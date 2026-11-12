@@ -553,7 +553,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,heard:[],last:"",done
     this.panel(`<div class="mut">Connecting. Say yes when your phone asks for the microphone.</div>`);
     try{this.conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"webrtc",dynamicVariables:this.vars(id),
         clientTools:{show_picture:p=>{this.pic(p&&p.picture);return "shown";},lesson_done:p=>{this.done=p||{};setTimeout(()=>this.end(),3500);return "ok";}},
-        onConnect:()=>this.live(),onDisconnect:()=>this.finish(),onError:e=>{this.err=String((e&&e.message)||e||"");},
+        onConnect:()=>this.live(),onDisconnect:d=>{if(d&&d.message&&!this.err)this.err=String(d.message);this.finish();},onError:e=>{this.err=String((e&&e.message)||e||"");},
         onMessage:m=>this.msg(m),onModeChange:m=>this.mode(m&&m.mode)});}
     catch(e){back(String((e&&e.message)||e||"The call didn't start.")+" If you blocked the microphone, allow it for this page and try again.");}},
   live(){this.t0=now();this.label("Live with Danny");
@@ -566,6 +566,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,heard:[],last:"",done
     if(who==="user"){this.heard.push(text);const h=$("#heard");if(h)h.textContent="heard: "+text;}else{this.last=text;const t=$("#tx");if(t)t.innerHTML="";}},
   end(){if(this.over){showMap();return;}try{if(this.conv)this.conv.endSession();}catch(e){}setTimeout(()=>this.finish(),1500);},
   finish(){if(this.over)return;this.over=true;const secs=this.t0?Math.round((now()-this.t0)/1000):0,m=this.m,said=this.heard.join(" . "),d=this.done||{};
+    if(secs<6){this.label("No answer");this.panel(`<h3>Danny didn't pick up</h3><div class="mut">The call was dropped before it started. That is not your phone or your mic. The usual cause is that the ElevenLabs voice credits for the month have run out.${this.err?" ("+this.err+")":""}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
     if(secs<45){this.label("Ended");this.panel(`<h3>Call ended</h3><div class="mut">${this.err?this.err+" ":""}That was too short to count, so nothing was saved.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
     const res={3:[],2:[],1:[]},nm=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase();
     m.items.forEach(k=>{const T=[ITEMS[k].es].concat(ITEMS[k].alt||[]),inT=saidIt(said,T),g=saidIt(d.alone||"",T)&&inT?3:(inT||saidIt(d.helped||"",T))?2:1;grade(k,"s",g);grade(k,"l",g>1?3:2);res[g].push(nm(k));});
