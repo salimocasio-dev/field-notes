@@ -3,6 +3,7 @@
  "title": "Rápido, despacio",
  "place": "El parque",
  "scene": "camino",
+ "next": "la-bola",
  "goal": "Walk the dog back to the gate with the three guineos for abuela.",
  "stake": {
   "thing": "guineos",

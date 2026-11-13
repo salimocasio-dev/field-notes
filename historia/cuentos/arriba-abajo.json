@@ -1,0 +1,767 @@
+{
+ "id": "arriba-abajo",
+ "title": "¡Arriba! ¡Abajo!",
+ "place": "El parque",
+ "scene": "campo",
+ "next": "otra-vez",
+ "goal": "Get the ball out of the tree. Then do not lose the balls to the pond.",
+ "stake": {
+  "thing": "bola",
+  "steps": 3
+ },
+ "dots": 9,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "arriba",
+  "abajo",
+  "salta"
+ ],
+ "back_again": [
+  "bola",
+  "tira",
+  "coge",
+  "tiene",
+  "árbol",
+  "¿dónde está?",
+  "hay",
+  "agua",
+  "mira",
+  "ahora"
+ ],
+ "also_heard": [
+  "por arriba",
+  "por abajo",
+  "va",
+  "mi",
+  "más"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "arbol": "c_n_arbol",
+  "juncos": "k_n_agua",
+  "campo": "c_n_parque",
+  "coqui": "yo_coqui",
+  "bola_luis": "k_n_bola_luis",
+  "bola_carmen": "k_n_bola_carmen",
+  "bola_cq": "k_n_bola_coqui",
+  "cesta": "k_n_cesta"
+ },
+ "palabras": {},
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c_n_arbol": {
+   "who": "narr",
+   "text": "Es un árbol."
+  },
+  "c_n_parque": {
+   "who": "narr",
+   "text": "Es el parque."
+  },
+  "k_n_bola_luis": {
+   "who": "narr",
+   "text": "Es la bola de Luis."
+  },
+  "k_n_bola_carmen": {
+   "who": "narr",
+   "text": "Es la bola de Carmen."
+  },
+  "k_n_bola_coqui": {
+   "who": "narr",
+   "text": "Es la bola de Coquí."
+  },
+  "k_n_agua": {
+   "who": "narr",
+   "text": "Es el agua."
+  },
+  "k_n_cesta": {
+   "who": "narr",
+   "text": "Hay más bolas."
+  },
+  "c16_mira_arriba": {
+   "who": "narr",
+   "text": "¡Mira! La bola está arriba."
+  },
+  "c16_l_ay": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ay, no! Mi bola está arriba, en el árbol."
+  },
+  "c16_luis_salta": {
+   "who": "narr",
+   "text": "Luis salta."
+  },
+  "c16_carmen_salta": {
+   "who": "narr",
+   "text": "Carmen salta."
+  },
+  "c16_canelo_salta": {
+   "who": "narr",
+   "text": "Canelo salta."
+  },
+  "c16_l_salta": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¡salta!"
+  },
+  "c16_coqui_salta": {
+   "who": "narr",
+   "text": "¡Coquí salta! ¡Arriba!"
+  },
+  "c16_ahora_abajo": {
+   "who": "narr",
+   "text": "Ahora la bola está abajo."
+  },
+  "c16_l_donde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Dónde está la bola?"
+  },
+  "c16_cq_arriba": {
+   "who": "tu",
+   "text": "¡Está arriba!"
+  },
+  "c16_cq_abajo": {
+   "who": "tu",
+   "text": "¡Está abajo!"
+  },
+  "c16_luis_tiene": {
+   "who": "narr",
+   "text": "Luis tiene la bola."
+  },
+  "c16_l_vamos": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Vamos a jugar!"
+  },
+  "c16_ca_arriba": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Está arriba!"
+  },
+  "c16_ca_abajo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Está abajo!"
+  },
+  "c16_coqui_tiene": {
+   "who": "narr",
+   "text": "Coquí tiene la bola."
+  },
+  "c16_l_coge_arriba": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora, ¡coge la bola! ¡Por arriba!"
+  },
+  "c16_va_arriba": {
+   "who": "narr",
+   "text": "La bola va por arriba. Coquí salta."
+  },
+  "c16_l_por_abajo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Por abajo!"
+  },
+  "c16_l_por_arriba": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Por arriba!"
+  },
+  "c16_va_abajo": {
+   "who": "narr",
+   "text": "La bola va por abajo."
+  },
+  "c16_l_canelo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Canelo, ¡por abajo!"
+  },
+  "c16_ay_agua": {
+   "who": "narr",
+   "text": "¡Ay, no! La bola está en el agua."
+  },
+  "c16_hay_mas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mira. Hay más bolas."
+  },
+  "c16_l_carmen_arriba": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Carmen, ¡por arriba!"
+  },
+  "c16_no_por_arriba": {
+   "who": "narr",
+   "text": "No, Coquí. Luis dice: ¡Por arriba!"
+  },
+  "c16_no_por_abajo": {
+   "who": "narr",
+   "text": "No, Coquí. Luis dice: ¡Por abajo!"
+  },
+  "c16_no_esta_arriba": {
+   "who": "narr",
+   "text": "No, Coquí. La bola está arriba."
+  },
+  "c16_no_esta_abajo": {
+   "who": "narr",
+   "text": "No, Coquí. La bola está abajo."
+  },
+  "c16_l_salta_coqui": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Salta, Coquí!"
+  },
+  "c16_fin": {
+   "who": "narr",
+   "text": "Luis salta. Carmen salta. ¡Y Coquí salta, salta, salta!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio16"
+  },
+  {
+   "wait": 500
+  },
+  "c16_mira_arriba",
+  {
+   "say": "c16_l_ay",
+   "gap": 250
+  },
+  {
+   "act": "bajoarbol",
+   "quien": "luis"
+  },
+  {
+   "act": "salta",
+   "quien": "luis"
+  },
+  "c16_luis_salta",
+  {
+   "act": "aparta",
+   "quien": "luis"
+  },
+  {
+   "act": "bajoarbol",
+   "quien": "carmen"
+  },
+  {
+   "act": "salta",
+   "quien": "carmen"
+  },
+  "c16_carmen_salta",
+  {
+   "act": "aparta",
+   "quien": "carmen"
+  },
+  {
+   "act": "salta",
+   "quien": "perro"
+  },
+  "c16_canelo_salta",
+  {
+   "dots": 1
+  },
+  {
+   "ask": "salta",
+   "lead": [],
+   "line": "c16_l_salta",
+   "then": [
+    "c16_coqui_salta"
+   ],
+   "after": [
+    {
+     "act": "tumba"
+    }
+   ],
+   "resp": [
+    "salta",
+    "corre"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "ruedabajo"
+  },
+  "c16_ahora_abajo",
+  {
+   "ask": "di_abajo",
+   "lead": [],
+   "line": "c16_l_donde",
+   "then": [
+    "c16_luis_tiene"
+   ],
+   "after": [
+    {
+     "act": "luisbusca",
+     "en": "abajo"
+    }
+   ],
+   "resp": [
+    "di_arriba",
+    "di_abajo"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_arriba": "c16_cq_arriba",
+    "di_abajo": "c16_cq_abajo"
+   },
+   "said": {
+    "di_abajo": "c16_cq_abajo"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "say": "c16_l_vamos",
+   "gap": 200
+  },
+  {
+   "act": "esconde16",
+   "en": "arriba"
+  },
+  {
+   "ask": "arbol",
+   "lead": [
+    "c16_l_donde"
+   ],
+   "line": "c16_ca_arriba",
+   "after": [
+    {
+     "act": "busca",
+     "en": "arriba"
+    }
+   ],
+   "then": [
+    "c16_coqui_tiene",
+    {
+     "act": "vuelve16"
+    }
+   ]
+  },
+  {
+   "act": "aluis"
+  },
+  {
+   "act": "esconde16",
+   "en": "abajo"
+  },
+  {
+   "ask": "juncos",
+   "lead": [
+    "c16_l_donde"
+   ],
+   "line": "c16_ca_abajo",
+   "after": [
+    {
+     "act": "busca",
+     "en": "abajo"
+    }
+   ],
+   "then": [
+    "c16_coqui_tiene"
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "listos"
+  },
+  {
+   "ask": "arriba",
+   "lead": [],
+   "line": "c16_l_coge_arriba",
+   "then": [
+    "c16_va_arriba"
+   ],
+   "after": [
+    {
+     "act": "tiro",
+     "como": "arriba",
+     "hace": "arriba"
+    }
+   ],
+   "resp": [
+    "arriba",
+    "abajo"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "listo16"
+  },
+  {
+   "ask": "abajo",
+   "lead": [],
+   "line": "c16_l_por_abajo",
+   "then": [
+    "c16_va_abajo"
+   ],
+   "after": [
+    {
+     "act": "tiro",
+     "como": "abajo",
+     "hace": "abajo"
+    }
+   ],
+   "resp": [
+    "arriba",
+    "abajo"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "turno16a"
+  },
+  {
+   "say": "c16_l_canelo",
+   "gap": 200
+  },
+  {
+   "act": "turno16b"
+  },
+  "c16_ay_agua",
+  {
+   "act": "trasturno"
+  },
+  {
+   "set": {
+    "twinkle": "cesta"
+   }
+  },
+  {
+   "say": "c16_hay_mas",
+   "gap": 200
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "prepcarmen"
+  },
+  {
+   "say": "c16_l_carmen_arriba",
+   "gap": 150
+  },
+  {
+   "act": "acarmen"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "listo16"
+  },
+  {
+   "draw": "la",
+   "options": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "decide": "say",
+   "options": [
+    "arriba",
+    "abajo"
+   ],
+   "baraja": true,
+   "pick": "$la",
+   "tests": "$la",
+   "lock": true,
+   "lead": [],
+   "line": "c16_l_por_$la",
+   "right": [
+    {
+     "act": "tiro",
+     "como": "$la",
+     "hace": "$la"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "alacesta"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tiro",
+     "como": "$la",
+     "hace": "$x"
+    },
+    "c16_no_por_$la",
+    {
+     "act": "marca",
+     "que": "agua"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "listo16"
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "lb",
+   "options": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "calc": "pb",
+   "cond": "lb=arriba",
+   "then": "arbol",
+   "else": "juncos"
+  },
+  {
+   "calc": "ob",
+   "cond": "lb=arriba",
+   "then": "abajo",
+   "else": "arriba"
+  },
+  {
+   "act": "esconde16",
+   "en": "$lb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arbol",
+    "juncos"
+   ],
+   "pick": "$pb",
+   "tests": "$lb",
+   "lock": true,
+   "lead": [
+    "c16_l_donde"
+   ],
+   "line": "c16_ca_$lb",
+   "right": [
+    {
+     "act": "busca",
+     "en": "$lb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "vuelve16"
+    },
+    {
+     "act": "alacesta"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "busca",
+     "en": "$ob"
+    },
+    "c16_no_esta_$lb",
+    {
+     "act": "perrotumba"
+    },
+    {
+     "act": "marca",
+     "que": "agua"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "vuelve16"
+    },
+    {
+     "act": "esconde16",
+     "en": "$lb"
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "draw": "lc",
+   "options": [
+    "arriba",
+    "abajo"
+   ]
+  },
+  {
+   "calc": "oc",
+   "cond": "lc=arriba",
+   "then": "abajo",
+   "else": "arriba"
+  },
+  {
+   "act": "sol",
+   "en": "$lc"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_arriba",
+    "di_abajo"
+   ],
+   "baraja": true,
+   "pick": "di_$lc",
+   "tests": "$lc",
+   "voces": {
+    "di_arriba": "c16_cq_arriba",
+    "di_abajo": "c16_cq_abajo"
+   },
+   "said": {
+    "di_arriba": "c16_cq_arriba",
+    "di_abajo": "c16_cq_abajo"
+   },
+   "lead": [],
+   "line": "c16_l_donde",
+   "right": [
+    {
+     "act": "luisbusca",
+     "en": "$lc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "luisbusca",
+     "en": "$oc"
+    },
+    "c16_no_esta_$lc",
+    {
+     "act": "perrotumba"
+    },
+    {
+     "act": "marca",
+     "que": "agua"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "sol",
+     "en": "$lc"
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 9
+  },
+  {
+   "act": "final16"
+  },
+  {
+   "say": "c16_l_salta_coqui",
+   "gap": 200
+  },
+  {
+   "act": "saltan"
+  },
+  "c16_fin",
+  {
+   "wait": 500
+  }
+ ],
+ "leer": [
+  "c16_mira_arriba",
+  "c16_l_ay",
+  "c16_luis_salta",
+  "c16_carmen_salta",
+  "c16_canelo_salta",
+  "c16_l_salta",
+  "c16_coqui_salta",
+  "c16_ahora_abajo",
+  "c16_l_donde",
+  "c16_cq_abajo",
+  "c16_luis_tiene",
+  "c16_l_vamos",
+  "c16_ca_arriba",
+  "c16_coqui_tiene",
+  "c16_ca_abajo",
+  "c16_l_coge_arriba",
+  "c16_va_arriba",
+  "c16_l_por_abajo",
+  "c16_va_abajo",
+  "c16_l_canelo",
+  "c16_ay_agua",
+  "c16_hay_mas",
+  "c16_l_carmen_arriba",
+  "c16_l_salta_coqui",
+  "c16_fin"
+ ]
+}

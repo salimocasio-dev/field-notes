@@ -230,7 +230,7 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
   if(st.as)V[st.as]=pick;if(st.other)V[st.other]=ops.find(x=>x!==pick);
   if(st.decide==="say"&&!OIR){W.resp=ops;W.respVoz=voz;}
   const line=sub(st.line),vale=(st.vale||[]).map(sub);let me=await espera(ops.concat(vale),st.lead,line,{lock:st.lock,kind:"decide",pick,voces:voz,orden:voz?ops:null,mudo:st.mudo,ayuda:st.libre?pick:null,alias:st.alias});const first=me.got===pick||vale.includes(me.got);V.ok=first?"1":"";V.x=me.got;
-  if(!OIR&&!st.libre){const w=sub(st.tests||pick);LOG.push({word:(S.palabras&&S.palabras[w])||w,asked:pick,got:me.got,ok:first,ms:me.ms||0});}
+  if(!OIR&&!st.libre){const w0=sub(st.tests||pick),w=(S.palabras&&S.palabras[w0])||w0;if(w!=="-")LOG.push({word:w,asked:pick,got:me.got,ok:first,ms:me.ms||0});}   // tests "-": no word decides this one, so nothing is filed
   if(said&&said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(said[me.got],300);}
   W.resp=null;
   if(st.do)await E.acts[st.do]({en:me.got});

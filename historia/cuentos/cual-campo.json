@@ -1,0 +1,825 @@
+{
+ "id": "cual-campo",
+ "title": "¿Cuál?",
+ "place": "El parque",
+ "scene": "campo",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for El campo. 'Otra vez' has no pair: a still picture cannot show 'again'.",
+ "clips": {
+  "k_c_bola": {
+   "who": "narr",
+   "text": "Es una bola."
+  },
+  "k_c_tiene": {
+   "who": "narr",
+   "text": "Canelo tiene la bola."
+  },
+  "k_c_tira": {
+   "who": "narr",
+   "text": "Luis tira la bola."
+  },
+  "k_c_coge": {
+   "who": "narr",
+   "text": "Carmen coge la bola."
+  },
+  "k_c_salta": {
+   "who": "narr",
+   "text": "El perro salta."
+  },
+  "k_c_dame": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Dame la bola!"
+  },
+  "c17_l_es_mi": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Es mi bola."
+  },
+  "k_c_tu": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Luis, es tu bola."
+  },
+  "k_c_arriba": {
+   "who": "narr",
+   "text": "La bola está arriba."
+  },
+  "k_c_abajo": {
+   "who": "narr",
+   "text": "Coquí está abajo."
+  },
+  "c17_quiere_mas": {
+   "who": "narr",
+   "text": "Canelo quiere más."
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "bola",
+   "say": "k_c_bola",
+   "si": {
+    "cam": [
+     100,
+     150,
+     75,
+     39.8
+    ],
+    "set": {
+     "bolas": {
+      "a": {
+       "k": "L",
+       "x": 137,
+       "y": 178
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     150,
+     75,
+     39.8
+    ],
+    "set": {
+     "flor": [
+      137,
+      178
+     ],
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "tiene",
+   "say": "k_c_tiene",
+   "si": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "perro": {
+      "x": 124,
+      "y": 182,
+      "pose": "lie",
+      "dir": 1
+     },
+     "bolas": {
+      "a": {
+       "k": "q",
+       "x": 138,
+       "y": 183
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "perro": {
+      "x": 124,
+      "y": 182,
+      "pose": "run",
+      "dir": 1,
+      "dy": 8
+     },
+     "bolas": {
+      "a": {
+       "k": "q",
+       "x": 142,
+       "y": 183,
+       "z": 40
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "tira",
+   "say": "k_c_tira",
+   "si": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 104,
+       "y": 182,
+       "pose": "offer",
+       "dir": 1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "L",
+       "x": 154,
+       "y": 182,
+       "z": 30,
+       "vuela": [
+        1,
+        0
+       ]
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 104,
+       "y": 182,
+       "pose": "arriba",
+       "dir": 1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "L",
+       "x": 109,
+       "y": 183,
+       "z": 52,
+       "vuela": [
+        0,
+        1
+       ]
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "coge",
+   "say": "k_c_coge",
+   "si": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 130,
+       "y": 182,
+       "pose": "arriba",
+       "dir": 1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "C",
+       "x": 135,
+       "y": 183,
+       "z": 50,
+       "vuela": [
+        0,
+        1
+       ]
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 118,
+       "y": 182,
+       "pose": "offer",
+       "dir": 1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "C",
+       "x": 164,
+       "y": 182,
+       "z": 30,
+       "vuela": [
+        1,
+        0
+       ]
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "salta",
+   "say": "k_c_salta",
+   "si": {
+    "cam": [
+     100,
+     150,
+     75,
+     39.8
+    ],
+    "set": {
+     "perro": {
+      "x": 137,
+      "y": 184,
+      "pose": "run",
+      "dir": 1,
+      "dy": 16
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     150,
+     75,
+     39.8
+    ],
+    "set": {
+     "perro": {
+      "x": 137,
+      "y": 184,
+      "pose": "run",
+      "dir": 1,
+      "polvo": 1
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "dame",
+   "say": "k_c_dame",
+   "si": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 150,
+       "y": 182,
+       "pose": "offer",
+       "dir": -1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "q",
+       "con": "cq"
+      }
+     },
+     "cq": {
+      "x": 88,
+      "y": 155,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 150,
+       "y": 182,
+       "pose": "offer",
+       "dir": -1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "q",
+       "con": "carmen"
+      }
+     },
+     "cq": {
+      "x": 88,
+      "y": 155,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "mi",
+   "say": "c17_l_es_mi",
+   "si": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 110,
+       "y": 182,
+       "pose": "yo",
+       "dir": 1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "L",
+       "con": "luis"
+      },
+      "b": {
+       "k": "q",
+       "x": 152,
+       "y": 184
+      }
+     },
+     "cq": {
+      "x": 144,
+      "y": 153,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 110,
+       "y": 182,
+       "pose": "tu",
+       "dir": 1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "L",
+       "x": 92,
+       "y": 184
+      },
+      "b": {
+       "k": "q",
+       "x": 140,
+       "y": 184
+      }
+     },
+     "cq": {
+      "x": 144,
+      "y": 153,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "tu",
+   "say": "k_c_tu",
+   "si": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 112,
+       "y": 182,
+       "pose": "tu",
+       "dir": 1
+      },
+      "luis": {
+       "x": 150,
+       "y": 182,
+       "pose": "idle",
+       "dir": -1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "L",
+       "con": "luis"
+      },
+      "b": {
+       "k": "C",
+       "x": 94,
+       "y": 184
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     74,
+     126,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 112,
+       "y": 182,
+       "pose": "yo",
+       "dir": 1
+      },
+      "luis": {
+       "x": 150,
+       "y": 182,
+       "pose": "idle",
+       "dir": -1
+      }
+     },
+     "bolas": {
+      "a": {
+       "k": "L",
+       "con": "luis"
+      },
+      "b": {
+       "k": "C",
+       "con": "carmen"
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "arriba",
+   "say": "k_c_arriba",
+   "si": {
+    "cam": [
+     4,
+     84,
+     113,
+     60
+    ],
+    "set": {
+     "bolas": {
+      "a": {
+       "k": "L",
+       "x": 64,
+       "y": 152,
+       "z": 33
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     120,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "bolas": {
+      "a": {
+       "k": "L",
+       "x": 176,
+       "y": 196
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "abajo",
+   "say": "k_c_abajo",
+   "si": {
+    "cam": [
+     14,
+     78,
+     150,
+     79.6
+    ],
+    "set": {
+     "cq": {
+      "x": 80,
+      "y": 127,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     14,
+     78,
+     150,
+     79.6
+    ],
+    "set": {
+     "cq": {
+      "x": 46,
+      "y": 87,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "más",
+   "say": "c17_quiere_mas",
+   "si": {
+    "cam": [
+     108,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "perro": {
+      "x": 160,
+      "y": 188,
+      "pose": "husmea",
+      "dir": -1,
+      "mojado": 1
+     },
+     "bolas": {
+      "a": {
+       "k": "q",
+       "x": 143,
+       "y": 189
+      }
+     },
+     "cq": {
+      "x": 108,
+      "y": 159,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     108,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "perro": {
+      "x": 178,
+      "y": 197,
+      "pose": "eat",
+      "dir": 1,
+      "mojado": 1
+     },
+     "bolas": {
+      "a": {
+       "k": "q",
+       "x": 143,
+       "y": 189
+      }
+     },
+     "cq": {
+      "x": 108,
+      "y": 159,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  }
+ ]
+}

@@ -109,7 +109,7 @@ decA=perro_hace("sa")+[act("situacion",que="$sa"),
 decB=[{"draw":"wb","options":PASO},pose("luis","wave"),
  {"decide":"say","options":PASO,"baraja":True,"pick":"$wb","tests":"$wb","lock":True,"lead":[],"line":"c14_luis_$wb","right":[pose("luis","idle"),act("paseo",modo="$wb",d=".07")],
   "wrong":[act("desigual",p="$wb",f="$x"),act("cae"),act("vuelveperro"),"c14_no_$wb",{"cost":1}]}]
-s14={"id":"rapido-despacio","title":"Rápido, despacio","place":"El parque","scene":"camino",
+s14={"id":"rapido-despacio","title":"Rápido, despacio","place":"El parque","scene":"camino","next":"la-bola",
  "goal":"Walk the dog back to the gate with the three guineos for abuela.","stake":{"thing":"guineos","steps":3},"dots":7,"bien":"si_muy_bien",
  "focus_words":["rápido","despacio"],"back_again":["perro","camina","corre","parque","ven","vamos","no","abuela","gracias","tres","¿dónde está?"],
  "also_heard":["muy","guineos","para abuela"],"names":NOMBRES,"palabras":{"rapido":"rápido"},"clips":c,
