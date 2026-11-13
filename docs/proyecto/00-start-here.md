@@ -36,6 +36,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 ## Waiting on Salim
 
 - How the app, stories 1 to 11 and ¿Cuál? feel and sound. Nothing is blocking.
+- His yes or no (asked Nov 13, evening): may up to 6,000 ElevenLabs credits (about $1) be spent on simulated test calls for place 1's call with Danny, once the allowance renews Nov 16. Until he says yes, build only the app side and the brief; spend nothing.
 - His yes or no on two small things (asked Nov 13): "por favor" and "de nada" have no next-day picture pair (they are tested by the speaking bubbles inside story 5); and whether this session may keep publishing straight to main, as page 07 says.
 
 ## Next steps, in order
@@ -50,6 +51,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 | Page | What it holds |
 | --- | --- |
 | 00-start-here | This page: state, next steps, rules |
+| 02-all-40-scenes | The ten places, forty scenes and their words (copied into the repo Nov 13) |
 | 01-plan | The A1 plan, second draft (plan doc, Plan tab) |
 | 02-all-40-scenes | The ten places, 40 scenes and their words (plan doc, All 40 scenes tab) |
 | 03-requirements | What Salim asked for and rejected, in his words |
