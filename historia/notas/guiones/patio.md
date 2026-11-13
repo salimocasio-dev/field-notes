@@ -196,18 +196,27 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | --- | --- | --- | --- |
 | niño | "Es un niño." | Luis alone on the grass | Carmen alone on the same spot |
 | niña | "Es una niña." | Carmen alone by the crate | mamá alone by the crate |
-| juega | "El niño juega." | Luis kicking the ball in the air | Luis kneeling at a bed, planting a flower, the ball lying beside him |
+| juega | "El niño juega." | Luis with the ball up in the air | Luis on the same spot holding a pot with a flower, the ball lying on the grass beside him |
 | flor | "Es una flor." | one open flower in the bed | the ball lying on the same bed |
 | sol | "Es el sol." | the yard at noon, the sun high | the yard at night, a moon and a star |
 | aquí | "Carmen dice: La flor está aquí." | Carmen behind the left bed, one open flower in the left bed | Carmen behind the left bed, one open flower in the right bed |
 | allá | "Luis dice: La flor está allá." | Luis behind the left bed, one open flower in the right bed | Luis behind the left bed, one open flower in the left bed |
-| amigo | "Luis dice: Es mi amigo." | Luis with an arm round the frog | Luis hugging his ball |
+| amigo | "Luis dice: Es mi amigo." | Luis with an arm out to the frog beside him | Luis with the same arm out to his ball, lying where the frog was |
 | ven | "Carmen dice: ¡Ven, Coquí!" | Carmen with an arm out; the frog in mid-hop, almost at her, dust behind him | Carmen pointing up at the bird in the air; the frog sitting still where he was, his eyes up on the bird |
 | mira | "Luis dice: ¡Mira, Coquí!" | Luis and the frog side by side, the frog's eyes wide and up, the bird doing a loop above | Luis with an arm out; the frog in mid-hop toward him, dust behind him; no bird |
 | vamos | "Carmen dice: ¡Vamos, Coquí!" | Carmen and the frog going out through the open gate | Carmen and the frog sitting on the grass by the shut gate, each with a glass |
 | hasta mañana | "¡Hasta mañana!" (the frog) | dusk: the frog at the open gate, waving back at the family | day: the frog arriving at the back door, the family waving hello |
 
 "¿Qué es esto?" has no picture pair; it is a question. It is staked in story 10, decision C.
+
+## What the wordless read changed (after the build)
+
+- The glass from the sack has juice and a straw in it, so it reads as a glass.
+- The crate of pots stands back by the fence, so it no longer looks like a hat on the frog.
+- The "go" doing bubble is the frog at the top of a jump with the path of the jump under him.
+- The family at the door stands further apart.
+- The three lights in the corner are bigger; a lost one is a crossed-out square.
+- Pairs juega, amigo, aquí and allá redrawn so each differs in one thing.
 
 ## For the owner, one line each
 

@@ -4,10 +4,50 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=22
-- Story 1 directly: historia/?v=22 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=22 in index.html, cual.html and app.html. Raise all three when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=23
+- Story 1 directly: historia/?v=23 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=23 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
+
+## Nov 13, part 7: El patio (scene 4 of La casa). All eleven stories of place 1 are built.
+
+Live at ?v=23. Scripts (final, draft 4): historia/notas/guiones/patio.md. The generator that writes the three story files and the pairs is kept in historia/tools/gen_patio.py (run it, never edit the JSON by hand).
+
+### What is built
+
+- **The yard** (historia/escenas/patio.js): the back of the house with its door, a fence with the garden gate (el portón), a flamboyán with the bird's nest, two flower beds with five holes each, a sun that can sink to the fence, dusk, night, fireflies. Luis and Carmen; the family at the back door.
+- **Story 9, Las flores** (niño, niña, juega, flor, sol, aquí, allá). He plants abuela's flowers. Stake: the daylight; a wrong move and the sun sinks a step, and what he planted wrong stays a shut bud. Round 1: "Una flor aquí / allá" (the speaker stands behind one bed). Round 2: abuela says "para el niño / la niña". Round 3: "¡Aquí no! ¡Allá!" in four orders. The beds as he left them are remembered and show in stories 10 and 11.
+- **Story 10, ¿Qué es esto?** (¿qué es esto?, amigo, mira, ven). Luis's sack, the frog's basket, the bird that snatches. A: Carmen says ven or mira and he picks what the frog does (two "doing bubbles": hop, or eyes wide). B: he answers the question by ear. C: he asks it himself.
+- **Story 11, Hasta mañana** (vamos, hasta mañana). Dusk, then night. Stake: three fireflies, each with someone. A: reply to Carmen's "Adiós". B: thank abuelo for the cake. C: Luis says "¡Ven, Coquí!" or "¡Vamos al portón!". He leaves by the gate; in every ending he sings and the fireflies answer.
+- **¿Cuál?**: 12 pairs in cuentos/cual-patio.json.
+
+### Two changes to the plan's words (told to Salim)
+
+- "allí" is taught as "allá" (Puerto Rican reviewer: that is what is said across a yard, and it is easier to tell from "aquí" by ear).
+- The garden gate is "el portón"; "puerta" stays the door of the house.
+
+### Engine and scene pieces new here
+
+| Piece | What it does |
+| --- | --- |
+| doing bubbles | a Say decision with picture answers (`options:["ir","ver"]`, no `voces`); the scene draws them in `respIcon` |
+| an ask with no line | `ask` with `resp` + `voces` and `line:null`: only the bubbles speak (the frog picks a question) |
+| `{"cost":1,"en":"carmen"}` | the stake act gets which thing is lost (which firefly) |
+| `vmapa` | the helper once called `mapa` in juego.js; the old name clashed with the app page and stopped the app from starting (caught by the app check before publishing) |
+| `KIT.FAM` | the family's look, shared by La sala and El patio |
+
+### Reviews
+
+- Scripts: four drafts. Round 1 (beginner, Spanish): the gate word, bird must not talk, aquí/allí unfair as taught, ven/mira unfair, story 11 staked neither new word. Round 2: vamos taught with a ven picture, asking never taught, wrong answers in story 11 changed only a counter. Last gate: firefly on the gate gave the answer away, the "no" line never modelled. All fixed.
+- Wordless frames, fresh reader: fixed after it: the glass (now juice and a straw), the crate looked like a hat on the frog, the hop card read as a face, the family overlapped, the lights card was too small, pairs juega / amigo / aquí / allá differed in more than one thing.
+
+### Testing
+
+- Every story: all-right, all-wrong and mixed paths, and every draw forced both ways, by machine. All 45 picture pairs. The app check.
+
+### Audio
+
+- 116 new lines, about 2,600 characters, Azure free tier. Session total so far about 8,300 of 500,000.
 
 ## Nov 13, part 6: La sala (scene 3 of La casa)
 
