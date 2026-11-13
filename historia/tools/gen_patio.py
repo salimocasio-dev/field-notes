@@ -51,7 +51,7 @@ flores={"id":"las-flores","title":"Las flores","place":"La casa","scene":"patio"
   {"dots":4},{"act":"anda","quien":"carmen","a":"espera"},{"act":"anda","quien":"luis","a":"detras","cama":"R"},
   ask("camaR","p_luis_flor_aqui",[{"act":"planta","cama":"R"},"p_luis_esta_aqui"]),
   ask("camaL","p_luis_no_alla_a",[{"act":"planta","cama":"L"},"p_luis_esta_alla"]),
-  {"act":"anda","quien":"luis","a":"espera"},{"act":"anda","quien":"carmen","x":"88","y":"152"},{"say":"p_carmen_ahora_tu","gap":300},{"act":"ensena"},
+  {"act":"anda","quien":"luis","a":"espera"},{"act":"anda","quien":"carmen","x":"86","y":"136"},{"say":"p_carmen_ahora_tu","gap":300},{"act":"ensena"},
   {"dots":5}]+cama("qa","oqa","ca","oca","wa","ta","p_$qa_flor_$wa")+[
   {"dots":6},{"act":"lados"},{"act":"asoma"},{"draw":"n","options":["nino","nina"]},{"calc":"pn","cond":"n=nino","then":"luis","else":"carmen"},
   {"decide":"do","options":["luis","carmen"],"pick":"$pn","tests":"$n","lock":True,"lead":[],"line":"p_ab_flor_para_$n",
@@ -153,24 +153,24 @@ json.dump(hasta,open("cuentos/hasta-manana.json","w",encoding="utf-8"),ensure_as
 P=lambda x,y,**k:dict({"x":x,"y":y,"pose":"idle"},**k)
 cq=lambda x,y,s=1,**k:dict({"x":x-16,"y":y-27,"s":s,"dy":0,"al":1,"vis":1,"bub":None},**k)
 NO=cq(0,0,vis=0)
-F1=lambda k:{"L":[{"k":1,"c":0}] if k=="L" else [],"R":[{"k":1,"c":0}] if k=="R" else []}
-FAMILIA=dict(abuela=P(40,134,pose="wave",dir=1),abuelo=P(62,128,pose="wave"),mama=P(84,134,pose="wave"),papa=P(104,128,pose="wave"))
+F1=lambda k:{"L":[{"k":1,"c":2}] if k=="L" else [],"R":[{"k":1,"c":2}] if k=="R" else []}
+FAMILIA=dict(abuela=P(34,136,pose="wave",dir=1),abuelo=P(60,126,pose="wave"),mama=P(86,136,pose="wave"),papa=P(112,126,pose="wave"))
 todos={**flores["clips"],**que["clips"],**hasta["clips"],"p_c_nino":N("Es un niño."),"p_c_nina":N("Es una niña."),"p_c_juega":N("El niño juega."),"p_c_flor":N("Es una flor."),
  "p_c_aqui":CA("La flor está aquí."),"p_c_amigo":L("Es mi amigo."),"p_c_mira":L("¡Mira, Coquí!")}
 usa=["p_c_nino","p_c_nina","p_c_juega","p_c_flor","p_n_sol","p_c_aqui","p_luis_esta_alla","p_c_amigo","p_carmen_ven_coqui","p_c_mira","p_carmen_vamos_coqui","p_cq_hm","muy_bien","si_muy_bien"]
-CB=[35,112,170,90.2]; CM=[40,100,170,90.2]
+CB=[42,118,156,82.8]; CM=[40,100,170,90.2]
 cual={"id":"cual-patio","title":"¿Cuál?","place":"La casa","scene":"patio","tipo":"cual","stake":{"thing":"none","steps":0},
  "note":"The next-day pass for El patio.","clips":{k:todos[k] for k in usa},
  "items":[
   {"w":"niño","say":"p_c_nino","si":{"cam":[64,118,113,60],"set":{"gente":{"luis":P(120,170)},"cq":NO}},"no":{"cam":[64,118,113,60],"set":{"gente":{"carmen":P(120,170)},"cq":NO}}},
-  {"w":"niña","say":"p_c_nina","si":{"cam":[50,100,113,60],"set":{"gente":{"carmen":P(90,152)},"caja":1,"cq":NO}},"no":{"cam":[50,100,113,60],"set":{"gente":{"mama":P(90,154)},"caja":1,"cq":NO}}},
+  {"w":"niña","say":"p_c_nina","si":{"cam":[40,80,113,60],"set":{"gente":{"carmen":P(86,136)},"caja":1,"cq":NO}},"no":{"cam":[40,80,113,60],"set":{"gente":{"mama":P(86,138)},"caja":1,"cq":NO}}},
   {"w":"juega","say":"p_c_juega","si":{"cam":[30,124,150,79.6],"set":{"gente":{"luis":P(126,172,pose="wave")},"bola":{"x":140,"y":172,"h":30},"flores":F1("L"),"cq":NO}},
-   "no":{"cam":[30,124,150,79.6],"set":{"gente":{"luis":P(110,186,sent=1,pose="ojos",lleva="maceta")},"bola":{"x":134,"y":192},"flores":F1("L"),"cq":NO}}},
+   "no":{"cam":[30,124,150,79.6],"set":{"gente":{"luis":P(126,172,pose="ojos",lleva="maceta")},"bola":{"x":146,"y":174},"flores":F1("L"),"cq":NO}}},
   {"w":"flor","say":"p_c_flor","si":{"cam":[16,146,113,60],"set":{"flores":F1("L"),"cq":NO}},"no":{"cam":[16,146,113,60],"set":{"bola":{"x":48,"y":188},"cq":NO}}},
   {"w":"sol","say":"p_n_sol","si":{"cam":[30,0,170,90.2],"set":{"cq":NO}},"no":{"cam":[30,0,170,90.2],"set":{"noche":1,"luna":1,"osc":.6,"cq":NO}}},
   {"w":"aquí","say":"p_c_aqui","si":{"cam":CB,"set":{"gente":{"carmen":P(68,176)},"flores":F1("L"),"cq":NO}},"no":{"cam":CB,"set":{"gente":{"carmen":P(68,176)},"flores":F1("R"),"cq":NO}}},
   {"w":"allá","say":"p_luis_esta_alla","si":{"cam":CB,"set":{"gente":{"luis":P(68,176)},"flores":F1("R"),"cq":NO}},"no":{"cam":CB,"set":{"gente":{"luis":P(68,176)},"flores":F1("L"),"cq":NO}}},
-  {"w":"amigo","say":"p_c_amigo","si":{"cam":[50,130,113,60],"set":{"gente":{"luis":P(118,180,pose="offer")},"cq":cq(88,184)}},"no":{"cam":[50,130,113,60],"set":{"gente":{"luis":P(110,180,pose="ojos",lleva="bola")},"cq":NO}}},
+  {"w":"amigo","say":"p_c_amigo","si":{"cam":[50,130,113,60],"set":{"gente":{"luis":P(118,180,pose="offer")},"cq":cq(88,184)}},"no":{"cam":[50,130,113,60],"set":{"gente":{"luis":P(118,180,pose="offer")},"bola":{"x":90,"y":182},"cq":NO}}},
   {"w":"ven","say":"p_carmen_ven_coqui","si":{"cam":CM,"set":{"gente":{"carmen":P(170,176,pose="offer")},"cq":cq(128,180,dy=-8),"polvo":{"x":106,"y":178,"dir":-1}}},
    "no":{"cam":CM,"set":{"gente":{"carmen":P(170,176,pose="alto",dir=-1)},"cq":cq(80,180,ojos=1,ojx=1,ojy=-1),"ave":{"mode":"fly","x":124,"y":128,"dir":1,"st":"n"},"rizo":{"x":124,"y":124,"r":12}}}},
   {"w":"mira","say":"p_c_mira","si":{"cam":CM,"set":{"gente":{"luis":P(160,178,pose="alto",dir=-1)},"cq":cq(118,182,ojos=1,ojx=0,ojy=-1),"ave":{"mode":"fly","x":124,"y":128,"dir":1,"st":"n"},"rizo":{"x":124,"y":124,"r":12}}},

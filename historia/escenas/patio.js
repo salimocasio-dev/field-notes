@@ -67,7 +67,7 @@ function mkCanasta(){const b=new Buf(18,17),T=RP.orng;for(let a=0;a<=24;a++){con
 // the small things of this place, one drawing each: flor, vaso, silla, bizcocho, bola, maceta
 function mkCosa(k){const b=new Buf(14,14),Wd=RP.wood;
   if(k==="flor"){b.rect(6,6,1,8,RP.grn[1]);b.rect(3,9,3,2,RP.grn[3]);b.rect(7,10,3,2,RP.grn[3]);b.ell(6.5,4,4,4,["#FF8FB8"]);b.ell(6.5,4,1.6,1.6,[RP.yel[2]]);}
-  else if(k==="vaso"){b.rect(4,3,7,10,"#E8F4FF");b.rect(5,4,5,8,"#C8E4FA");b.rect(4,3,7,1,"#FFFFFF");b.rect(9,5,1,6,"#FFFFFF");}
+  else if(k==="vaso"){for(let y=3;y<13;y++){const i=y>=10?1:0;b.rect(3+i,y,8-2*i,1,y>=6?RP.orng[3]:"#E8F4FF");}b.rect(3,6,8,1,RP.orng[4]);b.rect(4,3,1,9,"#FFFFFF");b.rect(3,2,8,1,"#FFFFFF");b.rect(8,0,1,8,RP.red[2]);b.px(9,0,RP.red[2]);}
   else if(k==="silla"){b.rect(3,1,2,12,Wd[2]);b.rect(3,2,7,1,Wd[3]);b.rect(3,4,7,1,Wd[3]);b.rect(9,1,1,6,Wd[2]);b.rect(3,7,9,2,Wd[3]);b.rect(10,9,2,4,Wd[2]);}
   else if(k==="bizcocho"){b.rect(1,12,12,1,"#FFFFFF");b.rect(2,7,10,5,"#F2D08A");b.rect(2,5,10,3,"#FF8FB8");b.rect(2,9,10,1,"#FFFDF4");b.rect(6,3,2,2,RP.red[2]);b.px(4,8,"#FF8FB8");b.px(9,8,"#FF8FB8");}
   else if(k==="bola"){b.ell(7,7.5,5.5,5.5,RP.red.slice(1));b.rect(2,7,10,2,"#FFFFFF");}
@@ -83,14 +83,14 @@ const hoyo=(k,i)=>[k==="L"?CAMA.L[0]+8+i*10:CAMA.R[0]+48-i*10,CAMA[k][1]+10];
 
 /* ---------- where things are ---------- */
 const LUGAR={puerta:[30,104,.8],inicio:[52,150,1],centro:[104,178,1],caja:[104,150,1],camaL:[90,164,.9],camaR:[118,164,.9],
-  luis:[112,140,1],carmen:[62,130,1],carmenA:[112,116,.9],abuela:[70,170,1],porton:[128,104,.85],luisC:[92,134,.95],sale:[134,84,.5]};
-const DETRAS={L:[68,176],R:[172,176]},ESPERA={luis:[136,128],carmen:[98,128]},LADOS=[[84,172],[156,172]];
+  luis:[112,140,1],carmen:[62,130,1],carmenA:[112,116,.9],abuela:[70,170,1],porton:[128,104,.85],luisC:[96,140,.95],sale:[134,84,.5]};
+const DETRAS={L:[68,176],R:[172,176]},ESPERA={luis:[160,128],carmen:[80,128]},LADOS=[[84,172],[156,172]];
 const alto=id=>id==="abuela"?51:id==="bebe"?28:(QUIEN[id].nino?(W.gente[id]&&W.gente[id].sent?40:44):(W.gente[id]&&W.gente[id].sent?49:56));
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0?[R(p.x)-11,R(p.y)-alto(id),22,alto(id)]:null;};
 const persona=id=>({id,m:1,si:w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0),box:()=>caja(id)});
 const COSAS=["luis","carmen","bebe","abuela","abuelo","mama","papa"].map(persona).concat([
   {id:"bola",si:w=>!!w.bola,box:w=>[R(w.bola.x)-7,R(w.bola.y)-13,14,14],m:2},{id:"saco",si:w=>!!w.saco,box:w=>[R(w.saco.x)-13,R(w.saco.y)-23,26,24],m:1},
-  {id:"caja",si:w=>!!w.caja,box:[104,130,32,24],m:0},{id:"camaL",box:[40,160,56,38],m:2},{id:"camaR",box:[144,160,56,38],m:2},
+  {id:"caja",si:w=>!!w.caja,box:[104,112,32,24],m:0},{id:"camaL",box:[40,160,56,38],m:2},{id:"camaR",box:[144,160,56,38],m:2},
   {id:"sol",si:w=>!w.noche&&w.soly<80,box:w=>[SOLX-14,R(w.soly)-14,28,28],m:3},{id:"porton",box:[127,70,40,43],m:1},{id:"nido",box:[170,60,22,16],m:1},{id:"arbol",box:[168,8,60,106],m:0},
   {id:"puerta",box:[27,57,30,56],m:0},{id:"casa",box:[0,14,61,100],m:0},{id:"cerca",box:[60,80,180,33],m:0},{id:"patio",box:[0,113,240,103],m:0}]);
 
@@ -133,7 +133,7 @@ function draw(c,W,a){const q=W.cq,G=W.gente||{},n=W.noche?4:Math.min(3,W.sol||0)
   const L=[];
   Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.vis!==0)L.push({y:p.z||p.y,d:()=>gente(c,id,a)});});
   for(const k in CAMA){const fl=(W.flores||{})[k]||[];L.push({y:CAMA[k][1]+12,d:()=>fl.forEach((f,i)=>{const h=hoyo(k,i);florEn(c,h[0],h[1],f);})});}
-  if(W.caja)L.push({y:153,d:()=>c.drawImage(spr("caja",mkCaja),104,130)});
+  if(W.caja)L.push({y:136,d:()=>c.drawImage(spr("caja",mkCaja),104,112)});
   if(W.saco)L.push({y:W.saco.y+1,d:()=>c.drawImage(spr("saco"+(W.saco.ab?1:0),()=>mkSaco(W.saco.ab)),R(W.saco.x)-13,R(W.saco.y)-23)});
   if(W.bola)L.push({y:W.bola.y,d:()=>cosa(c,"bola",W.bola.x,W.bola.y-(W.bola.h||0),1)});
   if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});
@@ -153,7 +153,8 @@ function draw(c,W,a){const q=W.cq,G=W.gente||{},n=W.noche?4:Math.min(3,W.sol||0)
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1-(p.bub?38:0)];}
 // the two doing bubbles: ir = the frog in the middle of a hop; ver = his two big eyes
 function respIcon(g,k,x,y,w,h,a){
-  if(k==="ir"){const up=a%2?2:0;fr(g,x+11,y+30,18,2,"#C8C8D4");g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),x+9,y+5-up);[[6,26],[32,26]].forEach(p=>{fr(g,x+p[0],y+p[1],3,2,"#9494A6");fr(g,x+p[0]+(p[0]<20?-2:3),y+p[1]-3,2,2,"#9494A6");});}
+  if(k==="ir"){const up=a%2?1:0;fr(g,x+4,y+32,32,1,"#9494A6");for(let i=0;i<=12;i++){const t=i/12,px=x+5+30*t,py=y+31-22*Math.sin(Math.PI*t);if(i%2===0)fr(g,R(px),R(py),2,2,"#2E9A48");}
+    g.drawImage(spr("cq.6_0",()=>mkCoqui(.6,0,0)),x+10,y+2-up);fr(g,x+15,y+29,10,2,"#C8C8D4");}
   else{[13,27].forEach(ex=>{g.fillStyle=OUT;g.beginPath();g.arc(x+ex,y+17,8,0,7);g.fill();g.fillStyle="#FFFFFF";g.beginPath();g.arc(x+ex,y+17,7,0,7);g.fill();g.fillStyle="#2E6CD0";g.beginPath();g.arc(x+ex,y+16-(a%2),4,0,7);g.fill();g.fillStyle="#20140A";g.beginPath();g.arc(x+ex,y+16-(a%2),2,0,7);g.fill();});
     [[4,6],[20,3],[36,6]].forEach(p=>fr(g,x+p[0],y+p[1],1,4,"#F8C838"));}}
 
@@ -165,10 +166,10 @@ function hud(g,W,a){
     for(let x=5;x<35;x+=5){g.fillStyle=RP.wood[2];g.fillRect(x,43,4,10);g.fillStyle=RP.wood[4];g.fillRect(x,43,1,10);}g.fillStyle=OUT;g.fillRect(5,42,30,1);}
   if(W.tanteo){const mio=W.canasta||[],suyo=W.nido||[];tarjeta(g,3,3,24+Math.max(3,mio.length)*15,26);g.drawImage(spr("canasta",mkCanasta),5,7);mio.forEach((k,i)=>cosa(g,k,36+i*15,25,1));
     const w=28+3*15;tarjeta(g,DW-w-3,3,w,26);g.drawImage(spr("kaven0",()=>KIT.mkAve("n",0)),DW-24,8);g.fillStyle=RP.wood[1];g.fillRect(DW-27,22,22,4);suyo.forEach((k,i)=>cosa(g,k,DW-w+6+i*15,25,1));}
-  if(W.tarjeta==="luces"){tarjeta(g,3,3,76,28);g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),5,8);(W.luces||[]).slice(0,3).forEach((l,i)=>{const x=40+i*13,y=17;
-      if(l.est==="con"){g.fillStyle="rgba(240,220,60,.45)";g.beginPath();g.arc(x,y,6,0,7);g.fill();g.fillStyle=OUT;g.fillRect(x-3,y-3,6,6);g.fillStyle="#F8E040";g.fillRect(x-2,y-2,4,4);}
-      else if(l.est==="ido"||l.est==="fuera"){g.fillStyle="#B8B8C8";g.fillRect(x-3,y,6,1);}
-      else{g.fillStyle="#9494A6";g.fillRect(x-2,y-2,4,4);g.fillStyle="#FFFDF4";g.fillRect(x-1,y-1,2,2);}});}
+  if(W.tarjeta==="luces"){tarjeta(g,3,3,84,30);g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),5,9);(W.luces||[]).slice(0,3).forEach((l,i)=>{const x=42+i*15,y=18;
+      if(l.est==="con"){g.fillStyle="rgba(248,224,64,.4)";g.beginPath();g.arc(x,y,7,0,7);g.fill();g.fillStyle=OUT;g.fillRect(x-4,y-4,8,8);g.fillStyle="#F8E040";g.fillRect(x-3,y-3,6,6);g.fillStyle="#FFFFFF";g.fillRect(x-1,y-1,2,2);}
+      else if(l.est==="ido"){g.fillStyle="#9494A6";g.fillRect(x-4,y-4,8,8);g.fillStyle="#FFFDF4";g.fillRect(x-3,y-3,6,6);g.fillStyle="#B8B8C8";for(let k=-2;k<=2;k++){g.fillRect(x+k,y+k,1,1);g.fillRect(x+k,y-k,1,1);}}
+      else{g.fillStyle="#6E6E80";g.fillRect(x-3,y-3,6,6);g.fillStyle="#D8E890";g.fillRect(x-2,y-2,4,4);}});}
 }
 
 /* ---------- what can happen here ---------- */
@@ -191,7 +192,7 @@ const acts={
   async rie(o){const p=G(o.quien);if(!p)return;p.rie=1;await wait(+o.ms||700);p.rie=0;},
   async ojos(o){const q=W.cq;q.ojos=o.on==="0"?0:1;q.ojx=+o.x||0;q.ojy=o.y==null?-1:+o.y;if(q.ojos){SFX.blip();await wait(350);}},
   /* ---- story 9: the flowers ---- */
-  async inicio9(){W.gente={luis:{x:136,y:128,pose:"idle"},carmen:{x:94,y:150,pose:"idle"}};W.caja=1;W.bola={x:150,y:128};W.cq.vis=0;},
+  async inicio9(){W.gente={luis:{x:160,y:128,pose:"idle"},carmen:{x:86,y:136,pose:"idle"}};W.caja=1;W.bola={x:174,y:128};W.cq.vis=0;},
   async sale(){const q=W.cq,L=LUGAR.puerta;W.pdoor=1;SFX.creak();q.x=L[0];q.y=L[1]-14;q.s=.7;q.vis=1;await wait(250);await hopTo(L[0],L[1],1,L[2]);await acts.ir({a:"inicio"});W.pdoor=0;},
   // Luis kicks the ball up and catches it
   async juega(o){const p=G(o.quien||"luis"),b=W.bola;b.x=p.x+12;b.y=p.y;for(let k=0;k<2;k++){p.pose="wave";SFX.blip();for(let i=1;i<=8;i++){b.h=Math.sin(Math.PI*i/8)*30;await wait(TICK);}b.h=0;}p.pose="idle";},
@@ -264,13 +265,13 @@ const acts={
     if(mio>=3){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,40],[150,44],[104,30],[80,60],[130,56]]});await wait(1000);}else if(mio){SFX.win();await wait(700);}else{SFX.coqui();await wait(700);}
     const k=W.nido.length?W.nido.pop():"flor";W.ave.lleva=k;W.ave.st="feliz";await KIT.aveVa(f[0]+14,f[1]-6,10);W.ave.lleva=null;W.canasta.push(k);SFX.luz();fx({t:"star",n:8,pts:[[f[0]+12,f[1]+12]]});await wait(500);await KIT.aveVa(f[0],f[1]-2,4);W.ave.mode="head";await wait(500);},
   /* ---- story 11: going home ---- */
-  async inicio11(){camas();W.gente={abuela:{x:40,y:134,pose:"idle",dir:1},abuelo:{x:62,y:128,pose:"ojos",lleva:"bizcocho",dir:1},mama:{x:84,y:134,pose:"idle"},bebe:{x:93,y:108,z:135,est:"idle"},papa:{x:104,y:128,pose:"idle"},
+  async inicio11(){camas();W.gente={abuela:{x:34,y:136,pose:"idle",dir:1},abuelo:{x:60,y:126,pose:"ojos",lleva:"bizcocho",dir:1},mama:{x:86,y:136,pose:"idle"},bebe:{x:97,y:109,z:137,est:"idle"},papa:{x:112,y:126,pose:"idle"},
       luis:{x:150,y:190,pose:"idle",dir:-1},carmen:{x:186,y:178,pose:"alto",dir:-1}};W.pdoor=1;W.sol=3;W.soly=SOLY[3];W.osc=.12;W.ave={mode:"sit",x:178,y:83,dir:-1,st:"n"};
     W.luces=[{id:"carmen",est:"en"},{id:"abuelo",est:"en"},{id:"medio",est:"en",x0:120,y0:156}];},
   async puesta(){for(let i=0;i<=12;i++){W.soly=SOLY[3]+i*3;W.osc=.12+.015*i;await wait(TICK);}W.estrella=1;SFX.luz();await wait(600);},
   // two go to the gate together, side by side
   async juntos(o){const id=o.quien||"luis",p=G(id);p.pose="idle";await Promise.all([mueve(id,170,124),acts.ir({a:"porton"})]);p.dir=-1;},
-  async vuelveluis(){await mueve("luis",126,134);G("luis").dir=1;},
+  async vuelveluis(){await mueve("luis",138,138);G("luis").dir=1;},
   async alcentro(o){const p=G(o.quien);await Promise.all([mueve(o.quien,+o.x||160,+o.y||190),acts.ir({a:"centro"})]);p.dir=-1;},
   async junto(o){const p=G(o.quien),b=frogBox(W.cq);await mueve(o.quien,b.x+b.w+14,b.y+b.h+2);p.dir=-1;},
   async oscurece(){for(let i=0;i<=10;i++){W.osc=.3+.03*i;await wait(TICK);}W.noche=1;W.brillo=1;SFX.luz();await wait(300);W.tarjeta="luces";await wait(500);},
@@ -302,7 +303,7 @@ async function stake(lost,max,en){const t=S.stake.thing;
 function poke(what){const p=W.gente&&W.gente[what];if(p&&!p.bub){p.bub="amor";const my=runId;setTimeout(()=>{if(my===runId&&p.bub==="amor")p.bub=null;},1400/FAST);}}
 const estado=W=>"gente="+Object.keys(W.gente||{}).filter(k=>W.gente[k]&&W.gente[k].vis!==0).map(k=>k+"@"+R(W.gente[k].x)+","+R(W.gente[k].y)+(W.gente[k].lleva?"("+W.gente[k].lleva+")":"")+(W.gente[k].bub?"["+W.gente[k].bub+"]":"")).join(" ")+
   " flores=L"+(W.flores.L.map(f=>f.k).join(""))+" R"+(W.flores.R.map(f=>f.k).join(""))+" sol="+W.sol+" lleva="+(W.lleva||"-")+" canasta="+(W.canasta?W.canasta.join("+"):"-")+" nido="+(W.nido||[]).join("+")+" luces="+(W.luces||[]).map(l=>l.id+":"+l.est).join(",")+" porton="+W.porton+" ojos="+(W.cq.ojos||0);
-KIT.escena({id:"patio",CAM:{wide:[22,0,196,216]},heartAt:[107,6],lugar:LUGAR,cosas:COSAS,
+KIT.escena({id:"patio",CAM:{wide:[22,0,196,216]},heartAt:[118,36],lugar:LUGAR,cosas:COSAS,
   fresh:()=>({gente:{},flores:{L:[],R:[]},sol:0,soly:SOLY[0],osc:0,noche:0,luna:0,estrella:0,porton:0,pdoor:0,caja:0,bola:null,saco:null,canasta:null,nido:[],tanteo:0,tarjeta:null,muestra:null,luces:[],brillo:0,aro:0,mari:[],lleva:null,vuela:null,
     polvo:null,rizo:null,brilla:0,ave:{mode:"sit",x:181,y:66,dir:-1,st:"n"},cq:{x:LUGAR.centro[0],y:LUGAR.centro[1],s:1,dy:0,al:1,vis:1,bub:null}}),
   draw,hud,poke,acts,stake,talkAt,respIcon,estado});
