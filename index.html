@@ -603,7 +603,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
     const c=this.P.active.filter(k=>canTouch(k)).map(k=>[rest.indexOf(" "+coreOf(k)+" "),k]).filter(a=>a[0]>=0).sort((a,b)=>a[0]-b[0])[0];if(!c)return;
     const k=c[1];if(k==="abuela")this.world.ab=1;if(k==="jugo"){this.world.ab=1;this.world.cup=1;}
     this.ask={k,t0:this.listening?now():null,cold:this.picTurn!==k};if(this.ask.cold||this.listening)this.arm();},
-  tap(p){if(this.over||!this.conv||!this.t0||this.tapWait)return;if(this.zoom){if(this.ask)this.arm();return;}
+  tap(p){if(this.over||!this.conv||!this.t0||this.tapWait)return;if(this.zoom){const z=this.zoom;p={x:z[0]+p.x/240*z[2],y:z[1]+p.y/150*z[3]};}
     const sc=SC[this.scene],st=this.st,vis=k=>this.scene!=="casa"||(k==="abuela"?!!st.ab:k==="jugo"?st.cup==="ab":true);
     const hit=sc.hot.map(h=>h[0]).find(k=>{if(!vis(k))return false;const b=sc.boxOf(st,k);return b&&p.x>=b[0]-3&&p.x<=b[0]+b[2]+3&&p.y>=b[1]-3&&p.y<=b[1]+b[3]+3;});if(!hit)return;
     const a=this.ask;if(a){const lat=a.t0?now()-a.t0:0,ok=hit===a.k;if(ok){if(a.cold)this.hit[a.k]=Math.min(this.hit[a.k]==null?1e9:this.hit[a.k],lat);}else this.miss[a.k]=1;this.lat.push({k:a.k,ok,lat,cold:a.cold});this.ask=null;}
