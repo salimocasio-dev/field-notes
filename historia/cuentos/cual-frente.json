@@ -1,0 +1,456 @@
+{
+ "id": "cual-frente",
+ "title": "¿Cuál?",
+ "place": "La casa",
+ "scene": "frente",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass: a sentence, two pictures, only one fits. Lines are reused from stories 1 to 3, so nothing new is recorded.",
+ "clips": {
+  "ab_cierra_puerta": {
+   "who": "narr",
+   "text": "Abuela cierra la puerta."
+  },
+  "abre_ventana": {
+   "who": "narr",
+   "text": "Abuela abre la ventana."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "adios_abuela": {
+   "who": "tu",
+   "text": "¡Adiós, abuela!"
+  },
+  "cq_no": {
+   "who": "tu",
+   "text": "¡No!"
+  },
+  "cq_si": {
+   "who": "tu",
+   "text": "¡Sí!"
+  },
+  "esta_casa": {
+   "who": "narr",
+   "text": "Esta es la casa de abuela."
+  },
+  "hola_abuela": {
+   "who": "tu",
+   "text": "¡Hola, abuela!"
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "n_casa_grande": {
+   "who": "narr",
+   "text": "Es la casa grande."
+  },
+  "n_casa_pequena": {
+   "who": "narr",
+   "text": "Es la casa pequeña."
+  },
+  "puerta": {
+   "who": "narr",
+   "text": "Es la puerta."
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "ventana": {
+   "who": "narr",
+   "text": "Es la ventana."
+  }
+ },
+ "items": [
+  {
+   "w": "casa",
+   "say": "esta_casa",
+   "si": {
+    "cam": [
+     52,
+     8,
+     180,
+     96
+    ]
+   },
+   "no": {
+    "cam": [
+     14,
+     30,
+     110,
+     58
+    ]
+   }
+  },
+  {
+   "w": "puerta",
+   "say": "puerta",
+   "si": {
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ]
+   },
+   "no": {
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ]
+   }
+  },
+  {
+   "w": "ventana",
+   "say": "ventana",
+   "si": {
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ]
+   },
+   "no": {
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ]
+   }
+  },
+  {
+   "w": "abuela",
+   "say": "abuela",
+   "si": {
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 0
+    }
+   }
+  },
+  {
+   "w": "abre",
+   "say": "abre_ventana",
+   "si": {
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "win": 1,
+     "ab": {
+      "en": "ventana",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "win": 0
+    }
+   }
+  },
+  {
+   "w": "cierra",
+   "say": "ab_cierra_puerta",
+   "si": {
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 0.5
+    }
+   },
+   "no": {
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     }
+    }
+   }
+  },
+  {
+   "w": "hola",
+   "say": "hola_abuela",
+   "si": {
+    "cam": [
+     70,
+     22,
+     170,
+     90
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "cq": {
+      "x": 146,
+      "y": 88,
+      "s": 0.6,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     70,
+     22,
+     170,
+     90
+    ],
+    "set": {
+     "door": 0.5,
+     "dusk": 2,
+     "ab": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "cq": {
+      "x": 184,
+      "y": 80,
+      "s": 0.55,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": 1
+    }
+   }
+  },
+  {
+   "w": "adiós",
+   "say": "adios_abuela",
+   "si": {
+    "cam": [
+     70,
+     22,
+     170,
+     90
+    ],
+    "set": {
+     "door": 0.5,
+     "dusk": 2,
+     "ab": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "cq": {
+      "x": 184,
+      "y": 80,
+      "s": 0.55,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": 1
+    }
+   },
+   "no": {
+    "cam": [
+     70,
+     22,
+     170,
+     90
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "cq": {
+      "x": 146,
+      "y": 88,
+      "s": 0.6,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "sí",
+   "say": "cq_si",
+   "si": {
+    "cam": [
+     55,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "si"
+     ]
+    }
+   },
+   "no": {
+    "cam": [
+     115,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "no"
+     ]
+    }
+   }
+  },
+  {
+   "w": "no",
+   "say": "cq_no",
+   "si": {
+    "cam": [
+     115,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "no"
+     ]
+    }
+   },
+   "no": {
+    "cam": [
+     55,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "si"
+     ]
+    }
+   }
+  },
+  {
+   "w": "grande",
+   "say": "n_casa_grande",
+   "si": {
+    "cam": [
+     52,
+     8,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    }
+   },
+   "no": {
+    "cam": [
+     0,
+     94,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    }
+   }
+  },
+  {
+   "w": "pequeña",
+   "say": "n_casa_pequena",
+   "si": {
+    "cam": [
+     0,
+     94,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    }
+   },
+   "no": {
+    "cam": [
+     52,
+     8,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    }
+   }
+  }
+ ]
+}

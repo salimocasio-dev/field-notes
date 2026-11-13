@@ -152,6 +152,7 @@ function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(po
     else if(ab.en==="paso"){c.drawImage(AB(pose,op),ABAT.paso[0],ABAT.paso[1]);if(W.rondas){const n=3-(W.mios||0)-(W.lost||0);for(let i=0;i<n;i++){fr(c,ABAT.paso[0]+5+i*4,ABAT.paso[1]+27,4,3,SPONGE);fr(c,ABAT.paso[0]+5+i*4,ABAT.paso[1]+27,4,1,FROST);}if(n>0){fr(c,ABAT.paso[0]+3,ABAT.paso[1]+30,15,1,"#FFFFFF");}}}   // on the step, with her plate
     else c.drawImage(AB(pose,op),ABAT.puerta[0],ABAT.puerta[1]);
     c.globalAlpha=1;}
+  if(q.vis&&W.polvo){const b=frogBox(q);[[-6,0],[-11,-2],[-16,1]].forEach((d,i)=>{fr(c,b.x+d[0],b.y+b.h-3+d[1],3-(i>1?1:0),2,"#E8DCC0");});fr(c,b.x+b.w+1,b.y+b.h-6,4,1,OUT);fr(c,b.x+b.w+4,b.y+b.h-7,1,3,OUT);}   // he is going: dust behind, facing away
   if(q.vis){c.globalAlpha=q.al;frog(c,q,a);c.globalAlpha=1;const b=frogBox(q);
     if(W.wet)for(let k=0;k<3;k++)fr(c,b.x+3+k*Math.round(b.w/3),b.y+((F*2+k*5)%12),1,2,"#8CC4F8");
     if(W.gotas){const t=F-W.gotas;for(let k=0;k<3;k++){const y=Math.min(b.y+2,b.y-26+(t-k*3)*5);if(t>=k*3)fr(c,b.x+5+k*Math.round(b.w/4),y,2,3,"#8CC4F8");}}}

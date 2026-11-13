@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0E1A24">
+<link rel="icon" href="data:,">
+<title>Coquí · ¿Cuál?</title>
+<style>
+html,body{margin:0;height:100%;background:#0E1A24;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;box-sizing:border-box;padding:8px 0}
+#stage{position:relative;line-height:0}
+canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch-action:none;border-radius:8px;box-shadow:0 0 0 3px #2A1810,0 0 0 6px #F4CC88}
+.rnd{position:absolute;border:0;border-radius:50%;background:#FFE040;box-shadow:0 0 0 4px #2A1810,0 6px 0 4px #2A1810;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.rnd:active{transform:translateY(4px);box-shadow:0 0 0 4px #2A1810,0 2px 0 4px #2A1810}
+#go{left:50%;top:50%;width:104px;height:104px;margin:-52px 0 0 -52px}
+#again{left:50%;bottom:22px;width:72px;height:72px;margin-left:-36px;display:none}
+#next{right:18px;bottom:22px;width:72px;height:72px;display:none}
+#again.two{margin-left:-80px}
+#bar{display:flex;gap:8px;align-items:center;height:30px}
+.dot{width:12px;height:12px;border-radius:3px;background:#24394A;box-shadow:0 0 0 2px #2A1810}
+.dot.on{background:#FFE040}
+#snd{margin-left:14px;width:34px;height:30px;border:0;border-radius:6px;background:#24394A;box-shadow:0 0 0 2px #2A1810;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+#snd.off svg .w{display:none}
+#snd.off svg .x{display:block}
+#snd svg .x{display:none}
+#bub{position:absolute;left:0;top:0;transform:translate(-50%,-100%) scale(.6);opacity:0;pointer-events:none;max-width:72%;width:max-content;box-sizing:border-box;
+  background:#FFFFFF;color:#2A1810;border:3px solid #2A1810;border-radius:12px;padding:5px 11px 6px;font:800 18px/1.22 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;transition:opacity .12s,transform .12s;line-height:1.2;--tx:50%}
+#bub.on{opacity:1;transform:translate(-50%,calc(-100% - 10px)) scale(1)}
+#bub::after{content:"";position:absolute;left:var(--tx);bottom:-11px;margin-left:-8px;border:8px solid transparent;border-top:9px solid #2A1810;border-bottom:0}
+#bub::before{content:"";position:absolute;left:var(--tx);bottom:-6px;margin-left:-5px;border:5px solid transparent;border-top:6px solid #FFFFFF;border-bottom:0;z-index:1}
+#bub.der,#bub.izq{transform:translate(0,-50%) scale(.6)}
+#bub.izq{transform:translate(-100%,-50%) scale(.6)}
+#bub.on.der{transform:translate(0,-50%) scale(1)}
+#bub.on.izq{transform:translate(-100%,-50%) scale(1)}
+#bub.der::after{left:-11px;top:50%;bottom:auto;margin:-8px 0 0;border:8px solid transparent;border-right:9px solid #2A1810;border-left:0}
+#bub.der::before{left:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-right:6px solid #FFFFFF;border-left:0}
+#bub.izq::after{left:auto;right:-11px;top:50%;bottom:auto;margin:-8px 0 0;border:8px solid transparent;border-left:9px solid #2A1810;border-right:0}
+#bub.izq::before{left:auto;right:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-left:6px solid #FFFFFF;border-right:0}
+#cap{min-height:2.5em;max-width:min(92vw,500px);box-sizing:border-box;padding:0 10px;color:#FFF4D6;font:700 20px/1.25 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;opacity:0;transition:opacity .12s;display:flex;align-items:center;justify-content:center}
+#cap.on{opacity:1}
+</style></head><body>
+<div id="wrap">
+  <div id="stage">
+    <canvas id="cv" width="196" height="216"></canvas>
+    <button class="rnd" id="go" aria-label="Start"><svg width="46" height="46" viewBox="0 0 24 24"><path d="M7 4.500v15l12.500-7.500z" fill="#2A1810"/></svg></button>
+    <div id="bub" aria-live="polite"></div>
+    <button class="rnd" id="next" aria-label="Next"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg></button>
+    <button class="rnd" id="again" aria-label="Again"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.500-5.800"/><path d="M20 4v5h-5"/></svg></button>
+  </div>
+  <div id="cap" aria-live="polite"></div>
+  <div id="bar">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <button id="snd" aria-label="Sound"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F4CC88" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="#F4CC88"/><path class="w" d="M15.500 8.500a5 5 0 0 1 0 7"/><path class="w" d="M18.500 5.500a9 9 0 0 1 0 13"/><path class="x" d="m16 9 6 6m0-6-6 6"/></svg></button>
+  </div>
+</div>
+<script src="engine.js?v=16"></script>
+<script src="palabras.js?v=16"></script>
+<script src="juego.js?v=16"></script>
+<script src="escenas/frente.js?v=16"></script>
+<script src="cual.js?v=16"></script>
+<script>cualArranca();</script>
+</body></html>

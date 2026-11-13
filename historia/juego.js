@@ -152,7 +152,7 @@ async function espera(liveSet,lead,line,o){o=o||{};const my=runId;
   const me={live:liveSet,res:null,line,asked:0,busy:0,done:0,p:null,got:null,loose:!!o.loose,lock:!!o.lock,sign:o.sign||null,kind:o.kind||"ask",pick:o.pick||null},gotP=new Promise(r=>{me.res=r;});pending=me;
   for(const st of lead||[]){if(me.done)break;if(typeof st==="string"){W.twinkle=o.sign||null;await say(sub(st));}else{W.twinkle=null;await paso(st);}}
   W.twinkle=null;let timer=null;
-  if(!me.done){if(o.sign)W.spot=o.sign;me.asked=1;if(line)await say(line,0);
+  if(!me.done){if(o.sign)W.spot=o.sign;me.asked=1;if(line)await say(line,0);me.tEnd=performance.now();
     if(!me.done&&line)timer=setInterval(()=>{if(pending===me&&!me.done&&my===runId&&!speaking)playClip(line);},9000/FAST);}   // he waits: the line plays again. It costs nothing.
   await gotP;clearInterval(timer);if(pending===me)pending=null;W.spot=null;W.twinkle=null;if(my!==runId)throw "stop";
   return me;}
@@ -163,7 +163,7 @@ function tap(x,y){if(!E||!S)return;const inb=b=>b&&x>=b[0]-3&&x<b[0]+b[2]+3&&y>=
     what=inb(respBox("si"))?"si":inb(respBox("no"))?"no":E.hit(x,y,W),p={x:Math.round(x),y:Math.round(y)};if(!what)return;
   const pn=pending,nm=S.names&&S.names[what];
   if(pn&&!pn.done){let w=what;if(pn.loose&&(w==="puerta"||w==="ventana"))w="casa";   // before the door has a name, the door is the house
-    if(pn.live.includes(w)&&!(pn.lock&&!pn.asked)){pn.done=1;pn.p=p;pn.got=w;hush();pn.res();return;}
+    if(pn.live.includes(w)&&!(pn.lock&&!pn.asked)){pn.done=1;pn.ms=pn.tEnd?Math.round((performance.now()-pn.tEnd)*FAST):0;pn.p=p;pn.got=w;hush();pn.res();return;}
     poke(what,p);if(what==="coqui")return;
     if(nm&&!speaking&&!pn.busy){pn.busy=1;playClip(nm).then(()=>sleep(300)).then(()=>pending===pn&&!pn.done&&pn.asked&&pn.line?playClip(pn.line):0).then(()=>{pn.busy=0;});}   // name what was touched, then ask again
     return;}
@@ -212,7 +212,7 @@ async function decide(st){const ops=st.options.map(sub),key=CUENTO+"."+(st.as||"
   if(st.as)V[st.as]=pick;if(st.other)V[st.other]=ops.find(x=>x!==pick);
   if(st.decide==="say")W.resp=ops;
   const line=sub(st.line);let me=await espera(ops,st.lead,line,{lock:st.lock,kind:"decide",pick});const first=me.got===pick;V.ok=first?"1":"";V.x=me.got;
-  {const w=sub(st.tests||pick);LOG.push({word:(S.palabras&&S.palabras[w])||w,asked:pick,got:me.got,ok:first});}
+  {const w=sub(st.tests||pick);LOG.push({word:(S.palabras&&S.palabras[w])||w,asked:pick,got:me.got,ok:first,ms:me.ms||0});}
   if(st.said&&st.said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}
   W.resp=null;
   if(st.do)await E.acts[st.do]({en:me.got});
@@ -228,6 +228,7 @@ function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd")
 async function run(){runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
+  if(window.PAL&&(!Q.get("fast")||Q.get("rec")))PAL.cuento(S,LOG);   // the words he heard and how he answered go into his word records
   running=false;$("#again").style.display="flex";if(S.next){$("#next").style.display="flex";$("#again").classList.add("two");}}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
