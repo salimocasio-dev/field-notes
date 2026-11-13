@@ -24,6 +24,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
     - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Story 8 opens with one English card. Page 08, part 6.
     - El patio: Las flores (niño, niña, juega, flor, sol, aquí, allá), ¿Qué es esto? (¿qué es esto?, amigo, mira, ven), Hasta mañana (vamos, hasta mañana). "Allí" is taught as "allá"; the gate is "el portón". Page 08, part 7.
     - Escuchar for La casa, first set (Library tab): the eleven stories told straight through, six new picture stories, four do-this routines. About 30 minutes; the plan's size is about 4 hours a place, so this is a first set. Page 08, part 8.
+    - The level check (Yo tab, and the welcome): one sentence, four pictures, easy to hard, about 3 minutes. It covers place 1 for now. Page 08, part 9.
     - Built: page 08. The UI spec and how the build follows it: page 09.
 - **The look (his correction, Nov 13): only the home map is the game.** "I didn't say the whole thing is a game, I said on the home screen is the map to the game as the main part of the course." His spec is the doc "Language App UI Design Plan" (link in 09). The map is 16-bit pixel art in the centre tab; everything else is a clean modern UI with a bottom tab bar.
 - The coquí speaks in his own voice (Victor, es-PR-VictorNeural), with speech bubbles and captions, Spanish only. Narrator and abuela's lines in Karina (es-PR-KarinaNeural).
@@ -40,7 +41,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 ## Next steps, in order
 
 1. Place 1: all four scenes, eleven stories and a first set of Escuchar are done. The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and its call with Danny (the app side and Danny's brief can be built without spending; testing a call costs ElevenLabs credits and needs Salim's yes; the allowance was used up Nov 12 and renews Nov 16).
-2. The level check.
+2. The level check: built for place 1 (page 08, part 9). Each new place adds its items.
 3. Places 2 to 10. Then the fort check.
 4. Open alongside: the rest of the UI plan (09: calm full-screen lesson screens, the mic states, unlock haptics, streak freezes, the map at an angle and finished places changing it); the 85% difficulty tuning; the mouth record fed by calls; the plan doc fixes ("porch lamp", "nothing is built", old three passes).
 

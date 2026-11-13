@@ -9,6 +9,18 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 - Script tags carry ?v=24 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
 
+## Nov 13, part 9: the level check
+
+Live at ?v=24: historia/nivel.html (Yo tab, "Level check"; and the welcome's "I understand some Spanish"). Code: historia/nivel.js.
+
+- The plan's rules: touch only; a sentence and four pictures; items run easy to hard; a right answer moves up, a miss moves down; it stops where he starts to miss. Nothing says right or wrong while it runs.
+- 20 items, in story order, built from the ¿Cuál? pictures and their recorded sentences (no new audio). Four pictures: the one that fits, usually its pair's other picture, and two from other pairs. Each picture is a square cut of its pair's picture.
+- It stops after three misses in a row, after five changes of direction, when he is right on the two top items, or after 16 items.
+- Result: every story up to the highest one where he was right on its items and on three in four of everything asked up to there. Those stories count as done (the map starts him after them; he can still play them). Their words start at "se queda", are due the next morning for a cold check, and are open for speaking at once (`PAL.presume`).
+- It covers place 1 only, because only place 1 is built. Each new place adds its items to the list NV in nivel.js.
+- Checked by machine: all right (11 stories presumed, stops after 11 items), all wrong (stops after 3, nothing presumed), right up to story 6 (6 presumed, starts at La foto). `?todo=1` shows all 20 items in order.
+- Known limit, told to Salim: in some items two of the four pictures are easy to rule out, so those items are closer to a choice of two.
+
 ## Nov 13, part 8: Escuchar for La casa, first set
 
 Live at ?v=24. Scripts (final, draft 3): historia/notas/guiones/escuchar-casa.md. Generator: historia/tools/gen_escuchar.py (run it, never edit the JSON by hand).
@@ -25,7 +37,7 @@ It lives in the Library tab, under "Listen · La casa". Nothing in it is scored;
 
 - Picture stories: Toc, toc (frente); Agua para el pájaro (balcón); El bizcocho del bebé and La foto de la familia (sala); La bola and Buenas noches (patio). Ids start with d-.
 - Routines: Abre y cierra (frente); En el balcón; La familia (sala); En el patio. Ids start with h-.
-- Size: about 30 minutes of listening in all. **The plan sizes Escuchar at about 4 hours a place. This first set is far short of that**; more sets follow the same pattern (write, two fresh reviews, build, wordless read, record).
+- Size, measured with sound: the six picture stories run 55 to 105 seconds each (about 7 minutes); the routines about 1 to 2 minutes each; the eleven stories told straight through about 15 minutes. About 30 minutes of listening in all. **The plan sizes Escuchar at about 4 hours a place. This first set is far short of that**; more sets follow the same pattern (write, two fresh reviews, build, wordless read, record).
 
 ### How a routine works (his rules applied)
 
@@ -54,7 +66,7 @@ New scene actions: patio (bolaarbol, avesale, avepica2, pelota3, seva, cierra, n
 ### Reviews and tests
 
 - Scripts: three drafts; beginner and Spanish reviewers, then a last gate. Main changes: routines were 21 bare "toca X" out of 33 (rewritten); two lines had two fair answers (both now count); two-part lines accept either order; story 4 got a turn (abuelo puts the camera down and joins the photo).
-- Wordless frames: fresh reader (see the commit after this one for what it changed).
+- Wordless frames, fresh reader: fixed after it: two weak endings (story 2 and 6 now end on a heart; in story 3 the frog is seen eating), the third photo looked like the first (now papá), the family photo was small and cut the frog off (now big, with him in it), the ball fell too fast to see, the frog's wide eyes were too big, the loop mark stayed in the sky.
 - Machine: every picture story end to end; every routine all-right, all-wrong and mixed; all eleven stories in the straight-through mode; the app check; the Library screen.
 - Found by testing: the frog stood in front of the small chair (moved aside); the baby on mamá's lap took her touches (the baby stays on its blanket in the routine); the test tool treated a new question with the same things as the old one (fixed in juega.py).
 
