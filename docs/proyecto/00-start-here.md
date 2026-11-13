@@ -19,13 +19,14 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 
 - The A1 plan is written, reviewed, and all five of its decisions are settled by Salim (Nov 13). His words are in 03-requirements.
 - **Live (Nov 13): the app to his UI plan, all eleven stories of place 1, La casa, as games (El frente 1 to 3, El balcón 4 and 5, La sala 6 to 8, El patio 9 to 11), word records with the scheduler, and the next-day ¿Cuál? pass for all four scenes.**
-    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=25
+    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=26
     - El balcón: El jugo (silla, se sienta, vaso, jugo, agua, toma) and ¡Qué calor! (quiero, por favor, gracias, de nada, ¿cómo estás?, bien). New in the game: answer bubbles that speak, for words that cannot be drawn. Page 08, part 5.
     - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Story 8 opens with one English card. Page 08, part 6.
     - El patio: Las flores (niño, niña, juega, flor, sol, aquí, allá), ¿Qué es esto? (¿qué es esto?, amigo, mira, ven), Hasta mañana (vamos, hasta mañana). "Allí" is taught as "allá"; the gate is "el portón". Page 08, part 7.
     - Escuchar for La casa, first set (Library tab): the eleven stories told straight through, six new picture stories, four do-this routines. About 30 minutes; the plan's size is about 4 hours a place, so this is a first set. Page 08, part 8.
     - The level check (Yo tab, and the welcome): one sentence, four pictures, easy to hard, about 3 minutes. It covers place 1 for now. Page 08, part 9.
     - Place 2, El parque, has begun. El camino: Uno, dos, tres (parque, perro, camina, corre, espera), ¿Dónde está el gato? (gato, árbol, hay, uno, dos, tres), Rápido, despacio. Abuela's dog is Canelo. Page 08, part 10.
+    - El campo (place 2, scene 2): La bola (bola, tiene, tira, coge, dame), ¡Arriba! ¡Abajo! (arriba, abajo, salta), ¡Otra vez! (mi, tu, más, otra vez). The balls are told apart by size and pattern. A card in the corner keeps a star or a mark for each of the three rounds. Page 08, part 11.
     - Built: page 08. The UI spec and how the build follows it: page 09.
 - **The look (his correction, Nov 13): only the home map is the game.** "I didn't say the whole thing is a game, I said on the home screen is the map to the game as the main part of the course." His spec is the doc "Language App UI Design Plan" (link in 09). The map is 16-bit pixel art in the centre tab; everything else is a clean modern UI with a bottom tab bar.
 - The coquí speaks in his own voice (Victor, es-PR-VictorNeural), with speech bubbles and captions, Spanish only. Narrator and abuela's lines in Karina (es-PR-KarinaNeural).
@@ -38,13 +39,14 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 
 - How the app, stories 1 to 11 and ¿Cuál? feel and sound. Nothing is blocking.
 - His yes or no (asked Nov 13, evening): may up to 6,000 ElevenLabs credits (about $1) be spent on simulated test calls for place 1's call with Danny, once the allowance renews Nov 16. Until he says yes, build only the app side and the brief; spend nothing.
+- His word on "salta" (asked Nov 13, night): his list says "salta"; in Puerto Rico the everyday word is "brinca". The stories use "salta" until he says otherwise. Also told: "el campo" means the countryside in Puerto Rico, so the stories say "el parque"; the scene keeps his name for it.
 - His yes or no on two small things (asked Nov 13): "por favor" and "de nada" have no next-day picture pair (they are tested by the speaking bubbles inside story 5); and whether this session may keep publishing straight to main, as page 07 says.
 
 ## Next steps, in order
 
 1. Place 1: all four scenes, eleven stories and a first set of Escuchar are done. The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and its call with Danny (the app side and Danny's brief can be built without spending; testing a call costs ElevenLabs credits and needs Salim's yes; the allowance was used up Nov 12 and renews Nov 16).
 2. The level check: built for place 1 (page 08, part 9). Each new place adds its items.
-3. Places 2 to 10. Place 2, El parque: El camino is done; next El campo (bola, tira, coge, salta, dame, mi, tu, arriba, abajo, más, otra vez, tiene), then El lago, El banco. Words for every scene: page 02. Then the fort check.
+3. Places 2 to 10. Place 2, El parque: El camino and El campo are done; next El lago (pájaro, pato, pez, vuela, nada, rojo, azul, verde, amarillo, blanco, negro, ¿de qué color?, ¿cuál?), then El banco. After its four scenes: place 2's Escuchar set and its call. Words for every scene: page 02. Then the fort check.
 4. Open alongside: the rest of the UI plan (09: calm full-screen lesson screens, the mic states, unlock haptics, streak freezes, the map at an angle and finished places changing it); the 85% difficulty tuning; the mouth record fed by calls; the plan doc fixes ("porch lamp", "nothing is built", old three passes).
 
 ## Pages

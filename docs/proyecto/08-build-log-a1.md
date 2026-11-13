@@ -9,6 +9,43 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 - Script tags carry ?v=25 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
 
+## Nov 13, part 11: place 2, scene 2, El campo
+
+Live at ?v=26. Scripts (final, draft 3): historia/notas/guiones/campo.md. Generator: historia/tools/gen_campo.py (stories, pairs; it also sets rapido-despacio's `next`).
+
+### What is built
+
+- **The field** (historia/escenas/campo.js): open grass, one tree with a fork, Canelo's spot under it, the bank down to the pond with reeds and water. Luis, Carmen, Canelo. Balls live in `W.bolas` by name: `{k, x, y, z, con, vis, flota, vuela}`; `con` is who carries it (a person, "cq", "perro"). Three kinds, told apart by size and pattern: L (Luis, big, stripes), C (Carmen, dots), q (the frog's, small, star). A basket supplies new small balls.
+- **Story 15, La bola** (bola, tiene, tira, coge, dame). A: Luis calls throw or catch (doing bubbles). B: who has the ball, behind their backs ("X tiene" / "X no tiene"). C: he sees who has it and says "¡Dame la bola!" or "¡Coge la bola!". Wrong: Canelo takes the ball to his pile.
+- **Story 16, ¡Arriba! ¡Abajo!** (arriba, abajo, salta). A: Luis calls "¡Por arriba!" or "¡Por abajo!" and throws. B: the picture goes dark, the ball is hidden, Carmen says where; he touches the tree or the reeds. C: he sees where it lands and tells Luis. Wrong: the ball ends in the pond and floats there.
+- **Story 17, ¡Otra vez!** (mi, tu, más, otra vez). A: "tira mi bola" / "tira tu bola", by Luis or Carmen; he touches one of three balls. B: "¡Otra vez!", "¡Dame la bola!" or "¡No más!" (throw, give, hold). C: he sees which ball Canelo has and says "¡Es mi bola!" or "¡Es tu bola!". Wrong: wet Canelo shakes himself beside the frog; the puddle grows.
+- **The card in the corner** (`W.tarjeta="rondas"`, `W.marcas`): three places; a star for a round done right, the mark of what went wrong otherwise (paw, splash, drop). Added because a right move left nothing to see.
+- **¿Cuál?**: 11 pairs in cuentos/cual-campo.json. "Otra vez" has none (a still picture cannot show "again").
+- **Level check**: four more items (tira, coge, arriba, mi); 28 in all, 17 stories.
+
+### New in the engine and the kit
+
+| Piece | What it does |
+| --- | --- |
+| `"tests":"-"` on a decision (also through `palabras`) | nothing is filed in the word records: no word decided it |
+| kit.js: `KIT.mkPerro`, `mkCesta`, `mano`, `tarjeta` | the dog, a basket, the raised hand and the corner card are shared by the park scenes |
+| campo.js helpers | `vuela(name, target, height)` (a ball flies or rolls to a place or into hands), `roba` (Canelo takes a ball to his pile), `alagua` (a ball rolls into the pond), `nueva` (a new ball from the basket), `sacude` |
+| a quirk | the kit draws the "offer" arm on the far side; campo.js turns it to the side the person faces |
+
+### Reviews
+
+- Scripts: three drafts and a last gate. Round 1: a right move left nothing on screen; the ball count could run out; five of nine decisions were the same kind; a decision staked only old words; bare "No. X" corrections can be heard as the opposite ("No. ¡Tira!" = "no tira"); "campo" is the countryside in Puerto Rico. Round 2: balls not accounted for step by step; the two taught "who has it" rounds had the same answer; only the tree, not the reeds, had been touched under the sign; "no" alone decided story 17's second decision; corrections said after they had stopped being true. Last gate: a ball other than his own had never been touched before it could cost; seven picture pairs could be done without the word (the fitting picture was always the lively one).
+- Said plainly to him: "tiene" and "más" decide nothing in the stories ("tiene" is heard a dozen times; "más" has its pair).
+- Wordless frames: fresh reader (see the commit after this one for what it changed).
+
+### Testing
+
+- Every story: all-right, all-wrong, mixed both ways, and every draw forced both ways. All 69 picture pairs. The level check (all items; a 17-story pass). The app check.
+
+### Audio
+
+- 118 new clips, 3,210 characters.
+
 ## Nov 13, part 10: place 2, El parque. Scene 1, El camino
 
 Live at ?v=25. Scripts (final, draft 3): historia/notas/guiones/camino.md. Generator: historia/tools/gen_camino.py.
