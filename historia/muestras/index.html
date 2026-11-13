@@ -19,13 +19,13 @@ p{margin:4px 0 12px;color:#B9C6D2}
 </style></head><body><main>
 <h1>Pick a voice</h1>
 <p id="what">Every Spanish voice reads the same six lines. Tap one to hear it. Tell Claude the name you like.</p>
-<div class="tabs"><button data-g="" class="on">All</button><button data-g="Male">Men</button><button data-g="Female">Women</button></div>
+<div class="tabs"><button data-g="" class="on">All</button><button data-g="Male">Men</button><button data-g="Female">Women</button><button data-g="es-PR">Puerto Rico</button></div>
 <div id="list"></div>
 <div id="none" hidden>No samples yet. They appear here once the audio job has run.</div>
 </main>
 <script>
 const list=document.getElementById("list");let voces=[],g="",au=null,cur=null;
-function show(){list.innerHTML="";voces.filter(v=>!g||v.genero===g).forEach(v=>{const d=document.createElement("div");d.className="v"+(cur===v.voz?" now":"");
+function show(){list.innerHTML="";voces.filter(v=>!g||v.genero===g||v.locale===g).forEach(v=>{const d=document.createElement("div");d.className="v"+(cur===v.voz?" now":"");
   d.innerHTML='<button aria-label="Play">▶</button><div><b></b><span></span></div>';d.querySelector("b").textContent=v.voz;d.querySelector("span").textContent=[v.lugar,v.genero==="Male"?"man":v.genero==="Female"?"woman":v.genero].filter(Boolean).join(" · ");
   d.querySelector("button").onclick=()=>{if(au)au.pause();au=new Audio(encodeURIComponent(v.voz)+".mp3");au.play();cur=v.voz;show();};list.appendChild(d);});}
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{g=b.dataset.g;document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));show();});
