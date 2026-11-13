@@ -43,7 +43,7 @@ async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.di
   if(!lista.length){const oidas=Object.keys(PAL.db.palabras).filter(w=>byW[w]);lista=(oidas.length&&!Q.get("todo")?oidas.map(w=>byW[w]):CU.items.slice());lista.sort(()=>Math.random()-.5);}
   lista=lista.slice(0,+(Q.get("n")||8));CQ.lista=lista;CQ.hecho=[];mkDots(lista.length);
   try{for(let i=0;i<lista.length;i++){step(i);CQ.i=i;await cualItem(lista[i]);}step(lista.length);}catch(e){if(e!=="stop")throw e;return;}
-  PAN=null;CQ.run=0;$("#again").style.display="flex";}
+  PAN=null;CQ.run=0;$("#again").style.display="flex";if($("#home"))$("#home").style.display="flex";}
 async function cualArranca(){CU=await (await fetch("cuentos/cual-frente.json",{cache:"no-store"})).json();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · ¿Cuál?";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   cv.addEventListener("pointerdown",e=>{const r=cv.getBoundingClientRect(),y=(e.clientY-r.top)/r.height*DH;if(CQ.toque)CQ.toque(y<PH+GAP/2?0:1);});

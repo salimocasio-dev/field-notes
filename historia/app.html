@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0E1A24">
+<link rel="icon" href="data:,">
+<title>Coquí</title>
+<style>
+:root{--ink:#2A1810;--bg:#0E1A24;--card:#16283A;--sun:#FFE040;--cream:#FFF4D6;--mut:#9FB3C4;--ok:#4CBC58}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--cream);font:500 17px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:520px;margin:0 auto;padding:14px 14px 96px}
+h1{font-size:26px;margin:6px 0 2px}h2{font-size:19px;margin:18px 0 8px}p{margin:6px 0}.mut{color:var(--mut);font-size:15px}
+.card{background:var(--card);border-radius:14px;padding:12px 14px;margin:10px 0;box-shadow:0 0 0 2px #24394A}
+.row{display:flex;align-items:center;gap:10px}.sp{flex:1}
+.big{display:block;width:100%;border:0;border-radius:14px;background:var(--sun);color:var(--ink);font:800 22px system-ui;padding:16px;margin:12px 0;box-shadow:0 5px 0 #B87A10;cursor:pointer}
+.big:active{transform:translateY(4px);box-shadow:0 1px 0 #B87A10}
+.btn{border:0;border-radius:10px;background:#24394A;color:var(--cream);font:700 16px system-ui;padding:9px 13px;cursor:pointer}
+.btn.y{background:var(--sun);color:var(--ink)}
+.step{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #24394A}.step:last-child{border:0}
+.n{width:28px;height:28px;border-radius:8px;background:#24394A;display:flex;align-items:center;justify-content:center;font-weight:800}.done .n{background:var(--ok);color:var(--ink)}
+.chip{font-size:13px;font-weight:800;border-radius:7px;padding:2px 7px;background:#24394A;white-space:nowrap}
+.c1{background:#3A4E60}.c2{background:#2E6CD0}.c3{background:#B87A10;color:#111}.c4{background:#4CBC58;color:#111}
+nav{position:fixed;left:0;right:0;bottom:0;background:#0A141C;display:flex;justify-content:center;box-shadow:0 -2px 0 #24394A;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;max-width:104px;border:0;background:none;color:var(--mut);font:700 13px system-ui;padding:8px 0 10px;cursor:pointer}nav button.on{color:var(--sun)}
+nav svg{display:block;margin:0 auto 2px}
+#mapa{width:100%;image-rendering:pixelated;border-radius:12px;box-shadow:0 0 0 3px var(--ink),0 0 0 6px #F4CC88;touch-action:manipulation}
+.sub{display:flex;gap:8px;margin:8px 0}.sub .btn.on{background:var(--sun);color:var(--ink)}
+input,select{font:600 16px system-ui;padding:9px;border-radius:9px;border:0;background:#0E1A24;color:var(--cream);box-shadow:0 0 0 2px #24394A;width:100%}
+.line{padding:4px 0}.who{color:var(--mut);font-size:13px;font-weight:700}
+#bien{position:fixed;inset:0;background:var(--bg);z-index:9;display:none;overflow:auto}
+.dots{display:flex;gap:6px;justify-content:center;margin:12px}.dots i{width:10px;height:10px;border-radius:3px;background:#24394A}.dots i.on{background:var(--sun)}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:14px;border-radius:12px;border:0;background:var(--card);color:var(--cream);font:700 18px system-ui;box-shadow:0 0 0 2px #24394A;cursor:pointer}.opt.on{box-shadow:0 0 0 3px var(--sun)}
+.sw{position:relative;width:52px;height:30px;border-radius:15px;background:#24394A;border:0;cursor:pointer}.sw i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--cream);transition:left .15s}.sw.on{background:var(--ok)}.sw.on i{left:25px}
+</style></head><body>
+<main id="m"></main>
+<div id="bien"></div>
+<nav id="nav"></nav>
+<script src="engine.js?v=17"></script>
+<script src="palabras.js?v=17"></script>
+<script src="curso.js?v=17"></script>
+<script>
+"use strict";
+/* Coquí · the app. Every tab is open on day 1. What changes by level is what is tracked.
+   Menus and the welcome are in English so a stuck learner can find his way. Spanish is for listening. */
+const $=s=>document.querySelector(s),db=()=>PAL.db,A=()=>db().ajustes;
+const TABS=[["hoy","Hoy","M12 3v2M12 19v2M5 12H3m18 0h-2M6 6l1.5 1.5M16.5 16.5 18 18M6 18l1.5-1.5M16.5 7.5 18 6M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"],["mapa","Mapa","M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"],
+  ["practica","Práctica","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm-2 6 6 3-6 3z"],["palabras","Palabras","M4 5h16M4 10h16M4 15h10M4 20h7"],["yo","Yo","M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-8 9a8 8 0 0 1 16 0"]];
+let TAB=new URLSearchParams(location.search).get("tab")||"hoy",SUB="escuchar";
+const hecho=id=>!!(db().cuentos[id]&&db().cuentos[id].n);
+const veces=id=>(db().cuentos[id]||{}).n||0;
+const abierto=l=>A().todo||l.n===1||(l.cuentos&&l.cuentos.length);   // only place 1 is built; the switch in Yo opens the rest
+const go=(cuento)=>location.href="index.html?cuento="+cuento+"&desde=app";
+function nav(){$("#nav").innerHTML=TABS.map(t=>`<button class="${t[0]===TAB?"on":""}" onclick="ver('${t[0]}')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${t[2]}"/></svg>${t[1]}</button>`).join("");}
+function ver(t){TAB=t;history.replaceState(null,"","?tab="+t);nav();({hoy,mapa,practica,palabras,yo})[t]();scrollTo(0,0);}
+
+/* ---------- Hoy: today's plan, sized to his minutes. Returns first, then a new story, then listening. ---------- */
+function plan(){const due=PAL.vence("ear"),out=[],min=A().min;let used=0;
+  if(due.length){out.push({t:"¿Cuál?",d:`Words coming back today: ${due.length}`,m:Math.min(6,2+Math.ceil(due.length/3)),href:"cual.html?desde=app",done:false});}
+  const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),hoyD=new Date().toDateString(),
+    nuevosHoy=cs.filter(c=>db().cuentos[c]&&new Date(db().cuentos[c].primera).toDateString()===hoyD).length,
+    nuevos=cs.filter(c=>veces(c)<2).slice(0,Math.max(0,3-nuevosHoy+cs.filter(c=>veces(c)===1).length));   // up to three new stories a day, each played twice
+  for(const c of nuevos){if(used>=min&&out.length)break;const x=CURSO.cuentos[c];out.push({t:x.t,d:veces(c)?"Second play. The choices are drawn fresh.":"New story. Play it twice.",m:x.min*(veces(c)?1:2),c});used+=x.min*(veces(c)?1:2);}
+  used=out.reduce((a,x)=>a+x.m,0);const otros=cs.filter(c=>veces(c)>=2);let k=0;
+  while(used<min&&otros.length&&k<6){const c=otros[k%otros.length];out.push({t:CURSO.cuentos[c].t,d:"Listen again (Otra vez)",m:CURSO.cuentos[c].min,c});used+=CURSO.cuentos[c].min;k++;}
+  if(!out.length)out.push({t:"¿Cuál?",d:"All your words, once more",m:3,href:"cual.html?desde=app"});
+  return out;}
+function hoy(){const p=plan(),r=PAL.racha(),first=p[0];
+  $("#m").innerHTML=`<h1>Hoy</h1><p class="mut">${A().min} minutes a day · streak: ${r} day${r===1?"":"s"}</p>
+  <button class="big" id="start">Start</button>
+  <div class="card">${p.map((s,i)=>`<div class="step"><span class="n">${i+1}</span><div class="sp"><b>${s.t}</b><br><span class="mut">${s.d} · about ${s.m} min</span></div></div>`).join("")}</div>
+  <p class="mut">Up to three new stories a day. Words come back when your answers say they should.</p>`;
+  $("#start").onclick=()=>first.href?location.href=first.href:go(first.c);}
+
+/* ---------- Mapa: the course as a 16-bit world. Ten places, three forks. ---------- */
+const MW=240,MH=330,STOPS=[[120,300,0],[70,250,1],[170,250,2],[120,205,3],[70,160,4],[170,160,5],[70,112,6],[170,112,7],[120,68,8],[120,24,9]];
+function mapa(){$("#m").innerHTML=`<h1>Mapa</h1><p class="mut">Tap a place. Finished places change for good.</p><canvas id="mapa" width="${MW}" height="${MH}"></canvas><div id="lugar"></div>`;
+  const cv=$("#mapa"),g=cv.getContext("2d"),b=new Buf(MW,MH);
+  b.grad(0,0,MW,MH,RP.grass);for(let i=0;i<500;i++){const x=hs(i,3)*MW/100,y=hs(i,9)*MH/100;b.px(x,y,i%7?RP.grn[1]:["#FFE070","#FF8FB8","#FFFFFF"][i%3]);}
+  for(let x=0;x<MW;x++)for(let y=0;y<16;y++)if(y<10+4*Math.sin(x*.08))b.px(x,y,RP.sky[3]);   // sky at the top
+  const road=(a,c)=>{const n=40;for(let i=0;i<=n;i++){const t=i/n,x=a[0]+(c[0]-a[0])*t+Math.sin(t*Math.PI)*6,y=a[1]+(c[1]-a[1])*t;b.ell(x,y,7,7,[RP.stone[2],RP.stone[3],RP.stone[3]]);}};
+  [[0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,5],[4,6],[5,7],[6,7],[6,8],[7,8],[8,9]].forEach(e=>road(STOPS[e[0]],STOPS[e[1]]));
+  const im=b.done();g.imageSmoothingEnabled=false;g.drawImage(im,0,0);
+  const L=CURSO.lugares;
+  STOPS.forEach((s,i)=>{const l=L[i],op=abierto(l),done=l.cuentos&&l.cuentos.every(hecho);
+    icono(g,i,s[0],s[1]-14,op);
+    g.fillStyle=OUT;g.beginPath();g.arc(s[0],s[1],9,0,7);g.fill();g.fillStyle=done?"#4CBC58":op?"#FFE040":"#6E7B90";g.beginPath();g.arc(s[0],s[1],7,0,7);g.fill();
+    g.fillStyle=OUT;g.font="bold 9px system-ui";g.textAlign="center";g.fillText(String(l.n),s[0],s[1]+3);});
+  const here=L.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho));const at=STOPS[Math.max(0,here)];g.drawImage(spr("cq.6_0",()=>mkCoqui(.6,0,0)),at[0]+8,at[1]-16);
+  cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;const i=STOPS.findIndex(s=>Math.hypot(s[0]-x,s[1]-y)<18||Math.hypot(s[0]-x,s[1]-14-y)<14);if(i>=0)lugar(i);};
+  lugar(Math.max(0,here));}
+function icono(g,i,x,y,op){g.save();g.globalAlpha=op?1:.45;const R=(a,b,w,h,c)=>{g.fillStyle=OUT;g.fillRect(a-1,b-1,w+2,h+2);g.fillStyle=c;g.fillRect(a,b,w,h);};
+  const k=CURSO.lugares[i].id;
+  if(k==="casa"||k==="casa2"){R(x-9,y-6,18,10,RP.teal[3]);g.fillStyle=RP.red[2];g.beginPath();g.moveTo(x-11,y-6);g.lineTo(x,y-14);g.lineTo(x+11,y-6);g.fill();R(x+2,y-3,4,7,RP.wood[2]);if(k==="casa2"){g.fillStyle="#FFF4B0";g.beginPath();g.arc(x-12,y-14,3,0,7);g.fill();}}
+  else if(k==="parque")g.drawImage(spr("tree",mkTree),x-12,y-26,24,31);
+  else if(k==="cocina"){R(x-8,y-8,16,12,RP.grey[3]);R(x-6,y-12,12,4,RP.grey[1]);}
+  else if(k==="colmado"){R(x-10,y-8,20,12,RP.cream[3]);for(let j=0;j<5;j++){g.fillStyle=j%2?"#FFFFFF":RP.red[2];g.fillRect(x-10+j*4,y-12,4,4);}}
+  else if(k==="calle"){R(x-1,y-14,2,18,RP.grey[1]);R(x-5,y-16,10,6,RP.blue[2]);}
+  else if(k==="plaza"){R(x-2,y-14,4,16,RP.stone[2]);g.fillStyle="#FFFFFF";g.beginPath();g.arc(x,y-14,5,0,7);g.fill();}
+  else if(k==="playa"){g.fillStyle=RP.red[2];g.beginPath();g.arc(x,y-8,9,Math.PI,0);g.fill();R(x,y-8,1,12,RP.wood[1]);}
+  else if(k==="fonda"){g.fillStyle="#FFFFFF";g.beginPath();g.ellipse(x,y-2,10,4,0,0,7);g.fill();R(x-4,y-8,8,5,RP.orng[2]);}
+  else if(k==="fuerte"){R(x-10,y-10,20,14,RP.stone[2]);for(let j=0;j<4;j++)R(x-10+j*6,y-14,3,4,RP.stone[2]);R(x+6,y-24,1,10,RP.wood[0]);R(x+7,y-24,6,4,RP.red[2]);}
+  g.restore();}
+function lugar(i){const l=CURSO.lugares[i],op=abierto(l);
+  $("#lugar").innerHTML=`<div class="card"><h2 style="margin-top:0">${l.n}. ${l.nombre}</h2><p class="mut">${l.en}${l.fork?" · a fork: do the two places in either order":""}</p>
+  ${l.cuentos?l.cuentos.map(c=>`<div class="step ${hecho(c)?"done":""}"><span class="n">${hecho(c)?"✓":"·"}</span><div class="sp"><b>${CURSO.cuentos[c].t}</b><br><span class="mut">Played ${veces(c)} time${veces(c)===1?"":"s"}</span></div><button class="btn y" onclick="go('${c}')">Play</button></div>`).join(""):
+  `<p>${op?"Not built yet.":"Locked. Finish the places before it."} Scenes: ${l.escenas.join(", ")}.</p>`}</div>`;}
+
+/* ---------- Práctica: Escuchar, Hablar, Leer ---------- */
+function practica(){const cs=CURSO.lugares[0].cuentos;
+  $("#m").innerHTML=`<h1>Práctica</h1><div class="sub">${["escuchar","hablar","leer"].map(s=>`<button class="btn ${s===SUB?"on":""}" onclick="SUB='${s}';practica()">${s[0].toUpperCase()+s.slice(1)}</button>`).join("")}</div><div id="sub"></div>`;
+  if(SUB==="escuchar"){$("#sub").innerHTML=`<div class="card"><b>Otra vez</b><p class="mut">Any story you have played, again.</p>${cs.map(c=>`<div class="step"><div class="sp">${CURSO.cuentos[c].t}</div><button class="btn y" ${veces(c)?"":"disabled style=opacity:.4"} onclick="go('${c}')">Play</button></div>`).join("")}</div>
+    <div class="card"><b>¿Cuál?</b><p class="mut">A sentence and two pictures. Only one fits.</p><button class="btn y" onclick="location.href='cual.html?desde=app'">Play</button></div>
+    <div class="card"><b>Cuentos con dibujos · Haz esto</b><p class="mut">Picture stories and do-this routines. Not built yet. They open with each finished place.</p></div>`;}
+  else if(SUB==="hablar"){const open=Object.values(db().palabras).filter(r=>r.ear.etapa>=3).map(r=>r.w);
+    $("#sub").innerHTML=`<div class="card"><b>Call Danny</b><p class="mut">A live call. He hears you. Calls use ElevenLabs credits (about $6.50 an hour).</p>
+    <p class="mut">Words open for speaking: ${open.length?open.join(", "):"none yet. A word opens once your ear holds it for a few days."}</p><button class="btn y" onclick="location.href='../'">Open the call page</button></div>`;}
+  else{ $("#sub").innerHTML=`<div class="card"><p class="mut">The words of each story you have finished. Listen first; read after. Reading is not tracked until A2.</p></div><div id="textos"></div>`;
+    cs.filter(hecho).forEach(async c=>{const S=await (await fetch("cuentos/"+c+".json")).json(),seen=new Set(),out=[];
+      const walk=l=>(l||[]).forEach(st=>{if(typeof st==="string")add(st);else if(st.say)add(st.say);else if(st.ask||st.decide||st.elige){(st.lead||[]).forEach(x=>typeof x==="string"&&add(x));if(st.line)add(st.line);walk(st.then);walk(st.right);(st.options||[]).forEach(o=>walk(st[o]));}else if(st.if)walk(st.then);});
+      const add=id=>{id=id.replace(/\$a|\$c|\$p/g,"puerta").replace(/\$b|\$o/g,"ventana").replace(/\$tipo/g,"palma").replace(/\$tam/g,"grande").replace(/\$resp/g,"si").replace(/\$ave/g,"puerta");const cl=S.clips[id];if(cl&&!seen.has(id)){seen.add(id);out.push(cl);}};
+      walk(S.beats);walk(S.final);const d=document.createElement("div");d.className="card";
+      d.innerHTML=`<h2 style="margin-top:0">${S.title}</h2>`+out.map(cl=>`<div class="line">${cl.who==="tu"?'<span class="who">Coquí</span> ':""}${cl.text}</div>`).join("");$("#textos").appendChild(d);});}}
+
+/* ---------- Palabras: every word and where it stands ---------- */
+function palabras(){const ws=Object.values(db().palabras).sort((a,b)=>b.ear.etapa-a.ear.etapa||a.w.localeCompare(b.w)),t=Date.now();
+  const when=d=>!d?"":d<=t?"today":Math.round((d-t)/864e5)<1?"later today":"in "+Math.round((d-t)/864e5)+" day"+(Math.round((d-t)/864e5)===1?"":"s");
+  $("#m").innerHTML=`<h1>Palabras</h1><p class="mut">${ws.length} words. Ear stages: oído (heard), encontrado (found), se queda (holding), bien (good).</p>
+  <div class="card">${ws.length?ws.map(r=>`<div class="step"><div class="sp"><b>${r.w}</b>${r.ear.marca?' <span class="chip c3">check picture</span>':""}<br><span class="mut">back ${when(r.ear.due)} · mouth: ${r.mouth.etapa?PAL.STAGES[r.mouth.etapa]:"not open yet"}</span></div><span class="chip c${r.ear.etapa}">${PAL.STAGES[r.ear.etapa]}</span></div>`).join(""):"<p class='mut'>Play the first story and your words show up here.</p>"}</div>
+  <div class="card"><b>Add a word or a goal</b><p class="mut">For example: "I want to speak to my 1-year-old son around the house." Extra material follows from it. Audio for added words comes later.</p>
+  <input id="extra" placeholder="A word, or a goal"><p><button class="btn y" onclick="extra()">Add</button></p>${(db().extra||[]).map(x=>`<p class="mut">· ${x}</p>`).join("")}</div>`;}
+function extra(){const v=$("#extra").value.trim();if(!v)return;(db().extra=db().extra||[]).push(v);PAL.save();palabras();}
+
+/* ---------- Yo: progress and settings ---------- */
+function yo(){const d=db(),r=PAL.racha(),ws=Object.values(d.palabras),good=ws.filter(x=>x.ear.etapa>=4).length,hold=ws.filter(x=>x.ear.etapa===3).length;
+  $("#m").innerHTML=`<h1>Yo</h1><div class="card"><div class="row"><b class="sp">Streak</b>${r} day${r===1?"":"s"}</div><div class="row"><b class="sp">Time listening</b>${Math.round(d.minutos||0)} min</div>
+  <div class="row"><b class="sp">Words</b>${ws.length} heard · ${hold} holding · ${good} good</div><div class="row"><b class="sp">Level</b>A1 · place ${Math.max(1,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho))+1)} of 10</div></div>
+  <div class="card"><b>Minutes a day</b><p class="mut">Today's plan is sized to this.</p><select id="min">${[15,30,60,120].map(m=>`<option ${m===A().min?"selected":""} value="${m}">${m} minutes</option>`).join("")}</select></div>
+  <div class="card"><div class="row"><div class="sp"><b>Open every place</b><p class="mut">For you, to look ahead. Places not built yet stay empty.</p></div><button class="sw ${A().todo?"on":""}" id="todo"><i></i></button></div></div>
+  <div class="card"><b>Level check</b><p class="mut">Places people who already know some Spanish. Not built yet. It comes after place 1.</p></div>
+  <div class="card"><button class="btn" onclick="bienvenida(0)">How it works</button></div>`;
+  $("#min").onchange=e=>{A().min=+e.target.value;PAL.save();};$("#todo").onclick=()=>{A().todo=A().todo?0:1;PAL.save();yo();};}
+
+/* ---------- The welcome, first time only. Three short screens in English. ---------- */
+function bienvenida(k){const B=$("#bien");B.style.display="block";
+  const pages=[`<h1>Coquí</h1><p>You learn Spanish the way children do: by hearing it, with pictures, in little stories.</p><p>You touch the picture to answer. The stories are games: what you touch changes what happens.</p><p>Words you know come back just before you would forget them.</p><p class="mut">Spanish is for listening. English is only here, in the menus, to help you find your way.</p>`,
+    `<h1>How much time a day?</h1><p class="mut">Today's plan is sized to it. You can change it in Yo.</p>${[15,30,60,120].map(m=>`<button class="opt ${A().min===m?"on":""}" onclick="A().min=${m};PAL.save();bienvenida(1)">${m} minutes</button>`).join("")}`,
+    `<h1>Where do you start?</h1><button class="opt on" onclick="fin()">I'm new to Spanish</button><button class="opt" onclick="alert('The level check is not built yet. You start at the first place for now.');fin()">I know some Spanish (level check)</button>`];
+  B.innerHTML=`<main>${pages[k]}<div class="dots">${pages.map((_,i)=>`<i class="${i===k?"on":""}"></i>`).join("")}</div>${k<2?`<button class="big" onclick="bienvenida(${k+1})">Next</button>`:""}</main>`;}
+function fin(){A().bienvenida=1;PAL.save();$("#bien").style.display="none";ver("hoy");}
+
+nav();ver(TAB);if(!A().bienvenida)bienvenida(0);
+window.App={plan,ver,get db(){return db();}};
+</script>
+</body></html>

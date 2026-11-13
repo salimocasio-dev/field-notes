@@ -225,11 +225,11 @@ async function decide(st){const ops=st.options.map(sub),key=CUENTO+"."+(st.as||"
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
 function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd");dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.insertBefore(d,snd);dots.push(d);}}
-async function run(){runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
+let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
-  if(window.PAL&&(!Q.get("fast")||Q.get("rec")))PAL.cuento(S,LOG);   // the words he heard and how he answered go into his word records
-  running=false;$("#again").style.display="flex";if(S.next){$("#next").style.display="flex";$("#again").classList.add("two");}}
+  if(window.PAL&&(!Q.get("fast")||Q.get("rec"))){S._lost=W.lost;PAL.cuento(S,LOG);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
+  running=false;$("#again").style.display="flex";if($("#home"))$("#home").style.display="flex";if(S.next){$("#next").style.display="flex";$("#again").classList.add("two");}}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
