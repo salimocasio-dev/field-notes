@@ -1,0 +1,685 @@
+{
+ "lineas": [
+  "La casa.",
+  "Toca la puerta.",
+  "Sí. Es la abuela.",
+  "La abuela abre la puerta.",
+  "Hola, abuela.",
+  "La casa de la abuela."
+ ],
+ "rate": "-12%",
+ "voces": [
+  {
+   "voz": "es-AR-ElenaNeural",
+   "nombre": "Elena",
+   "lugar": "Spanish (Argentina)",
+   "locale": "es-AR",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-AR-TomasNeural",
+   "nombre": "Tomas",
+   "lugar": "Spanish (Argentina)",
+   "locale": "es-AR",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-BO-MarceloNeural",
+   "nombre": "Marcelo",
+   "lugar": "Spanish (Bolivia)",
+   "locale": "es-BO",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-BO-SofiaNeural",
+   "nombre": "Sofia",
+   "lugar": "Spanish (Bolivia)",
+   "locale": "es-BO",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-CL-CatalinaNeural",
+   "nombre": "Catalina",
+   "lugar": "Spanish (Chile)",
+   "locale": "es-CL",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-CL-LorenzoNeural",
+   "nombre": "Lorenzo",
+   "lugar": "Spanish (Chile)",
+   "locale": "es-CL",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-CO-GonzaloNeural",
+   "nombre": "Gonzalo",
+   "lugar": "Spanish (Colombia)",
+   "locale": "es-CO",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-CO-SalomeNeural",
+   "nombre": "Salome",
+   "lugar": "Spanish (Colombia)",
+   "locale": "es-CO",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-CR-JuanNeural",
+   "nombre": "Juan",
+   "lugar": "Spanish (Costa Rica)",
+   "locale": "es-CR",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-CR-MariaNeural",
+   "nombre": "María",
+   "lugar": "Spanish (Costa Rica)",
+   "locale": "es-CR",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-CU-BelkysNeural",
+   "nombre": "Belkys",
+   "lugar": "Spanish (Cuba)",
+   "locale": "es-CU",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-CU-ManuelNeural",
+   "nombre": "Manuel",
+   "lugar": "Spanish (Cuba)",
+   "locale": "es-CU",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-DO-EmilioNeural",
+   "nombre": "Emilio",
+   "lugar": "Spanish (Dominican Republic)",
+   "locale": "es-DO",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-DO-RamonaNeural",
+   "nombre": "Ramona",
+   "lugar": "Spanish (Dominican Republic)",
+   "locale": "es-DO",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-EC-AndreaNeural",
+   "nombre": "Andrea",
+   "lugar": "Spanish (Ecuador)",
+   "locale": "es-EC",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-EC-LuisNeural",
+   "nombre": "Luis",
+   "lugar": "Spanish (Ecuador)",
+   "locale": "es-EC",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-AbrilNeural",
+   "nombre": "Abril",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-AlvaroNeural",
+   "nombre": "Álvaro",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-Arabella:DragonLatestNeural",
+   "nombre": "Arabella Dragon Latest",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-ArabellaMultilingualNeural",
+   "nombre": "Arabella Multilingual",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-ArnauNeural",
+   "nombre": "Arnau",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-DarioNeural",
+   "nombre": "Dario",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-EliasNeural",
+   "nombre": "Elias",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-ElviraNeural",
+   "nombre": "Elvira",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-EstrellaNeural",
+   "nombre": "Estrella",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-IreneNeural",
+   "nombre": "Irene",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-IsidoraMultilingualNeural",
+   "nombre": "Isidora Multilingual",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-LaiaNeural",
+   "nombre": "Laia",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-LiaNeural",
+   "nombre": "Lia",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-Marta:MAI-Voice-2",
+   "nombre": "Marta MAI-Voice-2",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-Marta:MAI-Voice-2-Flash",
+   "nombre": "Marta MAI-Voice-2-Flash",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-Marta:MAI-Voice-2.1",
+   "nombre": "Marta MAI-Voice-2.1",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-Marta:MAI-Voice-2.1-Flash",
+   "nombre": "Marta MAI-Voice-2.1-Flash",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-NilNeural",
+   "nombre": "Nil",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-SaulNeural",
+   "nombre": "Saul",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-TeoNeural",
+   "nombre": "Teo",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-TrianaNeural",
+   "nombre": "Triana",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-Tristan:DragonHDLatestNeural",
+   "nombre": "Tristan Dragon HD Latest",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-TristanMultilingualNeural",
+   "nombre": "Tristan Multilingual",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-ES-VeraNeural",
+   "nombre": "Vera",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-Ximena:DragonHDLatestNeural",
+   "nombre": "Ximena Dragon HD Latest",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-XimenaMultilingualNeural",
+   "nombre": "Ximena Multilingual",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-ES-XimenaNeural",
+   "nombre": "Ximena",
+   "lugar": "Spanish (Spain)",
+   "locale": "es-ES",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-GQ-JavierNeural",
+   "nombre": "Javier",
+   "lugar": "Spanish (Equatorial Guinea)",
+   "locale": "es-GQ",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-GQ-TeresaNeural",
+   "nombre": "Teresa",
+   "lugar": "Spanish (Equatorial Guinea)",
+   "locale": "es-GQ",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-GT-AndresNeural",
+   "nombre": "Andrés",
+   "lugar": "Spanish (Guatemala)",
+   "locale": "es-GT",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-GT-MartaNeural",
+   "nombre": "Marta",
+   "lugar": "Spanish (Guatemala)",
+   "locale": "es-GT",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-HN-CarlosNeural",
+   "nombre": "Carlos",
+   "lugar": "Spanish (Honduras)",
+   "locale": "es-HN",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-HN-KarlaNeural",
+   "nombre": "Karla",
+   "lugar": "Spanish (Honduras)",
+   "locale": "es-HN",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-Alejo:MAI-Voice-2",
+   "nombre": "Alejo MAI-Voice-2",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-Alejo:MAI-Voice-2-Flash",
+   "nombre": "Alejo MAI-Voice-2-Flash",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-Alejo:MAI-Voice-2.1",
+   "nombre": "Alejo MAI-Voice-2.1",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-Alejo:MAI-Voice-2.1-Flash",
+   "nombre": "Alejo MAI-Voice-2.1-Flash",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-BeatrizNeural",
+   "nombre": "Beatriz",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-CandelaNeural",
+   "nombre": "Candela",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-CarlotaNeural",
+   "nombre": "Carlota",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-CecilioNeural",
+   "nombre": "Cecilio",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-DaliaMultilingualNeural",
+   "nombre": "Dalia Multilingual",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-DaliaNeural",
+   "nombre": "Dalia",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-GerardoNeural",
+   "nombre": "Gerardo",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-Grant:MAI-Voice-2.1",
+   "nombre": "Grant MAI-Voice-2.1",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-Grant:MAI-Voice-2.1-Flash",
+   "nombre": "Grant MAI-Voice-2.1-Flash",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-Harper:MAI-Voice-2.1",
+   "nombre": "Harper MAI-Voice-2.1",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-Harper:MAI-Voice-2.1-Flash",
+   "nombre": "Harper MAI-Voice-2.1-Flash",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-JorgeMultilingualNeural",
+   "nombre": "Jorge Multilingual",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-JorgeNeural",
+   "nombre": "Jorge",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-LarissaNeural",
+   "nombre": "Larissa",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-LibertoNeural",
+   "nombre": "Liberto",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-LucianoNeural",
+   "nombre": "Luciano",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-MarinaNeural",
+   "nombre": "Marina",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-NuriaNeural",
+   "nombre": "Nuria",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-PelayoNeural",
+   "nombre": "Pelayo",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-MX-RenataNeural",
+   "nombre": "Renata",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-Valeria:MAI-Voice-2",
+   "nombre": "Valeria MAI-Voice-2",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-Valeria:MAI-Voice-2-Flash",
+   "nombre": "Valeria MAI-Voice-2-Flash",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-Valeria:MAI-Voice-2.1",
+   "nombre": "Valeria MAI-Voice-2.1",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-Valeria:MAI-Voice-2.1-Flash",
+   "nombre": "Valeria MAI-Voice-2.1-Flash",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-MX-YagoNeural",
+   "nombre": "Yago",
+   "lugar": "Spanish (Mexico)",
+   "locale": "es-MX",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-NI-FedericoNeural",
+   "nombre": "Federico",
+   "lugar": "Spanish (Nicaragua)",
+   "locale": "es-NI",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-NI-YolandaNeural",
+   "nombre": "Yolanda",
+   "lugar": "Spanish (Nicaragua)",
+   "locale": "es-NI",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-PA-MargaritaNeural",
+   "nombre": "Margarita",
+   "lugar": "Spanish (Panama)",
+   "locale": "es-PA",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-PA-RobertoNeural",
+   "nombre": "Roberto",
+   "lugar": "Spanish (Panama)",
+   "locale": "es-PA",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-PE-AlexNeural",
+   "nombre": "Alex",
+   "lugar": "Spanish (Peru)",
+   "locale": "es-PE",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-PE-CamilaNeural",
+   "nombre": "Camila",
+   "lugar": "Spanish (Peru)",
+   "locale": "es-PE",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-PR-KarinaNeural",
+   "nombre": "Karina",
+   "lugar": "Spanish (Puerto Rico)",
+   "locale": "es-PR",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-PR-VictorNeural",
+   "nombre": "Víctor",
+   "lugar": "Spanish (Puerto Rico)",
+   "locale": "es-PR",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-PY-MarioNeural",
+   "nombre": "Mario",
+   "lugar": "Spanish (Paraguay)",
+   "locale": "es-PY",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-PY-TaniaNeural",
+   "nombre": "Tania",
+   "lugar": "Spanish (Paraguay)",
+   "locale": "es-PY",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-SV-LorenaNeural",
+   "nombre": "Lorena",
+   "lugar": "Spanish (El Salvador)",
+   "locale": "es-SV",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-SV-RodrigoNeural",
+   "nombre": "Rodrigo",
+   "lugar": "Spanish (El Salvador)",
+   "locale": "es-SV",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-US-AlonsoNeural",
+   "nombre": "Alonso",
+   "lugar": "Spanish (United States)",
+   "locale": "es-US",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-US-PalomaNeural",
+   "nombre": "Paloma",
+   "lugar": "Spanish (United States)",
+   "locale": "es-US",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-UY-MateoNeural",
+   "nombre": "Mateo",
+   "lugar": "Spanish (Uruguay)",
+   "locale": "es-UY",
+   "genero": "Male"
+  },
+  {
+   "voz": "es-UY-ValentinaNeural",
+   "nombre": "Valentina",
+   "lugar": "Spanish (Uruguay)",
+   "locale": "es-UY",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-VE-PaolaNeural",
+   "nombre": "Paola",
+   "lugar": "Spanish (Venezuela)",
+   "locale": "es-VE",
+   "genero": "Female"
+  },
+  {
+   "voz": "es-VE-SebastianNeural",
+   "nombre": "Sebastián",
+   "lugar": "Spanish (Venezuela)",
+   "locale": "es-VE",
+   "genero": "Male"
+  }
+ ]
+}
