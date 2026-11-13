@@ -1,0 +1,27 @@
+{
+ "voces": {
+  "narr": "es-PR-KarinaNeural",
+  "abuela": "es-PR-KarinaNeural",
+  "tu": "es-PR-KarinaNeural"
+ },
+ "rate": "-12%",
+ "v": 1794566018,
+ "clips": [
+  "abuela",
+  "abuela_abre",
+  "abuela_dice",
+  "casa",
+  "cerrada",
+  "donde_puerta",
+  "esta_casa",
+  "esta_puerta",
+  "hola_abuela",
+  "mira_casa",
+  "muy_bien",
+  "palma",
+  "puedes_casa",
+  "puerta",
+  "sol",
+  "ventana"
+ ]
+}
