@@ -49,6 +49,7 @@ function mkAbuela(pose,open){const b=new Buf(48,51),X=30,S=RP.skin,P=RP.purp;
   if(open)b.rect(X-1,15,3,2,"#7A1C1C");else{b.rect(X-2,15,4,1,"#7A2A1A");b.px(X-3,14,"#7A2A1A");b.px(X+2,14,"#7A2A1A");}
   b.px(X-6,14,"#F8C838");b.px(X+6,14,"#F8C838");
   if(pose==="wave0"||pose==="wave1"){b.cap(X+7,23,X+12,13,2,P);b.ell(X+12.5+(pose==="wave1"?1.6:0),10,2.3,2.3,S);}
+  else if(pose==="dedo0"||pose==="dedo1"){const d=pose==="dedo1"?1:-1;b.cap(X+7,23,X+12,15,2,P);b.ell(X+12+d,12.5,2.6,2.6,S);b.rect(X+11+d*2,4,2,7,S[2]);b.rect(X+11+d*2,4,2,1,S[4]);b.px(X+10+d*2,4,OUT);b.px(X+13+d*2,4,OUT);}   // a wagging finger: not now
   else{b.cap(X+8,23,X+10,33,2,P);b.ell(X+10,35.5,2.1,2.1,S);}
   if(pose==="offer"){b.cap(X-7,24,X-16,27,2,P);b.ell(X-18.5,27,2.3,2.3,S);}
   else if(pose==="bless"){b.cap(X-7,23,X-15,19,2,P);b.ell(X-17.5,18,2.3,2.3,S);}

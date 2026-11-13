@@ -11,9 +11,10 @@ const Q=new URLSearchParams(location.search),FAST=+(Q.get("fast")||1),CUENTO=(Q.
 const DW=196,DH=216,TICK=70,ESCENAS={};
 const cv=$("#cv"),dc=cv.getContext("2d"),sc=document.createElement("canvas"),c=sc.getContext("2d");
 let S=null,E=null,SW=240,SH=216,W={fx:[]},V={},cam=[0,0,DW,DH],camA=null,F=0,pending=null,running=false,runId=0,muted=false,LOG=[];
-let ULT={};try{ULT=JSON.parse(localStorage.getItem("coqui.juego.ult")||"{}");}catch(e){}
+let ULT={},MEM={};try{ULT=JSON.parse(localStorage.getItem("coqui.juego.ult")||"{}");MEM=JSON.parse(localStorage.getItem("coqui.juego.mem")||"{}");}catch(e){}   // MEM: what one story passes to a later one
 
-function fresh(){W=Object.assign({cq:{x:150,y:178,s:1,dy:0,al:1,vis:1,bub:null},spot:null,twinkle:null,glow:null,fx:[],heart:0,lost:0},E.fresh());cam=E.CAM.wide.slice();camA=null;pending=null;V={};LOG=[];}
+function fresh(){W=Object.assign({cq:{x:150,y:178,s:1,dy:0,al:1,vis:1,bub:null},spot:null,twinkle:null,glow:null,fx:[],heart:0,lost:0,resp:null},E.fresh(S));cam=E.CAM.wide.slice();camA=null;pending=null;V={};LOG=[];
+  for(const k in MEM)V["mem_"+k]=MEM[k];}
 
 /* ---------- signs and marks, the same in every scene ---------- */
 const HAND=["....oo......","...owwo.....","...owwo.....","...owwo.....","...owwooo...","...owwowwoo.","oo.owwowwowo","owoowwwwwwwo","owwowwwwwwwo",".owwwwwwwwwo",".owwwwwwwwwo","..owwwwwwwo.","..owwwwwwwo.","...owwwwwo..","...ooooooo.."];
@@ -45,10 +46,21 @@ function frogBox(q){const w=Math.round(30*q.s)+2,h=Math.round(25*q.s)+2;return {
 function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK==="coqui")&&a%2?1:0;   // his mouth moves while he talks
   shadow(g,b.x+2,q.y+25,b.w-5);g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+Math.round(q.dy));}
 
+/* the two answer bubbles of the Say move: the frog nodding (sí) and the frog shaking his head (no) */
+function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),cx=b.x+b.w/2,y=Math.max(4,b.y-46);
+  return k==="si"?[Math.round(cx-50),y,40,36]:[Math.round(cx+10),y,40,36];}
+const bx=k=>respBox(k)||((k==="si"||k==="no")?(b=>[b.x,b.y,b.w,b.h])(frogBox(W.cq)):E.box(k,W));
+function respDraw(g,a){(W.resp||[]).forEach(k=>{const b=respBox(k),x=b[0],y=b[1],w=b[2],h=b[3],t=(F>>1)%8,o=[0,1,2,1,0,-1,-2,-1][t];
+  fr(g,x-1,y,w+2,h,OUT);fr(g,x,y-1,w,h+2,OUT);fr(g,x,y,w,h,"#FFFFFF");
+  const tx=k==="si"?x+w-8:x+8;fr(g,tx-3,y+h,7,1,"#FFFFFF");fr(g,tx-3,y+h+1,7,1,OUT);fr(g,tx-2,y+h+1,5,1,"#FFFFFF");fr(g,tx-2,y+h+2,5,1,OUT);fr(g,tx-1,y+h+2,3,1,"#FFFFFF");fr(g,tx-1,y+h+3,3,1,OUT);
+  const hx=x+Math.round(w/2)-11+(k==="no"?o*2:0),hy=y+7+(k==="si"?o*2:0);g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),hx,hy);
+  const col=k==="si"?"#2E9A48":"#D0403A";   // motion marks: up and down for sí, side to side for no
+  if(k==="si"){[[x+4,y+9],[x+w-6,y+9]].forEach(p=>{fr(g,p[0],p[1],2,14,col);fr(g,p[0]-1,p[1]+1,4,1,col);fr(g,p[0]-1,p[1]+12,4,1,col);});}
+  else{[[x+5,y+4],[x+5,y+h-6]].forEach(p=>{fr(g,p[0],p[1],w-10,2,col);fr(g,p[0]+1,p[1]-1,1,4,col);fr(g,p[0]+w-12,p[1]-1,1,4,col);});}});}
 function draw(){if(!E)return;const a=F>>1;
-  E.draw(c,W,a);
-  if(W.twinkle&&E.box(W.twinkle,W))twinkle(c,E.box(W.twinkle,W));
-  if(W.spot)spot(c,E.box(W.spot,W),a);
+  E.draw(c,W,a);if(W.resp)respDraw(c,a);
+  if(W.twinkle&&bx(W.twinkle))twinkle(c,bx(W.twinkle));
+  if(W.spot)spot(c,bx(W.spot),a);
   W.fx=W.fx.filter(e=>F-e.f0<e.n);
   W.fx.forEach(e=>{const k=F-e.f0;if(e.t==="star")e.pts.forEach((p,i)=>star(c,p[0],p[1],(i+a)%2?4:2,(i+a)%2));
     else if(e.t==="knock"){const s=cam[2]>150?2:1;if(k<2)bang(c,e.x,e.y,s);else if(k>=3&&k<6)bang(c,e.x+3*s,e.y-2*s,s);}});
@@ -56,7 +68,8 @@ function draw(){if(!E)return;const a=F>>1;
   if(camA){const t=Math.min(1,(F-camA.f0)/camA.n),e=t*t*(3-2*t);for(let i=0;i<4;i++)cam[i]=camA.a[i]+(camA.b[i]-camA.a[i])*e;if(t>=1){cam=camA.b.slice();const r=camA.res;camA=null;r();}}
   dc.imageSmoothingEnabled=false;dc.fillStyle="#0E1A24";dc.fillRect(0,0,DW,DH);
   dc.drawImage(sc,cam[0],cam[1],cam[2],cam[3],0,0,DW,DH);
-  if(W.spot){const p=E.handAt[W.spot],z=DW/cam[2],k=3,hx=Math.round((p[0]-cam[0])*z)-4*k,hy=Math.round((p[1]-cam[1])*z);hand(dc,hx,hy,(F>>2)%2===1,k);}
+  if(E.hud)E.hud(dc,W,a);
+  if(W.spot){const rb=respBox(W.spot),p=rb?[rb[0]+rb[2]/2,rb[1]+rb[3]-6]:E.handAt[W.spot],z=DW/cam[2],k=3,hx=Math.round((p[0]-cam[0])*z)-4*k,hy=Math.round((p[1]-cam[1])*z);hand(dc,hx,hy,(F>>2)%2===1,k);}
 }
 function loop(){F++;draw();placeBub();}
 
@@ -76,6 +89,8 @@ const SFX={right(){tone(784,0,.1,"triangle",.14);tone(1047,.09,.1,"triangle",.14
     g.gain.setValueAtTime((v||1)*.5,t);g.gain.exponentialRampToValueAtTime(.001,t+1.5);s.connect(f);f.connect(g);g.connect(out());s.start(t);s.stop(t+1.6);}catch(e){}},
   lluvia(){try{if(RAIN)return;const A=ac(),s=A.createBufferSource(),f=A.createBiquadFilter(),g=A.createGain();s.buffer=noise();s.loop=true;f.type="highpass";f.frequency.value=1800;g.gain.value=.03;s.connect(f);f.connect(g);g.connect(out());s.start();RAIN=s;}catch(e){}},
   calla(){try{if(RAIN)RAIN.stop();}catch(e){}RAIN=null;}};
+Object.assign(SFX,{pio(){tone(2600,0,.06,"sine",.07,3400);tone(2900,.09,.08,"sine",.07,3800);},slam(){tone(140,0,.12,"square",.05,70);tone(90,.02,.18,"sine",.12,50);},
+  bonk(){tone(600,0,.06,"square",.05,200);tone(300,.06,.2,"triangle",.08,120);},munch(){[0,.16,.32].forEach(t=>tone(260,t,.06,"square",.03,180));},swoop(){tone(1800,0,.35,"sine",.04,600);}});
 let TALK=null,LINES={},VOICE=false,CLIPS={},speaking=0,live=new Set(),voiceReady=null;
 function trim(b){const d=b.getChannelData(0),sr=b.sampleRate,th=.012;let i=0,j=d.length-1;while(i<j&&Math.abs(d[i])<th)i++;while(j>i&&Math.abs(d[j])<th)j--;return {buf:b,t0:Math.max(0,i/sr-.03),t1:Math.min(b.duration,j/sr+.1)};}   // the recordings carry silence at both ends; the pauses are set here instead
 async function loadVoice(){LINES=S.clips||{};
@@ -133,7 +148,7 @@ function fx(e){e.f0=F;W.fx.push(e);}
 /* ---------- waiting for a touch ---------- */
 // Wait for a touch on one of the live things. A touch on one of them counts from the first word of the lead-in.
 async function espera(liveSet,lead,line,o){o=o||{};const my=runId;
-  const me={live:liveSet,res:null,line,asked:0,busy:0,done:0,p:null,got:null,loose:!!o.loose,sign:o.sign||null},gotP=new Promise(r=>{me.res=r;});pending=me;
+  const me={live:liveSet,res:null,line,asked:0,busy:0,done:0,p:null,got:null,loose:!!o.loose,lock:!!o.lock,sign:o.sign||null,kind:o.kind||"ask",pick:o.pick||null},gotP=new Promise(r=>{me.res=r;});pending=me;
   for(const st of lead||[]){if(me.done)break;if(typeof st==="string"){W.twinkle=o.sign||null;await say(sub(st));}else{W.twinkle=null;await paso(st);}}
   W.twinkle=null;let timer=null;
   if(!me.done){if(o.sign)W.spot=o.sign;me.asked=1;if(line)await say(line,0);
@@ -143,10 +158,11 @@ async function espera(liveSet,lead,line,o){o=o||{};const my=runId;
 // a touch that is not an answer: it reacts and gets its name. Poking around is free.
 function poke(what,p){if(what==="coqui"){bounce(6);const nm=S.names&&S.names.coqui;if(nm&&VOICE&&CLIPS[nm]){if(!speaking)playClip(nm);}else SFX.coqui();return;}   // touch the frog: he says his name
   SFX.blip();fx({t:"star",n:7,pts:[[p.x-7,p.y-4],[p.x+8,p.y+2],[p.x,p.y-10]]});if(E.poke)E.poke(what,p);}
-function tap(x,y){if(!E||!S)return;const what=E.hit(x,y,W),p={x:Math.round(x),y:Math.round(y)};if(!what)return;
+function tap(x,y){if(!E||!S)return;const inb=b=>b&&x>=b[0]-3&&x<b[0]+b[2]+3&&y>=b[1]-3&&y<b[1]+b[3]+3,
+    what=inb(respBox("si"))?"si":inb(respBox("no"))?"no":E.hit(x,y,W),p={x:Math.round(x),y:Math.round(y)};if(!what)return;
   const pn=pending,nm=S.names&&S.names[what];
   if(pn&&!pn.done){let w=what;if(pn.loose&&(w==="puerta"||w==="ventana"))w="casa";   // before the door has a name, the door is the house
-    if(pn.live.includes(w)){pn.done=1;pn.p=p;pn.got=w;hush();pn.res();return;}
+    if(pn.live.includes(w)&&!(pn.lock&&!pn.asked)){pn.done=1;pn.p=p;pn.got=w;hush();pn.res();return;}
     poke(what,p);if(what==="coqui")return;
     if(nm&&!speaking&&!pn.busy){pn.busy=1;playClip(nm).then(()=>sleep(300)).then(()=>pending===pn&&!pn.done&&pn.asked&&pn.line?playClip(pn.line):0).then(()=>{pn.busy=0;});}   // name what was touched, then ask again
     return;}
@@ -154,9 +170,9 @@ function tap(x,y){if(!E||!S)return;const what=E.hit(x,y,W),p={x:Math.round(x),y:
 cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*DW,py=(e.clientY-r.top)/r.height*DH;tap(cam[0]+px/DW*cam[2],cam[1]+py/DH*cam[3]);});
 
 /* ---------- the signal for a right move: the same every time ---------- */
-function senal(t,p){const b=E.box(t,W),R=Math.round;p=p||{x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
+function senal(t,p){const b=bx(t),R=Math.round;p=p||{x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
   SFX.right();bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
-const bien=()=>wait(300).then(()=>say(S.bien||"muy_bien",350));
+const bien=id=>wait(300).then(()=>say(id||S.bien||"muy_bien",350));
 
 /* ---------- reading a story ---------- */
 const sub=s=>typeof s==="string"?s.replace(/\$([a-z]+)/g,(m,k)=>V[k]!=null?V[k]:m):s;
@@ -174,35 +190,50 @@ async function paso(st){
   if(st.act){const o={};for(const k in st)o[k]=sub(st[k]);const fn=E.acts[st.act];if(!fn)throw new Error("the scene has no act "+st.act);return fn(o);}
   if(st.ask)return ask(st);
   if(st.decide)return decide(st);
+  if(st.elige)return elige(st);
+  if(st.draw){const ops=st.options.map(sub),f=Q.get(st.draw),v=ops.includes(f)?f:ops[Math.random()<.5?0:1];V[st.draw]=v;if(st.other)V[st.other]=ops.find(x=>x!==v);return;}   // a fresh draw; ?name=value fixes it
+  if(st.calc){V[st.calc]=cond(st.cond)?sub(st.then):sub(st.else);return;}
+  if(st.recuerda){MEM[st.recuerda]=sub(String(st.valor));V["mem_"+st.recuerda]=MEM[st.recuerda];try{localStorage.setItem("coqui.juego.mem",JSON.stringify(MEM));}catch(e){}return;}
+  if(st.cost){W.lost++;return E.stake(W.lost,S.stake.steps,sub(st.en||""));}
   throw new Error("a step the game does not know");}
 // An ask, with the big sign. Nothing can go wrong here.
-async function ask(st){const t=sub(st.ask),me=await espera([t],st.lead,sub(st.line),{sign:t,loose:st.loose});
-  senal(t,me.p);await pasos(st.after);await bien();await pasos(st.then);}
+async function ask(st){const t=sub(st.ask);if(st.resp)W.resp=st.resp;const me=await espera([t],st.lead,sub(st.line),{sign:t,loose:st.loose});
+  senal(t,me.p);if(st.said&&st.said[t]){await wait(250);W.resp=null;await say(sub(st.said[t]),200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
+// He picks what the frog says, and there is no wrong answer: each answer leads somewhere else.
+async function elige(st){const ops=st.options;W.resp=st.kind==="say"?ops:null;const me=await espera(ops,st.lead,sub(st.line),{kind:"elige"});V.elegido=me.got;
+  LOG.push({word:null,asked:"libre",got:me.got,ok:true});SFX.blip();bounce(5);
+  if(st.said&&st.said[me.got]){await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}W.resp=null;await pasos(st[me.got]);}
 // A decision. Two things he could do; only the Spanish says which. A wrong one costs a step of the thing at stake,
 // what he did stays done, and then the big sign shows the right one.
 async function decide(st){const ops=st.options.map(sub),key=CUENTO+"."+(st.as||"x");let pick;
   if(st.pick)pick=sub(st.pick);
   else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.random()<.5?0:1];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}
   if(st.as)V[st.as]=pick;if(st.other)V[st.other]=ops.find(x=>x!==pick);
-  const line=sub(st.line);let me=await espera(ops,st.lead,line,{});const first=me.got===pick;
+  if(st.decide==="say")W.resp=ops;
+  const line=sub(st.line);let me=await espera(ops,st.lead,line,{lock:st.lock,kind:"decide",pick});const first=me.got===pick;V.ok=first?"1":"";V.x=me.got;
   LOG.push({word:sub(st.tests||pick),asked:pick,got:me.got,ok:first});
+  if(st.said&&st.said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}
+  W.resp=null;
   if(st.do)await E.acts[st.do]({en:me.got});
-  if(!first){V.x=me.got;await wait(500);await pasos(st.wrong);W.lost++;await E.stake(W.lost,S.stake.steps);
-    me=await espera([pick],[],line,{sign:pick});if(st.do)await E.acts[st.do]({en:pick});}
-  senal(pick,me.p);await bien();await pasos(st.right);}
+  if(!first){await wait(500);const costs=JSON.stringify(st.wrong||[]).includes('"cost"');await pasos(st.wrong);if(!costs){W.lost++;await E.stake(W.lost,S.stake.steps,me.got);}
+    if(st.noretry)return;   // one guess: the story shows the right one, then goes on
+    if(st.decide==="say")W.resp=ops;
+    me=await espera([pick],[],line,{sign:pick});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});}
+  senal(pick,me.p);await bien(st.bien);await pasos(st.right);}
 
 /* ---------- running it ---------- */
-const dots=[...document.querySelectorAll(".dot")],step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
+let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
+function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd");dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.insertBefore(d,snd);dots.push(d);}}
 async function run(){runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   running=false;$("#again").style.display="flex";}
-async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();E=ESCENAS[S.scene];SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;
+async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();E=ESCENAS[S.scene];SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();}
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
 function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-130)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
 fit();addEventListener("resize",fit);
 /* for checking the game by machine */
-window.Story={get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const b=E.box(k,W);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
+window.Story={get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
   get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;},get cap(){return capEl.classList.contains('on')?capEl.textContent:'';},get bub(){return bubEl.classList.contains('on')?bubEl.textContent:'';},get txt(){return TXT;}};
