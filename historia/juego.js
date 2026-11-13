@@ -42,7 +42,7 @@ function bang(g,cx,cy,s){const x0=cx-Math.floor(5.5*s),y0=cy-Math.floor(5.5*s);
   BANG.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")fr(g,x0+i*s-1,y0+j*s-1,s+2,s+2,OUT);});
   BANG.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")fr(g,x0+i*s,y0+j*s,s,s,Math.abs(i-5)<2&&Math.abs(j-5)<2?"#FFFFFF":"#FFE040");});}
 function frogBox(q){const w=Math.round(30*q.s)+2,h=Math.round(25*q.s)+2;return {x:Math.round(q.x+(32-w)/2),y:q.y+27-h,w,h};}
-function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=q.bub==="hola"&&a%2?1:0;
+function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK==="coqui")&&a%2?1:0;   // his mouth moves while he talks
   shadow(g,b.x+2,q.y+25,b.w-5);g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+Math.round(q.dy));}
 
 function draw(){if(!E)return;const a=F>>1;
@@ -76,7 +76,7 @@ const SFX={right(){tone(784,0,.1,"triangle",.14);tone(1047,.09,.1,"triangle",.14
     g.gain.setValueAtTime((v||1)*.5,t);g.gain.exponentialRampToValueAtTime(.001,t+1.5);s.connect(f);f.connect(g);g.connect(out());s.start(t);s.stop(t+1.6);}catch(e){}},
   lluvia(){try{if(RAIN)return;const A=ac(),s=A.createBufferSource(),f=A.createBiquadFilter(),g=A.createGain();s.buffer=noise();s.loop=true;f.type="highpass";f.frequency.value=1800;g.gain.value=.03;s.connect(f);f.connect(g);g.connect(out());s.start();RAIN=s;}catch(e){}},
   calla(){try{if(RAIN)RAIN.stop();}catch(e){}RAIN=null;}};
-let LINES={},VOICE=false,CLIPS={},speaking=0,live=new Set(),voiceReady=null;
+let TALK=null,LINES={},VOICE=false,CLIPS={},speaking=0,live=new Set(),voiceReady=null;
 function trim(b){const d=b.getChannelData(0),sr=b.sampleRate,th=.012;let i=0,j=d.length-1;while(i<j&&Math.abs(d[i])<th)i++;while(j>i&&Math.abs(d[j])<th)j--;return {buf:b,t0:Math.max(0,i/sr-.03),t1:Math.min(b.duration,j/sr+.1)};}   // the recordings carry silence at both ends; the pauses are set here instead
 async function loadVoice(){LINES=S.clips||{};
   try{const r=await fetch("audio/ready.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json(),A=ac(),have=new Set(j.clips||[]);
@@ -85,11 +85,11 @@ async function loadVoice(){LINES=S.clips||{};
 const words=id=>((LINES[id]||{}).text||"x x").split(/\s+/).length;
 const dur=id=>VOICE&&CLIPS[id]?CLIPS[id].t1-CLIPS[id].t0:(360*words(id)+300)/1000;
 function playClip(id){return new Promise(res=>{const cl=CLIPS[id];if(!VOICE||!cl){res(false);return;}
-  const s=ac().createBufferSource();s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);letras(id);
-  s._end=v=>{if(s._done)return;s._done=1;speaking=Math.max(0,speaking-1);live.delete(s);letrasFin(id,v);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));});}
+  const s=ac().createBufferSource();s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);TALK=partes(id).quien;letras(id);
+  s._end=v=>{if(s._done)return;s._done=1;speaking=Math.max(0,speaking-1);live.delete(s);TALK=null;letrasFin(id,v);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));});}
 function hush(){[...live].forEach(s=>{try{s.stop();}catch(e){}s._end(false);});}
 function say(id,gap){const my=runId,g=(gap==null?420:gap)/FAST;
-  return (VOICE&&CLIPS[id]?playClip(id).then(ok=>ok?sleep(g):0):(letras(id),sleep(dur(id)*1000/FAST).then(()=>{letrasFin(id,true);return sleep(g);}))).then(()=>{if(my!==runId)throw "stop";});}
+  return (VOICE&&CLIPS[id]?playClip(id).then(ok=>ok?sleep(g):0):(TALK=partes(id).quien,letras(id),sleep(dur(id)*1000/FAST).then(()=>{TALK=null;letrasFin(id,true);return sleep(g);}))).then(()=>{if(my!==runId)throw "stop";});}
 
 /* ---------- the words on screen: speech bubbles and captions ----------
    The frog's lines and grandma's lines show in a bubble at the speaker. The narrator's lines show as a caption under the picture.

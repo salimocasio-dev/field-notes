@@ -64,7 +64,7 @@ function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(po
   if(!W.storm)ambient(c);
   if(W.peek&&W.door===.5){c.save();c.beginPath();c.rect(153,53,11,51);c.clip();c.drawImage(AB("idle",0),135,55);c.restore();}   // she is behind the door as it opens
   const ab=W.ab;
-  if(ab){const pose=ab.pose==="wave"?"wave"+(a%2):"idle",op=ab.bub&&ab.bub!=="amor"&&a%2?1:0;c.globalAlpha=ab.al==null?1:ab.al;
+  if(ab){const pose=ab.pose==="wave"?"wave"+(a%2):"idle",op=((ab.bub&&ab.bub!=="amor")||TALK==="abuela")&&a%2?1:0;c.globalAlpha=ab.al==null?1:ab.al;
     if(ab.en==="ventana"){c.save();c.beginPath();c.rect(97,61,30,20);c.clip();c.drawImage(AB(pose,op),W.tab?75:82,61);   // head and shoulders in the window
       if(W.tab){const bl=(F%47)<2?1:0,sh=W.shake&&a%2?1:0;c.drawImage(spr("cq.42_"+bl,()=>mkCoqui(.42,bl,0)),112+sh,W.tab==="mojado"?68:67);   // and the frog beside her
         if(W.tab==="mojado"){towel(c,114,62);for(let k=0;k<2;k++)fr(c,113+k*13,70+((F+k*4)%8),1,2,"#8CC4F8");}}
