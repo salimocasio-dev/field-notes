@@ -1,0 +1,798 @@
+{
+ "id": "las-flores",
+ "title": "Las flores",
+ "place": "La casa",
+ "scene": "patio",
+ "next": "que-es-esto",
+ "goal": "Plant abuela's flowers while there is daylight.",
+ "stake": {
+  "thing": "sol",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "niño",
+  "niña",
+  "juega",
+  "flor",
+  "sol",
+  "aquí",
+  "allá"
+ ],
+ "back_again": [
+  "hola",
+  "no",
+  "sí",
+  "tiene",
+  "para",
+  "ahora",
+  "tú",
+  "yo",
+  "también"
+ ],
+ "also_heard": [
+  "patio",
+  "bola",
+  "con",
+  "una",
+  "está"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "bebe": "n_bebe",
+  "bola": "p_n_bola",
+  "saco": "p_n_saco",
+  "caja": "p_n_flores",
+  "camaL": "p_n_flores",
+  "camaR": "p_n_flores",
+  "sol": "p_n_sol",
+  "porton": "p_n_porton",
+  "nido": "p_n_nido",
+  "arbol": "p_n_arbol",
+  "puerta": "puerta",
+  "casa": "p_n_casa",
+  "patio": "p_n_patio",
+  "pajaro": "p_n_pajaro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "aqui": "aquí",
+  "alla": "allá",
+  "nino": "niño",
+  "nina": "niña"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "puerta": {
+   "who": "narr",
+   "text": "Es la puerta."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "p_n_bola": {
+   "who": "narr",
+   "text": "Es la bola."
+  },
+  "p_n_saco": {
+   "who": "narr",
+   "text": "Es el saco de Luis."
+  },
+  "p_n_flores": {
+   "who": "narr",
+   "text": "Son las flores de abuela."
+  },
+  "p_n_sol": {
+   "who": "narr",
+   "text": "Es el sol."
+  },
+  "p_n_porton": {
+   "who": "narr",
+   "text": "Es el portón."
+  },
+  "p_n_nido": {
+   "who": "narr",
+   "text": "Es la casa del pájaro."
+  },
+  "p_n_arbol": {
+   "who": "narr",
+   "text": "Es el árbol."
+  },
+  "p_n_casa": {
+   "who": "narr",
+   "text": "Es la casa de abuela."
+  },
+  "p_n_patio": {
+   "who": "narr",
+   "text": "Es el patio."
+  },
+  "p_n_pajaro": {
+   "who": "narr",
+   "text": "Es el pájaro."
+  },
+  "p_es_el_patio": {
+   "who": "narr",
+   "text": "Este es el patio de abuela."
+  },
+  "p_mira_luis_carmen": {
+   "who": "narr",
+   "text": "Mira. Luis y Carmen."
+  },
+  "p_luis_nino": {
+   "who": "narr",
+   "text": "Luis es un niño."
+  },
+  "p_carmen_nina": {
+   "who": "narr",
+   "text": "Carmen es una niña."
+  },
+  "p_puedes_nino": {
+   "who": "narr",
+   "text": "¿Puedes tocar al niño?"
+  },
+  "p_luis_hola_coqui": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Hola, Coquí!"
+  },
+  "p_nino_juega_bola": {
+   "who": "narr",
+   "text": "El niño juega con la bola."
+  },
+  "p_donde_nina": {
+   "who": "narr",
+   "text": "¿Y la niña? ¿Dónde está la niña?"
+  },
+  "p_carmen_hola": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Hola!"
+  },
+  "p_nina_tiene_flor": {
+   "who": "narr",
+   "text": "La niña tiene una flor."
+  },
+  "p_mira_el_sol": {
+   "who": "narr",
+   "text": "Mira el sol."
+  },
+  "p_donde_sol": {
+   "who": "narr",
+   "text": "¿Dónde está el sol?"
+  },
+  "p_es_el_sol": {
+   "who": "narr",
+   "text": "Es el sol."
+  },
+  "p_carmen_flor_aqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Una flor aquí."
+  },
+  "p_carmen_flor_alla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Una flor allá."
+  },
+  "p_luis_flor_aqui": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Una flor aquí."
+  },
+  "p_luis_flor_alla": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Una flor allá."
+  },
+  "p_carmen_si_esta_aqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Sí! La flor está aquí."
+  },
+  "p_carmen_y_flor_alla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Y una flor allá."
+  },
+  "p_carmen_esta_alla": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: La flor está allá."
+  },
+  "p_luis_esta_aqui": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: La flor está aquí."
+  },
+  "p_luis_esta_alla": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: La flor está allá."
+  },
+  "p_carmen_ahora_tu": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora tú, Coquí."
+  },
+  "p_no_aqui": {
+   "who": "narr",
+   "text": "No. Aquí."
+  },
+  "p_no_alla": {
+   "who": "narr",
+   "text": "No. Allá."
+  },
+  "p_ab_flor_para_nino": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una flor para el niño."
+  },
+  "p_ab_flor_para_nina": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una flor para la niña."
+  },
+  "p_no_para_nino": {
+   "who": "narr",
+   "text": "No. Para el niño."
+  },
+  "p_no_para_nina": {
+   "who": "narr",
+   "text": "No. Para la niña."
+  },
+  "p_nino_nina_juegan": {
+   "who": "narr",
+   "text": "El niño juega. La niña juega."
+  },
+  "p_cq_yo_tambien": {
+   "who": "tu",
+   "text": "¡Yo también!"
+  },
+  "p_luis_no_alla_a": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Aquí no! ¡Allá!"
+  },
+  "p_luis_no_alla_b": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Allá! ¡Aquí no!"
+  },
+  "p_luis_no_aqui_a": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Allá no! ¡Aquí!"
+  },
+  "p_luis_no_aqui_b": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Aquí! ¡Allá no!"
+  },
+  "p_carmen_no_alla_a": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Aquí no! ¡Allá!"
+  },
+  "p_carmen_no_alla_b": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Allá! ¡Aquí no!"
+  },
+  "p_carmen_no_aqui_a": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Allá no! ¡Aquí!"
+  },
+  "p_carmen_no_aqui_b": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Aquí! ¡Allá no!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio9"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "act": "sale"
+  },
+  "p_es_el_patio",
+  {
+   "dots": 1
+  },
+  "p_mira_luis_carmen",
+  {
+   "set": {
+    "twinkle": "luis"
+   }
+  },
+  "p_luis_nino",
+  {
+   "set": {
+    "twinkle": "carmen"
+   }
+  },
+  "p_carmen_nina",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "luis",
+   "lead": [],
+   "line": "p_puedes_nino",
+   "then": [
+    {
+     "act": "pose",
+     "quien": "luis",
+     "que": "wave"
+    },
+    {
+     "say": "p_luis_hola_coqui",
+     "gap": 250
+    },
+    {
+     "act": "pose",
+     "quien": "luis",
+     "que": "idle"
+    },
+    {
+     "act": "juega"
+    },
+    "p_nino_juega_bola"
+   ],
+   "after": []
+  },
+  {
+   "ask": "carmen",
+   "lead": [],
+   "line": "p_donde_nina",
+   "then": [
+    {
+     "act": "pose",
+     "quien": "carmen",
+     "que": "wave"
+    },
+    {
+     "say": "p_carmen_hola",
+     "gap": 250
+    },
+    {
+     "act": "maceta",
+     "quien": "carmen"
+    },
+    "p_nina_tiene_flor",
+    {
+     "act": "maceta",
+     "quien": "carmen",
+     "suelta": "1"
+    }
+   ],
+   "after": []
+  },
+  {
+   "dots": 2
+  },
+  {
+   "set": {
+    "twinkle": "sol"
+   }
+  },
+  "p_mira_el_sol",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "sol",
+   "lead": [],
+   "line": "p_donde_sol",
+   "then": [
+    {
+     "act": "brilla"
+    },
+    "p_es_el_sol"
+   ],
+   "after": []
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "ir",
+   "a": "caja"
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "a": "detras",
+   "cama": "L"
+  },
+  {
+   "ask": "camaL",
+   "lead": [],
+   "line": "p_carmen_flor_aqui",
+   "then": [
+    {
+     "act": "planta",
+     "cama": "L"
+    },
+    "p_carmen_si_esta_aqui"
+   ],
+   "after": []
+  },
+  {
+   "ask": "camaR",
+   "lead": [],
+   "line": "p_carmen_y_flor_alla",
+   "then": [
+    {
+     "act": "planta",
+     "cama": "R"
+    },
+    "p_carmen_esta_alla"
+   ],
+   "after": []
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "a": "espera"
+  },
+  {
+   "act": "anda",
+   "quien": "luis",
+   "a": "detras",
+   "cama": "R"
+  },
+  {
+   "ask": "camaR",
+   "lead": [],
+   "line": "p_luis_flor_aqui",
+   "then": [
+    {
+     "act": "planta",
+     "cama": "R"
+    },
+    "p_luis_esta_aqui"
+   ],
+   "after": []
+  },
+  {
+   "ask": "camaL",
+   "lead": [],
+   "line": "p_luis_no_alla_a",
+   "then": [
+    {
+     "act": "planta",
+     "cama": "L"
+    },
+    "p_luis_esta_alla"
+   ],
+   "after": []
+  },
+  {
+   "act": "anda",
+   "quien": "luis",
+   "a": "espera"
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "x": "88",
+   "y": "152"
+  },
+  {
+   "say": "p_carmen_ahora_tu",
+   "gap": 300
+  },
+  {
+   "act": "ensena"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "luis",
+    "carmen"
+   ],
+   "other": "oqa"
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "L",
+    "R"
+   ],
+   "other": "oca"
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "aqui",
+    "alla"
+   ]
+  },
+  {
+   "calc": "ta",
+   "cond": "wa=aqui",
+   "then": "$ca",
+   "else": "$oca"
+  },
+  {
+   "act": "anda",
+   "quien": "$oqa",
+   "a": "espera"
+  },
+  {
+   "act": "anda",
+   "quien": "$qa",
+   "a": "detras",
+   "cama": "$ca"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "camaL",
+    "camaR"
+   ],
+   "pick": "cama$ta",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "p_$qa_flor_$wa",
+   "right": [
+    {
+     "act": "planta",
+     "cama": "$ta",
+     "mari": "1"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "planta",
+     "cama": "$x",
+     "ok": "0"
+    },
+    "p_no_$wa",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "lados"
+  },
+  {
+   "act": "asoma"
+  },
+  {
+   "draw": "n",
+   "options": [
+    "nino",
+    "nina"
+   ]
+  },
+  {
+   "calc": "pn",
+   "cond": "n=nino",
+   "then": "luis",
+   "else": "carmen"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "luis",
+    "carmen"
+   ],
+   "pick": "$pn",
+   "tests": "$n",
+   "lock": true,
+   "lead": [],
+   "line": "p_ab_flor_para_$n",
+   "right": [
+    {
+     "act": "dale",
+     "a": "$pn"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "dale",
+     "a": "$x",
+     "ok": "0"
+    },
+    "p_no_para_$n",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "act": "entra"
+  },
+  {
+   "act": "manos"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "qc",
+   "options": [
+    "luis",
+    "carmen"
+   ],
+   "other": "oqc"
+  },
+  {
+   "draw": "cc",
+   "options": [
+    "L",
+    "R"
+   ],
+   "other": "occ"
+  },
+  {
+   "draw": "wc",
+   "options": [
+    "aqui",
+    "alla"
+   ]
+  },
+  {
+   "draw": "ord",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "calc": "tc",
+   "cond": "wc=aqui",
+   "then": "$cc",
+   "else": "$occ"
+  },
+  {
+   "act": "anda",
+   "quien": "$oqc",
+   "a": "espera"
+  },
+  {
+   "act": "anda",
+   "quien": "$qc",
+   "a": "detras",
+   "cama": "$cc"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "camaL",
+    "camaR"
+   ],
+   "pick": "cama$tc",
+   "tests": "$wc",
+   "lock": true,
+   "lead": [],
+   "line": "p_$qc_no_$wc_$ord",
+   "right": [
+    {
+     "act": "planta",
+     "cama": "$tc",
+     "mari": "1"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "planta",
+     "cama": "$x",
+     "ok": "0"
+    },
+    "p_no_$wc",
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "act": "final9"
+  },
+  {
+   "recuerda": "flores",
+   "valor": "$flores"
+  },
+  {
+   "act": "pelota"
+  },
+  "p_nino_nina_juegan",
+  {
+   "act": "pelota2"
+  },
+  {
+   "say": "p_cq_yo_tambien",
+   "gap": 400
+  },
+  {
+   "wait": 700
+  }
+ ],
+ "leer": [
+  "p_es_el_patio",
+  "p_luis_nino",
+  "p_carmen_nina",
+  "p_puedes_nino",
+  "p_luis_hola_coqui",
+  "p_nino_juega_bola",
+  "p_donde_nina",
+  "p_nina_tiene_flor",
+  "p_mira_el_sol",
+  "p_es_el_sol",
+  "p_carmen_flor_aqui",
+  "p_carmen_si_esta_aqui",
+  "p_carmen_y_flor_alla",
+  "p_carmen_esta_alla",
+  "p_luis_flor_aqui",
+  "p_luis_no_alla_a",
+  "p_carmen_ahora_tu",
+  "p_ab_flor_para_nina",
+  "p_nino_nina_juegan",
+  "p_cq_yo_tambien"
+ ]
+}

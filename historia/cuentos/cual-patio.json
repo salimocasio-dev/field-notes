@@ -1,0 +1,899 @@
+{
+ "id": "cual-patio",
+ "title": "¿Cuál?",
+ "place": "La casa",
+ "scene": "patio",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for El patio.",
+ "clips": {
+  "p_c_nino": {
+   "who": "narr",
+   "text": "Es un niño."
+  },
+  "p_c_nina": {
+   "who": "narr",
+   "text": "Es una niña."
+  },
+  "p_c_juega": {
+   "who": "narr",
+   "text": "El niño juega."
+  },
+  "p_c_flor": {
+   "who": "narr",
+   "text": "Es una flor."
+  },
+  "p_n_sol": {
+   "who": "narr",
+   "text": "Es el sol."
+  },
+  "p_c_aqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: La flor está aquí."
+  },
+  "p_luis_esta_alla": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: La flor está allá."
+  },
+  "p_c_amigo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Es mi amigo."
+  },
+  "p_carmen_ven_coqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ven, Coquí!"
+  },
+  "p_c_mira": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mira, Coquí!"
+  },
+  "p_carmen_vamos_coqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Vamos, Coquí!"
+  },
+  "p_cq_hm": {
+   "who": "tu",
+   "text": "¡Hasta mañana!"
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "niño",
+   "say": "p_c_nino",
+   "si": {
+    "cam": [
+     64,
+     118,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 120,
+       "y": 170,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     64,
+     118,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 120,
+       "y": 170,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "niña",
+   "say": "p_c_nina",
+   "si": {
+    "cam": [
+     50,
+     100,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 90,
+       "y": 152,
+       "pose": "idle"
+      }
+     },
+     "caja": 1,
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     50,
+     100,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 90,
+       "y": 154,
+       "pose": "idle"
+      }
+     },
+     "caja": 1,
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "juega",
+   "say": "p_c_juega",
+   "si": {
+    "cam": [
+     30,
+     124,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 126,
+       "y": 172,
+       "pose": "wave"
+      }
+     },
+     "bola": {
+      "x": 140,
+      "y": 172,
+      "h": 30
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     30,
+     124,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 110,
+       "y": 186,
+       "pose": "ojos",
+       "sent": 1,
+       "lleva": "maceta"
+      }
+     },
+     "bola": {
+      "x": 134,
+      "y": 192
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "flor",
+   "say": "p_c_flor",
+   "si": {
+    "cam": [
+     16,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     16,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "bola": {
+      "x": 48,
+      "y": 188
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "sol",
+   "say": "p_n_sol",
+   "si": {
+    "cam": [
+     30,
+     0,
+     170,
+     90.2
+    ],
+    "set": {
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     30,
+     0,
+     170,
+     90.2
+    ],
+    "set": {
+     "noche": 1,
+     "luna": 1,
+     "osc": 0.6,
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "aquí",
+   "say": "p_c_aqui",
+   "si": {
+    "cam": [
+     35,
+     112,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     35,
+     112,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [],
+      "R": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ]
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "allá",
+   "say": "p_luis_esta_alla",
+   "si": {
+    "cam": [
+     35,
+     112,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [],
+      "R": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ]
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     35,
+     112,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 0
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "amigo",
+   "say": "p_c_amigo",
+   "si": {
+    "cam": [
+     50,
+     130,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 118,
+       "y": 180,
+       "pose": "offer"
+      }
+     },
+     "cq": {
+      "x": 72,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     50,
+     130,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 110,
+       "y": 180,
+       "pose": "ojos",
+       "lleva": "bola"
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "ven",
+   "say": "p_carmen_ven_coqui",
+   "si": {
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 170,
+       "y": 176,
+       "pose": "offer"
+      }
+     },
+     "cq": {
+      "x": 112,
+      "y": 153,
+      "s": 1,
+      "dy": -8,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": {
+      "x": 106,
+      "y": 178,
+      "dir": -1
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 170,
+       "y": 176,
+       "pose": "alto",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 64,
+      "y": 153,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "ojos": 1,
+      "ojx": 1,
+      "ojy": -1
+     },
+     "ave": {
+      "mode": "fly",
+      "x": 124,
+      "y": 128,
+      "dir": 1,
+      "st": "n"
+     },
+     "rizo": {
+      "x": 124,
+      "y": 124,
+      "r": 12
+     }
+    }
+   }
+  },
+  {
+   "w": "mira",
+   "say": "p_c_mira",
+   "si": {
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 160,
+       "y": 178,
+       "pose": "alto",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 102,
+      "y": 155,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "ojos": 1,
+      "ojx": 0,
+      "ojy": -1
+     },
+     "ave": {
+      "mode": "fly",
+      "x": 124,
+      "y": 128,
+      "dir": 1,
+      "st": "n"
+     },
+     "rizo": {
+      "x": 124,
+      "y": 124,
+      "r": 12
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 170,
+       "y": 178,
+       "pose": "offer"
+      }
+     },
+     "cq": {
+      "x": 112,
+      "y": 155,
+      "s": 1,
+      "dy": -8,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": {
+      "x": 106,
+      "y": 180,
+      "dir": -1
+     },
+     "ave": {
+      "mode": "none"
+     }
+    }
+   }
+  },
+  {
+   "w": "vamos",
+   "say": "p_carmen_vamos_coqui",
+   "si": {
+    "cam": [
+     70,
+     62,
+     150,
+     79.6
+    ],
+    "set": {
+     "porton": 1,
+     "gente": {
+      "carmen": {
+       "x": 168,
+       "y": 120,
+       "pose": "idle",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 128,
+      "y": 99,
+      "s": 0.85,
+      "dy": -6,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": {
+      "x": 134,
+      "y": 132,
+      "dir": -1
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     70,
+     62,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 170,
+       "y": 138,
+       "pose": "ojos",
+       "sent": 1,
+       "lleva": "vaso"
+      }
+     },
+     "cq": {
+      "x": 122,
+      "y": 111,
+      "s": 0.85,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "lleva": "vaso"
+    }
+   }
+  },
+  {
+   "w": "hasta mañana",
+   "say": "p_cq_hm",
+   "si": {
+    "cam": [
+     24,
+     40,
+     180,
+     95.5
+    ],
+    "set": {
+     "sol": 3,
+     "soly": 73,
+     "osc": 0.2,
+     "pdoor": 1,
+     "porton": 1,
+     "gente": {
+      "abuela": {
+       "x": 40,
+       "y": 134,
+       "pose": "wave",
+       "dir": 1
+      },
+      "abuelo": {
+       "x": 62,
+       "y": 128,
+       "pose": "wave"
+      },
+      "mama": {
+       "x": 84,
+       "y": 134,
+       "pose": "wave"
+      },
+      "papa": {
+       "x": 104,
+       "y": 128,
+       "pose": "wave"
+      }
+     },
+     "cq": {
+      "x": 130,
+      "y": 101,
+      "s": 0.85,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     24,
+     40,
+     180,
+     95.5
+    ],
+    "set": {
+     "pdoor": 1,
+     "gente": {
+      "abuela": {
+       "x": 40,
+       "y": 134,
+       "pose": "wave",
+       "dir": 1
+      },
+      "abuelo": {
+       "x": 62,
+       "y": 128,
+       "pose": "wave"
+      },
+      "mama": {
+       "x": 84,
+       "y": 134,
+       "pose": "wave"
+      },
+      "papa": {
+       "x": 104,
+       "y": 128,
+       "pose": "wave"
+      }
+     },
+     "cq": {
+      "x": 118,
+      "y": 105,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  }
+ ]
+}

@@ -204,7 +204,7 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | amigo | "Luis dice: Es mi amigo." | Luis with an arm round the frog | Luis hugging his ball |
 | ven | "Carmen dice: ¡Ven, Coquí!" | Carmen with an arm out; the frog in mid-hop, almost at her, dust behind him | Carmen pointing up at the bird in the air; the frog sitting still where he was, his eyes up on the bird |
 | mira | "Luis dice: ¡Mira, Coquí!" | Luis and the frog side by side, the frog's eyes wide and up, the bird doing a loop above | Luis with an arm out; the frog in mid-hop toward him, dust behind him; no bird |
-| vamos | "Luis dice: ¡Vamos!" | Luis and the frog going out through the open gate | Luis and the frog sitting on the grass by the shut gate, each with a glass of juice |
+| vamos | "Carmen dice: ¡Vamos, Coquí!" | Carmen and the frog going out through the open gate | Carmen and the frog sitting on the grass by the shut gate, each with a glass |
 | hasta mañana | "¡Hasta mañana!" (the frog) | dusk: the frog at the open gate, waving back at the family | day: the frog arriving at the back door, the family waving hello |
 
 "¿Qué es esto?" has no picture pair; it is a question. It is staked in story 10, decision C.

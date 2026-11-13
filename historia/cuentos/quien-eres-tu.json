@@ -3,6 +3,7 @@
  "title": "¿Quién eres tú?",
  "place": "La casa",
  "scene": "sala",
+ "next": "las-flores",
  "nota": "Yo soy: I am.\nTú eres: you are.\nMe llamo: my name is.",
  "goal": "Abuelo has lost his glasses. Help him tell who is who.",
  "stake": {

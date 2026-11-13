@@ -1,0 +1,763 @@
+{
+ "id": "que-es-esto",
+ "title": "¿Qué es esto?",
+ "place": "La casa",
+ "scene": "patio",
+ "next": "hasta-manana",
+ "goal": "Fill his basket with what comes out of Luis's sack, before the bird takes it.",
+ "stake": {
+  "thing": "cosas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "¿qué es esto?",
+  "amigo",
+  "mira",
+  "ven"
+ ],
+ "back_again": [
+  "pájaro",
+  "flor",
+  "vaso",
+  "silla",
+  "bizcocho",
+  "sí",
+  "no",
+  "tú",
+  "eres",
+  "¿cómo estás?"
+ ],
+ "also_heard": [
+  "esto",
+  "mi",
+  "bola",
+  "es",
+  "un",
+  "una"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "abuela": "abuela",
+  "abuelo": "n_abuelo",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "bebe": "n_bebe",
+  "bola": "p_n_bola",
+  "saco": "p_n_saco",
+  "caja": "p_n_flores",
+  "camaL": "p_n_flores",
+  "camaR": "p_n_flores",
+  "sol": "p_n_sol",
+  "porton": "p_n_porton",
+  "nido": "p_n_nido",
+  "arbol": "p_n_arbol",
+  "puerta": "puerta",
+  "casa": "p_n_casa",
+  "patio": "p_n_patio",
+  "pajaro": "p_n_pajaro",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "que": "¿qué es esto?"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "puerta": {
+   "who": "narr",
+   "text": "Es la puerta."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "p_n_bola": {
+   "who": "narr",
+   "text": "Es la bola."
+  },
+  "p_n_saco": {
+   "who": "narr",
+   "text": "Es el saco de Luis."
+  },
+  "p_n_flores": {
+   "who": "narr",
+   "text": "Son las flores de abuela."
+  },
+  "p_n_sol": {
+   "who": "narr",
+   "text": "Es el sol."
+  },
+  "p_n_porton": {
+   "who": "narr",
+   "text": "Es el portón."
+  },
+  "p_n_nido": {
+   "who": "narr",
+   "text": "Es la casa del pájaro."
+  },
+  "p_n_arbol": {
+   "who": "narr",
+   "text": "Es el árbol."
+  },
+  "p_n_casa": {
+   "who": "narr",
+   "text": "Es la casa de abuela."
+  },
+  "p_n_patio": {
+   "who": "narr",
+   "text": "Es el patio."
+  },
+  "p_n_pajaro": {
+   "who": "narr",
+   "text": "Es el pájaro."
+  },
+  "p_luis_ven_coqui": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ven, Coquí!"
+  },
+  "p_luis_hola_amigo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Hola, amigo!"
+  },
+  "p_cq_hola_luis_amigo": {
+   "who": "tu",
+   "text": "¡Hola, Luis! Tú eres mi amigo."
+  },
+  "p_carmen_mira_pajaro": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Mira, Coquí! ¡El pájaro!"
+  },
+  "p_luis_pajaro_amigo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El pájaro es mi amigo."
+  },
+  "p_cq_hola_amigo": {
+   "who": "tu",
+   "text": "¡Hola, amigo!"
+  },
+  "p_carmen_ven_ven": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ven, Coquí! ¡Ven!"
+  },
+  "p_carmen_coqui_amigo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí es mi amigo."
+  },
+  "p_luis_mira_mira": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mira, Coquí! ¡Mira!"
+  },
+  "p_luis_que_es_esto": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Qué es esto?"
+  },
+  "p_cq_es_flor": {
+   "who": "tu",
+   "text": "Es una flor."
+  },
+  "p_cq_es_vaso": {
+   "who": "tu",
+   "text": "Es un vaso."
+  },
+  "p_cq_es_silla": {
+   "who": "tu",
+   "text": "Es una silla."
+  },
+  "p_cq_es_bizcocho": {
+   "who": "tu",
+   "text": "Es un bizcocho."
+  },
+  "p_luis_si_es_flor": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Sí! Es una flor."
+  },
+  "p_luis_si_es_silla": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Sí! Es una silla."
+  },
+  "p_luis_si_es_bizcocho": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Sí! Es un bizcocho."
+  },
+  "p_luis_no_es_silla": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No. Es una silla."
+  },
+  "p_luis_no_es_bizcocho": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: No. Es un bizcocho."
+  },
+  "p_cq_que_es_esto": {
+   "who": "tu",
+   "text": "¿Qué es esto?"
+  },
+  "p_cq_como_estas": {
+   "who": "tu",
+   "text": "¿Cómo estás?"
+  },
+  "p_cq_quien_eres": {
+   "who": "tu",
+   "text": "¿Quién eres tú?"
+  },
+  "p_luis_es_un_vaso": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Es un vaso."
+  },
+  "p_luis_no_amigo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, amigo! ¡No!"
+  },
+  "p_carmen_ven_coqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ven, Coquí!"
+  },
+  "p_carmen_mira_coqui": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Mira, Coquí!"
+  },
+  "p_no_ven_coqui": {
+   "who": "narr",
+   "text": "No. ¡Ven, Coquí!"
+  },
+  "p_no_mira_coqui": {
+   "who": "narr",
+   "text": "No. ¡Mira, Coquí!"
+  },
+  "p_luis_es_bola": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Es una bola. ¡Es mi bola!"
+  },
+  "p_luis_resp_como": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Bien."
+  },
+  "p_luis_resp_quien": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Yo soy Luis."
+  },
+  "p_no_que_es_esto": {
+   "who": "narr",
+   "text": "No. ¿Qué es esto?"
+  },
+  "p_luis_coqui_amigo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí es mi amigo."
+  },
+  "p_cq_y_tu_amigo": {
+   "who": "tu",
+   "text": "¡Y tú eres mi amigo!"
+  },
+  "p_cq_y_tu_tambien": {
+   "who": "tu",
+   "text": "¡Y tú también, amigo!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio10"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "ir",
+   "lead": [],
+   "line": "p_luis_ven_coqui",
+   "then": [
+    "p_luis_hola_amigo",
+    {
+     "say": "p_cq_hola_luis_amigo",
+     "gap": 300
+    }
+   ],
+   "after": [
+    {
+     "act": "ir",
+     "a": "luis"
+    }
+   ],
+   "resp": [
+    "ir",
+    "ver"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "aveloop"
+  },
+  {
+   "ask": "ver",
+   "lead": [],
+   "line": "p_carmen_mira_pajaro",
+   "then": [
+    {
+     "act": "ojos",
+     "on": "0"
+    },
+    "p_luis_pajaro_amigo",
+    {
+     "say": "p_cq_hola_amigo",
+     "gap": 300
+    },
+    {
+     "act": "avenido"
+    }
+   ],
+   "after": [
+    {
+     "act": "ojos",
+     "x": "1",
+     "y": "-1"
+    },
+    {
+     "act": "avecabeza"
+    }
+   ],
+   "resp": [
+    "ir",
+    "ver"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "ask": "ir",
+   "lead": [],
+   "line": "p_carmen_ven_ven",
+   "then": [
+    "p_carmen_coqui_amigo"
+   ],
+   "after": [
+    {
+     "act": "ir",
+     "a": "carmen"
+    },
+    {
+     "act": "acaricia",
+     "quien": "carmen"
+    }
+   ],
+   "resp": [
+    "ir",
+    "ver"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "ask": "ver",
+   "lead": [],
+   "line": "p_luis_mira_mira",
+   "then": [
+    {
+     "act": "ojos",
+     "on": "0"
+    },
+    {
+     "act": "ir",
+     "a": "luis"
+    }
+   ],
+   "after": [
+    {
+     "act": "ojos",
+     "x": "1",
+     "y": "0"
+    },
+    {
+     "act": "saca",
+     "que": "flor"
+    }
+   ],
+   "resp": [
+    "ir",
+    "ver"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "es_flor",
+   "lead": [],
+   "line": "p_luis_que_es_esto",
+   "then": [
+    "p_luis_si_es_flor",
+    {
+     "act": "alpelo"
+    }
+   ],
+   "after": [],
+   "resp": [
+    "es_flor",
+    "es_vaso"
+   ],
+   "baraja": true,
+   "voces": {
+    "es_flor": "p_cq_es_flor",
+    "es_vaso": "p_cq_es_vaso",
+    "es_silla": "p_cq_es_silla",
+    "es_bizcocho": "p_cq_es_bizcocho"
+   },
+   "said": {
+    "es_flor": "p_cq_es_flor"
+   }
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "turno",
+   "que": "vaso"
+  },
+  {
+   "ask": "q_que",
+   "lead": [],
+   "line": null,
+   "then": [
+    "p_luis_es_un_vaso",
+    {
+     "act": "acarmen"
+    }
+   ],
+   "after": [],
+   "resp": [
+    "q_que",
+    "q_como"
+   ],
+   "baraja": true,
+   "voces": {
+    "q_que": "p_cq_que_es_esto",
+    "q_como": "p_cq_como_estas",
+    "q_quien": "p_cq_quien_eres"
+   },
+   "said": {
+    "q_que": "p_cq_que_es_esto"
+   }
+  },
+  {
+   "act": "avepica"
+  },
+  {
+   "say": "p_luis_no_amigo",
+   "gap": 200
+  },
+  {
+   "act": "avenido"
+  },
+  {
+   "act": "marcador"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "prepA"
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "ven",
+    "mira"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "wa=ven",
+   "then": "ir",
+   "else": "ver"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "ir",
+    "ver"
+   ],
+   "baraja": true,
+   "pick": "$pa",
+   "tests": "$wa",
+   "lock": true,
+   "lead": [],
+   "line": "p_carmen_$wa_coqui",
+   "right": [
+    {
+     "if": "wa=ven",
+     "then": [
+      {
+       "act": "llega"
+      }
+     ],
+     "else": [
+      {
+       "act": "gira"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "wa=ven",
+     "then": [
+      {
+       "act": "mirasolo"
+      }
+     ],
+     "else": [
+      {
+       "act": "choca"
+      }
+     ]
+    },
+    "p_no_$wa_coqui",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "act": "ojos",
+   "on": "0"
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "idle"
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "x": "50",
+   "y": "160"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "ir",
+   "a": "luis"
+  },
+  {
+   "draw": "tb",
+   "options": [
+    "silla",
+    "bizcocho"
+   ],
+   "other": "otb"
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "flor",
+    "$otb"
+   ]
+  },
+  {
+   "act": "saca",
+   "que": "$tb"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "es_$tb",
+    "es_$ob"
+   ],
+   "baraja": true,
+   "pick": "es_$tb",
+   "tests": "$tb",
+   "voces": {
+    "es_flor": "p_cq_es_flor",
+    "es_vaso": "p_cq_es_vaso",
+    "es_silla": "p_cq_es_silla",
+    "es_bizcocho": "p_cq_es_bizcocho"
+   },
+   "said": {
+    "es_flor": "p_cq_es_flor",
+    "es_vaso": "p_cq_es_vaso",
+    "es_silla": "p_cq_es_silla",
+    "es_bizcocho": "p_cq_es_bizcocho"
+   },
+   "lead": [],
+   "line": "p_luis_que_es_esto",
+   "right": [
+    "p_luis_si_es_$tb",
+    {
+     "act": "alcanasta"
+    }
+   ],
+   "wrong": [
+    "p_luis_no_es_$tb",
+    {
+     "act": "roba",
+     "de": "luis"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "act": "turno",
+   "que": "bola"
+  },
+  {
+   "draw": "dc",
+   "options": [
+    "como",
+    "quien"
+   ]
+  },
+  {
+   "decide": "say",
+   "options": [
+    "q_que",
+    "q_$dc"
+   ],
+   "baraja": true,
+   "pick": "q_que",
+   "tests": "que",
+   "voces": {
+    "q_que": "p_cq_que_es_esto",
+    "q_como": "p_cq_como_estas",
+    "q_quien": "p_cq_quien_eres"
+   },
+   "said": {
+    "q_que": "p_cq_que_es_esto",
+    "q_como": "p_cq_como_estas",
+    "q_quien": "p_cq_quien_eres"
+   },
+   "lead": [],
+   "right": [
+    "p_luis_es_bola",
+    {
+     "act": "rie",
+     "quien": "luis"
+    },
+    {
+     "act": "alcanasta",
+     "de": "cq"
+    }
+   ],
+   "wrong": [
+    "p_luis_resp_$dc",
+    {
+     "act": "encoge"
+    },
+    {
+     "act": "roba",
+     "de": "cq"
+    },
+    {
+     "cost": 1
+    },
+    "p_no_que_es_esto"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "act": "final10"
+  },
+  "p_luis_coqui_amigo",
+  {
+   "say": "p_cq_y_tu_amigo",
+   "gap": 300
+  },
+  {
+   "say": "p_cq_y_tu_tambien",
+   "gap": 400
+  },
+  {
+   "wait": 700
+  }
+ ],
+ "leer": [
+  "p_luis_ven_coqui",
+  "p_luis_hola_amigo",
+  "p_cq_hola_luis_amigo",
+  "p_carmen_mira_pajaro",
+  "p_luis_pajaro_amigo",
+  "p_cq_hola_amigo",
+  "p_carmen_ven_ven",
+  "p_carmen_coqui_amigo",
+  "p_luis_mira_mira",
+  "p_luis_que_es_esto",
+  "p_cq_es_flor",
+  "p_luis_si_es_flor",
+  "p_cq_que_es_esto",
+  "p_luis_es_un_vaso",
+  "p_luis_no_amigo",
+  "p_luis_es_bola",
+  "p_luis_coqui_amigo",
+  "p_cq_y_tu_amigo",
+  "p_cq_y_tu_tambien"
+ ]
+}
