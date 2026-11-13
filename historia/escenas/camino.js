@@ -11,7 +11,7 @@
    ============================================================ */
 (function(){
 const SW=KIT.SW,SH=KIT.SH,FAM=KIT.FAM,R=Math.round;
-const QUIEN={luis:FAM.hermano,carmen:FAM.hermana};
+const QUIEN={luis:FAM.hermano,carmen:FAM.hermana},mkPerro=KIT.mkPerro,mkCesta=KIT.mkCesta,mano=KIT.mano,tarjeta=KIT.tarjeta;
 // the path: nine marks from the gate (0) to just before the big tree (8); 1 to 7 are the stones
 const MARCA=[[66,182],[79,175],[92,168],[105,162],[118,156],[131,151],[144,146],[157,142],[170,139]];
 const ARBOL=[[70,120],[112,116],[154,112]],GRAN=[200,128],BANCO=[98,128,30,16];
@@ -34,23 +34,6 @@ function fondo(gran){const b=new Buf(SW,SH),G=RP.grn,Wd=RP.wood,ST=RP.stone;
   if(gran){b.ell(GRAN[0],GRAN[1]+4,34,8,[G[1],G[2],G[3]]);b.grad(GRAN[0]-8,GRAN[1]-58,16,60,[Wd[2],Wd[1],Wd[1],Wd[0]],true);b.rect(GRAN[0]-9,GRAN[1]-56,1,58,OUT);b.rect(GRAN[0]+8,GRAN[1]-56,1,58,OUT);b.rect(GRAN[0]-13,GRAN[1],26,3,Wd[1]);
   [[GRAN[0],GRAN[1]-82,40,30],[GRAN[0]-26,GRAN[1]-64,18,14],[GRAN[0]+24,GRAN[1]-62,18,14]].forEach(e=>b.ell(e[0],e[1],e[2],e[3],G));}
   return b.done();}
-function mkPerro(pose,f){const b=new Buf(30,22),T=["#8A5A2A","#B07A3C","#D09A54","#E8BE80"],X=13,Y=12;
-  const lie=pose==="lie"||pose==="panza",sit=pose==="sit"||pose==="eat"||pose==="bark",baja=pose==="husmea";
-  if(pose==="panza"){b.ell(X,15,10,4.5,T);b.ell(X+1,13,7,2.6,["#F4E0B8"]);[[X-6,9],[X-1,8],[X+4,8],[X+8,9]].forEach(p=>b.rect(p[0],p[1],2,4,T[1]));b.ell(X+11,15,4.6,4,T);b.px(X+13,14,OUT);b.rect(X+14,16,2,1,OUT);return b.outline().done();}
-  // tail, body, legs
-  b.cap(X-9,Y-1,X-12,Y-6+(f?1:-1),1.4,[T[1]]);
-  if(lie){b.ell(X,Y+5,10,4,T);b.rect(X+6,Y+7,6,2,T[1]);}
-  else if(sit){b.ell(X-1,Y+3,7,6,T);b.rect(X+3,Y+4,2,6,T[1]);b.rect(X+6,Y+4,2,6,T[2]);b.ell(X-4,Y+8,4,2,[T[1]]);}
-  else{const run=pose==="run",a=f?1:-1;b.ell(X,Y+1,10,5,T);
-    if(run){b.cap(X-6,Y+4,X-11+a*2,Y+8,1.3,[T[1]]);b.cap(X-3,Y+4,X-7-a*2,Y+9,1.3,[T[0]]);b.cap(X+5,Y+4,X+10+a*2,Y+8,1.3,[T[1]]);b.cap(X+7,Y+4,X+12-a*2,Y+9,1.3,[T[2]]);}
-    else{b.rect(X-7+a,Y+5,2,5,T[1]);b.rect(X-4-a,Y+5,2,5,T[0]);b.rect(X+4+a,Y+5,2,5,T[1]);b.rect(X+7-a,Y+5,2,5,T[2]);}}
-  // head: one ear up, one down; a red collar
-  const hx=X+10,hy=lie?Y+3:baja?Y+5:Y-4;b.rect(hx-4,hy+(baja?-2:4),5,2,RP.red[2]);
-  b.ell(hx,hy,5,4.6,T);b.ell(hx+4,hy+1.5,3,2.2,[T[3]]);b.cap(hx-3,hy-3,hx-5,hy+2,1.5,[T[0]]);b.cap(hx+1,hy-4,hx+2,hy-7,1.3,[T[0]]);
-  b.px(hx+1,hy-1,OUT);b.px(hx+6,hy+1,OUT);
-  if(pose==="bark"&&f){b.rect(hx+3,hy+3,4,2,"#7A1C1C");}else if(pose==="eat"){b.rect(hx+3,hy+3,3,2,f?"#7A1C1C":T[3]);}else b.px(hx+4,hy+3,"#7A2A1A");
-  if(pose==="lie"){b.rect(hx,hy-1,2,1,OUT);}
-  return b.outline().done();}
 function mkGato(pose,f){const b=new Buf(26,20),Gr=["#5A5A6A","#7E7E90","#A2A2B2","#C8C8D4"],X=12,Y=11;
   if(pose==="cara"){b.ell(X,Y,6,5,Gr);b.rect(X-6,Y-7,3,4,Gr[1]);b.rect(X+3,Y-7,3,4,Gr[1]);b.px(X-5,Y-6,"#FF8FB8");b.px(X+4,Y-6,"#FF8FB8");b.rect(X-3,Y-1,2,2,"#F8C838");b.rect(X+2,Y-1,2,2,"#F8C838");b.px(X-3,Y,OUT);b.px(X+2,Y,OUT);b.px(X,Y+2,"#FF8FB8");return b.outline().done();}
   if(pose==="cola"){b.cap(X,1,X+(f?2:-2),12,2.2,Gr);b.cap(X+(f?2:-2),12,X+(f?5:-5),15,2.2,Gr);[4,8,12].forEach(y=>b.rect(X-2+(f?1:-1)*(y>8?1:0),y,5,1,Gr[0]));return b.outline().done();}
@@ -70,7 +53,7 @@ function mkPajarito(f){const b=new Buf(11,9),B=RP.blue;b.ell(5,5,3.6,2.8,B);b.el
 function galleta(g,x,y,k){k=k||1;const C="#E8B060",u=(a,b,w,h,col)=>fr(g,x+a*k,y+b*k,w*k,h*k,col);   // a biscuit in the shape of a fish
   [[1,0,5,5],[0,1,7,3],[7,0,1,5],[8,-1,1,7],[6,1,1,3]].forEach(r=>fr(g,x+r[0]*k-1,y+r[1]*k-1,r[2]*k+2,r[3]*k+2,OUT));u(1,0,5,5,C);u(0,1,7,3,C);u(6,1,1,3,C);u(7,0,1,5,C);u(8,-1,1,7,C);u(1,1,1,1,OUT);u(3,3,2,1,"#B07A3C");}
 function guineo(g,x,y,k){k=k||1;const Y=RP.yel;[[0,2,2,2],[1,3,3,2],[3,4,4,2],[6,3,3,2],[8,1,2,3]].forEach(r=>{fr(g,x+r[0]*k-1,y+r[1]*k-1,r[2]*k+2,r[3]*k+2,OUT);});[[0,2,2,2],[1,3,3,2],[3,4,4,2],[6,3,3,2],[8,1,2,3]].forEach(r=>fr(g,x+r[0]*k,y+r[1]*k,r[2]*k,r[3]*k,Y[2]));fr(g,x+9*k,y,k,k,RP.wood[1]);}
-function mkCesta(){const b=new Buf(20,12),T=RP.orng;b.rect(1,3,18,8,T[2]);for(let y=3;y<11;y+=2)for(let x=1;x<19;x+=2)b.px(x+(y>>1)%2,y,T[0]);b.rect(0,2,20,2,T[3]);return b.outline().done();}
+
 
 /* ---------- where things are ---------- */
 const ranaEn=i=>[MARCA[i][0]-22,MARCA[i][1]-34,Math.round((.96-.015*i)*100)/100];           // the frog walks on the far side of the path, so his answer bubbles stand clear of Carmen
@@ -132,9 +115,6 @@ function draw(c,W,a){const q=W.cq,G=W.gente||{};
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1-(p.bub?38:0)];}
 // the doing bubbles, moving pictures: camina (easy steps), corre (flat out, dust), espera (quite still), despacio (tiny steps, a snail keeps up), rapido (long quick steps)
-function mano(g,x,y){const C="#E8A468",u=(a,b,w,h,col)=>fr(g,x+a,y+b,w,h,col);   // an open raised hand: wait
-  [[0,4,2,6],[3,1,2,9],[6,0,2,10],[9,1,2,9],[0,9,11,6],[11,8,3,3],[2,15,7,2]].forEach(r=>u(r[0]-1,r[1]-1,r[2]+2,r[3]+2,OUT));
-  [[0,4,2,6],[3,1,2,9],[6,0,2,10],[9,1,2,9],[0,9,11,6],[11,8,3,3],[2,15,7,2]].forEach(r=>u(r[0],r[1],r[2],r[3],C));}
 function respIcon(g,k,x,y,w,h,a){const im=spr("cq.6_0",()=>mkCoqui(.6,0,0)),suelo=()=>fr(g,x+4,y+32,32,1,"#9494A6"),lin=(n,l,col)=>{for(let i=0;i<n;i++)fr(g,x+3+((F*2+i*5)%6),y+12+i*6,l,2,col);};
   suelo();
   if(k==="espera"){g.drawImage(im,x+6,y+12);fr(g,x+9,y+30,5,2,RP.tan[1]);fr(g,x+18,y+30,5,2,RP.tan[1]);mano(g,x+27,y+5);}
@@ -144,7 +124,7 @@ function respIcon(g,k,x,y,w,h,a){const im=spr("cq.6_0",()=>mkCoqui(.6,0,0)),suel
   else{const up=(F>>2)%2?3:0;g.drawImage(im,x+12,y+11-up);[[2,29],[7,25]].forEach((p,i)=>{if(((F>>2)+i)%3){fr(g,x+p[0]-1,y+p[1]-1,6,4,OUT);fr(g,x+p[0],y+p[1],4,2,"#C89858");}});const ax=x+33+((F>>2)%2),ay=y+20;fr(g,ax-1,ay,6,3,"#2E9A48");[[5,-3,2,9],[7,-1,2,5],[9,0,1,3]].forEach(r=>fr(g,ax+r[0],ay+r[1],r[2],r[3],"#2E9A48"));}}
 
 /* ---------- what is at stake, in the corner of the screen ---------- */
-function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x,y-1,w,h+2);g.fillStyle="#FFFDF4";g.fillRect(x,y,w,h);}
+
 function hud(g,W,a){
   if(W.tarjeta==="galletas"){tarjeta(g,3,3,88,30);g.drawImage(spr("gtsit0",()=>mkGato("sit",0)),5,7);   // one biscuit a round: a heart if the cat got it, a paw mark if Canelo did
     (W.marcas||[]).forEach((m,i)=>{const x=34+i*18,y=10;if(m==="c")heart(g,x,y+1,2);else if(m==="p"){g.fillStyle="#B07A3C";g.fillRect(x+3,y+8,8,7);[[1,3],[5,1],[9,1],[13,3]].forEach(d=>g.fillRect(x+d[0]-1,y+d[1]+1,3,4));}else galleta(g,x,y+3,1.5);});}

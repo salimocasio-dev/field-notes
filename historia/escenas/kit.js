@@ -135,5 +135,28 @@ function escena(d){const cosa=k=>d.cosas.find(t=>t.id===k),B=(t,w)=>typeof t.box
   ESCENAS[d.id]=Object.assign({SW,SH,CAM:d.CAM,heartAt:d.heartAt||[120,30],fresh:d.fresh,draw:d.draw,hud:d.hud,poke:d.poke,stake:d.stake,talkAt:d.talkAt,respIcon:d.respIcon,estado:d.estado,box,hit,handAt,acts});
   return ESCENAS[d.id];}
 
-return {SW,SH,mkAve,avePos,drawAve,aveA,aveVa,aveHit,mkAbuelaS,mkPersona,mkBebe,PIEL,PELO,PX,FAM,escena};
+/* ---------- shared by the scenes of the park: Canelo the dog, a basket, the raised hand of "wait", a card for the corner of the screen ---------- */
+function mkPerro(pose,f){const b=new Buf(30,22),T=["#8A5A2A","#B07A3C","#D09A54","#E8BE80"],X=13,Y=12;
+  const lie=pose==="lie"||pose==="panza",sit=pose==="sit"||pose==="eat"||pose==="bark",baja=pose==="husmea";
+  if(pose==="panza"){b.ell(X,15,10,4.5,T);b.ell(X+1,13,7,2.6,["#F4E0B8"]);[[X-6,9],[X-1,8],[X+4,8],[X+8,9]].forEach(p=>b.rect(p[0],p[1],2,4,T[1]));b.ell(X+11,15,4.6,4,T);b.px(X+13,14,OUT);b.rect(X+14,16,2,1,OUT);return b.outline().done();}
+  // tail, body, legs
+  b.cap(X-9,Y-1,X-12,Y-6+(f?1:-1),1.4,[T[1]]);
+  if(lie){b.ell(X,Y+5,10,4,T);b.rect(X+6,Y+7,6,2,T[1]);}
+  else if(sit){b.ell(X-1,Y+3,7,6,T);b.rect(X+3,Y+4,2,6,T[1]);b.rect(X+6,Y+4,2,6,T[2]);b.ell(X-4,Y+8,4,2,[T[1]]);}
+  else{const run=pose==="run",a=f?1:-1;b.ell(X,Y+1,10,5,T);
+    if(run){b.cap(X-6,Y+4,X-11+a*2,Y+8,1.3,[T[1]]);b.cap(X-3,Y+4,X-7-a*2,Y+9,1.3,[T[0]]);b.cap(X+5,Y+4,X+10+a*2,Y+8,1.3,[T[1]]);b.cap(X+7,Y+4,X+12-a*2,Y+9,1.3,[T[2]]);}
+    else{b.rect(X-7+a,Y+5,2,5,T[1]);b.rect(X-4-a,Y+5,2,5,T[0]);b.rect(X+4+a,Y+5,2,5,T[1]);b.rect(X+7-a,Y+5,2,5,T[2]);}}
+  // head: one ear up, one down; a red collar
+  const hx=X+10,hy=lie?Y+3:baja?Y+5:Y-4;b.rect(hx-4,hy+(baja?-2:4),5,2,RP.red[2]);
+  b.ell(hx,hy,5,4.6,T);b.ell(hx+4,hy+1.5,3,2.2,[T[3]]);b.cap(hx-3,hy-3,hx-5,hy+2,1.5,[T[0]]);b.cap(hx+1,hy-4,hx+2,hy-7,1.3,[T[0]]);
+  b.px(hx+1,hy-1,OUT);b.px(hx+6,hy+1,OUT);
+  if(pose==="bark"&&f){b.rect(hx+3,hy+3,4,2,"#7A1C1C");}else if(pose==="eat"){b.rect(hx+3,hy+3,3,2,f?"#7A1C1C":T[3]);}else b.px(hx+4,hy+3,"#7A2A1A");
+  if(pose==="lie"){b.rect(hx,hy-1,2,1,OUT);}
+  return b.outline().done();}
+function mkCesta(){const b=new Buf(20,12),T=RP.orng;b.rect(1,3,18,8,T[2]);for(let y=3;y<11;y+=2)for(let x=1;x<19;x+=2)b.px(x+(y>>1)%2,y,T[0]);b.rect(0,2,20,2,T[3]);return b.outline().done();}
+function mano(g,x,y){const C="#E8A468",u=(a,b,w,h,col)=>fr(g,x+a,y+b,w,h,col);   // an open raised hand: wait
+  [[0,4,2,6],[3,1,2,9],[6,0,2,10],[9,1,2,9],[0,9,11,6],[11,8,3,3],[2,15,7,2]].forEach(r=>u(r[0]-1,r[1]-1,r[2]+2,r[3]+2,OUT));
+  [[0,4,2,6],[3,1,2,9],[6,0,2,10],[9,1,2,9],[0,9,11,6],[11,8,3,3],[2,15,7,2]].forEach(r=>u(r[0],r[1],r[2],r[3],C));}
+function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x,y-1,w,h+2);g.fillStyle="#FFFDF4";g.fillRect(x,y,w,h);}
+return {SW,SH,mkAve,avePos,drawAve,aveA,aveVa,aveHit,mkAbuelaS,mkPersona,mkBebe,PIEL,PELO,PX,FAM,escena,mkPerro,mkCesta,mano,tarjeta};
 })();
