@@ -65,11 +65,11 @@ const Store={mode:"local",st:{items:{},done:{}},base:null,doc:null,q:Promise.res
     try{if(window.claude&&claude.use){[db,user]=await Promise.all([claude.use("db"),claude.use("user")]);if(user)uid=await user.id();}}catch(e){}
     if(db&&uid){this.base=db.doc("data/users/"+uid+"/coqui");this.doc=this.base.collection("v2").doc("state");
       try{const s=await Promise.race([this.doc.get(),new Promise((_,rj)=>setTimeout(()=>rj(0),10000))]);if(s.exists)this.st=JSON.parse(JSON.stringify(s.data()));this.mode="cloud";}catch(e){}}
-    if(this.mode==="local"){try{const r=localStorage.getItem("coqui.v2");if(r)this.st=JSON.parse(r);}catch(e){}}
-    this.st.items=this.st.items||{};this.st.done=this.st.done||{};},
+    if(this.mode==="local"){try{const r=localStorage.getItem("coqui.v3");if(r)this.st=JSON.parse(r);}catch(e){}}
+    this.st.items=this.st.items||{};this.st.done=this.st.done||{};this.st.w=this.st.w||{};},
   save(){const data=JSON.parse(JSON.stringify(this.st));
     if(this.mode==="cloud")this.q=this.q.then(()=>this.doc.set(data)).catch(()=>{});
-    else{try{localStorage.setItem("coqui.v2",JSON.stringify(data));}catch(e){}}},
+    else{try{localStorage.setItem("coqui.v3",JSON.stringify(data));}catch(e){}}},
   async getAudio(k){if(this.mode!=="cloud")return null;try{const d=await this.base.collection("audio").doc(k).get();return d.exists?(d.data()||{}).b64||null:null;}catch(e){return null;}},
   putAudio(k,b64){if(this.mode!=="cloud"||this.full)return;this.q=this.q.then(()=>this.base.collection("audio").doc(k).set({b64,t:now()})).catch(e=>{if(e&&e.code==="quota_exceeded")this.full=true;});}
 };
@@ -388,12 +388,12 @@ const ITEMS={
 };
 const WHO={narr:"male2",ab:"female",tu:"male",nene:"female"};
 const MISSIONS={
- casa:{name:"Casa",scene:"casa",can:"Greet abuela and take a drink from her.",items:["casa","puerta","abuela","hola","bendicion","como","bien","toma","jugo","gracias"],
+ casa:{name:"Casa",scene:"casa",can:"Greet abuela and take a drink from her.",items:["casa","puerta","abuela","hola","jugo","toma","gracias","bien","como","bendicion"],
   story:[["narr","Mira. La casa.","Look. The house.",{glow:"casa"}],["narr","La puerta.","The door.",{glow:"puerta"}],["narr","La abuela.","Grandma.",{door:1,ab:"idle",glow:"abuela"}],
    ["ab","¡Hola!","Hi!",{door:1,ab:"wave"}],["tu","¡Hola!","Hi!",{door:1,ab:"idle",hop:1},"hola"],["tu","¡Bendición, abuela!","Your blessing, grandma. It's how you greet an elder.",{door:1,ab:"idle",stars:1},"bendicion"],["ab","Dios te bendiga.","God bless you.",{door:1,ab:"bless",heart:1}],
    ["ab","¿Cómo estás?","How are you?",{door:1,ab:"idle",bub:"como"}],["tu","Bien.","Good.",{door:1,ab:"idle",bub:"bien",hop:1},"bien"],
    ["ab","Toma. Jugo.","Here. Juice.",{door:1,ab:"offer",cup:"ab",glow:"jugo"}],["tu","Gracias.","Thank you.",{door:1,ab:"idle",cup:"tu",stars:1},"gracias"]]},
- parque:{name:"Parque",scene:"parque",can:"Play with your son in Spanish.",items:["parque","arbol","perro","bola","mira","ven","dame","arriba","mas","vamos"],
+ parque:{name:"Parque",scene:"parque",can:"Play with your son in Spanish.",items:["arbol","perro","bola","parque","mira","ven","dame","arriba","mas","vamos"],
   story:[["narr","El parque.","The park.",{nene:"far"}],["tu","¡Mira! El árbol.","Look! The tree.",{nene:"far",bub:"eye",glow:"arbol"},"mira"],["tu","¡Mira! El perro.","Look! The dog.",{nene:"far",bub:"eye",glow:"perro"}],
    ["tu","¡Ven!","Come here!",{nene:"far",bub:"ven"},"ven"],["narr","La bola.","The ball.",{nene:"near",glow:"bola"}],["tu","Toma.","Here, take it.",{nene:"near",ball:"nene"},"toma"],
    ["tu","Dame la bola.","Give me the ball.",{nene:"near",ball:"nene",bub:"hand"},"dame"],["tu","Gracias.","Thank you.",{nene:"near",ball:"tu",stars:1},"gracias"],
@@ -408,8 +408,18 @@ const voiceOf=(id,alt)=>VO[(ITEMS[id].v+(alt?1:0))%3];
 const mem=(id,sk)=>(Store.st.items[id]||{})[sk]||null;
 const GOOD_AT=3,dayKey=(t=now())=>{const d=new Date(t);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();};
 function grade(id,sk,g){const it=Store.st.items[id]=Store.st.items[id]||{};it[sk]=review(it[sk]||null,g);}
-const planted=()=>Object.keys(Store.st.items).filter(id=>ITEMS[id]).length;
-function dueList(){const t=now(),a=[];Object.keys(Store.st.items).forEach(id=>{if(!ITEMS[id])return;const it=Store.st.items[id];if(it.l&&it.l.due<=t)a.push({id,sk:"l",due:it.l.due});if(it.s&&it.s.due<=t)a.push({id,sk:"s",due:it.s.due});});return a.sort((x,y)=>x.due-y.due);}
+const CALL_MIN=10,NEW_MAX=7,INT=[0,1,3,7,14,30],FAST=2000;
+const wordOf=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase();
+const coreOf=k=>nrm(ITEMS[k].es).split(" ").filter(w=>ART.indexOf(w)<0).join(" ");
+const Wd=k=>Store.st.w[k]||(Store.st.w[k]={x:0,d:0,ld:null,lvl:0,due:0,adv:null});
+const peek=k=>Store.st.w[k]||{x:0,d:0,lvl:0,due:0};
+// the step a word is on: how it may be asked. From how often it has been heard, and on how many days.
+const stepOf=k=>{const w=peek(k);return w.x<4?1:w.x<7?2:w.d<3?2:w.x<11?3:4;};
+const canTouch=k=>ITEMS[k].k==="n"&&ITEMS[k].tap!==0&&!!SC[ITEMS[k].home].boxOf({out:1},k);
+const isDue=k=>{const w=peek(k);return w.x>0&&w.due>0&&w.due<=now();};
+const planted=()=>Object.keys(Store.st.w).filter(k=>ITEMS[k]&&Store.st.w[k].x>0).length;
+function dueList(){return Object.keys(Store.st.w).filter(k=>ITEMS[k]&&isDue(k)).map(k=>({id:k}));}
+const dueAt=id=>MISSIONS[id]?MISSIONS[id].items.filter(isDue).length:0;
 const isDone=id=>!!Store.st.done[id],isOpen=p=>!!MISSIONS[p.id];
 function nextPlace(){return PLACES.find(p=>MISSIONS[p.id]&&!isDone(p.id)&&isOpen(p))||null;}
 function audioFor(mid){const m=MISSIONS[mid],a=m.story.map(b=>[b[1],WHO[b[0]]]);
@@ -522,69 +532,94 @@ function showMap(){Voice.stop();const due=dueList().length;
   const g=fit(192,240);App.draw=f=>drawMap(g.c,f);App.draw(App.f);
   g.cv.onclick=e=>{const p=pt(e),hit=PLACES.find(q=>Math.abs(p.x-q.x)<14&&Math.abs(p.y-q.y)<14)||PLACES.find(q=>Math.abs(p.x-q.lab[0])<22&&Math.abs(p.y-q.lab[1])<8);if(hit){App.sel=hit.id;mapPanel();}};
   mapPanel();}
-function mapPanel(){const pan=$("#pan"),sel=App.sel&&PLACES.find(p=>p.id===App.sel),nx=nextPlace()||PLACES[0];
+function mapPanel(){const pan=$("#pan"),sel=App.sel&&PLACES.find(p=>p.id===App.sel),withDue=PLACES.filter(p=>MISSIONS[p.id]).sort((a,b)=>dueAt(b.id)-dueAt(a.id))[0],nx=(withDue&&dueAt(withDue.id)?withDue:null)||nextPlace()||PLACES[0];
+  const about=id=>{const P=Mission.plan(id),L=a=>a.map(wordOf).join(", ");return (P.fresh.length?`<div class="mut">New this call: ${L(P.fresh)}.</div>`:"")+(P.active.filter(isDue).length?`<div class="mut">Coming back today: ${L(P.active.filter(isDue))}.</div>`:"");};
   if(sel){const m=MISSIONS[sel.id];let h=`<h3>${sel.name}</h3>`;
-    if(m)h+=`<div class="mut">${m.can}</div><div class="mut">A live talk with Danny, about 7 minutes. Focus words: ${m.items.map(k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase()).join(", ")}.</div><div class="row"><button class="btn go" id="go">Call Danny</button><button class="btn sm" id="bk">Back</button></div>`;
+    if(m)h+=`<div class="mut">${m.can} A ${CALL_MIN}-minute call with Danny.</div>`+about(sel.id)+`<div class="row"><button class="btn go" id="go">Call Danny</button><button class="btn sm" id="bk">Back</button></div>`;
     else h+=`<div class="mut">Here: ${sel.about}. This place has no pictures yet, so Danny can't take you there.</div><div class="row"><button class="btn" id="bk">Back</button></div>`;
     pan.innerHTML=h;on("go",()=>Mission.start(sel.id));on("bk",()=>{App.sel=null;mapPanel();});return;}
   const due=dueList().length;
-  pan.innerHTML=`<h3>Today</h3><div class="mut">You talk with Danny, live. He shows you the picture as he goes. Tap any place, or start here.${due?" "+due+" of your words are due; he'll bring them back.":""}</div><div class="row"><button class="btn go" id="nx">Call Danny · ${nx.name}</button></div>`;
+  pan.innerHTML=`<h3>Today</h3><div class="mut">Danny talks, the picture follows, you touch and answer.${due?" "+due+" of your words are due back.":""}</div>`+about(nx.id)+`<div class="row"><button class="btn go" id="nx">Call Danny · ${nx.name}</button></div>`;
   on("nx",()=>Mission.start(nx.id));}
 
 /* ---- the mission: a live conversation with Danny. He talks, listens, and changes the picture himself ---- */
-const AGENT="agent_6401m78ayjywf3rbjdpbtfzxr259";
 const PICD={casa:"the house, with a pointer on it",puerta:"the front door, closed, with a pointer on it",abuela:"abuela standing on the porch, with a pointer on her",hola:"abuela at the door waving hello",bendicion:"the little coquí frog (that is Salim) greeting abuela, and she blesses him",como:"abuela asking how he is: a happy face, a question mark, a sad face",bien:"the coquí happy and bouncing, a smiley above him",toma:"abuela holding out a big glass of orange juice",jugo:"a big glass of orange juice, close up",gracias:"the coquí holding the juice, sparkles around him",
   parque:"the whole park: tree, dog, ball, swing, Salim the coquí and his little son",arbol:"the tree, with a pointer on it",perro:"the dog, close up",bola:"the red ball, with a pointer on it",mira:"the coquí pointing something out to his son, an eye icon above him",ven:"the son far away, the coquí calling him over",dame:"the son holding the ball, the coquí asking for it",arriba:"the son on the swing going up",mas:"the son on the swing wanting more, a plus sign above him",vamos:"the coquí and his son walking off, time to go"};
 const SCENED={casa:"Abuela's house in Puerto Rico: a teal house with a red roof, a front door, a window with flowers, a palm tree. Salim appears as a little coquí frog standing on the path. Abuela comes to the door, greets him, asks how he is, and gives him juice.",
   parque:"A park: a big tree, a friendly dog, a red ball, a swing set, a path. Salim (a coquí frog) is there with his one-year-old son (a tiny coquí). They look at things, he calls his son over, they pass the ball, he pushes him on the swing, then they leave."};
-const Mission={id:null,m:null,st:{},scene:"casa",conv:null,heard:[],last:"",done:null,t0:0,over:true,
+const AGENT="agent_3301m795q3xtfpx8c99zc0s870vm";
+const OPEN={casa:["casa","Hola, Salim. Soy Danny. Mira. Esta es la casa. La casa de la abuela. Toca la casa."],parque:["arbol","Hola, Salim. Soy Danny. Mira. Este es el árbol. Un árbol grande. Toca el árbol."]};
+const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:true,world:{},P:null,
   shell(label){app.innerHTML=`<div class="hud"><button class="btn x" id="quit">✕ end</button><span class="chip" id="ph">${label}</span></div><canvas id="cv"></canvas><div class="pan" id="pan"></div>`;
-    const g=fit(240,150);App.draw=f=>{const z=this.zoom;if(!z)return SC[this.scene].draw(g.c,this.st,f);const o=this.off||(this.off=document.createElement("canvas"));o.width=240;o.height=150;SC[this.scene].draw(o.getContext("2d"),this.st,f);g.c.drawImage(o,z[0],z[1],z[2],z[3],0,0,240,150);};on("quit",()=>this.end());},
+    const g=fit(240,150);App.draw=f=>{const z=this.zoom;if(!z)return SC[this.scene].draw(g.c,this.st,f);const o=this.off||(this.off=document.createElement("canvas"));o.width=240;o.height=150;SC[this.scene].draw(o.getContext("2d"),this.st,f);g.c.drawImage(o,z[0],z[1],z[2],z[3],0,0,240,150);};
+    g.cv.onclick=e=>this.tap(pt(e));on("quit",()=>this.end());},
   set(scene,st,zoom){this.scene=scene;this.st=st||{};this.zoom=zoom||null;if(App.draw&&$("#cv"))App.draw(App.f);},
   panel(h){const p=$("#pan");if(p)p.innerHTML=h;},
   label(t){const e=$("#ph");if(e)e.textContent=t;},
-  pic(k){k=String(k||"").trim();const it=ITEMS[k];if(!it)return;const st=Object.assign({},it.st,{who:null});let z=null;
-    const b=it.k==="n"&&SC[it.home].boxOf(st,k);if(b){const cw=Math.max(b[2]*1.6,b[3]*2.56,72),ch=cw*150/240;if(cw<230)z=[Math.round(Math.max(0,Math.min(240-cw,b[0]+b[2]/2-cw/2))),Math.round(Math.max(0,Math.min(150-ch,b[1]+b[3]/2-ch/2-5))),Math.round(cw),Math.round(ch)];}
-    this.set(it.home,st,z);},
-  vars(id){const m=MISSIONS[id],t=now(),w=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase(),we=k=>w(k)+" ("+ITEMS[k].en+")",u=k=>((Store.st.items[k]||{}).u)||0,
-      due=k=>{const s=mem(k,"s");return !!s&&s.due<=t;},here=k=>m.items.indexOf(k)>=0,all=Object.keys(ITEMS),J=a=>a.length?a.join("; "):"none";
-    const nw=m.items.filter(k=>u(k)===0),lr=all.filter(k=>u(k)>0&&u(k)<GOOD_AT&&(here(k)||due(k))).slice(0,14),gd=all.filter(k=>u(k)>=GOOD_AT&&here(k)),
-      back=all.filter(k=>u(k)>=GOOD_AT&&!here(k)&&due(k)).slice(0,6),K=all.filter(k=>u(k)>0).length;
-    const ask=K===0?"He has no Spanish words yet. Ask him nothing that needs an answer. Only talk and show. Leave a pause so he can say a word if he wants to."
-      :K<6?"Ask one very easy question about every fourth turn, only about a LEARNING or GOOD word, answered with one word."
-      :K<16?"Ask one easy question about every third turn, only about LEARNING or GOOD words, answered with one or two words."
-      :"Ask an easy question about every second turn, only about LEARNING or GOOD words. Short answers of two or three words are fine.";
-    return {place:m.name,scene:SCENED[m.scene],pictures:m.items.map(k=>k+": "+PICD[k]).join("\n"),
-      targets:"NEW. He has never said these. Say them many times. Never ask about them: "+J(nw.map(we))+"\nLEARNING. He has said these on one or two days. Use them a lot: "+J(lr.map(we)),
-      old:"GOOD. He knows these. Use them freely: "+J(gd.map(w))+"\nBRING BACK TODAY. Known words from other places that are due. Fit them in where they are true of this scene: "+J(back.map(w))+"\nQUESTIONS: "+ask};},
-  async start(id){this.id=id;this.m=MISSIONS[id];this.scene=this.m.scene;this.st={};this.heard=[];this.last="";this.done=null;this.over=false;this.t0=0;this.shell("Calling Danny…");
+  put(id,t){const e=document.getElementById(id);if(e)e.textContent=t;},
+  // the whole scene with nothing pointed at, showing whatever has appeared so far
+  wide(){const w=this.world;return this.m.scene==="casa"?{door:w.ab?1:0,ab:w.cup?"offer":w.ab?"idle":null,out:w.ab?1:0,cup:w.cup?"ab":null}:{nene:"near"};},
+  pic(k){k=String(k||"").trim().toLowerCase();if(!this.m)return;if(k==="todo"){this.picTurn="todo";this.set(this.m.scene,this.wide(),null);return;}
+    const it=ITEMS[k];if(!it||it.home!==this.m.scene)return;if(k==="abuela"||it.st.ab)this.world.ab=1;if(it.st.cup==="ab")this.world.cup=1;
+    const st=Object.assign({},it.st,{who:null});let z=null;const b=it.k==="n"&&SC[it.home].boxOf(st,k);
+    if(b){const cw=Math.max(b[2]*1.6,b[3]*2.56,72),ch=cw*150/240;if(cw<230)z=[Math.round(Math.max(0,Math.min(240-cw,b[0]+b[2]/2-cw/2))),Math.round(Math.max(0,Math.min(150-ch,b[1]+b[3]/2-ch/2-5))),Math.round(cw),Math.round(ch)];}
+    this.picTurn=k;this.set(it.home,st,z);},
+  // which words this call carries: everything already met here, up to NEW_MAX new ones, and due phrases from elsewhere
+  plan(id){const m=MISSIONS[id],met=m.items.filter(k=>peek(k).x>0),fresh=m.items.filter(k=>peek(k).x===0).slice(0,NEW_MAX),
+      back=Object.keys(ITEMS).filter(k=>ITEMS[k].home!==m.scene&&ITEMS[k].k==="p"&&isDue(k)).slice(0,3);
+    return {m,active:met.concat(fresh),fresh,back,all:met.concat(fresh,back)};},
+  vars(id){const P=this.plan(id),m=P.m,here=k=>ITEMS[k].home===m.scene,
+      line=k=>"- "+wordOf(k)+" ("+ITEMS[k].en+") | picture: "+(here(k)?k+" = "+PICD[k]:"none")+" | "+(here(k)&&canTouch(k)?"touch":"say")+" | step "+stepOf(k)+(peek(k).x===0?" | NEW":isDue(k)?" | DUE":"");
+    return {place:m.name,scene:SCENED[m.scene],words:P.all.map(line).join("\n"),opening:OPEN[id][1],minutes:String(CALL_MIN)};},
+  start(id){this.id=id;this.m=MISSIONS[id];this.world={};this.P=this.plan(id);this.conv=null;this.last="";this.over=false;this.t0=0;this.ask=null;this.picTurn=null;this.listening=false;this.closing=0;this.tapWait=false;
+    this.exp={};this.hit={};this.miss={};this.said={};this.lat=[];this.shell("Before you call");this.set(this.m.scene,this.wide(),null);
+    this.panel(`<h3>${this.m.name} with Danny · ${CALL_MIN} minutes</h3><div class="mut">Danny talks and the picture follows him.</div><div class="mut"><b>«Toca…»</b> means touch it in the picture.</div><div class="mut">He may ask <b>sí o no</b>, or <b>«¿… o …?»</b> Answer out loud.</div><div class="mut">Say any word you like, any time. Lost? Tap <b>I'm stuck</b>.</div><div class="row"><button class="btn go" id="dial">Start the call</button><button class="btn sm" id="bk2">Back</button></div>`);
+    on("dial",()=>this.dial());on("bk2",()=>{this.over=true;showMap();});},
+  async dial(){this.label("Calling Danny…");this.panel(`<div class="mut">Calling Danny…</div>`);this.pic(OPEN[this.id][0]);
     const back=t=>{this.over=true;this.panel(`<h3>Couldn't reach Danny</h3><div class="mut">${t}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);};
     if(!window.ELConv)return back("The voice part of the page didn't load. Check your connection and reload.");
-    this.panel(`<div class="mut">Connecting. Say yes when your phone asks for the microphone.</div>`);
-    try{this.conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"webrtc",dynamicVariables:this.vars(id),
-        clientTools:{show_picture:p=>{this.pic(p&&p.picture);return "shown";},lesson_done:p=>{this.done=p||{};setTimeout(()=>this.end(),3500);return "ok";}},
+    try{this.conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"webrtc",dynamicVariables:this.vars(this.id),
+        clientTools:{show_picture:p=>{this.pic(p&&p.picture);return "shown";}},
         onConnect:()=>this.live(),onDisconnect:d=>{if(d&&d.message&&!this.err)this.err=String(d.message);this.finish();},onError:e=>{this.err=String((e&&e.message)||e||"");},
         onMessage:m=>this.msg(m),onModeChange:m=>this.mode(m&&m.mode)});}
     catch(e){back(String((e&&e.message)||e||"The call didn't start.")+" If you blocked the microphone, allow it for this page and try again.");}},
   live(){this.t0=now();this.label("Live with Danny");
-    this.panel(`<div class="row" style="margin-top:0"><span class="mic" id="dot"></span><div style="flex:1"><div class="say" style="font-size:17px" id="who">Danny is talking</div><div class="mut" id="heard">&nbsp;</div></div></div><div id="tx" style="min-height:26px"></div><div class="row"><button class="btn" id="stk">I'm stuck</button><button class="btn sm no" id="endb">End</button></div>`);
+    this.panel(`<div class="row" style="margin-top:0"><span class="mic" id="dot"></span><div style="flex:1"><div class="say" style="font-size:17px" id="who">Danny is talking</div><div class="mut" id="hint">&nbsp;</div></div></div><div class="mut" id="heard">&nbsp;</div><div id="tx" style="min-height:22px"></div><div class="row"><button class="btn" id="stk">I'm stuck</button><button class="btn sm no" id="endb">End</button></div>`);
     on("endb",()=>this.end());
-    on("stk",()=>{const t=$("#tx");if(t)t.innerHTML=this.last?`<div class="mut">Danny said: <b>${this.last}</b></div>`:"";
-      try{this.conv.sendContextualUpdate("Salim tapped the 'I'm stuck' button. Tell him in a few English words what you just said or asked, then say it again in simple Spanish and carry on.");}catch(e){}});},
-  mode(m){const w=$("#who"),d=$("#dot");if(!w)return;const you=m==="listening";w.textContent=you?"Say a word if you want. Or just listen.":"Danny is talking";if(d)d.style.background=you?"var(--red)":"#8698BC";},
+    on("stk",()=>{const t=$("#tx");if(t)t.innerHTML=this.last?`<div class="mut">Danny said: <b>${this.last}</b></div>`:"";this.send("(ayuda)");});
+    this.tm1=setTimeout(()=>{this.closing=1;this.send("(fin)");},CALL_MIN*6e4);this.tm2=setTimeout(()=>this.end(),CALL_MIN*6e4+25000);},
+  send(t){try{if(this.conv)this.conv.sendUserMessage(t);}catch(e){}},
+  mode(m){const you=m==="listening";this.listening=you;const w=$("#who"),d=$("#dot");if(w)w.textContent=you?"Your turn":"Danny is talking";if(d)d.style.background=you?"var(--red)":"#8698BC";
+    if(!you)return;this.picTurn=null;if(this.ask&&!this.ask.t0){this.ask.t0=now();this.arm();}if(this.closing===2)setTimeout(()=>this.end(),900);},
+  // Danny asked for a touch: take the pointer away, show the whole scene, start the clock
+  arm(){this.set(this.m.scene,this.wide(),null);this.put("hint","Touch it in the picture");},
   msg(m){const who=m&&(m.source||m.role),text=m&&(m.message||m.text);if(!text)return;
-    if(who==="user"){this.heard.push(text);const h=$("#heard");if(h)h.textContent="heard: "+text;}else{this.last=text;const t=$("#tx");if(t)t.innerHTML="";}},
+    if(who==="user"){if(/^\s*[(.]/.test(text))return;this.put("heard","heard: "+text);this.P.all.forEach(k=>{if(saidIt(text,[ITEMS[k].es].concat(ITEMS[k].alt||[])))this.said[k]=1;});return;}
+    this.last=text;this.tapWait=false;const t=$("#tx");if(t)t.innerHTML="";if(this.closing===1)this.closing=2;
+    const n=" "+nrm(text)+" ",ups=[],dk=dayKey();
+    this.P.all.forEach(k=>{if(n.indexOf(" "+coreOf(k)+" ")<0)return;const w=Wd(k),s0=stepOf(k);w.x++;if(w.ld!==dk){w.d++;w.ld=dk;}this.exp[k]=(this.exp[k]||0)+1;const s1=stepOf(k);if(s1!==s0)ups.push("PASO: «"+wordOf(k)+"» is now step "+s1+".");});
+    if(ups.length)try{this.conv.sendContextualUpdate(ups.join(" "));}catch(e){}
+    this.ask=null;this.put("hint"," ");const i=n.lastIndexOf(" toca ");if(i<0)return;const rest=n.slice(i+5);
+    const c=this.P.active.filter(k=>canTouch(k)).map(k=>[rest.indexOf(" "+coreOf(k)+" "),k]).filter(a=>a[0]>=0).sort((a,b)=>a[0]-b[0])[0];if(!c)return;
+    const k=c[1];if(k==="abuela")this.world.ab=1;if(k==="jugo"){this.world.ab=1;this.world.cup=1;}
+    this.ask={k,t0:this.listening?now():null,cold:this.picTurn!==k};if(this.ask.cold||this.listening)this.arm();},
+  tap(p){if(this.over||!this.conv||!this.t0||this.tapWait)return;if(this.zoom){if(this.ask)this.arm();return;}
+    const sc=SC[this.scene],st=this.st,vis=k=>this.scene!=="casa"||(k==="abuela"?!!st.ab:k==="jugo"?st.cup==="ab":true);
+    const hit=sc.hot.map(h=>h[0]).find(k=>{if(!vis(k))return false;const b=sc.boxOf(st,k);return b&&p.x>=b[0]-3&&p.x<=b[0]+b[2]+3&&p.y>=b[1]-3&&p.y<=b[1]+b[3]+3;});if(!hit)return;
+    const a=this.ask;if(a){const lat=a.t0?now()-a.t0:0,ok=hit===a.k;if(ok){if(a.cold)this.hit[a.k]=Math.min(this.hit[a.k]==null?1e9:this.hit[a.k],lat);}else this.miss[a.k]=1;this.lat.push({k:a.k,ok,lat,cold:a.cold});this.ask=null;}
+    this.tapWait=true;setTimeout(()=>{this.tapWait=false;},6000);this.set(this.m.scene,Object.assign({},this.wide(),{glow:hit}),null);this.put("hint"," ");this.put("heard","touched: "+wordOf(hit));this.send("(toca: "+wordOf(hit)+")");},
   end(){if(this.over){showMap();return;}try{if(this.conv)this.conv.endSession();}catch(e){}setTimeout(()=>this.finish(),1500);},
-  finish(){if(this.over)return;this.over=true;const secs=this.t0?Math.round((now()-this.t0)/1000):0,m=this.m,said=this.heard.join(" . "),d=this.done||{};
+  finish(){if(this.over)return;this.over=true;clearTimeout(this.tm1);clearTimeout(this.tm2);const secs=this.t0?Math.round((now()-this.t0)/1000):0,m=this.m;
     if(secs<6){this.label("No answer");this.panel(`<h3>Danny didn't pick up</h3><div class="mut">The call was dropped before it started. That is not your phone or your mic. The usual cause is that the ElevenLabs voice credits for the month have run out.${this.err?" ("+this.err+")":""}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
-    if(secs<45){this.label("Ended");this.panel(`<h3>Call ended</h3><div class="mut">${this.err?this.err+" ":""}That was too short to count, so nothing was saved.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
-    const nm=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase(),dk=dayKey(),saidL=[],heardL=[],goodL=[];
-    Object.keys(ITEMS).forEach(k=>{const here=m.items.indexOf(k)>=0,T=[ITEMS[k].es].concat(ITEMS[k].alt||[]);
-      if(saidIt(said,T)){const it=Store.st.items[k]=Store.st.items[k]||{};grade(k,"s",3);grade(k,"l",3);if(it.ud!==dk){it.u=(it.u||0)+1;it.ud=dk;}saidL.push(nm(k));if(it.u>=GOOD_AT)goodL.push(nm(k));}
-      else if(here){const it=Store.st.items[k]=Store.st.items[k]||{};it.h=(it.h||0)+1;heardL.push(nm(k));}});
+    const dk=dayKey(),next=d=>dayStart()+d*DAY+3*36e5,got=[],heard=[],again=[];
+    Object.keys(this.exp).forEach(k=>{const w=Wd(k),ok=(this.hit[k]!=null&&this.hit[k]<=FAST)||this.said[k];
+      if(ok){if(w.adv!==dk&&(w.lvl===0||w.due<=now())){w.lvl=Math.min(w.lvl+1,INT.length-1);w.adv=dk;w.due=next(INT[w.lvl]);}got.push(wordOf(k));}
+      else if(this.miss[k]){w.lvl=Math.max(0,w.lvl-1);w.due=next(1);again.push(wordOf(k));}
+      else{if(!w.due||w.lvl===0)w.due=next(1);heard.push(wordOf(k));}});
+    Store.st.log=(Store.st.log||[]).concat([{t:now(),id:this.id,secs,lat:this.lat}]).slice(-30);
     const prev=Store.st.done[this.id];Store.st.done[this.id]={n:(prev?prev.n:0)+1,t:now()};Store.save();
-    this.label("Done");this.set(m.scene,Object.assign({},m.story[m.story.length-1][3],{stars:1}));
-    this.panel(`<h3>${m.name} · ${Math.max(1,Math.round(secs/60))} min with Danny</h3>`+(saidL.length?`<div class="mut"><b>You said:</b> ${saidL.join(", ")}</div>`:"")+(heardL.length?`<div class="mut"><b>Heard, not said yet:</b> ${heardL.join(", ")}</div>`:"")+(goodL.length?`<div class="mut"><b>Good now:</b> ${goodL.join(", ")}</div>`:"")+`<div class="mut" style="margin-top:6px">A word you say on ${GOOD_AT} different days moves to good and comes back less often. Nothing is marked wrong.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);
+    this.label("Done");this.set(m.scene,Object.assign({},this.wide(),{stars:1}),null);
+    this.panel(`<h3>${m.name} · ${Math.max(1,Math.round(secs/60))} min with Danny</h3>`+(got.length?`<div class="mut"><b>You got:</b> ${got.join(", ")}</div>`:"")+(heard.length?`<div class="mut"><b>Heard:</b> ${heard.join(", ")}</div>`:"")+(again.length?`<div class="mut"><b>Back tomorrow:</b> ${again.join(", ")}</div>`:"")+`<div class="mut" style="margin-top:6px">A word you get comes back after 1 day, then 3, 7 and 14. A word you miss comes back tomorrow.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);
     on("mp",()=>{App.sel=null;showMap();});}
 };
 
@@ -593,6 +628,6 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,heard:[],last:"",done
   Player.init();document.addEventListener("pointerdown",()=>Player.unlock(),true);
   await Promise.all([Store.init(),Eleven.init(),Ear.init()]);
   setInterval(()=>{App.f++;if(App.draw&&$("#cv"))App.draw(App.f);},150);
-  window.Coqui={Store,Mission,ITEMS,MISSIONS,SC,App,dueList,showMap,Eleven,mem};
+  window.Coqui={Store,Mission,ITEMS,MISSIONS,SC,App,dueList,showMap,Eleven,mem,stepOf,Wd,peek,isDue};
   showMap();})();
 </script></body></html>
