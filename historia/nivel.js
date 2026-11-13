@@ -11,7 +11,7 @@
    It reuses the pictures and the recorded sentences of the ¿Cuál? pairs.
    It covers the stories built so far. Each new scene adds items to NV.
    ============================================================ */
-// w: the word asked. s: the story (1 to 11) that teaches it. p: four pictures, the first is the one that fits:
+// w: the word asked. s: the story (by its number in the course) that teaches it. p: four pictures, the first is the one that fits:
 // [the pair's word, which of its two pictures, the x the square crop is centred on (default: the middle of the pair's camera)]
 const NV=[
  {w:"abuela",s:1,p:[["abuela","si",166],["mamá","si"],["papá","si"],["hermana","si"]]},
@@ -38,7 +38,11 @@ const NV=[
  {w:"perro",s:12,p:[["perro","si"],["perro","no"],["gato","no"],["árbol","si"]]},
  {w:"corre",s:12,p:[["corre","si"],["corre","no"],["camina","si",116],["despacio","si"]]},
  {w:"dos",s:13,p:[["dos","si"],["uno","si"],["tres","si"],["hay","no"]]},
- {w:"rápido",s:14,p:[["rápido","si"],["rápido","no"],["despacio","no"],["perro","si"]]}];
+ {w:"rápido",s:14,p:[["rápido","si"],["rápido","no"],["despacio","no"],["perro","si"]]},
+ {w:"tira",s:15,p:[["tira","si",134],["tira","no",132],["dame","si",128],["tiene","si",130]]},
+ {w:"coge",s:15,p:[["coge","si",138],["coge","no",134],["dame","no",128],["salta","si"]]},
+ {w:"arriba",s:16,p:[["arriba","si",64],["arriba","no",176],["abajo","si",90],["salta","no"]]},
+ {w:"mi",s:17,p:[["mi","si",114],["mi","no",126],["tira","si",134],["tiene","si",130]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
 function celda(k){return [(k%2)*(CW+CG),Math.floor(k/2)*(CH+CG)];}

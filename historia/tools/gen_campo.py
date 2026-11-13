@@ -157,7 +157,7 @@ cq=lambda x,y,s=1,**k:dict({"x":x-16,"y":y-27,"s":s,"dy":0,"al":1,"vis":1,"bub":
 NO=cq(0,0,vis=0)
 perro=lambda x,y,pose="sit",**k:dict({"x":x,"y":y,"pose":pose,"dir":1},**k)
 bl=lambda k,**kw:dict({"k":k},**kw)
-CP=[74,126,113,60]; CB=[100,150,75,39.8]; CT=[14,78,150,79.6]
+CP=[74,126,113,60]; CB=[100,150,75,39.8]; CT=[14,78,150,79.6]; CQ=[70,110,134,71.1]
 todos={**s15["clips"],**s16["clips"],**s17["clips"],"k_c_bola":N("Es una bola."),"k_c_tiene":N("Canelo tiene la bola."),"k_c_tira":N("Luis tira la bola."),"k_c_coge":N("Carmen coge la bola."),"k_c_salta":N("El perro salta."),
  "k_c_dame":D("carmen","Carmen","¡Dame la bola!"),"k_c_mi":L("Es mi bola."),"k_c_tu":D("carmen","Carmen","Luis, es tu bola."),"k_c_arriba":N("La bola está arriba."),"k_c_abajo":N("Coquí está abajo."),"k_c_mas":N("Canelo quiere más.")}
 todos["k_c_mi"]=todos["c17_l_es_mi"]; todos["k_c_mas"]=todos["c17_quiere_mas"]
@@ -168,10 +168,10 @@ cual={"id":"cual-campo","title":"¿Cuál?","place":"El parque","scene":"campo","
   {"w":"bola","say":"k_c_bola","si":{"cam":CB,"set":{"bolas":{"a":bl("L",x=137,y=178)},"cq":NO}},"no":{"cam":CB,"set":{"flor":[137,178],"cq":NO}}},
   {"w":"tiene","say":"k_c_tiene","si":{"cam":CP,"set":{"perro":perro(124,182,"lie"),"bolas":{"a":bl("q",x=138,y=183)},"cq":NO}},
    "no":{"cam":CP,"set":{"perro":perro(124,182,"run",dy=8),"bolas":{"a":bl("q",x=142,y=183,z=40)},"cq":NO}}},
-  {"w":"tira","say":"k_c_tira","si":{"cam":CP,"set":{"gente":{"luis":P(104,182,pose="offer")},"bolas":{"a":bl("L",x=154,y=182,z=30,vuela=[1,0])},"cq":NO}},
-   "no":{"cam":CP,"set":{"gente":{"luis":P(104,182,pose="arriba")},"bolas":{"a":bl("L",x=109,y=183,z=52,vuela=[0,1])},"cq":NO}}},
-  {"w":"coge","say":"k_c_coge","si":{"cam":CP,"set":{"gente":{"carmen":P(130,182,pose="arriba")},"bolas":{"a":bl("C",x=135,y=183,z=50,vuela=[0,1])},"cq":NO}},
-   "no":{"cam":CP,"set":{"gente":{"carmen":P(118,182,pose="offer")},"bolas":{"a":bl("C",x=164,y=182,z=30,vuela=[1,0])},"cq":NO}}},
+  {"w":"tira","say":"k_c_tira","si":{"cam":CQ,"set":{"gente":{"luis":P(110,178,pose="offer")},"bolas":{"a":bl("L",x=160,y=178,z=30,vuela=[1,0])},"cq":NO}},
+   "no":{"cam":CQ,"set":{"gente":{"luis":P(126,178,pose="arriba")},"bolas":{"a":bl("L",x=132,y=179,z=44,vuela=[0,1])},"cq":NO}}},
+  {"w":"coge","say":"k_c_coge","si":{"cam":CQ,"set":{"gente":{"carmen":P(134,178,pose="arriba")},"bolas":{"a":bl("C",x=139,y=179,z=44,vuela=[0,1])},"cq":NO}},
+   "no":{"cam":CQ,"set":{"gente":{"carmen":P(112,178,pose="offer")},"bolas":{"a":bl("C",x=160,y=178,z=30,vuela=[1,0])},"cq":NO}}},
   {"w":"salta","say":"k_c_salta","si":{"cam":CB,"set":{"perro":perro(137,184,"run",dy=16),"cq":NO}},"no":{"cam":CB,"set":{"perro":perro(137,184,"run",polvo=1),"cq":NO}}},
   {"w":"dame","say":"k_c_dame","si":{"cam":CP,"set":{"gente":{"carmen":P(150,182,pose="offer",dir=-1)},"bolas":{"a":bl("q",con="cq")},"cq":cq(104,182)}},
    "no":{"cam":CP,"set":{"gente":{"carmen":P(150,182,pose="offer",dir=-1)},"bolas":{"a":bl("q",con="carmen")},"cq":cq(104,182)}}},

@@ -1,4 +1,4 @@
-# El campo: three stories (draft 3, after two rounds of fresh reviews)
+# El campo: three stories (draft 3, final: after two rounds of fresh reviews and a last gate)
 
 Place 2, El parque. Scene 2 of 4. The learner is the little frog (Coquí). He has finished place 1, La casa (eleven stories), and El camino (stories 12 to 14).
 
@@ -54,8 +54,8 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 **The opening** (big sign, nothing can go wrong)
 
-2. NARR: "Luis dice: ¡Vamos a jugar! Coquí, ¡coge la bola!" Two doing bubbles: catching, throwing. The big sign is on catching. He touches it. Luis throws his big ball in a high arc; the frog catches it. NARR: "Luis tira la bola. Coquí coge la bola."
-3. NARR: "Luis dice: Ahora, ¡tira la bola!" The two doing bubbles; the sign on throwing. He touches it. The frog throws the big ball back; Luis catches it. NARR: "Coquí tira la bola. Luis coge la bola." Luis and Carmen each put their own ball down in the grass beside them, where it stays in view until the game.
+2. NARR: "Luis dice: ¡Vamos a jugar! Coquí, ¡coge la bola!" Two doing bubbles: catching, throwing. The big sign is on catching. He touches it. Luis throws his big ball in a high arc; the frog catches it. Right signal. NARR: "Luis tira la bola. Coquí coge la bola."
+3. NARR: "Luis dice: Ahora, ¡tira la bola!" The two doing bubbles; the sign on throwing. He touches it. The frog throws the big ball back; Luis catches it. Right signal. NARR: "Coquí tira la bola. Luis coge la bola." Luis and Carmen each put their own ball down in the grass beside them, where it stays in view until the game.
 4. **He asks for it, taught.** Carmen walks over, picks up the frog's small ball and goes back to her place with it. NARR: "Ahora Carmen tiene la bola." Two speaking bubbles: "¡Dame la bola!" and "¡Coge la bola!" The big sign is on "¡Dame la bola!" He touches it. COQUÍ: "¡Dame la bola!" Carmen brings it over and puts it in his hands. NARR: "Carmen dice: Toma." COQUÍ: "Gracias." Right signal.
 5. Now the frog holds the ball. Carmen, back at her place, holds up both hands. The two speaking bubbles; the sign is on "¡Coge la bola!" He touches it. COQUÍ: "¡Coge la bola!" He throws; she catches it. NARR: "Coquí tira la bola. Carmen coge la bola." Right signal. She rolls it back to his feet.
 6. **Who has it, taught.** Luis takes the small ball. Luis and Carmen stand side by side; they turn round, heads together, then face us again, each with both hands behind the back. NARR: "¿Quién tiene la bola?" NARR: "Carmen tiene la bola." The big sign is on Carmen. He touches her. She shows the ball. Right signal.
@@ -64,14 +64,14 @@ In the corner of the screen, from the turn on, a card with three places, one for
 **The turn**
 
 8. Canelo cannot stand it any longer. He dashes in, takes the small ball from the frog's feet, runs back to his spot under the tree and lies down with it between his paws. NARR: "¡Ay! Coquí no tiene la bola. ¡Canelo tiene la bola!" COQUÍ: "Canelo, ¡dame la bola!" Canelo wags his tail and does not move. NARR: "Luis dice: Canelo, ¡dame la bola!" Canelo puts his chin on the ball.
-9. Luis laughs and points at the basket. NARR: "Luis dice: Mira. Hay más bolas." (The basket twinkles.) Carmen takes one out and puts it at the frog's feet. The card with three empty places shows in the corner. The signs go away.
+9. Luis laughs and points at the basket. NARR: "Luis dice: Mira. Hay más bolas." (The basket twinkles.) A new ball hops out of the basket to the frog's feet. The card with three empty places shows in the corner. The signs go away.
 
 **The game** (no sign)
 
 10. **Decision A, Do (throw or catch).** Luis picks up his big ball and holds it; the frog picks up his small ball and holds it. NARR: "Luis dice: Coquí, ¡tira la bola!" (Or: "Coquí, ¡coge la bola!" Drawn fresh.) Two doing bubbles: throwing, catching.
    - Right, "tira": the frog throws his ball; Luis lets his own drop at his feet, catches the small one, rolls it back to the frog's feet and picks his own up again. Right signal. A star on the card.
    - Right, "coge": Luis throws his big ball; the frog lets his own drop at his feet, catches the big one and throws it back. Right signal. A star.
-   - Wrong (he throws when he should catch): the frog throws his small ball just as Luis throws the big one. The big ball bumps the frog on the head and rolls back to Luis. The small ball sails past Luis; Canelo leaps, takes it out of the air and carries it to his pile. A paw on the card. NARR: "No, Coquí. Luis dice: ¡Coge la bola!" Carmen takes a new ball from the basket and gives it to the frog. The sign; he does it.
+   - Wrong (he throws when he should catch): the frog throws his small ball just as Luis throws the big one. The big ball bumps the frog on the head and rolls back to Luis. The small ball sails past Luis; Canelo leaps, takes it out of the air and carries it to his pile. A paw on the card. NARR: "No, Coquí. Luis dice: ¡Coge la bola!" A new ball hops out of the basket into the frog's hands. The sign; he does it.
    - Wrong (he gets ready to catch when he should throw): the frog lets his ball drop at his feet and looks up, hands cupped. Nothing comes. Canelo trots over, takes the ball from his feet and carries it to his pile. A paw. NARR: "No, Coquí. Luis dice: ¡Tira la bola!" A new ball, in the frog's hands. The sign; he does it.
    - After either: Luis has his big ball; the small ball lies at the frog's feet. Luis puts his own down beside him again.
 11. **Decision B, Touch (who has it).** Carmen takes the frog's small ball. Luis and Carmen stand side by side, turn round, heads together, and face us again, each with both hands behind the back. Their own two balls lie in the grass in view. Canelo sits and watches them both. NARR: "¿Quién tiene la bola?" Then one line, drawn fresh from four: "Luis tiene la bola." / "Carmen tiene la bola." / "Luis no tiene la bola." / "Carmen no tiene la bola." (Who really has it follows from the line.) He touches Luis or Carmen.
@@ -81,7 +81,7 @@ In the corner of the screen, from the turn on, a card with three places, one for
    - Right (she has it; he says "¡Dame la bola!"): she brings it and gives it to him. Right signal. A star.
    - Right (he has it; he says "¡Coge la bola!"): he throws; she catches it and rolls it back. Right signal. A star.
    - Wrong (she has it; he says "¡Coge la bola!"): Carmen looks at the ball in her hands, puzzled. NARR: "No, Coquí. Carmen tiene la bola." While she looks, Canelo jumps up, takes it out of her hands and carries it to his pile. A paw. A new ball, in Carmen's hands. The sign shows the right bubble; he says it; she gives it to him.
-   - Wrong (he has it; he says "¡Dame la bola!"): Carmen shows her empty hands, puzzled. NARR: "No. Carmen no tiene la bola. ¡Coquí tiene la bola!" Canelo takes the ball out of the frog's hands and carries it to his pile. A paw. A new ball, in the frog's hands. The sign shows the right bubble; he says it; he throws; she catches and rolls it back.
+   - Wrong (he has it; he says "¡Dame la bola!"): Carmen shows her empty hands, puzzled. NARR: "No, Coquí. Carmen no tiene la bola." Canelo takes the ball out of the frog's hands and carries it to his pile. A paw. A new ball, in the frog's hands. The sign shows the right bubble; he says it; he throws; she catches and rolls it back.
 
 **The ending** (the same lines in every ending)
 
@@ -93,7 +93,7 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 **Fewest hearings before a word can cost:** tira 4 (step 2; step 3 twice; step 5), coge 7 (steps 2 twice, 3, 4, 5 three times), dame 4 (step 4 twice: the bubble and the frog; step 8 twice), tiene 10 (step 1 three times; step 4; steps 6 and 7 five times; step 8), no tiene 3 (step 7 twice; step 8).
 
-**A miss is filed under:** A: the word that was called (tira or coge). B: "tiene" after a plain line, "no" after a "no tiene" line. C: the word he had to say (dame or coge).
+**A miss is filed under:** A: the word that was called (tira or coge). B: "no" after a "no tiene" line; nothing after a plain line (the name alone answers it, so it says nothing about any word). C: the word he had to say (dame or coge).
 
 **Said plainly:** in B a plain line can be answered from the name alone, and a "no" line turns on "no". What B makes him do is listen for "no tiene" against "tiene". "Tiene" is carried by its ten hearings; it is not what decides.
 
@@ -117,9 +117,9 @@ In the corner of the screen, from the turn on, a card with three places, one for
 3. NARR: "Luis dice: Coquí, ¡salta!" Two doing bubbles: jumping, running (the running picture of story 12). The big sign is on jumping. He touches it. The frog crouches and jumps, very high, higher than anybody, and knocks the ball out of the tree. Right signal. NARR: "¡Coquí salta! ¡Arriba!"
 4. **He says where it is, taught.** The ball drops behind Luis, bounces once and rolls down to the reeds at the water's edge. Luis is still looking up into the tree. NARR: "Ahora la bola está abajo." NARR: "Luis dice: ¿Dónde está la bola?" Two speaking bubbles: "¡Está arriba!" and "¡Está abajo!" The big sign is on "¡Está abajo!" He touches it. COQUÍ: "¡Está abajo!" Luis turns, runs down and gets it. Right signal. NARR: "Luis tiene la bola."
 5. **He looks for it, taught.** NARR: "Luis dice: ¡Vamos a jugar!" The picture goes dark for a moment, as if the frog has shut his eyes; steps are heard. When it is light again Luis and Carmen stand in the middle of the grass with empty hands, looking straight at us. The ball is gone. NARR: "Luis dice: ¿Dónde está la bola?" NARR: "Carmen dice: ¡Está arriba!" The big sign is on the crown of the tree. He touches it. The frog jumps up into the leaves; the ball drops out. Right signal. NARR: "Coquí tiene la bola."
-5b. Dark again; steps; light. The ball is gone again. NARR: "Luis dice: ¿Dónde está la bola?" NARR: "Carmen dice: ¡Está abajo!" The big sign is on the reeds. He touches them. The frog hops down; the ball is in the reeds. Right signal. NARR: "Coquí tiene la bola."
-6. **High and low, taught.** The frog gives Luis the ball and stands with his back to the pond; Luis faces him, the ball held at his chest. NARR: "Luis dice: Ahora, ¡coge la bola! ¡Por arriba!" Two doing bubbles: hands up, hands down. The sign is on hands up. He touches it. Luis throws high; the frog jumps and takes it over his head. NARR: "La bola va por arriba. Coquí salta." He throws it back to Luis.
-7. NARR: "Luis dice: ¡Por abajo!" The two doing bubbles; the sign on hands down. He touches it. Luis rolls the ball along the grass; the frog crouches and takes it. NARR: "La bola va por abajo." He throws it back to Luis.
+5b. The frog gives the ball to Luis. Dark again; steps; light. The ball is gone again. NARR: "Luis dice: ¿Dónde está la bola?" NARR: "Carmen dice: ¡Está abajo!" The big sign is on the reeds. He touches them. The frog hops down; the ball is in the reeds. Right signal. NARR: "Coquí tiene la bola."
+6. **High and low, taught.** The frog gives Luis the ball and stands with his back to the pond; Luis faces him, the ball held at his chest. NARR: "Luis dice: Ahora, ¡coge la bola! ¡Por arriba!" Two doing bubbles: hands up, hands down. The sign is on hands up. He touches it. Luis throws high; the frog jumps and takes it over his head. Right signal. NARR: "La bola va por arriba. Coquí salta." He throws it back to Luis.
+7. NARR: "Luis dice: ¡Por abajo!" The two doing bubbles; the sign on hands down. He touches it. Luis rolls the ball along the grass; the frog crouches and takes it. Right signal. NARR: "La bola va por abajo." He throws it back to Luis.
 
 **The turn**
 
@@ -131,13 +131,13 @@ In the corner of the screen, from the turn on, a card with three places, one for
 10. **Decision A, Do (high or low).** Luis holds a ball at his chest. NARR: "Luis dice: ¡Por arriba!" (Or: "¡Por abajo!" Drawn fresh.) Two doing bubbles: hands up, hands down.
    - Right: Luis throws it the way he called; the frog gets it and drops it back in the basket. Right signal. A star on the card.
    - Wrong: Luis throws it the way he called; the frog is doing the other thing. The ball goes over his head (or between his feet), on down to the water and in: plop. A splash on the card. NARR: "No, Coquí. Luis dice: ¡Por arriba!" (Or "¡Por abajo!") Luis takes another ball. The sign; he does it; he gets that one.
-11. **Decision B, Touch (where to look).** The picture goes dark for a moment; steps. Light again: Luis and Carmen stand in the middle, empty hands, looking straight at us. Canelo sits between them. NARR: "Luis dice: ¿Dónde está la bola?" NARR: "Carmen dice: ¡Está arriba!" (Or: "¡Está abajo!" Drawn fresh.) He touches the crown of the tree or the reeds.
+11. **Decision B, Touch (where to look).** The picture goes dark for a moment; steps. Light again: Luis and Carmen stand in the middle, empty hands, looking straight at us. Canelo sits between them. NARR: "Luis dice: ¿Dónde está la bola?" NARR: "Carmen dice: ¡Está arriba!" (Or: "¡Está abajo!" Drawn fresh.) He touches the tree (crown, fork or trunk: one touch area) or the reeds (reeds, bank and water: one touch area).
    - Right, "arriba": the frog jumps up into the leaves; the ball drops out. Right signal. A star. He drops it in the basket.
    - Right, "abajo": the frog hops down to the reeds; the ball is there. Right signal. A star. He drops it in the basket.
-   - Wrong: the frog goes to the other place and finds nothing. NARR: "No, Coquí. La bola está arriba." (Or "está abajo.") Where the ball really is, the leaves stir and it comes loose (it drops out of the tree; or it slips out of the reeds). Canelo runs after it, cannot hold it, and it rolls to the water and in: plop. A splash. Dark again; another is hidden in the same place. The sign shows the place; he touches it; he gets that one.
+   - Wrong: the frog goes to the other place and finds nothing. NARR: "No, Coquí. La bola está arriba." (Or "está abajo.") Canelo runs to where the ball really is (he jumps against the tree and it shakes; or he noses into the reeds) and knocks it loose. He cannot hold it, and it rolls to the water and in: plop. A splash. Dark again; another is hidden in the same place. The sign shows the place; he touches it; he gets that one.
 12. **Decision C, Say, last (he sees it; Luis does not).** Luis throws a ball up for the frog. The sun is in his eyes: he puts his arm across his face. The ball comes down where we can see it, drawn fresh: in the fork of the tree, or down in the reeds. Carmen is scratching Canelo's ears, her back to it all. Luis, still rubbing his eyes, turns to the frog. NARR: "Luis dice: ¿Dónde está la bola?" Two speaking bubbles: "¡Está arriba!" and "¡Está abajo!"
    - Right: the frog says where it is. Luis goes there (under the tree he holds out his hands, the frog jumps and knocks it down to him; or he picks it out of the reeds). Right signal. A star.
-   - Wrong: the frog says the other. Luis goes to the wrong place and looks. NARR: "No, Coquí. La bola está arriba." (Or "está abajo.") Where the ball really is it comes loose; Canelo runs after it, cannot hold it, and it rolls to the water and in: plop. A splash. Luis throws another and it comes down in the same place. The sign shows the right bubble; he says it; Luis gets that one.
+   - Wrong: the frog says the other. Luis goes to the wrong place and looks. NARR: "No, Coquí. La bola está arriba." (Or "está abajo.") Canelo breaks away from Carmen, runs to where the ball really is and knocks it loose; he cannot hold it, and it rolls to the water and in: plop. A splash. Luis throws another and it comes down in the same place. The sign shows the right bubble; he says it; Luis gets that one.
 
 **The ending** (the same lines in every ending)
 
@@ -163,31 +163,32 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 **Start:** the frog's small ball with the star lies in front of him. Carmen holds her dotted ball. Canelo is down in the water. Luis, Carmen and the frog stand on the grass. Canelo comes up, dripping, with Luis's striped ball in his mouth, and stops in front of the frog without letting go.
 
-1. NARR: "Mira. Canelo tiene una bola." Luis points at it. NARR: "Luis dice: Es mi bola." Carmen holds hers up. NARR: "Carmen dice: Esta es mi bola." (It twinkles.) She puts it down in front of the frog, beside the small one. Luis points at the small one. NARR: "Luis dice: Coquí, esta es tu bola." (It twinkles.) COQUÍ: "¡Mi bola!"
+1. NARR: "Mira. Canelo tiene una bola." Luis holds out his hand. NARR: "Luis dice: Canelo, ¡dame la bola!" Canelo does not let go. NARR: "Luis dice: Es mi bola." Carmen holds hers up. NARR: "Carmen dice: Esta es mi bola." (It twinkles.) She puts it down in front of the frog, beside the small one. Luis points at the small one. NARR: "Luis dice: Coquí, esta es tu bola." (It twinkles.) COQUÍ: "¡Mi bola!"
 
 **The opening** (big sign, nothing can go wrong)
 
 2. **He says whose it is, taught.** Canelo still has the striped ball in his mouth. Two speaking bubbles: "¡Es mi bola!" and "¡Es tu bola!" The big sign is on "¡Es tu bola!" He touches it. COQUÍ, to Luis: "¡Es tu bola!" Luis puts a hand on his chest. NARR: "Luis dice: Sí. Es mi bola." Canelo drops it into the row. Right signal. Now three balls lie in a row in front of the frog: striped, dotted, small.
 3. Canelo picks the small ball out of the row and holds it in his mouth. The two speaking bubbles; the sign is on "¡Es mi bola!" He touches it. COQUÍ: "¡Es mi bola!" Luis points at the frog. NARR: "Luis dice: Sí, Coquí. Es tu bola." Canelo drops it back in its place. Right signal.
 4. **He picks a ball, taught.** NARR: "Carmen dice: Coquí, ¡tira tu bola!" The big sign is on the small ball. He touches it. The frog throws it down toward the pond; Canelo tears after it, splashes in, brings it back and drops it at the frog's feet, in its place in the row. Right signal. NARR: "Coquí tira la bola. Canelo coge la bola."
-5. **Again, taught.** Canelo pushes the small ball at the frog with his nose and barks. NARR: "Canelo quiere más." NARR: "Luis dice: ¡Otra vez!" Three doing bubbles: throwing, holding, giving. The sign is on throwing. He touches it. The frog throws; this time Canelo jumps and takes it out of the air, and drops it back in its place. NARR: "Coquí tira la bola otra vez." Canelo barks. NARR: "Canelo quiere más. ¡Otra vez!"
-6. **Give it here, taught.** NARR: "Luis dice: Coquí, ¡dame la bola!" The three doing bubbles; the sign on giving. He touches it. The frog carries the small ball to Luis and puts it in his hands. Luis throws it for Canelo himself; Canelo fetches it and drops it back in its place. NARR: "Luis tira la bola. ¡Otra vez!"
-7. **No more, taught.** Canelo comes close, his tongue out, panting. NARR: "Luis dice: ¡No más! Canelo quiere agua." The three doing bubbles; the sign on holding. He touches it. The frog picks the ball up, holds it against him and stands still. Canelo goes down and drinks from the pond. NARR: "No más." The frog puts the ball back in its place.
+4b. NARR: "Carmen dice: Ahora, ¡tira mi bola!" The big sign is on the dotted ball. He touches it. The frog throws it; Canelo fetches it and drops it back in its place. Right signal.
+5. **Again, taught.** Canelo pushes the small ball at the frog with his nose and barks. NARR: "Canelo quiere más." NARR: "Luis dice: ¡Otra vez!" Three doing bubbles: throwing, holding, giving. The sign is on throwing. He touches it. The frog throws; this time Canelo jumps and takes it out of the air, and drops it back in its place. Right signal. NARR: "Coquí tira la bola otra vez." Canelo barks. NARR: "Canelo quiere más. ¡Otra vez!"
+6. **Give it here, taught.** NARR: "Luis dice: Coquí, ¡dame la bola!" The three doing bubbles; the sign on giving. He touches it. The frog carries the small ball to Luis and puts it in his hands. Luis throws it for Canelo himself; Canelo fetches it and drops it back in its place. Right signal. NARR: "Luis tira la bola. ¡Otra vez!"
+7. **No more, taught.** Canelo comes close, his tongue out, panting. NARR: "Luis dice: ¡No más! Canelo quiere agua." The three doing bubbles; the sign on holding. He touches it. The frog picks the ball up, holds it against him and stands still. Canelo goes down and drinks from the pond. Right signal (no hop). NARR: "No más." The frog puts the ball back in its place.
 
 **The turn**
 
-8. Canelo comes back up, wetter than ever. Carmen walks over and picks the small ball out of the row. NARR: "Luis dice: ¡Otra vez, Carmen!" But Carmen is watching a butterfly. Canelo waits. He looks at her. Then he shakes himself, from nose to tail, right beside her: water everywhere. Carmen stands dripping. NARR: "Carmen dice: ¡Ay! ¡No más, Canelo! ¡No más!" Luis laughs. Carmen puts the ball back in its place. Canelo walks over and sits down beside the frog, still very wet. The card with three empty places shows in the corner. The three balls are in their row in front of the frog. The signs go away.
+8. Canelo comes back up, wetter than ever. Carmen walks over and picks the small ball out of the row. NARR: "Luis dice: ¡Otra vez, Carmen!" But Carmen is watching a butterfly. NARR: "Luis dice: Carmen, ¡dame la bola!" She does not hear. Canelo waits. He looks at her. Then he shakes himself, from nose to tail, right beside her: water everywhere. Carmen stands dripping. NARR: "Carmen dice: ¡Ay! ¡No más, Canelo! ¡No más!" Luis laughs. Carmen puts the ball back in its place. Canelo walks over and sits down beside the frog, still very wet. The card with three empty places shows in the corner. The three balls are in their row in front of the frog. The signs go away.
 
 **The game** (no sign)
 
-9. **Decision A, Touch (whose ball).** NARR: "Luis dice: Coquí, ¡tira mi bola!" (Or Luis: "Coquí, ¡tira tu bola!" Or Carmen: "Coquí, ¡tira mi bola!" or "Coquí, ¡tira tu bola!" Who speaks and which word are both drawn fresh.) He touches one of the three balls.
+9. **Decision A, Touch (whose ball).** NARR: "Luis dice: Coquí, ¡tira mi bola!" (Or Luis: "Coquí, ¡tira tu bola!" Or Carmen: "Coquí, ¡tira mi bola!" or "Coquí, ¡tira tu bola!" Which ball is meant is drawn fresh, each of the three as often as the others; for the small ball, who speaks is drawn fresh too.) He touches one of the three balls.
    - Right: the frog throws that ball. Canelo fetches it, shakes himself down by the water and puts it back in its place in the row. Right signal. A star on the card.
    - Wrong: the frog throws another ball; it lands a little way off in the grass. Canelo does not go after it: he looks at the ball that was meant, and waits. The one who asked shakes his head. NARR: "No, Coquí. Luis dice: ¡Tira mi bola!" (Or the line that was called, with "Carmen dice".) Canelo, kept waiting, shakes himself beside the frog. The frog is splashed. A drop on the card. Canelo noses the stray ball back into its place. The sign; he touches the right ball; the frog throws it; Canelo fetches.
 10. **Decision B, Do (again, give it here, or no more).** Canelo pushes the small ball at the frog with his nose and looks up. One of three calls, drawn fresh. NARR: "Luis dice: ¡Otra vez!" (Or: "Luis dice: Coquí, ¡dame la bola!" Or: "Luis dice: ¡No más!") Three doing bubbles: throwing, holding, giving.
    - Right, "otra vez": he throws; Canelo fetches, shakes himself by the water and puts the ball back in its place. Right signal. A star.
    - Right, "dame la bola": he carries it to Luis; Luis throws it; Canelo fetches and puts it back. Right signal. A star.
    - Right, "no más": he picks the ball up and holds it; Canelo goes down and drinks; the frog puts the ball back in its place. Right signal. A star.
-   - Wrong: he does one of the other two. If he threw, Canelo fetches the ball, puts it back and comes to the frog wetter than before; if he held it or carried it to Luis, the ball is put back in its place and Canelo is left waiting. Luis shakes his head. NARR: "No, Coquí. Luis dice: ¡Otra vez!" (Or: "No, Coquí. Luis dice: ¡Dame la bola!" Or: "Luis dice: ¡Coquí, no más! ¡No más!") Canelo shakes himself beside the frog. A drop. The sign; he does it.
+   - Wrong: he does one of the other two. If he threw, Canelo fetches the ball, puts it back and comes to the frog wetter than before; if he held it, the frog puts it back in its place; if he carried it to Luis, Luis puts it back; and Canelo is left waiting. Luis shakes his head. NARR: "No, Coquí. Luis dice: ¡Otra vez!" (Or: "No, Coquí. Luis dice: ¡Dame la bola!" Or: "Luis dice: ¡Coquí, no más! ¡No más!") Canelo shakes himself beside the frog. A drop. The sign; he does it.
 11. **Decision C, Say, last (he sees which ball).** Canelo goes to the row, picks up one ball and stands in front of the frog and Luis with it in his mouth: Luis's striped ball or the frog's small ball, drawn fresh. NARR: "Luis dice: ¡Mira! Canelo tiene una bola." Two speaking bubbles: "¡Es mi bola!" and "¡Es tu bola!"
    - Right (the small ball; "¡Es mi bola!"): Luis points at the frog. NARR: "Luis dice: Sí, Coquí. Es tu bola." Canelo drops it for the frog; the frog throws it; Canelo fetches it and puts it back. Right signal. A star.
    - Right (the striped ball; "¡Es tu bola!"): Luis puts a hand on his chest. NARR: "Luis dice: Sí. Es mi bola." Canelo puts it back in its place. Right signal. A star.
@@ -201,9 +202,11 @@ In the corner of the screen, from the turn on, a card with three places, one for
    - No star: he is soaked, water running off him, in a puddle that reaches Carmen's feet.
 13. NARR: "Canelo no quiere más." Canelo opens one eye and pushes the ball at the frog with his nose. NARR: "Luis dice: ¿Otra vez?" COQUÍ: "¡No más!" They all laugh.
 
-**Fewest hearings before a word can cost:** mi 7 (step 1 twice; steps 2 and 3: each bubble twice, Luis once, the frog once), tu 6 (step 1; steps 2 and 3; step 4), otra vez 5 (step 5 three times; step 6; step 8), dame 2 here (step 6; and four in story 15), no más 4 (step 7 twice; step 8 twice), más 2 as "quiere más" (step 5) and in every "no más".
+**Fewest hearings before a word can cost:** mi 7 (step 1 twice; steps 2 and 3: each bubble twice, Luis once, the frog once), tu 6 (step 1; steps 2 and 3; step 4), otra vez 5 (step 5 three times; step 6; step 8), dame 3 here (steps 1, 6, 8; and four in story 15), "tira mi bola" 1 and "tira tu bola" 1 as calls under the sign (steps 4, 4b), no más 4 (step 7 twice; step 8 twice), más 2 as "quiere más" (step 5) and in every "no más".
 
-**A miss is filed under:** A: mi or tu. B: the call: otra vez, dame, or más (for "no más"). C: mi or tu.
+**A miss is filed under:** A: mi or tu. B: otra vez or dame; nothing for "no más" (old "no" is enough to get it). C: mi or tu.
+
+**Said plainly:** "más" decides nothing in the stories. It is heard in "quiere más", "hay más bolas" and "no más", and is tested by its picture pair.
 
 ---
 
@@ -214,18 +217,26 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | Word | Sentence | Picture that fits | The other picture |
 | --- | --- | --- | --- |
 | bola | "Es una bola." | the striped ball on the grass | a flower on the same grass |
-| tiene | "Canelo tiene la bola." | Canelo lying with a ball between his paws; Luis with empty hands | Luis holding the ball; Canelo lying with nothing |
-| tira | "Luis tira la bola." | Luis with his arm swung forward, the ball flying away from him, lines trailing behind it | Luis standing with the ball held at his chest |
-| coge | "Carmen coge la bola." | Carmen with the ball dropping into her raised hands, lines trailing above it | Carmen with her arms down, the ball lying in the grass in front of her |
-| salta | "El perro salta." | Canelo in the air, legs out, his shadow below | Canelo lying down |
-| dame | "Carmen dice: ¡Dame la bola!" | Carmen holding both hands out toward the frog, who holds a ball | Carmen, a ball of her own in her hands, turned away |
+| tiene | "Canelo tiene la bola." | Canelo lying with the ball between his paws | Canelo jumping at the ball, which is in the air above him |
+| tira | "Luis tira la bola." | Luis with his arm swung forward, the ball flying away from him, lines trailing behind it | Luis with his arm up, the ball dropping into his hand, lines trailing above it |
+| coge | "Carmen coge la bola." | Carmen with her arm up, the ball dropping into her hand, lines trailing above it | Carmen with her arm swung forward, the ball flying away from her |
+| salta | "El perro salta." | Canelo in the air, his shadow far below | Canelo running along the ground, dust behind him |
+| dame | "Carmen dice: ¡Dame la bola!" | Carmen holding her hand out toward the frog, who holds the ball | Carmen holding the ball out to the frog, who has none |
 | mi | "Luis dice: Es mi bola." | Luis with a hand on his chest, his striped ball in his other arm | Luis pointing at the frog's small ball at the frog's feet |
-| tu | "Carmen dice: Luis, es tu bola." | Carmen pointing at the striped ball in Luis's hands | Carmen with a hand on her chest, her dotted ball in her other arm; Luis beside her with empty hands |
+| tu | "Carmen dice: Luis, es tu bola." | Carmen pointing at the striped ball in Luis's hands; her own ball on the grass | Carmen with her hands on her chest, holding her dotted ball; Luis beside her holding his striped ball |
 | arriba | "La bola está arriba." | the ball in the fork of the tree | the ball down in the reeds |
 | abajo | "Coquí está abajo." | the frog on the ground at the foot of the tree | the frog sitting up in the fork of the tree |
-| más | "Canelo quiere más." | Canelo, wet, pushing the ball at the frog with his nose, tail up, barking | Canelo lying fast asleep, the ball beside him |
+| más | "Canelo quiere más." | Canelo, wet, pushing the ball at the frog with his nose | Canelo at the water, drinking, the ball left beside the frog |
 
 "Otra vez" has no picture pair: a still picture cannot show "again". It is the call of story 17 and comes back in the listening stories.
+
+## What the last gate changed
+
+- Story 17: one more step under the sign ("Ahora, ¡tira mi bola!", the dotted ball), so a ball other than his own has been touched before it can cost; each of the three balls is the right one equally often; "dame la bola" is heard twice more (to Canelo, to Carmen).
+- Story 16: the frog gives Luis the ball before it is hidden again; when he is wrong, it is Canelo who knocks the ball loose.
+- Story 15: the last correction starts "No, Coquí." like the others.
+- Picture pairs: seven were redrawn so that both pictures are lively and only the word picks one (throwing against catching; jumping against running; "give me" against "take").
+- What is filed: nothing after a plain "tiene" line and nothing for "no más", because no new word decides those.
 
 ## What the second round of reviews changed
 
@@ -252,3 +263,4 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 - "Coge" is used as in Puerto Rico: catch it, take it.
 - The balls are told apart by size and pattern, not colour; colours come at the pond.
 - Story 17 has no thing to lose: the frog gets wet.
+- "Tiene" and "más" decide nothing in the stories. "Tiene" is heard a dozen times; "más" is tested by its picture pair.
