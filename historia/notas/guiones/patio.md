@@ -1,4 +1,4 @@
-# El patio: three stories (draft 3, final: after two rounds of fresh reviews)
+# El patio: three stories (draft 4, final: after three rounds of fresh reviews)
 
 Place 1, La casa. Scene 4 of 4, the last of this place. The learner is the little frog (the coquí), a guest at abuela's house.
 He has played eight stories: three at the front of the house, two on the porch, three in the living room.
@@ -45,7 +45,7 @@ Nobody points with a hand or looks toward the answer in a decision.
 6. **Planting, taught.** The frog hops to the crate. Carmen walks to the left bed and stands behind it. NARR: "Carmen dice: Una flor aquí." The big sign is on the left bed, where she stands. He touches it. The frog takes a pot, hops there and plants it. The flower opens and stays. NARR: "Carmen dice: ¡Sí! La flor está aquí." The frog hops back to the crate.
 7. She does not move. NARR: "Carmen dice: Y una flor allá." The big sign is on the right bed, away from her. He touches it. The frog plants one there. It opens. NARR: "Carmen dice: La flor está allá." The frog hops back to the crate.
 8. Luis puts his ball down, walks to the right bed and stands behind it. Carmen steps back to the fence. NARR: "Luis dice: Una flor aquí." The big sign is on the right bed, where he stands. He touches it; the frog plants; it opens. NARR: "Luis dice: La flor está aquí."
-9. Luis does not move. NARR: "Luis dice: Y una flor allá." The big sign is on the left bed. He touches it; the frog plants; it opens. NARR: "Luis dice: La flor está allá."
+9. Luis does not move. NARR: "Luis dice: ¡Aquí no! ¡Allá!" The big sign is on the left bed. He touches it; the frog plants; it opens. NARR: "Luis dice: La flor está allá."
 
 **The turn**
 
@@ -71,7 +71,7 @@ Nobody points with a hand or looks toward the answer in a decision.
    - Sunset (three wrong): the sun sits on the fence, the sky is red and purple, the first firefly comes out. It is pretty. It is not a fail screen.
 15. Luis kicks the ball to Carmen; she kicks it back. NARR: "El niño juega. La niña juega." The ball comes to the frog. COQUÍ: "¡Yo también!" The frog bounces the ball on his head.
 
-**Fewest hearings before a word can cost:** aquí 4, allá 4 (steps 6 to 9, at both beds and from both children). Niño 3, niña 4 before round 2.
+**Fewest hearings before a word can cost:** aquí 5, allá 4 (steps 6 to 9, at both beds and from both children). The "no" line of round 3 is modelled once, in step 9. Niño 3, niña 4 before round 2.
 **Whole clean run:** flor 9 or more, sol 3, juega 3.
 
 **A miss is filed under:** round 1, the word said (aquí or allá); round 2, niño or niña; round 3, the word without the "no" (the one to act on).
@@ -136,7 +136,7 @@ Two kinds of answer bubble over the frog:
 
 ## Story 11: Hasta mañana
 
-- **Goal he can see:** the sun is on the fence and the sky is red. Time to go home: the bird sits on the garden gate. Three fireflies glow in the yard, each with someone: one on Carmen's finger, one on the napkin in abuelo's hands, one on the gate.
+- **Goal he can see:** the sun is on the fence and the sky is red. Time to go home: the bird sits on the garden gate. Three fireflies are in the yard from the first frame, dim until the turn: one on Carmen's finger, one on the napkin abuelo holds (a little cake is on it from the start), one hovering in the middle of the yard.
 - **At stake:** the three fireflies, one a round. A right move and that person sends theirs over to fly beside him, for good. A wrong one and it slips off and drifts away over the fence while they look puzzled. A card in the corner shows three lights, lit or gone.
 - **New words:** vamos, hasta mañana.
 - **Back again:** adiós, hola, ven, gracias, de nada, abuela, abuelo, mamá, papá, sol, mira, ahora, para.
@@ -151,12 +151,12 @@ Two kinds of answer bubble over the frog:
 
 2. Luis stands beside the frog, in the middle of the yard. NARR: "Luis dice: ¡Vamos, Coquí! ¡Vamos al portón!" The big sign is on the gate. He touches it. Luis and the frog go to the gate together, side by side. COQUÍ: "¡Vamos!"
 3. Abuela waves from the door, far from them. NARR: "Abuela dice: ¡Coquí! ¡Ven!" The big sign is on abuela. He touches her. The frog hops back across the yard to her, alone. Then Luis walks back and stands by the family.
-4. NARR: "Abuela dice: Adiós, Coquí. ¡Hasta mañana!" She waves. COQUÍ: "¡Hasta mañana, abuela!"
-5. NARR: "Mamá dice: ¡Hasta mañana, Coquí!" NARR: "Papá dice: ¡Hasta mañana!" The baby claps. COQUÍ: "¡Hasta mañana!" The frog hops to the middle of the yard.
+4. NARR: "Abuela dice: Adiós, Coquí. ¡Hasta mañana!" She waves. Two speaking bubbles: "¡Hasta mañana, abuela!" and "¡Hola, abuela!" The big sign is on "¡Hasta mañana, abuela!" He touches it. COQUÍ: "¡Hasta mañana, abuela!" Right signal.
+5. NARR: "Mamá dice: ¡Hasta mañana, Coquí!" NARR: "Papá dice: ¡Hasta mañana!" The baby claps. COQUÍ: "¡Hasta mañana!" Carmen comes to stand beside the frog. NARR: "Carmen dice: ¡Vamos, Coquí!" The two of them walk to the middle of the yard together.
 
 **The turn**
 
-6. It gets darker. The three fireflies light up and blink, each where it sits. The card with three lights appears. The signs go away.
+6. It gets darker. The three fireflies turn bright and blink, each where it is. The card with three lights appears. The signs go away.
 
 **The game** (no sign). Decisions A and B come in an order drawn fresh; C is last.
 
@@ -166,11 +166,11 @@ Two kinds of answer bubble over the frog:
 8. **Decision B, Say (the gift).** Abuelo comes down from the door with a little round cake on a napkin and holds it out with both hands; his firefly sits on the napkin. NARR: "Abuelo dice: Para ti, Coquí." Two speaking bubbles: "¡Gracias, abuelo!" and one other, drawn fresh from "De nada." and "¡Hola, abuelo!"
    - Right: COQUÍ: "¡Gracias, abuelo!" Right signal. He takes the cake, and the firefly comes with it and stays beside him. NARR: "Abuelo dice: De nada."
    - Wrong: the frog says the other line. Abuelo looks puzzled, a "?" over him; the firefly slips off the napkin and drifts away. NARR: "No. ¡Gracias!" The sign shows the right bubble; it speaks; he touches it. COQUÍ: "¡Gracias, abuelo!" He takes the cake. NARR: "Abuelo dice: De nada."
-9. **Decision C, Do, last (ven or vamos).** Luis stands by the family at the door, on the left. The gate is on the right. The frog is in the middle. The last firefly sits on the gate. NARR: "Luis dice: ¡Ven, Coquí!" (Or "Luis dice: ¡Vamos al portón!" Drawn fresh.) He can touch Luis or the gate.
-   - "¡Ven, Coquí!", and he touches Luis: the frog hops to him. Right signal. Luis hugs him. Then NARR: "Luis dice: ¡Vamos al portón!" and the two of them go to the gate together; the firefly on it comes to the frog and stays.
-   - "¡Vamos al portón!", and he touches the gate: Luis and the frog go to the gate together. Right signal. The firefly on it comes to the frog and stays.
-   - Wrong, he said "¡Ven, Coquí!" and the frog goes to the gate: he lands there alone with a bump, a "?" over him; the firefly is shaken off the gate and drifts away. NARR: "No. ¡Ven, Coquí!" The sign shows Luis; the frog hops to him; the hug; then "Luis dice: ¡Vamos al portón!" and they go to the gate together.
-   - Wrong, he said "¡Vamos al portón!" and the frog goes to Luis: Luis has already run to the gate and bumps it; the frog stands by the family alone, a "?" over him; the firefly is shaken off the gate and drifts away. NARR: "No. ¡Vamos al portón!" The sign shows the gate; the frog hops there, to Luis.
+9. **Decision C, Do, last (ven or vamos).** Luis stands by the family at the door, on the left. The gate is on the right. The frog is in the middle. The last firefly hovers in the middle of the yard, above the frog, the same distance from Luis and from the gate. NARR: "Luis dice: ¡Ven, Coquí!" (Or "Luis dice: ¡Vamos al portón!" Drawn fresh.) He can touch Luis or the gate.
+   - "¡Ven, Coquí!", and he touches Luis: the frog hops to him. Right signal. Luis hugs him. Then NARR: "Luis dice: ¡Vamos al portón!" and the two of them go to the gate together. The firefly comes down to the frog and stays.
+   - "¡Vamos al portón!", and he touches the gate: Luis and the frog go to the gate together. Right signal. The firefly comes down to the frog and stays.
+   - Wrong, he said "¡Ven, Coquí!" and the frog goes to the gate: he stands there alone, a "?" over him; the firefly drifts away over the fence. NARR: "No. ¡Ven, Coquí!" The sign shows Luis; the frog hops to him; the hug; then "Luis dice: ¡Vamos al portón!" and they go to the gate together.
+   - Wrong, he said "¡Vamos al portón!" and the frog goes to Luis: Luis has already run to the gate; the frog stands by the family alone, a "?" over him; the firefly drifts away over the fence. NARR: "No. ¡Vamos al portón!" The sign shows the gate; the frog hops there, to Luis.
    - Either way, Luis then opens the gate.
 
 **The ending** (the same lines in every ending)
@@ -182,7 +182,7 @@ Two kinds of answer bubble over the frog:
    - None: it is dark.
 12. In every ending he then sings his own call (the coquí sound, no words), and the fireflies he has blink back. With none, one comes out of the dark to him. His call again, from far off.
 
-**Fewest hearings before a word can cost:** hasta mañana 5 (steps 4 and 5), vamos 3 (step 2), ven 1 here and 3 or more in story 10.
+**Fewest hearings before a word can cost:** hasta mañana 6 (steps 4 and 5), vamos 4 (steps 2 and 5), ven 1 here and 3 or more in story 10.
 
 **A miss is filed under:** A, hasta mañana; B, gracias; C, the word said (ven or vamos).
 
@@ -201,8 +201,8 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | sol | "Es el sol." | the yard at noon, the sun high | the yard at night, a moon and a star |
 | aquí | "Carmen dice: La flor está aquí." | Carmen behind the left bed, one open flower in the left bed | Carmen behind the left bed, one open flower in the right bed |
 | allá | "Luis dice: La flor está allá." | Luis behind the left bed, one open flower in the right bed | Luis behind the left bed, one open flower in the left bed |
-| amigo | "Luis dice: Es mi amigo." | Luis with an arm round the frog | Luis with an arm round abuelo |
-| ven | "Carmen dice: ¡Ven, Coquí!" | Carmen with an arm out; the frog in mid-hop, almost at her, dust behind him | Carmen with an arm out; the frog sitting still where he was, calm |
+| amigo | "Luis dice: Es mi amigo." | Luis with an arm round the frog | Luis hugging his ball |
+| ven | "Carmen dice: ¡Ven, Coquí!" | Carmen with an arm out; the frog in mid-hop, almost at her, dust behind him | Carmen pointing up at the bird in the air; the frog sitting still where he was, his eyes up on the bird |
 | mira | "Luis dice: ¡Mira, Coquí!" | Luis and the frog side by side, the frog's eyes wide and up, the bird doing a loop above | Luis with an arm out; the frog in mid-hop toward him, dust behind him; no bird |
 | vamos | "Luis dice: ¡Vamos!" | Luis and the frog going out through the open gate | Luis and the frog sitting on the grass by the shut gate, each with a glass of juice |
 | hasta mañana | "¡Hasta mañana!" (the frog) | dusk: the frog at the open gate, waving back at the family | day: the frog arriving at the back door, the family waving hello |
