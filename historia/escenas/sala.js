@@ -79,7 +79,7 @@ const PARADOS=[[100,136],[140,136]],APARTE=[[70,198],[170,198]],JUNTOS=[[96,196]
 const alto=id=>id==="abuela"?51:id==="bebe"?28:(FAM[id].nino?44:(W.gente[id]&&W.gente[id].sent?49:56));
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0&&(p.al==null||p.al>.3)?[Math.round(p.x)-11,Math.round(p.y)-alto(id),22,alto(id)]:null;};
 const persona=id=>({id,m:1,si:w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0),box:()=>caja(id)});
-const COSAS=["bebe","hermano","hermana","abuela","mama","papa","abuelo"].map(persona).concat([
+const COSAS=["hermano","hermana","bebe","abuela","mama","papa","abuelo"].map(persona).concat([
   {id:"bizcocho",si:w=>w.pastel>0,box:[106,138,30,16],m:1},{id:"mesita",box:[98,148,46,18],m:0},{id:"sofa",box:[68,84,92,44],m:0},{id:"butaca",box:[160,86,42,42],m:0},
   {id:"fotos",box:[64,34,82,30],m:0},{id:"lampara",box:[146,62,20,64],m:0},{id:"puerta",box:[20,42,42,80],m:0},{id:"ventana",box:[160,32,56,54],m:0},{id:"sala",box:[0,122,240,94],m:0}]);
 
@@ -185,7 +185,8 @@ const acts={
     else{q.bub="amor";SFX.coqui();await wait(800);q.bub=null;}},
   /* ---- story 7: three photos ---- */
   // the boy and the girl run in and hug the baby
-  async corren(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=40;a.y=126;b.x=34;b.y=124;await Promise.all([mueve("hermano",94,198,10),mueve("hermana",48,200,10)]);G("bebe").est="clap";SFX.pio();await wait(800);G("bebe").est="idle";},
+  async corren(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=40;a.y=126;b.x=34;b.y=124;await Promise.all([mueve("hermano",94,198,10),mueve("hermana",48,200,10)]);G("bebe").est="clap";SFX.pio();await wait(800);G("bebe").est="idle";
+    const bb=G("bebe"),m=G("mama");for(let i=1;i<=6;i++){bb.x=70+(m.x-70)*i/6;bb.y=193+(m.y-15-193)*i/6-Math.sin(Math.PI*i/6)*8;await wait(TICK);}bb.x=m.x;bb.y=m.y-15;bb.z=m.y+1;await wait(200);},   // then the baby goes up onto mamá's lap
   // two people take their places, left and right; which side each is on is drawn fresh
   async lados(o){const s=azar()?0:1,P=o.donde==="juntos"?JUNTOS:o.donde==="parados"?PARADOS:APARTE;if(o.donde==="parados"){G(o.a).servido=0;G(o.b).servido=0;}await Promise.all([mueve(o.a,P[s][0],P[s][1]),mueve(o.b,P[1-s][0],P[1-s][1])]);},
   async sientan(){await Promise.all([mueve("mama",SITIO.mama[0],SITIO.mama[1]),mueve("papa",SITIO.papa[0],SITIO.papa[1])]);G("mama").sent=1;G("papa").sent=1;},
