@@ -75,7 +75,7 @@ function mkAve(st,fl){const R=st==="round",b=new Buf(R?24:18,R?18:14),B=RP.blue,
   if(!R){b.px(cx-1,cy+4,RP.orng[1]);b.px(cx+2,cy+4,RP.orng[1]);}
   return b.outline().done();}
 const PERCH={ventana:[112,57],puerta:[166,49]},HOLE={ventana:[112,71],puerta:[166,80]};
-function avePos(v){if(v.mode==="head"&&W.tapado){const b=frogBox(W.cq);return [b.x+b.w/2,b.y+Math.round(W.cq.dy)+13];}
+function avePos(v){if(v.mode==="head"&&W.tapado){const b=frogBox(W.cq);return [b.x+b.w/2,b.y+Math.round(W.cq.dy)+19];}
   if(v.mode==="circle")return [Math.round(150+56*Math.cos(F/13)),Math.round(22+7*Math.sin(F/13*2))];if(v.mode==="head"){const b=frogBox(W.cq);return [b.x+b.w/2,b.y+Math.round(W.cq.dy)+2];}return [Math.round(v.x),Math.round(v.y)];}
 const AVK=1.6;   // the bird is drawn bigger than its pixels, so it reads at phone size
 function drawAve(c,v){if(!v||v.mode==="none")return;const p=avePos(v),st=v.st||"n",fl=(v.mode==="circle"||v.mode==="fly")?(F>>1)%2:0,
@@ -156,7 +156,8 @@ function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(po
     if(W.wet)for(let k=0;k<3;k++)fr(c,b.x+3+k*Math.round(b.w/3),b.y+((F*2+k*5)%12),1,2,"#8CC4F8");
     if(W.gotas){const t=F-W.gotas;for(let k=0;k<3;k++){const y=Math.min(b.y+2,b.y-26+(t-k*3)*5);if(t>=k*3)fr(c,b.x+5+k*Math.round(b.w/4),y,2,3,"#8CC4F8");}}}
   drawAve(c,W.ave);
-  if(W.trozo){const t=W.trozo;fr(c,t.x-5,t.y-4,11,9,OUT);fr(c,t.x-4,t.y-3,9,7,SPONGE);fr(c,t.x-4,t.y-3,9,3,FROST);}   // a slice on its way to the frog
+  if(W.tapado&&W.ave){const p=avePos(W.ave),f=(F>>1)%2;[[-1],[1]].forEach(d=>{const x=p[0]+d[0]*(11+f);fr(c,x-4,p[1]-14,8,7,OUT);fr(c,x-3,p[1]-13,6,5,RP.blue[2]);fr(c,x-3,p[1]-13,6,1,RP.blue[3]);});}   // wings out over his eyes
+  if(W.trozo){const t=W.trozo,k=t.k||1,w=Math.max(3,Math.round(9*k));fr(c,t.x-4-1,t.y-4,w+2,9,OUT);fr(c,t.x-4,t.y-3,w,7,SPONGE);fr(c,t.x-4,t.y-3,w,3,FROST);if(t.k&&t.k<1){fr(c,t.x+6,t.y+5,1,1,SPONGE);fr(c,t.x-6,t.y+6,1,1,SPONGE);}}   // a slice on its way to the frog
   if(W.hojas&&F-W.hojas.f<12){const h=W.hojas,k=F-h.f;[[-1,-1],[1,-1],[-1,0],[1,0],[0,-1]].forEach((d,i)=>fr(c,h.x+d[0]*(4+k*2)+i,h.y+d[1]*(3+k)+k,3,2,i%2?RP.grn[4]:RP.grn[2]));}   // leaves fly as he looks
   if(W.storm){c.fillStyle="rgba(150,160,176,.62)";c.beginPath();c.arc(210,17,10,0,7);c.fill();}   // the sun goes pale
   if(W.dark){c.fillStyle="rgba(14,22,46,"+W.dark+")";c.fillRect(0,0,SW,SH);}
@@ -244,7 +245,7 @@ const acts={
     SFX.bonk();fx({t:"knock",n:7,x:h[0],y:h[1]-4});v.st="sleep";await aveA(h[0]-v.dir*6,h[1]+10,4);await wait(350);v.st="n";await aveA(150,26,10);v.mode="circle";},
   async posa(o){const v=W.ave,p=PERCH[o.en];v.x=avePos(v)[0];v.y=avePos(v)[1];v.mode="fly";v.dir=p[0]>=v.x?1:-1;await aveA(p[0],p[1],10);v.mode="sit";v.dir=o.en==="puerta"?-1:1;SFX.pio();await wait(400);},
   async come(){const k=W.ab?W.ab.en:"puerta";await acts.ir({a:k});W.plato=Math.max(0,W.plato-1);const h=HOLE[k],b=frogBox(W.cq);W.trozo={x:h[0],y:h[1]};
-    for(let i=1;i<=6;i++){W.trozo.x=h[0]+(b.x+b.w/2-h[0])*i/6;W.trozo.y=h[1]+(b.y+8-h[1])*i/6;await wait(TICK);}await wait(250);W.trozo=null;SFX.munch();bounce(4);W.cq.bub="amor";await wait(900);W.cq.bub=null;},
+    for(let i=1;i<=6;i++){W.trozo.x=h[0]+(b.x+b.w/2-h[0])*i/6;W.trozo.y=h[1]+(b.y+8-h[1])*i/6;await wait(TICK);}for(const k of [1,.7,.4]){W.trozo.k=k;SFX.munch();bounce(3);await wait(320);}W.trozo=null;fx({t:"star",n:8,pts:[[b.x+b.w/2-8,b.y+12],[b.x+b.w/2+8,b.y+10]]});W.cq.bub="amor";await wait(900);W.cq.bub=null;},
   async regala(){const v=W.ave,k=W.ab?W.ab.en:"puerta",h=HOLE[k];W.plato=Math.max(0,W.plato-1);v.x=avePos(v)[0];v.y=avePos(v)[1];v.mode="fly";v.dir=h[0]>=v.x?1:-1;SFX.pio();
     await aveA(h[0],h[1]-6,8);v.slice=1;await wait(300);const b=frogBox(W.cq);v.dir=b.x+b.w/2>=v.x?1:-1;await aveA(b.x+b.w/2,b.y+2,10);v.slice=0;v.mode="head";SFX.munch();await wait(250);SFX.pio();W.cq.bub="amor";await wait(1000);W.cq.bub=null;},
   async fin2(){await camGo("wide",9);const v=W.ave;
@@ -270,11 +271,12 @@ const acts={
     for(const s of ["palma_grande","palma_pequena"]){v.x=avePos(v)[0];v.y=avePos(v)[1];v.mode="fly";v.dir=SPOT[s][0]>=v.x?1:-1;await aveA(SPOT[s][0],SPOT[s][1],8);v.mode="sit";SFX.pio();await wait(450);}
     v.mode="fly";const t=k==="casa_grande"?[176,100]:[73,112];v.dir=t[0]>=v.x?1:-1;await aveA(t[0],t[1],9);v.mode="sit";
     if(k==="casa_pequena"){v.st="n";await wait(700);v.dir=-v.dir;await wait(300);}   // on the roof, puzzled, then it looks down
-    SFX.pio();const q=W.cq;W.piernas=0;if(k==="casa_grande"){SFX.creak();W.door=1;}W.asoma=0;q.vis=1;q.s=.8;await acts.ir({a:"patio"});W.door=0;bounce(8);SFX.coqui();},
+    const pa=avePos(v);fx({t:"knock",n:10,x:pa[0],y:pa[1]-30});SFX.pio();await wait(600);const q=W.cq;W.piernas=0;if(k==="casa_grande"){SFX.creak();W.door=1;}W.asoma=0;q.vis=1;q.s=.8;await acts.ir({a:"patio"});W.door=0;bounce(8);SFX.coqui();},
   async atardece(){W.dusk=2;await wait(700);},
-  async devuelve(){W.lost--;W.mios=(W.mios||0)+1;SFX.pio();W.cq.bub="amor";await wait(1000);W.cq.bub=null;},
+  async devuelve(){const b=frogBox(W.cq);W.ave={mode:"fly",x:250,y:30,dir:-1,st:"n",slice:1};SFX.pio();await aveA(b.x+b.w+8,b.y+6,10);W.ave.mode="sit";await wait(300);
+    W.ave.slice=0;W.lost--;W.mios=(W.mios||0)+1;SFX.right();W.cq.bub="amor";await wait(1100);W.cq.bub=null;},
   async avecasa(){const v=W.ave;if(!v||v.mode==="none")W.ave={mode:"fly",x:200,y:40,dir:-1,st:"n"};const w=W.ave;w.x=avePos(w)[0];w.y=avePos(w)[1];w.mode="fly";w.dir=-1;await aveA(73,126,10);w.mode="none";SFX.pio();await wait(400);},
-  async abentra(){if(W.ab){W.ab.en="puerta";W.ab.pose="wave";}SFX.creak();W.door=1;await wait(500);if(W.ab)W.ab.pose="idle";for(let i=4;i>=0;i--){if(W.ab)W.ab.al=i/5;await wait(TICK);}W.ab=null;SFX.slam();W.door=0;await wait(300);},
+  async abentra(){SFX.creak();W.door=1;await wait(500);if(W.ab){W.ab.en="puerta";W.ab.pose="wave";}await wait(900);if(W.ab)W.ab.pose="idle";for(let i=7;i>=0;i--){if(W.ab)W.ab.al=i/8;await wait(TICK);}W.ab=null;await wait(400);SFX.creak();W.door=.5;await wait(250);SFX.slam();W.door=0;await wait(400);},
   async marcador(){if((W.mios||0)>(W.lost||0)){W.heart=1;SFX.win();fx({t:"star",n:30,pts:[[60,20],[180,24],[120,12],[100,30],[150,30]]});}else{W.cq.bub="mal";SFX.coqui();}await wait(1600);W.cq.bub=null;},
   async vetecq(){const q=W.cq;for(let h=0;h<3;h++){SFX.hop();await hopTo(q.x+38,q.y+4,1);}SFX.coqui();await wait(500);SFX.coqui();q.vis=0;await wait(800);},
   async fin(){const b=cam;   // only the dry ending is a celebration
