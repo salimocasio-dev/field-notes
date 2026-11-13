@@ -1,0 +1,691 @@
+{
+ "id": "uno-dos-tres",
+ "title": "Uno, dos, tres",
+ "place": "El parque",
+ "scene": "camino",
+ "next": "donde-esta-el-gato",
+ "goal": "Do what Luis calls and get along the path to the big tree.",
+ "stake": {
+  "thing": "puesto",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "parque",
+  "perro",
+  "camina",
+  "corre",
+  "espera",
+  "uno",
+  "dos",
+  "tres"
+ ],
+ "back_again": [
+  "hola",
+  "mira",
+  "vamos",
+  "ahora",
+  "sí",
+  "no",
+  "juega",
+  "también"
+ ],
+ "also_heard": [
+  "árbol",
+  "se llama",
+  "este",
+  "a jugar"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "abuela": "abuela",
+  "perro": "c_n_perro",
+  "gato": "c_n_gato",
+  "arbol0": "c_n_arbol",
+  "arbol1": "c_n_arbol",
+  "arbol2": "c_n_arbol",
+  "grande": "c_n_grande",
+  "banco": "c_n_banco",
+  "porton": "p_n_porton",
+  "camino": "c_n_camino",
+  "parque": "c_n_parque",
+  "coqui": "yo_coqui",
+  "ave00": "c_n_pajaro",
+  "ave01": "c_n_pajaro",
+  "ave02": "c_n_pajaro",
+  "ave10": "c_n_pajaro",
+  "ave11": "c_n_pajaro",
+  "ave12": "c_n_pajaro",
+  "ave20": "c_n_pajaro",
+  "ave21": "c_n_pajaro",
+  "ave22": "c_n_pajaro"
+ },
+ "palabras": {},
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "p_n_porton": {
+   "who": "narr",
+   "text": "Es el portón."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c_n_gato": {
+   "who": "narr",
+   "text": "Es un gato."
+  },
+  "c_n_arbol": {
+   "who": "narr",
+   "text": "Es un árbol."
+  },
+  "c_n_grande": {
+   "who": "narr",
+   "text": "Es un árbol grande."
+  },
+  "c_n_banco": {
+   "who": "narr",
+   "text": "Es un banco."
+  },
+  "c_n_parque": {
+   "who": "narr",
+   "text": "Es el parque."
+  },
+  "c_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "c_n_camino": {
+   "who": "narr",
+   "text": "Es el camino."
+  },
+  "c12_parque": {
+   "who": "narr",
+   "text": "Este es el parque."
+  },
+  "c12_luis_carmen": {
+   "who": "narr",
+   "text": "Mira. Luis y Carmen están en el parque."
+  },
+  "c12_perro_abuela": {
+   "who": "narr",
+   "text": "Y este es el perro de abuela."
+  },
+  "c12_se_llama": {
+   "who": "narr",
+   "text": "El perro se llama Canelo."
+  },
+  "c12_cq_hola": {
+   "who": "tu",
+   "text": "¡Hola, Canelo!"
+  },
+  "c12_puedes": {
+   "who": "narr",
+   "text": "¿Puedes tocar al perro?"
+  },
+  "c12_vamos_jugar": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Vamos a jugar! ¡Uno, dos, tres!"
+  },
+  "c12_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Camina!"
+  },
+  "c12_coqui_camina": {
+   "who": "narr",
+   "text": "Coquí camina. Carmen camina."
+  },
+  "c12_coqui_corre": {
+   "who": "narr",
+   "text": "Coquí corre. El perro corre también."
+  },
+  "c12_coqui_espera": {
+   "who": "narr",
+   "text": "Coquí espera. Carmen espera."
+  },
+  "c12_ahora_si": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Ahora sí. ¡Uno, dos, tres! ¡Espera!"
+  },
+  "c12_no_canelo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Canelo! ¡Espera!"
+  },
+  "c12_ven": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ven, Coquí! ¡Ven, Canelo!"
+  },
+  "c12_juega_parque": {
+   "who": "narr",
+   "text": "Canelo juega en el parque."
+  },
+  "c12_cq_uno": {
+   "who": "tu",
+   "text": "¡Uno, dos, tres!"
+  },
+  "c12_uno_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Camina!"
+  },
+  "c12_lento_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Uno. Dos. Tres. ¡Camina!"
+  },
+  "c12_no_camina": {
+   "who": "narr",
+   "text": "No. ¡Camina!"
+  },
+  "c12_no_coqui_camina": {
+   "who": "narr",
+   "text": "No. Coquí, ¡camina!"
+  },
+  "c12_cf_corre_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Carmen, corre! ¡Coquí, camina!"
+  },
+  "c12_fc_corre_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Coquí, camina! ¡Carmen, corre!"
+  },
+  "c12_cf_espera_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Carmen, espera! ¡Coquí, camina!"
+  },
+  "c12_fc_espera_camina": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Coquí, camina! ¡Carmen, espera!"
+  },
+  "c12_uno_corre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Corre!"
+  },
+  "c12_lento_corre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Uno. Dos. Tres. ¡Corre!"
+  },
+  "c12_no_corre": {
+   "who": "narr",
+   "text": "No. ¡Corre!"
+  },
+  "c12_no_coqui_corre": {
+   "who": "narr",
+   "text": "No. Coquí, ¡corre!"
+  },
+  "c12_cf_camina_corre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Carmen, camina! ¡Coquí, corre!"
+  },
+  "c12_fc_camina_corre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Coquí, corre! ¡Carmen, camina!"
+  },
+  "c12_cf_espera_corre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Carmen, espera! ¡Coquí, corre!"
+  },
+  "c12_fc_espera_corre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Coquí, corre! ¡Carmen, espera!"
+  },
+  "c12_uno_espera": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Espera!"
+  },
+  "c12_lento_espera": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Uno. Dos. Tres. ¡Espera!"
+  },
+  "c12_no_espera": {
+   "who": "narr",
+   "text": "No. ¡Espera!"
+  },
+  "c12_no_coqui_espera": {
+   "who": "narr",
+   "text": "No. Coquí, ¡espera!"
+  },
+  "c12_cf_camina_espera": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Carmen, camina! ¡Coquí, espera!"
+  },
+  "c12_fc_camina_espera": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Coquí, espera! ¡Carmen, camina!"
+  },
+  "c12_cf_corre_espera": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Carmen, corre! ¡Coquí, espera!"
+  },
+  "c12_fc_corre_espera": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Uno, dos, tres! ¡Coquí, espera! ¡Carmen, corre!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio12"
+  },
+  {
+   "wait": 500
+  },
+  "c12_parque",
+  "c12_luis_carmen",
+  {
+   "set": {
+    "twinkle": "perro"
+   }
+  },
+  "c12_perro_abuela",
+  "c12_se_llama",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "ladra"
+  },
+  {
+   "say": "c12_cq_hola",
+   "gap": 300
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "perro",
+   "lead": [],
+   "line": "c12_puedes",
+   "then": [
+    {
+     "act": "lame"
+    }
+   ],
+   "after": []
+  },
+  {
+   "act": "cuenta"
+  },
+  {
+   "say": "c12_vamos_jugar",
+   "gap": 300
+  },
+  {
+   "dots": 2
+  },
+  {
+   "ask": "camina",
+   "lead": [],
+   "line": "c12_camina",
+   "then": [
+    "c12_coqui_camina"
+   ],
+   "after": [
+    {
+     "act": "ronda",
+     "modo": "camina"
+    }
+   ],
+   "resp": [
+    "camina",
+    "corre"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "corre",
+   "lead": [],
+   "line": "c12_uno_corre",
+   "then": [
+    "c12_coqui_corre"
+   ],
+   "after": [
+    {
+     "act": "ronda",
+     "modo": "corre"
+    }
+   ],
+   "resp": [
+    "corre",
+    "espera"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "espera",
+   "lead": [],
+   "line": "c12_uno_espera",
+   "then": [
+    "c12_coqui_espera"
+   ],
+   "after": [
+    {
+     "act": "ronda",
+     "modo": "espera"
+    }
+   ],
+   "resp": [
+    "espera",
+    "camina"
+   ],
+   "baraja": true,
+   "quieto": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "alinicio"
+  },
+  {
+   "ask": "espera",
+   "lead": [],
+   "line": "c12_cf_corre_espera",
+   "then": [],
+   "after": [
+    {
+     "act": "ronda2",
+     "f": "espera",
+     "c": "corre"
+    }
+   ],
+   "resp": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "baraja": true,
+   "quieto": true
+  },
+  {
+   "ask": "camina",
+   "lead": [],
+   "line": "c12_fc_espera_camina",
+   "then": [],
+   "after": [
+    {
+     "act": "ronda2",
+     "f": "camina",
+     "c": "espera"
+    }
+   ],
+   "resp": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "alinicio"
+  },
+  {
+   "say": "c12_ahora_si",
+   "gap": 100
+  },
+  {
+   "act": "demo"
+  },
+  {
+   "say": "c12_no_canelo",
+   "gap": 200
+  },
+  {
+   "act": "demo2"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "reparte": [
+    "la",
+    "oa",
+    "xa"
+   ],
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ]
+  },
+  {
+   "calc": "qa",
+   "cond": "la=espera",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "$la",
+    "$oa"
+   ],
+   "baraja": true,
+   "pick": "$la",
+   "tests": "$la",
+   "lock": true,
+   "quieto": "$qa",
+   "lead": [],
+   "line": "c12_uno_$la",
+   "right": [
+    {
+     "act": "ronda",
+     "modo": "$la"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ronda",
+     "modo": "$la",
+     "mal": "$x"
+    },
+    "c12_no_$la",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "reparte": [
+    "lb",
+    "cb",
+    "xb"
+   ],
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ]
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "cf",
+    "fc"
+   ]
+  },
+  {
+   "calc": "qb",
+   "cond": "lb=espera",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "baraja": true,
+   "pick": "$lb",
+   "tests": "$lb",
+   "lock": true,
+   "quieto": "$qb",
+   "lead": [],
+   "line": "c12_$ob_$cb_$lb",
+   "right": [
+    {
+     "act": "ronda2",
+     "f": "$lb",
+     "c": "$cb"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ronda2",
+     "f": "$lb",
+     "c": "$cb",
+     "mal": "$x"
+    },
+    "c12_no_coqui_$lb",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "lc",
+   "options": [
+    "$oa",
+    "$xa"
+   ]
+  },
+  {
+   "calc": "qc",
+   "cond": "lc=espera",
+   "then": "1",
+   "else": "0"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "baraja": true,
+   "pick": "$lc",
+   "tests": "$lc",
+   "lock": true,
+   "quieto": "$qc",
+   "lead": [],
+   "line": "c12_lento_$lc",
+   "right": [
+    {
+     "act": "ronda",
+     "modo": "$lc"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ronda",
+     "modo": "$lc",
+     "mal": "$x"
+    },
+    "c12_no_$lc",
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "say": "c12_ven",
+   "gap": 200
+  },
+  {
+   "act": "final12"
+  },
+  "c12_juega_parque",
+  {
+   "say": "c12_cq_uno",
+   "gap": 300
+  },
+  {
+   "act": "ladra3"
+  },
+  {
+   "wait": 600
+  }
+ ],
+ "leer": [
+  "c12_parque",
+  "c12_luis_carmen",
+  "c12_perro_abuela",
+  "c12_se_llama",
+  "c12_cq_hola",
+  "c12_puedes",
+  "c12_vamos_jugar",
+  "c12_camina",
+  "c12_coqui_camina",
+  "c12_uno_corre",
+  "c12_coqui_corre",
+  "c12_uno_espera",
+  "c12_coqui_espera",
+  "c12_cf_corre_espera",
+  "c12_fc_espera_camina",
+  "c12_ahora_si",
+  "c12_no_canelo",
+  "c12_ven",
+  "c12_juega_parque",
+  "c12_cq_uno"
+ ]
+}

@@ -1,0 +1,931 @@
+{
+ "id": "donde-esta-el-gato",
+ "title": "¿Dónde está el gato?",
+ "place": "El parque",
+ "scene": "camino",
+ "next": "rapido-despacio",
+ "goal": "Find the cat in the trees and get it into its basket.",
+ "stake": {
+  "thing": "galletas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "gato",
+  "árbol",
+  "hay",
+  "uno",
+  "dos",
+  "tres",
+  "¿dónde está?"
+ ],
+ "back_again": [
+  "perro",
+  "corre",
+  "espera",
+  "pájaro",
+  "no",
+  "mira",
+  "aquí",
+  "está",
+  "con"
+ ],
+ "also_heard": [
+  "en",
+  "gatito"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "abuela": "abuela",
+  "perro": "c_n_perro",
+  "gato": "c_n_gato",
+  "arbol0": "c_n_arbol",
+  "arbol1": "c_n_arbol",
+  "arbol2": "c_n_arbol",
+  "grande": "c_n_grande",
+  "banco": "c_n_banco",
+  "porton": "p_n_porton",
+  "camino": "c_n_camino",
+  "parque": "c_n_parque",
+  "coqui": "yo_coqui",
+  "ave00": "c_n_pajaro",
+  "ave01": "c_n_pajaro",
+  "ave02": "c_n_pajaro",
+  "ave10": "c_n_pajaro",
+  "ave11": "c_n_pajaro",
+  "ave12": "c_n_pajaro",
+  "ave20": "c_n_pajaro",
+  "ave21": "c_n_pajaro",
+  "ave22": "c_n_pajaro"
+ },
+ "palabras": {
+  "n1": "uno",
+  "n2": "dos",
+  "n3": "tres"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "p_n_porton": {
+   "who": "narr",
+   "text": "Es el portón."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c_n_gato": {
+   "who": "narr",
+   "text": "Es un gato."
+  },
+  "c_n_arbol": {
+   "who": "narr",
+   "text": "Es un árbol."
+  },
+  "c_n_grande": {
+   "who": "narr",
+   "text": "Es un árbol grande."
+  },
+  "c_n_banco": {
+   "who": "narr",
+   "text": "Es un banco."
+  },
+  "c_n_parque": {
+   "who": "narr",
+   "text": "Es el parque."
+  },
+  "c_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "c_n_camino": {
+   "who": "narr",
+   "text": "Es el camino."
+  },
+  "c13_un_gato": {
+   "who": "narr",
+   "text": "Mira. Un gato."
+  },
+  "c13_gato_parque": {
+   "who": "narr",
+   "text": "El gato está en el parque."
+  },
+  "c13_ven_gatito": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Ven, gatito! ¡Ven!"
+  },
+  "c13_puedes": {
+   "who": "narr",
+   "text": "¿Puedes tocar al gato?"
+  },
+  "c13_gato_corre": {
+   "who": "narr",
+   "text": "¡El gato corre! El gato está en el árbol."
+  },
+  "c13_mira_arboles": {
+   "who": "narr",
+   "text": "Mira los árboles."
+  },
+  "c13_un_arbol": {
+   "who": "narr",
+   "text": "Un árbol."
+  },
+  "c13_dos_arboles": {
+   "who": "narr",
+   "text": "Dos árboles."
+  },
+  "c13_tres_arboles": {
+   "who": "narr",
+   "text": "Tres árboles."
+  },
+  "c13_hay_1": {
+   "who": "narr",
+   "text": "En este árbol hay un pájaro. Uno."
+  },
+  "c13_hay_2": {
+   "who": "narr",
+   "text": "Aquí hay dos pájaros."
+  },
+  "c13_hay_3": {
+   "who": "narr",
+   "text": "Y aquí hay tres pájaros."
+  },
+  "c13_luis_donde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Dónde está el gato?"
+  },
+  "c13_car_donde": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Dónde está el gato?"
+  },
+  "c13_car_coqui_donde": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Coquí, ¿dónde está el gato?"
+  },
+  "c12_no_canelo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡No, Canelo! ¡Espera!"
+  },
+  "c13_cuenta_1": {
+   "who": "narr",
+   "text": "Un pájaro."
+  },
+  "c13_cuenta_2": {
+   "who": "narr",
+   "text": "Dos pájaros."
+  },
+  "c13_cuenta_3": {
+   "who": "narr",
+   "text": "Tres pájaros."
+  },
+  "c13_aqui": {
+   "who": "narr",
+   "text": "El gato y el perro están aquí."
+  },
+  "c13_amigos": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Ahora son amigos."
+  },
+  "c13_cq_amigos": {
+   "who": "tu",
+   "text": "¡Amigos!"
+  },
+  "c13_car_esta_1": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Está en el árbol con un pájaro."
+  },
+  "c13_luis_esta_1": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Está en el árbol con un pájaro."
+  },
+  "c13_no_esta_1": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El gato no está en el árbol con un pájaro."
+  },
+  "c13_y_no_esta_1": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y no está en el árbol con un pájaro."
+  },
+  "c13_cq_esta_1": {
+   "who": "tu",
+   "text": "Está en el árbol con un pájaro."
+  },
+  "c13_no_1": {
+   "who": "narr",
+   "text": "No. Un pájaro."
+  },
+  "c13_car_esta_2": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Está en el árbol con dos pájaros."
+  },
+  "c13_luis_esta_2": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Está en el árbol con dos pájaros."
+  },
+  "c13_no_esta_2": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El gato no está en el árbol con dos pájaros."
+  },
+  "c13_y_no_esta_2": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y no está en el árbol con dos pájaros."
+  },
+  "c13_cq_esta_2": {
+   "who": "tu",
+   "text": "Está en el árbol con dos pájaros."
+  },
+  "c13_no_2": {
+   "who": "narr",
+   "text": "No. Dos pájaros."
+  },
+  "c13_car_esta_3": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Está en el árbol con tres pájaros."
+  },
+  "c13_luis_esta_3": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Está en el árbol con tres pájaros."
+  },
+  "c13_no_esta_3": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: El gato no está en el árbol con tres pájaros."
+  },
+  "c13_y_no_esta_3": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Y no está en el árbol con tres pájaros."
+  },
+  "c13_cq_esta_3": {
+   "who": "tu",
+   "text": "Está en el árbol con tres pájaros."
+  },
+  "c13_no_3": {
+   "who": "narr",
+   "text": "No. Tres pájaros."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio13"
+  },
+  {
+   "draw": "pz",
+   "options": [
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "posan",
+   "p": "$pz"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "gato"
+   }
+  },
+  "c13_un_gato",
+  "c13_gato_parque",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "say": "c13_ven_gatito",
+   "gap": 300
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "gato",
+   "lead": [],
+   "line": "c13_puedes",
+   "then": [
+    {
+     "act": "ronronea"
+    }
+   ],
+   "after": []
+  },
+  {
+   "act": "ladra"
+  },
+  {
+   "draw": "gz",
+   "options": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "act": "gatoarbol",
+   "en": "$gz",
+   "que": "cola"
+  },
+  "c13_gato_corre",
+  "c13_mira_arboles",
+  {
+   "act": "lit",
+   "n": "1"
+  },
+  "c13_un_arbol",
+  {
+   "act": "lit",
+   "n": "2"
+  },
+  "c13_dos_arboles",
+  {
+   "act": "lit",
+   "n": "3"
+  },
+  "c13_tres_arboles",
+  {
+   "act": "lit",
+   "n": "0"
+  },
+  {
+   "act": "luzn",
+   "n": "1"
+  },
+  "c13_hay_1",
+  {
+   "act": "luzn",
+   "n": "2"
+  },
+  "c13_hay_2",
+  {
+   "act": "luzn",
+   "n": "3"
+  },
+  "c13_hay_3",
+  {
+   "act": "luzn",
+   "n": "0"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "say": "c13_luis_donde",
+   "gap": 250
+  },
+  {
+   "ask": "arbol$gz",
+   "lead": [],
+   "line": "c13_car_esta_$n",
+   "then": [],
+   "after": [
+    {
+     "act": "ir",
+     "a": "arbol$gz"
+    },
+    {
+     "act": "asoma"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "draw": "py",
+   "options": [
+    "123",
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "esconde"
+  },
+  {
+   "act": "posan",
+   "p": "$py"
+  },
+  {
+   "draw": "gy",
+   "options": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "act": "gatoarbol",
+   "en": "$gy",
+   "que": "cola"
+  },
+  {
+   "ask": "arbol$gy",
+   "lead": [
+    "c13_no_esta_$oa"
+   ],
+   "line": "c13_y_no_esta_$ob",
+   "after": [
+    {
+     "act": "ir",
+     "a": "arbol$gy"
+    },
+    {
+     "act": "asoma"
+    }
+   ],
+   "then": []
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "px",
+   "options": [
+    "123",
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "esconde"
+  },
+  {
+   "act": "posan",
+   "p": "$px"
+  },
+  {
+   "draw": "gx",
+   "options": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "act": "gatoarbol",
+   "en": "$gx",
+   "que": "cola"
+  },
+  {
+   "act": "ir",
+   "a": "centro"
+  },
+  {
+   "ask": "con_$n",
+   "lead": [],
+   "line": "c13_car_coqui_donde",
+   "then": [
+    {
+     "act": "carmenvuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "carmenva",
+     "en": "$gx"
+    },
+    {
+     "act": "asoma"
+    }
+   ],
+   "resp": [
+    "con_$n",
+    "con_$m"
+   ],
+   "baraja": true,
+   "voces": {
+    "con_1": "c13_cq_esta_1",
+    "con_2": "c13_cq_esta_2",
+    "con_3": "c13_cq_esta_3"
+   },
+   "said": {
+    "con_$n": "c13_cq_esta_$n"
+   }
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "escapa"
+  },
+  {
+   "say": "c12_no_canelo",
+   "gap": 200
+  },
+  {
+   "act": "agarra"
+  },
+  {
+   "draw": "pw",
+   "options": [
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "posan",
+   "p": "$pw"
+  },
+  {
+   "act": "luzn",
+   "n": "1"
+  },
+  "c13_cuenta_1",
+  {
+   "act": "luzn",
+   "n": "2"
+  },
+  "c13_cuenta_2",
+  {
+   "act": "luzn",
+   "n": "3"
+  },
+  "c13_cuenta_3",
+  {
+   "act": "luzn",
+   "n": "0"
+  },
+  {
+   "set": {
+    "tarjeta": "galletas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "123",
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "esconde"
+  },
+  {
+   "act": "posan",
+   "p": "$pa"
+  },
+  {
+   "draw": "ga",
+   "options": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "act": "gatoarbol",
+   "en": "$ga",
+   "que": "nada"
+  },
+  {
+   "say": "c13_car_donde",
+   "gap": 250
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arbol0",
+    "arbol1",
+    "arbol2"
+   ],
+   "pick": "arbol$ga",
+   "tests": "n$n",
+   "lock": true,
+   "lead": [],
+   "line": "c13_luis_esta_$n",
+   "right": [
+    {
+     "act": "ir",
+     "a": "arbol$ga"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "saca"
+      },
+      {
+       "act": "gatocome"
+      }
+     ],
+     "else": [
+      {
+       "act": "acaricia"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ir",
+     "a": "$x"
+    },
+    {
+     "act": "saca"
+    },
+    {
+     "wait": 500
+    },
+    {
+     "act": "perrocome"
+    },
+    "c13_no_$n",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "123",
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "esconde"
+  },
+  {
+   "act": "posan",
+   "p": "$pb"
+  },
+  {
+   "draw": "gb",
+   "options": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "act": "gatoarbol",
+   "en": "$gb",
+   "que": "nada"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "arbol0",
+    "arbol1",
+    "arbol2"
+   ],
+   "pick": "arbol$gb",
+   "tests": "no",
+   "lock": true,
+   "lead": [
+    "c13_no_esta_$oa"
+   ],
+   "line": "c13_y_no_esta_$ob",
+   "right": [
+    {
+     "act": "ir",
+     "a": "arbol$gb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "saca"
+      },
+      {
+       "act": "gatocome"
+      }
+     ],
+     "else": [
+      {
+       "act": "acaricia"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ir",
+     "a": "$x"
+    },
+    {
+     "act": "saca"
+    },
+    {
+     "wait": 500
+    },
+    {
+     "act": "perrocome"
+    },
+    "c13_no_$n",
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 8
+  },
+  {
+   "act": "ir",
+   "a": "centro"
+  },
+  {
+   "draw": "pc",
+   "options": [
+    "123",
+    "132",
+    "213",
+    "231",
+    "312",
+    "321"
+   ]
+  },
+  {
+   "act": "esconde"
+  },
+  {
+   "act": "posan",
+   "p": "$pc"
+  },
+  {
+   "draw": "gc",
+   "options": [
+    "0",
+    "1",
+    "2"
+   ]
+  },
+  {
+   "act": "gatoarbol",
+   "en": "$gc",
+   "que": "cola"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "con_$n",
+    "con_$m"
+   ],
+   "baraja": true,
+   "pick": "con_$n",
+   "tests": "n$n",
+   "voces": {
+    "con_1": "c13_cq_esta_1",
+    "con_2": "c13_cq_esta_2",
+    "con_3": "c13_cq_esta_3"
+   },
+   "said": {
+    "con_1": "c13_cq_esta_1",
+    "con_2": "c13_cq_esta_2",
+    "con_3": "c13_cq_esta_3"
+   },
+   "lead": [],
+   "line": "c13_car_coqui_donde",
+   "right": [
+    {
+     "act": "carmenva",
+     "en": "$gc"
+    },
+    {
+     "act": "gatocesta"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "galletacesta"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "carmenva",
+     "en": "$tm"
+    },
+    {
+     "act": "mirarriba"
+    },
+    {
+     "act": "perrocome2"
+    },
+    "c13_no_$n",
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "act": "final13"
+  },
+  "c13_aqui",
+  "c13_amigos",
+  {
+   "say": "c13_cq_amigos",
+   "gap": 400
+  },
+  {
+   "wait": 600
+  }
+ ],
+ "leer": [
+  "c13_un_gato",
+  "c13_gato_parque",
+  "c13_ven_gatito",
+  "c13_puedes",
+  "c13_gato_corre",
+  "c13_mira_arboles",
+  "c13_un_arbol",
+  "c13_dos_arboles",
+  "c13_tres_arboles",
+  "c13_hay_1",
+  "c13_hay_2",
+  "c13_hay_3",
+  "c13_luis_donde",
+  "c13_car_esta_2",
+  "c13_no_esta_1",
+  "c13_y_no_esta_3",
+  "c13_car_coqui_donde",
+  "c13_cq_esta_3",
+  "c12_no_canelo",
+  "c13_aqui",
+  "c13_amigos",
+  "c13_cq_amigos"
+ ]
+}

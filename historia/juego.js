@@ -48,8 +48,8 @@ function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK
   shadow(g,b.x+2,q.y+25,b.w-5);g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+Math.round(q.dy));}
 
 /* the two answer bubbles of the Say move: the frog nodding (sí) and the frog shaking his head (no) */
-function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),cx=Math.max(cam[0]+60,Math.min(cam[0]+cam[2]-60,b.x+b.w/2)),y=Math.max(4,b.y-46);
-  return W.resp.indexOf(k)===0?[Math.round(cx-50),y,40,36]:[Math.round(cx+10),y,40,36];}
+function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),n=W.resp.length,i=W.resp.indexOf(k),m=n>2?76:60,cx=Math.max(cam[0]+m,Math.min(cam[0]+cam[2]-m,b.x+b.w/2)),y=Math.max(4,b.y-46);
+  return n>2?[Math.round(cx-70+i*50),y,40,36]:i===0?[Math.round(cx-50),y,40,36]:[Math.round(cx+10),y,40,36];}   // two answer bubbles, or three in a row
 const bx=k=>respBox(k)||((k==="si"||k==="no")?null:E.box(k,W))||(b=>[b.x,b.y,b.w,b.h])(frogBox(W.cq));   // an answer bubble that is gone stands for the frog who said it
 function respDraw(g,a){(W.resp||[]).forEach(k=>{const b=respBox(k),x=b[0],y=b[1],w=b[2],h=b[3],t=(F>>1)%8,o=[0,1,2,1,0,-1,-2,-1][t];
   fr(g,x-1,y,w+2,h,OUT);fr(g,x,y-1,w,h+2,OUT);fr(g,x,y,w,h,"#FFFFFF");
@@ -182,8 +182,8 @@ function tap(x,y){if(!E||!S)return;const inb=b=>b&&x>=b[0]-3&&x<b[0]+b[2]+3&&y>=
 cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*DW,py=(e.clientY-r.top)/r.height*DH;tap(cam[0]+px/DW*cam[2],cam[1]+py/DH*cam[3]);});
 
 /* ---------- the signal for a right move: the same every time ---------- */
-function senal(t,p){if(OIR){bounce(4);return;}const R=Math.round,rb=respBox(t),b=rb?(f=>[f.x,f.y,f.w,f.h])(frogBox(W.cq)):bx(t);if(rb||!p)p={x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
-  SFX.right();bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
+function senal(t,p,quieto){if(OIR){if(!quieto)bounce(4);return;}const R=Math.round,rb=respBox(t),b=rb?(f=>[f.x,f.y,f.w,f.h])(frogBox(W.cq)):bx(t);if(rb||!p)p={x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
+  SFX.right();if(!quieto)bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
 const bien=id=>OIR?Promise.resolve():wait(300).then(()=>say(id||S.bien||"muy_bien",350));
 
 /* ---------- reading a story ---------- */
@@ -211,11 +211,12 @@ async function paso(st){
   if(st.cost){W.lost++;return E.stake(W.lost,S.stake.steps,sub(st.en||""));}
   throw new Error("a step the game does not know");}
 // An ask, with the big sign. Nothing can go wrong here.
+const baraja=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const vmapa=m=>m?Object.fromEntries(Object.entries(m).map(e=>[sub(e[0]),sub(e[1])])):null;   // a map from answers to lines, with the story's variables filled in on both sides
 async function ask(st){const t=sub(st.ask),voz=vmapa(st.voces),said=vmapa(st.said);   // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
-  if(st.resp&&!OIR){W.resp=st.resp.map(sub);if(st.baraja&&Math.random()<.5)W.resp=W.resp.slice().reverse();W.respVoz=voz;}
+  if(st.resp&&!OIR){W.resp=st.resp.map(sub);if(st.baraja)W.resp=baraja(W.resp);W.respVoz=voz;}
   const me=await espera([t],st.lead,st.line?sub(st.line):null,{sign:t,loose:st.loose,voces:voz,orden:voz?W.resp:null});
-  senal(t,me.p);if(said&&said[t]){await wait(250);W.resp=null;await say(said[t],200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
+  senal(t,me.p,sub(st.quieto)==="1"||st.quieto===true);if(said&&said[t]){await wait(250);W.resp=null;await say(said[t],200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
 // He picks what the frog says, and there is no wrong answer: each answer leads somewhere else.
 async function elige(st){const ops=st.options;W.respVoz=null;W.resp=st.kind==="say"&&!OIR?ops:null;const me=await espera(ops,st.lead,sub(st.line),{kind:"elige"});V.elegido=me.got;
   LOG.push({word:null,asked:"libre",got:me.got,ok:true});SFX.blip();bounce(5);
@@ -223,7 +224,7 @@ async function elige(st){const ops=st.options;W.respVoz=null;W.resp=st.kind==="s
 // A decision. Two things he could do; only the Spanish says which. A wrong one costs a step of the thing at stake,
 // what he did stays done, and then the big sign shows the right one.
 async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.as||"x"),voz=vmapa(st.voces),said=vmapa(st.said);let pick;
-  if(st.baraja&&Math.random()<.5)ops=ops.slice().reverse();   // which side each answer bubble is on is drawn fresh
+  if(st.baraja)ops=baraja(ops);   // which side each answer bubble is on is drawn fresh
   if(st.pick)pick=sub(st.pick);
   else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.floor(Math.random()*ops.length)];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}
   if(st.as)V[st.as]=pick;if(st.other)V[st.other]=ops.find(x=>x!==pick);
@@ -240,7 +241,7 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
     if(st.decide==="say"){W.resp=ops;W.respVoz=voz;}
     me=await espera([pick],[],line,{sign:pick,voces:voz,orden:voz?[pick]:null,alias:st.alias,mudo:st.mudo});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});
     if(st.decide==="say"&&said&&said[pick]){SFX.blip();bounce(5);await wait(200);await say(said[pick],250);}}
-  senal(pick,st.decide==="say"?null:me.p);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
+  senal(pick,st.decide==="say"?null:me.p,sub(st.quieto)==="1"||st.quieto===true);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
 
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));

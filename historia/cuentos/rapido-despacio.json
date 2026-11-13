@@ -1,0 +1,756 @@
+{
+ "id": "rapido-despacio",
+ "title": "Rápido, despacio",
+ "place": "El parque",
+ "scene": "camino",
+ "goal": "Walk the dog back to the gate with the three guineos for abuela.",
+ "stake": {
+  "thing": "guineos",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "rápido",
+  "despacio"
+ ],
+ "back_again": [
+  "perro",
+  "camina",
+  "corre",
+  "parque",
+  "ven",
+  "vamos",
+  "no",
+  "abuela",
+  "gracias",
+  "tres",
+  "¿dónde está?"
+ ],
+ "also_heard": [
+  "muy",
+  "guineos",
+  "para abuela"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "abuela": "abuela",
+  "perro": "c_n_perro",
+  "gato": "c_n_gato",
+  "arbol0": "c_n_arbol",
+  "arbol1": "c_n_arbol",
+  "arbol2": "c_n_arbol",
+  "grande": "c_n_grande",
+  "banco": "c_n_banco",
+  "porton": "p_n_porton",
+  "camino": "c_n_camino",
+  "parque": "c_n_parque",
+  "coqui": "yo_coqui",
+  "ave00": "c_n_pajaro",
+  "ave01": "c_n_pajaro",
+  "ave02": "c_n_pajaro",
+  "ave10": "c_n_pajaro",
+  "ave11": "c_n_pajaro",
+  "ave12": "c_n_pajaro",
+  "ave20": "c_n_pajaro",
+  "ave21": "c_n_pajaro",
+  "ave22": "c_n_pajaro"
+ },
+ "palabras": {
+  "rapido": "rápido"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "p_n_porton": {
+   "who": "narr",
+   "text": "Es el portón."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c_n_gato": {
+   "who": "narr",
+   "text": "Es un gato."
+  },
+  "c_n_arbol": {
+   "who": "narr",
+   "text": "Es un árbol."
+  },
+  "c_n_grande": {
+   "who": "narr",
+   "text": "Es un árbol grande."
+  },
+  "c_n_banco": {
+   "who": "narr",
+   "text": "Es un banco."
+  },
+  "c_n_parque": {
+   "who": "narr",
+   "text": "Es el parque."
+  },
+  "c_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "c_n_camino": {
+   "who": "narr",
+   "text": "Es el camino."
+  },
+  "c14_estan": {
+   "who": "narr",
+   "text": "Coquí y Canelo están en el parque."
+  },
+  "c14_guineos": {
+   "who": "narr",
+   "text": "Mira. Tres guineos para abuela."
+  },
+  "c14_vamos_ven": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Vamos, Coquí! ¡Ven con el perro!"
+  },
+  "c14_donde_perro": {
+   "who": "narr",
+   "text": "¿Dónde está el perro?"
+  },
+  "c14_camina": {
+   "who": "narr",
+   "text": "El perro camina. Coquí camina."
+  },
+  "c14_corre_corre": {
+   "who": "narr",
+   "text": "¡El perro corre! ¡Corre!"
+  },
+  "c14_cq_despacio": {
+   "who": "tu",
+   "text": "¡Despacio, Canelo!"
+  },
+  "c14_cq_rapido": {
+   "who": "tu",
+   "text": "¡Rápido, Canelo!"
+  },
+  "c14_ahora_despacio": {
+   "who": "narr",
+   "text": "Ahora el perro camina despacio."
+  },
+  "c14_no_camina": {
+   "who": "narr",
+   "text": "El perro no camina."
+  },
+  "c14_ahora_rapido": {
+   "who": "narr",
+   "text": "Ahora el perro camina rápido."
+  },
+  "c14_luis_despacio": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Coquí! ¡Camina despacio!"
+  },
+  "c14_luis_rapido": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Coquí! ¡Camina rápido!"
+  },
+  "c14_luis_rapido_2": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Camina rápido!"
+  },
+  "c14_no_despacio": {
+   "who": "narr",
+   "text": "No. ¡Despacio!"
+  },
+  "c14_no_rapido": {
+   "who": "narr",
+   "text": "No. ¡Rápido!"
+  },
+  "c14_corre": {
+   "who": "narr",
+   "text": "¡El perro corre!"
+  },
+  "c14_ab_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Hola, Canelo! Gracias, Coquí."
+  },
+  "c14_cq_de_nada": {
+   "who": "tu",
+   "text": "De nada, abuela."
+  },
+  "c14_vamos_casa": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Vamos a casa!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio14"
+  },
+  {
+   "wait": 500
+  },
+  "c14_estan",
+  "c14_guineos",
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "wave"
+  },
+  {
+   "say": "c14_vamos_ven",
+   "gap": 300
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "idle"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "perro",
+   "lead": [],
+   "line": "c14_donde_perro",
+   "then": [
+    {
+     "act": "ladra",
+     "n": "1"
+    }
+   ],
+   "after": []
+  },
+  {
+   "act": "paseo",
+   "modo": "trota",
+   "d": ".06"
+  },
+  "c14_camina",
+  {
+   "dots": 2
+  },
+  {
+   "act": "situacion",
+   "que": "corre"
+  },
+  {
+   "say": "c14_corre_corre",
+   "gap": 250
+  },
+  {
+   "ask": "di_despacio",
+   "lead": [],
+   "line": null,
+   "then": [
+    "c14_ahora_despacio"
+   ],
+   "after": [
+    {
+     "act": "paseo",
+     "modo": "despacio",
+     "d": ".03"
+    }
+   ],
+   "resp": [
+    "di_despacio",
+    "di_rapido"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_despacio": "c14_cq_despacio",
+    "di_rapido": "c14_cq_rapido"
+   },
+   "said": {
+    "di_despacio": "c14_cq_despacio"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "para"
+  },
+  {
+   "say": "c14_no_camina",
+   "gap": 250
+  },
+  {
+   "ask": "di_rapido",
+   "lead": [],
+   "line": null,
+   "then": [
+    "c14_ahora_rapido"
+   ],
+   "after": [
+    {
+     "act": "paseo",
+     "modo": "rapido",
+     "d": ".05"
+    }
+   ],
+   "resp": [
+    "di_despacio",
+    "di_rapido"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_despacio": "c14_cq_despacio",
+    "di_rapido": "c14_cq_rapido"
+   },
+   "said": {
+    "di_rapido": "c14_cq_rapido"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "wave"
+  },
+  {
+   "ask": "despacio",
+   "lead": [],
+   "line": "c14_luis_despacio",
+   "then": [],
+   "after": [
+    {
+     "act": "paseo",
+     "modo": "despacio",
+     "d": ".03"
+    }
+   ],
+   "resp": [
+    "despacio",
+    "rapido"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "rapido",
+   "lead": [],
+   "line": "c14_luis_rapido_2",
+   "then": [
+    {
+     "act": "pose",
+     "quien": "luis",
+     "que": "idle"
+    }
+   ],
+   "after": [
+    {
+     "act": "paseo",
+     "modo": "rapido",
+     "d": ".05"
+    }
+   ],
+   "resp": [
+    "despacio",
+    "rapido"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "tropieza"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "orden",
+   "options": [
+    "ab",
+    "ba"
+   ]
+  },
+  {
+   "if": "orden=ab",
+   "then": [
+    {
+     "draw": "sa",
+     "options": [
+      "corre",
+      "para"
+     ]
+    },
+    {
+     "calc": "rsa",
+     "cond": "sa=corre",
+     "then": "di_despacio",
+     "else": "di_rapido"
+    },
+    {
+     "calc": "tsa",
+     "cond": "sa=corre",
+     "then": "despacio",
+     "else": "rapido"
+    },
+    {
+     "act": "situacion",
+     "que": "$sa"
+    },
+    {
+     "decide": "say",
+     "options": [
+      "di_despacio",
+      "di_rapido"
+     ],
+     "baraja": true,
+     "pick": "$rsa",
+     "tests": "$tsa",
+     "voces": {
+      "di_despacio": "c14_cq_despacio",
+      "di_rapido": "c14_cq_rapido"
+     },
+     "said": {
+      "di_despacio": "c14_cq_despacio",
+      "di_rapido": "c14_cq_rapido"
+     },
+     "lead": [],
+     "right": [
+      {
+       "act": "trota"
+      }
+     ],
+     "wrong": [
+      {
+       "act": "masde",
+       "que": "$sa"
+      },
+      {
+       "act": "cae"
+      },
+      "c14_no_$tsa",
+      {
+       "cost": 1
+      }
+     ]
+    },
+    {
+     "dots": 6
+    },
+    {
+     "draw": "wb",
+     "options": [
+      "despacio",
+      "rapido"
+     ]
+    },
+    {
+     "act": "pose",
+     "quien": "luis",
+     "que": "wave"
+    },
+    {
+     "decide": "say",
+     "options": [
+      "despacio",
+      "rapido"
+     ],
+     "baraja": true,
+     "pick": "$wb",
+     "tests": "$wb",
+     "lock": true,
+     "lead": [],
+     "line": "c14_luis_$wb",
+     "right": [
+      {
+       "act": "pose",
+       "quien": "luis",
+       "que": "idle"
+      },
+      {
+       "act": "paseo",
+       "modo": "$wb",
+       "d": ".07"
+      }
+     ],
+     "wrong": [
+      {
+       "act": "desigual",
+       "p": "$wb",
+       "f": "$x"
+      },
+      {
+       "act": "cae"
+      },
+      {
+       "act": "vuelveperro"
+      },
+      "c14_no_$wb",
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ],
+   "else": [
+    {
+     "draw": "wb",
+     "options": [
+      "despacio",
+      "rapido"
+     ]
+    },
+    {
+     "act": "pose",
+     "quien": "luis",
+     "que": "wave"
+    },
+    {
+     "decide": "say",
+     "options": [
+      "despacio",
+      "rapido"
+     ],
+     "baraja": true,
+     "pick": "$wb",
+     "tests": "$wb",
+     "lock": true,
+     "lead": [],
+     "line": "c14_luis_$wb",
+     "right": [
+      {
+       "act": "pose",
+       "quien": "luis",
+       "que": "idle"
+      },
+      {
+       "act": "paseo",
+       "modo": "$wb",
+       "d": ".07"
+      }
+     ],
+     "wrong": [
+      {
+       "act": "desigual",
+       "p": "$wb",
+       "f": "$x"
+      },
+      {
+       "act": "cae"
+      },
+      {
+       "act": "vuelveperro"
+      },
+      "c14_no_$wb",
+      {
+       "cost": 1
+      }
+     ]
+    },
+    {
+     "dots": 6
+    },
+    {
+     "draw": "sa",
+     "options": [
+      "corre",
+      "para"
+     ]
+    },
+    {
+     "calc": "rsa",
+     "cond": "sa=corre",
+     "then": "di_despacio",
+     "else": "di_rapido"
+    },
+    {
+     "calc": "tsa",
+     "cond": "sa=corre",
+     "then": "despacio",
+     "else": "rapido"
+    },
+    {
+     "act": "situacion",
+     "que": "$sa"
+    },
+    {
+     "decide": "say",
+     "options": [
+      "di_despacio",
+      "di_rapido"
+     ],
+     "baraja": true,
+     "pick": "$rsa",
+     "tests": "$tsa",
+     "voces": {
+      "di_despacio": "c14_cq_despacio",
+      "di_rapido": "c14_cq_rapido"
+     },
+     "said": {
+      "di_despacio": "c14_cq_despacio",
+      "di_rapido": "c14_cq_rapido"
+     },
+     "lead": [],
+     "right": [
+      {
+       "act": "trota"
+      }
+     ],
+     "wrong": [
+      {
+       "act": "masde",
+       "que": "$sa"
+      },
+      {
+       "act": "cae"
+      },
+      "c14_no_$tsa",
+      {
+       "cost": 1
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "arbusto"
+  },
+  {
+   "draw": "sc",
+   "options": [
+    "corre",
+    "para"
+   ]
+  },
+  {
+   "calc": "rsc",
+   "cond": "sc=corre",
+   "then": "di_despacio",
+   "else": "di_rapido"
+  },
+  {
+   "calc": "tsc",
+   "cond": "sc=corre",
+   "then": "despacio",
+   "else": "rapido"
+  },
+  {
+   "calc": "lc",
+   "cond": "sc=corre",
+   "then": "c14_corre",
+   "else": "c14_no_camina"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_despacio",
+    "di_rapido"
+   ],
+   "baraja": true,
+   "pick": "$rsc",
+   "tests": "$tsc",
+   "voces": {
+    "di_despacio": "c14_cq_despacio",
+    "di_rapido": "c14_cq_rapido"
+   },
+   "said": {
+    "di_despacio": "c14_cq_despacio",
+    "di_rapido": "c14_cq_rapido"
+   },
+   "lead": [],
+   "line": "$lc",
+   "right": [
+    {
+     "act": "sale",
+     "modo": "trota"
+    }
+   ],
+   "wrong": [
+    {
+     "if": "sc=corre",
+     "then": [
+      {
+       "act": "sale",
+       "modo": "corre"
+      }
+     ],
+     "else": [
+      {
+       "act": "tira"
+      }
+     ]
+    },
+    {
+     "act": "cae"
+    },
+    "c14_no_$tsc",
+    {
+     "cost": 1
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "act": "final14"
+  },
+  {
+   "say": "c14_ab_gracias",
+   "gap": 300
+  },
+  {
+   "say": "c14_cq_de_nada",
+   "gap": 300
+  },
+  {
+   "say": "c14_vamos_casa",
+   "gap": 300
+  },
+  {
+   "act": "sevan"
+  },
+  {
+   "wait": 400
+  }
+ ],
+ "leer": [
+  "c14_estan",
+  "c14_guineos",
+  "c14_vamos_ven",
+  "c14_donde_perro",
+  "c14_camina",
+  "c14_corre_corre",
+  "c14_cq_despacio",
+  "c14_ahora_despacio",
+  "c14_no_camina",
+  "c14_cq_rapido",
+  "c14_ahora_rapido",
+  "c14_luis_despacio",
+  "c14_luis_rapido_2",
+  "c14_ab_gracias",
+  "c14_cq_de_nada",
+  "c14_vamos_casa"
+ ]
+}

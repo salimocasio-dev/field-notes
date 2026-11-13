@@ -41,7 +41,7 @@ function nivelDibuja(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.fil
   if(PAN)PAN.forEach((p,k)=>{W=p.w;W.fx=[];p.E.draw(c,W,a);if(W.resp)respDraw(c,a);const xy=celda(k),cm=p.cam;dc.drawImage(sc,cm[0],cm[1],cm[2],cm[3],xy[0],xy[1],CW,CH);
     if(p.pulso&&F-p.pulso<6){dc.fillStyle="rgba(255,255,255,.35)";dc.fillRect(xy[0],xy[1],CW,CH);}});
   W=keep;}
-function nivelPanel(pic,byW){const it=byW[pic[0]],spec=it[pic[1]],E2=ESCENAS[it.esc],cm=spec.cam,h=cm[3],w=h*CW/CH,cx=pic[2]!=null?pic[2]:cm[0]+cm[2]/2;
+function nivelPanel(pic,byW){const it=byW[pic[0]],spec=it[pic[1]],E2=ESCENAS[spec.esc||it.esc],cm=spec.cam,h=cm[3],w=h*CW/CH,cx=pic[2]!=null?pic[2]:cm[0]+cm[2]/2;
   return {w:panelW(spec,E2),E:E2,cam:[Math.max(0,Math.min(E2.SW-w,cx-w/2)),cm[1],w,h],pulso:0};}
 async function nivelItem(q,byW){const orden=[0,1,2,3].sort(()=>Math.random()-.5),it=byW[q.p[0][0]];   // where the right picture sits is drawn fresh
   PAN=orden.map(k=>Object.assign(nivelPanel(q.p[k],byW),{right:k===0}));

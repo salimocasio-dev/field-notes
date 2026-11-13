@@ -11,7 +11,7 @@ let CU=null,PAN=null,CQ={i:0,lista:[],hecho:[]};
 const EMPTY=Ex=>Object.assign({cq:{x:0,y:0,s:1,dy:0,al:1,vis:0,bub:null},spot:null,twinkle:null,fx:[],heart:0,lost:0,resp:null},(Ex||E).fresh(S));
 // the pairs of every scene built so far (curso.js lists the files), each one drawn by its own scene
 async function cualCarga(){const fs=(typeof CURSO!=="undefined"&&CURSO.cual)||["cual-frente"],out={id:"cual",title:"¿Cuál?",tipo:"cual",scene:"frente",stake:{thing:"none",steps:0},clips:{},items:[]};
-  for(const f of fs){const j=await (await fetch("cuentos/"+f+".json",{cache:"no-store"})).json();await cargaEscena(j.scene);Object.assign(out.clips,j.clips);j.items.forEach(it=>out.items.push(Object.assign({esc:j.scene},it)));}
+  for(const f of fs){const j=await (await fetch("cuentos/"+f+".json",{cache:"no-store"})).json();await cargaEscena(j.scene);Object.assign(out.clips,j.clips);for(const it of j.items){for(const k of ["si","no"])if(it[k].esc)await cargaEscena(it[k].esc);out.items.push(Object.assign({esc:j.scene},it));}}
   return out;}
 function panelW(spec,Ex){const w=EMPTY(Ex);w.cq={x:123,y:150,s:.86,dy:0,al:1,vis:spec.set&&spec.set.resp?1:0,bub:null};return Object.assign(w,JSON.parse(JSON.stringify(spec.set||{})));}
 const PH=104,GAP=8;   // two panels, one above the other
@@ -27,7 +27,7 @@ function dibujaPaneles(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.f
   W=keep;}
 function cualLoop(){F++;dibujaPaneles();}
 async function cualItem(it){const ok=Math.random()<.5?0:1;   // which panel holds the right picture: drawn fresh
-  PAN=[0,1].map(k=>{const spec=k===ok?it.si:it.no;return {w:panelW(spec,ESCENAS[it.esc]),E:ESCENAS[it.esc],cam:spec.cam,right:k===ok,fx:[],dim:0,sign:0};});
+  PAN=[0,1].map(k=>{const spec=k===ok?it.si:it.no,Ex=ESCENAS[spec.esc||it.esc];return {w:panelW(spec,Ex),E:Ex,cam:spec.cam,right:k===ok,fx:[],dim:0,sign:0};});   // a picture may name another scene to draw it
   await wait(500);const my=runId;let got=null,ms=0,tEnd=0,res;const p=new Promise(r=>res=r);
   CQ.toque=k=>{if(!tEnd||got!=null)return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);res();};   // a touch before the sentence ends does not count
   await say(it.say,0);tEnd=performance.now();CQ.listo=CQ.i+1;

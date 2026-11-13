@@ -3,6 +3,7 @@
  "title": "Hasta mañana",
  "place": "La casa",
  "scene": "patio",
+ "next": "uno-dos-tres",
  "goal": "Say goodbye and go home, with the fireflies to light the way.",
  "stake": {
   "thing": "luces",
