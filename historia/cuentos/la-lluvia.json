@@ -3,6 +3,7 @@
   "title": "La lluvia",
   "place": "La casa",
   "scene": "frente",
+  "next": "el-bizcocho",
   "goal": "Get into abuela's house dry.",
   "stake": {
     "thing": "nube",
@@ -180,7 +181,7 @@
     },
     "abuela": {
       "who": "narr",
-      "text": "Es abuela."
+      "text": "Esta es abuela."
     },
     "sol": {
       "who": "narr",

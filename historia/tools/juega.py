@@ -23,6 +23,8 @@ STATE="""()=>{const W=Story.W,p=Story.pending,V=Story.V;return {live:p?p.live.jo
  V:JSON.stringify(V),lost:W.lost,door:W.door,win:W.win,lamp:W.lamp,ab:W.ab?W.ab.en+'-'+W.ab.pose:null,vis:W.cq.vis,cq:W.cq.x+','+W.cq.y,bub:W.cq.bub,rain:W.rain,tab:W.tab,heart:W.heart,
  plato:W.plato,ave:W.ave?W.ave.mode+'-'+(W.ave.st||''):null,resp:W.resp?W.resp.join('|'):null,extra:Story.scene?Story.scene():'',
  running:Story.running,dots:document.querySelectorAll('.dot.on').length,cap:Story.cap,bubt:Story.bub}}"""
+class Log(list):
+    def append(self,x): super().append(x); print(x,flush=True)
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox","--autoplay-policy=no-user-gesture-required"])
@@ -38,7 +40,7 @@ async def main():
             n+=1; await pg.wait_for_timeout(320); await shot.screenshot(path=f"{OUT}/{n:02d}_{tag}.png")
         if os.environ.get("TL"):
             await pg.evaluate("""()=>{window.__t=[];const _p=playClip;playClip=function(id){const e={id,t0:performance.now()};__t.push(e);const pr=_p(id);pr.then(()=>{e.t1=performance.now();});return pr;};}""")
-        t0=time.time(); await pg.click("#go"); last=None; seen=None; k=0; log=[]; tapped=None
+        t0=time.time(); await pg.click("#go"); last=None; seen=None; k=0; log=Log(); tapped=None
         for i in range(9000):
             await pg.wait_for_timeout(40)
             s=await pg.evaluate(STATE)
@@ -58,11 +60,11 @@ async def main():
                     log.append(f"        choice {k} ({s['kind']}): right={s['pick']} touching {tgt}  V={s['V']}"); await snap(f"choice{k}_waiting")
                 await pg.wait_for_timeout(150)
                 try: await pg.evaluate(f"Story.tapOn('{tgt}')")
-                except Exception as e: log.append(f"        could not touch {tgt}: {str(e)[:160]}"); print("\n".join(log[-25:])); raise SystemExit(1)
+                except Exception as e: log.append(f"        could not touch {tgt}: {str(e)[:160]}"); raise SystemExit(1)
                 tapped=s["live"]; await pg.wait_for_timeout(150)
             if not s["running"] and i>40: break
         await snap("end")
-        print("\n".join(log)); print("took %.1fs at fast=%s"%(time.time()-t0,FASTV)); print("log:",await pg.evaluate("JSON.stringify(Story.log)"))
+        print("took %.1fs at fast=%s"%(time.time()-t0,FASTV)); print("log:",await pg.evaluate("JSON.stringify(Story.log)"))
         if os.environ.get("TL"):
             tl=await pg.evaluate("__t"); base=tl[0]["t0"]; prev=None
             for e in tl:

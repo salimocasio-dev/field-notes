@@ -1,0 +1,579 @@
+{
+ "id": "donde-esta-el-pajaro",
+ "title": "¿Dónde está el pájaro?",
+ "place": "La casa",
+ "scene": "frente",
+ "goal": "Find the bird. Win more rounds than it does.",
+ "stake": {
+  "thing": "rondas",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "grande",
+  "pequeña",
+  "adiós"
+ ],
+ "back_again": [
+  "casa",
+  "puerta",
+  "abuela",
+  "sí",
+  "cierra"
+ ],
+ "also_heard": [
+  "pájaro",
+  "palma",
+  "jugar",
+  "ahora",
+  "tú",
+  "o",
+  "aquí está",
+  "aquí estoy",
+  "vamos a"
+ ],
+ "names": {
+  "casa_grande": "n_casa_grande",
+  "casa_pequena": "n_casa_pequena",
+  "palma_grande": "n_palma_grande",
+  "palma_pequena": "n_palma_pequena",
+  "abuela": "abuela",
+  "sol": "sol",
+  "pajaro": "un_pajaro",
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "grande_casa": {
+   "who": "narr",
+   "text": "La casa de abuela es grande."
+  },
+  "puedes_casa_grande": {
+   "who": "narr",
+   "text": "¿Puedes tocar la casa grande?"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "casa_del_pajaro": {
+   "who": "narr",
+   "text": "Mira. Esta es la casa del pájaro."
+  },
+  "es_pequena": {
+   "who": "narr",
+   "text": "Es pequeña."
+  },
+  "donde_pequena": {
+   "who": "narr",
+   "text": "¿Dónde está la casa pequeña?"
+  },
+  "mira_palmas": {
+   "who": "narr",
+   "text": "Mira las palmas."
+  },
+  "una_palma_grande": {
+   "who": "narr",
+   "text": "Esta palma es grande."
+  },
+  "una_palma_pequena": {
+   "who": "narr",
+   "text": "Esta palma es pequeña."
+  },
+  "quiere_jugar": {
+   "who": "narr",
+   "text": "El pájaro quiere jugar."
+  },
+  "vamos_jugar": {
+   "who": "tu",
+   "text": "¡Sí! ¡Vamos a jugar!"
+  },
+  "aqui_esta": {
+   "who": "tu",
+   "text": "¡Sí! ¡Aquí está!"
+  },
+  "ahora_tu": {
+   "who": "narr",
+   "text": "Ahora tú."
+  },
+  "grande_o_pequena": {
+   "who": "narr",
+   "text": "¿La casa grande o la casa pequeña?"
+  },
+  "aqui_estoy": {
+   "who": "tu",
+   "text": "¡Aquí estoy!"
+  },
+  "adios_pajaro": {
+   "who": "tu",
+   "text": "¡Adiós, pájaro!"
+  },
+  "adios_ab": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Adiós!"
+  },
+  "adios_abuela": {
+   "who": "tu",
+   "text": "¡Adiós, abuela!"
+  },
+  "ab_cierra_puerta": {
+   "who": "narr",
+   "text": "Abuela cierra la puerta."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "sol": {
+   "who": "narr",
+   "text": "Es el sol."
+  },
+  "un_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "esta_en_palma_grande": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Está en la palma grande."
+  },
+  "no_esta_en_palma_grande": {
+   "who": "narr",
+   "text": "No. No está en la palma grande."
+  },
+  "n_palma_grande": {
+   "who": "narr",
+   "text": "Es la palma grande."
+  },
+  "esta_en_palma_pequena": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Está en la palma pequeña."
+  },
+  "no_esta_en_palma_pequena": {
+   "who": "narr",
+   "text": "No. No está en la palma pequeña."
+  },
+  "n_palma_pequena": {
+   "who": "narr",
+   "text": "Es la palma pequeña."
+  },
+  "esta_en_casa_grande": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Está en la casa grande."
+  },
+  "no_esta_en_casa_grande": {
+   "who": "narr",
+   "text": "No. No está en la casa grande."
+  },
+  "n_casa_grande": {
+   "who": "narr",
+   "text": "Es la casa grande."
+  },
+  "esta_en_casa_pequena": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Está en la casa pequeña."
+  },
+  "no_esta_en_casa_pequena": {
+   "who": "narr",
+   "text": "No. No está en la casa pequeña."
+  },
+  "n_casa_pequena": {
+   "who": "narr",
+   "text": "Es la casa pequeña."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "escondite": 1,
+    "dusk": 1,
+    "rondas": 1,
+    "ab": {
+     "en": "paso",
+     "pose": "idle",
+     "bub": null,
+     "al": 1
+    }
+   }
+  },
+  {
+   "if": "mem_amigo=1",
+   "then": [
+    {
+     "set": {
+      "ave": {
+       "mode": "head",
+       "x": 0,
+       "y": 0,
+       "dir": 1,
+       "st": "n"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "casa_grande",
+   "lead": [
+    "grande_casa"
+   ],
+   "line": "puedes_casa_grande"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "ask": "casa_pequena",
+   "lead": [
+    {
+     "act": "avecasa"
+    },
+    "casa_del_pajaro",
+    "es_pequena"
+   ],
+   "line": "donde_pequena",
+   "after": [
+    {
+     "act": "sale",
+     "en": "casa_pequena"
+    }
+   ],
+   "then": []
+  },
+  {
+   "dots": 3
+  },
+  "mira_palmas",
+  {
+   "set": {
+    "twinkle": "palma_grande"
+   }
+  },
+  "una_palma_grande",
+  {
+   "set": {
+    "twinkle": "palma_pequena"
+   }
+  },
+  "una_palma_pequena",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "quiere_jugar",
+  {
+   "say": "vamos_jugar",
+   "gap": 300
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "tapa"
+  },
+  {
+   "draw": "tipo",
+   "options": [
+    "palma",
+    "casa"
+   ]
+  },
+  {
+   "draw": "tam",
+   "options": [
+    "grande",
+    "pequena"
+   ]
+  },
+  {
+   "act": "mueve",
+   "que": "$tipo"
+  },
+  {
+   "decide": "find",
+   "options": [
+    "$tipo_grande",
+    "$tipo_pequena"
+   ],
+   "pick": "$tipo_$tam",
+   "as": "p",
+   "lock": true,
+   "noretry": true,
+   "do": "mira",
+   "tests": "$tam",
+   "bien": false,
+   "lead": [],
+   "line": "esta_en_$tipo_$tam",
+   "right": [
+    {
+     "say": "aqui_esta",
+     "gap": 300
+    },
+    {
+     "act": "gana"
+    },
+    {
+     "act": "limpia"
+    }
+   ],
+   "wrong": [
+    "no_esta_en_$x",
+    {
+     "act": "sale",
+     "en": "$p"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "limpia"
+    }
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "tapa"
+  },
+  {
+   "draw": "tipo",
+   "options": [
+    "palma",
+    "casa"
+   ]
+  },
+  {
+   "draw": "tam",
+   "options": [
+    "grande",
+    "pequena"
+   ]
+  },
+  {
+   "act": "mueve",
+   "que": "$tipo"
+  },
+  {
+   "decide": "find",
+   "options": [
+    "$tipo_grande",
+    "$tipo_pequena"
+   ],
+   "pick": "$tipo_$tam",
+   "as": "p",
+   "lock": true,
+   "noretry": true,
+   "do": "mira",
+   "tests": "$tam",
+   "bien": false,
+   "lead": [],
+   "line": "esta_en_$tipo_$tam",
+   "right": [
+    {
+     "say": "aqui_esta",
+     "gap": 300
+    },
+    {
+     "act": "gana"
+    },
+    {
+     "act": "limpia"
+    }
+   ],
+   "wrong": [
+    "no_esta_en_$x",
+    {
+     "act": "sale",
+     "en": "$p"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "limpia"
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "tapa"
+  },
+  {
+   "draw": "tipo",
+   "options": [
+    "palma",
+    "casa"
+   ]
+  },
+  {
+   "draw": "tam",
+   "options": [
+    "grande",
+    "pequena"
+   ]
+  },
+  {
+   "act": "mueve",
+   "que": "todo"
+  },
+  {
+   "decide": "find",
+   "options": [
+    "palma_grande",
+    "palma_pequena",
+    "casa_grande",
+    "casa_pequena"
+   ],
+   "pick": "$tipo_$tam",
+   "as": "p",
+   "lock": true,
+   "noretry": true,
+   "do": "mira",
+   "tests": "$tam",
+   "bien": false,
+   "lead": [],
+   "line": "esta_en_$tipo_$tam",
+   "right": [
+    {
+     "say": "aqui_esta",
+     "gap": 300
+    },
+    {
+     "act": "gana"
+    },
+    {
+     "act": "limpia"
+    }
+   ],
+   "wrong": [
+    "no_esta_en_$x",
+    {
+     "act": "sale",
+     "en": "$p"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "limpia"
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "tapate"
+  },
+  "ahora_tu",
+  {
+   "elige": "find",
+   "options": [
+    "casa_grande",
+    "casa_pequena"
+   ],
+   "lead": [],
+   "line": "grande_o_pequena",
+   "casa_grande": [
+    {
+     "act": "esconde",
+     "en": "casa_grande"
+    },
+    {
+     "act": "busca_ave",
+     "en": "casa_grande"
+    },
+    {
+     "say": "aqui_estoy",
+     "gap": 400
+    }
+   ],
+   "casa_pequena": [
+    {
+     "act": "esconde",
+     "en": "casa_pequena"
+    },
+    {
+     "act": "busca_ave",
+     "en": "casa_pequena"
+    },
+    {
+     "say": "aqui_estoy",
+     "gap": 400
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "act": "atardece"
+  },
+  {
+   "if": "mem_amigo=1",
+   "then": [
+    {
+     "if": "lost=3",
+     "then": [
+      {
+       "act": "devuelve"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "marcador"
+  },
+  {
+   "say": "adios_pajaro",
+   "gap": 200
+  },
+  {
+   "act": "avecasa"
+  },
+  {
+   "say": "adios_ab",
+   "gap": 300
+  },
+  {
+   "say": "adios_abuela",
+   "gap": 300
+  },
+  {
+   "act": "abentra"
+  },
+  "ab_cierra_puerta",
+  {
+   "act": "vetecq"
+  }
+ ],
+ "palabras": {
+  "pequena": "pequeña"
+ },
+ "cam": {
+  "wide": [
+   30,
+   0,
+   196,
+   216
+  ]
+ }
+}

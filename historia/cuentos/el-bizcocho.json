@@ -3,127 +3,627 @@
   "title": "El bizcocho",
   "place": "La casa",
   "scene": "frente",
+  "next": "donde-esta-el-pajaro",
   "goal": "Keep abuela's cake safe from the bird.",
-  "stake": {"thing": "bizcocho", "steps": 2},
+  "stake": {
+    "thing": "bizcocho",
+    "steps": 2
+  },
   "dots": 7,
   "bien": "si_muy_bien",
-  "focus_words": ["cierra", "sí", "no", "abre"],
-  "back_again": ["puerta", "ventana", "abuela", "hola", "casa"],
-  "also_heard": ["bizcocho", "pájaro", "quieres", "tiene", "caliente", "ahora", "está cerrada", "toma", "gracias", "mira", "muy bien"],
-  "names": {"casa": "casa", "puerta": "puerta", "ventana": "ventana", "abuela": "abuela", "sol": "sol", "palma": "palma", "pajaro": "un_pajaro", "bizcocho": "un_bizcocho", "coqui": "yo_coqui"},
+  "focus_words": [
+    "cierra",
+    "sí",
+    "no",
+    "abre"
+  ],
+  "back_again": [
+    "puerta",
+    "ventana",
+    "abuela",
+    "hola",
+    "casa"
+  ],
+  "also_heard": [
+    "bizcocho",
+    "pájaro",
+    "quieres",
+    "tiene",
+    "caliente",
+    "ahora",
+    "está cerrada",
+    "toma",
+    "gracias",
+    "mira",
+    "muy bien"
+  ],
+  "names": {
+    "casa": "casa",
+    "puerta": "puerta",
+    "ventana": "ventana",
+    "abuela": "abuela",
+    "sol": "sol",
+    "palma": "palma",
+    "pajaro": "un_pajaro",
+    "bizcocho": "un_bizcocho",
+    "coqui": "yo_coqui"
+  },
   "clips": {
-    "ventana_cerrada":  {"who": "narr", "text": "La ventana está cerrada."},
-    "puedes_abrir":     {"who": "narr", "text": "¿Puedes abrir la ventana?"},
-    "si_muy_bien":      {"who": "narr", "text": "¡Sí! ¡Muy bien!"},
-    "muy_bien":         {"who": "narr", "text": "¡Muy bien!"},
-    "tiene_bizcocho":   {"who": "narr", "text": "Mira. Abuela tiene un bizcocho."},
-    "quieres_hola":     {"who": "narr", "habla": "abuela", "text": "Abuela dice: ¡Hola! ¿Quieres bizcocho?"},
-    "cq_si":            {"who": "tu", "text": "¡Sí!"},
-    "cq_no":            {"who": "tu", "text": "¡No!"},
-    "ahora_no":         {"who": "narr", "habla": "abuela", "text": "Abuela dice: Ahora no. Está caliente."},
-    "ab_cierra_ventana":{"who": "narr", "text": "Abuela cierra la ventana."},
-    "cq_ay":            {"who": "tu", "text": "¡Ay!"},
-    "abre_ventana":     {"who": "narr", "text": "Abuela abre la ventana."},
-    "abre_puerta":      {"who": "narr", "text": "Abuela abre la puerta."},
-    "abre_puerta_q":    {"who": "narr", "text": "¿Abuela abre la puerta? ¿Sí o no?"},
-    "abre_ventana_q":   {"who": "narr", "text": "¿Abuela abre la ventana? ¿Sí o no?"},
-    "puerta_cerrada_q": {"who": "narr", "text": "¿La puerta está cerrada? ¿Sí o no?"},
-    "mira_pajaro":      {"who": "narr", "text": "¡Mira! Un pájaro."},
-    "pajaro_quiere":    {"who": "narr", "text": "El pájaro quiere el bizcocho."},
-    "cierra_ventana_ya":{"who": "narr", "text": "¡Cierra la ventana!"},
-    "cierra_puerta_ya": {"who": "narr", "text": "¡Cierra la puerta!"},
-    "no_pajaro":        {"who": "tu", "text": "¡No, pájaro, no!"},
-    "ahora_cierra_puerta": {"who": "narr", "text": "¡Ahora la puerta! ¡Cierra la puerta!"},
-    "ahora_cierra_ventana":{"who": "narr", "text": "¡Ahora la ventana! ¡Cierra la ventana!"},
-    "no_esa_puerta":    {"who": "narr", "text": "No. Esa es la puerta."},
-    "no_esa_ventana":   {"who": "narr", "text": "No. Esa es la ventana."},
-    "abuela_en_puerta": {"who": "narr", "text": "Abuela está en la puerta."},
-    "abuela_en_ventana":{"who": "narr", "text": "Abuela está en la ventana."},
-    "ay_pajaro":        {"who": "narr", "habla": "abuela", "text": "Abuela dice: ¡Ay, pájaro!"},
-    "pajaro_en_puerta": {"who": "narr", "text": "El pájaro está en la puerta."},
-    "pajaro_en_ventana":{"who": "narr", "text": "El pájaro está en la ventana."},
-    "quieres_bizcocho": {"who": "narr", "habla": "abuela", "text": "Abuela dice: ¿Quieres bizcocho?"},
-    "cq_si_gracias":    {"who": "tu", "text": "¡Sí, gracias!"},
-    "toma":             {"who": "narr", "habla": "abuela", "text": "Abuela dice: Toma."},
-    "cq_mmm":           {"who": "tu", "text": "¡Mmm!"},
-    "cq_no_gracias":    {"who": "tu", "text": "No, gracias."},
-    "abuela_no":        {"who": "narr", "habla": "abuela", "text": "Abuela dice: ¿No?"},
-    "casa":             {"who": "narr", "text": "Es la casa."},
-    "puerta":           {"who": "narr", "text": "Es la puerta."},
-    "ventana":          {"who": "narr", "text": "Es la ventana."},
-    "abuela":           {"who": "narr", "text": "Es abuela."},
-    "sol":              {"who": "narr", "text": "Es el sol."},
-    "palma":            {"who": "narr", "text": "Es la palma."},
-    "un_pajaro":        {"who": "narr", "text": "Es un pájaro."},
-    "un_bizcocho":      {"who": "narr", "text": "Es un bizcocho."},
-    "yo_coqui":         {"who": "tu", "text": "¡Coquí!"}
+    "ventana_cerrada": {
+      "who": "narr",
+      "text": "La ventana está cerrada."
+    },
+    "puedes_abrir": {
+      "who": "narr",
+      "text": "¿Puedes abrir la ventana?"
+    },
+    "si_muy_bien": {
+      "who": "narr",
+      "text": "¡Sí! ¡Muy bien!"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "tiene_bizcocho": {
+      "who": "narr",
+      "text": "Mira. Abuela tiene un bizcocho."
+    },
+    "quieres_hola": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Hola! ¿Quieres bizcocho?"
+    },
+    "cq_si": {
+      "who": "tu",
+      "text": "¡Sí!"
+    },
+    "cq_no": {
+      "who": "tu",
+      "text": "¡No!"
+    },
+    "ahora_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Ahora no. Está caliente."
+    },
+    "ab_cierra_ventana": {
+      "who": "narr",
+      "text": "Abuela cierra la ventana."
+    },
+    "cq_ay": {
+      "who": "tu",
+      "text": "¡Ay!"
+    },
+    "abre_ventana": {
+      "who": "narr",
+      "text": "Abuela abre la ventana."
+    },
+    "abre_puerta": {
+      "who": "narr",
+      "text": "Abuela abre la puerta."
+    },
+    "abre_puerta_q": {
+      "who": "narr",
+      "text": "¿Abuela abre la puerta? ¿Sí o no?"
+    },
+    "abre_ventana_q": {
+      "who": "narr",
+      "text": "¿Abuela abre la ventana? ¿Sí o no?"
+    },
+    "puerta_cerrada_q": {
+      "who": "narr",
+      "text": "¿La puerta está cerrada? ¿Sí o no?"
+    },
+    "mira_pajaro": {
+      "who": "narr",
+      "text": "¡Mira! Un pájaro."
+    },
+    "pajaro_quiere": {
+      "who": "narr",
+      "text": "El pájaro quiere el bizcocho."
+    },
+    "cierra_ventana_ya": {
+      "who": "narr",
+      "text": "¡Cierra la ventana!"
+    },
+    "cierra_puerta_ya": {
+      "who": "narr",
+      "text": "¡Cierra la puerta!"
+    },
+    "no_pajaro": {
+      "who": "tu",
+      "text": "¡No, pájaro, no!"
+    },
+    "ahora_cierra_puerta": {
+      "who": "narr",
+      "text": "¡Ahora la puerta! ¡Cierra la puerta!"
+    },
+    "ahora_cierra_ventana": {
+      "who": "narr",
+      "text": "¡Ahora la ventana! ¡Cierra la ventana!"
+    },
+    "no_esa_puerta": {
+      "who": "narr",
+      "text": "No. Esa es la puerta."
+    },
+    "no_esa_ventana": {
+      "who": "narr",
+      "text": "No. Esa es la ventana."
+    },
+    "abuela_en_puerta": {
+      "who": "narr",
+      "text": "Abuela está en la puerta."
+    },
+    "abuela_en_ventana": {
+      "who": "narr",
+      "text": "Abuela está en la ventana."
+    },
+    "ay_pajaro": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¡Ay, pájaro!"
+    },
+    "pajaro_en_puerta": {
+      "who": "narr",
+      "text": "El pájaro está en la puerta."
+    },
+    "pajaro_en_ventana": {
+      "who": "narr",
+      "text": "El pájaro está en la ventana."
+    },
+    "quieres_bizcocho": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿Quieres bizcocho?"
+    },
+    "cq_si_gracias": {
+      "who": "tu",
+      "text": "¡Sí, gracias!"
+    },
+    "toma": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: Toma."
+    },
+    "cq_mmm": {
+      "who": "tu",
+      "text": "¡Mmm!"
+    },
+    "cq_no_gracias": {
+      "who": "tu",
+      "text": "No, gracias."
+    },
+    "abuela_no": {
+      "who": "narr",
+      "habla": "abuela",
+      "text": "Abuela dice: ¿No?"
+    },
+    "casa": {
+      "who": "narr",
+      "text": "Es la casa."
+    },
+    "puerta": {
+      "who": "narr",
+      "text": "Es la puerta."
+    },
+    "ventana": {
+      "who": "narr",
+      "text": "Es la ventana."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Esta es abuela."
+    },
+    "sol": {
+      "who": "narr",
+      "text": "Es el sol."
+    },
+    "palma": {
+      "who": "narr",
+      "text": "Es la palma."
+    },
+    "un_pajaro": {
+      "who": "narr",
+      "text": "Es un pájaro."
+    },
+    "un_bizcocho": {
+      "who": "narr",
+      "text": "Es un bizcocho."
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    }
   },
   "beats": [
-    {"set": {"mesa": 1, "abIn": "ventana", "caliente": 1}},
-    {"wait": 600},
-
-    {"dots": 1},
-    {"ask": "ventana",
-     "lead": [{"cam": "ventana", "n": 14}, "ventana_cerrada", {"cam": "wide", "n": 10}],
-     "line": "puedes_abrir",
-     "after": [{"act": "abrir", "que": "ventana"}, {"cam": "ventana", "n": 10}],
-     "then": ["tiene_bizcocho"]},
-
-    {"dots": 2},
-    {"act": "pose", "que": "wave"}, {"say": "quieres_hola", "gap": 250}, {"act": "pose", "que": "idle"},
-    {"act": "burbuja", "quien": "cq", "que": "amor"}, {"say": "cq_si", "gap": 300}, {"act": "calla"},
-    {"act": "pose", "que": "dedo"}, {"say": "ahora_no", "gap": 400}, {"act": "pose", "que": "idle"},
-
-    {"dots": 3},
-    {"act": "asoma"},
-    {"act": "abcierra", "que": "ventana"}, "ab_cierra_ventana",
-    {"act": "baja"}, {"act": "burbuja", "quien": "cq", "que": "mal"}, {"say": "cq_ay", "gap": 400}, {"act": "calla"},
-    {"act": "abre", "que": "ventana"}, {"act": "pose", "que": "wave"}, {"say": "abre_ventana", "gap": 300}, {"act": "pose", "que": "idle"},
-    {"cam": "wide", "n": 10}, {"act": "atras"},
-
-    {"dots": 4},
-    {"ask": "si", "resp": ["si", "no"], "said": {"si": "cq_si"}, "bien": "muy_bien",
-     "lead": [], "line": "abre_puerta_q",
-     "then": [{"act": "abre", "que": "puerta"}, "abre_puerta", {"act": "vete"}, {"cam": "wide", "n": 9}]},
-    {"ask": "no", "resp": ["si", "no"], "said": {"no": "cq_no"}, "bien": "muy_bien",
-     "lead": [], "line": "puerta_cerrada_q"},
-
-    {"wait": 300},
-    {"act": "pajaro"},
-    {"set": {"plato": 3}},
-    "mira_pajaro", "pajaro_quiere",
-
-    {"dots": 5},
-    {"decide": "do", "options": ["ventana", "puerta"], "as": "a", "other": "b", "alterna": true,
-     "do": "cerrar", "tests": "$a",
-     "lead": [], "line": "cierra_$a_ya",
-     "wrong": ["no_esa_$x", {"cost": 1, "en": "$a"}],
-     "right": [{"if": "ok", "then": [
-        {"act": "bonk", "en": "$a"}, {"say": "no_pajaro", "gap": 300},
-        {"ask": "$b", "lead": [], "line": "ahora_cierra_$b", "after": [{"act": "cerrar", "en": "$b"}]}
-     ]}]},
-    {"act": "atras"},
-    {"draw": "ave", "options": ["puerta", "ventana"]},
-    {"act": "posa", "en": "$ave"},
-
-    {"dots": 6},
-    {"draw": "c", "options": ["puerta", "ventana"], "other": "o"},
-    {"set": {"abIn": null}},
-    {"calc": "resp", "cond": "ave=$c", "then": "no", "else": "si"},
-    {"decide": "say", "options": ["si", "no"], "pick": "$resp", "noretry": true, "tests": "$resp",
-     "said": {"si": "cq_si", "no": "cq_no"}, "bien": "muy_bien",
-     "lead": ["abuela_en_$c"], "line": "abre_$c_q",
-     "right": [{"if": "resp=si", "then": [{"act": "abre", "que": "$c"}, "abre_$c"], "else": [{"act": "abre", "que": "$o"}, "abre_$o"]}, {"cam": "wide", "n": 9}],
-     "wrong": [{"act": "abre", "que": "$ave"}, {"cost": 1, "en": "$ave"}, {"cam": "wide", "n": 9}, "ay_pajaro", "pajaro_en_$ave"]},
-
-    {"dots": 7},
-    {"elige": "say", "kind": "say", "options": ["si", "no"],
-     "lead": [{"act": "pose", "que": "offer"}], "line": "quieres_bizcocho",
-     "said": {"si": "cq_si_gracias", "no": "cq_no_gracias"},
-     "si": ["toma", {"act": "pose", "que": "idle"}, {"act": "come"}, "cq_mmm", {"recuerda": "amigo", "valor": "0"}],
-     "no": ["abuela_no", {"act": "pose", "que": "idle"}, {"act": "regala"}, {"recuerda": "amigo", "valor": "1"}]}
+    {
+      "set": {
+        "mesa": 1,
+        "abIn": "ventana",
+        "caliente": 1
+      }
+    },
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "ventana",
+      "lead": [
+        {
+          "cam": "ventana",
+          "n": 14
+        },
+        "ventana_cerrada",
+        {
+          "cam": "wide",
+          "n": 10
+        }
+      ],
+      "line": "puedes_abrir",
+      "after": [
+        {
+          "act": "abrir",
+          "que": "ventana"
+        },
+        {
+          "cam": "ventana",
+          "n": 10
+        }
+      ],
+      "then": [
+        "tiene_bizcocho"
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "act": "pose",
+      "que": "wave"
+    },
+    {
+      "say": "quieres_hola",
+      "gap": 250
+    },
+    {
+      "act": "pose",
+      "que": "idle"
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "amor"
+    },
+    {
+      "say": "cq_si",
+      "gap": 300
+    },
+    {
+      "act": "calla"
+    },
+    {
+      "act": "pose",
+      "que": "dedo"
+    },
+    {
+      "say": "ahora_no",
+      "gap": 400
+    },
+    {
+      "act": "pose",
+      "que": "idle"
+    },
+    {
+      "dots": 3
+    },
+    {
+      "act": "asoma"
+    },
+    {
+      "act": "abcierra",
+      "que": "ventana"
+    },
+    "ab_cierra_ventana",
+    {
+      "act": "baja"
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "mal"
+    },
+    {
+      "say": "cq_ay",
+      "gap": 400
+    },
+    {
+      "act": "calla"
+    },
+    {
+      "act": "abre",
+      "que": "ventana"
+    },
+    {
+      "act": "pose",
+      "que": "wave"
+    },
+    {
+      "say": "abre_ventana",
+      "gap": 300
+    },
+    {
+      "act": "pose",
+      "que": "idle"
+    },
+    {
+      "cam": "wide",
+      "n": 10
+    },
+    {
+      "act": "atras"
+    },
+    {
+      "dots": 4
+    },
+    {
+      "ask": "si",
+      "resp": [
+        "si",
+        "no"
+      ],
+      "said": {
+        "si": "cq_si"
+      },
+      "bien": "muy_bien",
+      "lead": [],
+      "line": "abre_puerta_q",
+      "then": [
+        {
+          "act": "abre",
+          "que": "puerta"
+        },
+        "abre_puerta",
+        {
+          "act": "vete"
+        },
+        {
+          "cam": "wide",
+          "n": 9
+        }
+      ]
+    },
+    {
+      "ask": "no",
+      "resp": [
+        "si",
+        "no"
+      ],
+      "said": {
+        "no": "cq_no"
+      },
+      "bien": "muy_bien",
+      "lead": [],
+      "line": "puerta_cerrada_q"
+    },
+    {
+      "wait": 300
+    },
+    {
+      "act": "pajaro"
+    },
+    {
+      "set": {
+        "plato": 3
+      }
+    },
+    "mira_pajaro",
+    "pajaro_quiere",
+    {
+      "dots": 5
+    },
+    {
+      "decide": "do",
+      "options": [
+        "ventana",
+        "puerta"
+      ],
+      "as": "a",
+      "other": "b",
+      "alterna": true,
+      "do": "cerrar",
+      "tests": "$a",
+      "lead": [],
+      "line": "cierra_$a_ya",
+      "wrong": [
+        "no_esa_$x",
+        {
+          "cost": 1,
+          "en": "$a"
+        }
+      ],
+      "right": [
+        {
+          "if": "ok",
+          "then": [
+            {
+              "act": "bonk",
+              "en": "$a"
+            },
+            {
+              "say": "no_pajaro",
+              "gap": 300
+            },
+            {
+              "ask": "$b",
+              "lead": [],
+              "line": "ahora_cierra_$b",
+              "after": [
+                {
+                  "act": "cerrar",
+                  "en": "$b"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "act": "atras"
+    },
+    {
+      "draw": "ave",
+      "options": [
+        "puerta",
+        "ventana"
+      ]
+    },
+    {
+      "act": "posa",
+      "en": "$ave"
+    },
+    {
+      "dots": 6
+    },
+    {
+      "draw": "c",
+      "options": [
+        "puerta",
+        "ventana"
+      ],
+      "other": "o"
+    },
+    {
+      "set": {
+        "abIn": null
+      }
+    },
+    {
+      "calc": "resp",
+      "cond": "ave=$c",
+      "then": "no",
+      "else": "si"
+    },
+    {
+      "decide": "say",
+      "options": [
+        "si",
+        "no"
+      ],
+      "pick": "$resp",
+      "noretry": true,
+      "tests": "$resp",
+      "said": {
+        "si": "cq_si",
+        "no": "cq_no"
+      },
+      "bien": "muy_bien",
+      "lead": [
+        "abuela_en_$c"
+      ],
+      "line": "abre_$c_q",
+      "right": [
+        {
+          "if": "resp=si",
+          "then": [
+            {
+              "act": "abre",
+              "que": "$c"
+            },
+            "abre_$c"
+          ],
+          "else": [
+            {
+              "act": "abre",
+              "que": "$o"
+            },
+            "abre_$o"
+          ]
+        },
+        {
+          "cam": "wide",
+          "n": 9
+        }
+      ],
+      "wrong": [
+        {
+          "act": "abre",
+          "que": "$ave"
+        },
+        {
+          "cam": "wide",
+          "n": 9
+        },
+        {
+          "cost": 1,
+          "en": "$ave"
+        },
+        "ay_pajaro",
+        "pajaro_en_$ave"
+      ]
+    },
+    {
+      "dots": 7
+    },
+    {
+      "elige": "say",
+      "kind": "say",
+      "options": [
+        "si",
+        "no"
+      ],
+      "lead": [
+        {
+          "act": "pose",
+          "que": "offer"
+        }
+      ],
+      "line": "quieres_bizcocho",
+      "said": {
+        "si": "cq_si_gracias",
+        "no": "cq_no_gracias"
+      },
+      "si": [
+        "toma",
+        {
+          "act": "pose",
+          "que": "idle"
+        },
+        {
+          "act": "come"
+        },
+        "cq_mmm",
+        {
+          "recuerda": "amigo",
+          "valor": "0"
+        }
+      ],
+      "no": [
+        "abuela_no",
+        {
+          "act": "pose",
+          "que": "idle"
+        },
+        {
+          "act": "regala"
+        },
+        {
+          "recuerda": "amigo",
+          "valor": "1"
+        }
+      ]
+    }
   ],
   "final": [
-    {"act": "fin2"}
-  ]
+    {
+      "act": "fin2"
+    }
+  ],
+  "palabras": {
+    "si": "sí"
+  }
 }

@@ -14,6 +14,8 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 .rnd:active{transform:translateY(4px);box-shadow:0 0 0 4px #2A1810,0 2px 0 4px #2A1810}
 #go{left:50%;top:50%;width:104px;height:104px;margin:-52px 0 0 -52px}
 #again{left:50%;bottom:22px;width:72px;height:72px;margin-left:-36px;display:none}
+#next{right:18px;bottom:22px;width:72px;height:72px;display:none}
+#again.two{margin-left:-80px}
 #bar{display:flex;gap:8px;align-items:center;height:30px}
 .dot{width:12px;height:12px;border-radius:3px;background:#24394A;box-shadow:0 0 0 2px #2A1810}
 .dot.on{background:#FFE040}
@@ -42,6 +44,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
     <canvas id="cv" width="196" height="216"></canvas>
     <button class="rnd" id="go" aria-label="Start"><svg width="46" height="46" viewBox="0 0 24 24"><path d="M7 4.500v15l12.500-7.500z" fill="#2A1810"/></svg></button>
     <div id="bub" aria-live="polite"></div>
+    <button class="rnd" id="next" aria-label="Next"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg></button>
     <button class="rnd" id="again" aria-label="Again"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.500-5.800"/><path d="M20 4v5h-5"/></svg></button>
   </div>
   <div id="cap" aria-live="polite"></div>
@@ -50,8 +53,8 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
     <button id="snd" aria-label="Sound"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F4CC88" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="#F4CC88"/><path class="w" d="M15.500 8.500a5 5 0 0 1 0 7"/><path class="w" d="M18.500 5.500a9 9 0 0 1 0 13"/><path class="x" d="m16 9 6 6m0-6-6 6"/></svg></button>
   </div>
 </div>
-<script src="engine.js?v=13"></script>
-<script src="juego.js?v=13"></script>
-<script src="escenas/frente.js?v=13"></script>
+<script src="engine.js?v=14"></script>
+<script src="juego.js?v=14"></script>
+<script src="escenas/frente.js?v=14"></script>
 <script>arranca();</script>
 </body></html>

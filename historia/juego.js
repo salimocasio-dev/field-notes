@@ -14,7 +14,8 @@ let S=null,E=null,SW=240,SH=216,W={fx:[]},V={},cam=[0,0,DW,DH],camA=null,F=0,pen
 let ULT={},MEM={};try{ULT=JSON.parse(localStorage.getItem("coqui.juego.ult")||"{}");MEM=JSON.parse(localStorage.getItem("coqui.juego.mem")||"{}");}catch(e){}   // MEM: what one story passes to a later one
 
 function fresh(){W=Object.assign({cq:{x:150,y:178,s:1,dy:0,al:1,vis:1,bub:null},spot:null,twinkle:null,glow:null,fx:[],heart:0,lost:0,resp:null},E.fresh(S));cam=E.CAM.wide.slice();camA=null;pending=null;V={};LOG=[];
-  for(const k in MEM)V["mem_"+k]=MEM[k];}
+  for(const k in MEM)V["mem_"+k]=MEM[k];
+  (Q.get("mem")||"").split(",").filter(Boolean).forEach(kv=>{const i=kv.indexOf(":");V["mem_"+kv.slice(0,i)]=kv.slice(i+1);});}   // for checking: ?mem=amigo:1
 
 /* ---------- signs and marks, the same in every scene ---------- */
 const HAND=["....oo......","...owwo.....","...owwo.....","...owwo.....","...owwooo...","...owwowwoo.","oo.owwowwowo","owoowwwwwwwo","owwowwwwwwwo",".owwwwwwwwwo",".owwwwwwwwwo","..owwwwwwwo.","..owwwwwwwo.","...owwwwwo..","...ooooooo.."];
@@ -191,7 +192,7 @@ async function paso(st){
   if(st.ask)return ask(st);
   if(st.decide)return decide(st);
   if(st.elige)return elige(st);
-  if(st.draw){const ops=st.options.map(sub),f=Q.get(st.draw),v=ops.includes(f)?f:ops[Math.random()<.5?0:1];V[st.draw]=v;if(st.other)V[st.other]=ops.find(x=>x!==v);return;}   // a fresh draw; ?name=value fixes it
+  if(st.draw){const ops=st.options.map(sub),f=Q.get(st.draw),v=ops.includes(f)?f:ops[Math.floor(Math.random()*ops.length)];V[st.draw]=v;if(st.other)V[st.other]=ops.find(x=>x!==v);return;}   // a fresh draw; ?name=value fixes it
   if(st.calc){V[st.calc]=cond(st.cond)?sub(st.then):sub(st.else);return;}
   if(st.recuerda){MEM[st.recuerda]=sub(String(st.valor));V["mem_"+st.recuerda]=MEM[st.recuerda];try{localStorage.setItem("coqui.juego.mem",JSON.stringify(MEM));}catch(e){}return;}
   if(st.cost){W.lost++;return E.stake(W.lost,S.stake.steps,sub(st.en||""));}
@@ -207,11 +208,11 @@ async function elige(st){const ops=st.options;W.resp=st.kind==="say"?ops:null;co
 // what he did stays done, and then the big sign shows the right one.
 async function decide(st){const ops=st.options.map(sub),key=CUENTO+"."+(st.as||"x");let pick;
   if(st.pick)pick=sub(st.pick);
-  else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.random()<.5?0:1];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}
+  else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.floor(Math.random()*ops.length)];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}
   if(st.as)V[st.as]=pick;if(st.other)V[st.other]=ops.find(x=>x!==pick);
   if(st.decide==="say")W.resp=ops;
   const line=sub(st.line);let me=await espera(ops,st.lead,line,{lock:st.lock,kind:"decide",pick});const first=me.got===pick;V.ok=first?"1":"";V.x=me.got;
-  LOG.push({word:sub(st.tests||pick),asked:pick,got:me.got,ok:first});
+  {const w=sub(st.tests||pick);LOG.push({word:(S.palabras&&S.palabras[w])||w,asked:pick,got:me.got,ok:first});}
   if(st.said&&st.said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}
   W.resp=null;
   if(st.do)await E.acts[st.do]({en:me.got});
@@ -219,21 +220,22 @@ async function decide(st){const ops=st.options.map(sub),key=CUENTO+"."+(st.as||"
     if(st.noretry)return;   // one guess: the story shows the right one, then goes on
     if(st.decide==="say")W.resp=ops;
     me=await espera([pick],[],line,{sign:pick});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});}
-  senal(pick,me.p);await bien(st.bien);await pasos(st.right);}
+  senal(pick,me.p);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
 
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
 function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd");dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.insertBefore(d,snd);dots.push(d);}}
-async function run(){runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";
+async function run(){runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
-  running=false;$("#again").style.display="flex";}
-async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();E=ESCENAS[S.scene];SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
+  running=false;$("#again").style.display="flex";if(S.next){$("#next").style.display="flex";$("#again").classList.add("two");}}
+async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
-  $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();}
+  $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
+  $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
 function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-130)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
 fit();addEventListener("resize",fit);
 /* for checking the game by machine */
-window.Story={get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
+window.Story={get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const h=!respBox(k)&&E.handAt&&E.handAt[k];if(h){tap(h[0],h[1]+3);return;}const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
   get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;},get cap(){return capEl.classList.contains('on')?capEl.textContent:'';},get bub(){return bubEl.classList.contains('on')?bubEl.textContent:'';},get txt(){return TXT;}};
