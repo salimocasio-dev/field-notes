@@ -80,12 +80,13 @@ nav .in{display:flex;max-width:560px;margin:0 auto;height:72px;align-items:stret
 <div id="sheetbg" onclick="cierra()"></div><div id="sheet"></div>
 <!-- the story engine runs hidden, only to draw word pictures and play sentences -->
 <div id="hide"><div id="wrap"><div id="stage"><canvas id="cv" width="196" height="216"></canvas><button id="go"></button><button id="again"></button><button id="next"></button><div id="bub"></div></div><div id="cap"></div><div id="bar"><button id="snd"></button></div></div></div>
-<script src="engine.js?v=20"></script>
-<script src="palabras.js?v=20"></script>
-<script src="curso.js?v=20"></script>
-<script src="juego.js?v=20"></script>
-<script src="escenas/frente.js?v=20"></script>
-<script src="cual.js?v=20"></script>
+<script src="engine.js?v=21"></script>
+<script src="palabras.js?v=21"></script>
+<script src="curso.js?v=21"></script>
+<script src="juego.js?v=21"></script>
+<script src="escenas/kit.js?v=21"></script>
+<script src="escenas/frente.js?v=21"></script>
+<script src="cual.js?v=21"></script>
 <script>
 "use strict";
 const db=()=>PAL.db,AJ=()=>db().ajustes,hecho=id=>!!(db().cuentos[id]&&db().cuentos[id].n),veces=id=>(db().cuentos[id]||{}).n||0;
@@ -143,7 +144,7 @@ function landmark(g,id,x,y,op){g.save();g.globalAlpha=op?1:.55;const R=(a,b,w,h,
   g.restore();}
 
 /* today's plan: returns first, then new stories (up to three a day, each twice), then replays, sized to his minutes */
-function plan(){const due=PAL.vence("ear"),out=[],min=AJ().min;let used=0;
+function plan(){const due=PAL.vence("ear").filter(w=>!CU||CU.items.some(it=>it.w===w)),out=[],min=AJ().min;let used=0;
   if(due.length)out.push({t:"¿Cuál?",d:due.length+" word"+(due.length>1?"s":"")+" coming back",m:Math.min(6,2+Math.ceil(due.length/3)),href:"cual.html?desde=app"});
   const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),hoyD=new Date().toDateString(),nuevosHoy=cs.filter(c=>db().cuentos[c]&&new Date(db().cuentos[c].primera).toDateString()===hoyD).length,
     nuevos=cs.filter(c=>veces(c)<2).slice(0,Math.max(0,3-nuevosHoy+cs.filter(c=>veces(c)===1).length));
@@ -173,7 +174,7 @@ async function biblioteca(){const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),don
 async function leer(c){const T=await (await fetch("cuentos/"+c+".json")).json(),seen=new Set(),out=[];
   const add=id=>{id=id.replace(/\$a|\$c|\$p/g,"puerta").replace(/\$b|\$o/g,"ventana").replace(/\$tipo/g,"palma").replace(/\$tam/g,"grande").replace(/\$resp/g,"si").replace(/\$ave/g,"puerta").replace(/\$x/g,"puerta");if(T.clips[id]&&!seen.has(id)){seen.add(id);out.push(id);}};
   const walk=l=>(l||[]).forEach(st=>{if(typeof st==="string")add(st);else if(st.say)add(st.say);else if(st.ask||st.decide||st.elige){(st.lead||[]).forEach(x=>typeof x==="string"&&add(x));if(st.line)add(st.line);walk(st.after);walk(st.then);walk(st.right);(st.options||[]).forEach(o=>walk(st[o]));}else if(st.if)walk(st.then);});
-  walk(T.beats);walk(T.final);LEE={T,ids:out,i:-1,run:0};
+  if(T.leer)T.leer.forEach(add);else{walk(T.beats);walk(T.final);}LEE={T,ids:out,i:-1,run:0};   // a story may list its own reading order
   // the story's own recordings, so each line can be heard as it is read
   const prev=S;S=T;LINES=T.clips;await loadVoice();S=prev;
   sheet(`<div class="lab">Read</div><div class="row" style="border:0"><h1 class="grow" style="margin:0">${T.title}</h1><button class="btn" id="lplay">${SVG(IC.play)}Play</button></div>
@@ -191,10 +192,10 @@ function palabras(){const byW={};(CU&&CU.items||[]).forEach(it=>byW[it.w]=it);co
   <div class="card"><div class="row" style="min-height:0"><div class="grow"><b>${due.length?due.length+" word"+(due.length>1?"s":"")+" due":"Nothing due"}</b><div class="small mut">A sentence and two pictures. Only one fits.</div></div><button class="btn" onclick="location.href='cual.html?desde=app'">Review</button></div></div>
   ${ws.length?`<div class="grid">${ws.map(r=>`<button class="wc" data-w="${r.w}">${byW[r.w]?`<canvas width="196" height="104"></canvas>`:`<div style="aspect-ratio:196/104;background:#ECEAE3"></div>`}<div class="t"><div class="w">${r.w}</div><div class="bar"><i style="width:${r.ear.etapa*25}%"></i></div><div class="small mut">${ETQ[r.ear.etapa]} · ${when(r.ear.due)}${r.ear.marca?" · check picture":""}</div></div></button>`).join("")}</div>`:`<p class="mut">Play the first story on the map. Your words show up here.</p>`}
   <h2>Add a word or a goal</h2><div class="card"><p class="small mut" style="margin-top:0">For example: "talk to my 1-year-old around the house". Audio for added words comes later.</p><input id="extra" style="width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit" placeholder="A word or a goal"><div style="margin-top:8px"><button class="btn" onclick="extra()">Add</button></div>${(db().extra||[]).map(x=>`<p class="small">· ${x}</p>`).join("")}</div>`;
-  document.querySelectorAll(".wc").forEach(el=>{const it=byW[el.dataset.w],c=el.querySelector("canvas");if(it&&c)miniatura(c,it.si);
+  document.querySelectorAll(".wc").forEach(el=>{const it=byW[el.dataset.w],c=el.querySelector("canvas");if(it&&c)miniatura(c,it.si,it.esc);
     el.onclick=()=>{tick();if(!it)return;try{ac().resume();}catch(e){}if(VOICE&&CLIPS[it.say])playClip(it.say);};});}   // touch a card: hear its sentence
 function extra(){const v=document.getElementById("extra").value.trim();if(!v)return;(db().extra=db().extra||[]).push(v);PAL.save();palabras();}
-function miniatura(canvas,spec){const keep=W;W=panelW(spec);E.draw(c,W,0);if(W.resp)respDraw(c,0);W=keep;const g=canvas.getContext("2d");g.imageSmoothingEnabled=false;g.drawImage(sc,spec.cam[0],spec.cam[1],spec.cam[2],spec.cam[3],0,0,196,104);}
+function miniatura(canvas,spec,esc){const keep=W,Ex=ESCENAS[esc]||E;W=panelW(spec,Ex);Ex.draw(c,W,0);if(W.resp)respDraw(c,0);W=keep;const g=canvas.getContext("2d");g.imageSmoothingEnabled=false;g.drawImage(sc,spec.cam[0],spec.cam[1],spec.cam[2],spec.cam[3],0,0,196,104);}
 
 /* ---------- HABLAR ---------- */
 function hablar(){const open=Object.values(db().palabras).filter(r=>r.ear.etapa>=3).map(r=>r.w);
@@ -222,7 +223,7 @@ function bienvenida(k){const dots=`<div style="display:flex;gap:8px;justify-cont
 function listo(){AJ().bienvenida=1;PAL.save();cierra();hud();}
 
 /* ---------- start ---------- */
-(async()=>{CU=await (await fetch("cuentos/cual-frente.json")).json();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;W=EMPTY();voiceReady=loadVoice();
+(async()=>{CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;W=EMPTY();voiceReady=loadVoice();
   mapa();tabs();const t=new URLSearchParams(location.search).get("tab");ver(TABS.some(x=>x[0]===t)?t:"mapa");
   if(!AJ().bienvenida)bienvenida(0);
   window.App={plan,ver,lugar,leer,listo,ready:1};})();

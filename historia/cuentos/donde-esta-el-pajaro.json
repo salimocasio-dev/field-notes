@@ -3,6 +3,7 @@
  "title": "¿Dónde está el pájaro?",
  "place": "La casa",
  "scene": "frente",
+ "next": "el-jugo",
  "goal": "Find the bird. Win more rounds than it does.",
  "stake": {
   "thing": "rondas",

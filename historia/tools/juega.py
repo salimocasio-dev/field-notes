@@ -30,7 +30,7 @@ async def main():
         b=await p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox","--autoplay-policy=no-user-gesture-required"])
         ctx=await b.new_context(viewport={"width":390,"height":844},device_scale_factor=2,is_mobile=True,has_touch=True)
         pg=await ctx.new_page(); msgs=[]
-        pg.on("console",lambda m: msgs.append(m.type+": "+m.text)); pg.on("pageerror",lambda e: msgs.append("PAGEERROR: "+str(e)))
+        pg.on("console",lambda m: msgs.append(m.type+": "+m.text)); pg.on("pageerror",lambda e: (msgs.append("PAGEERROR: "+str(e)),print("PAGEERROR:",str(e)[:300],flush=True)))
         await pg.goto(URL); await pg.wait_for_timeout(2500)
         print("ready:",await pg.evaluate("Story.ready"),"voice:",await pg.evaluate("Story.voice"),"clips:",await pg.evaluate("Story.clips"))
         shot=pg.locator("#wrap" if os.environ.get("WRAP") else "#cv"); n=0

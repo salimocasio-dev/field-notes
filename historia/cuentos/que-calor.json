@@ -1,0 +1,833 @@
+{
+ "id": "que-calor",
+ "title": "¡Qué calor!",
+ "place": "La casa",
+ "scene": "balcon",
+ "goal": "Help abuela cool down.",
+ "stake": {
+  "thing": "calor",
+  "steps": 3
+ },
+ "dots": 6,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "quiero",
+  "gracias",
+  "¿cómo estás?",
+  "bien"
+ ],
+ "back_again": [
+  "agua",
+  "jugo",
+  "toma",
+  "no"
+ ],
+ "also_heard": [
+  "por favor",
+  "de nada",
+  "qué calor",
+  "y tú",
+  "muy",
+  "o",
+  "quieres",
+  "hola",
+  "abuela"
+ ],
+ "names": {
+  "silla_grande": "n_silla_abuela",
+  "silla_pequena": "n_silla_pequena",
+  "mesa": "n_mesa",
+  "jugo": "n_jugo",
+  "agua": "n_agua",
+  "abuela": "abuela",
+  "puerta": "puerta",
+  "ventana": "ventana",
+  "balcon": "n_balcon",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "de_nada": "de nada",
+  "por_favor": "por favor"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "puerta": {
+   "who": "narr",
+   "text": "Es la puerta."
+  },
+  "ventana": {
+   "who": "narr",
+   "text": "Es la ventana."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "n_silla_abuela": {
+   "who": "narr",
+   "text": "Es la silla de abuela."
+  },
+  "n_silla_pequena": {
+   "who": "narr",
+   "text": "Es la silla pequeña."
+  },
+  "n_mesa": {
+   "who": "narr",
+   "text": "Es la mesa."
+  },
+  "n_jugo": {
+   "who": "narr",
+   "text": "Es el jugo."
+  },
+  "n_agua": {
+   "who": "narr",
+   "text": "Es el agua."
+  },
+  "n_balcon": {
+   "who": "narr",
+   "text": "Es el balcón."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "ab_de_nada": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: De nada."
+  },
+  "no_jugo": {
+   "who": "narr",
+   "text": "No. Eso es jugo."
+  },
+  "no_agua": {
+   "who": "narr",
+   "text": "No. Eso es agua."
+  },
+  "toma": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma."
+  },
+  "abuela_dice": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Hola! ¿Cómo estás?"
+  },
+  "cq_bien_y_tu": {
+   "who": "tu",
+   "text": "Bien, gracias. ¿Y tú, cómo estás?"
+  },
+  "ab_que_calor": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay, qué calor!"
+  },
+  "ab_quiero_agua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Quiero agua, por favor."
+  },
+  "cq_jugo_q": {
+   "who": "tu",
+   "text": "¿Jugo?"
+  },
+  "ab_no_quiero_jugo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No. No quiero jugo. Quiero agua, por favor."
+  },
+  "puedes_agua": {
+   "who": "narr",
+   "text": "¿Puedes tocar el agua?"
+  },
+  "cq_toma_abuela": {
+   "who": "tu",
+   "text": "Toma, abuela."
+  },
+  "ab_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias."
+  },
+  "cq_de_nada": {
+   "who": "tu",
+   "text": "De nada."
+  },
+  "cq_por_favor": {
+   "who": "tu",
+   "text": "Por favor."
+  },
+  "cq_gracias": {
+   "who": "tu",
+   "text": "Gracias."
+  },
+  "ab_quiero_jugo_a": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Quiero jugo, por favor. No quiero agua."
+  },
+  "ab_quiero_jugo_b": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No quiero agua. Quiero jugo, por favor."
+  },
+  "ab_quiero_agua_a": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Quiero agua, por favor. No quiero jugo."
+  },
+  "ab_quiero_agua_b": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No quiero jugo. Quiero agua, por favor."
+  },
+  "ab_y_tu_quieres": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y tú? ¿Quieres agua o jugo?"
+  },
+  "cq_quiero_jugo": {
+   "who": "tu",
+   "text": "Quiero jugo, por favor."
+  },
+  "cq_quiero_agua": {
+   "who": "tu",
+   "text": "Quiero agua, por favor."
+  },
+  "cq_mmm": {
+   "who": "tu",
+   "text": "¡Mmm!"
+  },
+  "cq_que_bien": {
+   "who": "tu",
+   "text": "¡Ah, qué bien!"
+  },
+  "cq_como_estas_abuela": {
+   "who": "tu",
+   "text": "¿Cómo estás, abuela?"
+  },
+  "ab_bien_y_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Bien, muy bien! ¿Y tú?"
+  },
+  "cq_bien": {
+   "who": "tu",
+   "text": "¡Bien!"
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "termo": 1,
+    "abanico": 1,
+    "sudor": 2,
+    "ab": {
+     "en": "silla",
+     "x": 94,
+     "y": 147,
+     "pose": "fan",
+     "bub": null,
+     "al": 1,
+     "trae": 0
+    }
+   }
+  },
+  {
+   "act": "pone"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "act": "sube"
+  },
+  {
+   "cam": "porche",
+   "n": 10
+  },
+  {
+   "act": "ir",
+   "a": "decir"
+  },
+  {
+   "act": "burbuja",
+   "quien": "ab",
+   "que": "como"
+  },
+  {
+   "say": "abuela_dice",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "act": "burbuja",
+   "quien": "cq",
+   "que": "bien"
+  },
+  {
+   "say": "cq_bien_y_tu",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "act": "burbuja",
+   "quien": "ab",
+   "que": "calor"
+  },
+  {
+   "say": "ab_que_calor",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "burbuja",
+   "quien": "ab",
+   "que": "quiere_agua"
+  },
+  {
+   "say": "ab_quiero_agua",
+   "gap": 250
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "act": "muestra",
+   "en": "jugo"
+  },
+  {
+   "say": "cq_jugo_q",
+   "gap": 250
+  },
+  {
+   "act": "burbuja",
+   "quien": "ab",
+   "que": "no_jugo_si_agua"
+  },
+  {
+   "say": "ab_no_quiero_jugo",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "act": "deja"
+  },
+  {
+   "ask": "agua",
+   "lead": [],
+   "line": "puedes_agua",
+   "then": [
+    {
+     "act": "lleva",
+     "en": "agua"
+    },
+    {
+     "say": "cq_toma_abuela",
+     "gap": 200
+    },
+    {
+     "act": "bebe"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "ask": "de_nada",
+   "resp": [
+    "de_nada",
+    "por_favor"
+   ],
+   "baraja": true,
+   "voces": {
+    "de_nada": "cq_de_nada",
+    "por_favor": "cq_por_favor",
+    "gracias": "cq_gracias"
+   },
+   "said": {
+    "de_nada": "cq_de_nada",
+    "por_favor": "cq_por_favor",
+    "gracias": "cq_gracias"
+   },
+   "lead": [],
+   "line": "ab_gracias"
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "rompe"
+  },
+  {
+   "act": "burbuja",
+   "quien": "ab",
+   "que": "calor"
+  },
+  {
+   "say": "ab_que_calor",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "orden",
+   "options": [
+    "ab",
+    "ba"
+   ]
+  },
+  {
+   "if": "orden=ab",
+   "then": [
+    {
+     "act": "recoge"
+    },
+    {
+     "draw": "w",
+     "options": [
+      "por_favor",
+      "gracias"
+     ]
+    },
+    {
+     "decide": "say",
+     "options": [
+      "de_nada",
+      "$w"
+     ],
+     "pick": "de_nada",
+     "baraja": true,
+     "tests": "de_nada",
+     "voces": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "said": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "lead": [],
+     "line": "ab_gracias",
+     "wrong": [
+      {
+       "act": "burbuja",
+       "quien": "ab",
+       "que": "q"
+      },
+      {
+       "wait": 800
+      },
+      {
+       "act": "calla"
+      }
+     ],
+     "right": [
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "dafan"
+        }
+       ],
+       "else": [
+        {
+         "act": "fanmesa"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "dots": 5
+    },
+    {
+     "elige": "say",
+     "kind": "say",
+     "options": [
+      "agua",
+      "jugo"
+     ],
+     "lead": [],
+     "line": "ab_y_tu_quieres",
+     "said": {
+      "jugo": "cq_quiero_jugo",
+      "agua": "cq_quiero_agua"
+     },
+     "jugo": [],
+     "agua": []
+    },
+    {
+     "calc": "bebida",
+     "cond": "elegido=jugo",
+     "then": "jugo",
+     "else": "agua"
+    },
+    {
+     "act": "ofrece",
+     "en": "$bebida"
+    },
+    {
+     "draw": "z",
+     "options": [
+      "de_nada",
+      "por_favor"
+     ]
+    },
+    {
+     "decide": "say",
+     "options": [
+      "gracias",
+      "$z"
+     ],
+     "pick": "gracias",
+     "baraja": true,
+     "tests": "gracias",
+     "voces": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "said": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "lead": [],
+     "line": "toma",
+     "wrong": [
+      {
+       "act": "burbuja",
+       "quien": "ab",
+       "que": "q"
+      },
+      {
+       "wait": 800
+      },
+      {
+       "act": "calla"
+      }
+     ],
+     "right": [
+      {
+       "say": "ab_de_nada",
+       "gap": 300
+      },
+      {
+       "act": "recibe"
+      }
+     ]
+    },
+    {
+     "if": "bebida=jugo",
+     "then": [
+      {
+       "act": "cqbebe"
+      },
+      {
+       "say": "cq_mmm",
+       "gap": 300
+      }
+     ],
+     "else": [
+      {
+       "act": "cqhielo"
+      },
+      {
+       "say": "cq_que_bien",
+       "gap": 300
+      }
+     ]
+    },
+    {
+     "recuerda": "bebida",
+     "valor": "$bebida"
+    }
+   ],
+   "else": [
+    {
+     "elige": "say",
+     "kind": "say",
+     "options": [
+      "agua",
+      "jugo"
+     ],
+     "lead": [],
+     "line": "ab_y_tu_quieres",
+     "said": {
+      "jugo": "cq_quiero_jugo",
+      "agua": "cq_quiero_agua"
+     },
+     "jugo": [],
+     "agua": []
+    },
+    {
+     "calc": "bebida",
+     "cond": "elegido=jugo",
+     "then": "jugo",
+     "else": "agua"
+    },
+    {
+     "act": "ofrece",
+     "en": "$bebida"
+    },
+    {
+     "draw": "z",
+     "options": [
+      "de_nada",
+      "por_favor"
+     ]
+    },
+    {
+     "decide": "say",
+     "options": [
+      "gracias",
+      "$z"
+     ],
+     "pick": "gracias",
+     "baraja": true,
+     "tests": "gracias",
+     "voces": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "said": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "lead": [],
+     "line": "toma",
+     "wrong": [
+      {
+       "act": "burbuja",
+       "quien": "ab",
+       "que": "q"
+      },
+      {
+       "wait": 800
+      },
+      {
+       "act": "calla"
+      }
+     ],
+     "right": [
+      {
+       "say": "ab_de_nada",
+       "gap": 300
+      },
+      {
+       "act": "recibe"
+      }
+     ]
+    },
+    {
+     "if": "bebida=jugo",
+     "then": [
+      {
+       "act": "cqbebe"
+      },
+      {
+       "say": "cq_mmm",
+       "gap": 300
+      }
+     ],
+     "else": [
+      {
+       "act": "cqhielo"
+      },
+      {
+       "say": "cq_que_bien",
+       "gap": 300
+      }
+     ]
+    },
+    {
+     "recuerda": "bebida",
+     "valor": "$bebida"
+    },
+    {
+     "dots": 5
+    },
+    {
+     "act": "recoge"
+    },
+    {
+     "draw": "w",
+     "options": [
+      "por_favor",
+      "gracias"
+     ]
+    },
+    {
+     "decide": "say",
+     "options": [
+      "de_nada",
+      "$w"
+     ],
+     "pick": "de_nada",
+     "baraja": true,
+     "tests": "de_nada",
+     "voces": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "said": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "lead": [],
+     "line": "ab_gracias",
+     "wrong": [
+      {
+       "act": "burbuja",
+       "quien": "ab",
+       "que": "q"
+      },
+      {
+       "wait": 800
+      },
+      {
+       "act": "calla"
+      }
+     ],
+     "right": [
+      {
+       "if": "ok",
+       "then": [
+        {
+         "act": "dafan"
+        }
+       ],
+       "else": [
+        {
+         "act": "fanmesa"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "d",
+   "options": [
+    "jugo",
+    "agua"
+   ]
+  },
+  {
+   "draw": "ord",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "jugo",
+    "agua"
+   ],
+   "pick": "$d",
+   "do": "lleva",
+   "tests": "quiero",
+   "lock": true,
+   "lead": [],
+   "line": "ab_quiero_$d_$ord",
+   "wrong": [
+    "no_$x",
+    {
+     "act": "aparta"
+    }
+   ],
+   "right": [
+    {
+     "say": "cq_toma_abuela",
+     "gap": 200
+    },
+    {
+     "act": "bebe"
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "say": "cq_como_estas_abuela",
+   "gap": 300
+  },
+  {
+   "act": "final"
+  },
+  {
+   "say": "ab_bien_y_tu",
+   "gap": 300
+  },
+  {
+   "say": "cq_bien",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "abuela_dice",
+  "cq_bien_y_tu",
+  "ab_que_calor",
+  "ab_quiero_agua",
+  "cq_jugo_q",
+  "ab_no_quiero_jugo",
+  "puedes_agua",
+  "cq_toma_abuela",
+  "ab_gracias",
+  "cq_de_nada",
+  "ab_y_tu_quieres",
+  "cq_quiero_jugo",
+  "toma",
+  "cq_gracias",
+  "ab_de_nada",
+  "cq_mmm",
+  "ab_quiero_jugo_a",
+  "cq_como_estas_abuela",
+  "ab_bien_y_tu",
+  "cq_bien"
+ ]
+}
