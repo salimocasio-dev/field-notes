@@ -1,0 +1,930 @@
+{
+ "id": "la-familia",
+ "title": "La familia",
+ "place": "La casa",
+ "scene": "sala",
+ "next": "la-foto",
+ "goal": "A slice of abuela's cake for everyone, and three for him.",
+ "stake": {
+  "thing": "plato",
+  "steps": 3
+ },
+ "dots": 7,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "mamá",
+  "papá",
+  "abuelo",
+  "bebé",
+  "familia"
+ ],
+ "back_again": [
+  "abuela",
+  "toma",
+  "gracias",
+  "hola",
+  "¿cómo estás?",
+  "bien",
+  "no"
+ ],
+ "also_heard": [
+  "sala",
+  "para",
+  "este",
+  "esta",
+  "come",
+  "y",
+  "bizcocho",
+  "quiere",
+  "pequeño",
+  "de nada",
+  "está caliente"
+ ],
+ "names": {
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "bebe": "n_bebe",
+  "hermano": "n_hermano",
+  "hermana": "n_hermana",
+  "abuela": "abuela",
+  "sofa": "n_sofa",
+  "butaca": "n_butaca",
+  "sala": "n_sala",
+  "mesita": "n_mesa",
+  "bizcocho": "un_bizcocho",
+  "fotos": "n_fotos",
+  "lampara": "n_lampara",
+  "puerta": "puerta",
+  "ventana": "ventana",
+  "coqui": "yo_coqui"
+ },
+ "palabras": {
+  "mama": "mamá",
+  "papa": "papá",
+  "bebe": "bebé"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "puerta": {
+   "who": "narr",
+   "text": "Es la puerta."
+  },
+  "ventana": {
+   "who": "narr",
+   "text": "Es la ventana."
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "n_hermano": {
+   "who": "narr",
+   "text": "Este es el hermano."
+  },
+  "n_hermana": {
+   "who": "narr",
+   "text": "Esta es la hermana."
+  },
+  "n_sofa": {
+   "who": "narr",
+   "text": "Es el sofá."
+  },
+  "n_butaca": {
+   "who": "narr",
+   "text": "Es la butaca de abuelo."
+  },
+  "n_sala": {
+   "who": "narr",
+   "text": "Es la sala."
+  },
+  "n_mesa": {
+   "who": "narr",
+   "text": "Es la mesa."
+  },
+  "un_bizcocho": {
+   "who": "narr",
+   "text": "Es un bizcocho."
+  },
+  "n_fotos": {
+   "who": "narr",
+   "text": "Son las fotos de la familia."
+  },
+  "n_lampara": {
+   "who": "narr",
+   "text": "Es la lámpara."
+  },
+  "es_la_sala": {
+   "who": "narr",
+   "text": "Esta es la sala."
+  },
+  "ahora_no": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ahora no. Está caliente."
+  },
+  "cq_hola": {
+   "who": "tu",
+   "text": "¡Hola!"
+  },
+  "familia_de_abuela": {
+   "who": "narr",
+   "text": "Mira. Esta es la familia de abuela."
+  },
+  "y_este_es_papa": {
+   "who": "narr",
+   "text": "Y este es papá."
+  },
+  "puedes_mama": {
+   "who": "narr",
+   "text": "¿Puedes tocar a mamá?"
+  },
+  "mama_hola": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Hola!"
+  },
+  "donde_papa": {
+   "who": "narr",
+   "text": "¿Y papá? ¿Dónde está papá?"
+  },
+  "papa_hola_como": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Hola! ¿Cómo estás?"
+  },
+  "bien_gracias": {
+   "who": "tu",
+   "text": "¡Bien, gracias!"
+  },
+  "abuela_y_abuelo": {
+   "who": "narr",
+   "text": "Mira: abuela y abuelo."
+  },
+  "puedes_abuelo": {
+   "who": "narr",
+   "text": "¿Puedes tocar a abuelo?"
+  },
+  "abuelo_hola": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Hola!"
+  },
+  "este_es_bebe": {
+   "who": "narr",
+   "text": "Y este es el bebé."
+  },
+  "bebe_pequeno": {
+   "who": "narr",
+   "text": "El bebé es pequeño."
+  },
+  "donde_bebe": {
+   "who": "narr",
+   "text": "¿Dónde está el bebé?"
+  },
+  "tiene_un_bizcocho": {
+   "who": "narr",
+   "text": "¡Mira! Abuela tiene un bizcocho."
+  },
+  "bizcocho_familia": {
+   "who": "narr",
+   "text": "Bizcocho para la familia."
+  },
+  "cq_mmm_bizcocho": {
+   "who": "tu",
+   "text": "¡Mmm! ¡Bizcocho!"
+  },
+  "cq_de_nada": {
+   "who": "tu",
+   "text": "De nada."
+  },
+  "mama_gracias": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: Gracias."
+  },
+  "papa_gracias": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Gracias."
+  },
+  "abuelo_gracias": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias."
+  },
+  "toma_biz_jugo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma. Bizcocho y jugo."
+  },
+  "toma_biz_agua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma. Bizcocho y agua."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "familia_come": {
+   "who": "narr",
+   "text": "La familia come bizcocho."
+  },
+  "para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es para mamá."
+  },
+  "quiere_mama": {
+   "who": "narr",
+   "text": "Ahora, mamá quiere bizcocho."
+  },
+  "no_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este no es para mamá."
+  },
+  "es_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Es para mamá."
+  },
+  "no_es_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No es para mamá."
+  },
+  "y_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y este es para mamá."
+  },
+  "toma_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, mamá."
+  },
+  "no_es_mama": {
+   "who": "narr",
+   "text": "No. Esa es mamá."
+  },
+  "para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es para papá."
+  },
+  "quiere_papa": {
+   "who": "narr",
+   "text": "Ahora, papá quiere bizcocho."
+  },
+  "no_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este no es para papá."
+  },
+  "es_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Es para papá."
+  },
+  "no_es_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No es para papá."
+  },
+  "y_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y este es para papá."
+  },
+  "toma_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, papá."
+  },
+  "no_es_papa": {
+   "who": "narr",
+   "text": "No. Ese es papá."
+  },
+  "para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es para abuelo."
+  },
+  "quiere_abuelo": {
+   "who": "narr",
+   "text": "Ahora, abuelo quiere bizcocho."
+  },
+  "no_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este no es para abuelo."
+  },
+  "es_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Es para abuelo."
+  },
+  "no_es_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No es para abuelo."
+  },
+  "y_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y este es para abuelo."
+  },
+  "toma_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, abuelo."
+  },
+  "no_es_abuelo": {
+   "who": "narr",
+   "text": "No. Ese es abuelo."
+  },
+  "para_bebe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es para el bebé."
+  },
+  "quiere_bebe": {
+   "who": "narr",
+   "text": "Ahora, el bebé quiere bizcocho."
+  },
+  "no_para_bebe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este no es para el bebé."
+  },
+  "es_para_bebe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Es para el bebé."
+  },
+  "no_es_para_bebe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No es para el bebé."
+  },
+  "y_para_bebe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y este es para el bebé."
+  },
+  "toma_bebe": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma, bebé."
+  },
+  "no_es_bebe": {
+   "who": "narr",
+   "text": "No. Ese es el bebé."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "pastel": "tapado"
+   }
+  },
+  {
+   "act": "duerme"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "act": "huele"
+  },
+  "es_la_sala",
+  {
+   "say": "ahora_no",
+   "gap": 300
+  },
+  {
+   "act": "atras"
+  },
+  {
+   "say": "cq_hola",
+   "gap": 250
+  },
+  "familia_de_abuela",
+  {
+   "dots": 1
+  },
+  {
+   "set": {
+    "twinkle": "mama"
+   }
+  },
+  "esta_es_mama",
+  {
+   "set": {
+    "twinkle": "papa"
+   }
+  },
+  "y_este_es_papa",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "mama",
+   "lead": [],
+   "line": "puedes_mama",
+   "then": [
+    {
+     "act": "beso"
+    },
+    "mama_hola"
+   ]
+  },
+  {
+   "ask": "papa",
+   "lead": [],
+   "line": "donde_papa",
+   "then": [
+    {
+     "act": "pose",
+     "quien": "papa",
+     "que": "wave"
+    },
+    {
+     "say": "papa_hola_como",
+     "gap": 250
+    },
+    {
+     "act": "pose",
+     "quien": "papa",
+     "que": "idle"
+    },
+    {
+     "say": "bien_gracias",
+     "gap": 300
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "set": {
+    "twinkle": "abuelo"
+   }
+  },
+  {
+   "act": "pose",
+   "quien": "abuela",
+   "que": "wave"
+  },
+  "abuela_y_abuelo",
+  {
+   "act": "pose",
+   "quien": "abuela",
+   "que": "idle"
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "abuelo",
+   "lead": [],
+   "line": "puedes_abuelo",
+   "then": [
+    {
+     "act": "despierta"
+    },
+    "abuelo_hola"
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "set": {
+    "twinkle": "bebe"
+   }
+  },
+  "este_es_bebe",
+  "bebe_pequeno",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "bebe",
+   "lead": [],
+   "line": "donde_bebe",
+   "then": [
+    {
+     "act": "saluda",
+     "quien": "bebe"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "destapa"
+  },
+  "tiene_un_bizcocho",
+  "bizcocho_familia",
+  {
+   "say": "cq_mmm_bizcocho",
+   "gap": 250
+  },
+  {
+   "act": "tres"
+  },
+  {
+   "reparte": [
+    "na",
+    "nb",
+    "nc",
+    "nd"
+   ],
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "$na",
+   "as": "p",
+   "lock": true,
+   "noretry": true,
+   "do": "da",
+   "tests": "$na",
+   "lead": [],
+   "line": "para_$na",
+   "right": [
+    {
+     "act": "come",
+     "quien": "$p"
+    },
+    {
+     "if": "p=bebe",
+     "then": [],
+     "else": [
+      {
+       "say": "$p_gracias",
+       "gap": 250
+      },
+      {
+       "say": "cq_de_nada",
+       "gap": 300
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    "no_es_$x",
+    {
+     "act": "muerde",
+     "quien": "$x"
+    },
+    {
+     "act": "abda",
+     "de": "$x",
+     "a": "$p"
+    },
+    {
+     "cost": 1
+    },
+    "toma_$p",
+    {
+     "act": "come",
+     "quien": "$p"
+    },
+    {
+     "act": "vuelve"
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$nb",
+    "$nc",
+    "$nd"
+   ],
+   "pick": "$nb",
+   "as": "p",
+   "lock": true,
+   "noretry": true,
+   "do": "da",
+   "tests": "$nb",
+   "lead": [],
+   "line": "quiere_$nb",
+   "right": [
+    {
+     "act": "come",
+     "quien": "$p"
+    },
+    {
+     "if": "p=bebe",
+     "then": [],
+     "else": [
+      {
+       "say": "$p_gracias",
+       "gap": 250
+      },
+      {
+       "say": "cq_de_nada",
+       "gap": 300
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    "no_es_$x",
+    {
+     "act": "muerde",
+     "quien": "$x"
+    },
+    {
+     "act": "abda",
+     "de": "$x",
+     "a": "$p"
+    },
+    {
+     "cost": 1
+    },
+    "toma_$p",
+    {
+     "act": "come",
+     "quien": "$p"
+    },
+    {
+     "act": "vuelve"
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ord",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "if": "ord=a",
+   "then": [
+    {
+     "decide": "do",
+     "options": [
+      "$nc",
+      "$nd"
+     ],
+     "pick": "$nc",
+     "as": "p",
+     "lock": true,
+     "noretry": true,
+     "do": "da",
+     "tests": "no",
+     "lead": [
+      "no_para_$nd"
+     ],
+     "line": "es_para_$nc",
+     "right": [
+      {
+       "act": "come",
+       "quien": "$p"
+      },
+      {
+       "if": "p=bebe",
+       "then": [],
+       "else": [
+        {
+         "say": "$p_gracias",
+         "gap": 250
+        },
+        {
+         "say": "cq_de_nada",
+         "gap": 300
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      "no_es_$x",
+      {
+       "act": "muerde",
+       "quien": "$x"
+      },
+      {
+       "act": "abda",
+       "de": "$x",
+       "a": "$p"
+      },
+      {
+       "cost": 1
+      },
+      "toma_$p",
+      {
+       "act": "come",
+       "quien": "$p"
+      },
+      {
+       "act": "vuelve"
+      }
+     ]
+    }
+   ],
+   "else": [
+    {
+     "decide": "do",
+     "options": [
+      "$nc",
+      "$nd"
+     ],
+     "pick": "$nc",
+     "as": "p",
+     "lock": true,
+     "noretry": true,
+     "do": "da",
+     "tests": "no",
+     "lead": [
+      "para_$nc"
+     ],
+     "line": "no_es_para_$nd",
+     "right": [
+      {
+       "act": "come",
+       "quien": "$p"
+      },
+      {
+       "if": "p=bebe",
+       "then": [],
+       "else": [
+        {
+         "say": "$p_gracias",
+         "gap": 250
+        },
+        {
+         "say": "cq_de_nada",
+         "gap": 300
+        }
+       ]
+      }
+     ],
+     "wrong": [
+      "no_es_$x",
+      {
+       "act": "muerde",
+       "quien": "$x"
+      },
+      {
+       "act": "abda",
+       "de": "$x",
+       "a": "$p"
+      },
+      {
+       "cost": 1
+      },
+      "toma_$p",
+      {
+       "act": "come",
+       "quien": "$p"
+      },
+      {
+       "act": "vuelve"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "act": "ultimo",
+   "a": "$nd"
+  },
+  "y_para_$nd",
+  {
+   "act": "come",
+   "quien": "$nd"
+  },
+  {
+   "act": "vuelve"
+  }
+ ],
+ "final": [
+  {
+   "act": "suplato"
+  },
+  {
+   "if": "mem_bebida=agua",
+   "then": [
+    "toma_biz_agua"
+   ],
+   "else": [
+    "toma_biz_jugo"
+   ]
+  },
+  {
+   "act": "final6"
+  },
+  {
+   "say": "cq_gracias_abuela",
+   "gap": 300
+  },
+  "familia_come",
+  {
+   "act": "comen"
+  }
+ ],
+ "leer": [
+  "es_la_sala",
+  "ahora_no",
+  "cq_hola",
+  "familia_de_abuela",
+  "esta_es_mama",
+  "y_este_es_papa",
+  "puedes_mama",
+  "mama_hola",
+  "donde_papa",
+  "papa_hola_como",
+  "bien_gracias",
+  "abuela_y_abuelo",
+  "puedes_abuelo",
+  "abuelo_hola",
+  "este_es_bebe",
+  "bebe_pequeno",
+  "donde_bebe",
+  "tiene_un_bizcocho",
+  "bizcocho_familia",
+  "cq_mmm_bizcocho",
+  "para_papa",
+  "papa_gracias",
+  "cq_de_nada",
+  "quiere_abuelo",
+  "abuelo_gracias",
+  "no_para_mama",
+  "es_para_bebe",
+  "y_para_mama",
+  "toma_biz_jugo",
+  "cq_gracias_abuela",
+  "familia_come"
+ ]
+}

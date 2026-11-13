@@ -3,6 +3,7 @@
  "title": "¡Qué calor!",
  "place": "La casa",
  "scene": "balcon",
+ "next": "la-familia",
  "goal": "Help abuela cool down.",
  "stake": {
   "thing": "calor",

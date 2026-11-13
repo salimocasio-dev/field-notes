@@ -1,0 +1,624 @@
+{
+ "id": "cual-sala",
+ "title": "¿Cuál?",
+ "place": "La casa",
+ "scene": "sala",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for La sala.",
+ "clips": {
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_bebe": {
+   "who": "narr",
+   "text": "Este es el bebé."
+  },
+  "n_familia": {
+   "who": "narr",
+   "text": "Esta es la familia."
+  },
+  "n_hermano": {
+   "who": "narr",
+   "text": "Este es el hermano."
+  },
+  "n_hermana": {
+   "who": "narr",
+   "text": "Esta es la hermana."
+  },
+  "n_foto_el": {
+   "who": "narr",
+   "text": "Una foto con él."
+  },
+  "n_foto_ella": {
+   "who": "narr",
+   "text": "Una foto con ella."
+  },
+  "h_soy_yo": {
+   "who": "narr",
+   "habla": "hermana",
+   "text": "La hermana dice: ¡Soy yo!"
+  },
+  "h_eres_tu": {
+   "who": "narr",
+   "habla": "hermano",
+   "text": "El hermano dice: ¡Eres tú!"
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "mamá",
+   "say": "esta_es_mama",
+   "si": {
+    "cam": [
+     41,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     41,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuela": {
+       "x": 97,
+       "y": 128,
+       "pose": "idle",
+       "dir": -1
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "papá",
+   "say": "n_papa",
+   "si": {
+    "cam": [
+     75,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     75,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuelo": {
+       "x": 131,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "abuelo",
+   "say": "n_abuelo",
+   "si": {
+    "cam": [
+     125,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     125,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "papa": {
+       "x": 181,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "bebé",
+   "say": "n_bebe",
+   "si": {
+    "cam": [
+     14,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     14,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 74,
+       "y": 197,
+       "pose": "idle"
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "familia",
+   "say": "n_familia",
+   "si": {
+    "cam": [
+     35,
+     60,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      },
+      "abuela": {
+       "x": 62,
+       "y": 150,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 114,
+       "y": 150,
+       "pose": "idle"
+      },
+      "hermana": {
+       "x": 150,
+       "y": 150,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 97,
+       "y": 112,
+       "z": 128,
+       "est": "idle"
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     35,
+     60,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "hermano",
+   "say": "n_hermano",
+   "si": {
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "papa": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "hermana",
+   "say": "n_hermana",
+   "si": {
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    }
+   }
+  },
+  {
+   "w": "él",
+   "say": "n_foto_el",
+   "si": {
+    "cam": [
+     30,
+     122,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 96,
+       "y": 196,
+       "pose": "idle"
+      },
+      "hermano": {
+       "x": 144,
+       "y": 196,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 152,
+      "y": 174,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     30,
+     122,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 96,
+       "y": 196,
+       "pose": "idle"
+      },
+      "hermano": {
+       "x": 144,
+       "y": 196,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 56,
+      "y": 174,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "ella",
+   "say": "n_foto_ella",
+   "si": {
+    "cam": [
+     35,
+     66,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 100,
+       "y": 136,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 140,
+       "y": 136,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 60,
+      "y": 114,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     35,
+     66,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 100,
+       "y": 136,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 140,
+       "y": 136,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 148,
+      "y": 114,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "yo",
+   "say": "h_soy_yo",
+   "si": {
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 100,
+       "y": 196,
+       "pose": "yo"
+      }
+     },
+     "cq": {
+      "x": 128,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 100,
+       "y": 196,
+       "pose": "tu"
+      }
+     },
+     "cq": {
+      "x": 128,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "tú",
+   "say": "h_eres_tu",
+   "si": {
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 140,
+       "y": 196,
+       "pose": "tu",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 80,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 140,
+       "y": 196,
+       "pose": "yo",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 80,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    }
+   }
+  }
+ ]
+}

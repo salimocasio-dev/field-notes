@@ -168,7 +168,7 @@ function poke(what,p){if(what==="coqui"){bounce(6);const nm=S.names&&S.names.coq
   SFX.blip();fx({t:"star",n:7,pts:[[p.x-7,p.y-4],[p.x+8,p.y+2],[p.x,p.y-10]]});if(E.poke)E.poke(what,p);}
 function tap(x,y){if(!E||!S)return;const inb=b=>b&&x>=b[0]-3&&x<b[0]+b[2]+3&&y>=b[1]-3&&y<b[1]+b[3]+3,
     what=(W.resp||[]).find(k=>inb(respBox(k)))||E.hit(x,y,W),p={x:Math.round(x),y:Math.round(y)};if(!what)return;
-  const pn=pending,nm=S.names&&S.names[what];
+  const pn=pending,nm=(W.apodo&&W.apodo[what])||(S.names&&S.names[what]);   // a scene may give a thing another line for a while (W.apodo)
   if(pn&&!pn.done){let w=what;if(pn.loose&&(w==="puerta"||w==="ventana"))w="casa";   // before the door has a name, the door is the house
     if(pn.live.includes(w)&&!(pn.lock&&!pn.asked)){pn.done=1;pn.ms=pn.tEnd?Math.round((performance.now()-pn.tEnd)*FAST):0;pn.p=p;pn.got=w;hush();pn.res();return;}
     if((W.resp||[]).includes(what))return;                               // a bubble that is still speaking: the touch does nothing
@@ -202,22 +202,25 @@ async function paso(st){
   if(st.decide)return decide(st);
   if(st.elige)return elige(st);
   if(st.draw){const ops=st.options.map(sub),f=Q.get(st.draw),v=ops.includes(f)?f:ops[Math.floor(Math.random()*ops.length)];V[st.draw]=v;if(st.other)V[st.other]=ops.find(x=>x!==v);return;}   // a fresh draw; ?name=value fixes it
+  if(st.reparte){const ops=st.options.slice();for(let i=ops.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ops[i],ops[j]]=[ops[j],ops[i]];}   // deals the options out to several names, none twice; ?name=value fixes one
+    st.reparte.forEach(k=>{const f=Q.get(k);if(ops.includes(f)){ops.splice(ops.indexOf(f),1);V[k]=f;}else V[k]=null;});st.reparte.forEach(k=>{if(V[k]==null)V[k]=ops.shift();});return;}
   if(st.calc){V[st.calc]=cond(st.cond)?sub(st.then):sub(st.else);return;}
   if(st.recuerda){MEM[st.recuerda]=sub(String(st.valor));V["mem_"+st.recuerda]=MEM[st.recuerda];try{localStorage.setItem("coqui.juego.mem",JSON.stringify(MEM));}catch(e){}return;}
   if(st.cost){W.lost++;return E.stake(W.lost,S.stake.steps,sub(st.en||""));}
   throw new Error("a step the game does not know");}
 // An ask, with the big sign. Nothing can go wrong here.
-async function ask(st){const t=sub(st.ask),voz=st.voces?Object.fromEntries(Object.entries(st.voces).map(e=>[e[0],sub(e[1])])):null;   // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
+const mapa=m=>m?Object.fromEntries(Object.entries(m).map(e=>[sub(e[0]),sub(e[1])])):null;   // a map from answers to lines, with the story's variables filled in on both sides
+async function ask(st){const t=sub(st.ask),voz=mapa(st.voces),said=mapa(st.said);   // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
   if(st.resp){W.resp=st.resp.map(sub);if(st.baraja&&Math.random()<.5)W.resp=W.resp.slice().reverse();W.respVoz=voz;}
   const me=await espera([t],st.lead,st.line?sub(st.line):null,{sign:t,loose:st.loose,voces:voz,orden:voz?W.resp:null});
-  senal(t,me.p);if(st.said&&st.said[t]){await wait(250);W.resp=null;await say(sub(st.said[t]),200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
+  senal(t,me.p);if(said&&said[t]){await wait(250);W.resp=null;await say(said[t],200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
 // He picks what the frog says, and there is no wrong answer: each answer leads somewhere else.
 async function elige(st){const ops=st.options;W.respVoz=null;W.resp=st.kind==="say"?ops:null;const me=await espera(ops,st.lead,sub(st.line),{kind:"elige"});V.elegido=me.got;
   LOG.push({word:null,asked:"libre",got:me.got,ok:true});SFX.blip();bounce(5);
   if(st.said&&st.said[me.got]){await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}W.resp=null;await pasos(st[me.got]);}
 // A decision. Two things he could do; only the Spanish says which. A wrong one costs a step of the thing at stake,
 // what he did stays done, and then the big sign shows the right one.
-async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.as||"x"),voz=st.voces?Object.fromEntries(Object.entries(st.voces).map(e=>[e[0],sub(e[1])])):null;let pick;
+async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.as||"x"),voz=mapa(st.voces),said=mapa(st.said);let pick;
   if(st.baraja&&Math.random()<.5)ops=ops.slice().reverse();   // which side each answer bubble is on is drawn fresh
   if(st.pick)pick=sub(st.pick);
   else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.floor(Math.random()*ops.length)];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}
@@ -225,14 +228,14 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
   if(st.decide==="say"){W.resp=ops;W.respVoz=voz;}
   const line=sub(st.line);let me=await espera(ops,st.lead,line,{lock:st.lock,kind:"decide",pick,voces:voz,orden:voz?ops:null});const first=me.got===pick;V.ok=first?"1":"";V.x=me.got;
   {const w=sub(st.tests||pick);LOG.push({word:(S.palabras&&S.palabras[w])||w,asked:pick,got:me.got,ok:first,ms:me.ms||0});}
-  if(st.said&&st.said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}
+  if(said&&said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(said[me.got],300);}
   W.resp=null;
   if(st.do)await E.acts[st.do]({en:me.got});
   if(!first){await wait(500);const costs=JSON.stringify(st.wrong||[]).includes('"cost"');await pasos(st.wrong);if(!costs){W.lost++;await E.stake(W.lost,S.stake.steps,me.got);}
     if(st.noretry)return;   // one guess: the story shows the right one, then goes on
     if(st.decide==="say"){W.resp=ops;W.respVoz=voz;}
     me=await espera([pick],[],line,{sign:pick,voces:voz,orden:voz?[pick]:null});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});
-    if(st.decide==="say"&&st.said&&st.said[pick]){SFX.blip();bounce(5);await wait(200);await say(sub(st.said[pick]),250);}}
+    if(st.decide==="say"&&said&&said[pick]){SFX.blip();bounce(5);await wait(200);await say(said[pick],250);}}
   senal(pick,st.decide==="say"?null:me.p);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
 
 /* ---------- running it ---------- */
