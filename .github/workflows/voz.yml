@@ -20,7 +20,7 @@ on:
         description: "cuento: voice for grandma"
         default: ""
       tu:
-        description: "cuento: voice for the learner's own line (empty = same as narrator)"
+        description: "cuento: voice for the coquí, the learner's own character (empty = es-PR-VictorNeural)"
         default: ""
       rate:
         description: "speaking rate, for example -12%"
@@ -45,7 +45,7 @@ jobs:
           MODO: ${{ inputs.modo || 'cuento' }}
           V_NARR: ${{ inputs.narr || 'es-PR-KarinaNeural' }}
           V_ABUELA: ${{ inputs.abuela }}
-          V_TU: ${{ inputs.tu }}
+          V_TU: ${{ inputs.tu || 'es-PR-VictorNeural' }}
           RATE: ${{ inputs.rate || '-12%' }}
       - name: Save the audio into the project
         env:

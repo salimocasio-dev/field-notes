@@ -58,7 +58,7 @@ function draw(){if(!E)return;const a=F>>1;
   dc.drawImage(sc,cam[0],cam[1],cam[2],cam[3],0,0,DW,DH);
   if(W.spot){const p=E.handAt[W.spot],z=DW/cam[2],k=3,hx=Math.round((p[0]-cam[0])*z)-4*k,hy=Math.round((p[1]-cam[1])*z);hand(dc,hx,hy,(F>>2)%2===1,k);}
 }
-function loop(){F++;draw();}
+function loop(){F++;draw();placeBub();}
 
 /* ---------- sound: effects, and the recorded voice ---------- */
 let AC=null;const ac=()=>AC||(AC=new (window.AudioContext||window.webkitAudioContext)());
@@ -85,10 +85,42 @@ async function loadVoice(){LINES=S.clips||{};
 const words=id=>((LINES[id]||{}).text||"x x").split(/\s+/).length;
 const dur=id=>VOICE&&CLIPS[id]?CLIPS[id].t1-CLIPS[id].t0:(360*words(id)+300)/1000;
 function playClip(id){return new Promise(res=>{const cl=CLIPS[id];if(!VOICE||!cl){res(false);return;}
-  const s=ac().createBufferSource();s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);
-  s._end=v=>{if(s._done)return;s._done=1;speaking=Math.max(0,speaking-1);live.delete(s);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));});}
+  const s=ac().createBufferSource();s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);letras(id);
+  s._end=v=>{if(s._done)return;s._done=1;speaking=Math.max(0,speaking-1);live.delete(s);letrasFin(id,v);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));});}
 function hush(){[...live].forEach(s=>{try{s.stop();}catch(e){}s._end(false);});}
-function say(id,gap){const my=runId,g=(gap==null?420:gap)/FAST;return (VOICE&&CLIPS[id]?playClip(id).then(ok=>ok?sleep(g):0):sleep(dur(id)*1000/FAST+g)).then(()=>{if(my!==runId)throw "stop";});}
+function say(id,gap){const my=runId,g=(gap==null?420:gap)/FAST;
+  return (VOICE&&CLIPS[id]?playClip(id).then(ok=>ok?sleep(g):0):(letras(id),sleep(dur(id)*1000/FAST).then(()=>{letrasFin(id,true);return sleep(g);}))).then(()=>{if(my!==runId)throw "stop";});}
+
+/* ---------- the words on screen: speech bubbles and captions ----------
+   The frog's lines and grandma's lines show in a bubble at the speaker. The narrator's lines show as a caption under the picture.
+   If the speaker cannot be seen, the caption carries the whole line. Spanish only, exactly what is said.
+   When the words show is one setting, TXT: "con" = while the line is spoken (Salim's ask), "tras" = right after it, "no" = never.
+   ?txt=tras or ?txt=no overrides it for one visit. */
+const TXT=["con","tras","no"].includes(Q.get("txt"))?Q.get("txt"):"con";
+const capEl=$("#cap"),bubEl=$("#bub");let BUBQ=null,capT=null,bubT=null;
+function partes(id){const cl=LINES[id]||{},t=cl.text||"";
+  if(cl.who==="tu")return {cap:null,quien:"coqui",bub:t,all:t};
+  if(cl.habla){const i=t.indexOf(": ");if(i>0)return {cap:t.slice(0,i+1),quien:cl.habla,bub:t.slice(i+2),all:t};}
+  return {cap:t,quien:null,bub:null,all:t};}
+function donde(quien){if(!quien||!E)return null;
+  if(quien==="coqui"){const q=W.cq;if(!q.vis)return null;const b=frogBox(q);return [b.x+b.w/2,b.y+Math.round(q.dy)-(q.bub?19:1)];}
+  return E.talkAt?E.talkAt(quien,W):null;}
+function muestra(id){const p=partes(id);let cap=p.cap,bub=p.bub;
+  if(bub&&!donde(p.quien)){cap=p.all;bub=null;}
+  clearTimeout(capT);clearTimeout(bubT);
+  capEl.textContent=cap||"";capEl.classList.toggle("on",!!cap);
+  if(bub){BUBQ=p.quien;bubEl.textContent=bub;bubEl.classList.add("on");placeBub();}else{BUBQ=null;bubEl.classList.remove("on");}}
+function borra(ms){clearTimeout(capT);clearTimeout(bubT);capT=setTimeout(()=>capEl.classList.remove("on"),ms);bubT=setTimeout(()=>{bubEl.classList.remove("on");BUBQ=null;},ms*.7);}
+function letras(id){if(TXT==="con")muestra(id);}
+function letrasFin(id,done){if(TXT==="no")return;if(TXT==="tras"){if(!done)return;muestra(id);borra(Math.max(1800,((LINES[id]||{}).text||"").length*70)/FAST);return;}borra(1700/FAST);}
+function callaLetras(){clearTimeout(capT);clearTimeout(bubT);capEl.classList.remove("on");bubEl.classList.remove("on");BUBQ=null;}
+function placeBub(){if(!BUBQ)return;const a=donde(BUBQ);if(!a){bubEl.classList.remove("on");return;}
+  const cw=cv.clientWidth,ch=cv.clientHeight,X=v=>(v-cam[0])/cam[2]*cw,Y=v=>(v-cam[1])/cam[3]*ch,bw=bubEl.offsetWidth,bh=bubEl.offsetHeight;
+  if(BUBQ==="coqui"){   // the frog talks from beside himself, so his bubble never hides abuela
+    const b=frogBox(W.cq),xr=X(b.x+b.w)+4,xl=X(b.x)-4,y=Y(b.y+b.h*.45+Math.round(W.cq.dy)),rR=cw-xr-18,rL=xl-18,right=rR>=rL,room=Math.min(right?rR:rL,cw*.72);
+    if(room>=110){bubEl.style.maxWidth=Math.floor(room)+"px";bubEl.className="on "+(right?"der":"izq");bubEl.style.left=Math.round(right?xr+12:xl-12)+"px";bubEl.style.top=Math.round(Math.max(bh/2+4,Math.min(ch-bh/2-4,y)))+"px";return;}}
+  bubEl.style.maxWidth="";bubEl.className="on";const x=X(a[0]),y=Y(a[1]),l=Math.max(bw/2+4,Math.min(cw-bw/2-4,x));
+  bubEl.style.left=Math.round(l)+"px";bubEl.style.top=Math.round(Math.max(bh+4,y))+"px";bubEl.style.setProperty("--tx",Math.round(Math.max(14,Math.min(bw-14,x-l+bw/2)))+"px");}
 const wait=ms=>{const my=runId;return sleep(ms/FAST).then(()=>{if(my!==runId)throw "stop";});};
 
 /* ---------- moving things ---------- */
@@ -109,7 +141,7 @@ async function espera(liveSet,lead,line,o){o=o||{};const my=runId;
   await gotP;clearInterval(timer);if(pending===me)pending=null;W.spot=null;W.twinkle=null;if(my!==runId)throw "stop";
   return me;}
 // a touch that is not an answer: it reacts and gets its name. Poking around is free.
-function poke(what,p){if(what==="coqui"){SFX.coqui();bounce(6);return;}
+function poke(what,p){if(what==="coqui"){bounce(6);const nm=S.names&&S.names.coqui;if(nm&&VOICE&&CLIPS[nm]){if(!speaking)playClip(nm);}else SFX.coqui();return;}   // touch the frog: he says his name
   SFX.blip();fx({t:"star",n:7,pts:[[p.x-7,p.y-4],[p.x+8,p.y+2],[p.x,p.y-10]]});if(E.poke)E.poke(what,p);}
 function tap(x,y){if(!E||!S)return;const what=E.hit(x,y,W),p={x:Math.round(x),y:Math.round(y)};if(!what)return;
   const pn=pending,nm=S.names&&S.names[what];
@@ -118,7 +150,7 @@ function tap(x,y){if(!E||!S)return;const what=E.hit(x,y,W),p={x:Math.round(x),y:
     poke(what,p);if(what==="coqui")return;
     if(nm&&!speaking&&!pn.busy){pn.busy=1;playClip(nm).then(()=>sleep(300)).then(()=>pending===pn&&!pn.done&&pn.asked&&pn.line?playClip(pn.line):0).then(()=>{pn.busy=0;});}   // name what was touched, then ask again
     return;}
-  if(running){poke(what,p);if(nm&&!speaking)playClip(nm);}}
+  if(running){const busy=speaking;poke(what,p);if(what!=="coqui"&&nm&&!busy)playClip(nm);}}
 cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*DW,py=(e.clientY-r.top)/r.height*DH;tap(cam[0]+px/DW*cam[2],cam[1]+py/DH*cam[3]);});
 
 /* ---------- the signal for a right move: the same every time ---------- */
@@ -161,7 +193,7 @@ async function decide(st){const ops=st.options.map(sub),key=CUENTO+"."+(st.as||"
 
 /* ---------- running it ---------- */
 const dots=[...document.querySelectorAll(".dot")],step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
-async function run(){runId++;const my=runId;hush();SFX.calla();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";
+async function run(){runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   running=false;$("#again").style.display="flex";}
@@ -169,8 +201,8 @@ async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();}
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
-function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-70)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
+function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-130)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
 fit();addEventListener("resize",fit);
 /* for checking the game by machine */
 window.Story={get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const b=E.box(k,W);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
-  get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;}};
+  get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;},get cap(){return capEl.classList.contains('on')?capEl.textContent:'';},get bub(){return bubEl.classList.contains('on')?bubEl.textContent:'';},get txt(){return TXT;}};

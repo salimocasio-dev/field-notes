@@ -4,105 +4,516 @@
   "place": "La casa",
   "scene": "frente",
   "goal": "Get into abuela's house dry.",
-  "stake": {"thing": "nube", "steps": 2},
-  "focus_words": ["casa", "puerta", "ventana", "abuela", "hola", "toca", "abre"],
-  "also_heard": ["esta es", "mira", "puedes", "tocar", "muy bien", "de", "está cerrada", "también", "dónde está", "ahí viene", "lluvia", "está en", "esa es", "ahora", "dice", "quién es", "es", "cómo estás", "entra", "estás mojado"],
-  "names": {"casa": "casa", "puerta": "puerta", "ventana": "ventana", "abuela": "abuela", "sol": "sol", "palma": "palma", "nube": "lluvia"},
+  "stake": {
+    "thing": "nube",
+    "steps": 2
+  },
+  "focus_words": [
+    "casa",
+    "puerta",
+    "ventana",
+    "abuela",
+    "hola",
+    "toca",
+    "abre"
+  ],
+  "also_heard": [
+    "esta es",
+    "mira",
+    "puedes",
+    "tocar",
+    "muy bien",
+    "de",
+    "está cerrada",
+    "también",
+    "dónde está",
+    "ahí viene",
+    "lluvia",
+    "está en",
+    "esa es",
+    "ahora",
+    "dice",
+    "quién es",
+    "es",
+    "cómo estás",
+    "entra",
+    "estás mojado",
+    "soy yo",
+    "gracias",
+    "bien",
+    "estoy mojado"
+  ],
+  "names": {
+    "casa": "casa",
+    "puerta": "puerta",
+    "ventana": "ventana",
+    "abuela": "abuela",
+    "sol": "sol",
+    "palma": "palma",
+    "nube": "lluvia",
+    "coqui": "yo_coqui"
+  },
   "clips": {
-    "esta_casa":         {"who": "narr", "text": "Esta es la casa de abuela."},
-    "mira_casa":         {"who": "narr", "text": "Mira la casa de abuela."},
-    "puedes_casa":       {"who": "narr", "text": "¿Puedes tocar la casa?"},
-    "muy_bien":          {"who": "narr", "text": "¡Muy bien!"},
-    "esta_puerta":       {"who": "narr", "text": "Esta es la puerta de la casa."},
-    "cerrada":           {"who": "narr", "text": "Está cerrada."},
-    "donde_puerta":      {"who": "narr", "text": "¿Dónde está la puerta?"},
-    "mira_ventana":      {"who": "narr", "text": "Mira la ventana."},
-    "tambien_cerrada":   {"who": "narr", "text": "También está cerrada."},
-    "toca_ventana":      {"who": "narr", "text": "Toca la ventana."},
-    "viene_lluvia":      {"who": "narr", "text": "¡Mira! Ahí viene la lluvia."},
-    "abuela_en_ventana": {"who": "narr", "text": "Abuela está en la ventana."},
-    "abuela_en_puerta":  {"who": "narr", "text": "Abuela está en la puerta."},
-    "toca_ventana_ya":   {"who": "narr", "text": "¡Toca la ventana!"},
-    "toca_puerta_ya":    {"who": "narr", "text": "¡Toca la puerta!"},
-    "esa_ventana":       {"who": "narr", "text": "Esa es la ventana."},
-    "esa_puerta":        {"who": "narr", "text": "Esa es la puerta."},
-    "hola_quien":        {"who": "narr", "text": "Abuela dice: ¡Hola, hola! ¿Quién es?"},
-    "ahora_en_ventana":  {"who": "narr", "text": "Ahora abuela está en la ventana."},
-    "ahora_en_puerta":   {"who": "narr", "text": "Ahora abuela está en la puerta."},
-    "abre_ventana":      {"who": "narr", "text": "Abuela abre la ventana."},
-    "abre_puerta":       {"who": "narr", "text": "Abuela abre la puerta."},
-    "es_abuela":         {"who": "narr", "text": "¡Mira! Es abuela."},
-    "hola_abuela":       {"who": "tu",   "text": "¡Hola, abuela!"},
-    "abuela_dice":       {"who": "narr", "text": "Abuela dice: ¡Hola! ¿Cómo estás?"},
-    "entra":             {"who": "narr", "text": "Abuela dice: ¡Entra, entra!"},
-    "mojado":            {"who": "narr", "text": "Abuela dice: ¡Ay, ay, ay! Estás mojado."},
-    "casa":              {"who": "narr", "text": "La casa."},
-    "puerta":            {"who": "narr", "text": "La puerta."},
-    "ventana":           {"who": "narr", "text": "La ventana."},
-    "abuela":            {"who": "narr", "text": "Abuela."},
-    "sol":               {"who": "narr", "text": "El sol."},
-    "palma":             {"who": "narr", "text": "La palma."},
-    "lluvia":            {"who": "narr", "text": "La lluvia."}
+    "esta_casa": {
+      "who": "narr",
+      "text": "Esta es la casa de abuela."
+    },
+    "mira_casa": {
+      "who": "narr",
+      "text": "Mira la casa de abuela."
+    },
+    "puedes_casa": {
+      "who": "narr",
+      "text": "¿Puedes tocar la casa?"
+    },
+    "muy_bien": {
+      "who": "narr",
+      "text": "¡Muy bien!"
+    },
+    "esta_puerta": {
+      "who": "narr",
+      "text": "Esta es la puerta de la casa."
+    },
+    "cerrada": {
+      "who": "narr",
+      "text": "Está cerrada."
+    },
+    "donde_puerta": {
+      "who": "narr",
+      "text": "¿Dónde está la puerta?"
+    },
+    "mira_ventana": {
+      "who": "narr",
+      "text": "Mira la ventana."
+    },
+    "tambien_cerrada": {
+      "who": "narr",
+      "text": "También está cerrada."
+    },
+    "toca_ventana": {
+      "who": "narr",
+      "text": "Toca la ventana."
+    },
+    "viene_lluvia": {
+      "who": "narr",
+      "text": "¡Mira! Ahí viene la lluvia."
+    },
+    "abuela_en_ventana": {
+      "who": "narr",
+      "text": "Abuela está en la ventana."
+    },
+    "abuela_en_puerta": {
+      "who": "narr",
+      "text": "Abuela está en la puerta."
+    },
+    "toca_ventana_ya": {
+      "who": "narr",
+      "text": "¡Toca la ventana!"
+    },
+    "toca_puerta_ya": {
+      "who": "narr",
+      "text": "¡Toca la puerta!"
+    },
+    "esa_ventana": {
+      "who": "narr",
+      "text": "Esa es la ventana."
+    },
+    "esa_puerta": {
+      "who": "narr",
+      "text": "Esa es la puerta."
+    },
+    "hola_quien": {
+      "who": "narr",
+      "text": "Abuela dice: ¡Hola, hola! ¿Quién es?",
+      "habla": "abuela"
+    },
+    "ahora_en_ventana": {
+      "who": "narr",
+      "text": "Ahora abuela está en la ventana."
+    },
+    "ahora_en_puerta": {
+      "who": "narr",
+      "text": "Ahora abuela está en la puerta."
+    },
+    "abre_ventana": {
+      "who": "narr",
+      "text": "Abuela abre la ventana."
+    },
+    "abre_puerta": {
+      "who": "narr",
+      "text": "Abuela abre la puerta."
+    },
+    "es_abuela": {
+      "who": "narr",
+      "text": "¡Mira! Es abuela."
+    },
+    "hola_abuela": {
+      "who": "tu",
+      "text": "¡Hola, abuela!"
+    },
+    "abuela_dice": {
+      "who": "narr",
+      "text": "Abuela dice: ¡Hola! ¿Cómo estás?",
+      "habla": "abuela"
+    },
+    "entra": {
+      "who": "narr",
+      "text": "Abuela dice: ¡Entra, entra!",
+      "habla": "abuela"
+    },
+    "mojado": {
+      "who": "narr",
+      "text": "Abuela dice: ¡Ay, ay, ay! Estás mojado.",
+      "habla": "abuela"
+    },
+    "casa": {
+      "who": "narr",
+      "text": "Es la casa."
+    },
+    "puerta": {
+      "who": "narr",
+      "text": "Es la puerta."
+    },
+    "ventana": {
+      "who": "narr",
+      "text": "Es la ventana."
+    },
+    "abuela": {
+      "who": "narr",
+      "text": "Es abuela."
+    },
+    "sol": {
+      "who": "narr",
+      "text": "Es el sol."
+    },
+    "palma": {
+      "who": "narr",
+      "text": "Es la palma."
+    },
+    "lluvia": {
+      "who": "narr",
+      "text": "Es la lluvia."
+    },
+    "ay_lluvia": {
+      "who": "tu",
+      "text": "¡Ay, la lluvia!"
+    },
+    "soy_yo": {
+      "who": "tu",
+      "text": "¡Soy yo, abuela! ¡Abre!"
+    },
+    "abre_puerta_tu": {
+      "who": "tu",
+      "text": "¡Abre la puerta, abuela!"
+    },
+    "abre_ventana_tu": {
+      "who": "tu",
+      "text": "¡Abre la ventana, abuela!"
+    },
+    "bien_gracias": {
+      "who": "tu",
+      "text": "¡Bien, gracias!"
+    },
+    "estoy_mojado": {
+      "who": "tu",
+      "text": "¡Ay, abuela! Estoy mojado."
+    },
+    "yo_coqui": {
+      "who": "tu",
+      "text": "¡Coquí!"
+    }
   },
   "beats": [
-    {"wait": 600},
-
-    {"dots": 1},
-    {"ask": "casa", "loose": true,
-     "lead": ["esta_casa", {"cam": "casa", "n": 16}, "mira_casa", {"cam": "wide", "n": 12}],
-     "line": "puedes_casa",
-     "after": [{"cam": "wide", "n": 6}]},
-
-    {"dots": 2},
-    {"ask": "puerta",
-     "lead": [{"cam": "puerta"}, "esta_puerta", "cerrada", {"cam": "wide"}],
-     "line": "donde_puerta",
-     "after": [{"cam": "wide", "n": 6}, {"act": "ir", "a": "puerta"}]},
-
-    {"dots": 3},
-    {"ask": "ventana",
-     "lead": [{"cam": "ventana"}, "mira_ventana", "tambien_cerrada", {"cam": "wide"}],
-     "line": "toca_ventana",
-     "after": [{"cam": "wide", "n": 6}, {"act": "ir", "a": "ventana"}]},
-
-    {"wait": 350},
-    {"act": "trueno"},
-    {"act": "atras"},
-    {"act": "burbuja", "quien": "cq", "que": "lluvia"},
+    {
+      "wait": 600
+    },
+    {
+      "dots": 1
+    },
+    {
+      "ask": "casa",
+      "loose": true,
+      "lead": [
+        "esta_casa",
+        {
+          "cam": "casa",
+          "n": 16
+        },
+        "mira_casa",
+        {
+          "cam": "wide",
+          "n": 12
+        }
+      ],
+      "line": "puedes_casa",
+      "after": [
+        {
+          "cam": "wide",
+          "n": 6
+        }
+      ]
+    },
+    {
+      "dots": 2
+    },
+    {
+      "ask": "puerta",
+      "lead": [
+        {
+          "cam": "puerta"
+        },
+        "esta_puerta",
+        "cerrada",
+        {
+          "cam": "wide"
+        }
+      ],
+      "line": "donde_puerta",
+      "after": [
+        {
+          "cam": "wide",
+          "n": 6
+        },
+        {
+          "act": "ir",
+          "a": "puerta"
+        }
+      ]
+    },
+    {
+      "dots": 3
+    },
+    {
+      "ask": "ventana",
+      "lead": [
+        {
+          "cam": "ventana"
+        },
+        "mira_ventana",
+        "tambien_cerrada",
+        {
+          "cam": "wide"
+        }
+      ],
+      "line": "toca_ventana",
+      "after": [
+        {
+          "cam": "wide",
+          "n": 6
+        },
+        {
+          "act": "ir",
+          "a": "ventana"
+        }
+      ]
+    },
+    {
+      "wait": 350
+    },
+    {
+      "act": "trueno"
+    },
+    {
+      "act": "atras"
+    },
+    {
+      "act": "burbuja",
+      "quien": "cq",
+      "que": "lluvia"
+    },
     "viene_lluvia",
-    {"act": "calla"},
-
-    {"dots": 4},
-    {"decide": "do", "options": ["ventana", "puerta"], "as": "a", "other": "b", "alterna": true,
-     "do": "tocar", "tests": "$a",
-     "lead": ["abuela_en_$a"],
-     "line": "toca_$a_ya",
-     "wrong": ["esa_$x"],
-     "right": [{"act": "luz"}, {"act": "dentro", "en": "$a"}, {"say": "hola_quien", "gap": 300}, {"act": "calla"}, {"act": "atras"}]},
-
-    {"dots": 5},
-    {"decide": "do", "options": ["ventana", "puerta"], "pick": "$b",
-     "do": "tocar", "tests": "$b",
-     "lead": ["ahora_en_$b"],
-     "line": "toca_$b_ya",
-     "wrong": ["esa_$x"],
-     "right": [
-       {"act": "abre", "que": "$b"}, "abre_$b", "es_abuela",
-       {"act": "burbuja", "quien": "cq", "que": "hola"}, {"say": "hola_abuela", "gap": 450}, {"act": "calla"},
-       {"act": "pose", "que": "wave"}, {"act": "burbuja", "quien": "ab", "que": "como"}, {"say": "abuela_dice", "gap": 500}, {"act": "calla"},
-       {"if": "wet", "then": [{"act": "burbuja", "quien": "cq", "que": "mal"}], "else": [{"act": "burbuja", "quien": "cq", "que": "bien"}]},
-       {"wait": 1100}, {"act": "calla"}, {"act": "pose", "que": "idle"},
-       "entra",
-       {"if": "lost=1", "then": [{"act": "gotas"}]},
-       {"act": "entra", "por": "$b"}
-     ]}
+    "ay_lluvia",
+    {
+      "act": "calla"
+    },
+    {
+      "dots": 4
+    },
+    {
+      "decide": "do",
+      "options": [
+        "ventana",
+        "puerta"
+      ],
+      "as": "a",
+      "other": "b",
+      "alterna": true,
+      "do": "tocar",
+      "tests": "$a",
+      "lead": [
+        "abuela_en_$a"
+      ],
+      "line": "toca_$a_ya",
+      "wrong": [
+        "esa_$x"
+      ],
+      "right": [
+        {
+          "act": "luz"
+        },
+        {
+          "act": "dentro",
+          "en": "$a"
+        },
+        {
+          "say": "hola_quien",
+          "gap": 250
+        },
+        {
+          "say": "soy_yo",
+          "gap": 300
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "act": "atras"
+        }
+      ]
+    },
+    {
+      "dots": 5
+    },
+    {
+      "decide": "do",
+      "options": [
+        "ventana",
+        "puerta"
+      ],
+      "pick": "$b",
+      "do": "tocar",
+      "tests": "$b",
+      "lead": [
+        "ahora_en_$b"
+      ],
+      "line": "toca_$b_ya",
+      "wrong": [
+        "esa_$x"
+      ],
+      "right": [
+        {
+          "say": "abre_$b_tu",
+          "gap": 200
+        },
+        {
+          "act": "abre",
+          "que": "$b"
+        },
+        "abre_$b",
+        "es_abuela",
+        {
+          "act": "burbuja",
+          "quien": "cq",
+          "que": "hola"
+        },
+        {
+          "say": "hola_abuela",
+          "gap": 450
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "act": "pose",
+          "que": "wave"
+        },
+        {
+          "act": "burbuja",
+          "quien": "ab",
+          "que": "como"
+        },
+        {
+          "say": "abuela_dice",
+          "gap": 500
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "if": "wet",
+          "then": [
+            {
+              "act": "burbuja",
+              "quien": "cq",
+              "que": "mal"
+            },
+            {
+              "say": "estoy_mojado",
+              "gap": 400
+            }
+          ],
+          "else": [
+            {
+              "act": "burbuja",
+              "quien": "cq",
+              "que": "bien"
+            },
+            {
+              "say": "bien_gracias",
+              "gap": 400
+            }
+          ]
+        },
+        {
+          "wait": 300
+        },
+        {
+          "act": "calla"
+        },
+        {
+          "act": "pose",
+          "que": "idle"
+        },
+        "entra",
+        {
+          "if": "lost=1",
+          "then": [
+            {
+              "act": "gotas"
+            }
+          ]
+        },
+        {
+          "act": "entra",
+          "por": "$b"
+        }
+      ]
+    }
   ],
   "final": [
-    {"cam": "wide", "n": 9},
-    {"if": "!rain", "then": [{"act": "llueve"}]},
-    {"if": "!win", "then": [{"act": "abre", "que": "ventana"}, "abre_ventana"]},
-    {"act": "cuadro"},
-    {"if": "lost=2", "then": ["mojado"]},
-    {"act": "fin"}
+    {
+      "cam": "wide",
+      "n": 9
+    },
+    {
+      "if": "!rain",
+      "then": [
+        {
+          "act": "llueve"
+        }
+      ]
+    },
+    {
+      "if": "!win",
+      "then": [
+        {
+          "act": "abre",
+          "que": "ventana"
+        },
+        "abre_ventana"
+      ]
+    },
+    {
+      "act": "cuadro"
+    },
+    {
+      "if": "lost=2",
+      "then": [
+        "mojado"
+      ]
+    },
+    {
+      "act": "fin"
+    }
   ]
 }

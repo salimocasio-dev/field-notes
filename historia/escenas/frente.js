@@ -87,6 +87,11 @@ function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(po
   if(W.dentro)bub(c,"quien",W.dentro==="ventana"?112:166,W.dentro==="ventana"?59:53,a);
   if(q.vis&&q.bub){const b=frogBox(q);bub(c,q.bub,b.x+(b.w>>1),b.y,a);}
 }
+// where a speech bubble points: just above the speaker's head (or above the picture bubble, if one shows). null = not seen.
+function talkAt(k,W){if(k!=="abuela")return null;const ab=W.ab;
+  if(ab){if(ab.en==="ventana")return [112,ab.bub?38:60];return [ab.bub==="como"?141:156,ab.bub?47:56];}
+  if(W.dentro)return W.dentro==="ventana"?[112,37]:[166,31];
+  return null;}
 function box(k,W){if(k==="abuela")return W&&W.ab&&W.ab.en==="ventana"?[97,61,30,20]:[151,56,29,49];
   if(k==="nube")return [Math.round(W&&W.nube?W.nube.x:0),0,98,22];
   return {casa:[60,17,166,90],puerta:[151,51,30,54],ventana:[93,57,38,28]}[k];}
@@ -147,5 +152,5 @@ async function stake(lost,max){if(lost>=max){await acts.llueve();return;}
 ESCENAS.frente={SW,SH,CAM:{wide:[44,0,196,216],casa:[56,0,172,190],puerta:[117,30,98,108],ventana:[63,22,98,108]},
   handAt:{casa:[141,24],puerta:[166,76],ventana:[112,72]},heartAt:[103,26],
   fresh:()=>({door:0,win:0,lamp:0,peek:0,ab:null,storm:0,nube:null,nube2:null,nube3:null,dark:0,rain:0,wet:0,gotas:0,flash:0,dentro:null,tab:null,shake:0}),
-  draw,box,hit,poke,acts,stake};
+  draw,box,hit,poke,acts,stake,talkAt};
 })();
