@@ -9,7 +9,7 @@
    What it presumes he knows starts at "se queda" (holding), is due for a cold
    check the next morning, and opens for speaking at once (palabras.js, presume).
    It reuses the pictures and the recorded sentences of the ¿Cuál? pairs.
-   Today it covers place 1 (the only place built). Each new place adds items.
+   It covers the stories built so far. Each new scene adds items to NV.
    ============================================================ */
 // w: the word asked. s: the story (1 to 11) that teaches it. p: four pictures, the first is the one that fits:
 // [the pair's word, which of its two pictures, the x the square crop is centred on (default: the middle of the pair's camera)]
@@ -33,7 +33,12 @@ const NV=[
  {w:"amigo",s:10,p:[["amigo","si",100],["amigo","no",100],["niño","si"],["mamá","si"]]},
  {w:"ven",s:10,p:[["ven","si",142],["ven","no",142],["niño","si"],["papá","si"]]},
  {w:"vamos",s:11,p:[["vamos","si",150],["vamos","no",150],["ven","no",142],["juega","si",130]]},
- {w:"hasta mañana",s:11,p:[["hasta mañana","si",120],["hasta mañana","no",120],["jugo","si"],["niña","si",100]]}];
+ {w:"hasta mañana",s:11,p:[["hasta mañana","si",120],["hasta mañana","no",120],["jugo","si"],["niña","si",100]]},
+ // place 2, El parque
+ {w:"perro",s:12,p:[["perro","si"],["perro","no"],["gato","no"],["árbol","si"]]},
+ {w:"corre",s:12,p:[["corre","si"],["corre","no"],["camina","si",116],["despacio","si"]]},
+ {w:"dos",s:13,p:[["dos","si"],["uno","si"],["tres","si"],["hay","no"]]},
+ {w:"rápido",s:14,p:[["rápido","si"],["rápido","no"],["despacio","no"],["perro","si"]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
 function celda(k){return [(k%2)*(CW+CG),Math.floor(k/2)*(CH+CG)];}
@@ -52,7 +57,7 @@ async function nivelItem(q,byW){const orden=[0,1,2,3].sort(()=>Math.random()-.5)
   await p;clearInterval(rep);SFX.blip();await wait(350);PAN=null;return {w:q.w,s:q.s,ok:!!PAN_OK(got,orden),ms};}
 const PAN_OK=(got,orden)=>orden[got]===0;
 // which stories he is presumed to know: every story up to the highest one where he was right on all its items and on three in four of everything asked up to there
-function nivelFrontera(h){let S0=0;for(let s=1;s<=11;s++){const de=h.filter(x=>x.s===s),hasta=h.filter(x=>x.s<=s);if(!de.length)continue;
+function nivelFrontera(h){let S0=0;const tope=Math.max(...NV.map(q=>q.s));for(let s=1;s<=tope;s++){const de=h.filter(x=>x.s===s),hasta=h.filter(x=>x.s<=s);if(!de.length)continue;
     const bien=hasta.filter(x=>x.ok).length/hasta.length;if(de.every(x=>x.ok)&&bien>=.75)S0=s;}   // one slip low down does not hold him back if he is right on what comes after
   return S0;}
 async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,run:1,toque:null,listo:-1,fin:null};$("#go").style.display="none";$("#fin").style.display="none";
@@ -69,8 +74,8 @@ async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,ru
   for(const id of ids){try{const j=await (await fetch("cuentos/"+id+".json")).json();(j.focus_words||[]).forEach(w=>{if(!pal.includes(w))pal.push(w);});}catch(e){}}
   if(!Q.get("fast")||Q.get("rec"))PAL.presume(pal,ids,NQ.hecho);
   NQ.fin={S0,ids,pal};NQ.run=0;const sig=CURSO.lugares.flatMap(l=>l.cuentos||[])[S0],T=id=>CURSO.cuentos[id].t;
-  $("#fin").innerHTML=`<b>Level check done</b><p>${S0?`You already understand the first ${S0} ${S0===1?"story":"stories"} of place 1. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped."}</p>
-    <p>${sig?`You start at: <b>${T(sig)}</b>.`:"All eleven stories of place 1 are open as done. More places are being built."}</p><button onclick="location.href='app.html'">To the map</button>`;
+  $("#fin").innerHTML=`<b>Level check done</b><p>${S0?`You already understand the first ${S0} ${S0===1?"story":"stories"}. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped."}</p>
+    <p>${sig?`You start at: <b>${T(sig)}</b>.`:"Every story built so far is open as done. More are being built."}</p><button onclick="location.href='app.html'">To the map</button>`;
   $("#fin").style.display="block";}
 async function nivelArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · Level check";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(()=>{F++;nivelDibuja();},TICK);

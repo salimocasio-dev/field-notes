@@ -7,7 +7,7 @@ Heard along the way: pájaro, bizcocho, lluvia, mesa, balcón, sala, patio, bola
 
 Scene words for El camino (from the 40-scene list): perro, gato, árbol, parque, camina, corre, espera, rápido, despacio, hay, ¿dónde está?, uno, dos, tres.
 
-The picture: a park. A dirt path runs from the park gate on the left, past three small trees and a bench, to one very big tree on a small rise at the far right. Three flat stones lie on the path, evenly spaced. Grass, sky, hills. Luis (the boy, green shirt) and Carmen (the girl, braids, pink dress) are here with abuela's dog, Canelo: a small tan dog with one ear down and a red collar. A grey cat lives in the park.
+The picture: a park. A dirt path runs from the park gate on the left, past three small trees and a bench, to one very big tree on a small rise at the far right. Five flat stones lie on the path, evenly spaced. Grass, sky, hills. Luis (the boy, green shirt) and Carmen (the girl, braids, pink dress) are here with abuela's dog, Canelo: a small tan dog with one ear down and a red collar. A grey cat lives in the park.
 
 Voices: the narrator speaks to the learner. A person's lines are spoken by the narrator and start with who says it ("Luis dice:"); the words show in a bubble at that person. The frog has his own voice (COQUÍ). The dog and the cat only make their sounds.
 
@@ -56,7 +56,7 @@ The doing pictures of this scene:
 
 **The turn**
 
-10. Luis waves them all back to the gate for the real game. NARR: "Luis dice: Ahora sí. ¡Uno, dos, tres! ¡Espera!" Carmen and the frog stand still. Canelo cannot: he runs up the path to the first stone. Luis shakes his head. NARR: "Luis dice: ¡No, Canelo! ¡Espera!" Canelo walks back to the gate, ears down, and sits. The signs go away.
+10. They stay where they are, on the second stone, for the real game. NARR: "Luis dice: Ahora sí. ¡Uno, dos, tres! ¡Espera!" Carmen and the frog stand still. Canelo cannot: he runs on to the next stone. Luis shakes his head. NARR: "Luis dice: ¡No, Canelo! ¡Espera!" Canelo walks back, ears down, and sits. The signs go away.
 
 **The game** (no sign). Three rounds. Every call is drawn fresh. Round 3 never repeats round 1's call; apart from that a call can come twice.
 
@@ -208,7 +208,7 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | parque | "Es el parque." | the park: gate, path, trees | abuela's back yard |
 | camina | "Luis camina." | Luis walking on the path | Luis running on the path, dust behind him |
 | corre | "El perro corre." | Canelo running, legs stretched, dust | Canelo sitting |
-| espera | "Carmen espera." | Carmen standing still on a stone, the frog far behind coming toward her | Carmen walking away up the path, the frog far behind |
+| espera | "Carmen espera." | Carmen standing still on the path | Carmen on the same spot, running: leaning forward, dust and speed lines behind her |
 | rápido | "El perro camina rápido." | Canelo stepping out with long quick steps, speed lines | Canelo creeping, nose down, the snail beside him |
 | despacio | "El gato camina despacio." | the cat creeping low, one paw raised, the snail beside it | the cat stepping out briskly, tail up, speed lines |
 | hay | "Hay un gato en el árbol." | a tree with the cat's face in the leaves; the bench empty | the same tree and the same bench, with no cat anywhere |
@@ -217,6 +217,15 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | tres | "Hay tres pájaros." | a tree with three birds | the same tree with two birds |
 
 "¿Dónde está?" has no picture pair; it is the question of story 13.
+
+## What the wordless read changed (after the build)
+
+- The dog stands in front of the frog, in plain sight, not behind him.
+- The opening of story 12 goes back to the start once, not twice; the path has five stones.
+- The walking picture leaves footprints; the waiting picture has a raised hand beside the frog.
+- The snail is bigger and has a shell and eye stalks; the biscuits are fish-shaped; the cat's tail is thicker and striped.
+- The bush of story 14 is in the picture from the start.
+- A person who runs leans forward. The espera pair is Carmen standing still against Carmen running.
 
 ## For the owner, one line each
 

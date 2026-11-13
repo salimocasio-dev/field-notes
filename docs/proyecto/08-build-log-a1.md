@@ -4,10 +4,44 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=24
-- Story 1 directly: historia/?v=24 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=24 in index.html, cual.html and app.html. Raise all three when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=25
+- Story 1 directly: historia/?v=25 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=25 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
+
+## Nov 13, part 10: place 2, El parque. Scene 1, El camino
+
+Live at ?v=25. Scripts (final, draft 3): historia/notas/guiones/camino.md. Generator: historia/tools/gen_camino.py.
+
+### What is built
+
+- **The park path** (historia/escenas/camino.js): the park gate, a dirt path with three stones, three small trees with birds in them, a bench, one very big tree. Luis and Carmen; abuela's dog Canelo (W.perro); a grey cat (W.gato). The dog and the cat have their own drawings and ways of going.
+- **Story 12, Uno, dos, tres** (parque, perro, camina, corre, espera; uno, dos, tres counted aloud). A "do what Luis calls" game along the path. He answers with moving "doing" pictures (walk, run, stand still). Stake: his place on the path; a wrong move and Luis shakes his head and he walks back a stone, so Carmen gets ahead. Round 2 calls one thing for Carmen and another for him.
+- **Story 13, ¿Dónde está el gato?** (gato, árbol, hay, uno, dos, tres, ¿dónde está?). The cat hides in one of three trees; the trees have one, two and three birds, dealt fresh every round. A: "Está en el árbol con tres pájaros." B: two "no" lines. C: he tells them himself. Stake: three fish biscuits, one a round: a heart if the cat gets it, a paw mark if Canelo does.
+- **Story 14, Rápido, despacio** (rápido, despacio). He walks the dog back to the gate with three guineos on his head for abuela. A: he sees what the dog does and says "¡Despacio!" or "¡Rápido!". B: Luis calls the pace. C: the dog is behind a bush and he only hears what it does. Stake: the guineos; the leash jerks, one falls, Canelo eats it.
+- **¿Cuál?**: 13 pairs in cuentos/cual-camino.json. A pair's picture may now name another scene (the park against abuela's yard).
+
+### New in the engine
+
+| Piece | What it does |
+| --- | --- |
+| three answer bubbles | `resp` or a decision's `options` may hold three; they stand in a row, shuffled (`baraja`) |
+| `"quieto"` | the right signal without the hop, where the right move is to stand still |
+| end buttons | home, again and next now sit below the picture, so the last picture is not covered (story, ¿Cuál? and level-check pages) |
+| `spec.esc` in a pair | that picture is drawn by another scene |
+
+### Reviews
+
+- Scripts: three drafts. Round 1 (beginner): the picture fought the rule in story 12 (running always looked right), "espera" was drawn as sitting (he knows that as "se sienta"), rounds repeated, forms used before they were taught, rápido / despacio pictures untrue. Spanish: "El gato no está…" (a bare "No está" is heard as "No. Está…"), the frog must answer where the cat is, not how many birds there are. Last gate: answers could be won by echo or by order; all closed.
+- Wordless frames: fresh reader (what it changed is in the next commit).
+
+### Testing
+
+- Every story: all-right, all-wrong, mixed, and draws forced both ways. All 58 picture pairs. The app check.
+
+### Audio
+
+- 117 new lines, about 3,500 characters. Session total so far about 15,700 of 500,000.
 
 ## Nov 13, part 9: the level check
 
