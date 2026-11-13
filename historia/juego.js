@@ -30,7 +30,8 @@ function spot(g,b,a){const e=a%4<2?0:2,x0=Math.max(0,b[0]-5-e),y0=Math.max(0,b[1
   ring(5,5,OUT);ring(4,3,e?"#FFF4B0":"#FFE040");}
 function twinkle(g,b){const cx=b[0]+b[2]/2,cy=b[1]+b[3]/2;for(let k=0;k<3;k++){const an=F/7+k*2.094;star(g,Math.round(cx+(b[2]/2+5)*Math.cos(an)),Math.round(cy+(b[3]/2+5)*Math.sin(an)),(F>>2)%2?3:2,k===(F>>3)%3);}}
 const G_HAND=["..#.#.#..","..#.#.#.#","..#.#.#.#","..#.#.#.#","#.#####.#","#.######.","########.",".#######.","..#####..","..#####.."],G_HEART=[".##.##.","#######","#######",".#####.","..###..","...#..."];
-const BUB={hola:[G_HAND,"#B46A30"],amor:[G_HEART,"#E0403A"]},BUBL={como:["ok","q","sad"],bien:["ok"],mal:["sad"],quien:["hand","q"]};
+GL.gota=["..#..","..#..",".###.",".###.","#####","#####",".###."];GC.gota="#3A86E6";   // a rain drop, for bubbles
+const BUB={hola:[G_HAND,"#B46A30"],amor:[G_HEART,"#E0403A"]},BUBL={como:["ok","q","sad"],bien:["ok"],mal:["sad"],quien:["hand","q"],lluvia:["gota","sad"]};
 function bub(g,k,tx,ty,a){if(BUBL[k]){bubble(g,BUBL[k],tx,ty,a);return;}
   const rows=BUB[k][0],col=BUB[k][1],w=rows[0].length+6,h=rows.length+6,x=Math.round(tx-w/2),y=ty-h-5-(a%2);
   fr(g,x-1,y,w+2,h,OUT);fr(g,x,y-1,w,h+2,OUT);fr(g,x,y,w,h,"#FFFFFF");

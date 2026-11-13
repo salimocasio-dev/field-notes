@@ -68,7 +68,9 @@
     {"wait": 350},
     {"act": "trueno"},
     {"act": "atras"},
+    {"act": "burbuja", "quien": "cq", "que": "lluvia"},
     "viene_lluvia",
+    {"act": "calla"},
 
     {"dots": 4},
     {"decide": "do", "options": ["ventana", "puerta"], "as": "a", "other": "b", "alterna": true,
@@ -76,7 +78,7 @@
      "lead": ["abuela_en_$a"],
      "line": "toca_$a_ya",
      "wrong": ["esa_$x"],
-     "right": [{"act": "luz"}, {"act": "dentro", "en": "$a"}, {"say": "hola_quien", "gap": 300}, {"act": "calla"}, {"wait": 250}]},
+     "right": [{"act": "luz"}, {"act": "dentro", "en": "$a"}, {"say": "hola_quien", "gap": 300}, {"act": "calla"}, {"act": "atras"}]},
 
     {"dots": 5},
     {"decide": "do", "options": ["ventana", "puerta"], "pick": "$b",
