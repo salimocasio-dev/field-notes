@@ -14,9 +14,9 @@
 // w: the word asked. s: the story (1 to 11) that teaches it. p: four pictures, the first is the one that fits:
 // [the pair's word, which of its two pictures, the x the square crop is centred on (default: the middle of the pair's camera)]
 const NV=[
- {w:"abuela",s:1,p:[["abuela","si"],["papá","si"],["bebé","si",70],["niño","si"]]},
- {w:"puerta",s:1,p:[["puerta","si"],["ventana","si"],["flor","si",60],["bebé","si",70]]},
- {w:"abre",s:2,p:[["abre","si"],["abre","no"],["cierra","si"],["bebé","si",70]]},
+ {w:"abuela",s:1,p:[["abuela","si",166],["papá","si"],["bebé","si",70],["niño","si"]]},
+ {w:"puerta",s:1,p:[["puerta","si",166],["ventana","si",112],["flor","si",60],["bebé","si",70]]},
+ {w:"abre",s:2,p:[["abre","si",112],["abre","no",112],["cierra","si",166],["bebé","si",70]]},
  {w:"hola",s:2,p:[["hola","si",160],["adiós","si",160],["flor","si",60],["papá","si"]]},
  {w:"silla",s:4,p:[["silla","si"],["flor","si",60],["flor","no",60],["bebé","si",70]]},
  {w:"jugo",s:4,p:[["jugo","si"],["agua","si"],["flor","si",60],["papá","si"]]},
