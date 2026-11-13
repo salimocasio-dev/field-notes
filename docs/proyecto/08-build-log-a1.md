@@ -9,6 +9,47 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 - Script tags carry ?v=20 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
 
+## Nov 13, part 5: El balcón (scene 2 of La casa), by the session that took over the build
+
+### What is built
+
+- Scene El balcón (historia/escenas/balcon.js): abuela's porch. Wall, window, door, abuela's big chair, a round table, a small yellow chair. States: door, shutters, glasses and jugs, abuela standing, walking or sitting, a paper fan, sweat, a thermometer.
+- Story 4, El jugo (cuentos/el-jugo.json). New words: silla, se sienta, vaso, jugo, agua, toma. Stake: three drinks. Each round abuela sets out two glasses, one his and one hers, and says which is his. Wrong: she takes hers back and the bird drinks his. Rounds: jugo or agua; the glass on the chair or on the table; the big glass or the small one. Two scores in the top corners. The frog loses a drop of sweat with every glass.
+- Story 5, ¡Qué calor! (cuentos/que-calor.json). New words: quiero, por favor, gracias, de nada, ¿cómo estás?, bien. Stake: the heat (a thermometer with five marks, starts on the third; a drink for abuela brings it down, a wrong move sends it up). Decisions: two with the speaking bubbles (after "Gracias." and after "Toma."), in an order drawn fresh, then "Quiero jugo, por favor. No quiero agua." with both drinks named and the order drawn fresh. A free pick of juice or water for himself; it is saved as mem_bebida for La sala.
+- ¿Cuál? pairs for the scene (cuentos/cual-balcon.json): silla, vaso, jugo, agua, se sienta, toma, quiero, gracias, ¿cómo estás?, bien. por favor and de nada have no pair yet (they are tested by the speaking bubbles in story 5 and counted as heard).
+- The scripts with every reviewer's changes: historia/notas/guiones/balcon.md.
+
+### New in the engine (juego.js)
+
+| Thing | Does |
+| --- | --- |
+| A story names its scene | index.html no longer lists scene files. arranca() loads escenas/<scene>.js when the story needs it. kit.js is loaded by all three pages. |
+| Speaking bubbles | For answers that cannot be drawn (gracias, de nada, por favor). {"decide":"say","options":[a,b],"voces":{option: clip},"said":{...},"baraja":true}. Each bubble says its line aloud in the frog's voice, in turn, with no words on screen. The bubbles are dead until both have spoken once. Waiting replays abuela's line and both bubbles, free. Touching the frog replays them too. "baraja" draws the sides fresh. After a wrong pick the sign shows the right bubble, it speaks again, and the frog says the right line. |
+| ask with "resp" + "voces" | The same bubbles under the big sign. This is how a new kind of bubble is taught before it can cost. |
+| Picture bubbles | Any two answers, not only sí and no: the scene's respIcon(g,k,x,y,w,h) draws what is in each. |
+| Story.scene() | The scene's own state as text (the scene's estado(W)), for juega.py. |
+| "leer" in a story file | The story's own reading order (a list of clip ids). Biblioteca uses it when present. |
+
+### The scene kit (historia/escenas/kit.js, global KIT)
+
+- KIT.escena({id, CAM, lugar, cosas, fresh, draw, hud, poke, acts, stake, talkAt, respIcon, estado}) registers a scene. cosas = the things that can be touched, front to back ({id, box or (W)=>box, si:(W)=>shown, hand, m:slack}). lugar = where the frog stands at each thing. It supplies box, hit, handAt and the actions ir, burbuja, calla, pose, fin.
+- KIT.mkAve / drawAve / aveVa: the bird (v.dip tips it to drink). KIT.mkAbuelaS(pose, open): abuela sitting (idle, fan0, fan1, vaso, bebe, zzz).
+- El frente was written before the kit and is unchanged.
+
+### ¿Cuál? and the app
+
+- curso.js lists the pair files (CURSO.cual). cual.js cualCarga() reads them all and loads each scene; every pair is drawn by its own scene. app.html uses the same.
+- CURSO.lugares[0].cuentos now has five stories; they show on the map sheet, in Today, Biblioteca and Palabras by themselves.
+
+### Reviews
+
+- Scripts: four rounds of fresh reviewers (beginner against his words; Puerto Rican Spanish; two more on the rewrites). Real findings fixed: the stake made no sense with the sound off (he drank even when wrong); too many juice-or-water asks; agua asked after one hearing; nothing new was staked in story 5; the speaking bubbles were first met at a decision that costs; picture pairs that leaked their answer; "Esa es el agua" changed to "Eso es agua"; "entra a la casa".
+- Left, and why: reviewers asked to stop naming things on a free poke during a round. Not done: poking is free and names things (his rule).
+
+### Testing
+
+- Every path of both stories by machine (all right, all wrong, both orders, both free picks), the 22 pairs, the three old stories again, and the app. No errors.
+
 ## Nov 13, part 4: the app rebuilt to his UI plan
 
 - See page 09. Only the home map is the game; the rest is a clean modern app with a bottom tab bar (Biblioteca, Palabras, Mapa, Hablar, Yo).
