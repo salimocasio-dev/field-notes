@@ -180,7 +180,7 @@ function tap(x,y){if(!E||!S)return;const inb=b=>b&&x>=b[0]-3&&x<b[0]+b[2]+3&&y>=
 cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*DW,py=(e.clientY-r.top)/r.height*DH;tap(cam[0]+px/DW*cam[2],cam[1]+py/DH*cam[3]);});
 
 /* ---------- the signal for a right move: the same every time ---------- */
-function senal(t,p){const b=bx(t),R=Math.round;p=p||{x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
+function senal(t,p){const R=Math.round,rb=respBox(t),b=rb?(f=>[f.x,f.y,f.w,f.h])(frogBox(W.cq)):bx(t);if(rb||!p)p={x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
   SFX.right();bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
 const bien=id=>wait(300).then(()=>say(id||S.bien||"muy_bien",350));
 
@@ -209,8 +209,8 @@ async function paso(st){
   if(st.cost){W.lost++;return E.stake(W.lost,S.stake.steps,sub(st.en||""));}
   throw new Error("a step the game does not know");}
 // An ask, with the big sign. Nothing can go wrong here.
-const mapa=m=>m?Object.fromEntries(Object.entries(m).map(e=>[sub(e[0]),sub(e[1])])):null;   // a map from answers to lines, with the story's variables filled in on both sides
-async function ask(st){const t=sub(st.ask),voz=mapa(st.voces),said=mapa(st.said);   // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
+const vmapa=m=>m?Object.fromEntries(Object.entries(m).map(e=>[sub(e[0]),sub(e[1])])):null;   // a map from answers to lines, with the story's variables filled in on both sides
+async function ask(st){const t=sub(st.ask),voz=vmapa(st.voces),said=vmapa(st.said);   // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
   if(st.resp){W.resp=st.resp.map(sub);if(st.baraja&&Math.random()<.5)W.resp=W.resp.slice().reverse();W.respVoz=voz;}
   const me=await espera([t],st.lead,st.line?sub(st.line):null,{sign:t,loose:st.loose,voces:voz,orden:voz?W.resp:null});
   senal(t,me.p);if(said&&said[t]){await wait(250);W.resp=null;await say(said[t],200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
@@ -220,7 +220,7 @@ async function elige(st){const ops=st.options;W.respVoz=null;W.resp=st.kind==="s
   if(st.said&&st.said[me.got]){await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}W.resp=null;await pasos(st[me.got]);}
 // A decision. Two things he could do; only the Spanish says which. A wrong one costs a step of the thing at stake,
 // what he did stays done, and then the big sign shows the right one.
-async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.as||"x"),voz=mapa(st.voces),said=mapa(st.said);let pick;
+async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.as||"x"),voz=vmapa(st.voces),said=vmapa(st.said);let pick;
   if(st.baraja&&Math.random()<.5)ops=ops.slice().reverse();   // which side each answer bubble is on is drawn fresh
   if(st.pick)pick=sub(st.pick);
   else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.floor(Math.random()*ops.length)];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}

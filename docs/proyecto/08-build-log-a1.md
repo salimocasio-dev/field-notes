@@ -4,10 +4,50 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=20
-- Story 1 directly: historia/?v=20 . Story 2: ?cuento=el-bizcocho . Story 3: ?cuento=donde-esta-el-pajaro . ¿Cuál?: historia/cual.html
-- Script tags carry ?v=20 in index.html, cual.html and app.html. Raise all three when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=22
+- Story 1 directly: historia/?v=22 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=22 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
+
+## Nov 13, part 6: La sala (scene 3 of La casa)
+
+Live at ?v=22. Scripts (final, draft 3): historia/notas/guiones/sala.md.
+
+### What is built
+
+- **The room** (historia/escenas/sala.js): wall with three picture frames, door to the porch, window, sofa, abuelo's armchair, lamp, low table, the baby's blanket. The family are people like abuela: mamá, papá, abuelo, el hermano (Luis), la hermana (Carmen), el bebé. They live in W.gente ({x,y,pose,sent,bub,dir,vis,...}) and are drawn back to front.
+- **Story 6, La familia** (mamá, papá, abuelo, bebé, familia). Stake: his own three slices of cake, shown in the corner; a wrong delivery and the wrong person takes a bite of one. Three rounds with three sentence shapes: "para X", "X quiere", "no es para X, es para Y". Who is named is dealt fresh, nobody twice.
+- **Story 7, La foto** (hermano, hermana, él, ella). Stake: the three frames on the wall; a right photo hangs straight with the frog in it, a wrong one hangs crooked. Round 3 is a sí/no answer to "¿Es él?" / "¿Es ella?" with the camera's blurred window. The wall he made is remembered and hangs in story 8.
+- **Story 8, ¿Quién eres tú?** (yo, tú, soy, eres, me llamo). Stake: abuelo's coffee (he has lost his glasses and bumps into things). Answers are speaking bubbles. Opens with one English card, his rule for words that cannot be drawn: "Yo soy: I am. Tú eres: you are. Me llamo: my name is."
+- **¿Cuál?**: 11 pairs in cuentos/cual-sala.json (mamá, papá, abuelo, bebé, familia, hermano, hermana, él, ella, yo, tú). The pass now reads every file listed in CURSO.cual and loads each scene as needed.
+
+### Engine and kit additions
+
+| Piece | What it does |
+| --- | --- |
+| `{"reparte":[names],"options":[...]}` | deals the options out to several variables, none twice; `?name=value` fixes one |
+| `voces` / `said` maps with variables | keys and values are filled in from the story's variables |
+| `W.apodo` | a scene can give a thing another poke line for a while |
+| `S.nota` | an English card before the story starts (the one allowed English line) |
+| `S.leer` | the lines the Library shows for reading |
+| dynamic scenes | a story names its scene; escenas/<id>.js loads when needed |
+| `KIT.mkPersona`, `KIT.mkBebe`, `KIT.FAM` | one drawing for every person who is not abuela; the family's look is shared by all places |
+| right signal | for a spoken answer the stars go on the frog, not where the bubble was |
+
+### Reviews
+
+- Scripts: three drafts. Fresh reviewers each round: a beginner against the requirements, a Puerto Rican Spanish reader, then a last gate. Main changes they forced: three different sentence shapes in story 6; the wall of photos as the stake in story 7; story 8 rebuilt around speaking bubbles and one English card.
+- Wordless frames (?txt=no), fresh reader: fixed after it: cake slices read as jars (now wedges; a bitten one is half gone); the sleeping Z was too small; children stood on abuela's feet; an answer bubble covered abuelo; in the photo story the camera window went sharp before the bad photo (now after); the refilled cup in the corner read as a win (the corner now keeps the true count); the yo/tú pictures (both hands on the chest; the arm points down at the frog); the abuelo pair now has abuela as the other picture.
+- Left as it is, on purpose: the two speaking bubbles look alike (he must pick by ear); stars after a corrected answer (the model replays the right side).
+
+### Testing
+
+- Every story: all-right, all-wrong and mixed paths by machine, with sound, no errors. All 33 picture pairs.
+- Clean run at real speed with instant touches: La familia 1 min 55 s, La foto 1 min 05 s, ¿Quién eres tú? 2 min. Longest stretch with no voice: 4.5 s.
+
+### Audio
+
+- 135 new lines, about 3,650 characters, Azure free tier. Session total so far about 5,700 of 500,000.
 
 ## Nov 13, part 5: El balcón (scene 2 of La casa), by the session that took over the build
 

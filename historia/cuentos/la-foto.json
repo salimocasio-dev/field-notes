@@ -578,15 +578,15 @@
    ],
    "wrong": [
     {
-     "act": "nitido"
-    },
-    "r_$resp_$n",
-    {
      "act": "pies"
     },
     {
      "cost": 1
     },
+    {
+     "act": "nitido"
+    },
+    "r_$resp_$n",
     {
      "act": "quitavisor"
     }

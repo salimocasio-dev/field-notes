@@ -11,12 +11,7 @@
    ============================================================ */
 (function(){
 const SW=KIT.SW,SH=KIT.SH,P=KIT.PIEL,H=KIT.PELO,SOFA=["#1F5A52","#2E7A6E","#3E9A8A","#62B8A6","#8AD0BE"],SPONGE="#F2D08A",FROST="#FF8FB8";
-const FAM={
-  mama:{piel:P.a,pelo:H.castano,peinado:"largo",ropa:RP.red,falda:1,zapato:"#7A1C1C"},
-  papa:{piel:P.b,pelo:H.negro,peinado:"corto",ropa:RP.blue,abajo:RP.wood},
-  abuelo:{piel:P.a,pelo:H.blanco,peinado:"calvo",ropa:RP.cream.slice(1),abajo:RP.grey,bigote:1,gafas:1,detalle:(b,X,tc,rx,t)=>{b.rect(X,tc-8,1,t+6,"#B89A6A");b.rect(X-5,tc-2,3,3,"#D8BC8A");b.rect(X+3,tc-2,3,3,"#D8BC8A");}},
-  hermano:{nino:1,piel:P.b,pelo:H.negro,peinado:"corto",ropa:RP.grn,abajo:RP.blue,zapato:"#F2F2F8"},
-  hermana:{nino:1,piel:P.a,pelo:H.castano,peinado:"trenzas",ropa:["#B8407A","#E0609A","#FF8FB8","#FFB8D4"],falda:1,lazo:"#FFE070",zapato:"#F2F2F8"}};
+const FAM=KIT.FAM;
 
 /* ---------- the room ---------- */
 function bg(){const b=new Buf(SW,SH),C=RP.cream,Wd=RP.wood,ST=RP.stone;
@@ -64,12 +59,16 @@ function marco(g,i,f){const x=76+i*24,y=38;g.save();g.translate(x+10,y+2);if(f&&
     g.restore();}
   fr(g,0,-3,1,3,OUT);g.restore();}
 // a slice of abuela's cake, and the cake itself
-function trozo(g,x,y,k,mord){k=k||1;const w=Math.round(9*k),h=Math.round(8*k);fr(g,x-1,y-1,w+2,h+2,OUT);fr(g,x,y,w,h,SPONGE);fr(g,x,y,w,Math.round(3*k),FROST);
-  if(mord){const m=Math.max(2,Math.round(4*k));fr(g,x+w-m,y-1,m+1,m+1,OUT);fr(g,x+w-m+1,y-1,m,m,"#FFFDF4");}else fr(g,x+Math.round(3*k),y-Math.round(2*k),Math.round(2*k)+1,Math.round(2*k),RP.red[2]);}
+function mkTrozo(mord){const b=new Buf(13,11),put=(x,y,c)=>{if(mord&&(x>6||Math.hypot(x-7,y-1.5)<2.7||Math.hypot(x-7,y-5.5)<2.4))return;b.px(x+1,y+3,c);};
+  for(let y=0;y<7;y++)for(let x=0;x<11;x++){const top=x>=6?0:x>=3?1:2;if(y<top)continue;put(x,y,y<top+2?FROST:y===top+3&&y<6?"#FFFDF4":y===6?"#D8B060":SPONGE);}
+  if(!mord)b.rect(9,1,2,2,RP.red[2]);b.outline();if(mord){b.px(10,9,SPONGE);b.px(12,8,SPONGE);b.px(11,6,FROST);}return b.done();}
+function trozo(g,x,y,k,mord){k=k||1;const im=spr("trozo"+(mord?1:0),()=>mkTrozo(mord));g.imageSmoothingEnabled=false;g.drawImage(im,Math.round(x-1),Math.round(y-2*k-1),Math.round(13*k),Math.round(11*k));}
+// the cake on its dish: one block, cut into slices; it gets shorter as slices go
 function bizcocho(g,x,y,n){fr(g,x-4,y+9,34,3,OUT);fr(g,x-3,y+9,32,2,"#FFFFFF");
   if(n==="tapado"){g.fillStyle=OUT;g.beginPath();g.ellipse(x+13,y+9,15,13,0,Math.PI,0);g.fill();g.fillStyle="#D8D8E4";g.beginPath();g.ellipse(x+13,y+9,14,12,0,Math.PI,0);g.fill();fr(g,x+6,y+1,3,5,"#F2F2F8");fr(g,x+11,y-5,4,3,OUT);fr(g,x+12,y-4,2,2,"#9494A6");
     for(let k=0;k<3;k++)for(let j=0;j<3;j++)fr(g,x+5+k*8+(((F>>2)+j+k)%2),y-8-j*4-((F>>1)+k*2)%3,2,2,j===2?"#E8F0F8":"#FFFFFF");return;}   // steam: it is hot
-  for(let i=0;i<n;i++){const sx=x-4+i*5;fr(g,sx-1,y-1,6,11,OUT);fr(g,sx,y,4,9,SPONGE);fr(g,sx,y,4,3,FROST);fr(g,sx+1,y-2,2,2,RP.red[2]);}}
+  if(!n)return;const w=n*4,x0=x-3;fr(g,x0-1,y-1,w+2,11,OUT);fr(g,x0,y,w,9,SPONGE);fr(g,x0,y,w,3,FROST);fr(g,x0,y+5,w,1,"#FFFDF4");
+  for(let i=0;i<n;i++){if(i)fr(g,x0+i*4,y,1,9,i%1?SPONGE:"#C89A50");fr(g,x0+i*4+1,y-3,2,2,OUT);fr(g,x0+i*4+1,y-2,2,2,RP.red[2]);}}
 function plato(g,x,y){fr(g,x-6,y,12,2,OUT);fr(g,x-5,y,10,1,"#FFFFFF");fr(g,x-2,y-1,1,1,SPONGE);fr(g,x+2,y-1,1,1,FROST);}   // an empty plate, a crumb or two
 
 /* ---------- where things are ---------- */
@@ -90,7 +89,7 @@ function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=Math.
     if(p.lleva){const hx=x+(p.dir<0?16:-22),hy=y-27;if(p.lleva==="plato"){fr(c,hx-3,hy+7,16,3,OUT);fr(c,hx-2,hy+7,14,2,"#FFFFFF");for(let k=0;k<3;k++)trozo(c,hx-2+k*5,hy-1,.6,k<(W.lost||0));}else trozo(c,hx,hy);}}
   else{const pose=p.pose==="wave"?"wave"+(a%2):(p.pose||"idle"),w=(p.gafas||p.dormido)?Object.assign({},FAM[id],p.gafas?{gafas:p.gafas}:{},{dormido:p.dormido}):FAM[id],k="p"+id+pose+habla+(p.sent?1:0)+(p.gafas||"")+(p.dormido?"z":""),im=spr(k,()=>KIT.mkPersona(w,pose,habla,p.sent));
     c.save();c.translate(x,y-im.height+1+(p.rie&&a%2?-1:0));if(p.dir<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
-    if(p.dormido){const z=(F>>3)%3;fr(c,x+9+z*2,y-h-4-z*2,5,1,"#FFFFFF");fr(c,x+12+z*2,y-h-3-z*2,1,1,"#FFFFFF");fr(c,x+11+z*2,y-h-2-z*2,1,1,"#FFFFFF");fr(c,x+10+z*2,y-h-1-z*2,1,1,"#FFFFFF");fr(c,x+9+z*2,y-h-z*2,5,1,"#FFFFFF");}
+    if(p.dormido){const z=(F>>3)%3,Z=(zx,zy,k)=>{fr(c,zx-1,zy-1,4*k+2,5*k+2,OUT);[[0,0,4,1],[3,1,1,1],[2,2,1,1],[1,3,1,1],[0,4,4,1]].forEach(r=>fr(c,zx+r[0]*k,zy+r[1]*k,r[2]*k,r[3]*k,"#FFFFFF"));};Z(x+10+z*2,y-h-8-z*2,2);Z(x+21+z*2,y-h-15-z*2,1);}
     if(pose==="taza"){const d=p.dir<0?-1:1,cx=x+d*13,cy=y-h+26;taza(c,cx-4,cy-8,W.relleno?3:Math.max(0,3-(W.lost||0)),1);}}
   if(p.trozo)trozo(c,x-4,y-Math.round(h*.52),1,p.trozo==="mordido");
   else if(p.servido&&id!=="bebe")plato(c,x,y-Math.round(h*(p.sent?.36:.5)));
@@ -131,7 +130,7 @@ function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x
 function hud(g,W,a){
   if(W.plato!=null){tarjeta(g,3,3,78,29);g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),5,7);g.fillStyle=OUT;g.fillRect(29,25,48,3);g.fillStyle="#FFFFFF";g.fillRect(30,25,46,2);
     for(let i=0;i<W.plato;i++)trozo(g,32+i*15,11,1.3,i>=W.plato-(W.lost||0));}   // three slices: whole, or with a bite out
-  if(W.cafe){tarjeta(g,3,3,44+(W.aciertos||0)*13,36);taza(g,8,9,W.relleno?3:Math.max(0,3-(W.lost||0)),3);for(let i=0;i<(W.aciertos||0);i++)heart(g,49+i*13,15,1);}
+  if(W.cafe){tarjeta(g,3,3,44+(W.aciertos||0)*13,36);taza(g,8,9,Math.max(0,3-(W.lost||0)),3);for(let i=0;i<(W.aciertos||0);i++)heart(g,49+i*13,15,1);}
   if(W.visor){const im=spr("pf"+W.visor.quien,()=>KIT.mkPersona(FAM[W.visor.quien],"idle",0,0));tarjeta(g,3,3,50,50);g.fillStyle="#BFE0F0";g.fillRect(5,5,46,46);
     if(W.visor.nitido){g.imageSmoothingEnabled=false;g.drawImage(im,KIT.PX-11,0,22,23,6,5,44,46);}
     else{const t=spr("vis",()=>{const k=document.createElement("canvas");k.width=5;k.height=5;return k;}),x=t.getContext("2d");x.fillStyle="#BFE0F0";x.fillRect(0,0,5,5);x.imageSmoothingEnabled=true;x.drawImage(im,KIT.PX-11,0,22,23,0,0,5,5);g.imageSmoothingEnabled=true;g.drawImage(t,0,0,5,5,5,5,46,46);g.imageSmoothingEnabled=false;}
@@ -177,15 +176,15 @@ const acts={
   // the last slice on the dish goes to the one who has had none
   async ultimo(o){const ab=G("abuela"),h=SITIO[o.a];W.pastel=0;ab.lleva=1;ab.pose="offer";await mueve("abuela",h[0]+(o.a==="bebe"?22:-2),o.a==="bebe"?h[1]-4:150);await wait(150);ab.lleva=0;G(o.a).trozo=1;SFX.blip();await wait(300);},
   // she brings the frog his own plate
-  async suplato(){const ab=G("abuela");ab.lleva="plato";ab.pose="offer";W.plato=null;await mueve("abuela",158,200);ab.dir=1;await wait(300);},
+  async suplato(){const ab=G("abuela");ab.lleva="plato";ab.pose="offer";await mueve("abuela",158,200);ab.dir=1;await wait(300);},
   async final6(){const ab=G("abuela"),q=W.cq,enteros=3-(W.lost||0);ab.lleva=0;ab.pose="idle";W.plato=3;
-    for(let i=0;i<3;i++){W.plato=2-i;SFX.munch();bounce(3);await wait(300);}
+    SFX.munch();bounce(3);await wait(400);
     if(enteros<=0){const b=G("bebe");await mueve("bebe",q.x-2,q.y+26,8);b.est="clap";b.trozo=0;W.vuela=null;await vuelaA(b.x,b.y-14,q.x+16,q.y+8,1,.8);SFX.munch();q.bub="amor";await wait(900);q.bub=null;}
     else if(enteros>=3){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,30],[180,34],[120,22],[96,44],[150,40]]});await wait(900);}
     else{q.bub="amor";SFX.coqui();await wait(800);q.bub=null;}},
   /* ---- story 7: three photos ---- */
   // the boy and the girl run in and hug the baby
-  async corren(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=40;a.y=126;b.x=34;b.y=124;await Promise.all([mueve("hermano",94,198,10),mueve("hermana",48,200,10)]);G("bebe").est="clap";SFX.pio();await wait(800);G("bebe").est="idle";
+  async corren(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=40;a.y=126;b.x=34;b.y=124;await Promise.all([mueve("hermano",94,198,10),mueve("hermana",66,203,10)]);G("bebe").est="clap";SFX.pio();await wait(800);G("bebe").est="idle";
     const bb=G("bebe"),m=G("mama");for(let i=1;i<=6;i++){bb.x=70+(m.x-70)*i/6;bb.y=193+(m.y-15-193)*i/6-Math.sin(Math.PI*i/6)*8;await wait(TICK);}bb.x=m.x;bb.y=m.y-15;bb.z=m.y+1;await wait(200);},   // then the baby goes up onto mamá's lap
   // two people take their places, left and right; which side each is on is drawn fresh
   async lados(o){const s=azar()?0:1,P=o.donde==="juntos"?JUNTOS:o.donde==="parados"?PARADOS:APARTE;if(o.donde==="parados"){G(o.a).servido=0;G(o.b).servido=0;}await Promise.all([mueve(o.a,P[s][0],P[s][1]),mueve(o.b,P[1-s][0],P[1-s][1])]);},
@@ -201,13 +200,14 @@ const acts={
   // the camera goes off at abuelo's feet: a photo of his slippers
   async pies(){const ab=G("abuelo"),i=nFotos();ab.pose="idle";ab.bub="q";await wait(500);flashazo();await wait(350);W.fotos[i]={ok:0,pies:1};SFX.bonk();ab.bub=null;await wait(700);ab.pose="foto";},
   // one child alone in the middle; the camera's little window shows a blur
-  async solo(o){const otro=o.quien==="hermano"?"hermana":"hermano";await Promise.all([mueve(o.quien,120,146),mueve(otro,44,204),acts.ir({a:"centro"})]);W.visor={quien:o.quien,nitido:0};
+  async solo(o){const otro=o.quien==="hermano"?"hermana":"hermano";await Promise.all([mueve(o.quien,120,146),mueve(otro,72,206),acts.ir({a:"centro"})]);W.visor={quien:o.quien,nitido:0};
     W.apodo={[o.quien]:o.quien==="hermano"?"el_dice_hola":"ella_dice_hola"};await wait(400);},   // while abuelo asks who it is, a poke on the child gets a hello, not a name
   async nitido(){if(W.visor)W.visor.nitido=1;SFX.luz();await wait(450);},
   async quitavisor(){W.visor=null;W.apodo=null;},
   // the wall, then everyone together for one last photo
   async final7(){const ok=(W.fotos||[]).filter(f=>f&&f.ok).length;W.visor=null;
-    V.fotos=(W.fotos||[]).map(f=>!f?"":f.pies?"pies":f.q.filter(k=>k!=="coqui")[0]+"."+(f.ok?1:0)+(f.pata?"p":"")+(f.q.includes("coqui")?"c":"")).join("-");   // the wall as he left it, for the next storyfx({t:"star",n:14,pts:(W.fotos||[]).map((f,i)=>f&&f.ok?[86+i*24,50]:null).filter(Boolean)});await wait(900);
+    V.fotos=(W.fotos||[]).map(f=>!f?"":f.pies?"pies":f.q.filter(k=>k!=="coqui")[0]+"."+(f.ok?1:0)+(f.pata?"p":"")+(f.q.includes("coqui")?"c":"")).join("-");   // the wall as he left it, for the next story
+    fx({t:"star",n:14,pts:(W.fotos||[]).map((f,i)=>f&&f.ok?[86+i*24,50]:null).filter(Boolean)});await wait(900);
     if(ok>=3){W.heart=1;SFX.win();}else SFX.coqui();await wait(500);
     const ab=G("abuelo");ab.pose="idle";ab.dir=1;G("mama").servido=0;G("papa").servido=0;
     await Promise.all([mueve("mama",98,146),mueve("papa",142,146),mueve("abuelo",172,160),mueve("abuela",66,160),mueve("hermano",140,190),mueve("hermana",100,190),acts.ir({a:"centro"})]);G("bebe").x=106;G("bebe").y=124;G("bebe").z=147;await wait(300);},
@@ -217,11 +217,11 @@ const acts={
   async inicio8(){const a=G("hermano"),b=G("hermana"),ab=G("abuelo");a.vis=1;b.vis=1;a.x=156;a.y=200;a.dir=-1;b.x=84;b.y=200;ab.sent=0;ab.x=190;ab.y=150;ab.pose="taza";ab.gafas="arriba";ab.dir=-1;const bb=G("bebe");bb.x=97;bb.y=112;bb.z=128;   // the baby is on mamá's lap
     (V.mem_fotos||"").split("-").forEach((t,i)=>{if(!t||i>2)return;if(t==="pies"){W.fotos[i]={ok:0,pies:1};return;}const m=t.split("."),f=m[1]||"";W.fotos[i]={q:(f.includes("c")?["coqui"]:[]).concat([m[0]]),ok:f[0]==="1"?1:0,pata:f.includes("p")?1:0};});},
   async tropieza(){const ab=G("abuelo");await mueve("abuelo",162,176);W.golpe=F;SFX.bonk();ab.rie=1;await wait(600);ab.rie=0;W.borroso=1;await wait(1100);W.borroso=0;await wait(200);},
-  async acerca(){await acts.ir({a:"centro"});await mueve("abuelo",122,180);G("abuelo").dir=-1;await wait(200);},
+  async acerca(){await acts.ir({a:"centro"});await mueve("abuelo",192,180);G("abuelo").dir=-1;await wait(200);},
   async palmada(){W.cq.bub="amor";SFX.coqui();bounce(5);await wait(700);W.cq.bub=null;},
   async rie(o){const p=G(o.quien||"abuelo");p.rie=1;await wait(700);p.rie=0;},
   // a child creeps up behind the frog and covers his eyes
-  async tapa(o){const q=W.cq,ab=G("abuelo");await acts.ir({a:"centro"});if(Math.abs(ab.x-120)<30)await mueve("abuelo",164,178);await mueve(o.quien,q.x+16,q.y+22);G(o.quien).pose="ojos";W.tapaojos=o.quien;SFX.blip();await wait(400);},
+  async tapa(o){const q=W.cq,ab=G("abuelo");await acts.ir({a:"centro"});if(Math.abs(ab.x-120)<60)await mueve("abuelo",192,180);await mueve(o.quien,q.x+16,q.y+22);G(o.quien).pose="ojos";W.tapaojos=o.quien;SFX.blip();await wait(400);},
   async suelta(o){W.tapaojos=null;G(o.quien).pose="idle";await mueve(o.quien,o.quien==="hermano"?152:86,200);},
   async gira(){const ab=G("abuelo");ab.dir=-(ab.dir||1);await wait(200);},
   // abuelo walks over to mamá or papá
@@ -233,7 +233,7 @@ const acts={
   async final8(){const ab=G("abuela"),ao=G("abuelo"),n=3-(W.lost||0);ao.pose="taza";
     if(n>=3){for(let k=0;k<3;k++){glu();await wait(300);}W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,30],[180,34],[120,22],[96,44],[150,40]]});await wait(900);}
     else if(n>0){for(let k=0;k<n;k++){glu();await wait(300);}SFX.coqui();await wait(600);}
-    else{ao.bub="q";SFX.drop();await wait(700);ao.bub=null;await mueve("abuela",ao.x-30,ao.y+2);ab.pose="offer";ab.dir=1;SFX.luz();W.relleno=1;await wait(900);ab.pose="idle";}},
+    else{ao.bub="q";SFX.drop();await wait(700);ao.bub=null;await mueve("abuelo",150,170);ao.dir=1;ao.pose="taza";await mueve("abuela",182,172);ab.pose="offer";ab.dir=-1;SFX.luz();W.relleno=1;await wait(900);ab.pose="idle";}},
 };
 const glu=()=>tone(300,0,.09,"sine",.09,170);
 // the thing at stake takes a step

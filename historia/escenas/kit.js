@@ -87,13 +87,20 @@ function mkPersona(w,pose,open,sent){const t=w.nino?7:11,l=sent?4:(w.nino?7:11),
   const sh=21,izq=()=>{b.cap(X-rx+1,sh,X-rx-1,sh+t-1,1.9,R);b.ell(X-rx-1,sh+t+1.5,2,2,S);},der=()=>{b.cap(X+rx-1,sh,X+rx+1,sh+t-1,1.9,R);b.ell(X+rx+1,sh+t+1.5,2,2,S);};
   if(pose==="wave0"||pose==="wave1"){izq();b.cap(X+rx-1,sh,X+rx+4,13,1.9,R);b.ell(X+rx+5+(pose==="wave1"?1.5:0),10,2.2,2.2,S);}
   else if(pose==="offer"){der();b.cap(X-rx+1,sh+1,X-rx-7,sh+4,1.9,R);b.ell(X-rx-9.5,sh+4,2.2,2.2,S);}
-  else if(pose==="yo"){izq();b.cap(X+rx-1,sh,X+rx+2,sh+5,1.9,R);b.cap(X+rx+2,sh+5,X+2,sh+4,1.7,R);b.ell(X+1,sh+3.5,2.2,2.2,S);}
-  else if(pose==="tu"){izq();b.cap(X+rx-1,sh,X+rx+8,sh+1,1.9,R);b.ell(X+rx+10.5,sh+1,2.2,2.2,S);b.rect(X+rx+12,sh,3,1,S[3]);}
+  else if(pose==="yo"){b.cap(X+rx-1,sh,X+rx+2,sh+5,1.9,R);b.cap(X+rx+2,sh+5,X+3,sh+4,1.7,R);b.cap(X-rx+1,sh,X-rx-2,sh+5,1.9,R);b.cap(X-rx-2,sh+5,X-3,sh+4,1.7,R);b.ell(X+2.5,sh+3.5,2.6,2.6,S);b.ell(X-2.5,sh+3.5,2.6,2.6,S);}
+  else if(pose==="tu"){izq();b.cap(X+rx-1,sh,X+rx+7,sh+6,1.9,R);b.ell(X+rx+9,sh+8,2.4,2.4,S);b.line(X+rx+11,sh+10,X+rx+13,sh+12,S[3]);b.line(X+rx+11,sh+9,X+rx+13,sh+11,S[2]);}
   else if(pose==="foto"){b.cap(X-rx+1,sh,X-5,13,1.9,R);b.cap(X+rx-1,sh,X+5,13,1.9,R);b.rect(X-7,6,14,9,"#3A3A46");b.rect(X-7,6,14,1,"#6E6E80");b.ell(X,10.5,3,3,["#9CCBF5","#DCEEFF"]);b.rect(X+3,4,3,2,"#FFE070");b.ell(X-6,13.5,2,2,S);b.ell(X+6,13.5,2,2,S);}
   else if(pose==="taza"){izq();b.cap(X+rx-1,sh,X+rx+3,sh+6,1.9,R);b.ell(X+rx+4.5,sh+6,2.2,2.2,S);}
   else if(pose==="ojos"){b.cap(X-rx+1,sh,X-4,sh+9,1.9,R);b.cap(X+rx-1,sh,X+4,sh+9,1.9,R);b.ell(X-4,sh+11,2.2,2.2,S);b.ell(X+4,sh+11,2.2,2.2,S);}
   else{izq();der();}
   return b.outline().done();}
+// abuela's family, the same people in every place
+const FAM={
+  mama:{piel:PIEL.a,pelo:PELO.castano,peinado:"largo",ropa:RP.red,falda:1,zapato:"#7A1C1C"},
+  papa:{piel:PIEL.b,pelo:PELO.negro,peinado:"corto",ropa:RP.blue,abajo:RP.wood},
+  abuelo:{piel:PIEL.a,pelo:PELO.blanco,peinado:"calvo",ropa:RP.cream.slice(1),abajo:RP.grey,bigote:1,gafas:1,detalle:(b,X,tc,rx,t)=>{b.rect(X,tc-8,1,t+6,"#B89A6A");b.rect(X-5,tc-2,3,3,"#D8BC8A");b.rect(X+3,tc-2,3,3,"#D8BC8A");}},
+  hermano:{nino:1,piel:PIEL.b,pelo:PELO.negro,peinado:"corto",ropa:RP.grn,abajo:RP.blue,zapato:"#F2F2F8"},
+  hermana:{nino:1,piel:PIEL.a,pelo:PELO.castano,peinado:"trenzas",ropa:["#B8407A","#E0609A","#FF8FB8","#FFB8D4"],falda:1,lazo:"#FFE070",zapato:"#F2F2F8"}};
 // the baby, sitting. est = idle | clap | llora | come
 function mkBebe(est,f){const b=new Buf(26,28),X=13,S=PIEL.a,Y=RP.yel;
   b.ell(X-5,24.5,3.4,2.2,[S[2]]);b.ell(X+5,24.5,3.4,2.2,[S[2]]);b.ell(X,19,7,6.4,Y.slice(1));b.ell(X,23,5,2.6,["#FFFFFF","#F2F2F8"]);
@@ -128,5 +135,5 @@ function escena(d){const cosa=k=>d.cosas.find(t=>t.id===k),B=(t,w)=>typeof t.box
   ESCENAS[d.id]=Object.assign({SW,SH,CAM:d.CAM,heartAt:d.heartAt||[120,30],fresh:d.fresh,draw:d.draw,hud:d.hud,poke:d.poke,stake:d.stake,talkAt:d.talkAt,respIcon:d.respIcon,estado:d.estado,box,hit,handAt,acts});
   return ESCENAS[d.id];}
 
-return {SW,SH,mkAve,avePos,drawAve,aveA,aveVa,aveHit,mkAbuelaS,mkPersona,mkBebe,PIEL,PELO,PX,escena};
+return {SW,SH,mkAve,avePos,drawAve,aveA,aveVa,aveHit,mkAbuelaS,mkPersona,mkBebe,PIEL,PELO,PX,FAM,escena};
 })();
