@@ -578,7 +578,7 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
   async dial(){this.label("Calling Danny…");this.panel(`<div class="mut">Calling Danny…</div>`);this.pic(OPEN[this.id][0]);
     const back=t=>{this.over=true;this.panel(`<h3>Couldn't reach Danny</h3><div class="mut">${t}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);};
     if(!window.ELConv)return back("The voice part of the page didn't load. Check your connection and reload.");
-    try{this.conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"webrtc",dynamicVariables:this.vars(this.id),
+    try{this.conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"websocket",dynamicVariables:this.vars(this.id),
         clientTools:{show_picture:p=>{this.pic(p&&p.picture);return "shown";}},
         onConnect:()=>this.live(),onDisconnect:d=>{if(d&&d.message&&!this.err)this.err=String(d.message);this.finish();},onError:e=>{this.err=String((e&&e.message)||e||"");},
         onMessage:m=>this.msg(m),onModeChange:m=>this.mode(m&&m.mode)});}
@@ -606,11 +606,14 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,last:"",t0:0,over:tru
   tap(p){if(this.over||!this.conv||!this.t0||this.tapWait)return;if(this.zoom){const z=this.zoom;p={x:z[0]+p.x/240*z[2],y:z[1]+p.y/150*z[3]};}
     const sc=SC[this.scene],st=this.st,vis=k=>this.scene!=="casa"||(k==="abuela"?!!st.ab:k==="jugo"?st.cup==="ab":true);
     const hit=sc.hot.map(h=>h[0]).find(k=>{if(!vis(k))return false;const b=sc.boxOf(st,k);return b&&p.x>=b[0]-3&&p.x<=b[0]+b[2]+3&&p.y>=b[1]-3&&p.y<=b[1]+b[3]+3;});if(!hit)return;
-    const a=this.ask;if(a){const lat=a.t0?now()-a.t0:0,ok=hit===a.k;if(ok){if(a.cold)this.hit[a.k]=Math.min(this.hit[a.k]==null?1e9:this.hit[a.k],lat);}else this.miss[a.k]=1;this.lat.push({k:a.k,ok,lat,cold:a.cold});this.ask=null;}
-    this.tapWait=true;setTimeout(()=>{this.tapWait=false;},6000);this.set(this.m.scene,Object.assign({},this.wide(),{glow:hit}),null);this.put("hint"," ");this.put("heard","touched: "+wordOf(hit));this.send("(toca: "+wordOf(hit)+")");},
+    // the page judges the touch itself and tells Danny the verdict. A touch made before he finished asking is never counted as a miss.
+    const a=this.ask,armed=a&&a.t0&&now()-a.t0>=600;let verdict="";
+    if(a&&armed){const lat=now()-a.t0,ok=hit===a.k;if(ok){if(a.cold)this.hit[a.k]=Math.min(this.hit[a.k]==null?1e9:this.hit[a.k],lat);}else this.miss[a.k]=1;this.lat.push({k:a.k,ok,lat,cold:a.cold});verdict=ok?" Correct.":" Wrong: you asked for "+wordOf(a.k)+".";this.ask=null;}
+    else if(a&&hit===a.k){this.lat.push({k:a.k,ok:true,lat:0,cold:a.cold,early:1});verdict=" Correct.";this.ask=null;}
+    this.tapWait=true;setTimeout(()=>{this.tapWait=false;},6000);this.set(this.m.scene,Object.assign({},this.wide(),{glow:hit}),null);this.put("hint","\u00a0");this.put("heard","touched: "+wordOf(hit));this.send("(toca: "+wordOf(hit)+(verdict?"."+verdict:"")+")");},
   end(){if(this.over){showMap();return;}try{if(this.conv)this.conv.endSession();}catch(e){}setTimeout(()=>this.finish(),1500);},
   finish(){if(this.over)return;this.over=true;clearTimeout(this.tm1);clearTimeout(this.tm2);const secs=this.t0?Math.round((now()-this.t0)/1000):0,m=this.m;
-    if(secs<6){this.label("No answer");this.panel(`<h3>Danny didn't pick up</h3><div class="mut">The call was dropped before it started. That is not your phone or your mic. The usual cause is that the ElevenLabs voice credits for the month have run out.${this.err?" ("+this.err+")":""}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
+    if(secs<6){this.label("No answer");this.panel(`<h3>Danny didn't pick up</h3><div class="mut">The call was dropped before it started. That is not your phone or your mic.${this.err?" What came back: "+this.err+".":""} Send Claude a screenshot of this.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
     const dk=dayKey(),next=d=>dayStart()+d*DAY+3*36e5,got=[],heard=[],again=[];
     Object.keys(this.exp).forEach(k=>{const w=Wd(k),ok=(this.hit[k]!=null&&this.hit[k]<=FAST)||this.said[k];
       if(ok){if(w.adv!==dk&&(w.lvl===0||w.due<=now())){w.lvl=Math.min(w.lvl+1,INT.length-1);w.adv=dk;w.due=next(INT[w.lvl]);}got.push(wordOf(k));}
