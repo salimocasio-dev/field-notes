@@ -74,7 +74,7 @@ function mkCesta(){const b=new Buf(20,12),T=RP.orng;b.rect(1,3,18,8,T[2]);for(le
 
 /* ---------- where things are ---------- */
 const ranaEn=i=>[MARCA[i][0]-22,MARCA[i][1]-34,Math.round((.96-.02*i)*100)/100];           // the frog walks on the far side of the path, so his answer bubbles stand clear of Carmen
-const ninaEn=i=>[MARCA[i][0]+12,MARCA[i][1]+13];                               // Carmen on our side
+const ninaEn=i=>[MARCA[i][0]+20,MARCA[i][1]+15];                               // Carmen on our side
 const LUGAR={inicio:ranaEn(0),centro:[100,176,1],banco:[74,128,.86],arbol0:[44,122,.8],arbol1:[126,122,.8],arbol2:[166,118,.8],gran:[166,126,.84]};
 const alto=id=>id==="abuela"?51:QUIEN[id].nino?(W.gente[id]&&W.gente[id].sent?40:44):56;
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0?[R(p.x)-11,R(p.y)-alto(id),22,alto(id)]:null;};
@@ -92,7 +92,7 @@ function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=R(p.x
   if(id==="abuela"){const ps=p.pose==="wave"?"wave"+(a%2):(p.pose||"idle");c.save();c.translate(x,y-50);if(d<0)c.scale(-1,1);c.drawImage(spr("ab"+ps+habla,()=>mkAbuela(ps,habla)),-30,0);c.restore();if(p.lleva==="cesta"){c.drawImage(spr("cesta",mkCesta),x+2,y-26);for(let i=0;i<(p.guineos||0);i++)guineo(c,x+3+i*6,y-31-(i%2),.7);}c.globalAlpha=1;return;}
   const pose=p.pose==="wave"?"wave"+(a%2):p.pose==="alto"?"wave0":p.pose==="dedos"?"wave0":(p.pose||"idle"),im=spr("pc"+id+pose+habla+(p.sent?1:0),()=>KIT.mkPersona(QUIEN[id],pose,habla,p.sent));
   c.save();c.translate(x,y-im.height+1+((p.paso&&a%2)||(p.rie&&a%2)?-1:0));if(p.corre){c.translate(0,im.height);c.rotate(.26*d);c.translate(0,-im.height);}if(d<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
-  if(p.lleva==="cesta"){c.drawImage(spr("cesta",mkCesta),x-10,y-h+26);if(W.gato&&W.gato.en==="cesta")c.drawImage(spr("gtduerme0",()=>mkGato("duerme",0)),x-13,y-h+12);}
+  if(p.lleva==="cesta"){fr(c,x-8,y-h+20,2,7,RP.orng[0]);fr(c,x+6,y-h+20,2,7,RP.orng[0]);fr(c,x-8,y-h+19,16,2,RP.orng[0]);c.drawImage(spr("cesta",mkCesta),x-10,y-h+26);if(W.gato&&W.gato.en==="cesta")c.drawImage(spr("gtduerme0",()=>mkGato("duerme",0)),x-13,y-h+12);}
   if(p.dedos){for(let i=0;i<p.dedos;i++){fr(c,x+d*9+i*4-1,y-h-9,4,8,OUT);fr(c,x+d*9+i*4,y-h-8,2,6,QUIEN[id].piel[3]);}}   // counting on his fingers
   c.globalAlpha=1;}
 function animal(c,k,a){const o=W[k];if(!o||o.vis===0||o.en!=null)return;const f=(o.pose==="walk"||o.pose==="husmea"||o.pose==="run"||o.pose==="bark"||o.pose==="eat"||o.pose==="lava")?(a>>(o.pose==="run"?0:1))%2:0,
@@ -119,21 +119,24 @@ function draw(c,W,a){const q=W.cq,G=W.gente||{};
   ["perro","gato"].forEach(k=>{if(W[k]&&W[k].vis!==0&&W[k].en==null)L.push({y:W[k].y,d:()=>animal(c,k,a)});});
   if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});
   if(W.caracol)L.push({y:W.caracol.y,d:()=>c.drawImage(spr("car"+((F>>3)%2),()=>mkCaracol((F>>3)%2)),R(W.caracol.x)-9,R(W.caracol.y)-12)});
-  if(W.arbusto)L.push({y:W.arbusto[1]+2,d:()=>c.drawImage(spr("arbusto",mkArbusto),W.arbusto[0]-22,W.arbusto[1]-28)});
+  if(W.arbusto)L.push({y:W.arbusto[1]+2,d:()=>{c.drawImage(spr("arbusto",mkArbusto),W.arbusto[0]-22,W.arbusto[1]-28);if(W.perro&&W.perro.vis===0&&W.correaA){const x=W.arbusto[0]-25,y=W.arbusto[1]-9;fr(c,x-1,y-1,7,5,OUT);fr(c,x-3,y-5,5,6,OUT);fr(c,x,y,5,3,"#C88A4A");fr(c,x-2,y-4,3,4,"#C88A4A");}}});
   L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());
   // the leash, from the frog's hand to the dog's collar
   if(W.correa&&W.perro&&(q.vis||W.correaDe)){const b=frogBox(q),lu=W.correaDe&&G[W.correaDe],x0=lu?R(lu.x)+(W.perro.x<lu.x?-10:10):(W.perro.x<q.x+16?b.x+3:b.x+b.w-3),y0=lu?R(lu.y)-18:b.y+R(q.dy)+b.h-9,x1=W.correaA?W.correaA[0]:R(W.perro.x)+(W.perro.dir<0?-8:8),y1=W.correaA?W.correaA[1]:R(W.perro.y)-11,n=14,sag=W.correa==="floja"?6:1;c.fillStyle="#7A1C1C";for(let i=0;i<=n;i++){const t=i/n;c.fillRect(R(x0+(x1-x0)*t),R(y0+(y1-y0)*t+Math.sin(Math.PI*t)*sag),2,1);}}
   if(W.vuela){const v=W.vuela;(v.k==="guineo"?guineo:galleta)(c,R(v.x),R(v.y),1);}
-  if(W.polvo){const p=W.polvo;for(let i=0;i<3;i++){fr(c,p.x+p.dir*(4+i*6)-2,p.y-2-i%2*3,4,3,"#FFFFFF");fr(c,p.x+p.dir*(4+i*6)-1,p.y-1-i%2*3,3,2,"#E8E0C8");}if(p.lin)for(let i=0;i<3;i++)fr(c,p.x+p.dir*10,p.y-10-i*5,10,1,"#FFFFFF");}
+  if(W.polvo){const p=W.polvo;for(let i=0;i<3;i++){fr(c,p.x+p.dir*(4+i*6)-2,p.y-2-i%2*3,4,3,"#FFFFFF");fr(c,p.x+p.dir*(4+i*6)-1,p.y-1-i%2*3,3,2,"#E8E0C8");}if(p.lin)for(let i=0;i<3;i++){const lx=p.x+p.dir*10-(i%2)*4,ly=p.y-10-i*5;fr(c,lx-1,ly-1,16,4,"#2E6CD0");fr(c,lx,ly,14,2,"#FFFFFF");}}
   if(W.avebanco){const im=spr("pj0",()=>mkPajarito(0));c.imageSmoothingEnabled=false;c.drawImage(im,BANCO[0]+8,BANCO[1]-11,15,12);}   // a bird on the bench (a picture pair)
   Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});
   if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2-(W.guineos!=null?16:0),a);}
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1-(p.bub?38:0)];}
 // the doing bubbles, moving pictures: camina (easy steps), corre (flat out, dust), espera (quite still), despacio (tiny steps, a snail keeps up), rapido (long quick steps)
+function mano(g,x,y){const C="#E8A468",u=(a,b,w,h,col)=>fr(g,x+a,y+b,w,h,col);   // an open raised hand: wait
+  [[0,4,2,6],[3,1,2,9],[6,0,2,10],[9,1,2,9],[0,9,11,6],[11,8,3,3],[2,15,7,2]].forEach(r=>u(r[0]-1,r[1]-1,r[2]+2,r[3]+2,OUT));
+  [[0,4,2,6],[3,1,2,9],[6,0,2,10],[9,1,2,9],[0,9,11,6],[11,8,3,3],[2,15,7,2]].forEach(r=>u(r[0],r[1],r[2],r[3],C));}
 function respIcon(g,k,x,y,w,h,a){const im=spr("cq.6_0",()=>mkCoqui(.6,0,0)),suelo=()=>fr(g,x+4,y+32,32,1,"#9494A6"),lin=(n,l,col)=>{for(let i=0;i<n;i++)fr(g,x+3+((F*2+i*5)%6),y+12+i*6,l,2,col);};
   suelo();
-  if(k==="espera"){g.drawImage(im,x+6,y+12);fr(g,x+9,y+30,5,2,RP.tan[1]);fr(g,x+18,y+30,5,2,RP.tan[1]);g.save();g.translate(x+26,y+8);g.scale(1.6,1.6);fr(g,-1,-1,9,9,"#FFFDF4");glyph(g,"hand",0,0);g.restore();}
+  if(k==="espera"){g.drawImage(im,x+6,y+12);fr(g,x+9,y+30,5,2,RP.tan[1]);fr(g,x+18,y+30,5,2,RP.tan[1]);mano(g,x+27,y+5);}
   else if(k==="corre"){const up=(F%2)?2:0;g.save();g.translate(x+24,y+21-up);g.rotate(.3);g.drawImage(im,-10,-9);g.restore();lin(3,9,"#2E6CD0");[[5,29],[11,27]].forEach((p,i)=>{fr(g,x+p[0]-(F%3),y+p[1],4,3,"#C8C8D4");});}
   else if(k==="rapido"){const up=(F%2)?2:0;g.drawImage(im,x+15,y+12-up);lin(3,6,"#2E6CD0");[[18,30],[27,30]].forEach((p,i)=>fr(g,x+p[0]+((F+i)%2)*3,y+p[1],5,2,RP.tan[1]));}
   else if(k==="despacio"){const up=(F>>3)%2?1:0;g.drawImage(im,x+14,y+12-up);g.drawImage(spr("car"+((F>>3)%2),()=>mkCaracol((F>>3)%2)),x+2,y+23);[[18,30],[25,30]].forEach((p,i)=>fr(g,x+p[0],y+p[1],4,2,RP.tan[1]));}
@@ -203,7 +206,7 @@ const acts={
     ca.sent=1;G("luis").sent=1;await wait(400);},
   async ladra3(){await ladra(3);},
   /* ---- story 13: the cat in the trees ---- */
-  async inicio13(){W.sinGran=1;W.gente={luis:{x:58,y:190,pose:"idle",dir:1},carmen:{x:84,y:198,pose:"idle",lleva:"cesta"}};W.perro={x:40,y:204,pose:"sit",dir:1};W.correa="floja";W.correaDe="luis";
+  async inicio13(){W.sinGran=1;W.gente={luis:{x:62,y:188,pose:"idle",dir:1},carmen:{x:92,y:198,pose:"idle",lleva:"cesta"}};W.perro={x:54,y:206,pose:"sit",dir:1};W.correa="floja";W.correaDe="luis";
     W.gato={x:113,y:134,pose:"lava",dir:-1,en:null};const L=LUGAR.centro;Object.assign(W.cq,{x:L[0],y:L[1],s:L[2]});},
   // the birds fly up and settle again: how many sit in each tree
   async posan(o){const n=o.p?o.p.split("").map(Number):[+o.a,+o.b,+o.c];if(W.pajaros.some(x=>x)){SFX.pio();for(let i=1;i<=6;i++){W.vuelan=i*5;await wait(TICK);}}W.pajaros=n;for(let i=6;i>=0;i--){W.vuelan=i*5;await wait(TICK);}W.vuelan=0;SFX.pio();await wait(200);},
@@ -220,26 +223,26 @@ const acts={
   async luzn(o){W.twinkle=o.n==="0"?null:"arbol"+W.pajaros.indexOf(+o.n);await wait(80);},
   // the cat's face goes back in; all three trees shake; where it goes next is not seen
   async esconde(){const g=W.gato;if(g.en==="cesta")return;g.pose="nada";W.tiembla=F;SFX.swoop();await wait(350);SFX.swoop();await wait(350);},
-  async carmenvuelve(){await mueve("carmen",84,198);G("carmen").dir=1;},
+  async carmenvuelve(){await mueve("carmen",92,198);G("carmen").dir=1;},
   // the cat eats this round's biscuit: a heart in the corner, for good
   async gatocome(o){const i=W.marcas?W.marcas.indexOf(null):-1;await acts.asoma({});await wait(200);W.galleta=0;SFX.munch();if(i>=0&&V.ok!=="")W.marcas[i]="c";await wait(600);},
   // Canelo jumps and gobbles it: a paw mark in the corner
-  async perrocome(){const o=W.perro,f=ranaXY(),i=W.marcas.indexOf(null);W.correa=0;await animalA("perro",f[0]-12,f[1]+20,"run");o.pose="eat";o.dy=-6;W.galleta=0;SFX.munch();if(i>=0)W.marcas[i]="p";await wait(500);o.dy=0;await wait(300);await animalA("perro",40,204,"walk");o.pose="sit";o.dir=1;W.correa="floja";},
+  async perrocome(){const o=W.perro,f=ranaXY(),i=W.marcas.indexOf(null);W.correa=0;await animalA("perro",f[0]-12,f[1]+20,"run");o.pose="eat";o.dy=-6;W.galleta=0;SFX.munch();if(i>=0)W.marcas[i]="p";await wait(500);o.dy=0;await wait(300);await animalA("perro",54,206,"walk");o.pose="sit";o.dir=1;W.correa="floja";},
   async acaricia(){await acts.asoma({});W.cq.bub="amor";SFX.coqui();bounce(4);await wait(800);W.cq.bub=null;},
   // the dog pulls loose; the birds fly up; the cat jumps about and is gone in the leaves
   async escapa(){const o=W.perro,g=W.gato;await ladra(2);W.correa=0;const corre=animalA("perro",150,150,"run");SFX.pio();for(let i=1;i<=6;i++){W.vuelan=i*5;await wait(TICK);}for(let k=0;k<5;k++){g.en=k%3;g.pose="cola";SFX.swoop();await wait(200);}g.pose="nada";await corre;await ladra(1);},
-  async agarra(){await animalA("perro",40,204,"walk");W.perro.pose="sit";W.perro.dir=1;W.correa="floja";await wait(200);},
+  async agarra(){await animalA("perro",54,206,"walk");W.perro.pose="sit";W.perro.dir=1;W.correa="floja";await wait(200);},
   async cuentaaves(){for(const n of [1,2,3]){W.twinkle="arbol"+W.pajaros.indexOf(n);await wait(60);}},
   async carmenva(o){const i=+o.en;await mueve("carmen",ARBOL[i][0]+18,ARBOL[i][1]+12);G("carmen").dir=-1;await wait(250);},
   async mirarriba(){G("carmen").bub="q";await wait(700);G("carmen").bub=null;},
   async gatocesta(){const g=W.gato;SFX.swoop();await wait(300);g.en="cesta";g.pose="duerme";SFX.luz();await wait(500);},
   async galletacesta(){const i=W.marcas?W.marcas.indexOf(null):-1;SFX.munch();if(i>=0&&V.ok!=="")W.marcas[i]="c";await wait(600);},
-  async perrocome2(){const o=W.perro,c=G("carmen"),i=W.marcas.indexOf(null);W.correa=0;await animalA("perro",c.x-14,c.y+2,"run");o.pose="eat";SFX.munch();if(i>=0)W.marcas[i]="p";await wait(700);await animalA("perro",40,204,"walk");o.pose="sit";o.dir=1;W.correa="floja";},
+  async perrocome2(){const o=W.perro,c=G("carmen"),i=W.marcas.indexOf(null);W.correa=0;await animalA("perro",c.x-14,c.y+2,"run");o.pose="eat";SFX.munch();if(i>=0)W.marcas[i]="p";await wait(700);await animalA("perro",54,206,"walk");o.pose="sit";o.dir=1;W.correa="floja";},
   async final13(){const n=(W.marcas||[]).filter(m=>m==="c").length,c=G("carmen"),o=W.perro;await mueve("carmen",156,196);c.dir=-1;
     if(n>=3){W.heart=1;SFX.win();fx({t:"star",n:30,pts:[[90,150],[150,150],[120,130],[100,176],[140,176]]});await wait(900);}else if(n){SFX.win();await wait(700);}else{SFX.coqui();await wait(700);}
     W.correa=0;await animalA("perro",c.x-26,c.y+4,"walk");o.pose="lie";o.dir=1;o.bub="amor";await wait(900);o.bub=null;},
   /* ---- story 14: the walk back with the dog ---- */
-  async inicio14(){W.gente={abuela:{x:54,y:182,pose:"idle",dir:1},luis:{x:76,y:200,pose:"idle"},carmen:{x:34,y:202,pose:"idle"}};W.guineos=3;W.t=1;{const p=perroT(.46);W.arbusto=[R(p[0])-4,R(p[1])+4];}const f=enT(1);Object.assign(W.cq,{x:f[0],y:f[1],s:f[2]});const d=perroT(1);W.perro={x:d[0],y:d[1],pose:"sit",dir:-1};W.correa="floja";},
+  async inicio14(){W.gente={abuela:{x:66,y:182,pose:"idle",dir:1},luis:{x:88,y:200,pose:"idle"},carmen:{x:46,y:202,pose:"idle"}};W.guineos=3;W.t=1;{const p=perroT(.46);W.arbusto=[R(p[0])+16,R(p[1])+5];}const f=enT(1);Object.assign(W.cq,{x:f[0],y:f[1],s:f[2]});const d=perroT(1);W.perro={x:d[0],y:d[1],pose:"sit",dir:-1};W.correa="floja";},
   // the two of them go on down the path. modo: trota (his easy trot), husmea (creeping, the snail keeps up), corre (flat out, the frog pulled off his feet), ligero (long quick steps)
   async paseo(o){const m=o.modo==="despacio"?"husmea":o.modo==="rapido"?"ligero":o.modo,d=+(o.d||.1),t1=Math.max(.02,W.t-d),pasos=m==="husmea"?26:m==="corre"?7:m==="ligero"?9:15,q=W.cq,pe=W.perro,t0=W.t,solo=o.solo;
     pe.pose=m==="corre"?"run":"walk";pe.dir=-1;W.correa=m==="corre"?"tensa":"floja";if(m==="corre"&&!solo)W.arrastra=-1;if(m==="husmea")W.caracol={x:pe.x-4,y:pe.y+8};else if(solo!=="cq")W.caracol=null;
