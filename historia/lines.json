@@ -1,0 +1,31 @@
+{
+  "story": "casa-frente-1",
+  "title": "La casa de la abuela",
+  "place": "La casa",
+  "scene": "El frente",
+  "goal": "Get into grandma's house.",
+  "new_words": ["casa", "puerta", "abuela", "hola", "abre"],
+  "carried_words": ["toca", "es", "sí", "de"],
+  "clips": {
+    "casa":               {"who": "narr",   "text": "La casa."},
+    "es_casa":            {"who": "narr",   "text": "Es la casa."},
+    "toca_casa":          {"who": "narr",   "text": "Toca la casa."},
+    "si_casa":            {"who": "narr",   "text": "Sí. La casa."},
+    "puerta":             {"who": "narr",   "text": "La puerta."},
+    "puerta_casa":        {"who": "narr",   "text": "La puerta de la casa."},
+    "toca_puerta":        {"who": "narr",   "text": "Toca la puerta."},
+    "si_puerta":          {"who": "narr",   "text": "Sí. Es la puerta."},
+    "si":                 {"who": "narr",   "text": "Sí."},
+    "abuela":             {"who": "narr",   "text": "La abuela."},
+    "abuela_abre":        {"who": "narr",   "text": "La abuela abre."},
+    "abuela_abre_puerta": {"who": "narr",   "text": "La abuela abre la puerta."},
+    "toca_abuela":        {"who": "narr",   "text": "Toca la abuela."},
+    "si_abuela":          {"who": "narr",   "text": "Sí. Es la abuela."},
+    "hola":               {"who": "abuela", "text": "¡Hola!"},
+    "hola_abuela":        {"who": "tu",     "text": "Hola, abuela."},
+    "casa_abuela":        {"who": "narr",   "text": "La casa de la abuela."},
+    "ventana":            {"who": "narr",   "text": "La ventana."},
+    "sol":                {"who": "narr",   "text": "El sol."},
+    "palma":              {"who": "narr",   "text": "La palma."}
+  }
+}
