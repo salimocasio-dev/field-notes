@@ -7,7 +7,7 @@ Heard along the way: pájaro, bizcocho, lluvia, mesa, balcón, sala, patio, bola
 
 Scene words for El camino (from the 40-scene list): perro, gato, árbol, parque, camina, corre, espera, rápido, despacio, hay, ¿dónde está?, uno, dos, tres.
 
-The picture: a park. A dirt path runs from the park gate on the left, past three small trees and a bench, to one very big tree on a small rise at the far right. Five flat stones lie on the path, evenly spaced. Grass, sky, hills. Luis (the boy, green shirt) and Carmen (the girl, braids, pink dress) are here with abuela's dog, Canelo: a small tan dog with one ear down and a red collar. A grey cat lives in the park.
+The picture: a park. A dirt path runs from the park gate on the left, past three small trees and a bench, to one very big tree on a small rise at the far right. Seven flat stones lie on the path, evenly spaced. Grass, sky, hills. Luis (the boy, green shirt) and Carmen (the girl, braids, pink dress) are here with abuela's dog, Canelo: a small tan dog with one ear down and a red collar. A grey cat lives in the park.
 
 Voices: the narrator speaks to the learner. A person's lines are spoken by the narrator and start with who says it ("Luis dice:"); the words show in a bubble at that person. The frog has his own voice (COQUÍ). The dog and the cat only make their sounds.
 
@@ -51,12 +51,12 @@ The doing pictures of this scene:
 5. NARR: "Luis dice: ¡Camina!" Doing bubbles: walking, running. The big sign is on walking. He touches it. The frog and Carmen walk to the first stone. NARR: "Coquí camina. Carmen camina."
 6. NARR: "Luis dice: ¡Uno, dos, tres! ¡Corre!" Doing bubbles: running, waiting. The sign on running. He touches it. They run to the second stone, Canelo running beside them. NARR: "Coquí corre. El perro corre también."
 7. NARR: "Luis dice: ¡Uno, dos, tres! ¡Espera!" Doing bubbles: waiting, walking. The sign on waiting. He touches it. The frog and Carmen stand quite still. Luis looks hard at them, then laughs and waves them on; they go to the third stone. NARR: "Coquí espera. Carmen espera."
-8. **A call for each of them, taught.** Luis waves them back to the gate; they go. NARR: "Luis dice: ¡Uno, dos, tres! ¡Carmen, corre! ¡Coquí, espera!" All three doing bubbles show. The sign is on waiting. He touches it. Carmen runs to the first stone; the frog stands still; Luis laughs and waves the frog on to the first stone too.
-9. NARR: "Luis dice: ¡Uno, dos, tres! ¡Coquí, camina! ¡Carmen, espera!" (His name comes first this time.) All three doing bubbles; the sign on walking. He touches it. Carmen stands still, the frog walks to the second stone, then Luis waves Carmen on.
+8. **A call for each of them, taught.** They stay where they are. NARR: "Luis dice: ¡Uno, dos, tres! ¡Carmen, corre! ¡Coquí, espera!" All three doing bubbles show. The sign is on waiting. He touches it. Carmen runs to the next stone; the frog stands still; Luis laughs and waves the frog on to it too.
+9. NARR: "Luis dice: ¡Uno, dos, tres! ¡Coquí, camina! ¡Carmen, espera!" (His name comes first this time.) All three doing bubbles; the sign on walking. He touches it. Carmen stands still, the frog walks to the next stone, then Luis waves Carmen on.
 
 **The turn**
 
-10. They stay where they are, on the second stone, for the real game. NARR: "Luis dice: Ahora sí. ¡Uno, dos, tres! ¡Espera!" Carmen and the frog stand still. Canelo cannot: he runs on to the next stone. Luis shakes his head. NARR: "Luis dice: ¡No, Canelo! ¡Espera!" Canelo walks back, ears down, and sits. The signs go away.
+10. They stay where they are for the real game. NARR: "Luis dice: Ahora sí. ¡Uno, dos, tres! ¡Espera!" Carmen and the frog stand still. Canelo cannot: he runs on to the next stone. Luis shakes his head. NARR: "Luis dice: ¡No, Canelo! ¡Espera!" Canelo walks back, ears down, and sits. The signs go away.
 
 **The game** (no sign). Three rounds. Every call is drawn fresh. Round 3 never repeats round 1's call; apart from that a call can come twice.
 
@@ -221,8 +221,9 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 ## What the wordless read changed (after the build)
 
 - The dog stands in front of the frog, in plain sight, not behind him.
-- The opening of story 12 goes back to the start once, not twice; the path has five stones.
-- The walking picture leaves footprints; the waiting picture has a raised hand beside the frog.
+- Story 12 never goes back to the start; the path has seven stones, one for every round.
+- Canelo stands a little ahead of the frog on the path, and Carmen a little below it, so the three do not overlap.
+- The walking picture has footprints behind the frog and an arrow ahead of him; the waiting picture has a raised hand beside the frog.
 - The snail is bigger and has a shell and eye stalks; the biscuits are fish-shaped; the cat's tail is thicker and striped.
 - The bush of story 14 is in the picture from the start.
 - A person who runs leans forward. The espera pair is Carmen standing still against Carmen running.

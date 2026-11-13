@@ -15,7 +15,7 @@ Live at ?v=25. Scripts (final, draft 3): historia/notas/guiones/camino.md. Gener
 
 ### What is built
 
-- **The park path** (historia/escenas/camino.js): the park gate, a dirt path with three stones, three small trees with birds in them, a bench, one very big tree. Luis and Carmen; abuela's dog Canelo (W.perro); a grey cat (W.gato). The dog and the cat have their own drawings and ways of going.
+- **The park path** (historia/escenas/camino.js): the park gate, a dirt path with seven stones (nine marks, one for every round of story 12), three small trees with birds in them, a bench, one very big tree. Luis and Carmen; abuela's dog Canelo (W.perro); a grey cat (W.gato). The dog and the cat have their own drawings and ways of going.
 - **Story 12, Uno, dos, tres** (parque, perro, camina, corre, espera; uno, dos, tres counted aloud). A "do what Luis calls" game along the path. He answers with moving "doing" pictures (walk, run, stand still). Stake: his place on the path; a wrong move and Luis shakes his head and he walks back a stone, so Carmen gets ahead. Round 2 calls one thing for Carmen and another for him.
 - **Story 13, ¿Dónde está el gato?** (gato, árbol, hay, uno, dos, tres, ¿dónde está?). The cat hides in one of three trees; the trees have one, two and three birds, dealt fresh every round. A: "Está en el árbol con tres pájaros." B: two "no" lines. C: he tells them himself. Stake: three fish biscuits, one a round: a heart if the cat gets it, a paw mark if Canelo does.
 - **Story 14, Rápido, despacio** (rápido, despacio). He walks the dog back to the gate with three guineos on his head for abuela. A: he sees what the dog does and says "¡Despacio!" or "¡Rápido!". B: Luis calls the pace. C: the dog is behind a bush and he only hears what it does. Stake: the guineos; the leash jerks, one falls, Canelo eats it.
@@ -33,7 +33,8 @@ Live at ?v=25. Scripts (final, draft 3): historia/notas/guiones/camino.md. Gener
 ### Reviews
 
 - Scripts: three drafts. Round 1 (beginner): the picture fought the rule in story 12 (running always looked right), "espera" was drawn as sitting (he knows that as "se sienta"), rounds repeated, forms used before they were taught, rápido / despacio pictures untrue. Spanish: "El gato no está…" (a bare "No está" is heard as "No. Está…"), the frog must answer where the cat is, not how many birds there are. Last gate: answers could be won by echo or by order; all closed.
-- Wordless frames: fresh reader (what it changed is in the next commit).
+- Wordless frames, two fresh readers. Fixed after the first: the dog was hidden at the start; the walk and wait cards looked alike; the opening went back to the start twice; the snail and the fish biscuits were unreadable; the bush of story 14 came from nowhere. Fixed after the second: frog, dog and Carmen overlapped (Canelo now stands a little ahead on the path, Carmen a little below it); the last walk back to the gate is gone (the path has a stone for every round); the wait card has a clear raised hand and the walk card footprints and an arrow; the group at the gate in story 14 was cut by the edge; speed lines are bolder; the dog's tail shows at the bush. Left as it is: speaking bubbles look alike (he picks by ear); the cat shows only as a tail or a face (that is the game); answer cards sometimes cover Luis.
+- A slip to avoid: frames were once captured into a folder that already held old frames, and the reader read a mix. Always capture into a new folder.
 
 ### Testing
 

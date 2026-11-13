@@ -422,9 +422,6 @@
    "dots": 3
   },
   {
-   "act": "alinicio"
-  },
-  {
    "ask": "espera",
    "lead": [],
    "line": "c12_cf_corre_espera",

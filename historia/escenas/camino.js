@@ -12,8 +12,8 @@
 (function(){
 const SW=KIT.SW,SH=KIT.SH,FAM=KIT.FAM,R=Math.round;
 const QUIEN={luis:FAM.hermano,carmen:FAM.hermana};
-// the path: seven marks from the gate (0) to the big tree (6); 1 to 5 are the stones
-const MARCA=[[66,182],[86,172],[106,163],[126,155],[146,148],[164,142],[184,137]];
+// the path: nine marks from the gate (0) to just before the big tree (8); 1 to 7 are the stones
+const MARCA=[[66,182],[79,175],[92,168],[105,162],[118,156],[131,151],[144,146],[157,142],[170,139]];
 const ARBOL=[[70,120],[112,116],[154,112]],GRAN=[200,128],BANCO=[98,128,30,16];
 const NIDO=[[-9,-31],[8,-36],[0,-21]];   // where up to three birds sit in a small tree, from its foot
 
@@ -23,7 +23,7 @@ function fondo(gran){const b=new Buf(SW,SH),G=RP.grn,Wd=RP.wood,ST=RP.stone;
   // the path, wider toward us
   for(let i=0;i<=200;i++){const t=i/200,x=30+170*t,y=198-66*t-8*Math.sin(Math.PI*t),hw=13-5*t;for(let dy=-hw;dy<=hw;dy++)for(let dx=-2;dx<=2;dx++){const px=x+dx,py=y+dy*.62;b.px(px,py,Math.abs(dy)>hw-1.2?"#C8A468":hs(R(px),R(py))<10?"#D8B67A":"#E8CE96");}}
   // the three stones
-  [1,2,3,4,5].forEach(i=>{const m=MARCA[i];b.ell(m[0],m[1]+1,8,3.4,[OUT]);b.ell(m[0],m[1],7,2.8,[ST[1],ST[2],ST[3],ST[4]]);});
+  [1,2,3,4,5,6,7].forEach(i=>{const m=MARCA[i];b.ell(m[0],m[1]+1,6,3,[OUT]);b.ell(m[0],m[1],5,2.4,[ST[1],ST[2],ST[3],ST[4]]);});
   // the park gate: two posts and an arch
   [24,50].forEach(x=>{b.rect(x,134,6,40,ST[3]);b.rect(x,134,2,40,ST[4]);b.rect(x+4,134,2,40,ST[1]);b.rect(x-1,130,8,5,ST[2]);b.frame(x-1,130,8,45,OUT);b.ell(x+3,127,3,3,[ST[3],ST[4]]);});
   for(let a=0;a<=40;a++){const t=Math.PI*a/40,x=40-13*Math.cos(t),y=134-11*Math.sin(t);b.rect(x,y,2,2,"#3A3A46");}
@@ -73,8 +73,9 @@ function guineo(g,x,y,k){k=k||1;const Y=RP.yel;[[0,2,2,2],[1,3,3,2],[3,4,4,2],[6
 function mkCesta(){const b=new Buf(20,12),T=RP.orng;b.rect(1,3,18,8,T[2]);for(let y=3;y<11;y+=2)for(let x=1;x<19;x+=2)b.px(x+(y>>1)%2,y,T[0]);b.rect(0,2,20,2,T[3]);return b.outline().done();}
 
 /* ---------- where things are ---------- */
-const ranaEn=i=>[MARCA[i][0]-22,MARCA[i][1]-34,Math.round((.96-.02*i)*100)/100];           // the frog walks on the far side of the path, so his answer bubbles stand clear of Carmen
-const ninaEn=i=>[MARCA[i][0]+20,MARCA[i][1]+15];                               // Carmen on our side
+const ranaEn=i=>[MARCA[i][0]-22,MARCA[i][1]-34,Math.round((.96-.015*i)*100)/100];           // the frog walks on the far side of the path, so his answer bubbles stand clear of Carmen
+const ninaEn=i=>[MARCA[i][0]+10,Math.min(206,MARCA[i][1]+22)];
+const perroEn=i=>[Math.min(204,MARCA[i][0]+34),MARCA[i][1]-9];              // Canelo a little ahead of the frog on the path, in plain sight                               // Carmen on our side
 const LUGAR={inicio:ranaEn(0),centro:[100,176,1],banco:[74,128,.86],arbol0:[44,122,.8],arbol1:[126,122,.8],arbol2:[166,118,.8],gran:[166,126,.84]};
 const alto=id=>id==="abuela"?51:QUIEN[id].nino?(W.gente[id]&&W.gente[id].sent?40:44):56;
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0?[R(p.x)-11,R(p.y)-alto(id),22,alto(id)]:null;};
@@ -140,7 +141,7 @@ function respIcon(g,k,x,y,w,h,a){const im=spr("cq.6_0",()=>mkCoqui(.6,0,0)),suel
   else if(k==="corre"){const up=(F%2)?2:0;g.save();g.translate(x+24,y+21-up);g.rotate(.3);g.drawImage(im,-10,-9);g.restore();lin(3,9,"#2E6CD0");[[5,29],[11,27]].forEach((p,i)=>{fr(g,x+p[0]-(F%3),y+p[1],4,3,"#C8C8D4");});}
   else if(k==="rapido"){const up=(F%2)?2:0;g.drawImage(im,x+15,y+12-up);lin(3,6,"#2E6CD0");[[18,30],[27,30]].forEach((p,i)=>fr(g,x+p[0]+((F+i)%2)*3,y+p[1],5,2,RP.tan[1]));}
   else if(k==="despacio"){const up=(F>>3)%2?1:0;g.drawImage(im,x+14,y+12-up);g.drawImage(spr("car"+((F>>3)%2),()=>mkCaracol((F>>3)%2)),x+2,y+23);[[18,30],[25,30]].forEach((p,i)=>fr(g,x+p[0],y+p[1],4,2,RP.tan[1]));}
-  else{const up=(F>>2)%2?3:0;g.drawImage(im,x+17,y+11-up);[[3,30],[8,27],[13,30]].forEach((p,i)=>{if(((F>>2)+i)%3)fr(g,x+p[0],y+p[1],4,2,"#6E4220");});}}
+  else{const up=(F>>2)%2?3:0;g.drawImage(im,x+12,y+11-up);[[2,29],[7,25]].forEach((p,i)=>{if(((F>>2)+i)%3){fr(g,x+p[0]-1,y+p[1]-1,6,4,OUT);fr(g,x+p[0],y+p[1],4,2,"#C89858");}});const ax=x+33+((F>>2)%2),ay=y+20;fr(g,ax-1,ay,6,3,"#2E9A48");[[5,-3,2,9],[7,-1,2,5],[9,0,1,3]].forEach(r=>fr(g,ax+r[0],ay+r[1],r[2],r[3],"#2E9A48"));}}
 
 /* ---------- what is at stake, in the corner of the screen ---------- */
 function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x,y-1,w,h+2);g.fillStyle="#FFFDF4";g.fillRect(x,y,w,h);}
@@ -157,7 +158,7 @@ async function animalA(k,x,y,pose,n){const o=W[k];if(!o)return;const x0=o.x,y0=o
 const enT=t=>{const x=40+146*t,y=194-58*t-8*Math.sin(Math.PI*t);return [R(x-10),R(y-14),1-.14*t];};
 const perroT=t=>{const tt=Math.max(0,t-.12),x=40+146*tt,y=194-58*tt-8*Math.sin(Math.PI*tt);return [R(x)-2,R(y)+16];};
 const ranaXY=()=>{const b=frogBox(W.cq);return [b.x+(b.w>>1),b.y+6];};
-const junto=()=>{const b=frogBox(W.cq);return [b.x+6,b.y+b.h+15];};      // where the dog stands: in front of the frog, in plain sight
+const junto=()=>perroEn(W.pos?W.pos.cq:0);      // where the dog stands: a little ahead of the frog
 const ladra=async n=>{const o=W.perro;o.pose="bark";for(let k=0;k<(n||2);k++){tone(520,0,.07,"square",.05,300);tone(400,.07,.1,"square",.05,240);await wait(330);}o.pose="sit";};
 const acts={
   async anda(o){await mueve(o.quien,+o.x,+o.y,null,o.corre);if(o.dir)G(o.quien).dir=+o.dir;},
@@ -175,11 +176,11 @@ const acts={
   /* ---- story 12: do what Luis calls ---- */
   async inicio12(){W.gente={luis:{x:174,y:138,pose:"wave",dir:-1},carmen:{x:ninaEn(0)[0],y:ninaEn(0)[1],pose:"idle"}};W.pos={cq:0,carmen:0};const L=ranaEn(0);Object.assign(W.cq,{x:L[0],y:L[1],s:L[2]});const j=junto();W.perro={x:j[0],y:j[1],pose:"bark",dir:1};await wait(500);G("luis").pose="idle";W.perro.pose="sit";},
   // one of them goes to a stone, in one of three ways: camina (easy steps), corre (flat out, dust), espera (stands quite still)
-  async va(o){const quien=o.quien,modo=o.modo,i=Math.max(0,Math.min(6,+o.a));
+  async va(o){const quien=o.quien,modo=o.modo,i=Math.max(0,Math.min(8,+o.a));
     if(quien==="carmen"){const p=G("carmen"),t=ninaEn(i);if(modo==="espera"){p.pose="idle";await wait(900);}else{await mueve("carmen",t[0],t[1],null,modo==="corre");}W.pos.carmen=modo==="espera"?W.pos.carmen:i;return;}
     const q=W.cq,L=ranaEn(i);if(modo==="espera"){await wait(900);return;}
-    if(modo==="corre"){W.polvo={x:frogBox(q).x,y:q.y+26,dir:-1,lin:1};const pe=animalA("perro",L[0]+22,L[1]+42,"run");await hopTo(L[0],L[1],1,L[2]);await pe;W.polvo=null;}
-    else{const pe=animalA("perro",L[0]+22,L[1]+42,"walk",16);await hopTo(L[0],L[1],3,L[2]);await pe;}
+    if(modo==="corre"){W.polvo={x:frogBox(q).x,y:q.y+26,dir:-1,lin:1};const pe=animalA("perro",perroEn(i)[0],perroEn(i)[1],"run");await hopTo(L[0],L[1],1,L[2]);await pe;W.polvo=null;}
+    else{const pe=animalA("perro",perroEn(i)[0],perroEn(i)[1],"walk",16);await hopTo(L[0],L[1],3,L[2]);await pe;}
     W.perro.pose="sit";W.perro.dir=1;W.pos.cq=i;},
   async luisno(){const p=G("luis");for(let k=0;k<4;k++){p.dir=-p.dir;await wait(140);}p.dir=-1;SFX.bonk();await wait(250);},
   async luisrie(){const p=G("luis");p.rie=1;p.pose="wave";await wait(650);p.rie=0;p.pose="idle";},
@@ -197,7 +198,7 @@ const acts={
     if(f==="espera"||cm==="espera"){await acts.luisrie();await Promise.all([f==="espera"?acts.va({quien:"cq",modo:"camina",a:pc+1}):0,cm==="espera"?acts.va({quien:"carmen",modo:"camina",a:pk+1}):0]);}},
   async alinicio(){await Promise.all([acts.va({quien:"cq",modo:"camina",a:0}),mueve("carmen",ninaEn(0)[0],ninaEn(0)[1])]);W.pos={cq:0,carmen:0};G("carmen").dir=1;},
   // the rule, shown once: Canelo cannot wait; Luis shakes his head; Canelo walks back
-  async demo(){const o=W.perro,L=ranaEn(Math.min(6,W.pos.cq+1));await wait(300);await animalA("perro",L[0]+22,L[1]+42,"run");o.pose="sit";await acts.luisno();},
+  async demo(){const o=W.perro,L=perroEn(Math.min(8,W.pos.cq+2));await wait(300);await animalA("perro",L[0],L[1],"run");o.pose="sit";await acts.luisno();},
   async demo2(){const o=W.perro,j=junto();await animalA("perro",j[0],j[1],"walk",14);o.pose="sit";o.dir=1;await wait(300);},
   async final12(){const n=W.lost||0,ca=G("carmen"),q=W.cq,L=LUGAR.gran,car=()=>mueve("carmen",160,146),yo=async()=>{const pe=animalA("perro",L[0]-12,L[1]+28,"run");await hopTo(L[0],L[1],3,L[2]);await pe;W.perro.pose="sit";};
     if(!n){await Promise.all([car(),yo()]);bounce(8);W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[150,60],[196,70],[176,50],[160,90],[200,96]]});await wait(900);}
