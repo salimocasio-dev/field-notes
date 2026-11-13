@@ -36,7 +36,7 @@ Live at ?v=26. Scripts (final, draft 3): historia/notas/guiones/campo.md. Genera
 
 - Scripts: three drafts and a last gate. Round 1: a right move left nothing on screen; the ball count could run out; five of nine decisions were the same kind; a decision staked only old words; bare "No. X" corrections can be heard as the opposite ("No. ¡Tira!" = "no tira"); "campo" is the countryside in Puerto Rico. Round 2: balls not accounted for step by step; the two taught "who has it" rounds had the same answer; only the tree, not the reeds, had been touched under the sign; "no" alone decided story 17's second decision; corrections said after they had stopped being true. Last gate: a ball other than his own had never been touched before it could cost; seven picture pairs could be done without the word (the fitting picture was always the lively one).
 - Said plainly to him: "tiene" and "más" decide nothing in the stories ("tiene" is heard a dozen times; "más" has its pair).
-- Wordless frames: fresh reader (see the commit after this one for what it changed).
+- Wordless frames, fresh reader. Fixed after it: the frog's ball looked like a coin or a flower (now plain yellow with a white line); the catch, throw and "up" answer pictures looked alike (each now has its own arms and arrow; "up" and "down" are the frog stretched tall and crouched flat); people stood on the frog; Canelo was cut by the edge at the start of story 16; the dark of the hiding game read as night (the frog now stays lit, eyes shut); the "salta" pair (Canelo now jumps over a ball). Left as it is: the speaking bubbles look alike (he picks by ear); the "mi" and "tu" pairs differ in more than one thing.
 
 ### Testing
 
@@ -44,7 +44,8 @@ Live at ?v=26. Scripts (final, draft 3): historia/notas/guiones/campo.md. Genera
 
 ### Audio
 
-- 118 new clips, 3,210 characters.
+- 118 new clips, 3,210 characters. Azure so far this month: about 22,500 of 500,000 characters (a sum of the counts printed by the generators, not a reading from Azure).
+- Minutes, measured by machine with sound: about 2.5 to 3 a play for each story.
 
 ## Nov 13, part 10: place 2, El parque. Scene 1, El camino
 
