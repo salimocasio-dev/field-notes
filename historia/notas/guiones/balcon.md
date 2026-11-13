@@ -64,7 +64,7 @@ Abuela stays in her chair. Each round two fresh glasses pop into place with a po
 
 **The ending** (the same lines in every ending)
 
-15. Two last glasses of water. NARR: "Abuela dice: Toma." The frog drinks one; one more drop of sweat goes, if any is left (no glasses in the game ends with two drops, one glass with one, two or three with none). The bird drinks the other. NARR: "El pájaro toma el agua."
+15. The two scores go away. Two last glasses of water. NARR: "Abuela dice: Toma." The frog drinks one; one more drop of sweat goes, if any is left (no glasses in the game ends with two drops, one glass with one, two or three with none). The bird drinks the other. NARR: "El pájaro toma el agua."
 16. By the scores:
    - Three for the frog: stars and a heart. The frog hops back onto his small chair.
    - Two: a heart. The frog gets his chair.
@@ -114,7 +114,7 @@ Abuela stays in her chair. Each round two fresh glasses pop into place with a po
 10. **Say decision B: she hands him his drink.** NARR: "Abuela dice: Toma." Two speaking bubbles: "Gracias." and one other, drawn fresh from "De nada." and "Por favor." Sides are drawn fresh, as in A.
    - Right: COQUÍ: "Gracias." Right signal. He gets the glass. NARR: "Abuela dice: De nada."
    - Wrong: the frog says the other line. She keeps holding the glass, puzzled; the sun flares; the thermometer climbs a mark. The sign shows the right bubble; it speaks; he touches it. COQUÍ: "Gracias." He gets the glass. NARR: "Abuela dice: De nada."
-   - Then the two picks end differently. Juice: he drinks it. COQUÍ: "¡Mmm!" Water: he drinks it, and an ice cube ends up on top of his head and stays there. COQUÍ: "¡Ah, qué bien!"
+   - Then the two picks end differently. Juice: he drinks it. COQUÍ: "¡Mmm!" Water: he drinks it and squirts a little fountain. COQUÍ: "¡Ah, qué bien!"
    - His pick carries into the first story in La sala.
 11. **Do decision, last (quiero or no quiero).** Both drinks are named, and which is named first is drawn fresh. NARR: "Abuela dice: Quiero jugo, por favor. No quiero agua." (Or "No quiero agua. Quiero jugo, por favor." Or the same two with the drinks swapped.) Her bubble stays empty.
    - Right: the frog carries that jug over and fills her glass. Right signal. COQUÍ: "Toma, abuela." She drinks. The thermometer comes down a mark.

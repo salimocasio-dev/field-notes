@@ -48,7 +48,7 @@ function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK
   shadow(g,b.x+2,q.y+25,b.w-5);g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+Math.round(q.dy));}
 
 /* the two answer bubbles of the Say move: the frog nodding (sí) and the frog shaking his head (no) */
-function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),cx=Math.max(cam[0]+54,Math.min(cam[0]+cam[2]-54,b.x+b.w/2)),y=Math.max(4,b.y-46);
+function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),cx=Math.max(cam[0]+60,Math.min(cam[0]+cam[2]-60,b.x+b.w/2)),y=Math.max(4,b.y-46);
   return W.resp.indexOf(k)===0?[Math.round(cx-50),y,40,36]:[Math.round(cx+10),y,40,36];}
 const bx=k=>respBox(k)||((k==="si"||k==="no")?null:E.box(k,W))||(b=>[b.x,b.y,b.w,b.h])(frogBox(W.cq));   // an answer bubble that is gone stands for the frog who said it
 function respDraw(g,a){(W.resp||[]).forEach(k=>{const b=respBox(k),x=b[0],y=b[1],w=b[2],h=b[3],t=(F>>1)%8,o=[0,1,2,1,0,-1,-2,-1][t];
@@ -233,7 +233,7 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
     if(st.decide==="say"){W.resp=ops;W.respVoz=voz;}
     me=await espera([pick],[],line,{sign:pick,voces:voz,orden:voz?[pick]:null});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});
     if(st.decide==="say"&&st.said&&st.said[pick]){SFX.blip();bounce(5);await wait(200);await say(sub(st.said[pick]),250);}}
-  senal(pick,me.p);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
+  senal(pick,st.decide==="say"?null:me.p);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
 
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
