@@ -14,26 +14,26 @@
 // w: the word asked. s: the story (1 to 11) that teaches it. p: four pictures, the first is the one that fits:
 // [the pair's word, which of its two pictures, the x the square crop is centred on (default: the middle of the pair's camera)]
 const NV=[
- {w:"abuela",s:1,p:[["abuela","si",166],["papá","si"],["bebé","si",70],["niño","si"]]},
- {w:"puerta",s:1,p:[["puerta","si",166],["ventana","si",112],["flor","si",60],["bebé","si",70]]},
- {w:"abre",s:2,p:[["abre","si",112],["abre","no",112],["cierra","si",166],["bebé","si",70]]},
- {w:"hola",s:2,p:[["hola","si",160],["adiós","si",160],["flor","si",60],["papá","si"]]},
- {w:"silla",s:4,p:[["silla","si"],["flor","si",60],["flor","no",60],["bebé","si",70]]},
- {w:"jugo",s:4,p:[["jugo","si"],["agua","si"],["flor","si",60],["papá","si"]]},
- {w:"se sienta",s:4,p:[["se sienta","si",80],["se sienta","no",96],["juega","si",130],["bebé","si",70]]},
- {w:"quiero",s:5,p:[["quiero","si",94],["quiero","no",94],["¿cómo estás?","si",94],["flor","si",60]]},
- {w:"mamá",s:6,p:[["mamá","si"],["papá","si"],["abuelo","si"],["bebé","si",70]]},
- {w:"abuelo",s:6,p:[["abuelo","si"],["mamá","si"],["papá","si"],["hermano","si"]]},
- {w:"familia",s:6,p:[["familia","si"],["mamá","si"],["papá","si"],["niño","si"]]},
- {w:"hermana",s:7,p:[["hermana","si"],["hermano","si"],["hermana","no"],["abuelo","si"]]},
- {w:"tú",s:8,p:[["tú","si",118],["tú","no",118],["yo","si",118],["bebé","si",70]]},
+ {w:"abuela",s:1,p:[["abuela","si",166],["mamá","si"],["papá","si"],["hermana","si"]]},
+ {w:"puerta",s:1,p:[["puerta","si",166],["ventana","si",112],["silla","si"],["sol","si"]]},
+ {w:"abre",s:2,p:[["abre","si",112],["abre","no",112],["puerta","si",166],["jugo","si"]]},
+ {w:"hola",s:2,p:[["hola","si",160],["adiós","si",160],["se sienta","si",80],["juega","si",130]]},
+ {w:"silla",s:4,p:[["silla","si"],["silla","no"],["jugo","si"],["ventana","si",112]]},
+ {w:"jugo",s:4,p:[["jugo","si"],["agua","si"],["silla","si"],["papá","si"]]},
+ {w:"se sienta",s:4,p:[["se sienta","si",80],["se sienta","no",96],["niño","si"],["abuelo","si"]]},
+ {w:"quiero",s:5,p:[["quiero","si",94],["quiero","no",94],["¿cómo estás?","si",94],["mamá","si"]]},
+ {w:"mamá",s:6,p:[["mamá","si"],["papá","si"],["abuelo","si"],["hermana","si"]]},
+ {w:"abuelo",s:6,p:[["abuelo","si"],["abuelo","no"],["papá","si"],["hermano","si"]]},
+ {w:"familia",s:6,p:[["familia","si"],["mamá","si"],["hermano","si"],["niña","si",100]]},
+ {w:"hermana",s:7,p:[["hermana","si"],["hermano","si"],["hermana","no"],["bebé","si",70]]},
+ {w:"tú",s:8,p:[["tú","si",118],["tú","no",118],["yo","si",118],["hermano","si"]]},
  {w:"niña",s:9,p:[["niña","si",100],["niño","si"],["niña","no",100],["abuelo","si"]]},
- {w:"flor",s:9,p:[["flor","si",60],["flor","no",60],["sol","no",150],["bebé","si",70]]},
- {w:"juega",s:9,p:[["juega","si",130],["juega","no",130],["niña","si",100],["flor","si",60]]},
- {w:"amigo",s:10,p:[["amigo","si",100],["amigo","no",100],["niña","si",100],["abuelo","si"]]},
- {w:"ven",s:10,p:[["ven","si",142],["ven","no",142],["flor","si",60],["mamá","si"]]},
- {w:"vamos",s:11,p:[["vamos","si",150],["vamos","no",150],["flor","si",60],["bebé","si",70]]},
- {w:"hasta mañana",s:11,p:[["hasta mañana","si",120],["hasta mañana","no",120],["hola","si",160],["juega","si",130]]}];
+ {w:"flor",s:9,p:[["flor","si",60],["flor","no",60],["sol","no",150],["silla","si"]]},
+ {w:"juega",s:9,p:[["juega","si",130],["juega","no",130],["niña","si",100],["sol","si"]]},
+ {w:"amigo",s:10,p:[["amigo","si",100],["amigo","no",100],["niño","si"],["mamá","si"]]},
+ {w:"ven",s:10,p:[["ven","si",142],["ven","no",142],["niño","si"],["papá","si"]]},
+ {w:"vamos",s:11,p:[["vamos","si",150],["vamos","no",150],["ven","no",142],["juega","si",130]]},
+ {w:"hasta mañana",s:11,p:[["hasta mañana","si",120],["hasta mañana","no",120],["jugo","si"],["niña","si",100]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
 function celda(k){return [(k%2)*(CW+CG),Math.floor(k/2)*(CH+CG)];}
