@@ -75,5 +75,5 @@ else:
         v = by_name[pick.get(clip.get("who", "narr"), pick["narr"])]
         speak(v["ShortName"], v["Locale"], [clip["text"]], os.path.join(HERE, "audio", cid + ".mp3"))
         print("ok", cid)
-    json.dump({"voces": pick, "rate": RATE, "clips": sorted(lines)}, open(os.path.join(HERE, "audio", "ready.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump({"voces": pick, "rate": RATE, "v": int(time.time()), "clips": sorted(lines)}, open(os.path.join(HERE, "audio", "ready.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(len(lines), "clips,", CHARS, "characters")

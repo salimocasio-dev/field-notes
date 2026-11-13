@@ -13,6 +13,8 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 .rnd:active{transform:translateY(4px);box-shadow:0 0 0 4px #2A1810,0 2px 0 4px #2A1810}
 #go{left:50%;top:50%;width:104px;height:104px;margin:-52px 0 0 -52px}
 #again{left:50%;bottom:22px;width:72px;height:72px;margin-left:-36px;display:none}
+#next{left:50%;bottom:22px;width:72px;height:72px;margin-left:14px;display:none}
+#stage.two #again{margin-left:-86px}
 #bar{display:flex;gap:8px;align-items:center;height:30px}
 .dot{width:12px;height:12px;border-radius:3px;background:#24394A;box-shadow:0 0 0 2px #2A1810}
 .dot.on{background:#FFE040}
@@ -26,6 +28,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
     <canvas id="cv" width="196" height="216"></canvas>
     <button class="rnd" id="go" aria-label="Start"><svg width="46" height="46" viewBox="0 0 24 24"><path d="M7 4.500v15l12.500-7.500z" fill="#2A1810"/></svg></button>
     <button class="rnd" id="again" aria-label="Again"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.500-5.800"/><path d="M20 4v5h-5"/></svg></button>
+    <button class="rnd" id="next" aria-label="Next"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 5 7 7-7 7"/></svg></button>
   </div>
   <div id="bar">
     <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -42,7 +45,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
    story runs silent, with the same timing.
    ============================================================ */
 const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const Q=new URLSearchParams(location.search),FAST=+(Q.get("fast")||1),PASS=Q.get("paso")==="busca"?"busca":"mira";
+const Q=new URLSearchParams(location.search),FAST=+(Q.get("fast")||1);let PASS=Q.get("paso")==="busca"?"busca":"mira";
 const DW=196,DH=216,SW=240,SH=216,TICK=70;
 const cv=$("#cv"),dc=cv.getContext("2d"),sc=document.createElement("canvas");sc.width=SW;sc.height=SH;const c=sc.getContext("2d");
 
@@ -145,12 +148,18 @@ function thump(at){if(muted)return;try{const A=ac(),t=A.currentTime+at,n=A.sampl
   const s=A.createBufferSource(),f=A.createBiquadFilter(),g=A.createGain();f.type="lowpass";f.frequency.value=420;g.gain.value=.5;s.buffer=bf;s.connect(f);f.connect(g);g.connect(A.destination);s.start(t);tone(150,at,.08,"sine",.25,70);}catch(e){}}
 const SFX={chime(){tone(880,0,.12,"square",.04);tone(1320,.1,.2,"square",.04);},knock(){thump(0);thump(.17);},creak(){tone(210,0,.5,"sawtooth",.025,120);tone(330,.05,.4,"sawtooth",.012,170);},
   hop(){tone(320,0,.07,"square",.025,520);},coqui(){tone(1500,0,.11,"sine",.09);tone(2300,.17,.2,"sine",.09,2750);},win(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.11,.2,"square",.04));},no(){tone(240,0,.1,"sine",.06,200);}};
-let LINES={},VOICE=false;
-fetch("lines.json").then(r=>r.json()).then(j=>{LINES=j.clips||{};return fetch("audio/ready.json")}).then(r=>{VOICE=r.ok;}).catch(()=>{});
+let LINES={},VOICE=false,CLIPS={},master=null,speaking=0,live=new Set();
+const out=()=>{const A=ac();if(!master){master=A.createGain();master.connect(A.destination);}master.gain.value=muted?0:1;return master;};
+async function loadVoice(){try{LINES=(await (await fetch("lines.json")).json()).clips||{};}catch(e){}
+  try{const r=await fetch("audio/ready.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json(),A=ac();
+    await Promise.all((j.clips||[]).map(async id=>{try{const b=await (await fetch("audio/"+id+".mp3?v="+(j.v||0))).arrayBuffer();CLIPS[id]=await new Promise((ok,no)=>A.decodeAudioData(b,ok,no));}catch(e){}}));
+    VOICE=Object.keys(CLIPS).length>0;}catch(e){}}
+const voiceReady=loadVoice();
 const words=id=>((LINES[id]||{}).text||"x x").split(/\s+/).length;
-function say(id){const my=runId;return new Promise(res=>{const done=()=>res();
-  if(VOICE&&!muted){const au=new Audio("audio/"+id+".mp3");au.onended=()=>setTimeout(done,350/FAST);au.onerror=()=>setTimeout(done,600/FAST);au.play().catch(()=>setTimeout(done,600/FAST));}
-  else setTimeout(done,(380*words(id)+420)*.8/FAST);}).then(()=>{if(my!==runId)throw "stop";});}
+function playClip(id){return new Promise(res=>{const buf=CLIPS[id];if(!VOICE||!buf){res(false);return;}
+  const s=ac().createBufferSource();s.buffer=buf;s.connect(out());speaking++;live.add(s);s.onended=()=>{speaking--;live.delete(s);res(true);};s.start();});}
+function hush(){live.forEach(s=>{try{s.onended=null;s.stop();}catch(e){}});live.clear();speaking=0;}
+function say(id){const my=runId;return (VOICE&&CLIPS[id]?playClip(id).then(()=>sleep(450/FAST)):sleep((380*words(id)+420)*.8/FAST)).then(()=>{if(my!==runId)throw "stop";});}
 const wait=ms=>{const my=runId;return sleep(ms/FAST).then(()=>{if(my!==runId)throw "stop";});};
 
 /* ---------- moving things ---------- */
@@ -177,21 +186,23 @@ function hit(x,y){const inb=b=>x>=b[0]&&x<b[0]+b[2]&&y>=b[1]&&y<b[1]+b[3];
   return null;}
 
 /* ---------- asking, and what happens on a touch ---------- */
+const NAME={casa:"casa",puerta:"puerta",abuela:"abuela",ventana:"ventana",sol:"sol",palma:"palma"};
 function ask(target,line,o){o=o||{};const my=runId;return (async()=>{
   if(o.point)W.glow=target;
+  const me={target,res:null,tries:0,loose:!!o.loose,line,busy:0,done:0},got=new Promise(res=>{me.res=res;});pending=me;
   await say(line);
-  if(o.hand)W.hand=target;
-  const got=new Promise(res=>{pending={target,res,tries:0,loose:!!o.loose};});
-  const slow=o.hand?0:setTimeout(()=>{if(pending&&pending.target===target&&my===runId){W.glow=target;W.hand=target;}},6500/FAST);
-  await got;clearTimeout(slow);pending=null;W.glow=null;W.glow2=null;W.hand=null;if(my!==runId)throw "stop";})();}
+  let slow=0;if(!me.done){if(o.hand)W.hand=target;else slow=setTimeout(()=>{if(pending===me&&!me.done&&my===runId){W.glow=target;W.hand=target;playClip(NAME[target]);}},6500/FAST);}
+  await got;clearTimeout(slow);if(pending===me)pending=null;W.glow=null;W.glow2=null;W.hand=null;if(my!==runId)throw "stop";})();}
 function tap(x,y){let what=hit(x,y);const p={x:Math.round(x),y:Math.round(y)};if(!what)return;
-  if(pending){if(pending.loose&&pending.target==="casa"&&(what==="puerta"||what==="ventana"))what="casa";   // before the door has a name, the door is the house
-    if(what===pending.target){react(what,p);pending.res();return;}
-    if(what==="coqui"){react(what,p);return;}
-    react(what,p);pending.tries++;
-    if(BOX[what]&&PASS==="busca"){if(pending.tries===1){W.glow=pending.target;W.glow2=what;}else{W.glow=pending.target;W.glow2=null;W.hand=pending.target;}}
+  const pn=pending;
+  if(pn&&!pn.done){if(pn.loose&&pn.target==="casa"&&(what==="puerta"||what==="ventana"))what="casa";   // before the door has a name, the door is the house
+    if(what===pn.target){pn.done=1;react(what,p);pn.res();return;}
+    react(what,p);if(what==="coqui")return;
+    pn.tries++;
+    if(BOX[what]&&PASS==="busca"){if(pn.tries===1){W.glow=pn.target;W.glow2=what;}else{W.glow=pn.target;W.glow2=null;W.hand=pn.target;}}
+    if(NAME[what]&&!speaking&&!pn.busy){pn.busy=1;playClip(NAME[what]).then(()=>sleep(350)).then(()=>pending===pn&&!pn.done?playClip(pn.line):0).then(()=>{pn.busy=0;});}   // say what was touched, then ask again
     return;}
-  if(running)react(what,p);}
+  if(running){react(what,p);if(NAME[what]&&!speaking)playClip(NAME[what]);}}
 cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*DW,py=(e.clientY-r.top)/r.height*DH;tap(cam[0]+px/DW*cam[2],cam[1]+py/DH*cam[3]);});
 
 /* ---------- the story ---------- */
@@ -222,15 +233,17 @@ async function story(){const P=PASS==="mira";
   SFX.creak();W.door=.5;await wait(420);W.door=0;await wait(450);
   await camGo("wide");W.heart=1;SFX.win();fx({t:"star",n:44,pts:[[66,20],[220,22],[104,8],[186,10],[60,70],[226,66],[84,40],[204,38]]});await say("casa_abuela");await wait(900);
 }
-async function run(){runId++;fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";
+async function run(){runId++;const my=runId;hush();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";$("#stage").classList.remove("two");
+  await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await story();}catch(e){if(e!=="stop")throw e;return;}
-  running=false;$("#again").style.display="flex";}
+  running=false;$("#again").style.display="flex";if(PASS==="mira"&&VOICE){$("#next").style.display="flex";$("#stage").classList.add("two");}}
 $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};
 $("#again").onclick=()=>run();
-$("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);};
+$("#next").onclick=()=>{PASS="busca";run();};
+$("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
 function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-70)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
 fit();addEventListener("resize",fit);
 /* for checking the pictures by machine */
-window.Story={get W(){return W;},get pending(){return pending;},tapOn(k){const b=BOX[k];tap(b[0]+b[2]/2,b[1]+b[3]/2);},get running(){return running;},get cam(){return cam;}};
+window.Story={get W(){return W;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const b=BOX[k];tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get pass(){return PASS;},get speaking(){return speaking;}};
 </script>
 </body></html>
