@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#0E1A24">
 <link rel="icon" href="data:,">
-<title>Coquí · La casa de la abuela</title>
+<title>Coquí</title>
 <style>
 html,body{margin:0;height:100%;background:#0E1A24;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 #wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;box-sizing:border-box;padding:8px 0}
@@ -13,8 +13,6 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 .rnd:active{transform:translateY(4px);box-shadow:0 0 0 4px #2A1810,0 2px 0 4px #2A1810}
 #go{left:50%;top:50%;width:104px;height:104px;margin:-52px 0 0 -52px}
 #again{left:50%;bottom:22px;width:72px;height:72px;margin-left:-36px;display:none}
-#next{left:50%;bottom:22px;width:72px;height:72px;margin-left:14px;display:none}
-#stage.two #again{margin-left:-86px}
 #bar{display:flex;gap:8px;align-items:center;height:30px}
 .dot{width:12px;height:12px;border-radius:3px;background:#24394A;box-shadow:0 0 0 2px #2A1810}
 .dot.on{background:#FFE040}
@@ -28,240 +26,14 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
     <canvas id="cv" width="196" height="216"></canvas>
     <button class="rnd" id="go" aria-label="Start"><svg width="46" height="46" viewBox="0 0 24 24"><path d="M7 4.500v15l12.500-7.500z" fill="#2A1810"/></svg></button>
     <button class="rnd" id="again" aria-label="Again"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.500-5.800"/><path d="M20 4v5h-5"/></svg></button>
-    <button class="rnd" id="next" aria-label="Next"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#2A1810" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 5 7 7-7 7"/></svg></button>
   </div>
   <div id="bar">
     <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
     <button id="snd" aria-label="Sound"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F4CC88" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="#F4CC88"/><path class="w" d="M15.500 8.500a5 5 0 0 1 0 7"/><path class="w" d="M18.500 5.500a9 9 0 0 1 0 13"/><path class="x" d="m16 9 6 6m0-6-6 6"/></svg></button>
   </div>
 </div>
-<script src="engine.js"></script>
-<script>
-"use strict";
-/* ============================================================
-   Coquí · story 1 of El frente: "La casa de la abuela"
-   The voice talks to the learner in whole sentences and asks him to
-   find things. Pass "mira": a big sign shows what to touch. Pass
-   "busca": no sign. The spoken lines are in lines.json.
-   ============================================================ */
-const $=s=>document.querySelector(s),sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const Q=new URLSearchParams(location.search),FAST=+(Q.get("fast")||1);let PASS=Q.get("paso")==="busca"?"busca":"mira";
-const DW=196,DH=216,SW=240,SH=216,TICK=70;
-const cv=$("#cv"),dc=cv.getContext("2d"),sc=document.createElement("canvas");sc.width=SW;sc.height=SH;const c=sc.getContext("2d");
-
-/* ---------- the place: the front of grandma's house ---------- */
-function bgFrente(door){const b=new Buf(SW,SH),T=RP.teal,C=RP.cream,Wd=RP.wood,ST=RP.stone;
-  sky(b,SW,96);grass(b,96,SW,SH);
-  for(let y=119;y<SH;y++){const t=(y-119)/(SH-119),xl=Math.round(142-34*t),xr=Math.round(188+34*t);
-    for(let x=xl;x<=xr;x++)b.px(x,y,x===xl||x===xr?ST[0]:(y%6===0||(x+Math.floor(y/6)*7)%13===0)?ST[1]:hs(x,y)<8?ST[4]:ST[3]);}
-  b.grad(70,44,144,60,[T[3],T[3],T[2],T[2],T[1]],true);
-  for(let y=49;y<104;y+=5)for(let x=70;x<214;x++)b.px(x,y,T[1]);
-  for(let y=44;y<51;y++)for(let x=70;x<214;x++)if(bay(x,y)<(51-y)/8)b.px(x,y,T[0]);
-  b.rect(69,44,1,60,"#134A4C");b.rect(214,44,1,60,"#134A4C");
-  for(let y=16;y<42;y++){const t=(y-16)/25,xl=Math.round(88-30*t),xr=Math.round(196+30*t),k=(y-16)%5,rw=Math.floor((y-16)/5);
-    for(let x=xl;x<=xr;x++)b.px(x,y,x===xl||x===xr||y===41?"#4A1210":y===16?RP.red[4]:k===4?RP.red[0]:(x+rw*4)%8===0?RP.red[1]:bay(x,y)<t*.8?RP.red[2]:RP.red[3]);}
-  b.rect(58,42,169,3,C[3]);b.rect(58,44,169,1,C[1]);b.frame(57,41,171,4,OUT);
-  b.rect(86,58,7,26,"#FFFFFF");b.rect(131,58,7,26,"#FFFFFF");for(let y=60;y<84;y+=3){b.rect(86,y,7,1,ST[2]);b.rect(131,y,7,1,ST[2]);}
-  b.frame(85,57,9,28,OUT);b.frame(130,57,9,28,OUT);
-  b.rect(94,58,36,26,C[3]);b.grad(97,61,30,20,[RP.blue[4],RP.blue[3],RP.blue[2]]);b.rect(111,61,2,20,C[3]);b.rect(97,70,30,2,C[3]);
-  for(let i=0;i<7;i++){b.px(100+i,67-i,"#FFFFFF");b.px(116+i,78-i,"#FFFFFF");}
-  b.frame(93,57,38,28,OUT);b.frame(96,60,32,22,C[0]);
-  b.rect(90,86,44,5,Wd[2]);b.rect(90,86,44,1,Wd[4]);b.frame(89,85,46,7,OUT);
-  for(let i=0;i<9;i++){b.ell(93+i*4.8,83.5,2.2,2.2,[["#FF8FB8","#FFE070","#F4584A"][i%3]]);b.px(93+i*4.8,85,RP.grn[1]);}
-  b.rect(150,50,32,54,C[3]);b.frame(149,49,34,56,OUT);
-  if(door===1){b.grad(153,53,24,51,["#140A06","#22140C","#32201A"]);b.rect(177,53,4,51,Wd[2]);b.rect(177,53,1,51,Wd[4]);b.frame(152,52,26,53,OUT);}
-  else if(door===.5){b.grad(153,53,11,51,["#140A06","#22140C","#32201A"]);b.grad(164,53,15,51,[Wd[3],Wd[2],Wd[1],Wd[0]],true);b.rect(164,53,1,51,Wd[4]);b.frame(152,52,28,53,OUT);b.rect(163,52,1,53,OUT);b.rect(167,77,2,2,RP.yel[2]);}
-  else{b.grad(153,53,26,51,[Wd[3],Wd[2],Wd[2],Wd[1]],true);b.frame(152,52,28,53,OUT);
-    [[156,57,20,18],[156,80,20,20]].forEach(p=>{b.frame(p[0],p[1],p[2],p[3],Wd[0]);b.rect(p[0]+1,p[1]+1,p[2]-2,1,Wd[4]);b.rect(p[0]+1,p[1]+1,1,p[3]-2,Wd[4]);});
-    b.rect(154,77,2,2,RP.yel[2]);}
-  b.rect(187,60,4,6,RP.yel[3]);b.frame(186,59,6,8,OUT);b.rect(188,57,2,2,ST[0]);
-  b.rect(62,104,160,6,ST[3]);b.rect(62,104,160,1,ST[4]);b.rect(62,109,160,1,ST[1]);b.frame(61,103,162,8,OUT);
-  b.rect(146,111,38,4,ST[2]);b.rect(146,111,38,1,ST[4]);b.rect(142,115,46,4,ST[3]);b.rect(142,115,46,1,ST[4]);b.rect(142,118,46,1,ST[0]);b.rect(146,114,38,1,ST[0]);
-  b.rect(153,104,24,2,RP.red[1]);
-  const out=b.done(),x=b.cx;x.drawImage(spr("palm",mkPalm),30,34);x.drawImage(spr("bush",mkBush),206,92);x.drawImage(spr("pot",mkPot),192,78);x.drawImage(spr("bush",mkBush),44,96);
-  return out;}
-
-/* ---------- the world: everything that can change ---------- */
-const CAM={wide:[44,0,196,216],casa:[56,0,172,190],door:[117,30,98,108]};
-const BOX={casa:[60,17,166,90],puerta:[151,51,30,54],abuela:[151,56,29,49]};
-let W,cam=CAM.wide.slice(),camA=null,F=0,pending=null,running=false,runId=0,muted=false;
-function fresh(){W={door:0,peek:0,ab:null,cq:{x:150,y:178,s:1,dy:0,al:1,vis:1,bub:null},spot:null,twinkle:null,glow:null,glow2:null,fx:[],heart:0};cam=CAM.wide.slice();camA=null;pending=null;}
-fresh();
-
-const HAND=["....oo......","...owwo.....","...owwo.....","...owwo.....","...owwooo...","...owwowwoo.","oo.owwowwowo","owoowwwwwwwo","owwowwwwwwwo",".owwwwwwwwwo",".owwwwwwwwwo","..owwwwwwwo.","..owwwwwwwo.","...owwwwwo..","...ooooooo.."];
-const HANDAT={casa:[141,24],puerta:[166,76],abuela:[165,80]};   // where the fingertip lands, in scene pixels
-function hand(g,x,y,down,k){const o=down?0:3*k;HAND.forEach((rw,j)=>{for(let i=0;i<rw.length;i++){const ch=rw[i];if(ch!==".")fr(g,x+i*k,y+j*k+o,k,k,ch==="o"?OUT:"#FFFFFF");}});
-  if(down){[[-4,-1],[2,-4],[8,-1]].forEach(p=>{fr(g,x+2*k+p[0]*k-1,y+p[1]*k-1,k+3,k+3,OUT);fr(g,x+2*k+p[0]*k,y+p[1]*k,k+1,k+1,"#FFE040");});}}
-const HEART=[".##...##.","####.####","#########","#########",".#######.","..#####..","...###...","....#...."];
-function heart(g,x,y,s){HEART.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#"){fr(g,x+i*s-1,y+j*s-1,s+2,s+2,OUT);}});
-  HEART.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")fr(g,x+i*s,y+j*s,s,s,j<2&&i<3?"#FF9A90":"#E8443C");});}
-function star(g,x,y,s,hot){const col=hot?"#FFFFFF":"#FFE040";fr(g,x-1,y-s-1,3,2*s+3,OUT);fr(g,x-s-1,y-1,2*s+3,3,OUT);fr(g,x,y-s,1,2*s+1,col);fr(g,x-s,y,2*s+1,1,col);fr(g,x-1,y-1,3,3,col);}
-function mark(g,b,a){const e=a%2,x0=b[0]-3-e,y0=b[1]-3-e,x1=b[0]+b[2]+2+e,y1=b[1]+b[3]+2+e,L=8,Y="#FFE040";
-  const parts=[[x0,y0,L,2],[x0,y0,2,L],[x1-L+1,y0,L,2],[x1-1,y0,2,L],[x0,y1-1,L,2],[x0,y1-L+1,2,L],[x1-L+1,y1-1,L,2],[x1-1,y1-L+1,2,L]];
-  parts.forEach(q=>fr(g,q[0]-1,q[1]-1,q[2]+2,q[3]+2,OUT));parts.forEach(q=>fr(g,q[0],q[1],q[2],q[3],Y));}
-// the big "touch this" sign: everything else goes dim, a thick pulsing frame, and (drawn later) a big tapping hand
-function spot(g,b,a){const e=a%4<2?0:2,x0=Math.max(0,b[0]-5-e),y0=Math.max(0,b[1]-5-e),x1=Math.min(SW,b[0]+b[2]+5+e),y1=Math.min(SH,b[1]+b[3]+5+e);
-  g.fillStyle="rgba(6,14,28,.6)";g.fillRect(0,0,SW,y0);g.fillRect(0,y1,SW,SH-y1);g.fillRect(0,y0,x0,y1-y0);g.fillRect(x1,y0,SW-x1,y1-y0);
-  const ring=(o,t,col)=>{fr(g,x0-o,y0-o,x1-x0+2*o,t,col);fr(g,x0-o,y1+o-t,x1-x0+2*o,t,col);fr(g,x0-o,y0-o,t,y1-y0+2*o,col);fr(g,x1+o-t,y0-o,t,y1-y0+2*o,col);};
-  ring(5,5,OUT);ring(4,3,e?"#FFF4B0":"#FFE040");}
-function twinkle(g,b){const cx=b[0]+b[2]/2,cy=b[1]+b[3]/2;for(let k=0;k<3;k++){const an=F/7+k*2.094;star(g,Math.round(cx+(b[2]/2+5)*Math.cos(an)),Math.round(cy+(b[3]/2+5)*Math.sin(an)),(F>>2)%2?3:2,k===(F>>3)%3);}}
-const G_HAND=["..#.#.#..","..#.#.#.#","..#.#.#.#","..#.#.#.#","#.#####.#","#.######.","########.",".#######.","..#####..","..#####.."],G_HEART=[".##.##.","#######","#######",".#####.","..###..","...#..."];
-const BUB={hola:[G_HAND,"#B46A30"],amor:[G_HEART,"#E0403A"]};
-function bub(g,k,tx,ty,a){if(k==="como"){bubble(g,["ok","q","sad"],tx,ty,a);return;}if(k==="bien"){bubble(g,["ok"],tx,ty,a);return;}
-  const rows=BUB[k][0],col=BUB[k][1],w=rows[0].length+6,h=rows.length+6,x=Math.round(tx-w/2),y=ty-h-5-(a%2);
-  fr(g,x-1,y,w+2,h,OUT);fr(g,x,y-1,w,h+2,OUT);fr(g,x,y,w,h,"#FFFFFF");
-  fr(g,tx-2,y+h,5,1,"#FFFFFF");fr(g,tx-2,y+h+1,5,1,OUT);fr(g,tx-1,y+h+1,3,1,"#FFFFFF");fr(g,tx-1,y+h+2,3,1,OUT);fr(g,tx,y+h+2,1,1,"#FFFFFF");fr(g,tx,y+h+3,1,1,OUT);
-  rows.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")fr(g,x+3+i,y+3+j,1,1,col);});}
-const BANG=[".....#.....","#....#....#",".#...#...#.","..#.###.#..","...#####...","###########","...#####...","..#.###.#..",".#...#...#.","#....#....#",".....#....."];
-function bang(g,cx,cy,s){const x0=cx-Math.floor(5.5*s),y0=cy-Math.floor(5.5*s);
-  BANG.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")fr(g,x0+i*s-1,y0+j*s-1,s+2,s+2,OUT);});
-  BANG.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")fr(g,x0+i*s,y0+j*s,s,s,Math.abs(i-5)<2&&Math.abs(j-5)<2?"#FFFFFF":"#FFE040");});}
-function frogBox(q){const w=Math.round(30*q.s)+2,h=Math.round(25*q.s)+2;return {x:Math.round(q.x+(32-w)/2),y:q.y+27-h,w,h};}
-function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=q.bub==="hola"&&a%2?1:0;
-  shadow(g,b.x+2,q.y+25,b.w-5);g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+Math.round(q.dy));
-  if(q.bub)bub(g,q.bub,b.x+(b.w>>1),b.y,a);}
-// small living things, so the place is never still
-function mkCloud(){const b=new Buf(40,15);b.ell(20,9,13,5,RP.cloud);b.ell(11,10,8,4,RP.cloud);b.ell(30,10,9,4,RP.cloud);b.ell(22,5,7,4.5,RP.cloud);return b.done();}
-const FLY=[["pp...pp","ppp.ppp",".ppdpp.","..pdp..","...d..."],[".......","ppp.ppp","pppdppp",".ppdpp.","...d..."]];
-function fly(g,x,y,col,fl){FLY[fl].forEach((rw,j)=>{for(let i=0;i<rw.length;i++){const ch=rw[i];if(ch!==".")fr(g,x+i,y+j,1,1,ch==="d"?OUT:col);}});}
-function ambient(g){g.drawImage(spr("cloud",mkCloud),Math.round(250-(F/4)%310),0);
-  fly(g,Math.round(98+34*Math.sin(F/41)+6*Math.sin(F/7)),Math.round(97+9*Math.sin(F/29)+3*Math.sin(F/5)),"#FF8FB8",(F>>1)%2);
-  fly(g,Math.round(203+13*Math.sin(F/33+2)+4*Math.sin(F/6)),Math.round(72+7*Math.sin(F/19)+2*Math.sin(F/4)),"#FFE070",((F>>1)+1)%2);}
-
-function draw(){const a=F>>1,AB=()=>spr("abidle0",()=>mkAbuela("idle",0));
-  c.drawImage(spr("fr"+W.door,()=>bgFrente(W.door)),0,0);ambient(c);
-  if(W.peek&&W.door===.5){c.save();c.beginPath();c.rect(153,53,11,51);c.clip();c.drawImage(AB(),135,55);c.restore();}   // she is behind the door as it opens
-  if(W.ab){const wv=W.ab.pose==="wave",pose=wv?"wave"+(a%2):"idle",op=(W.ab.bub==="hola"||W.ab.bub==="como")&&a%2?1:0;
-    c.globalAlpha=W.ab.al==null?1:W.ab.al;c.drawImage(spr("ab"+pose+op,()=>mkAbuela(pose,op)),135,55);c.globalAlpha=1;
-    if(W.ab.bub)bub(c,W.ab.bub,W.ab.bub==="como"?141:147,W.ab.bub==="como"?66:69,a);}
-  const q=W.cq;if(q.vis){c.globalAlpha=q.al;frog(c,q,a);c.globalAlpha=1;}
-  if(W.twinkle)twinkle(c,BOX[W.twinkle]);
-  if(W.spot)spot(c,BOX[W.spot],a);
-  W.fx=W.fx.filter(e=>F-e.f0<e.n);
-  W.fx.forEach(e=>{const k=F-e.f0;if(e.t==="star")e.pts.forEach((p,i)=>star(c,p[0],p[1],(i+a)%2?4:2,(i+a)%2));
-    else if(e.t==="knock"){const s=cam[2]>150?2:1;if(k<2)bang(c,e.x,e.y,s);else if(k>=3&&k<6)bang(c,e.x+3*s,e.y-2*s,s);}});
-  if(W.heart)heart(c,125,2-(a%2),3);
-  if(W.glow)mark(c,BOX[W.glow],a);
-  if(W.glow2)mark(c,BOX[W.glow2],a);
-  if(camA){const t=Math.min(1,(F-camA.f0)/camA.n),e=t*t*(3-2*t);for(let i=0;i<4;i++)cam[i]=camA.a[i]+(camA.b[i]-camA.a[i])*e;if(t>=1){cam=camA.b.slice();const r=camA.res;camA=null;r();}}
-  dc.imageSmoothingEnabled=false;dc.fillStyle="#0E1A24";dc.fillRect(0,0,DW,DH);
-  dc.drawImage(sc,cam[0],cam[1],cam[2],cam[3],0,0,DW,DH);
-  if(W.spot){const p=HANDAT[W.spot],z=DW/cam[2],k=3,hx=Math.round((p[0]-cam[0])*z)-4*k,hy=Math.round((p[1]-cam[1])*z);hand(dc,hx,hy,(F>>2)%2===1,k);}
-}
-function loop(){F++;draw();}
-setInterval(loop,TICK);draw();
-
-/* ---------- sound: effects, and the recorded voice ---------- */
-let AC=null;const ac=()=>AC||(AC=new (window.AudioContext||window.webkitAudioContext)());
-function tone(f0,at,dur,type,vol,f1){if(muted)return;try{const A=ac(),t=A.currentTime+at,o=A.createOscillator(),g=A.createGain();o.type=type||"square";o.frequency.setValueAtTime(f0,t);if(f1)o.frequency.exponentialRampToValueAtTime(f1,t+dur);
-  g.gain.setValueAtTime(vol||.05,t);g.gain.exponentialRampToValueAtTime(.0008,t+dur);o.connect(g);g.connect(A.destination);o.start(t);o.stop(t+dur+.02);}catch(e){}}
-const SFX={right(){tone(784,0,.1,"triangle",.14);tone(1047,.09,.1,"triangle",.14);tone(1319,.18,.26,"triangle",.14);},
-  toc(){tone(950,0,.07,"sine",.22,480);tone(950,.17,.07,"sine",.22,480);},toc1(){tone(700,0,.08,"sine",.2,330);},
-  blip(){tone(520,0,.06,"sine",.07,640);},creak(){tone(210,0,.5,"sawtooth",.025,120);tone(330,.05,.4,"sawtooth",.012,170);},
-  hop(){tone(320,0,.07,"square",.025,520);},coqui(){tone(1500,0,.11,"sine",.09);tone(2300,.17,.2,"sine",.09,2750);},win(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.11,.2,"square",.04));}};
-let LINES={},VOICE=false,CLIPS={},master=null,speaking=0,live=new Set();
-const out=()=>{const A=ac();if(!master){master=A.createGain();master.connect(A.destination);}master.gain.value=muted?0:1;return master;};
-function trim(b){const d=b.getChannelData(0),sr=b.sampleRate,th=.012;let i=0,j=d.length-1;while(i<j&&Math.abs(d[i])<th)i++;while(j>i&&Math.abs(d[j])<th)j--;return {buf:b,t0:Math.max(0,i/sr-.03),t1:Math.min(b.duration,j/sr+.1)};}   // the recordings carry silence at both ends; the pauses are set here instead
-async function loadVoice(){try{LINES=(await (await fetch("lines.json",{cache:"no-store"})).json()).clips||{};}catch(e){}
-  try{const r=await fetch("audio/ready.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json(),A=ac();
-    await Promise.all((j.clips||[]).map(async id=>{try{const b=await (await fetch("audio/"+id+".mp3?v="+(j.v||0))).arrayBuffer();CLIPS[id]=trim(await new Promise((ok,no)=>A.decodeAudioData(b,ok,no)));}catch(e){}}));
-    VOICE=Object.keys(LINES).every(id=>CLIPS[id]);}catch(e){}}
-const voiceReady=loadVoice();
-const words=id=>((LINES[id]||{}).text||"x x").split(/\s+/).length;
-const dur=id=>VOICE&&CLIPS[id]?CLIPS[id].t1-CLIPS[id].t0:(360*words(id)+300)/1000;
-function playClip(id){return new Promise(res=>{const cl=CLIPS[id];if(!VOICE||!cl){res(false);return;}
-  const s=ac().createBufferSource();s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);
-  s._end=v=>{if(s._done)return;s._done=1;speaking=Math.max(0,speaking-1);live.delete(s);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));});}
-function hush(){[...live].forEach(s=>{try{s.stop();}catch(e){}s._end(false);});}
-function say(id,gap){const my=runId,g=(gap==null?420:gap)/FAST;return (VOICE&&CLIPS[id]?playClip(id).then(ok=>ok?sleep(g):0):sleep(dur(id)*1000/FAST+g)).then(()=>{if(my!==runId)throw "stop";});}
-const wait=ms=>{const my=runId;return sleep(ms/FAST).then(()=>{if(my!==runId)throw "stop";});};
-
-/* ---------- moving things ---------- */
-const at=k=>CAM[k].every((v,i)=>Math.abs(v-cam[i])<.5);
-function camGo(k,n){return at(k)?Promise.resolve():new Promise(res=>{camA={a:cam.slice(),b:CAM[k].slice(),f0:F,n:n||9,res};});}
-async function hopTo(x,y,hops,s1){const q=W.cq,x0=q.x,y0=q.y,s0=q.s;if(s1==null)s1=s0;for(let h=0;h<hops;h++){SFX.hop();q.s=Math.round((s0+(s1-s0)*(h+1)/hops)*100)/100;const n=5;for(let i=1;i<=n;i++){const t=(h+i/n)/hops;q.x=Math.round(x0+(x-x0)*t);q.y=Math.round(y0+(y-y0)*t);q.dy=-7*Math.sin(Math.PI*i/n);await wait(TICK);}q.dy=0;await wait(110);}}
-function bounce(h){const q=W.cq;let i=0;const t=setInterval(()=>{i++;q.dy=-(h||6)*Math.sin(Math.PI*i/5);if(i>=5){q.dy=0;clearInterval(t);}},TICK);}
-function fx(e){e.f0=F;W.fx.push(e);}
-async function bump(){await hopTo(150,86,1,.72);SFX.toc1();fx({t:"knock",n:2,x:166,y:94});await wait(320);await hopTo(150,104,1,.72);}   // the frog hops at the door; it stays shut
-function hit(x,y){const inb=b=>x>=b[0]&&x<b[0]+b[2]&&y>=b[1]&&y<b[1]+b[3];
-  if(W.ab&&inb(BOX.abuela))return "abuela";
-  const q=W.cq,fb=frogBox(q);if(q.vis&&x>=fb.x&&x<fb.x+fb.w&&y>=fb.y&&y<fb.y+fb.h)return "coqui";
-  if(inb([149,49,34,56]))return "puerta";
-  if(inb([85,57,54,35]))return "ventana";
-  if(y>=16&&y<42){const t=(y-16)/25;if(x>=88-30*t&&x<=196+30*t)return "casa";}
-  if(inb([57,41,171,70]))return "casa";
-  if((x-210)*(x-210)+(y-17)*(y-17)<144)return "sol";
-  if(inb([34,36,30,70]))return "palma";
-  return null;}
-
-/* ---------- finding a thing: the lines that lead up to the question, the question, the touch ---------- */
-const NAME={casa:"casa",puerta:"puerta",abuela:"abuela",ventana:"ventana",sol:"sol",palma:"palma"};
-// A touch on the right thing counts from the first word of the lead-in, not only after the question.
-async function find(target,lead,line,o){o=o||{};const my=runId,P=PASS==="mira";
-  const me={target,res:null,tries:0,loose:!!o.loose,line,asked:0,busy:0,done:0,p:null},got=new Promise(r=>{me.res=r;});pending=me;
-  for(const st of lead){if(me.done)break;if(typeof st==="function"){W.twinkle=null;await st();}else{W.twinkle=target;await say(st);}}
-  W.twinkle=null;const timers=[];
-  if(!me.done){if(P)W.spot=target;me.asked=1;await say(line,0);
-    if(!me.done){if(P)timers.push(setInterval(()=>{if(pending===me&&!me.done&&my===runId&&!speaking)playClip(line);},9000/FAST));
-      else timers.push(setTimeout(()=>{if(pending===me&&!me.done&&my===runId){W.glow=null;W.glow2=null;W.spot=target;if(!speaking)playClip(line);}},7000/FAST));}}
-  await got;timers.forEach(t=>{clearTimeout(t);clearInterval(t);});
-  if(pending===me)pending=null;W.spot=null;W.twinkle=null;W.glow=null;W.glow2=null;if(my!==runId)throw "stop";
-  return me;}
-// what a right answer looks and sounds like, the same every time
-async function good(me){const b=BOX[me.target],p=me.p||{x:Math.round(b[0]+b[2]/2),y:Math.round(b[1]+b[3]/2)},R=Math.round;
-  if(me.target==="puerta"){SFX.toc();bounce(5);fx({t:"knock",n:7,x:p.x,y:p.y});await wait(430);}
-  SFX.right();bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});
-  await wait(300);await say("muy_bien",350);}
-function touchOther(what,p){   // a touch that is not the answer: it reacts and gets its name, nothing more
-  if(what==="coqui"){SFX.coqui();bounce(6);return;}
-  SFX.blip();fx({t:"star",n:7,pts:[[p.x-7,p.y-4],[p.x+8,p.y+2],[p.x,p.y-10]]});
-  if(what==="abuela"&&W.ab&&!W.ab.bub){W.ab.bub="amor";const my=runId;setTimeout(()=>{if(my===runId&&W.ab&&W.ab.bub==="amor")W.ab.bub=null;},1500/FAST);}}
-function tap(x,y){let what=hit(x,y);const p={x:Math.round(x),y:Math.round(y)};if(!what)return;
-  const pn=pending;
-  if(pn&&!pn.done){if(pn.loose&&pn.target==="casa"&&(what==="puerta"||what==="ventana"))what="casa";   // before the door has a name, the door is the house
-    if(what===pn.target){pn.done=1;pn.p=p;hush();pn.res();return;}
-    touchOther(what,p);if(what==="coqui")return;
-    if(pn.asked){pn.tries++;if(PASS==="busca"){if(pn.tries===1){W.glow=pn.target;W.glow2=BOX[what]?what:null;}else{W.glow=null;W.glow2=null;W.spot=pn.target;}}}
-    if(NAME[what]&&!speaking&&!pn.busy){pn.busy=1;playClip(NAME[what]).then(()=>sleep(300)).then(()=>pending===pn&&!pn.done&&pn.asked?playClip(pn.line):0).then(()=>{pn.busy=0;});}   // name what was touched, then ask again
-    return;}
-  if(running){touchOther(what,p);if(NAME[what]&&!speaking)playClip(NAME[what]);}}
-cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*DW,py=(e.clientY-r.top)/r.height*DH;tap(cam[0]+px/DW*cam[2],cam[1]+py/DH*cam[3]);});
-
-/* ---------- the story ---------- */
-const dots=[...document.querySelectorAll(".dot")],step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
-async function story(){let me;
-  await wait(600);
-  // 1. This is grandma's house. Look at grandma's house. Can you touch the house?
-  step(1);me=await find("casa",["esta_casa",()=>camGo("casa",16),"mira_casa",()=>camGo("wide",12)],"puedes_casa",{loose:true});
-  await camGo("wide",6);await good(me);
-  // 2. This is the door of the house. It is closed. Where is the door?
-  step(2);me=await find("puerta",[()=>hopTo(150,104,4,.72),()=>camGo("door"),"esta_puerta",bump,"cerrada",()=>wait(200),()=>camGo("wide")],"donde_puerta");
-  await good(me);
-  // 3. Grandma opens the door. Hola, abuela!
-  step(3);await camGo("door");SFX.creak();W.peek=1;W.door=.5;await wait(650);W.door=1;W.peek=0;W.ab={pose:"idle",bub:null,al:1};await wait(250);
-  await say("abuela_abre",350);
-  W.cq.bub="hola";SFX.coqui();bounce(6);await say("hola_abuela",550);W.cq.bub=null;
-  // 4. Grandma says: hola, how are you?
-  step(4);W.ab.pose="wave";W.ab.bub="hola";{const my=runId;setTimeout(()=>{if(my===runId&&W.ab&&W.ab.bub==="hola")W.ab.bub="como";},dur("abuela_dice")*560/FAST);}
-  await say("abuela_dice",700);W.ab.bub=null;
-  W.cq.bub="bien";SFX.coqui();bounce(7);await wait(1300);W.cq.bub=null;W.ab.pose="idle";await wait(300);
-  // 5. in you go: she goes in, you follow, the door closes
-  step(5);for(let i=4;i>=0;i--){W.ab.al=i/5;await wait(TICK);}W.ab=null;await wait(250);
-  await hopTo(150,80,2,.72);await wait(150);SFX.hop();for(let i=4;i>=0;i--){W.cq.al=i/5;W.cq.y-=2;await wait(TICK);}W.cq.vis=0;await wait(300);
-  SFX.creak();W.door=.5;await wait(420);W.door=0;await wait(400);
-  await camGo("wide");W.heart=1;SFX.win();fx({t:"star",n:40,pts:[[66,20],[220,22],[104,8],[186,10],[60,70],[226,66],[84,40],[204,38]]});await wait(1600);
-}
-async function run(){runId++;const my=runId;hush();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";$("#stage").classList.remove("two");
-  await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
-  try{await story();}catch(e){if(e!=="stop")throw e;return;}
-  running=false;$("#again").style.display="flex";if(PASS==="mira"&&VOICE){$("#next").style.display="flex";$("#stage").classList.add("two");}}
-$("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};
-$("#again").onclick=()=>run();
-$("#next").onclick=()=>{PASS="busca";run();};
-$("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
-function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-70)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
-fit();addEventListener("resize",fit);
-/* for checking the pictures by machine */
-window.Story={get W(){return W;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const b=BOX[k];tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get pass(){return PASS;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;}};
-</script>
+<script src="engine.js?v=7"></script>
+<script src="juego.js?v=7"></script>
+<script src="escenas/frente.js?v=7"></script>
+<script>arranca();</script>
 </body></html>

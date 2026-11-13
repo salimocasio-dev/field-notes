@@ -2,11 +2,12 @@
 
 MODO=muestras  the same six lines, read by every Spanish voice Azure has. No voice is left out.
                -> historia/muestras/<voice>.mp3 and historia/muestras/voces.json
-MODO=cuento    every clip in historia/lines.json, in the chosen voices
+MODO=cuento    every clip of every story in historia/cuentos/*.json, in the chosen voices
                -> historia/audio/<clip>.mp3 and historia/audio/ready.json
+               A clip whose text, voice and rate have not changed is not made again.
 The key is read from the environment and is never printed.
 """
-import json, os, sys, time, html, urllib.request, urllib.error
+import json, os, sys, time, html, glob, hashlib, urllib.request, urllib.error
 
 KEY = os.environ.get("AZURE_SPEECH_KEY", "").strip()
 REGION = os.environ.get("AZURE_SPEECH_REGION", "").strip()
@@ -51,7 +52,16 @@ def speak(voice, locale, parts, out):
 voices = json.loads(call(BASE + "/voices/list"))
 spanish = sorted((v for v in voices if v.get("Locale", "").lower().startswith("es-")), key=lambda v: (v["Locale"], v["ShortName"]))
 by_name = {v["ShortName"]: v for v in voices}
-lines = json.load(open(os.path.join(HERE, "lines.json"), encoding="utf-8"))["clips"]
+
+def story_lines():
+    """Every clip of every story. The same clip id may be used by several stories, with the same text."""
+    lines = {}
+    for f in sorted(glob.glob(os.path.join(HERE, "cuentos", "*.json"))):
+        for cid, clip in json.load(open(f, encoding="utf-8")).get("clips", {}).items():
+            if cid in lines and lines[cid]["text"] != clip["text"]:
+                sys.exit(f"The clip {cid} has two different texts in two stories.")
+            lines[cid] = clip
+    return lines
 
 if MODO == "muestras":
     sample = ["La casa.", "Toca la puerta.", "Sí. Es la abuela.", "La abuela abre la puerta.", "Hola, abuela.", "La casa de la abuela."]
@@ -71,9 +81,23 @@ else:
     for who, name in pick.items():
         if name not in by_name:
             sys.exit(f"Azure has no voice called {name} in this region.")
+    lines = story_lines()
+    ready = os.path.join(HERE, "audio", "ready.json")
+    try:
+        was = json.load(open(ready, encoding="utf-8"))
+    except Exception:
+        was = {}
+    old, hechos, made = was.get("hechos", {}), {}, 0
     for cid, clip in lines.items():
         v = by_name[pick.get(clip.get("who", "narr"), pick["narr"])]
-        speak(v["ShortName"], v["Locale"], [clip["text"]], os.path.join(HERE, "audio", cid + ".mp3"))
+        out = os.path.join(HERE, "audio", cid + ".mp3")
+        mark = hashlib.sha1(f"{v['ShortName']}|{RATE}|{clip['text']}".encode("utf-8")).hexdigest()[:16]
+        hechos[cid] = mark
+        if old.get(cid) == mark and os.path.exists(out):
+            continue
+        speak(v["ShortName"], v["Locale"], [clip["text"]], out)
+        made += 1
         print("ok", cid)
-    json.dump({"voces": pick, "rate": RATE, "v": int(time.time()), "clips": sorted(lines)}, open(os.path.join(HERE, "audio", "ready.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    print(len(lines), "clips,", CHARS, "characters")
+    json.dump({"voces": pick, "rate": RATE, "v": int(time.time()) if made else was.get("v", 0), "clips": sorted(hechos), "hechos": hechos},
+              open(ready, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print(made, "new clips of", len(lines), "-", CHARS, "characters")
