@@ -145,13 +145,13 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | Word | Sentence | Picture that fits | The other picture |
 | --- | --- | --- | --- |
 | silla | "Es la silla pequeña." | the small yellow chair | the small round table |
-| vaso | "Es un vaso." | a glass of water on the table | a jug of water on the table, the same height |
+| vaso | "Es un vaso." | a glass of water on the table | a jug of water on the table |
 | jugo | "Es el jugo." | a glass of juice | the same glass full of water |
 | agua | "Es el agua." | the jug of water | the jug of juice |
 | se sienta | "Abuela se sienta en la silla." | abuela sitting in her chair | abuela standing beside the empty chair |
 | toma | "El pájaro toma el agua." | the bird with its beak in the glass of water, the glass half empty | the bird asleep beside the full glass of water |
 | quiero | "Abuela dice: Quiero agua, por favor." | abuela, empty-handed, a glass of water in her bubble | abuela drinking from a glass of water, a heart in her bubble |
-| gracias | "¡Gracias, abuela!" (the frog) | abuela holds out a full glass to the frog beside her, a heart over him, the bird on the window sill | abuela with empty hands, the bird drinking the frog's glass on the table, a sad face over him |
+| gracias | "¡Gracias, abuela!" (the frog) | abuela holds out a full glass to the frog beside her, a heart over him, the bird on the window sill | abuela with empty hands, a sad face over the frog, the bird on the window sill |
 | ¿cómo estás? | "Abuela dice: ¿Cómo estás?" | abuela with the happy-face, question mark, sad-face bubble | abuela with a glass of water and a question mark in her bubble |
 | bien | "¡Bien!" (the frog) | the frog with a happy face in his bubble | the frog sweating, with a sun and a sad face in his bubble |
 

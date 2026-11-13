@@ -1,0 +1,14 @@
+<!doctype html><meta charset="utf-8"><title>people check</title><body style="background:#34B0B0;margin:0">
+<canvas id="cv" width="196" height="216" style="display:none"></canvas><div id="cap"></div><div id="bub"></div><div id="bar"><button id="snd"></button></div><button id="go"></button><button id="again"></button><button id="next"></button>
+<canvas id="out" width="420" height="150" style="image-rendering:pixelated;width:1680px;height:600px"></canvas>
+<script src="../engine.js"></script><script src="../juego.js"></script><script src="../escenas/kit.js"></script>
+<script>
+const g=document.getElementById("out").getContext("2d");g.imageSmoothingEnabled=false;
+const F_=window.FAMILIA||{};let x=4;
+function pon(im,y){g.drawImage(im,x,y-im.height);x+=im.width-4;}
+window.pinta=fam=>{g.fillStyle="#34B0B0";g.fillRect(0,0,420,150);g.fillStyle="#E0C690";g.fillRect(0,64,420,6);g.fillRect(0,134,420,6);x=4;
+  Object.values(fam).forEach(w=>{pon(KIT.mkPersona(w,"idle",0,0),64);});
+  ["wave0","offer","yo","tu","foto","taza","ojos"].forEach(p=>pon(KIT.mkPersona(Object.values(fam)[x%2],p,p==="yo"?1:0,0),64));
+  x=4;Object.values(fam).forEach(w=>{pon(KIT.mkPersona(w,"idle",0,1),134);});
+  ["idle","clap","llora","come"].forEach(e=>pon(KIT.mkBebe(e,1),134));pon(mkAbuela("idle",0),134);pon(KIT.mkAbuelaS("idle",0),134);pon(mkCoqui(1,0,0),134);pon(mkCoqui(.8,0,0),134);};
+</script>

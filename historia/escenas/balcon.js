@@ -93,7 +93,7 @@ function jarra(g,cx,by,k){const col=k==="agua"?AGUA:JUGO,x=cx-6,y=by-21,G="#F4FA
 
 /* ---------- where things are ---------- */
 const X2=[108,132],X4=[101,113,127,139],MESA_Y=128,SILLA=[48,102],SILLITA=[148,120],ABS=[51,96],PERCH=[120,86],ASIENTO=[160,135];
-const AB={puerta:[178,125],mesa:[158,141],lado:[94,147]};                                  // where abuela stands (her feet)
+const AB={puerta:[178,125],mesa:[98,143],lado:[94,147]};                                  // where abuela stands (her feet)
 const LUGAR={jardin:[104,185,1],balcon:[106,130,.8],mesa:[104,141,.86],junto:[104,141,.86],decir:[134,130,.8],silla_pequena:[144,109,.72],suelo:[150,132,.8],abuela:[84,129,.8],silla_grande:[84,129,.8],puerta:[162,125,.76],ventana:[106,130,.8]};
 const IDS=["jugo","agua","vaso_silla","vaso_mesa","vaso_grande","vaso_pequeno"];
 const enMesa=id=>(W.vasos||[]).find(v=>v.id===id)||(W.jarras||[]).find(v=>v.id===id);
@@ -125,8 +125,9 @@ function draw(c,W,a){const q=W.cq,ab=W.ab;
     if(ab.trae){fr(c,x+1,y+26,22,3,OUT);fr(c,x+2,y+26,20,2,RP.wood[3]);vaso(c,x+7,y+26,"n","jugo",1);vaso(c,x+18,y+26,"n","agua",1);}c.globalAlpha=1;};
   if(ab&&ab.en!=="silla"&&ab.y<144)dePie();                                             // behind the furniture
   c.drawImage(spr("sillaG",mkSillaG),SILLA[0],SILLA[1]);
-  if(ab&&ab.en==="silla"){const f=ab.pose==="fan"?"fan"+((F>>2)%2):ab.pose,pose=["fan0","fan1","vaso","bebe","zzz"].includes(f)?f:"idle";
+  if(ab&&ab.en==="silla"&&ab.al>0){const f=ab.pose==="fan"?"fan"+((F>>2)%2):ab.pose,pose=["fan0","fan1","vaso","bebe","zzz"].includes(f)?f:"idle";
     c.drawImage(spr("abS"+pose+habla,()=>KIT.mkAbuelaS(pose,habla,0)),ABS[0],ABS[1]);
+    if(ab.pose==="fan"){const d=(F>>2)%2;if(W.fanMedio)medio(c,ABS[0]+31+d,ABS[1]+16,1);else abanico(c,ABS[0]+31+d,ABS[1]+16,8,-60,60);}
     if(W.abvaso){const bb=ab.pose==="bebe";vaso(c,ABS[0]+(bb?30:36),ABS[1]+(bb?17:28),"n",W.abvaso.k,W.abvaso.lv);}
     if(W.sobre){c.save();c.translate(ABS[0]+30,ABS[1]-2);c.rotate(-1.05);jarra(c,0,8,"agua");c.restore();   // she tips the water jug over her own head
       for(let i=0;i<5;i++)fr(c,ABS[0]+16+(i%2),ABS[1]-10+((F*2+i*3)%12),2,3,i%2?AGUA[1]:"#FFFFFF");}
@@ -134,23 +135,22 @@ function draw(c,W,a){const q=W.cq,ab=W.ab;
   c.drawImage(spr("sillaP",mkSillaP),SILLITA[0],SILLITA[1]);
   c.drawImage(spr("mesa",mkMesa),94,125);
   (W.vasos||[]).forEach(v=>{if(!v.mano)vaso(c,v.x,v.y||MESA_Y,v.t,v.k,v.lv);});
-  if(W.fanMesa)medio(c,121,MESA_Y,0);
-  if(W.enSuelo)[[100,152,"#FFE070"],[108,154,"#FF8FB8"]].forEach(d=>{fr(c,d[0]-1,d[1]-1,7,5,OUT);fr(c,d[0],d[1],5,3,d[2]);});   // the two halves of her fan, on the floor
+  if(W.fanMesa)medio(c,121,MESA_Y,1);
+  if(W.enSuelo){medio(c,98,157,-1);medio(c,110,158,1);}   // the two halves of her fan, on the floor
   (W.jarras||[]).forEach(v=>{if(!v.mano)jarra(c,v.x,MESA_Y,v.k);});
   if(ab&&ab.en!=="silla"&&ab.y>=144)dePie();
-  if(W.trozos&&F-W.trozos<14){const t=F-W.trozos;[[-3,"#FFE070"],[4,"#FF8FB8"]].forEach((d,i)=>{fr(c,ABS[0]+32+d[0]*(1+t/3),ABS[1]+8+t*3,4,5,OUT);fr(c,ABS[0]+33+d[0]*(1+t/3),ABS[1]+9+t*3,2,3,d[1]);});}   // the two halves of her paper fan fall
+  if(W.trozos&&F-W.trozos<14){const t=F-W.trozos;medio(c,Math.round(ABS[0]+34-t),ABS[1]+16+t*3,-1);medio(c,Math.round(ABS[0]+38+t*.5),ABS[1]+16+t*3,1);}   // the two halves of her paper fan fall
   if(q.vis){c.globalAlpha=q.al;rana(c,q,a);c.globalAlpha=1;const b=frogBox(q),dy=Math.round(q.dy);
     for(let k=0;k<(W.calor||0);k++){const t=(F+k*5)%12,x=b.x+Math.round(b.w/2)+(k-1)*(7+t),y=b.y+dy+3-Math.round(t*1.4)+Math.round(t*t/9);gota(c,x,y);}   // drops of sweat: one for every drink he still needs
-    if(W.cqfan)medio(c,b.x-3,b.y+dy+Math.round(b.h*.55),(F>>2)%2?1:-1);   // his half of the fan: he keeps it, and fans himself
+    if(W.cqfan)medio(c,b.x-2+((F>>2)%2),b.y+dy+Math.round(b.h*.6),-1);   // his half of the fan: he keeps it, and fans himself
     if(W.fuente){const t=F-W.fuente;for(let i=0;i<10;i++){const u=((t*2+i*3)%20)/20,x=b.x+b.w/2+(i%2?1:-1)*u*14,y=b.y+dy+6-Math.round(34*u*(1-u)*2.2)+Math.round(u*8);fr(c,Math.round(x),y,2,2,i%3?AGUA[1]:"#FFFFFF");}}   // a little fountain
-    const m=(W.vasos||[]).find(v=>v.mano);if(m)vaso(c,b.x+b.w+1,b.y+dy+Math.round(b.h*.8),m.t,m.k,m.lv);
+    const m=(W.vasos||[]).find(v=>v.mano);if(m){if(W.bebiendo)vaso(c,b.x+Math.round(b.w/2)+1,b.y+dy+Math.round(b.h*.74),m.t,m.k,m.lv);else vaso(c,b.x+b.w+1,b.y+dy+Math.round(b.h*.8),m.t,m.k,m.lv);}
     const j=(W.jarras||[]).find(v=>v.mano===1);if(j)jarra(c,b.x+b.w+7,b.y+dy+b.h,j.k);}
   if(W.vierte){const x=ABS[0]+36,y0=ABS[1]+8;for(let i=0;i<7;i++)fr(c,x,y0+((i*2+F)%12),1,2,W.vierte==="agua"?AGUA[1]:JUGO[1]);}   // pouring into her glass
   KIT.drawAve(c,W.ave);
   if(W.splash){const t=F-W.splash;for(let i=0;i<22;i++){const u=((t*2+i*5)%24)/24,dir=i%2?1:-1,x=ABS[0]+17+dir*(4+u*(8+i%7*2)),y=ABS[1]+2+Math.round(u*u*44)-Math.round(u*10);fr(c,Math.round(x)-1,y-1,4,4,OUT);fr(c,Math.round(x),y,2,2,i%3?AGUA[1]:"#FFFFFF");}   // water splashes off her head and shoulders
     fr(c,ABS[0]+2,ABS[1]+50,34,2,AGUA[1]);fr(c,ABS[0]+6,ABS[1]+52,26,1,AGUA[2]);}
   if(W.rojo&&F-W.rojo<5){c.fillStyle="rgba(255,90,40,.2)";c.fillRect(0,0,SW,SH);}
-  if(W.azul&&F-W.azul<5){c.fillStyle="rgba(120,190,255,.12)";c.fillRect(0,0,SW,SH);}
   if(ab&&ab.bub){const at=talkAt("abuela",W);bub2(c,ab.bub,at[0],at[1]+38,a);}
   if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}
 }
@@ -162,18 +162,21 @@ function respIcon(g,k,x,y,w,h){vaso(g,x+w/2,y+h-7,"g",k,1);}
 /* ---------- what is at stake, in the corner of the screen ---------- */
 function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x,y-1,w,h+2);g.fillStyle="#FFFDF4";g.fillRect(x,y,w,h);}
 function mini(g,x,y,on){g.fillStyle=on?OUT:"#B9B2A2";g.fillRect(x-1,y,11,14);g.fillRect(x,y+14,9,1);g.fillStyle=on?"#F4FAFF":"#FFFDF4";g.fillRect(x,y,9,14);
-  if(on){fr(g,x,y+4,9,10,AGUA[1]);fr(g,x,y+4,9,1,AGUA[2]);fr(g,x+1,y+1,1,11,"#FFFFFF");fr(g,x+3,y+6,2,2,"#FFFFFF");}}
+  if(on){const col=on==="jugo"?JUGO:AGUA;fr(g,x,y+4,9,10,col[1]);fr(g,x,y+4,9,1,col[2]);fr(g,x+1,y+1,1,11,"#FFFFFF");if(on!=="jugo")fr(g,x+3,y+6,2,2,"#FFFFFF");}}
 function tanteo(g,x,y,n,who){const ic=who==="cq"?spr("cq.7_0",()=>mkCoqui(.7,0,0)):spr("kaven0",()=>KIT.mkAve("n",0)),gx=who==="cq"?x+27:x+3,ix=who==="cq"?x+1:x+45;
-  tarjeta(g,x-2,y-2,who==="cq"?70:68,25);g.drawImage(ic,ix,y+(who==="cq"?0:4));for(let i=0;i<3;i++)mini(g,gx+i*14,y+3,i<n);}
+  tarjeta(g,x-2,y-2,who==="cq"?70:68,25);g.drawImage(ic,ix,y+(who==="cq"?0:4));const ks=(who==="cq"?W.vmios:W.vsuyos)||[];for(let i=0;i<3;i++)mini(g,gx+i*14,y+3,i<n?(ks[i]||"agua"):0);}
 const nivel=W=>Math.max(0,Math.min(4,2+(W.lost||0)-(W.fresco||0)));   // how hot abuela is: every drink brings it down, every wrong move sends it up
 function termo(g,x,y,n,a){const hot=n>=3&&a%2,m=Math.min(3,n),red=hot?"#FF7A60":"#E8443C";tarjeta(g,x-3,y-3,50,62);
   fr(g,x+1,y-1,12,45,OUT);fr(g,x+2,y,10,44,"#FFFFFF");g.fillStyle=OUT;g.beginPath();g.arc(x+7,y+47,9,0,7);g.fill();g.fillStyle=red;g.beginPath();g.arc(x+7,y+47,7.5,0,7);g.fill();
   const hgt=[4,13,22,31,40][n];fr(g,x+5,y+42-hgt,4,hgt+3,red);for(let i=0;i<5;i++)fr(g,x+12,y+2+i*9,4,1,OUT);   // five marks; it starts on the third
   const sx=x+31,sy=y+16,r=5+m;g.fillStyle=OUT;g.beginPath();g.arc(sx,sy,r+1,0,7);g.fill();g.fillStyle=n>=3?"#FF8A20":n?"#FFC030":"#FFE680";g.beginPath();g.arc(sx,sy,r,0,7);g.fill();
   if(n)for(let k=0;k<8;k++){const an=k*Math.PI/4+(a%2?.2:0);fr(g,Math.round(sx+Math.cos(an)*(r+3))-1,Math.round(sy+Math.sin(an)*(r+3))-1,2,2,n>=3?"#FF8A20":"#FFC030");}}
-// half a paper fan
-function medio(g,x,y,d){for(let k=-2;k<=2;k++){const ex=x+k*2+d,ey=y-7+Math.abs(k);for(let t=0;t<=6;t++)fr(g,Math.round(x+(ex-x)*t/6),Math.round(y+(ey-y)*t/6),1,1,k%2?"#FFE070":"#FF8FB8");}fr(g,x-4+d,y-7,9,1,"#D0403A");fr(g,x,y,1,2,OUT);}
-function hud(g,W,a){if(W.rondas){tanteo(g,5,5,W.mios||0,"cq");tanteo(g,DW-71,5,W.lost||0,"ave");}if(W.termo)termo(g,7,7,nivel(W),a);}
+// a paper fan, or half of one: pleats from a pivot at the bottom, a red rim. a0..a1 in degrees, 0 = up
+function abanico(g,x,y,r,a0,a1){for(let dy=-r-1;dy<=0;dy++)for(let dx=-r-1;dx<=r+1;dx++){const d=Math.hypot(dx,dy),an=Math.atan2(dx,-dy)*180/Math.PI;if(an<a0||an>a1)continue;
+    if(d>r+.5&&d<=r+1.5)fr(g,x+dx,y+dy,1,1,OUT);else if(d<=r+.5&&d>=1)fr(g,x+dx,y+dy,1,1,d>r-1?"#D0403A":Math.floor((an+90)/15)%2?"#FFE070":"#FF8FB8");}
+  fr(g,x-1,y,3,3,OUT);fr(g,x,y,1,2,"#B88040");}
+function medio(g,x,y,d){abanico(g,x,y,8,d<0?-70:5,d<0?-5:70);}
+function hud(g,W,a){if(W.rondas){tanteo(g,5,5,W.mios||0,"cq");tanteo(g,DW-71,5,W.lost||0,"ave");}if(W.termo)termo(g,DW-51,7,nivel(W),a);}
 
 /* ---------- what can happen here ---------- */
 const glu=()=>tone(300,0,.09,"sine",.09,170),chorro=()=>{for(let i=0;i<4;i++)tone(700+i*90,i*.07,.08,"sine",.05,500);},azar=()=>Math.random()<.5;
@@ -200,16 +203,16 @@ const acts={
   // the frog picks a glass up from the table, puts it back, or drinks the one he holds
   async coge(o){const v=enMesa(o.en);await acts.ir({a:"mesa"});if(!v)return;await wait(120);v.mano=1;SFX.blip();await wait(350);},
   async suelta(){const v=(W.vasos||[]).find(x=>x.mano);if(v){await wait(150);v.mano=0;SFX.blip();await wait(250);}},
-  async bebecq(){const v=(W.vasos||[]).find(x=>x.mano);if(!v)return;for(const l of [.66,.33,0]){v.lv=l;glu();bounce(3);await wait(300);}W.calor=Math.max(0,(W.calor||0)-1);W.azul=F;await wait(200);v.mano=0;await wait(200);},
+  async bebecq(){const v=(W.vasos||[]).find(x=>x.mano);if(!v)return;W.bebiendo=1;await wait(200);for(const l of [.66,.33,0]){v.lv=l;glu();bounce(3);await wait(320);}W.bebiendo=0;W.ultimo=v.k;W.calor=Math.max(0,(W.calor||0)-1);SFX.luz();await wait(200);v.mano=0;await wait(200);},
   // abuela takes a glass (from the table, or back out of the frog's hand) and drinks it: that one was hers
   async abcoge(o){const v=(W.vasos||[]).find(x=>x.id===o.en);if(!v)return;await wait(150);W.vasos=W.vasos.filter(x=>x!==v);W.ab.pose="vaso";W.abvaso={k:v.k,lv:v.lv};SFX.blip();await wait(350);},
   async abbebe(){const ab=W.ab;if(!W.abvaso)return;ab.pose="bebe";for(const l of [.66,.33,0]){W.abvaso.lv=Math.min(W.abvaso.lv,l);glu();await wait(300);}ab.pose="vaso";await wait(250);W.abvaso=null;},
   async aveventana(){if(W.ave&&W.ave.mode!=="none"&&Math.abs(W.ave.x-PERCH[0])+Math.abs(W.ave.y-PERCH[1])>3){await KIT.aveVa(PERCH[0],PERCH[1],9,-1);await wait(200);}},
   // the bird flies down beside a glass, drinks it, and goes to sit on the small chair
-  async aveva(o){const v=(W.vasos||[]).find(x=>x.id===o.en);if(!v)return;const lado=v.x<120?1:-1;await KIT.aveVa(v.x+lado*15,v.y||MESA_Y,9,-lado);SFX.pio();await wait(250);},
-  async avebebe(o){const v=(W.vasos||[]).find(x=>x.id===o.en),a=W.ave;if(!v||!a)return;for(const l of [.66,.33,0]){a.dip=3;v.lv=l;glu();await wait(240);a.dip=0;await wait(160);}a.st="feliz";SFX.pio();await wait(450);a.st="n";},
+  async aveva(o){const v=(W.vasos||[]).find(x=>x.id===o.en);if(!v)return;const lado=v.x<120?1:-1;await KIT.aveVa(v.x+lado*19,v.y||MESA_Y,9,-lado);SFX.pio();await wait(250);},
+  async avebebe(o){const v=(W.vasos||[]).find(x=>x.id===o.en),a=W.ave;if(!v||!a)return;W.ultimoAve=v.k;for(const l of [.66,.33,0]){a.dip=3;v.lv=l;glu();await wait(240);a.dip=0;await wait(160);}a.st="feliz";SFX.pio();await wait(450);a.st="n";},
   async avesilla(){await KIT.aveVa(ASIENTO[0],ASIENTO[1],9,-1);SFX.pio();await wait(350);},
-  async gana(){W.mios=(W.mios||0)+1;SFX.right();W.cq.bub="amor";await wait(800);W.cq.bub=null;},
+  async gana(){W.mios=(W.mios||0)+1;(W.vmios=W.vmios||[]).push(W.ultimo||"agua");SFX.right();W.cq.bub="amor";await wait(800);W.cq.bub=null;},
   // the ending of El jugo: who drank more decides who gets the small chair
   async marcador(){const a=W.ave,mio=W.mios||0,suyo=W.lost||0,gano=mio>suyo,amigo=V.mem_amigo==="1";if(W.ab)W.ab.pose="idle";W.vasos=[];await camGo("wide",9);
     if(gano||amigo){if(a)await acts.aveventana();await acts.ir({a:"silla_pequena"});
@@ -228,7 +231,7 @@ const acts={
   async muestra(o){const j=enMesa(o.en);if(!j)return;await acts.ir({a:"mesa"});await wait(120);j.mano=1;SFX.blip();bounce(4);await wait(300);},
   async deja(){(W.jarras||[]).forEach(j=>{if(j.mano===1)j.mano=0;});SFX.blip();await wait(250);await acts.ir({a:"decir"});},
   // he picks up the two halves of her fan and gives them to her. She fans herself with one half, and keeps it.
-  async recoge(){await acts.ir({a:"abuela"});await wait(150);W.enSuelo=0;SFX.blip();bounce(4);await wait(350);W.abanico=1;W.ab.pose="fan";SFX.luz();await wait(450);await acts.ir({a:"decir"});},
+  async recoge(){await acts.ir({a:"abuela"});await wait(150);W.enSuelo=0;SFX.blip();bounce(4);await wait(350);W.abanico=1;W.fanMedio=1;W.ab.pose="fan";SFX.luz();await wait(450);await acts.ir({a:"decir"});},
   // her paper fan tears in two
   // she hands him the other half; or, after a wrong answer, it is left on the table
   async dafan(){await acts.ir({a:"abuela"});W.ab.bub="amor";await wait(300);W.cqfan=1;SFX.luz();bounce(5);await wait(600);W.ab.bub=null;await acts.ir({a:"decir"});},
@@ -239,25 +242,25 @@ const acts={
   async recibe(){await acts.ir({a:"abuela"});const k=W.abvaso?W.abvaso.k:"agua";W.abvaso=null;W.ab.pose=W.abanico?"fan":"idle";W.vasos.push({id:"mio",k,t:"n",lv:1,x:132,mano:1});SFX.blip();await wait(250);await acts.ir({a:"decir"});},
   // the two jugs on the table. Which side each is on is drawn fresh.
   async pone(){const s=azar()?0:1;W.jarras=[{id:"jugo",k:"jugo",x:X2[s]},{id:"agua",k:"agua",x:X2[1-s]}];},
-  async cqbebe(){const v=(W.vasos||[]).find(x=>x.mano);if(!v)return;for(const l of [.66,.33,0]){v.lv=l;glu();bounce(3);await wait(300);}W.vasos=W.vasos.filter(x=>x!==v);W.cq.bub="amor";await wait(600);W.cq.bub=null;},
-  async cqhielo(){const v=(W.vasos||[]).find(x=>x.mano);if(!v)return;for(const l of [.66,.33,0]){v.lv=l;glu();bounce(3);await wait(300);}W.vasos=W.vasos.filter(x=>x!==v);W.fuente=F;chorro();bounce(6);await wait(1000);W.fuente=0;},   // he drinks the water, and squirts a little fountain
+  async cqbebe(){const v=(W.vasos||[]).find(x=>x.mano);if(!v)return;W.bebiendo=1;await wait(200);for(const l of [.66,.33,0]){v.lv=l;glu();bounce(3);await wait(320);}W.bebiendo=0;W.vasos=W.vasos.filter(x=>x!==v);W.cq.bub="amor";await wait(600);W.cq.bub=null;},
+  async cqhielo(){const v=(W.vasos||[]).find(x=>x.mano);if(!v)return;W.bebiendo=1;await wait(200);for(const l of [.66,.33,0]){v.lv=l;glu();bounce(3);await wait(320);}W.bebiendo=0;W.vasos=W.vasos.filter(x=>x!==v);W.fuente=F;chorro();bounce(6);await wait(1000);W.fuente=0;},   // he drinks the water, and squirts a little fountain
   // the last picture, by how hot it got
   async final(){const ab=W.ab,n=nivel(W);
     if(n<=0){ab.pose="idle";W.sudor=0;ab.bub="feliz";await wait(1100);ab.bub=null;}
     else if(n===1){ab.pose=W.abanico?"fan":"idle";W.sudor=0;await wait(900);}
     else if(n===2){ab.pose=W.abanico?"fan":"idle";W.sudor=1;await wait(1000);}
-    else{const j=(W.jarras||[]).find(v=>v.k==="agua");if(j)j.mano=2;ab.pose="idle";W.sobre=1;W.sudor=0;await wait(450);W.splash=F;chorro();SFX.drop();await wait(300);SFX.drop();await wait(250);chorro();await wait(1500);W.sobre=0;if(j)j.mano=0;await wait(500);W.splash=0;ab.bub="feliz";await wait(900);ab.bub=null;}},
-  async fin(){if(S.stake.thing==="calor"?nivel(W)<=0:(W.mios||0)>(W.lost||0)){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,50],[180,54],[120,42],[96,64],[150,60]]});}else SFX.coqui();await wait(1600);}
+    else{const j=(W.jarras||[]).find(v=>v.k==="agua");if(j)j.mano=2;ab.pose="bebe";W.sobre=1;W.sudor=0;await wait(450);W.splash=F;chorro();SFX.drop();await wait(300);SFX.drop();await wait(250);chorro();await wait(1500);W.sobre=0;ab.pose="idle";if(j)j.mano=0;W.fresco=9;SFX.luz();await wait(500);W.splash=0;ab.bub="feliz";await wait(900);ab.bub=null;}},
+  async fin(){if(S.stake.thing==="calor"?!W.lost:(W.mios||0)>(W.lost||0)){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,50],[180,54],[120,42],[96,64],[150,60]]});}else SFX.coqui();await wait(1600);}
 };
 // the thing at stake takes a step: the bird gets a glass, or the heat climbs
 async function stake(lost,max,en){if(S.stake.thing==="calor"){W.rojo=F;W.sudor=Math.min(3,nivel(W));tone(400,0,.4,"sawtooth",.03,1200);await wait(800);return;}   // she waits; the sun flares; the thermometer climbs
-  SFX.munch();await wait(450);}
+  (W.vsuyos=W.vsuyos||[]).push(W.ultimoAve||"agua");SFX.munch();await wait(450);}
 function poke(what){if(what==="pajaro")SFX.pio();
   else if(what==="abuela"&&W.ab&&!W.ab.bub){W.ab.bub="amor";const my=runId;setTimeout(()=>{if(my===runId&&W.ab&&W.ab.bub==="amor")W.ab.bub=null;},1500/FAST);}}
 const estado=W=>"vasos="+(W.vasos||[]).map(v=>v.id+"@"+v.x+":"+v.lv+(v.mano?"m":"")).join(",")+" jarras="+(W.jarras||[]).map(v=>v.id+(v.mano?"m":"")).join(",")+" mios="+(W.mios||0)+" abvaso="+(W.abvaso?W.abvaso.k+":"+W.abvaso.lv:"-")+" nivel="+nivel(W)+" abanico="+(W.abanico||0)+" suelo="+(W.enSuelo||0)+" fuente="+(W.fuente?1:0)+" cqfan="+(W.cqfan||0)+" fanMesa="+(W.fanMesa||0)+" calor="+(W.calor||0)+" sudor="+(W.sudor||0)+" splash="+(W.splash?1:0)+" ave="+(W.ave?W.ave.mode+"/"+(W.ave.st||"")+"@"+Math.round(W.ave.x)+","+Math.round(W.ave.y):"-");
 
 KIT.escena({id:"balcon",CAM:{wide:[22,0,196,216],mesa:[45,36,127,140],porche:[35,20,170,187.3]},heartAt:[107,31],lugar:LUGAR,cosas:COSAS,
-  fresh:()=>({door:0,win:0,ab:{en:"puerta",x:AB.puerta[0],y:AB.puerta[1],pose:"idle",bub:null,al:1,trae:0},ave:null,vasos:[],jarras:[],abvaso:null,vierte:null,sobre:0,abanico:0,trozos:0,enSuelo:0,fuente:0,cqfan:0,fanMesa:0,
+  fresh:()=>({door:0,win:0,ab:{en:"puerta",x:AB.puerta[0],y:AB.puerta[1],pose:"idle",bub:null,al:1,trae:0},ave:null,vasos:[],jarras:[],abvaso:null,vierte:null,sobre:0,abanico:0,trozos:0,enSuelo:0,fuente:0,fanMedio:0,bebiendo:0,vmios:null,vsuyos:null,cqfan:0,fanMesa:0,
     calor:0,fresco:0,sudor:0,rojo:0,azul:0,splash:0,rondas:0,mios:0,termo:0,cq:{x:LUGAR.jardin[0],y:LUGAR.jardin[1],s:1,dy:0,al:1,vis:1,bub:null}}),
   draw,hud,poke,acts,stake,talkAt,respIcon,estado});
 })();

@@ -26,7 +26,7 @@ function avePos(v){if(v.mode==="head"){const b=frogBox(W.cq);return [b.x+b.w/2,b
 function drawAve(c,v){if(!v||v.mode==="none")return;const p=avePos(v),st=v.st||"n",fl=v.mode==="fly"?(F>>1)%2:0,
     im=spr("kave"+st+fl,()=>mkAve(st,fl)),w=im.width,h=im.height,dir=v.dir||1,H=Math.round(h*AVK);
   c.save();c.imageSmoothingEnabled=false;c.translate(p[0],p[1]-H+2);if(v.dip){c.translate(0,H);c.rotate(dir*.5);c.translate(0,-H);}c.scale(dir*AVK,AVK);c.drawImage(im,-Math.round(w/2),0);c.restore();
-  if(st==="round"){const z=(F>>3)%3,zx=p[0]+12+z*2,zy=p[1]-H-4-z*2;fr(c,zx,zy,4,1,"#FFFFFF");fr(c,zx+3,zy+1,1,1,"#FFFFFF");fr(c,zx+2,zy+2,1,1,"#FFFFFF");fr(c,zx+1,zy+3,1,1,"#FFFFFF");fr(c,zx,zy+4,4,1,"#FFFFFF");}
+  if(st==="round"){const z=(F>>3)%3,zx=p[0]+8+z*2,zy=p[1]-H-9-z*2,Z=(x,y,k)=>{fr(c,x-1,y-1,4*k+2,5*k+2,OUT);[[0,0,4,1],[3,1,1,1],[2,2,1,1],[1,3,1,1],[0,4,4,1]].forEach(r=>fr(c,x+r[0]*k,y+r[1]*k,r[2]*k,r[3]*k,"#FFFFFF"));};Z(zx,zy,2);Z(zx+11,zy-7,1);}   // asleep
   if(st==="feliz"&&(F>>2)%2){fr(c,p[0]-2,p[1]-H-5,2,2,"#FF8FB8");fr(c,p[0]+1,p[1]-H-5,2,2,"#FF8FB8");fr(c,p[0]-1,p[1]-H-3,3,2,"#FF8FB8");}}
 async function aveA(tx,ty,n){const v=W.ave,x0=v.x,y0=v.y;for(let i=1;i<=n;i++){const t=i/n;v.x=x0+(tx-x0)*t;v.y=y0+(ty-y0)*t-Math.sin(Math.PI*t)*6;await wait(TICK);}v.x=tx;v.y=ty;}
 // the bird flies to a spot and lands there
@@ -48,11 +48,60 @@ function mkAbuelaS(pose,open,pies){const b=new Buf(52,50),X=17,S=RP.skin,P=RP.pu
   if(open)b.rect(X-1,15,3,2,"#7A1C1C");else{b.rect(X-2,15,4,1,"#7A2A1A");b.px(X-3,14,"#7A2A1A");b.px(X+2,14,"#7A2A1A");}
   b.px(X-6,14,"#F8C838");b.px(X+6,14,"#F8C838");
   b.cap(X-7,23,X-6,31,2,P);b.ell(X-5,33.5,2.1,2.1,S);                                   // her left arm rests
-  if(pose==="fan0"||pose==="fan1"){const d=pose==="fan1"?2:0;b.cap(X+7,23,X+12,18,2,P);b.ell(X+13,16,2.2,2.2,S);   // a paper fan by her face
-    for(let k=-3;k<=3;k++)b.line(X+13,15,X+16+d+k,6+Math.abs(k),k%2?"#FFE070":"#FF8FB8");b.line(X+13+d,7,X+19+d,7,"#D0403A");}
+  if(pose==="fan0"||pose==="fan1"){b.cap(X+7,23,X+12,18,2,P);b.ell(X+13.5,16.5,2.2,2.2,S);}   // her arm up, to hold a paper fan (the scene draws the fan)
   else if(pose==="vaso"){b.cap(X+7,24,X+14,29,2,P);b.ell(X+16,29.5,2.2,2.2,S);}
   else if(pose==="bebe"){b.cap(X+7,24,X+11,19,2,P);b.ell(X+10,17.5,2.2,2.2,S);}
   else{b.cap(X+8,24,X+11,31,2,P);b.ell(X+12,33,2.1,2.1,S);}
+  return b.outline().done();}
+
+/* ---------- people. One drawing for everyone who is not abuela: grown-ups and children, standing or sitting.
+   who = {nino:1 (a child), piel:[ramp], pelo:[ramp], peinado:"corto"|"largo"|"trenzas"|"calvo", ropa:[ramp], abajo:[ramp], falda:1, bigote:1, gafas:1|"arriba", lazo:"#hex"}
+   pose = idle | wave0 | wave1 | offer | yo (a hand on the chest) | tu (pointing at someone) | foto (a camera at the face) | taza (holding a cup) | ojos (arms out in front)
+   sent = sitting, seen from the front. The sprite's feet are at its bottom edge and its middle is PX. ---------- */
+const PIEL={a:["#7A4A2A","#9A6238","#B87A48","#D09460","#E4B080"],b:["#5A3418","#7A4A26","#96623A","#B07C50","#C8966A"],c:["#8A5A38","#AE7A50","#CC9868","#E2B484","#F2CEA4"]};
+const PELO={negro:["#140C08","#24160E","#38241A"],castano:["#2A1608","#44260E","#643A1A"],blanco:["#9494A6","#C8C8D4","#F2F2F8"]};
+const PX=24;
+function mkPersona(w,pose,open,sent){const t=w.nino?7:11,l=sent?4:(w.nino?7:11),rx=w.nino?6.5:8,H=18+2*t+l+4,b=new Buf(48,H+1),X=PX,S=w.piel,R=w.ropa,A=w.abajo||w.ropa,P=w.pelo;
+  const tc=18+t,hc=18+2*t-2,lt=hc+2,lb=lt+l,dark="#2A1810";
+  // legs and shoes
+  if(w.falda){b.rect(X-4,lt,3,l,S[2]);b.rect(X+1,lt,3,l,S[1]);}else{b.rect(X-5,lt-2,4,l+2,A[1]);b.rect(X+1,lt-2,4,l+2,A[0]);b.rect(X-5,lt-2,1,l+2,A[2]);}
+  b.ell(X-3.5,lb+1.5,3.3,1.8,[w.zapato||"#3A2414"]);b.ell(X+3.5,lb+1.5,3.3,1.8,[w.zapato||"#3A2414"]);
+  // body
+  const A2=[A[0],A[1],A[1]];
+  if(w.falda){b.ell(X,tc,rx,t+1,R);b.ell(X,hc+1,rx+2.4,sent?4:5.5,R);}else{b.ell(X,hc,rx-.8,3.4,A2);b.ell(X,tc-1,rx,t,R);}
+  if(sent&&!w.falda){b.ell(X-4,hc+2,4.2,3.2,A2);b.ell(X+4,hc+2,4.2,3.2,A2);}                     // knees, towards us
+  if(w.detalle)w.detalle(b,X,tc,rx,t);
+  b.rect(X-2,16,4,4,S[1]);
+  // hair behind the face, the face, hair on top
+  if(w.peinado==="largo"){b.ell(X,11,8,8.8,P);b.rect(X-8,11,3,t+2,P[1]);b.rect(X+5,11,3,t+2,P[0]);}
+  b.ell(X,11.4,5.8,6.4,S);
+  if(w.peinado==="calvo"){b.ell(X-6,9.5,2,3.4,P);b.ell(X+6,9.5,2,3.4,P);}
+  else if(w.peinado==="trenzas"){b.ell(X,5.6,6.4,3,P);b.cap(X-7,9,X-8,19,1.6,P);b.cap(X+7,9,X+8,19,1.6,P);b.rect(X-10,19,4,3,w.lazo||"#FFE070");b.rect(X+6,19,4,3,w.lazo||"#FFE070");b.px(X,3,P[2]);}
+  else{b.ell(X,5.4,6.4,w.peinado==="largo"?3.2:2.8,P);if(w.peinado==="corto"){b.rect(X-6,6,1,4,P[1]);b.rect(X+5,6,1,4,P[0]);}}
+  b.px(X-3,11,"#20140A");b.px(X+2,11,"#20140A");b.px(X-4,13,"#E08A70");b.px(X+3,13,"#E08A70");
+  if(w.gafas===1){b.frame(X-5,9,4,4,dark);b.frame(X,9,4,4,dark);b.px(X-1,10,dark);b.px(X-3,11,"#20140A");b.px(X+2,11,"#20140A");}
+  else if(w.gafas==="arriba"){b.frame(X-5,3,4,3,dark);b.frame(X,3,4,3,dark);b.px(X-1,4,dark);b.rect(X-4,11,3,1,"#20140A");b.rect(X+1,11,3,1,"#20140A");}   // pushed up on his head; he squints
+  if(w.bigote){b.rect(X-4,14,8,2,P[2]);b.rect(X-4,15,2,1,P[1]);b.rect(X+2,15,2,1,P[1]);if(open)b.rect(X-1,16,3,1,"#7A1C1C");}
+  else if(open)b.rect(X-1,15,3,2,"#7A1C1C");else{b.rect(X-2,15,4,1,"#7A2A1A");b.px(X-3,14,"#7A2A1A");b.px(X+2,14,"#7A2A1A");}
+  // arms
+  const sh=21,izq=()=>{b.cap(X-rx+1,sh,X-rx-1,sh+t-1,1.9,R);b.ell(X-rx-1,sh+t+1.5,2,2,S);},der=()=>{b.cap(X+rx-1,sh,X+rx+1,sh+t-1,1.9,R);b.ell(X+rx+1,sh+t+1.5,2,2,S);};
+  if(pose==="wave0"||pose==="wave1"){izq();b.cap(X+rx-1,sh,X+rx+4,13,1.9,R);b.ell(X+rx+5+(pose==="wave1"?1.5:0),10,2.2,2.2,S);}
+  else if(pose==="offer"){der();b.cap(X-rx+1,sh+1,X-rx-7,sh+4,1.9,R);b.ell(X-rx-9.5,sh+4,2.2,2.2,S);}
+  else if(pose==="yo"){izq();b.cap(X+rx-1,sh,X+rx+2,sh+5,1.9,R);b.cap(X+rx+2,sh+5,X+2,sh+4,1.7,R);b.ell(X+1,sh+3.5,2.2,2.2,S);}
+  else if(pose==="tu"){izq();b.cap(X+rx-1,sh,X+rx+8,sh+1,1.9,R);b.ell(X+rx+10.5,sh+1,2.2,2.2,S);b.rect(X+rx+12,sh,3,1,S[3]);}
+  else if(pose==="foto"){b.cap(X-rx+1,sh,X-5,13,1.9,R);b.cap(X+rx-1,sh,X+5,13,1.9,R);b.rect(X-7,6,14,9,"#3A3A46");b.rect(X-7,6,14,1,"#6E6E80");b.ell(X,10.5,3,3,["#9CCBF5","#DCEEFF"]);b.rect(X+3,4,3,2,"#FFE070");b.ell(X-6,13.5,2,2,S);b.ell(X+6,13.5,2,2,S);}
+  else if(pose==="taza"){izq();b.cap(X+rx-1,sh,X+rx+3,sh+6,1.9,R);b.ell(X+rx+4.5,sh+6,2.2,2.2,S);}
+  else if(pose==="ojos"){b.cap(X-rx+1,sh,X-4,sh+9,1.9,R);b.cap(X+rx-1,sh,X+4,sh+9,1.9,R);b.ell(X-4,sh+11,2.2,2.2,S);b.ell(X+4,sh+11,2.2,2.2,S);}
+  else{izq();der();}
+  return b.outline().done();}
+// the baby, sitting. est = idle | clap | llora | come
+function mkBebe(est,f){const b=new Buf(26,28),X=13,S=PIEL.a,Y=RP.yel;
+  b.ell(X-5,24.5,3.4,2.2,[S[2]]);b.ell(X+5,24.5,3.4,2.2,[S[2]]);b.ell(X,19,7,6.4,Y.slice(1));b.ell(X,23,5,2.6,["#FFFFFF","#F2F2F8"]);
+  if(est==="clap"){b.cap(X-6,16,X-3-(f?2:0),12,1.6,[Y[2]]);b.cap(X+6,16,X+3+(f?2:0),12,1.6,[Y[2]]);b.ell(X-2-(f?2:0),11,1.8,1.8,S);b.ell(X+2+(f?2:0),11,1.8,1.8,S);}
+  else{b.cap(X-6,16,X-8,21,1.6,[Y[2]]);b.cap(X+6,16,X+8,21,1.6,[Y[2]]);b.ell(X-8.5,22.5,1.8,1.8,S);b.ell(X+8.5,22.5,1.8,1.8,S);}
+  b.ell(X,8,6.4,6.6,S);b.px(X,1,PELO.castano[2]);b.px(X+1,0,PELO.castano[2]);b.px(X-1,2,PELO.castano[2]);
+  if(est==="llora"){b.rect(X-4,7,3,1,"#20140A");b.rect(X+2,7,3,1,"#20140A");b.ell(X,11.5,2.2,2,["#7A1C1C"]);b.px(X-4,9+(f?1:0),"#7CC0FF");b.px(X+4,9+(f?0:1),"#7CC0FF");}
+  else{b.px(X-3,7,"#20140A");b.px(X+3,7,"#20140A");b.px(X-4,10,"#E08A70");b.px(X+4,10,"#E08A70");if(est==="come"){b.rect(X-3,10,6,3,"#F2D08A");b.rect(X-2,10,4,1,"#FF8FB8");}else{b.rect(X-2,11,4,1,"#7A2A1A");b.px(X-3,10,"#7A2A1A");b.px(X+2,10,"#7A2A1A");}}
   return b.outline().done();}
 
 /* ---------- a place, from its description ----------
@@ -79,5 +128,5 @@ function escena(d){const cosa=k=>d.cosas.find(t=>t.id===k),B=(t,w)=>typeof t.box
   ESCENAS[d.id]=Object.assign({SW,SH,CAM:d.CAM,heartAt:d.heartAt||[120,30],fresh:d.fresh,draw:d.draw,hud:d.hud,poke:d.poke,stake:d.stake,talkAt:d.talkAt,respIcon:d.respIcon,estado:d.estado,box,hit,handAt,acts});
   return ESCENAS[d.id];}
 
-return {SW,SH,mkAve,avePos,drawAve,aveA,aveVa,aveHit,mkAbuelaS,escena};
+return {SW,SH,mkAve,avePos,drawAve,aveA,aveVa,aveHit,mkAbuelaS,mkPersona,mkBebe,PIEL,PELO,PX,escena};
 })();

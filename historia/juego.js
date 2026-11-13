@@ -238,7 +238,7 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
 function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd");dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.insertBefore(d,snd);dots.push(d);}}
-let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
+let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);if($("#nota"))$("#nota").style.display="none";$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   if(window.PAL&&(!Q.get("fast")||Q.get("rec"))){S._lost=W.lost;PAL.cuento(S,LOG);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
@@ -246,6 +246,7 @@ let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush()
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
+  if(S.nota&&$("#nota")){$("#nota").textContent=S.nota;$("#nota").style.display="block";}   // the one plain English line before a new grammar pattern: on the opening card, gone before any Spanish plays
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
   $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
