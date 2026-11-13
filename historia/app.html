@@ -2,122 +2,134 @@
 <html lang="es" translate="no" class="notranslate"><head><meta charset="utf-8">
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#5C94FC">
 <link rel="icon" href="data:,">
 <title>Coquí</title>
 <style>
-@font-face{font-family:Pix;src:url(fuentes/pixelify-sans-latin-400-normal.woff2) format("woff2");font-weight:400}
-@font-face{font-family:Pix;src:url(fuentes/pixelify-sans-latin-700-normal.woff2) format("woff2");font-weight:700}
-:root{--w:#FFF;--sun:#F8D030;--org:#F89838;--sky:#5C94FC;--tan:#FCE0A8}
+/* A hybrid, as Salim's UI plan says: the course map is 16-bit pixel art; everything over it and every other screen
+   is a clean modern UI. 8-point spacing, touch targets of 48 px or more, a system sans-serif, colour only for meaning. */
+:root{--bg:#F6F5F1;--card:#FFFFFF;--ink:#16181D;--mut:#636A75;--line:#E3E1DA;--ok:#1F9D55;--bad:#D14343;--info:#3D5AFE;--acc:#FFB020;--r:16px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;background:#000;color:var(--w);font:700 18px/1.25 Pix,monospace;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
-#app{max-width:520px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}
-canvas.px{display:block;width:100%;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
-#hud{background:#000;border-top:4px solid var(--tan);padding:8px 10px 10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.hudbox{border:3px solid var(--w);border-radius:2px;padding:6px 8px;box-shadow:inset 0 0 0 3px #000,inset 0 0 0 5px #3C3CBC;background:#000;font-size:17px;line-height:1.35}
-.hudbox b{color:var(--sun)}
-.cards{display:flex;gap:6px}
-.card{width:62px;height:76px;border:3px solid var(--w);border-radius:6px;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:700 12px Pix;color:var(--w);cursor:pointer;padding:0}
-.card canvas{width:40px;height:40px;image-rendering:pixelated}
-.card:active,.go:active{transform:translateY(3px)}
-.go{display:flex;align-items:center;gap:10px;width:100%;border:0;background:var(--org);color:#000;font:700 22px Pix,monospace;padding:12px 14px;cursor:pointer;box-shadow:inset 0 0 0 3px #000,0 5px 0 #A84000;border-radius:4px;text-align:left}
-.go small{display:block;font-size:15px;font-weight:400}
-.blink{animation:bl 1s steps(2) infinite}@keyframes bl{50%{opacity:.35}}
-#dlg{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45);z-index:5}
-.box{width:min(96vw,500px);max-height:78vh;overflow:auto;margin:0 0 10px;background:#000;border:4px solid var(--w);border-radius:4px;box-shadow:inset 0 0 0 4px #000,inset 0 0 0 7px var(--sky);padding:16px 16px 12px}
-.box h2{margin:0 0 6px;font-size:24px;color:var(--sun)}.box p{margin:6px 0;font-weight:400}
-.opt{display:flex;align-items:center;gap:10px;width:100%;background:none;border:0;color:var(--w);font:700 20px Pix,monospace;padding:9px 4px;cursor:pointer;text-align:left}
-.opt:before{content:"▶";color:#333;font-size:16px}.opt:hover:before,.opt:focus:before,.opt.cur:before{color:var(--sun)}
-.opt[disabled]{opacity:.4}.opt i{font-style:normal;font-weight:400;font-size:15px;color:#BCBCBC;margin-left:auto}
-.x{float:right;background:none;border:0;color:var(--w);font:700 22px Pix;cursor:pointer}
-#scr{display:none;flex:1;background:var(--sky);padding:14px 12px 20px}
-#scr h1{font-size:30px;margin:12px 0 10px;color:var(--w);text-shadow:3px 3px 0 #000}
-.back{background:#000;color:var(--w);border:3px solid var(--w);font:700 18px Pix;padding:6px 12px;cursor:pointer;border-radius:4px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.wc{background:var(--w);color:#000;border:4px solid #000;border-radius:10px;padding:6px 4px 8px;text-align:center;cursor:pointer;font:700 19px Pix}
-.wc canvas{width:100%;aspect-ratio:196/104;image-rendering:pixelated;border:2px solid #000;border-radius:4px;background:#000;display:block}
-.pips{display:flex;justify-content:center;gap:3px;margin-top:3px}.pips i{width:10px;height:10px;border:2px solid #000;background:#fff}.pips i.on{background:var(--sun)}
-.panel{background:#000;border:4px solid var(--w);box-shadow:inset 0 0 0 3px #000,inset 0 0 0 6px #3C3CBC;padding:12px;margin:10px 0;border-radius:4px;font-weight:400}
-.panel b{color:var(--sun)}
-.tog{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tog button{background:#000;color:var(--w);border:3px solid var(--w);font:700 17px Pix;padding:6px 10px;cursor:pointer;border-radius:3px}.tog button.on{background:var(--sun);color:#000}
-.line{padding:3px 0;font-weight:400}.line em{font-style:normal;color:var(--sun)}
-input{font:700 18px Pix;width:100%;padding:9px;border:3px solid var(--w);background:#000;color:var(--w);border-radius:3px}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:400 16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overscroll-behavior:none}
+button{font:inherit;color:inherit}
+.tab{display:none;min-height:100%;padding:16px 16px 112px;max-width:560px;margin:0 auto}
+.tab.on{display:block}
+h1{font-size:24px;line-height:32px;font-weight:600;margin:8px 0 16px}
+h2{font-size:18px;line-height:24px;font-weight:600;margin:24px 0 8px}
+.mut{color:var(--mut)}.small{font-size:14px}.lab{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--mut);text-transform:uppercase}
+.card{background:var(--card);border-radius:var(--r);padding:16px;margin:8px 0;box-shadow:0 1px 2px rgba(0,0,0,.06),0 0 0 1px var(--line)}
+.row{display:flex;align-items:center;gap:16px;min-height:56px}.row+.row{border-top:1px solid var(--line)}.grow{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border:0;border-radius:12px;background:var(--ink);color:#fff;font-weight:600;cursor:pointer}
+.btn.full{width:100%}.btn.soft{background:#ECEAE3;color:var(--ink)}.btn:disabled{opacity:.4}
+.btn:active,.tb:active,.play:active{transform:scale(.98)}
+.pill{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:rgba(255,255,255,.94);font-size:14px;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{min-height:48px;min-width:64px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:600;cursor:pointer}.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sw{position:relative;width:52px;height:32px;border-radius:16px;background:#D5D3CC;border:0;cursor:pointer;flex:none}.sw i{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}.sw.on{background:var(--ok)}.sw.on i{left:24px}
+/* the map tab */
+#t-mapa{padding:0;max-width:none;background:#5C94FC}
+#mapwrap{position:relative;display:flex;justify-content:center;min-height:100vh;padding:calc(56px + env(safe-area-inset-top)) 0 200px}
+#mapa{display:block;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
+#topchips{position:fixed;top:calc(12px + env(safe-area-inset-top));left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:3;pointer-events:none}
+#hoy{position:fixed;left:16px;right:16px;bottom:calc(88px + env(safe-area-inset-bottom));max-width:528px;margin:0 auto;z-index:3}
+.play{display:flex;align-items:center;gap:16px;width:100%;min-height:72px;padding:12px 16px;border:0;border-radius:var(--r);background:#fff;text-align:left;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.22)}
+.play .ic{flex:none;width:48px;height:48px;border-radius:24px;background:var(--ok);display:flex;align-items:center;justify-content:center}
+.play .ic svg{width:24px;height:24px;color:#fff}.btn svg{width:20px;height:20px}
+.play b{display:block;font-size:18px;line-height:24px}.play span{font-size:14px;color:var(--mut)}
+/* bottom tab bar: five destinations, the map in the centre */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:4;background:#fff;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav .in{display:flex;max-width:560px;margin:0 auto;height:72px;align-items:stretch}
+.tb{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:12px;font-weight:500;color:var(--mut);cursor:pointer}
+.tb.on{color:var(--info)}.tb svg{width:24px;height:24px}
+.tb.mid .disc{width:56px;height:56px;margin-top:-24px;border-radius:28px;background:var(--info);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(61,90,254,.4);border:4px solid #fff}
+.tb.mid .disc svg{width:28px;height:28px;color:#fff}.tb.mid:not(.on) .disc{background:#8A93A3;box-shadow:none}
+/* bottom sheet */
+#sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:8;display:none}
+#sheet{position:fixed;left:0;right:0;bottom:0;z-index:9;max-width:560px;margin:0 auto;background:#fff;border-radius:24px 24px 0 0;padding:8px 16px calc(24px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .2s;max-height:85vh;overflow:auto}
+#sheet.on{transform:none}#sheet .grab{width:40px;height:4px;border-radius:2px;background:#D5D3CC;margin:4px auto 16px}
+/* word cards */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.wc{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06),0 0 0 1px var(--line);cursor:pointer;text-align:left;border:0;padding:0}
+.wc canvas{display:block;width:100%;aspect-ratio:196/104;image-rendering:pixelated;background:#222}
+.wc .t{padding:8px 12px 12px}.wc .w{font-size:18px;font-weight:600}
+.bar{height:6px;border-radius:3px;background:#ECEAE3;margin:8px 0 4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}
+/* reading */
+.ln{display:block;width:100%;text-align:left;border:0;background:none;padding:8px 12px;border-radius:10px;font-size:18px;line-height:28px;cursor:pointer}
+.ln.now{background:#FFF1C9}.ln .who{font-size:12px;font-weight:600;color:var(--mut);display:block;line-height:16px}
+/* speaking */
+.mic{width:96px;height:96px;border-radius:48px;border:0;background:var(--ok);display:flex;align-items:center;justify-content:center;margin:24px auto 8px;cursor:pointer;box-shadow:0 6px 18px rgba(31,157,85,.35)}
+.mic svg{width:40px;height:40px;color:#fff}
 #hide{position:fixed;left:-9999px;top:0;width:10px;height:10px;overflow:hidden}
 </style></head><body>
-<div id="app">
-  <canvas id="mapa" class="px" width="240" height="352"></canvas>
-  <div id="hud">
-    <div>
-      <button class="go" id="hoy"><span class="blink">▶</span><span><span id="hoyT">HOY</span><small id="hoyS"></small></span></button>
-      <div class="hudbox" id="stat" style="margin-top:8px"></div>
-    </div>
-    <div class="cards">
-      <button class="card" id="cPal"><canvas id="icPal" width="20" height="20"></canvas>PALABRAS</button>
-      <button class="card" id="cYo"><canvas id="icYo" width="20" height="20"></canvas>YO</button>
-    </div>
-  </div>
-  <div id="scr"></div>
-</div>
-<div id="dlg"><div class="box" id="box"></div></div>
-<!-- the story engine runs hidden here, only to draw word pictures and play their sentences -->
+
+<!-- MAPA: home. The course as a 16-bit world map. -->
+<section class="tab on" id="t-mapa">
+  <div id="topchips"><span class="pill" id="chipRacha"></span><span class="pill" id="chipLugar"></span></div>
+  <div id="mapwrap"><canvas id="mapa" width="240" height="352"></canvas></div>
+  <div id="hoy"></div>
+</section>
+<!-- BIBLIOTECA: listen and read -->
+<section class="tab" id="t-biblioteca"></section>
+<!-- PALABRAS: review -->
+<section class="tab" id="t-palabras"></section>
+<!-- HABLAR -->
+<section class="tab" id="t-hablar"></section>
+<!-- YO -->
+<section class="tab" id="t-yo"></section>
+
+<nav><div class="in" id="tabs"></div></nav>
+<div id="sheetbg" onclick="cierra()"></div><div id="sheet"></div>
+<!-- the story engine runs hidden, only to draw word pictures and play sentences -->
 <div id="hide"><div id="wrap"><div id="stage"><canvas id="cv" width="196" height="216"></canvas><button id="go"></button><button id="again"></button><button id="next"></button><div id="bub"></div></div><div id="cap"></div><div id="bar"><button id="snd"></button></div></div></div>
-<script src="engine.js?v=19"></script>
-<script src="palabras.js?v=19"></script>
-<script src="curso.js?v=19"></script>
-<script src="juego.js?v=19"></script>
-<script src="escenas/frente.js?v=19"></script>
-<script src="cual.js?v=19"></script>
+<script src="engine.js?v=20"></script>
+<script src="palabras.js?v=20"></script>
+<script src="curso.js?v=20"></script>
+<script src="juego.js?v=20"></script>
+<script src="escenas/frente.js?v=20"></script>
+<script src="cual.js?v=20"></script>
 <script>
 "use strict";
-/* ============================================================
-   Coquí · the app, as a game world (Super Mario Bros. 3 style).
-   Home is the world map: the road goes from La casa (1) up to El fuerte (10), with three forks.
-   Bonus houses on the map are the practice: Escuchar, Hablar, Leer.
-   The status bar: today's next step, streak, minutes, words. Cards open Palabras and Yo.
-   Menus are in English so a stuck learner can find his way; Spanish is for listening.
-   ============================================================ */
 const db=()=>PAL.db,AJ=()=>db().ajustes,hecho=id=>!!(db().cuentos[id]&&db().cuentos[id].n),veces=id=>(db().cuentos[id]||{}).n||0;
 const abierto=l=>AJ().todo||!!(l.cuentos&&l.cuentos.length);
 const ir=c=>location.href="index.html?cuento="+c+"&desde=app";
-const MW=240,MH=352,
-  STOP=[[120,326],[56,270],[184,270],[120,218],[56,166],[184,166],[56,114],[184,114],[120,66],[120,20]],
-  ROAD=[[0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,5],[4,6],[5,7],[6,7],[6,8],[7,8],[8,9]],
-  CASAS=[{id:"escuchar",x:200,y:326,techo:"#D82800",dibujo:"nota"},{id:"leer",x:40,y:326,techo:"#00A800",dibujo:"libro"},{id:"hablar",x:200,y:218,techo:"#3C3CBC",dibujo:"tel"}];
+const tick=()=>{try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}};   // a crisp, short haptic on taps (Android); nothing long or buzzy
+const SVG=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const IC={libro:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',cartas:'<rect x="7" y="4" width="13" height="16" rx="2"/><path d="M4 7v12a2 2 0 0 0 2 2h10"/>',mapa:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/>',
+  mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',yo:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',play:'<path d="M8 5v14l11-7z" fill="currentColor"/>',vol:'<path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6"/>'};
+const TABS=[["biblioteca","Biblioteca","libro"],["palabras","Palabras","cartas"],["mapa","Mapa","mapa"],["hablar","Hablar","mic"],["yo","Yo","yo"]];
+let TAB="mapa";
+function tabs(){document.getElementById("tabs").innerHTML=TABS.map(t=>t[0]==="mapa"
+  ?`<button class="tb mid ${TAB===t[0]?"on":""}" onclick="ver('${t[0]}')"><span class="disc">${SVG(IC[t[2]])}</span>${t[1]}</button>`
+  :`<button class="tb ${TAB===t[0]?"on":""}" onclick="ver('${t[0]}')">${SVG(IC[t[2]])}${t[1]}</button>`).join("");}
+const POS={};   // each tab keeps its scroll position
+function ver(t){tick();POS[TAB]=scrollY;TAB=t;history.replaceState(null,"","?tab="+t);document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("on",s.id==="t-"+t));
+  tabs();({mapa:hud,biblioteca,palabras,hablar,yo})[t]();scrollTo(0,POS[t]||0);}
 
-/* ---------- the world map ---------- */
+/* ---------- MAPA: 16-bit world map, scaled by whole numbers so every pixel stays sharp ---------- */
+const MW=240,MH=352,STOP=[[120,326],[56,270],[184,270],[120,218],[56,166],[184,166],[56,114],[184,114],[120,66],[120,20]],
+  ROAD=[[0,1],[0,2],[1,3],[2,3],[3,4],[3,5],[4,5],[4,6],[5,7],[6,7],[6,8],[7,8],[8,9]];
+const DIG={"0":"111101101101111","1":"010110010010111","2":"111001111100111","3":"111001111001111","4":"101101111001001","5":"111100111001111","6":"111100111101111","7":"111001010010010","8":"111101111101111","9":"111101111001111"};
+function digitos(g,t,cx,cy){const k=2,w=t.length*4*k-k,x0=Math.round(cx-w/2),y0=Math.round(cy-5*k/2);g.fillStyle="#000";[...t].forEach((ch,j)=>{const d=DIG[ch];for(let r=0;r<5;r++)for(let q=0;q<3;q++)if(d[r*3+q]==="1")g.fillRect(x0+j*4*k+q*k,y0+r*k,k,k);});}
 let dibujaMapa=()=>{};
+function escala(){const cv=document.getElementById("mapa"),dpr=window.devicePixelRatio||1,k=Math.max(1,Math.floor(Math.min(innerWidth,560)*dpr/MW));cv.style.width=(MW*k/dpr)+"px";cv.style.height=(MH*k/dpr)+"px";}
 function mapa(){const cv=document.getElementById("mapa"),g=cv.getContext("2d"),b=new Buf(MW,MH);
-  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++)b.px(x,y,((x>>3)+(y>>3))%2?"#58D854":"#4CC848");   // grass land, a checker of two greens
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++)b.px(x,y,((x>>3)+(y>>3))%2?"#58D854":"#4CC848");
   for(let i=0;i<260;i++){const x=hs(i,4)*MW/100,y=hs(i,8)*MH/100;b.px(x,y,"#2E9A48");b.px(x+1,y-1,"#B8F8A0");}
-  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const e=10+3*Math.sin(y*.09);   // water down both sides, with a sandy edge
-    if(x<e||x>MW-1-e)b.px(x,y,(x+y*2)%13===0?"#FFFFFF":((y>>2)+(x>>2))%2?"#3CBCFC":"#5C94FC");else if(x<e+2||x>MW-3-e)b.px(x,y,"#F8D878");}
-  const seg=(x0,y0,x1,y1)=>{const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0),1);for(let i=0;i<=n;i++){const x=Math.round(x0+(x1-x0)*i/n),y=Math.round(y0+(y1-y0)*i/n),h=x1!==x0;
-      for(let d=-5;d<=5;d++)b.px(h?x:x+d,h?y+d:y,Math.abs(d)===5?((i>>1)%2?"#000000":"#F8D878"):"#FCE0A8");}};   // roads: straight, with corners and dotted edges
+  for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){const e=10+3*Math.sin(y*.09);if(x<e||x>MW-1-e)b.px(x,y,(x+y*2)%13===0?"#FFFFFF":((y>>2)+(x>>2))%2?"#3CBCFC":"#5C94FC");else if(x<e+2||x>MW-3-e)b.px(x,y,"#F8D878");}
+  const seg=(x0,y0,x1,y1)=>{const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0),1);for(let i=0;i<=n;i++){const x=Math.round(x0+(x1-x0)*i/n),y=Math.round(y0+(y1-y0)*i/n),h=x1!==x0;for(let d=-5;d<=5;d++)b.px(h?x:x+d,h?y+d:y,Math.abs(d)===5?((i>>1)%2?"#000000":"#F8D878"):"#FCE0A8");}};
   ROAD.forEach(([a,c])=>{const A=STOP[a],C=STOP[c];if(A[0]===C[0]||A[1]===C[1])seg(A[0],A[1],C[0],C[1]);else{seg(A[0],A[1],A[0],C[1]);seg(A[0],C[1],C[0],C[1]);}});
-  CASAS.forEach(h=>{const n=STOP.reduce((m,s)=>Math.hypot(s[0]-h.x,s[1]-h.y)<Math.hypot(m[0]-h.x,m[1]-h.y)?s:m,STOP[0]);seg(n[0],h.y,h.x,h.y);});
-  [[30,62],[30,92],[210,62],[210,92],[92,140],[150,140],[92,192],[150,192],[92,244],[150,244],[30,296],[210,296]].forEach(p=>{for(let k=0;k<2;k++){b.ell(p[0]+k*12-6,p[1],7,7,["#006800","#00A800","#00A800","#58D854"]);b.px(p[0]+k*12-8,p[1]-3,"#B8F8A0");}});   // rows of round bushes
+  [[30,62],[30,92],[210,62],[210,92],[92,140],[150,140],[92,192],[150,192],[92,244],[150,244],[30,296],[210,296]].forEach(p=>{for(let k=0;k<2;k++){b.ell(p[0]+k*12-6,p[1],7,7,["#006800","#00A800","#00A800","#58D854"]);b.px(p[0]+k*12-8,p[1]-3,"#B8F8A0");}});
   b.ell(40,20,22,14,["#006800","#00A800","#58D854"]);b.ell(200,22,24,15,["#006800","#00A800","#58D854"]);
   const im=b.done();
-  dibujaMapa=()=>{const t=Math.floor(performance.now()/250);g.imageSmoothingEnabled=false;g.drawImage(im,0,0);
-    CASAS.forEach(h=>casita(g,h));
+  dibujaMapa=()=>{const t=Math.floor(performance.now()/300);g.imageSmoothingEnabled=false;g.drawImage(im,0,0);
     STOP.forEach((s,i)=>{const l=CURSO.lugares[i];landmark(g,l.id,s[0]+(s[0]<120?-22:24),s[1]-2,abierto(l));panel(g,s,i,l);});
-    const here=Math.max(0,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho))),at=STOP[here];
-    g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),at[0]-11,at[1]-24-(t%2));};
-  dibujaMapa();setInterval(dibujaMapa,250);
-  cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;
-    const h=CASAS.find(h=>Math.abs(h.x-x)<15&&Math.abs(h.y-6-y)<16);if(h)return casa(h.id);
-    let best=-1,bd=26;STOP.forEach((s,i)=>{const d=Math.hypot(s[0]-x,s[1]-y);if(d<bd){bd=d;best=i;}});if(best>=0)lugar(best);};}
-function panel(g,s,i,l){const done=l.cuentos&&l.cuentos.every(hecho),op=abierto(l),x=s[0]-8,y=s[1]-8;   // the numbered stop
+    const here=aqui(),at=STOP[here];g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),at[0]-11,at[1]-24-(t%2));};
+  dibujaMapa();setInterval(()=>{if(TAB==="mapa")dibujaMapa();},300);escala();addEventListener("resize",escala);
+  cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;let best=-1,bd=24;STOP.forEach((s,i)=>{const d=Math.hypot(s[0]-x,s[1]-y);if(d<bd){bd=d;best=i;}});if(best>=0){tick();lugar(best);}};}
+const aqui=()=>Math.max(0,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho)));
+function panel(g,s,i,l){const done=l.cuentos&&l.cuentos.every(hecho),op=abierto(l),here=i===aqui(),x=s[0]-8,y=s[1]-8;
+  if(here){g.fillStyle=Math.floor(performance.now()/300)%2?"#FFFFFF":"#F8D030";g.fillRect(x-3,y-3,22,22);}   // the current objective blinks
   g.fillStyle="#000";g.fillRect(x-1,y-1,18,18);g.fillStyle=done?"#F8D030":op?"#F89838":"#7C7C7C";g.fillRect(x,y,16,16);g.fillStyle=done?"#FCE0A8":op?"#FCBC74":"#BCBCBC";g.fillRect(x,y,16,2);g.fillRect(x,y,2,16);
-  digitos(g,String(l.n),s[0]+1,s[1]);
-  if(done){g.fillStyle="#000";g.fillRect(x+12,y-7,1,9);g.fillStyle="#D82800";g.fillRect(x+13,y-7,5,3);}}   // cleared: a flag
-// numbers drawn pixel by pixel (3x5, doubled), so they stay sharp on any phone
-const DIG={"0":"111101101101111","1":"010110010010111","2":"111001111100111","3":"111001111001111","4":"101101111001001","5":"111100111001111","6":"111100111101111","7":"111001010010010","8":"111101111101111","9":"111101111001111","*":"010111010101000"};
-function digitos(g,t,cx,cy){const k=2,w=t.length*4*k-k,x0=Math.round(cx-w/2),y0=Math.round(cy-5*k/2);g.fillStyle="#000";
-  [...t].forEach((ch,j)=>{const d=DIG[ch]||DIG["0"];for(let r=0;r<5;r++)for(let q=0;q<3;q++)if(d[r*3+q]==="1")g.fillRect(x0+j*4*k+q*k,y0+r*k,k,k);});}
-function casita(g,h){const x=h.x,y=h.y;g.fillStyle="#000";g.fillRect(x-10,y-9,20,14);g.fillStyle="#FCE0A8";g.fillRect(x-9,y-8,18,12);g.fillStyle="#000";g.fillRect(x-2,y-3,5,7);   // a bonus house
-  g.beginPath();g.moveTo(x-13,y-8);g.lineTo(x,y-20);g.lineTo(x+13,y-8);g.fill();g.fillStyle=h.techo;g.beginPath();g.moveTo(x-11,y-9);g.lineTo(x,y-18);g.lineTo(x+11,y-9);g.fill();
-  g.fillStyle="#FFF";if(h.dibujo==="nota"){g.fillRect(x+1,y-16,1,6);g.fillRect(x-1,y-11,3,2);g.fillRect(x+1,y-16,3,1);}else if(h.dibujo==="libro"){g.fillRect(x-3,y-15,7,4);g.fillStyle="#000";g.fillRect(x,y-15,1,4);}else{g.fillRect(x-3,y-15,7,2);g.fillRect(x-3,y-15,2,4);g.fillRect(x+2,y-15,2,4);}}
+  digitos(g,String(l.n),s[0]+1,s[1]);if(done){g.fillStyle="#000";g.fillRect(x+12,y-7,1,9);g.fillStyle="#D82800";g.fillRect(x+13,y-7,5,3);}}
 function landmark(g,id,x,y,op){g.save();g.globalAlpha=op?1:.55;const R=(a,b,w,h,c)=>{g.fillStyle="#000";g.fillRect(a-1,b-1,w+2,h+2);g.fillStyle=c;g.fillRect(a,b,w,h);};
   if(id==="casa"||id==="casa2"){R(x-8,y-6,16,10,"#5CCCC8");g.fillStyle="#000";g.beginPath();g.moveTo(x-11,y-5);g.lineTo(x,y-15);g.lineTo(x+11,y-5);g.fill();g.fillStyle="#D82800";g.beginPath();g.moveTo(x-9,y-6);g.lineTo(x,y-13);g.lineTo(x+9,y-6);g.fill();R(x+2,y-2,3,6,"#92602E");if(id==="casa2"){g.fillStyle="#FCE0A8";g.beginPath();g.arc(x-10,y-16,3,0,7);g.fill();}}
   else if(id==="parque")g.drawImage(spr("tree",mkTree),x-10,y-22,20,26);
@@ -130,73 +142,89 @@ function landmark(g,id,x,y,op){g.save();g.globalAlpha=op?1:.55;const R=(a,b,w,h,
   else if(id==="fuerte"){R(x-11,y-8,22,12,"#BCBCBC");for(let j=0;j<4;j++)R(x-11+j*6,y-12,3,4,"#BCBCBC");R(x-2,y-3,4,7,"#000");R(x+8,y-24,1,12,"#6E4220");R(x+9,y-24,7,4,"#D82800");}
   g.restore();}
 
-/* ---------- today's plan: returns first, then new stories (up to three a day, each twice), then replays ---------- */
+/* today's plan: returns first, then new stories (up to three a day, each twice), then replays, sized to his minutes */
 function plan(){const due=PAL.vence("ear"),out=[],min=AJ().min;let used=0;
   if(due.length)out.push({t:"¿Cuál?",d:due.length+" word"+(due.length>1?"s":"")+" coming back",m:Math.min(6,2+Math.ceil(due.length/3)),href:"cual.html?desde=app"});
   const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),hoyD=new Date().toDateString(),nuevosHoy=cs.filter(c=>db().cuentos[c]&&new Date(db().cuentos[c].primera).toDateString()===hoyD).length,
     nuevos=cs.filter(c=>veces(c)<2).slice(0,Math.max(0,3-nuevosHoy+cs.filter(c=>veces(c)===1).length));
-  for(const c of nuevos){if(used>=min&&out.length)break;const x=CURSO.cuentos[c],m=x.min*(veces(c)?1:2);out.push({t:x.t,d:veces(c)?"second play":"new story · play it twice",m,c});used+=m;}
-  const otros=cs.filter(c=>veces(c)>=2);let k=0;while(used<min&&otros.length&&k<6){const c=otros[k%otros.length];out.push({t:CURSO.cuentos[c].t,d:"again",m:CURSO.cuentos[c].min,c});used+=CURSO.cuentos[c].min;k++;}
-  if(!out.length)out.push({t:"¿Cuál?",d:"all your words",m:3,href:"cual.html?desde=app"});return out;}
-function hud(){const p=plan(),r=PAL.racha(),ws=Object.values(db().palabras);
-  document.getElementById("hoyT").textContent="HOY: "+p[0].t;document.getElementById("hoyS").textContent=p[0].d+" · "+p[0].m+" min"+(p.length>1?"  (+"+(p.length-1)+" more)":"");
-  document.getElementById("hoy").onclick=()=>{const s=p[0];s.href?location.href=s.href:ir(s.c);};
-  document.getElementById("stat").innerHTML=`<b>MUNDO A1</b> · LUGAR ${Math.max(1,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho))+1)}<br>STREAK ${r} · ${Math.round(db().minutos||0)} MIN<br>WORDS ${ws.length} · GOOD ${ws.filter(x=>x.ear.etapa>=4).length}`;}
-
-/* ---------- dialog boxes ---------- */
-function dlg(html){document.getElementById("box").innerHTML=`<button class="x" onclick="cierra()">✕</button>`+html;document.getElementById("dlg").style.display="flex";}
-function cierra(){document.getElementById("dlg").style.display="none";}
-document.getElementById("dlg").onclick=e=>{if(e.target.id==="dlg")cierra();};
+  for(const c of nuevos){if(used>=min&&out.length)break;const x=CURSO.cuentos[c],m=x.min*(veces(c)?1:2);out.push({t:x.t,d:veces(c)?"Second play":"New story · play it twice",m,c});used+=m;}
+  const otros=cs.filter(c=>veces(c)>=2);let k=0;while(used<min&&otros.length&&k<6){const c=otros[k%otros.length];out.push({t:CURSO.cuentos[c].t,d:"Listen again",m:CURSO.cuentos[c].min,c});used+=CURSO.cuentos[c].min;k++;}
+  if(!out.length)out.push({t:"¿Cuál?",d:"All your words",m:3,href:"cual.html?desde=app"});return out;}
+const empieza=s=>{tick();s.href?location.href=s.href:ir(s.c);};
+function hud(){const p=plan(),r=PAL.racha(),l=CURSO.lugares[aqui()];
+  document.getElementById("chipRacha").textContent="🔥 "+r+" day"+(r===1?"":"s");document.getElementById("chipLugar").textContent=l.n+" · "+l.nombre;
+  document.getElementById("hoy").innerHTML=`<button class="play" id="hoyBtn"><span class="ic">${SVG(IC.play)}</span><span class="grow"><span>Today${p.length>1?" · 1 of "+p.length:""}</span><b>${p[0].t}</b><span>${p[0].d} · ${p[0].m} min</span></span></button>`;
+  document.getElementById("hoyBtn").onclick=()=>empieza(p[0]);}
+function sheet(html){document.getElementById("sheet").innerHTML=`<div class="grab"></div>`+html;document.getElementById("sheet").classList.add("on");document.getElementById("sheetbg").style.display="block";}
+function cierra(){document.getElementById("sheet").classList.remove("on");document.getElementById("sheetbg").style.display="none";}
 function lugar(i){const l=CURSO.lugares[i],op=abierto(l);
-  dlg(`<h2>${l.n}. ${l.nombre.toUpperCase()}</h2><p>${l.en}${l.fork?" · a fork: either place first":""}</p>`+(l.cuentos?l.cuentos.map(c=>`<button class="opt" onclick="ir('${c}')">${CURSO.cuentos[c].t}<i>${hecho(c)?"✓ played "+veces(c):"new"}</i></button>`).join("")
-    :`<p style="color:#BCBCBC">${op?"Not built yet.":"Locked."}</p><p style="font-size:15px;color:#BCBCBC">${l.escenas.join(" · ")}</p>`));}
-function casa(id){const cs=CURSO.lugares[0].cuentos;
-  if(id==="escuchar")dlg(`<h2>ESCUCHAR</h2><p>Listen again, or check your words.</p><button class="opt" onclick="location.href='cual.html?desde=app'">¿Cuál?<i>a sentence, two pictures</i></button>`+cs.map(c=>`<button class="opt" ${veces(c)?"":"disabled"} onclick="ir('${c}')">${CURSO.cuentos[c].t}<i>${veces(c)?"again":"play it on the map first"}</i></button>`).join("")+`<p style="font-size:15px;color:#BCBCBC">Picture stories and do-this routines come with each finished place.</p>`);
-  else if(id==="hablar"){const open=Object.values(db().palabras).filter(r=>r.ear.etapa>=3).map(r=>r.w);dlg(`<h2>HABLAR</h2><p>A live call with Danny. He hears you.</p><p style="font-size:15px;color:#BCBCBC">Calls use ElevenLabs credits (about $6.50 an hour). Words open for speaking: ${open.length?open.join(", "):"none yet"}.</p><button class="opt" onclick="location.href='../'">Call Danny</button>`);}
-  else leer();}
+  sheet(`<div class="lab">Place ${l.n}${l.fork?" · a fork: either place first":""}</div><h1 style="margin:4px 0 8px">${l.nombre}</h1><p class="mut" style="margin:0 0 8px">${l.en}</p>`+
+    (l.cuentos?`<div>${l.cuentos.map(c=>`<div class="row"><div class="grow"><b>${CURSO.cuentos[c].t}</b><div class="small mut">${hecho(c)?"Played "+veces(c)+" time"+(veces(c)===1?"":"s"):"New"} · about ${CURSO.cuentos[c].min} min</div></div><button class="btn" onclick="ir('${c}')">Play</button></div>`).join("")}</div>`
+    :`<p class="mut">${op?"Not built yet.":"Locked until the places before it are done."}</p><p class="small mut">Scenes: ${l.escenas.join(" · ")}</p>`));}
 
-/* ---------- full screens: Palabras (word cards), Yo (status), Leer ---------- */
-function pantalla(html){const s=document.getElementById("scr");s.innerHTML=`<button class="back" onclick="mundo()">◀ MAP</button>`+html;s.style.display="block";document.getElementById("mapa").style.display="none";document.getElementById("hud").style.display="none";scrollTo(0,0);}
-function mundo(){document.getElementById("scr").style.display="none";document.getElementById("mapa").style.display="block";document.getElementById("hud").style.display="grid";hud();}
-const ETQ=["new","heard","found","holding","good"];
-function palabras(){const byW={};(CU&&CU.items||[]).forEach(it=>byW[it.w]=it);const ws=Object.values(db().palabras).sort((a,b)=>b.ear.etapa-a.ear.etapa||a.w.localeCompare(b.w)),t=Date.now();
-  const when=d=>!d?"":d<=t?"back today":"back in "+Math.max(1,Math.round((d-t)/864e5))+"d";
-  pantalla(`<h1>PALABRAS</h1>${ws.length?"":`<div class="panel">Play the first story on the map. Your words show up here as cards.</div>`}<div class="grid">${ws.map(r=>`<div class="wc" data-w="${r.w}">${byW[r.w]?`<canvas width="196" height="104"></canvas>`:""}<div>${r.w}</div><div class="pips">${[1,2,3,4].map(k=>`<i class="${r.ear.etapa>=k?"on":""}"></i>`).join("")}</div><div style="font:400 13px Pix">${ETQ[r.ear.etapa]} · ${when(r.ear.due)}</div></div>`).join("")}</div>
-  <div class="panel"><b>ADD A WORD OR A GOAL</b><p>For example: "talk to my 1-year-old around the house". Audio for added words comes later.</p><input id="extra" placeholder="word or goal"><div class="tog"><button onclick="extra()">ADD</button></div>${(db().extra||[]).map(x=>`<p>· ${x}</p>`).join("")}</div>`);
+/* ---------- BIBLIOTECA: listen and read ---------- */
+let LEE=null;
+async function biblioteca(){const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),done=cs.filter(hecho);
+  document.getElementById("t-biblioteca").innerHTML=`<h1>Biblioteca</h1><div class="lab">Listen</div>
+  <div class="card" style="padding:0 16px">${cs.map(c=>`<div class="row"><div class="grow"><b>${CURSO.cuentos[c].t}</b><div class="small mut">${veces(c)?"Played "+veces(c)+"×":"Play it on the map first"}</div></div><button class="btn soft" ${veces(c)?"":"disabled"} onclick="ir('${c}')">Listen</button></div>`).join("")}</div>
+  <p class="small mut">Picture stories and do-this routines open with each finished place.</p>
+  <div class="lab" style="margin-top:24px">Read</div><p class="small mut" style="margin-top:4px">Stories you have finished. Listen first, then read. Reading is not tracked until A2.</p>
+  ${done.length?done.map(c=>`<div class="card row" style="cursor:pointer" onclick="leer('${c}')"><div class="grow"><b>${CURSO.cuentos[c].t}</b></div><span class="mut">›</span></div>`).join(""):`<div class="card mut">Finish a story to read it here.</div>`}`;}
+async function leer(c){const T=await (await fetch("cuentos/"+c+".json")).json(),seen=new Set(),out=[];
+  const add=id=>{id=id.replace(/\$a|\$c|\$p/g,"puerta").replace(/\$b|\$o/g,"ventana").replace(/\$tipo/g,"palma").replace(/\$tam/g,"grande").replace(/\$resp/g,"si").replace(/\$ave/g,"puerta").replace(/\$x/g,"puerta");if(T.clips[id]&&!seen.has(id)){seen.add(id);out.push(id);}};
+  const walk=l=>(l||[]).forEach(st=>{if(typeof st==="string")add(st);else if(st.say)add(st.say);else if(st.ask||st.decide||st.elige){(st.lead||[]).forEach(x=>typeof x==="string"&&add(x));if(st.line)add(st.line);walk(st.after);walk(st.then);walk(st.right);(st.options||[]).forEach(o=>walk(st[o]));}else if(st.if)walk(st.then);});
+  walk(T.beats);walk(T.final);LEE={T,ids:out,i:-1,run:0};
+  // the story's own recordings, so each line can be heard as it is read
+  const prev=S;S=T;LINES=T.clips;await loadVoice();S=prev;
+  sheet(`<div class="lab">Read</div><div class="row" style="border:0"><h1 class="grow" style="margin:0">${T.title}</h1><button class="btn" id="lplay">${SVG(IC.play)}Play</button></div>
+    <div>${out.map((id,i)=>{const cl=T.clips[id];return `<button class="ln" data-i="${i}">${cl.who==="tu"?'<span class="who">Coquí</span>':''}${cl.text}</button>`;}).join("")}</div>`);
+  document.querySelectorAll(".ln").forEach(b=>b.onclick=()=>{LEE.run=0;linea(+b.dataset.i);});
+  document.getElementById("lplay").onclick=async()=>{try{ac().resume();}catch(e){}LEE.run=1;for(let i=Math.max(0,LEE.i);i<LEE.ids.length&&LEE.run;i++){await linea(i);await sleep(350);}LEE.run=0;};}
+async function linea(i){try{ac().resume();}catch(e){}LEE.i=i;document.querySelectorAll(".ln").forEach(b=>b.classList.toggle("now",+b.dataset.i===i));   // karaoke: the line lights while it plays
+  const el=document.querySelector(`.ln[data-i="${i}"]`);if(el)el.scrollIntoView({block:"nearest",behavior:"smooth"});hush();await playClip(LEE.ids[i]);}
+
+/* ---------- PALABRAS: review ---------- */
+const ETQ=["New","Heard","Found","Holding","Good"];
+function palabras(){const byW={};(CU&&CU.items||[]).forEach(it=>byW[it.w]=it);const ws=Object.values(db().palabras).sort((a,b)=>(a.ear.due||9e15)-(b.ear.due||9e15)),t=Date.now(),due=PAL.vence("ear");
+  const when=d=>!d?"":d<=t?"Due now":"In "+Math.max(1,Math.round((d-t)/864e5))+" day"+(Math.round((d-t)/864e5)>1?"s":"");
+  document.getElementById("t-palabras").innerHTML=`<h1>Palabras</h1>
+  <div class="card"><div class="row" style="min-height:0"><div class="grow"><b>${due.length?due.length+" word"+(due.length>1?"s":"")+" due":"Nothing due"}</b><div class="small mut">A sentence and two pictures. Only one fits.</div></div><button class="btn" onclick="location.href='cual.html?desde=app'">Review</button></div></div>
+  ${ws.length?`<div class="grid">${ws.map(r=>`<button class="wc" data-w="${r.w}">${byW[r.w]?`<canvas width="196" height="104"></canvas>`:`<div style="aspect-ratio:196/104;background:#ECEAE3"></div>`}<div class="t"><div class="w">${r.w}</div><div class="bar"><i style="width:${r.ear.etapa*25}%"></i></div><div class="small mut">${ETQ[r.ear.etapa]} · ${when(r.ear.due)}${r.ear.marca?" · check picture":""}</div></div></button>`).join("")}</div>`:`<p class="mut">Play the first story on the map. Your words show up here.</p>`}
+  <h2>Add a word or a goal</h2><div class="card"><p class="small mut" style="margin-top:0">For example: "talk to my 1-year-old around the house". Audio for added words comes later.</p><input id="extra" style="width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit" placeholder="A word or a goal"><div style="margin-top:8px"><button class="btn" onclick="extra()">Add</button></div>${(db().extra||[]).map(x=>`<p class="small">· ${x}</p>`).join("")}</div>`;
   document.querySelectorAll(".wc").forEach(el=>{const it=byW[el.dataset.w],c=el.querySelector("canvas");if(it&&c)miniatura(c,it.si);
-    el.onclick=()=>{if(!it)return;try{ac().resume();}catch(e){}if(VOICE&&CLIPS[it.say])playClip(it.say);};});}   // touch a card: hear its sentence
+    el.onclick=()=>{tick();if(!it)return;try{ac().resume();}catch(e){}if(VOICE&&CLIPS[it.say])playClip(it.say);};});}   // touch a card: hear its sentence
 function extra(){const v=document.getElementById("extra").value.trim();if(!v)return;(db().extra=db().extra||[]).push(v);PAL.save();palabras();}
 function miniatura(canvas,spec){const keep=W;W=panelW(spec);E.draw(c,W,0);if(W.resp)respDraw(c,0);W=keep;const g=canvas.getContext("2d");g.imageSmoothingEnabled=false;g.drawImage(sc,spec.cam[0],spec.cam[1],spec.cam[2],spec.cam[3],0,0,196,104);}
-function yo(){const d=db(),r=PAL.racha(),ws=Object.values(d.palabras);
-  pantalla(`<h1>YO</h1><div class="panel" style="display:flex;gap:14px;align-items:center"><canvas id="yoFrog" width="32" height="27" style="width:96px;image-rendering:pixelated"></canvas><div><b>MUNDO A1</b><br>Streak: ${r} day${r===1?"":"s"}<br>Listening: ${Math.round(d.minutos||0)} min<br>Words: ${ws.length} · holding ${ws.filter(x=>x.ear.etapa===3).length} · good ${ws.filter(x=>x.ear.etapa>=4).length}</div></div>
-  <div class="panel"><b>MINUTES A DAY</b><p>Today's plan is sized to this.</p><div class="tog">${[15,30,60,120].map(m=>`<button class="${AJ().min===m?"on":""}" onclick="AJ().min=${m};PAL.save();yo()">${m}</button>`).join("")}</div></div>
-  <div class="panel"><b>OPEN EVERY PLACE</b><p>For you, to look ahead. Places not built yet stay empty.</p><div class="tog"><button class="${AJ().todo?"on":""}" onclick="AJ().todo=AJ().todo?0:1;PAL.save();yo()">${AJ().todo?"ON":"OFF"}</button></div></div>
-  <div class="panel"><b>LEVEL CHECK</b><p>For people who already know some Spanish. Not built yet; it comes after place 1.</p></div>
-  <div class="panel"><div class="tog"><button onclick="bienvenida(0)">HOW IT WORKS</button></div></div>`);
-  const g=document.getElementById("yoFrog").getContext("2d");g.imageSmoothingEnabled=false;g.drawImage(spr("cq1_00",()=>mkCoqui(1,0,0)),0,0);}
-async function leer(){cierra();pantalla(`<h1>LEER</h1><div class="panel">The words of each story you have finished. Listen first, read after. Reading is not tracked until A2.</div><div id="textos"></div>`);
-  for(const c of CURSO.lugares[0].cuentos.filter(hecho)){const T=await (await fetch("cuentos/"+c+".json")).json(),seen=new Set(),out=[];
-    const add=id=>{id=id.replace(/\$a|\$c|\$p/g,"puerta").replace(/\$b|\$o/g,"ventana").replace(/\$tipo/g,"palma").replace(/\$tam/g,"grande").replace(/\$resp/g,"si").replace(/\$ave/g,"puerta");const cl=T.clips[id];if(cl&&!seen.has(id)){seen.add(id);out.push(cl);}};
-    const walk=l=>(l||[]).forEach(st=>{if(typeof st==="string")add(st);else if(st.say)add(st.say);else if(st.ask||st.decide||st.elige){(st.lead||[]).forEach(x=>typeof x==="string"&&add(x));if(st.line)add(st.line);walk(st.then);walk(st.right);(st.options||[]).forEach(o=>walk(st[o]));}else if(st.if)walk(st.then);});
-    walk(T.beats);walk(T.final);const d=document.createElement("div");d.className="panel";d.innerHTML=`<b>${T.title.toUpperCase()}</b>`+out.map(cl=>`<div class="line">${cl.who==="tu"?"<em>Coquí:</em> ":""}${cl.text}</div>`).join("");document.getElementById("textos").appendChild(d);}}
 
-/* ---------- welcome, first time only ---------- */
-function bienvenida(k){const pages=[`<h2>COQUÍ</h2><p>You learn Spanish the way children do: by hearing it, with pictures, in little stories.</p><p>You answer by touching the picture. The stories are games: what you touch changes what happens.</p><p>Words come back just before you would forget them.</p><p style="color:#BCBCBC;font-size:15px">English is only in the menus, to help you find your way.</p><button class="opt" onclick="bienvenida(1)">NEXT</button>`,
-    `<h2>MINUTES A DAY?</h2><p>Today's plan is sized to it.</p>`+[15,30,60,120].map(m=>`<button class="opt ${AJ().min===m?"cur":""}" onclick="AJ().min=${m};PAL.save();bienvenida(2)">${m} minutes</button>`).join(""),
-    `<h2>WHERE DO YOU START?</h2><button class="opt" onclick="listo()">I'm new to Spanish</button><button class="opt" onclick="document.getElementById('lc').style.display='block'">I know some Spanish</button><div id="lc" style="display:none"><p style="color:#BCBCBC;font-size:15px">The level check isn't built yet. You start at place 1 for now.</p><button class="opt" onclick="listo()">OK</button></div>`];
-  dlg(pages[k]);}
+/* ---------- HABLAR ---------- */
+function hablar(){const open=Object.values(db().palabras).filter(r=>r.ear.etapa>=3).map(r=>r.w);
+  document.getElementById("t-hablar").innerHTML=`<h1>Hablar</h1><div class="card" style="text-align:center"><p style="margin:0"><b>A live call with Danny</b></p><p class="small mut">He hears you and answers. Speaking is practice; nobody is judging.</p>
+  <button class="mic" onclick="tick();location.href='../'">${SVG(IC.mic)}</button><div class="small mut">Tap to call</div></div>
+  <div class="card"><div class="lab">Words open for speaking</div><p style="margin:8px 0 0">${open.length?open.join(", "):"None yet. A word opens once your ear has held it for a few days."}</p></div>
+  <p class="small mut">Calls use ElevenLabs credits, about $6.50 an hour.</p>`;}
+
+/* ---------- YO ---------- */
+function yo(){const d=db(),r=PAL.racha(),ws=Object.values(d.palabras),l=CURSO.lugares[aqui()];
+  const st=(n,t)=>`<div class="card" style="text-align:center;margin:0"><div style="font-size:24px;font-weight:600">${n}</div><div class="small mut">${t}</div></div>`;
+  document.getElementById("t-yo").innerHTML=`<h1>Yo</h1><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">${st("🔥 "+r,"day streak")+st(Math.round(d.minutos||0),"minutes listened")+st(ws.length,"words heard")+st(ws.filter(x=>x.ear.etapa>=4).length,"words good")}</div>
+  <div class="card"><div class="lab">Where you are</div><p style="margin:8px 0 0"><b>A1 · place ${l.n} of 10</b> · ${l.nombre}</p></div>
+  <h2>Minutes a day</h2><div class="seg">${[15,30,60,120].map(m=>`<button class="${AJ().min===m?"on":""}" onclick="AJ().min=${m};PAL.save();tick();yo()">${m}</button>`).join("")}</div><p class="small mut">Today's plan is sized to this.</p>
+  <div class="card row"><div class="grow"><b>Open every place</b><div class="small mut">To look ahead. Places not built yet stay empty.</div></div><button class="sw ${AJ().todo?"on":""}" onclick="AJ().todo=AJ().todo?0:1;PAL.save();tick();yo()"><i></i></button></div>
+  <div class="card row"><div class="grow"><b>Level check</b><div class="small mut">For people who already know some Spanish. Not built yet.</div></div></div>
+  <button class="btn soft full" onclick="bienvenida(0)">How it works</button>`;}
+
+/* ---------- welcome, first time only: three short steps in English ---------- */
+function bienvenida(k){const dots=`<div style="display:flex;gap:8px;justify-content:center;margin:16px 0">${[0,1,2].map(i=>`<i style="width:8px;height:8px;border-radius:4px;background:${i===k?"var(--ink)":"#D5D3CC"}"></i>`).join("")}</div>`;
+  const p=[`<h1 style="margin-top:0">Welcome to Coquí</h1><p>You learn Spanish the way children do: by hearing it, with pictures, in short stories.</p><p>You answer by touching the picture. What you touch changes what happens.</p><p>Words come back just before you would forget them.</p><p class="small mut">English is only in the menus, to help you find your way.</p>${dots}<button class="btn full" onclick="bienvenida(1)">Next</button>`,
+    `<h1 style="margin-top:0">How much time a day?</h1><p class="mut">Today's plan is sized to it. You can change it in Yo.</p><div class="seg">${[15,30,60,120].map(m=>`<button class="${AJ().min===m?"on":""}" onclick="AJ().min=${m};PAL.save();bienvenida(1)">${m} min</button>`).join("")}</div>${dots}<button class="btn full" onclick="bienvenida(2)">Next</button>`,
+    `<h1 style="margin-top:0">Where do you start?</h1><button class="btn full" onclick="listo()">I'm new to Spanish</button><div style="height:8px"></div><button class="btn soft full" onclick="document.getElementById('lc').style.display='block'">I know some Spanish</button><p id="lc" class="small mut" style="display:none">The level check isn't built yet. You start at place 1 for now. <a href="#" onclick="listo();return false">OK</a></p>${dots}`];
+  sheet(p[k]);}
 function listo(){AJ().bienvenida=1;PAL.save();cierra();hud();}
 
 /* ---------- start ---------- */
-(async()=>{try{await document.fonts.load("700 12px Pix");}catch(e){}
-  CU=await (await fetch("cuentos/cual-frente.json")).json();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;W=EMPTY();voiceReady=loadVoice();
-  mapa();hud();
-  const ic=(id,fn)=>{const g=document.getElementById(id).getContext("2d");g.imageSmoothingEnabled=false;fn(g);};
-  ic("icPal",g=>{g.fillStyle="#FFF";g.fillRect(3,1,14,18);g.fillStyle="#F8D030";g.fillRect(6,5,8,8);g.fillStyle="#000";g.fillRect(9,7,2,4);});
-  ic("icYo",g=>g.drawImage(spr("cq.6_0",()=>mkCoqui(.6,0,0)),0,2));
-  document.getElementById("cPal").onclick=palabras;document.getElementById("cYo").onclick=yo;
-  const t=new URLSearchParams(location.search).get("tab");if(t==="palabras")palabras();else if(t==="yo")yo();else if(t==="leer")leer();
+(async()=>{CU=await (await fetch("cuentos/cual-frente.json")).json();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;W=EMPTY();voiceReady=loadVoice();
+  mapa();tabs();const t=new URLSearchParams(location.search).get("tab");ver(TABS.some(x=>x[0]===t)?t:"mapa");
   if(!AJ().bienvenida)bienvenida(0);
-  window.App={plan,palabras,yo,leer,mundo,lugar,casa,listo,ready:1};})();
+  window.App={plan,ver,lugar,leer,listo,ready:1};})();
 </script>
 </body></html>
