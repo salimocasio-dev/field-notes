@@ -55,7 +55,10 @@ function mkNube(){const b=new Buf(72,18);b.ell(36,10,25,6,NB);b.ell(17,11,14,5,N
 const BOLT=["..##","..#.",".##.","###.",".##.",".#..","##..","#..."];
 function rain(g){for(let i=0;i<64;i++){const x=(i*61+F*3)%SW,y=(i*97+F*13)%SH;fr(g,x,y,1,4,"#C4DCF6");fr(g,x-1,y+4,1,2,"#C4DCF6");}
   for(let i=0;i<9;i++){const x=(i*83+((F>>1)*37))%SW,y=126+((i*29+(F>>1)*11)%84);fr(g,x-2,y,5,1,"#DCEBFA");}}
-function towel(g,x,y){fr(g,x-1,y-1,13,7,OUT);fr(g,x,y,11,5,"#FFFFFF");fr(g,x,y+2,11,1,"#E8443C");}
+function towel(g,x,y){   // draped over his head, hanging down both sides
+  fr(g,x-2,y-1,17,5,OUT);fr(g,x-2,y+3,5,10,OUT);fr(g,x+10,y+3,5,10,OUT);
+  fr(g,x-1,y,15,3,"#FFFFFF");fr(g,x-1,y+3,3,8,"#FFFFFF");fr(g,x+11,y+3,3,8,"#FFFFFF");
+  fr(g,x-1,y+8,3,1,"#3A86E6");fr(g,x+11,y+8,3,1,"#3A86E6");fr(g,x-1,y+1,15,1,"#D6E6F8");}
 
 const ABAT={puerta:[135,55],ventana:[82,61]};
 function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(pose,op));
@@ -66,7 +69,7 @@ function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(po
   if(ab){const pose=ab.pose==="wave"?"wave"+(a%2):"idle",op=ab.bub&&ab.bub!=="amor"&&a%2?1:0;c.globalAlpha=ab.al==null?1:ab.al;
     if(ab.en==="ventana"){c.save();c.beginPath();c.rect(97,61,30,20);c.clip();c.drawImage(AB(pose,op),W.tab?75:82,61);   // head and shoulders in the window
       if(W.tab){const bl=(F%47)<2?1:0,sh=W.shake&&a%2?1:0;c.drawImage(spr("cq.42_"+bl,()=>mkCoqui(.42,bl,0)),112+sh,67);   // and the frog beside her
-        if(W.tab==="mojado")towel(c,114,65);}
+        if(W.tab==="mojado")towel(c,113,65);}
       c.restore();
       if(W.tab==="gotas"&&W.shake)[[110,64],[120,62],[127,66]].forEach((p,i)=>fr(c,p[0]+(a%2?1:-1)*(i-1),p[1]-(a%3),1,2,"#8CC4F8"));}
     else c.drawImage(AB(pose,op),ABAT.puerta[0],ABAT.puerta[1]);
