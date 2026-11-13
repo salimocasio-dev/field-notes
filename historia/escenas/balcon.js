@@ -107,8 +107,8 @@ const COSAS=IDS.map(cosaMesa).concat([
 
 /* ---------- drawing ---------- */
 GL.sol=["...#...",".#.#.#.","..###..","#######","..###..",".#.#.#.","...#..."];GC.sol="#F0A010";
-GL.jugo=["o...o","o###o","o###o","o###o","o###o","o###o",".ooo."];GC.jugo=JUGO[1];
-GL.agua=["o...o","obbbo","obbbo","obbbo","obbbo","obbbo",".ooo."];GC.agua=AGUA[0];
+GL.jugo=[".....oo","o....oo","o#####o","o#w###o","o#w###o","o#####o","o#####o","o#####o",".ooooo."];GC.jugo=JUGO[1];   // a glass of juice, with its straw
+GL.agua=["o.....o","o.....o","o#####o","o#w#w#o","o#w###o","o###w#o","o#####o","o#####o",".ooooo."];GC.agua=AGUA[1];    // a glass of water, with ice
 GL.equis=["#...#",".#.#.","..#..",".#.#.","#...#"];GC.equis="#D0403A";
 Object.assign(BUBL,{calor:["sol","sad"],no:["equis"],q:["q"],quiere_agua:["agua"],no_jugo_si_agua:["jugo","equis","agua"],jugo_q:["jugo","q"],agua_q:["agua","q"],feliz:["ok"]});
 function gota(g,x,y){fr(g,x-1,y-2,3,1,OUT);fr(g,x-2,y-1,5,4,OUT);fr(g,x-1,y+3,3,1,OUT);fr(g,x,y-2,1,1,"#DCEEFF");fr(g,x-1,y-1,3,4,"#7CC0FF");fr(g,x-1,y-1,1,2,"#FFFFFF");}   // a drop of sweat
@@ -128,7 +128,8 @@ function draw(c,W,a){const q=W.cq,ab=W.ab;
   if(ab&&ab.en==="silla"){const f=ab.pose==="fan"?"fan"+((F>>2)%2):ab.pose,pose=["fan0","fan1","vaso","bebe","zzz"].includes(f)?f:"idle";
     c.drawImage(spr("abS"+pose+habla,()=>KIT.mkAbuelaS(pose,habla,0)),ABS[0],ABS[1]);
     if(W.abvaso){const bb=ab.pose==="bebe";vaso(c,ABS[0]+(bb?30:36),ABS[1]+(bb?17:28),"n",W.abvaso.k,W.abvaso.lv);}
-    if(W.sobre){jarra(c,ABS[0]+19,ABS[1]-4,"agua");}
+    if(W.sobre){c.save();c.translate(ABS[0]+30,ABS[1]-2);c.rotate(-1.05);jarra(c,0,8,"agua");c.restore();   // she tips the water jug over her own head
+      for(let i=0;i<5;i++)fr(c,ABS[0]+16+(i%2),ABS[1]-10+((F*2+i*3)%12),2,3,i%2?AGUA[1]:"#FFFFFF");}
     for(let k=0;k<(W.sudor||0);k++){const t=(F+k*5)%12;gota(c,ABS[0]+17+(k-1)*(8+t),ABS[1]+6-Math.round(t*1.2)+Math.round(t*t/9));}}   // she is hot: drops of sweat
   c.drawImage(spr("sillaP",mkSillaP),SILLITA[0],SILLITA[1]);
   c.drawImage(spr("mesa",mkMesa),94,125);
@@ -146,7 +147,8 @@ function draw(c,W,a){const q=W.cq,ab=W.ab;
     const j=(W.jarras||[]).find(v=>v.mano===1);if(j)jarra(c,b.x+b.w+7,b.y+dy+b.h,j.k);}
   if(W.vierte){const x=ABS[0]+36,y0=ABS[1]+8;for(let i=0;i<7;i++)fr(c,x,y0+((i*2+F)%12),1,2,W.vierte==="agua"?AGUA[1]:JUGO[1]);}   // pouring into her glass
   KIT.drawAve(c,W.ave);
-  if(W.splash){const t=F-W.splash;for(let i=0;i<14;i++){const x=ABS[0]+5+(i*37)%26,y=ABS[1]-2+((t*4+i*9)%42);fr(c,x,y,1,3,AGUA[1]);}}   // water over her own head
+  if(W.splash){const t=F-W.splash;for(let i=0;i<22;i++){const u=((t*2+i*5)%24)/24,dir=i%2?1:-1,x=ABS[0]+17+dir*(4+u*(8+i%7*2)),y=ABS[1]+2+Math.round(u*u*44)-Math.round(u*10);fr(c,Math.round(x)-1,y-1,4,4,OUT);fr(c,Math.round(x),y,2,2,i%3?AGUA[1]:"#FFFFFF");}   // water splashes off her head and shoulders
+    fr(c,ABS[0]+2,ABS[1]+50,34,2,AGUA[1]);fr(c,ABS[0]+6,ABS[1]+52,26,1,AGUA[2]);}
   if(W.rojo&&F-W.rojo<5){c.fillStyle="rgba(255,90,40,.2)";c.fillRect(0,0,SW,SH);}
   if(W.azul&&F-W.azul<5){c.fillStyle="rgba(120,190,255,.12)";c.fillRect(0,0,SW,SH);}
   if(ab&&ab.bub){const at=talkAt("abuela",W);bub2(c,ab.bub,at[0],at[1]+38,a);}
@@ -213,7 +215,7 @@ const acts={
     if(gano||amigo){if(a)await acts.aveventana();await acts.ir({a:"silla_pequena"});
       if(gano){W.heart=1;SFX.win();if(mio>=3)fx({t:"star",n:30,pts:[[60,50],[180,54],[120,42],[96,64],[150,60]]});}else{W.cq.bub="amor";SFX.coqui();}}
     else{if(a){await KIT.aveVa(ASIENTO[0],ASIENTO[1],9,-1);a.st="round";SFX.pio();}await acts.ir({a:"balcon"});W.cq.bub="mal";SFX.coqui();}
-    await wait(1500);W.cq.bub=null;},
+    await wait(700);W.cq.bub=null;},
   /* ---- story 5: abuela is hot ---- */
   // the frog carries a jug to her and fills her glass
   async lleva(o){const j=enMesa(o.en);if(!j)return;await acts.ir({a:"mesa"});await wait(120);j.mano=1;SFX.blip();await wait(250);await acts.ir({a:"abuela"});W.ab.pose="vaso";W.abvaso={k:o.en,lv:0};await wait(200);
@@ -244,7 +246,7 @@ const acts={
     if(n<=0){ab.pose="idle";W.sudor=0;ab.bub="feliz";await wait(1100);ab.bub=null;}
     else if(n===1){ab.pose=W.abanico?"fan":"idle";W.sudor=0;await wait(900);}
     else if(n===2){ab.pose=W.abanico?"fan":"idle";W.sudor=1;await wait(1000);}
-    else{const j=(W.jarras||[]).find(v=>v.k==="agua");if(j)j.mano=2;W.sobre=1;await wait(500);W.splash=F;chorro();SFX.drop();await wait(300);SFX.drop();W.sudor=0;await wait(1100);W.splash=0;W.sobre=0;if(j)j.mano=0;ab.bub="feliz";await wait(700);ab.bub=null;}},
+    else{const j=(W.jarras||[]).find(v=>v.k==="agua");if(j)j.mano=2;ab.pose="idle";W.sobre=1;W.sudor=0;await wait(450);W.splash=F;chorro();SFX.drop();await wait(300);SFX.drop();await wait(250);chorro();await wait(1500);W.sobre=0;if(j)j.mano=0;await wait(500);W.splash=0;ab.bub="feliz";await wait(900);ab.bub=null;}},
   async fin(){if(S.stake.thing==="calor"?nivel(W)<=0:(W.mios||0)>(W.lost||0)){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,50],[180,54],[120,42],[96,64],[150,60]]});}else SFX.coqui();await wait(1600);}
 };
 // the thing at stake takes a step: the bird gets a glass, or the heat climbs

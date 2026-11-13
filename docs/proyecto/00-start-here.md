@@ -1,6 +1,6 @@
 # Coquí: start here
 
-State on Nov 13 2026, end of the first build session. Read this page first. Update it at the end of every working session.
+State on Nov 13 2026, during the second build session (the one finishing A1). Read this page first. Update it at the end of every working session.
 (These pages live in two places: the claude.ai Project "Coqui - Language Learning App" and this folder, docs/proyecto/ in the GitHub project. A session that cannot see the Project works from this folder and keeps it current. Keep both the same.)
 
 **Read 03-requirements, this page, 07-handoff-build-a1, 08-build-log-a1 (everything built since 07; it wins where they differ), and 09-ui-plan before touching any screen.**
@@ -18,8 +18,9 @@ State on Nov 13 2026, end of the first build session. Read this page first. Upda
 ## Where things stand
 
 - The A1 plan is written, reviewed, and all five of its decisions are settled by Salim (Nov 13). His words are in 03-requirements.
-- **Live (Nov 13): the app to his UI plan, stories 1 to 3 of El frente as games, word records with the scheduler, and the next-day ¿Cuál? pass.**
-    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=20
+- **Live (Nov 13): the app to his UI plan, stories 1 to 3 (El frente) and 4 and 5 (El balcón) as games, word records with the scheduler, and the next-day ¿Cuál? pass for both scenes.**
+    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=21
+    - El balcón: El jugo (silla, se sienta, vaso, jugo, agua, toma) and ¡Qué calor! (quiero, por favor, gracias, de nada, ¿cómo estás?, bien). New in the game: answer bubbles that speak, for words that cannot be drawn. Page 08, part 5.
     - Built: page 08. The UI spec and how the build follows it: page 09.
 - **The look (his correction, Nov 13): only the home map is the game.** "I didn't say the whole thing is a game, I said on the home screen is the map to the game as the main part of the course." His spec is the doc "Language App UI Design Plan" (link in 09). The map is 16-bit pixel art in the centre tab; everything else is a clean modern UI with a bottom tab bar.
 - The coquí speaks in his own voice (Victor, es-PR-VictorNeural), with speech bubbles and captions, Spanish only. Narrator and abuela's lines in Karina (es-PR-KarinaNeural).
@@ -30,11 +31,12 @@ State on Nov 13 2026, end of the first build session. Read this page first. Upda
 
 ## Waiting on Salim
 
-- How the app, stories 1 to 3 and ¿Cuál? feel and sound. Nothing is blocking.
+- How the app, stories 1 to 5 and ¿Cuál? feel and sound. Nothing is blocking.
+- His yes or no on two small things (asked Nov 13): "por favor" and "de nada" have no next-day picture pair (they are tested by the speaking bubbles inside story 5); and whether this session may keep publishing straight to main, as page 07 says.
 
 ## Next steps, in order
 
-1. Place 1 complete: the scenes El balcón, La sala, El patio. Each needs its scene drawing, 2 or 3 stories written to the game model (06 and 07's checklist), reviews, recordings, a silent frame read. Then place 1's Escuchar (picture stories, do-this routines), its reading texts, its call with Danny.
+1. Place 1 complete: El balcón is done. Next: La sala (scripts drafted in historia/notas/guiones/sala.md, in review), then El patio. Each needs its scene drawing, 2 or 3 stories written to the game model (06 and 07's checklist), reviews, recordings, a silent frame read. Then place 1's Escuchar (picture stories, do-this routines), its reading texts, its call with Danny.
 2. The level check.
 3. Places 2 to 10. Then the fort check.
 4. Open alongside: the rest of the UI plan (09: calm full-screen lesson screens, the mic states, unlock haptics, streak freezes, the map at an angle and finished places changing it); the 85% difficulty tuning; the mouth record fed by calls; the plan doc fixes ("porch lamp", "nothing is built", old three passes).

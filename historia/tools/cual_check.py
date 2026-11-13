@@ -14,7 +14,7 @@ async def main():
             st=await pg.evaluate("({listo:Cual.listo,pan:Cual.pan,i:Cual.i,run:Cual.running,sp:Cual.speaking,lista:Cual.lista,cap:Story.cap})")
             if st["pan"] and st["i"]!=last and st["listo"]:
                 await pg.wait_for_timeout(200)
-                if OUT: n+=1; await pg.locator("#wrap").screenshot(path=f"{OUT}/{n:02d}_{st['lista'][st['i']]}.png")
+                if OUT: n+=1; await pg.locator("#cv").screenshot(path=f"{OUT}/{n:02d}_{st['lista'][st['i']]}.png")
                 want=PLAN[k] if k<len(PLAN) else "r"; k+=1
                 right=[j for j,x in enumerate(st["pan"]) if x["right"]][0]; tgt=right if want=="r" else 1-right
                 await pg.evaluate(f"Cual.toca({tgt})"); last=st["i"]
