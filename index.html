@@ -136,7 +136,7 @@ function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let 
 const ART=["la","el","los","las","un","una"];
 // did what was heard contain the line? Forgiving on purpose: a learner's accent and the recogniser both blur short words.
 function saidIt(heard,targets){const h=nrm(heard).split(" ").filter(Boolean);if(!h.length)return false;
-  return targets.some(T=>{const t=nrm(T).split(" ").filter(w=>w&&ART.indexOf(w)<0);return t.length>0&&t.every(w=>h.some(x=>lev(x,w)<=(w.length<=3?0:w.length<=5?1:2)));});}
+  return targets.some(T=>{const t=nrm(T).split(" ").filter(w=>w&&ART.indexOf(w)<0);return t.length>0&&t.every(w=>h.some(x=>lev(x,w)<=(w.length<=4?0:w.length<=6?1:2)));});}
 const Ear={d:null,on:false,cur:null,err:null,
   async init(){try{if(window.claude&&claude.use)this.d=await claude.use("dictation");}catch(e){}
     if(this.d){this.d.onPartial(e=>this.part(e.text));this.d.onFinal(e=>this.fin(e.text));
@@ -406,6 +406,7 @@ const PLACES=[{id:"casa",name:"Casa",x:50,y:190,g:"1",lab:[50,205],about:"hello,
  {id:"playa",name:"Playa",x:56,y:226,g:"q",lab:[90,229],about:"your own missions",need:"fuerte"}];
 const voiceOf=(id,alt)=>VO[(ITEMS[id].v+(alt?1:0))%3];
 const mem=(id,sk)=>(Store.st.items[id]||{})[sk]||null;
+const GOOD_AT=3,dayKey=(t=now())=>{const d=new Date(t);return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();};
 function grade(id,sk,g){const it=Store.st.items[id]=Store.st.items[id]||{};it[sk]=review(it[sk]||null,g);}
 const planted=()=>Object.keys(Store.st.items).filter(id=>ITEMS[id]).length;
 function dueList(){const t=now(),a=[];Object.keys(Store.st.items).forEach(id=>{if(!ITEMS[id])return;const it=Store.st.items[id];if(it.l&&it.l.due<=t)a.push({id,sk:"l",due:it.l.due});if(it.s&&it.s.due<=t)a.push({id,sk:"s",due:it.s.due});});return a.sort((x,y)=>x.due-y.due);}
@@ -545,8 +546,17 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,heard:[],last:"",done
   pic(k){k=String(k||"").trim();const it=ITEMS[k];if(!it)return;const st=Object.assign({},it.st,{who:null});let z=null;
     const b=it.k==="n"&&SC[it.home].boxOf(st,k);if(b){const cw=Math.max(b[2]*1.6,b[3]*2.56,72),ch=cw*150/240;if(cw<230)z=[Math.round(Math.max(0,Math.min(240-cw,b[0]+b[2]/2-cw/2))),Math.round(Math.max(0,Math.min(150-ch,b[1]+b[3]/2-ch/2-5))),Math.round(cw),Math.round(ch)];}
     this.set(it.home,st,z);},
-  vars(id){const m=MISSIONS[id],old=Object.keys(Store.st.items).filter(k=>ITEMS[k]&&m.items.indexOf(k)<0).sort((a,b)=>((mem(a,"s")||mem(a,"l")||{}).due||0)-((mem(b,"s")||mem(b,"l")||{}).due||0)).slice(0,8);
-    return {place:m.name,scene:SCENED[m.scene],pictures:m.items.map(k=>k+": "+PICD[k]).join("\n"),targets:m.items.map(k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase()+" ("+ITEMS[k].en+")").join("; "),old:old.length?old.map(k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase()).join(", "):"none yet"};},
+  vars(id){const m=MISSIONS[id],t=now(),w=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase(),we=k=>w(k)+" ("+ITEMS[k].en+")",u=k=>((Store.st.items[k]||{}).u)||0,
+      due=k=>{const s=mem(k,"s");return !!s&&s.due<=t;},here=k=>m.items.indexOf(k)>=0,all=Object.keys(ITEMS),J=a=>a.length?a.join("; "):"none";
+    const nw=m.items.filter(k=>u(k)===0),lr=all.filter(k=>u(k)>0&&u(k)<GOOD_AT&&(here(k)||due(k))).slice(0,14),gd=all.filter(k=>u(k)>=GOOD_AT&&here(k)),
+      back=all.filter(k=>u(k)>=GOOD_AT&&!here(k)&&due(k)).slice(0,6),K=all.filter(k=>u(k)>0).length;
+    const ask=K===0?"He has no Spanish words yet. Ask him nothing that needs an answer. Only talk and show. Leave a pause so he can say a word if he wants to."
+      :K<6?"Ask one very easy question about every fourth turn, only about a LEARNING or GOOD word, answered with one word."
+      :K<16?"Ask one easy question about every third turn, only about LEARNING or GOOD words, answered with one or two words."
+      :"Ask an easy question about every second turn, only about LEARNING or GOOD words. Short answers of two or three words are fine.";
+    return {place:m.name,scene:SCENED[m.scene],pictures:m.items.map(k=>k+": "+PICD[k]).join("\n"),
+      targets:"NEW. He has never said these. Say them many times. Never ask about them: "+J(nw.map(we))+"\nLEARNING. He has said these on one or two days. Use them a lot: "+J(lr.map(we)),
+      old:"GOOD. He knows these. Use them freely: "+J(gd.map(w))+"\nBRING BACK TODAY. Known words from other places that are due. Fit them in where they are true of this scene: "+J(back.map(w))+"\nQUESTIONS: "+ask};},
   async start(id){this.id=id;this.m=MISSIONS[id];this.scene=this.m.scene;this.st={};this.heard=[];this.last="";this.done=null;this.over=false;this.t0=0;this.shell("Calling Danny…");
     const back=t=>{this.over=true;this.panel(`<h3>Couldn't reach Danny</h3><div class="mut">${t}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);};
     if(!window.ELConv)return back("The voice part of the page didn't load. Check your connection and reload.");
@@ -561,19 +571,20 @@ const Mission={id:null,m:null,st:{},scene:"casa",conv:null,heard:[],last:"",done
     on("endb",()=>this.end());
     on("stk",()=>{const t=$("#tx");if(t)t.innerHTML=this.last?`<div class="mut">Danny said: <b>${this.last}</b></div>`:"";
       try{this.conv.sendContextualUpdate("Salim tapped the 'I'm stuck' button. Tell him in a few English words what you just said or asked, then say it again in simple Spanish and carry on.");}catch(e){}});},
-  mode(m){const w=$("#who"),d=$("#dot");if(!w)return;const you=m==="listening";w.textContent=you?"Your turn. Talk to him.":"Danny is talking";if(d)d.style.background=you?"var(--red)":"#8698BC";},
+  mode(m){const w=$("#who"),d=$("#dot");if(!w)return;const you=m==="listening";w.textContent=you?"Say a word if you want. Or just listen.":"Danny is talking";if(d)d.style.background=you?"var(--red)":"#8698BC";},
   msg(m){const who=m&&(m.source||m.role),text=m&&(m.message||m.text);if(!text)return;
     if(who==="user"){this.heard.push(text);const h=$("#heard");if(h)h.textContent="heard: "+text;}else{this.last=text;const t=$("#tx");if(t)t.innerHTML="";}},
   end(){if(this.over){showMap();return;}try{if(this.conv)this.conv.endSession();}catch(e){}setTimeout(()=>this.finish(),1500);},
   finish(){if(this.over)return;this.over=true;const secs=this.t0?Math.round((now()-this.t0)/1000):0,m=this.m,said=this.heard.join(" . "),d=this.done||{};
     if(secs<6){this.label("No answer");this.panel(`<h3>Danny didn't pick up</h3><div class="mut">The call was dropped before it started. That is not your phone or your mic. The usual cause is that the ElevenLabs voice credits for the month have run out.${this.err?" ("+this.err+")":""}</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
     if(secs<45){this.label("Ended");this.panel(`<h3>Call ended</h3><div class="mut">${this.err?this.err+" ":""}That was too short to count, so nothing was saved.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);on("mp",showMap);return;}
-    const res={3:[],2:[],1:[]},nm=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase();
-    m.items.forEach(k=>{const T=[ITEMS[k].es].concat(ITEMS[k].alt||[]),inT=saidIt(said,T),g=saidIt(d.alone||"",T)&&inT?3:(inT||saidIt(d.helped||"",T))?2:1;grade(k,"s",g);grade(k,"l",g>1?3:2);res[g].push(nm(k));});
-    Object.keys(Store.st.items).forEach(k=>{if(ITEMS[k]&&m.items.indexOf(k)<0&&saidIt(said,[ITEMS[k].es])&&mem(k,"s")&&mem(k,"s").due<=now())grade(k,"s",3);});
+    const nm=k=>ITEMS[k].es.replace(/[.!¡¿?]/g,"").toLowerCase(),dk=dayKey(),saidL=[],heardL=[],goodL=[];
+    Object.keys(ITEMS).forEach(k=>{const here=m.items.indexOf(k)>=0,T=[ITEMS[k].es].concat(ITEMS[k].alt||[]);
+      if(saidIt(said,T)){const it=Store.st.items[k]=Store.st.items[k]||{};grade(k,"s",3);grade(k,"l",3);if(it.ud!==dk){it.u=(it.u||0)+1;it.ud=dk;}saidL.push(nm(k));if(it.u>=GOOD_AT)goodL.push(nm(k));}
+      else if(here){const it=Store.st.items[k]=Store.st.items[k]||{};it.h=(it.h||0)+1;heardL.push(nm(k));}});
     const prev=Store.st.done[this.id];Store.st.done[this.id]={n:(prev?prev.n:0)+1,t:now()};Store.save();
     this.label("Done");this.set(m.scene,Object.assign({},m.story[m.story.length-1][3],{stars:1}));
-    this.panel(`<h3>${m.name} · ${Math.round(secs/60)} min with Danny</h3>`+(res[3].length?`<div class="mut"><b>You said on your own:</b> ${res[3].join(", ")}</div>`:"")+(res[2].length?`<div class="mut"><b>You said with help:</b> ${res[2].join(", ")}</div>`:"")+(res[1].length?`<div class="mut"><b>Not yet:</b> ${res[1].join(", ")}. Danny brings these back first.</div>`:"")+`<div class="mut" style="margin-top:6px">Each word has its own day to come back. Danny is told which ones are due before your next call.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);
+    this.panel(`<h3>${m.name} · ${Math.max(1,Math.round(secs/60))} min with Danny</h3>`+(saidL.length?`<div class="mut"><b>You said:</b> ${saidL.join(", ")}</div>`:"")+(heardL.length?`<div class="mut"><b>Heard, not said yet:</b> ${heardL.join(", ")}</div>`:"")+(goodL.length?`<div class="mut"><b>Good now:</b> ${goodL.join(", ")}</div>`:"")+`<div class="mut" style="margin-top:6px">A word you say on ${GOOD_AT} different days moves to good and comes back less often. Nothing is marked wrong.</div><div class="row"><button class="btn go" id="mp">Back to the map</button></div>`);
     on("mp",()=>{App.sel=null;showMap();});}
 };
 
