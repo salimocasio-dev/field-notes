@@ -2,7 +2,8 @@
 /* The A1 course: ten places on the map, three forks, the stories built so far. From page 02-all-40-scenes. */
 const CURSO={
   lugares:[
-    {id:"casa",n:1,nombre:"La casa",en:"Grandma's house",cuentos:["la-lluvia","el-bizcocho","donde-esta-el-pajaro","el-jugo","que-calor","la-familia","la-foto","quien-eres-tu","las-flores","que-es-esto","hasta-manana"],escenas:["El frente","El balcón","La sala","El patio"]},
+    {id:"casa",n:1,nombre:"La casa",en:"Grandma's house",cuentos:["la-lluvia","el-bizcocho","donde-esta-el-pajaro","el-jugo","que-calor","la-familia","la-foto","quien-eres-tu","las-flores","que-es-esto","hasta-manana"],
+      dibujos:["d-toc-toc","d-agua-pajaro","d-bizcocho-bebe","d-foto-familia","d-la-bola","d-buenas-noches"],haz:["h-frente","h-balcon","h-sala","h-patio"],escenas:["El frente","El balcón","La sala","El patio"]},
     {id:"parque",n:2,nombre:"El parque",en:"The park",fork:"2a",escenas:["El camino","El campo","El lago","El banco"]},
     {id:"cocina",n:3,nombre:"La cocina",en:"The kitchen",fork:"2b",escenas:["La mesa","La estufa","La nevera","A comer"]},
     {id:"colmado",n:4,nombre:"El colmado",en:"The corner shop",escenas:["El mostrador","Los estantes","Las frutas","La caja"]},
@@ -15,6 +16,9 @@ const CURSO={
   cuentos:{"la-lluvia":{t:"La lluvia",min:2},"el-bizcocho":{t:"El bizcocho",min:3},"donde-esta-el-pajaro":{t:"¿Dónde está el pájaro?",min:3},
     "el-jugo":{t:"El jugo",min:4},"que-calor":{t:"¡Qué calor!",min:3},
     "la-familia":{t:"La familia",min:4},"la-foto":{t:"La foto",min:3},"quien-eres-tu":{t:"¿Quién eres tú?",min:4},
-    "las-flores":{t:"Las flores",min:5},"que-es-esto":{t:"¿Qué es esto?",min:5},"hasta-manana":{t:"Hasta mañana",min:4}},
+    "las-flores":{t:"Las flores",min:5},"que-es-esto":{t:"¿Qué es esto?",min:5},"hasta-manana":{t:"Hasta mañana",min:4},
+    // Escuchar: picture stories (d-) and do-this routines (h-). Nothing in them is scored.
+    "d-toc-toc":{t:"Toc, toc",min:2},"d-agua-pajaro":{t:"Agua para el pájaro",min:2},"d-bizcocho-bebe":{t:"El bizcocho del bebé",min:2},"d-foto-familia":{t:"La foto de la familia",min:2},"d-la-bola":{t:"La bola",min:1},"d-buenas-noches":{t:"Buenas noches",min:2},
+    "h-frente":{t:"Abre y cierra",min:2},"h-balcon":{t:"En el balcón",min:2},"h-sala":{t:"La familia",min:2},"h-patio":{t:"En el patio",min:2}},
   cual:["cual-frente","cual-balcon","cual-sala","cual-patio"]   // the next-day picture pairs, one file per scene
 };

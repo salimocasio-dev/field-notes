@@ -83,7 +83,7 @@ const hoyo=(k,i)=>[k==="L"?CAMA.L[0]+8+i*10:CAMA.R[0]+48-i*10,CAMA[k][1]+10];
 
 /* ---------- where things are ---------- */
 const LUGAR={puerta:[30,104,.8],inicio:[52,150,1],centro:[104,178,1],caja:[104,150,1],camaL:[90,164,.9],camaR:[118,164,.9],
-  luis:[112,140,1],carmen:[62,130,1],carmenA:[112,116,.9],abuela:[70,170,1],porton:[128,104,.85],luisC:[96,140,.95],sale:[134,84,.5]};
+  luis:[112,140,1],carmen:[62,130,1],carmenA:[112,116,.9],abuela:[70,170,1],porton:[128,104,.85],arbol:[186,112,.8],luisC:[96,140,.95],sale:[134,84,.5]};
 const DETRAS={L:[68,176],R:[172,176]},ESPERA={luis:[160,128],carmen:[80,128]},LADOS=[[84,172],[156,172]];
 const alto=id=>id==="abuela"?51:id==="bebe"?28:(QUIEN[id].nino?(W.gente[id]&&W.gente[id].sent?40:44):(W.gente[id]&&W.gente[id].sent?49:56));
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0?[R(p.x)-11,R(p.y)-alto(id),22,alto(id)]:null;};
@@ -92,7 +92,7 @@ const COSAS=["luis","carmen","bebe","abuela","abuelo","mama","papa"].map(persona
   {id:"bola",si:w=>!!w.bola,box:w=>[R(w.bola.x)-7,R(w.bola.y)-13,14,14],m:2},{id:"saco",si:w=>!!w.saco,box:w=>[R(w.saco.x)-13,R(w.saco.y)-23,26,24],m:1},
   {id:"caja",si:w=>!!w.caja,box:[104,112,32,24],m:0},{id:"camaL",box:[40,160,56,38],m:2},{id:"camaR",box:[144,160,56,38],m:2},
   {id:"sol",si:w=>!w.noche&&w.soly<80,box:w=>[SOLX-14,R(w.soly)-14,28,28],m:3},{id:"porton",box:[127,70,40,43],m:1},{id:"nido",box:[170,60,22,16],m:1},{id:"arbol",box:[168,8,60,106],m:0},
-  {id:"puerta",box:[27,57,30,56],m:0},{id:"casa",box:[0,14,61,100],m:0},{id:"cerca",box:[60,80,180,33],m:0},{id:"patio",box:[0,113,240,103],m:0}]);
+  {id:"pajaro",si:w=>!!w.ave&&w.ave.mode!=="none",box:w=>{const p=KIT.avePos(w.ave);return [p[0]-10,p[1]-20,20,22];},m:0},{id:"puerta",box:[27,57,30,56],m:0},{id:"casa",box:[0,14,61,100],m:0},{id:"cerca",box:[60,80,180,33],m:0},{id:"patio",box:[0,113,240,103],m:0}]);
 
 /* ---------- drawing ---------- */
 function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=R(p.x),y=R(p.y),habla=TALK===id&&a%2?1:0,h=alto(id),d=p.dir<0?-1:1;c.globalAlpha=p.al==null?1:p.al;
@@ -222,6 +222,28 @@ const acts={
   // the ball goes from one to the other, and then to the frog's head
   async pelota(){const l=G("luis"),ca=G("carmen"),b=W.bola,q=W.cq;await Promise.all([mueve("luis",166,150),mueve("carmen",60,150)]);l.dir=-1;ca.dir=1;b.x=l.x-12;b.y=l.y;l.pose="wave";await bolaA(ca.x+12,ca.y,7);l.pose="idle";ca.pose="wave";await bolaA(l.x-12,l.y,7);ca.pose="idle";},
   async pelota2(){const l=G("luis"),b=W.bola,f=ranaXY();l.pose="wave";await bolaA(f[0],f[1]+4,7);l.pose="idle";W.bola=null;W.lleva="bola";for(let k=0;k<3;k++){bounce(8);SFX.blip();await wait(380);}},
+  /* ---- Escuchar: picture stories and do-this routines ---- */
+  async flores(){camas();},
+  async pon(o){const p=G(o.quien);if(!p)return;p.x=+o.x;p.y=+o.y;if(o.dir)p.dir=+o.dir;},
+  async deja(o){const p=G(o.quien);if(!p)return;p.lleva=null;p.pose="idle";},
+  async apunta(o){const p=G(o.quien);p.pose=o.no?"idle":"alto";await wait(300);},
+  // Luis kicks the ball so high that it stays up in the tree, by the nest
+  async bolaarbol(){const p=G("luis"),b=W.bola;b.x=p.x+12;b.y=p.y;p.pose="wave";SFX.blip();const x0=b.x,y0=b.y;for(let i=1;i<=12;i++){const t=i/12;b.x=x0+(196-x0)*t;b.y=y0+(64-y0)*t-Math.sin(Math.PI*t)*40;await wait(TICK);}b.x=196;b.y=64;SFX.bonk();p.pose="idle";await wait(400);},
+  async avesale(){await KIT.aveVa(184,60,5,1);SFX.pio();await wait(400);},
+  // the bird pecks the ball; it falls onto the frog's head and bounces over to Luis
+  async avepica2(){const v=W.ave,b=W.bola,q=W.cq,f=ranaXY(),l=G("luis");for(let k=0;k<2;k++){v.dip=3;SFX.pio();await wait(170);v.dip=0;await wait(170);}
+    const x0=b.x,y0=b.y;for(let i=1;i<=8;i++){b.x=x0+(f[0]-x0)*i/8;b.y=y0+(f[1]+8-y0)*(i/8)*(i/8);await wait(TICK);}SFX.bonk();bounce(7);await wait(250);await bolaA(l.x-12,l.y,7);},
+  // the ball goes round the three of them
+  async pelota3(){const l=G("luis"),ca=G("carmen"),f=ranaXY();for(let k=0;k<2;k++){l.pose="wave";await bolaA(ca.x+12,ca.y,6);l.pose="idle";ca.pose="wave";await bolaA(f[0],f[1]+10,6);ca.pose="idle";bounce(6);await bolaA(l.x-12,l.y,6);}},
+  async llama(o){const p=G(o.quien||"mama");p.pose="wave";await wait(600);},
+  // someone goes in at the back door
+  async seva(o){for(const id of o.quien.split("+")){const p=G(id);if(!p)continue;p.pose="idle";if(id==="mama"&&G("bebe"))G("bebe").vis=0;await mueve(id,44,118);p.vis=0;SFX.blip();}},
+  async cierra(){W.pdoor=0;SFX.slam();await wait(500);},
+  async noche(){for(let i=0;i<=10;i++){W.osc=.3+.03*i;await wait(TICK);}W.noche=1;W.brillo=1;await wait(500);},
+  async aveduerme(){W.ave.st="round";await wait(600);},
+  async luzsale(o){const P=[[70,160],[150,150],[112,190]],i=W.luces.length;W.luces.push({id:"l"+i,est:"en",x0:P[i%3][0],y0:P[i%3][1]});SFX.luz();await wait(500);},
+  async canta(){for(let k=0;k<3;k++){SFX.coqui();bounce(6);await wait(700);}for(let k=0;k<3;k++){W.luces.forEach(l=>{l.al=.25;});await wait(150);W.luces.forEach(l=>{l.al=1;});await wait(220);}},
+  async abreporton(){W.porton=1;SFX.creak();await wait(600);},
   /* ---- story 10: the sack ---- */
   async inicio10(){camas();W.gente={luis:{x:190,y:160,pose:"idle",sent:1,dir:1},carmen:{x:50,y:160,pose:"idle",dir:1}};W.saco={x:164,y:165,ab:0};W.canasta=[];W.nido=[];const q=W.cq,L=LUGAR.puerta;q.x=L[0];q.y=L[1];q.s=L[2];},
   // the bird flies a loop over the tree and comes back to its nest
@@ -266,7 +288,7 @@ const acts={
     const k=W.nido.length?W.nido.pop():"flor";W.ave.lleva=k;W.ave.st="feliz";await KIT.aveVa(f[0]+14,f[1]-6,10);W.ave.lleva=null;W.canasta.push(k);SFX.luz();fx({t:"star",n:8,pts:[[f[0]+12,f[1]+12]]});await wait(500);await KIT.aveVa(f[0],f[1]-2,4);W.ave.mode="head";await wait(500);},
   /* ---- story 11: going home ---- */
   async inicio11(){camas();W.gente={abuela:{x:34,y:136,pose:"idle",dir:1},abuelo:{x:60,y:126,pose:"ojos",lleva:"bizcocho",dir:1},mama:{x:86,y:136,pose:"idle"},bebe:{x:97,y:109,z:137,est:"idle"},papa:{x:112,y:126,pose:"idle"},
-      luis:{x:150,y:190,pose:"idle",dir:-1},carmen:{x:186,y:178,pose:"alto",dir:-1}};W.pdoor=1;W.sol=3;W.soly=SOLY[3];W.osc=.12;W.ave={mode:"sit",x:178,y:83,dir:-1,st:"n"};
+      luis:{x:150,y:160,pose:"idle",dir:-1},carmen:{x:188,y:158,pose:"alto",dir:-1}};W.pdoor=1;W.sol=3;W.soly=SOLY[3];W.osc=.12;W.ave={mode:"sit",x:178,y:83,dir:-1,st:"n"};
     W.luces=[{id:"carmen",est:"en"},{id:"abuelo",est:"en"},{id:"medio",est:"en",x0:120,y0:156}];},
   async puesta(){for(let i=0;i<=12;i++){W.soly=SOLY[3]+i*3;W.osc=.12+.015*i;await wait(TICK);}W.estrella=1;SFX.luz();await wait(600);},
   // two go to the gate together, side by side

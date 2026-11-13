@@ -1,0 +1,479 @@
+{
+ "id": "h-balcon",
+ "title": "En el balcón",
+ "place": "La casa",
+ "scene": "balcon",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_silla_grande": {
+   "who": "narr",
+   "text": "No. Esa es la silla grande."
+  },
+  "hz_no_silla_pequena": {
+   "who": "narr",
+   "text": "No. Esa es la silla pequeña."
+  },
+  "hz_no_mesa": {
+   "who": "narr",
+   "text": "No. Esa es la mesa."
+  },
+  "hz_no_jugo": {
+   "who": "narr",
+   "text": "No. Eso es jugo."
+  },
+  "hz_no_agua": {
+   "who": "narr",
+   "text": "No. Eso es agua."
+  },
+  "hb01": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Hola!"
+  },
+  "hb02": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Gracias."
+  },
+  "hb03": {
+   "who": "narr",
+   "text": "Esta es la mesa."
+  },
+  "hb04": {
+   "who": "narr",
+   "text": "Toca la silla grande."
+  },
+  "hb05": {
+   "who": "narr",
+   "text": "¿Dónde está la silla pequeña?"
+  },
+  "hb06": {
+   "who": "narr",
+   "text": "Toca la mesa."
+  },
+  "hb07": {
+   "who": "narr",
+   "text": "¿Dónde está el jugo?"
+  },
+  "hb08": {
+   "who": "narr",
+   "text": "Toca el agua."
+  },
+  "hb09": {
+   "who": "narr",
+   "text": "¡Mira! El jugo y el agua."
+  },
+  "hb10": {
+   "who": "narr",
+   "text": "El agua es para abuela."
+  },
+  "hb11": {
+   "who": "narr",
+   "text": "El jugo es para abuela."
+  },
+  "hb12": {
+   "who": "narr",
+   "text": "Toca la silla pequeña y la silla grande."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "door": 1
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "act": "sube"
+  },
+  {
+   "set": {
+    "twinkle": "mesa"
+   }
+  },
+  "hb03",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "silla_grande",
+    "silla_pequena",
+    "mesa"
+   ],
+   "pick": "silla_grande",
+   "lead": [],
+   "line": "hb04",
+   "right": [
+    {
+     "act": "absienta"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "silla_grande",
+    "silla_pequena",
+    "mesa"
+   ],
+   "pick": "silla_pequena",
+   "lead": [],
+   "line": "hb05",
+   "right": [
+    {
+     "act": "ir",
+     "a": "silla_pequena"
+    }
+   ],
+   "alias": {
+    "abuela": "silla_grande"
+   }
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "silla_grande",
+    "silla_pequena",
+    "mesa"
+   ],
+   "pick": "mesa",
+   "lead": [],
+   "line": "hb06",
+   "right": [
+    {
+     "act": "abentra"
+    },
+    {
+     "act": "absale"
+    },
+    {
+     "act": "pone2"
+    },
+    {
+     "act": "absienta"
+    },
+    {
+     "act": "ir",
+     "a": "mesa"
+    }
+   ],
+   "alias": {
+    "abuela": "silla_grande"
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "jugo",
+    "agua"
+   ],
+   "pick": "jugo",
+   "lead": [],
+   "line": "hb07",
+   "right": [
+    {
+     "act": "coge",
+     "en": "jugo"
+    },
+    {
+     "act": "bebecq"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "agua",
+    "silla_pequena"
+   ],
+   "pick": "agua",
+   "lead": [],
+   "line": "hb08",
+   "right": [
+    {
+     "act": "coge",
+     "en": "agua"
+    },
+    {
+     "act": "bebecq"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "set": {
+    "vasos": []
+   }
+  },
+  {
+   "act": "pone"
+  },
+  {
+   "act": "ir",
+   "a": "decir"
+  },
+  {
+   "set": {
+    "twinkle": "jugo"
+   }
+  },
+  "hb09",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "jugo",
+    "agua"
+   ],
+   "pick": "agua",
+   "lead": [],
+   "line": "hb10",
+   "right": [
+    {
+     "act": "lleva",
+     "en": "agua"
+    },
+    {
+     "act": "bebe"
+    },
+    {
+     "say": "hb02",
+     "gap": 300
+    },
+    {
+     "act": "deja"
+    }
+   ],
+   "vale": [
+    "abuela"
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "jugo",
+    "agua"
+   ],
+   "pick": "jugo",
+   "lead": [],
+   "line": "hb11",
+   "right": [
+    {
+     "act": "lleva",
+     "en": "jugo"
+    },
+    {
+     "act": "bebe"
+    },
+    {
+     "say": "hb02",
+     "gap": 300
+    },
+    {
+     "act": "deja"
+    }
+   ],
+   "vale": [
+    "abuela"
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "set": {
+    "jarras": []
+   }
+  },
+  {
+   "act": "ir",
+   "a": "mesa"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "silla_pequena"
+   ],
+   "vale": [
+    "silla_grande"
+   ],
+   "pick": "silla_pequena",
+   "lead": [],
+   "line": "hb12",
+   "right": [
+    {
+     "if": "x=silla_pequena",
+     "then": [
+      {
+       "act": "ir",
+       "a": "silla_pequena"
+      }
+     ],
+     "else": [
+      {
+       "act": "pose",
+       "que": "wave"
+      },
+      {
+       "say": "hb01",
+       "gap": 300
+      },
+      {
+       "act": "pose",
+       "que": "idle"
+      }
+     ]
+    }
+   ],
+   "alias": {
+    "abuela": "silla_grande"
+   }
+  },
+  {
+   "calc": "otro",
+   "cond": "x=silla_pequena",
+   "then": "silla_grande",
+   "else": "silla_pequena"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "mesa"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "hb12",
+   "right": [
+    {
+     "if": "otro=silla_pequena",
+     "then": [
+      {
+       "act": "ir",
+       "a": "silla_pequena"
+      }
+     ],
+     "else": [
+      {
+       "act": "pose",
+       "que": "wave"
+      },
+      {
+       "say": "hb01",
+       "gap": 300
+      },
+      {
+       "act": "pose",
+       "que": "idle"
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ],
+   "alias": {
+    "abuela": "silla_grande"
+   }
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "hb03",
+  "hb04",
+  "hb05",
+  "hb06",
+  "hb07",
+  "hb08",
+  "hb09",
+  "hb10",
+  "hb11",
+  "hb12"
+ ]
+}

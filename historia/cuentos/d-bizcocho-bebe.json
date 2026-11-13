@@ -1,0 +1,394 @@
+{
+ "id": "d-bizcocho-bebe",
+ "title": "El bizcocho del bebé",
+ "place": "La casa",
+ "scene": "sala",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "db01": {
+   "who": "narr",
+   "text": "Esta es la sala. Aquí está la familia."
+  },
+  "db02": {
+   "who": "narr",
+   "text": "Abuelo duerme."
+  },
+  "db03": {
+   "who": "narr",
+   "text": "¡Mira! Un bizcocho."
+  },
+  "db04": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién quiere bizcocho?"
+  },
+  "db05": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Yo!"
+  },
+  "db06": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Yo también!"
+  },
+  "db07": {
+   "who": "narr",
+   "text": "El bebé también quiere."
+  },
+  "db08": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es para mamá."
+  },
+  "db09": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: Gracias, Coquí."
+  },
+  "db10": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y este es para papá."
+  },
+  "db11": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Gracias."
+  },
+  "db12": {
+   "who": "narr",
+   "text": "El bebé no tiene bizcocho. El bebé llora."
+  },
+  "db13": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este es para el bebé."
+  },
+  "db14": {
+   "who": "narr",
+   "text": "Ahora el bebé no llora. El bebé come."
+  },
+  "db15": {
+   "who": "narr",
+   "text": "¿Y abuelo? Abuelo duerme."
+  },
+  "db16": {
+   "who": "narr",
+   "text": "Coquí toca a abuelo."
+  },
+  "db17": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¿Bizcocho? ¡Sí, por favor!"
+  },
+  "db18": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Gracias, Coquí."
+  },
+  "db19": {
+   "who": "tu",
+   "text": "De nada."
+  },
+  "db20": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y este es para ti, Coquí."
+  },
+  "db21": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "db22": {
+   "who": "narr",
+   "text": "La familia come bizcocho."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "pastel": "tapado"
+   }
+  },
+  {
+   "act": "duerme"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  "db01",
+  {
+   "set": {
+    "twinkle": "abuelo"
+   }
+  },
+  "db02",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "destapa"
+  },
+  "db03",
+  {
+   "act": "pose",
+   "quien": "abuela",
+   "que": "wave"
+  },
+  {
+   "say": "db04",
+   "gap": 250
+  },
+  {
+   "act": "pose",
+   "quien": "abuela",
+   "que": "idle"
+  },
+  {
+   "act": "pose",
+   "quien": "mama",
+   "que": "wave"
+  },
+  {
+   "say": "db05",
+   "gap": 200
+  },
+  {
+   "act": "pose",
+   "quien": "mama",
+   "que": "idle"
+  },
+  {
+   "act": "pose",
+   "quien": "papa",
+   "que": "wave"
+  },
+  {
+   "say": "db06",
+   "gap": 200
+  },
+  {
+   "act": "pose",
+   "quien": "papa",
+   "que": "idle"
+  },
+  {
+   "act": "saluda",
+   "quien": "bebe"
+  },
+  "db07",
+  {
+   "dots": 2
+  },
+  {
+   "say": "db08",
+   "gap": 200
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "act": "da",
+   "en": "mama"
+  },
+  {
+   "act": "come",
+   "quien": "mama"
+  },
+  {
+   "say": "db09",
+   "gap": 250
+  },
+  {
+   "say": "db10",
+   "gap": 200
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "act": "da",
+   "en": "papa"
+  },
+  {
+   "act": "come",
+   "quien": "papa"
+  },
+  {
+   "say": "db11",
+   "gap": 250
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "llora"
+  },
+  "db12",
+  {
+   "say": "db13",
+   "gap": 200
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "act": "da",
+   "en": "bebe"
+  },
+  {
+   "act": "come",
+   "quien": "bebe"
+  },
+  {
+   "act": "llora",
+   "no": "1"
+  },
+  {
+   "act": "saluda",
+   "quien": "bebe"
+  },
+  "db14",
+  {
+   "dots": 4
+  },
+  {
+   "set": {
+    "twinkle": "abuelo"
+   }
+  },
+  "db15",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "ir",
+   "a": "abuelo"
+  },
+  {
+   "say": "db16",
+   "gap": 100
+  },
+  {
+   "act": "despierta"
+  },
+  {
+   "act": "ir",
+   "a": "centro"
+  },
+  {
+   "say": "db17",
+   "gap": 250
+  },
+  {
+   "act": "dale"
+  },
+  {
+   "act": "da",
+   "en": "abuelo"
+  },
+  {
+   "act": "come",
+   "quien": "abuelo"
+  },
+  {
+   "say": "db18",
+   "gap": 250
+  },
+  {
+   "say": "db19",
+   "gap": 300
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "suplato"
+  },
+  {
+   "say": "db20",
+   "gap": 250
+  },
+  {
+   "say": "db21",
+   "gap": 300
+  },
+  {
+   "act": "vuelve"
+  },
+  {
+   "act": "comen"
+  },
+  "db22",
+  {
+   "set": {
+    "heart": 1
+   }
+  },
+  {
+   "wait": 700
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "db01",
+  "db02",
+  "db03",
+  "db04",
+  "db05",
+  "db06",
+  "db07",
+  "db08",
+  "db09",
+  "db10",
+  "db11",
+  "db12",
+  "db13",
+  "db14",
+  "db15",
+  "db16",
+  "db17",
+  "db18",
+  "db19",
+  "db20",
+  "db21",
+  "db22"
+ ]
+}

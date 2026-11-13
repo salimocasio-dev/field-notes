@@ -165,10 +165,16 @@ function lugar(i){const l=CURSO.lugares[i],op=abierto(l);
 
 /* ---------- BIBLIOTECA: listen and read ---------- */
 let LEE=null;
-async function biblioteca(){const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),done=cs.filter(hecho);
-  document.getElementById("t-biblioteca").innerHTML=`<h1>Biblioteca</h1><div class="lab">Listen</div>
-  <div class="card" style="padding:0 16px">${cs.map(c=>`<div class="row"><div class="grow"><b>${CURSO.cuentos[c].t}</b><div class="small mut">${veces(c)?"Played "+veces(c)+"×":"Play it on the map first"}</div></div><button class="btn soft" ${veces(c)?"":"disabled"} onclick="ir('${c}')">Listen</button></div>`).join("")}</div>
-  <p class="small mut">Picture stories and do-this routines open with each finished place.</p>
+async function biblioteca(){const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),done=cs.filter(hecho),oi=db().oidos||{};
+  const fila=(c,ok,q,sub)=>`<div class="row"><div class="grow"><b>${CURSO.cuentos[c].t}</b><div class="small mut">${sub}</div></div><button class="btn soft" ${ok?"":"disabled"} onclick="tick();location.href='index.html?cuento=${c}${q}&desde=app'">${SVG(IC.play)}</button></div>`;
+  const cuanto=c=>(oi[c]?"Heard "+oi[c]+"× · ":"")+"about "+CURSO.cuentos[c].min+" min";
+  const grupo=(t,d,rows)=>rows?`<div class="small" style="margin:16px 0 8px"><b>${t}</b> <span class="mut">· ${d}</span></div><div class="card" style="padding:0 16px">${rows}</div>`:"";
+  const lugares=CURSO.lugares.filter(l=>l.cuentos&&l.cuentos.length).map(l=>{const fin=AJ().todo||l.cuentos.every(hecho),falta="Finish "+l.nombre+" on the map first";
+    return `<div class="lab" style="margin-top:24px">Listen · ${l.nombre}</div>`+
+      grupo("Otra vez","the stories again, told straight through",l.cuentos.map(c=>fila(c,veces(c),"&oir=1",veces(c)?cuanto(c):"Play it on the map first")).join(""))+
+      grupo("Cuentos con dibujos","new picture stories, only to watch and hear",(l.dibujos||[]).map(c=>fila(c,fin,"",fin?cuanto(c):falta)).join(""))+
+      grupo("Haz esto","do what you hear",(l.haz||[]).map(c=>fila(c,fin,"",fin?cuanto(c):falta)).join(""));}).join("");
+  document.getElementById("t-biblioteca").innerHTML=`<h1>Biblioteca</h1>${lugares}
   <div class="lab" style="margin-top:24px">Read</div><p class="small mut" style="margin-top:4px">Stories you have finished. Listen first, then read. Reading is not tracked until A2.</p>
   ${done.length?done.map(c=>`<div class="card row" style="cursor:pointer" onclick="leer('${c}')"><div class="grow"><b>${CURSO.cuentos[c].t}</b></div><span class="mut">›</span></div>`).join(""):`<div class="card mut">Finish a story to read it here.</div>`}`;}
 async function leer(c){const T=await (await fetch("cuentos/"+c+".json")).json(),seen=new Set(),out=[];

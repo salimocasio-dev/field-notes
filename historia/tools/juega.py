@@ -50,7 +50,7 @@ async def main():
                 key=(s["sign"],s["lost"],s["door"],s["win"],s["ab"],s["plato"],s["ave"],s["resp"],s["tab"],s["heart"],s["rain"],s["lamp"],s["extra"],s["bubt"] if os.environ.get("WRAP") else "")
                 if key!=seen: seen=key; await snap(f"d{s['dots']}_L{s['lost']}")
             if not s["live"]: tapped=None
-            if s["live"] and (s["asked"]) and s["live"]!=tapped:
+            if s["live"] and (s["asked"]) and (s["live"],s["pick"],s["sign"],s["cap"])!=tapped:
                 live=s["live"].split("|")
                 if len(live)==1: tgt=live[0]
                 else:
@@ -61,7 +61,7 @@ async def main():
                 await pg.wait_for_timeout(150)
                 try: await pg.evaluate(f"Story.tapOn('{tgt}')")
                 except Exception as e: log.append(f"        could not touch {tgt}: {str(e)[:160]}"); raise SystemExit(1)
-                tapped=s["live"]; await pg.wait_for_timeout(150)
+                tapped=(s["live"],s["pick"],s["sign"],s["cap"]); await pg.wait_for_timeout(150)
             if not s["running"] and i>40: break
         await snap("end")
         print("took %.1fs at fast=%s"%(time.time()-t0,FASTV)); print("log:",await pg.evaluate("JSON.stringify(Story.log)"))

@@ -1,0 +1,302 @@
+{
+ "id": "d-toc-toc",
+ "title": "Toc, toc",
+ "place": "La casa",
+ "scene": "frente",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "dt01": {
+   "who": "narr",
+   "text": "Esta es la casa de abuela."
+  },
+  "dt02": {
+   "who": "narr",
+   "text": "La puerta está cerrada."
+  },
+  "dt03": {
+   "who": "narr",
+   "text": "La ventana está cerrada."
+  },
+  "dt04": {
+   "who": "narr",
+   "text": "Coquí toca la puerta. ¡Toc, toc!"
+  },
+  "dt05": {
+   "who": "narr",
+   "text": "Abuela no abre."
+  },
+  "dt06": {
+   "who": "narr",
+   "text": "Coquí toca la ventana. ¡Toc, toc!"
+  },
+  "dt07": {
+   "who": "narr",
+   "text": "Abuela no abre la ventana."
+  },
+  "dt08": {
+   "who": "narr",
+   "text": "¡Mira! Ahí viene la lluvia."
+  },
+  "dt09": {
+   "who": "narr",
+   "text": "Coquí toca la puerta. ¡Toc, toc, toc!"
+  },
+  "dt10": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién es?"
+  },
+  "dt11": {
+   "who": "tu",
+   "text": "¡Soy yo, abuela! ¡Abre!"
+  },
+  "dt12": {
+   "who": "narr",
+   "text": "Abuela abre la puerta."
+  },
+  "dt13": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Hola, Coquí! Entra."
+  },
+  "dt14": {
+   "who": "narr",
+   "text": "Coquí entra a la casa."
+  },
+  "dt15": {
+   "who": "narr",
+   "text": "Ahora está lloviendo."
+  },
+  "dt16": {
+   "who": "narr",
+   "text": "Abuela cierra la puerta."
+  },
+  "dt17": {
+   "who": "narr",
+   "text": "Abuela abre la ventana."
+  },
+  "dt18": {
+   "who": "narr",
+   "text": "Abuela y Coquí miran la lluvia."
+  }
+ },
+ "beats": [
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  "dt01",
+  {
+   "cam": "puerta"
+  },
+  "dt02",
+  {
+   "cam": "ventana"
+  },
+  "dt03",
+  {
+   "cam": "wide"
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "ir",
+   "a": "puerta"
+  },
+  {
+   "say": "dt04",
+   "gap": 100
+  },
+  {
+   "act": "tocar",
+   "en": "puerta"
+  },
+  {
+   "wait": 500
+  },
+  "dt05",
+  {
+   "act": "ir",
+   "a": "ventana"
+  },
+  {
+   "say": "dt06",
+   "gap": 100
+  },
+  {
+   "act": "tocar",
+   "en": "ventana"
+  },
+  {
+   "wait": 500
+  },
+  "dt07",
+  {
+   "dots": 3
+  },
+  {
+   "act": "trueno"
+  },
+  {
+   "act": "atras"
+  },
+  {
+   "act": "burbuja",
+   "quien": "cq",
+   "que": "lluvia"
+  },
+  {
+   "say": "dt08",
+   "gap": 100
+  },
+  {
+   "act": "gotas"
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "act": "ir",
+   "a": "puerta"
+  },
+  {
+   "say": "dt09",
+   "gap": 100
+  },
+  {
+   "act": "tocar",
+   "en": "puerta"
+  },
+  {
+   "act": "tocar",
+   "en": "puerta"
+  },
+  {
+   "act": "luz"
+  },
+  {
+   "act": "dentro",
+   "en": "puerta"
+  },
+  {
+   "say": "dt10",
+   "gap": 250
+  },
+  {
+   "say": "dt11",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "abre",
+   "que": "puerta"
+  },
+  "dt12",
+  {
+   "act": "pose",
+   "que": "wave"
+  },
+  {
+   "say": "dt13",
+   "gap": 300
+  },
+  {
+   "act": "pose",
+   "que": "idle"
+  },
+  {
+   "say": "dt14",
+   "gap": 100
+  },
+  {
+   "act": "entra",
+   "por": "puerta"
+  },
+  {
+   "cam": "wide",
+   "n": 9
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "llueve"
+  },
+  "dt15",
+  {
+   "act": "abcierra",
+   "que": "puerta"
+  },
+  "dt16",
+  {
+   "act": "abre",
+   "que": "ventana"
+  },
+  "dt17",
+  {
+   "act": "cuadro"
+  },
+  "dt18",
+  {
+   "act": "fin"
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "dt01",
+  "dt02",
+  "dt03",
+  "dt04",
+  "dt05",
+  "dt06",
+  "dt07",
+  "dt08",
+  "dt09",
+  "dt10",
+  "dt11",
+  "dt12",
+  "dt13",
+  "dt14",
+  "dt15",
+  "dt16",
+  "dt17",
+  "dt18"
+ ]
+}

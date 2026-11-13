@@ -1,0 +1,312 @@
+{
+ "id": "h-frente",
+ "title": "Abre y cierra",
+ "place": "La casa",
+ "scene": "frente",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "puerta": "puerta",
+  "ventana": "ventana",
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_puerta": {
+   "who": "narr",
+   "text": "No. Esa es la puerta."
+  },
+  "hz_no_ventana": {
+   "who": "narr",
+   "text": "No. Esa es la ventana."
+  },
+  "ha01": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Hola!"
+  },
+  "ha02": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Muy bien, Coquí!"
+  },
+  "ha03": {
+   "who": "narr",
+   "text": "Toca la puerta."
+  },
+  "ha04": {
+   "who": "narr",
+   "text": "¿Dónde está la ventana?"
+  },
+  "ha05": {
+   "who": "narr",
+   "text": "Abre la puerta."
+  },
+  "ha06": {
+   "who": "narr",
+   "text": "Abre la ventana."
+  },
+  "ha07": {
+   "who": "narr",
+   "text": "Cierra la puerta."
+  },
+  "ha08": {
+   "who": "narr",
+   "text": "Cierra la ventana."
+  },
+  "ha09": {
+   "who": "narr",
+   "text": "Abre la ventana y toca a abuela."
+  }
+ },
+ "beats": [
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "puerta",
+   "lead": [],
+   "line": "ha03",
+   "right": [
+    {
+     "act": "tocar",
+     "en": "puerta"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "ventana",
+   "lead": [],
+   "line": "ha04",
+   "right": [
+    {
+     "act": "tocar",
+     "en": "ventana"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "puerta",
+   "lead": [],
+   "line": "ha05",
+   "right": [
+    {
+     "act": "abrir",
+     "que": "puerta"
+    },
+    {
+     "set": {
+      "ab": {
+       "en": "puerta",
+       "pose": "wave",
+       "bub": null,
+       "al": 1
+      }
+     }
+    },
+    {
+     "say": "ha01",
+     "gap": 300
+    },
+    {
+     "act": "vete"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "ventana",
+   "lead": [],
+   "line": "ha06",
+   "right": [
+    {
+     "act": "abrir",
+     "que": "ventana"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "puerta",
+   "lead": [],
+   "line": "ha07",
+   "right": [
+    {
+     "act": "cerrar",
+     "en": "puerta"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "ventana",
+   "lead": [],
+   "line": "ha08",
+   "right": [
+    {
+     "act": "cerrar",
+     "en": "ventana"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "puerta",
+    "ventana"
+   ],
+   "pick": "ventana",
+   "lead": [],
+   "line": "ha09",
+   "right": [
+    {
+     "act": "abrir",
+     "que": "ventana"
+    },
+    {
+     "set": {
+      "ab": {
+       "en": "ventana",
+       "pose": "idle",
+       "bub": null,
+       "al": 1
+      }
+     }
+    },
+    {
+     "wait": 300
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "abuela",
+    "puerta"
+   ],
+   "pick": "abuela",
+   "lead": [],
+   "line": "ha09",
+   "right": [
+    {
+     "act": "pose",
+     "que": "wave"
+    },
+    {
+     "say": "ha02",
+     "gap": 400
+    },
+    {
+     "act": "pose",
+     "que": "idle"
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ],
+   "mudo": true
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "ha03",
+  "ha04",
+  "ha05",
+  "ha06",
+  "ha07",
+  "ha08",
+  "ha09"
+ ]
+}

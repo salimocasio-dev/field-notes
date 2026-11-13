@@ -1,0 +1,314 @@
+{
+ "id": "d-buenas-noches",
+ "title": "Buenas noches",
+ "place": "La casa",
+ "scene": "patio",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "dn01": {
+   "who": "narr",
+   "text": "Mira el sol."
+  },
+  "dn02": {
+   "who": "narr",
+   "text": "¡Mira! Una estrella."
+  },
+  "dn03": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Niños! ¡Vamos para adentro!"
+  },
+  "dn04": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Hasta mañana, Coquí."
+  },
+  "dn05": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Hasta mañana, amigo."
+  },
+  "dn06": {
+   "who": "tu",
+   "text": "¡Hasta mañana!"
+  },
+  "dn07": {
+   "who": "narr",
+   "text": "Los niños entran a la casa."
+  },
+  "dn08": {
+   "who": "narr",
+   "text": "Mamá, papá y el bebé entran."
+  },
+  "dn09": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Buenas noches, Coquí."
+  },
+  "dn10": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Buenas noches."
+  },
+  "dn11": {
+   "who": "tu",
+   "text": "Buenas noches, abuela. Buenas noches, abuelo."
+  },
+  "dn12": {
+   "who": "narr",
+   "text": "Abuela cierra la puerta."
+  },
+  "dn13": {
+   "who": "narr",
+   "text": "Ahora es de noche."
+  },
+  "dn14": {
+   "who": "narr",
+   "text": "El pájaro duerme."
+  },
+  "dn15": {
+   "who": "narr",
+   "text": "¡Mira! Un cucubano."
+  },
+  "dn16": {
+   "who": "narr",
+   "text": "Y otro. Y otro más."
+  },
+  "dn17": {
+   "who": "narr",
+   "text": "Coquí no duerme. Coquí canta."
+  },
+  "dn18": {
+   "who": "narr",
+   "text": "Buenas noches, Coquí."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio11"
+  },
+  {
+   "set": {
+    "luces": []
+   }
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "idle"
+  },
+  {
+   "act": "deja",
+   "quien": "abuelo"
+  },
+  {
+   "act": "pon",
+   "quien": "luis",
+   "x": "136",
+   "y": "164"
+  },
+  {
+   "act": "pon",
+   "quien": "carmen",
+   "x": "170",
+   "y": "160"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "say": "dn01",
+   "gap": 100
+  },
+  {
+   "act": "puesta"
+  },
+  "dn02",
+  {
+   "dots": 2
+  },
+  {
+   "act": "llama",
+   "quien": "mama"
+  },
+  {
+   "say": "dn03",
+   "gap": 300
+  },
+  {
+   "act": "pose",
+   "quien": "mama",
+   "que": "idle"
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "wave"
+  },
+  {
+   "say": "dn04",
+   "gap": 200
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "idle"
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "wave"
+  },
+  {
+   "say": "dn05",
+   "gap": 200
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "idle"
+  },
+  {
+   "say": "dn06",
+   "gap": 300
+  },
+  {
+   "say": "dn07",
+   "gap": 100
+  },
+  {
+   "act": "seva",
+   "quien": "luis+carmen"
+  },
+  {
+   "say": "dn08",
+   "gap": 100
+  },
+  {
+   "act": "seva",
+   "quien": "papa+mama"
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "pose",
+   "quien": "abuelo",
+   "que": "wave"
+  },
+  {
+   "say": "dn09",
+   "gap": 200
+  },
+  {
+   "act": "pose",
+   "quien": "abuela",
+   "que": "wave"
+  },
+  {
+   "say": "dn10",
+   "gap": 200
+  },
+  {
+   "say": "dn11",
+   "gap": 300
+  },
+  {
+   "act": "seva",
+   "quien": "abuelo+abuela"
+  },
+  {
+   "act": "cierra"
+  },
+  "dn12",
+  {
+   "dots": 4
+  },
+  {
+   "act": "noche"
+  },
+  "dn13",
+  {
+   "act": "aveduerme"
+  },
+  "dn14",
+  {
+   "act": "luzsale"
+  },
+  "dn15",
+  {
+   "act": "luzsale"
+  },
+  {
+   "act": "luzsale"
+  },
+  "dn16",
+  {
+   "dots": 5
+  },
+  {
+   "say": "dn17",
+   "gap": 100
+  },
+  {
+   "act": "canta"
+  },
+  {
+   "say": "dn18",
+   "gap": 500
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "dn01",
+  "dn02",
+  "dn03",
+  "dn04",
+  "dn05",
+  "dn06",
+  "dn07",
+  "dn08",
+  "dn09",
+  "dn10",
+  "dn11",
+  "dn12",
+  "dn13",
+  "dn14",
+  "dn15",
+  "dn16",
+  "dn17",
+  "dn18"
+ ]
+}

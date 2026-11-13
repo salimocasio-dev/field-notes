@@ -1,0 +1,286 @@
+{
+ "id": "d-agua-pajaro",
+ "title": "Agua para el pájaro",
+ "place": "La casa",
+ "scene": "balcon",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "da01": {
+   "who": "narr",
+   "text": "Hace calor."
+  },
+  "da02": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ven al balcón, Coquí."
+  },
+  "da03": {
+   "who": "narr",
+   "text": "Abuela se sienta en la silla grande."
+  },
+  "da04": {
+   "who": "narr",
+   "text": "Coquí se sienta en la silla pequeña."
+  },
+  "da05": {
+   "who": "narr",
+   "text": "Abuela entra a la casa."
+  },
+  "da06": {
+   "who": "narr",
+   "text": "¡Mira! Abuela tiene dos vasos."
+  },
+  "da07": {
+   "who": "narr",
+   "text": "Abuela pone los vasos en la mesa."
+  },
+  "da08": {
+   "who": "narr",
+   "text": "Un vaso de jugo."
+  },
+  "da09": {
+   "who": "narr",
+   "text": "Y un vaso de agua."
+  },
+  "da10": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El jugo es para ti, Coquí."
+  },
+  "da11": {
+   "who": "narr",
+   "text": "Coquí toma el jugo."
+  },
+  "da12": {
+   "who": "narr",
+   "text": "¡Mira! El pájaro."
+  },
+  "da13": {
+   "who": "narr",
+   "text": "El pájaro toma el agua."
+  },
+  "da14": {
+   "who": "narr",
+   "text": "El pájaro se sienta en la silla pequeña."
+  },
+  "da15": {
+   "who": "tu",
+   "text": "¡Mi silla!"
+  },
+  "da16": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ven acá, Coquí."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "calor": 3,
+    "door": 1
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "burbuja",
+   "quien": "cq",
+   "que": "calor"
+  },
+  "da01",
+  {
+   "act": "calla"
+  },
+  {
+   "act": "pose",
+   "que": "wave"
+  },
+  {
+   "say": "da02",
+   "gap": 250
+  },
+  {
+   "act": "pose",
+   "que": "idle"
+  },
+  {
+   "act": "sube"
+  },
+  {
+   "act": "absienta"
+  },
+  "da03",
+  {
+   "act": "ir",
+   "a": "silla_pequena"
+  },
+  "da04",
+  {
+   "dots": 2
+  },
+  {
+   "act": "abentra"
+  },
+  "da05",
+  {
+   "act": "absale"
+  },
+  "da06",
+  {
+   "act": "pone2"
+  },
+  "da07",
+  {
+   "set": {
+    "twinkle": "jugo"
+   }
+  },
+  "da08",
+  {
+   "set": {
+    "twinkle": "agua"
+   }
+  },
+  "da09",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "absienta"
+  },
+  {
+   "dots": 3
+  },
+  {
+   "say": "da10",
+   "gap": 250
+  },
+  {
+   "say": "da11",
+   "gap": 100
+  },
+  {
+   "act": "coge",
+   "en": "jugo"
+  },
+  {
+   "act": "bebecq"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "aveva",
+   "en": "agua"
+  },
+  "da12",
+  {
+   "say": "da13",
+   "gap": 100
+  },
+  {
+   "act": "avebebe",
+   "en": "agua"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "avesilla"
+  },
+  "da14",
+  {
+   "act": "burbuja",
+   "quien": "cq",
+   "que": "mal"
+  },
+  {
+   "say": "da15",
+   "gap": 300
+  },
+  {
+   "act": "calla"
+  },
+  {
+   "act": "pose",
+   "que": "wave"
+  },
+  {
+   "say": "da16",
+   "gap": 250
+  },
+  {
+   "act": "pose",
+   "que": "idle"
+  },
+  {
+   "act": "ir",
+   "a": "abuela"
+  },
+  {
+   "act": "burbuja",
+   "quien": "cq",
+   "que": "amor"
+  },
+  {
+   "wait": 1000
+  },
+  {
+   "act": "calla"
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "da01",
+  "da02",
+  "da03",
+  "da04",
+  "da05",
+  "da06",
+  "da07",
+  "da08",
+  "da09",
+  "da10",
+  "da11",
+  "da12",
+  "da13",
+  "da14",
+  "da15",
+  "da16"
+ ]
+}

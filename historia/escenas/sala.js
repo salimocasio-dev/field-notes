@@ -128,6 +128,7 @@ function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0||(p.al!=null&&
 /* ---------- what is at stake, in the corner of the screen ---------- */
 function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x,y-1,w,h+2);g.fillStyle="#FFFDF4";g.fillRect(x,y,w,h);}
 function hud(g,W,a){
+  if(W.retrato){const x=Math.round((DW-104)/2),y=8;g.fillStyle=OUT;g.fillRect(x-1,y-1,106,70);g.fillStyle=RP.wood[2];g.fillRect(x,y,104,68);g.fillStyle=RP.wood[4];g.fillRect(x,y,104,1);g.fillStyle=OUT;g.fillRect(x+3,y+3,98,62);g.imageSmoothingEnabled=false;g.drawImage(W.retrato,x+4,y+4);}
   if(W.plato!=null){tarjeta(g,3,3,78,29);g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),5,7);g.fillStyle=OUT;g.fillRect(29,25,48,3);g.fillStyle="#FFFFFF";g.fillRect(30,25,46,2);
     for(let i=0;i<W.plato;i++)trozo(g,32+i*15,11,1.3,i>=W.plato-(W.lost||0));}   // three slices: whole, or with a bite out
   if(W.cafe){tarjeta(g,3,3,44+(W.aciertos||0)*13,36);taza(g,8,9,Math.max(0,3-(W.lost||0)),3);for(let i=0;i<(W.aciertos||0);i++)heart(g,49+i*13,15,1);}
@@ -182,13 +183,21 @@ const acts={
     if(enteros<=0){const b=G("bebe");await mueve("bebe",q.x-2,q.y+26,8);b.est="clap";b.trozo=0;W.vuela=null;await vuelaA(b.x,b.y-14,q.x+16,q.y+8,1,.8);SFX.munch();q.bub="amor";await wait(900);q.bub=null;}
     else if(enteros>=3){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,30],[180,34],[120,22],[96,44],[150,40]]});await wait(900);}
     else{q.bub="amor";SFX.coqui();await wait(800);q.bub=null;}},
+  /* ---- Escuchar ---- */
+  // abuelo puts the camera down on the low table
+  async ponecamara(){const ab=G("abuelo");await mueve("abuelo",150,172);ab.pose="idle";ab.dir=-1;W.camMesa=1;SFX.blip();await wait(400);},
+  // the camera on the table goes off by itself: the photo of everyone, big, over the room
+  async retrato(){flashazo();while(F-W.flash<5)await wait(TICK);const k=document.createElement("canvas");k.width=96;k.height=60;const x=k.getContext("2d");x.imageSmoothingEnabled=false;x.drawImage(sc,48,100,144,90,0,0,96,60);W.retrato=k;SFX.luz();await wait(900);},
+  async ninos(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=150;a.y=200;b.x=182;b.y=200;},
+  async llora(o){const b=G("bebe");b.est=o.no?"idle":"llora";if(!o.no)SFX.pio();await wait(600);},
+  async todos(){["mama","papa"].forEach(id=>{G(id).pose="wave";});await wait(700);["mama","papa"].forEach(id=>{G(id).pose="idle";});},
   /* ---- story 7: three photos ---- */
   // the boy and the girl run in and hug the baby
   async corren(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=40;a.y=126;b.x=34;b.y=124;await Promise.all([mueve("hermano",94,198,10),mueve("hermana",66,203,10)]);G("bebe").est="clap";SFX.pio();await wait(800);G("bebe").est="idle";
     const bb=G("bebe"),m=G("mama");for(let i=1;i<=6;i++){bb.x=70+(m.x-70)*i/6;bb.y=193+(m.y-15-193)*i/6-Math.sin(Math.PI*i/6)*8;await wait(TICK);}bb.x=m.x;bb.y=m.y-15;bb.z=m.y+1;await wait(200);},   // then the baby goes up onto mamá's lap
   // two people take their places, left and right; which side each is on is drawn fresh
   async lados(o){const s=azar()?0:1,P=o.donde==="juntos"?JUNTOS:o.donde==="parados"?PARADOS:APARTE;if(o.donde==="parados"){G(o.a).servido=0;G(o.b).servido=0;}await Promise.all([mueve(o.a,P[s][0],P[s][1]),mueve(o.b,P[1-s][0],P[1-s][1])]);},
-  async sientan(){await Promise.all([mueve("mama",SITIO.mama[0],SITIO.mama[1]),mueve("papa",SITIO.papa[0],SITIO.papa[1])]);G("mama").sent=1;G("papa").sent=1;},
+  async sientan(){await Promise.all([mueve("mama",SITIO.mama[0],SITIO.mama[1]),mueve("papa",SITIO.papa[0],SITIO.papa[1])]);G("mama").sent=1;G("papa").sent=1;const bb=G("bebe"),m=G("mama");if(bb&&bb.z){bb.x=m.x;bb.y=m.y-15;bb.z=m.y+1;}},   // the baby settles back on her lap
   async camara(){const ab=G("abuelo");await mueve("abuelo",CAMARA[0],CAMARA[1]);ab.dir=-1;ab.pose="foto";await wait(250);},
   // the frog hops beside someone
   async junto(o){const p=G(o.en),q=W.cq,cx=p.x+(p.x<120?-24:24),s=p.y<150?.9:1;await hopTo(Math.round(cx-16),Math.round(p.y+5-27),2,s);},
@@ -246,7 +255,7 @@ const estado=W=>"gente="+Object.keys(W.gente||{}).filter(k=>W.gente[k]&&W.gente[
 const G0=()=>({mama:{x:SITIO.mama[0],y:SITIO.mama[1],sent:1,pose:"idle"},papa:{x:SITIO.papa[0],y:SITIO.papa[1],sent:1,pose:"idle"},abuelo:{x:SITIO.abuelo[0],y:SITIO.abuelo[1],sent:1,pose:"idle"},
   bebe:{x:SITIO.bebe[0],y:SITIO.bebe[1],est:"idle"},abuela:{x:SITIO.abuela[0],y:SITIO.abuela[1],pose:"idle",dir:-1},hermano:{x:SITIO.hermano[0],y:SITIO.hermano[1],pose:"idle",vis:0},hermana:{x:SITIO.hermana[0],y:SITIO.hermana[1],pose:"idle",vis:0}});
 KIT.escena({id:"sala",CAM:{wide:[22,0,196,216],sofa:[52,48,150,165.3]},heartAt:[107,6],lugar:LUGAR,cosas:COSAS,
-  fresh:()=>({gente:G0(),fotos:[null,null,null],luz:1,pastel:null,plato:null,lleva:0,vuela:null,flash:0,ave:null,cafe:0,relleno:0,aciertos:0,apodo:null,visor:null,borroso:0,tapaojos:null,golpe:0,gotas:null,camMesa:0,cq:{x:LUGAR.centro[0],y:LUGAR.centro[1],s:1,dy:0,al:1,vis:1,bub:null}}),
+  fresh:()=>({gente:G0(),fotos:[null,null,null],luz:1,pastel:null,plato:null,lleva:0,vuela:null,flash:0,ave:null,cafe:0,relleno:0,aciertos:0,apodo:null,visor:null,borroso:0,tapaojos:null,golpe:0,gotas:null,camMesa:0,retrato:null,cq:{x:LUGAR.centro[0],y:LUGAR.centro[1],s:1,dy:0,al:1,vis:1,bub:null}}),
   draw,hud,poke,acts,stake,talkAt,estado});
 window.SALA={FAM,SITIO,LUGAR,trozo};
 })();

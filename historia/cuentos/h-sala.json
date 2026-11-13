@@ -1,0 +1,443 @@
+{
+ "id": "h-sala",
+ "title": "La familia",
+ "place": "La casa",
+ "scene": "sala",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_mama": {
+   "who": "narr",
+   "text": "No. Esa es mamá."
+  },
+  "hz_no_papa": {
+   "who": "narr",
+   "text": "No. Ese es papá."
+  },
+  "hz_no_abuelo": {
+   "who": "narr",
+   "text": "No. Ese es abuelo."
+  },
+  "hz_no_bebe": {
+   "who": "narr",
+   "text": "No. Ese es el bebé."
+  },
+  "hz_no_hermano": {
+   "who": "narr",
+   "text": "No. Ese es Luis."
+  },
+  "hz_no_hermana": {
+   "who": "narr",
+   "text": "No. Esa es Carmen."
+  },
+  "hc01": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Hola!"
+  },
+  "hc02": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Hola!"
+  },
+  "hc03": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Gracias."
+  },
+  "hc04": {
+   "who": "narr",
+   "text": "Toca a mamá."
+  },
+  "hc05": {
+   "who": "narr",
+   "text": "¿Dónde está papá?"
+  },
+  "hc06": {
+   "who": "narr",
+   "text": "¿Dónde está el bebé?"
+  },
+  "hc07": {
+   "who": "narr",
+   "text": "Toca a abuelo."
+  },
+  "hc08": {
+   "who": "narr",
+   "text": "Toca a Luis."
+  },
+  "hc09": {
+   "who": "narr",
+   "text": "¿Dónde está Carmen?"
+  },
+  "hc10": {
+   "who": "narr",
+   "text": "¡Mira! El bizcocho."
+  },
+  "hc11": {
+   "who": "narr",
+   "text": "El bizcocho es para papá."
+  },
+  "hc12": {
+   "who": "narr",
+   "text": "El bizcocho es para el bebé."
+  },
+  "hc13": {
+   "who": "narr",
+   "text": "Toca a mamá y a papá."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "pastel": "tapado"
+   }
+  },
+  {
+   "act": "duerme"
+  },
+  {
+   "act": "ninos"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "mama",
+   "lead": [],
+   "line": "hc04",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "mama"
+    },
+    {
+     "say": "hc01",
+     "gap": 250
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "papa",
+   "lead": [],
+   "line": "hc05",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "papa"
+    },
+    {
+     "say": "hc02",
+     "gap": 250
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "bebe",
+   "lead": [],
+   "line": "hc06",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "bebe"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "abuelo",
+   "lead": [],
+   "line": "hc07",
+   "right": [
+    {
+     "act": "despierta"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "hermano",
+    "hermana"
+   ],
+   "pick": "hermano",
+   "lead": [],
+   "line": "hc08",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "hermano"
+    }
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "hermano",
+    "hermana"
+   ],
+   "pick": "hermana",
+   "lead": [],
+   "line": "hc09",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "hermana"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "destapa"
+  },
+  "hc10",
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "papa",
+   "lead": [],
+   "line": "hc11",
+   "right": [
+    {
+     "act": "dale"
+    },
+    {
+     "act": "da",
+     "en": "papa"
+    },
+    {
+     "act": "come",
+     "quien": "papa"
+    },
+    {
+     "say": "hc03",
+     "gap": 250
+    }
+   ],
+   "vale": [
+    "bizcocho"
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama",
+    "papa",
+    "abuelo",
+    "bebe"
+   ],
+   "pick": "bebe",
+   "lead": [],
+   "line": "hc12",
+   "right": [
+    {
+     "act": "dale"
+    },
+    {
+     "act": "da",
+     "en": "bebe"
+    },
+    {
+     "act": "come",
+     "quien": "bebe"
+    }
+   ],
+   "vale": [
+    "bizcocho"
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "mama"
+   ],
+   "vale": [
+    "papa"
+   ],
+   "pick": "mama",
+   "lead": [],
+   "line": "hc13",
+   "right": [
+    {
+     "if": "x=mama",
+     "then": [
+      {
+       "act": "saluda",
+       "quien": "mama"
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "papa"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "otro",
+   "cond": "x=mama",
+   "then": "papa",
+   "else": "mama"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "abuelo"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "hc13",
+   "right": [
+    {
+     "if": "otro=mama",
+     "then": [
+      {
+       "act": "saluda",
+       "quien": "mama"
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "papa"
+      }
+     ]
+    },
+    {
+     "act": "todos"
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "hc04",
+  "hc05",
+  "hc06",
+  "hc07",
+  "hc08",
+  "hc09",
+  "hc10",
+  "hc11",
+  "hc12",
+  "hc13"
+ ]
+}
