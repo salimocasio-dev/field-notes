@@ -51,10 +51,10 @@ c.say(AB("Ven al balcón, Coquí."),gap=250); c.do(act("pose",que="idle"),act("s
 c.do(act("absienta")); c.say(N("Abuela se sienta en la silla grande.")); c.do(act("ir",a="silla_pequena")); c.say(N("Coquí se sienta en la silla pequeña."))
 c.do({"dots":2},act("abentra")); c.say(N("Abuela entra a la casa.")); c.do(act("absale")); c.say(N("¡Mira! Abuela tiene dos vasos.")); c.do(act("pone2")); c.say(N("Abuela pone los vasos en la mesa."))
 c.do(tw("jugo")); c.say(N("Un vaso de jugo.")); c.do(tw("agua")); c.say(N("Y un vaso de agua.")); c.do(tw(None),act("absienta"))
-c.do({"dots":3}); c.say(AB("El jugo es para ti, Coquí."),gap=250); c.say(N("Coquí toma el jugo."),gap=100); c.do(act("coge",en="jugo"),act("bebecq"))
+c.do({"dots":3}); c.say(AB("El jugo es para ti, Coquí."),gap=250); c.say(N("Coquí toma el jugo."),gap=100); c.do(act("coge",en="jugo"),act("bebecq"),{"set":{"calor":0}})
 c.do({"dots":4},act("aveva",en="agua")); c.say(N("¡Mira! El pájaro.")); c.say(N("El pájaro toma el agua."),gap=100); c.do(act("avebebe",en="agua"))
 c.do({"dots":5},act("avesilla")); c.say(N("El pájaro se sienta en la silla pequeña.")); c.do(act("burbuja",quien="cq",que="mal")); c.say(T("¡Mi silla!"),gap=300); c.do(act("calla"),act("pose",que="wave"))
-c.say(AB("Ven acá, Coquí."),gap=250); c.do(act("pose",que="idle"),act("ir",a="abuela"),act("burbuja",quien="cq",que="amor"),{"wait":1000},act("calla"))
+c.say(AB("Ven acá, Coquí."),gap=250); c.do(act("pose",que="idle"),act("ir",a="abuela"),act("burbuja",quien="cq",que="amor"),{"set":{"heart":1}},{"wait":1200},act("calla"))
 guarda(c,"Agua para el pájaro","balcon","escucha",5)
 
 # ---- 3. El bizcocho del bebé (La sala) ----
@@ -70,7 +70,7 @@ c.do({"dots":2}); reparto(c,"mama",A("Este es para mamá."),MA("Gracias, Coquí.
 c.do({"dots":3},act("llora")); c.say(N("El bebé no tiene bizcocho. El bebé llora.")); reparto(c,"bebe",A("Este es para el bebé.")); c.do(act("llora",no="1"),act("saluda",quien="bebe")); c.say(N("Ahora el bebé no llora. El bebé come."))
 c.do({"dots":4},tw("abuelo")); c.say(N("¿Y abuelo? Abuelo duerme.")); c.do(tw(None),act("ir",a="abuelo")); c.say(N("Coquí toca a abuelo."),gap=100); c.do(act("despierta"),act("ir",a="centro"))
 c.say(AO("¿Bizcocho? ¡Sí, por favor!"),gap=250); c.do(act("dale"),act("da",en="abuelo"),act("come",quien="abuelo")); c.say(AO("Gracias, Coquí."),gap=250); c.say(T("De nada."),gap=300)
-c.do({"dots":5},act("suplato")); c.say(A("Y este es para ti, Coquí."),gap=250); c.say(T("¡Gracias, abuela!"),gap=300); c.do(act("vuelve"),act("comen")); c.say(N("La familia come bizcocho.")); c.do({"set":{"heart":1}},{"wait":700})
+c.do({"dots":5},act("suplato")); c.say(A("Y este es para ti, Coquí."),gap=250); c.say(T("¡Gracias, abuela!"),gap=300); c.do(act("cqcome"),act("vuelve"),act("comen")); c.say(N("La familia come bizcocho.")); c.do({"set":{"heart":1}},{"wait":700})
 guarda(c,"El bizcocho del bebé","sala","escucha",5)
 
 # ---- 4. La foto de la familia (La sala) ----
@@ -81,8 +81,8 @@ def foto(c,quien,x0,y0,dice,linea):
 c.do({"wait":400},act("corren"),act("camara"),{"dots":1}); c.say(N("Abuelo tiene una cámara."))
 foto(c,"hermana",84,200,AO("Carmen, ven. Una foto."),N("¡Mira! La foto de Carmen."))
 c.do({"dots":2}); foto(c,"hermano",156,200,AO("Ahora Luis."),N("La foto de Luis."))
-c.do({"dots":3}); foto(c,"mama",None,None,AO("Ahora mamá y el bebé."),N("La foto de mamá y el bebé.")); c.do(act("sientan"))
-c.do({"dots":4},tw("fotos"),{"wait":700},tw(None),act("pose",quien="hermana",que="tu")); c.say(CH("¿Y tú, abuelo?"),gap=300); c.do(act("pose",quien="hermana",que="idle"))
+c.do({"dots":3}); foto(c,"papa",None,None,AO("Ahora papá."),N("La foto de papá.")); c.do(act("sientan"))
+c.do({"dots":4},tw("fotos"),{"wait":700},tw(None),act("anda",quien="hermana",x="160",y="192"),act("pose",quien="hermana",que="tu"),act("burbuja",quien="abuelo",que="q")); c.say(CH("¿Y tú, abuelo?"),gap=300); c.do(act("calla"),act("pose",quien="hermana",que="idle"))
 c.say(N("Abuelo pone la cámara en la mesa."),gap=100); c.do(act("ponecamara")); c.say(AO("¡Vengan todos! ¡Ven, Coquí!"),gap=200); c.do(act("final7"))
 c.do({"dots":5},act("retrato")); c.say(N("¡Mira! La foto de la familia.")); c.say(T("¡Y yo también!"),gap=500)
 guarda(c,"La foto de la familia","sala","escucha",5)
@@ -109,7 +109,7 @@ c.do({"dots":3},act("pose",quien="abuelo",que="wave")); c.say(AO("Buenas noches,
 c.do(act("seva",quien="abuelo+abuela"),act("cierra")); c.say(N("Abuela cierra la puerta."))
 c.do({"dots":4},act("noche")); c.say(N("Ahora es de noche.")); c.do(act("aveduerme")); c.say(N("El pájaro duerme."))
 c.do(act("luzsale")); c.say(N("¡Mira! Un cucubano.")); c.do(act("luzsale"),act("luzsale")); c.say(N("Y otro. Y otro más."))
-c.do({"dots":5}); c.say(N("Coquí no duerme. Coquí canta."),gap=100); c.do(act("canta")); c.say(N("Buenas noches, Coquí."),gap=500)
+c.do({"dots":5}); c.say(N("Coquí no duerme. Coquí canta."),gap=100); c.do(act("canta")); c.do({"set":{"aro":1,"heart":1}}); c.say(N("Buenas noches, Coquí."),gap=700)
 guarda(c,"Buenas noches","patio","escucha",5)
 
 # =============== Haz esto ===============

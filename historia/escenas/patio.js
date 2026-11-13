@@ -107,7 +107,7 @@ function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=R(p.x
 function rana(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK==="coqui")&&a%2?1:0,dy=R(q.dy);
   for(let j=0;j<3;j++)for(let i=j===1?0:2;i<b.w-5-(j===1?0:2);i++)if((i+j)%2===0)fr(g,b.x+2+i,q.y+25+j,1,1,"#2E8A34");
   g.globalAlpha=q.al;g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+dy);
-  if(q.ojos)[.3,.7].forEach(u=>{const ex=b.x+b.w*u,ey=b.y+dy+7*q.s,r=5.4*q.s;g.fillStyle=OUT;g.beginPath();g.arc(ex,ey,r+1,0,7);g.fill();g.fillStyle="#FFFFFF";g.beginPath();g.arc(ex,ey,r,0,7);g.fill();
+  if(q.ojos)[.3,.7].forEach(u=>{const ex=b.x+b.w*u,ey=b.y+dy+7*q.s,r=4.5*q.s;g.fillStyle=OUT;g.beginPath();g.arc(ex,ey,r+1,0,7);g.fill();g.fillStyle="#FFFFFF";g.beginPath();g.arc(ex,ey,r,0,7);g.fill();
     g.fillStyle="#20140A";g.beginPath();g.arc(ex+(q.ojx||0)*1.6*q.s,ey+(q.ojy==null?-1:q.ojy)*1.6*q.s,r*.5,0,7);g.fill();});   // eyes wide: he is looking
   g.globalAlpha=1;
   if(W.lleva)cosa(g,W.lleva,b.x+(b.w>>1),b.y+dy+1,1.4);
@@ -139,7 +139,7 @@ function draw(c,W,a){const q=W.cq,G=W.gente||{},n=W.noche?4:Math.min(3,W.sol||0)
   if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});
   L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());
   if(W.polvo){const p=W.polvo;for(let i=0;i<3;i++){fr(c,p.x+p.dir*(4+i*6)-2,p.y-2-i%2*3,4,3,"#FFFFFF");fr(c,p.x+p.dir*(4+i*6)-1,p.y-1-i%2*3,3,2,"#E8E0C8");}for(let i=0;i<3;i++)fr(c,p.x+p.dir*8,p.y-12-i*5,9,1,"#FFFFFF");}   // dust and speed lines behind a hop
-  if(W.rizo){const z=W.rizo;c.strokeStyle="#FFFFFF";c.lineWidth=1;c.setLineDash([2,3]);c.beginPath();c.arc(z.x,z.y,z.r||12,0,7);c.stroke();c.setLineDash([]);}   // the loop the bird has just flown
+  if(W.rizo&&(W.rizo.f==null||F-W.rizo.f<36)){const z=W.rizo;c.strokeStyle="#FFFFFF";c.lineWidth=1;c.setLineDash([2,3]);c.beginPath();c.arc(z.x,z.y,z.r||12,0,7);c.stroke();c.setLineDash([]);}   // the loop the bird has just flown
   if(W.ave&&W.ave.mode!=="none"){KIT.drawAve(c,W.ave);if(W.ave.lleva){const p=KIT.avePos(W.ave);cosa(c,W.ave.lleva,p[0]+(W.ave.dir||1)*9,p[1]+8,1);}}
   (W.mari||[]).forEach((m,i)=>{const x=R(m.x+5*Math.sin(F/6+i*2)),y=R(m.y+3*Math.cos(F/5+i)),w=(F>>1)%2?4:2,col=FLOR[(i+1)%FLOR.length];fr(c,x-w-1,y-3,w+2,7,OUT);fr(c,x,y-3,w+2,7,OUT);fr(c,x-w,y-2,w,5,col);fr(c,x+1,y-2,w,5,col);fr(c,x,y-2,1,5,OUT);});
   if(W.vuela){const v=W.vuela;cosa(c,v.k,v.x,v.y,v.s||1);}
@@ -232,7 +232,7 @@ const acts={
   async avesale(){await KIT.aveVa(184,60,5,1);SFX.pio();await wait(400);},
   // the bird pecks the ball; it falls onto the frog's head and bounces over to Luis
   async avepica2(){const v=W.ave,b=W.bola,q=W.cq,f=ranaXY(),l=G("luis");for(let k=0;k<2;k++){v.dip=3;SFX.pio();await wait(170);v.dip=0;await wait(170);}
-    const x0=b.x,y0=b.y;for(let i=1;i<=8;i++){b.x=x0+(f[0]-x0)*i/8;b.y=y0+(f[1]+8-y0)*(i/8)*(i/8);await wait(TICK);}SFX.bonk();bounce(7);await wait(250);await bolaA(l.x-12,l.y,7);},
+    const x0=b.x,y0=b.y;await wait(300);for(let i=1;i<=14;i++){b.x=x0+(f[0]-x0)*i/14;b.y=y0+(f[1]+6-y0)*(i/14)*(i/14);await wait(TICK);}SFX.bonk();bounce(7);await wait(700);await bolaA(l.x-12,l.y,9);await wait(300);},
   // the ball goes round the three of them
   async pelota3(){const l=G("luis"),ca=G("carmen"),f=ranaXY();for(let k=0;k<2;k++){l.pose="wave";await bolaA(ca.x+12,ca.y,6);l.pose="idle";ca.pose="wave";await bolaA(f[0],f[1]+10,6);ca.pose="idle";bounce(6);await bolaA(l.x-12,l.y,6);}},
   async llama(o){const p=G(o.quien||"mama");p.pose="wave";await wait(600);},
@@ -247,7 +247,7 @@ const acts={
   /* ---- story 10: the sack ---- */
   async inicio10(){camas();W.gente={luis:{x:190,y:160,pose:"idle",sent:1,dir:1},carmen:{x:50,y:160,pose:"idle",dir:1}};W.saco={x:164,y:165,ab:0};W.canasta=[];W.nido=[];const q=W.cq,L=LUGAR.puerta;q.x=L[0];q.y=L[1];q.s=L[2];},
   // the bird flies a loop over the tree and comes back to its nest
-  async aveloop(){const v=W.ave;v.mode="fly";SFX.pio();const cx=150,cy=40,r=18;W.rizo=null;for(let i=0;i<=20;i++){const an=-Math.PI/2+Math.PI*2*i/20+1.2;v.x=cx+r*Math.cos(an);v.y=cy+r*Math.sin(an);v.dir=Math.sin(an)<0?1:-1;await wait(TICK);}W.rizo={x:cx,y:cy,r};await KIT.aveVa(181,66,7,-1);},
+  async aveloop(){const v=W.ave;v.mode="fly";SFX.pio();const cx=150,cy=40,r=18;W.rizo=null;for(let i=0;i<=20;i++){const an=-Math.PI/2+Math.PI*2*i/20+1.2;v.x=cx+r*Math.cos(an);v.y=cy+r*Math.sin(an);v.dir=Math.sin(an)<0?1:-1;await wait(TICK);}W.rizo={x:cx,y:cy,r,f:F};await KIT.aveVa(181,66,7,-1);},
   async avecabeza(){W.rizo=null;const f=ranaXY();await KIT.aveVa(f[0],f[1]-2,8);W.ave.mode="head";W.ave.st="feliz";SFX.pio();await wait(900);},
   async avenido(){W.ave.st="n";W.ave.lleva=null;await KIT.aveVa(181,66,8,-1);},
   async acaricia(o){const p=G(o.quien||"carmen");mira(o.quien||"carmen");p.pose="offer";p.dir=-p.dir;p.bub="amor";SFX.blip();await wait(900);p.bub=null;p.pose="idle";},

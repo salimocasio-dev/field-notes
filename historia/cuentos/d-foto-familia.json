@@ -55,11 +55,11 @@
   "df06": {
    "who": "narr",
    "habla": "abuelo",
-   "text": "Abuelo dice: Ahora mamá y el bebé."
+   "text": "Abuelo dice: Ahora papá."
   },
   "df07": {
    "who": "narr",
-   "text": "La foto de mamá y el bebé."
+   "text": "La foto de papá."
   },
   "df08": {
    "who": "narr",
@@ -156,13 +156,13 @@
   },
   {
    "act": "anda",
-   "quien": "mama",
+   "quien": "papa",
    "x": "120",
    "y": "146"
   },
   {
    "act": "dispara",
-   "con": "mama",
+   "con": "papa",
    "ok": "1",
    "solo": "1"
   },
@@ -187,13 +187,27 @@
    }
   },
   {
+   "act": "anda",
+   "quien": "hermana",
+   "x": "160",
+   "y": "192"
+  },
+  {
    "act": "pose",
    "quien": "hermana",
    "que": "tu"
   },
   {
+   "act": "burbuja",
+   "quien": "abuelo",
+   "que": "q"
+  },
+  {
    "say": "df08",
    "gap": 300
+  },
+  {
+   "act": "calla"
   },
   {
    "act": "pose",

@@ -198,6 +198,11 @@
    "act": "bebecq"
   },
   {
+   "set": {
+    "calor": 0
+   }
+  },
+  {
    "dots": 4
   },
   {
@@ -254,7 +259,12 @@
    "que": "amor"
   },
   {
-   "wait": 1000
+   "set": {
+    "heart": 1
+   }
+  },
+  {
+   "wait": 1200
   },
   {
    "act": "calla"

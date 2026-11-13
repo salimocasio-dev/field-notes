@@ -89,7 +89,7 @@ function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=Math.
     if(p.lleva){const hx=x+(p.dir<0?16:-22),hy=y-27;if(p.lleva==="plato"){fr(c,hx-3,hy+7,16,3,OUT);fr(c,hx-2,hy+7,14,2,"#FFFFFF");for(let k=0;k<3;k++)trozo(c,hx-2+k*5,hy-1,.6,k<(W.lost||0));}else trozo(c,hx,hy);}}
   else{const pose=p.pose==="wave"?"wave"+(a%2):(p.pose||"idle"),w=(p.gafas||p.dormido)?Object.assign({},FAM[id],p.gafas?{gafas:p.gafas}:{},{dormido:p.dormido}):FAM[id],k="p"+id+pose+habla+(p.sent?1:0)+(p.gafas||"")+(p.dormido?"z":""),im=spr(k,()=>KIT.mkPersona(w,pose,habla,p.sent));
     c.save();c.translate(x,y-im.height+1+(p.rie&&a%2?-1:0));if(p.dir<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
-    if(p.dormido){const z=(F>>3)%3,Z=(zx,zy,k)=>{fr(c,zx-1,zy-1,4*k+2,5*k+2,OUT);[[0,0,4,1],[3,1,1,1],[2,2,1,1],[1,3,1,1],[0,4,4,1]].forEach(r=>fr(c,zx+r[0]*k,zy+r[1]*k,r[2]*k,r[3]*k,"#FFFFFF"));};Z(x+10+z*2,y-h-8-z*2,2);Z(x+21+z*2,y-h-15-z*2,1);}
+    if(p.dormido){const z=(F>>3)%3,Z=(zx,zy,k)=>{fr(c,zx-1,zy-1,4*k+2,5*k+2,OUT);[[0,0,4,1],[3,1,1,1],[2,2,1,1],[1,3,1,1],[0,4,4,1]].forEach(r=>fr(c,zx+r[0]*k,zy+r[1]*k,r[2]*k,r[3]*k,"#FFFFFF"));};Z(x+6+z*2,y-h-5-z*2,2);Z(x+17+z*2,y-h-12-z*2,1);}
     if(pose==="taza"){const d=p.dir<0?-1:1,cx=x+d*13,cy=y-h+26;taza(c,cx-4,cy-8,W.relleno?3:Math.max(0,3-(W.lost||0)),1);}}
   if(p.trozo)trozo(c,x-4,y-Math.round(h*.52),1,p.trozo==="mordido");
   else if(p.servido&&id!=="bebe")plato(c,x,y-Math.round(h*(p.sent?.36:.5)));
@@ -128,7 +128,7 @@ function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0||(p.al!=null&&
 /* ---------- what is at stake, in the corner of the screen ---------- */
 function tarjeta(g,x,y,w,h){g.fillStyle=OUT;g.fillRect(x-1,y,w+2,h);g.fillRect(x,y-1,w,h+2);g.fillStyle="#FFFDF4";g.fillRect(x,y,w,h);}
 function hud(g,W,a){
-  if(W.retrato){const x=Math.round((DW-104)/2),y=8;g.fillStyle=OUT;g.fillRect(x-1,y-1,106,70);g.fillStyle=RP.wood[2];g.fillRect(x,y,104,68);g.fillStyle=RP.wood[4];g.fillRect(x,y,104,1);g.fillStyle=OUT;g.fillRect(x+3,y+3,98,62);g.imageSmoothingEnabled=false;g.drawImage(W.retrato,x+4,y+4);}
+  if(W.retrato){const x=Math.round((DW-136)/2),y=6;g.fillStyle=OUT;g.fillRect(x-1,y-1,138,90);g.fillStyle=RP.wood[2];g.fillRect(x,y,136,88);g.fillStyle=RP.wood[4];g.fillRect(x,y,136,1);g.fillStyle=OUT;g.fillRect(x+3,y+3,130,82);g.imageSmoothingEnabled=false;g.drawImage(W.retrato,x+4,y+4);}
   if(W.plato!=null){tarjeta(g,3,3,78,29);g.drawImage(spr("cq.7_0",()=>mkCoqui(.7,0,0)),5,7);g.fillStyle=OUT;g.fillRect(29,25,48,3);g.fillStyle="#FFFFFF";g.fillRect(30,25,46,2);
     for(let i=0;i<W.plato;i++)trozo(g,32+i*15,11,1.3,i>=W.plato-(W.lost||0));}   // three slices: whole, or with a bite out
   if(W.cafe){tarjeta(g,3,3,44+(W.aciertos||0)*13,36);taza(g,8,9,Math.max(0,3-(W.lost||0)),3);for(let i=0;i<(W.aciertos||0);i++)heart(g,49+i*13,15,1);}
@@ -187,7 +187,9 @@ const acts={
   // abuelo puts the camera down on the low table
   async ponecamara(){const ab=G("abuelo");await mueve("abuelo",150,172);ab.pose="idle";ab.dir=-1;W.camMesa=1;SFX.blip();await wait(400);},
   // the camera on the table goes off by itself: the photo of everyone, big, over the room
-  async retrato(){flashazo();while(F-W.flash<5)await wait(TICK);const k=document.createElement("canvas");k.width=96;k.height=60;const x=k.getContext("2d");x.imageSmoothingEnabled=false;x.drawImage(sc,48,100,144,90,0,0,96,60);W.retrato=k;SFX.luz();await wait(900);},
+  async retrato(){flashazo();while(F-W.flash<5)await wait(TICK);const k=document.createElement("canvas");k.width=128;k.height=80;const x=k.getContext("2d");x.imageSmoothingEnabled=false;x.drawImage(sc,22,88,198,124,0,0,128,80);W.retrato=k;SFX.luz();await wait(900);},
+  // the frog gets his plate from abuela and eats
+  async cqcome(){const ab=G("abuela");ab.lleva=0;ab.pose="idle";W.lleva=1;SFX.blip();await wait(500);for(let k=0;k<2;k++){SFX.munch();bounce(4);await wait(380);}W.lleva=0;W.cq.bub="amor";await wait(700);W.cq.bub=null;},
   async ninos(){const a=G("hermano"),b=G("hermana");a.vis=1;b.vis=1;a.x=150;a.y=200;b.x=182;b.y=200;},
   async llora(o){const b=G("bebe");b.est=o.no?"idle":"llora";if(!o.no)SFX.pio();await wait(600);},
   async todos(){["mama","papa"].forEach(id=>{G(id).pose="wave";});await wait(700);["mama","papa"].forEach(id=>{G(id).pose="idle";});},

@@ -282,8 +282,14 @@
    "act": "canta"
   },
   {
+   "set": {
+    "aro": 1,
+    "heart": 1
+   }
+  },
+  {
    "say": "dn18",
-   "gap": 500
+   "gap": 700
   }
  ],
  "final": [

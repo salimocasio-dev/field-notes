@@ -74,8 +74,8 @@ The stories keep the plain present of the map stories ("Abuela abre la puerta", 
 1. NARR: "Abuelo tiene una cámara." [abuelo stands with a camera at his face; Luis and Carmen are in the room; three empty frames on the wall]
 2. NARR: "Abuelo dice: Carmen, ven. Una foto." [Carmen runs to the middle and stands still] [a flash] NARR: "¡Mira! La foto de Carmen." [her photo is in the first frame]
 3. NARR: "Abuelo dice: Ahora Luis." [Luis runs to the middle] [a flash] NARR: "La foto de Luis." [second frame]
-4. NARR: "Abuelo dice: Ahora mamá y el bebé." [mamá stands in the middle with the baby on her arm] [a flash] NARR: "La foto de mamá y el bebé." [third frame]
-5. NARR: "Carmen dice: ¿Y tú, abuelo?" [the three photos twinkle; then Carmen points at abuelo]
+4. NARR: "Abuelo dice: Ahora papá." [papá stands in the middle] [a flash] NARR: "La foto de papá." [third frame]
+5. NARR: "Carmen dice: ¿Y tú, abuelo?" [the three photos twinkle; Carmen walks over to abuelo and points at him; a "?" over abuelo]
 6. NARR: "Abuelo pone la cámara en la mesa." [he walks to the low table and sets the camera on it]
 7. NARR: "Abuelo dice: ¡Vengan todos! ¡Ven, Coquí!" [everyone comes together in front of the sofa, abuelo with them, the frog in the middle]
 8. [the camera on the table flashes by itself] NARR: "¡Mira! La foto de la familia." [a big framed photo of all of them, abuelo and the frog too, shows over the room]
@@ -180,6 +180,14 @@ How a routine works:
 - Cuentos con dibujos: six stories, about 1 to 2 minutes each.
 - Haz esto: four routines, about 1 to 2 minutes each.
 - About 30 minutes of listening in this first set. The plan sizes Escuchar at about 4 hours a place; more sets would follow the same pattern.
+
+## What the wordless read changed (after the build)
+
+- Story 2 ends on a heart, and the frog stops sweating once he has had his juice.
+- Story 3: the frog is seen eating his own slice.
+- Story 4: the third photo is papá (in a small frame mamá looked like Carmen); the family photo is bigger and has the frog in it.
+- Story 5: the ball's fall onto the frog's head is slower, so it can be seen; the frog's wide eyes are smaller.
+- Story 6 ends with the fireflies in a ring and a heart.
 
 ## Not taken from the reviews, and why
 

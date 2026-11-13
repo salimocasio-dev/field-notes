@@ -4,10 +4,63 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=23
-- Story 1 directly: historia/?v=23 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=23 in index.html, cual.html and app.html. Raise all three when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=24
+- Story 1 directly: historia/?v=24 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=24 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
+
+## Nov 13, part 8: Escuchar for La casa, first set
+
+Live at ?v=24. Scripts (final, draft 3): historia/notas/guiones/escuchar-casa.md. Generator: historia/tools/gen_escuchar.py (run it, never edit the JSON by hand).
+
+### What Escuchar is, as built
+
+It lives in the Library tab, under "Listen · La casa". Nothing in it is scored; it only adds minutes listened and a "Heard N×" count (PAL.oido).
+
+| Part | What it is | Opens |
+| --- | --- | --- |
+| Otra vez | each of the eleven map stories told straight through, nothing to touch (`?oir=1`: asks and decisions answer themselves, no praise lines, no stars) | once that story has been played on the map |
+| Cuentos con dibujos | six new picture stories in the four scenes already drawn; he only watches and hears (`tipo:"escucha"`) | when all eleven map stories are done (or "Open every place" in Yo) |
+| Haz esto | four do-this routines, one per scene (`tipo:"haz"`) | the same |
+
+- Picture stories: Toc, toc (frente); Agua para el pájaro (balcón); El bizcocho del bebé and La foto de la familia (sala); La bola and Buenas noches (patio). Ids start with d-.
+- Routines: Abre y cierra (frente); En el balcón; La familia (sala); En el patio. Ids start with h-.
+- Size: about 30 minutes of listening in all. **The plan sizes Escuchar at about 4 hours a place. This first set is far short of that**; more sets follow the same pattern (write, two fresh reviews, build, wordless read, record).
+
+### How a routine works (his rules applied)
+
+- Not all "toca": lines are also "¿Dónde está…?", abre, cierra, "El agua es para abuela", and each routine ends with a line in two parts.
+- Right: the thing happens; no praise after each; one "¡Muy bien!" at the end.
+- Wrong: nothing is lost. "No. Esa es la ventana." then the big sign.
+- Where two touches are fair, both count (`vale`). A two-part line can be done in either order. If he waits, the line repeats, and after the second repeat the sign shows.
+
+### Engine pieces new here (juego.js)
+
+| Piece | What it does |
+| --- | --- |
+| `?oir=1` | straight-through telling |
+| `"libre":true` on a decision | no cost; wrong says `hz_no_<thing>`; then the sign |
+| `"vale":[...]` | other touches that also count as right |
+| `"mudo":true` | a second part with no new line (the line still repeats if he waits) |
+| `"alias":{"abuela":"silla_grande"}` | a touch on one thing stands for another (abuela sitting on the big chair) |
+| `S.tipo` | "escucha" or "haz": not written into the word records |
+
+New scene actions: patio (bolaarbol, avesale, avepica2, pelota3, seva, cierra, noche, aveduerme, luzsale, canta, abreporton, pon, deja, flores, apunta), sala (llora, ninos, ponecamara, retrato: the family photo shown big over the room).
+
+### Words changed by the Puerto Rican reviewer
+
+- A firefly is "un cucubano". "Entra a la casa" (not "en"). "Ahora está lloviendo." "¡Vamos para adentro!" "Ven acá."
+
+### Reviews and tests
+
+- Scripts: three drafts; beginner and Spanish reviewers, then a last gate. Main changes: routines were 21 bare "toca X" out of 33 (rewritten); two lines had two fair answers (both now count); two-part lines accept either order; story 4 got a turn (abuelo puts the camera down and joins the photo).
+- Wordless frames: fresh reader (see the commit after this one for what it changed).
+- Machine: every picture story end to end; every routine all-right, all-wrong and mixed; all eleven stories in the straight-through mode; the app check; the Library screen.
+- Found by testing: the frog stood in front of the small chair (moved aside); the baby on mamá's lap took her touches (the baby stays on its blanket in the routine); the test tool treated a new question with the same things as the old one (fixed in juega.py).
+
+### Audio
+
+- 165 new lines, about 3,900 characters. Session total so far about 12,200 of 500,000.
 
 ## Nov 13, part 7: El patio (scene 4 of La casa). All eleven stories of place 1 are built.
 
