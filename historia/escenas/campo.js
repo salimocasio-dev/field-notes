@@ -37,17 +37,17 @@ function fondo(){const b=new Buf(SW,SH),G=RP.grn,Wd=RP.wood,Bl=RP.blue;
   return b.done();}
 
 /* ---------- the balls: told apart by size and pattern ---------- */
-const BOLA={L:{r:7,c:["#B03A2E","#D8574A","#F08A7C"],m:"rayas"},C:{r:5.5,c:["#2E6CD0","#5A9AEA","#A8CCF8"],m:"puntos"},q:{r:4,c:["#C89A1C","#F0C83C","#FFE98C"],m:"estrella"}};
+const BOLA={L:{r:7,c:["#B03A2E","#D8574A","#F08A7C"],m:"rayas"},C:{r:5.5,c:["#2E6CD0","#5A9AEA","#A8CCF8"],m:"puntos"},q:{r:5,c:["#D8A414","#F4CC30","#FFE878"],m:"linea"}};
 function mkBola(k){const d=BOLA[k],r=d.r,n=Math.ceil(r*2+3),b=new Buf(n,n),c=n/2;b.ell(c,c,r,r,d.c);
   if(d.m==="rayas"){for(let y=0;y<n;y++)for(let x=0;x<n;x++){const dx=x+.5-c,dy=y+.5-c;if(dx*dx+dy*dy<r*r-1&&((x+y)%6)<2)b.px(x,y,"#FFF4E0");}}
   else if(d.m==="puntos"){[[c-2.5,c-2],[c+2,c-1],[c-1,c+2.5],[c+2.5,c+3]].forEach(p=>b.rect(R(p[0]),R(p[1]),2,2,"#FFFFFF"));}
-  else{b.rect(R(c)-1,R(c)-2,2,4,"#7A4A10");b.rect(R(c)-2,R(c)-1,4,2,"#7A4A10");}
+  else{[[-4,1],[-3,0],[-2,-1],[-1,-1],[0,-1],[1,0],[2,1],[3,1]].forEach(d=>b.px(R(c)+d[0],R(c)+d[1],"#FFFFFF"));b.px(R(c)-2,R(c)-3,"#FFFFFF");}   // a white line, like a tennis ball
   return b.outline().done();}
 const radio=k=>BOLA[k].r;
 
 const LUGAR={centro:[120,150,1],inicio:[120,150,1]};
 const CASA={luis:[88,178],carmen:[186,154]},PIES=[136,196],CESTA=[104,208],PILA=[[40,173],[52,174],[46,169],[46,177]];   // where the children stand, where the frog's ball lies, the basket, Canelo's pile
-const FILA=[[112,201],[128,202],[144,201]],ORILLA=[190,198],JUNCO=[180,197];                                                // story 17's row of balls; the water's edge; where a ball hides in the reeds
+const FILA=[[112,194],[128,195],[144,194]],ORILLA=[190,198],JUNCO=[180,197];                                                // story 17's row of balls; the water's edge; where a ball hides in the reeds
 const alto=id=>QUIEN[id].nino?44:56;
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0?[R(p.x)-11,R(p.y)-alto(id),22,alto(id)]:null;};
 const persona=id=>({id,m:1,si:w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0),box:()=>caja(id)});
@@ -107,7 +107,7 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{},Bs=W.bolas||{};
   L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());
   Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});
   if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}
-  if(W.oscuro){c.fillStyle="rgba(8,12,24,"+W.oscuro+")";c.fillRect(0,0,SW,SH);}   // his eyes are shut
+  if(W.oscuro){c.fillStyle="rgba(8,12,24,"+W.oscuro+")";c.fillRect(0,0,SW,SH);if(q.vis&&W.oscuro>.4)rana(c,q,a);}   // his eyes are shut: all is dark but him
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1-(p.bub?38:0)];}
 
@@ -116,13 +116,14 @@ function flecha(g,x,y,up){const C="#2E9A48";fr(g,x+2,y+(up?3:0),3,7,C);[[0,3,7,1
 function respIcon(g,k,x,y,w,h,a){const im=spr("cq.6_0",()=>mkCoqui(.6,0,0)),bq=spr("bolaq",()=>mkBola("q")),suelo=()=>fr(g,x+4,y+32,32,1,"#9494A6"),t=(F>>1)%8;
   suelo();
   const piel="#D09A54";
-  if(k==="tira"){g.drawImage(im,x+3,y+13);fr(g,x+17,y+19,6,3,OUT);fr(g,x+17,y+20,5,1,piel);const bx=x+20+t*2,by=y+14-R(Math.sin(t/7*Math.PI)*5);for(let i=1;i<=3;i++)fr(g,bx-2-i*4,by+4,3,1,"#2E6CD0");g.drawImage(bq,bx,by);}                    // the ball flies away from him
-  else if(k==="coge"){g.drawImage(im,x+11,y+15);[[10,9],[25,9]].forEach(p=>{fr(g,x+p[0],y+p[1],3,8,OUT);fr(g,x+p[0]+1,y+p[1]+1,1,6,piel);});const by=y+1+Math.min(t,5)*2;for(let i=1;i<=3;i++)fr(g,x+19,by-1-i*3,1,2,"#2E6CD0");g.drawImage(bq,x+15,by);}                                       // the ball drops onto him
-  else if(k==="arriba"){g.save();g.translate(x+11,y+33);g.scale(1,1.25);g.drawImage(im,0,-im.height);g.restore();g.drawImage(bq,x+15,y+1);flecha(g,x+32,y+8,1);}                                    // stretched tall, the ball over his head
-  else if(k==="abajo"){g.save();g.translate(x+7,y+33);g.scale(1.15,.7);g.drawImage(im,0,-im.height);g.restore();g.drawImage(bq,x+28,y+23);flecha(g,x+33,y+8,0);}                                    // crouched flat, the ball on the grass
-  else if(k==="salta"){const up=[0,5,9,12,13,12,9,5][t];fr(g,x+15,y+31,12,2,"#C8C8D4");g.drawImage(im,x+11,y+12-up);}                                                                             // high in the air, his shadow below
+  const flechita=(fx,fy,dx,dy)=>{[[0,0],[-1,-1],[-1,1],[-2,-2],[-2,2]].forEach(d=>fr(g,fx+(dx?d[0]*dx:d[1]),fy+(dx?d[1]:d[0]*dy),2,2,"#2E6CD0"));};
+  if(k==="tira"){g.drawImage(im,x+2,y+14);fr(g,x+16,y+24,8,4,OUT);fr(g,x+17,y+25,6,2,piel);const bx=x+22+t,by=y+13-R(Math.sin(t/7*Math.PI)*4);for(let i=1;i<=2;i++)fr(g,bx-1-i*4,by+5,3,1,"#2E6CD0");g.drawImage(bq,bx,by);flechita(x+37,y+10,1,0);}   // one arm forward; the ball flies away from him
+  else if(k==="coge"){g.drawImage(im,x+11,y+16);[[9,10],[27,10]].forEach(p=>{fr(g,x+p[0],y+p[1],3,9,OUT);fr(g,x+p[0]+1,y+p[1]+1,1,7,piel);});const by=y+Math.min(t,4);g.drawImage(bq,x+14,by);flechita(x+34,y+12,0,1);}                                        // both hands up; the ball drops into them
+  else if(k==="arriba"){g.save();g.translate(x+9,y+33);g.scale(1,1.3);g.drawImage(im,0,-im.height);g.restore();flecha(g,x+30,y+6,1);}                                                                   // stretched tall: up
+  else if(k==="abajo"){g.save();g.translate(x+6,y+33);g.scale(1.15,.65);g.drawImage(im,0,-im.height);g.restore();flecha(g,x+31,y+12,0);}                                                                // crouched flat: down
+  else if(k==="salta"){const up=[5,8,11,13,14,13,11,8][t];fr(g,x+14,y+31,13,2,"#B0B0C0");g.drawImage(im,x+11,y+13-up);[[13,0],[25,0]].forEach(d=>{fr(g,x+d[0],y+31-up+2,1,up-3,"#2E6CD0");});}        // in the air, his shadow below, lines down to the ground
   else if(k==="corre"){const up=(F%2)?2:0;g.save();g.translate(x+24,y+21-up);g.rotate(.3);g.drawImage(im,-10,-9);g.restore();for(let i=0;i<3;i++)fr(g,x+3+((F*2+i*5)%6),y+12+i*6,9,2,"#2E6CD0");}
-  else if(k==="da"){g.drawImage(im,x+2,y+13);g.drawImage(bq,x+19+((F>>2)%2),y+19);const hx=x+27,hy=y+24;fr(g,hx+5,hy-2,12,7,OUT);fr(g,hx+6,hy-1,11,5,"#3E9A52");fr(g,hx-1,hy-1,8,5,OUT);fr(g,hx,hy,7,3,"#C88A5A");fr(g,hx-1,hy-4,3,4,OUT);fr(g,hx,hy-3,1,3,"#C88A5A");}   // he holds the ball out; an open hand reaches for it
+  else if(k==="da"){g.drawImage(im,x+1,y+14);const hx=x+26,hy=y+25;fr(g,hx+5,hy-2,9,7,OUT);fr(g,hx+6,hy-1,7,5,"#3E9A52");fr(g,hx-1,hy-1,8,5,OUT);fr(g,hx,hy,7,3,"#C88A5A");g.drawImage(bq,hx-3,hy-11);[[0,0],[2,0],[4,0],[3,-1],[3,1]].forEach(d=>fr(g,x+19+d[0]+((F>>2)%2),y+12+d[1],2,1,"#2E9A48"));}   // the ball goes from him into a hand that reaches in from the edge
   else if(k==="aguanta"){g.drawImage(im,x+5,y+13);g.drawImage(bq,x+10,y+23);mano(g,x+27,y+6);}}                                                                                                  // holding the ball, the raised hand of "wait"
 
 /* ---------- the card in the corner: three rounds; a star, or the mark of what went wrong ---------- */
@@ -155,7 +156,7 @@ async function roba(n){const o=B(n),pe=W.perro;if(!o||!pe)return;const p=bolaXY(
 async function alagua(n){const o=B(n);if(!o)return;const k=W.flotan||0,d=[[196,205],[207,198],[200,212],[212,208]][Math.min(3,k)];await vuela(n,[ORILLA[0],ORILLA[1]],0,7,0);await vuela(n,d,4,5,0);
   o.flota=1;W.salpica=(W.salpica||[]).concat([{x:d[0],y:d[1]-2,f:F}]);tone(300,0,.12,"sine",.12,90);tone(180,.08,.2,"sine",.1,60);W.flotan=k+1;W.bolas["flota"+k]=o;delete W.bolas[n];await wait(500);}
 // a new small ball out of the basket, to the frog's feet or into somebody's hands
-async function nueva(a){W.bolas.cq={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};SFX.blip();if(a&&a!=="pies")await vuela("cq",a,10,6,0);else await vuela("cq",PIES,10,6,0);}
+async function nueva(a){W.bolas.cq={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};SFX.blip();W.twinkle="cesta";await wait(450);W.twinkle=null;if(a&&a!=="pies")await vuela("cq",a,10,6,0);else await vuela("cq",PIES,10,6,0);}
 
 const acts={
   async pose(o){const p=G(o.quien);if(p)p.pose=o.que;},
@@ -172,9 +173,9 @@ const acts={
   // the frog picks his ball up
   async recoge(){const o=B("cq");if(o&&!o.con){bounce(4);await wait(120);o.con="cq";}},
   // a child fetches the ball from the frog's feet and takes it home
-  async sellevan(o){const k=o.quien,p=G(k),b=B(o.b||"cq"),xy=bolaXY(b);await mueve(k,xy[0]+(k==="luis"?-10:10),xy[1]-2);b.con=k;SFX.blip();await wait(150);await mueve(k,CASA[k][0],CASA[k][1]);p.dir=k==="luis"?1:-1;},
+  async sellevan(o){const k=o.quien,p=G(k),b=B(o.b||"cq"),xy=bolaXY(b);await mueve(k,xy[0]+(k==="luis"?-22:22),xy[1]+4);b.con=k;SFX.blip();await wait(150);await mueve(k,CASA[k][0],CASA[k][1]);p.dir=k==="luis"?1:-1;},
   // a child brings the ball over and puts it in the frog's hands
-  async trae(o){const k=o.quien,p=G(k),b=B(o.b||"cq"),q=frogBox(W.cq);await mueve(k,k==="luis"?q.x-10:q.x+q.w+10,W.cq.y+29);p.pose="offer";await wait(250);b.con="cq";SFX.blip();bounce(4);await wait(250);p.pose="idle";if(!o.queda){await mueve(k,CASA[k][0],CASA[k][1]);p.dir=k==="luis"?1:-1;}},
+  async trae(o){const k=o.quien,p=G(k),b=B(o.b||"cq"),q=frogBox(W.cq);await mueve(k,k==="luis"?q.x-16:q.x+q.w+16,W.cq.y+30);p.pose="offer";await wait(250);b.con="cq";SFX.blip();bounce(4);await wait(250);p.pose="idle";if(!o.queda){await mueve(k,CASA[k][0],CASA[k][1]);p.dir=k==="luis"?1:-1;}},
   // the frog carries a ball over to a child and hands it across; the child keeps it, or (vuelve) gives it straight back
   async lleva(o){const k=o.a,p=G(k),b=B(o.b||"cq"),q=W.cq,x0=q.x,y0=q.y;b.con="cq";await hopTo(k==="luis"?p.x+8:p.x-40,p.y-30,2);p.pose="offer";await wait(200);b.con=k;SFX.blip();await wait(300);
     if(o.vuelve){await wait(200);b.con="cq";SFX.blip();}p.pose="idle";await hopTo(x0,y0,2);if(o.vuelve)await vuela(o.b||"cq",PIES,4,4,0);},
@@ -217,7 +218,7 @@ const acts={
     if(n===3){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[70,60],[196,70],[136,50],[110,90],[170,96]]});}else if(n>0)SFX.win();else SFX.coqui();await wait(500);},
 
   /* ----- story 16: ¡Arriba! ¡Abajo! ----- */
-  async inicio16(){W.gente={luis:{x:92,y:170,pose:"idle",dir:-1},carmen:{x:112,y:190,pose:"idle",dir:-1}};W.perro={x:34,y:176,pose:"sit",dir:1};Object.assign(W.cq,{x:132,y:142,s:1});W.cesta=[88,208];W.flotan=0;
+  async inicio16(){W.gente={luis:{x:92,y:170,pose:"idle",dir:-1},carmen:{x:112,y:190,pose:"idle",dir:-1}};W.perro={x:46,y:178,pose:"sit",dir:1};Object.assign(W.cq,{x:132,y:142,s:1});W.cesta=[88,208];W.flotan=0;
     W.bolas={juego:{k:"L",x:HORQ[0],y:ARBOL[1],z:ARBOL[1]-HORQ[1]-3}};},
   async salta(o){if(o.quien==="cq"){await ranaSalta(+(o.h||14));return;}if(o.quien==="perro"){await brinco(W.perro,+(o.h||9),7);tone(520,0,.07,"square",.05,300);return;}
     const p=G(o.quien);p.pose="arriba";await brinco(p,+(o.h||9),8);p.pose="idle";},
@@ -232,7 +233,7 @@ const acts={
     else{W.tiembla={en:"juncos",f:F};await wait(500);if(hay){b.vis=1;b.con="luis";SFX.blip();}}
     await wait(300);if(hay){await mueve("luis",CASA.luis[0],CASA.luis[1]);lu.dir=1;}},
   // ready for the catching game: the frog with his back to the pond, Luis facing him with the ball at his chest
-  async listos(){const lu=G("luis"),ca=G("carmen");await Promise.all([mueve("luis",CASA.luis[0],CASA.luis[1]),mueve("carmen",58,196),hopTo(136,150,2,1)]);lu.dir=1;ca.dir=1;const pe=W.perro;if(pe){await perroA(40,182,"walk");pe.pose="sit";pe.dir=1;}
+  async listos(){const lu=G("luis"),ca=G("carmen");await Promise.all([mueve("luis",CASA.luis[0],CASA.luis[1]),mueve("carmen",74,204),hopTo(136,150,2,1)]);lu.dir=1;ca.dir=1;const pe=W.perro;if(pe){await perroA(46,178,"walk");pe.pose="sit";pe.dir=1;}
     if(!B("juego")){W.bolas.juego={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};}await vuela("juego","luis",8,6,0);},
   async listo16(){const lu=G("luis");lu.ojos=0;if(Math.abs(W.cq.x-136)>3||Math.abs(W.cq.y-150)>3)await hopTo(136,150,2,1);if(Math.abs(lu.x-CASA.luis[0])>3)await mueve("luis",CASA.luis[0],CASA.luis[1]);lu.dir=1;
     if(!B("juego"))W.bolas.juego={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};if(B("juego").con!=="luis")await vuela("juego","luis",8,6,0);},
@@ -247,11 +248,11 @@ const acts={
   async turno16b(){const pe=W.perro,lu=G("luis");lu.pose="offer";await wait(200);const v=vuela("juego",[176,190,0],0,11,0);await wait(180);await brinco(pe,14,8);tone(520,0,.07,"square",.05,300);await v;lu.pose="idle";await alagua("juego");
     pe.dir=1;pe.pose="lie";await wait(500);},
   // after Canelo's miss: Luis takes a ball from the basket and throws it high to Carmen, who takes it over her head and throws it back
-  async prepcarmen(){const ca=G("carmen");W.bolas.juego={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};await Promise.all([vuela("juego","luis",8,6,0),mueve("carmen",156,176)]);ca.dir=-1;},
-  async acarmen(){const lu=G("luis"),ca=G("carmen");lu.pose="arriba";await wait(200);ca.pose="arriba";const v=vuela("juego","carmen",30,9);await wait(250);await brinco(ca,8,7);await v;lu.pose="idle";await wait(300);await vuela("juego","luis",22,8);ca.pose="idle";await mueve("carmen",58,196);ca.dir=1;},
-  async trasturno(){const pe=W.perro;await perroA(40,182,"walk");pe.pose="sit";pe.dir=1;await hopTo(136,150,2);},
+  async prepcarmen(){const ca=G("carmen");W.bolas.juego={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};await Promise.all([vuela("juego","luis",8,6,0),mueve("carmen",CASA.carmen[0],CASA.carmen[1])]);ca.dir=-1;},
+  async acarmen(){const lu=G("luis"),ca=G("carmen");lu.pose="arriba";await wait(200);ca.pose="arriba";const v=vuela("juego","carmen",30,9);await wait(250);await brinco(ca,8,7);await v;lu.pose="idle";await wait(300);await vuela("juego","luis",22,8);ca.pose="idle";await mueve("carmen",74,204);ca.dir=1;},
+  async trasturno(){const pe=W.perro;await perroA(46,178,"walk");pe.pose="sit";pe.dir=1;await hopTo(136,150,2);},
   // the picture goes dark: somebody hides the ball (arriba: in the tree; abajo: in the reeds)
-  async esconde16(o){for(let i=1;i<=5;i++){W.oscuro=i*.19;await wait(TICK);}W.cierra=1;const lu=G("luis"),ca=G("carmen"),pe=W.perro;for(let k=0;k<4;k++){tone(140+k%2*30,0,.06,"square",.05,90);await wait(220);}
+  async esconde16(o){W.cierra=1;await wait(350);for(let i=1;i<=5;i++){W.oscuro=i*.19;await wait(TICK);}const lu=G("luis"),ca=G("carmen"),pe=W.perro;for(let k=0;k<4;k++){tone(140+k%2*30,0,.06,"square",.05,90);await wait(220);}
     lu.x=96;lu.y=180;lu.dir=1;lu.pose="idle";lu.ojos=0;ca.x=122;ca.y=184;ca.dir=-1;ca.pose="idle";if(pe){pe.x=110;pe.y=198;pe.pose="sit";pe.dir=1;}Object.assign(W.cq,{x:136,y:136,s:1});
     W.bolas.juego={k:"q",x:o.en==="arriba"?HORQ[0]-4:JUNCO[0],y:o.en==="arriba"?ARBOL[1]:JUNCO[1],z:o.en==="arriba"?ARBOL[1]-COPA[1]:0,vis:0};W.donde=o.en;
     for(let i=4;i>=0;i--){W.oscuro=i*.19;await wait(TICK);}W.oscuro=0;W.cierra=0;await wait(200);},
@@ -269,7 +270,7 @@ const acts={
   async aluis(){const b=B("juego");if(b&&b.con!=="luis"){bounce(4);await vuela("juego","luis",12,7,0);}await wait(200);},
   async vuelve16(){await hopTo(136,136,3,1);},
   // decision C: Luis throws one up with the sun in his eyes; we see where it comes down
-  async sol(o){const lu=G("luis"),ca=G("carmen"),pe=W.perro;await Promise.all([mueve("luis",104,180),mueve("carmen",64,198),hopTo(136,136,2,1)]);lu.dir=1;if(pe){await perroA(46,196,"walk");pe.pose="sit";pe.dir=1;}ca.dir=-1;ca.pose="offer";
+  async sol(o){const lu=G("luis"),ca=G("carmen"),pe=W.perro;await Promise.all([mueve("luis",104,180),mueve("carmen",76,202),hopTo(136,136,2,1)]);lu.dir=1;if(pe){await perroA(50,196,"walk");pe.pose="sit";pe.dir=1;}ca.dir=-1;ca.pose="offer";
     W.bolas.juego={k:"q",x:W.cesta[0],y:W.cesta[1]-12,z:6};await vuela("juego","luis",8,6,0);lu.pose="arriba";await wait(250);lu.ojos=1;lu.pose="idle";W.donde=o.en;
     if(o.en==="arriba"){await vuela("juego",[HORQ[0],ARBOL[1],ARBOL[1]-HORQ[1]-3],50,12);W.tiembla={en:"arbol",f:F};}else{await vuela("juego",[156,186],56,12);await vuela("juego",[JUNCO[0]-2,JUNCO[1]+2],5,6,0);W.tiembla={en:"juncos",f:F};}await wait(300);},
   async final16(){const n=(W.marcas||[]).filter(m=>m==="ok").length,lu=G("luis"),ca=G("carmen"),pe=W.perro;lu.ojos=0;ca.pose="idle";
@@ -281,7 +282,7 @@ const acts={
   async saltan(){const lu=G("luis"),ca=G("carmen");await Promise.all([brinco(lu,9,8),brinco(ca,9,8),ranaSalta(40,14)]);await ranaSalta(40,14);if(W.perro){W.perro.dir=1;await ladra(2);}},
 
   /* ----- story 17: ¡Otra vez! ----- */
-  async inicio17(){W.gente={luis:{x:84,y:174,pose:"idle",dir:1},carmen:{x:58,y:198,pose:"idle",dir:1}};W.perro={x:196,y:204,pose:"walk",dir:-1,mojado:1};Object.assign(W.cq,{x:112,y:148,s:1});W.mojado=0;
+  async inicio17(){W.gente={luis:{x:84,y:174,pose:"idle",dir:1},carmen:{x:58,y:198,pose:"idle",dir:1}};W.perro={x:196,y:204,pose:"walk",dir:-1,mojado:1};Object.assign(W.cq,{x:112,y:140,s:1});W.mojado=0;
     W.bolas={carmen:{k:"C",con:"carmen"},cq:{k:"q",x:FILA[2][0],y:FILA[2][1],z:0},luis:{k:"L",con:"perro"}};},
   async carmenfila(){const ca=G("carmen");ca.pose="idle";await mueve("carmen",FILA[1][0]-12,FILA[1][1]+2);const b=B("carmen");b.con=null;b.x=FILA[1][0];b.y=FILA[1][1];b.z=0;SFX.blip();await mueve("carmen",58,198);ca.dir=1;},
   // Canelo comes up from the water with the ball in his mouth and stops in front of the frog
@@ -301,7 +302,7 @@ const acts={
     if(de!=="cq")G(de).pose="idle";
     await perroA(FILA[i][0]+16,FILA[i][1]-4,"run");pe.dir=-1;b.con=null;b.x=FILA[i][0];b.y=FILA[i][1];b.z=0;SFX.blip();await wait(150);await perroA(164,188,"walk");pe.pose="sit";pe.dir=-1;},
   // he carries the small ball to Luis and puts it in his hands; Luis throws it for Canelo himself (solo: Luis only puts it back in the row)
-  async da17(o){const b=B("cq"),lu=G("luis"),q=W.cq;b.con="cq";await hopTo(lu.x+8,lu.y-34,2);lu.pose="offer";await wait(200);b.con="luis";SFX.blip();await wait(250);lu.pose="idle";await hopTo(112,148,2);
+  async da17(o){const b=B("cq"),lu=G("luis"),q=W.cq;b.con="cq";await hopTo(lu.x+8,lu.y-34,2);lu.pose="offer";await wait(200);b.con="luis";SFX.blip();await wait(250);lu.pose="idle";await hopTo(112,140,2);
     if(o&&o.solo){await mueve("luis",FILA[2][0]-14,FILA[2][1]-3);b.con=null;b.x=FILA[2][0];b.y=FILA[2][1];b.z=0;SFX.blip();await mueve("luis",84,174);lu.dir=1;}else await acts.tira17({b:"cq",de:"luis"});},
   // decision B: what he chose to do (mal: it was not what Luis called, so nothing follows from it)
   async hazB(o){const q=o.que;if(q==="tira")await acts.tira17({b:"cq",sacude:o.mal?"no":null});else if(q==="da")await acts.da17({solo:o.mal});else await acts.aguanta({bebe:o.mal?"no":null});},
@@ -311,7 +312,7 @@ const acts={
   async jadea(){const pe=W.perro;await perroA(150,192,"walk",8);pe.dir=-1;pe.pose="bark";await wait(700);pe.pose="sit";},
   async luisno(){const p=G("luis");for(let k=0;k<4;k++){p.dir=-p.dir;await wait(140);}p.dir=1;SFX.bonk();await wait(250);},
   async empuja2(){const pe=W.perro;pe.pose="husmea";await wait(500);pe.pose="lie";},
-  async lleva17(o){const n=(o.b||"luis").replace("bola_",""),b=B(n),q=W.cq,lu=G("luis"),p=bolaXY(b);await hopTo(p[0]-16,p[1]-50,1);b.con="cq";SFX.blip();await hopTo(lu.x+8,lu.y-34,2);lu.pose="offer";await wait(200);b.con="luis";SFX.blip();await wait(250);await hopTo(112,148,2);},
+  async lleva17(o){const n=(o.b||"luis").replace("bola_",""),b=B(n),q=W.cq,lu=G("luis"),p=bolaXY(b);await hopTo(p[0]-16,p[1]-50,1);b.con="cq";SFX.blip();await hopTo(lu.x+8,lu.y-34,2);lu.pose="offer";await wait(200);b.con="luis";SFX.blip();await wait(250);await hopTo(112,140,2);},
   async luisfila(){const lu=G("luis");await mueve("luis",FILA[0][0]-12,FILA[0][1]-3);const b=B("luis");b.con=null;b.x=FILA[0][0];b.y=FILA[0][1];b.z=0;lu.pose="idle";SFX.blip();await mueve("luis",84,174);lu.dir=1;},
   async empuja(){const pe=W.perro;await perroA(FILA[2][0]+14,FILA[2][1]-4,"walk");pe.dir=-1;pe.pose="husmea";await wait(350);pe.pose="sit";await ladra(2);},
   // he holds the ball and stands still; Canelo goes down and drinks

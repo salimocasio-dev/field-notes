@@ -13,7 +13,7 @@ The picture: the open grass of the park. Flat grass in the middle. On the left, 
 The balls. Each one looks different, so nobody needs a colour word:
 - Luis's ball: big, with stripes.
 - Carmen's ball: middle-sized, with dots.
-- The frog's ball: small, with a star. A basket in the grass holds more small ones.
+- The frog's ball: small and yellow, with a white line across it. A basket in the grass holds more small ones.
 
 Voices: the narrator speaks to the learner. A person's lines are spoken by the narrator and start with who says it ("Luis dice:"); the words show in a bubble at that person. The frog has his own voice (COQUÍ). The dog only makes his sounds.
 
@@ -161,7 +161,7 @@ In the corner of the screen, from the turn on, a card with three places, one for
 - **Back again:** bola, tira, dame, tiene, quiere, agua, perro, no, gracias, toma, sí.
 - **Heard along the way:** esta es, no más, de Luis, de Coquí.
 
-**Start:** the frog's small ball with the star lies in front of him. Carmen holds her dotted ball. Canelo is down in the water. Luis, Carmen and the frog stand on the grass. Canelo comes up, dripping, with Luis's striped ball in his mouth, and stops in front of the frog without letting go.
+**Start:** the frog's small ball with the white line lies in front of him. Carmen holds her dotted ball. Canelo is down in the water. Luis, Carmen and the frog stand on the grass. Canelo comes up, dripping, with Luis's striped ball in his mouth, and stops in front of the frog without letting go.
 
 1. NARR: "Mira. Canelo tiene una bola." Luis holds out his hand. NARR: "Luis dice: Canelo, ¡dame la bola!" Canelo does not let go. NARR: "Luis dice: Es mi bola." Carmen holds hers up. NARR: "Carmen dice: Esta es mi bola." (It twinkles.) She puts it down in front of the frog, beside the small one. Luis points at the small one. NARR: "Luis dice: Coquí, esta es tu bola." (It twinkles.) COQUÍ: "¡Mi bola!"
 
@@ -229,6 +229,13 @@ One sentence, two pictures, only one fits. No pair of pictures is used twice.
 | más | "Canelo quiere más." | Canelo, wet, pushing the ball at the frog with his nose | Canelo at the water, drinking, the ball left beside the frog |
 
 "Otra vez" has no picture pair: a still picture cannot show "again". It is the call of story 17 and comes back in the listening stories.
+
+## What the wordless read changed (after the build)
+
+- The frog's ball did not read as a ball (it looked like a coin or a flower): it is now plain yellow with a white line.
+- The answer pictures: the thrower has one arm forward and an arrow away from him; the catcher has both hands up and an arrow down; "up" and "down" in story 16 are the frog stretched tall and crouched flat, each with an arrow and no ball; the jumping frog is always off the ground; the giving picture has the ball going into a hand that reaches in.
+- Nobody stands on the frog any more; Canelo is inside the picture at the start of story 16; in the dark of the hiding game the frog stays lit, eyes shut.
+- The "salta" pair: Canelo jumps over a ball, against Canelo running past it.
 
 ## What the last gate changed
 
