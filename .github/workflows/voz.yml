@@ -1,7 +1,6 @@
 # Makes the recorded voice files with Azure Speech and saves them into this project.
-# Started by hand from the Actions tab. Needs two repository secrets:
-#   AZURE_SPEECH_KEY     the key of the Azure Speech resource
-#   AZURE_SPEECH_REGION  its region, for example eastus
+# Started by hand from the Actions tab. Needs one repository secret:
+#   AZURE_SPEECH_KEY   the key of the Azure Speech resource (coqui-voz-2611, region eastus)
 name: Voz
 on:
   workflow_dispatch:
@@ -39,7 +38,7 @@ jobs:
         run: python historia/tools/voz.py
         env:
           AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
-          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+          AZURE_SPEECH_REGION: eastus
           MODO: ${{ inputs.modo }}
           V_NARR: ${{ inputs.narr }}
           V_ABUELA: ${{ inputs.abuela }}

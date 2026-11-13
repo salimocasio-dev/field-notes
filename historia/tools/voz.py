@@ -13,7 +13,7 @@ REGION = os.environ.get("AZURE_SPEECH_REGION", "").strip()
 MODO = os.environ.get("MODO", "muestras").strip() or "muestras"
 RATE = os.environ.get("RATE", "-12%").strip() or "-12%"
 if not KEY or not REGION:
-    sys.exit("Missing the secrets AZURE_SPEECH_KEY and AZURE_SPEECH_REGION.")
+    sys.exit("Missing the secret AZURE_SPEECH_KEY (or the region).")
 BASE = f"https://{REGION}.tts.speech.microsoft.com/cognitiveservices"
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # historia/
 CHARS = 0
