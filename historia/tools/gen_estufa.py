@@ -28,7 +28,7 @@ c.update({"c27_hace_comida":N("Abuela hace la comida."),"c27_una_olla":N("Aquí 
  "c27_familia_hambre":N("La familia tiene hambre."),"c27_familia_come":N("La familia come arroz con habichuelas."),"c27_luis_hambre":L("¡Tengo hambre!"),
  "c27_no_aqui_arroz":N("No, Coquí. Mira. Aquí hay arroz."),"c27_no_aqui_hab":N("No, Coquí. Mira. Aquí hay habichuelas."),
  "c27_no_mira_arroz":N("No, Coquí. "+MIRA["arroz"]),"c27_no_mira_hab":N("No, Coquí. "+MIRA["hab"]),
- "c27_fin":N("Aquí hay arroz con habichuelas."),"c24_a_comer":AB("¡A comer!"),"c27_cq_fin":T("¡Arroz con habichuelas!")})
+ "c26_comida_lista":N("La comida está lista."),"c27_comen":N("Luis come. Carmen come."),"c27_abuela_come":N("Abuela come."),"cq_gracias_abuela":T("¡Gracias, abuela!"),"c27_aqui_arroz":N("Aquí hay arroz.")})
 for p in ("abuela","luis"):
     for k in ("arroz","hab"):
         c["c27_%s_dame_%s"%(p,k)]=D(p,NOM[p],"Dame %s, por favor."%ES[k]); c["c27_no_%s_hace_%s"%(p,k)]=N("No, Coquí. Mira. %s hace %s."%(NOM[p],ES[k]))
@@ -48,49 +48,50 @@ s27={"id":"arroz-con-habichuelas","title":"Arroz con habichuelas","place":"La co
   ask("olla0","c27_listo_hab",[],[act("apaga",a="olla0")]),
   # the turn: the family eats it all; the pots are filled with water again
   {"dots":4},act("familia27"),"c27_familia_hambre",act("sirve27"),act("ventana27",suelto=1),"c27_familia_come",act("ya"),say("c27_luis_hambre"),act("otravez27"),CARD,{"wait":400},
-  # A: which one. One cook, drawn fresh, asks for one, drawn fresh
+  # A: which one. One cook, drawn fresh, asks for one, drawn fresh; only his pot is on the stove
   {"dots":5},{"draw":"ca","options":["abuela","luis"],"other":"cb"},{"draw":"ka","options":["arroz","hab"],"other":"kb"},{"calc":"ga","cond":"ka=arroz","then":"saco","else":"tazon"},
-  act("g",quien="$ca",pose="offer",ms=300),
+  act("unaolla",a="$ca"),act("g",quien="$ca",pose="offer",ms=300),
   {"decide":"do","options":["saco","tazon"],"pick":"$ga","tests":"$ka","lock":True,"lead":[],"line":"c27_$ca_dame_$ka",
-   "right":[act("g",quien="$ca",pose="idle"),act("echa",k="$ka",a="$ca"),ok(),act("carmenecha",k="$kb",a="$cb")],
+   "right":[act("g",quien="$ca",pose="idle"),act("echa",k="$ka",a="$ca"),ok()],
    "wrong":[act("g",quien="$ca",pose="idle"),act("echa",k="$x",a="$ca"),act("saca",a="$ca")]+X+["c27_no_aqui_$ka"]},
+  act("unaolla",a="$cb"),act("carmenecha",k="$kb",a="$cb"),
   # B: what it needs more of. One cook, drawn fresh, holds an empty cup up
   {"dots":6},{"draw":"cc","options":["abuela","luis"],"other":"cd"},{"calc":"kc","cond":"cc=$ca","then":"$ka","else":"$kb"},{"calc":"kd","cond":"cc=$ca","then":"$kb","else":"$ka"},act("pide",a="$cc"),
   {"decide":"say","options":DV,"baraja":True,"pick":"di_$kc","tests":"$kc","voces":VV,"said":VV,"lead":[],"line":None,
-   "right":[act("pide",a="$cc",no=1),act("carmenecha",k="$kc",a="$cc"),ok(),act("carmenecha",k="$kd",a="$cd")],
+   "right":[act("pide",a="$cc",no=1),act("carmenecha",k="$kc",a="$cc"),ok()],
    "wrong":[act("pide",a="$cc",no=1),act("carmenecha",k="$x",a="$cc"),act("saca",a="$cc")]+X+["c27_no_$cc_hace_$kc"]},
-  act("ultimas27"),
-  # C: which one is ready. Abuela says it, whoever cooks it
-  {"dots":7},{"draw":"ke","options":["arroz","hab"]},{"calc":"pe","cond":"ke=$ka","then":"$ca","else":"$cb"},{"calc":"pf","cond":"ke=$ka","then":"$cb","else":"$ca"},
+  act("carmenecha",k="$kd",a="$cd"),act("ultimas27"),
+  # C: which one is ready. Abuela says it from the plates, whoever cooked it; nobody but the frog is at the stove
+  {"dots":7},{"draw":"ke","options":["arroz","hab"],"other":"kf"},{"calc":"pe","cond":"ke=$ka","then":"$ca","else":"$cb"},
   {"calc":"oe","cond":"pe=abuela","then":"olla1","else":"olla0"},{"calc":"of","cond":"pe=abuela","then":"olla0","else":"olla1"},act("platos27"),
   {"decide":"do","options":["olla0","olla1"],"pick":"$oe","tests":"$ke","lock":True,"lead":[],"line":"c27_listo_$ke",
-   "right":[act("apaga",a="$oe"),{"if":"ok","then":[act("marca",que="ok"),{"wait":500},act("abuelamira"),act("apaga",a="$of")],"else":[act("enciende",a="$of"),{"wait":600},act("apaga",a="$of")]}],
-   "wrong":[act("apaga",a="$of"),act("quema",a="$oe")]+X+["c27_no_mira_$ke"]}],
- "final":[{"dots":8},act("sirve27"),"c27_fin","c24_a_comer",act("final27"),say("c27_cq_fin",300),act("fin")],
+   "right":[act("apaga",a="$oe"),{"if":"ok","then":[act("marca",que="ok"),{"wait":400},say("c27_listo_$kf"),act("apaga",a="$of")],"else":[act("enciende",a="$of"),{"wait":600},act("apaga",a="$of")]}],
+   "wrong":[act("apaga",a="$of"),act("derrama",a="$oe")]+X+["c27_no_mira_$ke"]}],
+ "final":[{"dots":8},act("sirve27"),"c26_comida_lista",act("final27",suelto=1),"c27_comen",{"if":"abu","then":["c27_abuela_come"]},act("ya"),say("cq_gracias_abuela",300),act("fin")],
  "leer":["c27_hace_comida","c27_una_olla","c27_otra_olla","c27_aqui_arroz","c27_aqui_hab","c27_abuela_dame_arroz","c27_cq_pone_arroz","c27_ab_hace_arroz","c27_luis_dame_hab","c27_luis_hace_hab","c27_cq_arroz","c27_mas_arroz","c27_cq_hab","c27_mas_hab",
-  "c27_listo_arroz","c27_listo_hab","c27_familia_hambre","c27_familia_come","c27_luis_hambre","c27_fin","c24_a_comer","c27_cq_fin"]}
+  "c27_listo_arroz","c27_listo_hab","c27_familia_hambre","c27_familia_come","c27_luis_hambre","c26_comida_lista","c27_comen","c27_abuela_come","cq_gracias_abuela"]}
 json.dump(s27,open("cuentos/arroz-con-habichuelas.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # ---------------- 28. El pollo y el huevo ----------------
 c=dict(comunes)
 PZ={"pollo":"el pollo","huevo":"el huevo"}; MA=lambda t:D("mama","Mamá",t)
-c.update({"c27_hace_comida":N("Abuela hace la comida."),"c28_aqui_pollo":N("Aquí hay pollo."),"c28_aqui_huevo":N("Y aquí hay un huevo."),"c28_huele_bien":N("¡Mmm! ¡Huele bien!"),"c28_toma_sal":AB("Toma la sal, Coquí."),
+c.update({"c28_hace":N("Abuela hace pollo y un huevo."),"c28_aqui_pollo":N("Aquí hay pollo."),"c28_aqui_huevo":N("Y aquí hay un huevo."),"c28_huele_bien":N("¡Mmm! ¡Huele bien!"),"c28_toma_sal":AB("Toma la sal, Coquí."),
  "c28_ponle_pollo":AB("Ponle sal al pollo."),"c28_ponle_huevo":AB("Y ponle sal al huevo."),"c28_pollo_tiene_sal":N("Ahora el pollo tiene sal."),"c28_huevo_tiene_sal":N("Ahora el huevo tiene sal."),
  "c28_mama_huele":MA("¡Mmm! ¡Huele bien!"),"c28_ab_mira":AB("Coquí, mira el pollo y el huevo."),"c28_cq_pollo":T("¡Abuela, el pollo!"),"c28_cq_huevo":T("¡Abuela, el huevo!"),"c28_ab_gracias":AB("¡Gracias, Coquí!"),
- "c28_bebe_quiere_pollo":MA("El bebé quiere pollo."),"c28_bebe_quiere_huevo":MA("El bebé quiere huevo."),"c28_ahora_bebe_huevo":MA("Ahora el bebé quiere huevo."),"c28_bebe_come_pollo":N("El bebé come pollo."),"c28_bebe_come_huevo":N("El bebé come huevo."),
- "c28_luis_huele":L("¡Mmm! ¡Huele a pollo!"),"c28_carmen_hambre":CA("¡Tengo hambre!"),"c28_no_hay_mas":AB("Aquí hay pollo y huevo. No hay más."),"c28_no_hay":AB("No hay más."),
- "c28_para_coqui":AB("Y esto es para Coquí."),"c28_familia_come":N("La familia come pollo y huevo."),"c28_cq_fin":T("¡Mmm! ¡Huele bien, abuela!")})
+ "c28_bebe_quiere_pollo":MA("El bebé quiere el pollo."),"c28_bebe_quiere_huevo":MA("El bebé quiere el huevo."),"c28_ahora_bebe_huevo":MA("Ahora el bebé quiere el huevo."),"c28_bebe_come_pollo":N("El bebé come el pollo."),"c28_bebe_come_huevo":N("El bebé come el huevo."),
+ "c28_luis_huele":L("¡Mmm! ¡Huele a pollo!"),"c28_carmen_hambre":CA("¡Tengo hambre!"),"c28_aqui_mas":AB("Aquí hay más."),"c28_no_hay":AB("No hay más."),
+ "c28_para_coqui":AB("Y esto es para Coquí."),"c28_bebe_come":N("El bebé come."),"c28_cq_fin":T("¡Huele bien, abuela!")})
 for k in PZ:
     c["c28_no_negro_"+k]=N("No, Coquí. Mira. %s está negro."%PZ[k].capitalize()); c["c28_carmen_mas_"+k]=CA("Más sal para %s, por favor."%PZ[k])
-    c["c28_no_carmen_sal_"+k]=N("No, Coquí. Mira. Carmen quiere sal para %s."%PZ[k]); c["c28_no_bebe_"+k]=N("No, Coquí. Mira. El bebé quiere %s."%k)
+    c["c28_no_carmen_sal_"+k]=N("No, Coquí. Mira. Carmen quiere sal para %s."%PZ[k]); c["c28_no_bebe_"+k]=N("No, Coquí. Mira. El bebé quiere %s."%PZ[k])
 DP=["di_pollo","di_huevo"]; VP={"di_pollo":"c28_cq_pollo","di_huevo":"c28_cq_huevo"}; DS=["salpollo","salhuevo"]
 s28={"id":"el-pollo-y-el-huevo","title":"El pollo y el huevo","place":"La cocina","scene":"estufa","next":"cuidado",
  "goal":"Get every piece onto a plate golden and tasting right.","stake":{"thing":"comida","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["pollo","huevo","sal","huele"],"back_again":["hace","comida","más","por favor","para","quiere","tiene","ahora","mira","negro","bebé","hay","tengo hambre","come","gracias","toma"],
  "also_heard":["huele a","no hay más","ponle"],"names":BASE,"clips":c,
- "beats":[act("inicio28"),{"wait":500},"c27_hace_comida",tw("sarten"),"c28_aqui_pollo","c28_aqui_huevo",tw(None),"c28_huele_bien",act("toma28",suelto=1),"c28_toma_sal",act("ya"),
+ "beats":[act("inicio28"),{"wait":500},"c28_hace",tw("sarten"),"c28_aqui_pollo","c28_aqui_huevo",tw(None),"c28_huele_bien",act("toma28",suelto=1),"c28_toma_sal",act("ya"),
   {"dots":1},ask("salpollo","c28_ponle_pollo",["c28_pollo_tiene_sal"],[act("sala",k="pollo")],resp=DS,baraja=True),
-  ask("salhuevo","c28_ponle_huevo",["c28_huevo_tiene_sal"],[act("sala",k="huevo")],resp=DS,baraja=True),
+  ask("salhuevo","c28_ponle_huevo",["c28_huevo_tiene_sal",act("toma28",deja=1)],[act("sala",k="huevo")],resp=DS,baraja=True),
   {"dots":2},act("entramama"),"c28_mama_huele","c28_ab_mira",act("mira28"),act("humo",k="pollo"),
   ask("di_pollo",None,["c28_ab_gracias"],[act("voltea",k="pollo",vuelta=1)],resp=DP,baraja=True,voces=VP,said={"di_pollo":"c28_cq_pollo"}),
   act("mira28"),act("humo",k="huevo"),
@@ -99,25 +100,25 @@ s28={"id":"el-pollo-y-el-huevo","title":"El pollo y el huevo","place":"La cocina
   ask("pzpollo","c28_bebe_quiere_pollo",["c28_bebe_come_pollo"],[act("dabebe",k="pollo")]),
   ask("pzhuevo","c28_ahora_bebe_huevo",["c28_bebe_come_huevo",act("madrecome")],[act("dabebe",k="huevo")]),
   # the turn
-  {"dots":4},act("entran28"),"c28_luis_huele","c28_carmen_hambre",tw("bandeja"),"c28_no_hay_mas",tw(None),CARD,{"wait":400},
-  # A: the smoke. He calls the piece that smokes; abuela, with the baby, reaches back and turns the one he calls
+  {"dots":4},act("entran28"),"c28_luis_huele","c28_carmen_hambre",tw("bandeja"),"c28_aqui_mas",tw(None),CARD,{"wait":400},
+  # A: the smoke. He calls the piece that smokes; abuela turns round into the smoke and turns the one he called
   {"dots":5},act("par"),"c28_ab_mira",act("mira28"),{"draw":"sa","options":["pollo","huevo"],"other":"oa"},act("humo",k="$sa"),
   {"decide":"say","options":DP,"baraja":True,"pick":"di_$sa","tests":"$sa","voces":VP,"said":VP,"lead":[],"line":None,
-   "right":[{"if":"ok","then":[act("voltea",k="$sa"),act("marca",que="ok"),act("voltea",k="$oa",vuelta=1)],"else":[act("voltea",k="$sa",vuelta=1,tarde=1)]},act("sirve28",a="luis"),act("come28",a="luis")],
-   "wrong":[act("voltea",k="$x"),act("quema28",k="$sa")]+X+["c28_no_negro_$sa"]},
-  # B: more salt. Carmen has tasted both; he salts the one she names
-  {"dots":6},act("par"),act("voltea",k="los dos",vuelta=1),act("sirve28",a="carmen"),act("muerde",a="carmen"),{"draw":"sb","options":["pollo","huevo"]},{"calc":"rb","cond":"sb=pollo","then":"salpollo","else":"salhuevo"},
+   "right":[act("voltea",k="$sa",vuelta=1),{"if":"ok","then":[act("marca",que="ok"),act("voltea",k="$oa")]},act("sirve28",a="luis"),act("come28",a="luis")],
+   "wrong":[act("voltea",k="$x",vuelta=1),act("quema28",k="$sa")]+X+["c28_no_negro_$sa"]},
+  # B: more salt. One piece of this pair got none; Carmen has tasted both, and names it
+  {"dots":6},{"draw":"sb","options":["pollo","huevo"]},{"calc":"rb","cond":"sb=pollo","then":"salpollo","else":"salhuevo"},act("par",sinsal="$sb"),act("voltea",k="los dos",vuelta=1),act("sirve28",a="carmen"),act("muerde",a="carmen"),
   {"decide":"say","options":DS,"baraja":True,"pick":"$rb","tests":"$sb","lead":[],"line":"c28_carmen_mas_$sb",
    "right":[act("salplato",a="carmen",k="$sb"),ok(),act("piensa28",quien="carmen"),act("come28",a="carmen")],
-   "wrong":[act("salplato",a="carmen",k="$x",mal=1),act("cara",a="carmen"),act("piensa28",quien="carmen",k="$sb")]+X+["c28_no_carmen_sal_$sb"]},
+   "wrong":[act("salplato",a="carmen",k="$x"),act("cara",a="carmen"),act("piensa28",quien="carmen",k="$sb")]+X+["c28_no_carmen_sal_$sb"]},
   # C: for the baby. The other piece of the last pair is the frog's
-  {"dots":7},act("vacia28"),"c28_no_hay",act("ultimo"),{"draw":"sc","options":["pollo","huevo"]},{"calc":"tc","cond":"sc=pollo","then":"pzpollo","else":"pzhuevo"},
+  {"dots":7},act("par"),act("vacia28"),"c28_no_hay",act("ultimo"),{"draw":"sc","options":["pollo","huevo"]},{"calc":"tc","cond":"sc=pollo","then":"pzpollo","else":"pzhuevo"},
   {"decide":"do","options":["pzpollo","pzhuevo"],"pick":"$tc","tests":"$sc","lock":True,"lead":[],"line":"c28_bebe_quiere_$sc",
    "right":[act("piensa28",quien="bebe"),act("dabebe",k="$sc"),{"if":"ok","then":[act("marca",que="ok"),act("parami",suelto=1),"c28_para_coqui",act("ya")]}],
    "wrong":[act("dabebe",k="$x",tira=1),act("piensa28",quien="bebe",k="$sc")]+X+["c28_no_bebe_$sc"]}],
- "final":[{"dots":8},act("final28"),"c28_familia_come",say("c28_cq_fin",300),act("fin")],
- "leer":["c27_hace_comida","c28_aqui_pollo","c28_aqui_huevo","c28_huele_bien","c28_toma_sal","c28_ponle_pollo","c28_pollo_tiene_sal","c28_ponle_huevo","c28_huevo_tiene_sal","c28_mama_huele","c28_ab_mira","c28_cq_pollo","c28_ab_gracias","c28_cq_huevo",
-  "c28_bebe_quiere_pollo","c28_bebe_come_pollo","c28_ahora_bebe_huevo","c28_bebe_come_huevo","c28_luis_huele","c28_carmen_hambre","c28_no_hay_mas","c28_no_hay","c28_para_coqui","c28_familia_come","c28_cq_fin"]}
+ "final":[{"dots":8},act("final28"),"c28_bebe_come",say("c28_cq_fin",300),act("fin")],
+ "leer":["c28_hace","c28_aqui_pollo","c28_aqui_huevo","c28_huele_bien","c28_toma_sal","c28_ponle_pollo","c28_pollo_tiene_sal","c28_ponle_huevo","c28_huevo_tiene_sal","c28_mama_huele","c28_ab_mira","c28_cq_pollo","c28_ab_gracias","c28_cq_huevo",
+  "c28_bebe_quiere_pollo","c28_bebe_come_pollo","c28_ahora_bebe_huevo","c28_bebe_come_huevo","c28_luis_huele","c28_carmen_hambre","c28_aqui_mas","c28_no_hay","c28_para_coqui","c28_bebe_come","c28_cq_fin"]}
 json.dump(s28,open("cuentos/el-pollo-y-el-huevo.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # ---------------- 29. ¡Cuidado! ----------------

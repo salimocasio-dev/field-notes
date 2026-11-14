@@ -60,10 +60,10 @@ The three games open differently: 27 with a touch on a thing, 28 with something 
 
 **The ending** (the same lines in every ending)
 
-12. Abuela fills the three plates, one cup's worth of rice and of beans on each as far as the pots go; a plate that goes short is her own. NARR: "Aquí hay arroz con habichuelas." Luis, Carmen and abuela take a plate each and eat; while they do: NARR: "Luis come. Carmen come. Abuela come." By what went wrong:
+12. Abuela fills the three plates, one cup's worth of rice and of beans on each as far as the pots go; a plate that goes short is her own. NARR: "La comida está lista." Luis, Carmen and abuela take a plate each and eat; while they do: NARR: "Luis come. Carmen come." And if there is anything on abuela's plate: NARR: "Abuela come." By what went wrong:
    - Nothing (three stars): three full plates, an empty waste bucket, a clean stove. Abuela spoons some from her plate onto the little plate for the frog. Stars and a heart.
    - Otherwise, whichever happened: the bucket holds what was skimmed off; foam lies on the stove; and abuela's plate has rice only, or beans only, or neither.
-13. COQUÍ: "¡Arroz con habichuelas!"
+13. COQUÍ: "¡Gracias, abuela!"
 
 **Fewest hearings before a word can cost:** arroz 10 (step 1; step 2 three times; step 4: the bubble, the frog, the line after; step 5, the bubble; step 6; the turn), habichuelas 9 (step 1; step 3 twice; step 4, the bubble; step 5: the bubble, the frog, the line after; step 7; the turn). Not deciding, but heard: olla 3 (steps 1 and 2), hace 3 (steps 1, 2 and 3), and again in a correction.
 
@@ -96,8 +96,8 @@ The frog's own moves, in doing bubbles: he shakes salt over the drumstick; or ov
 4. NARR: "Abuela dice: Y ponle sal al huevo." The two doing bubbles; the sign is on the egg. He touches it. He salts it. Right signal. NARR: "Ahora el huevo tiene sal." He puts the shaker back on the edge of the stove.
 5. **He calls it out, taught.** Mamá comes in with the baby. NARR: "Mamá dice: ¡Mmm! ¡Huele bien!" NARR: "Abuela dice: Coquí, mira el pollo y el huevo." She turns to the baby; her back is to the pan. Smoke rises from the drumstick. Two speaking bubbles: "¡Abuela, el pollo!" and "¡Abuela, el huevo!" The big sign is on "¡Abuela, el pollo!" He touches it. COQUÍ: "¡Abuela, el pollo!" Abuela turns round; by now the smoke hangs over the whole pan. She turns the drumstick over: golden, and the smoke clears. Right signal. NARR: "Abuela dice: ¡Gracias, Coquí!"
 6. She turns to the baby again. Smoke rises from the egg. The two speaking bubbles; the sign is on "¡Abuela, el huevo!" He touches it. COQUÍ: "¡Abuela, el huevo!" She turns round into the smoke and turns the egg over: golden. Right signal.
-7. **For the baby, taught.** Abuela holds both out to the frog on a plate; the baby waves both arms at the plate. NARR: "Mamá dice: El bebé quiere pollo." The big sign is on the drumstick on the plate. He touches it. The frog takes the drumstick over. Right signal. While the baby eats: NARR: "El bebé come pollo."
-8. NARR: "Mamá dice: Ahora el bebé quiere huevo." The sign is on the egg on the plate. He touches it. Right signal. While the baby eats: NARR: "El bebé come huevo."
+7. **For the baby, taught.** Abuela holds both out to the frog on a plate; the baby waves both arms at the plate. NARR: "Mamá dice: El bebé quiere el pollo." The big sign is on the drumstick on the plate. He touches it. The frog takes the drumstick over. Right signal. While the baby eats: NARR: "El bebé come el pollo."
+8. NARR: "Mamá dice: Ahora el bebé quiere el huevo." The sign is on the egg on the plate. He touches it. Right signal. While the baby eats: NARR: "El bebé come el huevo."
 
 **The turn**
 
@@ -111,9 +111,9 @@ The frog's own moves, in doing bubbles: he shakes salt over the drumstick; or ov
 11. **Decision B, Do (more salt).** Abuela fries the second pair and shakes salt over the pan once; one of the two got none, and nobody can see which. She sets the plate in front of Carmen. Carmen takes one bite of each (which first is drawn fresh; her face is the same for both). NARR: "Carmen dice: Más sal para el huevo, por favor." (Or: "para el pollo". Drawn fresh.) The frog takes the shaker. Two doing bubbles: the shaker over a drumstick; over an egg.
    - Right: the frog salts it. Right signal. A star. Carmen eats both.
    - Wrong: the frog salts the other one, which had its salt: a white heap on it. Carmen bites it, throws a hand up, and puts it back. A cross. A thought bubble over Carmen shows the right piece with the shaker over it. NARR: "No, Coquí. Mira. Carmen quiere sal para el huevo." The sign is on the right bubble; he touches it; he salts it; Carmen eats it. The piece with the white heap stays on her plate.
-12. **Decision C, Touch, last (for the baby).** Abuela tips the tray towards us: it is empty. NARR: "Abuela dice: No hay más." She fries the last pair herself and holds both out to the frog on a plate; the baby waves both arms at the plate. NARR: "Mamá dice: El bebé quiere huevo." (Or: "pollo". Drawn fresh.) He touches the drumstick or the egg on the plate.
+12. **Decision C, Touch, last (for the baby).** Abuela puts the last pair in the pan and tips the tray towards us: it is empty. NARR: "Abuela dice: No hay más." She fries the pair herself and holds both out to the frog on a plate; the baby waves both arms at the plate. NARR: "Mamá dice: El bebé quiere el huevo." (Or: "el pollo". Drawn fresh.) He touches the drumstick or the egg on the plate.
    - Right: the frog takes it over; the baby eats. Right signal. A star. Abuela puts the other piece on the frog's little plate; while she does: NARR: "Abuela dice: Y esto es para Coquí."
-   - Wrong: the frog takes over the one he touched. The baby throws it on the floor. A cross. A thought bubble over the baby shows the right one. NARR: "No, Coquí. Mira. El bebé quiere huevo." The sign is on the right piece; he touches it; the frog takes it over; the baby eats. The piece on the floor stays there; the frog's little plate stays empty.
+   - Wrong: the frog takes over the one he touched. The baby throws it on the floor. A cross. A thought bubble over the baby shows the right one. NARR: "No, Coquí. Mira. El bebé quiere el huevo." The sign is on the right piece; he touches it; the frog takes it over; the baby eats. The piece on the floor stays there; the frog's little plate stays empty.
 
 **The ending** (the same lines in every ending)
 
@@ -233,3 +233,9 @@ Beginner review: every decision in all three stories holds, the counts add up, t
 - 28: abuela turns round to the pan; the smoke hangs over all of it by then, so she turns the piece the frog called. Salt is not seen once it has fallen; in round B one piece got none, so the piece Carmen names gets its first salt and the other its second. "No hay más." is said over the empty tray; at the turn abuela says "Aquí hay más." The last line is "El bebé come.", true in every ending. The frog's piece lies on his little plate, not on a mat. "Ponle sal al pollo."
 - 29: the frog fills the cup himself, so Luis does not pour against an order he heard. Abuela and the pan are on the left, Luis and the chocolate on the right, so the right side is not crowded. Abuela calls again in each redo. The corrections are "No está listo." and "Está negro." The last fritters are fried just before the ending. "¡Carmen, cuidado! Está caliente."
 - Pairs: "Mira el huevo." and "Mira el pollo." ("mi huevo" is vulgar); hace, huele, frío, olla, sal and ya have other pictures.
+
+## What the last Spanish check changed
+
+Nothing in the Spanish itself. Two things for truth and safety:
+- 27: the last lines are true in every ending now: "La comida está lista.", "Luis come. Carmen come.", "Abuela come." only when her plate has food, and "¡Gracias, abuela!".
+- 28: "El bebé quiere el huevo." / "el pollo", with the article: a bare "quiere huevo" can be heard as a vulgar word.
