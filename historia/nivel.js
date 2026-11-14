@@ -85,23 +85,23 @@ const PAN_OK=(got,orden)=>orden[got]===0;
 function nivelFrontera(h){let S0=0;const tope=Math.max(...NV.map(q=>q.s));for(let s=1;s<=tope;s++){const de=h.filter(x=>x.s===s),hasta=h.filter(x=>x.s<=s);if(!de.length)continue;
     const bien=hasta.filter(x=>x.ok).length/hasta.length;if(de.every(x=>x.ok)&&bien>=.75)S0=s;}   // one slip low down does not hold him back if he is right on what comes after
   return S0;}
-async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,run:1,toque:null,listo:-1,fin:null};$("#go").style.display="none";$("#fin").style.display="none";
+async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,run:1,toque:null,listo:-1,fin:null};$("#go").style.display="none";$("#fin").style.display="none";foot(0,0,0);
   await Promise.race([voiceReady,sleep(6000)]);const byW={};CU.items.forEach(it=>byW[it.w]=it);
   const usados=new Set();let pos=0,seguidos=0,giros=0,ultimo=null;mkDots(16);
   try{for(let n=0;n<(Q.get("todo")?NV.length:16);n++){   // ?todo=1 shows every item in order, for checking the pictures
       // the next item: the nearest one not yet asked, in the direction the last answer points
       let i=pos;const dir=ultimo===false?-1:1;while(i>=0&&i<NV.length&&usados.has(i))i+=dir;if(i<0||i>=NV.length){i=pos;while(i>=0&&i<NV.length&&usados.has(i))i-=dir;}if(i<0||i>=NV.length)break;
-      if(Q.get("todo")){i=n;if(i>=NV.length)break;}usados.add(i);step(n);NQ.i=n;window.__cur=NV[i].s;const r=await nivelItem(NV[i],byW);NQ.hecho.push(Object.assign({i},r));
+      if(Q.get("todo")){i=n;if(i>=NV.length)break;}usados.add(i);step(n);NQ.i=n;window.__cur=NV[i].s;const r=await nivelItem(NV[i],byW);NQ.hecho.push(Object.assign({i},r));step(NQ.hecho.length);   // the bar fills with the items he has answered
       if(ultimo!=null&&ultimo!==r.ok)giros++;ultimo=r.ok;seguidos=r.ok?0:seguidos+1;pos=r.ok?i+PASO:i-1;if(pos<0)pos=0;if(pos>=NV.length)pos=NV.length-1;
       const arriba=k=>NQ.hecho.some(h=>h.i===k&&h.ok);if(!Q.get("todo")&&(seguidos>=3||giros>=5||(arriba(NV.length-1)&&arriba(NV.length-2))))break;}                                   // three misses in a row, it has gone up and down enough, or he is right at the very top: this is his level
-    step(16);}catch(e){if(e!=="stop")throw e;return;}
+    mkDots(Math.max(1,NQ.hecho.length));step(NQ.hecho.length);}catch(e){if(e!=="stop")throw e;return;}   // it can stop early: the bar then shows exactly the items he was asked, all done
   PAN=null;const S0=nivelFrontera(NQ.hecho),ids=CURSO.lugares.flatMap(l=>l.cuentos||[]).slice(0,S0),pal=[];
   for(const id of ids){try{const j=await (await fetch("cuentos/"+id+".json")).json();(j.focus_words||[]).forEach(w=>{if(!pal.includes(w))pal.push(w);});}catch(e){}}
   if(!Q.get("fast")||Q.get("rec"))PAL.presume(pal,ids,NQ.hecho);
   NQ.fin={S0,ids,pal};NQ.run=0;const sig=CURSO.lugares.flatMap(l=>l.cuentos||[])[S0],T=id=>CURSO.cuentos[id].t;
-  $("#fin").innerHTML=`<b>Level check done</b><p>${S0?`You already understand the first ${S0} ${S0===1?"story":"stories"}. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped."}</p>
-    <p>${sig?`You start at: <b>${T(sig)}</b>.`:"Every story built so far is open as done. More are being built."}</p><button onclick="location.href='app.html'">To the map</button>`;
-  $("#fin").style.display="block";}
+  $("#fin").innerHTML=`<h1>Level check done</h1><p>${S0?`You already understand the first ${S0} ${S0===1?"story":"stories"}. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped."}</p>
+    <p>${sig?`You start at: <b>${T(sig)}</b>.`:"Every story built so far is open as done. More are being built."}</p>`;
+  $("#fin").style.display="flex";$("#next").textContent="To the map";$("#next").onclick=()=>salir("app.html?tab=mapa");foot(1,0,0);}
 async function nivelArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · Level check";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(()=>{F++;nivelDibuja();},TICK);
   cv.addEventListener("pointerdown",e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*DW,y=(e.clientY-r.top)/r.height*DH;if(NQ.toque)NQ.toque((y<CH+CG/2?0:2)+(x<CW+CG/2?0:1));});

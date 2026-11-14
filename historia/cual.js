@@ -40,7 +40,7 @@ async function cualItem(it){const ok=Math.random()<.5?0:1;   // which panel hold
   else{SFX.bonk();PAN[got].dim=1;await wait(500);const k=1-got;PAN[k].sign=1;let res2;const p2=new Promise(r=>res2=r);got=null;
     CQ.toque=t=>{if(t===k){got=t;res2();}};await p2;PAN[k].sign=0;sig(k);await bien("muy_bien");}
   await wait(400);}
-async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.display="none";$("#again").style.display="none";
+async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.display="none";$("#fin").style.display="none";foot(0,0,0);
   await Promise.race([voiceReady,sleep(6000)]);
   const due=PAL.vence("ear"),byW={};CU.items.forEach(it=>byW[it.w]=it);
   let lista=due.filter(w=>byW[w]).map(w=>byW[w]);
@@ -48,9 +48,13 @@ async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.di
   if(Q.get("solo")){const so=Q.get("solo").split(",");lista=CU.items.filter(it=>so.includes(it.w));}   // for the machine check: only these words
   lista=lista.slice(0,+(Q.get("n")||8));CQ.lista=lista;CQ.hecho=[];mkDots(lista.length);
   try{for(let i=0;i<lista.length;i++){step(i);CQ.i=i;await cualItem(lista[i]);}step(lista.length);}catch(e){if(e!=="stop")throw e;return;}
-  PAN=null;CQ.run=0;$("#again").style.display="flex";if($("#home"))$("#home").style.display="flex";}
+  PAN=null;CQ.run=0;cualFin();}
+// the end: how many words and how many he got right the first time, and the way back to Palabras
+function cualFin(){const n=CQ.hecho.length,m=CQ.hecho.filter(h=>h.ok).length;
+  $("#fin").innerHTML=`<h1>Done</h1><p>${n} word${n===1?"":"s"} · ${m} right</p>`;$("#fin").style.display="flex";
+  $("#next").textContent="Back to Palabras";$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
 async function cualArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
-  document.title="Coquí · ¿Cuál?";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
+  document.title="Coquí · ¿Cuál?";SALIDA="app.html?tab=palabras";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   cv.addEventListener("pointerdown",e=>{const r=cv.getBoundingClientRect(),y=(e.clientY-r.top)/r.height*DH;if(CQ.toque)CQ.toque(y<PH+GAP/2?0:1);});
-  $("#go").onclick=()=>{try{ac().resume();}catch(e){}cualRun();};$("#again").onclick=()=>cualRun();}
+  $("#go").onclick=()=>{try{ac().resume();}catch(e){}cualRun();};}
 window.Cual={get pan(){return PAN?PAN.map(p=>({right:p.right,sign:p.sign})):null;},get i(){return CQ.i;},get listo(){return CQ.listo===CQ.i+1;},get lista(){return CQ.lista.map(x=>x.w);},get hecho(){return CQ.hecho;},toca(k){if(CQ.toque)CQ.toque(k);},get running(){return !!CQ.run;},get speaking(){return speaking;}};
