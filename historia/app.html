@@ -45,7 +45,7 @@ h2{font-size:18px;line-height:24px;font-weight:500;margin:24px 0 16px}   /* 16 p
 #hoy{grid-area:hoy;position:relative;z-index:2;width:100%;max-width:560px;margin:0 auto;padding:8px 16px 16px}
 @media (orientation:landscape) and (max-height:500px){
   :root{--navh:56px}
-  #t-mapa.on{grid-template-columns:minmax(0,1fr) 360px;grid-template-rows:1fr auto auto 1fr;grid-template-areas:"map ." "map chips" "map hoy" "map ."}
+  #t-mapa.on{grid-template-columns:minmax(240px,1fr) minmax(0,360px);grid-template-rows:1fr auto auto 1fr;grid-template-areas:"map ." "map chips" "map hoy" "map ."}
   #t-mapa.on::after{content:"";grid-area:1/2/-1/3;z-index:0;background:var(--bg)}   /* the right column is a plain panel; the map keeps its water */
   #topchips{height:auto;padding:8px 16px;background:none;border:0}#hoy{padding:8px 16px}}
 .play{display:flex;align-items:center;gap:16px;width:100%;min-height:80px;padding:16px;border:0;border-radius:var(--r);background:#fff;text-align:left;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.22)}
@@ -170,11 +170,11 @@ function pintaFondo(){const f=document.getElementById("fondo"),t=document.getEle
   if(!AGUAT||AGUAT.k!==KMAP){const b=new Buf(104,104);for(let y=0;y<104;y++)for(let x=0;x<104;x++)b.px(x,y,agua(x,y));
     const big=document.createElement("canvas");big.width=big.height=T;const bg=big.getContext("2d");bg.imageSmoothingEnabled=false;bg.drawImage(b.done(),0,0,T,T);AGUAT={k:KMAP,big};}
   g.setTransform(1,0,0,1,((ox%T)+T)%T-T,((oy%T)+T)%T-T);g.fillStyle=g.createPattern(AGUAT.big,"repeat");g.fillRect(0,0,W+2*T,H+2*T);g.setTransform(1,0,0,1,0,0);}
-// the map is drawn at a whole number of device pixels per map pixel: the largest that fits its area. On a phone held upright, if even one CSS pixel per map pixel does not fit, it scrolls inside the area;
-// on its side the largest whole number whose height fits the viewport minus 72 px is used, so no stop is cut off
+// the map is drawn at a whole number of device pixels per map pixel: the largest that fits its area, never below 1 CSS pixel per map pixel (a stop's tile stays 16 CSS px, its touch area 48). If even that does not fit the height,
+// the map scrolls inside its area with the current stop in view, upright or on its side (on its side the fit is against the viewport minus 72 px, and the column on the right gives way so the map's 240 px always fit across)
 const APAISADO=()=>matchMedia("(orientation:landscape) and (max-height:500px)").matches;
 function escala(){const cv=document.getElementById("mapa"),w=document.getElementById("mapw"),ar=document.getElementById("mapaarea"),dpr=window.devicePixelRatio||1,aw=ar.clientWidth,ah=ar.clientHeight,land=APAISADO();if(!aw||!ah)return;
-  let k=Math.min(Math.floor(Math.min(aw,560)*dpr/MW),Math.floor((land?Math.min(ah,innerHeight-72):ah)*dpr/MH));k=land?Math.max(k,1):Math.max(k,Math.ceil(dpr));
+  let k=Math.min(Math.floor(Math.min(aw,560)*dpr/MW),Math.floor((land?Math.min(ah,innerHeight-72):ah)*dpr/MH));k=Math.max(k,Math.ceil(dpr));
   const wd=MW*k,hd=MH*k;w.style.width=wd/dpr+"px";w.style.height=hd/dpr+"px";
   w.style.marginLeft=Math.max(0,Math.floor((aw*dpr-wd)/2))/dpr+"px";w.style.marginTop=Math.max(0,Math.floor((ah*dpr-hd)/2))/dpr+"px";KMAP=k;
   if(ar.scrollHeight>ar.clientHeight+1){if(!CENTRADO){const y=STOP[aqui()][1]*k/dpr;ar.scrollTop=Math.max(0,Math.min(ar.scrollHeight-ah,y-ah/2));}}   // the current stop in view
@@ -197,7 +197,7 @@ function mapa(){const cv=document.getElementById("mapa"),g=cv.getContext("2d"),b
     const fg=spr("cq.7_0",()=>mkCoqui(.7,0,0));f.drawImage(fg,(at[0]-11)*K,(at[1]-24-(t%2))*K,fg.width*K,fg.height*K);};
   dibujaMapa();setInterval(()=>{if(TAB==="mapa")dibujaMapa();},300);addEventListener("resize",()=>{if(TAB==="mapa"){CENTRADO=0;escala();}});
   document.getElementById("mapaarea").addEventListener("scroll",()=>requestAnimationFrame(pintaFondo),{passive:true});
-  cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;let best=-1,bd=Math.max(24,24*MW/r.width);   // a touch lands within 24 px of a stop, however small the map is drawn
+  cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;let best=-1,bd=Math.max(24,24*MW/r.width);   // a touch lands within 24 map px of a stop (never under 48 CSS px across, as the map is never drawn below 1 CSS px per map px)
     STOP.forEach((s,i)=>{const d=Math.hypot(s[0]-x,s[1]-y);if(d<bd){bd=d;best=i;}});if(best>=0){tick();lugar(best);}};}
 const aqui=()=>Math.max(0,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho)));
 const VERDE=getComputedStyle(document.documentElement).getPropertyValue("--ok").trim();   // the one green token, shared with the map tiles
