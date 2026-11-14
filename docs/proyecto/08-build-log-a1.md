@@ -4,10 +4,45 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=25
-- Story 1 directly: historia/?v=25 . Any story: ?cuento=<id> (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=25 in index.html, cual.html and app.html. Raise all three when a script changes.
-- The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=28
+- Story 1 directly: historia/?v=28 . Any story: ?cuento=<id> (the ids are in historia/curso.js; place 2 ends with la-piragua, senor-senora, el-bebe-duerme). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=28 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
+- The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
+
+## Nov 14, part 13: place 2, scene 4, El banco. All twelve stories of El parque are built.
+
+Live at ?v=28. Scripts (final): historia/notas/guiones/banco.md, with what each round of reviews changed at its end. Generator: historia/tools/gen_banco.py (stories, pairs; it also sets cual's `next`).
+
+### What is built
+
+- **The benches** (historia/escenas/banco.js): three benches in a row, a piragua cart on the left, a lamp post behind, a wire across the top where five pigeons sit, a hedge with a gate at the right edge (the way home). People in `W.gente` (the man, the woman, an old gentleman, a young man, a lady with a pushchair, the piragua man, abuela standing or sitting): `animo` draws a feeling on the face (triste, cansado, contento), `hace` holds a thing at the mouth (come, bebe), `lleva` and `lleva2` hold things low, `lee` a newspaper, `sin` what he has left behind. Pigeons in `W.palomas` (on the wire, on a bench back, pecking, drinking, flying). Things in `W.cosas`. Dogs in `W.perros` (canelo; viejo: grey, white muzzle; joven: white with black patches; poses for sad, tired, asleep). The pushchair in `W.coche` (hood up or down; the baby asleep, crying, laughing). What the frog holds: `W.bandeja` (a tray on his head), `W.encima` (a thing on his head), `W.manos` (one thing in each hand).
+- **Story 21, La piragua** (hombre, mujer, come, bebe). A: a pigeon pecks at the man's piragua or has its beak in the woman's bottle; he warns them: "¡El pájaro come!" / "¡El pájaro bebe!". B: "La piragua es para la mujer." (or el hombre, el niño, la niña): touch one of four. C: a pigeon lands behind him; "Carmen dice: ¡Come, Coquí!" / "¡Bebe, Coquí!": eat or drink (doing bubbles). Stake: a pigeon that gets food does not go back to the wire; it settles on a bench.
+- **Story 22, ¡Señor! ¡Señora!** (señor, señora, joven, viejo). A: "¡Es del perro viejo!" / "joven": which dog gets the bone. B: somebody drops a wallet and walks to the gate; he calls "¡Señor!", "¡Señora!" or "¡Joven!". C: "¡Es del señor!" (a paper bag): touch one of the two who are left. Stake: the thing goes into Luis's box of lost things; on three stars the man from story 21 comes back for the newspaper he left at the turn.
+- **Story 23, El bebé duerme** (cansado, contento, triste, duerme). A: the hood is down; "La señora dice: El bebé duerme." / "El bebé está contento.": keep still, or sing. B: "Abuela dice: ¿Cómo está Canelo?": he says contento, cansado or triste. C: "¿Quién está cansado?" (triste, contento): Canelo, Luis or the man. Stake: each miss ends in a noise; the baby wakes and throws a toy out; the toys stay on the ground.
+- **¿Cuál? pairs**: 12 in cuentos/cual-banco.json. **Level check**: four more items (come, señora, viejo, triste); 36 in all, 23 stories.
+
+### New in the engine
+
+| Piece | What it does |
+| --- | --- |
+| `"callado":true` on a story | stars only for a right move: no chime, no hop, no "¡Sí! ¡Muy bien!" (a baby sleeps) |
+| `W.respEn=[x,y]` set by a scene | the answer bubbles stand there, and not over the frog: here, in the sky, so that nobody is hidden while he chooses |
+| an act may set `V` | story 22's last round is drawn among "the two who are left": the act `cola22` works out who they are and puts their ids in `V.ra`, `V.rb`, `V.pc` |
+| a draw may repeat an option | `["hombre","mujer","hombre","mujer","nino","nina"]`: the grown-ups twice as often |
+
+### Reviews
+
+- Scripts: three drafts and a last gate (beginner against his requirements, Puerto Rican Spanish, both twice). The big changes. "Viejo" said of a person is blunt, so it is taught on a dog and people are "señor", "señora", "joven". "El piragüero" does not speak ("señor" not yet taught). Commands are "¡Come, Coquí!" (the name after), so they are not heard as "Coquí eats". A crying baby is not "triste". "No duerme" let old "no" decide, so the lady says "duerme" or "está contento". Somebody "walking away" cannot be caught or missed with no clock, so there is a gate where each one stops. At the turn of story 21 he had done as told and was punished for it. Touching Luis for "cansado" was wrong although Luis had been taught as the tired one. A right answer in the game ("¡Está cansado!") had never been the signed one.
+- Wordless frames, three fresh readers (one a story). Fixed after them: see the end of banco.md. The biggest: the answer bubbles covered the people and birds the choice was about.
+- Honest limits, told to Salim in page 00: story 21's "hombre" / "mujer" round can be done from "el" / "la" and the old words.
+
+### Testing
+
+- Every story: all right, all wrong, mixed both ways, with every draw forced (64 runs). All 92 picture pairs. The level check. The app check.
+
+### Audio
+
+- 116 clips recorded, about 2,950 characters (two of them, about 70 characters, are lines that were changed after the job had recorded them). Azure so far this month: about 29,000 of 500,000 characters (my own running count, not a reading from Azure).
 
 ## Nov 14, part 12: place 2, scene 3, El lago
 
