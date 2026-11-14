@@ -32,7 +32,7 @@ DN=["di_leche","di_queso"]; VN={"di_leche":"c30_cq_no_leche","di_queso":"c30_cq_
 def ida(k,**kw): return [act("sale30"),act("mandado",k=k,suelto=1,**kw),"c30_busca_"+k,act("ya")]
 def ronda(k):   # what follows a touch in a scored round: the first errand is paid from the sill; a second one, after a miss, from the frog's own jar
     return {"right":[{"if":"ok","then":[act("sale30")]},act("mandado",k="$"+k,suelto=1,carta=1),"c30_busca_$"+k,act("ya"),{"if":"ok","then":[act("marca",que="ok")],"else":[act("comparten")]},act("abuelavuelve")],
-            "wrong":[act("sale30"),act("mandado",k="$x",carta=1)]+X+["c30_no_$"+k]}
+            "wrong":[act("sale30"),act("mandado",k="$x",carta=1)]+X+["c30_no_$"+k,act("sacamoneda")]}
 s30={"id":"no-hay-leche","title":"No hay leche","place":"La cocina","scene":"nevera","next":"para-los-pajaros",
  "goal":"Keep the fridge stocked, and keep your three coins for a piragua.","stake":{"thing":"monedas","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["leche","queso","no hay","busca"],"back_again":["hay","sí","aquí","ahora","mira","come","toma","bebé","pan","con","piragua","tira","coge","gracias"],
