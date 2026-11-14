@@ -26,7 +26,8 @@ h2{font-size:18px;line-height:24px;font-weight:600;margin:24px 0 8px}
 .btn:active,.tb:active,.play:active{transform:scale(.98)}
 .pill{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:rgba(255,255,255,.94);font-size:14px;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.18)}
 .seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{min-height:48px;min-width:64px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:600;cursor:pointer}.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.sw{position:relative;width:52px;height:32px;border-radius:16px;background:#D5D3CC;border:0;cursor:pointer;flex:none}.sw i{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}.sw.on{background:var(--ok)}.sw.on i{left:24px}
+.sw{position:relative;width:52px;height:48px;padding:0;border:0;background:none;cursor:pointer;flex:none}   /* the button is the 48 px touch target; the visible switch (the track and the knob) is 52 x 32 inside it */
+.sw::before{content:"";position:absolute;left:0;top:8px;width:52px;height:32px;border-radius:16px;background:#D5D3CC}.sw i{position:absolute;top:12px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .15s}.sw.on::before{background:var(--ok)}.sw.on i{left:24px}
 /* the map tab: chips on top, the map in the space between the chips and the Today card, all over the map's own water pattern */
 #t-mapa{position:fixed;left:0;right:0;top:0;bottom:calc(var(--navh) + env(safe-area-inset-bottom));min-height:0;max-width:none;margin:0;padding:0;overflow:hidden;background:#5C94FC}
 #t-mapa.on{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"chips" "map" "hoy"}
