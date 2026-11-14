@@ -63,6 +63,7 @@ const NV=[
  {w:"queso",s:30,p:[["queso","si"],["queso","no"],["leche","si"],["fruta","si"]]},
  {w:"guineo",s:31,p:[["guineo","si"],["guineo","no"],["china","si"],["pan","no"]]},
  {w:"lleno",s:32,p:[["lleno","si"],["lleno","no"],["vacío","si"],["mantequilla","si"]]}];
+const MUESTRA=false;   // the ring around the picture he touched: false = white, it only shows which one he touched (a check never says right or wrong); true = green right, red-orange wrong, as in Review
 const CW=96,CH=106;   // four cells, two by two (the gap between them, GAP, is set from the scale in cual.js)
 const PASO=Math.max(2,Math.ceil(NV.length/14));   // how far a right answer moves him up: the list grows with every scene, the check must still reach its top in about a dozen items
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
@@ -75,7 +76,7 @@ function nivelPanel(pic,byW){const it=byW[pic[0]],spec=it[pic[1]],E2=ESCENAS[spe
 async function nivelItem(q,byW){anillo(null);const orden=[0,1,2,3].sort(()=>Math.random()-.5),it=byW[q.p[0][0]];   // where the right picture sits is drawn fresh
   PAN=orden.map(k=>Object.assign(nivelPanel(q.p[k],byW),{right:k===0}));
   await wait(450);const my=runId;let got=null,ms=0,tEnd=0,res;const p=new Promise(r=>res=r);
-  NQ.toque=k=>{if(!tEnd||got!=null||!PAN[k])return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);anillo(k,"sel");res();};   // the ring only shows which one he touched: a check never says right or wrong   // a touch before the sentence ends does not count
+  NQ.toque=k=>{if(!tEnd||got!=null||!PAN[k])return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);anillo(k,MUESTRA?(PAN[k].right?"ok":"bad"):"sel");res();};   // a touch before the sentence ends does not count
   await say(it.say,0);tEnd=performance.now();NQ.listo=NQ.i;
   const rep=setInterval(()=>{if(got==null&&!speaking&&my===runId)playClip(it.say);},9000/FAST);
   await p;clearInterval(rep);SFX.blip();await wait(350);PAN=null;return {w:q.w,s:q.s,ok:!!PAN_OK(got,orden),ms};}
