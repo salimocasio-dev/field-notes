@@ -81,7 +81,7 @@ Live at ?v=32. Script (final): historia/notas/guiones/nevera.md, with what each 
 
 ### Testing
 
-- TESTLINE17
+- 204 machine runs after the last change to the pictures: each story all right, all wrong and every mix of misses over sets of draws in which every value of every draw appears (68 runs a story). All end, with the stars and crosses they should have. All 128 picture pairs, the level check with all 48 items shown, and the app check. With sound, each story once all right and once all wrong.
 - Found by testing: cups hidden after an earlier step could not be touched; a run of more than 99 frames was shown to a reader out of order.
 
 ### Audio
