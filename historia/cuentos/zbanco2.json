@@ -1,0 +1,1 @@
+{"id": "zbanco2", "title": "prueba", "place": "El parque", "scene": "banco", "goal": "", "stake": {"thing": "x", "steps": 3}, "dots": 1, "bien": "si_muy_bien", "focus_words": [], "back_again": [], "also_heard": [], "names": {}, "clips": {"si_muy_bien": {"who": "narr", "text": "¡Sí! ¡Muy bien!"}}, "beats": [{"act": "prueba", "n": 2}, {"wait": 60000}], "final": [], "leer": []}
