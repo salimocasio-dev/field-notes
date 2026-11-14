@@ -124,10 +124,10 @@ body:not(.ready) .tab,body:not(.ready) nav{visibility:hidden}
 
 <nav><div class="in" id="tabs"></div></nav>
 <div id="sheetbg" onclick="fuera()"></div><div id="sheet"></div>
-<!-- the story engine runs hidden, only to draw word pictures and play sentences. It needs the same element ids as index.html (juego.js looks them up) -->
+<!-- the story engine runs hidden, only to draw word pictures and play sentences. It needs the same element ids as the lesson screen in index.html (juego.js looks them up: close, bar, snd, main, stage, cv, bub, side, capbox, cap, fin, foot, go, again, next, home) -->
 <div id="hide"><div id="app"><header id="top"><button id="close"></button><div id="bar"></div><button id="snd"></button></header>
-  <main id="main"><div id="stage"><canvas id="cv" width="196" height="216"></canvas><button id="go"></button><div id="bub"></div></div>
-  <div id="side"><div id="capbox"><div id="cap"></div><div id="nota"></div></div><div id="foot"><button id="next"></button><div class="sec"><button id="again"></button><button id="home"></button></div></div></div></main></div></div>
+  <main id="main"><div id="stage"><canvas id="cv" width="196" height="216"></canvas><div id="bub"></div></div>
+  <div id="side"><div id="capbox"><div id="cap"></div></div><div id="fin"></div><div id="foot"><button id="go"></button><button id="again"></button><button id="next"></button><button id="home"></button></div></div></main></div></div>
 <script src="engine.js?v=33"></script>
 <script src="palabras.js?v=33"></script>
 <script src="curso.js?v=33"></script>
@@ -200,11 +200,11 @@ function mapa(){const cv=document.getElementById("mapa"),g=cv.getContext("2d"),b
   cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;let best=-1,bd=Math.max(24,24*MW/r.width);   // a touch lands within 24 px of a stop, however small the map is drawn
     STOP.forEach((s,i)=>{const d=Math.hypot(s[0]-x,s[1]-y);if(d<bd){bd=d;best=i;}});if(best>=0){tick();lugar(best);}};}
 const aqui=()=>Math.max(0,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho)));
-const CHECK=["........XX","......XXX.",".....XXX..","X...XXX...","XX.XXX....",".XXXX.....","..XX......"];
+const CHECKPX=["........XX","......XXX.",".....XXX..","X...XXX...","XX.XXX....",".XXXX.....","..XX......"];
 function panel(g,s,i,l){const done=l.cuentos&&l.cuentos.every(hecho),op=abierto(l),x=s[0]-8,y=s[1]-8;   // done: a green tile with a white check; open: a quiet outline; closed: grey (the current stop's ring is plain CSS: see aro())
   g.fillStyle="#000";g.fillRect(x-1,y-1,18,18);
   if(done){g.fillStyle="#1E9E52";g.fillRect(x,y,16,16);g.fillStyle="#52C07F";g.fillRect(x,y,16,2);g.fillRect(x,y,2,16);g.fillStyle="#137A3C";g.fillRect(x+2,y+14,14,2);g.fillRect(x+14,y+2,2,14);
-    g.fillStyle="#FFFFFF";CHECK.forEach((r,j)=>{for(let q=0;q<r.length;q++)if(r[q]==="X")g.fillRect(x+3+q,y+5+j,1,1);});return;}
+    g.fillStyle="#FFFFFF";CHECKPX.forEach((r,j)=>{for(let q=0;q<r.length;q++)if(r[q]==="X")g.fillRect(x+3+q,y+5+j,1,1);});return;}
   if(op){g.fillStyle="#F7F7F4";g.fillRect(x,y,16,16);digitos(g,String(l.n),s[0]+1,s[1],"#000");return;}
   g.fillStyle="#7C7C7C";g.fillRect(x,y,16,16);g.fillStyle="#BCBCBC";g.fillRect(x,y,16,2);g.fillRect(x,y,2,16);digitos(g,String(l.n),s[0]+1,s[1],"#3A3A3A");}
 function landmark(g,id,x,y,op){g.save();g.globalAlpha=op?1:.55;const R=(a,b,w,h,c)=>{g.fillStyle="#000";g.fillRect(a-1,b-1,w+2,h+2);g.fillStyle=c;g.fillRect(a,b,w,h);};
