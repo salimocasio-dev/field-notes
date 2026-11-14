@@ -9,7 +9,7 @@ async def main():
         pg.on("pageerror",lambda e: errs.append(str(e)))
         await pg.goto("http://127.0.0.1:8765/historia/cual.html?fast=3&"+EXTRA); await pg.wait_for_timeout(2500); await pg.click("#go")
         k=0;last=-1;n=0
-        for i in range(8000):
+        for i in range(40000):   # 40000 x ~60 ms: todo=1&n=140 (128 pairs) needs more than the 8000 it had (it stopped at 114)
             await pg.wait_for_timeout(60)
             st=await pg.evaluate("({listo:Cual.listo,pan:Cual.pan,i:Cual.i,run:Cual.running,sp:Cual.speaking,lista:Cual.lista,cap:Story.cap})")
             if st["pan"] and st["i"]!=last and st["listo"]:
