@@ -250,23 +250,37 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
 
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
-function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd");dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.insertBefore(d,snd);dots.push(d);}}
-let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);if($("#nota"))$("#nota").style.display="none";$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
+function mkDots(n){const bar=$("#bar");bar.innerHTML="";dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.appendChild(d);dots.push(d);}bar.classList.toggle("many",n>24);}   // the progress bar: one segment per step
+// the bottom of the frame: what comes next. foot(next,again,map) shows the buttons it is given; with no Next, the Map button becomes the main one
+function foot(a,b,c){$("#next").style.display=a?"flex":"none";$("#again").style.display=b?"flex":"none";$("#home").style.display=c?"flex":"none";$("#foot").classList.toggle("solo",!a&&!!(b||c));}
+// where he opened this lesson from: the app page that sent him here (map, Palabras, Biblioteca or Yo), kept while he moves from story to story
+function origen(){const K="coqui.desde";let o=null;
+  try{const r=document.referrer?new URL(document.referrer):null;
+    if(r&&r.origin===location.origin&&/\/app\.html$/.test(r.pathname)){const t=r.searchParams.get("tab");o="app.html?tab="+(/^[a-z]+$/.test(t||"")?t:"mapa");sessionStorage.setItem(K,o);}
+    else if(r&&r.origin===location.origin&&/\/(index|cual|nivel)\.html$/.test(r.pathname))o=sessionStorage.getItem(K);}catch(e){}
+  return o||"app.html?tab=mapa";}
+let SALIDA=null;   // a screen that always leaves to one place (¿Cuál? goes back to Palabras)
+function salir(url){runId++;try{hush();SFX.calla();}catch(e){}callaLetras();try{if(AC)AC.suspend();}catch(e){}location.href=url;}   // the X: all sound stops, then back to where he came from
+let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);if($("#nota"))$("#nota").style.display="none";$("#go").style.display="none";foot(0,0,0);
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
   if(typeof PAL!=="undefined"&&(!Q.get("fast")||Q.get("rec"))){if(!OIR&&!S.tipo){S._lost=W.lost;PAL.cuento(S,LOG);}else if(PAL.oido)PAL.oido(CUENTO);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
-  running=false;$("#again").style.display="flex";if($("#home"))$("#home").style.display="flex";if(S.next&&!OIR){$("#next").style.display="flex";$("#again").classList.add("two");}}
+  step(dots.length);running=false;foot(!!(S.next&&!OIR),true,true);}
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
-  if(S.nota&&$("#nota")){$("#nota").textContent=S.nota;$("#nota").style.display="block";}   // the one plain English line before a new grammar pattern: on the opening card, gone before any Spanish plays
+  if(S.nota&&$("#nota")){$("#nota").textContent=S.nota;$("#nota").style.display="block";}   // the one plain English line before a new grammar pattern: one small grey line under the picture, gone before any Spanish plays
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
   $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
-function fit(){const vw=window.innerWidth,vh=window.innerHeight,w=Math.floor(Math.min(vw-12,500,(vh-130)*DW/DH));cv.style.width=w+"px";cv.style.height=Math.round(w*DH/DW)+"px";}
-fit();addEventListener("resize",fit);
+$("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("app.html?tab=mapa");
+// the picture is as big as the frame leaves room for: below the top bar, above the caption and the bottom third (portrait), or left of them (a phone on its side)
+function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight,aw=Math.min(mw-16,500),ah=mh-$("#capbox").offsetHeight-8-$("#foot").offsetHeight-8;
+  let k=Math.max(.5,Math.min(aw/DW,ah/DH));const dpr=window.devicePixelRatio||1,kd=k*dpr,ki=Math.floor(kd);if(ki>=1&&ki/kd>=.85)k=ki/dpr;   // a whole number of screen pixels per art pixel when that costs at most 15% of the size
+  cv.style.width=DW*k+"px";cv.style.height=DH*k+"px";}
+fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);
 /* for checking the game by machine */
 window.Story={scene(){return E&&E.estado?E.estado(W):"";},get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const h=!respBox(k)&&E.handAt&&E.handAt[k];if(h){tap(h[0],h[1]+3);return;}const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
   get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;},get cap(){return capEl.classList.contains('on')?capEl.textContent:'';},get bub(){return bubEl.classList.contains('on')?bubEl.textContent:'';},get txt(){return TXT;}};
