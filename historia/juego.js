@@ -277,7 +277,9 @@ async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
 $("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("app.html?tab=mapa");
 // the picture is as big as the frame leaves room for: below the top bar, above the caption and the bottom third (portrait), or left of them (a phone on its side)
-function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight,aw=Math.min(mw-16,500),ah=mh-$("#capbox").offsetHeight-8-$("#foot").offsetHeight-8;
+const LAND=()=>matchMedia("(orientation:landscape) and (max-height:600px)").matches;
+function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight;let aw,ah;
+  if(LAND()){aw=mw-32-16-280;ah=mh-16;}else{aw=Math.min(mw-16,500);ah=mh-$("#capbox").offsetHeight-8-$("#foot").offsetHeight-8;}
   let k=Math.max(.5,Math.min(aw/DW,ah/DH));const dpr=window.devicePixelRatio||1,kd=k*dpr,ki=Math.floor(kd);if(ki>=1&&ki/kd>=.85)k=ki/dpr;   // a whole number of screen pixels per art pixel when that costs at most 15% of the size
   cv.style.width=DW*k+"px";cv.style.height=DH*k+"px";}
 fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);

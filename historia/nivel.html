@@ -61,6 +61,14 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #bub.der::before{left:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-right:6px solid #FFFFFF;border-left:0}
 #bub.izq::after{left:auto;right:-11px;top:50%;bottom:auto;margin:-8px 0 0;border:8px solid transparent;border-left:9px solid #2A1810;border-right:0}
 #bub.izq::before{left:auto;right:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-left:6px solid #FFFFFF;border-right:0}
+/* a phone on its side: the picture on the left, the caption and the buttons to its right */
+@media (orientation:landscape) and (max-height:600px){
+  #main{flex-direction:row;justify-content:center;align-items:center;gap:16px;padding:0 16px}
+  #stage{margin:0}
+  #side{display:flex;flex-direction:column;justify-content:center;flex:1;min-width:0;max-width:420px;gap:16px}
+  #capbox{margin:0;max-width:none;padding:0}
+  #foot{min-height:120px;max-width:none;padding:0}
+}
 </style></head><body>
 <div id="app">
   <header id="top">
