@@ -39,6 +39,8 @@ h2{font-size:18px;line-height:24px;font-weight:500;margin:24px 0 16px}   /* 16 p
 .chip{font-size:14px;line-height:20px;font-weight:600;color:var(--ink);white-space:nowrap}
 #mapaarea{grid-area:map;position:relative;z-index:1;min-height:0;overflow:auto;scrollbar-width:none;overscroll-behavior:contain}
 #mapaarea::-webkit-scrollbar{display:none}
+.fade{grid-area:map;position:relative;z-index:2;height:16px;pointer-events:none;opacity:0;transition:opacity .15s}.fade.on{opacity:1}   /* a soft 16 px fade, from the background colour, at the edge that has more map: it reads as scrollable */
+#fadeT{align-self:start;background:linear-gradient(var(--bg),rgba(246,245,241,0))}#fadeB{align-self:end;background:linear-gradient(rgba(246,245,241,0),var(--bg))}
 #mapw{position:relative;display:block}   /* its size and margins are set by escala(): a whole number of device pixels per map pixel */
 #mapa,#ranac{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
 #mapa{touch-action:manipulation}
@@ -113,6 +115,7 @@ body:not(.ready) .tab,body:not(.ready) nav{visibility:hidden}
   <canvas id="fondo"></canvas>
   <div id="topchips"><span class="chip" id="chipRacha"></span><span class="chip" id="chipLugar"></span></div>
   <div id="mapaarea"><div id="mapw"><canvas id="mapa" width="240" height="352"></canvas><canvas id="ranac" width="240" height="352"></canvas></div></div>
+  <div class="fade" id="fadeT"></div><div class="fade" id="fadeB"></div>
   <div id="hoy"></div>
 </section>
 <!-- BIBLIOTECA: listen and read -->
@@ -180,7 +183,9 @@ function escala(){const cv=document.getElementById("mapa"),w=document.getElement
   const wd=MW*k,hd=MH*k;w.style.width=wd/dpr+"px";w.style.height=hd/dpr+"px";
   w.style.marginLeft=Math.max(0,Math.floor((aw*dpr-wd)/2))/dpr+"px";w.style.marginTop=Math.max(0,Math.floor((ah*dpr-hd)/2))/dpr+"px";KMAP=k;
   if(ar.scrollHeight>ar.clientHeight+1){if(!CENTRADO){const y=STOP[aqui()][1]*k/dpr;ar.scrollTop=Math.max(0,Math.min(ar.scrollHeight-ah,y-ah/2));}}   // the current stop in view
-  CENTRADO=1;dibujaMapa();pintaFondo();}
+  CENTRADO=1;dibujaMapa();pintaFondo();bordes();}
+function bordes(){const ar=document.getElementById("mapaarea");   // the fade shows at the top or the bottom edge when there is more map beyond it
+  document.getElementById("fadeT").classList.toggle("on",ar.scrollTop>1);document.getElementById("fadeB").classList.toggle("on",ar.scrollTop+ar.clientHeight<ar.scrollHeight-1);}
 function mapa(){const cv=document.getElementById("mapa"),g=cv.getContext("2d"),b=new Buf(MW,MH);
   for(let y=0;y<MH;y++)for(let x=0;x<MW;x++)b.px(x,y,((x>>3)+(y>>3))%2?"#58D854":"#4CC848");
   for(let i=0;i<260;i++){const x=hs(i,4)*MW/100,y=hs(i,8)*MH/100;b.px(x,y,"#2E9A48");b.px(x+1,y-1,"#B8F8A0");}
@@ -201,7 +206,7 @@ function mapa(){const cv=document.getElementById("mapa"),g=cv.getContext("2d"),b
       f.fillStyle="#FFFFFF";f.beginPath();f.roundRect(cx,cy,w,h,r);f.fill();f.fillStyle="#16181D";f.textAlign="center";f.textBaseline="middle";f.fillText(tx,cx+w/2,cy+h/2+Math.round(.5*d));}
     const fg=spr("cq.7_0",()=>mkCoqui(.7,0,0));f.drawImage(fg,(at[0]-11)*K,(at[1]-24-(t%2))*K,fg.width*K,fg.height*K);};
   dibujaMapa();setInterval(()=>{if(TAB==="mapa")dibujaMapa();},300);addEventListener("resize",()=>{if(TAB==="mapa"){CENTRADO=0;escala();}});
-  document.getElementById("mapaarea").addEventListener("scroll",()=>requestAnimationFrame(pintaFondo),{passive:true});
+  document.getElementById("mapaarea").addEventListener("scroll",()=>{requestAnimationFrame(pintaFondo);bordes();},{passive:true});
   cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;let best=-1,bd=Math.max(24,24*MW/r.width);   // a touch lands within 24 map px of a stop (never under 48 CSS px across, as the map is never drawn below 1 CSS px per map px)
     STOP.forEach((s,i)=>{const d=Math.hypot(s[0]-x,s[1]-y);if(d<bd){bd=d;best=i;}});if(best>=0){tick();lugar(best);}};}
 const aqui=()=>Math.max(0,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho)));
