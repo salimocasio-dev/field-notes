@@ -4,10 +4,53 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=28
-- Story 1 directly: historia/?v=28 . Any story: ?cuento=<id> (the ids are in historia/curso.js; place 2 ends with la-piragua, senor-senora, el-bebe-duerme). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=28 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
-- The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=29
+- Story 1 directly: historia/?v=29 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=29 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
+- The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
+
+## Nov 14, part 14: Escuchar for El parque, first set
+
+Live at ?v=29. Script (final): historia/notas/guiones/escuchar-parque.md, with what each review changed at its end. Generator: historia/tools/gen_escuchar_parque.py.
+
+### What is built
+
+It is in the Library tab under "Listen · El parque", the same three parts as La casa (part 8 below): the twelve map stories told straight through (Otra vez; nothing to build, the three bench stories were checked in that mode), five new picture stories, four do-this routines.
+
+| Piece | Scene | What happens |
+| --- | --- | --- |
+| d-corre, ¡Corre! | El camino | a race to the big tree; Canelo goes after a cat instead; Carmen wins |
+| d-bola-canelo, La bola de Canelo | El campo | Canelo takes Luis's ball and will not give it back, until he sees another one |
+| d-pato-pequeno, Pan para el pato pequeño | El lago | the two big ducks beat the small one to the bread twice; the frog feeds it from the end of the dock |
+| d-piragua-luis, La piragua de Luis | El banco | Luis's piragua falls; Carmen gives him hers; the frog buys two more; a pigeon eats the fallen one |
+| d-vamos-a-casa, Vamos a casa | El banco | night; everybody goes home; Canelo is too tired to move, until abuela bounces a ball |
+| h-camino, En el camino | El camino | touch the dog, the cat, the big tree, the tree with three birds; run and wait (doing bubbles) |
+| h-campo, En el campo | El campo | "Toca mi bola." / "Toca tu bola."; catch, jump, throw (doing bubbles) |
+| h-lago, En el lago | El lago | ducks and boats by colour; who flies; where the fish is |
+| h-banco, En el banco | El banco | señor, joven, señora; who drinks, who is tired, who sleeps |
+
+- His rule for listening ("they hear a bunch of words and focus on the words their learning") applies to the picture stories: they are built on the words he has met and carry seven others by their pictures (gana, otra, canasta, su, se cae, piragüero, luna). The routines stay inside his words, because there he must act on what he hears.
+- In a routine, not every answer in a group is asked for, and one may be asked twice: so the last line of a group is never the only one left.
+
+### New in the engine and the scenes
+
+- Nothing new in the engine. `W.respEn` (part 13) is set by the path and field routines too, so the bubbles do not hide Carmen or the cat.
+- Each park scene got a few plain acts for Escuchar, so that a picture story can be written in the generator without new code for each beat. banco.js: g (set anything on a person), anda (walk; `suelto`: the line is said while he walks; `lento`), saluda, rana, encima, can, pal, cosa, rueda, rebota, luz (night, with a moon), manos, hace. lago.js: tirapan and gana (bread on the water and the ducks' race for it), patoa, cuacp, mecebote, avea, suelta, dip. campo.js: alta (a high ball and the frog's jump), perro, saluda, ranaa. camino.js: ranaa (the frog alone to a stone), sacude, and `queda` / `fin` on cuenta (the three fingers stay up while the line is said).
+- banco.js at night (`W.noche`): the sun is painted over and the picture darkens; `W.luna` draws a moon.
+
+### Reviews
+
+- Script: draft 1 (beginner and Spanish), draft 2, a last gate, then the Spanish of the final lines again. The big changes: three picture stories retold map stories and got turns of their own (story 3 twice); draft 1 held the picture stories to his word lists, against his rule; three routines could be done without the Spanish; any grown man is "un señor" in Puerto Rico, so the piragua man counts for "Toca al señor."; "¡Corre!" said to three runners was a grammar error ("¡A correr!").
+- Wordless frames: two fresh readers (stories, routines). Fixed after them: see the end of the script.
+
+### Testing
+
+- Every picture story end to end. Every routine all right, all wrong and mixed. The three bench stories in the straight-through mode. The app check.
+- Found by testing: two asks in a row with the same answer stall the test tool (the routine was reordered); a child holding a ball takes the touch meant for the child (a touch on either counts: `alias`); a ball Canelo has taken lives in his pile under another name (pila0).
+
+### Audio
+
+- 141 new lines, about 3,500 characters. Azure so far this month: about 32,500 of 500,000 characters (my own running count, not a reading from Azure).
 
 ## Nov 14, part 13: place 2, scene 4, El banco. All twelve stories of El parque are built.
 

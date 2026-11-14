@@ -19,7 +19,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 
 - The A1 plan is written, reviewed, and all five of its decisions are settled by Salim (Nov 13). His words are in 03-requirements.
 - **Live (Nov 13): the app to his UI plan, all eleven stories of place 1, La casa, as games (El frente 1 to 3, El balcón 4 and 5, La sala 6 to 8, El patio 9 to 11), word records with the scheduler, and the next-day ¿Cuál? pass for all four scenes.**
-    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=28
+    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=29
     - El balcón: El jugo (silla, se sienta, vaso, jugo, agua, toma) and ¡Qué calor! (quiero, por favor, gracias, de nada, ¿cómo estás?, bien). New in the game: answer bubbles that speak, for words that cannot be drawn. Page 08, part 5.
     - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Story 8 opens with one English card. Page 08, part 6.
     - El patio: Las flores (niño, niña, juega, flor, sol, aquí, allá), ¿Qué es esto? (¿qué es esto?, amigo, mira, ven), Hasta mañana (vamos, hasta mañana). "Allí" is taught as "allá"; the gate is "el portón". Page 08, part 7.
@@ -29,6 +29,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
     - El campo (place 2, scene 2): La bola (bola, tiene, tira, coge, dame), ¡Arriba! ¡Abajo! (arriba, abajo, salta), ¡Otra vez! (mi, tu, más, otra vez). The balls are told apart by size and pattern. A card in the corner keeps a star or a mark for each of the three rounds. Page 08, part 11.
     - El lago (place 2, scene 3): Pan para el pato (pato, pez, pájaro, nada, vuela), Los botes (rojo, azul, verde, ¿de qué color?), ¿Cuál? (amarillo, blanco, negro, ¿cuál?). The three colours of story 19 differ in lightness as well as hue. Page 08, part 12.
     - El banco (place 2, scene 4; Nov 14): La piragua (hombre, mujer, come, bebe), ¡Señor! ¡Señora! (señor, señora, joven, viejo), El bebé duerme (cansado, contento, triste, duerme). All twelve stories of El parque are built (stories 12 to 23). In this scene the answer bubbles stand in the sky so that nobody is hidden while he chooses, and story 23 is stars only (a baby sleeps). Page 08, part 13.
+    - Escuchar for El parque, first set (Nov 14; Library tab): the twelve stories told straight through, five new picture stories (a race, Canelo and the ball, the small duck, Luis's piragua, going home at night), four do-this routines. Page 08, part 14.
     - Built: page 08. The UI spec and how the build follows it: page 09.
 - **The look (his correction, Nov 13): only the home map is the game.** "I didn't say the whole thing is a game, I said on the home screen is the map to the game as the main part of the course." His spec is the doc "Language App UI Design Plan" (link in 09). The map is 16-bit pixel art in the centre tab; everything else is a clean modern UI with a bottom tab bar.
 - The coquí speaks in his own voice (Victor, es-PR-VictorNeural), with speech bubbles and captions, Spanish only. Narrator and abuela's lines in Karina (es-PR-KarinaNeural).
@@ -50,7 +51,7 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 
 1. Place 1: all four scenes, eleven stories and a first set of Escuchar are done. The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and its call with Danny (the app side and Danny's brief can be built without spending; testing a call costs ElevenLabs credits and needs Salim's yes; the allowance was used up Nov 12 and renews Nov 16).
 2. The level check: built for place 1 (page 08, part 9). Each new place adds its items.
-3. Places 2 to 10. Place 2, El parque: all four scenes are done (El camino, El campo, El lago, El banco). Next: place 2's Escuchar set (picture stories and do-this routines, as place 1 has), then its call (same wait on his yes as place 1's), then place 3, La cocina, starting with La mesa (mesa, plato, taza, cuchara, tenedor, cuchillo, comida, cocina, pone, tengo hambre, tengo sed, listo). Words for every scene: page 02. Then the fort check.
+3. Places 2 to 10. Place 2, El parque: all four scenes and a first Escuchar set are done. Its call with Danny waits on the same yes as place 1's. Next: place 3, La cocina, starting with La mesa (mesa, plato, taza, cuchara, tenedor, cuchillo, comida, cocina, pone, tengo hambre, tengo sed, listo). It needs a new scene drawing (a kitchen). Words for every scene: page 02. Then the fort check.
 4. Open alongside: the rest of the UI plan (09: calm full-screen lesson screens, the mic states, unlock haptics, streak freezes, the map at an angle and finished places changing it); the 85% difficulty tuning; the mouth record fed by calls; the plan doc fixes ("porch lamp", "nothing is built", old three passes).
 
 ## Pages
