@@ -9,6 +9,35 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 - Script tags carry ?v=30 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
 
+## Script lessons so far (what reviewers have caught; check every new script against this before it goes to them)
+
+Decisions
+- Only the Spanish decides. Not echo (the question holds the sound of the answer), habit, position, elimination (the answer is the word the last round did not use), memory of an earlier step, line length, an old word, the picture, or world knowledge (cake goes on a plate; a shivering man wants something hot).
+- Every deciding word is heard three times or more before it can cost. Every answer mode (touch a thing, touch a person, picture bubbles, speaking bubbles, doing bubbles) is done under the big sign first, with each target kind. Six signed touches at most in an opening.
+- The three games of a scene open differently, and the three stories of a scene do not share a skeleton or a turn.
+- A draw must never make a round unloseable, and both wrong sides must cost.
+
+The world
+- The goal and what is at stake show in the first frame. A loss follows from the mistake, shows at once, and stays in the picture to the end. A redo brings no reward and needs nothing that is not there.
+- Count every thing in every branch (right and wrong of A, then B, then C, with each draw): plates, cups, portions, tools, people, chairs. Make stock finite and visible if a loss is "one fewer".
+- "No, Coquí. Mira." and a whole sentence, true to the eye at that moment.
+- Nobody acts like a fool or refuses without a reason. Nobody who cannot see asks. No hiding tricks. No clock.
+- A line about an action is said during it. No bare labels: whole sentences.
+- A poke never names a thing that decides a round. A touch on somebody's things counts as that person.
+
+Puerto Rican Spanish (so far)
+- "Viejo" of a person is blunt; any grown man is "un señor"; "pato" called at a person is a slur; "bebe" (drinks) against "bebé"; "taza" for hot drinks and "vaso" for cold; "pon" is the command of "pone"; "entra a", not "entra en"; "habichuelas"; "bizcocho"; "canasta"; "piragua"; "portón".
+- Say "Tú tienes sed", not "Tienes sed" (it runs into "tiene sed" aloud).
+
+Pictures (what readers with no sound and no words could not read)
+- A place 24 pixels wide holds two things; keep places apart. Small things in a hand do not read: hold them up at twice the size, in a hand, beside the head.
+- A flat brown oval reads as a dish, not a puddle: splashes need drops and a rim. A thing drawn over a head reads as alarming.
+- Whoever loses something reacts. Whoever stands in front must not hide the frog or the thing that matters.
+- Stills are taken at changes of state: a cause that lasts half a second is not seen in them. Make the result explain itself.
+
+Pairs
+- No old word in the sentence may fit one picture only. "Mi" or "tu" instead of "un" and "una". The other picture is as lively as the right one. No picture is right twice.
+
 ## Nov 14, part 15: place 3, La cocina, scene 1, La mesa (stories 24 to 26)
 
 Live at ?v=30. Script (final): historia/notas/guiones/mesa.md, with what each round of reviews changed at its end. Generator: historia/tools/gen_mesa.py (three stories, twelve pairs; it also sets `next` on story 23). Scene: historia/escenas/mesa.js.
