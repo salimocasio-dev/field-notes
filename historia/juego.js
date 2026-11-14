@@ -270,7 +270,7 @@ let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush()
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
-  if(S.nota&&$("#nota")){$("#nota").textContent=S.nota;$("#nota").style.display="block";}   // the one plain English line before a new grammar pattern: one small grey line under the picture, gone before any Spanish plays
+  if(S.nota&&$("#nota")){$("#nota").textContent=S.nota.replace(/\.?\s*\n\s*/g," · ").replace(/\.$/,"");$("#nota").style.display="block";}   // the one plain English line before a new grammar pattern: one small grey line under the picture, gone before any Spanish plays
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
   $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
