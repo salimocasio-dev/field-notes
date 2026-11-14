@@ -1,4 +1,4 @@
-# El lago: three stories (draft 3, after two rounds of fresh reviews)
+# El lago: three stories (draft 3, final: after two rounds of fresh reviews and a last gate)
 
 Place 2, El parque. Scene 3 of 4. The learner is the little frog (Coquí). He has finished place 1, La casa (eleven stories), El camino (stories 12 to 14) and El campo (stories 15 to 17).
 
@@ -48,7 +48,7 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 **The opening** (big sign, nothing can go wrong)
 
-3. Carmen gives the frog a piece. NARR: "Carmen dice: ¡Pan para el pato!" The big sign is on the duck. He touches it. The frog throws the bread; the duck eats it. Right signal. NARR: "El pato come pan."
+3. Carmen gives the frog a piece. NARR: "Carmen dice: ¡Pan para el pato!" The big sign is on the duck. He touches it. The frog throws the bread; the duck eats. Right signal. While it is still eating: NARR: "El pato come pan."
 4. **Who flies, taught.** The duck climbs out onto the bank beside the dock and stands there shaking its tail. The bird takes off and flies round and round over the pond; the fish swims to and fro. A new piece. NARR: "Carmen dice: ¿Quién vuela?" The big sign is on the bird. He touches it. The frog throws the bread up; the bird takes it in the air. Right signal. While the bird still flies: NARR: "¡Sí! El pájaro vuela."
 5. **Who swims, taught.** The same picture: the bird in the air, the fish in the water, the duck on the bank. A new piece. NARR: "Carmen dice: ¿Quién nada?" The sign is on the fish. He touches it. The frog drops the bread on the water; the fish comes up and eats it. Right signal. NARR: "¡Sí! El pez nada." The bird goes back to its post. The duck slides into the water again.
 6. **He says what the duck is doing, taught.** Luis is busy with his shoe, head down. The duck takes off and flies round over the pond. NARR: "Luis dice: ¿Y el pato?" Two speaking bubbles: "¡El pato vuela!" and "¡El pato nada!" The big sign is on "¡El pato vuela!" He touches it. COQUÍ: "¡El pato vuela!" Luis looks up. Right signal. NARR: "Luis dice: ¡Sí! ¡El pato vuela!"
@@ -63,7 +63,7 @@ In the corner of the screen, from the turn on, a card with three places, one for
 9. **Decision A, Touch (who the bread is for).** The frog takes a piece from the row. NARR: "Carmen dice: ¡Pan para el pez!" (Or "el pato", or "el pájaro". Drawn fresh, each as often as the others.) He touches the duck, the fish or the bird.
    - Right: the frog throws it to that one; it eats. Right signal. A star on the card.
    - Wrong: the frog throws it to the one he touched; that one eats it. The one it was for goes off a little way (the duck turns its back; the fish dives; the bird hops round on its post). A crust on the card. The frog takes a new piece from the row; the one that was named comes back. NARR: "No, Coquí. Este pan es para el pez." The sign; he touches the right one; it eats.
-10. **Decision B, Touch (the one that flies, or the one that swims).** The duck climbs out onto the bank and stands there. The bird takes off and flies round and round over the pond; the fish swims to and fro in front of the dock. The frog takes a piece. NARR: "Carmen dice: ¿Quién vuela?" (Or: "¿Quién nada?" Drawn fresh.) He touches the bird, the fish, or the duck on the bank.
+10. **Decision B, Touch (the one that flies, or the one that swims).** The duck climbs out onto the bank and stands there. The bird takes off and flies round and round over the pond; the fish swims to and fro in front of the dock. The frog takes a piece. NARR: "Carmen dice: ¿Quién vuela?" (Or: "¿Quién nada?" Drawn fresh.) He touches the bird or the fish. (A touch on the duck on the bank is not an answer: it is named, "Es un pato.", and costs nothing.)
    - Right: the frog throws the bread to it (up, or onto the water); it eats. Right signal. A star.
    - Wrong: the frog throws the bread to the one he touched; it eats. A crust. The frog takes a new piece. While the bird still flies and the fish still swims: NARR: "No, Coquí. Mira. El pájaro vuela." (Or: "No, Coquí. Mira. El pez nada en el agua.") The sign; he touches it; it eats.
    - After either: the bird goes back to its post; the duck slides into the water.
@@ -88,9 +88,9 @@ In the corner of the screen, from the turn on, a card with three places, one for
 ## Story 19: Los botes
 
 - **Goal he can see, from the first frame:** three little toy boats on the dock, and Carmen on the far bank with her arms out. Send the boats across to her. They gather in a row at her feet.
-- **At stake:** the boat in play. A boat set on the water that nobody blows drifts out to the reeds in the middle of the pond and sticks there, out of anybody's reach. It stays there. The card shows a boat in reeds for that round. A right round shows a star.
+- **At stake:** the boat in play. A boat set on the water that nobody blows or pushes drifts out to the reeds in the middle of the pond and sticks there, out of anybody's reach. It stays there. The card shows a boat in reeds for that round. A right round shows a star.
 - **New words:** rojo, azul, verde, ¿de qué color?
-- **Back again:** pez, nada, dame, hay, tres, dos, uno, mira, allá, aquí, va, es, este, ahora.
+- **Back again:** pez, nada, dame, coge, hay, tres, dos, uno, mira, allá, aquí, es, este, ahora.
 - **Heard along the way:** bote, pinta, van.
 
 **Start:** the frog at the end of the dock; Luis beside him with a cloth bag of boats. Three toy boats stand in a row along the back of the dock: each a small hull with one sail, the whole boat one colour: red, blue, green. Along the front of the dock stand three pots of paint, well apart: red, blue, green. Carmen stands on the far bank.
@@ -99,11 +99,11 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 **The opening** (big sign, nothing can go wrong)
 
-2. NARR: "Luis dice: Coquí, ¡dame el bote rojo!" The big sign is on the red boat. He touches it. The frog pushes it to Luis; Luis sets it on the water by the dock and holds it. Right signal.
-3. NARR: "Luis dice: ¡Dame el bote azul!" The sign is on the blue boat. He touches it. Luis sets it on the water beside the red one. Right signal.
-4. NARR: "Luis dice: ¡Y dame el bote verde!" The sign is on the green boat. He touches it. Right signal. Luis sets it beside the others and blows hard: the three boats sail across in a line. While they sail: NARR: "¡Allá van los botes! Rojo, azul y verde." Carmen lifts them out and stands them at her feet. Luis takes three more out of his bag, red, blue and green, and stands them in the row on the dock (the order drawn fresh).
-5. **He says a colour, taught.** Luis takes a bare boat out of his bag, plain wood with a white sail, and the brush. A red fish swims up to the dock, jumps once, and circles there just under the water. Luis looks at the splash and then at his boat. NARR: "Luis dice: ¡Un pez! ¿De qué color es?" Three speaking bubbles: "¡Es rojo!", "¡Es azul!", "¡Es verde!" The big sign is on "¡Es rojo!" He touches it. COQUÍ: "¡Es rojo!" Right signal. Luis paints the bare boat red and sets it on the water; he blows; the red fish swims along beside the red boat all the way across to Carmen. While they go: NARR: "Luis dice: ¡Un pez rojo y un bote rojo!"
-6. Luis takes out another bare boat. A green fish swims up, jumps once and circles. NARR: "Luis dice: ¿Y este pez? ¿De qué color es?" The three speaking bubbles; the sign is on "¡Es verde!" He touches it. COQUÍ: "¡Es verde!" Right signal. Luis paints the boat green; it sails across with the green fish beside it. NARR: "Luis dice: ¡Un pez verde y un bote verde!"
+2. NARR: "Luis dice: Coquí, ¡dame el bote rojo!" The big sign is on the red boat. He touches it. The frog pushes it along the dock to Luis; Luis sets it on the water by the dock. Right signal.
+3. Luis takes the blue boat from the row himself and sets it beside the red one. While he does: NARR: "Luis coge el bote azul." Then the green one. NARR: "Y el bote verde."
+4. Luis blows hard: the three boats sail across in a line. While they sail: NARR: "¡Allá van los botes! Rojo, azul y verde." Carmen lifts them out and stands them at her feet. Luis takes three more out of his bag, red, blue and green, and stands them in the row on the dock (the order drawn fresh).
+5. **He says a colour, taught.** Luis bends over his bag, head down, hunting for his brush. A red fish swims up to the dock, jumps once with a splash, and circles there just under the water. Luis does not look up. NARR: "Luis dice: ¿Un pez? ¿De qué color es?" Three speaking bubbles: "¡Es rojo!", "¡Es azul!", "¡Es verde!" The big sign is on "¡Es rojo!" He touches it. COQUÍ: "¡Es rojo!" Right signal. Luis takes a bare boat and the brush out of the bag, paints the boat red and sets it on the water. The red fish swims up behind the red boat and pushes it all the way across to Carmen. While they go: NARR: "Luis dice: ¡Un pez rojo y un bote rojo!"
+6. Luis bends over his bag again. A green fish swims up, jumps once and circles. NARR: "Luis dice: ¿Y este pez? ¿De qué color es?" The three speaking bubbles; the sign is on "¡Es verde!" He touches it. COQUÍ: "¡Es verde!" Right signal. Luis paints a boat green; the green fish pushes it across. NARR: "Luis dice: ¡Un pez verde y un bote verde!"
 7. **He paints, taught.** Luis takes three bare boats out of his bag and holds them out. NARR: "Luis dice: Coquí, ¡pinta tres botes! ¿De qué color? Uno rojo, uno azul y uno verde." The big sign is on the red pot. He touches it; the frog paints one boat red. The sign moves to the blue pot. He touches it; the frog paints one blue. The sign moves to the green pot. He touches it; the frog paints one green. Right signal. Luis sets the three on the water and blows; they sail across. NARR: "¡Allá van los botes!"
 
 **The turn**
@@ -114,23 +114,23 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 9. **Decision A, Touch (which boat).** The three boats stand in their row on the dock (the order drawn fresh). NARR: "Luis dice: Coquí, ¡dame el bote azul!" (Or "rojo", or "verde". Drawn fresh, each as often as the others.) He touches a boat.
    - Right: the frog pushes it to Luis; Luis sets it on the water and blows; it sails across to Carmen. Right signal. A star. Luis puts another of that colour in the row.
-   - Wrong: the frog pushes the boat he touched to Luis. Luis sets it on the water, sees its colour, and does not blow. It drifts out to the reeds and sticks. A boat in reeds on the card. Then the right boat twinkles in the row. NARR: "No, Coquí. Este es el bote azul." (The colour that was called.) Luis puts another of the lost colour in the row. The sign; he touches the right boat; it sails across.
-10. **Decision B, Say (he sees the fish; Luis does not).** Luis takes out a bare boat and the brush. A fish swims up to the dock, jumps once, and circles there: red, blue or green, drawn fresh. Luis looks at the splash and then at his boat. NARR: "Luis dice: ¡Un pez! ¿De qué color es?" Three speaking bubbles: "¡Es rojo!", "¡Es azul!", "¡Es verde!" The fish goes on circling.
-   - Right: Luis paints his boat that colour and sets it on the water; he blows; the fish swims beside it across to Carmen. Right signal. A star.
-   - Wrong: Luis paints his boat the colour the frog said and sets it on the water. The fish jumps again, beside it. Luis looks from the fish to the boat and does not blow. NARR: "No, Coquí. Mira. Es azul." (The fish's colour.) The boat drifts out to the reeds and sticks. A boat in reeds. The fish goes on circling. Luis takes out a new bare boat. The sign shows the right bubble; he says it; Luis paints; the boat sails across with the fish.
+   - Wrong: Luis is looking across at Carmen. The frog pushes the boat he touched to him; Luis sets it on the water without looking at it, and does not blow. It drifts out to the reeds and sticks. When Luis looks, it is out of reach. A boat in reeds on the card. Then the right boat twinkles in the row. NARR: "No, Coquí. Este es el bote azul." (The colour that was called.) Luis puts another of the lost colour in the row. The sign; he touches the right boat; it sails across.
+10. **Decision B, Say (he sees the fish; Luis does not).** Luis bends over his bag, head down, hunting for his brush. A fish swims up to the dock, jumps once, and circles there: red, blue or green, drawn fresh. NARR: "Luis dice: ¿Un pez? ¿De qué color es?" Three speaking bubbles: "¡Es rojo!", "¡Es azul!", "¡Es verde!" The fish goes on circling.
+   - Right: Luis takes out a bare boat, paints it that colour and sets it on the water; the fish swims up behind it and pushes it across to Carmen. Right signal. A star.
+   - Wrong: Luis paints a boat the colour the frog said, sets it on the water and bends over his bag again. The fish jumps beside the boat and does not push it; the fish twinkles. NARR: "No, Coquí. Mira. El pez es azul." (The fish's colour.) Nobody pushes the boat: it drifts out to the reeds and sticks. A boat in reeds. The fish goes on circling. The sign shows the right bubble; he says it; Luis paints another; the fish pushes it across.
 11. **Decision C, Touch, last (he paints two).** Luis holds out two bare boats. NARR: "Luis dice: ¡Ahora dos botes! Uno verde y uno rojo." (Two of the three colours, drawn fresh, in an order drawn fresh.) He touches a pot, and then another. Either of the two colours may come first. A pot he has used does nothing if he touches it again.
    - Right (both): each touch paints one boat. Luis sets both on the water and blows; they sail across. Right signal. A star.
-   - Wrong (a touch on the pot that was not named, first or second): the frog paints a boat that colour. It stays that colour. Luis sets it on the water, sees it, and does not blow; it drifts out to the reeds and sticks. A boat in reeds (one mark for the round, however it went wrong). Then the pot still wanted twinkles (if both are still wanted, the one he named first). NARR: "No, Coquí. Este es el rojo." A new bare boat. The sign shows that pot; he touches it; the frog paints. If the other colour is still to do, the sign shows that pot next. Luis sails the two right boats across.
+   - Wrong (a touch on the pot that was not named, first or second): the frog paints a boat that colour. It stays that colour. Luis, looking across at Carmen, sets it on the water without looking and does not blow; when he looks, it has drifted out to the reeds and stuck. A boat in reeds (one mark for the round, however it went wrong). NARR: "No, Coquí. Luis dice: ¡Uno rojo!" (The colour still wanted; if both are still wanted, the one he named first.) A new bare boat. The sign shows that pot; he touches it; the frog paints. If the other colour is still to do, the sign shows that pot next. Luis sails the two right boats across.
 
 **The ending** (the same lines in every ending)
 
 12. Carmen sets all the boats at her feet on the water and blows. They sail back across the pond toward the dock in a long line, past the reeds. By the boats in the reeds:
-   - Only the one that drifted at the turn (three stars): stars and a heart as the line comes in.
+   - Only the one that drifted at the turn (three stars): the line of boats bumps it free on the way, and it comes home with the others. Stars and a heart as the line comes in.
    - Two or three in the reeds: no heart.
    - Four in the reeds (no star): the frog watches the line sail past four boats stuck out in the middle.
 13. As the first boats reach the dock: NARR: "Un bote rojo. Un bote azul. Un bote verde." (One of each twinkles as it is named.) COQUÍ: "¡Aquí están los botes!"
 
-**Fewest hearings before a word can cost:** rojo 8 (step 1; step 2; step 4; step 5 four times: the bubble, the frog, Luis twice; step 7), azul 6 (step 1; step 3; step 4; steps 5 and 6, the bubble; step 7), verde 9 (step 1; step 4 twice; step 5, the bubble; step 6 four times; step 7), ¿de qué color? 3 (steps 5, 6, 7); it is asked, never the answer.
+**Fewest hearings before a word can cost:** rojo 8 (step 1; step 2; step 4; step 5 four times: the bubble, the frog, Luis twice; step 7), azul 6 (step 1; step 3; step 4; steps 5 and 6, the bubble; step 7), verde 9 (step 1; step 3; step 4; step 5, the bubble; step 6 four times; step 7), ¿de qué color? 3 (steps 5, 6, 7); it is asked, never the answer.
 
 **A miss is filed under:** A and B: the colour that was called or was true. C: the colour he should have touched.
 
@@ -139,7 +139,7 @@ In the corner of the screen, from the turn on, a card with three places, one for
 ## Story 20: ¿Cuál?
 
 - **Goal he can see, from the first frame:** three ducks out on the water, a white one, a black one and a small yellow one, and bread on the dock. Bring the ducks to the dock.
-- **At stake:** how near the ducks are. The water between the dock and the far side has seven places. A round done right at the first try brings all three one place nearer. A round done wrong sends all three one place further out, and putting it right brings nobody nearer. It stays. The card shows rings on the water for a round done wrong, a star for a round done right.
+- **At stake:** how near the ducks are. The water between the dock and the far side has seven places. A round done right at the first try brings all three one place nearer. A round done wrong sends all three one place further out, and putting it right brings nobody nearer. It stays. The card shows rings on the water for a round done wrong (a bitten crust if a bird took his bread), a star for a round done right.
 - **New words:** amarillo, blanco, negro, ¿cuál?
 - **Back again:** pato, pájaro, pan, para, hay, tres, mira, flor, sí, amigo.
 - **Heard along the way:** amarilla (una flor amarilla), ¿cuál pájaro?, ¿cuál pato?
@@ -152,28 +152,28 @@ In the corner of the screen, from the turn on, a card with three places, one for
 
 2. NARR: "Carmen dice: ¿Cuál es el pato blanco?" The big sign is on the white duck. He touches it. The frog throws it bread; it eats. Right signal. NARR: "Carmen dice: ¡Sí! El pato blanco."
 3. NARR: "Carmen dice: ¿Cuál es el pato negro?" The sign is on the black duck. He touches it. Bread; it eats. Right signal. NARR: "Carmen dice: ¡Sí! El pato negro."
-4. **He says which one, taught.** Two birds land on the rail of the dock, one at each end: a white one and a black one. NARR: "Mira. Un pájaro blanco y un pájaro negro." Carmen bends over the bag, her back to the rail. The black bird hops down, takes a crust from beside her and hops back to its end of the rail with the crust in its beak, its back turned. The white bird has not moved. Carmen looks up; the crust is gone. NARR: "Carmen dice: ¡Mi pan! ¿Cuál pájaro?" Two speaking bubbles: "¡El pájaro negro!" and "¡El pájaro blanco!" The big sign is on "¡El pájaro negro!" He touches it. COQUÍ: "¡El pájaro negro!" Carmen claps her hands at the black bird; it drops the crust into the water and flies to the post. The ducks eat the crust. Right signal. The black bird comes back to its end of the rail.
+4. **He says which one, taught.** Two birds land on the two posts of the dock, one at each end: a white one and a black one. NARR: "Mira. Un pájaro blanco y un pájaro negro." Carmen bends over the bag, her back to the posts. The black bird hops down, takes a crust from beside her and goes back to its post with the crust in its beak. The white bird has not moved. Carmen looks up; the crust is gone. NARR: "Carmen dice: ¡Mi pan! ¿Cuál pájaro?" Two speaking bubbles: "¡El pájaro negro!" and "¡El pájaro blanco!" The big sign is on "¡El pájaro negro!" He touches it. COQUÍ: "¡El pájaro negro!" Carmen claps her hands at the black bird; it drops the crust into the water. The crust floats out to the ducks and they eat it. Right signal.
 5. **He asks which one, taught.** A new piece of bread. One speaking bubble shows over the frog. NARR: "Carmen dice: ¡Pan para el pato!" The three ducks all look up, as they do every time she speaks. The big sign is on the speaking bubble. He touches it. COQUÍ: "¿Cuál?" NARR: "Carmen dice: El pato negro." The sign is on the black duck. He touches it. Bread; it eats. Right signal.
 6. Another piece. The speaking bubble shows again. NARR: "Carmen dice: ¡Pan para el pato amarillo!" The ducks look up. The big sign is on the yellow duck. He touches it. Bread; it eats. Right signal. NARR: "Carmen dice: ¡Sí! El pato amarillo."
 
 **The turn**
 
-7. Canelo wakes up, sees the ducks and barks. The ducks flap, quack, and paddle one place further out: the fourth place. NARR: "Luis dice: ¡No, Canelo!" Canelo lies down again. The card with three empty places shows in the corner. The birds are on the rail. The signs go away.
+7. Canelo wakes up, sees the ducks and barks. The ducks flap, quack, and paddle one place further out: the fourth place. NARR: "Luis dice: ¡No, Canelo!" Canelo lies down again. The two birds, which flew up at the bark, land on the posts again (which post each takes is drawn fresh). The card with three empty places shows in the corner. The signs go away.
 
 **The game** (no sign)
 
 8. **Decision A, Touch (which duck).** The three ducks paddle about and stop in a new order. The frog takes a piece of bread. NARR: "Carmen dice: ¿Cuál es el pato negro?" (Or "blanco", or "amarillo". Drawn fresh, each as often as the others.) He touches a duck.
    - Right: the frog throws it bread; it eats; all three come one place nearer. Right signal. A star.
    - Wrong: the frog throws bread to the duck he touched; it eats. The duck that was named, left out, flaps and quacks loudly; the noise sends all three one place further out. Rings on the card. The right duck twinkles. NARR: "No, Coquí. Este es el pato negro." A new piece. The sign; he touches it; it eats. Nobody comes nearer.
-9. **Decision B, Say (he sees which bird; Carmen does not).** Carmen bends over the bag, her back to the rail. One of the two birds, drawn fresh, hops down, takes a crust and hops back to its end of the rail, its back turned; the other has not moved. (Which end each bird sits at is drawn fresh.) Carmen looks up. NARR: "Carmen dice: ¡Mi pan! ¿Cuál pájaro?" Two speaking bubbles: "¡El pájaro negro!" and "¡El pájaro blanco!"
-   - Right: Carmen claps her hands at that bird; it drops the crust into the water; the ducks come one place nearer to eat it. Right signal. A star.
-   - Wrong: Carmen claps her hands at the bird he named. It has done nothing: it squawks and flaps up, and the noise sends the ducks one place further out. The other bird flies off to the post with the crust. Rings. NARR: "No, Coquí. Mira. El pájaro negro tiene el pan." (The one on the post, the crust in its beak.) Both birds come back to the rail; the same one takes another crust. The sign shows the right bubble; he says it; Carmen claps; the crust drops; the ducks eat it where they are.
+9. **Decision B, Say (he sees which bird; Carmen does not).** Carmen bends over the bag, her back to the posts. One of the two birds, drawn fresh, hops down, takes a crust and goes back to its post with the crust in its beak; the other has not moved. Carmen looks up. NARR: "Carmen dice: ¡Mi pan! ¿Cuál pájaro?" Two speaking bubbles: "¡El pájaro negro!" and "¡El pájaro blanco!"
+   - Right: Carmen claps her hands at that bird; it drops the crust into the water; the crust floats out, and the ducks come one place nearer to meet it. Right signal. A star.
+   - Wrong: Carmen claps her hands at the bird he named. It has done nothing: it squawks and flaps, and the noise sends the ducks one place further out. The other bird flies off to the post in the water with the crust. Rings. NARR: "No, Coquí. Mira. El pájaro negro tiene el pan." (The one on the post in the water, the crust in its beak.) The sign shows the right bubble; he says it; Carmen claps at the bird on the post; it drops the crust; the crust floats out to the ducks where they are; the bird goes back to its post on the dock.
 10. **Decision C, last (did she say which duck?).** The frog takes a piece. The speaking bubble shows over the frog. One of two lines, drawn fresh. NARR: "Carmen dice: ¡Pan para el pato!" (Which duck is not said.) Or: "Carmen dice: ¡Pan para el pato blanco!" (Or "negro", or "amarillo".) The ducks look up. He touches a duck, or the speaking bubble.
    - She did not say which, and he asks (the bubble). COQUÍ: "¿Cuál?" NARR: "Carmen dice: El pato negro." (One of the three, drawn fresh.) Then he touches a duck. The right one: bread; it eats; one place nearer; right signal; a star. Another one: as in Decision A, wrong.
    - She did not say which, and he touches a duck without asking: the frog throws the bread at that duck; all three go for it at once, flap and quack, and paddle one place further out. Rings. NARR: "No, Coquí. Hay tres patos. ¿Cuál pato?" A new piece. The sign shows the bubble; he touches it. COQUÍ: "¿Cuál?" NARR: "Carmen dice: El pato negro." The sign shows that duck; he touches it; it eats.
    - She said which, and he touches that duck: bread; it eats; one place nearer. Right signal. A star.
    - She said which, and he touches another duck: as in Decision A, wrong. Rings. NARR: "No, Coquí. Este es el pato blanco."
-   - She said which, and he asks all the same (the bubble). COQUÍ: "¿Cuál?" NARR: "Carmen dice: ¡El pato blanco, Coquí!" He then touches a duck. The right one eats, but slowly, after the wait: no star and nobody comes nearer; the place on the card gets a small grey dash. Another one: wrong, as above.
+   - She said which, and he asks all the same (the bubble). COQUÍ: "¿Cuál?" NARR: "Carmen dice: ¡El pato blanco, Coquí!" While he waits for her to say it again, a bird flies down and takes the bread out of his hand. A bitten crust on the card. A new piece. He then touches a duck: the right one eats, and nobody comes nearer, as in any round put right. Another one: wrong, as above.
 
 **The ending** (the same lines in every ending)
 
@@ -182,9 +182,9 @@ In the corner of the screen, from the turn on, a card with three places, one for
    - Anywhere else, from the second place to the seventh: they paddle where the game left them. Carmen throws one last piece out to them.
 12. NARR: "Un pato blanco. Un pato negro. Y un pato amarillo." NARR: "Carmen dice: ¿Cuál es tu amigo, Coquí?" COQUÍ: "¡El amarillo!" The small yellow duck quacks.
 
-**Fewest hearings before a word can cost:** blanco 6 (step 1; step 2 twice; step 4 three times: the narrator, the bubble; and more), negro 7 (step 1; step 3 twice; step 4 three times; step 5), amarillo 4 for a duck (step 1; step 6 twice; and "amarilla" once), ¿cuál? 5 (steps 2, 3, 4; step 5: the bubble and the frog).
+**Fewest hearings before a word can cost:** blanco 5 (step 1; step 2 twice; step 4 twice: the narrator, the bubble), negro 7 (step 1; step 3 twice; step 4 three times; step 5), amarillo 3 for a duck (step 1; step 6 twice), and "amarilla" once, ¿cuál? 5 (steps 2, 3, 4; step 5: the bubble and the frog).
 
-**A miss is filed under:** A: the colour that was called. B: the colour of the bird that took the bread (blanco or negro). C: ¿cuál?, when he guessed without asking, or asked when she had said; the colour, when he touched the wrong duck after hearing it.
+**A miss is filed under:** A: the colour that was called. B: the colour of the bird that took the bread (blanco or negro). C: ¿cuál?, when he guessed without asking; the colour, when he touched the wrong duck after hearing it; nothing, when he asked although she had said.
 
 ---
 
@@ -195,18 +195,26 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the wo
 | Word | Sentence | Picture that fits | The other picture |
 | --- | --- | --- | --- |
 | pato | "Es un pato." | the white duck walking on the dock | the blue bird hopping on the dock |
-| pez | "Es un pez." | the brown fish jumping | the duck dipping its head under the water, tail up |
-| pájaro | "Es un pájaro." | the blue bird pecking at a crust on the bank | the duck pecking at a crust on the bank |
-| nada | "El pez nada." | the fish swimming just under the water | the fish high in the air, out of the water |
+| pez | "Es un pez." | the brown fish jumping | the duck paddling, its head bobbing |
+| pájaro | "Es un pájaro." | the blue bird on the bank, a crust in its beak | the fish at the surface, taking a crust |
+| nada | "El pato nada." | the duck paddling on the water | the duck in the air, wings out |
 | vuela | "El pájaro vuela." | the bird in the air over the pond | the bird hopping on the dock, pecking |
 | rojo | "Es un bote rojo." | the red boat on the water | the blue boat on the water |
-| azul | "Es un pez azul." | a blue fish circling | a red fish circling |
+| azul | "Es un pez azul." | a blue fish | a green fish |
 | verde | "Es un bote verde." | the green boat on the dock | the red boat on the dock |
 | amarillo | "Es un pato amarillo." | the small yellow duck paddling | the white duck paddling |
 | blanco | "Es un pájaro blanco." | a white bird on the rail | a black bird on the rail |
 | negro | "Es un pato negro." | the black duck paddling | the small yellow duck paddling |
 
 "¿De qué color?" and "¿cuál?" have no picture pair; they are questions, and come back in the listening stories and in the call.
+
+## What the last gate changed
+
+- Story 20, the last decision: asking "¿Cuál?" when Carmen had already said which duck used to bring a silent penalty. Now a bird takes the bread from his hand while he waits: a cause he can see, and nothing is filed against him.
+- Story 20, the middle decision: the redo no longer needs a second theft (Carmen claps at the bird on the post in the water); a dropped crust floats out to the ducks; the birds change posts where he can see it, when Canelo's bark lifts them.
+- Story 19: one signed boat instead of three (six signed touches in all); Luis has his head in his bag when the fish jumps, so his question is real; the fish, not Luis, pushes a boat of its own colour; a wrong boat is set down while Luis looks at Carmen; in the three-star ending the returning boats bump the first one free.
+- Story 18: a touch on the duck on the bank, in the "who flies / who swims" decision, is a free poke: the duck does both, so it cannot be a wrong answer.
+- Picture pairs: no picture is the other one of two pairs that the same known word solves.
 
 ## What the second round of reviews changed
 
@@ -223,7 +231,7 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the wo
 - Story 18: the bread is in view on the dock and a wasted piece is gone; the ending shares out what is left. The closing line is true in every ending.
 - Story 19: the cart is gone (a step could not happen). Boats gather at Carmen's feet; the reeds are out in the middle, where nobody can reach a stuck boat; a wrong boat is lost because it is set down at the edge and slips in. Every correction is true to the eye ("Este es el bote azul.", as that boat twinkles). The fish circles while he chooses. The last decision is new: two colours in one line.
 - Story 20: "¿Cuál?" is now a bubble he can always touch, free. It costs only to guess a duck when Carmen did not say which. The middle decision needs two words (pato or pájaro; blanco or negro). The ducks end where the game left them. The turn is Canelo, not Luis.
-- Spanish: "¿Y el pato?" for "¿Dónde está el pato?"; "nada en el agua" at the first hearings and in corrections, so "nada" is not heard as "nothing"; "¡Allá va el bote rojo!"; "¡pinta mi bote de verde!"; "Es un pez azul."; no bare "pato" called out, no "tu pato".
+- Spanish: "¿Y el pato?" for "¿Dónde está el pato?"; "nada en el agua" at the first hearings and in corrections, so "nada" is not heard as "nothing"; "¡Allá van los botes!"; "¡pinta tres botes!"; no bare "pato" called out, no "tu pato".
 - Colours are drawn to differ in lightness as well as hue, for players who cannot tell red from green.
 
 ## For the owner, one line each

@@ -42,7 +42,11 @@ const NV=[
  {w:"tira",s:15,p:[["tira","si",134],["tira","no",132],["dame","si",128],["tiene","si",130]]},
  {w:"coge",s:15,p:[["coge","si",138],["coge","no",134],["dame","no",128],["salta","si"]]},
  {w:"arriba",s:16,p:[["arriba","si",64],["arriba","no",176],["abajo","si",90],["salta","no"]]},
- {w:"mi",s:17,p:[["mi","si",114],["mi","no",126],["tira","si",134],["tiene","si",130]]}];
+ {w:"mi",s:17,p:[["mi","si",114],["mi","no",126],["tira","si",134],["tiene","si",130]]},
+ {w:"pato",s:18,p:[["pato","si",100],["pato","no",100],["pez","si",156],["pájaro","no",176]]},
+ {w:"vuela",s:18,p:[["vuela","si",152],["vuela","no",96],["nada","si",150],["pez","si",156]]},
+ {w:"rojo",s:19,p:[["rojo","si",150],["rojo","no",150],["verde","si",96],["azul","si",150]]},
+ {w:"negro",s:20,p:[["negro","si",150],["negro","no",150],["amarillo","no",150],["blanco","si",133]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
 function celda(k){return [(k%2)*(CW+CG),Math.floor(k/2)*(CH+CG)];}

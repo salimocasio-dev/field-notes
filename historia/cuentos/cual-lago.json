@@ -1,0 +1,726 @@
+{
+ "id": "cual-lago",
+ "title": "¿Cuál?",
+ "place": "El parque",
+ "scene": "lago",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for El lago. '¿De qué color?' and '¿cuál?' have no pair: they are questions.",
+ "clips": {
+  "l_n_pato": {
+   "who": "narr",
+   "text": "Es un pato."
+  },
+  "l_n_pez": {
+   "who": "narr",
+   "text": "Es un pez."
+  },
+  "l_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "l_c_pato_nada": {
+   "who": "narr",
+   "text": "El pato nada."
+  },
+  "c18_pajaro_vuela": {
+   "who": "narr",
+   "text": "El pájaro vuela."
+  },
+  "l_c_bote_rojo": {
+   "who": "narr",
+   "text": "Es un bote rojo."
+  },
+  "l_c_pez_azul": {
+   "who": "narr",
+   "text": "Es un pez azul."
+  },
+  "l_c_bote_verde": {
+   "who": "narr",
+   "text": "Es un bote verde."
+  },
+  "l_c_pato_amarillo": {
+   "who": "narr",
+   "text": "Es un pato amarillo."
+  },
+  "l_c_pajaro_blanco": {
+   "who": "narr",
+   "text": "Es un pájaro blanco."
+  },
+  "l_c_pato_negro": {
+   "who": "narr",
+   "text": "Es un pato negro."
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "pato",
+   "say": "l_n_pato",
+   "si": {
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 100,
+       "y": 154,
+       "pose": "anda",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 100,
+       "y": 154,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "pez",
+   "say": "l_n_pez",
+   "si": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "pardo",
+       "x": 156,
+       "y": 196,
+       "dir": -1,
+       "dy": 16
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 156,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1,
+       "come": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "pájaro",
+   "say": "l_n_pajaro",
+   "si": {
+    "cam": [
+     120,
+     84,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 176,
+       "y": 119,
+       "dir": -1,
+       "pan": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     120,
+     84,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "pardo",
+       "x": 176,
+       "y": 134,
+       "dir": -1
+      }
+     },
+     "pan": {
+      "con": null,
+      "x": 166,
+      "y": 134,
+      "z": 0,
+      "vis": 1
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "nada",
+   "say": "l_c_pato_nada",
+   "si": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 150,
+       "y": 188,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     96,
+     30,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 150,
+       "y": 62,
+       "pose": "vuela",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "vuela",
+   "say": "c18_pajaro_vuela",
+   "si": {
+    "cam": [
+     96,
+     30,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 152,
+       "y": 60,
+       "dir": -1,
+       "vuela": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 96,
+       "y": 154,
+       "dir": -1,
+       "pan": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "rojo",
+   "say": "l_c_bote_rojo",
+   "si": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "rojo",
+       "x": 150,
+       "y": 190,
+       "en": "agua"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "azul",
+       "x": 150,
+       "y": 190,
+       "en": "agua"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "azul",
+   "say": "l_c_pez_azul",
+   "si": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "azul",
+       "x": 150,
+       "y": 192,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "verde",
+       "x": 150,
+       "y": 192,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "verde",
+   "say": "l_c_bote_verde",
+   "si": {
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "verde",
+       "x": 96,
+       "y": 153,
+       "en": "muelle"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "rojo",
+       "x": 96,
+       "y": 153,
+       "en": "muelle"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "amarillo",
+   "say": "l_c_pato_amarillo",
+   "si": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "amarillo",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "blanco",
+   "say": "l_c_pajaro_blanco",
+   "si": {
+    "cam": [
+     84,
+     116,
+     100,
+     53.1
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "blanco",
+       "x": 133,
+       "y": 140,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     84,
+     116,
+     100,
+     53.1
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "negro",
+       "x": 133,
+       "y": 140,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  },
+  {
+   "w": "negro",
+   "say": "l_c_pato_negro",
+   "si": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "negro",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   },
+   "no": {
+    "cam": [
+     100,
+     152,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "amarillo",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    }
+   }
+  }
+ ]
+}

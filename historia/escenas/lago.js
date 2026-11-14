@@ -177,7 +177,7 @@ const acts={
 
   /* ----- story 18: Pan para el pato ----- */
   async inicio18(){W.gente={luis:{x:44,y:154,pose:"idle",dir:1,sent:1},carmen:{x:72,y:154,pose:"idle",dir:1,lleva:"bolsa"}};Object.assign(W.cq,{x:100,y:125,s:1});
-    W.patos={blanco:{k:"blanco",x:150,y:186,pose:"nada",dir:-1}};W.peces={a:{c:"pardo",x:104,y:204,x0:104,dir:1,vaiven:1}};W.aves={a:{c:"azul",x:POSTE[0],y:POSTE[1]-24,dir:-1}};W.fila=0;W.pan=null;W.perro={x:40,y:118,pose:"lie",dir:1};},
+    W.patos={blanco:{k:"blanco",x:150,y:186,pose:"nada",dir:-1}};W.peces={a:{c:"pardo",x:104,y:204,x0:104,dir:1,vaiven:1}};W.aves={a:{c:"azul",x:POSTE[0],y:POSTE[1]-24,dir:-1}};W.fila=0;W.pan=null;},
   // the bird, or the duck, takes off and goes on flying round over the pond
   async sube(o){const a0=Math.PI*.7,tx=150+46*Math.cos(a0),ty=58+16*Math.sin(a0);if(o.quien==="pato"){const d=W.patos.blanco;d.rema=0;cuac(1);await patoA("blanco",tx,ty,"vuela");d.fase=a0-F/16;d.ronda=1;}else{const b=W.aves.a;pio();await aveA("a",tx,ty);b.vuela=1;b.fase=a0-F/16;b.ronda=1;}},
   async baja(o){if(o.quien==="pato"){const d=W.patos.blanco;d.ronda=0;d.rema=0;await patoA("blanco",150,186,d.pose==="vuela"?"vuela":"nada");if(d.pose==="vuela")salpica(150,186);d.pose="nada";d.dir=-1;}else{const b=W.aves.a;b.ronda=0;await aveA("a",POSTE[0],POSTE[1]-24);b.dir=-1;}},
@@ -202,7 +202,7 @@ const acts={
   async sale(o){const ob=quien(o.a);if(o.a==="pez"){ob.vaiven=0;ob.circula=0;}else if(o.a==="pajaro"){ob.ronda=0;pio();}else{ob.rema=0;ob.ronda=0;cuac(1);}ob.sale=1;await wait(350);},
 
   /* ----- story 19: Los botes ----- */
-  async inicio19(){W.gente={luis:{x:128,y:154,pose:"idle",dir:1},carmen:{x:ORILLA[0]+18,y:ORILLA[1]+1,pose:"idle",dir:-1}};Object.assign(W.cq,{x:60,y:125,s:1});W.saco=[110,153];W.botes={};W.nb=0;W.enC=0;W.enJ=0;W.peces={};W.aves={};W.patos={};W.perro={x:40,y:118,pose:"lie",dir:1};
+  async inicio19(){W.gente={luis:{x:128,y:154,pose:"idle",dir:1},carmen:{x:ORILLA[0]+18,y:ORILLA[1]+1,pose:"idle",dir:-1}};Object.assign(W.cq,{x:60,y:125,s:1});W.saco=[110,153];W.botes={};W.nb=0;W.enC=0;W.enJ=0;W.peces={};W.aves={};W.patos={};
     await acts.repone({o:"rav"});},
   // the row on the dock always holds a red, a blue and a green boat (o: their order, e.g. "var")
   async repone(o){const C={r:"rojo",a:"azul",v:"verde"},ord=(o.o||W.ord19||"rav").split("");W.ord19=ord.join("");ord.forEach((k,i)=>{const c=C[k],id="f_"+c;if(!W.botes[id]){W.botes[id]={c,x:FX[i],y:FY,en:"muelle"};SFX.blip();}else{W.botes[id].x=FX[i];}});await wait(250);},
@@ -241,7 +241,7 @@ const acts={
     if(n<=1){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[70,60],[196,70],[136,50],[110,90],[170,96]]});}else if(n<4)SFX.win();else SFX.coqui();await wait(1200);},
 
   /* ----- story 20: ¿Cuál? ----- */
-  async inicio20(){W.gente={luis:{x:60,y:118,pose:"idle",dir:1,sent:1},carmen:{x:112,y:154,pose:"idle",dir:-1}};Object.assign(W.cq,{x:62,y:125,s:1});W.bolsa=[96,153];W.flor=[116,118];W.perro={x:86,y:119,pose:"lie",dir:1};
+  async inicio20(){W.gente={luis:{x:60,y:118,pose:"idle",dir:1,sent:1},carmen:{x:112,y:154,pose:"idle",dir:-1}};Object.assign(W.cq,{x:62,y:125,s:1});W.bolsa=[96,153];W.flor=[196,119];W.perro={x:86,y:119,pose:"lie",dir:1};
     W.lugarP=3;W.orden=[0,1,2];W.patos={};PK.forEach(k=>{W.patos[k]={k,x:0,y:0,pose:"nada",dir:-1};});W.aves={};W.pan=null;W.botes={};W.peces={};acts._pon();},
   _pon(){const p=P7(W.lugarP);PK.forEach((k,i)=>{const o=OFF[W.orden[i]];W.patos[k].x=p[0]+o[0];W.patos[k].y=p[1]+o[1];});},
   // the ducks paddle d places (minus: nearer the dock); baraja: they stop in a new order

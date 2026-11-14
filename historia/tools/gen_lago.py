@@ -145,7 +145,7 @@ s20={"id":"cual","title":"¿Cuál?","place":"El parque","scene":"lago","next":No
   {"dots":4},act("turno20"),say("c20_l_no_canelo"),act("echado"),{"draw":"ladob","options":["bn","nb"]},act("posan20",lado="$ladob"),CARD,{"wait":400},
   {"dots":5},act("mueven",d=0,baraja=1),act("toma20"),{"draw":"ca","options":BNA},
   {"decide":"do","options":PT,"pick":"pato_$ca","tests":"$ca","lock":True,"lead":[],"line":"c20_ca_cual_es_$ca",
-   "right":[act("come",a="pato_$ca"),act("mueven",d=-1),ok()],
+   "right":[act("come",a="pato_$ca"),{"if":"ok","then":[act("mueven",d=-1),act("marca",que="ok")]}],   # putting it right brings nobody nearer
    "wrong":[act("come",a="$x"),act("ruido",a="pato_$ca"),act("mueven",d=1),act("marca",que="onda"),{"cost":1},tw("pato_$ca"),"c20_no_este_$ca",tw(None),act("toma20")]},
   {"dots":6},{"draw":"cb","options":["negro","blanco"]},{"calc":"ob","cond":"cb=negro","then":"blanco","else":"negro"},act("roba",c="$cb"),
   {"decide":"say","options":DP,"baraja":True,"pick":"di_$cb","tests":"$cb","voces":VP,"said":VP,"lead":[],"line":"c20_ca_mi_pan",
@@ -167,6 +167,32 @@ s20={"id":"cual","title":"¿Cuál?","place":"El parque","scene":"lago","next":No
  "leer":["c20_flor","c20_hay_tres","c20_un_blanco","c20_un_negro","c20_un_amarillo","c20_ca_cual_es_blanco","c20_ca_si_blanco","c20_ca_cual_es_negro","c20_ca_si_negro","c20_dos_pajaros","c20_ca_mi_pan","c20_cq_p_negro",
   "c20_ca_pan_pato","c20_cq_cual","c20_ca_el_negro","c20_ca_pan_amarillo","c20_ca_si_amarillo","c20_l_no_canelo","c20_fin","c20_ca_tu_amigo","c20_cq_el_amarillo"]}
 json.dump(s20,open("cuentos/cual.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+
+# ---------------- ¿Cuál? for El lago ----------------
+NO={"x":0,"y":0,"s":1,"dy":0,"al":1,"vis":0,"bub":None}
+pt=lambda k,x,y,pose="nada",**kw:dict({"k":k,"x":x,"y":y,"pose":pose,"dir":-1},**kw)
+pz=lambda c,x,y,**kw:dict({"c":c,"x":x,"y":y,"dir":-1},**kw)
+av=lambda c,x,y,**kw:dict({"c":c,"x":x,"y":y,"dir":-1},**kw)
+bt=lambda c,x,y,en="agua":{"c":c,"x":x,"y":y,"en":en}
+CW=[100,152,113,60]; CD=[44,112,113,60]; CS=[96,30,113,60]; CK=[120,84,113,60]
+todos={**s18["clips"],**s19["clips"],**s20["clips"],"l_c_pato_nada":N("El pato nada."),"l_c_bote_rojo":N("Es un bote rojo."),"l_c_pez_azul":N("Es un pez azul."),"l_c_bote_verde":N("Es un bote verde."),
+ "l_c_pato_amarillo":N("Es un pato amarillo."),"l_c_pajaro_blanco":N("Es un pájaro blanco."),"l_c_pato_negro":N("Es un pato negro.")}
+usa=["l_n_pato","l_n_pez","l_n_pajaro","l_c_pato_nada","c18_pajaro_vuela","l_c_bote_rojo","l_c_pez_azul","l_c_bote_verde","l_c_pato_amarillo","l_c_pajaro_blanco","l_c_pato_negro","muy_bien","si_muy_bien"]
+cual={"id":"cual-lago","title":"¿Cuál?","place":"El parque","scene":"lago","tipo":"cual","stake":{"thing":"none","steps":0},
+ "note":"The next-day pass for El lago. '¿De qué color?' and '¿cuál?' have no pair: they are questions.","clips":{k:todos[k] for k in usa},
+ "items":[
+  {"w":"pato","say":"l_n_pato","si":{"cam":CD,"set":{"patos":{"a":pt("blanco",100,154,"anda")},"cq":NO}},"no":{"cam":CD,"set":{"aves":{"a":av("azul",100,154)},"cq":NO}}},
+  {"w":"pez","say":"l_n_pez","si":{"cam":CW,"set":{"peces":{"a":pz("pardo",156,196,dy=16)},"cq":NO}},"no":{"cam":CW,"set":{"patos":{"a":pt("blanco",156,190,come=1)},"cq":NO}}},
+  {"w":"pájaro","say":"l_n_pajaro","si":{"cam":CK,"set":{"aves":{"a":av("azul",176,119,pan=1)},"cq":NO}},"no":{"cam":CK,"set":{"peces":{"a":pz("pardo",176,134)},"pan":{"con":None,"x":166,"y":134,"z":0,"vis":1},"cq":NO}}},
+  {"w":"nada","say":"l_c_pato_nada","si":{"cam":CW,"set":{"patos":{"a":pt("blanco",150,188)},"cq":NO}},"no":{"cam":CS,"set":{"patos":{"a":pt("blanco",150,62,"vuela")},"cq":NO}}},
+  {"w":"vuela","say":"c18_pajaro_vuela","si":{"cam":CS,"set":{"aves":{"a":av("azul",152,60,vuela=1)},"cq":NO}},"no":{"cam":CD,"set":{"aves":{"a":av("azul",96,154,pan=1)},"cq":NO}}},
+  {"w":"rojo","say":"l_c_bote_rojo","si":{"cam":CW,"set":{"botes":{"a":bt("rojo",150,190)},"cq":NO}},"no":{"cam":CW,"set":{"botes":{"a":bt("azul",150,190)},"cq":NO}}},
+  {"w":"azul","say":"l_c_pez_azul","si":{"cam":CW,"set":{"peces":{"a":pz("azul",150,192)},"cq":NO}},"no":{"cam":CW,"set":{"peces":{"a":pz("verde",150,192)},"cq":NO}}},
+  {"w":"verde","say":"l_c_bote_verde","si":{"cam":CD,"set":{"botes":{"a":bt("verde",96,153,"muelle")},"cq":NO}},"no":{"cam":CD,"set":{"botes":{"a":bt("rojo",96,153,"muelle")},"cq":NO}}},
+  {"w":"amarillo","say":"l_c_pato_amarillo","si":{"cam":CW,"set":{"patos":{"a":pt("amarillo",150,190)},"cq":NO}},"no":{"cam":CW,"set":{"patos":{"a":pt("blanco",150,190)},"cq":NO}}},
+  {"w":"blanco","say":"l_c_pajaro_blanco","si":{"cam":[84,116,100,53.1],"set":{"aves":{"a":av("blanco",133,140)},"cq":NO}},"no":{"cam":[84,116,100,53.1],"set":{"aves":{"a":av("negro",133,140)},"cq":NO}}},
+  {"w":"negro","say":"l_c_pato_negro","si":{"cam":CW,"set":{"patos":{"a":pt("negro",150,190)},"cq":NO}},"no":{"cam":CW,"set":{"patos":{"a":pt("amarillo",150,190)},"cq":NO}}}]}
+json.dump(cual,open("cuentos/cual-lago.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # the story before this scene leads into it
 p="cuentos/otra-vez.json"; d=json.load(open(p,encoding="utf-8"))

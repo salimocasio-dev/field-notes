@@ -80,13 +80,13 @@ nav .in{display:flex;max-width:560px;margin:0 auto;height:72px;align-items:stret
 <div id="sheetbg" onclick="cierra()"></div><div id="sheet"></div>
 <!-- the story engine runs hidden, only to draw word pictures and play sentences -->
 <div id="hide"><div id="wrap"><div id="stage"><canvas id="cv" width="196" height="216"></canvas><button id="go"></button><button id="again"></button><button id="next"></button><div id="bub"></div></div><div id="cap"></div><div id="bar"><button id="snd"></button></div></div></div>
-<script src="engine.js?v=26"></script>
-<script src="palabras.js?v=26"></script>
-<script src="curso.js?v=26"></script>
-<script src="juego.js?v=26"></script>
-<script src="escenas/kit.js?v=26"></script>
-<script src="escenas/frente.js?v=26"></script>
-<script src="cual.js?v=26"></script>
+<script src="engine.js?v=27"></script>
+<script src="palabras.js?v=27"></script>
+<script src="curso.js?v=27"></script>
+<script src="juego.js?v=27"></script>
+<script src="escenas/kit.js?v=27"></script>
+<script src="escenas/frente.js?v=27"></script>
+<script src="cual.js?v=27"></script>
 <script>
 "use strict";
 const db=()=>PAL.db,AJ=()=>db().ajustes,hecho=id=>!!(db().cuentos[id]&&db().cuentos[id].n),veces=id=>(db().cuentos[id]||{}).n||0;

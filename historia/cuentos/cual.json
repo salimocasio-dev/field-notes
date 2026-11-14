@@ -558,12 +558,12 @@
      "a": "pato_$ca"
     },
     {
-     "act": "mueven",
-     "d": -1
-    },
-    {
      "if": "ok",
      "then": [
+      {
+       "act": "mueven",
+       "d": -1
+      },
       {
        "act": "marca",
        "que": "ok"
