@@ -23,7 +23,7 @@ Read this whole page before you touch anything. You are a builder working for an
 - ElevenLabs is never used by builders. No accounts, no keys, no spending, no emails.
 
 ## Local testing
-- Start the server only for the length of your test batch: from the repo root, `curl -s -o /dev/null http://localhost:8765/ || (python3 -m http.server 8765 >/dev/null 2>&1 &)`. Stop it when you finish: `pkill -f "http.server 8765"`.
+- Start the server only for the length of your test batch: from the repo root, `curl -s -o /dev/null http://localhost:8765/ || (python3 -m http.server 8765 >/dev/null 2>&1 &)`. Stop the server only if you started it, and only when no other agent is testing: check `pgrep -af 'http.server 8765'` and the orchestrator's task; when unsure, leave it running.
 - Tools (in `historia/tools/`):
   - `juega.py <outdir|-> <plan> <cuento> <fast> "<query>"` plays one story by machine. Plan letters are r (right) / w (wrong), one per scored decision. Query sets the draws, e.g. `"txt=no&fa=leche&fb=queso"`; `txt=no` hides all words (for the wordless readers). With an outdir it saves numbered frames. With recorded audio a run takes 2 to 3 minutes: give it 4.
   - `matriz.sh <cuento> <plan> <query>` (one-line verdict: exit, pageerrors, finished, marcas, lost). Run many with `xargs -P 5 -L 1 bash historia/tools/matriz.sh < list.txt > out.txt`. A run is good when exit=0, pageerrors=0, finished=1, marcas match the plan (ok for r, x for w) and lost = number of w.
