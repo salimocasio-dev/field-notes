@@ -79,7 +79,7 @@ c.update({"c28_hace":N("Abuela hace pollo y un huevo."),"c28_aqui_pollo":N("Aqu�
  "c28_ponle_pollo":AB("Ponle sal al pollo."),"c28_ponle_huevo":AB("Y ponle sal al huevo."),"c28_pollo_tiene_sal":N("Ahora el pollo tiene sal."),"c28_huevo_tiene_sal":N("Ahora el huevo tiene sal."),
  "c28_mama_huele":MA("¡Mmm! ¡Huele bien!"),"c28_ab_mira":AB("Coquí, mira el pollo y el huevo."),"c28_cq_pollo":T("¡Abuela, el pollo!"),"c28_cq_huevo":T("¡Abuela, el huevo!"),"c28_ab_gracias":AB("¡Gracias, Coquí!"),
  "c28_bebe_quiere_pollo":MA("El bebé quiere el pollo."),"c28_bebe_quiere_huevo":MA("El bebé quiere el huevo."),"c28_ahora_bebe_huevo":MA("Ahora el bebé quiere el huevo."),"c28_bebe_come_pollo":N("El bebé come el pollo."),"c28_bebe_come_huevo":N("El bebé come el huevo."),
- "c28_luis_huele":L("¡Mmm! ¡Huele a pollo!"),"c28_carmen_huele":CA("¡Y huele a huevo!"),"c28_aqui_mas":AB("Aquí hay más."),"c28_no_hay":AB("No hay más."),
+ "c28_luis_huele":L("¡Mmm! ¡Huele a pollo!"),"c28_carmen_huele":CA("¡Sí! ¡Huele bien!"),"c28_aqui_mas":AB("Aquí hay más."),"c28_no_hay":AB("No hay más."),
  "c28_para_coqui":AB("Y esto es para Coquí."),"c28_bebe_come":N("El bebé come."),"c28_cq_fin":T("¡Huele bien, abuela!")})
 for k in PZ:
     c["c28_no_negro_"+k]=N("No, Coquí. Mira. %s está negro."%PZ[k].capitalize()); c["c28_carmen_mas_"+k]=CA("Más sal para %s, por favor."%PZ[k])

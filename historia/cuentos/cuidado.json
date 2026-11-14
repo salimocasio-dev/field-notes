@@ -1,0 +1,861 @@
+{
+ "id": "cuidado",
+ "title": "¡Cuidado!",
+ "place": "La cocina",
+ "scene": "estufa",
+ "next": null,
+ "goal": "Fry the fritters, and bring everybody the chocolate he wants.",
+ "stake": {
+  "thing": "merienda",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "caliente",
+  "frío",
+  "cuidado",
+  "ya"
+ ],
+ "back_again": [
+  "olla",
+  "chocolate",
+  "quiero",
+  "quiere",
+  "¿quién?",
+  "bebe",
+  "toma",
+  "come",
+  "mira",
+  "espera",
+  "hay",
+  "aquí",
+  "está",
+  "listo"
+ ],
+ "also_heard": [
+  "ya está"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "cocina": "m_n_cocina"
+ },
+ "palabras": {
+  "cal": "caliente",
+  "frio": "frío"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c29_olla_caliente": {
+   "who": "narr",
+   "text": "La olla está caliente."
+  },
+  "c29_aqui_cal": {
+   "who": "narr",
+   "text": "Aquí hay chocolate caliente."
+  },
+  "c29_aqui_frio": {
+   "who": "narr",
+   "text": "Y aquí hay chocolate frío."
+  },
+  "c29_luis_ya": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ya está!"
+  },
+  "c29_ab_cuidado_caliente": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Cuidado! Está caliente."
+  },
+  "c29_ab_cuidado": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Cuidado, Coquí!"
+  },
+  "c29_cq_espera": {
+   "who": "narr",
+   "text": "Coquí espera."
+  },
+  "c29_ab_ya": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ya está, Coquí!"
+  },
+  "c29_quien_cal": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Quién quiere chocolate caliente?"
+  },
+  "c29_quien_frio": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Quién quiere chocolate frío?"
+  },
+  "c29_ay_luis": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ay, Luis!"
+  },
+  "c29_no_cuidado": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. No está listo."
+  },
+  "c29_no_ya": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Está negro."
+  },
+  "c29_ya_fin": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ya está!"
+  },
+  "c29_cq_carmen": {
+   "who": "tu",
+   "text": "¡Carmen, cuidado! Está caliente."
+  },
+  "c29_abuelo_quiere_cal": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Quiero chocolate caliente."
+  },
+  "c29_no_abuelo_quiere_cal": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo quiere chocolate caliente."
+  },
+  "c29_abuelo_bebe_cal": {
+   "who": "narr",
+   "text": "Abuelo bebe chocolate caliente."
+  },
+  "c29_abuelo_quiere_frio": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Quiero chocolate frío."
+  },
+  "c29_no_abuelo_quiere_frio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo quiere chocolate frío."
+  },
+  "c29_abuelo_bebe_frio": {
+   "who": "narr",
+   "text": "Abuelo bebe chocolate frío."
+  },
+  "c29_mama_quiere_cal": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: Quiero chocolate caliente."
+  },
+  "c29_no_mama_quiere_cal": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá quiere chocolate caliente."
+  },
+  "c29_mama_bebe_cal": {
+   "who": "narr",
+   "text": "Mamá bebe chocolate caliente."
+  },
+  "c29_mama_quiere_frio": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: Quiero chocolate frío."
+  },
+  "c29_no_mama_quiere_frio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá quiere chocolate frío."
+  },
+  "c29_mama_bebe_frio": {
+   "who": "narr",
+   "text": "Mamá bebe chocolate frío."
+  },
+  "c29_papa_quiere_cal": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Quiero chocolate caliente."
+  },
+  "c29_no_papa_quiere_cal": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá quiere chocolate caliente."
+  },
+  "c29_papa_bebe_cal": {
+   "who": "narr",
+   "text": "Papá bebe chocolate caliente."
+  },
+  "c29_papa_quiere_frio": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: Quiero chocolate frío."
+  },
+  "c29_no_papa_quiere_frio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá quiere chocolate frío."
+  },
+  "c29_papa_bebe_frio": {
+   "who": "narr",
+   "text": "Papá bebe chocolate frío."
+  },
+  "c29_carmen_quiere_cal": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Quiero chocolate caliente."
+  },
+  "c29_no_carmen_quiere_cal": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen quiere chocolate caliente."
+  },
+  "c29_carmen_bebe_cal": {
+   "who": "narr",
+   "text": "Carmen bebe chocolate caliente."
+  },
+  "c29_carmen_quiere_frio": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Quiero chocolate frío."
+  },
+  "c29_no_carmen_quiere_frio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen quiere chocolate frío."
+  },
+  "c29_carmen_bebe_frio": {
+   "who": "narr",
+   "text": "Carmen bebe chocolate frío."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio29"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "olla1"
+   }
+  },
+  "c29_olla_caliente",
+  "c29_aqui_cal",
+  {
+   "set": {
+    "twinkle": "jarra"
+   }
+  },
+  "c29_aqui_frio",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "viene",
+   "quien": "papa"
+  },
+  {
+   "act": "copa"
+  },
+  {
+   "ask": "olla1",
+   "lead": [],
+   "line": "c29_papa_quiere_cal",
+   "then": [
+    "c29_papa_bebe_cal",
+    {
+     "act": "aparte",
+     "quien": "papa"
+    }
+   ],
+   "after": [
+    {
+     "act": "ranallena",
+     "k": "cal",
+     "a": "papa",
+     "suelto": 1
+    },
+    "c29_ab_cuidado_caliente",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "act": "viene",
+   "quien": "carmen"
+  },
+  {
+   "act": "copa"
+  },
+  {
+   "ask": "jarra",
+   "lead": [],
+   "line": "c29_carmen_quiere_frio",
+   "then": [
+    "c29_carmen_bebe_frio",
+    {
+     "act": "aparte",
+     "quien": "carmen"
+    }
+   ],
+   "after": [
+    {
+     "act": "ranallena",
+     "k": "frio",
+     "a": "carmen"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "frie"
+  },
+  {
+   "act": "asoma"
+  },
+  {
+   "ask": "espera",
+   "lead": [],
+   "line": "c29_ab_cuidado",
+   "then": [],
+   "after": [
+    "c29_cq_espera"
+   ],
+   "resp": [
+    "espera",
+    "saca"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "asoma"
+  },
+  {
+   "ask": "saca",
+   "lead": [],
+   "line": "c29_ab_ya",
+   "then": [],
+   "after": [
+    {
+     "act": "saca29"
+    }
+   ],
+   "resp": [
+    "espera",
+    "saca"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "viene",
+   "quien": "abuelo",
+   "suelto": 1
+  },
+  {
+   "act": "viene",
+   "quien": "mama",
+   "lugar": 2
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "piensa",
+   "quien": "abuelo",
+   "k": "cal"
+  },
+  {
+   "act": "piensa",
+   "quien": "mama",
+   "k": "frio"
+  },
+  {
+   "ask": "abuelo",
+   "lead": [],
+   "line": "c29_quien_cal",
+   "then": [
+    "c29_abuelo_bebe_cal"
+   ],
+   "after": [
+    {
+     "act": "llena",
+     "k": "cal"
+    },
+    {
+     "say": "c29_luis_ya",
+     "gap": 250
+    },
+    {
+     "act": "luisda",
+     "a": "abuelo",
+     "suelto": 1
+    },
+    "c29_ab_cuidado_caliente",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "ask": "mama",
+   "lead": [],
+   "line": "c29_quien_frio",
+   "then": [
+    "c29_mama_bebe_frio",
+    {
+     "act": "aparte",
+     "quien": "abuelo,mama"
+    }
+   ],
+   "after": [
+    {
+     "act": "llena",
+     "k": "frio"
+    },
+    {
+     "say": "c29_luis_ya",
+     "gap": 250
+    },
+    {
+     "act": "luisda",
+     "a": "mama"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "luiscome"
+  },
+  "c29_ay_luis",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "da",
+   "options": [
+    "cuidado",
+    "ya"
+   ]
+  },
+  {
+   "calc": "ra",
+   "cond": "da=cuidado",
+   "then": "espera",
+   "else": "saca"
+  },
+  {
+   "act": "frie"
+  },
+  {
+   "act": "asoma"
+  },
+  {
+   "act": "limpia"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "espera",
+    "saca"
+   ],
+   "baraja": true,
+   "pick": "$ra",
+   "tests": "$da",
+   "lead": [],
+   "line": "c29_ab_$da",
+   "right": [
+    {
+     "if": "da=cuidado",
+     "then": [
+      {
+       "act": "dora"
+      },
+      {
+       "act": "asoma"
+      },
+      {
+       "say": "c29_ab_ya",
+       "gap": 250
+      }
+     ]
+    },
+    {
+     "act": "saca29"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "if": "da=cuidado",
+     "then": [
+      {
+       "act": "saca29",
+       "cae": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "quema29"
+      }
+     ]
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c29_no_$da",
+    {
+     "act": "frie"
+    },
+    {
+     "act": "asoma"
+    },
+    {
+     "say": "c29_ab_$da",
+     "gap": 250
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "reparte": [
+    "pb",
+    "pc",
+    "pd"
+   ],
+   "options": [
+    "papa",
+    "mama",
+    "abuelo",
+    "carmen"
+   ]
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "cal",
+    "frio"
+   ]
+  },
+  {
+   "calc": "gb",
+   "cond": "wb=cal",
+   "then": "olla1",
+   "else": "jarra"
+  },
+  {
+   "act": "viene",
+   "quien": "$pb"
+  },
+  {
+   "act": "copa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "olla1",
+    "jarra"
+   ],
+   "pick": "$gb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c29_$pb_quiere_$wb",
+   "right": [
+    {
+     "act": "ranallena",
+     "k": "$gb",
+     "a": "$pb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "aparte",
+     "quien": "$pb"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "ranallena",
+     "k": "$x",
+     "a": "$pb"
+    },
+    {
+     "act": "niega",
+     "a": "$pb"
+    },
+    {
+     "act": "piensa",
+     "quien": "$pb",
+     "k": "$wb"
+    },
+    {
+     "act": "luisbebe",
+     "a": "$pb"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c29_no_$pb_quiere_$wb",
+    {
+     "act": "copa"
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "wc",
+   "options": [
+    "cal",
+    "frio"
+   ],
+   "other": "wd"
+  },
+  {
+   "draw": "kc",
+   "options": [
+    "cal",
+    "frio"
+   ],
+   "other": "kd"
+  },
+  {
+   "calc": "tc",
+   "cond": "kc=$wc",
+   "then": "$pc",
+   "else": "$pd"
+  },
+  {
+   "calc": "uc",
+   "cond": "kc=$wc",
+   "then": "$pd",
+   "else": "$pc"
+  },
+  {
+   "act": "viene",
+   "quien": "$pc",
+   "suelto": 1
+  },
+  {
+   "act": "viene",
+   "quien": "$pd",
+   "lugar": 2
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "act": "piensa",
+   "quien": "$pc",
+   "k": "$wc"
+  },
+  {
+   "act": "piensa",
+   "quien": "$pd",
+   "k": "$wd"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$pc",
+    "$pd"
+   ],
+   "pick": "$tc",
+   "tests": "$kc",
+   "lock": true,
+   "lead": [],
+   "line": "c29_quien_$kc",
+   "right": [
+    {
+     "act": "llena",
+     "k": "$kc"
+    },
+    {
+     "act": "luisda",
+     "a": "$tc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "llena",
+     "k": "$kd"
+    },
+    {
+     "act": "luisda",
+     "a": "$uc"
+    },
+    {
+     "act": "aparte",
+     "quien": "$pc,$pd"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "llena",
+     "k": "$kc"
+    },
+    {
+     "act": "luisda",
+     "a": "$x",
+     "queda": 1
+    },
+    {
+     "act": "niega",
+     "a": "$x"
+    },
+    {
+     "act": "luisbebe",
+     "a": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c29_no_$tc_quiere_$kc"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "resto29"
+  },
+  "c29_ya_fin",
+  {
+   "act": "viene",
+   "quien": "carmen"
+  },
+  {
+   "act": "final29"
+  },
+  {
+   "say": "c29_cq_carmen",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c29_olla_caliente",
+  "c29_aqui_cal",
+  "c29_aqui_frio",
+  "c29_papa_quiere_cal",
+  "c29_ab_cuidado_caliente",
+  "c29_papa_bebe_cal",
+  "c29_carmen_quiere_frio",
+  "c29_carmen_bebe_frio",
+  "c29_ab_cuidado",
+  "c29_cq_espera",
+  "c29_ab_ya",
+  "c29_quien_cal",
+  "c29_luis_ya",
+  "c29_abuelo_bebe_cal",
+  "c29_quien_frio",
+  "c29_mama_bebe_frio",
+  "c29_ay_luis",
+  "c29_ya_fin",
+  "c29_cq_carmen"
+ ]
+}

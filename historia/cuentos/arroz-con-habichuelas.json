@@ -1,0 +1,833 @@
+{
+ "id": "arroz-con-habichuelas",
+ "title": "Arroz con habichuelas",
+ "place": "La cocina",
+ "scene": "estufa",
+ "next": "el-pollo-y-el-huevo",
+ "goal": "Help abuela and Luis cook the rice and the beans.",
+ "stake": {
+  "thing": "comida",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "arroz",
+  "habichuelas",
+  "olla",
+  "hace"
+ ],
+ "back_again": [
+  "pone",
+  "dame",
+  "por favor",
+  "más",
+  "para",
+  "hay",
+  "aquí",
+  "otra",
+  "listo",
+  "mira",
+  "tengo hambre",
+  "familia",
+  "come"
+ ],
+ "also_heard": [
+  "listas"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "cocina": "m_n_cocina"
+ },
+ "palabras": {
+  "hab": "habichuelas"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c27_hace_comida": {
+   "who": "narr",
+   "text": "Abuela hace la comida."
+  },
+  "c27_una_olla": {
+   "who": "narr",
+   "text": "Aquí hay una olla."
+  },
+  "c27_otra_olla": {
+   "who": "narr",
+   "text": "Y aquí hay otra olla."
+  },
+  "c27_aqui_arroz": {
+   "who": "narr",
+   "text": "Aquí hay arroz."
+  },
+  "c27_aqui_hab": {
+   "who": "narr",
+   "text": "Y aquí hay habichuelas."
+  },
+  "c27_cq_pone_arroz": {
+   "who": "narr",
+   "text": "Coquí pone el arroz en la olla."
+  },
+  "c27_ab_hace_arroz": {
+   "who": "narr",
+   "text": "Abuela hace arroz."
+  },
+  "c27_luis_hace_hab": {
+   "who": "narr",
+   "text": "Luis hace habichuelas."
+  },
+  "c27_cq_arroz": {
+   "who": "tu",
+   "text": "¡Arroz!"
+  },
+  "c27_cq_hab": {
+   "who": "tu",
+   "text": "¡Habichuelas!"
+  },
+  "c27_mas_arroz": {
+   "who": "narr",
+   "text": "Más arroz para abuela."
+  },
+  "c27_mas_hab": {
+   "who": "narr",
+   "text": "Más habichuelas para Luis."
+  },
+  "c27_listo_arroz": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El arroz está listo."
+  },
+  "c27_listo_hab": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Las habichuelas están listas."
+  },
+  "c27_familia_hambre": {
+   "who": "narr",
+   "text": "La familia tiene hambre."
+  },
+  "c27_familia_come": {
+   "who": "narr",
+   "text": "La familia come arroz con habichuelas."
+  },
+  "c27_luis_hambre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Tengo hambre!"
+  },
+  "c27_no_aqui_arroz": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Aquí hay arroz."
+  },
+  "c27_no_aqui_hab": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Aquí hay habichuelas."
+  },
+  "c27_no_mira_arroz": {
+   "who": "narr",
+   "text": "No, Coquí. Mira el arroz."
+  },
+  "c27_no_mira_hab": {
+   "who": "narr",
+   "text": "No, Coquí. Mira las habichuelas."
+  },
+  "c26_comida_lista": {
+   "who": "narr",
+   "text": "La comida está lista."
+  },
+  "c27_comen": {
+   "who": "narr",
+   "text": "Luis come. Carmen come. Abuela come."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "c27_abuela_dame_arroz": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Dame arroz, por favor."
+  },
+  "c27_no_abuela_hace_arroz": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuela hace arroz."
+  },
+  "c27_abuela_dame_hab": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Dame habichuelas, por favor."
+  },
+  "c27_no_abuela_hace_hab": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuela hace habichuelas."
+  },
+  "c27_luis_dame_arroz": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Dame arroz, por favor."
+  },
+  "c27_no_luis_hace_arroz": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Luis hace arroz."
+  },
+  "c27_luis_dame_hab": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Dame habichuelas, por favor."
+  },
+  "c27_no_luis_hace_hab": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Luis hace habichuelas."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio27"
+  },
+  {
+   "wait": 500
+  },
+  "c27_hace_comida",
+  {
+   "set": {
+    "twinkle": "olla0"
+   }
+  },
+  "c27_una_olla",
+  {
+   "set": {
+    "twinkle": "olla1"
+   }
+  },
+  "c27_otra_olla",
+  {
+   "set": {
+    "twinkle": "saco"
+   }
+  },
+  "c27_aqui_arroz",
+  {
+   "set": {
+    "twinkle": "tazon"
+   }
+  },
+  "c27_aqui_hab",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "saco",
+   "lead": [],
+   "line": "c27_abuela_dame_arroz",
+   "then": [
+    {
+     "act": "cuchara",
+     "a": "abuela",
+     "suelto": 1
+    },
+    "c27_ab_hace_arroz"
+   ],
+   "after": [
+    {
+     "act": "echa",
+     "k": "arroz",
+     "a": "abuela",
+     "suelto": 1
+    },
+    "c27_cq_pone_arroz",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "ask": "tazon",
+   "lead": [],
+   "line": "c27_luis_dame_hab",
+   "then": [
+    {
+     "act": "cuchara",
+     "a": "luis",
+     "suelto": 1
+    },
+    "c27_luis_hace_hab"
+   ],
+   "after": [
+    {
+     "act": "echa",
+     "k": "hab",
+     "a": "luis"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "pide",
+   "a": "abuela"
+  },
+  {
+   "ask": "di_arroz",
+   "lead": [],
+   "line": null,
+   "then": [],
+   "after": [
+    {
+     "act": "pide",
+     "a": "abuela",
+     "no": 1
+    },
+    {
+     "act": "carmenecha",
+     "k": "arroz",
+     "a": "abuela",
+     "suelto": 1
+    },
+    "c27_mas_arroz",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_arroz",
+    "di_hab"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_arroz": "c27_cq_arroz",
+    "di_hab": "c27_cq_hab"
+   },
+   "said": {
+    "di_arroz": "c27_cq_arroz"
+   }
+  },
+  {
+   "act": "pide",
+   "a": "luis"
+  },
+  {
+   "ask": "di_hab",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "act": "ultimas27"
+    }
+   ],
+   "after": [
+    {
+     "act": "pide",
+     "a": "luis",
+     "no": 1
+    },
+    {
+     "act": "carmenecha",
+     "k": "hab",
+     "a": "luis",
+     "suelto": 1
+    },
+    "c27_mas_hab",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_arroz",
+    "di_hab"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_arroz": "c27_cq_arroz",
+    "di_hab": "c27_cq_hab"
+   },
+   "said": {
+    "di_hab": "c27_cq_hab"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "platos27"
+  },
+  {
+   "ask": "olla1",
+   "lead": [],
+   "line": "c27_listo_arroz",
+   "then": [],
+   "after": [
+    {
+     "act": "apaga",
+     "a": "olla1"
+    }
+   ]
+  },
+  {
+   "ask": "olla0",
+   "lead": [],
+   "line": "c27_listo_hab",
+   "then": [],
+   "after": [
+    {
+     "act": "apaga",
+     "a": "olla0"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "familia27"
+  },
+  "c27_familia_hambre",
+  {
+   "act": "sirve27"
+  },
+  {
+   "act": "ventana27",
+   "suelto": 1
+  },
+  "c27_familia_come",
+  {
+   "act": "ya"
+  },
+  {
+   "say": "c27_luis_hambre",
+   "gap": 250
+  },
+  {
+   "act": "otravez27"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "abuela",
+    "luis"
+   ],
+   "other": "cb"
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "arroz",
+    "hab"
+   ],
+   "other": "kb"
+  },
+  {
+   "calc": "ga",
+   "cond": "ka=arroz",
+   "then": "saco",
+   "else": "tazon"
+  },
+  {
+   "act": "unaolla",
+   "a": "$ca"
+  },
+  {
+   "act": "g",
+   "quien": "$ca",
+   "pose": "offer",
+   "ms": 300
+  },
+  {
+   "decide": "do",
+   "options": [
+    "saco",
+    "tazon"
+   ],
+   "pick": "$ga",
+   "tests": "$ka",
+   "lock": true,
+   "lead": [],
+   "line": "c27_$ca_dame_$ka",
+   "right": [
+    {
+     "act": "g",
+     "quien": "$ca",
+     "pose": "idle"
+    },
+    {
+     "act": "echa",
+     "k": "$ka",
+     "a": "$ca"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "g",
+     "quien": "$ca",
+     "pose": "idle"
+    },
+    {
+     "act": "echa",
+     "k": "$x",
+     "a": "$ca"
+    },
+    {
+     "act": "saca",
+     "a": "$ca"
+    },
+    {
+     "act": "nota",
+     "k": "fa"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c27_no_aqui_$ka"
+   ]
+  },
+  {
+   "act": "unaolla",
+   "a": "$cb"
+  },
+  {
+   "act": "carmenecha",
+   "k": "$kb",
+   "a": "$cb"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "cm",
+   "options": [
+    "abuela",
+    "luis"
+   ],
+   "other": "cn"
+  },
+  {
+   "calc": "cc",
+   "cond": "fa=1",
+   "then": "$cb",
+   "else": "$cm"
+  },
+  {
+   "calc": "cd",
+   "cond": "fa=1",
+   "then": "$ca",
+   "else": "$cn"
+  },
+  {
+   "calc": "kc",
+   "cond": "cc=$ca",
+   "then": "$ka",
+   "else": "$kb"
+  },
+  {
+   "calc": "kd",
+   "cond": "cc=$ca",
+   "then": "$kb",
+   "else": "$ka"
+  },
+  {
+   "act": "pide",
+   "a": "$cc"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_arroz",
+    "di_hab"
+   ],
+   "baraja": true,
+   "pick": "di_$kc",
+   "tests": "$kc",
+   "voces": {
+    "di_arroz": "c27_cq_arroz",
+    "di_hab": "c27_cq_hab"
+   },
+   "said": {
+    "di_arroz": "c27_cq_arroz",
+    "di_hab": "c27_cq_hab"
+   },
+   "lead": [],
+   "line": null,
+   "right": [
+    {
+     "act": "pide",
+     "a": "$cc",
+     "no": 1
+    },
+    {
+     "act": "carmenecha",
+     "k": "$kc",
+     "a": "$cc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pide",
+     "a": "$cc",
+     "no": 1
+    },
+    {
+     "act": "carmenecha",
+     "k": "$x",
+     "a": "$cc"
+    },
+    {
+     "act": "saca",
+     "a": "$cc"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c27_no_$cc_hace_$kc"
+   ]
+  },
+  {
+   "act": "carmenecha",
+   "k": "$kd",
+   "a": "$cd"
+  },
+  {
+   "act": "ultimas27"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ke",
+   "options": [
+    "arroz",
+    "hab"
+   ],
+   "other": "kf"
+  },
+  {
+   "calc": "pe",
+   "cond": "ke=$ka",
+   "then": "$ca",
+   "else": "$cb"
+  },
+  {
+   "calc": "oe",
+   "cond": "pe=abuela",
+   "then": "olla1",
+   "else": "olla0"
+  },
+  {
+   "calc": "of",
+   "cond": "pe=abuela",
+   "then": "olla0",
+   "else": "olla1"
+  },
+  {
+   "act": "platos27"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "olla0",
+    "olla1"
+   ],
+   "pick": "$oe",
+   "tests": "$ke",
+   "lock": true,
+   "lead": [],
+   "line": "c27_listo_$ke",
+   "right": [
+    {
+     "act": "apaga",
+     "a": "$oe"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "wait": 400
+      },
+      {
+       "say": "c27_listo_$kf",
+       "gap": 250
+      },
+      {
+       "act": "apaga",
+       "a": "$of"
+      }
+     ],
+     "else": [
+      {
+       "act": "enciende",
+       "a": "$of"
+      },
+      {
+       "wait": 600
+      },
+      {
+       "act": "apaga",
+       "a": "$of"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "apaga",
+     "a": "$of"
+    },
+    {
+     "act": "derrama",
+     "a": "$oe"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c27_no_mira_$ke"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "sirve27"
+  },
+  "c26_comida_lista",
+  {
+   "act": "final27",
+   "suelto": 1
+  },
+  "c27_comen",
+  {
+   "act": "ya"
+  },
+  {
+   "say": "cq_gracias_abuela",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c27_hace_comida",
+  "c27_una_olla",
+  "c27_otra_olla",
+  "c27_aqui_arroz",
+  "c27_aqui_hab",
+  "c27_abuela_dame_arroz",
+  "c27_cq_pone_arroz",
+  "c27_ab_hace_arroz",
+  "c27_luis_dame_hab",
+  "c27_luis_hace_hab",
+  "c27_cq_arroz",
+  "c27_mas_arroz",
+  "c27_cq_hab",
+  "c27_mas_hab",
+  "c27_listo_arroz",
+  "c27_listo_hab",
+  "c27_familia_hambre",
+  "c27_familia_come",
+  "c27_luis_hambre",
+  "c26_comida_lista",
+  "c27_comen",
+  "cq_gracias_abuela"
+ ]
+}

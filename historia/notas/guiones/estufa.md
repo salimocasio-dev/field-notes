@@ -101,7 +101,7 @@ The frog's own moves, in doing bubbles: he shakes salt over the drumstick; or ov
 
 **The turn**
 
-9. Luis and Carmen run in, noses up, and stand at the right counter by the plates. NARR: "Luis dice: ¡Mmm! ¡Huele a pollo!" NARR: "Carmen dice: ¡Y huele a huevo!" Abuela points at the tray: three drumsticks, three eggs. NARR: "Abuela dice: Aquí hay más." The card with three empty places shows in the corner. The signs go away.
+9. Luis and Carmen run in, noses up, and stand at the right counter by the plates. NARR: "Luis dice: ¡Mmm! ¡Huele a pollo!" NARR: "Carmen dice: ¡Sí! ¡Huele bien!" Abuela points at the tray: three drumsticks, three eggs. NARR: "Abuela dice: Aquí hay más." The card with three empty places shows in the corner. The signs go away.
 
 **The game** (no sign). Each round has its own pair from the tray.
 
@@ -122,7 +122,7 @@ The frog's own moves, in doing bubbles: he shakes salt over the drumstick; or ov
    - Otherwise, whichever happened: the black piece on Luis's plate; the piece with the white heap on Carmen's; the piece on the floor, and the frog's empty little plate.
 14. COQUÍ: "¡Huele bien, abuela!"
 
-**Fewest hearings before a word can cost:** pollo 10 (step 1 twice; step 3 twice; step 5: abuela's line, the bubble, the frog; step 6, the bubble; step 7 twice), huevo 10 (step 1 twice; step 4 twice; step 5: abuela's line, the bubble; step 6: the bubble, the frog; step 8 twice). Not deciding, but heard: sal 5 (steps 2, 3 and 4), huele 4 (steps 1 and 5, and twice at the turn).
+**Fewest hearings before a word can cost:** pollo 10 (step 1 twice; step 3 twice; step 5: abuela's line, the bubble, the frog; step 6, the bubble; step 7 twice), huevo 9 (step 1 twice; step 4 twice; step 5: abuela's line, the bubble; step 6: the bubble, the frog; step 8 twice). Not deciding, but heard: sal 5 (steps 2, 3 and 4), huele 4 (steps 1 and 5, and twice at the turn).
 
 **A miss is filed under:** A: the piece that smoked. B: the piece that was asked. C: the piece that was asked.
 
@@ -244,7 +244,7 @@ Nothing in the Spanish itself. Two things for truth and safety:
 
 Last gate: every decision holds; each story had one must-fix.
 - 27: one food could be lost up to three times. After a miss in round A, round B is at the pot of the food that was thrown away, so at least one cup of each food is left; and abuela serves so that no plate is empty. The foam runs down the far side of the pot, and the flame stays on until the frog turns it off. The sack and the jar stand on the shelf from the first frame.
-- 28: Carmen does not bite a piece she has seen salted twice; she pushes it aside. Abuela turns the piece the frog called first and the other too late. Mamá and the baby stand at the far left, away from the stove. The plate abuela holds out stands on the ledge of the stove from the first frame. "Ahora el pollo tiene sal." is said while the salt falls. Carmen's line at the turn is "¡Y huele a huevo!", not a second "¡Tengo hambre!".
+- 28: Carmen does not bite a piece she has seen salted twice; she pushes it aside. Abuela turns the piece the frog called first and the other too late. Mamá and the baby stand at the far left, away from the stove. The plate abuela holds out stands on the ledge of the stove from the first frame. "Ahora el pollo tiene sal." is said while the salt falls. Carmen's line at the turn is "¡Sí! ¡Huele bien!", not a second "¡Tengo hambre!". (The gate proposed "¡Y huele a huevo!"; a last Spanish check threw it out: "huele a huevo" is what is said of a rotten smell, and bare "huevo" after "huele a" invites the vulgar word.)
 - 29: the last clean cup is abuela's and the one before it the frog's, so that a miss costs the frog first. The frog fills at the hot pot with the ladle.
 - Pairs: "hace" shows mamá (abuela at the stove was "cocina" in La mesa); "huevo" against Luis with the shaker; "sal" against a pepper mill.
 

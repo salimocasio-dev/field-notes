@@ -4,9 +4,9 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=30
-- Story 1 directly: historia/?v=30 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=30 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=31
+- Story 1 directly: historia/?v=31 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=31 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
 
 ## Script lessons so far (what reviewers have caught; check every new script against this before it goes to them)
@@ -28,15 +28,61 @@ The world
 Puerto Rican Spanish (so far)
 - "Viejo" of a person is blunt; any grown man is "un señor"; "pato" called at a person is a slur; "bebe" (drinks) against "bebé"; "taza" for hot drinks and "vaso" for cold; "pon" is the command of "pone"; "entra a", not "entra en"; "habichuelas"; "bizcocho"; "canasta"; "piragua"; "portón".
 - Say "Tú tienes sed", not "Tienes sed" (it runs into "tiene sed" aloud).
+- "¡Ya!" alone means "enough, stop it": say "¡Ya está!". Bare "Sal para el pollo" starts like "get out": say "Ponle sal al pollo." "Huevo" never with mi, tu or su, never in the plural of a person, and never after "huele a" ("huele a huevo" is said of a rotten smell): "Mira el huevo.", "El bebé quiere el huevo." "Caliente" only of things, never of a person. "La familia tiene hambre."
 
 Pictures (what readers with no sound and no words could not read)
 - A place 24 pixels wide holds two things; keep places apart. Small things in a hand do not read: hold them up at twice the size, in a hand, beside the head.
 - A flat brown oval reads as a dish, not a puddle: splashes need drops and a rim. A thing drawn over a head reads as alarming.
 - Whoever loses something reacts. Whoever stands in front must not hide the frog or the thing that matters.
 - Stills are taken at changes of state: a cause that lasts half a second is not seen in them. Make the result explain itself.
+- White food on a white plate is an empty plate: give plates a colour. A lost thing must rest on something (the floor in the open, a bucket, a plate): against a cabinet or a stove front it reads as stuck to a wall or hanging in the air.
+- A boil-over is one soft shape over the rim with runs down the front and what was in the pot beside it; blocks read as a fault in the picture. Smoke is a puff, not specks. Rice needs its grains, beans their dark dots.
+- Thought clouds must not cover what stands on a counter, or each other: stand the people lower. Two who come in together need a body's width each.
+- A thing held up for a pair is held in a raised hand and must leave the face free. A cup with a heap on it reads as a mug of beer: use a bowl.
 
 Pairs
 - No old word in the sentence may fit one picture only. "Mi" or "tu" instead of "un" and "una". The other picture is as lively as the right one. No picture is right twice.
+
+## Nov 14, part 16: place 3, La cocina, scene 2, La estufa (stories 27 to 29)
+
+Live at ?v=31. Script (final): historia/notas/guiones/estufa.md, with what each round of reviews, the last gate and the wordless readers changed at its end. Generator: historia/tools/gen_estufa.py (three stories, twelve pairs; it also sets `next` on story 26). Scene: historia/escenas/estufa.js.
+
+### What is built
+
+| Story | Words | The game (after the turn) | What a miss costs |
+| --- | --- | --- | --- |
+| 27 arroz-con-habichuelas, Arroz con habichuelas | arroz, habichuelas, olla, hace | A touch the cups of rice or of beans for the cook who asks ("Dame arroz, por favor."; only his pot is on the stove); B say what a pot needs more of; C touch the pot abuela says is ready | a cup of the wrong food is skimmed off into the bucket, or the ready pot boils over: three cups of each for three plates, so somebody's plate has rice only or beans only |
+| 28 el-pollo-y-el-huevo, El pollo y el huevo | pollo, huevo, sal, huele | A call out the piece that smokes ("¡Abuela, el pollo!"); B doing bubbles: salt the piece Carmen names; C touch the piece on the plate abuela holds out ("El bebé quiere el huevo.") | a piece burns black, or is salted twice and pushed aside, or the baby throws it on the floor: six pieces on the tray, and the frog's own is the last |
+| 29 cuidado, ¡Cuidado! | caliente, frío, cuidado, ya | A doing bubbles: wait or take out ("¡Cuidado, Coquí!" / "¡Ya está, Coquí!"); B touch the pot or the jug ("Quiero chocolate frío."), the frog fills the cup; C touch who ("¿Quién quiere chocolate caliente?") | a fritter falls raw or burns; a wrong cup is drunk by Luis and thrown in the bucket: four balls of batter, nine cups; the last cup is abuela's, the one before it the frog's |
+
+- Story 29 has no speaking round; 27 and 28 have one each.
+- `curso.js` lists the three stories; the level check has four new items (44: arroz, olla, pollo, caliente); ¿Cuál? has twelve new pairs (cual-estufa, 116 in all).
+- "Olla", "hace", "huele" decide nothing in their stories; they are tested the next day by their pairs.
+
+### The scene (estufa.js)
+
+- The stove in the middle with two burners, a counter at each side, a shelf and a window. Cooks stand at the two sides of the stove, lower than the pots; the frog on a stool in front.
+- A burner: `W.fuegos[i]` {k (olla, sarten), con, n (cups in it, 0 to 3), llama, vapor, humo, mal (the wrong food lying on top), espuma (boiled over: the food's name), cosas:[{k, v, sal, humo}]}.
+- Left counter `W.izq` {saco, tazon (cups of rice and of beans left), llenando, bandeja:{pollo, huevo}, jarra, tazas, sucias}; right counter `W.der` {platos, pila, platito, servidos:[{de, items}], masa, fuente, frituras}. `W.estante` (1: the full sack and jar on the shelf, 2: both empty), `W.repisa` (the baby's plate waits at the back of the right counter), `W.plata` (the plate abuela holds out, drawn three times the size: its two pieces are the touch targets), `W.mat` (the frog's small plate by the stool: o, taza), `W.cubo` and `W.basura` (the bucket and what is in it: rice, beans, a black fritter, a cup), `W.olor` (a wavy line from a pan to a nose, for a pair).
+- People as in mesa.js, plus `alza` {k, v, e (size), dx, dy}, `come`, `cierra` (eyes shut), `pdx` (where a thought cloud stands). Abuela's offering arm points the way she faces.
+- Story 27 keeps count: `cae(i,k)` puts a cup in a pot (the wrong food lies on top and comes out again with `saca`); `sirve27` serves rice from Luis's plate on and beans from abuela's plate on, so no plate is empty; after a miss in A, round B is at the pot of the food that was thrown away (act `nota` sets `V.fa`), so one food is never lost three times.
+- An act with `suelto:1` runs while a line is said; `act ya` waits for it (`corre(o,pr)`).
+- cual.html takes `solo=word,word` for the machine check of a few pairs.
+
+### Reviews
+
+- Script: draft 1 to draft 3 over two rounds (a beginner against his requirements, and Puerto Rican Spanish, each round by fresh reviewers); story 28 was redesigned twice (no honest cost for pollo against huevo until the smoke, the salt and the baby's wish); then a final Spanish check and a last gate (every decision holds; one must-fix per story). A last Spanish check of the lines the gate added threw one of them out ("¡Y huele a huevo!").
+- Wordless frames: four fresh readers (one per story, one for the pairs), then two more after the redraw. What they could not read and what was redrawn is at the end of the script and in "Script lessons so far" above.
+- The biggest mistakes caught: one food could be lost three times so a plate would be empty (27); Carmen bit a piece she had watched being salted twice (28); the last cup went to the frog, so a miss cost abuela first (29); "¡Ya!", "Sal para…", "Mira mi huevo", "huele a huevo" (Spanish); white rice on a white plate, cups stuck to the oven, a boil-over that read as a chef's hat (pictures).
+
+### Testing
+
+- 183 machine runs after the last change to the pictures: each story all right, all wrong and every mix of misses, over every set of draws (27: 59 runs, 28: 64, 29: 60). All end, with the stars and crosses they should have. All 116 picture pairs, the level check with all 44 items shown, and the app check.
+- Found by testing: a pot held two cups at most, so the third plate at the turn was empty.
+
+### Audio
+
+- 114 new lines, about 3,400 characters. Azure so far this month: about 40,000 of 500,000 characters (my own running count, not a reading from Azure).
 
 ## Nov 14, part 15: place 3, La cocina, scene 1, La mesa (stories 24 to 26)
 

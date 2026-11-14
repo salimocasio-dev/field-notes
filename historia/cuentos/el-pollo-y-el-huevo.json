@@ -1,0 +1,792 @@
+{
+ "id": "el-pollo-y-el-huevo",
+ "title": "El pollo y el huevo",
+ "place": "La cocina",
+ "scene": "estufa",
+ "next": "cuidado",
+ "goal": "Get every piece onto a plate golden and tasting right.",
+ "stake": {
+  "thing": "comida",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "pollo",
+  "huevo",
+  "sal",
+  "huele"
+ ],
+ "back_again": [
+  "hace",
+  "comida",
+  "más",
+  "por favor",
+  "para",
+  "quiere",
+  "tiene",
+  "ahora",
+  "mira",
+  "negro",
+  "bebé",
+  "hay",
+  "aquí",
+  "come",
+  "gracias",
+  "toma"
+ ],
+ "also_heard": [
+  "huele a",
+  "no hay más",
+  "ponle"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "cocina": "m_n_cocina"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c28_hace": {
+   "who": "narr",
+   "text": "Abuela hace pollo y un huevo."
+  },
+  "c28_aqui_pollo": {
+   "who": "narr",
+   "text": "Aquí hay pollo."
+  },
+  "c28_aqui_huevo": {
+   "who": "narr",
+   "text": "Y aquí hay un huevo."
+  },
+  "c28_huele_bien": {
+   "who": "narr",
+   "text": "¡Mmm! ¡Huele bien!"
+  },
+  "c28_toma_sal": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma la sal, Coquí."
+  },
+  "c28_ponle_pollo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Ponle sal al pollo."
+  },
+  "c28_ponle_huevo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y ponle sal al huevo."
+  },
+  "c28_pollo_tiene_sal": {
+   "who": "narr",
+   "text": "Ahora el pollo tiene sal."
+  },
+  "c28_huevo_tiene_sal": {
+   "who": "narr",
+   "text": "Ahora el huevo tiene sal."
+  },
+  "c28_mama_huele": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Mmm! ¡Huele bien!"
+  },
+  "c28_ab_mira": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, mira el pollo y el huevo."
+  },
+  "c28_cq_pollo": {
+   "who": "tu",
+   "text": "¡Abuela, el pollo!"
+  },
+  "c28_cq_huevo": {
+   "who": "tu",
+   "text": "¡Abuela, el huevo!"
+  },
+  "c28_ab_gracias": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Gracias, Coquí!"
+  },
+  "c28_bebe_quiere_pollo": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: El bebé quiere el pollo."
+  },
+  "c28_bebe_quiere_huevo": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: El bebé quiere el huevo."
+  },
+  "c28_ahora_bebe_huevo": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: Ahora el bebé quiere el huevo."
+  },
+  "c28_bebe_come_pollo": {
+   "who": "narr",
+   "text": "El bebé come el pollo."
+  },
+  "c28_bebe_come_huevo": {
+   "who": "narr",
+   "text": "El bebé come el huevo."
+  },
+  "c28_luis_huele": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Mmm! ¡Huele a pollo!"
+  },
+  "c28_carmen_huele": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Sí! ¡Huele bien!"
+  },
+  "c28_aqui_mas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Aquí hay más."
+  },
+  "c28_no_hay": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No hay más."
+  },
+  "c28_para_coqui": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Y esto es para Coquí."
+  },
+  "c28_bebe_come": {
+   "who": "narr",
+   "text": "El bebé come."
+  },
+  "c28_cq_fin": {
+   "who": "tu",
+   "text": "¡Huele bien, abuela!"
+  },
+  "c28_no_negro_pollo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pollo está negro."
+  },
+  "c28_carmen_mas_pollo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Más sal para el pollo, por favor."
+  },
+  "c28_no_carmen_sal_pollo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen quiere sal para el pollo."
+  },
+  "c28_no_bebe_pollo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El bebé quiere el pollo."
+  },
+  "c28_no_negro_huevo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El huevo está negro."
+  },
+  "c28_carmen_mas_huevo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Más sal para el huevo, por favor."
+  },
+  "c28_no_carmen_sal_huevo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen quiere sal para el huevo."
+  },
+  "c28_no_bebe_huevo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El bebé quiere el huevo."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio28"
+  },
+  {
+   "wait": 500
+  },
+  "c28_hace",
+  {
+   "set": {
+    "twinkle": "sarten"
+   }
+  },
+  "c28_aqui_pollo",
+  "c28_aqui_huevo",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c28_huele_bien",
+  {
+   "act": "toma28",
+   "suelto": 1
+  },
+  "c28_toma_sal",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "salpollo",
+   "lead": [],
+   "line": "c28_ponle_pollo",
+   "then": [],
+   "after": [
+    {
+     "act": "sala",
+     "k": "pollo",
+     "suelto": 1
+    },
+    "c28_pollo_tiene_sal",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "salpollo",
+    "salhuevo"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "salhuevo",
+   "lead": [],
+   "line": "c28_ponle_huevo",
+   "then": [
+    {
+     "act": "toma28",
+     "deja": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "sala",
+     "k": "huevo",
+     "suelto": 1
+    },
+    "c28_huevo_tiene_sal",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "salpollo",
+    "salhuevo"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "entramama"
+  },
+  "c28_mama_huele",
+  "c28_ab_mira",
+  {
+   "act": "mira28"
+  },
+  {
+   "act": "humo",
+   "k": "pollo"
+  },
+  {
+   "ask": "di_pollo",
+   "lead": [],
+   "line": null,
+   "then": [
+    "c28_ab_gracias"
+   ],
+   "after": [
+    {
+     "act": "voltea",
+     "k": "pollo",
+     "vuelta": 1
+    }
+   ],
+   "resp": [
+    "di_pollo",
+    "di_huevo"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_pollo": "c28_cq_pollo",
+    "di_huevo": "c28_cq_huevo"
+   },
+   "said": {
+    "di_pollo": "c28_cq_pollo"
+   }
+  },
+  {
+   "act": "mira28"
+  },
+  {
+   "act": "humo",
+   "k": "huevo"
+  },
+  {
+   "ask": "di_huevo",
+   "lead": [],
+   "line": null,
+   "then": [],
+   "after": [
+    {
+     "act": "voltea",
+     "k": "huevo",
+     "vuelta": 1
+    }
+   ],
+   "resp": [
+    "di_pollo",
+    "di_huevo"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_pollo": "c28_cq_pollo",
+    "di_huevo": "c28_cq_huevo"
+   },
+   "said": {
+    "di_huevo": "c28_cq_huevo"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "platobebe"
+  },
+  {
+   "ask": "pzpollo",
+   "lead": [],
+   "line": "c28_bebe_quiere_pollo",
+   "then": [
+    "c28_bebe_come_pollo"
+   ],
+   "after": [
+    {
+     "act": "dabebe",
+     "k": "pollo"
+    }
+   ]
+  },
+  {
+   "ask": "pzhuevo",
+   "lead": [],
+   "line": "c28_ahora_bebe_huevo",
+   "then": [
+    "c28_bebe_come_huevo",
+    {
+     "act": "madrecome"
+    }
+   ],
+   "after": [
+    {
+     "act": "dabebe",
+     "k": "huevo"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "entran28"
+  },
+  "c28_luis_huele",
+  "c28_carmen_huele",
+  {
+   "set": {
+    "twinkle": "bandeja"
+   }
+  },
+  "c28_aqui_mas",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "par"
+  },
+  "c28_ab_mira",
+  {
+   "act": "mira28"
+  },
+  {
+   "draw": "sa",
+   "options": [
+    "pollo",
+    "huevo"
+   ],
+   "other": "oa"
+  },
+  {
+   "act": "humo",
+   "k": "$sa"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_pollo",
+    "di_huevo"
+   ],
+   "baraja": true,
+   "pick": "di_$sa",
+   "tests": "$sa",
+   "voces": {
+    "di_pollo": "c28_cq_pollo",
+    "di_huevo": "c28_cq_huevo"
+   },
+   "said": {
+    "di_pollo": "c28_cq_pollo",
+    "di_huevo": "c28_cq_huevo"
+   },
+   "lead": [],
+   "line": null,
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "voltea",
+       "k": "$sa",
+       "vuelta": 1
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "voltea",
+       "k": "$oa"
+      }
+     ]
+    },
+    {
+     "act": "sirve28",
+     "a": "luis"
+    },
+    {
+     "if": "ok",
+     "then": [],
+     "else": [
+      {
+       "act": "cara",
+       "a": "luis"
+      }
+     ]
+    },
+    {
+     "act": "come28",
+     "a": "luis"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "voltea",
+     "k": "$x",
+     "vuelta": 1
+    },
+    {
+     "act": "quema28",
+     "k": "$sa"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c28_no_negro_$sa"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "sb",
+   "options": [
+    "pollo",
+    "huevo"
+   ]
+  },
+  {
+   "calc": "rb",
+   "cond": "sb=pollo",
+   "then": "salpollo",
+   "else": "salhuevo"
+  },
+  {
+   "act": "par",
+   "sinsal": "$sb"
+  },
+  {
+   "act": "voltea",
+   "k": "los dos",
+   "vuelta": 1
+  },
+  {
+   "act": "sirve28",
+   "a": "carmen"
+  },
+  {
+   "act": "muerde",
+   "a": "carmen"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "salpollo",
+    "salhuevo"
+   ],
+   "baraja": true,
+   "pick": "$rb",
+   "tests": "$sb",
+   "lead": [],
+   "line": "c28_carmen_mas_$sb",
+   "right": [
+    {
+     "act": "salplato",
+     "a": "carmen",
+     "k": "$sb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "piensa28",
+     "quien": "carmen"
+    },
+    {
+     "act": "come28",
+     "a": "carmen"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "salplato",
+     "a": "carmen",
+     "k": "$x"
+    },
+    {
+     "act": "cara",
+     "a": "carmen"
+    },
+    {
+     "act": "piensa28",
+     "quien": "carmen",
+     "k": "$sb"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c28_no_carmen_sal_$sb"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "par"
+  },
+  {
+   "act": "vacia28"
+  },
+  "c28_no_hay",
+  {
+   "act": "ultimo"
+  },
+  {
+   "draw": "sc",
+   "options": [
+    "pollo",
+    "huevo"
+   ]
+  },
+  {
+   "calc": "tc",
+   "cond": "sc=pollo",
+   "then": "pzpollo",
+   "else": "pzhuevo"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "pzpollo",
+    "pzhuevo"
+   ],
+   "pick": "$tc",
+   "tests": "$sc",
+   "lock": true,
+   "lead": [],
+   "line": "c28_bebe_quiere_$sc",
+   "right": [
+    {
+     "act": "piensa28",
+     "quien": "bebe"
+    },
+    {
+     "act": "dabebe",
+     "k": "$sc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "parami",
+       "suelto": 1
+      },
+      "c28_para_coqui",
+      {
+       "act": "ya"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "dabebe",
+     "k": "$x",
+     "tira": 1
+    },
+    {
+     "act": "piensa28",
+     "quien": "bebe",
+     "k": "$sc"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c28_no_bebe_$sc"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "final28"
+  },
+  "c28_bebe_come",
+  {
+   "say": "c28_cq_fin",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c28_hace",
+  "c28_aqui_pollo",
+  "c28_aqui_huevo",
+  "c28_huele_bien",
+  "c28_toma_sal",
+  "c28_ponle_pollo",
+  "c28_pollo_tiene_sal",
+  "c28_ponle_huevo",
+  "c28_huevo_tiene_sal",
+  "c28_mama_huele",
+  "c28_ab_mira",
+  "c28_cq_pollo",
+  "c28_ab_gracias",
+  "c28_cq_huevo",
+  "c28_bebe_quiere_pollo",
+  "c28_bebe_come_pollo",
+  "c28_ahora_bebe_huevo",
+  "c28_bebe_come_huevo",
+  "c28_luis_huele",
+  "c28_carmen_huele",
+  "c28_aqui_mas",
+  "c28_no_hay",
+  "c28_para_coqui",
+  "c28_bebe_come",
+  "c28_cq_fin"
+ ]
+}

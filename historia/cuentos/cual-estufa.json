@@ -1,0 +1,1466 @@
+{
+ "id": "cual-estufa",
+ "title": "¿Cuál?",
+ "place": "La cocina",
+ "scene": "estufa",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for La estufa.",
+ "clips": {
+  "c27_aqui_arroz": {
+   "who": "narr",
+   "text": "Aquí hay arroz."
+  },
+  "m_e_mis_hab": {
+   "who": "narr",
+   "text": "Mira mis habichuelas."
+  },
+  "m_e_mi_olla": {
+   "who": "narr",
+   "text": "Mira mi olla."
+  },
+  "m_e_mama_hace": {
+   "who": "narr",
+   "text": "Mamá hace la comida."
+  },
+  "m_e_el_pollo": {
+   "who": "narr",
+   "text": "Mira el pollo."
+  },
+  "m_e_el_huevo": {
+   "who": "narr",
+   "text": "Mira el huevo."
+  },
+  "m_e_la_sal": {
+   "who": "narr",
+   "text": "Mira la sal."
+  },
+  "m_e_huele_bien": {
+   "who": "narr",
+   "text": "¡Huele bien!"
+  },
+  "m_e_choc_caliente": {
+   "who": "narr",
+   "text": "El chocolate está caliente."
+  },
+  "m_e_agua_fria": {
+   "who": "narr",
+   "text": "El agua está fría."
+  },
+  "m_e_cuidado_luis": {
+   "who": "narr",
+   "text": "¡Cuidado, Luis!"
+  },
+  "m_e_ya_esta": {
+   "who": "narr",
+   "text": "¡Ya está!"
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "arroz",
+   "say": "c27_aqui_arroz",
+   "si": {
+    "cam": [
+     70,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {
+       "k": "olla",
+       "con": "arroz",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     70,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "habichuelas",
+   "say": "m_e_mis_hab",
+   "si": {
+    "cam": [
+     60,
+     150,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 196,
+       "dir": 1,
+       "alza": {
+        "k": "tazon",
+        "v": "hab",
+        "e": 1,
+        "dx": 15,
+        "dy": 2
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     60,
+     150,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 196,
+       "dir": 1,
+       "alza": {
+        "k": "tazon",
+        "v": "arroz",
+        "e": 1,
+        "dx": 15,
+        "dy": 2
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "olla",
+   "say": "m_e_mi_olla",
+   "si": {
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "olla",
+        "v": "vacia",
+        "e": 1,
+        "dx": 26
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "sarten",
+        "e": 1,
+        "dx": 30,
+        "dy": -8
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "hace",
+   "say": "m_e_mama_hace",
+   "si": {
+    "cam": [
+     116,
+     86,
+     105.5,
+     56
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "mama": {
+       "x": 176,
+       "y": 152,
+       "dir": -1,
+       "pose": "wave0"
+      }
+     },
+     "fuegos": [
+      {},
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "cucharon",
+       "x": 150,
+       "y": 113,
+       "rot": 0.7,
+       "z": 999
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     116,
+     86,
+     105.5,
+     56
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "mama": {
+       "x": 176,
+       "y": 152,
+       "dir": 1,
+       "alza": {
+        "k": "platoc",
+        "v": "ah"
+       },
+       "come": {
+        "k": "cucharac"
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "pollo",
+   "say": "m_e_el_pollo",
+   "si": {
+    "cam": [
+     157,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": {
+      "x": 195,
+      "y": 123,
+      "solo": 1,
+      "items": [
+       {
+        "k": "muslo",
+        "v": "dorado"
+       }
+      ]
+     },
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     157,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": {
+      "x": 195,
+      "y": 123,
+      "solo": 1,
+      "items": [
+       {
+        "k": "frito",
+        "v": "dorado"
+       }
+      ]
+     },
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "huevo",
+   "say": "m_e_el_huevo",
+   "si": {
+    "cam": [
+     70,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "frito",
+         "v": "dorado"
+        }
+       ]
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     52,
+     148,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 196,
+       "dir": 1,
+       "alza": {
+        "k": "salero"
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "sal",
+   "say": "m_e_la_sal",
+   "si": {
+    "cam": [
+     98,
+     148,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 110,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [
+      {
+       "k": "salero",
+       "x": 150,
+       "y": 176,
+       "rot": 0.9
+      },
+      {
+       "k": "grano",
+       "x": 157,
+       "y": 181
+      },
+      {
+       "k": "grano",
+       "x": 158,
+       "y": 187
+      }
+     ],
+     "banco": 1,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": {
+      "x": 158,
+      "y": 196,
+      "o": {
+       "k": "frito",
+       "v": "dorado"
+      }
+     },
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     98,
+     148,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 110,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [
+      {
+       "k": "molinillo",
+       "x": 150,
+       "y": 176,
+       "rot": 0.9
+      },
+      {
+       "k": "granon",
+       "x": 157,
+       "y": 181
+      },
+      {
+       "k": "granon",
+       "x": 158,
+       "y": 187
+      }
+     ],
+     "banco": 1,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": {
+      "x": 158,
+      "y": 196,
+      "o": {
+       "k": "frito",
+       "v": "dorado"
+      }
+     },
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "huele",
+   "say": "m_e_huele_bien",
+   "si": {
+    "cam": [
+     60,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "papa": {
+       "x": 82,
+       "y": 158,
+       "dir": 1,
+       "cierra": 1
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "muslo",
+         "v": "dorado"
+        },
+        {
+         "k": "frito",
+         "v": "dorado"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": [
+      106,
+      104,
+      90,
+      117
+     ]
+    }
+   },
+   "no": {
+    "cam": [
+     60,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "papa": {
+       "x": 82,
+       "y": 158,
+       "dir": 1,
+       "come": {
+        "k": "muslo",
+        "v": "dorado"
+       }
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "frito",
+         "v": "dorado"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "caliente",
+   "say": "m_e_choc_caliente",
+   "si": {
+    "cam": [
+     98,
+     100,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "taza",
+       "v": "cal",
+       "x": 126,
+       "y": 127,
+       "vapor": 1
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     98,
+     100,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "vasochoco",
+       "x": 126,
+       "y": 127
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "frío",
+   "say": "m_e_agua_fria",
+   "si": {
+    "cam": [
+     98,
+     100,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "vasoagua",
+       "x": 126,
+       "y": 127
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     110,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {
+       "k": "olla",
+       "con": "agua",
+       "n": 0,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "cuidado",
+   "say": "m_e_cuidado_luis",
+   "si": {
+    "cam": [
+     58,
+     90,
+     139,
+     74
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 150,
+       "dir": 1,
+       "pose": "wave0"
+      },
+      "abuela": {
+       "x": 156,
+       "y": 164,
+       "dir": -1,
+       "pose": "wave0"
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "fritura",
+         "v": "burbujas"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     58,
+     104,
+     139,
+     74
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 112,
+       "y": 178,
+       "dir": 1,
+       "pose": "offer"
+      },
+      "abuela": {
+       "x": 150,
+       "y": 176,
+       "dir": -1,
+       "pose": "offer",
+       "lleva": {
+        "k": "platof"
+       }
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "fritura",
+         "v": "burbujas"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  },
+  {
+   "w": "ya",
+   "say": "m_e_ya_esta",
+   "si": {
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "fuentec",
+        "v": 3,
+        "e": 2,
+        "dx": 34,
+        "dy": 6
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   },
+   "no": {
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "cuenco",
+        "e": 2,
+        "dx": 34,
+        "dy": 6
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    }
+   }
+  }
+ ]
+}
