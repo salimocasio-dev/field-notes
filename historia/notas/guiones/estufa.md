@@ -135,7 +135,7 @@ The frog's own moves, in doing bubbles: he shakes salt over the drumstick; or ov
 - **Goal he can see, from the first frame:** on the left, a pan of hot oil, a board with four balls of batter and an empty plate; on the right, a pot of hot chocolate, a jug of cold chocolate and nine clean cups in rows. Fry the fritters, and bring everybody the chocolate he wants.
 - **At stake:** the merienda. After the turn there are three balls of batter, for three fritters: one for Carmen, one for abuela, one for the frog. A fritter that comes out too soon is soft and falls on the floor; one that stays in too long burns black. And there are five clean cups: a cup of the wrong chocolate is not wanted, Luis drinks it himself, and that cup lies empty on its side. The frog and abuela have theirs last, from what is left. The card shows a cross for that round.
 - **New words:** caliente, frío, cuidado, ya.
-- **Back again:** olla, chocolate, quiero, quiere, ¿quién?, bebe, toma, mira, espera, hay, aquí, está, listo, negro.
+- **Back again:** olla, chocolate, quiero, quiere, ¿quién?, bebe, mira, espera, hay, aquí, está, listo, negro.
 - **Heard along the way:** ya está.
 
 Hot chocolate steams. Cold chocolate has blue ice and a straw in it. A thought bubble shows one or the other.
