@@ -163,7 +163,7 @@ function draw(c,W,a){const q=W.cq,AB=(pose,op)=>spr("ab"+pose+op,()=>mkAbuela(po
   if(W.storm){c.fillStyle="rgba(150,160,176,.62)";c.beginPath();c.arc(210,17,10,0,7);c.fill();}   // the sun goes pale
   if(W.dark){c.fillStyle="rgba(14,22,46,"+W.dark+")";c.fillRect(0,0,SW,SH);}
   if(W.dusk){c.fillStyle=W.dusk>1?"rgba(40,24,70,.42)":"rgba(255,120,50,.16)";c.fillRect(0,0,SW,SH);if(W.dusk>1){c.fillStyle="rgba(255,190,90,.25)";c.fillRect(0,0,SW,40);}}   // late afternoon, then sunset
-  if(W.lamp){c.fillStyle="rgba(255,232,140,.16)";if(!W.win)c.fillRect(88,53,48,36);if(!W.door)c.fillRect(146,47,40,60);c.fillStyle="rgba(255,240,170,.14)";if(!W.win)c.fillRect(92,56,40,30);if(!W.door)c.fillRect(149,49,34,56);}   // the lights are on inside: window and door glow alike
+  // the lights are on inside: bg() already draws the window and the door lit (W.lamp). There is no glow laid over them: a flat translucent rectangle over the shut door showed in the end picture as a lighter hard-edged box at the right edge
   [W.nube3,W.nube2,W.nube].forEach(n=>{if(!n)return;n.x+=(n.tx-n.x)*.14;if(Math.abs(n.tx-n.x)<.6)n.x=n.tx;const x=Math.round(n.x);c.drawImage(spr("nube",mkNube),x,0);
     if(!W.rain)for(let i=0;i<16;i++)fr(c,x+9+(i*23+F*2)%80,21+(i*7+F*4)%26,1,4,"#C4DCF6");});   // rain already falling from the cloud, far off
   if(W.rain)rain(c);
