@@ -8,7 +8,7 @@
 <style>
 /* A hybrid, as Salim's UI plan says: the course map is 16-bit pixel art; everything over it and every other screen
    is a clean modern UI. 8-point spacing, touch targets of 48 px or more, a system sans-serif, colour only for meaning. */
-:root{--bg:#F6F5F1;--card:#FFFFFF;--ink:#16181D;--mut:#636A75;--line:#E3E1DA;--line2:#C9C6BB;--tint:#EEF1FF;--ok:#1E9E52;--bad:#D9480F;--info:#3B5BDB;--r:16px;--navh:72px}
+:root{--bg:#F6F5F1;--card:#FFFFFF;--ink:#16181D;--mut:#636A75;--line:#E3E1DA;--line2:#C9C6BB;--tint:#EEF1FF;--ok:#17803F;--bad:#D9480F;--info:#3B5BDB;--r:16px;--navh:72px}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:400 16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;overscroll-behavior:none}
 button{font:inherit;color:inherit}
@@ -25,7 +25,7 @@ h2{font-size:18px;line-height:24px;font-weight:500;margin:24px 0 16px}   /* 16 p
 .btn:disabled{background:#E3E1DA;color:var(--mut);border-color:transparent;cursor:default}
 .pb{flex:none;display:flex;align-items:center;justify-content:center;width:48px;height:48px;padding:0;border:0;border-radius:24px;background:var(--ok);color:#fff;cursor:pointer}   /* the one play control: a green 48 px disc, white triangle (stop: a white square) */
 .pb svg{width:24px;height:24px}
-.li{display:flex;align-items:center;gap:16px;min-height:64px;padding:8px 0}.li.rd{width:100%;border:0;border-radius:0;background:none;text-align:left;cursor:pointer;font-size:16px}.li+.li{border-top:1px solid var(--line)}.okc{color:#14793C;font-weight:600}
+.li{display:flex;align-items:center;gap:16px;min-height:64px;padding:8px 0}.li.rd{width:100%;border:0;border-radius:0;background:none;text-align:left;cursor:pointer;font-size:16px}.li+.li{border-top:1px solid var(--line)}.okc{color:var(--ok);font-weight:600}
 .btn:active,.pb:active,.tb:active,.play:active{transform:scale(.98)}
 .seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.seg button{min-height:48px;padding:0;border-radius:12px;border:1.5px solid var(--line2);background:transparent;font-weight:600;cursor:pointer}.seg button.on{background:var(--info);color:#fff;border-color:var(--info)}
 .sw{position:relative;width:52px;height:48px;padding:0;border:0;background:none;cursor:pointer;flex:none}   /* the button is the 48 px touch target; the visible switch (the track and the knob) is 52 x 32 inside it */
@@ -200,10 +200,11 @@ function mapa(){const cv=document.getElementById("mapa"),g=cv.getContext("2d"),b
   cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*MW/r.width,y=(e.clientY-r.top)*MH/r.height;let best=-1,bd=Math.max(24,24*MW/r.width);   // a touch lands within 24 px of a stop, however small the map is drawn
     STOP.forEach((s,i)=>{const d=Math.hypot(s[0]-x,s[1]-y);if(d<bd){bd=d;best=i;}});if(best>=0){tick();lugar(best);}};}
 const aqui=()=>Math.max(0,CURSO.lugares.findIndex(l=>l.cuentos&&!l.cuentos.every(hecho)));
+const VERDE=getComputedStyle(document.documentElement).getPropertyValue("--ok").trim();   // the one green token, shared with the map tiles
 const CHECKPX=["........XX","......XXX.",".....XXX..","X...XXX...","XX.XXX....",".XXXX.....","..XX......"];
 function panel(g,s,i,l){const done=l.cuentos&&l.cuentos.every(hecho),op=abierto(l),x=s[0]-8,y=s[1]-8;   // done: a green tile with a white check; open: a quiet outline; closed: grey (the current stop's ring is plain CSS: see aro())
   g.fillStyle="#000";g.fillRect(x-1,y-1,18,18);
-  if(done){g.fillStyle="#1E9E52";g.fillRect(x,y,16,16);g.fillStyle="#52C07F";g.fillRect(x,y,16,2);g.fillRect(x,y,2,16);g.fillStyle="#137A3C";g.fillRect(x+2,y+14,14,2);g.fillRect(x+14,y+2,2,14);
+  if(done){g.fillStyle=VERDE;g.fillRect(x,y,16,16);g.fillStyle="#3FAE6B";g.fillRect(x,y,16,2);g.fillRect(x,y,2,16);g.fillStyle="#0C5A2B";g.fillRect(x+2,y+14,14,2);g.fillRect(x+14,y+2,2,14);
     g.fillStyle="#FFFFFF";CHECKPX.forEach((r,j)=>{for(let q=0;q<r.length;q++)if(r[q]==="X")g.fillRect(x+3+q,y+5+j,1,1);});return;}
   if(op){g.fillStyle="#F7F7F4";g.fillRect(x,y,16,16);digitos(g,String(l.n),s[0]+1,s[1],"#000");return;}
   g.fillStyle="#7C7C7C";g.fillRect(x,y,16,16);g.fillStyle="#BCBCBC";g.fillRect(x,y,16,2);g.fillRect(x,y,2,16);digitos(g,String(l.n),s[0]+1,s[1],"#3A3A3A");}
