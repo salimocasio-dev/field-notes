@@ -261,7 +261,7 @@ function origen(){const K="coqui.desde";let o=null;
   return o||"app.html?tab=mapa";}
 let SALIDA=null;   // a screen that always leaves to one place (¿Cuál? goes back to Palabras)
 function salir(url){runId++;try{hush();SFX.calla();}catch(e){}callaLetras();try{if(AC)AC.suspend();}catch(e){}location.href=url;}   // the X: all sound stops, then back to where he came from
-let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);if($("#nota"))$("#nota").style.display="none";$("#go").style.display="none";foot(0,0,0);
+let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";foot(0,0,0);
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
@@ -270,7 +270,6 @@ let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush()
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
-  if(S.nota&&$("#nota")){$("#nota").textContent=S.nota.replace(/\.?\s*\n\s*/g," · ").replace(/\.$/,"");$("#nota").style.display="block";}   // the one plain English line before a new grammar pattern: one small grey line under the picture, gone before any Spanish plays
   fresh();voiceReady=loadVoice();setInterval(loop,TICK);draw();
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
   $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
