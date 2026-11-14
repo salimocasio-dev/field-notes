@@ -74,7 +74,7 @@ const COSA={
   hueso(){const b=new Buf(13,7);b.rect(3,2,7,3,"#F8F4E8");[[2,1],[2,5],[10,1],[10,5]].forEach(p=>b.ell(p[0],p[1],1.6,1.6,["#F8F4E8"]));return b.outline().done();},
   caja(){const b=new Buf(28,16);b.rect(1,5,26,10,"#C89A60");b.rect(1,5,26,2,"#E0B880");b.rect(1,13,26,2,"#A87A40");b.rect(3,2,22,3,"#8A6234");b.rect(12,8,4,2,"#8A6234");return b.outline().done();},
   sonajero(){const b=new Buf(8,12);b.ell(4,4,3,3,["#E86AA0","#F8A0C8"]);b.px(3,3,"#FFFFFF");b.rect(3,7,2,4,"#F0C020");return b.outline().done();},
-  oso(){const b=new Buf(11,13);b.ell(5.5,8,3.6,4,["#8A5A2A","#B07A3C"]);b.ell(5.5,3.5,3,3,["#8A5A2A","#B07A3C"]);b.px(3,1,"#8A5A2A");b.px(8,1,"#8A5A2A");b.px(4,3,OUT);b.px(7,3,OUT);b.px(5,5,"#2A1A0E");return b.outline().done();},
+  oso(){const b=new Buf(15,10);b.rect(1,4,13,3,"#D0302A");b.rect(4,1,7,3,"#D0302A");b.rect(5,2,2,2,"#BFE0EA");b.rect(8,2,2,2,"#BFE0EA");b.rect(1,4,13,1,"#F0605A");[4,11].forEach(x=>{b.ell(x,7.5,1.8,1.8,["#20202A"]);b.px(x,7,"#C8C8D4");});return b.outline().done();},
   bloque(){const b=new Buf(9,9);b.rect(1,1,7,7,"#3A6AC8");b.rect(1,1,7,2,"#7AA0F0");b.rect(3,3,3,3,"#F0C020");return b.outline().done();},
   patito(){const b=new Buf(11,9);b.ell(5,5.5,4,2.6,["#C89A10","#F0C020","#FFE060"]);b.ell(8,2.5,2,2,["#F0C020","#FFE060"]);b.px(9,2,OUT);b.rect(10,3,1,1,"#E88A2A");return b.outline().done();},
   chal(){const b=new Buf(20,10);b.ell(10,5,9,4,["#5A3A8A","#7A56B0","#A07ED0"]);for(let x=2;x<18;x+=3)b.px(x,9,"#5A3A8A");return b.outline().done();},
@@ -100,10 +100,10 @@ function mkCan(tipo,pose,f,pena){const b=new Buf(32,24),T={canelo:["#8A5A2A","#B
   // the head
   const hx=X+10*k+(j?1:0),hy=(lie?Y+4:pose==="triste"?Y-1:v?Y-2:Y-3)+(pena&&!lie?2:0);if(tipo==="canelo")b.rect(hx-4,hy+4,5,2,RP.red[2]);
   b.ell(hx,hy,5*k+(v?.6:0),4.6*k+(v?.4:0),T);b.ell(hx+4*k,hy+1.5,3*k,2.2*k,[T[3]]);
-  const caidas=v||pena||pose==="triste"||pose==="cansado"||pose==="duerme";
+  const caidas=pena||pose==="triste"||pose==="cansado"||pose==="duerme";
   if(caidas){b.cap(hx-3,hy-3,hx-4,hy+3,1.6,[j?"#20202A":T[0]]);}else{b.cap(hx-3,hy-3,hx-5,hy+2,1.5,[j?"#20202A":T[0]]);b.cap(hx+1,hy-4,hx+2,hy-7,1.3,[j?"#20202A":T[0]]);}
   if(v){b.rect(hx+2,hy+3,6,2,"#FFFFFF");b.rect(hx+3,hy+5,4,1,"#FFFFFF");b.rect(hx+3,hy+1,5,2,"#FFFFFF");b.rect(hx,hy-3,4,1,"#FFFFFF");b.rect(hx+6,hy,2,2,OUT);}                                   // his long white beard, his white eyebrows
-  if(pose==="cansado"){b.rect(hx,hy-1,2,2,OUT);b.px(hx,hy-1,"#FFFFFF");b.rect(hx+2,hy+3,4,f?3:2,"#7A1C1C");b.rect(hx+4,hy+5,2,f?4:3,"#F08AA0");}        // heavy open eyes, a yawn, his tongue out
+  if(pose==="cansado"){b.rect(hx,hy-1,2,2,OUT);b.px(hx,hy-1,"#FFFFFF");b.rect(hx+2,hy+3,4,f?3:2,"#7A1C1C");b.rect(hx+4,hy+5,2,f?4:3,"#F08AA0");b.rect(hx-1,hy-6+(f?1:0),2,3,"#A8DCF8");}        // heavy open eyes, a yawn, his tongue out
   else{if(pose==="duerme")b.rect(hx,hy-1,3,1,OUT);else b.px(hx+1,hy-1,OUT);if(pose==="bark"&&f)b.rect(hx+3,hy+3,4,2,"#7A1C1C");else if(pose==="come")b.rect(hx+3,hy+3,3,2,f?"#7A1C1C":T[3]);else if(!v)b.px(hx+4,hy+3,"#7A2A1A");}
   if(!v)b.px(hx+6*k,hy+1,OUT);
   if(pose==="triste"){b.rect(hx+2,hy+1,1,2+(f?1:0),"#5A9AEA");}                                                                              // a tear
@@ -148,8 +148,8 @@ function extra(c,k,hx,hy,d,p,im){const sin=p.sin||{};
 function animo(c,k,hx,hy){const t=(F>>3)%2;
   if(k==="triste"){fr(c,hx-3,hy+3,6,2,"#C89A70");fr(c,hx-2,hy+4,4,1,"#7A2A1A");fr(c,hx-3,hy+5,1,1,"#7A2A1A");fr(c,hx+2,hy+5,1,1,"#7A2A1A");fr(c,hx-5,hy-3,2,1,"#20140A");fr(c,hx-3,hy-4,1,1,"#20140A");fr(c,hx+3,hy-3,2,1,"#20140A");fr(c,hx+2,hy-4,1,1,"#20140A");
     fr(c,hx-5,hy+1,2,4+t,"#5AB4F4");fr(c,hx+3,hy+1,2,3+(1-t),"#5AB4F4");fr(c,hx-5,hy+8+t*2,2,2,"#5AB4F4");}                                                  // slanted brows, a turned-down mouth, tears down both cheeks
-  else if(k==="cansado"){fr(c,hx-4,hy-1,3,1,"#20140A");fr(c,hx+1,hy-1,3,1,"#20140A");fr(c,hx-4,hy,3,1,"#C89A70");fr(c,hx+1,hy,3,1,"#C89A70");fr(c,hx-1,hy+3,3,3,"#7A1C1C");
-    fr(c,hx+6,hy-7+t,2,3,"#A8DCF8");fr(c,hx-8,hy-5-t,2,3,"#A8DCF8");[[8,2],[11,-1],[14,-4]].forEach((q,i)=>{if((F>>2)%4>i){fr(c,hx+q[0]-1,hy+q[1]-1,5,4,OUT);fr(c,hx+q[0],hy+q[1],3,2,"#FFFFFF");}});}   // heavy lids, an open mouth, sweat, puffs of breath
+  else if(k==="cansado"){fr(c,hx-4,hy-1,3,1,"#20140A");fr(c,hx+1,hy-1,3,1,"#20140A");fr(c,hx-4,hy,3,1,"#C89A70");fr(c,hx+1,hy,3,1,"#C89A70");fr(c,hx-3,hy+3,6,2,"#C89A70");fr(c,hx-2,hy+4,4,1,"#7A2A1A");
+    fr(c,hx+6,hy-7+t,2,3,"#A8DCF8");fr(c,hx-8,hy-5-t,2,3,"#A8DCF8");[[8,2],[11,-1],[14,-4]].forEach((q,i)=>{if((F>>2)%4>i){fr(c,hx+q[0]-1,hy+q[1]-1,5,4,OUT);fr(c,hx+q[0],hy+q[1],3,2,"#FFFFFF");}});}   // heavy lids, a flat mouth, sweat, puffs of breath
   else if(k==="contento"){fr(c,hx-3,hy+3,6,2,"#7A1C1C");fr(c,hx-2,hy+3,4,1,"#FFFFFF");fr(c,hx-4,hy+2,1,1,"#7A1C1C");fr(c,hx+3,hy+2,1,1,"#7A1C1C");}}
 function tenida(c,k,x,y,girada){const im=cosa(k);if(girada){c.save();c.translate(x,y);c.rotate(girada);c.drawImage(im,-(im.width>>1),-im.height);c.restore();}else c.drawImage(im,R(x)-(im.width>>1),R(y)-im.height);}
 function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const w=QUIEN[id],x=R(p.x),y=R(p.y),habla=TALK===id&&a%2?1:0,d=p.dir<0?-1:1;
@@ -158,7 +158,7 @@ function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const w=QUIEN
   const pose=p.pose==="wave"?"wave"+(a%2):p.pose==="arriba"?"wave0":(p.pose||"idle"),im=spr("pb"+id+pose+habla+(p.sent?1:0),()=>KIT.mkPersona(w,pose,habla,p.sent)),top=y-im.height+1+((p.paso&&a%2)?-1:0)-(p.dy||0)+(p.animo==="cansado"?3:p.animo==="triste"?1:0);
   c.save();c.translate(x,top);if((pose==="offer"?-d:d)<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
   (w.extra||[]).forEach(k=>extra(c,k,x,top+11,d,p,im));if(p.animo)animo(c,p.animo,x,top+11);
-  if(p.hace==="come")tenida(c,p.que||"piragua",x+d*5,top+24+(a%2));else if(p.hace==="bebe")tenida(c,"agua",x+d*4,top+20,d*(a%2?1.9:1.6));
+  if(p.hace==="come")tenida(c,p.que||"piragua",x+d*5,top+24+(a%2));else if(p.hace==="bebe")tenida(c,"agua",x+d*11,top+7,-d*(a%2?2.3:2.45));
   else if(p.lleva)tenida(c,p.lleva,x+d*10,top+(w.nino?34:38));
   if(p.lleva2)tenida(c,p.lleva2,x-d*11,top+(p.sent?40:46));
   if(p.lee){fr(c,x-8,top+24,16,9,OUT);fr(c,x-7,top+25,14,7,"#F2F2F8");fr(c,x,top+25,1,7,"#C8C8D4");[27,29].forEach(yy=>{fr(c,x-6,top+yy,5,1,"#9494A6");fr(c,x+2,top+yy,4,1,"#9494A6");});}}
@@ -168,7 +168,7 @@ function rana(g,q,a){const b=frogBox(q),bl=(F%47)<2||q.hace==="cansado"?1:0,op=(
   // what he holds: one thing in each hand; the one he is eating or drinking goes to his mouth
   [["i",-1],["d",1]].forEach(s=>{const k=m[s[0]];if(!k)return;const enboca=(q.hace==="come"&&k.startsWith("piragua"))||(q.hace==="bebe"&&k==="agua");
     if(enboca&&k==="agua")tenida(g,k,cx+s[1]*3,b.y+dy+10,s[1]*(a%2?2.2:1.9));else if(enboca)tenida(g,k,cx+s[1]*2,b.y+dy+21+(a%2));else tenida(g,k,cx+s[1]*17,b.y+dy+b.h-2);});
-  if(q.hace==="canta"){const t=(F>>2)%4;nota(g,cx+15+t,b.y+dy-4-t);nota(g,cx+24+t,b.y+dy-12-t*2);}
+  if(q.hace==="canta"){const t=(F>>2)%4;nota(g,cx+15+t,b.y+dy-8-t);}
   if(q.hace==="quieto")nota(g,cx+18,b.y+dy-6,1);
   if(q.hace==="cansado"){const t=(F>>3)%2;fr(g,cx+13,b.y+dy+3+t,1,2,"#A8CCF8");fr(g,cx-14,b.y+dy+5-t,1,2,"#A8CCF8");}
   if(W.encima)tenida(g,W.encima,cx,b.y+dy+2);}
@@ -192,7 +192,7 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{};
   c.drawImage(spr("banco",fondo),0,0);
   if(W.noche){c.fillStyle="rgba(40,30,90,.18)";c.fillRect(0,0,SW,SH);fr(c,FAROL[0]-5,36,11,11,"#FFF8C8");c.fillStyle="rgba(255,240,160,.16)";c.beginPath();c.ellipse(FAROL[0],FAROL[1]+18,46,22,0,0,7);c.fill();}
   if(W.tarde&&!W.noche){c.fillStyle="rgba(255,150,60,.10)";c.fillRect(0,0,SW,SH);}
-  if(W.seva===1||W.seva===3){const pi=Gt.piraguero,v=W.perros.viejo,j=W.perros.joven;W.carroX+=1.5;if(pi)pi.x=W.carroX+30;if(v)v.x+=.45;if(j&&j.x<262)j.x+=3.2;}   // the cart goes home, the dogs with it
+  if(W.seva===1||W.seva===3){const pi=Gt.piraguero,v=W.perros.viejo,j=W.perros.joven;W.carroX-=1.1;if(pi)pi.x=W.carroX+30;if(v)v.x-=.35;if(j){const t=F-j.fase,x=j.x0-t*.5+34*Math.sin(t/7);j.dir=x<j.x?-1:1;j.x=x;}}   // the cart goes home, the dogs with it: the old one walks, the young one runs to and fro ahead
   const L=[];
   if(W.carro!==0)L.push({y:CARRO[1],d:()=>c.drawImage(spr("carro"+(W.carro==="cerrado"?1:0),()=>mkCarro(W.carro==="cerrado")),R(W.carroX!=null?W.carroX:CARRO[0])-24,CARRO[1]-72)});
   Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.vis!==0)L.push({y:p.sent?p.y-8:p.y,d:()=>gente(c,id,a)});});
@@ -208,15 +208,15 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{};
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1-(p.bub?38:0)];}
 // a note of music; and the same note crossed out: not a sound
-function nota(g,x,y,no){[[OUT,1],["#2A2A3A",0]].forEach(k=>{const m=k[1];fr(g,x+3-m,y-m,1+2*m,9+2*m,k[0]);fr(g,x-m,y+6-m,4+2*m,3+2*m,k[0]);fr(g,x+4-m,y-m,3+2*m,1+2*m,k[0]);fr(g,x+6-m,y+1-m,1+2*m,2+2*m,k[0]);});
-  if(no)for(let i=0;i<13;i++){fr(g,x-3+i,y-2+i,3,2,"#D0302A");fr(g,x+9-i,y-2+i,3,2,"#D0302A");}}
+function nota(g,x,y,no){[[OUT,1],["#2A3C8E",0]].forEach(k=>{const m=k[1],u=(a,b,w,h)=>fr(g,x+a-m,y+b-m,w+2*m,h+2*m,k[0]);u(3,0,1,10);u(11,0,1,9);u(3,0,9,2);u(0,8,4,3);u(8,7,4,3);});
+  if(no)for(let i=0;i<15;i++){fr(g,x-2+i,y-2+i,3,2,"#D0302A");fr(g,x+12-i,y-2+i,3,2,"#D0302A");}}
 // the doing bubbles: the frog eating, drinking, singing, keeping still. The thing is drawn big beside him
 function respIcon(g,k,x,y,w,h,a){const t=(F>>2)%2,op=(k==="canta"||k==="come")&&t?1:0,im=spr("cq.6_0"+op,()=>mkCoqui(.6,0,op)),fx=x+2,fy=y+h-im.height-3;g.imageSmoothingEnabled=false;
   g.drawImage(im,fx,fy);
   if(k==="come"){g.save();g.translate(x+28-t,y+32);g.scale(2,2);tenida(g,"piragua",0,0);g.restore();}
   else if(k==="bebe"){g.save();g.translate(x+31,y+31);g.scale(2,2);tenida(g,"agua",0,0,-.75-t*.15);g.restore();}
-  else if(k==="canta"){nota(g,x+24,y+7-t*2);nota(g,x+31,y+15+t*2);}
-  else if(k==="quieto")nota(g,x+26,y+11,1);}
+  else if(k==="canta"){nota(g,x+24,y+5-t*2);g.fillStyle="#2A3C8E";[[22,24],[26,27],[31,23]].forEach(q=>g.fillRect(x+q[0],y+q[1]+t,2,2));}
+  else if(k==="quieto")nota(g,x+24,y+10,1);}
 /* ---------- the card in the corner: three rounds; a star, or a cross ---------- */
 function hud(g,W,a){if(!W.tarjeta)return;tarjeta(g,3,3,66,24);
   (W.marcas||[]).forEach((m,i)=>{const x=10+i*20,y=6;
@@ -238,6 +238,7 @@ const B=BANCOS,ASIENTO=149,POSA=[[110,127],[158,127],[176,127],[208,127]],JUG=["
 const cx=()=>W.cq.x+16,pies=()=>W.cq.y+27;
 async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(4,R(d/34))));}
 const acasa=()=>ranaA(W.casa[0],W.casa[1]);
+async function carmenDa(f){const ca=G("carmen"),x0=ca.x,y0=ca.y;await mueve("carmen",cx()-30,pies()+1);ca.dir=1;ca.pose="offer";await wait(250);f();SFX.blip();await wait(300);ca.pose="idle";await mueve("carmen",x0,y0);ca.dir=1;}   // she walks over and hands it to him
 const cosaDe=id=>(W.cosas||[]).find(o=>o.id===id);
 const quita=id=>{W.cosas=(W.cosas||[]).filter(o=>o.id!==id);};
 const libre=()=>W.palomas.find(o=>o.en==="cable");
@@ -263,7 +264,7 @@ const acts={
 
   /* ----- story 21: La piragua ----- */
   async inicio21(){W.gente={piraguero:{x:CARRO[0]+4,y:CARRO[1]-6,dir:1},carmen:{x:62,y:206,dir:1},hombre:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[2][0],y:161,dir:1,sent:1}};
-    W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));W.casa=[122,190];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.bandeja=1;W.posadas=0;W.cosas=[];},
+    W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));W.casa=[124,206];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.bandeja=1;W.posadas=0;W.cosas=[];},
   async pon(o){const de=G(o.de||"carmen");await acasa();de.pose="offer";await wait(250);W.bandeja=o.k;SFX.blip();await wait(300);de.pose="idle";},
   async lleva(o){const p=G(o.a),k=W.bandeja;await ranaA(p.sent?p.x:p.x+26,p.sent?p.y+22:p.y);W.bandeja=1;p.que=k;p.hace=k==="agua"?"bebe":"come";SFX.blip();await wait(500);},
   async llevamal(o){const p=G(o.a);await ranaA(p.sent?p.x:p.x+26,p.sent?p.y+22:p.y);await niega(p);p.dir=1;W.cq.dy=-4;await wait(300);const pg=libre();pio();await palomaA(pg,cx(),pies()-30);pg.pose="come";pg.z=400;await wait(900);W.bandeja=1;pg.pose="";W.cq.dy=0;await posa(pg);},
@@ -275,14 +276,14 @@ const acts={
   async acaban(o){const h=G("hombre"),m=G("mujer"),ca=G("carmen");if(cosaDe("pir")){quita("pir");}if(cosaDe("bot")){quita("bot");}h.lee=0;h.lleva=null;m.lleva=null;m.dir=1;h.hace="come";h.que="piragua";m.hace="bebe";await wait(900);h.hace=null;m.hace=null;h.lleva="papel";m.lleva="vacia";
     await mueve("carmen",104,182);h.lleva=null;await mueve("carmen",150,182);m.lleva=null;await mueve("carmen",62,206);ca.dir=1;W.bandeja=o&&o.bandeja==="no"?null:1;await wait(200);},
   async sinbandeja(){W.bandeja=null;await wait(150);},
-  async manos(o){const ca=G("carmen");ca.pose="offer";await wait(250);W.manos=Object.assign({},W.manos||{},o.i?{i:o.i}:{},o.d?{d:o.d}:{});SFX.blip();await wait(300);ca.pose="idle";},
-  async llena(){const m=W.manos||{i:null,d:null},vale=k=>!!k&&(k==="agua"||k.startsWith("piragua")),hay=k=>["i","d"].some(q=>vale(m[q])&&(k==="agua"?m[q]==="agua":m[q].startsWith("piragua"))),falta=["piragua","agua"].filter(k=>!hay(k));["i","d"].forEach(q=>{if(!vale(m[q]))m[q]=falta.shift()||null;});W.manos=m;G("carmen").pose="offer";SFX.blip();await wait(350);G("carmen").pose="idle";},
+  async manos(o){await carmenDa(()=>{W.manos=Object.assign({},W.manos||{},o.i?{i:o.i}:{},o.d?{d:o.d}:{});});},
+  async llena(){const m=W.manos||{i:null,d:null},vale=k=>!!k&&(k==="agua"||k.startsWith("piragua")),hay=k=>["i","d"].some(q=>vale(m[q])&&(k==="agua"?m[q]==="agua":m[q].startsWith("piragua"))),falta=["piragua","agua"].filter(k=>!hay(k));await carmenDa(()=>{["i","d"].forEach(q=>{if(!vale(m[q]))m[q]=falta.shift()||null;});W.manos=m;});},
   async acaba(o){const p=G(o.a);p.hace=p.lleva==="agua"?"bebe":"come";p.que=p.lleva==="agua"?"agua":"piragua";p.lleva=null;await wait(900);p.hace=null;},
   async tragan(){Object.values(W.gente).forEach(p=>{p.hace=null;p.lleva=null;});await wait(200);},
   async empieza(o){const q=W.cq;q.hace=o.que;if(o.que==="come")[0,.2,.4].forEach(t=>tone(300,t,.05,"square",.03,240));else[0,.25,.5].forEach(t=>tone(500,t,.08,"sine",.04,380));await wait(650);},
   async termina(o){const q=W.cq,m=W.manos||{};await wait(350);["i","d"].forEach(s=>{if(o.que==="come"&&m[s]&&m[s].startsWith("piragua"))m[s]="papel";if(o.que==="bebe"&&m[s]==="agua")m[s]="vacia";});q.hace=null;await wait(250);},
   async otro(o){const que=o.que==="come"?"bebe":"come",m=W.manos||{},cual=que==="come"?"piragua":"agua";if(!["i","d"].some(q=>m[q]&&m[q].startsWith(cual)))return;await acts.empieza({que});await acts.termina({que});},
-  async repone(o){const m=W.manos||{},cual=o.que==="come"?"piragua":"agua",l=["i","d"].find(q=>!m[q]||m[q]==="papel"&&cual==="piragua"||m[q]===null)||["i","d"].find(q=>m[q]==="papel"||m[q]==="vacia");["i","d"].forEach(q=>{if(m[q]==="papel"||m[q]==="vacia")m[q]=null;});m[l||"i"]=cual;W.manos=m;G("carmen").pose="offer";SFX.blip();await wait(350);G("carmen").pose="idle";},
+  async repone(o){const m=W.manos||{},cual=o.que==="come"?"piragua":"agua",l=["i","d"].find(q=>!m[q]||m[q]==="papel"&&cual==="piragua"||m[q]===null)||["i","d"].find(q=>m[q]==="papel"||m[q]==="vacia");await carmenDa(()=>{["i","d"].forEach(q=>{if(m[q]==="papel"||m[q]==="vacia")m[q]=null;});m[l||"i"]=cual;W.manos=m;});},
   async limpia(){W.manos=null;await wait(200);},
   async turno21(){const q=W.cq,m=W.manos,s=m.i&&m.i.startsWith("piragua")?-1:1,pg=libre();q.dy=-5;await wait(500);pio();await palomaA(pg,cx()+s*17,pies()-9);pg.pose="come";pg.z=400;pg.dir=-s;await wait(1100);m[s<0?"i":"d"]="papel";q.dy=0;pg.pose="";SFX.bonk();await wait(400);await posa(pg);await wait(300);},
   async acecha(){const pg=libre();W.ladrona=pg;pio();await palomaA(pg,cx()-3,W.cq.y+9);pg.pose="";pg.dir=1;pg.z=W.cq.y+10;await wait(500);},   // behind him, dead centre: only the top of it shows
@@ -299,22 +300,22 @@ const acts={
   /* ----- story 22: ¡Señor! ¡Señora! ----- */
   async inicio22(){W.gente={piraguero:{x:CARRO[0]+4,y:CARRO[1]-6,dir:1},senor:{x:B[0][0]-9,y:161,dir:1,sent:1},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-9,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[0][0]+11,y:161,dir:1,sent:1,lee:1},carmen:{x:176,y:208,dir:-1},luis:{x:148,y:186,dir:1}};
     W.cosas=[{id:"sombrilla",k:"sombrilla",x:72,y:163},{id:"cartera",k:"cartera",x:157,y:ASIENTO},{id:"mochila",k:"mochila",x:204,y:ASIENTO+1},{id:"caja",k:"caja",x:167,y:187}];W.encaja=[];
-    W.perros={viejo:{x:90,y:197,pose:"lie",dir:1},joven:{x:38,y:197,pose:"sit",dir:1}};W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));
+    W.perros={viejo:{x:90,y:193,pose:"sit",dir:1},joven:{x:38,y:193,pose:"sit",dir:1}};W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));
     W.casa=[124,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;W.fuera=null;W.sinhueso=null;},
   async alcarro(){const en={senor:[80,184],mujer:[96,188],joven:[112,184]};await Promise.all(Object.keys(en).map(async id=>{await mueve(id,en[id][0],en[id][1]);G(id).dir=-1;}));await wait(400);},
   async vuelve22(o){const id=o.a,p=G(id),i={senor:0,mujer:1,joven:2}[id];p.dir=1;await wait(350);await mueve(id,B[i][0]-9,172);if(id==="joven"){p.sin={};quita("mochila");}else if(id==="senor"){quita("sombrilla");p.lleva2="sombrilla";}else{quita("cartera");p.lleva2="cartera";}SFX.blip();p.dy=3;await wait(160);p.dy=0;await wait(250);},
   async sientan(){await Promise.all([["senor",0,-9,"piragua"],["mujer",1,-9,"agua"],["joven",2,-9,"piragua"]].map(async k=>{const p=G(k[0]);await mueve(k[0],B[k[1]][0]+k[2],161);p.sent=1;p.dir=1;p.lleva=k[3];}));await wait(300);},
   async bolsa(){await mueve("carmen",122,174);G("carmen").lleva="bolsa";SFX.blip();await mueve("carmen",158,210);G("carmen").dir=-1;G("carmen").pose="arriba";await wait(300);},
-  async dabolsa(o){const p=G(o.a),ca=G("carmen");ca.lleva=null;ca.pose="idle";W.encima="bolsa";SFX.blip();await ranaA(p.sent?p.x:p.x+2,p.sent?p.y+22:p.y+19);if(o.no){await niega(p);p.dir=p.sent?1:-1;return;}W.encima=null;p.lleva="bolsa";SFX.blip();await wait(400);},
+  async dabolsa(o){const p=G(o.a),ca=G("carmen");ca.lleva=null;ca.pose="idle";W.encima="bolsa";SFX.blip();await ranaA(p.sent?p.x:p.x+2,p.sent?p.y+22:p.y+25);if(o.no){await niega(p);p.dir=p.sent?1:-1;return;}W.encima=null;p.lleva="bolsa";SFX.blip();await wait(400);},
   async hueso(){const ca=G("carmen");await mueve("carmen",146,176);ca.lleva="hueso";SFX.blip();await mueve("carmen",158,210);ca.dir=-1;await acasa();ca.lleva=null;W.encima="hueso";SFX.blip();await wait(300);},
   async dahueso(o){const d=perroDe(o.a);await ranaA(d.x+30,d.y+4);W.encima=null;d.lleva="hueso";d.pose=o.echa?"lie":"come";SFX.blip();await wait(500);},
   async ronda(o){const d=W.perros.joven;d.ronda=o.fin?0:1;if(o.fin){d.pose="come";d.x=d.x0;d.dir=1;}else{d.x0=d.x;d.pose="run";d.fase=F;}await wait(200);},
-  async paseo(o){const d=W.perros.viejo;d.paseo=o.fin?0:1;if(o.fin){d.pose="lie";d.x=d.x0;d.dir=1;}else{d.x0=d.x;d.pose="walk";d.fase=F;}await wait(200);},
+  async paseo(o){const d=W.perros.viejo;d.paseo=o.fin?0:1;if(o.fin){d.pose="sit";d.x=d.x0;d.dir=1;}else{d.x0=d.x;d.pose="walk";d.fase=F;}await wait(200);},
   async turno22(){const h=G("hombre");h.lee=0;W.cosas.push({id:"periodico",k:"periodico",x:108,y:ASIENTO});await wait(400);await mueve("hombre",PORTON[0],PORTON[1]);await mueve("hombre",244,PORTON[1]);h.vis=0;await wait(300);},
   async luisve(){const l=G("luis");l.dir=1;await wait(300);await mueve("luis",112,178);quita("periodico");l.lleva="periodico";await mueve("luis",PORTON[0]-4,PORTON[1]+2);l.dir=1;l.pose="arriba";await wait(200);},
   async luiscaja(){const l=G("luis");l.pose="idle";for(let k=0;k<3;k++){l.dir=-l.dir;await wait(160);}await mueve("luis",148,186);l.dir=1;l.lleva=null;W.encaja.push("periodico");SFX.blip();await wait(300);},
-  async sale22(o){const p=G(o.a),v=W.perros.viejo,j=W.perros.joven;v.lleva=null;j.lleva=null;await Promise.all([perroA("viejo",36,197,"walk"),perroA("joven",62,198,"run")]);v.pose="lie";j.pose="sit";v.dir=1;j.dir=1;W.casa=[100,205];await acasa();
-    p.lleva=null;p.lleva2=null;p.sent=0;await mueve(o.a,p.x+4,176);const t={id:"billetera",k:"billetera",x:p.x-8,y:p.y-22,z:400};W.cosas.push(t);for(let i=1;i<=6;i++){t.y=p.y-22+26*i/6;await wait(TICK);}t.y=p.y+4;t.z=null;SFX.bonk();t.y-=3;await wait(90);t.y+=3;await wait(350);   // it drops from a pocket, in plain sight
+  async sale22(o){const p=G(o.a),v=W.perros.viejo,j=W.perros.joven;v.lleva=null;j.lleva=null;await Promise.all([perroA("viejo",36,193,"walk"),perroA("joven",64,194,"run")]);v.pose="sit";j.pose="sit";v.dir=1;j.dir=1;W.casa=[100,205];await acasa();
+    p.lleva=null;p.sent=0;await mueve(o.a,p.x+4,176);const t={id:"billetera",k:"billetera",x:p.x-8,y:p.y-22,z:400};W.cosas.push(t);for(let i=1;i<=6;i++){t.y=p.y-22+26*i/6;await wait(TICK);}t.y=p.y+4;t.z=null;SFX.bonk();t.y-=3;await wait(90);t.y+=3;await wait(350);   // it drops from a pocket, in plain sight
     await mueve(o.a,PORTON[0],PORTON[1]);p.dir=1;W.fuera=o.a;await wait(300);},
   async recoge(o){const p=G(o.a),t=cosaDe("billetera");p.dir=-1;await wait(300);await mueve(o.a,t.x+10,t.y+2);quita("billetera");SFX.blip();p.dy=3;await wait(160);p.dy=0;await wait(200);},
   async adios(o){const p=G(o.a);p.dir=-1;p.pose="wave";await wait(600);p.pose="idle";await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]);p.vis=0;},
@@ -322,16 +323,16 @@ const acts={
   async duda(o){const id={di_senor:"senor",di_senora:"mujer",di_joven:"joven"}[o.x]||o.x,p=G(id);if(!p||p.vis===0)return;p.dy=3;await wait(200);p.dy=0;await niega(p);p.dir=p.sent?1:-1;},
   async sevade(o){const p=G(o.a);p.dir=-1;p.pose="wave";await wait(700);p.pose="idle";p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},
   async luisguarda(o){const l=G("luis"),t=cosaDe(o.k);if(t){await mueve("luis",t.x+10,t.y+6);quita(o.k);}else{await mueve("luis",cx()+22,pies());W.encima=null;W.cq.dy=0;}l.lleva=o.k;await mueve("luis",148,186);l.dir=1;l.lleva=null;W.encaja.push(o.k);SFX.blip();await wait(300);},
-  async perros22(o){const v=W.perros.viejo,j=W.perros.joven,L=[38,197],D=[90,197],pv=o.lado==="vj"?L:D,pj=o.lado==="vj"?D:L;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;await Promise.all([perroA("viejo",pv[0],pv[1],"walk"),perroA("joven",pj[0],pj[1],"run")]);v.pose="sit";j.pose="sit";v.dir=1;j.dir=1;await acasa();await wait(300);},
+  async perros22(o){const v=W.perros.viejo,j=W.perros.joven,L=[38,193],D=[90,193],pv=o.lado==="vj"?L:D,pj=o.lado==="vj"?D:L;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;await Promise.all([perroA("viejo",pv[0],pv[1],"walk"),perroA("joven",pj[0],pj[1],"run")]);v.pose="sit";j.pose="sit";v.dir=1;j.dir=1;await acasa();await wait(300);},
   async sinhueso(o){const d=W.perros[o.de.replace("perro_","")];d.pose="triste";d.pena=1;W.sinhueso=o.de.replace("perro_","");await wait(500);},
   async acaricia(o){const d=perroDe(o.a);await ranaA(d.x+30,d.y+4);bounce(4);await wait(500);d.pose="sit";d.pena=1;},
   async cola22(o){const rem=["senor","mujer","joven"].filter(k=>k!==W.fuera),own=rem[o.k==="a"?0:1],oth=rem[o.k==="a"?1:0],ord=o.lado==="ab"?rem:rem.slice().reverse(),en=[[82,186],[104,186]];
-    V.pc=own;V.oc=oth;V.qc=own==="mujer"?"senora":own;V.ra=rem[0];V.rb=rem[1];W.casa=[128,205];await acasa();await Promise.all(ord.map(async(id,i)=>{const p=G(id);p.lleva=null;p.lleva2=null;await mueve(id,en[i][0],en[i][1]);p.dir=-1;}));await wait(300);},
+    V.pc=own;V.oc=oth;V.qc=own==="mujer"?"senora":own;V.ra=rem[0];V.rb=rem[1];W.casa=[128,205];await acasa();await Promise.all(ord.map(async(id,i)=>{const p=G(id);p.lleva=null;await mueve(id,en[i][0],en[i][1]);p.dir=-1;}));await wait(300);},
   async sevan22(){await Promise.all(["senor","mujer","joven"].filter(k=>G(k).vis!==0).map(async(id,i)=>{await wait(i*350);const p=G(id);await mueve(id,PORTON[0],PORTON[1]);await mueve(id,246,PORTON[1]);p.vis=0;}));},
   async alza(o){const p=G(o.a);W.cq.dy=-7;await wait(500);p.pose="wave";await wait(700);p.pose="idle";p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;},
-  async final22(){W.noche=1;W.casa=[124,190];await Promise.all([acasa(),mueve("carmen",166,196)]);G("carmen").dir=-1;await wait(500);if((W.marcas||[]).every(m=>m==="ok")){const h=G("hombre"),l=G("luis");h.vis=1;h.x=244;h.y=PORTON[1];await mueve("hombre",PORTON[0]-4,PORTON[1]);for(let k=0;k<3;k++){h.dir=-h.dir;await wait(200);}W.encaja=[];l.lleva="periodico";l.pose="arriba";l.dir=1;SFX.blip();await wait(400);await mueve("hombre",l.x+20,l.y);l.lleva=null;l.pose="idle";h.lleva="periodico";SFX.blip();h.dir=-1;h.pose="wave";await wait(700);h.pose="idle";await mueve("hombre",246,PORTON[1]);h.vis=0;}else{const l=G("luis");l.dir=1;await niega(l);l.dir=1;await wait(300);}},
-  async carrova(){const pi=G("piraguero"),v=W.perros.viejo,j=W.perros.joven;W.carro="cerrado";SFX.blip();await wait(400);pi.x=CARRO[0]+30;pi.y=CARRO[1]+2;pi.dir=1;pi.paso=1;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;W.carroX=CARRO[0];v.pose="walk";j.pose="run";v.dir=1;j.dir=1;v.y=209;j.y=212;j.x=Math.max(j.x,96);v.pena=W.sinhueso==="viejo"?1:0;j.pena=W.sinhueso==="joven"?1:0;W.seva=1;await wait(300);},
-  async carrofin(){const pi=G("piraguero");W.seva=2;pi.paso=0;pi.pose="wave";pi.dir=-1;await wait(900);pi.pose="idle";pi.dir=1;pi.paso=1;W.seva=3;await wait(1400);},
+  async final22(){W.noche=1;W.casa=[124,190];await Promise.all([acasa(),mueve("carmen",190,204)]);G("carmen").dir=-1;await wait(500);if((W.marcas||[]).every(m=>m==="ok")){const h=G("hombre"),l=G("luis");h.vis=1;h.x=244;h.y=PORTON[1];await mueve("hombre",PORTON[0]-4,PORTON[1]);for(let k=0;k<3;k++){h.dir=-h.dir;await wait(200);}W.encaja=[];l.lleva="periodico";l.pose="arriba";l.dir=1;SFX.blip();await wait(400);await mueve("hombre",l.x+20,l.y);l.lleva=null;l.pose="idle";h.lleva="periodico";SFX.blip();h.dir=-1;h.pose="wave";await wait(700);h.pose="idle";await mueve("hombre",246,PORTON[1]);h.vis=0;}else{const l=G("luis");l.dir=1;await niega(l);l.dir=1;await wait(300);}},
+  async carrova(){const pi=G("piraguero"),v=W.perros.viejo,j=W.perros.joven;W.carro="cerrado";SFX.blip();await wait(400);pi.x=CARRO[0]+30;pi.y=CARRO[1]+2;pi.dir=-1;pi.paso=1;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;W.carroX=CARRO[0];v.pose="walk";j.pose="run";v.dir=-1;v.y=196;j.y=204;j.x0=Math.max(j.x,70);j.fase=F;v.pena=W.sinhueso==="viejo"?1:0;j.pena=W.sinhueso==="joven"?1:0;W.seva=1;await wait(300);},
+  async carrofin(){const pi=G("piraguero");W.seva=2;pi.paso=0;pi.pose="wave";pi.dir=1;await wait(900);pi.pose="idle";pi.dir=-1;pi.paso=1;W.seva=3;await wait(1400);},
 
   /* ----- story 23: El bebé duerme ----- */
   async inicio23(){W.gente={piraguero:{x:CARRO[0]+4,y:CARRO[1]-6,dir:1},senora:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[0][0]-13,y:161,dir:1,sent:1,animo:"cansado"},hombre:{x:B[2][0]+2,y:161,dir:1,sent:1,animo:"triste"},carmen:{x:38,y:210,dir:1,lleva:"mochila"}};
@@ -369,7 +370,7 @@ const acts={
   async tres23(){const c=W.perros.canelo,l=G("luis"),h=G("hombre"),a=G("abuela"),pg=libre();if(c.chal){a.pose="vaso";await wait(300);c.chal=0;a.pose="idle";}c.correa=null;c.mueve=0;a.lleva=null;a.pose="idle";pio();
     await Promise.all([(async()=>{await palomaA(pg,190,204);await wait(200);await palomaA(pg,150,150);await alcable(pg);})(),(async()=>{await wait(250);await perroA("canelo",196,204,"run");await perroA("canelo",124,199,"run");c.dir=1;c.pose="cansado";})(),
       (async()=>{await wait(500);l.lleva="papel";W.cosas.push({id:"hielo",k:"piragua",x:70,y:196,rot:Math.PI/2});SFX.bonk();await wait(300);l.animo="triste";})(),(async()=>{await wait(900);h.lleva=null;h.lee=1;h.animo="contento";h.paso=1;})()]);await wait(500);},
-  async ayuda(o){const q=o.q,c=W.perros.canelo;if(q==="cansado"){await ranaA(B[0][0]-8,184);quita("cojin");W.encima="mochila";SFX.blip();await ranaA(c.x+36,c.y);W.encima=null;W.cosas.push({id:"cojin",k:"mochila",x:c.x+13,y:c.y+1,z:c.y-1});W.concojin=1;SFX.blip();await wait(400);}
+  async ayuda(o){const q=o.q,c=W.perros.canelo;if(q==="cansado"){await ranaA(B[0][0]-8,184);quita("cojin");W.encima="mochila";SFX.blip();await ranaA(c.x+46,c.y+2);W.encima=null;W.cosas.push({id:"cojin",k:"mochila",x:c.x+13,y:c.y+1,z:c.y-1});W.concojin=1;SFX.blip();await wait(400);}
     else if(q==="triste"){await acts.alegra({a:"luis"});}
     else{const h=G("hombre");await ranaA(h.x-2,h.y+24);h.dy=2;await wait(200);h.dy=0;for(let k=0;k<3;k++){W.cq.dy=-3;await wait(140);W.cq.dy=0;await wait(140);}}
     await acasa();},

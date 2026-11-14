@@ -33,7 +33,7 @@ Live at ?v=28. Scripts (final): historia/notas/guiones/banco.md, with what each 
 ### Reviews
 
 - Scripts: three drafts and a last gate (beginner against his requirements, Puerto Rican Spanish, both twice). The big changes. "Viejo" said of a person is blunt, so it is taught on a dog and people are "señor", "señora", "joven". "El piragüero" does not speak ("señor" not yet taught). Commands are "¡Come, Coquí!" (the name after), so they are not heard as "Coquí eats". A crying baby is not "triste". "No duerme" let old "no" decide, so the lady says "duerme" or "está contento". Somebody "walking away" cannot be caught or missed with no clock, so there is a gate where each one stops. At the turn of story 21 he had done as told and was punished for it. Touching Luis for "cansado" was wrong although Luis had been taught as the tired one. A right answer in the game ("¡Está cansado!") had never been the signed one.
-- Wordless frames, three fresh readers (one a story). Fixed after them: see the end of banco.md. The biggest: the answer bubbles covered the people and birds the choice was about.
+- Wordless frames: three fresh readers (one a story), then two more on the fixed frames. Fixed after them: see the end of banco.md. The biggest: the answer bubbles covered the people and birds the choice was about; "keep still" drawn as a raised hand read as stop or wave, and notes read as Z's; feelings were too small to read; the old dog read as a donkey.
 - Honest limits, told to Salim in page 00: story 21's "hombre" / "mujer" round can be done from "el" / "la" and the old words.
 
 ### Testing
