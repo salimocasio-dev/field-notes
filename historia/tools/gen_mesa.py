@@ -146,7 +146,7 @@ for p in ("abuelo","mama","papa"):
     for w in ("hambre","sed"):
         c["c26_%s_%s"%(p,w)]=D(p,NOM[p],H[w]); c["c26_no_%s_%s"%(p,w)]=N("No, Coquí. Mira. %s tiene %s."%(NOM[p],w))
 DH=["di_hambre","di_sed"]; VH={"di_hambre":"c26_cq_hambre","di_sed":"c26_cq_sed"}
-s26={"id":"tengo-hambre","title":"Tengo hambre","place":"La cocina","scene":"mesa","next":None,
+s26={"id":"tengo-hambre","title":"Tengo hambre","place":"La cocina","scene":"mesa","next":"arroz-con-habichuelas",
  "goal":"Bring each one what he asks for: food, or water.","stake":{"thing":"almuerzo","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["tengo hambre","tengo sed","listo","cocina"],"back_again":["comida","agua","plato","vaso","toma","gracias","come","bebe","¿y tú?","ahora","perro","contento","familia","entra"],
  "also_heard":["tiene hambre","tiene sed","tienes","lista","esa"],"names":BASE,"palabras":{"hambre":"tengo hambre","sed":"tengo sed"},"clips":c,

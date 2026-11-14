@@ -3,7 +3,7 @@
  "title": "Tengo hambre",
  "place": "La cocina",
  "scene": "mesa",
- "next": null,
+ "next": "arroz-con-habichuelas",
  "goal": "Bring each one what he asks for: food, or water.",
  "stake": {
   "thing": "almuerzo",

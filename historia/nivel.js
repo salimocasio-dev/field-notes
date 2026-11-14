@@ -54,7 +54,11 @@ const NV=[
  {w:"plato",s:24,p:[["plato","si"],["plato","no"],["cuchara","si"],["taza","no"]]},
  {w:"taza",s:24,p:[["taza","si"],["taza","no"],["plato","si"],["cuchara","no"]]},
  {w:"cuchara",s:25,p:[["cuchara","si"],["cuchara","no"],["tenedor","no"],["plato","si"]]},
- {w:"tengo hambre",s:26,p:[["tengo hambre","si"],["tengo hambre","no"],["tengo sed","si"],["comida","no"]]}];
+ {w:"tengo hambre",s:26,p:[["tengo hambre","si"],["tengo hambre","no"],["tengo sed","si"],["comida","no"]]},
+ {w:"arroz",s:27,p:[["arroz","si"],["arroz","no"],["pollo","si"],["olla","no"]]},
+ {w:"olla",s:27,p:[["olla","si"],["olla","no"],["habichuelas","si"],["ya","si"]]},
+ {w:"pollo",s:28,p:[["pollo","si"],["pollo","no"],["arroz","si"],["sal","si"]]},
+ {w:"caliente",s:29,p:[["caliente","si"],["caliente","no"],["frío","si"],["huevo","si"]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
 const PASO=Math.max(2,Math.ceil(NV.length/14));   // how far a right answer moves him up: the list grows with every scene, the check must still reach its top in about a dozen items
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};

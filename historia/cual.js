@@ -45,6 +45,7 @@ async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.di
   const due=PAL.vence("ear"),byW={};CU.items.forEach(it=>byW[it.w]=it);
   let lista=due.filter(w=>byW[w]).map(w=>byW[w]);
   if(!lista.length){const oidas=Object.keys(PAL.db.palabras).filter(w=>byW[w]);lista=(oidas.length&&!Q.get("todo")?oidas.map(w=>byW[w]):CU.items.slice());lista.sort(()=>Math.random()-.5);}
+  if(Q.get("solo")){const so=Q.get("solo").split(",");lista=CU.items.filter(it=>so.includes(it.w));}   // for the machine check: only these words
   lista=lista.slice(0,+(Q.get("n")||8));CQ.lista=lista;CQ.hecho=[];mkDots(lista.length);
   try{for(let i=0;i<lista.length;i++){step(i);CQ.i=i;await cualItem(lista[i]);}step(lista.length);}catch(e){if(e!=="stop")throw e;return;}
   PAN=null;CQ.run=0;$("#again").style.display="flex";if($("#home"))$("#home").style.display="flex";}
