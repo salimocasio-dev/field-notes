@@ -276,12 +276,14 @@ async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"
   $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
 $("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("app.html?tab=mapa");
-// the picture is as big as the frame leaves room for: below the top bar, above the caption and the bottom third (portrait), or left of them (a phone on its side)
+// the picture is as big as the frame leaves room for: below the top bar, above the caption and the bottom third (portrait), or left of them (a phone on its side).
+// Always a whole number of screen pixels per art pixel (kd), so the pixel art stays crisp: the picture may end up smaller than the room it has. Only a camera zoom inside a story may be fractional.
 const LAND=()=>matchMedia("(orientation:landscape) and (max-height:600px)").matches;
-function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight;let aw,ah;
-  if(LAND()){aw=mw-32-16-280;ah=mh-16;}else{aw=Math.min(mw-16,500);ah=mh-$("#capbox").offsetHeight-8-$("#foot").offsetHeight-8;}
-  let k=Math.max(.5,Math.min(aw/DW,ah/DH));const dpr=window.devicePixelRatio||1,kd=k*dpr,ki=Math.floor(kd);if(ki>=1&&ki/kd>=.85)k=ki/dpr;   // a whole number of screen pixels per art pixel when that costs at most 15% of the size
-  cv.style.width=DW*k+"px";cv.style.height=DH*k+"px";}
+let blockDim=(kd,dpr)=>[DW*kd/dpr,DH*kd/dpr],blockFit=null;   // blockDim: the picture block's size in CSS px for kd screen pixels per art pixel (¿Cuál? and the level check draw several pictures and set their own); blockFit: what else to size once kd is known
+function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight,dpr=window.devicePixelRatio||1;let aw,ah;
+  if(LAND()){aw=mw-32-16-280;ah=mh-16;}else{aw=mw-32;ah=mh-$("#capbox").offsetHeight-8-$("#foot").offsetHeight-8;}
+  let kd=1;for(let k=2;k<=32;k++){const d=blockDim(k,dpr);if(d[0]<=aw+.01&&d[1]<=ah+.01)kd=k;else break;}
+  const d=blockDim(kd,dpr);cv.style.width=d[0]+"px";cv.style.height=d[1]+"px";if(blockFit)blockFit(kd,dpr);}
 fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);
 /* for checking the game by machine */
 window.Story={scene(){return E&&E.estado?E.estado(W):"";},get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const h=!respBox(k)&&E.handAt&&E.handAt[k];if(h){tap(h[0],h[1]+3);return;}const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
