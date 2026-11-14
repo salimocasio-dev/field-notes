@@ -3,7 +3,7 @@
  "title": "¿Cuál?",
  "place": "El parque",
  "scene": "lago",
- "next": null,
+ "next": "la-piragua",
  "goal": "Bring the three ducks to the dock.",
  "stake": {
   "thing": "patos",

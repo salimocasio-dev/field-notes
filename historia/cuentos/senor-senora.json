@@ -1,0 +1,887 @@
+{
+ "id": "senor-senora",
+ "title": "¡Señor! ¡Señora!",
+ "place": "El parque",
+ "scene": "banco",
+ "next": "el-bebe-duerme",
+ "goal": "Get each thing to its owner before the owner has gone home.",
+ "stake": {
+  "thing": "cosas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "señor",
+  "señora",
+  "joven",
+  "viejo"
+ ],
+ "back_again": [
+  "hombre",
+  "perro",
+  "camina",
+  "despacio",
+  "corre",
+  "¿dónde está?",
+  "gracias",
+  "de nada",
+  "adiós"
+ ],
+ "also_heard": [
+  "del",
+  "de la",
+  "mi sombrero"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "parque": "c_n_parque",
+  "pajaro": "l_n_pajaro",
+  "banco0": "b_n_banco",
+  "banco1": "b_n_banco",
+  "banco2": "b_n_banco",
+  "piraguero": "b_n_piraguero",
+  "carro": "b_n_piraguero",
+  "senor": "b_n_senor",
+  "mujer": "b_n_senora",
+  "joven": "b_n_joven",
+  "hombre": "b_n_hombre",
+  "perro_viejo": "c_c_perro",
+  "perro_joven": "c_c_perro"
+ },
+ "palabras": {
+  "senor": "señor",
+  "senora": "señora"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c_n_parque": {
+   "who": "narr",
+   "text": "Es el parque."
+  },
+  "l_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "c_c_perro": {
+   "who": "narr",
+   "text": "Es un perro."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "b_n_banco": {
+   "who": "narr",
+   "text": "Es un banco."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "b_n_hombre": {
+   "who": "narr",
+   "text": "Es un hombre."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_bebe": {
+   "who": "narr",
+   "text": "Es un bebé."
+  },
+  "c22_un_senor": {
+   "who": "narr",
+   "text": "Mira. Un señor."
+  },
+  "c22_una_senora": {
+   "who": "narr",
+   "text": "Una señora."
+  },
+  "c22_un_joven": {
+   "who": "narr",
+   "text": "Y un joven."
+  },
+  "c22_perro_viejo": {
+   "who": "narr",
+   "text": "Un perro viejo."
+  },
+  "c22_perro_joven": {
+   "who": "narr",
+   "text": "Y un perro joven."
+  },
+  "c22_cq_senor": {
+   "who": "tu",
+   "text": "¡Señor!"
+  },
+  "c22_cq_senora": {
+   "who": "tu",
+   "text": "¡Señora!"
+  },
+  "c22_cq_joven": {
+   "who": "tu",
+   "text": "¡Joven!"
+  },
+  "c22_senor_sombrero": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Mi sombrero! ¡Gracias!"
+  },
+  "c22_cq_dn_senor": {
+   "who": "tu",
+   "text": "De nada, señor."
+  },
+  "c22_cq_dn_senora": {
+   "who": "tu",
+   "text": "De nada, señora."
+  },
+  "c22_senor_gracias": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Gracias!"
+  },
+  "c22_senora_gracias": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La señora dice: ¡Gracias!"
+  },
+  "c22_joven_gracias": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: ¡Gracias!"
+  },
+  "c22_ca_es_senor": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Es del señor!"
+  },
+  "c22_ca_es_senora": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Es de la señora!"
+  },
+  "c22_ca_es_joven": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Es del joven!"
+  },
+  "c22_senor_gracias_coqui": {
+   "who": "narr",
+   "habla": "senor",
+   "text": "El señor dice: ¡Gracias, Coquí!"
+  },
+  "c22_senora_gracias_coqui": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La señora dice: ¡Gracias, Coquí!"
+  },
+  "c22_joven_gracias_coqui": {
+   "who": "narr",
+   "habla": "joven",
+   "text": "El joven dice: ¡Gracias, Coquí!"
+  },
+  "c22_ca_perro_joven": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Es del perro joven!"
+  },
+  "c22_ca_perro_viejo": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Es del perro viejo!"
+  },
+  "c22_joven_corre": {
+   "who": "narr",
+   "text": "El perro joven corre."
+  },
+  "c22_viejo_no_corre": {
+   "who": "narr",
+   "text": "El perro viejo no corre."
+  },
+  "c22_viejo_camina": {
+   "who": "narr",
+   "text": "El perro viejo camina despacio."
+  },
+  "c22_ay": {
+   "who": "narr",
+   "text": "¡Ay, no!"
+  },
+  "c22_l_senor": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Señor! ¡Señor!"
+  },
+  "c22_donde": {
+   "who": "narr",
+   "text": "¿Dónde está el hombre?"
+  },
+  "c22_no_es_senor": {
+   "who": "narr",
+   "text": "No, Coquí. Es un señor."
+  },
+  "c22_no_es_senora": {
+   "who": "narr",
+   "text": "No, Coquí. Es una señora."
+  },
+  "c22_no_es_joven": {
+   "who": "narr",
+   "text": "No, Coquí. Es un joven."
+  },
+  "c22_no_perro_viejo": {
+   "who": "narr",
+   "text": "No, Coquí. Es del perro viejo."
+  },
+  "c22_no_perro_joven": {
+   "who": "narr",
+   "text": "No, Coquí. Es del perro joven."
+  },
+  "c22_no_del_senor": {
+   "who": "narr",
+   "text": "No, Coquí. Es del señor."
+  },
+  "c22_no_del_senora": {
+   "who": "narr",
+   "text": "No, Coquí. Es de la señora."
+  },
+  "c22_no_del_joven": {
+   "who": "narr",
+   "text": "No, Coquí. Es del joven."
+  },
+  "c22_fin": {
+   "who": "narr",
+   "text": "El perro viejo camina despacio. El perro joven corre."
+  },
+  "c22_cq_adios": {
+   "who": "tu",
+   "text": "¡Adiós, señor!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio22"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "senor"
+   }
+  },
+  "c22_un_senor",
+  {
+   "set": {
+    "twinkle": "mujer"
+   }
+  },
+  "c22_una_senora",
+  {
+   "set": {
+    "twinkle": "joven"
+   }
+  },
+  "c22_un_joven",
+  {
+   "set": {
+    "twinkle": "perro_viejo"
+   }
+  },
+  "c22_perro_viejo",
+  {
+   "set": {
+    "twinkle": "perro_joven"
+   }
+  },
+  "c22_perro_joven",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "alcarro"
+  },
+  {
+   "ask": "di_senor",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "say": "c22_senor_sombrero",
+     "gap": 250
+    },
+    {
+     "say": "c22_cq_dn_senor",
+     "gap": 200
+    }
+   ],
+   "after": [
+    {
+     "act": "vuelve22",
+     "a": "senor"
+    }
+   ],
+   "resp": [
+    "di_senor",
+    "di_senora",
+    "di_joven"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_senor": "c22_cq_senor",
+    "di_senora": "c22_cq_senora",
+    "di_joven": "c22_cq_joven"
+   },
+   "said": {
+    "di_senor": "c22_cq_senor"
+   }
+  },
+  {
+   "ask": "di_senora",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "say": "c22_senora_gracias",
+     "gap": 250
+    },
+    {
+     "say": "c22_cq_dn_senora",
+     "gap": 200
+    }
+   ],
+   "after": [
+    {
+     "act": "vuelve22",
+     "a": "mujer"
+    }
+   ],
+   "resp": [
+    "di_senor",
+    "di_senora",
+    "di_joven"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_senor": "c22_cq_senor",
+    "di_senora": "c22_cq_senora",
+    "di_joven": "c22_cq_joven"
+   },
+   "said": {
+    "di_senora": "c22_cq_senora"
+   }
+  },
+  {
+   "ask": "di_joven",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "say": "c22_joven_gracias",
+     "gap": 250
+    },
+    {
+     "act": "sientan"
+    }
+   ],
+   "after": [
+    {
+     "act": "vuelve22",
+     "a": "joven"
+    }
+   ],
+   "resp": [
+    "di_senor",
+    "di_senora",
+    "di_joven"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_senor": "c22_cq_senor",
+    "di_senora": "c22_cq_senora",
+    "di_joven": "c22_cq_joven"
+   },
+   "said": {
+    "di_joven": "c22_cq_joven"
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "bolsa"
+  },
+  {
+   "ask": "mujer",
+   "lead": [],
+   "line": "c22_ca_es_senora",
+   "then": [
+    {
+     "say": "c22_senora_gracias_coqui",
+     "gap": 250
+    },
+    {
+     "act": "casa"
+    }
+   ],
+   "after": [
+    {
+     "act": "dabolsa",
+     "a": "mujer"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "hueso"
+  },
+  {
+   "ask": "perro_joven",
+   "lead": [],
+   "line": "c22_ca_perro_joven",
+   "then": [
+    {
+     "act": "ronda"
+    },
+    "c22_joven_corre",
+    "c22_viejo_no_corre",
+    {
+     "act": "ronda",
+     "fin": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "dahueso",
+     "a": "perro_joven"
+    },
+    {
+     "act": "casa"
+    }
+   ]
+  },
+  {
+   "act": "hueso"
+  },
+  {
+   "ask": "perro_viejo",
+   "lead": [],
+   "line": "c22_ca_perro_viejo",
+   "then": [
+    {
+     "act": "paseo"
+    },
+    "c22_viejo_camina",
+    {
+     "act": "paseo",
+     "fin": 1
+    }
+   ],
+   "after": [
+    {
+     "act": "dahueso",
+     "a": "perro_viejo"
+    },
+    {
+     "act": "casa"
+    }
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "turno22"
+  },
+  "c22_ay",
+  {
+   "act": "luisve"
+  },
+  {
+   "say": "c22_l_senor",
+   "gap": 250
+  },
+  "c22_donde",
+  {
+   "act": "luiscaja"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "lb",
+   "options": [
+    "vj",
+    "jv"
+   ]
+  },
+  {
+   "draw": "vb",
+   "options": [
+    "viejo",
+    "joven"
+   ]
+  },
+  {
+   "act": "perros22",
+   "lado": "$lb"
+  },
+  {
+   "act": "hueso"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "perro_viejo",
+    "perro_joven"
+   ],
+   "pick": "perro_$vb",
+   "tests": "$vb",
+   "lock": true,
+   "lead": [],
+   "line": "c22_ca_perro_$vb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "dahueso",
+       "a": "perro_$vb"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "acaricia",
+       "a": "perro_$vb"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "dahueso",
+     "a": "$x",
+     "echa": 1
+    },
+    {
+     "act": "sinhueso",
+     "de": "perro_$vb"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "set": {
+      "twinkle": "perro_$vb"
+     }
+    },
+    "c22_no_perro_$vb",
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "qa",
+   "options": [
+    "senora",
+    "senora",
+    "senor",
+    "joven"
+   ]
+  },
+  {
+   "calc": "pa",
+   "cond": "qa=senora",
+   "then": "mujer",
+   "else": "$qa"
+  },
+  {
+   "act": "sale22",
+   "a": "$pa"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_senor",
+    "di_senora",
+    "di_joven"
+   ],
+   "baraja": true,
+   "pick": "di_$qa",
+   "tests": "$qa",
+   "voces": {
+    "di_senor": "c22_cq_senor",
+    "di_senora": "c22_cq_senora",
+    "di_joven": "c22_cq_joven"
+   },
+   "said": {
+    "di_senor": "c22_cq_senor",
+    "di_senora": "c22_cq_senora",
+    "di_joven": "c22_cq_joven"
+   },
+   "lead": [],
+   "line": null,
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "recoge",
+       "a": "$pa"
+      },
+      {
+       "say": "c22_$qa_gracias",
+       "gap": 250
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "adios",
+       "a": "$pa"
+      }
+     ],
+     "else": [
+      {
+       "act": "sevade",
+       "a": "$pa"
+      },
+      {
+       "act": "luisguarda",
+       "k": "cartera"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "duda",
+     "x": "$x"
+    },
+    {
+     "act": "pasa",
+     "a": "$pa"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c22_no_es_$qa"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "kc",
+   "options": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "draw": "lc",
+   "options": [
+    "ab",
+    "ba"
+   ]
+  },
+  {
+   "act": "cola22",
+   "k": "$kc",
+   "lado": "$lc"
+  },
+  {
+   "act": "bolsa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$ra",
+    "$rb"
+   ],
+   "pick": "$pc",
+   "tests": "$qc",
+   "lock": true,
+   "lead": [],
+   "line": "c22_ca_es_$qc",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "dabolsa",
+       "a": "$pc"
+      },
+      {
+       "say": "c22_$qc_gracias_coqui",
+       "gap": 250
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "alza",
+       "a": "$pc"
+      },
+      {
+       "act": "luisguarda",
+       "k": "bolsa"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "dabolsa",
+     "a": "$x",
+     "no": 1
+    },
+    {
+     "act": "pasa",
+     "a": "$pc"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c22_no_del_$qc"
+   ]
+  },
+  {
+   "act": "sevan22"
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "final22"
+  },
+  {
+   "act": "carrova"
+  },
+  "c22_fin",
+  {
+   "say": "c22_cq_adios",
+   "gap": 300
+  },
+  {
+   "act": "carrofin"
+  },
+  {
+   "wait": 600
+  }
+ ],
+ "leer": [
+  "c22_un_senor",
+  "c22_una_senora",
+  "c22_un_joven",
+  "c22_perro_viejo",
+  "c22_perro_joven",
+  "c22_cq_senor",
+  "c22_senor_sombrero",
+  "c22_cq_dn_senor",
+  "c22_cq_senora",
+  "c22_senora_gracias",
+  "c22_cq_dn_senora",
+  "c22_cq_joven",
+  "c22_joven_gracias",
+  "c22_ca_es_senora",
+  "c22_senora_gracias_coqui",
+  "c22_ca_perro_joven",
+  "c22_joven_corre",
+  "c22_viejo_no_corre",
+  "c22_ca_perro_viejo",
+  "c22_viejo_camina",
+  "c22_ay",
+  "c22_l_senor",
+  "c22_donde",
+  "c22_fin",
+  "c22_cq_adios"
+ ]
+}

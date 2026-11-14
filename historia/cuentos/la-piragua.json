@@ -1,0 +1,814 @@
+{
+ "id": "la-piragua",
+ "title": "La piragua",
+ "place": "El parque",
+ "scene": "banco",
+ "next": "senor-senora",
+ "goal": "Get each thing to the one it is for, and keep it from the pigeons.",
+ "stake": {
+  "thing": "palomas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "hombre",
+  "mujer",
+  "come",
+  "bebe"
+ ],
+ "back_again": [
+  "pájaro",
+  "agua",
+  "para",
+  "niño",
+  "niña",
+  "quiere",
+  "mira",
+  "gracias",
+  "no más"
+ ],
+ "also_heard": [
+  "piragua"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "parque": "c_n_parque",
+  "pajaro": "l_n_pajaro",
+  "banco0": "b_n_banco",
+  "banco1": "b_n_banco",
+  "banco2": "b_n_banco",
+  "piraguero": "b_n_piraguero",
+  "carro": "b_n_piraguero",
+  "hombre": "b_n_hombre",
+  "mujer": "b_n_mujer"
+ },
+ "palabras": {
+  "nino": "-",
+  "nina": "-"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "c_n_parque": {
+   "who": "narr",
+   "text": "Es el parque."
+  },
+  "l_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "c_c_perro": {
+   "who": "narr",
+   "text": "Es un perro."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "b_n_banco": {
+   "who": "narr",
+   "text": "Es un banco."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  },
+  "b_n_hombre": {
+   "who": "narr",
+   "text": "Es un hombre."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "b_n_senora": {
+   "who": "narr",
+   "text": "Es una señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_n_bebe": {
+   "who": "narr",
+   "text": "Es un bebé."
+  },
+  "c21_un_hombre": {
+   "who": "narr",
+   "text": "Mira. Un hombre."
+  },
+  "c21_una_mujer": {
+   "who": "narr",
+   "text": "Y una mujer."
+  },
+  "c21_para_hombre": {
+   "who": "narr",
+   "text": "La piragua es para el hombre."
+  },
+  "c21_para_mujer": {
+   "who": "narr",
+   "text": "La piragua es para la mujer."
+  },
+  "c21_para_nino": {
+   "who": "narr",
+   "text": "La piragua es para el niño."
+  },
+  "c21_para_nina": {
+   "who": "narr",
+   "text": "La piragua es para la niña."
+  },
+  "c21_agua_mujer": {
+   "who": "narr",
+   "text": "El agua es para la mujer."
+  },
+  "c21_hombre_come": {
+   "who": "narr",
+   "text": "El hombre come."
+  },
+  "c21_mujer_bebe": {
+   "who": "narr",
+   "text": "La mujer bebe agua."
+  },
+  "c21_cq_come": {
+   "who": "tu",
+   "text": "¡El pájaro come!"
+  },
+  "c21_cq_bebe": {
+   "who": "tu",
+   "text": "¡El pájaro bebe!"
+  },
+  "c21_h_gracias": {
+   "who": "narr",
+   "habla": "hombre",
+   "text": "El hombre dice: ¡Gracias!"
+  },
+  "c21_m_gracias": {
+   "who": "narr",
+   "habla": "mujer",
+   "text": "La mujer dice: ¡Gracias!"
+  },
+  "c21_ca_come": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Come, Coquí!"
+  },
+  "c21_ca_bebe": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Bebe, Coquí!"
+  },
+  "c21_coqui_come": {
+   "who": "narr",
+   "text": "Coquí come piragua."
+  },
+  "c21_coqui_bebe": {
+   "who": "narr",
+   "text": "Coquí bebe agua."
+  },
+  "c21_ay": {
+   "who": "narr",
+   "text": "¡Ay, no! El pájaro se come la piragua de Coquí."
+  },
+  "c21_no_mira_come": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pájaro come."
+  },
+  "c21_no_mira_bebe": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pájaro bebe."
+  },
+  "c21_no_para_hombre": {
+   "who": "narr",
+   "text": "No, Coquí. La piragua es para el hombre."
+  },
+  "c21_no_para_mujer": {
+   "who": "narr",
+   "text": "No, Coquí. La piragua es para la mujer."
+  },
+  "c21_no_para_nino": {
+   "who": "narr",
+   "text": "No, Coquí. La piragua es para el niño."
+  },
+  "c21_no_para_nina": {
+   "who": "narr",
+   "text": "No, Coquí. La piragua es para la niña."
+  },
+  "c21_no_ca_come": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "No, Coquí. Carmen dice: ¡Come!"
+  },
+  "c21_no_ca_bebe": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "No, Coquí. Carmen dice: ¡Bebe!"
+  },
+  "c21_fin": {
+   "who": "narr",
+   "text": "Coquí come piragua. Carmen bebe agua."
+  },
+  "c21_y_pajaro": {
+   "who": "narr",
+   "text": "¿Y el pájaro? ¡El pájaro quiere más!"
+  },
+  "c17_cq_no_mas": {
+   "who": "tu",
+   "text": "¡No más!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio21"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "hombre"
+   }
+  },
+  "c21_un_hombre",
+  {
+   "set": {
+    "twinkle": "mujer"
+   }
+  },
+  "c21_una_mujer",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "pon",
+   "k": "piragua"
+  },
+  {
+   "ask": "hombre",
+   "lead": [],
+   "line": "c21_para_hombre",
+   "then": [
+    "c21_hombre_come"
+   ],
+   "after": [
+    {
+     "act": "lleva",
+     "a": "hombre"
+    }
+   ]
+  },
+  {
+   "act": "pon",
+   "k": "agua"
+  },
+  {
+   "ask": "mujer",
+   "lead": [],
+   "line": "c21_agua_mujer",
+   "then": [
+    "c21_mujer_bebe"
+   ],
+   "after": [
+    {
+     "act": "lleva",
+     "a": "mujer"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "dejan"
+  },
+  {
+   "act": "paloma",
+   "k": "come"
+  },
+  {
+   "ask": "di_come",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "say": "c21_h_gracias",
+     "gap": 250
+    },
+    {
+     "act": "acaba",
+     "a": "hombre"
+    }
+   ],
+   "after": [
+    {
+     "act": "salva",
+     "k": "come"
+    }
+   ],
+   "resp": [
+    "di_come",
+    "di_bebe"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_come": "c21_cq_come",
+    "di_bebe": "c21_cq_bebe"
+   },
+   "said": {
+    "di_come": "c21_cq_come"
+   }
+  },
+  {
+   "act": "paloma",
+   "k": "bebe"
+  },
+  {
+   "ask": "di_bebe",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "say": "c21_m_gracias",
+     "gap": 250
+    },
+    {
+     "act": "acaba",
+     "a": "mujer"
+    },
+    {
+     "act": "sinbandeja"
+    }
+   ],
+   "after": [
+    {
+     "act": "salva",
+     "k": "bebe"
+    }
+   ],
+   "resp": [
+    "di_come",
+    "di_bebe"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_come": "c21_cq_come",
+    "di_bebe": "c21_cq_bebe"
+   },
+   "said": {
+    "di_bebe": "c21_cq_bebe"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "manos",
+   "i": "piragua",
+   "d": "agua"
+  },
+  {
+   "ask": "come",
+   "lead": [],
+   "line": "c21_ca_come",
+   "then": [
+    "c21_coqui_come",
+    {
+     "act": "termina",
+     "que": "come"
+    }
+   ],
+   "after": [
+    {
+     "act": "empieza",
+     "que": "come"
+    }
+   ],
+   "resp": [
+    "come",
+    "bebe"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "llena"
+  },
+  {
+   "ask": "bebe",
+   "lead": [],
+   "line": "c21_ca_bebe",
+   "then": [
+    "c21_coqui_bebe",
+    {
+     "act": "termina",
+     "que": "bebe"
+    }
+   ],
+   "after": [
+    {
+     "act": "empieza",
+     "que": "bebe"
+    }
+   ],
+   "resp": [
+    "come",
+    "bebe"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "turno21"
+  },
+  "c21_ay",
+  {
+   "wait": 300
+  },
+  {
+   "act": "limpia"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "nuevas"
+  },
+  {
+   "act": "dejan"
+  },
+  {
+   "draw": "pa",
+   "options": [
+    "come",
+    "bebe"
+   ]
+  },
+  {
+   "calc": "qa",
+   "cond": "pa=come",
+   "then": "h",
+   "else": "m"
+  },
+  {
+   "act": "paloma",
+   "k": "$pa"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_come",
+    "di_bebe"
+   ],
+   "baraja": true,
+   "pick": "di_$pa",
+   "tests": "$pa",
+   "voces": {
+    "di_come": "c21_cq_come",
+    "di_bebe": "c21_cq_bebe"
+   },
+   "said": {
+    "di_come": "c21_cq_come",
+    "di_bebe": "c21_cq_bebe"
+   },
+   "lead": [],
+   "line": null,
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "salva",
+       "k": "$pa"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "say": "c21_$qa_gracias",
+       "gap": 250
+      }
+     ],
+     "else": [
+      {
+       "act": "salva",
+       "k": "$pa",
+       "medio": 1
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "miraotra",
+     "k": "$pa"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c21_no_mira_$pa"
+   ]
+  },
+  {
+   "act": "acaban"
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "pb",
+   "options": [
+    "hombre",
+    "mujer",
+    "hombre",
+    "mujer",
+    "nino",
+    "nina"
+   ]
+  },
+  {
+   "calc": "tb",
+   "cond": "pb=nino",
+   "then": "luis",
+   "else": "$pb"
+  },
+  {
+   "calc": "tb",
+   "cond": "pb=nina",
+   "then": "carmen",
+   "else": "$tb"
+  },
+  {
+   "act": "pon",
+   "k": "piragua",
+   "de": "piraguero"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "hombre",
+    "mujer",
+    "luis",
+    "carmen"
+   ],
+   "pick": "$tb",
+   "tests": "$pb",
+   "lock": true,
+   "lead": [],
+   "line": "c21_para_$pb",
+   "right": [
+    {
+     "act": "lleva",
+     "a": "$tb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "llevamal",
+     "a": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "pon",
+     "k": "piragua",
+     "de": "piraguero"
+    },
+    "c21_no_para_$pb"
+   ]
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "sinbandeja"
+  },
+  {
+   "act": "tragan"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "mc",
+   "options": [
+    "pa",
+    "ap"
+   ]
+  },
+  {
+   "draw": "vc",
+   "options": [
+    "come",
+    "bebe"
+   ]
+  },
+  {
+   "if": "mc=pa",
+   "then": [
+    {
+     "act": "manos",
+     "i": "piragua",
+     "d": "agua"
+    }
+   ],
+   "else": [
+    {
+     "act": "manos",
+     "i": "agua",
+     "d": "piragua"
+    }
+   ]
+  },
+  {
+   "act": "acecha"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "come",
+    "bebe"
+   ],
+   "baraja": true,
+   "pick": "$vc",
+   "tests": "$vc",
+   "lead": [],
+   "line": "c21_ca_$vc",
+   "right": [
+    {
+     "act": "empieza",
+     "que": "$vc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sale",
+       "que": "$vc",
+       "hizo": "$vc"
+      }
+     ]
+    },
+    {
+     "act": "termina",
+     "que": "$vc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "empieza",
+     "que": "$x"
+    },
+    {
+     "act": "sale",
+     "que": "$vc",
+     "hizo": "$x"
+    },
+    {
+     "act": "termina",
+     "que": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "repone",
+     "que": "$vc"
+    },
+    "c21_no_ca_$vc"
+   ]
+  },
+  {
+   "act": "otro",
+   "que": "$vc"
+  },
+  {
+   "act": "limpia"
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "final21"
+  },
+  "c21_fin",
+  {
+   "act": "quiere"
+  },
+  "c21_y_pajaro",
+  {
+   "say": "c17_cq_no_mas",
+   "gap": 300
+  },
+  {
+   "act": "fin21"
+  },
+  {
+   "wait": 600
+  }
+ ],
+ "leer": [
+  "c21_un_hombre",
+  "c21_una_mujer",
+  "c21_para_hombre",
+  "c21_hombre_come",
+  "c21_agua_mujer",
+  "c21_mujer_bebe",
+  "c21_cq_come",
+  "c21_h_gracias",
+  "c21_cq_bebe",
+  "c21_m_gracias",
+  "c21_ca_come",
+  "c21_coqui_come",
+  "c21_ca_bebe",
+  "c21_coqui_bebe",
+  "c21_ay",
+  "c21_para_mujer",
+  "c21_fin",
+  "c21_y_pajaro",
+  "c17_cq_no_mas"
+ ]
+}

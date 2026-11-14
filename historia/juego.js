@@ -183,8 +183,8 @@ cv.addEventListener("pointerdown",e=>{e.preventDefault();const r=cv.getBoundingC
 
 /* ---------- the signal for a right move: the same every time ---------- */
 function senal(t,p,quieto){if(OIR){if(!quieto)bounce(4);return;}const R=Math.round,rb=respBox(t),b=rb?(f=>[f.x,f.y,f.w,f.h])(frogBox(W.cq)):bx(t);if(rb||!p)p={x:R(b[0]+b[2]/2),y:R(b[1]+b[3]/2)};
-  SFX.right();if(!quieto)bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
-const bien=id=>OIR?Promise.resolve():wait(300).then(()=>say(id||S.bien||"muy_bien",350));
+  if(!S.callado)SFX.right();if(!quieto&&!S.callado)bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
+const bien=id=>OIR||S.callado?Promise.resolve():wait(300).then(()=>say(id||S.bien||"muy_bien",350));
 
 /* ---------- reading a story ---------- */
 const sub=s=>typeof s==="string"?s.replace(/\$([a-z]+)/g,(m,k)=>V[k]!=null?V[k]:m):s;
