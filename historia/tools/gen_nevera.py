@@ -17,6 +17,58 @@ comunes={"muy_bien":N("¡Muy bien!"),"si_muy_bien":N("¡Sí! ¡Muy bien!"),"yo_c
  "esta_es_mama":N("Esta es mamá."),"n_papa":N("Este es papá."),"n_abuelo":N("Este es abuelo."),"m_n_cocina":N("Es la cocina."),"c30_nevera":N("Esta es la nevera.")}
 BASE={"luis":"p_n_luis","carmen":"p_n_carmen","coqui":"yo_coqui","abuela":"abuela","mama":"esta_es_mama","papa":"n_papa","abuelo":"n_abuelo","cocina":"m_n_cocina","nevera":"c30_nevera"}
 
+# ---------------- 30. No hay leche ----------------
+c=dict(comunes)
+LQ={"leche":"leche","queso":"queso"}; EL={"leche":"la leche","queso":"el queso"}
+c.update({"c30_aqui_leche":N("Aquí hay leche."),"c30_aqui_queso":N("Y aquí hay queso."),"c30_bebe_toma":N("El bebé toma leche."),"c30_luis_come":N("Luis come pan con queso."),
+ "c30_ab_mira_hay":AB("Coquí, mira en la nevera. ¿Hay leche? ¿Hay queso?"),"c30_ab_mira":AB("Coquí, mira en la nevera."),
+ "c30_cq_piragua":T("¡Una piragua!"),"c30_ahora_los2":N("Ahora hay leche y queso."),"c30_cq_gracias_papa":T("¡Gracias, papá!"),"c30_no_piragua":N("No hay piragua para Coquí.")})
+for k in LQ:
+    o="queso" if k=="leche" else "leche"
+    c["c30_cq_no_"+k]=T("¡Papá, no hay %s!"%k); c["c30_busca_"+k]=N("Papá busca %s."%EL[k]); c["c30_ahora_"+k]=N("Ahora hay %s."%k)
+    c["c30_si_%s_no_%s"%(o,k)]=AB("Sí hay %s. No hay %s."%(o,k)); c["c30_no_%s_si_%s"%(k,o)]=AB("No hay %s. Sí hay %s."%(k,o))
+    c["c30_ab_si_"+k]=AB("Sí hay %s."%k); c["c30_ab_no_"+k]=AB("No hay %s."%k); c["c30_no_"+k]=N("No, Coquí. Mira. No hay %s."%k)
+DN=["di_leche","di_queso"]; VN={"di_leche":"c30_cq_no_leche","di_queso":"c30_cq_no_queso"}; DC=["c_leche","c_queso"]
+def ida(k,**kw): return [act("abuelasale"),act("mandado",k=k,suelto=1,**kw),"c30_busca_"+k,act("ya")]
+def ronda(k):   # what follows a touch in a scored round: the first errand is paid from the sill; a second one, after a miss, from the frog's own jar
+    return {"right":[act("abuelasale"),act("mandado",k="$"+k,suelto=1,carta=1),"c30_busca_$"+k,act("ya"),{"if":"ok","then":[act("marca",que="ok")],"else":[act("comparten")]},act("abuelavuelve")],
+            "wrong":[act("abuelasale"),act("mandado",k="$x",carta=1)]+X+["c30_no_$"+k]}
+s30={"id":"no-hay-leche","title":"No hay leche","place":"La cocina","scene":"nevera","next":"para-los-pajaros",
+ "goal":"Keep the fridge stocked, and keep your three coins for a piragua.","stake":{"thing":"monedas","steps":3},"dots":8,"bien":"si_muy_bien",
+ "focus_words":["leche","queso","no hay","busca"],"back_again":["hay","sí","aquí","ahora","mira","come","toma","bebé","pan","con","piragua","tira","coge","gracias"],
+ "also_heard":["nevera"],"names":BASE,"palabras":{"nohay":"no hay"},"clips":c,
+ "beats":[act("inicio30"),{"wait":500},tw("nevera"),"c30_nevera",tw("leche"),"c30_aqui_leche",tw("queso"),"c30_aqui_queso",tw(None),act("consume30",suelto=1),"c30_bebe_toma","c30_luis_come",act("ya"),
+  # the opening: say (twice), picture cards with both halves (twice), picture cards with one line (twice)
+  {"dots":1},act("sale30"),
+  ask("di_leche","c30_ab_mira_hay",["c30_ahora_leche",act("abuelavuelve")],ida("leche"),resp=DN,baraja=True,voces=VN,said={"di_leche":"c30_cq_no_leche"}),
+  act("sale30",toma=1),
+  ask("di_queso","c30_ab_mira",["c30_ahora_queso",act("abuelavuelve")],ida("queso"),resp=DN,baraja=True,voces=VN,said={"di_queso":"c30_cq_no_queso"}),
+  {"dots":2},act("setnev",falta="leche"),act("sale30",abre="poco"),
+  ask("c_leche","c30_si_queso_no_leche",[act("abuelavuelve")],ida("leche",carta=1),resp=DC,baraja=True),
+  act("setnev",falta="queso"),act("sale30",abre="poco"),
+  ask("c_queso","c30_no_queso_si_leche",[act("abuelavuelve")],ida("queso",carta=1),resp=DC,baraja=True),
+  {"dots":3},act("setnev",falta="queso"),act("sale30",abre="poco"),
+  ask("c_queso","c30_ab_si_leche",[act("abuelavuelve")],ida("queso",carta=1),resp=DC,baraja=True),
+  act("setnev",falta="leche"),act("sale30",abre="poco"),
+  ask("c_leche","c30_ab_no_leche",[act("abuelavuelve")],ida("leche",carta=1),resp=DC,baraja=True),
+  # the turn: the piragua man's bell
+  {"dots":4},act("turno30"),say("c30_cq_piragua"),CARD,{"wait":400},
+  # A: he sees in, and says what there is none of
+  {"dots":5},{"draw":"fa","options":["leche","queso"]},act("setnev",falta="$fa"),act("sale30",abre="todo"),
+  dict({"decide":"say","options":DN,"baraja":True,"pick":"di_$fa","tests":"$fa","voces":VN,"said":VN,"lead":[],"line":"c30_ab_mira"},**ronda("fa")),
+  # B: she says both halves; he answers with a picture card
+  {"dots":6},{"draw":"fb","options":["leche","queso"],"other":"gb"},{"draw":"ob","options":["1","2"]},{"calc":"lb","cond":"ob=1","then":"c30_si_$gb_no_$fb","else":"c30_no_$fb_si_$gb"},
+  act("setnev",falta="$fb"),act("sale30",abre="poco"),
+  dict({"decide":"say","options":DC,"baraja":True,"pick":"c_$fb","tests":"nohay","lead":[],"line":"$lb"},**ronda("fb")),
+  # C: she says one line; he answers with a picture card
+  {"dots":7},{"draw":"fc","options":["leche","queso"],"other":"gc"},{"draw":"sc","options":["si","no"]},{"calc":"lc","cond":"sc=no","then":"c30_ab_no_$fc","else":"c30_ab_si_$gc"},
+  act("setnev",falta="$fc"),act("sale30",abre="poco"),
+  dict({"decide":"say","options":DC,"baraja":True,"pick":"c_$fc","tests":"nohay","lead":[],"line":"$lc"},**ronda("fc"))],
+ "final":[{"dots":8},"c30_ahora_los2",act("final30"),{"if":"pir","then":[say("c30_cq_gracias_papa",300)],"else":["c30_no_piragua"]},act("fin")],
+ "leer":["c30_nevera","c30_aqui_leche","c30_aqui_queso","c30_bebe_toma","c30_luis_come","c30_ab_mira_hay","c30_cq_no_leche","c30_busca_leche","c30_ahora_leche","c30_ab_mira","c30_cq_no_queso","c30_busca_queso","c30_ahora_queso",
+  "c30_si_queso_no_leche","c30_no_queso_si_leche","c30_ab_si_leche","c30_ab_no_leche","c30_cq_piragua","c30_ahora_los2","c30_cq_gracias_papa"]}
+json.dump(s30,open("cuentos/no-hay-leche.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+
 # ---------------- 31. Para los pájaros ----------------
 c=dict(comunes)
 ART={"pan":"El pan","fruta":"La fruta","guineo":"El guineo","manzana":"La manzana"}
@@ -151,7 +203,7 @@ for f in sorted(glob.glob("cuentos/*.json")):
 for cid,(who,text) in seen.items():
     if not os.path.exists(f"audio/{cid}.mp3"): new+=1; chars+=len(text)
 print(len(seen),"clips,",new,"new,",chars,"characters to record,",clash,"clashes")
-for st in (s31,s32):
+for st in (s30,s31,s32):
     txt=json.dumps({"b":st["beats"],"f":st["final"]},ensure_ascii=False)
     for i in sorted(set(re.findall(r'"(c(?:30|31|32)_[a-z_0-9$]+)"',txt))):
         if "$" not in i and i not in st["clips"]: print("MISSING CLIP",st["id"],i)

@@ -69,8 +69,12 @@ const COSA={
   // a coin; the tray with six dents (n coins in it); the jar with a piragua on it; a piragua; the piragua man's cart, far off
   moneda(){const b=new Buf(6,6);b.ell(3,3,2.6,2.6,["#C89010","#F0C020","#FFE870"]);return b.outline().done();},
   monedas(n){const b=new Buf(24,13);n=n==null?6:+n;b.rect(1,1,22,11,"#8A5A2A");b.rect(1,1,22,1,"#B07A3C");for(let i=0;i<6;i++){const x=5+(i%3)*7,y=4+Math.floor(i/3)*5;b.ell(x,y,2.6,2,["#5A3A1A"]);if(i<n)b.ell(x,y-0.4,2.4,1.8,["#C89010","#F0C020","#FFE870"]);}return b.outline().done();},
-  piragua(){const b=new Buf(9,13);b.ell(4.5,4,3.6,3.4,["#C02040","#F04868","#FF98A8"]);for(let i=0;i<6;i++)b.rect(1+Math.floor(i/2),7+i,7-2*Math.floor(i/2),1,i%2?"#F2F2F8":"#DCDCE8");return b.outline().done();},
-  tarro(){const b=new Buf(12,15);b.rect(1,3,10,11,"#DCF2FA");b.rect(1,3,2,11,"#F2FBFF");b.rect(2,1,8,2,"#9494A6");b.ell(6,7,2.4,2.2,["#C02040","#F04868"]);b.rect(5,9,2,3,"#F2F2F8");return b.outline().done();},
+  piragua(n){n=n==null?1:+n;const b=new Buf(11,9+4*n),C=[["#C02040","#F04868","#FF98A8"],["#C89010","#F0C020","#FFE870"],["#2A60B0","#58A0F0","#A8D0FF"]];for(let i=0;i<6;i++)b.rect(2+Math.floor(i/2),3+4*n+i,7-2*Math.floor(i/2),1,i%2?"#F2F2F8":"#DCDCE8");for(let i=0;i<n;i++)b.ell(5.5,4*n-4*i,3.8,3.2,C[i%3]);return b.outline().done();},
+  tarro(n){n=n==null?3:+n;const b=new Buf(16,19);b.rect(1,4,14,14,"#DCF2FA");b.rect(1,4,2,14,"#F2FBFF");b.rect(3,1,10,3,"#9494A6");b.rect(3,1,10,1,"#C8C8D4");b.ell(5.5,8,2.6,2,["#48A848","#78D068"]);b.px(4,7,"#20140A");b.px(6,7,"#20140A");b.ell(11,8,1.8,1.6,["#F04868"]);b.rect(10,9,3,2,"#F2F2F8");for(let i=0;i<n;i++)b.ell(8,16-i*2.4,4,1.4,["#C89010","#F0C020","#FFE870"]);return b.outline().done();},
+  carta(k){const b=new Buf(14,17);b.rect(1,2,12,14,"#FFFDF0");b.rect(6,0,2,3,"#8A5A2A");if(k==="leche"){b.rect(5,6,4,8,"#FFFFFF");b.rect(6,4,2,2,"#FFFFFF");b.rect(6,3,2,1,"#3A70B0");b.frame(4,5,6,10,"#8AB4C8");}else{for(let i=0;i<8;i++){const h=2+Math.floor(i*4/7);b.rect(3+i,13-h,1,h,"#F0A010");}b.px(6,11,"#C07808");b.px(9,10,"#C07808");}return b.outline().done();},
+  corteza(){const b=new Buf(12,6);b.rect(1,3,10,2,"#C07808");b.rect(1,2,2,1,"#F0A010");b.rect(9,2,2,1,"#F0A010");return b.outline().done();},
+  soporte(){const b=new Buf(14,7);b.rect(1,4,12,2,"#8A8EA0");b.rect(1,1,1,4,"#8A8EA0");b.rect(12,1,1,4,"#8A8EA0");return b.done();},
+  platoazul(){const b=new Buf(20,6);b.ell(10,3,9,2,["#3A70B0","#5A90D0","#8CB8E8"]);return b.outline().done();},
   carrito(){const b=new Buf(22,24);b.rect(10,2,1,12,"#5A3A1A");b.ell(10.5,3,9,2.6,["#C02040","#F04868","#FF98A8"]);b.rect(3,13,16,7,"#F2F2F8");b.rect(3,13,16,2,"#58B4EC");b.ell(7,21,2.4,2.4,["#3A3A46","#6A6A7A"]);b.ell(15,21,2.4,2.4,["#3A3A46","#6A6A7A"]);return b.outline().done();},
   // a bird on the wall: sitting (0), pecking (c0, c1)
   ave(v){const b=new Buf(11,9),pk=String(v).startsWith("c"),dn=v==="c1";b.ell(5,5,3.6,2.6,["#8A4A1A","#B8742A","#D8A050"]);b.ell(dn?8.4:8,dn?5.6:3,1.8,1.8,["#B8742A","#D8A050"]);b.rect(dn?10:10,dn?6:3,1,1,"#F0C020");b.px(dn?8:8,dn?5:2,"#20140A");b.rect(1,4,2,1,"#6A3A12");b.rect(4,8,1,1,"#F0C020");b.rect(6,8,1,1,"#F0C020");return b.outline().done();},
@@ -105,6 +109,7 @@ function nevera(c,a){const N=W.nev||{},[x,y,w,h]=NEV;
   if(W.cesta)tenida(c,"cesta",EN.cesta[0],EN.cesta[1],0,0,W.cesta.n);
   if(N.abierta===1){fr(c,x+3,y+18,w-6,h-22,"#EAF6FA");fr(c,x+3,y+18,w-6,2,"#B8D8E4");[80,106].forEach(sy=>{fr(c,x+3,sy,w-6,2,"#8AB4C8");});fr(c,x+5,112,w-10,38,"#D6ECF2");fr(c,x+5,112,w-10,1,"#8AB4C8");fr(c,x+5,149,w-10,1,"#8AB4C8");
     fr(c,x-14,y+15,14,h-15,OUT);fr(c,x-13,y+16,12,h-17,"#C8CCDA");fr(c,x-13,y+16,2,h-17,"#E8EAF2");[72,104,136].forEach(sy=>{fr(c,x-11,sy,9,2,"#8A8EA0");});
+    if(N.soporte){tenida(c,"soporte",HUECO[0][0],HUECO[0][1]);tenida(c,"platoazul",HUECO[1][0],HUECO[1][1]+1);}
     (N.h||[]).forEach((o,i)=>{if(o&&HUECO[i])tenida(c,o.k,HUECO[i][0],HUECO[i][1],0,0,o.v);});
     const C=N.cajon||{};if(N.cajonver){fr(c,x+3,110,w-6,42,OUT);fr(c,x+4,111,w-8,40,"#EAF6FA");for(let i=0;i<(C.guineo||0);i++)tenida(c,"guineo",x+15,148-i*11);for(let i=0;i<(C.manzana||0);i++)tenida(c,"manzana",x+38,148-i*12);}
     else if(N.cajon){fr(c,x+5,112,w-10,38,"#F2F4FA");fr(c,x+5,112,w-10,1,"#8A8EA0");fr(c,x+5,149,w-10,1,"#8A8EA0");fr(c,x+20,118,16,3,"#8A8EA0");}}
@@ -162,7 +167,7 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{},M=W.mos||{};
   if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;if(p.fuera)return [R(p.x),R(p.y)-alto(k)-1];return [R(p.x),R(p.y)-alto(k)-1];}
-function respIcon(g,k,x,y,w,h,a){g.imageSmoothingEnabled=false;}
+function respIcon(g,k,x,y,w,h,a){g.imageSmoothingEnabled=false;if(k==="c_leche")tenida(g,"leche",x+(w>>1),y+h-3,0,2,4);else if(k==="c_queso")tenida(g,"queso",x+(w>>1),y+h-5,0,2,3);}
 function hud(g,W,a){if(!W.tarjeta)return;tarjeta(g,3,3,66,24);   // the card steps aside while three picture bubbles stand at the top
   (W.marcas||[]).forEach((m,i)=>{const x=10+i*20,y=6;
     if(m==="ok"){const st=["......#......",".....###.....",".....###.....","#############",".###########.","..#########..","...#######...","..#########..",".####...####.",".###.....###.","##.........##"];g.fillStyle=OUT;st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i-1,y+j+1,3,3);});g.fillStyle="#F0C020";st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i,y+j+2,1,1);});}
@@ -185,6 +190,37 @@ const acts={
   async ya(){const p=W._mov;W._mov=null;if(p)await p;},
   async g(o){const p=G(o.quien);if(!p)return;Object.keys(o).forEach(k=>{if(!["act","quien","ms"].includes(k))p[k]=o[k]===""?null:o[k];});if(o.ms)await wait(+o.ms);},
   async nota(o){V[o.k]=o.v==null?"1":String(o.v);},
+
+  /* ----- story 30: No hay leche ----- */
+  // The fridge has one holder for the bottle of milk and one dish for the cheese: W.nev.h[0], W.nev.h[1]. Papá, in the yard, fetches what the frog sends him for, for a coin. Whatever he brings, Luis carries to the fridge: a thing whose place is taken stays on the counter.
+  async inicio30(){W.gente={abuela:{x:142,y:180,dir:1,lleva:{k:"platopan",v:2}},luis:{x:174,y:192,dir:-1},carmen:{x:190,y:198,dir:-1},mama:{x:208,y:204,dir:-1,bebe:1},papa:{x:198,y:PATIO,dir:-1,fuera:1},abuelo:{vis:0}};
+    W.nev={abierta:1,soporte:1,h:[{k:"leche",v:4},{k:"queso",v:3}]};W.cesta=null;W.canasta=null;W.pila=null;W.patio={};W.repisa=[{id:"tarro",k:"tarro",v:3,x:158}];W.sobras=0;
+    W.cosas=[{k:"carta",v:"leche",x:114,y:86,z:50},{k:"carta",v:"queso",x:132,y:86,z:50},{k:"pan",v:5,x:152,y:ENC+10,z:99}];},
+  // the first picture: mamá fills the baby's bottle (the holder is empty); abuela lays cheese on bread for Luis
+  async consume30(o){const m=G("mama"),ab=G("abuela"),l=G("luis"),N=W.nev;const pr=(async()=>{await vuela({k:"leche",v:4},HUECO[0][0],HUECO[0][1],m.x-8,m.y-34,9);N.h[0]=null;m.bebe="come";SFX.blip();await wait(900);N.h[1].v=1;await vuela({k:"queso",v:1},HUECO[1][0],HUECO[1][1],l.x,l.y-30,8);l.come={k:"rebanada",v:"q"};SFX.blip();await wait(900);l.come=null;m.bebe=1;})();return corre(o,pr);},
+  // what is in the fridge now, whether we see it or not (falta: the thing that has run out)
+  async setnev(o){const N=W.nev;N.h[0]=o.falta==="leche"?null:{k:"leche",v:4};N.h[1]=o.falta==="queso"?null:{k:"queso",v:3};},
+  // abuela: opens the fridge wide (abre "todo"), or a little and looks in and shuts it (abre "poco"); takes the last cheese for her plate (toma); lays a coin on the sill; and goes to the door with her plate
+  async sale30(o){const ab=G("abuela"),N=W.nev;ab.vis=1;ab.pose="idle";if(o.abre||o.toma){ab.lleva=null;await mueve("abuela",102,176);ab.dir=-1;if(o.abre==="poco"){N.abierta=2;SFX.blip();ab.paso=1;await wait(600);ab.paso=0;N.abierta=0;}else{N.abierta=1;SFX.blip();await wait(250);}
+      if(o.toma){N.h[1]=null;SFX.blip();await wait(300);}}
+    await mueve("abuela",170,180);ab.dir=1;W.repisa.push({id:"moneda",k:"moneda",x:176});SFX.blip();await wait(250);ab.lleva={k:"platopan",v:2};await mueve("abuela",216,194);ab.dir=1;},
+  // the errand. The frog tosses papá the coin from the sill, or one out of his own jar when the sill is bare (carta: he holds that card up first); papá goes off and is back with the thing; Luis carries it to the fridge. Its place is empty: he puts it in. Its place is taken: he throws a hand up and stands it on the counter
+  async mandado(o){const k=String(o.k).replace(/^di_|^c_/,""),pa=G("papa"),l=G("luis"),N=W.nev,i=k==="leche"?0:1,R2=W.repisa,mon=R2.find(q=>q.id==="moneda"),tar=R2.find(q=>q.id==="tarro");
+    const pr=(async()=>{await ranaA(150,ENC+9);if(o.carta){W.encima={k:"carta",v:k};SFX.blip();await wait(450);}
+      if(mon){R2.splice(R2.indexOf(mon),1);await vuela({k:"moneda"},mon.x,SILL-4,pa.x,SILL-22,6);}else if(tar&&tar.v>0){tar.v--;await vuela({k:"moneda"},tar.x,SILL-10,pa.x,SILL-22,8);}SFX.blip();
+      pa.dir=1;await mueve("papa",236,PATIO);W.encima=null;await alBanco();await wait(300);pa.alza={k,v:k==="leche"?4:3,e:1,dx:-10,dy:-8};await mueve("papa",198,PATIO);pa.dir=-1;
+      await mueve("luis",190,190);pa.alza=null;await vuela({k,v:k==="leche"?4:3},pa.x-8,SILL-10,l.x,l.y-34,5);l.alza={k,v:k==="leche"?4:3,e:1,dx:-9,dy:-4};SFX.blip();await mueve("luis",124,180);l.dir=-1;const antes=N.abierta;N.abierta=1;SFX.blip();await wait(350);
+      if(!N.h[i]){l.alza=null;await vuela({k,v:k==="leche"?4:3},l.x-10,l.y-30,HUECO[i][0],HUECO[i][1],5);N.h[i]={k,v:k==="leche"?4:3};V.puso="1";SFX.blip();await wait(300);if(antes!==1)N.abierta=0;}
+      else{V.puso="";l.pose="wave0";SFX.bonk();await wait(600);l.pose="idle";l.alza=null;W.cosas.push({id:"sobra",k,v:k==="leche"?4:3,x:186+W.sobras*14,y:ENC+10,z:300});await wait(300);}
+      await mueve("luis",174,192);l.dir=-1;})();return corre(o,pr);},
+  // mamá and the children share out what stands on the counter: its empty bottle, or its rind, stays there
+  async comparten(){const t=ob("sobra");if(!t)return;const m=G("mama"),ca=G("carmen");if(t.k==="leche"){m.bebe="come";ca.bebe="carmen";}else{ca.come={k:"queso",v:1};G("luis").come={k:"queso",v:1};}SFX.blip();await wait(900);m.bebe=1;ca.bebe=null;ca.come=null;G("luis").come=null;t.id=null;if(t.k==="leche")t.v=0;else{t.k="corteza";t.v=null;}W.sobras++;},
+  // the turn: the piragua man's cart; the frog hops to his jar; abuela shows the three coins she has left
+  async turno30(){W.patio.carrito=1;SFX.right&&SFX.blip();await wait(400);await ranaA(150,ENC+9);const t=W.repisa.find(q=>q.id==="tarro");for(let i=0;i<3;i++){t.dy=-2;await wait(110);t.dy=0;await wait(110);}await alBanco();const ab=G("abuela");ab.pose="offer";ab.lleva={k:"moneda"};await wait(700);ab.pose="idle";ab.lleva={k:"platopan",v:2};},
+  // the ending: the frog tosses papá the coins left in his jar; papá buys a piragua at the cart: one scoop for each coin
+  async final30(){const pa=G("papa"),t=W.repisa.find(q=>q.id==="tarro"),n=t.v;V.pir=n>0?"1":"";await ranaA(150,ENC+9);for(let i=0;i<n;i++){t.v--;await vuela({k:"moneda"},t.x,SILL-10,pa.x,SILL-22,5);SFX.blip();}
+    if(n>0){pa.dir=-1;await mueve("papa",170,PATIO);await wait(500);pa.alza={k:"piragua",v:n,e:1,dx:10,dy:-8};pa.dir=1;await mueve("papa",198,PATIO);pa.dir=-1;await wait(200);pa.alza=null;await vuela({k:"piragua",v:n},pa.x-8,SILL-12,170,ENC+2,6);await alBanco();W.cosas.push({k:"piragua",v:n,x:cx()+24,y:pies()+2,z:400});W.cq.hace="come";SFX.blip();}
+    else{await alBanco();W.cq.dy=2;}await wait(600);},
 
   /* ----- story 31: Para los pájaros ----- */
   // The tray stands on the counter under the window: two places. What the frog or abuelo throws out lands on the yard wall, and a bird comes to it. A good thing thrown out stays there with its bird to the end (bueno); an old one is gone by the next throw.
