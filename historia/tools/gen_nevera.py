@@ -24,7 +24,7 @@ c.update({"c32_calor":N("Hace calor."),"c32_hace_jugo":N("Abuela hace jugo de ch
  "c32_le_pone":N("Abuela le pone mantequilla al pan."),"c32_luis_come":N("Luis come pan con mantequilla."),
  "c32_ab_un_vaso":AB("Coquí, un vaso está vacío. Ponle jugo de china."),"c32_ahora_amarillo":N("Ahora el vaso amarillo está lleno."),
  "c32_luis_mi_vacio":L("Mi vaso está vacío."),"c32_luis_mi_lleno":L("Mi vaso está lleno."),"c32_carmen_mi_vacio":CA("Mi vaso está vacío."),"c32_carmen_mi_lleno":CA("Mi vaso está lleno."),
- "c32_luis_toma":N("Luis toma jugo de china."),"c32_carmen_quiero":CA("Quiero pan con mantequilla y jugo de china."),"c32_carmen_come":N("Carmen come pan con mantequilla."),
+ "c32_luis_toma":N("Luis toma jugo de china."),"c32_carmen_toma":N("Carmen toma jugo de china."),"c32_carmen_quiero":CA("Quiero pan con mantequilla y jugo de china."),"c32_carmen_come":N("Carmen come pan con mantequilla."),
  "c32_luis_mas":L("¡Más pan con mantequilla, por favor!"),"c32_mas_jugo":N("Abuela hace más jugo de china."),"c32_familia":N("La familia toma jugo de china."),
  "c32_ab_come":N("Abuela come pan con mantequilla."),"cq_gracias_abuela":T("¡Gracias, abuela!"),"c32_no_hay_mas":N("No hay más jugo.")})
 for k in COL:
@@ -42,17 +42,21 @@ s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"n
  "focus_words":["china","mantequilla","lleno","vacío"],"back_again":["vaso","jugo","hace calor","hace","pone","pan","toma","mi","quiero","más","por favor","ahora","familia","verde","amarillo","rojo","azul","gracias","no hay"],
  "also_heard":["ponle","le pone"],"names":BASE,"palabras":{"vacio":"vacío"},"clips":c,
  "beats":[act("inicio32"),{"wait":500},"c32_calor",act("exprime",suelto=1),"c32_hace_jugo",act("ya"),tw("red"),"c32_aqui_chinas",tw("mant"),"c32_aqui_mant",tw(None),act("unta",a="luis",suelto=1),"c32_le_pone","c32_luis_come",act("ya"),
-  # the opening: a round picture over a cup shows what is in it
+  # the opening: a round picture over a cup shows what is in it. Six signed steps: pour (two lines; the children's two lines; one line "lleno"; one line "vacío"), to the sink (one line "vacío"; one line "lleno")
   {"dots":1}]+vista("v_verde","c32_n_verde_lleno")+vista("v_amarillo","c32_n_amarillo_vacio")+[
   ask("v_amarillo","c32_ab_un_vaso",vista("v_amarillo","c32_ahora_amarillo"),[act("vierte",a="v_amarillo")]),
-  {"dots":2},act("ninos32",que="toman",bebe="luis"),act("ninos32",que="dejan")]+vista("v_verde",say("c32_luis_mi_vacio"))+[act("vista",a="v_amarillo"),
-  ask("v_verde","c32_carmen_mi_lleno",["c32_luis_toma"],[act("vista",a=""),act("vierte",a="v_verde")],alias=AL),
-  {"dots":3},act("mama32",que="trae",vacio="azul"),act("vista",a="v_rojo"),
+  act("ninos32",que="toman",bebe="carmen"),act("ninos32",que="dejan")]+vista("v_amarillo",say("c32_carmen_mi_vacio"))+[act("vista",a="v_verde"),
+  ask("v_amarillo","c32_luis_mi_lleno",["c32_carmen_toma"],[act("vista",a=""),act("vierte",a="v_amarillo")],alias=AL),
+  {"dots":2},act("mama32",que="trae",vacio="azul"),act("vista",a="v_rojo"),
   ask("v_azul","c32_mama_rojo_lleno",[act("mama32",que="lleva")],[act("vista",a=""),act("vierte",a="v_azul")]),
-  act("ninos32",que="toman",bebe="luis"),act("ninos32",que="dejan"),act("abuelapila"),act("vista",a="v_verde"),
-  ask("v_verde","c32_ab_verde_vacio",[act("abuelavuelve"),say("c32_carmen_quiero")],[act("vista",a=""),act("lleva32",a="v_verde")]),
+  act("ninos32",que="toman",bebe="luis"),act("ninos32",que="dejan"),act("abuelamira"),act("vista",a="v_verde"),
+  ask("v_verde","c32_ab_verde_vacio",["c32_luis_toma"],[act("vista",a=""),act("vierte",a="v_verde")],alias=AL),
+  {"dots":3},act("mama32",que="trae",vacio="rojo"),act("vista",a="v_rojo"),
+  ask("v_rojo","c32_mama_rojo_vacio",[act("mama32",que="lleva")],[act("vista",a=""),act("lleva32",a="v_rojo")]),
+  act("ninos32",que="toman",bebe="carmen"),act("ninos32",que="dejan"),act("abuelamira",sale=1),act("vista",a="v_verde"),
+  ask("v_amarillo","c32_ab_verde_lleno",[act("abuelasale"),say("c32_carmen_quiero")],[act("vista",a=""),act("lleva32",a="v_amarillo")],alias=AL),
   # the turn: the last chinas
-  {"dots":4},act("ultima32"),act("ninos32",que="salen",con=1),"c32_carmen_come",say("c32_luis_mas"),act("exprime",todo=1,suelto=1),"c32_mas_jugo",act("ya"),"c32_familia",CARD,{"wait":400},
+  {"dots":4},act("abuelavuelve"),act("exprime",todo=1,suelto=1),"c32_mas_jugo",act("ya"),act("ninos32",que="toman"),act("ninos32",que="salen",con=1),"c32_carmen_come","c32_luis_mas","c32_familia",CARD,{"wait":400},
   # A: two lines, the children's own
   {"dots":5},{"draw":"va","options":["verde","amarillo"],"other":"vb"},{"draw":"oa","options":["l","c"]},
   {"calc":"ll","cond":"va=verde","then":"c32_luis_mi_vacio","else":"c32_luis_mi_lleno"},{"calc":"lc","cond":"va=amarillo","then":"c32_carmen_mi_vacio","else":"c32_carmen_mi_lleno"},
@@ -61,7 +65,7 @@ s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"n
   {"decide":"do","options":V2,"pick":"v_$va","tests":"vacio","lock":True,"alias":AL,"lead":[say("$la")],"line":"$lb",
    "right":[act("vierte",a="v_$va"),ok()],
    "wrong":[act("vierte",a="$x")]+X+vista("v_$va","c32_no_$va_vacio")},
-  act("ninos32",que="salen",con=1),
+  act("ninos32",que="toman"),act("ninos32",que="salen",con=1),
   # B: one line, mamá's, of the red cup or the blue one
   {"dots":6},{"draw":"ra","options":["rojo","azul"],"other":"rb"},{"draw":"fa","options":["lleno","vacio"]},{"calc":"rn","cond":"fa=vacio","then":"$ra","else":"$rb"},
   act("mama32",que="trae",vacio="$ra"),
@@ -70,13 +74,13 @@ s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"n
    "wrong":[act("vierte",a="$x")]+X+vista("v_$ra","c32_no_$ra_vacio")},
   # C: one line, abuela's; he carries a cup to the sink
   {"dots":7},{"draw":"ga","options":["verde","amarillo"],"other":"gb"},{"draw":"fc","options":["lleno","vacio"]},{"calc":"gn","cond":"fc=vacio","then":"$ga","else":"$gb"},
-  act("ninos32",que="quedan",vacio="$ga"),act("abuelapila"),
+  act("ninos32",que="entran",vacio="$ga"),act("ninos32",que="corren"),act("abuelamira",sale=1),
   {"decide":"do","options":V2,"pick":"v_$ga","tests":"$fc","lock":True,"lead":[],"line":"c32_ab_$gn_$fc",
-   "right":[act("lleva32",a="v_$ga"),ok()],
-   "wrong":[act("lleva32",a="$x")]+X+vista("v_$ga","c32_no_$ga_vacio")+[act("mirapila")]}],
+   "right":[act("abuelasale"),act("lleva32",a="v_$ga"),ok()],
+   "wrong":[act("abuelasale"),act("lleva32",a="$x")]+X+vista("v_$ga","c32_no_$ga_vacio")+[act("mirapila")]}],
  "final":[{"dots":8},act("abuelavuelve"),act("final32"),"c32_ab_come",{"if":"rana","then":[say("cq_gracias_abuela",300)],"else":["c32_no_hay_mas"]},act("fin")],
- "leer":["c32_calor","c32_hace_jugo","c32_aqui_chinas","c32_aqui_mant","c32_le_pone","c32_luis_come","c32_n_verde_lleno","c32_n_amarillo_vacio","c32_ab_un_vaso","c32_ahora_amarillo","c32_luis_mi_vacio","c32_carmen_mi_lleno","c32_luis_toma",
-  "c32_mama_rojo_lleno","c32_ab_verde_vacio","c32_carmen_quiero","c32_carmen_come","c32_luis_mas","c32_mas_jugo","c32_familia","c32_ab_come","cq_gracias_abuela"]}
+ "leer":["c32_calor","c32_hace_jugo","c32_aqui_chinas","c32_aqui_mant","c32_le_pone","c32_luis_come","c32_n_verde_lleno","c32_n_amarillo_vacio","c32_ab_un_vaso","c32_ahora_amarillo","c32_carmen_mi_vacio","c32_luis_mi_lleno","c32_carmen_toma",
+  "c32_mama_rojo_lleno","c32_ab_verde_vacio","c32_luis_toma","c32_mama_rojo_vacio","c32_ab_verde_lleno","c32_carmen_quiero","c32_carmen_come","c32_luis_mas","c32_mas_jugo","c32_familia","c32_ab_come","cq_gracias_abuela"]}
 json.dump(s32,open("cuentos/jugo-de-china.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # clip ids are global: the same id must have the same text everywhere
