@@ -48,6 +48,10 @@ Pictures (what readers with no sound and no words could not read)
 Pairs
 - No old word in the sentence may fit one picture only. "Mi" or "tu" instead of "un" and "una". The other picture is as lively as the right one. No picture is right twice.
 
+## In work, Nov 14: place 3, scene 4, A comer (stories 33 to 35)
+
+Not built. Script: historia/notas/guiones/comer.md, draft 2 after one round of reviews (beginner and Puerto Rican Spanish), now with a second pair of reviewers. The way of working is the one of part 17: designer's proposal, two review rounds, a final Spanish check and a last gate; then the scene, the generator, pairs, level-check items, a new ?v=, the path matrix, wordless readers (the sheet tool sorts by number now), audio, publish, pages.
+
 ## Nov 14, part 17: place 3, La cocina, scene 3, La nevera (stories 30 to 32)
 
 Live at ?v=32. Script (final): historia/notas/guiones/nevera.md, with what each round of reviews, the final Spanish check, the last gate and the wordless readers changed at its end. Generator: historia/tools/gen_nevera.py (three stories, twelve pairs; it also sets `next` on story 29). Scene: historia/escenas/nevera.js.
