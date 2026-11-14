@@ -54,7 +54,7 @@ async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.di
 // the end: how many words and how many he got right the first time, and the way back to Palabras
 function cualFin(){const n=CQ.hecho.length,m=CQ.hecho.filter(h=>h.ok).length;
   estado("end",true);pantalla("Done",[`${n} word${n===1?"":"s"} · ${m} right`]);
-  $("#next").textContent="Back to Palabras";$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
+  $("#next").textContent="Back to Palabras";$("#next").classList.add("blu");$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
 async function cualArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · ¿Cuál?";SALIDA="app.html?tab=palabras";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   CQ.lista=cualLista();mkDots(CQ.lista.length);estado("start",true);pantalla("Review");fit();   // the start screen: a title and the disc; the bar has its true number of segments from the start

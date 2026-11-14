@@ -270,7 +270,8 @@ let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush()
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
   if(typeof PAL!=="undefined"&&(!Q.get("fast")||Q.get("rec"))){if(!OIR&&!S.tipo){S._lost=W.lost;PAL.cuento(S,LOG);}else if(PAL.oido)PAL.oido(CUENTO);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
-  step(dots.length);running=false;foot(!!(S.next&&!OIR),true,true);}
+  step(dots.length);await sleep(1200/FAST);if(my!==runId)return;   // the last picture stays a moment before the end screen takes its place
+  running=false;const nx=!!(S.next&&!OIR);estado("end");pantalla(S.title);foot(nx,true,!nx);}   // the story's title, then Next story (green) above Play again; with no next story, Map (blue) takes the main place
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);

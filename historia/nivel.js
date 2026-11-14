@@ -99,9 +99,9 @@ async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,ru
   for(const id of ids){try{const j=await (await fetch("cuentos/"+id+".json")).json();(j.focus_words||[]).forEach(w=>{if(!pal.includes(w))pal.push(w);});}catch(e){}}
   if(!Q.get("fast")||Q.get("rec"))PAL.presume(pal,ids,NQ.hecho);
   NQ.fin={S0,ids,pal};NQ.run=0;const sig=CURSO.lugares.flatMap(l=>l.cuentos||[])[S0],T=id=>CURSO.cuentos[id].t;
-  $("#fin").innerHTML=`<h1>Level check done</h1><p>${S0?`You already understand the first ${S0} ${S0===1?"story":"stories"}. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped."}</p>
-    <p>${sig?`You start at: <b>${T(sig)}</b>.`:"Every story built so far is open as done. More are being built."}</p>`;
-  estado("end",true);$("#fin").style.display="flex";$("#next").textContent="To the map";$("#next").onclick=()=>salir("app.html?tab=mapa");foot(1,0,0);}
+  pantalla("Level check done",[S0?`You already understand the first ${S0} ${S0===1?"story":"stories"}. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped.",
+    sig?`You start at: <b>${T(sig)}</b>.`:"Every story built so far is open as done. More are being built."]);
+  estado("end",true);$("#next").textContent="To the map";$("#next").classList.add("blu");$("#next").onclick=()=>salir("app.html?tab=mapa");foot(1,0,0);}
 async function nivelArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · Level check";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(()=>{F++;nivelDibuja();},TICK);
   mkDots(Q.get("todo")?NV.length:16);estado("start",true);pantalla("Level check");fit();   // the start screen: a title and the disc; the bar has its true number of segments (16 at most) from the start
