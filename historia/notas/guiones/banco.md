@@ -100,16 +100,16 @@ The three games do not start the same way: story 21 starts with something he say
 - **At stake:** the thing in play. If it goes wrong, the owner goes home without it, and the thing goes into Luis's box of lost things under the lamp post and stays there. (The dog's bone stays with the wrong dog.) The card shows a cross for that round.
 - **New words:** señor, señora, joven, viejo.
 - **Back again:** hombre, perro, camina, despacio, corre, ¿dónde está?, gracias, de nada, es, de, mira, adiós, no.
-- **Heard along the way:** del, de la, mi sombrero.
+- **Heard along the way:** del, de la, mi sombrilla.
 
-**Start:** the three benches in evening light. On the first, the old gentleman, his hat on the bench beside him; on the second, the woman, her yellow sun umbrella leaning beside her; on the third, the young man, his rucksack beside him, and at the far end of it the man from story 21, reading his newspaper. The two dogs lie in front of the cart. Carmen and the frog stand in the middle. Luis is by the lamp post, with an empty box.
+**Start:** the three benches in evening light. On the first, the old gentleman, his umbrella leaning beside him, and at the far end of it the man from story 21, reading his newspaper; on the second, the woman, her red handbag beside her; on the third, the young man, his rucksack beside him. The two dogs lie in front of the cart. Carmen and the frog stand in the middle. Luis is by the lamp post, with an empty box.
 
 1. NARR: "Mira. Un señor." (The old gentleman twinkles.) NARR: "Una señora." (The woman twinkles.) NARR: "Y un joven." (The young man twinkles.) NARR: "Un perro viejo." (The old dog twinkles.) NARR: "Y un perro joven." (The young dog twinkles.)
 
 **The opening** (big sign, nothing can go wrong)
 
-2. **He calls, taught.** All three get up at once and walk to the cart; the hat, the umbrella and the rucksack stay on the benches. Three speaking bubbles: "¡Señor!", "¡Señora!", "¡Joven!" The big sign is on "¡Señor!" He touches it. COQUÍ: "¡Señor!" The old gentleman turns round, sees his hat, comes back and puts it on. Right signal. NARR: "El señor dice: ¡Mi sombrero! ¡Gracias!" COQUÍ: "De nada, señor."
-3. The three bubbles; the sign is on "¡Señora!" He touches it. COQUÍ: "¡Señora!" The woman turns round, comes back and takes her umbrella. Right signal. NARR: "La señora dice: ¡Gracias!" COQUÍ: "De nada, señora."
+2. **He calls, taught.** All three get up at once and walk to the cart; the umbrella, the handbag and the rucksack stay on the benches. Three speaking bubbles: "¡Señor!", "¡Señora!", "¡Joven!" The big sign is on "¡Señor!" He touches it. COQUÍ: "¡Señor!" The old gentleman turns round, sees his umbrella, comes back and takes it. Right signal. NARR: "El señor dice: ¡Mi sombrilla! ¡Gracias!" COQUÍ: "De nada, señor."
+3. The three bubbles; the sign is on "¡Señora!" He touches it. COQUÍ: "¡Señora!" The woman turns round, comes back and takes her handbag. Right signal. NARR: "La señora dice: ¡Gracias!" COQUÍ: "De nada, señora."
 4. The three bubbles; the sign is on "¡Joven!" He touches it. COQUÍ: "¡Joven!" The young man turns round, comes back and takes his rucksack. Right signal. NARR: "El joven dice: ¡Gracias!" All three sit down again with something from the cart.
 5. **Whose it is, taught.** Carmen comes from behind the benches holding up a small paper bag from the cart. NARR: "Carmen dice: ¡Es de la señora!" The big sign is on the woman. He touches her. The frog carries the bag to her. Right signal. NARR: "La señora dice: ¡Gracias, Coquí!"
 6. **The dogs, taught.** Carmen finds a bone under a bench and gives it to the frog; she turns to the dogs. NARR: "Carmen dice: ¡Es del perro joven!" The big sign is on the young dog. He touches him. The frog gives him the bone. Right signal. The young dog runs round the cart with it. While he runs: NARR: "El perro joven corre." The old dog lies where he is. NARR: "El perro viejo no corre."
@@ -205,8 +205,7 @@ The three games do not start the same way: story 21 starts with something he say
 
 13. Abuela opens her eyes and gets up. The baby sleeps. By the toys on the ground:
    - Only the rattle from the turn (three stars): the frog picks it up without a sound and lays it in the pushchair. Stars and a heart, without a sound.
-   - Two or three toys: Carmen and Luis gather them on tiptoe.
-   - Four toys: they lie all round the pushchair; the lady gathers them herself, one by one.
+   - Two toys or more: the lady gets up and picks one up; the others lie where they fell as everybody leaves.
 14. Canelo lies flat, his head on the rucksack. NARR: "Canelo está cansado." The frog droops, arms hanging. NARR: "Y Coquí está muy cansado." NARR: "Abuela dice: Vamos a casa." COQUÍ: "¡Hasta mañana!" Everybody goes home through the gate, on tiptoe.
 
 **Fewest hearings before a word can cost:** duerme 5 (step 1 twice; step 7; step 8; the turn), contento 8 (step 2; step 3; step 4: the bubble, the frog; steps 5 and 6, the bubble; step 6, the line after; step 8), cansado 5 (step 2; steps 4 and 6, the bubble; step 5: the bubble, the frog), triste 6 (step 2; step 3; steps 4 and 5, the bubble; step 6: the bubble, the frog).
@@ -271,4 +270,13 @@ The three feeling pairs go round in a ring (tired against happy, happy against s
 - Honest chances are written into stories 21 (B) and 22 (C).
 - Pairs: "De nada, señora." in place of "Es una señora." ("un" and "una" picked the picture). The two dogs both walk; the dog that is not asleep lies awake with a bone; the Luis who is not tired sits and smiles. "Es un hombre." still has "un" against "una": no clean fix inside the word list.
 - Left as it is: story 22 has no round where he does something (two touches and a call).
+
+## What the fresh readers of the frames changed (no sound, no words)
+
+- The answer bubbles covered the very people, birds and dogs the choice was about. In this scene they now stand in the sky, above everybody's head.
+- Story 21: the tray on the frog's head read as a white bar (now a brown tray). The eating and drinking bubbles showed the thing too small (now twice the size, beside the frog).
+- Story 22: the old gentleman without his hat and with it read as two people (he keeps his hat on and leaves his umbrella; the woman leaves her handbag). The wallet "appeared from nowhere" (it now falls from a pocket in plain sight, and is bigger). The gate posts read as bins (now taller, with a ball on top, in a hedge). The frog sat in the cart to feed a dog, and under people's legs (he now stands beside them). The piragua man was cut by the left edge when he left (he now pulls the cart). The things in Luis's box were specks (now drawn whole).
+- Story 23: the "keep still" bubble (a raised hand) read as stop, wave or pet, and the notes as a stepped line: now a note of music, and the same note crossed out in red. Sad and tired were too small to read: now tears down both cheeks and slanted brows; puffs of breath, sweat and a slump. The hood "moved for no reason": the lady now reaches over and pulls it. A wrong run ended almost like a right one: the toys now stay on the ground at the end. The ball rolled onto the frog (it now rolls the other way). The shawl hid Canelo's head.
+- Pairs: the z over the sleeping dog was unreadable (now two big Z's); the pigeon only stood beside its bottle or its piragua (it now stretches its neck to the bottle, and crumbs fly at the piragua).
+- Left as it is: with no sound, nothing shows why eating is right in one round and drinking in another; that is the Spanish. One pigeon stays down even in a perfect run (the turn).
 

@@ -74,7 +74,7 @@ c=dict(comunes)
 SE=lambda t:D("senor","El señor",t); SA=lambda t:D("mujer","La señora",t); JO=lambda t:D("joven","El joven",t)
 c.update({"c22_un_senor":N("Mira. Un señor."),"c22_una_senora":N("Una señora."),"c22_un_joven":N("Y un joven."),"c22_perro_viejo":N("Un perro viejo."),"c22_perro_joven":N("Y un perro joven."),
  "c22_cq_senor":T("¡Señor!"),"c22_cq_senora":T("¡Señora!"),"c22_cq_joven":T("¡Joven!"),
- "c22_senor_sombrero":SE("¡Mi sombrero! ¡Gracias!"),"c22_cq_dn_senor":T("De nada, señor."),"c22_cq_dn_senora":T("De nada, señora."),
+ "c22_senor_sombrilla":SE("¡Mi sombrilla! ¡Gracias!"),"c22_cq_dn_senor":T("De nada, señor."),"c22_cq_dn_senora":T("De nada, señora."),
  "c22_senor_gracias":SE("¡Gracias!"),"c22_senora_gracias":SA("¡Gracias!"),"c22_joven_gracias":JO("¡Gracias!"),
  "c22_ca_es_senor":CA("¡Es del señor!"),"c22_ca_es_senora":CA("¡Es de la señora!"),"c22_ca_es_joven":CA("¡Es del joven!"),
  "c22_senor_gracias_coqui":SE("¡Gracias, Coquí!"),"c22_senora_gracias_coqui":SA("¡Gracias, Coquí!"),"c22_joven_gracias_coqui":JO("¡Gracias, Coquí!"),
@@ -89,11 +89,11 @@ DS=["di_senor","di_senora","di_joven"]; VS={"di_senor":"c22_cq_senor","di_senora
 s22={"id":"senor-senora","title":"¡Señor! ¡Señora!","place":"El parque","scene":"banco","next":"el-bebe-duerme",
  "goal":"Get each thing to its owner before the owner has gone home.","stake":{"thing":"cosas","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["señor","señora","joven","viejo"],"back_again":["hombre","perro","camina","despacio","corre","¿dónde está?","gracias","de nada","adiós"],
- "also_heard":["del","de la","mi sombrero"],"names":dict(BASE,senor="b_n_senor",mujer="b_n_senora",joven="b_n_joven",hombre="b_n_hombre",perro_viejo="c_c_perro",perro_joven="c_c_perro"),
+ "also_heard":["del","de la","mi sombrilla"],"names":dict(BASE,senor="b_n_senor",mujer="b_n_senora",joven="b_n_joven",hombre="b_n_hombre",perro_viejo="c_c_perro",perro_joven="c_c_perro"),
  "palabras":{"senor":"señor","senora":"señora"},"clips":c,
  "beats":[act("inicio22"),{"wait":500},tw("senor"),"c22_un_senor",tw("mujer"),"c22_una_senora",tw("joven"),"c22_un_joven",tw("perro_viejo"),"c22_perro_viejo",tw("perro_joven"),"c22_perro_joven",tw(None),
   {"dots":1},act("alcarro"),
-  ask("di_senor",None,[say("c22_senor_sombrero"),say("c22_cq_dn_senor",200)],[act("vuelve22",a="senor")],resp=DS,baraja=True,voces=VS,said={"di_senor":"c22_cq_senor"}),
+  ask("di_senor",None,[say("c22_senor_sombrilla"),say("c22_cq_dn_senor",200)],[act("vuelve22",a="senor")],resp=DS,baraja=True,voces=VS,said={"di_senor":"c22_cq_senor"}),
   ask("di_senora",None,[say("c22_senora_gracias"),say("c22_cq_dn_senora",200)],[act("vuelve22",a="mujer")],resp=DS,baraja=True,voces=VS,said={"di_senora":"c22_cq_senora"}),
   ask("di_joven",None,[say("c22_joven_gracias"),act("sientan")],[act("vuelve22",a="joven")],resp=DS,baraja=True,voces=VS,said={"di_joven":"c22_cq_joven"}),
   {"dots":2},act("bolsa"),ask("mujer","c22_ca_es_senora",[say("c22_senora_gracias_coqui"),act("casa")],[act("dabolsa",a="mujer")]),
@@ -107,7 +107,7 @@ s22={"id":"senor-senora","title":"¡Señor! ¡Señora!","place":"El parque","sce
   act("casa"),
   {"dots":6},{"draw":"qa","options":["senora","senora","senor","joven"]},{"calc":"pa","cond":"qa=senora","then":"mujer","else":"$qa"},act("sale22",a="$pa"),
   {"decide":"say","options":DS,"baraja":True,"pick":"di_$qa","tests":"$qa","voces":VS,"said":VS,"lead":[],"line":None,
-   "right":[{"if":"ok","then":[act("recoge",a="$pa"),say("c22_$qa_gracias"),act("marca",que="ok"),act("adios",a="$pa")],"else":[act("sevade",a="$pa"),act("luisguarda",k="cartera")]}],   # too late: a wave from beyond the gate
+   "right":[{"if":"ok","then":[act("recoge",a="$pa"),say("c22_$qa_gracias"),act("marca",que="ok"),act("adios",a="$pa")],"else":[act("sevade",a="$pa"),act("luisguarda",k="billetera")]}],   # too late: a wave from beyond the gate
    "wrong":[act("duda",x="$x"),act("pasa",a="$pa")]+X+["c22_no_es_$qa"]},
   {"dots":7},{"draw":"kc","options":["a","b"]},{"draw":"lc","options":["ab","ba"]},act("cola22",k="$kc",lado="$lc"),act("bolsa"),
   {"decide":"do","options":["$ra","$rb"],"pick":"$pc","tests":"$qc","lock":True,"lead":[],"line":"c22_ca_es_$qc",
@@ -115,7 +115,7 @@ s22={"id":"senor-senora","title":"¡Señor! ¡Señora!","place":"El parque","sce
    "wrong":[act("dabolsa",a="$x",no=1),act("pasa",a="$pc")]+X+["c22_no_del_$qc"]},
   act("sevan22")],
  "final":[{"dots":8},act("final22"),act("carrova"),"c22_fin",say("c22_cq_adios",300),act("carrofin"),{"wait":600}],
- "leer":["c22_un_senor","c22_una_senora","c22_un_joven","c22_perro_viejo","c22_perro_joven","c22_cq_senor","c22_senor_sombrero","c22_cq_dn_senor","c22_cq_senora","c22_senora_gracias","c22_cq_dn_senora","c22_cq_joven","c22_joven_gracias",
+ "leer":["c22_un_senor","c22_una_senora","c22_un_joven","c22_perro_viejo","c22_perro_joven","c22_cq_senor","c22_senor_sombrilla","c22_cq_dn_senor","c22_cq_senora","c22_senora_gracias","c22_cq_dn_senora","c22_cq_joven","c22_joven_gracias",
   "c22_ca_es_senora","c22_senora_gracias_coqui","c22_ca_perro_joven","c22_joven_corre","c22_viejo_no_corre","c22_ca_perro_viejo","c22_viejo_camina","c22_ay","c22_l_senor","c22_donde","c22_fin","c22_cq_adios"]}
 json.dump(s22,open("cuentos/senor-senora.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 

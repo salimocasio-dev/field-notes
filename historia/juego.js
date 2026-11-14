@@ -48,12 +48,12 @@ function frog(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK
   shadow(g,b.x+2,q.y+25,b.w-5);g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+Math.round(q.dy));}
 
 /* the two answer bubbles of the Say move: the frog nodding (sí) and the frog shaking his head (no) */
-function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),n=W.resp.length,i=W.resp.indexOf(k),m=n>2?76:60,cx=Math.max(cam[0]+m,Math.min(cam[0]+cam[2]-m,b.x+b.w/2)),y=Math.max(4,b.y-46);
+function respBox(k){if(!W.resp||!W.resp.includes(k))return null;const q=W.cq,b=frogBox(q),n=W.resp.length,i=W.resp.indexOf(k),m=n>2?76:60,en=W.respEn,cx=en?en[0]:Math.max(cam[0]+m,Math.min(cam[0]+cam[2]-m,b.x+b.w/2)),y=en?en[1]:Math.max(4,b.y-46);   // respEn: a scene that needs its people seen while he chooses puts the bubbles elsewhere
   return n>2?[Math.round(cx-70+i*50),y,40,36]:i===0?[Math.round(cx-50),y,40,36]:[Math.round(cx+10),y,40,36];}   // two answer bubbles, or three in a row
 const bx=k=>respBox(k)||((k==="si"||k==="no")?null:E.box(k,W))||(b=>[b.x,b.y,b.w,b.h])(frogBox(W.cq));   // an answer bubble that is gone stands for the frog who said it
 function respDraw(g,a){(W.resp||[]).forEach(k=>{const b=respBox(k),x=b[0],y=b[1],w=b[2],h=b[3],t=(F>>1)%8,o=[0,1,2,1,0,-1,-2,-1][t];
   fr(g,x-1,y,w+2,h,OUT);fr(g,x,y-1,w,h+2,OUT);fr(g,x,y,w,h,"#FFFFFF");
-  const tx=W.resp.indexOf(k)===0?x+w-8:x+8;fr(g,tx-3,y+h,7,1,"#FFFFFF");fr(g,tx-3,y+h+1,7,1,OUT);fr(g,tx-2,y+h+1,5,1,"#FFFFFF");fr(g,tx-2,y+h+2,5,1,OUT);fr(g,tx-1,y+h+2,3,1,"#FFFFFF");fr(g,tx-1,y+h+3,3,1,OUT);
+  const tx=W.resp.indexOf(k)===0?x+w-8:x+8;if(!W.respEn){fr(g,tx-3,y+h,7,1,"#FFFFFF");fr(g,tx-3,y+h+1,7,1,OUT);fr(g,tx-2,y+h+1,5,1,"#FFFFFF");fr(g,tx-2,y+h+2,5,1,OUT);fr(g,tx-1,y+h+2,3,1,"#FFFFFF");fr(g,tx-1,y+h+3,3,1,OUT);}
   if(W.respVoz&&W.respVoz[k]){const on=W.respOn===k,m=on&&a%2?1:0,col=on?"#2E9A48":"#9AA4B0",n=on?1+(F>>1)%3:3;   // an answer that cannot be drawn: the bubble says it aloud, and he picks by ear
     if(on){fr(g,x+1,y+1,w-2,2,"#FFE040");fr(g,x+1,y+h-3,w-2,2,"#FFE040");fr(g,x+1,y+1,2,h-2,"#FFE040");fr(g,x+w-3,y+1,2,h-2,"#FFE040");}
     g.drawImage(spr("cqv"+m,()=>mkCoqui(.5,0,m)),x+4,y+11-(on?m:0));for(let i=0;i<n;i++)fr(g,x+25+i*4,y+17-i*3,2,4+i*6,col);return;}

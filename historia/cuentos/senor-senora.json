@@ -31,7 +31,7 @@
  "also_heard": [
   "del",
   "de la",
-  "mi sombrero"
+  "mi sombrilla"
  ],
  "names": {
   "luis": "p_n_luis",
@@ -160,10 +160,10 @@
    "who": "tu",
    "text": "¡Joven!"
   },
-  "c22_senor_sombrero": {
+  "c22_senor_sombrilla": {
    "who": "narr",
    "habla": "senor",
-   "text": "El señor dice: ¡Mi sombrero! ¡Gracias!"
+   "text": "El señor dice: ¡Mi sombrilla! ¡Gracias!"
   },
   "c22_cq_dn_senor": {
    "who": "tu",
@@ -348,7 +348,7 @@
    "line": null,
    "then": [
     {
-     "say": "c22_senor_sombrero",
+     "say": "c22_senor_sombrilla",
      "gap": 250
     },
     {
@@ -722,7 +722,7 @@
       },
       {
        "act": "luisguarda",
-       "k": "cartera"
+       "k": "billetera"
       }
      ]
     }
@@ -864,7 +864,7 @@
   "c22_perro_viejo",
   "c22_perro_joven",
   "c22_cq_senor",
-  "c22_senor_sombrero",
+  "c22_senor_sombrilla",
   "c22_cq_dn_senor",
   "c22_cq_senora",
   "c22_senora_gracias",
