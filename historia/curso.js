@@ -20,7 +20,7 @@ const CURSO={
     "uno-dos-tres":{t:"Uno, dos, tres",min:4},"donde-esta-el-gato":{t:"¿Dónde está el gato?",min:5},"rapido-despacio":{t:"Rápido, despacio",min:4},
     "la-bola":{t:"La bola",min:5},"arriba-abajo":{t:"¡Arriba! ¡Abajo!",min:6},"otra-vez":{t:"¡Otra vez!",min:5},
     "pan-para-el-pato":{t:"Pan para el pato",min:6},"los-botes":{t:"Los botes",min:6},"cual":{t:"¿Cuál?",min:5},
-    "la-piragua":{t:"La piragua",min:5},"senor-senora":{t:"¡Señor! ¡Señora!",min:5},"el-bebe-duerme":{t:"El bebé duerme",min:6},
+    "la-piragua":{t:"La piragua",min:4},"senor-senora":{t:"¡Señor! ¡Señora!",min:5},"el-bebe-duerme":{t:"El bebé duerme",min:4},
     // Escuchar: picture stories (d-) and do-this routines (h-). Nothing in them is scored.
     "d-toc-toc":{t:"Toc, toc",min:2},"d-agua-pajaro":{t:"Agua para el pájaro",min:2},"d-bizcocho-bebe":{t:"El bizcocho del bebé",min:2},"d-foto-familia":{t:"La foto de la familia",min:2},"d-la-bola":{t:"La bola",min:1},"d-buenas-noches":{t:"Buenas noches",min:2},
     "h-frente":{t:"Abre y cierra",min:2},"h-balcon":{t:"En el balcón",min:2},"h-sala":{t:"La familia",min:2},"h-patio":{t:"En el patio",min:2}},
