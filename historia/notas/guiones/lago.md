@@ -208,6 +208,15 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the wo
 
 "¿De qué color?" and "¿cuál?" have no picture pair; they are questions, and come back in the listening stories and in the call.
 
+## What the wordless read changed (after the build)
+
+- The bread was too small to read: it is now a slice with a crust, and the row on the dock is spaced out.
+- The duck was lost in the reeds, and the three ducks overlapped them: the reeds are now a clump up by the far side, clear of where anything swims; the post stands clear of them.
+- The fish and the far ducks were so low that the big sign was cut by the edge: both swim higher.
+- The marks on the card for a round that went wrong were three different small pictures, and none was read: it is now one red cross in every story of this scene (what went wrong shows in the picture itself).
+- The green is lighter, so that it is not mistaken for the blue when the picture dims; the yellow is stronger, against the white duck.
+- Nobody stands on anybody: Canelo lies clear of Luis and Carmen; Carmen stands clear of her row of boats.
+
 ## What the last gate changed
 
 - Story 20, the last decision: asking "¿Cuál?" when Carmen had already said which duck used to bring a silent penalty. Now a bird takes the bread from his hand while he waits: a cause he can see, and nothing is filed against him.

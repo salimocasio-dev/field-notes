@@ -238,7 +238,7 @@ const acts={
     if(n<=1){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[70,60],[196,70],[136,50],[110,90],[170,96]]});}else if(n<4)SFX.win();else SFX.coqui();await wait(1200);},
 
   /* ----- story 20: ¿Cuál? ----- */
-  async inicio20(){W.gente={luis:{x:60,y:118,pose:"idle",dir:1,sent:1},carmen:{x:112,y:154,pose:"idle",dir:-1}};Object.assign(W.cq,{x:62,y:125,s:1});W.bolsa=[96,153];W.flor=[196,119];W.perro={x:98,y:119,pose:"lie",dir:1};
+  async inicio20(){W.gente={luis:{x:74,y:118,pose:"idle",dir:1,sent:1},carmen:{x:112,y:154,pose:"idle",dir:-1}};Object.assign(W.cq,{x:62,y:125,s:1});W.bolsa=[96,153];W.flor=[196,119];W.perro={x:46,y:119,pose:"lie",dir:1};
     W.lugarP=3;W.orden=[0,1,2];W.patos={};PK.forEach(k=>{W.patos[k]={k,x:0,y:0,pose:"nada",dir:-1};});W.aves={};W.pan=null;W.botes={};W.peces={};acts._pon();},
   _pon(){const p=P7(W.lugarP);PK.forEach((k,i)=>{const o=OFF[W.orden[i]];W.patos[k].x=p[0]+o[0];W.patos[k].y=p[1]+o[1];});},
   // the ducks paddle d places (minus: nearer the dock); baraja: they stop in a new order

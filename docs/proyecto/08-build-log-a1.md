@@ -36,7 +36,7 @@ Live at ?v=27. Scripts (final, draft 3): historia/notas/guiones/lago.md. Generat
 ### Reviews
 
 - Scripts: three drafts and a last gate. Round 1: story 18 repeated story 16's hiding trick; a step of story 19 could not happen (a cart of boats); the "¿Cuál?" decision punished asking; "¿Dónde está el pato?" answered by "vuela" taught verbs as places; "El pato nada" is heard as "the duck, nothing"; a bare "pato" called out is an insult. Round 2: the duck both swims and flies, so "¿Quién nada?" had two true answers; "¿Cuál?" was free and so decided nothing; five places were too few to show every loss; a loss had no cause. Last gate: asking when already told had a silent penalty (now a bird takes the bread from his hand); eight signed touches in story 19 (now six); the fish must push the boat, or Luis's question is not real.
-- Wordless frames: fresh reader (see the next commit for what it changed).
+- Wordless frames, fresh reader. Fixed after it: bread too small to read (now a slice with a crust); the duck lost in the reeds and the ducks overlapping them (the reeds moved up to the far side); the fish and far ducks so low that the sign was cut off; the three different "wrong" marks on the card, none of which was read (now one red cross; the picture itself shows what went wrong); green too close to blue when the picture dims; Canelo and Carmen overlapping. Left as it is: the speaking bubbles look alike; birds and boats that "appear from nowhere" between two frames.
 
 ### Testing
 
@@ -44,7 +44,7 @@ Live at ?v=27. Scripts (final, draft 3): historia/notas/guiones/lago.md. Generat
 
 ### Audio
 
-- 121 new clips, 3,418 characters.
+- 121 new clips, 3,418 characters. Azure so far this month: about 26,000 of 500,000 characters (my own running count, not a reading from Azure).
 
 ## Nov 13, part 11: place 2, scene 2, El campo
 
@@ -56,7 +56,7 @@ Live at ?v=26. Scripts (final, draft 3): historia/notas/guiones/campo.md. Genera
 - **Story 15, La bola** (bola, tiene, tira, coge, dame). A: Luis calls throw or catch (doing bubbles). B: who has the ball, behind their backs ("X tiene" / "X no tiene"). C: he sees who has it and says "¡Dame la bola!" or "¡Coge la bola!". Wrong: Canelo takes the ball to his pile.
 - **Story 16, ¡Arriba! ¡Abajo!** (arriba, abajo, salta). A: Luis calls "¡Por arriba!" or "¡Por abajo!" and throws. B: the picture goes dark, the ball is hidden, Carmen says where; he touches the tree or the reeds. C: he sees where it lands and tells Luis. Wrong: the ball ends in the pond and floats there.
 - **Story 17, ¡Otra vez!** (mi, tu, más, otra vez). A: "tira mi bola" / "tira tu bola", by Luis or Carmen; he touches one of three balls. B: "¡Otra vez!", "¡Dame la bola!" or "¡No más!" (throw, give, hold). C: he sees which ball Canelo has and says "¡Es mi bola!" or "¡Es tu bola!". Wrong: wet Canelo shakes himself beside the frog; the puddle grows.
-- **The card in the corner** (`W.tarjeta="rondas"`, `W.marcas`): three places; a star for a round done right, the mark of what went wrong otherwise (paw, splash, drop). Added because a right move left nothing to see.
+- **The card in the corner** (`W.tarjeta="rondas"`, `W.marcas`): three places; a star for a round done right, the mark of what went wrong otherwise (paw, splash, drop). Added because a right move left nothing to see. From El lago on, a round that went wrong is one red cross: a fresh reader could not read the small pictures.
 - **¿Cuál?**: 11 pairs in cuentos/cual-campo.json. "Otra vez" has none (a still picture cannot show "again").
 - **Level check**: four more items (tira, coge, arriba, mi); 28 in all, 17 stories.
 
