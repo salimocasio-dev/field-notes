@@ -180,8 +180,8 @@ RANA={"x":110,"y":157,"s":1,"dy":0,"al":1,"vis":1,"bub":None,"hace":None}
 def pic(cam,**kw): return {"cam":cam,"set":dict({"cq":NO,"gente":{},"fuegos":[{},{}],"izq":{},"der":{},"basura":[],"ventana":[],"ventanacome":0,"cosas":[],"vuelos":[],"banco":0,"encima":None,"tarjeta":None,"cubo":0,"salero":0,"mat":None,"plata":None,"estante":0,"repisa":0,"olor":None},**kw)}
 OLLA=lambda con:{"k":"olla","con":con,"n":2,"llama":1,"vapor":1}
 SART=lambda *cosas,**kw:dict({"k":"sarten","llama":1,"cosas":[{"k":k,"v":v} for k,v in cosas]},**kw)
-C0=[70,84,75.3,40]; C1=[110,84,75.3,40]; CN=[52,148,94.2,50]; CAB=[84,146,113,60]; CTZ=[98,100,56.5,30]; CPL=[157,84,75.3,40]; CRA=[98,148,94.2,50]; CPA=[60,92,113,60]; CMA=[116,86,105.5,56]
-nino=lambda **kw:dict({"x":84,"y":196,"dir":1},**kw); abu=lambda **kw:dict({"x":112,"y":200,"dir":1},**kw); mam=lambda **kw:dict({"x":176,"y":152,"dir":-1},**kw); pap=lambda **kw:dict({"x":84,"y":174,"dir":1},**kw)
+C0=[70,84,75.3,40]; C1=[110,84,75.3,40]; CN=[52,148,94.2,50]; CB=[60,150,75.3,40]; CAB=[84,146,113,60]; CTZ=[98,100,56.5,30]; CPL=[157,84,75.3,40]; CRA=[98,148,94.2,50]; CPA=[60,92,113,60]; CMA=[116,86,105.5,56]
+nino=lambda **kw:dict({"x":84,"y":196,"dir":1},**kw); abu=lambda **kw:dict({"x":112,"y":200,"dir":1,"pose":"wave0"},**kw); mam=lambda **kw:dict({"x":176,"y":152,"dir":-1},**kw); pap=lambda **kw:dict({"x":82,"y":158,"dir":1},**kw)
 PAR={"m_e_mis_hab":N("Mira mis habichuelas."),"m_e_mi_olla":N("Mira mi olla."),"m_e_mama_hace":N("Mamá hace la comida."),"m_e_el_pollo":N("Mira el pollo."),"m_e_el_huevo":N("Mira el huevo."),"m_e_la_sal":N("Mira la sal."),
  "m_e_huele_bien":N("¡Huele bien!"),"m_e_choc_caliente":N("El chocolate está caliente."),"m_e_agua_fria":N("El agua está fría."),"m_e_cuidado_luis":N("¡Cuidado, Luis!"),"m_e_ya_esta":N("¡Ya está!")}
 todos={**s27["clips"],**s28["clips"],**s29["clips"],**PAR}
@@ -191,21 +191,21 @@ cual={"id":"cual-estufa","title":"¿Cuál?","place":"La cocina","scene":"estufa"
  "note":"The next-day pass for La estufa.","clips":{k:todos[k] for k in usa},
  "items":[
   {"w":"arroz","say":"c27_aqui_arroz","si":pic(C0,fuegos=[OLLA("arroz"),{}]),"no":pic(C0,fuegos=[OLLA("hab"),{}])},
-  {"w":"habichuelas","say":"m_e_mis_hab","si":pic(CN,gente={"luis":nino(alza={"k":"medida","v":"hab"})}),"no":pic(CN,gente={"luis":nino(alza={"k":"medida","v":"arroz"})})},
-  {"w":"olla","say":"m_e_mi_olla","si":pic(CAB,gente={"abuela":abu(alza={"k":"olla","v":"vacia","e":1,"dx":26})}),"no":pic(CAB,gente={"abuela":abu(alza={"k":"sarten","e":1,"dx":26})})},
+  {"w":"habichuelas","say":"m_e_mis_hab","si":pic(CB,gente={"luis":nino(alza={"k":"tazon","v":"hab","e":1,"dx":15,"dy":2})}),"no":pic(CB,gente={"luis":nino(alza={"k":"tazon","v":"arroz","e":1,"dx":15,"dy":2})})},
+  {"w":"olla","say":"m_e_mi_olla","si":pic(CAB,gente={"abuela":abu(alza={"k":"olla","v":"vacia","e":1,"dx":26})}),"no":pic(CAB,gente={"abuela":abu(alza={"k":"sarten","e":1,"dx":30,"dy":-8})})},
   {"w":"hace","say":"m_e_mama_hace","si":pic(CMA,gente={"mama":mam(pose="wave0")},fuegos=[{},OLLA("hab")],cosas=[{"k":"cucharon","x":150,"y":113,"rot":0.7,"z":999}]),
-                                   "no":pic(CMA,gente={"mama":mam(dir=1,alza={"k":"platoc","v":"ah"},come={"k":"monton","v":"arroz"})},fuegos=[{},OLLA("hab")])},
+                                   "no":pic(CMA,gente={"mama":mam(dir=1,alza={"k":"platoc","v":"ah"},come={"k":"cucharac"})},fuegos=[{},OLLA("hab")])},
   {"w":"pollo","say":"m_e_el_pollo","si":pic(CPL,plata={"x":195,"y":123,"solo":1,"items":[{"k":"muslo","v":"dorado"}]}),"no":pic(CPL,plata={"x":195,"y":123,"solo":1,"items":[{"k":"frito","v":"dorado"}]})},
   {"w":"huevo","say":"m_e_el_huevo","si":pic(C0,fuegos=[SART(("frito","dorado")),{}]),"no":pic(CN,gente={"luis":nino(alza={"k":"salero"})})},
   {"w":"sal","say":"m_e_la_sal","si":pic(CRA,cq=RANA,banco=1,mat={"x":158,"y":196,"o":{"k":"frito","v":"dorado"}},vuelos=[{"k":"salero","x":150,"y":176,"rot":0.9},{"k":"grano","x":157,"y":181},{"k":"grano","x":158,"y":187}]),
                                  "no":pic(CRA,cq=RANA,banco=1,mat={"x":158,"y":196,"o":{"k":"frito","v":"dorado"}},vuelos=[{"k":"molinillo","x":150,"y":176,"rot":0.9},{"k":"granon","x":157,"y":181},{"k":"granon","x":158,"y":187}])},
-  {"w":"huele","say":"m_e_huele_bien","si":pic(CPA,gente={"papa":pap(cierra=1)},fuegos=[SART(("muslo","dorado"),("frito","dorado"),vapor=1),{}],olor=[103,112,92,130]),
+  {"w":"huele","say":"m_e_huele_bien","si":pic(CPA,gente={"papa":pap(cierra=1)},fuegos=[SART(("muslo","dorado"),("frito","dorado"),vapor=1),{}],olor=[106,104,90,117]),
                                      "no":pic(CPA,gente={"papa":pap(come={"k":"muslo","v":"dorado"})},fuegos=[SART(("frito","dorado"),vapor=1),{}])},
-  {"w":"caliente","say":"m_e_choc_caliente","si":pic(CTZ,cosas=[{"k":"taza","v":"cal","x":126,"y":127,"vapor":1}]),"no":pic(CTZ,cosas=[{"k":"taza","v":"frio","x":126,"y":127}])},
+  {"w":"caliente","say":"m_e_choc_caliente","si":pic(CTZ,cosas=[{"k":"taza","v":"cal","x":126,"y":127,"vapor":1}]),"no":pic(CTZ,cosas=[{"k":"vasochoco","x":126,"y":127}])},
   {"w":"frío","say":"m_e_agua_fria","si":pic(CTZ,cosas=[{"k":"vasoagua","x":126,"y":127}]),"no":pic(C1,fuegos=[{},{"k":"olla","con":"agua","n":0,"llama":1,"vapor":1}])},
-  {"w":"cuidado","say":"m_e_cuidado_luis","si":pic([62,92,113,60],gente={"luis":{"x":84,"y":150,"dir":1,"pose":"wave0"},"abuela":{"x":171,"y":176,"dir":-1,"pose":"wave0"}},fuegos=[FRIT,{}]),
-                                         "no":pic([70,104,113,60],gente={"luis":{"x":112,"y":178,"dir":1,"pose":"offer"},"abuela":{"x":150,"y":176,"dir":-1,"pose":"offer","lleva":{"k":"platof"}}},fuegos=[FRIT,{}])},
-  {"w":"ya","say":"m_e_ya_esta","si":pic(CAB,gente={"abuela":abu(alza={"k":"fuentec","v":3,"e":2,"dx":24})}),"no":pic(CAB,gente={"abuela":abu(alza={"k":"cuenco","e":2,"dx":24})})}]}
+  {"w":"cuidado","say":"m_e_cuidado_luis","si":pic([58,90,139,74],gente={"luis":{"x":84,"y":150,"dir":1,"pose":"wave0"},"abuela":{"x":156,"y":164,"dir":-1,"pose":"wave0"}},fuegos=[FRIT,{}]),
+                                         "no":pic([58,104,139,74],gente={"luis":{"x":112,"y":178,"dir":1,"pose":"offer"},"abuela":{"x":150,"y":176,"dir":-1,"pose":"offer","lleva":{"k":"platof"}}},fuegos=[FRIT,{}])},
+  {"w":"ya","say":"m_e_ya_esta","si":pic(CAB,gente={"abuela":abu(alza={"k":"fuentec","v":3,"e":2,"dx":34,"dy":6})}),"no":pic(CAB,gente={"abuela":abu(alza={"k":"cuenco","e":2,"dx":34,"dy":6})})}]}
 json.dump(cual,open("cuentos/cual-estufa.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # the story before this scene leads into it

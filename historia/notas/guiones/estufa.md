@@ -85,7 +85,7 @@ Salt is seen while it falls from the shaker, and then no more; salt twice on one
 The shaker stands on the edge of the stove; whoever salts takes it from there.
 The frog's own moves, in doing bubbles: he shakes salt over the drumstick; or over the egg.
 
-**Start:** abuela stands at the left of the stove; the wide pan is on the left burner, the drumstick on its left side, the egg on its right. On the left counter: the tray. On the right counter: two plates; a third plate stands on the ledge of the stove. The frog is on his stool; his little plate lies beside it.
+**Start:** abuela stands at the left of the stove; the wide pan is on the left burner, the drumstick on its left side, the egg on its right. On the left counter: the tray. On the right counter: two plates; a third plate stands on the right burner of the stove, which is not lit. The frog is on his stool; his little plate lies beside it.
 
 1. NARR: "Abuela hace pollo y un huevo." NARR: "Aquí hay pollo." (The drumstick in the pan twinkles.) NARR: "Y aquí hay un huevo." (The egg.) NARR: "¡Mmm! ¡Huele bien!"
 2. Abuela hands him the shaker; while she does: NARR: "Abuela dice: Toma la sal, Coquí."
@@ -194,14 +194,14 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the ne
 | Word | Sentence | Picture that fits | The other picture |
 | --- | --- | --- | --- |
 | arroz | "Aquí hay arroz." | a pot full of white rice, steaming | a pot full of red beans, steaming |
-| habichuelas | "Mira mis habichuelas." | Luis holding up a cup of beans | Luis holding up a cup of rice |
+| habichuelas | "Mira mis habichuelas." | Luis holding a bowl of beans | Luis holding a bowl of rice |
 | olla | "Mira mi olla." | abuela holding up a pot | abuela holding up a frying pan |
 | hace | "Mamá hace la comida." | mamá stirring a pot at the stove | mamá standing with a plate of food, eating |
 | pollo | "Mira el pollo." | a golden drumstick on a plate | a fried egg on a plate |
 | huevo | "Mira el huevo." | a fried egg in the pan | Luis holding up the salt shaker |
 | sal | "Mira la sal." | the frog shaking the salt shaker, white grains falling | the frog turning a tall wooden pepper mill, black grains falling |
-| huele | "¡Huele bien!" | papá with his nose over a steaming pan, eyes shut | papá eating from the pan with a fork, smiling |
-| caliente | "El chocolate está caliente." | a cup of chocolate, steaming | a cup of chocolate with ice and a straw |
+| huele | "¡Huele bien!" | papá at a steaming pan, eyes shut, a wavy line from the pan to his nose | papá eating a drumstick from the pan |
+| caliente | "El chocolate está caliente." | a cup of chocolate, steaming | a glass of chocolate with ice in it |
 | frío | "El agua está fría." | a glass of water with ice in it | an open pot of water, steaming |
 | cuidado | "¡Cuidado, Luis!" | abuela with a hand up, Luis reaching for the hot pan | abuela handing Luis a fritter on a plate |
 | ya | "¡Ya está!" | abuela holding out a plate of golden fritters | abuela stirring batter in a bowl |
@@ -247,3 +247,12 @@ Last gate: every decision holds; each story had one must-fix.
 - 28: Carmen does not bite a piece she has seen salted twice; she pushes it aside. Abuela turns the piece the frog called first and the other too late. Mamá and the baby stand at the far left, away from the stove. The plate abuela holds out stands on the ledge of the stove from the first frame. "Ahora el pollo tiene sal." is said while the salt falls. Carmen's line at the turn is "¡Y huele a huevo!", not a second "¡Tengo hambre!".
 - 29: the last clean cup is abuela's and the one before it the frog's, so that a miss costs the frog first. The frog fills at the hot pot with the ladle.
 - Pairs: "hace" shows mamá (abuela at the stove was "cocina" in La mesa); "huevo" against Luis with the shaker; "sal" against a pepper mill.
+
+## What the wordless readers changed
+
+Four fresh readers saw numbered frames with no sound and no words (one per story, one for the pairs); two more saw the frames again after the changes.
+- All three stories: plates are blue, so that white rice and a fried egg show on them. Abuela's offering arm points the way she faces.
+- 27: a pot that boils over shows bubbles over its rim, foam down its front, and a heap of what was in it on the stove beside it. At the end each of the three holds his own plate below his face, so that what is on it shows. The cups of rice and beans stand clear of the left edge. Rice shows its grains.
+- 28: the plate abuela holds out is held in front of her, not over the frog's head; before that it waits on the right burner (the pot of rice that stood there is gone). Smoke is a grey puff, not a speck. The empty tray lies flat. Mamá and the baby, and Luis and Carmen, stand lower, so that their thought clouds do not cover what is on the counters. The frog salts a plate from its stool; the shaker flies over and back. The two plates on the right counter stand clear of the right edge.
+- 29: the cold cup shows ice cubes over its rim, and no straw; the jug shows bigger cubes. The two who come in stand lower and further apart, and their thought clouds stand side by side. A cup Luis has emptied lies on the floor by the cabinet with a brown drop at its mouth. At the end the frog's fritter and cup are on a small plate by the stool.
+- Pairs: a bowl of beans and a bowl of rice (the cup read as a mug of beer); the salt shaker is glass with a metal cap, and its grains show; "huele" has one wavy line from the pan to papá's nose; "caliente" is against a glass of iced chocolate; in "cuidado" abuela and Luis are whole in the frame; in "hace" mamá eats with a spoon.
