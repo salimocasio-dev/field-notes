@@ -59,6 +59,10 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #bub.der::before{left:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-right:6px solid #FFFFFF;border-left:0}
 #bub.izq::after{left:auto;right:-11px;top:50%;bottom:auto;margin:-8px 0 0;border:8px solid transparent;border-left:9px solid #2A1810;border-right:0}
 #bub.izq::before{left:auto;right:-6px;top:50%;bottom:auto;margin:-5px 0 0;border:5px solid transparent;border-left:6px solid #FFFFFF;border-right:0}
+/* a story's end screen keeps its last picture: upright, the H1 (placed by finFit() in juego.js, 16 px under the picture) sits over the picture's own space, and the buttons stay in the bottom third; ¿Cuál? and the level check (.nopic) keep the full-screen end */
+@media (orientation:portrait),(min-height:601px){
+  #app[data-s=end]:not(.nopic) #fin{inset:auto;left:0;right:0;top:0;padding:0 16px;background:none;overflow:visible;pointer-events:none}
+}
 /* a phone on its side: the picture on the left, everything else in a column on the right */
 @media (orientation:landscape) and (max-height:600px){
   #main{flex-direction:row;gap:16px;padding:0 16px}

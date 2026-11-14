@@ -256,7 +256,14 @@ function foot(a,b,c){$("#next").style.display=a?"flex":"none";$("#again").style.
 // the three states of a lesson screen: "start" (the disc), "play", "end" (title, result, buttons). nopic: ¿Cuál? and the level check show no picture before the first item and after the last
 function estado(s,nopic){const a=$("#app");if(a){a.dataset.s=s;a.classList.toggle("nopic",!!nopic);}}
 // the text of a start or end screen: a title (24 px, left, at about 35% of the height) and, where there is a result, a line or two under it; no title hides it
-function pantalla(h,ps){const f=$("#fin");if(!f)return;f.textContent="";if(h){const e=document.createElement("h1");e.textContent=h;f.appendChild(e);(ps||[]).forEach(t=>{const p=document.createElement("p");p.innerHTML=t;f.appendChild(p);});}f.style.display=h?"flex":"none";}
+function pantalla(h,ps){const f=$("#fin");if(!f)return;f.textContent="";f.dataset.t=h?"1":"";if(h){const e=document.createElement("h1");e.textContent=h;f.appendChild(e);(ps||[]).forEach(t=>{const p=document.createElement("p");p.innerHTML=t;f.appendChild(p);});}f.style.display=h?"flex":"none";}
+// a story's end screen keeps its last picture (it shows what the mistakes cost): upright, the H1 hangs 16 px under the picture and the buttons stay in the bottom third. When the H1 does not fit between
+// the picture and the buttons it is dropped, never the picture. On its side the title sits in the column beside the picture, and ¿Cuál? and the level check (no picture) keep the full-screen layout (all in the css)
+function finFit(){const f=$("#fin"),a=$("#app");if(!f||!a)return;f.style.top="";
+  if(a.dataset.s!=="end"||a.classList.contains("nopic")||LAND()||!f.dataset.t){if(f.dataset.t)f.style.display="flex";return;}
+  f.style.display="flex";const m=$("#main").getBoundingClientRect(),st=$("#stage").getBoundingClientRect(),h=f.firstElementChild,b=$("#again").getBoundingClientRect(),y=st.bottom-m.top+16;
+  if(!h||y+f.scrollHeight+16>b.top-m.top){f.style.display="none";return;}
+  f.style.top=y+"px";}
 // where he opened this lesson from: the app page that sent him here (map, Palabras, Biblioteca or Yo), kept while he moves from story to story
 function origen(){const K="coqui.desde";let o=null;
   try{const r=document.referrer?new URL(document.referrer):null;
@@ -270,8 +277,8 @@ let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush()
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
   if(typeof PAL!=="undefined"&&(!Q.get("fast")||Q.get("rec"))){if(!OIR&&!S.tipo){S._lost=W.lost;PAL.cuento(S,LOG);}else if(PAL.oido)PAL.oido(CUENTO);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
-  step(dots.length);await sleep(1200/FAST);if(my!==runId)return;   // the last picture stays a moment before the end screen takes its place
-  running=false;const nx=!!(S.next&&!OIR);estado("end");pantalla(S.title);foot(nx,true,!nx);}   // the story's title, then Next story (green) above Play again; with no next story, Map (blue) takes the main place
+  step(dots.length);await sleep(1200/FAST);if(my!==runId)return;   // the last picture stays a moment, then the title and the buttons come (the picture itself stays: see finFit)
+  running=false;const nx=!!(S.next&&!OIR);estado("end");pantalla(S.title);foot(nx,true,!nx);finFit();}   // the story's title under the last picture, then Play again above Next story (green); with no next story, Map (blue) takes the main place
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
@@ -288,7 +295,7 @@ function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clien
   if(L){aw=mw-32-16-240;ah=mh-8;}else{aw=mw-32;ah=Z-64;}   // portrait: 16 px side margins; above and below the picture there stays room for the caption (8 + two lines)
   let kd=1;for(let k=2;k<=32;k++){const d=blockDim(k,dpr);if(d[0]<=aw+.01&&d[1]<=ah+.01)kd=k;else break;}
   const d=blockDim(kd,dpr);cv.style.width=d[0]+"px";cv.style.height=d[1]+"px";if(blockFit)blockFit(kd,dpr);
-  const st=$("#stage");if(st)st.style.marginBottom=L?"":Math.max(0,d[1]+112-Z)+"px";}   // the picture is centred in Z; when the caption would not fit under it, it moves up
+  const st=$("#stage");if(st)st.style.marginBottom=L?"":Math.max(0,d[1]+112-Z)+"px";finFit();}   // the picture is centred in Z; when the caption would not fit under it, it moves up
 fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);
 /* for checking the game by machine */
 window.Story={scene(){return E&&E.estado?E.estado(W):"";},get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const h=!respBox(k)&&E.handAt&&E.handAt[k];if(h){tap(h[0],h[1]+3);return;}const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
