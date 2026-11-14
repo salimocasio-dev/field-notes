@@ -6,7 +6,7 @@
 <link rel="icon" href="data:,">
 <title>Coquí · ¿Cuál?</title>
 <style>
-:root{--bg:#1B1B1F;--ink:#FFFFFF;--ink2:#C9C9D1;--line:#4A4A52;--grn:#1E9E52;--blu:#3B5BDB;--sys:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+:root{--bg:#1B1B1F;--ink:#FFFFFF;--ink2:#C9C9D1;--line:#4A4A52;--bad:#D9480F;--grn:#1E9E52;--blu:#3B5BDB;--sys:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:16px/24px var(--sys);overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 button{font:inherit;color:inherit;border:0;padding:0;margin:0;background:none;cursor:pointer}
@@ -46,6 +46,12 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 .sec{display:none;width:100%;max-width:480px;height:48px;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);font:500 16px/24px var(--sys);align-items:center;justify-content:center}
 .sec:active{background:rgba(255,255,255,.08)}
 #app.nopic #stage,#app.nopic #capbox{display:none}
+/* the options of Review and the level check: one picture each, in its own 1.5 px frame; a ring shows the answer: green right, red-orange wrong (the level check only shows which one he touched, white) */
+#opts{position:absolute;inset:0}
+.opt{position:absolute;box-shadow:0 0 0 1.5px var(--line)}
+.opt.ok{box-shadow:0 0 0 3px var(--grn)}
+.opt.bad{box-shadow:0 0 0 3px var(--bad)}
+.opt.sel{box-shadow:0 0 0 3px var(--ink)}
 #bub{position:absolute;left:0;top:0;transform:translate(-50%,-100%) scale(.6);opacity:0;pointer-events:none;max-width:72%;width:max-content;box-sizing:border-box;
   background:#FFFFFF;color:#2A1810;border:3px solid #2A1810;border-radius:12px;padding:5px 11px 6px;font:800 18px/1.22 var(--sys);text-align:center;transition:opacity .12s,transform .12s;line-height:1.2;--tx:50%}
 #bub.on{opacity:1;transform:translate(-50%,calc(-100% - 10px)) scale(1)}
@@ -80,6 +86,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
   <main id="main">
     <div id="stage">
       <canvas id="cv" width="196" height="216"></canvas>
+      <div id="opts"></div>
       <div id="bub" aria-live="polite"></div>
     </div>
     <div id="side">

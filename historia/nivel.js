@@ -63,20 +63,19 @@ const NV=[
  {w:"queso",s:30,p:[["queso","si"],["queso","no"],["leche","si"],["fruta","si"]]},
  {w:"guineo",s:31,p:[["guineo","si"],["guineo","no"],["china","si"],["pan","no"]]},
  {w:"lleno",s:32,p:[["lleno","si"],["lleno","no"],["vacío","si"],["mantequilla","si"]]}];
-const CW=96,CH=106,CG=4;   // four cells, two by two
+const CW=96,CH=106;   // four cells, two by two (the gap between them, GAP, is set from the scale in cual.js)
 const PASO=Math.max(2,Math.ceil(NV.length/14));   // how far a right answer moves him up: the list grows with every scene, the check must still reach its top in about a dozen items
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
-function celda(k){return [(k%2)*(CW+CG),Math.floor(k/2)*(CH+CG)];}
-function nivelDibuja(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.fillStyle="#0E1A24";dc.fillRect(0,0,DW,DH);
-  if(PAN)PAN.forEach((p,k)=>{W=p.w;W.fx=[];p.E.draw(c,W,a);if(W.resp)respDraw(c,a);const xy=celda(k),cm=p.cam;dc.drawImage(sc,cm[0],cm[1],cm[2],cm[3],xy[0],xy[1],CW,CH);
-    if(p.pulso&&F-p.pulso<6){dc.fillStyle="rgba(255,255,255,.35)";dc.fillRect(xy[0],xy[1],CW,CH);}});
+function celda(k){return [(k%2)*(CW+GAP),Math.floor(k/2)*(CH+GAP)];}
+function nivelDibuja(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.clearRect(0,0,cv.width,cv.height);opcionesVer(!!PAN);
+  if(PAN)PAN.forEach((p,k)=>{W=p.w;W.fx=[];p.E.draw(c,W,a);if(W.resp)respDraw(c,a);const xy=celda(k),cm=p.cam;dc.drawImage(sc,cm[0],cm[1],cm[2],cm[3],xy[0],xy[1],CW,CH);});
   W=keep;}
 function nivelPanel(pic,byW){const it=byW[pic[0]],spec=it[pic[1]],E2=ESCENAS[spec.esc||it.esc],cm=spec.cam,h=cm[3],w=h*CW/CH,cx=pic[2]!=null?pic[2]:cm[0]+cm[2]/2;
-  return {w:panelW(spec,E2),E:E2,cam:[Math.max(0,Math.min(E2.SW-w,cx-w/2)),cm[1],w,h],pulso:0};}
-async function nivelItem(q,byW){const orden=[0,1,2,3].sort(()=>Math.random()-.5),it=byW[q.p[0][0]];   // where the right picture sits is drawn fresh
+  return {w:panelW(spec,E2),E:E2,cam:[Math.max(0,Math.min(E2.SW-w,cx-w/2)),cm[1],w,h]};}
+async function nivelItem(q,byW){anillo(null);const orden=[0,1,2,3].sort(()=>Math.random()-.5),it=byW[q.p[0][0]];   // where the right picture sits is drawn fresh
   PAN=orden.map(k=>Object.assign(nivelPanel(q.p[k],byW),{right:k===0}));
   await wait(450);const my=runId;let got=null,ms=0,tEnd=0,res;const p=new Promise(r=>res=r);
-  NQ.toque=k=>{if(!tEnd||got!=null||!PAN[k])return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);PAN[k].pulso=F;res();};   // a touch before the sentence ends does not count
+  NQ.toque=k=>{if(!tEnd||got!=null||!PAN[k])return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);anillo(k,"sel");res();};   // the ring only shows which one he touched: a check never says right or wrong   // a touch before the sentence ends does not count
   await say(it.say,0);tEnd=performance.now();NQ.listo=NQ.i;
   const rep=setInterval(()=>{if(got==null&&!speaking&&my===runId)playClip(it.say);},9000/FAST);
   await p;clearInterval(rep);SFX.blip();await wait(350);PAN=null;return {w:q.w,s:q.s,ok:!!PAN_OK(got,orden),ms};}
@@ -104,7 +103,7 @@ async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,ru
   estado("end",true);$("#next").textContent="To the map";$("#next").classList.add("blu");$("#next").onclick=()=>salir("app.html?tab=mapa");foot(1,0,0);}
 async function nivelArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · Level check";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(()=>{F++;nivelDibuja();},TICK);
+  cualSize(2,2,CW,CH);mkOpts(4,k=>{if(NQ.toque)NQ.toque(k);});
   mkDots(Q.get("todo")?NV.length:16);estado("start",true);pantalla("Level check");fit();   // the start screen: a title and the disc; the bar has its true number of segments (16 at most) from the start
-  cv.addEventListener("pointerdown",e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*DW,y=(e.clientY-r.top)/r.height*DH;if(NQ.toque)NQ.toque((y<CH+CG/2?0:2)+(x<CW+CG/2?0:1));});
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}nivelRun();};}
 window.Nivel={get pan(){return PAN?PAN.map(p=>({right:p.right})):null;},get i(){return NQ.i;},get listo(){return NQ.listo===NQ.i;},get hecho(){return NQ.hecho;},get fin(){return NQ.fin;},toca(k){if(NQ.toque)NQ.toque(k);},get running(){return !!NQ.run;},frontera:nivelFrontera,NV};
