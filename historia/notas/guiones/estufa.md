@@ -1,4 +1,4 @@
-# La estufa: three stories (draft 2 of stories 27 and 29, after the first two reviews; story 28 to come)
+# La estufa: three stories (draft 2 of stories 27 and 29, after the first two reviews; draft 1 of story 28 and of the pairs)
 
 Place 3, La cocina. Scene 2 of 4. The learner is the little frog (Coquí). He has finished La casa (stories 1 to 11), El parque (12 to 23) and the first scene of La cocina, La mesa (24 to 26).
 
@@ -15,7 +15,7 @@ The picture: abuela's stove, seen from the front and a little from above. It sta
 Voices, the signal for a right move, what follows a wrong move, pokes, answer bubbles and the corner card are as in La mesa (historia/notas/guiones/mesa.md). In short: a wrong move costs something in the picture that stays; then "No, Coquí. Mira." and a whole sentence, true at that moment; then the big sign shows the right one and he does it, with no star. Nobody points at or looks toward the answer in a decision. The sides of answer bubbles are drawn fresh every time.
 A poke names people, the stove and the kitchen only. It never names the cups of rice or of beans, what is in a pot, the pot of chocolate or the jug.
 
-The three games open differently: 27 with a touch on a thing, 28 (to come), 29 with something the frog does himself.
+The three games open differently: 27 with a touch on a thing, 28 with something he says, 29 with something the frog does himself.
 
 ---
 
@@ -72,9 +72,58 @@ The three games open differently: 27 with a touch on a thing, 28 (to come), 29 w
 
 ---
 
-## Story 28: (to come)
+## Story 28: El pollo y el huevo
 
-New words: pollo, huevo, sal, huele.
+- **Goal he can see, from the first frame:** a drumstick and an egg fry side by side in abuela's wide pan; a tray on the counter holds three more drumsticks and three more eggs; four plates stand on the right, and the frog's little mat lies on the floor. Get every piece onto a plate golden and tasting right.
+- **At stake:** the six pieces on the tray: after them there is no more. They are fried two at a time, a drumstick and an egg, and each pair is for somebody. A piece that goes on smoking turns black. A piece that is salted twice is too salty: a white heap lies on it, and whoever bites it pulls a face and leaves it. What the baby does not want, it throws on the floor. Each stays where it is to the end. The last pair is for the baby and the frog. The card shows a cross for that round.
+- **New words:** pollo, huevo, sal, huele.
+- **Back again:** hace, comida, más, por favor, para, quiere, tiene, ahora, mira, negro, bebé, hay, tengo hambre, come, gracias, toma.
+- **Heard along the way:** huele a, no hay más.
+
+Salt shows as white specks on a piece; a second helping of salt is a white heap.
+
+**Start:** abuela stands at the right of the stove; the wide pan is on the right burner, the drumstick on its left side, the egg on its right. On the left counter: the tray, and the salt shaker. On the right counter: four plates. The frog is on his stool.
+
+1. NARR: "Abuela hace la comida." NARR: "Aquí hay pollo." (The drumstick in the pan twinkles.) NARR: "Y aquí hay un huevo." (The egg.) NARR: "¡Mmm! ¡Huele bien!"
+2. Abuela hands him the shaker; while she does: NARR: "Abuela dice: Toma la sal, Coquí."
+
+**The opening** (big sign, nothing can go wrong)
+
+3. NARR: "Abuela dice: Sal para el pollo." The big sign is on the drumstick. He touches it. The frog shakes salt over it: white specks. Right signal. NARR: "Ahora el pollo tiene sal."
+4. NARR: "Abuela dice: Y sal para el huevo." The sign is on the egg. He touches it. He salts it. Right signal. NARR: "Ahora el huevo tiene sal."
+5. **He calls it out, taught.** Mamá comes in with the baby. NARR: "Mamá dice: ¡Mmm! ¡Huele bien!" NARR: "Abuela dice: Coquí, mira el pollo y el huevo." She turns to the baby, who takes hold of her finger; her back is to the pan. Smoke rises from the drumstick. Two speaking bubbles: "¡Abuela, el pollo!" and "¡Abuela, el huevo!" The big sign is on "¡Abuela, el pollo!" He touches it. COQUÍ: "¡Abuela, el pollo!" She turns round and turns the drumstick over: golden. Right signal. NARR: "Abuela dice: ¡Gracias, Coquí!"
+6. She turns to the baby again. Smoke rises from the egg. The two speaking bubbles; the sign is on "¡Abuela, el huevo!" He touches it. COQUÍ: "¡Abuela, el huevo!" She turns the egg over: golden. Right signal.
+7. **For the baby, taught.** Abuela holds both out on a plate; the baby waves both arms at the plate. NARR: "Mamá dice: El bebé quiere pollo." Two picture bubbles: a drumstick, an egg. The big sign is on the drumstick. He touches it. The frog takes the drumstick over. Right signal. While the baby eats: NARR: "El bebé come pollo."
+8. NARR: "Mamá dice: Ahora el bebé quiere huevo." The two picture bubbles; the sign is on the egg. He touches it. Right signal. While the baby eats: NARR: "El bebé come huevo."
+
+**The turn**
+
+9. Luis and Carmen run in, noses up. NARR: "Luis dice: ¡Mmm! ¡Huele a pollo!" NARR: "Carmen dice: ¡Tengo hambre!" Abuela shows them the tray: three drumsticks, three eggs. NARR: "Abuela dice: No hay más." The card with three empty places shows in the corner. The signs go away.
+
+**The game** (no sign). Each round has its own pair from the tray.
+
+10. **Decision A, Say (the smoke).** Abuela puts a drumstick and an egg in the pan and salts them. NARR: "Abuela dice: Coquí, mira el pollo y el huevo." She turns to the baby, who takes hold of her finger. Smoke rises from one of the two (drawn fresh). Two speaking bubbles: "¡Abuela, el pollo!" and "¡Abuela, el huevo!"
+   - Right: without letting go of the baby she reaches back and turns that one over, in time: golden. Right signal. A star. She turns the other one too, puts both on a plate, and Luis eats them.
+   - Wrong: she reaches back and turns over the one he called, which was fine. The other smokes on and turns black. A cross. NARR: "No, Coquí. Mira. El pollo está negro." (Or: "El huevo está negro.") The sign shows the right bubble; he says it; she turns round and turns it over: black. Both go on Luis's plate; he eats the good one, and the black one stays.
+11. **Decision B, Touch (more salt).** Abuela fries the second pair, salts each once, and sets the plate in front of Carmen. Carmen takes one bite of each (which first is drawn fresh; her face is the same for both). NARR: "Carmen dice: Más sal para el huevo, por favor." (Or: "para el pollo". Drawn fresh.) The frog has the shaker. He touches the drumstick or the egg on her plate.
+   - Right: the frog salts it. Right signal. A star. Carmen eats both.
+   - Wrong: the frog salts the other one: a white heap on it. Carmen bites it, pulls a face, and puts it back. A cross. A thought bubble over Carmen shows the right piece under the shaker. NARR: "No, Coquí. Mira. Carmen quiere sal para el huevo." The sign is on it; he touches it; he salts it; Carmen eats it. The piece with the white heap stays on her plate.
+12. **Decision C, Touch a picture, last (for the baby).** Abuela tips the tray: it is empty. She fries the last pair herself and holds the plate out; the baby waves both arms at the plate. NARR: "Mamá dice: El bebé quiere huevo." (Or: "pollo". Drawn fresh.) Two picture bubbles: a drumstick, an egg.
+   - Right: the frog takes it over; the baby eats. Right signal. A star. Abuela puts the other piece on the frog's mat; while she does: NARR: "Abuela dice: Y esto es para Coquí."
+   - Wrong: the frog takes over the one he touched. The baby throws it on the floor. A cross. A thought bubble over the baby shows the right one. NARR: "No, Coquí. Mira. El bebé quiere huevo." The sign shows the right picture; he touches it; the frog takes it over; the baby eats. The piece on the floor stays there; the frog's mat stays empty.
+
+**The ending** (the same lines in every ending)
+
+13. NARR: "La familia come pollo y huevo." By what went wrong:
+   - Nothing (three stars): clean plates; the frog eats his piece on his mat. Stars and a heart.
+   - Otherwise: the black piece on Luis's plate, the piece with the white heap on Carmen's, the piece on the floor, and the frog's empty mat.
+14. COQUÍ: "¡Mmm! ¡Huele bien, abuela!"
+
+**Fewest hearings before a word can cost:** pollo 9 (step 1; step 3 twice; step 5: abuela's line, the bubble, the frog; step 6, the bubble; step 7 twice; the turn), huevo 9 (step 1; step 4 twice; step 5: abuela's line, the bubble; step 6: the bubble, the frog; step 8 twice). Not deciding, but heard: sal 5 (steps 2, 3 and 4), huele 3 (steps 1 and 5, the turn).
+
+**A miss is filed under:** A: the piece that smoked. B: the piece that was asked. C: the piece that was asked.
+
+**Chance without the Spanish:** A one in two. B one in two. C one in two.
 
 ---
 
@@ -138,7 +187,22 @@ A fritter in the oil is under the bubbles: nobody can see how far it is until it
 
 ## Next-day picture pairs (¿Cuál?) for this scene
 
-To be written with story 28.
+One sentence, two pictures, only one fits. Both pictures are lively; only the new word picks one. No picture is the right one in two pairs. No other word in the sentence fits one picture only.
+
+| Word | Sentence | Picture that fits | The other picture |
+| --- | --- | --- | --- |
+| arroz | "Aquí hay arroz." | a pot full of white rice, steaming | a pot full of red beans, steaming |
+| habichuelas | "Mira mis habichuelas." | Luis holding up a cup of beans | Luis holding up a cup of rice |
+| olla | "Es una olla." | a pot on the stove | a frying pan on the stove |
+| hace | "Abuela hace la comida." | abuela stirring a pot at the stove | abuela holding an empty pot upside down |
+| pollo | "Mira mi pollo." | Carmen holding up a drumstick | Carmen holding up an egg |
+| huevo | "Mira mi huevo." | abuelo holding up an egg | abuelo holding up the salt shaker |
+| sal | "Mira la sal." | the salt shaker, salt falling from it | a drumstick on a plate |
+| huele | "¡Mmm! ¡Huele bien!" | papá with his nose over a steaming pan, eyes shut | papá looking the other way, a cold empty pan |
+| caliente | "El chocolate está caliente." | a cup of chocolate, steaming | a cup of chocolate with a straw and ice |
+| frío | "El agua está fría." | a glass of water with ice in it | a kettle of water, steaming |
+| cuidado | "¡Cuidado, Luis!" | abuela with a hand up, Luis reaching for the hot pan | abuela handing Luis a fritter on a plate |
+| ya | "¡Ya está!" | abuela lifting a golden fritter out of the pan | abuela dropping a ball of batter into the pan |
 
 ## For the owner, one line each
 
@@ -147,6 +211,9 @@ To be written with story 28.
 - Cold chocolate is drawn in the same cup as hot, with a straw, so that the cups can be counted. By the rule of La mesa it would be in a glass ("vaso").
 - The fritter is never named aloud. If it should be: "buñuelo" (sweet, goes with chocolate) or "fritura" (any fried thing).
 - In story 29 the frog does not speak the new words in a round; he acts on them.
+- "Sal" and "huele" decide nothing in story 28; they are heard and then tested in the picture pairs.
+- Abuela says "No hay más." in story 28; "no hay" is a word of the next scene, heard early here.
+- The pair for "frío" says "fría" (el agua). The pair for "ya" says "¡Ya está!".
 
 ## What the first two reviews changed (draft 1 to draft 2, stories 27 and 29)
 
