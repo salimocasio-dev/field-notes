@@ -106,7 +106,32 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{};
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1-(p.bub?38:0)];}
 function respIcon(g,k,x,y,w,h,a){}
-function hud(g,W,a){}
+/* ---------- the card in the corner: three rounds; a star, or the mark of what went wrong ---------- */
+function hud(g,W,a){if(!W.tarjeta)return;tarjeta(g,3,3,66,24);
+  (W.marcas||[]).forEach((m,i)=>{const x=10+i*20,y=6;
+    if(m==="ok"){const st=["......#......",".....###.....",".....###.....","#############",".###########.","..#########..","...#######...","..#########..",".####...####.",".###.....###.","##.........##"];g.fillStyle=OUT;st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i-1,y+j+1,3,3);});g.fillStyle="#F0C020";st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i,y+j+2,1,1);});}
+    else if(m==="pan"){g.fillStyle=OUT;g.fillRect(x+1,y+4,12,9);g.fillStyle="#D8AA70";g.fillRect(x+2,y+5,10,7);g.fillStyle="#FFFDF4";[[8,5,4,3],[10,8,2,2],[6,5,2,1]].forEach(r=>g.fillRect(x+r[0],y+r[1],r[2],r[3]));}                 // a bitten crust
+    else if(m==="bote"){g.drawImage(spr("btmadera",()=>mkBote("madera")),x-1,y-3,14,14);g.fillStyle="#1E6A2A";[[0,4],[4,2],[10,3],[13,5]].forEach(d=>g.fillRect(x+d[0],y+d[1],1,11-d[1]));}                                            // a boat in the reeds
+    else if(m==="onda"){g.strokeStyle="#2E6CD0";g.lineWidth=1.5;[5,2.5].forEach(r=>{g.beginPath();g.ellipse(x+7,y+9,r+1.5,r*.5+1,0,0,7);g.stroke();});}                                                                                    // rings on the water: the ducks went off
+    else{g.fillStyle="#C8C8D4";g.fillRect(x+1,y+13,12,1);g.fillRect(x+1,y+1,1,12);g.fillRect(x+12,y+1,1,12);g.fillRect(x+1,y+1,12,1);}});}
+
+/* ---------- moving things ---------- */
+async function mueve(id,x,y,n){const p=G(id);if(!p)return;const x0=p.x,y0=p.y;n=n||Math.max(3,R(Math.hypot(x-x0,y-y0)/5));p.sent=0;p.paso=1;if(Math.abs(x-x0)>3)p.dir=x>x0?1:-1;for(let i=1;i<=n;i++){p.x=x0+(x-x0)*i/n;p.y=y0+(y-y0)*i/n;await wait(TICK);}p.x=x;p.y=y;p.paso=0;}
+// a duck paddles, or flies, to a place
+async function patoA(n,x,y,pose,pasos){const o=W.patos[n];if(!o)return;const x0=o.x,y0=o.y;pose=pose||o.pose||"nada";pasos=pasos||Math.max(4,R(Math.hypot(x-x0,y-y0)/(pose==="vuela"?8:3)));o.pose=pose;if(Math.abs(x-x0)>3)o.dir=x>x0?1:-1;
+  for(let i=1;i<=pasos;i++){o.x=x0+(x-x0)*i/pasos;o.y=y0+(y-y0)*i/pasos;await wait(TICK);}o.x=x;o.y=y;}
+const salpica=(x,y)=>{W.salpica=(W.salpica||[]).filter(e=>F-e.f<12).concat([{x:R(x),y:R(y),f:F}]);tone(300,0,.1,"sine",.1,90);};
+const cuac=n=>{for(let k=0;k<(n||1);k++){tone(420,k*.16,.07,"sawtooth",.05,330);tone(330,k*.16+.07,.06,"sawtooth",.04,280);}};
+// a fish jumps out of the water and falls back
+async function pezSalta(n,h){const o=W.peces[n];if(!o)return;salpica(o.x,o.y-6);for(let i=1;i<=10;i++){o.dy=(h||22)*Math.sin(Math.PI*i/10);await wait(TICK);}o.dy=0;salpica(o.x,o.y-6);}
+async function pezA(n,x,y,pasos){const o=W.peces[n];if(!o)return;const x0=o.x,y0=o.y;pasos=pasos||Math.max(4,R(Math.hypot(x-x0,y-y0)/4));if(Math.abs(x-x0)>3)o.dir=x>x0?1:-1;for(let i=1;i<=pasos;i++){o.x=x0+(x-x0)*i/pasos;o.y=y0+(y-y0)*i/pasos;await wait(TICK);}}
+async function aveA(n,x,y,pasos){const o=W.aves[n];if(!o)return;const x0=o.x,y0=o.y;pasos=pasos||Math.max(5,R(Math.hypot(x-x0,y-y0)/7));o.vuela=1;if(Math.abs(x-x0)>3)o.dir=x>x0?1:-1;for(let i=1;i<=pasos;i++){const t=i/pasos;o.x=x0+(x-x0)*t;o.y=y0+(y-y0)*t-10*Math.sin(Math.PI*t);await wait(TICK);}o.x=x;o.y=y;o.vuela=0;}
+// the bread flies from whoever has it to a place (z: how high it ends); then it is there
+async function panA(x,y,z,alto,pasos){const pn=W.pan;if(!pn)return;let x0,y0,z0;if(pn.con==="cq"){const b=frogBox(W.cq);x0=b.x+(b.w>>1);y0=W.cq.y+28;z0=8;bounce(5);}else if(pn.con&&G(pn.con)){const p=G(pn.con);x0=p.x+8;y0=p.y;z0=24;}else{x0=pn.x;y0=pn.y;z0=pn.z||0;}
+  pn.con=null;pn.vis=1;pasos=pasos||9;for(let i=1;i<=pasos;i++){const t=i/pasos;pn.x=x0+(x-x0)*t;pn.y=y0+(y-y0)*t;pn.z=z0+((z||0)-z0)*t+(alto||18)*4*t*(1-t);await wait(TICK);}pn.x=x;pn.y=y;pn.z=z||0;}
+async function boteA(n,x,y,pasos){const o=W.botes[n];if(!o)return;const x0=o.x,y0=o.y;pasos=pasos||Math.max(5,R(Math.hypot(x-x0,y-y0)/3));for(let i=1;i<=pasos;i++){o.x=x0+(x-x0)*i/pasos;o.y=y0+(y-y0)*i/pasos;await wait(TICK);}o.x=x;o.y=y;}
+function marca(m){const i=(W.marcas||[]).indexOf(null);if(i>=0)W.marcas[i]=m;}
+
 
 const acts={
   async inicio18(){W.gente={luis:{x:44,y:152,pose:"idle",dir:1,sent:1},carmen:{x:66,y:152,pose:"idle",dir:1,lleva:"bolsa"}};Object.assign(W.cq,{x:84,y:123,s:1});
