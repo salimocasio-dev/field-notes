@@ -324,8 +324,9 @@ function yo(){const d=db(),r=PAL.racha(),ws=Object.values(d.palabras),l=CURSO.lu
   <button class="btn out full" onclick="bienvenida(0)">How it works</button>`;}
 
 /* ---------- welcome, first time only: three short steps in English ---------- */
+const NIVELTXT="The words of the stories you already understand are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.";   // what the level check's result screen used to say (notas/nivel-explicacion.txt)
 function bienvenida(k){const dots=`<div style="display:flex;gap:8px;justify-content:center;margin:8px 0 16px">${[0,1,2].map(i=>`<i style="width:8px;height:8px;border-radius:4px;background:${i===k?"var(--info)":"#D5D3CC"}"></i>`).join("")}</div>`;
-  const p=[[`<h1 style="margin-top:0">Welcome to Coquí</h1><p>You learn Spanish the way children do: by hearing it, with pictures, in short stories.</p><p>You answer by touching the picture. What you touch changes what happens.</p><p>Words come back just before you would forget them.</p><p class="small mut">English is only in the menus, to help you find your way.</p>`,
+  const p=[[`<h1 style="margin-top:0">Welcome to Coquí</h1><p>You learn Spanish the way children do: by hearing it, with pictures, in short stories.</p><p>You answer by touching the picture. What you touch changes what happens.</p><p>Words come back just before you would forget them.</p><p class="small mut">English is only in the menus, to help you find your way.</p>${AJ().bienvenida?`<h2>Level check</h2><p style="margin:0">${NIVELTXT}</p>`:""}`,   // opened again from Yo ("How it works"), not the first-time welcome
       `${dots}<button class="btn full" onclick="bienvenida(1)">Next</button>`],
     [`<h1 style="margin-top:0">How much time a day?</h1><p class="mut">Today's plan is sized to it. You can change it in Yo.</p><div class="seg">${[15,30,60,120].map(m=>`<button class="${AJ().min===m?"on":""}" onclick="AJ().min=${m};PAL.save();bienvenida(1)">${m} min</button>`).join("")}</div>`,
       `${dots}<button class="btn full" onclick="bienvenida(2)">Next</button>`],
