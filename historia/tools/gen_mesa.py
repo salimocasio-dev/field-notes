@@ -50,7 +50,7 @@ s24={"id":"la-mesa","title":"La mesa","place":"La cocina","scene":"mesa","next":
   {"dots":2},act("abuelaa",centro=1),act("reparte24",p="mama",t="papa"),
   ask("mama","c24_quien_no_taza",["c24_ahora_mama"],[act("pon",k="taza",a="mama")]),
   ask("papa","c24_quien_no_plato",["c24_ahora_papa"],[act("pon",k="plato",a="papa")]),
-  {"dots":3},act("casa"),act("entra",quien="carmen",silla=3)]+mira("carmen")+[
+  {"dots":3},act("casa"),act("entra",quien="carmen",silla=2)]+mira("carmen")+[
   ask("tazas","c24_taza_para_carmen",[],[act("pon",k="taza",a="carmen",suelto=1),"c24_cq_pone_taza",act("ya")]),
   act("casa")]+mira("carmen")+[
   ask("di_plato",None,[],[act("luispone",k="plato",a="carmen",suelto=1),"c24_luis_pone_plato",act("ya")],resp=DV,baraja=True,voces=VV,said={"di_plato":"c24_cq_plato"}),
@@ -204,19 +204,19 @@ abu=lambda **kw:dict({"x":205,"y":170,"dir":-1},**kw)
 cual={"id":"cual-mesa","title":"¿Cuál?","place":"La cocina","scene":"mesa","tipo":"cual","stake":{"thing":"none","steps":0},
  "note":"The next-day pass for La mesa.","clips":{k:todos[k] for k in usa},
  "items":[
-  {"w":"mesa","say":"n_mesa","si":pic(CT,mantel=1,cosas=[{"k":"florero","x":140,"y":152}]),"no":pic(CE,estufa={"olla":1,"vapor":1})},
+  {"w":"mesa","say":"n_mesa","si":pic(CT,mantel=1,cosas=[{"k":"florero","x":140,"y":152,"z":300}]),"no":pic(CE,estufa={"olla":1,"vapor":1})},
   {"w":"plato","say":"m_c_mi_plato","si":pic(CF,gente={"luis":de_pie(alza="plato")}),"no":pic(CF,gente={"luis":de_pie(alza="taza")})},
-  {"w":"taza","say":"m_c_mi_taza","si":pic(CF,gente={"carmen":de_pie(alza="tazall")}),"no":pic(CF,gente={"carmen":de_pie(alza="olla")})},
+  {"w":"taza","say":"m_c_mi_taza","si":pic(CF,gente={"carmen":de_pie(alza="tazall")}),"no":pic(CF,gente={"carmen":de_pie(alza="olla",alzax=26)})},
   {"w":"cuchara","say":"m_c_mi_cuchara","si":pic(CF,gente={"abuelo":de_pie(alza="cuchara")}),"no":pic(CF,gente={"abuelo":de_pie(alza="tenedor")})},
   {"w":"tenedor","say":"m_c_papa_tenedor","si":pic(CF,gente={"papa":de_pie(alza="tenedor")}),"no":pic(CF,gente={"papa":de_pie(alza="cuchillo")})},
   {"w":"cuchillo","say":"m_c_ab_cuchillo","si":pic(CA_,gente={"abuela":abu(alza="cuchillo")}),"no":pic(CA_,gente={"abuela":abu(alza="cuchara")})},
   {"w":"comida","say":"m_c_mira_comida","si":pic(CZ,mantel=1,puestos=[P0(),P0(plato={"n":1,"con":"espa","vapor":1}),P0(),P0()]),"no":pic(CZ,mantel=1,puestos=[P0(),P0(plato={"n":2,"con":None}),P0(),P0()])},
-  {"w":"cocina","say":"c26_ab_en_cocina","si":pic(CA_,gente={"abuela":abu()},estufa={"olla":1,"vapor":1}),"no":pic(CA_,afuera=1,gente={"abuela":{"x":186,"y":176,"dir":-1}})},
-  {"w":"pone","say":"m_c_carmen_pone","si":pic([84,134,113,60],mantel=1,gente={"carmen":{"x":150,"y":204,"dir":-1,"pose":"offer"}},cosas=[{"k":"plato","x":134,"y":166,"z":300}]),
-                                     "no":pic([84,134,113,60],mantel=1,gente={"carmen":{"x":150,"y":204,"dir":-1,"lleva":"pano"}},puestos=[P0(),P0(plato={"n":1,"con":None}),P0(),P0()],cosas=[{"k":"pano","x":140,"y":158,"z":300}])},
+  {"w":"cocina","say":"c26_ab_en_cocina","si":pic([70,86,169.5,90],gente={"abuela":abu(x=176,y=172)},estufa={"olla":1,"vapor":1}),"no":pic([70,90,169.5,90],afuera=1,gente={"abuela":{"x":176,"y":176,"dir":-1}})},
+  {"w":"pone","say":"m_c_carmen_pone","si":pic([127,104,113,60],mantel=1,gente={"carmen":{"x":206,"y":165,"dir":-1,"pose":"offer"}},cosas=[{"k":"plato","x":187,"y":150,"z":300}]),
+                                     "no":pic([127,104,113,60],mantel=1,gente={"carmen":{"x":206,"y":165,"dir":-1,"pose":"offer"}},cosas=[{"k":"plato","x":178,"y":150,"z":300},{"k":"pano","x":187,"y":151,"z":301}])},
   {"w":"tengo hambre","say":"c26_luis_hambre","si":pic([84,84,113,60],gente={"luis":sent(1,piensa="hambre")},sitio={"luis":1}),"no":pic([84,84,113,60],gente={"luis":sent(1,piensa="sed")},sitio={"luis":1})},
   {"w":"tengo sed","say":"c26_carmen_sed","si":pic(CT,gente={"carmen":sent(1,hace="bebe",que="vaso")},sitio={"carmen":1}),"no":pic(CT,gente={"carmen":sent(1,hace="come",que="tenedor")},sitio={"carmen":1},puestos=[P0(),P0(plato={"n":1,"con":"comida"}),P0(),P0()])},
-  {"w":"listo","say":"m_c_bizcocho_listo","si":pic(CT,mantel=1,cosas=[{"k":"entero","x":140,"y":152}]),"no":pic(CA_,estufa={"horno":1})}]}
+  {"w":"listo","say":"m_c_bizcocho_listo","si":pic(CT,mantel=1,cosas=[{"k":"entero","x":140,"y":153,"z":300}]),"no":pic(CA_,estufa={"horno":1})}]}
 json.dump(cual,open("cuentos/cual-mesa.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # the story before this scene leads into it

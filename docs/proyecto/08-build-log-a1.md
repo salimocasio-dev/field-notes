@@ -4,10 +4,53 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=29
-- Story 1 directly: historia/?v=29 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=29 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=30
+- Story 1 directly: historia/?v=30 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=30 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
+
+## Nov 14, part 15: place 3, La cocina, scene 1, La mesa (stories 24 to 26)
+
+Live at ?v=30. Script (final): historia/notas/guiones/mesa.md, with what each round of reviews changed at its end. Generator: historia/tools/gen_mesa.py (three stories, twelve pairs; it also sets `next` on story 23). Scene: historia/escenas/mesa.js.
+
+### What is built
+
+| Story | Words | The game (after the turn) | What a miss costs |
+| --- | --- | --- | --- |
+| 24 la-mesa, La mesa | mesa, plato, taza, pone | A touch the plates or the cups ("Un plato para papá."); B touch who ("¿Quién no tiene taza?"); C say what is missing | a slice of bizcocho or a cup of chocolate is ruined, and one plate or cup stays empty: there are exactly three of each |
+| 25 la-cuchara, La cuchara | cuchara, tenedor, cuchillo, comida | A touch who ("¿Quién tiene la cuchara?"); B say what is missing; C picture bubbles ("Un tenedor para Carmen.") | the food drops off the wrong thing onto the white cloth; the stain stays |
+| 26 tengo-hambre, Tengo hambre | tengo hambre, tengo sed, listo, cocina | A he says what he wants himself (a thought bubble shows it); B touch food or water; C touch who said it | Canelo has the plate or the glass, and the one it was for sits without it: four plates, four glasses |
+
+- The three games open differently (a thing, a person, something he says) and end differently.
+- A new place on the map: La cocina opens when El parque is done. `curso.js` lists the three stories; the level check has four new items (40); ¿Cuál? has twelve new pairs (cual-mesa).
+- "Mesa", "pone", "comida", "cocina" and "listo" decide nothing in their stories; they are tested the next day by their pairs.
+
+### The scene (mesa.js)
+
+- Abuela's kitchen: counter and cupboard left, the table in the middle seen a little from above with four chairs behind it, stove and window right, the door to the yard at the left edge. Whoever stands in front of the table is lower in the picture than its top, so nothing on the table is hidden.
+- People: `W.gente[name]` {x, y, dir, sent, vis, hace (come, bebe), que, lleva, lleva2, alza (held up, drawn twice the size), mano (in the hand at a dish), piensa (a thought bubble: hambre or sed), bebe (mamá carries the baby)}. `W.sitio[name]` is the chair, 0 to 3. Abuela also has `ofrece` (what she holds out).
+- A place: `W.puestos[i]` {plato:{n, con, vapor}, taza:{n, con, k}, frente:[...]}. `con`: bizcocho, choco, sopa, espa, pan, comida, migas, agua. `frente` holds the messes (roto, charco, mancha with its colour) and a thing put aside. The plate stands in front, the cup behind it to the right, so four places stay apart.
+- The counter is `W.mostrador` {platos, tazas, bandeja, comidas, vasos, jarron}; the tray's contents are `W.bandeja`; the stove is `W.estufa` {olla (2: empty, tipped towards us), tapa, vapor, bizcocho, jarra, pastel, horno}.
+- `coloca(i,k)`: a second plate or cup at a place ruins what was in the first. Story 24 counts slices and cups of chocolate (`W.reb`, `W.choc`) once `W.contado` is set at the turn; abuela's board shows the slices left.
+- Story 25: there is one spoon, one fork, one knife. `tiene(id)`, `quienTiene(k)`; `util` (the frog carries one, and a wrong one flies back to where it came from: `W.origen`), `llama` (two people change over), `come25` (a stain when the thing does not fit the dish).
+- Story 26: `W.tuvo[who]` and `W.perdio[who]` keep what each has had and what Canelo had instead; `reparte26` hands out what is left at the end.
+- `suelto:1` on an act starts it and goes on, so that a line is said during it; `act ya` waits for it. `abuelaa` {a, centro, sirve, nada}, `entra`, `sale`, `muestra` (one thing lifts up to twinkle), `piensa`.
+- A touch on somebody's place counts as that person (the person's box reaches down to the table). No poke names a plate, a cup, a spoon, a fork, a knife, food or water.
+- Pair pictures use `afuera` (a market stall), `estufa.horno`, `florero`, `pano`, and `alza` on anybody.
+
+### Reviews
+
+- Script: draft 1 (beginner: all three "not ready"; Spanish: six lines), draft 2 (beginner: every decision holds, three still "not ready"; Spanish: six small things), draft 3 to a last gate (26 ready; 24 and 25 one rule each) and a final Spanish check (nothing to fix). What changed is at the end of the script.
+- The biggest mistakes caught: a wrong answer that cost nothing in the world (24); things nobody kept count of (25: who has which; 26: plates that never ran out); the same story twice (24 and 25); a free poke that named the answer; pairs solved by an old word.
+
+### Testing
+
+- 68 machine runs: each story all right, all wrong and every single miss, over four sets of draws. All end, with the stars and crosses and the end state they should have.
+- Found by testing: the baby took the touch meant for mamá; six plates could not stay apart at 24 pixels a place (plate in front, cup behind).
+
+### Audio
+
+- 138 new lines, about 4,100 characters. Azure so far this month: about 36,600 of 500,000 characters (my own running count, not a reading from Azure).
 
 ## Nov 14, part 14: Escuchar for El parque, first set
 

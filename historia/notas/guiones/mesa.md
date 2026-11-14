@@ -43,7 +43,7 @@ The three games open differently: 24 with a touch on a thing, 25 with a touch on
 **Start:** the table has its cloth and nothing else. On the counter: a stack of six plates and six cups. Abuela stands at the stove. Luis stands at the counter. The frog stands in front of the table. Nobody sits yet.
 
 1. NARR: "Esta es la mesa." (The table twinkles.) NARR: "Aquí hay un plato." (One plate lifts off the stack and twinkles.) NARR: "Y aquí hay una taza." (One cup lifts out of the row and twinkles.)
-2. Abuelo, papá and mamá come in and sit down; mamá has the baby on her lap. While they sit down: NARR: "La familia se sienta." NARR: "El bebé está con mamá." (The baby twinkles.)
+2. Abuelo, papá and mamá come in and sit down; mamá takes the chair at the end, with the baby on her lap at her far side. While they sit down: NARR: "La familia se sienta." NARR: "El bebé está con mamá." (The baby twinkles.)
 
 **The opening** (big sign, nothing can go wrong)
 
@@ -51,7 +51,7 @@ The three games open differently: 24 with a touch on a thing, 25 with a touch on
 4. **He calls for what is missing, taught.** Abuelo's place has a plate and no cup. Abuelo twinkles. Luis stands at the counter, one hand over the plates and one over the cups. Two speaking bubbles: "¡Un plato!" and "¡Una taza!" The big sign is on "¡Una taza!" He touches it. COQUÍ: "¡Una taza!" Luis brings a cup and puts it down; while he does: NARR: "Luis pone la taza en la mesa." Right signal. Abuela fills the cup; while she does: NARR: "Y el chocolate, en la taza."
 5. **Who has none, taught.** Luis goes along the table with a plate in one hand and a cup in the other, and deals them out: the plate to mamá, the cup to papá. Abuela stands at the counter. NARR: "Abuela dice: ¿Quién no tiene taza?" The big sign is on mamá. He touches her. The frog takes her a cup. Right signal. NARR: "Ahora mamá tiene un plato y una taza."
 6. NARR: "Abuela dice: ¿Quién no tiene plato?" The big sign is on papá. He touches him. The frog takes him a plate. Right signal. NARR: "Ahora papá tiene una taza y un plato."
-7. Carmen runs in and sits down on the last chair. Her place is bare. NARR: "Abuela dice: Una taza para Carmen." The big sign is on the cups. He touches them. The frog puts a cup at her place; while he does: NARR: "Coquí pone la taza en la mesa." Right signal.
+7. Carmen runs in and sits down on the free chair, between papá and mamá. Her place is bare. NARR: "Abuela dice: Una taza para Carmen." The big sign is on the cups. He touches them. The frog puts a cup at her place; while he does: NARR: "Coquí pone la taza en la mesa." Right signal.
 8. Carmen's place has a cup and no plate. Carmen twinkles; Luis is at the counter. The two speaking bubbles; the sign is on "¡Un plato!" He touches it. COQUÍ: "¡Un plato!" Luis brings a plate; while he puts it down: NARR: "Luis pone el plato en la mesa." Right signal.
 
 **The turn**
@@ -265,3 +265,20 @@ Last gate: story 26 ready; 24 and 25 each needed one rule. Final Spanish check: 
 - 26: "No, Coquí. Mira. Tú tienes sed." so that "tienes sed" is not heard as "tiene sed".
 - Pairs: "comida" against two empty plates; "pone" against wiping a plate that lies on the table.
 - The hearing totals were recounted.
+
+## What the readers of the frames changed (no sound, no words)
+
+First reader (stories 24 and 25): both stories could be followed, and in 25 "wrong thing, then a spill" read well. What could not be read, and what was done:
+- 24: the puddle read as a brown dish and the broken slice as a yellow lump. The puddle is now a flat splash with drops; the broken slice lies in two pieces with its cherry beside it.
+- 24: why the cloth came off could not be seen, and the heap read as a cloud. The cloth has a red edge; the baby holds a corner of it while it pulls; the heap shows the red edge, a plate and a cup.
+- 24: nobody reacted to a mess. Whoever loses his slice or his chocolate throws a hand up.
+- 24: Carmen sat squeezed against mamá and the baby. Mamá sits at the end with the baby at her far side; Carmen has the chair between papá and mamá.
+- 24 and 25: abuela's board hid the frog, and Luis walked over him. The frog and abuela stand further apart at a place, and the frog waits at the left, by the counter.
+- Abuela's head stood in the dark oven window. The oven door is white with a handle.
+- The little cake floated on the wall once the bizcocho was gone. It stands on the stove top.
+- 25: the knife read as a candle. It is a table knife now: a wide grey blade with a round tip, a dark handle, no butter on it.
+- 25: the spaghetti read as a pudding. It shows strands and two meatballs.
+- 25: the things held up stood on heads like poles. Each is held in a raised hand, on an arm.
+- 25: Luis's tray read as a plank. It shows what lies in it while he carries it.
+- 25: the corner card covered the first picture bubble. The card steps aside while three picture bubbles stand at the top.
+- Pairs: the vase and the bizcocho were hidden behind the table; the pot hid Carmen's face; the kitchen picture did not show the pot; "pone" now shows Carmen at the end of the table with her arm out and the plate at her hand, against the plate lying there with a cloth on it.
