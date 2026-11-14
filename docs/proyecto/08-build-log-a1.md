@@ -4,9 +4,9 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=31
-- Story 1 directly: historia/?v=31 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=31 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=32
+- Story 1 directly: historia/?v=32 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=32 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
 
 ## Script lessons so far (what reviewers have caught; check every new script against this before it goes to them)
@@ -29,6 +29,7 @@ Puerto Rican Spanish (so far)
 - "Viejo" of a person is blunt; any grown man is "un señor"; "pato" called at a person is a slur; "bebe" (drinks) against "bebé"; "taza" for hot drinks and "vaso" for cold; "pon" is the command of "pone"; "entra a", not "entra en"; "habichuelas"; "bizcocho"; "canasta"; "piragua"; "portón".
 - Say "Tú tienes sed", not "Tienes sed" (it runs into "tiene sed" aloud).
 - "¡Ya!" alone means "enough, stop it": say "¡Ya está!". Bare "Sal para el pollo" starts like "get out": say "Ponle sal al pollo." "Huevo" never with mi, tu or su, never in the plural of a person, and never after "huele a" ("huele a huevo" is said of a rotten smell): "Mira el huevo.", "El bebé quiere el huevo." "Caliente" only of things, never of a person. "La familia tiene hambre."
+- "Leche", like "huevo", never with mi, tu or su; never "tiene queso". A bare "Hay leche." sounds like "¡Ay, leche!": say "Sí hay leche." or "Aquí hay…"; "y hay" runs together, so say "Hay leche y queso." "¿Qué no hay?" is not a question anyone asks. "Busca" is "go and get": say it while he goes, not while he hands over. A fruit after "come" has its article ("come el guineo"), and "el pájaro" in the singular beside "guineo" is slang: "para los pájaros". Bad food "no huele bien"; "¡Fo!" at a bad smell. "Le pone mantequilla al pan", not "pone mantequilla en el pan". A guineo with brown spots is ripe, not bad.
 
 Pictures (what readers with no sound and no words could not read)
 - A place 24 pixels wide holds two things; keep places apart. Small things in a hand do not read: hold them up at twice the size, in a hand, beside the head.
@@ -38,10 +39,54 @@ Pictures (what readers with no sound and no words could not read)
 - White food on a white plate is an empty plate: give plates a colour. A lost thing must rest on something (the floor in the open, a bucket, a plate): against a cabinet or a stove front it reads as stuck to a wall or hanging in the air.
 - A boil-over is one soft shape over the rim with runs down the front and what was in the pot beside it; blocks read as a fault in the picture. Smoke is a puff, not specks. Rice needs its grains, beans their dark dots.
 - Thought clouds must not cover what stands on a counter, or each other: stand the people lower. Two who come in together need a body's width each.
+- Somebody who must not hear or see has to be out of the room, or at the far end of the yard: standing with a back turned, or at the sink, does not hold up with a reviewer. Whoever knows the answer must not handle the thing afterwards.
+- When the good ending spends what the bad ending loses (coins), the last picture must show the wish: the frog thinks of what he could not buy.
+- A thing held by a child is held over the head at twice the size: beside the head it covers the face. An empty place needs a lining (a checked cloth, a stand): a white hollow reads as a bun. A bad thing gets green wisps. Birds must not be the colour of bread.
+- The sheet tool sorts frames by number now: a run of more than 99 frames was shown out of order.
 - A thing held up for a pair is held in a raised hand and must leave the face free. A cup with a heap on it reads as a mug of beer: use a bowl.
 
 Pairs
 - No old word in the sentence may fit one picture only. "Mi" or "tu" instead of "un" and "una". The other picture is as lively as the right one. No picture is right twice.
+
+## Nov 14, part 17: place 3, La cocina, scene 3, La nevera (stories 30 to 32)
+
+Live at ?v=32. Script (final): historia/notas/guiones/nevera.md, with what each round of reviews, the final Spanish check, the last gate and the wordless readers changed at its end. Generator: historia/tools/gen_nevera.py (three stories, twelve pairs; it also sets `next` on story 29). Scene: historia/escenas/nevera.js.
+
+### What is built
+
+| Story | Words | The game (after the turn) | What a miss costs |
+| --- | --- | --- | --- |
+| 30 no-hay-leche, No hay leche | leche, queso, no hay, busca | A he sees into the fridge and says what there is none of ("¡Papá, no hay leche!"); B abuela says both halves ("Sí hay leche. No hay queso.") and he answers with a picture card; C she says one line of four and he answers with a picture card | papá fetches the wrong thing for abuela's coin; its place in the fridge is taken, so it stands on the counter, and the second errand is paid from the frog's own jar of three coins: his piragua is a scoop smaller for each |
+| 31 para-los-pajaros, Para los pájaros | fruta, guineo, manzana, pan | A touch the roll or the plate of fruit abuela names ("El pan no huele bien."); B touch the child who holds the fruit she names; C he sees the spots and says which ("¡El guineo no huele bien!"), and abuelo, who sees only the backs, throws it | a good thing goes to the birds and is eaten at once; its cell in the picnic basket stays empty (three lots, three cells) |
+| 32 jugo-de-china, Jugo de china | china, mantequilla, lleno, vacío | A the children say "Mi vaso está vacío / lleno." and he pours; B mamá says one line of four about the red or the blue cup and he pours; C abuela says one line of four and he takes a cup to the sink | juice poured into a full cup runs over (a puddle that stays, a mark off the jug); a full cup tipped into the sink turns the dishwater orange: the jug has four marks, and the frog, then abuela, then the child go without |
+
+- Nobody can see into a metal cup or a shut fridge: that is what makes "lleno", "vacío" and "no hay" turn on the Spanish. In the openings a round picture shows a cup from above.
+- "Busca", "china" and "mantequilla" decide nothing in their stories; they are tested the next day by their pairs. "Nevera" and "fo" are helper words.
+- `curso.js` lists the three stories; the level check has four new items (48: leche, queso, guineo, lleno); ¿Cuál? has twelve new pairs (cual-nevera, 128 in all).
+
+### The scene (nevera.js)
+
+- The fridge at the left: `W.nev` {abierta (1 open to us, 2 a little, only who looks in sees; 0 shut), h (two shelves, four places), soporte (story 30: a stand for the bottle and a dish for the cheese), cajon and cajonver (the drawer and whether it is tipped towards us)}. A counter with a sink (`W.pila`: dishwater "a", orange "j"). A wide window to the yard: `W.patio` {aves, cosas (what lies on the wall), carrito}; a sill things stand on: `W.repisa` [{id, k, v, x, e}]. Whoever has `fuera:1` stands in the yard and is drawn inside the window.
+- Things with a name of their own live in `W.cosas` with an `id` (`ob(id)`); `porId` makes them touchable (the four cups, the two things on the tray).
+- Story 30: `mira30` (abuela at the fridge), `sale30` (her coin on the sill, out of the door), `mandado` (the coin to papá, papá off and back, Luis in at the door to the fridge: he puts the thing in, or its place is taken and it stands on the counter), `sacamoneda` (the frog's own coin), `comparten`, `final30`.
+- Story 31: `lote`, `huele31`, `tira31`, `resto31` (give, keep, or turn over), `sostienen`, `huelemanos`, `quita`, `nino31`, `abuelo31` (trae, alza, pone, tira, come, da, mira), `alMuro` (what is thrown lands in one of four places on the wall; a good thing stays there with its bird). `W.canasta` is the picnic basket; `W.olfato` shows a sniff; a bad thing has green wisps (`hedor`).
+- Story 32: `exprime`, `unta`, `vista` (the round picture), `vierte` (the frog pours from behind the jug; into a full cup: puddles), `ninos32`, `mama32`, `abuelamira`, `lleva32` (a cup to the sink), `final32`.
+- cual.html takes `solo=word,word` for the machine check of a few pairs.
+
+### Reviews
+
+- Two designers wrote proposals first; both came to the same three costs. Script: draft 1 and draft 2 each "not ready" for all three (beginner) with 13 and 10 lines of Spanish; draft 3 to a final Spanish check (112 lines read one by one, two changed) and a last gate (one fix a story, the pairs ready).
+- Wordless frames: four fresh readers, then three more after the redraw. What they could not read is at the end of the script and in "Script lessons so far".
+- The biggest mistakes caught: papá could hear abuela name what was missing, and abuela could send a wrong buy back (30); abuela handled food she knew was bad, and the frog threw good fruit out against his own eyes (31); people stood by while a full cup was filled (32); "Mira mi leche", "¿Qué no hay?", "Hay leche." heard as "¡Ay, leche!", "come guineo" beside "el pájaro" (Spanish); a green cup drawn grey, food over abuela's face, a basket that never looked empty, an ending whose loss did not show (pictures).
+
+### Testing
+
+- TESTLINE17
+- Found by testing: cups hidden after an earlier step could not be touched; a run of more than 99 frames was shown to a reader out of order.
+
+### Audio
+
+- 117 new lines, about 3,350 characters. Azure so far this month: about 43,400 of 500,000 characters (my own running count, not a reading from Azure).
 
 ## Nov 14, part 16: place 3, La cocina, scene 2, La estufa (stories 27 to 29)
 

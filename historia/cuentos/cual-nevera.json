@@ -1,0 +1,1317 @@
+{
+ "id": "cual-nevera",
+ "title": "¿Cuál?",
+ "place": "La cocina",
+ "scene": "nevera",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for La nevera.",
+ "clips": {
+  "m_n_carmen_leche": {
+   "who": "narr",
+   "text": "Carmen toma leche."
+  },
+  "m_n_el_queso": {
+   "who": "narr",
+   "text": "Mira el queso."
+  },
+  "m_n_no_hay_leche": {
+   "who": "narr",
+   "text": "No hay leche."
+  },
+  "m_n_papa_busca": {
+   "who": "narr",
+   "text": "Papá busca el pan."
+  },
+  "m_n_mi_fruta": {
+   "who": "narr",
+   "text": "Mira mi fruta."
+  },
+  "m_n_bebe_guineo": {
+   "who": "narr",
+   "text": "El bebé come guineo."
+  },
+  "m_n_mi_manzana": {
+   "who": "narr",
+   "text": "Mira mi manzana."
+  },
+  "m_n_tu_china": {
+   "who": "narr",
+   "text": "Dame tu china, por favor."
+  },
+  "m_n_plato_lleno": {
+   "who": "narr",
+   "text": "El plato está lleno."
+  },
+  "m_n_mi_vaso_vacio": {
+   "who": "narr",
+   "text": "Mi vaso está vacío."
+  },
+  "c31_aqui_pan": {
+   "who": "narr",
+   "text": "Aquí hay pan."
+  },
+  "c32_le_pone": {
+   "who": "narr",
+   "text": "Abuela le pone mantequilla al pan."
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "leche",
+   "say": "m_n_carmen_leche",
+   "si": {
+    "cam": [
+     124,
+     152,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "bebe": {
+        "k": "claro",
+        "v": "leche"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     124,
+     152,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "bebe": {
+        "k": "claro",
+        "v": 1
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "queso",
+   "say": "m_n_el_queso",
+   "si": {
+    "cam": [
+     132,
+     97,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "platoazul",
+       "x": 160,
+       "y": 123,
+       "z": 300
+      },
+      {
+       "k": "queso",
+       "v": 3,
+       "x": 160,
+       "y": 121,
+       "z": 301
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     132,
+     97,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "mantequilla",
+       "v": 3,
+       "x": 160,
+       "y": 122,
+       "z": 300
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "no hay",
+   "say": "m_n_no_hay_leche",
+   "si": {
+    "cam": [
+     36,
+     50,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 1,
+      "soporte": 1,
+      "h": [
+       null,
+       {
+        "k": "queso",
+        "v": 3
+       }
+      ]
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     36,
+     50,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 1,
+      "soporte": 1,
+      "h": [
+       {
+        "k": "leche",
+        "v": 4
+       },
+       null
+      ]
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "busca",
+   "say": "m_n_papa_busca",
+   "si": {
+    "cam": [
+     127,
+     36,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 184,
+       "y": 120,
+       "dir": 1,
+       "fuera": 1,
+       "alza": {
+        "k": "bolsa",
+        "v": "abuelo",
+        "e": 1,
+        "dx": 12,
+        "dy": 2
+       },
+       "piensa": {
+        "k": "panecillo",
+        "e": 2
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     127,
+     36,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 184,
+       "y": 120,
+       "dir": -1,
+       "fuera": 1,
+       "come": {
+        "k": "rebanada"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "fruta",
+   "say": "m_n_mi_fruta",
+   "si": {
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuelo": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "alza": {
+        "k": "platofruta",
+        "dx": 16,
+        "dy": 12
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuelo": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "alza": {
+        "k": "platorollo",
+        "dx": 16,
+        "dy": 12
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "guineo",
+   "say": "m_n_bebe_guineo",
+   "si": {
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "mama": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "bebe": "come",
+       "bebecosa": {
+        "k": "guineo",
+        "v": "medio"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "mama": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "bebe": "come",
+       "bebecosa": {
+        "k": "manzana"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "manzana",
+   "say": "m_n_mi_manzana",
+   "si": {
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "manzana"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "china"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "china",
+   "say": "m_n_tu_china",
+   "si": {
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 140,
+       "y": 204,
+       "dir": 1,
+       "pose": "offer"
+      },
+      "abuelo": {
+       "x": 184,
+       "y": 204,
+       "dir": -1,
+       "alza": {
+        "k": "china",
+        "dx": 16,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 140,
+       "y": 204,
+       "dir": 1,
+       "pose": "offer"
+      },
+      "abuelo": {
+       "x": 184,
+       "y": 204,
+       "dir": -1,
+       "alza": {
+        "k": "guineo",
+        "dx": 18,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "pan",
+   "say": "c31_aqui_pan",
+   "si": {
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "cesta",
+       "v": 4,
+       "x": 166,
+       "y": 122,
+       "z": 300
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "ollaarroz",
+       "x": 166,
+       "y": 122,
+       "z": 300
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "mantequilla",
+   "say": "c32_le_pone",
+   "si": {
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 158,
+       "y": 157,
+       "dir": 1,
+       "pose": "offer"
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "mantequilla",
+       "v": 3,
+       "x": 178,
+       "y": 119,
+       "z": 300
+      },
+      {
+       "k": "untando",
+       "x": 198,
+       "y": 124,
+       "z": 301
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 158,
+       "y": 157,
+       "dir": 1,
+       "pose": "offer"
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "platoazul",
+       "x": 178,
+       "y": 120,
+       "z": 300
+      },
+      {
+       "k": "queso",
+       "v": 3,
+       "x": 178,
+       "y": 118,
+       "z": 301
+      },
+      {
+       "k": "conqueso",
+       "x": 198,
+       "y": 124,
+       "z": 302
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "lleno",
+   "say": "m_n_plato_lleno",
+   "si": {
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "platolleno",
+        "dx": 15,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "plato",
+        "dx": 15,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  },
+  {
+   "w": "vacío",
+   "say": "m_n_mi_vaso_vacio",
+   "si": {
+    "cam": [
+     116,
+     142,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "alza": {
+        "k": "claroalreves",
+        "dx": 15,
+        "dy": -4
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   },
+   "no": {
+    "cam": [
+     116,
+     142,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "bebe": {
+        "k": "claro",
+        "v": 1
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    }
+   }
+  }
+ ]
+}

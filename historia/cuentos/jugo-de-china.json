@@ -1,0 +1,971 @@
+{
+ "id": "jugo-de-china",
+ "title": "Jugo de china",
+ "place": "La cocina",
+ "scene": "nevera",
+ "next": null,
+ "goal": "Give everybody juice from the last jug.",
+ "stake": {
+  "thing": "jugo",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "china",
+  "mantequilla",
+  "lleno",
+  "vacío"
+ ],
+ "back_again": [
+  "vaso",
+  "jugo",
+  "hace calor",
+  "hace",
+  "pone",
+  "pan",
+  "toma",
+  "mi",
+  "quiero",
+  "más",
+  "por favor",
+  "ahora",
+  "familia",
+  "verde",
+  "amarillo",
+  "rojo",
+  "azul",
+  "gracias",
+  "no hay"
+ ],
+ "also_heard": [
+  "ponle",
+  "le pone"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "cocina": "m_n_cocina",
+  "nevera": "c30_nevera"
+ },
+ "palabras": {
+  "vacio": "vacío"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c30_nevera": {
+   "who": "narr",
+   "text": "Esta es la nevera."
+  },
+  "c32_calor": {
+   "who": "narr",
+   "text": "Hace calor."
+  },
+  "c32_hace_jugo": {
+   "who": "narr",
+   "text": "Abuela hace jugo de china."
+  },
+  "c32_aqui_chinas": {
+   "who": "narr",
+   "text": "Aquí hay chinas."
+  },
+  "c32_aqui_mant": {
+   "who": "narr",
+   "text": "Y aquí hay mantequilla."
+  },
+  "c32_le_pone": {
+   "who": "narr",
+   "text": "Abuela le pone mantequilla al pan."
+  },
+  "c32_luis_come": {
+   "who": "narr",
+   "text": "Luis come pan con mantequilla."
+  },
+  "c32_ab_un_vaso": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, un vaso está vacío. Ponle jugo de china."
+  },
+  "c32_ahora_amarillo": {
+   "who": "narr",
+   "text": "Ahora el vaso amarillo está lleno."
+  },
+  "c32_luis_mi_vacio": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mi vaso está vacío."
+  },
+  "c32_luis_mi_lleno": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Mi vaso está lleno."
+  },
+  "c32_carmen_mi_vacio": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mi vaso está vacío."
+  },
+  "c32_carmen_mi_lleno": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mi vaso está lleno."
+  },
+  "c32_luis_toma": {
+   "who": "narr",
+   "text": "Luis toma jugo de china."
+  },
+  "c32_carmen_toma": {
+   "who": "narr",
+   "text": "Carmen toma jugo de china."
+  },
+  "c32_carmen_quiero": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Quiero pan con mantequilla y jugo de china."
+  },
+  "c32_carmen_come": {
+   "who": "narr",
+   "text": "Carmen come pan con mantequilla."
+  },
+  "c32_luis_mas": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Más pan con mantequilla, por favor!"
+  },
+  "c32_mas_jugo": {
+   "who": "narr",
+   "text": "Abuela hace más jugo de china."
+  },
+  "c32_familia": {
+   "who": "narr",
+   "text": "La familia toma jugo de china."
+  },
+  "c32_ab_come": {
+   "who": "narr",
+   "text": "Abuela come pan con mantequilla."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "c32_no_hay_mas": {
+   "who": "narr",
+   "text": "No hay más jugo."
+  },
+  "c32_n_verde_lleno": {
+   "who": "narr",
+   "text": "El vaso verde está lleno."
+  },
+  "c32_n_verde_vacio": {
+   "who": "narr",
+   "text": "El vaso verde está vacío."
+  },
+  "c32_no_verde_vacio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El vaso verde está vacío."
+  },
+  "c32_n_amarillo_lleno": {
+   "who": "narr",
+   "text": "El vaso amarillo está lleno."
+  },
+  "c32_n_amarillo_vacio": {
+   "who": "narr",
+   "text": "El vaso amarillo está vacío."
+  },
+  "c32_no_amarillo_vacio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El vaso amarillo está vacío."
+  },
+  "c32_n_rojo_lleno": {
+   "who": "narr",
+   "text": "El vaso rojo está lleno."
+  },
+  "c32_n_rojo_vacio": {
+   "who": "narr",
+   "text": "El vaso rojo está vacío."
+  },
+  "c32_no_rojo_vacio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El vaso rojo está vacío."
+  },
+  "c32_n_azul_lleno": {
+   "who": "narr",
+   "text": "El vaso azul está lleno."
+  },
+  "c32_n_azul_vacio": {
+   "who": "narr",
+   "text": "El vaso azul está vacío."
+  },
+  "c32_no_azul_vacio": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El vaso azul está vacío."
+  },
+  "c32_mama_rojo_lleno": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: El vaso rojo está lleno."
+  },
+  "c32_mama_rojo_vacio": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: El vaso rojo está vacío."
+  },
+  "c32_mama_azul_lleno": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: El vaso azul está lleno."
+  },
+  "c32_mama_azul_vacio": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: El vaso azul está vacío."
+  },
+  "c32_ab_verde_lleno": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El vaso verde está lleno."
+  },
+  "c32_ab_verde_vacio": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El vaso verde está vacío."
+  },
+  "c32_ab_amarillo_lleno": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El vaso amarillo está lleno."
+  },
+  "c32_ab_amarillo_vacio": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El vaso amarillo está vacío."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio32"
+  },
+  {
+   "wait": 500
+  },
+  "c32_calor",
+  {
+   "act": "exprime",
+   "suelto": 1
+  },
+  "c32_hace_jugo",
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "twinkle": "red"
+   }
+  },
+  "c32_aqui_chinas",
+  {
+   "set": {
+    "twinkle": "mant"
+   }
+  },
+  "c32_aqui_mant",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "unta",
+   "a": "luis",
+   "suelto": 1
+  },
+  "c32_le_pone",
+  "c32_luis_come",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "vista",
+   "a": "v_verde"
+  },
+  "c32_n_verde_lleno",
+  {
+   "act": "vista",
+   "a": ""
+  },
+  {
+   "act": "vista",
+   "a": "v_amarillo"
+  },
+  "c32_n_amarillo_vacio",
+  {
+   "act": "vista",
+   "a": ""
+  },
+  {
+   "ask": "v_amarillo",
+   "lead": [],
+   "line": "c32_ab_un_vaso",
+   "then": [
+    {
+     "act": "vista",
+     "a": "v_amarillo"
+    },
+    "c32_ahora_amarillo",
+    {
+     "act": "vista",
+     "a": ""
+    }
+   ],
+   "after": [
+    {
+     "act": "vierte",
+     "a": "v_amarillo"
+    }
+   ]
+  },
+  {
+   "act": "ninos32",
+   "que": "toman",
+   "bebe": "carmen"
+  },
+  {
+   "act": "ninos32",
+   "que": "dejan"
+  },
+  {
+   "act": "vista",
+   "a": "v_amarillo"
+  },
+  {
+   "say": "c32_carmen_mi_vacio",
+   "gap": 250
+  },
+  {
+   "act": "vista",
+   "a": ""
+  },
+  {
+   "act": "vista",
+   "a": "v_verde"
+  },
+  {
+   "ask": "v_amarillo",
+   "lead": [],
+   "line": "c32_luis_mi_lleno",
+   "then": [
+    "c32_carmen_toma"
+   ],
+   "after": [
+    {
+     "act": "vista",
+     "a": ""
+    },
+    {
+     "act": "vierte",
+     "a": "v_amarillo"
+    }
+   ],
+   "alias": {
+    "luis": "v_verde",
+    "carmen": "v_amarillo"
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "mama32",
+   "que": "trae",
+   "vacio": "azul"
+  },
+  {
+   "act": "vista",
+   "a": "v_rojo"
+  },
+  {
+   "ask": "v_azul",
+   "lead": [],
+   "line": "c32_mama_rojo_lleno",
+   "then": [
+    {
+     "act": "mama32",
+     "que": "lleva"
+    }
+   ],
+   "after": [
+    {
+     "act": "vista",
+     "a": ""
+    },
+    {
+     "act": "vierte",
+     "a": "v_azul"
+    }
+   ]
+  },
+  {
+   "act": "ninos32",
+   "que": "toman",
+   "bebe": "luis"
+  },
+  {
+   "act": "ninos32",
+   "que": "dejan"
+  },
+  {
+   "act": "abuelamira"
+  },
+  {
+   "act": "vista",
+   "a": "v_verde"
+  },
+  {
+   "ask": "v_verde",
+   "lead": [],
+   "line": "c32_ab_verde_vacio",
+   "then": [
+    "c32_luis_toma"
+   ],
+   "after": [
+    {
+     "act": "vista",
+     "a": ""
+    },
+    {
+     "act": "vierte",
+     "a": "v_verde"
+    }
+   ],
+   "alias": {
+    "luis": "v_verde",
+    "carmen": "v_amarillo"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "mama32",
+   "que": "trae",
+   "vacio": "rojo"
+  },
+  {
+   "act": "vista",
+   "a": "v_rojo"
+  },
+  {
+   "ask": "v_rojo",
+   "lead": [],
+   "line": "c32_mama_rojo_vacio",
+   "then": [
+    {
+     "act": "mama32",
+     "que": "lleva"
+    }
+   ],
+   "after": [
+    {
+     "act": "vista",
+     "a": ""
+    },
+    {
+     "act": "lleva32",
+     "a": "v_rojo"
+    }
+   ]
+  },
+  {
+   "act": "ninos32",
+   "que": "toman",
+   "bebe": "carmen"
+  },
+  {
+   "act": "ninos32",
+   "que": "dejan"
+  },
+  {
+   "act": "abuelamira",
+   "sale": 1
+  },
+  {
+   "act": "vista",
+   "a": "v_verde"
+  },
+  {
+   "ask": "v_amarillo",
+   "lead": [],
+   "line": "c32_ab_verde_lleno",
+   "then": [
+    {
+     "act": "abuelasale"
+    },
+    {
+     "say": "c32_carmen_quiero",
+     "gap": 250
+    }
+   ],
+   "after": [
+    {
+     "act": "vista",
+     "a": ""
+    },
+    {
+     "act": "lleva32",
+     "a": "v_amarillo"
+    }
+   ],
+   "alias": {
+    "luis": "v_verde",
+    "carmen": "v_amarillo"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "abuelavuelve"
+  },
+  {
+   "act": "exprime",
+   "todo": 1,
+   "suelto": 1
+  },
+  "c32_mas_jugo",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "mama32",
+   "que": "lleva"
+  },
+  {
+   "act": "ninos32",
+   "que": "toman"
+  },
+  {
+   "act": "ninos32",
+   "que": "salen",
+   "con": 1
+  },
+  "c32_carmen_come",
+  "c32_luis_mas",
+  {
+   "act": "abuelamira",
+   "sale": 1
+  },
+  {
+   "act": "abuelasale"
+  },
+  "c32_familia",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "va",
+   "options": [
+    "verde",
+    "amarillo"
+   ],
+   "other": "vb"
+  },
+  {
+   "draw": "oa",
+   "options": [
+    "l",
+    "c"
+   ]
+  },
+  {
+   "calc": "ll",
+   "cond": "va=verde",
+   "then": "c32_luis_mi_vacio",
+   "else": "c32_luis_mi_lleno"
+  },
+  {
+   "calc": "lc",
+   "cond": "va=amarillo",
+   "then": "c32_carmen_mi_vacio",
+   "else": "c32_carmen_mi_lleno"
+  },
+  {
+   "calc": "la",
+   "cond": "oa=l",
+   "then": "$ll",
+   "else": "$lc"
+  },
+  {
+   "calc": "lb",
+   "cond": "oa=l",
+   "then": "$lc",
+   "else": "$ll"
+  },
+  {
+   "act": "ninos32",
+   "que": "entran",
+   "vacio": "$va"
+  },
+  {
+   "act": "ninos32",
+   "que": "dejan"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "v_verde",
+    "v_amarillo"
+   ],
+   "pick": "v_$va",
+   "tests": "vacio",
+   "lock": true,
+   "alias": {
+    "luis": "v_verde",
+    "carmen": "v_amarillo"
+   },
+   "lead": [
+    {
+     "say": "$la",
+     "gap": 250
+    }
+   ],
+   "line": "$lb",
+   "right": [
+    {
+     "act": "vierte",
+     "a": "v_$va"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "vierte",
+     "a": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "vista",
+     "a": "v_$va"
+    },
+    "c32_no_$va_vacio",
+    {
+     "act": "vista",
+     "a": ""
+    }
+   ]
+  },
+  {
+   "act": "ninos32",
+   "que": "toman"
+  },
+  {
+   "act": "ninos32",
+   "que": "salen",
+   "con": 1
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "ra",
+   "options": [
+    "rojo",
+    "azul"
+   ],
+   "other": "rb"
+  },
+  {
+   "draw": "fa",
+   "options": [
+    "lleno",
+    "vacio"
+   ]
+  },
+  {
+   "calc": "rn",
+   "cond": "fa=vacio",
+   "then": "$ra",
+   "else": "$rb"
+  },
+  {
+   "act": "mama32",
+   "que": "trae",
+   "vacio": "$ra"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "v_rojo",
+    "v_azul"
+   ],
+   "pick": "v_$ra",
+   "tests": "$fa",
+   "lock": true,
+   "lead": [],
+   "line": "c32_mama_$rn_$fa",
+   "right": [
+    {
+     "act": "vierte",
+     "a": "v_$ra"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "mama32",
+     "que": "lleva"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "vierte",
+     "a": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "vista",
+     "a": "v_$ra"
+    },
+    "c32_no_$ra_vacio",
+    {
+     "act": "vista",
+     "a": ""
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "ga",
+   "options": [
+    "verde",
+    "amarillo"
+   ],
+   "other": "gb"
+  },
+  {
+   "draw": "fc",
+   "options": [
+    "lleno",
+    "vacio"
+   ]
+  },
+  {
+   "calc": "gn",
+   "cond": "fc=vacio",
+   "then": "$ga",
+   "else": "$gb"
+  },
+  {
+   "act": "ninos32",
+   "que": "entran",
+   "vacio": "$ga"
+  },
+  {
+   "act": "ninos32",
+   "que": "corren"
+  },
+  {
+   "act": "abuelamira",
+   "sale": 1
+  },
+  {
+   "decide": "do",
+   "options": [
+    "v_verde",
+    "v_amarillo"
+   ],
+   "pick": "v_$ga",
+   "tests": "$fc",
+   "lock": true,
+   "lead": [],
+   "line": "c32_ab_$gn_$fc",
+   "right": [
+    {
+     "act": "abuelasale"
+    },
+    {
+     "act": "lleva32",
+     "a": "v_$ga"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "abuelasale"
+    },
+    {
+     "act": "lleva32",
+     "a": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "vista",
+     "a": "v_$ga"
+    },
+    "c32_no_$ga_vacio",
+    {
+     "act": "vista",
+     "a": ""
+    },
+    {
+     "act": "mirapila"
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "abuelavuelve"
+  },
+  {
+   "act": "final32"
+  },
+  "c32_ab_come",
+  {
+   "if": "rana",
+   "then": [
+    {
+     "say": "cq_gracias_abuela",
+     "gap": 300
+    }
+   ],
+   "else": [
+    "c32_no_hay_mas"
+   ]
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c32_calor",
+  "c32_hace_jugo",
+  "c32_aqui_chinas",
+  "c32_aqui_mant",
+  "c32_le_pone",
+  "c32_luis_come",
+  "c32_n_verde_lleno",
+  "c32_n_amarillo_vacio",
+  "c32_ab_un_vaso",
+  "c32_ahora_amarillo",
+  "c32_carmen_mi_vacio",
+  "c32_luis_mi_lleno",
+  "c32_carmen_toma",
+  "c32_mama_rojo_lleno",
+  "c32_ab_verde_vacio",
+  "c32_luis_toma",
+  "c32_mama_rojo_vacio",
+  "c32_ab_verde_lleno",
+  "c32_carmen_quiero",
+  "c32_carmen_come",
+  "c32_luis_mas",
+  "c32_mas_jugo",
+  "c32_familia",
+  "c32_ab_come",
+  "cq_gracias_abuela"
+ ]
+}

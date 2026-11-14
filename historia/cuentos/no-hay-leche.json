@@ -1,0 +1,866 @@
+{
+ "id": "no-hay-leche",
+ "title": "No hay leche",
+ "place": "La cocina",
+ "scene": "nevera",
+ "next": "para-los-pajaros",
+ "goal": "Keep the fridge stocked, and keep your three coins for a piragua.",
+ "stake": {
+  "thing": "monedas",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "leche",
+  "queso",
+  "no hay",
+  "busca"
+ ],
+ "back_again": [
+  "hay",
+  "sí",
+  "aquí",
+  "ahora",
+  "mira",
+  "come",
+  "toma",
+  "bebé",
+  "pan",
+  "con",
+  "piragua",
+  "tira",
+  "coge",
+  "gracias"
+ ],
+ "also_heard": [
+  "nevera"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "cocina": "m_n_cocina",
+  "nevera": "c30_nevera"
+ },
+ "palabras": {
+  "nohay": "no hay"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c30_nevera": {
+   "who": "narr",
+   "text": "Esta es la nevera."
+  },
+  "c30_aqui_leche": {
+   "who": "narr",
+   "text": "Aquí hay leche."
+  },
+  "c30_aqui_queso": {
+   "who": "narr",
+   "text": "Y aquí hay queso."
+  },
+  "c30_bebe_toma": {
+   "who": "narr",
+   "text": "El bebé toma leche."
+  },
+  "c30_carmen_come": {
+   "who": "narr",
+   "text": "Carmen come pan con queso."
+  },
+  "c30_ab_mira_hay": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, mira en la nevera. ¿Hay leche? ¿Hay queso?"
+  },
+  "c30_ab_mira": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, mira en la nevera."
+  },
+  "c30_cq_piragua": {
+   "who": "tu",
+   "text": "¡Una piragua!"
+  },
+  "c30_ahora_los2": {
+   "who": "narr",
+   "text": "Ahora hay leche y queso."
+  },
+  "c30_cq_gracias_papa": {
+   "who": "tu",
+   "text": "¡Gracias, papá!"
+  },
+  "c30_no_piragua": {
+   "who": "narr",
+   "text": "No hay piragua para Coquí."
+  },
+  "c30_cq_no_leche": {
+   "who": "tu",
+   "text": "¡Papá, no hay leche!"
+  },
+  "c30_busca_leche": {
+   "who": "narr",
+   "text": "Papá busca la leche."
+  },
+  "c30_ahora_leche": {
+   "who": "narr",
+   "text": "Ahora hay leche."
+  },
+  "c30_si_queso_no_leche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí hay queso. No hay leche."
+  },
+  "c30_no_leche_si_queso": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No hay leche. Sí hay queso."
+  },
+  "c30_ab_si_leche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí hay leche."
+  },
+  "c30_ab_no_leche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No hay leche."
+  },
+  "c30_no_leche": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. No hay leche."
+  },
+  "c30_cq_no_queso": {
+   "who": "tu",
+   "text": "¡Papá, no hay queso!"
+  },
+  "c30_busca_queso": {
+   "who": "narr",
+   "text": "Papá busca el queso."
+  },
+  "c30_ahora_queso": {
+   "who": "narr",
+   "text": "Ahora hay queso."
+  },
+  "c30_si_leche_no_queso": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí hay leche. No hay queso."
+  },
+  "c30_no_queso_si_leche": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No hay queso. Sí hay leche."
+  },
+  "c30_ab_si_queso": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Sí hay queso."
+  },
+  "c30_ab_no_queso": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No hay queso."
+  },
+  "c30_no_queso": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. No hay queso."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio30"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "nevera"
+   }
+  },
+  "c30_nevera",
+  {
+   "set": {
+    "twinkle": "leche"
+   }
+  },
+  "c30_aqui_leche",
+  {
+   "set": {
+    "twinkle": "queso"
+   }
+  },
+  "c30_aqui_queso",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "consume30",
+   "suelto": 1
+  },
+  "c30_bebe_toma",
+  "c30_carmen_come",
+  {
+   "act": "ya"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "mira30",
+   "abre": "todo"
+  },
+  {
+   "ask": "di_leche",
+   "lead": [],
+   "line": "c30_ab_mira_hay",
+   "then": [
+    "c30_ahora_leche",
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "leche",
+     "suelto": 1
+    },
+    "c30_busca_leche",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_leche",
+    "di_queso"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_leche": "c30_cq_no_leche",
+    "di_queso": "c30_cq_no_queso"
+   },
+   "said": {
+    "di_leche": "c30_cq_no_leche"
+   }
+  },
+  {
+   "act": "mira30",
+   "abre": "todo",
+   "toma": 1
+  },
+  {
+   "ask": "di_queso",
+   "lead": [],
+   "line": "c30_ab_mira",
+   "then": [
+    "c30_ahora_queso",
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "queso",
+     "suelto": 1
+    },
+    "c30_busca_queso",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_leche",
+    "di_queso"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_leche": "c30_cq_no_leche",
+    "di_queso": "c30_cq_no_queso"
+   },
+   "said": {
+    "di_queso": "c30_cq_no_queso"
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "setnev",
+   "falta": "leche"
+  },
+  {
+   "act": "mira30",
+   "abre": "poco"
+  },
+  {
+   "ask": "c_leche",
+   "lead": [],
+   "line": "c30_si_queso_no_leche",
+   "then": [
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "leche",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_leche",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "c_leche",
+    "c_queso"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "setnev",
+   "falta": "queso"
+  },
+  {
+   "act": "mira30",
+   "abre": "poco"
+  },
+  {
+   "ask": "c_queso",
+   "lead": [],
+   "line": "c30_no_queso_si_leche",
+   "then": [
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "queso",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_queso",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "c_leche",
+    "c_queso"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "setnev",
+   "falta": "queso"
+  },
+  {
+   "act": "mira30",
+   "abre": "poco"
+  },
+  {
+   "ask": "c_queso",
+   "lead": [],
+   "line": "c30_ab_si_leche",
+   "then": [
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "queso",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_queso",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "c_leche",
+    "c_queso"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "setnev",
+   "falta": "leche"
+  },
+  {
+   "act": "mira30",
+   "abre": "poco"
+  },
+  {
+   "ask": "c_leche",
+   "lead": [],
+   "line": "c30_ab_no_leche",
+   "then": [
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "after": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "leche",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_leche",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "c_leche",
+    "c_queso"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "turno30"
+  },
+  {
+   "say": "c30_cq_piragua",
+   "gap": 250
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "fa",
+   "options": [
+    "leche",
+    "queso"
+   ]
+  },
+  {
+   "act": "setnev",
+   "falta": "$fa"
+  },
+  {
+   "act": "mira30",
+   "abre": "todo"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_leche",
+    "di_queso"
+   ],
+   "baraja": true,
+   "pick": "di_$fa",
+   "tests": "$fa",
+   "voces": {
+    "di_leche": "c30_cq_no_leche",
+    "di_queso": "c30_cq_no_queso"
+   },
+   "said": {
+    "di_leche": "c30_cq_no_leche",
+    "di_queso": "c30_cq_no_queso"
+   },
+   "lead": [],
+   "line": "c30_ab_mira",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sale30"
+      }
+     ]
+    },
+    {
+     "act": "mandado",
+     "k": "$fa",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_$fa",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "comparten"
+      }
+     ]
+    },
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "$x",
+     "carta": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c30_no_$fa",
+    {
+     "act": "sacamoneda"
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "draw": "fb",
+   "options": [
+    "leche",
+    "queso"
+   ],
+   "other": "gb"
+  },
+  {
+   "draw": "ob",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "calc": "lb",
+   "cond": "ob=1",
+   "then": "c30_si_$gb_no_$fb",
+   "else": "c30_no_$fb_si_$gb"
+  },
+  {
+   "act": "setnev",
+   "falta": "$fb"
+  },
+  {
+   "act": "mira30",
+   "abre": "poco"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "c_leche",
+    "c_queso"
+   ],
+   "baraja": true,
+   "pick": "c_$fb",
+   "tests": "nohay",
+   "lead": [],
+   "line": "$lb",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sale30"
+      }
+     ]
+    },
+    {
+     "act": "mandado",
+     "k": "$fb",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_$fb",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "comparten"
+      }
+     ]
+    },
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "$x",
+     "carta": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c30_no_$fb",
+    {
+     "act": "sacamoneda"
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "fc",
+   "options": [
+    "leche",
+    "queso"
+   ],
+   "other": "gc"
+  },
+  {
+   "draw": "sc",
+   "options": [
+    "si",
+    "no"
+   ]
+  },
+  {
+   "calc": "lc",
+   "cond": "sc=no",
+   "then": "c30_ab_no_$fc",
+   "else": "c30_ab_si_$gc"
+  },
+  {
+   "act": "setnev",
+   "falta": "$fc"
+  },
+  {
+   "act": "mira30",
+   "abre": "poco"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "c_leche",
+    "c_queso"
+   ],
+   "baraja": true,
+   "pick": "c_$fc",
+   "tests": "nohay",
+   "lead": [],
+   "line": "$lc",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sale30"
+      }
+     ]
+    },
+    {
+     "act": "mandado",
+     "k": "$fc",
+     "suelto": 1,
+     "carta": 1
+    },
+    "c30_busca_$fc",
+    {
+     "act": "ya"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "comparten"
+      }
+     ]
+    },
+    {
+     "act": "abuelavuelve"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "sale30"
+    },
+    {
+     "act": "mandado",
+     "k": "$x",
+     "carta": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c30_no_$fc",
+    {
+     "act": "sacamoneda"
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  "c30_ahora_los2",
+  {
+   "act": "final30"
+  },
+  {
+   "if": "pir",
+   "then": [
+    {
+     "say": "c30_cq_gracias_papa",
+     "gap": 300
+    }
+   ],
+   "else": [
+    "c30_no_piragua"
+   ]
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c30_nevera",
+  "c30_aqui_leche",
+  "c30_aqui_queso",
+  "c30_bebe_toma",
+  "c30_carmen_come",
+  "c30_ab_mira_hay",
+  "c30_cq_no_leche",
+  "c30_busca_leche",
+  "c30_ahora_leche",
+  "c30_ab_mira",
+  "c30_cq_no_queso",
+  "c30_busca_queso",
+  "c30_ahora_queso",
+  "c30_si_queso_no_leche",
+  "c30_no_queso_si_leche",
+  "c30_ab_si_leche",
+  "c30_ab_no_leche",
+  "c30_cq_piragua",
+  "c30_ahora_los2",
+  "c30_cq_gracias_papa"
+ ]
+}

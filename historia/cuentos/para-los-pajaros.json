@@ -1,0 +1,877 @@
+{
+ "id": "para-los-pajaros",
+ "title": "Para los pájaros",
+ "place": "La cocina",
+ "scene": "nevera",
+ "next": "jugo-de-china",
+ "goal": "Fill the picnic basket with good things for the park.",
+ "stake": {
+  "thing": "comida",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "fruta",
+  "guineo",
+  "manzana",
+  "pan"
+ ],
+ "back_again": [
+  "huele",
+  "bien",
+  "tira",
+  "busca",
+  "pájaro",
+  "come",
+  "hay",
+  "aquí",
+  "vamos",
+  "parque",
+  "para",
+  "comida",
+  "este",
+  "esta",
+  "mira",
+  "adiós"
+ ],
+ "also_heard": [
+  "fo",
+  "van"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "cocina": "m_n_cocina",
+  "nevera": "c30_nevera"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c30_nevera": {
+   "who": "narr",
+   "text": "Esta es la nevera."
+  },
+  "c31_vamos": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Vamos al parque."
+  },
+  "c31_busca": {
+   "who": "narr",
+   "text": "Abuela busca comida para el parque."
+  },
+  "c31_aqui_pan": {
+   "who": "narr",
+   "text": "Aquí hay pan."
+  },
+  "c31_aqui_fruta": {
+   "who": "narr",
+   "text": "Y aquí hay fruta."
+  },
+  "c31_aqui_gm": {
+   "who": "narr",
+   "text": "Aquí hay guineos y manzanas."
+  },
+  "c31_huele_pan": {
+   "who": "narr",
+   "text": "Abuela huele el pan."
+  },
+  "c31_fo_pan": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Fo! Este pan no huele bien."
+  },
+  "c31_para_pajaros": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este pan es para los pájaros."
+  },
+  "c31_tira_pan": {
+   "who": "narr",
+   "text": "Coquí tira el pan."
+  },
+  "c31_pajaro_pan": {
+   "who": "narr",
+   "text": "El pájaro come pan."
+  },
+  "c31_carmen_fruta": {
+   "who": "narr",
+   "text": "Carmen come fruta."
+  },
+  "c31_huele_fruta": {
+   "who": "narr",
+   "text": "Abuela huele la fruta."
+  },
+  "c31_esta_fruta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Esta fruta no huele bien."
+  },
+  "c31_tira_fruta": {
+   "who": "narr",
+   "text": "Coquí tira la fruta."
+  },
+  "c31_pajaro_fruta": {
+   "who": "narr",
+   "text": "El pájaro come fruta."
+  },
+  "c31_luis_pan": {
+   "who": "narr",
+   "text": "Luis come pan."
+  },
+  "c31_este_guineo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Este guineo no huele bien."
+  },
+  "c31_guineo_pajaros": {
+   "who": "narr",
+   "text": "El guineo es para los pájaros."
+  },
+  "c31_carmen_manzana": {
+   "who": "narr",
+   "text": "Carmen come la manzana."
+  },
+  "c31_esta_manzana": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Esta manzana no huele bien."
+  },
+  "c31_manzana_pajaros": {
+   "who": "narr",
+   "text": "La manzana es para los pájaros."
+  },
+  "c31_luis_guineo": {
+   "who": "narr",
+   "text": "Luis come el guineo."
+  },
+  "c31_abuelo_mira": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: Coquí, mira la fruta."
+  },
+  "c31_cq_guineo": {
+   "who": "tu",
+   "text": "¡El guineo no huele bien!"
+  },
+  "c31_cq_manzana": {
+   "who": "tu",
+   "text": "¡La manzana no huele bien!"
+  },
+  "c31_abuelo_manzana": {
+   "who": "narr",
+   "text": "Abuelo come la manzana."
+  },
+  "c31_abuelo_guineo": {
+   "who": "narr",
+   "text": "Abuelo come el guineo."
+  },
+  "c31_abuelo_vamos": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Vamos al parque!"
+  },
+  "c31_aqui_pan_fruta": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Aquí hay pan y fruta para el parque."
+  },
+  "c31_van": {
+   "who": "narr",
+   "text": "Luis y Carmen van al parque."
+  },
+  "c31_cq_adios": {
+   "who": "tu",
+   "text": "¡Adiós, abuela!"
+  },
+  "c31_ab_pan_no": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El pan no huele bien."
+  },
+  "c31_no_pan": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pan no huele bien."
+  },
+  "c31_ab_fruta_no": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La fruta no huele bien."
+  },
+  "c31_no_fruta": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. La fruta no huele bien."
+  },
+  "c31_ab_guineo_no": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: El guineo no huele bien."
+  },
+  "c31_no_guineo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El guineo no huele bien."
+  },
+  "c31_ab_manzana_no": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: La manzana no huele bien."
+  },
+  "c31_no_manzana": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. La manzana no huele bien."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio31"
+  },
+  {
+   "wait": 500
+  },
+  "c31_vamos",
+  "c31_busca",
+  {
+   "set": {
+    "twinkle": "cesta"
+   }
+  },
+  "c31_aqui_pan",
+  {
+   "set": {
+    "twinkle": "frutas"
+   }
+  },
+  "c31_aqui_fruta",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "cajon31",
+   "ver": 1
+  },
+  "c31_aqui_gm",
+  {
+   "act": "cajon31",
+   "ver": 0
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "lote",
+   "viejo": "pan",
+   "izq": "pan"
+  },
+  {
+   "act": "huele31",
+   "a": "pan",
+   "suelto": 1
+  },
+  "c31_huele_pan",
+  {
+   "act": "ya"
+  },
+  "c31_fo_pan",
+  {
+   "ask": "t_pan",
+   "lead": [],
+   "line": "c31_para_pajaros",
+   "then": [
+    "c31_pajaro_pan",
+    {
+     "act": "resto31",
+     "a": "carmen",
+     "suelto": 1
+    },
+    "c31_carmen_fruta",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "tira31",
+     "a": "t_pan",
+     "suelto": 1
+    },
+    "c31_tira_pan",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "act": "lote",
+   "viejo": "fruta",
+   "izq": "fruta"
+  },
+  {
+   "act": "huele31",
+   "a": "fruta",
+   "suelto": 1
+  },
+  "c31_huele_fruta",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "t_fruta",
+   "lead": [],
+   "line": "c31_esta_fruta",
+   "then": [
+    "c31_pajaro_fruta",
+    {
+     "act": "resto31",
+     "a": "luis",
+     "suelto": 1
+    },
+    "c31_luis_pan",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "tira31",
+     "a": "t_fruta",
+     "suelto": 1
+    },
+    "c31_tira_fruta",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "sostienen",
+   "luis": "guineo"
+  },
+  {
+   "act": "huelemanos",
+   "orden": 1
+  },
+  {
+   "ask": "luis",
+   "lead": [],
+   "line": "c31_este_guineo",
+   "then": [
+    "c31_guineo_pajaros",
+    {
+     "act": "nino31",
+     "a": "carmen",
+     "suelto": 1
+    },
+    "c31_carmen_manzana",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "quita",
+     "a": "luis"
+    }
+   ]
+  },
+  {
+   "act": "sostienen",
+   "luis": "guineo"
+  },
+  {
+   "act": "huelemanos",
+   "orden": 2
+  },
+  {
+   "ask": "carmen",
+   "lead": [],
+   "line": "c31_esta_manzana",
+   "then": [
+    "c31_manzana_pajaros",
+    {
+     "act": "nino31",
+     "a": "luis",
+     "suelto": 1
+    },
+    "c31_luis_guineo",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "quita",
+     "a": "carmen"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "abuelaa31"
+  },
+  {
+   "act": "abuelo31",
+   "que": "trae",
+   "viejo": "guineo"
+  },
+  {
+   "ask": "di_guineo",
+   "lead": [],
+   "line": "c31_abuelo_mira",
+   "then": [
+    {
+     "act": "abuelo31",
+     "que": "come",
+     "suelto": 1
+    },
+    "c31_abuelo_manzana",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "abuelo31",
+     "que": "tira",
+     "k": "guineo"
+    }
+   ],
+   "resp": [
+    "di_guineo",
+    "di_manzana"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_guineo": "c31_cq_guineo",
+    "di_manzana": "c31_cq_manzana"
+   },
+   "said": {
+    "di_guineo": "c31_cq_guineo"
+   }
+  },
+  {
+   "act": "abuelo31",
+   "que": "trae",
+   "viejo": "manzana"
+  },
+  {
+   "ask": "di_manzana",
+   "lead": [],
+   "line": "c31_abuelo_mira",
+   "then": [
+    {
+     "act": "abuelo31",
+     "que": "come",
+     "suelto": 1
+    },
+    "c31_abuelo_guineo",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "abuelo31",
+     "que": "tira",
+     "k": "manzana"
+    }
+   ],
+   "resp": [
+    "di_guineo",
+    "di_manzana"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_guineo": "c31_cq_guineo",
+    "di_manzana": "c31_cq_manzana"
+   },
+   "said": {
+    "di_manzana": "c31_cq_manzana"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "pan",
+    "fruta"
+   ],
+   "other": "kb"
+  },
+  {
+   "draw": "za",
+   "options": [
+    "pan",
+    "fruta"
+   ]
+  },
+  {
+   "draw": "ha",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "draw": "kc",
+   "options": [
+    "guineo",
+    "manzana"
+   ],
+   "other": "kd"
+  },
+  {
+   "draw": "qb",
+   "options": [
+    "guineo",
+    "manzana"
+   ]
+  },
+  {
+   "draw": "hb",
+   "options": [
+    "1",
+    "2"
+   ]
+  },
+  {
+   "draw": "ke",
+   "options": [
+    "guineo",
+    "manzana"
+   ],
+   "other": "kf"
+  },
+  {
+   "calc": "pv",
+   "cond": "kc=$qb",
+   "then": "luis",
+   "else": "carmen"
+  },
+  {
+   "calc": "pw",
+   "cond": "kc=$qb",
+   "then": "carmen",
+   "else": "luis"
+  },
+  {
+   "act": "turno31"
+  },
+  {
+   "say": "c31_abuelo_vamos",
+   "gap": 250
+  },
+  {
+   "act": "lotes31",
+   "viejo": "$ka",
+   "izq": "$za",
+   "luis": "$qb",
+   "abuelo": "$ke"
+  },
+  "c31_aqui_pan_fruta",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "huele31",
+   "orden": "$ha",
+   "pano": 1
+  },
+  {
+   "act": "abuelaa31",
+   "pano": 1
+  },
+  {
+   "decide": "do",
+   "options": [
+    "t_pan",
+    "t_fruta"
+   ],
+   "pick": "t_$ka",
+   "tests": "$ka",
+   "lock": true,
+   "lead": [],
+   "line": "c31_ab_$ka_no",
+   "right": [
+    {
+     "act": "tira31",
+     "a": "t_$ka"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "resto31",
+       "guarda": 1
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "tira31",
+     "a": "$x",
+     "bueno": 1
+    },
+    {
+     "act": "resto31",
+     "voltea": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c31_no_$ka"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "huelemanos",
+   "orden": "$hb"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "luis",
+    "carmen"
+   ],
+   "pick": "$pv",
+   "tests": "$kc",
+   "lock": true,
+   "lead": [],
+   "line": "c31_ab_$kc_no",
+   "right": [
+    {
+     "act": "quita",
+     "a": "$pv"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "nino31",
+       "a": "$pw",
+       "guarda": 1
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "quita",
+     "a": "$x",
+     "bueno": 1
+    },
+    {
+     "act": "nino31",
+     "a": "$pv",
+     "manchas": 1
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c31_no_$kc"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "abuelaa31"
+  },
+  {
+   "act": "abuelo31",
+   "que": "pone"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_guineo",
+    "di_manzana"
+   ],
+   "baraja": true,
+   "pick": "di_$ke",
+   "tests": "$ke",
+   "voces": {
+    "di_guineo": "c31_cq_guineo",
+    "di_manzana": "c31_cq_manzana"
+   },
+   "said": {
+    "di_guineo": "c31_cq_guineo",
+    "di_manzana": "c31_cq_manzana"
+   },
+   "lead": [],
+   "line": "c31_abuelo_mira",
+   "right": [
+    {
+     "act": "abuelo31",
+     "que": "tira",
+     "k": "$ke"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "abuelo31",
+       "que": "da"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "abuelo31",
+     "que": "tira",
+     "k": "$x"
+    },
+    {
+     "act": "abuelo31",
+     "que": "mira"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c31_no_$ke"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "final31"
+  },
+  "c31_van",
+  {
+   "say": "c31_cq_adios",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c31_vamos",
+  "c31_busca",
+  "c31_aqui_pan",
+  "c31_aqui_fruta",
+  "c31_aqui_gm",
+  "c31_huele_pan",
+  "c31_fo_pan",
+  "c31_para_pajaros",
+  "c31_tira_pan",
+  "c31_pajaro_pan",
+  "c31_carmen_fruta",
+  "c31_huele_fruta",
+  "c31_esta_fruta",
+  "c31_tira_fruta",
+  "c31_pajaro_fruta",
+  "c31_luis_pan",
+  "c31_este_guineo",
+  "c31_guineo_pajaros",
+  "c31_carmen_manzana",
+  "c31_esta_manzana",
+  "c31_manzana_pajaros",
+  "c31_luis_guineo",
+  "c31_abuelo_mira",
+  "c31_cq_guineo",
+  "c31_abuelo_manzana",
+  "c31_cq_manzana",
+  "c31_abuelo_guineo",
+  "c31_abuelo_vamos",
+  "c31_aqui_pan_fruta",
+  "c31_van",
+  "c31_cq_adios"
+ ]
+}
