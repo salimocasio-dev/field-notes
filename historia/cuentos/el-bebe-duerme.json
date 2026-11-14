@@ -3,7 +3,7 @@
  "title": "El bebé duerme",
  "place": "El parque",
  "scene": "banco",
- "next": null,
+ "next": "la-mesa",
  "callado": true,
  "goal": "Look after everybody without waking the baby.",
  "stake": {

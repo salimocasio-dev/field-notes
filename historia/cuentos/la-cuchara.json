@@ -1,0 +1,1117 @@
+{
+ "id": "la-cuchara",
+ "title": "La cuchara",
+ "place": "La cocina",
+ "scene": "mesa",
+ "next": "tengo-hambre",
+ "goal": "Get the right thing to eat with to whoever is eating.",
+ "stake": {
+  "thing": "mantel",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "cuchara",
+  "tenedor",
+  "cuchillo",
+  "comida"
+ ],
+ "back_again": [
+  "mesa",
+  "plato",
+  "pone",
+  "tiene",
+  "come",
+  "para",
+  "con",
+  "hay",
+  "aquí",
+  "ahora",
+  "más",
+  "pan",
+  "¿quién?",
+  "no",
+  "mira"
+ ],
+ "also_heard": [],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "mesa": "n_mesa",
+  "bebe": "m_n_bebe",
+  "cocina": "m_n_cocina",
+  "perro": "c_n_perro"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_mesa": {
+   "who": "narr",
+   "text": "Es la mesa."
+  },
+  "m_n_bebe": {
+   "who": "narr",
+   "text": "Es el bebé."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "c25_ab_tiene_comida": {
+   "who": "narr",
+   "text": "Abuela tiene la comida."
+  },
+  "c25_ab_pone_comida": {
+   "who": "narr",
+   "text": "Abuela pone la comida en la mesa."
+  },
+  "c25_aqui_cuchara": {
+   "who": "narr",
+   "text": "Aquí hay una cuchara."
+  },
+  "c25_aqui_tenedor": {
+   "who": "narr",
+   "text": "Aquí hay un tenedor."
+  },
+  "c25_aqui_cuchillo": {
+   "who": "narr",
+   "text": "Y aquí hay un cuchillo."
+  },
+  "c25_mama_come_cuchara": {
+   "who": "narr",
+   "text": "Mamá come con la cuchara."
+  },
+  "c25_papa_come_tenedor": {
+   "who": "narr",
+   "text": "Papá come con el tenedor."
+  },
+  "c25_ahora_abuelo": {
+   "who": "narr",
+   "text": "Ahora abuelo tiene el cuchillo."
+  },
+  "c25_abuelo_pan": {
+   "who": "narr",
+   "text": "Abuelo come pan."
+  },
+  "c25_cq_cuchara": {
+   "who": "tu",
+   "text": "¡Una cuchara!"
+  },
+  "c25_cq_tenedor": {
+   "who": "tu",
+   "text": "¡Un tenedor!"
+  },
+  "c25_cq_cuchillo": {
+   "who": "tu",
+   "text": "¡Un cuchillo!"
+  },
+  "c25_carmen_come": {
+   "who": "narr",
+   "text": "Carmen come con la cuchara."
+  },
+  "c25_mama_come_tenedor": {
+   "who": "narr",
+   "text": "Mamá come con el tenedor."
+  },
+  "c25_ahora_papa": {
+   "who": "narr",
+   "text": "Ahora papá tiene el cuchillo."
+  },
+  "c25_hay_mas": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Hay más comida!"
+  },
+  "c25_familia_come": {
+   "who": "narr",
+   "text": "La familia come."
+  },
+  "c25_cq_mmm": {
+   "who": "tu",
+   "text": "¡Mmm! ¡La comida de abuela!"
+  },
+  "c25_quien_cuchara": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién tiene la cuchara?"
+  },
+  "c25_cuchara_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una cuchara para abuelo."
+  },
+  "c25_no_abuelo_tiene_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo tiene la cuchara."
+  },
+  "c25_no_abuelo_no_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo no tiene cuchara."
+  },
+  "c25_cuchara_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una cuchara para mamá."
+  },
+  "c25_no_mama_tiene_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá tiene la cuchara."
+  },
+  "c25_no_mama_no_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá no tiene cuchara."
+  },
+  "c25_cuchara_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una cuchara para papá."
+  },
+  "c25_no_papa_tiene_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá tiene la cuchara."
+  },
+  "c25_no_papa_no_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá no tiene cuchara."
+  },
+  "c25_cuchara_para_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una cuchara para Carmen."
+  },
+  "c25_no_carmen_tiene_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen tiene la cuchara."
+  },
+  "c25_no_carmen_no_cuchara": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen no tiene cuchara."
+  },
+  "c25_quien_tenedor": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién tiene el tenedor?"
+  },
+  "c25_tenedor_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un tenedor para abuelo."
+  },
+  "c25_no_abuelo_tiene_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo tiene el tenedor."
+  },
+  "c25_no_abuelo_no_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo no tiene tenedor."
+  },
+  "c25_tenedor_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un tenedor para mamá."
+  },
+  "c25_no_mama_tiene_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá tiene el tenedor."
+  },
+  "c25_no_mama_no_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá no tiene tenedor."
+  },
+  "c25_tenedor_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un tenedor para papá."
+  },
+  "c25_no_papa_tiene_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá tiene el tenedor."
+  },
+  "c25_no_papa_no_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá no tiene tenedor."
+  },
+  "c25_tenedor_para_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un tenedor para Carmen."
+  },
+  "c25_no_carmen_tiene_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen tiene el tenedor."
+  },
+  "c25_no_carmen_no_tenedor": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen no tiene tenedor."
+  },
+  "c25_quien_cuchillo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién tiene el cuchillo?"
+  },
+  "c25_cuchillo_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un cuchillo para abuelo."
+  },
+  "c25_no_abuelo_tiene_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo tiene el cuchillo."
+  },
+  "c25_no_abuelo_no_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo no tiene cuchillo."
+  },
+  "c25_cuchillo_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un cuchillo para mamá."
+  },
+  "c25_no_mama_tiene_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá tiene el cuchillo."
+  },
+  "c25_no_mama_no_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá no tiene cuchillo."
+  },
+  "c25_cuchillo_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un cuchillo para papá."
+  },
+  "c25_no_papa_tiene_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá tiene el cuchillo."
+  },
+  "c25_no_papa_no_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá no tiene cuchillo."
+  },
+  "c25_cuchillo_para_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un cuchillo para Carmen."
+  },
+  "c25_no_carmen_tiene_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen tiene el cuchillo."
+  },
+  "c25_no_carmen_no_cuchillo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen no tiene cuchillo."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio25"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "olla"
+   }
+  },
+  "c25_ab_tiene_comida",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "plato25",
+   "a": "mama",
+   "d": "sopa",
+   "suelto": 1
+  },
+  "c25_ab_pone_comida",
+  {
+   "act": "ya"
+  },
+  {
+   "act": "plato25",
+   "a": "papa",
+   "d": "espa"
+  },
+  {
+   "act": "muestra",
+   "k": "cuchara"
+  },
+  {
+   "set": {
+    "twinkle": "muestra"
+   }
+  },
+  "c25_aqui_cuchara",
+  {
+   "act": "muestra",
+   "k": "tenedor"
+  },
+  {
+   "set": {
+    "twinkle": "muestra"
+   }
+  },
+  "c25_aqui_tenedor",
+  {
+   "act": "muestra",
+   "k": "cuchillo"
+  },
+  {
+   "set": {
+    "twinkle": "muestra"
+   }
+  },
+  "c25_aqui_cuchillo",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "muestra",
+   "k": ""
+  },
+  {
+   "dots": 1
+  },
+  {
+   "set": {
+    "twinkle": "mama"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "cuchara",
+   "lead": [],
+   "line": "c25_cuchara_para_mama",
+   "then": [
+    "c25_mama_come_cuchara"
+   ],
+   "after": [
+    {
+     "act": "util",
+     "a": "mama",
+     "k": "cuchara"
+    },
+    {
+     "act": "come25",
+     "a": "mama"
+    }
+   ],
+   "resp": [
+    "cuchara",
+    "tenedor",
+    "cuchillo"
+   ],
+   "baraja": true
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "set": {
+    "twinkle": "papa"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "tenedor",
+   "lead": [],
+   "line": "c25_tenedor_para_papa",
+   "then": [
+    "c25_papa_come_tenedor"
+   ],
+   "after": [
+    {
+     "act": "util",
+     "a": "papa",
+     "k": "tenedor"
+    },
+    {
+     "act": "come25",
+     "a": "papa"
+    }
+   ],
+   "resp": [
+    "cuchara",
+    "tenedor",
+    "cuchillo"
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "luisalza",
+   "k": "cuchillo"
+  },
+  {
+   "act": "plato25",
+   "a": "abuelo",
+   "d": "pan"
+  },
+  {
+   "ask": "luis",
+   "lead": [],
+   "line": "c25_quien_cuchillo",
+   "then": [
+    "c25_abuelo_pan"
+   ],
+   "after": [
+    {
+     "act": "util",
+     "a": "abuelo",
+     "de": "luis"
+    },
+    "c25_ahora_abuelo",
+    {
+     "act": "come25",
+     "a": "abuelo"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "termina25",
+   "a": "mama",
+   "queda": 1
+  },
+  {
+   "act": "plato25",
+   "a": "carmen",
+   "d": "sopa"
+  },
+  {
+   "set": {
+    "twinkle": "carmen"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "di_cuchara",
+   "lead": [],
+   "line": null,
+   "then": [
+    "c25_carmen_come"
+   ],
+   "after": [
+    {
+     "act": "llama",
+     "a": "carmen",
+     "k": "cuchara"
+    },
+    {
+     "act": "come25",
+     "a": "carmen"
+    }
+   ],
+   "resp": [
+    "di_cuchara",
+    "di_tenedor",
+    "di_cuchillo"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_cuchara": "c25_cq_cuchara",
+    "di_tenedor": "c25_cq_tenedor",
+    "di_cuchillo": "c25_cq_cuchillo"
+   },
+   "said": {
+    "di_cuchara": "c25_cq_cuchara"
+   }
+  },
+  {
+   "act": "termina25",
+   "a": "papa",
+   "queda": 1
+  },
+  {
+   "act": "plato25",
+   "a": "mama",
+   "d": "espa"
+  },
+  {
+   "set": {
+    "twinkle": "mama"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "di_tenedor",
+   "lead": [],
+   "line": null,
+   "then": [
+    "c25_mama_come_tenedor"
+   ],
+   "after": [
+    {
+     "act": "llama",
+     "a": "mama",
+     "k": "tenedor"
+    },
+    {
+     "act": "come25",
+     "a": "mama"
+    }
+   ],
+   "resp": [
+    "di_cuchara",
+    "di_tenedor",
+    "di_cuchillo"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_cuchara": "c25_cq_cuchara",
+    "di_tenedor": "c25_cq_tenedor",
+    "di_cuchillo": "c25_cq_cuchillo"
+   },
+   "said": {
+    "di_tenedor": "c25_cq_tenedor"
+   }
+  },
+  {
+   "act": "termina25",
+   "a": "abuelo",
+   "queda": 1
+  },
+  {
+   "act": "plato25",
+   "a": "papa",
+   "d": "pan"
+  },
+  {
+   "set": {
+    "twinkle": "papa"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "di_cuchillo",
+   "lead": [],
+   "line": null,
+   "then": [
+    "c25_ahora_papa"
+   ],
+   "after": [
+    {
+     "act": "llama",
+     "a": "papa",
+     "k": "cuchillo"
+    },
+    {
+     "act": "come25",
+     "a": "papa"
+    }
+   ],
+   "resp": [
+    "di_cuchara",
+    "di_tenedor",
+    "di_cuchillo"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_cuchara": "c25_cq_cuchara",
+    "di_tenedor": "c25_cq_tenedor",
+    "di_cuchillo": "c25_cq_cuchillo"
+   },
+   "said": {
+    "di_cuchillo": "c25_cq_cuchillo"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "termina25",
+   "a": "carmen,mama,papa"
+  },
+  {
+   "act": "turno25a"
+  },
+  {
+   "set": {
+    "twinkle": "olla"
+   }
+  },
+  "c25_hay_mas",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "reparte": [
+    "ha",
+    "hb",
+    "hc",
+    "pn"
+   ],
+   "options": [
+    "abuelo",
+    "mama",
+    "papa",
+    "carmen"
+   ]
+  },
+  {
+   "act": "turno25b",
+   "ha": "$ha",
+   "hb": "$hb",
+   "hc": "$hc"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ta",
+   "options": [
+    "cuchara",
+    "tenedor",
+    "cuchillo"
+   ]
+  },
+  {
+   "calc": "qa",
+   "cond": "ta=cuchara",
+   "then": "$ha",
+   "else": "$hb"
+  },
+  {
+   "calc": "qa",
+   "cond": "ta=cuchillo",
+   "then": "$hc",
+   "else": "$qa"
+  },
+  {
+   "set": {
+    "twinkle": "$pn"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "do",
+   "options": [
+    "$ha",
+    "$hb",
+    "$hc"
+   ],
+   "pick": "$qa",
+   "tests": "$ta",
+   "lock": true,
+   "lead": [],
+   "line": "c25_quien_$ta",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "util",
+       "a": "$pn",
+       "de": "$qa"
+      },
+      {
+       "act": "plato25",
+       "a": "$pn",
+       "para": "$ta"
+      },
+      {
+       "act": "come25",
+       "a": "$pn"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "util",
+       "a": "$pn",
+       "de": "$qa"
+      },
+      {
+       "act": "come25",
+       "a": "$pn"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "util",
+     "a": "$pn",
+     "de": "$x"
+    },
+    {
+     "act": "plato25",
+     "a": "$pn",
+     "para": "$ta"
+    },
+    {
+     "act": "come25",
+     "a": "$pn"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c25_no_$qa_tiene_$ta"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "termina25",
+   "a": "$pn"
+  },
+  {
+   "act": "elige25",
+   "no": "$pn"
+  },
+  {
+   "act": "plato25",
+   "a": "$pb",
+   "para": "$tb"
+  },
+  {
+   "set": {
+    "twinkle": "$pb"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_cuchara",
+    "di_tenedor",
+    "di_cuchillo"
+   ],
+   "baraja": true,
+   "pick": "di_$tb",
+   "tests": "$tb",
+   "voces": {
+    "di_cuchara": "c25_cq_cuchara",
+    "di_tenedor": "c25_cq_tenedor",
+    "di_cuchillo": "c25_cq_cuchillo"
+   },
+   "said": {
+    "di_cuchara": "c25_cq_cuchara",
+    "di_tenedor": "c25_cq_tenedor",
+    "di_cuchillo": "c25_cq_cuchillo"
+   },
+   "lead": [],
+   "line": null,
+   "right": [
+    {
+     "act": "llama",
+     "a": "$pb",
+     "k": "$tb"
+    },
+    {
+     "act": "come25",
+     "a": "$pb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "llama",
+     "a": "$pb",
+     "k": "$x"
+    },
+    {
+     "act": "come25",
+     "a": "$pb"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c25_no_$pb_no_$tb"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "termina25",
+   "a": "$pb"
+  },
+  {
+   "draw": "tc",
+   "options": [
+    "cuchara",
+    "tenedor",
+    "cuchillo"
+   ]
+  },
+  {
+   "set": {
+    "twinkle": "$qa"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "say",
+   "options": [
+    "cuchara",
+    "tenedor",
+    "cuchillo"
+   ],
+   "baraja": true,
+   "pick": "$tc",
+   "tests": "$tc",
+   "lead": [],
+   "line": "c25_$tc_para_$qa",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "util",
+       "a": "$qa",
+       "k": "$tc"
+      },
+      {
+       "act": "plato25",
+       "a": "$qa",
+       "para": "$tc"
+      },
+      {
+       "act": "come25",
+       "a": "$qa"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ],
+     "else": [
+      {
+       "act": "util",
+       "a": "$qa",
+       "k": "$tc"
+      },
+      {
+       "act": "come25",
+       "a": "$qa"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "util",
+     "a": "$qa",
+     "k": "$x"
+    },
+    {
+     "act": "plato25",
+     "a": "$qa",
+     "para": "$tc"
+    },
+    {
+     "act": "come25",
+     "a": "$qa"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c25_no_$qa_no_$tc"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "pan25"
+  },
+  "c25_familia_come",
+  {
+   "say": "c25_cq_mmm",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c25_ab_tiene_comida",
+  "c25_ab_pone_comida",
+  "c25_aqui_cuchara",
+  "c25_aqui_tenedor",
+  "c25_aqui_cuchillo",
+  "c25_cuchara_para_mama",
+  "c25_mama_come_cuchara",
+  "c25_tenedor_para_papa",
+  "c25_papa_come_tenedor",
+  "c25_quien_cuchillo",
+  "c25_ahora_abuelo",
+  "c25_abuelo_pan",
+  "c25_cq_cuchara",
+  "c25_carmen_come",
+  "c25_cq_tenedor",
+  "c25_mama_come_tenedor",
+  "c25_cq_cuchillo",
+  "c25_ahora_papa",
+  "c25_hay_mas",
+  "c25_familia_come",
+  "c25_cq_mmm"
+ ]
+}

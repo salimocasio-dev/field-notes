@@ -1,0 +1,977 @@
+{
+ "id": "la-mesa",
+ "title": "La mesa",
+ "place": "La cocina",
+ "scene": "mesa",
+ "next": "la-cuchara",
+ "goal": "Get a plate and a cup to each place, so that abuela can serve.",
+ "stake": {
+  "thing": "merienda",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "mesa",
+  "plato",
+  "taza",
+  "pone"
+ ],
+ "back_again": [
+  "abuela",
+  "abuelo",
+  "mamá",
+  "papá",
+  "bebé",
+  "familia",
+  "bizcocho",
+  "para",
+  "tiene",
+  "hay",
+  "aquí",
+  "no",
+  "mira",
+  "otra vez",
+  "gracias",
+  "¿quién?",
+  "se sienta"
+ ],
+ "also_heard": [
+  "chocolate",
+  "lista",
+  "a comer"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "mesa": "n_mesa",
+  "bebe": "m_n_bebe",
+  "cocina": "m_n_cocina",
+  "perro": "c_n_perro"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_mesa": {
+   "who": "narr",
+   "text": "Es la mesa."
+  },
+  "m_n_bebe": {
+   "who": "narr",
+   "text": "Es el bebé."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "c24_esta_mesa": {
+   "who": "narr",
+   "text": "Esta es la mesa."
+  },
+  "c24_aqui_plato": {
+   "who": "narr",
+   "text": "Aquí hay un plato."
+  },
+  "c24_aqui_taza": {
+   "who": "narr",
+   "text": "Y aquí hay una taza."
+  },
+  "c24_familia": {
+   "who": "narr",
+   "text": "La familia se sienta."
+  },
+  "c24_bebe_mama": {
+   "who": "narr",
+   "text": "El bebé está con mamá."
+  },
+  "c24_plato_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un plato para abuelo."
+  },
+  "c24_cq_pone_plato": {
+   "who": "narr",
+   "text": "Coquí pone el plato en la mesa."
+  },
+  "c24_ab_pone_bizcocho": {
+   "who": "narr",
+   "text": "Abuela pone el bizcocho en el plato."
+  },
+  "c24_cq_plato": {
+   "who": "tu",
+   "text": "¡Un plato!"
+  },
+  "c24_cq_taza": {
+   "who": "tu",
+   "text": "¡Una taza!"
+  },
+  "c24_luis_pone_taza": {
+   "who": "narr",
+   "text": "Luis pone la taza en la mesa."
+  },
+  "c24_y_chocolate": {
+   "who": "narr",
+   "text": "Y el chocolate, en la taza."
+  },
+  "c24_quien_no_taza": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién no tiene taza?"
+  },
+  "c24_quien_no_plato": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Quién no tiene plato?"
+  },
+  "c24_ahora_mama": {
+   "who": "narr",
+   "text": "Ahora mamá tiene un plato y una taza."
+  },
+  "c24_ahora_papa": {
+   "who": "narr",
+   "text": "Ahora papá tiene una taza y un plato."
+  },
+  "c24_cq_pone_taza": {
+   "who": "narr",
+   "text": "Coquí pone la taza en la mesa."
+  },
+  "c24_luis_pone_plato": {
+   "who": "narr",
+   "text": "Luis pone el plato en la mesa."
+  },
+  "c24_ay_bebe": {
+   "who": "narr",
+   "text": "¡Ay, no! ¡El bebé!"
+  },
+  "c24_otra_vez": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Otra vez!"
+  },
+  "c24_cq_pone_mesa": {
+   "who": "narr",
+   "text": "Coquí pone la mesa."
+  },
+  "c24_mesa_lista": {
+   "who": "narr",
+   "text": "La mesa está lista."
+  },
+  "c24_a_comer": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡A comer!"
+  },
+  "c24_plato_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un plato para mamá."
+  },
+  "c24_no_mama_plato": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá no tiene plato."
+  },
+  "c24_taza_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una taza para mamá."
+  },
+  "c24_no_mama_taza": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá no tiene taza."
+  },
+  "c24_plato_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un plato para papá."
+  },
+  "c24_no_papa_plato": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá no tiene plato."
+  },
+  "c24_taza_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una taza para papá."
+  },
+  "c24_no_papa_taza": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá no tiene taza."
+  },
+  "c24_plato_para_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un plato para Carmen."
+  },
+  "c24_no_carmen_plato": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen no tiene plato."
+  },
+  "c24_taza_para_carmen": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una taza para Carmen."
+  },
+  "c24_no_carmen_taza": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Carmen no tiene taza."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio24"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "mesa"
+   }
+  },
+  "c24_esta_mesa",
+  {
+   "act": "muestra",
+   "k": "plato"
+  },
+  {
+   "set": {
+    "twinkle": "muestra"
+   }
+  },
+  "c24_aqui_plato",
+  {
+   "act": "muestra",
+   "k": "taza"
+  },
+  {
+   "set": {
+    "twinkle": "muestra"
+   }
+  },
+  "c24_aqui_taza",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "muestra",
+   "k": ""
+  },
+  {
+   "act": "entran24",
+   "suelto": 1
+  },
+  "c24_familia",
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "twinkle": "bebe"
+   }
+  },
+  "c24_bebe_mama",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "abuelaa",
+   "a": "abuelo",
+   "sirve": 1
+  },
+  {
+   "set": {
+    "twinkle": "abuelo"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "platos",
+   "lead": [],
+   "line": "c24_plato_para_abuelo",
+   "then": [
+    {
+     "act": "sirve",
+     "a": "abuelo",
+     "k": "plato",
+     "suelto": 1
+    },
+    "c24_ab_pone_bizcocho",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "pon",
+     "k": "plato",
+     "a": "abuelo",
+     "suelto": 1
+    },
+    "c24_cq_pone_plato",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "set": {
+    "twinkle": "abuelo"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "di_taza",
+   "lead": [],
+   "line": null,
+   "then": [
+    {
+     "act": "sirve",
+     "a": "abuelo",
+     "k": "taza",
+     "suelto": 1
+    },
+    "c24_y_chocolate",
+    {
+     "act": "ya"
+    }
+   ],
+   "after": [
+    {
+     "act": "luispone",
+     "k": "taza",
+     "a": "abuelo",
+     "suelto": 1
+    },
+    "c24_luis_pone_taza",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_plato",
+    "di_taza"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_plato": "c24_cq_plato",
+    "di_taza": "c24_cq_taza"
+   },
+   "said": {
+    "di_taza": "c24_cq_taza"
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "abuelaa",
+   "centro": 1
+  },
+  {
+   "act": "reparte24",
+   "p": "mama",
+   "t": "papa"
+  },
+  {
+   "ask": "mama",
+   "lead": [],
+   "line": "c24_quien_no_taza",
+   "then": [
+    "c24_ahora_mama"
+   ],
+   "after": [
+    {
+     "act": "pon",
+     "k": "taza",
+     "a": "mama"
+    }
+   ]
+  },
+  {
+   "ask": "papa",
+   "lead": [],
+   "line": "c24_quien_no_plato",
+   "then": [
+    "c24_ahora_papa"
+   ],
+   "after": [
+    {
+     "act": "pon",
+     "k": "plato",
+     "a": "papa"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "entra",
+   "quien": "carmen",
+   "silla": 3
+  },
+  {
+   "set": {
+    "twinkle": "carmen"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "tazas",
+   "lead": [],
+   "line": "c24_taza_para_carmen",
+   "then": [],
+   "after": [
+    {
+     "act": "pon",
+     "k": "taza",
+     "a": "carmen",
+     "suelto": 1
+    },
+    "c24_cq_pone_taza",
+    {
+     "act": "ya"
+    }
+   ]
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "set": {
+    "twinkle": "carmen"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "ask": "di_plato",
+   "lead": [],
+   "line": null,
+   "then": [],
+   "after": [
+    {
+     "act": "luispone",
+     "k": "plato",
+     "a": "carmen",
+     "suelto": 1
+    },
+    "c24_luis_pone_plato",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_plato",
+    "di_taza"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_plato": "c24_cq_plato",
+    "di_taza": "c24_cq_taza"
+   },
+   "said": {
+    "di_plato": "c24_cq_plato"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "abuelaa",
+   "nada": 1
+  },
+  {
+   "act": "tira24"
+  },
+  "c24_ay_bebe",
+  {
+   "act": "recoge24"
+  },
+  {
+   "act": "corta24"
+  },
+  "c24_otra_vez",
+  {
+   "act": "rana",
+   "x": 40,
+   "y": 173,
+   "suelto": 1
+  },
+  "c24_cq_pone_mesa",
+  {
+   "act": "ya"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "reparte": [
+    "pa",
+    "pb",
+    "pc"
+   ],
+   "options": [
+    "mama",
+    "papa",
+    "carmen"
+   ]
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ka",
+   "options": [
+    "plato",
+    "taza"
+   ],
+   "other": "oa"
+  },
+  {
+   "calc": "ga",
+   "cond": "ka=plato",
+   "then": "platos",
+   "else": "tazas"
+  },
+  {
+   "act": "abuelaa",
+   "a": "$pa",
+   "sirve": 1
+  },
+  {
+   "set": {
+    "twinkle": "$pa"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "do",
+   "options": [
+    "platos",
+    "tazas"
+   ],
+   "pick": "$ga",
+   "tests": "$ka",
+   "lock": true,
+   "lead": [],
+   "line": "c24_$ka_para_$pa",
+   "right": [
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "pon",
+       "k": "$ka",
+       "a": "$pa"
+      },
+      {
+       "act": "sirve",
+       "a": "$pa",
+       "k": "$ka"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      },
+      {
+       "act": "luispone",
+       "k": "$oa",
+       "a": "$pa"
+      },
+      {
+       "act": "sirve",
+       "a": "$pa",
+       "k": "$oa"
+      }
+     ],
+     "else": [
+      {
+       "act": "pon",
+       "k": "$ka",
+       "a": "$pa"
+      },
+      {
+       "act": "sirve",
+       "a": "$pa",
+       "k": "$oa"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pon",
+     "k": "$x",
+     "a": "$pa"
+    },
+    {
+     "act": "sirvemal",
+     "a": "$pa",
+     "k": "$ka"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "calc": "fa",
+     "cond": "ok",
+     "then": "1",
+     "else": "1"
+    },
+    "c24_no_$pa_$ka"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "reparte24",
+   "p": "$pb",
+   "t": "$pc"
+  },
+  {
+   "act": "sirve",
+   "a": "$pb",
+   "k": "plato"
+  },
+  {
+   "act": "sirve",
+   "a": "$pc",
+   "k": "taza"
+  },
+  {
+   "draw": "kb",
+   "options": [
+    "plato",
+    "taza"
+   ]
+  },
+  {
+   "if": "fa=1",
+   "then": [
+    {
+     "calc": "kb",
+     "cond": "ka=plato",
+     "then": "taza",
+     "else": "plato"
+    }
+   ]
+  },
+  {
+   "calc": "tb",
+   "cond": "kb=plato",
+   "then": "$pc",
+   "else": "$pb"
+  },
+  {
+   "calc": "tc",
+   "cond": "kb=plato",
+   "then": "$pb",
+   "else": "$pc"
+  },
+  {
+   "calc": "kc",
+   "cond": "kb=plato",
+   "then": "taza",
+   "else": "plato"
+  },
+  {
+   "act": "abuelaa",
+   "centro": 1,
+   "sirve": 1
+  },
+  {
+   "decide": "do",
+   "options": [
+    "abuelo",
+    "mama",
+    "papa",
+    "carmen"
+   ],
+   "pick": "$tb",
+   "tests": "$kb",
+   "lock": true,
+   "lead": [],
+   "line": "c24_quien_no_$kb",
+   "right": [
+    {
+     "act": "pon",
+     "k": "$kb",
+     "a": "$tb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "sirve",
+       "a": "$tb",
+       "k": "$kb"
+      },
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pon",
+     "k": "$kb",
+     "a": "$x"
+    },
+    {
+     "act": "sirve",
+     "a": "$x",
+     "k": "$kb"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c24_no_$tb_$kb"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "abuelaa",
+   "centro": 1
+  },
+  {
+   "set": {
+    "twinkle": "$tc"
+   }
+  },
+  {
+   "wait": 700
+  },
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_plato",
+    "di_taza"
+   ],
+   "baraja": true,
+   "pick": "di_$kc",
+   "tests": "$kc",
+   "voces": {
+    "di_plato": "c24_cq_plato",
+    "di_taza": "c24_cq_taza"
+   },
+   "said": {
+    "di_plato": "c24_cq_plato",
+    "di_taza": "c24_cq_taza"
+   },
+   "lead": [],
+   "line": null,
+   "right": [
+    {
+     "act": "luispone",
+     "k": "$kc",
+     "a": "$tc"
+    },
+    {
+     "act": "sirve",
+     "a": "$tc",
+     "k": "$kc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "luispone",
+     "k": "$x",
+     "a": "$tc"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c24_no_$tc_$kc"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "lista24"
+  },
+  "c24_mesa_lista",
+  "c24_a_comer",
+  {
+   "act": "final24"
+  },
+  {
+   "say": "cq_gracias_abuela",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c24_esta_mesa",
+  "c24_aqui_plato",
+  "c24_aqui_taza",
+  "c24_familia",
+  "c24_bebe_mama",
+  "c24_plato_para_abuelo",
+  "c24_cq_pone_plato",
+  "c24_ab_pone_bizcocho",
+  "c24_cq_taza",
+  "c24_luis_pone_taza",
+  "c24_y_chocolate",
+  "c24_quien_no_taza",
+  "c24_ahora_mama",
+  "c24_quien_no_plato",
+  "c24_ahora_papa",
+  "c24_taza_para_carmen",
+  "c24_cq_pone_taza",
+  "c24_cq_plato",
+  "c24_luis_pone_plato",
+  "c24_ay_bebe",
+  "c24_otra_vez",
+  "c24_cq_pone_mesa",
+  "c24_mesa_lista",
+  "c24_a_comer",
+  "cq_gracias_abuela"
+ ]
+}

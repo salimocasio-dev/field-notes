@@ -136,7 +136,7 @@ c.update({"c23_un_bebe":N("Mira. Un bebé."),"c23_duerme":N("El bebé duerme."),
  "c23_otra":D("hombre","El señor","¡Otra! ¡Gracias!"),
  "c23_fin_canelo":N("Canelo está cansado."),"c23_fin_coqui":N("Y Coquí está muy cansado."),"c23_ab_vamos":AB("Vamos a casa."),"p_cq_hm":T("¡Hasta mañana!")})
 DF=["di_contento","di_cansado","di_triste"]; VF={"di_contento":"c23_cq_contento","di_cansado":"c23_cq_cansado","di_triste":"c23_cq_triste"}; DQ=["canta","quieto"]
-s23={"id":"el-bebe-duerme","title":"El bebé duerme","place":"El parque","scene":"banco","next":None,"callado":True,
+s23={"id":"el-bebe-duerme","title":"El bebé duerme","place":"El parque","scene":"banco","next":"la-mesa","callado":True,
  "goal":"Look after everybody without waking the baby.","stake":{"thing":"juguetes","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["cansado","contento","triste","duerme"],"back_again":["bebé","perro","está","¿quién?","¿cómo estás?","señor","señora","mira","ahora","no"],
  "also_heard":["contenta","¿cómo está?"],"names":dict(BASE,senora="b_n_senora",hombre="b_n_senor",coche="b_n_bebe",perro="c_n_perro",abuela="abuela"),"clips":c,

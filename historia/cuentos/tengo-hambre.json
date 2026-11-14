@@ -1,0 +1,931 @@
+{
+ "id": "tengo-hambre",
+ "title": "Tengo hambre",
+ "place": "La cocina",
+ "scene": "mesa",
+ "next": null,
+ "goal": "Bring each one what he asks for: food, or water.",
+ "stake": {
+  "thing": "almuerzo",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "tengo hambre",
+  "tengo sed",
+  "listo",
+  "cocina"
+ ],
+ "back_again": [
+  "comida",
+  "agua",
+  "plato",
+  "vaso",
+  "toma",
+  "gracias",
+  "come",
+  "bebe",
+  "¿y tú?",
+  "ahora",
+  "perro",
+  "contento",
+  "familia",
+  "entra"
+ ],
+ "also_heard": [
+  "tiene hambre",
+  "tiene sed",
+  "tienes",
+  "lista",
+  "esa"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "mesa": "n_mesa",
+  "bebe": "m_n_bebe",
+  "cocina": "m_n_cocina",
+  "perro": "c_n_perro"
+ },
+ "palabras": {
+  "hambre": "tengo hambre",
+  "sed": "tengo sed"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "n_mesa": {
+   "who": "narr",
+   "text": "Es la mesa."
+  },
+  "m_n_bebe": {
+   "who": "narr",
+   "text": "Es el bebé."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "cq_gracias_abuela": {
+   "who": "tu",
+   "text": "¡Gracias, abuela!"
+  },
+  "c26_esta_cocina": {
+   "who": "narr",
+   "text": "Esta es la cocina de abuela."
+  },
+  "c26_ab_en_cocina": {
+   "who": "narr",
+   "text": "Abuela está en la cocina."
+  },
+  "c26_comida_lista": {
+   "who": "narr",
+   "text": "La comida está lista."
+  },
+  "c26_ab_listo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Listo!"
+  },
+  "c26_luis_entra": {
+   "who": "narr",
+   "text": "Luis entra a la cocina."
+  },
+  "c26_luis_hambre": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Tengo hambre!"
+  },
+  "c26_luis_tiene_hambre": {
+   "who": "narr",
+   "text": "Luis tiene hambre. Luis come."
+  },
+  "c26_carmen_sed": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Tengo sed!"
+  },
+  "c26_carmen_tiene_sed": {
+   "who": "narr",
+   "text": "Carmen tiene sed. Carmen bebe agua."
+  },
+  "c26_y_tu": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y tú, Coquí?"
+  },
+  "c26_cq_hambre": {
+   "who": "tu",
+   "text": "¡Tengo hambre!"
+  },
+  "c26_cq_sed": {
+   "who": "tu",
+   "text": "¡Tengo sed!"
+  },
+  "c26_toma_agua": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Toma agua, Coquí."
+  },
+  "c26_y_ahora": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y ahora?"
+  },
+  "c26_luis_sed": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Tengo sed!"
+  },
+  "c26_carmen_hambre": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Tengo hambre!"
+  },
+  "c26_carmen_tiene_hambre": {
+   "who": "narr",
+   "text": "Carmen tiene hambre. Carmen come."
+  },
+  "c26_canelo_hambre": {
+   "who": "narr",
+   "text": "Canelo tiene hambre."
+  },
+  "c26_no_canelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: No, Canelo. Esa es la comida de la familia."
+  },
+  "c26_no_tu_hambre": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Tú tienes hambre."
+  },
+  "c26_no_tu_sed": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Tú tienes sed."
+  },
+  "c26_familia_cocina": {
+   "who": "narr",
+   "text": "La familia come en la cocina."
+  },
+  "c26_y_canelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Y Canelo?"
+  },
+  "c26_cq_canelo": {
+   "who": "tu",
+   "text": "¡Canelo está contento!"
+  },
+  "c26_abuelo_hambre": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Tengo hambre!"
+  },
+  "c26_no_abuelo_hambre": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo tiene hambre."
+  },
+  "c26_abuelo_sed": {
+   "who": "narr",
+   "habla": "abuelo",
+   "text": "Abuelo dice: ¡Tengo sed!"
+  },
+  "c26_no_abuelo_sed": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Abuelo tiene sed."
+  },
+  "c26_mama_hambre": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Tengo hambre!"
+  },
+  "c26_no_mama_hambre": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá tiene hambre."
+  },
+  "c26_mama_sed": {
+   "who": "narr",
+   "habla": "mama",
+   "text": "Mamá dice: ¡Tengo sed!"
+  },
+  "c26_no_mama_sed": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Mamá tiene sed."
+  },
+  "c26_papa_hambre": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Tengo hambre!"
+  },
+  "c26_no_papa_hambre": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá tiene hambre."
+  },
+  "c26_papa_sed": {
+   "who": "narr",
+   "habla": "papa",
+   "text": "Papá dice: ¡Tengo sed!"
+  },
+  "c26_no_papa_sed": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Papá tiene sed."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio26"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "set": {
+    "twinkle": "cocina"
+   }
+  },
+  "c26_esta_cocina",
+  {
+   "set": {
+    "twinkle": "abuela"
+   }
+  },
+  "c26_ab_en_cocina",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "tapa26"
+  },
+  "c26_comida_lista",
+  {
+   "act": "llena26",
+   "n": 2
+  },
+  "c26_ab_listo",
+  {
+   "act": "abuelaa"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "entra",
+   "quien": "luis",
+   "silla": 1,
+   "suelto": 1
+  },
+  "c26_luis_entra",
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "comidas",
+   "lead": [],
+   "line": "c26_luis_hambre",
+   "then": [
+    "c26_luis_tiene_hambre"
+   ],
+   "after": [
+    {
+     "act": "lleva26",
+     "a": "luis",
+     "k": "comida"
+    },
+    {
+     "act": "toma26",
+     "a": "luis"
+    }
+   ]
+  },
+  {
+   "act": "entra",
+   "quien": "carmen",
+   "silla": 2
+  },
+  {
+   "ask": "vasos",
+   "lead": [],
+   "line": "c26_carmen_sed",
+   "then": [
+    "c26_carmen_tiene_sed"
+   ],
+   "after": [
+    {
+     "act": "lleva26",
+     "a": "carmen",
+     "k": "agua"
+    },
+    {
+     "act": "toma26",
+     "a": "carmen"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "piensa",
+   "quien": "coqui",
+   "k": "sed"
+  },
+  {
+   "ask": "di_sed",
+   "lead": [],
+   "line": "c26_y_tu",
+   "then": [
+    {
+     "act": "ranatoma"
+    },
+    {
+     "act": "quita26"
+    }
+   ],
+   "after": [
+    {
+     "act": "abuelada",
+     "k": "sed",
+     "suelto": 1
+    },
+    "c26_toma_agua",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_hambre",
+    "di_sed"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_hambre": "c26_cq_hambre",
+    "di_sed": "c26_cq_sed"
+   },
+   "said": {
+    "di_sed": "c26_cq_sed"
+   }
+  },
+  {
+   "act": "llena26",
+   "n": 1,
+   "suelto": 1
+  },
+  {
+   "act": "piensa",
+   "quien": "coqui",
+   "k": "hambre"
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "ask": "di_hambre",
+   "lead": [],
+   "line": "c26_y_ahora",
+   "then": [
+    {
+     "act": "ranatoma"
+    },
+    {
+     "say": "cq_gracias_abuela",
+     "gap": 300
+    },
+    {
+     "act": "quita26"
+    }
+   ],
+   "after": [
+    {
+     "act": "abuelada",
+     "k": "hambre",
+     "suelto": 1
+    },
+    "c26_ab_listo",
+    {
+     "act": "ya"
+    }
+   ],
+   "resp": [
+    "di_hambre",
+    "di_sed"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_hambre": "c26_cq_hambre",
+    "di_sed": "c26_cq_sed"
+   },
+   "said": {
+    "di_hambre": "c26_cq_hambre"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "acaba26",
+   "quien": "luis,carmen"
+  },
+  {
+   "act": "llena26",
+   "n": 1
+  },
+  {
+   "act": "ofrece26",
+   "k": "comida"
+  },
+  {
+   "set": {
+    "twinkle": "ofrece"
+   }
+  },
+  {
+   "ask": "carmen",
+   "lead": [
+    {
+     "say": "c26_luis_sed",
+     "gap": 250
+    }
+   ],
+   "line": "c26_carmen_hambre",
+   "then": [
+    "c26_carmen_tiene_hambre",
+    {
+     "act": "abuelalleva",
+     "a": "luis",
+     "k": "agua"
+    },
+    {
+     "act": "toma26",
+     "a": "luis"
+    }
+   ],
+   "after": [
+    {
+     "act": "lleva26",
+     "a": "carmen",
+     "k": "comida",
+     "de": "abuela"
+    },
+    {
+     "act": "toma26",
+     "a": "carmen"
+    }
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "act": "salen26"
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "llena26",
+   "n": 4,
+   "fin": 1
+  },
+  "c26_ab_listo",
+  {
+   "act": "canelo26"
+  },
+  "c26_canelo_hambre",
+  "c26_no_canelo",
+  {
+   "act": "echa26"
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "wa",
+   "options": [
+    "hambre",
+    "sed"
+   ]
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "piensa",
+   "quien": "coqui",
+   "k": "$wa"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_hambre",
+    "di_sed"
+   ],
+   "baraja": true,
+   "pick": "di_$wa",
+   "tests": "$wa",
+   "voces": {
+    "di_hambre": "c26_cq_hambre",
+    "di_sed": "c26_cq_sed"
+   },
+   "said": {
+    "di_hambre": "c26_cq_hambre",
+    "di_sed": "c26_cq_sed"
+   },
+   "lead": [],
+   "line": "c26_y_tu",
+   "right": [
+    {
+     "act": "abuelada",
+     "k": "$wa"
+    },
+    {
+     "act": "ranatoma"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "abuelaa"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "abuelada",
+     "k": "$x"
+    },
+    {
+     "act": "canelo",
+     "de": "coqui"
+    },
+    {
+     "act": "abuelaa"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c26_no_tu_$wa"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "entra",
+   "quien": "abuelo",
+   "silla": 0
+  },
+  {
+   "draw": "wb",
+   "options": [
+    "hambre",
+    "sed"
+   ]
+  },
+  {
+   "calc": "gb",
+   "cond": "wb=hambre",
+   "then": "comidas",
+   "else": "vasos"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "comidas",
+    "vasos"
+   ],
+   "pick": "$gb",
+   "tests": "$wb",
+   "lock": true,
+   "lead": [],
+   "line": "c26_abuelo_$wb",
+   "right": [
+    {
+     "act": "lleva26",
+     "a": "abuelo",
+     "k": "$wb"
+    },
+    {
+     "act": "toma26",
+     "a": "abuelo",
+     "k": "$wb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva26",
+     "a": "abuelo",
+     "k": "$x"
+    },
+    {
+     "act": "canelo",
+     "a": "abuelo",
+     "k": "$x"
+    },
+    {
+     "act": "piensa",
+     "quien": "abuelo",
+     "k": "$wb"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c26_no_abuelo_$wb"
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "entra",
+   "quien": "mama",
+   "silla": 1,
+   "suelto": 1
+  },
+  {
+   "act": "entra",
+   "quien": "papa",
+   "silla": 2
+  },
+  {
+   "act": "ya"
+  },
+  {
+   "draw": "wc",
+   "options": [
+    "hambre",
+    "sed"
+   ],
+   "other": "wd"
+  },
+  {
+   "draw": "oc",
+   "options": [
+    "m",
+    "p"
+   ]
+  },
+  {
+   "draw": "kc",
+   "options": [
+    "hambre",
+    "sed"
+   ],
+   "other": "kd"
+  },
+  {
+   "calc": "mh",
+   "cond": "wc=hambre",
+   "then": "mama",
+   "else": "papa"
+  },
+  {
+   "calc": "ms",
+   "cond": "wc=sed",
+   "then": "mama",
+   "else": "papa"
+  },
+  {
+   "calc": "tc",
+   "cond": "kc=hambre",
+   "then": "$mh",
+   "else": "$ms"
+  },
+  {
+   "calc": "uc",
+   "cond": "kc=hambre",
+   "then": "$ms",
+   "else": "$mh"
+  },
+  {
+   "calc": "la",
+   "cond": "oc=m",
+   "then": "c26_mama_$wc",
+   "else": "c26_papa_$wd"
+  },
+  {
+   "calc": "lb",
+   "cond": "oc=m",
+   "then": "c26_papa_$wd",
+   "else": "c26_mama_$wc"
+  },
+  {
+   "act": "ofrece26",
+   "k": "$kc"
+  },
+  {
+   "set": {
+    "twinkle": "ofrece"
+   }
+  },
+  {
+   "decide": "do",
+   "options": [
+    "mama",
+    "papa"
+   ],
+   "pick": "$tc",
+   "tests": "$kc",
+   "lock": true,
+   "lead": [
+    {
+     "say": "$la",
+     "gap": 250
+    }
+   ],
+   "line": "$lb",
+   "right": [
+    {
+     "act": "lleva26",
+     "a": "$tc",
+     "k": "$kc",
+     "de": "abuela"
+    },
+    {
+     "act": "toma26",
+     "a": "$tc",
+     "k": "$kc"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    },
+    {
+     "act": "abuelalleva",
+     "a": "$uc",
+     "k": "$kd"
+    },
+    {
+     "act": "toma26",
+     "a": "$uc",
+     "k": "$kd"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "lleva26",
+     "a": "$x",
+     "k": "$kc",
+     "de": "abuela"
+    },
+    {
+     "act": "canelo",
+     "a": "$x",
+     "k": "$kc"
+    },
+    {
+     "act": "piensa",
+     "quien": "$tc",
+     "k": "$kc"
+    },
+    {
+     "act": "marca",
+     "que": "x"
+    },
+    {
+     "cost": 1
+    },
+    "c26_no_$tc_$kc"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "casa"
+  },
+  {
+   "act": "reparte26"
+  },
+  "c26_ab_listo",
+  {
+   "act": "final26"
+  },
+  "c26_familia_cocina",
+  "c26_y_canelo",
+  {
+   "say": "c26_cq_canelo",
+   "gap": 300
+  },
+  {
+   "act": "fin"
+  }
+ ],
+ "leer": [
+  "c26_esta_cocina",
+  "c26_ab_en_cocina",
+  "c26_comida_lista",
+  "c26_ab_listo",
+  "c26_luis_entra",
+  "c26_luis_hambre",
+  "c26_luis_tiene_hambre",
+  "c26_carmen_sed",
+  "c26_carmen_tiene_sed",
+  "c26_y_tu",
+  "c26_cq_sed",
+  "c26_toma_agua",
+  "c26_y_ahora",
+  "c26_cq_hambre",
+  "c26_luis_sed",
+  "c26_carmen_hambre",
+  "c26_carmen_tiene_hambre",
+  "c26_canelo_hambre",
+  "c26_no_canelo",
+  "c26_familia_cocina",
+  "c26_y_canelo",
+  "c26_cq_canelo"
+ ]
+}

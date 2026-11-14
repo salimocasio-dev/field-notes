@@ -1,4 +1,4 @@
-# La mesa: three stories (draft 3, after two rounds of reviews)
+# La mesa: three stories (final, after two rounds of reviews and a last gate)
 
 Place 3, La cocina. Scene 1 of 4. The learner is the little frog (Coquí). He has finished place 1, La casa (stories 1 to 11), and place 2, El parque (stories 12 to 23).
 
@@ -16,7 +16,7 @@ Voices: the narrator speaks to the learner. A person's lines are spoken by the n
 
 The signal for a right move is the same as always: chime, stars, the frog hops, then "¡Sí! ¡Muy bien!".
 After a wrong move, always: the cost; what he did stays done; "No, Coquí. Mira." and a whole sentence, true to the eye at the moment it is said; then the big sign shows the right one, he does it, and the story goes on without the signal.
-Poking is free: anything he touches outside an answer is named in a sentence ("Es la mesa." "Es un plato." "Es abuela.").
+Poking is free: a person, the table or the kitchen he touches outside an answer is named in a sentence ("Es la mesa." "Esta es abuela."). The things that decide a round (plates, cups, spoon, fork, knife, food, water) are never named by a poke. A touch on somebody's place at the table, or on anything standing there, counts as a touch on that person.
 A decision's line is said once; a touch before it ends does not count; if he waits it plays again, free.
 A line that says what somebody is doing is spoken while they are doing it, never after.
 Nobody points with a hand or looks toward the answer in a decision. Nobody else moves until he has touched.
@@ -35,12 +35,12 @@ The three games open differently: 24 with a touch on a thing, 25 with a touch on
 ## Story 24: La mesa
 
 - **Goal he can see, from the first frame:** a table with a cloth and nothing on it, four chairs, a bizcocho on the stove, a jug of hot chocolate beside it, and one little cake with a cherry. Get a plate and a cup to each place, so that abuela can serve.
-- **At stake:** the merienda. After the turn abuela has exactly three slices on her board and three cups of chocolate in the jug: one of each for each bare place. She serves as soon as a thing is set down, with her eyes on the baby: the slice goes onto what she asked for, the chocolate into what she asked for. A slice put on a cup tips over and breaks on the table. Chocolate poured on a plate runs off into a puddle. A plate put where a plate already stands knocks the slice off it, and the slice breaks on the table; a cup put where a cup stands knocks it over, and the chocolate is a puddle. The mess stays, and somebody's plate or cup stays empty to the end, because there is no spare slice and no spare chocolate. A full cup steams; an empty one does not. The card shows a cross for that round.
+- **At stake:** the merienda. After the turn abuela has exactly three slices on her board and three cups of chocolate in the jug: one of each for each bare place. She serves as soon as a thing is set down, with her eyes on the baby: the slice goes onto what she asked for, the chocolate into what she asked for. A slice put on a cup tips over and breaks on the table. Chocolate poured on a plate runs off into a puddle. A plate put where a plate already stands knocks the slice off it, and the slice breaks on the table; a cup put where a cup stands knocks it over, and the chocolate is a puddle (the fallen cup is taken away; the puddle stays). While abuela serves in the game she is turned towards the baby, who waves both arms at her. The mess stays, and somebody's plate or cup stays empty to the end, because there is no spare slice and no spare chocolate. A full cup steams; an empty one does not. The card shows a cross for that round.
 - **New words:** mesa, plato, taza, pone.
 - **Back again:** abuela, abuelo, mamá, papá, bebé, familia, bizcocho, para, tiene, hay, aquí, no, mira, otra vez, gracias, ¿quién?, se sienta.
 - **Heard along the way:** chocolate, la mesa está lista, a comer.
 
-**Start:** the table has its cloth and nothing else. On the counter: a stack of plates and a row of cups. Abuela stands at the stove. Luis stands at the counter. The frog stands in front of the table. Nobody sits yet.
+**Start:** the table has its cloth and nothing else. On the counter: a stack of six plates and six cups. Abuela stands at the stove. Luis stands at the counter. The frog stands in front of the table. Nobody sits yet.
 
 1. NARR: "Esta es la mesa." (The table twinkles.) NARR: "Aquí hay un plato." (One plate lifts off the stack and twinkles.) NARR: "Y aquí hay una taza." (One cup lifts out of the row and twinkles.)
 2. Abuelo, papá and mamá come in and sit down; mamá has the baby on her lap. While they sit down: NARR: "La familia se sienta." NARR: "El bebé está con mamá." (The baby twinkles.)
@@ -56,7 +56,7 @@ The three games open differently: 24 with a touch on a thing, 25 with a touch on
 
 **The turn**
 
-9. Abuela is at the stove, cutting three slices onto her board. The baby takes hold of the tablecloth and pulls. The plates and cups of mamá, papá and Carmen slide along the table and go over the edge with the cloth; they clatter on the floor in a heap. Nothing breaks. Abuelo has lifted his plate and his cup in time and holds them up. NARR: "¡Ay, no! ¡El bebé!" Luis carries the cloth and the heap out. The table is bare wood; abuelo puts his plate and cup down again. Mamá holds the baby with both arms. NARR: "Abuela dice: ¡Otra vez!" The frog hops to the counter; while he does: NARR: "Coquí pone la mesa." The card with three empty places shows in the corner. The signs go away.
+9. Abuela is at the stove, cutting three slices onto her board. The baby takes hold of the tablecloth and pulls. The plates and cups of mamá, papá and Carmen slide along the table and go over the edge with the cloth; they clatter on the floor in a heap. Nothing breaks. Abuelo has lifted his plate and his cup in time and holds them up. NARR: "¡Ay, no! ¡El bebé!" Luis carries the cloth and the heap out, and comes back with three plates and three cups, washed, for the counter. The table is bare wood; abuelo puts his plate and cup down again. Mamá holds the baby with both arms. NARR: "Abuela dice: ¡Otra vez!" The frog hops to the counter; while he does: NARR: "Coquí pone la mesa." The card with three empty places shows in the corner. The signs go away.
 
 **The game** (no sign). Three places are bare: mamá's, papá's and Carmen's. Which of them is first, second and third is drawn fresh.
 
@@ -77,7 +77,7 @@ The three games open differently: 24 with a touch on a thing, 25 with a touch on
    - One, two or three: the crumbs and the puddles lie where they fell. Whoever has an empty plate or an empty cup looks into it.
 14. COQUÍ: "¡Gracias, abuela!"
 
-**Fewest hearings before a word can cost:** plato 9 (step 1; step 3 three times; steps 4 and 8, the bubble; step 5; step 6 twice; step 8: the frog, the line after), taza 9 (step 1; step 4: the bubble, the frog, twice after; step 5 twice; step 6; step 7 twice; step 8, the bubble), "no tiene" 2, each time under the sign with the answer shown. Not deciding, but heard: mesa 8, pone 7.
+**Fewest hearings before a word can cost:** plato 11 (step 1; step 3 three times; steps 4 and 8, the bubble; step 5; step 6 twice; step 8: the frog, the line after), taza 11 (step 1; step 4: the bubble, the frog, twice after; step 5 twice; step 6; step 7 twice; step 8, the bubble), "no tiene" 2, each time under the sign with the answer shown. Not deciding, but heard: mesa 6, pone 6. "Coquí pone la mesa." at the turn is the game's title line: it is said as he sets off for the counter.
 
 **A miss is filed under:** A: the thing that was asked. B: the thing that was asked. C: the thing that was missing.
 
@@ -95,7 +95,7 @@ The three games open differently: 24 with a touch on a thing, 25 with a touch on
 
 The three dishes, each with one thing to eat it with: a bowl of soup (spoon), a plate of spaghetti in red sauce (fork), a bread roll with butter (knife). No line names a dish except "pan".
 
-Spoon, fork and knife are drawn big: a spoon with a round bowl, a fork with three prongs, a knife with a straight blade. There is only one of each, and all through the story they go from hand to hand. Whoever has one and is not eating holds it up over his head, twice the size. Nothing is ever left lying beside a dish.
+Spoon, fork and knife are drawn big: a spoon with a round bowl, a fork with three prongs, a butter knife with a round tip and a dab of butter on it. There is only one of each, and all through the story they go from hand to hand. Whoever has one and is not eating holds it up over his head, twice the size. Nothing is ever left lying beside a dish.
 
 **Start:** abuelo, mamá, papá and Carmen sit at the table. Abuela stands at the stove with the pot. The tray lies on the counter; Luis stands beside it. The frog stands in front of the table.
 
@@ -113,28 +113,28 @@ Spoon, fork and knife are drawn big: a spoon with a round bowl, a fork with thre
 
 **The turn**
 
-9. The dishes are empty. Abuela takes them away, and Luis takes the empty tray out. Abuela lifts the lid of the pot; steam. NARR: "Abuela dice: ¡Hay más comida!" Carmen holds up the spoon, mamá the fork, papá the knife. Abuelo has nothing in his hands. The card with three empty places shows in the corner. The signs go away.
+9. The dishes are empty; abuela takes them away. Luis goes along the table with the tray, and the spoon, the fork and the knife go into it; he takes it out to wash them. Abuela stands at the pot. NARR: "Abuela dice: ¡Hay más comida!" Luis comes back and deals the three out again along the table: one each to three of the four (who gets which, and who gets none, is drawn fresh). They hold them up. The card with three empty places shows in the corner. The signs go away.
 
 **The game** (no sign)
 
-10. **Decision A, Touch (who has it).** Abuela stands at the stove, filling a dish we cannot see, for abuelo; he twinkles. NARR: "Abuela dice: ¿Quién tiene la cuchara?" (Or: "el tenedor", "el cuchillo". Drawn fresh.) He touches one of the three who hold something up.
-   - Right: the frog takes it from that one to abuelo. Abuela brings the dish that goes with it. Abuelo eats. Right signal. A star.
-   - Wrong: the frog takes over the thing of the one he touched. Abuela brings the dish, and abuelo tries to eat with what he has: the food drops onto the cloth. A stain. A cross. NARR: "No, Coquí. Mira. Carmen tiene la cuchara." (The true one; she twinkles and holds it up.) The sign; he touches her; the frog takes it over, and takes the wrong thing back to the one it came from. Abuelo eats.
-11. **Decision B, Say (what is missing).** Two at the table still hold a thing up. Abuela brings one of them (drawn fresh) a dish, and it is the dish for the thing the other one holds: spaghetti in front of the one with the knife, when the other one holds the fork. That one looks at the dish and at the thing in his hand, and twinkles. Three speaking bubbles: "¡Una cuchara!", "¡Un tenedor!", "¡Un cuchillo!"
-   - Right: the two change over: whoever holds what the frog called passes it along and gets the other thing back. That one eats. Right signal. A star.
-   - Wrong: whoever holds what the frog called changes with him (if the frog called the thing he has already, he holds it up, shrugs, and keeps it). He tries to eat with it: the food drops onto the cloth. A stain. A cross. NARR: "No, Coquí. Mira. Papá no tiene tenedor." (The true one.) The sign shows the right bubble; he says it; they change over; that one eats; and if abuelo's thing went round, it goes back to abuelo.
-12. **Decision C, Touch, last (which one).** Abuelo and the one from round B have eaten; abuela takes their dishes, and they hold their things up. So three hold something up again, and the one who gave his away in round A sits with empty hands; he twinkles. Abuela is at the stove, filling a dish we cannot see. NARR: "Abuela dice: Un tenedor para Carmen." (Or: "Una cuchara", "Un cuchillo". Drawn fresh; the name is the one who twinkles.) Three picture bubbles: a spoon, a fork, a knife.
+10. **Decision A, Touch (who has it).** Abuela stands at the stove, filling a dish we cannot see, for the one at the table with empty hands; that one twinkles. NARR: "Abuela dice: ¿Quién tiene la cuchara?" (Or: "el tenedor", "el cuchillo". Drawn fresh.) He touches one of the three who hold something up.
+   - Right: the frog takes it from that one to the one with empty hands. Abuela brings the dish that goes with it. That one eats. Right signal. A star.
+   - Wrong: the frog takes over the thing of the one he touched. Abuela brings the dish, and that one tries to eat with what he has: the food drops onto the cloth. A stain. A cross. NARR: "No, Coquí. Mira. Carmen tiene la cuchara." (The true one; she still holds it up.) The sign; he touches her; the frog takes it over, and the wrong thing goes back to the one it came from. That one eats.
+11. **Decision B, Say (what is missing).** The one from round A has eaten; abuela takes the dish, and he holds his thing up. So three hold something up, and nobody is eating. Abuela brings a dish to one of the two who have not eaten yet (drawn fresh), and it is the dish for a thing one of the other two holds (which, is drawn fresh): spaghetti in front of the one with the knife. That one looks at the dish and at the thing in his hand, and twinkles. Three speaking bubbles: "¡Una cuchara!", "¡Un tenedor!", "¡Un cuchillo!"
+   - Right: whoever holds what the frog called passes it along and gets the other thing back. That one eats. Right signal. A star.
+   - Wrong: whoever holds what the frog called changes with him (if the frog called the thing he has already, he lifts it, shrugs, and keeps it). He tries to eat with it: the food drops onto the cloth. A stain. A cross. NARR: "No, Coquí. Mira. Papá no tiene tenedor." (The true one.) The sign shows the right bubble; he says it; they change over; that one eats.
+12. **Decision C, Touch, last (which one).** The one from round B has eaten; abuela takes the dish, and he holds his thing up. So three hold something up again, and the one who gave his away in round A sits with empty hands; he twinkles. Abuela is at the stove, filling a dish we cannot see. NARR: "Abuela dice: Un tenedor para Carmen." (Or: "Una cuchara", "Un cuchillo". Drawn fresh; the name is the one who twinkles.) Three picture bubbles in a row at the very top of the picture: a spoon, a fork, a knife.
    - Right: the frog fetches it from whoever holds it and takes it to that one. Abuela brings the dish. That one eats. Right signal. A star.
-   - Wrong: the frog fetches the one he touched. Abuela brings the dish; that one tries to eat with it. A stain. A cross. NARR: "No, Coquí. Mira. Carmen no tiene tenedor." The sign shows the right picture; he touches it; the frog fetches it, and takes the wrong thing back. That one eats.
+   - Wrong: the frog fetches the one he touched. Abuela brings the dish; that one tries to eat with it. A stain. A cross. NARR: "No, Coquí. Mira. Carmen no tiene tenedor." The sign shows the right picture; he touches it; the frog fetches it, and the wrong thing goes back. That one eats.
 
 **The ending** (the same lines in every ending)
 
-13. Abuela goes along the table with a basket and gives everybody a bread roll; all four eat. By the stains on the cloth:
+13. Luis goes along the table with the tray, and the things that are held up go back into it. Abuela goes along with a basket and gives a bread roll to everybody who is not eating; all four eat. By the stains on the cloth:
    - None (three stars): a clean white cloth. Abuela gives the frog a roll too. Stars and a heart.
    - One, two or three: the stains lie in front of the places where they were made.
 14. NARR: "La familia come." COQUÍ: "¡Mmm! ¡La comida de abuela!"
 
-**Fewest hearings before a word can cost:** cuchara 7 (step 2; step 3 twice; step 6: the bubble, the frog, the line after; steps 7 and 8, the bubble), tenedor 7 (step 2; step 4 twice; step 6, the bubble; step 7: the bubble, the frog, the line after; step 8, the bubble), cuchillo 7 (step 2; step 5 twice; steps 6 and 7, the bubble; step 8: the bubble, the frog, the line after). Not deciding, but heard: comida 3 before the game, 4 with the last line.
+**Fewest hearings before a word can cost:** cuchara 8 (step 2; step 3 twice; step 6: the bubble, the frog, the line after; steps 7 and 8, the bubble), tenedor 8 (step 2; step 4 twice; step 6, the bubble; step 7: the bubble, the frog, the line after; step 8, the bubble), cuchillo 8 (step 2; step 5 twice; steps 6 and 7, the bubble; step 8: the bubble, the frog, the line after). Not deciding, but heard: comida 3 before the game, 4 with the last line.
 
 **A miss is filed under:** the thing that was asked, or was missing.
 
@@ -147,7 +147,7 @@ Spoon, fork and knife are drawn big: a spoon with a round bowl, a fork with thre
 ## Story 26: Tengo hambre
 
 - **Goal he can see, from the first frame:** abuela's food is ready, and the family comes in from the yard one after the other, some hungry, some thirsty. Bring each one what he asks for.
-- **At stake:** lunch. From the turn on there are exactly four plates of food and four glasses of water on the counter, one of each for abuelo, mamá, papá and the frog; the pot and the jug are empty. Whoever gets the wrong thing puts it aside at the edge of the table, and Canelo, who lies in his corner and watches every plate, has it: he eats the food, or knocks the glass over and laps the water up. That plate or glass is gone: at the end the one it was for sits without it, and the empty plate or the fallen glass lies beside Canelo. The card shows a cross for that round.
+- **At stake:** lunch. From the turn on there are exactly four plates of food and four glasses of water on the counter, one of each for abuelo, mamá, papá and the frog; the pot and the jug are empty. Whoever gets the wrong thing puts it aside at the edge of the table, and Canelo, who lies in his corner and watches every plate, has it: he pulls it down, drags it to his corner, and there he eats the food, or knocks the glass over and laps the water up. That plate or glass is gone: at the end the one it was for sits without it, and the empty plate or the fallen glass lies beside Canelo. The card shows a cross for that round.
 - **New words:** tengo hambre, tengo sed, listo, cocina.
 - **Back again:** comida, agua, plato, vaso, toma, gracias, come, bebe, ¿y tú?, ahora, perro, contento, familia, entra.
 - **Heard along the way:** tiene hambre, tiene sed, tienes, la comida está lista, esa.
@@ -157,7 +157,7 @@ A thought bubble with a picture in it (a plate of food, or a glass of water) sho
 **Start:** abuela at the stove with the pot. The table is bare wood. On the counter: a jug of water. The frog stands by the counter. The door to the yard is at the left edge. Nobody else is in the room.
 
 1. NARR: "Esta es la cocina de abuela." NARR: "Abuela está en la cocina." Abuela lifts the lid of the pot; steam. NARR: "La comida está lista."
-2. Abuela fills two plates from the pot and two glasses from the jug and sets them on the counter: plates on the left, glasses on the right. When the last one stands: NARR: "Abuela dice: ¡Listo!"
+2. Abuela fills two plates from the pot and two glasses from the jug and sets them on the counter: plates on the left, glasses on the right. When the last one stands: NARR: "Abuela dice: ¡Listo!" (Through the opening she fills another whenever the counter runs short.)
 
 **The opening** (big sign, nothing can go wrong)
 
@@ -176,7 +176,7 @@ A thought bubble with a picture in it (a plate of food, or a glass of water) sho
 
 10. **Decision A, Say (what he wants himself).** A thought bubble over the frog shows a plate of food, or a glass of water (drawn fresh). NARR: "Abuela dice: ¿Y tú, Coquí?" Two speaking bubbles: "¡Tengo hambre!" and "¡Tengo sed!"
    - Right: abuela puts it in front of him; he eats (or drinks). Right signal. A star.
-   - Wrong: abuela puts in front of him what he said. He does not touch it; the thought bubble is still there. Canelo comes and has it. A cross. NARR: "No, Coquí. Mira. Tienes sed." (Or: "Tienes hambre." The thought bubble twinkles.) The sign shows the right bubble; he says it; abuela gives it to him.
+   - Wrong: abuela puts in front of him what he said. He does not touch it; the thought bubble is still there. Canelo comes and has it. A cross. NARR: "No, Coquí. Mira. Tú tienes sed." (Or: "Tú tienes hambre." The thought bubble is still over him.) The sign shows the right bubble; he says it; abuela gives it to him.
 11. **Decision B, Touch (food or water).** Abuelo comes in and sits down, hands on the table. NARR: "Abuelo dice: ¡Tengo sed!" (Or: "¡Tengo hambre!" Drawn fresh. He sits the same way either time.) He touches the plates or the glasses.
    - Right: the frog takes it to him. He eats (or drinks). Right signal. A star.
    - Wrong: abuelo shakes his head and puts it aside at the edge of the table. Canelo has it. A cross. A thought bubble over abuelo shows the glass (or the plate), and twinkles. NARR: "No, Coquí. Mira. Abuelo tiene sed." (Or: "tiene hambre".) The sign is on the right ones; he touches them; abuelo drinks (or eats).
@@ -191,7 +191,7 @@ A thought bubble with a picture in it (a plate of food, or a glass of water) sho
    - One, two or three: whoever's plate or glass Canelo had sits without it. Canelo lies beside the empty plates and the fallen glasses, wagging his tail.
 14. NARR: "La familia come en la cocina." NARR: "Abuela dice: ¿Y Canelo?" COQUÍ: "¡Canelo está contento!"
 
-**Fewest hearings before a word can cost:** tengo hambre 6 (step 3; step 5, the bubble; step 6: the bubble, the frog; step 7; and "tiene hambre" three times more), tengo sed 6 (step 4; step 5: the bubble, the frog; step 6, the bubble; step 7; and "tiene sed" once more). Not deciding, but heard: listo 3 before the game ("¡Listo!" at steps 2, 6 and 9) and "lista" once; cocina 3 before the game, 4 with the last line.
+**Fewest hearings before a word can cost:** tengo hambre 5 (step 3; step 5, the bubble; step 6: the bubble, the frog; step 7; and "tiene hambre" three times more), tengo sed 5 (step 4; step 5: the bubble, the frog; step 6, the bubble; step 7; and "tiene sed" once more). Not deciding, but heard: listo 3 before the game ("¡Listo!" at steps 2, 6 and 9) and "lista" once; cocina 3 before the game, 4 with the last line.
 
 **A miss is filed under:** tengo hambre or tengo sed (the one that was true, or was said).
 
@@ -211,9 +211,9 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the ne
 | cuchara | "Mira mi cuchara." | abuelo holding up a spoon | abuelo holding up a fork |
 | tenedor | "Papá tiene el tenedor." | papá holding up a fork | papá holding up a knife |
 | cuchillo | "Abuela tiene mi cuchillo." | abuela holding a knife | abuela holding a spoon |
-| comida | "Mira la comida." | a plate of spaghetti, steaming | a jug and two glasses |
+| comida | "Mira la comida." | a plate of spaghetti, steaming | two empty plates, one on the other |
 | cocina | "Abuela está en la cocina." | abuela at the stove | abuela at a market stall with fruit |
-| pone | "Carmen pone el plato en la mesa." | Carmen setting a plate down on the table | Carmen at the same table, drying a plate with a cloth |
+| pone | "Carmen pone el plato en la mesa." | Carmen setting a plate down on the table | Carmen wiping a plate that lies on the same table with a cloth |
 | tengo hambre | "Luis dice: ¡Tengo hambre!" | Luis thinking of a full plate | Luis thinking of a glass of water |
 | tengo sed | "Carmen dice: ¡Tengo sed!" | Carmen reaching for a glass of water | Carmen reaching for a plate of food |
 | listo | "El bizcocho está listo." | the bizcocho on the table, a cherry on top | the same bizcocho still in the oven, pale, behind the oven door |
@@ -225,7 +225,7 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the ne
 - In story 25 the fork dish is spaghetti, not rice: many people eat rice with a spoon, so rice could not show that a spoon is wrong.
 - In story 25 six signed touches cannot show spoon, fork and knife each in all three ways; the knife is never the signed picture.
 - "Mesa", "pone", "comida", "cocina" and "listo" are heard many times but decide nothing in their stories; they are tested the next day in the picture pairs.
-- "Tengo hambre" and "tengo sed" are taught as whole phrases, with "tiene hambre" / "tiene sed" heard for somebody else and "tienes" once for the frog.
+- "Tengo hambre" and "tengo sed" are taught as whole phrases, with "tiene hambre" / "tiene sed" heard for somebody else and "tú tienes" once for the frog.
 - Abuela's "¡Listo!" stays as it is because it is a call; "lista" is only heard with "está" (la comida, la mesa).
 - The pairs for "tengo hambre" and "tengo sed" are the same contrast twice; I found no clean way round it.
 
@@ -255,3 +255,13 @@ Beginner review: every decision holds up; all three stories still "not ready". P
 - 26: four plates and four glasses, one of each for each; the pot and jug are shown empty. What Canelo has is gone, and the one it was for sits without it at the end.
 - 26: a thought bubble shows what somebody wants, not fanning. "Luis entra a la cocina." "Tienes sed." "Toma agua, Coquí." while she sets it down. The frog no longer says "¡Listo!"; abuela does.
 - Pairs: tenedor, pone, listo, cocina and mesa got other pictures or sentences that no old word solves.
+
+## What the last gate changed (draft 3 to final)
+
+Last gate: story 26 ready; 24 and 25 each needed one rule. Final Spanish check: no line to fix; one line made clearer aloud.
+- A poke never names a thing that decides a round, and a touch on a place counts as the person sitting there.
+- 25: nobody gives away a thing he is eating with: whoever has eaten holds his thing up again before the next round. Round B's dish can need either of the other two held things, so it is one in three. Luis deals the three out afresh at the turn, so who holds what changes from play to play. At the end the three go back into the tray.
+- 24: six plates and six cups, and Luis brings three of each back washed. A fallen cup is taken away; the puddle stays. Abuela is turned to the baby while she serves.
+- 26: "No, Coquí. Mira. Tú tienes sed." so that "tienes sed" is not heard as "tiene sed".
+- Pairs: "comida" against two empty plates; "pone" against wiping a plate that lies on the table.
+- The hearing totals were recounted.

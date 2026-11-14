@@ -50,7 +50,11 @@ const NV=[
  {w:"come",s:21,p:[["come","si"],["come","no"],["bebe","si",152],["cansado","si"]]},
  {w:"señora",s:22,p:[["señora","si",146],["señora","no",146],["señor","si"],["mujer","no",146]]},
  {w:"viejo",s:22,p:[["viejo","si"],["viejo","no"],["duerme","no"],["triste","si"]]},
- {w:"triste",s:23,p:[["triste","si"],["triste","no"],["contento","si"],["cansado","si"]]}];
+ {w:"triste",s:23,p:[["triste","si"],["triste","no"],["contento","si"],["cansado","si"]]},
+ {w:"plato",s:24,p:[["plato","si"],["plato","no"],["cuchara","si"],["taza","no"]]},
+ {w:"taza",s:24,p:[["taza","si"],["taza","no"],["plato","si"],["cuchara","no"]]},
+ {w:"cuchara",s:25,p:[["cuchara","si"],["cuchara","no"],["tenedor","no"],["plato","si"]]},
+ {w:"tengo hambre",s:26,p:[["tengo hambre","si"],["tengo hambre","no"],["tengo sed","si"],["comida","no"]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
 const PASO=Math.max(2,Math.ceil(NV.length/14));   // how far a right answer moves him up: the list grows with every scene, the check must still reach its top in about a dozen items
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
