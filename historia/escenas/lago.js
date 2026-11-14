@@ -271,6 +271,21 @@ const acts={
   async marcaC(o){if(W.marcas&&W.marcas[2]===null){marca(o.que);SFX.blip();await wait(250);}},
   async final20(){const ca=G("carmen");if(W.lugarP===1){const xs=[104,118,131];await Promise.all(PK.map(async(k,i)=>{const d=W.patos[k];await patoA(k,136,172,"nada",6);d.pose="anda";await patoA(k,xs[i],154,"anda",8);d.dir=-1;}));cuac(2);W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[70,60],[196,70],[136,50],[110,90],[170,96]]});await wait(700);}
     else{W.pan={con:"carmen"};ca.dir=1;await come("pato_blanco","carmen");ca.dir=-1;const n=(W.marcas||[]).filter(m=>m==="ok").length;if(n)SFX.win();else SFX.coqui();await wait(500);}},
+  /* ----- Escuchar: plain acts for the picture story and the routine ----- */
+  async avea(o){const b=W.aves[o.c];if(!b)return;pio();if(o.sobre){const d=quien(o.sobre);await aveA(o.c,d.x-4,d.y-46);}else if(o.casa){await aveA(o.c,b.casa[0],b.casa[1]);b.dir=b.casa[0]<80?1:-1;}else await aveA(o.c,o.x,o.y);if(o.ronda){b.vuela=1;}},
+  async suelta(o){const b=W.aves[o.c];if(!b)return;b.pan=0;const p=W.pan={con:null,x:b.x,y:b.y+4,z:0,vis:1},y1=o.y||178;SFX.blip();for(let i=1;i<=8;i++){p.y=b.y+4+(y1-b.y-4)*i/8;await wait(TICK);}salpica(p.x,p.y);await wait(250);},
+  async cuacp(o){const d=W.patos[o.k];if(!d)return;cuac(1);for(let k=0;k<2;k++){d.dy=3;await wait(140);d.dy=0;await wait(120);}},
+  async sevanp(o){await Promise.all((o.k||"negro,amarillo").split(",").map(async k=>{const d=W.patos[k];if(!d)return;d.dir=1;await patoA(k,252,d.y+8,"nada");d.vis=0;}));},
+  async mecebote(o){const id=Object.keys(W.botes).find(k=>W.botes[k].c===o.c),b=W.botes[id];if(!b)return;SFX.blip();const y0=b.y;for(const d of [-2,1,-1,0]){b.y=y0+d;await wait(110);}b.y=y0;if(b.en==="agua")salpica(b.x,b.y);},
+  async pezsalta1(){await pezSalta("a",20);},
+  async anda(o){await mueve(o.quien,o.x,o.y);if(o.dir)G(o.quien).dir=o.dir;},
+  async saluda(o){const p=G(o.quien);if(!p)return;p.pose=o.que||"wave";await wait(o.ms||700);p.pose="idle";},
+  async ranaa(o){await hopTo(o.x,o.y,o.h||2);},
+  // a piece of bread is thrown onto the water; the ducks race for it: the one named gets there first and eats it, the small yellow one is too slow
+  async tirapan(o){const ca=G(o.de||"carmen");W.pan={con:o.de||"carmen"};ca.pose="arriba";await wait(250);await panA([o.x,o.y],22);salpica(o.x,o.y);W.pan={con:null,x:o.x,y:o.y,z:0,vis:1};ca.pose="idle";await wait(150);},
+  async gana(o){const p=W.pan,d=W.patos[o.k],am=W.patos.amarillo;if(!p)return;const x=p.x,y=p.y;await Promise.all([patoA(o.k,x+(d.x<x?-11:11),y+5,"nada",6),patoA("amarillo",am.x+(x-am.x)*.45,am.y+(y+5-am.y)*.45,"nada",9)]);d.dir=d.x<x?1:-1;W.pan=null;d.come=1;cuac(1);await wait(600);d.come=0;am.dy=-2;await wait(300);am.dy=0;},
+  async patoa(o){const d=W.patos[o.k];await patoA(o.k,o.x,o.y,"nada",o.pasos);if(o.dir)d.dir=o.dir;},
+  async dip(){const b=W.aves.a;if(!b)return;pio();b.dy=6;await wait(250);b.dy=0;await wait(200);},
   async cuac(){cuac(1);const d=W.patos.amarillo;if(d){d.dy=3;await wait(150);d.dy=0;}},
 };
 async function stake(lost,max,en){SFX.bonk();await wait(300);}

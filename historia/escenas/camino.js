@@ -151,7 +151,10 @@ const acts={
   async perroa(o){const j=o.a==="junto"?junto():[+o.x,+o.y];await animalA("perro",j[0],j[1],o.corre?"run":"walk");W.perro.pose=o.que||"sit";if(o.dir)W.perro.dir=+o.dir;},
   async gatoa(o){W.gato.en=null;await animalA("gato",+o.x,+o.y,o.corre?"run":"walk");W.gato.pose=o.que||"sit";if(o.dir)W.gato.dir=+o.dir;},
   // Luis counts on his fingers: one, two, three
-  async cuenta(o){const p=G(o.quien||"luis");p.pose="dedos";for(let i=1;i<=3;i++){p.dedos=i;SFX.blip();await wait(+o.ms||330);}await wait(250);p.dedos=0;p.pose="idle";},
+  async cuenta(o){const p=G(o.quien||"luis");if(o.fin){p.dedos=0;p.pose="idle";return;}p.pose="dedos";for(let i=1;i<=3;i++){p.dedos=i;SFX.blip();await wait(+o.ms||330);}if(o.fin){p.dedos=0;p.pose="idle";return;}if(o.queda)return;await wait(250);p.dedos=0;p.pose="idle";},   // queda: the three fingers stay up while the line is said
+  // Escuchar: the frog alone goes to a stone (the dog stays where he is); a tree shakes
+  async ranaa(o){const L=ranaEn(+o.a);await hopTo(L[0],L[1],+o.h||2,L[2]);W.pos.cq=+o.a;},
+  async sacude(o){W.twinkle=o.en;SFX.swoop();await wait(500);W.twinkle=null;},
   async lame(){const f=ranaXY(),o=W.perro;await animalA("perro",f[0]-14,f[1]+22,"walk");o.dir=1;o.pose="eat";W.cq.bub="amor";SFX.coqui();bounce(5);await wait(900);W.cq.bub=null;o.pose="sit";},
   /* ---- story 12: do what Luis calls ---- */
   async inicio12(){W.gente={luis:{x:174,y:138,pose:"wave",dir:-1},carmen:{x:ninaEn(0)[0],y:ninaEn(0)[1],pose:"idle"}};W.pos={cq:0,carmen:0};const L=ranaEn(0);Object.assign(W.cq,{x:L[0],y:L[1],s:L[2]});const j=junto();W.perro={x:j[0],y:j[1],pose:"bark",dir:1};await wait(500);G("luis").pose="idle";W.perro.pose="sit";},

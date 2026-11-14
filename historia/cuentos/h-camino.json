@@ -1,0 +1,460 @@
+{
+ "id": "h-camino",
+ "title": "En el camino",
+ "place": "El parque",
+ "scene": "camino",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_perro": {
+   "who": "narr",
+   "text": "No, ese es Canelo."
+  },
+  "hz_no_gato": {
+   "who": "narr",
+   "text": "No, ese es el gato."
+  },
+  "hz_no_grande": {
+   "who": "narr",
+   "text": "No, ese es el árbol grande."
+  },
+  "hz_no_arbol0": {
+   "who": "narr",
+   "text": "No, ese es el árbol con dos pájaros."
+  },
+  "hz_no_arbol1": {
+   "who": "narr",
+   "text": "No, ese es el árbol con tres pájaros."
+  },
+  "hz_no_arbol2": {
+   "who": "narr",
+   "text": "No, ese es el árbol con un pájaro."
+  },
+  "hz_no_carmen": {
+   "who": "narr",
+   "text": "No. Esa es Carmen."
+  },
+  "hz_no_luis": {
+   "who": "narr",
+   "text": "No. Ese es Luis."
+  },
+  "hz_no_camina": {
+   "who": "narr",
+   "text": "No."
+  },
+  "hz_no_corre": {
+   "who": "narr",
+   "text": "No."
+  },
+  "hz_no_espera": {
+   "who": "narr",
+   "text": "No."
+  },
+  "ra01": {
+   "who": "narr",
+   "text": "Toca al perro."
+  },
+  "ra02": {
+   "who": "narr",
+   "text": "¿Dónde está el gato?"
+  },
+  "ra03": {
+   "who": "narr",
+   "text": "Toca el árbol grande."
+  },
+  "ra04": {
+   "who": "narr",
+   "text": "Toca el árbol con tres pájaros."
+  },
+  "ra05": {
+   "who": "narr",
+   "text": "Toca el árbol con un pájaro."
+  },
+  "ra06": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Corre, Coquí!"
+  },
+  "ra07": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Espera!"
+  },
+  "ra08": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Corre!"
+  },
+  "ra09": {
+   "who": "narr",
+   "text": "Toca al niño y a la niña."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio12"
+  },
+  {
+   "set": {
+    "gato": {
+     "x": 113,
+     "y": 134,
+     "pose": "lava",
+     "dir": -1,
+     "en": null
+    }
+   }
+  },
+  {
+   "act": "pose",
+   "quien": "perro",
+   "que": "sit"
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "idle"
+  },
+  {
+   "act": "posan",
+   "p": "231"
+  },
+  {
+   "set": {
+    "respEn": [
+     96,
+     30
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "perro",
+    "gato",
+    "carmen"
+   ],
+   "pick": "perro",
+   "lead": [],
+   "line": "ra01",
+   "right": [
+    {
+     "act": "ladra",
+     "n": 1
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "gato",
+    "perro",
+    "carmen"
+   ],
+   "pick": "gato",
+   "lead": [],
+   "line": "ra02",
+   "right": [
+    {
+     "act": "ronronea"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "grande",
+    "arbol0",
+    "arbol1",
+    "arbol2"
+   ],
+   "pick": "grande",
+   "lead": [],
+   "line": "ra03",
+   "right": [
+    {
+     "act": "sacude",
+     "en": "grande"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "arbol0",
+    "arbol1",
+    "arbol2"
+   ],
+   "pick": "arbol1",
+   "lead": [],
+   "line": "ra04",
+   "right": [
+    {
+     "act": "luzn",
+     "n": "3"
+    },
+    {
+     "wait": 700
+    },
+    {
+     "act": "luzn",
+     "n": "0"
+    }
+   ],
+   "lock": true,
+   "vale": [
+    "ave10",
+    "ave11",
+    "ave12"
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "arbol0",
+    "arbol1",
+    "arbol2"
+   ],
+   "pick": "arbol2",
+   "lead": [],
+   "line": "ra05",
+   "right": [
+    {
+     "act": "luzn",
+     "n": "1"
+    },
+    {
+     "wait": 700
+    },
+    {
+     "act": "luzn",
+     "n": "0"
+    }
+   ],
+   "lock": true,
+   "vale": [
+    "ave20"
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "decide": "say",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "pick": "corre",
+   "lead": [],
+   "line": "ra06",
+   "right": [
+    {
+     "act": "va",
+     "quien": "cq",
+     "modo": "corre",
+     "a": 1
+    }
+   ],
+   "baraja": true
+  },
+  {
+   "decide": "say",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "pick": "espera",
+   "lead": [],
+   "line": "ra07",
+   "right": [
+    {
+     "act": "va",
+     "quien": "cq",
+     "modo": "espera",
+     "a": 1
+    },
+    {
+     "act": "luisrie"
+    }
+   ],
+   "baraja": true
+  },
+  {
+   "decide": "say",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "camina",
+    "corre",
+    "espera"
+   ],
+   "pick": "corre",
+   "lead": [],
+   "line": "ra08",
+   "right": [
+    {
+     "act": "va",
+     "quien": "cq",
+     "modo": "corre",
+     "a": 2
+    }
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "luis"
+   ],
+   "vale": [
+    "carmen"
+   ],
+   "pick": "luis",
+   "lead": [],
+   "line": "ra09",
+   "right": [
+    {
+     "if": "x=luis",
+     "then": [
+      {
+       "act": "saluda",
+       "quien": "luis"
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "carmen"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "otro",
+   "cond": "x=luis",
+   "then": "carmen",
+   "else": "luis"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "gato"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "ra09",
+   "right": [
+    {
+     "if": "otro=luis",
+     "then": [
+      {
+       "act": "saluda",
+       "quien": "luis"
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "carmen"
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "ra01",
+  "ra02",
+  "ra03",
+  "ra04",
+  "ra05",
+  "ra06",
+  "ra07",
+  "ra08",
+  "ra09"
+ ]
+}

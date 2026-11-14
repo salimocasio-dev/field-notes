@@ -85,7 +85,7 @@ const cosa=k=>spr("cs"+k,COSA[k]||COSA.bolsa);
 function mkPaloma(pose,f){const b=new Buf(18,13),C=["#5A5A6A","#8A8A9A","#B8B8C8"],baja=pose==="come"&&f,bebe=pose==="bebe";
   if(pose==="vuela"){b.ell(7,7,4.4,2.6,C);b.cap(6,6,4,f?1:11,1.6,[C[2]]);b.cap(8,6,10,f?1:11,1.6,[C[1]]);}
   else{b.ell(6,7,4.6,3.2,C);b.cap(2,7,0,5,1.2,[C[0]]);b.rect(5,10,1,2,"#E0483A");b.rect(8,10,1,2,"#E0483A");}
-  const hx=baja?11:bebe?12:10,hy=baja?8:bebe?(f?2:3):4;if(bebe)b.cap(9,6,hx,hy+1,1.4,[C[1]]);b.ell(hx,hy,2.4,2.4,C);b.px(hx+1,hy-1,OUT);b.rect(hx+2,hy+(baja||bebe?1:0),2,1,"#E88A2A");if(!baja&&!bebe)b.rect(8,5,2,2,"#3E9A52");
+  const duerme=pose==="duerme",hx=baja?11:bebe?12:duerme?9:10,hy=baja?8:bebe?(f?2:3):duerme?6:4;if(bebe)b.cap(9,6,hx,hy+1,1.4,[C[1]]);b.ell(hx,hy,2.4,2.4,C);if(duerme)b.rect(hx,hy-1,2,1,OUT);else b.px(hx+1,hy-1,OUT);if(!duerme)b.rect(hx+2,hy+(baja||bebe?1:0),2,1,"#E88A2A");if(!baja&&!bebe)b.rect(8,5,2,2,"#3E9A52");
   if(pose==="come"&&!f){b.px(14,11,"#F2F2F8");b.px(16,10,"#E0483A");}if(bebe&&f)b.rect(15,6,1,2,"#5AB4EA");return b.outline().done();}
 // a dog. tipo: canelo (brown), viejo (big, grey, a long white beard and eyebrows), joven (small, white with black patches)
 function mkCan(tipo,pose,f,pena){const b=new Buf(32,24),T={canelo:["#8A5A2A","#B07A3C","#D09A54","#E8BE80"],viejo:["#5A5A66","#7E7E8C","#A0A0AE","#B8B8C6"],joven:["#B8B8C8","#E6E6F0","#FFFFFF","#FFFFFF"]}[tipo]||[],v=tipo==="viejo",j=tipo==="joven",X=13,Y=13;
@@ -190,7 +190,8 @@ function coche(c,a){const o=W.coche;if(!o)return;const f=(a>>1)%2,im=spr("coche"
 function bub2(c,k,tx,ty,a){c.save();c.translate(tx,ty);c.scale(2,2);bub(c,k,0,0,a);c.restore();}
 function draw(c,W,a){const q=W.cq,Gt=W.gente||{};
   c.drawImage(spr("banco",fondo),0,0);
-  if(W.noche){c.fillStyle="rgba(40,30,90,.18)";c.fillRect(0,0,SW,SH);fr(c,FAROL[0]-5,36,11,11,"#FFF8C8");c.fillStyle="rgba(255,240,160,.16)";c.beginPath();c.ellipse(FAROL[0],FAROL[1]+18,46,22,0,0,7);c.fill();}
+  if(W.luna){c.fillStyle=OUT;c.beginPath();c.arc(64,26,9,0,7);c.fill();c.fillStyle="#FFF8D8";c.beginPath();c.arc(64,26,8,0,7);c.fill();c.fillStyle="#E8DCA8";c.fillRect(60,22,3,3);c.fillRect(66,28,2,2);}   // the moon
+  if(W.noche){c.drawImage(spr("banco",fondo),84,6,46,38,196,6,46,38);c.fillStyle="rgba(30,24,90,.32)";c.fillRect(0,0,SW,SH);fr(c,FAROL[0]-5,36,11,11,"#FFF8C8");c.fillStyle="rgba(255,240,160,.16)";c.beginPath();c.ellipse(FAROL[0],FAROL[1]+18,46,22,0,0,7);c.fill();}
   if(W.tarde&&!W.noche){c.fillStyle="rgba(255,150,60,.10)";c.fillRect(0,0,SW,SH);}
   if(W.seva===1||W.seva===3){const pi=Gt.piraguero,v=W.perros.viejo,j=W.perros.joven;W.carroX-=1.1;if(pi)pi.x=W.carroX+30;if(v)v.x-=.35;if(j){const t=F-j.fase,x=j.x0-t*.5+34*Math.sin(t/7);j.dir=x<j.x?-1:1;j.x=x;}}   // the cart goes home, the dogs with it: the old one walks, the young one runs to and fro ahead
   const L=[];
@@ -388,6 +389,25 @@ const acts={
     await acasa();},
   async ranacansada(){W.cq.hace="cansado";await wait(500);},
   async sevan23(){W.cq.hace=null;const c=W.perros.canelo;c.pose="walk";quita("cojin");G("carmen").lleva="mochila";await Promise.all([mueve("abuela",250,200),mueve("carmen",250,206),mueve("luis",250,196),perroA("canelo",250,210,"walk"),(async()=>{await wait(500);await ranaA(232,204,4);})()]);},
+
+  /* ----- Escuchar: plain acts that the picture stories and the routines are written with ----- */
+  async g(o){const p=G(o.quien);if(!p)return;Object.keys(o).forEach(k=>{if(!["act","quien","ms"].includes(k))p[k]=o[k];});if(o.ms)await wait(o.ms);},                       // set anything on a person
+  async anda(o){const p=G(o.quien),d=Math.hypot(o.x-p.x,o.y-p.y),pr=(async()=>{await mueve(o.quien,o.x,o.y,o.lento?Math.max(4,R(d/2)):null);if(o.dir)p.dir=o.dir;if(o.sent){p.sent=1;p.dir=1;}if(o.fuera)p.vis=0;})();if(!o.suelto)await pr;},   // suelto: the line is said while he walks
+  async saluda(o){const p=G(o.quien);if(!p)return;const d=p.dir;if(o.dir)p.dir=o.dir;p.pose=o.que||"wave";await wait(o.ms||750);p.pose="idle";p.dir=d;},
+  async brinco(o){const p=o.quien==="perro"?W.perros[o.n||"canelo"]:G(o.quien);for(let k=0;k<(o.n2||2);k++){p.dy=o.h||4;await wait(130);p.dy=0;await wait(130);}},
+  async rana(o){const pr=ranaA(o.x,o.y,o.h);if(!o.suelto)await pr;},
+  async sale(){const q=W.cq;await ranaA(PORTON[0]+4,PORTON[1]+2);await ranaA(236,PORTON[1]+2,2);q.vis=0;},
+  async encima(o){W.encima=o.k||null;SFX.blip();await wait(200);},
+  async can(o){const d=W.perros[o.n];if(!d)return;const pr=(async()=>{if(o.x!=null)await perroA(o.n,o.x,o.y,o.modo||"walk");Object.keys(o).forEach(k=>{if(!["act","n","x","y","modo","ms","suelto"].includes(k))d[k]=o[k];});})();if(!o.suelto)await pr;if(o.ms)await wait(o.ms);},
+  async pal(o){const pg=o.i!=null?W.palomas[o.i]:libre();if(!pg)return;if(o.cable)await alcable(pg);else if(o.x!=null){pio();await palomaA(pg,o.x,o.y);pg.en="suelo";}pg.pose=o.pose||"";if(o.dir)pg.dir=o.dir;if(o.z)pg.z=o.z;await wait(o.ms||200);},
+  async cosa(o){if(o.quita){quita(o.quita);return;}W.cosas.push({id:o.id,k:o.k,x:o.x,y:o.y,rot:o.rot||0,z:o.z});if(o.son&&SFX[o.son])SFX[o.son]();await wait(o.ms||150);},
+  async rueda(o){const t=cosaDe(o.id);if(!t)return;const x0=t.x,y0=t.y,n=o.n||10,pr=(async()=>{for(let i=1;i<=n;i++){t.x=x0+(o.x-x0)*i/n;t.y=y0+(o.y-y0)*i/n;await wait(TICK);}if(o.fuera)quita(o.id);})();if(!o.suelto)await pr;},
+  async luz(o){W.noche=o.v;if(o.luna)W.luna=1;SFX.blip();await wait(500);},
+  async rebota(o){const t=cosaDe(o.id);if(!t)return;const y0=t.y;for(let k=0;k<(o.n||3);k++){for(const d of [-6,-10,-6,0]){t.y=y0+d;await wait(60);}SFX.hop();}},
+  async manos(o){W.manos=o.v||null;SFX.blip();await wait(200);},
+  async hace(o){W.cq.hace=o.que||null;await wait(o.ms||200);},
+  async ladra(o){ladra(o.n||1);const d=W.perros[o.quien||"canelo"];if(d){for(let k=0;k<(o.n||1);k++){d.dy=3;await wait(140);d.dy=0;await wait(140);}}},
+  async ronda1(o){const d=W.perros[o.n||"joven"];d.x0=d.x;d.pose="run";d.fase=F;d.ronda=1;await wait(o.ms||1500);d.ronda=0;d.pose="sit";d.x=d.x0;d.dir=1;},
 
   // everybody at once, to look at the drawing
   async prueba(o){const b=BANCOS,n=+(o&&o.n||1);

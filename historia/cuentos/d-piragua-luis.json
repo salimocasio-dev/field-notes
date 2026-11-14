@@ -1,0 +1,338 @@
+{
+ "id": "d-piragua-luis",
+ "title": "La piragua de Luis",
+ "place": "El parque",
+ "scene": "banco",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "qd01": {
+   "who": "narr",
+   "text": "Este es el piragüero."
+  },
+  "qd02": {
+   "who": "narr",
+   "text": "Luis tiene una piragua. Carmen también tiene una piragua."
+  },
+  "qd03": {
+   "who": "narr",
+   "text": "Luis corre."
+  },
+  "qd04": {
+   "who": "narr",
+   "text": "¡Ay, no! La piragua se cae."
+  },
+  "qd05": {
+   "who": "narr",
+   "text": "Luis está triste."
+  },
+  "qd06": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Toma, Luis. Toma mi piragua."
+  },
+  "qd07": {
+   "who": "narr",
+   "text": "Ahora Luis está contento."
+  },
+  "qd08": {
+   "who": "tu",
+   "text": "Dos piraguas, por favor."
+  },
+  "qd09": {
+   "who": "narr",
+   "text": "Una piragua para Carmen."
+  },
+  "qd10": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Gracias, Coquí!"
+  },
+  "qd11": {
+   "who": "narr",
+   "text": "Y una piragua para Coquí. Carmen está contenta."
+  },
+  "qd12": {
+   "who": "narr",
+   "text": "¿Y el pájaro? El pájaro come."
+  },
+  "qd13": {
+   "who": "narr",
+   "text": "El pájaro también está contento."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "gente": {
+     "piraguero": {
+      "x": 51,
+      "y": 172,
+      "dir": 1
+     },
+     "luis": {
+      "x": 86,
+      "y": 190,
+      "dir": 1,
+      "lleva": "piragua"
+     },
+     "carmen": {
+      "x": 62,
+      "y": 206,
+      "dir": 1,
+      "lleva": "piragua"
+     }
+    },
+    "palomas": [
+     {
+      "i": 2,
+      "x": 100,
+      "y": 57,
+      "dir": -1,
+      "en": "cable"
+     }
+    ],
+    "cosas": [],
+    "perros": {},
+    "casa": [
+     104,
+     208
+    ],
+    "cq": {
+     "x": 88,
+     "y": 181,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null,
+     "hace": null
+    }
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "set": {
+    "twinkle": "piraguero"
+   }
+  },
+  "qd01",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "qd02",
+  {
+   "dots": 2
+  },
+  {
+   "act": "anda",
+   "quien": "luis",
+   "x": 150,
+   "y": 186,
+   "suelto": 1
+  },
+  {
+   "say": "qd03",
+   "gap": 500
+  },
+  {
+   "act": "g",
+   "quien": "luis",
+   "lleva": "papel"
+  },
+  {
+   "act": "cosa",
+   "id": "hielo",
+   "k": "piragua",
+   "x": 158,
+   "y": 190,
+   "rot": 1.5708,
+   "son": "bonk"
+  },
+  {
+   "act": "g",
+   "quien": "luis",
+   "dir": 1,
+   "ms": 400
+  },
+  "qd04",
+  {
+   "act": "g",
+   "quien": "luis",
+   "animo": "triste",
+   "ms": 300
+  },
+  "qd05",
+  {
+   "dots": 3
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "x": 124,
+   "y": 188
+  },
+  {
+   "act": "g",
+   "quien": "carmen",
+   "pose": "offer",
+   "ms": 800
+  },
+  {
+   "say": "qd06",
+   "gap": 250
+  },
+  {
+   "act": "g",
+   "quien": "carmen",
+   "pose": "idle",
+   "lleva": null
+  },
+  {
+   "act": "g",
+   "quien": "luis",
+   "lleva": null,
+   "hace": "come",
+   "que": "piragua",
+   "animo": "contento",
+   "dir": -1,
+   "ms": 500
+  },
+  "qd07",
+  {
+   "dots": 4
+  },
+  {
+   "act": "rana",
+   "x": 78,
+   "y": 200
+  },
+  {
+   "say": "qd08",
+   "gap": 300
+  },
+  {
+   "act": "saluda",
+   "quien": "piraguero",
+   "que": "offer",
+   "ms": 500
+  },
+  {
+   "act": "manos",
+   "v": {
+    "d": "piragua"
+   }
+  },
+  {
+   "act": "encima",
+   "k": "piragua"
+  },
+  {
+   "act": "rana",
+   "x": 104,
+   "y": 208
+  },
+  {
+   "act": "encima",
+   "k": null
+  },
+  {
+   "act": "g",
+   "quien": "carmen",
+   "lleva": "piragua",
+   "dir": -1,
+   "ms": 300
+  },
+  "qd09",
+  {
+   "say": "qd10",
+   "gap": 250
+  },
+  {
+   "act": "g",
+   "quien": "carmen",
+   "lleva": null,
+   "hace": "come",
+   "que": "piragua",
+   "animo": "contento",
+   "ms": 400
+  },
+  {
+   "act": "hace",
+   "que": "come"
+  },
+  "qd11",
+  {
+   "dots": 5
+  },
+  {
+   "act": "pal",
+   "x": 170,
+   "y": 191,
+   "pose": "come",
+   "dir": -1,
+   "z": 192
+  },
+  "qd12",
+  "qd13",
+  {
+   "set": {
+    "heart": 1
+   }
+  },
+  {
+   "wait": 1200
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "qd01",
+  "qd02",
+  "qd03",
+  "qd04",
+  "qd05",
+  "qd06",
+  "qd07",
+  "qd08",
+  "qd09",
+  "qd10",
+  "qd11",
+  "qd12",
+  "qd13"
+ ]
+}

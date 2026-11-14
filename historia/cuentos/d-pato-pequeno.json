@@ -1,0 +1,356 @@
+{
+ "id": "d-pato-pequeno",
+ "title": "Pan para el pato pequeño",
+ "place": "El parque",
+ "scene": "lago",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "qc01": {
+   "who": "narr",
+   "text": "Este es el lago."
+  },
+  "qc02": {
+   "who": "narr",
+   "text": "Hay tres patos."
+  },
+  "qc03": {
+   "who": "narr",
+   "text": "Un pato blanco."
+  },
+  "qc04": {
+   "who": "narr",
+   "text": "Un pato negro."
+  },
+  "qc05": {
+   "who": "narr",
+   "text": "Y un pato pequeño."
+  },
+  "qc06": {
+   "who": "narr",
+   "text": "¿De qué color es el pato pequeño? Es amarillo."
+  },
+  "qc07": {
+   "who": "narr",
+   "text": "Carmen tiene pan."
+  },
+  "qc08": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Pan para el pato pequeño."
+  },
+  "qc09": {
+   "who": "narr",
+   "text": "¡Ay! El pato blanco es rápido. El pato blanco come el pan."
+  },
+  "qc10": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Otra vez. Pan para el pato pequeño."
+  },
+  "qc11": {
+   "who": "narr",
+   "text": "¡Ay, no! Ahora el pato negro come el pan."
+  },
+  "qc12": {
+   "who": "narr",
+   "text": "El pato pequeño no tiene pan. Está triste."
+  },
+  "qc13": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Toma, Coquí."
+  },
+  "qc14": {
+   "who": "narr",
+   "text": "Carmen tiene más pan. El pato blanco y el pato negro miran a Carmen."
+  },
+  "qc15": {
+   "who": "narr",
+   "text": "Coquí va despacio."
+  },
+  "qc16": {
+   "who": "tu",
+   "text": "Pan para el pato pequeño."
+  },
+  "qc17": {
+   "who": "narr",
+   "text": "¡El pato pequeño come el pan!"
+  },
+  "qc18": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Muy bien, Coquí!"
+  },
+  "qc19": {
+   "who": "narr",
+   "text": "Ahora el pato pequeño está contento."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio20"
+  },
+  {
+   "set": {
+    "perro": null,
+    "flor": null,
+    "gente": {
+     "luis": {
+      "x": 96,
+      "y": 118,
+      "pose": "idle",
+      "dir": 1,
+      "sent": 1
+     },
+     "carmen": {
+      "x": 42,
+      "y": 154,
+      "pose": "idle",
+      "dir": 1
+     }
+    },
+    "bolsa": [
+     58,
+     153
+    ],
+    "cq": {
+     "x": 86,
+     "y": 125,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   }
+  },
+  {
+   "act": "mueven",
+   "d": -2
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  "qc01",
+  "qc02",
+  {
+   "set": {
+    "twinkle": "pato_blanco"
+   }
+  },
+  "qc03",
+  {
+   "set": {
+    "twinkle": "pato_negro"
+   }
+  },
+  "qc04",
+  {
+   "set": {
+    "twinkle": "pato_amarillo"
+   }
+  },
+  "qc05",
+  "qc06",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "saluda",
+   "quien": "carmen",
+   "que": "arriba",
+   "ms": 500
+  },
+  "qc07",
+  {
+   "say": "qc08",
+   "gap": 100
+  },
+  {
+   "act": "tirapan",
+   "x": 178,
+   "y": 184
+  },
+  {
+   "act": "gana",
+   "k": "blanco"
+  },
+  "qc09",
+  {
+   "say": "qc10",
+   "gap": 100
+  },
+  {
+   "act": "tirapan",
+   "x": 164,
+   "y": 200
+  },
+  {
+   "act": "gana",
+   "k": "negro"
+  },
+  "qc11",
+  {
+   "dots": 3
+  },
+  {
+   "act": "cuacp",
+   "k": "amarillo"
+  },
+  "qc12",
+  {
+   "say": "qc13",
+   "gap": 200
+  },
+  {
+   "act": "toma20"
+  },
+  {
+   "act": "saluda",
+   "quien": "carmen",
+   "que": "arriba",
+   "ms": 300
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "arriba"
+  },
+  {
+   "act": "patoa",
+   "k": "blanco",
+   "x": 104,
+   "y": 172,
+   "dir": -1
+  },
+  {
+   "act": "patoa",
+   "k": "negro",
+   "x": 124,
+   "y": 176,
+   "dir": -1
+  },
+  "qc14",
+  {
+   "dots": 4
+  },
+  {
+   "act": "ranaa",
+   "x": 104,
+   "y": 125,
+   "h": 1
+  },
+  {
+   "say": "qc15",
+   "gap": 100
+  },
+  {
+   "act": "patoa",
+   "k": "amarillo",
+   "x": 152,
+   "y": 178,
+   "dir": -1
+  },
+  {
+   "say": "qc16",
+   "gap": 250
+  },
+  {
+   "act": "come",
+   "a": "pato_amarillo",
+   "sigue": 1
+  },
+  "qc17",
+  {
+   "act": "traga"
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "idle"
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "saluda",
+   "quien": "luis"
+  },
+  {
+   "say": "qc18",
+   "gap": 200
+  },
+  {
+   "act": "cuacp",
+   "k": "amarillo"
+  },
+  "qc19",
+  {
+   "set": {
+    "heart": 1
+   }
+  },
+  {
+   "wait": 1200
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "qc01",
+  "qc02",
+  "qc03",
+  "qc04",
+  "qc05",
+  "qc06",
+  "qc07",
+  "qc08",
+  "qc09",
+  "qc10",
+  "qc11",
+  "qc12",
+  "qc13",
+  "qc14",
+  "qc15",
+  "qc16",
+  "qc17",
+  "qc18",
+  "qc19"
+ ]
+}

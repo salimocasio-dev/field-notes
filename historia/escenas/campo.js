@@ -188,6 +188,13 @@ const acts={
     Object.assign(W.cq,{x:LUGAR.inicio[0],y:LUGAR.inicio[1],s:1});W.cesta=CESTA.slice();W.pila=0;
     W.bolas={luis:{k:"L",con:"luis"},carmen:{k:"C",con:"carmen"},cq:{k:"q",x:PIES[0],y:PIES[1],z:0}};},
   // Canelo dashes in and takes the frog's ball to his spot
+  /* ----- Escuchar: plain acts for the picture story and the routine ----- */
+  async alta(o){await Promise.all([acts.pasa({de:o.de,a:"cq",b:o.b,alto:48}),(async()=>{await wait(TICK*7);await ranaSalta(18);})()]);},                 // a high ball; the frog jumps for it
+  async perro(o){const pe=W.perro;if(o.x!=null)await perroA(o.x,o.y,o.modo||"run");if(o.que)pe.pose=o.que;if(o.dir)pe.dir=o.dir;if(o.ms)await wait(o.ms);},
+  async deja(o){const b=B(o.b),pe=W.perro;if(!b)return;b.con=null;b.x=pe.x+14;b.y=pe.y+2;b.z=0;SFX.blip();await wait(200);},
+  async saluda(o){const p=G(o.quien);if(!p)return;p.pose=o.que||"wave";await wait(o.ms||700);p.pose="idle";},
+  async ranaa(o){await hopTo(o.x,o.y,o.h||2);},
+  async quita(o){delete W.bolas[o.b];await wait(100);},
   async turno15(){await roba("cq");await ladra(1);W.perro.pose="lie";},
   async mueverabo17(){const o=W.perro;for(let k=0;k<4;k++){o.dy=k%2?1:0;await wait(140);}o.dy=0;},   // he will not let go
   async mueverabo(){const o=W.perro;for(let k=0;k<4;k++){o.dir=-o.dir;await wait(140);}o.dir=1;},

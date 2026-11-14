@@ -1,0 +1,482 @@
+{
+ "id": "h-banco",
+ "title": "En el banco",
+ "place": "El parque",
+ "scene": "banco",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui",
+  "perro_viejo": "c_c_perro",
+  "perro_joven": "c_c_perro",
+  "pajaro": "l_n_pajaro",
+  "banco0": "b_n_banco",
+  "banco1": "b_n_banco",
+  "banco2": "b_n_banco",
+  "piraguero": "b_n_piraguero",
+  "carro": "b_n_piraguero"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_mujer": {
+   "who": "narr",
+   "text": "No, esa es la señora."
+  },
+  "hz_no_senor": {
+   "who": "narr",
+   "text": "No, ese es el señor."
+  },
+  "hz_no_joven": {
+   "who": "narr",
+   "text": "No, ese es el joven."
+  },
+  "hz_no_perro_viejo": {
+   "who": "narr",
+   "text": "No, ese es el perro viejo."
+  },
+  "hz_no_perro_joven": {
+   "who": "narr",
+   "text": "No, ese es el perro joven."
+  },
+  "rd01": {
+   "who": "narr",
+   "text": "Toca al señor."
+  },
+  "rd02": {
+   "who": "narr",
+   "text": "¿Dónde está el joven?"
+  },
+  "rd03": {
+   "who": "narr",
+   "text": "¿Quién bebe agua?"
+  },
+  "rd04": {
+   "who": "narr",
+   "text": "¿Quién está cansado?"
+  },
+  "rd05": {
+   "who": "narr",
+   "text": "¿Quién duerme?"
+  },
+  "rd06": {
+   "who": "narr",
+   "text": "¿Dónde está la señora?"
+  },
+  "rd07": {
+   "who": "narr",
+   "text": "¿Dónde están el perro viejo y la señora?"
+  },
+  "c_c_perro": {
+   "who": "narr",
+   "text": "Es un perro."
+  },
+  "l_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "b_n_banco": {
+   "who": "narr",
+   "text": "Es un banco."
+  },
+  "b_n_piraguero": {
+   "who": "narr",
+   "text": "Es el piragüero."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "gente": {
+     "piraguero": {
+      "x": 51,
+      "y": 172,
+      "dir": 1
+     },
+     "mujer": {
+      "x": 96,
+      "y": 161,
+      "dir": 1,
+      "sent": 1,
+      "hace": "come",
+      "que": "piragua"
+     },
+     "joven": {
+      "x": 138,
+      "y": 161,
+      "dir": 1,
+      "sent": 1,
+      "animo": "cansado",
+      "sin": {
+       "mochila": 1
+      }
+     },
+     "senor": {
+      "x": 192,
+      "y": 161,
+      "dir": 1,
+      "sent": 1,
+      "hace": "bebe"
+     }
+    },
+    "palomas": [
+     {
+      "i": 0,
+      "x": 66,
+      "y": 55,
+      "dir": -1,
+      "en": "cable"
+     },
+     {
+      "i": 1,
+      "x": 83,
+      "y": 56,
+      "dir": 1,
+      "en": "cable"
+     },
+     {
+      "i": 2,
+      "x": 100,
+      "y": 57,
+      "dir": -1,
+      "en": "cable"
+     },
+     {
+      "i": 3,
+      "x": 117,
+      "y": 57,
+      "dir": 1,
+      "en": "cable"
+     },
+     {
+      "i": 4,
+      "x": 134,
+      "y": 57,
+      "dir": -1,
+      "en": "cable"
+     }
+    ],
+    "cosas": [
+     {
+      "id": "mochila",
+      "k": "mochila",
+      "x": 160,
+      "y": 150
+     }
+    ],
+    "perros": {
+     "viejo": {
+      "x": 54,
+      "y": 194,
+      "pose": "duerme",
+      "dir": 1,
+      "zzz": 1
+     },
+     "joven": {
+      "x": 90,
+      "y": 194,
+      "pose": "sit",
+      "dir": 1
+     }
+    },
+    "casa": [
+     134,
+     206
+    ],
+    "cq": {
+     "x": 118,
+     "y": 179,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null,
+     "hace": null
+    }
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "senor",
+    "mujer",
+    "joven"
+   ],
+   "pick": "senor",
+   "lead": [],
+   "line": "rd01",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "senor"
+    }
+   ],
+   "lock": true,
+   "vale": [
+    "piraguero"
+   ]
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "senor",
+    "mujer",
+    "joven"
+   ],
+   "pick": "joven",
+   "lead": [],
+   "line": "rd02",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "joven"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "senor",
+    "mujer",
+    "joven"
+   ],
+   "pick": "senor",
+   "lead": [],
+   "line": "rd03",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "senor",
+     "que": "arriba"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "senor",
+    "mujer",
+    "joven"
+   ],
+   "pick": "joven",
+   "lead": [],
+   "line": "rd04",
+   "right": [
+    {
+     "act": "brinco",
+     "quien": "joven",
+     "h": -2
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "perro_viejo",
+    "perro_joven",
+    "joven"
+   ],
+   "pick": "perro_viejo",
+   "lead": [],
+   "line": "rd05",
+   "right": [
+    {
+     "act": "can",
+     "n": "viejo",
+     "pose": "lie",
+     "zzz": 0,
+     "ms": 600
+    },
+    {
+     "act": "can",
+     "n": "viejo",
+     "pose": "duerme",
+     "zzz": 1
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "senor",
+    "mujer",
+    "joven"
+   ],
+   "pick": "mujer",
+   "lead": [],
+   "line": "rd06",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "mujer"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "perro_viejo"
+   ],
+   "vale": [
+    "mujer"
+   ],
+   "pick": "perro_viejo",
+   "lead": [],
+   "line": "rd07",
+   "right": [
+    {
+     "if": "x=perro_viejo",
+     "then": [
+      {
+       "act": "can",
+       "n": "viejo",
+       "pose": "lie",
+       "zzz": 0,
+       "ms": 600
+      },
+      {
+       "act": "can",
+       "n": "viejo",
+       "pose": "duerme",
+       "zzz": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "mujer"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "otro",
+   "cond": "x=perro_viejo",
+   "then": "mujer",
+   "else": "perro_viejo"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "perro_joven"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "rd07",
+   "right": [
+    {
+     "if": "otro=perro_viejo",
+     "then": [
+      {
+       "act": "can",
+       "n": "viejo",
+       "pose": "lie",
+       "zzz": 0,
+       "ms": 600
+      },
+      {
+       "act": "can",
+       "n": "viejo",
+       "pose": "duerme",
+       "zzz": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "mujer"
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "rd01",
+  "rd02",
+  "rd03",
+  "rd04",
+  "rd05",
+  "rd06",
+  "rd07"
+ ]
+}

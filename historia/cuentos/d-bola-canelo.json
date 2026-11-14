@@ -1,0 +1,270 @@
+{
+ "id": "d-bola-canelo",
+ "title": "La bola de Canelo",
+ "place": "El parque",
+ "scene": "campo",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "qb01": {
+   "who": "narr",
+   "text": "Luis tiene una bola."
+  },
+  "qb02": {
+   "who": "narr",
+   "text": "Luis tira la bola."
+  },
+  "qb03": {
+   "who": "narr",
+   "text": "Carmen coge la bola."
+  },
+  "qb04": {
+   "who": "narr",
+   "text": "Carmen tira la bola para arriba."
+  },
+  "qb05": {
+   "who": "narr",
+   "text": "Coquí salta. ¡Coquí coge la bola!"
+  },
+  "qb06": {
+   "who": "narr",
+   "text": "¡Ay! Canelo tiene la bola de Luis."
+  },
+  "qb07": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Dame la bola, Canelo!"
+  },
+  "qb08": {
+   "who": "narr",
+   "text": "Canelo no quiere."
+  },
+  "qb09": {
+   "who": "narr",
+   "text": "Hay otra bola en la canasta."
+  },
+  "qb10": {
+   "who": "narr",
+   "text": "Carmen tiene la otra bola."
+  },
+  "qb11": {
+   "who": "narr",
+   "text": "Ahora Canelo quiere la otra bola."
+  },
+  "qb12": {
+   "who": "narr",
+   "text": "Canelo salta y salta."
+  },
+  "qb13": {
+   "who": "narr",
+   "text": "Luis tiene su bola. La bola de Luis."
+  },
+  "qb14": {
+   "who": "narr",
+   "text": "Coquí tira la bola."
+  },
+  "qb15": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Corre, Canelo!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio15"
+  },
+  {
+   "act": "quita",
+   "b": "carmen"
+  },
+  {
+   "act": "quita",
+   "b": "cq"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  "qb01",
+  {
+   "say": "qb02",
+   "gap": 100
+  },
+  {
+   "act": "pasa",
+   "de": "luis",
+   "a": "carmen",
+   "b": "luis"
+  },
+  "qb03",
+  {
+   "dots": 2
+  },
+  {
+   "say": "qb04",
+   "gap": 100
+  },
+  {
+   "act": "alta",
+   "de": "carmen",
+   "b": "luis"
+  },
+  "qb05",
+  {
+   "dots": 3
+  },
+  {
+   "act": "pasa",
+   "de": "cq",
+   "a": "luis",
+   "b": "luis"
+  },
+  {
+   "act": "roba",
+   "b": "luis"
+  },
+  "qb06",
+  {
+   "say": "qb07",
+   "gap": 250
+  },
+  {
+   "act": "mueverabo"
+  },
+  "qb08",
+  {
+   "dots": 4
+  },
+  {
+   "set": {
+    "twinkle": "cesta"
+   }
+  },
+  "qb09",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "nueva",
+   "a": "carmen"
+  },
+  "qb10",
+  {
+   "act": "pasa",
+   "de": "carmen",
+   "a": "cq",
+   "b": "cq"
+  },
+  {
+   "act": "perro",
+   "x": 168,
+   "y": 192,
+   "modo": "run",
+   "que": "bark",
+   "dir": -1
+  },
+  "qb11",
+  {
+   "act": "salta",
+   "quien": "perro"
+  },
+  {
+   "act": "salta",
+   "quien": "perro"
+  },
+  "qb12",
+  {
+   "dots": 5
+  },
+  {
+   "act": "sellevan",
+   "quien": "luis",
+   "b": "pila0"
+  },
+  "qb13",
+  {
+   "say": "qb14",
+   "gap": 100
+  },
+  {
+   "act": "pasa",
+   "de": "cq",
+   "a": "carmen",
+   "b": "cq",
+   "alto": 40
+  },
+  {
+   "act": "perro",
+   "x": 176,
+   "y": 176,
+   "modo": "run",
+   "que": "bark",
+   "dir": 1
+  },
+  {
+   "act": "rien"
+  },
+  {
+   "say": "qb15",
+   "gap": 200
+  },
+  {
+   "set": {
+    "heart": 1
+   }
+  },
+  {
+   "wait": 1200
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "qb01",
+  "qb02",
+  "qb03",
+  "qb04",
+  "qb05",
+  "qb06",
+  "qb07",
+  "qb08",
+  "qb09",
+  "qb10",
+  "qb11",
+  "qb12",
+  "qb13",
+  "qb14",
+  "qb15"
+ ]
+}

@@ -1,0 +1,447 @@
+{
+ "id": "d-vamos-a-casa",
+ "title": "Vamos a casa",
+ "place": "El parque",
+ "scene": "banco",
+ "tipo": "escucha",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 5,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "qe01": {
+   "who": "narr",
+   "text": "Ahora es de noche."
+  },
+  "qe02": {
+   "who": "narr",
+   "text": "¡Mira! La luna."
+  },
+  "qe03": {
+   "who": "narr",
+   "text": "El señor camina despacio."
+  },
+  "qe04": {
+   "who": "tu",
+   "text": "¡Adiós, señor!"
+  },
+  "qe05": {
+   "who": "tu",
+   "text": "¡Adiós, señora!"
+  },
+  "qe06": {
+   "who": "narr",
+   "text": "El pájaro duerme."
+  },
+  "qe07": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Vamos a casa."
+  },
+  "qe08": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¡Ven, Canelo!"
+  },
+  "qe09": {
+   "who": "narr",
+   "text": "Canelo no quiere. Canelo está cansado."
+  },
+  "qe10": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Vamos, Canelo!"
+  },
+  "qe11": {
+   "who": "narr",
+   "text": "Canelo duerme."
+  },
+  "qe12": {
+   "who": "narr",
+   "text": "Abuela tiene una bola."
+  },
+  "qe13": {
+   "who": "narr",
+   "text": "¡Mira! Ahora Canelo no está cansado."
+  },
+  "qe14": {
+   "who": "narr",
+   "text": "Canelo corre rápido."
+  },
+  "qe15": {
+   "who": "narr",
+   "text": "Y abuela camina despacio."
+  },
+  "qe16": {
+   "who": "tu",
+   "text": "Hasta mañana, parque."
+  }
+ },
+ "beats": [
+  {
+   "set": {
+    "gente": {
+     "piraguero": {
+      "x": 51,
+      "y": 172,
+      "dir": 1
+     },
+     "senor": {
+      "x": 87,
+      "y": 161,
+      "dir": 1,
+      "sent": 1
+     },
+     "mujer": {
+      "x": 135,
+      "y": 161,
+      "dir": 1,
+      "sent": 1
+     },
+     "abuela": {
+      "x": 76,
+      "y": 200,
+      "dir": 1
+     },
+     "luis": {
+      "x": 104,
+      "y": 204,
+      "dir": 1
+     },
+     "carmen": {
+      "x": 126,
+      "y": 208,
+      "dir": 1
+     }
+    },
+    "palomas": [
+     {
+      "i": 2,
+      "x": 100,
+      "y": 57,
+      "dir": -1,
+      "en": "cable"
+     }
+    ],
+    "cosas": [],
+    "perros": {
+     "canelo": {
+      "x": 92,
+      "y": 210,
+      "pose": "cansado",
+      "dir": 1
+     }
+    },
+    "tarde": 1,
+    "casa": [
+     44,
+     210
+    ],
+    "cq": {
+     "x": 28,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null,
+     "hace": null
+    }
+   }
+  },
+  {
+   "wait": 600
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "luz",
+   "v": 1,
+   "luna": 1
+  },
+  "qe01",
+  "qe02",
+  {
+   "dots": 2
+  },
+  {
+   "act": "anda",
+   "quien": "senor",
+   "x": 188,
+   "y": 197,
+   "lento": 1,
+   "suelto": 1
+  },
+  {
+   "say": "qe03",
+   "gap": 900
+  },
+  {
+   "say": "qe04",
+   "gap": 300
+  },
+  {
+   "act": "saluda",
+   "quien": "senor",
+   "dir": -1
+  },
+  {
+   "act": "anda",
+   "quien": "senor",
+   "x": 246,
+   "y": 197,
+   "fuera": 1
+  },
+  {
+   "act": "anda",
+   "quien": "mujer",
+   "x": 188,
+   "y": 197
+  },
+  {
+   "say": "qe05",
+   "gap": 300
+  },
+  {
+   "act": "saluda",
+   "quien": "mujer",
+   "dir": -1
+  },
+  {
+   "act": "anda",
+   "quien": "mujer",
+   "x": 246,
+   "y": 197,
+   "fuera": 1
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "pal",
+   "i": 0,
+   "pose": "duerme"
+  },
+  "qe06",
+  {
+   "say": "qe07",
+   "gap": 250
+  },
+  {
+   "act": "anda",
+   "quien": "luis",
+   "x": 168,
+   "y": 196
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "x": 186,
+   "y": 204
+  },
+  {
+   "act": "g",
+   "quien": "luis",
+   "dir": -1
+  },
+  {
+   "act": "g",
+   "quien": "carmen",
+   "dir": -1
+  },
+  {
+   "say": "qe08",
+   "gap": 250
+  },
+  {
+   "act": "can",
+   "n": "canelo",
+   "pose": "lie",
+   "ms": 500
+  },
+  {
+   "act": "can",
+   "n": "canelo",
+   "pose": "cansado",
+   "ms": 300
+  },
+  "qe09",
+  {
+   "say": "qe10",
+   "gap": 250
+  },
+  {
+   "act": "can",
+   "n": "canelo",
+   "pose": "duerme",
+   "zzz": 1,
+   "ms": 400
+  },
+  "qe11",
+  {
+   "dots": 4
+  },
+  {
+   "act": "g",
+   "quien": "abuela",
+   "lleva": "bola",
+   "ms": 400
+  },
+  "qe12",
+  {
+   "act": "g",
+   "quien": "abuela",
+   "lleva": null
+  },
+  {
+   "act": "cosa",
+   "id": "bola",
+   "k": "bola",
+   "x": 118,
+   "y": 208
+  },
+  {
+   "act": "rebota",
+   "id": "bola",
+   "n": 3
+  },
+  {
+   "act": "can",
+   "n": "canelo",
+   "pose": "lie",
+   "zzz": 0,
+   "ms": 300
+  },
+  {
+   "act": "can",
+   "n": "canelo",
+   "pose": "idle",
+   "mueve": 1
+  },
+  {
+   "act": "brinco",
+   "quien": "perro",
+   "h": 6
+  },
+  "qe13",
+  {
+   "act": "rueda",
+   "id": "bola",
+   "x": 240,
+   "y": 202,
+   "n": 16,
+   "fuera": 1,
+   "suelto": 1
+  },
+  {
+   "act": "can",
+   "n": "canelo",
+   "x": 250,
+   "y": 208,
+   "modo": "run",
+   "vis": 0,
+   "suelto": 1
+  },
+  {
+   "say": "qe14",
+   "gap": 300
+  },
+  {
+   "act": "anda",
+   "quien": "luis",
+   "x": 246,
+   "y": 198,
+   "fuera": 1,
+   "suelto": 1
+  },
+  {
+   "act": "anda",
+   "quien": "carmen",
+   "x": 246,
+   "y": 204,
+   "fuera": 1
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "anda",
+   "quien": "abuela",
+   "x": 188,
+   "y": 200,
+   "lento": 1,
+   "suelto": 1
+  },
+  {
+   "say": "qe15",
+   "gap": 1200
+  },
+  {
+   "act": "anda",
+   "quien": "abuela",
+   "x": 250,
+   "y": 200,
+   "fuera": 1
+  },
+  {
+   "say": "qe16",
+   "gap": 400
+  },
+  {
+   "act": "sale"
+  },
+  {
+   "set": {
+    "heart": 1
+   }
+  },
+  {
+   "wait": 1200
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "qe01",
+  "qe02",
+  "qe03",
+  "qe04",
+  "qe05",
+  "qe06",
+  "qe07",
+  "qe08",
+  "qe09",
+  "qe10",
+  "qe11",
+  "qe12",
+  "qe13",
+  "qe14",
+  "qe15",
+  "qe16"
+ ]
+}

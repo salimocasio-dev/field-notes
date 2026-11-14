@@ -1,0 +1,426 @@
+{
+ "id": "h-lago",
+ "title": "En el lago",
+ "place": "El parque",
+ "scene": "lago",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_pato_blanco": {
+   "who": "narr",
+   "text": "No, ese es el pato blanco."
+  },
+  "hz_no_pato_negro": {
+   "who": "narr",
+   "text": "No, ese es el pato negro."
+  },
+  "hz_no_pato_amarillo": {
+   "who": "narr",
+   "text": "No, ese es el pato amarillo."
+  },
+  "hz_no_bote_rojo": {
+   "who": "narr",
+   "text": "No, ese es el bote rojo."
+  },
+  "hz_no_bote_azul": {
+   "who": "narr",
+   "text": "No, ese es el bote azul."
+  },
+  "hz_no_bote_verde": {
+   "who": "narr",
+   "text": "No, ese es el bote verde."
+  },
+  "hz_no_pez": {
+   "who": "narr",
+   "text": "No, ese es el pez."
+  },
+  "hz_no_pajaro": {
+   "who": "narr",
+   "text": "No. Ese es el pájaro."
+  },
+  "rc01": {
+   "who": "narr",
+   "text": "Toca el pato blanco."
+  },
+  "rc02": {
+   "who": "narr",
+   "text": "¿Cuál es el pato amarillo?"
+  },
+  "rc03": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Pan para el pato blanco."
+  },
+  "rc04": {
+   "who": "narr",
+   "text": "¿Dónde está el bote rojo?"
+  },
+  "rc05": {
+   "who": "narr",
+   "text": "Toca el bote verde."
+  },
+  "rc06": {
+   "who": "narr",
+   "text": "¿Quién vuela?"
+  },
+  "rc07": {
+   "who": "narr",
+   "text": "¿Dónde está el pez?"
+  },
+  "rc08": {
+   "who": "narr",
+   "text": "Toca el bote azul y el pato negro."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio20"
+  },
+  {
+   "set": {
+    "perro": null,
+    "flor": null,
+    "gente": {
+     "luis": {
+      "x": 96,
+      "y": 118,
+      "pose": "idle",
+      "dir": 1,
+      "sent": 1
+     },
+     "carmen": {
+      "x": 64,
+      "y": 118,
+      "pose": "idle",
+      "dir": 1
+     }
+    },
+    "bolsa": null,
+    "cq": {
+     "x": 108,
+     "y": 125,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   }
+  },
+  {
+   "act": "mueven",
+   "d": -2
+  },
+  {
+   "act": "repone",
+   "o": "var"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "pato_blanco",
+    "pato_negro",
+    "pato_amarillo"
+   ],
+   "pick": "pato_blanco",
+   "lead": [],
+   "line": "rc01",
+   "right": [
+    {
+     "act": "cuacp",
+     "k": "blanco"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "pato_blanco",
+    "pato_negro",
+    "pato_amarillo"
+   ],
+   "pick": "pato_amarillo",
+   "lead": [],
+   "line": "rc02",
+   "right": [
+    {
+     "act": "cuacp",
+     "k": "amarillo"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "act": "toma20"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "pato_blanco",
+    "pato_negro",
+    "pato_amarillo"
+   ],
+   "pick": "pato_blanco",
+   "lead": [],
+   "line": "rc03",
+   "right": [
+    {
+     "act": "come",
+     "a": "pato_blanco"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "bote_verde",
+    "bote_azul",
+    "bote_rojo"
+   ],
+   "pick": "bote_rojo",
+   "lead": [],
+   "line": "rc04",
+   "right": [
+    {
+     "act": "mecebote",
+     "c": "rojo"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "bote_verde",
+    "bote_azul",
+    "bote_rojo"
+   ],
+   "pick": "bote_verde",
+   "lead": [],
+   "line": "rc05",
+   "right": [
+    {
+     "act": "mecebote",
+     "c": "verde"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "set": {
+    "aves": {
+     "a": {
+      "c": "azul",
+      "x": 152,
+      "y": 122,
+      "dir": -1
+     }
+    },
+    "peces": {
+     "a": {
+      "c": "pardo",
+      "x": 192,
+      "y": 192,
+      "dir": -1,
+      "circula": 1
+     }
+    }
+   }
+  },
+  {
+   "act": "sube",
+   "quien": "pajaro"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "pajaro",
+    "pez",
+    "pato_blanco",
+    "pato_negro",
+    "pato_amarillo"
+   ],
+   "pick": "pajaro",
+   "lead": [],
+   "line": "rc06",
+   "right": [
+    {
+     "act": "dip"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "pajaro",
+    "pez",
+    "pato_blanco",
+    "pato_negro",
+    "pato_amarillo"
+   ],
+   "pick": "pez",
+   "lead": [],
+   "line": "rc07",
+   "right": [
+    {
+     "act": "pezsalta1"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "bote_azul"
+   ],
+   "vale": [
+    "pato_negro"
+   ],
+   "pick": "bote_azul",
+   "lead": [],
+   "line": "rc08",
+   "right": [
+    {
+     "if": "x=bote_azul",
+     "then": [
+      {
+       "act": "mecebote",
+       "c": "azul"
+      }
+     ],
+     "else": [
+      {
+       "act": "cuacp",
+       "k": "negro"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "otro",
+   "cond": "x=bote_azul",
+   "then": "pato_negro",
+   "else": "bote_azul"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "bote_rojo"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "rc08",
+   "right": [
+    {
+     "if": "otro=bote_azul",
+     "then": [
+      {
+       "act": "mecebote",
+       "c": "azul"
+      }
+     ],
+     "else": [
+      {
+       "act": "cuacp",
+       "k": "negro"
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "rc01",
+  "rc02",
+  "rc03",
+  "rc04",
+  "rc05",
+  "rc06",
+  "rc07",
+  "rc08"
+ ]
+}

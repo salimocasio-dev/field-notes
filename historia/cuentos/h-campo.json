@@ -1,0 +1,382 @@
+{
+ "id": "h-campo",
+ "title": "En el campo",
+ "place": "El parque",
+ "scene": "campo",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_perro": {
+   "who": "narr",
+   "text": "No, ese es Canelo."
+  },
+  "hz_no_bola_luis": {
+   "who": "narr",
+   "text": "No, esa es la bola de Luis."
+  },
+  "hz_no_bola_carmen": {
+   "who": "narr",
+   "text": "No, esa es la bola de Carmen."
+  },
+  "hz_no_bola_cq": {
+   "who": "narr",
+   "text": "No, esa es tu bola."
+  },
+  "hz_no_carmen": {
+   "who": "narr",
+   "text": "No. Esa es Carmen."
+  },
+  "hz_no_luis": {
+   "who": "narr",
+   "text": "No. Ese es Luis."
+  },
+  "hz_no_tira": {
+   "who": "narr",
+   "text": "No."
+  },
+  "hz_no_coge": {
+   "who": "narr",
+   "text": "No."
+  },
+  "hz_no_salta": {
+   "who": "narr",
+   "text": "No."
+  },
+  "hz_no_corre": {
+   "who": "narr",
+   "text": "No."
+  },
+  "rb01": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Toca mi bola."
+  },
+  "rb02": {
+   "who": "narr",
+   "text": "¿Dónde está Canelo?"
+  },
+  "rb03": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Toca tu bola."
+  },
+  "rb04": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Coge la bola!"
+  },
+  "rb05": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Salta!"
+  },
+  "rb06": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Tira la bola!"
+  },
+  "rb07": {
+   "who": "narr",
+   "text": "Toca tu bola y toca a Carmen."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio15"
+  },
+  {
+   "set": {
+    "respEn": [
+     112,
+     40
+    ]
+   }
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "bola_luis",
+    "bola_carmen",
+    "bola_cq"
+   ],
+   "pick": "bola_luis",
+   "lead": [],
+   "line": "rb01",
+   "right": [
+    {
+     "act": "saluda",
+     "quien": "luis",
+     "que": "arriba"
+    }
+   ],
+   "lock": true,
+   "alias": {
+    "luis": "bola_luis",
+    "carmen": "bola_carmen"
+   }
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "perro",
+    "luis",
+    "carmen"
+   ],
+   "pick": "perro",
+   "lead": [],
+   "line": "rb02",
+   "right": [
+    {
+     "act": "ladra",
+     "n": 1
+    }
+   ],
+   "lock": true,
+   "alias": {
+    "bola_luis": "luis",
+    "bola_carmen": "carmen"
+   }
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "bola_luis",
+    "bola_carmen",
+    "bola_cq"
+   ],
+   "pick": "bola_cq",
+   "lead": [],
+   "line": "rb03",
+   "right": [
+    {
+     "act": "salta",
+     "quien": "cq",
+     "h": 6
+    }
+   ],
+   "lock": true,
+   "alias": {
+    "luis": "bola_luis",
+    "carmen": "bola_carmen"
+   }
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "say",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "coge",
+    "salta",
+    "corre"
+   ],
+   "pick": "coge",
+   "lead": [],
+   "line": "rb04",
+   "right": [
+    {
+     "act": "pasa",
+     "de": "luis",
+     "a": "cq",
+     "b": "luis"
+    }
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "decide": "say",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "tira",
+    "salta",
+    "corre"
+   ],
+   "pick": "salta",
+   "lead": [],
+   "line": "rb05",
+   "right": [
+    {
+     "act": "salta",
+     "quien": "cq"
+    },
+    {
+     "act": "salta",
+     "quien": "perro"
+    }
+   ],
+   "baraja": true
+  },
+  {
+   "decide": "say",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "tira",
+    "salta",
+    "corre"
+   ],
+   "pick": "tira",
+   "lead": [],
+   "line": "rb06",
+   "right": [
+    {
+     "act": "pasa",
+     "de": "cq",
+     "a": "luis",
+     "b": "luis"
+    }
+   ],
+   "baraja": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "bola_cq"
+   ],
+   "vale": [
+    "carmen"
+   ],
+   "pick": "bola_cq",
+   "lead": [],
+   "line": "rb07",
+   "right": [
+    {
+     "if": "x=bola_cq",
+     "then": [
+      {
+       "act": "salta",
+       "quien": "cq",
+       "h": 6
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "carmen"
+      }
+     ]
+    }
+   ],
+   "alias": {
+    "bola_carmen": "carmen"
+   }
+  },
+  {
+   "calc": "otro",
+   "cond": "x=bola_cq",
+   "then": "carmen",
+   "else": "bola_cq"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "perro"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "rb07",
+   "right": [
+    {
+     "if": "otro=bola_cq",
+     "then": [
+      {
+       "act": "salta",
+       "quien": "cq",
+       "h": 6
+      }
+     ],
+     "else": [
+      {
+       "act": "saluda",
+       "quien": "carmen"
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ],
+   "alias": {
+    "bola_carmen": "carmen"
+   }
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "rb01",
+  "rb02",
+  "rb03",
+  "rb04",
+  "rb05",
+  "rb06",
+  "rb07"
+ ]
+}
