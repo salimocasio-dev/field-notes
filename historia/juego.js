@@ -291,8 +291,10 @@ $("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("ap
 // Always a whole number of screen pixels per art pixel (kd), so the pixel art stays crisp: the picture may end up smaller than the room it has. Only a camera zoom inside a story may be fractional.
 const LAND=()=>matchMedia("(orientation:landscape) and (max-height:600px)").matches;
 let blockDim=(kd,dpr)=>[DW*kd/dpr,DH*kd/dpr],blockFit=null;   // blockDim: the picture block's size in CSS px for kd screen pixels per art pixel (¿Cuál? and the level check draw several pictures and set their own); blockFit: what else to size once kd is known
-function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight,dpr=window.devicePixelRatio||1,L=LAND(),Z=mh-112;let aw,ah;   // Z: the room above the bottom zone (the start disc and the 40 px under it)
-  if(L){aw=mw-32-16-240;ah=mh-8;}else{aw=mw-32;ah=Z-64;}   // portrait: 16 px side margins; above and below the picture there stays room for the caption (8 + two lines)
+function fit(){const m=$("#main"),a=$("#app");if(!m||!a)return;const dpr=window.devicePixelRatio||1,L=LAND();let mw=m.clientWidth,mh=m.clientHeight;
+  if(L){const cs=getComputedStyle(a),px=k=>parseFloat(cs[k])||0;mw=a.clientWidth-px("paddingLeft")-px("paddingRight");mh=a.clientHeight-px("paddingTop")-px("paddingBottom");}   // on its side the picture has the whole height: the top bar belongs to the column on the right
+  const Z=mh-112;let aw,ah;   // Z: the room above the bottom zone (the start disc and the 40 px under it)
+  if(L){aw=mw-16-16-240-16;ah=mh-32;}else{aw=mw-32;ah=Z-64;}   // on its side: 16 px left of the picture, 16 between it and a column of at least 240, 16 right of that, and 16 above and below the picture. Portrait: 16 px side margins; above and below the picture there stays room for the caption (8 + two lines)
   let kd=1;for(let k=2;k<=32;k++){const d=blockDim(k,dpr);if(d[0]<=aw+.01&&d[1]<=ah+.01)kd=k;else break;}
   const d=blockDim(kd,dpr);cv.style.width=d[0]+"px";cv.style.height=d[1]+"px";if(blockFit)blockFit(kd,dpr);
   const st=$("#stage");if(st)st.style.marginBottom=L?"":Math.max(0,d[1]+112-Z)+"px";finFit();}   // the picture is centred in Z; when the caption would not fit under it, it moves up
