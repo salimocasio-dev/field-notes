@@ -174,7 +174,7 @@ pt=lambda k,x,y,pose="nada",**kw:dict({"k":k,"x":x,"y":y,"pose":pose,"dir":-1},*
 pz=lambda c,x,y,**kw:dict({"c":c,"x":x,"y":y,"dir":-1},**kw)
 av=lambda c,x,y,**kw:dict({"c":c,"x":x,"y":y,"dir":-1},**kw)
 bt=lambda c,x,y,en="agua":{"c":c,"x":x,"y":y,"en":en}
-CW=[100,152,113,60]; CD=[44,112,113,60]; CS=[96,30,113,60]; CK=[120,84,113,60]
+CW=[100,156,113,60]; CD=[44,112,113,60]; CS=[96,30,113,60]; CK=[120,84,113,60]
 todos={**s18["clips"],**s19["clips"],**s20["clips"],"l_c_pato_nada":N("El pato nada."),"l_c_bote_rojo":N("Es un bote rojo."),"l_c_pez_azul":N("Es un pez azul."),"l_c_bote_verde":N("Es un bote verde."),
  "l_c_pato_amarillo":N("Es un pato amarillo."),"l_c_pajaro_blanco":N("Es un pájaro blanco."),"l_c_pato_negro":N("Es un pato negro.")}
 usa=["l_n_pato","l_n_pez","l_n_pajaro","l_c_pato_nada","c18_pajaro_vuela","l_c_bote_rojo","l_c_pez_azul","l_c_bote_verde","l_c_pato_amarillo","l_c_pajaro_blanco","l_c_pato_negro","muy_bien","si_muy_bien"]
@@ -183,7 +183,7 @@ cual={"id":"cual-lago","title":"¿Cuál?","place":"El parque","scene":"lago","ti
  "items":[
   {"w":"pato","say":"l_n_pato","si":{"cam":CD,"set":{"patos":{"a":pt("blanco",100,154,"anda")},"cq":NO}},"no":{"cam":CD,"set":{"aves":{"a":av("azul",100,154)},"cq":NO}}},
   {"w":"pez","say":"l_n_pez","si":{"cam":CW,"set":{"peces":{"a":pz("pardo",156,196,dy=16)},"cq":NO}},"no":{"cam":CW,"set":{"patos":{"a":pt("blanco",156,190,come=1)},"cq":NO}}},
-  {"w":"pájaro","say":"l_n_pajaro","si":{"cam":CK,"set":{"aves":{"a":av("azul",176,119,pan=1)},"cq":NO}},"no":{"cam":CK,"set":{"peces":{"a":pz("pardo",176,134)},"pan":{"con":None,"x":166,"y":134,"z":0,"vis":1},"cq":NO}}},
+  {"w":"pájaro","say":"l_n_pajaro","si":{"cam":[84,84,113,60],"set":{"aves":{"a":av("azul",140,119,pan=1)},"cq":NO}},"no":{"cam":CW,"set":{"peces":{"a":pz("pardo",156,186)},"pan":{"con":None,"x":143,"y":184,"z":0,"vis":1},"cq":NO}}},
   {"w":"nada","say":"l_c_pato_nada","si":{"cam":CW,"set":{"patos":{"a":pt("blanco",150,188)},"cq":NO}},"no":{"cam":CS,"set":{"patos":{"a":pt("blanco",150,62,"vuela")},"cq":NO}}},
   {"w":"vuela","say":"c18_pajaro_vuela","si":{"cam":CS,"set":{"aves":{"a":av("azul",152,60,vuela=1)},"cq":NO}},"no":{"cam":CD,"set":{"aves":{"a":av("azul",96,154,pan=1)},"cq":NO}}},
   {"w":"rojo","say":"l_c_bote_rojo","si":{"cam":CW,"set":{"botes":{"a":bt("rojo",150,190)},"cq":NO}},"no":{"cam":CW,"set":{"botes":{"a":bt("azul",150,190)},"cq":NO}}},

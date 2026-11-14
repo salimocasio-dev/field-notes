@@ -14,9 +14,9 @@
 (function(){
 const SW=KIT.SW,SH=KIT.SH,FAM=KIT.FAM,R=Math.round;
 const QUIEN={luis:FAM.hermano,carmen:FAM.hermana},mkPerro=KIT.mkPerro,tarjeta=KIT.tarjeta;
-const AGUA=118,MUELLE=[26,152,112,13],POSTE=[160,150],PM=[[31,141],[133,141]],JUNCOS=[[176,172],[186,166],[196,174],[182,180],[192,184]],ORILLA=[176,116];   // where the water starts; the dock; the post; the reeds; Carmen's place on the far bank
+const AGUA=118,MUELLE=[26,152,112,13],POSTE=[152,146],PM=[[40,141],[133,141]],JUNCOS=[[190,150],[200,144],[210,152],[196,158],[206,162]],ORILLA=[178,116];   // where the water starts; the dock; the post; the reeds; Carmen's place on the far bank
 // light orange-red, middle blue, dark blue-green: the three differ in lightness too, for eyes that cannot tell red from green
-const COLOR={rojo:["#C8401E","#F4683C","#FFA07A"],azul:["#1A3C8E","#2A5CC8","#5A8AE8"],verde:["#263E0A","#456E16","#6E9A30"],pardo:["#4A3A1E","#7A6234","#A88E58"],amarillo:["#C89A1C","#F0C83C","#FFE98C"],
+const COLOR={rojo:["#C8401E","#F4683C","#FFA07A"],azul:["#1A3C8E","#2A5CC8","#5A8AE8"],verde:["#2A520E","#4A8420","#7AB03C"],pardo:["#4A3A1E","#7A6234","#A88E58"],amarillo:["#B8860C","#F0B81C","#FFD84A"],
   blanco:["#B8B8C8","#E6E6F0","#FFFFFF"],negro:["#16161E","#30303C","#50505E"],naranja:["#B85A14","#E88A2A","#F8B860"],madera:["#8A5A2A","#B8854A","#D8AA70"]};
 
 /* ---------- the picture ---------- */
@@ -54,13 +54,13 @@ function mkPajaro(c,f,vuela){const C=COLOR[c],b=new Buf(15,12);b.ell(6,7,4.4,3.2
 function mkBote(c){const C=COLOR[c],b=new Buf(20,20),V=c==="madera"?COLOR.blanco:C;b.rect(9,2,1,13,"#5A3A1A");for(let y=0;y<11;y++)b.rect(10,3+y,1+Math.floor(y*.7),1,V[y<3?2:1]);for(let y=0;y<8;y++)b.rect(8-Math.floor(y*.5),6+y,Math.floor(y*.5)+1,1,V[2]);
   b.rect(2,15,16,2,C[1]);b.rect(3,17,14,1,C[1]);b.rect(4,18,12,1,C[0]);b.rect(2,15,16,1,C[2]);return b.outline().done();}
 function mkPote(c){const C=COLOR[c],b=new Buf(16,16);b.rect(1,4,14,11,"#C8C8D4");b.rect(1,4,3,11,"#E8E8F0");b.ell(8,4,7,2.6,[C[0],C[1],C[2]]);b.rect(3,8,10,5,C[1]);b.rect(3,8,10,1,C[2]);return b.outline().done();}
-function mkPan(){const b=new Buf(8,6);b.ell(4,3,3.2,2.2,["#B07A3C","#D8AA70","#F0D8A8"]);return b.outline().done();}
+function mkPan(){const b=new Buf(11,10);b.rect(1,2,9,7,"#F4E2B4");b.ell(3.5,2.5,2.6,2,["#F4E2B4"]);b.ell(7.5,2.5,2.6,2,["#F4E2B4"]);b.rect(1,8,9,1,"#B07A3C");b.rect(1,3,1,6,"#C8904A");b.rect(9,3,1,6,"#C8904A");b.px(4,5,"#E0C890");b.px(6,6,"#E0C890");return b.outline().done();}
 function mkBolsa(){const b=new Buf(12,13);b.rect(1,3,10,9,"#C8A468");b.rect(1,3,3,9,"#D8B67A");b.rect(1,3,10,2,"#B08A54");[[2,0],[5,1],[8,0]].forEach(p=>b.ell(p[0]+1,p[1]+2,1.8,1.6,["#D8AA70","#F0D8A8"]));return b.outline().done();}
 
 const LUGAR={inicio:[100,125,1],muelle:[100,125,1]};
-const FX=[46,68,90],FY=165,SALE=[[150,174],[161,178],[172,182]],PEGA=[[170,180],[200,182],[185,193],[188,168]];   // the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds
-const slotC=i=>[104+(i%12)*7,119+(i>=12?4:0)];                                                                 // the row at Carmen's feet on the far bank
-const P7=i=>[134+(i-1)*9.5,188+(i-1)*2],OFF=[[-14,-9],[14,-7],[0,12]],PK=["blanco","negro","amarillo"];           // story 20: seven places for the three ducks, from the dock outward
+const FX=[46,68,90],FY=165,SALE=[[150,172],[168,180],[152,190]],PEGA=[[182,166],[196,172],[210,168],[190,178]];   // the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds
+const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];                                                                 // the row at Carmen's feet on the far bank
+const P7=i=>[134+(i-1)*9.5,177+(i-1)*2],OFF=[[-14,-9],[14,-7],[0,12]],PK=["blanco","negro","amarillo"];           // story 20: seven places for the three ducks, from the dock outward
 const alto=id=>QUIEN[id].nino?(W.gente[id]&&W.gente[id].sent?40:44):56;
 const caja=id=>{const p=W.gente[id];return p&&p.vis!==0?[R(p.x)-11,R(p.y)-alto(id),22,alto(id)]:null;};
 const persona=id=>({id,m:1,si:w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0),box:()=>caja(id)});
@@ -73,7 +73,7 @@ const COSAS=["luis","carmen"].map(persona).concat(PK.map(patoCosa),["blanco","ne
   {id:"pajaro",z:1,m:3,si:w=>!!(w.aves&&w.aves.a&&w.aves.a.vis!==0),box:w=>{const o=w.aves.a;return [R(o.x)-10,R(o.y)-15,20,18];}},
   {id:"perro",si:w=>!!w.perro&&w.perro.vis!==0,box:w=>[R(w.perro.x)-14,R(w.perro.y)-14,28,16],m:1},
   {id:"flor",si:w=>!!w.flor,box:w=>[w.flor[0]-5,w.flor[1]-16,10,17],m:2},
-  {id:"juncos",box:[166,150,42,42],m:0},{id:"poste",box:[POSTE[0]-5,POSTE[1]-26,10,36],m:1},{id:"muelle",box:[MUELLE[0],MUELLE[1]-2,MUELLE[2],MUELLE[3]+4],m:0},
+  {id:"juncos",box:[178,120,40,46],m:0},{id:"poste",box:[POSTE[0]-5,POSTE[1]-26,10,36],m:1},{id:"muelle",box:[MUELLE[0],MUELLE[1]-2,MUELLE[2],MUELLE[3]+4],m:0},
   {id:"agua",box:[0,AGUA,240,98],m:0},{id:"lago",box:[0,94,240,122],m:0}]);
 
 /* ---------- drawing ---------- */
@@ -81,16 +81,16 @@ const COSAS=["luis","carmen"].map(persona).concat(PK.map(patoCosa),["blanco","ne
 function anima(){
   Object.values(W.aves||{}).forEach(o=>{if(!o)return;if(o.ronda){const t=F/16+(o.fase||0);o.x=150+46*Math.cos(t);o.y=58+16*Math.sin(t);o.dir=Math.sin(t)<0?1:-1;o.vuela=1;}else if(o.sale){o.x+=2.2;o.y-=1.1;o.vuela=1;o.dir=1;if(o.x>250)o.vis=0;}});
   Object.values(W.patos||{}).forEach(o=>{if(!o)return;if(o.ronda){const t=F/16+(o.fase||0);o.x=150+46*Math.cos(t);o.y=58+16*Math.sin(t);o.dir=Math.sin(t)<0?1:-1;o.pose="vuela";}
-    else if(o.rema){const t=F/22+(o.fase||0);o.x=POSTE[0]+24*Math.cos(t);o.y=POSTE[1]+14+7*Math.sin(t);o.dir=Math.sin(t)<0?1:-1;o.pose="nada";}
+    else if(o.rema){const t=F/22+(o.fase||0);o.x=POSTE[0]+20*Math.cos(t);o.y=POSTE[1]+16+7*Math.sin(t);o.dir=Math.sin(t)<0?1:-1;o.pose="nada";}
     else if(o.sale){o.sale++;o.dir=1;if(o.sale<26){o.x+=1.3;o.pose="nada";}else{o.x+=2.2;o.y-=2;o.pose="vuela";}if(o.x>250||o.y<-10)o.vis=0;}});
-  Object.values(W.peces||{}).forEach(o=>{if(!o)return;if(o.vaiven){const t=F/14;o.x=o.x0+12*Math.sin(t);o.dir=Math.cos(t)>0?1:-1;}else if(o.circula){const t=F/12;o.x=118+13*Math.cos(t);o.y=198+4*Math.sin(t);o.dir=Math.sin(t)<0?1:-1;}
+  Object.values(W.peces||{}).forEach(o=>{if(!o)return;if(o.vaiven){const t=F/14;o.x=o.x0+12*Math.sin(t);o.dir=Math.cos(t)>0?1:-1;}else if(o.circula){const t=F/12;o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t);o.dir=Math.sin(t)<0?1:-1;}
     else if(o.sale){o.x+=1.8;o.dir=1;if(o.x>236)o.vis=0;}else if(o.sigue&&W.botes[o.sigue]){const b=W.botes[o.sigue];o.x=b.x-4;o.y=b.y+9;o.dir=1;}});
   Object.values(W.botes||{}).forEach(o=>{if(!o||!o.meta)return;const dx=o.meta[0]-o.x,dy=o.meta[1]-o.y,d=Math.hypot(dx,dy),v=o.meta[2]||1.5;if(d<=v){o.x=o.meta[0];o.y=o.meta[1];o.meta=null;}else{o.x+=dx/d*v;o.y+=dy/d*v;}});}
 function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=R(p.x),y=R(p.y),habla=TALK===id&&a%2?1:0,d=p.dir<0?-1:1,h=alto(id);
   const pose=p.pose==="wave"?"wave"+(a%2):p.pose==="arriba"?"wave0":(p.pose||"idle"),im=spr("pc"+id+pose+habla+(p.sent?1:0),()=>KIT.mkPersona(QUIEN[id],pose,habla,p.sent));
   c.save();c.translate(x,y-im.height+1+((p.paso&&a%2)||(p.rie&&a%2)?-1:0)-(p.dy||0));if((pose==="offer"?-d:d)<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
   if(p.lleva==="bolsa")c.drawImage(spr("bolsa",mkBolsa),x+d*6-6,y-h+22);
-  if(p.pan)c.drawImage(spr("pan",mkPan),x+d*9-4,y-h+25);
+  if(p.pan)c.drawImage(spr("pan",mkPan),x+d*9-5,y-h+22);
   (p.botes||[]).forEach((k,i)=>{const im2=spr("bt"+k,()=>mkBote(k));c.drawImage(im2,x+d*(8+i*9)-10,y-h+10+i*2);});   // boats in his hands
   if(p.pincel){fr(c,x+d*14,y-h+12,1,8,"#5A3A1A");fr(c,x+d*14-1,y-h+19,3,3,COLOR[p.pincel]?COLOR[p.pincel][1]:"#E8E8F0");}}
 function pato(c,o,a){if(!o||o.vis===0)return;const anim=o.pose==="vuela"||o.pose==="anda"||o.come||o.aletea,f=anim?(a>>1)%2:0,pose=o.aletea?"vuela":(o.pose||"nada"),im=spr("pt"+o.k+pose+f,()=>mkPato(o.k,pose,f)),d=o.dir<0?-1:1,s=o.k==="amarillo"?.78:1,x=R(o.x),y=R(o.y)-(o.dy||0);
@@ -100,12 +100,12 @@ function pez(c,o){if(!o||o.vis===0)return;const im=spr("pz"+o.c,()=>mkPez(o.c)),
   c.save();c.translate(x,y);if(d>0)c.scale(-1,1);if(fuera)c.rotate(-.5);c.drawImage(im,-9,-6);c.restore();
   if(!fuera){fr(c,x-9,y-7,18,1,"#EAF6FA");fr(c,x-6,y+5,12,1,"#7FB4C8");}}   // just under the clear water: its colour shows
 function ave(c,o,a){if(!o||o.vis===0)return;const f=(a>>1)%2,v=o.vuela||o.aletea?1:0,im=spr("pj"+o.c+f+v,()=>mkPajaro(o.c,f,v)),d=o.dir<0?-1:1,y=R(o.y)-(o.dy||0);c.save();c.translate(R(o.x),y);if(d<0)c.scale(-1,1);c.drawImage(im,-7,-12);c.restore();
-  if(o.pan)c.drawImage(spr("pan",mkPan),R(o.x)+d*8-4,y-9);}
+  if(o.pan)c.drawImage(spr("pan",mkPan),R(o.x)+d*9-5,y-11);}
 function bote(c,o){if(!o||o.vis===0)return;const im=spr("bt"+o.c,()=>mkBote(o.c)),x=R(o.x),y=R(o.y),enAgua=o.en==="agua"||o.en==="juncos",bob=enAgua?((F>>3)%2):0;
   c.save();c.translate(x,y+bob);if(o.en==="juncos")c.rotate(.3);c.drawImage(im,-10,-19);c.restore();if(enAgua)fr(c,x-10,y+bob,20,1,"#EAF6FA");}
 function rana(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK==="coqui")&&a%2?1:0,dy=R(q.dy);
   g.globalAlpha=q.al;g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+dy);g.globalAlpha=1;
-  if(W.pan&&W.pan.con==="cq")g.drawImage(spr("pan",mkPan),b.x+(b.w>>1)-4,b.y+dy+b.h-9);
+  if(W.pan&&W.pan.con==="cq")g.drawImage(spr("pan",mkPan),b.x+(b.w>>1)-5,b.y+dy+b.h-11);
   if(W.pincel){fr(g,b.x+b.w-4,b.y+dy+10,1,9,"#5A3A1A");fr(g,b.x+b.w-5,b.y+dy+8,3,3,COLOR[W.pincel]?COLOR[W.pincel][1]:"#E8E8F0");}}
 function bub2(c,k,tx,ty,a){c.save();c.translate(tx,ty);c.scale(2,2);bub(c,k,0,0,a);c.restore();}
 function draw(c,W,a){const q=W.cq,Gt=W.gente||{};anima();
@@ -118,12 +118,12 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{};anima();
   Object.keys(W.patos||{}).forEach(k=>{const o=W.patos[k];if(o&&o.vis!==0)L.push({y:o.pose==="vuela"?o.y+200:o.y,d:()=>pato(c,o,a)});});
   Object.keys(W.aves||{}).forEach(k=>{const o=W.aves[k];if(o&&o.vis!==0)L.push({y:o.y+200,d:()=>ave(c,o,a)});});
   Object.keys(W.botes||{}).forEach(k=>{const o=W.botes[k];if(o&&o.vis!==0)L.push({y:o.y+(o.en==="juncos"?14:1),d:()=>bote(c,o)});});
-  for(let i=0;i<(W.fila||0);i++)L.push({y:FY+1,d:()=>c.drawImage(spr("pan",mkPan),40+i*10-4,FY-6)});                 // the row of bread along the front of the dock
+  for(let i=0;i<(W.fila||0);i++)L.push({y:FY+1,d:()=>c.drawImage(spr("pan",mkPan),36+i*12-5,FY-8)});                 // the row of bread along the front of the dock
   if(W.bolsa)L.push({y:W.bolsa[1],d:()=>c.drawImage(spr("bolsa",mkBolsa),W.bolsa[0]-6,W.bolsa[1]-12)});
   if(W.saco)L.push({y:W.saco[1],d:()=>{const x=W.saco[0],y=W.saco[1];fr(c,x-8,y-10,16,11,OUT);fr(c,x-7,y-9,14,9,"#B89858");fr(c,x-7,y-9,4,9,"#D8BE80");fr(c,x-5,y-12,10,3,"#8A6E3A");}});
   if(W.perro&&W.perro.vis!==0)L.push({y:W.perro.y,d:()=>{const o=W.perro,f=o.pose==="bark"?(a>>1)%2:0,im=spr("pe"+o.pose+f,()=>mkPerro(o.pose,f));c.save();c.translate(R(o.x),R(o.y)-im.height+2);if(o.dir<0)c.scale(-1,1);c.drawImage(im,-13,0);c.restore();}});
   if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});
-  if(W.pan&&W.pan.con==null&&W.pan.vis!==0)L.push({y:999,d:()=>c.drawImage(spr("pan",mkPan),R(W.pan.x)-4,R(W.pan.y)-R(W.pan.z||0)-5)});
+  if(W.pan&&W.pan.con==null&&W.pan.vis!==0)L.push({y:999,d:()=>c.drawImage(spr("pan",mkPan),R(W.pan.x)-5,R(W.pan.y)-R(W.pan.z||0)-7)});
   L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());
   (W.salpica||[]).forEach(e=>{const t=F-e.f;if(t<10)for(let i=0;i<7;i++){const an=Math.PI+i*Math.PI/6;fr(c,e.x+R(Math.cos(an)*(3+t*1.2)),e.y+R(Math.sin(an)*(2+t*1.4))+R(t*t*.12),2,2,i%2?"#7FB4C8":"#FFFFFF");}});
   Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});
@@ -137,10 +137,7 @@ function respIcon(g,k,x,y,w,h,a){const c=k.replace("pote_","");if(!COLOR[c])retu
 function hud(g,W,a){if(!W.tarjeta)return;tarjeta(g,3,3,66,24);
   (W.marcas||[]).forEach((m,i)=>{const x=10+i*20,y=6;
     if(m==="ok"){const st=["......#......",".....###.....",".....###.....","#############",".###########.","..#########..","...#######...","..#########..",".####...####.",".###.....###.","##.........##"];g.fillStyle=OUT;st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i-1,y+j+1,3,3);});g.fillStyle="#F0C020";st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i,y+j+2,1,1);});}
-    else if(m==="pan"){g.fillStyle=OUT;g.fillRect(x+1,y+4,12,9);g.fillStyle="#D8AA70";g.fillRect(x+2,y+5,10,7);g.fillStyle="#FFFDF4";[[8,5,4,3],[10,8,2,2],[6,5,2,1]].forEach(r=>g.fillRect(x+r[0],y+r[1],r[2],r[3]));}                 // a bitten crust
-    else if(m==="bote"){g.imageSmoothingEnabled=false;g.drawImage(spr("btmadera",()=>mkBote("madera")),x-1,y-2,14,14);g.fillStyle="#8A6E3A";[[0,4],[4,2],[10,3],[13,5]].forEach(d=>g.fillRect(x+d[0],y+d[1],1,12-d[1]));}                // a boat in the reeds
-    else if(m==="onda"){g.strokeStyle="#2A5CC8";g.lineWidth=1.5;[5,2.5].forEach(r=>{g.beginPath();g.ellipse(x+7,y+9,r+1.5,r*.5+1,0,0,7);g.stroke();});}                                                                                    // rings on the water: the ducks went off
-    else if(m==="raya"){g.fillStyle="#9494A6";g.fillRect(x+3,y+8,8,2);}                                                                                                                                                             // asked when he had been told: nothing gained, nothing lost
+    else if(m){g.fillStyle=OUT;for(let k=0;k<11;k++){g.fillRect(x+k,y+1+k,4,3);g.fillRect(x+10-k,y+1+k,4,3);}g.fillStyle="#C8401E";for(let k=0;k<11;k++){g.fillRect(x+1+k,y+2+k,2,1);g.fillRect(x+11-k,y+2+k,2,1);}}   // a cross: this round went wrong (what went wrong shows in the picture)
     else{g.fillStyle="#C8C8D4";g.fillRect(x+1,y+13,12,1);g.fillRect(x+1,y+1,1,12);g.fillRect(x+12,y+1,1,12);g.fillRect(x+1,y+1,12,1);}});}
 
 /* ---------- moving things ---------- */
@@ -177,16 +174,16 @@ const acts={
 
   /* ----- story 18: Pan para el pato ----- */
   async inicio18(){W.gente={luis:{x:44,y:154,pose:"idle",dir:1,sent:1},carmen:{x:72,y:154,pose:"idle",dir:1,lleva:"bolsa"}};Object.assign(W.cq,{x:100,y:125,s:1});
-    W.patos={blanco:{k:"blanco",x:150,y:186,pose:"nada",dir:-1}};W.peces={a:{c:"pardo",x:104,y:204,x0:104,dir:1,vaiven:1}};W.aves={a:{c:"azul",x:POSTE[0],y:POSTE[1]-24,dir:-1}};W.fila=0;W.pan=null;},
+    W.patos={blanco:{k:"blanco",x:142,y:184,pose:"nada",dir:-1}};W.peces={a:{c:"pardo",x:92,y:192,x0:92,dir:1,vaiven:1}};W.aves={a:{c:"azul",x:POSTE[0],y:POSTE[1]-24,dir:-1}};W.fila=0;W.pan=null;},
   // the bird, or the duck, takes off and goes on flying round over the pond
   async sube(o){const a0=Math.PI*.7,tx=150+46*Math.cos(a0),ty=58+16*Math.sin(a0);if(o.quien==="pato"){const d=W.patos.blanco;d.rema=0;cuac(1);await patoA("blanco",tx,ty,"vuela");d.fase=a0-F/16;d.ronda=1;}else{const b=W.aves.a;pio();await aveA("a",tx,ty);b.vuela=1;b.fase=a0-F/16;b.ronda=1;}},
-  async baja(o){if(o.quien==="pato"){const d=W.patos.blanco;d.ronda=0;d.rema=0;await patoA("blanco",150,186,d.pose==="vuela"?"vuela":"nada");if(d.pose==="vuela")salpica(150,186);d.pose="nada";d.dir=-1;}else{const b=W.aves.a;b.ronda=0;await aveA("a",POSTE[0],POSTE[1]-24);b.dir=-1;}},
+  async baja(o){if(o.quien==="pato"){const d=W.patos.blanco;d.ronda=0;d.rema=0;await patoA("blanco",142,184,d.pose==="vuela"?"vuela":"nada");if(d.pose==="vuela")salpica(142,184);d.pose="nada";d.dir=-1;}else{const b=W.aves.a;b.ronda=0;await aveA("a",POSTE[0],POSTE[1]-24);b.dir=-1;}},
   // the duck paddles round and round the post
-  async rema(){const d=W.patos.blanco;d.ronda=0;await patoA("blanco",POSTE[0]+24,POSTE[1]+14,"nada");d.fase=-F/22;d.rema=1;},
+  async rema(){const d=W.patos.blanco;d.ronda=0;await patoA("blanco",POSTE[0]+20,POSTE[1]+16,"nada");d.fase=-F/22;d.rema=1;},
   async giro(o){const d=W.patos.blanco,x0=d.x;for(let k=0;k<2;k++){await patoA("blanco",x0-10,d.y+3,"nada",6);await patoA("blanco",x0,d.y-3,"nada",6);}d.dir=-1;},
   // the duck climbs out onto the far bank and stands there; alagua: it slides back in and paddles home
-  async orilla(){const d=W.patos.blanco;d.rema=0;d.ronda=0;await patoA("blanco",200,124,"nada");d.pose="anda";await patoA("blanco",204,118,"anda",4);d.dir=-1;for(let k=0;k<3;k++){d.dy=1;await wait(100);d.dy=0;await wait(100);}},
-  async alagua(){const d=W.patos.blanco;if(d.pose==="anda"){await patoA("blanco",200,124,"anda",4);d.pose="nada";salpica(200,126);}d.rema=0;d.ronda=0;await patoA("blanco",150,186,"nada");d.dir=-1;},
+  async orilla(){const d=W.patos.blanco;d.rema=0;d.ronda=0;await patoA("blanco",124,126,"nada");d.pose="anda";await patoA("blanco",120,118,"anda",4);d.dir=-1;for(let k=0;k<3;k++){d.dy=1;await wait(100);d.dy=0;await wait(100);}},
+  async alagua(){const d=W.patos.blanco;if(d.pose==="anda"){await patoA("blanco",124,126,"anda",4);d.pose="nada";salpica(124,128);}d.rema=0;d.ronda=0;await patoA("blanco",142,184,"nada");d.dir=-1;},
   // the frog takes a piece of bread: from Carmen's bag, or (once the row is out) from the row on the dock
   async toma(){if(W.fila>0)W.fila--;W.pan={con:"cq"};SFX.blip();bounce(4);await wait(250);},
   async luispan(){const lu=G("luis");if(W.fila>0)W.fila--;W.pan={con:"luis"};lu.pan=1;SFX.blip();await wait(300);},
@@ -222,7 +219,7 @@ const acts={
   async alagua19(){const lu=G("luis");for(const c of (lu.botes||[])){const k=Object.values(W.botes).filter(x=>x.en==="agua"&&!x.meta).length,id="b"+(W.nb++);W.botes[id]={c,x:lu.x+10,y:lu.y-20,en:"agua"};await boteA(id,SALE[k%3][0],SALE[k%3][1],6);salpica(SALE[k%3][0],SALE[k%3][1]);}lu.botes=[];await wait(200);},
   async luisve(){const lu=G("luis");for(let k=0;k<4;k++){lu.dir=-lu.dir;await wait(140);}lu.dir=1;SFX.bonk();await wait(250);},
   // a fish of one colour swims up to the dock, jumps once and circles there
-  async pezviene(o){W.peces={a:{c:o.c,x:232,y:196,dir:-1}};await pezA("a",134,198,16);await pezSalta("a",24);W.peces.a.circula=1;await wait(300);},
+  async pezviene(o){W.peces={a:{c:o.c,x:232,y:192,dir:-1}};await pezA("a",134,192,16);await pezSalta("a",24);W.peces.a.circula=1;await wait(300);},
   async pezsalta(){const f=W.peces.a;if(!f)return;const ci=f.circula;f.circula=0;await pezSalta("a",24);f.circula=ci;},
   async pezseva(){const f=W.peces.a;if(f){f.circula=0;f.sigue=null;f.sale=1;}await wait(300);},
   // Luis paints the first bare boat he holds (c: the colour)
@@ -241,7 +238,7 @@ const acts={
     if(n<=1){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[70,60],[196,70],[136,50],[110,90],[170,96]]});}else if(n<4)SFX.win();else SFX.coqui();await wait(1200);},
 
   /* ----- story 20: ¿Cuál? ----- */
-  async inicio20(){W.gente={luis:{x:60,y:118,pose:"idle",dir:1,sent:1},carmen:{x:112,y:154,pose:"idle",dir:-1}};Object.assign(W.cq,{x:62,y:125,s:1});W.bolsa=[96,153];W.flor=[196,119];W.perro={x:86,y:119,pose:"lie",dir:1};
+  async inicio20(){W.gente={luis:{x:60,y:118,pose:"idle",dir:1,sent:1},carmen:{x:112,y:154,pose:"idle",dir:-1}};Object.assign(W.cq,{x:62,y:125,s:1});W.bolsa=[96,153];W.flor=[196,119];W.perro={x:98,y:119,pose:"lie",dir:1};
     W.lugarP=3;W.orden=[0,1,2];W.patos={};PK.forEach(k=>{W.patos[k]={k,x:0,y:0,pose:"nada",dir:-1};});W.aves={};W.pan=null;W.botes={};W.peces={};acts._pon();},
   _pon(){const p=P7(W.lugarP);PK.forEach((k,i)=>{const o=OFF[W.orden[i]];W.patos[k].x=p[0]+o[0];W.patos[k].y=p[1]+o[1];});},
   // the ducks paddle d places (minus: nearer the dock); baraja: they stop in a new order
