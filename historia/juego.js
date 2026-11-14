@@ -228,8 +228,13 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
   if(st.pick)pick=sub(st.pick);
   else{const forced=Q.get(st.as||""),last=ULT[key];pick=ops.includes(forced)?forced:st.alterna&&ops.includes(last)?ops.find(x=>x!==last):ops[Math.floor(Math.random()*ops.length)];ULT[key]=pick;try{localStorage.setItem("coqui.juego.ult",JSON.stringify(ULT));}catch(e){}}
   if(st.as)V[st.as]=pick;if(st.other)V[st.other]=ops.find(x=>x!==pick);
-  if(st.decide==="say"&&!OIR){W.resp=ops;W.respVoz=voz;}
-  const line=sub(st.line),vale=(st.vale||[]).map(sub);let me=await espera(ops.concat(vale),st.lead,line,{lock:st.lock,kind:"decide",pick,voces:voz,orden:voz?ops:null,mudo:st.mudo,ayuda:st.libre?pick:null,alias:st.alias});const first=me.got===pick||vale.includes(me.got);V.ok=first?"1":"";V.x=me.got;
+  const bur=(st.burbujas||[]).map(sub),gratis=st.gratis||null;   // burbujas: speaking bubbles that stand beside the things he can touch. gratis: answers that cost nothing: their steps run and he chooses again
+  if(st.decide==="say"&&!OIR){W.resp=ops;W.respVoz=voz;}else if(bur.length&&!OIR){W.resp=bur;W.respVoz=voz;}
+  const line=sub(st.line),vale=(st.vale||[]).map(sub);let me,otra=0;
+  for(;;){me=await espera(ops.concat(vale,bur),otra?[]:st.lead,line,{lock:st.lock,kind:"decide",pick,voces:otra?null:voz,orden:voz&&!otra?(bur.length?bur:ops):null,mudo:st.mudo||!!otra,ayuda:st.libre?pick:null,alias:st.alias});
+    if(gratis&&gratis[me.got]&&me.got!==pick&&!OIR){SFX.blip();bounce(5);await wait(200);if(said&&said[me.got])await say(said[me.got],300);await pasos(gratis[me.got]);otra=1;continue;}
+    break;}
+  const first=me.got===pick||vale.includes(me.got);V.ok=first?"1":"";V.x=me.got;
   if(!OIR&&!st.libre){const w0=sub(st.tests||pick),w=(S.palabras&&S.palabras[w0])||w0;if(w!=="-")LOG.push({word:w,asked:pick,got:me.got,ok:first,ms:me.ms||0});}   // tests "-": no word decides this one, so nothing is filed
   if(said&&said[me.got]){SFX.blip();bounce(5);await wait(250);W.resp=null;await say(said[me.got],300);}
   W.resp=null;
@@ -238,9 +243,9 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
   else if(!first){await wait(500);const costs=JSON.stringify(st.wrong||[]).includes('"cost"');await pasos(st.wrong);if(!costs){W.lost++;await E.stake(W.lost,S.stake.steps,me.got);}}
   if(!first){
     if(st.noretry)return;   // one guess: the story shows the right one, then goes on
-    if(st.decide==="say"){W.resp=ops;W.respVoz=voz;}
-    me=await espera([pick],[],line,{sign:pick,voces:voz,orden:voz?[pick]:null,alias:st.alias,mudo:st.mudo});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});
-    if(st.decide==="say"&&said&&said[pick]){SFX.blip();bounce(5);await wait(200);await say(said[pick],250);}}
+    const habla=st.decide==="say"||bur.includes(pick);if(st.decide==="say"){W.resp=ops;W.respVoz=voz;}else if(bur.includes(pick)){W.resp=bur;W.respVoz=voz;}
+    me=await espera([pick],[],line,{sign:pick,voces:habla?voz:null,orden:habla&&voz?[pick]:null,alias:st.alias,mudo:st.mudo});W.resp=null;if(st.do)await E.acts[st.do]({en:pick});
+    if(habla&&said&&said[pick]){SFX.blip();bounce(5);await wait(200);await say(said[pick],250);}}
   senal(pick,st.decide==="say"?null:me.p,sub(st.quieto)==="1"||st.quieto===true);if(st.bien!==false)await bien(st.bien);await pasos(st.right);}
 
 /* ---------- running it ---------- */
