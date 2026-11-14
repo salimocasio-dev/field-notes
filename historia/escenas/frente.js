@@ -228,7 +228,7 @@ const acts={
   // a few drops catch him just before he is in
   async gotas(){W.gotas=F;for(let k=0;k<3;k++){await wait(210);SFX.drop();}bounce(4);await wait(500);},
   // the last picture: grandma and the frog at the window
-  async cuadro(){W.tab=W.lost>=S.stake.steps?"mojado":W.lost?"gotas":"seco";if(!W.ab)W.ab={en:"ventana",pose:"idle",bub:null,al:1};W.ab.en="ventana";await camGo("ventana");
+  async cuadro(){W.tab=W.lost>=S.stake.steps?"mojado":W.lost?"gotas":"seco";if(!W.ab)W.ab={en:"ventana",pose:"idle",bub:null,al:1};W.ab.en="ventana";await camGo("cuadro");   // its own view: the heart (x 102 to 130, y 24 to 51) must sit whole in the ending picture, and the frog is inside, beside her
     if(W.tab==="seco"){W.ab.pose="wave";await wait(900);}
     else if(W.tab==="gotas"){W.shake=1;SFX.drop();await wait(250);SFX.drop();await wait(700);W.shake=0;W.tab="seco";W.ab.bub="bien";await wait(1100);W.ab.bub=null;}
     else await wait(500);},
@@ -295,7 +295,7 @@ async function stake(lost,max,en){if(S.stake.thing==="bizcocho"){await roba(en);
   if(lost>=max){await acts.llueve();return;}
   SFX.trueno(.6);W.flash=F;W.nube.tx=NX[Math.min(2,Math.round(lost*2/max))];W.dark=.22+.05*lost;await wait(900);}
 
-ESCENAS.frente={SW,SH,CAM:{wide:[44,0,196,216],casa:[56,0,172,190],puerta:[117,30,98,108],ventana:[84,24,98,108]},
+ESCENAS.frente={SW,SH,CAM:{wide:[44,0,196,216],casa:[56,0,172,190],puerta:[117,30,98,108],ventana:[84,24,98,108],cuadro:[63,18,98,108]},
   handAt:{casa:[141,24],puerta:[166,76],ventana:[112,72],casa_grande:[141,24],casa_pequena:[73,128],palma_grande:[56,60],palma_pequena:[195,140],get abuela(){const b=box("abuela",W);return b?[Math.round(b[0]+b[2]/2),Math.round(b[1]+b[3]/2)]:[166,76];}},heartAt:[103,26],
   fresh:()=>({trozo:null,hojas:null,asoma:0,escondite:0,rustle:null,abierto:null,piernas:0,dusk:0,rondas:0,mios:0,tapado:0,ave:null,plato:null,mesa:0,abIn:null,caliente:0,door:0,win:0,lamp:0,peek:0,ab:null,storm:0,nube:null,nube2:null,nube3:null,dark:0,rain:0,wet:0,gotas:0,flash:0,dentro:null,tab:null,shake:0}),
   draw,box,hit,poke,acts,stake,talkAt,hud};
