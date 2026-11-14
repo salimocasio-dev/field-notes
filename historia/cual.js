@@ -65,6 +65,7 @@ function cualFin(){const n=CQ.hecho.length,m=CQ.hecho.filter(h=>h.ok).length;
 async function cualArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · ¿Cuál?";SALIDA="app.html?tab=palabras";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   cualSize(1,2,DW,PH);mkOpts(2,k=>{if(CQ.toque)CQ.toque(k);});
-  CQ.lista=cualLista();mkDots(CQ.lista.length);estado("start",true);pantalla("Review");fit();   // the start screen: a title and the disc; the bar has its true number of segments from the start
+  CQ.lista=cualLista();mkDots(CQ.lista.length);estado("start",true);const n=CQ.lista.length,min=Math.max(1,Math.round(n*10/60));   // about 10 s a word
+  pantalla("Review",n?[`${n} word${n===1?"":"s"} \u00b7 about ${min} min`]:[]);fit();   // the start screen: a title, how long it is, and the disc; the bar has its true number of segments from the start
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}cualRun();};}
 window.Cual={get pan(){return PAN?PAN.map(p=>({right:p.right,sign:p.sign})):null;},get i(){return CQ.i;},get listo(){return CQ.listo===CQ.i+1;},get lista(){return CQ.lista.map(x=>x.w);},get hecho(){return CQ.hecho;},toca(k){if(CQ.toque)CQ.toque(k);},get running(){return !!CQ.run;},get speaking(){return speaking;}};

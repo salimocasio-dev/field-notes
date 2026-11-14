@@ -65,6 +65,7 @@ const NV=[
  {w:"lleno",s:32,p:[["lleno","si"],["lleno","no"],["vacío","si"],["mantequilla","si"]]}];
 const MUESTRA=false;   // the ring around the picture he touched: false = white, it only shows which one he touched (a check never says right or wrong); true = green right, red-orange wrong, as in Review
 const CW=96,CH=106;   // four cells, two by two (the gap between them, GAP, is set from the scale in cual.js)
+const NN=Q.get("todo")?NV.length:Math.min(16,NV.length);   // how many pictures it asks at most: 16, or every item with ?todo=1
 const PASO=Math.max(2,Math.ceil(NV.length/14));   // how far a right answer moves him up: the list grows with every scene, the check must still reach its top in about a dozen items
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
 function celda(k){return [(k%2)*(CW+GAP),Math.floor(k/2)*(CH+GAP)];}
@@ -88,7 +89,7 @@ function nivelFrontera(h){let S0=0;const tope=Math.max(...NV.map(q=>q.s));for(le
 async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,run:1,toque:null,listo:-1,fin:null};$("#go").style.display="none";pantalla("");foot(0,0,0);estado("play");
   await Promise.race([voiceReady,sleep(6000)]);const byW={};CU.items.forEach(it=>byW[it.w]=it);
   const usados=new Set();let pos=0,seguidos=0,giros=0,ultimo=null;
-  try{for(let n=0;n<(Q.get("todo")?NV.length:16);n++){   // ?todo=1 shows every item in order, for checking the pictures
+  try{for(let n=0;n<NN;n++){   // ?todo=1 shows every item in order, for checking the pictures
       // the next item: the nearest one not yet asked, in the direction the last answer points
       let i=pos;const dir=ultimo===false?-1:1;while(i>=0&&i<NV.length&&usados.has(i))i+=dir;if(i<0||i>=NV.length){i=pos;while(i>=0&&i<NV.length&&usados.has(i))i-=dir;}if(i<0||i>=NV.length)break;
       if(Q.get("todo")){i=n;if(i>=NV.length)break;}usados.add(i);step(n);NQ.i=n;window.__cur=NV[i].s;const r=await nivelItem(NV[i],byW);NQ.hecho.push(Object.assign({i},r));step(NQ.hecho.length);   // the bar fills with the items he has answered
@@ -105,6 +106,6 @@ async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,ru
 async function nivelArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · Level check";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(()=>{F++;nivelDibuja();},TICK);
   cualSize(2,2,CW,CH);mkOpts(4,k=>{if(NQ.toque)NQ.toque(k);});
-  mkDots(Q.get("todo")?NV.length:16);estado("start",true);pantalla("Level check");fit();   // the start screen: a title and the disc; the bar has its true number of segments (16 at most) from the start
+  mkDots(NN);estado("start",true);pantalla("Level check",[`${NN} pictures \u00b7 about ${Math.max(1,Math.round(NN*11/60))} min`]);fit();   // the start screen: a title, how long it is, and the disc; the bar has its true number of segments (16 at most) from the start. About 11 s a picture
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}nivelRun();};}
 window.Nivel={get pan(){return PAN?PAN.map(p=>({right:p.right})):null;},get i(){return NQ.i;},get listo(){return NQ.listo===NQ.i;},get hecho(){return NQ.hecho;},get fin(){return NQ.fin;},toca(k){if(NQ.toque)NQ.toque(k);},get running(){return !!NQ.run;},frontera:nivelFrontera,NV};
