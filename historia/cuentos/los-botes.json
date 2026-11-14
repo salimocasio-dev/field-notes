@@ -1,0 +1,981 @@
+{
+ "id": "los-botes",
+ "title": "Los botes",
+ "place": "El parque",
+ "scene": "lago",
+ "next": "cual",
+ "goal": "Send the toy boats across the pond to Carmen.",
+ "stake": {
+  "thing": "bote",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "rojo",
+  "azul",
+  "verde",
+  "¿de qué color?"
+ ],
+ "back_again": [
+  "pez",
+  "nada",
+  "dame",
+  "hay",
+  "tres",
+  "dos",
+  "uno",
+  "mira",
+  "allá",
+  "aquí",
+  "ahora"
+ ],
+ "also_heard": [
+  "bote",
+  "pinta",
+  "van"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "agua": "k_n_agua",
+  "lago": "l_n_lago",
+  "juncos": "k_n_agua",
+  "coqui": "yo_coqui",
+  "flor": "l_n_flor",
+  "pato_blanco": "l_n_pato",
+  "pato_negro": "l_n_pato",
+  "pato_amarillo": "l_n_pato",
+  "pez": "l_n_pez",
+  "pajaro": "l_n_pajaro",
+  "ave_blanco": "l_n_pajaro",
+  "ave_negro": "l_n_pajaro",
+  "bote_rojo": "l_n_bote",
+  "bote_azul": "l_n_bote",
+  "bote_verde": "l_n_bote"
+ },
+ "palabras": {
+  "pote_rojo": "rojo",
+  "pote_azul": "azul",
+  "pote_verde": "verde"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "k_n_agua": {
+   "who": "narr",
+   "text": "Es el agua."
+  },
+  "l_n_pato": {
+   "who": "narr",
+   "text": "Es un pato."
+  },
+  "l_n_pez": {
+   "who": "narr",
+   "text": "Es un pez."
+  },
+  "l_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "l_n_lago": {
+   "who": "narr",
+   "text": "Es el lago."
+  },
+  "l_n_bote": {
+   "who": "narr",
+   "text": "Es un bote."
+  },
+  "l_n_flor": {
+   "who": "narr",
+   "text": "Es una flor."
+  },
+  "c19_hay_tres": {
+   "who": "narr",
+   "text": "Mira. Hay tres botes."
+  },
+  "c19_un_rojo": {
+   "who": "narr",
+   "text": "Un bote rojo."
+  },
+  "c19_un_azul": {
+   "who": "narr",
+   "text": "Un bote azul."
+  },
+  "c19_un_verde": {
+   "who": "narr",
+   "text": "Y un bote verde."
+  },
+  "c19_l_dame_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¡dame el bote rojo!"
+  },
+  "c19_l_dame_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¡dame el bote azul!"
+  },
+  "c19_l_dame_verde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¡dame el bote verde!"
+  },
+  "c19_luis_azul": {
+   "who": "narr",
+   "text": "Luis coge el bote azul."
+  },
+  "c19_luis_verde": {
+   "who": "narr",
+   "text": "Y el bote verde."
+  },
+  "c19_alla_van3": {
+   "who": "narr",
+   "text": "¡Allá van los botes! Rojo, azul y verde."
+  },
+  "c19_alla_van": {
+   "who": "narr",
+   "text": "¡Allá van los botes!"
+  },
+  "c19_l_un_pez": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Un pez? ¿De qué color es?"
+  },
+  "c19_l_y_este": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y este pez? ¿De qué color es?"
+  },
+  "c19_cq_rojo": {
+   "who": "tu",
+   "text": "¡Es rojo!"
+  },
+  "c19_cq_azul": {
+   "who": "tu",
+   "text": "¡Es azul!"
+  },
+  "c19_cq_verde": {
+   "who": "tu",
+   "text": "¡Es verde!"
+  },
+  "c19_l_pez_bote_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Un pez rojo y un bote rojo!"
+  },
+  "c19_l_pez_bote_verde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Un pez verde y un bote verde!"
+  },
+  "c19_l_pinta3": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Coquí, ¡pinta tres botes! ¿De qué color? Uno rojo, uno azul y uno verde."
+  },
+  "c19_ay_rojo": {
+   "who": "narr",
+   "text": "¡Ay, no! ¡El bote rojo!"
+  },
+  "c19_no_este_rojo": {
+   "who": "narr",
+   "text": "No, Coquí. Este es el bote rojo."
+  },
+  "c19_no_este_azul": {
+   "who": "narr",
+   "text": "No, Coquí. Este es el bote azul."
+  },
+  "c19_no_este_verde": {
+   "who": "narr",
+   "text": "No, Coquí. Este es el bote verde."
+  },
+  "c19_no_es_rojo": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pez es rojo."
+  },
+  "c19_no_es_azul": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pez es azul."
+  },
+  "c19_no_es_verde": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pez es verde."
+  },
+  "c19_no_uno_rojo": {
+   "who": "narr",
+   "text": "No, Coquí. Luis dice: ¡Uno rojo!"
+  },
+  "c19_no_uno_azul": {
+   "who": "narr",
+   "text": "No, Coquí. Luis dice: ¡Uno azul!"
+  },
+  "c19_no_uno_verde": {
+   "who": "narr",
+   "text": "No, Coquí. Luis dice: ¡Uno verde!"
+  },
+  "c19_fin": {
+   "who": "narr",
+   "text": "Un bote rojo. Un bote azul. Un bote verde."
+  },
+  "c19_cq_aqui": {
+   "who": "tu",
+   "text": "¡Aquí están los botes!"
+  },
+  "c19_l_dos_rojo_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahora dos botes! Uno rojo y uno azul."
+  },
+  "c19_l_dos_rojo_verde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahora dos botes! Uno rojo y uno verde."
+  },
+  "c19_l_dos_azul_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahora dos botes! Uno azul y uno rojo."
+  },
+  "c19_l_dos_azul_verde": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahora dos botes! Uno azul y uno verde."
+  },
+  "c19_l_dos_verde_rojo": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahora dos botes! Uno verde y uno rojo."
+  },
+  "c19_l_dos_verde_azul": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Ahora dos botes! Uno verde y uno azul."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio19"
+  },
+  {
+   "wait": 500
+  },
+  "c19_hay_tres",
+  {
+   "set": {
+    "twinkle": "bote_rojo"
+   }
+  },
+  "c19_un_rojo",
+  {
+   "set": {
+    "twinkle": "bote_azul"
+   }
+  },
+  "c19_un_azul",
+  {
+   "set": {
+    "twinkle": "bote_verde"
+   }
+  },
+  "c19_un_verde",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "dots": 1
+  },
+  {
+   "ask": "bote_rojo",
+   "lead": [],
+   "line": "c19_l_dame_rojo",
+   "then": [
+    "c19_luis_azul",
+    {
+     "act": "luiscoge",
+     "c": "azul"
+    },
+    "c19_luis_verde",
+    {
+     "act": "luiscoge",
+     "c": "verde"
+    },
+    {
+     "act": "sopla"
+    },
+    "c19_alla_van3",
+    {
+     "act": "llegan"
+    },
+    {
+     "draw": "ordu",
+     "options": [
+      "rav",
+      "rva",
+      "arv",
+      "avr",
+      "vra",
+      "var"
+     ]
+    },
+    {
+     "act": "repone",
+     "o": "$ordu"
+    }
+   ],
+   "after": [
+    {
+     "act": "empuja",
+     "c": "rojo"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "bolso"
+  },
+  {
+   "act": "pezviene",
+   "c": "rojo"
+  },
+  {
+   "ask": "di_rojo",
+   "lead": [],
+   "line": "c19_l_un_pez",
+   "then": [
+    {
+     "act": "bolso",
+     "fin": 1
+    },
+    {
+     "act": "saca",
+     "c": "madera"
+    },
+    {
+     "act": "luispinta",
+     "c": "rojo"
+    },
+    {
+     "act": "conpez"
+    },
+    {
+     "say": "c19_l_pez_bote_rojo",
+     "gap": 250
+    },
+    {
+     "act": "llegapez"
+    }
+   ],
+   "after": [],
+   "resp": [
+    "di_rojo",
+    "di_azul",
+    "di_verde"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_rojo": "c19_cq_rojo",
+    "di_azul": "c19_cq_azul",
+    "di_verde": "c19_cq_verde"
+   },
+   "said": {
+    "di_rojo": "c19_cq_rojo"
+   }
+  },
+  {
+   "act": "bolso"
+  },
+  {
+   "act": "pezviene",
+   "c": "verde"
+  },
+  {
+   "ask": "di_verde",
+   "lead": [],
+   "line": "c19_l_y_este",
+   "then": [
+    {
+     "act": "bolso",
+     "fin": 1
+    },
+    {
+     "act": "saca",
+     "c": "madera"
+    },
+    {
+     "act": "luispinta",
+     "c": "verde"
+    },
+    {
+     "act": "conpez"
+    },
+    {
+     "say": "c19_l_pez_bote_verde",
+     "gap": 250
+    },
+    {
+     "act": "llegapez"
+    }
+   ],
+   "after": [],
+   "resp": [
+    "di_rojo",
+    "di_azul",
+    "di_verde"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_rojo": "c19_cq_rojo",
+    "di_azul": "c19_cq_azul",
+    "di_verde": "c19_cq_verde"
+   },
+   "said": {
+    "di_verde": "c19_cq_verde"
+   }
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "saca",
+   "c": "madera,madera,madera"
+  },
+  {
+   "ask": "pote_rojo",
+   "lead": [],
+   "line": "c19_l_pinta3",
+   "then": [],
+   "after": [
+    {
+     "act": "ranapinta",
+     "c": "rojo"
+    }
+   ],
+   "resp": [
+    "pote_rojo",
+    "pote_azul",
+    "pote_verde"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "pote_azul",
+   "lead": [],
+   "line": null,
+   "after": [
+    {
+     "act": "ranapinta",
+     "c": "azul"
+    }
+   ],
+   "then": [],
+   "resp": [
+    "pote_azul",
+    "pote_verde"
+   ],
+   "baraja": true
+  },
+  {
+   "ask": "pote_verde",
+   "lead": [],
+   "line": null,
+   "after": [
+    {
+     "act": "ranapinta",
+     "c": "verde"
+    }
+   ],
+   "then": [
+    {
+     "act": "alagua19"
+    },
+    {
+     "act": "sopla"
+    },
+    "c19_alla_van",
+    {
+     "act": "llegan"
+    }
+   ],
+   "resp": [
+    "pote_verde"
+   ]
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "saca",
+   "c": "rojo"
+  },
+  {
+   "act": "alagua19"
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "wave"
+  },
+  {
+   "act": "deriva"
+  },
+  {
+   "act": "pose",
+   "quien": "luis",
+   "que": "idle"
+  },
+  "c19_ay_rojo",
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "draw": "ordd",
+   "options": [
+    "rav",
+    "rva",
+    "arv",
+    "avr",
+    "vra",
+    "var"
+   ]
+  },
+  {
+   "act": "repone",
+   "o": "$ordd"
+  },
+  {
+   "draw": "ca",
+   "options": [
+    "rojo",
+    "azul",
+    "verde"
+   ]
+  },
+  {
+   "decide": "do",
+   "options": [
+    "bote_rojo",
+    "bote_azul",
+    "bote_verde"
+   ],
+   "pick": "bote_$ca",
+   "tests": "$ca",
+   "lock": true,
+   "lead": [],
+   "line": "c19_l_dame_$ca",
+   "right": [
+    {
+     "act": "empuja",
+     "c": "$ca"
+    },
+    {
+     "act": "sopla"
+    },
+    {
+     "act": "llegan"
+    },
+    {
+     "act": "repone"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "miracarmen"
+    },
+    {
+     "act": "empuja",
+     "c": "$x"
+    },
+    {
+     "act": "deriva"
+    },
+    {
+     "act": "miracarmen",
+     "fin": 1
+    },
+    {
+     "act": "luisve"
+    },
+    {
+     "act": "marca",
+     "que": "bote"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "repone"
+    },
+    {
+     "set": {
+      "twinkle": "bote_$ca"
+     }
+    },
+    "c19_no_este_$ca",
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "bolso"
+  },
+  {
+   "draw": "cb",
+   "options": [
+    "rojo",
+    "azul",
+    "verde"
+   ]
+  },
+  {
+   "act": "pezviene",
+   "c": "$cb"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_rojo",
+    "di_azul",
+    "di_verde"
+   ],
+   "baraja": true,
+   "pick": "di_$cb",
+   "tests": "$cb",
+   "voces": {
+    "di_rojo": "c19_cq_rojo",
+    "di_azul": "c19_cq_azul",
+    "di_verde": "c19_cq_verde"
+   },
+   "said": {
+    "di_rojo": "c19_cq_rojo",
+    "di_azul": "c19_cq_azul",
+    "di_verde": "c19_cq_verde"
+   },
+   "lead": [],
+   "line": "c19_l_un_pez",
+   "right": [
+    {
+     "act": "bolso",
+     "fin": 1
+    },
+    {
+     "act": "saca",
+     "c": "madera"
+    },
+    {
+     "act": "luispinta",
+     "c": "$cb"
+    },
+    {
+     "act": "conpez"
+    },
+    {
+     "act": "llegapez"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "calc": "xb",
+     "cond": "x=di_rojo",
+     "then": "rojo",
+     "else": "$x"
+    },
+    {
+     "calc": "xb",
+     "cond": "x=di_azul",
+     "then": "azul",
+     "else": "$xb"
+    },
+    {
+     "calc": "xb",
+     "cond": "x=di_verde",
+     "then": "verde",
+     "else": "$xb"
+    },
+    {
+     "act": "bolso",
+     "fin": 1
+    },
+    {
+     "act": "saca",
+     "c": "madera"
+    },
+    {
+     "act": "luispinta",
+     "c": "$xb"
+    },
+    {
+     "act": "alagua19"
+    },
+    {
+     "act": "bolso"
+    },
+    {
+     "act": "pezsalta"
+    },
+    {
+     "set": {
+      "twinkle": "pez"
+     }
+    },
+    "c19_no_es_$cb",
+    {
+     "set": {
+      "twinkle": null
+     }
+    },
+    {
+     "act": "deriva"
+    },
+    {
+     "act": "marca",
+     "que": "bote"
+    },
+    {
+     "cost": 1
+    }
+   ]
+  },
+  {
+   "dots": 7
+  },
+  {
+   "draw": "cc",
+   "options": [
+    "rojo_azul",
+    "rojo_verde",
+    "azul_rojo",
+    "azul_verde",
+    "verde_rojo",
+    "verde_azul"
+   ]
+  },
+  {
+   "if": "cc=rojo_azul",
+   "then": [
+    {
+     "act": "dosbotes",
+     "c1": "rojo",
+     "c2": "azul"
+    }
+   ]
+  },
+  {
+   "if": "cc=rojo_verde",
+   "then": [
+    {
+     "act": "dosbotes",
+     "c1": "rojo",
+     "c2": "verde"
+    }
+   ]
+  },
+  {
+   "if": "cc=azul_rojo",
+   "then": [
+    {
+     "act": "dosbotes",
+     "c1": "azul",
+     "c2": "rojo"
+    }
+   ]
+  },
+  {
+   "if": "cc=azul_verde",
+   "then": [
+    {
+     "act": "dosbotes",
+     "c1": "azul",
+     "c2": "verde"
+    }
+   ]
+  },
+  {
+   "if": "cc=verde_rojo",
+   "then": [
+    {
+     "act": "dosbotes",
+     "c1": "verde",
+     "c2": "rojo"
+    }
+   ]
+  },
+  {
+   "if": "cc=verde_azul",
+   "then": [
+    {
+     "act": "dosbotes",
+     "c1": "verde",
+     "c2": "azul"
+    }
+   ]
+  },
+  {
+   "decide": "say",
+   "options": [
+    "pote_rojo",
+    "pote_azul",
+    "pote_verde"
+   ],
+   "baraja": true,
+   "pick": "$falta",
+   "vale": [
+    "$vale"
+   ],
+   "tests": "$falta",
+   "lock": true,
+   "lead": [],
+   "line": "c19_l_dos_$cc",
+   "right": [
+    {
+     "act": "pintado",
+     "x": "$x"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pintamal",
+     "x": "$x"
+    },
+    {
+     "cost": 1
+    },
+    "c19_no_uno_$fc"
+   ]
+  },
+  {
+   "decide": "say",
+   "options": [
+    "$pu",
+    "$pd"
+   ],
+   "baraja": true,
+   "pick": "$falta",
+   "tests": "$falta",
+   "mudo": true,
+   "lead": [],
+   "line": null,
+   "bien": false,
+   "right": [
+    {
+     "act": "pintado",
+     "x": "$x"
+    },
+    {
+     "act": "findos"
+    }
+   ],
+   "wrong": [
+    {
+     "act": "pintamal",
+     "x": "$x"
+    },
+    {
+     "cost": 1
+    },
+    "c19_no_uno_$fc"
+   ]
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "final19"
+  },
+  "c19_fin",
+  {
+   "say": "c19_cq_aqui",
+   "gap": 300
+  },
+  {
+   "wait": 600
+  }
+ ],
+ "leer": [
+  "c19_hay_tres",
+  "c19_un_rojo",
+  "c19_un_azul",
+  "c19_un_verde",
+  "c19_l_dame_rojo",
+  "c19_luis_azul",
+  "c19_luis_verde",
+  "c19_alla_van3",
+  "c19_l_un_pez",
+  "c19_cq_rojo",
+  "c19_l_pez_bote_rojo",
+  "c19_l_y_este",
+  "c19_cq_verde",
+  "c19_l_pez_bote_verde",
+  "c19_l_pinta3",
+  "c19_alla_van",
+  "c19_ay_rojo",
+  "c19_fin",
+  "c19_cq_aqui"
+ ]
+}

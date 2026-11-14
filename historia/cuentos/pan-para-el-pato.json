@@ -1,0 +1,794 @@
+{
+ "id": "pan-para-el-pato",
+ "title": "Pan para el pato",
+ "place": "El parque",
+ "scene": "lago",
+ "next": "los-botes",
+ "goal": "Give the duck, the fish and the bird each its piece of bread.",
+ "stake": {
+  "thing": "pan",
+  "steps": 3
+ },
+ "dots": 8,
+ "bien": "si_muy_bien",
+ "focus_words": [
+  "pato",
+  "pez",
+  "pájaro",
+  "nada",
+  "vuela"
+ ],
+ "back_again": [
+  "agua",
+  "hay",
+  "mira",
+  "para",
+  "tiene",
+  "¿quién?",
+  "más",
+  "ahora",
+  "amigo"
+ ],
+ "also_heard": [
+  "lago",
+  "pan",
+  "come"
+ ],
+ "names": {
+  "luis": "p_n_luis",
+  "carmen": "p_n_carmen",
+  "perro": "c_n_perro",
+  "agua": "k_n_agua",
+  "lago": "l_n_lago",
+  "juncos": "k_n_agua",
+  "coqui": "yo_coqui",
+  "flor": "l_n_flor",
+  "pato_blanco": "l_n_pato",
+  "pato_negro": "l_n_pato",
+  "pato_amarillo": "l_n_pato",
+  "pez": "l_n_pez",
+  "pajaro": "l_n_pajaro",
+  "ave_blanco": "l_n_pajaro",
+  "ave_negro": "l_n_pajaro",
+  "bote_rojo": "l_n_bote",
+  "bote_azul": "l_n_bote",
+  "bote_verde": "l_n_bote"
+ },
+ "palabras": {
+  "pato_blanco": "pato",
+  "pajaro": "pájaro"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "p_n_carmen": {
+   "who": "narr",
+   "text": "Esta es Carmen."
+  },
+  "c_n_perro": {
+   "who": "narr",
+   "text": "Es el perro. Se llama Canelo."
+  },
+  "k_n_agua": {
+   "who": "narr",
+   "text": "Es el agua."
+  },
+  "l_n_pato": {
+   "who": "narr",
+   "text": "Es un pato."
+  },
+  "l_n_pez": {
+   "who": "narr",
+   "text": "Es un pez."
+  },
+  "l_n_pajaro": {
+   "who": "narr",
+   "text": "Es un pájaro."
+  },
+  "l_n_lago": {
+   "who": "narr",
+   "text": "Es el lago."
+  },
+  "l_n_bote": {
+   "who": "narr",
+   "text": "Es un bote."
+  },
+  "l_n_flor": {
+   "who": "narr",
+   "text": "Es una flor."
+  },
+  "c18_lago": {
+   "who": "narr",
+   "text": "Este es el lago."
+  },
+  "c18_hay_pato": {
+   "who": "narr",
+   "text": "Mira. Hay un pato."
+  },
+  "c18_pato_nada": {
+   "who": "narr",
+   "text": "El pato nada en el agua."
+  },
+  "c18_hay_pez": {
+   "who": "narr",
+   "text": "Hay un pez."
+  },
+  "c18_pez_nada": {
+   "who": "narr",
+   "text": "El pez nada en el agua."
+  },
+  "c18_hay_pajaro": {
+   "who": "narr",
+   "text": "Y hay un pájaro."
+  },
+  "c18_pajaro_vuela": {
+   "who": "narr",
+   "text": "El pájaro vuela."
+  },
+  "c18_tiene_pan": {
+   "who": "narr",
+   "text": "Carmen tiene pan."
+  },
+  "c18_ca_pato": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Pan para el pato!"
+  },
+  "c18_ca_pez": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Pan para el pez!"
+  },
+  "c18_ca_pajaro": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¡Pan para el pájaro!"
+  },
+  "c18_come": {
+   "who": "narr",
+   "text": "El pato come pan."
+  },
+  "c18_ca_quien_vuela": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Quién vuela?"
+  },
+  "c18_ca_quien_nada": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: ¿Quién nada?"
+  },
+  "c18_si_pajaro": {
+   "who": "narr",
+   "text": "¡Sí! El pájaro vuela."
+  },
+  "c18_si_pez": {
+   "who": "narr",
+   "text": "¡Sí! El pez nada."
+  },
+  "c18_l_y_pato": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y el pato?"
+  },
+  "c18_cq_vuela": {
+   "who": "tu",
+   "text": "¡El pato vuela!"
+  },
+  "c18_cq_nada": {
+   "who": "tu",
+   "text": "¡El pato nada!"
+  },
+  "c18_l_si_vuela": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¡Sí! ¡El pato vuela!"
+  },
+  "c18_l_y_ahora": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: ¿Y ahora?"
+  },
+  "c18_l_si_nada": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Sí. Ahora el pato nada en el agua."
+  },
+  "c18_ay_pez": {
+   "who": "narr",
+   "text": "¡Ay, no! El pez se come el pan del pato."
+  },
+  "c18_ca_mas": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: Mira. Hay más pan."
+  },
+  "c18_no_para_pato": {
+   "who": "narr",
+   "text": "No, Coquí. Este pan es para el pato."
+  },
+  "c18_no_para_pez": {
+   "who": "narr",
+   "text": "No, Coquí. Este pan es para el pez."
+  },
+  "c18_no_para_pajaro": {
+   "who": "narr",
+   "text": "No, Coquí. Este pan es para el pájaro."
+  },
+  "c18_no_mira_vuela": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pájaro vuela."
+  },
+  "c18_no_mira_nada": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. El pez nada en el agua."
+  },
+  "c18_no_ahora_vuela": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Ahora el pato vuela."
+  },
+  "c18_no_ahora_nada": {
+   "who": "narr",
+   "text": "No, Coquí. Mira. Ahora el pato nada en el agua."
+  },
+  "c18_fin_pez": {
+   "who": "narr",
+   "text": "El pez nada."
+  },
+  "c18_fin_pajaro": {
+   "who": "narr",
+   "text": "El pájaro vuela."
+  },
+  "c18_fin_pato": {
+   "who": "narr",
+   "text": "Y el pato nada y vuela."
+  },
+  "c18_cq_adios": {
+   "who": "tu",
+   "text": "¡Adiós, amigos!"
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio18"
+  },
+  {
+   "wait": 500
+  },
+  "c18_lago",
+  {
+   "set": {
+    "twinkle": "pato_blanco"
+   }
+  },
+  "c18_hay_pato",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "giro"
+  },
+  "c18_pato_nada",
+  {
+   "set": {
+    "twinkle": "pez"
+   }
+  },
+  "c18_hay_pez",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  "c18_pez_nada",
+  {
+   "set": {
+    "twinkle": "pajaro"
+   }
+  },
+  "c18_hay_pajaro",
+  {
+   "set": {
+    "twinkle": null
+   }
+  },
+  {
+   "act": "sube",
+   "quien": "pajaro"
+  },
+  "c18_pajaro_vuela",
+  {
+   "act": "baja",
+   "quien": "pajaro"
+  },
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "arriba"
+  },
+  "c18_tiene_pan",
+  {
+   "act": "pose",
+   "quien": "carmen",
+   "que": "idle"
+  },
+  {
+   "dots": 1
+  },
+  {
+   "act": "toma"
+  },
+  {
+   "ask": "pato_blanco",
+   "lead": [],
+   "line": "c18_ca_pato",
+   "then": [],
+   "after": [
+    {
+     "act": "come",
+     "a": "pato_blanco",
+     "sigue": 1
+    },
+    "c18_come",
+    {
+     "act": "traga"
+    }
+   ]
+  },
+  {
+   "dots": 2
+  },
+  {
+   "act": "orilla"
+  },
+  {
+   "act": "sube",
+   "quien": "pajaro"
+  },
+  {
+   "act": "toma"
+  },
+  {
+   "ask": "pajaro",
+   "lead": [],
+   "line": "c18_ca_quien_vuela",
+   "then": [
+    "c18_si_pajaro"
+   ],
+   "after": [
+    {
+     "act": "come",
+     "a": "pajaro"
+    }
+   ]
+  },
+  {
+   "act": "toma"
+  },
+  {
+   "ask": "pez",
+   "lead": [],
+   "line": "c18_ca_quien_nada",
+   "then": [
+    "c18_si_pez",
+    {
+     "act": "baja",
+     "quien": "pajaro"
+    },
+    {
+     "act": "alagua"
+    }
+   ],
+   "after": [
+    {
+     "act": "come",
+     "a": "pez"
+    }
+   ]
+  },
+  {
+   "dots": 3
+  },
+  {
+   "act": "sube",
+   "quien": "pato"
+  },
+  {
+   "ask": "di_vuela",
+   "lead": [],
+   "line": "c18_l_y_pato",
+   "then": [
+    {
+     "say": "c18_l_si_vuela",
+     "gap": 250
+    }
+   ],
+   "after": [],
+   "resp": [
+    "di_vuela",
+    "di_nada"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_vuela": "c18_cq_vuela",
+    "di_nada": "c18_cq_nada"
+   },
+   "said": {
+    "di_vuela": "c18_cq_vuela"
+   }
+  },
+  {
+   "act": "rema"
+  },
+  {
+   "ask": "di_nada",
+   "lead": [],
+   "line": "c18_l_y_ahora",
+   "then": [
+    {
+     "say": "c18_l_si_nada",
+     "gap": 250
+    },
+    {
+     "act": "baja",
+     "quien": "pato"
+    }
+   ],
+   "after": [],
+   "resp": [
+    "di_vuela",
+    "di_nada"
+   ],
+   "baraja": true,
+   "voces": {
+    "di_vuela": "c18_cq_vuela",
+    "di_nada": "c18_cq_nada"
+   },
+   "said": {
+    "di_nada": "c18_cq_nada"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "act": "turno18"
+  },
+  "c18_ay_pez",
+  {
+   "act": "vuelca"
+  },
+  {
+   "say": "c18_ca_mas",
+   "gap": 250
+  },
+  {
+   "set": {
+    "tarjeta": "rondas",
+    "marcas": [
+     null,
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "wait": 400
+  },
+  {
+   "dots": 5
+  },
+  {
+   "act": "toma"
+  },
+  {
+   "draw": "aa",
+   "options": [
+    "pato",
+    "pez",
+    "pajaro"
+   ]
+  },
+  {
+   "calc": "ra",
+   "cond": "aa=pato",
+   "then": "pato_blanco",
+   "else": "$aa"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "pato_blanco",
+    "pez",
+    "pajaro"
+   ],
+   "pick": "$ra",
+   "tests": "$ra",
+   "lock": true,
+   "lead": [],
+   "line": "c18_ca_$aa",
+   "right": [
+    {
+     "act": "come",
+     "a": "$ra"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "come",
+     "a": "$x"
+    },
+    {
+     "act": "seva",
+     "a": "$ra"
+    },
+    {
+     "act": "marca",
+     "que": "pan"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "toma"
+    },
+    {
+     "act": "vuelve",
+     "a": "$ra"
+    },
+    "c18_no_para_$aa"
+   ]
+  },
+  {
+   "dots": 6
+  },
+  {
+   "act": "orilla"
+  },
+  {
+   "act": "sube",
+   "quien": "pajaro"
+  },
+  {
+   "act": "toma"
+  },
+  {
+   "draw": "vb",
+   "options": [
+    "vuela",
+    "nada"
+   ]
+  },
+  {
+   "calc": "rb",
+   "cond": "vb=vuela",
+   "then": "pajaro",
+   "else": "pez"
+  },
+  {
+   "decide": "do",
+   "options": [
+    "pajaro",
+    "pez"
+   ],
+   "pick": "$rb",
+   "tests": "$vb",
+   "lock": true,
+   "lead": [],
+   "line": "c18_ca_quien_$vb",
+   "right": [
+    {
+     "act": "come",
+     "a": "$rb"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "come",
+     "a": "$x"
+    },
+    {
+     "act": "marca",
+     "que": "pan"
+    },
+    {
+     "cost": 1
+    },
+    {
+     "act": "toma"
+    },
+    "c18_no_mira_$vb"
+   ]
+  },
+  {
+   "act": "baja",
+   "quien": "pajaro"
+  },
+  {
+   "act": "alagua"
+  },
+  {
+   "dots": 7
+  },
+  {
+   "act": "luispan"
+  },
+  {
+   "draw": "sc",
+   "options": [
+    "vuela",
+    "nada"
+   ]
+  },
+  {
+   "if": "sc=vuela",
+   "then": [
+    {
+     "act": "sube",
+     "quien": "pato"
+    }
+   ],
+   "else": [
+    {
+     "act": "rema"
+    }
+   ]
+  },
+  {
+   "calc": "oc",
+   "cond": "sc=vuela",
+   "then": "pez",
+   "else": "pajaro"
+  },
+  {
+   "decide": "say",
+   "options": [
+    "di_vuela",
+    "di_nada"
+   ],
+   "baraja": true,
+   "pick": "di_$sc",
+   "tests": "$sc",
+   "voces": {
+    "di_vuela": "c18_cq_vuela",
+    "di_nada": "c18_cq_nada"
+   },
+   "said": {
+    "di_vuela": "c18_cq_vuela",
+    "di_nada": "c18_cq_nada"
+   },
+   "lead": [],
+   "line": "c18_l_y_pato",
+   "right": [
+    {
+     "act": "come",
+     "a": "pato_blanco",
+     "de": "luis"
+    },
+    {
+     "if": "ok",
+     "then": [
+      {
+       "act": "marca",
+       "que": "ok"
+      }
+     ]
+    }
+   ],
+   "wrong": [
+    {
+     "act": "come",
+     "a": "$oc",
+     "de": "luis"
+    },
+    {
+     "act": "marca",
+     "que": "pan"
+    },
+    {
+     "cost": 1
+    },
+    "c18_no_ahora_$sc",
+    {
+     "act": "luispan"
+    }
+   ]
+  },
+  {
+   "act": "baja",
+   "quien": "pato"
+  }
+ ],
+ "final": [
+  {
+   "dots": 8
+  },
+  {
+   "act": "final18"
+  },
+  {
+   "act": "sale",
+   "a": "pez"
+  },
+  "c18_fin_pez",
+  {
+   "act": "sale",
+   "a": "pajaro"
+  },
+  "c18_fin_pajaro",
+  {
+   "act": "sale",
+   "a": "pato_blanco"
+  },
+  "c18_fin_pato",
+  {
+   "say": "c18_cq_adios",
+   "gap": 300
+  },
+  {
+   "wait": 600
+  }
+ ],
+ "leer": [
+  "c18_lago",
+  "c18_hay_pato",
+  "c18_pato_nada",
+  "c18_hay_pez",
+  "c18_pez_nada",
+  "c18_hay_pajaro",
+  "c18_pajaro_vuela",
+  "c18_tiene_pan",
+  "c18_ca_pato",
+  "c18_come",
+  "c18_ca_quien_vuela",
+  "c18_si_pajaro",
+  "c18_ca_quien_nada",
+  "c18_si_pez",
+  "c18_l_y_pato",
+  "c18_cq_vuela",
+  "c18_l_si_vuela",
+  "c18_l_y_ahora",
+  "c18_cq_nada",
+  "c18_l_si_nada",
+  "c18_ay_pez",
+  "c18_ca_mas",
+  "c18_fin_pez",
+  "c18_fin_pajaro",
+  "c18_fin_pato",
+  "c18_cq_adios"
+ ]
+}

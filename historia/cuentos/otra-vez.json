@@ -3,7 +3,7 @@
  "title": "¡Otra vez!",
  "place": "El parque",
  "scene": "campo",
- "next": null,
+ "next": "pan-para-el-pato",
  "goal": "Throw the ball for Canelo. Stay dry.",
  "stake": {
   "thing": "seco",
