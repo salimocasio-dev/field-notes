@@ -21,14 +21,14 @@ ES={"arroz":"arroz","hab":"habichuelas"}; LISTO={"arroz":"El arroz está listo."
 
 # ---------------- 27. Arroz con habichuelas ----------------
 c=dict(comunes)
-c.update({"c27_una_olla":N("Aquí hay una olla."),"c27_otra_olla":N("Y aquí hay otra olla."),"c27_aqui_arroz":N("Aquí hay arroz."),"c27_aqui_hab":N("Y aquí hay habichuelas."),
+c.update({"c27_hace_comida":N("Abuela hace la comida."),"c27_una_olla":N("Aquí hay una olla."),"c27_otra_olla":N("Y aquí hay otra olla."),"c27_aqui_arroz":N("Aquí hay arroz."),"c27_aqui_hab":N("Y aquí hay habichuelas."),
  "c27_cq_pone_arroz":N("Coquí pone el arroz en la olla."),"c27_ab_hace_arroz":N("Abuela hace arroz."),"c27_luis_hace_hab":N("Luis hace habichuelas."),
  "c27_cq_arroz":T("¡Arroz!"),"c27_cq_hab":T("¡Habichuelas!"),"c27_mas_arroz":N("Más arroz para abuela."),"c27_mas_hab":N("Más habichuelas para Luis."),
  "c27_listo_arroz":AB(LISTO["arroz"]),"c27_listo_hab":AB(LISTO["hab"]),
  "c27_familia_hambre":N("La familia tiene hambre."),"c27_familia_come":N("La familia come arroz con habichuelas."),"c27_luis_hambre":L("¡Tengo hambre!"),
  "c27_no_aqui_arroz":N("No, Coquí. Mira. Aquí hay arroz."),"c27_no_aqui_hab":N("No, Coquí. Mira. Aquí hay habichuelas."),
  "c27_no_mira_arroz":N("No, Coquí. "+MIRA["arroz"]),"c27_no_mira_hab":N("No, Coquí. "+MIRA["hab"]),
- "c27_fin":N("Aquí hay arroz con habichuelas."),"c24_a_comer":AB("¡A comer!"),"c27_cq_mmm":T("¡Mmm! ¡Arroz con habichuelas!")})
+ "c27_fin":N("Aquí hay arroz con habichuelas."),"c24_a_comer":AB("¡A comer!"),"c27_cq_fin":T("¡Arroz con habichuelas!")})
 for p in ("abuela","luis"):
     for k in ("arroz","hab"):
         c["c27_%s_dame_%s"%(p,k)]=D(p,NOM[p],"Dame %s, por favor."%ES[k]); c["c27_no_%s_hace_%s"%(p,k)]=N("No, Coquí. Mira. %s hace %s."%(NOM[p],ES[k]))
@@ -37,17 +37,17 @@ s27={"id":"arroz-con-habichuelas","title":"Arroz con habichuelas","place":"La co
  "goal":"Help abuela and Luis cook the rice and the beans.","stake":{"thing":"comida","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["arroz","habichuelas","olla","hace"],"back_again":["pone","dame","por favor","más","para","hay","aquí","otra","listo","mira","tengo hambre","familia","come"],
  "also_heard":["listas"],"names":BASE,"palabras":{"hab":"habichuelas"},"clips":c,
- "beats":[act("inicio27"),{"wait":500},tw("olla0"),"c27_una_olla",tw("olla1"),"c27_otra_olla",tw("saco"),"c27_aqui_arroz",tw("tazon"),"c27_aqui_hab",tw(None),
+ "beats":[act("inicio27"),{"wait":500},"c27_hace_comida",tw("olla0"),"c27_una_olla",tw("olla1"),"c27_otra_olla",tw("saco"),"c27_aqui_arroz",tw("tazon"),"c27_aqui_hab",tw(None),
   {"dots":1},ask("saco","c27_abuela_dame_arroz",[act("cuchara",a="abuela",suelto=1),"c27_ab_hace_arroz"],[act("echa",k="arroz",a="abuela",suelto=1),"c27_cq_pone_arroz",act("ya")]),
   ask("tazon","c27_luis_dame_hab",[act("cuchara",a="luis",suelto=1),"c27_luis_hace_hab"],[act("echa",k="hab",a="luis")]),
   {"dots":2},act("pide",a="abuela"),
   ask("di_arroz",None,[],[act("pide",a="abuela",no=1),act("carmenecha",k="arroz",a="abuela",suelto=1),"c27_mas_arroz",act("ya")],resp=DV,baraja=True,voces=VV,said={"di_arroz":"c27_cq_arroz"}),
   act("pide",a="luis"),
-  ask("di_hab",None,[],[act("pide",a="luis",no=1),act("carmenecha",k="hab",a="luis",suelto=1),"c27_mas_hab",act("ya")],resp=DV,baraja=True,voces=VV,said={"di_hab":"c27_cq_hab"}),
-  {"dots":3},ask("olla1","c27_listo_arroz",[],[act("apaga",a="olla1")]),
+  ask("di_hab",None,[act("ultimas27")],[act("pide",a="luis",no=1),act("carmenecha",k="hab",a="luis",suelto=1),"c27_mas_hab",act("ya")],resp=DV,baraja=True,voces=VV,said={"di_hab":"c27_cq_hab"}),
+  {"dots":3},act("platos27"),ask("olla1","c27_listo_arroz",[],[act("apaga",a="olla1")]),
   ask("olla0","c27_listo_hab",[],[act("apaga",a="olla0")]),
   # the turn: the family eats it all; the pots are filled with water again
-  {"dots":4},act("familia27"),"c27_familia_hambre",act("sirve27"),act("salen27",suelto=1),"c27_familia_come",act("ya"),say("c27_luis_hambre"),act("otravez27"),CARD,{"wait":400},
+  {"dots":4},act("familia27"),"c27_familia_hambre",act("sirve27"),act("ventana27",suelto=1),"c27_familia_come",act("ya"),say("c27_luis_hambre"),act("otravez27"),CARD,{"wait":400},
   # A: which one. One cook, drawn fresh, asks for one, drawn fresh
   {"dots":5},{"draw":"ca","options":["abuela","luis"],"other":"cb"},{"draw":"ka","options":["arroz","hab"],"other":"kb"},{"calc":"ga","cond":"ka=arroz","then":"saco","else":"tazon"},
   act("g",quien="$ca",pose="offer",ms=300),
@@ -59,15 +59,16 @@ s27={"id":"arroz-con-habichuelas","title":"Arroz con habichuelas","place":"La co
   {"decide":"say","options":DV,"baraja":True,"pick":"di_$kc","tests":"$kc","voces":VV,"said":VV,"lead":[],"line":None,
    "right":[act("pide",a="$cc",no=1),act("carmenecha",k="$kc",a="$cc"),ok(),act("carmenecha",k="$kd",a="$cd")],
    "wrong":[act("pide",a="$cc",no=1),act("carmenecha",k="$x",a="$cc"),act("saca",a="$cc")]+X+["c27_no_$cc_hace_$kc"]},
+  act("ultimas27"),
   # C: which one is ready. Abuela says it, whoever cooks it
   {"dots":7},{"draw":"ke","options":["arroz","hab"]},{"calc":"pe","cond":"ke=$ka","then":"$ca","else":"$cb"},{"calc":"pf","cond":"ke=$ka","then":"$cb","else":"$ca"},
-  {"calc":"oe","cond":"pe=abuela","then":"olla1","else":"olla0"},{"calc":"of","cond":"pe=abuela","then":"olla0","else":"olla1"},
-  {"decide":"do","options":["olla0","olla1"],"pick":"$oe","tests":"$ke","lock":True,"lead":[],"line":"c27_listo_$ke","alias":{"luis":"olla0","abuela":"olla1"},
-   "right":[act("apaga",a="$oe"),{"if":"ok","then":[act("marca",que="ok"),{"wait":500},act("apaga",a="$of")],"else":[act("enciende",a="$of"),{"wait":600},act("apaga",a="$of")]}],
+  {"calc":"oe","cond":"pe=abuela","then":"olla1","else":"olla0"},{"calc":"of","cond":"pe=abuela","then":"olla0","else":"olla1"},act("platos27"),
+  {"decide":"do","options":["olla0","olla1"],"pick":"$oe","tests":"$ke","lock":True,"lead":[],"line":"c27_listo_$ke",
+   "right":[act("apaga",a="$oe"),{"if":"ok","then":[act("marca",que="ok"),{"wait":500},act("abuelamira"),act("apaga",a="$of")],"else":[act("enciende",a="$of"),{"wait":600},act("apaga",a="$of")]}],
    "wrong":[act("apaga",a="$of"),act("quema",a="$oe")]+X+["c27_no_mira_$ke"]}],
- "final":[{"dots":8},act("sirve27"),"c27_fin","c24_a_comer",act("final27"),say("c27_cq_mmm",300),act("fin")],
- "leer":["c27_una_olla","c27_otra_olla","c27_aqui_arroz","c27_aqui_hab","c27_abuela_dame_arroz","c27_cq_pone_arroz","c27_ab_hace_arroz","c27_luis_dame_hab","c27_luis_hace_hab","c27_cq_arroz","c27_mas_arroz","c27_cq_hab","c27_mas_hab",
-  "c27_listo_arroz","c27_listo_hab","c27_familia_hambre","c27_familia_come","c27_luis_hambre","c27_fin","c24_a_comer","c27_cq_mmm"]}
+ "final":[{"dots":8},act("sirve27"),"c27_fin","c24_a_comer",act("final27"),say("c27_cq_fin",300),act("fin")],
+ "leer":["c27_hace_comida","c27_una_olla","c27_otra_olla","c27_aqui_arroz","c27_aqui_hab","c27_abuela_dame_arroz","c27_cq_pone_arroz","c27_ab_hace_arroz","c27_luis_dame_hab","c27_luis_hace_hab","c27_cq_arroz","c27_mas_arroz","c27_cq_hab","c27_mas_hab",
+  "c27_listo_arroz","c27_listo_hab","c27_familia_hambre","c27_familia_come","c27_luis_hambre","c27_fin","c24_a_comer","c27_cq_fin"]}
 json.dump(s27,open("cuentos/arroz-con-habichuelas.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # ---------------- 29. ¡Cuidado! ----------------
