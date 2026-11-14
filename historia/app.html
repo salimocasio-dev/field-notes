@@ -78,7 +78,8 @@ nav .in{display:flex;max-width:560px;margin:0 auto;height:var(--navh);align-item
 #sheet.modal #sfoot{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 /* word cards */
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.wc{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06),0 0 0 1px var(--line);cursor:pointer;text-align:left;border:0;padding:0}
+.wc{position:relative;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06),0 0 0 1px var(--line);cursor:pointer;text-align:left;border:0;padding:0}
+.wc .spk{position:absolute;top:8px;right:8px;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:14px;background:rgba(255,255,255,.92);color:var(--ink)}.wc .spk svg{width:16px;height:16px}   /* the card plays the word: a 16 px speaker at its top right */
 .wc canvas{display:block;width:100%;aspect-ratio:196/104;image-rendering:pixelated;background:#222}
 .wc .t{padding:8px 12px 12px}.wc .w{font-size:18px;font-weight:600}
 .bar{height:6px;border-radius:3px;background:#ECEAE3;margin:8px 0 4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok)}
@@ -288,8 +289,8 @@ function palabras(){const byW={};(CU&&CU.items||[]).forEach(it=>byW[it.w]=it);co
   const barra=r=>`<div class="bar"><i style="width:${r.ear.etapa*25}%"></i></div><div class="small mut">${ETQ[r.ear.etapa]} · ${when(r.ear.due)}${r.ear.marca?" · check picture":""}</div>`;
   document.getElementById("t-palabras").innerHTML=`<h1>Palabras</h1>
   <div class="card"><div class="row" style="min-height:0"><div class="grow"><b>${rev.t}</b><div class="small mut">A sentence and two pictures. Only one fits.</div></div><button class="btn go" ${off?"disabled":""} onclick="tick();location.href='cual.html?desde=app'">${rev.b}</button></div></div>
-  ${ws.length?`<div class="grid">${ws.filter(r=>byW[r.w]).map(r=>`<button class="wc" data-w="${r.w}"><canvas width="196" height="104"></canvas><div class="t"><div class="w">${r.w}</div>${barra(r)}</div></button>`).join("")}</div>
-  ${sin.length?`<div class="lab" style="margin:24px 0 8px">More words</div><div class="card" style="padding:0 16px">${sin.map(r=>`<div class="li" style="display:block;padding:12px 0"><div class="w" style="font-size:18px;font-weight:600">${r.w}</div>${barra(r)}</div>`).join("")}</div>`:""}`:`<p class="mut">Play the first story on the map. Your words show up here.</p>`}
+  ${ws.length?`<div class="grid">${ws.filter(r=>byW[r.w]).map(r=>`<button class="wc" data-w="${r.w}" aria-label="Hear: ${r.w}"><span class="spk">${SVG(IC.vol)}</span><canvas width="196" height="104"></canvas><div class="t"><div class="w">${r.w}</div>${barra(r)}</div></button>`).join("")}</div>
+  ${sin.length?`<h2>More words</h2><div class="card" style="padding:0 16px">${sin.map(r=>`<div class="li" style="display:block;padding:12px 0"><div class="w" style="font-size:18px;font-weight:600">${r.w}</div>${barra(r)}</div>`).join("")}</div>`:""}`:`<p class="mut">Play the first story on the map. Your words show up here.</p>`}
   <h2>Add a word or a goal</h2><div class="card"><p class="small mut" style="margin-top:0">For example: "talk to my 1-year-old around the house". Audio for added words comes later.</p><input id="extra" style="width:100%;min-height:48px;border:1.5px solid var(--line2);border-radius:12px;padding:0 12px;font:inherit;background:#fff" placeholder="A word or a goal"><div style="margin-top:8px"><button class="btn" onclick="extra()">Add</button></div>${(db().extra||[]).map(x=>`<p class="small">· ${x}</p>`).join("")}</div>`;
   document.querySelectorAll(".wc").forEach(el=>{const it=byW[el.dataset.w],c=el.querySelector("canvas");if(it&&c)miniatura(c,it.si,it.esc);
     el.onclick=()=>{tick();try{ac().resume();}catch(e){}if(VOICE&&CLIPS[it.say])playClip(it.say);};});}   // touch a card: hear its sentence
