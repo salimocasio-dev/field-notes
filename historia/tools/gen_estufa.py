@@ -76,53 +76,53 @@ c=dict(comunes)
 CH={"cal":"chocolate caliente","frio":"chocolate frío"}; NOMM={"abuelo":"Abuelo","mama":"Mamá","papa":"Papá","carmen":"Carmen"}
 c.update({"c29_olla_caliente":N("La olla está caliente."),"c29_aqui_cal":N("Aquí hay chocolate caliente."),"c29_aqui_frio":N("Y aquí hay chocolate frío."),
  "c29_luis_ya":L("¡Ya está!"),"c29_luis_toma":L("Toma."),"c29_ab_cuidado_caliente":AB("¡Cuidado! Está caliente."),
- "c29_ab_cuidado":AB("¡Cuidado, Coquí!"),"c29_cq_espera":N("Coquí espera."),"c29_ab_ya":AB("¡Ya está, Coquí!"),"c29_cq_cal":T("¡Caliente!"),"c29_cq_frio":T("¡Frío!"),
- "c29_mas_chocolate":N("La familia dice: ¡Más chocolate!"),"c24_otra_vez":AB("¡Otra vez!"),
- "c29_no_cuidado":N("No, Coquí. Abuela dice: ¡Cuidado!"),"c29_no_ya":N("No, Coquí. Abuela dice: ¡Ya está!"),
- "c29_familia_bebe":N("La familia bebe chocolate."),"c29_cq_mmm":T("¡Mmm! ¡Chocolate!")})
+ "c29_ab_cuidado":AB("¡Cuidado, Coquí!"),"c29_cq_espera":N("Coquí espera."),"c29_ab_ya":AB("¡Ya está, Coquí!"),
+ "c29_quien_cal":L("¿Quién quiere chocolate caliente?"),"c29_quien_frio":L("¿Quién quiere chocolate frío?"),"c29_ay_luis":AB("¡Ay, Luis!"),
+ "c29_no_cuidado":N("No, Coquí. Mira. No está listo."),"c29_no_ya":N("No, Coquí. Mira. ¡Ya está!"),
+ "c29_ya_comer":AB("¡Ya está! ¡A comer!"),"c29_cq_carmen":T("¡Carmen, cuidado! Está caliente.")})
 for p in NOMM:
     for k in CH:
         c["c29_%s_quiere_%s"%(p,k)]=D(p,NOMM[p],"Quiero %s."%CH[k]); c["c29_no_%s_quiere_%s"%(p,k)]=N("No, Coquí. Mira. %s quiere %s."%(NOMM[p],CH[k])); c["c29_%s_bebe_%s"%(p,k)]=N("%s bebe %s."%(NOMM[p],CH[k]))
-DO=["espera","saca"]; DT=["di_cal","di_frio"]; VT={"di_cal":"c29_cq_cal","di_frio":"c29_cq_frio"}
-def sirve(p,k,mode):   # an opening step: one cup for one person
-    return [act("viene",quien=p)]+([act("piensa",quien=p,k=k)] if mode=="di" else [])
+DO=["espera","saca"]
 s29={"id":"cuidado","title":"¡Cuidado!","place":"La cocina","scene":"estufa","next":None,
  "goal":"Fry the fritters, and bring everybody the chocolate he wants.","stake":{"thing":"merienda","steps":3},"dots":8,"bien":"si_muy_bien",
- "focus_words":["caliente","frío","cuidado","ya"],"back_again":["olla","chocolate","quiero","bebe","más","mira","espera","hay","aquí","otra vez","familia"],
- "also_heard":[],"names":BASE,"palabras":{"cal":"caliente","frio":"frío"},"clips":c,
+ "focus_words":["caliente","frío","cuidado","ya"],"back_again":["olla","chocolate","quiero","quiere","¿quién?","bebe","toma","come","mira","espera","hay","aquí","está","listo"],
+ "also_heard":["ya está","a comer"],"names":BASE,"palabras":{"cal":"caliente","frio":"frío"},"clips":c,
  "beats":[act("inicio29"),{"wait":500},tw("olla0"),"c29_olla_caliente","c29_aqui_cal",tw("jarra"),"c29_aqui_frio",tw(None),
   {"dots":1},act("viene",quien="papa"),
   ask("olla0","c29_papa_quiere_cal",["c29_papa_bebe_cal",act("aparte",quien="papa")],[act("llena",k="cal"),say("c29_luis_ya"),act("lleva29",a="papa",suelto=1),"c29_ab_cuidado_caliente",act("ya")]),
   act("viene",quien="carmen"),
   ask("jarra","c29_carmen_quiere_frio",["c29_carmen_bebe_frio",act("aparte",quien="carmen")],[act("llena",k="frio"),say("c29_luis_ya"),act("lleva29",a="carmen")]),
-  {"dots":2},act("frie"),
-  ask("espera","c29_ab_cuidado",[act("dora")],["c29_cq_espera"],resp=DO,baraja=True),
+  {"dots":2},act("frie"),act("asoma"),
+  ask("espera","c29_ab_cuidado",[],["c29_cq_espera"],resp=DO,baraja=True),
+  act("asoma"),
   ask("saca","c29_ab_ya",[],[act("saca29")],resp=DO,baraja=True),
-  {"dots":3},act("viene",quien="abuelo"),act("piensa",quien="abuelo",k="cal"),
-  ask("di_cal",None,["c29_abuelo_bebe_cal",act("aparte",quien="abuelo")],[act("llena",k="cal"),act("luisda",a="abuelo",suelto=1),say("c29_luis_toma"),act("ya"),act("piensa",quien="abuelo")],resp=DT,baraja=True,voces=VT,said={"di_cal":"c29_cq_cal"}),
-  act("viene",quien="mama"),act("piensa",quien="mama",k="frio"),
-  ask("di_frio",None,["c29_mama_bebe_frio",act("aparte",quien="mama")],[act("llena",k="frio"),act("luisda",a="mama",suelto=1),say("c29_luis_toma"),act("ya"),act("piensa",quien="mama")],resp=DT,baraja=True,voces=VT,said={"di_frio":"c29_cq_frio"}),
-  # the turn
-  {"dots":4},act("turno29"),"c29_mas_chocolate","c24_otra_vez",CARD,{"wait":400},
-  # A: what he does himself
-  {"dots":5},{"draw":"da","options":["cuidado","ya"]},{"calc":"ra","cond":"da=cuidado","then":"espera","else":"saca"},act("frie"),
+  {"dots":3},act("viene",quien="abuelo",suelto=1),act("viene",quien="mama",lugar=2),act("ya"),act("piensa",quien="abuelo",k="cal"),act("piensa",quien="mama",k="frio"),
+  ask("abuelo","c29_quien_cal",["c29_abuelo_bebe_cal"],[act("llena",k="cal"),act("luisda",a="abuelo",suelto=1),say("c29_luis_toma"),act("ya"),"c29_ab_cuidado_caliente"]),
+  ask("mama","c29_quien_frio",["c29_mama_bebe_frio",act("aparte",quien="abuelo,mama")],[act("llena",k="frio"),act("luisda",a="mama")]),
+  # the turn: Luis eats the first fritter
+  {"dots":4},act("luiscome"),"c29_ay_luis",CARD,{"wait":400},
+  # A: what he does himself. Abuela looks into the pan, turns to her board, and calls
+  {"dots":5},{"draw":"da","options":["cuidado","ya"]},{"calc":"ra","cond":"da=cuidado","then":"espera","else":"saca"},act("frie"),act("asoma"),act("amasa"),
   {"decide":"say","options":DO,"baraja":True,"pick":"$ra","tests":"$da","lead":[],"line":"c29_ab_$da",
-   "right":[{"if":"ok","then":[act("dora"),act("saca29"),act("marca",que="ok")],"else":[act("frie"),act("dora"),act("saca29")]}],
-   "wrong":[{"if":"da=cuidado","then":[act("saca29",cae=1)],"else":[act("quema29")]}]+X+["c29_no_$da"]},
+   "right":[{"if":"da=cuidado","then":[act("dora"),act("asoma"),say("c29_ab_ya")]},act("saca29"),ok()],
+   "wrong":[{"if":"da=cuidado","then":[act("saca29",cae=1)],"else":[act("quema29")]}]+X+["c29_no_$da",act("frie"),act("asoma")]},
   act("resto29"),
   # B: which chocolate, by what he says
-  {"dots":6},{"reparte":["pb","pc"],"options":["papa","mama","abuelo","carmen"]},{"draw":"wb","options":["cal","frio"]},{"calc":"gb","cond":"wb=cal","then":"olla0","else":"jarra"},act("viene",quien="$pb"),
+  {"dots":6},{"reparte":["pb","pc","pd"],"options":["papa","mama","abuelo","carmen"]},{"draw":"wb","options":["cal","frio"]},{"calc":"gb","cond":"wb=cal","then":"olla0","else":"jarra"},act("viene",quien="$pb"),
   {"decide":"do","options":["olla0","jarra"],"pick":"$gb","tests":"$wb","lock":True,"lead":[],"line":"c29_$pb_quiere_$wb",
    "right":[act("llena",k="$gb"),act("lleva29",a="$pb"),ok(),act("aparte",quien="$pb")],
-   "wrong":[act("llena",k="$x"),act("lleva29",a="$pb"),act("sorbo",a="$pb"),act("piensa",quien="$pb",k="$wb")]+X+["c29_no_$pb_quiere_$wb"]},
-  # C: which chocolate, by what he thinks of
-  {"dots":7},{"draw":"wc","options":["cal","frio"]},act("viene",quien="$pc"),act("piensa",quien="$pc",k="$wc"),
-  {"decide":"say","options":DT,"baraja":True,"pick":"di_$wc","tests":"$wc","voces":VT,"said":VT,"lead":[],"line":None,
-   "right":[act("llena",k="di_$wc"),act("luisda",a="$pc"),act("piensa",quien="$pc"),ok(),act("aparte",quien="$pc")],
-   "wrong":[act("llena",k="$x"),act("luisda",a="$pc"),act("sorbo",a="$pc")]+X+["c29_no_$pc_quiere_$wc"]}],
- "final":[{"dots":8},act("final29"),"c29_familia_bebe",say("c29_cq_mmm",300),act("fin")],
+   "wrong":[act("llena",k="$x"),act("lleva29",a="$pb"),act("niega",a="$pb"),act("piensa",quien="$pb",k="$wb"),act("luisbebe",a="$pb")]+X+["c29_no_$pb_quiere_$wb"]},
+  # C: who wants it. Two come in; one thinks of hot chocolate, the other of cold
+  {"dots":7},{"draw":"wc","options":["cal","frio"],"other":"wd"},{"draw":"kc","options":["cal","frio"],"other":"kd"},
+  {"calc":"tc","cond":"kc=$wc","then":"$pc","else":"$pd"},{"calc":"uc","cond":"kc=$wc","then":"$pd","else":"$pc"},
+  act("viene",quien="$pc",suelto=1),act("viene",quien="$pd",lugar=2),act("ya"),act("piensa",quien="$pc",k="$wc"),act("piensa",quien="$pd",k="$wd"),
+  {"decide":"do","options":["$pc","$pd"],"pick":"$tc","tests":"$kc","lock":True,"lead":[],"line":"c29_quien_$kc",
+   "right":[act("llena",k="$kc"),act("luisda",a="$tc"),ok(),act("llena",k="$kd"),act("luisda",a="$uc"),act("aparte",quien="$pc,$pd")],
+   "wrong":[act("llena",k="$kc"),act("luisda",a="$x",queda=1),act("niega",a="$x"),act("luisbebe",a="$x")]+X+["c29_no_$tc_quiere_$kc"]}],
+ "final":[{"dots":8},act("viene",quien="carmen"),"c29_ya_comer",act("final29"),say("c29_cq_carmen",300),act("fin")],
  "leer":["c29_olla_caliente","c29_aqui_cal","c29_aqui_frio","c29_papa_quiere_cal","c29_luis_ya","c29_ab_cuidado_caliente","c29_papa_bebe_cal","c29_carmen_quiere_frio","c29_carmen_bebe_frio","c29_ab_cuidado","c29_cq_espera","c29_ab_ya",
-  "c29_cq_cal","c29_abuelo_bebe_cal","c29_cq_frio","c29_mama_bebe_frio","c29_mas_chocolate","c24_otra_vez","c29_familia_bebe","c29_cq_mmm"]}
+  "c29_quien_cal","c29_luis_toma","c29_abuelo_bebe_cal","c29_quien_frio","c29_mama_bebe_frio","c29_ay_luis","c29_ya_comer","c29_cq_carmen"]}
 json.dump(s29,open("cuentos/cuidado.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 # clip ids are global: the same id must have the same text everywhere
