@@ -1,4 +1,4 @@
-# A comer: three stories (draft 1)
+# A comer: three stories (draft 2, after one round of reviews)
 
 Place 3, La cocina. Scene 4 of 4. The learner is the little frog (Coquí). He has finished La casa (stories 1 to 11), El parque (12 to 23) and three scenes of La cocina: La mesa (24 to 26), La estufa (27 to 29) and La nevera (30 to 32).
 
@@ -15,163 +15,181 @@ The picture: abuela's kitchen table (the drawing of La mesa, historia/escenas/me
 
 Voices, the signal for a right move, what follows a wrong move, pokes, answer bubbles and the corner card are as in the other scenes of La cocina. A poke never names food, a cup, the sugar or a pot.
 
-## What I found about honest costs at a table (read this first)
+The three games differ: 33 is touch a thing twice (two lines; one line of three shapes), 34 is say, then touch a person of three, 35 is touch a person (sugar), touch a cup (the long pour), say (his own cup). The three losses differ: in 33 a hot roll is filled with the wrong thing and tomorrow's basket is a roll short; in 34 a helping nobody asked for comes off the lunch kept for papá; in 35 a cup of coffee is spoiled for its owner. The three turns differ: a second basket of hot rolls; abuela goes to the gate to look for papá; abuela hands the frog the little pot. Stories 33 and 34 have two scored rounds each (the game model allows two or three); 35 has three.
 
-- Amounts cost on one side only. Too much cannot be taken back; too little is topped up. So "un poco / mucho" never decide "how much into one cup". They decide WHO gets the big lot (two people, one heap), or a cup that is then filled to the brim with milk.
-- Solid food is passed on in a real family. Only what mixes cannot be undone: sugar in coffee, coffee in milk, a piece dropped into bean sauce.
-- "No me gusta" holds the old word "no". I could not design that away (same as "sí hay / no hay" in story 30). Said plainly at each round.
-- "¿Qué quieres?", "quieres", "todo", "café" (as a foil only) have no honest cost as the frog's choice: asking the wrong question loses nothing. They are heard six times or more and go to the pairs.
-
-Grouping: 33 quieres, ¿qué quieres?, me gusta, no me gusta. 34 buen provecho, también, rico, todo. 35 café, azúcar, un poco, mucho.
-Rounds: 33 thing, say, picture bubbles. 34 say, person (two), person (three). 35 person (sugar), person (pour), say.
-Losses: 33 a piece nobody eats lies on a rim and the dish kept for later is a piece short. 34 an unwanted second helping comes off papá's kept plate. 35 a cup of coffee is spoiled for its owner.
-Turns: 33 abuela lifts the frog onto the table as a guest. 34 every plate is clean and the pot is scraped onto a platter. 35 the second pot of coffee, the last milk.
-Endings: 33 abuela sits last; 34 papá comes home; 35 each spoiled cup stays with its owner. None is "the frog goes without first".
+What is true of a table (and shaped these games): too little can be topped up and solid food can be passed on, so only what mixes or melts cannot be undone: butter or chocolate in a hot roll, sugar in coffee, coffee in milk. And a helping that somebody eats without having asked for it is gone from the dish all the same.
 
 ---
 
 ## Story 33: ¿Qué quieres?
 
-- **First frame:** abuelo, papá, Carmen, and mamá with the baby sit; Luis stands at the end. Every blue plate has rice and beans (wet, red sauce). In the middle a dish with one drumstick and one golden slice of fried cheese. Abuela at the pan; beside it a tray: three drumsticks, three slices. On the counter an empty dish with a glass cover beside it. The frog on his stool, little plate beside it.
-- **At stake:** the pieces. A piece dropped on a plate sinks into the sauce. Whoever does not like it lifts it to the rim and it stays there. After the turn each round has its own pair from the pan (one pollo, one queso): one for the person, the other for the covered dish.
-- **New:** quieres, ¿qué quieres?, me gusta, no me gusta. **Back:** pollo, queso, come, toma, comida, familia.
+- **Goal he can see, from the first frame:** a basket of hot rolls under a cloth on the table, steam rising; beside it the butter dish and a pot of melted chocolate with a spoon. The frog stands on the table with a knife. Fill each roll with what its eater likes.
+- **At stake:** the rolls. Butter or chocolate melts into a hot roll and cannot come out. Whoever does not like what is in his roll pushes it away; Luis, who likes everything, eats it at once, and the frog fills a new roll from the basket. After the turn the basket has four rolls: two are for the two who ask, two are for tomorrow.
+- **New words:** quieres, ¿qué quieres?, me gusta, no me gusta.
+- **Back again:** pan, mantequilla, chocolate, caliente, tengo, quiere, come, aquí, más, gracias.
 
-1. NARR: "La comida está lista." Abuela shows abuelo the dish: NARR: "Abuela dice: ¿Quieres pollo? ¿Quieres queso?" (each twinkles)
+**Start:** the table. On it: the basket with five rolls, the butter dish, the pot of chocolate. Abuela at the stove with a second tray of rolls in the oven. The frog on the table. Abuelo, mamá, papá, Carmen and Luis are in the yard, past the door at the left; they come in one at a time.
 
-**Opening** (big sign)
-2. **Touch a thing, both halves.** NARR: "Abuela dice: ¿Qué quieres?" NARR: "Abuelo dice: Me gusta el pollo. No me gusta el queso." Abuela holds the dish out and turns to the pan. Sign on the drumstick. The frog lays it on abuelo's plate. NARR: "Abuelo come pollo."
-3. **He says it (yes).** Abuela holds the slice out on a fork; over the frog a thought bubble: the slice with a heart. NARR: "Abuela dice: ¿Quieres queso, Coquí?" Bubbles: "¡Me gusta el queso!" / "¡No me gusta el queso!" Sign on the first. COQUÍ says it. She lays it on his plate; he eats.
-4. **He says it (no).** A drumstick on the fork; thought bubble: the drumstick with a green face. NARR: "Abuela dice: ¿Quieres pollo, Coquí?" Sign on "¡No me gusta el pollo!" COQUÍ says it. She puts it back in the pan.
-5. **Picture bubbles, one line.** Abuela fries. COQUÍ: "¿Qué quieres, papá?" NARR: "Papá dice: Me gusta el queso." Bubbles: a drumstick, a slice. Sign on the slice. The frog fetches it from the pan.
-6. COQUÍ: "¿Qué quieres, Luis?" NARR: "Luis dice: No me gusta el queso." Sign on the drumstick.
+1. NARR: "Aquí hay pan." (the basket twinkles) NARR: "El pan está caliente." NARR: "Aquí hay mantequilla." NARR: "Aquí hay chocolate." NARR: "Abuela dice: ¿Quieres pan, Coquí?" COQUÍ: "¡Sí, gracias!" Abuela goes out to the yard.
 
-**Turn.** 7. Abuela lifts the frog and his little plate onto the table. NARR: "Abuela dice: ¡A comer, Coquí!" She tips the tray into the pan: three and three; the tray is empty. Card. Signs go.
+**The opening** (big sign)
 
-**Game**
-8. **A, touch a thing (both halves).** NARR: "Abuela dice: ¿Qué quieres?" NARR: "Mamá dice: No me gusta el pollo. Me gusta el queso." (which, and which half first, drawn) Abuela holds the pair out on her serving plate and turns back to the pan.
-   - Right: mamá eats it; the other piece goes into the dish on the counter. Star.
-   - Wrong: it lands in her beans; she lifts it to the rim with her fork. Cross. NARR: "No, Coquí. Mira. Mamá no come el pollo." Sign on the other; the frog brings it. Nothing goes into the dish.
-9. **B, say (his own taste).** Thought bubble: one of the two with a heart, the other with a green face (drawn). Abuela holds one out (drawn). NARR: "Abuela dice: ¿Quieres pollo, Coquí?" Bubbles: "¡Me gusta el pollo!" / "¡No me gusta el pollo!"
-   - Right: he gets the one he likes ("Abuela dice: Toma queso." after a right no); the other goes into the dish. Star.
-   - Wrong, either way: the piece he does not like lies on his plate (a wrong yes brings it; after a wrong no abuela gives him the other, which is the one he does not like). He turns his back to it. Cross. NARR: "No, Coquí. Mira. Coquí no come el pollo." Sign on the right bubble; he says it; she gives him the other. Nothing for the dish.
-10. **C, picture bubbles (one line).** Abuela goes out to the yard with Canelo's bowl; the last pair waits in the pan. COQUÍ: "¿Qué quieres, Carmen?" One of four (drawn): NARR: "Carmen dice: Me gusta el pollo." / "No me gusta el pollo." / "Me gusta el queso." / "No me gusta el queso."
-   - Right and wrong as in A; the frog takes the other piece to the dish himself.
+2. **Two lines, taught.** Abuelo comes in and sits. COQUÍ: "¿Qué quieres, abuelo?" NARR: "Abuelo dice: Me gusta el chocolate." NARR: "Abuelo dice: No me gusta la mantequilla." He goes out to wash his hands. Sign on the chocolate. He touches it; the frog cuts a roll open and spoons chocolate in: it melts. Abuelo comes back. NARR: "Abuelo come pan con chocolate."
+3. Mamá comes in. COQUÍ: "¿Qué quieres, mamá?" NARR: "Mamá dice: No me gusta el chocolate." NARR: "Mamá dice: Me gusta la mantequilla." She goes out. Sign on the butter. NARR: "Mamá come pan con mantequilla."
+4. **One line, taught.** Papá. COQUÍ: "¿Qué quieres, papá?" NARR: "Papá dice: Me gusta la mantequilla." He goes out. Sign on the butter. NARR: "Papá come pan con mantequilla."
+5. Carmen. COQUÍ: "¿Qué quieres, Carmen?" NARR: "Carmen dice: No me gusta la mantequilla." She goes out. Sign on the chocolate. NARR: "Carmen come pan con chocolate."
+6. Luis comes in with a roll of his own, cut open and empty, and holds it up. COQUÍ: "¿Qué quieres, Luis?" NARR: "Luis dice: No tengo chocolate." He goes out. Sign on the chocolate. The frog spoons chocolate into Luis's roll. NARR: "Luis come pan con chocolate." The basket is empty.
 
-**Count:** opening four pieces (two from the dish, two from the pan; the pollo of step 4 is Luis's). Game: three pairs, six pieces. Each round uses one (right) or both (wrong), so a redo always has its piece. Dish on the counter: 3, 2, 1 or 0.
-**Ending.** Abuela comes in and sits on the stool with her plate; she takes one piece from the dish if there is one and puts the glass cover over the rest. NARR: "La familia come." COQUÍ: "¡Me gusta la comida de abuela!" Three stars: abuela has a piece, two under the cover. One miss: one under the cover. Two: none under it. Three: abuela has rice and beans only and looks at the three pieces on the rims.
-**Hearings before cost** (a bubble's voice not counted): me gusta 3 (step 2, the frog in step 3, step 5), no me gusta 3 (step 2, the frog in step 4, step 6). Not deciding: ¿qué quieres? 7 with the game, quieres 6.
-**Chance:** each round one in two with no Spanish. Knowing only "me gusta": right every time. Knowing only the old "no" plus pollo and queso: A and C can be worked out, B by the "no" in one bubble. UNSURE 1: so "no" does half the work; the next-day pairs carry "me gusta". UNSURE 2: abuela would in truth eat a piece off a rim herself; the script must make the sauce and the fork read, or use the fallback (butter or cheese melted on a roll at breakfast, which cannot come off). UNSURE 3: 33 is thing, say, picture; story 27 was thing, say, thing.
+**The turn**
+
+7. Abuela comes in with the second tray from the oven and tips four hot rolls into the basket. NARR: "Abuela dice: Aquí hay más pan." She points at two of them and at the frog's calendar picture of tomorrow's sun on the wall; then she goes out to the yard with the tray. The card shows two places. The signs go.
+
+**The game.** Whoever asks says it and goes out to wash his hands; nobody else is in the kitchen while the frog fills the roll.
+
+8. **Decision A, Touch a thing (two lines).** One of abuelo, mamá, papá, Carmen comes in for a second roll (drawn). COQUÍ: "¿Qué quieres, mamá?" Two lines, one "Me gusta…" and one "No me gusta…" (which thing he likes, and which line comes first, drawn): NARR: "Mamá dice: No me gusta la mantequilla." NARR: "Mamá dice: Me gusta el chocolate." She goes out. He touches the butter or the chocolate; the frog fills a roll.
+   - Right: she comes back and eats it. A star.
+   - Wrong: she comes back, looks into the roll and pushes the plate away. Luis runs in, takes it and eats it at once. A cross. NARR: "No, Coquí. Mira. Mamá quiere pan con chocolate." (Or: "…con mantequilla.") The sign is on the right thing; he touches it; the frog fills a second roll from the basket.
+9. **Decision B, Touch a thing (one line).** Another of the four comes in (drawn). COQUÍ: "¿Qué quieres, papá?" One line of six (drawn): "Me gusta el chocolate." / "Me gusta la mantequilla." / "No me gusta el chocolate." / "No me gusta la mantequilla." / "No tengo chocolate." / "No tengo mantequilla." (with "No tengo…" he holds up a roll that is cut open and empty). He goes out.
+   - Right and wrong as in A.
+
+**Count:** the first basket: five rolls, used in steps 2 to 5 and by the frog at the end of step 1 (he eats his own while abuelo comes in); Luis brings his own in step 6. The second basket: four. Each round takes one (right) or two (wrong): two, one or none are left for tomorrow. A redo always has its roll. Butter and chocolate do not run out.
+
+**The ending.** Abuela comes in and looks into the basket; she lays the cloth over what is left and stands the basket on the counter. NARR: "La familia come pan." COQUÍ: "¡Me gusta el pan de abuela!"
+- Nothing wrong (two stars): two rolls under the cloth for tomorrow. Stars and a heart.
+- One miss: one roll for tomorrow. Two misses: the basket is empty, and abuela turns it over.
+
+**Fewest hearings before a word can cost** (a bubble's voice is not counted; the frog's own line counts once): me gusta 3 (steps 2, 3, 4), no me gusta 3 (steps 2, 3, 5). Not deciding: ¿qué quieres? 5 before the game and twice in it; quieres 6 before the game (the five questions and step 1).
+**A miss is filed under:** me gusta or no me gusta, whichever the line had; in A, no me gusta.
+**Chance without the Spanish:** one in two each. Somebody who knows only the old word "no" and the two foods gets A, and gets B only when the line is not "No tengo…": a "no" can ask for the thing as well as refuse it. "Me gusta" against "no me gusta" turns on "no"; that cannot be avoided.
 
 ---
 
 ## Story 34: Buen provecho
 
-- **First frame:** lunch on the plates (yellow rice). Abuelo, mamá with the baby, Carmen sit; Luis stands at the end; the frog and his little plate are on the table. Papá's chair is empty; his empty plate stands at his place. The pot on the stove.
-- **At stake:** papá's lunch. After the turn the pot is scraped out onto a platter: seven mounds. Every second helping is a mound. What is left when papá comes home is his.
-- **New:** buen provecho, también, rico, todo. **Back:** más, arroz, por favor, gracias, come, aquí, lleno.
+- **Goal he can see, from the first frame:** lunch on the plates: yellow rice. Abuelo, mamá with the baby and Carmen sit; Luis stands at the end of the table; the frog and his little plate are on the table. Papá's chair is empty; a cover lies beside his empty plate. Keep papá's lunch for him.
+- **At stake:** papá's lunch. After the turn the pot is scraped out onto a platter: five mounds. Two are second helpings that will be asked for; three are papá's. A mound that goes to somebody who did not ask for it is eaten all the same, and it comes off papá's three.
+- **New words:** buen provecho, también, rico, todo.
+- **Back again:** arroz, más, quiero, quieres, quiere, por favor, gracias, come, aquí, hola, familia.
 
-1. NARR: "Papá no está aquí." (the chair twinkles) NARR: "Este plato es para papá."
+**Start:** as above. Abuela at the stove with the pot.
 
-**Opening** (big sign)
-2. **He says it.** Everybody holds a fork up and waits. Bubbles: "¡Buen provecho!" / "¡Está rico!" Sign on the first. COQUÍ: "¡Buen provecho!" NARR: "La familia dice: ¡Buen provecho!" They eat. NARR: "Abuelo dice: ¡Mmm! ¡Está rico!"
-3. Luis's plate is clean. NARR: "Luis come todo." NARR: "Luis dice: ¡Está rico! Más arroz, por favor." Abuela comes with one mound on her spoon. Thought bubble over the frog: a mound with a heart. NARR: "Abuela dice: ¿Y tú, Coquí?" Bubbles: "¡Yo también!" / "¡Está rico!" Sign on the first. The mound goes on his plate. NARR: "Coquí come todo."
-4. Again Luis asks; the frog has a round belly and a clean plate. NARR: "Abuela dice: ¿Y tú, Coquí?" Sign on "¡Está rico!" NARR: "Abuela dice: ¡Gracias!" The mound goes to Luis.
-5. **Touch a person (two).** Abuela, a mound on the spoon: NARR: "Abuela dice: ¿Y tú?" NARR: "Mamá dice: Yo también." NARR: "Abuelo dice: ¡Está rico!" Sign on mamá. The frog carries it over. NARR: "Mamá come todo."
-6. **Touch a person (three).** NARR: "Carmen dice: Yo también." NARR: "Abuelo dice: ¡Está rico!" NARR: "Mamá dice: ¡Buen provecho!" and she gets up with the baby and goes out. Sign on Carmen. NARR: "Carmen come todo."
+1. NARR: "Papá no está aquí." (his chair twinkles) NARR: "Este plato es para papá."
 
-**Turn.** 7. Every plate is clean. NARR: "La familia come todo." Abuela scrapes the pot onto a platter in the middle of the table: seven mounds; she tips the pot: empty. Mamá comes back and sits. Card. Signs go.
+**The opening** (big sign)
 
-**Game.** In every round somebody has just asked for more; abuela has one mound on her spoon.
-8. **A, say.** NARR: "Luis dice: ¡Más arroz, por favor!" Thought bubble over the frog (drawn): a mound with a heart, or his round belly. NARR: "Abuela dice: ¿Y tú, Coquí?" Bubbles: "¡Yo también!" / "¡Está rico!"
-   - Right "¡Yo también!": the mound is his. Right "¡Está rico!": it goes to Luis. One mound either way. Star.
-   - Wrong, he wanted it and praised: the mound goes to Luis, who eats it. Cross. NARR: "No, Coquí. Mira. Luis come más arroz." Sign; he says "¡Yo también!"; a second mound for him.
-   - Wrong, he was full and asked: the mound lies on his plate; he holds his belly. Cross. NARR: "No, Coquí. Mira. Coquí está lleno." Sign; he says "¡Está rico!"; a second mound goes to Luis.
-9. **B, touch a person (two).** Two of abuelo, mamá, Carmen (drawn), in the same pose. NARR: "Abuela dice: ¿Y tú?" One says "Yo también.", one "¡Está rico!" (who and order drawn).
-   - Right: that one eats it. Star.
-   - Wrong: the one who only praised throws both hands up, pats his belly and pushes the plate away; the mound stays. Cross. NARR: "No, Coquí. Mira. Abuelo está lleno." Sign on the other; a second mound.
-10. **C, touch a person (three).** All three: "Yo también." / "¡Está rico!" / "¡Buen provecho!" (drawn). After the touch the one who said "¡Buen provecho!" stands up and carries his plate to the counter (with the mound on it, if the frog put one there).
-   - Right and wrong as in B.
+2. **He says it, taught.** Everybody holds a fork up and waits. Two speaking bubbles: "¡Buen provecho!" / "¡Yo también!" Sign on the first. COQUÍ: "¡Buen provecho!" NARR: "La familia dice: ¡Buen provecho!" They eat. NARR: "Abuelo dice: ¡El arroz está rico!"
+3. Luis's plate is clean. NARR: "Luis se come todo el arroz." NARR: "Luis dice: Quiero más arroz, por favor." Abuela gives him the big spoon; he takes a mound for himself, eats it, and holds a second mound out on the spoon. Over the frog, a thought bubble: a mound with a heart. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Bubbles: "¡Yo también!" / "No, gracias. ¡Está rico!" Sign on the first. COQUÍ: "¡Yo también!" The mound goes on his plate. NARR: "Coquí se come todo el arroz."
+4. Luis holds out another mound; the frog has a round belly and a clean plate. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Sign on the second bubble. COQUÍ: "No, gracias. ¡Está rico!" Luis eats the mound himself.
+5. **Touch a person of three, taught.** NARR: "Luis dice: ¿Quién quiere más?" He holds the spoon out to the frog, who takes it with a mound on it. All three at the table are still eating. NARR: "Mamá dice: Yo también." NARR: "Abuelo dice: ¡El arroz está rico!" NARR: "Carmen dice: ¡Buen provecho!" and Carmen gets up with her plate, which is clean, and carries it to the counter. Sign on mamá. He touches her; the frog carries the mound to her plate. NARR: "Mamá se come todo el arroz."
+6. Carmen sits again. NARR: "Luis dice: ¿Quién quiere más?" NARR: "Abuelo dice: Yo también." NARR: "Carmen dice: ¡El arroz está rico!" NARR: "Mamá dice: ¡Buen provecho!" and mamá gets up with the baby. Sign on abuelo. NARR: "Abuelo se come todo el arroz."
 
-**Count:** platter 7. Each round takes one or two: 4, 3, 2 or 1 left. A redo always has its mound.
-**Ending.** Papá comes in at the door. NARR: "Papá dice: ¡Buen provecho!" He sits; abuela scrapes the platter onto his plate. NARR: "Papá come todo." COQUÍ: "¡Buen provecho, papá!" True in every branch (he always has one mound or more). Three stars: four mounds. Otherwise fewer, and the mounds nobody ate lie on the plates; with one mound papá thinks of a full plate.
-**Hearings before cost** (a bubble's voice not counted): también 3 (the frog in step 3, steps 5 and 6), rico 5 (steps 2, 3, 4, 5, 6), buen provecho 3 (step 2 twice, step 6). Not deciding: todo 5 before the game (steps 3 twice, 5, 6, 7), 6 with the ending.
-**Chance:** A one in two, B one in two, C one in three. Only "también": B and C right. Only "rico": B right by elimination, C one in two. Only "buen provecho": C one in two.
-UNSURE 4: somebody who says "¡Está rico!" might in truth eat another mound; I make him full ("lleno" is an old word and names the picture only in the correction). UNSURE 5: in A the mound Luis eats is not wasted, only unplanned (the same kind of loss as Luis's cup in 29). UNSURE 6: B and C are the same mode. "Todo" decides nothing: a clean plate is seen, not heard.
+**The turn**
+
+7. Abuela scrapes the pot out onto a platter in the middle of the table: five mounds; she tips the pot towards us: empty. She lays two fingers on two mounds and looks round the table, then lays her hand on the other three and on papá's plate. Then she takes her shawl and goes out to the gate to look for papá. Mamá sits again. The card shows two places. The signs go.
+
+**The game.** Abuela is out at the gate. Luis has the big spoon.
+
+8. **Decision A, Say (his own wish).** Luis takes a mound and holds it out. Over the frog a thought bubble (drawn): a mound with a heart, or his round belly beside his clean plate. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Bubbles: "¡Yo también!" / "No, gracias. ¡Está rico!"
+   - Right "¡Yo también!": the mound is the frog's, and he eats it. Right "No, gracias. ¡Está rico!": Luis eats it. One mound either way. A star.
+   - Wrong, he wanted it and said no: Luis eats it. A cross. NARR: "No, Coquí. Mira. Coquí quiere más arroz." The sign is on "¡Yo también!"; he says it; a second mound for the frog.
+   - Wrong, he was full and said "¡Yo también!": the mound lies on his plate; he takes one bite and holds his belly; the rest stays. A cross. NARR: "No, Coquí. Mira. Coquí está lleno." The sign is on the other bubble; he says it; Luis takes a second mound for himself.
+9. **Decision B, Touch a person of three.** NARR: "Luis dice: ¿Quién quiere más?" He hands the frog the spoon with one mound. Abuelo, mamá and Carmen, all still eating, in the same pose: one says "Yo también.", one "¡El arroz está rico!", one "¡Buen provecho!" and gets up with a clean plate (who says which, and in which order, drawn).
+   - Right: that one eats it. A star.
+   - Wrong: the one who only praised the rice, or the one who was leaving, shrugs and eats the mound; the one who asked looks at the platter. A cross. NARR: "No, Coquí. Mira. Mamá quiere más arroz." (the one who said "Yo también.") The sign is on that one; he touches him; a second mound.
+
+**Count:** the platter: five mounds. A takes one (right) or two (wrong); B takes one or two. Three, two or one are left. A redo always has its mound.
+
+**The ending.** Abuela comes in with papá. NARR: "Papá dice: ¡Hola, familia!" He sits; abuela scrapes what is left of the platter onto his plate. COQUÍ: "¡Buen provecho, papá!" He eats; when his plate is clean: NARR: "Papá se come todo el arroz."
+- Nothing wrong (two stars): three mounds on papá's plate. Stars and a heart.
+- One miss: two mounds. Two misses: one mound, and papá looks at the empty platter.
+
+**Fewest hearings before a word can cost:** también 3 (the frog in step 3; steps 5 and 6), rico 5 (steps 2, 4, 5, 6 and the frog in step 4 counted once), buen provecho 4 (step 2 twice; steps 5 and 6). Not deciding: todo 4 before the game (steps 3 twice, 5, 6) and once in the ending.
+**A miss is filed under:** también.
+**Chance without the Spanish:** A one in two; B one in three. In A the other bubble opens on the old words "No, gracias": somebody who knows only those can do A; that is how a Puerto Rican turns food down, and praise alone would get him served. In B somebody who knows only "también" is right; somebody who knows only one of the other two lines has one in two.
 
 ---
 
 ## Story 35: Café con azúcar
 
-- **First frame:** the table is cleared. Abuelo and papá have cups of black coffee; Luis and Carmen have cups of white hot milk; the frog stands on the table beside the sugar bowl with its big spoon, his own small empty cup by him. On the stove: the coffee pot, a little pouring pot, the milk pan. Abuela at the stove. Mamá is out with the baby.
-- **At stake:** each one's cup. Sugar stirred in does not come out; coffee poured into milk does not come out. A spoiled cup is pushed to the middle of the table and stands there with no steam. There is no second cup: the big pot and the milk pan are emptied at the turn.
-- **New:** café, azúcar, un poco, mucho. **Back:** leche (never with mi, tu, su), taza, toma, más, por favor, huele a, pone, no hay, rico.
+- **Goal he can see, from the first frame:** the table is cleared. Abuelo and papá have cups of black coffee; Luis and Carmen have cups of hot milk; the frog stands on the table beside the sugar bowl with its big spoon, his own small empty cup by him. On the stove: the big coffee pot, a little pouring pot, the milk pan. Give everybody the cup he asks for.
+- **At stake:** each one's cup. Sugar stirred in does not come out; coffee poured into milk does not come out. A spoiled cup is pushed to the middle of the table and stands there with no steam. There is no second cup.
+- **New words:** café, azúcar, un poco, mucho.
+- **Back again:** leche, taza, toma, más, por favor, huele a, le pone, no hay, rico, sí, quieres.
 - Cups show their colour from above: black, brown (much coffee in milk), pale (a little).
 
-1. NARR: "Abuela hace café." NARR: "Aquí hay café." (the pot) NARR: "Y aquí hay azúcar." (the bowl) NARR: "¡Mmm! Huele a café."
+**Start:** as above. Abuela at the stove. Mamá is out with the baby.
 
-**Opening** (big sign)
-2. **Touch a person (who gets the sugar).** The frog lifts a heaped spoon; abuela comes with the pot. NARR: "Abuelo dice: Azúcar, por favor." NARR: "Papá dice: Más café, por favor." Sign on abuelo. During it: NARR: "Coquí le pone azúcar al café." Abuela fills papá's cup.
-3. The same with the lines the other way round. Sign on papá.
-4. **Touch a person (who gets the long pour).** The frog holds the little pot. NARR: "Luis dice: Mucho café, por favor." NARR: "Carmen dice: Un poco de café, por favor." Sign on Luis. A long pour: his milk turns brown. Then a splash for Carmen: pale. NARR: "Luis toma mucho café." NARR: "Carmen toma un poco de café."
-5. **He says it.** Thought bubble over the frog: a pale cup. NARR: "Abuela dice: ¿Quieres café, Coquí?" Bubbles: "Un poco, por favor." / "Mucho, por favor." Sign on the first. COQUÍ says it. Abuela pours a splash into his cup and fills it to the brim with milk. He drinks. COQUÍ: "¡Está rico!"
-6. Abuela fills her own cup. NARR: "Abuela dice: ¡Mucho café para mí!"
+1. NARR: "Abuela hace café." NARR: "Aquí hay café." (the pot twinkles) NARR: "Aquí hay azúcar." (the bowl twinkles) NARR: "Huele a café."
 
-**Turn.** 7. The cups are empty. The second pot of coffee hisses on the stove. Abuela fills abuelo's, papá's and her own cup half, and tips the big pot: one last pour is left in it. She pours the last milk: Luis's and Carmen's cups three quarters full, and one small cupful stays in the pan. NARR: "Abuela dice: No hay más leche." Card. Signs go.
+**The opening** (big sign)
 
-**Game**
-8. **A, touch a person (sugar).** Abuelo and papá, half cups of black coffee, both looking at abuela, who comes with the pot. One says "Azúcar, por favor.", one "Más café, por favor." (who and order drawn). The frog has the heaped spoon; in one move he tips it into the cup of the one touched and stirs.
-   - Right: abuela pours the last coffee for the other; the big pot is empty. Star.
-   - Wrong: abuela, already pouring, tops up the same cup with the last coffee (he asked for it): the big pot is empty. He tastes, pulls a face and pushes his cup to the middle. Cross. NARR: "No, Coquí. Mira. Papá no quiere azúcar." Sign on the other; a new heap for him.
-9. **B, touch a person (the long pour).** Luis and Carmen, both holding their milk cups out the same way. One says "Mucho café, por favor.", one "Un poco de café, por favor." (drawn). The frog pours long into the cup of the one touched.
-   - Right: brown; then a splash for the other. Star.
-   - Wrong: the cup of the one who wanted a little is brown to the brim. That child tastes, pulls a face and pushes it to the middle. Cross. NARR: "No, Coquí. Mira. Carmen quiere un poco de café." Sign on the other child; a long pour for him.
-10. **C, say (his own cup).** Thought bubble (drawn): a brown cup or a pale cup. NARR: "Abuela dice: ¿Quieres café, Coquí?" Bubbles: "Un poco, por favor." / "Mucho, por favor." Abuela pours what he says and fills the cup to the brim with the last milk; she tips the pan: empty.
-   - Right: he drinks. Star.
-   - Wrong: the cup is the wrong colour and full to the brim. He looks at it and at his thought bubble. Cross. NARR: "No, Coquí. Mira. Coquí quiere mucho café." Sign on the right bubble; he says it. NARR: "Abuela dice: No hay más leche." The cup stays.
+2. **Touch a person (sugar), taught.** The frog lifts a heaped spoon; abuela comes with the big pot. NARR: "Abuelo dice: Más azúcar, por favor." NARR: "Papá dice: Más café, por favor." Sign on abuelo. He touches him; during it: NARR: "Coquí le pone azúcar al café." Abuela fills papá's cup.
+3. The same with the lines the other way round: NARR: "Abuelo dice: Más café, por favor." NARR: "Papá dice: Más azúcar, por favor." Sign on papá.
+4. **Touch a cup (the long pour), taught.** Abuela gives the frog the little pot. Luis and Carmen stand their cups of milk in front of the frog. NARR: "Luis dice: Mucho café, por favor." NARR: "Carmen dice: Un poco de café, por favor." They go out to the yard. Sign on Luis's cup. He touches it; a long pour: the milk turns brown. Then a splash into Carmen's: pale. They come back. NARR: "Luis toma mucho café." NARR: "Carmen toma un poco de café."
+5. The same again with fresh cups of milk and the lines the other way round: NARR: "Carmen dice: Mucho café, por favor." NARR: "Luis dice: Un poco de café, por favor." Sign on Carmen's cup.
+6. **He says it, taught, twice.** Over the frog a thought bubble: a pale cup. NARR: "Abuela dice: ¿Quieres café, Coquí?" Bubbles: "Sí, un poco, por favor." / "Sí, mucho, por favor." Sign on the first. COQUÍ: "Sí, un poco, por favor." Abuela pours a splash from the little pot into his cup and fills it with milk; he drinks. Then a thought bubble with a brown cup; the same question; sign on the second. COQUÍ: "Sí, mucho, por favor." A long pour, a little milk. COQUÍ: "¡El café está rico!"
 
-**Count:** big pot at the turn: three half cups and one last pour (used in A in both branches). Milk: two cups for the children and one small cupful (used in C in both branches). Sugar and the little pot never run out. Cups: abuelo, papá, Luis, Carmen, the frog, abuela: six, no spare. No redo needs a new cup.
-**Ending.** NARR: "Abuela toma café." COQUÍ: "¡Mmm! ¡Huele a café!" Both true in every branch. Three stars: everybody drinks. Otherwise each spoiled cup stands in the middle and its owner looks at it; the others drink.
-**Hearings before cost:** azúcar 4 (steps 1, 2 twice, 3), café 9, mucho 3 (step 4 twice, step 6; the bubble in step 5 not counted), un poco 3 (step 4 twice, the frog in step 5).
-**Chance:** each one in two. In A either noun alone is enough; in B and C either amount word alone is enough (a pair of two always is).
-UNSURE 7: in A, is a heap of sugar in the cup of a man who asked for coffee "spoiled"? I think yes (he had his own sugar in); the script must show him sweeten his cup in step 2. UNSURE 8: C is the weakest cost in the scene: coffee of the wrong strength can be drunk, and in life he would sip and top up. If the reviewers refuse it, C becomes a third "who" round and the story loses its speaking round. UNSURE 9: A and B are the same mode with different things (spoon, pot). UNSURE 10: children drinking milk with coffee is ordinary in Puerto Rico, but both speakers in B are children so that age cannot answer.
+**The turn**
+
+7. The cups are empty. Abuela pours the last of the big pot: a half cup each for abuelo, papá and herself, and tips the pot: one last pour is left in it. Abuelo and papá each stir one spoon of sugar into his half cup and taste it and nod. She pours the last milk: Luis's and Carmen's cups three quarters full; one small cupful stays in the pan. One of the two children (drawn) stirs a spoon of sugar into his milk; the other makes a face at the sugar and shakes his head. Abuela gives the frog the little pot, full. NARR: "Abuela dice: ¡Mucho café para mí!" She sits down at the stove with her own cup. The card shows three places. The signs go.
+
+**The game**
+
+8. **Decision A, Touch a person (sugar).** Abuela gets up with the big pot and its last pour. Abuelo and papá hold their half cups out, both looking at her. One says "Más azúcar, por favor.", one "Más café, por favor." (who, and in which order, drawn). The frog has the heaped spoon; in one move he tips it into the cup of the one touched and stirs.
+   - Right: abuela pours the last coffee for the other; the big pot is empty. A star.
+   - Wrong: abuela, already pouring, tops up the same cup with the last coffee (he asked for it); the big pot is empty. He tastes, pulls a face (two heaps of sugar) and pushes his cup to the middle. A cross. NARR: "No, Coquí. Mira. Papá quiere más café." (the one who was touched) The sign is on the other; he touches him; a heap for him.
+9. **Decision B, Touch a cup (the long pour).** Luis and Carmen stand their cups of milk in front of the frog (the sweetened one has its spoon in it). One says "Mucho café, por favor.", one "Un poco de café, por favor." (who, and in which order, drawn). They go out to the yard. He touches a cup; the frog pours long into it.
+   - Right: brown; then a splash into the other. They come back and drink. A star.
+   - Wrong: the cup of the child who wanted a little is brown to the brim. The two come back. That child tastes his, pulls a face and pushes it to the middle; the other child cannot take it (it is sweet, and he takes no sugar; or it is not sweet, and he does). A cross. NARR: "No, Coquí. Mira. Carmen quiere un poco de café." (the one whose cup it is) The sign is on the other cup; he touches it; a long pour into it.
+10. **Decision C, Say (his own cup).** Over the frog a thought bubble (drawn): a brown cup or a pale cup. NARR: "Abuela dice: ¿Quieres café, Coquí?" Bubbles: "Sí, un poco, por favor." / "Sí, mucho, por favor." Abuela pours from the little pot what he says, tips what is left in the little pot into her own cup, and fills the frog's cup to the brim with the last milk; she tips the pan towards us: empty.
+   - Right: he drinks. A star.
+   - Wrong: the cup is the wrong colour and full to the brim. He looks at it and at his thought bubble. A cross. NARR: "No, Coquí. Mira. Coquí quiere mucho café." (Or: "…un poco de café.") The sign is on the right bubble; he says it. Abuela shows him the little pot and the pan: both empty. NARR: "Abuela dice: No hay más café." (after he wanted more) or "Abuela dice: No hay más leche." (after he wanted less). The cup stays as it is.
+
+**Count:** the big pot at the turn: three half cups and one last pour (used in A in both branches). Milk: two cups for the children and one small cupful (used in C in both branches). The little pot: enough for one long pour and two splashes, or for two long pours after a miss in B; what is left after C goes into abuela's cup. Sugar does not run out. Cups: abuelo, papá, Luis, Carmen, the frog, abuela: six, no spare. No redo needs a new cup.
+
+**The ending.** NARR: "Abuela toma café." COQUÍ: "¡Huele a café!"
+- Nothing wrong (three stars): everybody drinks. Stars and a heart.
+- Otherwise: each spoiled cup stands in the middle of the table and its owner looks at it; after a miss in C the frog's cup stands by him, untouched; the others drink.
+
+**Fewest hearings before a word can cost:** azúcar 6 (steps 1, 2 twice, 3 twice; and the turn shows it), café 12, mucho 5 (steps 4 twice, 5, the frog in step 6, step 7), un poco 4 (steps 4 twice, 5, the frog in step 6).
+**A miss is filed under:** A: azúcar. B and C: the amount word.
+**Chance without the Spanish:** one in two each. In A both lines open on "Más…", so the old word decides nothing: the learner has to tell "azúcar" from "café". In B and C either amount word alone is enough (with two, it always is).
 
 ---
 
-## Next-day picture pairs
+## Next-day picture pairs (¿Cuál?) for this scene
 
-| Word | Sentence | Fits | The other |
+One sentence, two pictures, only one fits. Both pictures are lively; only the new word picks one. No picture is the right one in two pairs. No other word in the sentence fits one picture only.
+
+| Word | Sentence | Picture that fits | The other picture |
 | --- | --- | --- | --- |
 | quieres | "¿Quieres pan?" | abuela holding a basket of rolls out to Luis | abuela and Luis each biting a roll |
 | ¿qué quieres? | "Abuela dice: ¿Qué quieres?" | abuela, a spoon in each hand over two pots, looking at Carmen, whose plate is empty | abuela setting a full plate down in front of Carmen |
-| me gusta | "Me gusta el pollo." | Luis biting a drumstick, a heart over it | Luis pushing a plate with a drumstick away, tongue out |
-| no me gusta | "No me gusta la china." | Carmen turning her head from a peeled china, a green face over it | Carmen with china juice on her chin, smiling |
-| rico | "¡Está rico!" | abuelo eating bizcocho, eyes shut, a hand on his belly | abuelo holding a black, smoking slice away from him |
-| buen provecho | "¡Buen provecho!" | the family at full plates, forks up, papá coming in at the door with a hand raised | the family waving at the open door, the table bare |
+| me gusta | "Me gusta el pollo." | Luis biting a drumstick, a heart over it | Luis pushing a plate with a drumstick away, his tongue out |
+| no me gusta | "No me gusta la manzana." | Carmen turning her head from a manzana on her plate, a green face over it | Carmen at an empty plate, a manzana with a heart in her thought |
+| rico | "¡El bizcocho está rico!" | abuelo eating bizcocho, eyes shut, a hand on his belly | abuelo blowing on a steaming slice he has not tasted |
+| buen provecho | "¡Buen provecho!" | the family at full plates, forks up, papá coming in at the door with a hand raised | the same table, plates clean, hands on bellies, papá asleep in his chair |
 | también | "Luis come pan. Carmen también." | Luis and Carmen each with a roll | Luis with a roll, Carmen with a glass of water |
-| todo | "Canelo come todo." | Canelo licking a bowl that is clean | Canelo nosing a bowl that is still heaped |
+| todo | "Canelo se lo come todo." | Canelo licking a bowl that is clean | Canelo nosing a bowl that is still heaped |
 | café | "Mamá toma café." | mamá with a small steaming cup, the coffee pot beside her | mamá with a tall glass of orange juice |
 | azúcar | "Abuela le pone azúcar al café." | abuela tipping a spoon of white grains into a cup | abuela pouring milk from a jug into a cup |
-| un poco | "Quiero un poco de arroz." | Carmen holding out a plate while abuela puts one small spoonful on it | Carmen holding a plate heaped as high as her face |
+| un poco | "Un poco de arroz, por favor." | abuela putting one small spoonful on Carmen's plate | abuela heaping Carmen's plate as high as her face |
 | mucho | "Aquí hay mucho jugo." | a jug full to the brim on the counter | a jug with a finger of juice in it |
-
-No picture is right twice. "Un poco" and "mucho" are the same contrast in two different pictures; "me gusta" and "no me gusta" likewise.
-
-## Puerto Rican Spanish: what I am unsure of
-
-- "Azúcar" changes gender: "el azúcar" but usually "mucha azúcar". I kept "mucho" and "un poco" on café ("Mucho café", "Un poco de café") so the focus form is heard as taught. A bare "Mucho, por favor." after "¿Quieres café?" must be checked.
-- "Un poco": islanders mostly say "un poquito". Check whether "un poco de café" sounds stiff.
-- "Me gusta el queso.": plain to my ear, but "queso" has slang ("tiene queso" is already banned). If the reviewer refuses it, the second dish needs another singular food; I found none that is clean ("huevo" and "leche" are out, "guineo" beside a boy is a risk, plurals need "me gustan").
-- Only singular things after "me gusta": "me gustan las habichuelas" is another form.
-- "Luis come todo." A speaker would say "se lo come todo". Check.
-- "¡Está rico!" only of masculine things here (el arroz, el pollo, el café); "la comida está rica" is avoided.
-- "¡Buen provecho!" said on leaving the table (34, step 6 and round C): I believe it is used so on the island; check.
-- The frog says "¿Qué quieres, papá?" with "tú" to a grown-up. Check.
-- "Más café, por favor." / "Azúcar, por favor." / "No hay más leche." (does not open on "Hay") / "Huele a café.": I think safe.
-- Coffee is in a "taza"; the pot is never named ("greca" would be a new word).
 
 ## For the owner, one line each
 
-- Six words decide: me gusta, no me gusta; también, rico (and buen provecho in one round); azúcar, mucho, un poco. Six are heard and go to the pairs: quieres, ¿qué quieres?, todo, café; buen provecho mostly; rico as the other side.
-- "¿Qué quieres?" is the frog's own spoken line four times, but never a choice: a wrong question loses nothing in the world.
-- No story ends with the frog going without first.
-- Ten places are marked UNSURE; 2, 4 and 8 are the ones a reviewer is most likely to raise.
+- Six words decide: me gusta, no me gusta; también; azúcar, mucho, un poco. "Quieres", "¿qué quieres?", "rico", "todo", "buen provecho" and "café" are heard six times or more (todo five) and tested the next day by their pairs: asking the wrong question, or praising, loses nothing in the world.
+- "¿Qué quieres?" is the frog's own spoken line seven times, but never a choice.
+- "Me gusta" against "no me gusta" turns on the old word "no". The line "No tengo chocolate." is there so that a "no" does not always mean "the other one".
+- In story 34's first round the other bubble is "No, gracias. ¡Está rico!": that is how food is turned down in Puerto Rico; praise alone gets you served.
+- "Todo" is said as "se come todo el arroz": a bare "come todo" sounds like an order.
+- Stories 33 and 34 have two scored rounds each.
+- No story ends with the frog going without first: the loss lands on tomorrow's basket (33), on papá (34), on the cup's owner (35).
+
+## What the first round of reviews changed (draft 1 to draft 2)
+
+Beginner (all three "not ready") and Puerto Rican Spanish (fourteen lines).
+- 33: chicken in bean sauce is a normal plate and a piece on the rim can be eaten, so nothing was lost: now butter or chocolate melts into a hot roll. The frog's own "me gusta" round is gone (his taste was fixed in the opening, and the "no" in one bubble answered it). Whoever asks goes out to wash his hands, and nobody else is in the kitchen. Both things are signed in the opening. "No tengo chocolate." is a "no" that asks for the thing. What is left is tomorrow's basket, not abuela's supper. The two halves of "Me gusta… No me gusta…" are two recordings.
+- 34: "¡Está rico!" does not mean "no more". Nobody is full in the who-round: a mound given to somebody who did not ask is eaten, and papá's lunch pays. Luis holds the spoon, and abuela is out at the gate. Rounds B and C became one round of three. "Come todo" became "se come todo el arroz"; "¿Y tú?" to the table became "¿Quién quiere más?"; papá says "¡Hola, familia!".
+- 35: both men's lines open on "Más…" (the old word marked the wrong man). Each sweetens his own cup in view at the turn, so a second heap is one too many. The children leave their cups and go out; one of them takes sugar and the other does not, so a spoiled cup cannot change hands. Too pale could be topped up: now abuela tips the rest of the little pot into her own cup. "No hay más leche." is said only when the pan is empty. Each amount word is signed for the pour and for the frog's own answer. Abuela handing the frog the pot is the turn.
+- Pairs: "no me gusta" (the "no" picked the picture), "un poco" ("quiero" fitted one picture), "rico" (a glad voice picked the glad face; and "está rico" with no food named is said of a person) and "buen provecho" were redrawn.
