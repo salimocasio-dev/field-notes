@@ -26,7 +26,7 @@
 - No swipe-to-rate flashcards: that is the learner telling the app he knows a word. Review stays the picture check (¿Cuál?), where the app finds out. His rule against self-report buttons.
 - No English translation tooltip in reading: his rule that English is only for menus, the welcome and the stuck line.
 
-## What is built (v=33, Nov 14)
+## What is built (v=34, Nov 14)
 
 Rebuilt in two rounds after the owner called the app "a mess"; the decisions are in historia/notas/ui-decisiones-1.md and ui-decisiones-2.md, the screenshots of each round in the orchestrator's scratchpad (uitour1, uitour2, uitour3).
 - One system: green #17803F for anything that starts or continues learning, blue #3B5BDB for other primary actions; one green 48 px play disc; one outline secondary button; 48 px targets 16 px apart; 8-point grid; H1 24, H2 18, body 16, labels 12.
@@ -35,6 +35,7 @@ Rebuilt in two rounds after the owner called the app "a mess"; the decisions are
 - Place sheet: 70% high, a close X, the tab bar stays usable.
 - Biblioteca lists only what he has played; reading audio stops when its sheet closes. Palabras reviews only heard words. Hablar shows calls as "Calls open later" (the old test page is no longer linked). Each tab keeps its scroll.
 - Fixed with it: finished stories now record progress (they recorded nothing before: a `window.PAL` test in juego.js).
+- Round 3 (v=34): map stops show done/current/open/locked with an N/M chip; the place sheet marks the next story; story ends offer Play again and Map; landscape lessons keep their controls in the right column; Hablar is one card; the level check's explanation lives in Yo.
 
 ## Not done from the doc
 
