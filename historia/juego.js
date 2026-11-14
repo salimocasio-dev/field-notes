@@ -251,8 +251,12 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
 function mkDots(n){const bar=$("#bar");bar.innerHTML="";dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.appendChild(d);dots.push(d);}bar.classList.toggle("many",n>24);}   // the progress bar: one segment per step
-// the bottom of the frame: what comes next. foot(next,again,map) shows the buttons it is given; with no Next, the Map button becomes the main one
-function foot(a,b,c){$("#next").style.display=a?"flex":"none";$("#again").style.display=b?"flex":"none";$("#home").style.display=c?"flex":"none";$("#foot").classList.toggle("solo",!a&&!!(b||c));}
+// the bottom zone: what comes next. foot(next,again,map) shows the buttons it is given. Next (green) and Map (blue) are the one main button; Play again is the outline one above it
+function foot(a,b,c){$("#next").style.display=a?"flex":"none";$("#again").style.display=b?"flex":"none";$("#home").style.display=c?"flex":"none";}
+// the three states of a lesson screen: "start" (the disc), "play", "end" (title, result, buttons). nopic: ¿Cuál? and the level check show no picture before the first item and after the last
+function estado(s,nopic){const a=$("#app");if(a){a.dataset.s=s;a.classList.toggle("nopic",!!nopic);}}
+// the text of a start or end screen: a title (24 px, left, at about 35% of the height) and, where there is a result, a line or two under it; no title hides it
+function pantalla(h,ps){const f=$("#fin");if(!f)return;f.textContent="";if(h){const e=document.createElement("h1");e.textContent=h;f.appendChild(e);(ps||[]).forEach(t=>{const p=document.createElement("p");p.innerHTML=t;f.appendChild(p);});}f.style.display=h?"flex":"none";}
 // where he opened this lesson from: the app page that sent him here (map, Palabras, Biblioteca or Yo), kept while he moves from story to story
 function origen(){const K="coqui.desde";let o=null;
   try{const r=document.referrer?new URL(document.referrer):null;
@@ -261,7 +265,7 @@ function origen(){const K="coqui.desde";let o=null;
   return o||"app.html?tab=mapa";}
 let SALIDA=null;   // a screen that always leaves to one place (¿Cuál? goes back to Palabras)
 function salir(url){runId++;try{hush();SFX.calla();}catch(e){}callaLetras();try{if(AC)AC.suspend();}catch(e){}location.href=url;}   // the X: all sound stops, then back to where he came from
-let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";foot(0,0,0);
+let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";foot(0,0,0);estado("play");pantalla("");
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
@@ -279,10 +283,11 @@ $("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("ap
 // Always a whole number of screen pixels per art pixel (kd), so the pixel art stays crisp: the picture may end up smaller than the room it has. Only a camera zoom inside a story may be fractional.
 const LAND=()=>matchMedia("(orientation:landscape) and (max-height:600px)").matches;
 let blockDim=(kd,dpr)=>[DW*kd/dpr,DH*kd/dpr],blockFit=null;   // blockDim: the picture block's size in CSS px for kd screen pixels per art pixel (¿Cuál? and the level check draw several pictures and set their own); blockFit: what else to size once kd is known
-function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight,dpr=window.devicePixelRatio||1;let aw,ah;
-  if(LAND()){aw=mw-32-16-280;ah=mh-16;}else{aw=mw-32;ah=mh-$("#capbox").offsetHeight-8-$("#foot").offsetHeight-8;}
+function fit(){const m=$("#main");if(!m)return;const mw=m.clientWidth,mh=m.clientHeight,dpr=window.devicePixelRatio||1,L=LAND(),Z=mh-112;let aw,ah;   // Z: the room above the bottom zone (the start disc and the 40 px under it)
+  if(L){aw=mw-32-16-240;ah=mh-8;}else{aw=mw-32;ah=Z-64;}   // portrait: 16 px side margins; above and below the picture there stays room for the caption (8 + two lines)
   let kd=1;for(let k=2;k<=32;k++){const d=blockDim(k,dpr);if(d[0]<=aw+.01&&d[1]<=ah+.01)kd=k;else break;}
-  const d=blockDim(kd,dpr);cv.style.width=d[0]+"px";cv.style.height=d[1]+"px";if(blockFit)blockFit(kd,dpr);}
+  const d=blockDim(kd,dpr);cv.style.width=d[0]+"px";cv.style.height=d[1]+"px";if(blockFit)blockFit(kd,dpr);
+  const st=$("#stage");if(st)st.style.marginBottom=L?"":Math.max(0,d[1]+112-Z)+"px";}   // the picture is centred in Z; when the caption would not fit under it, it moves up
 fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);
 /* for checking the game by machine */
 window.Story={scene(){return E&&E.estado?E.estado(W):"";},get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const h=!respBox(k)&&E.handAt&&E.handAt[k];if(h){tap(h[0],h[1]+3);return;}const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},

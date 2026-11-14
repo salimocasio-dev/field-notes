@@ -85,9 +85,9 @@ const PAN_OK=(got,orden)=>orden[got]===0;
 function nivelFrontera(h){let S0=0;const tope=Math.max(...NV.map(q=>q.s));for(let s=1;s<=tope;s++){const de=h.filter(x=>x.s===s),hasta=h.filter(x=>x.s<=s);if(!de.length)continue;
     const bien=hasta.filter(x=>x.ok).length/hasta.length;if(de.every(x=>x.ok)&&bien>=.75)S0=s;}   // one slip low down does not hold him back if he is right on what comes after
   return S0;}
-async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,run:1,toque:null,listo:-1,fin:null};$("#go").style.display="none";$("#fin").style.display="none";foot(0,0,0);
+async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,run:1,toque:null,listo:-1,fin:null};$("#go").style.display="none";pantalla("");foot(0,0,0);estado("play");
   await Promise.race([voiceReady,sleep(6000)]);const byW={};CU.items.forEach(it=>byW[it.w]=it);
-  const usados=new Set();let pos=0,seguidos=0,giros=0,ultimo=null;mkDots(16);
+  const usados=new Set();let pos=0,seguidos=0,giros=0,ultimo=null;
   try{for(let n=0;n<(Q.get("todo")?NV.length:16);n++){   // ?todo=1 shows every item in order, for checking the pictures
       // the next item: the nearest one not yet asked, in the direction the last answer points
       let i=pos;const dir=ultimo===false?-1:1;while(i>=0&&i<NV.length&&usados.has(i))i+=dir;if(i<0||i>=NV.length){i=pos;while(i>=0&&i<NV.length&&usados.has(i))i-=dir;}if(i<0||i>=NV.length)break;
@@ -101,9 +101,10 @@ async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,ru
   NQ.fin={S0,ids,pal};NQ.run=0;const sig=CURSO.lugares.flatMap(l=>l.cuentos||[])[S0],T=id=>CURSO.cuentos[id].t;
   $("#fin").innerHTML=`<h1>Level check done</h1><p>${S0?`You already understand the first ${S0} ${S0===1?"story":"stories"}. Their ${pal.length} words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.`:"You start at the beginning. Nothing was skipped."}</p>
     <p>${sig?`You start at: <b>${T(sig)}</b>.`:"Every story built so far is open as done. More are being built."}</p>`;
-  $("#fin").style.display="flex";$("#next").textContent="To the map";$("#next").onclick=()=>salir("app.html?tab=mapa");foot(1,0,0);}
+  estado("end",true);$("#fin").style.display="flex";$("#next").textContent="To the map";$("#next").onclick=()=>salir("app.html?tab=mapa");foot(1,0,0);}
 async function nivelArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · Level check";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(()=>{F++;nivelDibuja();},TICK);
+  mkDots(Q.get("todo")?NV.length:16);estado("start",true);pantalla("Level check");fit();   // the start screen: a title and the disc; the bar has its true number of segments (16 at most) from the start
   cv.addEventListener("pointerdown",e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*DW,y=(e.clientY-r.top)/r.height*DH;if(NQ.toque)NQ.toque((y<CH+CG/2?0:2)+(x<CW+CG/2?0:1));});
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}nivelRun();};}
 window.Nivel={get pan(){return PAN?PAN.map(p=>({right:p.right})):null;},get i(){return NQ.i;},get listo(){return NQ.listo===NQ.i;},get hecho(){return NQ.hecho;},get fin(){return NQ.fin;},toca(k){if(NQ.toque)NQ.toque(k);},get running(){return !!NQ.run;},frontera:nivelFrontera,NV};
