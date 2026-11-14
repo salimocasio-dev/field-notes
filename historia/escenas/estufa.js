@@ -20,7 +20,7 @@ const PISO=150,ENC=112,EST=[86,106,80,54],FX=[107,145],FY=121,IZQ=[24,54],DER=[1
 const ESX=EST[0]+26,CUBO=[34,208],SALX=EST[0]+40;   // cups that were put aside stand on the front of the stove
 const QUIEN={luis:FAM.hermano,carmen:FAM.hermana,abuelo:FAM.abuelo,mama:FAM.mama,papa:FAM.papa,abuela:{}};
 const LADO=[[82,174],[171,176]],AYUDA=[42,176],PUERTA=[200,180];   // where a cook stands at the left and at the right of the stove; the helper at the left counter; whoever comes in for something
-const EN={saco:[38,ENC+10],tazon:[64,ENC+10],platos:[184,ENC+9],basura:[207,ENC+10],jarra:[183,ENC+9],tazas:[200,ENC+9],masa:[38,ENC+9],fuente:[64,ENC+9],apartes:[222,ENC+9]};
+const EN={saco:[38,ENC+10],tazon:[64,ENC+10],platos:[184,ENC+9],basura:[207,ENC+10],jarra:[181,ENC+9],tazas:[195,ENC+9],masa:[38,ENC+9],fuente:[64,ENC+9],apartes:[222,ENC+9]};
 
 /* ---------- the picture ---------- */
 function fondo(){const b=new Buf(SW,SH),Wd=RP.wood,E=EST;
@@ -261,7 +261,7 @@ const acts={
   async inicio29(){W.gente={abuela:{x:LADO[0][0],y:LADO[0][1],dir:1},luis:{x:LADO[1][0]+4,y:LADO[1][1],dir:1},carmen:{vis:0},abuelo:{vis:0},mama:{vis:0},papa:{vis:0}};
     W.fuegos=[{k:"sarten",llama:1,cosas:[]},{k:"olla",con:"choco",n:2,llama:1,vapor:1}];W.izq={jarra:1,tazas:9,sucias:0};W.der={masa:4,fuente:1,frituras:[]};},
   // somebody comes in at the door and stands at the right; lugar 2: a second one beside him
-  async viene(o){const p=G(o.quien),x=o.lugar==2?214:201,y=PUERTA[1]+(o.lugar==2?14:6);p.bebe=null;p.piensa=null;p.vis=1;p.x=236;p.y=y;const pr=(async()=>{await mueve(o.quien,x,y);p.dir=-1;})();return corre(o,pr);},
+  async viene(o){const p=G(o.quien),x=o.lugar==2?209:196,y=PUERTA[1]+(o.lugar==2?14:6);p.bebe=null;p.piensa=null;p.vis=1;p.x=236;p.y=y;const pr=(async()=>{await mueve(o.quien,x,y);p.dir=-1;})();return corre(o,pr);},
   // whoever has his cup goes out with it
   async aparte(o){for(const id of String(o.quien).split(",")){const p=G(id);p.piensa=null;await wait(300);await mueve(id,238,p.y);p.vis=0;p.bebe=null;}},
   async piensa(o){G(o.quien).piensa=o.k||null;if(o.k)SFX.blip();await wait(250);},
@@ -282,7 +282,7 @@ const acts={
   async dora(){await wait(700);},
   // the frog lifts the fritter out, golden, onto the plate; or, too soon, it is pale and soft and falls on the floor beside the stove
   async saca29(o){const f=W.fuegos[0];W.cq.dy=-4;await wait(120);W.cq.dy=0;f.cosas=[];
-    if(o.cae){await vuela({k:"fritura",v:"cruda"},FX[0],FY-10,FX[0]-34,PISO+22,7);W.cosas.push({id:"caida",k:"fritura",v:"cruda",x:FX[0]-34,y:PISO+22});SFX.bonk();await wait(400);return;}
+    if(o.cae){await vuela({k:"fritura",v:"cruda"},FX[0],FY-10,FX[0]-4,PISO+34,7);W.cosas.push({id:"caida",k:"fritura",v:"cruda",x:FX[0]-4,y:PISO+34});SFX.bonk();await wait(400);return;}
     await vuela({k:"fritura",v:"dorada"},FX[0],FY-10,EN.fuente[0],EN.fuente[1]-6,6);W.der.frituras.push("dorada");SFX.blip();await wait(250);},
   // too long: smoke; abuela turns round and lifts a black fritter out onto the edge of the stove
   async quema29(){const f=W.fuegos[0],ab=G("abuela");await wait(500);f.humo=1;SFX.bonk();await wait(600);ab.dir=1;await wait(300);f.humo=0;f.cosas=[];W.cosas.push({id:"negra",k:"fritura",v:"negra",x:FX[0]+20,y:FY+6,z:0});await wait(300);},
