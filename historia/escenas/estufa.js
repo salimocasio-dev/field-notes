@@ -61,8 +61,8 @@ const COSA={
   cucharon(){const b=new Buf(6,18);b.rect(2,1,2,12,"#B07A3C");b.ell(3,14,2.6,3,["#8A5A2A","#B07A3C"]);return b.outline().done();},
   jarra(){const b=new Buf(20,22);b.rect(3,3,12,18,"#E4F4FA");b.rect(3,8,12,13,"#7A3A1A");b.rect(3,3,3,18,"#F8FDFF");[[6,9],[10,8],[12,11]].forEach(q=>{b.rect(q[0],q[1],3,3,"#DCF2FA");b.px(q[0],q[1],"#FFFFFF");});b.rect(15,6,2,1,"#B8D8E8");b.rect(17,7,1,7,"#B8D8E8");b.rect(15,14,2,1,"#B8D8E8");b.rect(1,3,2,2,"#E4F4FA");return b.outline().done();},
   taza(c){const b=new Buf(12,12);b.rect(1,4,7,7,"#F2F2F8");b.rect(1,4,2,7,"#FFFFFF");b.rect(1,10,7,1,"#C8C8D4");b.rect(8,5,2,1,"#F2F2F8");b.rect(10,6,1,3,"#F2F2F8");b.rect(8,9,2,1,"#F2F2F8");b.rect(2,4,5,2,c?"#6A3214":"#C8C8D4");
-    if(c==="frio"){b.rect(3,3,2,2,"#DCF2FA");b.rect(5,4,2,2,"#FFFFFF");b.rect(6,0,1,5,"#E0403A");}if(c==="cal"){b.rect(3,0,1,3,"#FFFFFF");b.rect(6,1,1,2,"#FFFFFF");}return b.outline().done();},
-  fritura(v){const b=new Buf(13,8),C=v==="negra"?["#141418","#2A2420","#3A3028"]:v==="cruda"?["#D8C890","#F0E4B8","#FBF4D8"]:["#B87A20","#E0A838","#F8D070"];b.ell(6.5,4,5,2.8,C);b.px(3,3,C[0]);b.px(9,5,C[0]);b.px(6,2,C[2]);return b.outline().done();},
+    if(c==="frio"){const g=new Buf(10,15);g.rect(1,3,8,11,"#E4F4FA");g.rect(1,6,8,8,"#7A3A1A");g.rect(1,3,2,11,"#F8FDFF");g.rect(3,6,3,3,"#DCF2FA");g.rect(5,8,3,3,"#FFFFFF");g.rect(6,0,1,7,"#E0403A");return g.outline().done();}if(c==="cal"){b.rect(3,0,1,3,"#FFFFFF");b.rect(6,1,1,2,"#FFFFFF");}return b.outline().done();},
+  fritura(v){if(v==="burbujas"){const g=new Buf(15,9);g.ell(7.5,5,6,3,["#C8A040","#E8C860"]);[[3,4],[6,2],[9,4],[11,6],[5,6],[8,6]].forEach(q=>{g.rect(q[0],q[1],2,2,"#FFF4C0");g.px(q[0],q[1],"#FFFFFF");});return g.done();}const b=new Buf(13,8),C=v==="negra"?["#141418","#2A2420","#3A3028"]:v==="cruda"?["#D8C890","#F0E4B8","#FBF4D8"]:["#B87A20","#E0A838","#F8D070"];b.ell(6.5,4,5,2.8,C);b.px(3,3,C[0]);b.px(9,5,C[0]);b.px(6,2,C[2]);return b.outline().done();},
   masa(n){const b=new Buf(20,13);b.ell(10,9,7.6,3.4,["#B84A2E","#D8704A"]);b.ell(10,5,9,4,["#B84A2E","#D8704A","#F09A70"]);b.ell(10,4.8,7,2.8,["#8A2E18"]);[[6,5],[10,4],[14,5]].slice(0,n==null?3:+n).forEach(q=>b.ell(q[0],q[1],2,1.6,["#F0E4B8","#FBF4D8"]));return b.outline().done();},
   fuente(){const b=new Buf(24,9);b.ell(12,5,10.6,3.4,["#B8B8C8","#F2F2F8","#FFFFFF"]);b.ell(12,4.6,7.6,2,["#DCDCE8"]);return b.outline().done();},
   pinzas(){const b=new Buf(6,16);b.rect(1,1,1,13,"#9494A6");b.rect(4,1,1,13,"#C8C8D4");b.rect(1,0,4,2,"#5A5A6A");return b.outline().done();},
@@ -184,9 +184,9 @@ const acts={
   // one sip of the wrong chocolate: a start, and the cup is put aside
   async sorbo(o){const p=G(o.a),k=p.bebe;await wait(500);p.dy=-3;p.pose="wave0";SFX.bonk();await wait(500);p.dy=0;p.pose="idle";p.bebe=null;await vuela({k:"taza",v:k},p.x-8,p.y-30,ESX-10+W.der.apartes.length*13,PISO-24,7);W.der.apartes.push(k);await wait(300);},
   // abuela drops a spoonful of batter into the pan; it turns golden; the frog lifts it out; or it falls, or it burns
-  async frie(){const f=W.fuegos[1];if(W.der.masa>0)W.der.masa--;await vuela({k:"fritura",v:"cruda"},EN.masa[0],EN.masa[1]-8,FX[1],FY-8,5);f.cosas=[{k:"fritura",v:"cruda"}];SFX.blip();await wait(300);},
-  async dora(){const f=W.fuegos[1];await wait(500);if(f.cosas[0])f.cosas[0].v="dorada";SFX.blip();await wait(300);},
-  async saca29(o){const f=W.fuegos[1],v=f.cosas[0]?f.cosas[0].v:"dorada";W.cq.dy=-4;await wait(120);W.cq.dy=0;f.cosas=[];
+  async frie(){const f=W.fuegos[1];if(W.der.masa>0)W.der.masa--;await vuela({k:"fritura",v:"cruda"},EN.masa[0],EN.masa[1]-8,FX[1],FY-8,5);f.cosas=[{k:"fritura",v:"cruda"}];SFX.blip();await wait(350);f.cosas[0].v="burbujas";await wait(350);},
+  async dora(){await wait(700);},
+  async saca29(o){const f=W.fuegos[1],v="dorada";W.cq.dy=-4;await wait(120);W.cq.dy=0;f.cosas=[];
     if(o.cae){await vuela({k:"fritura",v:"cruda"},FX[1],FY-10,cx()+26,pies()+6,7);W.cosas.push({k:"fritura",v:"cruda",x:cx()+26,y:pies()+6});SFX.bonk();await wait(400);return;}
     await vuela({k:"fritura",v},FX[1],FY-10,EN.fuente[0],EN.fuente[1]-6,6);W.der.frituras.push(v);SFX.blip();await wait(250);},
   async quema29(){const f=W.fuegos[1];await wait(500);if(f.cosas[0])f.cosas[0].v="negra";f.humo=1;SFX.bonk();await wait(700);f.humo=0;f.cosas=[];W.cosas.push({k:"fritura",v:"negra",x:FX[1]+22,y:FY+2,z:0});await wait(300);},

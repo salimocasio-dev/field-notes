@@ -25,10 +25,10 @@ c.update({"c27_una_olla":N("Aquí hay una olla."),"c27_otra_olla":N("Y aquí hay
  "c27_cq_pone_arroz":N("Coquí pone el arroz en la olla."),"c27_ab_hace_arroz":N("Abuela hace arroz."),"c27_luis_hace_hab":N("Luis hace habichuelas."),
  "c27_cq_arroz":T("¡Arroz!"),"c27_cq_hab":T("¡Habichuelas!"),"c27_mas_arroz":N("Más arroz para abuela."),"c27_mas_hab":N("Más habichuelas para Luis."),
  "c27_listo_arroz":AB(LISTO["arroz"]),"c27_listo_hab":AB(LISTO["hab"]),
- "c27_familia_hambre":N("La familia dice: ¡Tengo hambre!"),"c27_familia_come":N("La familia come arroz con habichuelas."),"c27_luis_hambre":L("¡Tengo hambre!"),
+ "c27_familia_hambre":N("La familia tiene hambre."),"c27_familia_come":N("La familia come arroz con habichuelas."),"c27_luis_hambre":L("¡Tengo hambre!"),
  "c27_no_aqui_arroz":N("No, Coquí. Mira. Aquí hay arroz."),"c27_no_aqui_hab":N("No, Coquí. Mira. Aquí hay habichuelas."),
  "c27_no_mira_arroz":N("No, Coquí. "+MIRA["arroz"]),"c27_no_mira_hab":N("No, Coquí. "+MIRA["hab"]),
- "c27_fin":N("Abuela hace arroz con habichuelas."),"c24_a_comer":AB("¡A comer!"),"c27_cq_mmm":T("¡Mmm! ¡Arroz con habichuelas!")})
+ "c27_fin":N("Aquí hay arroz con habichuelas."),"c24_a_comer":AB("¡A comer!"),"c27_cq_mmm":T("¡Mmm! ¡Arroz con habichuelas!")})
 for p in ("abuela","luis"):
     for k in ("arroz","hab"):
         c["c27_%s_dame_%s"%(p,k)]=D(p,NOM[p],"Dame %s, por favor."%ES[k]); c["c27_no_%s_hace_%s"%(p,k)]=N("No, Coquí. Mira. %s hace %s."%(NOM[p],ES[k]))
@@ -74,10 +74,10 @@ json.dump(s27,open("cuentos/arroz-con-habichuelas.json","w",encoding="utf-8"),en
 c=dict(comunes)
 CH={"cal":"chocolate caliente","frio":"chocolate frío"}; NOMM={"abuelo":"Abuelo","mama":"Mamá","papa":"Papá","carmen":"Carmen"}
 c.update({"c29_olla_caliente":N("La olla está caliente."),"c29_aqui_cal":N("Aquí hay chocolate caliente."),"c29_aqui_frio":N("Y aquí hay chocolate frío."),
- "c29_luis_ya":L("¡Ya!"),"c29_ab_cuidado_caliente":AB("¡Cuidado! Está caliente."),
- "c29_ab_cuidado":AB("¡Cuidado, Coquí!"),"c29_cq_espera":N("Coquí espera."),"c29_ab_ya":AB("¡Ya, Coquí!"),"c29_cq_cal":T("¡Caliente!"),"c29_cq_frio":T("¡Frío!"),
+ "c29_luis_ya":L("¡Ya está!"),"c29_luis_toma":L("Toma."),"c29_ab_cuidado_caliente":AB("¡Cuidado! Está caliente."),
+ "c29_ab_cuidado":AB("¡Cuidado, Coquí!"),"c29_cq_espera":N("Coquí espera."),"c29_ab_ya":AB("¡Ya está, Coquí!"),"c29_cq_cal":T("¡Caliente!"),"c29_cq_frio":T("¡Frío!"),
  "c29_mas_chocolate":N("La familia dice: ¡Más chocolate!"),"c24_otra_vez":AB("¡Otra vez!"),
- "c29_no_cuidado":N("No, Coquí. Abuela dice: ¡Cuidado!"),"c29_no_ya":N("No, Coquí. Abuela dice: ¡Ya!"),
+ "c29_no_cuidado":N("No, Coquí. Abuela dice: ¡Cuidado!"),"c29_no_ya":N("No, Coquí. Abuela dice: ¡Ya está!"),
  "c29_familia_bebe":N("La familia bebe chocolate."),"c29_cq_mmm":T("¡Mmm! ¡Chocolate!")})
 for p in NOMM:
     for k in CH:
@@ -98,9 +98,9 @@ s29={"id":"cuidado","title":"¡Cuidado!","place":"La cocina","scene":"estufa","n
   ask("espera","c29_ab_cuidado",[act("dora")],["c29_cq_espera"],resp=DO,baraja=True),
   ask("saca","c29_ab_ya",[],[act("saca29")],resp=DO,baraja=True),
   {"dots":3},act("viene",quien="abuelo"),act("piensa",quien="abuelo",k="cal"),
-  ask("di_cal",None,["c29_abuelo_bebe_cal",act("aparte",quien="abuelo")],[act("llena",k="cal"),act("luisda",a="abuelo"),act("piensa",quien="abuelo")],resp=DT,baraja=True,voces=VT,said={"di_cal":"c29_cq_cal"}),
+  ask("di_cal",None,["c29_abuelo_bebe_cal",act("aparte",quien="abuelo")],[act("llena",k="cal"),act("luisda",a="abuelo",suelto=1),say("c29_luis_toma"),act("ya"),act("piensa",quien="abuelo")],resp=DT,baraja=True,voces=VT,said={"di_cal":"c29_cq_cal"}),
   act("viene",quien="mama"),act("piensa",quien="mama",k="frio"),
-  ask("di_frio",None,["c29_mama_bebe_frio",act("aparte",quien="mama")],[act("llena",k="frio"),act("luisda",a="mama"),act("piensa",quien="mama")],resp=DT,baraja=True,voces=VT,said={"di_frio":"c29_cq_frio"}),
+  ask("di_frio",None,["c29_mama_bebe_frio",act("aparte",quien="mama")],[act("llena",k="frio"),act("luisda",a="mama",suelto=1),say("c29_luis_toma"),act("ya"),act("piensa",quien="mama")],resp=DT,baraja=True,voces=VT,said={"di_frio":"c29_cq_frio"}),
   # the turn
   {"dots":4},act("turno29"),"c29_mas_chocolate","c24_otra_vez",CARD,{"wait":400},
   # A: what he does himself
