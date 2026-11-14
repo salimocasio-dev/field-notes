@@ -50,7 +50,11 @@ Pairs
 
 ## In work, Nov 14: place 3, scene 4, A comer (stories 33 to 35)
 
-Not built. Script: historia/notas/guiones/comer.md, draft 2 after one round of reviews (beginner and Puerto Rican Spanish), now with a second pair of reviewers. The way of working is the one of part 17: designer's proposal, two review rounds, a final Spanish check and a last gate; then the scene, the generator, pairs, level-check items, a new ?v=, the path matrix, wordless readers (the sheet tool sorts by number now), audio, publish, pages.
+Paused at the owner's word. Not built. Script: historia/notas/guiones/comer.md, draft 3 (commit c718c42), after two rounds of reviews (beginner and Puerto Rican Spanish each round); the decisions that made draft 3 are in historia/notas/guiones/comer-decisiones-3.md. Open before the last gate: 34 B (one mound or two when Luis serves), the pairs for "quieres" and "buen provecho", and "No tengo…" heard only twice before the game.
+
+How the work runs from Nov 14: one orchestrating session makes every decision; builder agents execute. Their runbook is historia/notas/runbook-agentes.md. The test helpers moved from the scratchpad into historia/tools/: matriz.sh (logs in $MATRIZ_LOGS), hojas.py, sel.py, nivel_check.py, app_check.py, beside juega.py and cual_check.py.
+
+Size, Nov 14 (estimates): 32 stories built (about 2 h 25 min played once, about 5 hours with the replays), about 1 hour of Escuchar, 128 picture pairs, a level check of 48 items: about 6 hours a learner can spend. The plan for all of A1 is about 100 stories and about 40 hours of Escuchar, so about 11% of the hours and about 32% of the stories are built.
 
 ## Nov 14, part 17: place 3, La cocina, scene 3, La nevera (stories 30 to 32)
 

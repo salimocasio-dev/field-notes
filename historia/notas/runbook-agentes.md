@@ -10,7 +10,7 @@ Read this whole page before you touch anything. You are a builder working for an
 
 ## Git
 - Work on branch `ccr-2871b5d2-axaw8h`. Commit small, push often: `git push -q origin ccr-2871b5d2-axaw8h`. If a push is refused, `git pull -q --rebase origin ccr-2871b5d2-axaw8h` first (an audio job also commits to this branch).
-- Every commit message ends with these two lines:
+- End every commit with the attribution lines your own session gives you; if it gives none, use these:
   `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`
   `Claude-Session: https://claude.ai/code/session_01XaggvtaHwrZFWHrVJ9zJ7n`
 - Publishing (only when your task says so): `git fetch -q origin main && git merge-base --is-ancestor origin/main HEAD && git push -q origin HEAD:main`. Then check the Pages workflow (id 416688417) with the GitHub MCP tool `mcp__github__actions_list` (load it with ToolSearch `select:mcp__github__actions_list`; owner `salimocasio-dev`, repo `field-notes`, method `list_workflow_runs`, resource_id `416688417`) until the newest run is `completed` / `success`.
