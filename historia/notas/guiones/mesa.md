@@ -282,3 +282,12 @@ First reader (stories 24 and 25): both stories could be followed, and in 25 "wro
 - 25: Luis's tray read as a plank. It shows what lies in it while he carries it.
 - 25: the corner card covered the first picture bubble. The card steps aside while three picture bubbles stand at the top.
 - Pairs: the vase and the bizcocho were hidden behind the table; the pot hid Carmen's face; the kitchen picture did not show the pot; "pone" now shows Carmen at the end of the table with her arm out and the plate at her hand, against the plate lying there with a cloth on it.
+
+Second reader (all three stories, after those changes): every story could be followed, and every cross had a cause and a result that stayed. What was still weak, and what was done:
+- 26: the fallen glass by Canelo read as a tub. It is a glass on its side now, with the water run out beside it.
+- 26: the frog seemed to eat off the floor like the dog. His plate and glass stand on a little mat of his own.
+- 26: nobody reacted when Canelo had a plate. Whoever loses it throws a hand up.
+- 26: the frog's thought bubble covered abuela's face. She stands further off.
+- 24: the puddle was brown on brown wood and far from its place. It has a dark rim and lies right in front of the place.
+- 25: a knife held over a head still looked alarming. Things are held up beside the head, in a raised hand.
+- Left as it is: in stills, who pulled the cloth cannot be seen (the baby holds its corner for half a second before it slides); the two children leave between two frames.

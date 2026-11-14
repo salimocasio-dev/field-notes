@@ -41,11 +41,13 @@ Live at ?v=30. Script (final): historia/notas/guiones/mesa.md, with what each ro
 ### Reviews
 
 - Script: draft 1 (beginner: all three "not ready"; Spanish: six lines), draft 2 (beginner: every decision holds, three still "not ready"; Spanish: six small things), draft 3 to a last gate (26 ready; 24 and 25 one rule each) and a final Spanish check (nothing to fix). What changed is at the end of the script.
+- Wordless frames: two fresh readers, one after the other; the second read the redrawn pictures. Both could follow the stories. Redrawn after them: the messes of 24, the knife, the spaghetti, the cloth and its heap, where mamá and the baby sit, how a thing is held up, the fallen glass, a mat for the frog. The list is at the end of the script.
 - The biggest mistakes caught: a wrong answer that cost nothing in the world (24); things nobody kept count of (25: who has which; 26: plates that never ran out); the same story twice (24 and 25); a free poke that named the answer; pairs solved by an old word.
 
 ### Testing
 
-- 68 machine runs: each story all right, all wrong and every single miss, over four sets of draws. All end, with the stars and crosses and the end state they should have.
+- 68 machine runs: each story all right, all wrong and every single miss, over four sets of draws; 44 of them again after the pictures were redrawn. All end, with the stars and crosses and the end state they should have. All 104 picture pairs, the level check with every item shown, and the app check.
+- With the recorded lines in place a story takes 2 to 3 minutes by machine at six times speed: give the test tool 4 minutes a run.
 - Found by testing: the baby took the touch meant for mamá; six plates could not stay apart at 24 pixels a place (plate in front, cup behind).
 
 ### Audio
