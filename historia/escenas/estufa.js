@@ -17,9 +17,10 @@
 (function(){
 const SW=KIT.SW,SH=KIT.SH,FAM=KIT.FAM,R=Math.round,tarjeta=KIT.tarjeta;
 const PISO=150,ENC=112,EST=[86,106,80,54],FX=[107,145],FY=121,IZQ=[24,54],DER=[172,46],BANCO=[126,184];   // the floor; the counter tops; the stove (x, y of its top, width, height); the two burners; the left and right counters (x, width); the frog's stool
+const ESX=EST[0]+26;   // cups that were put aside stand on the front of the stove
 const QUIEN={luis:FAM.hermano,carmen:FAM.hermana,abuelo:FAM.abuelo,mama:FAM.mama,papa:FAM.papa,abuela:{}};
 const LADO=[[82,174],[171,176]],AYUDA=[42,176],PUERTA=[200,180];   // where a cook stands at the left and at the right of the stove; the helper at the left counter; whoever comes in for something
-const EN={saco:[37,ENC+9],tazon:[63,ENC+9],platos:[184,ENC+9],basura:[207,ENC+10],jarra:[36,ENC+9],tazas:[60,ENC+9],fuente:[190,ENC+9],apartes:[196,ENC+9]};
+const EN={saco:[37,ENC+9],tazon:[63,ENC+9],platos:[184,ENC+9],basura:[207,ENC+10],jarra:[36,ENC+9],tazas:[60,ENC+9],masa:[181,ENC+9],fuente:[202,ENC+9],apartes:[222,ENC+9]};
 
 /* ---------- the picture ---------- */
 function fondo(){const b=new Buf(SW,SH),Wd=RP.wood,E=EST;
@@ -60,7 +61,11 @@ const COSA={
   cucharon(){const b=new Buf(6,18);b.rect(2,1,2,12,"#B07A3C");b.ell(3,14,2.6,3,["#8A5A2A","#B07A3C"]);return b.outline().done();},
   jarra(){const b=new Buf(20,22);b.rect(3,3,12,18,"#E4F4FA");b.rect(3,8,12,13,"#7A3A1A");b.rect(3,3,3,18,"#F8FDFF");[[6,9],[10,8],[12,11]].forEach(q=>{b.rect(q[0],q[1],3,3,"#DCF2FA");b.px(q[0],q[1],"#FFFFFF");});b.rect(15,6,2,1,"#B8D8E8");b.rect(17,7,1,7,"#B8D8E8");b.rect(15,14,2,1,"#B8D8E8");b.rect(1,3,2,2,"#E4F4FA");return b.outline().done();},
   taza(c){const b=new Buf(12,12);b.rect(1,4,7,7,"#F2F2F8");b.rect(1,4,2,7,"#FFFFFF");b.rect(1,10,7,1,"#C8C8D4");b.rect(8,5,2,1,"#F2F2F8");b.rect(10,6,1,3,"#F2F2F8");b.rect(8,9,2,1,"#F2F2F8");b.rect(2,4,5,2,c?"#6A3214":"#C8C8D4");
-    if(c==="frio"){b.rect(3,3,2,2,"#DCF2FA");b.rect(5,4,2,2,"#FFFFFF");b.rect(6,0,1,5,"#E0403A");}return b.outline().done();},
+    if(c==="frio"){b.rect(3,3,2,2,"#DCF2FA");b.rect(5,4,2,2,"#FFFFFF");b.rect(6,0,1,5,"#E0403A");}if(c==="cal"){b.rect(3,0,1,3,"#FFFFFF");b.rect(6,1,1,2,"#FFFFFF");}return b.outline().done();},
+  fritura(v){const b=new Buf(13,8),C=v==="negra"?["#141418","#2A2420","#3A3028"]:v==="cruda"?["#D8C890","#F0E4B8","#FBF4D8"]:["#B87A20","#E0A838","#F8D070"];b.ell(6.5,4,5,2.8,C);b.px(3,3,C[0]);b.px(9,5,C[0]);b.px(6,2,C[2]);return b.outline().done();},
+  masa(n){const b=new Buf(20,13);b.ell(10,9,7.6,3.4,["#B84A2E","#D8704A"]);b.ell(10,5,9,4,["#B84A2E","#D8704A","#F09A70"]);b.ell(10,4.8,7,2.8,["#8A2E18"]);[[6,5],[10,4],[14,5]].slice(0,n==null?3:+n).forEach(q=>b.ell(q[0],q[1],2,1.6,["#F0E4B8","#FBF4D8"]));return b.outline().done();},
+  fuente(){const b=new Buf(24,9);b.ell(12,5,10.6,3.4,["#B8B8C8","#F2F2F8","#FFFFFF"]);b.ell(12,4.6,7.6,2,["#DCDCE8"]);return b.outline().done();},
+  pinzas(){const b=new Buf(6,16);b.rect(1,1,1,13,"#9494A6");b.rect(4,1,1,13,"#C8C8D4");b.rect(1,0,4,2,"#5A5A6A");return b.outline().done();},
   banco(){const b=new Buf(26,20);b.rect(2,1,22,4,RP.wood[3]);b.rect(2,1,22,1,RP.wood[4]);b.rect(4,5,3,14,RP.wood[1]);b.rect(19,5,3,14,RP.wood[1]);b.rect(5,11,16,2,RP.wood[1]);return b.outline().done();}};
 const cosa=(k,c)=>spr("es"+k+(c==null?"":c),()=>(COSA[k]||COSA.plato)(c));
 function tenida(c,k,x,y,ang,esc,v){const im=cosa(k,v);if(ang||esc){c.save();c.translate(R(x),R(y));if(ang)c.rotate(ang);if(esc)c.scale(esc,esc);c.drawImage(im,-(im.width>>1),-im.height);c.restore();}else c.drawImage(im,R(x)-(im.width>>1),R(y)-im.height);}
@@ -70,8 +75,8 @@ function vapor(c,x,y,negro){const t=(F>>2)%6;[[-7,0],[0,-4],[6,-1]].forEach((p,i
 function fuego(c,i,a){const f=W.fuegos[i];if(!f||!f.k)return;const x=FX[i];
   if(f.llama)llama(c,x,a);
   if(f.k==="olla"){tenida(c,"olla",x,FY+1,0,0,f.negra&&!f.n?"negra":f.n?f.con:(f.con==="agua"||f.con==="choco"?f.con:"vacia"));if(f.negra)c.drawImage(cosa("quemada"),x-17,FY-23);
-    if(f.humo)vapor(c,x,FY-26,1);else if(f.vapor)vapor(c,x,FY-22,0);}
-  else{tenida(c,"sarten",x+6,FY+1);(f.cosas||[]).forEach((o,j)=>tenida(c,o.k,x-6+j*11,FY-4,0,0,o.v));if(f.humo)vapor(c,x,FY-14,1);}}
+    if(f.mal)tenida(c,"monton",x,FY-13,0,0,f.mal);if(f.humo)vapor(c,x,FY-26,1);else if(f.vapor)vapor(c,x,FY-22,0);}
+  else{tenida(c,"sarten",x+6,FY+1);(f.cosas||[]).forEach((o,j)=>tenida(c,o.k,x+j*11-((f.cosas.length-1)*5),FY-3,0,0,o.v));if(f.humo)vapor(c,x,FY-14,1);}}
 const alto=id=>{const w=QUIEN[id]||{};return id==="abuela"?51:w.nino?44:56;};
 const caja=id=>{const p=W.gente[id];if(!p||p.vis===0)return null;const h=alto(id);return [R(p.x)-11,R(p.y)-h,22,h];};
 const persona=id=>({id,m:1,si:w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0),box:()=>caja(id)});
@@ -79,16 +84,19 @@ const G=id=>W.gente[id];
 const COSAS=Object.keys(QUIEN).map(persona).concat([
   {id:"olla0",si:w=>!!(w.fuegos[0]&&w.fuegos[0].k),box:[FX[0]-17,FY-24,34,28],m:1,z:1},{id:"olla1",si:w=>!!(w.fuegos[1]&&w.fuegos[1].k),box:[FX[1]-17,FY-24,34,28],m:1,z:1},
   {id:"saco",si:w=>!!w.izq.saco,box:[EN.saco[0]-11,EN.saco[1]-22,22,24],m:2,z:1},{id:"tazon",si:w=>!!w.izq.tazon,box:[EN.tazon[0]-12,EN.tazon[1]-16,24,18],m:2,z:1},
+  {id:"jarra",si:w=>!!w.izq.jarra,box:[EN.jarra[0]-11,EN.jarra[1]-22,22,24],m:2,z:2},
   {id:"estufa",box:[EST[0],EST[1]-2,EST[2],EST[3]],m:0},{id:"cocina",box:[22,16,196,198],m:0}]);
 
 /* ---------- drawing ---------- */
 function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const w=QUIEN[id],x=R(p.x),y=R(p.y),habla=TALK===id&&a%2?1:0,d=p.dir<0?-1:1;
   if(id==="abuela"){const ps=p.pose||"idle",top=y-50+((p.paso&&a%2)?-1:0);c.save();c.translate(x,top);if(d<0)c.scale(-1,1);c.drawImage(spr("ab"+ps+habla,()=>mkAbuela(ps,habla)),-30,0);c.restore();
-    if(p.lleva)tenida(c,p.lleva.k||p.lleva,x+d*14,y-17,0,0,p.lleva.v);return;}
+    if(p.lleva)tenida(c,p.lleva.k||p.lleva,x+d*14,y-17,0,0,p.lleva.v);if(p.bebe)tenida(c,"taza",x+d*8,y-24-(a%2),0,0,p.bebe);return;}
   const pose=p.pose||"idle",im=spr("pm"+id+pose+habla+"0",()=>KIT.mkPersona(w,pose,habla,0)),top=y-im.height+1+((p.paso&&a%2)?-1:0)+(p.dy||0);
   c.save();c.translate(x,top);if((pose==="offer"?-d:d)<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
   if(p.lleva)tenida(c,p.lleva.k||p.lleva,x+d*10,top+(w.nino?34:38),0,0,p.lleva.v);
-  if(p.alza){const ax=x+d*13,ay=top+(w.nino?30:34);tenida(c,p.alza.k||p.alza,ax,ay,0,2,p.alza.v);}}
+  if(p.alza){const ax=x+d*13,ay=top+(w.nino?30:34);tenida(c,p.alza.k||p.alza,ax,ay,0,2,p.alza.v);}
+  if(p.bebe)tenida(c,"taza",x+d*6,top+(w.nino?26:30)-(a%2),0,0,p.bebe);}
+function nube(g,x,y,v){fr(g,x-1,y-1,22,20,OUT);fr(g,x,y,20,18,"#FFFFFF");fr(g,x+8,y+18,4,4,OUT);fr(g,x+9,y+19,2,2,"#FFFFFF");tenida(g,"taza",x+10,y+16,0,0,v);if(v==="cal"){const t=(F>>3)%2;fr(g,x+6+t,y+1,1,3,"#B8B8C8");fr(g,x+10-t,y,1,3,"#B8B8C8");}}
 function rana(g,q,a){const b=frogBox(q),bl=(F%47)<2?1:0,op=(q.bub==="hola"||TALK==="coqui"||q.hace)&&a%2?1:0,dy=R(q.dy),cx=b.x+(b.w>>1);
   g.globalAlpha=q.al;g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+dy);g.globalAlpha=1;
   if(W.encima)tenida(g,W.encima.k,cx,b.y+dy+3,0,0,W.encima.v);}
@@ -100,9 +108,10 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{},I=W.izq||{},D=W.der||{};
   if(I.saco)tenida(c,"saco",EN.saco[0],EN.saco[1]);if(I.tazon)tenida(c,"tazon",EN.tazon[0],EN.tazon[1]);
   if(I.jarra)tenida(c,"jarra",EN.jarra[0],EN.jarra[1]);for(let i=0;i<(I.tazas||0);i++)tenida(c,"taza",EN.tazas[0]-4+(i%2)*11,EN.tazas[1]-(i>>1)*5);
   // the right counter: plates, the waste bowl and what lies in it
-  (D.platos||[]).forEach((p,i)=>{const x=EN.platos[0]-6+(i%2)*14,y=EN.platos[1]-(i>>1)*6;tenida(c,"plato",x,y);if(p.arroz)tenida(c,"monton",x-2,y-2,0,0,p.negro==="arroz"?"negro":"arroz");if(p.hab)tenida(c,"monton",x+3,y-1,0,0,"hab");});
+  (D.platos||[]).forEach((p,i)=>{const x=EN.platos[0]-6+(i%2)*14,y=EN.platos[1]-(i>>1)*6;tenida(c,"plato",x,y);if(p.arroz)tenida(c,"monton",x-2,y-2,0,0,p.negro==="arroz"?"negro":"arroz");if(p.hab)tenida(c,"monton",x+3,y-1,0,0,p.negrohab?"negro":"hab");});
   if(D.basura){tenida(c,"basura",EN.basura[0],EN.basura[1]);(W.basura||[]).forEach((k,i)=>tenida(c,"monton",EN.basura[0]-4+i*4,EN.basura[1]-5-i*2,0,0,k));}
-  (D.apartes||[]).forEach((k,i)=>tenida(c,"taza",EN.apartes[0]-10+i*12,EN.apartes[1],0,0,k));
+  if(D.masa!=null)tenida(c,"masa",EN.masa[0],EN.masa[1],0,0,D.masa);if(D.fuente){tenida(c,"fuente",EN.fuente[0],EN.fuente[1]);(D.frituras||[]).forEach((v,i)=>tenida(c,"fritura",EN.fuente[0]-6+i*6,EN.fuente[1]-3-(i%2),0,0,v));}
+  (D.apartes||[]).forEach((k,i)=>tenida(c,"taza",ESX-10+i*13,PISO-24,0,0,k));
   const L=[];
   if(W.banco)L.push({y:BANCO[1]+1,d:()=>tenida(c,"banco",BANCO[0],BANCO[1]+18)});
   Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.vis!==0)L.push({y:p.y,d:()=>gente(c,id,a)});});
@@ -110,11 +119,12 @@ function draw(c,W,a){const q=W.cq,Gt=W.gente||{},I=W.izq||{},D=W.der||{};
   if(q.vis)L.push({y:q.y+27,d:()=>rana(c,q,a)});
   L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());
   (W.vuelos||[]).forEach(o=>tenida(c,o.k,o.x,o.y,o.rot,0,o.v));
+  Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.piensa&&p.vis!==0)nube(c,R(p.x)-14,R(p.y)-alto(id)-24,p.piensa);});
   Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});
   if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}
 }
 function talkAt(k,W){const p=W.gente&&W.gente[k];if(!p||p.vis===0)return null;return [R(p.x),R(p.y)-alto(k)-1];}
-function respIcon(g,k,x,y,w,h,a){}
+function respIcon(g,k,x,y,w,h,a){g.imageSmoothingEnabled=false;if(k==="espera")KIT.mano(g,x+(w>>1)-7,y+(h>>1)-9);else if(k==="saca"){tenida(g,"pinzas",x+(w>>1)-4,y+h-8,0.5,2);tenida(g,"fritura",x+(w>>1)+6,y+h-4,0,2,"dorada");}}
 function hud(g,W,a){if(!W.tarjeta)return;tarjeta(g,3,3,66,24);   // the card steps aside while three picture bubbles stand at the top
   (W.marcas||[]).forEach((m,i)=>{const x=10+i*20,y=6;
     if(m==="ok"){const st=["......#......",".....###.....",".....###.....","#############",".###########.","..#########..","...#######...","..#########..",".####...####.",".###.....###.","##.........##"];g.fillStyle=OUT;st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i-1,y+j+1,3,3);});g.fillStyle="#F0C020";st.forEach((rw,j)=>{for(let i=0;i<rw.length;i++)if(rw[i]==="#")g.fillRect(x+i,y+j+2,1,1);});}
@@ -126,8 +136,77 @@ const marca=m=>{const i=(W.marcas||[]).indexOf(null);if(i>=0)W.marcas[i]=m;};
 /* ---------- moving things ---------- */
 async function mueve(id,x,y,n){const p=G(id);if(!p)return;const x0=p.x,y0=p.y;n=n||Math.max(3,R(Math.hypot(x-x0,y-y0)/6));p.sent=0;p.paso=1;if(Math.abs(x-x0)>3)p.dir=x>x0?1:-1;for(let i=1;i<=n;i++){p.x=x0+(x-x0)*i/n;p.y=y0+(y-y0)*i/n;await wait(TICK);}p.x=x;p.y=y;p.paso=0;}
 async function vuela(o,x0,y0,x1,y1,n){const v=Object.assign({x:x0,y:y0},o);W.vuelos.push(v);n=n||5;for(let i=1;i<=n;i++){const t=i/n;v.x=x0+(x1-x0)*t;v.y=y0+(y1-y0)*t-Math.sin(t*Math.PI)*8;await wait(TICK);}W.vuelos.splice(W.vuelos.indexOf(v),1);}
+async function vuela(o,x0,y0,x1,y1,n){const v=Object.assign({x:x0,y:y0},o);W.vuelos.push(v);n=n||5;for(let i=1;i<=n;i++){const t=i/n;v.x=x0+(x1-x0)*t;v.y=y0+(y1-y0)*t-Math.sin(t*Math.PI)*10;await wait(TICK);}W.vuelos.splice(W.vuelos.indexOf(v),1);}
+const cx=()=>W.cq.x+16,pies=()=>W.cq.y+27;
+async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(3,R(d/40))));}
+const alBanco=()=>ranaA(BANCO[0],BANCO[1]);
+const corre=(o,pr)=>{if(o&&o.suelto){W._mov=pr;return Promise.resolve();}return pr;};
+const olla=a=>a==="abuela"?1:a==="luis"?0:+String(a).replace("olla","");   // which burner: by its cook, or by its name
+const cocinero=i=>i?"abuela":"luis";
+const clase=k=>{k=String(k||"").replace(/^di_/,"");return k==="saco"||k==="arroz"?"arroz":"hab";};
+// a cup of rice or of beans goes into a pot. If the pot cooks the other thing, it lies on top and has to come out again
+function cae(i,k){const f=W.fuegos[i];if(!f.n||f.con===k){f.con=k;f.n=Math.min(2,(f.n||0)+1);f.mal=null;SFX.blip();return 0;}f.mal=k;SFX.bonk();return 1;}
+function caeAgua(i,k){const f=W.fuegos[i];if(f.con==="agua"||f.con===k)return cae(i,k);return cae(i,k);}
 const acts={
   async marca(o){marca(o.que);SFX.blip();await wait(250);},
+  async ya(){const p=W._mov;W._mov=null;if(p)await p;},
+  async g(o){const p=G(o.quien);if(!p)return;Object.keys(o).forEach(k=>{if(!["act","quien","ms"].includes(k))p[k]=o[k]===""?null:o[k];});if(o.ms)await wait(+o.ms);},
+
+  /* ----- story 27: Arroz con habichuelas ----- */
+  async inicio27(){W.gente={abuela:{x:LADO[1][0],y:LADO[1][1],dir:-1},luis:{x:LADO[0][0],y:LADO[0][1],dir:1},carmen:{x:AYUDA[0],y:AYUDA[1],dir:1},abuelo:{vis:0},mama:{vis:0},papa:{vis:0}};
+    W.fuegos=[{k:"olla",con:"agua",n:0,llama:1,vapor:1},{k:"olla",con:"agua",n:0,llama:1,vapor:1}];W.izq={saco:1,tazon:1};W.der={platos:[{},{},{}],basura:1};W.basura=[];},
+  // the frog tips a cup of rice or of beans into a cook's pot
+  async echa(o){const k=clase(o.k),i=olla(o.a),e=EN[k==="arroz"?"saco":"tazon"];const pr=(async()=>{await ranaA(e[0]+6,186);W.encima={k:"medida",v:k};SFX.blip();await ranaA(FX[i],190);await wait(100);W.encima=null;await vuela({k:"medida",v:k},FX[i],165,FX[i],FY-18,5);if(W.fuegos[i].con==="agua")W.fuegos[i].n=0;V.mal=cae(i,k)?"1":"";await wait(250);await alBanco();})();return corre(o,pr);},
+  // Carmen tips one in
+  async carmenecha(o){const k=clase(o.k),i=olla(o.a),c=G("carmen"),e=EN[k==="arroz"?"saco":"tazon"];const pr=(async()=>{await mueve("carmen",e[0]+4,AYUDA[1]);c.lleva={k:"medida",v:k};SFX.blip();await mueve("carmen",FX[i]-(i?10:22),AYUDA[1]+8);await wait(100);c.lleva=null;await vuela({k:"medida",v:k},c.x+8,c.y-30,FX[i],FY-18,5);if(W.fuegos[i].con==="agua")W.fuegos[i].n=0;V.mal=cae(i,k)?"1":"";await wait(250);await mueve("carmen",AYUDA[0],AYUDA[1]);c.dir=1;})();return corre(o,pr);},
+  // the cook lifts out what does not belong in his pot, into the waste bowl
+  async saca(o){const i=olla(o.a),f=W.fuegos[i],k=f.mal||(f.n?f.con:null);if(!k)return;const id=cocinero(i),p=G(id);p.lleva="espumadera";await wait(350);if(f.mal)f.mal=null;else{f.n=0;f.con="agua";}await vuela({k:"monton",v:k},FX[i],FY-16,EN.basura[0],EN.basura[1]-8,8);W.basura.push(k);p.lleva=null;SFX.bonk();await wait(400);},
+  async cuchara(o){const p=G(o.a);p.lleva="cucharon";await wait(+(o.ms||700));p.lleva=null;},
+  // a cook holds an empty cup up: his pot wants more
+  async pide(o){const p=G(o.a);p.alza=o.no?null:{k:"medida"};if(!o.no)SFX.blip();await wait(250);},
+  // the flame under a pot goes out, or is lit again; a pot that stays on too long burns
+  async apaga(o){const i=olla(o.a);W.fuegos[i].llama=0;W.fuegos[i].vapor=W.fuegos[i].humo?0:1;SFX.blip();await wait(350);},
+  async enciende(o){const i=olla(o.a);W.fuegos[i].llama=1;SFX.blip();await wait(300);},
+  async quema(o){const i=olla(o.a),f=W.fuegos[i];await wait(300);f.humo=1;f.negra=1;SFX.bonk();await wait(700);},
+  /* ----- story 29: ¡Cuidado! ----- */
+  // The pot of hot chocolate is on the left burner, by Luis, the jug of cold chocolate and the cups; the pan is on the right burner, by abuela, the batter and the fritter plate.
+  async inicio29(){W.gente={abuela:{x:LADO[1][0],y:LADO[1][1],dir:-1},luis:{x:AYUDA[0]+8,y:AYUDA[1],dir:1},carmen:{vis:0},abuelo:{vis:0},mama:{vis:0},papa:{vis:0}};
+    W.fuegos=[{k:"olla",con:"choco",n:2,llama:1,vapor:1},{k:"sarten",llama:1,cosas:[]}];W.izq={jarra:1,tazas:4};W.der={masa:3,fuente:1,frituras:[],apartes:[]};W.cola=[];},
+  // somebody comes in for a cup and stands at the right; whoever has drunk steps back
+  async viene(o){const p=G(o.quien);p.bebe=null;p.piensa=null;p.vis=1;p.x=232;p.y=PUERTA[1]+4;await mueve(o.quien,PUERTA[0],PUERTA[1]+4);p.dir=-1;},
+  async aparte(o){const p=G(o.quien);await wait(400);await mueve(o.quien,234,PUERTA[1]+6);p.vis=0;p.bebe=null;},
+  async piensa(o){G(o.quien).piensa=o.k||null;if(o.k)SFX.blip();await wait(250);},
+  // Luis fills a clean cup from the pot or from the jug
+  async llena(o){const l=G("luis"),k=o.k==="olla0"||o.k==="cal"||o.k==="di_cal"?"cal":"frio";if(W.izq.tazas)W.izq.tazas--;l.lleva={k:"taza",v:k};SFX.blip();await wait(350);V.taza=k;},
+  // the frog carries the cup over; or Luis does
+  async lleva29(o){const l=G("luis"),p=G(o.a),k=V.taza;const pr=(async()=>{await ranaA(l.x+18,190);l.lleva=null;W.encima={k:"taza",v:k};SFX.blip();await ranaA(p.x-22,192);await wait(100);W.encima=null;p.bebe=k;p.piensa=null;SFX.blip();await wait(200);await alBanco();})();return corre(o,pr);},
+  async luisda(o){const l=G("luis"),p=G(o.a),k=V.taza;await mueve("luis",p.x-24,p.y+4);await wait(100);l.lleva=null;p.bebe=k;SFX.blip();await wait(200);await mueve("luis",AYUDA[0]+8,AYUDA[1]);l.dir=1;},
+  // one sip of the wrong chocolate: a start, and the cup is put aside
+  async sorbo(o){const p=G(o.a),k=p.bebe;await wait(500);p.dy=-3;p.pose="wave0";SFX.bonk();await wait(500);p.dy=0;p.pose="idle";p.bebe=null;await vuela({k:"taza",v:k},p.x-8,p.y-30,ESX-10+W.der.apartes.length*13,PISO-24,7);W.der.apartes.push(k);await wait(300);},
+  // abuela drops a spoonful of batter into the pan; it turns golden; the frog lifts it out; or it falls, or it burns
+  async frie(){const f=W.fuegos[1];if(W.der.masa>0)W.der.masa--;await vuela({k:"fritura",v:"cruda"},EN.masa[0],EN.masa[1]-8,FX[1],FY-8,5);f.cosas=[{k:"fritura",v:"cruda"}];SFX.blip();await wait(300);},
+  async dora(){const f=W.fuegos[1];await wait(500);if(f.cosas[0])f.cosas[0].v="dorada";SFX.blip();await wait(300);},
+  async saca29(o){const f=W.fuegos[1],v=f.cosas[0]?f.cosas[0].v:"dorada";W.cq.dy=-4;await wait(120);W.cq.dy=0;f.cosas=[];
+    if(o.cae){await vuela({k:"fritura",v:"cruda"},FX[1],FY-10,cx()+26,pies()+6,7);W.cosas.push({k:"fritura",v:"cruda",x:cx()+26,y:pies()+6});SFX.bonk();await wait(400);return;}
+    await vuela({k:"fritura",v},FX[1],FY-10,EN.fuente[0],EN.fuente[1]-6,6);W.der.frituras.push(v);SFX.blip();await wait(250);},
+  async quema29(){const f=W.fuegos[1];await wait(500);if(f.cosas[0])f.cosas[0].v="negra";f.humo=1;SFX.bonk();await wait(700);f.humo=0;f.cosas=[];W.cosas.push({k:"fritura",v:"negra",x:FX[1]+22,y:FY+2,z:0});await wait(300);},
+  async resto29(){while(W.der.masa>0){await acts.frie();await acts.dora();await acts.saca29({});}},
+  // the turn: the fritter is eaten, the cups are empty; four clean cups, three spoonfuls of batter
+  async turno29(){["papa","carmen","abuelo","mama"].forEach(id=>{const p=G(id);p.bebe=null;});W.der.frituras=[];SFX.blip();await wait(400);W.izq.tazas=4;W.der.masa=3;SFX.blip();await wait(300);},
+  async final29(){const n=W.der.frituras.filter(v=>v==="dorada").length,ab=G("abuela"),l=G("luis");W.encima=null;
+    if(n>=3){W.der.frituras.pop();W.cosas.push({k:"fritura",v:"dorada",x:cx()+22,y:pies()+4});W.cq.hace="come";SFX.blip();await wait(300);}
+    if(W.izq.tazas>0){W.izq.tazas--;W.cosas.push({k:"taza",v:"cal",x:cx()-22,y:pies()+4});SFX.blip();await wait(300);}
+    if(W.izq.tazas>0){W.izq.tazas--;ab.bebe="cal";SFX.blip();}
+    Object.keys(W.gente).forEach(id=>{const p=G(id);if(p.vis!==0&&p.piensa)p.piensa=null;});await wait(900);},
+
+  // the plates are filled from the two pots; from a burnt pot the food is dark
+  async sirve27(o){const ab=G("abuela");ab.lleva="cucharon";for(const p of W.der.platos){for(const i of [0,1]){const f=W.fuegos[i];if(!f.n)continue;await vuela({k:"monton",v:f.negra?"negro":f.con},FX[i],FY-16,EN.platos[0],EN.platos[1]-6,4);if(f.con==="arroz"){p.arroz=1;if(f.negra)p.negro="arroz";}else{p.hab=1;if(f.negra)p.negrohab=1;}SFX.blip();}}ab.lleva=null;W.fuegos.forEach(f=>{f.n=0;f.con="vacia";f.vapor=0;f.llama=0;});await wait(300);},
+  // the family looks in at the door
+  async familia27(o){const ids=["abuelo","mama","papa"];ids.forEach((id,j)=>{const p=G(id);p.vis=1;p.x=226;p.y=PUERTA[1]+j*8;p.dir=-1;});await Promise.all(ids.map((id,j)=>mueve(id,PUERTA[0]-6+j*9,PUERTA[1]+j*8)));ids.forEach(id=>G(id).dir=-1);},
+  async salen27(){const c=G("carmen"),ids=["abuelo","mama","papa"];await mueve("carmen",EN.platos[0]-16,AYUDA[1]+10);c.lleva="plato";W.der.platos=[];SFX.blip();await Promise.all(ids.map(id=>mueve(id,232,G(id).y)).concat([mueve("carmen",232,AYUDA[1]+12)]));ids.forEach(id=>G(id).vis=0);c.lleva=null;c.x=20;c.y=AYUDA[1];await mueve("carmen",AYUDA[0],AYUDA[1]);c.dir=1;},
+  async otravez27(){W.fuegos=[{k:"olla",con:"agua",n:0,llama:1,vapor:1},{k:"olla",con:"agua",n:0,llama:1,vapor:1}];W.der.platos=[{},{},{}];SFX.blip();await wait(400);},
+  async final27(){if(!W.lost){const ab=G("abuela");await wait(300);W.cosas.push({k:"plato",x:cx()+20,y:pies()+4});W.cosas.push({k:"monton",v:"arroz",x:cx()+18,y:pies()+2});W.cosas.push({k:"monton",v:"hab",x:cx()+23,y:pies()+3});W.cq.hace="come";SFX.blip();}await wait(900);},
+
   // everything at once, to look at the drawing
   async prueba(o){const n=+(o&&o.n||1);
     W.gente={abuela:{x:LADO[1][0],y:LADO[1][1],dir:-1},luis:{x:LADO[0][0],y:LADO[0][1],dir:1},carmen:{x:AYUDA[0],y:AYUDA[1],dir:1,lleva:{k:"medida",v:"arroz"}},papa:{x:PUERTA[0],y:PUERTA[1]+6,dir:-1,vis:n===2?1:0}};
@@ -139,6 +218,6 @@ async function stake(lost,max,en){await wait(200);}
 function poke(what){}
 const estado=W=>"gente="+Object.keys(W.gente||{}).filter(k=>W.gente[k].vis!==0).map(k=>k+"@"+R(W.gente[k].x)+","+R(W.gente[k].y)).join(" ")+" fuegos="+(W.fuegos||[]).map(f=>f&&f.k?f.k+":"+(f.con||"")+f.n+(f.llama?"*":"")+(f.negra?"#":""):"-").join("|")+" basura="+(W.basura||[]).join("+")+" marcas="+(W.marcas||[]).join(",");
 KIT.escena({id:"estufa",CAM:{wide:[22,0,196,216]},heartAt:[124,24],lugar:{inicio:[BANCO[0]-16,BANCO[1]-27,1],centro:[BANCO[0]-16,BANCO[1]-27,1]},cosas:COSAS,
-  fresh:()=>({respEn:[125,46],gente:{},fuegos:[{},{}],izq:{},der:{},basura:[],cosas:[],vuelos:[],banco:1,encima:null,tarjeta:null,marcas:null,cq:{x:BANCO[0]-16,y:BANCO[1]-27,s:1,dy:0,al:1,vis:1,bub:null,hace:null}}),
+  fresh:()=>({respEn:[125,46],gente:{},fuegos:[{},{}],izq:{},der:{},basura:[],cola:[],cosas:[],vuelos:[],banco:1,encima:null,tarjeta:null,marcas:null,cq:{x:BANCO[0]-16,y:BANCO[1]-27,s:1,dy:0,al:1,vis:1,bub:null,hace:null}}),
   draw,hud,poke,acts,stake,talkAt,respIcon,estado});
 })();
