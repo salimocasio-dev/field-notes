@@ -254,7 +254,8 @@ function mkDots(n){dots.forEach(d=>d.remove());const bar=$("#bar"),snd=$("#snd")
 let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);if($("#nota"))$("#nota").style.display="none";$("#go").style.display="none";$("#again").style.display="none";$("#next").style.display="none";
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
-  if(window.PAL&&(!Q.get("fast")||Q.get("rec"))){if(!OIR&&!S.tipo){S._lost=W.lost;PAL.cuento(S,LOG);}else if(PAL.oido)PAL.oido(CUENTO);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
+  // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
+  if(typeof PAL!=="undefined"&&(!Q.get("fast")||Q.get("rec"))){if(!OIR&&!S.tipo){S._lost=W.lost;PAL.cuento(S,LOG);}else if(PAL.oido)PAL.oido(CUENTO);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
   running=false;$("#again").style.display="flex";if($("#home"))$("#home").style.display="flex";if(S.next&&!OIR){$("#next").style.display="flex";$("#again").classList.add("two");}}
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
