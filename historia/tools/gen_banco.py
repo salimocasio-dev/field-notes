@@ -174,6 +174,34 @@ s23={"id":"el-bebe-duerme","title":"El bebé duerme","place":"El parque","scene"
   "c23_ab_y_ahora","c23_cq_cansado","c23_cq_triste","c23_ahora_contento","c23_sa_shh_duerme","c23_sa_ahora_contento","c23_ahora_duerme","c23_ca_shh_coqui","c23_fin_canelo","c23_fin_coqui","c23_ab_vamos","p_cq_hm"]}
 json.dump(s23,open("cuentos/el-bebe-duerme.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
+# ---------------- ¿Cuál? for El banco ----------------
+NO={"x":0,"y":0,"s":1,"dy":0,"al":1,"vis":0,"bub":None}
+SI={"x":92,"y":176,"s":1,"dy":0,"al":1,"vis":1,"bub":None}
+def per(x=144,y=161,**kw): return dict({"x":x,"y":y,"dir":1},**kw)
+sen=lambda **kw:per(sent=1,**kw)
+def pic(cam,carro=0,**kw): return {"cam":cam,"set":dict({"cq":NO,"carro":carro,"palomas":[],"cosas":[],"perros":{},"gente":{},"coche":None},**kw)}
+CB=[88,106,113,60]; CP=[84,136,124.3,66]; CD=[64,154,113,60]; CM=[112,116,90,47.8]
+can=lambda pose,**kw:{"canelo":dict({"x":120,"y":204,"pose":pose,"dir":1},**kw)}
+todos={**s21["clips"],**s22["clips"],**s23["clips"],"b_c_perro_viejo":N("Es un perro viejo."),"b_c_pajaro_bebe":N("El pájaro bebe."),"b_c_perro_duerme":N("El perro duerme."),
+ "b_c_senor_contento":N("El señor está contento."),"b_c_canelo_triste":N("Canelo está triste.")}
+usa=["b_n_hombre","b_n_mujer","b_n_senor","c22_cq_dn_senora","b_n_joven","b_c_perro_viejo","c21_hombre_come","b_c_pajaro_bebe","b_c_perro_duerme","c23_luis_cansado","b_c_senor_contento","b_c_canelo_triste","muy_bien","si_muy_bien"]
+cual={"id":"cual-banco","title":"¿Cuál?","place":"El parque","scene":"banco","tipo":"cual","stake":{"thing":"none","steps":0},
+ "note":"The next-day pass for El banco.","clips":{k:todos[k] for k in usa},
+ "items":[
+  {"w":"hombre","say":"b_n_hombre","si":pic(CB,gente={"hombre":sen(lee=1)}),"no":pic(CB,gente={"mujer":sen(lee=1)})},
+  {"w":"mujer","say":"b_n_mujer","si":pic(CP,gente={"mujer":per(146,198,paso=1)}),"no":pic(CP,gente={"carmen":per(146,198,paso=1)})},
+  {"w":"señor","say":"b_n_senor","si":pic(CB,gente={"senor":sen()}),"no":pic(CB,gente={"luis":sen()})},
+  {"w":"señora","say":"c22_cq_dn_senora","si":pic(CP,gente={"mujer":per(160,198,dir=-1,lleva="bolsa")},cq=dict(SI,x=106,y=172)),"no":pic(CP,gente={"joven":per(160,198,dir=-1,lleva="bolsa")},cq=dict(SI,x=106,y=172))},
+  {"w":"joven","say":"b_n_joven","si":pic(CP,gente={"joven":per(146,198,paso=1)}),"no":pic(CP,gente={"senor":per(146,198,paso=1)})},
+  {"w":"viejo","say":"b_c_perro_viejo","si":pic(CD,perros={"viejo":{"x":120,"y":204,"pose":"walk","dir":1}}),"no":pic(CD,perros={"joven":{"x":120,"y":204,"pose":"walk","dir":1}})},
+  {"w":"come","say":"c21_hombre_come","si":pic(CB,gente={"hombre":sen(hace="come",que="piragua")}),"no":pic(CB,gente={"hombre":sen(hace="bebe")})},
+  {"w":"bebe","say":"b_c_pajaro_bebe","si":pic(CM,palomas=[{"x":162,"y":149,"dir":-1,"pose":"bebe"}],cosas=[{"k":"agua","x":152,"y":149}]),"no":pic(CM,palomas=[{"x":164,"y":149,"dir":-1,"pose":"come"}],cosas=[{"k":"piragua","x":146,"y":145,"rot":1.5708}])},
+  {"w":"duerme","say":"b_c_perro_duerme","si":pic(CD,perros=can("duerme",zzz=1)),"no":pic(CD,perros=can("lie",lleva="hueso"))},
+  {"w":"cansado","say":"c23_luis_cansado","si":pic(CB,gente={"luis":sen(animo="cansado")}),"no":pic(CB,gente={"luis":sen(animo="contento",pose="arriba")})},
+  {"w":"contento","say":"b_c_senor_contento","si":pic(CB,gente={"hombre":sen(animo="contento")}),"no":pic(CB,gente={"hombre":sen(animo="triste")})},
+  {"w":"triste","say":"b_c_canelo_triste","si":pic(CD,perros=can("triste")),"no":pic(CD,perros=can("cansado"))}]}
+json.dump(cual,open("cuentos/cual-banco.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+
 # the story before this scene leads into it
 p="cuentos/cual.json"; d=json.load(open(p,encoding="utf-8"))
 if d.get("next")!="la-piragua":

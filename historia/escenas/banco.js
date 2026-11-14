@@ -16,7 +16,7 @@
 (function(){
 const SW=KIT.SW,SH=KIT.SH,FAM=KIT.FAM,R=Math.round,P=KIT.PIEL,H=KIT.PELO;
 const tarjeta=KIT.tarjeta,mano=KIT.mano;
-const SUELO=132,BANCOS=[[96,150],[144,150],[192,150]],CARRO=[47,178],FAROL=[168,154],PORTON=[203,197];   // where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate
+const SUELO=132,BANCOS=[[96,150],[144,150],[192,150]],CARRO=[47,178],FAROL=[168,154],PORTON=[196,198];   // where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate
 const cableY=x=>R(50+7*(1-Math.pow((x-120)/98,2)));                                                    // the wire sags in the middle
 const CABLE=i=>[66+i*17,cableY(66+i*17)];                                                              // where the pigeons sit on it
 const RESP=i=>[BANCOS[i][0],BANCOS[i][1]-23];                                                          // the top of the back of a bench
@@ -44,8 +44,8 @@ function fondo(){const b=new Buf(SW,SH),G=RP.grn,Wd=RP.wood;
   // the benches: a back, a seat, legs
   BANCOS.forEach(q=>{const x=q[0]-21,y=q[1];b.rect(x+2,y-22,2,34,Wd[0]);b.rect(x+38,y-22,2,34,Wd[0]);[y-22,y-16,y-10].forEach(yy=>{b.rect(x,yy,42,4,Wd[2]);b.rect(x,yy,42,1,Wd[4]);b.rect(x,yy+3,42,1,Wd[1]);});b.rect(x-1,y-3,44,5,Wd[3]);b.rect(x-1,y-3,44,1,Wd[4]);b.rect(x-1,y+1,44,1,Wd[1]);b.frame(x-2,y-4,46,7,OUT);b.frame(x-1,y-23,44,17,OUT);b.rect(x+3,y+3,3,9,Wd[0]);b.rect(x+36,y+3,3,9,Wd[0]);});
   // the hedge along the right edge, and the gate in it: the way home
-  for(let y=166;y<SH;y++)for(let x=212;x<SW;x++){if(y>186&&y<208)continue;b.px(x,y,x===212?OUT:hs(x,y)<22?G[3]:hs(x+3,y)<30?G[0]:G[1]);}
-  [[174,13],[208,8]].forEach(q=>{b.rect(209,q[0],7,q[1],"#C8BEA8");b.rect(209,q[0],2,q[1],"#E2DAC6");b.frame(208,q[0]-1,9,q[1]+2,OUT);b.rect(207,q[0]-3,11,3,"#8A8270");b.frame(206,q[0]-4,13,5,OUT);});
+  for(let y=166;y<SH;y++)for(let x=207;x<SW;x++){if(y>186&&y<208)continue;b.px(x,y,x===207?OUT:hs(x,y)<22?G[3]:hs(x+3,y)<30?G[0]:G[1]);}
+  [[174,13],[208,8]].forEach(q=>{b.rect(203,q[0],8,q[1],"#C8BEA8");b.rect(203,q[0],2,q[1],"#E2DAC6");b.frame(202,q[0]-1,10,q[1]+2,OUT);b.rect(201,q[0]-3,12,3,"#8A8270");b.frame(200,q[0]-4,14,5,OUT);});
   return b.done();}
 // the piragua cart: a box on two wheels, a block of ice, bottles of syrup, an umbrella
 function mkCarro(cerrado){const b=new Buf(48,74),Wd=RP.wood;b.rect(23,14,2,34,"#6E6E80");
@@ -166,12 +166,13 @@ function rana(g,q,a){const b=frogBox(q),bl=(F%47)<2||q.hace==="cansado"?1:0,op=(
   if(q.hace==="cansado"){const t=(F>>3)%2;fr(g,cx+13,b.y+dy+3+t,1,2,"#A8CCF8");fr(g,cx-14,b.y+dy+5-t,1,2,"#A8CCF8");}
   if(W.encima)tenida(g,W.encima,cx,b.y+dy+2);}
 function perro(c,n,a){const o=W.perros[n];if(!o||o.vis===0)return;
-  if(o.ronda){const t=(F-o.fase)%44,u=t<22?t/22:(44-t)/22;o.x=o.x0+u*84;o.dir=t<22?1:-1;}        // the young dog runs to and fro
+  if(o.ronda){const t=(F-o.fase)%44,u=t<22?t/22:(44-t)/22;o.x=o.x0+u*70;o.dir=t<22?1:-1;}        // the young dog runs to and fro
   if(o.paseo){const t=(F-o.fase)%130,u=t<65?t/65:(130-t)/65;o.x=o.x0+u*24;o.dir=t<65?1:-1;}   // the old dog walks slowly, there and back
   const anda=o.pose==="walk"||o.pose==="run"||o.pose==="bark"||o.pose==="come"||o.pose==="cansado"||o.pose==="triste"||o.mueve,f=anda?(a>>(o.pose==="run"?0:1))%2:0,tp=o.tipo||n,im=spr("can"+tp+o.pose+f+(o.pena?1:0),()=>mkCan(tp,o.pose,f,o.pena));
   c.save();c.translate(R(o.x),R(o.y)-im.height+2-(o.dy||0));if(o.dir<0)c.scale(-1,1);c.drawImage(im,-13,0);
   if(o.lleva){const t=cosa(o.lleva);c.drawImage(t,16-(t.width>>1),(o.pose==="lie"||o.pose==="cansado"?17:12));}
   if(o.chal)c.drawImage(cosa("chal"),-12,10);c.restore();
+  if(o.zzz){const t=(F>>3)%3,zx=R(o.x)+14,zy=R(o.y)-18;fr(c,zx,zy-t*3,3,1,"#FFFFFF");fr(c,zx+1,zy+1-t*3,1,1,"#FFFFFF");fr(c,zx,zy+2-t*3,3,1,"#FFFFFF");}
   if(o.correa){const [bx,by]=o.correa;c.strokeStyle="#A82020";c.lineWidth=1;c.beginPath();c.moveTo(R(o.x)+(o.dir<0?-5:5)+.5,R(o.y)-10.5);c.lineTo(bx+.5,by+.5);c.stroke();}}
 function coche(c,a){const o=W.coche;if(!o)return;const f=(a>>1)%2,im=spr("coche"+(o.capota?1:0)+(o.bebe||"")+f,()=>mkCoche(o.capota,o.bebe,f)),sx=o.tiembla?(a%2?1:-1):o.mece?R(Math.sin(F/5)*2):0,x=R(o.x)-19+sx,y=R(o.y)-40;
   c.drawImage(im,x,y);
@@ -223,7 +224,7 @@ const pio=()=>{tone(1500,0,.05,"sine",.04,1900);tone(1300,.07,.05,"sine",.04,170
 const ladra=n=>{for(let k=0;k<(n||1);k++){tone(520,k*.26,.07,"square",.05,300);tone(400,k*.26+.07,.1,"square",.05,240);}};
 
 /* ---------- helpers for the stories ---------- */
-const B=BANCOS,ASIENTO=149,POSA=[[110,127],[158,127],[176,127],[208,127]],JUG=["sonajero","oso","bloque","patito"],JUGEN=[[176,190],[190,198],[168,206],[198,208]];
+const B=BANCOS,ASIENTO=149,POSA=[[110,127],[158,127],[176,127],[208,127]],JUG=["sonajero","oso","bloque","patito"],JUGEN=[[182,188],[195,196],[183,209],[196,211]];
 const cx=()=>W.cq.x+16,pies=()=>W.cq.y+27;
 async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(4,R(d/34))));}
 const acasa=()=>ranaA(W.casa[0],W.casa[1]);
@@ -257,12 +258,12 @@ const acts={
   async lleva(o){const p=G(o.a),k=W.bandeja;await ranaA(p.sent?p.x:p.x+26,p.sent?p.y+22:p.y);W.bandeja=1;p.que=k;p.hace=k==="agua"?"bebe":"come";SFX.blip();await wait(500);},
   async llevamal(o){const p=G(o.a);await ranaA(p.sent?p.x:p.x+26,p.sent?p.y+22:p.y);await niega(p);p.dir=1;W.cq.dy=-4;await wait(300);const pg=libre();pio();await palomaA(pg,cx(),pies()-30);pg.pose="come";pg.z=400;await wait(900);W.bandeja=1;pg.pose="";W.cq.dy=0;await posa(pg);},
   async dejan(){const h=G("hombre"),m=G("mujer");h.hace=null;h.lleva=null;h.lee=1;m.hace=null;m.lleva=null;m.dir=-1;W.cosas.push({id:"pir",k:"piragua",x:101,y:ASIENTO-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:ASIENTO});await wait(500);},
-  async nuevas(){const ca=G("carmen");await mueve("carmen",104,182);G("hombre").hace="come";G("hombre").que="piragua";SFX.blip();await wait(250);await mueve("carmen",150,182);G("mujer").hace="bebe";SFX.blip();await wait(250);await mueve("carmen",84,192);ca.dir=1;await wait(500);},
+  async nuevas(){const ca=G("carmen");await mueve("carmen",104,182);G("hombre").hace="come";G("hombre").que="piragua";SFX.blip();await wait(250);await mueve("carmen",150,182);G("mujer").hace="bebe";SFX.blip();await wait(250);await mueve("carmen",62,206);ca.dir=1;await wait(500);},
   async paloma(o){const pg=libre();W.ladrona=pg;pio();if(o.k==="come"){await palomaA(pg,119,ASIENTO);pg.dir=-1;pg.pose="come";}else{await palomaA(pg,163,ASIENTO);pg.dir=-1;pg.pose="bebe";}pg.z=152;await wait(700);},
   async salva(o){const come=o.k==="come",p=G(come?"hombre":"mujer"),pg=W.ladrona;if(come){p.lee=0;quita("pir");p.lleva="piragua";}else{p.dir=1;quita("bot");p.lleva="agua";}SFX.blip();p.dy=3;await wait(150);p.dy=0;if(pg){pg.pose="";if(o.medio)await posa(pg);else await alcable(pg);}W.ladrona=null;await wait(250);},
   async miraotra(o){const come=o.k==="come",p=G(come?"mujer":"hombre");if(come){quita("bot");p.lleva="agua";}else{p.lee=0;quita("pir");p.lleva="piragua";}SFX.blip();await niega(p);p.dir=1;await wait(300);},
   async acaban(o){const h=G("hombre"),m=G("mujer"),ca=G("carmen");if(cosaDe("pir")){quita("pir");}if(cosaDe("bot")){quita("bot");}h.lee=0;h.lleva=null;m.lleva=null;m.dir=1;h.hace="come";h.que="piragua";m.hace="bebe";await wait(900);h.hace=null;m.hace=null;h.lleva="papel";m.lleva="vacia";
-    await mueve("carmen",104,182);h.lleva=null;await mueve("carmen",150,182);m.lleva=null;await mueve("carmen",84,192);ca.dir=1;W.bandeja=o&&o.bandeja==="no"?null:1;await wait(200);},
+    await mueve("carmen",104,182);h.lleva=null;await mueve("carmen",150,182);m.lleva=null;await mueve("carmen",62,206);ca.dir=1;W.bandeja=o&&o.bandeja==="no"?null:1;await wait(200);},
   async sinbandeja(){W.bandeja=null;await wait(150);},
   async manos(o){const ca=G("carmen");ca.pose="offer";await wait(250);W.manos=Object.assign({},W.manos||{},o.i?{i:o.i}:{},o.d?{d:o.d}:{});SFX.blip();await wait(300);ca.pose="idle";},
   async llena(){const m=W.manos||{i:null,d:null},vale=k=>!!k&&(k==="agua"||k.startsWith("piragua")),hay=k=>["i","d"].some(q=>vale(m[q])&&(k==="agua"?m[q]==="agua":m[q].startsWith("piragua"))),falta=["piragua","agua"].filter(k=>!hay(k));["i","d"].forEach(q=>{if(!vale(m[q]))m[q]=falta.shift()||null;});W.manos=m;G("carmen").pose="offer";SFX.blip();await wait(350);G("carmen").pose="idle";},
@@ -280,50 +281,50 @@ const acts={
     else if(cual==="piragua"){await palomaA(pg,cx()+s*17,pies()-9,4);pg.dir=-s;pg.pose="come";await wait(1000);m[l]="papel";pg.pose="";SFX.bonk();await wait(300);await posa(pg);}
     else{await palomaA(pg,cx()+s*17,pies()-9,4);m[l]=null;const t={id:"tirada",k:"agua",x:cx()+s*26,y:pies()-3,rot:s*Math.PI/2,charco:1};W.cosas.push(t);SFX.bonk();await palomaA(pg,cx()+s*36,pies(),3);pg.dir=-s;pg.pose="come";await wait(1000);pg.pose="";quita("tirada");await posa(pg);}
     W.ladrona=null;},
-  async final21(){const n=W.posadas||0,ca=G("carmen"),q=W.cq;await acasa();await mueve("carmen",cx()+30,pies()+2);ca.dir=-1;ca.pose="offer";await wait(300);W.manos={d:n<=1?"piragua3":"piragua"};ca.pose="idle";ca.hace="bebe";SFX.blip();q.hace="come";
+  async final21(){const n=W.posadas||0,ca=G("carmen"),q=W.cq;await acasa();await mueve("carmen",cx()+42,pies()+2);ca.dir=-1;ca.pose="offer";await wait(300);W.manos={i:n<=1?"piragua3":"piragua"};ca.pose="idle";ca.hace="bebe";SFX.blip();q.hace="come";
     if(n>=4){const en=[[-34,2],[-22,12],[26,14],[44,-6]];await Promise.all(W.palomas.filter(o=>o.en==="banco").map((o,i)=>palomaA(o,cx()+en[i%4][0],pies()+en[i%4][1]).then(()=>{o.dir=en[i%4][0]<0?1:-1;o.z=null;})));}await wait(400);},
   async quiere(){const o=W.palomas.find(p=>p.en==="banco");if(o){pio();o.dy=2;await wait(200);o.x+=o.dir*3;await wait(300);}},
   async fin21(){W.cq.hace=null;G("carmen").hace=null;await wait(300);},
 
   /* ----- story 22: ¡Señor! ¡Señora! ----- */
-  async inicio22(){W.gente={piraguero:{x:CARRO[0]+4,y:CARRO[1]-6,dir:1},senor:{x:B[0][0]-9,y:161,dir:1,sent:1,sin:{sombrero:1}},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-11,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[2][0]+11,y:161,dir:1,sent:1,lee:1},carmen:{x:140,y:204,dir:-1},luis:{x:184,y:206,dir:-1}};
-    W.cosas=[{id:"sombrero",k:"sombrero",x:109,y:ASIENTO},{id:"sombrilla",k:"sombrilla",x:158,y:155},{id:"mochila",k:"mochila",x:165,y:172},{id:"caja",k:"caja",x:166,y:208}];W.encaja=[];
-    W.perros={viejo:{x:40,y:204,pose:"lie",dir:1},joven:{x:68,y:206,pose:"sit",dir:1}};W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));
-    W.casa=[112,192];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;W.fuera=null;W.sinhueso=null;},
-  async alcarro(){const en={senor:[86,186],mujer:[104,190],joven:[122,186]};await Promise.all(Object.keys(en).map(async id=>{await mueve(id,en[id][0],en[id][1]);G(id).dir=-1;}));await wait(400);},
+  async inicio22(){W.gente={piraguero:{x:CARRO[0]+4,y:CARRO[1]-6,dir:1},senor:{x:B[0][0]-9,y:161,dir:1,sent:1,sin:{sombrero:1}},mujer:{x:B[1][0]-9,y:161,dir:1,sent:1},joven:{x:B[2][0]-11,y:161,dir:1,sent:1,sin:{mochila:1}},hombre:{x:B[2][0]+11,y:161,dir:1,sent:1,lee:1},carmen:{x:176,y:208,dir:-1},luis:{x:148,y:186,dir:1}};
+    W.cosas=[{id:"sombrero",k:"sombrero",x:109,y:ASIENTO},{id:"sombrilla",k:"sombrilla",x:158,y:155},{id:"mochila",k:"mochila",x:165,y:172},{id:"caja",k:"caja",x:167,y:187}];W.encaja=[];
+    W.perros={viejo:{x:38,y:197,pose:"lie",dir:1},joven:{x:90,y:197,pose:"sit",dir:1}};W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));
+    W.casa=[118,205];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;W.fuera=null;W.sinhueso=null;},
+  async alcarro(){const en={senor:[80,184],mujer:[96,188],joven:[112,184]};await Promise.all(Object.keys(en).map(async id=>{await mueve(id,en[id][0],en[id][1]);G(id).dir=-1;}));await wait(400);},
   async vuelve22(o){const id=o.a,p=G(id),i={senor:0,mujer:1,joven:2}[id];p.dir=1;await wait(350);if(id==="joven"){await mueve(id,170,170);p.sin={};quita("mochila");}else await mueve(id,B[i][0]-9,172);if(id==="senor"){p.sin={};quita("sombrero");}SFX.blip();p.dy=3;await wait(160);p.dy=0;await wait(250);},
   async sientan(){await Promise.all([["senor",0,-9,"piragua"],["mujer",1,-9,"agua"],["joven",2,-11,"piragua"]].map(async k=>{const p=G(k[0]);await mueve(k[0],B[k[1]][0]+k[2],161);p.sent=1;p.dir=1;p.lleva=k[3];}));await wait(300);},
-  async bolsa(){await mueve("carmen",122,174);G("carmen").lleva="bolsa";SFX.blip();await mueve("carmen",140,204);G("carmen").dir=-1;G("carmen").pose="arriba";await wait(300);},
+  async bolsa(){await mueve("carmen",122,174);G("carmen").lleva="bolsa";SFX.blip();await mueve("carmen",176,208);G("carmen").dir=-1;G("carmen").pose="arriba";await wait(300);},
   async dabolsa(o){const p=G(o.a),ca=G("carmen");ca.lleva=null;ca.pose="idle";W.encima="bolsa";SFX.blip();await ranaA(p.sent?p.x:p.x+24,p.sent?p.y+22:p.y+2);if(o.no){await niega(p);p.dir=p.sent?1:-1;return;}W.encima=null;p.lleva="bolsa";SFX.blip();await wait(400);},
-  async hueso(){const ca=G("carmen");await mueve("carmen",146,176);ca.lleva="hueso";SFX.blip();await mueve("carmen",140,204);ca.dir=-1;await acasa();ca.lleva=null;W.encima="hueso";SFX.blip();await wait(300);},
-  async dahueso(o){const d=perroDe(o.a);await ranaA(d.x+6,d.y-24);W.encima=null;d.lleva="hueso";d.pose=o.echa?"lie":"come";SFX.blip();await wait(500);},
+  async hueso(){const ca=G("carmen");await mueve("carmen",146,176);ca.lleva="hueso";SFX.blip();await mueve("carmen",176,208);ca.dir=-1;await acasa();ca.lleva=null;W.encima="hueso";SFX.blip();await wait(300);},
+  async dahueso(o){const d=perroDe(o.a);await ranaA(d.x+30,d.y+4);W.encima=null;d.lleva="hueso";d.pose=o.echa?"lie":"come";SFX.blip();await wait(500);},
   async ronda(o){const d=W.perros.joven;d.ronda=o.fin?0:1;if(o.fin){d.pose="come";d.x=d.x0;d.dir=1;}else{d.x0=d.x;d.pose="run";d.fase=F;}await wait(200);},
   async paseo(o){const d=W.perros.viejo;d.paseo=o.fin?0:1;if(o.fin){d.pose="lie";d.x=d.x0;d.dir=1;}else{d.x0=d.x;d.pose="walk";d.fase=F;}await wait(200);},
   async turno22(){const h=G("hombre");h.lee=0;W.cosas.push({id:"periodico",k:"periodico",x:204,y:ASIENTO});await wait(400);await mueve("hombre",PORTON[0],PORTON[1]);await mueve("hombre",244,PORTON[1]);h.vis=0;await wait(300);},
   async luisve(){const l=G("luis");l.dir=1;await wait(300);await mueve("luis",204,176);quita("periodico");l.lleva="periodico";await mueve("luis",PORTON[0]-4,PORTON[1]+2);l.dir=1;l.pose="arriba";await wait(200);},
-  async luiscaja(){const l=G("luis");l.pose="idle";for(let k=0;k<3;k++){l.dir=-l.dir;await wait(160);}await mueve("luis",184,206);l.dir=-1;l.lleva=null;W.encaja.push("periodico");SFX.blip();await wait(300);},
+  async luiscaja(){const l=G("luis");l.pose="idle";for(let k=0;k<3;k++){l.dir=-l.dir;await wait(160);}await mueve("luis",148,186);l.dir=1;l.lleva=null;W.encaja.push("periodico");SFX.blip();await wait(300);},
   async sale22(o){const p=G(o.a);p.lleva=null;p.sent=0;await wait(200);W.cosas.push({id:"cartera",k:"cartera",x:p.x+4,y:176});SFX.blip();await mueve(o.a,p.x+6,178);await mueve(o.a,PORTON[0],PORTON[1]);p.dir=1;W.fuera=o.a;await wait(300);},
   async recoge(o){const p=G(o.a),t=cosaDe("cartera");p.dir=-1;await wait(300);await mueve(o.a,t.x+10,t.y+4);quita("cartera");SFX.blip();p.dy=3;await wait(160);p.dy=0;await wait(200);},
   async adios(o){const p=G(o.a);p.dir=-1;p.pose="wave";await wait(600);p.pose="idle";await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,246,PORTON[1]);p.vis=0;},
   async pasa(o){const p=G(o.a);await mueve(o.a,PORTON[0],PORTON[1]);await mueve(o.a,PORTON[0]+7,PORTON[1]);p.dir=-1;await wait(300);},
   async duda(o){const id={di_senor:"senor",di_senora:"mujer",di_joven:"joven"}[o.x]||o.x,p=G(id);if(!p||p.vis===0)return;p.dy=3;await wait(200);p.dy=0;await niega(p);p.dir=p.sent?1:-1;},
   async sevade(o){const p=G(o.a);p.dir=-1;p.pose="wave";await wait(700);p.pose="idle";p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;},
-  async luisguarda(o){const l=G("luis"),t=cosaDe(o.k);if(t){await mueve("luis",t.x+10,t.y+6);quita(o.k);}else{await mueve("luis",cx()+22,pies());W.encima=null;W.cq.dy=0;}l.lleva=o.k;await mueve("luis",184,206);l.dir=-1;l.lleva=null;W.encaja.push(o.k);SFX.blip();await wait(300);},
-  async perros22(o){const v=W.perros.viejo,j=W.perros.joven,L=[40,204],D=[70,204],pv=o.lado==="vj"?L:D,pj=o.lado==="vj"?D:L;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;await Promise.all([perroA("viejo",pv[0],pv[1],"walk"),perroA("joven",pj[0],pj[1],"run")]);v.pose="sit";j.pose="sit";v.dir=1;j.dir=1;await acasa();await wait(300);},
+  async luisguarda(o){const l=G("luis"),t=cosaDe(o.k);if(t){await mueve("luis",t.x+10,t.y+6);quita(o.k);}else{await mueve("luis",cx()+22,pies());W.encima=null;W.cq.dy=0;}l.lleva=o.k;await mueve("luis",148,186);l.dir=1;l.lleva=null;W.encaja.push(o.k);SFX.blip();await wait(300);},
+  async perros22(o){const v=W.perros.viejo,j=W.perros.joven,L=[38,197],D=[90,197],pv=o.lado==="vj"?L:D,pj=o.lado==="vj"?D:L;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;await Promise.all([perroA("viejo",pv[0],pv[1],"walk"),perroA("joven",pj[0],pj[1],"run")]);v.pose="sit";j.pose="sit";v.dir=1;j.dir=1;await acasa();await wait(300);},
   async sinhueso(o){const d=W.perros[o.de.replace("perro_","")];d.pose="triste";d.pena=1;W.sinhueso=o.de.replace("perro_","");await wait(500);},
-  async acaricia(o){const d=perroDe(o.a);await ranaA(d.x+6,d.y-24);bounce(4);await wait(500);d.pose="sit";d.pena=1;},
-  async cola22(o){const rem=["senor","mujer","joven"].filter(k=>k!==W.fuera),own=rem[o.k==="a"?0:1],oth=rem[o.k==="a"?1:0],ord=o.lado==="ab"?rem:rem.slice().reverse(),en=[[88,188],[112,188]];
+  async acaricia(o){const d=perroDe(o.a);await ranaA(d.x+30,d.y+4);bounce(4);await wait(500);d.pose="sit";d.pena=1;},
+  async cola22(o){const rem=["senor","mujer","joven"].filter(k=>k!==W.fuera),own=rem[o.k==="a"?0:1],oth=rem[o.k==="a"?1:0],ord=o.lado==="ab"?rem:rem.slice().reverse(),en=[[82,186],[104,186]];
     V.pc=own;V.oc=oth;V.qc=own==="mujer"?"senora":own;V.ra=rem[0];V.rb=rem[1];await acasa();await Promise.all(ord.map(async(id,i)=>{const p=G(id);p.lleva=null;await mueve(id,en[i][0],en[i][1]);p.dir=-1;}));await wait(300);},
   async sevan22(){await Promise.all(["senor","mujer","joven"].filter(k=>G(k).vis!==0).map(async(id,i)=>{await wait(i*350);const p=G(id);await mueve(id,PORTON[0],PORTON[1]);await mueve(id,246,PORTON[1]);p.vis=0;}));},
   async alza(o){const p=G(o.a);W.cq.dy=-7;await wait(500);p.pose="wave";await wait(700);p.pose="idle";p.dir=1;await mueve(o.a,246,PORTON[1]);p.vis=0;W.cq.dy=0;},
   async final22(){W.noche=1;await acasa();await wait(500);if((W.marcas||[]).every(m=>m==="ok")){const h=G("hombre"),l=G("luis");h.vis=1;h.x=244;h.y=PORTON[1];await mueve("hombre",PORTON[0]-4,PORTON[1]);for(let k=0;k<3;k++){h.dir=-h.dir;await wait(200);}W.encaja=[];l.lleva="periodico";l.pose="arriba";l.dir=1;SFX.blip();await wait(400);await mueve("hombre",l.x+20,l.y);l.lleva=null;l.pose="idle";h.lleva="periodico";SFX.blip();h.dir=-1;h.pose="wave";await wait(700);h.pose="idle";await mueve("hombre",246,PORTON[1]);h.vis=0;}},
-  async carrova(){const pi=G("piraguero"),v=W.perros.viejo,j=W.perros.joven;W.carro="cerrado";SFX.blip();await wait(400);pi.x=CARRO[0]-27;pi.y=CARRO[1]+2;pi.dir=1;pi.paso=1;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;W.carroX=CARRO[0];v.pose="walk";j.pose="run";v.dir=1;j.dir=1;v.y=200;j.y=206;j.x=Math.max(j.x,80);W.seva=1;await wait(300);},
+  async carrova(){const pi=G("piraguero"),v=W.perros.viejo,j=W.perros.joven;W.carro="cerrado";SFX.blip();await wait(400);pi.x=CARRO[0]-27;pi.y=CARRO[1]+2;pi.dir=1;pi.paso=1;v.lleva=null;j.lleva=null;v.paseo=0;j.ronda=0;W.carroX=CARRO[0];v.pose="walk";j.pose="run";v.dir=1;j.dir=1;v.y=198;j.y=204;j.x=Math.max(j.x,80);W.seva=1;await wait(300);},
   async carrofin(){const pi=G("piraguero");W.seva=2;pi.paso=0;pi.pose="wave";pi.dir=-1;await wait(900);pi.pose="idle";pi.dir=1;pi.paso=1;W.seva=3;await wait(1400);},
 
   /* ----- story 23: El bebé duerme ----- */
   async inicio23(){W.gente={piraguero:{x:CARRO[0]+4,y:CARRO[1]-6,dir:1},senora:{x:B[1][0]-9,y:161,dir:1,sent:1},luis:{x:B[0][0]-13,y:161,dir:1,sent:1,animo:"cansado"},hombre:{x:B[2][0]+2,y:161,dir:1,sent:1,animo:"triste"},carmen:{x:38,y:210,dir:1,lleva:"mochila"}};
-    W.coche={x:164,y:176,capota:0,bebe:"duerme"};W.perros={canelo:{x:112,y:208,pose:"idle",dir:1,mueve:1}};W.cosas=[{id:"caida",k:"piragua",x:206,y:170,rot:Math.PI/2}];W.juguetes=0;
-    W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));W.casa=[146,202];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;},
+    W.coche={x:164,y:176,capota:0,bebe:"duerme"};W.perros={canelo:{x:112,y:208,pose:"idle",dir:1,mueve:1}};W.cosas=[{id:"caida",k:"piragua",x:184,y:178,rot:Math.PI/2}];W.juguetes=0;W.concojin=0;
+    W.palomas=[0,1,2,3,4].map(i=>({i,x:CABLE(i)[0],y:CABLE(i)[1],dir:i%2?1:-1,en:"cable"}));W.casa=[156,207];Object.assign(W.cq,{x:W.casa[0]-16,y:W.casa[1]-27,s:1});W.tarde=1;},
   async alegra(o){const p=G(o.a),k=o.k||"piragua";await ranaA(70,190);W.encima=k;SFX.blip();await ranaA(p.sent?p.x-4:p.x+26,p.sent?p.y+22:p.y+2);W.encima=null;if(o.no)return;if(o.a==="hombre")quita("caida");quita("hielo");p.animo=o.a==="hombre"?"contento":null;p.hace="come";p.que="piragua";p.lleva=null;SFX.blip();await wait(700);p.hace=null;p.lleva="piragua";await acasa();},
   async cojin(){const ca=G("carmen");await mueve("carmen",B[0][0]-4,180);ca.lleva=null;W.cosas.push({id:"cojin",k:"mochila",x:B[0][0]-21,y:ASIENTO+1,z:150});SFX.blip();await wait(400);await mueve("carmen",38,210);ca.dir=1;},
   async abuelallega(){W.gente.abuela={x:250,y:204,dir:-1,paso:1};await mueve("abuela",B[0][0]+6,176);const a=G("abuela");a.sent=1;a.x=B[0][0]+5;a.y=161;a.dir=1;await wait(400);a.ojos=1;await perroA("canelo",124,180,"walk");const c=W.perros.canelo;c.pose="idle";c.mueve=1;c.dir=1;await wait(300);},
@@ -354,8 +355,8 @@ const acts={
   async turno23a(){const l=G("luis");l.animo=null;l.sent=0;l.pose="arriba";await wait(500);l.pose="idle";await mueve("luis",92,192);l.dir=-1;await wait(300);l.lleva="piragua";l.dir=1;SFX.blip();const pg=libre();W.ladrona=pg;pio();await palomaA(pg,W.coche.x+14,W.coche.y-33);pg.z=400;await wait(400);},
   async turno23b(){const pg=W.ladrona;bounce(8);await wait(200);await Promise.all([alcable(pg),despierta()]);W.ladrona=null;await wait(500);await mece();},
   async tres23(){const c=W.perros.canelo,l=G("luis"),h=G("hombre"),a=G("abuela"),pg=libre();if(c.chal){a.pose="vaso";await wait(300);c.chal=0;a.pose="idle";}c.correa=null;c.mueve=0;a.lleva=null;a.pose="idle";pio();
-    await Promise.all([(async()=>{await palomaA(pg,190,210);await wait(200);await palomaA(pg,150,150);await alcable(pg);})(),(async()=>{await wait(250);await perroA("canelo",196,210,"run");await perroA("canelo",116,210,"run");c.dir=1;c.pose="cansado";})(),
-      (async()=>{await wait(500);l.lleva="papel";W.cosas.push({id:"hielo",k:"piragua",x:100,y:202,rot:Math.PI/2});SFX.bonk();await wait(300);l.animo="triste";})(),(async()=>{await wait(900);h.lleva=null;h.lee=1;h.animo="contento";h.paso=1;})()]);await wait(500);},
+    await Promise.all([(async()=>{await palomaA(pg,190,204);await wait(200);await palomaA(pg,150,150);await alcable(pg);})(),(async()=>{await wait(250);await perroA("canelo",196,204,"run");await perroA("canelo",114,202,"run");c.dir=1;c.pose="cansado";})(),
+      (async()=>{await wait(500);l.lleva="papel";W.cosas.push({id:"hielo",k:"piragua",x:96,y:194,rot:Math.PI/2});SFX.bonk();await wait(300);l.animo="triste";})(),(async()=>{await wait(900);h.lleva=null;h.lee=1;h.animo="contento";h.paso=1;})()]);await wait(500);},
   async ayuda(o){const q=o.q,c=W.perros.canelo;if(q==="cansado"){await ranaA(B[0][0]-8,184);quita("cojin");W.encima="mochila";SFX.blip();await ranaA(c.x+36,c.y);W.encima=null;W.cosas.push({id:"cojin",k:"mochila",x:c.x+13,y:c.y+1,z:c.y-1});W.concojin=1;SFX.blip();await wait(400);}
     else if(q==="triste"){await acts.alegra({a:"luis"});}
     else{const h=G("hombre");await ranaA(h.x-2,h.y+24);h.dy=2;await wait(200);h.dy=0;for(let k=0;k<3;k++){W.cq.dy=-3;await wait(140);W.cq.dy=0;await wait(140);}}
@@ -374,7 +375,7 @@ const acts={
     else{const s=G("senora");for(const t of jug()){await mueve("senora",t.x-12,t.y+2);quita(t.id);}await mueve("senora",B[1][0]-9,180);s.dir=1;}
     await acasa();},
   async ranacansada(){W.cq.hace="cansado";await wait(500);},
-  async sevan23(){W.cq.hace=null;const c=W.perros.canelo;c.pose="walk";await Promise.all([mueve("abuela",250,200),mueve("carmen",250,206),mueve("luis",250,196),perroA("canelo",250,210,"walk"),(async()=>{await wait(500);await ranaA(232,204,4);})()]);},
+  async sevan23(){W.cq.hace=null;const c=W.perros.canelo;c.pose="walk";quita("cojin");G("carmen").lleva="mochila";await Promise.all([mueve("abuela",250,200),mueve("carmen",250,206),mueve("luis",250,196),perroA("canelo",250,210,"walk"),(async()=>{await wait(500);await ranaA(232,204,4);})()]);},
 
   // everybody at once, to look at the drawing
   async prueba(o){const b=BANCOS,n=+(o&&o.n||1);

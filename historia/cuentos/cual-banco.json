@@ -1,0 +1,913 @@
+{
+ "id": "cual-banco",
+ "title": "¿Cuál?",
+ "place": "El parque",
+ "scene": "banco",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for El banco.",
+ "clips": {
+  "b_n_hombre": {
+   "who": "narr",
+   "text": "Es un hombre."
+  },
+  "b_n_mujer": {
+   "who": "narr",
+   "text": "Es una mujer."
+  },
+  "b_n_senor": {
+   "who": "narr",
+   "text": "Es un señor."
+  },
+  "c22_cq_dn_senora": {
+   "who": "tu",
+   "text": "De nada, señora."
+  },
+  "b_n_joven": {
+   "who": "narr",
+   "text": "Es un joven."
+  },
+  "b_c_perro_viejo": {
+   "who": "narr",
+   "text": "Es un perro viejo."
+  },
+  "c21_hombre_come": {
+   "who": "narr",
+   "text": "El hombre come."
+  },
+  "b_c_pajaro_bebe": {
+   "who": "narr",
+   "text": "El pájaro bebe."
+  },
+  "b_c_perro_duerme": {
+   "who": "narr",
+   "text": "El perro duerme."
+  },
+  "c23_luis_cansado": {
+   "who": "narr",
+   "text": "Luis está cansado."
+  },
+  "b_c_senor_contento": {
+   "who": "narr",
+   "text": "El señor está contento."
+  },
+  "b_c_canelo_triste": {
+   "who": "narr",
+   "text": "Canelo está triste."
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "hombre",
+   "say": "b_n_hombre",
+   "si": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "lee": 1
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "mujer": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "lee": 1
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "mujer",
+   "say": "b_n_mujer",
+   "si": {
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "mujer": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "carmen": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "señor",
+   "say": "b_n_senor",
+   "si": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "senor": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "luis": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "señora",
+   "say": "c22_cq_dn_senora",
+   "si": {
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 106,
+      "y": 172,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "mujer": {
+       "x": 160,
+       "y": 198,
+       "dir": -1,
+       "lleva": "bolsa"
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 106,
+      "y": 172,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "joven": {
+       "x": 160,
+       "y": 198,
+       "dir": -1,
+       "lleva": "bolsa"
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "joven",
+   "say": "b_n_joven",
+   "si": {
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "joven": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "senor": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "viejo",
+   "say": "b_c_perro_viejo",
+   "si": {
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "viejo": {
+       "x": 120,
+       "y": 204,
+       "pose": "walk",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "joven": {
+       "x": 120,
+       "y": 204,
+       "pose": "walk",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "come",
+   "say": "c21_hombre_come",
+   "si": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "hace": "come",
+       "que": "piragua"
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "hace": "bebe"
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "bebe",
+   "say": "b_c_pajaro_bebe",
+   "si": {
+    "cam": [
+     112,
+     116,
+     90,
+     47.8
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [
+      {
+       "x": 162,
+       "y": 149,
+       "dir": -1,
+       "pose": "bebe"
+      }
+     ],
+     "cosas": [
+      {
+       "k": "agua",
+       "x": 152,
+       "y": 149
+      }
+     ],
+     "perros": {},
+     "gente": {},
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     112,
+     116,
+     90,
+     47.8
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [
+      {
+       "x": 164,
+       "y": 149,
+       "dir": -1,
+       "pose": "come"
+      }
+     ],
+     "cosas": [
+      {
+       "k": "piragua",
+       "x": 146,
+       "y": 145,
+       "rot": 1.5708
+      }
+     ],
+     "perros": {},
+     "gente": {},
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "duerme",
+   "say": "b_c_perro_duerme",
+   "si": {
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "duerme",
+       "dir": 1,
+       "zzz": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "lie",
+       "dir": 1,
+       "lleva": "hueso"
+      }
+     },
+     "gente": {},
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "cansado",
+   "say": "c23_luis_cansado",
+   "si": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "luis": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "cansado"
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "luis": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "contento",
+       "pose": "arriba"
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "contento",
+   "say": "b_c_senor_contento",
+   "si": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "contento"
+      }
+     },
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "triste"
+      }
+     },
+     "coche": null
+    }
+   }
+  },
+  {
+   "w": "triste",
+   "say": "b_c_canelo_triste",
+   "si": {
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "triste",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    }
+   },
+   "no": {
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "cansado",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    }
+   }
+  }
+ ]
+}
