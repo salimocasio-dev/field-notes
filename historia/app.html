@@ -217,14 +217,16 @@ function lugar(i){const l=CURSO.lugares[i],op=abierto(l),sig=((CURSO.lugares[aqu
 
 /* ---------- BIBLIOTECA: listen and read ---------- */
 async function biblioteca(){const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),done=cs.filter(hecho),oi=db().oidos||{};
-  const fila=(c,ok,q,sub)=>`<div class="row"><div class="grow"><b>${CURSO.cuentos[c].t}</b><div class="small mut">${sub}</div></div><button class="btn soft" ${ok?"":"disabled"} onclick="tick();location.href='index.html?cuento=${c}${q}&desde=app'">${SVG(IC.play)}</button></div>`;
+  const fila=(c,q,sub)=>`<div class="li"><div class="grow"><b>${CURSO.cuentos[c].t}</b><div class="small mut">${sub}</div></div><button class="btn soft" aria-label="Listen" onclick="tick();location.href='index.html?cuento=${c}${q}&desde=app'">${SVG(IC.play)}</button></div>`;
   const cuanto=c=>(oi[c]?"Heard "+oi[c]+"× · ":"")+"about "+CURSO.cuentos[c].min+" min";
-  const grupo=(t,d,rows)=>rows?`<div class="small" style="margin:16px 0 8px"><b>${t}</b> <span class="mut">· ${d}</span></div><div class="card" style="padding:0 16px">${rows}</div>`:"";
-  const lugares=CURSO.lugares.filter(l=>l.cuentos&&l.cuentos.length).map(l=>{const fin=AJ().todo||l.cuentos.every(hecho),falta="Finish "+l.nombre+" on the map first";
+  // a group lists only what he can play now; what is still closed is one grey line, never a column of disabled rows
+  const grupo=(t,d,rows,linea)=>rows?`<div class="small" style="margin:16px 0 8px"><b>${t}</b> <span class="mut">· ${d}</span></div><div class="card" style="padding:0 16px">${rows}</div>${linea?`<p class="small mut" style="margin:8px 0 0">${linea}</p>`:""}`:linea?`<p class="small" style="margin:16px 0 0"><b>${t}</b> <span class="mut">· ${linea}</span></p>`:"";
+  const lugares=CURSO.lugares.filter(l=>l.cuentos&&l.cuentos.length).map(l=>{const fin=AJ().todo||l.cuentos.every(hecho),jug=l.cuentos.filter(c=>veces(c)),falta=l.cuentos.length-jug.length,
+      dib=l.dibujos||[],haz=l.haz||[],cierra=`when you finish ${l.nombre} on the map`;
     return `<div class="lab" style="margin-top:24px">Listen · ${l.nombre}</div>`+
-      grupo("Otra vez","the stories again, told straight through",l.cuentos.map(c=>fila(c,veces(c),"&oir=1",veces(c)?cuanto(c):"Play it on the map first")).join(""))+
-      grupo("Cuentos con dibujos","new picture stories, only to watch and hear",(l.dibujos||[]).map(c=>fila(c,fin,"",fin?cuanto(c):falta)).join(""))+
-      grupo("Haz esto","do what you hear",(l.haz||[]).map(c=>fila(c,fin,"",fin?cuanto(c):falta)).join(""));}).join("");
+      grupo("Otra vez","the stories again, told straight through",jug.map(c=>fila(c,"&oir=1",cuanto(c))).join(""),falta?`${falta} more ${falta===1?"opens as you play it":"open as you play them"} on the map`:"")+
+      grupo("Cuentos con dibujos","new picture stories, only to watch and hear",fin?dib.map(c=>fila(c,"",cuanto(c))).join(""):"",!fin&&dib.length?`${dib.length} picture ${dib.length===1?"story opens":"stories open"} ${cierra}`:"")+
+      grupo("Haz esto","do what you hear",fin?haz.map(c=>fila(c,"",cuanto(c))).join(""):"",!fin&&haz.length?`${haz.length} do-this ${haz.length===1?"routine opens":"routines open"} ${cierra}`:"");}).join("");
   document.getElementById("t-biblioteca").innerHTML=`<h1>Biblioteca</h1>${lugares}
   <div class="lab" style="margin-top:24px">Read</div><p class="small mut" style="margin-top:4px">Stories you have finished. Listen first, then read. Reading is not tracked until A2.</p>
   ${done.length?done.map(c=>`<div class="card row" style="cursor:pointer" onclick="leer('${c}')"><div class="grow"><b>${CURSO.cuentos[c].t}</b></div><span class="mut">›</span></div>`).join(""):`<div class="card mut">Finish a story to read it here.</div>`}`;}
@@ -251,14 +253,19 @@ async function linea(i){try{ac().resume();}catch(e){}LEE.i=i;document.querySelec
 
 /* ---------- PALABRAS: review ---------- */
 const ETQ=["New","Heard","Found","Holding","Good"];
-function palabras(){const byW={};(CU&&CU.items||[]).forEach(it=>byW[it.w]=it);const ws=Object.values(db().palabras).sort((a,b)=>(a.ear.due||9e15)-(b.ear.due||9e15)),t=Date.now(),due=PAL.vence("ear");
+function palabras(){const byW={};(CU&&CU.items||[]).forEach(it=>byW[it.w]=it);const ws=Object.values(db().palabras).sort((a,b)=>(a.ear.due||9e15)-(b.ear.due||9e15)),t=Date.now(),
+    due=PAL.vence("ear").filter(w=>byW[w]),askable=ws.filter(r=>r.ear.etapa>0&&byW[r.w]);   // ¿Cuál? asks only words he has heard, and only those that have a picture pair
   const when=d=>!d?"":d<=t?"Due now":"In "+Math.max(1,Math.round((d-t)/864e5))+" day"+(Math.round((d-t)/864e5)>1?"s":"");
+  const rev=due.length?{t:due.length+" word"+(due.length>1?"s":"")+" due",b:"Review"}:ws.length?{t:"Nothing due",b:"Practice"}:{t:"Play a story first",b:"Review"},off=!due.length&&!askable.length;
+  const sin=ws.filter(r=>!byW[r.w]);   // heard words that have no picture pair yet
+  const barra=r=>`<div class="bar"><i style="width:${r.ear.etapa*25}%"></i></div><div class="small mut">${ETQ[r.ear.etapa]} · ${when(r.ear.due)}${r.ear.marca?" · check picture":""}</div>`;
   document.getElementById("t-palabras").innerHTML=`<h1>Palabras</h1>
-  <div class="card"><div class="row" style="min-height:0"><div class="grow"><b>${due.length?due.length+" word"+(due.length>1?"s":"")+" due":"Nothing due"}</b><div class="small mut">A sentence and two pictures. Only one fits.</div></div><button class="btn" onclick="location.href='cual.html?desde=app'">Review</button></div></div>
-  ${ws.length?`<div class="grid">${ws.map(r=>`<button class="wc" data-w="${r.w}">${byW[r.w]?`<canvas width="196" height="104"></canvas>`:`<div style="aspect-ratio:196/104;background:#ECEAE3"></div>`}<div class="t"><div class="w">${r.w}</div><div class="bar"><i style="width:${r.ear.etapa*25}%"></i></div><div class="small mut">${ETQ[r.ear.etapa]} · ${when(r.ear.due)}${r.ear.marca?" · check picture":""}</div></div></button>`).join("")}</div>`:`<p class="mut">Play the first story on the map. Your words show up here.</p>`}
+  <div class="card"><div class="row" style="min-height:0"><div class="grow"><b>${rev.t}</b><div class="small mut">A sentence and two pictures. Only one fits.</div></div><button class="btn" ${off?"disabled":""} onclick="tick();location.href='cual.html?desde=app'">${rev.b}</button></div></div>
+  ${ws.length?`<div class="grid">${ws.filter(r=>byW[r.w]).map(r=>`<button class="wc" data-w="${r.w}"><canvas width="196" height="104"></canvas><div class="t"><div class="w">${r.w}</div>${barra(r)}</div></button>`).join("")}</div>
+  ${sin.length?`<div class="lab" style="margin:24px 0 8px">More words</div><div class="card" style="padding:0 16px">${sin.map(r=>`<div class="li" style="display:block;padding:12px 0"><div class="w" style="font-size:18px;font-weight:600">${r.w}</div>${barra(r)}</div>`).join("")}</div>`:""}`:`<p class="mut">Play the first story on the map. Your words show up here.</p>`}
   <h2>Add a word or a goal</h2><div class="card"><p class="small mut" style="margin-top:0">For example: "talk to my 1-year-old around the house". Audio for added words comes later.</p><input id="extra" style="width:100%;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit" placeholder="A word or a goal"><div style="margin-top:8px"><button class="btn" onclick="extra()">Add</button></div>${(db().extra||[]).map(x=>`<p class="small">· ${x}</p>`).join("")}</div>`;
   document.querySelectorAll(".wc").forEach(el=>{const it=byW[el.dataset.w],c=el.querySelector("canvas");if(it&&c)miniatura(c,it.si,it.esc);
-    el.onclick=()=>{tick();if(!it)return;try{ac().resume();}catch(e){}if(VOICE&&CLIPS[it.say])playClip(it.say);};});}   // touch a card: hear its sentence
+    el.onclick=()=>{tick();try{ac().resume();}catch(e){}if(VOICE&&CLIPS[it.say])playClip(it.say);};});}   // touch a card: hear its sentence
 function extra(){const v=document.getElementById("extra").value.trim();if(!v)return;(db().extra=db().extra||[]).push(v);PAL.save();palabras();}
 function miniatura(canvas,spec,esc){const keep=W,Ex=ESCENAS[esc]||E;W=panelW(spec,Ex);Ex.draw(c,W,0);if(W.resp)respDraw(c,0);W=keep;const g=canvas.getContext("2d");g.imageSmoothingEnabled=false;g.drawImage(sc,spec.cam[0],spec.cam[1],spec.cam[2],spec.cam[3],0,0,196,104);}
 
