@@ -9,6 +9,43 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 - Script tags carry ?v=25 in index.html, cual.html and app.html. Raise all three when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused.
 
+## Nov 14, part 12: place 2, scene 3, El lago
+
+Live at ?v=27. Scripts (final, draft 3): historia/notas/guiones/lago.md. Generator: historia/tools/gen_lago.py (stories, pairs; it also sets otra-vez's `next`).
+
+### What is built
+
+- **The pond** (historia/escenas/lago.js): pale water, a dock on the left with a post at each end, a post in the water, a clump of tan reeds in the middle, the far bank along the top (a child can stand there). Ducks in `W.patos` (white, black, a small yellow one; they paddle, fly, walk), fish in `W.peces` (any colour; just under the water, or jumping), birds in `W.aves`, toy boats in `W.botes` (`en`: muelle, agua, carmen, juncos), a row of bread `W.fila`. Things that keep moving while he chooses (a bird flying round, the duck paddling round the post, a fish circling, boats under way) are moved by `anima()` in the draw.
+- **Story 18, Pan para el pato** (pato, pez, pájaro, nada, vuela). A: "¡Pan para el pez!" (touch one of three). B: "¿Quién vuela?" / "¿Quién nada?" with the bird in the air, the fish in the water and the duck on the bank (the duck does both, so a touch on it is a free poke). C: Luis, head down, asks "¿Y el pato?"; he says "¡El pato vuela!" or "¡El pato nada!". Stake: six pieces of bread in a row on the dock; a wrong round uses two; what is left is shared out at the end.
+- **Story 19, Los botes** (rojo, azul, verde, ¿de qué color?). A: "¡dame el bote azul!". B: a fish circles; Luis, head in his bag: "¿De qué color es?"; he says the colour; Luis paints a boat that colour and the fish pushes it across. C: "¡Ahora dos botes! Uno verde y uno rojo.": two touches on pots of paint (picture bubbles). Stake: a boat nobody blows or pushes drifts into the reeds and stays.
+- **Story 20, ¿Cuál?** (amarillo, blanco, negro, ¿cuál?). A: "¿Cuál es el pato negro?". B: a bird takes Carmen's bread; "¿Cuál pájaro?"; he says which. C: "¡Pan para el pato!" (which is not said: he must ask "¿Cuál?", a bubble beside the ducks) or "¡Pan para el pato blanco!" (touch it). Stake: the three ducks' place out of seven; noise sends them out.
+- **¿Cuál? pairs**: 11 in cuentos/cual-lago.json. **Level check**: four more items (pato, vuela, rojo, negro); 32 in all, 20 stories.
+
+### New in the engine
+
+| Piece | What it does |
+| --- | --- |
+| `"burbujas":[...]` on a touch decision | speaking bubbles that stand beside the things he can touch (the "¿Cuál?" bubble); their lines come from `voces` |
+| `"gratis":{option:[steps]}` | an answer that is neither right nor wrong: its steps run and he chooses again |
+| a rule | `$name` in a story file only takes letters: a variable called `o1` is never filled in |
+
+### Colours
+
+- rojo is a light orange-red, azul a middle blue, verde a dark yellowish green: they differ in lightness too, for eyes that cannot tell red from green. The water is pale so that blue things show on it; the reeds are tan so that a green boat shows against them.
+
+### Reviews
+
+- Scripts: three drafts and a last gate. Round 1: story 18 repeated story 16's hiding trick; a step of story 19 could not happen (a cart of boats); the "¿Cuál?" decision punished asking; "¿Dónde está el pato?" answered by "vuela" taught verbs as places; "El pato nada" is heard as "the duck, nothing"; a bare "pato" called out is an insult. Round 2: the duck both swims and flies, so "¿Quién nada?" had two true answers; "¿Cuál?" was free and so decided nothing; five places were too few to show every loss; a loss had no cause. Last gate: asking when already told had a silent penalty (now a bird takes the bread from his hand); eight signed touches in story 19 (now six); the fish must push the boat, or Luis's question is not real.
+- Wordless frames: fresh reader (see the next commit for what it changed).
+
+### Testing
+
+- Every story: all-right, all-wrong, mixed both ways, every draw forced. The path "asked ¿Cuál? when she had said" by its own script. All 80 picture pairs. The level check. The app check.
+
+### Audio
+
+- 121 new clips, 3,418 characters.
+
 ## Nov 13, part 11: place 2, scene 2, El campo
 
 Live at ?v=26. Scripts (final, draft 3): historia/notas/guiones/campo.md. Generator: historia/tools/gen_campo.py (stories, pairs; it also sets rapido-despacio's `next`).
