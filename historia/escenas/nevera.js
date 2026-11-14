@@ -193,33 +193,33 @@ const acts={
 
   /* ----- story 30: No hay leche ----- */
   // The fridge has one holder for the bottle of milk and one dish for the cheese: W.nev.h[0], W.nev.h[1]. Papá, in the yard, fetches what the frog sends him for, for a coin. Whatever he brings, Luis carries to the fridge: a thing whose place is taken stays on the counter.
-  async inicio30(){W.gente={abuela:{x:142,y:180,dir:1,lleva:{k:"platopan",v:2}},luis:{x:174,y:192,dir:-1},carmen:{x:190,y:198,dir:-1},mama:{x:208,y:204,dir:-1,bebe:1},papa:{x:198,y:PATIO,dir:-1,fuera:1},abuelo:{vis:0}};
-    W.nev={abierta:1,soporte:1,h:[{k:"leche",v:4},{k:"queso",v:3}]};W.cesta=null;W.canasta=null;W.pila=null;W.patio={};W.repisa=[{id:"tarro",k:"tarro",v:3,x:158}];W.sobras=0;
+  async inicio30(){W.gente={abuela:{x:142,y:180,dir:1,lleva:{k:"platopan",v:2}},carmen:{x:188,y:198,dir:1},mama:{x:206,y:204,dir:1,bebe:1},papa:{x:160,y:PATIO,dir:1,fuera:1},luis:{x:174,y:PATIO+6,dir:-1,fuera:1},abuelo:{vis:0}};
+    W.nev={abierta:1,soporte:1,h:[{k:"leche",v:4},{k:"queso",v:3}]};W.cesta=null;W.canasta=null;W.pila=null;W.patio={};W.repisa=[{id:"tarro",k:"tarro",v:3,x:205}];W.sobras=0;
     W.cosas=[{k:"carta",v:"leche",x:114,y:86,z:50},{k:"carta",v:"queso",x:132,y:86,z:50},{k:"pan",v:5,x:152,y:ENC+10,z:99}];},
   // the first picture: mamá fills the baby's bottle (the holder is empty); abuela lays cheese on bread for Luis
-  async consume30(o){const m=G("mama"),ab=G("abuela"),l=G("luis"),N=W.nev;const pr=(async()=>{await vuela({k:"leche",v:4},HUECO[0][0],HUECO[0][1],m.x-8,m.y-34,9);N.h[0]=null;m.bebe="come";SFX.blip();await wait(900);N.h[1].v=1;await vuela({k:"queso",v:1},HUECO[1][0],HUECO[1][1],l.x,l.y-30,8);l.come={k:"rebanada",v:"q"};SFX.blip();await wait(900);l.come=null;m.bebe=1;})();return corre(o,pr);},
+  async consume30(o){const m=G("mama"),ab=G("abuela"),l=G("luis"),N=W.nev;const pr=(async()=>{await vuela({k:"leche",v:4},HUECO[0][0],HUECO[0][1],m.x-8,m.y-34,9);N.h[0]=null;m.bebe="come";SFX.blip();await wait(900);N.h[1].v=1;const ca=G("carmen");await vuela({k:"queso",v:1},HUECO[1][0],HUECO[1][1],ca.x,ca.y-30,8);ca.come={k:"rebanada",v:"q"};SFX.blip();await wait(900);ca.come=null;m.bebe=1;})();return corre(o,pr);},
   // what is in the fridge now, whether we see it or not (falta: the thing that has run out)
   async setnev(o){const N=W.nev;N.h[0]=o.falta==="leche"?null:{k:"leche",v:4};N.h[1]=o.falta==="queso"?null:{k:"queso",v:3};},
-  // abuela: opens the fridge wide (abre "todo"), or a little and looks in and shuts it (abre "poco"); takes the last cheese for her plate (toma); lays a coin on the sill; and goes to the door with her plate
-  async sale30(o){const ab=G("abuela"),N=W.nev;ab.vis=1;ab.pose="idle";if(o.abre||o.toma){ab.lleva=null;await mueve("abuela",102,176);ab.dir=-1;if(o.abre==="poco"){N.abierta=2;SFX.blip();ab.paso=1;await wait(600);ab.paso=0;N.abierta=0;}else{N.abierta=1;SFX.blip();await wait(250);}
-      if(o.toma){N.h[1]=null;SFX.blip();await wait(300);}}
-    await mueve("abuela",170,180);ab.dir=1;W.repisa.push({id:"moneda",k:"moneda",x:176});SFX.blip();await wait(250);ab.lleva={k:"platopan",v:2};await mueve("abuela",216,194);ab.dir=1;},
+  // abuela goes to the fridge: she opens it wide (abre "todo"), or a little and looks in (abre "poco"); toma: she takes the last cheese for her plate. She speaks from there
+  async mira30(o){const ab=G("abuela"),N=W.nev;ab.vis=1;ab.pose="idle";ab.lleva=null;await mueve("abuela",102,176);ab.dir=-1;if(o.abre==="poco"){N.abierta=2;SFX.blip();ab.paso=1;await wait(500);ab.paso=0;}else{N.abierta=1;SFX.blip();await wait(250);}if(o.toma){N.h[1]=null;SFX.blip();await wait(300);}},
+  // then she shuts it (if she had only looked in), lays one coin on the sill, takes her plate and goes out of the door
+  async sale30(o){const ab=G("abuela"),N=W.nev;if(N.abierta===2)N.abierta=0;await mueve("abuela",172,180);ab.dir=1;W.repisa.push({id:"moneda",k:"moneda",x:178});SFX.blip();await wait(250);ab.lleva={k:"platopan",v:2};await mueve("abuela",244,196);ab.vis=0;ab.lleva=null;},
   // the errand. The frog tosses papá the coin from the sill, or one out of his own jar when the sill is bare (carta: he holds that card up first); papá goes off and is back with the thing; Luis carries it to the fridge. Its place is empty: he puts it in. Its place is taken: he throws a hand up and stands it on the counter
-  async mandado(o){const k=String(o.k).replace(/^di_|^c_/,""),pa=G("papa"),l=G("luis"),N=W.nev,i=k==="leche"?0:1,R2=W.repisa,mon=R2.find(q=>q.id==="moneda"),tar=R2.find(q=>q.id==="tarro");
+  async mandado(o){const k=String(o.k).replace(/^di_|^c_/,""),pa=G("papa"),l=G("luis"),N=W.nev,i=k==="leche"?0:1,R2=W.repisa,mon=R2.find(q=>q.id==="moneda"),tar=R2.find(q=>q.id==="tarro"),v=k==="leche"?4:3;
     const pr=(async()=>{await ranaA(150,ENC+9);if(o.carta){W.encima={k:"carta",v:k};SFX.blip();await wait(450);}
-      if(mon){R2.splice(R2.indexOf(mon),1);await vuela({k:"moneda"},mon.x,SILL-4,pa.x,SILL-22,6);}else if(tar&&tar.v>0){tar.v--;await vuela({k:"moneda"},tar.x,SILL-10,pa.x,SILL-22,8);}SFX.blip();
-      pa.dir=1;await mueve("papa",236,PATIO);W.encima=null;await alBanco();await wait(300);pa.alza={k,v:k==="leche"?4:3,e:1,dx:-10,dy:-8};await mueve("papa",198,PATIO);pa.dir=-1;
-      await mueve("luis",190,190);pa.alza=null;await vuela({k,v:k==="leche"?4:3},pa.x-8,SILL-10,l.x,l.y-34,5);l.alza={k,v:k==="leche"?4:3,e:1,dx:-9,dy:-4};SFX.blip();await mueve("luis",124,180);l.dir=-1;const antes=N.abierta;N.abierta=1;SFX.blip();await wait(350);
-      if(!N.h[i]){l.alza=null;await vuela({k,v:k==="leche"?4:3},l.x-10,l.y-30,HUECO[i][0],HUECO[i][1],5);N.h[i]={k,v:k==="leche"?4:3};V.puso="1";SFX.blip();await wait(300);if(antes!==1)N.abierta=0;}
-      else{V.puso="";l.pose="wave0";SFX.bonk();await wait(600);l.pose="idle";l.alza=null;W.cosas.push({id:"sobra",k,v:k==="leche"?4:3,x:186+W.sobras*14,y:ENC+10,z:300});await wait(300);}
-      await mueve("luis",174,192);l.dir=-1;})();return corre(o,pr);},
+      if(mon){R2.splice(R2.indexOf(mon),1);await vuela({k:"moneda"},mon.x,SILL-4,pa.x,SILL-22,6);}else if(tar&&tar.v>0){tar.v--;await vuela({k:"moneda"},tar.x,SILL-10,pa.x,SILL-22,9);}SFX.blip();
+      pa.dir=-1;await mueve("papa",136,PATIO);W.encima=null;await alBanco();await wait(300);pa.alza={k,v,e:1,dx:10,dy:-8};await mueve("papa",160,PATIO);pa.dir=1;await wait(150);
+      pa.alza=null;l.alza={k,v,e:1,dx:9,dy:-8};l.dir=1;SFX.blip();await mueve("luis",230,PATIO+6);l.fuera=0;l.x=242;l.y=188;l.alza={k,v,e:1,dx:-9,dy:-4};await mueve("luis",124,180);l.dir=-1;const antes=N.abierta;N.abierta=1;SFX.blip();await wait(350);
+      if(!N.h[i]){l.alza=null;await vuela({k,v},l.x-10,l.y-30,HUECO[i][0],HUECO[i][1],5);N.h[i]={k,v};V.puso="1";SFX.blip();await wait(300);if(antes!==1)N.abierta=0;}
+      else{V.puso="";l.pose="wave0";SFX.bonk();await wait(600);l.pose="idle";l.alza=null;W.cosas.push({id:"sobra",k,v,x:176+W.sobras*14,y:ENC+10,z:300});await wait(300);}
+      l.dir=1;await mueve("luis",242,188);l.fuera=1;l.x=230;l.y=PATIO+6;await mueve("luis",174,PATIO+6);l.dir=-1;})();return corre(o,pr);},
   // mamá and the children share out what stands on the counter: its empty bottle, or its rind, stays there
-  async comparten(){const t=ob("sobra");if(!t)return;const m=G("mama"),ca=G("carmen");if(t.k==="leche"){m.bebe="come";ca.bebe="carmen";}else{ca.come={k:"queso",v:1};G("luis").come={k:"queso",v:1};}SFX.blip();await wait(900);m.bebe=1;ca.bebe=null;ca.come=null;G("luis").come=null;t.id=null;if(t.k==="leche")t.v=0;else{t.k="corteza";t.v=null;}W.sobras++;},
+  async comparten(){const t=ob("sobra");if(!t)return;const m=G("mama"),ca=G("carmen");if(t.k==="leche"){m.bebe="come";ca.bebe="carmen";}else{ca.come={k:"queso",v:1};}SFX.blip();await wait(900);m.bebe=1;ca.bebe=null;ca.come=null;t.id=null;if(t.k==="leche")t.v=0;else{t.k="corteza";t.v=null;}W.sobras++;},
   // the turn: the piragua man's cart; the frog hops to his jar; abuela shows the three coins she has left
-  async turno30(){W.patio.carrito=1;SFX.right&&SFX.blip();await wait(400);await ranaA(150,ENC+9);const t=W.repisa.find(q=>q.id==="tarro");for(let i=0;i<3;i++){t.dy=-2;await wait(110);t.dy=0;await wait(110);}await alBanco();const ab=G("abuela");ab.pose="offer";ab.lleva={k:"moneda"};await wait(700);ab.pose="idle";ab.lleva={k:"platopan",v:2};},
+  async turno30(){W.patio.carrito=1;SFX.right&&SFX.blip();await wait(400);await ranaA(150,ENC+9);const t=W.repisa.find(q=>q.id==="tarro");for(let i=0;i<3;i++){t.dy=-2;await wait(110);t.dy=0;await wait(110);}await alBanco();const ab=G("abuela");if(ab.vis===0){ab.vis=1;ab.x=244;ab.y=196;await mueve("abuela",142,180);}ab.dir=1;ab.pose="offer";ab.lleva={k:"moneda"};await wait(700);ab.pose="idle";ab.lleva=null;},
   // the ending: the frog tosses papá the coins left in his jar; papá buys a piragua at the cart: one scoop for each coin
   async final30(){const pa=G("papa"),t=W.repisa.find(q=>q.id==="tarro"),n=t.v;V.pir=n>0?"1":"";await ranaA(150,ENC+9);for(let i=0;i<n;i++){t.v--;await vuela({k:"moneda"},t.x,SILL-10,pa.x,SILL-22,5);SFX.blip();}
-    if(n>0){pa.dir=-1;await mueve("papa",170,PATIO);await wait(500);pa.alza={k:"piragua",v:n,e:1,dx:10,dy:-8};pa.dir=1;await mueve("papa",198,PATIO);pa.dir=-1;await wait(200);pa.alza=null;await vuela({k:"piragua",v:n},pa.x-8,SILL-12,170,ENC+2,6);await alBanco();W.cosas.push({k:"piragua",v:n,x:cx()+24,y:pies()+2,z:400});W.cq.hace="come";SFX.blip();}
+    if(n>0){pa.dir=-1;await mueve("papa",154,PATIO);await wait(500);pa.alza={k:"piragua",v:n,e:1,dx:10,dy:-8};pa.dir=1;await mueve("papa",186,PATIO);await wait(200);pa.alza=null;await vuela({k:"piragua",v:n},pa.x+8,SILL-12,170,ENC+2,6);await alBanco();W.cosas.push({k:"piragua",v:n,x:cx()+24,y:pies()+2,z:400});W.cq.hace="come";SFX.blip();}
     else{await alBanco();W.cq.dy=2;}await wait(600);},
 
   /* ----- story 31: Para los pájaros ----- */
@@ -248,15 +248,16 @@ const acts={
   // she bends to the hands of one, then of the other (orden: which first), and turns to the picnic basket
   async huelemanos(o){const ab=G("abuela"),ids=String(o.orden)==="2"?["carmen","luis"]:["luis","carmen"];for(const id of ids){const p=G(id);await mueve("abuela",p.x+16,p.y-2);ab.dir=-1;ab.paso=1;await wait(500);ab.paso=0;await wait(150);}await mueve("abuela",146,182);ab.dir=1;},
   // the frog takes the fruit out of a child's hands and tosses it out of the window
-  async quita(o){const p=G(o.a),f=p.alza;if(!f)return;await ranaA(p.x-18,p.y+2);p.alza=null;SFX.blip();await alMuro({k:f.k,v:f.v},p.x+8,p.y-30,!!o.bueno);await alBanco();},
+  async quita(o){const p=G(o.a),f=p.alza;if(!f)return;await ranaA(p.x-18,p.y+2);p.alza=null;SFX.blip();if(o.bueno){p.pose="wave0";p.dy=-2;}await alMuro({k:f.k,v:f.v},p.x+8,p.y-30,!!o.bueno);if(o.bueno){await wait(300);p.pose="idle";p.dy=0;}await alBanco();},
   // a child: eats the fruit in his hands (come), lays it in the picnic basket (guarda), or turns it over: black spots (manchas)
-  async nino31(o){const p=G(o.a),f=p.alza;if(!f)return;const pr=(async()=>{if(o.manchas){p.pose="wave0";SFX.bonk();await wait(400);p.pose="idle";f.v="manchas";await wait(500);return;}
+  async nino31(o){const p=G(o.a),f=p.alza;if(!f)return;const pr=(async()=>{if(o.manchas){f.dx=16;f.dy=-6;SFX.bonk();await wait(350);f.v="manchas";f.e=2;await wait(700);f.e=1;return;}
       if(o.guarda){await mueve(o.a,170,196);p.alza=null;W.canasta.items.push({k:f.k});SFX.blip();await wait(250);return;}
       p.alza=null;p.come={k:f.k};SFX.blip();await wait(900);p.come=null;})();return corre(o,pr);},
   // abuelo, in the yard at the window: trae (he lays a guineo and a manzana on the sill; viejo: the one with black spots on our side), tira (he tosses the one named to the birds), come (he eats the one that is left), da (he hands it in and abuela lays it in the picnic basket), mira (he turns the one that is left: spots)
   async abuelo31(o){const ao=G("abuelo"),R2=W.repisa,k=String(o.k||"").replace(/^di_/,""),it=R2.find(q=>q.id==="s_"+k);
     if(o.que==="trae"){ao.x=204;ao.dir=-1;ao.alza=null;W.repisa=[{id:"s_guineo",k:"guineo",v:o.viejo==="guineo"?"manchas":null,x:180,viejo:o.viejo==="guineo"},{id:"s_manzana",k:"manzana",v:o.viejo==="manzana"?"manchas":null,x:193,viejo:o.viejo==="manzana"}];SFX.blip();await wait(400);}
-    else if(o.que==="alza"){ao.alza={k:"guineo",e:1,dx:-9,dy:-22};ao.lleva={k:"manzana"};SFX.blip();await wait(300);}
+    else if(o.que==="alza"){ao.x=204;ao.dir=-1;W.repisa=[{id:"s_guineo",k:"guineo",v:o.viejo==="guineo"?"manchas":null,x:180,dy:-14,viejo:o.viejo==="guineo"},{id:"s_manzana",k:"manzana",v:o.viejo==="manzana"?"manchas":null,x:193,dy:-14,viejo:o.viejo==="manzana"}];SFX.blip();await wait(300);}
+    else if(o.que==="pone"){R2.forEach(q=>q.dy=0);SFX.blip();["luis","carmen"].forEach(id=>{G(id).dir=-1;});await wait(350);}
     else if(o.que==="tira"){R2.splice(R2.indexOf(it),1);ao.pose="wave0";await alMuro({k:it.k,v:it.viejo?"manchas":null},it.x,SILL-8,!it.viejo);ao.pose="idle";}
     else if(o.que==="come"){const r=R2[0];if(!r)return;const pr=(async()=>{W.repisa=[];ao.come={k:r.k};SFX.blip();await wait(900);ao.come=null;})();return corre(o,pr);}
     else if(o.que==="da"){const r=R2[0];if(!r)return;const ab=G("abuela");ab.lleva=null;await mueve("abuela",184,178);W.repisa=[];ab.lleva={k:r.k};SFX.blip();await mueve("abuela",152,180);ab.lleva=null;W.canasta.items.push({k:r.k});SFX.blip();await wait(250);}
@@ -264,7 +265,7 @@ const acts={
   async abuelaa31(o){const ab=G("abuela");ab.pose="idle";ab.lleva=o.pano?{k:"pano"}:null;await mueve("abuela",146,182);ab.dir=1;},
   // the turn: abuelo puts his hat on; three more birds; the three last lots come out, one for each hollow: the last roll and plate on the tray (izq, viejo), the last guineo and manzana out of the drawer into the children's hands (luis), and the two abuelo holds up
   async turno31(o){const ao=G("abuelo"),P=W.patio;ao.gorro=1;SFX.blip();await wait(300);for(const x of [176,186,196])if(P.aves.length<5){P.aves.push({x});SFX.blip();await wait(140);}},
-  async lotes31(o){await acts.lote({viejo:o.viejo,izq:o.izq});const ab=G("abuela");await mueve("abuela",102,176);ab.dir=-1;W.nev.cajonver=1;SFX.blip();await wait(500);await acts.sostienen({luis:o.luis,ya:1});await wait(300);W.nev.cajonver=0;await acts.abuelo31({que:"alza"});await mueve("abuela",146,182);ab.dir=1;},
+  async lotes31(o){await acts.lote({viejo:o.viejo,izq:o.izq});const ab=G("abuela");await mueve("abuela",102,176);ab.dir=-1;W.nev.cajonver=1;SFX.blip();await wait(500);await acts.sostienen({luis:o.luis,ya:1});await wait(300);W.nev.cajonver=0;await acts.abuelo31({que:"alza",viejo:o.abuelo});await mueve("abuela",146,182);ab.dir=1;},
   // the ending: the lid half shut; Luis carries the picnic basket, and they go
   async final31(){const ab=G("abuela"),l=G("luis"),ca=G("carmen"),K=W.canasta;ab.lleva=null;l.alza=null;ca.alza=null;await mueve("abuela",146,182);K.tapa=1;SFX.blip();await wait(700);if(K.items.length<3){await mueve("luis",166,192);l.dir=-1;l.dy=2;await wait(700);l.dy=0;}await wait(300);},
 
@@ -278,7 +279,7 @@ const acts={
       {id:"c1",k:"claro",v:0,x:60,y:NEV[1],z:90},{id:"c2",k:"claro",v:0,x:74,y:NEV[1],z:90}];},
   // abuela squeezes a china into the jug (one mark more); todo: the last ones: she fills the green cup and the yellow cup, and the jug to its fourth mark; the net is empty
   async exprime(o){const ab=G("abuela"),r=ob("red"),j=ob("jarra");const pr=(async()=>{ab.pose="idle";await mueve("abuela",148,180);ab.dir=1;const n=o.todo?r.v:1;for(let i=0;i<n;i++){r.v--;ab.lleva={k:"china"};SFX.blip();await wait(280);ab.lleva={k:"china",v:"cortada"};await wait(220);ab.lleva=null;if(!o.todo)j.v=Math.min(4,j.v+1);SFX.blip();await wait(150);}
-      if(o.todo){for(const id of ["v_verde","v_amarillo"]){const v=ob(id);v.vis=1;v.x=id==="v_verde"?196:206;v.y=ENC+10;v.n=1;SFX.blip();await wait(200);}j.v=4;SFX.blip();}await wait(200);})();return corre(o,pr);},
+      if(o.todo){const X0={v_rojo:175,v_azul:185,v_verde:196,v_amarillo:206};for(const id of ["v_rojo","v_azul","v_verde","v_amarillo"]){const v=ob(id);if(v.vis===0||v.y<ENC)await vuela({k:"vaso",v:v.v},EN.pila[0],ENC+2,X0[id],ENC+6,5);v.vis=1;v.x=X0[id];v.y=ENC+10;v.n=1;SFX.blip();await wait(160);}j.v=4;SFX.blip();}await wait(200);})();return corre(o,pr);},
   // abuela butters a slice from the plate on the sill and gives it to somebody, who eats it
   async unta(o){const ab=G("abuela"),p=G(o.a),pl=ob("pan32");const pr=(async()=>{await mueve("abuela",158,180);ab.dir=1;if(pl.v>0)pl.v--;ab.lleva={k:"rebanada"};SFX.blip();await wait(350);ab.lleva={k:"rebanada",v:"m"};SFX.blip();await wait(450);ab.lleva=null;if(p){p.come={k:"rebanada",v:"m"};await wait(+(o.ms||900));p.come=null;}pl.v=2;await mueve("abuela",140,180);ab.dir=1;})();return corre(o,pr);},
   // the round picture over a cup: on, or off
@@ -299,9 +300,9 @@ const acts={
   // mamá, at the window: trae (she sets the red cup and the blue cup on the sill, looks down into them, and turns her face away; vacio: which is empty), lleva (she carries out the cups that stand on the sill)
   async mama32(o){const m=G("mama"),vr=ob("v_rojo"),vz=ob("v_azul");
     if(o.que==="trae"){m.x=200;m.dir=-1;vr.vis=1;vz.vis=1;if(o.vacio){vr.n=o.vacio==="rojo"?0:1;vz.n=o.vacio==="azul"?0:1;}for(const v of [vr,vz]){const x1=v===vr?192:206;if(v.y>SILL)await vuela({k:"vaso",v:v.v},v.x,v.y-4,x1,SILL-2,6);v.x=x1;v.y=SILL;}SFX.blip();m.dy=2;await wait(500);m.dy=0;m.dir=1;await wait(200);}
-    else if(o.que==="lleva"){m.dir=-1;await wait(250);vr.vis=0;vz.vis=0;SFX.blip();await wait(200);m.dir=1;await wait(300);}},
+    else if(o.que==="lleva"){m.dir=-1;await wait(250);if(vr.y>SILL){for(const v of [vr,vz])await vuela({k:"vaso",v:v.v},v.x,v.y-4,m.x-8,SILL-6,5);}vr.vis=0;vz.vis=0;SFX.blip();await wait(200);m.dir=1;await wait(300);}},
   // abuela looks into the green cup and the yellow one; then she turns to the bread, or (sale) goes to the door with a plate of bread, her back to the cups
-  async abuelamira(o){const ab=G("abuela");ab.vis=1;ab.pose="idle";await mueve("abuela",200,184);ab.dir=1;ab.paso=1;await wait(550);ab.paso=0;if(o.sale){ab.lleva={k:"platopan",v:2};await mueve("abuela",216,196);ab.dir=1;}else{await mueve("abuela",158,180);ab.dir=-1;}await wait(150);},
+  async abuelamira(o){const ab=G("abuela");if(ab.vis===0){ab.vis=1;ab.x=244;ab.y=196;}ab.pose="idle";ab.lleva=null;await mueve("abuela",200,184);ab.dir=1;ab.paso=1;await wait(550);ab.paso=0;if(o.sale){ab.lleva={k:"platopan",v:2};await mueve("abuela",216,196);ab.dir=1;}else{await mueve("abuela",158,180);ab.dir=-1;}await wait(150);},
   async abuelasale(){const ab=G("abuela");if(ab.vis===0)return;await mueve("abuela",244,196);ab.vis=0;ab.lleva=null;},
   async abuelavuelve(){const ab=G("abuela");if(ab.vis===0){ab.vis=1;ab.x=244;ab.y=196;}ab.lleva=null;ab.pose="idle";await mueve("abuela",140,180);ab.dir=1;},
   // the frog carries a cup to the sink and tips it over the dishwater. A full one: the juice is in the dishwater. The cup goes in to be washed

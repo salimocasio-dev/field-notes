@@ -20,7 +20,7 @@ BASE={"luis":"p_n_luis","carmen":"p_n_carmen","coqui":"yo_coqui","abuela":"abuel
 # ---------------- 30. No hay leche ----------------
 c=dict(comunes)
 LQ={"leche":"leche","queso":"queso"}; EL={"leche":"la leche","queso":"el queso"}
-c.update({"c30_aqui_leche":N("Aquí hay leche."),"c30_aqui_queso":N("Y aquí hay queso."),"c30_bebe_toma":N("El bebé toma leche."),"c30_luis_come":N("Luis come pan con queso."),
+c.update({"c30_aqui_leche":N("Aquí hay leche."),"c30_aqui_queso":N("Y aquí hay queso."),"c30_bebe_toma":N("El bebé toma leche."),"c30_carmen_come":N("Carmen come pan con queso."),
  "c30_ab_mira_hay":AB("Coquí, mira en la nevera. ¿Hay leche? ¿Hay queso?"),"c30_ab_mira":AB("Coquí, mira en la nevera."),
  "c30_cq_piragua":T("¡Una piragua!"),"c30_ahora_los2":N("Ahora hay leche y queso."),"c30_cq_gracias_papa":T("¡Gracias, papá!"),"c30_no_piragua":N("No hay piragua para Coquí.")})
 for k in LQ:
@@ -29,43 +29,43 @@ for k in LQ:
     c["c30_si_%s_no_%s"%(o,k)]=AB("Sí hay %s. No hay %s."%(o,k)); c["c30_no_%s_si_%s"%(k,o)]=AB("No hay %s. Sí hay %s."%(k,o))
     c["c30_ab_si_"+k]=AB("Sí hay %s."%k); c["c30_ab_no_"+k]=AB("No hay %s."%k); c["c30_no_"+k]=N("No, Coquí. Mira. No hay %s."%k)
 DN=["di_leche","di_queso"]; VN={"di_leche":"c30_cq_no_leche","di_queso":"c30_cq_no_queso"}; DC=["c_leche","c_queso"]
-def ida(k,**kw): return [act("abuelasale"),act("mandado",k=k,suelto=1,**kw),"c30_busca_"+k,act("ya")]
+def ida(k,**kw): return [act("sale30"),act("mandado",k=k,suelto=1,**kw),"c30_busca_"+k,act("ya")]
 def ronda(k):   # what follows a touch in a scored round: the first errand is paid from the sill; a second one, after a miss, from the frog's own jar
-    return {"right":[act("abuelasale"),act("mandado",k="$"+k,suelto=1,carta=1),"c30_busca_$"+k,act("ya"),{"if":"ok","then":[act("marca",que="ok")],"else":[act("comparten")]},act("abuelavuelve")],
-            "wrong":[act("abuelasale"),act("mandado",k="$x",carta=1)]+X+["c30_no_$"+k]}
+    return {"right":[{"if":"ok","then":[act("sale30")]},act("mandado",k="$"+k,suelto=1,carta=1),"c30_busca_$"+k,act("ya"),{"if":"ok","then":[act("marca",que="ok")],"else":[act("comparten")]},act("abuelavuelve")],
+            "wrong":[act("sale30"),act("mandado",k="$x",carta=1)]+X+["c30_no_$"+k]}
 s30={"id":"no-hay-leche","title":"No hay leche","place":"La cocina","scene":"nevera","next":"para-los-pajaros",
  "goal":"Keep the fridge stocked, and keep your three coins for a piragua.","stake":{"thing":"monedas","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["leche","queso","no hay","busca"],"back_again":["hay","sí","aquí","ahora","mira","come","toma","bebé","pan","con","piragua","tira","coge","gracias"],
  "also_heard":["nevera"],"names":BASE,"palabras":{"nohay":"no hay"},"clips":c,
- "beats":[act("inicio30"),{"wait":500},tw("nevera"),"c30_nevera",tw("leche"),"c30_aqui_leche",tw("queso"),"c30_aqui_queso",tw(None),act("consume30",suelto=1),"c30_bebe_toma","c30_luis_come",act("ya"),
+ "beats":[act("inicio30"),{"wait":500},tw("nevera"),"c30_nevera",tw("leche"),"c30_aqui_leche",tw("queso"),"c30_aqui_queso",tw(None),act("consume30",suelto=1),"c30_bebe_toma","c30_carmen_come",act("ya"),
   # the opening: say (twice), picture cards with both halves (twice), picture cards with one line (twice)
-  {"dots":1},act("sale30"),
+  {"dots":1},act("mira30",abre="todo"),
   ask("di_leche","c30_ab_mira_hay",["c30_ahora_leche",act("abuelavuelve")],ida("leche"),resp=DN,baraja=True,voces=VN,said={"di_leche":"c30_cq_no_leche"}),
-  act("sale30",toma=1),
+  act("mira30",abre="todo",toma=1),
   ask("di_queso","c30_ab_mira",["c30_ahora_queso",act("abuelavuelve")],ida("queso"),resp=DN,baraja=True,voces=VN,said={"di_queso":"c30_cq_no_queso"}),
-  {"dots":2},act("setnev",falta="leche"),act("sale30",abre="poco"),
+  {"dots":2},act("setnev",falta="leche"),act("mira30",abre="poco"),
   ask("c_leche","c30_si_queso_no_leche",[act("abuelavuelve")],ida("leche",carta=1),resp=DC,baraja=True),
-  act("setnev",falta="queso"),act("sale30",abre="poco"),
+  act("setnev",falta="queso"),act("mira30",abre="poco"),
   ask("c_queso","c30_no_queso_si_leche",[act("abuelavuelve")],ida("queso",carta=1),resp=DC,baraja=True),
-  {"dots":3},act("setnev",falta="queso"),act("sale30",abre="poco"),
+  {"dots":3},act("setnev",falta="queso"),act("mira30",abre="poco"),
   ask("c_queso","c30_ab_si_leche",[act("abuelavuelve")],ida("queso",carta=1),resp=DC,baraja=True),
-  act("setnev",falta="leche"),act("sale30",abre="poco"),
+  act("setnev",falta="leche"),act("mira30",abre="poco"),
   ask("c_leche","c30_ab_no_leche",[act("abuelavuelve")],ida("leche",carta=1),resp=DC,baraja=True),
   # the turn: the piragua man's bell
   {"dots":4},act("turno30"),say("c30_cq_piragua"),CARD,{"wait":400},
   # A: he sees in, and says what there is none of
-  {"dots":5},{"draw":"fa","options":["leche","queso"]},act("setnev",falta="$fa"),act("sale30",abre="todo"),
+  {"dots":5},{"draw":"fa","options":["leche","queso"]},act("setnev",falta="$fa"),act("mira30",abre="todo"),
   dict({"decide":"say","options":DN,"baraja":True,"pick":"di_$fa","tests":"$fa","voces":VN,"said":VN,"lead":[],"line":"c30_ab_mira"},**ronda("fa")),
   # B: she says both halves; he answers with a picture card
   {"dots":6},{"draw":"fb","options":["leche","queso"],"other":"gb"},{"draw":"ob","options":["1","2"]},{"calc":"lb","cond":"ob=1","then":"c30_si_$gb_no_$fb","else":"c30_no_$fb_si_$gb"},
-  act("setnev",falta="$fb"),act("sale30",abre="poco"),
+  act("setnev",falta="$fb"),act("mira30",abre="poco"),
   dict({"decide":"say","options":DC,"baraja":True,"pick":"c_$fb","tests":"nohay","lead":[],"line":"$lb"},**ronda("fb")),
   # C: she says one line; he answers with a picture card
   {"dots":7},{"draw":"fc","options":["leche","queso"],"other":"gc"},{"draw":"sc","options":["si","no"]},{"calc":"lc","cond":"sc=no","then":"c30_ab_no_$fc","else":"c30_ab_si_$gc"},
-  act("setnev",falta="$fc"),act("sale30",abre="poco"),
+  act("setnev",falta="$fc"),act("mira30",abre="poco"),
   dict({"decide":"say","options":DC,"baraja":True,"pick":"c_$fc","tests":"nohay","lead":[],"line":"$lc"},**ronda("fc"))],
  "final":[{"dots":8},"c30_ahora_los2",act("final30"),{"if":"pir","then":[say("c30_cq_gracias_papa",300)],"else":["c30_no_piragua"]},act("fin")],
- "leer":["c30_nevera","c30_aqui_leche","c30_aqui_queso","c30_bebe_toma","c30_luis_come","c30_ab_mira_hay","c30_cq_no_leche","c30_busca_leche","c30_ahora_leche","c30_ab_mira","c30_cq_no_queso","c30_busca_queso","c30_ahora_queso",
+ "leer":["c30_nevera","c30_aqui_leche","c30_aqui_queso","c30_bebe_toma","c30_carmen_come","c30_ab_mira_hay","c30_cq_no_leche","c30_busca_leche","c30_ahora_leche","c30_ab_mira","c30_cq_no_queso","c30_busca_queso","c30_ahora_queso",
   "c30_si_queso_no_leche","c30_no_queso_si_leche","c30_ab_si_leche","c30_ab_no_leche","c30_cq_piragua","c30_ahora_los2","c30_cq_gracias_papa"]}
 json.dump(s30,open("cuentos/no-hay-leche.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
@@ -76,7 +76,7 @@ c.update({"c31_vamos":AB("Vamos al parque."),"c31_busca":N("Abuela busca comida 
  "c31_huele_pan":N("Abuela huele el pan."),"c31_fo_pan":AB("¡Fo! Este pan no huele bien."),"c31_para_pajaros":AB("Este pan es para los pájaros."),"c31_tira_pan":N("Coquí tira el pan."),"c31_pajaro_pan":N("El pájaro come pan."),"c31_carmen_fruta":N("Carmen come fruta."),
  "c31_huele_fruta":N("Abuela huele la fruta."),"c31_esta_fruta":AB("Esta fruta no huele bien."),"c31_tira_fruta":N("Coquí tira la fruta."),"c31_pajaro_fruta":N("El pájaro come fruta."),"c31_luis_pan":N("Luis come pan."),
  "c31_este_guineo":AB("Este guineo no huele bien."),"c31_guineo_pajaros":N("El guineo es para los pájaros."),"c31_carmen_manzana":N("Carmen come la manzana."),
- "c31_esta_manzana":AB("Esta manzana no huele bien."),"c31_manzana_pajaros":N("La manzana es para los pájaros."),"c31_carmen_guineo":N("Carmen come el guineo."),
+ "c31_esta_manzana":AB("Esta manzana no huele bien."),"c31_manzana_pajaros":N("La manzana es para los pájaros."),"c31_luis_guineo":N("Luis come el guineo."),
  "c31_abuelo_mira":AO("Coquí, mira la fruta."),"c31_cq_guineo":T("¡El guineo no huele bien!"),"c31_cq_manzana":T("¡La manzana no huele bien!"),"c31_abuelo_manzana":N("Abuelo come la manzana."),"c31_abuelo_guineo":N("Abuelo come el guineo."),
  "c31_abuelo_vamos":AO("¡Vamos al parque!"),"c31_aqui_pan_fruta":AB("Aquí hay pan y fruta para el parque."),"c31_van":N("Luis y Carmen van al parque."),"c31_cq_adios":T("¡Adiós, abuela!")})
 for k in ART:
@@ -94,8 +94,8 @@ s31={"id":"para-los-pajaros","title":"Para los pájaros","place":"La cocina","sc
   ask("t_fruta","c31_esta_fruta",["c31_pajaro_fruta",act("resto31",a="luis",suelto=1),"c31_luis_pan",act("ya")],[act("tira31",a="t_fruta",suelto=1),"c31_tira_fruta",act("ya")]),
   {"dots":2},act("sostienen",luis="guineo"),act("huelemanos",orden=1),
   ask("luis","c31_este_guineo",["c31_guineo_pajaros",act("nino31",a="carmen",suelto=1),"c31_carmen_manzana",act("ya")],[act("quita",a="luis")]),
-  act("sostienen",luis="manzana"),act("huelemanos",orden=2),
-  ask("luis","c31_esta_manzana",["c31_manzana_pajaros",act("nino31",a="carmen",suelto=1),"c31_carmen_guineo",act("ya")],[act("quita",a="luis")]),
+  act("sostienen",luis="guineo"),act("huelemanos",orden=2),
+  ask("carmen","c31_esta_manzana",["c31_manzana_pajaros",act("nino31",a="luis",suelto=1),"c31_luis_guineo",act("ya")],[act("quita",a="carmen")]),
   {"dots":3},act("abuelaa31"),act("abuelo31",que="trae",viejo="guineo"),
   ask("di_guineo","c31_abuelo_mira",[act("abuelo31",que="come",suelto=1),"c31_abuelo_manzana",act("ya")],[act("abuelo31",que="tira",k="guineo")],resp=DG,baraja=True,voces=VG,said={"di_guineo":"c31_cq_guineo"}),
   act("abuelo31",que="trae",viejo="manzana"),
@@ -104,7 +104,7 @@ s31={"id":"para-los-pajaros","title":"Para los pájaros","place":"La cocina","sc
   {"dots":4},{"draw":"ka","options":["pan","fruta"],"other":"kb"},{"draw":"za","options":["pan","fruta"]},{"draw":"ha","options":["1","2"]},
   {"draw":"kc","options":["guineo","manzana"],"other":"kd"},{"draw":"qb","options":["guineo","manzana"]},{"draw":"hb","options":["1","2"]},{"draw":"ke","options":["guineo","manzana"],"other":"kf"},
   {"calc":"pv","cond":"kc=$qb","then":"luis","else":"carmen"},{"calc":"pw","cond":"kc=$qb","then":"carmen","else":"luis"},
-  act("turno31"),say("c31_abuelo_vamos"),act("lotes31",viejo="$ka",izq="$za",luis="$qb"),"c31_aqui_pan_fruta",CARD,{"wait":400},
+  act("turno31"),say("c31_abuelo_vamos"),act("lotes31",viejo="$ka",izq="$za",luis="$qb",abuelo="$ke"),"c31_aqui_pan_fruta",CARD,{"wait":400},
   # A: bread or fruit, on the tray
   {"dots":5},act("huele31",orden="$ha",pano=1),act("abuelaa31",pano=1),
   {"decide":"do","options":["t_pan","t_fruta"],"pick":"t_$ka","tests":"$ka","lock":True,"lead":[],"line":"c31_ab_$ka_no",
@@ -116,13 +116,13 @@ s31={"id":"para-los-pajaros","title":"Para los pájaros","place":"La cocina","sc
    "right":[act("quita",a="$pv"),{"if":"ok","then":[act("marca",que="ok"),act("nino31",a="$pw",guarda=1)]}],
    "wrong":[act("quita",a="$x",bueno=1),act("nino31",a="$pv",manchas=1)]+X+["c31_no_$kc"]},
   # C: he sees the spots and says which; abuelo, who sees only the backs, throws what he names
-  {"dots":7},act("abuelo31",que="trae",viejo="$ke"),
+  {"dots":7},act("abuelaa31"),act("abuelo31",que="pone"),
   {"decide":"say","options":DG,"baraja":True,"pick":"di_$ke","tests":"$ke","voces":VG,"said":VG,"lead":[],"line":"c31_abuelo_mira",
    "right":[act("abuelo31",que="tira",k="$ke"),{"if":"ok","then":[act("marca",que="ok"),act("abuelo31",que="da")]}],
    "wrong":[act("abuelo31",que="tira",k="$x"),act("abuelo31",que="mira")]+X+["c31_no_$ke"]}],
  "final":[{"dots":8},act("final31"),"c31_van",say("c31_cq_adios",300),act("fin")],
  "leer":["c31_vamos","c31_busca","c31_aqui_pan","c31_aqui_fruta","c31_aqui_gm","c31_huele_pan","c31_fo_pan","c31_para_pajaros","c31_tira_pan","c31_pajaro_pan","c31_carmen_fruta","c31_huele_fruta","c31_esta_fruta","c31_tira_fruta","c31_pajaro_fruta","c31_luis_pan",
-  "c31_este_guineo","c31_guineo_pajaros","c31_carmen_manzana","c31_esta_manzana","c31_manzana_pajaros","c31_carmen_guineo","c31_abuelo_mira","c31_cq_guineo","c31_abuelo_manzana","c31_cq_manzana","c31_abuelo_guineo",
+  "c31_este_guineo","c31_guineo_pajaros","c31_carmen_manzana","c31_esta_manzana","c31_manzana_pajaros","c31_luis_guineo","c31_abuelo_mira","c31_cq_guineo","c31_abuelo_manzana","c31_cq_manzana","c31_abuelo_guineo",
   "c31_abuelo_vamos","c31_aqui_pan_fruta","c31_van","c31_cq_adios"]}
 json.dump(s31,open("cuentos/para-los-pajaros.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
@@ -165,7 +165,7 @@ s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"n
   act("ninos32",que="toman",bebe="carmen"),act("ninos32",que="dejan"),act("abuelamira",sale=1),act("vista",a="v_verde"),
   ask("v_amarillo","c32_ab_verde_lleno",[act("abuelasale"),say("c32_carmen_quiero")],[act("vista",a=""),act("lleva32",a="v_amarillo")],alias=AL),
   # the turn: the last chinas
-  {"dots":4},act("abuelavuelve"),act("exprime",todo=1,suelto=1),"c32_mas_jugo",act("ya"),act("ninos32",que="toman"),act("ninos32",que="salen",con=1),"c32_carmen_come","c32_luis_mas","c32_familia",CARD,{"wait":400},
+  {"dots":4},act("abuelavuelve"),act("exprime",todo=1,suelto=1),"c32_mas_jugo",act("ya"),act("mama32",que="lleva"),act("ninos32",que="toman"),act("ninos32",que="salen",con=1),"c32_carmen_come","c32_luis_mas",act("abuelamira",sale=1),act("abuelasale"),"c32_familia",CARD,{"wait":400},
   # A: two lines, the children's own
   {"dots":5},{"draw":"va","options":["verde","amarillo"],"other":"vb"},{"draw":"oa","options":["l","c"]},
   {"calc":"ll","cond":"va=verde","then":"c32_luis_mi_vacio","else":"c32_luis_mi_lleno"},{"calc":"lc","cond":"va=amarillo","then":"c32_carmen_mi_vacio","else":"c32_carmen_mi_lleno"},
