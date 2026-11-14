@@ -17,6 +17,63 @@ comunes={"muy_bien":N("¡Muy bien!"),"si_muy_bien":N("¡Sí! ¡Muy bien!"),"yo_c
  "esta_es_mama":N("Esta es mamá."),"n_papa":N("Este es papá."),"n_abuelo":N("Este es abuelo."),"m_n_cocina":N("Es la cocina."),"c30_nevera":N("Esta es la nevera.")}
 BASE={"luis":"p_n_luis","carmen":"p_n_carmen","coqui":"yo_coqui","abuela":"abuela","mama":"esta_es_mama","papa":"n_papa","abuelo":"n_abuelo","cocina":"m_n_cocina","nevera":"c30_nevera"}
 
+# ---------------- 31. Para los pájaros ----------------
+c=dict(comunes)
+ART={"pan":"El pan","fruta":"La fruta","guineo":"El guineo","manzana":"La manzana"}
+c.update({"c31_vamos":AB("Vamos al parque."),"c31_busca":N("Abuela busca comida para el parque."),"c31_aqui_pan":N("Aquí hay pan."),"c31_aqui_fruta":N("Y aquí hay fruta."),"c31_aqui_gm":N("Aquí hay guineos y manzanas."),
+ "c31_huele_pan":N("Abuela huele el pan."),"c31_fo_pan":AB("¡Fo! Este pan no huele bien."),"c31_para_pajaros":AB("Este pan es para los pájaros."),"c31_tira_pan":N("Coquí tira el pan."),"c31_pajaro_pan":N("El pájaro come pan."),"c31_carmen_fruta":N("Carmen come fruta."),
+ "c31_huele_fruta":N("Abuela huele la fruta."),"c31_esta_fruta":AB("Esta fruta no huele bien."),"c31_tira_fruta":N("Coquí tira la fruta."),"c31_pajaro_fruta":N("El pájaro come fruta."),"c31_luis_pan":N("Luis come pan."),
+ "c31_este_guineo":AB("Este guineo no huele bien."),"c31_guineo_pajaros":N("El guineo es para los pájaros."),"c31_carmen_manzana":N("Carmen come la manzana."),
+ "c31_esta_manzana":AB("Esta manzana no huele bien."),"c31_manzana_pajaros":N("La manzana es para los pájaros."),"c31_carmen_guineo":N("Carmen come el guineo."),
+ "c31_abuelo_mira":AO("Coquí, mira la fruta."),"c31_cq_guineo":T("¡El guineo no huele bien!"),"c31_cq_manzana":T("¡La manzana no huele bien!"),"c31_abuelo_manzana":N("Abuelo come la manzana."),"c31_abuelo_guineo":N("Abuelo come el guineo."),
+ "c31_abuelo_vamos":AO("¡Vamos al parque!"),"c31_aqui_pan_fruta":AB("Aquí hay pan y fruta para el parque."),"c31_van":N("Luis y Carmen van al parque."),"c31_cq_adios":T("¡Adiós, abuela!")})
+for k in ART:
+    c["c31_ab_%s_no"%k]=AB("%s no huele bien."%ART[k]); c["c31_no_%s"%k]=N("No, Coquí. Mira. %s no huele bien."%ART[k])
+DG=["di_guineo","di_manzana"]; VG={"di_guineo":"c31_cq_guineo","di_manzana":"c31_cq_manzana"}
+s31={"id":"para-los-pajaros","title":"Para los pájaros","place":"La cocina","scene":"nevera","next":"jugo-de-china",
+ "goal":"Fill the picnic basket with good things for the park.","stake":{"thing":"comida","steps":3},"dots":8,"bien":"si_muy_bien",
+ "focus_words":["fruta","guineo","manzana","pan"],"back_again":["huele","bien","tira","busca","pájaro","come","hay","aquí","vamos","parque","para","comida","este","esta","mira","adiós"],
+ "also_heard":["fo","van"],"names":BASE,"clips":c,
+ "beats":[act("inicio31"),{"wait":500},"c31_vamos","c31_busca",tw("cesta"),"c31_aqui_pan",tw("frutas"),"c31_aqui_fruta",tw(None),act("cajon31",ver=1),"c31_aqui_gm",act("cajon31",ver=0),
+  # the opening: touch a thing (twice), touch a person (twice), say (twice)
+  {"dots":1},act("lote",viejo="pan",izq="pan"),act("huele31",a="pan",suelto=1),"c31_huele_pan",act("ya"),"c31_fo_pan",
+  ask("t_pan","c31_para_pajaros",["c31_pajaro_pan",act("resto31",a="carmen",suelto=1),"c31_carmen_fruta",act("ya")],[act("tira31",a="t_pan",suelto=1),"c31_tira_pan",act("ya")]),
+  act("lote",viejo="fruta",izq="fruta"),act("huele31",a="fruta",suelto=1),"c31_huele_fruta",act("ya"),
+  ask("t_fruta","c31_esta_fruta",["c31_pajaro_fruta",act("resto31",a="luis",suelto=1),"c31_luis_pan",act("ya")],[act("tira31",a="t_fruta",suelto=1),"c31_tira_fruta",act("ya")]),
+  {"dots":2},act("sostienen",luis="guineo"),act("huelemanos",orden=1),
+  ask("luis","c31_este_guineo",["c31_guineo_pajaros",act("nino31",a="carmen",suelto=1),"c31_carmen_manzana",act("ya")],[act("quita",a="luis")]),
+  act("sostienen",luis="manzana"),act("huelemanos",orden=2),
+  ask("luis","c31_esta_manzana",["c31_manzana_pajaros",act("nino31",a="carmen",suelto=1),"c31_carmen_guineo",act("ya")],[act("quita",a="luis")]),
+  {"dots":3},act("abuelaa31"),act("abuelo31",que="trae",viejo="guineo"),
+  ask("di_guineo","c31_abuelo_mira",[act("abuelo31",que="come",suelto=1),"c31_abuelo_manzana",act("ya")],[act("abuelo31",que="tira",k="guineo")],resp=DG,baraja=True,voces=VG,said={"di_guineo":"c31_cq_guineo"}),
+  act("abuelo31",que="trae",viejo="manzana"),
+  ask("di_manzana","c31_abuelo_mira",[act("abuelo31",que="come",suelto=1),"c31_abuelo_guineo",act("ya")],[act("abuelo31",que="tira",k="manzana")],resp=DG,baraja=True,voces=VG,said={"di_manzana":"c31_cq_manzana"}),
+  # the turn: abuelo with his hat on; the three last lots, one for each hollow
+  {"dots":4},{"draw":"ka","options":["pan","fruta"],"other":"kb"},{"draw":"za","options":["pan","fruta"]},{"draw":"ha","options":["1","2"]},
+  {"draw":"kc","options":["guineo","manzana"],"other":"kd"},{"draw":"qb","options":["guineo","manzana"]},{"draw":"hb","options":["1","2"]},{"draw":"ke","options":["guineo","manzana"],"other":"kf"},
+  {"calc":"pv","cond":"kc=$qb","then":"luis","else":"carmen"},{"calc":"pw","cond":"kc=$qb","then":"carmen","else":"luis"},
+  act("turno31"),say("c31_abuelo_vamos"),act("lotes31",viejo="$ka",izq="$za",luis="$qb"),"c31_aqui_pan_fruta",CARD,{"wait":400},
+  # A: bread or fruit, on the tray
+  {"dots":5},act("huele31",orden="$ha",pano=1),act("abuelaa31",pano=1),
+  {"decide":"do","options":["t_pan","t_fruta"],"pick":"t_$ka","tests":"$ka","lock":True,"lead":[],"line":"c31_ab_$ka_no",
+   "right":[act("tira31",a="t_$ka"),{"if":"ok","then":[act("marca",que="ok"),act("resto31",guarda=1)]}],
+   "wrong":[act("tira31",a="$x",bueno=1),act("resto31",voltea=1)]+X+["c31_no_$ka"]},
+  # B: guineo or manzana, in the children's hands
+  {"dots":6},act("huelemanos",orden="$hb"),
+  {"decide":"do","options":["luis","carmen"],"pick":"$pv","tests":"$kc","lock":True,"lead":[],"line":"c31_ab_$kc_no",
+   "right":[act("quita",a="$pv"),{"if":"ok","then":[act("marca",que="ok"),act("nino31",a="$pw",guarda=1)]}],
+   "wrong":[act("quita",a="$x",bueno=1),act("nino31",a="$pv",manchas=1)]+X+["c31_no_$kc"]},
+  # C: he sees the spots and says which; abuelo, who sees only the backs, throws what he names
+  {"dots":7},act("abuelo31",que="trae",viejo="$ke"),
+  {"decide":"say","options":DG,"baraja":True,"pick":"di_$ke","tests":"$ke","voces":VG,"said":VG,"lead":[],"line":"c31_abuelo_mira",
+   "right":[act("abuelo31",que="tira",k="$ke"),{"if":"ok","then":[act("marca",que="ok"),act("abuelo31",que="da")]}],
+   "wrong":[act("abuelo31",que="tira",k="$x"),act("abuelo31",que="mira")]+X+["c31_no_$ke"]}],
+ "final":[{"dots":8},act("final31"),"c31_van",say("c31_cq_adios",300),act("fin")],
+ "leer":["c31_vamos","c31_busca","c31_aqui_pan","c31_aqui_fruta","c31_aqui_gm","c31_huele_pan","c31_fo_pan","c31_para_pajaros","c31_tira_pan","c31_pajaro_pan","c31_carmen_fruta","c31_huele_fruta","c31_esta_fruta","c31_tira_fruta","c31_pajaro_fruta","c31_luis_pan",
+  "c31_este_guineo","c31_guineo_pajaros","c31_carmen_manzana","c31_esta_manzana","c31_manzana_pajaros","c31_carmen_guineo","c31_abuelo_mira","c31_cq_guineo","c31_abuelo_manzana","c31_cq_manzana","c31_abuelo_guineo",
+  "c31_abuelo_vamos","c31_aqui_pan_fruta","c31_van","c31_cq_adios"]}
+json.dump(s31,open("cuentos/para-los-pajaros.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+
 # ---------------- 32. Jugo de china ----------------
 c=dict(comunes)
 COL={"verde":"verde","amarillo":"amarillo","rojo":"rojo","azul":"azul"}; EST={"lleno":"lleno","vacio":"vacío"}
@@ -94,7 +151,7 @@ for f in sorted(glob.glob("cuentos/*.json")):
 for cid,(who,text) in seen.items():
     if not os.path.exists(f"audio/{cid}.mp3"): new+=1; chars+=len(text)
 print(len(seen),"clips,",new,"new,",chars,"characters to record,",clash,"clashes")
-for st in (s32,):
+for st in (s31,s32):
     txt=json.dumps({"b":st["beats"],"f":st["final"]},ensure_ascii=False)
     for i in sorted(set(re.findall(r'"(c(?:30|31|32)_[a-z_0-9$]+)"',txt))):
         if "$" not in i and i not in st["clips"]: print("MISSING CLIP",st["id"],i)
