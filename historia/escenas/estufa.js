@@ -78,6 +78,9 @@ const COSA={
   monticulo(){const b=new Buf(9,6);b.ell(4.5,4,3.6,2,["#DCDCE8","#FFFFFF"]);b.px(4,1,"#FFFFFF");b.px(5,2,"#FFFFFF");return b.outline().done();},
   bandeja(){const b=new Buf(46,9);b.rect(1,3,44,5,"#9494A6");b.rect(1,3,44,1,"#C8C8D4");b.rect(2,4,42,3,"#6A6A7A");return b.outline().done();},
   cubo(){const b=new Buf(22,20);b.rect(3,5,16,14,"#5A8A5A");b.rect(3,5,4,14,"#7AAA7A");b.rect(3,16,16,3,"#3A6A3A");b.ell(11,5,8.6,3,["#3A6A3A","#5A8A5A","#9ACA9A"]);b.ell(11,5,6.6,2,["#2A3A2A"]);return b.outline().done();},
+  molinillo(){const b=new Buf(8,13);b.rect(2,4,4,8,"#5A3A1A");b.rect(2,4,1,8,"#8A5A2A");b.ell(4,3,2.6,2.2,["#3A2414","#5A3A1A"]);b.rect(3,0,2,2,"#C8C8D4");return b.outline().done();},
+  vasoagua(){const b=new Buf(10,14);b.rect(1,1,8,12,"#DCF2FA");b.rect(1,4,8,9,"#58B4EC");b.rect(1,1,2,12,"#F2FBFF");b.rect(3,3,3,3,"#FFFFFF");b.rect(5,6,3,3,"#E4F6FF");return b.outline().done();},
+  cuenco(){const b=new Buf(22,13);b.ell(11,9,8,3.4,["#B84A2E","#D8704A"]);b.ell(11,5,9.6,4,["#B84A2E","#D8704A","#F09A70"]);b.ell(11,4.6,7.6,2.8,["#D8C890","#F0E4B8"]);return b.outline().done();},
   banco(){const b=new Buf(26,20);b.rect(2,1,22,4,RP.wood[3]);b.rect(2,1,22,1,RP.wood[4]);b.rect(4,5,3,14,RP.wood[1]);b.rect(19,5,3,14,RP.wood[1]);b.rect(5,11,16,2,RP.wood[1]);return b.outline().done();}};
 const cosa=(k,c)=>spr("es"+k+(c==null?"":c),()=>(COSA[k]||COSA.plato)(c));
 function tenida(c,k,x,y,ang,esc,v){const im=cosa(k,v);if(ang||esc){c.save();c.translate(R(x),R(y));if(ang)c.rotate(ang);if(esc)c.scale(esc,esc);c.drawImage(im,-(im.width>>1),-im.height);c.restore();}else c.drawImage(im,R(x)-(im.width>>1),R(y)-im.height);}
@@ -87,7 +90,7 @@ function vapor(c,x,y,negro){const t=(F>>2)%6;[[-7,0],[0,-4],[6,-1]].forEach((p,i
 function fuego(c,i,a){const f=W.fuegos[i];if(!f||!f.k)return;const x=FX[i];
   if(f.k==="olla"){tenida(c,"olla",x,FY+1,0,0,f.negra&&!f.n?"negra":f.n?f.con:(f.con==="agua"||f.con==="choco"?f.con:"vacia"));if(f.negra)c.drawImage(cosa("quemada"),x-17,FY-23);
     if(f.mal)tenida(c,"monton",x,FY-13,0,0,f.mal);if(f.espuma){const E1=f.con==="hab"?"#E8B8A8":"#FFFFFF";[[-12,0,3,22],[-6,-2,4,30],[2,0,3,26],[9,-1,4,20]].forEach(q=>{fr(c,x+q[0]-1,FY-16+q[1],q[2]+2,q[3]+1,OUT);fr(c,x+q[0],FY-16+q[1],q[2],q[3],E1);});fr(c,x-14,FY-19,28,4,E1);}if(f.humo)vapor(c,x,FY-26,1);else if(f.vapor&&f.llama)vapor(c,x,FY-22,0);}
-  else{tenida(c,"sarten",x+6,FY+1);(f.cosas||[]).forEach((o,j)=>{const px=x+j*12-((f.cosas.length-1)*6);pieza(c,o,px,FY-3);if(o.humo)vapor(c,px,FY-14,1);});if(f.humo)vapor(c,x,FY-14,1);}
+  else{tenida(c,"sarten",x+6,FY+1);(f.cosas||[]).forEach((o,j)=>{const px=x+j*12-((f.cosas.length-1)*6);pieza(c,o,px,FY-3);if(o.humo)vapor(c,px,FY-14,1);});if(f.humo)vapor(c,x,FY-14,1);else if(f.vapor)vapor(c,x,FY-14,0);}
   if(f.llama)llama(c,x,a);}
 function pieza(c,o,x,y,esc){tenida(c,o.k,x,y,0,esc||0,o.v);const e=esc||1;if(o.sal>=2)tenida(c,"monticulo",x,y-3*e,0,esc||0);}
 const alto=id=>{const w=QUIEN[id]||{};return id==="abuela"?51:w.nino?44:56;};
@@ -105,7 +108,7 @@ const COSAS=Object.keys(QUIEN).map(persona).concat([
 /* ---------- drawing ---------- */
 function gente(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const w=QUIEN[id],x=R(p.x),y=R(p.y),habla=TALK===id&&a%2?1:0,d=p.dir<0?-1:1;
   if(id==="abuela"){const ps=p.pose||"idle",top=y-50+((p.paso&&a%2)?-1:0);c.save();c.translate(x,top);if(d<0)c.scale(-1,1);c.drawImage(spr("ab"+ps+habla,()=>mkAbuela(ps,habla)),-30,0);c.restore();
-    if(p.lleva)tenida(c,p.lleva.k||p.lleva,x+d*14,y-17,0,0,p.lleva.v);if(p.bebe)tenida(c,"taza",x+d*8,y-24-(a%2),0,0,p.bebe);return;}
+    if(p.lleva)tenida(c,p.lleva.k||p.lleva,x+d*14,y-17,0,0,p.lleva.v);if(p.bebe)tenida(c,"taza",x+d*8,y-24-(a%2),0,0,p.bebe);if(p.alza)tenida(c,p.alza.k,x+d*(p.alza.dx||18),y-22,0,p.alza.e||2,p.alza.v);if(p.come)tenida(c,p.come.k,x+d*7,y-26+(a%2),0,0,p.come.v);return;}
   const pose=p.pose||"idle",im=spr("pm"+id+pose+habla+"0",()=>KIT.mkPersona(w,pose,habla,0)),top=y-im.height+1+((p.paso&&a%2)?-1:0)+(p.dy||0);
   c.save();c.translate(x,top);if((pose==="offer"?-d:d)<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
   if(p.bebe&&id==="mama"){const e=p.bebe===1?"idle":p.bebe,bi=spr("bb"+e+(a%2),()=>KIT.mkBebe(e,a%2));c.drawImage(bi,x+d*2-13+d*8,y-42);}
