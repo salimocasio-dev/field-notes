@@ -78,8 +78,8 @@ What is true of a table (and shaped these games): too little can be topped up an
 **The opening** (big sign)
 
 2. **He says it, taught.** Everybody holds a fork up and waits. Two speaking bubbles: "¡Buen provecho!" / "¡Yo también!" Sign on the first. COQUÍ: "¡Buen provecho!" NARR: "La familia dice: ¡Buen provecho!" They eat. NARR: "Abuelo dice: ¡El arroz está rico!"
-3. Luis's plate is clean. NARR: "Luis se come todo el arroz." NARR: "Luis dice: Quiero más arroz, por favor." Abuela gives him the big spoon; he takes a mound for himself, eats it, and holds a second mound out on the spoon. Over the frog, a thought bubble: a mound with a heart. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Bubbles: "¡Yo también!" / "No, gracias. ¡Está rico!" Sign on the first. COQUÍ: "¡Yo también!" The mound goes on his plate. NARR: "Coquí se come todo el arroz."
-4. Luis holds out another mound; the frog has a round belly and a clean plate. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Sign on the second bubble. COQUÍ: "No, gracias. ¡Está rico!" Luis eats the mound himself.
+3. Luis takes his last forkfuls; during them: NARR: "Luis se come todo el arroz." His plate is clean. NARR: "Luis dice: Quiero más arroz, por favor." Abuela gives him the big spoon; he takes a mound for himself, eats it, and holds a second mound out on the spoon. Over the frog, a thought bubble: a mound with a heart. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Bubbles: "¡Yo también!" / "No, gracias. ¡El arroz está rico!" Sign on the first. COQUÍ: "¡Yo también!" The mound goes on his plate. NARR: "Coquí se come todo el arroz."
+4. Luis holds out another mound; the frog has a round belly and a clean plate. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Sign on the second bubble. COQUÍ: "No, gracias. ¡El arroz está rico!" Luis eats the mound himself.
 5. **Touch a person of three, taught.** NARR: "Luis dice: ¿Quién quiere más?" He holds the spoon out to the frog, who takes it with a mound on it. All three at the table are still eating. NARR: "Mamá dice: Yo también." NARR: "Abuelo dice: ¡El arroz está rico!" NARR: "Carmen dice: ¡Buen provecho!" and Carmen gets up with her plate, which is clean, and carries it to the counter. Sign on mamá. He touches her; the frog carries the mound to her plate. NARR: "Mamá se come todo el arroz."
 6. Carmen sits again. NARR: "Luis dice: ¿Quién quiere más?" NARR: "Abuelo dice: Yo también." NARR: "Carmen dice: ¡El arroz está rico!" NARR: "Mamá dice: ¡Buen provecho!" and mamá gets up with the baby. Sign on abuelo. NARR: "Abuelo se come todo el arroz."
 
@@ -89,17 +89,17 @@ What is true of a table (and shaped these games): too little can be topped up an
 
 **The game.** Abuela is out at the gate. Luis has the big spoon.
 
-8. **Decision A, Say (his own wish).** Luis takes a mound and holds it out. Over the frog a thought bubble (drawn): a mound with a heart, or his round belly beside his clean plate. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Bubbles: "¡Yo también!" / "No, gracias. ¡Está rico!"
-   - Right "¡Yo también!": the mound is the frog's, and he eats it. Right "No, gracias. ¡Está rico!": Luis eats it. One mound either way. A star.
-   - Wrong, he wanted it and said no: Luis eats it. A cross. NARR: "No, Coquí. Mira. Coquí quiere más arroz." The sign is on "¡Yo también!"; he says it; a second mound for the frog.
-   - Wrong, he was full and said "¡Yo también!": the mound lies on his plate; he takes one bite and holds his belly; the rest stays. A cross. NARR: "No, Coquí. Mira. Coquí está lleno." The sign is on the other bubble; he says it; Luis takes a second mound for himself.
+8. **Decision A, Say (his own wish).** Luis takes a mound and holds it out. Over the frog a thought bubble (drawn): a mound with a heart, or his round belly beside his clean plate. NARR: "Luis dice: ¿Y tú, Coquí? ¿Quieres más?" Bubbles: "¡Yo también!" / "No, gracias. ¡El arroz está rico!"
+   - Right "¡Yo también!": the mound is the frog's, and he eats it. Right "No, gracias. ¡El arroz está rico!": Luis eats it. One mound either way. A star.
+   - Wrong, he wanted it and said no: Luis eats it. A cross. NARR: "No, Coquí. Mira. Tú quieres más arroz." The sign is on "¡Yo también!"; he says it; a second mound for the frog.
+   - Wrong, he was full and said "¡Yo también!": the mound lies on his plate; he takes one bite and holds his belly; the rest stays. A cross. NARR: "No, Coquí. Mira. Tú estás lleno." The sign is on the other bubble; he says it; Luis takes a second mound for himself.
 9. **Decision B, Touch a person of three.** NARR: "Luis dice: ¿Quién quiere más?" He hands the frog the spoon with one mound. Abuelo, mamá and Carmen, all still eating, in the same pose: one says "Yo también.", one "¡El arroz está rico!", one "¡Buen provecho!" and gets up with a clean plate (who says which, and in which order, drawn).
    - Right: that one eats it. A star.
    - Wrong: the one who only praised the rice, or the one who was leaving, shrugs and eats the mound; the one who asked looks at the platter. A cross. NARR: "No, Coquí. Mira. Mamá quiere más arroz." (the one who said "Yo también.") The sign is on that one; he touches him; a second mound.
 
 **Count:** the platter: five mounds. A takes one (right) or two (wrong); B takes one or two. Three, two or one are left. A redo always has its mound.
 
-**The ending.** Abuela comes in with papá. NARR: "Papá dice: ¡Hola, familia!" He sits; abuela scrapes what is left of the platter onto his plate. COQUÍ: "¡Buen provecho, papá!" He eats; when his plate is clean: NARR: "Papá se come todo el arroz."
+**The ending.** Abuela comes in with papá. NARR: "Papá dice: ¡Hola, familia!" He sits; abuela scrapes what is left of the platter onto his plate. COQUÍ: "¡Buen provecho, papá!" During his last forkfuls: NARR: "Papá se come todo el arroz."
 - Nothing wrong (two stars): three mounds on papá's plate. Stars and a heart.
 - One miss: two mounds. Two misses: one mound, and papá looks at the empty platter.
 
@@ -143,7 +143,7 @@ What is true of a table (and shaped these games): too little can be topped up an
    - Wrong: the cup of the child who wanted a little is brown to the brim. The two come back. That child tastes his, pulls a face and pushes it to the middle; the other child cannot take it (it is sweet, and he takes no sugar; or it is not sweet, and he does). A cross. NARR: "No, Coquí. Mira. Carmen quiere un poco de café." (the one whose cup it is) The sign is on the other cup; he touches it; a long pour into it.
 10. **Decision C, Say (his own cup).** Over the frog a thought bubble (drawn): a brown cup or a pale cup. NARR: "Abuela dice: ¿Quieres café, Coquí?" Bubbles: "Sí, un poco, por favor." / "Sí, mucho, por favor." Abuela pours from the little pot what he says, tips what is left in the little pot into her own cup, and fills the frog's cup to the brim with the last milk; she tips the pan towards us: empty.
    - Right: he drinks. A star.
-   - Wrong: the cup is the wrong colour and full to the brim. He looks at it and at his thought bubble. A cross. NARR: "No, Coquí. Mira. Coquí quiere mucho café." (Or: "…un poco de café.") The sign is on the right bubble; he says it. Abuela shows him the little pot and the pan: both empty. NARR: "Abuela dice: No hay más café." (after he wanted more) or "Abuela dice: No hay más leche." (after he wanted less). The cup stays as it is.
+   - Wrong: the cup is the wrong colour and full to the brim. He looks at it and at his thought bubble. A cross. NARR: "No, Coquí. Mira. Tú quieres mucho café." (Or: "Tú quieres un poco de café.") The sign is on the right bubble; he says it. Abuela shows him the little pot and the pan: both empty. NARR: "Abuela dice: No hay más café." (after he wanted more) or "Abuela dice: No hay más leche." (after he wanted less). The cup stays as it is.
 
 **Count:** the big pot at the turn: three half cups and one last pour (used in A in both branches). Milk: two cups for the children and one small cupful (used in C in both branches). The little pot: enough for one long pour and two splashes, or for two long pours after a miss in B; what is left after C goes into abuela's cup. Sugar does not run out. Cups: abuelo, papá, Luis, Carmen, the frog, abuela: six, no spare. No redo needs a new cup.
 
@@ -181,7 +181,7 @@ One sentence, two pictures, only one fits. Both pictures are lively; only the ne
 - Six words decide: me gusta, no me gusta; también; azúcar, mucho, un poco. "Quieres", "¿qué quieres?", "rico", "todo", "buen provecho" and "café" are heard six times or more (todo five) and tested the next day by their pairs: asking the wrong question, or praising, loses nothing in the world.
 - "¿Qué quieres?" is the frog's own spoken line seven times, but never a choice.
 - "Me gusta" against "no me gusta" turns on the old word "no". The line "No tengo chocolate." is there so that a "no" does not always mean "the other one".
-- In story 34's first round the other bubble is "No, gracias. ¡Está rico!": that is how food is turned down in Puerto Rico; praise alone gets you served.
+- In story 34's first round the other bubble is "No, gracias. ¡El arroz está rico!": that is how food is turned down in Puerto Rico; praise alone gets you served.
 - "Todo" is said as "se come todo el arroz": a bare "come todo" sounds like an order.
 - Stories 33 and 34 have two scored rounds each.
 - No story ends with the frog going without first: the loss lands on tomorrow's basket (33), on papá (34), on the cup's owner (35).
