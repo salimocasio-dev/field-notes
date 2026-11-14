@@ -295,7 +295,8 @@ async function stake(lost,max,en){if(S.stake.thing==="bizcocho"){await roba(en);
   if(lost>=max){await acts.llueve();return;}
   SFX.trueno(.6);W.flash=F;W.nube.tx=NX[Math.min(2,Math.round(lost*2/max))];W.dark=.22+.05*lost;await wait(900);}
 
-ESCENAS.frente={SW,SH,CAM:{wide:[44,0,196,216],casa:[56,0,172,190],puerta:[117,30,98,108],ventana:[84,24,98,108],cuadro:[63,18,98,108]},
+// casa: the whole house, and the frog where he starts (y 178, his shadow ends at y 206) with at least 8 art px of picture under his feet: the view ends at y 214 and starts under the little cloud (y 15), so no stub of it shows at the top
+ESCENAS.frente={SW,SH,CAM:{wide:[44,0,196,216],casa:[51.7,15,180.6,199],puerta:[117,30,98,108],ventana:[84,24,98,108],cuadro:[63,18,98,108]},
   handAt:{casa:[141,24],puerta:[166,76],ventana:[112,72],casa_grande:[141,24],casa_pequena:[73,128],palma_grande:[56,60],palma_pequena:[195,140],get abuela(){const b=box("abuela",W);return b?[Math.round(b[0]+b[2]/2),Math.round(b[1]+b[3]/2)]:[166,76];}},heartAt:[103,26],
   fresh:()=>({trozo:null,hojas:null,asoma:0,escondite:0,rustle:null,abierto:null,piernas:0,dusk:0,rondas:0,mios:0,tapado:0,ave:null,plato:null,mesa:0,abIn:null,caliente:0,door:0,win:0,lamp:0,peek:0,ab:null,storm:0,nube:null,nube2:null,nube3:null,dark:0,rain:0,wet:0,gotas:0,flash:0,dentro:null,tab:null,shake:0}),
   draw,box,hit,poke,acts,stake,talkAt,hud};
