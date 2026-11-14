@@ -45,6 +45,9 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 .pri:active{filter:brightness(.92)}
 .sec{display:none;width:100%;max-width:480px;height:48px;border:1.5px solid var(--line);border-radius:12px;color:var(--ink);font:500 16px/24px var(--sys);align-items:center;justify-content:center}
 .sec:active{background:rgba(255,255,255,.08)}
+#duo{display:contents}   /* Play again alone is a direct child of the bottom zone; with Map beside it (a story that has a next one) the two share a row, 16 px apart */
+#duo.two{display:flex;gap:16px;width:100%;max-width:480px}
+#duo.two>.sec{flex:1 1 0;width:auto;min-width:0}
 #app.nopic #stage,#app.nopic #capbox{display:none}
 /* the options of Review and the level check: one picture each, in its own 1.5 px frame; a ring shows the answer: green right, red-orange wrong (the level check only shows which one he touched, white) */
 #opts{position:absolute;inset:0}
@@ -74,7 +77,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
   #side{display:block;position:relative;grid-column:2;grid-row:2;min-width:0;margin-right:16px}
   #capbox{position:absolute;left:0;right:0;top:50%;width:auto;transform:translateY(-50%)}
   #cap{position:static}
-  #fin{padding:8px 0 136px;background:none}
+  #fin{padding:8px 0 152px;background:none}
   #foot{padding:0 0 16px}
   #go{margin-bottom:0}
   #app[data-s=start] #foot{top:50%;bottom:auto;padding:0;transform:translateY(-50%)}
@@ -97,7 +100,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
       <div id="fin"></div>
       <div id="foot">
         <button id="go" aria-label="Start"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M8 4.5v15l12-7.5z" fill="#FFFFFF"/></svg></button>
-        <button class="sec" id="again">Play again</button>
+        <div id="duo"><button class="sec" id="again">Play again</button><button class="sec" id="map">Map</button></div>
         <button class="pri" id="next">Next story</button>
         <button class="pri blu" id="home">Map</button>
       </div>

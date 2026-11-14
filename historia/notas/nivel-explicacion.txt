@@ -1,0 +1,22 @@
+Level check: the explanation that moved out of the result screen (UI round 3, A5)
+For the app's Yo tab, in "How it works", under a heading "Level check". The shell agent places it.
+
+HEADING
+Level check
+
+TEXT FOR YO (static, use exactly this)
+The words of the stories you already understand are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.
+
+WHAT THE RESULT SCREEN SAID BEFORE (exact, from nivel.js, with the numbers it filled in)
+Moved to Yo (the explanation; "Their N words" became "The words of the stories you already understand", nothing else changed):
+  Their N words are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.
+Left out of the screen, not an explanation (the result line now says only how far he got):
+  You already understand the first S stories.        (this one stays, as the one line under the title)
+  You start at the beginning. Nothing was skipped.   (now: "You start at the beginning.")
+  You start at: <b>TITLE</b>.
+  Every story built so far is open as done. More are being built.
+
+THE RESULT SCREEN NOW
+Title: Level check done
+One line: "You already understand the first S stories." (S = 1: "story"), or "You start at the beginning." when S = 0
+Button: To the map

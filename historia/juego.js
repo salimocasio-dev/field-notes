@@ -251,8 +251,9 @@ async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.a
 /* ---------- running it ---------- */
 let dots=[...document.querySelectorAll(".dot")];const step=n=>dots.forEach((d,i)=>d.classList.toggle("on",i<n));
 function mkDots(n){const bar=$("#bar");bar.innerHTML="";dots=[];for(let i=0;i<n;i++){const d=document.createElement("span");d.className="dot";bar.appendChild(d);dots.push(d);}bar.classList.toggle("many",n>24);}   // the progress bar: one segment per step
-// the bottom zone: what comes next. foot(next,again,map) shows the buttons it is given. Next (green) and Map (blue) are the one main button; Play again is the outline one above it
-function foot(a,b,c){$("#next").style.display=a?"flex":"none";$("#again").style.display=b?"flex":"none";$("#home").style.display=c?"flex":"none";}
+// the bottom zone: what comes next. foot(next,again,map,mapOutline) shows the buttons it is given. Next (green) and Map (blue) are the one main button; Play again is the outline one above it, and when a next story waits the outline Map sits beside Play again, so the map is reachable without the X
+function foot(a,b,c,d){$("#next").style.display=a?"flex":"none";$("#again").style.display=b?"flex":"none";$("#home").style.display=c?"flex":"none";
+  const m=$("#map"),r=$("#duo");if(m)m.style.display=d?"flex":"none";if(r)r.classList.toggle("two",!!(b&&d));}   // d: the outline Map beside Play again (the app's hidden copy of this page has neither #map nor #duo)
 // the three states of a lesson screen: "start" (the disc), "play", "end" (title, result, buttons). nopic: ¿Cuál? and the level check show no picture before the first item and after the last
 function estado(s,nopic){const a=$("#app");if(a){a.dataset.s=s;a.classList.toggle("nopic",!!nopic);}}
 // the text of a start or end screen: a title (24 px, left, at about 35% of the height) and, where there is a result, a line or two under it; no title hides it
@@ -278,7 +279,7 @@ let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush()
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
   if(typeof PAL!=="undefined"&&(!Q.get("fast")||Q.get("rec"))){if(!OIR&&!S.tipo){S._lost=W.lost;PAL.cuento(S,LOG);}else if(PAL.oido)PAL.oido(CUENTO);PAL.minutos((performance.now()-T0)/6e4);}   // the words he heard and how he answered go into his word records
   step(dots.length);await sleep(1200/FAST);if(my!==runId)return;   // the last picture stays a moment, then the title and the buttons come (the picture itself stays: see finFit)
-  running=false;const nx=!!(S.next&&!OIR);estado("end");pantalla(S.title);foot(nx,true,!nx);finFit();}   // the story's title under the last picture, then Play again above Next story (green); with no next story, Map (blue) takes the main place
+  running=false;const nx=!!(S.next&&!OIR);estado("end");pantalla(S.title);foot(nx,true,!nx,nx);finFit();}   // the story's title under the last picture, then Play again above Next story (green); with no next story, Map (blue) takes the main place
 const VER=((document.querySelector('script[src*="juego.js"]')||{src:""}).src.split("v=")[1]||"0");
 function cargaEscena(id){return ESCENAS[id]?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement("script");s.src="escenas/"+id+".js?v="+VER;s.onload=ok;s.onerror=()=>no(new Error("no scene "+id));document.head.appendChild(s);});}
 async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"no-store"})).json();await cargaEscena(S.scene);E=ESCENAS[S.scene];if(S.cam)E.CAM=Object.assign({},E.CAM,S.cam);SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;document.title="Coquí · "+S.title;mkDots(S.dots||5);
@@ -286,7 +287,7 @@ async function arranca(){S=await (await fetch("cuentos/"+CUENTO+".json",{cache:"
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}run();};$("#again").onclick=()=>run();
   $("#next").onclick=()=>{const q=new URLSearchParams(location.search);q.set("cuento",S.next);location.search=q.toString();};}
 $("#snd").onclick=()=>{muted=!muted;$("#snd").classList.toggle("off",muted);if(master)master.gain.value=muted?0:1;};
-$("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("app.html?tab=mapa");
+$("#close").onclick=()=>salir(SALIDA||origen());$("#home").onclick=()=>salir("app.html?tab=mapa");{const mp=$("#map");if(mp)mp.onclick=()=>salir("app.html?tab=mapa");}
 // the picture is as big as the frame leaves room for: below the top bar, above the caption and the bottom third (portrait), or left of them (a phone on its side).
 // Always a whole number of screen pixels per art pixel (kd), so the pixel art stays crisp: the picture may end up smaller than the room it has. Only a camera zoom inside a story may be fractional.
 const LAND=()=>matchMedia("(orientation:landscape) and (max-height:600px)").matches;
