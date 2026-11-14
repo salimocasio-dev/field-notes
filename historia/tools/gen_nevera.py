@@ -192,6 +192,40 @@ s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"n
   "c32_mama_rojo_lleno","c32_ab_verde_vacio","c32_luis_toma","c32_mama_rojo_vacio","c32_ab_verde_lleno","c32_carmen_quiero","c32_carmen_come","c32_luis_mas","c32_mas_jugo","c32_familia","c32_ab_come","cq_gracias_abuela"]}
 json.dump(s32,open("cuentos/jugo-de-china.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
+# ---------------- the next-day picture pairs ----------------
+NO={"x":0,"y":0,"s":1,"dy":0,"al":1,"vis":0,"bub":None,"hace":None,"piensa":None}
+def pic(cam,**kw): return {"cam":cam,"set":dict({"cq":NO,"gente":{},"nev":{"abierta":0,"h":[]},"mos":{},"patio":{},"repisa":[],"cesta":None,"canasta":None,"cosas":[],"vuelos":[],"banco":0,"encima":None,"tarjeta":None,"pila":None,"vista":None},**kw)}
+ENC=112
+def nino(**kw): return dict({"x":150,"y":200,"dir":1},**kw)
+def adulto(**kw): return dict({"x":150,"y":204,"dir":1},**kw)
+CN=[118,154,94.2,50]; CT=[124,152,56.5,30]; CA=[110,146,113,60]; CM=[132,92,75.3,40]; CZ=[132,97,56.5,30]; CF=[36,50,75.3,40]; CV=[127,36,113,60]
+PAR={"m_n_carmen_leche":N("Carmen toma leche."),"m_n_el_queso":N("Mira el queso."),"m_n_no_hay_leche":N("No hay leche."),"m_n_papa_busca":N("Papá busca el pan."),"m_n_mi_fruta":N("Mira mi fruta."),"m_n_bebe_guineo":N("El bebé come guineo."),
+ "m_n_mi_manzana":N("Mira mi manzana."),"m_n_tu_china":N("Dame tu china, por favor."),"m_n_plato_lleno":N("El plato está lleno."),"m_n_mi_vaso_vacio":N("Mi vaso está vacío.")}
+todos={**s30["clips"],**s31["clips"],**s32["clips"],**PAR}
+usa=list(PAR)+["c31_aqui_pan","c32_le_pone","muy_bien","si_muy_bien"]
+FR=lambda h:{"abierta":1,"soporte":1,"h":h}
+cual={"id":"cual-nevera","title":"¿Cuál?","place":"La cocina","scene":"nevera","tipo":"cual","stake":{"thing":"none","steps":0},
+ "note":"The next-day pass for La nevera.","clips":{k:todos[k] for k in usa},
+ "items":[
+  {"w":"leche","say":"m_n_carmen_leche","si":pic(CT,gente={"carmen":nino(bebe={"k":"claro","v":"leche"})}),"no":pic(CT,gente={"carmen":nino(bebe={"k":"claro","v":1})})},
+  {"w":"queso","say":"m_n_el_queso","si":pic(CZ,cosas=[{"k":"platoazul","x":160,"y":ENC+11,"z":300},{"k":"queso","v":3,"x":160,"y":ENC+9,"z":301}]),"no":pic(CZ,cosas=[{"k":"mantequilla","v":3,"x":160,"y":ENC+10,"z":300}])},
+  {"w":"no hay","say":"m_n_no_hay_leche","si":pic(CF,nev=FR([None,{"k":"queso","v":3}])),"no":pic(CF,nev=FR([{"k":"leche","v":4},None]))},
+  {"w":"busca","say":"m_n_papa_busca","si":pic(CV,gente={"papa":{"x":184,"y":120,"dir":1,"fuera":1,"alza":{"k":"moneda","e":2,"dx":13,"dy":-12},"piensa":{"k":"pan","v":3}}}),"no":pic(CV,gente={"papa":{"x":184,"y":120,"dir":-1,"fuera":1,"come":{"k":"rebanada"}}})},
+  {"w":"fruta","say":"m_n_mi_fruta","si":pic(CA,gente={"abuelo":adulto(alza={"k":"platofruta","dx":16,"dy":12})}),"no":pic(CA,gente={"abuelo":adulto(alza={"k":"platorollo","dx":16,"dy":12})})},
+  {"w":"guineo","say":"m_n_bebe_guineo","si":pic(CA,gente={"mama":adulto(bebe="come",bebecosa={"k":"guineo","v":"pelado"})}),"no":pic(CA,gente={"mama":adulto(bebe="come",bebecosa={"k":"manzana"})})},
+  {"w":"manzana","say":"m_n_mi_manzana","si":pic(CN,gente={"luis":nino(alza={"k":"manzana"})}),"no":pic(CN,gente={"luis":nino(alza={"k":"china"})})},
+  {"w":"china","say":"m_n_tu_china","si":pic(CA,gente={"carmen":{"x":140,"y":204,"dir":1,"pose":"offer"},"abuelo":{"x":184,"y":204,"dir":-1,"alza":{"k":"china","dx":16,"dy":10}}}),"no":pic(CA,gente={"carmen":{"x":140,"y":204,"dir":1,"pose":"offer"},"abuelo":{"x":184,"y":204,"dir":-1,"alza":{"k":"guineo","dx":18,"dy":10}}})},
+  {"w":"pan","say":"c31_aqui_pan","si":pic(CM,cosas=[{"k":"cesta","v":4,"x":166,"y":ENC+10,"z":300}]),"no":pic(CM,cosas=[{"k":"ollaarroz","x":166,"y":ENC+10,"z":300}])},
+  {"w":"mantequilla","say":"c32_le_pone","si":pic(CM,gente={"abuela":{"x":158,"y":157,"dir":1,"pose":"offer"}},cosas=[{"k":"untando","x":186,"y":ENC+11,"e":2,"z":300}]),"no":pic(CM,gente={"abuela":{"x":158,"y":157,"dir":1,"pose":"offer"}},cosas=[{"k":"conqueso","x":186,"y":ENC+11,"e":2,"z":300}])},
+  {"w":"lleno","say":"m_n_plato_lleno","si":pic(CN,gente={"luis":nino(alza={"k":"platolleno","dx":15,"dy":10})}),"no":pic(CN,gente={"luis":nino(alza={"k":"plato","dx":15,"dy":10})})},
+  {"w":"vacío","say":"m_n_mi_vaso_vacio","si":pic(CA,gente={"papa":adulto(alza={"k":"claroalreves"})}),"no":pic(CA,gente={"papa":adulto(alza={"k":"claro","v":1,"dx":8,"dy":-14})})}]}
+json.dump(cual,open("cuentos/cual-nevera.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+
+# the story before this scene leads into it
+p="cuentos/cuidado.json"; d=json.load(open(p,encoding="utf-8"))
+if d.get("next")!="no-hay-leche":
+    d["next"]="no-hay-leche"; json.dump(d,open(p,"w",encoding="utf-8"),ensure_ascii=False,indent=1)
+
 # clip ids are global: the same id must have the same text everywhere
 seen={}; clash=0; new=0; chars=0
 for f in sorted(glob.glob("cuentos/*.json")):

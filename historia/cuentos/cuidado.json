@@ -3,7 +3,7 @@
  "title": "¡Cuidado!",
  "place": "La cocina",
  "scene": "estufa",
- "next": null,
+ "next": "no-hay-leche",
  "goal": "Fry the fritters, and bring everybody the chocolate he wants.",
  "stake": {
   "thing": "merienda",

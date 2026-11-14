@@ -134,7 +134,7 @@ for p in NOMM:
     for k in CH:
         c["c29_%s_quiere_%s"%(p,k)]=D(p,NOMM[p],"Quiero %s."%CH[k]); c["c29_no_%s_quiere_%s"%(p,k)]=N("No, Coquí. Mira. %s quiere %s."%(NOMM[p],CH[k])); c["c29_%s_bebe_%s"%(p,k)]=N("%s bebe %s."%(NOMM[p],CH[k]))
 DO=["espera","saca"]
-s29={"id":"cuidado","title":"¡Cuidado!","place":"La cocina","scene":"estufa","next":None,
+s29={"id":"cuidado","title":"¡Cuidado!","place":"La cocina","scene":"estufa","next":"no-hay-leche",
  "goal":"Fry the fritters, and bring everybody the chocolate he wants.","stake":{"thing":"merienda","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["caliente","frío","cuidado","ya"],"back_again":["olla","chocolate","quiero","quiere","¿quién?","bebe","toma","come","mira","espera","hay","aquí","está","listo"],
  "also_heard":["ya está"],"names":BASE,"palabras":{"cal":"caliente","frio":"frío"},"clips":c,

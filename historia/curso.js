@@ -6,7 +6,7 @@ const CURSO={
       dibujos:["d-toc-toc","d-agua-pajaro","d-bizcocho-bebe","d-foto-familia","d-la-bola","d-buenas-noches"],haz:["h-frente","h-balcon","h-sala","h-patio"],escenas:["El frente","El balcón","La sala","El patio"]},
     {id:"parque",n:2,nombre:"El parque",en:"The park",fork:"2a",cuentos:["uno-dos-tres","donde-esta-el-gato","rapido-despacio","la-bola","arriba-abajo","otra-vez","pan-para-el-pato","los-botes","cual","la-piragua","senor-senora","el-bebe-duerme"],
       dibujos:["d-corre","d-bola-canelo","d-pato-pequeno","d-piragua-luis","d-vamos-a-casa"],haz:["h-camino","h-campo","h-lago","h-banco"],escenas:["El camino","El campo","El lago","El banco"]},
-    {id:"cocina",n:3,nombre:"La cocina",en:"The kitchen",fork:"2b",cuentos:["la-mesa","la-cuchara","tengo-hambre","arroz-con-habichuelas","el-pollo-y-el-huevo","cuidado"],escenas:["La mesa","La estufa","La nevera","A comer"]},
+    {id:"cocina",n:3,nombre:"La cocina",en:"The kitchen",fork:"2b",cuentos:["la-mesa","la-cuchara","tengo-hambre","arroz-con-habichuelas","el-pollo-y-el-huevo","cuidado","no-hay-leche","para-los-pajaros","jugo-de-china"],escenas:["La mesa","La estufa","La nevera","A comer"]},
     {id:"colmado",n:4,nombre:"El colmado",en:"The corner shop",escenas:["El mostrador","Los estantes","Las frutas","La caja"]},
     {id:"calle",n:5,nombre:"La calle",en:"The street",fork:"4a",escenas:["La esquina","La parada","Las tiendas","El cruce"]},
     {id:"plaza",n:6,nombre:"La plaza",en:"The town square",fork:"4b",escenas:["El banco de la plaza","El reloj","El quiosco","El calendario"]},
@@ -24,10 +24,11 @@ const CURSO={
     "la-piragua":{t:"La piragua",min:4},"senor-senora":{t:"¡Señor! ¡Señora!",min:5},"el-bebe-duerme":{t:"El bebé duerme",min:4},
     "la-mesa":{t:"La mesa",min:5},"la-cuchara":{t:"La cuchara",min:5},"tengo-hambre":{t:"Tengo hambre",min:5},
     "arroz-con-habichuelas":{t:"Arroz con habichuelas",min:5},"el-pollo-y-el-huevo":{t:"El pollo y el huevo",min:5},"cuidado":{t:"¡Cuidado!",min:5},
+    "no-hay-leche":{t:"No hay leche",min:6},"para-los-pajaros":{t:"Para los pájaros",min:5},"jugo-de-china":{t:"Jugo de china",min:5},
     // Escuchar: picture stories (d-) and do-this routines (h-). Nothing in them is scored.
     "d-toc-toc":{t:"Toc, toc",min:2},"d-agua-pajaro":{t:"Agua para el pájaro",min:2},"d-bizcocho-bebe":{t:"El bizcocho del bebé",min:2},"d-foto-familia":{t:"La foto de la familia",min:2},"d-la-bola":{t:"La bola",min:1},"d-buenas-noches":{t:"Buenas noches",min:2},
     "d-corre":{t:"¡Corre!",min:2},"d-bola-canelo":{t:"La bola de Canelo",min:2},"d-pato-pequeno":{t:"Pan para el pato pequeño",min:2},"d-piragua-luis":{t:"La piragua de Luis",min:2},"d-vamos-a-casa":{t:"Vamos a casa",min:2},
     "h-camino":{t:"En el camino",min:2},"h-campo":{t:"En el campo",min:2},"h-lago":{t:"En el lago",min:2},"h-banco":{t:"En el banco",min:2},
     "h-frente":{t:"Abre y cierra",min:2},"h-balcon":{t:"En el balcón",min:2},"h-sala":{t:"La familia",min:2},"h-patio":{t:"En el patio",min:2}},
-  cual:["cual-frente","cual-balcon","cual-sala","cual-patio","cual-camino","cual-campo","cual-lago","cual-banco","cual-mesa","cual-estufa"]   // the next-day picture pairs, one file per scene
+  cual:["cual-frente","cual-balcon","cual-sala","cual-patio","cual-camino","cual-campo","cual-lago","cual-banco","cual-mesa","cual-estufa","cual-nevera"]   // the next-day picture pairs, one file per scene
 };
