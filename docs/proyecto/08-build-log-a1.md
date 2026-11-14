@@ -19,7 +19,7 @@ Live at ?v=27. Scripts (final, draft 3): historia/notas/guiones/lago.md. Generat
 - **Story 18, Pan para el pato** (pato, pez, pájaro, nada, vuela). A: "¡Pan para el pez!" (touch one of three). B: "¿Quién vuela?" / "¿Quién nada?" with the bird in the air, the fish in the water and the duck on the bank (the duck does both, so a touch on it is a free poke). C: Luis, head down, asks "¿Y el pato?"; he says "¡El pato vuela!" or "¡El pato nada!". Stake: six pieces of bread in a row on the dock; a wrong round uses two; what is left is shared out at the end.
 - **Story 19, Los botes** (rojo, azul, verde, ¿de qué color?). A: "¡dame el bote azul!". B: a fish circles; Luis, head in his bag: "¿De qué color es?"; he says the colour; Luis paints a boat that colour and the fish pushes it across. C: "¡Ahora dos botes! Uno verde y uno rojo.": two touches on pots of paint (picture bubbles). Stake: a boat nobody blows or pushes drifts into the reeds and stays.
 - **Story 20, ¿Cuál?** (amarillo, blanco, negro, ¿cuál?). A: "¿Cuál es el pato negro?". B: a bird takes Carmen's bread; "¿Cuál pájaro?"; he says which. C: "¡Pan para el pato!" (which is not said: he must ask "¿Cuál?", a bubble beside the ducks) or "¡Pan para el pato blanco!" (touch it). Stake: the three ducks' place out of seven; noise sends them out.
-- **¿Cuál? pairs**: 11 in cuentos/cual-lago.json. **Level check**: four more items (pato, vuela, rojo, negro); 32 in all, 20 stories.
+- **¿Cuál? pairs**: 11 in cuentos/cual-lago.json. **Level check**: four more items (pato, vuela, rojo, negro); 32 in all, 20 stories. A right answer now moves him up by `PASO` items (the list length over 14, at least 2), so the check still reaches the top in about a dozen items as scenes are added.
 
 ### New in the engine
 

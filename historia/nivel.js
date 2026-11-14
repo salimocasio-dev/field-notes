@@ -48,6 +48,7 @@ const NV=[
  {w:"rojo",s:19,p:[["rojo","si",150],["rojo","no",150],["verde","si",96],["azul","si",150]]},
  {w:"negro",s:20,p:[["negro","si",150],["negro","no",150],["amarillo","no",150],["blanco","si",133]]}];
 const CW=96,CH=106,CG=4;   // four cells, two by two
+const PASO=Math.max(2,Math.ceil(NV.length/14));   // how far a right answer moves him up: the list grows with every scene, the check must still reach its top in about a dozen items
 let NQ={i:0,hecho:[],pos:0,run:0,toque:null,listo:-1,fin:null};
 function celda(k){return [(k%2)*(CW+CG),Math.floor(k/2)*(CH+CG)];}
 function nivelDibuja(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.fillStyle="#0E1A24";dc.fillRect(0,0,DW,DH);
@@ -75,7 +76,7 @@ async function nivelRun(){runId++;hush();callaLetras();NQ={i:0,hecho:[],pos:0,ru
       // the next item: the nearest one not yet asked, in the direction the last answer points
       let i=pos;const dir=ultimo===false?-1:1;while(i>=0&&i<NV.length&&usados.has(i))i+=dir;if(i<0||i>=NV.length){i=pos;while(i>=0&&i<NV.length&&usados.has(i))i-=dir;}if(i<0||i>=NV.length)break;
       if(Q.get("todo")){i=n;if(i>=NV.length)break;}usados.add(i);step(n);NQ.i=n;window.__cur=NV[i].s;const r=await nivelItem(NV[i],byW);NQ.hecho.push(Object.assign({i},r));
-      if(ultimo!=null&&ultimo!==r.ok)giros++;ultimo=r.ok;seguidos=r.ok?0:seguidos+1;pos=r.ok?i+2:i-1;if(pos<0)pos=0;if(pos>=NV.length)pos=NV.length-1;
+      if(ultimo!=null&&ultimo!==r.ok)giros++;ultimo=r.ok;seguidos=r.ok?0:seguidos+1;pos=r.ok?i+PASO:i-1;if(pos<0)pos=0;if(pos>=NV.length)pos=NV.length-1;
       const arriba=k=>NQ.hecho.some(h=>h.i===k&&h.ok);if(!Q.get("todo")&&(seguidos>=3||giros>=5||(arriba(NV.length-1)&&arriba(NV.length-2))))break;}                                   // three misses in a row, it has gone up and down enough, or he is right at the very top: this is his level
     step(16);}catch(e){if(e!=="stop")throw e;return;}
   PAN=null;const S0=nivelFrontera(NQ.hecho),ids=CURSO.lugares.flatMap(l=>l.cuentos||[]).slice(0,S0),pal=[];
