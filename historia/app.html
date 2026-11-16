@@ -320,12 +320,19 @@ function hablar(){const open=Object.values(db().palabras).filter(r=>r.ear.etapa>
   if(Llamada.tiene("casa")&&CURSO.lugares[0].cuentos.every(hecho))Llamada.precarga();}   // the voice library is ready before the tap
 
 /* ---------- YO ---------- */
+let NOTAPAG="";   // the day the "speaking is not available" note was first shown on this page: it stays while the page is open, and comes back once a day
+function notaHabla(){if(habDisp())return "";   // habDisp (juego.js): can this phone take a speaking turn right now? It also says no after an error in a story
+  const hoy=new Date().toISOString().slice(0,10);
+  if(NOTAPAG!==hoy){if(AJ().notaHabla===hoy)return "";AJ().notaHabla=hoy;PAL.save();NOTAPAG=hoy;}
+  return `<div class="small mut" style="margin:-8px 0 16px">Speaking in stories isn't available on this phone right now.</div>`;}
 function yo(){const d=db(),r=PAL.racha(),ws=Object.values(d.palabras),l=CURSO.lugares[aqui()];
   const pl=(n,u,p)=>n===1?u:(p||u+"s"),st=(n,t)=>`<div class="card" style="text-align:center;margin:0"><div style="font-size:24px;font-weight:600">${n}</div><div class="small mut">${t}</div></div>`;
   document.getElementById("t-yo").innerHTML=`<h1>Yo</h1><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px">${st("🔥 "+r,"day streak")+st(Math.round(d.minutos||0),pl(Math.round(d.minutos||0),"minute")+" listened")+st(ws.length,pl(ws.length,"word")+" heard")+st(ws.filter(x=>x.ear.etapa>=4).length,pl(ws.filter(x=>x.ear.etapa>=4).length,"word")+" good")}</div>
   <div class="card"><div class="lab">Where you are</div><div style="font-size:18px;line-height:24px;font-weight:500;margin-top:4px">A1 · place ${l.n} of 10 · ${l.nombre}</div></div>
   <h2>Minutes a day</h2><div class="seg">${[15,30,60,120].map(m=>`<button class="${AJ().min===m?"on":""}" onclick="AJ().min=${m};PAL.save();tick();yo()">${m}</button>`).join("")}</div><p class="small mut" style="margin:16px 0">Today's plan is sized to this.</p>
   <div class="card row"><div class="grow"><b>Open every place</b><div class="small mut">To look ahead. Places not built yet stay empty.</div></div><button class="sw ${AJ().todo?"on":""}" onclick="AJ().todo=AJ().todo?0:1;PAL.save();tick();yo()"><i></i></button></div>
+  <div class="card row"><div class="grow"><b>Speak in stories</b><div class="small mut">Some of the coquí's lines become your turn: you say them and the app listens.</div></div><button class="sw ${AJ().habla!==0?"on":""}" aria-label="Speak in stories" onclick="AJ().habla=AJ().habla===0?1:0;PAL.save();tick();yo()"><i></i></button></div>
+  ${notaHabla()}
   <div class="card row"><div class="grow"><b>Level check</b><div class="small mut">For people who already understand some Spanish. About 3 minutes, touch only. ${db().nivel?"Done: "+db().nivel.historias+" "+pl(db().nivel.historias,"story","stories")+" skipped.":"Covers the stories built so far."}</div></div><button class="btn out" onclick="tick();location.href='nivel.html'">Start</button></div>
   <button class="btn out full" onclick="bienvenida(0)">How it works</button>`;}
 
