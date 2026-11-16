@@ -3,7 +3,7 @@
  "title": "Jugo de china",
  "place": "La cocina",
  "scene": "nevera",
- "next": null,
+ "next": "que-quieres",
  "goal": "Give everybody juice from the last jug.",
  "stake": {
   "thing": "jugo",
