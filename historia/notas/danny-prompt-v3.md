@@ -397,3 +397,50 @@ Criteria 1 to 4 passed (silence handled as designed; "Toma." is now accepted). C
 My reading: the same kind of conflict as "toma". The "# The job" paragraph gives "show its picture and ask "¿Qué es esto?"" as its main way to get a word out of the learner, but the La casa word lists used in these tests do not contain "qué" or "esto" (the draft's old section-5 words_heard had "¿qué es esto?" as one item; the lists given for these runs do not). Danny is following his own prompt. Decision needed from the orchestrator: either add "qué" and "esto" to the glue words (so "¿Qué es esto?" is allowed), or drop that example from "# The job" and ask with a listed word. Nothing was changed on the agent after this failure.
 
 Other things seen in the same run (not criteria): line 9 is three pieces ("Eso." "Toma." "¿Qué es esto?") and hands over the drink and asks what it is in one turn; at line 10 the learner's "no sé" was treated as stuck (question again, then the first word "Agua."), which is the intended help behaviour.
+
+### After fix 4 (Nov 16)
+
+Fix 4 (the orchestrator's decision): "¿qué es esto?" added to the glue words in section 2 (the prompt itself uses it in "# The job"): "... gracias, por favor, toma, ¿qué es esto?, and the words of your opening." Section 2 is now 638 words, 3,372 characters (commit 9506286).
+
+Applied to the agent (Main) as version `agtvrsn_1301m7jm054gehz9rf3tyy0yjqbp`. Read back: the config summary gives prompt_chars 3,372 (same as the file), the stored prompt has "toma, ¿qué es esto?, and the words of your opening" and all earlier fix lines, the first message is still `{{opening}}`, opening and minutes unchanged, and LLM, temperature, tool, voice and TTS, turn settings, allowlist and call limits are identical to section 1.
+
+Word list used in the tests from now on (the real La casa list as the app sends it right after the place is finished): words_open = words_heard = every focus word of the 11 La casa stories in course order (la-lluvia, el-bizcocho, donde-esta-el-pajaro, el-jugo, que-calor, la-familia, la-foto, quien-eres-tu, las-flores, que-es-esto, hasta-manana), joined with ", ", the one repeated word ("abre", in la-lluvia and el-bizcocho) kept once, 50 words:
+
+~~~~text
+casa, puerta, ventana, abuela, hola, toca, abre, cierra, sí, no, grande, pequeña, adiós, silla, se sienta, vaso, jugo, agua, toma, quiero, gracias, ¿cómo estás?, bien, mamá, papá, abuelo, bebé, familia, hermano, hermana, él, ella, yo, tú, soy, eres, me llamo, niño, niña, juega, flor, sol, aquí, allá, ¿qué es esto?, amigo, mira, ven, vamos, hasta mañana
+~~~~
+
+The other variables are as before (place "La casa", the job line, opening "¡Hola! Soy Danny. ¿Cómo estás?", minutes "5"). Tests 4, 1, 2, 5 and 3 on ElevenLabs now carry this list; the allowed-words lists in their criteria are the 18 glue words (sí, no, y, el, la, un, una, es, está, de, eso, o, quieres, ¿y tú?, gracias, por favor, toma, ¿qué es esto?). Test ids: 4 `test_2901m7jjb8j5ewxab3teqr1f1e67`; 1 `test_1501m7jm4g3ve76v1fctw72nd57p` (new); 2 `test_5401m7jm9q3weyaa2wtdqyq0kf6n` (new, not run); 5 `test_3401m7jfqmc5eyttmpc48cgyjy9w`; 3 `test_7001m7jfncmnfjpbek6effz3cjgd`.
+
+| # | Test | Result | Credits | Run |
+|---|------|--------|---------|-----|
+| 4 | Silence | PASS | 542 | `trun_0701m7jm2v7dfm2a2raz4acnpjen` |
+| 1 | Greets, one thing at a time | PASS (see the notes) | 480 | `trun_3901m7jm6h4be8kaytb4px9h28m5` |
+| 2 | Only allowed words | NOT RUN: does not fit the cap | 0 | |
+
+Test 2 was skipped on purpose: it is the longest test (10 turns); after test 1 there were 1,042 credits left, and its upper estimate is 1,400 (the top of the measured range; its own guess in section 5), so it could have passed the 6,000 cap. A straight line from the 6-turn tests (480 to 620 each) gives about 800 to 1,030, too close to 1,042 to start.
+
+Credits since the owner's yes: 3,936 before fix 4, plus 542 (test 4) and 480 (test 1), so 4,958 of 6,000 (the account counter went from 683,746 to 688,704); 1,042 are left. Account after: 688,704 used of 996,993 (308,289 left).
+
+Test 4 after fix 4, key lines (all criteria passed, including allowed words): Danny "Sí. Yo me llamo Danny. ¿Y tú?" / learner "..." / Danny "Yo me llamo Danny. ¿Y tú?" / learner "..." / Danny (show_picture "me llamo") "Me llamo." / learner "Me llamo... uh... María." / Danny (show_picture "jugo") "Sí. Es un jugo. ¿Quieres jugo?" / learner "No, gracias." / Danny (show_picture "agua") "Eso. Es agua. ¿Quieres agua?"
+
+Test 1 after fix 4, full transcript (all four criteria passed):
+
+1. Danny: "¡Hola! Soy Danny. ¿Cómo estás?"
+2. Learner: "Hola. Bien."
+3. Danny: "Sí. Me llamo Danny. ¿Y tú?"
+4. Learner: "Soy Ana."
+5. Danny (show_picture "jugo"): "Eso. Toma. ¿Quieres jugo o agua?"
+6. Learner: "Agua."
+7. Danny (show_picture "agua"): "Sí. Toma, por favor. ¿Qué se dice?"
+8. Learner: "Gracias."
+9. Danny (show_picture "adiós"): "Eso. Adiós, amigo. ¿Y tú?"
+10. Learner: "Adiós."
+11. Danny (show_picture "vaso"): "Sí. ¿Qué es esto?"
+
+Notes for the orchestrator (not criteria of tests 4 and 1, nothing was changed):
+
+- Line 7, "¿Qué se dice?": "dice" is in no list, and "se" and "qué" appear in the lists only inside "se sienta" and "¿qué es esto?". Test 2 (only allowed words) would very likely fail on it. A word outside the lists, said by Danny in a passing test, is the kind of thing the Guardrails line was meant to stop.
+- Line 9, "Adiós, amigo.": "amigo" is a La casa word, but here it addresses the learner (a form of address, close to the "no name, no pet names" rule); it is not in the pet-name list in the criteria, so the test passed it.
+- The Guardrails line from fix 1 says "Never say ... aquí, mira"; with the real La casa list those two words ARE listed ("aquí" in las-flores, "mira" in que-es-esto), so that line and the list now disagree. The line was written for the old draft list.
+- At line 5 and line 7 Danny hands over "Toma." with the drink and then asks a question in the same turn; at line 9 he says goodbye and asks "¿Y tú?", which is odd after "Adiós".
