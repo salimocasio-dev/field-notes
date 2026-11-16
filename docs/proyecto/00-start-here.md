@@ -27,7 +27,7 @@ State on Nov 16 2026, during the second build session (the one finishing A1). Re
     - Danny's brief for place calls is prompt v3: historia/notas/danny-prompt-v3.md.
 - **Live (Nov 13): the app to his UI plan, all eleven stories of place 1, La casa, as games (El frente 1 to 3, El balcón 4 and 5, La sala 6 to 8, El patio 9 to 11), word records with the scheduler, and the next-day ¿Cuál? pass for all four scenes.**
     - El balcón: El jugo (silla, se sienta, vaso, jugo, agua, toma) and ¡Qué calor! (quiero, por favor, gracias, de nada, ¿cómo estás?, bien). New in the game: answer bubbles that speak, for words that cannot be drawn. Page 08, part 5.
-    - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Page 08, part 6. (Its old English card was removed in UI round 2.)
+    - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Story 8 opens with one English card. Page 08, part 6.
     - El patio: Las flores (niño, niña, juega, flor, sol, aquí, allá), ¿Qué es esto? (¿qué es esto?, amigo, mira, ven), Hasta mañana (vamos, hasta mañana). "Allí" is taught as "allá"; the gate is "el portón". Page 08, part 7.
     - Escuchar for La casa, first set (Library tab): the eleven stories told straight through, six new picture stories, four do-this routines. About 30 minutes; the plan's size is about 4 hours a place, so this is a first set. Page 08, part 8.
     - The level check (Yo tab, and the welcome): one sentence, four pictures, easy to hard, about 3 minutes. It covers place 1 for now. Page 08, part 9.
@@ -63,6 +63,8 @@ State on Nov 16 2026, during the second build session (the one finishing A1). Re
 ## Next steps, in order
 
 In short: A comer (place 3, scene 4; paused at script draft 3), then places 4 to 10, then the fort check.
+
+**His ask, Nov 16 (applies to every story from A comer on):** "we should probably put some speaking prompts in the next stories that use the previously learned vocabulary." So each new story includes moments where he says a line out loud, using words from earlier scenes whose ear record has held 2 to 3 days (the coquí's lines are the natural place), and the app hears it. Never a self-report button. Needs speech recognition on the story page (the phone's built-in recognition is free; test how well it hears his Spanish first). Words he says go to their mouth record. He also confirmed the design: speaking with Danny comes after a place's stories.
 
 1. Place 1: all four scenes, eleven stories, a first set of Escuchar and the call with Danny are done (v=35). The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and whatever his first real call shows.
 2. The level check: built for place 1 (page 08, part 9). Each new place adds its items.

@@ -94,3 +94,7 @@
 - Ask everything needed in one go.
 - A plan gets an independent review (fresh reviewers who did not write it) before it goes to him. A self-review does not count.
 - Say plainly when Claude's own work caused a problem.
+
+## Speaking inside the stories (Nov 16)
+- Asked when the research says to add speaking: per word, 2 to 3 days after he first hears it. His conclusion: "So basically the design is fine. You speak to Danny after finishing a story. Except right now we should probably put some speaking prompts in the next stories that use the previously learned vocabulary".
+- So: the next stories carry speaking prompts with words learned in earlier scenes, heard by the app. (Danny's call opens after all of a place's stories, not after each one.)

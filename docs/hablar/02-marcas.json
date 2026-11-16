@@ -1,0 +1,1024 @@
+{
+ "la-lluvia": {
+  "hola_abuela": [
+   {
+    "palabra": "hola",
+    "formas": [
+     "hola"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ],
+  "abre_puerta_tu": [
+   {
+    "palabra": "abre",
+    "formas": [
+     "abre"
+    ]
+   },
+   {
+    "palabra": "puerta",
+    "formas": [
+     "puerta"
+    ]
+   }
+  ],
+  "abre_ventana_tu": [
+   {
+    "palabra": "abre",
+    "formas": [
+     "abre"
+    ]
+   },
+   {
+    "palabra": "ventana",
+    "formas": [
+     "ventana"
+    ]
+   }
+  ],
+  "bien_gracias": [
+   {
+    "palabra": "bien",
+    "formas": [
+     "bien"
+    ]
+   },
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   }
+  ]
+ },
+ "el-bizcocho": {
+  "cq_si": [
+   {
+    "palabra": "sí",
+    "formas": [
+     "si"
+    ]
+   }
+  ],
+  "cq_no": [
+   {
+    "palabra": "no",
+    "formas": [
+     "no"
+    ]
+   }
+  ],
+  "cq_si_gracias": [
+   {
+    "palabra": "sí",
+    "formas": [
+     "si"
+    ]
+   }
+  ],
+  "cq_no_gracias": [
+   {
+    "palabra": "no",
+    "formas": [
+     "no"
+    ]
+   }
+  ]
+ },
+ "donde-esta-el-pajaro": {
+  "vamos_jugar": [
+   {
+    "palabra": "vamos",
+    "formas": [
+     "vamos"
+    ]
+   }
+  ],
+  "aqui_estoy": [
+   {
+    "palabra": "aquí",
+    "formas": [
+     "aqui"
+    ]
+   }
+  ],
+  "adios_abuela": [
+   {
+    "palabra": "adiós",
+    "formas": [
+     "adios"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ },
+ "el-jugo": {
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ],
+  "no_pajaro": [
+   {
+    "palabra": "no",
+    "formas": [
+     "no"
+    ]
+   }
+  ]
+ },
+ "que-calor": {
+  "cq_bien_y_tu": [
+   {
+    "palabra": "bien",
+    "formas": [
+     "bien"
+    ]
+   },
+   {
+    "palabra": "¿cómo estás?",
+    "formas": [
+     "como estas"
+    ]
+   }
+  ],
+  "cq_quiero_jugo": [
+   {
+    "palabra": "quiero",
+    "formas": [
+     "quiero"
+    ]
+   },
+   {
+    "palabra": "jugo",
+    "formas": [
+     "jugo"
+    ]
+   }
+  ],
+  "cq_quiero_agua": [
+   {
+    "palabra": "quiero",
+    "formas": [
+     "quiero"
+    ]
+   },
+   {
+    "palabra": "agua",
+    "formas": [
+     "agua"
+    ]
+   }
+  ],
+  "cq_de_nada": [
+   {
+    "palabra": "de nada",
+    "formas": [
+     "de nada"
+    ]
+   }
+  ],
+  "cq_toma_abuela": [
+   {
+    "palabra": "toma",
+    "formas": [
+     "toma"
+    ]
+   }
+  ]
+ },
+ "la-familia": {
+  "bien_gracias": [
+   {
+    "palabra": "bien",
+    "formas": [
+     "bien"
+    ]
+   },
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   }
+  ],
+  "cq_de_nada": [
+   {
+    "palabra": "de nada",
+    "formas": [
+     "de nada"
+    ]
+   }
+  ],
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ },
+ "la-foto": {
+  "cq_familia": [
+   {
+    "palabra": "familia",
+    "formas": [
+     "familia"
+    ]
+   }
+  ]
+ },
+ "quien-eres-tu": {
+  "cq_yo_me_llamo": [
+   {
+    "palabra": "soy",
+    "formas": [
+     "soy"
+    ]
+   }
+  ],
+  "cq_tu_hermana": [
+   {
+    "palabra": "tú",
+    "formas": [
+     "tu"
+    ]
+   },
+   {
+    "palabra": "eres",
+    "formas": [
+     "eres"
+    ]
+   }
+  ],
+  "cq_tu_hermano": [
+   {
+    "palabra": "tú",
+    "formas": [
+     "tu"
+    ]
+   },
+   {
+    "palabra": "eres",
+    "formas": [
+     "eres"
+    ]
+   }
+  ]
+ },
+ "las-flores": {
+  "p_cq_yo_tambien": [
+   {
+    "palabra": "yo",
+    "formas": [
+     "yo"
+    ]
+   }
+  ]
+ },
+ "que-es-esto": {
+  "p_cq_hola_amigo": [
+   {
+    "palabra": "hola",
+    "formas": [
+     "hola"
+    ]
+   }
+  ],
+  "p_cq_es_flor": [
+   {
+    "palabra": "flor",
+    "formas": [
+     "flor"
+    ]
+   }
+  ],
+  "p_cq_que_es_esto": [
+   {
+    "palabra": "¿qué es esto?",
+    "formas": [
+     "que es esto"
+    ]
+   }
+  ],
+  "p_cq_y_tu_amigo": [
+   {
+    "palabra": "tú",
+    "formas": [
+     "tu"
+    ]
+   },
+   {
+    "palabra": "eres",
+    "formas": [
+     "eres"
+    ]
+   }
+  ]
+ },
+ "hasta-manana": {
+  "p_cq_vamos": [
+   {
+    "palabra": "vamos",
+    "formas": [
+     "vamos"
+    ]
+   }
+  ],
+  "p_cq_hm_abuela": [
+   {
+    "palabra": "hasta mañana",
+    "formas": [
+     "hasta mañana"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ],
+  "p_cq_adios_hm": [
+   {
+    "palabra": "adiós",
+    "formas": [
+     "adios"
+    ]
+   },
+   {
+    "palabra": "hasta mañana",
+    "formas": [
+     "hasta mañana"
+    ]
+   }
+  ]
+ },
+ "uno-dos-tres": {
+  "c12_cq_hola": [
+   {
+    "palabra": "hola",
+    "formas": [
+     "hola"
+    ]
+   }
+  ],
+  "c12_cq_uno": [
+   {
+    "palabra": "uno",
+    "formas": [
+     "uno",
+     "1"
+    ]
+   },
+   {
+    "palabra": "tres",
+    "formas": [
+     "tres",
+     "3"
+    ]
+   }
+  ]
+ },
+ "donde-esta-el-gato": {
+  "c13_cq_amigos": [
+   {
+    "palabra": "amigo",
+    "formas": [
+     "amigos",
+     "amigo"
+    ]
+   }
+  ]
+ },
+ "rapido-despacio": {
+  "c14_cq_despacio": [
+   {
+    "palabra": "despacio",
+    "formas": [
+     "despacio"
+    ]
+   }
+  ],
+  "c14_cq_rapido": [
+   {
+    "palabra": "rápido",
+    "formas": [
+     "rapido"
+    ]
+   }
+  ],
+  "c14_cq_de_nada": [
+   {
+    "palabra": "de nada",
+    "formas": [
+     "de nada"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ },
+ "la-bola": {
+  "c15_cq_gracias": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   }
+  ],
+  "c15_cq_dame": [
+   {
+    "palabra": "dame",
+    "formas": [
+     "dame"
+    ]
+   }
+  ],
+  "c15_cq_coge": [
+   {
+    "palabra": "coge",
+    "formas": [
+     "coge"
+    ]
+   }
+  ]
+ },
+ "arriba-abajo": {
+  "c16_cq_abajo": [
+   {
+    "palabra": "abajo",
+    "formas": [
+     "abajo"
+    ]
+   }
+  ]
+ },
+ "otra-vez": {
+  "c17_cq_es_mi": [
+   {
+    "palabra": "mi",
+    "formas": [
+     "mi"
+    ]
+   },
+   {
+    "palabra": "bola",
+    "formas": [
+     "bola"
+    ]
+   }
+  ],
+  "c17_cq_es_tu": [
+   {
+    "palabra": "tu",
+    "formas": [
+     "tu"
+    ]
+   },
+   {
+    "palabra": "bola",
+    "formas": [
+     "bola"
+    ]
+   }
+  ],
+  "c17_cq_no_mas": [
+   {
+    "palabra": "no",
+    "formas": [
+     "no"
+    ]
+   },
+   {
+    "palabra": "más",
+    "formas": [
+     "mas"
+    ]
+   }
+  ]
+ },
+ "pan-para-el-pato": {
+  "c18_cq_vuela": [
+   {
+    "palabra": "pato",
+    "formas": [
+     "pato"
+    ]
+   },
+   {
+    "palabra": "vuela",
+    "formas": [
+     "vuela"
+    ]
+   }
+  ],
+  "c18_cq_nada": [
+   {
+    "palabra": "pato",
+    "formas": [
+     "pato"
+    ]
+   },
+   {
+    "palabra": "nada",
+    "formas": [
+     "nada"
+    ]
+   }
+  ],
+  "c18_cq_adios": [
+   {
+    "palabra": "adiós",
+    "formas": [
+     "adios"
+    ]
+   },
+   {
+    "palabra": "amigo",
+    "formas": [
+     "amigos",
+     "amigo"
+    ]
+   }
+  ]
+ },
+ "los-botes": {
+  "c19_cq_rojo": [
+   {
+    "palabra": "rojo",
+    "formas": [
+     "rojo"
+    ]
+   }
+  ],
+  "c19_cq_verde": [
+   {
+    "palabra": "verde",
+    "formas": [
+     "verde"
+    ]
+   }
+  ],
+  "c19_cq_aqui": [
+   {
+    "palabra": "aquí",
+    "formas": [
+     "aqui"
+    ]
+   }
+  ]
+ },
+ "la-piragua": {
+  "c21_cq_come": [
+   {
+    "palabra": "pájaro",
+    "formas": [
+     "pajaro"
+    ]
+   },
+   {
+    "palabra": "come",
+    "formas": [
+     "come"
+    ]
+   }
+  ],
+  "c21_cq_bebe": [
+   {
+    "palabra": "pájaro",
+    "formas": [
+     "pajaro"
+    ]
+   },
+   {
+    "palabra": "bebe",
+    "formas": [
+     "bebe"
+    ]
+   }
+  ],
+  "c17_cq_no_mas": [
+   {
+    "palabra": "no",
+    "formas": [
+     "no"
+    ]
+   },
+   {
+    "palabra": "más",
+    "formas": [
+     "mas"
+    ]
+   }
+  ]
+ },
+ "senor-senora": {
+  "c22_cq_senor": [
+   {
+    "palabra": "señor",
+    "formas": [
+     "señor"
+    ]
+   }
+  ],
+  "c22_cq_senora": [
+   {
+    "palabra": "señora",
+    "formas": [
+     "señora"
+    ]
+   }
+  ],
+  "c22_cq_dn_senor": [
+   {
+    "palabra": "de nada",
+    "formas": [
+     "de nada"
+    ]
+   },
+   {
+    "palabra": "señor",
+    "formas": [
+     "señor"
+    ]
+   }
+  ],
+  "c22_cq_adios": [
+   {
+    "palabra": "adiós",
+    "formas": [
+     "adios"
+    ]
+   },
+   {
+    "palabra": "señor",
+    "formas": [
+     "señor"
+    ]
+   }
+  ]
+ },
+ "el-bebe-duerme": {
+  "c23_cq_contento": [
+   {
+    "palabra": "contento",
+    "formas": [
+     "contento"
+    ]
+   }
+  ],
+  "c23_cq_cansado": [
+   {
+    "palabra": "cansado",
+    "formas": [
+     "cansado"
+    ]
+   }
+  ],
+  "c23_cq_triste": [
+   {
+    "palabra": "triste",
+    "formas": [
+     "triste"
+    ]
+   }
+  ],
+  "p_cq_hm": [
+   {
+    "palabra": "hasta mañana",
+    "formas": [
+     "hasta mañana"
+    ]
+   }
+  ]
+ },
+ "la-mesa": {
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ],
+  "c24_cq_plato": [
+   {
+    "palabra": "plato",
+    "formas": [
+     "plato"
+    ]
+   }
+  ],
+  "c24_cq_taza": [
+   {
+    "palabra": "taza",
+    "formas": [
+     "taza"
+    ]
+   }
+  ]
+ },
+ "la-cuchara": {
+  "c25_cq_cuchara": [
+   {
+    "palabra": "cuchara",
+    "formas": [
+     "cuchara"
+    ]
+   }
+  ],
+  "c25_cq_tenedor": [
+   {
+    "palabra": "tenedor",
+    "formas": [
+     "tenedor"
+    ]
+   }
+  ],
+  "c25_cq_cuchillo": [
+   {
+    "palabra": "cuchillo",
+    "formas": [
+     "cuchillo"
+    ]
+   }
+  ],
+  "c25_cq_mmm": [
+   {
+    "palabra": "comida",
+    "formas": [
+     "comida"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ },
+ "tengo-hambre": {
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ],
+  "c26_cq_hambre": [
+   {
+    "palabra": "tengo hambre",
+    "formas": [
+     "tengo hambre"
+    ]
+   }
+  ],
+  "c26_cq_sed": [
+   {
+    "palabra": "tengo sed",
+    "formas": [
+     "tengo sed"
+    ]
+   }
+  ],
+  "c26_cq_canelo": [
+   {
+    "palabra": "contento",
+    "formas": [
+     "contento"
+    ]
+   }
+  ]
+ },
+ "arroz-con-habichuelas": {
+  "c27_cq_arroz": [
+   {
+    "palabra": "arroz",
+    "formas": [
+     "arroz"
+    ]
+   }
+  ],
+  "c27_cq_hab": [
+   {
+    "palabra": "habichuelas",
+    "formas": [
+     "habichuelas"
+    ]
+   }
+  ],
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ },
+ "el-pollo-y-el-huevo": {
+  "c28_cq_pollo": [
+   {
+    "palabra": "pollo",
+    "formas": [
+     "pollo"
+    ]
+   }
+  ],
+  "c28_cq_huevo": [
+   {
+    "palabra": "huevo",
+    "formas": [
+     "huevo"
+    ]
+   }
+  ],
+  "c28_cq_fin": [
+   {
+    "palabra": "huele",
+    "formas": [
+     "huele"
+    ]
+   },
+   {
+    "palabra": "bien",
+    "formas": [
+     "bien"
+    ]
+   }
+  ]
+ },
+ "cuidado": {
+  "c29_cq_carmen": [
+   {
+    "palabra": "cuidado",
+    "formas": [
+     "cuidado"
+    ]
+   },
+   {
+    "palabra": "caliente",
+    "formas": [
+     "caliente"
+    ]
+   }
+  ]
+ },
+ "no-hay-leche": {
+  "c30_cq_no_leche": [
+   {
+    "palabra": "no hay",
+    "formas": [
+     "no hay"
+    ]
+   },
+   {
+    "palabra": "leche",
+    "formas": [
+     "leche"
+    ]
+   }
+  ],
+  "c30_cq_no_queso": [
+   {
+    "palabra": "no hay",
+    "formas": [
+     "no hay"
+    ]
+   },
+   {
+    "palabra": "queso",
+    "formas": [
+     "queso"
+    ]
+   }
+  ],
+  "c30_cq_gracias_papa": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "papá",
+    "formas": [
+     "papa"
+    ]
+   }
+  ]
+ },
+ "para-los-pajaros": {
+  "c31_cq_guineo": [
+   {
+    "palabra": "guineo",
+    "formas": [
+     "guineo"
+    ]
+   },
+   {
+    "palabra": "huele",
+    "formas": [
+     "huele"
+    ]
+   }
+  ],
+  "c31_cq_manzana": [
+   {
+    "palabra": "manzana",
+    "formas": [
+     "manzana"
+    ]
+   },
+   {
+    "palabra": "huele",
+    "formas": [
+     "huele"
+    ]
+   }
+  ],
+  "c31_cq_adios": [
+   {
+    "palabra": "adiós",
+    "formas": [
+     "adios"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ },
+ "jugo-de-china": {
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   },
+   {
+    "palabra": "abuela",
+    "formas": [
+     "abuela"
+    ]
+   }
+  ]
+ }
+}
