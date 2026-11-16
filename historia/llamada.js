@@ -195,10 +195,15 @@ const Llamada=(()=>{
     est("connecting");UI.ld.textContent="";UI.ld.classList.remove("q");
     let words;try{words=await palabrasDe(C.l);}catch(e){words=[];}
     if(my!==RUN)return;if(!words.length){fallo("The call did not start. Check your connection and try again.");return;}
-    C.words=words;const abiertas=words.filter(abierta),oidas=words.filter(w=>!abierta(w));
+    C.words=words;
+    // open for speaking = the ear has held it (etapa >= 3). With fewer than 8 of those, every word he has heard at least once counts as open too, so Danny has something to ask for.
+    const vistas=w=>{const r=PAL.db.palabras[w];return !!(r&&r.oida>=1);};
+    let abiertas=words.filter(abierta);if(abiertas.length<8)abiertas=words.filter(w=>abierta(w)||vistas(w));
+    let oidas=words.filter(w=>!abiertas.includes(w));
+    if(!abiertas.length)abiertas=words.slice();if(!oidas.length)oidas=abiertas.slice();   // never an empty list or a "none" for Danny to read
     if(!await precarga()||!window.ELConv){if(my===RUN)fallo("The voice part did not load. Check your connection and try again.");return;}
     if(my!==RUN)return;
-    const vars={place:C.l.nombre,job:C.cfg.job,words_open:abiertas.length?abiertas.join(", "):"(none yet)",words_heard:oidas.length?oidas.join(", "):"(none yet)",minutes:String(C.cfg.minutos),opening:C.cfg.opening};
+    const vars={place:C.l.nombre,job:C.cfg.job,words_open:abiertas.join(", "),words_heard:oidas.join(", "),minutes:String(C.cfg.minutos),opening:C.cfg.opening};
     let conv;
     try{conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"websocket",dynamicVariables:vars,
       clientTools:{show_picture:p=>{if(my===RUN)muestra(p);return "shown";}},
@@ -258,20 +263,22 @@ const Llamada=(()=>{
         if(!loud)C.floor=C.floor*.98+raw*.02;
         const target=loud?Math.min(1,(raw-C.floor)*5):0;C.lvl+=(target-C.lvl)*.5;UI.root.style.setProperty("--rt",(3+C.lvl*9).toFixed(1)+"px");
         if(loud){C.turn.lastLoud=now;if(!C.turn.loud0)C.turn.loud0=now;if(now-C.turn.loud0>=100){C.turn.spoke=1;if(!C.turn.onset)C.turn.onset=C.turn.loud0;}}
-        else{C.turn.loud0=0;if(C.turn.spoke&&now-C.turn.lastLoud>=300)est("proc");}}}   // he spoke, and has been quiet for 300 ms: the dots, until Danny speaks
+        else{C.turn.loud0=0;if(C.turn.spoke&&now-C.turn.lastLoud>=600)est("proc");}}}   // he spoke, and has been quiet for 600 ms (short pauses mid-sentence do not count): the dots, until Danny speaks
     if(!C.fin&&el>=FIN_AT)enviaFin();
     if(el>=MAX_AT)finish("max");}
 
   // every way out ends here once: the session, the timers, the lock
+  // a call counts like a story: its minutes go into the minutes listened, and a day with a call keeps the streak (PAL.minutos does both)
+  function cuenta(C,secs){if(C.min||!C.t0)return;C.min=1;try{PAL.minutos(secs/60);}catch(e){}}
   function finish(why){const C=CALL;if(!C||C.done)return;C.done=1;stopTimers();
     const secs=elapsed(),conv=C.conv;C.conv=null;try{if(conv)conv.endSession();}catch(e){}
-    LOCK=false;clearTimeout(C.noteT);
+    cuenta(C,secs);LOCK=false;clearTimeout(C.noteT);
     if(!UI)return;
     const dicho=[...C.said.keys()],min=Math.max(1,Math.round(secs/60));
     UI.sum.querySelector(".ls1").textContent=min+" min · "+dicho.length+" word"+(dicho.length===1?"":"s")+" said";
     UI.sum.querySelector(".lchips").innerHTML=dicho.map(w=>`<span>${w.replace(/[<>&]/g,"")}</span>`).join("");
     C.why=why;est("done");}
-  addEventListener("pagehide",()=>{const C=CALL;if(C&&C.conv){const c=C.conv;C.conv=null;C.done=1;stopTimers();try{c.endSession();}catch(e){}LOCK=false;}});
+  addEventListener("pagehide",()=>{const C=CALL;if(C&&C.conv){const c=C.conv,secs=elapsed();C.conv=null;C.done=1;stopTimers();try{c.endSession();}catch(e){}cuenta(C,secs);LOCK=false;}});
 
   return {abre,precarga,tiene:id=>!!LLAMADAS[id],minutos:id=>LLAMADAS[id].minutos,cierra,
     get estado(){return ST;},get activo(){return !!UI;},get ocupado(){return LOCK;},
