@@ -320,3 +320,46 @@ Test 5 after fix 1, full transcript:
 What changed from the first run: the out-of-list words are gone ("para", "después" no longer appear; every word Danny said is in the lists, the glue words or the opening), no English, and "What is juice?" now gets the picture "jugo" and "Es jugo." and then the same question. The evaluator still failed criterion 2 (criteria 1 and 3 passed): after the first English message ("I don't understand. What do you want me to say?") Danny repeated "Soy Danny. ¿Y tú?" with no picture and no short sentence about the thing he asked.
 
 My reading: this is a mismatch between the test and the new rule, not a new prompt fault. The test's criterion 2 (written before fix 1) wants a picture and a short Spanish sentence after every English message. The new line says that English with no listed word in it is ignored and the last question is asked again, slowly, which is what Danny did. The orchestrator needs to decide: relax test 5's criterion 2 (picture only when the learner asks about a listed word), or change the prompt so plain English also gets a picture of the word of the last question. I changed neither. Also seen, not a criterion: at line 9 the learner showed he understood and Danny still said "Sí. Soy Danny. ¿Y tú?" (the question again, not the next step of the job); this may repeat in other tests.
+
+### After fix 2 (Nov 16)
+
+Fix 2 (the orchestrator's text): the "English from him" line in "# When he is stuck" is now: "English from him: never answer in English. If he asks what a listed word is, call show_picture for it and say "Es [word].", then ask your question again. Otherwise treat it like "(ayuda)": the first time, say your last question again, slowly, then only the first word of the answer; the second time, call show_picture and say the whole answer for him to repeat; the third time, say "Eso." and go to the next step of the job." The Guardrails line from fix 1 stays. Section 2 is now 634 words, 3,351 characters (commits 35e12b3 and 60983f5).
+
+Applied to the agent (Main) as version `agtvrsn_5701m7jhj1yrezztyj1tz60qbjas`. Read back: the config summary gives prompt_chars 3,351 (same as the file), the stored prompt contains the new line and the fix-1 Guardrails line, the first message is still `{{opening}}`, the placeholders (place, job, opening, minutes) are unchanged, and LLM, temperature, max_tokens, tool, voice and TTS, turn settings, speech recognition, conversation settings, allowlist, overrides and call limits read back identical to section 1.
+
+Test changes on ElevenLabs (tests can be edited, so no replacement was made; the ids are unchanged):
+- Test 5 `test_3401m7jfqmc5eyttmpc48cgyjy9w`: the five pass criteria are the orchestrator's (only Spanish from the allowed words; the first English line gets the question again plus the first word; the second gets a picture and the whole answer; a question about a listed word gets its picture and "Es …"; no more than three loops, then "Eso." and the next step). To let the evaluator check them, the simulated learner's script now has four English lines: "I don't understand. What do you want me to say?", "I still don't get it.", "What is juice?", "Sorry, I am confused."; max turns 7 (was 5).
+- Test 3 `test_7001m7jfncmnfjpbek6effz3cjgd`: the scenario forces the exact text "(ayuda)", and a first criterion checks that the learner's message has the brackets.
+- Test 4 `test_2901m7jjb8j5ewxab3teqr1f1e67` (new): messages 2 and 3 are exactly "...", and a first criterion checks that.
+
+| # | Test | Result | Credits | Run |
+|---|------|--------|---------|-----|
+| 5 | English (new criteria) | PASS | 520 | `trun_1301m7jhp0g3fdrby5grm6kfdxdz` |
+| 3 | "(ayuda)", literal brackets | PASS | 623 | `trun_6301m7jj9abyfvpah644s35kaecj` |
+| 4 | Silence | FAIL (criterion 5, a word outside the lists: "Toma") | 451 | `trun_4901m7jjbf8aek59435h67zhdwfa` |
+| 1 | Greets | not run (stopped at the first failure) | 0 | |
+| 2 | Only allowed words | not run | 0 | |
+
+Credits since the owner's yes: 2,242 at the end of fix 1's test 5 run plus 623 plus 451, so 3,316 of 6,000 in all (the account counter went from 683,746 to 687,062). Of the 6,000, 2,684 are left. Account after: 687,062 used of 996,993 (309,931 left). For test 4 the counter agrees with the run's own `credits_used` (451).
+
+Test 5 (PASS), key lines: Danny's first English reply "¿Y tú? Soy." (question plus first word); second ("I still don't get it.") show_picture "me llamo" and "Me llamo Danny. Tú: me llamo."; "What is juice?" show_picture "jugo" and "Es jugo. ¿Y tú? Me llamo."; third plain English ("Sorry, I am confused.") show_picture "agua" and "Eso. ¿Quieres agua o jugo?" (next step of the job). No English, no word outside the lists, every picture key listed. The evaluator's rationale lists only three of the five criteria, but its status is passed and my own reading of the transcript agrees with all five. The colon in "Tú: me llamo." is still there (label-like), not a criterion.
+
+Test 3 (PASS), key lines: Danny "Sí. Yo soy Danny. ¿Y tú?" / learner "(ayuda)" (literal, with brackets; criterion 1 passed) / Danny "Yo soy Danny. ¿Y tú? Soy." / learner "Soy... hmm, María." / Danny (show_picture "agua") "Sí. ¿Quieres agua o jugo?" / learner "Agua." / Danny "Eso. Toma." The question again with the same words, then exactly one word, no English, no new question, then on in Spanish. The last line has "Toma." too, which this test does not check (see test 4).
+
+Test 4 (FAIL), full transcript:
+
+1. Danny: "¡Hola! Soy Danny. ¿Cómo estás?"
+2. Learner: "Hola. Bien."
+3. Danny: "Sí. Soy Danny. ¿Y tú?"
+4. Learner: "..."
+5. Danny: "Soy Danny. ¿Y tú?"
+6. Learner: "..."
+7. Danny (show_picture "me llamo"): "Me llamo."
+8. Learner: "Me llamo... Ana."
+9. Danny (show_picture "agua"): "Eso. ¿Quieres agua o jugo?"
+10. Learner: "Agua."
+11. Danny: "Sí. Toma."
+
+Criteria 1 to 4 passed: the silence handling is right (the same question once more after the first "...", no "¿estás ahí?", no mention of the silence; after the second "...", a listed picture and the word "Me llamo."; then on to the drink). Criterion 5 failed on line 11: "Toma" is in none of the lists (words_open, words_heard, the opening or the 16 glue words).
+
+My reading: this is a conflict inside the prompt, not a slip by Danny. The "# The job" paragraph itself gives "hand him something ("Toma.")" as a way to get a word out of the learner, and its Guardrails say to use only listed words, but the word lists used in these tests (the ones a real La casa call sends) have no "toma" (the draft's old section-5 list had it; this list does not). The same "Toma." appears in tests 6 and 3 earlier, where it was not checked. Decision needed from the orchestrator: either add "toma" to the glue words (as "quieres" was added) or change the example in "# The job" to a listed word. Also note: the test summary tool shows only three rationale messages; the full rationale (criteria 4 and 5) is in `agents_get_test_result`. Nothing was changed on the agent after this failure.
