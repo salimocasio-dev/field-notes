@@ -363,3 +363,37 @@ Test 4 (FAIL), full transcript:
 Criteria 1 to 4 passed: the silence handling is right (the same question once more after the first "...", no "¿estás ahí?", no mention of the silence; after the second "...", a listed picture and the word "Me llamo."; then on to the drink). Criterion 5 failed on line 11: "Toma" is in none of the lists (words_open, words_heard, the opening or the 16 glue words).
 
 My reading: this is a conflict inside the prompt, not a slip by Danny. The "# The job" paragraph itself gives "hand him something ("Toma.")" as a way to get a word out of the learner, and its Guardrails say to use only listed words, but the word lists used in these tests (the ones a real La casa call sends) have no "toma" (the draft's old section-5 list had it; this list does not). The same "Toma." appears in tests 6 and 3 earlier, where it was not checked. Decision needed from the orchestrator: either add "toma" to the glue words (as "quieres" was added) or change the example in "# The job" to a listed word. Also note: the test summary tool shows only three rationale messages; the full rationale (criteria 4 and 5) is in `agents_get_test_result`. Nothing was changed on the agent after this failure.
+
+### After fix 3 (Nov 16)
+
+Fix 3 (the orchestrator's decision): "toma" added to the glue words in section 2 ("... gracias, por favor, toma, and the words of your opening."), because it is a La casa focus word and the prompt's own example in "# The job". Section 2 is now 635 words, 3,357 characters (commit f1b6f4b).
+
+Applied to the agent (Main) as version `agtvrsn_8501m7jjtavrf0r9mnfckgkcak9f`. Read back: the config summary gives prompt_chars 3,357 (same as the file), the stored prompt has "por favor, toma, and the words of your opening" and all fix-1 and fix-2 lines, the first message is still `{{opening}}`, opening and minutes unchanged, and LLM, temperature, tool, voice and TTS, turn settings, allowlist and call limits are identical to section 1. The glue list in the criteria of tests 4 and 5 on ElevenLabs now ends "..., por favor, toma" (17 words with "toma"; tests 4 and 5 were edited in place, no credits).
+
+| # | Test | Result | Credits | Run |
+|---|------|--------|---------|-----|
+| 4 | Silence (again) | FAIL (criterion 5, words outside the lists: "Qué es esto") | 620 | `trun_4301m7jjvb86e6tt2rewsj56qerw` |
+| 1 | Greets | not run (stopped at the first failure) | 0 | |
+| 2 | Only allowed words | not run | 0 | |
+
+Credits since the owner's yes: 3,316 before fix 3 plus 620, so 3,936 of 6,000 (the account counter went from 683,746 to 687,682; for this run the counter and the run's own `credits_used` agree at 620 once the counter has caught up, which takes about a minute). Of the 6,000, 2,064 are left. Account after: 687,682 used of 996,993 (309,311 left).
+
+Test 4 after fix 3, full transcript:
+
+1. Danny: "¡Hola! Soy Danny. ¿Cómo estás?"
+2. Learner: "Hola. Bien."
+3. Danny (show_picture "me llamo"): "Eso. Yo soy Danny. ¿Y tú?"
+4. Learner: "..."
+5. Danny: "Yo soy Danny. ¿Y tú?"
+6. Learner: "..."
+7. Danny (show_picture "me llamo"): "Me llamo."
+8. Learner: "Me llamo... uh... María."
+9. Danny (show_picture "agua"): "Eso. Toma. ¿Qué es esto?"
+10. Learner: "Hmm... uh... no sé."
+11. Danny: "¿Qué es esto? Agua."
+
+Criteria 1 to 4 passed (silence handled as designed; "Toma." is now accepted). Criterion 5 failed on "¿Qué es esto?" (lines 9 and 11): "qué" and "esto" are in none of the lists (words_open, words_heard, the opening, the 17 glue words).
+
+My reading: the same kind of conflict as "toma". The "# The job" paragraph gives "show its picture and ask "¿Qué es esto?"" as its main way to get a word out of the learner, but the La casa word lists used in these tests do not contain "qué" or "esto" (the draft's old section-5 words_heard had "¿qué es esto?" as one item; the lists given for these runs do not). Danny is following his own prompt. Decision needed from the orchestrator: either add "qué" and "esto" to the glue words (so "¿Qué es esto?" is allowed), or drop that example from "# The job" and ask with a listed word. Nothing was changed on the agent after this failure.
+
+Other things seen in the same run (not criteria): line 9 is three pieces ("Eso." "Toma." "¿Qué es esto?") and hands over the drink and asks what it is in one turn; at line 10 the learner's "no sé" was treated as stuck (question again, then the first word "Agua."), which is the intended help behaviour.
