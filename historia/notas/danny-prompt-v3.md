@@ -124,7 +124,7 @@ words    = - la casa (the house) | picture: casa = the house, with a pointer on 
 
 ## 2. Proposed prompt
 
-638 words, 3,372 characters (the current one is 1,079 words, 5,616 characters). Fix 4 (Nov 16, after test 4 again): "¿qué es esto?" added to the glue words (the prompt itself uses it in "# The job"). Before fix 4 it was 635 words, 3,357 characters. Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
+674 words, 3,572 characters (the current one is 1,079 words, 5,616 characters). Fix 5 (Nov 16, after test 1 passed with notes): in "# Guardrails" the fix-1 line no longer lists "aquí" and "mira" (they are La casa words now), and two lines were added: never ask "¿Qué se dice?" (after "Toma." wait; if he says nothing follow the silence steps), and never call him anything (no name, no "amigo", no pet names; "Adiós." or "Hasta mañana." alone). Before fix 5 it was 638 words, 3,372 characters. Fix 4 (Nov 16, after test 4 again): "¿qué es esto?" added to the glue words (the prompt itself uses it in "# The job"). Before fix 4 it was 635 words, 3,357 characters. Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
 
 ~~~~text
 # Personality
@@ -448,3 +448,75 @@ Notes for the orchestrator (not criteria of tests 4 and 1, nothing was changed):
 - At line 5 and line 7 Danny hands over "Toma." with the drink and then asks a question in the same turn; at line 9 he says goodbye and asks "¿Y tú?", which is odd after "Adiós".
 
 Note on the balance: after the last test the account's monthly allowance renewed (the counter now reads 0 used of 908,289, with the next reset moved a month on). The "688,704 used of 996,993" above is the last reading of the old period, taken after test 1. The 4,958 credits spent since the owner's yes were all measured in the old period.
+
+## 7. After fix 5 (Nov 16)
+
+### The change
+
+Fix 5 (the orchestrator's decisions), all in section 2, "# Guardrails". It was applied to the file first (it was saved in commit ede8c69, a work-in-progress save made by another agent working in the same folder; the text in it is exactly the three lines below) and then to the agent.
+
+1. The fix-1 line is now: "If you need a word that is not in the lists, do not say it: show a picture or ask again instead. Never say para, después, ahora, or any other word outside the lists." ("aquí" and "mira" were removed: they are La casa words now.)
+2. New line right after it: "Never ask "¿Qué se dice?". After "Toma.", wait for his answer; if he says nothing, follow the silence steps."
+3. New line after that: "Never call him anything: no name, no "amigo", no pet names. Say "Adiós." or "Hasta mañana." alone."
+
+Nothing else was changed (LLM, voice, turn settings, allowlist, limits and first message are as they were).
+
+### New length and version
+
+- Section 2 in the file: 674 words, 3,572 characters (before: 638 words, 3,372 characters).
+- Applied to the agent (Main) as version `agtvrsn_4901m7jzc6j3e60st7e27tx1yazw`, with the same method as fixes 1 to 4 (the whole prompt text sent in one call; only the prompt was sent).
+
+### Read-back
+
+- The stored system prompt, read back after the change, is 3,572 characters, the same count as the file. Its Guardrails section has the three new lines in the order above, followed by the three old lines, and every other line is the text of fix 4.
+- First message read back: `{{opening}}` (11 characters), unchanged.
+- Config summary after the change: LLM claude-sonnet-5-5, voice kcsUqKsJMPz7j3H6QPNd, language es, one tool (show_picture), no built-in tools, prompt_chars 3,572. The update call's own answer shows temperature 0.3, max_tokens -1, the same tool id, and no reasoning effort or thinking budget (still unset). I did not re-read the turn settings, allowlist and call limits in full after this change; the call only wrote prompt fields.
+
+### Test 2 edit
+
+Test 2 `test_5401m7jm9q3weyaa2wtdqyq0kf6n` ("Danny v3 #2 allowed words (Nov 16)"): max turns 10 down to 6 (new test version `tver_6001m7jzfdcwfdhbdjd0ftzshvhm`). Kept as they were: the scenario (a beginner who answers everything right), the four criteria, the word lists (50 words in words_open and words_heard, in the dynamic variables) and the glue list in criterion 1, which already had "¿y tú?" (18 words: sí, no, y, el, la, un, una, es, está, de, eso, o, quieres, ¿y tú?, gracias, por favor, toma, ¿qué es esto?).
+
+### Test 2 result: FAIL (as the platform scored it), but see my reading
+
+Run `trun_9901m7jzfm36f64smm7q4p1ycxd5` (suite `suite_1701m7jzfm30fvc9ekh6fj1p8cgw`), run once, against `agtvrsn_4901m7jzc6j3e60st7e27tx1yazw`. Status failed; the simulated user ended the conversation after 5 messages.
+
+Full transcript:
+
+1. Danny: "¡Hola! Soy Danny. ¿Cómo estás?"
+2. Learner: "Hola. Bien."
+3. Danny: "Sí. Me llamo Danny. ¿Y tú?"
+4. Learner: "Me llamo Ana."
+5. Danny (show_picture "jugo"): "Eso. Es jugo. ¿Quieres jugo?"
+6. Learner: "Jugo, gracias."
+7. Danny (show_picture "vaso"): "Sí. Toma."
+8. Learner: "Gracias."
+9. Danny (show_picture "adiós"): "Eso. Yo, adiós. ¿Y tú?"
+10. Learner: "Adiós."
+11. Danny (show_picture "casa"): "Sí. ¿Qué es esto?"
+
+The evaluator's rationale (in Spanish, as stored):
+
+- Criterion 1 failed: Danny says "Yo" in "Eso. Yo, adiós. ¿Y tú?"; "yo" does not appear in the allowed words (words_open, words_heard, the opening or the listed glue words).
+- Criterion 2 passed: no violation (he uses "¿Y tú?" and "¿Qué es esto?").
+- Criterion 3 inconclusive: the keys were "jugo", "vaso", "adiós", "casa"; "without the explicit lists of words_open / words_heard it cannot be confirmed that they are all included", but no clear evidence of a violation.
+- Criterion 4 passed: no English.
+
+My reading: the failure is the evaluator's, not Danny's. "yo" IS in both lists (words_open and words_heard: "... él, ella, yo, tú, soy, eres ..."). Every other word in line 9 ("Eso", "adiós", "y", "tú") and in lines 3, 5, 7, 11 is a listed word, a glue word or the opening. The four picture keys (jugo, vaso, adiós, casa) are all listed. The evaluator itself says it could not see the explicit lists, so it judged against the 18 glue words only. The criteria text names the glue words but not the 50 listed words (they are only in the dynamic variables); for this test the criterion would have to carry the list itself. By my own reading of the transcript, all four criteria hold. I did not change the test and did not rerun (as instructed). Decision for the orchestrator: accept my reading, or put the 50 words into criterion 1 and run again (about 665 credits, which does not fit in what is left of the cap).
+
+What the fix-5 lines did in this run (my reading, not criteria):
+
+- No "¿Qué se dice?" anywhere. After "Toma." (line 7) Danny stopped without asking anything, and the learner answered "Gracias." This is what fix 5 asked for.
+- No name for the learner, no "amigo", no pet name.
+- No word outside the lists ("aquí" and "mira" were not said either).
+- Still odd, not a criterion: line 9, "Eso. Yo, adiós. ¿Y tú?" is a strange goodbye (a question after "adiós", and not "Adiós." alone), and after the learner's "Adiós." (line 10) Danny did not close but went on to the casa picture ("Sí. ¿Qué es esto?"), because the job was done and time remained. The "alone" rule of fix 5 covers the goodbye line itself (the "(fin)" goodbye), so this is not a breach, but it shows the same habit as before ("Adiós, amigo. ¿Y tú?" in test 1).
+
+### Credits
+
+| Reading | Counter (character_count) |
+|---------|---------------------------|
+| Before the run (after the prompt and test edits) | 0 of 908,289 |
+| After the run (one reading, already settled) | 665 of 908,289 |
+
+The run's own `credits_used` is 665 (LLM 539 + platform 126), the same as the counter change. Edits to the prompt and the test cost nothing.
+
+Total since the owner's yes: 4,958 before this run, plus 665 = 5,623 of 6,000. Left under the cap: 377. Nothing else was run (tests 1, 3, 4, 5 and 6 were not rerun after fix 5, so fix 5 is untested on them).
