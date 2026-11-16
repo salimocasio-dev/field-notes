@@ -288,3 +288,35 @@ What failed, in my reading (the evaluator's criteria 2 and 3 failed; criterion 1
 ### Not run
 
 Tests 4 (silence), 1 (greets) and 2 (only allowed words) were not run. Credits left of the 6,000 approved: 4,762.
+
+### After fix 1 (Nov 16)
+
+Fix 1 (the orchestrator's text): in section 2, "# When he is stuck", the "English from him" line became "English from him, or he asks what a word is: call show_picture for that word if it is in the lists, say the word once, slowly, in a short sentence ("Es jugo."), then ask the same question you asked before. If the word is not in the lists, ignore it and ask your last question again, slowly."; and a new first line in "# Guardrails": "If you need a word that is not in the lists, do not say it: show a picture or ask again instead. Never say para, después, ahora, aquí, mira, or any other word outside the lists." Section 2 is now 613 words, 3,217 characters (commit de10e73).
+
+Applied to the agent (Main) as version `agtvrsn_4501m7jfzj1te849nqv4md42hw7d`. Read back: the config summary gives prompt_chars 3,217 (same as the file) and the stored prompt text is the section-2 text, including both new lines. First message still `{{opening}}`; opening and minutes placeholders unchanged; LLM, temperature, tool, voice and TTS, turn settings and allowlist read back identical to before.
+
+| # | Test | Result | Credits | Run |
+|---|------|--------|---------|-----|
+| 5 | English (same test as before) | FAIL | 484 | `trun_6801m7jfzxfmfhfbp6ttk7e9mwtk` |
+| 3 | "(ayuda)" with the literal brackets | not run (stopped at the first failure) | 0 | |
+| 4 | Silence | not run | 0 | |
+| 1 | Greets | not run | 0 | |
+| 2 | Only allowed words | not run | 0 | |
+
+Credits since the owner's yes: 1,238 before fix 1 plus 484 = 1,722 of 6,000 (4,278 left). Account after: 685,468 used of 996,993 (311,525 left).
+
+Test 5 after fix 1, full transcript:
+
+1. Danny: "¡Hola! Soy Danny. ¿Cómo estás?"
+2. Learner: "Hola. Bien."
+3. Danny: "Eso. Soy Danny. ¿Y tú?"
+4. Learner: "I don't understand. What do you want me to say?"
+5. Danny (no picture): "Soy Danny. ¿Y tú?"
+6. Learner: "What is juice?"
+7. Danny (show_picture "jugo"): "Es jugo. ¿Y tú?"
+8. Learner: "OK, I think I get it. So jugo means juice, got it."
+9. Danny (no picture): "Sí. Soy Danny. ¿Y tú?"
+
+What changed from the first run: the out-of-list words are gone ("para", "después" no longer appear; every word Danny said is in the lists, the glue words or the opening), no English, and "What is juice?" now gets the picture "jugo" and "Es jugo." and then the same question. The evaluator still failed criterion 2 (criteria 1 and 3 passed): after the first English message ("I don't understand. What do you want me to say?") Danny repeated "Soy Danny. ¿Y tú?" with no picture and no short sentence about the thing he asked.
+
+My reading: this is a mismatch between the test and the new rule, not a new prompt fault. The test's criterion 2 (written before fix 1) wants a picture and a short Spanish sentence after every English message. The new line says that English with no listed word in it is ignored and the last question is asked again, slowly, which is what Danny did. The orchestrator needs to decide: relax test 5's criterion 2 (picture only when the learner asks about a listed word), or change the prompt so plain English also gets a picture of the word of the last question. I changed neither. Also seen, not a criterion: at line 9 the learner showed he understood and Danny still said "Sí. Soy Danny. ¿Y tú?" (the question again, not the next step of the job); this may repeat in other tests.
