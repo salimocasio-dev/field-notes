@@ -124,7 +124,7 @@ words    = - la casa (the house) | picture: casa = the house, with a pointer on 
 
 ## 2. Proposed prompt
 
-674 words, 3,572 characters (the current one is 1,079 words, 5,616 characters). Fix 5 (Nov 16, after test 1 passed with notes): in "# Guardrails" the fix-1 line no longer lists "aquí" and "mira" (they are La casa words now), and two lines were added: never ask "¿Qué se dice?" (after "Toma." wait; if he says nothing follow the silence steps), and never call him anything (no name, no "amigo", no pet names; "Adiós." or "Hasta mañana." alone). Before fix 5 it was 638 words, 3,372 characters. Fix 4 (Nov 16, after test 4 again): "¿qué es esto?" added to the glue words (the prompt itself uses it in "# The job"). Before fix 4 it was 635 words, 3,357 characters. Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
+702 words, 3,718 characters (the current one is 1,079 words, 5,616 characters). Fix 6 (Nov 16, after the fix-5 tests): in "# When he is stuck", one new line after the "(fin)" line: when he says adiós or hasta mañana, the call is over, say "Adiós." or "Hasta mañana." alone and end the call. No existing line was replaced. Before fix 6 it was 674 words, 3,572 characters. Fix 5 (Nov 16, after test 1 passed with notes): in "# Guardrails" the fix-1 line no longer lists "aquí" and "mira" (they are La casa words now), and two lines were added: never ask "¿Qué se dice?" (after "Toma." wait; if he says nothing follow the silence steps), and never call him anything (no name, no "amigo", no pet names; "Adiós." or "Hasta mañana." alone). Before fix 5 it was 638 words, 3,372 characters. Fix 4 (Nov 16, after test 4 again): "¿qué es esto?" added to the glue words (the prompt itself uses it in "# The job"). Before fix 4 it was 635 words, 3,357 characters. Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
 
 ~~~~text
 # Personality
@@ -158,6 +158,7 @@ Call show_picture just before you ask for or name a word, so the picture matches
 - Silence (nothing heard, or "..."): never ask if he is there. First silence: say the same question once more, slowly. Second silence: call show_picture for that word, say the word, and wait. Third silence: say the answer yourself and go to the next step.
 - English from him: never answer in English. If he asks what a listed word is, call show_picture for it and say "Es [word].", then ask your question again. Otherwise treat it like "(ayuda)": the first time, say your last question again, slowly, then only the first word of the answer; the second time, call show_picture and say the whole answer for him to repeat; the third time, say "Eso." and go to the next step of the job.
 - "(fin)": say "Hasta mañana." or "Adiós." Say nothing after it. Ask nothing.
+- When he says adiós or hasta mañana, the call is over: say "Adiós." or "Hasta mañana." alone, with nothing before or after it, and end the call.
 
 # Guardrails
 - If you need a word that is not in the lists, do not say it: show a picture or ask again instead. Never say para, después, ahora, or any other word outside the lists.
@@ -503,6 +504,8 @@ The evaluator's rationale (in Spanish, as stored):
 
 My reading: the failure is the evaluator's, not Danny's. "yo" IS in both lists (words_open and words_heard: "... él, ella, yo, tú, soy, eres ..."). Every other word in line 9 ("Eso", "adiós", "y", "tú") and in lines 3, 5, 7, 11 is a listed word, a glue word or the opening. The four picture keys (jugo, vaso, adiós, casa) are all listed. The evaluator itself says it could not see the explicit lists, so it judged against the 18 glue words only. The criteria text names the glue words but not the 50 listed words (they are only in the dynamic variables); for this test the criterion would have to carry the list itself. By my own reading of the transcript, all four criteria hold. I did not change the test and did not rerun (as instructed). Decision for the orchestrator: accept my reading, or put the 50 words into criterion 1 and run again (about 665 credits, which does not fit in what is left of the cap).
 
+Orchestrator's decision (Nov 16, recorded after this section was written): the FAIL on "Eso. Yo, adiós. ¿Y tú?" is accepted as the evaluator's mistake, because "yo" is in the word lists (words_open and words_heard). The test is not rerun and was not changed.
+
 What the fix-5 lines did in this run (my reading, not criteria):
 
 - No "¿Qué se dice?" anywhere. After "Toma." (line 7) Danny stopped without asking anything, and the learner answered "Gracias." This is what fix 5 asked for.
@@ -520,3 +523,31 @@ What the fix-5 lines did in this run (my reading, not criteria):
 The run's own `credits_used` is 665 (LLM 539 + platform 126), the same as the counter change. Edits to the prompt and the test cost nothing.
 
 Total since the owner's yes: 4,958 before this run, plus 665 = 5,623 of 6,000. Left under the cap: 377. Nothing else was run (tests 1, 3, 4, 5 and 6 were not rerun after fix 5, so fix 5 is untested on them).
+
+## 8. Fix 6 (Nov 16)
+
+### The change
+
+Fix 6 (the orchestrator's decision), in section 2 and then on the agent, the same way as fixes 1 to 5. In "# When he is stuck", the part that handles "(fin)" and goodbyes, one new line right after the "(fin)" line, the orchestrator's text exactly:
+
+- When he says adiós or hasta mañana, the call is over: say "Adiós." or "Hasta mañana." alone, with nothing before or after it, and end the call.
+
+No existing line was replaced. The orchestrator said to replace a goodbye line only if this one contradicts it. I read the two goodbye lines already there and found no contradiction: the "(fin)" line ("say Hasta mañana. or Adiós. Say nothing after it. Ask nothing.") covers the app's "(fin)" message, and the Guardrails line ("Say Adiós. or Hasta mañana. alone.") says the same thing as the new line. Both stay. Nothing else in the prompt was changed.
+
+One thing for the orchestrator, not changed: the Environment section still says "You cannot end the call. After '(fin)' you say goodbye; the app hangs up.", and Danny has no end_call tool (section 4, item 20). The new line says "end the call". Danny can only say the goodbye and stop; the page still has to hang up. The two lines are not a word-for-word clash, but the new line asks for something Danny cannot do. I left the Environment line as it was.
+
+### New length and version
+
+- Section 2 in the file: 702 words, 3,718 characters (before: 674 words, 3,572 characters; the difference, 146 characters, is the new line with its line break).
+- Applied to the agent (Main) as version `agtvrsn_4201m7k03faweq19n82pqx1zenw5` (the version before it is `agtvrsn_4901m7jzc6j3e60st7e27tx1yazw`, fix 5). Same method as before: the whole prompt text sent in one call, only the prompt field.
+
+### Read-back
+
+- Before the change, the live prompt was read first: 3,572 characters, the same as the file, so the file and the agent were in step.
+- After the change, the stored system prompt is 3,718 characters, the same count as the file, and the text is identical to section 2 character for character (compared by script: equal). The new line is the second bullet after "(fin)" in "# When he is stuck"; every other line is the fix-5 text.
+- First message read back: `{{opening}}` (11 characters), unchanged.
+- Config summary after the change: version `agtvrsn_4201m7k03faweq19n82pqx1zenw5`, LLM claude-sonnet-5-5, voice kcsUqKsJMPz7j3H6QPNd, language es, one tool (show_picture), no built-in tools, prompt_chars 3,718. The update call's own answer shows temperature 0.3, max_tokens -1, the same tool id, and no reasoning effort or thinking budget. I did not re-read the turn settings, allowlist and call limits in full; the call wrote only prompt fields.
+
+### Status: untested
+
+Fix 6 has not been tested. No test was run (the cap leaves 377 credits, and the orchestrator decided the owner's first real call is the next test). No credits were spent; the account counter was not read. Fixes 5 and 6 are both untested on tests 1, 3, 4, 5 and 6, and fix 6 is untested everywhere. What to look for in the first real call: after the learner's "adiós" or "hasta mañana", Danny says "Adiós." or "Hasta mañana." and nothing else, with no question and no "¿Y tú?" (the habit seen in tests 1 and 2).
