@@ -56,6 +56,25 @@ For what was built after story 1, page 08 wins.
 - Testing the page with the real call code: in his desktop Chrome on the live page, replace the microphone with a silent stream, start the call with real clicks, drive touches with Mission.tap. Save localStorage["coqui.v3"] before and put it back after.
 - Nov 16: prompt v3 for place calls (place, job, words_open, words_heard, opening, minutes); see historia/notas/danny-prompt-v3.md.
 
+## The call in the app (v=35, Nov 16)
+
+- Code: historia/llamada.js, one object `Llamada` in its own scope. The Hablar tab in historia/app.html opens it. It reads the app's CURSO, CU and PAL and writes only mouth records and minutes.
+- Library: @elevenlabs/client 1.25.0 from cdn.jsdelivr.net, loaded when Hablar shows La casa's open card, never inside the tap.
+- The agent is agent_3301m795q3xtfpx8c99zc0s870vm. connectionType websocket, no overrides, no signed URL.
+- **The agent only connects from the published site** (allowlist salimocasio-dev.github.io). From localhost it is refused. A real call can only be tried on the live page, with a real microphone.
+- The page sends these dynamic variables: place, job, words_open, words_heard, minutes, opening. Danny has one tool, show_picture(key); the page answers "shown", and ignores a key that is not a word of the place.
+- The page sends "(ayuda)" when the learner taps Help and "(fin)" to end the call. Danny cannot hang up.
+- Cost: about 650 credits a minute. The page ends the call at 7 minutes at most.
+
+**The stub: `?callstub=1`**
+
+- Add `?callstub=1` to app.html (for example `app.html?tab=hablar&callstub=1` on localhost:8765). The page then uses a fake `Conversation` in place of the library. No network, no microphone, no credits.
+- Without that parameter the stub does not exist: nothing but a tap on the green disc can place a call.
+- The fake call walks through every mic state, sends two of Danny's lines (the second asks for the juice picture) and two learner lines, then a learner "Adiós." after 2 call-minutes. It answers "(fin)" with a goodbye.
+- Options, joined with `&`: `stub=manual` (nothing moves by itself; step with `CallStub.go("connect")`, "danny1", "you1" and so on, names in `CallStub.names`); `stub=mic` (the microphone is refused); `stub=fail` (the call does not start); `stub=nofin` (Danny does not answer "(fin)"); `clock=N` (the call's clock runs N times faster).
+- `CallStub.sent` lists what the page sent; `CallStub.opts` holds what it passed to startSession.
+- Check by machine: `python3 historia/tools/llamada_check.py <outdir>` (outdir must exist; server on 8765). It plays Hablar locked and open, the stepped call, the natural call and the error paths at 390x844, 360x640 and 844x390, saves numbered frames, and prints one line per check.
+
 ## ElevenLabs costs (measured)
 
 - A live call costs about 650 credits a minute, about $6.50 an hour at $1.65 per 10,000 credits.

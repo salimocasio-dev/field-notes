@@ -4,9 +4,9 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=32
-- Story 1 directly: historia/?v=32 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=32 in index.html, cual.html, app.html and nivel.html. Raise all four when a script changes.
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=35
+- Story 1 directly: historia/?v=35 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
+- Script tags carry ?v=35 in index.html, cual.html, app.html and nivel.html (app.html also loads llamada.js). Raise all four when a script changes.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
 
 ## Script lessons so far (what reviewers have caught; check every new script against this before it goes to them)
@@ -55,6 +55,31 @@ Paused at the owner's word. Not built. Script: historia/notas/guiones/comer.md, 
 How the work runs from Nov 14: one orchestrating session makes every decision; builder agents execute. Their runbook is historia/notas/runbook-agentes.md. The test helpers moved from the scratchpad into historia/tools/: matriz.sh (logs in $MATRIZ_LOGS), hojas.py, sel.py, nivel_check.py, app_check.py, beside juega.py and cual_check.py.
 
 Size, Nov 14 (estimates): 32 stories built (about 2 h 25 min played once, about 5 hours with the replays), about 1 hour of Escuchar, 128 picture pairs, a level check of 48 items: about 6 hours a learner can spend. The plan for all of A1 is about 100 stories and about 40 hours of Escuchar, so about 11% of the hours and about 32% of the stories are built.
+
+## Nov 16, part 18: UI rounds 1 to 3, and the call with Danny
+
+Live at ?v=35. The UI rounds went out at v=34 (Nov 14); the call is new at v=35.
+
+### UI rounds 1 to 3 (v=34)
+
+- Why: the owner called the app "a mess" (Nov 14). Three rounds, each from a fresh screenshot tour of the screens. The decisions are in historia/notas/ui-decisiones-1.md, ui-decisiones-2.md and ui-decisiones-3.md. What is built: page 09.
+- Round 1: story, ¿Cuál? and the level check share one full-screen frame (a top bar with a close X, a progress bar, the sound button). Finished stories now save progress (a `window.PAL` test in juego.js had stopped it). Place sheet at most 70% high. Reading audio stops when its sheet closes. Biblioteca and Palabras show only what he has played or heard.
+- Round 2: one system for every screen. Green for anything that starts or continues learning, blue for other primary actions, one green 48 px play disc, one outline secondary button, 48 px targets 16 px apart, pictures scaled by whole numbers, one end-screen layout, map stop states.
+- Round 3: polish. Map stops show done, current, open or locked with an N/M chip. The place sheet marks the next story. Story ends offer Play again and Map. Landscape lessons keep their controls in the right column. The level check's explanation moved to Yo. Hablar became one card. La lluvia's opening camera and end picture were fixed.
+
+### The call with Danny (v=35)
+
+- Decisions: historia/notas/llamada-decisiones-1.md. Code: historia/llamada.js (all call code, one object `Llamada` in its own scope) and the Hablar tab and one script tag in historia/app.html.
+- Hablar has one "Call Danny" card for each place. La casa's opens once all 11 of its stories are played. The screen, its states, colours and sizes: page 09, "Call screen (v=35)".
+- A speaking call: no touches. Danny talks; the screen shows his last line, the picture he asks for and what the app heard the learner say. The pictures are the "si" pictures of La casa's ¿Cuál? pairs, drawn with the same code as the Palabras cards.
+- The words are the 50 focus words of La casa's 11 stories. A word is open for speaking when its ear record has reached stage 3. With fewer than 8 open words, every word he has heard once counts as open too. The page sends place, job, words_open, words_heard, minutes and opening to Danny.
+- Every word of the place that the learner says (once per call) becomes a mouth record: PAL.responde(word, "mouth", true, ms). The call's minutes count into the minutes listened, and a day with a call keeps the streak.
+- The end: the X; Danny ending it; "(fin)" sent by the page at 6 minutes, or from 2 minutes when the learner says adiós or hasta mañana, and then the call ends when Danny has said goodbye (15 s at most); 7 minutes is the hard stop. Then a summary: "Call done", "N min · M words said", the words as chips, "Back to Hablar".
+- Danny's prompt v3 (historia/notas/danny-prompt-v3.md): the brief for place calls, written to the owner's rules (slow, plain, A1 and A2 words, "Sí." or "Eso." and on, no pet names), with a section of simulated test results. Those tests were run with ElevenLabs credits (the owner said yes on Nov 16 to up to 6,000); the counts are in that file.
+- A call cannot be placed from localhost: the agent only connects from the published site. So the app has a stub, `?callstub=1` (page 05), and historia/tools/llamada_check.py checks every screen and path with it.
+- Checked (Nov 16, localhost:8765, with the stub): llamada_check.py, 163 checks, 0 failed, 0 page errors, at 390x844, 360x640 and 844x390. Hablar locked with nothing played and with 10 of 11 stories played, open with all 11. The stepped call through every mic state, the picture, Help, the X, the summary, back to Hablar. A natural call with a fast clock. Every state change showed within 200 ms of its cause (the dots come 0.6 s after he stops talking). The 7 words said in the test call each got a mouth record. After every way out (the X, Danny hanging up, pagehide, the 6-minute "(fin)", the 7-minute stop, the 15 s cap) no timer of the call was left and the tab bar was back. app_check.py: only the known navigator.vibrate line. One story from start to end (El jugo, all answers right): no errors.
+- Not tested: a real call. It needs the owner's microphone on the live page.
+- Only La casa has a call. The calls of places 2 to 10 come with their places.
 
 ## Nov 14, part 17: place 3, La cocina, scene 3, La nevera (stories 30 to 32)
 
@@ -635,6 +660,7 @@ Live at ?v=22. Scripts (final, draft 3): historia/notas/guiones/sala.md.
 
 ## Next, in the order of page 07
 
-1. Place 1 complete: El balcón, La sala, El patio (stories, scenes, pictures, lines), its Escuchar, reading texts, its call with Danny.
-2. The level check. 3. Places 2 to 10. 4. The fort check.
-- Also open: the rest of the UI plan (09); the 85% difficulty tuning; the mouth record fed by calls; the plan doc's game tab fixes ("porch lamp", "nothing is built").
+1. Place 3, scene 4: A comer (paused at script draft 3; see "In work" above).
+2. Places 4 to 10 (page 02). 3. The fort check.
+- Done since page 07 was written: place 1 complete with its call with Danny (v=35), the level check, El parque, three of the four scenes of La cocina.
+- Also open: the rest of the UI plan (09); the 85% difficulty tuning; the plan doc's game tab fixes ("porch lamp", "nothing is built"); the calls of places 2 to 10.

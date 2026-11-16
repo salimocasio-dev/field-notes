@@ -1,6 +1,6 @@
 # Coquí: start here
 
-State on Nov 13 2026, during the second build session (the one finishing A1). Read this page first. Update it at the end of every working session.
+State on Nov 16 2026, during the second build session (the one finishing A1). Read this page first. Update it at the end of every working session.
 (These pages live in two places: the claude.ai Project "Coqui - Language Learning App" and this folder, docs/proyecto/ in the GitHub project. A session that cannot see the Project works from this folder and keeps it current. Keep both the same.)
 
 **Read 03-requirements, this page, 07-handoff-build-a1, 08-build-log-a1 (everything built since 07; it wins where they differ), and 09-ui-plan before touching any screen.**
@@ -18,8 +18,14 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 ## Where things stand
 
 - The A1 plan is written, reviewed, and all five of its decisions are settled by Salim (Nov 13). His words are in 03-requirements.
+- **Live now (Nov 16): v=35.** The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=35
+    - UI rounds 1 to 3 are done (v=34, Nov 14). One look for every screen. Decisions: historia/notas/ui-decisiones-1.md, 2 and 3. What is built: page 09.
+    - Call Danny is open in Hablar, for La casa. Its card opens once all 11 stories of La casa are played. Page 08, part 18; the screen is in page 09.
+    - The call is a speaking call. Danny talks. The screen shows his line, the picture he asks for and what the app heard. Every word of the place that he says becomes a mouth record.
+    - A call costs about 650 ElevenLabs credits a minute. The page ends the call at 7 minutes at most (about 4,500 credits).
+    - A call cannot be placed from localhost: the agent only connects from the published site. The screens are checked with a stub (?callstub=1). Page 05.
+    - Danny's brief for place calls is prompt v3: historia/notas/danny-prompt-v3.md.
 - **Live (Nov 13): the app to his UI plan, all eleven stories of place 1, La casa, as games (El frente 1 to 3, El balcón 4 and 5, La sala 6 to 8, El patio 9 to 11), word records with the scheduler, and the next-day ¿Cuál? pass for all four scenes.**
-    - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=32
     - El balcón: El jugo (silla, se sienta, vaso, jugo, agua, toma) and ¡Qué calor! (quiero, por favor, gracias, de nada, ¿cómo estás?, bien). New in the game: answer bubbles that speak, for words that cannot be drawn. Page 08, part 5.
     - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Story 8 opens with one English card. Page 08, part 6.
     - El patio: Las flores (niño, niña, juega, flor, sol, aquí, allá), ¿Qué es esto? (¿qué es esto?, amigo, mira, ven), Hasta mañana (vamos, hasta mañana). "Allí" is taught as "allá"; the gate is "el portón". Page 08, part 7.
@@ -43,8 +49,9 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 
 ## Waiting on Salim
 
-- How the app, stories 1 to 11 and ¿Cuál? feel and sound. Nothing is blocking.
-- His yes or no (asked Nov 13, evening): may up to 6,000 ElevenLabs credits (about $1) be spent on simulated test calls for place 1's call with Danny, once the allowance renews Nov 16. Until he says yes, build only the app side and the brief; spend nothing.
+- How the app, stories 1 to 11, ¿Cuál? and the call with Danny feel and sound. Nothing is blocking.
+- His first real call on the live page (v=35, Hablar, after all 11 stories of La casa are played). Nobody can try it for him: it needs his microphone and the published site.
+- His yes was given on Nov 16 for up to 6,000 ElevenLabs credits (about $1) on simulated test calls. Tell him the amount before any more is spent. His own calls cost about 650 credits a minute.
 - His word on "salta" (asked Nov 13, night): his list says "salta"; in Puerto Rico the everyday word is "brinca". The stories use "salta" until he says otherwise. Also told: "el campo" means the countryside in Puerto Rico, so the stories say "el parque"; the scene keeps his name for it.
 - Told him (Nov 14): "pato" is also an insult in Puerto Rico when called at a person; the stories only ever say "el pato" / "un pato" of a duck. His list has "vuela" and "nada"; people say "está volando" / "está nadando" for something happening now; the stories keep his forms. "¿Quién nada?" and "¡El pato nada!" must be said in one breath or "nada" is heard as "nothing": only he can hear whether the voice does.
 - Told him (Nov 14, El banco): "viejo" is taught on a dog, because said of a person it is blunt in Puerto Rico (the polite word is "mayor", which comes later); people in the stories are "señor", "señora", "joven". "Hombre" and "mujer" are only said by the narrator. "Bebe" (drinks) and "bebé" (baby) differ only in stress; everyday speech says "toma agua" more than "bebe agua"; "bebe" is his word and is kept. A crying baby is not "triste" in Puerto Rico, so the baby is only "contento" or asleep. In story 21 a learner can find the man or the woman from "el" / "la" and the old words "niño" / "niña": no cleaner test of "hombre" / "mujer" exists inside the word list.
@@ -55,10 +62,12 @@ State on Nov 13 2026, during the second build session (the one finishing A1). Re
 
 ## Next steps, in order
 
-1. Place 1: all four scenes, eleven stories and a first set of Escuchar are done. The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and its call with Danny (the app side and Danny's brief can be built without spending; testing a call costs ElevenLabs credits and needs Salim's yes; the allowance was used up Nov 12 and renews Nov 16).
+In short: A comer (place 3, scene 4; paused at script draft 3), then places 4 to 10, then the fort check.
+
+1. Place 1: all four scenes, eleven stories, a first set of Escuchar and the call with Danny are done (v=35). The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and whatever his first real call shows.
 2. The level check: built for place 1 (page 08, part 9). Each new place adds its items.
-3. Places 2 to 10. Place 2, El parque: all four scenes and a first Escuchar set are done. Its call with Danny waits on the same yes as place 1's. Place 3, La cocina: scenes 1 to 3, La mesa, La estufa and La nevera, are done (stories 24 to 32). Paused (Nov 14, at the owner's word, while he tests the app): scene 4, A comer. Its script is at draft 3, after two rounds of reviews: historia/notas/guiones/comer.md (33 ¿Qué quieres?: butter or chocolate inside a hot roll, a wrong one is bitten and left, abuela eats last; 34 Buen provecho: second helpings against papá's lunch, the frog says "¡Buen provecho!" to leave the table; 35 Café con azúcar: sugar and coffee that cannot come out of a cup). Every story has two scored rounds. The orchestrator's decisions for draft 3 are in historia/notas/guiones/comer-decisiones-3.md. Open before the last gate: in 34 B whether Luis takes a mound for himself (the count allows one); the pairs for "quieres" ("pan" picks the picture) and "buen provecho" (the clean-plates picture now fits too); "No tengo…" is heard only twice before the game. Next: settle those, a last gate and a final Spanish check (fresh reviewers), then build (scene file comer.js from the table of mesa.js, historia/tools/gen_comer.py on the pattern of gen_nevera.py), pairs, level-check items, version 33, machine tests, wordless readers, audio, publish. Then the place's Escuchar and its call. Since Nov 14 the work runs with one orchestrating session and builder agents; their rules are in historia/notas/runbook-agentes.md, and the test helpers are in historia/tools/. Words for every scene: page 02.
-4. Open alongside: the rest of the UI plan (09: calm full-screen lesson screens, the mic states, unlock haptics, streak freezes, the map at an angle and finished places changing it); the 85% difficulty tuning; the mouth record fed by calls; the plan doc fixes ("porch lamp", "nothing is built", old three passes).
+3. Places 2 to 10. Place 2, El parque: all four scenes and a first Escuchar set are done. Its call with Danny is not built yet (only La casa has one). Place 3, La cocina: scenes 1 to 3, La mesa, La estufa and La nevera, are done (stories 24 to 32). Paused (Nov 14, at the owner's word, while he tests the app): scene 4, A comer. Its script is at draft 3, after two rounds of reviews: historia/notas/guiones/comer.md (33 ¿Qué quieres?: butter or chocolate inside a hot roll, a wrong one is bitten and left, abuela eats last; 34 Buen provecho: second helpings against papá's lunch, the frog says "¡Buen provecho!" to leave the table; 35 Café con azúcar: sugar and coffee that cannot come out of a cup). Every story has two scored rounds. The orchestrator's decisions for draft 3 are in historia/notas/guiones/comer-decisiones-3.md. Open before the last gate: in 34 B whether Luis takes a mound for himself (the count allows one); the pairs for "quieres" ("pan" picks the picture) and "buen provecho" (the clean-plates picture now fits too); "No tengo…" is heard only twice before the game. Next: settle those, a last gate and a final Spanish check (fresh reviewers), then build (scene file comer.js from the table of mesa.js, historia/tools/gen_comer.py on the pattern of gen_nevera.py), pairs, level-check items, version 33, machine tests, wordless readers, audio, publish. Then the place's Escuchar and its call. Since Nov 14 the work runs with one orchestrating session and builder agents; their rules are in historia/notas/runbook-agentes.md, and the test helpers are in historia/tools/. Words for every scene: page 02.
+4. Open alongside: the rest of the UI plan (09: unlock haptics, streak freezes, the map at an angle and finished places changing it, pitch feedback); the 85% difficulty tuning; the plan doc fixes ("porch lamp", "nothing is built", old three passes).
 
 ## Pages
 
