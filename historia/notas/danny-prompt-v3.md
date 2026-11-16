@@ -444,3 +444,5 @@ Notes for the orchestrator (not criteria of tests 4 and 1, nothing was changed):
 - Line 9, "Adiós, amigo.": "amigo" is a La casa word, but here it addresses the learner (a form of address, close to the "no name, no pet names" rule); it is not in the pet-name list in the criteria, so the test passed it.
 - The Guardrails line from fix 1 says "Never say ... aquí, mira"; with the real La casa list those two words ARE listed ("aquí" in las-flores, "mira" in que-es-esto), so that line and the list now disagree. The line was written for the old draft list.
 - At line 5 and line 7 Danny hands over "Toma." with the drink and then asks a question in the same turn; at line 9 he says goodbye and asks "¿Y tú?", which is odd after "Adiós".
+
+Note on the balance: after the last test the account's monthly allowance renewed (the counter now reads 0 used of 908,289, with the next reset moved a month on). The "688,704 used of 996,993" above is the last reading of the old period, taken after test 1. The 4,958 credits spent since the owner's yes were all measured in the old period.
