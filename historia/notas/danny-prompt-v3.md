@@ -340,7 +340,7 @@ Test changes on ElevenLabs (tests can be edited, so no replacement was made; the
 | 1 | Greets | not run (stopped at the first failure) | 0 | |
 | 2 | Only allowed words | not run | 0 | |
 
-Credits since the owner's yes: 2,242 at the end of fix 1's test 5 run plus 623 plus 451, so 3,316 of 6,000 in all (the account counter went from 683,746 to 687,062). Of the 6,000, 2,684 are left. Account after: 687,062 used of 996,993 (309,931 left). For test 4 the counter agrees with the run's own `credits_used` (451).
+Credits since the owner's yes: 1,722 before fix 2, plus 520 (test 5), 623 (test 3) and 451 (test 4), so 3,316 of 6,000 in all (the account counter went from 683,746 to 687,062). Of the 6,000, 2,684 are left. Account after: 687,062 used of 996,993 (309,931 left). For test 4 the counter agrees with the run's own `credits_used` (451).
 
 Test 5 (PASS), key lines: Danny's first English reply "¿Y tú? Soy." (question plus first word); second ("I still don't get it.") show_picture "me llamo" and "Me llamo Danny. Tú: me llamo."; "What is juice?" show_picture "jugo" and "Es jugo. ¿Y tú? Me llamo."; third plain English ("Sorry, I am confused.") show_picture "agua" and "Eso. ¿Quieres agua o jugo?" (next step of the job). No English, no word outside the lists, every picture key listed. The evaluator's rationale lists only three of the five criteria, but its status is passed and my own reading of the transcript agrees with all five. The colon in "Tú: me llamo." is still there (label-like), not a criterion.
 
