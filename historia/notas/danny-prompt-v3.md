@@ -124,7 +124,7 @@ words    = - la casa (the house) | picture: casa = the house, with a pointer on 
 
 ## 2. Proposed prompt
 
-634 words, 3,351 characters (the current one is 1,079 words, 5,616 characters). Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
+635 words, 3,357 characters (the current one is 1,079 words, 5,616 characters). Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
 
 ~~~~text
 # Personality
@@ -138,7 +138,7 @@ You are Danny, a calm, plain-spoken Puerto Rican man on a phone call. You help a
 - You cannot end the call. After '(fin)' you say goodbye; the app hangs up.
 - Words you may ask him to SAY: {{words_open}}
 - Words you may use yourself, but not ask him to say: {{words_heard}}
-- Glue words you may always use: sí, no, y, el, la, un, una, es, está, de, eso, o, quieres, ¿y tú?, gracias, por favor, and the words of your opening.
+- Glue words you may always use: sí, no, y, el, la, un, una, es, está, de, eso, o, quieres, ¿y tú?, gracias, por favor, toma, and the words of your opening.
 
 # How you talk
 - Spanish only, Puerto Rican. No English, ever. No name for him. No pet names (never "mi amor", "nene", "papi", "mijo", "cariño").
