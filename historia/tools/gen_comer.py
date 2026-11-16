@@ -212,14 +212,13 @@ PARC={"m_c_quieres":N("¿Quieres pan?"),"m_c_que_quieres":AB("¿Qué quieres?"),
  "m_c_tambien":N("Luis come pan. Carmen también."),"m_c_todo":N("Canelo se lo come todo."),"m_c_cafe":N("Mamá toma café."),"m_c_azucar":N("Abuela le pone azúcar al café."),"m_c_un_poco":N("Un poco de arroz, por favor."),"m_c_mucho":N("Aquí hay mucho jugo.")}
 USA=list(PARC)+["muy_bien","si_muy_bien"]
 todos={**c,**s33["clips"],**s34["clips"],**s35["clips"],**PARC}
-MESA_=[]
 cualj={"id":"cual-comer","title":"¿Cuál?","place":"La cocina","scene":"comer","tipo":"cual","stake":{"thing":"none","steps":0},
  "note":"The next-day pass for A comer.","clips":{k:todos[k] for k in USA},
  "items":[
   {"w":"quieres","say":"m_c_quieres","si":pic(cam(100,146,88),gente={"abuela":P(76,186,1,pose="offer",alza={"k":"rollo","v":"ce","e":2,"dx":24,"dy":28}),"luis":P(126,186,-1,pose="ojos")}),
                                     "no":pic(cam(100,146,88),gente={"abuela":P(70,186,1,pose="idle"),"luis":P(134,186,-1,pose="wave0",alza={"k":"plato","v":"","e":1,"dx":22,"dy":-14})},cosas=[cosa("cesta",46,114,v="4:0"),Q(134,134)])},
   {"w":"¿qué quieres?","say":"m_c_que_quieres","si":pic(cam(174,144,88),gente={"abuela":P(208,181,-1,pose="idle",lleva={"k":"cucharon","dx":14,"dy":17},alza={"k":"cucharon","dx":28,"dy":26,"e":0}),"carmen":P(140,186,1)},cosas=[cosa("olla",176,168,v="lleno",vapor=1,vdy=19),cosa("olla",194,168,v="lleno",vapor=1,vdy=19),Q(208,124)]),
-                                              "no":pic(cam(174,144,88),gente={"abuela":P(208,181,-1,pose="offer",alza={"k":"plato","v":"r","e":1,"dx":-30,"dy":22}),"carmen":P(140,186,1,pose="ojos")},cosas=[Q(208,124)])},
+                                              "no":pic(cam(174,144,88),gente={"abuela":P(208,181,-1,pose="offer",alza={"k":"plato","v":"r","e":1,"dx":30,"dy":22}),"carmen":P(140,186,1,pose="ojos")},cosas=[Q(208,124)])},
   {"w":"me gusta","say":"m_c_me_gusta","si":pic(cam(120,150,76),gente={"luis":P(120,184,1,come={"k":"muslo","e":1,"dx":11,"dy":0},boca=1)},cosas=[cosa("corazon",134,132,e=2,z=900)]),
                                       "no":pic(cam(120,150,76),gente={"luis":P(104,184,1,pose="wave0",alza={"k":"muslo","e":2,"dx":24,"dy":-14}),"carmen":P(142,186,-1,pose="ojos")})},
   {"w":"no me gusta","say":"m_c_no_me_gusta","si":pic(cam(124,152,76),gente={"carmen":P(106,186,1,pose="offer",cara="mal")},cosas=[cosa("platoma",142,163)]),
@@ -233,7 +232,7 @@ cualj={"id":"cual-comer","title":"¿Cuál?","place":"La cocina","scene":"comer",
                                       "no":pic(cam(126,152,76),gente={"luis":P(112,186,-1,pose="wave0",boca=1,alza={"k":"rollo","v":"mo:c","e":2,"dx":22,"dy":-14}),"carmen":P(140,186,1,pose="ojos")})},
   {"w":"todo","say":"m_c_todo","si":pic(cam(130,190,58),perro=dict(x=122,y=198,pose="eat",dir=1),cosas=[cosa("cuenco",146,201,v="limpio")]),
                                 "no":pic(cam(130,190,58),perro=dict(x=104,y=198,pose="walk",dir=-1),cosas=[cosa("cuenco",146,201,v="lleno"),cosa("granos",88,189,z=900)])},
-  {"w":"café","say":"m_c_cafe","si":pic(cam(126,150,66),gente={"mama":P(112,184,1,pose="wave0",alza={"k":"taza","v":"negro","e":2,"dx":22,"dy":-14,"vapor":1})},cosas=[cosa("cafetera",156,168,vapor=1,vdy=22,vdx=-2)]),
+  {"w":"café","say":"m_c_cafe","si":pic(cam(126,150,66),gente={"mama":P(112,184,1,pose="wave0",alza={"k":"taza","v":"negro","e":1,"dx":20,"dy":-14,"vapor":1})},cosas=[cosa("cafetera",156,168,vapor=1,vdy=22,vdx=-2)]),
                               "no":pic(cam(126,150,66),gente={"mama":P(112,184,1,pose="wave0",alza={"k":"vasojugo","e":2,"dx":22,"dy":-14})})},
   {"w":"azúcar","say":"m_c_azucar","si":pic(cam(118,150,68),gente={"abuela":P(100,186,1,pose="offer")},cosas=[cosa("taza",128,164,v="negro",vapor=1),cosa("cucharon",126,150,v="a",rot=-0.9)],vuelos=[{"k":"chorro","x":128,"y":151,"h":9,"col":"#FFFFFF"}]),
                                 "no":pic(cam(118,150,68),gente={"abuela":P(100,186,1,pose="offer")},cosas=[cosa("taza",128,164,v="negro",vapor=1),cosa("jarrale",132,144,rot=-0.8,e=0)],vuelos=[{"k":"chorro","x":128,"y":151,"h":9,"col":"#F6F1E4"}])},
