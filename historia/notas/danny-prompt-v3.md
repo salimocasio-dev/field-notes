@@ -124,7 +124,7 @@ words    = - la casa (the house) | picture: casa = the house, with a pointer on 
 
 ## 2. Proposed prompt
 
-613 words, 3,217 characters (the current one is 1,079 words, 5,616 characters). Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
+634 words, 3,351 characters (the current one is 1,079 words, 5,616 characters). Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
 
 ~~~~text
 # Personality
