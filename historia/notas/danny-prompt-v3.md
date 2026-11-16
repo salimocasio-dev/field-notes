@@ -219,3 +219,71 @@ opening     = ¡Hola! Soy Danny. ¿Cómo estás?
 | 6 | "(fin)" | Talks for two exchanges, then sends "(fin)". | After "(fin)" Danny says one goodbye ("Hasta mañana." or "Adiós.") and nothing else: no question, no name, no new topic. He cannot hang up until item 20 in section 4 is settled, so "ends" is checked as "says nothing after the goodbye". | 4 | 500 |
 
 Total about 5,000 credits (3,000 if every test runs at the bottom of the range, 8,400 if every one runs at the top, which is over the 6,000 approved). Suggested order, cheapest first: 6, 3, 5, 4, 1, 2 (about 3,600 before test 2). Stop and fix the prompt at the first failure instead of running the rest, and keep about 1,000 credits for one re-run. Tell the owner the amount before anything is run.
+
+## 6. Test results (Nov 16)
+
+### What was applied to the agent
+
+The call-brief-apply agent put section 2 on `agent_3301m795q3xtfpx8c99zc0s870vm` (Main, the only branch, 100% of live traffic, no draft, so nothing had to be published). Two versions on Main:
+
+- `agtvrsn_0901m7jf7qs3e2zb8bmy2betfb4x`: dynamic variable placeholders set to place "La casa", job (the La casa job line), words_open "", words_heard "", opening "¡Hola! Soy Danny. ¿Cómo estás?", minutes "5". The old `scene` and `words` placeholders were left in place (the prompt no longer uses them; they are harmless and can be removed later).
+- `agtvrsn_6301m7jfhzf7fdrrc9xmekwavbm9`: system prompt = section 2 exactly (2,891 characters, same count as the file).
+
+First message was already `{{opening}}`, so it was not touched. Read back after the change: the prompt text matches section 2 (character count 2,891), and the LLM (claude-sonnet-5-5, temperature 0.3, max_tokens -1), voice and TTS settings, turn settings, speech recognition, conversation settings, client events, the show_picture tool (`tool_5401m790pja3ec2rm0vdw3brmvwq`, unchanged, its description not edited), allowlist, overrides and call limits are all identical to section 1. Note for the orchestrator: Main is live, so any call from the page right now gets the new prompt.
+
+### How the tests were run
+
+- Tests made with `agents_create_test` (type simulation), because the dedicated simulation tool cannot carry dynamic variables. Source `js_sdk`. Simulated learner and evaluator: the defaults (claude-sonnet-4-6). The show_picture tool is mocked to answer "shown", like the page.
+- Dynamic variables in every test: place "La casa"; job "Say hello, say who you are, accept a drink, say thanks and goodbye."; words_open "hola, sí, no, gracias, adiós, bien, ¿cómo estás?, quiero, agua, jugo, me llamo, soy, yo, tú"; words_heard "casa, puerta, ventana, abuela, mamá, papá, abuelo, familia, vaso, silla, de nada, por favor, hasta mañana"; opening "¡Hola! Soy Danny. ¿Cómo estás?"; minutes "5".
+- Credits = the change in `character_count` from `account_get_usage`. The counter lags 20 to 60 seconds after a run, so each reading was repeated until it stopped moving. Start: 683,746. Order: 6, 3, 5, then stopped at the first failure.
+- The glue words for judging test 2 are now 16, not 11: sí, no, y, el, la, un, una, es, está, de, eso, o, quieres, ¿y tú?, gracias, por favor (sections 4 and 5 above still say 11).
+
+### Results
+
+| # | Test | Result | Credits | Test id |
+|---|------|--------|---------|---------|
+| 6 | "(fin)" | PASS | 363 | `test_9401m7jfkm3qe6arw9ff66sed28j` |
+| 3 | "(ayuda)" | PASS (see the note) | 372 | `test_7001m7jfncmnfjpbek6effz3cjgd` |
+| 5 | English | FAIL | 503 | `test_3401m7jfqmc5eyttmpc48cgyjy9w` |
+| 4 | Silence | not run (stopped at the first failure) | 0 | |
+| 1 | Greets, one thing at a time | not run | 0 | |
+| 2 | Only allowed words | not run | 0 | |
+
+Total used: 1,238 credits of the 6,000 approved. Account after: 684,984 used of 996,993 (312,009 left).
+
+### Test 6, "(fin)": PASS
+
+- Danny: "¡Hola! Soy Danny. ¿Cómo estás?" / learner: "Hola. Bien." / Danny: "Eso. Me llamo Danny. ¿Y tú?" / learner: "Soy Ana." / Danny (show_picture "agua"): "Sí. Toma. ¿Quieres agua o jugo?" / learner: "(fin)" / Danny: "Hasta mañana."
+- One goodbye and nothing else; no name for the learner; no English.
+
+### Test 3, "(ayuda)": PASS, with a note
+
+- Danny: "Eso. Yo soy Danny. ¿Y tú?" / learner: "ayuda" / Danny: "Yo soy Danny. ¿Y tú? Me." / learner: "Me llamo... uh, me." / Danny (show_picture "agua"): "Eso. ¿Quieres agua o jugo?" / learner: "Agua." / Danny: "Sí. Toma. ¿Qué dices?"
+- After the help message Danny said the same question again with the same words, then one word ("Me."), no English, no new question, and went on in Spanish.
+- Note: the simulated learner typed "ayuda" without the brackets (the page sends "(ayuda)"). Danny took it as help, but the exact "(ayuda)" text was not tested. A re-run with the literal text would cost about 400 credits.
+- Small thing seen, not a test criterion: "¿Qué dices?" after "Toma." is a question about what the learner says, which fits the job (accept, then say gracias).
+
+### Test 5, English: FAIL (the first failure, so the run stopped here)
+
+Full transcript:
+
+1. Danny: "¡Hola! Soy Danny. ¿Cómo estás?"
+2. Learner: "Hola. Bien."
+3. Danny: "Eso. Yo soy Danny. ¿Y tú?"
+4. Learner: "I don't understand. What do you want me to say?"
+5. Danny (show_picture "me llamo"): "Yo soy Danny. Me llamo Danny. ¿Y tú?"
+6. Learner: "What is juice?"
+7. Danny (show_picture "me llamo"): "Eso es para después. Tú: me llamo. ¿Y tú?"
+8. Learner: "OK, uh, me llamo... is that right?"
+9. Danny: "Sí. Eso. Yo soy Danny. ¿Quieres un jugo?" then (show_picture "jugo"): "Es un jugo."
+
+What failed, in my reading (the evaluator's criteria 2 and 3 failed; criterion 1, no English, passed):
+
+- Line 7, "Eso es para después.": "para" and "después" are in neither list, not glue words and not in the opening. This breaks the allowed-words rule ("If a word is not there, do not say it").
+- Line 7 is three pieces ("Eso es para después." "Tú: me llamo." "¿Y tú?"), longer than the one short sentence plus the question that the test expects, and "Tú: me llamo." reads like a label with a colon.
+- Line 7 does not deal with what the learner asked ("What is juice?"): the picture stays on "me llamo" and juice is left for later. Note the key "me llamo" is a listed word, so the picture rule alone was not broken; the evaluator's wording on that point was loose.
+- Not fixed: the prompt was not changed (the task was to stop and report).
+
+### Not run
+
+Tests 4 (silence), 1 (greets) and 2 (only allowed words) were not run. Credits left of the 6,000 approved: 4,762.

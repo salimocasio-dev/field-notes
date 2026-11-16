@@ -54,6 +54,7 @@ For what was built after story 1, page 08 wins.
 - Not yet done for the new plan: its brief needs the list of words open for speaking, and the place's job.
 - Tests attached: touches test_2901m795v4cve0vrytfz7s13be9w; confused test_6801m795v4w4ea0rbzn67gr6edgs; silent test_9401m795v5b8f6yad1aq0a95jpda; speaks test_9601m795v5rwf4n9gnkfkts5ermp (inconclusive); day two test_9401m79704g6f4trp3mgxq1kn7mz. Last full run: confused passed, silent passed, touches 6 of 7, day two 5 of 6.
 - Testing the page with the real call code: in his desktop Chrome on the live page, replace the microphone with a silent stream, start the call with real clicks, drive touches with Mission.tap. Save localStorage["coqui.v3"] before and put it back after.
+- Nov 16: prompt v3 for place calls (place, job, words_open, words_heard, opening, minutes); see historia/notas/danny-prompt-v3.md.
 
 ## ElevenLabs costs (measured)
 
