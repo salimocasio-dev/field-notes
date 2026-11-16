@@ -62,7 +62,12 @@ const NV=[
  {w:"leche",s:30,p:[["leche","si"],["leche","no"],["queso","si"],["pan","si"]]},
  {w:"queso",s:30,p:[["queso","si"],["queso","no"],["leche","si"],["fruta","si"]]},
  {w:"guineo",s:31,p:[["guineo","si"],["guineo","no"],["china","si"],["pan","no"]]},
- {w:"lleno",s:32,p:[["lleno","si"],["lleno","no"],["vacío","si"],["mantequilla","si"]]}];
+ {w:"lleno",s:32,p:[["lleno","si"],["lleno","no"],["vacío","si"],["mantequilla","si"]]},
+ // place 3, A comer
+ {w:"café",s:35,p:[["café","si"],["café","no"],["azúcar","si"],["leche","si"]]},
+ {w:"azúcar",s:35,p:[["azúcar","si"],["azúcar","no"],["café","si"],["arroz","si"]]},
+ {w:"mucho",s:35,p:[["mucho","si"],["mucho","no"],["un poco","si"],["vacío","si"]]},
+ {w:"un poco",s:35,p:[["un poco","si"],["un poco","no"],["mucho","si"],["lleno","si"]]}];
 const MUESTRA=false;   // the ring around the picture he touched: false = white, it only shows which one he touched (a check never says right or wrong); true = green right, red-orange wrong, as in Review
 const CW=96,CH=106;   // four cells, two by two (the gap between them, GAP, is set from the scale in cual.js)
 const NN=Q.get("todo")?NV.length:Math.min(16,NV.length);   // how many pictures it asks at most: 16, or every item with ?todo=1
