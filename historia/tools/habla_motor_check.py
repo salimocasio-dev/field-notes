@@ -278,6 +278,33 @@ async def main():
         if r: ck("frog not on screen: the bubble sits just above the mic button, centred on it",r["bub"][1]+r["bub"][3]<=r["mic"][1] and abs(r["bub"][0]+r["bub"][2]/2-(r["mic"][0]+r["mic"][2]/2))<=2,(r["bub"],r["mic"]))
         base("frog not on screen",R,[("linea","ok"),("ask","ok"),("elige","ok")])
 
+        # the mic bubble never covers a person or an answer bubble; listening and the tick read plainly
+        GEO="""()=>{const b=document.getElementById('bub').getBoundingClientRect(),c=document.getElementById('cv').getBoundingClientRect(),z=c.width/Story.cam[2],zy=c.height/Story.cam[3],cm=Story.cam,
+          rect=a=>({l:c.left+(a[0]-cm[0])*z,t:c.top+(a[1]-cm[1])*zy,r:c.left+(a[0]+a[2]-cm[0])*z,b:c.top+(a[1]+a[3]-cm[1])*zy}),others=[];
+          (Story.W.resp||[]).forEach(k=>{const x=respBox(k);if(x)others.push(['answer '+k,rect(x)]);});const ab=(Story.W.ab&&E.box)?E.box('abuela',Story.W):null;if(ab)others.push(['abuela',rect(ab)]);
+          return {bub:{l:b.left,t:b.top,r:b.right,b:b.bottom},others,at:Story.hab.at,tail:12}}"""
+        MIC="""()=>{const m=document.getElementById('mic'),g=(e,p)=>getComputedStyle(e,p),b=g(m),f=g(m,'::before'),a=g(m,'::after');return {bg:b.backgroundColor,shadow:b.boxShadow,pe:b.pointerEvents,bw:b.borderTopWidth,
+          f:{an:f.animationName,w:f.borderTopWidth,c:f.borderTopColor},a:{an:a.animationName,w:a.borderTopWidth,c:a.borderTopColor}}}"""
+        async def geo(pg,s,R):
+            R.setdefault("geo",{}); R.setdefault("mic",{})
+            tipo=s["log"][-1]["tipo"] if s["log"] else None
+            if s["est"]=="ready" and tipo and tipo not in R["geo"]:
+                await pg.wait_for_timeout(350); R["geo"][tipo]=await pg.evaluate(GEO); R["mic"].setdefault("ready",await pg.evaluate(MIC))
+            if s["est"]=="listening" and "listening" not in R["mic"]: R["mic"]["listening"]=await pg.evaluate(MIC)
+            if s["est"]=="ok" and "ok" not in R["mic"]: await pg.wait_for_timeout(200); R["mic"]["ok"]=await pg.evaluate(MIC)   # after the 120 ms colour change
+        for vp in ((390,844),(844,390)):
+            R=await play(br,A+SI3,vp=vp,on_poll=geo,budget=140,fast=2); tag="%dx%d"%vp
+            for tipo,g in R["geo"].items():
+                bb=g["bub"]; hit=[n for n,o in g["others"] if bb["l"]<o["r"] and bb["r"]>o["l"] and bb["t"]<o["b"] and bb["b"]+g["tail"]>o["t"]]
+                ck("covering "+tag+": the mic bubble of a "+tipo+" turn covers no person and no answer bubble ("+str(len(g["others"]))+" checked, bubble at "+g["at"]+")",not hit and len(g["others"])>=(0 if tipo=="linea" else 1),hit)
+            m=R["mic"]
+            if "ready" in m and "listening" in m:
+                lum=lambda c:(lambda v:0.2126*v[0]+0.7152*v[1]+0.0722*v[2])([((x/255)/12.92 if x/255<=0.03928 else (((x/255)+0.055)/1.055)**2.4) for x in map(int,c[c.index("(")+1:c.index(")")].split(",")[:3])])
+                ring=m["listening"]["a"]["c"]; cr=(lum(ring)+0.05)/(lum("rgb(27, 27, 31)")+0.05)
+                ck("listening "+tag+": the disc is another colour than ready, with two rings spreading outside it",m["listening"]["bg"]!=m["ready"]["bg"] and m["listening"]["f"]["an"]=="micring" and m["listening"]["a"]["an"]=="micring" and m["listening"]["a"]["w"]=="4px",(m["ready"]["bg"],m["listening"]["bg"],m["listening"]["f"]["an"]))
+                ck("listening "+tag+": the ring is at least 3:1 against the screen (the UI plan's non-text contrast); it is %.1f:1"%cr,cr>=3,round(cr,1))
+            if "ok" in m: ck("tick "+tag+": it is a status, not a button (no fill, no shadow, takes no touch)",m["ok"]["bg"] in("rgba(0, 0, 0, 0)","transparent") and m["ok"]["shadow"]=="none" and m["ok"]["pe"]=="none" and m["ok"]["bw"]=="3px",m["ok"])
+            else: ck("tick "+tag+": it was seen",False)
         # real time (fast=1): the 9 s repeat, nothing repeats while listening, the frog does nothing while listening, the 6 s stop; an elige touched while listening
         T1={}
         async def live(pg,s,R):

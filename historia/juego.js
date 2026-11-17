@@ -233,7 +233,7 @@ const habRana=()=>{const q=W&&W.cq;if(!q||!q.vis)return false;const b=frogBox(q)
 function habBub(k,txt){clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:SVMIC;bubEl.dataset.mic=k;
   if(txt){const sp=document.createElement("span");sp.textContent=txt;bubEl.appendChild(sp);}
   MBUB=1;bubEl.classList.add("on");
-  if(!HAB.q){BUBQ=habRana()?"coqui":"mic";placeBub();HAB.q=BUBQ==="coqui"&&habCubre()?"mic":BUBQ;}   // where it sits is decided once for the whole turn: at the frog if he is on screen and the bubble covers neither a person nor an answer bubble, else just above the mic button
+  if(!HAB.q){BUBQ=habRana()?"coqui":"mic";placeBub();HAB.q=BUBQ==="coqui"&&(()=>{try{return habCubre();}catch(e){return true;}})()?"mic":BUBQ;}   // where it sits is decided once for the whole turn: at the frog if he is on screen and the bubble covers neither a person nor an answer bubble, else just above the mic button
   BUBQ=HAB.q;placeBub();}   // it shows even when TXT is "no"
 // would the bubble, where placeBub has just put it beside or above the frog, cover a person or one of the answer bubbles? (everything in the stage's own pixels)
 function habCubre(){const cw=cv.clientWidth,ch=cv.clientHeight,zx=cw/cam[2],zy=ch/cam[3],bw=bubEl.offsetWidth,bh=bubEl.offsetHeight,l=parseFloat(bubEl.style.left)||0,t=parseFloat(bubEl.style.top)||0,cl=bubEl.className,
