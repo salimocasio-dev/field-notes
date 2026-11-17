@@ -32,7 +32,7 @@ What is true of a table (and shaped these games): too little can be topped up an
 
 **Start:** the table. On it: the basket with five split rolls, the butter dish, the pot of chocolate, abuela's empty plate by the basket. Seats: the four chairs are abuelo's, mamá's, papá's and abuela's; Carmen and Luis eat standing at the end of the table, by their plates. Abuela at the stove with a second tray of rolls in the oven. The frog on the table. Abuelo, mamá, papá, Carmen and Luis are in the yard, past the door at the left. In the opening abuelo, mamá and Luis come in, one at a time; papá and Carmen come in for the first time at the turn.
 
-1. NARR: "Aquí hay pan." (the basket twinkles) NARR: "El pan está caliente." NARR: "Aquí hay mantequilla." NARR: "Aquí hay chocolate." Abuela, by the basket, turns to the frog. NARR: "Abuela dice: ¡Hola! ¿Cómo estás?" COQUÍ [TURN: bien (bien) + gracias (gracias)]: "¡Bien, gracias!" Abuela moves her own empty plate close up to the basket; during it: NARR: "Abuela dice: Me gusta el pan." Abuela goes out to the yard.
+1. NARR: "Aquí hay pan." (the basket twinkles) NARR: "El pan está caliente." NARR: "Aquí hay mantequilla." NARR: "Aquí hay chocolate." Abuela, by the basket, turns to the frog. NARR: "Abuela dice: ¡Hola! ¿Cómo estás?" COQUÍ [TURN: bien (bien)]: "¡Bien, gracias!" Abuela moves her own empty plate close up to the basket; during it: NARR: "Abuela dice: Me gusta el pan." Abuela goes out to the yard.
 
 **The opening** (big sign)
 
@@ -44,7 +44,7 @@ What is true of a table (and shaped these games): too little can be topped up an
 
 **The turn**
 
-7. Abuela comes in with the second tray from the oven and tips four hot rolls, split and empty, into the basket. NARR: "Abuela dice: Aquí hay más pan." She points at her own empty plate by the basket. NARR: "El plato de abuela no tiene pan." (not signed) Still at the basket, she looks at the frog. NARR: "Abuela dice: ¿Listo, Coquí?" COQUÍ [TURN: sí (si) + abuela (abuela)]: "¡Sí, abuela!" Then she goes out to the yard with the tray. Papá and Carmen come in from the yard for the first time, look at the full basket and go out again. The card shows two places. The signs go.
+7. Abuela comes in with the second tray from the oven and tips four hot rolls, split and empty, into the basket. NARR: "Abuela dice: Aquí hay más pan." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, abuela!" She points at her own empty plate by the basket. NARR: "El plato de abuela no tiene pan." (not signed) Then she goes out to the yard with the tray. Papá and Carmen come in from the yard for the first time, look at the full basket and go out again. The card shows two places. The signs go.
 
 **The game.** Whoever asks takes a roll, holds it up cut open and empty, says it and goes out to wash his hands; nobody else is in the kitchen while the frog spoons the filling in and closes the roll.
 
@@ -128,7 +128,7 @@ What is true of a table (and shaped these games): too little can be topped up an
 
 2. **Touch a person (sugar), taught.** The frog lifts a heaped spoon; abuela comes with the big pot. NARR: "Abuelo dice: Más azúcar, por favor." NARR: "Papá dice: Más café, por favor." Sign on abuelo. He touches him; during it: NARR: "Coquí le pone azúcar al café." Abuela fills papá's cup.
 3. The same with the lines the other way round: NARR: "Abuelo dice: Más café, por favor." NARR: "Papá dice: Más azúcar, por favor." Sign on papá. NARR: "Coquí le pone azúcar al café."
-4. **A scene, no sign.** Abuela gives the frog the little pot; during it: NARR: "Abuela dice: Toma." COQUÍ [TURN: gracias (gracias) + abuela (abuela)]: "¡Gracias, abuela!" Luis and Carmen stand their cups of milk in front of the frog. NARR: "Luis dice: Mucho café, por favor." NARR: "Carmen dice: Un poco de café, por favor." They go out to the yard. The frog pours as told: a long pour into Luis's cup, and the milk turns brown; then a splash into Carmen's: pale. They come back. NARR: "Luis toma mucho café." NARR: "Carmen toma un poco de café."
+4. **A scene, no sign.** Abuela gives the frog the little pot; during it: NARR: "Abuela dice: Toma." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, abuela!" Luis and Carmen stand their cups of milk in front of the frog. NARR: "Luis dice: Mucho café, por favor." NARR: "Carmen dice: Un poco de café, por favor." They go out to the yard. The frog pours as told: a long pour into Luis's cup, and the milk turns brown; then a splash into Carmen's: pale. They come back. NARR: "Luis toma mucho café." NARR: "Carmen toma un poco de café."
 5. **A scene, no sign.** The same again with fresh cups of milk and the lines the other way round: NARR: "Carmen dice: Mucho café, por favor." NARR: "Luis dice: Un poco de café, por favor." They go out; the frog pours as told; they come back and drink.
 6. **He says it, taught, twice.** Over the frog a thought bubble: a pale cup. NARR: "Abuela dice: ¿Quieres café, Coquí?" Bubbles: "Sí, un poco, por favor." / "Sí, mucho, por favor." Sign on the first. COQUÍ: "Sí, un poco, por favor." Abuela pours a splash from the little pot into his cup and fills it with milk; he drinks. Then a thought bubble with a brown cup; the same question; sign on the second. COQUÍ: "Sí, mucho, por favor." A long pour, a little milk. COQUÍ: "¡El café está rico!"
 
@@ -249,14 +249,16 @@ Decisions: historia/notas/guiones/comer-turnos-decisiones.md (the proposal it an
 
 **Targets:** each is in focus_words of a story before A comer (stories 1 to 32, read from historia/cuentos/*.json) and in no focus_words of 33, 34 or 35. No word new in A comer is in any new line (set-up lines included). No word is a target twice in one story. Names, "por favor" and "de nada" are never targets.
 
+**After the fresh reviews (Nov 17)** (decisions: the last section of comer-turnos-decisions.md): one target word per turn, so a natural reply that holds only the target cannot miss, and a miss never writes a second word wrong. The words of a turn line that are not its target ("gracias" in the greeting turns, "abuela" in the thanks turns) are not tested. 33 turn 1: target "bien" only. 33 turn 2 is replaced: the question "¿Listo, Coquí?" and the reply "¡Sí, abuela!" are gone (no object, and "¡Listo!" was the natural echo); in their place the coquí thanks abuela right after her "Aquí hay más pan.", target "gracias" only, with the clip cq_gracias_abuela already recorded. 35 turn 2: target "gracias" only. Kept as they were: 34 (both turns) and 35 turn 1 (target "bien"). Not taken: swapping a greeting for a word of a later scene; near-miss forms (03 forbids them).
+
 ### Story 33, ¿Qué quieres? (2 turns, both new)
 
 | | Where | Set-up line (NARR) | Coquí line (who "tu") | Targets (accepted forms), taught in |
 | --- | --- | --- | --- | --- |
-| 1 | Step 1, after "Aquí hay chocolate.", before abuela moves her plate | abuela_dice: "Abuela dice: ¡Hola! ¿Cómo estás?" (she greets him) | bien_gracias: "¡Bien, gracias!" | bien (bien) and gracias (gracias), both in ¡Qué calor! (story 5) |
-| 2 | Step 7 (the story's turn), after "El plato de abuela no tiene pan.", before she goes out with the tray | c33_ab_listo: "Abuela dice: ¿Listo, Coquí?" (a yes/no question) | c33_cq_si_abuela: "¡Sí, abuela!" | sí (si) in El bizcocho (story 2); abuela (abuela) in La lluvia (story 1) |
+| 1 | Step 1, after "Aquí hay chocolate.", before abuela moves her plate | abuela_dice: "Abuela dice: ¡Hola! ¿Cómo estás?" (she greets him) | bien_gracias: "¡Bien, gracias!" | bien (bien) in ¡Qué calor! (story 5); "gracias" is in the line but is the target of turn 2, so no word is tested twice in this story |
+| 2 | Step 7 (the story's turn), right after "Aquí hay más pan.", before she points at her plate | c33_ab_mas_pan: "Abuela dice: Aquí hay más pan." (she has just tipped the four hot rolls into the basket; a line of the story already) | cq_gracias_abuela: "¡Gracias, abuela!" | gracias (gracias) in ¡Qué calor! (story 5); "abuela" is in the line but is not a target |
 
-- Turn 1 answers the question in the greeting and shares no word with it. Turn 2 answers a yes/no question with "sí", and "listo" is not in his line: neither is an echo.
+- Turn 1 answers the question in the greeting and shares no word with it. Turn 2 thanks abuela for the rolls (03 lists thanking) and shares no word with "Aquí hay más pan.": not an echo. It is the same clip as the thanks in 35 turn 2 and in the bubble of 34 step 2 (one id, one text, one speaker).
 - Not turns in 33: every "¿Qué quieres, X?" (the story's new phrase and names; in A and B it is inside a decide); c33_cq_pan_abuela "¡Me gusta el pan de abuela!" (6 words, and not played in the two-miss play); yo_coqui.
 
 ### Story 34, Buen provecho (2 turns, both kept; none added)
@@ -274,27 +276,24 @@ Decisions: historia/notas/guiones/comer-turnos-decisiones.md (the proposal it an
 | | Where | Set-up line (NARR) | Coquí line (who "tu") | Targets (accepted forms), taught in |
 | --- | --- | --- | --- | --- |
 | 1 | Step 1, after "Huele a café." | papa_hola_como: "Papá dice: ¡Hola! ¿Cómo estás?" (he greets him from the table) | bien_gracias: "¡Bien, gracias!" | bien (bien) in ¡Qué calor! (story 5); "gracias" is in the line but is the target of turn 2, so no word is tested twice in this story |
-| 2 | Step 4, while abuela hands him the little pot | toma: "Abuela dice: Toma." | cq_gracias_abuela: "¡Gracias, abuela!" | gracias (gracias) in ¡Qué calor! (story 5); abuela (abuela) in La lluvia (story 1) |
+| 2 | Step 4, while abuela hands him the little pot | toma: "Abuela dice: Toma." | cq_gracias_abuela: "¡Gracias, abuela!" | gracias (gracias) in ¡Qué calor! (story 5); "abuela" is in the line but is not a target |
 
 - Turn 2 thanks her for what she hands him. Turn 1 and turn 2 have steps 2 and 3 (two signed asks) between them.
 - Not turns in 35: c35_cq_poco and c35_cq_mucho (the two bubbles of each ask both hold "sí", and the words that tell them apart are new); c35_cq_huele and c35_cq_rico (remarks, and "rico" is a word of 34).
 
 ### New clips to record (Azure)
 
-| Clip id | Speaker | Text | Characters |
-| --- | --- | --- | --- |
-| c33_ab_listo | narrator (Karina), habla abuela | Abuela dice: ¿Listo, Coquí? | 27 |
-| c33_cq_si_abuela | coquí (Victor, who "tu") | ¡Sí, abuela! | 12 |
+None. New characters for turns: 0. The two clips of the first draft of 33 turn 2 (c33_ab_listo, "Abuela dice: ¿Listo, Coquí?", and c33_cq_si_abuela, "¡Sí, abuela!") are dropped and are not recorded.
 
-Two new clips, 39 new characters in all. Five clips the new turns need are already recorded (0 characters): abuela_dice (narr, "Abuela dice: ¡Hola! ¿Cómo estás?"), papa_hola_como (narr, "Papá dice: ¡Hola! ¿Cómo estás?"), toma (narr, "Abuela dice: Toma."), bien_gracias (tu, "¡Bien, gracias!") and cq_gracias_abuela (tu, "¡Gracias, abuela!"). The story file adds each to its clips with the same id, text and speaker (voz.py stops if one id has two texts), and the three narrator lines keep the "habla" they have where they are used now (abuela, papa, abuela). Checked: the mp3 of each is in historia/audio and in ready.json. The four clips of the two kept turns in 34 (c34_luis_y_tu, c34_cq_lleno, c34_papa_hola, c34_cq_bp_papa) are in the story file already and are recorded with the story: none of the A comer clips has been through the audio job yet.
+Five clips the new turns need are already recorded (0 characters): abuela_dice (narr, "Abuela dice: ¡Hola! ¿Cómo estás?"), papa_hola_como (narr, "Papá dice: ¡Hola! ¿Cómo estás?"), toma (narr, "Abuela dice: Toma."), bien_gracias (tu, "¡Bien, gracias!") and cq_gracias_abuela (tu, "¡Gracias, abuela!"). The story file adds each to its clips with the same id, text and speaker (voz.py stops if one id has two texts), and the three narrator lines keep the "habla" they have where they are used now (abuela, papa, abuela). cq_gracias_abuela (who "tu", "¡Gracias, abuela!", as in historia/tools/gen_comer.py line 95) is now in 33 (turn 2) and in 35 (turn 2) as well as in 34 (step 2, a bubble). The set-up line of 33 turn 2, c33_ab_mas_pan ("Abuela dice: Aquí hay más pan.", habla abuela), is a line of the story already and is recorded with it. Checked: the mp3 of each of the five is in historia/audio and in ready.json. The four clips of the two kept turns in 34 (c34_luis_y_tu, c34_cq_lleno, c34_papa_hola, c34_cq_bp_papa) are in the story file already and are recorded with the story: none of the A comer clips has been through the audio job yet.
 
 Targets for the build (same shape as docs/hablar/02-marcas.json):
 
 ```json
 {
  "que-quieres": {
-  "bien_gracias": [{"palabra": "bien", "formas": ["bien"]}, {"palabra": "gracias", "formas": ["gracias"]}],
-  "c33_cq_si_abuela": [{"palabra": "sí", "formas": ["si"]}, {"palabra": "abuela", "formas": ["abuela"]}]
+  "bien_gracias": [{"palabra": "bien", "formas": ["bien"]}],
+  "cq_gracias_abuela": [{"palabra": "gracias", "formas": ["gracias"]}]
  },
  "buen-provecho": {
   "c34_cq_lleno": [{"palabra": "lleno", "formas": ["lleno"]}],
@@ -302,23 +301,24 @@ Targets for the build (same shape as docs/hablar/02-marcas.json):
  },
  "cafe-con-azucar": {
   "bien_gracias": [{"palabra": "bien", "formas": ["bien"]}],
-  "cq_gracias_abuela": [{"palabra": "gracias", "formas": ["gracias"]}, {"palabra": "abuela", "formas": ["abuela"]}]
+  "cq_gracias_abuela": [{"palabra": "gracias", "formas": ["gracias"]}]
  }
 }
 ```
 
 ### Rechecks after the change
 
-- **Counts and draws:** unchanged in every branch. The change adds talk lines inside steps 1 and 7 (33), step 4 and the ending (34, marks only) and steps 1 and 4 (35). No step is added, removed or renumbered, no object, cup, roll or mound is touched, no draw or answer is touched; no line of any Count, hearings, "A miss is filed under", chance or ending-branch text changed.
+- **Counts and draws:** unchanged in every branch. The change adds talk lines inside steps 1 and 7 (33), step 4 and the ending (34, marks only) and steps 1 and 4 (35); the first draft's "¿Listo, Coquí?" and "¡Sí, abuela!" in 33 step 7 are gone. No step is added, removed or renumbered, no object, cup, roll or mound is touched, no draw or answer is touched; no line of any Count, hearings, "A miss is filed under", chance or ending-branch text changed.
 - **Deciding words, three hearings before they can cost:** the new lines hold none of no me gusta, tiene, me gusta, quieres, buen provecho, también, lleno, rico, todo, café, azúcar, mucho, un poco, so every hearings line above still reads as written. The only existing hearings a live turn replaces are the two kept ones in 34, both the frog's own: "Yo estoy lleno." (step 4: lleno, a deciding word; see turn 1 of 34) and "¡Buen provecho, papá!" (the ending: not a deciding word).
-- **No new hearing that gives an answer away:** the new set-up lines are a greeting, a readiness question and a hand-over; none names a filling, a mound, a person's wish, a cup, an amount or the sugar.
+- **No new hearing that gives an answer away:** the set-up lines are two greetings, a hand-over ("Toma.") and abuela's "Aquí hay más pan." (33, already in the step); none names a filling, a mound, a person's wish, a cup, an amount or the sugar.
+- **33 turn 2 ("¡Gracias, abuela!" after "Aquí hay más pan."):** no count changes (the basket holds four rolls at the turn; a spoken line moves none), no draw and no right answer (A and B are drawn and judged as before). It holds no deciding word of 33 (no me gusta, tiene, me gusta, quieres, ¿qué quieres?), so "El plato de abuela no tiene pan." stays the third hearing of "no tiene" before A and B, and no hearing is added, moved or replaced; the line gives no hint of a filling, a person or a roll. It is not next to another turn: turn 1 is step 1 (five coquí questions between), and after it come "El plato de abuela no tiene pan." and then the lead of decide A, never a turn. It reads naturally: abuela has just tipped the rolls into the basket and said "Aquí hay más pan.", the frog (who will fill them for the others) thanks her, and then she points at her own empty plate. "Gracias" is also in the line of turn 1 (not its target): turn 2 is the only turn of 33 with "gracias" as a target.
 - **No turn inside a decide:** the six turn lines are plain lines (33 steps 1 and 7; 34 ending; 35 steps 1 and 4) or one signed ask (34 step 4). The two decides of each story hold none. After turn 2 of 33 the next coquí line is the lead of decide A ("¿Qué quieres, papá?"), which is never a turn.
 - **No two in a row:** 33 steps 1 and 7 (five coquí questions between); 34 step 4 and the ending (steps 5 and 6, the turn and both decisions between); 35 steps 1 and 4 (two signed asks between). Never more than two turns in a play.
-- **Words per line:** turn lines 2, 2, 3, 3, 2, 2 (33, 34, 35 in order: ¡Bien, gracias! / ¡Sí, abuela! / Yo estoy lleno. / ¡Buen provecho, papá! / ¡Bien, gracias! / ¡Gracias, abuela!); the four set-up lines of the new turns have 3 to 5 words (abuela_dice 5, c33_ab_listo 4, papa_hola_como 5, toma 3). The only coquí line over 5 words is c33_cq_pan_abuela, which is not a turn.
+- **Words per line:** turn lines 2, 2, 3, 3, 2, 2 (33, 34, 35 in order: ¡Bien, gracias! / ¡Gracias, abuela! / Yo estoy lleno. / ¡Buen provecho, papá! / ¡Bien, gracias! / ¡Gracias, abuela!); the four set-up lines of the new turns have 3 to 6 words (abuela_dice 5, c33_ab_mas_pan 6, papa_hola_como 5, toma 3). The only coquí line over 5 words is c33_cq_pan_abuela, which is not a turn.
 - **Spanish:** everyday Puerto Rican; no pet names, nothing religious, no English in any line.
 
 ### For the reviewers
 
-- Beginner: at each turn, is it clear what the coquí should say, from the story alone? My own reading: clear for the two greetings and for 35's thanks (something is handed to him); least clear is 33 turn 2 (a yes/no question with no picture; "no" would be a miss, and a miss never costs). For 34 the question and the belly picture make "lleno" clear.
-- The same greeting pair ("¡Hola! ¿Cómo estás?" / "¡Bien, gracias!") is in 33 and 35, from different speakers and at different places; the thanks and the "sí" turns differ.
+- Beginner: at each turn, is it clear what the coquí should say, from the story alone? My own reading: clear for the two greetings and for the two thanks (something is handed or tipped out for him: the little pot in 35, the rolls in 33); least clear is 33 turn 2, where the rolls are for the family and he fills them (he thanks abuela for the bread she has just brought). For 34 the question and the belly picture make "lleno" clear.
+- The same greeting pair ("¡Hola! ¿Cómo estás?" / "¡Bien, gracias!") is in 33 and 35, from different speakers and at different places; the thanks turns (33 turn 2, 35 turn 2) are the same clip, "¡Gracias, abuela!", after "Aquí hay más pan." and after "Toma.".
 - Silent frame reader: one frame of a turn (empty bubble with the mic, the mic button) and what it asks him to do.
