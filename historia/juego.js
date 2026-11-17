@@ -138,9 +138,9 @@ function letras(id){if(TXT==="con"&&!SINLETRAS)muestra(id);}
 function letrasFin(id,done){if(TXT==="no"||SINLETRAS)return;if(TXT==="tras"){if(!done)return;muestra(id);borra(Math.max(1800,((LINES[id]||{}).text||"").length*70)/FAST);return;}borra(1700/FAST);}
 function callaLetras(){clearTimeout(capT);clearTimeout(bubT);capEl.classList.remove("on");bubEl.classList.remove("on");bubEl.removeAttribute("data-mic");BUBQ=null;MBUB=0;}
 function placeBub(){if(!BUBQ)return;
-  if(BUBQ==="mic"){const sr=$("#stage").getBoundingClientRect(),mr=MICB?MICB.getBoundingClientRect():null;   // the frog is not on screen: the turn's bubble sits just above the mic button
+  if(BUBQ==="mic"){const sr=$("#stage").getBoundingClientRect(),mr=MICB?MICB.getBoundingClientRect():null;   // the frog is not on screen, or his bubble would cover someone: the turn's bubble sits just above the mic button, clear of the listening rings (24 px)
     if(!mr||!mr.width){bubEl.classList.remove("on");return;}bubEl.style.maxWidth="";bubEl.className="on";const bw=bubEl.offsetWidth,cx=mr.left+mr.width/2-sr.left,l=Math.max(bw/2+4-sr.left,Math.min(innerWidth-sr.left-bw/2-4,cx));
-    bubEl.style.left=Math.round(l)+"px";bubEl.style.top=Math.round(mr.top-sr.top-8)+"px";bubEl.style.setProperty("--tx",Math.round(Math.max(14,Math.min(bw-14,cx-l+bw/2)))+"px");return;}
+    bubEl.style.left=Math.round(l)+"px";bubEl.style.top=Math.round(mr.top-sr.top-24)+"px";bubEl.style.setProperty("--tx",Math.round(Math.max(14,Math.min(bw-14,cx-l+bw/2)))+"px");return;}
   const a=donde(BUBQ);if(!a){bubEl.classList.remove("on");return;}
   const cw=cv.clientWidth,ch=cv.clientHeight,X=v=>(v-cam[0])/cam[2]*cw,Y=v=>(v-cam[1])/cam[3]*ch,bw=bubEl.offsetWidth,bh=bubEl.offsetHeight;
   if(BUBQ==="coqui"){   // the frog talks from beside himself, so his bubble never hides abuela

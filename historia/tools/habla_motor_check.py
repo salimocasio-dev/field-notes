@@ -71,9 +71,13 @@ async def play(br,query,story="zprueba-habla",vp=(390,844),mic="tap",touch_elige
         await pg.goto(f"{BASE}index.html?cuento={story}&fast={fast}&rec=1&a=ventana&ave=puerta&c=ventana&{query}")   # the story's draws fixed, so every run plays the same story; await pg.wait_for_function("window.Story&&Story.ready",timeout=20000); await pg.wait_for_timeout(1200)
         await pg.evaluate(SPY)
         if fake is not None: await pg.evaluate("q=>{window.__fakeQ=q}",fake)
-        await pg.click("#go"); t0=time.time(); tapped=None; last=None; micw=0
+        await pg.click("#go"); t0=time.time(); tapped=None; last=None; micw=0; started=False
         for i in range(9000):
             await pg.wait_for_timeout(40); s=await pg.evaluate(STATE)
+            if s["running"]: started=True
+            elif not started and i%100==99:   # on a busy machine the first tap may not have started the story: tap the start disc again (never counted as finished before it started)
+                try: await pg.click("#go",timeout=1000)
+                except Exception: pass
             sig=(s["est"],s["bub"],s["at"])
             if sig!=last: last=sig; R["seen"].append(sig)
             logs=s["log"]
@@ -91,7 +95,7 @@ async def play(br,query,story="zprueba-habla",vp=(390,844),mic="tap",touch_elige
                 try: await pg.evaluate(f"Story.tapOn('{tgt}')")
                 except Exception as e: R["errs"].append("could not touch "+tgt)
                 tapped=(s["live"],s["est"]); await pg.wait_for_timeout(150)
-            if not s["running"] and i>40: R["finished"]=True; break
+            if started and not s["running"] and i>40: R["finished"]=True; break
             if time.time()-t0>budget: R["hang"]=True; break
         R["secs"]=round(time.time()-t0,1)
         for k,e in (("log","Story.hab.log"),("hab","Story.hab"),("clips","__c"),("rights","__right"),("resp","__resp"),("lost","Story.W.lost"),
@@ -275,7 +279,7 @@ async def main():
                 await pg.screenshot(path=f"{OUT}/turno_sin_rana.png")
         R=await play(br,A+SI3,on_poll=hide,budget=90); r=R.get("rect")
         ck("frog not on screen: the bubble is placed at the mic",bool(r) and r["at"]=="mic",r)
-        if r: ck("frog not on screen: the bubble sits just above the mic button, centred on it",r["bub"][1]+r["bub"][3]<=r["mic"][1] and abs(r["bub"][0]+r["bub"][2]/2-(r["mic"][0]+r["mic"][2]/2))<=2,(r["bub"],r["mic"]))
+        if r: ck("frog not on screen: the bubble sits just above the mic button, centred on it, and clears the listening rings (33 to 60 px above the disc)",33<=r["mic"][1]-(r["bub"][1]+r["bub"][3])<=60 and abs(r["bub"][0]+r["bub"][2]/2-(r["mic"][0]+r["mic"][2]/2))<=2,(r["bub"],r["mic"]))
         base("frog not on screen",R,[("linea","ok"),("ask","ok"),("elige","ok")])
 
         # the mic bubble never covers a person or an answer bubble; listening and the tick read plainly
@@ -283,14 +287,16 @@ async def main():
           rect=a=>({l:c.left+(a[0]-cm[0])*z,t:c.top+(a[1]-cm[1])*zy,r:c.left+(a[0]+a[2]-cm[0])*z,b:c.top+(a[1]+a[3]-cm[1])*zy}),others=[];
           (Story.W.resp||[]).forEach(k=>{const x=respBox(k);if(x)others.push(['answer '+k,rect(x)]);});const ab=(Story.W.ab&&E.box)?E.box('abuela',Story.W):null;if(ab)others.push(['abuela',rect(ab)]);
           return {bub:{l:b.left,t:b.top,r:b.right,b:b.bottom},others,at:Story.hab.at,tail:12}}"""
-        MIC="""()=>{const m=document.getElementById('mic'),g=(e,p)=>getComputedStyle(e,p),b=g(m),f=g(m,'::before'),a=g(m,'::after');return {bg:b.backgroundColor,shadow:b.boxShadow,pe:b.pointerEvents,bw:b.borderTopWidth,
+        MIC="""()=>{const m=document.getElementById('mic'),g=(e,p)=>getComputedStyle(e,p),b=g(m),f=g(m,'::before'),a=g(m,'::after');return {s:m.dataset.s,bg:b.backgroundColor,shadow:b.boxShadow,pe:b.pointerEvents,bw:b.borderTopWidth,
           f:{an:f.animationName,w:f.borderTopWidth,c:f.borderTopColor},a:{an:a.animationName,w:a.borderTopWidth,c:a.borderTopColor}}}"""
         async def geo(pg,s,R):
             R.setdefault("geo",{}); R.setdefault("mic",{})
             tipo=s["log"][-1]["tipo"] if s["log"] else None
             if s["est"]=="ready" and tipo and tipo not in R["geo"]:
                 await pg.wait_for_timeout(350); R["geo"][tipo]=await pg.evaluate(GEO); R["mic"].setdefault("ready",await pg.evaluate(MIC))
-            if s["est"]=="listening" and "listening" not in R["mic"]: R["mic"]["listening"]=await pg.evaluate(MIC)
+            if s["est"]=="listening" and "listening" not in R["mic"]:
+                await pg.wait_for_timeout(160); m=await pg.evaluate(MIC)   # after the 120 ms colour change, still listening
+                if m["s"]=="listening": R["mic"]["listening"]=m
             if s["est"]=="ok" and "ok" not in R["mic"]: await pg.wait_for_timeout(200); R["mic"]["ok"]=await pg.evaluate(MIC)   # after the 120 ms colour change
         for vp in ((390,844),(844,390)):
             R=await play(br,A+SI3,vp=vp,on_poll=geo,budget=140,fast=2); tag="%dx%d"%vp
@@ -302,6 +308,7 @@ async def main():
                 lum=lambda c:(lambda v:0.2126*v[0]+0.7152*v[1]+0.0722*v[2])([((x/255)/12.92 if x/255<=0.03928 else (((x/255)+0.055)/1.055)**2.4) for x in map(int,c[c.index("(")+1:c.index(")")].split(",")[:3])])
                 ring=m["listening"]["a"]["c"]; cr=(lum(ring)+0.05)/(lum("rgb(27, 27, 31)")+0.05)
                 ck("listening "+tag+": the disc is another colour than ready, with two rings spreading outside it",m["listening"]["bg"]!=m["ready"]["bg"] and m["listening"]["f"]["an"]=="micring" and m["listening"]["a"]["an"]=="micring" and m["listening"]["a"]["w"]=="4px",(m["ready"]["bg"],m["listening"]["bg"],m["listening"]["f"]["an"]))
+                ck("listening "+tag+": a steady bright ring stands just outside the disc (ready has none)","rgb(61, 220, 132)" in m["listening"]["shadow"] and "rgb(61, 220, 132)" not in m["ready"]["shadow"],(m["ready"]["shadow"],m["listening"]["shadow"]))
                 ck("listening "+tag+": the ring is at least 3:1 against the screen (the UI plan's non-text contrast); it is %.1f:1"%cr,cr>=3,round(cr,1))
             if "ok" in m: ck("tick "+tag+": it is a status, not a button (no fill, no shadow, takes no touch)",m["ok"]["bg"] in("rgba(0, 0, 0, 0)","transparent") and m["ok"]["shadow"]=="none" and m["ok"]["pe"]=="none" and m["ok"]["bw"]=="3px",m["ok"])
             else: ck("tick "+tag+": it was seen",False)
