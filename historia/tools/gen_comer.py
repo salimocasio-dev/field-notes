@@ -161,7 +161,7 @@ s34={"id":"buen-provecho","title":"Buen provecho","place":"La cocina","scene":"c
   {"decide":"do","options":["abuelo","mama","carmen"],"pick":"$qt","tests":"tambien","lock":True,"lead":[],"line":None,
    "right":[{"if":"ok","then":[act("tipa34",a="$qt"),act("marca",que="ok"),act("levanta34",a="$ql",suelto=1),"c34_$ql_bp",act("ya")],
              "else":[act("papaB34",a="$qt")]}],
-   "wrong":[act("tipa34",a="$x",mezcla=1),{"if":"x=$qf","then":[act("llenoAhora34",a="$x")]},act("levanta34",a="$ql",suelto=1),"c34_$ql_bp",act("ya"),act("mira34",a="luis")]+X+["c34_no_$qt"]}],
+   "wrong":[act("tipa34",a="$x",mezcla=1),{"if":"x=$qf","then":[act("llenoAhora34",a="$x")]},act("levanta34",a="$ql",suelto=1),"c34_$ql_bp",act("ya"),act("mira34",a="$qt")]+X+["c34_no_$qt"]}],
  "final":[{"dots":9},act("final34",suelto=1),"c34_papa_hola",act("ya"),say("c34_cq_bp_papa",300),act("papaCome34",suelto=1),"c34_papa_rico",act("ya"),act("papaCome34",fin=1,suelto=1),"c34_papa_todo",act("ya"),{"if":"pmont=1","then":[act("papaMira34")]},act("fin")],
  "leer":["c34_papa_no_esta","c34_plato_papa","c34_familia_bp","c34_abuelo_rico","c34_luis_rico","c34_luis_todo","c34_luis_quiero","c34_luis_y_tu","c34_cq_todo","c34_mama_tambien","c34_abuelo_lleno","c34_carmen_levanto","c34_mama_todo","c34_carmen_bp",
   "c34_abuelo_tambien","c34_carmen_lleno","c34_mama_levanto","c34_abuelo_todo","c34_mama_bp","c34_papa_hola","c34_cq_bp_papa","c34_papa_rico","c34_papa_todo"]}
