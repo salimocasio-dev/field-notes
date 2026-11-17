@@ -113,7 +113,7 @@ const COSA={
     if(!tapa){
       const P=[[7,17],[19,17],[31,17],[13,14],[25,14]];P.slice(0,n).slice().sort((p,q)=>p[1]-q[1]).forEach(p=>rollitos(b,p[0],p[1]));}
     b.rect(1,15,34,8,"#B07A3C");for(let x=2;x<35;x+=4)b.rect(x,15,2,8,"#8A5A2A");b.rect(0,14,36,2,"#D09A54");b.rect(0,22,36,1,"#7A4A1E");
-    if(tapa){b.ell(18,12,17,5.4,["#D0302A","#F4B8B0","#FFFFFF"]);for(let x=3;x<34;x+=4)b.rect(x,9+(x%8?0:1),2,5,"#FFFFFF");b.rect(1,14,34,3,"#F4B8B0");for(let x=2;x<35;x+=4)b.rect(x,14,2,3,"#D0302A");}
+    if(tapa){if(n>0){b.ell(33,12,4,3.4,TAN);b.px(31,10,"#F4CC88");}b.ell(18,12,17,5.4,["#D0302A","#F4B8B0","#FFFFFF"]);for(let x=3;x<34;x+=4)b.rect(x,9+(x%8?0:1),2,5,"#FFFFFF");b.rect(1,14,34,3,"#F4B8B0");for(let x=2;x<35;x+=4)b.rect(x,14,2,3,"#D0302A");}
     else{b.rect(28,13,11,9,"#FFFFFF");for(let x=28;x<39;x+=4)for(let y=13;y<21;y+=4){b.rect(x,y,2,2,"#F4B8B0");b.rect(x+2,y+2,2,2,"#F4B8B0");}b.rect(28,20,11,2,"#D0302A");b.px(39,15,"#FFFFFF");b.px(39,17,"#F4B8B0");}
     return b.outline().done();},
   // the two fillings: the same bowl of blue and white china, 26 x 16. butter: a yellow block (v = how much is left, 1 to 5); chocolate: melted, dark brown and shiny, with a spoon in it (v: the same)
