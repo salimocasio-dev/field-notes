@@ -64,5 +64,5 @@ async def main():
                 try: await pg.evaluate(f"Story.tapOn('{tgt}')")
                 except Exception as e: print("could not touch",tgt,str(e)[:160]); raise SystemExit(1)
                 tapped=(s["live"],s["pick"],s["sign"],s["cap"]); await pg.wait_for_timeout(150)
-        print("frames:",n,"errors:",msgs[:3]); await b.close()
+        print("frames:",n,"errors:",msgs[:3],"reach:",(await pg.evaluate("window.__ALC||[]"))[:12]); await b.close()
 asyncio.run(main())

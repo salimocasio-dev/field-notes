@@ -329,7 +329,7 @@ function mkAbuelaSN(open){const b=new Buf(52,50),X=17,S=RP.skin,P=RP.purp;
 function mkTaburete(){const b=new Buf(22,16),W=RP.wood;b.rect(3,5,2,10,W[0]);b.rect(17,5,2,10,W[0]);b.rect(10,6,2,9,W[1]);b.rect(4,11,14,1,W[1]);b.ell(11,4.4,10,3.4,[W[1],W[2],W[3],W[4]]);return b.outline().done();}
 
 // an arm of two bones (L each): shoulder (sx,sy) to hand (hx,hy), with an elbow, a sleeve and a hand. lado: -1 the arm on the left of the picture, 1 on the right (the elbow goes out and down)
-const ALCANCE=[];   // a hand that is farther than his arm can reach (checked by machine: it must stay empty)
+const ALCANCE=[];window.__ALC=ALCANCE;   // a hand that is farther than his arm can reach (checked by machine: window.__ALC must stay empty)
 function brazoJ(c,sx,sy,hx,hy,L,sl,pi,lado,quien){
   const d=Math.hypot(hx-sx,hy-sy)||.01,dd=Math.min(d,2*L-.4),ux=(hx-sx)/d,uy=(hy-sy)/d,a=dd/2,h=Math.sqrt(Math.max(0,L*L-a*a)),nx=-uy,ny=ux;
   if(d>2*L+1.5&&quien&&ALCANCE.length<40)ALCANCE.push(quien+" "+Math.round(d)+">"+2*L);
