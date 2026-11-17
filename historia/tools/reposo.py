@@ -16,7 +16,7 @@ BASE=A[6] if len(A)>6 else "http://127.0.0.1:8765/historia/index.html"
 URL=f"{BASE}?cuento={CUENTO}&fast={FASTV}&txt=no"+("&"+EXTRA if EXTRA else "")
 # what moves: where everybody and everything is. Steam, a blinking eye or the hand of a sign swinging do not count.
 SIG="""()=>{const W=Story.W,p=Story.pending;const m=o=>o&&JSON.stringify(o,(k,v)=>k==='fx'?undefined:v);
- return JSON.stringify([m(W.gente),m(W.cosas),m(W.cq),m(W.perro),m(W.vuelos),W.resp,W.spot,W.marcas,W.heart,W.lost,p?p.live.join('|'):null,p?p.sign:null,Story.cap,W.twinkle,(W.fx||[]).length])}"""
+ return JSON.stringify([m(W.gente),m(W.cosas),m(W.cq),m(W.perro),m(W.vuelos),W.resp,W.spot,W.marcas,W.heart,W.lost,p?p.live.join('|'):null,p?p.sign:null,Story.cap,W.twinkle,(W.fx||[]).length,typeof TALK!=='undefined'?TALK:null])}"""   # TALK: who speaks (the empty speech bubble over him is part of the picture: a frame is kept when it appears)
 PASO=int(__import__("os").environ.get("PASO","0"))
 # where everything is, to the pixel: people, what they hold, the frog, the things, what flies, the dog
 MOV="""()=>{const W=Story.W,o={};for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o['g'+k]=[p.x,p.y+(p.dy||0)];(p.tiene||[]).forEach((t,i)=>{if(t.vis!==0)o['g'+k+'#'+i]=[p.x+(t.dx||0),p.y-(t.dy||0)];});}
@@ -64,5 +64,9 @@ async def main():
                 try: await pg.evaluate(f"Story.tapOn('{tgt}')")
                 except Exception as e: print("could not touch",tgt,str(e)[:160]); raise SystemExit(1)
                 tapped=(s["live"],s["pick"],s["sign"],s["cap"]); await pg.wait_for_timeout(150)
+        await pg.wait_for_timeout(1500)   # the end card (the story's title under the last picture, the buttons): one more frame, the whole page, so that the end of the run is plain
+        try:
+            n+=1; await pg.screenshot(path=f"{OUT}/{n:03d}.png",full_page=False,clip={"x":0,"y":220,"width":390,"height":432})   # the last picture with its title under it (the card of the end)
+        except Exception as e: print("no end card:",str(e)[:120])
         print("frames:",n,"errors:",msgs[:3],"reach:",(await pg.evaluate("window.__ALC||[]"))[:12]); await b.close()
 asyncio.run(main())
