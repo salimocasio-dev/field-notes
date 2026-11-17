@@ -28,7 +28,7 @@ async def main():
         b=await p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox","--autoplay-policy=no-user-gesture-required"])
         ctx=await b.new_context(viewport={"width":390,"height":844},device_scale_factor=2,is_mobile=True,has_touch=True)
         pg=await ctx.new_page(); msgs=[]
-        pg.on("pageerror",lambda e: (msgs.append(str(e)),print("PAGEERROR:",str(e)[:300],flush=True)))
+        pg.on("pageerror",lambda e: (msgs.append(str(e)),print("PAGEERROR:",str(e)[:300],(getattr(e,"stack","") or "")[:700],flush=True)))
         await pg.goto(URL); await pg.wait_for_timeout(2500)
         await pg.click("#go"); n=0; k=0; prev=None; last=None; tapped=None; still=0; lastmov=None
         async def keep():
@@ -50,7 +50,7 @@ async def main():
             if still==2 and sig!=last:
                 last=sig; await keep()
             elif PASO and still==0 and sig!=last and lastmov is not None:
-                m=await pg.evaluate(MOV); far=max([max(abs(m[a][0]-b[0]),abs(m[a][1]-b[1])) for a,b in lastmov.items() if a in m]+[0])
+                m=await pg.evaluate(MOV); far=max([max(abs(m[a][0]-b[0]),abs(m[a][1]-b[1])) if a in m else 99 for a,b in lastmov.items()]+[99 for a in m if a not in lastmov]+[0])   # something that appeared or went also counts
                 if far>=PASO: last=sig; await keep()
             if not s["live"]: tapped=None
             if s["live"] and s["asked"] and (s["live"],s["pick"],s["sign"],s["cap"])!=tapped:

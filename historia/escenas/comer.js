@@ -374,7 +374,7 @@ function brazosQuietos(c,id,p,a,vivos){const x=R(p.x),y=R(p.y),hy=hombroY(id,p),
 function cuerpo(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const w=QUIEN[id],x=R(p.x),y=R(p.y),habla=TALK===id&&a%2?1:0,d=p.dir<0?-1:1,pie=p.paso?(p.pie||0):0,bob=p.paso&&pie===0?-1:0;
   const vivos=manosDe(id,p,a);
   if(id==="abuela"){
-    if(p.sent){const top=y-48,hb=(habla||p.abre||p.boca)?1:0;if(p.taburete)tenida(c,"taburete",x+3,y+3);c.drawImage(spr("abSN"+hb,()=>recolor(mkAbuelaSN(hb),APRON)),x-17,top);brazosQuietos(c,id,p,a,vivos);return;}
+    if(p.sent){const top=y-48,hb=(habla||p.abre||p.boca)?1:0;const im=spr("abSN"+hb,()=>recolor(mkAbuelaSN(hb),APRON));if(d<0){c.save();c.translate(x,top);c.scale(-1,1);c.drawImage(im,-17,0);c.restore();}else c.drawImage(im,x-17,top);brazosQuietos(c,id,p,a,vivos);return;}
     const top=y-50+bob,hb=(habla||p.abre||p.boca)?1:0;c.save();c.translate(x,top);if(d<0)c.scale(-1,1);c.drawImage(spr("abN"+hb+pie,()=>recolor(mkAbuelaN(hb,pie),APRON)),-24,0);c.restore();brazosQuietos(c,id,p,a,vivos);return;}
   const op=(habla||p.boca||p.sopla)?1:0,w2=p.cierra?Object.assign({},w,{dormido:1},w.gafas?{gafas:"arriba"}:{}):w,im=spr("pmN"+id+op+(p.sent?1:0)+pie+(p.cierra?"c":""),()=>mkPersonaN(w2,op,p.sent,pie)),top=y-im.height+1+bob+(p.dy||0);
   c.save();c.translate(x,top);if(d<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
@@ -645,7 +645,7 @@ const acts={
     await ranaA(134,168);},
   // he walks in again and his hand takes the filled roll off the board; he goes to his chair (the children stay at the end of the table)
   async regresa33(o){const id=o.a,p=G(id),tb=ob("tabla"),nino=NINO(id),lp=LEP(id),seat={abuelo:1,mama:2,papa:3,abuela:0}[id];
-    await entra(id,lp[0],lp[1],1);p.dir=1;p.pose="idle";
+    if(p.vis!==0&&p.sent)await levanta(id,lp[0],lp[1]);else await entra(id,lp[0],lp[1],1);p.dir=1;p.pose="idle";   // after a miss he is still sitting with the bitten roll: he gets up and walks round the table to the new one
     const r=tb.rollo,v=r.st+(r.con?":"+r.con:""),w=[tb.x-6,tb.y-7],r0=rel(id,w[0],w[1]);
     await manoA(id,r0[0],r0[1],3);tb.rollo=null;SFX.blip();const it={k:"rollo",v,e:1},c=centroPara(id,it,w[0],w[1]);it.dx=c[0];it.dy=c[1];sinManos(id);p.tiene.push(it);await wait(TICK*2);
     await mueveTiene(id,it,16,nino?24:30,4);
@@ -922,6 +922,7 @@ const acts={
     await ruta("abuela",[[TRANA[0]+26,190]]);ab.dir=-1;const gr=await toma("abuela",jt,-9,24,{n:3,m:3});gr.flip=false;await wait(TICK*2);},
   // round B: abuela pours from the little pot what he said into his cup, tips what is left of it into her own cup, fills his cup to the brim with milk from the pan (a white stream); whatever is left in the pan she tips into Canelo's bowl, and Canelo laps it
   async sirveB35(o){const ab=G("abuela"),mucho=String(o.cant).replace(/^di_/,"")==="mucho",cz=ob("cazo"),tz=ob("tazon"),pe=W.perro,t=copa("rana"),ta=copa("abuela"),q=W.cq;q.piensa=null;
+    if(W.pote&&W.pote.pan)return;   // after a miss the same act comes round again with the right answer: everything is poured already, nothing more is poured
     let gr=ab.tiene.find(x=>x.k==="jarrita");ab.dir=-1;
     const pot=vierteItem(ab,"jarrita","",t.x,t.y-24,false,14,"#2A160C");ab.tiene=ab.tiene.filter(x=>x!==gr);ab.tiene.push(pot);SFX.blip();await wait(mucho?TICK*4:TICK*2);liq("rana","negro",1);await wait(mucho?TICK*12:TICK*5);ab.tiene=ab.tiene.filter(x=>x!==pot);ab.tiene.push(gr);await wait(TICK*2);
     // what is left of the little pot goes into her own cup (she walks to it)
@@ -956,7 +957,7 @@ const acts={
 async function stake(lost,max,en){await wait(200);}
 function poke(what){}
 const estado=W=>{const C=W.cosas||[],f=C.find(o=>o.id==="fuente"),ce=C.find(o=>o.id==="cesta"),tb=C.find(o=>o.id==="tabla");return "gente="+Object.keys(W.gente||{}).filter(k=>W.gente[k].vis!==0).map(k=>k+"@"+R(W.gente[k].x)+","+R(W.gente[k].y)+(W.gente[k].sent?"s":"")+((W.gente[k].tiene||[]).length?"^"+W.gente[k].tiene.map(t=>t.k).join("+"):"")+(W.gente[k].come?"("+W.gente[k].come.k+")":"")).join(" ")
-  +" cesta="+(ce?ce.v:"-")+" fuente="+(f?f.montones.filter(m=>m.g==="m").length+"m"+f.montones.filter(m=>m.g==="p").length+"p":"-")+" platos="+C.filter(o=>o.k==="plato").map(o=>o.id.slice(3)+":"+(o.v||"")+"/"+(o.rollos||[]).map(r=>(r.mal?"ma":r.st)+(r.con||"")).join("+")).join("|")
+  +" cesta="+(ce?ce.v:"-")+" fuente="+(f?f.montones.filter(m=>m.g==="m").length+"m"+f.montones.filter(m=>m.g==="p").length+"p":"-")+" platos="+C.filter(o=>o.k==="plato").map(o=>o.id.slice(3)+":"+(o.v||"")+"/"+(o.rollos||[]).map(r=>(r.mal?"ma":r.st)+(r.con||"")).join("+")).concat(["luis","carmen"].filter(k=>W.gente&&W.gente[k]).map(k=>{const pt=(W.gente[k].tiene||[]).find(t=>t.k==="plato");return pt?k+":"+(pt.v||"")+"/"+(pt.rollos||[]).map(r=>(r.mal?"ma":r.st)+(r.con||"")).join("+"):k+":/";})).join("|")
   +" tabla="+(tb&&tb.rollo?tb.rollo.st+(tb.rollo.con||""):"-")+" malos="+(tb&&tb.malos?tb.malos.length:0)+" mant="+((C.find(o=>o.id==="mant")||{}).v||"-")+" choc="+((C.find(o=>o.id==="choc")||{}).v||"-")
   +" tazas="+C.filter(o=>o.k==="taza").map(o=>o.id.slice(2)+":"+o.v+(o.vapor?"*":"")+(o.vis===0?"^":"")).join("|")+" pmont="+V.pmont+" marcas="+(W.marcas||[]).join(",");};
 KIT.escena({id:"comer",CAM:{wide:[32,0,196,216]},heartAt:[130,22],lugar:{inicio:[124,141,1],centro:[124,141,1]},cosas:COSAS,
