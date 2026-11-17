@@ -44,6 +44,8 @@ async def main():
             url=await pg.evaluate("document.querySelector('#cv').toDataURL('image/png')")
             im=Image.open(io.BytesIO(base64.b64decode(url.split(",")[1]))).convert("RGB"); im=im.resize((im.width*4,im.height*4),Image.NEAREST)
             n+=1; im.save(f"{OUT}/{n:03d}.png")
+            try: open(f"{OUT}/estado.txt","a").write(f"{n} "+await pg.evaluate("(()=>{const q=Story.W.cq;return [q.lleno||0,q.hinch||0,q.caida||0,q.espalda||0].join(',')})()")+"\n")   # per frame: the frog's belly state (lleno, hinch 1 to 3, caida 1 to 2, espalda), so that a swell or a fall can be checked in the frames kept
+            except Exception: pass
             if PASO: lastmov=await pg.evaluate(MOV)
         for i in range(60000):
             await pg.wait_for_timeout(55)

@@ -936,7 +936,7 @@ const acts={
   async levanta34(o){const id=o.a,p=G(id),pl=ob("pl_"+id),sb=ob("silla_bebe"),juego=!!W.turno;p.pose="idle";SFX.blip();
     const llevaPlato=id!=="mama"&&(+o.plato||(juego&&pl.v!=="h"));
     if(llevaPlato)await dejaTenedor(id);else if(tenedorDe(id))await dejaTenedor(id);
-    p.sent=0;await wait(TICK*2);
+    p.dy=-3;await wait(TICK*4);p.dy=-6;await wait(TICK*4);p.sent=0;p.dy=0;await wait(TICK*4);   // he stands up in steps (his head goes up 3, 6, then upright)
     if(id==="mama"){await delante(id,188,206);p.dir=1;const bc=[HIJA[0],HIJA[1]-26];   // both her hands go to the baby, under his arms (from his left side, so that she does not stand in front of him)
       const rL=rel(id,bc[0]-6,bc[1]+7),rR=rel(id,bc[0]+1,bc[1]+7);await Promise.all([manoA(id,rL[0],rL[1],3,-1),manoA(id,rR[0],rR[1],3,1)]);await wait(TICK*3);
       const it={k:"bebeH",e:1,dos:3.5},c=centroPara(id,it,bc[0]-6,bc[1]+7);it.dx=c[0];it.dy=c[1];sinManos(id);p.tiene=[it];sb.v="0";SFX.blip();await wait(TICK*2);   // he is in her hands in the same moment the chair is empty
@@ -958,7 +958,7 @@ const acts={
   // the turn. Luis walks to abuela at the stove and gives her the big spoon (both hands on it), and goes to wait at the left end; abuela takes the platter off the stove top in one hand (the spoon in the other) and carries it along the front to its place;
   // she lifts the pot by its handle, carries it along the front and round the right end to BEHIND the table, and serves the three plates from behind (abuelo, Carmen, mamá: she stands at each one's shoulder, the spoon dips into the pot she holds, the pot is lower, the helping goes over the plate); she carries the pot back and sets it on the table;
   // then she stands between the pot and the platter and scoops the pot onto the platter, mound by mound (seven: four helpings at the left, papá's three at his end), the rice going down at every scoop; she pushes papá's fork behind his three, lifts the pot, tips it towards us: empty; gives the spoon back to Luis at the stove (both hands on it) and walks out with the pot
-  async turno34(o){const ab=G("abuela"),l=G("luis"),ol=ob("olla"),fu=ob("fuente");W.turno=1;
+  async turno34(o){const ab=G("abuela"),l=G("luis"),ol=ob("olla"),fu=ob("fuente");W.turno=1;if(W.cq.lleno)desinflar();   // his belly goes down again in view (three steps) while the turn starts: the game begins with a frog of his own size
     await aEncuentro34();await mueve("abuela",FOGON[0]-2,176);ab.dir=-1;{const sL=spoonOf("luis");await cucharaA("luis",sL,l.x+13,l.y-22,3);await wait(TICK*2);}
     const spA=await pasaCuchara("luis","abuela");spA.side=-1;await cucharaA("abuela",spA,ab.x-17,ab.y-22,3);await wait(TICK*2);
     const lw=ruta("luis",[[184,FR],[58,FR],[58,190]]).then(()=>{l.dir=1;});
