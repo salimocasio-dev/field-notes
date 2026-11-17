@@ -36,7 +36,7 @@ def reuse(st):
     return turnos(out)
 # Speaking turns (docs/hablar/01-decisiones.md and 03; the six turns of the script comer.md, "Speaking turns", and comer-turnos-decisiones.md). A coquí clip with "tu_turno" is his turn.
 # One target word and one accepted form each; no near-miss spellings. The mark is put on the clip once its id is settled (reuse() ends here). It adds no line and no clip: a turn whose
-# clip is not in the story, or is never played in it, is reported (MISSING TURN LINE) and not made up.
+# clip is not in the story, or is never played in it, is reported (MISSING TURN LINE) and not made up. The lines themselves are in the stories' own steps below.
 TG=lambda w,f:[{"palabra":w,"formas":[f]}]
 TURNOS={"que-quieres":{"bien_gracias":TG("bien","bien"),"cq_gracias_abuela":TG("gracias","gracias")},          # step 1 (set up by abuela_dice), step 7 (right after c33_ab_mas_pan)
         "buen-provecho":{"c34_cq_lleno":TG("lleno","lleno"),"c34_cq_bp_papa":TG("papá","papa")},              # step 4 (the signed ask di_lleno), the ending (after c34_papa_hola)
@@ -67,7 +67,8 @@ c.update({"c33_caliente":N("El pan está caliente."),"c33_aqui_mant":N("Aquí ha
  "c33_abuelo_mg_choc":AO("Me gusta el chocolate."),"c33_abuelo_nmg_mant":AO("No me gusta la mantequilla."),"c33_abuelo_come_choc":N("Abuelo come pan con chocolate."),
  "c33_mama_nmg_choc":MA("No me gusta el chocolate."),"c33_mama_mg_mant":MA("Me gusta la mantequilla."),"c33_mama_come_mant":N("Mamá come pan con mantequilla."),
  "c33_abuelo_nt_choc":AO("Mi pan no tiene chocolate."),"c33_luis_nmg_mant":L("No me gusta la mantequilla."),"c33_luis_come_choc":N("Luis come pan con chocolate."),"c33_mama_nt_mant":MA("Mi pan no tiene mantequilla."),
- "c33_ab_mas_pan":AB("Aquí hay más pan."),"c33_plato_no_tiene":N("El plato de abuela no tiene pan."),"c33_familia_come":N("La familia come pan."),"c33_cq_pan_abuela":T("¡Me gusta el pan de abuela!")})
+ "c33_ab_mas_pan":AB("Aquí hay más pan."),"c33_plato_no_tiene":N("El plato de abuela no tiene pan."),"c33_familia_come":N("La familia come pan."),"c33_cq_pan_abuela":T("¡Me gusta el pan de abuela!"),
+ "abuela_dice":AB("¡Hola! ¿Cómo estás?"),"bien_gracias":T("¡Bien, gracias!"),"cq_gracias_abuela":T("¡Gracias, abuela!")})   # the last three are recorded already (the greeting and the thanks of the speaking turns)
 for p,F in (("papa",PA),("carmen",CA)):
     for ty,txt in (("nmg","No me gusta %s."),("nt","Mi pan no tiene %s.")):
         for k in COS:
@@ -88,7 +89,7 @@ s33={"id":"que-quieres","title":"¿Qué quieres?","place":"La cocina","scene":"c
  "goal":"Fill each roll with what its eater likes.","stake":{"thing":"pan","steps":2},"dots":9,"bien":"si_muy_bien",
  "focus_words":["quieres","¿qué quieres?","me gusta","no me gusta"],"back_again":["pan","mantequilla","chocolate","caliente","tiene","quiere","come","aquí","más"],
  "also_heard":[],"names":BASE,"palabras":{"nmg":"no me gusta","nt":"tiene"},"clips":c,
- "beats":[act("inicio33"),{"wait":500},tw("cesta"),"c31_aqui_pan","c33_caliente",tw("mant"),"c33_aqui_mant",tw("choc"),"c33_aqui_choc",tw(None),act("plato33",suelto=1),"c33_ab_mg_pan",act("ya"),
+ "beats":[act("inicio33"),{"wait":500},tw("cesta"),"c31_aqui_pan","c33_caliente",tw("mant"),"c33_aqui_mant",tw("choc"),"c33_aqui_choc",tw(None),"abuela_dice","bien_gracias",act("plato33",suelto=1),"c33_ab_mg_pan",act("ya"),
   # the opening: five signed touches on a thing
   {"dots":1}]+paso33("abuelo",["c33_abuelo_mg_choc","c33_abuelo_nmg_mant"],"choc","c33_abuelo_come_choc")+[
   {"dots":2}]+paso33("mama",["c33_mama_nmg_choc","c33_mama_mg_mant"],"mant","c33_mama_come_mant")+[
@@ -96,14 +97,14 @@ s33={"id":"que-quieres","title":"¿Qué quieres?","place":"La cocina","scene":"c
   {"dots":4}]+paso33("luis",["c33_luis_nmg_mant"],"choc","c33_luis_come_choc",rollo=1)+[
   {"dots":5}]+paso33("mama",["c33_mama_nt_mant"],"mant","c33_mama_come_mant",rollo=1)+[
   # the turn
-  {"dots":6},act("turno33"),"c33_ab_mas_pan",act("apunta33",suelto=1),"c33_plato_no_tiene",act("ya"),act("sale33a"),act("miran33"),CARD,{"wait":400},
+  {"dots":6},act("turno33"),"c33_ab_mas_pan","cq_gracias_abuela",act("apunta33",suelto=1),"c33_plato_no_tiene",act("ya"),act("sale33a"),act("miran33"),CARD,{"wait":400},
   # A: papá. One line of four, drawn: the answer, then which kind of line
   {"dots":7}]+juego33("papa","c33_q_papa",[{"draw":"ka","options":["choc","mant"],"other":"ja"},{"draw":"ta","options":["nmg","nt"],"other":"ua"},{"calc":"na","cond":"ta=nt","then":"$ka","else":"$ja"}],"c33_papa_$ta_$na","ka","ta")+[
   # B: Carmen. First a fair draw of the answer, then a line for that answer that A did not use
   {"dots":8}]+juego33("carmen","c33_q_carmen",[{"draw":"kb","options":["choc","mant"],"other":"jb"},{"draw":"tr","options":["nmg","nt"],"other":"ur"},{"calc":"tb","cond":"kb=$ka","then":"$ua","else":"$tr"},{"calc":"nb","cond":"tb=nt","then":"$kb","else":"$jb"}],"c33_carmen_$tb_$nb","kb","tb"),
  "final":[{"dots":9},act("final33",suelto=1),"c33_familia_come",act("ya"),{"if":"pan","then":[say("c33_cq_pan_abuela",300)]},act("fin")],
- "leer":["c31_aqui_pan","c33_caliente","c33_aqui_mant","c33_aqui_choc","c33_ab_mg_pan","c33_q_abuelo","c33_abuelo_mg_choc","c33_abuelo_nmg_mant","c33_abuelo_come_choc","c33_q_mama","c33_mama_nmg_choc","c33_mama_mg_mant","c33_mama_come_mant","c33_abuelo_nt_choc",
-  "c33_q_luis","c33_luis_nmg_mant","c33_luis_come_choc","c33_mama_nt_mant","c33_ab_mas_pan","c33_plato_no_tiene","c33_familia_come","c33_cq_pan_abuela"]}
+ "leer":["c31_aqui_pan","c33_caliente","c33_aqui_mant","c33_aqui_choc","abuela_dice","bien_gracias","c33_ab_mg_pan","c33_q_abuelo","c33_abuelo_mg_choc","c33_abuelo_nmg_mant","c33_abuelo_come_choc","c33_q_mama","c33_mama_nmg_choc","c33_mama_mg_mant","c33_mama_come_mant","c33_abuelo_nt_choc",
+  "c33_q_luis","c33_luis_nmg_mant","c33_luis_come_choc","c33_mama_nt_mant","c33_ab_mas_pan","cq_gracias_abuela","c33_plato_no_tiene","c33_familia_come","c33_cq_pan_abuela"]}
 s33=reuse(s33)
 json.dump(s33,open("cuentos/que-quieres.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
@@ -139,8 +140,8 @@ s34={"id":"buen-provecho","title":"Buen provecho","place":"La cocina","scene":"c
   {"dots":2},act("luisCome34",suelto=1),"c34_luis_rico","c34_luis_todo",act("ya"),"c34_luis_quiero",act("cuchara34"),act("luis34",que="sirve"),act("luis34",que="come"),act("luis34",que="cuchara",tiende=1),act("piensa34",k="quiere"),"c34_luis_y_tu",
   ask("di_tambien",None,after=[act("ranaCome34",lleno=1,suelto=1),"c34_cq_todo",act("ya")],resp=["di_tambien","di_lleno"],voces=VT,said={"di_tambien":"c34_cq_tambien"}),
   # 4: the other way round: the frog is full
-  {"dots":3},"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="come"),act("luis34",que="cuchara",tiende=1),act("piensa34",k="lleno"),"c34_luis_y_tu",
-  ask("di_lleno",None,after=[act("luisCome2")],resp=["di_lleno","di_tambien"],voces=VT,said={"di_lleno":"c34_cq_lleno"}),
+  {"dots":3},"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="come"),act("luis34",que="cuchara",tiende=1),act("piensa34",k="lleno"),
+  ask("di_lleno","c34_luis_y_tu",after=[act("luisCome2")],resp=["di_lleno","di_tambien"],voces=VT,said={"di_lleno":"c34_cq_lleno"}),
   # 5: touch a person of three, taught
   {"dots":4},act("plato34",a="carmen",v=""),"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="entrega"),act("luis34",que="come",suelto=1),"c34_mama_tambien",act("mano34",a="abuelo"),"c34_abuelo_lleno","c34_carmen_levanto",act("ya"),
   ask("mama",None,after=[act("tipa34",a="mama",suelto=1),"c34_mama_todo",act("ya")],then=[act("mano34",a="abuelo",pose="idle"),act("levanta34",a="carmen",plato=1,suelto=1),"c34_carmen_bp",act("ya")]),
@@ -175,6 +176,7 @@ c.update({"c35_hace":N("Abuela hace café."),"c35_aqui_cafe":N("Aquí hay café.
  "c35_luis_mucho":L("Mucho café, por favor."),"c35_carmen_poco":CA("Un poco de café, por favor."),"c35_carmen_mucho":CA("Mucho café, por favor."),"c35_luis_poco":L("Un poco de café, por favor."),
  "c35_luis_toma":N("Luis toma mucho café."),"c35_carmen_toma":N("Carmen toma un poco de café."),
  "c35_ab_quieres":AB("¿Quieres café, Coquí?"),"c35_cq_poco":T("Sí, un poco, por favor."),"c35_cq_mucho":T("Sí, mucho, por favor."),"c35_cq_rico":T("¡El café está rico!"),
+ "papa_hola_como":PA("¡Hola! ¿Cómo estás?"),"toma":AB("Toma."),"bien_gracias":T("¡Bien, gracias!"),"cq_gracias_abuela":T("¡Gracias, abuela!"),   # recorded already (greeting, hand-over, thanks of the speaking turns)
  "c35_ab_cafe_mi":AB("¡Y café para mí!"),"c35_no_mucho":N("No, Coquí. Mira. Tú quieres mucho café."),"c35_no_poco":N("No, Coquí. Mira. Tú quieres un poco de café."),
  "c35_no_hay_cafe":AB("No hay más café."),"c35_no_hay_leche":AB("No hay más leche."),"c35_ab_toma":N("Abuela toma café."),"c35_cq_huele":T("¡Huele a café!")})
 for p,F in (("abuelo",AO),("papa",PA)):
@@ -188,12 +190,12 @@ s35={"id":"cafe-con-azucar","title":"Café con azúcar","place":"La cocina","sce
  "goal":"Give everybody the cup he asks for.","stake":{"thing":"café","steps":2},"dots":9,"bien":"si_muy_bien",
  "focus_words":["café","azúcar","un poco","mucho"],"back_again":["leche","taza","toma","más","por favor","huele a","le pone","no hay","rico","sí","quieres"],
  "also_heard":[],"names":BASE,"palabras":{"azucar":"azúcar","poco":"un poco","mucho":"mucho"},"clips":c,
- "beats":[act("inicio35"),{"wait":500},"c35_hace",tw("cafetera"),"c35_aqui_cafe",tw("azucarera"),"c35_aqui_azucar",tw(None),"c35_huele",
+ "beats":[act("inicio35"),{"wait":500},"c35_hace",tw("cafetera"),"c35_aqui_cafe",tw("azucarera"),"c35_aqui_azucar",tw(None),"c35_huele","papa_hola_como","bien_gracias",
   # 2 and 3: touch a person (sugar), taught twice, the lines the other way round
   {"dots":1}]+paso35("abuelo","papa","c35_abuelo_azucar","c35_papa_cafe","abuelo")+[
   {"dots":2}]+paso35("abuelo","papa","c35_abuelo_cafe","c35_papa_azucar","papa")+[
   # 4 and 5: scenes, no sign
-  {"dots":3},act("pote35"),act("ninos35",que="ponen"),"c35_luis_mucho","c35_carmen_poco",act("ninos35",que="salen"),act("vierte35",a="luis",cant="mucho"),act("vierte35",a="carmen",cant="poco"),act("ninos35",que="vuelven"),act("ninos35",que="toman",suelto=1),"c35_luis_toma","c35_carmen_toma",act("ya"),
+  {"dots":3},act("pote35"),"toma","cq_gracias_abuela",act("pote35b"),act("ninos35",que="ponen"),"c35_luis_mucho","c35_carmen_poco",act("ninos35",que="salen"),act("vierte35",a="luis",cant="mucho"),act("vierte35",a="carmen",cant="poco"),act("ninos35",que="vuelven"),act("ninos35",que="toman",suelto=1),"c35_luis_toma","c35_carmen_toma",act("ya"),
   {"dots":4},act("ninos35",que="ponen"),"c35_carmen_mucho","c35_luis_poco",act("ninos35",que="salen"),act("vierte35",a="carmen",cant="mucho"),act("vierte35",a="luis",cant="poco"),act("ninos35",que="vuelven"),act("ninos35",que="toman"),
   # 6: he says it, taught twice
   {"dots":5},act("piensa35",k="palido"),"c35_ab_quieres",
@@ -215,7 +217,7 @@ s35={"id":"cafe-con-azucar","title":"Café con azúcar","place":"La cocina","sce
    "right":[act("sirveB35",cant="$wb"),{"if":"ok","then":[act("rana35bebe"),act("marca",que="ok")],"else":[act("bebeAb35"),{"if":"wb=mucho","then":[act("muestra35",k="taza"),act("muestra35",k="jarrita"),act("muestra35",k="cazo"),"c35_no_hay_cafe"],"else":[act("muestra35",k="taza"),act("muestra35",k="jarrita"),act("muestra35",k="cazo"),"c35_no_hay_leche"]}]}],
    "wrong":[act("sirveB35",cant="$x"),act("pruebaB35")]+X+["c35_no_$wb"]}],
  "final":[{"dots":9},act("final35",suelto=1),{"if":"cafe","then":["c35_ab_toma"]},act("ya"),say("c35_cq_huele",300),act("fin")],
- "leer":["c35_hace","c35_aqui_cafe","c35_aqui_azucar","c35_huele","c35_abuelo_azucar","c35_papa_cafe","c35_coqui_pone","c35_abuelo_cafe","c35_papa_azucar","c35_luis_mucho","c35_carmen_poco","c35_luis_toma","c35_carmen_toma","c35_carmen_mucho","c35_luis_poco","c35_ab_quieres","c35_cq_poco","c35_cq_mucho","c35_cq_rico","c35_ab_cafe_mi","c35_ab_toma","c35_cq_huele"]}
+ "leer":["c35_hace","c35_aqui_cafe","c35_aqui_azucar","c35_huele","papa_hola_como","bien_gracias","c35_abuelo_azucar","c35_papa_cafe","c35_coqui_pone","c35_abuelo_cafe","c35_papa_azucar","toma","cq_gracias_abuela","c35_luis_mucho","c35_carmen_poco","c35_luis_toma","c35_carmen_toma","c35_carmen_mucho","c35_luis_poco","c35_ab_quieres","c35_cq_poco","c35_cq_mucho","c35_cq_rico","c35_ab_cafe_mi","c35_ab_toma","c35_cq_huele"]}
 s35=reuse(s35)
 json.dump(s35,open("cuentos/cafe-con-azucar.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 

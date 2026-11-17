@@ -950,7 +950,9 @@ const acts={
   // abuela gives the frog the little pot: she takes the greca from the right end of the table, carries it to him and sets it where he can take it; he takes it in his hand. The children set their cups of milk in front of the frog (ponen), walk out (salen), walk in (vuelven) and drink (toman)
   async pote35(o){const ab=G("abuela"),jt=ob("jarrita"),q=W.cq;
     await ruta("abuela",[[FOGON[0],FR],[GRECA35[0]+4,FR],[GRECA35[0]+4,190]]);ab.dir=-1;const it=await toma("abuela",jt,6,22,{n:3,m:3});it.flip=true;
-    await ruta("abuela",[[140,190]]);ab.dir=-1;await pon("abuela",it,jt,138,172,4);
+    await ruta("abuela",[[140,190]]);ab.dir=-1;await pon("abuela",it,jt,138,172,4);},   // she sets the little pot down in front of the frog and stays there: "Toma." and his thanks come now
+  // then she walks back to the stove and the frog fetches the pot and takes it home
+  async pote35b(o){const ab=G("abuela"),jt=ob("jarrita");
     await ruta("abuela",[[140,FR],[FOGON[0],FR],[FOGON[0],FOGON[1]]]);ab.dir=-1;
     await ranaA(150,170);const gi=await ranaToma(jt,-14,14,{n:3,m:3});gi.flip=true;await ranaA(CASA35[0],CASA35[1]);},
   async ninos35(o){const l=G("luis"),ca=G("carmen"),tl=copa("luis"),tc=copa("carmen"),cupOf=p=>p.tiene.find(x=>x.k==="taza");
