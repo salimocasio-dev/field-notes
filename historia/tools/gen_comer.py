@@ -33,7 +33,26 @@ def reuse(st):
         if isinstance(o,dict): return {fx(k) if k in ren else k:fx(v) for k,v in o.items()}
         return o
     out=fx(st)
-    return out
+    return turnos(out)
+# Speaking turns (docs/hablar/01-decisiones.md and 03; the six turns of the script comer.md, "Speaking turns", and comer-turnos-decisiones.md). A coquí clip with "tu_turno" is his turn.
+# One target word and one accepted form each; no near-miss spellings. The mark is put on the clip once its id is settled (reuse() ends here). It adds no line and no clip: a turn whose
+# clip is not in the story, or is never played in it, is reported (MISSING TURN LINE) and not made up.
+TG=lambda w,f:[{"palabra":w,"formas":[f]}]
+TURNOS={"que-quieres":{"bien_gracias":TG("bien","bien"),"cq_gracias_abuela":TG("gracias","gracias")},          # step 1 (set up by abuela_dice), step 7 (right after c33_ab_mas_pan)
+        "buen-provecho":{"c34_cq_lleno":TG("lleno","lleno"),"c34_cq_bp_papa":TG("papá","papa")},              # step 4 (the signed ask di_lleno), the ending (after c34_papa_hola)
+        "cafe-con-azucar":{"bien_gracias":TG("bien","bien"),"cq_gracias_abuela":TG("gracias","gracias")}}    # step 1 (set up by papa_hola_como), step 4 (after toma)
+def turnos(st):
+    def strs(o):   # every string in the steps (not the keys)
+        if isinstance(o,str): yield o
+        elif isinstance(o,list):
+            for x in o: yield from strs(x)
+        elif isinstance(o,dict):
+            for x in o.values(): yield from strs(x)
+    played=set(strs([st["beats"],st["final"]]))
+    for cid,t in TURNOS.get(st["id"],{}).items():
+        if cid in st["clips"] and cid in played: st["clips"][cid]["tu_turno"]=t
+        else: print("MISSING TURN LINE",st["id"],cid)
+    return st
 DIN=set()   # ids that are put together in the story ("c33_papa_$ta_$na"): never renamed
 comunes={"muy_bien":N("¡Muy bien!"),"si_muy_bien":N("¡Sí! ¡Muy bien!"),"yo_coqui":T("¡Coquí!"),"p_n_luis":N("Este es Luis."),"p_n_carmen":N("Esta es Carmen."),"abuela":N("Esta es abuela."),
  "esta_es_mama":N("Esta es mamá."),"n_papa":N("Este es papá."),"n_abuelo":N("Este es abuelo."),"m_n_cocina":N("Es la cocina.")}
