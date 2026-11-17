@@ -124,7 +124,7 @@ words    = - la casa (the house) | picture: casa = the house, with a pointer on 
 
 ## 2. Proposed prompt
 
-702 words, 3,718 characters (the current one is 1,079 words, 5,616 characters). Fix 6 (Nov 16, after the fix-5 tests): in "# When he is stuck", one new line after the "(fin)" line: when he says adiós or hasta mañana, the call is over, say "Adiós." or "Hasta mañana." alone and end the call. No existing line was replaced. Before fix 6 it was 674 words, 3,572 characters. Fix 5 (Nov 16, after test 1 passed with notes): in "# Guardrails" the fix-1 line no longer lists "aquí" and "mira" (they are La casa words now), and two lines were added: never ask "¿Qué se dice?" (after "Toma." wait; if he says nothing follow the silence steps), and never call him anything (no name, no "amigo", no pet names; "Adiós." or "Hasta mañana." alone). Before fix 5 it was 638 words, 3,372 characters. Fix 4 (Nov 16, after test 4 again): "¿qué es esto?" added to the glue words (the prompt itself uses it in "# The job"). Before fix 4 it was 635 words, 3,357 characters. Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
+866 words, 4,572 characters (the current one is 1,079 words, 5,616 characters). Fix 7 (Nov 17, after the owner's first two real calls; section 9): in "# The job", the goodbye is his, never Danny's; a new section "# When the job is done" (go through the open words one at a time with their pictures, every fourth word go back over a part of the job, skip adiós and hasta mañana); in "# Guardrails", one new line (never start the goodbye yourself) and an exception to the no-repeat line for "¿Qué es esto?" and the job's lines. The "If the job is done and time remains" sentence of "# The job" was replaced by the new section. Before fix 7 it was 702 words, 3,718 characters. Fix 6 (Nov 16, after the fix-5 tests): in "# When he is stuck", one new line after the "(fin)" line: when he says adiós or hasta mañana, the call is over, say "Adiós." or "Hasta mañana." alone and end the call. No existing line was replaced. Before fix 6 it was 674 words, 3,572 characters. Fix 5 (Nov 16, after test 1 passed with notes): in "# Guardrails" the fix-1 line no longer lists "aquí" and "mira" (they are La casa words now), and two lines were added: never ask "¿Qué se dice?" (after "Toma." wait; if he says nothing follow the silence steps), and never call him anything (no name, no "amigo", no pet names; "Adiós." or "Hasta mañana." alone). Before fix 5 it was 638 words, 3,372 characters. Fix 4 (Nov 16, after test 4 again): "¿qué es esto?" added to the glue words (the prompt itself uses it in "# The job"). Before fix 4 it was 635 words, 3,357 characters. Fix 3 (Nov 16, after test 4): "toma" added to the glue words (it is a La casa focus word and the prompt's own example in "# The job"). Before fix 3 it was 634 words, 3,351 characters. Fix 2 (Nov 16, after test 5 again): the "English from him" line was replaced (English is treated like "(ayuda)" in three steps; a question about a listed word gets its picture and "Es [word]."); the Guardrails line from fix 1 stays. Before fix 2 it was 613 words, 3,217 characters. Paste the text in the box below. Edited Nov 16 with the orchestrator's decisions: glue words "o", "quieres", "¿y tú?", "gracias", "por favor" added; the line "You cannot end the call" added to Environment. Fix 1 (after test 5, Nov 16): the "English from him" line now also covers "he asks what a word is", and a new first line in Guardrails forbids any word outside the lists (para, después, ahora, aquí, mira). Before fix 1 it was 544 words, 2,891 characters.
 
 ~~~~text
 # Personality
@@ -148,7 +148,10 @@ You are Danny, a calm, plain-spoken Puerto Rican man on a phone call. You help a
 - A wrong or half-right word: say the right word once, slowly, then go on.
 
 # The job
-Do the job in order, one step at a time, as small exchanges: you say a short line, he answers. Ways to get a word out of him, using only listed words: show its picture and ask "¿Qué es esto?"; hand him something ("Toma."); ask back ("¿Y tú?"). If the job is done and time remains, go back over his open words one at a time, each with its picture.
+Do the job in order, one step at a time, as small exchanges: you say a short line, he answers. Ways to get a word out of him, using only listed words: show its picture and ask "¿Qué es esto?"; hand him something ("Toma."); ask back ("¿Y tú?"). The goodbye at the end of the job is his, never yours: do not say it first, even if the job lists it.
+
+# When the job is done
+Do not say goodbye. Go through his open words one at a time, in list order. For each: call show_picture, then ask "¿Qué es esto?". After his answer say "Sí." or "Eso." Then the next word. Skip adiós and hasta mañana: they end the call. At the end of the list, start again. After every fourth word, go back over a part of the job instead, with listed words only: the greeting ("Hola." "¿Cómo estás?"), the name ("Soy Danny. ¿Y tú?"), the drink ("¿Quieres jugo?" "Toma."). Never the same part twice in a row. Go on until he says goodbye or "(fin)" comes.
 
 # Pictures
 Call show_picture just before you ask for or name a word, so the picture matches. The key is the word exactly as written in the two lists. Never any other key. Never "todo". If it fails, carry on and say nothing.
@@ -165,7 +168,8 @@ Call show_picture just before you ask for or name a word, so the picture matches
 - Never ask "¿Qué se dice?". After "Toma.", wait for his answer; if he says nothing, follow the silence steps.
 - Never call him anything: no name, no "amigo", no pet names. Say "Adiós." or "Hasta mañana." alone.
 - Use only words from the two lists, the glue words and your opening. If a word is not there, do not say it. This is important.
-- Never repeat a sentence word for word, except after "(ayuda)" or silence.
+- Never start the goodbye yourself, not when the job is done and not when it is quiet. Say "Adiós." or "Hasta mañana." only after he says adiós or hasta mañana, or after "(fin)". This is important.
+- Never repeat a sentence word for word, except after "(ayuda)" or silence, and except "¿Qué es esto?" and the lines of the job when you go back over them.
 - Everything you write is spoken aloud. No labels, lists, brackets, stage directions or translations.
 ~~~~
 
@@ -551,3 +555,48 @@ One thing for the orchestrator, not changed: the Environment section still says 
 ### Status: untested
 
 Fix 6 has not been tested. No test was run (the cap leaves 377 credits, and the orchestrator decided the owner's first real call is the next test). No credits were spent; the account counter was not read. Fixes 5 and 6 are both untested on tests 1, 3, 4, 5 and 6, and fix 6 is untested everywhere. What to look for in the first real call: after the learner's "adiós" or "hasta mañana", Danny says "Adiós." or "Hasta mañana." and nothing else, with no question and no "¿Y tú?" (the habit seen in tests 1 and 2).
+
+## 9. Fix 7 (Nov 17, after the owner's first two real calls)
+
+### What the calls showed
+
+Conversations `conv_6801m7k326n6ermrksa6w3wr0jp8` and `conv_9001m7k3ac87fncbek5dzcbk3wa9`, agent version `agtvrsn_4201m7k03faweq19n82pqx1zenw5` (fix 6).
+
+- Call 2: Danny did the whole job in 35 s, then said "Sí. Hasta mañana." himself, then a goodbye loop (Hasta mañana x3, Adiós x4) for 20 s. The page did not end the call (its goodbye guard only worked from 120 s) and Danny cannot hang up.
+- Replies took 3.0 to 4.7 s on turns where the model reasoned, about 1 s on the others.
+- The page sent only 8 open words (casa, ventana, abre, cierra, sí, no, grande, pequeña); the words the job needs went as heard words.
+- Call 1: background English was picked up; nothing to fix.
+
+### The change
+
+Prompt (section 2, applied to the agent as one whole-prompt update). The orchestrator's points 5 and 6:
+
+1. "# The job": the last sentence ("If the job is done and time remains, go back over his open words one at a time, each with its picture.") is replaced by: "The goodbye at the end of the job is his, never yours: do not say it first, even if the job lists it." The page's job text still ends "say thanks and say goodbye", so this line is needed.
+2. New section after "# The job":
+   - "# When the job is done": "Do not say goodbye. Go through his open words one at a time, in list order. For each: call show_picture, then ask "¿Qué es esto?". After his answer say "Sí." or "Eso." Then the next word. Skip adiós and hasta mañana: they end the call. At the end of the list, start again. After every fourth word, go back over a part of the job instead, with listed words only: the greeting ("Hola." "¿Cómo estás?"), the name ("Soy Danny. ¿Y tú?"), the drink ("¿Quieres jugo?" "Toma."). Never the same part twice in a row. Go on until he says goodbye or "(fin)" comes."
+3. "# Guardrails", one new line: "Never start the goodbye yourself, not when the job is done and not when it is quiet. Say "Adiós." or "Hasta mañana." only after he says adiós or hasta mañana, or after "(fin)". This is important."
+4. "# Guardrails", the no-repeat line now ends: "... except after "(ayuda)" or silence, and except "¿Qué es esto?" and the lines of the job when you go back over them." (Without this the old line forbade asking "¿Qué es esto?" for each word.)
+
+Two things I added that the decisions did not spell out, both so that the new lines work with the page: "Skip adiós and hasta mañana" (the page now ends the call whenever the learner says either, so asking for them in the review would end the call early), and the exception in item 4. Every example line in the new section uses open words, the glue words or the opening ("soy", "Danny", "¿Cómo estás?"). No English, no pet names, nothing religious. Nothing else in the prompt was changed.
+
+The words the page sends (llamada.js v=36): `words_open` = all 50 place words of La casa, `words_heard` = empty.
+
+### New length and version
+
+- Section 2 in the file: 866 words, 4,572 characters (before: 702 words, 3,718 characters).
+- Live agent (Main), final version `agtvrsn_6101m7ke5jw1e359681bw18yk2x4`. The prompt went in as `agtvrsn_0201m7ke3217eqn902gmk93c6th2`; the two reasoning calls below made `agtvrsn_3901m7ke39nzev7bjrfc9rptp3fm` (no change stored) and then the final one.
+- Read-back: the stored prompt is 4,572 characters, the same count as the file. First message `{{opening}}`, one tool (show_picture), voice, language and turn settings as before, allowlist still `salimocasio-dev.github.io` with the origin header required. No draft exists on the branch.
+
+### The reasoning setting
+
+- The agent's LLM is claude-sonnet-5-5. The platform's setting is `reasoning_effort` (the model list offers none, low, medium, high, xhigh, max); there is also `thinking_budget`. Before this change both were unset. Section 1 of this file called that "off"; the 3 to 4.7 s turns in the calls say the model was reasoning, so unset is not off for this model.
+- Tried `reasoning_effort` "none": the platform refused it twice, once with the prompt and once alone ("Not supported reasoning effort"), although the model list shows it.
+- Tried `thinking_budget` 0: accepted, but it does not stay (it reads back unset), so it does nothing.
+- Set `reasoning_effort` "low", read back as "low". That is the lowest the platform accepts for this model. Nothing else was changed in the model settings (temperature 0.3, max tokens unlimited).
+- Not tested (no credits). To check in the owner's next call: the length of Danny's replies in the conversation log; a turn over 2 s means reasoning is still running.
+
+### Status: untested
+
+No test or simulation was run. What to look for in the next real call: no goodbye from Danny until the learner says one; after the job, Danny shows each word's picture and asks "¿Qué es esto?", and every fourth word goes back to the greeting, the name or the drink; a learner "adiós" or "hasta mañana" ends the call after Danny's next line. Also check the replies' speed.
+
+For the orchestrator, not changed: the page's job text for La casa still says "say thanks and say goodbye". The prompt now tells Danny the goodbye is the learner's. If he says it anyway, the page ends the call after his line (no loop), but the review would be cut short; the plain fix is to take "and say goodbye" out of the job text in llamada.js (one line).
