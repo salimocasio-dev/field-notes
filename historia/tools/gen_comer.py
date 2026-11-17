@@ -143,7 +143,7 @@ s34={"id":"buen-provecho","title":"Buen provecho","place":"La cocina","scene":"c
   {"dots":3},"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="come"),act("luis34",que="cuchara",tiende=1),act("piensa34",k="lleno"),
   ask("di_lleno","c34_luis_y_tu",after=[act("luisCome2")],resp=["di_lleno","di_tambien"],voces=VT,said={"di_lleno":"c34_cq_lleno"}),
   # 5: touch a person of three, taught
-  {"dots":4},act("plato34",a="carmen",v=""),"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="entrega"),act("luis34",que="come",suelto=1),"c34_mama_tambien",act("mano34",a="abuelo"),"c34_abuelo_lleno","c34_carmen_levanto",act("ya"),
+  {"dots":4},act("limpia34",a="carmen"),"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="entrega"),act("luis34",que="come",suelto=1),"c34_mama_tambien",act("mano34",a="abuelo"),"c34_abuelo_lleno","c34_carmen_levanto",act("ya"),
   ask("mama",None,after=[act("tipa34",a="mama",suelto=1),"c34_mama_todo",act("ya")],then=[act("mano34",a="abuelo",pose="idle"),act("levanta34",a="carmen",plato=1,suelto=1),"c34_carmen_bp",act("ya")]),
   # 6: and again, with the three in other places
   {"dots":5},act("vuelve34",a="carmen",plato=1),"c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="entrega"),act("luis34",que="come",suelto=1),"c34_abuelo_tambien",act("mano34",a="carmen"),"c34_carmen_lleno","c34_mama_levanto",act("ya"),
