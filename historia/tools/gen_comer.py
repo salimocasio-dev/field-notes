@@ -238,9 +238,9 @@ PARC={"m_c_quieres":N("¿Quieres pan?"),"m_c_que_quieres":AB("¿Qué quieres?"),
 USA=list(PARC)+["muy_bien","si_muy_bien"]
 todos={**c,**s33["clips"],**s34["clips"],**s35["clips"],**PARC}
 # two pots with a spoon over each, in abuela's two hands: each spoon is as long as her forearm, the hand at her side, the bowl over its pot
-def dosCucharas(): return [dict(k="uten",ax=9,ay=30,bx=21,by=25,load="arr",o={"rx":2,"ry":1}),dict(k="uten",ax=-9,ay=30,bx=-21,by=25,load="arr",o={"rx":2,"ry":1})]
+def dosCucharas(): return [dict(k="uten",ax=9,ay=21,bx=20,by=18,load="",o={"rx":3,"ry":2}),dict(k="uten",ax=-9,ay=21,bx=-20,by=18,load="",o={"rx":3,"ry":2})]
 plato_manzana=lambda x:cosa("platoma",x,160,e=2)
-CERCA1=[30,128,98,52]; CERCA2=[142,128,98,52]   # the closer pictures: waist up, so that the faces read; the kitchen stays behind them (the counter at the left, the stove at the right)
+CERCA1=[26,138,106,56]; CERCA2=[142,128,98,52]   # the closer pictures: waist up, so that the faces read; the kitchen stays behind them (the counter at the left, the stove at the right)
 cualj={"id":"cual-comer","title":"¿Cuál?","place":"La cocina","scene":"comer","tipo":"cual","stake":{"thing":"none","steps":0},
  "note":"The next-day pass for A comer.","clips":{k:todos[k] for k in USA},
  "items":[
@@ -250,23 +250,23 @@ cualj={"id":"cual-comer","title":"¿Cuál?","place":"La cocina","scene":"comer",
                                               "no":pic(gente={"abuela":P(142,184,-1,pose="offer",tiene=[ti("plato",24,30,e=1,v="rm")]),"carmen":P(94,184,1)},cosas=[Q(142,128)])},
   {"w":"me gusta","say":"m_c_me_gusta","si":pic(gente={"luis":P(124,184,1,boca=1,come={"k":"muslo","v":"b","e":1,"dx":15})},cosas=[corazon(150,132)]),
                                       "no":pic(gente={"luis":P(104,184,1,tiene=[ti("muslo",24,30)]),"carmen":P(172,184,-1,pose="offer")})},
-  {"w":"no me gusta","say":"m_c_no_me_gusta","si":pic(CERCA1,gente={"carmen":P(68,194,1,cara="ceno",tiene=[ti("platoma",24,24,dos=11)])}),
-                                               "no":pic(CERCA1,gente={"carmen":P(68,194,1,cara="calma",tiene=[ti("platoma",24,24),dict(k="brazo",gx=3,gy=13,sh=-1)])})},
-  {"w":"rico","say":"m_c_rico","si":pic(CERCA2,gente={"abuelo":P(176,194,1,cierra=1,boca=1,come={"k":"tenedor","v":"t","e":1,"dx":11},tiene=[dict(k="brazo",gx=2,gy=15,sh=-1)])},cosas=[cosa("bizcocho",152,174,e=1),cosa("manoG",174,168,v="#D09460",z=900)]),
-                               "no":pic(CERCA2,gente={"abuelo":P(176,194,1,sopla=1,come={"k":"tenedor","v":"t","e":1,"dx":14,"vapor":1})},cosas=[cosa("bizcocho",152,174,e=1)])},
+  {"w":"no me gusta","say":"m_c_no_me_gusta","si":pic(CERCA1,gente={"carmen":P(68,194,1,cara="ceno",tiene=[ti("platoma",17,22,dos=9)])}),
+                                               "no":pic(CERCA1,gente={"carmen":P(68,194,1,cara="calma",tiene=[ti("platoma",17,22,una=1),dict(k="brazo",gx=3,gy=11,sh=-1)])})},
+  {"w":"rico","say":"m_c_rico","si":pic(CERCA2,gente={"abuelo":P(176,194,1,cierra=1,come={"k":"tenedor","v":"t","e":1,"dx":7,"dy":5},tiene=[dict(k="brazo",gx=3,gy=14,sh=-1)])},cosas=[cosa("bizcocho",152,174,e=1)]),
+                               "no":pic(CERCA2,gente={"abuelo":P(168,194,1,sopla=1,come={"k":"tenedor","v":"t","e":1,"dx":18,"dy":5,"vapor":1})},cosas=[cosa("bizcocho",146,174,e=1)])},
   {"w":"buen provecho","say":"m_c_buen_provecho","si":pic(gente={"mama":P(90,132,1,sent=1,come={"k":"tenedor","dx":12}),"abuelo":P(114,132,1,sent=1,come={"k":"tenedor","dx":12}),"carmen":P(138,132,1,sent=1,come={"k":"tenedor","dx":12}),"luis":P(200,168,-1,pose="wave0",tiene=[ti("plato",20,30,v="")])},
                                                     cosas=[PL("pl_mama",90,"r"),PL("pl_abuelo",114,"r"),PL("pl_carmen",138,"r")]),
-                                       "no":pic(gente={"luis":P(60,154,1,boca=1,tiene=[ti("plato",15,26,dos=7,e=1)]),"carmen":P(40,158,1,boca=1,tiene=[ti("plato",15,24,dos=7,e=1)]),"abuelo":P(112,188,-1,boca=1,tiene=[ti("plato",16,26,dos=7,e=1)])})},
+                                       "no":pic(gente={"luis":P(70,186,1,boca=1,tiene=[ti("plato",10,24,dos=7,e=1)]),"carmen":P(112,186,1,boca=1,tiene=[ti("plato",10,22,dos=7,e=1)]),"abuelo":P(160,186,-1,boca=1,tiene=[ti("plato",10,26,dos=7,e=1)])})},
   {"w":"también","say":"m_c_tambien","si":pic(gente={"luis":P(100,182,1,come={"k":"rollo","v":"mo:c","e":1,"dx":14}),"carmen":P(152,182,-1,come={"k":"rollo","v":"mo:m","e":1,"dx":14})}),
                                       "no":pic(gente={"luis":P(100,182,1,come={"k":"rollo","v":"mo:c","e":1,"dx":14}),"carmen":P(152,182,-1)})},
-  {"w":"todo","say":"m_c_todo","si":pic(perro=dict(x=108,y=177,pose="eat",dir=1,lengua=1,e=2),cosas=[cosa("cuenco",164,177,v="limpio",e=2)]),
+  {"w":"todo","say":"m_c_todo","si":pic(perro=dict(x=114,y=179,pose="husmea",dir=1,lengua=1,e=2),cosas=[cosa("cuenco",158,177,v="limpio",e=2)]),
                                 "no":pic(perro=dict(x=118,y=177,pose="walk",dir=-1,granos=1,e=2),cosas=[cosa("cuenco",164,177,v="lleno",e=2)])},
-  {"w":"café","say":"m_c_cafe","si":pic(gente={"mama":P(108,184,1,tiene=[ti("taza",15,32,v="negro",vapor=1,vn=1)])},cosas=[cosa("cafetera",160,160,e=1,vapor=1,vdy=24,vn=1)]),
-                              "no":pic(gente={"mama":P(108,184,1,tiene=[ti("vasojugo",14,30)])},cosas=[cosa("cafetera",160,160,e=1)])},
-  {"w":"azúcar","say":"m_c_azucar","si":pic(gente={"abuela":P(116,184,1,tiene=[dict(k="uten",ax=14,ay=34,bx=27,by=40,load="azu",o={"plata":1,"rx":2,"ry":1})])},cosas=[cosa("taza",146,168,v="negro",vapor=1,vn=1),cosa("granos",143,152,e=1,z=900),cosa("granos",147,156,e=1,z=900),cosa("granos",144,160,e=1,z=900)]),
-                                "no":pic(gente={"abuela":P(112,184,1,tiene=[ti("tiltjarraleche",24,26,e=1,v="suave",flip=True,chorro={"h":14,"col":"#FFFFFF"})])},cosas=[cosa("taza",152,170,v="negro",vapor=1,vn=1)])},
-  {"w":"un poco","say":"m_c_un_poco","si":pic(gente={"abuela":P(108,184,1,tiene=[dict(k="uten",ax=14,ay=32,bx=28,by=38,load="arr",o={"plata":1,"rx":3,"ry":1})]),"carmen":P(178,184,-1)},cosas=[cosa("plato",142,172)]),
-                                  "no":pic(gente={"abuela":P(108,184,1,tiene=[dict(k="uten",ax=14,ay=32,bx=28,by=38,load="ARR",o={"plata":1,"rx":3,"ry":1})]),"carmen":P(178,184,-1)},cosas=[cosa("plato",142,172)])},
+  {"w":"café","say":"m_c_cafe","si":pic(gente={"mama":P(108,184,1,tiene=[ti("taza",12,26,v="negro",vapor=1,vn=1,dos=6)])},cosas=[cosa("cafetera",160,160,e=1,vapor=1,vdy=24,vn=1)]),
+                              "no":pic(gente={"mama":P(108,184,1,tiene=[ti("vasojugo",12,26,dos=5)])},cosas=[cosa("cafetera",160,160,e=1)])},
+  {"w":"azúcar","say":"m_c_azucar","si":pic(gente={"abuela":P(106,178,1,tiene=[dict(k="uten",ax=11,ay=24,bx=29,by=27,load="azu",o={"plata":1,"rx":3,"ry":2})])},cosas=[cosa("sombra",138,172),cosa("taza",138,170,v="negro",vapor=1,vn=1),cosa("grano",134,157,z=900),cosa("grano",137,161,z=900),cosa("grano",133,164,z=900)]),
+                                "no":pic(gente={"abuela":P(106,178,1,tiene=[ti("tiltjarraleche",12.6,26.5,e=1,v="suave",flip=True,chorro={"h":14,"col":"#FFFFFF"})])},cosas=[cosa("sombra",138,172),cosa("taza",138,170,v="negro",vapor=1,vn=1)])},
+  {"w":"un poco","say":"m_c_un_poco","si":pic(gente={"abuela":P(108,184,1,tiene=[dict(k="uten",ax=14,ay=30,bx=28,by=35,load="arr",o={"rx":4,"ry":3})]),"carmen":P(178,184,-1)},cosas=[cosa("sombra",142,172),cosa("plato",142,172)]),
+                                  "no":pic(gente={"abuela":P(108,184,1,tiene=[dict(k="uten",ax=14,ay=30,bx=28,by=35,load="ARR",o={"rx":4,"ry":3})]),"carmen":P(178,184,-1)},cosas=[cosa("sombra",142,172),cosa("plato",142,172)])},
   {"w":"mucho","say":"m_c_mucho","si":pic(cosas=[cosa("jugo",128,164)]),"no":pic(cosas=[cosa("jugopoco",128,164)])}]}
 for it in cualj["items"]:
     for k in ("si","no"):
