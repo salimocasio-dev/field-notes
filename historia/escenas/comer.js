@@ -1069,7 +1069,7 @@ const acts={
     if(k==="jarrita"){const jt=ob("jarrita");await mostrar(jt,jt.x+4,190);}
     else{const cz=ob("cazo");await ruta("abuela",[[FOGON[0],FR],[FOGON[0],FOGON[1]],[CAZO35[0]-4,150]]);ab.dir=-1;const it=await toma("abuela",cz,8,18,{n:3,m:3});it.v="0";await mueveTiene("abuela",it,-2,32,3);it.ang=-.8;await wait(TICK*10);it.ang=0;await mueveTiene("abuela",it,8,18,3);await pon("abuela",it,cz,CAZO35[0],CAZO35[1],4);cz.v="0";}},
   // the ending: everybody drinks (they lift their cups, sip, set them down); a spoiled cup stands in front of its owner; abuela drinks at her stool
-  async final35(o){const ab=G("abuela");
+  async final35(o){const ab=G("abuela");if(!ab.sent)await acts.sientaAb35({});   // after a miss in B she has been walking about: she sits down on her stool with her cup
     await Promise.all([entra("luis",72,178,1),(async()=>{await wait(TICK*3);await entra("carmen",88,186,1);})()].slice(0,G("luis").vis===0?2:0));
     const ninos=acts.ninos35({que:"toman"});
     const men=Promise.all(["abuelo","papa"].map(async id=>{const t=copa(id),p=G(id);if(t.v==="azu"||t.vis===0)return;const it=await toma(id,t,13,16,{n:3,m:3,vapor:0});it.v=t.v;it.vapor=0;if(t.sp){it.sp=1;it.k="tazacu";}
