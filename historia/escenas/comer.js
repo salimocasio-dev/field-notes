@@ -703,6 +703,6 @@ const estado=W=>{const C=W.cosas||[],f=C.find(o=>o.id==="fuente"),ce=C.find(o=>o
   +" tabla="+(tb&&tb.rollo?tb.rollo.st+(tb.rollo.con||""):"-")+" malos="+(tb&&tb.malos?tb.malos.length:0)+" mant="+((C.find(o=>o.id==="mant")||{}).v||"-")+" choc="+((C.find(o=>o.id==="choc")||{}).v||"-")
   +" tazas="+C.filter(o=>o.k==="taza").map(o=>o.id.slice(2)+":"+o.v+(o.vapor?"*":"")+(o.vis===0?"^":"")).join("|")+" pmont="+V.pmont+" marcas="+(W.marcas||[]).join(",");};
 KIT.escena({id:"comer",CAM:{wide:[32,0,196,216]},heartAt:[130,22],lugar:{inicio:[124,141,1],centro:[124,141,1]},cosas:COSAS,
-  fresh:()=>({respEn:[130,9],gente:{},sitio:{},cosas:[],vuelos:[],perro:null,tarjeta:null,marcas:null,cq:{x:108,y:141,s:1,dy:0,al:1,vis:1,sobre:1,bub:null,hace:null,piensa:null,tiene:[]}}),
+  fresh:()=>({respEn:[130,12],gente:{},sitio:{},cosas:[],vuelos:[],perro:null,tarjeta:null,marcas:null,cq:{x:108,y:141,s:1,dy:0,al:1,vis:1,sobre:1,bub:null,hace:null,piensa:null,tiene:[]}}),
   draw,hud,poke,acts,stake,talkAt,respIcon,estado});
 })();
