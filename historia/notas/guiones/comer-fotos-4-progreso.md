@@ -55,3 +55,11 @@ Brief: scratchpad comer_fix_brief4.md (A across the three stories, B story 33, C
 ## Not done / for fresh eyes
 - Some hands are 2 to 8 px beyond the arm (reposo.py prints them): abuela's long reach over the table for the slide and the serving, the men's teaspoons, a few pours of 35.
 - In 34 abuela reaches over the table with a long arm to serve the three plates (the plates are at the back row); a fresh reader may find the arm long.
+
+## Tests (Nov 17, on the last code commit)
+- gen_comer.py: 1691 clips, 109 new, 3190 characters to record, 0 clashes, no MISSING TURN LINE; the clips of the three stories and the pair file are equal to the generator before this round (only 34's beat order of two acts changed).
+- matriz.sh over every draw and every plan, mic off (204 runs: 17 draws of each story, each with rr rw wr ww): 204 of 204 exit 0, 0 page errors, all finished, micdecide 0; check_estado.py: 204 runs, 0 with problems (cesta, bitten rolls, papá's mounds, platter, spoiled cups, frog's cup).
+- cual_check.py: the twelve pairs, all right and all wrong: no errors. nivel_check.py todo: no errors. app_check.py: no errors (the vibrate console line is the browser's own). habla_motor_check.py (port 8771): 186 checks ok, FAILED: 0.
+
+## Frames
+scratchpad comer_frames6 (txt=no, PASO=8, fast 1): que-quieres_rr 718 frames, que-quieres_ww 807, buen-provecho_rr 837, buen-provecho_ww 891, cafe-con-azucar_rr 939, cafe-con-azucar_ww 1025; the last frame of each is the end card; pares/ holds the twelve pairs. Draws: 33 ka=choc ta=nmg kb=mant tr=nt; 34 rr wa=quiere qt=mama qf=abuelo ql=carmen, ww wa=lleno (the full branch: the frog swells and tips over); 35 rr sa=abuelo oa=1 wb=poco, ww sa=papa oa=2 wb=mucho. More frames than round 3 because every change of state is kept.
