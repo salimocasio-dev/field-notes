@@ -4,6 +4,6 @@ S=${MATRIZ_LOGS:-/tmp/claude-0/-home-user-field-notes/3c5d275f-89f8-5f76-b4a5-10
 mkdir -p "$S"
 c=$1; pl=$2; q=$3; tag=$(echo "$c-$pl-$q" | tr '&=' '__')
 case "$q" in *[:\|/%]*) tag="$(echo "$c-$pl-$q" | tr '&=:|/%' '______' | cut -c1-120)-$(echo "$q" | md5sum | cut -c1-6)";; esac   # a mic query has characters a file name does not like
-timeout 240 python3 "$(dirname "$0")/juega.py" - $pl $c 6 "$q" > $S/M_$tag.log 2>&1; e=$?
+timeout 240 python3 "$(dirname "$0")/juega.py" - $pl $c 6 "$q" ${JUEGA_BASE:+"$JUEGA_BASE"} > $S/M_$tag.log 2>&1; e=$?   # JUEGA_BASE: another page to play, e.g. a copy of the site on another port (default: http://127.0.0.1:8765/historia/index.html)
 err=$(grep -c "PAGEERROR" $S/M_$tag.log); fin=$(grep -c "again button: flex" $S/M_$tag.log)
 echo "$c $pl [$q] exit=$e pageerrors=$err finished=$fin marcas=$(grep -o 'marcas=[a-z,]*' $S/M_$tag.log | tail -1) lost=$(grep -o 'lost=[0-9]' $S/M_$tag.log | tail -1) turnos=$(grep '^turnos:' $S/M_$tag.log | tail -1 | sed 's/^turnos: *//;s/ /,/g') $(grep -o '^micdecide=[0-9]*' $S/M_$tag.log | tail -1)"
