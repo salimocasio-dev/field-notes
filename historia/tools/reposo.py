@@ -40,8 +40,10 @@ async def main():
         for i in range(60000):
             await pg.wait_for_timeout(55)
             s=await pg.evaluate(STATE)
-            if not s["running"] and i>40: break
             sig=await pg.evaluate(SIG)
+            if not s["running"] and i>40:
+                if sig!=last: await pg.wait_for_timeout(250); last=sig; await keep()   # the last picture is kept too
+                break
             if sig==prev: still+=1
             else: still=0
             prev=sig
