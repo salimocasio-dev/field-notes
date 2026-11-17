@@ -20,3 +20,12 @@ From the proposal in comer-turnos.md. His ask (Nov 16) says every story from A c
 - A new line must not change any count, any draw, or which answer is right in any round; it must not give a hearing of a deciding word before the round (unless the line is outside the run-up to that round, e.g. in the ending), and must not hint at an answer.
 - Prefer moments the story already has (a character handing him something, a greeting when someone arrives, the ending); add the smallest set-up line where none exists.
 - New clips are recorded on Azure; keep the new characters small and give the count.
+
+## After the fresh reviews of the turn lines (Nov 17)
+Puerto Rican reviewer: no must-fix. Beginner reviewer: three fixes, taken.
+1. 33 turn 1 ("¡Bien, gracias!" after abuela's "¡Hola! ¿Cómo estás?"): target "bien" only. A natural "Bien." must not miss, and a miss writes both words wrong.
+2. 33 turn 2 goes ("¿Listo, Coquí?" / "¡Sí, abuela!": no object, and "¡Listo!" is the natural echo). In its place: right after abuela's "Aquí hay más pan." the coquí says "¡Gracias, abuela!" (the recorded clip cq_gracias_abuela), target "gracias" only. The clips c33_ab_listo and c33_cq_si_abuela are dropped. New characters for turns: 0.
+3. 35 turn 2 ("¡Gracias, abuela!" after "Toma."): target "gracias" only.
+4. Kept as they are: 34 (both turns), 35 turn 1 (target bien). "No, gracias" will miss at 34 turn 1; a miss costs nothing and two misses bring the sign back.
+5. Not taken: swapping a greeting for a later-scene word. Greeting and thanks are the words he will say most; later scenes' words get turns in the stories after A comer.
+6. No near-miss forms (ben, ven, leno, a buela): 03 forbids them.
