@@ -17,7 +17,7 @@ const Llamada=(()=>{
   const AGENT="agent_3301m795q3xtfpx8c99zc0s870vm",SDK="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.25.0/+esm";
   const FIN_AT=360,MAX_AT=420,FIN_CAP=15000;   // seconds of call time; the 15 s cap after "(fin)" is real time
   // the calls built so far: place id -> what Danny is told. Only La casa has one in version 1.
-  const LLAMADAS={casa:{minutos:5,job:"Say hello, say who you are, accept a drink, say thanks and say goodbye.",opening:"¡Hola! Soy Danny. ¿Cómo estás?",foto:"casa"}};
+  const LLAMADAS={casa:{minutos:5,job:"Say hello, say who you are, accept a drink and say thanks.",opening:"¡Hola! Soy Danny. ¿Cómo estás?",foto:"casa"}};
   const norm=s=>" "+String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";   // accents, case and punctuation ignored
   const dice=(texto,palabra)=>{const w=norm(palabra);return w.trim()!==""&&texto.indexOf(w)>=0;};   // does the normalised text hold the word or phrase, on word boundaries
   const safe=(f,d)=>{try{const v=f();return v==null?d:v;}catch(e){return d;}};
