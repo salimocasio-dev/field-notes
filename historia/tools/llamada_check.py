@@ -1,17 +1,19 @@
-# Checks the call with Danny by machine, with the page's own stub (?callstub=1; needs the local server on 8765):
+# Checks the call with Danny by machine, with the page's own stub (?callstub=1; needs the local server on 8765, or on the port in LLAMADA_PORT):
 #   python3 historia/tools/llamada_check.py <outdir>      (outdir must exist; makes one folder of numbered frames per screen size, prints one line per check and "FAILED: n" at the end)
-# Per size (390x844, 360x640, 844x390): Hablar with nothing played, with 10 of 11 La casa stories played (both locked), with all 11 (open); the stepped call (every mic state, picture, Help, X, summary, back);
-# the natural call with a fast clock (the learner says goodbye after 2 call-minutes, the page sends "(fin)"). At 390x844 only: refused microphone, failed start, X while calling, Danny hangs up, pagehide,
+# Per size (390x844, 360x640, 844x390): Hablar with nothing played, with 10 of 11 La casa stories played (both locked), with all 11 (open); the stepped call (every mic state, picture, Help, X, summary, back;
+# the learner's "Adiós." at under a minute sends "(fin)" at once); the natural call with a fast clock (the learner says goodbye a moment after the second exchange, the page sends "(fin)", the call ends after Danny's goodbye).
+# The variables: words_open = every place word of La casa, words_heard empty. At 390x844 only: refused microphone, failed start, X while calling, Danny hangs up, pagehide,
+# the learner's "Hasta mañana.", Danny's own goodbye (nothing is sent, the call ends after his line), the goodbye loop of the first real call (the call ends after the first line, not at the 15 s cap),
 # no goodbye (15 s cap), the 7-minute stop, the 6-minute "(fin)", and the page without the stub (nothing breaks while the voice library cannot load).
 import asyncio,json,os,sys,time
 from playwright.async_api import async_playwright
-OUT=sys.argv[1]; BASE="http://127.0.0.1:8765/historia/app.html"; HERE=os.path.dirname(os.path.abspath(__file__))
+OUT=sys.argv[1]; BASE="http://127.0.0.1:%s/historia/app.html"%os.environ.get("LLAMADA_PORT","8765"); HERE=os.path.dirname(os.path.abspath(__file__))
 CASA=["la-lluvia","el-bizcocho","donde-esta-el-pajaro","el-jugo","que-calor","la-familia","la-foto","quien-eres-tu","las-flores","que-es-esto","hasta-manana"]
 WORDS=[]
 for c in CASA:
     for w in json.load(open(os.path.join(HERE,"..","cuentos",c+".json"),encoding="utf-8")).get("focus_words",[]):
         if w not in WORDS: WORDS.append(w)
-OPEN=WORDS[:14]   # the words whose ear stage is 3 (open for speaking)
+OPEN=WORDS[:14]   # the words whose ear stage is 3 (the call no longer looks at the stage: every word of the place is open)
 SAID=["hola","bien","gracias","sí","quiero","jugo","adiós"]   # the words of La casa in the stub's three learner lines
 FAILS=[]; ERRS=[]
 def ck(name,ok,detail=""):
@@ -20,13 +22,15 @@ def ck(name,ok,detail=""):
 def seed(played):
     t=int(time.time()*1000); sk=lambda e:{"etapa":e,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":t+864000000 if e<3 else 0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}
     return {"palabras":{w:{"w":w,"primera":t,"oida":1,"ear":sk(3 if w in OPEN else 1),"mouth":sk(0)} for w in WORDS},"dias":{},"cuentos":{c:{"n":1,"primera":t,"ultima":t,"perdido":0} for c in played},"ajustes":{"min":30,"todo":0,"bienvenida":1},"minutos":0,"v":1}
-# records the timers made by the call's own code (llamada.js, outside the stub: lines 42-75) so that we can see none is left
+# records the timers made by the call's own code (llamada.js, outside the stub: found by "function installStub" to "if(STUB)installStub();") so that we can see none is left
+_L=open(os.path.join(HERE,"..","llamada.js"),encoding="utf-8").read().split("\n")
+STUB_A=next(i for i,l in enumerate(_L,1) if "function installStub" in l); STUB_B=next(i for i,l in enumerate(_L,1) if l.strip()=="if(STUB)installStub();")
 TIMERS="""(()=>{const P=window.__tm={t:new Map(),i:new Map()};
 const line=()=>{for(const l of (new Error().stack||"").split("\\n")){const m=l.match(/llamada\\.js[^:]*:(\\d+):/);if(m)return +m[1];}return 0;};
-const prod=n=>n>0&&!(n>=42&&n<=75),st=window.setTimeout,si=window.setInterval,ct=window.clearTimeout,ci=window.clearInterval;
+const prod=n=>n>0&&!(n>=@A@&&n<=@B@),st=window.setTimeout,si=window.setInterval,ct=window.clearTimeout,ci=window.clearInterval;
 window.setTimeout=function(f,d,...a){const n=line();if(!prod(n))return st.call(window,f,d,...a);let id;const w=function(){P.t.delete(id);return typeof f==="function"?f.apply(this,arguments):undefined;};id=st.call(window,w,d,...a);P.t.set(id,n);return id;};
 window.setInterval=function(f,d,...a){const n=line();const id=si.call(window,f,d,...a);if(prod(n))P.i.set(id,n);return id;};
-window.clearTimeout=function(id){P.t.delete(id);return ct.call(window,id);};window.clearInterval=function(id){P.i.delete(id);return ci.call(window,id);};})();"""
+window.clearTimeout=function(id){P.t.delete(id);return ct.call(window,id);};window.clearInterval=function(id){P.i.delete(id);return ci.call(window,id);};})();""".replace("@A@",str(STUB_A)).replace("@B@",str(STUB_B))
 LAY="""()=>{const out={};for(const s of ['.lx','.lt','canvas','.ld','.lh','.ldisc','.ll','.lo','.lhelp','.lerr','.lsb h1','.ls1','.lchips','.lbk']){const e=document.querySelector('#llam '+s);if(!e)continue;const r=e.getBoundingClientRect(),cs=getComputedStyle(e);
  out[s]={x:r.left,y:r.top,r:r.right,b:r.bottom,w:r.width,h:r.height,vis:cs.visibility!=='hidden'&&cs.display!=='none'&&r.width>0&&r.height>0,fs:cs.fontSize,col:cs.color,bg:cs.backgroundColor};}
  return {el:out,vw:innerWidth,vh:innerHeight,sw:document.documentElement.scrollWidth,sh:document.documentElement.scrollHeight};}"""
@@ -68,7 +72,7 @@ async def view(b,label,vw,vh):
         await pg.click("#t-hablar .card.cc >> nth=0"); await pg.wait_for_timeout(300); ck(T+nm+": a touch on the locked card opens nothing",await pg.evaluate("!Llamada.activo&&!document.getElementById('llam')"))
         await close(pg,ctx,T+nm)
     # ---- Hablar open
-    pg,ctx=await newpage(b,vw,vh,CASA,"&callstub=1&stub=manual"); await shot(pg,d,n,"hablar_open")
+    pg,ctx=await newpage(b,vw,vh,CASA,"&callstub=1&stub=manual,nofin"); await shot(pg,d,n,"hablar_open")   # nofin: the learner's "Adiós." sends (fin) at once, and the X, not Danny's goodbye, ends this stepped call
     info=await pg.evaluate("""()=>{const c=[...document.querySelectorAll('#t-hablar .card.cc')],o=c.filter(x=>!x.classList.contains('lk')),b=o[0]&&o[0].querySelector('.pb'),r=b&&b.getBoundingClientRect();return {n:c.length,open:o.length,t:o[0]&&o[0].innerText.replace(/\\n/g,' | '),w:r&&r.width,h:r&&r.height,bg:b&&getComputedStyle(b).backgroundColor,first:c[0]===o[0],sw:document.documentElement.scrollWidth,vw:innerWidth}}""")
     ck(T+"open: La casa's card is first and open, 'Call Danny' / 'La casa · about 5 min', green 48 px disc",info["open"]==1 and info["first"] and info["t"].startswith("Call Danny | La casa · about 5 min") and info["w"]==48 and info["h"]==48 and info["bg"]=="rgb(23, 128, 63)",info)
     ck(T+"open: no horizontal scroll on Hablar",info["sw"]<=info["vw"],info["sw"])
@@ -86,8 +90,8 @@ async def view(b,label,vw,vh):
     ck(T+"connecting: shows within 200 ms, label 'Calling…'",t[0]<200 and t[1]=="Calling…",t); await pg.wait_for_timeout(250); await shot(pg,d,n,"connecting")
     ck(T+"connecting: the disc pulses",await pg.evaluate("getComputedStyle(document.querySelector('#llam .ldisc')).animationName")=="lpul")
     ck(T+"the call was started once, with the agent, websocket, no overrides, no signed URL, from the tap",await pg.evaluate("""()=>{const o=CallStub.opts;return o.agentId==='agent_3301m795q3xtfpx8c99zc0s870vm'&&o.connectionType==='websocket'&&!o.overrides&&!o.signedUrl&&!o.conversationToken&&Llamada.ocupado}"""))
-    v=await pg.evaluate("CallStub.opts.dynamicVariables"); ao=[x.strip() for x in v["words_open"].split(",")]; ah=[x.strip() for x in v["words_heard"].split(",")]
-    ck(T+"variables: place, job, minutes 5, opening; words_open = the %d open words; words_heard = the other %d (together all %d, no overlap)"%(len(OPEN),len(WORDS)-len(OPEN),len(WORDS)),v["place"]=="La casa" and v["minutes"]=="5" and v["opening"]=="¡Hola! Soy Danny. ¿Cómo estás?" and v["job"].startswith("Say hello") and sorted(ao)==sorted(OPEN) and not set(ao)&set(ah) and set(ao)|set(ah)==set(WORDS),{"open":len(ao),"heard":len(ah)})
+    v=await pg.evaluate("CallStub.opts.dynamicVariables"); ao=[x.strip() for x in v["words_open"].split(",")]
+    ck(T+"variables: place, job, minutes 5, opening; words_open = every place word of La casa (%d, in the list's order, the %d the ear had not held included); words_heard empty; the six variables, no more"%(len(WORDS),len(WORDS)-len(OPEN)),v["place"]=="La casa" and v["minutes"]=="5" and v["opening"]=="¡Hola! Soy Danny. ¿Cómo estás?" and v["job"].startswith("Say hello") and ao==WORDS and v["words_heard"]=="" and sorted(v)==sorted(["place","job","words_open","words_heard","minutes","opening"]),{"open":len(ao),"heard":v["words_heard"],"keys":sorted(v)})
     # ---- stepped call
     lat={}
     await pg.evaluate("CallStub.go('connect')"); await pg.wait_for_timeout(120); await shot(pg,d,n,"danny_wave"); L=await pg.evaluate(LAY)
@@ -113,6 +117,7 @@ async def view(b,label,vw,vh):
     ck(T+"Help sends (ayuda)",await pg.evaluate("CallStub.sent.includes('(ayuda)')"),await pg.evaluate("CallStub.sent"))
     ck(T+"every change of state showed within 200 ms (Danny speaking / your turn): %s ms; the dots came %s ms after the learner went quiet"%(json.dumps({k:v for k,v in lat.items() if k!="proc_after_quiet_ms"}),lat["proc_after_quiet_ms"]),all(0<=v<200 for k,v in lat.items() if k!="proc_after_quiet_ms"),lat)
     await step(pg,"heard3"); await pg.wait_for_timeout(150)
+    ck(T+"the learner's 'Adiós.' at under a minute of call time sends (fin) at once (no waiting for 2 minutes), after the Help message",await pg.evaluate("CallStub.sent.join(' ')=='(ayuda) (fin)'&&CallStub.sentAt[1]<60&&Llamada.fin&&!CallStub.ended"),await pg.evaluate("[CallStub.sent,CallStub.sentAt]"))
     # the timer runs
     ck(T+"the timer counts (mm:ss)",await pg.evaluate("/^\\d\\d:\\d\\d$/.test(document.querySelector('#llam .lt').textContent)"),await pg.evaluate("document.querySelector('#llam .lt').textContent"))
     # ---- X ends the live call with the summary
@@ -129,8 +134,8 @@ async def view(b,label,vw,vh):
     await leftover(pg,T+"after Back to Hablar",200)
     await pg.click("#t-hablar .card.cc >> nth=0"); await pg.wait_for_timeout(300); ck(T+"the call can be opened again",await pg.evaluate("Llamada.estado==='idle'&&Llamada.activo")); await pg.click("#llam .lx"); await pg.wait_for_timeout(200)
     ck(T+"X before the call starts closes the screen",await pg.evaluate("!document.getElementById('llam')&&!Llamada.ocupado")); await close(pg,ctx,T+"stepped call")
-    # ---- natural call, fast clock: the learner says goodbye after 2 call-minutes, the page sends (fin)
-    pg,ctx=await newpage(b,vw,vh,CASA,"&callstub=1&clock=6"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.wait_for_timeout(300)
+    # ---- natural call, fast clock: the learner says goodbye a moment after the second exchange (well before 2 call-minutes), the page sends (fin)
+    pg,ctx=await newpage(b,vw,vh,CASA,"&callstub=1&clock=3"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.wait_for_timeout(300)
     await pg.evaluate("window.__seq=[];new MutationObserver(()=>{const s=document.getElementById('llam').dataset.s,q=window.__seq;if(q[q.length-1]!==s)q.push(s);}).observe(document.getElementById('llam'),{attributes:true,attributeFilter:['data-s']});window.__seq.push('idle')")
     await pg.click("#llam .ldisc"); got=0
     for i in range(120):
@@ -140,8 +145,8 @@ async def view(b,label,vw,vh):
     await pg.wait_for_timeout(300); await shot(pg,d,n,"natural_summary")
     sq=await pg.evaluate("window.__seq"); sm=await pg.evaluate("""()=>({l:document.querySelector('#llam .ls1').textContent,chips:[...document.querySelectorAll('#llam .lchips span')].map(x=>x.textContent),why:Llamada.motivo,sent:CallStub.sent,ended:CallStub.ended,oc:Llamada.ocupado,t:document.querySelector('#llam .lt').textContent})""")
     ck(T+"natural call: states idle > connecting > danny > (you > proc > danny)... > done, ends by itself after the goodbye ('fin')",sq[:3]==["idle","connecting","danny"] and sq[-1]=="done" and sq.count("proc")>=3 and sm["why"]=="fin" and sm["sent"]==["(fin)"] and sm["ended"] and not sm["oc"],{"seq":sq,"sent":sm["sent"],"why":sm["why"]})
-    tt=sm["t"].split(":"); secs=int(tt[0])*60+int(tt[1])
-    ck(T+"natural call: the call lasted 2 minutes or more (timer %s), the summary's minutes agree with it and say '7 words said'"%sm["t"],secs>=120 and sm["l"] in("%d min · 7 words said"%round(secs/60),"%d min · 7 words said"%round((secs+1)/60)) and sorted(sm["chips"])==sorted(SAID),sm["l"])
+    tt=sm["t"].split(":"); secs=int(tt[0])*60+int(tt[1]); fa=await pg.evaluate("CallStub.sentAt[0]")
+    ck(T+"natural call: (fin) went out at %s s of call time and the call ended under 2 minutes (timer %s), so no 2-minute wait is left; the summary's minutes agree with the timer and say '7 words said'"%(fa,sm["t"]),0<fa<90 and secs<120 and sm["l"] in("%d min · 7 words said"%max(1,round(secs/60)),"%d min · 7 words said"%max(1,round((secs+1)/60))) and sorted(sm["chips"])==sorted(SAID),sm["l"])
     await leftover(pg,T+"after the natural call"); await pg.click("#llam .lbk"); await pg.wait_for_timeout(300); await close(pg,ctx,T+"natural call")
     # ---- error screen
     pg,ctx=await newpage(b,vw,vh,CASA,"&callstub=1&stub=mic"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.wait_for_timeout(200); await pg.click("#llam .ldisc"); await pg.wait_for_function("document.getElementById('llam').dataset.s==='err'",timeout=4000); await pg.wait_for_timeout(150); await shot(pg,d,n,"mic_refused"); L=await pg.evaluate(LAY)
@@ -163,6 +168,24 @@ async def extras(b):
     # pagehide while live
     pg,ctx=await newpage(b,390,844,CASA,"&callstub=1&stub=manual"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.click("#llam .ldisc"); await pg.evaluate("CallStub.go('connect')"); await pg.evaluate("CallStub.go('danny1')"); await pg.wait_for_timeout(1200); m0=await pg.evaluate("PAL.db.minutos"); await pg.evaluate("dispatchEvent(new Event('pagehide'))"); await pg.wait_for_timeout(200)
     ck(T+"pagehide ends the session, clears the timers, frees the lock, counts the minutes",await pg.evaluate("CallStub.ended&&!Llamada.ocupado")and (await pg.evaluate("PAL.db.minutos"))>m0,(m0,await pg.evaluate("PAL.db.minutos"))); await leftover(pg,T+"after pagehide",100); await close(pg,ctx,T+"pagehide")
+    # the learner says "Hasta mañana." (not "Adiós.") a moment after the second exchange: (fin) at once, the call ends after Danny's goodbye
+    pg,ctx=await newpage(b,390,844,CASA,"&callstub=1&stub=hasta"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.click("#llam .ldisc"); await pg.wait_for_function("Llamada.estado==='done'",timeout=60000); await pg.wait_for_timeout(200)
+    r=await pg.evaluate("[Llamada.motivo,CallStub.sent,CallStub.sentAt,CallStub.ended,[...document.querySelectorAll('#llam .lchips span')].map(x=>x.textContent)]")
+    ck(T+"the learner's 'Hasta mañana.' at under a minute: (fin) sent once at once, the call ends after Danny's goodbye (why=fin), 'hasta mañana' counted as a word said",r[0]=="fin" and r[1]==["(fin)"] and r[2][0]<60 and r[3] and "hasta mañana" in r[4],r); await leftover(pg,T+"after 'Hasta mañana.'",100); await close(pg,ctx,T+"hasta mañana")
+    # Danny says goodbye on his own (the learner says nothing): nothing is sent, the call ends when his line is over
+    pg,ctx=await newpage(b,390,844,CASA,"&callstub=1&stub=dannybye"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.click("#llam .ldisc"); await pg.wait_for_function("document.getElementById('llam').dataset.s==='done'||CallStub.log.filter(x=>x==='speaking').length>=3",timeout=60000)
+    t0=time.time(); await pg.wait_for_function("Llamada.estado==='done'",timeout=20000); dt=time.time()-t0; r=await pg.evaluate("[Llamada.motivo,CallStub.sent,CallStub.ended,CallStub.log.filter(x=>x==='speaking').length,document.querySelector('#llam .ld')&&1]")
+    ck(T+"Danny's own goodbye: the call ends when his line is over (%.1f s after it began, not the 15 s cap), nothing is sent (no (fin)), why=fin"%dt,r[0]=="fin" and r[1]==[] and r[2] and r[3]==3 and dt<5,r); await leftover(pg,T+"after Danny's own goodbye",100); await close(pg,ctx,T+"Danny's own goodbye")
+    # the goodbye loop of the first real call: the learner says "Adiós.", Danny goes on saying goodbyes every 3 s for ever; the page ends the call after the first line
+    pg,ctx=await newpage(b,390,844,CASA,"&callstub=1&stub=loop"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.click("#llam .ldisc"); await pg.wait_for_function("CallStub.sent.includes('(fin)')",timeout=60000)
+    t0=time.time(); await pg.wait_for_function("Llamada.estado==='done'",timeout=20000); dt=time.time()-t0; await pg.wait_for_timeout(4000)
+    r=await pg.evaluate("[Llamada.motivo,CallStub.sent,CallStub.ended,CallStub.log.filter(x=>x==='speaking').length,Llamada.estado]")
+    ck(T+"goodbye loop (learner's 'Adiós.', Danny repeats goodbyes every 3 s): (fin) once, the call ends after the first goodbye line (%.1f s after (fin), not the 15 s cap, not 20 s of loop), one goodbye line heard in all, why=fin"%dt,r[0]=="fin" and r[1]==["(fin)"] and r[2] and r[3]==3 and dt<5 and r[4]=="done",r); await leftover(pg,T+"after the loop",100); await close(pg,ctx,T+"goodbye loop")
+    # Danny's own goodbye, then the loop: still ends after his first line, nothing sent
+    pg,ctx=await newpage(b,390,844,CASA,"&callstub=1&stub=dannybye,loop"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.click("#llam .ldisc"); await pg.wait_for_function("CallStub.log.filter(x=>x==='speaking').length>=3",timeout=60000)
+    t0=time.time(); await pg.wait_for_function("Llamada.estado==='done'",timeout=20000); dt=time.time()-t0; await pg.wait_for_timeout(4000)
+    r=await pg.evaluate("[Llamada.motivo,CallStub.sent,CallStub.ended,CallStub.log.filter(x=>x==='speaking').length]")
+    ck(T+"Danny's own goodbye followed by the loop: the call ends after his first goodbye line (%.1f s), nothing is sent, no second goodbye line, why=fin"%dt,r[0]=="fin" and r[1]==[] and r[2] and r[3]==3 and dt<5,r); await leftover(pg,T+"after his own goodbye and the loop",100); await close(pg,ctx,T+"own goodbye and loop")
     # clock x60, Danny never answers (fin): the 7-minute stop
     pg,ctx=await newpage(b,390,844,CASA,"&callstub=1&clock=60&stub=nofin"); await pg.click("#t-hablar .card.cc >> nth=0"); await pg.click("#llam .ldisc"); await pg.wait_for_function("Llamada.estado==='done'",timeout=40000); await pg.wait_for_timeout(200)
     r=await pg.evaluate("[Llamada.motivo,CallStub.sent,CallStub.ended,document.querySelector('#llam .ls1').textContent]")

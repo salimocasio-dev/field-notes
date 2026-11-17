@@ -5,20 +5,23 @@
    It reads (never writes) the app's globals CURSO, CU (the ¿Cuál? items) and PAL (the records), and calls hush() and miniatura() once each.
    The call: a speaking call. Danny talks, the page shows his last line, the picture he asks for, and what it heard the learner say.
    Every word of the place the learner says becomes a mouth record: PAL.responde(word,"mouth",true,ms).
-   The page ends the call (Danny cannot hang up): "(fin)" at 6 minutes, or from 2 minutes when the learner says adiós / hasta mañana;
-   then the session ends when Danny has finished his goodbye (15 s at the latest); 7 minutes is the hard stop.
+   Every word of the place is open for speaking: words_open is the whole list, words_heard is empty.
+   The page ends the call (Danny cannot hang up): "(fin)" at 6 minutes, or at once, at any time, when the learner says adiós / hasta mañana;
+   when Danny says adiós / hasta mañana on his own, the call ends after that line and nothing is sent (a "(fin)" would only make him say it again);
+   the session ends when Danny has finished his goodbye line (15 s at the latest); 7 minutes is the hard stop.
    Test without a real call: add ?callstub=1 to app.html. A fake Conversation then walks through the modes (see installStub below);
    without that parameter nothing here can place a call from anywhere but a tap on the green disc.
    ============================================================ */
 const Llamada=(()=>{
   const Q=new URLSearchParams(location.search),STUB=Q.get("callstub")==="1",STUBOPT=new Set((Q.get("stub")||"").split(",")),CLK=STUB?Math.max(1,+(Q.get("clock")||1)||1):1;   // CLK: the stub's fast clock (call time runs CLK times faster)
   const AGENT="agent_3301m795q3xtfpx8c99zc0s870vm",SDK="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.25.0/+esm";
-  const BYE_FROM=120,FIN_AT=360,MAX_AT=420,FIN_CAP=15000;   // seconds of call time; the 15 s cap after "(fin)" is real time
+  const FIN_AT=360,MAX_AT=420,FIN_CAP=15000;   // seconds of call time; the 15 s cap after "(fin)" is real time
   // the calls built so far: place id -> what Danny is told. Only La casa has one in version 1.
   const LLAMADAS={casa:{minutos:5,job:"Say hello, say who you are, accept a drink, say thanks and say goodbye.",opening:"¡Hola! Soy Danny. ¿Cómo estás?",foto:"casa"}};
   const norm=s=>" "+String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g," ").trim()+" ";   // accents, case and punctuation ignored
   const dice=(texto,palabra)=>{const w=norm(palabra);return w.trim()!==""&&texto.indexOf(w)>=0;};   // does the normalised text hold the word or phrase, on word boundaries
   const safe=(f,d)=>{try{const v=f();return v==null?d:v;}catch(e){return d;}};
+  const adios=t=>{const n=norm(t);return dice(n,"adiós")||dice(n,"hasta mañana");};   // a goodbye, from either side
   const SVGI=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
   const IC={x:SVGI('<path d="M6 6l12 12M18 6L6 18"/>'),phone:SVGI('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>'),mic:SVGI('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>')};
 
@@ -28,7 +31,6 @@ const Llamada=(()=>{
     return PW[l.id]=Promise.all((l.cuentos||[]).map(c=>fetch("cuentos/"+c+".json").then(r=>r.ok?r.json():null).catch(()=>null))).then(js=>{const out=[];
       js.forEach(j=>{if(j&&(!j.place||j.place===l.nombre))(j.focus_words||[]).forEach(w=>{if(!out.includes(w))out.push(w);});});
       if(!out.length)delete PW[l.id];return out;});}
-  const abierta=w=>{const r=PAL.db.palabras[w];return !!(r&&r.ear&&r.ear.etapa>=3);};   // open for speaking: the ear has held it
 
   /* ---------- the voice library: preloaded when Hablar opens, never imported inside the tap ---------- */
   let SDKP=null;
@@ -41,19 +43,25 @@ const Llamada=(()=>{
 
   /* ---------- the stub (only with ?callstub=1) ----------
      A fake Conversation: startSession() resolves a fake call that walks through the modes, sends two of Danny's lines
-     (the second asks for a picture) and learner lines, then, after 2 minutes of call time, a learner "Adiós.", and answers "(fin)" with a goodbye.
+     (the second asks for a picture) and learner lines, then, a moment later (any time is a time to say goodbye), a learner "Adiós.", and answers "(fin)" with a goodbye.
      ?stub=manual   nothing moves by itself; step with CallStub.go("connect"), ("danny1") ... (names in CallStub.names)
      ?stub=mic      the microphone is refused;  ?stub=fail  the call does not start;  ?stub=nofin  Danny does not answer "(fin)"  (join with commas: stub=manual,nofin)
-     ?clock=N       the call's clock runs N times faster (timer, 2 / 6 / 7 minutes); the 15 s cap stays real. The walk takes about 15 s: use clock=6 to see "Adiós." after 2 call-minutes */
+     ?stub=hasta    the learner's goodbye is "Hasta mañana." instead of "Adiós."
+     ?stub=dannybye the learner says nothing more: Danny says "Sí. Hasta mañana." on his own after the second exchange
+     ?stub=loop     the goodbye loop of the first real call: once a goodbye has been said (the learner's, or his own with dannybye) Danny keeps saying
+                    "Hasta mañana." / "Adiós." every 3 s, for ever, whatever the page sends; the page has to end the call after the first line
+     CallStub.sentAt  the call time (s, the fast clock included) at which each message in CallStub.sent was sent
+     ?clock=N       the call's clock runs N times faster (timer, 2 / 6 / 7 minutes); the 15 s cap stays real. The walk takes about 17 s real time */
   function installStub(){if(window.ELConv)return;
-    const S=window.CallStub={sent:[],opts:null,ended:false,names:[],log:[]};
+    const S=window.CallStub={sent:[],sentAt:[],opts:null,ended:false,names:[],log:[]};
     const ph={inp:"quiet",say:0};
     window.ELConv={startSession(o){S.opts=o;S.o=o;return new Promise((res,rej)=>{
       if(STUBOPT.has("mic")){setTimeout(()=>{const e=new Error("Permission denied");e.name="NotAllowedError";rej(e);},400);return;}
       if(STUBOPT.has("fail")){setTimeout(()=>rej(new Error("The call did not start.")),600);return;}
       let t0=0;const mode=m=>{S.log.push(m);o.onModeChange&&o.onModeChange({mode:m});},
         msg=(who,t)=>{o.onMessage&&o.onMessage(who==="user"?{role:"user",source:"user",message:t}:{role:"agent",source:"ai",message:t});};
-      const c={sendUserMessage(t){S.sent.push(t);if(t==="(fin)"&&!STUBOPT.has("nofin"))setTimeout(()=>{ph.say=1;mode("speaking");msg("agent","Eso. Hasta mañana.");setTimeout(()=>{ph.say=0;mode("listening");},2000);},400);},
+      let nb=0;const loop=()=>{if(S.ended)return;ph.say=1;mode("speaking");msg("agent",nb++%2?"Adiós.":"Hasta mañana.");setTimeout(()=>{ph.say=0;mode("listening");setTimeout(loop,1200);},1800);};   // the goodbye loop: a line every 3 s
+      const c={sendUserMessage(t){S.sent.push(t);S.sentAt.push(t0?Math.round((performance.now()-t0)/1000*CLK):0);if(t==="(fin)"&&!STUBOPT.has("nofin")&&!STUBOPT.has("loop"))setTimeout(()=>{ph.say=1;mode("speaking");msg("agent","Eso. Hasta mañana.");setTimeout(()=>{ph.say=0;mode("listening");},2000);},400);},
         endSession(){if(S.ended)return Promise.resolve();S.ended=true;setTimeout(()=>o.onDisconnect&&o.onDisconnect({reason:"user"}),30);return Promise.resolve();},
         getInputVolume(){return ph.inp==="talk"?.10+.08*Math.abs(Math.sin(performance.now()/90))+Math.random()*.04:.004;},
         getOutputVolume(){return ph.say?.10+.10*Math.abs(Math.sin(performance.now()/130)):0;},setMicMuted(){}};
@@ -62,15 +70,15 @@ const Llamada=(()=>{
         you1(){ph.say=0;ph.inp="quiet";mode("listening");},talk1(){ph.inp="talk";},quiet1(){ph.inp="quiet";},heard1(){msg("user","Hola. Bien, gracias.");},
         danny2(){ph.inp="quiet";ph.say=1;mode("speaking");msg("agent","Eso. Mira. ¿Quieres jugo?");setTimeout(()=>{try{o.clientTools.show_picture({picture:"jugo"});}catch(e){}},500);},
         you2(){ph.say=0;ph.inp="quiet";mode("listening");},talk2(){ph.inp="talk";},quiet2(){ph.inp="quiet";},heard2(){msg("user","Sí, quiero jugo.");},
-        you3(){ph.say=0;ph.inp="quiet";mode("listening");},talk3(){ph.inp="talk";},quiet3(){ph.inp="quiet";},heard3(){msg("user","Adiós.");},
+        you3(){ph.say=0;ph.inp="quiet";mode("listening");},talk3(){ph.inp="talk";},quiet3(){ph.inp="quiet";},heard3(){msg("user",STUBOPT.has("hasta")?"Hasta mañana.":"Adiós.");if(STUBOPT.has("loop"))setTimeout(loop,300);},
+        danny3(){ph.inp="quiet";ph.say=1;mode("speaking");msg("agent","Sí. Hasta mañana.");setTimeout(()=>{ph.say=0;mode("listening");if(STUBOPT.has("loop"))setTimeout(loop,1200);},1800);},
         end(){S.ended=true;o.onDisconnect&&o.onDisconnect({reason:"agent"});}};
       S.names=Object.keys(steps);S.go=n=>{if(S.ended&&n!=="connect")return;steps[n]();};
       if(STUBOPT.has("manual"))return;   // the test steps it: CallStub.go("connect"), ...
       const seq=[["connect",1200],["danny1",2800],["you1",700],["talk1",1500],["quiet1",900],["heard1",1100],["danny2",3000],["you2",700],["talk2",1500],["quiet2",900],["heard2",0]];
       let i=0;const next=()=>{if(S.ended)return;if(i<seq.length){const [n,d]=seq[i++];steps[n]();setTimeout(next,d);return;}
-        // then the call idles until 2 minutes and a few seconds of call time have passed, and the learner says goodbye
-        const wait=Math.max(1500,(BYE_FROM+5)/CLK*1000-(performance.now()-t0));
-        setTimeout(()=>{steps.you3();setTimeout(()=>{steps.talk3();setTimeout(()=>{steps.quiet3();setTimeout(()=>steps.heard3(),900);},1200);},500);},wait);};
+        // then, a moment later, the learner says goodbye (or, with dannybye, Danny does)
+        setTimeout(()=>{if(STUBOPT.has("dannybye")){steps.danny3();return;}steps.you3();setTimeout(()=>{steps.talk3();setTimeout(()=>{steps.quiet3();setTimeout(()=>steps.heard3(),900);},1200);},500);},1500);};
       next();});}};}
   if(STUB)installStub();
 
@@ -196,14 +204,10 @@ const Llamada=(()=>{
     let words;try{words=await palabrasDe(C.l);}catch(e){words=[];}
     if(my!==RUN)return;if(!words.length){fallo("The call did not start. Check your connection and try again.");return;}
     C.words=words;
-    // open for speaking = the ear has held it (etapa >= 3). With fewer than 8 of those, every word he has heard at least once counts as open too, so Danny has something to ask for.
-    const vistas=w=>{const r=PAL.db.palabras[w];return !!(r&&r.oida>=1);};
-    let abiertas=words.filter(abierta);if(abiertas.length<8)abiertas=words.filter(w=>abierta(w)||vistas(w));
-    let oidas=words.filter(w=>!abiertas.includes(w));
-    if(!abiertas.length)abiertas=words.slice();if(!oidas.length)oidas=abiertas.slice();   // never an empty list or a "none" for Danny to read
+    // every word of the place is open for speaking (Nov 16, after the first real calls): words_open is the whole list, words_heard is empty
     if(!await precarga()||!window.ELConv){if(my===RUN)fallo("The voice part did not load. Check your connection and try again.");return;}
     if(my!==RUN)return;
-    const vars={place:C.l.nombre,job:C.cfg.job,words_open:abiertas.join(", "),words_heard:oidas.join(", "),minutes:String(C.cfg.minutos),opening:C.cfg.opening};
+    const vars={place:C.l.nombre,job:C.cfg.job,words_open:words.join(", "),words_heard:"",minutes:String(C.cfg.minutos),opening:C.cfg.opening};
     let conv;
     try{conv=await window.ELConv.startSession({agentId:AGENT,connectionType:"websocket",dynamicVariables:vars,
       clientTools:{show_picture:p=>{if(my===RUN)muestra(p);return "shown";}},
@@ -229,13 +233,14 @@ const Llamada=(()=>{
 
   function mensaje(my,m){if(my!==RUN||!CALL||CALL.done||!m)return;const C=CALL,text=m.message||m.text;if(!text)return;
     const user=m.role==="user"||m.source==="user";
-    if(!user){C.last=text;UI.ld.classList.remove("q");UI.ld.textContent=text;return;}
+    if(!user){C.last=text;UI.ld.classList.remove("q");UI.ld.textContent=text;
+      if(!C.fin&&adios(text))terminaDanny();   // he said goodbye on his own: the call ends after this line
+      return;}
     if(/^\s*\(/.test(text))return;   // our own "(ayuda)" and "(fin)" come back as messages: they are not his words
     UI.lh.textContent=text;UI.lh.title=text;
     if(ST==="you")est("proc");   // his line is in: Danny is about to answer
     oye(text);
-    const n=norm(text);
-    if(!C.fin&&elapsed()>=BYE_FROM&&(dice(n,"adiós")||dice(n,"hasta mañana")))enviaFin();}
+    if(!C.fin&&adios(text))enviaFin();}   // any goodbye from him, at any time, ends the call
 
   // every word of the place he said (once per call each) becomes a mouth record; ms = how long he took to start speaking
   function oye(text){const C=CALL,n=norm(text),ms=C.turn&&C.turn.onset?Math.max(0,Math.round(C.turn.onset-C.turn.t)):null;
@@ -254,6 +259,9 @@ const Llamada=(()=>{
   function enviaFin(){const C=CALL;if(!C||C.fin||C.done)return;
     C.fin={n:C.mode==="speaking"?2:1,seen:C.mode==="speaking"};   // if he is mid-line, that line ends first: the goodbye is the second one
     enviar("(fin)");CAP=setTimeout(()=>{if(CALL===C)finish("cap");},FIN_CAP);}
+  // Danny said goodbye on his own: that line is the goodbye, so nothing is sent ("(fin)" would only make him say it again) and the call ends when the line is finished (15 s at the latest)
+  function terminaDanny(){const C=CALL;if(!C||C.fin||C.done)return;
+    C.fin={n:1,seen:C.mode==="speaking"};CAP=setTimeout(()=>{if(CALL===C)finish("cap");},FIN_CAP);}
 
   function bucle(){const C=CALL;if(!C||!UI||C.done||!C.t0)return;const el=elapsed();
     const t=mmss(el);if(UI.lt.textContent!==t)UI.lt.textContent=t;
