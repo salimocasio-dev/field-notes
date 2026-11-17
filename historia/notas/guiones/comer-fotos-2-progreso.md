@@ -19,4 +19,15 @@ Story 34: platter waits on the stove and abuela carries it to the table; she lif
 Story 35: teaspoon from the sugar bowl, grains fall, he stirs, the spoon stays in the cup; the milk pan is a saucepan with a handle and lip, milk is a solid white stream; the blue pot is the coffee pot, the red one is a greca (small moka pot); abuela's stool is there from the start and she sits fully inside the picture; the men and the children lift their cups and drink; the spoiled cup is put down at its owner's place and he stays cross.
 Pairs: quieres, ¿qué quieres?, me gusta, no me gusta and rico redrawn (closer camera for the last two), azúcar jug redrawn, un poco spoon shortened, no held object floats (every held thing has an arm and a hand).
 
-Open: see the end of this file (updated before each commit).
+
+Tests (Nov 17, after the last code commit)
+- gen_comer.py: 1691 clips, 109 new, 3190 characters to record, 0 clashes (same clip list). It also writes one act more in story 35 (pregunta35, an act, not a clip) and the new pair pictures; the story JSON files are local (git info/exclude): run gen_comer.py to regenerate them.
+- matriz.sh over every draw and every plan (144 runs: 33 sixteen draws, 34 twelve, 35 eight, each with rr rw wr ww): 0 page errors, all finished; check_estado.py: 144 runs, 0 with problems. A second matrix of 12 runs after the last edits: 0 with problems.
+- cual_check.py (the twelve pairs, right and wrong answers): no errors. nivel_check.py (todo): no errors. app_check.py: no errors (the vibrate console line is the browser's own).
+- Hands out of reach (reposo.py now prints them): only 2 to 4 px over the arm in a few moments (the child's spoon at the hand-over, the little pot set down at the frog's cup); no hand floats.
+
+Frames: scratchpad comer_frames4 (sheets hoja_*_N.png, twelve frames each; pairs in pares/ and hoja_pares_*). Captured with PASO=8, fast 1, txt=no.
+
+Not done / to look at with fresh eyes
+- The platter waits on the stove (thin, flat) and abuela carries it to the table; the brief said "from the counter": the counter is where Carmen leaves her plate in steps 5 and 6.
+- Frames are many more than before (walks and carries are kept): 190 to 700 per run.
