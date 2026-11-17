@@ -54,5 +54,17 @@ Brief: scratchpad comer_fix_brief5.md (A across the three stories, B story 33, C
 - buen provecho (6): the three apart, each plate in two hands, inside the frame.
 - todo (8): the dog stands with his head down in the bowl, his tongue in it.
 
-## Not done / for fresh eyes
-See the report; the layout of 34 (the pot, the platter and the people at the front) is the tightest of the three.
+## Tests (Nov 17) and what they ran on
+- gen_comer.py (on the committed code): 1691 clips, 109 new, 3190 characters to record, 0 clashes, no MISSING TURN LINE.
+- matriz.sh over every draw and every plan, mic off (204 runs: 17 draws of each story, each with rr rw wr ww): 204 of 204 exit 0, 0 page errors, all finished, micdecide 0; check_estado.py: 204 runs, 0 with problems. These ran on the code of commit 29fdc78. THREE small edits came after them and were NOT covered by the matrix (a re-run of the 68 runs of story 34 was started and stopped unfinished): `levanta34` stands up in steps, `turno34` calls `desinflar()` when the frog is round, `reposo.py` writes estado.txt per frame. The 34 captures (rr, ww) of comer_frames7 ran on the final code with no page error; the 33 and 35 captures ran on the code just before those edits (no difference for them).
+- cual_check.py all right and all wrong (12 pairs): errors []. nivel_check.py todo: errors []. app_check.py: only the browser's own vibrate line. habla_motor_check.py (port 8771): 186 ok, FAILED: 0. These ran before the last three edits too.
+
+## Frames
+scratchpad comer_frames7 (txt=no, PASO=8, fast 1): que-quieres_rr 903 frames, que-quieres_ww 998, buen-provecho_rr 979, buen-provecho_ww 1034, cafe-con-azucar_rr 1020, cafe-con-azucar_ww 1137; the last frame of each is the end card; pares/ holds the twelve pairs; hoja_<run>_N.png are the sheets (16 frames, 4 columns). Each run folder has estado.txt (the frog's belly state per frame; the 34 runs only). Swell and shrink in the captured frames of 34 ww: swell 157-159 (belly 1, 2, 3), shrink at the turn 457-463 (2, 1, 0), swell 718-720, fall 721-722, on his back 723, up 752-754, shrink 755-758; rr: 158-160 and 460-466.
+
+## Not done / half-done / not verified
+- Not verified in the frames: steam over empty cups (35), the sips of the children (35), abuela clear of the children while she pours (35: the children were moved 12 px left for it, after the first captures), the frog's cup and abuela's face under the tilted pots (35).
+- The girl's hands in 34 (four brown blocks): changed to one hand at the chest when a seated person says he is full (`yo` pose); not looked at in the frames.
+- Hands a little beyond the arm remain (reposo.py prints them: 2 to 6 px, abuela's plate and towel in 33, the men's teaspoons in 35, mamá's fork in 34).
+- 34 is the tightest layout: abuela walks the pot and the platter round the right end and serves from behind the table; it makes the turn and the ending longer.
+- Pairs 4 and 5 are still crops of the one canvas (the old proposal for a higher-resolution pair is a cual.js change and was not made).
