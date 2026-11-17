@@ -40,6 +40,28 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #foot>*{pointer-events:auto}
 #go{display:flex;flex:none;width:72px;height:72px;margin-bottom:16px;border-radius:50%;background:var(--grn);align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.35)}   /* the start disc: 40 px above the bottom edge */
 #go:active{transform:scale(.96)}
+/* a speaking turn: the mic takes the start disc's place (72 px, the bottom of the right column on its side). Colours as in the call: green = your turn, grey = the app is speaking or thinking */
+#mic{display:none;flex:none;position:relative;width:72px;height:72px;margin-bottom:16px;border-radius:50%;background:var(--grn);color:#fff;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:background .12s}
+#mic svg{width:32px;height:32px}
+#mic .im,#mic .ck,#mic .dt{display:none}
+#mic[data-s=dead] .im,#mic[data-s=ready] .im,#mic[data-s=listening] .im{display:flex}
+#mic[data-s=ok] .ck{display:flex}
+#mic[data-s=processing] .dt{display:flex;gap:6px}
+#mic[data-s=dead],#mic[data-s=processing]{background:#2B2B33}
+#mic[data-s=dead] .im{color:#A7A7B0}
+#mic[data-s=ready]:active{transform:scale(.96)}
+/* listening is the recording colour, coral red (5.6:1 on the screen): a coral disc with a dark mic, a steady coral ring just outside it, and two more that spread well outside the button (a timer, not the voice level). Ready stays dark green with a white mic and no rings; the green tick means heard */
+#mic[data-s=listening]{background:#FF5A5F;color:#2B0A0C;box-shadow:0 0 0 5px var(--bg),0 0 0 8px #FF5A5F,0 4px 16px rgba(0,0,0,.35);animation:micpul 1.2s ease-in-out infinite}
+#mic[data-s=listening]::before,#mic[data-s=listening]::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid #FF5A5F;animation:micring 1.2s ease-out infinite;pointer-events:none}
+#mic[data-s=listening]::after{animation-delay:-.6s}
+/* the tick is a status, not a button: an outline with a green tick, no fill, no shadow */
+#mic[data-s=ok]{background:transparent;box-shadow:none;border:3px solid #3DDC84;color:#3DDC84;cursor:default;pointer-events:none}
+#mic .dt i{width:8px;height:8px;border-radius:50%;background:#fff;animation:micdot .9s ease-in-out infinite}
+#mic .dt i:nth-child(2){animation-delay:.15s}#mic .dt i:nth-child(3){animation-delay:.3s}
+@keyframes micpul{50%{transform:scale(1.06)}}
+@keyframes micring{0%{transform:scale(1);opacity:.95}100%{transform:scale(1.8);opacity:0}}
+@keyframes micdot{0%,70%,100%{opacity:.3;transform:scale(.8)}35%{opacity:1;transform:scale(1.15)}}
+@media (prefers-reduced-motion:reduce){#bub[data-e=listening] svg,#bub .dt i{animation:none}#mic[data-s=listening],#mic[data-s=listening]::before,#mic[data-s=listening]::after,#mic .dt i{animation:none}#mic[data-s=listening]::before{transform:scale(1.5);opacity:.8}#mic[data-s=listening]::after{display:none}}
 .pri{display:none;width:100%;max-width:480px;height:56px;border-radius:12px;background:var(--grn);color:#fff;font:600 16px/24px var(--sys);align-items:center;justify-content:center}   /* green: continue learning */
 .pri.blu{background:var(--blu)}   /* blue: any other main action */
 .pri:active{filter:brightness(.92)}
@@ -52,6 +74,15 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #bub{position:absolute;left:0;top:0;transform:translate(-50%,-100%) scale(.6);opacity:0;pointer-events:none;max-width:72%;width:max-content;box-sizing:border-box;
   background:#FFFFFF;color:#2A1810;border:3px solid #2A1810;border-radius:12px;padding:5px 11px 6px;font:800 18px/1.22 var(--sys);text-align:center;transition:opacity .12s,transform .12s;line-height:1.2;--tx:50%}
 #bub.on{opacity:1;transform:translate(-50%,calc(-100% - 10px)) scale(1)}
+#bub[data-mic]{display:flex;align-items:center;justify-content:center;gap:8px;min-width:56px;min-height:44px}   /* a speaking turn: the bubble holds only a mic, or a tick (and his words) */
+#bub[data-mic] svg{flex:none;width:28px;height:28px;color:#2A1810}
+#bub[data-mic=ok] svg{color:#17803F}
+/* the bubble follows the button: while he is listened to the mic icon is coral red (4.8:1 on white) and pulses with the button; while the app thinks the bubble shows the same three dots (28 px, so the bubble keeps its size) */
+#bub[data-e=listening] svg{color:#D93025;animation:bubmic 1.2s ease-in-out infinite}
+#bub .dt{flex:none;display:flex;align-items:center;justify-content:center;gap:4px;width:28px;height:28px}
+#bub .dt i{width:6px;height:6px;border-radius:50%;background:#2A1810;animation:micdot .9s ease-in-out infinite}
+#bub .dt i:nth-child(2){animation-delay:.15s}#bub .dt i:nth-child(3){animation-delay:.3s}
+@keyframes bubmic{50%{transform:scale(1.25)}}
 #bub::after{content:"";position:absolute;left:var(--tx);bottom:-11px;margin-left:-8px;border:8px solid transparent;border-top:9px solid #2A1810;border-bottom:0}
 #bub::before{content:"";position:absolute;left:var(--tx);bottom:-6px;margin-left:-5px;border:5px solid transparent;border-top:6px solid #FFFFFF;border-bottom:0;z-index:1}
 #bub.der,#bub.izq{transform:translate(0,-50%) scale(.6)}
@@ -77,7 +108,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
   #cap{position:static}
   #fin{padding:8px 0 152px;background:none}
   #foot{padding:0 0 16px}
-  #go{margin-bottom:0}
+  #go,#mic{margin-bottom:0}
   #app[data-s=start] #foot{top:50%;bottom:auto;padding:0;transform:translateY(-50%)}
 }
 </style></head><body>
@@ -97,6 +128,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
       <div id="fin"></div>
       <div id="foot">
         <button id="go" aria-label="Start"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M8 4.5v15l12-7.5z" fill="#FFFFFF"/></svg></button>
+        <button id="mic" aria-label="Micrófono" aria-disabled="true"><span class="im"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><span class="dt"><i></i><i></i><i></i></span></button>
         <div id="duo"><button class="sec" id="again">Play again</button><button class="sec" id="map">Map</button></div>
         <button class="pri" id="next">Next story</button>
         <button class="pri blu" id="home">Map</button>
@@ -105,8 +137,8 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
   </main>
 </div>
 <script src="engine.js?v=35"></script>
-<script src="palabras.js?v=35"></script>
-<script src="juego.js?v=35"></script>
+<script src="palabras.js?v=38"></script>
+<script src="juego.js?v=38"></script>
 <script src="escenas/kit.js?v=35"></script>
 <script src="escenas/frente.js?v=35"></script>
 <script>arranca();</script>

@@ -94,19 +94,21 @@ const SFX={right(){tone(784,0,.1,"triangle",.14);tone(1047,.09,.1,"triangle",.14
     g.gain.setValueAtTime((v||1)*.5,t);g.gain.exponentialRampToValueAtTime(.001,t+1.5);s.connect(f);f.connect(g);g.connect(out());s.start(t);s.stop(t+1.6);}catch(e){}},
   lluvia(){try{if(RAIN)return;const A=ac(),s=A.createBufferSource(),f=A.createBiquadFilter(),g=A.createGain();s.buffer=noise();s.loop=true;f.type="highpass";f.frequency.value=1800;g.gain.value=.03;s.connect(f);f.connect(g);g.connect(out());s.start();RAIN=s;}catch(e){}},
   calla(){try{if(RAIN)RAIN.stop();}catch(e){}RAIN=null;}};
-Object.assign(SFX,{pio(){tone(2600,0,.06,"sine",.07,3400);tone(2900,.09,.08,"sine",.07,3800);},slam(){tone(140,0,.12,"square",.05,70);tone(90,.02,.18,"sine",.12,50);},
+Object.assign(SFX,{suave(){tone(330,0,.16,"sine",.05,290);},pio(){tone(2600,0,.06,"sine",.07,3400);tone(2900,.09,.08,"sine",.07,3800);},slam(){tone(140,0,.12,"square",.05,70);tone(90,.02,.18,"sine",.12,50);},
   bonk(){tone(600,0,.06,"square",.05,200);tone(300,.06,.2,"triangle",.08,120);},munch(){[0,.16,.32].forEach(t=>tone(260,t,.06,"square",.03,180));},swoop(){tone(1800,0,.35,"sine",.04,600);}});
 let SINLETRAS=0,TALK=null,LINES={},VOICE=false,CLIPS={},speaking=0,live=new Set(),voiceReady=null;
 function trim(b){const d=b.getChannelData(0),sr=b.sampleRate,th=.012;let i=0,j=d.length-1;while(i<j&&Math.abs(d[i])<th)i++;while(j>i&&Math.abs(d[j])<th)j--;return {buf:b,t0:Math.max(0,i/sr-.03),t1:Math.min(b.duration,j/sr+.1)};}   // the recordings carry silence at both ends; the pauses are set here instead
 async function loadVoice(){LINES=S.clips||{};
   try{const r=await fetch("audio/ready.json",{cache:"no-store"});if(!r.ok)return;const j=await r.json(),A=ac(),have=new Set(j.clips||[]);
+    if(have.has("ahora_tu")&&!LINES.ahora_tu&&Object.values(LINES).some(c=>c&&c.tu_turno))LINES=Object.assign({},LINES,{ahora_tu:{who:"narr",text:"Ahora tú."}});   // a story with speaking turns can say "Ahora tú." even when it does not list the clip
     await Promise.all(Object.keys(LINES).filter(id=>have.has(id)).map(async id=>{try{const b=await (await fetch("audio/"+id+".mp3?v="+(j.v||0))).arrayBuffer();CLIPS[id]=trim(await new Promise((ok,no)=>A.decodeAudioData(b,ok,no)));}catch(e){}}));
     VOICE=Object.keys(LINES).every(id=>CLIPS[id]);}catch(e){}}
 const words=id=>((LINES[id]||{}).text||"x x").split(/\s+/).length;
 const dur=id=>VOICE&&CLIPS[id]?CLIPS[id].t1-CLIPS[id].t0:(360*words(id)+300)/1000;
 function playClip(id){return new Promise(res=>{const cl=CLIPS[id];if(!VOICE||!cl){res(false);return;}
-  const s=ac().createBufferSource();s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);TALK=partes(id).quien;letras(id);
-  s._end=v=>{if(s._done)return;s._done=1;speaking=Math.max(0,speaking-1);live.delete(s);TALK=null;letrasFin(id,v);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));});}
+  const s=ac().createBufferSource();let lim=0;s.buffer=cl.buf;s.connect(out());speaking++;live.add(s);TALK=partes(id).quien;letras(id);
+  s._end=v=>{if(s._done)return;s._done=1;clearTimeout(lim);speaking=Math.max(0,speaking-1);live.delete(s);TALK=null;letrasFin(id,v);res(v);};s.onended=()=>s._end(true);s.start(0,cl.t0,Math.max(.05,cl.t1-cl.t0));
+  if(HAB.guard)lim=setTimeout(()=>{try{s.stop();}catch(e){}s._end(false);},(cl.t1-cl.t0)*1000+1000);});}   // after a speaking turn (iPhone) a clip may never report its end: every clip gets its length + 1 s, so the story cannot hang
 function hush(){[...live].forEach(s=>{try{s.stop();}catch(e){}s._end(false);});}
 function say(id,gap){const my=runId,g=(gap==null?420:gap)/FAST;
   return (VOICE&&CLIPS[id]?playClip(id).then(ok=>ok?sleep(g):0):(TALK=partes(id).quien,letras(id),sleep(dur(id)*1000/FAST).then(()=>{TALK=null;letrasFin(id,true);return sleep(g);}))).then(()=>{if(my!==runId)throw "stop";});}
@@ -117,7 +119,7 @@ function say(id,gap){const my=runId,g=(gap==null?420:gap)/FAST;
    When the words show is one setting, TXT: "con" = while the line is spoken (Salim's ask), "tras" = right after it, "no" = never.
    ?txt=tras or ?txt=no overrides it for one visit. */
 const TXT=["con","tras","no"].includes(Q.get("txt"))?Q.get("txt"):"con";
-const capEl=$("#cap"),bubEl=$("#bub");let BUBQ=null,capT=null,bubT=null;
+const capEl=$("#cap"),bubEl=$("#bub");let BUBQ=null,capT=null,bubT=null,MBUB=0;   // MBUB: the bubble holds a speaking turn's mic (or tick), not a line
 function partes(id){const cl=LINES[id]||{},t=cl.text||"";
   if(cl.who==="tu")return {cap:null,quien:"coqui",bub:t,all:t};
   if(cl.habla){const i=t.indexOf(": ");if(i>0)return {cap:t.slice(0,i+1),quien:cl.habla,bub:t.slice(i+2),all:t};}
@@ -127,14 +129,19 @@ function donde(quien){if(!quien||!E)return null;
   return E.talkAt?E.talkAt(quien,W):null;}
 function muestra(id){const p=partes(id);let cap=p.cap,bub=p.bub;
   if(bub&&!donde(p.quien)){cap=p.all;bub=null;}
-  clearTimeout(capT);clearTimeout(bubT);
+  clearTimeout(capT);if(!MBUB)clearTimeout(bubT);
   capEl.textContent=cap||"";capEl.classList.toggle("on",!!cap);
+  if(MBUB)return;bubEl.removeAttribute("data-mic");   // while a speaking turn shows its mic bubble, the caption may change but the bubble stays
   if(bub){BUBQ=p.quien;bubEl.textContent=bub;bubEl.classList.add("on");placeBub();}else{BUBQ=null;bubEl.classList.remove("on");}}
-function borra(ms){clearTimeout(capT);clearTimeout(bubT);capT=setTimeout(()=>capEl.classList.remove("on"),ms);bubT=setTimeout(()=>{bubEl.classList.remove("on");BUBQ=null;},ms*.7);}
+function borra(ms){clearTimeout(capT);clearTimeout(bubT);capT=setTimeout(()=>capEl.classList.remove("on"),ms);bubT=setTimeout(()=>{if(MBUB)return;bubEl.classList.remove("on");BUBQ=null;},ms*.7);}
 function letras(id){if(TXT==="con"&&!SINLETRAS)muestra(id);}
 function letrasFin(id,done){if(TXT==="no"||SINLETRAS)return;if(TXT==="tras"){if(!done)return;muestra(id);borra(Math.max(1800,((LINES[id]||{}).text||"").length*70)/FAST);return;}borra(1700/FAST);}
-function callaLetras(){clearTimeout(capT);clearTimeout(bubT);capEl.classList.remove("on");bubEl.classList.remove("on");BUBQ=null;}
-function placeBub(){if(!BUBQ)return;const a=donde(BUBQ);if(!a){bubEl.classList.remove("on");return;}
+function callaLetras(){clearTimeout(capT);clearTimeout(bubT);capEl.classList.remove("on");bubEl.classList.remove("on");bubEl.removeAttribute("data-mic");BUBQ=null;MBUB=0;}
+function placeBub(){if(!BUBQ)return;
+  if(BUBQ==="mic"){const sr=$("#stage").getBoundingClientRect(),mr=MICB?MICB.getBoundingClientRect():null;   // the frog is not on screen, or his bubble would cover someone: the turn's bubble sits just above the mic button, clear of the listening rings (24 px)
+    if(!mr||!mr.width){bubEl.classList.remove("on");return;}bubEl.style.maxWidth="";bubEl.className="on";const bw=bubEl.offsetWidth,cx=mr.left+mr.width/2-sr.left,l=Math.max(bw/2+4-sr.left,Math.min(innerWidth-sr.left-bw/2-4,cx));
+    bubEl.style.left=Math.round(l)+"px";bubEl.style.top=Math.round(mr.top-sr.top-24)+"px";bubEl.style.setProperty("--tx",Math.round(Math.max(14,Math.min(bw-14,cx-l+bw/2)))+"px");return;}
+  const a=donde(BUBQ);if(!a){bubEl.classList.remove("on");return;}
   const cw=cv.clientWidth,ch=cv.clientHeight,X=v=>(v-cam[0])/cam[2]*cw,Y=v=>(v-cam[1])/cam[3]*ch,bw=bubEl.offsetWidth,bh=bubEl.offsetHeight;
   if(BUBQ==="coqui"){   // the frog talks from beside himself, so his bubble never hides abuela
     const b=frogBox(W.cq),xr=X(b.x+b.w)+4,xl=X(b.x)-4,y=Y(b.y+b.h*.45+Math.round(W.cq.dy)),rR=cw-xr-18,rL=xl-18,right=rR>=rL,room=Math.min(right?rR:rL,cw*.72);
@@ -153,23 +160,27 @@ function fx(e){e.f0=F;W.fx.push(e);}
 /* ---------- waiting for a touch ---------- */
 // Wait for a touch on one of the live things. A touch on one of them counts from the first word of the lead-in.
 async function espera(liveSet,lead,line,o){o=o||{};const my=runId;
-  const me={live:liveSet,res:null,line,asked:0,busy:0,done:0,p:null,got:null,loose:!!o.loose,lock:!!o.lock||!!o.voces,sign:o.sign||null,kind:o.kind||"ask",pick:o.pick||null,alias:o.alias||null},gotP=new Promise(r=>{me.res=r;});pending=me;
-  for(const st of lead||[]){if(me.done)break;if(typeof st==="string"){W.twinkle=o.sign||null;await say(sub(st));}else{W.twinkle=null;await paso(st);}}
+  const me={live:liveSet,res:null,line,asked:0,busy:0,done:0,p:null,got:null,loose:!!o.loose,lock:!!o.lock||!!o.voces,sign:o.turno&&o.turno.kind==="ask"?null:(o.sign||null),kind:o.kind||"ask",pick:o.pick||null,alias:o.alias||null},gotP=new Promise(r=>{me.res=r;});pending=me;
+  for(const st of lead||[]){if(me.done)break;if(typeof st==="string"){W.twinkle=me.sign;await say(sub(st));}else{W.twinkle=null;await paso(st);}}
   W.twinkle=null;let timer=null;const voz=o.voces?(o.orden||liveSet):[];me.voz=voz.length>0;
   // each speaking bubble says its line in turn, with no words on screen: he picks by ear
   const voces=async()=>{for(let i=0;i<voz.length;i++){if(me.done||pending!==me||my!==runId)break;const id=o.voces[voz[i]];W.respOn=voz[i];SINLETRAS=1;if(VOICE&&CLIPS[id])await playClip(id);else await sleep(dur(id)*1000/FAST);SINLETRAS=0;W.respOn=null;if(i<voz.length-1)await sleep(700/FAST);}W.respOn=null;};
-  me.repite=()=>{if(pending===me&&!me.done&&my===runId&&!speaking&&!me.rep){me.rep=1;me.nrep=(me.nrep||0)+1;if(o.ayuda&&me.nrep>=2)W.spot=o.ayuda;   // a routine: after the second repeat the sign shows what to touch
-    (line?playClip(line).then(()=>sleep(300/FAST)):Promise.resolve()).then(voces).then(()=>{me.rep=0;});}};
+  me.repite=()=>{if(pending===me&&!me.done&&my===runId&&!speaking&&!me.rep&&!habOcupado()){me.rep=1;me.nrep=(me.nrep||0)+1;if(o.ayuda&&me.nrep>=2)W.spot=o.ayuda;   // a routine: after the second repeat the sign shows what to touch
+    (line?playClip(line).then(()=>sleep(300/FAST)):Promise.resolve()).then(()=>me.turnoOn?0:voces()).then(()=>{me.rep=0;});}};   // during a turn the question is repeated, the bubbles do not speak
   if(OIR){if(line)await say(line,350);const w=o.pick||o.sign||liveSet[0],b=bx(w);me.done=1;me.got=w;me.ms=0;me.p={x:Math.round(b[0]+b[2]/2),y:Math.round(b[1]+b[3]/2)};pending=null;return me;}   // told straight through: the story answers itself
-  if(!me.done){if(o.sign)W.spot=o.sign;if(!me.voz)me.asked=1;if(line&&!o.mudo)await say(line,me.voz?300:0);if(!me.done)await voces();me.asked=1;me.tEnd=performance.now();   // the bubbles are dead until both have spoken once
-    if(!me.done&&(line||me.voz))timer=setInterval(me.repite,9000/FAST);}   // he waits: the line plays again. It costs nothing.
-  await gotP;clearInterval(timer);if(pending===me)pending=null;W.spot=null;W.twinkle=null;W.respOn=null;if(my!==runId)throw "stop";
+  if(!me.done){const dijo=o.turno&&o.turno.kind==="ask"&&habVivo([o.turno.id])?await turnoAsk(me,o,line,my):false;   // his turn inside a signed ask: true when he said the answer
+    if(!dijo){me.sign=o.sign||null;if(o.sign)W.spot=o.sign;const tuE=o.turno&&o.turno.kind==="elige"&&!me.done&&habVivo(o.turno.ids);if(tuE)turnoEligeInicio(me,o);
+      if(!me.voz)me.asked=1;if(line&&!o.mudo)await say(line,me.voz?300:0);if(!me.done)await voces();me.asked=1;me.tEnd=performance.now();   // the bubbles are dead until both have spoken once
+      if(tuE&&!me.done)me.turnoP=turnoElige(me,o,my);   // an elige: he may also speak, beside the touch
+      if(!me.done&&(line||me.voz))timer=setInterval(me.repite,9000/FAST);}}   // he waits: the line plays again. It costs nothing.
+  await gotP;clearInterval(timer);if(me.turnoOn&&!me.hablado)habCorta();if(pending===me)pending=null;W.spot=null;W.twinkle=null;W.respOn=null;if(my!==runId)throw "stop";
   return me;}
 // a touch that is not an answer: it reacts and gets its name. Poking around is free.
 function poke(what,p){if(what==="coqui"){bounce(6);const nm=S.names&&S.names.coqui;if(nm&&VOICE&&CLIPS[nm]){if(!speaking)playClip(nm);}else SFX.coqui();return;}   // touch the frog: he says his name
   SFX.blip();fx({t:"star",n:7,pts:[[p.x-7,p.y-4],[p.x+8,p.y+2],[p.x,p.y-10]]});if(E.poke)E.poke(what,p);}
 function tap(x,y){if(!E||!S)return;const inb=b=>b&&x>=b[0]-3&&x<b[0]+b[2]+3&&y>=b[1]-3&&y<b[1]+b[3]+3,
     what=(W.resp||[]).find(k=>inb(respBox(k)))||E.hit(x,y,W),p={x:Math.round(x),y:Math.round(y)};if(!what)return;
+  if(habOcupado()&&!(pending&&!pending.done&&pending.kind==="elige"&&pending.live.includes(what)))return;   // listening or processing a speaking turn: a touch does nothing (the frog neither; only an elige can still be answered by touching)
   const pn=pending,nm=(W.apodo&&W.apodo[what])||(S.names&&S.names[what]);   // a scene may give a thing another line for a while (W.apodo)
   if(pn&&!pn.done){let w=what;if(pn.loose&&(w==="puerta"||w==="ventana"))w="casa";if(pn.alias&&pn.alias[w])w=pn.alias[w];   // before the door has a name, the door is the house
     if(pn.live.includes(w)&&!(pn.lock&&!pn.asked)){pn.done=1;pn.ms=pn.tEnd?Math.round((performance.now()-pn.tEnd)*FAST):0;pn.p=p;pn.got=w;hush();pn.res();return;}
@@ -186,14 +197,128 @@ function senal(t,p,quieto){if(OIR){if(!quieto)bounce(4);return;}const R=Math.rou
   if(!S.callado)SFX.right();if(!quieto&&!S.callado)bounce(8);fx({t:"star",n:16,pts:[[b[0]+4,b[1]+2],[b[0]+b[2]-4,b[1]+4],[R(b[0]+b[2]/2),b[1]-6],[b[0]-4,R(b[1]+b[3]/2)],[b[0]+b[2]+4,R(b[1]+b[3]/2)],[p.x,p.y-9]]});}
 const bien=id=>OIR||S.callado?Promise.resolve():wait(300).then(()=>say(id||S.bien||"muy_bien",350));
 
+/* ---------- speaking turns ----------
+   The rules are docs/hablar/01-decisiones.md. A coquí clip marked "tu_turno" (its targets, each with the forms that count) is his turn
+   when every target word is open for speaking, the Yo switch is on and the phone can recognise speech: the coquí's bubble shows only a mic,
+   he taps the mic and says the line, the app hears it. Called ONLY from paso() (a plain line), ask() (the target's said clip) and elige()
+   (the options' said clips); never from decide(), say() or playClip(). A turn never costs anything and never blocks.
+   For checking by machine: ?mic=stub:<r1>|<r2>|... (each result: alternatives split by /, or none, or error:<code>), ?mic=off, ?abiertas=todas.
+   Without these and without a real recogniser nothing here runs. */
+const MICB=$("#mic"),MQ=Q.get("mic")||"",MICOFF=MQ==="off",STUB=MQ.indexOf("stub:")===0?MQ.slice(5).split("|"):null,ABIERTAS=Q.get("abiertas")==="todas";
+const HAB={n:0,hechos:new Set(),est:"",q:"",cur:null,rec:null,perm:null,nd:false,si:0,guard:false,log:[],t:[],stop6:0,force:0};   // n: turns this play; hechos: the clips that have been a turn this play; est: the mic's state (""/dead/ready/listening/processing/ok); guard: a turn has used the mic (clips then get a time limit)
+const NODISP=["not-allowed","service-not-allowed","network","audio-capture","language-not-supported"];
+try{if(navigator.permissions&&navigator.permissions.query)navigator.permissions.query({name:"microphone"}).then(p=>{HAB.perm=p;},()=>{});}catch(e){}
+const habSR=()=>window.SpeechRecognition||window.webkitSpeechRecognition;
+const habNd=()=>{try{if(sessionStorage.getItem("coqui.habla.nodisp")==="1")return true;}catch(e){}return HAB.nd;};
+function habPon(){HAB.nd=true;try{sessionStorage.setItem("coqui.habla.nodisp","1");}catch(e){}}   // an error showed that speaking cannot work here: no more turns this session
+// can this phone take a turn? (also what Yo asks, for its once-a-day note)
+function habDisp(){return !MICOFF&&(!!STUB||!!habSR())&&navigator.onLine!==false&&!(HAB.perm&&HAB.perm.state==="denied")&&!habNd();}
+const habMarca=id=>{const t=(LINES[id]||{}).tu_turno;return Array.isArray(t)&&t.length&&t.every(x=>x&&typeof x.palabra==="string"&&Array.isArray(x.formas)&&x.formas.length)?t:null;};   // the targets of a marked clip
+const habAbierta=w=>ABIERTAS||PAL.abiertaHabla(w);
+const habNueva=w=>{const r=PAL.db.palabras[w];return !(r&&r.mouth&&r.mouth.n>0);};   // he has not said this word yet: the model comes first
+const habBase=()=>!!MICB&&typeof PAL!=="undefined"&&!OIR&&!!S&&!S.callado&&PAL.db.ajustes.habla!==0&&habDisp();
+// ids: the clips one turn is made of (one for a plain line or an ask, one per option for an elige). Live: first live occurrence in this play, fewer than 4 turns so far, every target word open
+function habVivo(ids){if(!ids.length||HAB.n>=4||!habBase())return false;return ids.every(id=>{const t=habMarca(id);return !!t&&!HAB.hechos.has(id)&&t.every(x=>habAbierta(x.palabra));});}
+// heard right: for EVERY target at least one accepted form is inside one of the alternatives (words whole, accents and case ignored, extra words fine)
+const habCuadra=(alts,T)=>{const ns=(alts||[]).map(PAL.norm);return T.every(x=>(x.formas||[]).some(f=>{const g=PAL.norm(f).trim();return g!==""&&ns.some(a=>a.indexOf(" "+g+" ")>=0);}));};
+const habClase=r=>r.cancel?"cancel":NODISP.includes(r.err)?"nodisp":(r.alts&&r.alts.length)?"voz":"miss";
+// the mouth record: one answer per target word. The ear record is never written here. Same condition as PAL.cuento (not under ?fast without ?rec)
+function habGraba(T,ok,ms){if(typeof PAL==="undefined"||(Q.get("fast")&&!Q.get("rec")))return;T.forEach(x=>PAL.responde(x.palabra,"mouth",ok,ms||0,false));}
+
+/* the screen of a turn: the mic button (dead while a line plays, ready, listening, processing, the tick) and the coquí's bubble with only a mic icon */
+const SV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',SVMIC=SV+'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',SVOK=SV.replace('stroke-width="2"','stroke-width="3"')+'<path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+function micEst(s){HAB.est=s;habBubE(s);if(!MICB)return;MICB.dataset.s=s;MICB.style.display=s?"flex":"none";MICB.setAttribute("aria-disabled",s==="ready"?"false":"true");}
+// the turn's bubble agrees with the button: the mic icon (pulsing, in green, while he is listened to), three dots while the app is thinking
+const SVDOTS='<span class="dt"><i></i><i></i><i></i></span>';
+function habBubE(s){if(!MBUB||bubEl.dataset.mic!=="mic")return;bubEl.dataset.e=s;const pun=bubEl.querySelector(".dt");if(s==="processing"&&!pun)bubEl.innerHTML=SVDOTS;else if(s!=="processing"&&pun)bubEl.innerHTML=SVMIC;}
+const habOcupado=()=>HAB.est==="listening"||HAB.est==="processing";
+const habRana=()=>{const q=W&&W.cq;if(!q||!q.vis)return false;const b=frogBox(q),x=b.x+b.w/2,y=b.y+b.h/2;return x>=cam[0]&&x<=cam[0]+cam[2]&&y>=cam[1]&&y<=cam[1]+cam[3];};   // the frog is on screen
+function habBub(k,txt){clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:HAB.est==="processing"?SVDOTS:SVMIC;bubEl.dataset.mic=k;bubEl.dataset.e=HAB.est;
+  if(txt){const sp=document.createElement("span");sp.textContent=txt;bubEl.appendChild(sp);}
+  MBUB=1;bubEl.classList.add("on");
+  if(!HAB.q){BUBQ=habRana()?"coqui":"mic";placeBub();HAB.q=BUBQ==="coqui"&&(()=>{try{return habCubre();}catch(e){return true;}})()?"mic":BUBQ;}   // where it sits is decided once for the whole turn: at the frog if he is on screen and the bubble covers neither a person nor an answer bubble, else just above the mic button
+  BUBQ=HAB.q;placeBub();}   // it shows even when TXT is "no"
+// would the bubble, where placeBub has just put it beside or above the frog, cover a person or one of the answer bubbles? (everything in the stage's own pixels)
+function habCubre(){const cw=cv.clientWidth,ch=cv.clientHeight,zx=cw/cam[2],zy=ch/cam[3],bw=bubEl.offsetWidth,bh=bubEl.offsetHeight,l=parseFloat(bubEl.style.left)||0,t=parseFloat(bubEl.style.top)||0,cl=bubEl.className,
+    r=/\bder\b/.test(cl)?[l-11,t-bh/2,bw+11,bh]:/\bizq\b/.test(cl)?[l-bw,t-bh/2,bw+11,bh]:[l-bw/2,t-10-bh,bw,bh+11],   // the bubble with its tail
+    hit=a=>r[0]<a[0]+a[2]&&r[0]+r[2]>a[0]&&r[1]<a[1]+a[3]&&r[1]+r[3]>a[1],art=(b,m)=>[(b[0]-m-cam[0])*zx,(b[1]-m-cam[1])*zy,(b[2]+2*m)*zx,(b[3]+2*m)*zy];
+  if((W.resp||[]).some(k=>{const b=respBox(k);return !!b&&hit(art(b,3));}))return true;
+  const who=Object.keys(W.gente||{});if(W.ab)who.push("abuela");
+  return who.some(k=>{const a=E.talkAt?E.talkAt(k,W):null;if(!a)return false;let b=k==="abuela"&&E.box?E.box("abuela",W):null;   // a person is where talkAt says (above his head); abuela in the first scenes has her own box
+    if(!b){const p=(W.gente&&W.gente[k])||W.ab||{};b=[a[0]-13,a[1]+1,26,Math.max(24,p.y!=null?p.y-a[1]-1:36)];}return hit(art(b,4));});}
+function habFin(){HAB.q="";micEst("");MBUB=0;bubEl.removeAttribute("data-mic");bubEl.removeAttribute("data-e");bubEl.classList.remove("on");bubEl.textContent="";BUBQ=null;}   // the turn's screen goes away
+function habTick(txt){micEst("ok");habBub("ok",TXT!=="no"&&!SINLETRAS?txt:"");}   // the green tick always; his words in the bubble when TXT allows
+function habOkP(txt){habTick(txt);const p=wait(750).then(habFin);p.catch(()=>{});return p;}   // the tick stays a moment, then the turn's screen goes
+// everything that a turn holds, let go: a new play, the X, or he touched an elige
+function habCorta(){clearTimeout(HAB.stop6);clearTimeout(HAB.force);HAB.t.forEach(clearTimeout);HAB.t=[];
+  if(HAB.rec){try{HAB.rec.abort();}catch(e){}HAB.rec=null;try{ac().resume();}catch(e){}}
+  const C=HAB.cur;HAB.cur=null;if(C){clearInterval(C.idle);C.listo=1;C.res({cancel:1});}habFin();}
+function habLimpia(){habCorta();HAB.n=0;HAB.hechos=new Set();}
+
+/* one attempt: the mic is ready until he taps it; every 9 s of waiting, repite() (the line that asks him again). The tap starts the recogniser inside the tap itself (the phone wants that) */
+function habIntento(repite){return new Promise(res=>{const C={res,idle:null,listo:0};HAB.cur=C;micEst("ready");
+  if(repite)C.idle=setInterval(()=>{if(HAB.est==="ready"&&!speaking)repite();},9000/FAST);});}
+if(MICB)MICB.addEventListener("click",()=>{const C=HAB.cur;if(C&&HAB.est==="ready")habEmpieza(C);});
+function habStub(){const r=(STUB&&STUB[HAB.si++])||"none";   // the results are used in order; when they run out, he says nothing
+  return r==="none"?{err:"no-speech"}:r.indexOf("error:")===0?{err:r.slice(6)||"error"}:{alts:r.split("/")};}
+function habEmpieza(C){clearInterval(C.idle);hush();HAB.guard=true;micEst("listening");const t0=performance.now();let onset=0,alts=null,err="";   // hush() first: nothing is playing while he is listened to
+  const fin=()=>{if(C.listo)return;C.listo=1;clearTimeout(HAB.stop6);clearTimeout(HAB.force);HAB.t.forEach(clearTimeout);HAB.t=[];HAB.rec=null;
+    try{ac().resume();}catch(e){}   // iPhone: the sound comes back only after this
+    if(HAB.cur===C)HAB.cur=null;C.res({alts,err,ms:onset?Math.round(onset-t0):0});};   // ms: the tap to the recogniser's speechstart; 0 when there was none
+  const proc=()=>{if(HAB.est==="listening")micEst("processing");};
+  if(STUB){const r=habStub(),T=(f,ms)=>HAB.t.push(setTimeout(f,ms));   // the stub keeps its own pace (not sped up by ?fast), so every state can be seen
+    if(r.alts){T(()=>{onset=performance.now();},120);T(proc,300);T(()=>{alts=r.alts;fin();},420);}
+    else T(()=>{err=r.err;fin();},r.err==="no-speech"?500:150);
+    return;}
+  let rc;try{rc=new (habSR())();}catch(e){err="service-not-allowed";fin();return;}
+  rc.lang="es-US";rc.interimResults=false;rc.maxAlternatives=5;rc.continuous=false;HAB.rec=rc;
+  rc.onspeechstart=()=>{if(!onset)onset=performance.now();};rc.onspeechend=rc.onaudioend=proc;
+  rc.onresult=e=>{const rs=e.results[e.results.length-1];alts=[];for(let i=0;i<rs.length;i++)alts.push(rs[i].transcript);};
+  rc.onerror=e=>{err=(e&&e.error)||"error";};rc.onend=fin;
+  try{rc.start();}catch(e){err="aborted";fin();return;}
+  HAB.stop6=setTimeout(()=>{proc();try{rc.stop();}catch(e){}HAB.force=setTimeout(()=>{try{rc.abort();}catch(e){}if(!err&&!alts)err="aborted";fin();},2500);},6000/FAST);}   // the recogniser's own end of speech first; stop() at 6 s at the latest
+
+/* a plain line (called from paso): his turn, or the line as today */
+async function habLinea(id,gap){if(!habVivo([id])||(pending&&!pending.done))return say(id,gap);return turnoLinea(id,habMarca(id),gap);}   // inside the lead of an ask or decide a touch may arrive at any time: no turn there
+async function turnoLinea(id,T,gap){const my=runId;HAB.hechos.add(id);HAB.n++;const reg={id,tipo:"linea",est:"",intentos:0};HAB.log.push(reg);
+  micEst("dead");
+  if(T.some(x=>habNueva(x.palabra))){await say(id,gap);await say("ahora_tu",200);}   // a word he has not said yet: the coquí's recording first, then "Ahora tú."
+  habBub("mic");
+  for(let n=1;;n++){const r=await habIntento(()=>playClip("ahora_tu"));if(my!==runId)throw "stop";const k=habClase(r);reg.intentos=n;
+    if(k==="nodisp"){habPon();reg.est="nodisp";habFin();return say(id,gap);}   // speaking cannot work: the line plays as today, nothing recorded
+    if(k==="voz"&&habCuadra(r.alts,T)){reg.est="ok";habGraba(T,true,r.ms);habTick(r.alts[0]);senal("coqui",null,false);await wait(750);habFin();return;}   // his voice was the line: the recording does not play again
+    if(n===1){micEst("dead");await say("ahora_tu",200);continue;}   // first miss: "Ahora tú." again, the mic ready again
+    reg.est="fallo";habGraba(T,false,r.ms);habFin();SFX.suave();await wait(250);return say(id,gap);}}   // second miss: a soft sound, the model, and on
+
+/* inside a signed ask (called from espera): he answers from the picture and the question. No sign and no speaking bubbles until two misses. true: he said it */
+async function turnoAsk(me,o,line,my){const tu=o.turno,T=tu.T;HAB.hechos.add(tu.id);HAB.n++;const reg={id:tu.id,tipo:"ask",est:"",intentos:0};HAB.log.push(reg);
+  me.turnoOn=1;me.lock=true;micEst("dead");
+  if(line)await say(line,0);
+  habBub("mic");
+  for(let n=1;;n++){const r=await habIntento(me.repite);if(my!==runId)throw "stop";const k=habClase(r);reg.intentos=n;
+    if(k==="nodisp"){habPon();reg.est="nodisp";break;}
+    if(k==="voz"&&habCuadra(r.alts,T)){reg.est="ok";habGraba(T,true,r.ms);hush();me.hablado=1;me.got=me.live[0];me.ms=r.ms;me.p=null;me.done=1;me.turnoOn=0;me.okP=habOkP(r.alts[0]);me.res();return true;}   // said[t] does not play again
+    if(n>=2){reg.est="fallo";habGraba(T,false,r.ms);break;}}   // the other option, or nothing that matches, is a miss
+  habFin();me.turnoOn=0;me.lock=!!o.lock||!!o.voces;return false;}   // two misses (or speaking cannot work): the sign, the voices and the touch come back as today
+
+/* inside an elige: the mic comes beside the bubbles. He may speak or touch, whichever comes first */
+function turnoEligeInicio(me,o){const tu=o.turno;tu.ids.forEach(id=>HAB.hechos.add(id));HAB.n++;me.reg={id:tu.ids.join("|"),tipo:"elige",est:"",intentos:0};HAB.log.push(me.reg);me.turnoOn=1;micEst("dead");habBub("mic");}
+async function turnoElige(me,o,my){const tu=o.turno,reg=me.reg;
+  try{for(let n=1;;n++){const r=await habIntento(null);if(my!==runId||me.done||r.cancel)return;const k=habClase(r);reg.intentos=n;   // the question line is repeated by espera's own timer
+    if(k==="nodisp"){habPon();reg.est="nodisp";habFin();me.turnoOn=0;return;}
+    const m=k==="voz"?tu.ops.filter(op=>habCuadra(r.alts,tu.Ts[op])):[];
+    if(m.length===1){reg.est="ok";reg.op=m[0];habGraba(tu.Ts[m[0]],true,r.ms);hush();me.hablado=1;me.got=m[0];me.ms=r.ms;me.p=null;me.done=1;me.turnoOn=0;me.okP=habOkP(r.alts[0]);me.res();return;}   // exactly one option matches: taken
+    if(n>=2){reg.est="fallo";habFin();me.turnoOn=0;return;}}}   // two misses: the mic goes away, the bubbles are the way (nothing is written: elige has no wrong answer)
+  catch(e){if(e!=="stop")throw e;}}
+
 /* ---------- reading a story ---------- */
 const sub=s=>typeof s==="string"?s.replace(/\$([a-z]+)/g,(m,k)=>V[k]!=null?V[k]:m):s;
 const val=k=>V[k]!=null?V[k]:W[k];
 function cond(e){const neg=e[0]==="!";if(neg)e=e.slice(1);const i=e.indexOf("="),r=i<0?!!val(e):String(val(e.slice(0,i)))===sub(e.slice(i+1));return neg?!r:r;}
 async function pasos(list){for(const st of list||[])await paso(st);}
 async function paso(st){
-  if(typeof st==="string")return say(sub(st));                 // a line
-  if(st.say)return say(sub(st.say),st.gap);
+  if(typeof st==="string")return habLinea(sub(st));                 // a line (or his turn, when the clip is marked "tu_turno" and its words are open)
+  if(st.say)return habLinea(sub(st.say),st.gap);
   if(st.wait!=null)return wait(st.wait);
   if(st.cam)return camGo(st.cam,st.n);
   if(st.dots!=null)return step(st.dots);
@@ -215,12 +340,15 @@ const baraja=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Ma
 const vmapa=m=>m?Object.fromEntries(Object.entries(m).map(e=>[sub(e[0]),sub(e[1])])):null;   // a map from answers to lines, with the story's variables filled in on both sides
 async function ask(st){const t=sub(st.ask),voz=vmapa(st.voces),said=vmapa(st.said);   // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
   if(st.resp&&!OIR){W.resp=st.resp.map(sub);if(st.baraja)W.resp=baraja(W.resp);W.respVoz=voz;}
-  const me=await espera([t],st.lead,st.line?sub(st.line):null,{sign:t,loose:st.loose,voces:voz,orden:voz?W.resp:null});
-  senal(t,me.p,sub(st.quieto)==="1"||st.quieto===true);if(said&&said[t]){await wait(250);W.resp=null;await say(said[t],200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
+  const tu=said&&said[t]&&habVivo([said[t]])?habMarca(said[t]):null;   // the target's said clip is marked "tu_turno": he may say the answer
+  const me=await espera([t],st.lead,st.line?sub(st.line):null,{sign:t,loose:st.loose,voces:voz,orden:voz?W.resp:null,turno:tu?{kind:"ask",id:said[t],T:tu}:null});
+  senal(t,me.p,sub(st.quieto)==="1"||st.quieto===true);if(me.hablado)await me.okP;else if(said&&said[t]){await wait(250);W.resp=null;await say(said[t],200);}W.resp=null;await pasos(st.after);await bien(st.bien);await pasos(st.then);}
 // He picks what the frog says, and there is no wrong answer: each answer leads somewhere else.
-async function elige(st){const ops=st.options;W.respVoz=null;W.resp=st.kind==="say"&&!OIR?ops:null;const me=await espera(ops,st.lead,sub(st.line),{kind:"elige"});V.elegido=me.got;
+async function elige(st){const ops=st.options;W.respVoz=null;W.resp=st.kind==="say"&&!OIR?ops:null;
+  const ids=ops.map(k=>st.said&&st.said[k]?sub(st.said[k]):""),tu=ids.every(Boolean)&&habVivo(ids)?{kind:"elige",ids,ops,Ts:Object.fromEntries(ops.map((k,i)=>[k,habMarca(ids[i])]))}:null;   // every option's said clip is marked: he may say one of them
+  const me=await espera(ops,st.lead,sub(st.line),{kind:"elige",turno:tu});V.elegido=me.got;
   LOG.push({word:null,asked:"libre",got:me.got,ok:true});SFX.blip();bounce(5);
-  if(st.said&&st.said[me.got]){await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}W.resp=null;await pasos(st[me.got]);}
+  if(me.hablado)await me.okP;else if(st.said&&st.said[me.got]){await wait(250);W.resp=null;await say(sub(st.said[me.got]),300);}W.resp=null;await pasos(st[me.got]);}
 // A decision. Two things he could do; only the Spanish says which. A wrong one costs a step of the thing at stake,
 // what he did stays done, and then the big sign shows the right one.
 async function decide(st){let ops=st.options.map(sub);const key=CUENTO+"."+(st.as||"x"),voz=vmapa(st.voces),said=vmapa(st.said);let pick;
@@ -272,8 +400,8 @@ function origen(){const K="coqui.desde";let o=null;
     else if(r&&r.origin===location.origin&&/\/(index|cual|nivel)\.html$/.test(r.pathname))o=sessionStorage.getItem(K);}catch(e){}
   return o||"app.html?tab=mapa";}
 let SALIDA=null;   // a screen that always leaves to one place (¿Cuál? goes back to Palabras)
-function salir(url){runId++;try{hush();SFX.calla();}catch(e){}callaLetras();try{if(AC)AC.suspend();}catch(e){}location.href=url;}   // the X: all sound stops, then back to where he came from
-let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";foot(0,0,0);estado("play");pantalla("");
+function salir(url){runId++;try{hush();SFX.calla();}catch(e){}habLimpia();callaLetras();try{if(AC)AC.suspend();}catch(e){}location.href=url;}   // the X: all sound stops, then back to where he came from
+let T0=0;async function run(){T0=performance.now();runId++;const my=runId;hush();habLimpia();HAB.log=[];SFX.calla();callaLetras();fresh();running=true;step(0);$("#go").style.display="none";foot(0,0,0);estado("play");pantalla("");
   await Promise.race([voiceReady,sleep(6000)]);if(my!==runId)return;
   try{await pasos(S.beats);await pasos(S.final);}catch(e){if(e!=="stop")throw e;return;}
   // PAL is a top-level const in palabras.js, not a property of window: test it with typeof, never window.PAL
@@ -302,4 +430,5 @@ function fit(){const m=$("#main"),a=$("#app");if(!m||!a)return;const dpr=window.
 fit();addEventListener("resize",fit);addEventListener("orientationchange",fit);
 /* for checking the game by machine */
 window.Story={scene(){return E&&E.estado?E.estado(W):"";},get W(){return W;},get V(){return V;},get pending(){return pending&&!pending.done?pending:null;},tapOn(k){const h=!respBox(k)&&E.handAt&&E.handAt[k];if(h){tap(h[0],h[1]+3);return;}const b=bx(k);tap(b[0]+b[2]/2,b[1]+b[3]/2);},tapAt(x,y){tap(x,y);},
-  get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;},get cap(){return capEl.classList.contains('on')?capEl.textContent:'';},get bub(){return bubEl.classList.contains('on')?bubEl.textContent:'';},get txt(){return TXT;}};
+  get running(){return running;},get cam(){return cam;},get voice(){return VOICE;},get speaking(){return speaking;},get clips(){return Object.keys(CLIPS).length;},get log(){return LOG;},get ready(){return !!S;},get cap(){return capEl.classList.contains('on')?capEl.textContent:'';},get bub(){return bubEl.classList.contains('on')?bubEl.textContent:'';},get txt(){return TXT;},
+  get hab(){return {est:HAB.est,n:HAB.n,hechos:[...HAB.hechos],log:HAB.log.slice(),bub:bubEl.classList.contains("on")?(bubEl.dataset.mic||"texto"):"",at:BUBQ,mic:MICB?MICB.dataset.s||"":null,disp:habDisp()};},tapMic(){if(MICB)MICB.click();}};
