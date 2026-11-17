@@ -7,6 +7,7 @@
   extra    more query, for example ka=mant&ta=nt (fixes draws); txt=no is always added (no words on screen)
   fast     speed (2 is good: a rest shorter than two looks, about 130 ms, is not kept)
 A frame is kept when the picture has not changed in two looks and differs from the last one kept. The signs, the stars and the words are part of the picture. Needs the local server on 8765.
+  A frame is also kept at every change of state (STATE below): a bite, a sip, a lap, a pour stage, a level of rice, anything held that changes what it is, whoever speaks next: these happen while others walk, so a rest-only capture dropped them (what changes in a bite is few pixels, and the mouth moves at the same time).
   PASO=8   (environment) walks and carries are never at rest, so with PASO=n a frame is also kept while things move: whenever a person, the frog, a thing on the table or a thing in a hand has moved n pixels or more since the last frame kept. Without PASO nothing changes (rests only)."""
 import sys, asyncio, json, time, base64, io
 from playwright.async_api import async_playwright
@@ -22,6 +23,13 @@ PASO=int(__import__("os").environ.get("PASO","0"))
 MOV="""()=>{const W=Story.W,o={};for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o['g'+k]=[p.x,p.y+(p.dy||0)];(p.tiene||[]).forEach((t,i)=>{if(t.vis!==0)o['g'+k+'#'+i]=[p.x+(t.dx||0),p.y-(t.dy||0)];});}
  (W.cosas||[]).forEach(c=>{if(c.vis!==0)o['c'+c.id]=[c.x,c.y];});const q=W.cq;if(q&&q.vis){o.q=[q.x,q.y+(q.dy||0)];(q.tiene||[]).forEach((t,i)=>{o['q#'+i]=[t.bx!=null?t.bx:(t.dx||0),t.by!=null?t.by:(t.dy||0)];});}
  (W.vuelos||[]).forEach((v,i)=>{o['v'+i]=[v.x,v.y];});if(W.perro&&W.perro.vis!==0)o.p=[W.perro.x,W.perro.y];return o}"""
+# the discrete state of the picture, without the positions: what each thing is (the bite of a roll, the level in a cup or in a plate, a spoon's load, a stream, the mounds on the platter), what each person holds and eats, the frog's face. A change of it is a frame.
+STSIG="""()=>{const W=Story.W,o=[];const it=t=>t?[t.k,t.v==null?'':t.v,t.sp?1:0,t.ang?1:0,t.load||'',t.vapor?1:0,t.chorro?1:0,(t.rollos||[]).map(r=>r.st+(r.con||'')+(r.mal?'m':'')).join('+'),(t.montones||[]).length,t.tenedor?1:0,t.rollo?t.rollo.st+(t.rollo.con||''):'',t.tomada?1:0,t.spoons==null?'':t.spoons].join(','):'';
+ (W.cosas||[]).forEach(c=>{if(c.vis!==0)o.push(c.id+':'+it(c))});
+ for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o.push(k+':'+[p.sent?1:0,p.pose||'',p.cara||'',p.cierra?1:0,p.sopla?1:0,p.come?it(p.come):'',p.bebe2||'',(p.tiene||[]).filter(t=>t.k!=='brazo').map(it).join('/')].join('|'));}
+ const q=W.cq;if(q&&q.vis){o.push('q:'+[q.hace||'',q.mal?1:0,q.lleno?1:0,q.espalda?1:0,q.piensa?q.piensa.k+(q.piensa.v||''):'',(q.tiene||[]).filter(t=>t.k!=='brazo').map(it).join('/')].join('|'));}
+ if(W.perro)o.push('p:'+[W.perro.pose,W.perro.lengua?1:0].join(','));(W.vuelos||[]).forEach(v=>o.push('v:'+v.k));
+ return o.join(';')}"""
 STATE="()=>{const p=Story.pending;return {live:p?p.live.join('|'):null,kind:p?p.kind:null,pick:p?p.pick:null,sign:p?p.sign:null,asked:p?p.asked:0,running:Story.running,cap:Story.cap}}"
 async def main():
     async with async_playwright() as p:
@@ -30,7 +38,7 @@ async def main():
         pg=await ctx.new_page(); msgs=[]
         pg.on("pageerror",lambda e: (msgs.append(str(e)),print("PAGEERROR:",str(e)[:300],(getattr(e,"stack","") or "")[:700],flush=True)))
         await pg.goto(URL); await pg.wait_for_timeout(2500)
-        await pg.click("#go"); n=0; k=0; prev=None; last=None; tapped=None; still=0; lastmov=None
+        await pg.click("#go"); n=0; k=0; prev=None; last=None; tapped=None; still=0; lastmov=None; prevst=None; lastkeep=0
         async def keep():
             nonlocal n,lastmov
             url=await pg.evaluate("document.querySelector('#cv').toDataURL('image/png')")
@@ -44,6 +52,10 @@ async def main():
             if not s["running"] and i>40:
                 if sig!=last: await pg.wait_for_timeout(250); last=sig; await keep()   # the last picture is kept too
                 break
+            st=await pg.evaluate(STSIG)
+            if prevst is not None and st!=prevst and sig!=last and i-lastkeep>=2 and s["running"]:
+                prevst=st; last=sig; lastkeep=i; await keep()   # a change of state: a frame, whatever else moves
+            prevst=st
             if sig==prev: still+=1
             else: still=0
             prev=sig
