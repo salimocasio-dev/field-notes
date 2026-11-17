@@ -61,7 +61,7 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 @keyframes micpul{50%{transform:scale(1.06)}}
 @keyframes micring{0%{transform:scale(1);opacity:.95}100%{transform:scale(1.8);opacity:0}}
 @keyframes micdot{0%,70%,100%{opacity:.3;transform:scale(.8)}35%{opacity:1;transform:scale(1.15)}}
-@media (prefers-reduced-motion:reduce){#mic[data-s=listening],#mic[data-s=listening]::before,#mic[data-s=listening]::after,#mic .dt i{animation:none}#mic[data-s=listening]::before{transform:scale(1.5);opacity:.8}#mic[data-s=listening]::after{display:none}}
+@media (prefers-reduced-motion:reduce){#bub[data-e=listening] svg,#bub .dt i{animation:none}#mic[data-s=listening],#mic[data-s=listening]::before,#mic[data-s=listening]::after,#mic .dt i{animation:none}#mic[data-s=listening]::before{transform:scale(1.5);opacity:.8}#mic[data-s=listening]::after{display:none}}
 .pri{display:none;width:100%;max-width:480px;height:56px;border-radius:12px;background:var(--grn);color:#fff;font:600 16px/24px var(--sys);align-items:center;justify-content:center}   /* green: continue learning */
 .pri.blu{background:var(--blu)}   /* blue: any other main action */
 .pri:active{filter:brightness(.92)}
@@ -77,6 +77,12 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #bub[data-mic]{display:flex;align-items:center;justify-content:center;gap:8px;min-width:56px;min-height:44px}   /* a speaking turn: the bubble holds only a mic, or a tick (and his words) */
 #bub[data-mic] svg{flex:none;width:28px;height:28px;color:#2A1810}
 #bub[data-mic=ok] svg{color:#17803F}
+/* the bubble follows the button: while he is listened to the mic icon is green and pulses with the button; while the app thinks the bubble shows the same three dots (28 px, so the bubble keeps its size) */
+#bub[data-e=listening] svg{color:#17803F;animation:bubmic 1.2s ease-in-out infinite}
+#bub .dt{flex:none;display:flex;align-items:center;justify-content:center;gap:4px;width:28px;height:28px}
+#bub .dt i{width:6px;height:6px;border-radius:50%;background:#2A1810;animation:micdot .9s ease-in-out infinite}
+#bub .dt i:nth-child(2){animation-delay:.15s}#bub .dt i:nth-child(3){animation-delay:.3s}
+@keyframes bubmic{50%{transform:scale(1.25)}}
 #bub::after{content:"";position:absolute;left:var(--tx);bottom:-11px;margin-left:-8px;border:8px solid transparent;border-top:9px solid #2A1810;border-bottom:0}
 #bub::before{content:"";position:absolute;left:var(--tx);bottom:-6px;margin-left:-5px;border:5px solid transparent;border-top:6px solid #FFFFFF;border-bottom:0;z-index:1}
 #bub.der,#bub.izq{transform:translate(0,-50%) scale(.6)}

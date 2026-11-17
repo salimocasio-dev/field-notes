@@ -227,10 +227,13 @@ function habGraba(T,ok,ms){if(typeof PAL==="undefined"||(Q.get("fast")&&!Q.get("
 
 /* the screen of a turn: the mic button (dead while a line plays, ready, listening, processing, the tick) and the coquí's bubble with only a mic icon */
 const SV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',SVMIC=SV+'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',SVOK=SV.replace('stroke-width="2"','stroke-width="3"')+'<path d="M5 12.5l4.5 4.5L19 7"/></svg>';
-function micEst(s){HAB.est=s;if(!MICB)return;MICB.dataset.s=s;MICB.style.display=s?"flex":"none";MICB.setAttribute("aria-disabled",s==="ready"?"false":"true");}
+function micEst(s){HAB.est=s;habBubE(s);if(!MICB)return;MICB.dataset.s=s;MICB.style.display=s?"flex":"none";MICB.setAttribute("aria-disabled",s==="ready"?"false":"true");}
+// the turn's bubble agrees with the button: the mic icon (pulsing, in green, while he is listened to), three dots while the app is thinking
+const SVDOTS='<span class="dt"><i></i><i></i><i></i></span>';
+function habBubE(s){if(!MBUB||bubEl.dataset.mic!=="mic")return;bubEl.dataset.e=s;const pun=bubEl.querySelector(".dt");if(s==="processing"&&!pun)bubEl.innerHTML=SVDOTS;else if(s!=="processing"&&pun)bubEl.innerHTML=SVMIC;}
 const habOcupado=()=>HAB.est==="listening"||HAB.est==="processing";
 const habRana=()=>{const q=W&&W.cq;if(!q||!q.vis)return false;const b=frogBox(q),x=b.x+b.w/2,y=b.y+b.h/2;return x>=cam[0]&&x<=cam[0]+cam[2]&&y>=cam[1]&&y<=cam[1]+cam[3];};   // the frog is on screen
-function habBub(k,txt){clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:SVMIC;bubEl.dataset.mic=k;
+function habBub(k,txt){clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:HAB.est==="processing"?SVDOTS:SVMIC;bubEl.dataset.mic=k;bubEl.dataset.e=HAB.est;
   if(txt){const sp=document.createElement("span");sp.textContent=txt;bubEl.appendChild(sp);}
   MBUB=1;bubEl.classList.add("on");
   if(!HAB.q){BUBQ=habRana()?"coqui":"mic";placeBub();HAB.q=BUBQ==="coqui"&&(()=>{try{return habCubre();}catch(e){return true;}})()?"mic":BUBQ;}   // where it sits is decided once for the whole turn: at the frog if he is on screen and the bubble covers neither a person nor an answer bubble, else just above the mic button
@@ -243,7 +246,7 @@ function habCubre(){const cw=cv.clientWidth,ch=cv.clientHeight,zx=cw/cam[2],zy=c
   const who=Object.keys(W.gente||{});if(W.ab)who.push("abuela");
   return who.some(k=>{const a=E.talkAt?E.talkAt(k,W):null;if(!a)return false;let b=k==="abuela"&&E.box?E.box("abuela",W):null;   // a person is where talkAt says (above his head); abuela in the first scenes has her own box
     if(!b){const p=(W.gente&&W.gente[k])||W.ab||{};b=[a[0]-13,a[1]+1,26,Math.max(24,p.y!=null?p.y-a[1]-1:36)];}return hit(art(b,4));});}
-function habFin(){HAB.q="";micEst("");MBUB=0;bubEl.removeAttribute("data-mic");bubEl.classList.remove("on");bubEl.textContent="";BUBQ=null;}   // the turn's screen goes away
+function habFin(){HAB.q="";micEst("");MBUB=0;bubEl.removeAttribute("data-mic");bubEl.removeAttribute("data-e");bubEl.classList.remove("on");bubEl.textContent="";BUBQ=null;}   // the turn's screen goes away
 function habTick(txt){micEst("ok");habBub("ok",TXT!=="no"&&!SINLETRAS?txt:"");}   // the green tick always; his words in the bubble when TXT allows
 function habOkP(txt){habTick(txt);const p=wait(750).then(habFin);p.catch(()=>{});return p;}   // the tick stays a moment, then the turn's screen goes
 // everything that a turn holds, let go: a new play, the X, or he touched an elige

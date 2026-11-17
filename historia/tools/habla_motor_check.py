@@ -199,10 +199,17 @@ async def main():
         async def silence_after_turn(pg,s,R):   # iPhone: after a turn a clip may never report its end. Here no clip even starts; every clip is let go after its length + 1 s
             if s["log"] and s["log"][0]["est"]=="ok" and "n0" not in R:
                 await pg.evaluate("AudioBufferSourceNode.prototype.start=function(){}"); R["n0"]=await pg.evaluate("__c.length"); R["t0"]=time.time()
+        BUBSNAP="""()=>{const b=document.getElementById('bub'),r=b.getBoundingClientRect(),sv=b.querySelector('svg'),d=b.querySelector('.dt i');return {e:b.dataset.e,dt:!!b.querySelector('.dt'),svg:!!sv,w:Math.round(r.width),h:Math.round(r.height),
+          an:sv?getComputedStyle(sv).animationName:null,col:sv?getComputedStyle(sv).color:null,dan:d?getComputedStyle(d).animationName:null}}"""
+        async def bubsnap(pg,s,R):   # the mic bubble in each state of the first turn (the hang run keeps listening for 1 s and processing for 2.5 s)
+            R.setdefault("bs",{})
+            if s["est"] in ("ready","listening","processing") and s["est"] not in R["bs"] and s["bub"]=="mic":
+                await pg.wait_for_timeout(150); sn=await pg.evaluate(BUBSNAP)
+                if sn["e"]==s["est"]: R["bs"][s["est"]]=sn
         async def go2(k,q,**kw): r2[k]=await play(br,"abiertas=todas",fake=q,**kw)
         await asyncio.gather(go2("alt",[{"alts":["ese","si"],"onset":400},{"alts":["no","si"]},{"alts":["si gracias"]}]),
                              go2("errs",[{"err":"no-speech"},{"alts":["si"]},{"err":"aborted"},{"err":"aborted"},{"err":"audio-capture"}]),
-                             go2("hang",[{"hang":True},{"alts":["si"]},{"hang":True,"noend":True},{"hang":True,"noend":True},{"alts":["si gracias"]}]),
+                             go2("hang",[{"hang":True},{"alts":["si"]},{"hang":True,"noend":True},{"hang":True,"noend":True},{"alts":["si gracias"]}],on_poll=bubsnap),
                              go2("elige_listen",[{"alts":["si"]},{"alts":["no"]},{"hang":True,"noend":True}],on_poll=touch_listening),
                              go2("limit",[{"alts":["si"]},{"alts":["no"]},{"alts":["si gracias"]}],on_poll=silence_after_turn,budget=40))
         r=r2["alt"]; base("real recogniser: heard right in the second alternative",r,[("linea","ok"),("ask","ok"),("elige","ok")])
@@ -214,6 +221,10 @@ async def main():
         ck("real recogniser: no-speech on try 1, right on try 2",r["log"][0]["intentos"]==2,r["log"][0]); ck("real recogniser: audio-capture flagged the session",r["nd"]=="1",r["nd"])
         r=r2["hang"]; base("real recogniser: it hangs: stop() at 6 s (1 s at fast=6), then a forced end (a miss)",r,[("linea","ok"),("ask","fallo"),("elige","ok")])
         ck("hang: stop() was called, and abort() when stop() was not enough",r["fake"][1]["stop"]>=3 and r["fake"][1]["abort"]>=2,r["fake"][1])
+        bs=r.get("bs",{}); rd,li,pr=bs.get("ready"),bs.get("listening"),bs.get("processing")
+        ck("the bubble agrees with the button: ready, the mic icon, not moving",bool(rd) and rd["svg"] and not rd["dt"] and rd["an"]=="none",rd)
+        ck("the bubble agrees with the button: listening, a green mic icon that pulses (as the button does), the bubble the same size",bool(rd and li) and li["svg"] and not li["dt"] and li["an"]=="bubmic" and li["col"]=="rgb(23, 128, 63)" and (li["w"],li["h"])==(rd["w"],rd["h"]),(rd,li))
+        ck("the bubble agrees with the button: processing, the same three pulsing dots (no mic icon), the bubble the same size",bool(rd and pr) and pr["dt"] and not pr["svg"] and pr["dan"]=="micdot" and (pr["w"],pr["h"])==(rd["w"],rd["h"]),(rd,pr))
 
         r=r2["elige_listen"]; base("elige: touched while the mic is listening",r)
         ck("elige touched while listening: the mic went, the touched option's said clip played as today, nothing written for it",kinds(r)[2:]==[("elige","")] and "cq_no_gracias" in r["clips"] and "abuela_no" in r["clips"] and len(r["resp"])==2,(r["log"][2:],len(r["resp"])))
