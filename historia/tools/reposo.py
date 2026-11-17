@@ -17,18 +17,18 @@ BASE=A[6] if len(A)>6 else "http://127.0.0.1:8765/historia/index.html"
 URL=f"{BASE}?cuento={CUENTO}&fast={FASTV}&txt=no"+("&"+EXTRA if EXTRA else "")
 # what moves: where everybody and everything is. Steam, a blinking eye or the hand of a sign swinging do not count.
 SIG="""()=>{const W=Story.W,p=Story.pending;const m=o=>o&&JSON.stringify(o,(k,v)=>k==='fx'?undefined:v);
- return JSON.stringify([m(W.gente),m(W.cosas),m(W.cq),m(W.perro),m(W.vuelos),W.resp,W.spot,W.marcas,W.heart,W.lost,p?p.live.join('|'):null,p?p.sign:null,Story.cap,W.twinkle,(W.fx||[]).length,typeof TALK!=='undefined'?TALK:null])}"""   # TALK: who speaks (the empty speech bubble over him is part of the picture: a frame is kept when it appears)
+ return JSON.stringify([m(W.gente),m(W.cosas),m(W.cq),m(W.perro),m(W.vuelos),W.resp,W.spot,W.marcas,W.heart,W.lost,p?p.live.join('|'):null,p?p.sign:null,W.respOn||null,Story.cap,W.twinkle,(W.fx||[]).length,typeof TALK!=='undefined'?TALK:null])}"""   # TALK: who speaks (the empty speech bubble over him is part of the picture: a frame is kept when it appears)
 PASO=int(__import__("os").environ.get("PASO","0"))
 # where everything is, to the pixel: people, what they hold, the frog, the things, what flies, the dog
-MOV="""()=>{const W=Story.W,o={};for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o['g'+k]=[p.x,p.y+(p.dy||0)];(p.tiene||[]).forEach((t,i)=>{if(t.vis!==0)o['g'+k+'#'+i]=[p.x+(t.dx||0),p.y-(t.dy||0)];});}
- (W.cosas||[]).forEach(c=>{if(c.vis!==0)o['c'+c.id]=[c.x,c.y];});const q=W.cq;if(q&&q.vis){o.q=[q.x,q.y+(q.dy||0)];(q.tiene||[]).forEach((t,i)=>{o['q#'+i]=[t.bx!=null?t.bx:(t.dx||0),t.by!=null?t.by:(t.dy||0)];});}
+MOV="""()=>{const W=Story.W,o={};for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o['g'+k]=[p.x,p.y+(p.dy||0)];(p.tiene||[]).forEach((t,i)=>{if(t.vis!==0)o['g'+k+'#'+i]=[p.x+(t.gx!=null?t.gx:(t.dx||0)),p.y-(t.gy!=null?t.gy:(t.dy||0))];});}
+ (W.cosas||[]).forEach(c=>{if(c.vis!==0)o['c'+c.id]=[c.x,c.y];});const q=W.cq;if(q&&q.vis){o.q=[q.x,q.y+(q.dy||0)];(q.tiene||[]).forEach((t,i)=>{o['q#'+i]=[t.gx!=null?t.gx:(t.bx!=null?t.bx:(t.dx||0)),t.gy!=null?t.gy:(t.by!=null?t.by:(t.dy||0))];});}
  (W.vuelos||[]).forEach((v,i)=>{o['v'+i]=[v.x,v.y];});if(W.perro&&W.perro.vis!==0)o.p=[W.perro.x,W.perro.y];return o}"""
 # the discrete state of the picture, without the positions: what each thing is (the bite of a roll, the level in a cup or in a plate, a spoon's load, a stream, the mounds on the platter), what each person holds and eats, the frog's face. A change of it is a frame.
 STSIG="""()=>{const W=Story.W,o=[];const it=t=>t?[t.k,t.v==null?'':t.v,t.sp?1:0,t.ang?1:0,t.load||'',t.vapor?1:0,t.chorro?1:0,(t.rollos||[]).map(r=>r.st+(r.con||'')+(r.mal?'m':'')).join('+'),(t.montones||[]).length,t.tenedor?1:0,t.rollo?t.rollo.st+(t.rollo.con||''):'',t.tomada?1:0,t.spoons==null?'':t.spoons].join(','):'';
  (W.cosas||[]).forEach(c=>{if(c.vis!==0)o.push(c.id+':'+it(c))});
- for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o.push(k+':'+[p.sent?1:0,p.pose||'',p.cara||'',p.cierra?1:0,p.sopla?1:0,p.come?it(p.come):'',p.bebe2||'',(p.tiene||[]).filter(t=>t.k!=='brazo').map(it).join('/')].join('|'));}
- const q=W.cq;if(q&&q.vis){o.push('q:'+[q.hace||'',q.mal?1:0,q.lleno?1:0,q.espalda?1:0,q.piensa?q.piensa.k+(q.piensa.v||''):'',(q.tiene||[]).filter(t=>t.k!=='brazo').map(it).join('/')].join('|'));}
- if(W.perro)o.push('p:'+[W.perro.pose,W.perro.lengua?1:0].join(','));(W.vuelos||[]).forEach(v=>o.push('v:'+v.k));
+ for(const k in (W.gente||{})){const p=W.gente[k];if(!p||p.vis===0)continue;o.push(k+':'+[p.sent?1:0,p.pose||'',p.cara||'',p.cierra?1:0,p.sopla?1:0,p.come?it(p.come):'',p.bebe2||'',(p.tiene||[]).filter(t=>t.k!=='brazo').map(it).join('/'),(p.tiene||[]).filter(t=>t.k==='brazo').length].join('|'));}
+ const q=W.cq;if(q&&q.vis){o.push('q:'+[q.hace||'',q.mal?1:0,q.lleno?1:0,q.espalda?1:0,q.piensa?q.piensa.k+(q.piensa.v||''):'',(q.tiene||[]).filter(t=>t.k!=='brazo').map(it).join('/'),(q.tiene||[]).filter(t=>t.k==='brazo').length,q.hinch||0,q.caida||0].join('|'));}
+ if(W.perro)o.push('p:'+[W.perro.pose,W.perro.lengua?1:0].join(','));o.push('r:'+(W.respOn||'')+'/'+((W.resp||[]).join(',')));(W.vuelos||[]).forEach(v=>o.push('v:'+v.k));
  return o.join(';')}"""
 STATE="()=>{const p=Story.pending;return {live:p?p.live.join('|'):null,kind:p?p.kind:null,pick:p?p.pick:null,sign:p?p.sign:null,asked:p?p.asked:0,running:Story.running,cap:Story.cap}}"
 async def main():

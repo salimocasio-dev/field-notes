@@ -155,7 +155,7 @@ s34={"id":"buen-provecho","title":"Buen provecho","place":"La cocina","scene":"c
   "c34_luis_quiero",act("luis34",que="sirve"),act("luis34",que="come"),act("luis34",que="cuchara",tiende=1),act("piensa34",k="$wa"),"c34_luis_y_tu",
   {"decide":"say","options":["di_tambien","di_lleno"],"baraja":True,"pick":"$pa","tests":"$wa","voces":VT,"said":VT,"lead":[],"line":None,
    "right":[{"if":"ok","then":[{"if":"wa=quiere","then":[act("ranaCome34")],"else":[act("luisCome2")]},act("marca",que="ok")],
-             "else":[{"if":"wa=quiere","then":[act("luisPapa34",para="rana")],"else":[act("levantaRana34"),act("luisPapa34",para="luis")]}]}],
+             "else":[{"if":"wa=quiere","then":[act("luisPapa34",para="rana")],"else":[act("luisPapa34",para="luis"),act("levantaRana34")]}]}],
    "wrong":[{"if":"wa=quiere","then":[act("luisCome2")],"else":[act("ranaCome34",entera=1)]}]+X+["c34_no_$wa"]},
   # B: touch a person of three
   {"dots":8},{"reparte":["qt","qf","ql"],"options":["abuelo","mama","carmen"]},"c34_luis_quiero"]+CUARTO+[dice("abuelo"),dice("mama"),dice("carmen"),act("ya"),
