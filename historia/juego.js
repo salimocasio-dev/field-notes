@@ -230,7 +230,7 @@ const SV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-widt
 function micEst(s){HAB.est=s;if(!MICB)return;MICB.dataset.s=s;MICB.style.display=s?"flex":"none";MICB.setAttribute("aria-disabled",s==="ready"?"false":"true");}
 const habOcupado=()=>HAB.est==="listening"||HAB.est==="processing";
 const habRana=()=>{const q=W&&W.cq;if(!q||!q.vis)return false;const b=frogBox(q),x=b.x+b.w/2,y=b.y+b.h/2;return x>=cam[0]&&x<=cam[0]+cam[2]&&y>=cam[1]&&y<=cam[1]+cam[3];};   // the frog is on screen
-function habBub(k,txt){clearTimeout(capT);clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:SVMIC;bubEl.dataset.mic=k;
+function habBub(k,txt){clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:SVMIC;bubEl.dataset.mic=k;
   if(txt){const sp=document.createElement("span");sp.textContent=txt;bubEl.appendChild(sp);}
   MBUB=1;BUBQ=habRana()?"coqui":"mic";bubEl.classList.add("on");placeBub();}   // it shows even when TXT is "no"; with no frog on screen it sits above the mic button
 function habFin(){micEst("");MBUB=0;bubEl.removeAttribute("data-mic");bubEl.classList.remove("on");bubEl.textContent="";BUBQ=null;}   // the turn's screen goes away
