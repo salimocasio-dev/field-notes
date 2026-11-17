@@ -48,3 +48,17 @@ Brief: scratchpad comer_fix_brief3.md (A1-A8, B story 33, C story 34, D story 35
 - buen provecho (other): the striped box and the blue circles are gone; the plates are held by arms.
 - azúcar: the stream is 4 px wide, white, bends out of the lip and splashes; steam from the cup's top. un poco: the bowl and the handle of the same silver spoon show in both pictures (the heap stands in the bowl, the lip drawn in front).
 - Not done: the brief asks for the closer pictures (4 and 5) at the same pixel size as the others. The pictures are crops of the one canvas scaled up by the ¿Cuál? page (juego.js and cual.js are the engine), so a close-up is always blockier; I kept the 2x crop and showed the kitchen behind. A real fix needs the scene drawn at a higher resolution for the pair (a cual.js change): proposal only.
+
+## Tests (Nov 17, on the last code commit)
+- gen_comer.py: 1691 clips, 109 new, 3190 characters to record, 0 clashes; the clips of the three stories and the pair file are identical to the generator of a8df0a4 (the only change in the beats of the stories: `mira34 a="$qt"`, an act argument, not a clip).
+- matriz.sh over every draw and every plan (204 runs: 17 draws of each story, each with rr rw wr ww): 204 of 204 exit 0, 0 page errors, all finished, micdecide 0; check_estado.py: 204 runs, 0 with problems (the bitten rolls, the cesta, papá's mounds, the spoiled cups, the frog's cup all as the script counts them; estado() now also lists the children's plates, which are things on the table).
+- cual_check.py: the twelve pairs, all right and all wrong: no errors. nivel_check.py todo: no errors. app_check.py: no errors (the vibrate console line is the browser's own). habla_motor_check.py: see the report.
+- Hands farther than the arm (reposo.py prints them): a few moments of 2 to 8 px over (abuela taking her plate from behind the table, the lying fork a seated person takes up, Luis's spoon). Not fixed.
+
+## Frames
+scratchpad comer_frames5 (txt=no, PASO=8, fast 1, same six runs and draws as comer_frames4): que-quieres_rr 648 frames, que-quieres_ww 706, buen-provecho_rr 537, buen-provecho_ww 591, cafe-con-azucar_rr 673, cafe-con-azucar_ww 767; the last frame of each is the end card. The sheets hoja_*.png hold twelve frames; the twelve pairs are in pares/ and hoja_pares_*.png.
+
+## Not done / to look at with fresh eyes
+- Pairs 4 and 5 at the same pixel size as the others (see E): a cual.js change, proposal only.
+- A few hands 2 to 8 px beyond the arm (see Tests).
+- The speaker marker needed no engine change (comer.js draws it; reposo.py keeps the frame). If the engine should show a marker for NARR lines in the real game with the words on, that is juego.js and was not touched.
