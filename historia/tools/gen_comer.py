@@ -191,7 +191,7 @@ s35={"id":"cafe-con-azucar","title":"Café con azúcar","place":"La cocina","sce
              "else":[act("llena35"),act("azucar35",a="$sa")]},act("despuesA35")],
    "wrong":[act("azucar35",a="$x",mal=1,suelto=1),act("cafe35",a="$x",dedo=1,mal=1),act("ya"),act("empuja35",a="$x")]+X+["c35_no_$x"]},
   # B: say (his own cup)
-  {"dots":8},{"draw":"wb","options":["poco","mucho"],"other":"vb"},act("piensa35",k="$wb"),"c35_ab_quieres",
+  {"dots":8},{"draw":"wb","options":["poco","mucho"],"other":"vb"},act("piensa35",k="$wb"),act("pregunta35"),"c35_ab_quieres",
   {"decide":"say","options":["di_poco","di_mucho"],"baraja":True,"pick":"di_$wb","tests":"$wb","voces":VC,"said":VC,"lead":[],"line":None,
    "right":[act("sirveB35",cant="$wb"),{"if":"ok","then":[act("rana35bebe"),act("marca",que="ok")],"else":[act("bebeAb35"),{"if":"wb=mucho","then":[act("muestra35",k="taza"),act("muestra35",k="jarrita"),act("muestra35",k="cazo"),"c35_no_hay_cafe"],"else":[act("muestra35",k="taza"),act("muestra35",k="jarrita"),act("muestra35",k="cazo"),"c35_no_hay_leche"]}]}],
    "wrong":[act("sirveB35",cant="$x"),act("pruebaB35")]+X+["c35_no_$wb"]}],
