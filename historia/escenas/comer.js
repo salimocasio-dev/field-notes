@@ -580,7 +580,7 @@ const acts={
     W.gente={abuelo:{x:SILLA[1],y:ASIENTO,sent:1,dir:1,tiene:[]},papa:{x:SILLA[3],y:ASIENTO,sent:1,dir:-1,tiene:[]},luis:{x:LE[0]+2,y:LE[1]+2,dir:1,pose:"idle",tiene:taza()},carmen:{x:CAR[0],y:CAR[1],dir:1,tiene:taza()},abuela:{x:FOGON[0],y:FOGON[1],dir:-1,tiene:[]},mama:{vis:0}};W.sitio={abuelo:1,papa:3};
     W.cosas=[{id:"t_abuelo",k:"taza",x:SILLA[1],y:FILA,v:"negro",vapor:1,vdy:20},{id:"t_papa",k:"taza",x:SILLA[3],y:FILA,v:"negro",vapor:1,vdy:20},
       {id:"t_luis",k:"taza",x:K1[0],y:K1[1],v:"leche",vapor:1,vdy:20,vis:0},{id:"t_carmen",k:"taza",x:K2[0],y:K2[1],v:"leche",vapor:1,vdy:20,vis:0},
-      {id:"azucarera",k:"azucarera",x:AZU[0],y:AZU[1]},{id:"t_rana",k:"taza",x:TRANA[0],y:TRANA[1],v:"vacia",vapor:0},{id:"t_abuela",k:"taza",x:TABU[0],y:TABU[1],v:"vacia",vapor:0,vis:0},
+      {id:"azucarera",k:"azucarera",x:AZU[0],y:AZU[1]},{id:"t_rana",k:"taza",x:TRANA[0],y:TRANA[1],v:"vacia",vapor:0},{id:"t_abuela",k:"taza",x:TABU[0],y:TABU[1],v:"vacia",vapor:0},
       {id:"cafetera",k:"cafetera",x:196,y:118,vapor:1,vdx:-2,vdy:30,vn:1},{id:"cazo",k:"cazo",v:"1",x:217,y:118},{id:"jarrita",k:"jarrita",x:207,y:97},{id:"tazon",k:"tazon",v:"0",x:TAZON[0],y:TAZON[1]}];
     W.perro={x:CANELO[0],y:CANELO[1],pose:"lie",dir:-1};W.pote={};
     Object.assign(W.cq,{x:CASA35[0]-16,y:CASA35[1]-27,s:1,sobre:1,dy:0,vis:1,tiene:[SPA()],lleno:0,espalda:0,piensa:null,nube:[84,124],ndir:1});},
@@ -589,16 +589,16 @@ const acts={
     await ruta("abuela",[[200,146],[188,ATRAS],[150,ATRAS],[138,ASIENTO-2]]);ab.dir=-1;},
   async vuelve35(o){const ab=G("abuela"),ce=ob("cafetera");ab.tiene=[TENE("cafetera",0,24,{arm:1,gx:12,gy:22})];await ruta("abuela",[[150,ATRAS],[188,ATRAS],[200,146],[FOGON[0],FOGON[1]]]);ab.dir=-1;ab.pose="offer";await wait(200);ab.tiene=[];ce.vis=1;ab.pose="idle";SFX.blip();},
   // the men hold their cups out over the table; or set them down
-  async tienden35(o){for(const id of String(o.a).split(",")){const t=copa(id),p=G(id);t.vis=0;p.tiene=[TENE("taza",3,19,{v:t.v,vapor:t.vapor,arm:1,gx:9,gy:17,sp:t.sp})];}SFX.blip();await wait(400);},
+  async tienden35(o){for(const id of String(o.a).split(",")){const t=copa(id),p=G(id);t.vis=0;p.tiene=[TENE("taza",4,-6,{v:t.v,vapor:t.vapor,arm:1,gx:12,gy:-4,sp:t.sp})];}SFX.blip();await wait(400);},
   async bajan35(o){for(const id of String(o.a).split(",")){const t=copa(id),p=G(id),it=p.tiene&&p.tiene[0];if(it){t.v=it.v;t.vapor=it.vapor;}p.tiene=[];t.vis=1;}await wait(200);},
   // the frog tips the heaped spoon into a cup (mal: it already had its sugar: two heaps), stirs; the sweetened cup keeps its spoon
-  async azucar35(o){const id=o.a,t=copa(id),q=W.cq,p=G(id),mal=+o.mal;const pr=(async()=>{const hold=p.tiene&&p.tiene[0],cup=hold?hold:null;const px=cup?p.x+3:t.x;
-      const sx=px<130?px-22:px-22;await ranaA(sx,152);const sp=q.tiene.find(i=>i.k==="uten");await bolaA(sp,22,38,5);
-      sp.load="";SFX.blip();for(let i=0;i<3;i++){W.vuelos.push({k:"granos",x:px+1,y:112+i*5,e:1});await wait(110);W.vuelos.pop();}
+  async azucar35(o){const id=o.a,t=copa(id),q=W.cq,p=G(id),mal=+o.mal;const pr=(async()=>{const hold=p.tiene&&p.tiene[0],cup=hold?hold:null,dd=p.dir<0?-1:1;const px=cup?p.x+dd*cup.dx:t.x,top=cup?p.y-cup.dy-9:t.y-17;
+      await ranaA(px-22,166);const sp=q.tiene.find(i=>i.k==="uten");await bolaA(sp,22,166-top+6,5);
+      sp.load="";SFX.blip();for(let i=0;i<3;i++){W.vuelos.push({k:"granos",x:px+1,y:top-8+i*4,e:1});await wait(110);W.vuelos.pop();}
       if(cup){if(mal)cup.v="azu";else cup.sp=1;}else{if(mal)t.v="azu";else t.sp=1;}
       for(let k=0;k<3;k++){sp.bx=22+(k%2?3:-3);await wait(TICK);}await bolaA(sp,30,22,3);})();return corre(o,pr);},
   // abuela pours coffee into a cup from the big pot (mal: the last finger, into the same cup)
-  async cafe35(o){const id=o.a,t=copa(id),ab=G("abuela"),p=G(id);const pr=(async()=>{const cup=p.tiene&&p.tiene[0],cxx=cup?p.x+3:t.x,left=cxx<ab.x,tx=cxx+(left?7:-7),ty=(cup?p.y-12:t.y)-24;ab.dir=left?-1:1;
+  async cafe35(o){const id=o.a,t=copa(id),ab=G("abuela"),p=G(id);const pr=(async()=>{const cup=p.tiene&&p.tiene[0],dd=p.dir<0?-1:1,cxx=cup?p.x+dd*cup.dx:t.x,left=cxx<ab.x,tx=cxx+(left?7:-7),ty=cup?p.y-cup.dy-17-5:t.y-24;ab.dir=left?-1:1;
       const up=ab.tiene[0],tilt=vierteItem(ab,"cafetera","",tx,ty,!left,12,"#2A160C");ab.tiene=[tilt];SFX.blip();await wait(+o.dedo?600:1000);
       if(cup){if(+o.mal)cup.v="azu";}else{if(+o.mal)t.v="azu";}
       ab.tiene=[up];await wait(150);})();return corre(o,pr);},
@@ -606,7 +606,7 @@ const acts={
   async prueba35(o){for(const id of String(o.a).split(",")){const p=G(id);p.dy=-2;await wait(150);p.dy=0;await wait(150);}},
   // he looks into his cup, and pushes it to the middle of the table
   async empuja35(o){const id=o.a,p=G(id),it=p.tiene&&p.tiene[0],t=copa(id);await wait(500);p.cara="mal";SFX.bonk();
-    if(it){it.vapor=0;it.v="azu";t.v="azu";t.vapor=0;t.vis=1;it.vis=0;}const x0=t.x,y0=t.y;p.tiene=[TENE("brazo",0,0,{k:"brazo",gx:8,gy:12,sh:1})];for(let i=1;i<=8;i++){t.x=x0+(130-x0)*i/8;t.y=y0+(MED-y0)*i/8;p.tiene[0].gx=8+(t.x-x0)*(p.dir<0?-1:1);p.tiene[0].gy=12+(y0-t.y);await wait(TICK);}p.tiene=[];await wait(300);p.cara=null;},
+    if(it){const dd=p.dir<0?-1:1;it.vapor=0;it.v="azu";t.v="azu";t.vapor=0;t.x=p.x+dd*it.dx;t.y=p.y-it.dy+9;t.vis=1;it.vis=0;}const x0=t.x,y0=t.y;p.tiene=[TENE("brazo",0,0,{k:"brazo",gx:8,gy:12,sh:1})];for(let i=1;i<=8;i++){t.x=x0+(130-x0)*i/8;t.y=y0+(MED-y0)*i/8;p.tiene[0].gx=8+(t.x-x0)*(p.dir<0?-1:1);p.tiene[0].gy=12+(y0-t.y);await wait(TICK);}p.tiene=[];await wait(300);p.cara=null;},
   // abuela gives the frog the little pot: she takes it from the shelf and sets it where he can take it; the children set their cups of milk in front of the frog (ponen), go out (salen), come back (vuelven) and drink (toman)
   async pote35(o){const ab=G("abuela"),jt=ob("jarrita"),q=W.cq;ab.dir=-1;ab.pose="wave0";await wait(250);jt.vis=0;ab.tiene=[TENE("jarrita",18,54,{arm:1,gx:13,gy:46})];SFX.blip();await wait(250);ab.pose="idle";
     await ruta("abuela",[[DER[0],DER[1]+6],[TRANA[0]+36,186]]);ab.dir=-1;ab.pose="offer";await wait(250);
@@ -687,8 +687,9 @@ const acts={
   // the ending: everybody drinks; a spoiled cup stands in the middle of the table; abuela drinks at the stove
   async final35(o){const ab=G("abuela");
     await Promise.all([entra("luis",LE[0],LE[1],1),entra("carmen",CAR[0],CAR[1],1)]);
+    const ninos=acts.ninos35({que:"toman"});
     const pr=(async()=>{for(const id of ["abuelo","papa"]){const t=copa(id),p=G(id);if(t.v!=="azu"&&t.vis!==0){t.vis=0;p.tiene=[TENE("taza",14,30,{v:t.v,vapor:1})];p.bebe2=t.v;}}await wait(1000);for(const id of ["abuelo","papa"]){const t=copa(id),p=G(id);if(p.bebe2){p.bebe2=null;p.tiene=[];t.vis=1;t.v="vacia";t.vapor=0;}}})();
-    ab.sent=1;ab.taburete=1;ab.tiene=[TENE("taza",16,22,{v:copa("abuela").v,vapor:copa("abuela").v!=="vacia"?1:0})];V.cafe=copa("abuela").v!=="vacia"?"1":"";await pr;W.cq.hace=null;await wait(500);},
+    ab.sent=1;ab.taburete=1;ab.tiene=[TENE("taza",16,22,{v:copa("abuela").v,vapor:copa("abuela").v!=="vacia"?1:0})];V.cafe=copa("abuela").v!=="vacia"?"1":"";await pr;await ninos;W.cq.hace=null;await wait(500);},
 
   // everything at once, to look at the drawing
   async prueba(o){W.gente={};W.cosas=[];}
