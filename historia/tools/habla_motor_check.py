@@ -223,7 +223,7 @@ async def main():
         ck("hang: stop() was called, and abort() when stop() was not enough",r["fake"][1]["stop"]>=3 and r["fake"][1]["abort"]>=2,r["fake"][1])
         bs=r.get("bs",{}); rd,li,pr=bs.get("ready"),bs.get("listening"),bs.get("processing")
         ck("the bubble agrees with the button: ready, the mic icon, not moving",bool(rd) and rd["svg"] and not rd["dt"] and rd["an"]=="none",rd)
-        ck("the bubble agrees with the button: listening, a green mic icon that pulses (as the button does), the bubble the same size",bool(rd and li) and li["svg"] and not li["dt"] and li["an"]=="bubmic" and li["col"]=="rgb(23, 128, 63)" and (li["w"],li["h"])==(rd["w"],rd["h"]),(rd,li))
+        ck("the bubble agrees with the button: listening, a coral red mic icon that pulses (as the button does), the bubble the same size",bool(rd and li) and li["svg"] and not li["dt"] and li["an"]=="bubmic" and li["col"]=="rgb(217, 48, 37)" and (li["w"],li["h"])==(rd["w"],rd["h"]),(rd,li))
         ck("the bubble agrees with the button: processing, the same three pulsing dots (no mic icon), the bubble the same size",bool(rd and pr) and pr["dt"] and not pr["svg"] and pr["dan"]=="micdot" and (pr["w"],pr["h"])==(rd["w"],rd["h"]),(rd,pr))
 
         r=r2["elige_listen"]; base("elige: touched while the mic is listening",r)
@@ -318,8 +318,8 @@ async def main():
             if "ready" in m and "listening" in m:
                 lum=lambda c:(lambda v:0.2126*v[0]+0.7152*v[1]+0.0722*v[2])([((x/255)/12.92 if x/255<=0.03928 else (((x/255)+0.055)/1.055)**2.4) for x in map(int,c[c.index("(")+1:c.index(")")].split(",")[:3])])
                 ring=m["listening"]["a"]["c"]; cr=(lum(ring)+0.05)/(lum("rgb(27, 27, 31)")+0.05)
-                ck("listening "+tag+": the disc is another colour than ready, with two rings spreading outside it",m["listening"]["bg"]!=m["ready"]["bg"] and m["listening"]["f"]["an"]=="micring" and m["listening"]["a"]["an"]=="micring" and m["listening"]["a"]["w"]=="4px",(m["ready"]["bg"],m["listening"]["bg"],m["listening"]["f"]["an"]))
-                ck("listening "+tag+": a steady bright ring stands just outside the disc (ready has none)","rgb(61, 220, 132)" in m["listening"]["shadow"] and "rgb(61, 220, 132)" not in m["ready"]["shadow"],(m["ready"]["shadow"],m["listening"]["shadow"]))
+                ck("listening "+tag+": the disc is coral red, not the green of ready and of the tick, with two rings spreading outside it",m["listening"]["bg"]=="rgb(255, 90, 95)" and m["ready"]["bg"]=="rgb(23, 128, 63)" and m["listening"]["f"]["an"]=="micring" and m["listening"]["a"]["an"]=="micring" and m["listening"]["a"]["w"]=="4px",(m["ready"]["bg"],m["listening"]["bg"],m["listening"]["f"]["an"]))
+                ck("listening "+tag+": a steady coral ring stands just outside the coral disc (ready is green and has none)","rgb(255, 90, 95)" in m["listening"]["shadow"] and "rgb(255, 90, 95)" not in m["ready"]["shadow"],(m["ready"]["shadow"],m["listening"]["shadow"]))
                 ck("listening "+tag+": the ring is at least 3:1 against the screen (the UI plan's non-text contrast); it is %.1f:1"%cr,cr>=3,round(cr,1))
             if "ok" in m: ck("tick "+tag+": it is a status, not a button (no fill, no shadow, takes no touch)",m["ok"]["bg"] in("rgba(0, 0, 0, 0)","transparent") and m["ok"]["shadow"]=="none" and m["ok"]["pe"]=="none" and m["ok"]["bw"]=="3px",m["ok"])
             else: ck("tick "+tag+": it was seen",False)

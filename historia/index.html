@@ -50,9 +50,9 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #mic[data-s=dead],#mic[data-s=processing]{background:#2B2B33}
 #mic[data-s=dead] .im{color:#A7A7B0}
 #mic[data-s=ready]:active{transform:scale(.96)}
-/* listening: a bright disc with a dark mic, a steady bright ring just outside it, and two more that spread well outside the button (a timer, not the voice level). Ready is a dark green disc with a white mic and no rings */
-#mic[data-s=listening]{background:#3DDC84;color:#0B2A17;box-shadow:0 0 0 5px var(--bg),0 0 0 8px #3DDC84,0 4px 16px rgba(0,0,0,.35);animation:micpul 1.2s ease-in-out infinite}
-#mic[data-s=listening]::before,#mic[data-s=listening]::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid #3DDC84;animation:micring 1.2s ease-out infinite;pointer-events:none}
+/* listening is the recording colour, coral red (5.6:1 on the screen): a coral disc with a dark mic, a steady coral ring just outside it, and two more that spread well outside the button (a timer, not the voice level). Ready stays dark green with a white mic and no rings; the green tick means heard */
+#mic[data-s=listening]{background:#FF5A5F;color:#2B0A0C;box-shadow:0 0 0 5px var(--bg),0 0 0 8px #FF5A5F,0 4px 16px rgba(0,0,0,.35);animation:micpul 1.2s ease-in-out infinite}
+#mic[data-s=listening]::before,#mic[data-s=listening]::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid #FF5A5F;animation:micring 1.2s ease-out infinite;pointer-events:none}
 #mic[data-s=listening]::after{animation-delay:-.6s}
 /* the tick is a status, not a button: an outline with a green tick, no fill, no shadow */
 #mic[data-s=ok]{background:transparent;box-shadow:none;border:3px solid #3DDC84;color:#3DDC84;cursor:default;pointer-events:none}
@@ -77,8 +77,8 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #bub[data-mic]{display:flex;align-items:center;justify-content:center;gap:8px;min-width:56px;min-height:44px}   /* a speaking turn: the bubble holds only a mic, or a tick (and his words) */
 #bub[data-mic] svg{flex:none;width:28px;height:28px;color:#2A1810}
 #bub[data-mic=ok] svg{color:#17803F}
-/* the bubble follows the button: while he is listened to the mic icon is green and pulses with the button; while the app thinks the bubble shows the same three dots (28 px, so the bubble keeps its size) */
-#bub[data-e=listening] svg{color:#17803F;animation:bubmic 1.2s ease-in-out infinite}
+/* the bubble follows the button: while he is listened to the mic icon is coral red (4.8:1 on white) and pulses with the button; while the app thinks the bubble shows the same three dots (28 px, so the bubble keeps its size) */
+#bub[data-e=listening] svg{color:#D93025;animation:bubmic 1.2s ease-in-out infinite}
 #bub .dt{flex:none;display:flex;align-items:center;justify-content:center;gap:4px;width:28px;height:28px}
 #bub .dt i{width:6px;height:6px;border-radius:50%;background:#2A1810;animation:micdot .9s ease-in-out infinite}
 #bub .dt i:nth-child(2){animation-delay:.15s}#bub .dt i:nth-child(3){animation-delay:.3s}
