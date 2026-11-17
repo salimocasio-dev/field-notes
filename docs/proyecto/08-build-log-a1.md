@@ -4,9 +4,10 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=35
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=37
+- Voice test for speaking turns: historia/habla-prueba.html?v=1
 - Story 1 directly: historia/?v=35 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=35 in index.html, cual.html, app.html and nivel.html (app.html also loads llamada.js). Raise all four when a script changes.
+- Script tags carry ?v=35 in index.html, cual.html, app.html and nivel.html (app.html also loads llamada.js). Raise all four when a script changes. Exception: v=36 and v=37 changed only llamada.js, so only its tag in app.html was raised (to ?v=37); the others stay at ?v=35.
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
 
 ## Script lessons so far (what reviewers have caught; check every new script against this before it goes to them)
@@ -50,15 +51,56 @@ Pairs
 
 ## In work, Nov 14: place 3, scene 4, A comer (stories 33 to 35)
 
-Paused at the owner's word. Not built. Script: historia/notas/guiones/comer.md, draft 3 (commit c718c42), after two rounds of reviews (beginner and Puerto Rican Spanish each round); the decisions that made draft 3 are in historia/notas/guiones/comer-decisiones-3.md. Open before the last gate: 34 B (one mound or two when Luis serves), the pairs for "quieres" and "buen provecho", and "No tengo…" heard only twice before the game.
+Not live. Paused at draft 3 on Nov 14 at the owner's word; since then the script was finished and the scene built on the branch ccr-2871b5d2-axaw8h. Its state is in part 19 below. Script (final): historia/notas/guiones/comer.md; decisions: comer-decisiones-3.md to comer-decisiones-7.md in the same folder.
 
 How the work runs from Nov 14: one orchestrating session makes every decision; builder agents execute. Their runbook is historia/notas/runbook-agentes.md. The test helpers moved from the scratchpad into historia/tools/: matriz.sh (logs in $MATRIZ_LOGS), hojas.py, sel.py, nivel_check.py, app_check.py, beside juega.py and cual_check.py.
 
 Size, Nov 14 (estimates): 32 stories built (about 2 h 25 min played once, about 5 hours with the replays), about 1 hour of Escuchar, 128 picture pairs, a level check of 48 items: about 6 hours a learner can spend. The plan for all of A1 is about 100 stories and about 40 hours of Escuchar, so about 11% of the hours and about 32% of the stories are built.
 
+## Nov 16 to 17, part 19: his first real calls with Danny, v=36 and v=37, the voice test, A comer built
+
+State on Nov 17. Live: v=37. Not live: the speaking turns engine and A comer (branch ccr-2871b5d2-axaw8h).
+
+### His first two real calls (Nov 16)
+
+- The owner made two calls on the live page, prompt version agtvrsn_4201m7k03faweq19n82pqx1zenw5 (fix 6). About 1,000 credits for both.
+- Call 2: Danny did the whole job in 35 s and said goodbye himself, then a goodbye loop for 20 s. The page only ended a call on a goodbye from 120 s, and Danny cannot hang up.
+- Replies took 3 to 4.7 s on turns where the model reasoned (about 1 s on the others).
+- The page sent only 8 words as open.
+- Call 1 picked up background English (a guess: another person or a car). Nothing to fix.
+- The conversation ids and what each call showed are in historia/notas/danny-prompt-v3.md, section 9 (on the branch).
+
+### Fixes, live
+
+- v=36 (commit ec993a8), llamada.js: any learner adiós or hasta mañana ends the call after Danny's next line, at any time (the page sends "(fin)" at once and hangs up after his next line; the 15 s cap stays; the 120 s guard is gone). A goodbye from Danny alone (adiós or hasta mañana in his own line) ends the call after that line, and nothing is sent. words_open is all 50 La casa words; words_heard is empty. The stub has three new cases for this, and llamada_check.py covers them: 178 checks pass, 0 failed.
+- v=37 (commit 00e176c): La casa's job text no longer asks Danny to say goodbye.
+- Only llamada.js and the llamada.js tag in app.html changed, so the other script tags stay at ?v=35. Live link: historia/app.html?v=37.
+- Danny's prompt, fix 7 (historia/notas/danny-prompt-v3.md, section 9, on branch ccr-2871b5d2-axaw8h): he never starts the goodbye. After the job he goes through the open words, one at a time, with a picture and "¿Qué es esto?", and goes back over part of the job every fourth word (the greeting, the name, the drink). Live version agtvrsn_6101m7ke5jw1e359681bw18yk2x4 (866 words, 4,572 characters; before 702 words, 3,718).
+- The LLM's reasoning_effort is set to "low". The platform refuses "none" for this model, and a thinking budget of 0 does not stay. Before, it was unset, which was not the same as off (the slow turns).
+- No test credits were spent. Untested until his next call. What to look for: no goodbye from Danny until he says one; his adiós ends the call after Danny's next line; after the job the pictures and "¿Qué es esto?"; replies under about 2 s.
+- Part 18 below describes v=35. Where it differs (the end of the call, which words are open), this section wins.
+
+### Calls of other places on hold
+
+- The calls of El parque and La cocina wait until he confirms La casa's call works. His words: "you aren't even sure if the first call is right".
+
+### Voice test for speaking turns (live)
+
+- historia/habla-prueba.html?v=1 (commit 64752db; order 2 of docs/hablar/04-encargo.md). 141 machine checks pass.
+- Waiting for his number. 10 or more of 12 heard right: go on (order 3). Fewer than 10: stop and report.
+- Not live: the speaking turns engine (order 1), being built on the branch. Marking the 31 stories (order 4) comes after his number.
+
+### A comer (place 3, scene 4; stories 33 ¿Qué quieres?, 34 Buen provecho, 35 Café con azúcar): built on the branch, not live
+
+- The script is final: historia/notas/guiones/comer.md, after decisions 4 to 7 (comer-decisiones-4.md to comer-decisiones-7.md). Scene: historia/escenas/comer.js. Generator: historia/tools/gen_comer.py. 3,190 characters of new audio.
+- Machine checks: 204 runs, 140 picture pairs, the level check, all pass.
+- The first fresh wordless readers found many pictures that do not read. Story 33: the chocolate reads as a toaster. Story 34: the "full" thought bubble reads as "wants more". Story 35: the cups read as dishes, so coffee, milk and sugar cannot be told apart. 6 of the 12 picture pairs. Things move with nobody moving them.
+- A fix is under way. Fresh readers look again after it.
+- Per his Nov 16 ask, A comer also gets 2 to 4 speaking turns per story (docs/hablar/03-para-historias-nuevas.md) before it is published.
+
 ## Nov 16, part 18: UI rounds 1 to 3, and the call with Danny
 
-Live at ?v=35. The UI rounds went out at v=34 (Nov 14); the call is new at v=35.
+Live at ?v=35 when written; the call has been at v=37 since Nov 17 (part 19 above). The UI rounds went out at v=34 (Nov 14); the call is new at v=35.
 
 ### UI rounds 1 to 3 (v=34)
 
@@ -660,7 +702,7 @@ Live at ?v=22. Scripts (final, draft 3): historia/notas/guiones/sala.md.
 
 ## Next, in the order of page 07
 
-1. Place 3, scene 4: A comer (paused at script draft 3; see "In work" above).
+1. His voice test number and his next La casa call; then place 3, scene 4: A comer (built on the branch, its picture fixes and fresh readers, then 2 to 4 speaking turns a story; see part 19 above).
 2. Places 4 to 10 (page 02). 3. The fort check.
-- Done since page 07 was written: place 1 complete with its call with Danny (v=35), the level check, El parque, three of the four scenes of La cocina.
+- Done since page 07 was written: place 1 complete with its call with Danny (v=37 after his first two calls), the level check, El parque, three of the four scenes of La cocina.
 - Also open: the rest of the UI plan (09); the 85% difficulty tuning; the plan doc's game tab fixes ("porch lamp", "nothing is built"); the calls of places 2 to 10.
