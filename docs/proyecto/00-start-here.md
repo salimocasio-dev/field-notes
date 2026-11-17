@@ -27,8 +27,11 @@ State on Nov 17 2026, during the second build session (the one finishing A1). Re
     - Fixed and live, untested until his next call: v=36 and v=37. Any learner adiós or hasta mañana ends the call after Danny's next line, at any time; a goodbye from Danny alone ends it after that line; all 50 La casa words go as open. Danny's prompt fix 7: he never starts the goodbye; after the job he goes through the open words with a picture and "¿Qué es esto?", going back over part of the job every fourth word. LLM reasoning set to "low" ("none" is refused by the platform). No test credits were spent.
     - A call cannot be placed from localhost: the agent only connects from the published site. The screens are checked with a stub (?callstub=1). Page 05.
     - Danny's brief for place calls is prompt v3: historia/notas/danny-prompt-v3.md. Fix 7 (Nov 17) is section 9 of it, on branch ccr-2871b5d2-axaw8h. Live agent version agtvrsn_6101m7ke5jw1e359681bw18yk2x4 (866 words, 4,572 characters).
-- **Live (Nov 17): the voice test for speaking turns, historia/habla-prueba.html?v=1** (commit 64752db; 141 machine checks pass). He taps the mic and says 12 lines. Waiting for his number.
-- **Not live (Nov 17), on branch ccr-2871b5d2-axaw8h:** the speaking turns engine (order 1 of docs/hablar/04-encargo.md, being built) and A comer, place 3, scene 4, stories 33 to 35 (built, its pictures being fixed; see next steps).
+- **Live (Nov 17): the voice test for speaking turns: https://salimocasio-dev.github.io/field-notes/historia/habla-prueba.html?v=1** (commit 64752db; 141 machine checks pass). He taps the mic and says 12 lines. Waiting for his number.
+- **Not live (Nov 17), on branch ccr-2871b5d2-axaw8h:** the speaking turns engine (order 1 of docs/hablar/04-encargo.md) and A comer, place 3, scene 4, stories 33 to 35.
+    - A comer: the script is final. All six speaking turns are built and machine-tested (every turn fires once after its set-up line; all right and all missed both pass; habla_motor_check 186/186; matrix 576 runs, 0 problems).
+    - A comer pictures: four rounds of fixes, each judged by fresh readers with no sound and no words. After round 4 the three stories read from start to end. Round 5 is running.
+    - A comer stays on the branch until the pictures pass the readers. Then it is published. Page 08, part 20.
 - **Live (Nov 13): the app to his UI plan, all eleven stories of place 1, La casa, as games (El frente 1 to 3, El balcón 4 and 5, La sala 6 to 8, El patio 9 to 11), word records with the scheduler, and the next-day ¿Cuál? pass for all four scenes.**
     - El balcón: El jugo (silla, se sienta, vaso, jugo, agua, toma) and ¡Qué calor! (quiero, por favor, gracias, de nada, ¿cómo estás?, bien). New in the game: answer bubbles that speak, for words that cannot be drawn. Page 08, part 5.
     - La sala: La familia (mamá, papá, abuelo, bebé, familia), La foto (hermano, hermana, él, ella), ¿Quién eres tú? (yo, tú, soy, eres, me llamo). The family are drawn people. Story 8 opens with one English card. Page 08, part 6.
@@ -54,8 +57,8 @@ State on Nov 17 2026, during the second build session (the one finishing A1). Re
 ## Waiting on Salim
 
 - How the app, stories 1 to 11, ¿Cuál? and the call with Danny feel and sound. Nothing is blocking.
-- His number from the voice test: https://salimocasio-dev.github.io/field-notes/historia/habla-prueba.html?v=1 . 10 or more of 12 heard right and the speaking turns go on; fewer and they stop (docs/hablar/04-encargo.md, order 3).
-- His next call with Danny on the live page (v=37, Hablar, La casa). Nobody can try it for him: it needs his microphone and the published site. His own words: "you aren't even sure if the first call is right", so the calls of El parque and La cocina wait until he confirms La casa's works.
+- His number from the voice test: https://salimocasio-dev.github.io/field-notes/historia/habla-prueba.html?v=1 . 10 of 12 or more and the 31 older stories get marked for speaking turns; fewer and the turns stop (docs/hablar/04-encargo.md, order 3).
+- His next call with Danny on the live page (https://salimocasio-dev.github.io/field-notes/historia/app.html?v=37, Hablar, La casa). Nobody can try it for him: it needs his microphone and the published site. His own words: "you aren't even sure if the first call is right", so the calls of El parque and La cocina wait until he confirms La casa's works.
 - His yes was given on Nov 16 for up to 6,000 ElevenLabs credits (about $1) on simulated test calls. Tell him the amount before any more is spent. His own calls cost about 650 credits a minute. No test credits have been spent for v=36, v=37 or fix 7.
 - His word on "salta" (asked Nov 13, night): his list says "salta"; in Puerto Rico the everyday word is "brinca". The stories use "salta" until he says otherwise. Also told: "el campo" means the countryside in Puerto Rico, so the stories say "el parque"; the scene keeps his name for it.
 - Told him (Nov 14): "pato" is also an insult in Puerto Rico when called at a person; the stories only ever say "el pato" / "un pato" of a duck. His list has "vuela" and "nada"; people say "está volando" / "está nadando" for something happening now; the stories keep his forms. "¿Quién nada?" and "¡El pato nada!" must be said in one breath or "nada" is heard as "nothing": only he can hear whether the voice does.
@@ -67,14 +70,20 @@ State on Nov 17 2026, during the second build session (the one finishing A1). Re
 
 ## Next steps, in order
 
-In short: his voice test number and his next La casa call; A comer (picture fixes, fresh readers, speaking turns); the speaking turns engine; marking the 31 stories; publish; then places 4 to 10, then the fort check.
+In short: his voice test number and his next La casa call; A comer (picture round 5 and fresh readers, then publish); marking the 31 stories; then places 4 to 10, then the fort check.
 
 **His ask, Nov 16 (applies to every story from A comer on):** "we should probably put some speaking prompts in the next stories that use the previously learned vocabulary." So each new story includes moments where he says a line out loud, using words from earlier scenes whose ear record has held 2 to 3 days (the coquí's lines are the natural place), and the app hears it. Never a self-report button. Needs speech recognition on the story page (the phone's built-in recognition is free; the voice test checks how well it hears his Spanish first). Words he says go to their mouth record. He also confirmed the design: speaking with Danny comes after a place's stories. The decisions and the work orders are in docs/hablar/ (01 to 04).
 
-1. **His voice test number and his next La casa call.** The test is live (habla-prueba.html?v=1). 10 or more of 12: go on. Fewer than 10: stop and report the lines and what was heard; do not change the settings or the accepted forms. His next call at v=37 shows whether the fixes hold: no goodbye from Danny until he says one, the call ends after his adiós, replies under about 2 s (a turn over 2 s means reasoning is still running), the review of the open words with pictures. No call for El parque or La cocina until he confirms La casa's works.
-2. **A comer: the picture fixes, then fresh readers look again.** Place 3, scene 4; stories 33 ¿Qué quieres?, 34 Buen provecho, 35 Café con azúcar. The script is final (historia/notas/guiones/comer.md, after decisions 4 to 7) and built on the branch: scene historia/escenas/comer.js, generator historia/tools/gen_comer.py, 3,190 characters of new audio; 204 machine runs, 140 pairs, the level check all pass. The first fresh wordless readers found many pictures that do not read: story 33's chocolate reads as a toaster; story 34's "full" thought bubble reads as "wants more"; story 35's cups read as dishes, so coffee, milk and sugar cannot be told apart; 6 of the 12 picture pairs; things move with nobody moving them. A fix is under way; fresh readers look again after it. Not live.
-3. **Speaking turns in A comer, and their reviews.** Per his Nov 16 ask, 2 to 4 per story (docs/hablar/03-para-historias-nuevas.md), before A comer is published. They are part of the script review and of the machine tests (04-encargo.md, "New stories from now on").
-4. **The speaking turns engine** (order 1 of docs/hablar/04-encargo.md). Being built on the branch. Not live.
+1. **His voice test number and his next La casa call.** The test is live (https://salimocasio-dev.github.io/field-notes/historia/habla-prueba.html?v=1). 10 or more of 12: go on. Fewer than 10: stop and report the lines and what was heard; do not change the settings or the accepted forms. His next call at v=37 (https://salimocasio-dev.github.io/field-notes/historia/app.html?v=37) shows whether the fixes hold: no goodbye from Danny until he says one, the call ends after his adiós, replies under about 2 s (a turn over 2 s means reasoning is still running), the review of the open words with pictures. No call for El parque or La cocina until he confirms La casa's works.
+2. **A comer: the pictures, then publish.** Place 3, scene 4; stories 33 ¿Qué quieres?, 34 Buen provecho, 35 Café con azúcar. Not live.
+    - The script is final (historia/notas/guiones/comer.md, after decisions 4 to 7). Built on the branch: scene historia/escenas/comer.js, generator historia/tools/gen_comer.py.
+    - Pictures: four rounds of fixes, commits a01301e (round 2) to 18ed1ba (round 4) on the branch, each judged by fresh readers with no sound and no words (txt=no).
+    - After round 4 the three stories read from start to end: who asks, who speaks, what is lost, the counts.
+    - Left: layering, reach, some actions still out of view, and three pairs (rico, azúcar, un poco). Round 5 is running.
+    - Not published: A comer stays on the branch until the pictures pass the readers. Then publish (item 6): merge main, raise ?v=, push to main, send him the link.
+    - Audio: 3,190 characters to record on Azure when it is published, within the free 500,000 a month. Nothing spent yet.
+3. **Speaking turns in A comer: built and machine-tested** (commit 711ba4f). Six turns: story 33 bien, gracias; story 34 lleno, papá; story 35 bien, gracias. Every turn fires once after its set-up line; all right and all missed both pass; habla_motor_check 186/186; matrix 576 runs, 0 problems. The turn lines reuse recorded clips, so no new audio. Per his Nov 16 ask, every new story from now on gets them (docs/hablar/03-para-historias-nuevas.md).
+4. **The speaking turns engine** (order 1 of docs/hablar/04-encargo.md). On the branch, with its machine check (habla_motor_check, 186/186). Not live.
 5. **Marking the 31 stories** (order 4), only after his voice test passes (item 1). Then the machine tests and the reviews (orders 5 and 6).
 6. **Publish** (order 7): push, check the live site, send him the link with a new ?v= number and one line per point: what changed, what was checked, what is a guess.
 7. Place 1: all four scenes, eleven stories, a first set of Escuchar and the call with Danny are done (v=37). The reading texts are in the Library (each story carries its lines). Still to do for place 1: more Escuchar sets toward the plan's 4 hours, and whatever his next call shows.
@@ -102,6 +111,8 @@ In short: his voice test number and his next La casa call; A comer (picture fixe
 
 - Plan doc, the one Salim reads and comments on: https://claude.ai/artifact/DAUEyjyynrQe5x1uZRFKcJ (if it and these pages differ, the doc wins)
 - UI plan doc (his): https://docs.google.com/document/d/1oYSXXDBPCQhxDJ3IbrvKfI7LC2eDjCPhOW8Ljs9BEm0
+- Live app (v=37): https://salimocasio-dev.github.io/field-notes/historia/app.html?v=37
+- Live voice test (v=1): https://salimocasio-dev.github.io/field-notes/historia/habla-prueba.html?v=1
 - Code: https://github.com/salimocasio-dev/field-notes (public; main is the live site)
 - Research reports in his Google Drive: links in 01-plan, "Sources".
 

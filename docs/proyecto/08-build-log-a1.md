@@ -51,11 +51,48 @@ Pairs
 
 ## In work, Nov 14: place 3, scene 4, A comer (stories 33 to 35)
 
-Not live. Paused at draft 3 on Nov 14 at the owner's word; since then the script was finished and the scene built on the branch ccr-2871b5d2-axaw8h. Its state is in part 19 below. Script (final): historia/notas/guiones/comer.md; decisions: comer-decisiones-3.md to comer-decisiones-7.md in the same folder.
+Not live. Paused at draft 3 on Nov 14 at the owner's word; since then the script was finished and the scene built on the branch ccr-2871b5d2-axaw8h. Its state is in part 20 below (part 19 has the first build). Script (final): historia/notas/guiones/comer.md; decisions: comer-decisiones-3.md to comer-decisiones-7.md in the same folder.
 
 How the work runs from Nov 14: one orchestrating session makes every decision; builder agents execute. Their runbook is historia/notas/runbook-agentes.md. The test helpers moved from the scratchpad into historia/tools/: matriz.sh (logs in $MATRIZ_LOGS), hojas.py, sel.py, nivel_check.py, app_check.py, beside juega.py and cual_check.py.
 
 Size, Nov 14 (estimates): 32 stories built (about 2 h 25 min played once, about 5 hours with the replays), about 1 hour of Escuchar, 128 picture pairs, a level check of 48 items: about 6 hours a learner can spend. The plan for all of A1 is about 100 stories and about 40 hours of Escuchar, so about 11% of the hours and about 32% of the stories are built.
+
+## Nov 17, part 20: A comer, the speaking turns built and tested, four rounds of picture fixes
+
+State on Nov 17. Live: v=37 and the voice test (historia/habla-prueba.html?v=1). Not live: A comer, on the branch ccr-2871b5d2-axaw8h. Where this part and part 19 differ on A comer, this part wins.
+
+### Speaking turns (built, machine-tested)
+
+- The script is final with six speaking turns, two in each story. The words he says: story 33 bien, gracias; story 34 lleno, papá; story 35 bien, gracias.
+- All six are built. Every turn fires once, after its set-up line.
+- All right and all missed both pass.
+- habla_motor_check: 186 of 186. The matrix: 576 runs, 0 problems.
+- The turn lines reuse clips that are already recorded. No new audio for the turns.
+- Commit 711ba4f (turns). The speaking turns engine is on the branch too. Not live.
+
+### Pictures (four rounds of fixes)
+
+- Each round was judged by fresh readers with no sound and no words (?txt=no).
+- Commits on the branch: from a01301e (round 2) to 18ed1ba (round 4).
+- After round 4 the three stories read from start to end: who asks, who speaks, what is lost, the counts.
+- Left: layering, reach, some actions still out of view, and three pairs (rico, azúcar, un poco).
+- Round 5 is running.
+
+### Audio
+
+- 3,190 characters to record on Azure when A comer is published. Within the free 500,000 a month.
+- Nothing spent yet.
+
+### Not published
+
+- A comer stays on the branch until the pictures pass the readers.
+- Then publish: merge main, raise ?v=, push to main. Send him the link.
+
+### Waiting on the owner
+
+- His voice test score (historia/habla-prueba.html?v=1). 10 of 12 or more opens the marking of the 31 older stories for speaking turns.
+- His next La casa call with Danny (historia/app.html?v=37).
+- The El parque and La cocina calls stay on hold until he confirms La casa works.
 
 ## Nov 16 to 17, part 19: his first real calls with Danny, v=36 and v=37, the voice test, A comer built
 
@@ -97,6 +134,7 @@ State on Nov 17. Live: v=37. Not live: the speaking turns engine and A comer (br
 - The first fresh wordless readers found many pictures that do not read. Story 33: the chocolate reads as a toaster. Story 34: the "full" thought bubble reads as "wants more". Story 35: the cups read as dishes, so coffee, milk and sugar cannot be told apart. 6 of the 12 picture pairs. Things move with nobody moving them.
 - A fix is under way. Fresh readers look again after it.
 - Per his Nov 16 ask, A comer also gets 2 to 4 speaking turns per story (docs/hablar/03-para-historias-nuevas.md) before it is published.
+- Later the same day: the turns are built and tested, and the pictures have had four rounds. See part 20 above.
 
 ## Nov 16, part 18: UI rounds 1 to 3, and the call with Danny
 
@@ -702,7 +740,7 @@ Live at ?v=22. Scripts (final, draft 3): historia/notas/guiones/sala.md.
 
 ## Next, in the order of page 07
 
-1. His voice test number and his next La casa call; then place 3, scene 4: A comer (built on the branch, its picture fixes and fresh readers, then 2 to 4 speaking turns a story; see part 19 above).
+1. His voice test number and his next La casa call; then place 3, scene 4: A comer (built on the branch with its six speaking turns; its picture fixes are in round 5 with fresh readers; then publish; see part 20 above).
 2. Places 4 to 10 (page 02). 3. The fort check.
 - Done since page 07 was written: place 1 complete with its call with Danny (v=37 after his first two calls), the level check, El parque, three of the four scenes of La cocina.
 - Also open: the rest of the UI plan (09); the 85% difficulty tuning; the plan doc's game tab fixes ("porch lamp", "nothing is built"); the calls of places 2 to 10.
