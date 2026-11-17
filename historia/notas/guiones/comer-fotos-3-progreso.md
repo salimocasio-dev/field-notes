@@ -52,7 +52,7 @@ Brief: scratchpad comer_fix_brief3.md (A1-A8, B story 33, C story 34, D story 35
 ## Tests (Nov 17, on the last code commit)
 - gen_comer.py: 1691 clips, 109 new, 3190 characters to record, 0 clashes; the clips of the three stories and the pair file are identical to the generator of a8df0a4 (the only change in the beats of the stories: `mira34 a="$qt"`, an act argument, not a clip).
 - matriz.sh over every draw and every plan (204 runs: 17 draws of each story, each with rr rw wr ww): 204 of 204 exit 0, 0 page errors, all finished, micdecide 0; check_estado.py: 204 runs, 0 with problems (the bitten rolls, the cesta, papá's mounds, the spoiled cups, the frog's cup all as the script counts them; estado() now also lists the children's plates, which are things on the table).
-- cual_check.py: the twelve pairs, all right and all wrong: no errors. nivel_check.py todo: no errors. app_check.py: no errors (the vibrate console line is the browser's own). habla_motor_check.py: see the report.
+- cual_check.py: the twelve pairs, all right and all wrong: no errors. nivel_check.py todo: no errors. app_check.py: no errors (the vibrate console line is the browser's own). habla_motor_check.py: 186 checks ok, FAILED: 0.
 - Hands farther than the arm (reposo.py prints them): a few moments of 2 to 8 px over (abuela taking her plate from behind the table, the lying fork a seated person takes up, Luis's spoon). Not fixed.
 
 ## Frames
