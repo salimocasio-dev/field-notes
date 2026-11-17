@@ -50,14 +50,18 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #mic[data-s=dead],#mic[data-s=processing]{background:#2B2B33}
 #mic[data-s=dead] .im{color:#A7A7B0}
 #mic[data-s=ready]:active{transform:scale(.96)}
-#mic[data-s=listening]{animation:micpul 1.2s ease-in-out infinite}
-#mic[data-s=listening]::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:3px solid var(--grn);animation:micring 1.2s ease-out infinite}
+/* listening: a bright disc with a dark mic, and two bright rings that spread well outside the button (a timer, not the voice level). Ready is a dark green disc with a white mic and no rings */
+#mic[data-s=listening]{background:#3DDC84;color:#0B2A17;animation:micpul 1.2s ease-in-out infinite}
+#mic[data-s=listening]::before,#mic[data-s=listening]::after{content:"";position:absolute;inset:0;border-radius:50%;border:4px solid #3DDC84;animation:micring 1.2s ease-out infinite;pointer-events:none}
+#mic[data-s=listening]::after{animation-delay:-.6s}
+/* the tick is a status, not a button: an outline with a green tick, no fill, no shadow */
+#mic[data-s=ok]{background:transparent;box-shadow:none;border:3px solid #3DDC84;color:#3DDC84;cursor:default;pointer-events:none}
 #mic .dt i{width:8px;height:8px;border-radius:50%;background:#fff;animation:micdot .9s ease-in-out infinite}
 #mic .dt i:nth-child(2){animation-delay:.15s}#mic .dt i:nth-child(3){animation-delay:.3s}
 @keyframes micpul{50%{transform:scale(1.06)}}
-@keyframes micring{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+@keyframes micring{0%{transform:scale(1);opacity:.95}100%{transform:scale(2.3);opacity:0}}
 @keyframes micdot{0%,70%,100%{opacity:.3;transform:scale(.8)}35%{opacity:1;transform:scale(1.15)}}
-@media (prefers-reduced-motion:reduce){#mic[data-s=listening],#mic[data-s=listening]::after,#mic .dt i{animation:none}}
+@media (prefers-reduced-motion:reduce){#mic[data-s=listening],#mic[data-s=listening]::before,#mic[data-s=listening]::after,#mic .dt i{animation:none}#mic[data-s=listening]::before{transform:scale(1.5);opacity:.8}#mic[data-s=listening]::after{display:none}}
 .pri{display:none;width:100%;max-width:480px;height:56px;border-radius:12px;background:var(--grn);color:#fff;font:600 16px/24px var(--sys);align-items:center;justify-content:center}   /* green: continue learning */
 .pri.blu{background:var(--blu)}   /* blue: any other main action */
 .pri:active{filter:brightness(.92)}

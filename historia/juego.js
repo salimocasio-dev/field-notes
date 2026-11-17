@@ -205,7 +205,7 @@ const bien=id=>OIR||S.callado?Promise.resolve():wait(300).then(()=>say(id||S.bie
    For checking by machine: ?mic=stub:<r1>|<r2>|... (each result: alternatives split by /, or none, or error:<code>), ?mic=off, ?abiertas=todas.
    Without these and without a real recogniser nothing here runs. */
 const MICB=$("#mic"),MQ=Q.get("mic")||"",MICOFF=MQ==="off",STUB=MQ.indexOf("stub:")===0?MQ.slice(5).split("|"):null,ABIERTAS=Q.get("abiertas")==="todas";
-const HAB={n:0,hechos:new Set(),est:"",cur:null,rec:null,perm:null,nd:false,si:0,guard:false,log:[],t:[],stop6:0,force:0};   // n: turns this play; hechos: the clips that have been a turn this play; est: the mic's state (""/dead/ready/listening/processing/ok); guard: a turn has used the mic (clips then get a time limit)
+const HAB={n:0,hechos:new Set(),est:"",q:"",cur:null,rec:null,perm:null,nd:false,si:0,guard:false,log:[],t:[],stop6:0,force:0};   // n: turns this play; hechos: the clips that have been a turn this play; est: the mic's state (""/dead/ready/listening/processing/ok); guard: a turn has used the mic (clips then get a time limit)
 const NODISP=["not-allowed","service-not-allowed","network","audio-capture","language-not-supported"];
 try{if(navigator.permissions&&navigator.permissions.query)navigator.permissions.query({name:"microphone"}).then(p=>{HAB.perm=p;},()=>{});}catch(e){}
 const habSR=()=>window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -232,8 +232,18 @@ const habOcupado=()=>HAB.est==="listening"||HAB.est==="processing";
 const habRana=()=>{const q=W&&W.cq;if(!q||!q.vis)return false;const b=frogBox(q),x=b.x+b.w/2,y=b.y+b.h/2;return x>=cam[0]&&x<=cam[0]+cam[2]&&y>=cam[1]&&y<=cam[1]+cam[3];};   // the frog is on screen
 function habBub(k,txt){clearTimeout(bubT);bubEl.innerHTML=k==="ok"?SVOK:SVMIC;bubEl.dataset.mic=k;
   if(txt){const sp=document.createElement("span");sp.textContent=txt;bubEl.appendChild(sp);}
-  MBUB=1;BUBQ=habRana()?"coqui":"mic";bubEl.classList.add("on");placeBub();}   // it shows even when TXT is "no"; with no frog on screen it sits above the mic button
-function habFin(){micEst("");MBUB=0;bubEl.removeAttribute("data-mic");bubEl.classList.remove("on");bubEl.textContent="";BUBQ=null;}   // the turn's screen goes away
+  MBUB=1;bubEl.classList.add("on");
+  if(!HAB.q){BUBQ=habRana()?"coqui":"mic";placeBub();HAB.q=BUBQ==="coqui"&&habCubre()?"mic":BUBQ;}   // where it sits is decided once for the whole turn: at the frog if he is on screen and the bubble covers neither a person nor an answer bubble, else just above the mic button
+  BUBQ=HAB.q;placeBub();}   // it shows even when TXT is "no"
+// would the bubble, where placeBub has just put it beside or above the frog, cover a person or one of the answer bubbles? (everything in the stage's own pixels)
+function habCubre(){const cw=cv.clientWidth,ch=cv.clientHeight,zx=cw/cam[2],zy=ch/cam[3],bw=bubEl.offsetWidth,bh=bubEl.offsetHeight,l=parseFloat(bubEl.style.left)||0,t=parseFloat(bubEl.style.top)||0,cl=bubEl.className,
+    r=/\bder\b/.test(cl)?[l-11,t-bh/2,bw+11,bh]:/\bizq\b/.test(cl)?[l-bw,t-bh/2,bw+11,bh]:[l-bw/2,t-10-bh,bw,bh+11],   // the bubble with its tail
+    hit=a=>r[0]<a[0]+a[2]&&r[0]+r[2]>a[0]&&r[1]<a[1]+a[3]&&r[1]+r[3]>a[1],art=(b,m)=>[(b[0]-m-cam[0])*zx,(b[1]-m-cam[1])*zy,(b[2]+2*m)*zx,(b[3]+2*m)*zy];
+  if((W.resp||[]).some(k=>{const b=respBox(k);return !!b&&hit(art(b,3));}))return true;
+  const who=Object.keys(W.gente||{});if(W.ab)who.push("abuela");
+  return who.some(k=>{const a=E.talkAt?E.talkAt(k,W):null;if(!a)return false;let b=k==="abuela"&&E.box?E.box("abuela",W):null;   // a person is where talkAt says (above his head); abuela in the first scenes has her own box
+    if(!b){const p=(W.gente&&W.gente[k])||W.ab||{};b=[a[0]-13,a[1]+1,26,Math.max(24,p.y!=null?p.y-a[1]-1:36)];}return hit(art(b,4));});}
+function habFin(){HAB.q="";micEst("");MBUB=0;bubEl.removeAttribute("data-mic");bubEl.classList.remove("on");bubEl.textContent="";BUBQ=null;}   // the turn's screen goes away
 function habTick(txt){micEst("ok");habBub("ok",TXT!=="no"&&!SINLETRAS?txt:"");}   // the green tick always; his words in the bubble when TXT allows
 function habOkP(txt){habTick(txt);const p=wait(750).then(habFin);p.catch(()=>{});return p;}   // the tick stays a moment, then the turn's screen goes
 // everything that a turn holds, let go: a new play, the X, or he touched an elige
