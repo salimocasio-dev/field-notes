@@ -150,16 +150,23 @@ class _PairsPageState extends State<PairsPage> {
     final sheet = _sheet;
     if (sheet == null) return const SizedBox();
     // each picture of the sheet, by name; the state of each is the pair's (cual-frente.json), given here as the
-    // preview gives it: the page shows how ScenePictures draws a named picture
-    Widget pic(String name) => SizedBox(
-      width: 196,
+    // preview gives it: the page shows how ScenePictures draws a named picture. A level cell is 96 x 106 picture pixels.
+    Widget pic(
+      String name, {
+      String? state,
+      int width = 196,
+      int height = 104,
+    }) => SizedBox(
+      width: width.toDouble(),
       child: source.ofPicture(
         PictureRef(
           scene: 'frente',
-          set: pairSets[name] ?? const {},
+          set: pairSets[state ?? name] ?? const {},
           cam: const [0, 0, 196, 104],
         ),
         name,
+        width: width,
+        height: height,
       ),
     );
     final words = <String>{
@@ -183,7 +190,12 @@ class _PairsPageState extends State<PairsPage> {
             child: Wrap(
               spacing: 8,
               children: [
-                pic(l.picture),
+                pic(
+                  'nivel.${l.word}.${l.index}',
+                  state: l.picture,
+                  width: 96,
+                  height: 106,
+                ),
                 Text('level ${l.word} ${l.index}: ${l.picture}'),
               ],
             ),

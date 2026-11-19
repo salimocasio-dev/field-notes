@@ -30,3 +30,19 @@ List<ReviewPair> frentePairs() {
       ),
   ];
 }
+
+/// The level-check items that have a picture of El frente (historia/datos/nivel.json: `w`, `s`, `p`), as the content has
+/// them. The test that reads the real file (vm) checks this copy against it.
+const String frenteLevelJson = r'''[
+ {"w": "abuela", "s": 1, "p": [["abuela", "si", 166], ["mamá", "si"], ["papá", "si"], ["hermana", "si"]]},
+ {"w": "puerta", "s": 1, "p": [["puerta", "si", 166], ["ventana", "si", 112], ["silla", "si"], ["sol", "si"]]},
+ {"w": "abre", "s": 2, "p": [["abre", "si", 112], ["abre", "no", 112], ["puerta", "si", 166], ["jugo", "si"]]},
+ {"w": "hola", "s": 2, "p": [["hola", "si", 160], ["adiós", "si", 160], ["se sienta", "si", 80], ["juega", "si", 130]]},
+ {"w": "silla", "s": 4, "p": [["silla", "si"], ["silla", "no"], ["jugo", "si"], ["ventana", "si", 112]]}
+]''';
+
+/// [frenteLevelJson] as items.
+List<LevelItem> frenteLevelItems() => [
+  for (final q in jsonDecode(frenteLevelJson) as List)
+    LevelItem.fromJson(q as Map<String, dynamic>),
+];

@@ -2,13 +2,14 @@
 ///
 /// A converted scene is made from its sheet with [loadScene]; it is a [SetScene] (its set built by the engine, every
 /// place from its sheet). [SetBakes] keeps a scene's baked states, [StillFrame] draws a frame of one on a [StillHost],
-/// and [ScenePictures] is the `PictureSource` of page 12, section 3.
+/// and [ScenePictures] is the `PictureSource` of page 12, section 3: a converted scene's pictures are drawn by its
+/// engine; until a scene is converted its pictures are the old ones (`assets/old_pictures/`).
 library;
 
-export 'package:coqui_scenes/src/load_scene.dart'
-    show convertedScenes, loadScene;
-export 'package:coqui_scenes/src/pictures.dart'
-    show PictureError, ScenePictures, pictureF;
+export 'package:coqui_scenes/src/converted_scenes.dart' show convertedScenes;
+export 'package:coqui_scenes/src/load_scene.dart' show loadScene;
+export 'package:coqui_scenes/src/picture_error.dart' show PictureError;
+export 'package:coqui_scenes/src/pictures.dart' show ScenePictures, pictureF;
 export 'package:coqui_scenes/src/registry.dart' show sceneRegistry;
 export 'package:coqui_scenes/src/scene_set.dart' show SetBakes, SetScene;
 export 'package:coqui_scenes/src/sheets.dart' show loadSheet, sheetAsset;

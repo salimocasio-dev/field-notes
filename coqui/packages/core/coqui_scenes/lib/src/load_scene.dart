@@ -1,10 +1,8 @@
 import 'package:coqui_pixel/coqui_pixel.dart';
+import 'package:coqui_scenes/src/converted_scenes.dart';
 import 'package:coqui_scenes/src/registry.dart';
 import 'package:coqui_scenes/src/sheets.dart';
 import 'package:flutter/services.dart';
-
-/// The scenes that are converted: each has its sheet among this package's assets and its real scene in the registry.
-const Set<String> convertedScenes = {'frente'};
 
 /// The scene [id], made from its sheet (read from the assets first). A scene that is not converted yet throws
 /// `UnimplementedError('not converted yet')`, as its stub in the registry does; an id that is not a scene throws
