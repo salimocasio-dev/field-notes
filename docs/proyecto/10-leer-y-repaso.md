@@ -72,3 +72,11 @@ The fresh reviewer read all 43 books: 13 read well (most of them the picture sto
 - Bare reaction lines to a touch the reader never sees read as nonsense ("¡Sí!", "¡Mmm!", "No más.", "¡Ay, no!", "Gracias" and "De nada" with no giving). From now: a line is left out of a book when, without its speaker tag ("X dice:", the coquí label), it has two words or fewer; a "Gracias" or "De nada" line is left out with it when its pair is left out.
 - Game marks in the pictures (highlight rings, enlarged held things, thought and picture bubbles, the touch sign): off in every captured picture.
 - Then the same kind of fresh beginner review again, on all books. A book whose verdict is not "reads well" gets no Read button (Listen only) until its own overrides fix it; the shelf shows only books that read well. Overrides are listed in the tool, per story, never by hand in the JSON.
+
+## Repaso after the fresh read (Nov 19)
+- Start screen: one English line under the title: "Listen, then touch the picture that fits."
+- While the sentence plays, both pictures are dimmed (not touchable look); when it ends they come to full brightness: that is "your turn".
+- Right: the green ring plus a small check badge on the picture, and the other picture dims. Wrong: as today.
+- The progress bar has one segment per word of the session; a second ask adds no segment.
+- End screen: one summary line ("8 moving up · 2 coming back soon"; practice: "6 right · 2 missed"); a grey line under each group heading ("You'll see these less often" / "You'll see these again soon"; practice: none); no sound button and no X on it (the green button is the way out); grid centred, a long word wraps inside its cell, a fade at both ends of the scrolling list.
+- Not taken: English glosses (his rule), a reward animation (the reports: extrinsic rewards undermine; the summary line is enough).
