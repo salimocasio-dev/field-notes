@@ -1,0 +1,27 @@
+name: coqui_ui
+description: "Colours, type, shared widgets, the lesson frame, and the widget that shows a pixel picture."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: 3.50.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  fonts:
+    - family: Pixelify Sans
+      fonts:
+        - asset: fonts/PixelifySans-Regular.ttf
+          weight: 400
+        - asset: fonts/PixelifySans-Bold.ttf
+          weight: 700

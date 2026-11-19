@@ -1,0 +1,23 @@
+name: coqui_platform
+description: "Audio, speech recognition, the call connection, storage and haptics. The only package with plugins or browser code."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: 3.50.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  coqui_contracts: any
+  just_audio: ^0.10.6
+  shared_preferences: ^2.5.6
+  speech_to_text: ^7.5.0
+  web: ^1.1.2
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
