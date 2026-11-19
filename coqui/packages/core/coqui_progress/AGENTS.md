@@ -21,8 +21,8 @@ Word records and the scheduler. Pure Dart.
 
 - `lib/coqui_progress.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
-- Later it holds the `ProgressStore` of page 12, section 2, on a `KeyValueStore` and a `Clock`.
+- It exports `PalabrasStore`: the `ProgressStore` of page 12, section 2, on a `KeyValueStore` and a `Clock` (order 16, a port of historia/palabras.js). `lib/src/palabras_store.dart` is the port, function by function with the old names in comments; `lib/src/js.dart` holds the JavaScript behaviours it leans on (truthiness, `JSON.stringify` with numbers written as JavaScript writes them, `Object.assign`).
+- The store is the JSON object of palabras.js kept as a map, so unknown keys and half-empty records stay as they are; `WordRecord` and the other typed records are copies made from it.
 
 ## Run and test it alone
 
@@ -30,7 +30,13 @@ Word records and the scheduler. Pure Dart.
 cd coqui/packages/core/coqui_progress
 dart test -p vm
 dart test -p chrome   # needs CHROME_EXECUTABLE, see the runbook
+bash tool/test_zones.sh   # the suite four times: TZ=UTC and TZ=America/New_York, each on the VM and in Chrome
+node tool/make_fixture.mjs   # makes test/fixtures/progress_fixture.dart again: after node coqui/tool/ref/progress/make.mjs, or when historia/app.html or palabras.js changes
 ```
+
+- `test/replay_test.dart` replays the recordings of `coqui/ref/progress/` (as the Dart fixture) in the zone the test process runs in: UTC or America/New_York, and fails in any other. Plain `dart test` replays the zone the machine has; `tool/test_zones.sh` covers both.
+- `test/fixture_files_test.dart` (VM only) checks that the fixture equals the files, and that `historia/app.html` still contains the pieces below.
+- The members palabras.js does not have (`markRead`, `hasRead`, `add`, `added`, `played`, `setting`, `setSetting`, `levelResult`, `minutes`) are ported from `historia/app.html`. `tool/app_sequences.mjs` cuts each piece out of the page (`marcaLeido`, `extra`, `hecho`, the `onclick` handlers that write `ajustes`, ...), runs it against the real palabras.js once per zone, and `make_fixture.mjs` writes what the store was after every call into the fixture (`fixtureAppSequences`). `replay_test.dart` replays them like the recorded sequences.
 
 At `coqui/`, for the checks every branch passes:
 
