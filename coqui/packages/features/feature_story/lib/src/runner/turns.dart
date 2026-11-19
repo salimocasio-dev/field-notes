@@ -25,6 +25,20 @@ String _habClase(HabResult r) => r.cancel
     ? 'voz'
     : 'miss';
 
+// juego.js: habCuadra
+/// Heard right (docs/hablar/01-decisiones.md, "What counts as heard right"): for EVERY target at least one accepted form
+/// is inside one of the alternatives, whole words, accents and case ignored (`normalize` of both), extra words fine, in
+/// any order.
+bool heardRight(List<String>? alts, List<Target> T) {
+  final ns = [for (final a in alts ?? const <String>[]) normalize(a)];
+  return T.every(
+    (x) => x.formas.any((f) {
+      final g = normalize(f).trim();
+      return g != '' && ns.any((a) => a.contains(' $g '));
+    }),
+  );
+}
+
 extension _Turns on StoryRunner {
   /// Whether the story's turns may use the mic at all: the recogniser's switches (juego.js: `habDisp`).
   bool _habDisp() =>
@@ -63,17 +77,8 @@ extension _Turns on StoryRunner {
   }
 
   // juego.js: habCuadra
-  /// Heard right: for EVERY target at least one accepted form is inside one of the alternatives (words whole, accents
-  /// and case ignored, extra words fine).
-  bool habCuadra(List<String>? alts, List<Target> T) {
-    final ns = [for (final a in alts ?? const <String>[]) normalize(a)];
-    return T.every(
-      (x) => x.formas.any((f) {
-        final g = normalize(f).trim();
-        return g != '' && ns.any((a) => a.contains(' $g '));
-      }),
-    );
-  }
+  /// Heard right: see [heardRight].
+  bool habCuadra(List<String>? alts, List<Target> T) => heardRight(alts, T);
 
   // juego.js: habGraba
   /// The mouth record: one answer per target word. The ear record is never written here.

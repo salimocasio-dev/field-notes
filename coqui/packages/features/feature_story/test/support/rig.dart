@@ -98,7 +98,7 @@ class TestProgress implements ProgressStore {
       mouth.containsKey(w) ? WordRecord(w: w, primera: 0, mouth: SkillRecord()..n = mouth[w]!) : null;
 
   @override
-  bool openForSpeaking(String w) => open.contains(w);
+  bool openForSpeaking(String w) => open.contains(w) || (mouth[w] ?? 0) > 0;
 
   @override
   Object? setting(String key) => key == 'habla' ? habla : null;
@@ -292,6 +292,64 @@ class Rig {
         continue;
       }
       if (t == null) throw StateError('stuck at ${timers.now} ms: nothing scheduled and nothing to touch');
+      if (t.at > end) throw StateError('still running at the time limit');
+      timers.fire(t);
+    }
+  }
+
+  /// Plays the story through as `habla_motor_check.py` does: the mic is tapped when it is ready (`tapMic`), the question is
+  /// answered by [choose] when it is asked and no turn is going on (an elige also while the mic is up when [touchElige]).
+  Future<void> finishTurns(String? Function(Pending pn) choose, {bool tapMic = true, bool touchElige = false, int think = 700, int limitMs = 3600000}) async {
+    unawaited(runner.start().then((_) {}, onError: (Object e) => failure ??= e));
+    final end = timers.now + limitMs;
+    var started = false;
+    Object? key;
+    int? at;
+    void Function()? act;
+    for (;;) {
+      await drain();
+      if (failure != null) throw failure!;
+      if (runner.running) {
+        started = true;
+      } else if (started) {
+        return;
+      }
+      Object? k;
+      void Function()? a;
+      final pn = runner.pendingNow;
+      if (tapMic && runner.HAB.est == 'ready' && runner.HAB.cur != null) {
+        k = runner.HAB.cur;
+        a = runner.tapMic;
+      } else if (pn != null &&
+          pn.asked &&
+          pn.tEnd != null &&
+          !pn.busy &&
+          runner.speaking == 0 &&
+          (runner.HAB.est == '' || (touchElige && pn.kind == 'elige' && runner.HAB.est != 'listening' && runner.HAB.est != 'processing'))) {
+        k = pn;
+        a = () {
+          final what = choose(pn);
+          if (what != null) touch(what);
+        };
+      }
+      if (k == null) {
+        key = null;
+      } else if (!identical(key, k)) {
+        key = k;
+        at = timers.now + think;
+        act = a;
+      } else {
+        act = a;
+      }
+      final t = timers.next();
+      if (key != null && (t == null || t.at > at!)) {
+        timers.now = at!;
+        final f = act!;
+        key = null;
+        f();
+        continue;
+      }
+      if (t == null) throw StateError('stuck at ${timers.now} ms');
       if (t.at > end) throw StateError('still running at the time limit');
       timers.fire(t);
     }

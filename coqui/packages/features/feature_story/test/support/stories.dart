@@ -16,7 +16,7 @@ Map<String, dynamic> story({
   'dots': 5,
   'focus_words': ['uno'],
   'back_again': ['dos'],
-  'clips': {
+  'clips': <String, dynamic>{
     for (final e in clips.entries)
       e.key: e.value.startsWith('tu:')
           ? {'who': 'tu', 'text': e.value.substring(3)}
