@@ -81,10 +81,6 @@ class _Still extends Scene {
   List<num>? handAt(String k) => null;
 }
 
-Matcher _unimplemented(String order) => throwsA(
-  isA<UnimplementedError>().having((e) => e.message, 'message', order),
-);
-
 void main() {
   group('SFX', () {
     final rec = _Rec();
@@ -142,10 +138,7 @@ void main() {
     });
   });
 
-  group('shells', () {
-    test('the canvas is order 11\'s', () {
-      expect(() => Ctx(Uint32List(4), 2, 2), _unimplemented('order 11'));
-    });
+  group('sprite', () {
     test('a sprite holds its picture', () {
       final s = Sprite(2, 1, Uint32List.fromList([0xFF0000FF, 0]));
       expect([s.w, s.h, s.px.length], [2, 1, 2]);
