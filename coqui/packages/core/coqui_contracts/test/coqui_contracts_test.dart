@@ -109,6 +109,56 @@ void main() {
       );
     });
 
+    test(
+      'every word record is written back exactly as JSON.stringify wrote it',
+      () {
+        expect(wordRecordTexts, isNotEmpty);
+        for (final e in wordRecordTexts.entries) {
+          final r = WordRecord.fromJson(
+            jsonDecode(e.value) as Map<String, dynamic>,
+          );
+          expect(jsonEncode(r.toJson()), e.value, reason: e.key);
+        }
+      },
+    );
+
+    test('a due with a fraction (palabras.js line 33) is kept unrounded', () {
+      final store = jsonDecode(fractionalStoreJson) as Map<String, dynamic>;
+      final sol =
+          (store['palabras'] as Map<String, dynamic>)['sol']
+              as Map<String, dynamic>;
+      final stored = (sol['ear'] as Map<String, dynamic>)['due'] as num;
+      expect(
+        stored,
+        isNot(stored.truncate()),
+        reason: 'node made a fractional due',
+      );
+      final r = WordRecord.fromJson(sol);
+      expect(r.ear.due, stored);
+      expect(r.ear.due, 1794283613888.889);
+      expect(jsonEncode(r.toJson()), wordRecordTexts['fractional:sol']);
+    });
+
+    test(
+      'a whole due is written as an integer, read from an int or a double',
+      () {
+        expect(jsonEncode(SkillRecord(due: 5.0).toJson()['due']), '5');
+        expect(SkillRecord.fromJson({'due': 1700000000000}).due, 1700000000000);
+        expect(
+          jsonEncode(
+            SkillRecord.fromJson({'due': 1700000000000.0}).toJson()['due'],
+          ),
+          '1700000000000',
+        );
+        expect(
+          jsonEncode(
+            SkillRecord.fromJson({'due': 1700000000000.5}).toJson()['due'],
+          ),
+          '1700000000000.5',
+        );
+      },
+    );
+
     test('a fresh skill is skill()', () {
       expect(SkillRecord().toJson(), {
         'etapa': 0,

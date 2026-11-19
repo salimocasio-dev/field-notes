@@ -178,6 +178,28 @@ PAL.db.ajustes.bienvenida = 1;
 PAL.save();
 const sampleStore = store['coqui.palabras.v1'];
 
+// A store whose `due` is not a whole number (palabras.js line 33: e.due=t+e.gap*DAY). Six rights a day apart
+// stretch the gap to 2.5^6 days; five misses ten minutes apart cut it by 3 each time (the third parks the word),
+// to 2.5^6/3^5; one more right gives 2.5^7/3^5 = 2.5117... days, and t + that many ms has a fraction.
+const clock2 = {t: Date.UTC(2026, 10, 1, 15, 0, 0)};
+const {PAL: PAL2, store: store2} = loadPal(clock2);
+for (let i = 0; i < 6; i++) {
+  PAL2.responde('sol', 'ear', true, 500, false);
+  clock2.t += DAY;
+}
+for (let i = 0; i < 5; i++) {
+  PAL2.responde('sol', 'ear', false, 500, false);
+  clock2.t += 10 * 6e4;
+}
+PAL2.responde('sol', 'ear', true, 500, false);
+const fractionalStore = store2['coqui.palabras.v1'];
+if (Number.isInteger(JSON.parse(fractionalStore).palabras.sol.ear.due)) throw new Error('the due is whole: the sequence no longer makes a fraction');
+// Each word record exactly as JSON.stringify writes it, from both stores.
+const wordTexts = {};
+for (const [name, text] of [['sample', sampleStore], ['fractional', fractionalStore]]) {
+  for (const [w, r] of Object.entries(JSON.parse(text).palabras)) wordTexts[name + ':' + w] = JSON.stringify(r);
+}
+
 // ---------- data files and the old code's data ----------
 const evalConst = (file, name) => {
   const text = read(file);
@@ -238,6 +260,12 @@ fx += '\n/// The first ten values of mulberry32(1), from node.\n';
 fx += `const List<double> mulberry32Seed1 = [\n${mulberry.map((v) => '  ' + v + ',').join('\n')}\n];\n`;
 fx += "\n/// localStorage['coqui.palabras.v1'] after a scripted run of palabras.js.\n";
 fx += `const String sampleStoreJson = ${dartString(sampleStore)};\n`;
+fx += "\n/// localStorage['coqui.palabras.v1'] after six rights, five misses and a right on one word: its ear `due` has a fraction.\n";
+fx += `const String fractionalStoreJson = ${dartString(fractionalStore)};\n`;
+fx += '\n/// Every word record of both stores, as JSON.stringify writes it, by "store:word".\n';
+fx += 'const Map<String, String> wordRecordTexts = {\n';
+for (const [k, v] of Object.entries(wordTexts)) fx += `  ${dartString(k)}: ${dartString(v)},\n`;
+fx += '};\n';
 fx += '\n/// CURSO, from curso.js.\n';
 fx += `const String cursoJson = ${json(curso)};\n`;
 fx += '\n/// NV, from nivel.js.\n';

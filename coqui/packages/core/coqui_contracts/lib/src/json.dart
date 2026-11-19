@@ -12,9 +12,12 @@ int? jsonIntOrNull(Object? v) => v == null ? null : (v as num).toInt();
 double jsonDouble(Object? v, [double orElse = 0]) =>
     v == null ? orElse : (v as num).toDouble();
 
-/// A double as JavaScript's JSON.stringify writes it: a whole number has no ".0".
-num jsonNumber(double v) =>
-    v == v.truncateToDouble() && v.isFinite ? v.toInt() : v;
+/// A JSON number as it is, int or double, unrounded.
+num jsonNum(Object? v, [num orElse = 0]) => v == null ? orElse : v as num;
+
+/// A number as JavaScript's JSON.stringify writes it: a whole number has no ".0" (on the VM too).
+num jsonNumber(num v) =>
+    v is double && v.isFinite && v == v.truncateToDouble() ? v.toInt() : v;
 
 /// A JSON list of strings.
 List<String> jsonStrings(Object? v) =>

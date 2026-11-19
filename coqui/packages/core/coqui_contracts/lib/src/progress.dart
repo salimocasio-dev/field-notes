@@ -4,6 +4,11 @@ import 'package:coqui_contracts/src/json.dart';
 enum Skill { ear, mouth }
 
 /// One skill of one word. Field for field today's record (historia/palabras.js, skill()).
+///
+/// Numbers are read and written as palabras.js leaves them: `gap` and `due` can hold fractions (lines 32,
+/// 33, 35) and are written back unrounded; a whole value is written as an integer (5, not 5.0), as
+/// JSON.stringify does. The other fields are counters or clock readings (`ultima`, `aciertos`, `aparcada`
+/// = now + 7 days, line 36) and are whole numbers.
 class SkillRecord {
   SkillRecord({
     this.etapa = 0,
@@ -28,7 +33,7 @@ class SkillRecord {
     seguidas: jsonInt(j['seguidas']),
     fallos: jsonInt(j['fallos']),
     gap: jsonDouble(j['gap']),
-    due: jsonInt(j['due']),
+    due: jsonNum(j['due']),
     aciertos: [
       for (final t in (j['aciertos'] as List?) ?? const []) jsonInt(t),
     ],
@@ -42,7 +47,11 @@ class SkillRecord {
 
   int etapa, paso, seguidas, fallos, n, bien, marca;
   double gap; // days
-  int due, ultima, aparcada; // ms since epoch, 0 = none
+
+  /// When the word comes back, ms since epoch, 0 = none. A `num`, not an int: palabras.js line 33
+  /// (`e.due=t+e.gap*DAY`) can give a fraction of a ms, and the stored JSON keeps exactly what it wrote.
+  num due;
+  int ultima, aparcada; // ms since epoch, 0 = none
   List<int> aciertos;
   int? presunta;
 
@@ -53,7 +62,7 @@ class SkillRecord {
     'seguidas': seguidas,
     'fallos': fallos,
     'gap': jsonNumber(gap),
-    'due': due,
+    'due': jsonNumber(due),
     'aciertos': [...aciertos],
     'ultima': ultima,
     'aparcada': aparcada,
