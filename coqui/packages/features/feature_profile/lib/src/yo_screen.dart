@@ -177,6 +177,7 @@ class _YoScreenState extends State<YoScreen> {
       onStep: (k) => setState(() => _step = k),
       onNew: _listo,
       onClose: _close,
+      onLeave: _close,
     );
   }
 

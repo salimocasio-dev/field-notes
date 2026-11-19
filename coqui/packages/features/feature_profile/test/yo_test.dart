@@ -11,7 +11,6 @@
 import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/js.dart';
 import 'package:flutter_test/flutter_test.dart';

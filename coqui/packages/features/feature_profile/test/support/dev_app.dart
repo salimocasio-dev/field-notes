@@ -41,6 +41,7 @@ class DevFixture {
     this.speech,
     this.info,
     this.clock,
+    this.spaces,
   );
 
   final Services services;
@@ -50,6 +51,9 @@ class DevFixture {
   final FakeSpeechListener speech;
   final FakeAppInfo info;
   final FakeClock clock;
+
+  /// The storage spaces features keep their own things in, by name (`Services.storage(space)`).
+  final Map<String, FakeKeyValueStore> spaces;
 
   /// The same store and clock under new [Services]: what a reload of the page is (a store that kept what it
   /// held, and a page that remembers nothing). [mic] is whether the recogniser is there this time.
@@ -65,8 +69,18 @@ class DevFixture {
       haptics: haptics,
       speech: speech,
       info: info,
+      storage: (space) => spaces.putIfAbsent(space, FakeKeyValueStore.new),
     );
-    return DevFixture._(fresh, progress, nav, haptics, speech, info, clock);
+    return DevFixture._(
+      fresh,
+      progress,
+      nav,
+      haptics,
+      speech,
+      info,
+      clock,
+      spaces,
+    );
   }
 }
 
@@ -96,6 +110,7 @@ DevFixture fixture({
     isIos: ios,
     installed: installed,
   );
+  final spaces = <String, FakeKeyValueStore>{};
   final services = fakeServices(
     progress: progress,
     course: DevCourse(),
@@ -104,8 +119,18 @@ DevFixture fixture({
     haptics: haptics,
     speech: speech,
     info: info,
+    storage: (space) => spaces.putIfAbsent(space, FakeKeyValueStore.new),
   );
-  return DevFixture._(services, progress, nav, haptics, speech, info, clock);
+  return DevFixture._(
+    services,
+    progress,
+    nav,
+    haptics,
+    speech,
+    info,
+    clock,
+    spaces,
+  );
 }
 
 /// The dev entry's root widget, for the address [query].

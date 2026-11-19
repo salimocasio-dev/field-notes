@@ -114,8 +114,12 @@ List<String> yoTexts(WidgetTester tester) => textsOf(
 );
 
 /// The pills of [SegmentedPills]: the labels and which one is on.
-List<({String text, bool on})> pillsOf(WidgetTester tester) {
-  final p = tester.widget<SegmentedPills>(find.byType(SegmentedPills));
+List<({String text, bool on})> pillsOf(WidgetTester tester, [Finder? within]) {
+  final p = tester.widget<SegmentedPills>(
+    within == null
+        ? find.byType(SegmentedPills)
+        : find.descendant(of: within, matching: find.byType(SegmentedPills)),
+  );
   return [
     for (var i = 0; i < p.labels.length; i++)
       (text: p.labels[i], on: i == p.selected),

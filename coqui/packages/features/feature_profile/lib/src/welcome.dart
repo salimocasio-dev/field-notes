@@ -25,17 +25,20 @@ int minutePillIndex(Object? min) {
 /// (`modal:!AJ().bienvenida`). Opened again from Yo it is an ordinary sheet: the handle and the X, and
 /// step 1 ends with the level check's paragraph.
 ///
-/// [onStep] is `bienvenida(n)`; [onNew] is `listo()`; [onClose] is `cierra()` (the X and the drag).
+/// [onStep] is `bienvenida(n)`; [onNew] is `listo()`; [onClose] is `cierra()` (the X and the drag). [onLeave]
+/// is called once "I understand some Spanish" has written the setting and gone to the level check: the old page
+/// is left there, a page that is loaded again has no sheet; here the sheet is closed.
 CoquiSheet welcomeSheet({
   required Services services,
   required int step,
   required ValueChanged<int> onStep,
   required VoidCallback onNew,
   VoidCallback? onClose,
+  VoidCallback? onLeave,
 }) {
   final progress = services.progress;
   final seen = jsTruthy(progress.setting('bienvenida')); // AJ().bienvenida
-  final footer = _footer(services, step, onStep, onNew);
+  final footer = _footer(services, step, onStep, onNew, onLeave);
   return CoquiSheet(
     key: ValueKey('welcome-step-$step'),
     modal: !seen,
@@ -114,6 +117,7 @@ Widget _footer(
   int step,
   ValueChanged<int> onStep,
   VoidCallback onNew,
+  VoidCallback? onLeave,
 ) {
   final dots = PageDots(count: welcomeSteps, index: step);
   if (step < 2) {
@@ -145,6 +149,7 @@ Widget _footer(
         onPressed: () {
           services.progress.setSetting('bienvenida', 1);
           services.nav.go(const LevelCheckRoute());
+          onLeave?.call();
         },
       ),
     ],
