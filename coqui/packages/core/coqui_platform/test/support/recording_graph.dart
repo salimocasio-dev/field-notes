@@ -76,7 +76,8 @@ class RecNode implements AudioNodeH {
   final String name;
 
   @override
-  void connect(AudioNodeH to) => g!.log.add([name, 'connect', (to as RecNode).name]);
+  void connect(AudioNodeH to) =>
+      g!.log.add([name, 'connect', (to as RecNode).name]);
 }
 
 class RecParam implements ParamH {
@@ -135,7 +136,8 @@ class RecSource extends RecNode implements BufferSourceH {
   void Function()? ended;
 
   @override
-  set buffer(AudioBufferH b) => g!.log.add([name, 'buffer', (b as RecBuffer).name]);
+  set buffer(AudioBufferH b) =>
+      g!.log.add([name, 'buffer', (b as RecBuffer).name]);
 
   @override
   set loop(bool v) => g!.log.add([name, 'loop', v]);
@@ -144,21 +146,15 @@ class RecSource extends RecNode implements BufferSourceH {
   set onended(void Function()? f) => ended = f;
 
   @override
-  void start([double? when, double? offset, double? duration]) => g!.log.add([
-    name,
-    'start',
-    ?when,
-    ?offset,
-    ?duration,
-  ]);
+  void start([double? when, double? offset, double? duration]) =>
+      g!.log.add([name, 'start', ?when, ?offset, ?duration]);
 
   @override
   void stop([double? when]) => g!.log.add([name, 'stop', ?when]);
 }
 
 class RecBuffer implements AudioBufferH {
-  RecBuffer(this.name, this.length, this.sampleRate)
-    : _d = Float32List(length);
+  RecBuffer(this.name, this.length, this.sampleRate) : _d = Float32List(length);
   final String name;
   final Float32List _d;
 

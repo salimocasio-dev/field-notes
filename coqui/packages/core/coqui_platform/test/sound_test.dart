@@ -12,9 +12,9 @@ import 'support/recording_graph.dart';
 import 'support/sfx.dart';
 
 /// The expected calls: juego.js run in node on a recording AudioContext (tool/juego_sonido.mjs).
-final Map<String, dynamic> _fixture =
-    jsonDecode(File('test/fixtures/juego_sonido.json').readAsStringSync())
-        as Map<String, dynamic>;
+final Map<String, dynamic> _fixture = jsonDecode(
+  File('test/fixtures/juego_sonido.json').readAsStringSync(),
+) as Map<String, dynamic>;
 
 List<Object?> _expected(String key) =>
     ((_fixture['scenarios'] as Map<String, dynamic>)[key] as List)
@@ -52,7 +52,9 @@ class _Rig {
       base: Uri.parse('https://example.test/historia/'),
       fetch: (u) async {
         fetched.add(u);
-        return Uint8List.fromList(u.pathSegments.last.split('.').first.codeUnits);
+        return Uint8List.fromList(
+          u.pathSegments.last.split('.').first.codeUnits,
+        );
       },
     );
   }
@@ -93,12 +95,11 @@ void main() {
     );
     test(
       'one noise buffer for the thunder and the rain',
-      () => _scenario('SFX.trueno then SFX.lluvia (one noise buffer)', (
-        r,
-      ) async {
-        r.player.noiseBurst();
-        r.player.loop('rain', true);
-      }),
+      () =>
+          _scenario('SFX.trueno then SFX.lluvia (one noise buffer)', (r) async {
+            r.player.noiseBurst();
+            r.player.loop('rain', true);
+          }),
     );
     test(
       'the rain starts once and stops once',
@@ -124,7 +125,10 @@ void main() {
       r.player.noiseBurst();
       final b = r.core.noise();
       expect(b.length, 88200);
-      expect(b.channel(0).every((v) => v == -.5), isTrue); // random() = .25 here
+      expect(
+        b.channel(0).every((v) => v == -.5),
+        isTrue,
+      ); // random() = .25 here
     });
   });
 
@@ -148,9 +152,7 @@ void main() {
     );
     test(
       'a clip played muted keeps its timing',
-      () => _scenario('playClip while muted, then the sound button', (
-        r,
-      ) async {
+      () => _scenario('playClip while muted, then the sound button', (r) async {
         await r.player.preload(['ab_bien_y_tu']);
         r.player.muted = true;
         final p = r.player.play('ab_bien_y_tu');
@@ -215,45 +217,51 @@ void main() {
         r.log.add(['resolved', await r.player.play('nada')]);
       }),
     );
-    test('preload fetches and decodes each clip once, from base + url', () async {
-      final r = _Rig();
-      await Future.wait([
-        r.player.preload(['ab_bien_y_tu', 'x', 'ab_bien_y_tu']),
-        r.player.preload(['x']),
-      ]);
-      await r.player.preload(['x']);
-      expect(r.fetched.map((u) => '$u'), [
-        'https://example.test/historia/audio/ab_bien_y_tu.mp3?v=7',
-        'https://example.test/historia/audio/x.mp3?v=7',
-      ]);
-      expect(r.graph!.decoded, hasLength(2));
-      expect(r.core.clips['ab_bien_y_tu']!.t0, .198);
-      expect(r.core.clips['ab_bien_y_tu']!.t1, 4.462);
-      final p = r.player.play('x');
-      await Future<void>.delayed(Duration.zero);
-      expect(r.fetched, hasLength(2));
-      r.endLast();
-      expect(await p, isTrue);
-    });
-    test('a clip whose file cannot be had gives false; a later call tries again', () async {
-      var fail = true;
-      final g = RecordingGraph([]);
-      final p = GraphClipPlayer(
-        core: SoundCore(() => g),
-        clipInfo: (id) => _info(id, 0, 1000),
-        base: Uri.parse('https://example.test/'),
-        fetch: (u) async {
-          if (fail) throw const SocketExceptionLike();
-          return Uint8List.fromList([1]);
-        },
-      );
-      expect(await p.play('a'), isFalse);
-      fail = false;
-      final f = p.play('a');
-      await Future<void>.delayed(Duration.zero);
-      g.sources.single.ended!();
-      expect(await f, isTrue);
-    });
+    test(
+      'preload fetches and decodes each clip once, from base + url',
+      () async {
+        final r = _Rig();
+        await Future.wait([
+          r.player.preload(['ab_bien_y_tu', 'x', 'ab_bien_y_tu']),
+          r.player.preload(['x']),
+        ]);
+        await r.player.preload(['x']);
+        expect(r.fetched.map((u) => '$u'), [
+          'https://example.test/historia/audio/ab_bien_y_tu.mp3?v=7',
+          'https://example.test/historia/audio/x.mp3?v=7',
+        ]);
+        expect(r.graph!.decoded, hasLength(2));
+        expect(r.core.clips['ab_bien_y_tu']!.t0, .198);
+        expect(r.core.clips['ab_bien_y_tu']!.t1, 4.462);
+        final p = r.player.play('x');
+        await Future<void>.delayed(Duration.zero);
+        expect(r.fetched, hasLength(2));
+        r.endLast();
+        expect(await p, isTrue);
+      },
+    );
+    test(
+      'a clip whose file cannot be had gives false; a later call tries again',
+      () async {
+        var fail = true;
+        final g = RecordingGraph([]);
+        final p = GraphClipPlayer(
+          core: SoundCore(() => g),
+          clipInfo: (id) => _info(id, 0, 1000),
+          base: Uri.parse('https://example.test/'),
+          fetch: (u) async {
+            if (fail) throw const SocketExceptionLike();
+            return Uint8List.fromList([1]);
+          },
+        );
+        expect(await p.play('a'), isFalse);
+        fail = false;
+        final f = p.play('a');
+        await Future<void>.delayed(Duration.zero);
+        g.sources.single.ended!();
+        expect(await f, isTrue);
+      },
+    );
     test('unlock makes the context and resumes it', () async {
       final r = _Rig();
       var hook = 0;

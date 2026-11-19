@@ -23,12 +23,9 @@ class GraphClip {
 /// What juego.js does around it is not here: which clips a story loads, and `trim` (the marks now come
 /// with the clip, from marcas.json, made by the same rule).
 class SoundCore {
-  SoundCore(
-    this._make, {
-    double Function()? random,
-    StartTimer? startTimer,
-  }) : _random = random ?? math.Random().nextDouble,
-       _startTimer = startTimer ?? _timer;
+  SoundCore(this._make, {double Function()? random, StartTimer? startTimer})
+    : _random = random ?? math.Random().nextDouble,
+      _startTimer = startTimer ?? _timer;
 
   final AudioGraph Function() _make;
   final double Function() _random;
@@ -106,11 +103,7 @@ class SoundCore {
     final a = ac();
     var n = _noise;
     if (n == null) {
-      n = _noise = a.createBuffer(
-        1,
-        (a.sampleRate * 2).toInt(),
-        a.sampleRate,
-      );
+      n = _noise = a.createBuffer(1, (a.sampleRate * 2).toInt(), a.sampleRate);
       final d = Float32List(n.length);
       for (var i = 0; i < d.length; i++) {
         d[i] = _random() * 2 - 1;
