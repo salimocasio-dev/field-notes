@@ -368,6 +368,19 @@ Page 11-pixel-engine, build step 3. Page 12: sections 1 to 7. Step b of section 
 
 **Stop if:** frente.js holds a screen position the sheet has no name for. Report it with its line. Do not place it.
 
+**Result (Nov 19): done, merged to main.** Built by an Opus builder; its tests were run again by the orchestrator (205 on vm, 204 in Chrome) and `test_all.sh` on merged main. One line was changed by the orchestrator at the merge (the still host's `preload`, after order 02b changed the contract).
+- The set: all 25 states equal the JavaScript references exactly (0 of 51,840 elements differ in `pix`, `zb` and `kinds`), on vm and in Chrome.
+- The 22 sprites frente.js makes for itself: exact.
+- The whole picture against `frente-preview.html` in headless Chrome: 513 pictures (the 33 review and level pictures, and 480 moments at rest from all 15 recorded runs): none has a pixel differing by more than 24 in a channel; 380 are bit-identical; the other 133 differ only along clip edges. 91 of them are a committed test.
+- No position in frente.js lacked a sheet entry.
+- Touch boxes: every pixel a set thing draws lies inside its box in all 25 states (the small palm puts 3 of 912 pixels outside when it rustles to one side). `hit` at each box's middle gives the thing's key, except where the old test order says otherwise (listed in the test with reasons).
+- `ScenePictures` is the picture source: all 24 pair pictures and 9 level pictures draw; a scene not yet converted says "not converted yet".
+- **The pattern for the next ten scenes** (in the package's AGENTS.md): `set_kit.dart` (shared); per scene `<id>_set.dart` (the set, call for call), `<id>_places.dart` (every place, read from the sheet), `<id>.dart` (the old scene file line for line, as a `SetScene`); the sheet copied into `assets/sheets/` by `tool/make_sheets.dart`; the same six tests.
+- Bake time in a release web build, on the build machine while other builders loaded it (load average about 15): median 86 to 209 ms, slowest (the first bake, which also builds the ground) 289 to 703 ms. Over 150 ms in the loaded runs. To be measured again on a quiet machine and on his phone.
+- Decided after the report: shadows are cast only while a character is more than half faded in (as the preview the readers saw does); the cake plate's touch area is tested in display coordinates, so it matches the plate at either zoom; the frog's shadow on the porch stays at ground height, as in the preview. Order 14b applies them.
+- `PictureRef` gets a `name`: abuela.si and cierra.no share scene, state and view and differ only in their crop.
+- Old faults ported: `draw()` moves the clouds, so state changes with the frame rate; `come` and `regala` throw when abuela is at the step.
+
 ## Order 15. The story runner and play screen (builder, feature_story)
 
 Page 12: sections 1 to 7. **From:** historia/juego.js (all but what orders 12 and 18 take), historia/index.html, docs/hablar/01-decisiones.md, page 09 (the lesson frame, the mic states), page 07 ("A decision, as the engine runs it").
