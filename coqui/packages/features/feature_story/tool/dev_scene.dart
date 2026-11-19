@@ -22,6 +22,7 @@ List<Thing> devThings() => [
   Thing(id: 'puerta', box: [150, 96, 30, 54]),
   Thing(id: 'ventana', box: [70, 96, 40, 34]),
   Thing(id: 'casa', box: [40, 60, 160, 92]),
+  Thing(id: 'palma', box: [8, 80, 24, 70]),
   Thing(id: 'sol', box: [200, 14, 22, 22], si: (W) => W['storm'] != true),
 ];
 

@@ -35,6 +35,7 @@ class StoryScreen extends StatefulWidget {
     this.txt = TxtMode.con,
     this.session,
     this.options,
+    this.onOpen,
   });
 
   final Services services;
@@ -45,6 +46,9 @@ class StoryScreen extends StatefulWidget {
 
   /// The old page's address switches, for a check by machine; the route and [txt] fill in the rest.
   final StoryOptions? options;
+
+  /// Told when the story is ready: the runner and the frame (for the dev entry and tests).
+  final void Function(StoryRunner runner, FrameRenderer frame)? onOpen;
 
   @override
   State<StoryScreen> createState() => _StoryScreenState();
@@ -109,6 +113,7 @@ class _StoryScreenState extends State<StoryScreen>
         runner.leave();
         return;
       }
+      widget.onOpen?.call(runner, frame);
       _ticker = createTicker((_) => runner.pump())..start();
       setState(() {
         _runner = runner;
