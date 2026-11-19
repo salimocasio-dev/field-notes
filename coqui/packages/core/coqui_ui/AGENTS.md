@@ -24,7 +24,7 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
 - `lib/coqui_ui.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
 - Today the public file holds a library comment and nothing else. `fonts/` holds Pixelify Sans, weights 400 and 700, as `.ttf` (converted from `historia/fuentes/`), with its licence `LICENSE-pixelify-sans.txt` beside them. The pubspec declares the family `Pixelify Sans`. Use it only where page 09 allows: signs on the map, never learning content.
-- Later it holds `PictureRef`, `PictureSource`, `Services`, `FeatureTab`, `FeatureModule` and `PixelView` (page 12, section 3), and the shared look (tokens, buttons, bottom sheet, tab bar, lesson frame, meters, word card).
+- Since order 02 it holds `PictureRef`, `PictureSource`, `Services`, `FeatureTab`, `FeatureModule` (page 12, section 3). Later it holds `PixelView` and the shared look (tokens, buttons, bottom sheet, tab bar, lesson frame, meters, word card).
 
 ## Run and test it alone
 

@@ -21,8 +21,7 @@ Models, interfaces, routes. Pure Dart.
 
 - `lib/coqui_contracts.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
-- Later it holds the models, the interfaces (`ProgressStore`, `CourseCatalog`, `ClipPlayer`, `SpeechListener`, `CallSession`, `KeyValueStore`, `Clock`, `Rng`, `Haptics`, `AppInfo`, `AppNavigator`), the routes (`AppRoute` and its subclasses), `normalize` and `Mulberry32`, as page 12, section 2 gives them.
+- Since order 02 it holds page 12, section 2: the models, the interfaces, the routes, `normalize` (PAL.norm, through `lib/src/normalize_table.dart`) and `Mulberry32`. `coqui/tool/contracts/make_fixtures.mjs` makes the table and the test fixtures from the old code.
 
 ## Run and test it alone
 
