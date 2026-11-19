@@ -172,33 +172,41 @@ try {
     await ctx.close();
   }
 
+  writeFileSync(join(out, 'pairs.json'), JSON.stringify(pairs, null, 2) + '\n');
+  
   if (flag('--perf')) {
     // The map with motion on, as it runs, in each of the three demo states: the chip in the corner says what it
     // measured (the bake, and the slowest frame: updateFrog and draw, not the upload of the picture).
     perf = {};
     for (const demo of ['none', 'three', 'all']) {
-      const ctx = await newContext();
-      const page = await ctx.newPage();
-      await page.goto(`${base}?demo=${demo}`);
-      await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
-      await page.waitForTimeout(10000);
-      // Flutter draws to a canvas: turn its semantics on to read the chip as text.
-      await page.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
-      await page.waitForTimeout(1500);
-      const text = await page.evaluate(() =>
-        [...document.querySelectorAll('flt-semantics')].map((e) => e.textContent || e.getAttribute('aria-label') || '')
-          .find((t) => /bake \d+ ms/.test(t)) || null);
-      const m = text && /bake (\d+) ms · frame max ([\d.]+) ms · mean ([\d.]+) ms/.exec(text);
-      perf[demo] = m ? { bake_ms: Number(m[1]), slowest_frame_ms: Number(m[2]), mean_frame_ms: Number(m[3]), chip: text } : { chip: text };
-      console.log(`perf ${demo}:`, JSON.stringify(perf[demo]));
-      await page.screenshot({ path: join(out, `perf-${demo}-motion-on.png`) });
-      await ctx.close();
+      for (let attempt = 1; attempt <= 2 && !perf[demo]; attempt++) {
+        const ctx = await newContext();
+        try {
+          const page = await ctx.newPage();
+          await page.goto(`${base}?demo=${demo}`);
+          await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
+          await page.waitForTimeout(10000);
+          // Flutter draws to a canvas: turn its semantics on to read the chip as text.
+          await page.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
+          await page.waitForTimeout(1500);
+          const text = await page.evaluate(() =>
+            [...document.querySelectorAll('flt-semantics')].map((e) => e.textContent || e.getAttribute('aria-label') || '')
+              .find((t) => /bake \d+ ms/.test(t)) || null);
+          const m = text && /bake (\d+) ms · frame max ([\d.]+) ms · mean ([\d.]+) ms/.exec(text);
+          perf[demo] = m ? { bake_ms: Number(m[1]), slowest_frame_ms: Number(m[2]), mean_frame_ms: Number(m[3]), chip: text } : { chip: text };
+          console.log(`perf ${demo}:`, JSON.stringify(perf[demo]));
+          await page.screenshot({ path: join(out, `perf-${demo}-motion-on.png`) });
+        } catch (e) {
+          console.log(`perf ${demo}, attempt ${attempt}: ${String(e).split('\n')[0]}`);
+        } finally {
+          await ctx.close().catch(() => {});
+        }
+      }
     }
   }
 } finally {
   await browser.close();
   server.close();
 }
-writeFileSync(join(out, 'pairs.json'), JSON.stringify(pairs, null, 2) + '\n');
 if (perf) writeFileSync(join(out, 'perf.json'), JSON.stringify(perf, null, 2) + '\n');
 console.log(`pairs: ${join(out, 'pairs.json')}`);
