@@ -21,8 +21,13 @@ Audio, speech recognition, the call connection, storage, haptics. The only packa
 
 - `lib/coqui_platform.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
-- Later it holds implementations of `ClipPlayer`, `SpeechListener`, `CallSession`, `KeyValueStore`, `Haptics` and `AppInfo` (page 12, section 2). All browser code stays behind a conditional import.
+- After order 18 it gives `createClipPlayer`, `createSpeechListener`, `openStorage` (`CoquiStorage`: `progress` and `space(name)`), `createHaptics`, `createAppInfo`, and the build settings `coquiBuild`, `coquiCallsAllowed`, `iosAudioSessionType`. Order 19 adds `CallSession`. All browser code stays behind a conditional import (`src/web/`); the plugins are in `src/io/`.
+
+## Order 18's own tools
+
+- `node tool/juego_sonido.mjs`: juego.js's sound code run in node on a recording AudioContext; writes `test/fixtures/juego_sonido.json` (byte-identical on a re-run).
+- `flutter test --platform chrome`: the interop tests (`test/web_test.dart`; `flutter test` alone skips them).
+- `flutter build web -t tool/dev_main.dart --no-web-resources-cdn`, then `node tool/dev_check.mjs`: the dev screen in headless Chromium, with the worktree's `historia/audio/` (gaps on the output bus, the made sounds, one recognition, storage, haptics, AppInfo).
 
 ## Run and test it alone
 
