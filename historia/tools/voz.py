@@ -87,7 +87,7 @@ else:
         was = json.load(open(ready, encoding="utf-8"))
     except Exception:
         was = {}
-    old, hechos, made = was.get("hechos", {}), {}, 0
+    old, hechos, made, nuevos = was.get("hechos", {}), {}, 0, []
     for cid, clip in lines.items():
         v = by_name[pick.get(clip.get("who", "narr"), pick["narr"])]
         out = os.path.join(HERE, "audio", cid + ".mp3")
@@ -97,7 +97,13 @@ else:
             continue
         speak(v["ShortName"], v["Locale"], [clip["text"]], out)
         made += 1
+        nuevos.append(cid)
         print("ok", cid)
     json.dump({"voces": pick, "rate": RATE, "v": int(time.time()) if made else was.get("v", 0), "clips": sorted(hechos), "hechos": hechos},
               open(ready, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(made, "new clips of", len(lines), "-", CHARS, "characters")
+    try:   # the start and end marks of the clips just made (historia/audio/marcas.json); a failure here must not lose the clips
+        import marcas
+        print("marks made for", marcas.update(nuevos), "clips")
+    except Exception as e:
+        print("WARNING: marcas.json was not updated:", e, "- run python3 historia/tools/marcas.py")

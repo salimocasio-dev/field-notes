@@ -37,6 +37,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: ffmpeg, for the start and end marks (historia/tools/marcas.py)
+        run: command -v ffmpeg ffprobe >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg; }
       - name: Make the audio
         run: python historia/tools/voz.py
         env:
