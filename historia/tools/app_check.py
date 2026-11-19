@@ -16,7 +16,9 @@ async def main():
         await pg.evaluate("App.lugar(0)"); await pg.wait_for_timeout(500); await pg.screenshot(path=OUT+"/app2.png")
         print("sheet",(await pg.evaluate("document.getElementById('sheet').innerText"))[:400].replace("\n"," | "))
         # mark the two new stories as played, with their words, and look at Palabras, the shelf and a book
-        await pg.evaluate("""async()=>{for(const c of ['el-jugo','que-calor','la-lluvia']){const T=await (await fetch('cuentos/'+c+'.json')).json();PAL.cuento(T,[]);}cierra();App.ver('palabras');}""")
+        # the stories to play: two plain ones, and the first story whose book reads well ("lee": true), so the book can be opened
+        await pg.evaluate("""async()=>{const ids=['el-jugo','que-calor'];for(const c of CURSO.lugares.flatMap(l=>l.cuentos||[])){try{const r=await fetch('libros/'+c+'.json');if(r.ok&&(await r.json()).lee===true){ids.push(c);break;}}catch(e){}}
+          for(const c of ids){const T=await (await fetch('cuentos/'+c+'.json')).json();PAL.cuento(T,[]);}cierra();App.ver('palabras');}""")
         await pg.wait_for_timeout(1500); await pg.screenshot(path=OUT+"/app3.png",full_page=True)
         n=await pg.evaluate("document.querySelectorAll('#t-palabras .wc').length"); print("palabras",n,"cards |",(await pg.evaluate("document.getElementById('repaso').textContent")))
         if not n: FAIL.append("no word cards")
