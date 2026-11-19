@@ -144,8 +144,8 @@ TestHost signHost(SignCase c) {
   return host;
 }
 
-/// Makes the case's call on `Ctx`, the way the page made it on the old code.
-SignResult replaySign(SignCase c) {
+/// Makes the case's call on `Ctx`, the way the page made it on the old code. [frogShadow] is `Signs.frog`'s `shadow`.
+SignResult replaySign(SignCase c, {bool frogShadow = true}) {
   final st = c.state;
   final host = signHost(c);
   final scene = SignScene(
@@ -190,7 +190,12 @@ SignResult replaySign(SignCase c) {
     case 'bang':
       bang(g, a[0] as num, a[1] as num, a[2] as num);
     case 'frog':
-      signs.frog(g, copyJson(a[0] as Map<String, dynamic>), a[1] as int);
+      signs.frog(
+        g,
+        copyJson(a[0] as Map<String, dynamic>),
+        a[1] as int,
+        shadow: frogShadow,
+      );
     case 'respDraw':
       signs.respDraw(g, a[0] as int);
     case 'drawAve':

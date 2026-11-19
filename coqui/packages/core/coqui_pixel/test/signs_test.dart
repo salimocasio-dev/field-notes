@@ -4,6 +4,9 @@
 // Exact where the drawing uses only fillRect and unscaled drawImage; the bird is scaled 1.6 and rotated, so for it the
 // rule is order 11's: no more than 3% of the picture's pixels differ by more than 24 in a channel.
 // On the vm and in a browser the reference is the same fixture.
+import 'dart:typed_data';
+
+import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:test/test.dart';
 
 import 'support/ctx_replay.dart' show diffTile, tolerance;
@@ -34,6 +37,93 @@ void main() {
       expect(blank, [24, 83]);
     },
   );
+
+  // `Signs.frog(shadow: false)`: the same frog without the old flat shadow (juego.js line 48), on the 8 reference cases.
+  // The shadow's own pixels are what `shadow` draws alone on the case's background, at the place `frog` puts it.
+  group('frog without the old shadow', () {
+    final frogs = byKind['frog']!;
+
+    /// The shadow of case [c], alone on its background: its colour where it draws, the background elsewhere.
+    Uint32List shadowAlone(SignCase c) {
+      final size = c.size!, px = Uint32List(size[0] * size[1]);
+      final g = Ctx(px, size[0], size[1]);
+      g.fillStyle = colour(c.background);
+      g.fillRect(0, 0, size[0], size[1]);
+      final q = c.args[0] as Map<String, dynamic>, b = frogBox(q);
+      shadow(g, b.x + 2, (q['y'] as num) + 25, b.w - 5);
+      return px;
+    }
+
+    test('there are 8 cases', () => expect(frogs.length, 8));
+
+    // the cases whose frog covers all of his shadow (s .5 and dy 3.5 push him down over it): nothing to drop there
+    const hidden = [54];
+
+    test('shadow: true is the old picture, and shadow: false is the same everywhere but the shadow\'s own pixels, which hold the background', () {
+      for (final c in frogs) {
+        final bg = colour(c.background), alone = shadowAlone(c);
+        final withShadow = replaySign(c, frogShadow: true).px!;
+        final without = replaySign(c, frogShadow: false).px!;
+        final ref = signReference(c);
+        final bad = <String>[];
+        var shadowPixels = 0, shown = 0, covered = 0;
+        for (var i = 0; i < ref.length; i++) {
+          if (withShadow[i] != ref[i]) bad.add('#$i true != the reference');
+          if (alone[i] == bg) {
+            // not the shadow's: the frog and the background, the same either way
+            if (without[i] != withShadow[i]) bad.add('#$i outside');
+            continue;
+          }
+          shadowPixels++;
+          if (without[i] == bg) {
+            // the shadow's pixel, with the frog not over it: the shadow with it, the background without
+            if (withShadow[i] == alone[i]) {
+              shown++;
+            } else {
+              bad.add('#$i shadow pixel not shown by shadow: true');
+            }
+          } else if (without[i] == withShadow[i]) {
+            covered++; // the frog is over it: both pictures hold the frog's pixel
+          } else {
+            bad.add('#$i inside');
+          }
+        }
+        // what is left in `without` is the frog's, not the shadow's colour
+        final shadowColour = alone.firstWhere((v) => v != bg);
+        expect(
+          without.contains(shadowColour),
+          isFalse,
+          reason: '${c.label}: the shadow\'s colour is left',
+        );
+        expect(bad.take(10), isEmpty, reason: c.label);
+        expect(shadowPixels, shown + covered, reason: c.label);
+        expect(
+          shown > 0,
+          !hidden.contains(c.n),
+          reason: '${c.label}: $shown shadow pixels show',
+        );
+      }
+    });
+
+    test('the flag does something: the two pictures differ', () {
+      final same = <int>[];
+      for (final c in frogs) {
+        final a = replaySign(c, frogShadow: true).px!;
+        final b = replaySign(c, frogShadow: false).px!;
+        var differ = 0;
+        for (var i = 0; i < a.length; i++) {
+          if (a[i] != b[i]) differ++;
+        }
+        if (differ == 0) same.add(c.n);
+        // and `true` is the default
+        final d = replaySign(c).px!;
+        for (var i = 0; i < a.length; i++) {
+          if (a[i] != d[i]) fail('${c.label}: the default is not shadow: true');
+        }
+      }
+      expect(same, hidden, reason: 'the cases where both pictures are equal');
+    });
+  });
 
   // the bird is scaled and rotated: the rule is the tolerance one
   const scaled = {'drawAve'};

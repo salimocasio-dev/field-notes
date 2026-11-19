@@ -245,6 +245,9 @@ void bang(Ctx g, num cx, num cy, num s) {
   );
 }
 
+// engine.js: shadow. [Signs.frog] has a parameter of that name, which hides the function inside it.
+void _flatShadow(Ctx g, num x, num y, num w) => shadow(g, x, y, w);
+
 /// The signs that read the game's state.
 class Signs {
   Signs({required this.host, required this.scene}) {
@@ -315,15 +318,17 @@ class Signs {
   }
 
   // juego.js: frog
-  // the frog `q` (W.cq) with his shadow; his mouth moves while he talks
-  void frog(Ctx g, Map<String, dynamic> q, int a) {
+  /// The frog [q] (W.cq) with his shadow; his mouth moves while he talks. With [shadow] false the old flat shadow
+  /// (juego.js line 48, `shadow(g,b.x+2,q.y+25,b.w-5)`) is not drawn and everything else is: a scene whose engine casts
+  /// the frog's shadow asks for that.
+  void frog(Ctx g, Map<String, dynamic> q, int a, {bool shadow = true}) {
     final F = host.F, b = frogBox(q);
     final bl = F % 47 < 2 ? 1 : 0,
         op = ((q['bub'] == 'hola' || host.TALK == 'coqui') && a % 2 != 0)
             ? 1
             : 0;
     final s = q['s'] as num;
-    shadow(g, b.x + 2, (q['y'] as num) + 25, b.w - 5);
+    if (shadow) _flatShadow(g, b.x + 2, (q['y'] as num) + 25, b.w - 5);
     g.drawImage(
       host.lib.spr('cq${jsNum(s)}_$bl$op', () => mkCoqui(s, bl, op != 0)),
       b.x,
