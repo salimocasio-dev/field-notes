@@ -1,13 +1,11 @@
-{"id": "el-jugo", "title": "El jugo", "pages": [
- {"img": "img/el-jugo-1.png", "clips": ["hace_calor", "cq_que_calor", "ven_balcon"]},
- {"img": "img/el-jugo-2.png", "clips": ["silla_de_abuela", "se_sienta_silla", "silla_es_pequena"]},
- {"img": "img/el-jugo-3.png", "clips": ["abuela_entra", "dos_vasos", "pone_vasos"]},
- {"img": "img/el-jugo-4.png", "clips": ["vaso_de_jugo", "vaso_de_agua", "abuela_se_sienta"]},
- {"img": "img/el-jugo-5.png", "clips": ["agua_en_mesa", "mira_pajaro", "pajaro_toma_jugo"]},
- {"img": "img/el-jugo-6.png", "clips": ["no_pajaro", "pajaro_se_sienta"]},
- {"img": "img/el-jugo-7.png", "clips": ["cq_gracias_abuela", "abuela_toma_jugo", "vaso_en_silla"]},
- {"img": "img/el-jugo-8.png", "clips": ["vaso_en_mesa", "abuela_toma_vaso_mesa", "un_vaso_grande"]},
- {"img": "img/el-jugo-9.png", "clips": ["un_vaso_pequeno", "abuela_toma_vaso_grande", "toma"]},
- {"img": "img/el-jugo-10.png", "clips": ["pajaro_toma_agua"]},
- {"img": "img/el-jugo-11.png", "clips": ["ab_de_nada"]}
+{"id": "el-jugo", "title": "El jugo", "lee": true, "pages": [
+ {"img": "img/el-jugo-1.png", "clips": ["cq_que_calor", "ven_balcon", "silla_de_abuela"]},
+ {"img": "img/el-jugo-2.png", "clips": ["se_sienta_silla", "silla_es_pequena", "abuela_entra"]},
+ {"img": "img/el-jugo-3.png", "clips": ["dos_vasos", "pone_vasos", "vaso_de_jugo"]},
+ {"img": "img/el-jugo-4.png", "clips": ["vaso_de_agua", "abuela_se_sienta", "agua_en_mesa"]},
+ {"img": "img/el-jugo-5.png", "clips": ["mira_pajaro", "pajaro_toma_jugo", "no_pajaro"]},
+ {"img": "img/el-jugo-6.png", "clips": ["pajaro_se_sienta"]},
+ {"img": "img/el-jugo-7.png", "clips": ["abuela_toma_jugo", "vaso_en_silla", "vaso_en_mesa"]},
+ {"img": "img/el-jugo-8.png", "clips": ["abuela_toma_vaso_mesa", "un_vaso_grande", "un_vaso_pequeno"]},
+ {"img": "img/el-jugo-9.png", "clips": ["abuela_toma_vaso_grande", "pajaro_toma_agua"]}
 ]}

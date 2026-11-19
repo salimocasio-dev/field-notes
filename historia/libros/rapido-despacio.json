@@ -1,6 +1,6 @@
-{"id": "rapido-despacio", "title": "Rápido, despacio", "pages": [
+{"id": "rapido-despacio", "title": "Rápido, despacio", "lee": true, "pages": [
  {"img": "img/rapido-despacio-1.png", "clips": ["c14_estan", "c14_guineos", "c14_vamos_ven"]},
- {"img": "img/rapido-despacio-2.png", "clips": ["c14_camina", "c14_corre_corre", "c14_cq_despacio"]},
- {"img": "img/rapido-despacio-3.png", "clips": ["c14_ahora_despacio", "c14_cq_rapido", "c14_ahora_rapido"]},
- {"img": "img/rapido-despacio-4.png", "clips": ["c14_ab_gracias", "c14_cq_de_nada", "c14_vamos_casa"]}
+ {"img": "img/rapido-despacio-2.png", "clips": ["c14_camina", "c14_corre_corre", "c14_ahora_despacio"]},
+ {"img": "img/rapido-despacio-3.png", "clips": ["c14_ahora_rapido", "c14_ab_gracias", "c14_cq_de_nada"]},
+ {"img": "img/rapido-despacio-4.png", "clips": ["c14_vamos_casa"]}
 ]}

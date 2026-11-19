@@ -1,7 +1,5 @@
-{"id": "hasta-manana", "title": "Hasta mañana", "pages": [
+{"id": "hasta-manana", "title": "Hasta mañana", "lee": true, "pages": [
  {"img": "img/hasta-manana-1.png", "clips": ["p_mira_el_sol"]},
- {"img": "img/hasta-manana-2.png", "clips": ["p_cq_vamos", "p_cq_hm_abuela", "p_mama_hm_coqui"]},
- {"img": "img/hasta-manana-3.png", "clips": ["p_papa_hm", "p_cq_hm", "p_carmen_vamos_coqui"]},
- {"img": "img/hasta-manana-4.png", "clips": ["p_cq_gracias_abuelo", "p_ao_de_nada"]},
- {"img": "img/hasta-manana-5.png", "clips": ["p_familia_adios_hm", "p_cq_adios_hm"]}
+ {"img": "img/hasta-manana-2.png", "clips": ["p_cq_hm_abuela", "p_mama_hm_coqui"]},
+ {"img": "img/hasta-manana-3.png", "clips": ["p_familia_adios_hm", "p_cq_adios_hm"]}
 ]}

@@ -1,8 +1,7 @@
-{"id": "quien-eres-tu", "title": "¿Quién eres tú?", "pages": [
+{"id": "quien-eres-tu", "title": "¿Quién eres tú?", "lee": true, "pages": [
  {"img": "img/quien-eres-tu-1.png", "clips": ["me_llamo_hermana", "y_yo_hermano", "cq_yo_me_llamo"]},
  {"img": "img/quien-eres-tu-2.png", "clips": ["ah_tu_hermana", "cq_tu_hermana", "si_yo_hermana"]},
  {"img": "img/quien-eres-tu-3.png", "clips": ["ao_espejuelos_q", "cq_yo_coqui", "ao_ah_tu"]},
  {"img": "img/quien-eres-tu-4.png", "clips": ["cq_tu_hermano", "si_yo_hermano", "cq_ella_mama"]},
- {"img": "img/quien-eres-tu-5.png", "clips": ["ao_hola_mama", "ao_mis_espejuelos", "ao_y_tu_eres"]},
- {"img": "img/quien-eres-tu-6.png", "clips": ["cq_si_yo_me_llamo"]}
+ {"img": "img/quien-eres-tu-5.png", "clips": ["ao_mis_espejuelos", "ao_y_tu_eres", "cq_si_yo_me_llamo"]}
 ]}

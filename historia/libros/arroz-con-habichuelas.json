@@ -1,8 +1,8 @@
-{"id": "arroz-con-habichuelas", "title": "Arroz con habichuelas", "pages": [
+{"id": "arroz-con-habichuelas", "title": "Arroz con habichuelas", "lee": true, "pages": [
  {"img": "img/arroz-con-habichuelas-1.png", "clips": ["c27_hace_comida", "c27_una_olla", "c27_otra_olla"]},
  {"img": "img/arroz-con-habichuelas-2.png", "clips": ["c27_aqui_arroz", "c27_aqui_hab", "c27_cq_pone_arroz"]},
- {"img": "img/arroz-con-habichuelas-3.png", "clips": ["c27_ab_hace_arroz", "c27_luis_hace_hab", "c27_cq_arroz"]},
- {"img": "img/arroz-con-habichuelas-4.png", "clips": ["c27_mas_arroz", "c27_cq_hab", "c27_mas_hab"]},
- {"img": "img/arroz-con-habichuelas-5.png", "clips": ["c27_familia_hambre", "c27_familia_come", "c27_luis_hambre"]},
- {"img": "img/arroz-con-habichuelas-6.png", "clips": ["c26_comida_lista", "c27_comen", "cq_gracias_abuela"]}
+ {"img": "img/arroz-con-habichuelas-3.png", "clips": ["c27_ab_hace_arroz", "c27_luis_hace_hab", "c27_mas_arroz"]},
+ {"img": "img/arroz-con-habichuelas-4.png", "clips": ["c27_mas_hab"]},
+ {"img": "img/arroz-con-habichuelas-5.png", "clips": ["c27_familia_hambre", "c27_familia_come", "c26_comida_lista"]},
+ {"img": "img/arroz-con-habichuelas-6.png", "clips": ["c27_comen"]}
 ]}

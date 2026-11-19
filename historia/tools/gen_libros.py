@@ -10,7 +10,8 @@
   --hud keeps the scenes' own counters (E.hud) in the pictures (off by default); --icon-bubbles keeps the picture bubbles above the speakers
   --solve  finds the draws a story's "leer" list was written for (see DRAWS) and prints them; writes nothing
 
-It writes historia/libros/<story id>.json = {"id","title","pages":[{"img":"img/<id>-<n>.png","clips":[...]}]}
+It writes historia/libros/<story id>.json = {"id","title","lee":true,"pages":[{"img":"img/<id>-<n>.png","clips":[...]}]}
+("lee": the book gets a Read button; true for every book until the review decides otherwise)
 and the page pictures historia/libros/img/<id>-<n>.png. Serves the repo on port 8767 if nothing answers there. Needs playwright,
 a Chrome at /usr/bin/google-chrome, node (to read curso.js) and PIL (sheets and checks).
 
@@ -20,8 +21,9 @@ HOW A BOOK IS MADE (all of it mechanical; nothing is read by a person)
    The first draw: every draw, deal and decision of the play takes its first option (Math.random is held at 0 inside the play), except for the
    stories in DRAWS (see there); a choice with no wrong answer (elige) takes its first option, as juega.py plays "r". The play is logged: every clip the engine starts (with where it came from), every scene act (E.acts) and
    every step (cam, set, ...). At the start of every clip the scene canvas (#cv, 196 x 216, the art's own size) is saved as a PNG: only the
-   canvas, with the big sign (spot, hand, twinkle), the answer bubbles (resp), the star effects and the picture bubbles above the speakers
-   (HIDE_ICON_BUBBLES: the speaker markers) off, the frog's hop offset 0 and the
+   canvas with every game mark off: the touch sign (spot, hand, twinkle), the answer bubbles (resp), the star effects, the win heart, the
+   highlight rings of counted things (W.lit), the thought bubbles (piensa), the picture bubbles (bub, bubble), the things held up and enlarged
+   to be seen (alza, except e:1, carried at its own size) and the scene counters (E.hud); the frog's hop offset 0 and the
    frame counter fixed (no blink, mouth shut), so a play gives the same picture again (a handful of pixels can differ in a few pictures where a dog
    or a ball is still moving when the line starts). No DOM: no caption, no speech bubble, no UI.
 2. The lines, in play order: the story's "leer" list if it has one. Else the lines that historia/app.html leer() walks today (a bare line or
@@ -30,17 +32,20 @@ HOW A BOOK IS MADE (all of it mechanical; nothing is read by a person)
    an elige takes its first option. Clips the walk does not walk (said answers, praise) are not added.
 3. Left out: a clip that is the question line ("line") of any ask, decide or elige of the story (all values of its $ variables); the engine's
    generic clips (GENERIC below); a clip already used earlier in the book.
+   Then (rule 2) a line with fewer than MIN_WORDS (3) words once its speaker tag ("X dice:") is taken off is left out (the coquí label is not
+   in the text), and so is the other line of a thank/reply pair (a "gracias" line and the "de nada" line right after it) when one of the two is.
 4. Pages: at most three consecutive kept lines. A new page when the camera moved in the play between two kept lines (a camGo that really
-   moved it), or when the canvas saved at the start of the next kept line differs from the page's picture in more than PAGE_DIFF (10%) of its
-   pixels (a pixel differs when any of its colours does). Scene acts, {set} and touches do not break a page by themselves.
-5. The picture of a page is the canvas saved when its first line started.
+   moved it, or other camera values at the two line starts), or when the canvas saved at the start of the next kept line differs from the page's
+   picture so far (the canvas at the end of its current last line) in more than PAGE_DIFF (10%) of its pixels (a pixel differs when any of its
+   colours does). Scene acts, {set} and touches do not break a page by themselves.
+5. The picture of a page is the canvas saved when its last line has ended (the clip and the pause after it).
    The routines (haz) get no book: nothing is left of them once their question lines are out. They are skipped (SKIP_KINDS).
 6. OVERRIDES: per story, later fixes for what the reviewers flag; never edit the JSON by hand. Each entry is one of
      {"drop": clip}                     leave the clip out of the book
      {"move": clip, "after": other}     put the clip right after another one (or "after": null for the very first place)
      {"break": clip}                    a page starts at this clip
      {"join": clip}                     no page break before this clip (the page limit of three still holds)
-     {"pic": clip, "at": other}         the page that starts at clip takes its picture from where the line 'other' started
+     {"pic": clip, "at": other}         the page that starts at clip takes its picture from where the line 'other' ended
    It is empty for now.
 """
 import sys, os, re, io, json, time, asyncio, subprocess, socket, itertools, argparse, shutil
@@ -188,20 +193,27 @@ def is_generic(T, c):
 # ---------------------------------------------------------------- the machine play
 HOOK = r"""(cfg)=>{
  window.__ev=[];const ev=__ev;window.__plan=cfg.plan||[];window.__k=0;window.__pickj=0;window.__RV=0;
- const shot=()=>{const sv={spot:W.spot,tw:W.twinkle,resp:W.resp,fx:W.fx,dy:W.cq.dy,F:F,camA:camA};
-   const b0=bub,b1=bubble,h0=E.hud;
-   W.spot=null;W.twinkle=null;W.resp=null;W.fx=[];W.cq.dy=0;F=948;camA=null;let u=null;
+ const shot=()=>{const sv={spot:W.spot,tw:W.twinkle,resp:W.resp,fx:W.fx,dy:W.cq.dy,F:F,camA:camA,heart:W.heart,lit:W.lit,cqp:W.cq.piensa};
+   const b0=bub,b1=bubble,h0=E.hud,gs=[];
+   // the game marks, off for the capture only: the touch sign (spot, hand, twinkle), the answer bubbles, the star effects, the win heart,
+   // the highlight rings of counted things (W.lit, El camino), the thought bubbles (piensa), the picture bubbles (bub, bubble), the enlarged
+   // things held up to be seen (alza, except e:1 = carried at its own size), the scene counters (E.hud)
+   W.spot=null;W.twinkle=null;W.resp=null;W.fx=[];W.cq.dy=0;F=948;camA=null;W.heart=0;W.lit=null;W.cq.piensa=null;
+   for(const id in (W.gente||{})){const p=W.gente[id];if(!p)continue;gs.push([p,p.piensa,p.alza]);p.piensa=null;if(p.alza&&(typeof p.alza==='string'||p.alza.e!==1))p.alza=null;}
+   let u=null;
    if(cfg.bubbles){bub=function(){};bubble=function(){};}
    if(cfg.hud)E.hud=null;
    try{draw();u=cv.toDataURL('image/png');}catch(e){u=null;}
    bub=b0;bubble=b1;E.hud=h0;
-   W.spot=sv.spot;W.twinkle=sv.tw;W.resp=sv.resp;W.fx=sv.fx;W.cq.dy=sv.dy;F=sv.F;camA=sv.camA;return u;};
+   for(const g of gs){g[0].piensa=g[1];g[0].alza=g[2];}
+   W.spot=sv.spot;W.twinkle=sv.tw;W.resp=sv.resp;W.fx=sv.fx;W.cq.dy=sv.dy;F=sv.F;camA=sv.camA;W.heart=sv.heart;W.lit=sv.lit;W.cq.piensa=sv.cqp;return u;};
  let mark=null,leads=null;
  const _say=say;say=function(id,gap){let src='other';
    if(mark&&mark===id){src='line';mark=null;}
    else if(leads&&leads.includes(id)){src='lead';leads.splice(leads.indexOf(id),1);}
    else if(window.__q&&window.__q===id){src='q';window.__q=null;}
-   ev.push({k:'say',id,src,img:shot(),cam:cam.map(v=>Math.round(v*10)/10)});return _say.apply(this,arguments);};
+   const e={k:'say',id,src,img:shot(),cam:cam.map(v=>Math.round(v*10)/10)};ev.push(e);
+   return _say.apply(this,arguments).then(v=>{e.end=shot();e.ecam=cam.map(v=>Math.round(v*10)/10);return v;});};   // e.img: the canvas when the line starts; e.end: when it has ended (clip and pause)
  const _cg=camGo;camGo=function(k,n){if(!at(k))ev.push({k:'camera',to:k});return _cg.apply(this,arguments);};
  const _paso=paso;paso=function(st){
    if(st&&typeof st==='object'&&!st.act){
@@ -282,8 +294,23 @@ def lines_of(T, ev):
     return [(ev[n]["id"], n, "") for (i, n) in says if ev[n]["src"] in ("line", "lead")]
 
 
-def kept(T, sid, lines, ev, why):
-    """Leaves out the question lines, the generic clips and repeats. `why` collects what was left out and why."""
+TAG = re.compile(r"^[^:]{1,40} dice:\s*")   # a speaker tag: "Abuela dice: ", "La señora dice: " (the coquí label is not in the text)
+MIN_WORDS = 3   # a line with fewer words than this (without its tag) is left out
+THANKS, REPLY = re.compile(r"\bgracias\b", re.I), re.compile(r"\bde nada\b", re.I)
+
+
+def bare(T, c):
+    """The text of a clip without its speaker tag."""
+    return TAG.sub("", T["clips"][c]["text"])
+
+
+def nwords(T, c):
+    return len(re.findall(r"[\wáéíóúüñÁÉÍÓÚÜÑ]+", bare(T, c)))
+
+
+def kept(T, sid, lines, ev, why, unclear=None):
+    """Leaves out the question lines, the generic clips and repeats; then (rule 2) the lines of two words or fewer and, with them, the other
+    line of a thank/reply pair. `why` collects what was left out and why; `unclear` the thank/reply cases the rule does not settle."""
     Q = question_clips(T) | {e["line"] for e in ev if e["k"] == "ask" and e["line"]}; seen = set(); out = []
     for c, n, flag in lines:
         if c in Q:
@@ -293,7 +320,24 @@ def kept(T, sid, lines, ev, why):
         if c in seen:
             why.append((c, "repeat")); continue
         seen.add(c); out.append((c, n, flag))
-    return out
+    short = {c for c, n, f in out if nwords(T, c) < MIN_WORDS}
+    pair = set()   # a thank line followed at once by its reply: when one of them is short the other goes with it
+    for (a, _, _), (b, _, _) in zip(out, out[1:]):
+        if THANKS.search(bare(T, a)) and REPLY.search(bare(T, b)) and ((a in short) != (b in short)):
+            pair.add(b if a in short else a)
+    afterq = {c for c, _, _ in out}
+    res = [(c, n, f) for c, n, f in out if c not in short and c not in pair]
+    final = {c for c, _, _ in res}
+    if unclear is not None:   # a thank line and its reply side by side in the whole list, one of them left out by another rule (question, generic, repeat) and the other kept
+        for (a, _, _), (b, _, _) in zip(lines, lines[1:]):
+            if THANKS.search(bare(T, a)) and REPLY.search(bare(T, b)) and (a in afterq) != (b in afterq) and (a in final or b in final):
+                unclear.append((a, b))
+    for c, n, flag in out:
+        if c in short:
+            why.append((c, "short"))
+        elif c in pair:
+            why.append((c, "pair"))
+    return res
 
 
 def overrides(sid, lst):
@@ -325,8 +369,9 @@ def moved_pixels(a, b):
 
 
 def paginate(sid, lst, ev, pic, brk, join):
-    """Pages of at most three consecutive lines. A new page where the camera moved between two lines, or where the canvas at the start of a line
-    differs from the page's picture in more than PAGE_DIFF of its pixels. -> [{"first": event index, "clips": [...], "pic": event index}]"""
+    """Pages of at most three consecutive lines. A new page where the camera moved between two lines, or where the canvas at the start of the next
+    line differs from the page's picture (the canvas at the end of its last line so far) in more than PAGE_DIFF of its pixels.
+    The picture of a page is the canvas when its last line has ended. -> [{"clips": [...], "pic": event index whose end canvas is the picture}]"""
     pages = []
     ev_of = {c: n for c, n, _ in lst}
     for k, (c, n, _) in enumerate(lst):
@@ -334,15 +379,16 @@ def paginate(sid, lst, ev, pic, brk, join):
         if not new and c not in join:
             prev = lst[k - 1][1]
             lo, hi = sorted((prev, n))
-            if any(e["k"] == "camera" for e in ev[lo + 1:hi]) or ev[prev].get("cam") != ev[n].get("cam"):
+            if any(e["k"] == "camera" for e in ev[lo + 1:hi]) or ev[prev].get("ecam") != ev[n].get("cam"):
                 new = True
-            elif moved_pixels(ev[pages[-1]["pic"]]["img"], ev[n]["img"]) > PAGE_DIFF:
+            elif moved_pixels(ev[prev].get("end") or ev[prev]["img"], ev[n]["img"]) > PAGE_DIFF:
                 new = True
         if new:
-            at = ev_of[pic[c]] if c in pic else n
-            pages.append({"first": n, "clips": [c], "pic": at})
+            pages.append({"clips": [c], "last": n})
         else:
-            pages[-1]["clips"].append(c)
+            pages[-1]["clips"].append(c); pages[-1]["last"] = n
+    for pg in pages:
+        pg["pic"] = ev_of[pic[pg["clips"][0]]] if pg["clips"][0] in pic else pg["last"]
     return pages
 
 
@@ -350,17 +396,18 @@ def build(sid, res):
     T = story(sid); ev = res["ev"]
     why = []
     lines = lines_of(T, ev)
-    lst = kept(T, sid, lines, ev, why)
+    unclear = []
+    lst = kept(T, sid, lines, ev, why, unclear)
     lst, pic, brk, join = overrides(sid, lst)
     pages = paginate(sid, lst, ev, pic, brk, join)
-    book = {"id": sid, "title": T["title"], "pages": [{"img": f"img/{sid}-{i + 1}.png", "clips": p["clips"]} for i, p in enumerate(pages)]}
+    book = {"id": sid, "title": T["title"], "lee": True, "pages": [{"img": f"img/{sid}-{i + 1}.png", "clips": p["clips"]} for i, p in enumerate(pages)]}
     imgs = []
     for p in pages:
-        u = ev[p["pic"]].get("img")
+        u = ev[p["pic"]].get("end") or ev[p["pic"]].get("img")
         if not u:
-            raise Stop("no picture could be saved at the start of " + p["clips"][0])
+            raise Stop("no picture could be saved at the end of " + p["clips"][-1])
         imgs.append(__import__("base64").b64decode(u.split(",", 1)[1]))
-    info = {"empty": not pages, "left_out": why, "order_flags": [c for c, n, f in lst if f == "order"]}
+    info = {"empty": not pages, "unclear": unclear, "left_out": why, "order_flags": [c for c, n, f in lst if f == "order"]}
     # the lead question check: a lead line that asks something and is not a question line of the story is reported (none exist now)
     Q = question_clips(T)
     for st in all_steps(T):
@@ -418,6 +465,8 @@ def check(ids, rd, verbose=True):
         tot["books"] += 1
         if B["id"] != sid or not B["title"]:
             bad.append((sid, "id or title"))
+        if B.get("lee") is not True:
+            bad.append((sid, 'no "lee": true'))
         for i, pg in enumerate(B["pages"]):
             tot["pages"] += 1; tot["lines"] += len(pg["clips"])
             if not 1 <= len(pg["clips"]) <= 3:
@@ -432,6 +481,8 @@ def check(ids, rd, verbose=True):
                 seen.add(c)
                 if c in Q or is_generic(T, c):
                     bad.append((sid, f"left-out clip {c} is in the book"))
+                if nwords(T, c) < MIN_WORDS:
+                    bad.append((sid, f"clip {c} has fewer than {MIN_WORDS} words"))
             f = os.path.join(OUT, pg["img"])
             if pg["img"] != f"img/{sid}-{i + 1}.png":
                 bad.append((sid, f"page {i + 1} image name {pg['img']}"))
@@ -547,7 +598,7 @@ async def main():
                     for i, b in enumerate(imgs):
                         open(os.path.join(OUT, "img", f"{sid}-{i + 1}.png"), "wb").write(b)
                     open(os.path.join(OUT, sid + ".json"), "w", encoding="utf8").write(
-                        '{"id": %s, "title": %s, "pages": [\n%s\n]}\n' % (json.dumps(book["id"]), json.dumps(book["title"], ensure_ascii=False), ",\n".join(" " + json.dumps(x, ensure_ascii=False) for x in book["pages"])))
+                        '{"id": %s, "title": %s, "lee": %s, "pages": [\n%s\n]}\n' % (json.dumps(book["id"]), json.dumps(book["title"], ensure_ascii=False), json.dumps(book["lee"]), ",\n".join(" " + json.dumps(x, ensure_ascii=False) for x in book["pages"])))
                     infos[sid] = info
                     print(f"{sid}: {len(book['pages'])} pages, {sum(len(x['clips']) for x in book['pages'])} lines", flush=True)
             await asyncio.gather(*[one(s) for s in ids])
@@ -574,6 +625,11 @@ async def main():
             for c, w in inf["left_out"]:
                 lo[w] = lo.get(w, 0) + 1
         print("INFO left out:", json.dumps(lo))
+        r2 = {sid: [sum(1 for c, w in inf["left_out"] if w == "short"), sum(1 for c, w in inf["left_out"] if w == "pair")] for sid, inf in infos.items()}
+        print("RULE2 left out per book (short, pair):", json.dumps({k: v for k, v in r2.items() if any(v)}, ensure_ascii=False), "| total", sum(v[0] + v[1] for v in r2.values()))
+        for sid, inf in infos.items():
+            for a, b in inf["unclear"]:
+                print("UNCLEAR thank/reply", sid, a, b)
     print("TOTAL", json.dumps(tot)); [print("BAD", b) for b in bad]
     sys.exit(1 if (bad or stops) else 0)
 

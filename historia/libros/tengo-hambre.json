@@ -1,8 +1,7 @@
-{"id": "tengo-hambre", "title": "Tengo hambre", "pages": [
+{"id": "tengo-hambre", "title": "Tengo hambre", "lee": true, "pages": [
  {"img": "img/tengo-hambre-1.png", "clips": ["c26_esta_cocina", "c26_ab_en_cocina", "c26_comida_lista"]},
- {"img": "img/tengo-hambre-2.png", "clips": ["c26_ab_listo", "c26_luis_entra", "c26_luis_tiene_hambre"]},
- {"img": "img/tengo-hambre-3.png", "clips": ["c26_carmen_tiene_sed", "c26_cq_sed", "c26_toma_agua"]},
- {"img": "img/tengo-hambre-4.png", "clips": ["c26_cq_hambre", "c26_luis_sed", "c26_carmen_tiene_hambre"]},
- {"img": "img/tengo-hambre-5.png", "clips": ["c26_canelo_hambre", "c26_no_canelo"]},
- {"img": "img/tengo-hambre-6.png", "clips": ["c26_familia_cocina", "c26_y_canelo", "c26_cq_canelo"]}
+ {"img": "img/tengo-hambre-2.png", "clips": ["c26_luis_entra", "c26_luis_tiene_hambre", "c26_carmen_tiene_sed"]},
+ {"img": "img/tengo-hambre-3.png", "clips": ["c26_toma_agua", "c26_carmen_tiene_hambre", "c26_canelo_hambre"]},
+ {"img": "img/tengo-hambre-4.png", "clips": ["c26_no_canelo"]},
+ {"img": "img/tengo-hambre-5.png", "clips": ["c26_familia_cocina", "c26_cq_canelo"]}
 ]}

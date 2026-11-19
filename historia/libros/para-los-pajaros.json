@@ -1,4 +1,4 @@
-{"id": "para-los-pajaros", "title": "Para los pájaros", "pages": [
+{"id": "para-los-pajaros", "title": "Para los pájaros", "lee": true, "pages": [
  {"img": "img/para-los-pajaros-1.png", "clips": ["c31_vamos", "c31_busca", "c31_aqui_pan"]},
  {"img": "img/para-los-pajaros-2.png", "clips": ["c31_aqui_fruta", "c31_aqui_gm", "c31_huele_pan"]},
  {"img": "img/para-los-pajaros-3.png", "clips": ["c31_fo_pan", "c31_tira_pan", "c31_pajaro_pan"]},
@@ -7,5 +7,5 @@
  {"img": "img/para-los-pajaros-6.png", "clips": ["c31_carmen_manzana", "c31_manzana_pajaros", "c31_luis_guineo"]},
  {"img": "img/para-los-pajaros-7.png", "clips": ["c31_cq_guineo", "c31_abuelo_manzana", "c31_cq_manzana"]},
  {"img": "img/para-los-pajaros-8.png", "clips": ["c31_abuelo_guineo", "c31_abuelo_vamos", "c31_aqui_pan_fruta"]},
- {"img": "img/para-los-pajaros-9.png", "clips": ["c31_van", "c31_cq_adios"]}
+ {"img": "img/para-los-pajaros-9.png", "clips": ["c31_van"]}
 ]}

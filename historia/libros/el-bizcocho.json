@@ -1,11 +1,9 @@
-{"id": "el-bizcocho", "title": "El bizcocho", "pages": [
+{"id": "el-bizcocho", "title": "El bizcocho", "lee": true, "pages": [
  {"img": "img/el-bizcocho-1.png", "clips": ["ventana_cerrada"]},
- {"img": "img/el-bizcocho-2.png", "clips": ["tiene_bizcocho", "quieres_hola", "cq_si"]},
- {"img": "img/el-bizcocho-3.png", "clips": ["ahora_no"]},
- {"img": "img/el-bizcocho-4.png", "clips": ["ab_cierra_ventana", "cq_ay"]},
- {"img": "img/el-bizcocho-5.png", "clips": ["abre_ventana"]},
- {"img": "img/el-bizcocho-6.png", "clips": ["abre_puerta"]},
- {"img": "img/el-bizcocho-7.png", "clips": ["mira_pajaro", "pajaro_quiere", "no_pajaro"]},
- {"img": "img/el-bizcocho-8.png", "clips": ["abuela_en_puerta"]},
- {"img": "img/el-bizcocho-9.png", "clips": ["toma", "cq_mmm"]}
+ {"img": "img/el-bizcocho-2.png", "clips": ["tiene_bizcocho", "quieres_hola", "ahora_no"]},
+ {"img": "img/el-bizcocho-3.png", "clips": ["ab_cierra_ventana"]},
+ {"img": "img/el-bizcocho-4.png", "clips": ["abre_ventana"]},
+ {"img": "img/el-bizcocho-5.png", "clips": ["abre_puerta"]},
+ {"img": "img/el-bizcocho-6.png", "clips": ["mira_pajaro", "pajaro_quiere", "no_pajaro"]},
+ {"img": "img/el-bizcocho-7.png", "clips": ["abuela_en_puerta"]}
 ]}

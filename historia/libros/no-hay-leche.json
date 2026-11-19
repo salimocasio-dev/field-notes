@@ -1,7 +1,7 @@
-{"id": "no-hay-leche", "title": "No hay leche", "pages": [
+{"id": "no-hay-leche", "title": "No hay leche", "lee": true, "pages": [
  {"img": "img/no-hay-leche-1.png", "clips": ["c30_nevera", "c30_aqui_leche", "c30_aqui_queso"]},
  {"img": "img/no-hay-leche-2.png", "clips": ["c30_bebe_toma", "c30_carmen_come", "c30_cq_no_leche"]},
  {"img": "img/no-hay-leche-3.png", "clips": ["c30_busca_leche", "c30_ahora_leche", "c30_cq_no_queso"]},
  {"img": "img/no-hay-leche-4.png", "clips": ["c30_busca_queso", "c30_ahora_queso"]},
- {"img": "img/no-hay-leche-5.png", "clips": ["c30_cq_piragua", "c30_ahora_los2", "c30_cq_gracias_papa"]}
+ {"img": "img/no-hay-leche-5.png", "clips": ["c30_ahora_los2"]}
 ]}

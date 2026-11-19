@@ -1,7 +1,6 @@
-{"id": "d-la-bola", "title": "La bola", "pages": [
+{"id": "d-la-bola", "title": "La bola", "lee": true, "pages": [
  {"img": "img/d-la-bola-1.png", "clips": ["dl01", "dl02", "dl03"]},
- {"img": "img/d-la-bola-2.png", "clips": ["dl04", "dl05", "dl06"]},
- {"img": "img/d-la-bola-3.png", "clips": ["dl07", "dl08", "dl09"]},
- {"img": "img/d-la-bola-4.png", "clips": ["dl10", "dl11", "dl12"]},
- {"img": "img/d-la-bola-5.png", "clips": ["dl13", "dl14"]}
+ {"img": "img/d-la-bola-2.png", "clips": ["dl04", "dl05", "dl07"]},
+ {"img": "img/d-la-bola-3.png", "clips": ["dl08", "dl09", "dl10"]},
+ {"img": "img/d-la-bola-4.png", "clips": ["dl11", "dl12", "dl14"]}
 ]}

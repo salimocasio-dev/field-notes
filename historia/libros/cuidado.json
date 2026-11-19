@@ -1,7 +1,5 @@
-{"id": "cuidado", "title": "¡Cuidado!", "pages": [
+{"id": "cuidado", "title": "¡Cuidado!", "lee": true, "pages": [
  {"img": "img/cuidado-1.png", "clips": ["c29_olla_caliente", "c29_aqui_cal", "c29_aqui_frio"]},
  {"img": "img/cuidado-2.png", "clips": ["c29_ab_cuidado_caliente", "c29_papa_bebe_cal", "c29_carmen_bebe_frio"]},
- {"img": "img/cuidado-3.png", "clips": ["c29_cq_espera", "c29_luis_ya", "c29_abuelo_bebe_cal"]},
- {"img": "img/cuidado-4.png", "clips": ["c29_mama_bebe_frio", "c29_ay_luis", "c29_ya_fin"]},
- {"img": "img/cuidado-5.png", "clips": ["c29_cq_carmen"]}
+ {"img": "img/cuidado-3.png", "clips": ["c29_abuelo_bebe_cal", "c29_mama_bebe_frio", "c29_cq_carmen"]}
 ]}

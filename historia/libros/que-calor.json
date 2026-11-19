@@ -1,7 +1,5 @@
-{"id": "que-calor", "title": "¡Qué calor!", "pages": [
+{"id": "que-calor", "title": "¡Qué calor!", "lee": true, "pages": [
  {"img": "img/que-calor-1.png", "clips": ["abuela_dice", "cq_bien_y_tu", "ab_que_calor"]},
- {"img": "img/que-calor-2.png", "clips": ["ab_quiero_agua", "cq_jugo_q", "ab_no_quiero_jugo"]},
- {"img": "img/que-calor-3.png", "clips": ["cq_toma_abuela", "cq_de_nada", "cq_quiero_jugo"]},
- {"img": "img/que-calor-4.png", "clips": ["cq_gracias", "ab_de_nada", "cq_mmm"]},
- {"img": "img/que-calor-5.png", "clips": ["cq_como_estas_abuela", "ab_bien_y_tu", "cq_bien"]}
+ {"img": "img/que-calor-2.png", "clips": ["ab_quiero_agua", "ab_no_quiero_jugo", "cq_quiero_jugo"]},
+ {"img": "img/que-calor-3.png", "clips": ["cq_como_estas_abuela", "ab_bien_y_tu"]}
 ]}

@@ -1,8 +1,7 @@
-{"id": "donde-esta-el-gato", "title": "¿Dónde está el gato?", "pages": [
+{"id": "donde-esta-el-gato", "title": "¿Dónde está el gato?", "lee": true, "pages": [
  {"img": "img/donde-esta-el-gato-1.png", "clips": ["c13_un_gato", "c13_gato_parque", "c13_ven_gatito"]},
- {"img": "img/donde-esta-el-gato-2.png", "clips": ["c13_gato_corre", "c13_mira_arboles", "c13_un_arbol"]},
- {"img": "img/donde-esta-el-gato-3.png", "clips": ["c13_dos_arboles", "c13_tres_arboles", "c13_hay_1"]},
- {"img": "img/donde-esta-el-gato-4.png", "clips": ["c13_hay_2", "c13_hay_3", "c13_luis_donde"]},
- {"img": "img/donde-esta-el-gato-5.png", "clips": ["c13_no_esta_1", "c13_cq_esta_3", "c12_no_canelo"]},
- {"img": "img/donde-esta-el-gato-6.png", "clips": ["c13_aqui", "c13_amigos", "c13_cq_amigos"]}
+ {"img": "img/donde-esta-el-gato-2.png", "clips": ["c13_gato_corre", "c13_mira_arboles", "c13_hay_1"]},
+ {"img": "img/donde-esta-el-gato-3.png", "clips": ["c13_hay_2", "c13_hay_3", "c13_luis_donde"]},
+ {"img": "img/donde-esta-el-gato-4.png", "clips": ["c13_no_esta_1", "c13_cq_esta_3", "c12_no_canelo"]},
+ {"img": "img/donde-esta-el-gato-5.png", "clips": ["c13_aqui", "c13_amigos"]}
 ]}

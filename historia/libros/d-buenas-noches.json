@@ -1,9 +1,8 @@
-{"id": "d-buenas-noches", "title": "Buenas noches", "pages": [
+{"id": "d-buenas-noches", "title": "Buenas noches", "lee": true, "pages": [
  {"img": "img/d-buenas-noches-1.png", "clips": ["dn01"]},
  {"img": "img/d-buenas-noches-2.png", "clips": ["dn02", "dn03", "dn04"]},
- {"img": "img/d-buenas-noches-3.png", "clips": ["dn05", "dn06", "dn07"]},
- {"img": "img/d-buenas-noches-4.png", "clips": ["dn08", "dn09", "dn10"]},
- {"img": "img/d-buenas-noches-5.png", "clips": ["dn11", "dn12"]},
- {"img": "img/d-buenas-noches-6.png", "clips": ["dn13", "dn14", "dn15"]},
- {"img": "img/d-buenas-noches-7.png", "clips": ["dn16", "dn17", "dn18"]}
+ {"img": "img/d-buenas-noches-3.png", "clips": ["dn05", "dn07", "dn08"]},
+ {"img": "img/d-buenas-noches-4.png", "clips": ["dn09", "dn11", "dn12"]},
+ {"img": "img/d-buenas-noches-5.png", "clips": ["dn13", "dn14", "dn15"]},
+ {"img": "img/d-buenas-noches-6.png", "clips": ["dn16", "dn17", "dn18"]}
 ]}

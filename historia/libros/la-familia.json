@@ -1,10 +1,7 @@
-{"id": "la-familia", "title": "La familia", "pages": [
- {"img": "img/la-familia-1.png", "clips": ["es_la_sala", "ahora_no", "cq_hola"]},
- {"img": "img/la-familia-2.png", "clips": ["familia_de_abuela", "esta_es_mama", "y_este_es_papa"]},
- {"img": "img/la-familia-3.png", "clips": ["mama_hola", "papa_hola_como", "bien_gracias"]},
- {"img": "img/la-familia-4.png", "clips": ["abuela_y_abuelo", "abuelo_hola", "este_es_bebe"]},
- {"img": "img/la-familia-5.png", "clips": ["bebe_pequeno", "tiene_un_bizcocho", "bizcocho_familia"]},
- {"img": "img/la-familia-6.png", "clips": ["cq_mmm_bizcocho", "papa_gracias", "cq_de_nada"]},
- {"img": "img/la-familia-7.png", "clips": ["abuelo_gracias", "no_para_mama", "y_para_mama"]},
- {"img": "img/la-familia-8.png", "clips": ["toma_biz_jugo", "cq_gracias_abuela", "familia_come"]}
+{"id": "la-familia", "title": "La familia", "lee": true, "pages": [
+ {"img": "img/la-familia-1.png", "clips": ["es_la_sala", "ahora_no", "familia_de_abuela"]},
+ {"img": "img/la-familia-2.png", "clips": ["esta_es_mama", "y_este_es_papa", "papa_hola_como"]},
+ {"img": "img/la-familia-3.png", "clips": ["abuela_y_abuelo", "este_es_bebe", "bebe_pequeno"]},
+ {"img": "img/la-familia-4.png", "clips": ["tiene_un_bizcocho", "bizcocho_familia", "no_para_mama"]},
+ {"img": "img/la-familia-5.png", "clips": ["y_para_mama", "toma_biz_jugo", "familia_come"]}
 ]}

@@ -1,12 +1,11 @@
-{"id": "la-lluvia", "title": "La lluvia", "pages": [
+{"id": "la-lluvia", "title": "La lluvia", "lee": true, "pages": [
  {"img": "img/la-lluvia-1.png", "clips": ["esta_casa"]},
  {"img": "img/la-lluvia-2.png", "clips": ["mira_casa"]},
- {"img": "img/la-lluvia-3.png", "clips": ["esta_puerta", "cerrada"]},
+ {"img": "img/la-lluvia-3.png", "clips": ["esta_puerta"]},
  {"img": "img/la-lluvia-4.png", "clips": ["mira_ventana", "tambien_cerrada"]},
  {"img": "img/la-lluvia-5.png", "clips": ["viene_lluvia", "ay_lluvia", "abuela_en_ventana"]},
  {"img": "img/la-lluvia-6.png", "clips": ["hola_quien", "soy_yo", "ahora_en_puerta"]},
  {"img": "img/la-lluvia-7.png", "clips": ["abre_puerta_tu"]},
- {"img": "img/la-lluvia-8.png", "clips": ["abre_puerta", "es_abuela", "hola_abuela"]},
- {"img": "img/la-lluvia-9.png", "clips": ["abuela_dice", "bien_gracias", "entra"]},
- {"img": "img/la-lluvia-10.png", "clips": ["abre_ventana"]}
+ {"img": "img/la-lluvia-8.png", "clips": ["abre_puerta", "es_abuela", "abuela_dice"]},
+ {"img": "img/la-lluvia-9.png", "clips": ["abre_ventana"]}
 ]}

@@ -1,9 +1,8 @@
-{"id": "d-pato-pequeno", "title": "Pan para el pato pequeño", "pages": [
+{"id": "d-pato-pequeno", "title": "Pan para el pato pequeño", "lee": true, "pages": [
  {"img": "img/d-pato-pequeno-1.png", "clips": ["qc01", "qc02", "qc03"]},
  {"img": "img/d-pato-pequeno-2.png", "clips": ["qc04", "qc05", "qc06"]},
  {"img": "img/d-pato-pequeno-3.png", "clips": ["qc07", "qc08", "qc09"]},
  {"img": "img/d-pato-pequeno-4.png", "clips": ["qc10", "qc11", "qc12"]},
- {"img": "img/d-pato-pequeno-5.png", "clips": ["qc13", "qc14", "qc15"]},
- {"img": "img/d-pato-pequeno-6.png", "clips": ["qc16", "qc17", "qc18"]},
- {"img": "img/d-pato-pequeno-7.png", "clips": ["qc19"]}
+ {"img": "img/d-pato-pequeno-5.png", "clips": ["qc14", "qc15", "qc16"]},
+ {"img": "img/d-pato-pequeno-6.png", "clips": ["qc17", "qc18", "qc19"]}
 ]}

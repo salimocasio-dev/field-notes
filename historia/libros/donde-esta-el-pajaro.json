@@ -1,8 +1,6 @@
-{"id": "donde-esta-el-pajaro", "title": "¿Dónde está el pájaro?", "pages": [
- {"img": "img/donde-esta-el-pajaro-1.png", "clips": ["grande_casa", "casa_del_pajaro", "es_pequena"]},
- {"img": "img/donde-esta-el-pajaro-2.png", "clips": ["mira_palmas", "una_palma_grande", "una_palma_pequena"]},
- {"img": "img/donde-esta-el-pajaro-3.png", "clips": ["quiere_jugar", "vamos_jugar", "aqui_esta"]},
- {"img": "img/donde-esta-el-pajaro-4.png", "clips": ["aqui_estoy"]},
- {"img": "img/donde-esta-el-pajaro-5.png", "clips": ["adios_pajaro", "adios_ab", "adios_abuela"]},
- {"img": "img/donde-esta-el-pajaro-6.png", "clips": ["ab_cierra_puerta"]}
+{"id": "donde-esta-el-pajaro", "title": "¿Dónde está el pájaro?", "lee": true, "pages": [
+ {"img": "img/donde-esta-el-pajaro-1.png", "clips": ["grande_casa", "casa_del_pajaro", "mira_palmas"]},
+ {"img": "img/donde-esta-el-pajaro-2.png", "clips": ["una_palma_grande", "una_palma_pequena", "quiere_jugar"]},
+ {"img": "img/donde-esta-el-pajaro-3.png", "clips": ["vamos_jugar", "aqui_esta"]},
+ {"img": "img/donde-esta-el-pajaro-4.png", "clips": ["ab_cierra_puerta"]}
 ]}

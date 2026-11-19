@@ -1,10 +1,7 @@
-{"id": "d-bizcocho-bebe", "title": "El bizcocho del bebé", "pages": [
- {"img": "img/d-bizcocho-bebe-1.png", "clips": ["db01", "db02", "db03"]},
- {"img": "img/d-bizcocho-bebe-2.png", "clips": ["db04", "db05", "db06"]},
- {"img": "img/d-bizcocho-bebe-3.png", "clips": ["db07", "db08", "db09"]},
- {"img": "img/d-bizcocho-bebe-4.png", "clips": ["db10", "db11", "db12"]},
- {"img": "img/d-bizcocho-bebe-5.png", "clips": ["db13", "db14", "db15"]},
- {"img": "img/d-bizcocho-bebe-6.png", "clips": ["db16", "db17", "db18"]},
- {"img": "img/d-bizcocho-bebe-7.png", "clips": ["db19", "db20", "db21"]},
- {"img": "img/d-bizcocho-bebe-8.png", "clips": ["db22"]}
+{"id": "d-bizcocho-bebe", "title": "El bizcocho del bebé", "lee": true, "pages": [
+ {"img": "img/d-bizcocho-bebe-1.png", "clips": ["db01", "db03", "db04"]},
+ {"img": "img/d-bizcocho-bebe-2.png", "clips": ["db07", "db08", "db10"]},
+ {"img": "img/d-bizcocho-bebe-3.png", "clips": ["db12", "db13", "db14"]},
+ {"img": "img/d-bizcocho-bebe-4.png", "clips": ["db15", "db16", "db17"]},
+ {"img": "img/d-bizcocho-bebe-5.png", "clips": ["db20", "db22"]}
 ]}

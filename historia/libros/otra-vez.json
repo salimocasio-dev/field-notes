@@ -1,9 +1,8 @@
-{"id": "otra-vez", "title": "¡Otra vez!", "pages": [
+{"id": "otra-vez", "title": "¡Otra vez!", "lee": true, "pages": [
  {"img": "img/otra-vez-1.png", "clips": ["c17_canelo_tiene", "c15_l_canelo_dame", "c17_l_es_mi"]},
- {"img": "img/otra-vez-2.png", "clips": ["c17_ca_esta_mi", "c17_l_esta_tu", "c15_cq_mi"]},
- {"img": "img/otra-vez-3.png", "clips": ["c17_cq_es_tu", "c17_l_si_mi", "c17_cq_es_mi"]},
- {"img": "img/otra-vez-4.png", "clips": ["c17_l_si_tu", "c17_tira_coge", "c17_quiere_mas"]},
- {"img": "img/otra-vez-5.png", "clips": ["c17_tira_otra", "c17_no_mas", "c17_l_otra_carmen"]},
- {"img": "img/otra-vez-6.png", "clips": ["c17_l_carmen_dame", "c17_ca_no_mas", "c17_no_quiere"]},
- {"img": "img/otra-vez-7.png", "clips": ["c17_l_otra_q", "c17_cq_no_mas"]}
+ {"img": "img/otra-vez-2.png", "clips": ["c17_ca_esta_mi", "c17_l_esta_tu", "c17_cq_es_tu"]},
+ {"img": "img/otra-vez-3.png", "clips": ["c17_l_si_mi", "c17_cq_es_mi", "c17_l_si_tu"]},
+ {"img": "img/otra-vez-4.png", "clips": ["c17_tira_coge", "c17_quiere_mas", "c17_tira_otra"]},
+ {"img": "img/otra-vez-5.png", "clips": ["c17_l_otra_carmen", "c17_l_carmen_dame", "c17_ca_no_mas"]},
+ {"img": "img/otra-vez-6.png", "clips": ["c17_no_quiere"]}
 ]}

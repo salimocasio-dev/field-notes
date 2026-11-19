@@ -1,7 +1,6 @@
-{"id": "la-piragua", "title": "La piragua", "pages": [
+{"id": "la-piragua", "title": "La piragua", "lee": true, "pages": [
  {"img": "img/la-piragua-1.png", "clips": ["c21_un_hombre", "c21_una_mujer", "c21_hombre_come"]},
- {"img": "img/la-piragua-2.png", "clips": ["c21_mujer_bebe", "c21_cq_come", "c21_h_gracias"]},
- {"img": "img/la-piragua-3.png", "clips": ["c21_cq_bebe", "c21_m_gracias", "c21_coqui_come"]},
- {"img": "img/la-piragua-4.png", "clips": ["c21_coqui_bebe", "c21_ay", "c21_fin"]},
- {"img": "img/la-piragua-5.png", "clips": ["c21_y_pajaro", "c17_cq_no_mas"]}
+ {"img": "img/la-piragua-2.png", "clips": ["c21_mujer_bebe", "c21_cq_come", "c21_cq_bebe"]},
+ {"img": "img/la-piragua-3.png", "clips": ["c21_coqui_come", "c21_coqui_bebe", "c21_ay"]},
+ {"img": "img/la-piragua-4.png", "clips": ["c21_fin", "c21_y_pajaro"]}
 ]}

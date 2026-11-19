@@ -1,6 +1,5 @@
-{"id": "la-foto", "title": "La foto", "pages": [
- {"img": "img/la-foto-1.png", "clips": ["hermano_del_bebe", "hermana_del_bebe", "el_dice_hola"]},
- {"img": "img/la-foto-2.png", "clips": ["ella_dice_hola", "el_es_papa", "ella_es_mama"]},
- {"img": "img/la-foto-3.png", "clips": ["tres_fotos", "cq_si"]},
- {"img": "img/la-foto-4.png", "clips": ["foto_familia", "cq_familia"]}
+{"id": "la-foto", "title": "La foto", "lee": true, "pages": [
+ {"img": "img/la-foto-1.png", "clips": ["hermano_del_bebe", "hermana_del_bebe", "el_es_papa"]},
+ {"img": "img/la-foto-2.png", "clips": ["ella_es_mama", "tres_fotos"]},
+ {"img": "img/la-foto-3.png", "clips": ["foto_familia"]}
 ]}
