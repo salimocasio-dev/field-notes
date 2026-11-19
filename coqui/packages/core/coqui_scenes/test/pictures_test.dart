@@ -123,7 +123,7 @@ void main() {
     );
 
     testWidgets(
-      'the 9 level cells that use El frente are 96 x 106, found by their level names',
+      'the 9 level cells that use El frente are 96 x 106 at zoom 1, found by their level names',
       (tester) async {
         final source = ScenePictures(bundle: testBundle());
         final frame = (await tester.runAsync(() => source.frameOf('frente')))!;
@@ -145,14 +145,15 @@ void main() {
             [96, 106],
             reason: '${l.word} ${l.index}',
           );
-          // the region: 96 x 106 at zoom 1, 48 x 53 at zoom 2, centred on the centre of the entry's crop
-          final w = 96 ~/ l.zoom, h = 106 ~/ l.zoom;
+          // the region: always 96 x 106, one picture pixel per pixel, centred on the centre of the entry's crop (a zoom-2
+          // pair picture too)
+          const w = 96, h = 106;
           final cx = l.crop[0] + l.crop[2] / 2, cy = l.crop[1] + l.crop[3] / 2;
           final x = ((cx - w / 2) + .5).floor().clamp(0, 240 - w),
               y = ((cy - h / 2) + .5).floor().clamp(0, 216 - h);
           expect(
             view.pixels,
-            blocks(frame.picture, [x, y, w, h], l.zoom, 96, 106),
+            blocks(frame.picture, [x, y, w, h], 1, 96, 106),
             reason: '${l.word} ${l.index}: ${l.picture} as a cell',
           );
         }

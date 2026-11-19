@@ -22,13 +22,15 @@ import 'package:material_ui/material_ui.dart';
 const int pictureF = 8;
 
 /// Where a picture is cut from the scene's picture: the sheet's `crop` for it (its centre is the picture's centre) and
-/// its zoom. [name] is the sheet's picture (`<word>.<side>`) or level entry (`nivel.<word>.<index>`) they came from.
+/// its zoom. [name] is the sheet's picture (`<word>.<side>`) or level entry (`nivel.<word>.<index>`) they came from; a
+/// [level] cell is drawn at zoom 1 whatever the entry's zoom (picture_cut.dart).
 class _Cut {
-  _Cut(this.name, this.crop, this.zoom);
+  _Cut(this.name, this.crop, this.zoom, {this.level = false});
 
   final String name;
   final List<int> crop;
   final int zoom;
+  final bool level;
 }
 
 /// One picture made ready: the scene's frame, where its picture is cut from, and the W it draws.
@@ -64,7 +66,9 @@ String _canon(Object? v) {
 /// per scene, each state of a set baked once, on first use or by [warm] (cached by scene and set key, `SetBakes`). The
 /// picture is cut from the scene's 240 x 216 picture as its sheet says and as the size rule says ([pictureRegion]): the
 /// picture is `width` x `height` picture pixels; it shows the region of `width / zoom` x `height / zoom` pixels centred on
-/// the centre of the sheet's `crop` for it, each pixel drawn `zoom` x `zoom` (zoom 1 or 2). Never a fraction.
+/// the centre of the sheet's `crop` for it, each pixel drawn `zoom` x `zoom` (zoom 1 or 2, the sheet's). Never a fraction.
+/// A cell of the level check (`nivel.<word>.<index>`) is always zoom 1: a `width` x `height` region at the centre of the
+/// level entry's `crop`, one picture pixel per pixel.
 ///
 /// Which picture of the sheet a [PictureRef] is: its [PictureRef.name] (`<word>.si`, `<word>.no`: the sheet's
 /// `pictures`; `nivel.<word>.<index>`: the sheet's `level`, which names the pair picture it uses). A reference with no
@@ -141,7 +145,7 @@ class ScenePictures implements PictureSource {
     return names.first;
   }
 
-  // the sheet's picture [n] (`<word>.<side>`), or its level entry (`nivel.<word>.<index>`: its own centre and zoom)
+  // the sheet's picture [n] (`<word>.<side>`), or its level entry (`nivel.<word>.<index>`: its own centre; the cell is always zoom 1)
   _Cut _cutNamed(Sheet sheet, String scene, String n) {
     final pic = sheet.pictures[n];
     if (pic != null) return _Cut(n, pic.crop, pic.zoom);
@@ -152,7 +156,7 @@ class ScenePictures implements PictureSource {
         final word = rest.substring(0, dot);
         for (final l in sheet.level) {
           if (l.word == word && l.index == index) {
-            return _Cut(n, l.crop, l.zoom);
+            return _Cut(n, l.crop, l.zoom, level: true);
           }
         }
       }
@@ -270,6 +274,7 @@ class ScenePictures implements PictureSource {
       frame.picture,
       crop: shot.cut.crop,
       zoom: shot.cut.zoom,
+      level: shot.cut.level,
       width: width,
       height: height,
       picW: sheet.pictureW,
@@ -416,6 +421,7 @@ class _ScenePictureState extends State<_ScenePicture>
       pictureRegion(
         crop: shot.cut.crop,
         zoom: shot.cut.zoom,
+        level: shot.cut.level,
         width: widget.width,
         height: widget.height,
         picW: shot.frame.scene.sheet.pictureW,

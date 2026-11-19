@@ -12,22 +12,28 @@ int _round(num v) => (v + 0.5).floor();
 
 /// The size rule of a review or level-check picture (page 12, section 3: `PictureSource.of`; section 5, "The camera").
 ///
-/// The picture is [width] x [height] picture pixels. It shows a region of the scene's picture of `width / zoom` x
-/// `height / zoom` pixels, each drawn as a [zoom] x [zoom] block (zoom 1 or 2, from the sheet's entry for the picture).
-/// The region is centred on the centre of the sheet's [crop] for the picture and kept inside the scene's picture
-/// ([picW] x [picH], 240 x 216), in whole pixels. At the default 196 x 104 the region is the sheet's [crop] itself; for a
-/// cell of the level check (96 x 106) it is 96 x 106 at zoom 1 and 48 x 53 at zoom 2.
+/// The picture is [width] x [height] picture pixels. A REVIEW picture ([level] false) shows the region of `width / zoom` x
+/// `height / zoom` pixels, each drawn as a [zoom] x [zoom] block, [zoom] being 1 or 2 as the sheet's entry for the picture
+/// says. A LEVEL-CHECK cell ([level] true, `nivel.<word>.<index>`) is always drawn at zoom 1, whatever the zoom of the pair
+/// picture it uses (decided by the orchestrator: a zoom-2 cell is 48 x 53 pixels, smaller than a door or a window): its
+/// region is [width] x [height] pixels, one picture pixel per pixel, and [zoom] is not looked at.
 ///
-/// Throws [PictureError] when [zoom] is not 1 or 2, when [width] or [height] is not a whole number of [zoom] blocks (a
-/// picture is never stretched by a fraction), or when the region does not fit in the scene's picture.
+/// The region is centred on the centre of the sheet's [crop] for the picture (the level entry's own `crop` for a cell) and
+/// kept inside the scene's picture ([picW] x [picH], 240 x 216), in whole pixels. At the default 196 x 104 a review picture's
+/// region is the sheet's [crop] itself; a level cell (96 x 106) is a 96 x 106 region.
+///
+/// Throws [PictureError] when a review picture's [zoom] is not 1 or 2, when its [width] or [height] is not a whole number of
+/// [zoom] blocks (a picture is never stretched by a fraction), or when the region does not fit in the scene's picture.
 PictureRegion pictureRegion({
   required List<num> crop,
   required int zoom,
   required int width,
   required int height,
+  bool level = false,
   int picW = pictureW,
   int picH = pictureH,
 }) {
+  if (level) zoom = 1;
   if (zoom != 1 && zoom != 2) {
     throw PictureError('a picture has zoom 1 or 2, not $zoom');
   }
@@ -58,13 +64,14 @@ PictureRegion pictureRegion({
 }
 
 /// The picture itself: [width] x [height] pixels cut from [picture] (`picW` x `picH`) as [pictureRegion] says, each pixel
-/// of the region drawn [zoom] x [zoom]. No stretch.
+/// of the region drawn [zoom] x [zoom] (1 for a [level] cell). No stretch.
 Uint32List cutPicture(
   Uint32List picture, {
   required List<num> crop,
   required int zoom,
   required int width,
   required int height,
+  bool level = false,
   int picW = pictureW,
   int picH = pictureH,
 }) {
@@ -73,9 +80,11 @@ Uint32List cutPicture(
     zoom: zoom,
     width: width,
     height: height,
+    level: level,
     picW: picW,
     picH: picH,
   );
+  if (level) zoom = 1;
   final out = Uint32List(width * height);
   for (var j = 0; j < height; j++) {
     final row = (r.y + j ~/ zoom) * picW + r.x;

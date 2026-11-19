@@ -74,7 +74,7 @@ void main() {
       );
       key.writeln(
         'row ${n ~/ 3 + 1}, column ${n % 3 + 1}: level item "${l.word}", picture ${l.index} (${ref.name}): the picture '
-        '"${l.picture}" (${sheet.pictures[l.picture]!.what}); zoom ${l.zoom}, crop ${l.crop}; cells/nivel.${ascii(l.word)}.${l.index}.png',
+        '"${l.picture}" (${sheet.pictures[l.picture]!.what}); the cell is zoom 1 (its pair picture is zoom ${l.zoom}), centred on the centre of crop ${l.crop}; cells/nivel.${ascii(l.word)}.${l.index}.png',
       );
     }
     const gap = 8, grey = 0xFF303030;

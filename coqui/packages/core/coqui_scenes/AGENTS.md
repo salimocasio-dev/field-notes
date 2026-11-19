@@ -63,11 +63,13 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   does not have fails clearly. A new scene's sheet must name every picture the content asks of it:
   `test/pictures_test.dart` ("the names the content makes") checks every pair side and level picture of every course item.
 - **The size rule** (`lib/src/picture_cut.dart`, `pictureRegion` and `cutPicture`, tested in `test/picture_cut_test.dart`): the
-  picture is `width` x `height` picture pixels; the region of the 240 x 216 scene picture that fills it is `width / zoom` x
-  `height / zoom` (zoom 1 or 2, from the sheet's entry), centred on the centre of the sheet's `crop` for the picture, kept inside
-  the scene picture, each region pixel drawn as a zoom x zoom block. At 196 x 104 it is the sheet's `crop` exactly. A level cell
-  (96 x 106) is a 96 x 106 region at zoom 1 and a 48 x 53 region at zoom 2. A size that is not whole blocks fails with a
-  `PictureError`; nothing is ever stretched by a fraction.
+  picture is `width` x `height` picture pixels. A REVIEW picture shows the region of `width / zoom` x `height / zoom` of the 240 x
+  216 scene picture (zoom 1 or 2, from the sheet's entry), centred on the centre of the sheet's `crop` for the picture, kept
+  inside the scene picture, each region pixel drawn as a zoom x zoom block; at 196 x 104 it is the sheet's `crop` exactly. A
+  LEVEL-CHECK cell (`nivel.<word>.<index>`) is ALWAYS zoom 1, whatever the zoom of the pair picture it uses (decided: a zoom-2
+  cell would be 48 x 53 picture pixels, smaller than a door or a window): a `width` x `height` region (96 x 106) centred on the
+  centre of the level entry's `crop`, kept inside the picture, one picture pixel per pixel. A review size that is not whole
+  zoom blocks fails with a `PictureError`; nothing is ever stretched by a fraction.
 - **A scene that is not converted** shows its OLD picture (order 06's, `coqui/ref/escenas/<id>/pairs/`), found by the ref's
   name in `assets/old_pictures/<id>/index.json`, decoded and shown through `PixelView`. It comes only in the size it was drawn
   in (196 x 104 review, 96 x 106 level cell); any other size, a name with no picture, and a ref with no name fail clearly.
