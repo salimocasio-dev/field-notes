@@ -6,7 +6,8 @@
 name: Coquí Android
 on:
   push:
-    branches: [main, orden/03] # TEMP: orden/03 is for testing, removed in the last commit
+    branches: [main]
+    paths: ["coqui/**"]
 permissions:
   contents: read
 jobs:
