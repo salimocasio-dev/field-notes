@@ -5,12 +5,14 @@ library;
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// The width, in logical pixels, that a browser draws a CSS border of [css] px: a border snaps down to
-/// whole device pixels (`floor(css * ratio)`) and is never less than one. At ratio 2.625 a 1 px border is
-/// 2 device pixels and a 1.5 px one is 3; at ratio 3, 3 and 4. Every CSS border (not a `box-shadow` ring,
-/// which a browser does not snap) is drawn through this.
+/// The width, in logical pixels, that a browser draws a CSS border of [css] px. Chrome takes a border
+/// width down to whole CSS pixels (1.5 becomes 1, never below 1) and then snaps the box to device pixels:
+/// at ratio 2.625 both 1 and 1.5 px borders are 3 device pixels, at ratio 3 they are 3 as well (measured
+/// on the reference pictures: an outline pill's ring is 3 device pixels on both phones). Every CSS
+/// border (not a `box-shadow` ring, which a browser draws as it is) goes through this.
 double cssBorderWidth(double css, double devicePixelRatio) {
-  final px = (css * devicePixelRatio).floor();
+  final whole = css.floor() < 1 ? 1 : css.floor();
+  final px = (whole * devicePixelRatio).round();
   return (px < 1 ? 1 : px) / devicePixelRatio;
 }
 

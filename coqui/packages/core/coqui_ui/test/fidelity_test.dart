@@ -96,82 +96,79 @@ void main() {
     });
   });
 
-  group('hairlines: a CSS border is whole device pixels, rounded down', () {
-    test('1 px and 1.5 px at ratio 2.625 and 3', () {
-      expect(cssBorderWidth(1, 2.625) * 2.625, closeTo(2, 1e-9));
+  group('hairlines: a CSS border as Chrome draws it', () {
+    test('1 px, 1.5 px and 4 px at ratio 2.625 and 3', () {
+      // Chrome floors the CSS width (1.5 to 1) and snaps the box: 3 device pixels at both ratios,
+      // as the reference pictures show (an outline pill's ring is 3 px on both phones).
+      expect(cssBorderWidth(1, 2.625) * 2.625, closeTo(3, 1e-9));
       expect(cssBorderWidth(1.5, 2.625) * 2.625, closeTo(3, 1e-9));
-      expect(cssBorderWidth(4, 2.625) * 2.625, closeTo(10, 1e-9));
+      expect(cssBorderWidth(4, 2.625) * 2.625, closeTo(11, 1e-9));
       expect(cssBorderWidth(1, 3) * 3, closeTo(3, 1e-9));
-      expect(cssBorderWidth(1.5, 3) * 3, closeTo(4, 1e-9));
+      expect(cssBorderWidth(1.5, 3) * 3, closeTo(3, 1e-9));
       expect(cssBorderWidth(4, 3) * 3, closeTo(12, 1e-9));
     });
     test('never below one device pixel', () {
-      expect(cssBorderWidth(0.2, 2.625) * 2.625, closeTo(1, 1e-9));
+      expect(cssBorderWidth(0.2, 2.625) * 2.625, closeTo(3, 1e-9));
       expect(cssBorderWidth(1, 1) * 1, closeTo(1, 1e-9));
-      expect(cssBorderWidth(1, 1.5) * 1.5, closeTo(1, 1e-9));
+      expect(cssBorderWidth(1, 0.5) * 0.5, closeTo(1, 1e-9));
     });
 
     for (final ratio in [2.625, 3.0]) {
-      testWidgets(
-        'the outline button\'s border is ${(1.5 * ratio).floor()} device pixels at $ratio',
-        (tester) async {
-          _phone(tester, const Size(412, 915), ratio);
-          final key = GlobalKey();
-          await tester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: Align(
-                  alignment: Alignment.topLeft,
-                  child: RepaintBoundary(
-                    key: key,
-                    child: SizedBox(
-                      width: 120,
-                      child: CoquiButton(
-                        label: 'x',
-                        kind: CoquiButtonKind.outline,
-                        full: true,
-                        onPressed: () {},
-                      ),
+      testWidgets('the outline button\'s border is 3 device pixels at $ratio', (
+        tester,
+      ) async {
+        _phone(tester, const Size(412, 915), ratio);
+        final key = GlobalKey();
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Align(
+                alignment: Alignment.topLeft,
+                child: RepaintBoundary(
+                  key: key,
+                  child: SizedBox(
+                    width: 120,
+                    child: CoquiButton(
+                      label: 'x',
+                      kind: CoquiButtonKind.outline,
+                      full: true,
+                      onPressed: () {},
                     ),
                   ),
                 ),
               ),
             ),
-          );
-          final boundary =
-              key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-          final px = await tester.runAsync(() async {
-            final image = await boundary.toImage(pixelRatio: ratio);
-            final data = (await image.toByteData())!;
-            final out = Uint32List(image.width * image.height);
-            final view = ByteData.sublistView(data);
-            for (var i = 0; i < out.length; i++) {
-              out[i] = view.getUint32(i * 4, Endian.little);
-            }
-            final r = (w: image.width, h: image.height, px: out);
-            image.dispose();
-            return r;
-          });
-          final w = px!.w;
-          final y = px.h ~/ 2;
-          // The left edge, mid height: solid border pixels (line2, #C9C6BB), then nothing.
-          const line2 = 0xFFBBC6C9;
-          var run = 0;
-          while (run < 12 && px.px[y * w + run] == line2) {
-            run++;
+          ),
+        );
+        final boundary =
+            key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+        final px = await tester.runAsync(() async {
+          final image = await boundary.toImage(pixelRatio: ratio);
+          final data = (await image.toByteData())!;
+          final out = Uint32List(image.width * image.height);
+          final view = ByteData.sublistView(data);
+          for (var i = 0; i < out.length; i++) {
+            out[i] = view.getUint32(i * 4, Endian.little);
           }
-          expect(
-            run,
-            (1.5 * ratio).floor(),
-            reason: 'border thickness in device pixels',
-          );
-          expect(
-            px.px[y * w + run] >>> 24,
-            0,
-            reason: 'the pill is empty inside',
-          );
-        },
-      );
+          final r = (w: image.width, h: image.height, px: out);
+          image.dispose();
+          return r;
+        });
+        final w = px!.w;
+        final y = px.h ~/ 2;
+        // The left edge, mid height: solid border pixels (line2, #C9C6BB), then nothing.
+        const line2 = 0xFFBBC6C9;
+        var run = 0;
+        while (run < 12 && px.px[y * w + run] == line2) {
+          run++;
+        }
+        expect(run, 3, reason: 'border thickness in device pixels');
+        expect(
+          px.px[y * w + run] >>> 24,
+          0,
+          reason: 'the pill is empty inside',
+        );
+      });
     }
 
     testWidgets(
