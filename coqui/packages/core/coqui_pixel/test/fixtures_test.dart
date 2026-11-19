@@ -65,4 +65,14 @@ void main() {
       expect(refCtxFixture.containsKey('ctx/cases.json'), isTrue);
     },
   );
+
+  test(
+    'the Nov 14 one-state El frente is whole (it is in no folder any more)',
+    () {
+      expect(decodeFrenteNov14('pix.bin').length, 240 * 216 * 4);
+      expect(decodeFrenteNov14('zb.bin').length, 240 * 216 * 4);
+      expect(decodeFrenteNov14('kinds.bin').length, 240 * 216);
+      expect(decodeFrenteNov14('state.json').length, 1515);
+    },
+  );
 }
