@@ -17,6 +17,7 @@ class _Saved {
     required this.strokeStyle,
     required this.lineWidth,
     required this.smoothing,
+    required this.dash,
     required this.clipX0,
     required this.clipY0,
     required this.clipX1,
@@ -28,6 +29,7 @@ class _Saved {
   final double globalAlpha, lineWidth;
   final int fillStyle, strokeStyle;
   final bool smoothing;
+  final List<double> dash;
   final int clipX0, clipY0, clipX1, clipY1;
   final Uint8List? mask;
 }
@@ -67,6 +69,7 @@ const double _twoPi = 2 * math.pi;
 ///   neighbour (bilinear, with a soft edge, when `smoothing` is on).
 /// - `arc`, `ellipse`, `rect`, `moveTo`, `lineTo` build a path; `fill` and `stroke` draw it by scanline, 4 × 4
 ///   samples a pixel; `clip` keeps a stack of rectangles (whole-pixel rectangles) and one path mask (anything else).
+/// - `setLineDash` (order 12, for patio.js): a stroke made of dashes and gaps.
 class Ctx {
   Ctx(Uint32List target, int w, int h)
     : _t = target,
@@ -103,6 +106,9 @@ class Ctx {
   final List<_Saved> _stack = [];
   List<_Sub> _path = [];
 
+  // the line dash list, in the units of the path (setLineDash): empty is a solid line
+  List<double> _dash = const [];
+
   // ---- state ----
 
   void save() {
@@ -119,6 +125,7 @@ class Ctx {
         strokeStyle: strokeStyle,
         lineWidth: lineWidth,
         smoothing: smoothing,
+        dash: _dash,
         clipX0: _clipX0,
         clipY0: _clipY0,
         clipX1: _clipX1,
@@ -142,6 +149,7 @@ class Ctx {
     strokeStyle = s.strokeStyle;
     lineWidth = s.lineWidth;
     smoothing = s.smoothing;
+    _dash = s.dash;
     _clipX0 = s.clipX0;
     _clipY0 = s.clipY0;
     _clipX1 = s.clipX1;
@@ -169,6 +177,19 @@ class Ctx {
     _b = nb;
     _c = nc;
     _d = nd;
+  }
+
+  /// The browser's `setLineDash`: the lengths of the dashes and gaps a stroke is made of, alternately (on, off, on, ...),
+  /// along each sub-path, which starts with a dash. A list of odd length is used twice over (`[2, 3, 4]` is
+  /// `[2, 3, 4, 2, 3, 4]`). A negative or infinite or NaN length is a mistake the browser ignores: the call changes
+  /// nothing. An empty list, or one of only zeros, is a solid line. The list is part of the state `save` keeps.
+  void setLineDash(List<num> segments) {
+    for (final v in segments) {
+      if (v.isNaN || v.isInfinite || v < 0) return;
+    }
+    final list = [for (final v in segments) v.toDouble()];
+    if (list.length.isOdd) list.addAll(List<double>.of(list));
+    _dash = list.fold<double>(0, (a, b) => a + b) > 0 ? list : const [];
   }
 
   // ---- blending ----
@@ -924,12 +945,91 @@ class Ctx {
     out.add(r);
   }
 
+  /// The sub-paths a stroke runs along: the path's own, or, with a line dash list, the dashes cut out of them (open
+  /// sub-paths, a dash that runs round a corner keeping the corner). Each sub-path starts a new round of the list, and a
+  /// closed one is dashed all the way round. The dash that is on at the end of a closed sub-path is not joined to the
+  /// one that began it (the browser's rectangle is drawn that way: one corner pixel differs if they are joined).
+  List<_Sub> _dashed(double scale) {
+    if (_dash.isEmpty) return _path;
+    final pattern = [for (final d in _dash) d * scale];
+    final out = <_Sub>[];
+    for (final sub in _path) {
+      // the points, one that repeats the one before dropped
+      final p = <double>[];
+      for (var i = 0; i < sub.pts.length; i += 2) {
+        if (p.length >= 2 &&
+            p[p.length - 2] == sub.pts[i] &&
+            p[p.length - 1] == sub.pts[i + 1]) {
+          continue;
+        }
+        p
+          ..add(sub.pts[i])
+          ..add(sub.pts[i + 1]);
+      }
+      var m = p.length ~/ 2;
+      var closed = sub.closed;
+      if (closed &&
+          m > 1 &&
+          p[0] == p[(m - 1) * 2] &&
+          p[1] == p[(m - 1) * 2 + 1]) {
+        p.removeRange((m - 1) * 2, m * 2);
+        m--;
+      }
+      if (m < 2) continue;
+      if (m == 2) closed = false;
+      final segs = closed ? m : m - 1;
+      var index = 0;
+      var left = pattern[0];
+      _Sub? current;
+      void begin(double x, double y) {
+        current = _Sub()
+          ..pts.add(x)
+          ..pts.add(y);
+      }
+
+      void end() {
+        final d = current;
+        if (d != null && d.pts.length >= 4) out.add(d);
+        current = null;
+      }
+
+      begin(p[0], p[1]);
+      for (var i = 0; i < segs; i++) {
+        final j = (i + 1) % m;
+        final ax = p[i * 2], ay = p[i * 2 + 1];
+        final dx = p[j * 2] - ax, dy = p[j * 2 + 1] - ay;
+        final len = math.sqrt(dx * dx + dy * dy);
+        var at = 0.0;
+        while (at < len) {
+          final take = math.min(left, len - at);
+          at += take;
+          left -= take;
+          final on = index.isEven;
+          if (on) {
+            final d = current!;
+            d.pts
+              ..add(ax + dx * at / len)
+              ..add(ay + dy * at / len);
+          }
+          if (left <= 1e-12) {
+            if (on) end();
+            index = (index + 1) % pattern.length;
+            left = pattern[index];
+            if (index.isEven) begin(ax + dx * at / len, ay + dy * at / len);
+          }
+        }
+      }
+      end();
+    }
+    return out;
+  }
+
   List<List<double>> _strokePolys() {
     final scale = math.sqrt((_a * _d - _b * _c).abs());
     final hw = lineWidth * scale / 2;
     final out = <List<double>>[];
     if (!(hw > 0)) return out;
-    for (final sub in _path) {
+    for (final sub in _dashed(scale)) {
       // the points, a point that repeats the one before dropped
       final p = <double>[];
       for (var i = 0; i < sub.pts.length; i += 2) {

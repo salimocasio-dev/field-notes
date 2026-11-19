@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:coqui_pixel/src/ctx.dart';
 import 'package:coqui_pixel/src/int32.dart';
+import 'package:coqui_pixel/src/js.dart';
 
 /// Port of historia/engine.js: Buf, RP, OUT, bay, hs, rgb, fr, every mk* sprite, sky, grass, shadow, face, coqui, bubble, GL, GC.
 ///
@@ -167,13 +168,6 @@ const int _white = 0xFFFFFFFF;
 
 /// A `#` pixel of a glyph with no colour of its own in [SpriteLib.GC], and a `b` pixel of the eye: `"#2E6CD0"`.
 const int _glyphBlue = 0xFFD06C2E;
-
-/// What a number looks like in JavaScript when it is joined to a string: `1` and not `1.0`.
-String _jsNum(num n) {
-  if (n is int) return '$n';
-  if (n == n.truncateToDouble() && n.abs() < 1e21) return '${n.truncate()}';
-  return '$n';
-}
 
 // engine.js: Buf
 /// A sprite being drawn pixel by pixel: `d` is the image data, `cv` the canvas it is put on by [done], `cx` the
@@ -803,7 +797,7 @@ class SpriteLib {
   // engine.js: coqui
   Sprite coqui(num s, int f, bool open) {
     final bl = f.remainder(19) == 0 ? 1 : 0;
-    return spr('cq${_jsNum(s)}$bl${open ? 1 : 0}', () => mkCoqui(s, bl, open));
+    return spr('cq${jsNum(s)}$bl${open ? 1 : 0}', () => mkCoqui(s, bl, open));
   }
 
   // engine.js: glyph

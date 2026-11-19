@@ -1,0 +1,183 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El frente · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/frente.js, unchanged) drawn over the NEW set (frente-set.html), every hard-coded position moved where frente-sheet.json says, then cropped to a view, as the Flutter port will do it.
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ventana|cuadro|wide@donde-esta-el-pajaro&amp;F=8&amp;t=0</code> (puerta, ventana and cuadro are zoom 2: a 98 x 108 region shown at 2x), or <code>?pair=puerta&amp;side=si</code> (a review picture of cual-frente, 196 x 104, zoom 1 or 2 as the sheet says). Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script src="../../../historia/escenas/frente.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart, done here by wrapping the old canvas):
+   1. W in old positions is moved to new ones (remapW): the frog to his spot, the bird to its point, by the sheet.
+   2. The set for setKey(W) is drawn by frente-set.html in a hidden frame, with the characters' shadows cast (frame()).
+   3. frente.js draw() runs unchanged on juego.js's scene canvas `c`; each canvas call is moved by the offset the sheet gives its line
+      (code), the bg / palmita / casita / pale sun / dark / dusk calls are skipped (the set draws them), the old clip rectangles
+      become the sheet's clip polygons.
+   4. The picture is cropped to the view (196 x 216 at the view's x0) or the pair's crop (196 x 104). */
+(() => {
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = fetch('frente-sheet.json').then(r => r.json()).then(j => { SHEET = j; });
+
+  /* ---------- the set, one hidden frame per state ---------- */
+  const SETS = {};
+  function setOf(w) {
+    const sky = w.dusk > 1 ? 'sunset' : w.dusk ? 'dusk' : (w.dark >= .33 || w.rain) ? 'rain' : w.dark >= .27 ? 'storm2' : (w.storm || w.dark > 0) ? 'storm' : 'day';
+    const rustle = w.escondite && w.rustle ? w.rustle : 'none';
+    return { door: w.door === 1 ? 'open' : w.door === .5 ? 'half' : 'shut', win: w.win ? 'open' : 'shut', lights: w.lamp ? '1' : '0', sky, hide: w.escondite ? '1' : '0', rustle, side: rustle === 'none' ? '1' : ((F >> 1) % 2 ? '1' : '-1') };
+  }
+  PV.setOf = setOf;
+  async function setFrame(st, t, casts) {
+    const q = Object.entries(st).map(([k, v]) => k + '=' + v).join('&');
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'frente-set.html?' + q; }); SETS[q] = fr; }
+    const w = fr.contentWindow, img = w.frame(t, casts.map(c => c.length === 3 ? groundCast(w, c) : c));
+    return new ImageData(new Uint8ClampedArray(img.data), 240, 216);
+  }
+  // a cast given as a screen point under the feet: the ground point there
+  function groundCast(w, [sx, sy, r]) { const g = w.unproject(sx, sy); return [g.x, g.y, .3, r]; }
+
+  /* ---------- old W -> new W ---------- */
+  const near = (list, x, y, lim) => { let best = null, bd = lim; for (const e of list) { const d = Math.hypot(e.old[0] - x, e.old[1] - y); if (d < bd) { bd = d; best = e; } } return best; };
+  function frogList() { const L = []; for (const s of Object.values(SHEET.spots)) if (s.frog) L.push({ old: s.old, new: s.frog }); return L; }
+  function birdList() {
+    const L = [];
+    for (const [k, p] of Object.entries(SHEET.points)) if (k.startsWith('ave.') || k === 'corazon') L.push({ old: p.old, new: p.screen.map(Math.round) });
+    return L;
+  }
+  function moveFrog(q) {
+    if (!q) return q;
+    const e = near(frogList(), q.x, q.y, 60); if (!e) return q;
+    return Object.assign({}, q, { x: q.x + e.new[0] - e.old[0], y: q.y + e.new[1] - e.old[1] });
+  }
+  function movePoint(o) {
+    if (!o || o.x == null) return o;
+    if (o.y < 45 || o.x < -5 || o.x > 245) return o;   // the sky and off the picture: unchanged
+    const e = near(birdList(), o.x, o.y, 40); if (!e) return o;
+    return Object.assign({}, o, { x: o.x + e.new[0] - e.old[0], y: o.y + e.new[1] - e.old[1] });
+  }
+  function remapW(w0) {
+    const w = JSON.parse(JSON.stringify(w0));
+    w.cq = moveFrog(w.cq);
+    if (w.ave && (w.ave.mode === 'sit' || w.ave.mode === 'fly')) w.ave = movePoint(w.ave);
+    if (w.trozo) w.trozo = movePoint(w.trozo);
+    if (w.hojas) w.hojas = movePoint(w.hojas);
+    return w;
+  }
+  PV.remapW = remapW;
+
+  /* ---------- the old canvas, moved line by line ---------- */
+  const KEY = new Set([48, 49, 50, 64, 65, 66, 97, 100, 101, 102, 122, 125, 126, 127, 140, 143, 144, 147, 148, 149, 151, 152, 153, 163, 164, 165, 172, 173]);
+  let SKIP = new Set([97, 100, 122, 125, 140, 163, 164, 165]);
+  const SKIP_NEW = SKIP, SKIP_OLDLIGHT = new Set([97, 100, 122, 125, 140]);
+  Error.stackTraceLimit = 64;   // the bubbles' icons are drawn ten calls deep
+  function lineOf() {
+    const st = new Error().stack.split('\n');
+    for (const l of st) { const m = /escenas\/frente\.js(?:\?[^:]*)?:(\d+):\d+/.exec(l); if (m && KEY.has(+m[1])) return +m[1]; }
+    return 0;
+  }
+  const off = f => SHEET.frames[f].offset;
+  const pt = (n, old) => SHEET.points[n].screen.map((v, i) => Math.round(v) - old[i]);
+  let CUR = '';
+  function offsetFor(line, x) {
+    switch (line) {
+      case 49: return off('ventana');
+      case 64: case 65: case 66: case 148: case 149: case 151: return off('ventana.lado');
+      case 147: return W.tab || W.mesa ? SHEET.points['abuela.ventana.mesa'].screen.map((v, i) => v - [75, 61][i]) : off('ventana');
+      case 50: return off('puerta');
+      case 101: case 126: return off('casita');
+      case 102: case 127: return x < 120 ? off('palma') : off('palmita');
+      case 143: return pt('cq.asoma', [150, 84]);
+      case 144: case 153: return off('abuela.puerta');
+      case 152: return CUR === 'drawImage' ? off('abuela.paso') : off('abuela.plato');
+      case 172: return W.ab && W.ab.en === 'ventana' ? off('ventana') : off('abuela.puerta');
+      case 173: return W.dentro === 'ventana' ? off('ventana') : off('puerta');
+      default: return [0, 0];
+    }
+  }
+  const CLIP = { 143: 'puerta.hueco', 144: 'puerta.hueco', 147: 'ventana.hueco' };
+  let wrapped = false;
+  function wrap() {
+    if (wrapped) return; wrapped = true;
+    const X = c, P = CanvasRenderingContext2D.prototype;
+    // juego.js frog() draws an old shadow() under him: the engine casts his shadow now (sheet: shadows.dropped)
+    const oldShadow = () => /at shadow \([^)]*engine\.js/.test(new Error().stack);
+    const two = name => { X[name] = function (...a) { const L = lineOf(); if (SKIP.has(L) || (name === 'fillRect' && oldShadow())) return; CUR = name; const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P[name].apply(X, a); }; };
+    ['fillRect', 'clearRect', 'arc', 'ellipse', 'moveTo', 'lineTo'].forEach(two);
+    X.fill = function (...a) { const L = lineOf(); if (SKIP.has(L)) return; return P.fill.apply(X, a); };
+    X.rect = function (...a) {
+      const L = lineOf();
+      if (CLIP[L]) { const s = SHEET.clips[CLIP[L]].screen; P.moveTo.call(X, s[0][0], s[0][1]); for (let i = 1; i < 4; i++) P.lineTo.call(X, s[i][0], s[i][1]); P.closePath.call(X); return; }
+      const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P.rect.apply(X, a);
+    };
+    X.drawImage = function (...a) {
+      const L = lineOf(); if (SKIP.has(L)) return; CUR = 'drawImage';
+      const o = offsetFor(L, a[a.length === 9 ? 5 : 1]), i = a.length === 9 ? 5 : 1;
+      a[i] += o[0]; a[i + 1] += o[1]; return P.drawImage.apply(X, a);
+    };
+  }
+
+  /* ---------- a picture ---------- */
+  function baseW(over) {
+    const E0 = ESCENAS.frente;
+    return Object.assign({ cq: { x: 150, y: 178, s: 1, dy: 0, al: 1, vis: 1, bub: null }, spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, E0.fresh({}), over || {});
+  }
+  PV.baseW = baseW;
+  // opts: view (a sheet view name) or crop [x0, y0, w, h]; F (frame counter, default 8); t (wind time); remap (default true); hud; oldLight
+  PV.render = async function (wOld, opts = {}) {
+    await ready; wrap();
+    if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
+    E = ESCENAS.frente; F = opts.F == null ? 8 : opts.F; TALK = null;
+    const wNew = opts.remap === false ? wOld : remapW(wOld);
+    W = wNew; if (!W.fx) W.fx = [];
+    const V0 = SHEET.views[opts.view || 'wide'], x0 = opts.crop ? opts.crop[0] : V0.x0;
+    // cam as the old code reads it (respBox, fin's stars): the region in picture pixels
+    cam = !opts.crop && V0.zoom === 2 ? V0.region.slice() : [x0, 0, 196, 216];
+    // shadows: the frog at his feet (not in the window), abuela at the door or on the porch
+    const casts = [];
+    const q = W.cq;
+    if (q && q.vis && !W.tab && q.al > .5) { const b = frogBox(q); casts.push([b.x + b.w / 2, q.y + 25, .45]); }
+    if (W.ab && (W.ab.en === 'puerta' || W.ab.en === 'paso') && (W.ab.al == null || W.ab.al > .5)) {
+      const s = SHEET.spots['abuela.' + W.ab.en].world;
+      for (let z = .3; z <= 2; z += .35) casts.push([s[0], s[1], z + s[2], .35]);
+    }
+    // opts.oldLight (for comparing only): the set in daylight and the old washes of frente.js:163-165 laid over everything, characters too
+    SKIP = opts.oldLight ? SKIP_OLDLIGHT : SKIP_NEW;
+    const st = setOf(W); if (opts.oldLight) st.sky = 'day';
+    const img = await setFrame(st, opts.t || 0, casts);
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
+    c.putImageData(img, 0, 0);
+    E.draw(c, W, F >> 1);
+    if (W.resp) respDraw(c, F >> 1);
+    const cr = opts.crop || (V0.zoom === 2 ? V0.region : [x0, 0, 196, 216]), z = opts.crop ? (opts.zoom || 1) : V0.zoom;   // zoom 2: the region shown at 2 x 2 screen pixels per picture pixel, nearest neighbour
+    const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
+    const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
+    if (opts.hud && E.hud) E.hud(g, W, F >> 1);
+    return out.toDataURL();
+  };
+  // a review picture of cual-frente: panelW() of cual.js (the frog at patio, seen only with answer bubbles), cropped and zoomed as the sheet's pictures say (a level picture is the picture of its pair)
+  PV.pair = async function (word, side) {
+    await ready;
+    const spec = PV.CUAL.items.find(i => i.w === word)[side];
+    const w = baseW({ cq: { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null } });
+    Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    const pc = SHEET.pictures[word + '.' + side];
+    return PV.render(w, { crop: pc.crop, zoom: pc.zoom, F: 8 });
+  };
+  PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-frente.json')).then(r => r.json()).then(j => { PV.CUAL = j; });
+
+  // the address
+  const A = new URLSearchParams(location.search);
+  PV.done = PV.ready.then(() => {
+    if (A.get('pair')) return PV.pair(A.get('pair'), A.get('side') || 'si');
+    const w = A.get('w') ? baseW(JSON.parse(A.get('w'))) : baseW();
+    return PV.render(w, { view: A.get('view') || 'wide', F: +(A.get('F') || 8), t: +(A.get('t') || 0), hud: A.get('hud') === '1' });
+  });
+})();
+</script></body></html>
