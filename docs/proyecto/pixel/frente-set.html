@@ -1,0 +1,97 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script src="curso.js"></script>
+<script>const Q=new URLSearchParams(location.search);window.PP_SCENE={w:240,h:216,s:+(Q.get('s')||20),originX:+(Q.get('ox')||-14),originY:+(Q.get('oy')||26),shadowX:.9,shadowY:-.1};</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script>
+'use strict';
+const HX0=-4.2,HX1=3.0,HY0=-3.6,HY1=0,HH=3.3, DOOR0=.45, DOOR1=1.85, DH=2.55;
+const TEAL=[92,190,186];
+function sceneGround(x,y,ix,iy,i){
+  // porch slab and step are blocks; the path runs from the step to the front of the frame
+  const pathHalf=.75+Math.max(0,y-1.7)*.12;
+  if(y>1.6 && Math.abs(x-(DOOR0+DOOR1)/2)<pathHalf){
+    kinds[i]=KIND_ROAD;
+    const sx=Math.floor((y-1.6)/.9), stone=hash(sx, Math.floor((x+8)/.9));
+    const gap=((y-1.6)%.9)<.1 || Math.abs(((x+8+sx*.45)%.9))<.08;
+    return gap? rgb(...C.stone.map(c=>c*.6)) : toneOf(C.pave,.3+stone*.6+(hash(ix,iy)-.5)*.2,ix,iy);
+  }
+  if(y>-4.6 && y<-3.6 && x>HX0-1 && x<HX1+1) { kinds[i]=KIND_GRASS; }
+  kinds[i]=KIND_GRASS;
+  const t=noise(x*.45,y*.45)*1.1+(hash(ix,iy)-.5)*.5;
+  return rgb(...GRASS[clamp(Math.floor(t*4.2)+1,0,4)]);
+}
+function bigPalm(x,y,h,lean,seed){
+  const top=[x+lean*.7,y-lean*.5,h];
+  capsule([x,y,0],[x+lean*.25,y-lean*.15,h*.5],.2,.16,()=>C.palm,'rough');
+  capsule([x+lean*.25,y-lean*.15,h*.5],top,.16,.13,()=>C.palm,'rough');
+  for(let f=0;f<9;f++){const a=f/9*6.283+seed,dx=Math.cos(a),dy=Math.sin(a),len=1.6+hash(f,seed)*.5;
+    for(let t=0;t<=1;t+=.012){const px=top[0]+dx*len*t,py=top[1]+dy*len*t,pz=top[2]+.3*t-1.3*t*t,w=.32*Math.sin(t*Math.PI)+.03;
+      for(let s=-1;s<=1;s+=.12){const leaflet=Math.abs(s)>.2&&((t*40|0)%2)===0;if(leaflet&&Math.abs(s)>.7)continue;
+        plot(px-dy*w*s,py+dx*w*s,pz-Math.abs(s)*w*.5,rampOf(C.leaf)[clamp(Math.round(2.2+(dx+dy)*.6-Math.abs(s)*.8+(s>0?.4:-.2)),0,4)]);}}
+    for(let t=0;t<=1;t+=.15)castShadow(top[0]+dx*len*t,top[1]+dy*len*t,top[2]-.6*t,.3);}
+  sphere(top[0],top[1],top[2]-.15,.22,[120,92,48],'rough');
+  for(let z=.4;z<h;z+=.4)castShadow(x+lean*z/h*.6,y-lean*z/h*.4,z,.18);
+}
+function louvre(a0,a1,z0,z1){ // a white shutter flat against the front wall
+  for(let a=a0;a<=a1;a+=ST*.6)for(let z=z0;z<=z1;z+=ST*.6){
+    const slat=Math.floor((z-z0)/.11)%2, edge=a-a0<.06||a1-a<.06||z-z0<.06||z1-z<.06;
+    plot(a,HY1+.05,z,rampOf(C.white)[edge?2:slat?3:2]);
+  }
+}
+function buildSet(){
+  zb.fill(-1e9); pix.fill(0);
+  for(let iy=0;iy<H;iy++)for(let ix=0;ix<W;ix++){const g=unproject(ix+.5,iy+.5),i=iy*W+ix,c=sceneGround(g.x,g.y,ix,iy,i);pix[i]=c;ground[i]=1;zb[i]=(g.x+g.y)/R2*COS;}
+  growGrass(); groundZ.set(zb);
+  // the house
+  block(HX0,HY0,0,HX1,HY1,HH,TEAL);
+  // a darker band at the foot of the walls
+  onWall('y',HY1,HX0,HX1,0,.35,rampOf(TEAL)[1]); onWall('x',HX1,HY0,HY1,0,.35,rampOf(TEAL)[0]);
+  // window with open louvred shutters, and a flower box
+  const wa=-2.3,wz=1.75,ww=1.4,wh=1.25;
+  onWall('y',HY1,wa-ww/2-.1,wa+ww/2+.1,wz-wh/2-.1,wz+wh/2+.1,rampOf(C.white)[3]);
+  for(let a=wa-ww/2;a<=wa+ww/2;a+=ST*.5)for(let z=wz-wh/2;z<=wz+wh/2;z+=ST*.5){
+    const bar=Math.abs(a-wa)<.05||Math.abs(z-wz)<.05, curtain=(a<wa-ww/2+.28||a>wa+ww/2-.28)&&z>wz-wh/2+.15;
+    plot(a,HY1+.04,z,bar?rampOf(C.white)[3]:curtain?rampOf([236,120,130])[2+((a*14|0)%2)]:rampOf([70,96,130])[z>wz+.25?2:1]);}
+  louvre(wa-ww/2-.75,wa-ww/2-.12,wz-wh/2,wz+wh/2); louvre(wa+ww/2+.12,wa+ww/2+.75,wz-wh/2,wz+wh/2);
+  block(wa-ww/2-.15,HY1,wz-wh/2-.42,wa+ww/2+.15,HY1+.35,wz-wh/2-.12,C.wood);
+  for(let k=0;k<9;k++)sphere(wa-ww/2+k*.17,HY1+.2,wz-wh/2-.02,.1,[[255,143,184],[255,224,112],[244,88,74]][k%3],'solid');
+  // the door, open, dark inside, the leaf swung in
+  onWall('y',HY1,DOOR0-.14,DOOR1+.14,0,DH+.14,rampOf(C.white)[3]);
+  for(let a=DOOR0;a<=DOOR1;a+=ST*.5)for(let z=0;z<=DH;z+=ST*.5)plot(a,HY1+.04,z,rampOf([52,36,28])[z>1.9?1:z>.9?1:0]);
+  for(let t=0;t<=1;t+=ST*.4)for(let z=0;z<=DH;z+=ST*.5)plot(DOOR1-.06-t*.45,HY1+.04-t*.88,z,rampOf(C.wood)[t>.92?3:2]);
+  // the porch lamp, lit
+  block(DOOR1+.35,HY1,2.05,DOOR1+.6,HY1+.18,2.4,C.dark);
+  sphere(DOOR1+.47,HY1+.26,2.25,.14,C.lamp,'gloss');
+  // side window
+  windowOn('x',HX1,HY0+1.6,1.8,1,1,C.white,C.glass);
+  // red gable roof, ridge along x
+  gable(HX0-.35,HY0-.45,HX1+.35,HY1+.45,HH,1.35,C.red,TEAL);
+  // porch slab and step
+  block(HX0-.1,HY1,0,HX1+.1,HY1+1.25,.16,C.stone);
+  block(DOOR0-.2,HY1+1.25,0,DOOR1+.2,HY1+1.65,.08,C.stone);
+  // garden
+  bigPalm(HX1+2.2,HY0-1.4,5.2,.5,2);
+  bush(HX1+.9,HY1+.6,.45,[96,150,70]); bush(HX0-.6,HY1+2.2,.5);
+  bush(HX1+.9,HY0+.6,.6);
+  block(HX1-.75,HY1+.55,.16,HX1-.35,HY1+.95,.6,[220,120,60]);
+  sphere(HX1-.55,HY1+.75,.85,.32,C.leaf,'rough');
+  // shadows
+  shadowBox(HX0,HY0,HX1,HY1,HH+1,.6);
+  flushShadows(); pendingShadows.length=0;
+  bakeOcclusion(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+// where the characters stand, so the composite can place them and the engine can cast their shadows
+window.SPOTS={abuela:[ (DOOR0+DOOR1)/2-.1, HY1+.2, .16 ], coqui:[ (DOOR0+DOOR1)/2-.1, HY1+3.0, 0 ]};
+buildSet();
+// the characters' shadows, cast by the engine onto the porch and the path
+pix.set(bakedPix); zb.set(bakedZ);
+for(let z=.3;z<=2;z+=.35)castShadow(SPOTS.abuela[0],SPOTS.abuela[1],z+SPOTS.abuela[2],.35);
+castShadow(SPOTS.coqui[0],SPOTS.coqui[1],.3,.45);
+applyShadows(groundZ);
+drawLeaves(0); drawTufts(0);
+ctx.putImageData(image,0,0);
+window.SCREEN=Object.fromEntries(Object.entries(SPOTS).map(([k,p])=>{const s=project(...p);return [k,[s.sx,s.sy]];}));
+</script></body></html>

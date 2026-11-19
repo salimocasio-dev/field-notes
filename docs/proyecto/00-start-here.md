@@ -1,5 +1,7 @@
 # Coquí: start here
 
+**Nov 19 2026: the app is moving to Flutter.** A session doing that work starts from 14-flutter-handoff.md, then 11-flutter-plan, 12-flutter-contracts, 13-flutter-orders and 11-pixel-engine. The JavaScript site described below stays live and frozen (bug fixes only) until the cutover in page 13, order 42.
+
 State on Nov 19 2026, after the second build session (the one finishing A1) and the rebuild of reading and review. Read this page first. Update it at the end of every working session.
 (These pages live in two places: the claude.ai Project "Coqui - Language Learning App" and this folder, docs/proyecto/ in the GitHub project. A session that cannot see the Project works from this folder and keeps it current. Keep both the same.)
 
