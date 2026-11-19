@@ -161,13 +161,14 @@ class Rig {
     Map<String, String> forced = const {},
     Map<String, String> mem = const {},
     SpeechSession? session,
+    VirtualClipPlayer Function(StoryTimers, CourseCatalog)? playerFor,
   }) async {
     final timers = StoryTimers();
     final c = course ?? TestCourse();
     final p = progress ?? TestProgress();
     final m = memory ?? MemStore();
     final sc = scene ?? StandInScene();
-    final player = VirtualClipPlayer(timers, c);
+    final player = playerFor != null ? playerFor(timers, c) : VirtualClipPlayer(timers, c);
     final sounds = <Object?>[];
     final st = stub;
     final runner = StoryRunner(
