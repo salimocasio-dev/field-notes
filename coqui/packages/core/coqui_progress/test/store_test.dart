@@ -368,6 +368,59 @@ void main() {
       );
     });
 
+    test('markRead keeps the clock time once, and saves once', () async {
+      final clock = SettableClock(_t0);
+      final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+      final s = _store(kv: kv, clock: clock);
+      var events = 0;
+      final sub = s.changes.listen((_) => events++);
+      s.markRead('la-lluvia');
+      clock.now = _t0 + 5000;
+      s.markRead('la-lluvia');
+      s.markRead('el-jugo');
+      await pumpEventQueue();
+      await sub.cancel();
+      expect(s.raw['leidos'], {'la-lluvia': _t0, 'el-jugo': _t0 + 5000});
+      expect(s.hasRead('la-lluvia'), isTrue);
+      expect(s.hasRead('que-calor'), isFalse);
+      expect(kv.writes, 2);
+      expect(events, 2);
+      expect(s.words, isEmpty); // reading writes no word record
+    });
+
+    test(
+      'add trims, drops what is empty (no save, no event), keeps duplicates',
+      () async {
+        final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+        final s = _store(kv: kv);
+        var events = 0;
+        final sub = s.changes.listen((_) => events++);
+        s.add('');
+        s.add(' \n\t ');
+        expect(kv.writes, 0);
+        expect(s.raw.containsKey('extra'), isFalse);
+        s.add('  la playa ');
+        s.add('la playa');
+        s.add(
+          '\u0085x\u0085',
+        ); // JavaScript's trim leaves U+0085 where Dart's takes it
+        await pumpEventQueue();
+        await sub.cancel();
+        expect(s.added, ['la playa', 'la playa', '\u0085x\u0085']);
+        expect(kv.writes, 3);
+        expect(events, 3);
+      },
+    );
+
+    test('setSetting writes a whole number as an integer', () {
+      final s = _store();
+      s.setSetting('min', 15.0);
+      expect(s.setting('min'), isA<int>());
+      expect(s.export(), contains('"min":15,'));
+      s.setSetting('notaHabla', '2026-03-02');
+      expect(s.setting('notaHabla'), '2026-03-02');
+    });
+
     test(
       'hasRead and added read what a store keeps under leidos and extra',
       () {
@@ -381,11 +434,5 @@ void main() {
         expect(_store().hasRead('la-lluvia'), isFalse);
       },
     );
-
-    test('markRead and add are not settled yet: they say so', () {
-      final s = _store();
-      expect(() => s.markRead('la-lluvia'), throwsUnimplementedError);
-      expect(() => s.add('la playa'), throwsUnimplementedError);
-    });
   });
 }

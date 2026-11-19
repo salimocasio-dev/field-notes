@@ -176,6 +176,9 @@ class PalabrasStore implements ProgressStore {
     return r;
   }
 
+  /// palabras.js `oida`. It does not save, exactly as `oida` does not: the word is in the store
+  /// and in [raw] at once, but it reaches the storage with the next save (the answer, the story, the
+  /// minutes, any setting that follows), and [changes] does not fire for it.
   @override
   WordRecord heard(String w) => WordRecord.fromJson(_oida(w));
 
@@ -468,61 +471,79 @@ class PalabrasStore implements ProgressStore {
     return jsTruthy(c) ? StoryRecord.fromJson(c as Map<String, dynamic>) : null;
   }
 
+  // app.html yo: d.minutos||0
   @override
   double get minutes =>
       jsTruthy(_db['minutos']) ? jsToNumber(_db['minutos']) : 0;
 
-  // app.html: hecho. A play is counted by cuento() and by presume(), and both leave `n` at 1 or
-  // more, so a story is done when its record has an `n`.
+  // app.html line 185: hecho=id=>!!(db().cuentos[id]&&db().cuentos[id].n). A play is counted by
+  // cuento() and by presume(), and both leave `n` at 1 or more.
   @override
   bool played(String id) {
-    final c = _cuentos[id];
-    return jsTruthy(c) && jsTruthy((c as Map<String, dynamic>)['n']);
+    final c = jsGet(_db['cuentos'], id);
+    return jsTruthy(c) && jsTruthy(jsGet(c, 'n'));
   }
 
-  // db.leidos: a story or book id, with a value that is not 0 once it is read.
+  // app.html biblioteca: rd=db().leidos||{} ... leido=!!rd[c]
   @override
   bool hasRead(String id) {
-    final l = _db['leidos'];
-    return jsTruthy(l) && jsTruthy((l as Map<String, dynamic>)[id]);
+    final rd = jsTruthy(_db['leidos']) ? _db['leidos'] : <String, dynamic>{};
+    return jsTruthy(jsGet(rd, id));
   }
 
-  // Question for the orchestrator (order 16 report): palabras.js has no such function. What
-  // value does app.html store under db.leidos[id]?
+  // app.html: marcaLeido. "Completion only: no word record is written." The first time a book is
+  // read its id gets the time (the palabras clock) and the store is saved; a book that is already
+  // there changes nothing and saves nothing. The `leidos` object is made if it is not there.
   @override
-  void markRead(String id) => throw UnimplementedError(
-    'markRead: not settled by palabras.js or by pages 12 and 13 (what is stored under db.leidos[id])',
-  );
+  void markRead(String id) {
+    _db['leidos'] = jsTruthy(_db['leidos'])
+        ? _db['leidos']
+        : <String, dynamic>{};
+    final leidos = _db['leidos'] as Map<String, dynamic>;
+    if (!jsTruthy(leidos[id])) {
+      leidos[id] = _now();
+      _save();
+    }
+  }
 
-  // db.ajustes: min, todo, bienvenida, habla (and any key the stored store has).
+  // app.html: AJ()[key], with AJ=()=>db().ajustes. `ajustes` holds min, todo, bienvenida and habla
+  // from the start (palabras.js), and any key a page has written (notaHabla).
   @override
-  Object? setting(String key) => (_db['ajustes'] as Map<String, dynamic>)[key];
+  Object? setting(String key) => jsGet(_db['ajustes'], key);
 
+  // app.html: AJ().key=value; PAL.save(). Every write of a setting in app.html is followed by the save.
   @override
   void setSetting(String key, Object value) {
-    (_db['ajustes'] as Map<String, dynamic>)[key] = value;
+    (_db['ajustes'] as Map<String, dynamic>)[key] = value is num
+        ? jsNumberOut(value.toDouble())
+        : value;
     _save();
   }
 
-  // db.extra: the words and goals he added.
+  // app.html palabras: ex=db().extra||[]
   @override
   List<String> get added {
     final x = _db['extra'];
     return jsTruthy(x) ? [for (final w in x as List<dynamic>) w as String] : [];
   }
 
-  // Question for the orchestrator (order 16 report): palabras.js has no such function. Does an
-  // added word already in db.extra go in twice? Is it normalized or trimmed first?
+  // app.html: extra. The value is trimmed as JavaScript trims; an empty one is dropped (nothing is
+  // changed or saved); the rest goes to the end of `extra`, with no check for a word that is
+  // already there and no limit on the length or the number.
   @override
-  void add(String wordOrGoal) => throw UnimplementedError(
-    'add: not settled by palabras.js or by pages 12 and 13 (how a word or goal is put into db.extra)',
-  );
+  void add(String wordOrGoal) {
+    final v = jsTrim(wordOrGoal);
+    if (v.isEmpty) return;
+    _db['extra'] = jsTruthy(_db['extra']) ? _db['extra'] : <Object?>[];
+    (_db['extra'] as List<dynamic>).add(v);
+    _save();
+  }
 
-  /// The stored `nivel` (written by [presume]), or null.
+  /// The stored `nivel` (written by [presume]), or null. app.html yo: `db().nivel?"Done: "+db().nivel.historias`.
   @override
   Map<String, dynamic>? get levelResult {
     final n = _db['nivel'];
-    return jsTruthy(n) ? n as Map<String, dynamic> : null;
+    return jsTruthy(n) && n is Map<String, dynamic> ? n : null;
   }
 
   /// The text palabras.js would keep under [storageKey]: `JSON.stringify(db)`.
@@ -532,6 +553,9 @@ class PalabrasStore implements ProgressStore {
   /// Replaces the store with [json], read as palabras.js reads its stored text when it starts
   /// (the defaults, then every key of [json] over them; `cuentos` and `ajustes` made whole),
   /// and saves. Text that is not JSON throws a [FormatException] and the store is left as it was.
+  ///
+  /// New behaviour: the old code has no import. Its load, which this reuses, ignores text that is
+  /// not JSON and starts with an empty store, which would wipe the store here (order 43 uses it).
   @override
   void import(String json) {
     final parsed = jsonDecode(json);

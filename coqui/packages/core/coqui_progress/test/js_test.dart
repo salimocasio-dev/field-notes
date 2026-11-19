@@ -117,6 +117,54 @@ void main() {
     });
   });
 
+  group('trim, as JavaScript trims', () {
+    test(
+      'exactly the ${jsWhitespaceUnits.length} code units node trims, out of all 65536',
+      () {
+        final trimmed = jsWhitespaceUnits.toSet();
+        for (var u = 0; u <= 0xffff; u++) {
+          final c = String.fromCharCode(u);
+          expect(
+            jsTrim(c).isEmpty,
+            trimmed.contains(u),
+            reason: 'U+${u.toRadixString(16)}',
+          );
+          expect(
+            jsTrim(
+              '$c'
+              'x$c',
+            ),
+            trimmed.contains(u)
+                ? 'x'
+                : '$c'
+                      'x$c',
+          );
+        }
+      },
+    );
+    test('U+0085 stays, as in JavaScript; Dart\'s own trim takes it', () {
+      expect(jsTrim('\u0085a\u0085'), '\u0085a\u0085');
+      expect('\u0085a\u0085'.trim(), 'a');
+      expect(jsTrim(' \n a b \t'), 'a b');
+      expect(jsTrim(''), '');
+    });
+  });
+
+  group('o[key] on stored JSON', () {
+    test('an object, an array, a string, and what has no properties', () {
+      expect(jsGet(<String, dynamic>{'a': 1}, 'a'), 1);
+      expect(jsGet(<String, dynamic>{'a': 1}, 'b'), isNull);
+      expect(jsGet(<Object?>['x', 'y'], '1'), 'y');
+      expect(jsGet(<Object?>['x', 'y'], '2'), isNull);
+      expect(jsGet(<Object?>['x', 'y'], 'a'), isNull);
+      expect(jsGet('abc', '0'), 'a');
+      expect(jsGet('abc', '3'), isNull);
+      expect(jsGet(5, '0'), isNull);
+      expect(jsGet(null, 'a'), isNull);
+      expect(jsGet(true, 'a'), isNull);
+    });
+  });
+
   group('truthiness, as `if (x)` and `x || y`', () {
     test('false for null, false, 0, -0, NaN and ""', () {
       for (final v in <Object?>[null, false, 0, 0.0, -0.0, double.nan, '']) {

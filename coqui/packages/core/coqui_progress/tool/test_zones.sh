@@ -2,7 +2,8 @@
 # Runs the whole test suite of coqui_progress four times: TZ=UTC and TZ=America/New_York, each on the
 # VM and in Chrome, because palabras.js mixes local time and UTC and numbers behave differently on a
 # phone and in a browser. Each run replays the recordings of the zone it detects (test/replay_test.dart
-# says which zone that was, in its first test name: look for "detected zone").
+# says which zone that was, in its first test name: look for "detected zone"): the 31 sequences of
+# coqui/ref/progress/, and the sequences made from historia/app.html (tool/app_sequences.mjs).
 #
 #   bash tool/test_zones.sh            (from anywhere; it moves to the package itself)
 #
@@ -29,6 +30,7 @@ for tz in UTC America/New_York; do
     code=$?
     detected="$(name_of 'detected zone')"
     compared="$(name_of 'compared [0-9]* sequences')"
+    app="$(name_of 'compared [0-9]* app.html sequences')"
     last="$(grep -E 'All tests passed|Some tests failed' "$log" | tail -1)"
     if [ "$code" -ne 0 ]; then
       failed=1
@@ -36,8 +38,9 @@ for tz in UTC America/New_York; do
     fi
     echo "$detected"
     echo "$compared"
+    echo "$app"
     echo "$last"
-    summary+=("TZ=$tz  -p $platform: exit $code | ${detected:-NO ZONE LINE} | ${compared:-NO TOTALS LINE} | $last")
+    summary+=("TZ=$tz  -p $platform: exit $code | ${detected:-NO ZONE LINE} | ${compared:-NO TOTALS LINE} | ${app:-NO APP.HTML TOTALS LINE} | $last")
   done
 done
 

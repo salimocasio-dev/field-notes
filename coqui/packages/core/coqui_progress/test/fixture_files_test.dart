@@ -35,6 +35,37 @@ void main() {
     );
   });
 
+  group(
+    'historia/app.html still has what the app.html sequences were run from',
+    () {
+      final app = File('../../../../historia/app.html');
+      test('the page is where the test looks for it', () {
+        expect(
+          app.existsSync(),
+          isTrue,
+          reason: 'looked for ${app.absolute.path}',
+        );
+      });
+      for (final piece in fixtureAppPieces.entries) {
+        test(piece.key, () {
+          expect(
+            app.readAsStringSync().contains(piece.value),
+            isTrue,
+            reason: 'app.html changed: run `node tool/make_fixture.mjs` again and read the new diff',
+          );
+        });
+      }
+      test('the same app.html sequences in both zones', () {
+        String ids(String zone) => [
+          for (final k in fixtureAppSequences.keys)
+            if (k.startsWith('$zone/')) k.split('/').last,
+        ].join(',');
+        expect(ids('UTC'), isNotEmpty);
+        expect(ids('America_New_York'), ids('UTC'));
+      });
+    },
+  );
+
   for (final zone in fixtureZones) {
     group(zone, () {
       final files =

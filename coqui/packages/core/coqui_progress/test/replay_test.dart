@@ -3,6 +3,11 @@
 // time, then the WHOLE store against the recorded one (numbers as numbers, exact), and the return
 // value. Also: the text the store saved against what palabras.js saved, and export().
 //
+// The same replay runs the pieces of historia/app.html that read or write the store (marcaLeido, extra,
+// the settings handlers, hecho ...), cut out of the page and run against the real palabras.js by
+// tool/app_sequences.mjs: the members palabras.js does not have (markRead, hasRead, add, added,
+// setting, setSetting, played, levelResult, minutes).
+//
 // The test process must run in the zone of the recordings it replays: UTC or America/New_York
 // (`bash tool/test_zones.sh` runs both, on the VM and in Chrome). In any other zone it fails.
 import 'dart:convert';
@@ -83,6 +88,50 @@ void main() {
     () {
       expect(comparedSequences, replayable.length);
       expect(comparedCalls, expectedCalls);
+    },
+  );
+
+  // historia/app.html, run: the same, from tool/app_sequences.mjs
+  final appIds = [
+    for (final k in fixtureAppSequences.keys)
+      if (k.startsWith('$zone/')) k,
+  ];
+  final appSequences = {
+    for (final k in appIds)
+      k: jsonDecode(fixtureAppSequences[k]!) as Map<String, dynamic>,
+  };
+  final appCalls = [
+    for (final k in appIds)
+      for (final s
+          in (appSequences[k]!['steps'] as List).cast<Map<String, dynamic>>())
+        if (replays(s)) s,
+  ].length;
+  var comparedAppSequences = 0;
+  var comparedAppCalls = 0;
+
+  test(
+    'detected zone $zone: also replaying ${appIds.length} app.html sequences, $appCalls calls',
+    () {
+      expect(appIds, isNotEmpty);
+    },
+  );
+
+  group('the $zone app.html pieces', () {
+    for (final key in appIds) {
+      final seq = appSequences[key]!;
+      final steps = (seq['steps'] as List).cast<Map<String, dynamic>>();
+      test('${seq['id']}: ${steps.length} steps', () {
+        comparedAppCalls += _replay(key, seq, steps, replays);
+        comparedAppSequences++;
+      });
+    }
+  });
+
+  test(
+    'compared ${appIds.length} app.html sequences and $appCalls calls in $zone',
+    () {
+      expect(comparedAppSequences, appIds.length);
+      expect(comparedAppCalls, appCalls);
     },
   );
 }
@@ -227,6 +276,28 @@ Object? _call(PalabrasStore store, String member, Map<String, dynamic> a) {
       return null;
     case 'raw':
       return store.raw;
+    // the members palabras.js does not have: historia/app.html (tool/app_sequences.mjs)
+    case 'markRead':
+      store.markRead(a['id'] as String);
+      return null;
+    case 'hasRead':
+      return store.hasRead(a['id'] as String);
+    case 'add':
+      store.add(a['wordOrGoal'] as String);
+      return null;
+    case 'added':
+      return store.added;
+    case 'played':
+      return store.played(a['id'] as String);
+    case 'setting':
+      return store.setting(a['key'] as String);
+    case 'setSetting':
+      store.setSetting(a['key'] as String, a['value'] as Object);
+      return null;
+    case 'levelResult':
+      return store.levelResult;
+    case 'minutes':
+      return store.minutes;
   }
   throw StateError(
     'the recording has a member this test does not know: $member',

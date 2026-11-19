@@ -44,6 +44,46 @@ num jsNumberOut(double v) {
 /// 2^53: up to here a whole double is exactly an integer.
 const double _maxSafe = 9007199254740992;
 
+/// `s.trim()`: the characters JavaScript counts as white space and line terminators, no others
+/// (Dart's `trim` also takes U+0085, which JavaScript leaves in).
+String jsTrim(String s) {
+  var start = 0;
+  var end = s.length;
+  while (start < end && _isJsSpace(s.codeUnitAt(start))) {
+    start++;
+  }
+  while (end > start && _isJsSpace(s.codeUnitAt(end - 1))) {
+    end--;
+  }
+  return s.substring(start, end);
+}
+
+bool _isJsSpace(int c) =>
+    (c >= 0x09 && c <= 0x0d) ||
+    c == 0x20 ||
+    c == 0xa0 ||
+    c == 0x1680 ||
+    (c >= 0x2000 && c <= 0x200a) ||
+    c == 0x2028 ||
+    c == 0x2029 ||
+    c == 0x202f ||
+    c == 0x205f ||
+    c == 0x3000 ||
+    c == 0xfeff;
+
+/// `o[key]` on a value read out of the stored JSON: reading a property never throws in JavaScript.
+/// An object gives the key, an array or a string the item at that index, anything else undefined (null).
+Object? jsGet(Object? o, String key) {
+  if (o is Map) return o[key];
+  if ((o is List || o is String) && _isArrayIndex(key)) {
+    final i = int.parse(key);
+    if (o is List) return i < o.length ? o[i] : null;
+    final str = o as String;
+    return i < str.length ? str[i] : null;
+  }
+  return null;
+}
+
 /// `Object.assign(target, source)` for what `JSON.parse` can give: an object copies its keys,
 /// an array its indexes, a string its characters; null and the other primitives copy nothing.
 void jsAssign(Map<String, dynamic> target, Object? source) {

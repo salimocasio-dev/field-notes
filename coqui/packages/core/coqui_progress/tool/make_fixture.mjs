@@ -11,7 +11,12 @@
 //    `initial.store`) turned into its own JSON text. The test decodes that text to compare the store as
 //    numbers, and compares the text the store wrote byte for byte: it is JSON.stringify of the store, which
 //    is what palabras.js saved.
+//  - the pieces of historia/app.html that read or write the store (marcaLeido, extra, the settings
+//    handlers, hecho ...), run against the real palabras.js by tool/app_sequences.mjs, once per zone, in
+//    the same format: `fixtureAppSequences`; and `fixtureAppPieces`, the text cut out of app.html, so that a
+//    VM test can tell when app.html no longer has it.
 //  - index.json as text.
+//  - jsWhitespaceUnits: the code units JavaScript's trim() removes.
 //  - numberCases and stringCases: values with what JSON.stringify writes for each, to test jsonStringify.
 //
 // The result is formatted with `dart format`.
@@ -53,6 +58,37 @@ for (const zone of zones) {
     lines.push(`  '${zone}/${file.replace(/\.json$/, '')}': ${dartString(JSON.stringify(j))},`);
     count++;
   }
+}
+lines.push('};');
+lines.push('');
+
+// ---- historia/app.html, run: tool/app_sequences.mjs once per zone (it needs TZ in its environment) ----
+// JSON text with every non-ASCII character escaped, so that no odd space or line separator sits in the Dart source.
+const asciiJson = (text) => text.replace(/[^\x20-\x7e]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0'));
+const tzOf = { UTC: 'UTC', America_New_York: 'America/New_York' };
+let pieces = null;
+let appCount = 0;
+lines.push('/// `zone/sequence` of the pieces of historia/app.html run against palabras.js (tool/app_sequences.mjs), in the format above.');
+lines.push('const fixtureAppSequences = <String, String>{');
+for (const zone of zones) {
+  const out = JSON.parse(
+    execFileSync(process.execPath, [join(here, 'app_sequences.mjs')], { env: { ...process.env, TZ: tzOf[zone] }, maxBuffer: 1 << 28 }).toString(),
+  );
+  pieces = out.pieces;
+  for (const seq of out.sequences) {
+    seq.initial.store = JSON.stringify(JSON.parse(seq.initial.store));
+    lines.push(`  '${zone}/${seq.id}': ${dartString(asciiJson(JSON.stringify(seq)))},`);
+    appCount++;
+  }
+}
+lines.push('};');
+lines.push('');
+lines.push('/// What was cut out of historia/app.html and run: name and text. `app.html` must still contain each text.');
+lines.push('const fixtureAppPieces = <String, String>{');
+for (const [name, text] of Object.entries(pieces)) {
+  if (/[^\x20-\x7e\n]/.test(text)) throw new Error(`the piece "${name}" has a character that is not plain ASCII`);
+  // one literal per line, joined with a line break (adjacent literals make one string)
+  lines.push(`  ${dartString(name)}: ${text.split('\n').map(dartString).join(" '\\n' ")},`);
 }
 lines.push('};');
 lines.push('');
@@ -110,7 +146,14 @@ for (const w of words) {
 lines.push('];');
 lines.push('');
 
+// ---- white space: which UTF-16 code units String.prototype.trim removes -----------------------------
+const spaces = [];
+for (let u = 0; u <= 0xffff; u++) if (String.fromCharCode(u).trim() === '') spaces.push(u);
+lines.push("/// Every UTF-16 code unit that JavaScript's String.prototype.trim removes.");
+lines.push(`const jsWhitespaceUnits = <int>[${spaces.join(', ')}];`);
+lines.push('');
+
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, lines.join('\n'));
 execFileSync('dart', ['format', out], { stdio: 'ignore' });
-console.log(`wrote ${out}: ${count} sequences, ${numbers.length} numbers`);
+console.log(`wrote ${out}: ${count} sequences, ${appCount} app.html sequences, ${numbers.length} numbers`);
