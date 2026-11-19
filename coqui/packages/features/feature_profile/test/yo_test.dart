@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/js.dart';
+import 'package:feature_profile/src/yo_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -34,7 +35,7 @@ void main() {
           final f = fixture(seed: seed, mic: mic);
           await pumpYo(tester, f);
           final want = m(m(yo[seed])[mic ? 'mic' : 'nomic']);
-          expect(yoTexts(tester), strings(want['texts']));
+          expectYoPage(tester, strings(want['texts']));
           expect(pillsOf(tester), oldPills(want['pills']));
           expect(switchesOf(tester), (want['switches'] as List).cast<bool>());
           expect(
@@ -64,7 +65,7 @@ void main() {
         final f = fixture(json: v['stored'] as String);
         await pumpYo(tester, f);
         final want = m(v['facts']);
-        expect(yoTexts(tester), strings(want['texts']));
+        expectYoPage(tester, strings(want['texts']));
         expect(pillsOf(tester), oldPills(want['pills']));
         expect(switchesOf(tester), (want['switches'] as List).cast<bool>());
       });
@@ -133,10 +134,7 @@ void main() {
             ...strings(w['texts']),
             ...strings(w['footer']),
           ]);
-          expect(
-            tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-            isTrue,
-          );
+          expect(sheetOpen(tester), isTrue);
         }
       });
     }
@@ -261,16 +259,10 @@ void main() {
       (tester) async {
         final f = fixture(seed: 'vacio');
         await pumpYo(tester, f);
-        expect(
-          tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-          isFalse,
-        );
+        expect(sheetOpen(tester), isFalse);
         await tester.tap(find.byKey(const Key('yo-how-it-works')));
         await settle(tester);
-        expect(
-          tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-          isTrue,
-        );
+        expect(sheetOpen(tester), isTrue);
         expect(
           tester.widget<CoquiSheet>(find.byType(CoquiSheet)).modal,
           isFalse,
@@ -292,10 +284,7 @@ void main() {
       expect(dotOf(tester), 1);
       await tester.tap(find.byType(CoquiCloseButton));
       await settle(tester);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isFalse,
-      );
+      expect(sheetOpen(tester), isFalse);
       await tester.tap(find.byKey(const Key('yo-how-it-works')));
       await settle(tester);
       expect(dotOf(tester), 0);
@@ -304,17 +293,65 @@ void main() {
     testWidgets('a tap on the page above it closes it (fuera)', (tester) async {
       final f = fixture(seed: 'vacio');
       await pumpYo(tester, f, how: 0);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isTrue,
-      );
+      expect(sheetOpen(tester), isTrue);
       await tester.tapAt(const Offset(200, 20));
       await settle(tester);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isFalse,
-      );
+      expect(sheetOpen(tester), isFalse);
     });
+
+    testWidgets(
+      'its scrim covers the tab bar (showCoquiSheet): a tap on a tab only closes it; About does the same',
+      (tester) async {
+        for (final about in [false, true]) {
+          final f = fixture(seed: 'curso');
+          phone(tester);
+          final taps = <String>[];
+          await tester.pumpWidget(const SizedBox());
+          await tester.pumpWidget(
+            MaterialApp(
+              theme: coquiTheme(),
+              home: Scaffold(
+                body: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    YoScreen(
+                      services: f.services,
+                      howItWorksStep: about ? null : 0,
+                      aboutOpen: about,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: CoquiTabBar(
+                        selectedId: CoquiTabs.meId,
+                        onTap: taps.add,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+          await settle(tester);
+          expect(sheetOpen(tester), isTrue, reason: 'about: $about');
+          final bar = tester.getRect(find.byType(CoquiTabBar));
+          expect(
+            tester.getRect(find.byType(CoquiSheet)).bottom,
+            lessThanOrEqualTo(bar.top),
+          );
+          expect(
+            tester.widget<ModalBarrier>(find.byType(ModalBarrier).last).color,
+            CoquiColors.scrim,
+          );
+          await tester.tapAt(bar.center - const Offset(120, 0));
+          await settle(tester);
+          expect(taps, isEmpty);
+          expect(sheetOpen(tester), isFalse);
+          await tester.tapAt(bar.center - const Offset(120, 0));
+          await tester.pump();
+          expect(taps, hasLength(1));
+        }
+      },
+    );
 
     testWidgets('it does not write anything, and it does not tick', (
       tester,
