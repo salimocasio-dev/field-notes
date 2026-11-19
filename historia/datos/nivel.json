@@ -1,0 +1,1133 @@
+[
+  {
+    "w": "abuela",
+    "s": 1,
+    "p": [
+      [
+        "abuela",
+        "si",
+        166
+      ],
+      [
+        "mamá",
+        "si"
+      ],
+      [
+        "papá",
+        "si"
+      ],
+      [
+        "hermana",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "puerta",
+    "s": 1,
+    "p": [
+      [
+        "puerta",
+        "si",
+        166
+      ],
+      [
+        "ventana",
+        "si",
+        112
+      ],
+      [
+        "silla",
+        "si"
+      ],
+      [
+        "sol",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "abre",
+    "s": 2,
+    "p": [
+      [
+        "abre",
+        "si",
+        112
+      ],
+      [
+        "abre",
+        "no",
+        112
+      ],
+      [
+        "puerta",
+        "si",
+        166
+      ],
+      [
+        "jugo",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "hola",
+    "s": 2,
+    "p": [
+      [
+        "hola",
+        "si",
+        160
+      ],
+      [
+        "adiós",
+        "si",
+        160
+      ],
+      [
+        "se sienta",
+        "si",
+        80
+      ],
+      [
+        "juega",
+        "si",
+        130
+      ]
+    ]
+  },
+  {
+    "w": "silla",
+    "s": 4,
+    "p": [
+      [
+        "silla",
+        "si"
+      ],
+      [
+        "silla",
+        "no"
+      ],
+      [
+        "jugo",
+        "si"
+      ],
+      [
+        "ventana",
+        "si",
+        112
+      ]
+    ]
+  },
+  {
+    "w": "jugo",
+    "s": 4,
+    "p": [
+      [
+        "jugo",
+        "si"
+      ],
+      [
+        "agua",
+        "si"
+      ],
+      [
+        "silla",
+        "si"
+      ],
+      [
+        "papá",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "se sienta",
+    "s": 4,
+    "p": [
+      [
+        "se sienta",
+        "si",
+        80
+      ],
+      [
+        "se sienta",
+        "no",
+        96
+      ],
+      [
+        "niño",
+        "si"
+      ],
+      [
+        "abuelo",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "quiero",
+    "s": 5,
+    "p": [
+      [
+        "quiero",
+        "si",
+        94
+      ],
+      [
+        "quiero",
+        "no",
+        94
+      ],
+      [
+        "¿cómo estás?",
+        "si",
+        94
+      ],
+      [
+        "mamá",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "mamá",
+    "s": 6,
+    "p": [
+      [
+        "mamá",
+        "si"
+      ],
+      [
+        "papá",
+        "si"
+      ],
+      [
+        "abuelo",
+        "si"
+      ],
+      [
+        "hermana",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "abuelo",
+    "s": 6,
+    "p": [
+      [
+        "abuelo",
+        "si"
+      ],
+      [
+        "abuelo",
+        "no"
+      ],
+      [
+        "papá",
+        "si"
+      ],
+      [
+        "hermano",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "familia",
+    "s": 6,
+    "p": [
+      [
+        "familia",
+        "si"
+      ],
+      [
+        "mamá",
+        "si"
+      ],
+      [
+        "hermano",
+        "si"
+      ],
+      [
+        "niña",
+        "si",
+        100
+      ]
+    ]
+  },
+  {
+    "w": "hermana",
+    "s": 7,
+    "p": [
+      [
+        "hermana",
+        "si"
+      ],
+      [
+        "hermano",
+        "si"
+      ],
+      [
+        "hermana",
+        "no"
+      ],
+      [
+        "bebé",
+        "si",
+        70
+      ]
+    ]
+  },
+  {
+    "w": "tú",
+    "s": 8,
+    "p": [
+      [
+        "tú",
+        "si",
+        118
+      ],
+      [
+        "tú",
+        "no",
+        118
+      ],
+      [
+        "yo",
+        "si",
+        118
+      ],
+      [
+        "hermano",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "niña",
+    "s": 9,
+    "p": [
+      [
+        "niña",
+        "si",
+        100
+      ],
+      [
+        "niño",
+        "si"
+      ],
+      [
+        "niña",
+        "no",
+        100
+      ],
+      [
+        "abuelo",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "flor",
+    "s": 9,
+    "p": [
+      [
+        "flor",
+        "si",
+        60
+      ],
+      [
+        "flor",
+        "no",
+        60
+      ],
+      [
+        "sol",
+        "no",
+        150
+      ],
+      [
+        "silla",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "juega",
+    "s": 9,
+    "p": [
+      [
+        "juega",
+        "si",
+        130
+      ],
+      [
+        "juega",
+        "no",
+        130
+      ],
+      [
+        "niña",
+        "si",
+        100
+      ],
+      [
+        "sol",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "amigo",
+    "s": 10,
+    "p": [
+      [
+        "amigo",
+        "si",
+        100
+      ],
+      [
+        "amigo",
+        "no",
+        100
+      ],
+      [
+        "niño",
+        "si"
+      ],
+      [
+        "mamá",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "ven",
+    "s": 10,
+    "p": [
+      [
+        "ven",
+        "si",
+        142
+      ],
+      [
+        "ven",
+        "no",
+        142
+      ],
+      [
+        "niño",
+        "si"
+      ],
+      [
+        "papá",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "vamos",
+    "s": 11,
+    "p": [
+      [
+        "vamos",
+        "si",
+        150
+      ],
+      [
+        "vamos",
+        "no",
+        150
+      ],
+      [
+        "ven",
+        "no",
+        142
+      ],
+      [
+        "juega",
+        "si",
+        130
+      ]
+    ]
+  },
+  {
+    "w": "hasta mañana",
+    "s": 11,
+    "p": [
+      [
+        "hasta mañana",
+        "si",
+        120
+      ],
+      [
+        "hasta mañana",
+        "no",
+        120
+      ],
+      [
+        "jugo",
+        "si"
+      ],
+      [
+        "niña",
+        "si",
+        100
+      ]
+    ]
+  },
+  {
+    "w": "perro",
+    "s": 12,
+    "p": [
+      [
+        "perro",
+        "si"
+      ],
+      [
+        "perro",
+        "no"
+      ],
+      [
+        "gato",
+        "no"
+      ],
+      [
+        "árbol",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "corre",
+    "s": 12,
+    "p": [
+      [
+        "corre",
+        "si"
+      ],
+      [
+        "corre",
+        "no"
+      ],
+      [
+        "camina",
+        "si",
+        116
+      ],
+      [
+        "despacio",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "dos",
+    "s": 13,
+    "p": [
+      [
+        "dos",
+        "si"
+      ],
+      [
+        "uno",
+        "si"
+      ],
+      [
+        "tres",
+        "si"
+      ],
+      [
+        "hay",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "rápido",
+    "s": 14,
+    "p": [
+      [
+        "rápido",
+        "si"
+      ],
+      [
+        "rápido",
+        "no"
+      ],
+      [
+        "despacio",
+        "no"
+      ],
+      [
+        "perro",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "tira",
+    "s": 15,
+    "p": [
+      [
+        "tira",
+        "si",
+        134
+      ],
+      [
+        "tira",
+        "no",
+        132
+      ],
+      [
+        "dame",
+        "si",
+        128
+      ],
+      [
+        "tiene",
+        "si",
+        130
+      ]
+    ]
+  },
+  {
+    "w": "coge",
+    "s": 15,
+    "p": [
+      [
+        "coge",
+        "si",
+        138
+      ],
+      [
+        "coge",
+        "no",
+        134
+      ],
+      [
+        "dame",
+        "no",
+        128
+      ],
+      [
+        "salta",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "arriba",
+    "s": 16,
+    "p": [
+      [
+        "arriba",
+        "si",
+        64
+      ],
+      [
+        "arriba",
+        "no",
+        176
+      ],
+      [
+        "abajo",
+        "si",
+        90
+      ],
+      [
+        "salta",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "mi",
+    "s": 17,
+    "p": [
+      [
+        "mi",
+        "si",
+        114
+      ],
+      [
+        "mi",
+        "no",
+        126
+      ],
+      [
+        "tira",
+        "si",
+        134
+      ],
+      [
+        "tiene",
+        "si",
+        130
+      ]
+    ]
+  },
+  {
+    "w": "pato",
+    "s": 18,
+    "p": [
+      [
+        "pato",
+        "si",
+        100
+      ],
+      [
+        "pato",
+        "no",
+        100
+      ],
+      [
+        "pez",
+        "si",
+        156
+      ],
+      [
+        "pájaro",
+        "no",
+        176
+      ]
+    ]
+  },
+  {
+    "w": "vuela",
+    "s": 18,
+    "p": [
+      [
+        "vuela",
+        "si",
+        152
+      ],
+      [
+        "vuela",
+        "no",
+        96
+      ],
+      [
+        "nada",
+        "si",
+        150
+      ],
+      [
+        "pez",
+        "si",
+        156
+      ]
+    ]
+  },
+  {
+    "w": "rojo",
+    "s": 19,
+    "p": [
+      [
+        "rojo",
+        "si",
+        150
+      ],
+      [
+        "rojo",
+        "no",
+        150
+      ],
+      [
+        "verde",
+        "si",
+        96
+      ],
+      [
+        "azul",
+        "si",
+        150
+      ]
+    ]
+  },
+  {
+    "w": "negro",
+    "s": 20,
+    "p": [
+      [
+        "negro",
+        "si",
+        150
+      ],
+      [
+        "negro",
+        "no",
+        150
+      ],
+      [
+        "amarillo",
+        "no",
+        150
+      ],
+      [
+        "blanco",
+        "si",
+        133
+      ]
+    ]
+  },
+  {
+    "w": "come",
+    "s": 21,
+    "p": [
+      [
+        "come",
+        "si"
+      ],
+      [
+        "come",
+        "no"
+      ],
+      [
+        "bebe",
+        "si",
+        152
+      ],
+      [
+        "cansado",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "señora",
+    "s": 22,
+    "p": [
+      [
+        "señora",
+        "si",
+        146
+      ],
+      [
+        "señora",
+        "no",
+        146
+      ],
+      [
+        "señor",
+        "si"
+      ],
+      [
+        "mujer",
+        "no",
+        146
+      ]
+    ]
+  },
+  {
+    "w": "viejo",
+    "s": 22,
+    "p": [
+      [
+        "viejo",
+        "si"
+      ],
+      [
+        "viejo",
+        "no"
+      ],
+      [
+        "duerme",
+        "no"
+      ],
+      [
+        "triste",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "triste",
+    "s": 23,
+    "p": [
+      [
+        "triste",
+        "si"
+      ],
+      [
+        "triste",
+        "no"
+      ],
+      [
+        "contento",
+        "si"
+      ],
+      [
+        "cansado",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "plato",
+    "s": 24,
+    "p": [
+      [
+        "plato",
+        "si"
+      ],
+      [
+        "plato",
+        "no"
+      ],
+      [
+        "cuchara",
+        "si"
+      ],
+      [
+        "taza",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "taza",
+    "s": 24,
+    "p": [
+      [
+        "taza",
+        "si"
+      ],
+      [
+        "taza",
+        "no"
+      ],
+      [
+        "plato",
+        "si"
+      ],
+      [
+        "cuchara",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "cuchara",
+    "s": 25,
+    "p": [
+      [
+        "cuchara",
+        "si"
+      ],
+      [
+        "cuchara",
+        "no"
+      ],
+      [
+        "tenedor",
+        "no"
+      ],
+      [
+        "plato",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "tengo hambre",
+    "s": 26,
+    "p": [
+      [
+        "tengo hambre",
+        "si"
+      ],
+      [
+        "tengo hambre",
+        "no"
+      ],
+      [
+        "tengo sed",
+        "si"
+      ],
+      [
+        "comida",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "arroz",
+    "s": 27,
+    "p": [
+      [
+        "arroz",
+        "si"
+      ],
+      [
+        "arroz",
+        "no"
+      ],
+      [
+        "pollo",
+        "si"
+      ],
+      [
+        "olla",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "olla",
+    "s": 27,
+    "p": [
+      [
+        "olla",
+        "si"
+      ],
+      [
+        "olla",
+        "no"
+      ],
+      [
+        "habichuelas",
+        "si"
+      ],
+      [
+        "ya",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "pollo",
+    "s": 28,
+    "p": [
+      [
+        "pollo",
+        "si"
+      ],
+      [
+        "pollo",
+        "no"
+      ],
+      [
+        "arroz",
+        "si"
+      ],
+      [
+        "sal",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "caliente",
+    "s": 29,
+    "p": [
+      [
+        "caliente",
+        "si"
+      ],
+      [
+        "caliente",
+        "no"
+      ],
+      [
+        "frío",
+        "si"
+      ],
+      [
+        "olla",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "leche",
+    "s": 30,
+    "p": [
+      [
+        "leche",
+        "si"
+      ],
+      [
+        "leche",
+        "no"
+      ],
+      [
+        "queso",
+        "si"
+      ],
+      [
+        "pan",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "queso",
+    "s": 30,
+    "p": [
+      [
+        "queso",
+        "si"
+      ],
+      [
+        "queso",
+        "no"
+      ],
+      [
+        "leche",
+        "si"
+      ],
+      [
+        "fruta",
+        "si"
+      ]
+    ]
+  },
+  {
+    "w": "guineo",
+    "s": 31,
+    "p": [
+      [
+        "guineo",
+        "si"
+      ],
+      [
+        "guineo",
+        "no"
+      ],
+      [
+        "china",
+        "si"
+      ],
+      [
+        "pan",
+        "no"
+      ]
+    ]
+  },
+  {
+    "w": "lleno",
+    "s": 32,
+    "p": [
+      [
+        "lleno",
+        "si"
+      ],
+      [
+        "lleno",
+        "no"
+      ],
+      [
+        "vacío",
+        "si"
+      ],
+      [
+        "mantequilla",
+        "si"
+      ]
+    ]
+  }
+]

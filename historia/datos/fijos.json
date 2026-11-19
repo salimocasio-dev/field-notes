@@ -1,0 +1,12 @@
+{
+  "clips": {
+    "story_your_turn": "ahora_tu",
+    "story_praise": "muy_bien",
+    "review_praise_right": "si_muy_bien",
+    "review_praise_after_miss": "muy_bien"
+  },
+  "despedidas": [
+    "adiós",
+    "hasta mañana"
+  ]
+}
