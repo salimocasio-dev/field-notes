@@ -1,0 +1,10780 @@
+{
+ "scene": "sala",
+ "file": "historia/escenas/sala.js",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "sha256": "54dbd31b03925565b0baa751d515beef5961a88a817b6adcd63eacaa118b43f5",
+ "stories": [
+  "d-bizcocho-bebe",
+  "d-foto-familia",
+  "h-sala",
+  "la-familia",
+  "la-foto",
+  "quien-eres-tu"
+ ],
+ "reviewFile": "cual-sala",
+ "hostPage": "historia/index.html?cuento=d-bizcocho-bebe&fast=1",
+ "background": {
+  "functions": [
+   "bg"
+  ],
+  "at": [
+   "sala.js:17 bg()",
+   "sala.js:107 spr(\"sala\",bg)"
+  ],
+  "keys": [],
+  "keysCheck": "no two states with the same values of these keys have a different background sprite",
+  "sprites": [
+   {
+    "key": "sala",
+    "maker": "function bg(){const b=new Buf(SW,SH),C=RP.cream,Wd=RP.wood,ST=RP.stone;\n  b.grad(0,0,SW,122,[\"#F8E8C0\",\"#F4E0B0\",\"#EED6A0\"]);for(let y=6;y<118;y+=12)for(let x=0;x<SW;x++)if((x+y)%24<1)b.px(x,y,\"#EACD92\");\n  // the tile floor, wider towards us\n  for(let y=122;y<SH;y++){const t=(y-122)/(SH-122),hw=120...",
+    "readsW": [],
+    "askedAt": "sala.js:107"
+   }
+  ]
+ },
+ "given": {
+  "kit": true,
+  "call": "sala.js:259 KIT.escena({...})",
+  "keys": [
+   "id",
+   "CAM",
+   "heartAt",
+   "lugar",
+   "cosas",
+   "fresh",
+   "draw",
+   "hud",
+   "poke",
+   "acts",
+   "stake",
+   "talkAt",
+   "estado"
+  ],
+  "CAM": {
+   "wide": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "sofa": [
+    52,
+    48,
+    150,
+    165.3
+   ]
+  },
+  "heartAt": [
+   107,
+   6
+  ],
+  "heartAtDefault": null,
+  "lugar": {
+   "puerta": [
+    30,
+    104,
+    0.7
+   ],
+   "centro": [
+    104,
+    183,
+    1
+   ],
+   "huele": [
+    72,
+    146,
+    0.9
+   ],
+   "abuela": [
+    58,
+    155,
+    1
+   ],
+   "mama": [
+    82,
+    125,
+    0.9
+   ],
+   "papa": [
+    116,
+    125,
+    0.9
+   ],
+   "abuelo": [
+    166,
+    125,
+    0.9
+   ],
+   "bebe": [
+    88,
+    175,
+    1
+   ],
+   "izq": [
+    44,
+    183,
+    1
+   ]
+  },
+  "cosas": [
+   {
+    "id": "hermano",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "hermana",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "bebe",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "abuela",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "mama",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "papa",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "abuelo",
+    "m": 1,
+    "si": {
+     "fn": "w=>!!(w.gente&&w.gente[id]&&w.gente[id].vis!==0)",
+     "line": 80
+    },
+    "box": {
+     "fn": "()=>caja(id)",
+     "line": 80
+    }
+   },
+   {
+    "id": "bizcocho",
+    "si": {
+     "fn": "w=>w.pastel>0",
+     "line": 82
+    },
+    "box": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "m": 1
+   },
+   {
+    "id": "mesita",
+    "box": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "m": 0
+   },
+   {
+    "id": "sofa",
+    "box": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "m": 0
+   },
+   {
+    "id": "butaca",
+    "box": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "m": 0
+   },
+   {
+    "id": "fotos",
+    "box": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "m": 0
+   },
+   {
+    "id": "lampara",
+    "box": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "m": 0
+   },
+   {
+    "id": "puerta",
+    "box": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "m": 0
+   },
+   {
+    "id": "ventana",
+    "box": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "m": 0
+   },
+   {
+    "id": "sala",
+    "box": [
+     0,
+     122,
+     240,
+     94
+    ],
+    "m": 0
+   }
+  ],
+  "fresh": {
+   "fn": "()=>({gente:G0(),fotos:[null,null,null],luz:1,pastel:null,plato:null,lleva:0,vuela:null,flash:0,ave:null,cafe:0,relleno:0,aciertos:0,apodo:null,visor:null,borroso:0,tapaojos:null,golpe:0,gotas:null,camMesa:0,retrato:null,cq:{x:LUGAR.centro[0],y:LUGAR.centro[1],s:1,dy:0,al:1,vis:1,bub:null}})",
+   "line": 260
+  },
+  "acts": {
+   "own": [
+    "abda",
+    "abva",
+    "acerca",
+    "anda",
+    "atras",
+    "beso",
+    "calla",
+    "camara",
+    "come",
+    "comen",
+    "corazon",
+    "corren",
+    "cqcome",
+    "da",
+    "dale",
+    "despierta",
+    "destapa",
+    "dispara",
+    "duerme",
+    "entra",
+    "espejuelos",
+    "fin8",
+    "final6",
+    "final7",
+    "final8",
+    "flash",
+    "gira",
+    "huele",
+    "inicio8",
+    "junto",
+    "lados",
+    "llora",
+    "muerde",
+    "ninos",
+    "nitido",
+    "palmada",
+    "pies",
+    "ponecamara",
+    "pose",
+    "prueba",
+    "quitavisor",
+    "retrato",
+    "rie",
+    "saluda",
+    "sientan",
+    "solo",
+    "suelta",
+    "suplato",
+    "tapa",
+    "todos",
+    "tres",
+    "tropieza",
+    "ultimo",
+    "vuelve"
+   ],
+   "shared": [
+    "burbuja",
+    "fin",
+    "ir"
+   ]
+  },
+  "other": {},
+  "functions": {
+   "draw": {
+    "line": 106
+   },
+   "hud": {
+    "line": 130
+   },
+   "poke": {
+    "line": 255
+   },
+   "stake": {
+    "line": 251
+   },
+   "talkAt": {
+    "line": 126
+   },
+   "estado": {
+    "line": 256
+   }
+  },
+  "hitOrder": {
+   "rule": "kit.js:120-125: things with z (in cosas order), then the bird (aveHit), then the frog (frogBox), then the rest in cosas order; each box widened by m (default 3) on every side",
+   "order": [
+    "pajaro",
+    "coqui",
+    "hermano",
+    "hermana",
+    "bebe",
+    "abuela",
+    "mama",
+    "papa",
+    "abuelo",
+    "bizcocho",
+    "mesita",
+    "sofa",
+    "butaca",
+    "fotos",
+    "lampara",
+    "puerta",
+    "ventana",
+    "sala"
+   ],
+   "slack": {
+    "hermano": 1,
+    "hermana": 1,
+    "bebe": 1,
+    "abuela": 1,
+    "mama": 1,
+    "papa": 1,
+    "abuelo": 1,
+    "bizcocho": 1,
+    "mesita": 0,
+    "sofa": 0,
+    "butaca": 0,
+    "fotos": 0,
+    "lampara": 0,
+    "puerta": 0,
+    "ventana": 0,
+    "sala": 0
+   }
+  }
+ },
+ "thingIds": [
+  "hermano",
+  "hermana",
+  "bebe",
+  "abuela",
+  "mama",
+  "papa",
+  "abuelo",
+  "bizcocho",
+  "mesita",
+  "sofa",
+  "butaca",
+  "fotos",
+  "lampara",
+  "puerta",
+  "ventana",
+  "sala"
+ ],
+ "things": {
+  "hermano": {
+   "moves": true,
+   "fresh": {
+    "si": false,
+    "box": null,
+    "hand": null
+   },
+   "boxReads": [
+    "gente",
+    "gente.hermano"
+   ],
+   "siReads": [
+    "gente",
+    "gente.hermano"
+   ],
+   "handReads": [
+    "gente",
+    "gente.hermano"
+   ],
+   "bySnapshot": [
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-66",
+      "d-bizcocho-bebe/wrong": "start,0-66",
+      "d-bizcocho-bebe/alternate": "start,0-66",
+      "d-foto-familia/right": "start,0",
+      "d-foto-familia/wrong": "start,0",
+      "d-foto-familia/alternate": "start,0",
+      "h-sala/right": "start,0-1",
+      "h-sala/wrong": "start,0-1",
+      "h-sala/alternate": "start,0-1",
+      "la-familia/right": "start,0-77",
+      "la-familia/wrong": "start,0-88",
+      "la-familia/alternate": "start,0-80",
+      "la-foto/right": "start,0",
+      "la-foto/wrong": "start,0",
+      "la-foto/alternate": "start,0",
+      "quien-eres-tu/right": "start,",
+      "quien-eres-tu/wrong": "start,",
+      "quien-eres-tu/alternate": "start,",
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:mamá.no": "picture",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:papá.no": "picture",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:abuelo.no": "picture",
+      "cual-sala:bebé.si": "picture",
+      "cual-sala:familia.no": "picture",
+      "cual-sala:hermano.no": "picture",
+      "cual-sala:hermana.si": "picture",
+      "cual-sala:hermana.no": "picture",
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture",
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      83,
+      154,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "1-11",
+      "d-foto-familia/wrong": "1-11",
+      "d-foto-familia/alternate": "1-11",
+      "la-foto/right": "1-22",
+      "la-foto/wrong": "1-22",
+      "la-foto/alternate": "1-22"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      102,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "12-14",
+      "d-foto-familia/wrong": "12-14",
+      "d-foto-familia/alternate": "12-14",
+      "la-foto/right": "52-56",
+      "la-foto/wrong": "56-62",
+      "la-foto/alternate": "54-58"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      145,
+      156,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "15-34",
+      "d-foto-familia/wrong": "15-34",
+      "d-foto-familia/alternate": "15-34",
+      "quien-eres-tu/right": "0-26",
+      "quien-eres-tu/wrong": "0-26",
+      "quien-eres-tu/alternate": "0-26"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      129,
+      146,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      139,
+      156,
+      22,
+      44
+     ],
+     "at": {
+      "h-sala/right": "2-45",
+      "h-sala/wrong": "2-45",
+      "h-sala/alternate": "2-45"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      133,
+      152,
+      22,
+      44
+     ],
+     "at": {
+      "la-foto/right": "23-35",
+      "la-foto/wrong": "23-35",
+      "la-foto/alternate": "23-35",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      59,
+      154,
+      22,
+      44
+     ],
+     "at": {
+      "la-foto/right": "36-51",
+      "la-foto/wrong": "36-55",
+      "la-foto/alternate": "36-53"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      161,
+      22,
+      44
+     ],
+     "at": {
+      "quien-eres-tu/right": "28",
+      "quien-eres-tu/wrong": "28,30-31",
+      "quien-eres-tu/alternate": "28"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      141,
+      156,
+      22,
+      44
+     ],
+     "at": {
+      "quien-eres-tu/right": "27,29-56",
+      "quien-eres-tu/wrong": "27,29,32-60",
+      "quien-eres-tu/alternate": "27,29-57"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      63,
+      153,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:bebé.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      103,
+      106,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:familia.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      106,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:hermano.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      129,
+      152,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    }
+   ]
+  },
+  "hermana": {
+   "moves": true,
+   "fresh": {
+    "si": false,
+    "box": null,
+    "hand": null
+   },
+   "boxReads": [
+    "gente",
+    "gente.hermana"
+   ],
+   "siReads": [
+    "gente",
+    "gente.hermana"
+   ],
+   "handReads": [
+    "gente",
+    "gente.hermana"
+   ],
+   "bySnapshot": [
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-66",
+      "d-bizcocho-bebe/wrong": "start,0-66",
+      "d-bizcocho-bebe/alternate": "start,0-66",
+      "d-foto-familia/right": "start,0",
+      "d-foto-familia/wrong": "start,0",
+      "d-foto-familia/alternate": "start,0",
+      "h-sala/right": "start,0-1",
+      "h-sala/wrong": "start,0-1",
+      "h-sala/alternate": "start,0-1",
+      "la-familia/right": "start,0-77",
+      "la-familia/wrong": "start,0-88",
+      "la-familia/alternate": "start,0-80",
+      "la-foto/right": "start,0",
+      "la-foto/wrong": "start,0",
+      "la-foto/alternate": "start,0",
+      "quien-eres-tu/right": "start,",
+      "quien-eres-tu/wrong": "start,",
+      "quien-eres-tu/alternate": "start,",
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:mamá.no": "picture",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:papá.no": "picture",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:abuelo.no": "picture",
+      "cual-sala:bebé.si": "picture",
+      "cual-sala:bebé.no": "picture",
+      "cual-sala:familia.no": "picture",
+      "cual-sala:hermano.si": "picture",
+      "cual-sala:hermano.no": "picture",
+      "cual-sala:hermana.no": "picture",
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture",
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      55,
+      159,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "1-5",
+      "d-foto-familia/wrong": "1-5",
+      "d-foto-familia/alternate": "1-5",
+      "la-foto/right": "1-22",
+      "la-foto/wrong": "1-22",
+      "la-foto/alternate": "1-22"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      102,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "6-8",
+      "d-foto-familia/wrong": "6-8",
+      "d-foto-familia/alternate": "6-8"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      73,
+      156,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "9-25",
+      "d-foto-familia/wrong": "9-25",
+      "d-foto-familia/alternate": "9-25",
+      "quien-eres-tu/right": "0-56",
+      "quien-eres-tu/wrong": "0-60",
+      "quien-eres-tu/alternate": "0-57"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      149,
+      148,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "26-34",
+      "d-foto-familia/wrong": "26-34",
+      "d-foto-familia/alternate": "26-34"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      89,
+      146,
+      22,
+      44
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      171,
+      156,
+      22,
+      44
+     ],
+     "at": {
+      "h-sala/right": "2-45",
+      "h-sala/wrong": "2-45",
+      "h-sala/alternate": "2-45"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      85,
+      152,
+      22,
+      44
+     ],
+     "at": {
+      "la-foto/right": "23-35",
+      "la-foto/wrong": "23-35",
+      "la-foto/alternate": "23-35",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      159,
+      154,
+      22,
+      44
+     ],
+     "at": {
+      "la-foto/right": "36-51",
+      "la-foto/wrong": "36-55",
+      "la-foto/alternate": "36-53"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      61,
+      162,
+      22,
+      44
+     ],
+     "at": {
+      "la-foto/right": "52-56",
+      "la-foto/wrong": "56-62",
+      "la-foto/alternate": "54-58"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      139,
+      106,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:familia.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      106,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:hermana.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      89,
+      152,
+      22,
+      44
+     ],
+     "at": {
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture"
+     }
+    }
+   ]
+  },
+  "bebe": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "hand": [
+     70,
+     179
+    ]
+   },
+   "boxReads": [
+    "gente",
+    "gente.bebe"
+   ],
+   "siReads": [
+    "gente",
+    "gente.bebe"
+   ],
+   "handReads": [
+    "gente",
+    "gente.bebe"
+   ],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": [
+      59,
+      165,
+      22,
+      28
+     ],
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-66",
+      "d-bizcocho-bebe/wrong": "start,0-66",
+      "d-bizcocho-bebe/alternate": "start,0-66",
+      "d-foto-familia/right": "start,0",
+      "d-foto-familia/wrong": "start,0",
+      "d-foto-familia/alternate": "start,0",
+      "h-sala/right": "start,0-45",
+      "h-sala/wrong": "start,0-45",
+      "h-sala/alternate": "start,0-45",
+      "la-familia/right": "start,0-77",
+      "la-familia/wrong": "start,0-84",
+      "la-familia/alternate": "start,0-80",
+      "la-foto/right": "start,0",
+      "la-foto/wrong": "start,0",
+      "la-foto/alternate": "start,0",
+      "quien-eres-tu/right": "start,",
+      "quien-eres-tu/wrong": "start,",
+      "quien-eres-tu/alternate": "start,",
+      "cual-sala:bebé.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      86,
+      84,
+      22,
+      28
+     ],
+     "at": {
+      "d-foto-familia/right": "1-34",
+      "d-foto-familia/wrong": "1-34",
+      "d-foto-familia/alternate": "1-34",
+      "la-foto/right": "1-41,47-56",
+      "la-foto/wrong": "1-43,51-62",
+      "la-foto/alternate": "1-41,49-58",
+      "quien-eres-tu/right": "0-41",
+      "quien-eres-tu/wrong": "0-43",
+      "quien-eres-tu/alternate": "0-42",
+      "cual-sala:familia.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      95,
+      96,
+      22,
+      28
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      91,
+      181,
+      22,
+      28
+     ],
+     "at": {
+      "la-familia/wrong": "85-88"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      138,
+      81,
+      22,
+      28
+     ],
+     "at": {
+      "la-foto/right": "42-46",
+      "la-foto/wrong": "44-50",
+      "la-foto/alternate": "42-48",
+      "quien-eres-tu/right": "42-50",
+      "quien-eres-tu/wrong": "44-54",
+      "quien-eres-tu/alternate": "43-51"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      138,
+      82,
+      22,
+      28
+     ],
+     "at": {
+      "quien-eres-tu/right": "51-56",
+      "quien-eres-tu/wrong": "55-60",
+      "quien-eres-tu/alternate": "52-57"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:mamá.no": "picture",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:papá.no": "picture",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:abuelo.no": "picture",
+      "cual-sala:bebé.no": "picture",
+      "cual-sala:familia.no": "picture",
+      "cual-sala:hermano.si": "picture",
+      "cual-sala:hermano.no": "picture",
+      "cual-sala:hermana.si": "picture",
+      "cual-sala:hermana.no": "picture",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture",
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture",
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture",
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    }
+   ]
+  },
+  "abuela": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "hand": [
+     42,
+     143
+    ]
+   },
+   "boxReads": [
+    "gente",
+    "gente.abuela"
+   ],
+   "siReads": [
+    "gente",
+    "gente.abuela"
+   ],
+   "handReads": [
+    "gente",
+    "gente.abuela"
+   ],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": [
+      31,
+      117,
+      22,
+      51
+     ],
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-56,61-66",
+      "d-bizcocho-bebe/wrong": "start,0-56,61-66",
+      "d-bizcocho-bebe/alternate": "start,0-56,61-66",
+      "d-foto-familia/right": "start,0-34",
+      "d-foto-familia/wrong": "start,0-34",
+      "d-foto-familia/alternate": "start,0-34",
+      "h-sala/right": "start,0-45",
+      "h-sala/wrong": "start,0-45",
+      "h-sala/alternate": "start,0-45",
+      "la-familia/right": "start,0-66,70",
+      "la-familia/wrong": "start,0-50,55-60,65-72,77,81",
+      "la-familia/alternate": "start,0-55,60-69,73",
+      "la-foto/right": "start,0-56",
+      "la-foto/wrong": "start,0-62",
+      "la-foto/alternate": "start,0-58",
+      "quien-eres-tu/right": "start,0-56",
+      "quien-eres-tu/wrong": "start,0-56",
+      "quien-eres-tu/alternate": "start,0-57"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      147,
+      149,
+      22,
+      51
+     ],
+     "at": {
+      "d-bizcocho-bebe/right": "57-60",
+      "d-bizcocho-bebe/wrong": "57-60",
+      "d-bizcocho-bebe/alternate": "57-60",
+      "la-familia/right": "71-77",
+      "la-familia/wrong": "82-88",
+      "la-familia/alternate": "74-80"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      55,
+      109,
+      22,
+      51
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      168,
+      99,
+      22,
+      51
+     ],
+     "at": {
+      "la-familia/right": "67-69",
+      "la-familia/wrong": "78-80",
+      "la-familia/alternate": "70-72"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      81,
+      138,
+      22,
+      51
+     ],
+     "at": {
+      "la-familia/wrong": "51-54"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      118,
+      99,
+      22,
+      51
+     ],
+     "at": {
+      "la-familia/wrong": "61-64",
+      "la-familia/alternate": "56-59"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      84,
+      99,
+      22,
+      51
+     ],
+     "at": {
+      "la-familia/wrong": "73-76"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      171,
+      121,
+      22,
+      51
+     ],
+     "at": {
+      "quien-eres-tu/wrong": "57-60"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:papá.no": "picture",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:bebé.si": "picture",
+      "cual-sala:bebé.no": "picture",
+      "cual-sala:familia.no": "picture",
+      "cual-sala:hermano.si": "picture",
+      "cual-sala:hermano.no": "picture",
+      "cual-sala:hermana.si": "picture",
+      "cual-sala:hermana.no": "picture",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture",
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture",
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture",
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      86,
+      77,
+      22,
+      51
+     ],
+     "at": {
+      "cual-sala:mamá.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      172,
+      77,
+      22,
+      51
+     ],
+     "at": {
+      "cual-sala:abuelo.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      51,
+      99,
+      22,
+      51
+     ],
+     "at": {
+      "cual-sala:familia.si": "picture"
+     }
+    }
+   ]
+  },
+  "mama": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "hand": [
+     97,
+     103
+    ]
+   },
+   "boxReads": [
+    "gente",
+    "gente.mama"
+   ],
+   "siReads": [
+    "gente",
+    "gente.mama"
+   ],
+   "handReads": [
+    "gente",
+    "gente.mama"
+   ],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": [
+      86,
+      78,
+      22,
+      49
+     ],
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-66",
+      "d-bizcocho-bebe/wrong": "start,0-66",
+      "d-bizcocho-bebe/alternate": "start,0-66",
+      "d-foto-familia/right": "start,0-34",
+      "d-foto-familia/wrong": "start,0-34",
+      "d-foto-familia/alternate": "start,0-34",
+      "h-sala/right": "start,0-45",
+      "h-sala/wrong": "start,0-45",
+      "h-sala/alternate": "start,0-45",
+      "la-familia/right": "start,0-77",
+      "la-familia/wrong": "start,0-88",
+      "la-familia/alternate": "start,0-80",
+      "la-foto/right": "start,0-41,47-56",
+      "la-foto/wrong": "start,0-43,51-62",
+      "la-foto/alternate": "start,0-41,49-58",
+      "quien-eres-tu/right": "start,0-41",
+      "quien-eres-tu/wrong": "start,0-43",
+      "quien-eres-tu/alternate": "start,0-42",
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:familia.si": "picture",
+      "cual-sala:familia.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      87,
+      90,
+      22,
+      56
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      129,
+      80,
+      22,
+      56
+     ],
+     "at": {
+      "la-foto/right": "42-46",
+      "la-foto/wrong": "44-50",
+      "la-foto/alternate": "42-48",
+      "quien-eres-tu/right": "42-56",
+      "quien-eres-tu/wrong": "44-60",
+      "quien-eres-tu/alternate": "43-57"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "cual-sala:mamá.no": "picture",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:papá.no": "picture",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:abuelo.no": "picture",
+      "cual-sala:bebé.si": "picture",
+      "cual-sala:bebé.no": "picture",
+      "cual-sala:hermano.si": "picture",
+      "cual-sala:hermano.no": "picture",
+      "cual-sala:hermana.si": "picture",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture",
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture",
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      94,
+      22,
+      56
+     ],
+     "at": {
+      "cual-sala:hermana.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      89,
+      80,
+      22,
+      56
+     ],
+     "at": {
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture"
+     }
+    }
+   ]
+  },
+  "papa": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "hand": [
+     131,
+     103
+    ]
+   },
+   "boxReads": [
+    "gente",
+    "gente.papa"
+   ],
+   "siReads": [
+    "gente",
+    "gente.papa"
+   ],
+   "handReads": [
+    "gente",
+    "gente.papa"
+   ],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": [
+      120,
+      78,
+      22,
+      49
+     ],
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-66",
+      "d-bizcocho-bebe/wrong": "start,0-66",
+      "d-bizcocho-bebe/alternate": "start,0-66",
+      "d-foto-familia/right": "start,0-17,21-34",
+      "d-foto-familia/wrong": "start,0-17,21-34",
+      "d-foto-familia/alternate": "start,0-17,21-34",
+      "h-sala/right": "start,0-45",
+      "h-sala/wrong": "start,0-45",
+      "h-sala/alternate": "start,0-45",
+      "la-familia/right": "start,0-77",
+      "la-familia/wrong": "start,0-88",
+      "la-familia/alternate": "start,0-80",
+      "la-foto/right": "start,0-41,47-56",
+      "la-foto/wrong": "start,0-43,51-62",
+      "la-foto/alternate": "start,0-41,49-58",
+      "quien-eres-tu/right": "start,0-41",
+      "quien-eres-tu/wrong": "start,0-43",
+      "quien-eres-tu/alternate": "start,0-42",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:familia.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      90,
+      22,
+      56
+     ],
+     "at": {
+      "d-foto-familia/right": "18-20",
+      "d-foto-familia/wrong": "18-20",
+      "d-foto-familia/alternate": "18-20"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      131,
+      90,
+      22,
+      56
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      89,
+      80,
+      22,
+      56
+     ],
+     "at": {
+      "la-foto/right": "42-46",
+      "la-foto/wrong": "44-50",
+      "la-foto/alternate": "42-48",
+      "quien-eres-tu/right": "42-56",
+      "quien-eres-tu/wrong": "44-60",
+      "quien-eres-tu/alternate": "43-57"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:mamá.no": "picture",
+      "cual-sala:papá.no": "picture",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:abuelo.no": "picture",
+      "cual-sala:bebé.si": "picture",
+      "cual-sala:bebé.no": "picture",
+      "cual-sala:familia.no": "picture",
+      "cual-sala:hermano.si": "picture",
+      "cual-sala:hermana.si": "picture",
+      "cual-sala:hermana.no": "picture",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture",
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture",
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      109,
+      94,
+      22,
+      56
+     ],
+     "at": {
+      "cual-sala:hermano.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      129,
+      80,
+      22,
+      56
+     ],
+     "at": {
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture"
+     }
+    }
+   ]
+  },
+  "abuelo": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": [
+     170,
+     78,
+     22,
+     49
+    ],
+    "hand": [
+     181,
+     103
+    ]
+   },
+   "boxReads": [
+    "gente",
+    "gente.abuelo"
+   ],
+   "siReads": [
+    "gente",
+    "gente.abuelo"
+   ],
+   "handReads": [
+    "gente",
+    "gente.abuelo"
+   ],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": [
+      170,
+      78,
+      22,
+      49
+     ],
+     "at": {
+      "d-bizcocho-bebe/right": "start,0-66",
+      "d-bizcocho-bebe/wrong": "start,0-66",
+      "d-bizcocho-bebe/alternate": "start,0-66",
+      "d-foto-familia/right": "start,0-1",
+      "d-foto-familia/wrong": "start,0-1",
+      "d-foto-familia/alternate": "start,0-1",
+      "h-sala/right": "start,0-45",
+      "h-sala/wrong": "start,0-45",
+      "h-sala/alternate": "start,0-45",
+      "la-familia/right": "start,0-77",
+      "la-familia/wrong": "start,0-88",
+      "la-familia/alternate": "start,0-80",
+      "la-foto/right": "start,0-21",
+      "la-foto/wrong": "start,0-21",
+      "la-foto/alternate": "start,0-21",
+      "quien-eres-tu/right": "start,",
+      "quien-eres-tu/wrong": "start,",
+      "quien-eres-tu/alternate": "start,",
+      "cual-sala:abuelo.si": "picture",
+      "cual-sala:familia.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      187,
+      120,
+      22,
+      56
+     ],
+     "at": {
+      "d-foto-familia/right": "2-32",
+      "d-foto-familia/wrong": "2-32",
+      "d-foto-familia/alternate": "2-32",
+      "la-foto/right": "22-56",
+      "la-foto/wrong": "22-62",
+      "la-foto/alternate": "22-58"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      139,
+      116,
+      22,
+      56
+     ],
+     "at": {
+      "d-foto-familia/right": "33-34",
+      "d-foto-familia/wrong": "33-34",
+      "d-foto-familia/alternate": "33-34"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      161,
+      104,
+      22,
+      56
+     ],
+     "at": {
+      "d-foto-familia/right": "35-40",
+      "d-foto-familia/wrong": "35-40",
+      "d-foto-familia/alternate": "35-40",
+      "la-foto/right": "57-62",
+      "la-foto/wrong": "63-68",
+      "la-foto/alternate": "59-64"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      179,
+      94,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/right": "0-19",
+      "quien-eres-tu/wrong": "0-19",
+      "quien-eres-tu/alternate": "0-19"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      151,
+      120,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/right": "20-26",
+      "quien-eres-tu/wrong": "20-26",
+      "quien-eres-tu/alternate": "20-26"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      181,
+      124,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/right": "27-45",
+      "quien-eres-tu/wrong": "27-47",
+      "quien-eres-tu/alternate": "27-46"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      67,
+      90,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/right": "46-50",
+      "quien-eres-tu/wrong": "48,52-54",
+      "quien-eres-tu/alternate": "47-51"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      157,
+      86,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/right": "51-56",
+      "quien-eres-tu/wrong": "55-56",
+      "quien-eres-tu/alternate": "52-57"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      151,
+      90,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/wrong": "49-51"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      139,
+      114,
+      22,
+      56
+     ],
+     "at": {
+      "quien-eres-tu/wrong": "57-60"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "cual-sala:mamá.si": "picture",
+      "cual-sala:mamá.no": "picture",
+      "cual-sala:papá.si": "picture",
+      "cual-sala:abuelo.no": "picture",
+      "cual-sala:bebé.si": "picture",
+      "cual-sala:bebé.no": "picture",
+      "cual-sala:familia.no": "picture",
+      "cual-sala:hermano.si": "picture",
+      "cual-sala:hermano.no": "picture",
+      "cual-sala:hermana.si": "picture",
+      "cual-sala:hermana.no": "picture",
+      "cual-sala:él.si": "picture",
+      "cual-sala:él.no": "picture",
+      "cual-sala:ella.si": "picture",
+      "cual-sala:ella.no": "picture",
+      "cual-sala:yo.si": "picture",
+      "cual-sala:yo.no": "picture",
+      "cual-sala:tú.si": "picture",
+      "cual-sala:tú.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      120,
+      78,
+      22,
+      49
+     ],
+     "at": {
+      "cual-sala:papá.no": "picture"
+     }
+    }
+   ]
+  },
+  "bizcocho": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "hand": [
+     121,
+     146
+    ]
+   },
+   "boxReads": [],
+   "siReads": [
+    "pastel"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      106,
+      138,
+      30,
+      16
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      106,
+      138,
+      30,
+      16
+     ],
+     "states": [
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012"
+     ]
+    }
+   ]
+  },
+  "mesita": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "hand": [
+     121,
+     157
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      98,
+      148,
+      46,
+      18
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "sofa": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "hand": [
+     114,
+     106
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      68,
+      84,
+      92,
+      44
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "butaca": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "hand": [
+     181,
+     107
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      160,
+      86,
+      42,
+      42
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "fotos": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "hand": [
+     105,
+     49
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      64,
+      34,
+      82,
+      30
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "lampara": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "hand": [
+     156,
+     94
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      146,
+      62,
+      20,
+      64
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "puerta": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "hand": [
+     41,
+     82
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      20,
+      42,
+      42,
+      80
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "ventana": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "hand": [
+     188,
+     59
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      160,
+      32,
+      56,
+      54
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "sala": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     0,
+     122,
+     240,
+     94
+    ],
+    "hand": [
+     120,
+     169
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      0,
+      122,
+      240,
+      94
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  }
+ },
+ "hitTest": {
+  "grid": "every 3rd pixel of 240 x 216, in every distinct W",
+  "idsAnswered": [
+   "abuela",
+   "abuelo",
+   "bebe",
+   "bizcocho",
+   "butaca",
+   "coqui",
+   "fotos",
+   "hermana",
+   "hermano",
+   "lampara",
+   "mama",
+   "mesita",
+   "papa",
+   "puerta",
+   "sala",
+   "sofa",
+   "ventana"
+  ],
+  "answers": {
+   "ventana": {
+    "n": 99904,
+    "states": 338,
+    "at": [
+     162,
+     33
+    ]
+   },
+   "fotos": {
+    "n": 91260,
+    "states": 338,
+    "at": [
+     66,
+     36
+    ]
+   },
+   "puerta": {
+    "n": 123132,
+    "states": 338,
+    "at": [
+     21,
+     42
+    ]
+   },
+   "lampara": {
+    "n": 17104,
+    "states": 338,
+    "at": [
+     147,
+     63
+    ]
+   },
+   "mama": {
+    "n": 31392,
+    "states": 322,
+    "at": [
+     87,
+     78
+    ]
+   },
+   "papa": {
+    "n": 43355,
+    "states": 322,
+    "at": [
+     120,
+     78
+    ]
+   },
+   "abuelo": {
+    "n": 44863,
+    "states": 320,
+    "at": [
+     171,
+     78
+    ]
+   },
+   "sofa": {
+    "n": 77125,
+    "states": 338,
+    "at": [
+     69,
+     84
+    ]
+   },
+   "butaca": {
+    "n": 42652,
+    "states": 338,
+    "at": [
+     162,
+     87
+    ]
+   },
+   "abuela": {
+    "n": 45879,
+    "states": 320,
+    "at": [
+     30,
+     117
+    ]
+   },
+   "sala": {
+    "n": 626810,
+    "states": 338,
+    "at": [
+     0,
+     123
+    ]
+   },
+   "mesita": {
+    "n": 25861,
+    "states": 338,
+    "at": [
+     99,
+     150
+    ]
+   },
+   "bebe": {
+    "n": 25380,
+    "states": 319,
+    "at": [
+     60,
+     165
+    ]
+   },
+   "coqui": {
+    "n": 31477,
+    "states": 325,
+    "at": [
+     105,
+     183
+    ]
+   },
+   "bizcocho": {
+    "n": 5312,
+    "states": 87,
+    "at": [
+     105,
+     138
+    ]
+   },
+   "hermano": {
+    "n": 25190,
+    "states": 212,
+    "at": [
+     84,
+     153
+    ]
+   },
+   "hermana": {
+    "n": 24771,
+    "states": 211,
+    "at": [
+     54,
+     159
+    ]
+   }
+  },
+  "onlyInList": [],
+  "notInList": []
+ },
+ "namedInFiles": {
+  "$bien_$m": {
+   "$var": true,
+   "where": [
+    "quien-eres-tu:beats.28 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.28 pick"
+   ]
+  },
+  "$h": {
+   "$var": true,
+   "where": [
+    "la-foto:beats.28 pick"
+   ]
+  },
+  "$mal_$m": {
+   "$var": true,
+   "where": [
+    "quien-eres-tu:beats.28 decide (say: answer bubbles)"
+   ]
+  },
+  "$na": {
+   "$var": true,
+   "where": [
+    "la-familia:beats.39 pick"
+   ]
+  },
+  "$nb": {
+   "$var": true,
+   "where": [
+    "la-familia:beats.42 decide",
+    "la-familia:beats.42 pick"
+   ]
+  },
+  "$nc": {
+   "$var": true,
+   "where": [
+    "la-familia:beats.42 decide",
+    "la-familia:beats.46.then.0 decide",
+    "la-familia:beats.46.then.0 pick",
+    "la-familia:beats.46.else.0 decide",
+    "la-familia:beats.46.else.0 pick"
+   ]
+  },
+  "$nd": {
+   "$var": true,
+   "where": [
+    "la-familia:beats.42 decide",
+    "la-familia:beats.46.then.0 decide",
+    "la-familia:beats.46.else.0 decide"
+   ]
+  },
+  "$otro": {
+   "$var": true,
+   "where": [
+    "h-sala:beats.20 decide",
+    "h-sala:beats.20 pick"
+   ]
+  },
+  "$pp": {
+   "$var": true,
+   "where": [
+    "la-foto:beats.34 pick"
+   ]
+  },
+  "$resp": {
+   "$var": true,
+   "where": [
+    "la-foto:beats.41 pick"
+   ]
+  },
+  "abuela": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-familia/wrong touch (wrong-poke)",
+    "la-familia/alternate touch (wrong-poke)",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "abuelo": {
+   "$var": false,
+   "where": [
+    "d-bizcocho-bebe:beats.5 set",
+    "d-bizcocho-bebe:beats.43 set",
+    "h-sala:beats.5 decide",
+    "h-sala:beats.6 decide",
+    "h-sala:beats.8 decide",
+    "h-sala:beats.9 decide",
+    "h-sala:beats.9 pick",
+    "h-sala:beats.15 decide",
+    "h-sala:beats.16 decide",
+    "h-sala:beats.20 decide",
+    "h-sala/right choice beats.5 live",
+    "h-sala/right choice beats.6 live",
+    "… 46 more"
+   ]
+  },
+  "bebe": {
+   "$var": false,
+   "where": [
+    "h-sala:beats.5 decide",
+    "h-sala:beats.6 decide",
+    "h-sala:beats.8 decide",
+    "h-sala:beats.8 pick",
+    "h-sala:beats.9 decide",
+    "h-sala:beats.15 decide",
+    "h-sala:beats.16 decide",
+    "h-sala:beats.16 pick",
+    "h-sala/right choice beats.5 live",
+    "h-sala/right choice beats.6 live",
+    "h-sala/right choice beats.8 live",
+    "h-sala/right choice beats.9 live",
+    "… 35 more"
+   ]
+  },
+  "bizcocho": {
+   "$var": false,
+   "where": [
+    "h-sala:beats.15 vale",
+    "h-sala:beats.16 vale",
+    "h-sala/right choice beats.15 live",
+    "h-sala/right choice beats.16 live",
+    "h-sala/wrong choice beats.15 live",
+    "h-sala/wrong choice beats.16 live",
+    "h-sala/alternate choice beats.15 live",
+    "h-sala/alternate choice beats.16 live",
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "butaca": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "coqui": {
+   "$var": false,
+   "where": [
+    "d-bizcocho-bebe:names",
+    "d-foto-familia:names",
+    "h-sala:names",
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "el_papa": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu/right choice beats.28 live",
+    "quien-eres-tu/right touch (right)",
+    "quien-eres-tu/wrong choice beats.28 live",
+    "quien-eres-tu/wrong touch (retry)",
+    "quien-eres-tu/alternate choice beats.28 live",
+    "quien-eres-tu/alternate touch (right)"
+   ]
+  },
+  "ella_papa": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu/right choice beats.28 live",
+    "quien-eres-tu/wrong choice beats.28 live",
+    "quien-eres-tu/wrong touch (wrong)",
+    "quien-eres-tu/alternate choice beats.28 live"
+   ]
+  },
+  "fotos": {
+   "$var": false,
+   "where": [
+    "d-foto-familia:beats.23 set",
+    "la-familia:names",
+    "la-foto:beats.22 set",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "hermana": {
+   "$var": false,
+   "where": [
+    "h-sala:beats.10 decide",
+    "h-sala:beats.11 decide",
+    "h-sala:beats.11 pick",
+    "h-sala/right choice beats.10 live",
+    "h-sala/right choice beats.11 live",
+    "h-sala/right touch (right)",
+    "h-sala/wrong choice beats.10 live",
+    "h-sala/wrong choice beats.11 live",
+    "h-sala/wrong touch (wrong)",
+    "h-sala/wrong touch (retry)",
+    "h-sala/alternate choice beats.10 live",
+    "h-sala/alternate choice beats.11 live",
+    "… 22 more"
+   ]
+  },
+  "hermano": {
+   "$var": false,
+   "where": [
+    "h-sala:beats.10 decide",
+    "h-sala:beats.10 pick",
+    "h-sala:beats.11 decide",
+    "h-sala/right choice beats.10 live",
+    "h-sala/right choice beats.11 live",
+    "h-sala/right touch (right)",
+    "h-sala/wrong choice beats.10 live",
+    "h-sala/wrong choice beats.11 live",
+    "h-sala/wrong touch (retry)",
+    "h-sala/wrong touch (wrong)",
+    "h-sala/alternate choice beats.10 live",
+    "h-sala/alternate choice beats.11 live",
+    "… 26 more"
+   ]
+  },
+  "lampara": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "mama": {
+   "$var": false,
+   "where": [
+    "h-sala:beats.5 decide",
+    "h-sala:beats.5 pick",
+    "h-sala:beats.6 decide",
+    "h-sala:beats.8 decide",
+    "h-sala:beats.9 decide",
+    "h-sala:beats.15 decide",
+    "h-sala:beats.16 decide",
+    "h-sala:beats.18 decide",
+    "h-sala:beats.18 pick",
+    "h-sala/right choice beats.5 live",
+    "h-sala/right choice beats.6 live",
+    "h-sala/right choice beats.8 live",
+    "… 53 more"
+   ]
+  },
+  "mesita": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "no": {
+   "$var": false,
+   "where": [
+    "la-foto:beats.41 decide (say: answer bubbles)",
+    "la-foto/right choice beats.41 live",
+    "la-foto/right touch (right)",
+    "la-foto/wrong choice beats.41 live",
+    "la-foto/alternate choice beats.41 live",
+    "la-foto/alternate touch (right)"
+   ]
+  },
+  "papa": {
+   "$var": false,
+   "where": [
+    "h-sala:beats.5 decide",
+    "h-sala:beats.6 decide",
+    "h-sala:beats.6 pick",
+    "h-sala:beats.8 decide",
+    "h-sala:beats.9 decide",
+    "h-sala:beats.15 decide",
+    "h-sala:beats.15 pick",
+    "h-sala:beats.16 decide",
+    "h-sala:beats.18 vale",
+    "h-sala/right choice beats.5 live",
+    "h-sala/right choice beats.6 live",
+    "h-sala/right choice beats.8 live",
+    "… 51 more"
+   ]
+  },
+  "puerta": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "sala": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "si": {
+   "$var": false,
+   "where": [
+    "la-foto:beats.41 decide (say: answer bubbles)",
+    "la-foto/right choice beats.41 live",
+    "la-foto/wrong choice beats.41 live",
+    "la-foto/wrong touch (wrong)",
+    "la-foto/alternate choice beats.41 live"
+   ]
+  },
+  "sofa": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "tu_$ca": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu:beats.13 ask"
+   ]
+  },
+  "tu_$cb": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu:beats.22.then.4 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.22.then.4 pick",
+    "quien-eres-tu:beats.22.else.1 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.22.else.1 pick"
+   ]
+  },
+  "tu_coqui": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu:beats.22.then.1 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.22.else.4 decide (say: answer bubbles)",
+    "quien-eres-tu/right choice beats.22.else.4 live",
+    "quien-eres-tu/wrong choice beats.22.else.4 live",
+    "quien-eres-tu/wrong touch (wrong)",
+    "quien-eres-tu/alternate choice beats.22.else.4 live",
+    "quien-eres-tu/alternate touch (wrong)"
+   ]
+  },
+  "tu_hermana": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu/right choice beats.13 live",
+    "quien-eres-tu/right touch (right)",
+    "quien-eres-tu/wrong choice beats.13 live",
+    "quien-eres-tu/wrong touch (right)",
+    "quien-eres-tu/alternate choice beats.13 live",
+    "quien-eres-tu/alternate touch (right)"
+   ]
+  },
+  "tu_hermano": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu/right choice beats.22.else.1 live",
+    "quien-eres-tu/right touch (right)",
+    "quien-eres-tu/wrong choice beats.22.else.1 live",
+    "quien-eres-tu/wrong touch (retry)",
+    "quien-eres-tu/alternate choice beats.22.else.1 live",
+    "quien-eres-tu/alternate touch (right)"
+   ]
+  },
+  "ventana": {
+   "$var": false,
+   "where": [
+    "la-familia:names",
+    "la-foto:names",
+    "quien-eres-tu:names"
+   ]
+  },
+  "yo_$cb": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu:beats.22.then.4 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.22.else.1 decide (say: answer bubbles)"
+   ]
+  },
+  "yo_coqui": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu:beats.10 ask",
+    "quien-eres-tu:beats.22.then.1 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.22.then.1 pick",
+    "quien-eres-tu:beats.22.else.4 decide (say: answer bubbles)",
+    "quien-eres-tu:beats.22.else.4 pick",
+    "quien-eres-tu/right choice beats.10 live",
+    "quien-eres-tu/right choice beats.22.else.4 live",
+    "quien-eres-tu/right touch (right)",
+    "quien-eres-tu/wrong choice beats.10 live",
+    "quien-eres-tu/wrong choice beats.22.else.4 live",
+    "quien-eres-tu/wrong touch (right)",
+    "quien-eres-tu/wrong touch (retry)",
+    "… 4 more"
+   ]
+  },
+  "yo_hermano": {
+   "$var": false,
+   "where": [
+    "quien-eres-tu/right choice beats.22.else.1 live",
+    "quien-eres-tu/wrong choice beats.22.else.1 live",
+    "quien-eres-tu/wrong touch (wrong)",
+    "quien-eres-tu/alternate choice beats.22.else.1 live"
+   ]
+  }
+ },
+ "views": {
+  "wide": [
+   22,
+   0,
+   196,
+   216
+  ],
+  "sofa": [
+   52,
+   48,
+   150,
+   165.3
+  ]
+ },
+ "storyViews": [],
+ "fresh": {
+  "d-bizcocho-bebe": {
+   "scene": {
+    "gente": {
+     "mama": {
+      "x": 97,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "papa": {
+      "x": 131,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "abuelo": {
+      "x": 181,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "bebe": {
+      "x": 70,
+      "y": 193,
+      "est": "idle"
+     },
+     "abuela": {
+      "x": 42,
+      "y": 168,
+      "pose": "idle",
+      "dir": -1
+     },
+     "hermano": {
+      "x": 150,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     },
+     "hermana": {
+      "x": 180,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     }
+    },
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "luz": 1,
+    "pastel": null,
+    "plato": null,
+    "lleva": 0,
+    "vuela": null,
+    "flash": 0,
+    "ave": null,
+    "cafe": 0,
+    "relleno": 0,
+    "aciertos": 0,
+    "apodo": null,
+    "visor": null,
+    "borroso": 0,
+    "tapaojos": null,
+    "golpe": 0,
+    "gotas": null,
+    "camMesa": 0,
+    "retrato": null,
+    "cq": {
+     "x": 104,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      },
+      "abuela": {
+       "x": 42,
+       "y": 168,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 150,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      },
+      "hermana": {
+       "x": 180,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      }
+     },
+     "fotos": [
+      null,
+      null,
+      null
+     ],
+     "luz": 1,
+     "pastel": null,
+     "plato": null,
+     "lleva": 0,
+     "vuela": null,
+     "flash": 0,
+     "ave": null,
+     "cafe": 0,
+     "relleno": 0,
+     "aciertos": 0,
+     "apodo": null,
+     "visor": null,
+     "borroso": 0,
+     "tapaojos": null,
+     "golpe": 0,
+     "gotas": null,
+     "camMesa": 0,
+     "retrato": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "d-foto-familia": {
+   "scene": {
+    "gente": {
+     "mama": {
+      "x": 97,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "papa": {
+      "x": 131,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "abuelo": {
+      "x": 181,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "bebe": {
+      "x": 70,
+      "y": 193,
+      "est": "idle"
+     },
+     "abuela": {
+      "x": 42,
+      "y": 168,
+      "pose": "idle",
+      "dir": -1
+     },
+     "hermano": {
+      "x": 150,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     },
+     "hermana": {
+      "x": 180,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     }
+    },
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "luz": 1,
+    "pastel": null,
+    "plato": null,
+    "lleva": 0,
+    "vuela": null,
+    "flash": 0,
+    "ave": null,
+    "cafe": 0,
+    "relleno": 0,
+    "aciertos": 0,
+    "apodo": null,
+    "visor": null,
+    "borroso": 0,
+    "tapaojos": null,
+    "golpe": 0,
+    "gotas": null,
+    "camMesa": 0,
+    "retrato": null,
+    "cq": {
+     "x": 104,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      },
+      "abuela": {
+       "x": 42,
+       "y": 168,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 150,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      },
+      "hermana": {
+       "x": 180,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      }
+     },
+     "fotos": [
+      null,
+      null,
+      null
+     ],
+     "luz": 1,
+     "pastel": null,
+     "plato": null,
+     "lleva": 0,
+     "vuela": null,
+     "flash": 0,
+     "ave": null,
+     "cafe": 0,
+     "relleno": 0,
+     "aciertos": 0,
+     "apodo": null,
+     "visor": null,
+     "borroso": 0,
+     "tapaojos": null,
+     "golpe": 0,
+     "gotas": null,
+     "camMesa": 0,
+     "retrato": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "h-sala": {
+   "scene": {
+    "gente": {
+     "mama": {
+      "x": 97,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "papa": {
+      "x": 131,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "abuelo": {
+      "x": 181,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "bebe": {
+      "x": 70,
+      "y": 193,
+      "est": "idle"
+     },
+     "abuela": {
+      "x": 42,
+      "y": 168,
+      "pose": "idle",
+      "dir": -1
+     },
+     "hermano": {
+      "x": 150,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     },
+     "hermana": {
+      "x": 180,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     }
+    },
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "luz": 1,
+    "pastel": null,
+    "plato": null,
+    "lleva": 0,
+    "vuela": null,
+    "flash": 0,
+    "ave": null,
+    "cafe": 0,
+    "relleno": 0,
+    "aciertos": 0,
+    "apodo": null,
+    "visor": null,
+    "borroso": 0,
+    "tapaojos": null,
+    "golpe": 0,
+    "gotas": null,
+    "camMesa": 0,
+    "retrato": null,
+    "cq": {
+     "x": 104,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      },
+      "abuela": {
+       "x": 42,
+       "y": 168,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 150,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      },
+      "hermana": {
+       "x": 180,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      }
+     },
+     "fotos": [
+      null,
+      null,
+      null
+     ],
+     "luz": 1,
+     "pastel": null,
+     "plato": null,
+     "lleva": 0,
+     "vuela": null,
+     "flash": 0,
+     "ave": null,
+     "cafe": 0,
+     "relleno": 0,
+     "aciertos": 0,
+     "apodo": null,
+     "visor": null,
+     "borroso": 0,
+     "tapaojos": null,
+     "golpe": 0,
+     "gotas": null,
+     "camMesa": 0,
+     "retrato": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "la-familia": {
+   "scene": {
+    "gente": {
+     "mama": {
+      "x": 97,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "papa": {
+      "x": 131,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "abuelo": {
+      "x": 181,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "bebe": {
+      "x": 70,
+      "y": 193,
+      "est": "idle"
+     },
+     "abuela": {
+      "x": 42,
+      "y": 168,
+      "pose": "idle",
+      "dir": -1
+     },
+     "hermano": {
+      "x": 150,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     },
+     "hermana": {
+      "x": 180,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     }
+    },
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "luz": 1,
+    "pastel": null,
+    "plato": null,
+    "lleva": 0,
+    "vuela": null,
+    "flash": 0,
+    "ave": null,
+    "cafe": 0,
+    "relleno": 0,
+    "aciertos": 0,
+    "apodo": null,
+    "visor": null,
+    "borroso": 0,
+    "tapaojos": null,
+    "golpe": 0,
+    "gotas": null,
+    "camMesa": 0,
+    "retrato": null,
+    "cq": {
+     "x": 104,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      },
+      "abuela": {
+       "x": 42,
+       "y": 168,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 150,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      },
+      "hermana": {
+       "x": 180,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      }
+     },
+     "fotos": [
+      null,
+      null,
+      null
+     ],
+     "luz": 1,
+     "pastel": null,
+     "plato": null,
+     "lleva": 0,
+     "vuela": null,
+     "flash": 0,
+     "ave": null,
+     "cafe": 0,
+     "relleno": 0,
+     "aciertos": 0,
+     "apodo": null,
+     "visor": null,
+     "borroso": 0,
+     "tapaojos": null,
+     "golpe": 0,
+     "gotas": null,
+     "camMesa": 0,
+     "retrato": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "la-foto": {
+   "scene": {
+    "gente": {
+     "mama": {
+      "x": 97,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "papa": {
+      "x": 131,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "abuelo": {
+      "x": 181,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "bebe": {
+      "x": 70,
+      "y": 193,
+      "est": "idle"
+     },
+     "abuela": {
+      "x": 42,
+      "y": 168,
+      "pose": "idle",
+      "dir": -1
+     },
+     "hermano": {
+      "x": 150,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     },
+     "hermana": {
+      "x": 180,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     }
+    },
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "luz": 1,
+    "pastel": null,
+    "plato": null,
+    "lleva": 0,
+    "vuela": null,
+    "flash": 0,
+    "ave": null,
+    "cafe": 0,
+    "relleno": 0,
+    "aciertos": 0,
+    "apodo": null,
+    "visor": null,
+    "borroso": 0,
+    "tapaojos": null,
+    "golpe": 0,
+    "gotas": null,
+    "camMesa": 0,
+    "retrato": null,
+    "cq": {
+     "x": 104,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      },
+      "abuela": {
+       "x": 42,
+       "y": 168,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 150,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      },
+      "hermana": {
+       "x": 180,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      }
+     },
+     "fotos": [
+      null,
+      null,
+      null
+     ],
+     "luz": 1,
+     "pastel": null,
+     "plato": null,
+     "lleva": 0,
+     "vuela": null,
+     "flash": 0,
+     "ave": null,
+     "cafe": 0,
+     "relleno": 0,
+     "aciertos": 0,
+     "apodo": null,
+     "visor": null,
+     "borroso": 0,
+     "tapaojos": null,
+     "golpe": 0,
+     "gotas": null,
+     "camMesa": 0,
+     "retrato": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "quien-eres-tu": {
+   "scene": {
+    "gente": {
+     "mama": {
+      "x": 97,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "papa": {
+      "x": 131,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "abuelo": {
+      "x": 181,
+      "y": 127,
+      "sent": 1,
+      "pose": "idle"
+     },
+     "bebe": {
+      "x": 70,
+      "y": 193,
+      "est": "idle"
+     },
+     "abuela": {
+      "x": 42,
+      "y": 168,
+      "pose": "idle",
+      "dir": -1
+     },
+     "hermano": {
+      "x": 150,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     },
+     "hermana": {
+      "x": 180,
+      "y": 198,
+      "pose": "idle",
+      "vis": 0
+     }
+    },
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "luz": 1,
+    "pastel": null,
+    "plato": null,
+    "lleva": 0,
+    "vuela": null,
+    "flash": 0,
+    "ave": null,
+    "cafe": 0,
+    "relleno": 0,
+    "aciertos": 0,
+    "apodo": null,
+    "visor": null,
+    "borroso": 0,
+    "tapaojos": null,
+    "golpe": 0,
+    "gotas": null,
+    "camMesa": 0,
+    "retrato": null,
+    "cq": {
+     "x": 104,
+     "y": 183,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "sent": 1,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      },
+      "abuela": {
+       "x": 42,
+       "y": 168,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 150,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      },
+      "hermana": {
+       "x": 180,
+       "y": 198,
+       "pose": "idle",
+       "vis": 0
+      }
+     },
+     "fotos": [
+      null,
+      null,
+      null
+     ],
+     "luz": 1,
+     "pastel": null,
+     "plato": null,
+     "lleva": 0,
+     "vuela": null,
+     "flash": 0,
+     "ave": null,
+     "cafe": 0,
+     "relleno": 0,
+     "aciertos": 0,
+     "apodo": null,
+     "visor": null,
+     "borroso": 0,
+     "tapaojos": null,
+     "golpe": 0,
+     "gotas": null,
+     "camMesa": 0,
+     "retrato": null
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  }
+ },
+ "states": {
+  "count": 27,
+  "distinctW": 338,
+  "snapshots": 1123,
+  "grouping": "same background sprite(s), the same set things shown with the same boxes, the same values of the set keys",
+  "setKeys": [
+   "borroso",
+   "camMesa",
+   "fotos",
+   "gotas",
+   "luz",
+   "pastel",
+   "relleno"
+  ],
+  "setThings": [
+   "bizcocho",
+   "mesita",
+   "sofa",
+   "butaca",
+   "fotos",
+   "lampara",
+   "puerta",
+   "ventana",
+   "sala"
+  ],
+  "movingThings": [
+   "hermano",
+   "hermana",
+   "bebe",
+   "abuela",
+   "mama",
+   "papa",
+   "abuelo"
+  ],
+  "propKeys": [
+   "vuela"
+  ],
+  "index": "frames/index.json"
+ },
+ "wKeys": {
+  "aciertos": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "corazon"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act corazon": 5
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 324
+    },
+    {
+     "v": 1,
+     "n": 5
+    },
+    {
+     "v": 2,
+     "n": 5
+    },
+    {
+     "v": 3,
+     "n": 4
+    }
+   ]
+  },
+  "apodo": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "quitavisor",
+     "solo"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act quitavisor": 3,
+     "act solo": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 328
+    },
+    {
+     "v": {
+      "hermano": "el_dice_hola"
+     },
+     "n": 10
+    }
+   ]
+  },
+  "ave": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 338
+    }
+   ]
+  },
+  "borroso": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "tropieza"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 338
+    }
+   ]
+  },
+  "cafe": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 3
+    },
+    "setIn": [
+     "quien-eres-tu:beats.19"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 302
+    },
+    {
+     "v": 1,
+     "n": 36
+    }
+   ]
+  },
+  "camMesa": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "ponecamara"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act ponecamara": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 335
+    },
+    {
+     "v": 1,
+     "n": 3
+    }
+   ]
+  },
+  "cq": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "atras",
+     "burbuja",
+     "calla",
+     "cqcome",
+     "palmada"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act atras": 3,
+     "act come": 22,
+     "act da": 18,
+     "act dispara": 3,
+     "act huele": 3,
+     "act ir": 12,
+     "act junto": 6,
+     "act solo": 3,
+     "line": 7
+    },
+    "setIn": [
+     "cual-sala:ella.no",
+     "cual-sala:ella.si",
+     "cual-sala:tú.no",
+     "cual-sala:tú.si",
+     "cual-sala:yo.no",
+     "cual-sala:yo.si",
+     "cual-sala:él.no",
+     "cual-sala:él.si"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 15,
+   "values": [
+    {
+     "v": {
+      "x": 104,
+      "y": 183,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 261
+    },
+    {
+     "v": {
+      "x": 123,
+      "y": 150,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 13
+    },
+    {
+     "v": {
+      "x": 82,
+      "y": 125,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 12
+    },
+    {
+     "v": {
+      "x": 152,
+      "y": 174,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 10
+    },
+    {
+     "v": {
+      "x": 56,
+      "y": 174,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 9
+    },
+    {
+     "v": {
+      "x": 60,
+      "y": 114,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 9
+    },
+    {
+     "v": {
+      "x": 166,
+      "y": 125,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 7
+    },
+    {
+     "v": {
+      "x": 148,
+      "y": 114,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 30,
+      "y": 176,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 116,
+      "y": 125,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 88,
+      "y": 175,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 178,
+      "y": 176,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 128,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 80,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 72,
+      "y": 146,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "bizcocho"
+     },
+     "n": 1
+    }
+   ]
+  },
+  "flash": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act dispara": 17,
+     "act flash": 3,
+     "act pies": 1,
+     "act prueba": 6,
+     "act retrato": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 23,
+   "values": [
+    {
+     "v": 0,
+     "n": 258
+    },
+    {
+     "v": 154,
+     "n": 10
+    },
+    {
+     "v": 250,
+     "n": 6
+    },
+    {
+     "v": 193,
+     "n": 5
+    },
+    {
+     "v": 342,
+     "n": 5
+    },
+    {
+     "v": 506,
+     "n": 5
+    },
+    {
+     "v": 221,
+     "n": 5
+    },
+    {
+     "v": 381,
+     "n": 5
+    },
+    {
+     "v": 345,
+     "n": 4
+    },
+    {
+     "v": 422,
+     "n": 4
+    },
+    {
+     "v": 306,
+     "n": 4
+    },
+    {
+     "v": 70,
+     "n": 3
+    },
+    {
+     "v": 115,
+     "n": 3
+    },
+    {
+     "v": 149,
+     "n": 3
+    },
+    {
+     "v": 277,
+     "n": 3
+    },
+    {
+     "v": 426,
+     "n": 3
+    },
+    {
+     "v": 192,
+     "n": 3
+    },
+    {
+     "v": 467,
+     "n": 3
+    },
+    {
+     "v": 163,
+     "n": 2
+    },
+    {
+     "v": 258,
+     "n": 1
+    },
+    {
+     "v": 479,
+     "n": 1
+    },
+    {
+     "v": 576,
+     "n": 1
+    },
+    {
+     "v": 520,
+     "n": 1
+    }
+   ]
+  },
+  "fotos": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "dispara",
+     "inicio8",
+     "pies"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act dispara": 17,
+     "act pies": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 12,
+   "values": [
+    {
+     "v": [
+      null,
+      null,
+      null
+     ],
+     "n": 282
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "hermana"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "hermano"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "papa"
+       ],
+       "ok": 1
+      }
+     ],
+     "n": 11
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "coqui",
+        "hermana"
+       ],
+       "ok": 1
+      },
+      null,
+      null
+     ],
+     "n": 7
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "hermana"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      {
+       "q": [
+        "mama"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      {
+       "ok": 0,
+       "pies": 1
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "hermana"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      null,
+      null
+     ],
+     "n": 5
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "coqui",
+        "hermana"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "mama"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      null
+     ],
+     "n": 5
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "coqui",
+        "hermana"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "coqui",
+        "mama"
+       ],
+       "ok": 1
+      },
+      null
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "coqui",
+        "hermana"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "coqui",
+        "mama"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "hermano"
+       ],
+       "ok": 1
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "hermana"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      {
+       "q": [
+        "mama"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      null
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "coqui",
+        "hermana"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "mama"
+       ],
+       "ok": 0,
+       "pata": 1
+      },
+      {
+       "q": [
+        "hermano"
+       ],
+       "ok": 1
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "hermana"
+       ],
+       "ok": 1
+      },
+      null,
+      null
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "q": [
+        "hermana"
+       ],
+       "ok": 1
+      },
+      {
+       "q": [
+        "hermano"
+       ],
+       "ok": 1
+      },
+      null
+     ],
+     "n": 3
+    }
+   ]
+  },
+  "fx": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act comen": 1,
+     "act despierta": 3,
+     "act destapa": 9,
+     "act fin8": 1,
+     "act final6": 1,
+     "act final8": 1,
+     "act junto": 6,
+     "act palmada": 1,
+     "act pose": 9,
+     "act prueba": 6,
+     "act saluda": 21,
+     "act suelta": 3,
+     "act todos": 3,
+     "ask": 5,
+     "line": 16,
+     "say": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 55,
+   "values": [
+    {
+     "v": [],
+     "n": 273
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         59,
+         161
+        ],
+        [
+         73,
+         163
+        ],
+        [
+         66,
+         153
+        ],
+        [
+         51,
+         181
+        ],
+        [
+         81,
+         181
+        ],
+        [
+         66,
+         175
+        ]
+       ],
+       "f0": 80
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         59,
+         161
+        ],
+        [
+         73,
+         163
+        ],
+        [
+         66,
+         153
+        ],
+        [
+         51,
+         181
+        ],
+        [
+         81,
+         181
+        ],
+        [
+         66,
+         175
+        ]
+       ],
+       "f0": 109
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         59,
+         161
+        ],
+        [
+         73,
+         163
+        ],
+        [
+         66,
+         153
+        ],
+        [
+         51,
+         181
+        ],
+        [
+         81,
+         181
+        ],
+        [
+         66,
+         175
+        ]
+       ],
+       "f0": 95
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         124,
+         80
+        ],
+        [
+         138,
+         82
+        ],
+        [
+         131,
+         72
+        ],
+        [
+         116,
+         103
+        ],
+        [
+         146,
+         103
+        ],
+        [
+         131,
+         97
+        ]
+       ],
+       "f0": 123
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         124,
+         80
+        ],
+        [
+         138,
+         82
+        ],
+        [
+         131,
+         72
+        ],
+        [
+         116,
+         103
+        ],
+        [
+         146,
+         103
+        ],
+        [
+         131,
+         97
+        ]
+       ],
+       "f0": 152
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         124,
+         80
+        ],
+        [
+         138,
+         82
+        ],
+        [
+         131,
+         72
+        ],
+        [
+         116,
+         103
+        ],
+        [
+         146,
+         103
+        ],
+        [
+         131,
+         97
+        ]
+       ],
+       "f0": 137
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         87,
+         156
+        ],
+        [
+         101,
+         158
+        ],
+        [
+         94,
+         148
+        ],
+        [
+         79,
+         176
+        ],
+        [
+         109,
+         176
+        ],
+        [
+         94,
+         170
+        ]
+       ],
+       "f0": 58
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         87,
+         156
+        ],
+        [
+         101,
+         158
+        ],
+        [
+         94,
+         148
+        ],
+        [
+         79,
+         176
+        ],
+        [
+         109,
+         176
+        ],
+        [
+         94,
+         170
+        ]
+       ],
+       "f0": 72
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 10,
+       "pts": [
+        [
+         108,
+         134
+        ],
+        [
+         132,
+         134
+        ],
+        [
+         120,
+         128
+        ]
+       ],
+       "f0": 20
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         90,
+         80
+        ],
+        [
+         104,
+         82
+        ],
+        [
+         97,
+         72
+        ],
+        [
+         82,
+         103
+        ],
+        [
+         112,
+         103
+        ],
+        [
+         97,
+         97
+        ]
+       ],
+       "f0": 15
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         124,
+         80
+        ],
+        [
+         138,
+         82
+        ],
+        [
+         131,
+         72
+        ],
+        [
+         116,
+         103
+        ],
+        [
+         146,
+         103
+        ],
+        [
+         131,
+         97
+        ]
+       ],
+       "f0": 39
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         63,
+         167
+        ],
+        [
+         77,
+         169
+        ],
+        [
+         70,
+         159
+        ],
+        [
+         55,
+         179
+        ],
+        [
+         85,
+         179
+        ],
+        [
+         70,
+         173
+        ]
+       ],
+       "f0": 62
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         143,
+         158
+        ],
+        [
+         157,
+         160
+        ],
+        [
+         150,
+         150
+        ],
+        [
+         135,
+         178
+        ],
+        [
+         165,
+         178
+        ],
+        [
+         150,
+         172
+        ]
+       ],
+       "f0": 108
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         175,
+         158
+        ],
+        [
+         189,
+         160
+        ],
+        [
+         182,
+         150
+        ],
+        [
+         167,
+         178
+        ],
+        [
+         197,
+         178
+        ],
+        [
+         182,
+         172
+        ]
+       ],
+       "f0": 128
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 10,
+       "pts": [
+        [
+         108,
+         134
+        ],
+        [
+         132,
+         134
+        ],
+        [
+         120,
+         128
+        ]
+       ],
+       "f0": 138
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         90,
+         80
+        ],
+        [
+         104,
+         82
+        ],
+        [
+         97,
+         72
+        ],
+        [
+         82,
+         103
+        ],
+        [
+         112,
+         103
+        ],
+        [
+         97,
+         97
+        ]
+       ],
+       "f0": 327
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         124,
+         80
+        ],
+        [
+         138,
+         82
+        ],
+        [
+         131,
+         72
+        ],
+        [
+         116,
+         103
+        ],
+        [
+         146,
+         103
+        ],
+        [
+         131,
+         97
+        ]
+       ],
+       "f0": 347
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         90,
+         80
+        ],
+        [
+         104,
+         82
+        ],
+        [
+         97,
+         72
+        ],
+        [
+         82,
+         103
+        ],
+        [
+         112,
+         103
+        ],
+        [
+         97,
+         97
+        ]
+       ],
+       "f0": 34
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         124,
+         80
+        ],
+        [
+         138,
+         82
+        ],
+        [
+         131,
+         72
+        ],
+        [
+         116,
+         103
+        ],
+        [
+         146,
+         103
+        ],
+        [
+         131,
+         97
+        ]
+       ],
+       "f0": 76
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         63,
+         167
+        ],
+        [
+         77,
+         169
+        ],
+        [
+         70,
+         159
+        ],
+        [
+         55,
+         179
+        ],
+        [
+         85,
+         179
+        ],
+        [
+         70,
+         173
+        ]
+       ],
+       "f0": 118
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         174,
+         80
+        ],
+        [
+         188,
+         82
+        ],
+        [
+         181,
+         72
+        ],
+        [
+         166,
+         103
+        ],
+        [
+         196,
+         103
+        ],
+        [
+         181,
+         97
+        ]
+       ],
+       "f0": 157
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         143,
+         158
+        ],
+        [
+         157,
+         160
+        ],
+        [
+         150,
+         150
+        ],
+        [
+         135,
+         178
+        ],
+        [
+         165,
+         178
+        ],
+        [
+         150,
+         172
+        ]
+       ],
+       "f0": 201
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         175,
+         158
+        ],
+        [
+         189,
+         160
+        ],
+        [
+         182,
+         150
+        ],
+        [
+         167,
+         178
+        ],
+        [
+         197,
+         178
+        ],
+        [
+         182,
+         172
+        ]
+       ],
+       "f0": 240
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 10,
+       "pts": [
+        [
+         108,
+         134
+        ],
+        [
+         132,
+         134
+        ],
+        [
+         120,
+         128
+        ]
+       ],
+       "f0": 249
+      }
+     ],
+     "n": 1
+    }
+   ]
+  },
+  "gente": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act abda": 4,
+     "act abva": 4,
+     "act acerca": 1,
+     "act anda": 18,
+     "act atras": 3,
+     "act beso": 3,
+     "act burbuja": 6,
+     "act calla": 6,
+     "act camara": 6,
+     "act come": 30,
+     "act comen": 6,
+     "act corren": 6,
+     "act cqcome": 3,
+     "act da": 18,
+     "act dale": 9,
+     "act despierta": 9,
+     "act duerme": 9,
+     "act espejuelos": 3,
+     "act final6": 3,
+     "act final7": 6,
+     "act final8": 1,
+     "act gira": 1,
+     "act huele": 3,
+     "act inicio8": 3,
+     "act junto": 1,
+     "act lados": 12,
+     "act llora": 3,
+     "act muerde": 4,
+     "act ninos": 3,
+     "act pies": 1,
+     "act ponecamara": 3,
+     "act pose": 72,
+     "act rie": 1,
+     "act saluda": 2,
+     "act sientan": 6,
+     "act solo": 3,
+     "act suelta": 3,
+     "act suplato": 6,
+     "act tapa": 3,
+     "act tropieza": 3,
+     "act ultimo": 3,
+     "act vuelve": 10,
+     "line": 5
+    },
+    "setIn": [
+     "cual-sala:abuelo.no",
+     "cual-sala:abuelo.si",
+     "cual-sala:bebé.no",
+     "cual-sala:bebé.si",
+     "cual-sala:ella.no",
+     "cual-sala:ella.si",
+     "cual-sala:familia.no",
+     "cual-sala:familia.si",
+     "cual-sala:hermana.no",
+     "cual-sala:hermana.si",
+     "cual-sala:hermano.no",
+     "cual-sala:hermano.si",
+     "cual-sala:mamá.no",
+     "cual-sala:mamá.si",
+     "cual-sala:papá.no",
+     "cual-sala:papá.si",
+     "cual-sala:tú.no",
+     "cual-sala:tú.si",
+     "cual-sala:yo.no",
+     "cual-sala:yo.si",
+     "cual-sala:él.no",
+     "cual-sala:él.si"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 158,
+   "values": [
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"…",
+     "n": 14
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":0,\"rie\":0},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\"},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle…",
+     "n": 13
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"abuelo\":{\"x\":192,\"y\":180,\"sent\":0,\"pose\":\"taza\",\"gafas\":\"arriba\",\"dir\":-1,\"rie\":0,\"bub\":null},\"bebe\":{\"x\":97,\"y\":112,\"est…",
+     "n": 11
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"dir\":-1},…",
+     "n": 9
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":1},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\"},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"dir\":…",
+     "n": 9
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"…",
+     "n": 9
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"trozo\":\"mordido\",\"rie\":0},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":0,\"rie\":0},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\",\"trozo\":\"mor…",
+     "n": 8
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"…",
+     "n": 8
+    },
+    {
+     "v": "{\"mama\":{\"x\":140,\"y\":136,\"sent\":0,\"pose\":\"idle\",\"servido\":0},\"papa\":{\"x\":100,\"y\":136,\"sent\":0,\"pose\":\"idle\",\"servido\":0},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":149,\"y\":109,\"est\":\"idle\",\"z\":136},\"abuela\":{\"x\":…",
+     "n": 8
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":1},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\"},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"dir\":…",
+     "n": 6
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"abuelo\":{\"x\":162,\"y\":176,\"sent\":0,\"pose\":\"taza\",\"gafas\":\"arriba\",\"dir\":-1,\"rie\":0,\"bub\":null},\"bebe\":{\"x\":97,\"y\":112,\"est…",
+     "n": 6
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":0,\"rie\":0},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\"},\"abuela\":{\"x\":42,\"y\":168,\"…",
+     "n": 5
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":0,\"rie\":0},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\",\"bub\":null},\"abuela\":{\"x\":4…",
+     "n": 5
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"dir\":-1},…",
+     "n": 5
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"servido\":0},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"servido\":0},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42…",
+     "n": 5
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"dir\":-1},…",
+     "n": 5
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":1},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"idle\",\"bub\":null},\"abuela\":{\"x\":42,\"y\":16…",
+     "n": 4
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"bub\":null,\"trozo\":0},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"trozo\":\"mordido\",\"rie\":0},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":0,\"rie\":0},\"bebe\":{\"x\":70,\"y\":193,\"est…",
+     "n": 4
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"servido\":0},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"servido\":0},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42…",
+     "n": 4
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"servido\":0},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"servido\":0},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1,\"bub\":null},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abue…",
+     "n": 4
+    },
+    {
+     "v": "{\"mama\":{\"x\":140,\"y\":136,\"sent\":0,\"pose\":\"idle\",\"bub\":null,\"servido\":0},\"papa\":{\"x\":100,\"y\":136,\"sent\":0,\"pose\":\"idle\",\"bub\":null,\"servido\":0},\"abuelo\":{\"x\":78,\"y\":146,\"sent\":0,\"pose\":\"taza\",\"gafas\":\"arriba\",\"dir\":1,\"rie\":0,\"bub\":null},\"beb…",
+     "n": 4
+    },
+    {
+     "v": "{\"mama\":{\"x\":140,\"y\":136,\"sent\":0,\"pose\":\"idle\",\"bub\":null,\"servido\":0},\"papa\":{\"x\":100,\"y\":136,\"sent\":0,\"pose\":\"idle\",\"bub\":null,\"servido\":0},\"abuelo\":{\"x\":168,\"y\":142,\"sent\":0,\"pose\":\"taza\",\"gafas\":1,\"dir\":-1,\"rie\":0,\"bub\":null},\"bebe\":{\"…",
+     "n": 4
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"trozo\":\"mordido\",\"rie\":0},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"trozo\":\"mordido\",\"rie\":0},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":1},\"bebe\":{\"x\":70,\"y\":193,\"est\":\"…",
+     "n": 3
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"trozo\":\"mordido\",\"rie\":0},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"trozo\":\"mordido\",\"rie\":0},\"abuelo\":{\"x\":181,\"y\":127,\"sent\":1,\"pose\":\"idle\",\"dormido\":0,\"rie\":0},\"bebe\":{\"x\":70,\"y\":193…",
+     "n": 3
+    },
+    {
+     "v": "{\"mama\":{\"x\":97,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"papa\":{\"x\":131,\"y\":127,\"sent\":1,\"pose\":\"idle\"},\"abuelo\":{\"x\":198,\"y\":176,\"sent\":0,\"pose\":\"foto\",\"dir\":-1},\"bebe\":{\"x\":97,\"y\":112,\"est\":\"idle\",\"z\":128},\"abuela\":{\"x\":42,\"y\":168,\"pose\":\"idle\",\"…",
+     "n": 3
+    }
+   ]
+  },
+  "glow": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 338
+    }
+   ]
+  },
+  "golpe": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "tropieza"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act tropieza": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 293
+    },
+    {
+     "v": 145,
+     "n": 17
+    },
+    {
+     "v": 117,
+     "n": 15
+    },
+    {
+     "v": 131,
+     "n": 13
+    }
+   ]
+  },
+  "gotas": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [
+     "stake"
+    ],
+    "seenAfter": {
+     "act abva": 1,
+     "act suelta": 1,
+     "line": 2
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 5,
+   "values": [
+    {
+     "v": null,
+     "n": 322
+    },
+    {
+     "v": {
+      "x": 179,
+      "y": 152,
+      "f": 354
+     },
+     "n": 5
+    },
+    {
+     "v": {
+      "x": 179,
+      "y": 152,
+      "f": 297
+     },
+     "n": 5
+    },
+    {
+     "v": {
+      "x": 205,
+      "y": 152,
+      "f": 241
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 149,
+      "y": 118,
+      "f": 484
+     },
+     "n": 3
+    }
+   ]
+  },
+  "heart": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "fin",
+     "final6",
+     "final7",
+     "final8"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act final6": 1,
+     "act final7": 4,
+     "act final8": 1,
+     "set": 6
+    },
+    "setIn": [
+     "d-bizcocho-bebe:beats.64",
+     "h-sala:beats.20.right.4"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 328
+    },
+    {
+     "v": 1,
+     "n": 10
+    }
+   ]
+  },
+  "lleva": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "cqcome",
+     "da",
+     "dale"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act come": 5,
+     "act da": 18,
+     "act dale": 27,
+     "line": 4
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 324
+    },
+    {
+     "v": 1,
+     "n": 14
+    }
+   ]
+  },
+  "lost": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act abva": 1,
+     "act suelta": 1,
+     "cost": 8,
+     "line": 2
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 267
+    },
+    {
+     "v": 1,
+     "n": 38
+    },
+    {
+     "v": 3,
+     "n": 17
+    },
+    {
+     "v": 2,
+     "n": 16
+    }
+   ]
+  },
+  "luz": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 1,
+     "n": 338
+    }
+   ]
+  },
+  "pastel": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "dale",
+     "destapa",
+     "tres",
+     "ultimo"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act dale": 27,
+     "act destapa": 9,
+     "act tres": 3,
+     "act ultimo": 3,
+     "set": 9
+    },
+    "setIn": [
+     "d-bizcocho-bebe:beats.0",
+     "h-sala:beats.0",
+     "la-familia:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 10,
+   "values": [
+    {
+     "v": null,
+     "n": 192
+    },
+    {
+     "v": "tapado",
+     "n": 41
+    },
+    {
+     "v": 3,
+     "n": 18
+    },
+    {
+     "v": 0,
+     "n": 18
+    },
+    {
+     "v": 2,
+     "n": 15
+    },
+    {
+     "v": 7,
+     "n": 14
+    },
+    {
+     "v": 5,
+     "n": 14
+    },
+    {
+     "v": 1,
+     "n": 11
+    },
+    {
+     "v": 4,
+     "n": 9
+    },
+    {
+     "v": 6,
+     "n": 6
+    }
+   ]
+  },
+  "plato": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "final6",
+     "tres"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act tres": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 282
+    },
+    {
+     "v": 3,
+     "n": 56
+    }
+   ]
+  },
+  "relleno": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "final8"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act final8": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 337
+    },
+    {
+     "v": 1,
+     "n": 1
+    }
+   ]
+  },
+  "resp": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 338
+    }
+   ]
+  },
+  "respOn": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act beso": 3,
+     "act pose": 6,
+     "act saluda": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 338
+    }
+   ]
+  },
+  "respVoz": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act nitido": 2,
+     "act pies": 1,
+     "act pose": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 287
+    },
+    {
+     "v": "{\"yo_coqui\":\"cq_yo_coqui\",\"tu_coqui\":\"cq_tu_coqui\",\"yo_hermana\":\"cq_yo_hermana\",\"tu_hermana\":\"cq_tu_hermana\",\"yo_hermano\":\"cq_yo_hermano\",\"tu_hermano\":\"cq_tu_hermano\",\"ella_mama\":\"cq_ella_mama\",\"el_mama\":\"cq_el_mama\",\"el_papa\":\"cq_el_papa\",…",
+     "n": 51
+    }
+   ]
+  },
+  "retrato": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "retrato"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act retrato": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 337
+    },
+    {
+     "v": "[canvas 128x80]",
+     "n": 1
+    }
+   ]
+  },
+  "spot": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 338
+    }
+   ]
+  },
+  "tapaojos": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "suelta",
+     "tapa"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act suelta": 3,
+     "act tapa": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 334
+    },
+    {
+     "v": "hermano",
+     "n": 4
+    }
+   ]
+  },
+  "twinkle": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 63
+    },
+    "setIn": [
+     "d-bizcocho-bebe:beats.43",
+     "d-bizcocho-bebe:beats.45",
+     "d-bizcocho-bebe:beats.5",
+     "d-bizcocho-bebe:beats.7",
+     "d-foto-familia:beats.23",
+     "d-foto-familia:beats.25",
+     "la-familia:beats.10",
+     "la-familia:beats.12",
+     "la-familia:beats.14",
+     "la-familia:beats.18",
+     "la-familia:beats.22",
+     "la-familia:beats.25",
+     "la-familia:beats.28",
+     "la-foto:beats.10",
+     "la-foto:beats.12",
+     "la-foto:beats.14",
+     "la-foto:beats.2",
+     "la-foto:beats.22",
+     "la-foto:beats.24",
+     "la-foto:beats.4",
+     "la-foto:beats.6"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 8,
+   "values": [
+    {
+     "v": null,
+     "n": 313
+    },
+    {
+     "v": "papa",
+     "n": 7
+    },
+    {
+     "v": "abuelo",
+     "n": 6
+    },
+    {
+     "v": "fotos",
+     "n": 4
+    },
+    {
+     "v": "mama",
+     "n": 4
+    },
+    {
+     "v": "bebe",
+     "n": 2
+    },
+    {
+     "v": "hermano",
+     "n": 1
+    },
+    {
+     "v": "hermana",
+     "n": 1
+    }
+   ]
+  },
+  "visor": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "final7",
+     "nitido",
+     "quitavisor",
+     "solo"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act nitido": 3,
+     "act quitavisor": 3,
+     "act solo": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 328
+    },
+    {
+     "v": {
+      "quien": "hermano",
+      "nitido": 0
+     },
+     "n": 5
+    },
+    {
+     "v": {
+      "quien": "hermano",
+      "nitido": 1
+     },
+     "n": 5
+    }
+   ]
+  },
+  "vuela": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "final6"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "moving prop",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 338
+    }
+   ]
+  }
+ },
+ "spriteLayer": [
+  {
+   "key": "@sala.js:107 · bg",
+   "class": "background",
+   "maker": "bg",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "sala.js:107",
+   "code": "c.drawImage(spr(\"sala\",bg),0,0);",
+   "sites": [
+    "sala.js:107"
+   ],
+   "chain": [
+    "Object.draw@sala.js:107"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      0,
+      0,
+      240,
+      216
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "marco @sala.js:108",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "marco"
+   ],
+   "drawCall": "sala.js:108",
+   "code": "for(let i=0;i<3;i++)marco(c,i,(W.fotos||[])[i]);",
+   "sites": [
+    "sala.js:53",
+    "sala.js:55",
+    "sala.js:58",
+    "sala.js:60"
+   ],
+   "chain": [
+    "marco@sala.js:53",
+    "Object.draw@sala.js:108"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      75,
+      37,
+      70,
+      28
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012",
+      "s013",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      75,
+      39,
+      22,
+      26
+     ],
+     "states": [
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s014",
+      "s015",
+      "s016",
+      "s020",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      86,
+      37,
+      59,
+      28
+     ],
+     "states": [
+      "s007",
+      "s014",
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      86,
+      37,
+      35,
+      28
+     ],
+     "states": [
+      "s008",
+      "s009",
+      "s010",
+      "s015",
+      "s016"
+     ]
+    },
+    {
+     "box": [
+      110,
+      37,
+      35,
+      28
+     ],
+     "states": [
+      "s008",
+      "s009",
+      "s010",
+      "s015",
+      "s016",
+      "s018",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      134,
+      37,
+      1,
+      3
+     ],
+     "states": [
+      "s009",
+      "s010",
+      "s016",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      69.17,
+      36.32,
+      27.74,
+      30.63
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      85.41,
+      37,
+      59.59,
+      28
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      70.03,
+      36.73,
+      26.94,
+      30.02
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      69.73,
+      36.58,
+      27.22,
+      30.23
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      85.99,
+      37,
+      59.01,
+      28
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      68.58,
+      36.03,
+      28.27,
+      31.03
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      84.79,
+      37,
+      60.21,
+      28
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      68.81,
+      36.14,
+      28.06,
+      30.87
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      85.04,
+      37,
+      59.96,
+      28
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      69.97,
+      36.7,
+      26.99,
+      30.06
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      86,
+      36.94,
+      34.99,
+      29.69
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      70.46,
+      36.93,
+      26.53,
+      29.7
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      86,
+      36.76,
+      34.98,
+      29.96
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      69.96,
+      36.69,
+      27,
+      30.07
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      86,
+      36.19,
+      34.89,
+      30.8
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      109.15,
+      37,
+      35.85,
+      28
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      69.86,
+      36.65,
+      27.1,
+      30.14
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      70.37,
+      36.89,
+      26.62,
+      29.77
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      86,
+      36.48,
+      34.93,
+      30.38
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      109.77,
+      36.02,
+      35.08,
+      31.04
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      69.69,
+      36.57,
+      27.25,
+      30.26
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      85.96,
+      36.08,
+      34.9,
+      30.96
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      108.9,
+      35.9,
+      35.93,
+      31.2
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      68.68,
+      36.08,
+      28.18,
+      30.96
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "more": 24
+    }
+   ]
+  },
+  {
+   "key": "marco @sala.js:108 · KIT.mkPersona",
+   "class": "prop or effect",
+   "maker": "KIT.mkPersona",
+   "method": "drawImage",
+   "functions": [
+    "marco"
+   ],
+   "drawCall": "sala.js:108",
+   "code": "for(let i=0;i<3;i++)marco(c,i,(W.fotos||[])[i]);",
+   "sites": [
+    "sala.js:57"
+   ],
+   "chain": [
+    "?@sala.js:57",
+    "marco@sala.js:56",
+    "Object.draw@sala.js:108"
+   ],
+   "clipped": [
+    "sala.js:54"
+   ],
+   "states": [
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021"
+   ],
+   "boxes": [
+    {
+     "box": [
+      78,
+      43,
+      16,
+      22
+     ],
+     "states": [
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s014",
+      "s015",
+      "s016",
+      "s020",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      102,
+      43,
+      16,
+      22
+     ],
+     "states": [
+      "s008",
+      "s009",
+      "s010",
+      "s015",
+      "s016"
+     ]
+    },
+    {
+     "box": [
+      126,
+      43,
+      16,
+      22
+     ],
+     "states": [
+      "s009",
+      "s010",
+      "s016",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      72.08,
+      40.93,
+      20.94,
+      25.27
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      72.96,
+      41.27,
+      20.23,
+      24.85
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      72.65,
+      41.15,
+      20.48,
+      25
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      71.47,
+      40.7,
+      21.41,
+      25.54
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      71.71,
+      40.79,
+      21.22,
+      25.43
+     ],
+     "states": [
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      72.9,
+      41.24,
+      20.28,
+      24.88
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      97.42,
+      41.44,
+      19.87,
+      24.63
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      73.41,
+      41.43,
+      19.88,
+      24.63
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      97.04,
+      41.3,
+      20.17,
+      24.81
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      72.89,
+      41.24,
+      20.29,
+      24.89
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      95.82,
+      40.83,
+      21.14,
+      25.38
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      72.79,
+      41.2,
+      20.38,
+      24.94
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      97.42,
+      41.43,
+      19.87,
+      24.63
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      73.31,
+      41.4,
+      19.96,
+      24.68
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      96.43,
+      41.07,
+      20.66,
+      25.1
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      72.62,
+      41.14,
+      20.51,
+      25.02
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      95.57,
+      40.74,
+      21.33,
+      25.49
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      71.57,
+      40.74,
+      21.33,
+      25.49
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      95.19,
+      40.59,
+      21.62,
+      25.65
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      71.19,
+      40.59,
+      21.62,
+      25.65
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      95.81,
+      40.83,
+      21.14,
+      25.39
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      71.53,
+      40.72,
+      21.36,
+      25.51
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      95.2,
+      40.59,
+      21.61,
+      25.65
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      72.04,
+      40.92,
+      20.96,
+      25.29
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      97.08,
+      41.31,
+      20.14,
+      24.8
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      97.26,
+      41.37,
+      20,
+      24.71
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      97.37,
+      41.42,
+      19.91,
+      24.65
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "more": 6
+    }
+   ]
+  },
+  {
+   "key": "marco @sala.js:108 · mkCoqui",
+   "class": "prop or effect",
+   "maker": "mkCoqui",
+   "method": "drawImage",
+   "functions": [
+    "marco"
+   ],
+   "drawCall": "sala.js:108",
+   "code": "for(let i=0;i<3;i++)marco(c,i,(W.fotos||[])[i]);",
+   "sites": [
+    "sala.js:56"
+   ],
+   "chain": [
+    "?@sala.js:56",
+    "marco@sala.js:56",
+    "Object.draw@sala.js:108"
+   ],
+   "clipped": [
+    "sala.js:54"
+   ],
+   "states": [
+    "s014",
+    "s015",
+    "s016",
+    "s020",
+    "s021"
+   ],
+   "boxes": [
+    {
+     "box": [
+      85,
+      52,
+      17,
+      15
+     ],
+     "states": [
+      "s014",
+      "s015",
+      "s016",
+      "s020",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      109,
+      52,
+      17,
+      15
+     ],
+     "states": [
+      "s015",
+      "s016"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@sala.js:109 · mkLampara",
+   "class": "prop or effect",
+   "maker": "mkLampara",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "sala.js:109",
+   "code": "c.drawImage(spr(\"lamp\"+(W.luz?1:0),()=>mkLampara(W.luz)),146,62);",
+   "sites": [
+    "sala.js:109"
+   ],
+   "chain": [
+    "Object.draw@sala.js:109"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      146,
+      62,
+      20,
+      64
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@sala.js:110 · mkButaca",
+   "class": "prop or effect",
+   "maker": "mkButaca",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "sala.js:110",
+   "code": "c.drawImage(spr(\"sofa\",mkSofa),68,84);c.drawImage(spr(\"butaca\",mkButaca),160,86);",
+   "sites": [
+    "sala.js:110"
+   ],
+   "chain": [
+    "Object.draw@sala.js:110"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      160,
+      86,
+      42,
+      44
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@sala.js:110 · mkSofa",
+   "class": "prop or effect",
+   "maker": "mkSofa",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "sala.js:110",
+   "code": "c.drawImage(spr(\"sofa\",mkSofa),68,84);c.drawImage(spr(\"butaca\",mkButaca),160,86);",
+   "sites": [
+    "sala.js:110"
+   ],
+   "chain": [
+    "Object.draw@sala.js:110"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      68,
+      84,
+      92,
+      46
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "manta @sala.js:111",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "manta"
+   ],
+   "drawCall": "sala.js:111",
+   "code": "manta(c);",
+   "sites": [
+    "sala.js:49"
+   ],
+   "chain": [
+    "manta@sala.js:49",
+    "Object.draw@sala.js:111"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      49,
+      177,
+      58,
+      22
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@sala.js:117",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:114",
+    "sala.js:116"
+   ],
+   "chain": [
+    "Object.d@sala.js:114",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s010"
+   ],
+   "boxes": [
+    {
+     "box": [
+      113,
+      139,
+      16,
+      10
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      108.4,
+      184.8,
+      23.2,
+      10.4
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@sala.js:117 · mkMesita",
+   "class": "prop or effect",
+   "maker": "mkMesita",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:114"
+   ],
+   "chain": [
+    "Object.d@sala.js:114",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      98,
+      148,
+      46,
+      18
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "bizcocho @sala.js:117",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "bizcocho"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:67",
+    "sala.js:68",
+    "sala.js:69",
+    "sala.js:70",
+    "sala.js:71"
+   ],
+   "chain": [
+    "bizcocho@sala.js:67",
+    "Object.d@sala.js:114",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s011",
+    "s012",
+    "s013"
+   ],
+   "boxes": [
+    {
+     "box": [
+      103,
+      120,
+      34,
+      40
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      103,
+      135,
+      34,
+      15
+     ],
+     "states": [
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012"
+     ]
+    },
+    {
+     "box": [
+      103,
+      147,
+      34,
+      3
+     ],
+     "states": [
+      "s013"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente @sala.js:117",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "gente"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:89"
+   ],
+   "chain": [
+    "gente@sala.js:89",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s006",
+    "s013"
+   ],
+   "boxes": [
+    {
+     "box": [
+      133,
+      180,
+      16,
+      3
+     ],
+     "states": [
+      "s006",
+      "s013"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente @sala.js:117 · KIT.mkBebe",
+   "class": "character",
+   "maker": "KIT.mkBebe",
+   "method": "drawImage",
+   "functions": [
+    "gente"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:87"
+   ],
+   "chain": [
+    "gente@sala.js:87",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      57,
+      165,
+      26,
+      28
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      84,
+      84,
+      26,
+      28
+     ],
+     "states": [
+      "s000",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      93,
+      96,
+      26,
+      28
+     ],
+     "states": [
+      "s010",
+      "s016",
+      "s019",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      89,
+      181,
+      26,
+      28
+     ],
+     "states": [
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      136,
+      81,
+      26,
+      28
+     ],
+     "states": [
+      "s000",
+      "s014",
+      "s015",
+      "s017",
+      "s018",
+      "s020",
+      "s023",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      136,
+      82,
+      26,
+      28
+     ],
+     "states": [
+      "s000",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente @sala.js:117 · KIT.mkPersona",
+   "class": "character",
+   "maker": "KIT.mkPersona",
+   "method": "drawImage",
+   "functions": [
+    "gente"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:91"
+   ],
+   "chain": [
+    "gente@sala.js:91",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      73,
+      79,
+      132,
+      49
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s005",
+      "s006",
+      "s011"
+     ]
+    },
+    {
+     "box": [
+      73,
+      79,
+      48,
+      49
+     ],
+     "states": [
+      "s000",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s008",
+      "s009",
+      "s011",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      107,
+      79,
+      98,
+      49
+     ],
+     "states": [
+      "s003",
+      "s004",
+      "s006",
+      "s011"
+     ]
+    },
+    {
+     "box": [
+      107,
+      79,
+      48,
+      49
+     ],
+     "states": [
+      "s000",
+      "s004",
+      "s005",
+      "s006",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      157,
+      79,
+      48,
+      49
+     ],
+     "states": [
+      "s000",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      42,
+      155,
+      76,
+      49
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      73,
+      79,
+      82,
+      49
+     ],
+     "states": [
+      "s000",
+      "s003",
+      "s004",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      42,
+      121,
+      180,
+      83
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      96,
+      103,
+      48,
+      44
+     ],
+     "states": [
+      "s000",
+      "s007",
+      "s008",
+      "s015",
+      "s016",
+      "s018",
+      "s019",
+      "s020",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      70,
+      121,
+      152,
+      78
+     ],
+     "states": [
+      "s000",
+      "s007"
+     ]
+    },
+    {
+     "box": [
+      60,
+      121,
+      162,
+      80
+     ],
+     "states": [
+      "s007",
+      "s008",
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      96,
+      91,
+      48,
+      56
+     ],
+     "states": [
+      "s008",
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      132,
+      121,
+      90,
+      80
+     ],
+     "states": [
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      126,
+      117,
+      58,
+      84
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      74,
+      91,
+      92,
+      56
+     ],
+     "states": [
+      "s010",
+      "s016",
+      "s019",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      148,
+      105,
+      48,
+      56
+     ],
+     "states": [
+      "s010",
+      "s016",
+      "s019",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      76,
+      147,
+      88,
+      44
+     ],
+     "states": [
+      "s010",
+      "s016",
+      "s019",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      126,
+      157,
+      80,
+      44
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      72,
+      121,
+      150,
+      76
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      46,
+      121,
+      176,
+      78
+     ],
+     "states": [
+      "s000",
+      "s014",
+      "s015",
+      "s017",
+      "s018",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      76,
+      81,
+      88,
+      56
+     ],
+     "states": [
+      "s000",
+      "s014",
+      "s015",
+      "s017",
+      "s018",
+      "s020",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      48,
+      121,
+      174,
+      86
+     ],
+     "states": [
+      "s015",
+      "s016",
+      "s018",
+      "s019",
+      "s020",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      166,
+      95,
+      48,
+      56
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      60,
+      157,
+      120,
+      44
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      138,
+      121,
+      48,
+      56
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      168,
+      125,
+      48,
+      56
+     ],
+     "states": [
+      "s000",
+      "s022",
+      "s023",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      60,
+      157,
+      84,
+      49
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      60,
+      157,
+      116,
+      44
+     ],
+     "states": [
+      "s000",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      54,
+      91,
+      48,
+      56
+     ],
+     "states": [
+      "s000",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      144,
+      87,
+      48,
+      56
+     ],
+     "states": [
+      "s000",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "more": 9
+    }
+   ]
+  },
+  {
+   "key": "gente @sala.js:117 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [
+    "gente"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:88"
+   ],
+   "chain": [
+    "gente@sala.js:88",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      24,
+      118,
+      48,
+      51
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      128,
+      150,
+      48,
+      51
+     ],
+     "states": [
+      "s006",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      12,
+      118,
+      48,
+      51
+     ],
+     "states": [
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      48,
+      110,
+      48,
+      51
+     ],
+     "states": [
+      "s010",
+      "s016",
+      "s019",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      161,
+      100,
+      48,
+      51
+     ],
+     "states": [
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      74,
+      139,
+      48,
+      51
+     ],
+     "states": [
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      111,
+      100,
+      48,
+      51
+     ],
+     "states": [
+      "s011"
+     ]
+    },
+    {
+     "box": [
+      77,
+      100,
+      48,
+      51
+     ],
+     "states": [
+      "s012"
+     ]
+    },
+    {
+     "box": [
+      164,
+      122,
+      48,
+      51
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      79,
+      78,
+      48,
+      51
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      165,
+      78,
+      48,
+      51
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      44,
+      100,
+      48,
+      51
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente > plato @sala.js:117",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "gente",
+    "plato"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:72"
+   ],
+   "chain": [
+    "plato@sala.js:72",
+    "gente@sala.js:95",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s006",
+    "s013"
+   ],
+   "boxes": [
+    {
+     "box": [
+      91,
+      108,
+      12,
+      3
+     ],
+     "states": [
+      "s006",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      125,
+      108,
+      12,
+      3
+     ],
+     "states": [
+      "s006",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      175,
+      108,
+      12,
+      3
+     ],
+     "states": [
+      "s006",
+      "s013"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente > taza @sala.js:117",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "gente",
+    "taza"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:98",
+    "sala.js:99"
+   ],
+   "chain": [
+    "taza@sala.js:98",
+    "gente@sala.js:93",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026"
+   ],
+   "boxes": [
+    {
+     "box": [
+      172,
+      112,
+      14,
+      9
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      144,
+      138,
+      14,
+      9
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      174,
+      142,
+      14,
+      9
+     ],
+     "states": [
+      "s000",
+      "s022",
+      "s023",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      86,
+      108,
+      14,
+      9
+     ],
+     "states": [
+      "s000",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      150,
+      104,
+      14,
+      9
+     ],
+     "states": [
+      "s000",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      200,
+      142,
+      14,
+      9
+     ],
+     "states": [
+      "s000",
+      "s022"
+     ]
+    },
+    {
+     "box": [
+      144,
+      108,
+      14,
+      9
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      158,
+      132,
+      14,
+      9
+     ],
+     "states": [
+      "s025"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente > trozo @sala.js:117 · mkTrozo",
+   "class": "character",
+   "maker": "mkTrozo",
+   "method": "drawImage",
+   "functions": [
+    "gente",
+    "trozo"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:65"
+   ],
+   "chain": [
+    "trozo@sala.js:65",
+    "gente@sala.js:94",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s011",
+    "s012",
+    "s013"
+   ],
+   "boxes": [
+    {
+     "box": [
+      92,
+      99,
+      13,
+      11
+     ],
+     "states": [
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      126,
+      99,
+      13,
+      11
+     ],
+     "states": [
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      65,
+      175,
+      13,
+      11
+     ],
+     "states": [
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      176,
+      99,
+      13,
+      11
+     ],
+     "states": [
+      "s006",
+      "s012",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      133,
+      170,
+      18,
+      7
+     ],
+     "states": [
+      "s006",
+      "s013"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gente > Z @sala.js:117",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "gente",
+    "Z"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:92"
+   ],
+   "chain": [
+    "Z@sala.js:92",
+    "gente@sala.js:92",
+    "Object.d@sala.js:113",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005"
+   ],
+   "boxes": [
+    {
+     "box": [
+      186,
+      65,
+      17,
+      19
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      188,
+      63,
+      17,
+      19
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s004",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      190,
+      61,
+      17,
+      19
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "rana @sala.js:117",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "rana"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:101"
+   ],
+   "chain": [
+    "rana@sala.js:101",
+    "Object.d@sala.js:115",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      107,
+      208,
+      25,
+      3
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      87,
+      150,
+      23,
+      3
+     ],
+     "states": [
+      "s003",
+      "s006",
+      "s011"
+     ]
+    },
+    {
+     "box": [
+      121,
+      150,
+      23,
+      3
+     ],
+     "states": [
+      "s003",
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      91,
+      200,
+      25,
+      3
+     ],
+     "states": [
+      "s004",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      171,
+      150,
+      23,
+      3
+     ],
+     "states": [
+      "s005",
+      "s006",
+      "s012"
+     ]
+    },
+    {
+     "box": [
+      77,
+      171,
+      23,
+      3
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      59,
+      199,
+      25,
+      3
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      155,
+      199,
+      25,
+      3
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      181,
+      201,
+      25,
+      3
+     ],
+     "states": [
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      153,
+      139,
+      23,
+      3
+     ],
+     "states": [
+      "s000",
+      "s015"
+     ]
+    },
+    {
+     "box": [
+      33,
+      201,
+      25,
+      3
+     ],
+     "states": [
+      "s000",
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      65,
+      139,
+      23,
+      3
+     ],
+     "states": [
+      "s000",
+      "s014",
+      "s017",
+      "s018",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      131,
+      204,
+      25,
+      3
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      83,
+      204,
+      25,
+      3
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "rana @sala.js:117 · mkCoqui",
+   "class": "character",
+   "maker": "mkCoqui",
+   "method": "drawImage",
+   "functions": [
+    "rana"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:102"
+   ],
+   "chain": [
+    "rana@sala.js:102",
+    "Object.d@sala.js:115",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      104,
+      183,
+      32,
+      27
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      84,
+      127,
+      29,
+      25
+     ],
+     "states": [
+      "s003",
+      "s006",
+      "s011"
+     ]
+    },
+    {
+     "box": [
+      118,
+      127,
+      29,
+      25
+     ],
+     "states": [
+      "s003",
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      88,
+      175,
+      32,
+      27
+     ],
+     "states": [
+      "s004",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      168,
+      127,
+      29,
+      25
+     ],
+     "states": [
+      "s005",
+      "s006",
+      "s012"
+     ]
+    },
+    {
+     "box": [
+      74,
+      148,
+      29,
+      25
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      56,
+      174,
+      32,
+      27
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      152,
+      174,
+      32,
+      27
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      178,
+      176,
+      32,
+      27
+     ],
+     "states": [
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      150,
+      116,
+      29,
+      25
+     ],
+     "states": [
+      "s000",
+      "s015"
+     ]
+    },
+    {
+     "box": [
+      30,
+      176,
+      32,
+      27
+     ],
+     "states": [
+      "s000",
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      62,
+      116,
+      29,
+      25
+     ],
+     "states": [
+      "s000",
+      "s014",
+      "s017",
+      "s018",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      128,
+      179,
+      32,
+      27
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      80,
+      179,
+      32,
+      27
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "trozo @sala.js:117 · mkTrozo",
+   "class": "character",
+   "maker": "mkTrozo",
+   "method": "drawImage",
+   "functions": [
+    "trozo"
+   ],
+   "drawCall": "sala.js:117",
+   "code": "lista.sort((m,n)=>m.y-n.y).forEach(o=>o.d());",
+   "sites": [
+    "sala.js:65"
+   ],
+   "chain": [
+    "trozo@sala.js:65",
+    "Object.d@sala.js:115",
+    "?@sala.js:117",
+    "Object.draw@sala.js:117"
+   ],
+   "clipped": null,
+   "states": [
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s011",
+    "s012"
+   ],
+   "boxes": [
+    {
+     "box": [
+      115,
+      171,
+      13,
+      11
+     ],
+     "states": [
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s011",
+      "s012"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "bub2 @sala.js:123",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "bub2"
+   ],
+   "drawCall": "sala.js:123",
+   "code": "Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.bub&&p.vis!==0){const at=talkAt(id,W);if(at)bub2(c,p.bub,at[0],at[1]+38,a);}});",
+   "sites": [
+    "sala.js:105"
+   ],
+   "chain": [
+    "bub2@sala.js:105",
+    "?@sala.js:123",
+    "Object.draw@sala.js:123"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s009"
+   ],
+   "boxes": [
+    {
+     "box": [
+      186,
+      79,
+      26,
+      36
+     ],
+     "states": [
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      140,
+      81,
+      46,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      140,
+      79,
+      46,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "bub2 @sala.js:124",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "bub2"
+   ],
+   "drawCall": "sala.js:124",
+   "code": "if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}",
+   "sites": [
+    "sala.js:105"
+   ],
+   "chain": [
+    "bub2@sala.js:105",
+    "Object.draw@sala.js:124"
+   ],
+   "clipped": null,
+   "states": [
+    "s001"
+   ],
+   "boxes": [
+    {
+     "box": [
+      72,
+      110,
+      34,
+      36
+     ],
+     "states": [
+      "s001"
+     ]
+    }
+   ]
+  }
+ ],
+ "positionsInFile": [
+  {
+   "at": "sala.js:49",
+   "fn": "manta",
+   "kind": "rect",
+   "nums": [
+    49,
+    177,
+    58,
+    22
+   ],
+   "what": "fr(g,49,177,58,22,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:49",
+   "fn": "manta",
+   "kind": "rect",
+   "nums": [
+    50,
+    178,
+    56,
+    20
+   ],
+   "what": "fr(g,50,178,56,20,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:49",
+   "fn": "manta",
+   "kind": "rect",
+   "nums": [
+    50,
+    178,
+    56,
+    1
+   ],
+   "what": "fr(g,50,178,56,1,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -11,
+    -1,
+    22,
+    26
+   ],
+   "what": "fr(g,-11,-1,22,26,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -10,
+    0,
+    20,
+    24
+   ],
+   "what": "fr(g,-10,0,20,24,RP.wood[2]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -10,
+    0,
+    20,
+    1
+   ],
+   "what": "fr(g,-10,0,20,1,RP.wood[4]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -8,
+    2,
+    16,
+    20
+   ],
+   "what": "fr(g,-8,2,16,20,…) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:54",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -8,
+    2,
+    16,
+    20
+   ],
+   "what": "g.rect(-8,2,16,20) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:55",
+   "fn": "marco",
+   "kind": "point",
+   "nums": [
+    -6,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:55",
+   "fn": "marco",
+   "kind": "point",
+   "nums": [
+    1,
+    11
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:55",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -8,
+    14,
+    16,
+    8
+   ],
+   "what": "fr(g,-8,14,16,8,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:58",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    5,
+    17,
+    4,
+    5
+   ],
+   "what": "fr(g,5,17,4,5,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:58",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    6,
+    18,
+    3,
+    4
+   ],
+   "what": "fr(g,6,18,3,4,RP.tan[3]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:60",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    0,
+    -3,
+    1,
+    3
+   ],
+   "what": "fr(g,0,-3,1,3,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    97,
+    127,
+    1
+   ],
+   "what": "SITIO.mama",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    131,
+    127,
+    1
+   ],
+   "what": "SITIO.papa",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    181,
+    127,
+    1
+   ],
+   "what": "SITIO.abuelo",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    70,
+    193
+   ],
+   "what": "SITIO.bebe",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    42,
+    168
+   ],
+   "what": "SITIO.abuela",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    150,
+    198
+   ],
+   "what": "SITIO.hermano",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    180,
+    198
+   ],
+   "what": "SITIO.hermana",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    30,
+    104,
+    0.7
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    183,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    72,
+    146,
+    0.9
+   ],
+   "what": "LUGAR.huele",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    58,
+    155,
+    1
+   ],
+   "what": "LUGAR.abuela",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    82,
+    125,
+    0.9
+   ],
+   "what": "LUGAR.mama",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    116,
+    125,
+    0.9
+   ],
+   "what": "LUGAR.papa",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    166,
+    125,
+    0.9
+   ],
+   "what": "LUGAR.abuelo",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    88,
+    175,
+    1
+   ],
+   "what": "LUGAR.bebe",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    44,
+    183,
+    1
+   ],
+   "what": "LUGAR.izq",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    100,
+    136
+   ],
+   "what": "PARADOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    140,
+    136
+   ],
+   "what": "PARADOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    70,
+    198
+   ],
+   "what": "APARTE[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    170,
+    198
+   ],
+   "what": "APARTE[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    96,
+    196
+   ],
+   "what": "JUNTOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    144,
+    196
+   ],
+   "what": "JUNTOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    198,
+    176
+   ],
+   "what": "CAMARA",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    106,
+    138,
+    30,
+    16
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    98,
+    148,
+    46,
+    18
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    68,
+    84,
+    92,
+    44
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    160,
+    86,
+    42,
+    42
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    64,
+    34,
+    82,
+    30
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    146,
+    62,
+    20,
+    64
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    20,
+    42,
+    42,
+    80
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    160,
+    32,
+    56,
+    54
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    122,
+    240,
+    94
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:88",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:88",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(im,-30,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:91",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    0,
+    0,
+    4,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    3,
+    1,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    0,
+    4,
+    4,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:99",
+   "fn": "taza",
+   "kind": "rect",
+   "nums": [
+    0,
+    2,
+    4,
+    6
+   ],
+   "what": "hgt",
+   "comment": null
+  },
+  {
+   "at": "sala.js:105",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:105",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "sala.js:162",
+   "fn": "destapa",
+   "kind": "point",
+   "nums": [
+    108,
+    134
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:162",
+   "fn": "destapa",
+   "kind": "point",
+   "nums": [
+    132,
+    134
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:162",
+   "fn": "destapa",
+   "kind": "point",
+   "nums": [
+    120,
+    128
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:163",
+   "fn": "tres",
+   "kind": "point",
+   "nums": [
+    120,
+    140
+   ],
+   "what": "vuelaA(120,140,50,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:163",
+   "fn": "tres",
+   "kind": "point",
+   "nums": [
+    50,
+    24
+   ],
+   "what": "vuelaA(120,140,50,24) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "sala.js:174",
+   "fn": "abda",
+   "kind": "point",
+   "nums": [
+    50,
+    24
+   ],
+   "what": "vuelaA(x.x,x.y-30,50,24,1) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "sala.js:180",
+   "fn": "suplato",
+   "kind": "point",
+   "nums": [
+    158,
+    200
+   ],
+   "what": "mueve(\"______\",158,200) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:183",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    1,
+    0.8
+   ],
+   "what": "vuelaA(b.x,b.y-14,q.x+16,q.y+8,1,.8) args 4,5",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    60,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    180,
+    34
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    120,
+    22
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    96,
+    44
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    150,
+    40
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:188",
+   "fn": "ponecamara",
+   "kind": "point",
+   "nums": [
+    150,
+    172
+   ],
+   "what": "mueve(\"______\",150,172) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:198",
+   "fn": "corren",
+   "kind": "point",
+   "nums": [
+    94,
+    198
+   ],
+   "what": "mueve(\"_______\",94,198,10) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:198",
+   "fn": "corren",
+   "kind": "point",
+   "nums": [
+    66,
+    203
+   ],
+   "what": "mueve(\"_______\",66,203,10) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:214",
+   "fn": "solo",
+   "kind": "point",
+   "nums": [
+    120,
+    146
+   ],
+   "what": "mueve(o.quien,120,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:214",
+   "fn": "solo",
+   "kind": "point",
+   "nums": [
+    72,
+    206
+   ],
+   "what": "mueve(otro,72,206) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    98,
+    146
+   ],
+   "what": "mueve(\"____\",98,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    142,
+    146
+   ],
+   "what": "mueve(\"____\",142,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    172,
+    160
+   ],
+   "what": "mueve(\"______\",172,160) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    66,
+    160
+   ],
+   "what": "mueve(\"______\",66,160) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    140,
+    190
+   ],
+   "what": "mueve(\"_______\",140,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    100,
+    190
+   ],
+   "what": "mueve(\"_______\",100,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:230",
+   "fn": "tropieza",
+   "kind": "point",
+   "nums": [
+    162,
+    176
+   ],
+   "what": "mueve(\"______\",162,176) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:231",
+   "fn": "acerca",
+   "kind": "point",
+   "nums": [
+    192,
+    180
+   ],
+   "what": "mueve(\"______\",192,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:235",
+   "fn": "tapa",
+   "kind": "point",
+   "nums": [
+    192,
+    180
+   ],
+   "what": "mueve(\"______\",192,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    60,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    180,
+    34
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    120,
+    22
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    96,
+    44
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    150,
+    40
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:247",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    150,
+    170
+   ],
+   "what": "mueve(\"______\",150,170) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:247",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    182,
+    172
+   ],
+   "what": "mueve(\"______\",182,172) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:259",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "sala.js:259",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    52,
+    48,
+    150,
+    165.3
+   ],
+   "what": "CAM.sofa",
+   "comment": null
+  },
+  {
+   "at": "sala.js:259",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    107,
+    6
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ],
+ "judgments": [
+  "Characters, for the frames without them: gente, rana, bub2 (functions) and the lines sala.js:115, sala.js:116, sala.js:123, sala.js:124 (config.mjs CHARS).",
+  "States are grouped without the character keys cq, gente, ave, lleva, tapaojos, the moving-prop keys vuela and the sign and stamp keys (config.mjs); a thing whose box reads only those keys (movingThings) does not separate states either: its box in every snapshot is in things[id].bySnapshot. The frame of a state shows the characters where the first snapshot of that state had them.",
+  "The frames are the scene's draw() only: juego.js's signs (the big hand, the frame around a thing, stars, the heart, answer bubbles) are not drawn; the views add the scene's hud() as the play screen does.",
+  "Each frame starts with the canvas default imageSmoothingEnabled = true (the old page keeps whatever the last frame left; order 05 found it on by default)."
+ ]
+}

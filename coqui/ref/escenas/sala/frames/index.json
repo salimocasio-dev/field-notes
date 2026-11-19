@@ -1,0 +1,4102 @@
+{
+ "scene": "sala",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "name": "sofa",
+   "rect": [
+    52,
+    48,
+    150,
+    165.3
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "full.sofa": "s000.full.sofa.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "nochar.sofa": "s000.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 120,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "start",
+     "d-bizcocho-bebe/wrong": "start",
+     "d-bizcocho-bebe/alternate": "start",
+     "d-foto-familia/right": "start,0-6",
+     "d-foto-familia/wrong": "start,0-6",
+     "d-foto-familia/alternate": "start,0-6",
+     "h-sala/right": "start",
+     "h-sala/wrong": "start",
+     "h-sala/alternate": "start",
+     "la-familia/right": "start",
+     "la-familia/wrong": "start",
+     "la-familia/alternate": "start",
+     "la-foto/right": "start,0-37",
+     "la-foto/wrong": "start,0-37,39",
+     "la-foto/alternate": "start,0-37",
+     "quien-eres-tu/right": "start,0-56",
+     "quien-eres-tu/wrong": "start,0-26,28,30-31",
+     "quien-eres-tu/alternate": "start,0-26,28-35,37-38"
+    },
+    "pairs": [
+     "cual-sala:mamá.si",
+     "cual-sala:mamá.no",
+     "cual-sala:papá.si",
+     "cual-sala:papá.no",
+     "cual-sala:abuelo.si",
+     "cual-sala:abuelo.no",
+     "cual-sala:bebé.si",
+     "cual-sala:bebé.no",
+     "cual-sala:familia.si",
+     "cual-sala:familia.no",
+     "cual-sala:hermano.si",
+     "cual-sala:hermano.no",
+     "cual-sala:hermana.si",
+     "cual-sala:hermana.no",
+     "cual-sala:él.si",
+     "cual-sala:él.no",
+     "cual-sala:ella.si",
+     "cual-sala:ella.no",
+     "cual-sala:yo.si",
+     "cual-sala:yo.no",
+     "cual-sala:tú.si",
+     "cual-sala:tú.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "full.sofa": "s001.full.sofa.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "nochar.sofa": "s001.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": "tapado",
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 41,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "0-7",
+     "d-bizcocho-bebe/wrong": "0-7",
+     "d-bizcocho-bebe/alternate": "0-7",
+     "h-sala/right": "0-20",
+     "h-sala/wrong": "0-20",
+     "h-sala/alternate": "0-20",
+     "la-familia/right": "0-39",
+     "la-familia/wrong": "0-39",
+     "la-familia/alternate": "0-39"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "full.sofa": "s002.full.sofa.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "nochar.sofa": "s002.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 7,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@8",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 29,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "8-22",
+     "d-bizcocho-bebe/wrong": "8-22",
+     "d-bizcocho-bebe/alternate": "8-22",
+     "h-sala/right": "21-22",
+     "h-sala/wrong": "21-22",
+     "h-sala/alternate": "21-22",
+     "la-familia/right": "40-43",
+     "la-familia/wrong": "40-43",
+     "la-familia/alternate": "40-43"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "full.sofa": "s003.full.sofa.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "nochar.sofa": "s003.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 6,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@23",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 98,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "23-27",
+     "d-bizcocho-bebe/wrong": "23-27",
+     "d-bizcocho-bebe/alternate": "23-27",
+     "h-sala/right": "23-27",
+     "h-sala/wrong": "23-27",
+     "h-sala/alternate": "23-27"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "full.sofa": "s004.full.sofa.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "nochar.sofa": "s004.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 5,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@28",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 181,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "28-35",
+     "d-bizcocho-bebe/wrong": "28-35",
+     "d-bizcocho-bebe/alternate": "28-35",
+     "h-sala/right": "28-45",
+     "h-sala/wrong": "28-45",
+     "h-sala/alternate": "28-45"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "full.sofa": "s005.full.sofa.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "nochar.sofa": "s005.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 4,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@36",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 279,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "36-50",
+     "d-bizcocho-bebe/wrong": "36-50",
+     "d-bizcocho-bebe/alternate": "36-50",
+     "la-familia/right": "44-46",
+     "la-familia/wrong": "44-46",
+     "la-familia/alternate": "44-46"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "full.sofa": "s006.full.sofa.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "nochar.sofa": "s006.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 3,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "d-bizcocho-bebe/right@51",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 433,
+   "distinctW": 18,
+   "reachedBy": {
+    "steps": {
+     "d-bizcocho-bebe/right": "51-66",
+     "d-bizcocho-bebe/wrong": "51-66",
+     "d-bizcocho-bebe/alternate": "51-66",
+     "la-familia/right": "47-51",
+     "la-familia/wrong": "47-56",
+     "la-familia/alternate": "47-51"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "full.sofa": "s007.full.sofa.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "nochar.sofa": "s007.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 1
+     },
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     83,
+     154,
+     22,
+     44
+    ],
+    "hermana": [
+     109,
+     102,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "d-foto-familia/right@7",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 85,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "d-foto-familia/right": "7-12",
+     "d-foto-familia/wrong": "7-12",
+     "d-foto-familia/alternate": "7-12"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "full.sofa": "s008.full.sofa.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
+    "nochar.sofa": "s008.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "hermano"
+      ],
+      "ok": 1
+     },
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     109,
+     102,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "d-foto-familia/right@13",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 130,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "d-foto-familia/right": "13-18",
+     "d-foto-familia/wrong": "13-18",
+     "d-foto-familia/alternate": "13-18"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "full.sofa": "s009.full.sofa.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
+    "nochar.sofa": "s009.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "hermano"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "papa"
+      ],
+      "ok": 1
+     }
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     145,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     109,
+     90,
+     22,
+     56
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "d-foto-familia/right@19",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 169,
+   "distinctW": 8,
+   "reachedBy": {
+    "steps": {
+     "d-foto-familia/right": "19-32",
+     "d-foto-familia/wrong": "19-32",
+     "d-foto-familia/alternate": "19-32"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s010",
+   "files": {
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "full.sofa": "s010.full.sofa.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
+    "nochar.sofa": "s010.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 1,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "hermano"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "papa"
+      ],
+      "ok": 1
+     }
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     145,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     149,
+     148,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     139,
+     116,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "d-foto-familia/right@33",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 221,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "d-foto-familia/right": "33-40",
+     "d-foto-familia/wrong": "33-40",
+     "d-foto-familia/alternate": "33-40"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s011",
+   "files": {
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "full.sofa": "s011.full.sofa.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
+    "nochar.sofa": "s011.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 2,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "la-familia/right@52",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 396,
+   "distinctW": 15,
+   "reachedBy": {
+    "steps": {
+     "la-familia/right": "52-59",
+     "la-familia/wrong": "57-67",
+     "la-familia/alternate": "52-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s012",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "full.sofa": "s012.full.sofa.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "nochar.sofa": "s012.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 1,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": [
+     106,
+     138,
+     30,
+     16
+    ],
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "la-familia/right@60",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 500,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "la-familia/right": "60-66",
+     "la-familia/wrong": "68-77",
+     "la-familia/alternate": "63-69"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s013",
+   "files": {
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "full.sofa": "s013.full.sofa.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
+    "nochar.sofa": "s013.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": 0,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": null,
+    "hermana": null,
+    "bebe": [
+     59,
+     165,
+     22,
+     28
+    ],
+    "abuela": [
+     168,
+     99,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     170,
+     78,
+     22,
+     49
+    ]
+   },
+   "drawnFrom": "la-familia/right@67",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 604,
+   "distinctW": 18,
+   "reachedBy": {
+    "steps": {
+     "la-familia/right": "67-77",
+     "la-familia/wrong": "78-88",
+     "la-familia/alternate": "70-80"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s014",
+   "files": {
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "full.sofa": "s014.full.sofa.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
+    "nochar.sofa": "s014.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "coqui",
+       "hermana"
+      ],
+      "ok": 1
+     },
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     178,
+     176,
+     32,
+     27
+    ],
+    "hermano": [
+     59,
+     154,
+     22,
+     44
+    ],
+    "hermana": [
+     159,
+     154,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/right@39",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 292,
+   "distinctW": 7,
+   "reachedBy": {
+    "steps": {
+     "la-foto/right": "38-44",
+     "la-foto/alternate": "38-44,46"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s015",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "full.sofa": "s015.full.sofa.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
+    "nochar.sofa": "s015.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "coqui",
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "coqui",
+       "mama"
+      ],
+      "ok": 1
+     },
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     150,
+     116,
+     29,
+     25
+    ],
+    "hermano": [
+     59,
+     154,
+     22,
+     44
+    ],
+    "hermana": [
+     159,
+     154,
+     22,
+     44
+    ],
+    "bebe": [
+     138,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     129,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     89,
+     80,
+     22,
+     56
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/right@46",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 360,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "la-foto/right": "45-52,54"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s016",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "full.sofa": "s016.full.sofa.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
+    "nochar.sofa": "s016.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "coqui",
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "coqui",
+       "mama"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "hermano"
+      ],
+      "ok": 1
+     }
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     109,
+     102,
+     22,
+     44
+    ],
+    "hermana": [
+     61,
+     162,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/right@55",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 441,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "la-foto/right": "53,55-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s017",
+   "files": {
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "full.sofa": "s017.full.sofa.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
+    "nochar.sofa": "s017.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     null,
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     30,
+     176,
+     32,
+     27
+    ],
+    "hermano": [
+     59,
+     154,
+     22,
+     44
+    ],
+    "hermana": [
+     159,
+     154,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/wrong@40",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 357,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "la-foto/wrong": "38,40-46,48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s018",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "full.sofa": "s018.full.sofa.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
+    "nochar.sofa": "s018.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     {
+      "q": [
+       "mama"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     62,
+     116,
+     29,
+     25
+    ],
+    "hermano": [
+     59,
+     154,
+     22,
+     44
+    ],
+    "hermana": [
+     159,
+     154,
+     22,
+     44
+    ],
+    "bebe": [
+     138,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     129,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     89,
+     80,
+     22,
+     56
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/wrong@49",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 437,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "la-foto/wrong": "47,49-56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s019",
+   "files": {
+    "full": "s019.full.png",
+    "full.wide": "s019.full.wide.png",
+    "full.sofa": "s019.full.sofa.png",
+    "nochar": "s019.nochar.png",
+    "nochar.wide": "s019.nochar.wide.png",
+    "nochar.sofa": "s019.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "hermana"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     {
+      "q": [
+       "mama"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     {
+      "ok": 0,
+      "pies": 1
+     }
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     109,
+     102,
+     22,
+     44
+    ],
+    "hermana": [
+     61,
+     162,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/wrong@58",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 521,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "la-foto/wrong": "57-68"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s020",
+   "files": {
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "full.sofa": "s020.full.sofa.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
+    "nochar.sofa": "s020.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "coqui",
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "mama"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     null
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     62,
+     116,
+     29,
+     25
+    ],
+    "hermano": [
+     59,
+     154,
+     22,
+     44
+    ],
+    "hermana": [
+     159,
+     154,
+     22,
+     44
+    ],
+    "bebe": [
+     138,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     129,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     89,
+     80,
+     22,
+     56
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/alternate@47",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 396,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "la-foto/alternate": "45,47-54,56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s021",
+   "files": {
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "full.sofa": "s021.full.sofa.png",
+    "nochar": "s021.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
+    "nochar.sofa": "s021.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     {
+      "q": [
+       "coqui",
+       "hermana"
+      ],
+      "ok": 1
+     },
+     {
+      "q": [
+       "mama"
+      ],
+      "ok": 0,
+      "pata": 1
+     },
+     {
+      "q": [
+       "hermano"
+      ],
+      "ok": 1
+     }
+    ],
+    "gotas": null,
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     109,
+     102,
+     22,
+     44
+    ],
+    "hermana": [
+     61,
+     162,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     187,
+     120,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "la-foto/alternate@57",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 482,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "la-foto/alternate": "55,57-64"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s022",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "full.sofa": "s022.full.sofa.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
+    "nochar.sofa": "s022.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": {
+     "x": 205,
+     "y": 152,
+     "f": 241
+    },
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     141,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     181,
+     124,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "quien-eres-tu/wrong@32",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 287,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "quien-eres-tu/wrong": "29,32-36,38-39"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s023",
+   "files": {
+    "full": "s023.full.png",
+    "full.wide": "s023.full.wide.png",
+    "full.sofa": "s023.full.sofa.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s023.nochar.wide.png",
+    "nochar.sofa": "s023.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": {
+     "x": 179,
+     "y": 152,
+     "f": 354
+    },
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     141,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     181,
+     124,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "quien-eres-tu/wrong@40",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 401,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "quien-eres-tu/wrong": "27,37,40-47,49-51"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s024",
+   "files": {
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "full.sofa": "s024.full.sofa.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "nochar.sofa": "s024.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": {
+     "x": 149,
+     "y": 118,
+     "f": 484
+    },
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     141,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     138,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     129,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     89,
+     80,
+     22,
+     56
+    ],
+    "abuelo": [
+     67,
+     90,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "quien-eres-tu/wrong@52",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 542,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "quien-eres-tu/wrong": "48,52-56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s025",
+   "files": {
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "full.sofa": "s025.full.sofa.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "nochar.sofa": "s024.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": {
+     "x": 149,
+     "y": 118,
+     "f": 484
+    },
+    "luz": 1,
+    "pastel": null,
+    "relleno": 1
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     141,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     138,
+     82,
+     22,
+     28
+    ],
+    "abuela": [
+     171,
+     121,
+     22,
+     51
+    ],
+    "mama": [
+     129,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     89,
+     80,
+     22,
+     56
+    ],
+    "abuelo": [
+     139,
+     114,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "quien-eres-tu/wrong@57",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 641,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "quien-eres-tu/wrong": "57-60"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s026",
+   "files": {
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "full.sofa": "s026.full.sofa.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
+    "nochar.sofa": "s026.nochar.sofa.png",
+    "bg": "bg.sala.png"
+   },
+   "background": [
+    "sala"
+   ],
+   "keys": {
+    "borroso": 0,
+    "camMesa": 0,
+    "fotos": [
+     null,
+     null,
+     null
+    ],
+    "gotas": {
+     "x": 179,
+     "y": 152,
+     "f": 297
+    },
+    "luz": 1,
+    "pastel": null,
+    "relleno": 0
+   },
+   "things": {
+    "bizcocho": null,
+    "mesita": [
+     98,
+     148,
+     46,
+     18
+    ],
+    "sofa": [
+     68,
+     84,
+     92,
+     44
+    ],
+    "butaca": [
+     160,
+     86,
+     42,
+     42
+    ],
+    "fotos": [
+     64,
+     34,
+     82,
+     30
+    ],
+    "lampara": [
+     146,
+     62,
+     20,
+     64
+    ],
+    "puerta": [
+     20,
+     42,
+     42,
+     80
+    ],
+    "ventana": [
+     160,
+     32,
+     56,
+     54
+    ],
+    "sala": [
+     0,
+     122,
+     240,
+     94
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     183,
+     32,
+     27
+    ],
+    "hermano": [
+     141,
+     156,
+     22,
+     44
+    ],
+    "hermana": [
+     73,
+     156,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     84,
+     22,
+     28
+    ],
+    "abuela": [
+     31,
+     117,
+     22,
+     51
+    ],
+    "mama": [
+     86,
+     78,
+     22,
+     49
+    ],
+    "papa": [
+     120,
+     78,
+     22,
+     49
+    ],
+    "abuelo": [
+     181,
+     124,
+     22,
+     56
+    ]
+   },
+   "drawnFrom": "quien-eres-tu/alternate@39",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 344,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "quien-eres-tu/alternate": "27,36,39-57"
+    },
+    "pairs": []
+   }
+  }
+ ]
+}

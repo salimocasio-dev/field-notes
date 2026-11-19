@@ -1,0 +1,1417 @@
+{
+ "scene": "sala",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-sala",
+   "w": "mamá",
+   "say": "esta_es_mama",
+   "sayText": "Esta es mamá.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     41,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    },
+    "esc": null,
+    "png": "mama.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     41,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuela": {
+       "x": 97,
+       "y": 128,
+       "pose": "idle",
+       "dir": -1
+      }
+     }
+    },
+    "esc": null,
+    "png": "mama.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "papá",
+   "say": "n_papa",
+   "sayText": "Este es papá.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     75,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    },
+    "esc": null,
+    "png": "papa.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     75,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuelo": {
+       "x": 131,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    },
+    "esc": null,
+    "png": "papa.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "abuelo",
+   "say": "n_abuelo",
+   "sayText": "Este es abuelo.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     125,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    },
+    "esc": null,
+    "png": "abuelo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     125,
+     70,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "abuela": {
+       "x": 183,
+       "y": 128,
+       "pose": "idle",
+       "dir": -1
+      }
+     }
+    },
+    "esc": null,
+    "png": "abuelo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "bebé",
+   "say": "n_bebe",
+   "sayText": "Este es el bebé.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     14,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "bebe": {
+       "x": 70,
+       "y": 193,
+       "est": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "bebe.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     14,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 74,
+       "y": 197,
+       "pose": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "bebe.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "familia",
+   "say": "n_familia",
+   "sayText": "Esta es la familia.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     35,
+     60,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      },
+      "papa": {
+       "x": 131,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      },
+      "abuelo": {
+       "x": 181,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      },
+      "abuela": {
+       "x": 62,
+       "y": 150,
+       "pose": "idle",
+       "dir": -1
+      },
+      "hermano": {
+       "x": 114,
+       "y": 150,
+       "pose": "idle"
+      },
+      "hermana": {
+       "x": 150,
+       "y": 150,
+       "pose": "idle"
+      },
+      "bebe": {
+       "x": 97,
+       "y": 112,
+       "z": 128,
+       "est": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "familia.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     35,
+     60,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 97,
+       "y": 127,
+       "pose": "idle",
+       "sent": 1
+      }
+     }
+    },
+    "esc": null,
+    "png": "familia.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "hermano",
+   "say": "n_hermano",
+   "sayText": "Este es el hermano.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "hermano.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "papa": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "hermano.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "hermana",
+   "say": "n_hermana",
+   "sayText": "Esta es la hermana.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "hermana.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     64,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 120,
+       "y": 150,
+       "pose": "idle"
+      }
+     }
+    },
+    "esc": null,
+    "png": "hermana.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "él",
+   "say": "n_foto_el",
+   "sayText": "Una foto con él.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     30,
+     122,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 96,
+       "y": 196,
+       "pose": "idle"
+      },
+      "hermano": {
+       "x": 144,
+       "y": 196,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 152,
+      "y": 174,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "el.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     30,
+     122,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 96,
+       "y": 196,
+       "pose": "idle"
+      },
+      "hermano": {
+       "x": 144,
+       "y": 196,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 56,
+      "y": 174,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "el.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "ella",
+   "say": "n_foto_ella",
+   "sayText": "Una foto con ella.",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     35,
+     66,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 100,
+       "y": 136,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 140,
+       "y": 136,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 60,
+      "y": 114,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "ella.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     35,
+     66,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 100,
+       "y": 136,
+       "pose": "idle"
+      },
+      "papa": {
+       "x": 140,
+       "y": 136,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": 148,
+      "y": 114,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "ella.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "yo",
+   "say": "h_soy_yo",
+   "sayText": "La hermana dice: ¡Soy yo!",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 100,
+       "y": 196,
+       "pose": "yo"
+      }
+     },
+     "cq": {
+      "x": 128,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "yo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermana": {
+       "x": 100,
+       "y": 196,
+       "pose": "tu"
+      }
+     },
+     "cq": {
+      "x": 128,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "yo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-sala",
+   "w": "tú",
+   "say": "h_eres_tu",
+   "sayText": "El hermano dice: ¡Eres tú!",
+   "si": {
+    "scene": "sala",
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 140,
+       "y": 196,
+       "pose": "tu",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 80,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "tu.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "sala",
+    "cam": [
+     44,
+     132,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "hermano": {
+       "x": 140,
+       "y": 196,
+       "pose": "yo",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 80,
+      "y": 179,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "tu.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "abuela",
+   "s": 1,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "abuela",
+     "side": "si",
+     "x": 166,
+     "crop": [
+      143.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuela.1.png"
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuela.2.png"
+    },
+    {
+     "first": false,
+     "pair": "hermana",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuela.3.png"
+    }
+   ]
+  },
+  {
+   "w": "jugo",
+   "s": 4,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "jugo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      103.65,
+      98,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "agua",
+     "side": "si",
+     "x": null,
+     "crop": [
+      103.65,
+      98,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "silla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      143.65,
+      116,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.jugo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "se sienta",
+   "s": 4,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "se sienta",
+     "side": "si",
+     "x": 80,
+     "crop": [
+      50.2,
+      84,
+      59.59,
+      65.8
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "se sienta",
+     "side": "no",
+     "x": 96,
+     "crop": [
+      66.2,
+      84,
+      59.59,
+      65.8
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "abuelo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.se_sienta.3.png"
+    }
+   ]
+  },
+  {
+   "w": "quiero",
+   "s": 5,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "quiero",
+     "side": "si",
+     "x": 94,
+     "crop": [
+      49.31,
+      52,
+      89.39,
+      98.7
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "quiero",
+     "side": "no",
+     "x": 94,
+     "crop": [
+      49.31,
+      52,
+      89.39,
+      98.7
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "¿cómo estás?",
+     "side": "si",
+     "x": 94,
+     "crop": [
+      49.31,
+      52,
+      89.39,
+      98.7
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.quiero.3.png"
+    }
+   ]
+  },
+  {
+   "w": "mamá",
+   "s": 6,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.mama.0.png"
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.mama.1.png"
+    },
+    {
+     "first": false,
+     "pair": "abuelo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.mama.2.png"
+    },
+    {
+     "first": false,
+     "pair": "hermana",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.mama.3.png"
+    }
+   ]
+  },
+  {
+   "w": "abuelo",
+   "s": 6,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "abuelo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuelo.0.png"
+    },
+    {
+     "first": false,
+     "pair": "abuelo",
+     "side": "no",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuelo.1.png"
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuelo.2.png"
+    },
+    {
+     "first": false,
+     "pair": "hermano",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.abuelo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "familia",
+   "s": 6,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "familia",
+     "side": "si",
+     "x": null,
+     "crop": [
+      79.15,
+      60,
+      81.69,
+      90.2
+     ],
+     "scene": "sala",
+     "png": "nivel.familia.0.png"
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.familia.1.png"
+    },
+    {
+     "first": false,
+     "pair": "hermano",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.familia.2.png"
+    },
+    {
+     "first": false,
+     "pair": "niña",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "hermana",
+   "s": 7,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "hermana",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.hermana.0.png"
+    },
+    {
+     "first": false,
+     "pair": "hermano",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.hermana.1.png"
+    },
+    {
+     "first": false,
+     "pair": "hermana",
+     "side": "no",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.hermana.2.png"
+    },
+    {
+     "first": false,
+     "pair": "bebé",
+     "side": "si",
+     "x": 70,
+     "crop": [
+      42.83,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.hermana.3.png"
+    }
+   ]
+  },
+  {
+   "w": "tú",
+   "s": 8,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "tú",
+     "side": "si",
+     "x": 118,
+     "crop": [
+      81.95,
+      132,
+      72.09,
+      79.6
+     ],
+     "scene": "sala",
+     "png": "nivel.tu.0.png"
+    },
+    {
+     "first": false,
+     "pair": "tú",
+     "side": "no",
+     "x": 118,
+     "crop": [
+      81.95,
+      132,
+      72.09,
+      79.6
+     ],
+     "scene": "sala",
+     "png": "nivel.tu.1.png"
+    },
+    {
+     "first": false,
+     "pair": "yo",
+     "side": "si",
+     "x": 118,
+     "crop": [
+      81.95,
+      132,
+      72.09,
+      79.6
+     ],
+     "scene": "sala",
+     "png": "nivel.tu.2.png"
+    },
+    {
+     "first": false,
+     "pair": "hermano",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.tu.3.png"
+    }
+   ]
+  },
+  {
+   "w": "niña",
+   "s": 9,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "niña",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niña",
+     "side": "no",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "abuelo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.nina.3.png"
+    }
+   ]
+  },
+  {
+   "w": "amigo",
+   "s": 10,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "amigo",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      130,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "amigo",
+     "side": "no",
+     "x": 100,
+     "crop": [
+      72.83,
+      130,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.amigo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "ven",
+   "s": 10,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "ven",
+     "side": "si",
+     "x": 142,
+     "crop": [
+      101.15,
+      100,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "ven",
+     "side": "no",
+     "x": 142,
+     "crop": [
+      101.15,
+      100,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": "nivel.ven.3.png"
+    }
+   ]
+  }
+ ]
+}

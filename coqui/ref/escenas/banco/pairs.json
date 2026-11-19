@@ -1,0 +1,1218 @@
+{
+ "scene": "banco",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-banco",
+   "w": "hombre",
+   "say": "b_n_hombre",
+   "sayText": "Es un hombre.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "lee": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "hombre.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "mujer": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "lee": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "hombre.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "mujer",
+   "say": "b_n_mujer",
+   "sayText": "Es una mujer.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "mujer": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "mujer.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "carmen": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "mujer.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "señor",
+   "say": "b_n_senor",
+   "sayText": "Es un señor.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "senor": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "senor.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "luis": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "senor.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "señora",
+   "say": "c22_cq_dn_senora",
+   "sayText": "De nada, señora.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 106,
+      "y": 172,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "mujer": {
+       "x": 160,
+       "y": 198,
+       "dir": -1,
+       "lleva": "bolsa"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "senora.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 106,
+      "y": 172,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "joven": {
+       "x": 160,
+       "y": 198,
+       "dir": -1,
+       "lleva": "bolsa"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "senora.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "joven",
+   "say": "b_n_joven",
+   "sayText": "Es un joven.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "joven": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "joven.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     84,
+     136,
+     124.3,
+     66
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "senor": {
+       "x": 146,
+       "y": 198,
+       "dir": 1,
+       "paso": 1
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "joven.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "viejo",
+   "say": "b_c_perro_viejo",
+   "sayText": "Es un perro viejo.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "viejo": {
+       "x": 120,
+       "y": 204,
+       "pose": "walk",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "viejo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "joven": {
+       "x": 120,
+       "y": 204,
+       "pose": "walk",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "viejo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "come",
+   "say": "c21_hombre_come",
+   "sayText": "El hombre come.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "hace": "come",
+       "que": "piragua"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "come.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "hace": "bebe"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "come.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "bebe",
+   "say": "b_c_pajaro_bebe",
+   "sayText": "El pájaro bebe.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     112,
+     116,
+     90,
+     47.8
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [
+      {
+       "x": 162,
+       "y": 149,
+       "dir": -1,
+       "pose": "bebe"
+      }
+     ],
+     "cosas": [
+      {
+       "k": "agua",
+       "x": 152,
+       "y": 149
+      }
+     ],
+     "perros": {},
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "bebe.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     112,
+     116,
+     90,
+     47.8
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [
+      {
+       "x": 164,
+       "y": 149,
+       "dir": -1,
+       "pose": "come"
+      }
+     ],
+     "cosas": [
+      {
+       "k": "piragua",
+       "x": 146,
+       "y": 145,
+       "rot": 1.5708
+      }
+     ],
+     "perros": {},
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "bebe.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "duerme",
+   "say": "b_c_perro_duerme",
+   "sayText": "El perro duerme.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "duerme",
+       "dir": 1,
+       "zzz": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "duerme.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "lie",
+       "dir": 1,
+       "lleva": "hueso"
+      }
+     },
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "duerme.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "cansado",
+   "say": "c23_luis_cansado",
+   "sayText": "Luis está cansado.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "luis": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "cansado"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "cansado.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "luis": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "contento",
+       "pose": "arriba"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "cansado.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "contento",
+   "say": "b_c_senor_contento",
+   "sayText": "El señor está contento.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "contento"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "contento.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     88,
+     106,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {},
+     "gente": {
+      "hombre": {
+       "x": 144,
+       "y": 161,
+       "dir": 1,
+       "sent": 1,
+       "animo": "triste"
+      }
+     },
+     "coche": null
+    },
+    "esc": null,
+    "png": "contento.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-banco",
+   "w": "triste",
+   "say": "b_c_canelo_triste",
+   "sayText": "Canelo está triste.",
+   "si": {
+    "scene": "banco",
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "triste",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "triste.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "banco",
+    "cam": [
+     64,
+     154,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "carro": 0,
+     "palomas": [],
+     "cosas": [],
+     "perros": {
+      "canelo": {
+       "x": 120,
+       "y": 204,
+       "pose": "cansado",
+       "dir": 1
+      }
+     },
+     "gente": {},
+     "coche": null
+    },
+    "esc": null,
+    "png": "triste.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "come",
+   "s": 21,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "come",
+     "side": "si",
+     "x": null,
+     "crop": [
+      117.33,
+      106,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.come.0.png"
+    },
+    {
+     "first": false,
+     "pair": "come",
+     "side": "no",
+     "x": null,
+     "crop": [
+      117.33,
+      106,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.come.1.png"
+    },
+    {
+     "first": false,
+     "pair": "bebe",
+     "side": "si",
+     "x": 152,
+     "crop": [
+      130.35,
+      116,
+      43.29,
+      47.8
+     ],
+     "scene": "banco",
+     "png": "nivel.come.2.png"
+    },
+    {
+     "first": false,
+     "pair": "cansado",
+     "side": "si",
+     "x": null,
+     "crop": [
+      117.33,
+      106,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.come.3.png"
+    }
+   ]
+  },
+  {
+   "w": "señora",
+   "s": 22,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "señora",
+     "side": "si",
+     "x": 146,
+     "crop": [
+      116.11,
+      136,
+      59.77,
+      66
+     ],
+     "scene": "banco",
+     "png": "nivel.senora.0.png"
+    },
+    {
+     "first": false,
+     "pair": "señora",
+     "side": "no",
+     "x": 146,
+     "crop": [
+      116.11,
+      136,
+      59.77,
+      66
+     ],
+     "scene": "banco",
+     "png": "nivel.senora.1.png"
+    },
+    {
+     "first": false,
+     "pair": "señor",
+     "side": "si",
+     "x": null,
+     "crop": [
+      117.33,
+      106,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.senora.2.png"
+    },
+    {
+     "first": false,
+     "pair": "mujer",
+     "side": "no",
+     "x": 146,
+     "crop": [
+      116.11,
+      136,
+      59.77,
+      66
+     ],
+     "scene": "banco",
+     "png": "nivel.senora.3.png"
+    }
+   ]
+  },
+  {
+   "w": "viejo",
+   "s": 22,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "viejo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      154,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.viejo.0.png"
+    },
+    {
+     "first": false,
+     "pair": "viejo",
+     "side": "no",
+     "x": null,
+     "crop": [
+      93.33,
+      154,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.viejo.1.png"
+    },
+    {
+     "first": false,
+     "pair": "duerme",
+     "side": "no",
+     "x": null,
+     "crop": [
+      93.33,
+      154,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.viejo.2.png"
+    },
+    {
+     "first": false,
+     "pair": "triste",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      154,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.viejo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "triste",
+   "s": 23,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "triste",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      154,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.triste.0.png"
+    },
+    {
+     "first": false,
+     "pair": "triste",
+     "side": "no",
+     "x": null,
+     "crop": [
+      93.33,
+      154,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.triste.1.png"
+    },
+    {
+     "first": false,
+     "pair": "contento",
+     "side": "si",
+     "x": null,
+     "crop": [
+      117.33,
+      106,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.triste.2.png"
+    },
+    {
+     "first": false,
+     "pair": "cansado",
+     "side": "si",
+     "x": null,
+     "crop": [
+      117.33,
+      106,
+      54.34,
+      60
+     ],
+     "scene": "banco",
+     "png": "nivel.triste.3.png"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1025 @@
+{
+ "scene": "lago",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-lago",
+   "w": "pato",
+   "say": "l_n_pato",
+   "sayText": "Es un pato.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 100,
+       "y": 154,
+       "pose": "anda",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "pato.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 100,
+       "y": 154,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "pato.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "pez",
+   "say": "l_n_pez",
+   "sayText": "Es un pez.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "pardo",
+       "x": 156,
+       "y": 196,
+       "dir": -1,
+       "dy": 16
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "pez.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 156,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1,
+       "come": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "pez.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "pájaro",
+   "say": "l_n_pajaro",
+   "sayText": "Es un pájaro.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     84,
+     84,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 140,
+       "y": 119,
+       "dir": -1,
+       "pan": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "pajaro.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "pardo",
+       "x": 156,
+       "y": 186,
+       "dir": -1
+      }
+     },
+     "pan": {
+      "con": null,
+      "x": 143,
+      "y": 184,
+      "z": 0,
+      "vis": 1
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "pajaro.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "nada",
+   "say": "l_c_pato_nada",
+   "sayText": "El pato nada.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 150,
+       "y": 188,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "nada.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     96,
+     30,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 150,
+       "y": 62,
+       "pose": "vuela",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "nada.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "vuela",
+   "say": "c18_pajaro_vuela",
+   "sayText": "El pájaro vuela.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     96,
+     30,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 152,
+       "y": 60,
+       "dir": -1,
+       "vuela": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "vuela.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "azul",
+       "x": 96,
+       "y": 154,
+       "dir": -1,
+       "pan": 1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "vuela.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "rojo",
+   "say": "l_c_bote_rojo",
+   "sayText": "Es un bote rojo.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "rojo",
+       "x": 150,
+       "y": 190,
+       "en": "agua"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "rojo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "azul",
+       "x": 150,
+       "y": 190,
+       "en": "agua"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "rojo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "azul",
+   "say": "l_c_pez_azul",
+   "sayText": "Es un pez azul.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "azul",
+       "x": 150,
+       "y": 192,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "azul.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "peces": {
+      "a": {
+       "c": "verde",
+       "x": 150,
+       "y": 192,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "azul.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "verde",
+   "say": "l_c_bote_verde",
+   "sayText": "Es un bote verde.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "verde",
+       "x": 96,
+       "y": 153,
+       "en": "muelle"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "verde.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     44,
+     112,
+     113,
+     60
+    ],
+    "set": {
+     "botes": {
+      "a": {
+       "c": "rojo",
+       "x": 96,
+       "y": 153,
+       "en": "muelle"
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "verde.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "amarillo",
+   "say": "l_c_pato_amarillo",
+   "sayText": "Es un pato amarillo.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "amarillo",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "amarillo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "blanco",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "amarillo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "blanco",
+   "say": "l_c_pajaro_blanco",
+   "sayText": "Es un pájaro blanco.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     84,
+     116,
+     100,
+     53.1
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "blanco",
+       "x": 133,
+       "y": 140,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "blanco.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     84,
+     116,
+     100,
+     53.1
+    ],
+    "set": {
+     "aves": {
+      "a": {
+       "c": "negro",
+       "x": 133,
+       "y": 140,
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "blanco.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-lago",
+   "w": "negro",
+   "say": "l_c_pato_negro",
+   "sayText": "Es un pato negro.",
+   "si": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "negro",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "negro.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "lago",
+    "cam": [
+     100,
+     156,
+     113,
+     60
+    ],
+    "set": {
+     "patos": {
+      "a": {
+       "k": "amarillo",
+       "x": 150,
+       "y": 190,
+       "pose": "nada",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "negro.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "pato",
+   "s": 18,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "pato",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      112,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.pato.0.png"
+    },
+    {
+     "first": false,
+     "pair": "pato",
+     "side": "no",
+     "x": 100,
+     "crop": [
+      72.83,
+      112,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.pato.1.png"
+    },
+    {
+     "first": false,
+     "pair": "pez",
+     "side": "si",
+     "x": 156,
+     "crop": [
+      128.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.pato.2.png"
+    },
+    {
+     "first": false,
+     "pair": "pájaro",
+     "side": "no",
+     "x": 176,
+     "crop": [
+      148.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.pato.3.png"
+    }
+   ]
+  },
+  {
+   "w": "vuela",
+   "s": 18,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "vuela",
+     "side": "si",
+     "x": 152,
+     "crop": [
+      124.83,
+      30,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.vuela.0.png"
+    },
+    {
+     "first": false,
+     "pair": "vuela",
+     "side": "no",
+     "x": 96,
+     "crop": [
+      68.83,
+      112,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.vuela.1.png"
+    },
+    {
+     "first": false,
+     "pair": "nada",
+     "side": "si",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.vuela.2.png"
+    },
+    {
+     "first": false,
+     "pair": "pez",
+     "side": "si",
+     "x": 156,
+     "crop": [
+      128.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.vuela.3.png"
+    }
+   ]
+  },
+  {
+   "w": "rojo",
+   "s": 19,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "rojo",
+     "side": "si",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.rojo.0.png"
+    },
+    {
+     "first": false,
+     "pair": "rojo",
+     "side": "no",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.rojo.1.png"
+    },
+    {
+     "first": false,
+     "pair": "verde",
+     "side": "si",
+     "x": 96,
+     "crop": [
+      68.83,
+      112,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.rojo.2.png"
+    },
+    {
+     "first": false,
+     "pair": "azul",
+     "side": "si",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.rojo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "negro",
+   "s": 20,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "negro",
+     "side": "si",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.negro.0.png"
+    },
+    {
+     "first": false,
+     "pair": "negro",
+     "side": "no",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.negro.1.png"
+    },
+    {
+     "first": false,
+     "pair": "amarillo",
+     "side": "no",
+     "x": 150,
+     "crop": [
+      122.83,
+      156,
+      54.34,
+      60
+     ],
+     "scene": "lago",
+     "png": "nivel.negro.2.png"
+    },
+    {
+     "first": false,
+     "pair": "blanco",
+     "side": "si",
+     "x": 133,
+     "crop": [
+      108.95,
+      116,
+      48.09,
+      53.1
+     ],
+     "scene": "lago",
+     "png": "nivel.negro.3.png"
+    }
+   ]
+  }
+ ]
+}

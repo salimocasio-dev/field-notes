@@ -1,0 +1,3063 @@
+{
+ "scene": "patio",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 73,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 16,
+   "y": 146,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "flor.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "flor.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 22,
+   "y": 30,
+   "w": 196,
+   "h": 104,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "parque.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 22,
+   "y": 84,
+   "w": 196,
+   "h": 104,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "parque.si.cam",
+     "owner": "pair picture",
+     "note": "drawn by scene camino"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 24,
+   "y": 40,
+   "w": 180,
+   "h": 95.5,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 30,
+   "y": 0,
+   "w": 170,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "sol.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "sol.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 30,
+   "y": 124,
+   "w": 150,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 40,
+   "y": 80,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niña.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niña.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 40,
+   "y": 100,
+   "w": 170,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 42,
+   "y": 118,
+   "w": 156,
+   "h": 82.8,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "aquí.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "aquí.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "allá.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "allá.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 50,
+   "y": 130,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 64,
+   "y": 118,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niño.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niño.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 70,
+   "y": 62,
+   "w": 150,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 32.83,
+   "y": 146,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p0",
+     "owner": "level picture",
+     "note": "pair flor.si, centred on x 60 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p1",
+     "owner": "level picture",
+     "note": "pair flor.no, centred on x 60 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 72.83,
+   "y": 80,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "familia.p3",
+     "owner": "level picture",
+     "note": "pair niña.si, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "niña.p0",
+     "owner": "level picture",
+     "note": "pair niña.si, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "niña.p2",
+     "owner": "level picture",
+     "note": "pair niña.no, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p2",
+     "owner": "level picture",
+     "note": "pair niña.si, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p3",
+     "owner": "level picture",
+     "note": "pair niña.si, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 72.83,
+   "y": 130,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "amigo.p0",
+     "owner": "level picture",
+     "note": "pair amigo.si, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "amigo.p1",
+     "owner": "level picture",
+     "note": "pair amigo.no, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 74.15,
+   "y": 0,
+   "w": 81.69,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "puerta.p3",
+     "owner": "level picture",
+     "note": "pair sol.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p3",
+     "owner": "level picture",
+     "note": "pair sol.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 76.75,
+   "y": 40,
+   "w": 86.49,
+   "h": 95.5,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p0",
+     "owner": "level picture",
+     "note": "pair hasta mañana.si, centred on x 120 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p1",
+     "owner": "level picture",
+     "note": "pair hasta mañana.no, centred on x 120 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 93.33,
+   "y": 118,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "se sienta.p2",
+     "owner": "level picture",
+     "note": "pair niño.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "niña.p1",
+     "owner": "level picture",
+     "note": "pair niño.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "amigo.p2",
+     "owner": "level picture",
+     "note": "pair niño.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "ven.p2",
+     "owner": "level picture",
+     "note": "pair niño.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 93.95,
+   "y": 124,
+   "w": 72.09,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p3",
+     "owner": "level picture",
+     "note": "pair juega.si, centred on x 130 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p0",
+     "owner": "level picture",
+     "note": "pair juega.si, centred on x 130 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p1",
+     "owner": "level picture",
+     "note": "pair juega.no, centred on x 130 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p3",
+     "owner": "level picture",
+     "note": "pair juega.si, centred on x 130 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 101.15,
+   "y": 100,
+   "w": 81.69,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "ven.p0",
+     "owner": "level picture",
+     "note": "pair ven.si, centred on x 142 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "ven.p1",
+     "owner": "level picture",
+     "note": "pair ven.no, centred on x 142 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p2",
+     "owner": "level picture",
+     "note": "pair ven.no, centred on x 142 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 109.15,
+   "y": 0,
+   "w": 81.69,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p2",
+     "owner": "level picture",
+     "note": "pair sol.no, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 113.95,
+   "y": 62,
+   "w": 72.09,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p0",
+     "owner": "level picture",
+     "note": "pair vamos.si, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p1",
+     "owner": "level picture",
+     "note": "pair vamos.no, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": -16,
+   "y": -27,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niño.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niño.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niña.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niña.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "flor.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "flor.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "sol.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "sol.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "aquí.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "aquí.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "allá.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "allá.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "parque.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 1,
+   "y": -1,
+   "uses": [
+    {
+     "file": "cuentos/d-la-bola.json",
+     "at": "beats.22",
+     "owner": "[]"
+    },
+    {
+     "file": "cuentos/que-es-esto.json",
+     "at": "beats.6.after.0",
+     "owner": "[].after[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 1,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/que-es-esto.json",
+     "at": "beats.10.after.0",
+     "owner": "[].after[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 30,
+   "y": 104,
+   "uses": [
+    {
+     "file": "cuentos/d-la-bola.json",
+     "at": "beats.0.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "puerta"
+     ],
+     "insideThings": [
+      "puerta",
+      "casa"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 34,
+   "y": 136,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 48,
+   "y": 188,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "flor.no.set.bola",
+     "owner": "set.bola",
+     "insideThings": [
+      "bola",
+      "camaL",
+      "patio"
+     ],
+     "meaning": "the ball's foot (patio.js:138, cosa at x-7, y-14-h)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 50,
+   "y": 160,
+   "uses": [
+    {
+     "file": "cuentos/que-es-esto.json",
+     "at": "beats.26",
+     "owner": "[]",
+     "insideThings": [
+      "camaL",
+      "patio"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 60,
+   "y": 126,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.si.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.no.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 62,
+   "y": 128,
+   "uses": [
+    {
+     "file": "cuentos/hasta-manana.json",
+     "at": "beats.25.then.6.right.4",
+     "owner": "[].then[].right[]",
+     "insideThings": [
+      "patio"
+     ]
+    },
+    {
+     "file": "cuentos/hasta-manana.json",
+     "at": "beats.25.else.2.right.4",
+     "owner": "[].else[].right[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 64,
+   "y": 153,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 68,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "aquí.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "camaL",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "aquí.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "camaL",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "allá.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "camaL",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "allá.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "camaL",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 72,
+   "y": 157,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 84,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/d-la-bola.json",
+     "at": "beats.0.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/h-patio.json",
+     "at": "beats.0.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/h-patio.json",
+     "at": "beats.20",
+     "owner": "[]",
+     "insideThings": [
+      "patio"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 86,
+   "y": 136,
+   "uses": [
+    {
+     "file": "cuentos/las-flores.json",
+     "at": "beats.29",
+     "owner": "[]",
+     "insideThings": [
+      "patio"
+     ]
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niña.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.si.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 86,
+   "y": 138,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niña.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 90,
+   "y": 182,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.no.set.bola",
+     "owner": "set.bola",
+     "insideThings": [
+      "bola",
+      "camaL",
+      "patio"
+     ],
+     "meaning": "the ball's foot (patio.js:138, cosa at x-7, y-14-h)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 102,
+   "y": 155,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 106,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.si.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "dust behind a hop (patio.js:141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 106,
+   "y": 180,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.no.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "dust behind a hop (patio.js:141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 126,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 153,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 155,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 118,
+   "y": 105,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "papa",
+      "cerca"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 118,
+   "y": 180,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "amigo.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 120,
+   "y": 170,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niño.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "niño.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 122,
+   "y": 111,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "cerca"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 124,
+   "y": 124,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.no.set.rizo",
+     "owner": "set.rizo",
+     "insideThings": [
+      "pajaro",
+      "patio"
+     ],
+     "meaning": "the dotted loop the bird flew: centre x, y, radius r (patio.js:142)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.si.set.rizo",
+     "owner": "set.rizo",
+     "insideThings": [
+      "pajaro",
+      "patio"
+     ],
+     "meaning": "the dotted loop the bird flew: centre x, y, radius r (patio.js:142)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 124,
+   "y": 128,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.no.set.ave",
+     "owner": "set.ave",
+     "insideThings": [
+      "pajaro",
+      "patio"
+     ]
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.si.set.ave",
+     "owner": "set.ave",
+     "insideThings": [
+      "pajaro",
+      "patio"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 126,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 128,
+   "y": 99,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "porton",
+      "cerca"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 130,
+   "y": 101,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "hasta mañana.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "porton",
+      "cerca"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 134,
+   "y": 132,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.si.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "dust behind a hop (patio.js:141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 136,
+   "y": 164,
+   "uses": [
+    {
+     "file": "cuentos/d-buenas-noches.json",
+     "at": "beats.4",
+     "owner": "[]",
+     "insideThings": [
+      "patio"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.si.set.bola",
+     "owner": "set.bola",
+     "insideThings": [
+      "bola",
+      "patio"
+     ],
+     "meaning": "the ball's foot (patio.js:138, cosa at x-7, y-14-h)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 146,
+   "y": 174,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "juega.no.set.bola",
+     "owner": "set.bola",
+     "insideThings": [
+      "bola",
+      "camaR",
+      "patio"
+     ],
+     "meaning": "the ball's foot (patio.js:138, cosa at x-7, y-14-h)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/d-la-bola.json",
+     "at": "beats.0.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/h-patio.json",
+     "at": "beats.0.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 162,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/d-la-bola.json",
+     "at": "beats.0.set.bola",
+     "owner": "set.bola",
+     "insideThings": [
+      "bola",
+      "patio"
+     ],
+     "meaning": "the ball's foot (patio.js:138, cosa at x-7, y-14-h)"
+    },
+    {
+     "file": "cuentos/h-patio.json",
+     "at": "beats.0.set.bola",
+     "owner": "set.bola",
+     "insideThings": [
+      "bola",
+      "patio"
+     ],
+     "meaning": "the ball's foot (patio.js:138, cosa at x-7, y-14-h)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 168,
+   "y": 120,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 170,
+   "y": 138,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "vamos.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 170,
+   "y": 160,
+   "uses": [
+    {
+     "file": "cuentos/d-buenas-noches.json",
+     "at": "beats.5",
+     "owner": "[]",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 170,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    },
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "ven.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 170,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-patio.json",
+     "at": "mira.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (patio.js:98-103 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 186,
+   "y": 170,
+   "uses": [
+    {
+     "file": "cuentos/hasta-manana.json",
+     "at": "beats.21",
+     "owner": "[]",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 198,
+   "y": 166,
+   "uses": [
+    {
+     "file": "cuentos/hasta-manana.json",
+     "at": "beats.25.then.2.right.2",
+     "owner": "[].then[].right[]",
+     "insideThings": [
+      "camaR",
+      "patio"
+     ]
+    },
+    {
+     "file": "cuentos/hasta-manana.json",
+     "at": "beats.25.else.6.right.2",
+     "owner": "[].else[].right[]"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 100,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "familia.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "niña.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "niña.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "amigo.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "amigo.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 120,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 130,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "juega.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 142,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "ven.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "ven.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 150,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vamos.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "patio.js:16",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    40,
+    176,
+    56,
+    20
+   ],
+   "what": "CAMA.L",
+   "comment": null
+  },
+  {
+   "at": "patio.js:16",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    144,
+    176,
+    56,
+    20
+   ],
+   "what": "CAMA.R",
+   "comment": null
+  },
+  {
+   "at": "patio.js:16",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    24,
+    40,
+    56,
+    73
+   ],
+   "what": "SOLY",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    60,
+    18
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    84,
+    40
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    124,
+    12
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    150,
+    36
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    40,
+    46
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    58
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    72,
+    64
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    140,
+    60
+   ],
+   "what": "ESTRELLAS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:85",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    30,
+    104,
+    0.8
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "patio.js:85",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    52,
+    150,
+    1
+   ],
+   "what": "LUGAR.inicio",
+   "comment": null
+  },
+  {
+   "at": "patio.js:85",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    178,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "patio.js:85",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    150,
+    1
+   ],
+   "what": "LUGAR.caja",
+   "comment": null
+  },
+  {
+   "at": "patio.js:85",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    90,
+    164,
+    0.9
+   ],
+   "what": "LUGAR.camaL",
+   "comment": null
+  },
+  {
+   "at": "patio.js:85",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    118,
+    164,
+    0.9
+   ],
+   "what": "LUGAR.camaR",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    112,
+    140,
+    1
+   ],
+   "what": "luis",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    62,
+    130,
+    1
+   ],
+   "what": "carmen",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    112,
+    116,
+    0.9
+   ],
+   "what": "carmenA",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    70,
+    170,
+    1
+   ],
+   "what": "abuela",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    128,
+    104,
+    0.85
+   ],
+   "what": "porton",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    186,
+    112,
+    0.8
+   ],
+   "what": "arbol",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    96,
+    140,
+    0.95
+   ],
+   "what": "luisC",
+   "comment": null
+  },
+  {
+   "at": "patio.js:86",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    134,
+    84,
+    0.5
+   ],
+   "what": "sale",
+   "comment": null
+  },
+  {
+   "at": "patio.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    68,
+    176
+   ],
+   "what": "DETRAS.L",
+   "comment": null
+  },
+  {
+   "at": "patio.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    172,
+    176
+   ],
+   "what": "DETRAS.R",
+   "comment": null
+  },
+  {
+   "at": "patio.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    160,
+    128
+   ],
+   "what": "ESPERA.luis",
+   "comment": null
+  },
+  {
+   "at": "patio.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    80,
+    128
+   ],
+   "what": "ESPERA.carmen",
+   "comment": null
+  },
+  {
+   "at": "patio.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    84,
+    172
+   ],
+   "what": "LADOS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    156,
+    172
+   ],
+   "what": "LADOS[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:93",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    104,
+    112,
+    32,
+    24
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:93",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    40,
+    160,
+    56,
+    38
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:93",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    144,
+    160,
+    56,
+    38
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    127,
+    70,
+    40,
+    43
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    170,
+    60,
+    22,
+    16
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    168,
+    8,
+    60,
+    106
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    27,
+    57,
+    30,
+    56
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    14,
+    61,
+    100
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    60,
+    80,
+    180,
+    33
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    113,
+    240,
+    103
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "patio.js:100",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:100",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(…,-30,0) [sprite \"ab\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:102",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:110",
+   "fn": "rana",
+   "kind": "point",
+   "nums": [
+    0.3,
+    0.7
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "patio.js:116",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:116",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "patio.js:129",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"cielo\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:131",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    150,
+    26
+   ],
+   "what": "luna(c,150,26) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:132",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"patio\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:136",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    104,
+    112
+   ],
+   "what": "c.drawImage(spr(\"____\",mkCaja),104,112) [sprite \"caja\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:142",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    2,
+    3
+   ],
+   "what": "c.setLineDash(…)",
+   "comment": "the loop the bird has just flown"
+  },
+  {
+   "at": "patio.js:147",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:148",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:158",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    13,
+    27
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "patio.js:159",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    4,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:159",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    20,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:159",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    36,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:164",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,34,52) args 1,2",
+   "comment": "the sun on its way down to the fence"
+  },
+  {
+   "at": "patio.js:164",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    5,
+    5,
+    30,
+    40
+   ],
+   "what": "g.fillRect(5,5,30,40) args 0,1",
+   "comment": "the sun on its way down to the fence"
+  },
+  {
+   "at": "patio.js:166",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    5,
+    42,
+    30,
+    1
+   ],
+   "what": "g.fillRect(5,42,30,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:167",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,…,26) [sprite \"canasta\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:167",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    7
+   ],
+   "what": "g.drawImage(…,5,7) [sprite \"canasta\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:169",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,84,30) [sprite \"cq.7_0\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:169",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    9
+   ],
+   "what": "g.drawImage(…,5,9) [sprite \"cq.7_0\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:195",
+   "fn": "inicio9",
+   "kind": "xy",
+   "nums": [
+    160,
+    128
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:195",
+   "fn": "inicio9",
+   "kind": "xy",
+   "nums": [
+    86,
+    136
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:195",
+   "fn": "inicio9",
+   "kind": "xy",
+   "nums": [
+    174,
+    128
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:205",
+   "fn": "ensena",
+   "kind": "rect",
+   "nums": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "patio.js:208",
+   "fn": "asoma",
+   "kind": "xy",
+   "nums": [
+    42,
+    116
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:219",
+   "fn": "final9",
+   "kind": "point",
+   "nums": [
+    60,
+    150
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:219",
+   "fn": "final9",
+   "kind": "point",
+   "nums": [
+    180,
+    150
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:219",
+   "fn": "final9",
+   "kind": "point",
+   "nums": [
+    120,
+    120
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:219",
+   "fn": "final9",
+   "kind": "point",
+   "nums": [
+    90,
+    170
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:219",
+   "fn": "final9",
+   "kind": "point",
+   "nums": [
+    150,
+    170
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:223",
+   "fn": "pelota",
+   "kind": "point",
+   "nums": [
+    166,
+    150
+   ],
+   "what": "mueve(\"____\",166,150) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:223",
+   "fn": "pelota",
+   "kind": "point",
+   "nums": [
+    60,
+    150
+   ],
+   "what": "mueve(\"______\",60,150) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:232",
+   "fn": "avesale",
+   "kind": "point",
+   "nums": [
+    184,
+    60
+   ],
+   "what": "KIT.aveVa(184,60,5,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:240",
+   "fn": "seva",
+   "kind": "point",
+   "nums": [
+    44,
+    118
+   ],
+   "what": "mueve(id,44,118) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:244",
+   "fn": "luzsale",
+   "kind": "point",
+   "nums": [
+    70,
+    160
+   ],
+   "what": "P[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:244",
+   "fn": "luzsale",
+   "kind": "point",
+   "nums": [
+    150,
+    150
+   ],
+   "what": "P[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:244",
+   "fn": "luzsale",
+   "kind": "point",
+   "nums": [
+    112,
+    190
+   ],
+   "what": "P[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:248",
+   "fn": "inicio10",
+   "kind": "xy",
+   "nums": [
+    190,
+    160
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:248",
+   "fn": "inicio10",
+   "kind": "xy",
+   "nums": [
+    50,
+    160
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:248",
+   "fn": "inicio10",
+   "kind": "xy",
+   "nums": [
+    164,
+    165
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:250",
+   "fn": "aveloop",
+   "kind": "point",
+   "nums": [
+    181,
+    66
+   ],
+   "what": "KIT.aveVa(181,66,7,-1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:252",
+   "fn": "avenido",
+   "kind": "point",
+   "nums": [
+    181,
+    66
+   ],
+   "what": "KIT.aveVa(181,66,8,-1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:270",
+   "fn": "prepA",
+   "kind": "point",
+   "nums": [
+    150,
+    140
+   ],
+   "what": "mueve(\"______\",150,140) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:284",
+   "fn": "alnido",
+   "kind": "point",
+   "nums": [
+    181,
+    66
+   ],
+   "what": "KIT.aveVa(181,66,9,-1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:287",
+   "fn": "final10",
+   "kind": "point",
+   "nums": [
+    60,
+    40
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:287",
+   "fn": "final10",
+   "kind": "point",
+   "nums": [
+    150,
+    44
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:287",
+   "fn": "final10",
+   "kind": "point",
+   "nums": [
+    104,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:287",
+   "fn": "final10",
+   "kind": "point",
+   "nums": [
+    80,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:287",
+   "fn": "final10",
+   "kind": "point",
+   "nums": [
+    130,
+    56
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:290",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    34,
+    136
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:290",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    60,
+    126
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:290",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    86,
+    136
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:290",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    97,
+    109
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:290",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    112,
+    126
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:291",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    150,
+    160
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:291",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    188,
+    158
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:291",
+   "fn": "inicio11",
+   "kind": "xy",
+   "nums": [
+    178,
+    83
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:295",
+   "fn": "juntos",
+   "kind": "point",
+   "nums": [
+    170,
+    124
+   ],
+   "what": "mueve(id,170,124) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:296",
+   "fn": "vuelveluis",
+   "kind": "point",
+   "nums": [
+    138,
+    138
+   ],
+   "what": "mueve(\"____\",138,138) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:301",
+   "fn": "viene",
+   "kind": "point",
+   "nums": [
+    186,
+    174
+   ],
+   "what": "mueve(\"______\",186,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:301",
+   "fn": "viene",
+   "kind": "point",
+   "nums": [
+    52,
+    174
+   ],
+   "what": "mueve(\"______\",52,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:308",
+   "fn": "luiscorre",
+   "kind": "point",
+   "nums": [
+    170,
+    124
+   ],
+   "what": "mueve(\"____\",170,124,8) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:313",
+   "fn": "final11",
+   "kind": "point",
+   "nums": [
+    110,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:313",
+   "fn": "final11",
+   "kind": "point",
+   "nums": [
+    170,
+    66
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:313",
+   "fn": "final11",
+   "kind": "point",
+   "nums": [
+    140,
+    56
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:313",
+   "fn": "final11",
+   "kind": "point",
+   "nums": [
+    124,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:313",
+   "fn": "final11",
+   "kind": "point",
+   "nums": [
+    160,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "patio.js:316",
+   "fn": "final11",
+   "kind": "xy",
+   "nums": [
+    214,
+    120
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "patio.js:316",
+   "fn": "final11",
+   "kind": "point",
+   "nums": [
+    14,
+    1
+   ],
+   "what": "luzA(l,f[0]+12,f[1]-8,14,1) args 3,4",
+   "comment": null
+  },
+  {
+   "at": "patio.js:318",
+   "fn": "sevan",
+   "kind": "point",
+   "nums": [
+    150,
+    70
+   ],
+   "what": "KIT.aveA(150,70,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "patio.js:323",
+   "fn": "stake",
+   "kind": "point",
+   "nums": [
+    226,
+    58
+   ],
+   "what": "luzA(l,226,58,14,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "patio.js:323",
+   "fn": "stake",
+   "kind": "point",
+   "nums": [
+    14,
+    0
+   ],
+   "what": "luzA(l,226,58,14,0) args 3,4",
+   "comment": null
+  },
+  {
+   "at": "patio.js:328",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "patio.js:328",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    118,
+    36
+   ],
+   "what": "heartAt",
+   "comment": null
+  },
+  {
+   "at": "patio.js:330",
+   "fn": null,
+   "kind": "xy",
+   "nums": [
+    181,
+    66
+   ],
+   "what": "x:,y:",
+   "comment": null
+  }
+ ]
+}

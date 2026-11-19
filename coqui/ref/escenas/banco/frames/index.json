@@ -1,0 +1,6813 @@
+{
+ "scene": "banco",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     180,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": null,
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-piragua-luis/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 86,
+   "reachedBy": {
+    "steps": {
+     "d-piragua-luis/right": "start,0-26",
+     "d-piragua-luis/wrong": "start,0-26",
+     "d-piragua-luis/alternate": "start,0-26",
+     "d-vamos-a-casa/right": "start",
+     "d-vamos-a-casa/wrong": "start",
+     "d-vamos-a-casa/alternate": "start",
+     "el-bebe-duerme/right": "start",
+     "el-bebe-duerme/wrong": "start",
+     "el-bebe-duerme/alternate": "start",
+     "h-banco/right": "start,0-31",
+     "h-banco/wrong": "start,0-31",
+     "h-banco/alternate": "start,0-31",
+     "la-piragua/right": "start,25,29-35,45-58,70-87",
+     "la-piragua/wrong": "start,25,29-35,45-60,76-83,85-89,97-98",
+     "la-piragua/alternate": "start,25,29-35,45-58,74-91",
+     "senor-senora/right": "start",
+     "senor-senora/wrong": "start",
+     "senor-senora/alternate": "start"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "d": "piragua"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     62,
+     173,
+     32,
+     27
+    ],
+    "luis": [
+     139,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     113,
+     144,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     91,
+     43,
+     18,
+     18
+    ]
+   },
+   "drawnFrom": "d-piragua-luis/right@27",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 113,
+   "distinctW": 7,
+   "reachedBy": {
+    "steps": {
+     "d-piragua-luis/right": "27,30-43",
+     "d-piragua-luis/wrong": "27,30-43",
+     "d-piragua-luis/alternate": "27,30-43"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": "piragua",
+    "luna": null,
+    "manos": {
+     "d": "piragua"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     62,
+     173,
+     32,
+     27
+    ],
+    "luis": [
+     139,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     113,
+     144,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     91,
+     43,
+     18,
+     18
+    ]
+   },
+   "drawnFrom": "d-piragua-luis/right@28",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 116,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "d-piragua-luis/right": "28-29",
+     "d-piragua-luis/wrong": "28-29",
+     "d-piragua-luis/alternate": "28-29"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     28,
+     183,
+     32,
+     27
+    ],
+    "luis": [
+     93,
+     160,
+     22,
+     44
+    ],
+    "carmen": [
+     115,
+     164,
+     22,
+     44
+    ],
+    "abuela": [
+     65,
+     149,
+     22,
+     51
+    ],
+    "hombre": null,
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     77,
+     188,
+     30,
+     24
+    ],
+    "pajaro": [
+     91,
+     43,
+     18,
+     18
+    ]
+   },
+   "drawnFrom": "d-vamos-a-casa/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 53,
+   "reachedBy": {
+    "steps": {
+     "d-vamos-a-casa/right": "0-2",
+     "d-vamos-a-casa/wrong": "0-2",
+     "d-vamos-a-casa/alternate": "0-2",
+     "senor-senora/right": "0-33,35-41,43-54",
+     "senor-senora/wrong": "0-33,35-41,43-54",
+     "senor-senora/alternate": "0-33,35-41,43-54"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": 1,
+    "manos": null,
+    "noche": 1,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     28,
+     183,
+     32,
+     27
+    ],
+    "luis": [
+     93,
+     160,
+     22,
+     44
+    ],
+    "carmen": [
+     115,
+     164,
+     22,
+     44
+    ],
+    "abuela": [
+     65,
+     149,
+     22,
+     51
+    ],
+    "hombre": null,
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     77,
+     188,
+     30,
+     24
+    ],
+    "pajaro": [
+     91,
+     43,
+     18,
+     18
+    ]
+   },
+   "drawnFrom": "d-vamos-a-casa/right@3",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 15,
+   "distinctW": 33,
+   "reachedBy": {
+    "steps": {
+     "d-vamos-a-casa/right": "3-54",
+     "d-vamos-a-casa/wrong": "3-54",
+     "d-vamos-a-casa/alternate": "3-54"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 0,
+     "bebe": "duerme"
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     72,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     97,
+     186,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "0-33",
+     "el-bebe-duerme/wrong": "0-33",
+     "el-bebe-duerme/alternate": "0-33"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 1,
+     "bebe": "duerme"
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     72,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@34",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 432,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "34-37",
+     "el-bebe-duerme/wrong": "34-37",
+     "el-bebe-duerme/alternate": "34-37"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 1,
+     "bebe": "rie",
+     "mano": 1
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     72,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@38",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 480,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "38-39,41",
+     "el-bebe-duerme/wrong": "38-39,41",
+     "el-bebe-duerme/alternate": "38-39,41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 1,
+     "bebe": "rie",
+     "mano": 0,
+     "tiembla": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     72,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@42",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 533,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "42",
+     "el-bebe-duerme/wrong": "42",
+     "el-bebe-duerme/alternate": "42"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 1,
+     "bebe": "duerme",
+     "mano": 0,
+     "tiembla": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     72,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@43",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 538,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "43",
+     "el-bebe-duerme/wrong": "43",
+     "el-bebe-duerme/alternate": "43"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s010",
+   "files": {
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 0,
+     "bebe": "duerme",
+     "mano": 0,
+     "tiembla": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     72,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@44",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 547,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "40,44-48",
+     "el-bebe-duerme/wrong": "40,44-48",
+     "el-bebe-duerme/alternate": "40,44-48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s011",
+   "files": {
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 0,
+     "bebe": "duerme",
+     "mano": 0,
+     "tiembla": 0,
+     "mece": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     81,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@49",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 650,
+   "distinctW": 37,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "49-55,58,64-92",
+     "el-bebe-duerme/wrong": "49-55,58,65-66,72-77,81-95,99-114",
+     "el-bebe-duerme/alternate": "49-55,58,64-69,73-97"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s012",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 1,
+     "bebe": "duerme",
+     "mano": 0,
+     "tiembla": 0,
+     "mece": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     81,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/right@56",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 669,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/right": "56-57,59-63",
+     "el-bebe-duerme/wrong": "56-57,59-60,67-71",
+     "el-bebe-duerme/alternate": "56-57,59-63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s013",
+   "files": {
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 1,
+     "bebe": "llora",
+     "mano": 0,
+     "tiembla": 1,
+     "mece": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     81,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/wrong@61",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 823,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/wrong": "61-63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s014",
+   "files": {
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": {
+     "x": 164,
+     "y": 176,
+     "capota": 0,
+     "bebe": "llora",
+     "mano": 0,
+     "tiembla": 1,
+     "mece": 0
+    },
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": [
+     145,
+     134,
+     38,
+     44
+    ],
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     140,
+     180,
+     32,
+     27
+    ],
+    "luis": [
+     81,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     27,
+     166,
+     22,
+     44
+    ],
+    "abuela": [
+     90,
+     113,
+     22,
+     48
+    ],
+    "hombre": [
+     183,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": [
+     109,
+     158,
+     30,
+     24
+    ],
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "el-bebe-duerme/wrong@64",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 840,
+   "distinctW": 10,
+   "reachedBy": {
+    "steps": {
+     "el-bebe-duerme/wrong": "64,78-80,96-98",
+     "el-bebe-duerme/alternate": "70-72"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s015",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": 1,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     179,
+     32,
+     27
+    ],
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "la-piragua/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 33,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "0-7,9-11,13-24,26-28,59-63,65-69",
+     "la-piragua/wrong": "0-7,9-11,13-24,26-28,61-65,67-70,73-75",
+     "la-piragua/alternate": "0-7,9-11,13-24,26-28,59-63,65-68,71-73"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s016",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": "piragua",
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     179,
+     32,
+     27
+    ],
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "la-piragua/right@8",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 27,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "8,64",
+     "la-piragua/wrong": "8,66,71-72",
+     "la-piragua/alternate": "8,64,69-70"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s017",
+   "files": {
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": "agua",
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     179,
+     32,
+     27
+    ],
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "la-piragua/right@12",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 80,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "12",
+     "la-piragua/wrong": "12",
+     "la-piragua/alternate": "12"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s018",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "i": "piragua",
+     "d": "agua"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     179,
+     32,
+     27
+    ],
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "la-piragua/right@36",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 390,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "36,38-39",
+     "la-piragua/wrong": "36,38-39",
+     "la-piragua/alternate": "36,38-39"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s019",
+   "files": {
+    "full": "s019.full.png",
+    "full.wide": "s019.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "i": "piragua",
+     "d": "vacia"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     179,
+     32,
+     27
+    ],
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "la-piragua/right@40",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 434,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "37,40-41",
+     "la-piragua/wrong": "37,40-41",
+     "la-piragua/alternate": "37,40-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s020",
+   "files": {
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "i": "papel",
+     "d": "vacia"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     179,
+     32,
+     27
+    ],
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     74,
+     42,
+     69,
+     89
+    ]
+   },
+   "drawnFrom": "la-piragua/right@42",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 490,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "42-44",
+     "la-piragua/wrong": "42-44",
+     "la-piragua/alternate": "42-44"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s021",
+   "files": {
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "i": "piragua3"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     159,
+     164,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     91,
+     43,
+     52,
+     149
+    ]
+   },
+   "drawnFrom": "la-piragua/right@88",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 911,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/right": "88-94"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s022",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "i": "piragua"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     101,
+     43,
+     84,
+     149
+    ]
+   },
+   "drawnFrom": "la-piragua/wrong@90",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1139,
+   "distinctW": 8,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/wrong": "90-93,99-105",
+     "la-piragua/alternate": "92-98"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s023",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": {
+     "i": "papel"
+    },
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": [
+     181,
+     121,
+     22,
+     40
+    ],
+    "carmen": [
+     51,
+     162,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": [
+     101,
+     43,
+     84,
+     149
+    ]
+   },
+   "drawnFrom": "la-piragua/wrong@94",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1183,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-piragua/wrong": "84,94-96"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s024",
+   "files": {
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": "hueso",
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     178,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     147,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": [
+     96,
+     112,
+     22,
+     49
+    ],
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "joven": [
+     172,
+     112,
+     22,
+     49
+    ],
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     75,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     23,
+     171,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@34",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 363,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "34,42",
+     "senor-senora/wrong": "34,42",
+     "senor-senora/alternate": "34,42"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s025",
+   "files": {
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     178,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     147,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "joven": [
+     172,
+     112,
+     22,
+     49
+    ],
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     75,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     23,
+     171,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@55",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 606,
+   "distinctW": 41,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "55-61,63-89",
+     "senor-senora/wrong": "55-61,63-77,79-83,85",
+     "senor-senora/alternate": "55-61,63-71,73-77,79"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s026",
+   "files": {
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico"
+    ],
+    "encima": "hueso",
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     178,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     147,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": [
+     124,
+     112,
+     22,
+     49
+    ],
+    "senor": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "joven": [
+     172,
+     112,
+     22,
+     49
+    ],
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     75,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     23,
+     171,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@62",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 638,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "62",
+     "senor-senora/wrong": "62",
+     "senor-senora/alternate": "62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s027",
+   "files": {
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "nochar": "s027.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     21,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     172,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@90",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1058,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "90"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s028",
+   "files": {
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "nochar": "s028.nochar.png",
+    "nochar.wide": "s028.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 42.599999999999994,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     62,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     20,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     71,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@91",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1068,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "91"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s029",
+   "files": {
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 35.999999999999986,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     55,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     17,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     84,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@92",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1074,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "92"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s030",
+   "files": {
+    "full": "s030.full.png",
+    "full.wide": "s030.full.wide.png",
+    "nochar": "s030.nochar.png",
+    "nochar.wide": "s030.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 31.59999999999998,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     51,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     16,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     79,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@93",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1079,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "93"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s031",
+   "files": {
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "nochar": "s031.nochar.png",
+    "nochar.wide": "s031.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 9.599999999999962,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 3,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     29,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     9,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     46,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@94",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1111,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "94"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s032",
+   "files": {
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": -0.30000000000003624,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 3,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     19,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     6,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     61,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/right@95",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1120,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/right": "95"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s033",
+   "files": {
+    "full": "s033.full.png",
+    "full.wide": "s033.full.wide.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     84,
+     178,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     147,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": [
+     76,
+     112,
+     22,
+     49
+    ],
+    "joven": [
+     172,
+     112,
+     22,
+     49
+    ],
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     21,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     172,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@86",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1029,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "78,84,86-91",
+     "senor-senora/alternate": "72,78,80-92"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s034",
+   "files": {
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": "bolsa",
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     90,
+     184,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     147,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": [
+     71,
+     130,
+     22,
+     56
+    ],
+    "joven": [
+     93,
+     130,
+     22,
+     56
+    ],
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     21,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     172,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@93",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1114,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "93-97,99"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s035",
+   "files": {
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "nochar": "s035.nochar.png",
+    "nochar.wide": "s035.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     90,
+     184,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     147,
+     166,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": [
+     93,
+     130,
+     22,
+     56
+    ],
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     21,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     172,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@100",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1219,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "92,98,100-102"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s036",
+   "files": {
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     21,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     172,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@103",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1275,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "103"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s037",
+   "files": {
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "nochar": "s037.nochar.png",
+    "nochar.wide": "s037.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 42.599999999999994,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     62,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     20,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     71,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@104",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1285,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "104"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s038",
+   "files": {
+    "full": "s038.full.png",
+    "full.wide": "s038.full.wide.png",
+    "nochar": "s038.nochar.png",
+    "nochar.wide": "s038.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 35.999999999999986,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     55,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     17,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     84,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@105",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1291,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "105"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s039",
+   "files": {
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "nochar": "s039.nochar.png",
+    "nochar.wide": "s039.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 30.49999999999998,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     49,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     16,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     76,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@106",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1295,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "106"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s040",
+   "files": {
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "nochar": "s040.nochar.png",
+    "nochar.wide": "s040.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 8.499999999999963,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 3,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     27,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     9,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@107",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1328,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "107"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s041",
+   "files": {
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": -0.30000000000003624,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera",
+     "bolsa"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 3,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     19,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     6,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     61,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/wrong@108",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1336,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/wrong": "108"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s042",
+   "files": {
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 1,
+    "carroX": null,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 0,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     40,
+     116,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     21,
+     171,
+     30,
+     24
+    ],
+    "perro_joven": [
+     49,
+     172,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/alternate@93",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1090,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/alternate": "93"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s043",
+   "files": {
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "nochar": "s043.nochar.png",
+    "nochar.wide": "s043.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 42.599999999999994,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     62,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     20,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     71,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/alternate@94",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1100,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/alternate": "94"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s044",
+   "files": {
+    "full": "s044.full.png",
+    "full.wide": "s044.full.wide.png",
+    "nochar": "s044.nochar.png",
+    "nochar.wide": "s044.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 35.999999999999986,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     55,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     17,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     84,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/alternate@95",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1106,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/alternate": "95"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s045",
+   "files": {
+    "full": "s045.full.png",
+    "full.wide": "s045.full.wide.png",
+    "nochar": "s045.nochar.png",
+    "nochar.wide": "s045.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 31.59999999999998,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 1,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     51,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     16,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     79,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/alternate@96",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1110,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/alternate": "96"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s046",
+   "files": {
+    "full": "s046.full.png",
+    "full.wide": "s046.full.wide.png",
+    "nochar": "s046.nochar.png",
+    "nochar.wide": "s046.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": 9.599999999999962,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 3,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     29,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     9,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     46,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/alternate@97",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1143,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/alternate": "97"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s047",
+   "files": {
+    "full": "s047.full.png",
+    "full.wide": "s047.full.wide.png",
+    "nochar": "s047.nochar.png",
+    "nochar.wide": "s047.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": "cerrado",
+    "carroX": -0.30000000000003624,
+    "coche": null,
+    "encaja": [
+     "periodico",
+     "billetera"
+    ],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 1,
+    "seva": 3,
+    "tarde": 1
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": [
+     108,
+     163,
+     32,
+     27
+    ],
+    "luis": [
+     137,
+     142,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     160,
+     22,
+     44
+    ],
+    "abuela": null,
+    "hombre": null,
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": [
+     19,
+     124,
+     22,
+     56
+    ],
+    "perro_viejo": [
+     6,
+     174,
+     30,
+     24
+    ],
+    "perro_joven": [
+     61,
+     182,
+     30,
+     24
+    ],
+    "perro": null,
+    "pajaro": [
+     57,
+     41,
+     86,
+     20
+    ]
+   },
+   "drawnFrom": "senor-senora/alternate@98",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1152,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "senor-senora/alternate": "98"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s048",
+   "files": {
+    "full": "s048.full.png",
+    "full.wide": "s048.full.wide.png",
+    "nochar": "bg.banco.png",
+    "nochar.wide": "s048.nochar.wide.png",
+    "bg": "bg.banco.png"
+   },
+   "background": [
+    "banco"
+   ],
+   "keys": {
+    "bandeja": null,
+    "carro": 0,
+    "carroX": null,
+    "coche": null,
+    "encaja": [],
+    "encima": null,
+    "luna": null,
+    "manos": null,
+    "noche": 0,
+    "seva": 0,
+    "tarde": 0
+   },
+   "things": {
+    "coche": null,
+    "carro": [
+     23,
+     106,
+     48,
+     74
+    ],
+    "farol": [
+     161,
+     34,
+     14,
+     126
+    ],
+    "banco0": [
+     74,
+     127,
+     44,
+     36
+    ],
+    "banco1": [
+     122,
+     127,
+     44,
+     36
+    ],
+    "banco2": [
+     170,
+     127,
+     44,
+     36
+    ],
+    "parque": [
+     0,
+     60,
+     240,
+     156
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": null,
+    "carmen": null,
+    "abuela": null,
+    "hombre": [
+     133,
+     112,
+     22,
+     49
+    ],
+    "mujer": null,
+    "senor": null,
+    "joven": null,
+    "senora": null,
+    "piraguero": null,
+    "perro_viejo": null,
+    "perro_joven": null,
+    "perro": null,
+    "pajaro": null
+   },
+   "drawnFrom": "cual-banco:hombre.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 24,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-banco:hombre.si",
+     "cual-banco:hombre.no",
+     "cual-banco:mujer.si",
+     "cual-banco:mujer.no",
+     "cual-banco:señor.si",
+     "cual-banco:señor.no",
+     "cual-banco:señora.si",
+     "cual-banco:señora.no",
+     "cual-banco:joven.si",
+     "cual-banco:joven.no",
+     "cual-banco:viejo.si",
+     "cual-banco:viejo.no",
+     "cual-banco:come.si",
+     "cual-banco:come.no",
+     "cual-banco:bebe.si",
+     "cual-banco:bebe.no",
+     "cual-banco:duerme.si",
+     "cual-banco:duerme.no",
+     "cual-banco:cansado.si",
+     "cual-banco:cansado.no",
+     "cual-banco:contento.si",
+     "cual-banco:contento.no",
+     "cual-banco:triste.si",
+     "cual-banco:triste.no"
+    ]
+   }
+  }
+ ]
+}

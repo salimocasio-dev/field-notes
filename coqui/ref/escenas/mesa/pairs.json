@@ -1,0 +1,1984 @@
+{
+ "scene": "mesa",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-mesa",
+   "w": "mesa",
+   "say": "n_mesa",
+   "sayText": "Es la mesa.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     84,
+     100,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {},
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 1,
+     "cosas": [
+      {
+       "k": "florero",
+       "x": 140,
+       "y": 152,
+       "z": 300
+      }
+     ],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "mesa.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     122,
+     66,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {},
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {
+      "olla": 1,
+      "vapor": 1
+     },
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "mesa.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "plato",
+   "say": "m_c_mi_plato",
+   "sayText": "Mira mi plato.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "luis": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "plato"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "plato.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "luis": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "taza"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "plato.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "taza",
+   "say": "m_c_mi_taza",
+   "sayText": "Mira mi taza.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "tazall"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "taza.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "olla",
+       "alzax": 26
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "taza.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "cuchara",
+   "say": "m_c_mi_cuchara",
+   "sayText": "Mira mi cuchara.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "abuelo": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "cuchara"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "cuchara.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "abuelo": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "tenedor"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "cuchara.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "tenedor",
+   "say": "m_c_papa_tenedor",
+   "sayText": "Papá tiene el tenedor.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "papa": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "tenedor"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "tenedor.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     54,
+     150,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "papa": {
+       "x": 110,
+       "y": 206,
+       "dir": 1,
+       "alza": "cuchillo"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "tenedor.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "cuchillo",
+   "say": "m_c_ab_cuchillo",
+   "sayText": "Abuela tiene mi cuchillo.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     127,
+     116,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 205,
+       "y": 170,
+       "dir": -1,
+       "alza": "cuchillo"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "cuchillo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     127,
+     116,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 205,
+       "y": 170,
+       "dir": -1,
+       "alza": "cuchara"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "cuchillo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "comida",
+   "say": "m_c_mira_comida",
+   "sayText": "Mira la comida.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     100,
+     126,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {},
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": {
+        "n": 1,
+        "con": "espa",
+        "vapor": 1
+       },
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 1,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "comida.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     100,
+     126,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {},
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": {
+        "n": 2,
+        "con": null
+       },
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 1,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "comida.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "cocina",
+   "say": "c26_ab_en_cocina",
+   "sayText": "Abuela está en la cocina.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     70,
+     86,
+     169.5,
+     90
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 176,
+       "y": 172,
+       "dir": -1
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {
+      "olla": 1,
+      "vapor": 1
+     },
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "cocina.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     70,
+     90,
+     169.5,
+     90
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 176,
+       "y": 176,
+       "dir": -1
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 1,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "cocina.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "pone",
+   "say": "m_c_carmen_pone",
+   "sayText": "Carmen pone el plato en la mesa.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     127,
+     104,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 206,
+       "y": 165,
+       "dir": -1,
+       "pose": "offer"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 1,
+     "cosas": [
+      {
+       "k": "plato",
+       "x": 187,
+       "y": 150,
+       "z": 300
+      }
+     ],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "pone.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     127,
+     104,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 206,
+       "y": 165,
+       "dir": -1,
+       "pose": "offer"
+      }
+     },
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 1,
+     "cosas": [
+      {
+       "k": "plato",
+       "x": 178,
+       "y": 150,
+       "z": 300
+      },
+      {
+       "k": "pano",
+       "x": 187,
+       "y": 151,
+       "z": 301
+      }
+     ],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "pone.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "tengo hambre",
+   "say": "c26_luis_hambre",
+   "sayText": "Luis dice: ¡Tengo hambre!",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     84,
+     84,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "luis": {
+       "x": 128,
+       "y": 150,
+       "dir": 1,
+       "sent": 1,
+       "piensa": "hambre"
+      }
+     },
+     "sitio": {
+      "luis": 1
+     },
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "tengo_hambre.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     84,
+     84,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "luis": {
+       "x": 128,
+       "y": 150,
+       "dir": 1,
+       "sent": 1,
+       "piensa": "sed"
+      }
+     },
+     "sitio": {
+      "luis": 1
+     },
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "tengo_hambre.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "tengo sed",
+   "say": "c26_carmen_sed",
+   "sayText": "Carmen dice: ¡Tengo sed!",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     84,
+     100,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 128,
+       "y": 150,
+       "dir": 1,
+       "sent": 1,
+       "hace": "bebe",
+       "que": "vaso"
+      }
+     },
+     "sitio": {
+      "carmen": 1
+     },
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "tengo_sed.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     84,
+     100,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 128,
+       "y": 150,
+       "dir": 1,
+       "sent": 1,
+       "hace": "come",
+       "que": "tenedor"
+      }
+     },
+     "sitio": {
+      "carmen": 1
+     },
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": {
+        "n": 1,
+        "con": "comida"
+       },
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "tengo_sed.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-mesa",
+   "w": "listo",
+   "say": "m_c_bizcocho_listo",
+   "sayText": "El bizcocho está listo.",
+   "si": {
+    "scene": "mesa",
+    "cam": [
+     84,
+     100,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {},
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {},
+     "mantel": 1,
+     "cosas": [
+      {
+       "k": "entero",
+       "x": 140,
+       "y": 153,
+       "z": 300
+      }
+     ],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "listo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "mesa",
+    "cam": [
+     127,
+     116,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "gente": {},
+     "sitio": {},
+     "puestos": [
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      },
+      {
+       "plato": null,
+       "taza": null,
+       "uts": [],
+       "frente": []
+      }
+     ],
+     "mostrador": {},
+     "estufa": {
+      "horno": 1
+     },
+     "mantel": 0,
+     "cosas": [],
+     "perro": null,
+     "muestra": null,
+     "encima": null,
+     "tarjeta": null,
+     "afuera": 0,
+     "bandeja": []
+    },
+    "esc": null,
+    "png": "listo.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "plato",
+   "s": 24,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "plato",
+     "side": "si",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.plato.0.png"
+    },
+    {
+     "first": false,
+     "pair": "plato",
+     "side": "no",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.plato.1.png"
+    },
+    {
+     "first": false,
+     "pair": "cuchara",
+     "side": "si",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.plato.2.png"
+    },
+    {
+     "first": false,
+     "pair": "taza",
+     "side": "no",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.plato.3.png"
+    }
+   ]
+  },
+  {
+   "w": "taza",
+   "s": 24,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "taza",
+     "side": "si",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.taza.0.png"
+    },
+    {
+     "first": false,
+     "pair": "taza",
+     "side": "no",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.taza.1.png"
+    },
+    {
+     "first": false,
+     "pair": "plato",
+     "side": "si",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.taza.2.png"
+    },
+    {
+     "first": false,
+     "pair": "cuchara",
+     "side": "no",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.taza.3.png"
+    }
+   ]
+  },
+  {
+   "w": "cuchara",
+   "s": 25,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "cuchara",
+     "side": "si",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.cuchara.0.png"
+    },
+    {
+     "first": false,
+     "pair": "cuchara",
+     "side": "no",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.cuchara.1.png"
+    },
+    {
+     "first": false,
+     "pair": "tenedor",
+     "side": "no",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.cuchara.2.png"
+    },
+    {
+     "first": false,
+     "pair": "plato",
+     "side": "si",
+     "x": null,
+     "crop": [
+      83.33,
+      150,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.cuchara.3.png"
+    }
+   ]
+  },
+  {
+   "w": "tengo hambre",
+   "s": 26,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "tengo hambre",
+     "side": "si",
+     "x": null,
+     "crop": [
+      113.33,
+      84,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.tengo_hambre.0.png"
+    },
+    {
+     "first": false,
+     "pair": "tengo hambre",
+     "side": "no",
+     "x": null,
+     "crop": [
+      113.33,
+      84,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.tengo_hambre.1.png"
+    },
+    {
+     "first": false,
+     "pair": "tengo sed",
+     "side": "si",
+     "x": null,
+     "crop": [
+      113.33,
+      100,
+      54.34,
+      60
+     ],
+     "scene": "mesa",
+     "png": "nivel.tengo_hambre.2.png"
+    },
+    {
+     "first": false,
+     "pair": "comida",
+     "side": "no",
+     "x": null,
+     "crop": [
+      114.67,
+      126,
+      27.17,
+      30
+     ],
+     "scene": "mesa",
+     "png": "nivel.tengo_hambre.3.png"
+    }
+   ]
+  }
+ ]
+}

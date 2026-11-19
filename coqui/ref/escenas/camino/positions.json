@@ -1,0 +1,2470 @@
+{
+ "scene": "camino",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 35,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 22,
+   "y": 30,
+   "w": 196,
+   "h": 104,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "parque.no.cam",
+     "owner": "pair picture",
+     "note": "drawn by scene patio"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 22,
+   "y": 84,
+   "w": 196,
+   "h": 104,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "parque.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 40,
+   "y": 120,
+   "w": 150,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 58,
+   "y": 58,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "hay.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "hay.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 62,
+   "y": 60,
+   "w": 100,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "uno.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "uno.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "dos.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "dos.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "tres.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "tres.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 62,
+   "y": 96,
+   "w": 100,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "gato.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "gato.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 70,
+   "y": 128,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "perro.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "perro.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 78,
+   "y": 118,
+   "w": 75,
+   "h": 39.8,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "árbol.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 112,
+   "y": 62,
+   "w": 100,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "árbol.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 79.95,
+   "y": 120,
+   "w": 72.09,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "corre.p2",
+     "owner": "level picture",
+     "note": "pair camina.si, centred on x 116 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 87.33,
+   "y": 58,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "dos.p3",
+     "owner": "level picture",
+     "note": "pair hay.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 87.95,
+   "y": 60,
+   "w": 48.09,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "dos.p0",
+     "owner": "level picture",
+     "note": "pair dos.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "dos.p1",
+     "owner": "level picture",
+     "note": "pair uno.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "dos.p2",
+     "owner": "level picture",
+     "note": "pair tres.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 87.95,
+   "y": 96,
+   "w": 48.09,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "perro.p2",
+     "owner": "level picture",
+     "note": "pair gato.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 99.33,
+   "y": 128,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "perro.p0",
+     "owner": "level picture",
+     "note": "pair perro.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "perro.p1",
+     "owner": "level picture",
+     "note": "pair perro.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "corre.p0",
+     "owner": "level picture",
+     "note": "pair corre.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "corre.p1",
+     "owner": "level picture",
+     "note": "pair corre.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "corre.p3",
+     "owner": "level picture",
+     "note": "pair despacio.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rápido.p0",
+     "owner": "level picture",
+     "note": "pair rápido.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rápido.p1",
+     "owner": "level picture",
+     "note": "pair rápido.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rápido.p2",
+     "owner": "level picture",
+     "note": "pair despacio.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rápido.p3",
+     "owner": "level picture",
+     "note": "pair perro.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 137.95,
+   "y": 62,
+   "w": 48.09,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "perro.p3",
+     "owner": "level picture",
+     "note": "pair árbol.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "numbers",
+   "x": 0,
+   "y": 0,
+   "w": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "gato.no.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    }
+   ]
+  },
+  {
+   "kind": "numbers",
+   "x": 0,
+   "y": 1,
+   "w": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "uno.si.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "dos.no.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    }
+   ]
+  },
+  {
+   "kind": "numbers",
+   "x": 0,
+   "y": 2,
+   "w": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "dos.si.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "tres.no.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    }
+   ]
+  },
+  {
+   "kind": "numbers",
+   "x": 0,
+   "y": 3,
+   "w": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "uno.no.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "tres.si.set.pajaros",
+     "owner": "set.pajaros",
+     "note": "not a place on screen (a list of counts or flags)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": -16,
+   "y": -27,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "perro.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "perro.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "gato.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "gato.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "árbol.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "árbol.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "parque.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "hay.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "hay.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "uno.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "uno.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "dos.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "dos.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "tres.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "tres.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "hay.si.set.gato",
+     "owner": "set.gato",
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 46,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/d-corre.json",
+     "at": "beats.26",
+     "owner": "[]",
+     "insideThings": [
+      "gato",
+      "porton",
+      "camino",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 70,
+   "y": 186,
+   "uses": [
+    {
+     "file": "cuentos/d-corre.json",
+     "at": "beats.27",
+     "owner": "[]",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 88,
+   "y": 134,
+   "uses": [
+    {
+     "file": "cuentos/d-corre.json",
+     "at": "beats.49",
+     "owner": "[]",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 96,
+   "y": 30,
+   "uses": [
+    {
+     "file": "cuentos/h-camino.json",
+     "at": "beats.5.set.respEn",
+     "owner": "set.respEn",
+     "meaning": "where the answer bubbles stand instead of above the frog (juego.js:51 respBox)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 98,
+   "y": 170,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.no.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "dust behind a run (camino.js:111)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 100,
+   "y": 174,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.no.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "dust behind a run (camino.js:111)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 102,
+   "y": 185,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.no.set.caracol",
+     "owner": "set.caracol",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "the snail's foot (camino.js:105)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.si.set.caracol",
+     "owner": "set.caracol",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "the snail's foot (camino.js:105)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 106,
+   "y": 180,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.si.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "dust behind a run (camino.js:111)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.no.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "dust behind a run (camino.js:111)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 108,
+   "y": 180,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.si.set.polvo",
+     "owner": "set.polvo",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "dust behind a run (camino.js:111)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 113,
+   "y": 134,
+   "uses": [
+    {
+     "file": "cuentos/d-corre.json",
+     "at": "beats.1.set.gato",
+     "owner": "set.gato",
+     "insideThings": [
+      "gato",
+      "banco",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    },
+    {
+     "file": "cuentos/h-camino.json",
+     "at": "beats.1.set.gato",
+     "owner": "set.gato",
+     "insideThings": [
+      "gato",
+      "banco",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "gato.si.set.gato",
+     "owner": "set.gato",
+     "insideThings": [
+      "gato",
+      "banco",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 116,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "a person's feet (camino.js:75-80 gente)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "camina.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "a person's feet (camino.js:75-80 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 118,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "a person's feet (camino.js:75-80 gente)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "espera.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "camino",
+      "parque"
+     ],
+     "meaning": "a person's feet (camino.js:75-80 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 126,
+   "y": 180,
+   "uses": [
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "perro.si.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the dog's feet (camino.js:82 animal)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "perro.no.set.gato",
+     "owner": "set.gato",
+     "insideThings": [
+      "gato",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.si.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the dog's feet (camino.js:82 animal)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "corre.no.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the dog's feet (camino.js:82 animal)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.si.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the dog's feet (camino.js:82 animal)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "rápido.no.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the dog's feet (camino.js:82 animal)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.si.set.gato",
+     "owner": "set.gato",
+     "insideThings": [
+      "gato",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    },
+    {
+     "file": "cuentos/cual-camino.json",
+     "at": "despacio.no.set.gato",
+     "owner": "set.gato",
+     "insideThings": [
+      "gato",
+      "camino",
+      "parque"
+     ],
+     "meaning": "the cat's feet; en: a tree index puts it up that tree instead (camino.js:100)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 116,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "corre.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    66,
+    182
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    79,
+    175
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    92,
+    168
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    105,
+    162
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    118,
+    156
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    131,
+    151
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    144,
+    146
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    157,
+    142
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    170,
+    139
+   ],
+   "what": "MARCA[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    70,
+    120
+   ],
+   "what": "ARBOL[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    116
+   ],
+   "what": "ARBOL[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    154,
+    112
+   ],
+   "what": "ARBOL[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    200,
+    128
+   ],
+   "what": "GRAN",
+   "comment": null
+  },
+  {
+   "at": "camino.js:17",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    98,
+    128,
+    30,
+    16
+   ],
+   "what": "BANCO",
+   "comment": null
+  },
+  {
+   "at": "camino.js:18",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    -9,
+    -31
+   ],
+   "what": "NIDO[]",
+   "comment": "where up to three birds sit in a small tree, from its foot"
+  },
+  {
+   "at": "camino.js:18",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    -36
+   ],
+   "what": "NIDO[]",
+   "comment": "where up to three birds sit in a small tree, from its foot"
+  },
+  {
+   "at": "camino.js:18",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    0,
+    -21
+   ],
+   "what": "NIDO[]",
+   "comment": "where up to three birds sit in a small tree, from its foot"
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "rect",
+   "nums": [
+    1,
+    0,
+    5,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "rect",
+   "nums": [
+    0,
+    1,
+    7,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "rect",
+   "nums": [
+    7,
+    0,
+    1,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "rect",
+   "nums": [
+    8,
+    -1,
+    1,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "rect",
+   "nums": [
+    6,
+    1,
+    1,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    1,
+    0
+   ],
+   "what": "u(1,0,5,5,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "u(1,0,5,5,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    0,
+    1
+   ],
+   "what": "u(0,1,7,3,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    7,
+    3
+   ],
+   "what": "u(0,1,7,3,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    6,
+    1
+   ],
+   "what": "u(6,1,1,3,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    1,
+    3
+   ],
+   "what": "u(6,1,1,3,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    7,
+    0
+   ],
+   "what": "u(7,0,1,5,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    1,
+    5
+   ],
+   "what": "u(7,0,1,5,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    8,
+    -1
+   ],
+   "what": "u(8,-1,1,7,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    1,
+    7
+   ],
+   "what": "u(8,-1,1,7,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "u(1,1,1,1,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "u(1,1,1,1,OUT) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "u(3,3,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:54",
+   "fn": "galleta",
+   "kind": "point",
+   "nums": [
+    2,
+    1
+   ],
+   "what": "u(3,3,2,1,\"_______\") args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    0,
+    2,
+    2,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    3,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    3,
+    4,
+    4,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    6,
+    3,
+    3,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    8,
+    1,
+    2,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    0,
+    2,
+    2,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    3,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    3,
+    4,
+    4,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    6,
+    3,
+    3,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:55",
+   "fn": "guineo",
+   "kind": "rect",
+   "nums": [
+    8,
+    1,
+    2,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:62",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    100,
+    176,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "camino.js:62",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    74,
+    128,
+    0.86
+   ],
+   "what": "LUGAR.banco",
+   "comment": null
+  },
+  {
+   "at": "camino.js:62",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    44,
+    122,
+    0.8
+   ],
+   "what": "LUGAR.arbol0",
+   "comment": null
+  },
+  {
+   "at": "camino.js:62",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    126,
+    122,
+    0.8
+   ],
+   "what": "LUGAR.arbol1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:62",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    166,
+    118,
+    0.8
+   ],
+   "what": "LUGAR.arbol2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:62",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    166,
+    126,
+    0.84
+   ],
+   "what": "LUGAR.gran",
+   "comment": null
+  },
+  {
+   "at": "camino.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    116,
+    36,
+    60
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "camino.js:72",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    30,
+    128,
+    170,
+    76
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "camino.js:72",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    100,
+    240,
+    116
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "camino.js:76",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:76",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(…,-30,0) [sprite \"ab\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:78",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:84",
+   "fn": "animal",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:84",
+   "fn": "animal",
+   "kind": "point",
+   "nums": [
+    -13,
+    0
+   ],
+   "what": "c.drawImage(im,-13,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:93",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:93",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:95",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"camino\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:98",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -18,
+    -36
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:98",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    16,
+    -40
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:98",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -14,
+    -18
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:98",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    18,
+    -22
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    5,
+    29
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    11,
+    27
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    -10,
+    -9
+   ],
+   "what": "g.drawImage(im,-10,-9) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    3,
+    9
+   ],
+   "what": "lin(3,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:122",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    18,
+    30
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:122",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    27,
+    30
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:122",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    3,
+    6
+   ],
+   "what": "lin(3,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "camino.js:123",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    18,
+    30
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:123",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    25,
+    30
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:124",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    2,
+    29
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:124",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    7,
+    25
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:124",
+   "fn": "respIcon",
+   "kind": "rect",
+   "nums": [
+    5,
+    -3,
+    2,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:124",
+   "fn": "respIcon",
+   "kind": "rect",
+   "nums": [
+    7,
+    -1,
+    2,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:124",
+   "fn": "respIcon",
+   "kind": "rect",
+   "nums": [
+    9,
+    0,
+    1,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:129",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,88,30) [sprite \"gtsit0\"] args 1,2",
+   "comment": "one biscuit a round: a heart if the cat got it, a paw mark if Canelo did"
+  },
+  {
+   "at": "camino.js:129",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    7
+   ],
+   "what": "g.drawImage(…,5,7) [sprite \"gtsit0\"] args 1,2",
+   "comment": "one biscuit a round: a heart if the cat got it, a paw mark if Canelo did"
+  },
+  {
+   "at": "camino.js:130",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    1,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:130",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:130",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    9,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:130",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    13,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:131",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,84,30) [sprite \"cesta\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:131",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    13
+   ],
+   "what": "g.drawImage(…,5,13) [sprite \"cesta\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:131",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    10,
+    1.5
+   ],
+   "what": "guineo(g,30+i*17,10,1.5) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "camino.js:160",
+   "fn": "inicio12",
+   "kind": "xy",
+   "nums": [
+    174,
+    138
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:186",
+   "fn": "final12",
+   "kind": "point",
+   "nums": [
+    160,
+    146
+   ],
+   "what": "mueve(\"______\",160,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:187",
+   "fn": "final12",
+   "kind": "point",
+   "nums": [
+    150,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:187",
+   "fn": "final12",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:187",
+   "fn": "final12",
+   "kind": "point",
+   "nums": [
+    176,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:187",
+   "fn": "final12",
+   "kind": "point",
+   "nums": [
+    160,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:187",
+   "fn": "final12",
+   "kind": "point",
+   "nums": [
+    200,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:193",
+   "fn": "inicio13",
+   "kind": "xy",
+   "nums": [
+    62,
+    188
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:193",
+   "fn": "inicio13",
+   "kind": "xy",
+   "nums": [
+    92,
+    198
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:193",
+   "fn": "inicio13",
+   "kind": "xy",
+   "nums": [
+    54,
+    206
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:194",
+   "fn": "inicio13",
+   "kind": "xy",
+   "nums": [
+    113,
+    134
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:198",
+   "fn": "gatoarbol",
+   "kind": "point+",
+   "nums": [
+    0,
+    1,
+    2
+   ],
+   "what": "otros",
+   "comment": null
+  },
+  {
+   "at": "camino.js:203",
+   "fn": "lit",
+   "kind": "point+",
+   "nums": [
+    0,
+    1,
+    2
+   ],
+   "what": "null",
+   "comment": null
+  },
+  {
+   "at": "camino.js:210",
+   "fn": "carmenvuelve",
+   "kind": "point",
+   "nums": [
+    92,
+    198
+   ],
+   "what": "mueve(\"______\",92,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:214",
+   "fn": "perrocome",
+   "kind": "point",
+   "nums": [
+    54,
+    206
+   ],
+   "what": "animalA(\"_____\",54,206,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:217",
+   "fn": "escapa",
+   "kind": "point",
+   "nums": [
+    150,
+    150
+   ],
+   "what": "animalA(\"_____\",150,150,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:218",
+   "fn": "agarra",
+   "kind": "point",
+   "nums": [
+    54,
+    206
+   ],
+   "what": "animalA(\"_____\",54,206,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:219",
+   "fn": "cuentaaves",
+   "kind": "point+",
+   "nums": [
+    1,
+    2,
+    3
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "camino.js:224",
+   "fn": "perrocome2",
+   "kind": "point",
+   "nums": [
+    54,
+    206
+   ],
+   "what": "animalA(\"_____\",54,206,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:225",
+   "fn": "final13",
+   "kind": "point",
+   "nums": [
+    156,
+    196
+   ],
+   "what": "mueve(\"______\",156,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "camino.js:226",
+   "fn": "final13",
+   "kind": "point",
+   "nums": [
+    90,
+    150
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:226",
+   "fn": "final13",
+   "kind": "point",
+   "nums": [
+    150,
+    150
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:226",
+   "fn": "final13",
+   "kind": "point",
+   "nums": [
+    120,
+    130
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:226",
+   "fn": "final13",
+   "kind": "point",
+   "nums": [
+    100,
+    176
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:226",
+   "fn": "final13",
+   "kind": "point",
+   "nums": [
+    140,
+    176
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:229",
+   "fn": "inicio14",
+   "kind": "xy",
+   "nums": [
+    66,
+    182
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:229",
+   "fn": "inicio14",
+   "kind": "xy",
+   "nums": [
+    88,
+    200
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:229",
+   "fn": "inicio14",
+   "kind": "xy",
+   "nums": [
+    46,
+    202
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "camino.js:248",
+   "fn": "cae",
+   "kind": "rect",
+   "nums": [
+    4,
+    -4,
+    3,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "camino.js:256",
+   "fn": "final14",
+   "kind": "point",
+   "nums": [
+    40,
+    120
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:256",
+   "fn": "final14",
+   "kind": "point",
+   "nums": [
+    90,
+    130
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:256",
+   "fn": "final14",
+   "kind": "point",
+   "nums": [
+    64,
+    110
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:256",
+   "fn": "final14",
+   "kind": "point",
+   "nums": [
+    50,
+    150
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:256",
+   "fn": "final14",
+   "kind": "point",
+   "nums": [
+    90,
+    160
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "camino.js:265",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "camino.js:265",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    110,
+    30
+   ],
+   "what": "heartAt",
+   "comment": null
+  },
+  {
+   "at": "camino.js:266",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    0,
+    0,
+    0
+   ],
+   "what": "pajaros",
+   "comment": null
+  }
+ ]
+}

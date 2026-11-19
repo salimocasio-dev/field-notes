@@ -1,0 +1,1771 @@
+{
+ "scene": "estufa",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-estufa",
+   "w": "arroz",
+   "say": "c27_aqui_arroz",
+   "sayText": "Aquí hay arroz.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     70,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {
+       "k": "olla",
+       "con": "arroz",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "arroz.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     70,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "arroz.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "habichuelas",
+   "say": "m_e_mis_hab",
+   "sayText": "Mira mis habichuelas.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     60,
+     150,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 196,
+       "dir": 1,
+       "alza": {
+        "k": "tazon",
+        "v": "hab",
+        "e": 1,
+        "dx": 15,
+        "dy": 2
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "habichuelas.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     60,
+     150,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 196,
+       "dir": 1,
+       "alza": {
+        "k": "tazon",
+        "v": "arroz",
+        "e": 1,
+        "dx": 15,
+        "dy": 2
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "habichuelas.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "olla",
+   "say": "m_e_mi_olla",
+   "sayText": "Mira mi olla.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "olla",
+        "v": "vacia",
+        "e": 1,
+        "dx": 26
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "olla.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "sarten",
+        "e": 1,
+        "dx": 30,
+        "dy": -8
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "olla.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "hace",
+   "say": "m_e_mama_hace",
+   "sayText": "Mamá hace la comida.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     116,
+     86,
+     105.5,
+     56
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "mama": {
+       "x": 176,
+       "y": 152,
+       "dir": -1,
+       "pose": "wave0"
+      }
+     },
+     "fuegos": [
+      {},
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "cucharon",
+       "x": 150,
+       "y": 113,
+       "rot": 0.7,
+       "z": 999
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "hace.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     116,
+     86,
+     105.5,
+     56
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "mama": {
+       "x": 176,
+       "y": 152,
+       "dir": 1,
+       "alza": {
+        "k": "platoc",
+        "v": "ah"
+       },
+       "come": {
+        "k": "cucharac"
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {
+       "k": "olla",
+       "con": "hab",
+       "n": 2,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "hace.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "pollo",
+   "say": "m_e_el_pollo",
+   "sayText": "Mira el pollo.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     157,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": {
+      "x": 195,
+      "y": 123,
+      "solo": 1,
+      "items": [
+       {
+        "k": "muslo",
+        "v": "dorado"
+       }
+      ]
+     },
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "pollo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     157,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": {
+      "x": 195,
+      "y": 123,
+      "solo": 1,
+      "items": [
+       {
+        "k": "frito",
+        "v": "dorado"
+       }
+      ]
+     },
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "pollo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "huevo",
+   "say": "m_e_el_huevo",
+   "sayText": "Mira el huevo.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     70,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "frito",
+         "v": "dorado"
+        }
+       ]
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "huevo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     52,
+     148,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 196,
+       "dir": 1,
+       "alza": {
+        "k": "salero"
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "huevo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "sal",
+   "say": "m_e_la_sal",
+   "sayText": "Mira la sal.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     98,
+     148,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 110,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [
+      {
+       "k": "salero",
+       "x": 150,
+       "y": 176,
+       "rot": 0.9
+      },
+      {
+       "k": "grano",
+       "x": 157,
+       "y": 181
+      },
+      {
+       "k": "grano",
+       "x": 158,
+       "y": 187
+      }
+     ],
+     "banco": 1,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": {
+      "x": 158,
+      "y": 196,
+      "o": {
+       "k": "frito",
+       "v": "dorado"
+      }
+     },
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "sal.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     98,
+     148,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 110,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [
+      {
+       "k": "molinillo",
+       "x": 150,
+       "y": 176,
+       "rot": 0.9
+      },
+      {
+       "k": "granon",
+       "x": 157,
+       "y": 181
+      },
+      {
+       "k": "granon",
+       "x": 158,
+       "y": 187
+      }
+     ],
+     "banco": 1,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": {
+      "x": 158,
+      "y": 196,
+      "o": {
+       "k": "frito",
+       "v": "dorado"
+      }
+     },
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "sal.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "huele",
+   "say": "m_e_huele_bien",
+   "sayText": "¡Huele bien!",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     60,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "papa": {
+       "x": 82,
+       "y": 158,
+       "dir": 1,
+       "cierra": 1
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "muslo",
+         "v": "dorado"
+        },
+        {
+         "k": "frito",
+         "v": "dorado"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": [
+      106,
+      104,
+      90,
+      117
+     ]
+    },
+    "esc": null,
+    "png": "huele.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     60,
+     92,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "papa": {
+       "x": 82,
+       "y": 158,
+       "dir": 1,
+       "come": {
+        "k": "muslo",
+        "v": "dorado"
+       }
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "frito",
+         "v": "dorado"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "huele.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "caliente",
+   "say": "m_e_choc_caliente",
+   "sayText": "El chocolate está caliente.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     98,
+     100,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "taza",
+       "v": "cal",
+       "x": 126,
+       "y": 127,
+       "vapor": 1
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "caliente.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     98,
+     100,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "vasochoco",
+       "x": 126,
+       "y": 127
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "caliente.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "frío",
+   "say": "m_e_agua_fria",
+   "sayText": "El agua está fría.",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     98,
+     100,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [
+      {
+       "k": "vasoagua",
+       "x": 126,
+       "y": 127
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "frio.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     110,
+     84,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {},
+     "fuegos": [
+      {},
+      {
+       "k": "olla",
+       "con": "agua",
+       "n": 0,
+       "llama": 1,
+       "vapor": 1
+      }
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "frio.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "cuidado",
+   "say": "m_e_cuidado_luis",
+   "sayText": "¡Cuidado, Luis!",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     58,
+     90,
+     139,
+     74
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 84,
+       "y": 150,
+       "dir": 1,
+       "pose": "wave0"
+      },
+      "abuela": {
+       "x": 156,
+       "y": 164,
+       "dir": -1,
+       "pose": "wave0"
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "fritura",
+         "v": "burbujas"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "cuidado.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     58,
+     104,
+     139,
+     74
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "luis": {
+       "x": 112,
+       "y": 178,
+       "dir": 1,
+       "pose": "offer"
+      },
+      "abuela": {
+       "x": 150,
+       "y": 176,
+       "dir": -1,
+       "pose": "offer",
+       "lleva": {
+        "k": "platof"
+       }
+      }
+     },
+     "fuegos": [
+      {
+       "k": "sarten",
+       "llama": 1,
+       "cosas": [
+        {
+         "k": "fritura",
+         "v": "burbujas"
+        }
+       ],
+       "vapor": 1
+      },
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "cuidado.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-estufa",
+   "w": "ya",
+   "say": "m_e_ya_esta",
+   "sayText": "¡Ya está!",
+   "si": {
+    "scene": "estufa",
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "fuentec",
+        "v": 3,
+        "e": 2,
+        "dx": 34,
+        "dy": 6
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "ya.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "estufa",
+    "cam": [
+     84,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 200,
+       "dir": 1,
+       "pose": "wave0",
+       "alza": {
+        "k": "cuenco",
+        "e": 2,
+        "dx": 34,
+        "dy": 6
+       }
+      }
+     },
+     "fuegos": [
+      {},
+      {}
+     ],
+     "izq": {},
+     "der": {},
+     "basura": [],
+     "ventana": [],
+     "ventanacome": 0,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "cubo": 0,
+     "salero": 0,
+     "mat": null,
+     "plata": null,
+     "estante": 0,
+     "repisa": 0,
+     "olor": null
+    },
+    "esc": null,
+    "png": "ya.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "arroz",
+   "s": 27,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "arroz",
+     "side": "si",
+     "x": null,
+     "crop": [
+      89.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.arroz.0.png"
+    },
+    {
+     "first": false,
+     "pair": "arroz",
+     "side": "no",
+     "x": null,
+     "crop": [
+      89.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.arroz.1.png"
+    },
+    {
+     "first": false,
+     "pair": "pollo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      176.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.arroz.2.png"
+    },
+    {
+     "first": false,
+     "pair": "olla",
+     "side": "no",
+     "x": null,
+     "crop": [
+      113.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "estufa",
+     "png": "nivel.arroz.3.png"
+    }
+   ]
+  },
+  {
+   "w": "olla",
+   "s": 27,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "olla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      113.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "estufa",
+     "png": "nivel.olla.0.png"
+    },
+    {
+     "first": false,
+     "pair": "olla",
+     "side": "no",
+     "x": null,
+     "crop": [
+      113.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "estufa",
+     "png": "nivel.olla.1.png"
+    },
+    {
+     "first": false,
+     "pair": "habichuelas",
+     "side": "si",
+     "x": null,
+     "crop": [
+      79.54,
+      150,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.olla.2.png"
+    },
+    {
+     "first": false,
+     "pair": "ya",
+     "side": "si",
+     "x": null,
+     "crop": [
+      113.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "estufa",
+     "png": "nivel.olla.3.png"
+    }
+   ]
+  },
+  {
+   "w": "pollo",
+   "s": 28,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "pollo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      176.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.pollo.0.png"
+    },
+    {
+     "first": false,
+     "pair": "pollo",
+     "side": "no",
+     "x": null,
+     "crop": [
+      176.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.pollo.1.png"
+    },
+    {
+     "first": false,
+     "pair": "arroz",
+     "side": "si",
+     "x": null,
+     "crop": [
+      89.54,
+      84,
+      36.23,
+      40
+     ],
+     "scene": "estufa",
+     "png": "nivel.pollo.2.png"
+    },
+    {
+     "first": false,
+     "pair": "sal",
+     "side": "si",
+     "x": null,
+     "crop": [
+      122.46,
+      148,
+      45.28,
+      50
+     ],
+     "scene": "estufa",
+     "png": "nivel.pollo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "caliente",
+   "s": 29,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "caliente",
+     "side": "si",
+     "x": null,
+     "crop": [
+      112.67,
+      100,
+      27.17,
+      30
+     ],
+     "scene": "estufa",
+     "png": "nivel.caliente.0.png"
+    },
+    {
+     "first": false,
+     "pair": "caliente",
+     "side": "no",
+     "x": null,
+     "crop": [
+      112.67,
+      100,
+      27.17,
+      30
+     ],
+     "scene": "estufa",
+     "png": "nivel.caliente.1.png"
+    },
+    {
+     "first": false,
+     "pair": "frío",
+     "side": "si",
+     "x": null,
+     "crop": [
+      112.67,
+      100,
+      27.17,
+      30
+     ],
+     "scene": "estufa",
+     "png": "nivel.caliente.2.png"
+    },
+    {
+     "first": false,
+     "pair": "olla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      113.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "estufa",
+     "png": "nivel.caliente.3.png"
+    }
+   ]
+  }
+ ]
+}
