@@ -453,6 +453,117 @@ void main() {
     });
   });
 
+  group('lines the old code writes in code (fijos.json, lineas)', () {
+    final fijos = _tree('datos/fijos.json');
+    final lineas = Map<String, dynamic>.from(fijos['lineas'] as Map);
+    final id = lineas.keys.first;
+
+    /// The story of the small course that has a line of its own for [id], and that line.
+    String storyWith(String id) => _courseStories.firstWhere(
+      (c) => (_tree('cuentos/$c.json')['clips'] as Map).containsKey(id),
+    );
+
+    Map<String, String> fijosWith(Object? lineas) => {
+      'datos/fijos.json': jsonEncode({
+        for (final e in fijos.entries)
+          if (e.key != 'lineas') e.key: e.value,
+        'lineas': ?lineas,
+      }),
+    };
+
+    test('a clip the code gives a line to has it right after load, with no story read', () async {
+      final (catalog, files) = await _loaded();
+      expect(lineas, isNotEmpty);
+      expect(lineas.keys, contains(catalog.fixedClip('story_your_turn')));
+      for (final e in lineas.entries) {
+        final c = catalog.clip(e.key);
+        final line = e.value as Map;
+        expect(c, isNotNull, reason: e.key);
+        expect([c!.who, c.text, c.habla], [line['who'], line['text'], null]);
+        expect(c.endMs, greaterThan(c.startMs));
+        expect(c.url, startsWith('audio/${e.key}.mp3?v='));
+      }
+      expect(catalog.clip(id)!.who, 'narr');
+      expect(
+        files.calls.where((p) => p.startsWith('cuentos/')),
+        isNot(contains('cuentos/${storyWith(id)}.json')),
+      );
+    });
+
+    test(
+      'a story that has the same id wins over it, once it has been read',
+      () async {
+        final other = {'who': 'tu', 'text': 'written elsewhere'};
+        final (catalog, _) = await _loaded(fijosWith({id: other}));
+        expect(
+          (_ready['clips'] as List).contains(id),
+          isTrue,
+          reason: 'the small course keeps its recording',
+        );
+        final before = catalog.clip(id)!;
+        expect([before.who, before.text], [other['who'], other['text']]);
+        final sid = storyWith(id);
+        await catalog.story(sid);
+        final story = (_tree('cuentos/$sid.json')['clips'] as Map)[id] as Map;
+        final after = catalog.clip(id)!;
+        expect(
+          [after.who, after.text, after.habla],
+          [story['who'], story['text'], story['habla']],
+        );
+        expect(after.text, isNot(other['text']));
+      },
+    );
+
+    test('a clip without a recording or marks stays null', () async {
+      final (catalog, _) = await _loaded(
+        fijosWith({
+          ...lineas,
+          'no_such_clip': {'who': 'narr', 'text': 'x'},
+          _expectedWithoutRecording.first: {'who': 'narr', 'text': 'x'},
+        }),
+      );
+      expect(catalog.clip('no_such_clip'), isNull);
+      expect(catalog.clip(_expectedWithoutRecording.first), isNull);
+      expect(catalog.clip(id), isNotNull);
+    });
+
+    test('a fijos.json without lineas loads, and the clip has no line until its story is read', () async {
+      final (catalog, files) = await _loaded(fijosWith(null));
+      expect(files.calls, contains('datos/fijos.json'));
+      expect(catalog.fixedClip('story_your_turn'), id);
+      final before = catalog.clip(id)!;
+      expect([before.who, before.text], ['', '']);
+      await catalog.story(storyWith(id));
+      expect(catalog.clip(id)!.text, isNotEmpty);
+    });
+
+    test('lineas that is not an object of {who, text} is a FormatException that names the file', () async {
+      for (final bad in <Object>[
+        [1],
+        'x',
+        {id: 'Ahora'},
+        {
+          id: [1],
+        },
+      ]) {
+        final catalog = ContentCatalog(
+          Files({...smallTree, ...fijosWith(bad)}).call,
+        );
+        await expectLater(
+          catalog.load(),
+          throwsA(
+            isA<FormatException>().having(
+              (e) => e.message,
+              'message',
+              startsWith('datos/fijos.json: lineas'),
+            ),
+          ),
+          reason: '$bad',
+        );
+      }
+    });
+  });
+
   group('linesWith (app.html, oidoEn)', () {
     test(
       'every word, both cases: the lines the old code gives, in its order',

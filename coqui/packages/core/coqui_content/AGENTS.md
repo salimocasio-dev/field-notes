@@ -23,7 +23,7 @@ Reads the course, stories, review sets, books, clip list. Pure Dart.
 - Nobody imports another package's `src/`.
 - Since order 17 it exports `ContentCatalog`, the `CourseCatalog` of page 12, section 2, over a `FetchText` (`Future<String> Function(String path)`, the path relative to `historia/`, for example `cuentos/la-lluvia.json`) the shell gives it.
 - `load()` reads `datos/curso.json`, `datos/nivel.json`, `datos/llamadas.json`, `datos/fijos.json`, `audio/ready.json`, `audio/marcas.json` and the review sets `curso.json` names. `story(id)` and `book(id)` fetch on demand and keep the answer.
-- A clip's who, text and habla are in the story files: `clip(id)` has them once a story with the clip has been read (the review sets are read by `load()`); before that it has the marks and the url, and an empty `who` and `text`.
+- A clip's who, text and habla are in the story files: `clip(id)` has them once a story with the clip has been read (the review sets are read by `load()`); before that it has the marks and the url, and the line `datos/fijos.json` holds for it under `lineas` (the lines the old code writes in code: juego.js line 103, `ahora_tu`; made by `coqui/tool/export_datos.mjs`), or an empty `who` and `text` where there is none. A story's own line wins once it has been read. A `fijos.json` without `lineas` is not an error.
 
 ## Run and test it alone
 

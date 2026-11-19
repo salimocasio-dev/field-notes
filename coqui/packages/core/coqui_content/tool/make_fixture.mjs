@@ -13,7 +13,8 @@
 //                          cuentos/cual-*.json four review sets cut to the items below, with the clips those items say
 //                          libros/              la-lluvia and uno-dos-tres (el-bizcocho has no book in the tree)
 //                          audio/ready.json    every clip of those files except every 7th (in sorted order), so some
-//                                              lines have no recording
+//                                              lines have no recording; a clip fijos.json holds a line for (`lineas`)
+//                                              always keeps its recording
 //                          audio/marcas.json   the real marks of the clips in ready.json
 //   small_expected.dart  `smallExpectedJson`: what the old code (old_code.mjs) answers over exactly this tree:
 //                          pairs, words, played cases, lines for each word, titles, urls
@@ -92,9 +93,11 @@ put('datos/llamadas.json', real('datos/llamadas.json'));
 put('datos/fijos.json', real('datos/fijos.json'));
 for (const b of BOOKS) put(`libros/${b}.json`, real(`libros/${b}.json`));
 
-// audio: every 7th clip (sorted) has no recording
+// audio: every 7th clip (sorted) has no recording, except the clips fijos.json writes a line for (`lineas`)
+const keep = new Set(Object.keys(real('datos/fijos.json').lineas ?? {}));
+keep.forEach((id) => clipIds.add(id));
 const sorted = [...clipIds].sort();
-const have = sorted.filter((_, i) => i % 7 !== 6);
+const have = sorted.filter((id, i) => i % 7 !== 6 || keep.has(id));
 const realReady = real('audio/ready.json');
 const realMarks = real('audio/marcas.json');
 put('audio/ready.json', {voces: realReady.voces, rate: realReady.rate, v: realReady.v, clips: have});
@@ -118,7 +121,7 @@ const expected = {
   lines,
   titles: Object.fromEntries(Object.entries(smallCurso.cuentos).map(([c, m]) => [c, m.t])),
   urls,
-  withoutRecording: sorted.filter((_, i) => i % 7 === 6),
+  withoutRecording: sorted.filter((id, i) => i % 7 === 6 && !keep.has(id)),
 };
 
 // ---- Dart ----
