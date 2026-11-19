@@ -1,0 +1,37 @@
+{
+ "id": "15-oido-minutos",
+ "tz": "America/New_York",
+ "title": "Escuchar: oido counts a piece heard to the end (twice, two pieces); minutos adds fractions; neither touches a word",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"oido","args":["d-toc-toc"],"member":"listened","dart":{"id":"d-toc-toc"},"store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1,"oidos":{"d-toc-toc":1}},"saved":"same"},
+  {"i":1,"now":1772470980000,"local":"2026-03-02T12:03:00-05:00","call":"oido","args":["d-toc-toc"],"member":"listened","dart":{"id":"d-toc-toc"},"store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1,"oidos":{"d-toc-toc":2}},"saved":"same"},
+  {"i":2,"now":1772471160000,"local":"2026-03-02T12:06:00-05:00","call":"oido","args":["h-frente"],"member":"listened","dart":{"id":"h-frente"},"store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1,"oidos":{"d-toc-toc":2,"h-frente":1}},"saved":"same"},
+  {"i":3,"now":1772471220000,"local":"2026-03-02T12:07:00-05:00","call":"minutos","args":[1.7333333333333334],"member":"addMinutes","dart":{"m":1.7333333333333334},"store":{"palabras":{},"dias":{"2026-03-02":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":1.7333333333333334,"v":1,"oidos":{"d-toc-toc":2,"h-frente":1}},"saved":"same"},
+  {"i":4,"now":1772471280000,"local":"2026-03-02T12:08:00-05:00","call":"minutos","args":[0.1],"member":"addMinutes","dart":{"m":0.1},"store":{"palabras":{},"dias":{"2026-03-02":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":1.8333333333333335,"v":1,"oidos":{"d-toc-toc":2,"h-frente":1}},"saved":"same"},
+  {"i":5,"now":1772471340000,"local":"2026-03-02T12:09:00-05:00","call":"minutos","args":[0.2],"member":"addMinutes","dart":{"m":0.2},"store":{"palabras":{},"dias":{"2026-03-02":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2.0333333333333337,"v":1,"oidos":{"d-toc-toc":2,"h-frente":1}},"saved":"same"}
+ ]
+}

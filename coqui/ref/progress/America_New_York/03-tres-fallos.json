@@ -1,0 +1,40 @@
+{
+ "id": "03-tres-fallos",
+ "tz": "America/New_York",
+ "title": "Three misses in a row on returns: parked a week, flagged, stage back to found, aciertos cleared",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772488800000,"local":"2026-03-02T17:00:00-05:00","call":"oida","args":["ventana"],"member":"heard","dart":{"w":"ventana"},"returns":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772546400000,"local":"2026-03-03T09:00:00-05:00","call":"responde","args":["ventana","ear",true,800,false],"member":"answer","dart":{"w":"ventana","skill":"ear","ok":true,"ms":800,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546400000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546400000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":2,"now":1772547000000,"local":"2026-03-03T09:10:00-05:00","call":"responde","args":["ventana","ear",false,900,false],"member":"answer","dart":{"w":"ventana","skill":"ear","ok":false,"ms":900,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1772547600000,"aciertos":[1772546400000],"ultima":1772547000000,"aparcada":0,"marca":0,"n":2,"bien":1},"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1772547600000,"aciertos":[1772546400000],"ultima":1772547000000,"aparcada":0,"marca":0,"n":2,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":3,"now":1772547600000,"local":"2026-03-03T09:20:00-05:00","call":"responde","args":["ventana","ear",false,900,false],"member":"answer","dart":{"w":"ventana","skill":"ear","ok":false,"ms":900,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":0,"fallos":2,"gap":1,"due":1772548200000,"aciertos":[1772546400000],"ultima":1772547600000,"aparcada":0,"marca":0,"n":3,"bien":1},"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":0,"fallos":2,"gap":1,"due":1772548200000,"aciertos":[1772546400000],"ultima":1772547600000,"aparcada":0,"marca":0,"n":3,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":4,"now":1772548200000,"local":"2026-03-03T09:30:00-05:00","call":"responde","args":["ventana","ear",false,900,false],"member":"answer","dart":{"w":"ventana","skill":"ear","ok":false,"ms":900,"intro":false},"returns":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1773153000000,"aciertos":[],"ultima":1772548200000,"aparcada":1773153000000,"marca":1,"n":4,"bien":1},"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1773153000000,"aciertos":[],"ultima":1772548200000,"aparcada":1773153000000,"marca":1,"n":4,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":5,"now":1772548800000,"local":"2026-03-03T09:40:00-05:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1773153000000,"aciertos":[],"ultima":1772548200000,"aparcada":1773153000000,"marca":1,"n":4,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":6,"now":1773061200000,"local":"2026-03-09T09:00:00-04:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1773153000000,"aciertos":[],"ultima":1772548200000,"aparcada":1773153000000,"marca":1,"n":4,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":7,"now":1773149460000,"local":"2026-03-10T09:31:00-04:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1773153000000,"aciertos":[],"ultima":1772548200000,"aparcada":1773153000000,"marca":1,"n":4,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":8,"now":1773149520000,"local":"2026-03-10T09:32:00-04:00","call":"responde","args":["ventana","ear",true,800,false],"member":"answer","dart":{"w":"ventana","skill":"ear","ok":true,"ms":800,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773365520000,"aciertos":[1773149520000],"ultima":1773149520000,"aparcada":1773153000000,"marca":1,"n":5,"bien":2},"store":{"palabras":{"ventana":{"w":"ventana","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773365520000,"aciertos":[1773149520000],"ultima":1773149520000,"aparcada":1773153000000,"marca":1,"n":5,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"}
+ ]
+}

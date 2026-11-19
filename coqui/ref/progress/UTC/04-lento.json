@@ -1,0 +1,38 @@
+{
+ "id": "04-lento",
+ "tz": "UTC",
+ "title": "Right but slow keeps the gap: ms 2600 (slow), 2000 (not slow, the limit), 2001 (slow), null and absent (not slow)",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772470800000,"local":"2026-03-02T17:00:00+00:00","call":"oida","args":["puerta"],"member":"heard","dart":{"w":"puerta"},"returns":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772528400000,"local":"2026-03-03T09:00:00+00:00","call":"responde","args":["puerta","ear",true,900,false],"member":"answer","dart":{"w":"puerta","skill":"ear","ok":true,"ms":900,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772744400000,"aciertos":[1772528400000],"ultima":1772528400000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772744400000,"aciertos":[1772528400000],"ultima":1772528400000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":2,"now":1772701200000,"local":"2026-03-05T09:00:00+00:00","call":"responde","args":["puerta","ear",true,2600,false],"member":"answer","dart":{"w":"puerta","skill":"ear","ok":true,"ms":2600,"intro":false},"returns":{"etapa":3,"paso":2,"seguidas":0,"fallos":0,"gap":2.5,"due":1772917200000,"aciertos":[1772528400000,1772701200000],"ultima":1772701200000,"aparcada":0,"marca":0,"n":2,"bien":2},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":3,"paso":2,"seguidas":0,"fallos":0,"gap":2.5,"due":1772917200000,"aciertos":[1772528400000,1772701200000],"ultima":1772701200000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":3,"now":1772874000000,"local":"2026-03-07T09:00:00+00:00","call":"responde","args":["puerta","ear",true,2000,false],"member":"answer","dart":{"w":"puerta","skill":"ear","ok":true,"ms":2000,"intro":false},"returns":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":6.25,"due":1773414000000,"aciertos":[1772528400000,1772701200000,1772874000000],"ultima":1772874000000,"aparcada":0,"marca":0,"n":3,"bien":3},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":6.25,"due":1773414000000,"aciertos":[1772528400000,1772701200000,1772874000000],"ultima":1772874000000,"aparcada":0,"marca":0,"n":3,"bien":3},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":4,"now":1773306000000,"local":"2026-03-12T09:00:00+00:00","call":"responde","args":["puerta","ear",true,2001,false],"member":"answer","dart":{"w":"puerta","skill":"ear","ok":true,"ms":2001,"intro":false},"returns":{"etapa":3,"paso":3,"seguidas":0,"fallos":0,"gap":6.25,"due":1773846000000,"aciertos":[1772528400000,1772701200000,1772874000000,1773306000000],"ultima":1773306000000,"aparcada":0,"marca":0,"n":4,"bien":4},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":3,"paso":3,"seguidas":0,"fallos":0,"gap":6.25,"due":1773846000000,"aciertos":[1772528400000,1772701200000,1772874000000,1773306000000],"ultima":1773306000000,"aparcada":0,"marca":0,"n":4,"bien":4},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":5,"now":1773997200000,"local":"2026-03-20T09:00:00+00:00","call":"responde","args":["puerta","ear",true,null,false],"member":"answer","dart":{"w":"puerta","skill":"ear","ok":true,"ms":null,"intro":false},"returns":{"etapa":4,"paso":3,"seguidas":1,"fallos":0,"gap":15.625,"due":1775347200000,"aciertos":[1772528400000,1772701200000,1772874000000,1773306000000,1773997200000],"ultima":1773997200000,"aparcada":0,"marca":0,"n":5,"bien":5},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":4,"paso":3,"seguidas":1,"fallos":0,"gap":15.625,"due":1775347200000,"aciertos":[1772528400000,1772701200000,1772874000000,1773306000000,1773997200000],"ultima":1773997200000,"aparcada":0,"marca":0,"n":5,"bien":5},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":6,"now":1775120400000,"local":"2026-04-02T09:00:00+00:00","call":"responde","args":["puerta","ear",true],"member":"answer","dart":{"w":"puerta","skill":"ear","ok":true,"ms":null,"intro":false},"returns":{"etapa":4,"paso":4,"seguidas":0,"fallos":0,"gap":39.0625,"due":1778495400000,"aciertos":[1772528400000,1772701200000,1772874000000,1773306000000,1773997200000,1775120400000],"ultima":1775120400000,"aparcada":0,"marca":0,"n":6,"bien":6},"store":{"palabras":{"puerta":{"w":"puerta","primera":1772470800000,"oida":1,"ear":{"etapa":4,"paso":4,"seguidas":0,"fallos":0,"gap":39.0625,"due":1778495400000,"aciertos":[1772528400000,1772701200000,1772874000000,1773306000000,1773997200000,1775120400000],"ultima":1775120400000,"aparcada":0,"marca":0,"n":6,"bien":6},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"}
+ ]
+}

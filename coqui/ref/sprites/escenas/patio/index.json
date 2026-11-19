@@ -1,0 +1,1113 @@
+{
+ "scene": "patio",
+ "file": "historia/escenas/patio.js",
+ "fileSha256": "c984b66d1a5d19cf8a933dbfe6187ee09bde56be52211f2288af189c68f617d6",
+ "sprites": [
+  {
+   "key": "abidle0",
+   "file": "abidle0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "831aa41c06c47834cd9f8bcf6b7631c594ed747e81ba9d3aca38432a7296b82f",
+   "caller": "escenas/patio.js:100:145 gente",
+   "maker": "escenas/patio.js:100:169",
+   "firstRun": "las-flores/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "abwave00",
+   "file": "abwave00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "c990abc59cbf56be8955cbe792df1c9dc85cf6e577f05131d3c9b6d6888573d8",
+   "caller": "escenas/patio.js:100:145 gente",
+   "maker": "escenas/patio.js:100:169",
+   "firstRun": "las-flores/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "abwave10",
+   "file": "abwave10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "1081a1840c85ca356e18ace6439cce58e73e5859439f8b6eae59a4d91cff1e1f",
+   "caller": "escenas/patio.js:100:145 gente",
+   "maker": "escenas/patio.js:100:169",
+   "firstRun": "las-flores/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "bbclap0",
+   "file": "bbclap0.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "3c95c9ab20b1041b2929166f26f788351c59cad67f0f0265e0fb649dc9cf5acc",
+   "caller": "escenas/patio.js:99:53 gente",
+   "maker": "escenas/patio.js:99:78",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "bbclap1",
+   "file": "bbclap1.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "9bf424b8d23b899b6068bf31b71a7933befd50920f826595207c1f4f80f0c53d",
+   "caller": "escenas/patio.js:99:53 gente",
+   "maker": "escenas/patio.js:99:78",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "bbidle0",
+   "file": "bbidle0.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "00e338ad3634301a41705dbe9123d8cd25c18f24d6f2649d9e55b636235d66e5",
+   "caller": "escenas/patio.js:99:53 gente",
+   "maker": "escenas/patio.js:99:78",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "bbidle1",
+   "file": "bbidle1.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "00e338ad3634301a41705dbe9123d8cd25c18f24d6f2649d9e55b636235d66e5",
+   "caller": "escenas/patio.js:99:53 gente",
+   "maker": "escenas/patio.js:99:78",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "caja",
+   "file": "caja.rgba",
+   "w": 32,
+   "h": 24,
+   "sha256": "45dc2ac190338fa03b0fa2cda6bd146309c4154bbaf7f147965c3dc93c565361",
+   "caller": "escenas/patio.js:136:45 Object.d",
+   "maker": "escenas/patio.js:59:27 mkCaja",
+   "firstRun": "las-flores/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "canasta",
+   "file": "canasta.rgba",
+   "w": 18,
+   "h": 17,
+   "sha256": "db531e445fd1fcec3bf4daf8158073b17b2c8cf20990945108093fbcd74cdb3b",
+   "caller": "escenas/patio.js:114:28 rana",
+   "maker": "escenas/patio.js:65:30 mkCanasta",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cielo0",
+   "file": "cielo0.rgba",
+   "w": 240,
+   "h": 116,
+   "sha256": "686aeee4cb863fa98893d1a60de3d66cfc8b69eb8365cba6fa510404d4aeeea1",
+   "caller": "escenas/patio.js:129:15 Object.draw",
+   "maker": "escenas/patio.js:129:33",
+   "firstRun": "las-flores/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "cielo1",
+   "file": "cielo1.rgba",
+   "w": 240,
+   "h": 116,
+   "sha256": "706afd9aa6da84077fb57a4f412b521a182ea0fc72862ac5af2cebeab2c45890",
+   "caller": "escenas/patio.js:129:15 Object.draw",
+   "maker": "escenas/patio.js:129:33",
+   "firstRun": "las-flores/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "cielo2",
+   "file": "cielo2.rgba",
+   "w": 240,
+   "h": 116,
+   "sha256": "417b883c20ccbced4d7cce8eb8e57e241b2088f66d84464ed47072d72bb6a9b4",
+   "caller": "escenas/patio.js:129:15 Object.draw",
+   "maker": "escenas/patio.js:129:33",
+   "firstRun": "las-flores/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "cielo3",
+   "file": "cielo3.rgba",
+   "w": 240,
+   "h": 116,
+   "sha256": "ef871aa0007ee3b47e3da7149c829fdc51fc7cfb0694ed42253c4f1a0247a292",
+   "caller": "escenas/patio.js:129:15 Object.draw",
+   "maker": "escenas/patio.js:129:33",
+   "firstRun": "las-flores/wrong",
+   "runs": 7,
+   "variants": 1
+  },
+  {
+   "key": "cielo4",
+   "file": "cielo4.rgba",
+   "w": 240,
+   "h": 116,
+   "sha256": "61273729165cd99d0835950bf4dfaaf64e46eb306155dc8ddb66b9da664f9b10",
+   "caller": "escenas/patio.js:129:15 Object.draw",
+   "maker": "escenas/patio.js:129:33",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cosabizcocho",
+   "file": "cosabizcocho.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "a8ae0909b43e8eb1aac0508dab16e6629a6760b72b795879abcad8d7f4d18d8f",
+   "caller": "escenas/patio.js:76:42 cosa",
+   "maker": "escenas/patio.js:76:59",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cosabola",
+   "file": "cosabola.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "2e41d633c522da3193936b116ee3fec0e99b121da421e4bd9fa8b9ebb009d538",
+   "caller": "escenas/patio.js:76:42 cosa",
+   "maker": "escenas/patio.js:76:59",
+   "firstRun": "las-flores/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cosaflor",
+   "file": "cosaflor.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "b1597c77e2dd97d6db3d02fc1ce59fc597bc0df2f7317f3b7d16af241068e4cd",
+   "caller": "escenas/patio.js:76:42 cosa",
+   "maker": "escenas/patio.js:76:59",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cosamaceta",
+   "file": "cosamaceta.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "bb93f73cfd9c58e55cd183cdd10fbfe89c0c9b64ce585ae8db551f67a41d8cc6",
+   "caller": "escenas/patio.js:76:42 cosa",
+   "maker": "escenas/patio.js:76:59",
+   "firstRun": "las-flores/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cosasilla",
+   "file": "cosasilla.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "20422668edc2b3ea9902e31473e0ec4db2d8b81547ed662761b83cc5b863638a",
+   "caller": "escenas/patio.js:76:42 cosa",
+   "maker": "escenas/patio.js:76:59",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cosavaso",
+   "file": "cosavaso.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "4ef85bcb2db47f54e879055423dde3f12c68e1123f77c914e38738cf4475bfed",
+   "caller": "escenas/patio.js:76:42 cosa",
+   "maker": "escenas/patio.js:76:59",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq.6_0",
+   "file": "cq.6_0.rgba",
+   "w": 20,
+   "h": 17,
+   "sha256": "947dafedb89c34c11b4f0fb938238eca92f96ddb631ffa22c8fd8b6a611397a1",
+   "caller": "escenas/patio.js:157:17 Object.respIcon",
+   "maker": "escenas/patio.js:157:34",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq.7_0",
+   "file": "cq.7_0.rgba",
+   "w": 23,
+   "h": 20,
+   "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0",
+   "caller": "escenas/patio.js:169:60 Object.hud",
+   "maker": "escenas/patio.js:169:77",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.5_00",
+   "file": "cq0.5_00.rgba",
+   "w": 17,
+   "h": 15,
+   "sha256": "3a44a8f6fd0da7f110483c0d0e247f28fd4b6efabf21780087e6b872ff0419ad",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.62_00",
+   "file": "cq0.62_00.rgba",
+   "w": 21,
+   "h": 18,
+   "sha256": "b563da171f0978ea0c09083906bc3f35c16e6d4c5a2a726185045fbbdb74d33a",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.73_00",
+   "file": "cq0.73_00.rgba",
+   "w": 24,
+   "h": 20,
+   "sha256": "ead96a43c68532ee2de6534d19e9eab7f4346acbc5acc726a113664c993ef813",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.73_10",
+   "file": "cq0.73_10.rgba",
+   "w": 24,
+   "h": 20,
+   "sha256": "3f0648f8afb08b82d118004d22df5d76483fc485bbf5f89f6474a6e5480aeab6",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "cq0.7_00",
+   "file": "cq0.7_00.rgba",
+   "w": 23,
+   "h": 20,
+   "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "las-flores/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.83_00",
+   "file": "cq0.83_00.rgba",
+   "w": 27,
+   "h": 23,
+   "sha256": "156fc31714cc3a5b36c6bc6a2ccb90976ed228a4e658edc010b947a615a0bc95",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "cq0.85_00",
+   "file": "cq0.85_00.rgba",
+   "w": 28,
+   "h": 23,
+   "sha256": "3e864c6012147f934abb3908bd06a884b14774a8feb5f37e4c6c700918e290de",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq0.85_10",
+   "file": "cq0.85_10.rgba",
+   "w": 28,
+   "h": 23,
+   "sha256": "0f1fe51734c147f53dfce523e2a0240821c8bb2d38801a6a64746218b60360c4",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.87_00",
+   "file": "cq0.87_00.rgba",
+   "w": 28,
+   "h": 24,
+   "sha256": "2c3fa7e9cf9f939f712b3719169ccf57431c0263f26444842ba82c8dd99df502",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.87_10",
+   "file": "cq0.87_10.rgba",
+   "w": 28,
+   "h": 24,
+   "sha256": "fd85a638f6444751c96f03673ad509445731ce88b8219a047070cb45dcce127b",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "cq0.8_00",
+   "file": "cq0.8_00.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "6e77fd58c97a563ad7b03ce3758417cc5f9f3562866b535fd210a254f51a1bee",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "las-flores/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "cq0.8_10",
+   "file": "cq0.8_10.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "e0d00e683fee9fddfd894ef13c640e3e34209474409393b69042b7ed043fed4d",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq0.93_00",
+   "file": "cq0.93_00.rgba",
+   "w": 30,
+   "h": 25,
+   "sha256": "3ca96c6a12e5a90f1347e007e679346b30f4a6519d83f39a77db6c2d30c17b32",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.93_10",
+   "file": "cq0.93_10.rgba",
+   "w": 30,
+   "h": 25,
+   "sha256": "e36b689010650f38d2f987cb6b79b14d3f865e41422687d17a3fd857ae23ef7b",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "cq0.95_00",
+   "file": "cq0.95_00.rgba",
+   "w": 31,
+   "h": 26,
+   "sha256": "ec9e8588f62fc00f674a6dafce02f10f68bf10fc2bda569635031edb3791f6d0",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq0.95_10",
+   "file": "cq0.95_10.rgba",
+   "w": 31,
+   "h": 26,
+   "sha256": "83b52cd5496c75ec6a95540c701693cffb511021d6ea1cf2f95c10ce51a3ee46",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.9_00",
+   "file": "cq0.9_00.rgba",
+   "w": 29,
+   "h": 25,
+   "sha256": "534d015ee13d318ea4cda5ff8e30b216309cddc82bb4245bc23d748dd2521e8e",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "las-flores/right",
+   "runs": 13,
+   "variants": 1
+  },
+  {
+   "key": "cq0.9_10",
+   "file": "cq0.9_10.rgba",
+   "w": 29,
+   "h": 25,
+   "sha256": "c6afd01dcb91dfb5365f11c1da698a45c4f84505733198300901e22de603b4fe",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "las-flores/right",
+   "runs": 8,
+   "variants": 1
+  },
+  {
+   "key": "cq1_00",
+   "file": "cq1_00.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "c8717ae68b12349fc7daf8a06388dca414e1c3dbec78c5211e91e0f8ebf3bffc",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "las-flores/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "cq1_01",
+   "file": "cq1_01.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "8aa6c2bbdb6f3fc9dac64144c1532663d41216ddb9af0dbb9dc8d97eb971bba2",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "que-es-esto/right",
+   "runs": 7,
+   "variants": 1
+  },
+  {
+   "key": "cq1_10",
+   "file": "cq1_10.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "d5972b548da9b40ec44c1f8369c54552ec37031c5750bc9df9bb40898ff292f3",
+   "caller": "escenas/patio.js:109:34 rana",
+   "maker": "escenas/patio.js:109:61",
+   "firstRun": "las-flores/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "patio00",
+   "file": "patio00.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "9820000ccebb20105852834f02a8952a385d819060d04d5ddb91aa0159be47f3",
+   "caller": "escenas/patio.js:132:15 Object.draw",
+   "maker": "escenas/patio.js:132:60",
+   "firstRun": "las-flores/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "patio01",
+   "file": "patio01.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "2183fb54b3e077bb70ddacc500dd13c2027af1c419e51594ea33266417d4858f",
+   "caller": "escenas/patio.js:132:15 Object.draw",
+   "maker": "escenas/patio.js:132:60",
+   "firstRun": "las-flores/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "patio10",
+   "file": "patio10.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "ceb29513ce8b2f0670a8f3aef3cd31f59e14f84176b8d03c0b0816c57831cc7b",
+   "caller": "escenas/patio.js:132:15 Object.draw",
+   "maker": "escenas/patio.js:132:60",
+   "firstRun": "h-patio/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "patio11",
+   "file": "patio11.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "76912657c326f367bd1e23a3abe2368783360444f9d74ab4e6e84bd1162fccc0",
+   "caller": "escenas/patio.js:132:15 Object.draw",
+   "maker": "escenas/patio.js:132:60",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppabueloidle00",
+   "file": "ppabueloidle00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "7bfbdca75fdf2697fe1737bbf476ad08131b04d8c018751dccc44801311b2604",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ppabueloojos00",
+   "file": "ppabueloojos00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "ceea7ce1778955c4c46c8286eee577fcf3b5b20b6b520611482efd2693cf8971",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppabuelowave000",
+   "file": "ppabuelowave000.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "b13414b29bec1029f42e2a88dc3d69d1283ab4014ae5ed6a7d84b1a137f30e51",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ppabuelowave100",
+   "file": "ppabuelowave100.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "252f85c645edd23ea09e118bcd16984181ba561368743b068dc0b634a88539f0",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ppcarmenidle00",
+   "file": "ppcarmenidle00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "0f458c009a0d087bd47bb1dd0ecef1dab84637c95b822cb77f650466170897a1",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "ppcarmenidle10",
+   "file": "ppcarmenidle10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "ccf2e584ae7ff3a5ca21aa551a5e861a150d9d2000eb40533bb62a730f283ef2",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/wrong",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "ppcarmenoffer00",
+   "file": "ppcarmenoffer00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "53ca8722e122d5d2ff49da385c7ceeb350cdffafc177ecc71879c53e6e454b6c",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppcarmenojos00",
+   "file": "ppcarmenojos00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "099c900e1b3383d08e4f265ea99fe8a8041a258ed5f6cb8681988d022250bc63",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ppcarmenwave000",
+   "file": "ppcarmenwave000.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "fc9e4a78177c5966bad7032cc8bdce95d829b47ad6f76ddae6497ce8d361ae4d",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "ppcarmenwave100",
+   "file": "ppcarmenwave100.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "00332acac59222e6d6be110dfadf01a5589aa110223352d6b4cf932c79f661ce",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "ppluisidle00",
+   "file": "ppluisidle00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "808f88ba1715c4aac35e11ad848fdb7f29539151eaf1fa7555f14874a1da87ab",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "ppluisidle01",
+   "file": "ppluisidle01.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "d9ba39fa7f35bc897fe7e6257197bd87777627b427a034ffaa41b30783fbc59e",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppluisidle10",
+   "file": "ppluisidle10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "4282504dc2d7ed80ebef814ef2c9afc4d48d8395ff00ff2ca71ae025602fa0b8",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "ppluisidle11",
+   "file": "ppluisidle11.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "1d45de1199132c0f517e69b911d8937373be1b2142cbd156e60f65bbbbcd9dc1",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "que-es-esto/right",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "ppluisoffer00",
+   "file": "ppluisoffer00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "925d9f3489e855bd355c15ea5d7538e9f7049b6b6222b4143c45df2988196e72",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppluisojos00",
+   "file": "ppluisojos00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "a4635503877defb9c22916497cfbfbf94e427ae9c92f47ae9999de67ea6d5cec",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppluiswave000",
+   "file": "ppluiswave000.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "98cf5269b410868321f5e83aac9aebd99c493a23abbd2a596054159f63d3c63c",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "ppluiswave001",
+   "file": "ppluiswave001.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "a1396602c567d7104f50e2bf2cd61e4bc436ea3d3923d08cbda51a4c4c0569d0",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppluiswave100",
+   "file": "ppluiswave100.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "54b176072474e3b378ba07cea6adf0563c9611babfe2de8d5e1a3c3493037f4e",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "las-flores/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "ppluiswave110",
+   "file": "ppluiswave110.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "eca01aa0c9ce0d29fd33eee1824d45c1ffdc3e681ba341e8e44257fadb360048",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "d-la-bola/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ppmamaidle00",
+   "file": "ppmamaidle00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "8e0937311ec5e252e2760e540dd4145b1b6ccea614e11500ce9b127cdd45274d",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ppmamawave000",
+   "file": "ppmamawave000.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "f143b2eb23c88fd30e492f1be24fabf05e3daa962626c44f5479d2677a33a9f1",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ppmamawave100",
+   "file": "ppmamawave100.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "17c655e183eb49452c21fe6c791d8fe70f5ab83f85c7d5acb6a797229a0d5f46",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pppapaidle00",
+   "file": "pppapaidle00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "9f5171b08315846d65e4145a40dc9cbc2d4bd74f1ac56a4a4d8da6d28604a570",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pppapawave000",
+   "file": "pppapawave000.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "8a25ca1339745d1fc8cc89e4dd9255f2b7b35332bce67cc51ff4564eee41eca1",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pppapawave100",
+   "file": "pppapawave100.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "7247471bd7dcd4ef2f246fdb88fad7b357888951a16d9e717918346cf24b9d16",
+   "caller": "escenas/patio.js:101:92 gente",
+   "maker": "escenas/patio.js:101:136",
+   "firstRun": "hasta-manana/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "saco0",
+   "file": "saco0.rgba",
+   "w": 26,
+   "h": 24,
+   "sha256": "5c87d91cd6b771e1c9a422a16e2429bb3402d704c5df069ffbed6b077e13aec1",
+   "caller": "escenas/patio.js:137:52 Object.d",
+   "maker": "escenas/patio.js:137:83",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "saco1",
+   "file": "saco1.rgba",
+   "w": 26,
+   "h": 24,
+   "sha256": "c0186d7b110db2097bab13e6e2825b38857f7b6c3e8cd08dc60becb6f51b1c02",
+   "caller": "escenas/patio.js:137:52 Object.d",
+   "maker": "escenas/patio.js:137:83",
+   "firstRun": "que-es-esto/right",
+   "runs": 3,
+   "variants": 1
+  }
+ ],
+ "outsideCache": [],
+ "notDumped": [
+  {
+   "key": "cqv0",
+   "caller": "juego.js:59:17"
+  },
+  {
+   "key": "cqv1",
+   "caller": "juego.js:59:17"
+  },
+  {
+   "key": "kavefeliz0",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kavefeliz1",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kaven0",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kaven1",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kaveround0",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  }
+ ],
+ "sites": [
+  {
+   "line": 76,
+   "col": 42,
+   "key": "\"cosa\"+k",
+   "made": [
+    "cosabizcocho",
+    "cosabola",
+    "cosaflor",
+    "cosamaceta",
+    "cosasilla",
+    "cosavaso"
+   ]
+  },
+  {
+   "line": 99,
+   "col": 53,
+   "key": "\"bb\"+e+(a%2)",
+   "made": [
+    "bbclap0",
+    "bbclap1",
+    "bbidle0",
+    "bbidle1"
+   ]
+  },
+  {
+   "line": 100,
+   "col": 145,
+   "key": "\"ab\"+pose+habla",
+   "made": [
+    "abidle0",
+    "abwave00",
+    "abwave10"
+   ]
+  },
+  {
+   "line": 101,
+   "col": 92,
+   "key": "\"pp\"+id+pose+habla+(p.sent?1:0)",
+   "made": [
+    "ppabueloidle00",
+    "ppabueloojos00",
+    "ppabuelowave000",
+    "ppabuelowave100",
+    "ppcarmenidle00",
+    "ppcarmenidle10",
+    "ppcarmenoffer00",
+    "ppcarmenojos00",
+    "ppcarmenwave000",
+    "ppcarmenwave100",
+    "ppluisidle00",
+    "ppluisidle01",
+    "ppluisidle10",
+    "ppluisidle11",
+    "ppluisoffer00",
+    "ppluisojos00",
+    "ppluiswave000",
+    "ppluiswave001",
+    "ppluiswave100",
+    "ppluiswave110",
+    "ppmamaidle00",
+    "ppmamawave000",
+    "ppmamawave100",
+    "pppapaidle00",
+    "pppapawave000",
+    "pppapawave100"
+   ]
+  },
+  {
+   "line": 109,
+   "col": 34,
+   "key": "\"cq\"+q.s+\"_\"+bl+op",
+   "made": [
+    "cq0.5_00",
+    "cq0.62_00",
+    "cq0.73_00",
+    "cq0.73_10",
+    "cq0.7_00",
+    "cq0.83_00",
+    "cq0.85_00",
+    "cq0.85_10",
+    "cq0.87_00",
+    "cq0.87_10",
+    "cq0.8_00",
+    "cq0.8_10",
+    "cq0.93_00",
+    "cq0.93_10",
+    "cq0.95_00",
+    "cq0.95_10",
+    "cq0.9_00",
+    "cq0.9_10",
+    "cq1_00",
+    "cq1_01",
+    "cq1_10"
+   ]
+  },
+  {
+   "line": 114,
+   "col": 28,
+   "key": "\"canasta\"",
+   "made": [
+    "canasta"
+   ]
+  },
+  {
+   "line": 129,
+   "col": 15,
+   "key": "\"cielo\"+n",
+   "made": [
+    "cielo0",
+    "cielo1",
+    "cielo2",
+    "cielo3",
+    "cielo4"
+   ]
+  },
+  {
+   "line": 132,
+   "col": 15,
+   "key": "\"patio\"+(W.porton?1:0)+(W.pdoor?1:0)",
+   "made": [
+    "patio00",
+    "patio01",
+    "patio10",
+    "patio11"
+   ]
+  },
+  {
+   "line": 136,
+   "col": 45,
+   "key": "\"caja\"",
+   "made": [
+    "caja"
+   ]
+  },
+  {
+   "line": 137,
+   "col": 52,
+   "key": "\"saco\"+(W.saco.ab?1:0)",
+   "made": [
+    "saco0",
+    "saco1"
+   ]
+  },
+  {
+   "line": 157,
+   "col": 17,
+   "key": "\"cq.6_0\"",
+   "made": [
+    "cq.6_0"
+   ]
+  },
+  {
+   "line": 167,
+   "col": 115,
+   "key": "\"canasta\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 168,
+   "col": 58,
+   "key": "\"kaven0\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 169,
+   "col": 60,
+   "key": "\"cq.7_0\"",
+   "made": [
+    "cq.7_0"
+   ]
+  }
+ ]
+}

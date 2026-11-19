@@ -1,0 +1,536 @@
+{
+ "scene": "balcon",
+ "file": "historia/escenas/balcon.js",
+ "fileSha256": "956790ed17d736d18204385dbeaf2d4dd861d6096e2ef9e5f0fa1dbd58943f7d",
+ "sprites": [
+  {
+   "key": "abSbebe0",
+   "file": "abSbebe0.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "16c13609c4d1f2fe742ca13e05d9f1413ccfa58bacf7423b6cd1e405c98a53c7",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "abSfan00",
+   "file": "abSfan00.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "682f692b26e985d0d8e1a2159e6da3382a3f6344526abfda2813de68e53e88a6",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "que-calor/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abSfan01",
+   "file": "abSfan01.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "54b4e1fdd51e99f25798449f5086f167d0d9feaff4a19b66abb3e0fae7d02c22",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "que-calor/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "abSfan10",
+   "file": "abSfan10.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "682f692b26e985d0d8e1a2159e6da3382a3f6344526abfda2813de68e53e88a6",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "que-calor/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abSfan11",
+   "file": "abSfan11.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "54b4e1fdd51e99f25798449f5086f167d0d9feaff4a19b66abb3e0fae7d02c22",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "que-calor/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "abSidle0",
+   "file": "abSidle0.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "d7ab5fa887812d300c7b649cdb6ca935b97f471d95a0b408045708b8243706ab",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "abSvaso0",
+   "file": "abSvaso0.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "b6d21f197fd9ac12896f1d1766722195e4acf759b6920d19ba37804aedefa08e",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "abSvaso1",
+   "file": "abSvaso1.rgba",
+   "w": 52,
+   "h": 50,
+   "sha256": "133a26989d0341fd756bf14c0c8ef45b8cda9a77fe29adf370fd4e29dc6efc25",
+   "caller": "escenas/balcon.js:129:17 Object.draw",
+   "maker": "escenas/balcon.js:129:46",
+   "firstRun": "el-jugo/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abidle0",
+   "file": "abidle0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "831aa41c06c47834cd9f8bcf6b7631c594ed747e81ba9d3aca38432a7296b82f",
+   "caller": "escenas/balcon.js:124:91 dePie",
+   "maker": "escenas/balcon.js:124:115",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "aboffer0",
+   "file": "aboffer0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "8be03d04ff1120c6baf16fb136f4fb5cfbd508d5f9e18f8c08810dc3d621789b",
+   "caller": "escenas/balcon.js:124:91 dePie",
+   "maker": "escenas/balcon.js:124:115",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "abwave00",
+   "file": "abwave00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "c990abc59cbf56be8955cbe792df1c9dc85cf6e577f05131d3c9b6d6888573d8",
+   "caller": "escenas/balcon.js:124:91 dePie",
+   "maker": "escenas/balcon.js:124:115",
+   "firstRun": "el-jugo/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "abwave10",
+   "file": "abwave10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "1081a1840c85ca356e18ace6439cce58e73e5859439f8b6eae59a4d91cff1e1f",
+   "caller": "escenas/balcon.js:124:91 dePie",
+   "maker": "escenas/balcon.js:124:115",
+   "firstRun": "el-jugo/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "bal0_0",
+   "file": "bal0_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "a143abdc0f48416dad6739ea4a73f0bb96e433f90396c539bc50d8ba2bd34a7e",
+   "caller": "escenas/balcon.js:121:15 Object.draw",
+   "maker": "escenas/balcon.js:121:46",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "bal1_0",
+   "file": "bal1_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "3845d57a9f2d6b49ec9e076ae12cb73b233b6bfd39bde60212bc24aeec9ff5b6",
+   "caller": "escenas/balcon.js:121:15 Object.draw",
+   "maker": "escenas/balcon.js:121:46",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "bush",
+   "file": "bush.rgba",
+   "w": 34,
+   "h": 22,
+   "sha256": "a0d30b30c9c8359578f0ae8d5766dcfc82f3b1a5c033b0542c2e458a755ed969",
+   "caller": "escenas/balcon.js:56:41 bg",
+   "maker": "engine.js:76:27 mkBush",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq.7_0",
+   "file": "cq.7_0.rgba",
+   "w": 23,
+   "h": 20,
+   "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0",
+   "caller": "escenas/balcon.js:166:50 tanteo",
+   "maker": "escenas/balcon.js:166:67",
+   "firstRun": "el-jugo/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.72_00",
+   "file": "cq0.72_00.rgba",
+   "w": 24,
+   "h": 20,
+   "sha256": "f8e1b1869ed4893847d8321f0bb594085efc35a0a9aa7394d760a5703f547a89",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "cq0.72_01",
+   "file": "cq0.72_01.rgba",
+   "w": 24,
+   "h": 20,
+   "sha256": "2400d7f41ac124eb7531286e02b4d47ac66b9004a5ef82155c2c4b63bed6a209",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/alternate",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "cq0.72_10",
+   "file": "cq0.72_10.rgba",
+   "w": 24,
+   "h": 20,
+   "sha256": "d09231224424ac3a5826d54e321808442a986dd92f987b408467282c40af1ea9",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "cq0.79_00",
+   "file": "cq0.79_00.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "156a58d2e0bd5afa16578b8284976ea4c12bc393dcf4cacf6578b0666c5cbbb3",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "cq0.85_00",
+   "file": "cq0.85_00.rgba",
+   "w": 28,
+   "h": 23,
+   "sha256": "3e864c6012147f934abb3908bd06a884b14774a8feb5f37e4c6c700918e290de",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.86_00",
+   "file": "cq0.86_00.rgba",
+   "w": 28,
+   "h": 24,
+   "sha256": "e42b89706fa3c7281cca42e208b2affcc9fad768d08fa3bc5965dd3bc4597030",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.86_10",
+   "file": "cq0.86_10.rgba",
+   "w": 28,
+   "h": 24,
+   "sha256": "32d158e12d533f634a7081855524373d2b99ffcfdde121edc2b5701b1ab87487",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.8_00",
+   "file": "cq0.8_00.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "6e77fd58c97a563ad7b03ce3758417cc5f9f3562866b535fd210a254f51a1bee",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.8_01",
+   "file": "cq0.8_01.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "ae1e0319b26b65173c871c7e22c5e3f57cd5b320a0e797f92557d4d14eedbe96",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "que-calor/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.8_10",
+   "file": "cq0.8_10.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "e0d00e683fee9fddfd894ef13c640e3e34209474409393b69042b7ed043fed4d",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.9_00",
+   "file": "cq0.9_00.rgba",
+   "w": 29,
+   "h": 25,
+   "sha256": "534d015ee13d318ea4cda5ff8e30b216309cddc82bb4245bc23d748dd2521e8e",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq1_00",
+   "file": "cq1_00.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "c8717ae68b12349fc7daf8a06388dca414e1c3dbec78c5211e91e0f8ebf3bffc",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq1_10",
+   "file": "cq1_10.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "d5972b548da9b40ec44c1f8369c54552ec37031c5750bc9df9bb40898ff292f3",
+   "caller": "escenas/balcon.js:119:15 rana",
+   "maker": "escenas/balcon.js:119:42",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "mesa",
+   "file": "mesa.rgba",
+   "w": 52,
+   "h": 24,
+   "sha256": "735b9c1165d52e766f965848a92f963cc19a7e329ff09f3276f308dc86ef9f0c",
+   "caller": "escenas/balcon.js:136:15 Object.draw",
+   "maker": "escenas/balcon.js:74:27 mkMesa",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "sillaG",
+   "file": "sillaG.rgba",
+   "w": 40,
+   "h": 48,
+   "sha256": "54028b0900a55294716116812e127adfc192a145d400bd2bd5c959fe9932bac4",
+   "caller": "escenas/balcon.js:127:15 Object.draw",
+   "maker": "escenas/balcon.js:60:29 mkSillaG",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "sillaP",
+   "file": "sillaP.rgba",
+   "w": 24,
+   "h": 30,
+   "sha256": "d455357853ad4d513ba7c6c4dd33fc3abe614c71fa5d742df1f4c89294489abe",
+   "caller": "escenas/balcon.js:135:15 Object.draw",
+   "maker": "escenas/balcon.js:68:29 mkSillaP",
+   "firstRun": "el-jugo/right",
+   "runs": 12,
+   "variants": 1
+  }
+ ],
+ "outsideCache": [],
+ "notDumped": [
+  {
+   "key": "cqv0",
+   "caller": "juego.js:59:17"
+  },
+  {
+   "key": "cqv1",
+   "caller": "juego.js:59:17"
+  },
+  {
+   "key": "kavefeliz0",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kaven0",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kaven1",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  },
+  {
+   "key": "kaveround0",
+   "caller": "escenas/kit.js:27:8 Object.drawAve"
+  }
+ ],
+ "sites": [
+  {
+   "line": 56,
+   "col": 41,
+   "key": "\"bush\"",
+   "made": [
+    "bush"
+   ]
+  },
+  {
+   "line": 56,
+   "col": 80,
+   "key": "\"bush\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 119,
+   "col": 15,
+   "key": "\"cq\"+q.s+\"_\"+bl+op",
+   "made": [
+    "cq0.72_00",
+    "cq0.72_01",
+    "cq0.72_10",
+    "cq0.79_00",
+    "cq0.85_00",
+    "cq0.86_00",
+    "cq0.86_10",
+    "cq0.8_00",
+    "cq0.8_01",
+    "cq0.8_10",
+    "cq0.9_00",
+    "cq1_00",
+    "cq1_10"
+   ]
+  },
+  {
+   "line": 121,
+   "col": 15,
+   "key": "\"bal\"+W.door+\"_\"+W.win",
+   "made": [
+    "bal0_0",
+    "bal1_0"
+   ]
+  },
+  {
+   "line": 124,
+   "col": 91,
+   "key": "\"ab\"+pose+habla",
+   "made": [
+    "abidle0",
+    "aboffer0",
+    "abwave00",
+    "abwave10"
+   ]
+  },
+  {
+   "line": 124,
+   "col": 172,
+   "key": "\"ab\"+pose+habla",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 127,
+   "col": 15,
+   "key": "\"sillaG\"",
+   "made": [
+    "sillaG"
+   ]
+  },
+  {
+   "line": 129,
+   "col": 17,
+   "key": "\"abS\"+pose+habla",
+   "made": [
+    "abSbebe0",
+    "abSfan00",
+    "abSfan01",
+    "abSfan10",
+    "abSfan11",
+    "abSidle0",
+    "abSvaso0",
+    "abSvaso1"
+   ]
+  },
+  {
+   "line": 135,
+   "col": 15,
+   "key": "\"sillaP\"",
+   "made": [
+    "sillaP"
+   ]
+  },
+  {
+   "line": 136,
+   "col": 15,
+   "key": "\"mesa\"",
+   "made": [
+    "mesa"
+   ]
+  },
+  {
+   "line": 166,
+   "col": 50,
+   "key": "\"cq.7_0\"",
+   "made": [
+    "cq.7_0"
+   ]
+  },
+  {
+   "line": 166,
+   "col": 84,
+   "key": "\"kaven0\"",
+   "made": [],
+   "madeElsewhere": true
+  }
+ ]
+}
