@@ -50,8 +50,8 @@ const modeArg = opt('--mode', 'both');
 const modes = modeArg === 'both' ? ['sample', 'real'] : [modeArg];
 const refDir = join(repo, 'coqui', 'ref', 'pantallas');
 
-// Every reference picture of order 22 and how to reach its state in the dev entry. `sample` is the same state on the
-// sample course (its one book, La lluvia, in place of the reference's books); null: the sample course cannot show it.
+// Every reference picture of order 22 and how to reach its state in the dev entry. `sampleQ` is the same state on the
+// sample course (its one book, La lluvia, in place of the reference's books; the shelf states have none and use `q`); null: the sample course cannot show it.
 // speed: the clips play 40 times faster than their length, so a state that waits for the lines to finish does not wait long.
 const quick = 'speed=40';
 const states = [
@@ -157,7 +157,7 @@ try {
       mkdirSync(join(out, device.id, mode), { recursive: true });
       for (const s of states) {
         if (only.length && !only.includes(s.name)) continue;
-        const q = mode === 'sample' ? s.sampleQ : s.q;
+        const q = mode === 'sample' && 'sampleQ' in s ? s.sampleQ : s.q;
         if (q === null || q === undefined) continue;
         const content = mode === 'real' ? '&content=real' : '';
         const ctx = await browser.newContext({

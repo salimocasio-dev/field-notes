@@ -1,7 +1,7 @@
 /// Where the books' pictures come from.
 ///
 /// A page of a book names its picture by a path under `libros/` (`img/la-lluvia-1.png`). Nothing in
-/// `Services` carries the base those files are served from (request 22-feature-library-needs-coqui-contracts-content-base),
+/// `Services` carries the base those files are served from (request 22-feature-library-needs-coqui-contracts-book-image-url),
 /// so the module takes a resolver, and its default is the old site's relative path with its version
 /// tag (`BV` of app.html:305: the books and their pictures are fetched with `?v=39`, so a phone does not
 /// keep an old copy).

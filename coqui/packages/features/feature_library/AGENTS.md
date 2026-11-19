@@ -23,8 +23,26 @@ Biblioteca and the book reader (Leer).
 
 - `lib/feature_library.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Since order 02 the file exports a placeholder module (its screen says the feature's name), until this feature's order builds the real one. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
-- Later it holds one thing: its module, a `FeatureModule` (boundary rule 4).
+- It holds one thing: `LibraryModule` (a `FeatureModule`, boundary rule 4). Id `library`; its tab is the Biblioteca shelf; `screenFor(BookRoute)` is the book reader. A book page's picture is a file served by the old site: `LibraryModule({imageUrl, imageProvider})` takes the address resolver (default `libros/<img>?v=39`, the old page's own) until `Services` carries a base (request `22-feature-library-needs-coqui-contracts-book-image-url`).
+- What is in `lib/src/`: `shelf.dart` (app.html `biblioteca`), `shelf_row.dart` (`.bk` and `.btn` of the shelf), `reader.dart` (`leer` to `initLibro`), `book_line.dart` (`lineaEl`, `.lbl`, the underlines), `book_picture.dart` (`ajustaPic`), `word_marks.dart` (`pares`, `occs`), `word_popup.dart` (`tarjetaPal`), `strings.dart` (the words app.html writes itself), `images.dart`, `press.dart`.
+- The reader keeps its text size in its own storage space: `Services.storage('leer')`, key `tam` (the old page's `coqui.leer.tam`). It writes no word record; `progress.markRead` at the last page.
+- The shelf reads `course.places` when it is built and after each progress save: the shell loads the catalog first. It carries its own `#fadeTab` fade (16 px at the tab bar's edge, while there is more to scroll) and expects the shell to lay the tab out full screen with the tab bar over it, as `TabPage`'s foot padding does.
+
+## The dev entry
+
+`tool/dev_main.dart` runs the feature alone on the fakes, on the shelf with a tab bar under it; Read opens the reader. The address starts it in a reference state (`coqui/ref/pantallas/`):
+
+```
+flutter run -d chrome -t tool/dev_main.dart --web-launch-url "/?seed=curso&screen=book&book=la-lluvia&page=5&hold=2"
+```
+
+`seed` (vacio, curso, casi, todo: the progress of the reference states, embedded by `dart run tool/embed_seeds.dart` into `tool/dev_seeds.dart`), `screen` (shelf or book), `book`, `page` (from 1), `hold` (the n-th line of the page hangs, lit), `speed` (clips play this many times faster), `big=1`, `card=1`, `scroll=end`, `tab=0`, `content=real` (the real files of `historia/`, served by the screenshot script). The sample course has one book, La lluvia, whose own verdict is "does not read well"; the dev entry turns it on so the shelf shows Read.
+
+```
+node tool/shots.mjs --out <dir>      # builds it, serves it with the books' files, captures every reference state of order 22 on both phones
+```
+
+It writes `<dir>/<device>/<mode>/<state>.png`, `<dir>/pairs.json` (each picture with its reference picture) and `<dir>/side/` (each pair, the reference at the left). `--mode sample` is the sample course alone, `--mode real` the real files of `historia/` (read from the repository, nothing copied).
 
 ## Run and test it alone
 
@@ -42,7 +60,7 @@ dart format --output=none --set-exit-if-changed .
 flutter analyze
 ```
 
-A dev entry that starts the feature on the fakes comes with order 02. It lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_library`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
+The dev entry lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_library`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
 
 ## Lines that apply
 
