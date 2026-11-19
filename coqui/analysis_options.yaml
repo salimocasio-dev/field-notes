@@ -1,0 +1,23 @@
+# The one analysis file for the whole workspace. Packages below this folder use it
+# as it is: the analyzer reads the nearest analysis_options.yaml upward, and none
+# of the packages has its own. Pure Dart packages are covered the same way.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    # A standalone throwaway app (order 00). Not part of the workspace.
+    - tool/prueba_telefono/**
+    - "**/.dart_tool/**"
+    - "**/build/**"
+  errors:
+    depend_on_referenced_packages: error
+    avoid_relative_lib_imports: error
+    avoid_print: error
+    always_use_package_imports: error
+
+linter:
+  rules:
+    - depend_on_referenced_packages
+    - avoid_relative_lib_imports
+    - avoid_print
+    - always_use_package_imports

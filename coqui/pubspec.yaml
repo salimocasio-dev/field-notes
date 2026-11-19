@@ -1,0 +1,28 @@
+name: coqui_workspace
+description: The Coquí workspace root. No app code lives here. See AGENTS.md.
+publish_to: none
+
+environment:
+  sdk: ^3.14.0
+
+workspace:
+  - app
+  - packages/core/coqui_contracts
+  - packages/core/coqui_progress
+  - packages/core/coqui_content
+  - packages/core/coqui_platform
+  - packages/core/coqui_pixel
+  - packages/core/coqui_scenes
+  - packages/core/coqui_ui
+  - packages/core/coqui_testing
+  - packages/features/feature_map
+  - packages/features/feature_story
+  - packages/features/feature_review
+  - packages/features/feature_words
+  - packages/features/feature_library
+  - packages/features/feature_speaking
+  - packages/features/feature_profile
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.32.0
