@@ -16,12 +16,10 @@ import 'package:feature_review/src/logic/js_sort.dart';
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/review_session.dart' show OptionRing;
 
-/// nivel.js: CW, CH: four cells, two by two, each 96 x 106 art pixels.
+/// nivel.js: CW, CH: four cells, two by two, each 96 x 106 art pixels. The picture source is asked for pictures
+/// of this size (`PictureSource.of(ref, width: levelCellWidth, height: levelCellHeight)`).
 const int levelCellWidth = 96;
 const int levelCellHeight = 106;
-
-/// nivel.js: `E2.SW`: the width of a scene. Every scene file takes it from the scene kit (`SW=KIT.SW`, 240).
-const int levelSceneWidth = 240;
 
 /// nivel.js: the most pictures it asks, unless every item is asked (`?todo=1`).
 const int levelCap = 16;
@@ -40,7 +38,7 @@ class LevelPanel {
   LevelPanel({required this.right, required this.ref});
   final bool right;
 
-  /// The square crop of one picture of a pair (nivelPanel).
+  /// The square crop of one picture of a pair (nivelPanel), named `nivel.<word>.<index>`.
   final PictureRef ref;
 }
 
@@ -181,28 +179,16 @@ class LevelCheckSession extends LessonBase {
     return s0;
   }
 
-  // nivel.js: nivelPanel: the square crop of one picture of a pair
-  LevelPanel _panel(List<Object?> pic, bool right) {
-    final word = pic[0] as String;
-    final it = _pairs[word];
-    if (it == null) {
+  // nivel.js: nivelPanel: the square crop of picture [k] of item [q]: the picture's ref is coqui_ui's
+  // (`PictureRef.ofLevel`)
+  LevelPanel _panel(LevelItem q, int k, bool right) {
+    final word = q.pictures[k][0] as String;
+    if (_pairs[word] == null) {
       throw StateError('the level check has no review pair for "$word"');
     }
-    final spec = pic[1] == 'no' ? it.no : it.yes;
-    final cm = spec.cam;
-    final h = cm[3];
-    final w = h * levelCellWidth / levelCellHeight;
-    final cx = (pic.length > 2 && pic[2] != null)
-        ? pic[2] as num
-        : cm[0] + cm[2] / 2;
-    final x = math.max(0, math.min(levelSceneWidth - w, cx - w / 2));
     return LevelPanel(
       right: right,
-      ref: PictureRef(
-        scene: spec.scene ?? it.scene,
-        set: spec.set,
-        cam: [x, cm[1], w, h],
-      ),
+      ref: PictureRef.ofLevel(q, k, pairs: _pairs),
     );
   }
 
@@ -313,7 +299,7 @@ class LevelCheckSession extends LessonBase {
         'the level check has no review pair for "${q.pictures[0][0]}"',
       );
     }
-    panels = [for (final k in orden) _panel(q.pictures[k], k == 0)];
+    panels = [for (final k in orden) _panel(q, k, k == 0)];
     changed();
     await waitMs(450);
     final my = runId;
@@ -370,9 +356,10 @@ class LevelCheckSession extends LessonBase {
     final refs = <PictureRef>[];
     for (final next in [place + upStep, place - 1]) {
       if (next < 0 || next >= items.length) continue;
-      for (final pic in items[next].pictures) {
-        if (_pairs[pic[0] as String] == null) continue;
-        refs.add(_panel(pic, false).ref);
+      final q = items[next];
+      for (var k = 0; k < q.pictures.length; k++) {
+        if (_pairs[q.pictures[k][0] as String] == null) continue;
+        refs.add(_panel(q, k, false).ref);
       }
     }
     if (refs.isNotEmpty) w(refs);

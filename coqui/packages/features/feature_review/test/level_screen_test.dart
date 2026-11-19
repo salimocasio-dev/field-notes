@@ -110,6 +110,49 @@ void main() {
       },
     );
 
+    testWidgets(
+      'the four cells ask for pictures of 96 x 106, animated, the refs coqui_ui makes for the item (PictureRef.ofLevel)',
+      (t) async {
+        final lab = await open(t);
+        await lab.start();
+        await lab.until(() => lab.lv.ready);
+        final panels = lab.lv.panels!;
+        expect(panels.length, 4);
+        final asked = [
+          for (final a in lab.pictures.asked)
+            if (panels.any((p) => identical(p.ref, a.ref))) a,
+        ];
+        expect(asked.length, 4, reason: 'one picture for each cell');
+        for (final a in asked) {
+          expect((a.width, a.height, a.animated), (96, 106, true));
+        }
+        final byWord = {for (final p in course.pairs) p.word: p};
+        for (final p in panels) {
+          // `nivel.<word>.<index>`: the item and the picture of it the cell shows
+          final parts = p.ref.name!.split('.');
+          expect(parts.first, 'nivel');
+          final item = course.levelItems.firstWhere((q) => q.word == parts[1]);
+          expect(
+            p.ref,
+            PictureRef.ofLevel(item, int.parse(parts[2]), pairs: byWord),
+          );
+        }
+        // the four are the four pictures of one item, each once
+        expect({for (final p in panels) p.ref.name!.split('.')[1]}.length, 1);
+        expect(
+          [for (final p in panels) int.parse(p.ref.name!.split('.')[2])]
+            ..sort(),
+          [0, 1, 2, 3],
+        );
+        // the pictures of the item that can come next were made ready the same way
+        expect(lab.pictures.warmed, isNotEmpty);
+        expect(
+          lab.pictures.warmed.every((r) => r.name!.startsWith('nivel.')),
+          isTrue,
+        );
+      },
+    );
+
     testWidgets('nivel_check: touches before the sentence ends do not count', (
       t,
     ) async {
