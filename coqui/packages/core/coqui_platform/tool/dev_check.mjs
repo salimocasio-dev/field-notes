@@ -116,6 +116,8 @@ try {
     "Mode listening", "Heard Adiós.", "Mode speaking", "AgentLine Eso. Hasta mañana.", "Mode listening", "Ended user"];
   if (JSON.stringify(T.events) !== JSON.stringify(wantStub) || JSON.stringify(T.sent) !== '["(fin)"]' || !T.ended)
     failed.push("the stub call's events are not the old stub's");
+  out("the sound context before, during, after the stub call: " + JSON.stringify(T.contextStates));
+  if (JSON.stringify(T.contextStates) !== '["running","suspended","running"]') failed.push("the sound did not come back after the call");
   for (const e of errors) failed.push("page error: " + e);
 } finally {
   await browser.close();

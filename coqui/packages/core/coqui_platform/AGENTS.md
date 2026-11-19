@@ -21,7 +21,9 @@ Audio, speech recognition, the call connection, storage, haptics. The only packa
 
 - `lib/coqui_platform.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- After order 18 it gives `createClipPlayer`, `createSpeechListener`, `openStorage` (`CoquiStorage`: `progress` and `space(name)`), `createHaptics`, `createAppInfo`, and the build settings `coquiBuild`, `coquiCallsAllowed`, `iosAudioSessionType`. Order 19 added `createCallSession` (`CallStub`, `CallStubScript`, `CallStartException`, `dannyAgentId`, `elevenLabsClientUrl`). All browser code stays behind a conditional import (`src/web/`); the plugins are in `src/io/`.
+- After order 18 it gives `createClipPlayer`, `createSpeechListener`, `openStorage` (`CoquiStorage`: `progress` and `space(name)`), `createHaptics`, `createAppInfo`, and the build settings `coquiBuild`, `coquiCallsAllowed`, `iosAudioSessionType`. Order 19 added `createCallSession` (`CallStub`, `CallStubScript`, `dannyAgentId`, `elevenLabsClientUrl`). All browser code stays behind a conditional import (`src/web/`); the plugins are in `src/io/`.
+- Order 19b: `CallSession.start` throws only the contract's `CallStartError` (`CallStartFailure.microphone` when the client's error name and message match llamada.js's microphone test, `library` when the voice library did not load, `failed` otherwise, `unavailable` in a phone build or with calls off); its text stays `<name>: <message>`.
+- Order 19b: the call suspends the shared sound context at start (llamada.js's `AC.suspend()`) and resumes it once when the call is over (its `Ended`, a failed start, or `end()`), so story audio works after a call without a reload; a phone build suspends nothing and resumes nothing.
 
 ## Order 18's own tools
 

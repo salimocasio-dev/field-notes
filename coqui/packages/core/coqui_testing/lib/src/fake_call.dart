@@ -10,6 +10,8 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 /// [end] ends the call (Ended "user" 30 ms later). Options, as `?stub=`:
 /// - `manual`: nothing moves by itself; step with [go] (names in [names]).
 /// - `mic`: the microphone is refused ([start] throws, 400 ms); `fail`: the call does not start (600 ms).
+///   Each throws a [CallStartError] (kinds microphone and failed). Two more for the other kinds (order 19b):
+///   `library`: the voice library did not load (at once); `unavailable`, or [available] false: no calls here (at once).
 /// - `nofin`: Danny does not answer "(fin)". `hasta`: the learner's goodbye is "Hasta mañana." instead of "Adiós.".
 /// - `dannybye`: the learner says nothing more; Danny says goodbye on his own.
 /// - `loop`: once a goodbye has been said Danny says "Hasta mañana." / "Adiós." every 3 s, whatever is sent.
@@ -164,18 +166,44 @@ class FakeCallSession implements CallSession {
     this.brief = brief;
     this.variables = variables;
     final done = _started = Completer<void>();
+    if (!available || options.contains('unavailable')) {
+      return Future.error(
+        const CallStartError(
+          CallStartFailure.unavailable,
+          'Calls are off on this build.',
+        ),
+      );
+    }
+    if (options.contains('library')) {
+      return Future.error(
+        const CallStartError(
+          CallStartFailure.library,
+          'The voice library did not load.',
+        ),
+      );
+    }
     if (options.contains('mic')) {
       _later(
         400,
-        () =>
-            done.completeError(Exception('NotAllowedError: Permission denied')),
+        () => done.completeError(
+          const CallStartError(
+            CallStartFailure.microphone,
+            'Permission denied',
+            name: 'NotAllowedError',
+          ),
+        ),
       );
       return done.future;
     }
     if (options.contains('fail')) {
       _later(
         600,
-        () => done.completeError(Exception('The call did not start.')),
+        () => done.completeError(
+          const CallStartError(
+            CallStartFailure.failed,
+            'The call did not start.',
+          ),
+        ),
       );
       return done.future;
     }

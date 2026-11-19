@@ -151,7 +151,20 @@ CallSession createCallSession({
   library: stub ?? JsConvLibrary(libraryUrl),
   callsAllowed: appInfo.callsAllowed,
   beforeStart: _suspendSound,
+  afterCall: _resumeSound,
 );
+
+// order 19b: when the call is over, the sound comes back (the old page reloaded instead)
+void _resumeSound() {
+  final g = webSoundCore.context;
+  if (g is! WebAudioGraph) return;
+  final c = g.ctx;
+  if (c.isA<web.AudioContext>()) {
+    unawaited(
+      (c as web.AudioContext).resume().toDart.catchError((Object _) => null),
+    );
+  }
+}
 
 // llamada.js, inicia: `try{if(AC)AC.suspend();}catch(e){}`, before the microphone opens
 void _suspendSound() {
