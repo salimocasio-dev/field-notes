@@ -12,6 +12,11 @@ class _Timer {
 }
 
 class VirtualTime implements Clock {
+  /// [settler]: how pending microtasks are let run. The default is a turn of the event loop (plain tests and the dev
+  /// entry); a widget test, whose futures live in its fake zone, gives `tester.idle`.
+  VirtualTime({this.settler});
+
+  final Future<void> Function()? settler;
   int now = 0;
   int _seq = 0;
   final List<_Timer> _timers = [];
@@ -74,7 +79,8 @@ class VirtualTime implements Clock {
   }
 
   /// Lets every pending microtask run (a timer comes after all of them).
-  Future<void> settle() => Future<void>.delayed(Duration.zero);
+  Future<void> settle() =>
+      settler != null ? settler!() : Future<void>.delayed(Duration.zero);
 }
 
 /// A count of draws in front of a generator.

@@ -17,6 +17,8 @@
 //
 // The old pictures were taken with the progress clock fixed at 19 Nov 2026 16:00 UTC; so is the store's here.
 import 'dart:async';
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -116,7 +118,11 @@ class _DevAppState extends State<DevApp> {
         _services = s;
       });
       if (vt != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => _playState(vt));
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await _playState(vt);
+          // the screenshot script waits for this
+          globalContext.setProperty('__devReady'.toJS, true.toJS);
+        });
       }
     } catch (e) {
       setState(() => _error = e);

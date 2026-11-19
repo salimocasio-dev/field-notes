@@ -168,7 +168,8 @@ class LessonTextScreen extends StatelessWidget {
                 maxWidth: CoquiMetrics.lessonColumnMax,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // `#fin>*{width:100%;max-width:480px}`: each line is as wide as the column
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(title, style: CoquiText.lessonH1),
                   for (final l in lines) ...[
