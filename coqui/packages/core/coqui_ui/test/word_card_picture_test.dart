@@ -7,7 +7,9 @@ import 'package:material_ui/material_ui.dart';
 
 /// 0xAABBGGRR
 const _colours = [0xFF0000FF, 0xFF00FF00, 0xFFFF0000, 0xFF00FFFF];
-const _back = 0xFF222222;
+
+/// The card's own surface, white (`.wc{background:#fff}`, app.html:88): what shows round the picture.
+const _back = 0xFFFFFFFF;
 
 Uint32List _checker(int w, int h) {
   final p = Uint32List(w * h);
@@ -21,7 +23,7 @@ Uint32List _checker(int w, int h) {
 
 /// A word card [cardWidth] CSS px wide (v=39's grid cell on a phone), a 196 x 104
 /// picture in it, taken at [ratio]. Checks the picture is at scale [scale], centred,
-/// every device pixel its picture pixel, on the #222 of the picture area.
+/// every device pixel its picture pixel, on the card's own surface.
 Future<void> _check(
   WidgetTester tester, {
   required double ratio,
@@ -116,7 +118,7 @@ Future<void> _check(
   }
   expect(wrong, 0, reason: 'device pixels that are not their picture pixel');
 
-  // The bands are the picture area's #222, not a stretch of the picture.
+  // The bands are the card's own surface (white), not a stretch of the picture and not a frame.
   final midY = (minY + maxY) ~/ 2;
   expect(px[midY * w + (minX - 3)], _back);
   expect(px[midY * w + (maxX + 4)], _back);
@@ -134,7 +136,7 @@ Future<void> _check(
 void main() {
   testWidgets(
     'Android: a 196 x 104 picture in a 182 px card at ratio 2.625 is drawn at '
-    'scale 2 (392 x 208 device pixels), centred',
+    'scale 2 (392 x 208 device pixels), centred, on the card surface',
     (tester) async {
       await _check(
         tester,

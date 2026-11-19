@@ -10,11 +10,11 @@ import 'package:material_ui/material_ui.dart';
 /// `.wc`: a white card, 16 px corners, a 1 px ring and a faint shadow.
 ///
 /// With a [picture]: a picture area on top, 196:104 and as wide as the card (v=39's
-/// `.wc canvas{aspect-ratio:196/104}`, app.html:89), on `#222` (`.wc canvas{background:#222}`,
-/// app.html:89, [CoquiColors.pictureBack]). The picture stands in it at the largest whole
-/// number of device pixels per picture pixel that fits the card's width ([PixelView]'s own
-/// rule: page 11-pixel-engine, decision 3), centred, never stretched and never cropped;
-/// the `#222` shows in the bands round it. Then the word (18/24 semibold) and the two
+/// `.wc canvas{aspect-ratio:196/104}`, app.html:89), on the card's own surface (white,
+/// `.wc{background:#fff}`, app.html:88, [CoquiColors.card]). The picture stands in it at the
+/// largest whole number of device pixels per picture pixel that fits the card's width
+/// ([PixelView]'s own rule: page 11-pixel-engine, decision 3), centred, never stretched
+/// and never cropped; the card's surface shows in the bands round it. Then the word (18/24 semibold) and the two
 /// meters, padded 8 / 12 / 12. Without: `.np`, a
 /// plain tile with the word large (24/32 semibold, centred, at least 72 px high,
 /// breaking anywhere in a long word) and the meters under it; no empty picture
@@ -65,7 +65,7 @@ class WordCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: CoquiMetrics.wordPictureAspect,
             child: ColoredBox(
-              color: CoquiColors.pictureBack,
+              color: CoquiColors.card,
               child: Center(child: picture),
             ),
           ),
