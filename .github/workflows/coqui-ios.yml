@@ -9,8 +9,6 @@
 # The Flutter version is the one in coqui/.flutter-version.
 name: Coquí iOS
 on:
-  push:
-    branches: [orden/03] # TEMP: for testing, removed in the last commit
   schedule:
     - cron: "23 5 * * 1" # Mondays, 05:23 UTC
   workflow_dispatch:

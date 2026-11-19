@@ -13,7 +13,8 @@
 name: Coquí sitio
 on:
   push:
-    branches: [main, orden/03] # TEMP: orden/03 is for testing, removed in the last commit
+    branches: [main]
+    paths: ["coqui/BUILD"]
   workflow_dispatch:
 permissions:
   contents: write
