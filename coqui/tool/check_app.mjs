@@ -163,9 +163,11 @@ async function waitFor(page, test, what, timeout = 30000) {
     await page.waitForTimeout(250);
   }
 }
-const has = (re) => (ns) => ns.some((n) => re.test(n.text));
+// a node's label can hold several lines (a card's title and its line under it): each line is matched alone too
+const says = (n, re) => re.test(n.text) || n.text.split('\n').some((l) => re.test(l.trim()));
+const has = (re) => (ns) => ns.some((n) => says(n, re));
 async function tapText(page, re, { last = false } = {}) {
-  const ns = (await nodes(page)).filter((n) => re.test(n.text));
+  const ns = (await nodes(page)).filter((n) => says(n, re));
   if (!ns.length) throw new Error(`nothing on screen says ${re}`);
   const n = last ? ns[ns.length - 1] : ns[0];
   await page.mouse.click(n.x, n.y);
@@ -223,7 +225,7 @@ async function run(phone, state) {
   for (const [label, id, sure] of [
     ['Biblioteca', 'library', /^Biblioteca$|^feature_library$/],
     ['Palabras', 'words', /^Palabras$|^feature_words$/],
-    ['Hablar', 'speak', /^Call Danny$/],
+    ['Hablar', 'speak', /^Opens when you finish /],
     ['Yo', 'me', /day streak/],
     ['Mapa', 'map', seed ? /^2 · El parque$/ : /^1 · La casa$/],
   ]) {
@@ -312,7 +314,10 @@ async function run(phone, state) {
     check(true, `${tag}: #/prueba-voz shows ${at === '/prueba-voz' ? 'the voice test' : `the map (${at}): the voice test is not wired (see the report)`}`);
     await shot(page, `${tag}-08-prueba-voz`);
   });
-  check(w.console.length === 0 && w.errors.length === 0, `${tag}: no console error and no page error`, [...w.console, ...w.errors].join(' | ').slice(0, 1500));
+  // the ElevenLabs library's address is not let out from this machine: each aborted load prints one "Failed to load resource"
+  const aborted = w.outside.filter((u) => EL.test(u)).length;
+  const own = w.console.filter((m, i) => !(m === 'error: Failed to load resource: net::ERR_FAILED' && w.console.slice(0, i + 1).filter((x) => x === m).length <= aborted));
+  check(own.length === 0 && w.errors.length === 0, `${tag}: no console error and no page error${aborted ? ` (but the ${aborted} "Failed to load resource" of the aborted library loads)` : ''}`, [...own, ...w.errors].join(' | ').slice(0, 1500));
   const bad = w.outside.filter((u) => !(EL.test(u) && seed));
   check(bad.length === 0, `${tag}: every request stays on the local server, but the ElevenLabs library's on an open call card`, [...new Set(w.outside)].join(', '));
   await context.close();
