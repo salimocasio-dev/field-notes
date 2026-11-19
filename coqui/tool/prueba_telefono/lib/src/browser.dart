@@ -89,6 +89,56 @@ String setAudioSession(String type) {
   }
 }
 
+/// Does this browser have navigator.audioSession?
+bool hasAudioSession() {
+  try {
+    return (web.window.navigator as JSObject).has('audioSession');
+  } catch (_) {
+    return false;
+  }
+}
+
+/// Set navigator.audioSession.type to [type] and wait (up to 1 s) until it reads back as [type].
+/// Never throws: a throw from the setter is reported in the line.
+Future<({bool ok, String line})> switchAudioSession(String type) async {
+  try {
+    final s = (web.window.navigator as JSObject).getProperty<JSObject?>(
+      'audioSession'.toJS,
+    );
+    if (s == null) return (ok: false, line: 'navigator.audioSession is null');
+    final before = s.getProperty<JSAny?>('type'.toJS).dartifyText();
+    try {
+      s.setProperty('type'.toJS, type.toJS);
+    } catch (e) {
+      return (
+        ok: false,
+        line:
+            'setting the type to "$type" threw ${errText(e)} (it reads "${s.getProperty<JSAny?>('type'.toJS).dartifyText()}")',
+      );
+    }
+    final t0 = nowMs();
+    var now = s.getProperty<JSAny?>('type'.toJS).dartifyText();
+    while (now != type && nowMs() - t0 < 1000) {
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      now = s.getProperty<JSAny?>('type'.toJS).dartifyText();
+    }
+    final took = ms(nowMs() - t0);
+    return now == type
+        ? (
+            ok: true,
+            line:
+                'audio session type set to "$type" (was "$before"), reads "$now" after $took ms',
+          )
+        : (
+            ok: false,
+            line:
+                'audio session type set to "$type" (was "$before"), but it still reads "$now" after $took ms',
+          );
+  } catch (e) {
+    return (ok: false, line: 'audio session: ${errText(e)}');
+  }
+}
+
 /// The current navigator.audioSession type, or '' when there is none.
 String audioSessionType() {
   try {

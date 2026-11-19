@@ -126,7 +126,7 @@ class Lab extends ChangeNotifier {
     Card(
       4,
       'Silent switch',
-      'iPhone: set the ring switch to SILENT first. A line plays; say if you heard it. Twice.',
+      'iPhone: set the ring switch to SILENT first. A line plays; say if you heard it. Two or four times.',
     ),
     Card(5, 'Storage', 'Writes a marker and checks for the old progress.'),
     Card(6, 'Load', 'How long this page took to show.'),
@@ -632,43 +632,79 @@ class Lab extends ChangeNotifier {
 
   // ---------- 4. Silent switch
 
+  static const kSilentNote =
+      'iPhone: do this test with the ring switch set to silent.';
+
+  /// Where navigator.audioSession exists (iPhone), once per session type, "playback" then "play-and-record",
+  /// so a "No" can be told apart from sound going to the earpiece; then the type goes back to
+  /// "play-and-record" for the other tests. Elsewhere once, labelled "no audioSession".
   Future<void> _test4(Card c) async {
-    _say(c, ['Loading...']);
+    _say(c, [kSilentNote, 'Loading...']);
     if (!await _clipsLoaded()) {
-      _say(c, ['Clips not loaded: $clipsNote']);
+      _say(c, [kSilentNote, 'Clips not loaded: $clipsNote']);
       return;
     }
     final de = await _liveBuffers([kSilent]);
+    await wa.meterReady(limit: const Duration(seconds: 3));
     final cl = clips[kSilent]!;
-    final out = <String>['audio session "${audioSessionType()}"'];
-    if (de != null) {
-      out.add('Web Audio: could not decode: $de');
-    } else {
-      _say(c, [...out, 'Playing a line (Web Audio)...']);
-      final p = await wa.play(cl.buf!, cl.live!, limit: _limit(cl.live!));
-      final a = await _ask('Did you hear it (Web Audio)?', [
-        'Yes',
-        'No',
-      ], const Duration(seconds: 60));
-      out.add('Web Audio: heard: $a; the page says: ${_played(p, cl.live!)}');
+    final out = <String>[kSilentNote];
+    final types = hasAudioSession()
+        ? const ['playback', 'play-and-record']
+        : const <String?>[null];
+    try {
+      for (final type in types) {
+        final label = type ?? 'no audioSession';
+        if (type != null) {
+          final sw = await switchAudioSession(type);
+          out.add(sw.line);
+          wa.resume();
+          if (!sw.ok) {
+            out.add('[$label] skipped: the type did not take');
+            _say(c, out);
+            continue;
+          }
+        }
+        // Web Audio
+        if (de != null) {
+          out.add('[$label, Web Audio] could not decode: $de');
+        } else {
+          _say(c, [...out, 'Playing a line ($label, Web Audio)...']);
+          final p = await wa.play(cl.buf!, cl.live!, limit: _limit(cl.live!));
+          final a = await _ask('Did you hear it? ($label, Web Audio)', [
+            'Yes',
+            'No',
+          ], const Duration(seconds: 60));
+          out.add(
+            '[$label, Web Audio] heard: $a; the page detected: ${_played(p, cl.live!)}',
+          );
+        }
+        _say(c, out);
+        // the plugin
+        await plugin.unlockDone();
+        final le = await plugin.load([(clipUri(kSilent), cl.offline!)]);
+        if (le != null) {
+          out.add('[$label, plugin] could not load: $le');
+        } else {
+          _say(c, [...out, 'Playing a line ($label, the plugin)...']);
+          final pe = await plugin.playToEnd(_limit(cl.offline!));
+          final a = await _ask('Did you hear it? ($label, the plugin)', [
+            'Yes',
+            'No',
+          ], const Duration(seconds: 60));
+          out.add(
+            '[$label, plugin] heard: $a; the page detected: ${pe == null ? 'it played to its end' : 'no: $pe'}',
+          );
+        }
+        _say(c, out);
+      }
+    } finally {
+      if (types.first != null) {
+        final back = await switchAudioSession('play-and-record');
+        out.add('after the test: ${back.line}');
+        wa.resume();
+        _say(c, out);
+      }
     }
-    _say(c, out);
-    await plugin.unlockDone();
-    final le = await plugin.load([(clipUri(kSilent), cl.offline!)]);
-    if (le != null) {
-      out.add('Plugin: could not load: $le');
-    } else {
-      _say(c, [...out, 'Playing a line (the plugin)...']);
-      final pe = await plugin.playToEnd(_limit(cl.offline!));
-      final a = await _ask('Did you hear it (the plugin)?', [
-        'Yes',
-        'No',
-      ], const Duration(seconds: 60));
-      out.add(
-        'Plugin: heard: $a; the page says: ${pe == null ? 'it played to its end' : 'no: $pe'}',
-      );
-    }
-    _say(c, out);
   }
 
   // ---------- 5. Storage

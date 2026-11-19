@@ -178,6 +178,10 @@ class _CardView extends StatelessWidget {
           ],
           if (ask != null) ...[
             const SizedBox(height: 10),
+            if (card.n == 4) ...[
+              const Text(Lab.kSilentNote, style: TextStyle(fontSize: 17)),
+              const SizedBox(height: 4),
+            ],
             Text(
               ask.question,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
