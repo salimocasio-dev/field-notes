@@ -501,6 +501,42 @@ void main() {
       },
     );
   });
+  group('showPerf: the bake time of the state on screen', () {
+    testWidgets('off by default: no corner chip', (tester) async {
+      await openScreen(tester);
+      expect(find.byKey(const Key('story-perf-chip')), findsNothing);
+      expect(find.textContaining('scene bake'), findsNothing);
+    });
+
+    testWidgets(
+      'on: a corner chip under the top bar gives the bake of the state now drawn, as the frame timed it',
+      (tester) async {
+        final s = await openScreen(tester, showPerf: true);
+        final chip = find.byKey(const Key('story-perf-chip'));
+        expect(chip, findsOneWidget);
+        // every state baked so far was timed, and the chip shows the one now on screen
+        expect(s.frame.bakeMs, isNotEmpty);
+        expect(s.frame.bakeMs.length, s.frame.bakes);
+        final now = s.frame.currentBakeMs.value!;
+        expect(s.frame.bakeMs.values, contains(now));
+        expect(
+          find.descendant(
+            of: chip,
+            matching: find.text('scene bake ${now.toStringAsFixed(0)} ms'),
+          ),
+          findsOneWidget,
+        );
+        expect(tester.getTopRight(chip).dx, 412 - 4);
+        expect(
+          tester.getTopLeft(chip).dy,
+          greaterThanOrEqualTo(CoquiMetrics.lessonTopBar),
+        );
+        // the picture and its frame are as without the chip
+        expect(find.byType(LessonFrame), findsOneWidget);
+        expect(find.byType(PixelView), findsOneWidget);
+      },
+    );
+  });
 }
 
 /// Plays the story by answering each question when it is asked: [right] says whether to touch the right thing.

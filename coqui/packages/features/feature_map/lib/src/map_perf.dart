@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
-/// What the map measured of itself, for a dev entry to show (the real limits, 500 ms for the bake and 8 ms for
-/// a frame, are read on a phone). The screen records it; nothing in the app reads it.
+/// What the map measured of itself, for a dev entry or the app's `?perf=1` to show (the real limits, 500 ms for the
+/// bake and 8 ms for a frame, are read on a phone). The screen records it; [MapPerfChip] shows it.
 class MapPerf extends ChangeNotifier {
   /// How long `bake` took, in ms (0 until it has run).
   double bakeMs = 0;
@@ -31,4 +31,36 @@ class MapPerf extends ChangeNotifier {
     if (slower) slowestFrameMs = ms;
     if (slower || frames % 30 == 0) notifyListeners();
   }
+}
+
+/// The corner chip that shows [perf]: the bake, the slowest frame and the mean frame, in ms. Shown by the dev entry, and by
+/// the app when `MapModule(showPerf: true)` (its `?perf=1`).
+class MapPerfChip extends StatelessWidget {
+  const MapPerfChip(this.perf, {super.key});
+
+  final MapPerf perf;
+
+  @override
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: perf,
+    builder: (context, _) => DecoratedBox(
+      key: const Key('map-perf-chip'),
+      decoration: BoxDecoration(
+        color: const Color(0xCC000000),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(
+          'bake ${perf.bakeMs.toStringAsFixed(0)} ms · frame max ${perf.slowestFrameMs.toStringAsFixed(1)} ms · mean ${perf.meanFrameMs.toStringAsFixed(1)} ms',
+          style: const TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 11,
+            decoration: TextDecoration.none,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    ),
+  );
 }

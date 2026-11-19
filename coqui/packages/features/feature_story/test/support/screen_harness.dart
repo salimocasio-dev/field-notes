@@ -155,6 +155,7 @@ Future<Screen> openScreen(
   bool reduceMotion = true,
   Object habla = 1,
   SceneFactory? scenes,
+  bool showPerf = false,
 }) async {
   tester.view.physicalSize = Size(size.width * ratio, size.height * ratio);
   tester.view.devicePixelRatio = ratio;
@@ -189,6 +190,7 @@ Future<Screen> openScreen(
         txt: txt,
         session: SpeechSession(),
         options: options,
+        showPerf: showPerf,
         onOpen: (r, f) {
           screen.runner = r;
           screen.frame = f;

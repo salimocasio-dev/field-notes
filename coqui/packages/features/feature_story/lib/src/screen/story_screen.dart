@@ -36,6 +36,7 @@ class StoryScreen extends StatefulWidget {
     this.session,
     this.options,
     this.onOpen,
+    this.showPerf = false,
   });
 
   final Services services;
@@ -49,6 +50,10 @@ class StoryScreen extends StatefulWidget {
 
   /// Told when the story is ready: the runner and the frame (for the dev entry and tests).
   final void Function(StoryRunner runner, FrameRenderer frame)? onOpen;
+
+  /// Shows, in a small chip in a corner, how long the bake of the scene's state now on screen took (the app's
+  /// `?perf=1`). Off by default.
+  final bool showPerf;
 
   @override
   State<StoryScreen> createState() => _StoryScreenState();
@@ -210,7 +215,7 @@ class _StoryScreenState extends State<StoryScreen>
         progress: const LessonProgressDashes(segments: 5, done: 0),
       );
     }
-    return ListenableBuilder(
+    final story = ListenableBuilder(
       listenable: _repaint,
       builder: (context, _) {
         // where the mic button is, once it has been laid out: a turn's bubble that stands above it needs it
@@ -268,5 +273,49 @@ class _StoryScreenState extends State<StoryScreen>
         );
       },
     );
+    if (!widget.showPerf) return story;
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        story,
+        Positioned(
+          top: CoquiLayout.safeTop(context) + CoquiMetrics.lessonTopBar + 4,
+          right: 4,
+          child: ValueListenableBuilder<double?>(
+            valueListenable: frame.currentBakeMs,
+            builder: (context, ms, _) => StoryPerfChip(bakeMs: ms),
+          ),
+        ),
+      ],
+    );
   }
+}
+
+/// The corner chip of `showPerf`: the bake time of the scene's state now on screen, in ms.
+class StoryPerfChip extends StatelessWidget {
+  const StoryPerfChip({super.key, required this.bakeMs});
+
+  /// Null before the first frame.
+  final double? bakeMs;
+
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    key: const Key('story-perf-chip'),
+    decoration: BoxDecoration(
+      color: const Color(0xCC000000),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Text(
+        'scene bake ${bakeMs == null ? '-' : bakeMs!.toStringAsFixed(0)} ms',
+        style: const TextStyle(
+          color: Color(0xFFFFFFFF),
+          fontSize: 11,
+          decoration: TextDecoration.none,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    ),
+  );
 }
