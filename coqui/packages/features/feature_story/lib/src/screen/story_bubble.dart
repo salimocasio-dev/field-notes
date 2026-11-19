@@ -248,6 +248,8 @@ class _TailPainter extends CustomPainter {
 }
 
 /// Where a bubble stands and the bubble itself, over a stage of [stage] size. [placement] is what [placeBubble] found.
+///
+/// The bubble takes no touch: a finger on it goes through to the picture under it, as in the old page (`#bub{pointer-events:none}`).
 class StoryBubbleLayer extends StatelessWidget {
   const StoryBubbleLayer({
     super.key,
@@ -272,22 +274,24 @@ class StoryBubbleLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final first = placementFor(const Size(0, 0));
     if (!visible || first == null) return const SizedBox.shrink();
-    return CustomSingleChildLayout(
-      delegate: _BubbleDelegate(placementFor, first.maxWidth),
-      child: AnimatedOpacity(
-        opacity: 1,
-        duration: const Duration(milliseconds: 120),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            StoryBubbleBody(
-              kind: kind,
-              text: text,
-              estate: estate,
-              reduceMotion: reduceMotion,
-            ),
-            Positioned.fill(child: _TailAnchor(placementFor: placementFor)),
-          ],
+    return IgnorePointer(
+      child: CustomSingleChildLayout(
+        delegate: _BubbleDelegate(placementFor, first.maxWidth),
+        child: AnimatedOpacity(
+          opacity: 1,
+          duration: const Duration(milliseconds: 120),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              StoryBubbleBody(
+                kind: kind,
+                text: text,
+                estate: estate,
+                reduceMotion: reduceMotion,
+              ),
+              Positioned.fill(child: _TailAnchor(placementFor: placementFor)),
+            ],
+          ),
         ),
       ),
     );

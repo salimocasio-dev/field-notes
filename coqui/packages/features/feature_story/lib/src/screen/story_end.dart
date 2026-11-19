@@ -10,7 +10,7 @@ import 'package:material_ui/material_ui.dart';
 
 /// The story's title at the end: 24 px semibold, left, 16 px under the picture (which keeps its place: it is the last
 /// picture of the story). When it does not fit between the picture and the buttons it is dropped, never the picture. On a
-/// phone on its side it sits at the top of the column beside the picture.
+/// phone on its side it sits at the top of the column beside the picture. It takes no touch (`#fin{pointer-events:none}`).
 class StoryEndTitle extends StatelessWidget {
   const StoryEndTitle({super.key, required this.title});
 
@@ -22,17 +22,25 @@ class StoryEndTitle extends StatelessWidget {
     final dpr =
         MediaQuery.maybeDevicePixelRatioOf(context) ??
         View.of(context).devicePixelRatio;
+    // `#fin>*{width:100%;max-width:480px}` and `#fin h1{text-align:left}`: a column at most 480 px wide, centred, the title at
+    // its left. The column is as high as the title is (nothing in it may fill the height it is given).
     final text = ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: CoquiMetrics.lessonColumnMax),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(title, style: CoquiText.lessonH1),
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          title,
+          textAlign: TextAlign.left,
+          style: CoquiText.lessonH1,
+        ),
       ),
     );
     if (CoquiLayout.lessonLandscape(context)) {
-      return Align(
-        alignment: Alignment.topLeft,
-        child: Padding(padding: const EdgeInsets.only(top: 8), child: text),
+      return IgnorePointer(
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: Padding(padding: const EdgeInsets.only(top: 8), child: text),
+        ),
       );
     }
     return LayoutBuilder(
@@ -56,13 +64,15 @@ class StoryEndTitle extends StatelessWidget {
         if (y + painter.height + 16 > buttonsTop) {
           return const SizedBox.shrink();
         }
-        return Padding(
-          padding: EdgeInsets.only(
-            top: y,
-            left: CoquiMetrics.s16,
-            right: CoquiMetrics.s16,
+        return IgnorePointer(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: y,
+              left: CoquiMetrics.s16,
+              right: CoquiMetrics.s16,
+            ),
+            child: Align(alignment: Alignment.topCenter, child: text),
           ),
-          child: Align(alignment: Alignment.topCenter, child: text),
         );
       },
     );

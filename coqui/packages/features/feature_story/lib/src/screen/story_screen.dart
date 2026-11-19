@@ -291,7 +291,8 @@ class _StoryScreenState extends State<StoryScreen>
   }
 }
 
-/// The corner chip of `showPerf`: the bake time of the scene's state now on screen, in ms.
+/// The corner chip of `showPerf`: the bake time of the scene's state now on screen, in ms. It takes no touch: it stands over
+/// the picture, and the old page has no such chip to put a finger on.
 class StoryPerfChip extends StatelessWidget {
   const StoryPerfChip({super.key, required this.bakeMs});
 
@@ -299,21 +300,23 @@ class StoryPerfChip extends StatelessWidget {
   final double? bakeMs;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    key: const Key('story-perf-chip'),
-    decoration: BoxDecoration(
-      color: const Color(0xCC000000),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Text(
-        'scene bake ${bakeMs == null ? '-' : bakeMs!.toStringAsFixed(0)} ms',
-        style: const TextStyle(
-          color: Color(0xFFFFFFFF),
-          fontSize: 11,
-          decoration: TextDecoration.none,
-          fontWeight: FontWeight.w500,
+  Widget build(BuildContext context) => IgnorePointer(
+    child: DecoratedBox(
+      key: const Key('story-perf-chip'),
+      decoration: BoxDecoration(
+        color: const Color(0xCC000000),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Text(
+          'scene bake ${bakeMs == null ? '-' : bakeMs!.toStringAsFixed(0)} ms',
+          style: const TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 11,
+            decoration: TextDecoration.none,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     ),
