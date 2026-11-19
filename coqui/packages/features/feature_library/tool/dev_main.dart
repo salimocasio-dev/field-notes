@@ -147,19 +147,25 @@ class _DevAppState extends State<_DevApp> {
     return _Dev(services, nav);
   }
 
-  // the page's height for the whole-page picture: the shelf's scroll extent and the room it is shown in
+  // the page's height and where it is scrolled to, in the page's title, for the whole-page picture (tool/shots.mjs
+  // cannot take a canvas as tall as the page in one picture: it scrolls and joins strips)
   bool _measure(Notification n) {
-    if (n is ScrollMetricsNotification && n.metrics.axis == Axis.vertical) {
-      final m = n.metrics;
+    if (n is ScrollMetricsNotification || n is ScrollNotification) {
+      final m = n is ScrollMetricsNotification
+          ? n.metrics
+          : (n as ScrollNotification).metrics;
+      if (m.axis != Axis.vertical) return false;
       unawaited(
         SystemChrome.setApplicationSwitcherDescription(
           ApplicationSwitcherDescription(
             label:
-                'shelf-height=${(m.maxScrollExtent + m.viewportDimension).round()}',
+                'shelf-height=${(m.maxScrollExtent + m.viewportDimension).round()} scroll=${m.pixels.toStringAsFixed(1)}',
           ),
         ),
       );
-      if (widget.options.scrollEnd && _scroll.hasClients) {
+      if (n is ScrollMetricsNotification &&
+          widget.options.scrollEnd &&
+          _scroll.hasClients) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (_scroll.hasClients) {
             _scroll.jumpTo(_scroll.position.maxScrollExtent);

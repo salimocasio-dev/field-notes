@@ -96,7 +96,7 @@ const states = [
   },
   {
     name: 'libro-cuento-con-dibujos-primera-pagina', ref: '061-libro-cuento-con-dibujos-primera-pagina.png',
-    q: `screen=book&book=d-toc-toc&${quick}`, sampleQ: null, rest: true,
+    q: 'screen=book&book=d-toc-toc&hold=1', sampleQ: null,
   },
   {
     name: 'libro-cuento-con-dibujos-pagina-6-linea-del-coqui', ref: '062-libro-cuento-con-dibujos-pagina-6-linea-del-coqui.png',
@@ -145,6 +145,77 @@ const server = createServer((req, res) => {
 await new Promise((ok) => server.listen(0, '127.0.0.1', ok));
 const base = `http://127.0.0.1:${server.address().port}/`;
 
+
+// The shelf as one picture, top to bottom. The page is opened without its tab bar and scrolled with the wheel; each
+// strip's scroll is read from the page's title (the dev entry writes `shelf-height=<n> scroll=<y>` there). A strip gives
+// the page rows from its scroll to its foot, less the 88 px at the foot where the fade stands; a last picture, taken
+// at the end of the page with the tab bar, gives the final screen. The strips are joined on a canvas.
+async function captureWholePage(browser, device, url, dest) {
+  const ctx = await browser.newContext({
+    viewport: { width: device.width, height: device.height },
+    deviceScaleFactor: device.ratio, hasTouch: true, isMobile: true, locale: 'en-US',
+  });
+  const page = await ctx.newPage();
+  const where = async () => {
+    const m = /shelf-height=(\d+) scroll=([\d.]+)/.exec(await page.title());
+    return m ? { height: Number(m[1]), y: Number(m[2]) } : null;
+  };
+  const strips = [];
+  await page.goto(url + '&tab=0');
+  await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 90000 });
+  await page.waitForTimeout(5000);
+  let at = await where();
+  if (!at) throw new Error('the page did not say its height');
+  const total = at.height;
+  const foot = 88;
+  while (true) {
+    strips.push({ y: at.y, data: (await page.screenshot()).toString('base64') });
+    if (at.y + device.height >= total - 1) break;
+    await page.mouse.move(device.width / 2, device.height / 2);
+    await page.mouse.wheel(0, device.height - foot - 40);
+    await page.waitForTimeout(900);
+    const next = await where();
+    if (!next || next.y <= at.y) break;
+    at = next;
+  }
+  await ctx.close();
+  // the last screen, with the tab bar, at the end of the page
+  const last = await browser.newContext({
+    viewport: { width: device.width, height: device.height },
+    deviceScaleFactor: device.ratio, hasTouch: true, isMobile: true, locale: 'en-US',
+  });
+  const lp = await last.newPage();
+  await lp.goto(url + '&scroll=end');
+  await lp.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 90000 });
+  await lp.waitForTimeout(5000);
+  const finalShot = (await lp.screenshot()).toString('base64');
+  await last.close();
+  // join
+  const ctx2 = await browser.newContext({ deviceScaleFactor: 1 });
+  const jp = await ctx2.newPage();
+  const png = await jp.evaluate(
+    async ({ strips, finalShot, total, ratio, w, h, foot }) => {
+      const load = (b64) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.src = 'data:image/png;base64,' + b64; });
+      const W = Math.round(w * ratio), H = Math.round(total * ratio);
+      const c = document.createElement('canvas');
+      c.width = W; c.height = H;
+      const g = c.getContext('2d');
+      g.fillStyle = '#F6F5F1'; g.fillRect(0, 0, W, H);
+      for (const s of strips) {
+        const img = await load(s.data);
+        const rows = Math.min(Math.round((h - foot) * ratio), H - Math.round(s.y * ratio));
+        g.drawImage(img, 0, 0, W, rows, 0, Math.round(s.y * ratio), W, rows);
+      }
+      const fin = await load(finalShot);
+      g.drawImage(fin, 0, H - fin.height);
+      return c.toDataURL('image/png').split(',')[1];
+    },
+    { strips, finalShot, total, ratio: device.ratio, w: device.width, h: device.height, foot },
+  );
+  await ctx2.close();
+  writeFileSync(dest, Buffer.from(png, 'base64'));
+}
+
 const browser = await chromium.launch();
 const pairs = {
   note: 'ours = the dev entry (Roboto); reference = the old app v=39 (Inter). mode sample: the sample course; real: the real files of historia/',
@@ -160,6 +231,20 @@ try {
         const q = mode === 'sample' && 'sampleQ' in s ? s.sampleQ : s.q;
         if (q === null || q === undefined) continue;
         const content = mode === 'real' ? '&content=real' : '';
+        const png = join(out, device.id, mode, `${s.name}.png`);
+        const pair = {
+          device: device.id, mode, state: s.name, url: `?${q}${content}`,
+          screenshot: join(device.id, mode, `${s.name}.png`),
+          reference: `coqui/ref/pantallas/${device.id}/${s.ref}`,
+        };
+        if (s.full) {
+          // the whole page, top to bottom: a canvas as tall as the page cannot be drawn in one piece, so the page is
+          // scrolled and the strips joined (the old pictures were taken with the viewport as tall as the page)
+          await captureWholePage(browser, device, `${base}?${q}${content}`, png);
+          console.log(`${device.id} ${mode} ${s.name} (whole page, in strips)`);
+          pairs.pairs.push(pair);
+          continue;
+        }
         const ctx = await browser.newContext({
           viewport: { width: device.width, height: device.height },
           deviceScaleFactor: device.ratio,
@@ -174,21 +259,9 @@ try {
         await page.goto(`${base}?${q}${content}`);
         await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 90000 });
         await page.waitForTimeout(s.rest ? 7000 : 4500);
-        if (s.full) {
-          const m = /shelf-height=(\d+)/.exec(await page.title());
-          if (m) {
-            await page.setViewportSize({ width: device.width, height: Number(m[1]) });
-            await page.waitForTimeout(2500);
-          }
-        }
-        const png = join(out, device.id, mode, `${s.name}.png`);
         await page.screenshot({ path: png });
         console.log(`${device.id} ${mode} ${s.name}${errors.length ? '  (errors: ' + [...new Set(errors)].slice(0, 3).join(' | ') + ')' : ''}`);
-        pairs.pairs.push({
-          device: device.id, mode, state: s.name, url: `?${q}${content}`,
-          screenshot: join(device.id, mode, `${s.name}.png`),
-          reference: `coqui/ref/pantallas/${device.id}/${s.ref}`,
-        });
+        pairs.pairs.push(pair);
         await ctx.close();
       }
     }
