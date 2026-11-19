@@ -113,11 +113,16 @@ Gate A's pictures (a tool, not a test; it is not run by `flutter test`): `tool/g
 (El frente), each right and wrong, by touches in the real app on a 390 x 844 screen at ratio 2, and saves what is seen:
 
 ```
-flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>   # [--dart-define=ONLY=la-lluvia-right,...]
+flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>   # [--dart-define=ONLY=la-lluvia-right,...] [--dart-define=TXT=con|tras|no]
 flutter test tool/gate_a_sheets_test.dart --dart-define=OUT=<dir>   # the contact sheets again, from the pictures on disk
 ```
 
 It writes `<dir>/<story>-<plan>/NN-<kind>.png`, `index.json` and `sheet-NN.png` (4 pictures a sheet), and `<dir>/summary.json`.
+`TXT` (default `con`) starts the app as the address `?txt=` does (`AppSwitches.fromQuery({'txt': ...})`): when the story's words
+show, as the line is spoken, right after it, or never. With `no` nothing of the story's words is on the screen (the speech
+bubble's mic and tick, the end title and the buttons still are, as in the old page). The tool still finds its way: it reads the
+runner and the clip player, not the screen. In `index.json` each picture's `caption` and `bubble` are what the runner shows
+(empty with `no`); `said` is the text of the last line the story began to speak, whether it shows or not; `txt` names the setting.
 
 The build the live site gets, and the browser checks of it:
 
