@@ -572,6 +572,15 @@ The tab bar and routes (`go_router` here only), each `AppRoute` to the module th
 
 First, by the orchestrator: frames of stories 1 to 3 (all right, all wrong) from `tool/juega.dart`, read by a fresh reader with no sound and no words; real findings fixed. Then the seven steps of 00-start-here. Then one message, one point a line: the link and its build number; what he is looking at; what was checked; what is a guess (the look of the sets with the sprites on them is his to judge; views no longer zoom, they slide; Claude cannot hear).
 
+**Result (Nov 19): ready for Salim as build 3; the scenes lane is stopped.**
+
+- The frames come from `coqui/app/tool/gate_a_frames_test.dart` (the real app, played by touches; `TXT=no` shows no words), not from `tool/juega.dart`. Six plays (stories 1 to 3, all right and all wrong) reach the end; no touch is lost. Lengths, all right: 88.8 s, 114.6 s, 107.9 s.
+- Playing by machine found, and builders fixed: the speech bubble swallowed touches on things under it (the old page lets them through); the end screen's title sat on "Play again" (now 16 px under the picture, as the old page); a story whose scene is not converted opened an empty frame (now "This story is not in the new app yet." and "Back to the map").
+- Three fresh readers (one per story, no sound, no words): each says a person who cannot read Spanish can mostly follow from the pictures. What hurt most is the stories' own design, the same in the old app: waits with nothing marked, the two answer cards, the cake plate.
+- Eleven items that could be new were checked against the old page played in headless Chrome. Fixed in the sheet (`frente-sheet-make.js`, then the Dart assets; 513 pictures still equal to the preview): the bird on the birdhouse (7 px right); the frog's spot under the window (on the lawn before the porch, so his bubble is off abuela's face; hop counts as the old ones); the window's hint frame (the window only); the house's hint frame (to the eaves, so it has a top edge) and its hand (5 px right); the door close view (16 px up, so the frog is not cut at its bottom edge). Left because the old app shows the same: the sad ending (bird on the frog's head, the "z"), rain only under the cloud, the towel over the frog's eyes, the open door as a dark opening, the frog's shadow (cast from his feet; the style is page 11's).
+- Not fixed, for after his answer: the answer cards cover abuela's body when she stands in the doorway (the cards sit 46 px above the frog; the new doorway is lower). The fix is in the cards' placement (coqui_pixel `signs.dart`), not the scene.
+- Found on the way, for order 40: hop counts between frog spots the recorded stories do not use differ from the old ones (patio to puerta was 2 hops, is 1). To check: the hint hand may be drawn larger than the old one.
+
 **The scenes lane stops here.** No order 30a starts until he answers. A change he wants to the look is a change to page 11-pixel-engine, made with him, before any other scene. Feature lanes keep going.
 
 ## Orders 30 to 39. The other scenes, one at a time
