@@ -35,15 +35,27 @@ def fake_png(n):
     for i in range(0,196,14): d.rectangle([i,150,i+7,215],fill=(60,160,70))
     d.text((90,70),str(n),fill=(255,255,255));b=io.BytesIO();im.save(b,"PNG");return b.getvalue()
 FAKED=set()
+# A book's "lee" field is its review verdict: the shelf shows Read (and the cover) only when it is true. The check pins it for the stories its tests use, so a later verdict cannot change the tests:
+# these read (lee true), these do not (lee false); any other book keeps its own value, and a book that has no field yet counts as true.
+LEE_YES={"la-lluvia","que-calor","el-jugo","la-familia","donde-esta-el-pajaro","la-foto","quien-eres-tu","d-toc-toc"};LEE_NO={"el-bizcocho"}
+def with_lee(b):
+    sid=b["id"]
+    if sid in LEE_YES: b["lee"]=True
+    elif sid in LEE_NO: b["lee"]=False
+    elif "lee" not in b: b["lee"]=True
+    return b
 async def libros_route(route):
     u=route.request.url.split("/historia/libros/")[1].split("?")[0]
-    if (ROOT/"historia/libros"/u).exists(): await route.continue_();return
+    real=ROOT/"historia/libros"/u
+    if real.exists():
+        if u.endswith(".json"): await route.fulfill(status=200,content_type="application/json",body=json.dumps(with_lee(json.load(open(real)))));return
+        await route.continue_();return
     if u.endswith(".json"):
         b=fake_book(u[:-5])
         if b is None: await route.fulfill(status=404,body="");return
-        FAKED.add(u);await route.fulfill(status=200,content_type="application/json",body=json.dumps(b))
+        FAKED.add(u);await route.fulfill(status=200,content_type="application/json",body=json.dumps(with_lee(b)))
     else: await route.fulfill(status=200,content_type="image/png",body=fake_png(int(re.search(r"-(\d+)\.png",u).group(1))))
-HOOK="""()=>{window.__log=[];const o=window.playClip;window.playClip=function(id){const e={id,t:performance.now(),end:null,ok:null};window.__log.push(e);const p=o.apply(this,arguments);p.then(ok=>{e.end=performance.now();e.ok=ok;});return p;};
+HOOK="""()=>{window.__log=[];const o=window.playClip;window.playClip=function(id){const l0=document.querySelector('#lbtxt .lbl.now'),e={id,t:performance.now(),end:null,ok:null,lit:l0&&l0.dataset.id};window.__log.push(e);const p=o.apply(this,arguments);p.then(ok=>{e.end=performance.now();e.ok=ok;});return p;};
  window.__lit=[];setInterval(()=>{const l=document.querySelector('#lbtxt .lbl.now'),id=l&&l.dataset.id;if(id&&window.__lit[window.__lit.length-1]!==id)window.__lit.push(id);},25);}"""
 async def new_page(b,w=390,h=844,errs=None):
     ctx=await b.new_context(viewport={"width":w,"height":h},device_scale_factor=2,is_mobile=True,has_touch=True)
@@ -94,6 +106,7 @@ async def main():
               return {title:r.querySelector('b').textContent,img:im&&im.getAttribute('src'),imgok:im&&im.complete&&im.naturalWidth>0,btn:bs.map(x=>x.textContent.trim()),h:bs.map(x=>x.getBoundingClientRect().height),on:bs.map(x=>x.getAttribute('onclick')),grey:document.querySelector('#t-biblioteca p.small.mut').textContent}})()""")
             check("shelf row: cover (first page), title, Listen and Read",r0["title"]=="¡Qué calor!" and r0["imgok"] and r0["img"].endswith("que-calor-1.png") and r0["btn"]==["Listen","Read"],str(r0["btn"]))
             check("shelf row: 48 px buttons",all(h>=48 for h in r0["h"]))
+            check("shelf row: the Read button has a book icon, Listen a play icon",await pg.evaluate("(()=>{const r=document.querySelector('.bk[data-c=\"que-calor\"]'),b=r.querySelectorAll('button');return !!b[0].querySelector('svg')&&!!b[1].querySelector('svg')&&!r.querySelector('b + .okc')})()"))
             check("shelf: Listen keeps the link (oir=1)","index.html?cuento=que-calor&oir=1&desde=app" in r0["on"][0])
             ins=await pg.evaluate("[...document.querySelectorAll('#t-biblioteca .bk')].every(r=>{const c=r.closest('.card').getBoundingClientRect();return [...r.querySelectorAll('button')].every(b=>b.getBoundingClientRect().right<=c.right-16+1)})")
             check("shelf: Listen and Read sit inside the card",ins)
@@ -107,6 +120,9 @@ async def main():
             check("shelf: routines (Haz esto) show Listen only, no Read, no cover, the old link",len(hz)>=4 and all(x["b"]==["Listen"] and not x["img"] and "oir=1" not in x["on"] for x in hz),str([x["c"] for x in hz]))
             check("shelf: no request for a routine's book (no missing-book request)",not [u for u in lreqs if "/libros/h-" in u])
             check("shelf: a picture story of the finished place keeps its Read button when its book exists",await pg.evaluate("(()=>{const r=document.querySelector('.bk[data-c=\"d-toc-toc\"]');return !!r&&[...r.querySelectorAll('button')].map(x=>x.textContent.trim()).join()==='Listen,Read'})()"))
+            nl=await pg.evaluate("""(()=>{const r=document.querySelector('.bk[data-c=\"el-bizcocho\"]');return r&&{b:[...r.querySelectorAll('button')].map(x=>x.textContent.trim()),img:!!r.querySelector('.cov img'),cov:r.querySelector('.cov').getBoundingClientRect().width}})()""")
+            check("shelf: a book whose verdict is lee:false shows Listen only and a plain cover tile (like a routine)",nl is not None and nl["b"]==["Listen"] and not nl["img"] and nl["cov"]>=64,str(nl))
+            check("shelf: a book with lee:true has its cover and Read",await pg.evaluate("(()=>{const r=document.querySelector('.bk[data-c=\"la-lluvia\"]');return !!r.querySelector('.cov img')&&[...r.querySelectorAll('button')].map(x=>x.textContent.trim()).join()==='Listen,Read'})()"))
             # back to two played stories for the rest
             await pg.evaluate("""async()=>{const keep=['el-jugo','que-calor','la-lluvia'];for(const c of Object.keys(PAL.db.cuentos))if(!keep.includes(c))delete PAL.db.cuentos[c];for(const w of Object.keys(PAL.db.palabras))delete PAL.db.palabras[w];
               for(const c of keep){const T=await (await fetch('cuentos/'+c+'.json')).json();PAL.cuento(T,[]);}PAL.save();}""")
@@ -122,10 +138,9 @@ async def main():
             check("page waits at its end (no auto-advance)",(await pg.evaluate("App.libro"))["i"]==0)
             got=set(re.sub(r".*/audio/|\.mp3.*","",u) for u in reqs[n_req:])
             lbk=await pg.evaluate("[App.libro.n,(()=>{const L=document.querySelectorAll('#lbtxt .lbl');return L.length})()]")
-            pages=await pg.evaluate("(()=>{const o=[];return fetch('libros/que-calor.json').then(r=>r.ok?r.json():null).then(j=>j?j.pages.map(p=>p.clips):null)})()")
-            if pages is None: pages=[x["clips"] for x in fake_book("que-calor")["pages"]]
+            pages=await pg.evaluate("BOOKS['que-calor'].then(b=>b.pages.map(p=>p.clips))")   # the book as the app itself loaded it
             allowed=set(pages[0])|set(pages[1] if len(pages)>1 else [])
-            check("audio is loaded per page (this page's clips and the next page's, not the story)",got<=allowed and len(got)>0 and len(allowed)<sum(len(x) for x in pages),"requested %d of %d clips"%(len(got),sum(len(x) for x in pages)))
+            check("audio is loaded per page (this page's clips and the next page's, not the story)",got<=allowed and len(got)>0 and len(allowed)<sum(len(x) for x in pages),"requested %d of %d clips, outside: %s"%(len(got),sum(len(x) for x in pages),sorted(got-allowed)))
             # the picture: whole-number scale, pixelated, in the viewport; the targets
             geo=await pg.evaluate("""(()=>{const im=document.getElementById('lbimg'),r=im.getBoundingClientRect(),dpr=devicePixelRatio,k=im.naturalWidth?r.width*dpr/im.naturalWidth:0,
                bt=id=>{const e=document.getElementById(id).getBoundingClientRect();return [e.width,e.height]};
@@ -139,6 +154,12 @@ async def main():
             check("speaker label: a Coquí line has 'Coquí', the text is exactly as recorded",all(w[1]==(T["clips"][w[0]]["who"]=="tu") and w[2].replace("Coquí","",1 if w[1] else 0)==T["clips"][w[0]]["text"] for w in who),str(who[:2]))
             ph=await pg.evaluate("""(()=>{const s=[...document.querySelectorAll('#lbtxt .bw')].find(x=>/\\s/.test(x.textContent));return s?{txt:s.textContent,k:s.dataset.k,n:document.querySelectorAll('#lbtxt .bw[data-k="'+s.dataset.k+'"]').length}:null})()""")
             check("a multi-word word is one span (phrase, accents ignored)",ph is not None and norm(ph["txt"]).strip()=="como estas",str(ph))
+            sp=await pg.evaluate("""(()=>{const L=[...document.querySelectorAll('#lbtxt .lbl')],bar=document.getElementById('lbbar').getBoundingClientRect(),c=document.getElementById('lbcnt').getBoundingClientRect(),aa=document.getElementById('lbaa').getBoundingClientRect();
+               return {n:L.length,spk:L.map(l=>{const s=l.querySelector('.spk svg');return s?s.getBoundingClientRect().width:0}),cnt:document.getElementById('lbcnt').textContent,np:App.libro.n,beside:c.left>=bar.right&&c.right<=aa.left+1&&Math.abs((c.top+c.bottom)/2-(bar.top+bar.bottom)/2)<8,col:getComputedStyle(document.getElementById('lbcnt')).color}})()""")
+            check("each line has a small speaker icon",sp["n"]>=1 and all(14<=w<=24 for w in sp["spk"]),str(sp["spk"]))
+            check("page count '1 / N' beside the progress bar",sp["cnt"]=="1 / %d"%sp["np"] and sp["beside"],sp["cnt"])
+            dot=await pg.evaluate("(()=>{const w=document.querySelector('#lbtxt .bw');if(!w)return null;const c=getComputedStyle(w);return [c.textDecorationLine,c.textDecorationStyle]})()")
+            check("words that have a picture carry a faint dotted underline",dot is None or dot==["underline","dotted"],str(dot))
             # a line tap plays that line only
             await pg.evaluate("window.__log.length=0;window.__lit.length=0")
             tid=ids0[1] if len(ids0)>1 else ids0[0]
@@ -156,6 +177,16 @@ async def main():
             await swipe(cdp,200,230);await pg.wait_for_timeout(300);check("a short drag does not turn the page",(await pg.evaluate("App.libro"))["i"]==0)
             await quiet(pg)
             check("back arrow disabled on page 1",await pg.evaluate("document.getElementById('lbback').disabled"))
+            # the line playing is lit on every page (the first at once, while its recording loads)
+            npg0=(await pg.evaluate("App.libro"))["n"];bad=[]
+            for i in range(npg0-1):
+                await pg.evaluate("window.__log.length=0")
+                imm=await pg.evaluate("(()=>{App.pag(%d-App.libro.i);return [App.libro.i,App.libro.lit.slice(),App.libro.ids.slice()]})()"%i)
+                if not imm[2]: continue
+                st=await until(pg,"()=>window.__log.length>0",15000);e=(await pg.evaluate("window.__log"))[0] if st else None
+                if not (imm[1]==[imm[2][0]] and e and e["id"]==imm[2][0] and e["lit"]==e["id"]): bad.append((i,imm[1],e and (e["id"],e["lit"])))
+            check("the line playing is lit on every page, the first at once",not bad,"%d pages, bad: %s"%(npg0-1,bad[:2]))
+            await pg.evaluate("App.pag(-App.libro.i)");await quiet(pg,30000)
             # audio stops on page change and on close
             await pg.evaluate("App.cierraLibro()");await pg.wait_for_timeout(400)
             await pg.evaluate("window.__log.length=0")
@@ -192,15 +223,15 @@ async def main():
                 box=await pg.evaluate("(()=>{const r=document.querySelector('#lbtxt .bw').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]})()")
                 await pg.mouse.click(box[0],box[1]);await pg.wait_for_timeout(500)
                 card=await pg.evaluate("""(()=>{const c=document.getElementById('lbcard'),cv=c.querySelector('canvas');let ink=0;if(cv){const d=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data;for(let i=3;i<d.length;i+=4*50)if(d[i])ink++;}
-                    return {on:c.classList.contains('on'),word:c.querySelector('.cw')&&c.querySelector('.cw').textContent,ink,uw:document.querySelectorAll('#lbtxt .bw.uw').length,log:window.__log.length,w:cv&&cv.getBoundingClientRect().width}})()""")
+                    return {on:c.classList.contains('on'),word:c.querySelector('.cw')&&c.querySelector('.cw').textContent,ink,uw:document.querySelectorAll('#lbtxt .bw.uw').length,uws:getComputedStyle(document.querySelector('#lbtxt .bw.uw')||document.body).textDecorationStyle,log:window.__log.length,w:cv&&cv.getBoundingClientRect().width}})()""")
                 check("tap on a picture word: a card with its picture and the word",card["on"] and card["ink"]>50 and norm(card["word"]).strip() in norm(found[1]["txt"]).strip() or norm(found[1]["txt"]).strip() in norm(card["word"]),str(card))
                 check("every place the word is on the page is underlined",card["uw"]==found[1]["n"] and card["uw"]>=1,"%d underlined"%card["uw"])
-                check("the word tap plays nothing",card["log"]==0)
+                check("the word tap plays nothing; the tapped word's underline is solid green",card["log"]==0 and card["uws"]=="solid")
                 await pg.mouse.click(40,60);await pg.wait_for_timeout(300)
                 check("the card closes on any tap (and that tap does nothing else)",not await pg.evaluate("document.getElementById('lbcard').classList.contains('on')") and await pg.evaluate("window.__log.length")==0 and await pg.evaluate("App.libro.open"))
                 await pg.wait_for_timeout(2600);check("the underline goes after a moment",await pg.evaluate("document.querySelectorAll('#lbtxt .bw.uw').length")==0)
                 # another word: find a plain word of a line and tap on it
-                pt=await pg.evaluate("""(()=>{for(const l of document.querySelectorAll('#lbtxt .lbl')){const tx=l.querySelector('span:not(.who)');for(const n of tx.childNodes){if(n.nodeType===3){const m=/[A-Za-zÁ-ú]{3,}/.exec(n.textContent);if(m){const r=document.createRange();r.setStart(n,m.index);r.setEnd(n,m.index+m[0].length);const q=r.getBoundingClientRect();return {x:q.left+q.width/2,y:q.top+q.height/2,id:l.dataset.id,w:m[0]};}}}}return null})()""")
+                pt=await pg.evaluate("""(()=>{for(const l of document.querySelectorAll('#lbtxt .lbl')){const tx=l.querySelector('.tx');for(const n of tx.childNodes){if(n.nodeType===3){const m=/[A-Za-zÁ-ú]{3,}/.exec(n.textContent);if(m){const r=document.createRange();r.setStart(n,m.index);r.setEnd(n,m.index+m[0].length);const q=r.getBoundingClientRect();return {x:q.left+q.width/2,y:q.top+q.height/2,id:l.dataset.id,w:m[0]};}}}}return null})()""")
                 check("a plain word is on the page",pt is not None,str(pt))
                 if pt:
                     await pg.mouse.click(pt["x"],pt["y"]);ok=await quiet(pg)
@@ -210,13 +241,19 @@ async def main():
             last=npg-1
             for _ in range(npg): await pg.evaluate("App.pag(1)")
             await pg.wait_for_timeout(500)
+            fin=await pg.evaluate("""(()=>{const f=document.getElementById('lbfin'),a=document.getElementById('lbagain'),b=document.getElementById('lbshelf'),row=document.querySelector('#lbfoot .lbrow'),bg=e=>getComputedStyle(e).backgroundColor;
+               return {fin:f&&f.textContent,above:!!f&&f.getBoundingClientRect().bottom<=row.getBoundingClientRect().top+1,again:bg(a),shelf:bg(b),icon:!!a.querySelector('svg'),txt:a.textContent.trim(),blue:[...document.querySelectorAll('#lbfoot button')].some(x=>bg(x)==='rgb(59, 91, 219)'),lit:App.libro.lit.length,cnt:document.getElementById('lbcnt').textContent,n:App.libro.n}})()""")
+            check("last page: 'Fin' above its buttons, both green (no blue), 'Otra vez' with a replay icon",fin["fin"]=="Fin" and fin["above"] and fin["again"]==fin["shelf"]=="rgb(23, 128, 63)" and fin["icon"] and fin["txt"]=="Otra vez" and not fin["blue"],str(fin))
+            check("last page: its line is lit while it plays, the count reads 'N / N'",fin["lit"]==1 and fin["cnt"]=="%d / %d"%(fin["n"],fin["n"]),fin["cnt"])
             check("the last page offers Otra vez and Biblioteca",await pg.evaluate("[document.getElementById('lbagain')&&document.getElementById('lbagain').textContent,document.getElementById('lbshelf')&&document.getElementById('lbshelf').textContent]")==["Otra vez","Biblioteca"])
             check("read check stored when the last page is reached",await pg.evaluate("!!(PAL.db.leidos&&PAL.db.leidos['que-calor'])"))
             check("reading writes no word record (palabras, days, stories unchanged)",await pg.evaluate("JSON.stringify([PAL.db.palabras,PAL.db.dias,PAL.db.cuentos])")==before)
             await pg.click("#lbagain");await pg.wait_for_timeout(300);check("Otra vez: back to page 1",(await pg.evaluate("App.libro"))["i"]==0)
             for _ in range(npg): await pg.evaluate("App.pag(1)")
             await pg.click("#lbshelf");await pg.wait_for_timeout(600)
-            check("Biblioteca: the book closes on the shelf, the row has its check",not await pg.evaluate("App.libro.open") and await pg.evaluate("TAB")=="biblioteca" and await until(pg,"()=>!!document.querySelector('.bk[data-c=\"que-calor\"] .okc')") and not await pg.evaluate("!!document.querySelector('.bk[data-c=\"el-jugo\"] .okc')"))
+            check("Biblioteca: the book closes on the shelf; a read book's button says 'Read ✓', an unread one 'Read'",not await pg.evaluate("App.libro.open") and await pg.evaluate("TAB")=="biblioteca" and await until(pg,"()=>!!document.querySelector('.bk[data-c=\"que-calor\"] .okc')") and await pg.evaluate("[document.querySelector('.bk[data-c=\"que-calor\"] .btn.out').textContent.trim(),document.querySelector('.bk[data-c=\"el-jugo\"] .btn.out').textContent.trim()]")==["Read ✓","Read"])
+            rw=await pg.evaluate("""(()=>{const r=document.querySelector('.bk[data-c=\"que-calor\"]'),b=[...r.querySelectorAll('button')].map(x=>x.getBoundingClientRect()),c=r.closest('.card').getBoundingClientRect();return {oneRow:Math.abs(b[0].top-b[1].top)<2,inside:b[1].right<=c.right-16+1}})()""")
+            check("390 px: 'Read ✓' sits beside Listen, inside the card",rw["oneRow"] and rw["inside"],str(rw))
             await pg.click('.bk[data-c="el-jugo"] .btn.out');await until(pg,"()=>App.libro.open");await pg.go_back();await pg.wait_for_timeout(500)
             check("the back button closes the book",not await pg.evaluate("App.libro.open") and await pg.evaluate("speaking")==0)
             # ------------------------------------------------------------- Palabras
@@ -224,13 +261,14 @@ async def main():
             await until(pg,"()=>document.querySelectorAll('#t-palabras .wc').length>0");await pg.wait_for_timeout(1200)
             recs=await pg.evaluate("Object.values(PAL.db.palabras).map(r=>({w:r.w,e:r.ear.etapa,m:r.mouth.etapa}))")
             cards=await pg.evaluate("""[...document.querySelectorAll('#t-palabras .wc')].map(c=>{let h=c,place=null;const hs=[...document.querySelectorAll('#t-palabras h2')].filter(x=>x.compareDocumentPosition(c)&4);place=hs.length?hs[hs.length-1].textContent:null;
-                return {key:c.dataset.w,shown:c.querySelector('.w').textContent,pic:!!c.querySelector('canvas'),tile:!!c.querySelector('.tile'),dots:[...c.querySelectorAll('.mt')].map(m=>[m.querySelector('.ml').textContent,m.querySelectorAll('.dts i.on').length,m.querySelectorAll('.dts i').length]),place}})""")
+                const wd=c.querySelector('.w')||c.querySelector('.npw');return {key:c.dataset.w,shown:wd.textContent,pic:!!c.querySelector('canvas'),np:c.classList.contains('np'),tile:!!c.querySelector('.tile'),fs:getComputedStyle(wd).fontSize,dots:[...c.querySelectorAll('.mt')].map(m=>[m.querySelector('.ml').textContent,m.querySelectorAll('.dts i.on').length,m.querySelectorAll('.dts i').length]),place}})""")
             check("Palabras: every word he has heard has a card",sorted(c["key"] for c in cards)==sorted(r["w"] for r in recs) and len(cards)>=8,"%d cards"%len(cards))
-            sp=all(c["shown"]==(c["key"] if next(r for r in recs if r["w"]==c["key"])["e"]>=2 else "?") for c in cards)
-            check("spelling shows from ear stage 2, a '?' before",sp and any(c["shown"]=="?" for c in cards) and any(c["shown"]!="?" for c in cards))
+            check("every word is spelled on its card, whatever its stage (no '?')",all(c["shown"]==c["key"] for c in cards) and any(next(r for r in recs if r["w"]==c["key"])["e"]<2 for c in cards))
             check("Ear and Mouth meters: four dots, filled by stage",all(c["dots"][0][0]=="Ear" and c["dots"][1][0]=="Mouth" and c["dots"][0][2]==4==c["dots"][1][2] and c["dots"][0][1]==next(r for r in recs if r["w"]==c["key"])["e"] and c["dots"][1][1]==next(r for r in recs if r["w"]==c["key"])["m"] for c in cards))
             pair=await pg.evaluate("CU.items.map(i=>i.w)")
-            check("a picture on a pair word, a plain tile on the others",all(c["pic"]==(c["key"] in pair) and c["tile"]==(c["key"] not in pair) for c in cards) and any(c["tile"] for c in cards) and any(c["pic"] for c in cards))
+            check("a picture on a pair word; on the others a plain tile with the word large and no empty picture box",all(c["pic"]==(c["key"] in pair) and c["np"]==(c["key"] not in pair) and not c["tile"] for c in cards) and any(c["np"] for c in cards) and any(c["pic"] for c in cards) and all(float(c["fs"][:-2])>=24 for c in cards if c["np"]),str([c["fs"] for c in cards if c["np"]][:2]))
+            kl=await pg.evaluate("""(()=>{const k=[...document.querySelectorAll('#t-palabras .keyl')],h=document.querySelector('#t-palabras h2');return {n:k.length,t:k[0]&&k[0].textContent,after:!!k[0]&&h.nextElementSibling===k[0],before:!!k[0]&&k[0].nextElementSibling.classList.contains('grid')}})()""")
+            check("one key line under the grid title: 'Ear: you know it when you hear it. Mouth: you can say it.'",kl["n"]==1 and kl["t"]=="Ear: you know it when you hear it. Mouth: you can say it." and kl["after"] and kl["before"],str(kl))
             inks=await pg.evaluate("[...document.querySelectorAll('#t-palabras .wc canvas')].map(cv=>{const d=cv.getContext('2d').getImageData(0,0,196,104).data;let n=0;for(let i=3;i<d.length;i+=4*40)if(d[i])n++;return n})")
             check("the pictures are drawn",all(n>100 for n in inks))
             # grouping by place, in story order, as the story files say
@@ -263,7 +301,16 @@ async def main():
             sh=await pg.evaluate("""(()=>{const s=document.getElementById('sheet');return {on:s.classList.contains('on'),canvas:!!s.querySelector('canvas.wsp'),cw:s.querySelector('canvas.wsp')&&s.querySelector('canvas.wsp').getBoundingClientRect().width,word:s.querySelector('.wsw').textContent,dots:[...s.querySelectorAll('.mt')].map(m=>[m.querySelector('.ml').textContent,m.querySelectorAll('.dts i.on').length]),back:(s.querySelector('p.small.mut')||{}).textContent,
                lines:[...s.querySelectorAll('#oido .li')].map(l=>[l.querySelector('.grow').textContent,l.querySelector('.pb').dataset.id,l.querySelector('.pb').getBoundingClientRect().height]),h2:[...s.querySelectorAll('h2')].map(h=>h.textContent)}})()""")
             rec=next(r for r in recs if r["w"]==pick)
-            check("word sheet: big picture, the word, Ear and Mouth meters",sh["on"] and sh["canvas"] and sh["cw"]>=196 and sh["word"]==(pick if rec["e"]>=2 else "?") and sh["dots"]==[["Ear",rec["e"]],["Mouth",rec["m"]]],str(sh["dots"]))
+            check("word sheet: big picture, the word, Ear and Mouth meters",sh["on"] and sh["canvas"] and sh["cw"]>=196 and sh["word"]==pick and sh["dots"]==[["Ear",rec["e"]],["Mouth",rec["m"]]],str(sh["dots"]))
+            hd=await pg.evaluate("""(async()=>{const sb=document.getElementById('sbody'),hd=document.getElementById('shead'),st=hd.querySelector('.st'),op=()=>+getComputedStyle(st).opacity,out={scroll:sb.scrollHeight>sb.clientHeight,word:st.textContent,top:op()};sb.scrollTop=400;sb.dispatchEvent(new Event('scroll'));await new Promise(r=>setTimeout(r,400));out.scrolled=op();out.wsh=hd.classList.contains('wsh');
+               const rb=st.getBoundingClientRect(),hb=hd.getBoundingClientRect();out.inhead=rb.top>=hb.top&&rb.bottom<=hb.bottom;sb.scrollTop=0;sb.dispatchEvent(new Event('scroll'));await new Promise(r=>setTimeout(r,400));out.back=op();return out})()""")
+            check("word sheet: scrolled, the word stays in its header (hidden while the big word shows)",hd["scroll"] and hd["word"]==pick and hd["top"]==0 and hd["scrolled"]==1 and hd["wsh"] and hd["inhead"] and hd["back"]==0,str(hd))
+            bo=await pg.evaluate("[...document.querySelectorAll('#oido .li')].map(l=>[[...l.querySelectorAll('.grow b')].map(b=>b.textContent),l.querySelector('.grow').textContent,l.querySelector('.pb').getAttribute('aria-label')])")
+            check("word sheet: the word is bold inside each 'Heard in' line (text unchanged)",len(bo)>=1 and all(len(b[0])>=1 and all(norm(x)==norm(pick) for x in b[0]) and "Play: "+b[1]==b[2] for b in bo),str(bo[:1]))
+            await pg.evaluate("(()=>{const sb=document.getElementById('sbody');sb.scrollTop=sb.scrollHeight;})()");await pg.wait_for_timeout(300)
+            clr=await pg.evaluate("""(()=>{const sb=document.getElementById('sbody'),last=sb.querySelector('#ws').lastElementChild.getBoundingClientRect(),d=document.querySelector('.tb.mid .disc').getBoundingClientRect(),n=document.querySelector('nav').getBoundingClientRect();return {last:last.bottom,disc:d.top,nav:n.top,sheet:document.getElementById('sheet').getBoundingClientRect().bottom}})()""")
+            check("word sheet: scrolled to its end, the last line clears the tab bar and the Mapa disc",clr["last"]<=min(clr["disc"],clr["nav"])-8,str(clr))
+            await pg.evaluate("document.getElementById('sbody').scrollTop=0")
             check("word sheet: next return in English",re.match(r"Comes back (today|in \d+ days?)$",sh["back"] or "") is not None,sh["back"])
             check("word sheet: 'Heard in', up to five lines that contain the word, each with a 48 px play button",sh["h2"]==["Heard in"] and 1<=len(sh["lines"])<=5 and all(norm(pick) in norm(l[0]) and l[2]>=48 for l in sh["lines"]),"%d lines"%len(sh["lines"]))
             if sh["lines"]:
@@ -274,7 +321,7 @@ async def main():
                 await pg.click('#oido .li:first-child .pb');await until(pg,"()=>speaking>0",15000);await pg.click("#shead .x");await pg.wait_for_timeout(300)
                 check("closing the sheet stops the sound",await pg.evaluate("speaking")==0 and await pg.evaluate("live.size")==0)
             # a word with no picture: the sheet has no picture
-            tl=await pg.evaluate("(()=>{const c=[...document.querySelectorAll('#t-palabras .wc')].find(c=>c.querySelector('.tile'));return c&&c.dataset.w})()")
+            tl=await pg.evaluate("(()=>{const c=[...document.querySelectorAll('#t-palabras .wc')].find(c=>c.classList.contains('np'));return c&&c.dataset.w})()")
             if tl:
                 await pg.evaluate("window.scrollTo(0,0)");await pg.evaluate("App.palabra(%s)"%json.dumps(tl));await pg.wait_for_timeout(500)
                 check("word with no picture: sheet without a picture, with its meters",await pg.evaluate("!document.querySelector('#sheet canvas.wsp')&&document.querySelectorAll('#sheet .mt').length==2"),tl)
@@ -284,13 +331,23 @@ async def main():
             tx=await pg.inner_text("#t-palabras")
             check("add a word or a goal: honest text and the saved list","Saved. Material for it comes later." in tx and "talk to my 1-year-old" in tx and "talk to my 1-year-old" in await pg.evaluate("JSON.stringify(PAL.db.extra)"))
             # no horizontal scroll
+            for tab in ("palabras","biblioteca"):
+                await pg.evaluate("App.ver(%s)"%json.dumps(tab));await pg.wait_for_timeout(900);await pg.evaluate("window.scrollTo(0,1e6)");await pg.wait_for_timeout(300)
+                clr=await pg.evaluate("""(t=>{const e=document.getElementById('t-'+t),last=e.lastElementChild.getBoundingClientRect(),d=document.querySelector('.tb.mid .disc').getBoundingClientRect();return {last:last.bottom,disc:d.top,nav:document.querySelector('nav').getBoundingClientRect().top}})(%s)"""%json.dumps(tab))
+                check("%s scrolled to its end: nothing under the tab bar or the Mapa disc"%tab,clr["last"]<=min(clr["disc"],clr["nav"])-8,str(clr))
+            await pg.evaluate("App.ver('palabras')");await pg.wait_for_timeout(600);await pg.evaluate("window.scrollTo(0,1e6)");await pg.wait_for_timeout(200)
+            clr=await pg.evaluate("""(()=>{const g=[...document.querySelectorAll('#t-palabras .grid')].pop().getBoundingClientRect();return {grid:g.bottom,add:[...document.querySelectorAll('#t-palabras h2')].pop().getBoundingClientRect().top}})()""")
+            check("Palabras: the last grid ends above the 'Add a word or a goal' title",clr["grid"]<=clr["add"],str(clr))
+            await pg.evaluate("window.scrollTo(0,0)")
             check("390 px: no horizontal scroll (Palabras)",await pg.evaluate("document.documentElement.scrollWidth<=innerWidth"))
             await ctx.close()
             # ------------------------------------------------------------- 360 x 640
             ctx2,pg2=await new_page(b,360,640,errs)
             await pg2.goto(BASE);await until(pg2,"()=>!!(window.App&&App.ready)",15000);await pg2.evaluate("App.listo()");await pg2.evaluate(HOOK)
-            await pg2.evaluate("""async()=>{for(const c of ['el-jugo','que-calor','la-lluvia']){const T=await (await fetch('cuentos/'+c+'.json')).json();PAL.cuento(T,[]);}App.ver('biblioteca');}""");await until(pg2,"()=>document.querySelectorAll('#t-biblioteca .bk').length>=3");await pg2.wait_for_timeout(500)
+            await pg2.evaluate("""async()=>{for(const c of ['el-jugo','que-calor','la-lluvia']){const T=await (await fetch('cuentos/'+c+'.json')).json();PAL.cuento(T,[]);}PAL.db.leidos={'que-calor':Date.now()};PAL.save();App.ver('biblioteca');}""");await until(pg2,"()=>document.querySelectorAll('#t-biblioteca .bk').length>=3");await pg2.wait_for_timeout(500)
             check("360 px: shelf has no horizontal scroll",await pg2.evaluate("document.documentElement.scrollWidth<=360"))
+            rw=await pg2.evaluate("""(()=>{const r=document.querySelector('.bk[data-c=\"que-calor\"]'),b=[...r.querySelectorAll('button')].map(x=>x.getBoundingClientRect()),c=r.closest('.card').getBoundingClientRect();return {txt:r.querySelectorAll('button')[1].textContent.trim(),oneRow:Math.abs(b[0].top-b[1].top)<2,inside:b[1].right<=c.right-16+1}})()""")
+            check("360 px: 'Read ✓' sits beside Listen, inside the card",rw["txt"]=="Read ✓" and rw["oneRow"] and rw["inside"],str(rw))
             await pg2.click('.bk[data-c="que-calor"] .btn.out');await until(pg2,"()=>App.libro.open&&App.libro.ids.length>0");await pg2.wait_for_timeout(1000)
             ov=await pg2.evaluate("""(()=>{const l=document.getElementById('libro'),bad=[...l.querySelectorAll('*')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&(r.right>360.5||r.left<-.5)&&getComputedStyle(e).position!=='absolute'}).map(e=>e.id||e.className);const im=document.getElementById('lbimg').getBoundingClientRect();
                return {sw:l.scrollWidth,bad,imh:im.height,imbottom:im.bottom,txt:document.getElementById('lbtxt').getBoundingClientRect().top,foot:document.getElementById('lbfoot').getBoundingClientRect().top,dsw:document.documentElement.scrollWidth}})()""")
@@ -301,6 +358,9 @@ async def main():
             await pg2.evaluate("App.cierraLibro()");await pg2.evaluate("""()=>{Object.values(PAL.db.palabras).forEach((r,i)=>{r.ear.etapa=1+i%4;});PAL.save();App.ver('palabras');}""");await until(pg2,"()=>document.querySelectorAll('#t-palabras .wc').length>0");await pg2.wait_for_timeout(800)
             check("360 px: Palabras has no horizontal scroll",await pg2.evaluate("document.documentElement.scrollWidth<=360"))
             await pg2.click('#t-palabras .wc >> nth=0');await pg2.wait_for_timeout(600)
+            await pg2.evaluate("(()=>{const sb=document.getElementById('sbody');sb.scrollTop=sb.scrollHeight;})()");await pg2.wait_for_timeout(300)
+            clr=await pg2.evaluate("""(()=>{const sb=document.getElementById('sbody'),last=sb.querySelector('#ws').lastElementChild.getBoundingClientRect(),d=document.querySelector('.tb.mid .disc').getBoundingClientRect();return {last:last.bottom,disc:d.top}})()""")
+            check("360 px: the word sheet's last line clears the Mapa disc",clr["last"]<=clr["disc"]-8,str(clr))
             check("360 px: the word sheet has no horizontal scroll",await pg2.evaluate("document.documentElement.scrollWidth<=360&&document.getElementById('sbody').scrollWidth<=document.getElementById('sbody').clientWidth+1"))
             await ctx2.close()
             # ------------------------------------------------------------- frames (only with --frames)
@@ -317,21 +377,29 @@ async def main():
                 box=await pg3.evaluate("(()=>{const s=[...document.querySelectorAll('#lbtxt .bw')].find(x=>x.textContent==='casa')||document.querySelector('#lbtxt .bw');const r=s.getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]})()")
                 await pg3.mouse.click(box[0],box[1]);await pg3.wait_for_timeout(600);await shot(pg3,"book_word_card_and_underlines")
                 await pg3.mouse.click(40,60);await pg3.wait_for_timeout(300)
-                await pg3.evaluate("window.__log.length=0;App.pag(2)");await until(pg3,"()=>window.__log.length>0",15000);await quiet(pg3,30000);await pg3.click("#lbaa");await pg3.wait_for_timeout(500);await shot(pg3,"book_page_3_large_text")
-                await pg3.click("#lbaa")
+                for _ in range(8):   # the next page that has two or more lines: the second line is lit
+                    await pg3.evaluate("window.__log.length=0;App.pag(1)");await pg3.wait_for_timeout(200)
+                    if (await pg3.evaluate("App.libro.ids.length"))>=2: break
+                await until(pg3,"()=>App.libro.lit[0]===App.libro.ids[App.libro.ids.length>1?1:0]",20000);await pg3.wait_for_timeout(300);await shot(pg3,"book_second_line_lit")
+                await pg3.click("#lbaa");await pg3.wait_for_timeout(500)
+                if not await pg3.evaluate("App.libro.lit.length"): await pg3.evaluate("App.pag(0)");await until(pg3,"()=>App.libro.lit.length>0",15000)
+                await shot(pg3,"book_page_large_text");await pg3.click("#lbaa")
                 n3=await pg3.evaluate("App.libro.n")
                 for _ in range(n3): await pg3.evaluate("App.pag(1)")
-                await pg3.wait_for_timeout(700);await shot(pg3,"book_last_page")
-                await pg3.click("#lbshelf");await pg3.wait_for_timeout(900);await shot(pg3,"shelf_after_reading_check")
+                await until(pg3,"()=>App.libro.lit.length>0",15000);await pg3.wait_for_timeout(500);await shot(pg3,"book_last_page_fin")
+                await pg3.click("#lbshelf");await pg3.wait_for_timeout(900);await shot(pg3,"shelf_after_reading_read_check")
+                await pg3.evaluate("window.scrollTo(0,1e6)");await pg3.wait_for_timeout(400);await shot(pg3,"shelf_scrolled_to_end");await pg3.evaluate("window.scrollTo(0,0)")
                 await pg3.evaluate("window.__PAL_NOW=Date.now()+2*864e5;App.ver('palabras')");await until(pg3,"()=>document.querySelectorAll('#t-palabras .wc').length>0");await pg3.wait_for_timeout(1500)
                 await shot(pg3,"palabras_top")
                 await pg3.evaluate("window.scrollTo(0,760)");await pg3.wait_for_timeout(400);await shot(pg3,"palabras_cards")
-                await pg3.evaluate("window.scrollTo(0,0)")
+                await pg3.evaluate("(()=>{const c=document.querySelector('#t-palabras .wc.np');if(c)c.scrollIntoView({block:'center'})})()");await pg3.wait_for_timeout(400);await shot(pg3,"palabras_plain_tile_card")
+                await pg3.evaluate("window.scrollTo(0,1e6)");await pg3.wait_for_timeout(400);await shot(pg3,"palabras_scrolled_to_end");await pg3.evaluate("window.scrollTo(0,0)")
                 w=await pg3.evaluate("(()=>{const c=[...document.querySelectorAll('#t-palabras .wc')].find(c=>c.dataset.w==='casa'&&c.querySelector('canvas'))||[...document.querySelectorAll('#t-palabras .wc')].find(c=>c.querySelector('canvas'));return c.dataset.w})()")
                 await pg3.evaluate("App.palabra(%s)"%json.dumps(w));await pg3.wait_for_timeout(900);await shot(pg3,"word_sheet_with_heard_in")
-                await pg3.evaluate("document.getElementById('sbody').scrollTo(0,400)");await pg3.wait_for_timeout(300);await shot(pg3,"word_sheet_scrolled")
+                await pg3.evaluate("document.getElementById('sbody').scrollTo(0,250)");await pg3.wait_for_timeout(500);await shot(pg3,"word_sheet_scrolled_word_in_header")
+                await pg3.evaluate("(()=>{const sb=document.getElementById('sbody');sb.scrollTop=sb.scrollHeight;})()");await pg3.wait_for_timeout(500);await shot(pg3,"word_sheet_scrolled_to_end")
                 await pg3.click("#shead .x")
-                tl=await pg3.evaluate("(()=>{const c=[...document.querySelectorAll('#t-palabras .wc')].find(c=>c.querySelector('.tile'));return c&&c.dataset.w})()")
+                tl=await pg3.evaluate("(()=>{const c=[...document.querySelectorAll('#t-palabras .wc')].find(c=>c.classList.contains('np'));return c&&c.dataset.w})()")
                 if tl:
                     await pg3.evaluate("App.palabra(%s)"%json.dumps(tl));await pg3.wait_for_timeout(700);await shot(pg3,"word_sheet_no_picture")
                 await ctx3.close()
@@ -345,16 +413,21 @@ async def main():
         head=("Frames of the Coquí app's new Biblioteca shelf, book reader and Palabras tab (historia/app.html), phone size 390x844 at 2x (780x1688 px), made by historia/tools/leer_check.py --frames.\n"
               "The app teaches Spanish to an English speaker. Rules: English only in menus and labels; the Spanish is shown exactly as recorded; no translations anywhere; no self-rating buttons.\n"
               "The reader sees a picture book of a story he has already played."+(" Plain coloured tiles with a number are books the picture tool had not made when the check ran (the check fakes them); judge the layout, not those tiles." if FAKED else "")+"\n\n")
-        desc={"shelf_before_reading":"Biblioteca tab. One card per place (heading = place name), one row per story already played: a small cover (the book's first page), the title, a green Listen button and an outline Read button. The grey line at the bottom counts what is still closed. Look for: nothing cut off, buttons 48 px high and 16 px apart, readable grey text.",
-              "book_first_page_line_lit":"The book, page 1 of a story: full screen, the tab bar is gone. Top: close X (left), a thin progress bar, 'Aa' text-size button (right). Middle: the page picture. Below: up to three lines of text, the line being read aloud is lit (green background). Bottom: back arrow (disabled on page 1) and a green next arrow. Look for: the lit line, the picture sharp (pixel art, not blurred), text large and readable.",
-              "book_word_card_and_underlines":"The same page after tapping the word 'casa' (a word that has a picture): a white card pops over the page showing that word's picture and the word; the page is dimmed; every 'casa' in the lines is underlined in green. Any tap closes the card. No translation.",
-              "book_page_3_large_text":"Page 3 with the large text size (24 px): the Aa button toggled. Look for: nothing overlaps, the picture is smaller or the same, lines still readable.",
-              "book_last_page":"The last page: the progress bar is full; the bottom row has the back arrow, an outline 'Otra vez' (read again) and a blue 'Biblioteca' (back to the shelf). No next arrow, nothing starts by itself.",
-              "shelf_after_reading_check":"The shelf after reading the first book to its last page: a small green check after that story's title. Nothing else changed.",
-              "palabras_top":"Palabras tab. Top card 'Repaso' with '10 words today · about 2 min' (the session size: at most 10 words, however many are due) and a green Start button. Under it the words he has met, grouped by place (heading = place name). Each card: the word's picture (or a plain grey tile when the word has no picture), the word, and two four-dot meters 'Ear' and 'Mouth'. A word whose Ear meter has fewer than 2 dots shows '?' instead of the spelling.",
-              "palabras_cards":"Palabras scrolled down: more cards with different Ear/Mouth dots, '?' cards, a plain tile card, then the next place heading if any.",
-              "word_sheet_with_heard_in":"Tapping a card opens a bottom sheet: the big picture, the word (or '?'), the Ear and Mouth meters, 'Comes back ...' in English, and 'Heard in' with up to five lines from played stories that contain the word, each with a green play button (the story's own recording). Spanish exactly as recorded.",
-              "word_sheet_scrolled":"The same sheet scrolled to show the rest of the 'Heard in' lines.",
+        desc={"shelf_before_reading":"Biblioteca tab. One card per place (heading = place name), one row per story already played: a small cover (the book's first page), the title, a green Listen button and an outline Read button with a book icon. A story whose book is not good enough to read has Listen only and a plain grey cover tile. The grey line at the bottom counts what is still closed. Look for: nothing cut off, buttons 48 px high and 16 px apart.",
+              "book_first_page_line_lit":"The book, page 1: full screen, tab bar gone. Top: close X, a thin progress bar, the page count ('1 / 10'), the 'Aa' text-size button. Middle: the page picture. Below: up to three lines, each with a small speaker icon at its right (tap a line to hear it again); the line being read aloud is lit (green background, green bar at its left). Words that have a picture carry a faint dotted underline. Bottom: back arrow (disabled on page 1) and a green next arrow.",
+              "book_word_card_and_underlines":"The same page after tapping the word 'casa' (it has a picture): a white card shows that word's picture and the word; the page is dimmed; every 'casa' in the lines gets a solid green underline for a moment. Any tap closes the card. No translation.",
+              "book_second_line_lit":"A later page with two or more lines, mid-play: the second line is the one lit; the first is not. The count in the top bar has moved on.",
+              "book_page_large_text":"A page with the large text size (24 px) after the 'Aa' button was tapped, a line lit. Look for: nothing overlaps, lines still readable.",
+              "book_last_page_fin":"The last page: the bar is full, the count reads 'N / N', 'Fin' stands above the buttons. Buttons: a back arrow, 'Otra vez' (with a replay icon) and 'Biblioteca', both in the app's green. Nothing starts by itself.",
+              "shelf_after_reading_read_check":"The shelf after reading the first book to its last page: that story's button now reads 'Read ✓'. Nothing else changed.",
+              "shelf_scrolled_to_end":"The shelf scrolled to the very end: the last card and the grey line end clear above the tab bar and the raised round Mapa button.",
+              "palabras_top":"Palabras tab. Top card 'Repaso' with '10 words today · about 2 min' (the session size: at most 10 words, however many are due) and a green Start button. Then the first place heading and one grey key line ('Ear: you know it when you hear it. Mouth: you can say it.'). Then the words he has met, grouped by place. Each card: the word's picture, the word, and two four-dot meters 'Ear' and 'Mouth'. Every word is spelled, whatever its dots.",
+              "palabras_cards":"Palabras scrolled down: more cards with different Ear/Mouth dots.",
+              "palabras_plain_tile_card":"A word that has no picture is a plain white tile with the word in large type and its two meters under it (no empty picture box).",
+              "palabras_scrolled_to_end":"Palabras scrolled to the very end: the 'Add a word or a goal' card ends clear above the tab bar and the Mapa button.",
+              "word_sheet_with_heard_in":"Tapping a card opens a bottom sheet: the big picture, the word, the Ear and Mouth meters, 'Comes back ...' in English, and 'Heard in' with up to five lines from played stories that contain the word, the word in bold, each with a green play button (the story's own recording). Spanish exactly as recorded.",
+              "word_sheet_scrolled_word_in_header":"The same sheet scrolled: the word now shows in the sheet's header, next to the close X.",
+              "word_sheet_scrolled_to_end":"The same sheet scrolled to its end: the last 'Heard in' line is clear above the tab bar and the Mapa button (nothing cut off).",
               "word_sheet_no_picture":"The sheet of a word that has no picture: no picture block, the word, the meters, the return line, and its 'Heard in' lines."}
         (FRAMES.parent/(FRAMES.name+"_key.txt")).write_text(head+"\n".join("%s\n    %s\n"%(f,desc.get(n,n)) for f,n in KEY));print("frames:",FRAMES)
     print("%d checks, %d failed"%(N[0],len(FAILS)));sys.exit(1 if FAILS else 0)
