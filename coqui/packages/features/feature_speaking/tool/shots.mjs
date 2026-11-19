@@ -94,8 +94,8 @@ const shots = [
   { name: 'prueba-de-voz-despues-oido-bien', ref: '123', title: 'Heard right', q: 'screen=voice&reduce=1', do: [{ tap: 'mic' }, { wait: 600 }] },
   { name: 'prueba-de-voz-despues-no-se-oyo', ref: '124', title: 'Line 2: nothing heard', q: 'screen=voice&reduce=1', do: [{ tap: 'mic' }, { wait: 900 }, { tap: 'next' }, { wait: 300 }, { tap: 'mic' }, { wait: 800 }] },
   { name: 'prueba-de-voz-despues-oido-mal', ref: '125', title: 'Line 6: heard "la caza"', q: 'screen=voice&reduce=1', do: [{ reps: 5, do: [{ tap: 'mic' }, { wait: 900 }, { tap: 'next' }, { wait: 300 }] }, { tap: 'mic' }, { wait: 800 }] },
-  { name: 'prueba-de-voz-final', ref: '126', title: 'The result after twelve lines', q: 'screen=voice&reduce=1', do: [{ reps: 12, do: [{ tap: 'mic' }, { wait: 900 }, { tap: 'next' }, { wait: 300 }] }, { wait: 300 }] },
-  { name: 'prueba-de-voz-final-al-final', ref: '127', title: 'The result, scrolled to the end', q: 'screen=voice&reduce=1', do: [{ reps: 12, do: [{ tap: 'mic' }, { wait: 900 }, { tap: 'next' }, { wait: 300 }] }, { wait: 300 }, { scroll: 'end' }] },
+  { name: 'prueba-de-voz-final', ref: '126', title: 'The result after twelve lines', q: 'screen=voice&reduce=1', do: [{ reps: 12, do: [{ tap: 'mic' }, { wait: 1200 }, { tap: 'next' }, { wait: 450 }] }, { wait: 300 }] },
+  { name: 'prueba-de-voz-final-al-final', ref: '127', title: 'The result, scrolled to the end', q: 'screen=voice&reduce=1', do: [{ reps: 12, do: [{ tap: 'mic' }, { wait: 1200 }, { tap: 'next' }, { wait: 450 }] }, { wait: 300 }, { scroll: 'end' }] },
   { name: 'prueba-de-voz-sin-microfono', ref: '128', title: 'No microphone', q: 'screen=voice&reduce=1&mic=off', do: [{ wait: 300 }] },
   { name: 'prueba-de-voz-escuchando-con-movimiento', ref: '129', title: 'Listening, with motion (a ring spreads)', q: 'screen=voice&micwait=3000&speechwait=3000', do: [{ tap: 'mic' }] },
 ];
