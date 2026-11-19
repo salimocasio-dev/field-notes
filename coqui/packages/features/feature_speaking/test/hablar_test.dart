@@ -275,6 +275,54 @@ void main() {
     );
   });
 
+  group('hablar: a call library that did not load', () {
+    testWidgets(
+      'the failed answer is kept: the tab does not ask again at each rebuild, only when it is made again',
+      (tester) async {
+        Phone.android.use(tester);
+        // a call session whose library did not load: `available` is false, and each read of it is counted (each read
+        // of the real one starts another try at the network)
+        final call = CountingCall(available: false);
+        final w = await World.create(seed: 'todo', call: call);
+        await tester.pumpWidget(tab(w));
+        expect(call.asked, 1);
+        expect(find.text('Calls with Danny open later.'), findsOneWidget);
+        expect(find.byType(PlayButton), findsNothing);
+        // the tab is built again at every change of the progress
+        for (var i = 0; i < 7; i++) {
+          w.progress.add('word $i');
+          await tester.pump();
+        }
+        expect(call.asked, 1);
+        expect(find.text('Calls with Danny open later.'), findsOneWidget);
+        // a screen opened afresh asks again, once
+        await tester.pumpWidget(tab(w));
+        expect(call.asked, 2);
+        w.progress.add('another word');
+        await tester.pump();
+        expect(call.asked, 2);
+        w.dispose();
+      },
+    );
+
+    testWidgets(
+      'an answer of true is not kept: the card is open and follows the session',
+      (tester) async {
+        Phone.android.use(tester);
+        final call = CountingCall();
+        final w = await World.create(seed: 'todo', call: call);
+        await tester.pumpWidget(tab(w));
+        expect(find.byType(PlayButton), findsOneWidget);
+        final first = call.asked;
+        w.progress.add('a word');
+        await tester.pump();
+        expect(call.asked, greaterThan(first));
+        expect(find.byType(PlayButton), findsOneWidget);
+        w.dispose();
+      },
+    );
+  });
+
   group('hablar: words open for speaking', () {
     testWidgets('nothing met: the plain sentence', (tester) async {
       Phone.android.use(tester);
