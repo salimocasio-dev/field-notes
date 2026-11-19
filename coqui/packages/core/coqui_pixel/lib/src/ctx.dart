@@ -1069,7 +1069,7 @@ class Ctx {
         xs.clear();
         ds.clear();
         for (var k = 0; k < ne; k++) {
-          if (sy < ey[k] || sy >= ey2[k]) continue;
+          if (sy <= ey[k] || sy > ey2[k]) continue;
           final x = ex[k] + (sy - ey[k]) * (ex2[k] - ex[k]) / (ey2[k] - ey[k]);
           var at = xs.length;
           while (at > 0 && xs[at - 1] > x) {
@@ -1083,7 +1083,7 @@ class Ctx {
           wind += ds[m];
           if (wind == 0) continue;
           // the sample points (k + .5) / 4 from xs[m] up to xs[m + 1]
-          var ks = (xs[m] * 4 - .5).ceil(), ke = (xs[m + 1] * 4 - .5).ceil();
+          var ks = (xs[m] * 4 + .5).floor(), ke = (xs[m + 1] * 4 + .5).floor();
           if (ks < left) ks = left;
           if (ke > right) ke = right;
           for (var k = ks; k < ke; k++) {
