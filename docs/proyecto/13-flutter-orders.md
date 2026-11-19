@@ -456,7 +456,7 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 - No call was placed. The library's own code (the npm package, served locally) loads through the same path and `startSession` is a function. The real address is blocked from the build machine.
 - **To check on the test site, with no call started:** on Hablar with an open call card, in the console: `typeof window.ELConv?.startSession + ' ' + window.ELConvError` must print `function undefined`.
 - `ClipPlayer.loop('rain', ...)` is idempotent on the web and in phone builds (tested).
-- Follow-up, order 19b: a reason for a failed start in the contract (microphone, library, failed, unavailable), and the sound context resumed when a call ends (the old page reloaded on leaving a call; this app does not).
+- Order 19b (done, merged): `CallSession.start` throws `CallStartError` with a `kind` (microphone, library, failed, unavailable) whose text is the old `<Name>: <message>`; the session resumes the sound context when a call ends or fails to start (the old page reloaded on leaving a call; this app does not).
 
 ## Order 20. Shared look (builder, coqui_ui)
 
