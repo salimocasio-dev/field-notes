@@ -1,8 +1,9 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_words/src/words_tab.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_words's module. A placeholder until order 21 builds the real one: its screen says the feature's name.
+/// feature_words's module: the Palabras tab (id `words`).
 class WordsModule implements FeatureModule {
   const WordsModule();
 
@@ -12,19 +13,13 @@ class WordsModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: 'words',
-    label: 'feature_words',
+    label: 'Palabras',
     icon: Icons.style,
-    builder: (_) => const _Placeholder(),
+    builder: (_) => WordsTab(services: s),
   );
 
+  /// Nothing but its own tab.
   @override
-  Widget? screenFor(AppRoute route, Services s) => null;
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text('feature_words'));
+  Widget? screenFor(AppRoute route, Services s) =>
+      route is TabRoute && route.tab == 'words' ? WordsTab(services: s) : null;
 }
