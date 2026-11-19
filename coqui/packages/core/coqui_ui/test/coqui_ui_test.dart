@@ -1,6 +1,7 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 ReviewPair _pair(String word, {String scene = 'frente'}) => ReviewPair(
   word: word,
@@ -204,4 +205,44 @@ void main() {
       },
     );
   });
+
+  group('PictureSource.of: width x height in picture pixels, no scale', () {
+    test(
+      'the signature is of(ref, {width = 196, height = 104, animated})',
+      () async {
+        final fake = _RecordingSource();
+        final PictureSource source = fake;
+        final ref = PictureRef(
+          scene: 'frente',
+          cam: [52, 8, 180, 96],
+          name: 'abuela.si',
+        );
+        source.of(ref);
+        source.of(ref, width: 96, height: 106, animated: true);
+        await source.warm([ref]);
+        expect(fake.calls, [(196, 104, false), (96, 106, true)]);
+        expect(fake.warmed, [ref]);
+      },
+    );
+  });
+}
+
+/// Implements the contract with exactly its signature: it stops compiling if the signature changes.
+class _RecordingSource implements PictureSource {
+  final calls = <(int, int, bool)>[];
+  final warmed = <PictureRef>[];
+
+  @override
+  Widget of(
+    PictureRef ref, {
+    int width = 196,
+    int height = 104,
+    bool animated = false,
+  }) {
+    calls.add((width, height, animated));
+    return const SizedBox.shrink();
+  }
+
+  @override
+  Future<void> warm(Iterable<PictureRef> refs) async => warmed.addAll(refs);
 }

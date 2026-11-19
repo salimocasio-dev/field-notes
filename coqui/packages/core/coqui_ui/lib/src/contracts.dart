@@ -164,14 +164,25 @@ int _deepHash(Object? v) {
 
 /// Where features get pictures of scenes. They never import a scene.
 abstract interface class PictureSource {
-  /// A scene in a given state, the 196-wide window at cam (section 5, "The camera"), cropped to height.
+  /// The picture [ref] names, [width] x [height] PICTURE pixels: 196 x 104 for a review picture (the
+  /// default), 96 x 106 for a cell of the level check. The source decides what region of the scene
+  /// fills it, from the scene's sheet: the picture's centre and its zoom of 1 or 2 (a zoom-2 picture shows
+  /// a region of width / 2 x height / 2, each pixel doubled). It never stretches by a fraction: every picture
+  /// pixel it returns is one whole pixel of the scene, or two of them side by side at zoom 2.
+  ///
+  /// The widget it returns shows that picture through `PixelView`, which takes the whole number of device
+  /// pixels per picture pixel from the box it is given (`pixelViewScale`): the caller sizes the box, not
+  /// the picture. There is no scale parameter. [animated]: the scene's own motion plays (a still frame
+  /// otherwise).
   Widget of(
     PictureRef ref, {
+    int width = 196,
     int height = 104,
-    int? scale,
     bool animated = false,
   });
-  Future<void> warm(Iterable<PictureRef> refs); // bake ahead
+
+  /// Bakes the pictures of [refs] ahead, so that `of` shows them at once.
+  Future<void> warm(Iterable<PictureRef> refs);
 }
 
 /// Everything a feature is given. The shell builds one from the real packages;
