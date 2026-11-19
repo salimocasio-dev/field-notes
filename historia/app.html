@@ -94,7 +94,8 @@ nav .in{display:flex;max-width:560px;margin:0 auto;height:var(--navh);align-item
 /* the shelf: a cover (the book's first page), the title with its read check, Listen and Read */
 .bk{display:flex;align-items:flex-start;gap:16px;padding:16px 0}.bk+.bk{border-top:1px solid var(--line)}
 .cov{flex:none;width:72px;min-height:72px;border-radius:8px;overflow:hidden;background:#ECEAE3;box-shadow:0 0 0 1px var(--line);line-height:0}.cov img{display:block;width:72px;height:auto}
-.bk .acts{display:flex;gap:16px;margin-top:8px}.bk .btn{padding:0 16px}.okc svg{width:16px;height:16px;vertical-align:-2px;margin-left:4px}
+.bk .acts{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:8px}.bk .btn{padding:0 16px}
+@media (max-width:380px){.bk{gap:12px}.cov{width:64px;min-height:64px}.cov img{width:64px}.bk .btn{padding:0 12px}}   /* a 360 px phone: Listen and Read still fit side by side */.okc svg{width:16px;height:16px;vertical-align:-2px;margin-left:4px}
 /* the book: the lesson frame (calm dark grey, full screen over the tab bar), one page at a time */
 #libro{position:fixed;inset:0;z-index:20;display:none;flex-direction:column;background:#1B1B1F;color:#fff;padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);overscroll-behavior:contain;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;--lt:20px;--ll:30px}
 #libro.on{display:flex}#libro.big{--lt:24px;--ll:36px}
