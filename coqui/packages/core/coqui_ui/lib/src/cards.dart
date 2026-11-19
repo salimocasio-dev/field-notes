@@ -410,23 +410,48 @@ class TodayCard extends StatelessWidget {
 }
 
 /// A stat of Yo: a card with a big number and a grey word under it, centred, no
-/// space under it (the grid puts 16 px between). app.html:472
+/// space under it (the grid puts 16 px between). The streak's has the flame before its number
+/// ([flame]: the fire emoji glyph the old page writes in front of it, drawn as [CoquiFlame] at the number's
+/// size, 0.26 em before the digits). app.html:472
 class StatCard extends StatelessWidget {
-  const StatCard({super.key, required this.value, required this.label});
+  const StatCard({
+    super.key,
+    required this.value,
+    required this.label,
+    this.flame = false,
+  });
   final String value;
   final String label;
+  final bool flame;
 
   @override
-  Widget build(BuildContext context) => CoquiCard(
-    marginBottom: 0,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(value, style: CoquiText.stat, textAlign: TextAlign.center),
-        Text(label, style: CoquiText.smallMuted, textAlign: TextAlign.center),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final number = Text(
+      value,
+      style: CoquiText.stat,
+      textAlign: TextAlign.center,
+    );
+    return CoquiCard(
+      marginBottom: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (flame)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CoquiFlame(fontSize: CoquiText.stat.fontSize!),
+                SizedBox(width: CoquiFlame.gapFor(CoquiText.stat.fontSize!)),
+                number,
+              ],
+            )
+          else
+            number,
+          Text(label, style: CoquiText.smallMuted, textAlign: TextAlign.center),
+        ],
+      ),
+    );
+  }
 }
 
 /// `.seg`: pills in a row of equal width, 16 px apart; the chosen one is blue

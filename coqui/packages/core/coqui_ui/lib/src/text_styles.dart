@@ -10,7 +10,7 @@
 /// above and below the line as CSS does (`TextLeadingDistribution.even`).
 ///
 /// Ligatures are off in every style ([coquiNoLigatures], added by [_s] and by
-/// [pixelifyStyle]): Roboto joins "f" and "i" into one glyph with no dot ("fi" reads as "fı"), and
+/// [pixelifyStyle]): Roboto joins "f" and "i" into one glyph with no dot ("fi" reads as "f" and a dotless i), and
 /// Pixelify Sans' "fi" reads as "A". An app for learning to read a language draws every letter plain.
 ///
 /// Pixelify Sans: no rule of app.html, cual.html, index.html, nivel.html or

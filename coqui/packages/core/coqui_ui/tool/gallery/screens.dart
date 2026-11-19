@@ -367,7 +367,11 @@ class _YoScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: StatCard(value: '\u{1F525} 0', label: 'day streak'),
+                    child: StatCard(
+                      value: '0',
+                      label: 'day streak',
+                      flame: true,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   const Expanded(

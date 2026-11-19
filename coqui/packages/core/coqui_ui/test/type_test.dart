@@ -53,6 +53,155 @@ Set<int> get _needed => {
   for (final c in '‘’“”–—…·0123456789'.runes) c,
 };
 
+/// The text of every string literal of Dart [src], escapes decoded (`\u{1F525}` is the flame emoji),
+/// raw strings as written. Comments are skipped. Code inside `${...}` is skipped, but a string inside it is
+/// a literal of its own.
+List<String> stringLiterals(String src) {
+  final out = <String>[];
+  var i = 0;
+
+  bool isIdent(String c) => RegExp(r'[A-Za-z0-9_$]').hasMatch(c);
+
+  // Skips a comment starting at [i] if there is one; returns the new index or [i].
+  int comment(int i) {
+    if (src.startsWith('//', i)) {
+      final nl = src.indexOf('\n', i);
+      return nl < 0 ? src.length : nl;
+    }
+    if (src.startsWith('/*', i)) {
+      var depth = 0;
+      var j = i;
+      while (j < src.length) {
+        if (src.startsWith('/*', j)) {
+          depth++;
+          j += 2;
+        } else if (src.startsWith('*/', j)) {
+          depth--;
+          j += 2;
+          if (depth == 0) return j;
+        } else {
+          j++;
+        }
+      }
+      return src.length;
+    }
+    return i;
+  }
+
+  // Reads the string whose opening quote is at [start]; returns the index after its closing quote.
+  int readString(int start, {required bool raw}) {
+    final q = src[start];
+    final triple = src.startsWith(q * 3, start);
+    var j = start + (triple ? 3 : 1);
+    final text = StringBuffer();
+    final close = triple ? q * 3 : q;
+    while (j < src.length) {
+      if (src.startsWith(close, j)) {
+        out.add(text.toString());
+        return j + close.length;
+      }
+      final c = src[j];
+      if (!raw && c == r'\') {
+        final n = src[j + 1];
+        if (n == 'u') {
+          if (src[j + 2] == '{') {
+            final end = src.indexOf('}', j);
+            text.writeCharCode(int.parse(src.substring(j + 3, end), radix: 16));
+            j = end + 1;
+          } else {
+            text.writeCharCode(
+              int.parse(src.substring(j + 2, j + 6), radix: 16),
+            );
+            j += 6;
+          }
+        } else if (n == 'x') {
+          text.writeCharCode(int.parse(src.substring(j + 2, j + 4), radix: 16));
+          j += 4;
+        } else if ('nrtbfv'.contains(n)) {
+          j += 2;
+        } else {
+          text.write(n);
+          j += 2;
+        }
+      } else if (!raw && c == r'$') {
+        if (src[j + 1] == '{') {
+          // Code: skip to the matching brace; strings inside are literals of their own.
+          var depth = 1;
+          j += 2;
+          while (j < src.length && depth > 0) {
+            final k = comment(j);
+            if (k != j) {
+              j = k;
+              continue;
+            }
+            final d = src[j];
+            if (d == '{') {
+              depth++;
+            } else if (d == '}') {
+              depth--;
+            } else if (d == "'" || d == '"') {
+              j = readString(
+                j,
+                raw: j > 0 && src[j - 1] == 'r' && !isIdent(src[j - 2]),
+              );
+              continue;
+            }
+            j++;
+          }
+        } else {
+          j++;
+          while (j < src.length && isIdent(src[j]) && src[j] != r'$') {
+            j++;
+          }
+        }
+      } else {
+        text.write(c);
+        j++;
+      }
+    }
+    out.add(text.toString());
+    return src.length;
+  }
+
+  while (i < src.length) {
+    final k = comment(i);
+    if (k != i) {
+      i = k;
+      continue;
+    }
+    final c = src[i];
+    if (c == "'" || c == '"') {
+      final raw = i > 0 && src[i - 1] == 'r' && (i < 2 || !isIdent(src[i - 2]));
+      i = readString(i, raw: raw);
+    } else {
+      i++;
+    }
+  }
+  return out;
+}
+
+/// Every character a string literal under `lib/` holds that the shipped fonts lack.
+Map<String, Set<String>> missingInLib() {
+  final fonts = [
+    for (final f in coquiFontFiles.values) _cmap(File(f).readAsBytesSync()),
+  ];
+  final missing = <String, Set<String>>{};
+  for (final entity in Directory('lib').listSync(recursive: true)) {
+    if (entity is! File || !entity.path.endsWith('.dart')) continue;
+    for (final text in stringLiterals(entity.readAsStringSync())) {
+      for (final c in text.runes) {
+        if (c < 0x20) continue; // a line break or a tab is not drawn
+        if (fonts.every((f) => f.contains(c))) continue;
+        (missing[entity.path] ??= {}).add(
+          'U+${c.toRadixString(16).toUpperCase().padLeft(4, '0')} '
+          '${String.fromCharCode(c)}',
+        );
+      }
+    }
+  }
+  return missing;
+}
+
 Widget _app(Widget child) => MaterialApp(
   debugShowCheckedModeBanner: false,
   theme: coquiTheme(),
@@ -103,6 +252,51 @@ void main() {
         );
       });
     }
+  });
+
+  group('no string literal under lib/ holds a character the fonts lack', () {
+    test(
+      'the scanner reads escapes, raw strings, interpolation and comments',
+      () {
+        const src = r"""
+// 'not a literal' with a flame \u{1F525}
+final a = '\u{1F525} $days day${days == 1 ? '' : 's'}';
+final b = r'raw \u{1F525} text';
+final c = "a \u00e9 ${'nested \u2713'} done"; /* 'in a comment' */
+final d = 'plain \\ \' quote';
+""";
+        final lits = stringLiterals(src);
+        expect(
+          lits,
+          contains(
+            '\u{1F525} '
+            r' day',
+          ),
+        );
+        expect(lits, contains(r'raw \u{1F525} text'));
+        expect(lits, contains('nested \u2713'));
+        expect(lits, contains('a \u00e9  done'));
+        expect(lits.any((l) => l.contains('not a literal')), isFalse);
+        expect(lits.any((l) => l.contains('in a comment')), isFalse);
+      },
+    );
+
+    test('a flame emoji or a check mark in a literal would be found', () {
+      final fonts = [
+        for (final f in coquiFontFiles.values) _cmap(File(f).readAsBytesSync()),
+      ];
+      bool lacks(int c) => !fonts.every((f) => f.contains(c));
+      expect(lacks(0x1F525), isTrue);
+      expect(lacks(0x2713), isTrue);
+      expect(lacks(0x2192), isTrue);
+      expect(lacks(0x00B7), isFalse, reason: 'the middle dot is in Roboto');
+      expect(lacks(0x00E9), isFalse);
+      expect(lacks(0x00BF), isFalse);
+    });
+
+    test('lib/ holds none', () {
+      expect(missingInLib(), isEmpty);
+    });
   });
 
   group('ligatures are off: "fi", "fl", "ffi" and "ffl" draw plain letters', () {
