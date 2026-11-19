@@ -350,6 +350,15 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/palabras.js, rule for rule. Pag
 
 **Done when:** all 30 sequences of `ref/progress/`, in both time zones, give the same store after every call (numbers compared as numbers), on vm and chrome.
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; the four runs and `test_all.sh` on merged main were run again by the orchestrator (all pass).
+- `PalabrasStore(KeyValueStore, Clock)`. `bash tool/test_zones.sh` in the package runs the suite four times (UTC and America/New_York, each on vm and chrome): 654 tests on vm, 569 on chrome, per zone.
+- Each run replays 30 sequences and 361 calls from `ref/progress/` (the sequence that calls `PAL.rec` is skipped: no page calls it), comparing the whole store, the return value, the saved text and `export()` after every call.
+- The members that live in app.html, not palabras.js (`markRead`, `hasRead`, `add`, `added`, `played`, `setting`, `setSetting`, `levelResult`, `minutes`): the page's own code was cut out by pattern and run in node against the real palabras.js; 8 more sequences and 163 calls per zone are replayed the same way.
+- `add` trims as JavaScript does, keeps duplicates, has no length cap. `markRead` writes the clock time once. `heard` does not save, exactly as `oida` does not.
+- `import(json)` is new (order 43 uses it): valid JSON replaces the store; text that is not JSON throws and leaves the store untouched.
+- The `habla` setting is tested by the page with `!== 0`, so it can be 0, 1 or absent; the feature that shows the switch must apply the same test.
+- The old faults are ported as they are (the streak and day keys, the 5:00 and 3:00 mornings on clock-change nights, `vence` throwing on a word with no `ear` or `mouth`, `reset` dropping unknown keys).
+
 ## Order 17. Content (builder, coqui_content)
 
 Page 12: sections 1, 2, 6, 7. **Build:** `CourseCatalog` over a `fetch(String path)` given by the shell. Loads `datos/*.json`, `cuentos/*.json`, `libros/*.json`, `audio/ready.json`, `audio/marcas.json`. `pairFor` and `linesWith` as `pares()` and `oidoEn()` in app.html.
