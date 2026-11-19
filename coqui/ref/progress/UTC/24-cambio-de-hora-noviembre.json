@@ -1,0 +1,38 @@
+{
+ "id": "24-cambio-de-hora-noviembre",
+ "tz": "UTC",
+ "title": "Across the US clock change on Nov 1 2026: in New York the word is due at 3:00",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1793476800000,"local":"2026-10-31T20:00:00+00:00","call":"oida","args":["vaso"],"member":"heard","dart":{"w":"vaso"},"returns":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1793505600000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1793505600000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1793502000000,"local":"2026-11-01T03:00:00+00:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1793505600000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":2,"now":1793505540000,"local":"2026-11-01T03:59:00+00:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1793505600000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":3,"now":1793505600000,"local":"2026-11-01T04:00:00+00:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":["vaso"],"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1793505600000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":4,"now":1793505660000,"local":"2026-11-01T04:01:00+00:00","call":"responde","args":["vaso","ear",false,700,false],"member":"answer","dart":{"w":"vaso","skill":"ear","ok":false,"ms":700,"intro":false},"returns":{"etapa":1,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1793506260000,"aciertos":[],"ultima":1793505660000,"aparcada":0,"marca":0,"n":1,"bien":0},"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1793506260000,"aciertos":[],"ultima":1793505660000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":5,"now":1793575800000,"local":"2026-11-01T23:30:00+00:00","call":"minutos","args":[1],"member":"addMinutes","dart":{"m":1},"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1793506260000,"aciertos":[],"ultima":1793505660000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{"2026-11-01":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":1,"v":1},"saved":"same"},
+  {"i":6,"now":1793579400000,"local":"2026-11-02T00:30:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":0,"store":{"palabras":{"vaso":{"w":"vaso","primera":1793476800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1793506260000,"aciertos":[],"ultima":1793505660000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{"2026-11-01":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":1,"v":1},"saved":"same"}
+ ]
+}

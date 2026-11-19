@@ -1,0 +1,840 @@
+{
+ "made": "node coqui/tool/ref/progress/make.mjs",
+ "zones": [
+  "UTC",
+  "America/New_York"
+ ],
+ "sequences": 31,
+ "exported": [
+  "rec",
+  "oida",
+  "responde",
+  "cuento",
+  "presume",
+  "oido",
+  "minutos",
+  "vence",
+  "racha",
+  "save",
+  "norm",
+  "abiertaHabla",
+  "db",
+  "STAGES",
+  "reset"
+ ],
+ "notCalled": [],
+ "files": [
+  {
+   "file": "UTC/01-veinte-dias.json",
+   "id": "01-veinte-dias",
+   "tz": "UTC",
+   "steps": 156,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 5,
+    "minutos": 22,
+    "racha": 18,
+    "vence": 35,
+    "responde": 70,
+    "abiertaHabla": 6
+   },
+   "sha256": "8999dc2a04e3a3a7f49f7905a924ad52b3a6aa85e4e48a6332a31a0df832d444"
+  },
+  {
+   "file": "UTC/02-un-fallo.json",
+   "id": "02-un-fallo",
+   "tz": "UTC",
+   "steps": 8,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 4,
+    "vence": 3
+   },
+   "sha256": "14375199d95b40debbdbde06ff6d6e78e7c8bdc99168b14a8b7d7bcd64122d0d"
+  },
+  {
+   "file": "UTC/03-tres-fallos.json",
+   "id": "03-tres-fallos",
+   "tz": "UTC",
+   "steps": 9,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 5,
+    "vence": 3
+   },
+   "sha256": "5763bb3eb5329c9cdee656a18512c8e0eb5dede26f56bb10b7220920a792e076"
+  },
+  {
+   "file": "UTC/04-lento.json",
+   "id": "04-lento",
+   "tz": "UTC",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 6
+   },
+   "sha256": "8df73873fc857747fc6c58ed4a32eefb719f57d722f72f7c14aa081b2b8eb4f4"
+  },
+  {
+   "file": "UTC/05-presume.json",
+   "id": "05-presume",
+   "tz": "UTC",
+   "steps": 9,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 1,
+    "responde": 3,
+    "presume": 3,
+    "abiertaHabla": 1,
+    "vence": 1
+   },
+   "sha256": "6034f137cb5e77540eb61296363dcd33edc6e8f3a4e6696fcbe86b5a72c7311a"
+  },
+  {
+   "file": "UTC/06-cuento-dos-veces.json",
+   "id": "06-cuento-dos-veces",
+   "tz": "UTC",
+   "steps": 4,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 3,
+    "vence": 1
+   },
+   "sha256": "2d85eb65edcda7a81cfb3ef3f8fadf67f8dedec2c51385ab786e240705600222"
+  },
+  {
+   "file": "UTC/07-a-las-3-59.json",
+   "id": "07-a-las-3-59",
+   "tz": "UTC",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 1,
+    "vence": 3,
+    "racha": 1
+   },
+   "sha256": "1f3e5fb40abd1a1a0ccb7f42a19b3cc0fa51a9f81d6caa5dd45d6a6b0a973206"
+  },
+  {
+   "file": "UTC/08-a-las-4-01.json",
+   "id": "08-a-las-4-01",
+   "tz": "UTC",
+   "steps": 5,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 2,
+    "vence": 2
+   },
+   "sha256": "d23234aff3e9fb25a1171dab9ef5ced5efa17e3afe41ef3a2a73e508898f1968"
+  },
+  {
+   "file": "UTC/09-intro.json",
+   "id": "09-intro",
+   "tz": "UTC",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "responde": 6
+   },
+   "sha256": "71131197e891c4ed2f1772a02a2b930e5db2b94ce7662142e8cb5333880dfa4c"
+  },
+  {
+   "file": "UTC/10-bien.json",
+   "id": "10-bien",
+   "tz": "UTC",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 5,
+    "abiertaHabla": 1
+   },
+   "sha256": "fe16bab4fef8fb8432c70ec399f577f3ec5a0f9186ed4dd4c1710706d09a25e1"
+  },
+  {
+   "file": "UTC/11-pasos.json",
+   "id": "11-pasos",
+   "tz": "UTC",
+   "steps": 13,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 12
+   },
+   "sha256": "72d68aa914eab50b3980fcc400ecb2bb5ab950fa40e2a0564fd4ab2e241b01bf"
+  },
+  {
+   "file": "UTC/12-boca-y-oido.json",
+   "id": "12-boca-y-oido",
+   "tz": "UTC",
+   "steps": 11,
+   "dartReplayable": true,
+   "calls": {
+    "abiertaHabla": 4,
+    "oida": 1,
+    "responde": 3,
+    "vence": 3
+   },
+   "sha256": "0c4e3d938b36704870b824372f05d2be97d069929270ca1dfabec9cce60f603d"
+  },
+  {
+   "file": "UTC/13-vence-orden.json",
+   "id": "13-vence-orden",
+   "tz": "UTC",
+   "steps": 11,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 2,
+    "responde": 3,
+    "vence": 6
+   },
+   "sha256": "4ee2060daaaadcde0bf0cbba95227bd60bb1526ec2004197bd842461f7e3751f"
+  },
+  {
+   "file": "UTC/14-racha.json",
+   "id": "14-racha",
+   "tz": "UTC",
+   "steps": 10,
+   "dartReplayable": true,
+   "calls": {
+    "racha": 6,
+    "minutos": 4
+   },
+   "sha256": "ed896ec7ca9ff2be9263835bcb5a3a4fed0524916eab0ef1e6e025a8803626b4"
+  },
+  {
+   "file": "UTC/15-oido-minutos.json",
+   "id": "15-oido-minutos",
+   "tz": "UTC",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "oido": 3,
+    "minutos": 3
+   },
+   "sha256": "aeb4959e006a5b791e22155e9216673720b91e28503f2b3a9e8607d11983028e"
+  },
+  {
+   "file": "UTC/16-norm.json",
+   "id": "16-norm",
+   "tz": "UTC",
+   "steps": 19,
+   "dartReplayable": true,
+   "calls": {
+    "norm": 19
+   },
+   "sha256": "f91a61cf9d719c23c6190f7c12c70560ddfcbbaec07bc5897fd802eb8a382568"
+  },
+  {
+   "file": "UTC/17-reset.json",
+   "id": "17-reset",
+   "tz": "UTC",
+   "steps": 8,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 2,
+    "minutos": 1,
+    "oido": 1,
+    "reset": 1,
+    "db": 1,
+    "STAGES": 1,
+    "save": 1
+   },
+   "sha256": "e7adf0fa489680ee511e128aead295d14c382664f7071b6548ccb6b873f8489b"
+  },
+  {
+   "file": "UTC/18-carga-guardada.json",
+   "id": "18-carga-guardada",
+   "tz": "UTC",
+   "steps": 8,
+   "dartReplayable": true,
+   "calls": {
+    "db": 1,
+    "abiertaHabla": 3,
+    "racha": 1,
+    "vence": 1,
+    "minutos": 1,
+    "cuento": 1
+   },
+   "sha256": "9084021ca5964f5ae07792be4676f38e9c628cccc7074ef591549113ce6df538"
+  },
+  {
+   "file": "UTC/19-carga-rota.json",
+   "id": "19-carga-rota",
+   "tz": "UTC",
+   "steps": 2,
+   "dartReplayable": true,
+   "calls": {
+    "db": 1,
+    "oida": 1
+   },
+   "sha256": "578812f6f5d390540eb98e84188a767a9c84d88a8d7043b99d8d76bcfbb21949"
+  },
+  {
+   "file": "UTC/20-sin-almacen.json",
+   "id": "20-sin-almacen",
+   "tz": "UTC",
+   "steps": 3,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 1,
+    "minutos": 1
+   },
+   "sha256": "7ae646dda15158a89d965cd74664c4f65cb16c4e6e4f6dd49900b1ab4f2f21aa"
+  },
+  {
+   "file": "UTC/21-sin-window.json",
+   "id": "21-sin-window",
+   "tz": "UTC",
+   "steps": 3,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "vence": 1,
+    "responde": 1
+   },
+   "sha256": "6ae28bb91869317cdfb2bfd454c6128b2513db55a72e0076191e38933b4dd14d"
+  },
+  {
+   "file": "UTC/22-reloj-cero.json",
+   "id": "22-reloj-cero",
+   "tz": "UTC",
+   "steps": 2,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "racha": 1
+   },
+   "sha256": "0f05b53a8106dbee51e5d6aaac97e8a271960ff76500281b09f3c5d6a1b1f031"
+  },
+  {
+   "file": "UTC/23-cambio-de-hora-marzo.json",
+   "id": "23-cambio-de-hora-marzo",
+   "tz": "UTC",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "vence": 2,
+    "responde": 1,
+    "minutos": 2,
+    "racha": 1
+   },
+   "sha256": "6a5c4365a91b6546cc75c78033d00836448dc764fa1bbf7115857321a8815548"
+  },
+  {
+   "file": "UTC/24-cambio-de-hora-noviembre.json",
+   "id": "24-cambio-de-hora-noviembre",
+   "tz": "UTC",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "vence": 3,
+    "responde": 1,
+    "minutos": 1,
+    "racha": 1
+   },
+   "sha256": "45906721a06fe644cece59840078ae7a88dc372627cbe8bf0416b34287cf72b6"
+  },
+  {
+   "file": "UTC/25-cuento-casos.json",
+   "id": "25-cuento-casos",
+   "tz": "UTC",
+   "steps": 5,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "cuento": 4
+   },
+   "sha256": "accc45de8446fa352fee12930b3a5f4aba35cbfe1cc4c2733686090656d9201a"
+  },
+  {
+   "file": "UTC/26-noche.json",
+   "id": "26-noche",
+   "tz": "UTC",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 2,
+    "minutos": 1,
+    "racha": 3
+   },
+   "sha256": "84a62397d0fe1c456ecd59977eb2143237bb331d16c0114a69e6f040cf444719"
+  },
+  {
+   "file": "UTC/27-rec-y-oida.json",
+   "id": "27-rec-y-oida",
+   "tz": "UTC",
+   "steps": 5,
+   "dartReplayable": false,
+   "calls": {
+    "rec": 2,
+    "oida": 2,
+    "save": 1
+   },
+   "sha256": "54ec0eb8393c059082de8a979d059f08d7150df6e4ae7d422ff07c827dd6aeda"
+  },
+  {
+   "file": "UTC/28-palabra-nueva.json",
+   "id": "28-palabra-nueva",
+   "tz": "UTC",
+   "steps": 4,
+   "dartReplayable": true,
+   "calls": {
+    "responde": 3,
+    "vence": 1
+   },
+   "sha256": "543148bc288ceef7c7d495f543af239fa20ef7b7c8f8da2c18fff5d472bfb585"
+  },
+  {
+   "file": "UTC/29-gap.json",
+   "id": "29-gap",
+   "tz": "UTC",
+   "steps": 12,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 11
+   },
+   "sha256": "e0cdf33894971f0293a99196b4676e6a93fa4b8375530d6b31b2b8b8eacd4c8c"
+  },
+  {
+   "file": "UTC/30-aparcada.json",
+   "id": "30-aparcada",
+   "tz": "UTC",
+   "steps": 10,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 5,
+    "vence": 4
+   },
+   "sha256": "01559755aac94dd8f13b57df0cd06be83c573a93172d3c5cc118ac232c22152d"
+  },
+  {
+   "file": "UTC/31-carga-nulos.json",
+   "id": "31-carga-nulos",
+   "tz": "UTC",
+   "steps": 2,
+   "dartReplayable": true,
+   "calls": {
+    "db": 1,
+    "cuento": 1
+   },
+   "sha256": "75b80129f75a2b355ece1ddfa3f2ffee206521c4a96f862ec825616a94ffe9bc"
+  },
+  {
+   "file": "America_New_York/01-veinte-dias.json",
+   "id": "01-veinte-dias",
+   "tz": "America/New_York",
+   "steps": 156,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 5,
+    "minutos": 22,
+    "racha": 18,
+    "vence": 35,
+    "responde": 70,
+    "abiertaHabla": 6
+   },
+   "sha256": "cf02d1a0269deb0c6bd57a2816232a205556d3ca05b287475ac9c2a87f055496"
+  },
+  {
+   "file": "America_New_York/02-un-fallo.json",
+   "id": "02-un-fallo",
+   "tz": "America/New_York",
+   "steps": 8,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 4,
+    "vence": 3
+   },
+   "sha256": "5978365042af4d902b58fb0966c99581cdfa63cf1fa3a50b339d8d86ce6e06ba"
+  },
+  {
+   "file": "America_New_York/03-tres-fallos.json",
+   "id": "03-tres-fallos",
+   "tz": "America/New_York",
+   "steps": 9,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 5,
+    "vence": 3
+   },
+   "sha256": "b1e02fb6252b6fce5c2f977adef875a0e6db7d368f5e0cf6b7bf8f9b65b16e5a"
+  },
+  {
+   "file": "America_New_York/04-lento.json",
+   "id": "04-lento",
+   "tz": "America/New_York",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 6
+   },
+   "sha256": "b4751f86cd6d5302f07f98c61e5847f5d13d426e4871289944abd81002603ff4"
+  },
+  {
+   "file": "America_New_York/05-presume.json",
+   "id": "05-presume",
+   "tz": "America/New_York",
+   "steps": 9,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 1,
+    "responde": 3,
+    "presume": 3,
+    "abiertaHabla": 1,
+    "vence": 1
+   },
+   "sha256": "4de83a2759b2d62e2d0e4175b1a2059c17d5f9aa7c9b6e1fc2f3053dc6643758"
+  },
+  {
+   "file": "America_New_York/06-cuento-dos-veces.json",
+   "id": "06-cuento-dos-veces",
+   "tz": "America/New_York",
+   "steps": 4,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 3,
+    "vence": 1
+   },
+   "sha256": "d25dfac544a17545e8e9ea57e3a76b1b2c742e248e0da453d9c4ec6a663c0dbc"
+  },
+  {
+   "file": "America_New_York/07-a-las-3-59.json",
+   "id": "07-a-las-3-59",
+   "tz": "America/New_York",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 1,
+    "vence": 3,
+    "racha": 1
+   },
+   "sha256": "bf2180ec5e7e6fb436b30b5d5d56effed95e327175a8b48ed56d57feed9a7622"
+  },
+  {
+   "file": "America_New_York/08-a-las-4-01.json",
+   "id": "08-a-las-4-01",
+   "tz": "America/New_York",
+   "steps": 5,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 2,
+    "vence": 2
+   },
+   "sha256": "f4c02c969e2e4e81807e5c8be4ccb808c7dc36f2565eb3e1981e497d3a9ed67f"
+  },
+  {
+   "file": "America_New_York/09-intro.json",
+   "id": "09-intro",
+   "tz": "America/New_York",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "responde": 6
+   },
+   "sha256": "8e15911bc0335cc7c977f2401ff93a7d08c3daa40d23cbf8be15896cb5670e46"
+  },
+  {
+   "file": "America_New_York/10-bien.json",
+   "id": "10-bien",
+   "tz": "America/New_York",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 5,
+    "abiertaHabla": 1
+   },
+   "sha256": "66d7a13e9b2034e27fe14443205a41b84d8835f3c058178e7c83b99f2fac570c"
+  },
+  {
+   "file": "America_New_York/11-pasos.json",
+   "id": "11-pasos",
+   "tz": "America/New_York",
+   "steps": 13,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 12
+   },
+   "sha256": "caf557ed406561004090e314d8437fa48d4f9fd6bb364891a3e3290eda719ea6"
+  },
+  {
+   "file": "America_New_York/12-boca-y-oido.json",
+   "id": "12-boca-y-oido",
+   "tz": "America/New_York",
+   "steps": 11,
+   "dartReplayable": true,
+   "calls": {
+    "abiertaHabla": 4,
+    "oida": 1,
+    "responde": 3,
+    "vence": 3
+   },
+   "sha256": "7a022e32518763578b2340bc2df4a224a1996ca5d23c98abb875f34cdf357c33"
+  },
+  {
+   "file": "America_New_York/13-vence-orden.json",
+   "id": "13-vence-orden",
+   "tz": "America/New_York",
+   "steps": 11,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 2,
+    "responde": 3,
+    "vence": 6
+   },
+   "sha256": "9a165333661c916097f26ee18f337e4a8eeeb9051f4e9b0cca8f338da3a9e112"
+  },
+  {
+   "file": "America_New_York/14-racha.json",
+   "id": "14-racha",
+   "tz": "America/New_York",
+   "steps": 10,
+   "dartReplayable": true,
+   "calls": {
+    "racha": 6,
+    "minutos": 4
+   },
+   "sha256": "3c6044be5a1ac06add78b462b6cd0e5f7ed329357f96931e168f1cab7e927b76"
+  },
+  {
+   "file": "America_New_York/15-oido-minutos.json",
+   "id": "15-oido-minutos",
+   "tz": "America/New_York",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "oido": 3,
+    "minutos": 3
+   },
+   "sha256": "d2f01d5ef113777f6adb3b5c3556533d041a895a466fb547ef31c6db9c48900c"
+  },
+  {
+   "file": "America_New_York/16-norm.json",
+   "id": "16-norm",
+   "tz": "America/New_York",
+   "steps": 19,
+   "dartReplayable": true,
+   "calls": {
+    "norm": 19
+   },
+   "sha256": "a06529b1dfb3ec315a5ee5b6d7b5939a26909b462f19286147809790f4343837"
+  },
+  {
+   "file": "America_New_York/17-reset.json",
+   "id": "17-reset",
+   "tz": "America/New_York",
+   "steps": 8,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 2,
+    "minutos": 1,
+    "oido": 1,
+    "reset": 1,
+    "db": 1,
+    "STAGES": 1,
+    "save": 1
+   },
+   "sha256": "07201fcb1acfda2ad337026f572addf553d1c6afea9b362da113ab006f8ff6f5"
+  },
+  {
+   "file": "America_New_York/18-carga-guardada.json",
+   "id": "18-carga-guardada",
+   "tz": "America/New_York",
+   "steps": 8,
+   "dartReplayable": true,
+   "calls": {
+    "db": 1,
+    "abiertaHabla": 3,
+    "racha": 1,
+    "vence": 1,
+    "minutos": 1,
+    "cuento": 1
+   },
+   "sha256": "5430316af3885fcbff87f6a00ba8ee7817f964ea4a31832d2a48c688bc7a1197"
+  },
+  {
+   "file": "America_New_York/19-carga-rota.json",
+   "id": "19-carga-rota",
+   "tz": "America/New_York",
+   "steps": 2,
+   "dartReplayable": true,
+   "calls": {
+    "db": 1,
+    "oida": 1
+   },
+   "sha256": "bf1b1fc10ce784fdde4edc6f4fd91aaf527483d8b89772d85b9478c6fce07b43"
+  },
+  {
+   "file": "America_New_York/20-sin-almacen.json",
+   "id": "20-sin-almacen",
+   "tz": "America/New_York",
+   "steps": 3,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 1,
+    "minutos": 1
+   },
+   "sha256": "b977c45181e2f5c179f48ba31c5158209836e7fe8ec45fac0e736ad85fa2096b"
+  },
+  {
+   "file": "America_New_York/21-sin-window.json",
+   "id": "21-sin-window",
+   "tz": "America/New_York",
+   "steps": 3,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "vence": 1,
+    "responde": 1
+   },
+   "sha256": "99a2ac3dda083ca1fb3cdbf44bd5a22954c0fce3ee93eba702001fe2193fe971"
+  },
+  {
+   "file": "America_New_York/22-reloj-cero.json",
+   "id": "22-reloj-cero",
+   "tz": "America/New_York",
+   "steps": 2,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "racha": 1
+   },
+   "sha256": "785cc1203468f78b62a42b279400924310fba3e02a20ede173692d39373dbb61"
+  },
+  {
+   "file": "America_New_York/23-cambio-de-hora-marzo.json",
+   "id": "23-cambio-de-hora-marzo",
+   "tz": "America/New_York",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "vence": 2,
+    "responde": 1,
+    "minutos": 2,
+    "racha": 1
+   },
+   "sha256": "8db7759246b5419be396834677dab5840925e5d20429e9388a25f98a765c857f"
+  },
+  {
+   "file": "America_New_York/24-cambio-de-hora-noviembre.json",
+   "id": "24-cambio-de-hora-noviembre",
+   "tz": "America/New_York",
+   "steps": 7,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "vence": 3,
+    "responde": 1,
+    "minutos": 1,
+    "racha": 1
+   },
+   "sha256": "4a75d0f3bfdb0b1091003a0a81a6f19c2140cae51ff54e33f3838528e110bc31"
+  },
+  {
+   "file": "America_New_York/25-cuento-casos.json",
+   "id": "25-cuento-casos",
+   "tz": "America/New_York",
+   "steps": 5,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "cuento": 4
+   },
+   "sha256": "ed99d5fa00080bd5134ac5c5835912b22c37e1fda31745ca939ebfe955ca71a8"
+  },
+  {
+   "file": "America_New_York/26-noche.json",
+   "id": "26-noche",
+   "tz": "America/New_York",
+   "steps": 6,
+   "dartReplayable": true,
+   "calls": {
+    "cuento": 2,
+    "minutos": 1,
+    "racha": 3
+   },
+   "sha256": "6e4c8d2ba56b302bb9015745bee8bd69e5fa63872880c1d7ec8d8681d1347b49"
+  },
+  {
+   "file": "America_New_York/27-rec-y-oida.json",
+   "id": "27-rec-y-oida",
+   "tz": "America/New_York",
+   "steps": 5,
+   "dartReplayable": false,
+   "calls": {
+    "rec": 2,
+    "oida": 2,
+    "save": 1
+   },
+   "sha256": "256455bf67133a4cff4aa48328645b0621d721f2170ea75ba8c8ecfbb947219d"
+  },
+  {
+   "file": "America_New_York/28-palabra-nueva.json",
+   "id": "28-palabra-nueva",
+   "tz": "America/New_York",
+   "steps": 4,
+   "dartReplayable": true,
+   "calls": {
+    "responde": 3,
+    "vence": 1
+   },
+   "sha256": "28f53417389318cddd44799550436db5e8598b4fc90411d74732b8334dd623d1"
+  },
+  {
+   "file": "America_New_York/29-gap.json",
+   "id": "29-gap",
+   "tz": "America/New_York",
+   "steps": 12,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 11
+   },
+   "sha256": "0e3acabad14f48a08d943780c0817d4bf365f3ffa11bff2f0abb0a48574a481b"
+  },
+  {
+   "file": "America_New_York/30-aparcada.json",
+   "id": "30-aparcada",
+   "tz": "America/New_York",
+   "steps": 10,
+   "dartReplayable": true,
+   "calls": {
+    "oida": 1,
+    "responde": 5,
+    "vence": 4
+   },
+   "sha256": "fb177202670b4c1ee83a261f324fe59c30837f8e7a0bf1dbc8f8a8f115b75d06"
+  },
+  {
+   "file": "America_New_York/31-carga-nulos.json",
+   "id": "31-carga-nulos",
+   "tz": "America/New_York",
+   "steps": 2,
+   "dartReplayable": true,
+   "calls": {
+    "db": 1,
+    "cuento": 1
+   },
+   "sha256": "f29ac67e39e0481c1237c69325215b4cc5a6f1ed422ca1858642f958a148e745"
+  }
+ ]
+}

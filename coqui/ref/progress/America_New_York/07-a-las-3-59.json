@@ -1,0 +1,37 @@
+{
+ "id": "07-a-las-3-59",
+ "tz": "America/New_York",
+ "title": "First meeting and an intro answer at 3:59 local: next morning is 4:00 of the next day, not one minute later",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772528340000,"local":"2026-03-03T03:59:00-05:00","call":"oida","args":["hola"],"member":"heard","dart":{"w":"hola"},"returns":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"store":{"palabras":{"hola":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772528370000,"local":"2026-03-03T03:59:30-05:00","call":"responde","args":["abuela","ear",true,900,true],"member":"answer","dart":{"w":"abuela","skill":"ear","ok":true,"ms":900,"intro":true},"returns":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772528370000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"hola":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abuela":{"w":"abuela","primera":1772528370000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772528370000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":2,"now":1772528400000,"local":"2026-03-03T04:00:00-05:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"hola":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abuela":{"w":"abuela","primera":1772528370000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772528370000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":3,"now":1772614740000,"local":"2026-03-04T03:59:00-05:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":[],"store":{"palabras":{"hola":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abuela":{"w":"abuela","primera":1772528370000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772528370000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":4,"now":1772614800000,"local":"2026-03-04T04:00:00-05:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":["hola","abuela"],"store":{"palabras":{"hola":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abuela":{"w":"abuela","primera":1772528370000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772528370000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":5,"now":1772614800000,"local":"2026-03-04T04:00:00-05:00","call":"racha","args":[],"member":"streak","dart":{},"returns":0,"store":{"palabras":{"hola":{"w":"hola","primera":1772528340000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abuela":{"w":"abuela","primera":1772528370000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772528370000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"}
+ ]
+}
