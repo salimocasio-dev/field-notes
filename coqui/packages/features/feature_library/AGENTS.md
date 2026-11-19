@@ -23,8 +23,24 @@ Biblioteca and the book reader (Leer).
 
 - `lib/feature_library.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- It holds one thing: `LibraryModule` (a `FeatureModule`, boundary rule 4). Id `library`; its tab is the Biblioteca shelf; `screenFor(BookRoute)` is the book reader. A book page's picture is a file served by the old site: `LibraryModule({imageUrl, imageProvider})` takes the address resolver (default `libros/<img>?v=39`, the old page's own) until `Services` carries a base (request `22-feature-library-needs-coqui-contracts-book-image-url`).
-- What is in `lib/src/`: `shelf.dart` (app.html `biblioteca`), `shelf_row.dart` (`.bk` and `.btn` of the shelf), `reader.dart` (`leer` to `initLibro`), `book_line.dart` (`lineaEl`, `.lbl`, the underlines), `book_picture.dart` (`ajustaPic`), `word_marks.dart` (`pares`, `occs`), `word_popup.dart` (`tarjetaPal`), `strings.dart` (the words app.html writes itself), `images.dart`, `press.dart`.
+- It holds one thing: `LibraryModule` (a `FeatureModule`, boundary rule 4). Id `library`; its tab is the Biblioteca shelf; `screenFor(BookRoute)` is the book reader. A book page's picture is a file served by the old site: `LibraryModule({imageUrl, imageProvider})` takes the address resolver (default `libros/<img>?v=39`, the old page's own). The content base stays a parameter of the module and the shell passes it (decided: `Services` does not grow one).
+- What is in `lib/src/`: `shelf.dart` (app.html `biblioteca`), `shelf_row.dart` (`.bk` and `.btn` of the shelf), `reader.dart` (`leer` to `initLibro`), `book_line.dart` (`lineaEl`, `.lbl`, the underlines), `book_picture.dart` (`ajustaPic`), `word_marks.dart` (`pares`, `occs`), `word_popup.dart` (`tarjetaPal`), `strings.dart` (the English words app.html writes itself), `images.dart`, `press.dart`.
+- The Spanish names of the screens come from `CoquiLabels` (coqui_ui): the shelf's name, "Fin", "Otra vez", the app's name over the coquí's lines, the kinds of a picture story and of a routine. No Spanish literal is in `lib/`. Listen on a picture story or a routine goes to `StoryRoute(id)` with `listen: false` (the old link without `oir=1`); on a played story, `listen: true`.
+- A book or its story that cannot be read: the reader goes back. A shelf row whose story the catalog has no meta for is skipped.
+
+## Stand-ins
+
+What this package draws itself where coqui_ui has no widget that fits. Each has one user, this feature, or a reason below (the requests that asked for them are answered):
+
+- The book's frame (`reader.dart`): the top bar (close, the page line at the left, the count, "Aa"), the picture area (8 above, 16 at the sides, `8 + --finx` below), the text area as tall as the tallest page, the foot, the card's scrim layer, and the phone on its side. `LessonFrame` centres its bar and puts one picture over a foot reserve: not the book's body.
+- The book line and its underlines (`book_line.dart`): `BookLine` left coqui_ui (one user).
+- The word card over the page (`word_popup.dart`): the reader's own popup with its light scrim; not `showCoquiSheet` (a sheet over everything).
+- The shelf row and its two buttons (`shelf_row.dart`): `ShelfRow` and `ShelfButton` left coqui_ui (one user); the cover as tall as its picture, the phone rules of `.bk` and the check after Read.
+- The pressed state (`press.dart`): `Pressable` is not exported by coqui_ui.
+- "Fin" at a fixed 32 px (`reader.dart`, `_foot`): `LessonFin` is as tall as the text scale makes it, and the last page's foot must be exactly `--finx` taller than the others at any text scale, or the picture moves when the last page opens.
+- The page's picture (`book_picture.dart`): `ajustaPic`'s whole-number scale of a loaded file, drawn through `PixelView`.
+
+What it takes from coqui_ui: `LessonButtonRow` (`reader`, `readerLast`), `LessonBackButton`, `LessonNextButton`, `LessonButton`, `LessonIconButton`, `LessonProgressLine`, `LessonTextSizeButton`, `PictureFrame`, `PixelView`, `CoquiLabels`, the book and cover tokens, `CoquiIcons`, `CoquiLayout.border`.
 - The reader keeps its text size in its own storage space: `Services.storage('leer')`, key `tam` (the old page's `coqui.leer.tam`). It writes no word record; `progress.markRead` at the last page.
 - The shelf reads `course.places` when it is built and after each progress save: the shell loads the catalog first. It carries its own `#fadeTab` fade (16 px at the tab bar's edge, while there is more to scroll) and expects the shell to lay the tab out full screen with the tab bar over it, as `TabPage`'s foot padding does.
 
