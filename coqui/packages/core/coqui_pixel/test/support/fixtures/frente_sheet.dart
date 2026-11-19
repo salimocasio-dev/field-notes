@@ -228,8 +228,8 @@ const String frenteSheetJson = r'''{
   },
   "casa_grande": {
    "set": true,
-   "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
-   "box": [67, -2, 133, 150],
+   "world": [-2.52, -1.62, 0, 2.82, 0.22, 2.9],
+   "box": [67, 16, 133, 132],
    "hit": {
     "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
     "box": [67, -2, 133, 150]
@@ -273,13 +273,13 @@ const String frenteSheetJson = r'''{
   },
   "ventana": {
    "set": true,
-   "world": [-2.26, 0, 0.7, 0.54, 0.32, 2.52],
-   "box": [70, 42, 58, 71],
+   "world": [-1.83, 0, 1.03, 0.11, 0.06, 2.52],
+   "box": [83, 46, 38, 53],
    "hit": {
     "world": [-2.29, 0, 0.7, 0.57, 0.42, 2.62],
     "box": [68, 39, 61, 75]
    },
-   "what": "the window with its frame, its shutters (open, flat on the wall) and the flower box; hit adds a little slack",
+   "what": "the window with its frame, its shutters (open, flat on the wall) and the flower box; hit adds a little slack. The hint frame goes round the window and its frame only",
    "old": {
     "box": [93, 57, 38, 28],
     "hit": [82, 53, 61, 42]
@@ -287,8 +287,8 @@ const String frenteSheetJson = r'''{
   },
   "casa": {
    "set": true,
-   "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
-   "box": [67, -2, 133, 150],
+   "world": [-2.52, -1.62, 0, 2.82, 0.22, 2.9],
+   "box": [67, 16, 133, 132],
    "hit": {
     "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
     "box": [67, -2, 133, 150]
@@ -352,12 +352,12 @@ const String frenteSheetJson = r'''{
    "what": "LUGAR.puerta and LUGAR.casa_grande: on the porch, before the door"
   },
   "ventana": {
-   "world": [-0.81, 0.62, 0.16],
-   "screen": [91.71, 114.65],
+   "world": [-0.27, 1.47, 0],
+   "screen": [86.01, 131.03],
    "scale": 0.72,
-   "frog": [76, 90],
+   "frog": [70, 106],
    "old": [96, 104],
-   "what": "LUGAR.ventana: on the porch, under the window"
+   "what": "LUGAR.ventana: under the window, on the lawn just before the porch, as the old frog stood (on the porch his bubble covered abuela in the window and the window's hint frame crossed his eyes). Placed so that every hop count acts.ir gives (round(d / 28)) from the places the stories hop from is the old one"
   },
   "palma_grande": {
    "world": [-0.78, 3.46, 0],
@@ -454,7 +454,7 @@ const String frenteSheetJson = r'''{
   },
   "ventana": {
    "spot": "ventana",
-   "frog": [76, 90],
+   "frog": [70, 106],
    "scale": 0.72
   },
   "patio": {
@@ -588,10 +588,10 @@ const String frenteSheetJson = r'''{
    "screen": [175.54, 159.1]
   },
   "ave.casita": {
-   "world": [3.05, 6.03, 1.38],
+   "world": [3.235, 5.845, 1.38],
    "old": [73, 129],
-   "what": "SPOT.casa_pequena: at the birdhouse's hole, on its perch",
-   "screen": [63.21, 172.39]
+   "what": "SPOT.casa_pequena: at the birdhouse's hole, on its perch: centred on the birdhouse as the old bird was (the hole is on its left face; a bird before the hole hung off the house's left side), its feet as low as before",
+   "screen": [70.02, 172.39]
   },
   "ave.casita.techo": {
    "world": [3.05, 5.66, 2.1],
@@ -624,10 +624,10 @@ const String frenteSheetJson = r'''{
    "screen": [178.67, 166.88]
   },
   "mano.casa": {
-   "world": [0.375, -0.35, 3.34],
+   "world": [0.515, -0.49, 3.34],
    "old": [141, 24],
-   "what": "handAt.casa and handAt.casa_grande: on the roof",
-   "screen": [131.33, 45.02]
+   "what": "handAt.casa and handAt.casa_grande: on the roof (5 px right of the first place: the thumb cleared abuela's hair on the porch, story 3)",
+   "screen": [136.48, 45.02]
   },
   "mano.puerta": {
    "world": [1.475, 0, 1.435],
@@ -799,13 +799,13 @@ const String frenteSheetJson = r'''{
    "what": "the house (the same window as wide: the house fits it whole)"
   },
   "puerta": {
-   "world": [1.475, 0.3, 1.16],
-   "screen": [139.6, 110.2],
+   "world": [1.475, 0.3, 1.88],
+   "screen": [139.6, 93.99],
    "zoom": 2,
    "x0": 91,
-   "region": [91, 56, 98, 108],
+   "region": [91, 40, 98, 108],
    "old": [117, 30, 98, 108],
-   "what": "the door, at 2x: the whole door, abuela in it, the frog before it on the porch"
+   "what": "the door, at 2x: the whole door, abuela in it, the frog before it on the porch. The frog on the path (patio) is wholly below it, as in the old view (16 px lower, his head showed at its bottom edge)"
   },
   "ventana": {
    "world": [-0.86, 0.3, 1],
@@ -1658,7 +1658,7 @@ const String frenteSheetJson = r'''{
    "old": "SPOT.casa_pequena [73,129]",
    "to": {
     "point": "ave.casita",
-    "new": [63.21, 172.39]
+    "new": [70.02, 172.39]
    }
   },
   {
@@ -1666,7 +1666,7 @@ const String frenteSheetJson = r'''{
    "old": "SPOT.casa_pequena [73,129] (the copy inside hud)",
    "to": {
     "point": "ave.casita",
-    "new": [63.21, 172.39]
+    "new": [70.02, 172.39]
    }
   },
   {
@@ -2202,7 +2202,7 @@ const String frenteSheetJson = r'''{
    "old": "box casa_grande [60,17,166,90]",
    "to": {
     "thing": "casa_grande",
-    "box": [67, -2, 133, 150]
+    "box": [67, 16, 133, 132]
    }
   },
   {
@@ -2215,7 +2215,7 @@ const String frenteSheetJson = r'''{
    "old": "box casa [60,17,166,90]",
    "to": {
     "thing": "casa",
-    "box": [67, -2, 133, 150]
+    "box": [67, 16, 133, 132]
    }
   },
   {
@@ -2231,7 +2231,7 @@ const String frenteSheetJson = r'''{
    "old": "box ventana [93,57,38,28]",
    "to": {
     "thing": "ventana",
-    "box": [70, 42, 58, 71]
+    "box": [83, 46, 38, 53]
    }
   },
   {
@@ -2344,7 +2344,7 @@ const String frenteSheetJson = r'''{
    "old": "LUGAR.ventana [96,104,0.72]",
    "to": {
     "spot": "ventana",
-    "frog": [76, 90],
+    "frog": [70, 106],
     "scale": 0.72
    }
   },
@@ -2667,7 +2667,7 @@ const String frenteSheetJson = r'''{
     "view": "puerta",
     "zoom": 2,
     "x0": 91,
-    "region": [91, 56, 98, 108]
+    "region": [91, 40, 98, 108]
    }
   },
   {
@@ -2695,7 +2695,7 @@ const String frenteSheetJson = r'''{
    "old": "handAt.casa [141,24]",
    "to": {
     "point": "mano.casa",
-    "new": [131, 45]
+    "new": [136, 45]
    }
   },
   {
@@ -2719,7 +2719,7 @@ const String frenteSheetJson = r'''{
    "old": "handAt.casa_grande [141,24]",
    "to": {
     "point": "mano.casa",
-    "new": [131, 45]
+    "new": [136, 45]
    }
   },
   {

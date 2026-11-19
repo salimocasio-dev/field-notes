@@ -303,7 +303,7 @@ void main() {
         expect(zoomOf(v.cam), v.zoom);
       }
       expect(sheet.views['wide']!.cam, [29, 0, 196, 216]);
-      expect(sheet.views['puerta']!.cam, [91, 56, 98, 108]);
+      expect(sheet.views['puerta']!.cam, [91, 40, 98, 108]);
       expect(sheet.views['puerta']!.zoom, 2);
       expect(sheet.views['wide@donde-esta-el-pajaro']!.cam, [8, 0, 196, 216]);
     });
