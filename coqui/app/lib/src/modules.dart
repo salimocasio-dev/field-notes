@@ -33,18 +33,31 @@ List<FeatureModule> coquiModules({
 ];
 
 /// Biblioteca's module, told where a book page's picture is ([imageUrl]: `historia/libros/<path>?v=39` on the site).
-///
-/// Until order 22's module is merged, feature_library's module is a placeholder that takes nothing. At that merge this
-/// one line changes, from `const LibraryModule()` to `LibraryModule(imageUrl: imageUrl)`.
 FeatureModule libraryModule({required String Function(String path) imageUrl}) =>
-    const LibraryModule();
+    LibraryModule(imageUrl: imageUrl);
 
 /// Hablar's module. There is no entry to the voice test on the tab (v=39 links it from nowhere): it opens by its
-/// address only (`#/prueba-voz`).
-///
-/// [voiceTest] cannot reach the module yet: feature_speaking exports only `SpeakingModule`, not `VoiceTestContent`
-/// and the types it is made of, so the shell cannot build one, and the voice test's address opens the map. Once
-/// feature_speaking exports them, this function builds `SpeakingModule(voiceTest: ...)` from [voiceTest] (see
-/// `../AGENTS.md`, "Waiting on other packages").
-FeatureModule speakingModule({VoiceTestData? voiceTest}) =>
-    const SpeakingModule();
+/// address only (`#/prueba-voz`). With no [voiceTest] (its file could not be read) that address opens the map.
+FeatureModule speakingModule({VoiceTestData? voiceTest}) => SpeakingModule(
+  voiceTest: voiceTest == null ? null : voiceTestContent(voiceTest),
+);
+
+/// The voice test's content, from the file read at the start: its lines, each with its hint and its targets, and the
+/// seven Spanish words around them (`VoiceTestLabels`, by the names [VoiceTestData.labelNames] holds).
+VoiceTestContent voiceTestContent(VoiceTestData data) => VoiceTestContent(
+  lines: [
+    for (final l in data.lines)
+      VoiceLine(l.text, [
+        for (final t in l.targets) VoiceTarget(t.word, t.forms),
+      ], hint: l.hint),
+  ],
+  labels: VoiceTestLabels(
+    listening: data.labels['listening']!,
+    processing: data.labels['processing']!,
+    unavailable: data.labels['unavailable']!,
+    again: data.labels['again']!,
+    mic: data.labels['mic']!,
+    next: data.labels['next']!,
+    progress: data.labels['progress']!,
+  ),
+);

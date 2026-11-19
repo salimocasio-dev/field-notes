@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:app/src/switches.dart';
-import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:app/src/voice_test_data.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -90,39 +90,56 @@ Future<void> answerRight(
 }
 
 void main() {
-  testWidgets('(e) Listen (nav.go(StoryRoute(id, listen: true)), as Biblioteca\'s Listen does): told straight through, '
-      'writes listened; its X returns to Biblioteca', (tester) async {
-    final app = TestApp(tester);
-    await app.open(stored: seed('curso'), speechAvailable: false);
-    await app.openTab('library');
-    // With order 22's module merged, this is a tap on Listen on the shelf; the placeholder has no shelf, so the
-    // test goes where that button goes.
-    await app.go(const StoryRoute('la-lluvia', listen: true));
-    expect(app.lessonShown, isTrue);
-    await app.until(
-      () => find.byType(LessonStartButton).evaluate().isNotEmpty,
-      what: 'the start disc',
-    );
-    expect(
-      (storedDb(app)['oidos'] as Map? ?? const {}).containsKey('la-lluvia'),
-      isFalse,
-    );
-    await app.tap(find.byType(LessonStartButton));
-    for (var t = 0; find.text('Play again').evaluate().isEmpty; t += 200) {
-      if (t > 5 * 60 * 1000) fail('Listen did not end');
-      await app.advance(200);
-    }
-    // nothing to touch: no decision was logged, and the story's record did not move
-    expect(
-      ((storedDb(app)['cuentos'] as Map)['la-lluvia'] as Map)['n'],
-      jsonDecode(seed('curso'))['cuentos']['la-lluvia']['n'],
-    );
-    // PAL.oido
-    expect((storedDb(app)['oidos'] as Map).containsKey('la-lluvia'), isTrue);
-    await app.tap(find.byType(LessonCloseButton));
-    await app.settle(rounds: 5);
-    expect(app.selectedTab, 'library');
-  }, timeout: const Timeout(Duration(minutes: 10)));
+  testWidgets(
+    '(e) Listen on Biblioteca\'s shelf: the story told straight through, '
+    'writes listened; its X returns to Biblioteca',
+    (tester) async {
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'), speechAvailable: false);
+      await app.openTab('library');
+      await app.until(
+        () => find.text('La lluvia').evaluate().isNotEmpty,
+        what: 'the shelf',
+      );
+      // the Listen button of La lluvia's row
+      await app.tap(
+        find.descendant(
+          of: find.ancestor(
+            of: find.text('La lluvia'),
+            matching: byTypeName('ShelfEntry'),
+          ),
+          matching: find.text('Listen'),
+        ),
+      );
+      await app.settle(rounds: 5);
+      expect(app.lessonShown, isTrue);
+      expect(byTypeName('StoryScreen'), findsOneWidget);
+      await app.until(
+        () => find.byType(LessonStartButton).evaluate().isNotEmpty,
+        what: 'the start disc',
+      );
+      expect(
+        (storedDb(app)['oidos'] as Map? ?? const {}).containsKey('la-lluvia'),
+        isFalse,
+      );
+      await app.tap(find.byType(LessonStartButton));
+      for (var t = 0; find.text('Play again').evaluate().isEmpty; t += 200) {
+        if (t > 5 * 60 * 1000) fail('Listen did not end');
+        await app.advance(200);
+      }
+      // nothing to touch: no decision was logged, and the story's record did not move
+      expect(
+        ((storedDb(app)['cuentos'] as Map)['la-lluvia'] as Map)['n'],
+        jsonDecode(seed('curso'))['cuentos']['la-lluvia']['n'],
+      );
+      // PAL.oido
+      expect((storedDb(app)['oidos'] as Map).containsKey('la-lluvia'), isTrue);
+      await app.tap(find.byType(LessonCloseButton));
+      await app.settle(rounds: 5);
+      expect(app.selectedTab, 'library');
+    },
+    timeout: const Timeout(Duration(minutes: 10)),
+  );
 
   testWidgets(
     '(f, g) Repaso from the Today card: answered, it writes ear answers; its pictures come from ScenePictures '
@@ -132,8 +149,7 @@ void main() {
       await app.open(stored: seed('curso'));
       expect(app.services.pictures, isA<ScenePictures>());
       final before = answers(app, 'ear');
-      // the Today card's first entry is the review (¿Cuál?); with order 21's module merged, Palabras' Start goes the
-      // same way (nav.go(ReviewRoute()))
+      // the Today card's first entry is the review (¿Cuál?); Palabras' Start goes the same way (test (m))
       expect(find.text(CoquiLabels.reviewTitle), findsOneWidget);
       await app.tap(find.byType(TodayCard));
       await app.settle();
@@ -187,6 +203,126 @@ void main() {
       expect(app.selectedTab, 'words');
     },
     timeout: const Timeout(Duration(minutes: 10)),
+  );
+
+  testWidgets('(m) Palabras\' Start opens Repaso; its X returns to Palabras', (
+    tester,
+  ) async {
+    final app = TestApp(tester);
+    await app.open(stored: seed('curso'));
+    await app.openTab('words');
+    await app.until(
+      () => find.text('Start').evaluate().isNotEmpty,
+      what: 'the Repaso card',
+    );
+    await app.tap(find.text('Start'));
+    await app.settle();
+    expect(app.lessonShown, isTrue);
+    expect(byTypeName('ReviewScreen'), findsOneWidget);
+    await app.tap(find.byType(LessonCloseButton));
+    await app.settle(rounds: 5);
+    expect(app.tabBarShown, isTrue);
+    expect(app.selectedTab, 'words');
+  }, timeout: const Timeout(Duration(minutes: 5)));
+
+  testWidgets(
+    '(n) a book: Read on the shelf and the address #/libro/<id> both open the reader; its X returns to where it was opened from',
+    (tester) async {
+      // Read, on Biblioteca's shelf (La familia has a book that reads well)
+      final app = TestApp(tester);
+      await app.open(stored: seed('curso'));
+      await app.openTab('library');
+      await app.until(
+        () => find.text('La familia').evaluate().isNotEmpty,
+        what: 'the shelf',
+      );
+      final read = find.descendant(
+        of: find.ancestor(
+          of: find.text('La familia'),
+          matching: byTypeName('ShelfEntry'),
+        ),
+        matching: find.text('Read'),
+      );
+      await tester.ensureVisible(read);
+      await app.settle(rounds: 3);
+      await app.tap(read);
+      await app.until(
+        () => byTypeName('BookReader').evaluate().isNotEmpty,
+        what: 'the reader',
+      );
+      await app.settle(rounds: 10);
+      expect(app.lessonShown, isTrue);
+      expect(find.byType(CoquiTabBar), findsNothing);
+      // the pictures are asked for where the shell says: the site's historia/libros/, with the old page's ?v=39
+      expect(
+        (tester.widget(byTypeName('BookReader')) as dynamic).imageUrl(
+          'img/la-familia-1.png',
+        ),
+        'http://127.0.0.1/field-notes/historia/libros/img/la-familia-1.png?v=39',
+      );
+      await app.tap(find.byType(LessonIconButton).first); // the reader's X
+      await app.advance(10000);
+      expect(app.tabBarShown, isTrue);
+      expect(app.selectedTab, 'library');
+      expect(byTypeName('BookReader'), findsNothing);
+
+      // the address of a book, opened as it is (a reload): the reader; its X returns to the map
+      await tester.pumpWidget(const SizedBox());
+      final again = TestApp(tester);
+      await again.open(stored: seed('curso'), location: '/libro/la-familia');
+      await again.until(
+        () => byTypeName('BookReader').evaluate().isNotEmpty,
+        what: 'the reader',
+      );
+      await again.settle(rounds: 10);
+      expect(again.lessonShown, isTrue);
+      await again.tap(find.byType(LessonIconButton).first);
+      await again.advance(10000);
+      expect(byTypeName('BookReader'), findsNothing);
+      expect(again.tabBarShown, isTrue);
+      expect(again.selectedTab, 'map');
+    },
+    timeout: const Timeout(Duration(minutes: 5)),
+  );
+
+  testWidgets(
+    '(o) the address #/prueba-voz opens the voice test, made from historia/datos/prueba-voz.json: its first line, the '
+    'file\'s mic label; one line said is heard; the system back returns to the map',
+    (tester) async {
+      final file = VoiceTestData.parse(
+        repoFile('historia/datos/prueba-voz.json'),
+      );
+      final app = TestApp(tester);
+      await app.open(
+        stored: seed('curso'),
+        location: '/prueba-voz',
+        micStub: const ['hola abuela'],
+      );
+      // not the map: the voice test, a lesson screen, on the first of the file's twelve lines
+      expect(byTypeName('VoiceTestScreen'), findsOneWidget);
+      expect(app.lessonShown, isTrue);
+      expect(find.text('1 / 12'), findsOneWidget);
+      expect(find.text(file.lines.first.text), findsOneWidget);
+      // the file's own words are the screen's: its mic label is the mic disc's
+      final mic = find.byWidgetPredicate(
+        (x) => x is Semantics && x.properties.label == file.labels['mic'],
+      );
+      expect(mic, findsOneWidget);
+      await app.tap(mic);
+      await app.advance(1500);
+      // the scripted answer is what the file's first line asks for (hola, abuela): heard
+      expect(find.text('hola abuela'), findsOneWidget);
+      expect(
+        tester.widget<Text>(find.text('hola abuela')).style!.color,
+        CoquiColors.heard,
+      );
+      final handled = await tester.binding.handlePopRoute();
+      await app.settle(rounds: 5);
+      expect(handled, isTrue);
+      expect(byTypeName('VoiceTestScreen'), findsNothing);
+      expect(app.selectedTab, 'map');
+    },
+    timeout: const Timeout(Duration(minutes: 5)),
   );
 
   testWidgets(

@@ -18,14 +18,35 @@ void main() {
       expect(find.text('2 · El parque'), findsOneWidget);
       expect(find.text('10 words coming back · 6 min'), findsOneWidget);
 
-      // Biblioteca and Palabras: the placeholders of orders 22 and 21 on this branch (they show no progress yet;
-      // with the real modules merged, this is where the seed's books and words show)
+      // Biblioteca: the real shelf, with what the seed has played (La casa's stories, each with its Listen) and what it
+      // has heard (El jugo, once)
       await app.openTab('library');
       expect(app.selectedTab, 'library');
-      expect(find.text('feature_library').hitTestable(), findsOneWidget);
+      await app.until(
+        () => find.text('La lluvia').evaluate().isNotEmpty,
+        what: 'the shelf',
+      );
+      expect(byTypeName('LibraryShelf').hitTestable(), findsOneWidget);
+      expect(find.text('La casa').hitTestable(), findsOneWidget);
+      expect(find.text('La lluvia').hitTestable(), findsOneWidget);
+      expect(find.text('El jugo').hitTestable(), findsOneWidget);
+      expect(find.text('Heard 1× · about 4 min').hitTestable(), findsOneWidget);
+      expect(find.text('Listen').hitTestable(), findsWidgets);
+
+      // Palabras: the real tab, with the seed's ten words due on its Repaso card and the words he has met, by place
       await app.openTab('words');
       expect(app.selectedTab, 'words');
-      expect(find.text('feature_words').hitTestable(), findsOneWidget);
+      await app.until(
+        () => find.text('Repaso').evaluate().isNotEmpty,
+        what: 'the words',
+      );
+      expect(byTypeName('WordsTab').hitTestable(), findsOneWidget);
+      expect(
+        find.text('10 words today · about 2 min').hitTestable(),
+        findsOneWidget,
+      );
+      expect(find.text('Start').hitTestable(), findsOneWidget);
+      expect(find.text('casa').hitTestable(), findsOneWidget);
 
       // Hablar: La casa is done in the seed, so its call card is open; El parque's is not
       await app.openTab('speak');

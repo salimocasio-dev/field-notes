@@ -2,10 +2,12 @@
 // recogniser, the voice test's file.
 import 'package:app/src/addresses.dart';
 import 'package:app/src/content.dart';
+import 'package:app/src/modules.dart';
 import 'package:app/src/scripted_speech.dart';
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:feature_speaking/feature_speaking.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/harness.dart';
@@ -211,4 +213,35 @@ void main() {
       expect(() => VoiceTestData.parse('{"lines": []}'), throwsFormatException);
     },
   );
+  test('the voice test\'s content is the file, line for line, and the module has it only when the file was read', () {
+    final file = VoiceTestData.parse(
+      repoFile('historia/datos/prueba-voz.json'),
+    );
+    final content = voiceTestContent(file);
+    expect(content.lines, hasLength(file.lines.length));
+    for (var i = 0; i < file.lines.length; i++) {
+      final a = file.lines[i], b = content.lines[i];
+      expect(b.text, a.text, reason: 'line $i');
+      expect(b.hint, a.hint, reason: 'line $i');
+      expect(
+        [for (final t in b.targets) (t.word, t.forms)],
+        [for (final t in a.targets) (t.word, t.forms)],
+        reason: 'line $i',
+      );
+    }
+    expect({
+      'listening': content.labels.listening,
+      'processing': content.labels.processing,
+      'unavailable': content.labels.unavailable,
+      'again': content.labels.again,
+      'mic': content.labels.mic,
+      'next': content.labels.next,
+      'progress': content.labels.progress,
+    }, file.labels);
+    expect(
+      (speakingModule(voiceTest: file) as SpeakingModule).voiceTest,
+      isNotNull,
+    );
+    expect((speakingModule() as SpeakingModule).voiceTest, isNull);
+  });
 }
