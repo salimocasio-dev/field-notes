@@ -238,7 +238,7 @@ class StillHost implements SceneHost {
   void fresh() {
     final f = startFrog();
     W = {
-      'cq': {
+      'cq': <String, dynamic>{
         'x': f.x,
         'y': f.y,
         's': f.scale,

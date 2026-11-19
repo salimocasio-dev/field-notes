@@ -4,7 +4,15 @@ import 'package:coqui_scenes/src/frente/frente_set.dart';
 /// A W that is in the set state [s] (the sheet's setKey table read backwards), and the frame counter its rustle needs.
 ({Map<String, dynamic> W, int F}) wOfState(Frente scene, FrenteState s) {
   final W = <String, dynamic>{
-    'cq': {'x': 103, 'y': 168, 's': 1, 'dy': 0, 'al': 1, 'vis': 1, 'bub': null},
+    'cq': <String, dynamic>{
+      'x': 103,
+      'y': 168,
+      's': 1,
+      'dy': 0,
+      'al': 1,
+      'vis': 1,
+      'bub': null,
+    },
     'fx': <Map<String, dynamic>>[],
     'heart': 0,
     'lost': 0,

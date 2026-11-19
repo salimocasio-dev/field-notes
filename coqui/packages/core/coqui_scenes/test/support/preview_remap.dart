@@ -35,7 +35,15 @@ Map<String, dynamic> previewBaseW(
   Map<String, dynamic> fresh,
   Map<String, dynamic> over,
 ) => {
-  'cq': {'x': 150, 'y': 178, 's': 1, 'dy': 0, 'al': 1, 'vis': 1, 'bub': null},
+  'cq': <String, dynamic>{
+    'x': 150,
+    'y': 178,
+    's': 1,
+    'dy': 0,
+    'al': 1,
+    'vis': 1,
+    'bub': null,
+  },
   'spot': null,
   'twinkle': null,
   'glow': null,

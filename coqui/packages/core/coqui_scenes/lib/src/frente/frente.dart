@@ -1110,7 +1110,7 @@ class Frente extends SetScene {
       final b = box(o['en'] as String, W)!;
       host.SFX.toc();
       host.bounce(5);
-      host.fx({
+      host.fx(<String, dynamic>{
         't': 'knock',
         'n': 7,
         'x': _round(b[0] + b[2] / 2),
@@ -1122,7 +1122,7 @@ class Frente extends SetScene {
     'luz': (o) async {
       W['lamp'] = 1;
       host.SFX.luz();
-      host.fx({
+      host.fx(<String, dynamic>{
         't': 'star',
         'n': 12,
         'pts': [
@@ -1166,14 +1166,24 @@ class Frente extends SetScene {
         await wait(650);
         W['door'] = 1;
         W['peek'] = 0;
-        W['ab'] = {'en': 'puerta', 'pose': 'idle', 'bub': null, 'al': 1};
+        W['ab'] = <String, dynamic>{
+          'en': 'puerta',
+          'pose': 'idle',
+          'bub': null,
+          'al': 1,
+        };
         await wait(250);
       } else {
         await host.camGo('ventana');
         host.SFX.creak();
         await wait(350);
         W['win'] = 1;
-        W['ab'] = {'en': 'ventana', 'pose': 'idle', 'bub': null, 'al': 1};
+        W['ab'] = <String, dynamic>{
+          'en': 'ventana',
+          'pose': 'idle',
+          'bub': null,
+          'al': 1,
+        };
         await wait(350);
       }
     },
@@ -1234,7 +1244,7 @@ class Frente extends SetScene {
       W['flash'] = F;
       host.SFX.trueno();
       W['dark'] = .22;
-      W['nube'] = {'x': -100, 'tx': NX[0]};
+      W['nube'] = <String, dynamic>{'x': -100, 'tx': NX[0]};
       await wait(1000);
     },
     'atras': (o) => atras(),
@@ -1257,7 +1267,12 @@ class Frente extends SetScene {
           : lost != 0
           ? 'gotas'
           : 'seco';
-      W['ab'] ??= {'en': 'ventana', 'pose': 'idle', 'bub': null, 'al': 1};
+      W['ab'] ??= <String, dynamic>{
+        'en': 'ventana',
+        'pose': 'idle',
+        'bub': null,
+        'al': 1,
+      };
       final ab = W['ab'] as Map<String, dynamic>;
       ab['en'] = 'ventana';
       // its own view: the heart must sit whole in the ending picture, and the frog is inside, beside her
@@ -1295,7 +1310,12 @@ class Frente extends SetScene {
         W['door'] = 1;
       }
       if (W['abIn'] == k) {
-        W['ab'] = {'en': k, 'pose': 'idle', 'bub': null, 'al': 1};
+        W['ab'] = <String, dynamic>{
+          'en': k,
+          'pose': 'idle',
+          'bub': null,
+          'al': 1,
+        };
       }
       await wait(350);
     },
@@ -1314,7 +1334,7 @@ class Frente extends SetScene {
       }
       final ab = W['ab'] as Map<String, dynamic>?;
       if (ab != null && ab['en'] == k) W['ab'] = null;
-      host.fx({
+      host.fx(<String, dynamic>{
         't': 'star',
         'n': 6,
         'pts': [HOLE[k]],
@@ -1367,7 +1387,13 @@ class Frente extends SetScene {
       }
     },
     'pajaro': (o) async {
-      W['ave'] = {'mode': 'fly', 'x': -12, 'y': 40, 'dir': 1, 'st': 'n'};
+      W['ave'] = <String, dynamic>{
+        'mode': 'fly',
+        'x': -12,
+        'y': 40,
+        'dir': 1,
+        'st': 'n',
+      };
       host.SFX.pio();
       await aveA(150 + 56, 22, 12);
       _ave()['mode'] = 'circle';
@@ -1382,7 +1408,12 @@ class Frente extends SetScene {
       host.SFX.swoop();
       await aveA(h[0], h[1], 8);
       host.SFX.bonk();
-      host.fx({'t': 'knock', 'n': 7, 'x': h[0], 'y': h[1] - 4});
+      host.fx(<String, dynamic>{
+        't': 'knock',
+        'n': 7,
+        'x': h[0],
+        'y': h[1] - 4,
+      });
       v['st'] = 'sleep';
       await aveA(h[0] - (v['dir'] as num) * 6, h[1] + 10, 4);
       await wait(350);
@@ -1422,7 +1453,7 @@ class Frente extends SetScene {
         await wait(320);
       }
       W['trozo'] = null;
-      host.fx({
+      host.fx(<String, dynamic>{
         't': 'star',
         'n': 8,
         'pts': [
@@ -1488,7 +1519,7 @@ class Frente extends SetScene {
         W['heart'] = 1;
         host.SFX.win();
         final b = host.cam;
-        host.fx({
+        host.fx(<String, dynamic>{
           't': 'star',
           'n': 40,
           'pts': [
@@ -1509,7 +1540,13 @@ class Frente extends SetScene {
       W['abierto'] = null;
       final b = host.frogBox(_q());
       if (W['ave'] == null || _ave()['mode'] == 'none') {
-        W['ave'] = {'mode': 'fly', 'x': -10, 'y': 60, 'dir': 1, 'st': 'n'};
+        W['ave'] = <String, dynamic>{
+          'mode': 'fly',
+          'x': -10,
+          'y': 60,
+          'dir': 1,
+          'st': 'n',
+        };
       }
       final v = _ave();
       if (v['mode'] != 'head') {
@@ -1555,11 +1592,15 @@ class Frente extends SetScene {
       } else {
         host.SFX.blip();
         W['abierto'] = k;
-        W['hojas'] = {'x': SPOT[k]![0], 'y': SPOT[k]![1], 'f': F};
+        W['hojas'] = <String, dynamic>{
+          'x': SPOT[k]![0],
+          'y': SPOT[k]![1],
+          'f': F,
+        };
       }
       await wait(400);
       if (host.V['p'] == k) {
-        W['ave'] = {
+        W['ave'] = <String, dynamic>{
           'mode': 'sit',
           'x': SPOT[k]![0],
           'y': SPOT[k]![1],
@@ -1570,7 +1611,7 @@ class Frente extends SetScene {
         host.bounce(6);
         await wait(500);
       } else {
-        host.fx({
+        host.fx(<String, dynamic>{
           't': 'star',
           'n': 5,
           'pts': [SPOT[k]],
@@ -1580,7 +1621,7 @@ class Frente extends SetScene {
     },
     'sale': (o) async {
       final k = o['en'] as String;
-      W['ave'] = {
+      W['ave'] = <String, dynamic>{
         'mode': 'sit',
         'x': SPOT[k]![0],
         'y': SPOT[k]![1],
@@ -1611,7 +1652,13 @@ class Frente extends SetScene {
       if (W['ave'] != null && _ave()['mode'] != 'none') {
         v = _ave();
       } else {
-        v = {'mode': 'fly', 'x': 250, 'y': 60, 'dir': -1, 'st': 'n'};
+        v = <String, dynamic>{
+          'mode': 'fly',
+          'x': 250,
+          'y': 60,
+          'dir': -1,
+          'st': 'n',
+        };
         W['ave'] = v;
       }
       v['x'] = avePos(v)[0];
@@ -1684,7 +1731,12 @@ class Frente extends SetScene {
         await wait(300);
       }
       final pa = avePos(v);
-      host.fx({'t': 'knock', 'n': 10, 'x': pa[0], 'y': pa[1] - 30});
+      host.fx(<String, dynamic>{
+        't': 'knock',
+        'n': 10,
+        'x': pa[0],
+        'y': pa[1] - 30,
+      });
       host.SFX.pio();
       await wait(600);
       final q = _q();
@@ -1707,7 +1759,7 @@ class Frente extends SetScene {
     },
     'devuelve': (o) async {
       final b = host.frogBox(_q());
-      W['ave'] = {
+      W['ave'] = <String, dynamic>{
         'mode': 'fly',
         'x': 250,
         'y': 30,
@@ -1730,7 +1782,13 @@ class Frente extends SetScene {
     'avecasa': (o) async {
       final v = W['ave'] as Map<String, dynamic>?;
       if (v == null || v['mode'] == 'none') {
-        W['ave'] = {'mode': 'fly', 'x': 200, 'y': 40, 'dir': -1, 'st': 'n'};
+        W['ave'] = <String, dynamic>{
+          'mode': 'fly',
+          'x': 200,
+          'y': 40,
+          'dir': -1,
+          'st': 'n',
+        };
       }
       final w = _ave();
       w['x'] = avePos(w)[0];
@@ -1771,7 +1829,7 @@ class Frente extends SetScene {
       if (((W['mios'] as num?) ?? 0) > ((W['lost'] as num?) ?? 0)) {
         W['heart'] = 1;
         host.SFX.win();
-        host.fx({
+        host.fx(<String, dynamic>{
           't': 'star',
           'n': 30,
           'pts': [
@@ -1807,7 +1865,7 @@ class Frente extends SetScene {
       if (lost == 0) {
         W['heart'] = 1;
         host.SFX.win();
-        host.fx({
+        host.fx(<String, dynamic>{
           't': 'star',
           'n': 40,
           'pts': [
@@ -1859,8 +1917,8 @@ class Frente extends SetScene {
   // frente.js: acts.llueve
   Future<void> llueve() async {
     (W['nube'] as Map<String, dynamic>)['tx'] = NX[2];
-    W['nube2'] = {'x': -100, 'tx': 44};
-    W['nube3'] = {'x': 250, 'tx': 176};
+    W['nube2'] = <String, dynamic>{'x': -100, 'tx': 44};
+    W['nube3'] = <String, dynamic>{'x': 250, 'tx': 176};
     W['dark'] = .33;
     host.SFX.trueno(.5);
     W['flash'] = F;

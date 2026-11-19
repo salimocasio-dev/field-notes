@@ -132,7 +132,15 @@ class ScenePictures implements PictureSource {
   ) {
     final f = frogOfCode(scene.sheet, scene.projection, 'cual.js:21');
     final w = <String, dynamic>{
-      'cq': {'x': 0, 'y': 0, 's': 1, 'dy': 0, 'al': 1, 'vis': 0, 'bub': null},
+      'cq': <String, dynamic>{
+        'x': 0,
+        'y': 0,
+        's': 1,
+        'dy': 0,
+        'al': 1,
+        'vis': 0,
+        'bub': null,
+      },
       'spot': null,
       'twinkle': null,
       'fx': <Map<String, dynamic>>[],
@@ -141,7 +149,7 @@ class ScenePictures implements PictureSource {
       'resp': null,
       ...scene.fresh(const {}),
     };
-    w['cq'] = {
+    w['cq'] = <String, dynamic>{
       'x': f.x,
       'y': f.y,
       's': f.scale,
