@@ -17,7 +17,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
-import { HISTORIA, mulberry32, newOldPage, wordRec } from './old_harness.mjs';
+import { HISTORIA, layoutProbe, mulberry32, newOldPage, wordRec } from './old_harness.mjs';
 import { runReview, runLevel } from './runs.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -220,3 +220,57 @@ for (const sc of levelScenarios) {
   process.stderr.write(`level: ${sc.name}: ${res.result.hecho.length} items, S0=${fin ? fin.S0 : '-'}, ${res.draws} draws\n`);
 }
 fs.writeFileSync(path.join(out, 'level_sessions.json'), JSON.stringify({ node: process.version, sessions: levels }) + '\n');
+
+// ---------------------------------------------------------------- the layout arithmetic
+const phones = [
+  { w: 412, h: 915, dpr: 2.625, top: 0, bottom: 0, left: 0, right: 0 }, // the Android reference phone
+  { w: 390, h: 844, dpr: 3, top: 0, bottom: 0, left: 0, right: 0 }, // the iPhone reference, no safe area
+  { w: 390, h: 844, dpr: 3, top: 47, bottom: 34, left: 0, right: 0 }, // the same with its notch and home bar
+  { w: 360, h: 640, dpr: 3, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 360, h: 800, dpr: 2.75, top: 24, bottom: 0, left: 0, right: 0 },
+  { w: 393, h: 852, dpr: 3, top: 59, bottom: 34, left: 0, right: 0 },
+  { w: 375, h: 667, dpr: 2, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 414, h: 896, dpr: 2, top: 44, bottom: 34, left: 0, right: 0 },
+  { w: 320, h: 568, dpr: 2, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 430, h: 932, dpr: 3, top: 59, bottom: 34, left: 0, right: 0 },
+  { w: 412, h: 915, dpr: 1, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 800, h: 1280, dpr: 1.5, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 844, h: 390, dpr: 3, top: 0, bottom: 21, left: 47, right: 47 }, // on its side
+  { w: 915, h: 412, dpr: 2.625, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 667, h: 375, dpr: 2, top: 0, bottom: 0, left: 0, right: 0 },
+  { w: 740, h: 360, dpr: 3, top: 0, bottom: 0, left: 0, right: 0 },
+];
+const layout = await layoutProbe(phones, [
+  { cols: 1, rows: 2, pw: 196, ph: 104 },
+  { cols: 2, rows: 2, pw: 96, ph: 106 },
+]);
+fs.writeFileSync(path.join(out, 'layout.json'), JSON.stringify({ node: process.version, cases: layout }) + '\n');
+
+// ---------------------------------------------------------------- nivelFrontera on its own
+{
+  const probe2 = await newOldPage({ seed: 1, now: 0, store: null, nivel: true });
+  const r = mulberry32(777);
+  const logs = [];
+  const tops = Math.max(...NV.map((q) => q.s));
+  for (let n = 0; n < 400; n++) {
+    const len = 1 + Math.floor(r() * 16);
+    const h = [];
+    for (let k = 0; k < len; k++) {
+      const s = 1 + Math.floor(r() * (n % 3 === 0 ? 6 : tops));
+      h.push({ i: k, w: 'x', s, ok: r() < (n % 4 === 0 ? 0.9 : 0.6), ms: 1000 });
+    }
+    logs.push(h);
+  }
+  // the edges: exactly three right of four (0.75), and just under
+  const mk = (oks, ss) => oks.map((ok, k) => ({ i: k, w: 'x', s: ss[k], ok, ms: 1 }));
+  logs.push(mk([false, true, true, true], [1, 2, 3, 4]));
+  logs.push(mk([true, true, true, false], [1, 2, 3, 3]));
+  logs.push(mk([false, false, true, true, true, true, true, true, true], [1, 1, 2, 3, 4, 5, 6, 7, 8]));
+  logs.push(mk([true, false, true, true, true, true, true, true], [1, 2, 3, 4, 5, 6, 7, 8]));
+  logs.push([]);
+  const cases = logs.map((h) => {
+    probe2.ctx.__h = h;
+    return { h, S0: probe2.get('Nivel.frontera(__h)') };
+  });
+  fs.writeFileSync(path.join(out, 'frontier.json'), JSON.stringify({ node: process.version, cases }) + '\n');
+}

@@ -338,3 +338,64 @@ export function wordRec(w, over = {}) {
   const e = skillRec(Object.assign({ etapa: 1, gap: 1 }, over));
   return { w, primera: (over.due || 0) - 864e5, oida: 1, ear: e, mouth: skillRec() };
 }
+
+/**
+ * The old page's layout arithmetic, run for phone sizes: juego.js `fit` (the whole-number scale of the block of
+ * pictures, the gap between them, the room under it), cual.js `cualSize` / `placeOpts` (where each picture's frame
+ * sits) and cual.js `cualGrid` (the end screen's grid). `fit`, `LAND` and `gapFor` are cut out of the page's files
+ * by pattern; the page's elements are stubs that have the sizes the CSS gives them.
+ *
+ * phone: {w, h, dpr, top, bottom, left, right} (CSS px; top and bottom: the safe area), landscape decided by the
+ * page's own media query (width > height and height <= 600).
+ */
+export async function layoutProbe(phones, blocks) {
+  const out = [];
+  for (const ph of phones) {
+    const page = await newOldPage({ seed: 1, now: 0, store: null });
+    const { run, get, $, ctx } = page;
+    const juego = read('juego.js');
+    run(cutBlock(juego, /^const LAND=/), 'LAND');
+    run(cutBlock(juego, /^function fit\(/), 'fit');
+    run('function finFit(){}', 'finFit');
+    const land = ph.w > ph.h && ph.h <= 600;
+    ctx.matchMedia = () => ({ matches: land });
+    ctx.devicePixelRatio = ph.dpr;
+    const padT = land ? ph.top : 0; // #app padding-top: only on its side
+    ctx.getComputedStyle = (el) => ({
+      paddingLeft: (el.name === '#fin' ? ph.padFin ?? 16 : ph.left) + 'px',
+      paddingRight: (el.name === '#fin' ? ph.padFin ?? 16 : ph.right) + 'px',
+      paddingTop: padT + 'px',
+      paddingBottom: ph.bottom + 'px',
+    });
+    const app = $('#app');
+    app.clientWidth = ph.w;
+    app.clientHeight = ph.h;
+    const main = $('#main');
+    main.clientWidth = ph.w - ph.left - ph.right;
+    main.clientHeight = ph.h - ph.bottom - (56 + ph.top); // #top is 56 + the safe area, #app has the bottom padding
+    for (const b of blocks) {
+      run(`mkOpts(${b.cols * b.rows}, () => {})`, 'mkOpts');
+      run(`cualSize(${b.cols}, ${b.rows}, ${b.pw}, ${b.ph})`, 'cualSize');
+      run('fit()', 'fit()');
+      out.push({
+        phone: ph,
+        block: b,
+        land,
+        gap: get('GAP'),
+        width: $('#cv').style.width,
+        height: $('#cv').style.height,
+        marginBottom: $('#stage').style.marginBottom ?? '',
+        rects: get('OPT').map((o) => o.style.cssText),
+      });
+    }
+    // the end screen's grid
+    const fin = $('#fin');
+    fin.clientWidth = ph.w - ph.left - ph.right;
+    const props = {};
+    fin.style = { setProperty: (k, v) => (props[k] = v) };
+    fin.querySelectorAll = (sel) => (sel === '.gw' ? [{}] : []);
+    run('cualGrid()', 'cualGrid');
+    out.push({ phone: ph, grid: props });
+  }
+  return out;
+}
