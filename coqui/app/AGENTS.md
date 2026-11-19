@@ -87,22 +87,13 @@ How the app moves, as the old pages do:
 Before the `#`, read once at the start, never kept: `?perf=1` (the map's bake and frame times and a story's scene bake in
 corner chips: `MapModule(showPerf:)`, `StoryModule(showPerf:)`), `?callstub=1` with `stub=` and `clock=` (the call is
 coqui_platform's `CallStub`), `?mic=stub:<r1>|<r2>|...` and `?mic=off` (the scripted recogniser,
-docs/hablar/01-decisiones.md, "Machine tests"). `?txt=` is not passed: `StoryModule` takes no TXT setting.
+docs/hablar/01-decisiones.md, "Machine tests"), and `?txt=con|tras|no` (juego.js's TXT: when a story's words show, as the
+line is spoken, right after it, never; anything else is `con`; `StoryModule(txt:)`).
 
 ## The cache rules (the old pages')
 
 `audio/ready.json`, `audio/marcas.json`, `datos/*.json` and `cuentos/*.json`: `cache: "no-store"`. `libros/*.json` and the
 books' pictures: `?v=39`. Clips: `audio/<id>.mp3?v=<ready.json's v>` (the catalog's url, from the content base).
-
-## Waiting on other packages
-
-- Biblioteca (order 22): at its merge, in `lib/src/modules.dart`, `libraryModule` returns
-  `LibraryModule(imageUrl: imageUrl)` instead of `const LibraryModule()`. Palabras (order 21): no change
-  (`WordsModule()`).
-- The voice test: feature_speaking exports only `SpeakingModule`, so the shell cannot make the `VoiceTestContent` its
-  `voiceTest:` takes, and `#/prueba-voz` opens the map. Once feature_speaking exports `VoiceTestContent`, `VoiceLine`,
-  `VoiceTarget` and `VoiceTestLabels`, `speakingModule` in `lib/src/modules.dart` builds them from `VoiceTestData` (the
-  file `historia/datos/prueba-voz.json`, already read at the start).
 
 ## Run and test it alone
 
@@ -117,11 +108,12 @@ The tests run the real modules, the real `PalabrasStore`, the real `ContentCatal
 from disk and the real `ScenePictures`; fakes only for sound, speech, the call, the clock, haptics and `AppInfo`
 (`test/support/harness.dart`).
 
-The build the live site gets, and the browser check of it:
+The build the live site gets, and the browser checks of it:
 
 ```
-bash ../tool/build_sitio.sh <dir>
+COQUI_BUILD=$(cat ../BUILD) bash ../tool/build_sitio.sh <dir>
 node ../tool/check_app.mjs <dir> --out=<shots dir>   # serves <dir> at /field-notes/app/ and the repo's historia/ beside it
+node ../tool/check_sitio.mjs <dir>                   # the same serving: the app starts on the map, reads historia/, Yo shows "build <BUILD>"
 ```
 
 ## Lines that apply
