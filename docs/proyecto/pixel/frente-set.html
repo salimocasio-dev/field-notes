@@ -38,11 +38,12 @@ window.PP_SCENE = { w: 240, h: 216, s: 26, originX: +(Q.get('ox') || -2), origin
 const HX0 = -2.3, HX1 = 2.3, HY0 = -1.4, HY1 = 0, HH = 2.9;          // the house walls; the front faces +y
 const EAVE = .22, RISE = .8;                                          // the roof: overhang, ridge above the eaves
 const FLOOR = .16;                                                    // the porch and the floor inside
-const DOOR0 = .6, DOOR1 = 1.85, DH = 2.55;                            // the doorway, from the porch up
-const WIN0 = -1.62, WIN1 = -.52, WZ0 = 1.15, WZ1 = 2.4;               // the window opening
+const DOOR0 = .72, DOOR1 = 1.97, DH = 2.55;                           // the doorway, from the porch up
+const WIN0 = -1.62, WIN1 = -.2, WZ0 = 1.15, WZ1 = 2.4;                // the window opening
 const PORCH = 1.0, STEP = 1.4;                                        // the porch slab's depth, the step's front
 const PALM = [-1.33, 3.51], SPALM = [6.15, 3.32], BIRD = [3.05, 5.66];  // the big palm, the small palm, the birdhouse
 const PATH_U = ((DOOR0 + DOOR1) / 2 - STEP) / R2, PATH_V = ((DOOR0 + DOOR1) / 2 + STEP) / R2;   // where the path leaves the step
+const BUSH1 = [3.37, -2.28], BUSH2 = [1.47, 6.8];                     // the two bushes
 const PALM_H = 3.6, PALM_LEAN = .3, PALM_SIZE = .62, SPALM_H = 2.1, SPALM_LEAN = .25, SPALM_SIZE = .58;
 const palmTop = (p, h, lean) => [p[0] + lean * .7, p[1] - lean * .5, h];   // where swayPalm puts the crown
 const HZ = 46;                                                        // the horizon, in screen rows: sky above
@@ -87,7 +88,7 @@ function frontGround(x, y, ix, iy, i) {
 function house() {
   const holeD = [DOOR0, DOOR1, FLOOR, FLOOR + DH], holeW = [WIN0, WIN1, WZ0, WZ1];
   part('casa', () => {
-    blockHoles(HX0, HY0, 0, HX1, HY1, HH, TEAL, [holeD, holeW]);
+    blockHoles(HX0, HY0, 0, HX1, HY1, HH, TEAL, [holeD, holeW], .21);   // wooden siding, like the old picture's
     // a darker band at the foot of the walls, and the shade under the eaves
     onWall('y', HY1, HX0, HX1, 0, .3, rampOf(TEAL)[1]); onWall('x', HX1, HY0, HY1, 0, .3, rampOf(TEAL)[0]);
     onWall('y', HY1, HX0, HX1, HH - .16, HH, rampOf(TEAL)[1]); onWall('x', HX1, HY0, HY1, HH - .16, HH, rampOf(TEAL)[0]);
@@ -134,9 +135,9 @@ function doorway() {
     for (let a = 0; a <= .1; a += ST * .4) for (let z = 0; z <= .1; z += ST * .4) plot(DOOR0 + .14 + a, HY1 - .03, z0 + 1.15 + z, rgb(250, 210, 80));
     // the lights on inside: a thin line of light round the shut door
     if (on) {
-      const glow = rgb(255, 228, 140);
-      for (let z = z0; z <= z1; z += ST * .4) { plotGlow(DOOR0 + .02, HY1 - .02, z, glow); plotGlow(DOOR1 - .02, HY1 - .02, z, glow); }
-      for (let a = DOOR0; a <= DOOR1; a += ST * .4) { plotGlow(a, HY1 - .02, z1 - .02, glow); plotGlow(a, HY1 - .02, z0 + .03, rgb(255, 240, 170)); plotGlow(a, HY1 - .02, z0 + .06, rgb(255, 240, 170)); }
+      const glow = rgb(255, 222, 120), hot = rgb(255, 244, 180);
+      for (let z = z0; z <= z1; z += ST * .4) for (let d = 0; d <= .07; d += ST * .3) { plotGlow(DOOR0 + d, HY1 + .015, z, glow); plotGlow(DOOR1 - d, HY1 + .015, z, glow); }
+      for (let a = DOOR0; a <= DOOR1; a += ST * .4) { for (let d = 0; d <= .07; d += ST * .3) plotGlow(a, HY1 + .015, z1 - d, glow); for (let d = 0; d <= .1; d += ST * .3) plotGlow(a, HY1 + .015, z0 + d, hot); }
     }
   } else {
     const ang = SET.door === 'half' ? Math.PI + .36 : Math.PI + 1.45;   // the sheet's door gap (clip puerta.hueco) is worked out from the half angle   // from the hinge, back along -x and into the room
@@ -173,7 +174,7 @@ function windowAndShutters() {
     for (const a of [WIN0 + half - .1, WIN0 + half + .04]) for (let p = 0; p <= .06; p += ST * .3) for (let q = 0; q <= .06; q += ST * .3) plot(a + p, HY1 - .02, (WZ0 + WZ1) / 2 + q, rgb(60, 44, 34));
   } else {
     // open: each leaf (a little narrower than half the window) flat on the wall beside it
-    const lw = .5;
+    const lw = .45;
     for (let a = 0; a <= lw; a += ST * .4) for (let z = WZ0; z <= WZ1; z += ST * .4) {
       plot(WIN0 - .14 - lw + a, HY1 + .05, z, slats(a, z, lw, false));
       plot(WIN1 + .14 + a, HY1 + .05, z, slats(a, z, lw, false));
@@ -187,6 +188,8 @@ function windowAndShutters() {
 /* ---------- the garden ---------- */
 function garden() {
   part('palma', () => swayPalm(PALM[0], PALM[1], PALM_H, PALM_LEAN, 2, PALM_SIZE, LIGHT));
+  // two bushes, like the old garden's, where no touch box reaches (right of the house; the front left corner)
+  part('arbusto', () => { bush(BUSH1[0], BUSH1[1], .5, lit([96, 150, 70], LIGHT)); bush(BUSH2[0], BUSH2[1], .45, lit(C.leaf, LIGHT)); });
   if (SET.hide) {
     const sh = side => SET.rustle === side || SET.rustle === 'todo' ? SET.side / (S * R2) : 0;   // one pixel to the side on screen
     part('palma_pequena', () => swayPalm(SPALM[0] + sh('palma'), SPALM[1] - sh('palma'), SPALM_H, SPALM_LEAN, 5, SPALM_SIZE, LIGHT));
@@ -218,13 +221,16 @@ function buildSet() {
 }
 
 /* ---------- where things are: the touch boxes (world), the spots ---------- */
+// a palm's touch box: the crown (left, right of the crown's middle; above it) down to the foot of the trunk, on screen
+function crownBox(base, top, left, right, up) { const T = project(...top), B = project(base[0], base[1], 0); return boxAround(T.sx - left, T.sy - up, T.sx + right, B.sy + 2); }
 const THINGS = {
   casa: [HX0 - EAVE, HY0 - EAVE, 0, HX1 + EAVE, HY1 + EAVE, HH + RISE],
   puerta: [DOOR0 - .14, HY1 - .06, 0, DOOR1 + .14, HY1 + .06, FLOOR + DH + .14],
-  ventana: [WIN0 - .2, HY1, WZ0 - .45, WIN1 + .2, HY1 + .32, WZ1 + .12],
-  palma: [PALM[0] - 1.1, PALM[1] - 1.5, 0, PALM[0] + 1.6, PALM[1] + .9, 4.75],
-  palma_pequena: [SPALM[0] - .9, SPALM[1] - 1, 0, SPALM[0] + 1.1, SPALM[1] + .8, 2.8],
-  casa_pequena: [BIRD[0] - .4, BIRD[1] - .38, 0, BIRD[0] + .4, BIRD[1] + .38, 2.1],
+  ventana: [WIN0 - .66, HY1, WZ0 - .45, WIN1 + .66, HY1 + .32, WZ1 + .12],   // with the shutters, open
+  // the palms and the birdhouse: boxes fitted to what is drawn (their fronds would give boxes over the house)
+  palma: crownBox(PALM, palmTop(PALM, PALM_H, PALM_LEAN), 26, 31, 6),
+  palma_pequena: crownBox(SPALM, palmTop(SPALM, SPALM_H, SPALM_LEAN), 24, 24, 5),
+  casa_pequena: (() => { const B = project(BIRD[0], BIRD[1], 0), T = project(BIRD[0], BIRD[1], 2.1); return boxAround(B.sx - 16, T.sy - 4, B.sx + 15, B.sy + 2); })(),
 };
 window.SPOTS = {};                                                    // filled by the sheet's maker; the reference has no characters
 window.FRENTE = { SET, HX0, HX1, HY0, HY1, HH, EAVE, RISE, FLOOR, DOOR0, DOOR1, DH, WIN0, WIN1, WZ0, WZ1, PORCH, STEP, PATH_U, PATH_V, PALM, SPALM, BIRD, HZ, SUN, THINGS,

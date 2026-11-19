@@ -60,24 +60,25 @@ function skyHills(base, far, near, ix, iy) {
 
 /* ---------- walls with openings ---------- */
 // the face of a wall that faces +y (lit), at y = at, from a0 to a1 along x, z0 to z1, with rectangular holes [a0, a1, z0, z1]
-function wallY(at, a0, a1, z0, z1, c, holes = []) {
+// boards: the spacing of wooden siding (a darker line under each board), 0 for a plain wall
+function wallY(at, a0, a1, z0, z1, c, holes = [], boards = 0) {
   for (let a = a0; a <= a1; a += ST) for (let z = z0; z <= z1; z += ST) {
     if (holes.some(h => a > h[0] && a < h[1] && z > h[2] && z < h[3])) continue;
-    plot(a, at, z, shade(c, 2.4, a, z));
+    plot(a, at, z, shade(c, boards && z % boards < boards * .17 ? 1.5 : 2.4, a, z));
   }
 }
 // a solid block whose +y face has holes: block() with wallY for the lit face
-function blockHoles(x0, y0, z0, x1, y1, z1, c, holes) {
+function blockHoles(x0, y0, z0, x1, y1, z1, c, holes, boards = 0) {
   for (let a = x0; a <= x1; a += ST) for (let b = y0; b <= y1; b += ST) plot(a, b, z1, shade(c, 3.4, a, b));
-  wallY(y1, x0, x1, z0, z1, c, holes);
-  for (let b = y0; b <= y1; b += ST) for (let z = z0; z <= z1; z += ST) plot(x1, b, z, shade(c, 1.3, b, z));
+  wallY(y1, x0, x1, z0, z1, c, holes, boards);
+  for (let b = y0; b <= y1; b += ST) for (let z = z0; z <= z1; z += ST) plot(x1, b, z, shade(c, boards && z % boards < boards * .17 ? .5 : 1.3, b, z));
 }
-// the reveal of a hole in a +y wall: the side and top faces you see through it, `deep` into the wall
+// the reveal of a hole in a +y wall: the faces of the wall's thickness you see through it from above, `deep` into the wall
+// (the left side, which faces +x, and the sill; the lintel's underside cannot be seen from above)
 function reveal(at, a0, a1, z0, z1, deep, c) {
   for (let t = 0; t <= deep; t += ST * .5) {
-    for (let z = z0; z <= z1; z += ST * .5) plot(a0, at - t, z, rampOf(c)[1]);   // the left side faces +x: in shade
-    for (let a = a0; a <= a1; a += ST * .5) plot(a, at - t, z1, rampOf(c)[0]);     // the lintel's underside, darkest
-    for (let a = a0; a <= a1; a += ST * .5) plot(a, at - t, z0, rampOf(c)[3]);     // the sill, lit from above
+    for (let z = z0; z <= z1; z += ST * .5) plot(a0, at - t, z, rampOf(c)[1]);
+    for (let a = a0; a <= a1; a += ST * .5) plot(a, at - t, z0, rampOf(c)[3]);
   }
 }
 // a flat plane parallel to a +y wall (y = at), painted by fn(a, z) -> colour or 0; glow: the pixels give light
@@ -111,17 +112,25 @@ function joinSlabs() {
   slabTops.length = 0;
 }
 
-/* ---------- a hip roof: four slopes, the ridge along x ---------- */
+/* ---------- a hip roof: four slopes, the ridge along x, rows of tiles ---------- */
 // eaves at height z over [x0, x1] x [y0, y1]; rise: the ridge above the eaves. c: tiles; edge: the fascia
 function hipRoof(x0, y0, x1, y1, z, rise, c, edge) {
   const xc = (x0 + x1) / 2, yc = (y0 + y1) / 2, hy = (y1 - y0) / 2, hx = (x1 - x0) / 2;
-  const R = rampOf(c);
+  const R = rampOf(c), ROW = .19, TILE = .3;
   for (let x = x0; x <= x1; x += ST * .7) for (let y = y0; y <= y1; y += ST * .7) {
     const fy = (hy - Math.abs(y - yc)) / hy, fx = (hx - Math.abs(x - xc)) / hy, f = Math.min(fy, fx, 1);
-    const front = fy <= fx, along = front ? (hy - Math.abs(y - yc)) : (hx - Math.abs(x - xc));   // distance up the slope
-    const row = Math.floor(along * 5.5) % 2, seam = (Math.floor((front ? x : y) * 3.2 + row * .5) % 2 === 0) && hash(x * 7 | 0, y * 7 | 0) > .55;
-    const lit = front ? (y > yc ? 3 : 2) : (x > xc ? 1 : 2);
-    plot(x, y, z + rise * f, R[clamp(lit - (row ? 0 : 1) + (seam ? -1 : 0) + (hash(x * 9 | 0, y * 9 | 0) > .9 ? 1 : 0), 0, 4)]);
+    const front = fy <= fx, along = (front ? fy : fx) * hy;                     // how far up the slope from the eave
+    const r = Math.floor(along / ROW), t = (along % ROW) / ROW;
+    const run = front ? x : y, s = ((run / TILE + (r % 2) * .5) % 1 + 1) % 1;   // along the eave, the tiles staggered row by row
+    const tile = Math.floor(run / TILE + (r % 2) * .5);
+    let lit = front ? (y > yc ? 3 : 2) : (x > xc ? 1 : 2);
+    if (t < .22) lit -= 1;                                                    // the shadow under each row
+    else if (s < .1) lit -= 1;                                                // the gap between two tiles
+    else if (t > .8) lit += front ? 1 : 0;                                    // the lit lip of a tile
+    const h = hash(tile * 3 + r, r * 7 + (front ? 0 : 50));
+    if (h > .9) lit += 1; else if (h < .07) lit -= 1;
+    if (Math.abs(fy - fx) * hy < .045 || f > .985) lit = front ? 4 : 3;       // the hips and the ridge: capped, light
+    plot(x, y, z + rise * f, R[clamp(lit, 0, 4)]);
   }
   // the fascia: a thin board round the eaves, in front of the tiles' edge
   const E = rampOf(edge);
@@ -180,6 +189,16 @@ function birdhouse(x, y, L = null) {
   for (let b = -.36; b <= .36; b += ST * .5) for (let h = 0; h <= .3 * (1 - Math.abs(b) / .38); h += ST * .5) plot(x + .28, y + b, 1.78 + h, rampOf(box)[1]);
   shadowBox(x - .28, y - .24, x + .28, y + .24, 2, .3);
   for (let z = .2; z < 1.25; z += .3) castShadow(x, y, z, .1);
+}
+
+/* ---------- a touch box for something round (a palm's crown, a post) ---------- */
+// the world box (x0, y0, z0, x1, y1, z1), square on the ground, whose 8 projected corners have the screen bounding box
+// [sx0, sy0] - [sx1, sy1]: for a thing whose 3D extent would give far too big a box (a palm's fronds)
+function boxAround(sx0, sy0, sx1, sy1) {
+  const d = (sx1 - sx0) / S, uc = ((sx0 + sx1) / 2 - OX) / S;           // a box with x and y extents e projects 2e/R2 wide in u and in v
+  const vmax = (sy1 - OY) / (S * SIN), vmin = vmax - d, z1 = (vmin * SIN - (sy0 - OY) / S) / COS;
+  const xc = (uc + (vmin + vmax) / 2) / R2, yc = ((vmin + vmax) / 2 - uc) / R2, e = d * R2 / 4;
+  return [xc - e, yc - e, 0, xc + e, yc + e, z1];
 }
 
 /* ---------- for the checks: which object drew each pixel ---------- */
