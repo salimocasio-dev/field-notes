@@ -1,0 +1,75 @@
+# Puts the Flutter web app on the live site.
+#
+# GitHub Pages keeps serving the repo root of main. This workflow builds the app with
+# coqui/tool/build_sitio.sh and commits the build to app/ at the repo root of main, so the app is
+# at https://salimocasio-dev.github.io/field-notes/app/ . Nothing else publishes it.
+#
+# It starts when a push to main changes coqui/BUILD (a one-line file: the build number), or by hand
+# from the Actions tab. To put a build live, raise the number in coqui/BUILD and push main.
+#
+# On any ref other than main (and on a pull request) it builds and keeps the result as an artifact,
+# and does not commit. The commit to main is made with GitHub's own token, which does not start
+# other workflows (coqui.yml, voz.yml, this one); and app/ matches none of their path filters.
+name: Coquí sitio
+on:
+  push:
+    branches: [main]
+    paths: ["coqui/BUILD"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: coqui-sitio
+jobs:
+  sitio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the pinned Flutter version and the build number
+        id: pin
+        run: |
+          echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
+          n="$(tr -d '[:space:]' < coqui/BUILD)"
+          [[ "$n" =~ ^[0-9]+$ ]] || { echo "coqui/BUILD must hold one number, not '$n'" >&2; exit 1; }
+          echo "build=$n" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.flutter }}
+          channel: stable
+          cache: true
+      - name: Build the site
+        env:
+          COQUI_BUILD: ${{ steps.pin.outputs.build }}
+        run: bash coqui/tool/build_sitio.sh "$RUNNER_TEMP/sitio"
+      - name: Keep the build as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coqui-sitio
+          path: ${{ runner.temp }}/sitio
+          if-no-files-found: error
+          retention-days: 14
+      - name: Commit the build to app/ on main
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          BUILD: ${{ steps.pin.outputs.build }}
+        run: |
+          set -euo pipefail
+          git config user.name "coqui-sitio"
+          git config user.email "coqui-sitio@users.noreply.github.com"
+          # Replace app/ with the build: files the build no longer has are removed.
+          rm -rf app
+          mkdir app
+          cp -a "$RUNNER_TEMP/sitio/." app/
+          git add -A app
+          git diff --cached --quiet && { echo "nothing new"; exit 0; }
+          git commit -m "app: build $BUILD"
+          # Main may have moved while this ran (the audio job commits to it): put this commit on top
+          # of the newest main, and try again if main moves once more before the push.
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            echo "push refused (attempt $attempt of 5): main moved again"
+            sleep $((attempt * 5))
+          done
+          echo "could not push after 5 attempts" >&2
+          exit 1

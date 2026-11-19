@@ -1,0 +1,77 @@
+# The Android build of the Flutter app in coqui/: a debug apk, kept as an artifact, then installed
+# on an emulator twice in a row (the second time over the first, `adb install -r`) and started once.
+# The apk is signed with the key in coqui/app/android/debug.keystore (the standard debug key, not a
+# secret), so every build installs over the last. The adb steps are in coqui/tool/check_apk.sh.
+# The Flutter version is the one in coqui/.flutter-version.
+name: Coquí Android
+on:
+  push:
+    branches: [main]
+    paths: ["coqui/**"]
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the pinned Flutter version
+        id: pin
+        run: echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.flutter }}
+          channel: stable
+          cache: true
+      - name: flutter pub get
+        run: flutter pub get
+        working-directory: coqui
+      - name: Build the debug apk
+        run: flutter build apk --debug
+        working-directory: coqui/app
+      - name: The apk is signed with the key in the repo
+        run: bash coqui/tool/check_apk.sh key coqui/app/build/app/outputs/flutter-apk/app-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coqui-debug-apk
+          path: coqui/app/build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  emulator:
+    needs: apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: coqui-debug-apk
+          path: apk
+      # The rule from the android-emulator-runner README: the emulator needs KVM.
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Install twice, start once
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: bash coqui/tool/check_apk.sh emulator apk/app-debug.apk emulator-screenshot.png
+      - name: Keep the screenshot of the running app
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coqui-emulator-screenshot
+          path: emulator-screenshot.png
+          if-no-files-found: ignore
+          retention-days: 14

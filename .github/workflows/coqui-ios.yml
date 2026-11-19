@@ -1,0 +1,36 @@
+# The iOS build of the Flutter app in coqui/, compiled once a week and by hand, with no signing:
+# it proves the code builds for iOS. It makes nothing to install (that needs an Apple developer
+# account).
+#
+# Cost: standard GitHub-hosted runners, macOS included, are free in public repositories. GitHub's
+# billing page ("GitHub Actions billing") says: "The use of standard GitHub-hosted runners is free:
+# In public repositories". `macos-latest` is a standard runner. Larger runners are billed, so never
+# change this to a "-large" or "-xlarge" label.
+# The Flutter version is the one in coqui/.flutter-version.
+name: Coquí iOS
+on:
+  schedule:
+    - cron: "23 5 * * 1" # Mondays, 05:23 UTC
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the pinned Flutter version
+        id: pin
+        run: echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.flutter }}
+          channel: stable
+          cache: true
+      - name: flutter pub get
+        run: flutter pub get
+        working-directory: coqui
+      - name: Build for iOS, no signing
+        run: flutter build ios --no-codesign
+        working-directory: coqui/app
