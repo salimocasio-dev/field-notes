@@ -41,7 +41,9 @@ Future<String?> compareWithScene(
   Directory trazas,
   Scene Function(Rng rng) sceneFor,
 ) async {
-  final committed = jsonDecode(File('${trazas.path}/$story/$plan.json').readAsStringSync()) as Map<String, dynamic>;
+  final committed = jsonDecode(
+    File('${trazas.path}/$story/$plan.json').readAsStringSync(),
+  ) as Map<String, dynamic>;
   final file = await course.story(story);
   final trace = await play(
     story: file,

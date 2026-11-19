@@ -29,7 +29,9 @@ class TimedClips extends FakeClipPlayer {
     final ok = await super.play(clipId, limit: limit);
     if (len != null) {
       final cap = limit?.inMilliseconds;
-      await Future<void>.delayed(Duration(milliseconds: cap != null && cap < len ? cap : len));
+      await Future<void>.delayed(
+        Duration(milliseconds: cap != null && cap < len ? cap : len),
+      );
     }
     return ok;
   }
@@ -72,7 +74,11 @@ class Screen {
   }
 
   /// Goes on until [ok] is true; fails when [maxMs] pass first.
-  Future<void> until(bool Function() ok, {int maxMs = 180000, String what = 'the condition'}) async {
+  Future<void> until(
+    bool Function() ok, {
+    int maxMs = 180000,
+    String what = 'the condition',
+  }) async {
     var t = 0;
     while (!ok()) {
       if (t >= maxMs) fail('$what never came (after $maxMs ms of the story)');
@@ -83,17 +89,30 @@ class Screen {
 
   /// Goes on, answering each question rightly 700 ms after it is asked (and touching nothing while a turn is going on),
   /// until [ok] is true.
-  Future<void> answerUntil(bool Function() ok, {int maxMs = 300000, String what = 'the condition'}) async {
+  Future<void> answerUntil(
+    bool Function() ok, {
+    int maxMs = 300000,
+    String what = 'the condition',
+  }) async {
     var t = 0;
     while (!ok()) {
       if (t >= maxMs) fail('$what never came (after $maxMs ms of the story)');
       final pn = runner.pendingNow;
-      if (pn != null && pn.asked && pn.tEnd != null && !pn.busy && runner.speaking == 0 && runner.HAB.est == '') {
+      if (pn != null &&
+          pn.asked &&
+          pn.tEnd != null &&
+          !pn.busy &&
+          runner.speaking == 0 &&
+          runner.HAB.est == '') {
         await advance(700);
         t += 700;
         if (ok()) return;
         if (identical(runner.pendingNow, pn) && !pn.done) {
-          runner.tapThing(pn.kind == 'decide' && pn.pick != null ? pn.pick! : pn.live.first, 100, 100);
+          runner.tapThing(
+            pn.kind == 'decide' && pn.pick != null ? pn.pick! : pn.live.first,
+            100,
+            100,
+          );
           await tester.pump();
         }
       } else {
@@ -109,8 +128,11 @@ class Screen {
     final z = runner.cam[2] == 98 ? 2 : 1;
     final tl = tester.getTopLeft(find.byType(PixelView));
     final size = tester.getSize(find.byType(PixelView));
-    final px = ((b[0] + b[2] / 2) - runner.cam[0]) * z, py = ((b[1] + b[3] / 2) - runner.cam[1]) * z;
-    await tester.tapAt(tl + Offset(px / 196 * size.width, py / 216 * size.height));
+    final px = ((b[0] + b[2] / 2) - runner.cam[0]) * z,
+        py = ((b[1] + b[3] / 2) - runner.cam[1]) * z;
+    await tester.tapAt(
+      tl + Offset(px / 196 * size.width, py / 216 * size.height),
+    );
     await tester.pump();
   }
 }
@@ -137,7 +159,9 @@ Future<Screen> openScreen(
   await tester.runAsync(c.load);
   final stories = <Map<String, dynamic>>[];
   for (final s in ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro']) {
-    stories.add(await tester.runAsync(() => c.story(s)) as Map<String, dynamic>);
+    stories.add(
+      await tester.runAsync(() => c.story(s)) as Map<String, dynamic>,
+    );
   }
   final progress = FakeProgressStore(clock: clock);
   progress.setSetting('habla', habla);
@@ -167,7 +191,9 @@ Future<Screen> openScreen(
     ),
   );
   for (var i = 0; i < 10; i++) {
-    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 5)));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 5)),
+    );
     await tester.pump();
   }
   screen.story = stories.firstWhere((s) => s['id'] == id || true);

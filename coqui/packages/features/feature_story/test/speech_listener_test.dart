@@ -33,15 +33,24 @@ class Scripted implements SpeechListener {
   Scripted({this.isAvailable = true});
 
   bool isAvailable;
-  final List<({String locale, Duration limit, int maxAlternatives})> listens = [];
+  final List<({String locale, Duration limit, int maxAlternatives})> listens =
+      [];
   final List<ScriptedTurn> turns = [];
 
   @override
   Future<bool> available() async => isAvailable;
 
   @override
-  SpeechTurn listen({required String locale, required Duration limit, int maxAlternatives = 5}) {
-    listens.add((locale: locale, limit: limit, maxAlternatives: maxAlternatives));
+  SpeechTurn listen({
+    required String locale,
+    required Duration limit,
+    int maxAlternatives = 5,
+  }) {
+    listens.add((
+      locale: locale,
+      limit: limit,
+      maxAlternatives: maxAlternatives,
+    ));
     final t = ScriptedTurn();
     turns.add(t);
     return t;
@@ -56,7 +65,12 @@ final things = [
 void main() {
   Future<(Rig, Scripted)> start({bool available = true}) async {
     final sp = Scripted(isAvailable: available);
-    final r = await Rig.make(turnsStory(), scene: StandInScene(things: things), speech: sp, allOpen: true);
+    final r = await Rig.make(
+      turnsStory(),
+      scene: StandInScene(things: things),
+      speech: sp,
+      allOpen: true,
+    );
     await r.start();
     return (r, sp);
   }
@@ -75,7 +89,11 @@ void main() {
     await r.until(() => r.runner.HAB.est == 'ready', what: 'the mic');
     expect(sp.listens, isEmpty);
     r.runner.tapMic();
-    expect(sp.listens.single, (locale: 'es-US', limit: const Duration(seconds: 6), maxAlternatives: 5));
+    expect(sp.listens.single, (
+      locale: 'es-US',
+      limit: const Duration(seconds: 6),
+      maxAlternatives: 5,
+    ));
     expect(r.runner.HAB.est, 'listening');
     expect(r.runner.speaking, 0); // nothing plays while he is listened to
   });
@@ -87,40 +105,67 @@ void main() {
     sp.turns.single.end.complete();
     await r.drain();
     expect(r.runner.HAB.est, 'processing');
-    sp.turns.single.r.complete(SpeechResult(alternatives: ['ese', 'si'], msToSound: 340));
+    sp.turns.single.r.complete(
+      SpeechResult(alternatives: ['ese', 'si'], msToSound: 340),
+    );
     await r.until(() => r.runner.HAB.est == 'ok');
     expect(r.progress.answers.single, (w: 'sí', ok: true, ms: 340));
-    expect(r.runner.view.bubbleText, 'ese'); // the best alternative is what shows
+    expect(
+      r.runner.view.bubbleText,
+      'ese',
+    ); // the best alternative is what shows
   });
 
-  test('no sound at all: msToSound is null and the time written is 0', () async {
-    final (r, sp) = await start();
-    await r.until(() => r.runner.HAB.est == 'ready');
-    r.runner.tapMic();
-    sp.turns.single.r.complete(SpeechResult(alternatives: ['si']));
-    await r.until(() => r.runner.HAB.est == 'ok');
-    expect(r.progress.answers.single.ms, 0);
-  });
+  test(
+    'no sound at all: msToSound is null and the time written is 0',
+    () async {
+      final (r, sp) = await start();
+      await r.until(() => r.runner.HAB.est == 'ready');
+      r.runner.tapMic();
+      sp.turns.single.r.complete(SpeechResult(alternatives: ['si']));
+      await r.until(() => r.runner.HAB.est == 'ok');
+      expect(r.progress.answers.single.ms, 0);
+    },
+  );
 
   test('no-speech and aborted are misses; the mic is ready again, Ahora tú. is said again', () async {
     final (r, sp) = await start();
     await r.until(() => r.runner.HAB.est == 'ready');
     r.runner.tapMic();
     sp.turns.single.r.complete(SpeechResult(error: 'no-speech'));
-    await r.until(() => r.runner.HAB.est == 'ready' && sp.turns.length == 1 && r.clips.contains('ahora_tu') && r.runner.habLog.single['intentos'] == 1, what: 'ready again');
+    await r.until(
+      () =>
+          r.runner.HAB.est == 'ready' &&
+          sp.turns.length == 1 &&
+          r.clips.contains('ahora_tu') &&
+          r.runner.habLog.single['intentos'] == 1,
+      what: 'ready again',
+    );
     r.runner.tapMic();
     sp.turns.last.r.complete(SpeechResult(error: 'aborted'));
-    await r.until(() => r.runner.habLog.single['est'] == 'fallo', what: 'two misses');
+    await r.until(
+      () => r.runner.habLog.single['est'] == 'fallo',
+      what: 'two misses',
+    );
     expect(r.progress.answers.single.ok, isFalse);
   });
 
   test('not-allowed, network, audio-capture... say speaking cannot work here: the line plays as today, no more turns', () async {
-    for (final code in ['not-allowed', 'service-not-allowed', 'network', 'audio-capture', 'language-not-supported']) {
+    for (final code in [
+      'not-allowed',
+      'service-not-allowed',
+      'network',
+      'audio-capture',
+      'language-not-supported',
+    ]) {
       final (r, sp) = await start();
       await r.until(() => r.runner.HAB.est == 'ready');
       r.runner.tapMic();
       sp.turns.single.r.complete(SpeechResult(error: code));
-      await r.until(() => r.runner.habLog.single['est'] == 'nodisp', what: code);
+      await r.until(
+        () => r.runner.habLog.single['est'] == 'nodisp',
+        what: code,
+      );
       expect(r.progress.mouth, isEmpty);
       expect(r.runner.session.unavailable, isTrue);
       expect(r.runner.habDisp(), isFalse);
@@ -133,18 +178,35 @@ void main() {
     final before = r.player.limits.length;
     expect(r.player.limits.every((l) => l == null), isTrue);
     r.runner.tapMic();
-    sp.turns.single.r.complete(SpeechResult(alternatives: ['si'], msToSound: 100));
-    await r.until(() => r.player.limits.length > before + 1, what: 'a clip after the turn');
-    expect(r.player.limits.last, const Duration(milliseconds: 2000)); // the test course's clips are 1000 ms long
+    sp.turns.single.r.complete(
+      SpeechResult(alternatives: ['si'], msToSound: 100),
+    );
+    await r.until(
+      () => r.player.limits.length > before + 1,
+      what: 'a clip after the turn',
+    );
+    expect(
+      r.player.limits.last,
+      const Duration(milliseconds: 2000),
+    ); // the test course's clips are 1000 ms long
   });
 
   test('a touch on an elige while the mic listens takes the recogniser back (cancel)', () async {
     final sp = Scripted();
     final r = await Rig.make(
-      turnsStory(beats: [
-        {'wait': 100},
-        {'elige': 'x', 'options': ['si', 'no'], 'line': 'bizcocho_q', 'said': {'si': 'cq_si_gracias', 'no': 'cq_no_gracias'}, 'si': ['toma'], 'no': ['abuela_no']},
-      ]),
+      turnsStory(
+        beats: [
+          {'wait': 100},
+          {
+            'elige': 'x',
+            'options': ['si', 'no'],
+            'line': 'bizcocho_q',
+            'said': {'si': 'cq_si_gracias', 'no': 'cq_no_gracias'},
+            'si': ['toma'],
+            'no': ['abuela_no'],
+          },
+        ],
+      ),
       scene: StandInScene(things: things),
       speech: sp,
       allOpen: true,

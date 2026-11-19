@@ -18,7 +18,10 @@ void main() {
   final root = findRoot();
   final trazas = Directory('${root.path}/coqui/ref/trazas');
   final acts = Directory('test/fixtures/acts');
-  final runs = (jsonDecode(File('${trazas.path}/runs.json').readAsStringSync())['runs'] as List).cast<Map<String, dynamic>>();
+  final runs =
+      (jsonDecode(File('${trazas.path}/runs.json').readAsStringSync())['runs']
+              as List)
+          .cast<Map<String, dynamic>>();
   final stories = {for (final r in runs) r['story'] as String}.toList();
   late DiskCourse course;
 
@@ -31,7 +34,11 @@ void main() {
     for (final s in stories) {
       test('$s: the three plans, whole', () async {
         for (final plan in ['right', 'wrong', 'alternate']) {
-          expect(await compareRun(course, s, plan, acts, trazas), isNull, reason: '$s $plan');
+          expect(
+            await compareRun(course, s, plan, acts, trazas),
+            isNull,
+            reason: '$s $plan',
+          );
         }
       });
     }
@@ -47,10 +54,22 @@ void main() {
         '$s: the three plans, whole',
         () async {
           for (final plan in ['right', 'wrong', 'alternate']) {
-            expect(await compareWithScene(course, s, plan, trazas, (rng) => realScene('frente', rng)), isNull, reason: '$s $plan');
+            expect(
+              await compareWithScene(
+                course,
+                s,
+                plan,
+                trazas,
+                (rng) => realScene('frente', rng),
+              ),
+              isNull,
+              reason: '$s $plan',
+            );
           }
         },
-        skip: realScenesReady ? false : 'El frente is not in the scene registry yet (order 14)',
+        skip: realScenesReady
+            ? false
+            : 'El frente is not in the scene registry yet (order 14)',
       );
     }
   });

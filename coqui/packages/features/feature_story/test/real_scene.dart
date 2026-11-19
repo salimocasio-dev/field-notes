@@ -8,4 +8,5 @@ bool get realScenesReady => false;
 
 /// The real scene [id], drawing its random numbers from [rng]. Once `coqui_scenes` exports `sceneRegistry` this is
 /// `sceneRegistry[id]!()` (with [rng] given to the scene as the scenes package says), and [realScenesReady] is true.
-Scene realScene(String id, Rng rng) => throw UnimplementedError('coqui_scenes exports no scene registry yet');
+Scene realScene(String id, Rng rng) =>
+    throw UnimplementedError('coqui_scenes exports no scene registry yet');

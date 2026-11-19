@@ -189,6 +189,10 @@ class _StoryScreenState extends State<StoryScreen>
     return ListenableBuilder(
       listenable: _repaint,
       builder: (context, _) {
+        // where the mic button is, once it has been laid out: a turn's bubble that stands above it needs it
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => r.micAnchor = mounted ? _anchor() : null,
+        );
         final v = r.view;
         final ended = v.screen == StoryScreenState.end;
         final mic = micStateOf(v.mic);
