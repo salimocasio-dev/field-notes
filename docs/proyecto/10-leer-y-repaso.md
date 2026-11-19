@@ -44,7 +44,7 @@ His ask: "Reading and flash card parts of the app need design and feature work. 
 
 ### The tab
 - Top: the review card (as today, renamed "Repaso"): "N words today · about M min" and Start; when nothing is due: "Nothing due today" and "Practice" (asks his weakest heard words, schedule untouched, as now).
-- Then words grouped by place, in story order. Each word is a card: its picture (pair words) or a plain tile (words with no picture), the word, and two small four-dot meters with labels "Ear" and "Mouth" (dots = stage 1 to 4). Spelling shows from ear stage 2 ("found"), as the A1 plan says; before that the card shows the picture and "?" in place of the word.
+- Then words grouped by place, in story order. Each word is a card: its picture (pair words) or a plain tile (words with no picture), the word, and two small four-dot meters with labels "Ear" and "Mouth" (dots = stage 1 to 4). The word is always spelled (decided Nov 19 after the fresh read: the "?" before stage 2 read as a bug, and the books show every word written from day 1 anyway, so hiding it protected nothing).
 - Tap a card: a word sheet opens: the big picture, the word, Ear and Mouth meters with the next return in English ("Comes back in 2 days"), and "Heard in" — up to five lines from stories he has played that contain the word, each with a play button (the story's own recording). No translation.
 - "Add a word or a goal" stays (his vision) with honest text: "Saved. Material for it comes later." and the saved list.
 
@@ -59,3 +59,9 @@ His ask: "Reading and flash card parts of the app need design and feature work. 
 ## Not now (said so it is not invented)
 - Word-level karaoke or word audio (no word timing exists).
 - Themes (dark/sepia), reading tracking, new recordings, new review item types beyond ¿Cuál?, pictures for the 28 words without a pair.
+
+## After the first fresh read (Nov 19)
+- Nothing is ever covered by the tab bar or the Mapa disc: lists, grid and sheets end clear of it.
+- Book: the line playing is lit on every page; each line has a small speaker icon (tap to hear it again); words with a picture carry a faint dotted underline; a page count "3 / 9" beside the progress bar; the last page says "Fin" above its buttons, both buttons in the app's green style (no blue), "Otra vez" with a replay icon.
+- Shelf: the Read button has a book icon; a read book shows "Read ✓" in place of a bare check.
+- Palabras: one key line under the grid title: "Ear: you know it when you hear it. Mouth: you can say it."; a word with no picture is a plain tile with the word large (no empty picture box); the word sheet keeps the word in its header when scrolled; the word is bold inside its "Heard in" lines.
