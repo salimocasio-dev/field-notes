@@ -339,6 +339,16 @@ Page 11-pixel-engine, build step 2, decisions 5 to 8. Page 12: sections 1 to 4, 
 - A fresh reader, shown the three states with no words, says which places are open, done and locked, and where the frog is.
 - Then, on Salim's phone (the orchestrator sends the link with the seven steps of page 00 done): bake under 500 ms, frame under 8 ms, read off the corner chip. Over: report the numbers. Do not change the look.
 
+**Result (Nov 19): built and merged to main; the reader's look and the phone numbers are open.** Built by a Sonnet builder; its tests were run again by the orchestrator (47 on vm, 47 in Chrome) and `test_all.sh` on merged main.
+- The map frame at time 0 differs from the JavaScript in 0 of 122,880 pixels in each of the three states, on vm and in Chrome.
+- Tested: tap an open place (hop with the old tone, then the sheet); tap a locked place; finishing a place's last story adds its flag and moves the frog; the Today card names the next story; a story row opens the story; reduced motion stands still; the first frame is empty and the bake follows; the map opens scrolled to the frog.
+- In headless Chrome on the shared build machine (release build): bake 376 to 769 ms, mean frame 3.4 to 4.9 ms, slowest frame 10 to 38 ms. Over the limits there; the real numbers are his phone's, at Gate A. The look was not changed.
+- The review entry's title on the Today card is `CoquiLabels.reviewTitle` in coqui_ui (a fixed label of v=39, like the tab names). The map module has one marked line where it is passed; the shell order wires it.
+- Not ported: v=39's sideways two-column layout (the app is portrait).
+- Around the island is mapa.html's dark page colour with dots, not the old blue checker: the map is new art.
+- Old quirks ported: once every built story is played the frog and chip sit on place 1; the frog stays squashed through a trip of several hops; the bake runs every place twice.
+- For the shell: keep the map tab alive (a rebuilt tab bakes again, about half a second); draw the tab bar over the tab.
+
 ## Order 14. El frente in Dart (builder, coqui_scenes)
 
 Page 11-pixel-engine, build step 3. Page 12: sections 1 to 7. Step b of section 5.
@@ -456,7 +466,16 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 
 **Done when:** a fresh reader compares the gallery with `ref/pantallas/` and finds no difference a learner would notice, or lists them. `PixelView` tests: a 196 × 216 picture in a 412-wide screen at pixel ratio 2.625 is drawn at 5 device pixels a pixel, unsmoothed, on whole device pixels; it repaints when its `repaint` fires and not otherwise.
 
-**Result (Nov 19): built and merged to main; the fresh reader's comparison is running.** Built by a Sonnet builder; `test_all.sh` run again by the orchestrator on merged main.
+**Round 2 (Nov 19), after the fresh reader's first comparison, merged to main; a second reader is comparing.** The reader found what the builder's own comparison had missed, all fixed in round 2:
+- Weights 500 and 600 drew as regular and bold drew too heavy: the web build carried only Roboto Regular. The app now ships Roboto Regular, Medium and Bold itself (from the Flutter SDK's own fonts, Apache 2.0 licence beside them), one look on every platform; CSS 600 uses Bold, as a browser would choose among those three.
+- 1-pixel borders were a device pixel too thick. Borders now follow what Chrome does (the CSS width floored, then snapped), through one helper.
+- The shelf's "Listen" button missed a `max-width: 420px` rule of the old CSS; its padding and gap now match to within 1 px.
+- The reader's Back and Next row is equal halves; the last page's row and a story's end pair are there too; a disabled Back has the old colours exactly.
+- Repaso's answer screen: the unchosen picture is dimmed (55%, measured on the old screenshots), and the tick badge has the old size and place.
+- `CoquiLabels`: the app name, the five tab names, "¿Cuál?" and "Repaso".
+- Left as they are: bold words are a little narrower than in the old screenshots (Roboto against Inter); baselines sit up to 3 device pixels off for the same reason.
+
+**Result (Nov 19), round 1: built and merged to main.** Built by a Sonnet builder; `test_all.sh` run again by the orchestrator on merged main.
 - 137 tokens (40 colours, 49 metrics, 6 shadows, 42 text styles), each with its CSS file and line. 61 tests. A gallery (`tool/dev_main.dart`, 17 sections) and `tool/shots.mjs` to capture it on both phone sizes.
 - Against the old screenshots, in device pixels: most edges identical (chips, the Mapa disc, word cards, stat cards, the lesson dashes and start disc, sheet title); the rest within 1 to 2 px.
 - `PixelView`: 196 × 216 in 412 at 2.625 is 980 × 1080 device pixels, every device pixel equal to its picture pixel; it repaints only on its tick.
