@@ -9,6 +9,7 @@
 library;
 
 import 'package:coqui_ui/src/icons.dart';
+import 'package:coqui_ui/src/layout.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
@@ -37,6 +38,7 @@ class CoquiButton extends StatelessWidget {
     this.icon,
     this.full = false,
     this.padX = CoquiMetrics.buttonPadX,
+    this.gap = CoquiMetrics.s8,
     this.semanticLabel,
   });
 
@@ -52,8 +54,11 @@ class CoquiButton extends StatelessWidget {
   /// `.btn.full`: the whole width. app.html:23
   final bool full;
 
-  /// 24 by default; the shelf's buttons use 16 (`.bk .btn`, app.html:99).
+  /// 24 by default (`.btn`, app.html:22). The shelf's buttons are [ShelfButton]s.
   final double padX;
+
+  /// Between the icon and the label: 8 (`.btn{gap:8px}`, app.html:22).
+  final double gap;
   final String? semanticLabel;
 
   @override
@@ -81,43 +86,72 @@ class CoquiButton extends StatelessWidget {
       semanticLabel: semanticLabel,
       builder: (context, pressed) {
         final fg = disabled ? CoquiColors.mut : style.color!;
-        final body = DecoratedBox(
+        // A Container, so the border takes room inside the padding (`box-sizing: border-box`).
+        final body = Container(
+          constraints: const BoxConstraints(minHeight: CoquiMetrics.targetMin),
+          padding: EdgeInsets.symmetric(horizontal: padX),
           decoration: BoxDecoration(
             color: disabled ? CoquiColors.disabledFill : bg,
             borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
             border: Border.all(
               color: disabled ? CoquiColors.line : border,
-              width: CoquiMetrics.borderButton,
+              width: CoquiLayout.border(context, CoquiMetrics.borderButton),
             ),
           ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minHeight: CoquiMetrics.targetMin,
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: padX),
-              child: Row(
-                mainAxisSize: full ? MainAxisSize.max : MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (icon != null) ...[
-                    CoquiIcon(icon!, size: 20, color: fg),
-                    const SizedBox(width: CoquiMetrics.s8),
-                  ],
-                  Flexible(
-                    child: Text(
-                      label,
-                      style: style.copyWith(color: fg),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+          child: Row(
+            mainAxisSize: full ? MainAxisSize.max : MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null) ...[
+                CoquiIcon(icon!, size: 20, color: fg),
+                SizedBox(width: gap),
+              ],
+              Flexible(
+                child: Text(
+                  label,
+                  style: style.copyWith(color: fg),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
+            ],
           ),
         );
         return Transform.scale(scale: pressed ? 0.98 : 1, child: body);
       },
+    );
+  }
+}
+
+/// A button on a shelf row (`.bk .btn`): side padding 16 and gap 8; on a phone at most 420 px wide
+/// (`@media (max-width:420px)`) padding 12 and gap 6; at most 380 px wide padding 10 (the gap stays 6).
+/// app.html:99-101
+class ShelfButton extends StatelessWidget {
+  const ShelfButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.kind = CoquiButtonKind.go,
+    this.icon,
+    this.semanticLabel,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final CoquiButtonKind kind;
+  final CoquiIconData? icon;
+  final String? semanticLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final w = MediaQuery.sizeOf(context).width;
+    return CoquiButton(
+      label: label,
+      onPressed: onPressed,
+      kind: kind,
+      icon: icon,
+      padX: w <= 380 ? 10 : (w <= 420 ? 12 : 16),
+      gap: w <= 420 ? 6 : 8,
+      semanticLabel: semanticLabel,
     );
   }
 }
@@ -157,7 +191,7 @@ class PlayButton extends StatelessWidget {
           border: quiet
               ? Border.all(
                   color: CoquiColors.line2,
-                  width: CoquiMetrics.borderButton,
+                  width: CoquiLayout.border(context, CoquiMetrics.borderButton),
                 )
               : null,
         ),
@@ -206,6 +240,7 @@ class LessonButton extends StatelessWidget {
     super.key,
     this.label,
     this.child,
+    this.icon,
     required this.onPressed,
     this.kind = LessonButtonKind.go,
     this.height,
@@ -213,9 +248,12 @@ class LessonButton extends StatelessWidget {
     this.semanticLabel,
   });
 
-  /// The text. Or give [child] (an arrow, an icon and a label).
+  /// The text. Or give [child] (an arrow).
   final String? label;
   final Widget? child;
+
+  /// A 20 px icon before the [label], 8 px from it (`.lbb.tx svg`, app.html:122), white.
+  final CoquiIconData? icon;
   final VoidCallback? onPressed;
   final LessonButtonKind kind;
 
@@ -254,13 +292,31 @@ class LessonButton extends StatelessWidget {
             border: outline
                 ? Border.all(
                     color: CoquiColors.lessonLine,
-                    width: CoquiMetrics.borderButton,
+                    width: CoquiLayout.border(
+                      context,
+                      CoquiMetrics.borderButton,
+                    ),
                   )
                 : null,
           ),
           child: DefaultTextStyle(
             style: style,
-            child: child ?? Text(label ?? '', style: style),
+            child:
+                child ??
+                (icon == null
+                    ? Text(label ?? '', style: style)
+                    : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CoquiIcon(
+                            icon!,
+                            size: 20,
+                            color: CoquiColors.lessonInk,
+                          ),
+                          const SizedBox(width: CoquiMetrics.s8),
+                          Text(label ?? '', style: style),
+                        ],
+                      )),
           ),
         );
         if (!outline && pressed) {
@@ -294,24 +350,124 @@ class LessonButton extends StatelessWidget {
   }
 }
 
-/// Two outline buttons side by side, 16 px apart (`#duo.two`). cual.html:61-62
+/// A row of lesson buttons, laid out as v=39 lays out each pair. Each button shares the row equally
+/// (`flex:1 1 0`), 16 px apart; a [LessonRowFixed] keeps its own width.
+///
+/// - [LessonButtonRow.pair]: "Play again" and "Map" at a story's end (`#duo.two`): two 48 px outline
+///   buttons, equal halves, 16 px apart, at most 480 px wide. cual.html:61-62
+/// - [LessonButtonRow.reader]: the book's back and next on every page but the last (`.lbrow`): two 56 px
+///   buttons, equal halves, 16 px apart, at most 528 px wide (the 560 px foot less its 16 px sides). app.html:120-123
+/// - [LessonButtonRow.readerLast]: the book's last page: the back arrow 72 px wide, then two equal
+///   buttons ("Otra vez" and "Biblioteca"). app.html:120-123, 365
 class LessonButtonRow extends StatelessWidget {
-  const LessonButtonRow({super.key, required this.children});
+  const LessonButtonRow({
+    super.key,
+    required this.children,
+    this.maxWidth = CoquiMetrics.lessonColumnMax,
+  });
+
+  /// `#duo.two`.
+  LessonButtonRow.pair({
+    super.key,
+    required Widget first,
+    required Widget second,
+  }) : children = [first, second],
+       maxWidth = CoquiMetrics.lessonColumnMax;
+
+  /// The book's back and next.
+  LessonButtonRow.reader({
+    super.key,
+    required Widget back,
+    required Widget next,
+  }) : children = [back, next],
+       maxWidth = CoquiMetrics.readerColumnMax - 2 * CoquiMetrics.s16;
+
+  /// The book's last page.
+  LessonButtonRow.readerLast({
+    super.key,
+    required Widget back,
+    required Widget again,
+    required Widget shelf,
+  }) : children = [
+         LessonRowFixed(width: CoquiMetrics.readerBackWidth, child: back),
+         again,
+         shelf,
+       ],
+       maxWidth = CoquiMetrics.readerColumnMax - 2 * CoquiMetrics.s16;
+
   final List<Widget> children;
+  final double maxWidth;
 
   @override
   Widget build(BuildContext context) => Center(
     widthFactor: 1,
     child: ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: CoquiMetrics.lessonColumnMax),
+      constraints: BoxConstraints(maxWidth: maxWidth),
       child: Row(
         children: [
           for (var i = 0; i < children.length; i++) ...[
             if (i > 0) const SizedBox(width: CoquiMetrics.s16),
-            Expanded(child: children[i]),
+            switch (children[i]) {
+              final LessonRowFixed f => SizedBox(
+                width: f.width,
+                child: f.child,
+              ),
+              final c => Expanded(child: c),
+            },
           ],
         ],
       ),
+    ),
+  );
+}
+
+/// A button in a [LessonButtonRow] that keeps its width instead of sharing the row (`.lbb.ar`). app.html:123
+class LessonRowFixed extends StatelessWidget {
+  const LessonRowFixed({super.key, required this.width, required this.child});
+  final double width;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(width: width, child: child);
+}
+
+/// The book's back arrow (`.lbb.sec`): a 56 px outline button with a white 28 px chevron. With a null
+/// [onPressed] it is disabled, as on a first page: the whole button at 35% (`.lbb:disabled`), its ring
+/// `#4A4A52` over the dark becoming about (43,43,48). app.html:122-123
+class LessonBackButton extends StatelessWidget {
+  const LessonBackButton({super.key, required this.onPressed});
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => LessonButton(
+    kind: LessonButtonKind.outline,
+    height: CoquiMetrics.primaryHeight,
+    fillWidth: false,
+    onPressed: onPressed,
+    semanticLabel: 'Previous page',
+    child: const CoquiIcon(
+      CoquiIcons.left,
+      size: 28,
+      color: CoquiColors.lessonInk,
+    ),
+  );
+}
+
+/// The book's next arrow (`.lbb`): a green 56 px button with a white 28 px chevron. app.html:122
+class LessonNextButton extends StatelessWidget {
+  const LessonNextButton({super.key, required this.onPressed});
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) => LessonButton(
+    height: CoquiMetrics.primaryHeight,
+    fillWidth: false,
+    onPressed: onPressed,
+    semanticLabel: 'Next page',
+    child: const CoquiIcon(
+      CoquiIcons.right,
+      size: 28,
+      color: CoquiColors.lessonInk,
     ),
   );
 }

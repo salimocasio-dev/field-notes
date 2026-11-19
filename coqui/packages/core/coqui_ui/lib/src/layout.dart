@@ -5,7 +5,23 @@ library;
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// The width, in logical pixels, that a browser draws a CSS border of [css] px: a border snaps down to
+/// whole device pixels (`floor(css * ratio)`) and is never less than one. At ratio 2.625 a 1 px border is
+/// 2 device pixels and a 1.5 px one is 3; at ratio 3, 3 and 4. Every CSS border (not a `box-shadow` ring,
+/// which a browser does not snap) is drawn through this.
+double cssBorderWidth(double css, double devicePixelRatio) {
+  final px = (css * devicePixelRatio).floor();
+  return (px < 1 ? 1 : px) / devicePixelRatio;
+}
+
 abstract final class CoquiLayout {
+  /// [cssBorderWidth] for this screen's device pixel ratio.
+  static double border(BuildContext context, double css) => cssBorderWidth(
+    css,
+    MediaQuery.maybeDevicePixelRatioOf(context) ??
+        View.of(context).devicePixelRatio,
+  );
+
   /// `@media (orientation:landscape) and (max-height:500px)`: a phone on its
   /// side, in app.html (lower tab bar, smaller Mapa disc). app.html:49, 136
   static bool compact(BuildContext context) {

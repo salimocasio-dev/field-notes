@@ -255,7 +255,10 @@ class _Disc extends StatelessWidget {
         color: selected ? CoquiColors.info : CoquiColors.white,
         border: Border.all(
           color: selected ? CoquiColors.white : CoquiColors.line2,
-          width: selected ? (compact ? 3 : 4) : CoquiMetrics.borderButton,
+          width: CoquiLayout.border(
+            context,
+            selected ? (compact ? 3 : 4) : CoquiMetrics.borderButton,
+          ),
         ),
         boxShadow: selected ? CoquiShadows.mapDiscActive : null,
       ),
@@ -300,9 +303,14 @@ class MapChips extends StatelessWidget {
       CoquiMetrics.s16,
       0,
     ),
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       color: CoquiColors.white,
-      border: Border(bottom: BorderSide(color: CoquiColors.line)),
+      border: Border(
+        bottom: BorderSide(
+          color: CoquiColors.line,
+          width: CoquiLayout.border(context, 1),
+        ),
+      ),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,

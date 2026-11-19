@@ -20,8 +20,40 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  # Roboto is the app's text font on every platform (web, Android, iOS: one look), in the weights the
+  # tokens use. CSS weight 600 has no file of its own: a browser's font matching picks the next one
+  # up, 700, so 600 is declared here as the Bold file. Nothing is synthesised. Licence: Apache 2.0,
+  # fonts/LICENSE-roboto.txt (copied from the Flutter SDK's material_fonts). `Roboto` is the name
+  # other packages see as `packages/coqui_ui/Roboto`; the second name is what this package's own
+  # entry (tool/dev_main.dart) needs to find the same files with `package: 'coqui_ui'`.
   fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 600
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 700
+    - family: packages/coqui_ui/Roboto
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 600
+        - asset: fonts/Roboto-Bold.ttf
+          weight: 700
     - family: Pixelify Sans
+      fonts:
+        - asset: fonts/PixelifySans-Regular.ttf
+          weight: 400
+        - asset: fonts/PixelifySans-Bold.ttf
+          weight: 700
+    - family: packages/coqui_ui/Pixelify Sans
       fonts:
         - asset: fonts/PixelifySans-Regular.ttf
           weight: 400
