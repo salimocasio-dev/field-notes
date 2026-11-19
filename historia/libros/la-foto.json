@@ -1,0 +1,10 @@
+{"id": "la-foto", "title": "La foto", "pages": [
+ {"img": "img/la-foto-1.png", "clips": ["hermano_del_bebe", "hermana_del_bebe"]},
+ {"img": "img/la-foto-2.png", "clips": ["el_dice_hola"]},
+ {"img": "img/la-foto-3.png", "clips": ["ella_dice_hola"]},
+ {"img": "img/la-foto-4.png", "clips": ["el_es_papa", "ella_es_mama"]},
+ {"img": "img/la-foto-5.png", "clips": ["tres_fotos"]},
+ {"img": "img/la-foto-6.png", "clips": ["cq_si"]},
+ {"img": "img/la-foto-7.png", "clips": ["foto_familia"]},
+ {"img": "img/la-foto-8.png", "clips": ["cq_familia"]}
+]}

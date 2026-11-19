@@ -1,0 +1,18 @@
+{"id": "arriba-abajo", "title": "¡Arriba! ¡Abajo!", "pages": [
+ {"img": "img/arriba-abajo-1.png", "clips": ["c16_mira_arriba", "c16_l_ay"]},
+ {"img": "img/arriba-abajo-2.png", "clips": ["c16_luis_salta"]},
+ {"img": "img/arriba-abajo-3.png", "clips": ["c16_carmen_salta"]},
+ {"img": "img/arriba-abajo-4.png", "clips": ["c16_canelo_salta"]},
+ {"img": "img/arriba-abajo-5.png", "clips": ["c16_coqui_salta"]},
+ {"img": "img/arriba-abajo-6.png", "clips": ["c16_ahora_abajo", "c16_cq_abajo"]},
+ {"img": "img/arriba-abajo-7.png", "clips": ["c16_luis_tiene", "c16_l_vamos"]},
+ {"img": "img/arriba-abajo-8.png", "clips": ["c16_coqui_tiene"]},
+ {"img": "img/arriba-abajo-9.png", "clips": ["c16_va_arriba"]},
+ {"img": "img/arriba-abajo-10.png", "clips": ["c16_va_abajo"]},
+ {"img": "img/arriba-abajo-11.png", "clips": ["c16_l_canelo"]},
+ {"img": "img/arriba-abajo-12.png", "clips": ["c16_ay_agua"]},
+ {"img": "img/arriba-abajo-13.png", "clips": ["c16_hay_mas"]},
+ {"img": "img/arriba-abajo-14.png", "clips": ["c16_l_carmen_arriba"]},
+ {"img": "img/arriba-abajo-15.png", "clips": ["c16_l_salta_coqui"]},
+ {"img": "img/arriba-abajo-16.png", "clips": ["c16_fin"]}
+]}

@@ -1,0 +1,15 @@
+{"id": "jugo-de-china", "title": "Jugo de china", "pages": [
+ {"img": "img/jugo-de-china-1.png", "clips": ["c32_calor"]},
+ {"img": "img/jugo-de-china-2.png", "clips": ["c32_hace_jugo"]},
+ {"img": "img/jugo-de-china-3.png", "clips": ["c32_aqui_chinas", "c32_aqui_mant"]},
+ {"img": "img/jugo-de-china-4.png", "clips": ["c32_le_pone", "c32_luis_come"]},
+ {"img": "img/jugo-de-china-5.png", "clips": ["c32_n_verde_lleno"]},
+ {"img": "img/jugo-de-china-6.png", "clips": ["c32_n_amarillo_vacio"]},
+ {"img": "img/jugo-de-china-7.png", "clips": ["c32_ahora_amarillo"]},
+ {"img": "img/jugo-de-china-8.png", "clips": ["c32_carmen_toma"]},
+ {"img": "img/jugo-de-china-9.png", "clips": ["c32_luis_toma"]},
+ {"img": "img/jugo-de-china-10.png", "clips": ["c32_carmen_quiero"]},
+ {"img": "img/jugo-de-china-11.png", "clips": ["c32_carmen_come", "c32_luis_mas", "c32_mas_jugo"]},
+ {"img": "img/jugo-de-china-12.png", "clips": ["c32_familia"]},
+ {"img": "img/jugo-de-china-13.png", "clips": ["c32_ab_come", "cq_gracias_abuela"]}
+]}

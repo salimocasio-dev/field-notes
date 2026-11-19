@@ -1,0 +1,12 @@
+{"id": "d-foto-familia", "title": "La foto de la familia", "pages": [
+ {"img": "img/d-foto-familia-1.png", "clips": ["df01", "df02"]},
+ {"img": "img/d-foto-familia-2.png", "clips": ["df03"]},
+ {"img": "img/d-foto-familia-3.png", "clips": ["df04"]},
+ {"img": "img/d-foto-familia-4.png", "clips": ["df05"]},
+ {"img": "img/d-foto-familia-5.png", "clips": ["df06"]},
+ {"img": "img/d-foto-familia-6.png", "clips": ["df07"]},
+ {"img": "img/d-foto-familia-7.png", "clips": ["df08"]},
+ {"img": "img/d-foto-familia-8.png", "clips": ["df09"]},
+ {"img": "img/d-foto-familia-9.png", "clips": ["df10"]},
+ {"img": "img/d-foto-familia-10.png", "clips": ["df11", "df12"]}
+]}

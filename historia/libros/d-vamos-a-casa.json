@@ -1,0 +1,14 @@
+{"id": "d-vamos-a-casa", "title": "Vamos a casa", "pages": [
+ {"img": "img/d-vamos-a-casa-1.png", "clips": ["qe01", "qe02"]},
+ {"img": "img/d-vamos-a-casa-2.png", "clips": ["qe03", "qe04"]},
+ {"img": "img/d-vamos-a-casa-3.png", "clips": ["qe05"]},
+ {"img": "img/d-vamos-a-casa-4.png", "clips": ["qe06", "qe07"]},
+ {"img": "img/d-vamos-a-casa-5.png", "clips": ["qe08"]},
+ {"img": "img/d-vamos-a-casa-6.png", "clips": ["qe09", "qe10"]},
+ {"img": "img/d-vamos-a-casa-7.png", "clips": ["qe11"]},
+ {"img": "img/d-vamos-a-casa-8.png", "clips": ["qe12"]},
+ {"img": "img/d-vamos-a-casa-9.png", "clips": ["qe13"]},
+ {"img": "img/d-vamos-a-casa-10.png", "clips": ["qe14"]},
+ {"img": "img/d-vamos-a-casa-11.png", "clips": ["qe15"]},
+ {"img": "img/d-vamos-a-casa-12.png", "clips": ["qe16"]}
+]}

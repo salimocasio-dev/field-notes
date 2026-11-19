@@ -1,0 +1,19 @@
+{"id": "la-cuchara", "title": "La cuchara", "pages": [
+ {"img": "img/la-cuchara-1.png", "clips": ["c25_ab_tiene_comida"]},
+ {"img": "img/la-cuchara-2.png", "clips": ["c25_ab_pone_comida"]},
+ {"img": "img/la-cuchara-3.png", "clips": ["c25_aqui_cuchara"]},
+ {"img": "img/la-cuchara-4.png", "clips": ["c25_aqui_tenedor"]},
+ {"img": "img/la-cuchara-5.png", "clips": ["c25_aqui_cuchillo"]},
+ {"img": "img/la-cuchara-6.png", "clips": ["c25_mama_come_cuchara"]},
+ {"img": "img/la-cuchara-7.png", "clips": ["c25_papa_come_tenedor"]},
+ {"img": "img/la-cuchara-8.png", "clips": ["c25_ahora_abuelo"]},
+ {"img": "img/la-cuchara-9.png", "clips": ["c25_abuelo_pan"]},
+ {"img": "img/la-cuchara-10.png", "clips": ["c25_cq_cuchara"]},
+ {"img": "img/la-cuchara-11.png", "clips": ["c25_carmen_come"]},
+ {"img": "img/la-cuchara-12.png", "clips": ["c25_cq_tenedor"]},
+ {"img": "img/la-cuchara-13.png", "clips": ["c25_mama_come_tenedor"]},
+ {"img": "img/la-cuchara-14.png", "clips": ["c25_cq_cuchillo"]},
+ {"img": "img/la-cuchara-15.png", "clips": ["c25_ahora_papa"]},
+ {"img": "img/la-cuchara-16.png", "clips": ["c25_hay_mas"]},
+ {"img": "img/la-cuchara-17.png", "clips": ["c25_familia_come", "c25_cq_mmm"]}
+]}

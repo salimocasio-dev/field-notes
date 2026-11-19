@@ -1,0 +1,16 @@
+{"id": "el-bizcocho", "title": "El bizcocho", "pages": [
+ {"img": "img/el-bizcocho-1.png", "clips": ["ventana_cerrada"]},
+ {"img": "img/el-bizcocho-2.png", "clips": ["tiene_bizcocho"]},
+ {"img": "img/el-bizcocho-3.png", "clips": ["quieres_hola"]},
+ {"img": "img/el-bizcocho-4.png", "clips": ["cq_si"]},
+ {"img": "img/el-bizcocho-5.png", "clips": ["ahora_no"]},
+ {"img": "img/el-bizcocho-6.png", "clips": ["ab_cierra_ventana"]},
+ {"img": "img/el-bizcocho-7.png", "clips": ["cq_ay"]},
+ {"img": "img/el-bizcocho-8.png", "clips": ["abre_ventana"]},
+ {"img": "img/el-bizcocho-9.png", "clips": ["abre_puerta"]},
+ {"img": "img/el-bizcocho-10.png", "clips": ["mira_pajaro", "pajaro_quiere"]},
+ {"img": "img/el-bizcocho-11.png", "clips": ["no_pajaro"]},
+ {"img": "img/el-bizcocho-12.png", "clips": ["abuela_en_puerta"]},
+ {"img": "img/el-bizcocho-13.png", "clips": ["toma"]},
+ {"img": "img/el-bizcocho-14.png", "clips": ["cq_mmm"]}
+]}

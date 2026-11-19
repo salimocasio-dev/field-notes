@@ -1,0 +1,12 @@
+{"id": "d-piragua-luis", "title": "La piragua de Luis", "pages": [
+ {"img": "img/d-piragua-luis-1.png", "clips": ["qd01", "qd02"]},
+ {"img": "img/d-piragua-luis-2.png", "clips": ["qd03"]},
+ {"img": "img/d-piragua-luis-3.png", "clips": ["qd04"]},
+ {"img": "img/d-piragua-luis-4.png", "clips": ["qd05"]},
+ {"img": "img/d-piragua-luis-5.png", "clips": ["qd06"]},
+ {"img": "img/d-piragua-luis-6.png", "clips": ["qd07"]},
+ {"img": "img/d-piragua-luis-7.png", "clips": ["qd08"]},
+ {"img": "img/d-piragua-luis-8.png", "clips": ["qd09", "qd10"]},
+ {"img": "img/d-piragua-luis-9.png", "clips": ["qd11"]},
+ {"img": "img/d-piragua-luis-10.png", "clips": ["qd12", "qd13"]}
+]}

@@ -1,0 +1,16 @@
+{"id": "d-corre", "title": "¡Corre!", "pages": [
+ {"img": "img/d-corre-1.png", "clips": ["qa01"]},
+ {"img": "img/d-corre-2.png", "clips": ["qa02", "qa03", "qa04"]},
+ {"img": "img/d-corre-3.png", "clips": ["qa05"]},
+ {"img": "img/d-corre-4.png", "clips": ["qa06"]},
+ {"img": "img/d-corre-5.png", "clips": ["qa07"]},
+ {"img": "img/d-corre-6.png", "clips": ["qa08"]},
+ {"img": "img/d-corre-7.png", "clips": ["qa09", "qa10"]},
+ {"img": "img/d-corre-8.png", "clips": ["qa11"]},
+ {"img": "img/d-corre-9.png", "clips": ["qa12"]},
+ {"img": "img/d-corre-10.png", "clips": ["qa13"]},
+ {"img": "img/d-corre-11.png", "clips": ["qa14", "qa15"]},
+ {"img": "img/d-corre-12.png", "clips": ["qa16"]},
+ {"img": "img/d-corre-13.png", "clips": ["qa17", "qa18"]},
+ {"img": "img/d-corre-14.png", "clips": ["qa19", "qa20"]}
+]}

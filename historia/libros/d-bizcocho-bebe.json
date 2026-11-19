@@ -1,0 +1,17 @@
+{"id": "d-bizcocho-bebe", "title": "El bizcocho del bebé", "pages": [
+ {"img": "img/d-bizcocho-bebe-1.png", "clips": ["db01", "db02"]},
+ {"img": "img/d-bizcocho-bebe-2.png", "clips": ["db03"]},
+ {"img": "img/d-bizcocho-bebe-3.png", "clips": ["db04"]},
+ {"img": "img/d-bizcocho-bebe-4.png", "clips": ["db05"]},
+ {"img": "img/d-bizcocho-bebe-5.png", "clips": ["db06"]},
+ {"img": "img/d-bizcocho-bebe-6.png", "clips": ["db07", "db08"]},
+ {"img": "img/d-bizcocho-bebe-7.png", "clips": ["db09", "db10"]},
+ {"img": "img/d-bizcocho-bebe-8.png", "clips": ["db11"]},
+ {"img": "img/d-bizcocho-bebe-9.png", "clips": ["db12", "db13"]},
+ {"img": "img/d-bizcocho-bebe-10.png", "clips": ["db14", "db15"]},
+ {"img": "img/d-bizcocho-bebe-11.png", "clips": ["db16"]},
+ {"img": "img/d-bizcocho-bebe-12.png", "clips": ["db17"]},
+ {"img": "img/d-bizcocho-bebe-13.png", "clips": ["db18", "db19"]},
+ {"img": "img/d-bizcocho-bebe-14.png", "clips": ["db20", "db21"]},
+ {"img": "img/d-bizcocho-bebe-15.png", "clips": ["db22"]}
+]}

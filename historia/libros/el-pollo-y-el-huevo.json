@@ -1,0 +1,17 @@
+{"id": "el-pollo-y-el-huevo", "title": "El pollo y el huevo", "pages": [
+ {"img": "img/el-pollo-y-el-huevo-1.png", "clips": ["c28_hace", "c28_aqui_pollo", "c28_aqui_huevo"]},
+ {"img": "img/el-pollo-y-el-huevo-2.png", "clips": ["c28_huele_bien"]},
+ {"img": "img/el-pollo-y-el-huevo-3.png", "clips": ["c28_toma_sal"]},
+ {"img": "img/el-pollo-y-el-huevo-4.png", "clips": ["c28_pollo_tiene_sal"]},
+ {"img": "img/el-pollo-y-el-huevo-5.png", "clips": ["c28_huevo_tiene_sal"]},
+ {"img": "img/el-pollo-y-el-huevo-6.png", "clips": ["c28_mama_huele", "c28_ab_mira"]},
+ {"img": "img/el-pollo-y-el-huevo-7.png", "clips": ["c28_cq_pollo"]},
+ {"img": "img/el-pollo-y-el-huevo-8.png", "clips": ["c28_ab_gracias"]},
+ {"img": "img/el-pollo-y-el-huevo-9.png", "clips": ["c28_cq_huevo"]},
+ {"img": "img/el-pollo-y-el-huevo-10.png", "clips": ["c28_bebe_come_pollo"]},
+ {"img": "img/el-pollo-y-el-huevo-11.png", "clips": ["c28_bebe_come_huevo"]},
+ {"img": "img/el-pollo-y-el-huevo-12.png", "clips": ["c28_luis_huele", "c28_carmen_huele", "c28_aqui_mas"]},
+ {"img": "img/el-pollo-y-el-huevo-13.png", "clips": ["c28_no_hay"]},
+ {"img": "img/el-pollo-y-el-huevo-14.png", "clips": ["c28_para_coqui"]},
+ {"img": "img/el-pollo-y-el-huevo-15.png", "clips": ["c28_bebe_come", "c28_cq_fin"]}
+]}

@@ -7,6 +7,7 @@
   --fast   speed of the machine play (default 8; the pictures do not depend on it)
   --sheets a contact sheet per book (the page picture, its lines under it) into DIR
   --check  only checks the books already written (counts, audio, left-out clips, pictures)
+  --no-hud takes the scenes' own counters (E.hud) off the pictures too; --icon-bubbles keeps the picture bubbles above the speakers
   --solve  finds the draws a story's "leer" list was written for (see DRAWS) and prints them; writes nothing
 
 It writes historia/libros/<story id>.json = {"id","title","pages":[{"img":"img/<id>-<n>.png","clips":[...]}]}
@@ -17,10 +18,12 @@ HOW A BOOK IS MADE (all of it mechanical; nothing is read by a person)
 1. The story is played by machine, all right, at phone size, the way juega.py plays it: every ask and decision is answered with the right
    thing (a choice with no wrong answer takes the first option), with no voice (clips take their time as in a silent play) and no speaking turns.
    The first draw: every draw, deal and decision of the play takes its first option (Math.random is held at 0 inside the play), except for the
-   stories in DRAWS (see there). The play is logged: every clip the engine starts (with where it came from), every scene act (E.acts) and
+   stories in DRAWS (see there); a choice with no wrong answer (elige) takes its first option, as juega.py plays "r". The play is logged: every clip the engine starts (with where it came from), every scene act (E.acts) and
    every step (cam, set, ...). At the start of every clip the scene canvas (#cv, 196 x 216, the art's own size) is saved as a PNG: only the
-   canvas, with the big sign (spot, hand, twinkle), the answer bubbles (resp) and the star effects off, the frog's hop offset 0 and the
-   frame counter fixed (no blink, mouth shut), so the same play gives the same picture. No DOM: no caption, no speech bubble, no UI.
+   canvas, with the big sign (spot, hand, twinkle), the answer bubbles (resp), the star effects and the picture bubbles above the speakers
+   (HIDE_ICON_BUBBLES: the speaker markers) off, the frog's hop offset 0 and the
+   frame counter fixed (no blink, mouth shut), so a play gives the same picture again (a handful of pixels can differ in a few pictures where a dog
+   or a ball is still moving when the line starts). No DOM: no caption, no speech bubble, no UI.
 2. The lines, in play order: the story's "leer" list if it has one. Else the lines that historia/app.html leer() walks today (a bare line or
    {say}, the lead lines and the question line of an ask, decide or elige, and the lines inside after / then / right and the options),
    in the order they are played in the all-right play: so a $ variable is what the draw gave it, an {if} takes the branch the play took,
@@ -59,13 +62,29 @@ BREAK_ON = {"act"}
 GENERIC_IDS = {"muy_bien", "si_muy_bien", "ahora_tu"}
 GENERIC_PREFIX = ("hz_no_",)
 
+# What the picture leaves out of the canvas besides the sign, the answer bubbles and the star effects (see 1 above).
+# The picture bubbles above a speaker (the hand, the heart, the ?, the faces) are speaker markers: a page holds up to three lines, so they are off.
+# The scene's own counters (frog and bird tallies, the card of what is asked: E.hud) are part of the scene canvas and stay; --no-hud takes them off.
+HIDE_ICON_BUBBLES = True
+HIDE_HUD = False
+
 # Per-story fixes (see 6 above). Empty for now.
 OVERRIDES = {}
 
-# The first draw. Every draw, deal and decision takes its first option, except in the stories below, whose "leer" list was written for another
-# draw: there the plan lists, in order, which option (0 = first) each random step takes, so that every clip of the list really plays.
-# Found by  --solve <id>  (a search over the draws of the real engine, scored by how many "leer" clips play in the order of the list).
-DRAWS = {}
+# The first draw. Every draw, deal and decision of the play takes its first option, and a choice with no wrong answer (elige) takes its first
+# option too. The stories below have a "leer" list that was written for another draw: there the plan lists, in order of the random steps of the
+# play (draws, deals, decisions with no fixed pick, elige), which option each takes (0 = the first), so that every clip of the list really
+# plays and the picture of a line is the scene that line is about. Found by  --solve <id>  (a search over the real engine's draws, scored by how
+# many "leer" clips play in the order of the list); trailing zeros are left off. Stories not named here play their first draw.
+DRAWS = {
+    "el-jugo": [1, 0, 1],               # d=agua, l=silla, t=pequeno
+    "que-calor": [0, 0, 1],             # the elige: jugo
+    "la-foto": [1, 1],
+    "quien-eres-tu": [1],               # the deal: hermano and hermana the other way round
+    "las-flores": [0, 0, 0, 1],
+    "donde-esta-el-gato": [1, 0, 3, 0, 4],
+    "la-piragua": [0, 1],
+}
 
 
 # ---------------------------------------------------------------- the course and the story files
@@ -117,21 +136,19 @@ def all_steps(T):
 
 
 def pool(T):
-    """Every string the story can give to a $ variable: the options of its draws, deals and decisions, and the results of its calcs."""
-    p = set()
+    """Every string the story can give to a $ variable: the options of its draws, deals and decisions, and the results of its calcs
+    (a value that is itself a pattern with $ is expanded once against the clips of the story)."""
+    p, pats = set(), set()
     for st in all_steps(T):
-        for k in ("options", "reparte"):
-            for v in st.get(k) or []:
-                if isinstance(v, str):
-                    p.add(v)
-        for k in ("then", "else"):
-            if "calc" in st and isinstance(st.get(k), str):
-                p.add(st[k])
-        for k in ("vale", "burbujas", "resp"):
-            for v in st.get(k) or []:
-                if isinstance(v, str):
-                    p.add(v)
-    return {v for v in p if "$" not in v}
+        vals = [v for k in ("options", "reparte", "vale", "burbujas", "resp") for v in st.get(k) or [] if isinstance(v, str)]
+        if "calc" in st:
+            vals += [st[k] for k in ("then", "else") if isinstance(st.get(k), str)]
+        for v in vals:
+            (pats if "$" in v else p).add(v)
+    ids = set(T["clips"])
+    for v in pats:
+        p |= expand(v, p, ids)
+    return p
 
 
 def expand(pat, P, ids):
@@ -165,11 +182,15 @@ def is_generic(T, c):
 
 
 # ---------------------------------------------------------------- the machine play
-HOOK = r"""(plan)=>{
- window.__ev=[];const ev=__ev;window.__plan=plan||[];window.__k=0;window.__nf=0;window.__RV=0;
+HOOK = r"""(cfg)=>{
+ window.__ev=[];const ev=__ev;window.__plan=cfg.plan||[];window.__k=0;window.__pickj=0;window.__RV=0;
  const shot=()=>{const sv={spot:W.spot,tw:W.twinkle,resp:W.resp,fx:W.fx,dy:W.cq.dy,F:F,camA:camA};
+   const b0=bub,b1=bubble,h0=E.hud;
    W.spot=null;W.twinkle=null;W.resp=null;W.fx=[];W.cq.dy=0;F=948;camA=null;let u=null;
+   if(cfg.bubbles){bub=function(){};bubble=function(){};}
+   if(cfg.hud)E.hud=null;
    try{draw();u=cv.toDataURL('image/png');}catch(e){u=null;}
+   bub=b0;bubble=b1;E.hud=h0;
    W.spot=sv.spot;W.twinkle=sv.tw;W.resp=sv.resp;W.fx=sv.fx;W.cq.dy=sv.dy;F=sv.F;camA=sv.camA;return u;};
  let mark=null,leads=null;
  const _say=say;say=function(id,gap){let src='other';
@@ -181,6 +202,8 @@ HOOK = r"""(plan)=>{
    if(st&&typeof st==='object'&&!st.act){
      if(st.say){mark=sub(st.say);}
      ev.push({k:'step',t:Object.keys(st)[0]});
+     if(st.elige){const n=(st.options||[]).length,j=(window.__plan[window.__k]||0);window.__k++;window.__pickj=j;
+       ev.push({k:'rand',n,j,what:'elige:'+st.elige});}
      const rs=st.draw||st.reparte||(st.decide&&!st.pick);
      if(rs){const n=st.reparte?2:(st.options||[]).length,j=(window.__plan[window.__k]||0);window.__k++;
        const r=st.reparte?(j?0.99:0):(j+0.5)/n;ev.push({k:'rand',n,j,what:st.draw||st.reparte&&st.reparte.join('+')||st.decide});window.__RV=r;
@@ -192,10 +215,10 @@ HOOK = r"""(plan)=>{
  for(const n of Object.keys(E.acts)){const f=E.acts[n];E.acts[n]=function(){ev.push({k:'act',n});return f.apply(this,arguments);};}
  Math.random=()=>window.__RV;
 }"""
-STATE = """()=>{const p=Story.pending;return {live:p?p.live.join('|'):null,kind:p?p.kind:null,pick:p?p.pick:null,asked:p?p.asked:0,running:Story.running}}"""
+STATE = """()=>{const p=Story.pending;return {live:p?p.live.join('|'):null,kind:p?p.kind:null,pick:p?p.pick:null,asked:p?p.asked:0,running:Story.running,j:window.__pickj||0}}"""
 
 
-async def play(browser, sid, plan, fast, limit=300):
+async def play(browser, sid, plan, fast, limit=300, hud=None):
     """One all-right machine play. Returns {"ev": [...], "V": {...}, "errs": [...], "timeout": bool}."""
     ctx = await browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=1, is_mobile=True, has_touch=True)
     try:
@@ -205,7 +228,7 @@ async def play(browser, sid, plan, fast, limit=300):
         await pg.goto(f"{BASE}?cuento={sid}&fast={fast}&mic=off")
         await pg.wait_for_function("window.Story&&Story.ready", timeout=20000)
         await pg.wait_for_timeout(600)
-        await pg.evaluate(HOOK, plan)
+        await pg.evaluate(HOOK, {"plan": plan, "bubbles": HIDE_ICON_BUBBLES, "hud": HIDE_HUD if hud is None else hud})
         await pg.click("#go"); t0 = time.time(); last = None; timeout = False; i = 0
         while True:
             i += 1
@@ -215,7 +238,7 @@ async def play(browser, sid, plan, fast, limit=300):
                 key = (s["live"], s["pick"])
                 if key != last:   # the right thing: the only live one; for a decision its pick; for an ask or a choice the first (as juega.py plays "r")
                     live = s["live"].split("|")
-                    tgt = live[0] if len(live) == 1 else (s["pick"] if s["kind"] == "decide" else live[0])
+                    tgt = live[0] if len(live) == 1 else (s["pick"] if s["kind"] == "decide" else live[min(s["j"], len(live) - 1)])
                     await pg.wait_for_timeout(120)
                     await pg.evaluate("t=>Story.tapOn(t)", tgt); last = key
             if not s["live"]:
@@ -333,7 +356,7 @@ def build(sid, res):
         if not u:
             raise Stop("no picture could be saved at the start of " + p["clips"][0])
         imgs.append(__import__("base64").b64decode(u.split(",", 1)[1]))
-    info = {"left_out": why, "order_flags": [c for c, n, f in lst if f == "order"], "pages_with_cam_or_set": stats_more(lst, ev, pages)}
+    info = {"empty": not pages, "left_out": why, "order_flags": [c for c, n, f in lst if f == "order"], "pages_with_cam_or_set": stats_more(lst, ev, pages)}
     # the lead question check: a lead line that asks something and is not a question line of the story is reported (none exist now)
     Q = question_clips(T)
     for st in all_steps(T):
@@ -365,7 +388,7 @@ async def solve(browser, sid, fast):
         if k >= len(steps):
             break
         cands = []
-        for j in range(steps[k]["n"] if steps[k]["what"] and not "+" in steps[k]["what"] else 2):
+        for j in range(steps[k]["n"]):
             p = (plan + [0] * (k + 1))[:max(len(plan), k + 1)]
             if j != p[k]:
                 p[k] = j; cands.append(p)
@@ -419,9 +442,16 @@ def check(ids, rd, verbose=True):
     return tot, bad
 
 
-def sheet(sid, T, B, outdir):
+def sheet(sid, T, B, outdir, info=None):
     from PIL import Image, ImageDraw, ImageFont
     f20, f16, f14 = (ImageFont.truetype(FONT, s) for s in (20, 16, 14))
+    if not B["pages"]:   # no line is left: the sheet says so, and lists what was left out
+        rows = ["No pages: every line of this story is left out (question lines, generic clips).", ""] + [f"{c}  ({w}):  {T['clips'][c]['text']}" for c, w in (info or {}).get("left_out", [])]
+        S = Image.new("RGB", (1000, 50 + 24 * len(rows)), (244, 240, 230)); d = ImageDraw.Draw(S)
+        d.text((12, 10), f"{B['title']}  ({sid})  0 pages", font=f20, fill=(20, 20, 20))
+        for i, t in enumerate(rows):
+            d.text((12, 46 + 24 * i), t, font=f16, fill=(10, 10, 10))
+        os.makedirs(outdir, exist_ok=True); S.save(os.path.join(outdir, sid + ".png")); return
     Z, W, M, cols = 2, 392, 12, 3   # picture twice its size; cell width; margin; columns
     cells = []
     for i, pg in enumerate(B["pages"]):
@@ -476,7 +506,10 @@ async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="*"); ap.add_argument("--jobs", type=int, default=6); ap.add_argument("--fast", default="8")
     ap.add_argument("--sheets"); ap.add_argument("--check", action="store_true"); ap.add_argument("--solve", action="store_true")
+    ap.add_argument("--no-hud", action="store_true"); ap.add_argument("--icon-bubbles", action="store_true")
     a = ap.parse_args()
+    global HIDE_HUD, HIDE_ICON_BUBBLES
+    HIDE_HUD = HIDE_HUD or a.no_hud; HIDE_ICON_BUBBLES = HIDE_ICON_BUBBLES and not a.icon_bubbles
     cs, C = course(); allids = [s for s, _, _ in cs]
     ids = a.ids or allids
     for i in ids:
@@ -523,14 +556,20 @@ async def main():
     for sid, why in stops.items():
         print("STOP", sid, why)
     for sid, inf in infos.items():
-        for k in ("order_flags", "lead_questions", "unknown_questions"):
+        for k in ("empty", "order_flags", "lead_questions", "unknown_questions"):
             if inf.get(k):
-                print("NOTE", sid, k, inf[k])
+                print("NOTE", sid, k, inf[k] if k != "empty" else "no line is left: the book has no pages")
     if a.sheets:
         for sid in ids:
             if os.path.exists(os.path.join(OUT, sid + ".json")) and sid not in stops:
-                sheet(sid, story(sid), json.load(open(os.path.join(OUT, sid + ".json"), encoding="utf8")), a.sheets)
+                sheet(sid, story(sid), json.load(open(os.path.join(OUT, sid + ".json"), encoding="utf8")), a.sheets, infos.get(sid))
     tot, bad = check([s for s in ids if s not in stops], rd)
+    if infos:
+        lo = {}
+        for inf in infos.values():
+            for c, w in inf["left_out"]:
+                lo[w] = lo.get(w, 0) + 1
+        print("INFO left out:", json.dumps(lo), "| pages that hold a camera move or a {set} between two of their lines:", sum(i["pages_with_cam_or_set"] for i in infos.values()))
     print("TOTAL", json.dumps(tot)); [print("BAD", b) for b in bad]
     sys.exit(1 if (bad or stops) else 0)
 

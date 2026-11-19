@@ -1,0 +1,17 @@
+{"id": "pan-para-el-pato", "title": "Pan para el pato", "pages": [
+ {"img": "img/pan-para-el-pato-1.png", "clips": ["c18_lago", "c18_hay_pato"]},
+ {"img": "img/pan-para-el-pato-2.png", "clips": ["c18_pato_nada", "c18_hay_pez", "c18_pez_nada"]},
+ {"img": "img/pan-para-el-pato-3.png", "clips": ["c18_hay_pajaro"]},
+ {"img": "img/pan-para-el-pato-4.png", "clips": ["c18_pajaro_vuela"]},
+ {"img": "img/pan-para-el-pato-5.png", "clips": ["c18_tiene_pan"]},
+ {"img": "img/pan-para-el-pato-6.png", "clips": ["c18_come"]},
+ {"img": "img/pan-para-el-pato-7.png", "clips": ["c18_si_pajaro"]},
+ {"img": "img/pan-para-el-pato-8.png", "clips": ["c18_si_pez"]},
+ {"img": "img/pan-para-el-pato-9.png", "clips": ["c18_cq_vuela", "c18_l_si_vuela"]},
+ {"img": "img/pan-para-el-pato-10.png", "clips": ["c18_cq_nada", "c18_l_si_nada"]},
+ {"img": "img/pan-para-el-pato-11.png", "clips": ["c18_ay_pez"]},
+ {"img": "img/pan-para-el-pato-12.png", "clips": ["c18_ca_mas"]},
+ {"img": "img/pan-para-el-pato-13.png", "clips": ["c18_fin_pez"]},
+ {"img": "img/pan-para-el-pato-14.png", "clips": ["c18_fin_pajaro"]},
+ {"img": "img/pan-para-el-pato-15.png", "clips": ["c18_fin_pato", "c18_cq_adios"]}
+]}

@@ -1,0 +1,10 @@
+{"id": "que-es-esto", "title": "¿Qué es esto?", "pages": [
+ {"img": "img/que-es-esto-1.png", "clips": ["p_luis_hola_amigo", "p_cq_hola_luis_amigo"]},
+ {"img": "img/que-es-esto-2.png", "clips": ["p_luis_pajaro_amigo", "p_cq_hola_amigo"]},
+ {"img": "img/que-es-esto-3.png", "clips": ["p_carmen_coqui_amigo"]},
+ {"img": "img/que-es-esto-4.png", "clips": ["p_cq_es_flor", "p_luis_si_es_flor"]},
+ {"img": "img/que-es-esto-5.png", "clips": ["p_cq_que_es_esto", "p_luis_es_un_vaso"]},
+ {"img": "img/que-es-esto-6.png", "clips": ["p_luis_no_amigo"]},
+ {"img": "img/que-es-esto-7.png", "clips": ["p_luis_es_bola"]},
+ {"img": "img/que-es-esto-8.png", "clips": ["p_luis_coqui_amigo", "p_cq_y_tu_amigo", "p_cq_y_tu_tambien"]}
+]}

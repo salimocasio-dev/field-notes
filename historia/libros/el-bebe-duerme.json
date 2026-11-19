@@ -1,0 +1,14 @@
+{"id": "el-bebe-duerme", "title": "El bebé duerme", "pages": [
+ {"img": "img/el-bebe-duerme-1.png", "clips": ["c23_un_bebe", "c23_duerme", "c23_ca_shh"]},
+ {"img": "img/el-bebe-duerme-2.png", "clips": ["c23_luis_cansado"]},
+ {"img": "img/el-bebe-duerme-3.png", "clips": ["c23_canelo_contento", "c23_senor_triste", "c23_carmen_contenta"]},
+ {"img": "img/el-bebe-duerme-4.png", "clips": ["c23_ahora_senor"]},
+ {"img": "img/el-bebe-duerme-5.png", "clips": ["c23_cq_contento"]},
+ {"img": "img/el-bebe-duerme-6.png", "clips": ["c23_cq_cansado"]},
+ {"img": "img/el-bebe-duerme-7.png", "clips": ["c23_cq_triste"]},
+ {"img": "img/el-bebe-duerme-8.png", "clips": ["c23_ahora_contento"]},
+ {"img": "img/el-bebe-duerme-9.png", "clips": ["c23_ahora_duerme"]},
+ {"img": "img/el-bebe-duerme-10.png", "clips": ["c23_ca_shh_coqui"]},
+ {"img": "img/el-bebe-duerme-11.png", "clips": ["c23_fin_canelo"]},
+ {"img": "img/el-bebe-duerme-12.png", "clips": ["c23_fin_coqui", "c23_ab_vamos", "p_cq_hm"]}
+]}

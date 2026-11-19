@@ -1,0 +1,15 @@
+{"id": "que-calor", "title": "¡Qué calor!", "pages": [
+ {"img": "img/que-calor-1.png", "clips": ["abuela_dice"]},
+ {"img": "img/que-calor-2.png", "clips": ["cq_bien_y_tu"]},
+ {"img": "img/que-calor-3.png", "clips": ["ab_que_calor"]},
+ {"img": "img/que-calor-4.png", "clips": ["ab_quiero_agua"]},
+ {"img": "img/que-calor-5.png", "clips": ["cq_jugo_q"]},
+ {"img": "img/que-calor-6.png", "clips": ["ab_no_quiero_jugo"]},
+ {"img": "img/que-calor-7.png", "clips": ["cq_toma_abuela"]},
+ {"img": "img/que-calor-8.png", "clips": ["cq_de_nada"]},
+ {"img": "img/que-calor-9.png", "clips": ["cq_quiero_jugo"]},
+ {"img": "img/que-calor-10.png", "clips": ["cq_gracias", "ab_de_nada"]},
+ {"img": "img/que-calor-11.png", "clips": ["cq_mmm"]},
+ {"img": "img/que-calor-12.png", "clips": ["cq_como_estas_abuela"]},
+ {"img": "img/que-calor-13.png", "clips": ["ab_bien_y_tu", "cq_bien"]}
+]}

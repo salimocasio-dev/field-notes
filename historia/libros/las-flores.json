@@ -1,0 +1,13 @@
+{"id": "las-flores", "title": "Las flores", "pages": [
+ {"img": "img/las-flores-1.png", "clips": ["p_es_el_patio", "p_luis_nino", "p_carmen_nina"]},
+ {"img": "img/las-flores-2.png", "clips": ["p_luis_hola_coqui"]},
+ {"img": "img/las-flores-3.png", "clips": ["p_nino_juega_bola"]},
+ {"img": "img/las-flores-4.png", "clips": ["p_nina_tiene_flor"]},
+ {"img": "img/las-flores-5.png", "clips": ["p_mira_el_sol"]},
+ {"img": "img/las-flores-6.png", "clips": ["p_es_el_sol"]},
+ {"img": "img/las-flores-7.png", "clips": ["p_carmen_si_esta_aqui"]},
+ {"img": "img/las-flores-8.png", "clips": ["p_carmen_esta_alla"]},
+ {"img": "img/las-flores-9.png", "clips": ["p_carmen_ahora_tu"]},
+ {"img": "img/las-flores-10.png", "clips": ["p_nino_nina_juegan"]},
+ {"img": "img/las-flores-11.png", "clips": ["p_cq_yo_tambien"]}
+]}
