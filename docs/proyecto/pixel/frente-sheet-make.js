@@ -60,7 +60,7 @@ function make(G) {
     inicio: { world: pathAt(3.55), scale: 1, old: [150, 178], what: 'where every story starts: on the path, near the bottom (juego.js:16 fresh(), cq x 150 y 178 s 1)' },
     patio: { world: pathAt(1.8), scale: .86, old: [123, 150], what: 'LUGAR.patio: on the path in front of the house (also cual.js:21, the frog of every pair picture)' },
     puerta: { world: [doorMid - .2, F.HY1 + .62, F.FLOOR], scale: .72, old: [150, 104], what: 'LUGAR.puerta and LUGAR.casa_grande: on the porch, before the door' },
-    ventana: { world: [winMid + .85, F.HY1 + 1.42, 0], scale: .72, old: [96, 104], what: 'LUGAR.ventana: under the window, on the lawn just before the porch, as the old frog stood (on the porch his bubble covered abuela in the window and the window\'s hint frame crossed his eyes)' },
+    ventana: { world: [winMid + .59, F.HY1 + 1.47, 0], scale: .72, old: [96, 104], what: 'LUGAR.ventana: under the window, on the lawn just before the porch, as the old frog stood (on the porch his bubble covered abuela in the window and the window\'s hint frame crossed his eyes). Placed so that every hop count acts.ir gives (round(d / 28)) from the places the stories hop from is the old one' },
     palma_grande: { world: [F.PALM[0] + .55, F.PALM[1] - .05, 0], scale: .74, old: [38, 100], what: 'LUGAR.palma_grande: at the foot of the big palm' },
     palma_pequena: { world: [F.SPALM[0] - .55, F.SPALM[1] + .5, 0], scale: .88, old: [150, 150], what: 'LUGAR.palma_pequena: beside the small palm' },
     casa_pequena: { world: [F.BIRD[0] + .5, F.BIRD[1] - .15, 0], scale: .86, old: [86, 150], what: 'LUGAR.casa_pequena: beside the birdhouse' },

@@ -348,12 +348,12 @@
    "what": "LUGAR.puerta and LUGAR.casa_grande: on the porch, before the door"
   },
   "ventana": {
-   "world": [-0.01, 1.42, 0],
-   "screen": [91.71, 132.96],
+   "world": [-0.27, 1.47, 0],
+   "screen": [86.01, 131.03],
    "scale": 0.72,
-   "frog": [76, 108],
+   "frog": [70, 106],
    "old": [96, 104],
-   "what": "LUGAR.ventana: under the window, on the lawn just before the porch, as the old frog stood (on the porch his bubble covered abuela in the window and the window's hint frame crossed his eyes)"
+   "what": "LUGAR.ventana: under the window, on the lawn just before the porch, as the old frog stood (on the porch his bubble covered abuela in the window and the window's hint frame crossed his eyes). Placed so that every hop count acts.ir gives (round(d / 28)) from the places the stories hop from is the old one"
   },
   "palma_grande": {
    "world": [-0.78, 3.46, 0],
@@ -450,7 +450,7 @@
   },
   "ventana": {
    "spot": "ventana",
-   "frog": [76, 108],
+   "frog": [70, 106],
    "scale": 0.72
   },
   "patio": {
@@ -2340,7 +2340,7 @@
    "old": "LUGAR.ventana [96,104,0.72]",
    "to": {
     "spot": "ventana",
-    "frog": [76, 108],
+    "frog": [70, 106],
     "scale": 0.72
    }
   },
