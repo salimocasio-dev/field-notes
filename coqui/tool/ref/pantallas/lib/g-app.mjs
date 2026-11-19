@@ -36,6 +36,9 @@ export async function bienvenida(C) {
   const st = [open('vacio', APP + '?tab=yo'), 'touch "How it works"'];
   await tap(pg, '#t-yo .btn.out.full'); await sheetOpen(pg); await adv(pg, 100);
   await S(C, pg, 'bienvenida', 'como-funciona-1', { orders: ME, seed: 'vacio', url: APP + '?tab=yo', steps: st });
+  await pg.evaluate(() => { const b = document.getElementById('sbody'); b.scrollTop = b.scrollHeight; b.dispatchEvent(new Event('scroll')); }); await adv(pg, 100);
+  await S(C, pg, 'bienvenida', 'como-funciona-1-al-final', { orders: ME, seed: 'vacio', url: APP + '?tab=yo', steps: [...st, 'scroll the sheet to its end (the Level check paragraph)'] });
+  await pg.evaluate(() => { const b = document.getElementById('sbody'); b.scrollTop = 0; b.dispatchEvent(new Event('scroll')); }); await adv(pg, 100);
   await tap(pg, '#sfoot .btn'); await adv(pg, 100);
   await S(C, pg, 'bienvenida', 'como-funciona-2', { orders: ME, seed: 'vacio', url: APP + '?tab=yo', steps: [...st, 'touch "Next"'] });
   await tap(pg, '#sfoot .btn'); await adv(pg, 100);
@@ -262,7 +265,7 @@ export async function libro(C) {
 // ------------------------------------------------------------------------------------------------------------------
 export async function hablar(C) {
   const url = APP + '?tab=hablar';
-  for (const [sd, state, full] of [['vacio', 'nada-jugado', false], ['curso', 'a-medio-curso', true], ['todo', 'todo-jugado', true]]) {
+  for (const [sd, state, full] of [['vacio', 'nada-jugado', true], ['curso', 'a-medio-curso', true], ['todo', 'todo-jugado', true]]) {
     const pg = await C.page(sd);
     await openApp(pg, C.base, '?tab=hablar');
     const steps = [open(sd, url)];

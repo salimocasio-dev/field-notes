@@ -154,7 +154,7 @@ export class Recorder {
       await untilReal(pg, 'document.documentElement.scrollHeight===innerHeight');
     }
     const buf = await pg.screenshot({ animations: opts.motion ? 'allow' : 'disabled', caret: 'hide', scale: 'device', type: 'png' });
-    const text = await pg.evaluate(VISIBLE_TEXT);
+    const text = await pg.evaluate(`(${VISIBLE_TEXT})()`);
     if (opts.full) { await pg.setViewportSize({ width: this.dev.w, height: this.dev.h }); await untilReal(pg, `innerHeight===${this.dev.h}`); }
     this.items.push({ file, nn, screen, state, device: this.dev.id, meta, raw: buf, text, full: !!opts.full });
     if (this.sink) this.sink(file);

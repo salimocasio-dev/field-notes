@@ -15,6 +15,7 @@ import { nivelSeed } from './lib/g-lessons.mjs';
 const arg = (k, d = null) => { const i = process.argv.indexOf('--' + k); return i < 0 ? d : (process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : true); };
 const only = arg('only') ? String(arg('only')).split(',') : null;
 const outDir = path.resolve(arg('out', OUT0));
+if ((arg('only') || arg('device')) && outDir === path.resolve(OUT0)) { console.error('--only and --device make a partial set: give --out <a scratch folder> so the committed pictures stay whole'); process.exit(2); }
 const devices = DEVICES.filter(d => !arg('device') || d.id.startsWith(arg('device')));
 const noOpt = !!arg('no-optimise');
 if (arg('list')) { console.log(GROUPS.map(g => g.id).join('\n')); process.exit(0); }
@@ -54,7 +55,7 @@ try {
     if (a !== b) throw new Error('the two phones did not take the same pictures:\n' + a + '\n' + b);
   }
   fs.mkdirSync(outDir, { recursive: true });
-  const finals = await optimiseAll(recs, outDir, { skip: noOpt });
+  const finals = await optimiseAll(recs, outDir, { skip: noOpt, full: !only && devices.length === DEVICES.length });
   writeIndex({ recs, finals, outDir, seeds, only, noOpt });
   console.log(`done in ${((Date.now() - t0) / 1000).toFixed(0)} s: ${recs.reduce((n, r) => n + r.items.length, 0)} pictures in ${outDir}`);
 } finally {

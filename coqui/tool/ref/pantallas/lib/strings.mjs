@@ -24,14 +24,14 @@ export const STRINGS = [
   // ---- Palabras and the word sheet
   ['Repaso', 'app.html palabras, cual.js'], [R('^\\d+ words today · about \\d+ min$'), 'app.html palabras'], [R('^1 word today · about 1 min$'), 'app.html palabras, singular'], ['Start', 'app.html palabras, yo'],
   ['Nothing due today', 'app.html palabras'], ['Practice', 'app.html palabras'], ['Ear: you know it when you hear it. Mouth: you can say it.', 'app.html palabras'], ['Ear', 'app.html meter'], ['Mouth', 'app.html meter'],
-  ['Play the first story on the map. Your words show up here.', 'app.html palabras'], ['More words', 'app.html palabras (a recorded word that no played story brings)', 'unreachable'],
+  ['Play the first story on the map. Your words show up here.', 'app.html palabras'], ['More words', 'app.html palabras (a recorded word that no played story brings)'],
   ['Add a word or a goal', 'app.html palabras'], ['For example: "talk to my 1-year-old around the house".', 'app.html palabras'], ['[placeholder] A word or a goal', 'app.html palabras'], ['Add', 'app.html palabras'], ['Saved. Material for it comes later.', 'app.html palabras'],
   ['Comes back today', 'app.html vuelve'], [R('^Comes back in \\d+ days$'), 'app.html vuelve'], ['Comes back in 1 day', 'app.html vuelve, singular'], ['Heard in', 'app.html palabra'],
   // ---- Hablar
   ['Call Danny', 'app.html hablar'], [R('· about 5 min$'), 'app.html hablar'], [R('^Opens when you finish '), 'app.html hablar'], [R('^Coming soon · '), 'app.html hablar'], ['Words open for speaking', 'app.html hablar'],
   ['None yet. A word opens once your ear has held it for a few days.', 'app.html hablar'],
   // ---- Yo
-  ['day streak', 'app.html yo'], ['minutes listened', 'app.html yo'], ['1 minute listened', 'app.html yo, singular'], ['words heard', 'app.html yo'], ['1 word heard', 'app.html yo, singular'], ['words good', 'app.html yo'], ['1 word good', 'app.html yo, singular'],
+  ['day streak', 'app.html yo'], ['minutes listened', 'app.html yo'], ['minute listened', 'app.html yo, singular (the number is its own element)'], ['words heard', 'app.html yo'], ['word heard', 'app.html yo, singular'], ['words good', 'app.html yo'], ['word good', 'app.html yo, singular'],
   ['Where you are', 'app.html yo'], [R('^A1 · place \\d+ of 10 · '), 'app.html yo'], ['Minutes a day', 'app.html yo'], ['15', 'app.html yo'], ['30', 'app.html yo'], ['60', 'app.html yo'], ['120', 'app.html yo'],
   ["Today's plan is sized to this.", 'app.html yo'], ['Open every place', 'app.html yo'], ['To look ahead. Places not built yet stay empty.', 'app.html yo'], ['Speak in stories', 'app.html yo'],
   ["Some of the coquí's lines become your turn: you say them and the app listens.", 'app.html yo'], ["Speaking in stories isn't available on this phone right now.", 'app.html notaHabla'],
