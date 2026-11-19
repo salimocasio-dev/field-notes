@@ -123,21 +123,8 @@ class StillHost implements SceneHost {
 
   // juego.js: frog. A scene whose sheet casts the frog's shadow in the engine drops the old one (sheet: shadows.dropped)
   @override
-  void frog(Ctx g, Map<String, dynamic> q, int a) {
-    if (scene.frogShadow) {
-      signs.frog(g, q, a);
-      return;
-    }
-    final b = frogBox(q);
-    final bl = F % 47 < 2 ? 1 : 0,
-        op = ((q['bub'] == 'hola' || TALK == 'coqui') && a % 2 != 0) ? 1 : 0;
-    final s = q['s'] as num;
-    g.drawImage(
-      lib.spr('cq${jsNum(s)}_$bl$op', () => mkCoqui(s, bl, op != 0)),
-      b.x,
-      b.y + _round(q['dy'] as num),
-    );
-  }
+  void frog(Ctx g, Map<String, dynamic> q, int a) =>
+      signs.frog(g, q, a, shadow: scene.frogShadow);
 
   // juego.js: frogBox
   @override
