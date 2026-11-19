@@ -4,7 +4,12 @@ import 'dart:typed_data';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart';
+import 'package:coqui_scenes/src/converted_scenes.dart';
 import 'package:coqui_scenes/src/load_scene.dart';
+import 'package:coqui_scenes/src/old_pictures.dart';
+import 'package:coqui_scenes/src/picture_cut.dart';
+import 'package:coqui_scenes/src/picture_error.dart';
+import 'package:coqui_scenes/src/registry.dart';
 import 'package:coqui_scenes/src/scene_set.dart';
 import 'package:coqui_scenes/src/still_frame.dart';
 import 'package:coqui_scenes/src/still_host.dart';
@@ -16,25 +21,23 @@ import 'package:material_ui/material_ui.dart';
 /// its pairs at F 8).
 const int pictureF = 8;
 
-/// One picture made ready: the scene's frame, the picture's name in the sheet (`pictures.<word>.<side>`), and the W it
-/// draws.
-class _Shot {
-  _Shot(this.frame, this.name, this.W);
+/// Where a picture is cut from the scene's picture: the sheet's `crop` for it (its centre is the picture's centre) and
+/// its zoom. [name] is the sheet's picture (`<word>.<side>`) or level entry (`nivel.<word>.<index>`) they came from.
+class _Cut {
+  _Cut(this.name, this.crop, this.zoom);
 
-  final StillFrame frame;
   final String name;
-  final Map<String, dynamic> W;
+  final List<int> crop;
+  final int zoom;
 }
 
-/// Why a picture cannot be drawn: the scene is not converted, or the sheet does not say which of its pictures a
-/// reference is.
-class PictureError implements Exception {
-  PictureError(this.message);
+/// One picture made ready: the scene's frame, where its picture is cut from, and the W it draws.
+class _Shot {
+  _Shot(this.frame, this.cut, this.W);
 
-  final String message;
-
-  @override
-  String toString() => message;
+  final StillFrame frame;
+  final _Cut cut;
+  final Map<String, dynamic> W;
 }
 
 // JSON-shaped values, deep-copied (the old code's JSON.parse(JSON.stringify(...)))
@@ -55,20 +58,28 @@ String _canon(Object? v) {
   return jsonEncode(v);
 }
 
-/// The pictures other features ask for (page 12, section 3, `PictureSource`), drawn by the converted scenes on a still
-/// host: waits return at once, sound is silent. One engine per scene; each state of a set is baked once, on first use or
-/// by [warm] (cached by scene and set key, `SetBakes`).
+/// The pictures other features ask for (page 12, section 3, `PictureSource`).
 ///
-/// A review or level picture is cut from the scene's picture as its sheet says (`pictures.<word>.<side>`: a centre and a
-/// zoom of 1 or 2; 196 × 104). A [PictureRef] holds a scene, a state and the old view rectangle, not which picture of
-/// the sheet it is, so the pictures are found by the review pairs given here ([pairs]): the side of a pair whose scene,
-/// state and view are the reference's. [ofPicture] takes the picture's name itself.
+/// A converted scene draws its pictures: its engine on a still host (waits return at once, sound is silent), one engine
+/// per scene, each state of a set baked once, on first use or by [warm] (cached by scene and set key, `SetBakes`). The
+/// picture is cut from the scene's 240 x 216 picture as its sheet says and as the size rule says ([pictureRegion]): the
+/// picture is `width` x `height` picture pixels; it shows the region of `width / zoom` x `height / zoom` pixels centred on
+/// the centre of the sheet's `crop` for it, each pixel drawn `zoom` x `zoom` (zoom 1 or 2). Never a fraction.
+///
+/// Which picture of the sheet a [PictureRef] is: its [PictureRef.name] (`<word>.si`, `<word>.no`: the sheet's
+/// `pictures`; `nivel.<word>.<index>`: the sheet's `level`, which names the pair picture it uses). A reference with no
+/// name is found by the review pairs given here ([pairs]): the side of a pair whose scene, state and view are the
+/// reference's (it fails when the sheet crops two of them differently). [ofPicture] takes the picture's name itself.
+///
+/// A scene that is not converted yet shows its old picture (order 06's, `assets/old_pictures/<id>/`), found by the
+/// reference's name, in the size it was drawn in (196 x 104 for a review picture, 96 x 106 for a cell of the level
+/// check); any other size, and a reference with no name, fail. `animated` does nothing for it.
 class ScenePictures implements PictureSource {
   ScenePictures({
     Iterable<ReviewPair> pairs = const [],
     this.bundle,
     this.still = false,
-  }) {
+  }) : _old = OldPictures(bundle: bundle) {
     for (final p in pairs) {
       for (final (side, spec) in [('si', p.yes), ('no', p.no)]) {
         final ref = PictureRef.of(p, spec);
@@ -77,30 +88,37 @@ class ScenePictures implements PictureSource {
     }
   }
 
-  /// Where the scenes' sheets are read from (the root bundle when null).
+  /// Where the scenes' sheets and old pictures are read from (the root bundle when null).
   final AssetBundle? bundle;
 
   /// The OS asks for reduced motion: no wind, even in an animated picture.
   final bool still;
 
+  final OldPictures _old;
   final Map<String, List<String>> _index = {};
   final Map<String, Future<StillFrame>> _frames = {};
 
   static String _key(PictureRef r) =>
       '${r.scene}|${_canon(r.set)}|${r.cam.map(jsNum).join(',')}';
 
-  /// The frame of scene [id], made once.
-  Future<StillFrame> frameOf(String id) => _frames[id] ??= () async {
-    final scene = await loadScene(id, bundle: bundle);
-    if (scene is! SetScene) {
-      throw PictureError('$id: not converted yet');
+  /// The frame of scene [id] (a converted scene), made once.
+  Future<StillFrame> frameOf(String id) {
+    if (!convertedScenes.contains(id)) {
+      return Future.error(PictureError('$id: not converted yet'));
     }
-    final f = StillFrame(scene, still: still);
-    f.host.fresh();
-    return f;
-  }();
+    return _frames[id] ??= () async {
+      final scene = await loadScene(id, bundle: bundle);
+      if (scene is! SetScene) {
+        throw PictureError('$id: not converted yet');
+      }
+      final f = StillFrame(scene, still: still);
+      f.host.fresh();
+      return f;
+    }();
+  }
 
-  /// The name in the sheet of the picture [ref] is (`<word>.<side>`), from the review pairs.
+  /// The name in the sheet of the picture [ref] is (`<word>.<side>`), from the review pairs: the fallback for a reference
+  /// that has no name.
   String pictureName(PictureRef ref, Sheet sheet) {
     final names = [
       for (final n in _index[_key(ref)] ?? const <String>[])
@@ -121,6 +139,25 @@ class ScenePictures implements PictureSource {
       );
     }
     return names.first;
+  }
+
+  // the sheet's picture [n] (`<word>.<side>`), or its level entry (`nivel.<word>.<index>`: its own centre and zoom)
+  _Cut _cutNamed(Sheet sheet, String scene, String n) {
+    final pic = sheet.pictures[n];
+    if (pic != null) return _Cut(n, pic.crop, pic.zoom);
+    if (n.startsWith('nivel.')) {
+      final rest = n.substring('nivel.'.length), dot = rest.lastIndexOf('.');
+      final index = dot < 0 ? null : int.tryParse(rest.substring(dot + 1));
+      if (index != null) {
+        final word = rest.substring(0, dot);
+        for (final l in sheet.level) {
+          if (l.word == word && l.index == index) {
+            return _Cut(n, l.crop, l.zoom);
+          }
+        }
+      }
+    }
+    throw PictureError('$scene: its sheet has no picture "$n"');
   }
 
   // cual.js: panelW. The world of a review picture: the scene's fresh world, the frog where a pair picture has him
@@ -171,18 +208,55 @@ class ScenePictures implements PictureSource {
     return w;
   }
 
+  // a converted scene's picture, ready to draw: [name] (ofPicture) wins over the reference's own name, which wins over
+  // the review pairs
   Future<_Shot> _prepare(PictureRef ref, String? name) async {
     final frame = await frameOf(ref.scene);
     final sheet = frame.scene.sheet;
-    final n = name ?? pictureName(ref, sheet);
-    if (!sheet.pictures.containsKey(n)) {
-      throw PictureError('${ref.scene}: its sheet has no picture "$n"');
-    }
-    return _Shot(frame, n, pictureW(frame.scene, ref.set));
+    final cut = _cutNamed(
+      sheet,
+      ref.scene,
+      name ?? ref.name ?? pictureName(ref, sheet),
+    );
+    return _Shot(frame, cut, pictureW(frame.scene, ref.set));
   }
 
-  /// Draws [shot] at frame [F] and cuts its picture: 196 × 104 pixels.
-  static Uint32List _draw(_Shot shot, int F, {bool wind = false}) {
+  // an old picture of a scene that is not converted yet; [width] x [height] null: whatever size it is (to decode ahead)
+  Future<OldPicture> _oldOf(
+    PictureRef ref,
+    String? name,
+    int? width,
+    int? height,
+  ) async {
+    final id = ref.scene;
+    if (!sceneRegistry.containsKey(id)) {
+      throw PictureError('"$id" is not a scene');
+    }
+    final n = name ?? ref.name;
+    if (n == null) {
+      throw PictureError(
+        '$id: not converted yet, so its pictures are the old ones, found by name; this reference has no name: make it with '
+        'PictureRef.of or PictureRef.ofLevel ($ref)',
+      );
+    }
+    final pic = await _old.picture(id, n);
+    if (width != null && (pic.width != width || pic.height != height)) {
+      throw PictureError(
+        '$id: not converted yet; its old picture "$n" is ${pic.width} x ${pic.height}, and a $width x $height picture '
+        'cannot be made of it',
+      );
+    }
+    return pic;
+  }
+
+  /// Draws [shot] at frame [F] and cuts its picture: [width] x [height] pixels.
+  static Uint32List _draw(
+    _Shot shot,
+    int F,
+    int width,
+    int height, {
+    bool wind = false,
+  }) {
     final frame = shot.frame;
     frame.draw(
       _copy(shot.W) as Map<String, dynamic>,
@@ -191,21 +265,41 @@ class ScenePictures implements PictureSource {
       tick: wind ? frame.host.TICK : 0,
       allSigns: false,
     );
-    return frame.scene.sheet
-        .pictureCrop(shot.name, frame.engine, frame.picture)
-        .px;
+    final sheet = frame.scene.sheet;
+    return cutPicture(
+      frame.picture,
+      crop: shot.cut.crop,
+      zoom: shot.cut.zoom,
+      width: width,
+      height: height,
+      picW: sheet.pictureW,
+      picH: sheet.pictureH,
+    );
   }
 
-  /// The picture of [ref] (or of the sheet's picture [name]) at frame [F], 196 × 104 pixels, drawn now.
+  /// The picture of [ref] (or of the sheet's picture [name]) at frame [F], [width] x [height] pixels, drawn now (a scene
+  /// that is not converted: its old picture, which has the size it was drawn in).
   Future<Uint32List> pixels(
     PictureRef ref, {
     String? name,
     int F = pictureF,
-  }) async => _draw(await _prepare(ref, name), F);
+    int width = reviewW,
+    int height = reviewH,
+  }) async {
+    if (!convertedScenes.contains(ref.scene)) {
+      final old = await _oldOf(ref, name, width, height);
+      return Uint32List.fromList(old.pixels);
+    }
+    return _draw(await _prepare(ref, name), F, width, height);
+  }
 
   @override
   Future<void> warm(Iterable<PictureRef> refs) async {
     for (final r in refs) {
+      if (!convertedScenes.contains(r.scene)) {
+        await _oldOf(r, null, null, null);
+        continue;
+      }
       final shot = await _prepare(r, null);
       shot.frame.bakes.bake(shot.W);
     }
@@ -214,31 +308,31 @@ class ScenePictures implements PictureSource {
   @override
   Widget of(
     PictureRef ref, {
-    int height = 104,
-    int? scale,
+    int width = reviewW,
+    int height = reviewH,
     bool animated = false,
   }) => _ScenePicture(
     source: this,
     ref: ref,
     name: null,
+    width: width,
     height: height,
-    scale: scale,
     animated: animated,
   );
 
-  /// [of] for the sheet's picture [name] (`<word>.<side>`, as `pictures` in the sheet names it).
+  /// [of] for the sheet's picture [name] (`<word>.<side>` or `nivel.<word>.<index>`, as the sheet names them).
   Widget ofPicture(
     PictureRef ref,
     String name, {
-    int height = 104,
-    int? scale,
+    int width = reviewW,
+    int height = reviewH,
     bool animated = false,
   }) => _ScenePicture(
     source: this,
     ref: ref,
     name: name,
+    width: width,
     height: height,
-    scale: scale,
     animated: animated,
   );
 }
@@ -248,16 +342,16 @@ class _ScenePicture extends StatefulWidget {
     required this.source,
     required this.ref,
     required this.name,
+    required this.width,
     required this.height,
-    required this.scale,
     required this.animated,
   });
 
   final ScenePictures source;
   final PictureRef ref;
   final String? name;
+  final int width;
   final int height;
-  final int? scale;
   final bool animated;
 
   @override
@@ -283,8 +377,9 @@ class _ScenePictureState extends State<_ScenePicture>
   void didUpdateWidget(_ScenePicture old) {
     super.didUpdateWidget(old);
     if (old.source != widget.source ||
-        old.ref.toString() != widget.ref.toString() ||
+        old.ref != widget.ref ||
         old.name != widget.name ||
+        old.width != widget.width ||
         old.height != widget.height ||
         old.animated != widget.animated) {
       _ticker?.dispose();
@@ -303,16 +398,38 @@ class _ScenePictureState extends State<_ScenePicture>
   Future<void> _start() async {
     final gen = ++_gen;
     try {
-      if (widget.height != reviewH) {
-        throw PictureError(
-          'a review picture is $reviewW x $reviewH (the sheet\'s pictures); height ${widget.height} is not one',
+      final source = widget.source;
+      if (!convertedScenes.contains(widget.ref.scene)) {
+        // its old picture: shown as it is (the sheet and the engine are not asked); `animated` does nothing
+        final old = await source._oldOf(
+          widget.ref,
+          widget.name,
+          widget.width,
+          widget.height,
         );
+        if (!mounted || gen != _gen) return;
+        setState(() => _pixels = old.pixels);
+        return;
       }
-      final shot = await widget.source._prepare(widget.ref, widget.name);
+      final shot = await source._prepare(widget.ref, widget.name);
+      // the size rule fails before anything is drawn
+      pictureRegion(
+        crop: shot.cut.crop,
+        zoom: shot.cut.zoom,
+        width: widget.width,
+        height: widget.height,
+        picW: shot.frame.scene.sheet.pictureW,
+        picH: shot.frame.scene.sheet.pictureH,
+      );
       if (!mounted || gen != _gen) return;
       setState(() {
         _shot = shot;
-        _pixels = ScenePictures._draw(shot, _frameNo);
+        _pixels = ScenePictures._draw(
+          shot,
+          _frameNo,
+          widget.width,
+          widget.height,
+        );
       });
       if (widget.animated) {
         final ticker = createTicker(_onTick);
@@ -331,7 +448,16 @@ class _ScenePictureState extends State<_ScenePicture>
     final F = pictureF + elapsed.inMilliseconds ~/ shot.frame.host.TICK;
     if (F == _frameNo) return;
     _frameNo = F;
-    px.setAll(0, ScenePictures._draw(shot, F, wind: !widget.source.still));
+    px.setAll(
+      0,
+      ScenePictures._draw(
+        shot,
+        F,
+        widget.width,
+        widget.height,
+        wind: !widget.source.still,
+      ),
+    );
     _tick.value++;
   }
 
@@ -345,10 +471,10 @@ class _ScenePictureState extends State<_ScenePicture>
   @override
   Widget build(BuildContext context) {
     final err = _error;
-    Widget child;
+    final aspect = widget.width / widget.height;
     if (err != null) {
-      child = AspectRatio(
-        aspectRatio: reviewW / reviewH,
+      return AspectRatio(
+        aspectRatio: aspect,
         child: ColoredBox(
           color: const Color(0xFF3A1E24),
           child: Center(
@@ -360,19 +486,14 @@ class _ScenePictureState extends State<_ScenePicture>
           ),
         ),
       );
-    } else if (_pixels == null) {
-      child = const AspectRatio(aspectRatio: reviewW / reviewH);
-    } else {
-      child = PixelView(
-        pixels: _pixels!,
-        width: reviewW,
-        height: reviewH,
-        repaint: _tick,
-      );
     }
-    final s = widget.scale;
-    if (s == null) return child;
-    final dpr = MediaQuery.maybeDevicePixelRatioOf(context) ?? 1;
-    return SizedBox(width: reviewW * s / dpr, child: child);
+    final px = _pixels;
+    if (px == null) return AspectRatio(aspectRatio: aspect);
+    return PixelView(
+      pixels: px,
+      width: widget.width,
+      height: widget.height,
+      repaint: _tick,
+    );
   }
 }

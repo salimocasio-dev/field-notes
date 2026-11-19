@@ -1,24 +1,47 @@
 import 'dart:convert';
 
 import 'package:coqui_scenes/coqui_scenes.dart';
+import 'package:coqui_scenes/src/old_pictures.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'fixtures/old_sample.dart';
 import 'fixtures/sheets.dart';
 
-/// An asset bundle that holds only the scenes' sheets (test/support/fixtures/sheets.dart, made by tool/make_sheets.dart).
+final Map<String, dynamic> _oldSample =
+    jsonDecode(oldSampleJson) as Map<String, dynamic>;
+
+/// The scene whose old pictures the browser tests have (the last scene that is not converted), its index (name to
+/// file) and its files (file to bytes), from test/support/fixtures/old_sample.dart.
+String get oldSampleScene => _oldSample['scene'] as String;
+Map<String, String> get oldSampleIndex =>
+    (_oldSample['index'] as Map<String, dynamic>).cast<String, String>();
+Map<String, String> get oldSampleFiles =>
+    (_oldSample['files'] as Map<String, dynamic>).cast<String, String>();
+
+/// An asset bundle that holds only the scenes' sheets (test/support/fixtures/sheets.dart, made by tool/make_sheets.dart)
+/// and one scene's old pictures (test/support/fixtures/old_sample.dart, made by tool/make_old_pictures.dart).
 class SheetBundle extends CachingAssetBundle {
+  ByteData _bytes(List<int> b) => ByteData.sublistView(Uint8List.fromList(b));
+
   @override
   Future<ByteData> load(String key) async {
     for (final e in sheetTexts.entries) {
-      if (key == sheetAsset(e.key)) {
-        return ByteData.sublistView(Uint8List.fromList(utf8.encode(e.value)));
+      if (key == sheetAsset(e.key)) return _bytes(utf8.encode(e.value));
+    }
+    final scene = oldSampleScene;
+    if (key == oldPictureAsset(scene, 'index.json')) {
+      return _bytes(utf8.encode(jsonEncode(oldSampleIndex)));
+    }
+    for (final e in oldSampleFiles.entries) {
+      if (key == oldPictureAsset(scene, e.key)) {
+        return _bytes(base64Decode(e.value));
       }
     }
     throw FlutterError('no asset $key in the sheet bundle');
   }
 }
 
-/// The bundle a test reads the sheets from: in a browser the [SheetBundle] (the root bundle never answers there), on
-/// the vm the root bundle itself (null), so the vm tests read the package's real assets.
+/// The bundle a test reads the assets from: in a browser the [SheetBundle] (the root bundle never answers there), on the
+/// vm the root bundle itself (null), so the vm tests read the package's real assets.
 AssetBundle? testBundle() => kIsWeb ? SheetBundle() : null;
