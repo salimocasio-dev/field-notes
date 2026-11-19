@@ -198,6 +198,8 @@ class StoryRunner implements SceneHost {
     SpeechSession? session,
     Sfx? sfx,
     StoryView? view,
+    this.startFrog,
+    this.frogShadow = true,
   }) : // `S._lost` is written on the story (juego.js: `S._lost=W.lost`): on a copy, the catalog's stays as it is
        S = Map<String, dynamic>.of(story),
        timers = timers ?? StoryTimers(),
@@ -238,6 +240,14 @@ class StoryRunner implements SceneHost {
   final StoryView view;
   late final Signs _signs;
   late int _origin;
+
+  /// Where the game puts the frog when a play starts (juego.js, `fresh`: `cq x 150 y 178 s 1`), as the scene's sheet says
+  /// (its `code` entry for `juego.js:16`: a spot). Null: the old numbers.
+  final ({int x, int y, num scale}) Function()? startFrog;
+
+  /// Whether the frog keeps the old flat shadow juego.js's `frog()` draws under him. A converted scene (a `SetScene`) casts his
+  /// shadow in the engine, so the old one is not drawn (its sheet: `shadows.dropped`).
+  final bool frogShadow;
 
   // ---------- the globals of juego.js ----------
 
@@ -407,11 +417,12 @@ class StoryRunner implements SceneHost {
   // juego.js: fresh
   @override
   void fresh() {
+    final f = startFrog?.call();
     final base = <String, dynamic>{
       'cq': <String, dynamic>{
-        'x': 150,
-        'y': 178,
-        's': 1,
+        'x': f?.x ?? 150,
+        'y': f?.y ?? 178,
+        's': f?.scale ?? 1,
         'dy': 0,
         'al': 1,
         'vis': 1,
@@ -763,8 +774,25 @@ class StoryRunner implements SceneHost {
   ({num x, num y, num w, num h}) frogBox(Map<String, dynamic> q) =>
       px.frogBox(q);
 
+  // juego.js: frog
   @override
-  void frog(Ctx g, Map<String, dynamic> q, int a) => _signs.frog(g, q, a);
+  void frog(Ctx g, Map<String, dynamic> q, int a) {
+    if (frogShadow) {
+      _signs.frog(g, q, a);
+      return;
+    }
+    // Without the old shadow. A copy of what coqui_scenes' `StillHost.frog` does, until `Signs.frog` has its `shadow` flag
+    // (order 12b): to be replaced by `_signs.frog(g, q, a, shadow: false)`.
+    final b = px.frogBox(q);
+    final bl = F % 47 < 2 ? 1 : 0,
+        op = ((q['bub'] == 'hola' || TALK == 'coqui') && a % 2 != 0) ? 1 : 0;
+    final sc = q['s'] as num;
+    g.drawImage(
+      lib.spr('cq${jsNum(sc)}_$bl$op', () => mkCoqui(sc, bl, op != 0)),
+      b.x,
+      b.y + jsRound(q['dy'] as num),
+    );
+  }
 
   @override
   void star(Ctx g, num x, num y, num s, [bool hot = false]) =>

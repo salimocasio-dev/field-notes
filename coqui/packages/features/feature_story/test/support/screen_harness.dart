@@ -13,6 +13,8 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../tool/dev_scene.dart';
 
+import 'package:feature_story/src/screen/scene_frame.dart';
+
 /// A clip player whose lines take as long as their marks say, on the test's time.
 class TimedClips extends FakeClipPlayer {
   TimedClips(CourseCatalog course)
@@ -149,6 +151,7 @@ Future<Screen> openScreen(
   double ratio = 2.625,
   bool reduceMotion = true,
   Object habla = 1,
+  SceneFactory? scenes,
 }) async {
   tester.view.physicalSize = Size(size.width * ratio, size.height * ratio);
   tester.view.devicePixelRatio = ratio;
@@ -179,7 +182,7 @@ Future<Screen> openScreen(
       home: StoryScreen(
         services: services,
         route: StoryRoute(id, listen: listen),
-        scenes: devScenes(stories),
+        scenes: scenes ?? fakeScenes(stories),
         txt: txt,
         session: SpeechSession(),
         options: options,

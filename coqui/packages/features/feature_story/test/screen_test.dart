@@ -8,6 +8,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:feature_story/feature_story.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_view.dart';
+import 'package:feature_story/src/screen/scene_frame.dart';
 import 'package:feature_story/src/screen/story_bubble.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -124,6 +125,48 @@ void main() {
         isTrue,
       );
     });
+  });
+
+  group('on the real El frente (order 14: the scenes package\'s registry)', () {
+    testWidgets(
+      'the set is baked and drawn, the frog starts where the sheet puts him, the first question shows the sign',
+      (tester) async {
+        final s = await openScreen(tester, scenes: registryScenes);
+        // the picture is El frente's, not a flat one: many colours
+        expect({...s.frame.display}.length, greaterThan(60));
+        expect(s.frame.bakes, 1);
+        final q = s.runner.W['cq'] as Map<String, dynamic>;
+        expect((
+          q['x'],
+          q['y'],
+          q['s'],
+        ), isNot((150, 178, 1))); // the sheet's spot, not the old screen number
+        await tester.tap(find.byType(LessonStartButton));
+        await s.until(() => s.runner.W['spot'] != null, what: 'the sign');
+        await s.advance(150);
+        expect(s.runner.W['spot'], 'casa');
+        expect(count(s, _gold), greaterThan(100));
+      },
+    );
+
+    testWidgets(
+      'a scene that is not converted yet: the lesson frame and its way out, nothing else',
+      (tester) async {
+        final errors = <FlutterErrorDetails>[];
+        final old = FlutterError.onError;
+        FlutterError.onError = errors.add;
+        addTearDown(() => FlutterError.onError = old);
+        await openScreen(
+          tester,
+          id: 'la-lluvia',
+          scenes: (id, rng) => registryScenes('balcon', rng),
+        );
+        expect(find.byType(LessonFrame), findsOneWidget);
+        expect(find.byType(LessonCloseButton), findsOneWidget);
+        expect(find.byType(LessonStartButton), findsNothing);
+        expect(errors.single.exception, isA<UnimplementedError>());
+      },
+    );
   });
 
   group('words on the screen', () {

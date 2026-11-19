@@ -32,6 +32,35 @@ Map<String, dynamic> forComparison(Map<String, dynamic> t) {
   return c;
 }
 
+/// A trace as the comparison of a different scene reads it: without any time (`t`, `virtualMs`, `minutes`, the time to answer
+/// `ms`), without the touches' places, and without the frog's `hop` sounds. A scene's own geometry (where its frog stands and
+/// which views it has) changes how long its acts take and how many hops one has; everything else must be the old run's.
+Map<String, dynamic> forTimeless(Map<String, dynamic> t) {
+  Object? strip(Object? v, String key) {
+    if (v is Map) {
+      return {
+        for (final e in v.entries)
+          if (!const {
+            't',
+            'virtualMs',
+            'minutes',
+            'x',
+            'y',
+            'ms',
+          }.contains(e.key))
+            e.key: strip(e.value, e.key as String),
+      };
+    }
+    if (v is List) {
+      final l = [for (final e in v) strip(e, key)];
+      return key == 'sounds' ? l.where((e) => e != 'hop').toList() : l;
+    }
+    return v;
+  }
+
+  return Map<String, dynamic>.from(strip(t, '') as Map);
+}
+
 /// One recorded run of the old page played by the runner on a scene of the caller's. Returns the first difference, or null
 /// when the two traces are equal.
 Future<String?> compareWithScene(
@@ -41,6 +70,8 @@ Future<String?> compareWithScene(
   Directory trazas,
   Scene Function(Rng rng) sceneFor, {
   List<String> Function(Map<String, dynamic> W, int now)? thingOrder,
+  ({int x, int y, num scale}) Function(Scene scene)? startFrog,
+  bool Function(Scene scene)? frogShadow,
 }) async {
   final committed = jsonDecode(
     File('${trazas.path}/$story/$plan.json').readAsStringSync(),
@@ -55,13 +86,19 @@ Future<String?> compareWithScene(
     progress: ToolProgress(),
     storySha256: sha256Hex(course.storyBytes(story)),
     thingOrder: thingOrder,
+    startFrog: startFrog,
+    frogShadow: frogShadow,
   );
   final errs = trace['errors'];
   if (errs is List && errs.isNotEmpty) {
     return 'the run failed: ${(errs.first as String).split('\n').take(4).join(' | ')}';
   }
+  lastCompared = (committed: committed, trace: trace);
   return firstDifference(forComparison(committed), forComparison(trace));
 }
+
+/// The two traces [compareWithScene] compared last (the recorded one and the one played), to look at a difference.
+({Map<String, dynamic> committed, Map<String, dynamic> trace})? lastCompared;
 
 /// One recorded run of the old page played by the runner on the replay scene. Returns the first difference, or null when
 /// the two traces are equal (the committed one is [committed]).

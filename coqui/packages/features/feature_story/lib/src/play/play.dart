@@ -451,6 +451,8 @@ Future<void> _drain() {
 /// - [thingOrder]: the scene's things in the order the wrong-touch rule reads them (given the world and the story's time),
 ///   when the scene's `cosas` is not it (El frente has no list: its order is that of its `hit()`).
 /// - [micStub]: the stub's results, if a story with speaking turns is played (the learner writes into it).
+/// - [startFrog], [frogShadow]: where the frog starts and whether he keeps the old shadow, for a converted scene (what its
+///   sheet says); the old numbers and the old shadow when not given.
 Future<Map<String, dynamic>> play({
   required Map<String, dynamic> story,
   required String plan,
@@ -469,6 +471,8 @@ Future<Map<String, dynamic>> play({
   List<String> Function(Map<String, dynamic> W, int now)? thingOrder,
   bool allOpen = true,
   List<String>? micStub,
+  ({int x, int y, num scale}) Function(Scene scene)? startFrog,
+  bool Function(Scene scene)? frogShadow,
 }) async {
   if (!playPlans.contains(plan)) {
     throw ArgumentError.value(plan, 'plan', 'right, wrong or alternate');
@@ -505,6 +509,8 @@ Future<Map<String, dynamic>> play({
     renderer: HeadlessRenderer(),
     observer: watcher,
     sfx: RecordingSfx(player, sounds),
+    startFrog: startFrog == null ? null : () => startFrog(scene),
+    frogShadow: frogShadow?.call(scene) ?? true,
   );
   final errors = <String>[];
   final done = Completer<Map<String, dynamic>?>();

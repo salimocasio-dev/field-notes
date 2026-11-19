@@ -12,10 +12,10 @@ final SpeechSession _speech = SpeechSession();
 /// feature_story's module: the story game. It answers [StoryRoute] (a story played, or told straight through when the route
 /// says `listen`) with the play screen, full screen: the shell hides its tab bar. It has no tab.
 ///
-/// [scenes] makes the scene a story file names. The shell gives it from the scenes package; with none, no story can be
-/// shown (see `coqui/requests/15-feature-story-needs-coqui-scenes-frame-inputs.md`).
+/// [scenes] makes the scene a story file names: by default the scenes package's registry (`registryScenes`: the real
+/// scenes, the converted ones; the others throw "not converted yet" and the screen shows the lesson frame and its X).
 class StoryModule implements FeatureModule {
-  const StoryModule({this.scenes = noScenes});
+  const StoryModule({this.scenes = registryScenes});
 
   final SceneFactory scenes;
 

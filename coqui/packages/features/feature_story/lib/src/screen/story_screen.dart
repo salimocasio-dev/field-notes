@@ -75,7 +75,7 @@ class _StoryScreenState extends State<StoryScreen>
     try {
       await _s.course.load();
       final story = await _s.course.story(widget.route.id);
-      final scene = widget.scenes(story['scene'] as String, _s.rng);
+      final scene = await widget.scenes(story['scene'] as String, _s.rng);
       final frame = FrameRenderer(
         setup: scene.frame,
         reduceMotion: _s.reduceMotion,
@@ -105,6 +105,8 @@ class _StoryScreenState extends State<StoryScreen>
         ),
         renderer: frame,
         session: widget.session,
+        startFrog: scene.startFrog,
+        frogShadow: scene.frogShadow,
       );
       runner.view.addListener(_repaint.ping);
       runner.bubbleMetrics = _metrics;

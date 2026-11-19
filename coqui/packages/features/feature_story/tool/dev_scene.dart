@@ -6,7 +6,7 @@
 // package (order 14).
 import 'package:coqui_contracts/coqui_contracts.dart' show Rng;
 import 'package:coqui_pixel/coqui_pixel.dart';
-import 'package:feature_story/feature_story.dart';
+import 'package:feature_story/src/screen/scene_frame.dart';
 
 import 'stand_in_scene.dart';
 
@@ -98,7 +98,18 @@ Map<String, List<num>> camsOfStory(Iterable<Map<String, dynamic>> stories) {
   };
 }
 
-/// The scene factory of the dev entry: the dev scene of a scene id, for the stories among [stories] that use it.
+/// The scene factory of the dev entry: the real scene from the registry when it is converted (El frente), a dev scene for a scene
+/// that is not, built for the stories among [stories] that use it.
 SceneFactory devScenes(Iterable<Map<String, dynamic>> stories) =>
-    (String id, Rng rng) =>
+    (String id, Rng rng) async {
+      try {
+        return await registryScenes(id, rng);
+      } on UnimplementedError {
+        return devStoryScene(id, stories.where((x) => x['scene'] == id));
+      }
+    };
+
+/// The scene factory of the tests that want a scene of our own whatever the scene: the dev scene, for every scene id.
+SceneFactory fakeScenes(Iterable<Map<String, dynamic>> stories) =>
+    (String id, Rng rng) async =>
         devStoryScene(id, stories.where((x) => x['scene'] == id));

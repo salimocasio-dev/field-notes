@@ -10,6 +10,8 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:feature_story/src/play/trace_json.dart' show firstDifference;
+
 import '../tool/differential.dart';
 import '../tool/disk_course.dart';
 import '../tool/frente_order.dart';
@@ -45,33 +47,46 @@ void main() {
     }
   });
 
-  group('the recorded runs, on the real El frente', () {
+  // The real El frente (order 14): its sheet puts the frog and the views in the new picture, so the runs are the old ones in
+  // everything but time. Two reproduce whole; in the other thirteen the first step that differs is a step after a call of the
+  // scene that took less time than the old one: `camGo("casa")` is no move (the sheet's `casa` view is its `wide` one: the
+  // old one slid 16 ticks and back 12), or `ir`/`tocar` make one hop fewer (each is 5 ticks and 110 ms: 460 ms) because the
+  // frog's spots are nearer in the new picture.
+  group('the recorded runs, on the real El frente (order 14)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
     final frente = {
       for (final r in runs)
         if (r['scene'] == 'frente') r['story'] as String,
     };
+    const whole = {'el-bizcocho wrong', 'el-bizcocho alternate'};
     for (final s in frente) {
       test(
-        '$s: the three plans, whole',
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
         () async {
           for (final plan in ['right', 'wrong', 'alternate']) {
+            // a new scene for each run: the scene keeps its own state
+            final scene = await realScene('frente');
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              (rng) => scene,
+              thingOrder: frenteThingOrder,
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            final c = lastCompared!;
             expect(
-              await compareWithScene(
-                course,
-                s,
-                plan,
-                trazas,
-                (rng) => realScene('frente', rng),
-                thingOrder: frenteThingOrder,
-              ),
+              firstDifference(forTimeless(c.committed), forTimeless(c.trace)),
               isNull,
               reason: '$s $plan',
             );
+            if (whole.contains('$s $plan')) {
+              expect(d, isNull, reason: '$s $plan whole');
+            }
           }
         },
-        skip: realScenesReady
-            ? false
-            : 'El frente is not in the scene registry yet (order 14)',
       );
     }
   });
