@@ -89,6 +89,16 @@ Everything in 03-requirements still binds.
 | Until cutover the web app reads stories, audio and books by address from `historia/` on the same site | No copy of 40 MB, the audio job is untouched |
 | The old site stays live and frozen (bug fixes only) until cutover | He never loses a working app |
 | Builders may not add a third-party package | One lock file. They file a request |
+| (Nov 19, the session running the move) The orchestrator plans, decides and checks. It builds nothing itself. Orders the pages mark "orchestrator" go to agents too: mechanical work to Sonnet at extra-high effort; work whose decisions only show up once it has started, and every set design, to Opus at high effort | His words, Nov 19: "make sure you only plan ad make decisions. work execution goes to sonnet extra. if the work will require decision making that can only be encountered after the work starts. give it to Opus high. i want to save on usage". "Extra" read as extra-high effort is a guess |
+| (Nov 19) Flutter 3.50.0, Dart 3.14.0, pinned in `coqui/.flutter-version` | What `flutter --version` gave on the build machine |
+| (Nov 19) The audio plugin is `just_audio` 0.10.6 | It plays a clip between two marks, which is what a recorded line needs. Whether the web uses it or Web Audio is still order 00's answer |
+| (Nov 19) Widgets come from `material_ui` (flutter.dev's package), never `package:flutter/material.dart` | Flutter 3.50 deprecates the old import. The boundary check fails on it (rule f) |
+| (Nov 19) coqui_ui may depend on coqui_contracts | Page 12 section 3 puts `Services`, `FeatureModule` and `PictureSource` in coqui_ui, and they use contracts' types |
+| (Nov 19) coqui_testing is a dev dependency only, in the features, coqui_scenes and app. A feature's dev entry is `tool/dev_main.dart`, not `lib/dev_main.dart` | A file under `lib/` may only import real dependencies; the fakes must never ship |
+| (Nov 19) Builders do not push. The orchestrator checks a branch, then merges and pushes | One gate; the machine's git proxy allows two transfers at a time |
+| (Nov 19) A request is one file: `coqui/requests/<order>-<package>-needs-<target>-<slug>.md` | Two lanes can never write the same file |
+| (Nov 19) Web builds use `--no-web-resources-cdn` | The app's engine files come from our own site, not Google's servers |
+| (Nov 19) The four research reports added to his Drive on Nov 19 (speech, retention, listening-first review) change nothing in the port | The move copies behaviour as it is. What they suggest is course design, his to pick, after the move |
 | Orchestrator: the Claude Code session. Builders: Sonnet agents. Reviewers and readers: fresh agents that did not build the thing | His rule: a self-review does not count |
 
 Name map (JSON and old code → Dart): cuento → story. escena → scene. cosa → thing. lugar (in a scene) → spot. palabras → words. cual → review pair. nivel → level check. llamada → call. libros → books. dibujos → picture stories. haz → routines.

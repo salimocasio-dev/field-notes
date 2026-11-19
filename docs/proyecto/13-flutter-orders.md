@@ -94,6 +94,14 @@ Each answer picks a route. Nothing here shows course pictures.
 
 **Done when:** a test branch that imports one feature from another fails CI; a clean branch passes; `flutter build web` makes an empty app.
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; every check below was run again by the orchestrator.
+- `bash coqui/tool/test_all.sh`: passes. 21 test blocks (the four pure Dart packages on vm and chrome), format, analyze, the web build.
+- The check fails, with exit 1, on: a feature importing a feature (rule e); an import of another package's `src/` (rule c); a branch `lane/feature_words/99` changing a file in feature_map (rule d). A clean branch passes.
+- The check script has 51 tests of its own. Rules added: (f) no `package:flutter/material.dart`; (g) nothing under `lib/` imports coqui_testing.
+- Versions resolved: just_audio 0.10.6, speech_to_text 7.5.0, shared_preferences 2.5.6, web 1.1.2, go_router 18.1.4, collection 1.19.1, material_ui 1.11.1, flutter_lints 6.0.0, test 1.32.0.
+- Decisions taken while it ran are in 11-flutter-plan, "Decisions made here", the rows marked Nov 19.
+- Pixelify Sans is in coqui_ui as .ttf (converted from the site's woff2, Latin subset, 239 glyphs), with its licence.
+
 ## Order 02. Contracts and fakes (orchestrator)
 
 **From:** historia/palabras.js, curso.js, juego.js (the names in page 12 section 4), escenas/kit.js (`escena`), cual.js (`panelW`, items), nivel.js (`NV`), llamada.js (`LLAMADAS`, the session calls).
