@@ -105,6 +105,10 @@ class PalabrasStore implements ProgressStore {
   }
 
   Map<String, dynamic> get _palabras => _db['palabras'] as Map<String, dynamic>;
+  // Object.values(db.palabras)
+  List<dynamic> get _palabrasInJsOrder => [
+    for (final k in jsKeys(_palabras)) _palabras[k],
+  ];
   Map<String, dynamic> get _dias => _db['dias'] as Map<String, dynamic>;
   Map<String, dynamic> get _cuentos => _db['cuentos'] as Map<String, dynamic>;
 
@@ -383,7 +387,7 @@ class PalabrasStore implements ProgressStore {
   List<String> due(Skill skill, {int? at}) {
     final t = (at != null && at != 0) ? at : _now();
     final sk = skill.name;
-    final rs = _palabras.values.where((r) {
+    final rs = _palabrasInJsOrder.where((r) {
       final e = _skillOf(r, sk);
       return jsNumberAt(e, 'etapa') > 0 &&
           jsTruthy(e['due']) &&
@@ -448,7 +452,7 @@ class PalabrasStore implements ProgressStore {
 
   @override
   Iterable<WordRecord> get words => [
-    for (final r in _palabras.values)
+    for (final r in _palabrasInJsOrder)
       WordRecord.fromJson(r as Map<String, dynamic>),
   ];
 

@@ -62,8 +62,34 @@ void jsAssign(Map<String, dynamic> target, Object? source) {
   }
 }
 
-/// `JSON.stringify(v)`: compact, keys in the map's order, numbers as JavaScript writes them
-/// (a whole value without ".0"), NaN and Infinity as null.
+/// The keys of [m] in the order JavaScript lists an object's own properties (`Object.keys`,
+/// `Object.values`, `JSON.stringify`): the array indexes first, in ascending order (the canonical
+/// whole numbers from "0" to "4294967294": "10" comes after "9" and before "casa"), then every
+/// other key in the order it was added.
+List<String> jsKeys(Map<dynamic, dynamic> m) {
+  final indexes = <String>[];
+  final others = <String>[];
+  for (final k in m.keys) {
+    final key = '$k';
+    (_isArrayIndex(key) ? indexes : others).add(key);
+  }
+  if (indexes.isEmpty) return others;
+  indexes.sort((a, b) => int.parse(a).compareTo(int.parse(b)));
+  return [...indexes, ...others];
+}
+
+bool _isArrayIndex(String k) {
+  if (k.isEmpty || k.length > 10) return false;
+  if (k.length > 1 && k.codeUnitAt(0) == 0x30) return false; // no leading zero
+  for (var i = 0; i < k.length; i++) {
+    final c = k.codeUnitAt(i);
+    if (c < 0x30 || c > 0x39) return false;
+  }
+  return int.parse(k) <= 4294967294;
+}
+
+/// `JSON.stringify(v)`: compact, keys in the order JavaScript lists them ([jsKeys]), numbers as
+/// JavaScript writes them (a whole value without ".0"), NaN and Infinity as null.
 String jsonStringify(Object? v) {
   final out = StringBuffer();
   _write(out, v);
@@ -90,12 +116,12 @@ void _write(StringBuffer out, Object? v) {
   } else if (v is Map) {
     out.write('{');
     var first = true;
-    for (final e in v.entries) {
+    for (final k in jsKeys(v)) {
       if (!first) out.write(',');
       first = false;
-      out.write(jsonEncode('${e.key}'));
+      out.write(jsonEncode(k));
       out.write(':');
-      _write(out, e.value);
+      _write(out, v[k]);
     }
     out.write('}');
   } else if (v is Iterable) {

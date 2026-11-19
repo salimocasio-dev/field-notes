@@ -59,6 +59,48 @@ void main() {
     }
   });
 
+  group('the order of an object\'s keys', () {
+    // from node: JSON.stringify({b:1,"2":2,a:3,"1":4,"01":5,"4294967295":6,"4294967294":7,"10":8,"9":9,"-1":10,"1.5":11,"0":12})
+    final map = <String, dynamic>{
+      'b': 1,
+      '2': 2,
+      'a': 3,
+      '1': 4,
+      '01': 5,
+      '4294967295': 6,
+      '4294967294': 7,
+      '10': 8,
+      '9': 9,
+      '-1': 10,
+      '1.5': 11,
+      '0': 12,
+    };
+    test(
+      'whole-number keys first, ascending; the others as they were added',
+      () {
+        expect(jsKeys(map), [
+          '0',
+          '1',
+          '2',
+          '9',
+          '10',
+          '4294967294',
+          'b',
+          'a',
+          '01',
+          '4294967295',
+          '-1',
+          '1.5', //
+        ]);
+        expect(
+          jsonStringify(map),
+          '{"0":12,"1":4,"2":2,"9":9,"10":8,"4294967294":7,"b":1,"a":3,"01":5,'
+          '"4294967295":6,"-1":10,"1.5":11}',
+        );
+      },
+    );
+  });
+
   group('JSON.stringify of a structure', () {
     test('compact, keys in the order of the map, null kept', () {
       expect(

@@ -309,6 +309,33 @@ void main() {
     });
   });
 
+  group(
+    'words that are whole numbers come first, as in a JavaScript object',
+    () {
+      test('Object.values order in due(), and the order of the saved text', () {
+        final clock = SettableClock(_t0);
+        final kv = MemoryKeyValueStore(key: PalabrasStore.storageKey);
+        final s = _store(kv: kv, clock: clock);
+        for (final w in ['casa', '10', '9', 'agua', '2026', '007']) {
+          s.heard(w);
+        }
+        s.addMinutes(1);
+        clock.now = _t0 + 3 * 864e5.toInt();
+        // node: PAL.vence("ear"), and Object.keys(JSON.parse(localStorage).palabras)
+        expect(s.due(Skill.ear), ['9', '10', '2026', 'casa', 'agua', '007']);
+        expect(
+          (jsonDecode(kv.data[PalabrasStore.storageKey]!)['palabras'] as Map)
+              .keys,
+          ['9', '10', '2026', 'casa', 'agua', '007'],
+        );
+        expect(
+          [for (final w in s.words) w.w],
+          ['9', '10', '2026', 'casa', 'agua', '007'],
+        );
+      });
+    },
+  );
+
   group('due', () {
     test('at: 0 means now, as `t || now()`', () {
       final clock = SettableClock(_t0);
