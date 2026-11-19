@@ -12,7 +12,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/frente/frente.dart';
@@ -207,15 +206,14 @@ void main() {
         } else if (k == 'bizcocho') {
           continue;
         } else {
-          if ((k.endsWith('_grande') || k.endsWith('_pequena')) &&
-              !jsTruthy(W['escondite']))
-            continue;
+          final hiding = k.endsWith('_grande') || k.endsWith('_pequena');
+          if (hiding && !jsTruthy(W['escondite'])) continue;
           if (k == 'abuela' && W['ab'] == null) continue;
           if (k == 'nube' && W['nube'] == null) continue;
           box = scene.box(k, W) ?? scene.sheet.boxOf(k, scene.projection);
         }
         outline(pic, 240, 216, box, 0xFF00FFFF);
-        if (t.hit != null)
+        if (t.hit != null) {
           outline(
             pic,
             240,
@@ -223,6 +221,7 @@ void main() {
             scene.sheet.hitBoxOf(k, scene.projection)!,
             0xFFFF00FF,
           );
+        }
       }
       writePng('$out/boxes/${en.key}.png', pic, 240, 216, scale: 3);
       key.writeln('  boxes/${en.key}.png: ${scene.setKey(W)}');

@@ -12,6 +12,13 @@ String sheetAsset(String id) =>
 Future<Sheet> loadSheet(String id, {AssetBundle? bundle}) async {
   final had = sheetIfRead(id);
   if (had != null) return had;
-  final text = await (bundle ?? rootBundle).loadString(sheetAsset(id));
+  final b = bundle ?? rootBundle;
+  String text;
+  try {
+    text = await b.loadString(sheetAsset(id));
+  } catch (_) {
+    // this package run as the app itself (its dev entry): its own assets have no `packages/coqui_scenes/` in front
+    text = await b.loadString('assets/sheets/$id-sheet.json');
+  }
   return useSheet(id, text);
 }
