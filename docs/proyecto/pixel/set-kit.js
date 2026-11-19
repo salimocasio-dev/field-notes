@@ -16,14 +16,15 @@ function plotGlow(x, y, z, color) {
   if (zb[i] === Math.fround(p.d)) glowZ[i] = zb[i];
 }
 // the light of the hour, on everything the set drew (not the sky, not the pixels that give light):
-// c' = c * m + a, per channel. It also darkens the grass blades that drawTufts draws each frame.
-function lightPass(m, a) {
+// c' = c * m + a, per channel. darkTufts: the grass blades drawTufts draws each frame take their shaded colours everywhere
+// (a dim light: storm, rain, sunset); without it they keep their lit colours (a warm light: dusk)
+function lightPass(m, a, darkTufts = true) {
   for (let i = 0; i < W * H; i++) {
     if (zb[i] < -1e8 || glowZ[i] === zb[i]) continue;
     const c = pix[i];
     pix[i] = rgb((c & 255) * m[0] + a[0], (c >> 8 & 255) * m[1] + a[1], (c >> 16 & 255) * m[2] + a[2]);
   }
-  for (let i = 0; i < W * H; i++) if (kinds[i] === KIND_GRASS) staticShadow[i] = 1;
+  if (darkTufts) for (let i = 0; i < W * H; i++) if (kinds[i] === KIND_GRASS) staticShadow[i] = 1;
 }
 // the same light on one colour, for pixels drawn each frame (swaying leaves)
 const lit = (c, L) => L ? [c[0] * L.m[0] + L.a[0], c[1] * L.m[1] + L.a[1], c[2] * L.m[2] + L.a[2]] : c;
@@ -62,14 +63,19 @@ function skyHills(base, far, near, ix, iy) {
 // the face of a wall that faces +y (lit), at y = at, from a0 to a1 along x, z0 to z1, with rectangular holes [a0, a1, z0, z1]
 // boards: the spacing of wooden siding (a darker line under each board), 0 for a plain wall
 function wallY(at, a0, a1, z0, z1, c, holes = [], boards = 0) {
-  for (let a = a0; a <= a1; a += ST) for (let z = z0; z <= z1; z += ST) {
-    if (holes.some(h => a > h[0] && a < h[1] && z > h[2] && z < h[3])) continue;
-    plot(a, at, z, shade(c, boards && z % boards < boards * .17 ? 1.5 : 2.4, a, z));
+  for (let a = a0; a <= a1; a += ST) {
+    const hs = holes.filter(h => a > h[0] && a < h[1]);                        // the holes this column crosses
+    for (let z = z0; z <= z1; z += ST) {
+      let hole = false;
+      for (let k = 0; k < hs.length; k++) if (z > hs[k][2] && z < hs[k][3]) { hole = true; break; }
+      if (!hole) plot(a, at, z, shade(c, boards && z % boards < boards * .17 ? 1.5 : 2.4, a, z));
+    }
   }
 }
 // a solid block whose +y face has holes: block() with wallY for the lit face
-function blockHoles(x0, y0, z0, x1, y1, z1, c, holes, boards = 0) {
-  for (let a = x0; a <= x1; a += ST) for (let b = y0; b <= y1; b += ST) plot(a, b, z1, shade(c, 3.4, a, b));
+// roofed: the top is under a roof that covers it, so it is not drawn
+function blockHoles(x0, y0, z0, x1, y1, z1, c, holes, boards = 0, roofed = false) {
+  if (!roofed) for (let a = x0; a <= x1; a += ST) for (let b = y0; b <= y1; b += ST) plot(a, b, z1, shade(c, 3.4, a, b));
   wallY(y1, x0, x1, z0, z1, c, holes, boards);
   for (let b = y0; b <= y1; b += ST) for (let z = z0; z <= z1; z += ST) plot(x1, b, z, shade(c, boards && z % boards < boards * .17 ? .5 : 1.3, b, z));
 }

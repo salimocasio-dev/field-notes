@@ -7,5 +7,5 @@
   "layout": "row-major, index = y * width + x",
   "note": "pixels 0xAABBGGRR; the four bytes of one pixel are R, G, B, A in memory order; alpha 0 where nothing was drawn",
   "bytes": 207360,
-  "sha256": "ee966e2aaab00f03641186f80fbe739d3973c12bde12288d6459220eb64fe17b"
+  "sha256": "e62ab68f6f888a9bead91958a4236ec5cdcaa9c6edf2dc8ca5e6dcfde069e898"
 }

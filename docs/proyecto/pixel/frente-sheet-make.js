@@ -88,10 +88,14 @@ function make(G) {
     palma: { old: [56, 52], world: W4(F.PALM_TOP), what: 'the big palm\'s crown' },
     palmita: { old: [195, 132], world: W4(F.SPALM_TOP), what: 'the small palm\'s crown' },
     casita: { old: [73, 126], world: W4(birdHole), what: 'the birdhouse\'s round hole' },
+    // the right part of the window, for the last picture of story 1 and the cake: the frog (and his towel and drops) and the table
+    // sit 2 px right of and 3 px lower than the plain window offset, so the frog with his towel is wholly inside the opening
+    'ventana.lado': { old: [112, 71], world: W4(winC), nudge: [2, 3], what: 'beside abuela in the window: the frog (cq.42), his towel and drops, the cake table and its steam' },
   };
   for (const f of Object.values(FRAMES)) {
     f.screen = f.spot ? abDraw(f.spot) : P(f.world);
-    f.offset = [Math.round(f.screen[0] - f.old[0]), Math.round(f.screen[1] - f.old[1])];
+    const n = f.nudge || [0, 0];
+    f.offset = [Math.round(f.screen[0] - f.old[0]) + n[0], Math.round(f.screen[1] - f.old[1]) + n[1]];
   }
   const viaFrame = (fr, old) => [old[0] + FRAMES[fr].offset[0], old[1] + FRAMES[fr].offset[1]];
 
@@ -100,7 +104,7 @@ function make(G) {
   const pt = (name, def) => { PTS[name] = def; };
   // the bird: (x, y) is under its feet (drawAve draws its bottom at y + 2)
   pt('ave.ventana.posa', { world: [winMid, F.HY1 + .06, F.WZ1 + .14], old: [112, 57], what: 'PERCH.ventana: on top of the window frame' });
-  pt('ave.puerta.posa', { world: [doorMid, F.HY1 + .06, F.FLOOR + F.DH + .14], old: [166, 49], what: 'PERCH.puerta: on top of the door frame' });
+  pt('ave.puerta.posa', { world: [doorMid + .1, F.HY1 + F.EAVE - .02, F.HH + .03], old: [166, 49], what: 'PERCH.puerta: on the edge of the roof, over the door (the door frame\'s top is under the eave: the bird would hide in it)' });
   pt('ave.ventana.hueco', { world: winC, old: [112, 71], what: 'HOLE.ventana: the middle of the window (it bonks, it flies in, the slice comes out)' });
   pt('ave.puerta.hueco', { world: [doorMid, F.HY1, F.FLOOR + F.DH * .45], old: [166, 80], what: 'HOLE.puerta and SPOT.casa_grande: the middle of the door' });
   pt('ave.palma', { world: [F.PALM_TOP[0], F.PALM_TOP[1], F.PALM_TOP[2] + .05], old: [56, 52], what: 'SPOT.palma_grande: in the big palm\'s crown' });
@@ -119,14 +123,14 @@ function make(G) {
   pt('mano.palma_grande', { world: [F.PALM_TOP[0], F.PALM_TOP[1], F.PALM_TOP[2] - .25], old: [56, 60], what: 'handAt.palma_grande: the big palm\'s crown' });
   pt('mano.palma_pequena', { world: [F.SPALM_TOP[0], F.SPALM_TOP[1], F.SPALM_TOP[2] - .25], old: [195, 140], what: 'handAt.palma_pequena: the small palm\'s crown' });
   // translated through a frame: the screen point is old + the frame's offset; the world point lies on the frame's plane
-  const fpt = (name, fr, old, what) => { const s = viaFrame(fr, old), fw = FRAMES[fr];
+  const fpt = (name, fr, old, what, nudge) => { const s0 = viaFrame(fr, old), s = nudge ? [s0[0] + nudge[0], s0[1] + nudge[1]] : s0, fw = FRAMES[fr];
     const world = fw.spot ? E.atZ(s[0], s[1], SPOTS[fw.spot].world[2] + 1.2) : fr === 'ventana' || fr === 'puerta' ? E.onWallY(s[0], s[1], F.HY1) : E.atZ(s[0], s[1], fw.world[2]);
-    pt(name, { frame: fr, old, world, what }); };
+    pt(name, Object.assign({ frame: fr, old, world, what }, nudge ? { nudge } : {})); };
   fpt('corazon', 'ventana', [103, 26], 'heartAt: the heart over the window in the last picture of story 1 (cuadro)');
   fpt('abuela.ventana', 'ventana', [82, 61], 'ABAT.ventana: abuela\'s sprite behind the window (clipped to the opening)');
-  fpt('abuela.ventana.mesa', 'ventana', [75, 61], 'abuela behind the window when W.tab or W.mesa (the frog or the cake beside her)');
-  fpt('cq.ventana', 'ventana', [112, 67], 'the frog beside her in the window (cq.42), 68 when wet: same offset');
-  fpt('toalla', 'ventana', [114, 62], 'the towel on his head in the window');
+  fpt('abuela.ventana.mesa', 'ventana', [75, 61], 'abuela behind the window when W.tab or W.mesa (the frog or the cake beside her): 3 px right of the plain window offset, so her head is wholly inside the opening', [3, 0]);
+  fpt('cq.ventana', 'ventana.lado', [112, 67], 'the frog beside her in the window (cq.42), 68 when wet: same offset');
+  fpt('toalla', 'ventana.lado', [114, 62], 'the towel on his head in the window');
   fpt('globo.ventana', 'ventana', [112, 60], 'abuela\'s bubble in the window');
   fpt('dentro.ventana', 'ventana', [112, 59], 'her voice from behind the shut window (bubble quien)');
   fpt('habla.ventana', 'ventana', [112, 60], 'talkAt abuela in the window (y 38 with a bubble; x 105 with the cake): same offset');
@@ -139,7 +143,7 @@ function make(G) {
   fpt('globo.puerta', 'abuela.puerta', [147, 69], 'abuela\'s bubble at the door, and on the porch (x 141, y 66 for como): same offset');
   fpt('habla.puerta', 'abuela.puerta', [156, 56], 'talkAt abuela at the door (y 47 with a bubble, x 141 for como): same offset');
   fpt('habla.paso', 'abuela.paso', [124, 56], 'talkAt abuela on the porch (y 40 with a bubble): same offset');
-  for (const p of Object.values(PTS)) { p.world = W4(p.world); p.screen = p.frame ? viaFrame(p.frame, p.old) : P(p.world); }
+  for (const p of Object.values(PTS)) { p.world = W4(p.world); p.screen = p.frame ? viaFrame(p.frame, p.old).map((v, i) => v + (p.nudge ? p.nudge[i] : 0)) : P(p.world); }
 
   /* ---- things: the 14 touch keys ---- */
   const T = F.THINGS;
@@ -155,8 +159,8 @@ function make(G) {
     bizcocho: { hud: true, why: 'the plate in the corner of the display (hud), not in the picture. Its hit (frente.js:190) turns a picture point into display pixels with the old zoom (DW / cam[2]); with no zoom that is x - cam[0], y - cam[1]' },
     coqui: { sprite: true, why: 'a character (frogBox around today\'s sprite)' },
     nube: { sprite: true, sky: true, why: 'the storm cloud moves (W.nube.x eases to its tx): today\'s sprite, in the sky, at the same screen places as before (box [x, 0, 98, 22], hit [x - 2, 0, 102, 24])' },
-    puerta: setThing(T.puerta, [0, .1, .12], 'the door with its frame; hit adds a little slack', { old: { box: [151, 51, 30, 54], hit: [145, 46, 42, 62] } }),
-    ventana: setThing(T.ventana, [.1, .1, .1], 'the window with its frame, its shutters (open, flat on the wall) and the flower box; hit adds a little slack', { old: { box: [93, 57, 38, 28], hit: [82, 53, 61, 42] } }),
+    puerta: setThing(T.puerta, [0, 0, .12], 'the door with its frame; hit adds a little slack', { old: { box: [151, 51, 30, 54], hit: [145, 46, 42, 62] } }),
+    ventana: setThing(T.ventana, [.03, .1, .1], 'the window with its frame, its shutters (open, flat on the wall) and the flower box; hit adds a little slack', { old: { box: [93, 57, 38, 28], hit: [82, 53, 61, 42] } }),
     casa: setThing(T.casa, [0, 0, 0], 'the house: walls and roof. Its hit replaces both old tests (the roof trapezoid, frente.js:195, and the wall rectangle, frente.js:196)', { old: { box: [60, 17, 166, 90], hit: 'roof: 16 <= y < 42, 88 - 30t <= x <= 196 + 30t (t = (y - 16) / 25); walls [57, 41, 171, 70]' } }),
     sol: { set: true, sky: true, screen: { circle: [210, 17, 12], box: [198, 5, 25, 25] }, why: 'the sun is baked into the sky (pale in a storm, none in the rain); the sky is screen space, so it stays where it was: hit (x-210)^2 + (y-17)^2 < 144, box [198, 5, 25, 25]' },
     palma: setThing(T.palma, [0, 0, 0], 'the big palm (stories 1 and 2: a free touch)', { old: { box: [34, 36, 30, 70], hit: [34, 36, 30, 70] } }),
@@ -210,6 +214,48 @@ function make(G) {
     R(p => p.kind === 'point' && p.x === 176 && p.y === 116, { spot: 'adios' }),
     R(p => p.kind === 'point' && p.x === 0 && p.y === 0, { none: 'set.ave in mode head: x and y are not used (avePos puts the bird on the frog\'s head)' }),
   ];
+  /* ---- the review and level pictures: each its own centre and a whole-number zoom (order 07, the orchestrator's decision) ---- */
+  // zoom 1: the 196 x 104 window; zoom 2: a 98 x 52 region shown at 2 x 2 screen pixels per picture pixel. Never a fraction.
+  const pic = (world, zoom, what) => { const s = P(world), crop = zoom === 1
+      ? [Math.max(0, Math.min(44, Math.round(s[0] - 98))), Math.max(0, Math.min(112, Math.round(s[1] - 52))), 196, 104]
+      : [Math.max(0, Math.min(142, Math.round(s[0] - 49))), Math.max(0, Math.min(164, Math.round(s[1] - 26))), 98, 52];
+    return { world: W4(world), screen: s, zoom, crop, what }; };
+  const houseTop = [(F.HX0 + F.HX1) / 2 + .35, F.HY0, F.HH], doorUp = [doorMid, F.HY1, F.FLOOR + F.DH * .62];
+  // the door alone and the window alone, close: centres put on the wall so that the 98 px wide region holds the one and not the other
+  // (the door: its left edge 7 px inside the region's left side, its top in; the window: the region ends 7 px left of the door frame)
+  const doorL = Math.min(...['puerta'].map(() => P([F.DOOR0 - .14, F.HY1, F.FLOOR + F.DH])[0]));
+  const doorOnly = E.onWallY(Math.floor(doorL) - 7 + 49, P([doorMid, F.HY1, F.FLOOR + F.DH + .14])[1] - 4 + 26, F.HY1);
+  const winOnly = E.onWallY(Math.floor(doorL) - 7 - 49, P(winC)[1] + 3, F.HY1);
+  const yard = pathAt(3.3), birdC = [F.BIRD[0], F.BIRD[1], 1.15];
+  const respC = E.atZ(resp[0] + 20, resp[1] + 18, 0);
+  const PICS = {
+    'casa.si': pic(houseTop, 1, 'the whole house, its roof at the top'),
+    'casa.no': pic(yard, 2, 'the yard: the path and the lawn, no part of the house'),
+    'puerta.si': pic(doorOnly, 2, 'the door, close: no window in it'),
+    'puerta.no': pic(winOnly, 2, 'the window, close: no door in it'),
+    'ventana.si': pic(winOnly, 2, 'the window, close: no door in it'),
+    'ventana.no': pic(doorOnly, 2, 'the door, close: no window in it'),
+    'abuela.si': pic(doorC, 1, 'the door with abuela in it'),
+    'abuela.no': pic(doorC, 1, 'the shut door, nobody'),
+    'abre.si': pic(winOnly, 2, 'the window, close: open, abuela in it'),
+    'abre.no': pic(winOnly, 2, 'the window, close: shut'),
+    'cierra.si': pic(doorUp, 2, 'the door, close: half shut, abuela behind it'),
+    'cierra.no': pic(doorUp, 2, 'the door, close: open, abuela in it'),
+    'hola.si': pic([doorMid - .1, F.HY1 + .5, F.FLOOR + .9], 1, 'the door with abuela and the frog: day, waving'),
+    'hola.no': pic([doorMid - .1, F.HY1 + .5, F.FLOOR + .9], 1, 'the door at sunset, the frog going'),
+    'adiós.si': pic([doorMid - .1, F.HY1 + .5, F.FLOOR + .9], 1, 'the door at sunset, the frog going'),
+    'adiós.no': pic([doorMid - .1, F.HY1 + .5, F.FLOOR + .9], 1, 'the door with abuela and the frog: day, waving'),
+    'sí.si': pic(respC, 2, 'the answer bubble, close: the frog nodding'),
+    'sí.no': pic(respC, 2, 'the answer bubble, close: the frog shaking his head'),
+    'no.si': pic(respC, 2, 'the answer bubble, close: the frog shaking his head'),
+    'no.no': pic(respC, 2, 'the answer bubble, close: the frog nodding'),
+    'grande.si': pic(houseTop, 1, 'the whole house'),
+    'grande.no': pic(birdC, 2, 'the birdhouse, close'),
+    'pequeña.si': pic(birdC, 2, 'the birdhouse, close'),
+    'pequeña.no': pic(houseTop, 1, 'the whole house'),
+  };
+  const LEVEL = JSON.parse(fs.readFileSync(path.join(REF, 'pairs.json'), 'utf8')).level.flatMap(L => L.pictures.map((p, i) => p.scene === 'frente' ? { w: L.w, index: i, picture: p.pair + '.' + p.side, crop: PICS[p.pair + '.' + p.side].crop, zoom: PICS[p.pair + '.' + p.side].zoom, old: p.crop } : null).filter(Boolean));
+
   const remap = POS.positions.map(p => {
     const rule = RULES.find(r => r.match(p));
     const e = { kind: p.kind, old: p.kind === 'point' ? [p.x, p.y] : p.kind === 'x' ? [p.x] : [p.x, p.y, p.w, p.h], uses: p.uses.map(u => u.file.replace(/^cuentos\//, '') + ' ' + u.at) };
@@ -256,7 +302,7 @@ function make(G) {
       frame: 'a point named with a frame is the old point plus the frame\'s offset (a whole number of pixels); points drawn relative to it (a rect, a sprite) move by the same offset',
       sky: 'the sky is screen space: what lives in it (clouds, rain, the sun, the bird circling, the stars of marcador) keeps its old screen numbers',
       view: 'a view is the 196 x 216 window with x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point (x0 is given)',
-      pair: 'a pair or level picture is the 196 x 104 window [clamp(round(sx - 98), 0, 44), clamp(round(sy - 52), 0, 112)] (crop is given)',
+      pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window [clamp(round(sx - 98), 0, 44), clamp(round(sy - 52), 0, 112)]; zoom 2 = the 98 x 52 region [clamp(round(sx - 49), 0, 142), clamp(round(sy - 26), 0, 164)] shown nearest-neighbour at 2 x 2 in the 196 x 104 picture. crop is given. remap\'s cam and crop entries say what each old rectangle meant; for the pictures themselves pictures wins',
     },
     setKey,
     things,
@@ -266,6 +312,8 @@ function make(G) {
     points: PTS,
     views,
     remap,
+    pictures: PICS,
+    level: LEVEL,
     clips,
     front: { things: [], why: 'nothing in the set covers a character: abuela inside the window and the frog or abuela behind the half-open door are clipped (clips), the birdhouse and the small palm are drawn before the characters as before, and every spot stands in front of what is near it' },
     shadows: {
@@ -295,9 +343,9 @@ function make(G) {
     c(61, 'ABAT.puerta [135,55]', { spot: 'abuela.puerta', new: abDraw('abuela.puerta') });
     c(61, 'ABAT.ventana [82,61]', { point: 'abuela.ventana', new: PTS['abuela.ventana'].screen });
     c(61, 'ABAT.paso [94,57]', { spot: 'abuela.paso', new: abDraw('abuela.paso') });
-    for (const r of [[108, 75, 20, 2], [108, 77, 20, 1], [110, 78, 2, 3], [124, 78, 2, 3]]) c(64, 'mesa fr ' + JSON.stringify(r), fr('ventana', r));
-    for (const r of [[111, 74, 14, 1], [112, 68, 12, 6], [112, 67, 12, 2], [111, 67, 1, 7], [124, 67, 1, 7], [112, 66, 12, 1], [117, 65, 2, 2]]) c(65, 'mesa fr ' + JSON.stringify(r), fr('ventana', r));
-    c(66, 'steam 113+k*4, 64-j*3', fr('ventana', [113, 64]), 'the k and j steps stay');
+    for (const r of [[108, 75, 20, 2], [108, 77, 20, 1], [110, 78, 2, 3], [124, 78, 2, 3]]) c(64, 'mesa fr ' + JSON.stringify(r), fr('ventana.lado', r));
+    for (const r of [[111, 74, 14, 1], [112, 68, 12, 6], [112, 67, 12, 2], [111, 67, 1, 7], [124, 67, 1, 7], [112, 66, 12, 1], [117, 65, 2, 2]]) c(65, 'mesa fr ' + JSON.stringify(r), fr('ventana.lado', r));
+    c(66, 'steam 113+k*4, 64-j*3', fr('ventana.lado', [113, 64]), 'the k and j steps stay');
     c(77, 'PERCH.ventana [112,57]', { point: 'ave.ventana.posa', new: PTS['ave.ventana.posa'].screen });
     c(77, 'PERCH.puerta [166,49]', { point: 'ave.puerta.posa', new: PTS['ave.puerta.posa'].screen });
     c(77, 'HOLE.ventana [112,71]', { point: 'ave.ventana.hueco', new: PTS['ave.ventana.hueco'].screen });
@@ -326,10 +374,10 @@ function make(G) {
     c(147, 'clip rect [97,61,30,20]', { clip: 'ventana.hueco' });
     c(147, 'drawImage(abuela, 82, 61)', { point: 'abuela.ventana', new: PTS['abuela.ventana'].screen });
     c(147, 'drawImage(abuela, 75, 61) (W.tab || W.mesa)', { point: 'abuela.ventana.mesa', new: PTS['abuela.ventana.mesa'].screen });
-    c(148, 'drawImage(cq.42, 112+sh, 67 or 68)', fr('ventana', [112, 67]), 'y 68 when wet: the same offset; +sh stays');
+    c(148, 'drawImage(cq.42, 112+sh, 67 or 68)', fr('ventana.lado', [112, 67]), 'y 68 when wet: the same offset; +sh stays');
     c(149, 'towel(c, 114, 62)', { point: 'toalla', new: PTS.toalla.screen });
-    c(149, 'drips 113+k*13, 70+...', fr('ventana', [113, 70]), 'the steps stay');
-    for (const p of [[110, 64], [120, 62], [127, 66]]) c(151, 'drop ' + JSON.stringify(p), fr('ventana', p));
+    c(149, 'drips 113+k*13, 70+...', fr('ventana.lado', [113, 70]), 'the steps stay');
+    for (const p of [[110, 64], [120, 62], [127, 66]]) c(151, 'drop ' + JSON.stringify(p), fr('ventana.lado', p));
     c(152, 'ABAT.paso + (5+i*4, 27), (3, 30)', 'relative to abuela.paso: unchanged');
     c(155, 'dust at frogBox + [-6,0], [-11,-2], [-16,1]; the back of his head at b.x+b.w+1', 'relative to the frog: unchanged');
     for (const L of [157, 158]) c(L, 'drops around the frog (frogBox)', 'relative to the frog: unchanged');
