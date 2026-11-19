@@ -1,2 +1,4 @@
+import 'package:coqui_pixel/coqui_pixel.dart';
+
 /// The scene "patio". Not converted yet: using it throws.
-Object createPatio() => throw UnimplementedError('not converted yet');
+Scene createPatio() => throw UnimplementedError('not converted yet');
