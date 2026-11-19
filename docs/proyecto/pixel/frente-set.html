@@ -117,7 +117,7 @@ function doorway() {
     if (on) return z < z0 + .35 ? rgb(196, 128, 70) : k > .82 ? rgb(255, 236, 170) : rgb(255, 214 - k * 30, 130 - k * 40);
     return z < z0 + .35 ? rgb(46, 30, 22) : rgb(...[[28, 16, 10], [36, 22, 14], [50, 32, 22]][clamp(Math.floor(k * 3), 0, 2)]);
   };
-  paneY(HY1 - .3, DOOR0 - .2, DOOR1 + .3, z0, z1 + .2, room, on);
+  paneY(HY1 - .3, DOOR0 - .2, DOOR1 - .15, z0, z1 + .02, room, on);   // only what shows through the doorway
   // the frame
   const F = rampOf(WHITE);
   for (let z = z0; z <= z1 + .14; z += ST * .5) for (let a = 0; a <= .12; a += ST * .5) { plot(DOOR0 - .14 + a, HY1 + .03, z, F[3]); plot(DOOR1 + .02 + a, HY1 + .03, z, F[2]); }
@@ -157,7 +157,7 @@ function windowAndShutters() {
     const k = (z - WZ0) / (WZ1 - WZ0);
     return on ? rgb(255, 222 - k * 26, 140 - k * 40) : rgb(...[[30, 18, 12], [40, 26, 16], [56, 36, 24]][clamp(Math.floor(k * 3), 0, 2)]);
   };
-  paneY(HY1 - .3, WIN0 - .2, WIN1 + .3, WZ0 - .1, WZ1 + .2, room, on);
+  paneY(HY1 - .3, WIN0 - .2, WIN1 - .15, WZ0 - .1, WZ1 + .02, room, on);   // only what shows through the window
   // the frame
   for (let a = WIN0 - .12; a <= WIN1 + .12; a += ST * .5) for (const z of [WZ0 - .12, WZ1]) for (let h = 0; h <= .12; h += ST * .5) plot(a, HY1 + .03, z + h, F[3]);
   for (let z = WZ0 - .12; z <= WZ1 + .12; z += ST * .5) for (const a of [WIN0 - .12, WIN1]) for (let h = 0; h <= .12; h += ST * .5) plot(a + h, HY1 + .03, z, F[3]);
@@ -203,15 +203,23 @@ function garden() {
 }
 
 /* ---------- bake one state ---------- */
+let GROUND_CACHE = null;
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
   tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
-  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
-    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = frontGround(g.x, g.y, ix, iy, i);
-    if (!c) continue;
-    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+  // the ground and its grass are the same in every state: made once, then copied (a second bake in the same page reuses them)
+  if (!GROUND_CACHE) {
+    for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+      const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = frontGround(g.x, g.y, ix, iy, i);
+      if (!c) continue;
+      pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+    }
+    growGrass();
+    GROUND_CACHE = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
+  } else {
+    pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
   }
-  growGrass(); groundZ.set(zb);
+  groundZ.set(zb);
   house();
   garden();
   flushShadows(); pendingShadows.length = 0;
