@@ -14,10 +14,14 @@ final SpeechSession _speech = SpeechSession();
 ///
 /// [scenes] makes the scene a story file names: by default the scenes package's registry (`registryScenes`: the real
 /// scenes, the converted ones; the others throw "not converted yet" and the screen shows the lesson frame and its X).
+///
+/// [showPerf]: the play screen shows, in a small corner chip, the bake time of the scene's state now on screen (the app's
+/// `?perf=1`). Off by default.
 class StoryModule implements FeatureModule {
-  const StoryModule({this.scenes = registryScenes});
+  const StoryModule({this.scenes = registryScenes, this.showPerf = false});
 
   final SceneFactory scenes;
+  final bool showPerf;
 
   @override
   String get id => 'story';
@@ -33,6 +37,7 @@ class StoryModule implements FeatureModule {
           route: route,
           scenes: scenes,
           session: _speech,
+          showPerf: showPerf,
         )
       : null;
 }
