@@ -68,6 +68,7 @@ class PixelView extends StatefulWidget {
 class _PixelViewState extends State<PixelView> {
   ui.Image? _image;
   int _token = 0;
+  final _paintKey = GlobalKey();
 
   @override
   void initState() {
@@ -124,7 +125,7 @@ class _PixelViewState extends State<PixelView> {
   void _tap(TapUpDetails d) {
     final cb = widget.onTapPixel;
     if (cb == null) return;
-    final box = context.findRenderObject();
+    final box = _paintKey.currentContext?.findRenderObject();
     if (box is! RenderPixelView) return;
     final p = box.pixelAt(d.localPosition);
     if (p != null) cb(p.dx.toInt(), p.dy.toInt());
@@ -136,6 +137,7 @@ class _PixelViewState extends State<PixelView> {
         MediaQuery.maybeDevicePixelRatioOf(context) ??
         View.of(context).devicePixelRatio;
     Widget view = _PixelPaint(
+      key: _paintKey,
       image: _image,
       width: widget.width,
       height: widget.height,
@@ -159,6 +161,7 @@ class _PixelViewState extends State<PixelView> {
 
 class _PixelPaint extends LeafRenderObjectWidget {
   const _PixelPaint({
+    super.key,
     required this.image,
     required this.width,
     required this.height,
@@ -243,7 +246,7 @@ class RenderPixelView extends RenderBox {
   }
 
   Size _desired(BoxConstraints c) {
-    final avail = c.maxWidth.isFinite ? c.maxWidth : _w / _dpr;
+    final avail = c.maxWidth.isFinite ? c.maxWidth : _w.toDouble();
     final scale = pixelViewScale(
       availableWidth: avail,
       devicePixelRatio: _dpr,
@@ -260,7 +263,7 @@ class RenderPixelView extends RenderBox {
   void performLayout() {
     final avail = constraints.maxWidth.isFinite
         ? constraints.maxWidth
-        : _w / _dpr;
+        : _w.toDouble();
     _scale = pixelViewScale(
       availableWidth: avail,
       devicePixelRatio: _dpr,
