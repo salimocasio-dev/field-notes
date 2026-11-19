@@ -189,6 +189,7 @@ class _BookReaderState extends State<BookReader> {
       final marks = _marksOf(id);
       if (marks.isNotEmpty) {
         _tarjetaPal(marks.first.k);
+        _uwTimer?.cancel(); // the picture of the old page was taken while the underline showed: it stays
         return;
       }
     }

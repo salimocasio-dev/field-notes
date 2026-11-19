@@ -9,7 +9,6 @@ library;
 
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/press.dart';
-import 'package:feature_library/src/strings.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// Which of the two `.btn`s: Listen is green (`.go`), Read the outline.
@@ -33,7 +32,7 @@ class ShelfButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String semanticLabel;
 
-  /// The green check after the label (`<span class="okc">✓</span>`).
+  /// The green check after the label (`<span class="okc">✓</span>`), drawn as an icon.
   final bool check;
 
   /// `.bk .btn{padding:0 16px}`, 12 under 420 px, 10 under 380. app.html:99-101
@@ -76,10 +75,22 @@ class ShelfButton extends StatelessWidget {
               SizedBox(width: gap(width)),
               Flexible(child: Text(label, style: style)),
               if (check) ...[
+                // `<span class="okc">✓</span>`: a green check after the label, the button's gap away; drawn, not a glyph,
+                // so that it looks the same on every device (a font's own check differs)
                 SizedBox(width: gap(width)),
-                Text(
-                  LibraryStrings.readCheck,
-                  style: CoquiText.button.copyWith(color: CoquiColors.ok),
+                // the glyph's own width is 13 px (it sets how wide the button is); the drawn check is 12 px wide, in the middle of it
+                SizedBox(
+                  width: 13,
+                  height: 20,
+                  child: OverflowBox(
+                    maxWidth: 20,
+                    maxHeight: 20,
+                    child: CoquiIcon(
+                      CoquiIcons.check,
+                      size: 20,
+                      color: CoquiColors.ok,
+                    ),
+                  ),
                 ),
               ],
             ],

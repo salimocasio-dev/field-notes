@@ -102,7 +102,7 @@ void main() {
       final bs = entry(tester, 'Uno').actions.cast<ShelfButton>();
       expect(bs[0].icon, same(CoquiIcons.play));
       expect(bs[1].icon, same(CoquiIcons.read));
-      expect(find.text(LibraryStrings.readCheck), findsNothing);
+      expect(bs[1].check, isFalse);
     },
   );
 
@@ -229,7 +229,14 @@ void main() {
       expect(uno.semanticLabel, 'Read again: Uno');
       expect(tres.check, isFalse);
       expect(tres.semanticLabel, 'Read: Tres');
-      expect(find.text(LibraryStrings.readCheck), findsOneWidget);
+      // the check is drawn after the label of the read book's button, and only there
+      bool hasCheck(Finder button) => tester
+          .widgetList<CoquiIcon>(
+            find.descendant(of: button, matching: find.byType(CoquiIcon)),
+          )
+          .any((i) => identical(i.data, CoquiIcons.check));
+      expect(hasCheck(buttonOf('Read again', 'Uno')), isTrue);
+      expect(hasCheck(buttonOf('Read', 'Tres')), isFalse);
     },
   );
 
@@ -238,10 +245,11 @@ void main() {
     (tester) async {
       final rig = Rig()..played(['uno']);
       await pumpShelf(tester, rig);
-      expect(find.text(LibraryStrings.readCheck), findsNothing);
+      expect(buttonOf('Read', 'Uno'), findsOneWidget);
+      expect(buttonOf('Read again', 'Uno'), findsNothing);
       rig.store.markRead('uno');
       await settle(tester);
-      expect(find.text(LibraryStrings.readCheck), findsOneWidget);
+      expect(buttonOf('Read again', 'Uno'), findsOneWidget);
     },
   );
 
@@ -250,7 +258,7 @@ void main() {
     (tester) async {
       for (final w in [390.0, 360.0]) {
         final rig = Rig()..played(['uno'], read: ['uno']);
-        await pumpShelf(tester, rig, size: Size(w, 800), textScale: 0.55);
+        await pumpShelf(tester, rig, size: Size(w, 800), textScale: 0.5);
         final listen = tester.getRect(buttonOf('Listen', 'Uno'));
         final read = tester.getRect(buttonOf('Read again', 'Uno'));
         expect(

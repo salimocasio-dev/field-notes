@@ -10,9 +10,6 @@ abstract final class LibraryStrings {
   /// `.btn` Read. app.html:337
   static const read = 'Read';
 
-  /// The check after Read once the book was read to its last page (`.okc`). app.html:337
-  static const readCheck = '✓';
-
   /// The shelf when nothing was played. app.html:340
   static const emptyShelf =
       'Play a story on the map. You can hear it again here and read it.';
