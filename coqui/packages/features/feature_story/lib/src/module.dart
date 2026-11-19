@@ -1,10 +1,23 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_story/src/runner/speech_session.dart';
+import 'package:feature_story/src/screen/scene_frame.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_story's module. A placeholder until order 15 builds the real one: its screen says the feature's name.
+/// What speaking remembers until the app is closed: an error that says speaking cannot work ends the turns of every story
+/// after it (juego.js: the session flag).
+final SpeechSession _speech = SpeechSession();
+
+/// feature_story's module: the story game. It answers [StoryRoute] (a story played, or told straight through when the route
+/// says `listen`) with the play screen, full screen: the shell hides its tab bar. It has no tab.
+///
+/// [scenes] makes the scene a story file names. The shell gives it from the scenes package; with none, no story can be
+/// shown (see `coqui/requests/15-feature-story-needs-coqui-scenes-frame-inputs.md`).
 class StoryModule implements FeatureModule {
-  const StoryModule();
+  const StoryModule({this.scenes = noScenes});
+
+  final SceneFactory scenes;
 
   @override
   String get id => 'story';
@@ -13,14 +26,13 @@ class StoryModule implements FeatureModule {
   FeatureTab? tab(Services s) => null;
 
   @override
-  Widget? screenFor(AppRoute route, Services s) =>
-      route is StoryRoute ? const _Placeholder() : null;
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text('feature_story'));
+  Widget? screenFor(AppRoute route, Services s) => route is StoryRoute
+      ? StoryScreen(
+          key: ValueKey(route),
+          services: s,
+          route: route,
+          scenes: scenes,
+          session: _speech,
+        )
+      : null;
 }

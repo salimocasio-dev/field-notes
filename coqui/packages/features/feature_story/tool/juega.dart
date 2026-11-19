@@ -28,7 +28,9 @@ Future<void> main(List<String> args) async {
     }
   }
   if (pos.length != 3) {
-    stderr.writeln('usage: dart run tool/juega.dart <story> <plan> <seed> [--out FILE] [--root DIR]');
+    stderr.writeln(
+      'usage: dart run tool/juega.dart <story> <plan> <seed> [--out FILE] [--root DIR]',
+    );
     exit(64);
   }
   final root = findRoot(rootArg == null ? null : Directory(rootArg));
@@ -55,7 +57,8 @@ Future<Map<String, dynamic>> playFromDisk(
     story: file,
     plan: plan,
     seed: seed,
-    sceneFor: (rng) => StandInScene(sceneId: file['scene'] as String, cam: camsOf(file)),
+    sceneFor: (rng) =>
+        StandInScene(sceneId: file['scene'] as String, cam: camsOf(file)),
     course: course,
     progress: ToolProgress(),
     storySha256: sha256Hex(course.storyBytes(story)),

@@ -40,13 +40,16 @@ extension _Steps on StoryRunner {
 
   String subS(Object? s) => sub(s) as String;
 
-  List<String> subList(Object? l) => [for (final e in (l as List? ?? const [])) subS(e)];
+  List<String> subList(Object? l) => [
+    for (final e in (l as List? ?? const [])) subS(e),
+  ];
 
   // juego.js: val
   Object? val(String k) => V[k] ?? W[k];
 
-  String valString(String k) =>
-      V[k] != null ? jsString(V[k]) : jsString(W[k], missing: !W.containsKey(k));
+  String valString(String k) => V[k] != null
+      ? jsString(V[k])
+      : jsString(W[k], missing: !W.containsKey(k));
 
   // juego.js: cond
   bool cond(String e0) {
@@ -64,9 +67,7 @@ extension _Steps on StoryRunner {
   /// A map from answers to lines, with the story's variables filled in on both sides.
   Map<String, String>? vmapa(Object? m) {
     if (m == null) return null;
-    return {
-      for (final e in (m as Map).entries) subS(e.key): subS(e.value),
-    };
+    return {for (final e in (m as Map).entries) subS(e.key): subS(e.value)};
   }
 
   /// Every position read from a story file goes through the scene's `remap`: a map with a number `x` and a number `y`
@@ -115,9 +116,13 @@ extension _Steps on StoryRunner {
         W.addAll(set);
         return;
       case 'if':
-        return pasos((cond(m['if'] as String) ? m['then'] : m['else']) as List<Object?>?);
+        return pasos(
+          (cond(m['if'] as String) ? m['then'] : m['else']) as List<Object?>?,
+        );
       case 'act':
-        final o = <String, dynamic>{for (final e in m.entries) e.key: sub(e.value)};
+        final o = <String, dynamic>{
+          for (final e in m.entries) e.key: sub(e.value),
+        };
         final fn = E.acts[m['act']];
         if (fn == null) throw StoryError('the scene has no act ${m['act']}');
         return fn(o);
@@ -130,10 +135,15 @@ extension _Steps on StoryRunner {
       case 'draw':
         final ops = subList(m['options']);
         final f = options.forced[m['draw'] as String];
-        final v = f != null && ops.contains(f) ? f : ops[(rng.next() * ops.length).floor()];
+        final v = f != null && ops.contains(f)
+            ? f
+            : ops[(rng.next() * ops.length).floor()];
         V[m['draw'] as String] = v;
         if (jsTruthy(m['other'])) {
-          V[m['other'] as String] = ops.cast<String?>().firstWhere((x) => x != v, orElse: () => null);
+          V[m['other'] as String] = ops.cast<String?>().firstWhere(
+            (x) => x != v,
+            orElse: () => null,
+          );
         }
         return;
       case 'reparte':
@@ -160,7 +170,9 @@ extension _Steps on StoryRunner {
         }
         return;
       case 'calc':
-        V[m['calc'] as String] = cond(m['cond'] as String) ? sub(m['then']) : sub(m['else']);
+        V[m['calc'] as String] = cond(m['cond'] as String)
+            ? sub(m['then'])
+            : sub(m['else']);
         return;
       case 'recuerda':
         final k = m['recuerda'] as String;
@@ -193,18 +205,26 @@ extension _Steps on StoryRunner {
     return l;
   }
 
-  String? _bienId(Map<String, dynamic> st) => st['bien'] is String ? st['bien'] as String : null;
+  String? _bienId(Map<String, dynamic> st) =>
+      st['bien'] is String ? st['bien'] as String : null;
 
   // juego.js: espera, as the recording tool wraps it
-  Future<Pending> _esperaW(List<String> liveSet, List<Object?>? lead, String? line, EsperaOpts o) =>
-      obs.espera(() => _espera(liveSet, lead, line, o), () => pending, line);
+  Future<Pending> _esperaW(
+    List<String> liveSet,
+    List<Object?>? lead,
+    String? line,
+    EsperaOpts o,
+  ) => obs.espera(() => _espera(liveSet, lead, line, o), () => pending, line);
 
-  bool _quiet(Map<String, dynamic> st) => sub(st['quieto']) == '1' || st['quieto'] == true;
+  bool _quiet(Map<String, dynamic> st) =>
+      sub(st['quieto']) == '1' || st['quieto'] == true;
 
   // juego.js: ask
   /// An ask, with the big sign. Nothing can go wrong here.
   Future<void> _ask(Map<String, dynamic> st) async {
-    final t = subS(st['ask']), voz = vmapa(st['voces']), said = vmapa(st['said']);
+    final t = subS(st['ask']),
+        voz = vmapa(st['voces']),
+        said = vmapa(st['said']);
     // an ask can use answer bubbles too: this is where a new kind of bubble is taught, with the big sign
     if (jsTruthy(st['resp']) && !OIR) {
       W['resp'] = subList(st['resp']);
@@ -213,7 +233,9 @@ extension _Steps on StoryRunner {
     }
     final sa = said != null ? said[t] : null;
     // the target's said clip is marked "tu_turno": he may say the answer
-    final tu = sa != null && sa.isNotEmpty && habVivo([sa]) ? habMarca(sa) : null;
+    final tu = sa != null && sa.isNotEmpty && habVivo([sa])
+        ? habMarca(sa)
+        : null;
     final line = jsTruthy(st['line']) ? subS(st['line']) : null;
     final me = await _esperaW(
       [t],
@@ -250,7 +272,8 @@ extension _Steps on StoryRunner {
     W['resp'] = st['kind'] == 'say' && !OIR ? ops : null;
     final saidMap = st['said'] as Map?;
     final ids = [
-      for (final k in ops) saidMap != null && jsTruthy(saidMap[k]) ? subS(saidMap[k]) : '',
+      for (final k in ops)
+        saidMap != null && jsTruthy(saidMap[k]) ? subS(saidMap[k]) : '',
     ];
     Turno? tu;
     if (ids.every((s) => s.isNotEmpty) && habVivo(ids)) {
@@ -258,7 +281,12 @@ extension _Steps on StoryRunner {
         for (var i = 0; i < ops.length; i++) ops[i]: habMarca(ids[i])!,
       });
     }
-    final me = await _esperaW(ops, st['lead'] as List<Object?>?, subS(st['line']), EsperaOpts(kind: 'elige', turno: tu));
+    final me = await _esperaW(
+      ops,
+      st['lead'] as List<Object?>?,
+      subS(st['line']),
+      EsperaOpts(kind: 'elige', turno: tu),
+    );
     V['elegido'] = me.got;
     LOG.add(Decision(word: null, asked: 'libre', got: me.got, ok: true));
     SFX.blip();
@@ -283,9 +311,13 @@ extension _Steps on StoryRunner {
   Future<void> _decide(Map<String, dynamic> st) async {
     var ops = subList(st['options']);
     final asKey = jsTruthy(st['as']) ? st['as'] as String : null;
-    final key = '$storyId.${asKey ?? 'x'}', voz = vmapa(st['voces']), said = vmapa(st['said']);
+    final key = '$storyId.${asKey ?? 'x'}',
+        voz = vmapa(st['voces']),
+        said = vmapa(st['said']);
     late String pick;
-    if (jsTruthy(st['baraja'])) ops = baraja(ops); // which side each answer bubble is on is drawn fresh
+    if (jsTruthy(st['baraja'])) {
+      ops = baraja(ops); // which side each answer bubble is on is drawn fresh
+    }
     if (jsTruthy(st['pick'])) {
       pick = subS(st['pick']);
     } else {
@@ -302,7 +334,10 @@ extension _Steps on StoryRunner {
     }
     if (asKey != null) V[asKey] = pick;
     if (jsTruthy(st['other'])) {
-      V[st['other'] as String] = ops.cast<String?>().firstWhere((x) => x != pick, orElse: () => null);
+      V[st['other'] as String] = ops.cast<String?>().firstWhere(
+        (x) => x != pick,
+        orElse: () => null,
+      );
     }
     // burbujas: speaking bubbles that stand beside the things he can touch. gratis: answers that cost nothing: their
     // steps run and he chooses again
@@ -315,7 +350,8 @@ extension _Steps on StoryRunner {
       W['resp'] = bur;
       W['respVoz'] = voz;
     }
-    final line = jsTruthy(st['line']) ? subS(st['line']) : null, vale = subList(st['vale']);
+    final line = jsTruthy(st['line']) ? subS(st['line']) : null,
+        vale = subList(st['vale']);
     late Pending me;
     var otra = false;
     for (;;) {
@@ -334,11 +370,16 @@ extension _Steps on StoryRunner {
           alias: st['alias'] as Map<String, dynamic>?,
         ),
       );
-      if (gratis != null && jsTruthy(gratis[me.got]) && me.got != pick && !OIR) {
+      if (gratis != null &&
+          jsTruthy(gratis[me.got]) &&
+          me.got != pick &&
+          !OIR) {
         SFX.blip();
         bounce(5);
         await wait(200);
-        if (said != null && jsTruthy(said[me.got])) await say(said[me.got]!, 300);
+        if (said != null && jsTruthy(said[me.got])) {
+          await say(said[me.got]!, 300);
+        }
         await pasos(gratis[me.got] as List<Object?>?);
         otra = true;
         continue;
@@ -351,8 +392,20 @@ extension _Steps on StoryRunner {
     if (!OIR && !jsTruthy(st['libre'])) {
       final w0 = subS(jsTruthy(st['tests']) ? st['tests'] : pick);
       final palabras = S['palabras'];
-      final w = palabras is Map && jsTruthy(palabras[w0]) ? palabras[w0] as String : w0;
-      if (w != '-') LOG.add(Decision(word: w, asked: pick, got: me.got, ok: first, ms: me.ms ?? 0));
+      final w = palabras is Map && jsTruthy(palabras[w0])
+          ? palabras[w0] as String
+          : w0;
+      if (w != '-') {
+        LOG.add(
+          Decision(
+            word: w,
+            asked: pick,
+            got: me.got,
+            ok: first,
+            ms: me.ms ?? 0,
+          ),
+        );
+      }
     }
     if (said != null && jsTruthy(said[me.got])) {
       SFX.blip();
@@ -381,11 +434,17 @@ extension _Steps on StoryRunner {
       await pasos(st['wrong'] as List<Object?>?);
       if (!costs) {
         W['lost'] = (W['lost'] as num).toInt() + 1;
-        await E.stake(W['lost'] as int, ((S['stake'] as Map)['steps'] as num).toInt(), me.got ?? '');
+        await E.stake(
+          W['lost'] as int,
+          ((S['stake'] as Map)['steps'] as num).toInt(),
+          me.got ?? '',
+        );
       }
     }
     if (!first) {
-      if (jsTruthy(st['noretry'])) return; // one guess: the story shows the right one, then goes on
+      if (jsTruthy(st['noretry'])) {
+        return; // one guess: the story shows the right one, then goes on
+      }
       final habla = st['decide'] == 'say' || bur.contains(pick);
       if (st['decide'] == 'say') {
         W['resp'] = ops;
@@ -491,7 +550,9 @@ extension _Steps on StoryRunner {
         me.rep = true;
         me.nrep++;
         // a routine: after the second repeat the sign shows what to touch
-        if (o.ayuda != null && o.ayuda!.isNotEmpty && me.nrep >= 2) W['spot'] = o.ayuda;
+        if (o.ayuda != null && o.ayuda!.isNotEmpty && me.nrep >= 2) {
+          W['spot'] = o.ayuda;
+        }
         Future<void> first = line != null && line.isNotEmpty
             ? playClip(line).then((_) => sleep(300 / FAST))
             : Future<void>.value();
@@ -516,16 +577,23 @@ extension _Steps on StoryRunner {
       return me;
     }
     if (!me.done) {
-      final bool dijo = o.turno != null && o.turno!.kind == 'ask' && habVivo([o.turno!.id!])
+      final bool dijo =
+          o.turno != null && o.turno!.kind == 'ask' && habVivo([o.turno!.id!])
           ? await turnoAsk(me, o, line, my)
           : false; // his turn inside a signed ask: true when he said the answer
       if (!dijo) {
         me.sign = o.sign;
         if (o.sign != null && o.sign!.isNotEmpty) W['spot'] = o.sign;
-        final tuE = o.turno != null && o.turno!.kind == 'elige' && !me.done && habVivo(o.turno!.ids);
+        final tuE =
+            o.turno != null &&
+            o.turno!.kind == 'elige' &&
+            !me.done &&
+            habVivo(o.turno!.ids);
         if (tuE) turnoEligeInicio(me, o);
         if (!me.voz) me.asked = true;
-        if (line != null && line.isNotEmpty && !o.mudo) await say(line, me.voz ? 300 : 0);
+        if (line != null && line.isNotEmpty && !o.mudo) {
+          await say(line, me.voz ? 300 : 0);
+        }
         if (!me.done) await voces();
         me.asked = true; // the bubbles are dead until both have spoken once
         me.tEnd = now();

@@ -31,7 +31,10 @@ String _compact(Object? x) => jsonEncode(_normTree(x));
 
 // a double that is whole prints as an integer (JavaScript has one kind of number)
 Object? _normTree(Object? v) {
-  if (v is double && v.isFinite && v == v.truncateToDouble() && v.abs() < 1e21) {
+  if (v is double &&
+      v.isFinite &&
+      v == v.truncateToDouble() &&
+      v.abs() < 1e21) {
     return v.truncate();
   }
   if (v is Map) return {for (final e in v.entries) e.key: _normTree(e.value)};
@@ -44,8 +47,12 @@ Object? _normTree(Object? v) {
 String? firstDifference(Object? a, Object? b, [String path = '']) {
   if (a is Map && b is Map) {
     for (final k in {...a.keys, ...b.keys}) {
-      if (!a.containsKey(k)) return '$path.$k: missing in the first (second has ${_show(b[k])})';
-      if (!b.containsKey(k)) return '$path.$k: missing in the second (first has ${_show(a[k])})';
+      if (!a.containsKey(k)) {
+        return '$path.$k: missing in the first (second has ${_show(b[k])})';
+      }
+      if (!b.containsKey(k)) {
+        return '$path.$k: missing in the second (first has ${_show(a[k])})';
+      }
       final d = firstDifference(a[k], b[k], '$path.$k');
       if (d != null) return d;
     }
@@ -63,7 +70,9 @@ String? firstDifference(Object? a, Object? b, [String path = '']) {
     }
     return null;
   }
-  if (a is num && b is num) return a == b ? null : '$path: ${_show(a)} vs ${_show(b)}';
+  if (a is num && b is num) {
+    return a == b ? null : '$path: ${_show(a)} vs ${_show(b)}';
+  }
   return a == b ? null : '$path: ${_show(a)} vs ${_show(b)}';
 }
 

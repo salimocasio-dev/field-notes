@@ -42,7 +42,9 @@ bool heardRight(List<String>? alts, List<Target> T) {
 extension _Turns on StoryRunner {
   /// Whether the story's turns may use the mic at all: the recogniser's switches (juego.js: `habDisp`).
   bool _habDisp() =>
-      !options.micOff && (options.micStub != null || _speechOk) && !session.unavailable;
+      !options.micOff &&
+      (options.micStub != null || _speechOk) &&
+      !session.unavailable;
 
   // juego.js: habPon
   /// An error showed that speaking cannot work here: no more turns this session.
@@ -72,7 +74,9 @@ extension _Turns on StoryRunner {
     if (ids.isEmpty || HAB.n >= 4 || !habBase()) return false;
     return ids.every((id) {
       final t = habMarca(id);
-      return t != null && !HAB.hechos.contains(id) && t.every((x) => habAbierta(x.palabra));
+      return t != null &&
+          !HAB.hechos.contains(id) &&
+          t.every((x) => habAbierta(x.palabra));
     });
   }
 
@@ -85,7 +89,13 @@ extension _Turns on StoryRunner {
   void habGraba(List<Target> T, bool ok, int? ms) {
     if (!options.recordsProgress) return;
     for (final x in T) {
-      progress.answer(x.palabra, Skill.mouth, ok: ok, ms: ms ?? 0, intro: false);
+      progress.answer(
+        x.palabra,
+        Skill.mouth,
+        ok: ok,
+        ms: ms ?? 0,
+        intro: false,
+      );
     }
   }
 
@@ -98,7 +108,10 @@ extension _Turns on StoryRunner {
     final q = W['cq'];
     if (q is! Map<String, dynamic> || !jsTruthy(q['vis'])) return false;
     final b = px.frogBox(q), x = b.x + b.w / 2, y = b.y + b.h / 2;
-    return x >= cam[0] && x <= cam[0] + cam[2] && y >= cam[1] && y <= cam[1] + cam[3];
+    return x >= cam[0] &&
+        x <= cam[0] + cam[2] &&
+        y >= cam[1] &&
+        y <= cam[1] + cam[3];
   }
 
   // ---------- the screen of a turn ----------
@@ -116,7 +129,11 @@ extension _Turns on StoryRunner {
   // the turn's bubble agrees with the button: the mic icon (pulsing, in green, while he is listened to), three dots
   // while the app is thinking
   void _habBubE(String s) {
-    if (!MBUB || (view.bubbleKind != BubbleKind.mic && view.bubbleKind != BubbleKind.dots)) return;
+    if (!MBUB ||
+        (view.bubbleKind != BubbleKind.mic &&
+            view.bubbleKind != BubbleKind.dots)) {
+      return;
+    }
     view.bubbleEstate = s;
     if (s == 'processing' && view.bubbleKind != BubbleKind.dots) {
       view.bubbleKind = BubbleKind.dots;
@@ -177,7 +194,10 @@ extension _Turns on StoryRunner {
     };
     final zx = m.cw / cam[2], zy = m.ch / cam[3];
     bool hit(List<double> a) =>
-        r[0] < a[0] + a[2] && r[0] + r[2] > a[0] && r[1] < a[1] + a[3] && r[1] + r[3] > a[1];
+        r[0] < a[0] + a[2] &&
+        r[0] + r[2] > a[0] &&
+        r[1] < a[1] + a[3] &&
+        r[1] + r[3] > a[1];
     List<double> art(List<num> b, num mg) => [
       (b[0] - mg - cam[0]) * zx,
       (b[1] - mg - cam[1]) * zy,
@@ -204,7 +224,12 @@ extension _Turns on StoryRunner {
             ? gente[k] as Map
             : (W['ab'] is Map ? W['ab'] as Map : const {});
         final y = p['y'];
-        b = [a[0] - 13, a[1] + 1, 26, math.max(24, y is num ? y - a[1] - 1 : 36)];
+        b = [
+          a[0] - 13,
+          a[1] + 1,
+          26,
+          math.max(24, y is num ? y - a[1] - 1 : 36),
+        ];
       }
       return hit(art(b, 4));
     });
@@ -319,7 +344,13 @@ extension _Turns on StoryRunner {
       HAB.rec = null;
       if (identical(HAB.cur, C)) HAB.cur = null;
       // ms: the tap to the recogniser's speechstart; 0 when there was none
-      C.res.complete(HabResult(alts: alts, err: err, ms: onset != null && onset != 0 ? onset! - t0 : 0));
+      C.res.complete(
+        HabResult(
+          alts: alts,
+          err: err,
+          ms: onset != null && onset != 0 ? onset! - t0 : 0,
+        ),
+      );
     }
 
     void proc() {
@@ -372,7 +403,9 @@ extension _Turns on StoryRunner {
   /// A plain line (called from paso): his turn, or the line as today. Inside the lead of an ask or decide a touch may
   /// arrive at any time: no turn there.
   Future<void> habLinea(String id, num? gap) async {
-    if (!habVivo([id]) || (pending != null && !pending!.done)) return say(id, gap);
+    if (!habVivo([id]) || (pending != null && !pending!.done)) {
+      return say(id, gap);
+    }
     return turnoLinea(id, habMarca(id)!, gap);
   }
 
@@ -381,7 +414,12 @@ extension _Turns on StoryRunner {
     final my = runId;
     HAB.hechos.add(id);
     HAB.n++;
-    final reg = <String, dynamic>{'id': id, 'tipo': 'linea', 'est': '', 'intentos': 0};
+    final reg = <String, dynamic>{
+      'id': id,
+      'tipo': 'linea',
+      'est': '',
+      'intentos': 0,
+    };
     HAB.log.add(reg);
     micEst('dead');
     if (T.any((x) => habNueva(x.palabra))) {
@@ -390,8 +428,10 @@ extension _Turns on StoryRunner {
       await say(course.fixedClip('story_your_turn'), 200);
     }
     habBub('mic');
-    for (var n = 1;; n++) {
-      final r = await habIntento(() => unawaited(playClip(course.fixedClip('story_your_turn'))));
+    for (var n = 1; ; n++) {
+      final r = await habIntento(
+        () => unawaited(playClip(course.fixedClip('story_your_turn'))),
+      );
       if (my != runId) throw const StopSignal();
       final k = _habClase(r);
       reg['intentos'] = n;
@@ -399,7 +439,10 @@ extension _Turns on StoryRunner {
         habPon();
         reg['est'] = 'nodisp';
         habFin();
-        return say(id, gap); // speaking cannot work: the line plays as today, nothing recorded
+        return say(
+          id,
+          gap,
+        ); // speaking cannot work: the line plays as today, nothing recorded
       }
       if (k == 'voz' && habCuadra(r.alts, T)) {
         reg['est'] = 'ok';
@@ -432,14 +475,19 @@ extension _Turns on StoryRunner {
     final tu = o.turno!, T = tu.T;
     HAB.hechos.add(tu.id!);
     HAB.n++;
-    final reg = <String, dynamic>{'id': tu.id, 'tipo': 'ask', 'est': '', 'intentos': 0};
+    final reg = <String, dynamic>{
+      'id': tu.id,
+      'tipo': 'ask',
+      'est': '',
+      'intentos': 0,
+    };
     HAB.log.add(reg);
     me.turnoOn = true;
     me.lock = true;
     micEst('dead');
     if (line != null && line.isNotEmpty) await say(line, 0);
     habBub('mic');
-    for (var n = 1;; n++) {
+    for (var n = 1; ; n++) {
       final r = await habIntento(me.repite);
       if (my != runId) throw const StopSignal();
       final k = _habClase(r);
@@ -483,7 +531,12 @@ extension _Turns on StoryRunner {
     final tu = o.turno!;
     tu.ids.forEach(HAB.hechos.add);
     HAB.n++;
-    me.reg = <String, dynamic>{'id': tu.ids.join('|'), 'tipo': 'elige', 'est': '', 'intentos': 0};
+    me.reg = <String, dynamic>{
+      'id': tu.ids.join('|'),
+      'tipo': 'elige',
+      'est': '',
+      'intentos': 0,
+    };
     HAB.log.add(me.reg!);
     me.turnoOn = true;
     micEst('dead');
@@ -494,9 +547,11 @@ extension _Turns on StoryRunner {
   Future<void> turnoElige(Pending me, EsperaOpts o, int my) async {
     final tu = o.turno!, reg = me.reg!;
     try {
-      for (var n = 1;; n++) {
+      for (var n = 1; ; n++) {
         final r = await habIntento(null);
-        if (my != runId || me.done || r.cancel) return; // the question line is repeated by espera's own timer
+        if (my != runId || me.done || r.cancel) {
+          return; // the question line is repeated by espera's own timer
+        }
         final k = _habClase(r);
         reg['intentos'] = n;
         if (k == 'nodisp') {
@@ -506,7 +561,9 @@ extension _Turns on StoryRunner {
           me.turnoOn = false;
           return;
         }
-        final m = k == 'voz' ? tu.ops.where((op) => habCuadra(r.alts, tu.Ts[op]!)).toList() : <String>[];
+        final m = k == 'voz'
+            ? tu.ops.where((op) => habCuadra(r.alts, tu.Ts[op]!)).toList()
+            : <String>[];
         if (m.length == 1) {
           reg['est'] = 'ok';
           reg['op'] = m[0];

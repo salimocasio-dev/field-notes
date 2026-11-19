@@ -70,7 +70,10 @@ class _Watcher extends StoryObserver {
   final Map<String, dynamic> story;
   final List<Object?> sounds;
   final Map<Object, String> paths = HashMap<Object, String>.identity();
-  final List<Map<String, dynamic>> steps = [], clips = [], choices = [], touches = [];
+  final List<Map<String, dynamic>> steps = [],
+      clips = [],
+      choices = [],
+      touches = [];
   final List<_Choice> ch = [];
   final Expando<_EsperaInfo> info = Expando<_EsperaInfo>();
   String? nextPath;
@@ -108,13 +111,20 @@ class _Watcher extends StoryObserver {
     final own = st is Map || st is List ? paths[st!] : null;
     final path = own ?? nextPath;
     nextPath = null;
-    final r = <String, dynamic>{'n': steps.length, 't': timers.now, 'path': path, 'kind': kind};
+    final r = <String, dynamic>{
+      'n': steps.length,
+      't': timers.now,
+      'path': path,
+      'kind': kind,
+    };
     if (kind == 'line' || kind == 'say') r['id'] = id;
     if (kind == 'act') r['act'] = act;
     steps.add(r);
     if (kind != 'ask' && kind != 'decide' && kind != 'elige') return run();
     final c = _Choice(kind, st as Map<String, dynamic>, path);
-    ch.add(c); // before the call: ask, decide and elige reach espera() synchronously
+    ch.add(
+      c,
+    ); // before the call: ask, decide and elige reach espera() synchronously
     void pop() => ch.remove(c);
     Future<void> p;
     try {
@@ -186,10 +196,13 @@ final List<(String, bool Function(Map<String, dynamic>))> _frenteOrder = [
   ('casa_pequena', (W) => jsTruthy(W['escondite'])),
   ('palma_grande', (W) => jsTruthy(W['escondite'])),
   ('casa_grande', (W) => jsTruthy(W['escondite'])),
-  ('pajaro', (W) {
-    final a = W['ave'];
-    return a is Map && jsTruthy(a) && a['mode'] != 'none';
-  }),
+  (
+    'pajaro',
+    (W) {
+      final a = W['ave'];
+      return a is Map && jsTruthy(a) && a['mode'] != 'none';
+    },
+  ),
   ('bizcocho', (W) => W['plato'] != null),
   ('nube', (W) => jsTruthy(W['storm']) && jsTruthy(W['nube'])),
   ('puerta', (W) => true),
@@ -266,15 +279,24 @@ class _Driver {
   String? wrongPoke(Pending pn) {
     final resp = runner.W['resp'];
     for (final k in sceneList()) {
-      if (k != 'coqui' && !counts(pn, k) && !(resp is List && resp.contains(k))) return k;
+      if (k != 'coqui' &&
+          !counts(pn, k) &&
+          !(resp is List && resp.contains(k))) {
+        return k;
+      }
     }
     return null;
   }
 
   // a decide: the first live thing that is not the right one, not also right ("vale") and not free ("gratis")
   String? wrongOption(Pending pn, Map<String, dynamic> st) {
-    final vale = [for (final v in (st['vale'] as List? ?? const [])) runner.fill(v as String)];
-    final gratis = (st['gratis'] as Map? ?? const {}).keys.cast<String>().toList();
+    final vale = [
+      for (final v in (st['vale'] as List? ?? const []))
+        runner.fill(v as String),
+    ];
+    final gratis = (st['gratis'] as Map? ?? const {}).keys
+        .cast<String>()
+        .toList();
     final al = pn.alias;
     for (final k in pn.live) {
       if (k != pn.pick &&
@@ -294,12 +316,16 @@ class _Driver {
     if (runner.HAB.est == 'ready' && runner.HAB.cur != null) {
       // a speaking turn waits for the mic
       final reg = runner.HAB.log.last;
-      final pn = runner.pending != null && !runner.pending!.done ? runner.pending : null;
+      final pn = runner.pending != null && !runner.pending!.done
+          ? runner.pending
+          : null;
       final key = runner.HAB.cur!;
       return _Want(key, () {
         final i = pn != null ? watcher.info[pn] : null;
         if (turnLetter[reg] == null) {
-          turnLetter[reg] = i != null ? (i.letter ??= letterFor()) : letterFor();
+          turnLetter[reg] = i != null
+              ? (i.letter ??= letterFor())
+              : letterFor();
         }
         final letter = turnLetter[reg]!;
         var ans = 'none';
@@ -310,9 +336,17 @@ class _Driver {
             id = ids[letter == 'r' ? 0 : (ids.length < 2 ? ids.length - 1 : 1)];
           }
           final targets = runner.habMarca(id);
-          ans = targets != null ? targets.map((x) => x.formas[0]).join(' ') : 'none';
+          ans = targets != null
+              ? targets.map((x) => x.formas[0]).join(' ')
+              : 'none';
         }
-        speechEvents.add({'t': timers.now, 'turn': reg['id'], 'tipo': reg['tipo'], 'letter': letter, 'says': ans});
+        speechEvents.add({
+          't': timers.now,
+          'turn': reg['id'],
+          'tipo': reg['tipo'],
+          'letter': letter,
+          'says': ans,
+        });
         while (stub.length <= runner.HAB.si) {
           stub.add('none');
         }
@@ -350,7 +384,11 @@ class _Driver {
     }
     String k, why;
     if (I.role != 'first') {
-      k = I.role == 'retry' && pn.pick != null && pn.pick!.isNotEmpty && pn.live.contains(pn.pick)
+      k =
+          I.role == 'retry' &&
+              pn.pick != null &&
+              pn.pick!.isNotEmpty &&
+              pn.live.contains(pn.pick)
           ? pn.pick!
           : pn.live[0];
       why = I.role;
@@ -412,7 +450,14 @@ class _Driver {
       y = b[1] + b[3] / 2;
     }
     final i = watcher.info[pn];
-    watcher.touches.add({'t': timers.now, 'what': k, 'why': why, 'espera': i?.n, 'x': x, 'y': y});
+    watcher.touches.add({
+      't': timers.now,
+      'what': k,
+      'why': why,
+      'espera': i?.n,
+      'x': x,
+      'y': y,
+    });
     runner.tapThing(k, x, y);
   }
 }
@@ -460,7 +505,9 @@ Future<Map<String, dynamic>> play({
   bool allOpen = true,
   List<String>? micStub,
 }) async {
-  if (!playPlans.contains(plan)) throw ArgumentError.value(plan, 'plan', 'right, wrong or alternate');
+  if (!playPlans.contains(plan)) {
+    throw ArgumentError.value(plan, 'plan', 'right, wrong or alternate');
+  }
   final id = story['id'] as String;
   final timers = StoryTimers();
   final rng = CountingRng(Mulberry32(seed));
@@ -483,7 +530,12 @@ Future<Map<String, dynamic>> play({
     rng: rng,
     clock: clock,
     memory: mem,
-    options: StoryOptions(micStub: stub, allOpen: allOpen, recordsProgress: true, forced: draws),
+    options: StoryOptions(
+      micStub: stub,
+      allOpen: allOpen,
+      recordsProgress: true,
+      forced: draws,
+    ),
     timers: timers,
     renderer: HeadlessRenderer(),
     observer: watcher,
@@ -507,7 +559,8 @@ Future<Map<String, dynamic>> play({
       unawaited(
         runner.start().then(
           (_) {},
-          onError: (Object e, StackTrace s) => errors.add('unhandledrejection: $e\n$s'),
+          onError: (Object e, StackTrace s) =>
+              errors.add('unhandledrejection: $e\n$s'),
         ),
       );
       var started = false;
@@ -600,7 +653,9 @@ Future<Map<String, dynamic>> play({
     'scene': story['scene'],
     'tipo': jsTruthy(story['tipo']) ? story['tipo'] : null,
     'storySha256': storySha256,
-    'page': page ?? 'historia/index.html?cuento=$id&fast=1&rec=1&mic=stub:none&abiertas=todas',
+    'page':
+        page ??
+        'historia/index.html?cuento=$id&fast=1&rec=1&mic=stub:none&abiertas=todas',
     'think': think,
     ...r,
   };
@@ -660,11 +715,15 @@ Map<String, dynamic> _finish({
     'lost': W['lost'],
     'ending': {
       'lost': W['lost'],
-      'stakeSteps': stake is Map && stake['steps'] != null ? stake['steps'] : null,
+      'stakeSteps': stake is Map && stake['steps'] != null
+          ? stake['steps']
+          : null,
       'heart': jsTruthy(W['heart']) ? W['heart'] : 0,
       'final': [
         for (final s in steps)
-          if (s['path'] != null && RegExp(r'^final\b').hasMatch(s['path'] as String)) s['path'],
+          if (s['path'] != null &&
+              RegExp(r'^final\b').hasMatch(s['path'] as String))
+            s['path'],
       ],
       'screen': runner.view.screen.name,
     },
@@ -704,6 +763,9 @@ class _NoSpeech implements SpeechListener {
   Future<bool> available() async => false;
 
   @override
-  SpeechTurn listen({required String locale, required Duration limit, int maxAlternatives = 5}) =>
-      throw StateError('no recogniser: the stub answers');
+  SpeechTurn listen({
+    required String locale,
+    required Duration limit,
+    int maxAlternatives = 5,
+  }) => throw StateError('no recogniser: the stub answers');
 }

@@ -33,7 +33,10 @@ class RecordedCall {
 
 /// The views a story and a recorded run name: each its own view of zoom 1 (the old scenes' views were not whole
 /// numbers; here two names are never the same view, as in the old scenes).
-Map<String, List<num>> replayViews(Map<String, dynamic> story, Map<String, dynamic> run) {
+Map<String, List<num>> replayViews(
+  Map<String, dynamic> story,
+  Map<String, dynamic> run,
+) {
   final names = <String>{'wide'};
   void walk(Object? x) {
     if (x is Map) {
@@ -145,7 +148,9 @@ class ReplayScene extends Escena {
     }
     final rc = _acts[_nAct++];
     if (rc.name != 'act:$act') {
-      divergences.add('act call ${_nAct - 1}: the story asked for $act, the old run called ${rc.name}');
+      divergences.add(
+        'act call ${_nAct - 1}: the story asked for $act, the old run called ${rc.name}',
+      );
     }
     await _play(rc);
   }
@@ -174,9 +179,18 @@ class ReplayScene extends Escena {
         rng.next();
       case 'tone':
         num? n(int i) => i < a.length ? a[i] as num? : null;
-        host.tone(n(0)!, n(1)!, n(2)!, a.length > 3 ? a[3] as String? : null, n(4), n(5));
+        host.tone(
+          n(0)!,
+          n(1)!,
+          n(2)!,
+          a.length > 3 ? a[3] as String? : null,
+          n(4),
+          n(5),
+        );
       case 'cam':
-        host.camGo(a[0] as String, (a[1] as num?)?.toInt()).then((_) {}, onError: (Object _) {});
+        host
+            .camGo(a[0] as String, (a[1] as num?)?.toInt())
+            .then((_) {}, onError: (Object _) {});
       case 'sfx':
         _sfx(a[0] as String, a.length > 1 ? a[1] as num? : null);
     }
@@ -256,9 +270,11 @@ class _Replays implements Map<String, Act> {
   final ReplayScene scene;
 
   @override
-  Act? operator [](Object? key) => key is String ? (o) => scene._replay(key, o) : null;
+  Act? operator [](Object? key) =>
+      key is String ? (o) => scene._replay(key, o) : null;
 
   @override
-  dynamic noSuchMethod(Invocation invocation) =>
-      throw UnimplementedError('the replay scene has no ${invocation.memberName}');
+  dynamic noSuchMethod(Invocation invocation) => throw UnimplementedError(
+    'the replay scene has no ${invocation.memberName}',
+  );
 }

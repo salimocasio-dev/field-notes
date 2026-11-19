@@ -12,12 +12,28 @@ final things = [
   Thing(id: 'ventana', box: [60, 10, 20, 20]),
   Thing(id: 'casa', box: [100, 10, 20, 20]),
 ];
-const clips = {'q': 'Q', 'muy_bien': 'M', 'p_n': 'PN', 'v_n': 'VN', 'cq_n': 'CN', 'otra': 'O'};
+const clips = {
+  'q': 'Q',
+  'muy_bien': 'M',
+  'p_n': 'PN',
+  'v_n': 'VN',
+  'cq_n': 'CN',
+  'otra': 'O',
+};
 
-Map<String, dynamic> ask(Map<String, dynamic> a, {Map<String, dynamic> extra = const {}}) => story(
-  beats: [{'wait': 100}, {'ask': 'puerta', 'line': 'q', ...a}],
+Map<String, dynamic> ask(
+  Map<String, dynamic> a, {
+  Map<String, dynamic> extra = const {},
+}) => story(
+  beats: [
+    {'wait': 100},
+    {'ask': 'puerta', 'line': 'q', ...a},
+  ],
   clips: clips,
-  extra: {'names': {'ventana': 'v_n', 'puerta': 'p_n', 'coqui': 'cq_n'}, ...extra},
+  extra: {
+    'names': {'ventana': 'v_n', 'puerta': 'p_n', 'coqui': 'cq_n'},
+    ...extra,
+  },
 );
 
 void main() {
@@ -44,7 +60,16 @@ void main() {
       r.touch('ventana');
       expect(scene.pokes, ['ventana']);
       expect(r.sounds.last, 'blip');
-      expect((r.runner.W['fx'] as List).last, {'t': 'star', 'n': 7, 'pts': [[93, 96], [108, 102], [100, 90]], 'f0': r.runner.F});
+      expect((r.runner.W['fx'] as List).last, {
+        't': 'star',
+        'n': 7,
+        'pts': [
+          [93, 96],
+          [108, 102],
+          [100, 90],
+        ],
+        'f0': r.runner.F,
+      });
       expect(r.runner.pendingNow!.busy, isTrue);
       await r.until(() => !r.runner.pendingNow!.busy, what: 'the name');
       // the name of what he touched, then the question asked again
@@ -72,33 +97,65 @@ void main() {
       await r.start();
       await r.untilAsked();
       r.touch('coqui');
-      expect(r.clips.last, 'cq_n'); // he says his name (when no line is playing)
+      expect(
+        r.clips.last,
+        'cq_n',
+      ); // he says his name (when no line is playing)
       await r.advance(2000);
-      final noName = await Rig.make(ask({}, extra: {'names': {}}), scene: scene);
+      final noName = await Rig.make(
+        ask({}, extra: {'names': {}}),
+        scene: scene,
+      );
       await noName.start();
       await noName.untilAsked();
       noName.touch('coqui');
       expect(noName.sounds.last, 'coqui');
     });
 
-    test('a touch on the answer counts from the first word of the lead-in', () async {
-      final r = await Rig.make(ask({'lead': ['otra']}), scene: StandInScene(things: things));
-      await r.start();
-      await r.until(() => r.runner.pending != null);
-      r.touch('puerta');
-      await r.until(() => !r.runner.running);
-      expect(r.runner.W['lost'], 0);
-      expect(r.clips, ['otra', 'muy_bien']);
-    });
+    test(
+      'a touch on the answer counts from the first word of the lead-in',
+      () async {
+        final r = await Rig.make(
+          ask({
+            'lead': ['otra'],
+          }),
+          scene: StandInScene(things: things),
+        );
+        await r.start();
+        await r.until(() => r.runner.pending != null);
+        r.touch('puerta');
+        await r.until(() => !r.runner.running);
+        expect(r.runner.W['lost'], 0);
+        expect(r.clips, ['otra', 'muy_bien']);
+      },
+    );
 
     test('loose: before the door has a name, the door is the house', () async {
-      final r = await Rig.make(story(beats: [{'wait': 100}, {'ask': 'casa', 'loose': true, 'line': 'q'}], clips: clips), scene: StandInScene(things: things));
+      final r = await Rig.make(
+        story(
+          beats: [
+            {'wait': 100},
+            {'ask': 'casa', 'loose': true, 'line': 'q'},
+          ],
+          clips: clips,
+        ),
+        scene: StandInScene(things: things),
+      );
       await r.start();
       await r.untilAsked();
       r.touch('puerta');
       await r.until(() => !r.runner.running);
       expect(r.clips, ['q', 'muy_bien']);
-      final strict = await Rig.make(story(beats: [{'wait': 100}, {'ask': 'casa', 'line': 'q'}], clips: clips), scene: StandInScene(things: things));
+      final strict = await Rig.make(
+        story(
+          beats: [
+            {'wait': 100},
+            {'ask': 'casa', 'line': 'q'},
+          ],
+          clips: clips,
+        ),
+        scene: StandInScene(things: things),
+      );
       await strict.start();
       await strict.untilAsked();
       strict.touch('puerta');
@@ -107,10 +164,22 @@ void main() {
     });
 
     test('alias: a thing that stands for another', () async {
-      final r = await Rig.make(story(beats: [
-        {'wait': 100},
-        {'decide': 'do', 'options': ['casa', 'ventana'], 'pick': 'casa', 'alias': {'puerta': 'casa'}, 'line': 'q'},
-      ], clips: clips), scene: StandInScene(things: things));
+      final r = await Rig.make(
+        story(
+          beats: [
+            {'wait': 100},
+            {
+              'decide': 'do',
+              'options': ['casa', 'ventana'],
+              'pick': 'casa',
+              'alias': {'puerta': 'casa'},
+              'line': 'q',
+            },
+          ],
+          clips: clips,
+        ),
+        scene: StandInScene(things: things),
+      );
       await r.start();
       await r.untilAsked();
       r.touch('puerta');
@@ -119,22 +188,48 @@ void main() {
       expect(r.runner.LOG.single.ok, isTrue);
     });
 
-    test('a touch when nothing is asked is a poke when the story runs', () async {
-      final scene = StandInScene(things: things);
-      final r = await Rig.make(story(beats: [{'wait': 5000}], clips: clips, extra: {'names': {'ventana': 'v_n'}}), scene: scene);
-      r.touch('ventana');
-      expect(scene.pokes, isEmpty); // not running yet
-      await r.start();
-      await r.advance(100);
-      r.touch('ventana');
-      expect(scene.pokes, ['ventana']);
-      await r.advance(100);
-      expect(r.clips, ['v_n']);
-    });
+    test(
+      'a touch when nothing is asked is a poke when the story runs',
+      () async {
+        final scene = StandInScene(things: things);
+        final r = await Rig.make(
+          story(
+            beats: [
+              {'wait': 5000},
+            ],
+            clips: clips,
+            extra: {
+              'names': {'ventana': 'v_n'},
+            },
+          ),
+          scene: scene,
+        );
+        r.touch('ventana');
+        expect(scene.pokes, isEmpty); // not running yet
+        await r.start();
+        await r.advance(100);
+        r.touch('ventana');
+        expect(scene.pokes, ['ventana']);
+        await r.advance(100);
+        expect(r.clips, ['v_n']);
+      },
+    );
 
     test('the question is asked again every 9 s while he waits; a routine\'s sign comes after the second time', () async {
       final r = await Rig.make(
-        story(beats: [{'wait': 100}, {'decide': 'do', 'libre': true, 'options': ['puerta', 'ventana'], 'pick': 'puerta', 'line': 'q'}], clips: clips),
+        story(
+          beats: [
+            {'wait': 100},
+            {
+              'decide': 'do',
+              'libre': true,
+              'options': ['puerta', 'ventana'],
+              'pick': 'puerta',
+              'line': 'q',
+            },
+          ],
+          clips: clips,
+        ),
         scene: StandInScene(things: things),
       );
       await r.start();
@@ -152,14 +247,20 @@ void main() {
   });
 
   group('the signal for a right move (juego.js senal 196)', () {
-    test('a sound, a bounce and six stars; not when the story is quiet (callado)', () async {
-      final r = await Rig.make(ask({}), scene: StandInScene(things: things));
-      await r.finish((pn) => 'puerta');
-      expect(r.sounds.where((s) => s == 'right'), hasLength(1));
-      final q = await Rig.make(ask({}, extra: {'callado': true}), scene: StandInScene(things: things));
-      await q.finish((pn) => 'puerta');
-      expect(q.sounds.where((s) => s == 'right'), isEmpty);
-      expect(q.clips, ['q']); // no "¡Muy bien!" either
-    });
+    test(
+      'a sound, a bounce and six stars; not when the story is quiet (callado)',
+      () async {
+        final r = await Rig.make(ask({}), scene: StandInScene(things: things));
+        await r.finish((pn) => 'puerta');
+        expect(r.sounds.where((s) => s == 'right'), hasLength(1));
+        final q = await Rig.make(
+          ask({}, extra: {'callado': true}),
+          scene: StandInScene(things: things),
+        );
+        await q.finish((pn) => 'puerta');
+        expect(q.sounds.where((s) => s == 'right'), isEmpty);
+        expect(q.clips, ['q']); // no "¡Muy bien!" either
+      },
+    );
   });
 }

@@ -31,13 +31,7 @@ class StoryObserver {
 
   /// A clip was asked for: by `say` ([via] "say") or directly by `playClip` ([via] "clip"). [who] is the clip's `who`,
   /// [talker] who speaks it on screen (`partes().quien`), [noVoice] true when there is no recording for it.
-  void clip(
-    String id,
-    String via,
-    String? who,
-    String? talker,
-    bool noVoice,
-  ) {}
+  void clip(String id, String via, String? who, String? talker, bool noVoice) {}
 
   /// A scene called `tone` itself (not through an SFX): its arguments as given.
   void tone(List<Object?> args) {}

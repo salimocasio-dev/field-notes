@@ -14,7 +14,8 @@ import '../../tool/stand_in_scene.dart';
 
 /// A course that has the clips a test names. The fixed lines are the ones datos/fijos.json names.
 class TestCourse implements CourseCatalog {
-  TestCourse({Set<String>? missing, this.lengths = const {}}) : missing = missing ?? {};
+  TestCourse({Set<String>? missing, this.lengths = const {}})
+    : missing = missing ?? {};
 
   /// Clips that have no recording.
   final Set<String> missing;
@@ -48,7 +49,8 @@ class TestCourse implements CourseCatalog {
   }[role]!;
 
   @override
-  dynamic noSuchMethod(Invocation i) => throw UnimplementedError('${i.memberName}');
+  dynamic noSuchMethod(Invocation i) =>
+      throw UnimplementedError('${i.memberName}');
 }
 
 class MemStore implements KeyValueStore {
@@ -85,7 +87,13 @@ class TestProgress implements ProgressStore {
   void addMinutes(double m) => minutesAdded.add(m);
 
   @override
-  SkillRecord answer(String w, Skill skill, {required bool ok, int? ms, bool intro = false}) {
+  SkillRecord answer(
+    String w,
+    Skill skill, {
+    required bool ok,
+    int? ms,
+    bool intro = false,
+  }) {
     if (skill == Skill.mouth) {
       mouth[w] = (mouth[w] ?? 0) + 1;
       answers.add((w: w, ok: ok, ms: ms));
@@ -94,8 +102,9 @@ class TestProgress implements ProgressStore {
   }
 
   @override
-  WordRecord? word(String w) =>
-      mouth.containsKey(w) ? WordRecord(w: w, primera: 0, mouth: SkillRecord()..n = mouth[w]!) : null;
+  WordRecord? word(String w) => mouth.containsKey(w)
+      ? WordRecord(w: w, primera: 0, mouth: SkillRecord()..n = mouth[w]!)
+      : null;
 
   @override
   bool openForSpeaking(String w) => open.contains(w) || (mouth[w] ?? 0) > 0;
@@ -104,7 +113,8 @@ class TestProgress implements ProgressStore {
   Object? setting(String key) => key == 'habla' ? habla : null;
 
   @override
-  dynamic noSuchMethod(Invocation i) => throw UnimplementedError('${i.memberName}');
+  dynamic noSuchMethod(Invocation i) =>
+      throw UnimplementedError('${i.memberName}');
 }
 
 /// A recogniser that is not there.
@@ -113,8 +123,11 @@ class NoSpeech implements SpeechListener {
   Future<bool> available() async => false;
 
   @override
-  SpeechTurn listen({required String locale, required Duration limit, int maxAlternatives = 5}) =>
-      throw StateError('no recogniser');
+  SpeechTurn listen({
+    required String locale,
+    required Duration limit,
+    int maxAlternatives = 5,
+  }) => throw StateError('no recogniser');
 }
 
 class _Clock implements Clock {
@@ -128,7 +141,17 @@ class _Clock implements Clock {
 
 /// One play of a story on the test's own pieces.
 class Rig {
-  Rig._(this.runner, this.timers, this.player, this.progress, this.scene, this.memory, this.sounds, this.course, this.stub);
+  Rig._(
+    this.runner,
+    this.timers,
+    this.player,
+    this.progress,
+    this.scene,
+    this.memory,
+    this.sounds,
+    this.course,
+    this.stub,
+  );
 
   final StoryRunner runner;
   final StoryTimers timers;
@@ -168,7 +191,9 @@ class Rig {
     final p = progress ?? TestProgress();
     final m = memory ?? MemStore();
     final sc = scene ?? StandInScene();
-    final player = playerFor != null ? playerFor(timers, c) : VirtualClipPlayer(timers, c);
+    final player = playerFor != null
+        ? playerFor(timers, c)
+        : VirtualClipPlayer(timers, c);
     final sounds = <Object?>[];
     final st = stub;
     final runner = StoryRunner(
@@ -211,7 +236,9 @@ class Rig {
 
   /// Starts the story (the start disc).
   Future<void> start() async {
-    unawaited(runner.start().then((_) {}, onError: (Object e) => failure ??= e));
+    unawaited(
+      runner.start().then((_) {}, onError: (Object e) => failure ??= e),
+    );
     await drain();
   }
 
@@ -234,17 +261,29 @@ class Rig {
   }
 
   /// Goes on until [ok] is true. Throws when [limitMs] of story time pass first.
-  Future<void> until(bool Function() ok, {int limitMs = 600000, String what = 'the condition'}) async {
+  Future<void> until(
+    bool Function() ok, {
+    int limitMs = 600000,
+    String what = 'the condition',
+  }) async {
     final end = timers.now + limitMs;
     await drain();
     while (!ok()) {
-      if (!await tick(limit: end)) throw StateError('$what never came (at ${timers.now} ms)');
+      if (!await tick(limit: end)) {
+        throw StateError('$what never came (at ${timers.now} ms)');
+      }
     }
   }
 
   /// Goes on until the touch is waited for and the question has been asked.
   Future<Pending> untilAsked() async {
-    await until(() => runner.pendingNow != null && runner.pendingNow!.asked && runner.pendingNow!.tEnd != null, what: 'the question');
+    await until(
+      () =>
+          runner.pendingNow != null &&
+          runner.pendingNow!.asked &&
+          runner.pendingNow!.tEnd != null,
+      what: 'the question',
+    );
     return runner.pendingNow!;
   }
 
@@ -253,8 +292,14 @@ class Rig {
 
   /// Plays the story through. At each question [choose] is given the thing waited for and says what to touch (null: leave
   /// it). He answers [think] ms after the question is ready.
-  Future<void> finish(String? Function(Pending pn) choose, {int think = 700, int limitMs = 3600000}) async {
-    unawaited(runner.start().then((_) {}, onError: (Object e) => failure ??= e));
+  Future<void> finish(
+    String? Function(Pending pn) choose, {
+    int think = 700,
+    int limitMs = 3600000,
+  }) async {
+    unawaited(
+      runner.start().then((_) {}, onError: (Object e) => failure ??= e),
+    );
     final end = timers.now + limitMs;
     var started = false;
     Pending? waiting;
@@ -268,7 +313,8 @@ class Rig {
         return;
       }
       final pn = runner.pendingNow;
-      final ready = pn != null &&
+      final ready =
+          pn != null &&
           pn.asked &&
           pn.tEnd != null &&
           !pn.busy &&
@@ -291,7 +337,11 @@ class Rig {
         if (what != null) touch(what);
         continue;
       }
-      if (t == null) throw StateError('stuck at ${timers.now} ms: nothing scheduled and nothing to touch');
+      if (t == null) {
+        throw StateError(
+          'stuck at ${timers.now} ms: nothing scheduled and nothing to touch',
+        );
+      }
       if (t.at > end) throw StateError('still running at the time limit');
       timers.fire(t);
     }
@@ -299,8 +349,16 @@ class Rig {
 
   /// Plays the story through as `habla_motor_check.py` does: the mic is tapped when it is ready (`tapMic`), the question is
   /// answered by [choose] when it is asked and no turn is going on (an elige also while the mic is up when [touchElige]).
-  Future<void> finishTurns(String? Function(Pending pn) choose, {bool tapMic = true, bool touchElige = false, int think = 700, int limitMs = 3600000}) async {
-    unawaited(runner.start().then((_) {}, onError: (Object e) => failure ??= e));
+  Future<void> finishTurns(
+    String? Function(Pending pn) choose, {
+    bool tapMic = true,
+    bool touchElige = false,
+    int think = 700,
+    int limitMs = 3600000,
+  }) async {
+    unawaited(
+      runner.start().then((_) {}, onError: (Object e) => failure ??= e),
+    );
     final end = timers.now + limitMs;
     var started = false;
     Object? key;
@@ -325,7 +383,11 @@ class Rig {
           pn.tEnd != null &&
           !pn.busy &&
           runner.speaking == 0 &&
-          (runner.HAB.est == '' || (touchElige && pn.kind == 'elige' && runner.HAB.est != 'listening' && runner.HAB.est != 'processing'))) {
+          (runner.HAB.est == '' ||
+              (touchElige &&
+                  pn.kind == 'elige' &&
+                  runner.HAB.est != 'listening' &&
+                  runner.HAB.est != 'processing'))) {
         k = pn;
         a = () {
           final what = choose(pn);

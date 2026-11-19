@@ -23,7 +23,11 @@ class StandInScene extends Escena {
              Thing(id: 'puerta', box: [150, 60, 30, 50]),
              Thing(id: 'ventana', box: [60, 60, 40, 30]),
              Thing(id: 'casa', box: [40, 20, 150, 100]),
-             Thing(id: 'sol', box: [200, 10, 20, 20], si: (W) => W['storm'] != true),
+             Thing(
+               id: 'sol',
+               box: [200, 10, 20, 20],
+               si: (W) => W['storm'] != true,
+             ),
            ],
        _cam =
            cam ??

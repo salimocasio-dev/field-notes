@@ -28,7 +28,8 @@ Map<String, dynamic> story({
 };
 
 /// `Act` that writes down it was called.
-Act noting(List<String> log, String name, {Future<void> Function()? then}) => (o) async {
-  log.add(name);
-  await then?.call();
-};
+Act noting(List<String> log, String name, {Future<void> Function()? then}) =>
+    (o) async {
+      log.add(name);
+      await then?.call();
+    };

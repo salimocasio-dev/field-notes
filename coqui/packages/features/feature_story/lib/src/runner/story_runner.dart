@@ -16,8 +16,11 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:coqui_pixel/coqui_pixel.dart' hide hand, heart, star, spot, frogBox;
-import 'package:coqui_pixel/coqui_pixel.dart' as px show hand, heart, star, spot, frogBox;
+import 'package:coqui_pixel/coqui_pixel.dart'
+    hide hand, heart, star, spot, frogBox;
+import 'package:coqui_pixel/coqui_pixel.dart'
+    as px
+    show hand, heart, star, spot, frogBox;
 import 'package:feature_story/src/runner/bubble_place.dart';
 import 'package:feature_story/src/runner/js.dart';
 import 'package:feature_story/src/runner/observer.dart';
@@ -74,7 +77,10 @@ class EsperaOpts {
       lock: jsTruthy(o['lock']),
       voces: v == null
           ? null
-          : {for (final e in (v as Map).entries) e.key as String: e.value as String},
+          : {
+              for (final e in (v as Map).entries)
+                e.key as String: e.value as String,
+            },
       orden: ord == null ? null : [for (final e in ord as List) e as String],
       sign: o['sign'] as String?,
       kind: o['kind'] as String?,
@@ -305,6 +311,9 @@ class StoryRunner implements SceneHost {
   /// (juego.js measured the page's elements). Null: no screen. Then a turn's bubble never counts as covering anyone.
   BubbleMetrics? Function()? bubbleMetrics;
 
+  /// Where the mic button is, in the stage's pixels, when the screen knows (a turn's bubble that sits above it).
+  MicAnchor? micAnchor;
+
   // ---------- starting ----------
 
   // juego.js: arranca (after the story is fetched and its scene loaded)
@@ -312,15 +321,17 @@ class StoryRunner implements SceneHost {
   /// [start].
   Future<void> init() async {
     final camOver = S['cam'];
-    _cams = {
-      for (final e in E.CAM.entries) e.key: List<num>.of(e.value),
-    };
+    _cams = {for (final e in E.CAM.entries) e.key: List<num>.of(e.value)};
     if (camOver is Map) {
       camOver.forEach((k, v) {
-        _cams[k as String] = List<num>.of(E.remap([for (final n in v as List) n as num]));
+        _cams[k as String] = List<num>.of(
+          E.remap([for (final n in v as List) n as num]),
+        );
       });
     }
-    view.dots = S['dots'] != null && S['dots'] != 0 ? (S['dots'] as num).toInt() : 5;
+    view.dots = S['dots'] != null && S['dots'] != 0
+        ? (S['dots'] as num).toInt()
+        : 5;
     view.dotsLit = 0;
     fresh();
     voiceReady = loadVoice();
@@ -332,9 +343,17 @@ class StoryRunner implements SceneHost {
   void _loadMemory() {
     try {
       final u = memory.read('ult');
-      ULT = u == null || u.isEmpty ? {} : Map<String, dynamic>.of((jsonDecode(u) as Map).cast<String, dynamic>());
+      ULT = u == null || u.isEmpty
+          ? {}
+          : Map<String, dynamic>.of(
+              (jsonDecode(u) as Map).cast<String, dynamic>(),
+            );
       final m = memory.read('mem');
-      MEM = m == null || m.isEmpty ? {} : Map<String, dynamic>.of((jsonDecode(m) as Map).cast<String, dynamic>());
+      MEM = m == null || m.isEmpty
+          ? {}
+          : Map<String, dynamic>.of(
+              (jsonDecode(m) as Map).cast<String, dynamic>(),
+            );
     } catch (_) {
       // juego.js: `try{...}catch(e){}`
     }
@@ -351,7 +370,9 @@ class StoryRunner implements SceneHost {
   // juego.js: loadVoice
   /// Reads the story's lines and gets their recordings ready. [VOICE] is true when every line has one.
   Future<void> loadVoice() async {
-    LINES = Map<String, dynamic>.of((S['clips'] as Map?)?.cast<String, dynamic>() ?? const {});
+    LINES = Map<String, dynamic>.of(
+      (S['clips'] as Map?)?.cast<String, dynamic>() ?? const {},
+    );
     try {
       final ahoraTu = course.fixedClip('story_your_turn');
       final info = course.clip(ahoraTu);
@@ -388,7 +409,15 @@ class StoryRunner implements SceneHost {
   @override
   void fresh() {
     final base = <String, dynamic>{
-      'cq': <String, dynamic>{'x': 150, 'y': 178, 's': 1, 'dy': 0, 'al': 1, 'vis': 1, 'bub': null},
+      'cq': <String, dynamic>{
+        'x': 150,
+        'y': 178,
+        's': 1,
+        'dy': 0,
+        'al': 1,
+        'vis': 1,
+        'bub': null,
+      },
       'spot': null,
       'twinkle': null,
       'glow': null,
@@ -478,15 +507,7 @@ class StoryRunner implements SceneHost {
   // juego.js: tone
   @override
   void tone(num f0, num at, num dur, [String? type, num? vol, num? f1]) {
-    obs.tone([
-      'tone',
-      f0,
-      at,
-      dur,
-      type,
-      vol,
-      f1,
-    ]);
+    obs.tone(['tone', f0, at, dur, type, vol, f1]);
     clips.tone(
       f0.toDouble(),
       at: at.toDouble(),
@@ -566,9 +587,7 @@ class StoryRunner implements SceneHost {
       final i = course.clip(id)!;
       limit = Duration(milliseconds: i.endMs - i.startMs + 1000);
     }
-    clips
-        .play(id, limit: limit)
-        .then(end, onError: (Object _) => end(false));
+    clips.play(id, limit: limit).then(end, onError: (Object _) => end(false));
     return c.future;
   }
 
@@ -629,7 +648,12 @@ class StoryRunner implements SceneHost {
     if (jsTruthy(habla)) {
       final i = t.indexOf(': ');
       if (i > 0) {
-        return (cap: t.substring(0, i + 1), quien: habla as String, bub: t.substring(i + 2), all: t);
+        return (
+          cap: t.substring(0, i + 1),
+          quien: habla as String,
+          bub: t.substring(i + 2),
+          all: t,
+        );
       }
     }
     return (cap: t, quien: null, bub: null, all: t);
@@ -643,7 +667,10 @@ class StoryRunner implements SceneHost {
       final q = W['cq'] as Map<String, dynamic>;
       if (!jsTruthy(q['vis'])) return null;
       final b = frogBox(q);
-      return [b.x + b.w / 2, b.y + jsRound(q['dy'] as num) - (jsTruthy(q['bub']) ? 19 : 1)];
+      return [
+        b.x + b.w / 2,
+        b.y + jsRound(q['dy'] as num) - (jsTruthy(q['bub']) ? 19 : 1),
+      ];
     }
     return E.talkAt(quien, W);
   }
@@ -734,13 +761,15 @@ class StoryRunner implements SceneHost {
   // ---------- the signs ----------
 
   @override
-  ({num x, num y, num w, num h}) frogBox(Map<String, dynamic> q) => px.frogBox(q);
+  ({num x, num y, num w, num h}) frogBox(Map<String, dynamic> q) =>
+      px.frogBox(q);
 
   @override
   void frog(Ctx g, Map<String, dynamic> q, int a) => _signs.frog(g, q, a);
 
   @override
-  void star(Ctx g, num x, num y, num s, [bool hot = false]) => px.star(g, x, y, s, hot);
+  void star(Ctx g, num x, num y, num s, [bool hot = false]) =>
+      px.star(g, x, y, s, hot);
 
   @override
   void hand(Ctx g, num x, num y, bool down, num k) => px.hand(g, x, y, down, k);
@@ -752,7 +781,8 @@ class StoryRunner implements SceneHost {
   void spot(Ctx g, List<num> b, int a) => px.spot(g, b, a, E.SW, E.SH);
 
   @override
-  void bub(Ctx g, String k, num tx, num ty, int a) => _signs.bub(g, k, tx, ty, a);
+  void bub(Ctx g, String k, num tx, num ty, int a) =>
+      _signs.bub(g, k, tx, ty, a);
 
   // juego.js: respBox
   /// An answer bubble's box, or null.
@@ -778,9 +808,7 @@ class StoryRunner implements SceneHost {
   @override
   Future<void> camGo(String k, [int? n]) {
     if (at(k)) return Future<void>.value();
-    final m = _camA = _CamMove(
-      CamSlide(from: cam, to: _cams[k]!, f0: F, n: n),
-    );
+    final m = _camA = _CamMove(CamSlide(from: cam, to: _cams[k]!, f0: F, n: n));
     return m.done.future;
   }
 
@@ -906,7 +934,9 @@ class StoryRunner implements SceneHost {
       if (al != null && jsTruthy(al[w])) w = al[w] as String;
       if (pn.live.contains(w) && !(pn.lock && !pn.asked)) {
         pn.done = true;
-        pn.ms = pn.tEnd != null && pn.tEnd != 0 ? jsRound((now() - pn.tEnd!) * FAST) : 0;
+        pn.ms = pn.tEnd != null && pn.tEnd != 0
+            ? jsRound((now() - pn.tEnd!) * FAST)
+            : 0;
         pn.p = p;
         pn.got = w;
         hush();
@@ -914,7 +944,9 @@ class StoryRunner implements SceneHost {
         return;
       }
       final resp = W['resp'];
-      if (resp is List && resp.contains(what)) return; // a bubble that is still speaking
+      if (resp is List && resp.contains(what)) {
+        return; // a bubble that is still speaking
+      }
       if (pn.voz && what == 'coqui' && pn.asked) {
         bounce(5);
         pn.repite(); // touch the frog: the bubbles speak again
@@ -928,7 +960,11 @@ class StoryRunner implements SceneHost {
         unawaited(() async {
           await playClip(nm!);
           await sleep(300);
-          if (identical(pending, pn) && !pn.done && pn.asked && pn.line != null && pn.line!.isNotEmpty) {
+          if (identical(pending, pn) &&
+              !pn.done &&
+              pn.asked &&
+              pn.line != null &&
+              pn.line!.isNotEmpty) {
             await playClip(pn.line!);
           }
           pn.busy = false;
@@ -988,7 +1024,9 @@ class StoryRunner implements SceneHost {
       return say(
         id != null && id.isNotEmpty
             ? id
-            : (own is String && own.isNotEmpty ? own : course.fixedClip('story_praise')),
+            : (own is String && own.isNotEmpty
+                  ? own
+                  : course.fixedClip('story_praise')),
         350,
       );
     });
@@ -1031,7 +1069,8 @@ class StoryRunner implements SceneHost {
     List<Object?>? lead,
     String? line, [
     Map<String, dynamic>? o,
-  ]) async => (await _esperaW(liveSet, lead, line, EsperaOpts.fromMap(o))).asMap();
+  ]) async =>
+      (await _esperaW(liveSet, lead, line, EsperaOpts.fromMap(o))).asMap();
 
   // juego.js: baraja
   @override
@@ -1110,8 +1149,14 @@ class StoryRunner implements SceneHost {
         progress.storyFinished(
           StoryResult(
             id: S['id'] as String,
-            focusWords: [for (final w in (S['focus_words'] as List?) ?? const []) w as String],
-            backAgain: [for (final w in (S['back_again'] as List?) ?? const []) w as String],
+            focusWords: [
+              for (final w in (S['focus_words'] as List?) ?? const [])
+                w as String,
+            ],
+            backAgain: [
+              for (final w in (S['back_again'] as List?) ?? const [])
+                w as String,
+            ],
             lost: (W['lost'] as num).toInt(),
             log: LOG,
           ),
@@ -1154,7 +1199,9 @@ class StoryRunner implements SceneHost {
   String get cap => view.captionOn ? view.caption : '';
 
   /// `Story.bub`: the bubble's words shown, or "".
-  String get bubText => view.bubbleOn && view.bubbleKind == BubbleKind.words ? view.bubbleText : '';
+  String get bubText => view.bubbleOn && view.bubbleKind == BubbleKind.words
+      ? view.bubbleText
+      : '';
 
   /// `Story.hab`: the turns' state.
   Map<String, dynamic> get hab => {

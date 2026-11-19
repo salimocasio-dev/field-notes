@@ -15,7 +15,11 @@ Directory findRoot([Directory? from]) {
   for (;;) {
     if (Directory('${d.path}/historia/cuentos').existsSync()) return d;
     final p = d.parent;
-    if (p.path == d.path) throw StateError('no historia/ folder above ${from ?? Directory.current}');
+    if (p.path == d.path) {
+      throw StateError(
+        'no historia/ folder above ${from ?? Directory.current}',
+      );
+    }
     d = p;
   }
 }
@@ -33,13 +37,15 @@ class DiskCourse implements CourseCatalog {
   String _version = '0';
   final Map<String, Map<String, dynamic>> _stories = {};
 
-  dynamic _json(String path) => jsonDecode(File('$_hist/$path').readAsStringSync());
+  dynamic _json(String path) =>
+      jsonDecode(File('$_hist/$path').readAsStringSync());
 
   @override
   Future<void> load() async {
     final curso = _json('datos/curso.json') as Map<String, dynamic>;
     _places = [
-      for (final l in curso['lugares'] as List) Place.fromJson(Map<String, dynamic>.from(l as Map)),
+      for (final l in curso['lugares'] as List)
+        Place.fromJson(Map<String, dynamic>.from(l as Map)),
     ];
     final fijos = _json('datos/fijos.json') as Map<String, dynamic>;
     _fixed = Map<String, String>.from(fijos['clips'] as Map);
@@ -52,7 +58,8 @@ class DiskCourse implements CourseCatalog {
     _version = '${ready['v'] ?? 0}';
     final marks = _json('audio/marcas.json') as Map<String, dynamic>;
     _marks = {
-      for (final e in marks.entries) e.key: [for (final m in e.value as List) (m as num).toInt()],
+      for (final e in marks.entries)
+        e.key: [for (final m in e.value as List) (m as num).toInt()],
     };
   }
 
@@ -60,11 +67,12 @@ class DiskCourse implements CourseCatalog {
   List<Place> get places => _places;
 
   @override
-  Future<Map<String, dynamic>> story(String id) async =>
-      _stories[id] ??= Map<String, dynamic>.from(_json('cuentos/$id.json') as Map);
+  Future<Map<String, dynamic>> story(String id) async => _stories[id] ??=
+      Map<String, dynamic>.from(_json('cuentos/$id.json') as Map);
 
   /// The bytes of a story file (for its SHA-256).
-  List<int> storyBytes(String id) => File('$_hist/cuentos/$id.json').readAsBytesSync();
+  List<int> storyBytes(String id) =>
+      File('$_hist/cuentos/$id.json').readAsBytesSync();
 
   @override
   ClipInfo? clip(String id) {
@@ -84,7 +92,8 @@ class DiskCourse implements CourseCatalog {
 
   @override
   String fixedClip(String role) =>
-      _fixed[role] ?? (throw ArgumentError.value(role, 'role', 'no fixed line for this role'));
+      _fixed[role] ??
+      (throw ArgumentError.value(role, 'role', 'no fixed line for this role'));
 
   @override
   dynamic noSuchMethod(Invocation invocation) =>

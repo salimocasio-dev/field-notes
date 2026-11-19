@@ -12,7 +12,9 @@ import 'support/stories.dart';
 void main() {
   group('the timed-line fallback (juego.js dur 107 and say 113)', () {
     test('every clip has a recording: the lines are played by the clip player, each then a pause of 420 ms', () async {
-      final r = await Rig.make(story(beats: ['a', 'b'], clips: {'a': 'uno dos', 'b': 'tres'}));
+      final r = await Rig.make(
+        story(beats: ['a', 'b'], clips: {'a': 'uno dos', 'b': 'tres'}),
+      );
       await r.finish((pn) => null);
       expect(r.runner.VOICE, isTrue);
       expect(r.clips, ['a', 'b']);
@@ -32,36 +34,61 @@ void main() {
     });
 
     test('the words of a line are counted as the old page counts them (split on white space; no text: two words)', () async {
-      final r = await Rig.make(story(beats: ['a', 'b'], clips: {'a': '  uno   dos tres ', 'b': ''}), course: TestCourse(missing: {'a'}));
+      final r = await Rig.make(
+        story(beats: ['a', 'b'], clips: {'a': '  uno   dos tres ', 'b': ''}),
+        course: TestCourse(missing: {'a'}),
+      );
       await r.finish((pn) => null);
       // " uno dos tres ".split(/\s+/) is ["", "uno", "dos", "tres", ""]: 5 words; "" is the guess of two
       expect(r.runner.dur('a'), (360 * 5 + 300) / 1000);
       expect(r.runner.dur('b'), (360 * 2 + 300) / 1000);
     });
 
-    test('preload says a clip could not be made ready: the same fallback', () async {
-      late _FailingPlayer player;
-      final r = await Rig.make(
-        story(beats: ['a'], clips: {'a': 'uno'}),
-        playerFor: (timers, course) => player = _FailingPlayer(timers, course, {'a'}),
-      );
-      await r.finish((pn) => null);
-      expect(player.preloaded, ['a']);
-      expect(r.runner.VOICE, isFalse);
-      expect(r.timers.now, 660 + 420 + 1200);
-    });
+    test(
+      'preload says a clip could not be made ready: the same fallback',
+      () async {
+        late _FailingPlayer player;
+        final r = await Rig.make(
+          story(beats: ['a'], clips: {'a': 'uno'}),
+          playerFor: (timers, course) =>
+              player = _FailingPlayer(timers, course, {'a'}),
+        );
+        await r.finish((pn) => null);
+        expect(player.preloaded, ['a']);
+        expect(r.runner.VOICE, isFalse);
+        expect(r.timers.now, 660 + 420 + 1200);
+      },
+    );
 
-    test('a recorded line lasts as its marks say; a missing one is not played', () async {
-      final r = await Rig.make(story(beats: ['a'], clips: {'a': 'uno'}), course: TestCourse(lengths: {'a': 2500}));
-      expect(r.runner.dur('a'), 2.5);
-    });
+    test(
+      'a recorded line lasts as its marks say; a missing one is not played',
+      () async {
+        final r = await Rig.make(
+          story(beats: ['a'], clips: {'a': 'uno'}),
+          course: TestCourse(lengths: {'a': 2500}),
+        );
+        expect(r.runner.dur('a'), 2.5);
+      },
+    );
 
     test('speech bubbles that speak by ear (`voces`) use the timed line when the clip is missing', () async {
       final scene = StandInScene();
-      final r = await Rig.make(story(beats: [
-        {'wait': 100},
-        {'ask': 'puerta', 'line': 'q', 'resp': ['si', 'no'], 'voces': {'si': 'vsi', 'no': 'vno'}},
-      ], clips: {'q': 'Q', 'vsi': 'uno dos', 'vno': 'tres', 'muy_bien': 'M'}), scene: scene, course: TestCourse(missing: {'vno'}));
+      final r = await Rig.make(
+        story(
+          beats: [
+            {'wait': 100},
+            {
+              'ask': 'puerta',
+              'line': 'q',
+              'resp': ['si', 'no'],
+              'voces': {'si': 'vsi', 'no': 'vno'},
+            },
+          ],
+          clips: {'q': 'Q', 'vsi': 'uno dos', 'vno': 'tres', 'muy_bien': 'M'},
+        ),
+        scene: scene,
+        course: TestCourse(missing: {'vno'}),
+      );
       await r.start();
       await r.untilAsked();
       // q (1 word: 660 ms) and the pause of 300 a question with voices has, then the two voices: (2 words) 1020, a pause
@@ -71,30 +98,47 @@ void main() {
   });
 
   group('the words on screen (juego.js: TXT, partes 123, muestra 130, borra 136)', () {
-    final clips = {
-      'n': 'La casa',
-      'f': 'tu:Hola',
-      'p': 'Abuela: Hola, hola',
-    };
+    final clips = {'n': 'La casa', 'f': 'tu:Hola', 'p': 'Abuela: Hola, hola'};
 
-    Future<Rig> rig(TxtMode txt, {Map<String, List<num>> talk = const {}}) async {
-      final s = story(beats: [{'wait': 100}, 'n', {'wait': 3000}], clips: clips);
-      (s['clips'] as Map)['p'] = {'who': 'narr', 'text': 'Abuela: Hola, hola', 'habla': 'abuela'};
-      return Rig.make(s, txt: txt, scene: StandInScene(talk: talk));
+    Future<Rig> rig(
+      TxtMode txt, {
+      Map<String, List<num>> talk = const {},
+    }) async {
+      final s = story(
+        beats: [
+          {'wait': 100},
+          'n',
+          {'wait': 3000},
+        ],
+        clips: clips,
+      );
+      (s['clips'] as Map)['p'] = {
+        'who': 'narr',
+        'text': 'Abuela: Hola, hola',
+        'habla': 'abuela',
+      };
+      return Rig.make(
+        s,
+        txt: txt,
+        scene: StandInScene(talk: talk),
+      );
     }
 
-    test('con: the caption shows while the line is said and goes 1700 ms after it', () async {
-      final r = await rig(TxtMode.con);
-      await r.start();
-      await r.advance(50);
-      expect(r.runner.cap, '');
-      await r.advance(100); // t = 150: the clip is playing (it ends in 0 ms; the caption stays 1700 ms)
-      expect(r.runner.cap, 'La casa');
-      await r.advance(1600);
-      expect(r.runner.cap, 'La casa');
-      await r.advance(200);
-      expect(r.runner.cap, '');
-    });
+    test(
+      'con: the caption shows while the line is said and goes 1700 ms after it',
+      () async {
+        final r = await rig(TxtMode.con);
+        await r.start();
+        await r.advance(50);
+        expect(r.runner.cap, '');
+        await r.advance(100); // t = 150: the clip is playing (it ends in 0 ms; the caption stays 1700 ms)
+        expect(r.runner.cap, 'La casa');
+        await r.advance(1600);
+        expect(r.runner.cap, 'La casa');
+        await r.advance(200);
+        expect(r.runner.cap, '');
+      },
+    );
 
     test('tras: the words come right after the line and stay for the longer of 1800 ms and 70 ms a letter', () async {
       final r = await rig(TxtMode.tras);
@@ -119,7 +163,14 @@ void main() {
     });
 
     test('the frog\'s lines (`who: tu`) show in a bubble at the frog, never as a caption', () async {
-      final s = story(beats: [{'wait': 100}, 'f', {'wait': 3000}], clips: {'f': 'tu:Hola'});
+      final s = story(
+        beats: [
+          {'wait': 100},
+          'f',
+          {'wait': 3000},
+        ],
+        clips: {'f': 'tu:Hola'},
+      );
       final r = await Rig.make(s);
       await r.start();
       await r.advance(150);
@@ -130,11 +181,39 @@ void main() {
     });
 
     test('a person\'s line: the name as a caption, the words in a bubble at her; with nobody to point at, all in the caption', () async {
-      final seen = await rig(TxtMode.con, talk: {'abuela': [100, 100]});
-      expect(seen.runner.partes('p'), (cap: 'Abuela:', quien: 'abuela', bub: 'Hola, hola', all: 'Abuela: Hola, hola'));
-      final s = story(beats: [{'wait': 100}, 'p', {'wait': 3000}], clips: {});
-      (s['clips'] as Map)['p'] = {'who': 'narr', 'text': 'Abuela: Hola, hola', 'habla': 'abuela'};
-      final at = await Rig.make(s, scene: StandInScene(talk: {'abuela': [100, 100]}));
+      final seen = await rig(
+        TxtMode.con,
+        talk: {
+          'abuela': [100, 100],
+        },
+      );
+      expect(seen.runner.partes('p'), (
+        cap: 'Abuela:',
+        quien: 'abuela',
+        bub: 'Hola, hola',
+        all: 'Abuela: Hola, hola',
+      ));
+      final s = story(
+        beats: [
+          {'wait': 100},
+          'p',
+          {'wait': 3000},
+        ],
+        clips: {},
+      );
+      (s['clips'] as Map)['p'] = {
+        'who': 'narr',
+        'text': 'Abuela: Hola, hola',
+        'habla': 'abuela',
+      };
+      final at = await Rig.make(
+        s,
+        scene: StandInScene(
+          talk: {
+            'abuela': [100, 100],
+          },
+        ),
+      );
       await at.start();
       await at.advance(150);
       expect(at.runner.cap, 'Abuela:');

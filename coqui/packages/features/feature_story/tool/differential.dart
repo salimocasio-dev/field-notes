@@ -22,7 +22,10 @@ Map<String, dynamic> forComparison(Map<String, dynamic> t) {
   final c = Map<String, dynamic>.of(t);
   c['touches'] = [
     for (final x in (t['touches'] as List? ?? const []))
-      {for (final e in (x as Map).entries) if (e.key != 'x' && e.key != 'y') e.key: e.value},
+      {
+        for (final e in (x as Map).entries)
+          if (e.key != 'x' && e.key != 'y') e.key: e.value,
+      },
   ];
   return c;
 }
@@ -36,19 +39,29 @@ Future<String?> compareRun(
   Directory actsDir,
   Directory trazas,
 ) async {
-  final committed = jsonDecode(File('${trazas.path}/$story/$plan.json').readAsStringSync()) as Map<String, dynamic>;
-  final run = jsonDecode(File('${actsDir.path}/$story/$plan.acts.json').readAsStringSync()) as Map<String, dynamic>;
+  final committed = jsonDecode(
+    File('${trazas.path}/$story/$plan.json').readAsStringSync(),
+  ) as Map<String, dynamic>;
+  final run = jsonDecode(
+    File('${actsDir.path}/$story/$plan.acts.json').readAsStringSync(),
+  ) as Map<String, dynamic>;
   final file = await course.story(story);
   final wrongs = [
     for (final t in (committed['touches'] as List).cast<Map<String, dynamic>>())
-      if (t['why'] == 'wrong-poke') (t: (t['t'] as num).toInt(), what: t['what'] as String),
+      if (t['why'] == 'wrong-poke')
+        (t: (t['t'] as num).toInt(), what: t['what'] as String),
   ];
   late ReplayScene scene;
   final trace = await play(
     story: file,
     plan: plan,
     seed: committed['seed'] as int,
-    sceneFor: (rng) => scene = ReplayScene(sceneId: file['scene'] as String, story: file, run: run, rng: rng),
+    sceneFor: (rng) => scene = ReplayScene(
+      sceneId: file['scene'] as String,
+      story: file,
+      run: run,
+      rng: rng,
+    ),
     course: course,
     progress: ToolProgress(),
     storySha256: sha256Hex(course.storyBytes(story)),
@@ -60,9 +73,13 @@ Future<String?> compareRun(
       return const [];
     },
   );
-  if (scene.divergences.isNotEmpty) return 'the replay: ${scene.divergences.first}';
+  if (scene.divergences.isNotEmpty) {
+    return 'the replay: ${scene.divergences.first}';
+  }
   final errs = trace['errors'];
-  if (errs is List && errs.isNotEmpty) return 'the run failed: ${(errs.first as String).split('\n').take(4).join(' | ')}';
+  if (errs is List && errs.isNotEmpty) {
+    return 'the run failed: ${(errs.first as String).split('\n').take(4).join(' | ')}';
+  }
   return firstDifference(forComparison(committed), forComparison(trace));
 }
 
@@ -77,14 +94,23 @@ Future<void> main(List<String> args) async {
   await course.load();
   final trazas = Directory('${root.path}/coqui/ref/trazas');
   final actsDir = Directory('${Directory.current.path}/test/fixtures/acts');
-  final runs = (jsonDecode(File('${trazas.path}/runs.json').readAsStringSync())['runs'] as List).cast<Map<String, dynamic>>();
+  final runs =
+      (jsonDecode(File('${trazas.path}/runs.json').readAsStringSync())['runs']
+              as List)
+          .cast<Map<String, dynamic>>();
   var same = 0, differ = 0;
   for (final r in runs) {
     if (only != null && r['story'] != only) continue;
     if (onlyPlan != null && r['plan'] != onlyPlan) continue;
     String? d;
     try {
-      d = await compareRun(course, r['story'] as String, r['plan'] as String, actsDir, trazas);
+      d = await compareRun(
+        course,
+        r['story'] as String,
+        r['plan'] as String,
+        actsDir,
+        trazas,
+      );
     } catch (e, s) {
       d = 'threw $e\n$s';
     }
