@@ -3,6 +3,7 @@
 
 import 'dart:typed_data';
 
+import 'package:coqui_pixel/src/camera.dart';
 import 'package:coqui_pixel/src/ctx.dart';
 import 'package:coqui_pixel/src/pp_engine.dart';
 import 'package:coqui_pixel/src/scene.dart';
@@ -27,9 +28,10 @@ const int _displayBackground = 0xFF241A0E;
 /// 3. Cast the shadow of each character in [shadows], and `applyShadows` (the leaves' shadows go with them).
 /// 4. The sprite layer, [scene]'s `draw(c, W, a)` with `a = F >> 1`, then [signs] (the game's signs: the answer
 ///    bubbles, the twinkle, the "touch this" frame, the effects, the heart; [Signs.drawSigns]).
-/// 5. Copy the window at [cam] (`[x, y, w, h]`) of the picture into [display]; then the scene's `hud` and the hand sign
-///    ([handPoint]: where the hand points in the picture, [Signs.handPoint]; null: no hand) are drawn on [display]
-///    through [dc]. The window keeps its size: nothing is stretched.
+/// 5. Crop the picture by [cam] (`[x, y, w, h]`: a 196 × 216 window at zoom 1, a 98 × 108 region drawn as 2 × 2 blocks
+///    at zoom 2) into [display], 196 × 216; then the scene's `hud` and the hand sign ([handPoint]: where the hand
+///    points in the picture, [Signs.handPoint]; null: no hand) are drawn on [display] through [dc]. Any other size of
+///    [cam] throws: a fractional scale is never drawn.
 ///
 /// [c] draws on [engine]'s `pix`, [dc] on [display]. [engine] is the one the baked set was made with, so its ground,
 /// `kinds`, `groundZ` and `staticShadow` are the ones of the set (only `pix` and `zb` are copied here).
@@ -68,29 +70,35 @@ void drawFrame({
   scene.draw(c, W, a);
   signs(c, a);
   // 5. the window at cam, then hud and the hand
-  _copyWindow(engine, display, cam);
+  _copyView(engine, display, cam);
   scene.hud(dc, W, a);
   if (handPoint != null) {
-    // juego.js: z = DW / cam[2] is 1 now (the window keeps its size), so the picture's point is the display's plus cam
+    // juego.js: `z = DW / cam[2]` is 1 or 2, `hx = Math.round((p[0] - cam[0]) * z) - 4 * k`
     const k = 3;
-    final hx = (handPoint[0] - cam[0] + 0.5).floor() - 4 * k,
-        hy = (handPoint[1] - cam[1] + 0.5).floor();
+    final z = zoomOf(cam);
+    final hx = ((handPoint[0] - cam[0]) * z + 0.5).floor() - 4 * k,
+        hy = ((handPoint[1] - cam[1]) * z + 0.5).floor();
     hand(dc, hx, hy, (F >> 2) % 2 == 1, k);
   }
 }
 
-/// The display picture: the window `cam` of the engine's picture, 1 to 1. What the window lies outside the picture
-/// (never, for a window the camera made) is the old background colour.
-void _copyWindow(PpEngine e, Uint32List display, List<num> cam) {
+/// The display picture: the part of the engine's picture the view [cam] shows, each pixel 1 × 1 at zoom 1 and 2 × 2 at
+/// zoom 2. What the view lies outside the picture (never, for a view the camera made) is the old background colour.
+void _copyView(PpEngine e, Uint32List display, List<num> cam) {
+  final zoom = zoomOf(cam);
+  if (display.length != displayW * displayH) {
+    throw ArgumentError('the display picture is $displayW x $displayH');
+  }
   final x0 = (cam[0] + 0.5).floor(), y0 = (cam[1] + 0.5).floor();
-  final w = (cam[2] + 0.5).floor(), h = (cam[3] + 0.5).floor();
   display.fillRange(0, display.length, _displayBackground);
-  for (var j = 0; j < h; j++) {
-    final sy = y0 + j;
+  for (var j = 0; j < displayH; j++) {
+    final sy = y0 + j ~/ zoom;
     if (sy < 0 || sy >= e.H) continue;
-    final from = x0 < 0 ? -x0 : 0, to = x0 + w > e.W ? e.W - x0 : w;
-    if (to <= from) continue;
-    display.setRange(j * w + from, j * w + to, e.pix, sy * e.W + x0 + from);
+    for (var i = 0; i < displayW; i++) {
+      final sx = x0 + i ~/ zoom;
+      if (sx < 0 || sx >= e.W) continue;
+      display[j * displayW + i] = e.pix[sy * e.W + sx];
+    }
   }
 }
 
