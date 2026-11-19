@@ -84,13 +84,16 @@ class _WordsTabState extends State<WordsTab> {
       final pair = pairsByWord(_s.course)[w];
       final lines = await _s.course.linesWith(w, playedStories(_s));
       if (!mounted) return;
-      await showWordSheet(
-        context,
+      final sheet = WordSheet(
         services: _s,
         record: r,
         pair: pair,
         lines: lines,
       );
+      // above everything, the tab bar included: the scrim of v=39 dims both
+      await showCoquiSheet(context, builder: sheet.build);
+      sheet
+          .closed(); // cierra: the sound stops as the sheet starts to slide out
     } finally {
       _opening = false;
     }
@@ -152,7 +155,7 @@ class _WordsTabState extends State<WordsTab> {
                     child: TabPage(
                       controller: _scroll,
                       children: [
-                        const ScreenTitle('Palabras'),
+                        const ScreenTitle(CoquiLabels.words),
                         CoquiCard(
                           child: CoquiRow(
                             minHeight: 0,
@@ -161,7 +164,10 @@ class _WordsTabState extends State<WordsTab> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Repaso', style: CoquiText.rowBold),
+                                    Text(
+                                      CoquiLabels.review,
+                                      style: CoquiText.rowBold,
+                                    ),
                                     Text(
                                       v.reviewText,
                                       style: CoquiText.smallMuted,

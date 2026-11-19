@@ -17,7 +17,7 @@ void main() {
     expect(m.id, 'words');
     final tab = m.tab(s)!;
     expect(tab.id, 'words');
-    expect(tab.label, 'Palabras');
+    expect(tab.label, CoquiLabels.words);
   });
 
   testWidgets('screenFor answers its own tab and nothing else', (tester) async {
@@ -59,10 +59,37 @@ void main() {
         addTearDown(tester.view.reset);
         await tester.pumpWidget(devApp(state: state));
         await tester.pumpAndSettle();
-        expect(find.text('Repaso'), findsOneWidget);
+        expect(find.text(CoquiLabels.review), findsOneWidget);
         expect(tester.takeException(), isNull);
       });
     }
+
+    testWidgets(
+      'the word sheet opens above the tab bar (showCoquiSheet): the scrim dims it and takes a touch on it',
+      (tester) async {
+        tester.view.physicalSize = const Size(412 * 2.625, 915 * 2.625);
+        tester.view.devicePixelRatio = 2.625;
+        addTearDown(tester.view.reset);
+        await tester.pumpWidget(devApp(state: 'curso'));
+        await tester.pumpAndSettle();
+        final bar = tester.getRect(find.byType(CoquiTabBar));
+        await tester.tap(find.byType(WordCard).first);
+        await tester.pumpAndSettle();
+        expect(sheet, findsOneWidget);
+        // the sheet stands above the bar and the raised Mapa disc (the bar's box holds both: 72 + 14 px), the scrim
+        // covers the whole screen
+        expect(bar.height, 72 + 14);
+        expect(tester.getRect(sheet).bottom, bar.top);
+        expect(
+          tester.getRect(find.byType(AnimatedModalBarrier).last),
+          const Rect.fromLTWH(0, 0, 412, 915),
+        );
+        // a touch on the bar goes to the scrim: the sheet closes
+        await tester.tapAt(bar.center);
+        await tester.pumpAndSettle();
+        expect(sheet, findsNothing);
+      },
+    );
 
     testWidgets('mid-course: the Repaso card says ten words are due', (
       tester,

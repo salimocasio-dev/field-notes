@@ -6,8 +6,9 @@
 // - the course is the sample course's catalog fed with every course file the old app reads (tool/dev_data/): the
 //   sample course holds three stories, so most words of a reference state would fall under "More words";
 // - a clip plays for its own length (the fake plays at once, and a line would never show as playing);
-// - a picture is a grey box of the size the real picture source gives (the width it is offered, at a whole number
-//   of device pixels per picture pixel), where the fake's is always 196 x 104.
+// - a picture is a grey box of the size the real picture source gives (`width` x `height` picture pixels, at the
+//   whole number of device pixels per picture pixel that the width offered holds), with the scene and the camera
+//   written on it (a stand-in, see the package's AGENTS.md).
 import 'dart:async';
 
 import 'package:coqui_testing/coqui_testing.dart';
@@ -81,27 +82,26 @@ class DevClips extends FakeClipPlayer {
   }
 }
 
-/// Grey boxes with the geometry of the real picture source: 196 : [height] picture pixels, as many device pixels
-/// to a picture pixel as the width offered holds (PixelView's rule), or `scale` when given.
+/// Grey boxes with the geometry of the real picture source: `width` x `height` picture pixels, laid out as
+/// `PixelView` lays a picture out (as many device pixels to a picture pixel as the width offered holds), the
+/// scene and the camera written on them.
 class DevPictures implements PictureSource {
   @override
   Widget of(
     PictureRef ref, {
+    int width = 196,
     int height = 104,
-    int? scale,
     bool animated = false,
   }) => LayoutBuilder(
     builder: (context, c) {
       final dpr = MediaQuery.devicePixelRatioOf(context);
-      final k =
-          scale ??
-          pixelViewScale(
-            availableWidth: c.hasBoundedWidth ? c.maxWidth : 196,
-            devicePixelRatio: dpr,
-            width: 196,
-          );
+      final k = pixelViewScale(
+        availableWidth: c.hasBoundedWidth ? c.maxWidth : width.toDouble(),
+        devicePixelRatio: dpr,
+        width: width,
+      );
       return SizedBox(
-        width: 196 * k / dpr,
+        width: width * k / dpr,
         height: height * k / dpr,
         child: ColoredBox(
           color: const Color(0xFF9E9E9E),

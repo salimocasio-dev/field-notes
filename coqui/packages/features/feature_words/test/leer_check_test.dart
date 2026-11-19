@@ -227,7 +227,7 @@ void main() {
         await pumpTab(tester, m.rig);
         final r = repaso(tester);
         expect((r.line, r.button), ('Nothing due today', 'Practice'));
-        expect(find.text('Repaso'), findsOneWidget);
+        expect(find.text(CoquiLabels.review), findsOneWidget);
       },
     );
 

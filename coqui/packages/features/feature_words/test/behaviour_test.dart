@@ -6,6 +6,8 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -598,15 +600,19 @@ void main() {
     );
 
     testWidgets(
-      'the field is 48 px high and the Add button 16 px under it, whatever the app\'s density (a web build on a desktop platform is compact)',
+      'the field is 48 px high and the Add button 16 px under it, whatever the platform (a web build on a desktop platform would be compact; coquiTheme sets the standard density)',
       (tester) async {
+        debugDefaultTargetPlatformOverride = TargetPlatform.linux;
+        addTearDown(() => debugDefaultTargetPlatformOverride = null);
+        // the premise: left to itself, Flutter picks the compact density here (a field 40 px high)
+        expect(ThemeData().visualDensity, VisualDensity.compact);
         final rig = Rig();
         tester.view.physicalSize = const Size(390 * 3, 844 * 3);
         tester.view.devicePixelRatio = 3;
         addTearDown(tester.view.reset);
         await tester.pumpWidget(
           MaterialApp(
-            theme: ThemeData(visualDensity: VisualDensity.compact),
+            theme: coquiTheme(),
             home: Scaffold(
               body: Builder(
                 builder: (c) =>
@@ -1056,6 +1062,24 @@ void main() {
       expect(x.clips.stops, greaterThan(stops));
       expect(x.clips.open.where((c) => !c.isCompleted), isEmpty);
     });
+
+    testWidgets(
+      'the sound stops as the sheet starts to slide out, not 200 ms later; the stop square stays while it slides (cierra)',
+      (tester) async {
+        final x = await two(tester);
+        await tester.tap(inSheet(find.byType(PlayButton)).at(0));
+        await tester.pump();
+        final stops = x.clips.stops;
+        await tester.tap(find.byType(CoquiCloseButton));
+        await tester.pump(const Duration(milliseconds: 20));
+        expect(sheet, findsOneWidget, reason: 'it is still sliding out');
+        expect(x.clips.stops, greaterThan(stops));
+        expect(x.clips.open.where((c) => !c.isCompleted), isEmpty);
+        expect(button(tester, 0).icon, CoquiIcons.stop);
+        await tester.pumpAndSettle();
+        expect(sheet, findsNothing);
+      },
+    );
   });
 }
 

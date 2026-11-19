@@ -29,9 +29,9 @@ class AddBox extends StatelessWidget {
     final text = CoquiText.body.copyWith(textBaseline: TextBaseline.alphabetic);
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
-      borderSide: const BorderSide(
+      borderSide: BorderSide(
         color: CoquiColors.line2,
-        width: CoquiMetrics.borderButton,
+        width: CoquiLayout.border(context, CoquiMetrics.borderButton),
       ),
     );
     return CoquiCard(
@@ -46,31 +46,26 @@ class AddBox extends StatelessWidget {
               style: CoquiText.smallMuted,
             ),
           ),
-          // the field is 48 px whatever the app's density (a web build on a desktop platform is compact)
-          Theme(
-            data: Theme.of(context)
-                .copyWith(visualDensity: VisualDensity.standard),
-            child: TextField(
-              controller: controller,
-              style: text,
-              cursorColor: CoquiColors.ink,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: 'A word or a goal',
-                hintStyle: text.copyWith(color: _placeholder),
-                filled: true,
-                fillColor: CoquiColors.white,
-                // Material greys a hovered or focused field: the old input stays white
-                hoverColor: const Color(0x00000000),
-                focusColor: const Color(0x00000000),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: CoquiMetrics.s12,
-                  vertical: CoquiMetrics.s12,
-                ),
-                border: border,
-                enabledBorder: border,
-                focusedBorder: border,
+          TextField(
+            controller: controller,
+            style: text,
+            cursorColor: CoquiColors.ink,
+            decoration: InputDecoration(
+              isDense: true,
+              hintText: 'A word or a goal',
+              hintStyle: text.copyWith(color: _placeholder),
+              filled: true,
+              fillColor: CoquiColors.white,
+              // Material greys a hovered or focused field: the old input stays white
+              hoverColor: const Color(0x00000000),
+              focusColor: const Color(0x00000000),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: CoquiMetrics.s12,
+                vertical: CoquiMetrics.s12,
               ),
+              border: border,
+              enabledBorder: border,
+              focusedBorder: border,
             ),
           ),
           const SizedBox(height: CoquiMetrics.s16),
