@@ -4,6 +4,7 @@
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/src/ctx.dart';
+import 'package:coqui_pixel/src/sprite.dart';
 
 /// What a scene may call. Every name is used by today's scenes or kit (page 12 gives the count of uses).
 /// Each member has the parameters it has in juego.js. feature_story implements it for play; coqui_scenes
@@ -53,6 +54,11 @@ abstract class SceneHost {
 
   /// The answer bubbles' icons by key (juego.js: `BUBL`).
   Map<String, List<String>> get BUBL;
+
+  /// The game's one sprite cache (engine.js: `spr`, `SP`, `GL`, `GC`).
+  // ADDED(order 12): the old scenes and kit.js call the global `spr`, which here is a field of [SpriteLib]; a scene
+  // reaches the game's one through its host, as it reaches every other global. Additive: nothing else changes.
+  SpriteLib get lib;
 
   // ---------- time ----------
 

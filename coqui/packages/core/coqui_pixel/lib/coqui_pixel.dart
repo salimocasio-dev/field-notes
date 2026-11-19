@@ -6,6 +6,8 @@ library;
 
 export 'package:coqui_pixel/src/ctx.dart';
 export 'package:coqui_pixel/src/int32.dart';
+export 'package:coqui_pixel/src/js_num.dart';
+export 'package:coqui_pixel/src/kit.dart';
 export 'package:coqui_pixel/src/pp_build.dart';
 export 'package:coqui_pixel/src/pp_engine.dart';
 export 'package:coqui_pixel/src/scene.dart';
