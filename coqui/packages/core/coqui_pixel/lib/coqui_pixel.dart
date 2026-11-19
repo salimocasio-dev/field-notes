@@ -1,7 +1,8 @@
 /// The Pixel Plays engine, the set-building helpers, the sprite library, the software canvas and the scene kit. Pure Dart.
 ///
 /// Page 12, section 4. `PpEngine` and `PpBuild` are order 10's, with `toInt32` and `imul`; the sprite library
-/// (`Sprite`, `Buf`, `SpriteLib` and the rest of engine.js) and the software canvas `Ctx` are order 11's.
+/// (`Sprite`, `Buf`, `SpriteLib` and the rest of engine.js) and the software canvas `Ctx` are order 11's; the scene kit
+/// (`Escena`, the people, the bird), the signs, the camera and the frame recipe are order 12's.
 library;
 
 export 'package:coqui_pixel/src/camera.dart';

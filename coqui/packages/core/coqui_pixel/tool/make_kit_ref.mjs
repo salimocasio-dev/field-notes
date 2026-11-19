@@ -259,7 +259,8 @@ const text = `// Made by tool/make_kit_ref.mjs from the old kit.js, juego.js and
 // ignore_for_file: lines_longer_than_80_chars
 
 /// The reference for test/kit_logic_test.dart: JSON, \`{scene, sfx, clip, camgo}\`.
-const String kitLogicRef = r'''${json}''';
+const String kitLogicRef =
+    r'''${json}''';
 `;
 if (process.argv.includes('--check')) {
   const same = fs.existsSync(outFile) && fs.readFileSync(outFile, 'utf8') === text;

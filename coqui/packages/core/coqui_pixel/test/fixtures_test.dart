@@ -10,6 +10,7 @@ import 'dart:io';
 
 import 'support/fixture_decode.dart';
 import 'support/fixtures/ref_ctx.dart';
+import 'support/fixtures/ref_kit.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
 import 'support/ref_data.dart';
@@ -29,7 +30,12 @@ void main() {
   test('every sprite and canvas fixture file is the file in coqui/ref/', () {
     expect(refSpritesFixture, isNotEmpty);
     expect(refCtxFixture, isNotEmpty);
-    for (final entry in {...refSpritesFixture, ...refCtxFixture}.entries) {
+    expect(refKitFixture, isNotEmpty);
+    for (final entry in {
+      ...refSpritesFixture,
+      ...refCtxFixture,
+      ...refKitFixture,
+    }.entries) {
       final fromFile = File('../../../ref/${entry.key}').readAsBytesSync();
       expect(base64Decode(entry.value.join()), fromFile, reason: entry.key);
       expect(refFile(entry.key), fromFile, reason: entry.key);
@@ -44,6 +50,10 @@ void main() {
           if (f is File) 'sprites/engine/${f.uri.pathSegments.last}',
       };
       expect(refSpritesFixture.keys.toSet(), onDisk);
+      expect(refKitFixture.keys.toSet(), {
+        for (final f in Directory('../../../ref/sprites/kit').listSync())
+          if (f is File) 'sprites/kit/${f.uri.pathSegments.last}',
+      });
       expect(
         refCtxFixture.keys.where((k) => k.startsWith('ctx/tiles/')).length,
         40,
