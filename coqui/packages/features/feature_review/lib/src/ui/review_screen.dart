@@ -156,7 +156,12 @@ class ReviewScreenState extends State<ReviewScreen> {
                 lines: s.screenLines,
               )
             : end
-            ? ReviewEndScreen(box: box, end: s.end!, pictures: _s.pictures)
+            ? ReviewEndScreen(
+                box: box,
+                end: s.end!,
+                pictures: _s.pictures,
+                controller: widget.endScroll,
+              )
             : null,
         bottom: [
           if (start) LessonStartButton(onPressed: _start),
