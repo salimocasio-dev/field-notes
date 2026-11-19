@@ -1,4 +1,5 @@
-"""Plays the ¿Cuál? pass by machine. python3 historia/tools/cual_check.py <plan r/w per item> [extra-query] [outdir]"""
+"""Plays the ¿Cuál? pass (Repaso) by machine. python3 historia/tools/cual_check.py <plan r/w per ask> [extra-query] [outdir]   (a missed word is asked a second time, three items later: the plan runs on in that order, the rest right)
+The checks of the 10 cap, the 6 s rule, the second ask, the end screen and the clock are in repaso_check.py."""
 import sys,asyncio,json,os
 BASE=os.environ.get("COQUI_BASE","http://127.0.0.1:8765")   # the local server (COQUI_BASE=http://127.0.0.1:8768 for a worktree)
 from playwright.async_api import async_playwright
@@ -12,17 +13,17 @@ async def main():
         k=0;last=-1;n=0
         for i in range(40000):   # 40000 x ~60 ms: todo=1&n=140 (128 pairs) needs more than the 8000 it had (it stopped at 114)
             await pg.wait_for_timeout(60)
-            st=await pg.evaluate("({listo:Cual.listo,pan:Cual.pan,i:Cual.i,run:Cual.running,sp:Cual.speaking,lista:Cual.lista,cap:Story.cap})")
+            st=await pg.evaluate("({listo:Cual.listo,pan:Cual.pan,i:Cual.i,run:Cual.running,sp:Cual.speaking,lista:Cual.lista,cola:Cual.cola,cap:Story.cap})")
             if st["pan"] and st["i"]!=last and st["listo"]:
                 await pg.wait_for_timeout(200)
-                if OUT: n+=1; await pg.locator("#cv").screenshot(path=f"{OUT}/{n:02d}_{st['lista'][st['i']]}.png")
+                if OUT: n+=1; await pg.locator("#cv").screenshot(path=f"{OUT}/{n:02d}_{st['cola'][st['i']]['w']}{'_again' if st['cola'][st['i']]['re'] else ''}.png")
                 want=PLAN[k] if k<len(PLAN) else "r"; k+=1
                 right=[j for j,x in enumerate(st["pan"]) if x["right"]][0]; tgt=right if want=="r" else 1-right
                 await pg.evaluate(f"Cual.toca({tgt})"); last=st["i"]
                 if want=="w":
                     await pg.wait_for_timeout(1500); await pg.evaluate(f"Cual.toca({right})")
             if i>40 and not st["run"]: break
-        print("items:",st["lista"]); print("answers:",json.dumps(await pg.evaluate("Cual.hecho")))
+        print("items:",st["lista"]); print("asked:",[x["w"]+("*" if x["re"] else "") for x in st["cola"]]); print("answers:",json.dumps(await pg.evaluate("Cual.hecho"))); print("second asks:",json.dumps(await pg.evaluate("Cual.rehecho"))); print("end:",json.dumps(await pg.evaluate("Cual.fin"),ensure_ascii=False))
         print("records:",json.dumps({w:{"etapa":r["ear"]["etapa"],"paso":r["ear"]["paso"],"n":r["ear"]["n"],"due_in_h":round((r["ear"]["due"]-await pg.evaluate("Date.now()"))/36e5,1)} for w,r in (await pg.evaluate("PAL.db.palabras")).items()},ensure_ascii=False))
         print("errors:",errs[:5]); await b.close()
 asyncio.run(main())

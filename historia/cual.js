@@ -40,7 +40,7 @@ function dibujaPaneles(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.c
 function cualLoop(){F++;dibujaPaneles();}
 async function cualItem(it,re){anillo(null);const ok=Math.random()<.5?0:1;   // which panel holds the right picture: drawn fresh at every ask, the second ask of a missed word too
   PAN=[0,1].map(k=>{const spec=k===ok?it.si:it.no,Ex=ESCENAS[spec.esc||it.esc];return {w:panelW(spec,Ex),E:Ex,cam:spec.cam,right:k===ok,fx:[],dim:0,sign:0};});   // a picture may name another scene to draw it
-  await wait(500);const my=runId;let got=null,ms=0,tEnd=0,res;const p=new Promise(r=>res=r),T={i:CQ.i,w:it.w,re:!!re};CQ.tt.push(T);
+  await wait(500);let got=null,ms=0,tEnd=0,res;const p=new Promise(r=>res=r),T={i:CQ.i,w:it.w,re:!!re};CQ.tt.push(T);
   CQ.toque=k=>{if(!tEnd||got!=null)return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);res();};   // a touch before the sentence ends does not count
   await say(it.say,0);tEnd=T.fin=performance.now();CQ.listo=CQ.i+1;
   // he waits: 6 s after the sentence ends it plays again (a touch while it plays counts); 6 s after that the right picture is shown, and that is a miss
@@ -78,8 +78,10 @@ function cualGrupo(f,titulo,its){if(!its.length)return;const h=document.createEl
   its.forEach(it=>{const li=document.createElement("li"),sp=document.createElement("span");sp.textContent=it.w;li.appendChild(miniatura(it));li.appendChild(sp);ul.appendChild(li);});f.appendChild(h);f.appendChild(ul);}
 // the pictures are scaled by a whole number of screen pixels (kd); as many columns as fit at the biggest scale that fits, 16 px apart
 function cualGrid(){const f=$("#fin"),us=f.querySelectorAll(".gw");if(!us.length)return;const dpr=window.devicePixelRatio||1,cs=getComputedStyle(f),w=Math.min(480,f.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0));let best=null;
-  for(const n of [3,2,1]){const kd=Math.floor(((w-(n-1)*16)/n)*dpr/DW+.001);if(kd>=1&&(!best||kd>best.kd))best={n,kd};}   // a tie goes to more columns
-  if(!best)best={n:1,kd:1};us.forEach(u=>u.style.setProperty("--c",best.n));
+  const top=Math.max(1,Math.floor(140*dpr/DW+.001));   // a picture is at most about 140 px wide: the words are small things to look at, ten fit a screen
+  for(const n of [3,2]){const kd=Math.min(top,Math.floor(((w-(n-1)*16)/n)*dpr/DW+.001));if(kd>=1&&(!best||kd>best.kd))best={n,kd};}   // three or two to a row, at the largest whole scale that fits; a tie goes to three
+  if(!best)best={n:1,kd:1};   // a screen too narrow or too low in density for two: one to a row
+  us.forEach(u=>u.style.setProperty("--c",best.n));
   f.querySelectorAll(".gw canvas").forEach(t=>{t.style.width=DW*best.kd/dpr+"px";t.style.height=PH*best.kd/dpr+"px";});}
 addEventListener("resize",()=>{if(CQ.fin)cualGrid();});
 function cualFin(){const up=[],soon=[];CQ.lista.forEach(it=>{const h=CQ.hecho.find(x=>x.w===it.w);if(h)(h.ok?up:soon).push(it);});
