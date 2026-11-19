@@ -83,8 +83,8 @@ Map<String, dynamic> previewRemapW(Map<String, dynamic> w0, Sheet sheet) {
   Map<String, dynamic>? movePoint(Map<String, dynamic>? o) {
     if (o == null || o['x'] == null) return o;
     final x = o['x'] as num, y = o['y'] as num;
-    if (y < 45 || x < -5 || x > 245)
-      return o; // the sky and off the picture: unchanged
+    // the sky and off the picture: unchanged
+    if (y < 45 || x < -5 || x > 245) return o;
     final e = _near(birds, x, y, 40);
     if (e == null) return o;
     return {...o, 'x': x + e.now[0] - e.old[0], 'y': y + e.now[1] - e.old[1]};
@@ -95,9 +95,8 @@ Map<String, dynamic> previewRemapW(Map<String, dynamic> w0, Sheet sheet) {
   if (ave != null && (ave['mode'] == 'sit' || ave['mode'] == 'fly')) {
     w['ave'] = movePoint(ave);
   }
-  if (w['trozo'] != null)
-    w['trozo'] = movePoint(w['trozo'] as Map<String, dynamic>);
-  if (w['hojas'] != null)
-    w['hojas'] = movePoint(w['hojas'] as Map<String, dynamic>);
+  for (final k in const ['trozo', 'hojas']) {
+    if (w[k] != null) w[k] = movePoint(w[k] as Map<String, dynamic>);
+  }
   return w;
 }

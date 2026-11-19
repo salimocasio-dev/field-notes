@@ -1,6 +1,8 @@
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'support/sheet_bundle.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -23,7 +25,7 @@ void main() {
   for (final entry in sceneRegistry.entries) {
     if (convertedScenes.contains(entry.key)) {
       test('${entry.key} is converted: made from its sheet', () async {
-        final scene = await loadScene(entry.key);
+        final scene = await loadScene(entry.key, bundle: testBundle());
         expect(scene, isA<SetScene>());
         expect(scene.id, entry.key);
       });

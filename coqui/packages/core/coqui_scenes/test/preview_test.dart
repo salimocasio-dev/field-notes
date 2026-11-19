@@ -18,6 +18,7 @@ import 'support/channels.dart';
 import 'support/fixtures/preview_fixture.dart';
 import 'support/preview_remap.dart';
 import 'support/report.dart';
+import 'support/sheet_bundle.dart';
 
 Future<Uint32List> decodePng(Uint8List bytes) async {
   final codec = await ui.instantiateImageCodec(bytes);
@@ -36,7 +37,7 @@ void main() {
   late ScenePictures pictures;
   late StillFrame frame;
   setUpAll(() async {
-    pictures = ScenePictures();
+    pictures = ScenePictures(bundle: testBundle());
     frame = await pictures.frameOf('frente');
   });
 
