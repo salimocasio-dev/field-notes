@@ -146,6 +146,13 @@ abstract final class CoquiColors {
 
   /// `.lbl .spk` the speaker glyph beside a book line. app.html:116
   static const bookSpeaker = Color(0xFF9A9AA6);
+
+  /// The streak's flame, its body: the median colour of the inside of the fire emoji glyph the old chip shows
+  /// (`hud()`, app.html:286), measured on references 012 (both phones): `#FF7003`.
+  static const flameBody = Color(0xFFFF7003);
+
+  /// The streak's flame, its core: the median of the glyph's yellow part, `#FFF293`. Same measure.
+  static const flameCore = Color(0xFFFFF293);
 }
 
 /// Sizes in logical pixels (CSS px). The old app uses an 8-point grid.

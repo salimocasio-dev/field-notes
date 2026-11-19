@@ -11,8 +11,7 @@
 // the package's assets through the root bundle (it never answers), so it is given a bundle that answers from there.
 import 'dart:io';
 
-/// The scenes converted so far, by id: each has `docs/proyecto/pixel/<id>-sheet.json`.
-const converted = ['frente'];
+import 'package:coqui_scenes/src/converted_scenes.dart';
 
 void main(List<String> args) {
   final check = args.contains('--check');
@@ -34,7 +33,7 @@ void main(List<String> args) {
       '/// The sheets of the converted scenes, by id: the text of each file, for the tests that run in a browser.',
     )
     ..writeln('const Map<String, String> sheetTexts = {');
-  for (final id in converted) {
+  for (final id in convertedScenes) {
     final from = File('${docs.path}/$id-sheet.json');
     final to = File('assets/sheets/$id-sheet.json');
     final want = from.readAsStringSync();

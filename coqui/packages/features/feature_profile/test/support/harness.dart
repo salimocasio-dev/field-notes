@@ -113,6 +113,42 @@ List<String> yoTexts(WidgetTester tester) => textsOf(
   ],
 );
 
+/// The fire emoji and its space, as the old page writes them in front of the streak (app.html:473). The page
+/// under test draws a flame (`CoquiFlame`) there and writes the number alone.
+const String oldFlame = '\u{1F525} ';
+
+/// The page's texts against what the old `yo()` wrote ([want], from `old_expected`), where the old text has the
+/// emoji in front of the streak's number and the page has the drawn flame before it: the number is compared, and
+/// the flame's presence (one flame for the one emoji, none where the old page had none).
+void expectYoPage(WidgetTester tester, List<String> want) {
+  expect(yoTexts(tester), [
+    for (final t in want)
+      if (t.startsWith(oldFlame)) t.substring(oldFlame.length) else t,
+  ]);
+  expect(
+    find.byType(CoquiFlame),
+    findsNWidgets(want.where((t) => t.startsWith(oldFlame)).length),
+  );
+}
+
+/// A sheet is up: the gate's `CoquiSheetLayer` when it is open, or one that `showCoquiSheet` put above everything
+/// (a [CoquiSheet] that is not in a layer: the layers keep theirs in the tree while they are closed).
+bool sheetOpen(WidgetTester tester) {
+  if (tester
+      .widgetList<CoquiSheetLayer>(find.byType(CoquiSheetLayer))
+      .any((l) => l.open)) {
+    return true;
+  }
+  final inLayers = find
+      .descendant(
+        of: find.byType(CoquiSheetLayer),
+        matching: find.byType(CoquiSheet),
+      )
+      .evaluate()
+      .length;
+  return find.byType(CoquiSheet).evaluate().length > inLayers;
+}
+
 /// The pills of [SegmentedPills]: the labels and which one is on.
 List<({String text, bool on})> pillsOf(WidgetTester tester, [Finder? within]) {
   final p = tester.widget<SegmentedPills>(

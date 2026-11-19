@@ -279,21 +279,22 @@ class _Disc extends StatelessWidget {
 /// the top) with a hairline under it, two flat labels (no pill, no shadow, not
 /// tappable) centred 24 px apart: the streak and the place. app.html:38-39
 ///
-/// The old page writes them in `hud()` (app.html:286): `"🔥 " + N + " day" +
+/// The old page writes them in `hud()` (app.html:286): `"(fire emoji) " + N + " day" +
 /// (N === 1 ? "" : "s")` and `N + " · " + place name`. [streakLabel] and
-/// [placeLabel] write the same strings.
+/// [placeLabel] write the same strings, except that the flame is not a character here: it is
+/// drawn ([CoquiFlame], the size and place of the glyph on references 010 and 012), so that no emoji
+/// font is asked for.
 class MapChips extends StatelessWidget {
   const MapChips({super.key, required this.streak, required this.place});
 
-  /// The first chip, e.g. `🔥 5 days`.
+  /// The first chip's text, e.g. `5 days` ([streakLabel]); the flame before it is drawn by the chip.
   final String streak;
 
   /// The second chip, e.g. `2 · El parque`.
   final String place;
 
-  /// `"🔥 " + n + " day" + (n === 1 ? "" : "s")`. app.html:286
-  static String streakLabel(int days) =>
-      '\u{1F525} $days day${days == 1 ? '' : 's'}';
+  /// `n + " day" + (n === 1 ? "" : "s")`: the text after the flame of `"(fire emoji) " + n + " day" + ...`. app.html:286
+  static String streakLabel(int days) => '$days day${days == 1 ? '' : 's'}';
 
   /// `n + " · " + name`. app.html:286
   static String placeLabel(int number, String name) => '$number · $name';
@@ -319,6 +320,8 @@ class MapChips extends StatelessWidget {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        CoquiFlame(fontSize: CoquiText.chip.fontSize!),
+        SizedBox(width: CoquiFlame.gapFor(CoquiText.chip.fontSize!)),
         Text(streak, style: CoquiText.chip, maxLines: 1),
         const SizedBox(width: CoquiMetrics.s24),
         Text(place, style: CoquiText.chip, maxLines: 1),

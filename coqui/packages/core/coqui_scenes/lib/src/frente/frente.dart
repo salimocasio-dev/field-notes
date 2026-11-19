@@ -422,21 +422,28 @@ class Frente extends SetScene {
       FrenteSet(e, b, FrenteState.fromKey(key)).buildSet();
 
   // the sheet's shadows: coqui and abuela (cast as its `cast` text says: the frog at .3 with his radius; abuela from
-  // .3 to 2 in steps of .35 over her spot, her spot's height added)
+  // .3 to 2 in steps of .35 over her spot, her spot's height added). A character casts only while more than half faded
+  // in, as frente-preview.html does it (`q.al > .5`, `W.ab.al == null || W.ab.al > .5`): the sheet's `when` text does
+  // not say so, the preview is what the readers saw.
   @override
   List<ShadowCast> shadows(Map<String, dynamic> W) {
     final out = <ShadowCast>[];
     final e = _p.e, sh = sheet.shadows;
     final q = W['cq'] as Map<String, dynamic>?;
-    // coqui: W.cq.vis and he is not in the window (W.tab); at the ground under his feet
-    if (q != null && jsTruthy(q['vis']) && !jsTruthy(W['tab'])) {
+    // coqui: W.cq.vis, more than half in, and he is not in the window (W.tab); at the ground under his feet
+    if (q != null &&
+        jsTruthy(q['vis']) &&
+        !jsTruthy(W['tab']) &&
+        _moreThanHalf(q['al'])) {
       final b = frogBox(q),
           g = e.unproject(b.x + b.w / 2, (q['y'] as num) + 25);
       out.add((x: g.x, y: g.y, z: .3, r: sh['coqui']!.radius));
     }
-    // abuela: W.ab with en puerta or paso; at her spot
+    // abuela: W.ab with en puerta or paso, with no `al` or more than half in; at her spot
     final ab = W['ab'] as Map<String, dynamic>?;
-    if (ab != null && (ab['en'] == 'puerta' || ab['en'] == 'paso')) {
+    if (ab != null &&
+        (ab['en'] == 'puerta' || ab['en'] == 'paso') &&
+        (ab['al'] == null || _moreThanHalf(ab['al']))) {
       final s = sheet.spots['abuela.${ab['en']}']!.world,
           r = sh['abuela']!.radius;
       for (num z = .3; z <= 2; z += .35) {
@@ -445,6 +452,9 @@ class Frente extends SetScene {
     }
     return out;
   }
+
+  // JavaScript: `al > .5` (a missing `al` is not more than half)
+  static bool _moreThanHalf(Object? al) => al is num && al > .5;
 
   /* ---------- small living things ---------- */
 
@@ -1028,10 +1038,11 @@ class Frente extends SetScene {
         return 'pajaro';
       }
     }
-    // the plate in the corner of the display: the sheet's line 190, "x - cam[0] < 66 and y - cam[1] < 36 (no zoom)"
+    // the plate in the corner of the display (hud draws it there, at the display's own pixels): frente.js:190 turns the
+    // picture point into display pixels with the view's zoom (`(x - cam[0]) * DW / cam[2]`), then sx < 66 and sy < 36
     if (W['plato'] != null) {
-      final cam = host.cam, sx = x - cam[0], sy = y - cam[1];
-      if (sx < 66 && sy < 36) return 'bizcocho';
+      final d = pictureToDisplay(host.cam, x, y);
+      if (d.x < 66 && d.y < 36) return 'bizcocho';
     }
     final q = W['cq'] as Map<String, dynamic>, fb = host.frogBox(q);
     if (jsTruthy(q['vis']) &&

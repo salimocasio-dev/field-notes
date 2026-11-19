@@ -25,3 +25,13 @@ dev_dependencies:
 flutter:
   assets:
     - assets/sheets/
+    - assets/old_pictures/balcon/
+    - assets/old_pictures/sala/
+    - assets/old_pictures/patio/
+    - assets/old_pictures/camino/
+    - assets/old_pictures/campo/
+    - assets/old_pictures/lago/
+    - assets/old_pictures/banco/
+    - assets/old_pictures/mesa/
+    - assets/old_pictures/estufa/
+    - assets/old_pictures/nevera/

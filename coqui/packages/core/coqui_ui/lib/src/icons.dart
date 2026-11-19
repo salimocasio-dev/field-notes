@@ -8,14 +8,19 @@ library;
 
 import 'dart:math' as math;
 
+import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// One shape of an icon: an SVG path, filled or stroked or both.
 class IconShape {
-  const IconShape(this.d, {this.fill = false, this.stroke = true});
+  const IconShape(this.d, {this.fill = false, this.stroke = true, this.color});
 
   /// The SVG path data (`M`, `L`, `H`, `V`, `A`, `C`, `Z` and their lower case).
   final String d;
+
+  /// A colour of its own, for an icon that is not one tone (the flame). Null: the icon's colour
+  /// (`currentColor`).
+  final Color? color;
 
   /// `fill="currentColor"` (the play triangle, the speaker body).
   final bool fill;
@@ -166,6 +171,50 @@ abstract final class CoquiIcons {
 
   /// The map's tab: the Mapa disc's icon is this same map drawn at 28 px.
   static const mapDisc = map;
+
+  /// The streak's flame: two tones, an orange body ([CoquiColors.flameBody]) and a yellow core
+  /// ([CoquiColors.flameCore]). It stands in for the fire emoji glyph that the old chip and the Yo stat write as
+  /// text (`hud()`, app.html:286; app.html:472): the outline is traced from that glyph as it is drawn
+  /// on references 012 and 069 (the body, then the core), on the 24 x 24 box, 21.7 high and 17.4 wide. Its own
+  /// colours: [CoquiIcon]'s `color` does not tint it. Draw it with [CoquiFlame].
+  static const flame = CoquiIconData([
+    IconShape(
+      'M10.1 1.2C12.9 1.9 16.2 3.3 16.4 7.1C16.7 9 16.3 10.4 16.2 11.5L16.9 12.4L18.6 10.8C19.5 11.8 20.7 13.6 20.7 15.7C20.7 19.3 17.6 22.9 12 22.9C6.9 22.9 3.3 18.8 3.3 14.8C3.3 12.7 3.9 10.8 4.5 9.6C5.1 8.5 5.7 7.8 6.9 7.6C6.9 8.7 7 10.1 7.6 11.1C8 8 10.4 7.3 10.7 4.7C10.9 2.9 9.8 2.4 10.1 1.2Z',
+      fill: true,
+      stroke: false,
+      color: CoquiColors.flameBody,
+    ),
+    IconShape(
+      'M13.2 9C14.3 10.8 15.5 13.6 15.7 16.9C16 20.2 14.3 22.1 11.5 22.1C9 22.1 7.1 20.7 7.2 18.6C7.3 17.1 8.5 16.2 9.2 16.4C9.8 16.6 9.9 17.1 10 16.9C10.1 14.6 11.3 11.3 13.2 9Z',
+      fill: true,
+      stroke: false,
+      color: CoquiColors.flameCore,
+    ),
+  ]);
+}
+
+/// The streak's flame at the size of the fire emoji glyph next to text of [fontSize]: the glyph is 0.86 em wide and
+/// 1.1 em tall (12.2 x 15.6 px next to the map chip's 14 px text; 20.6 x 26.3 next to Yo's 24 px
+/// number: measured on references 012 and 069), so the icon's box is 1.2 em. Put [gapFor] between it
+/// and the text (the ink of the glyph is 0.49 em from the text that follows). A flame is a picture of
+/// a flame, so a screen reader is told nothing.
+class CoquiFlame extends StatelessWidget {
+  const CoquiFlame({super.key, this.fontSize = 14});
+
+  /// The font size of the text beside it, in px.
+  final double fontSize;
+
+  /// The space between the flame's box and the text that follows it: 0.29 em.
+  static double gapFor(double fontSize) => fontSize * 0.29;
+
+  @override
+  Widget build(BuildContext context) => ExcludeSemantics(
+    child: CoquiIcon(
+      CoquiIcons.flame,
+      size: fontSize * 1.2,
+      color: CoquiColors.flameBody,
+    ),
+  );
 }
 
 /// An icon at [size] px (the old CSS sizes: 24 in the tab bar, 28 in the Mapa
@@ -203,7 +252,7 @@ class _IconPainter extends CustomPainter {
           path,
           Paint()
             ..style = PaintingStyle.fill
-            ..color = color,
+            ..color = s.color ?? color,
         );
       }
       if (s.stroke) {
@@ -214,7 +263,7 @@ class _IconPainter extends CustomPainter {
             ..strokeWidth = data.strokeWidth
             ..strokeCap = StrokeCap.round
             ..strokeJoin = StrokeJoin.round
-            ..color = color,
+            ..color = s.color ?? color,
         );
       }
     }

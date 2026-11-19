@@ -69,9 +69,6 @@ final List<GallerySection> gallerySections = [
     const ['030-palabras-a-medio-curso.png'],
     (c) => const _PalabrasScreen(),
   ),
-  GallerySection('biblioteca', 'Biblioteca: shelf rows in a card', const [
-    '047-biblioteca-a-medio-curso.png',
-  ], (c) => const _BibliotecaScreen()),
   GallerySection('yo', 'Yo: stat cards, a card, pills, switches', const [
     '069-yo-nada-jugado.png',
   ], (c) => const _YoScreen()),
@@ -102,12 +99,24 @@ final List<GallerySection> gallerySections = [
     ),
   ),
   GallerySection(
+    'lesson-choice-miss',
+    'Picture choice: a wrong touch: red-orange ring and dimmed; the right one still plain in its grey frame, before it turns green',
+    const ['087-repaso-toque-mal.png'],
+    (c) => _LessonChoice(
+      caption: 'A sample caption.',
+      progressDone: 1,
+      first: (p) => PictureChoice(child: p),
+      second: (p) => PictureChoice(
+        ring: ChoiceRing.wrong,
+        dim: ChoiceDim.unchosen,
+        child: p,
+      ),
+    ),
+  ),
+  GallerySection(
     'lesson-choice-wrong',
     'Picture choice: a wrong touch (red-orange ring, dimmed) and the right one shown (green ring)',
-    const [
-      '088-repaso-toque-mal-se-muestra-la-buena.png',
-      '087-repaso-toque-mal.png',
-    ],
+    const ['088-repaso-toque-mal-se-muestra-la-buena.png'],
     (c) => _LessonChoice(
       caption: 'A sample caption.',
       progressDone: 1,
@@ -121,9 +130,10 @@ final List<GallerySection> gallerySections = [
   ),
   GallerySection(
     'lesson-choice-sentence',
-    'Picture choice: both pictures dimmed while the sentence plays',
+    'Picture choice: both pictures dimmed while the sentence plays, its caption under them',
     const ['084-repaso-frase-suena-imagenes-oscuras.png'],
     (c) => _LessonChoice(
+      caption: 'A sample caption.',
       first: (p) => PictureChoice(dim: ChoiceDim.whileSentence, child: p),
       second: (p) => PictureChoice(dim: ChoiceDim.whileSentence, child: p),
     ),
@@ -133,24 +143,6 @@ final List<GallerySection> gallerySections = [
     'Lesson frame: a story\'s end: Play again and Map in equal halves, Next story under them',
     const ['136-cuento-fin-con-un-error.png'],
     (c) => const _LessonDuo(),
-  ),
-  GallerySection(
-    'lesson-book-first',
-    'Book reader, first page: back disabled (35%), next, equal halves',
-    const ['053-libro-primera-pagina-linea-1-luce.png'],
-    (c) => const _LessonBook(0),
-  ),
-  GallerySection(
-    'lesson-book-middle',
-    'Book reader, a middle page: back and next in equal halves',
-    const ['057-libro-pagina-media-linea-luce.png'],
-    (c) => const _LessonBook(1),
-  ),
-  GallerySection(
-    'lesson-book-last',
-    'Book reader, last page: Fin, the back arrow 72 wide, two equal buttons',
-    const ['060-libro-ultima-pagina.png'],
-    (c) => const _LessonBook(2),
   ),
   GallerySection(
     'lesson-end',
@@ -184,7 +176,6 @@ final List<GallerySection> gallerySections = [
     'Buttons on the light screens: every kind, every state',
     const [
       '030-palabras-a-medio-curso.png',
-      '047-biblioteca-a-medio-curso.png',
       '069-yo-nada-jugado.png',
       '015-lugar-abierto-1-nada-jugado.png',
     ],
@@ -360,56 +351,6 @@ class _PalabrasScreen extends StatelessWidget {
   );
 }
 
-class _BibliotecaScreen extends StatelessWidget {
-  const _BibliotecaScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    Widget row(
-      String title,
-      String sub, {
-      bool read = false,
-      bool cover = false,
-    }) => ShelfRow(
-      title: title,
-      subtitle: sub,
-      cover: cover ? _pic(_scene, w: 196, h: 104) : null,
-      actions: [
-        ShelfButton(label: 'Listen', icon: CoquiIcons.play, onPressed: () {}),
-        if (read)
-          ShelfButton(
-            label: 'Read',
-            icon: CoquiIcons.read,
-            kind: CoquiButtonKind.outline,
-            onPressed: () {},
-          ),
-      ],
-    );
-    return _TabScreen(
-      selected: CoquiTabs.libraryId,
-      body: TabPage(
-        children: [
-          const ScreenTitle(CoquiLabels.library),
-          const SectionTitle('Place one'),
-          CoquiCard(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DividedRows(
-              rows: [
-                row('Story one', 'about 2 min'),
-                row('Story two', 'about 3 min'),
-                row('Story three', 'about 3 min'),
-                row('Story four', 'Heard 1× · about 4 min'),
-                row('Story five', 'about 3 min'),
-                row('Story six', 'about 4 min', read: true, cover: true),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _YoScreen extends StatelessWidget {
   const _YoScreen();
 
@@ -426,7 +367,11 @@ class _YoScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: StatCard(value: '\u{1F525} 0', label: 'day streak'),
+                    child: StatCard(
+                      value: '0',
+                      label: 'day streak',
+                      flame: true,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   const Expanded(
@@ -719,10 +664,12 @@ class _LessonChoice extends StatelessWidget {
 class _LessonEnd extends StatelessWidget {
   const _LessonEnd();
 
-  /// cual.js draws these at 1 device pixel a picture pixel on this phone: 196 / 2.625 css px.
-  static const _pw = 196 / 2.625;
-
-  Widget _group(String title, String sub, List<String> words) => Column(
+  Widget _group(
+    LessonGridPlan plan,
+    String title,
+    String sub,
+    List<String> words,
+  ) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const SizedBox(height: 24),
@@ -730,32 +677,13 @@ class _LessonEnd extends StatelessWidget {
       const SizedBox(height: 4),
       Text(sub, style: CoquiText.lessonSub),
       const SizedBox(height: 12),
-      Wrap(
-        spacing: 16,
-        runSpacing: 16,
-        children: [
+      // cual.js `cualGrid()`: two or three to a row at the largest whole scale that fits; the picture of
+      // a cell is as wide as its cell, so it fills it.
+      LessonPictureGrid(
+        plan: plan,
+        cells: [
           for (final w in words)
-            SizedBox(
-              width: _pw,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DecoratedBox(
-                    position: DecorationPosition.foreground,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: CoquiColors.lessonLine,
-                        width: 1.5,
-                        strokeAlign: BorderSide.strokeAlignOutside,
-                      ),
-                    ),
-                    child: SizedBox(width: _pw, child: _pic(_scene2)),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(w, style: CoquiText.lessonWord),
-                ],
-              ),
-            ),
+            LessonGridCell(picture: _pic(_scene2), word: w),
         ],
       ),
     ],
@@ -771,42 +699,60 @@ class _LessonEnd extends StatelessWidget {
       right: 0,
       top: 0,
       bottom: 96 - 24 - 24,
-      child: FadingEdges(
-        top: 16,
-        bottom: 16,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 3 * _pw + 2 * 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Done', style: CoquiText.lessonH1),
-                  const SizedBox(height: 8),
-                  Text(
-                    '8 moving up · 2 coming back soon',
-                    style: CoquiText.lessonBody,
+      child: LayoutBuilder(
+        builder: (context, box) {
+          // `#fin` is the whole width, with 16 px of padding at each side.
+          final plan = lessonGridPlan(
+            contentWidth: box.maxWidth - 32,
+            devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
+            pictureWidth: 196,
+          );
+          return FadingEdges(
+            top: 16,
+            bottom: 16,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              child: Center(
+                // the title, the lines and the grid are one block as wide as the grid, centred
+                child: SizedBox(
+                  width: plan.blockWidth,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Done', style: CoquiText.lessonH1),
+                      const SizedBox(height: 8),
+                      Text(
+                        '8 moving up · 2 coming back soon',
+                        style: CoquiText.lessonBody,
+                      ),
+                      _group(
+                        plan,
+                        'Moving up',
+                        'You\'ll see these less often',
+                        [
+                          'one',
+                          'two',
+                          'three',
+                          'four',
+                          'five',
+                          'six',
+                          'seven',
+                          'eight',
+                        ],
+                      ),
+                      _group(
+                        plan,
+                        'Coming back soon',
+                        'You\'ll see these again soon',
+                        ['nine', 'ten'],
+                      ),
+                    ],
                   ),
-                  _group('Moving up', 'You\'ll see these less often', [
-                    'one',
-                    'two',
-                    'three',
-                    'four',
-                    'five',
-                    'six',
-                    'seven',
-                    'eight',
-                  ]),
-                  _group('Coming back soon', 'You\'ll see these again soon', [
-                    'nine',
-                    'ten',
-                  ]),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     ),
     bottom: [
@@ -857,24 +803,6 @@ class _Buttons extends StatelessWidget {
               label: 'Start',
               kind: CoquiButtonKind.outline,
               onPressed: null,
-            ),
-          ],
-        ),
-        _h('on a shelf row: padding and gap by screen width'),
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          children: [
-            ShelfButton(
-              label: 'Listen',
-              icon: CoquiIcons.play,
-              onPressed: () {},
-            ),
-            ShelfButton(
-              label: 'Read',
-              icon: CoquiIcons.read,
-              kind: CoquiButtonKind.outline,
-              onPressed: () {},
             ),
           ],
         ),
@@ -963,6 +891,23 @@ class _LessonButtons extends StatelessWidget {
           LessonButtonRow.reader(
             back: const LessonBackButton(onPressed: null),
             next: LessonNextButton(onPressed: () {}),
+          ),
+          const LessonFin(CoquiLabels.fin),
+          LessonButtonRow.readerLast(
+            back: LessonBackButton(onPressed: () {}),
+            again: LessonButton(
+              label: CoquiLabels.again,
+              icon: CoquiIcons.replay,
+              fillWidth: false,
+              height: 56,
+              onPressed: () {},
+            ),
+            shelf: LessonButton(
+              label: CoquiLabels.library,
+              fillWidth: false,
+              height: 56,
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -1233,30 +1178,58 @@ class _WordMeters extends StatelessWidget {
               child: EarMouthMeters(ear: 3, mouth: 1, centered: true),
             ),
             const SectionTitle('Fades: top, bottom (16 px, over a white card)'),
-            SizedBox(
-              height: 120,
-              child: Stack(
-                children: [
-                  const Positioned.fill(
-                    child: ColoredBox(color: CoquiColors.card),
+            // A white card whose lines run past both edges: the fades take the lines out softly (a fade
+            // over an empty white card would show nothing).
+            CoquiCard(
+              marginBottom: 0,
+              padding: EdgeInsets.zero,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
+                child: SizedBox(
+                  height: 120,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRect(
+                          child: OverflowBox(
+                            alignment: Alignment.center,
+                            minHeight: 0,
+                            maxHeight: 8 * 24,
+                            child: Column(
+                              children: [
+                                for (var i = 1; i <= 8; i++)
+                                  SizedBox(
+                                    height: 24,
+                                    child: Center(
+                                      child: Text(
+                                        'a line of the list, $i',
+                                        style: CoquiText.body,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        child: ListFade(
+                          edge: FadeEdge.top,
+                          color: CoquiColors.card,
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: ListFade(color: CoquiColors.card),
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    child: ListFade(
-                      edge: FadeEdge.top,
-                      color: CoquiColors.card,
-                    ),
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: ListFade(color: CoquiColors.card),
-                  ),
-                  Center(child: Text('a list', style: CoquiText.body)),
-                ],
+                ),
               ),
             ),
             const SectionTitle('Fading edges (a list scrolling out, 24 px)'),
@@ -1319,93 +1292,6 @@ class _WordCards extends StatelessWidget {
   );
 }
 
-class _LessonBook extends StatelessWidget {
-  const _LessonBook(this.page);
-
-  /// 0 first page, 1 a middle page, 2 the last page.
-  final int page;
-
-  @override
-  Widget build(BuildContext context) {
-    final last = page == 2;
-    final lines = switch (page) {
-      0 => <Widget>[
-        BookLine(
-          lit: true,
-          text: const Text(
-            'A sample line that is long enough to wrap onto a second line.',
-          ),
-        ),
-        BookLine(
-          text: const Text(
-            'Another sample line, long enough to wrap onto a second line too.',
-          ),
-        ),
-        BookLine(who: 'Who', text: const Text('A short third line.')),
-      ],
-      1 => <Widget>[
-        BookLine(
-          text: const Text(
-            'A sample line that is long enough to wrap onto a second line.',
-          ),
-        ),
-        BookLine(
-          lit: true,
-          text: const Text(
-            'Another sample line, long enough to wrap onto a second line too.',
-          ),
-        ),
-      ],
-      _ => <Widget>[
-        BookLine(text: const Text('A sample line that fits on one line.')),
-        BookLine(text: const Text('Another sample line on one line.')),
-        BookLine(
-          who: 'Who',
-          text: const Text(
-            'A third line that is long enough to wrap onto a second line.',
-          ),
-        ),
-      ],
-    };
-    return LessonReaderFrame(
-      onClose: () {},
-      progress: LessonProgressLine(
-        value: last ? 1 : (page + 1) / 5 * (page == 1 ? 3 / 2 : 1),
-      ),
-      count: last ? '5 / 5' : (page == 0 ? '1 / 5' : '3 / 5'),
-      trailing: LessonTextSizeButton(onPressed: () {}),
-      last: last,
-      picture: PictureFrame(child: _pic(_story, w: 196, h: 216)),
-      lines: lines,
-      foot: [
-        if (last) const LessonFin('Fin'),
-        if (last)
-          LessonButtonRow.readerLast(
-            back: LessonBackButton(onPressed: () {}),
-            again: LessonButton(
-              label: 'Again',
-              icon: CoquiIcons.replay,
-              fillWidth: false,
-              height: 56,
-              onPressed: () {},
-            ),
-            shelf: LessonButton(
-              label: 'Shelf',
-              fillWidth: false,
-              height: 56,
-              onPressed: () {},
-            ),
-          )
-        else
-          LessonButtonRow.reader(
-            back: LessonBackButton(onPressed: page == 0 ? null : () {}),
-            next: LessonNextButton(onPressed: () {}),
-          ),
-      ],
-    );
-  }
-}
-
 class _LessonDuo extends StatelessWidget {
   const _LessonDuo();
 
@@ -1415,14 +1301,8 @@ class _LessonDuo extends StatelessWidget {
     onSound: () {},
     progress: const LessonProgressDashes(segments: 5, done: 5),
     picture: PictureFrame(child: _pic(_story, w: 196, h: 216)),
-    // `finFit()` puts the title 16 px under the picture: the picture ends at 635 px, the frame's
-    // area starts at 56.
-    overlay: Positioned(
-      left: 16,
-      right: 16,
-      top: 635 + 16 - 56,
-      child: Text('Story title', style: CoquiText.lessonH1),
-    ),
+    // `finFit()` (juego.js:391): the title hangs 16 px under the picture, wherever the picture stands.
+    underPicture: Text('Story title', style: CoquiText.lessonH1),
     bottom: [
       LessonButtonRow.pair(
         first: LessonButton(

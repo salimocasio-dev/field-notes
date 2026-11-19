@@ -97,7 +97,12 @@ class LevelCheckScreenState extends State<LevelCheckScreen> {
   Widget _picture(LevelPanel p, CellRect r) => _pictures[p] ??= SizedBox(
     width: r.width,
     height: r.height,
-    child: _s.pictures.of(p.ref, height: p.ref.cam[3].round(), animated: true),
+    child: _s.pictures.of(
+      p.ref,
+      width: levelCellWidth,
+      height: levelCellHeight,
+      animated: true,
+    ),
   );
 
   Widget _choices(LessonBox box) {

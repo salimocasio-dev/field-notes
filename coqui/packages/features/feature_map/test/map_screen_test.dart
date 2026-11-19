@@ -35,7 +35,7 @@ void phone(
 Future<Shown> showMap(
   WidgetTester tester,
   MapFixture f, {
-  String? reviewTitle = fixtureReviewTitle,
+  String? reviewTitle = CoquiLabels.reviewTitle,
   int? openPlace,
 }) async {
   final shown = Shown(f, MapPerf());
@@ -92,8 +92,10 @@ Future<void> tapStop(WidgetTester tester, int k) async {
   await tester.pump();
 }
 
-CoquiSheetLayer sheetLayer(WidgetTester tester) =>
-    tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer));
+/// The place sheet is up: it is a route of the root navigator (`showCoquiSheet`), so it is there while it is
+/// open and gone once it has slid out.
+bool sheetOpen(WidgetTester tester) =>
+    find.byType(CoquiSheet).evaluate().isNotEmpty;
 
 /// The reddish pixels of the picture inside the rectangle where the flag of stop [k] is drawn.
 int flagPixels(MapPicture m, int k) {
@@ -161,10 +163,10 @@ void main() {
       await tapStop(tester, 2);
       // hopping: the sheet is not open, the frog is on his way
       expect(m.FROG.path, isNotNull);
-      expect(sheetLayer(tester).open, isFalse);
+      expect(sheetOpen(tester), isFalse);
       expect(f.haptics.ticks, 1);
       await run(tester, 100);
-      expect(sheetLayer(tester).open, isFalse);
+      expect(sheetOpen(tester), isFalse);
       await run(tester, 3000);
       // landed: the frog is at place 3, the sheet is open on it
       expect(m.FROG.path, isNull);
@@ -172,7 +174,7 @@ void main() {
       final stop = XY(PADS[2][0], PADS[2][1]);
       expect(m.FROG.x, closeTo(stop.x, 1e-9));
       expect(m.FROG.y, closeTo(stop.y, 1e-9));
-      expect(sheetLayer(tester).open, isTrue);
+      expect(sheetOpen(tester), isTrue);
       expect(find.text('La cocina'), findsWidgets);
       expect(
         find.text("Place 3 · The kitchen · a fork: either place first"),
@@ -204,7 +206,7 @@ void main() {
       expect(s.picture.FROG.path, isNull);
       expect(s.picture.FROG.at, 0); // he did not hop
       expect(f.clips.tones, isEmpty);
-      expect(sheetLayer(tester).open, isTrue);
+      expect(sheetOpen(tester), isTrue);
       expect(find.text('El colmado'), findsWidgets);
       expect(find.text('Place 4 · The corner shop'), findsOneWidget);
       expect(
@@ -218,7 +220,7 @@ void main() {
       // the X closes it
       await tester.tap(find.byType(CoquiCloseButton));
       await run(tester, 300);
-      expect(sheetLayer(tester).open, isFalse);
+      expect(sheetOpen(tester), isFalse);
     },
   );
 
@@ -307,7 +309,7 @@ void main() {
     final f = fixture(seed: 'uno');
     await showMap(tester, f);
     expect(find.text('TODAY · 1 OF 4'), findsOneWidget);
-    expect(find.text(fixtureReviewTitle), findsOneWidget);
+    expect(find.text(CoquiLabels.reviewTitle), findsOneWidget);
     expect(find.text('1 word coming back · 3 min'), findsOneWidget);
     await tester.tap(find.byType(TodayCard));
     await tester.pump();
@@ -328,7 +330,9 @@ void main() {
     phone(tester);
     final f = fixture(seed: 'curso');
     await showMap(tester, f);
-    expect(find.text('\u{1F525} 5 days'), findsOneWidget);
+    // the flame is drawn, not a character (no emoji font is asked for): the text is the number of days
+    expect(find.text('5 days'), findsOneWidget);
+    expect(find.byType(CoquiFlame), findsOneWidget);
     expect(find.text('2 · El parque'), findsOneWidget);
   });
 
@@ -341,7 +345,7 @@ void main() {
       0,
     ); // the place the frog is on: the sheet opens at once
     await run(tester, 300);
-    expect(sheetLayer(tester).open, isTrue);
+    expect(sheetOpen(tester), isTrue);
     expect(s.picture.FROG.at, 0);
     expect(find.text('La casa'), findsWidgets);
     expect(find.text("Place 1 · Grandma's house"), findsOneWidget);
@@ -351,11 +355,18 @@ void main() {
     expect(find.text('Played · about 2 min'), findsOneWidget);
     expect(find.text('New · about 3 min'), findsWidgets);
     await tester.tap(find.bySemanticsLabel('Play: El bizcocho'));
-    await tester.pump();
+    await run(tester, 300);
     expect(f.nav.routes, [const StoryRoute('el-bizcocho')]);
+    // the play disc leaves for the story and closes the sheet, as the old page, which leaves, does
+    expect(sheetOpen(tester), isFalse);
+    await tapStop(tester, 0);
+    await run(tester, 300);
+    expect(sheetOpen(tester), isTrue);
     await tester.tap(find.bySemanticsLabel('Play again: La lluvia'));
-    await tester.pump();
+    await run(tester, 300);
     expect(f.nav.routes.last, const StoryRoute('la-lluvia'));
+    expect(f.nav.routes, hasLength(2));
+    expect(sheetOpen(tester), isFalse);
   });
 
   mapTest('the sheet closes on the scrim', (tester) async {
@@ -363,11 +374,60 @@ void main() {
     final f = fixture(seed: 'vacio');
     await showMap(tester, f, openPlace: 3);
     await run(tester, 300);
-    expect(sheetLayer(tester).open, isTrue);
+    expect(sheetOpen(tester), isTrue);
     await tester.tapAt(const Offset(200, 60));
     await run(tester, 300);
-    expect(sheetLayer(tester).open, isFalse);
+    expect(sheetOpen(tester), isFalse);
   });
+
+  mapTest(
+    'the sheet is above the tab bar: its scrim covers it, and a tap on it only closes the sheet',
+    (tester) async {
+      phone(tester);
+      final f = fixture(seed: 'vacio');
+      final taps = <String>[];
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(
+            body: Stack(
+              fit: StackFit.expand,
+              children: [
+                MapScreen(services: f.services, openPlace: 3),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CoquiTabBar(
+                    selectedId: CoquiTabs.mapId,
+                    onTap: taps.add,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      await run(tester, 300);
+      expect(sheetOpen(tester), isTrue);
+      // the sheet's own box ends above the tab bar and the raised Mapa disc, and the scrim fills the screen
+      final bar = tester.getRect(find.byType(CoquiTabBar));
+      final sheet = tester.getRect(find.byType(CoquiSheet));
+      expect(sheet.bottom, lessThanOrEqualTo(bar.top));
+      final scrim = tester.widget<ModalBarrier>(find.byType(ModalBarrier).last);
+      expect(scrim.color, CoquiColors.scrim);
+      // a tap on a tab while the sheet is up goes to the scrim: the sheet closes, the tab is not pressed
+      await tester.tapAt(bar.center - const Offset(120, 0));
+      await run(tester, 300);
+      expect(taps, isEmpty);
+      expect(sheetOpen(tester), isFalse);
+      // the sheet closed, the tab bar takes its touches again
+      await tester.tapAt(bar.center - const Offset(120, 0));
+      await tester.pump();
+      expect(taps, hasLength(1));
+    },
+  );
 
   mapTest('reduceMotion: everything stands still', (tester) async {
     phone(tester);
@@ -385,7 +445,7 @@ void main() {
     expect(m.FROG.path, isNull);
     expect(m.FROG.at, 2);
     expect(f.clips.tones, isEmpty);
-    expect(sheetLayer(tester).open, isTrue);
+    expect(sheetOpen(tester), isTrue);
     await tester.pumpAndSettle();
     expect(find.text('La cocina'), findsWidgets);
   });
@@ -428,7 +488,7 @@ void main() {
     ); // the sea in the corner
     await run(tester, 300);
     expect(s.picture.FROG.path, isNull);
-    expect(sheetLayer(tester).open, isFalse);
+    expect(sheetOpen(tester), isFalse);
     expect(f.haptics.ticks, 0);
     expect(RendererBinding.instance.renderViews, isNotEmpty);
   });
