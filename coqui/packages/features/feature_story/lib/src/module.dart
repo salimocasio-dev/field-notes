@@ -14,7 +14,7 @@ final SpeechSession _speech = SpeechSession();
 /// says `listen`) with the play screen, full screen: the shell hides its tab bar. It has no tab.
 ///
 /// [scenes] makes the scene a story file names: by default the scenes package's registry (`registryScenes`: the real
-/// scenes, the converted ones; the others throw "not converted yet" and the screen shows the lesson frame and its X).
+/// scenes, the converted ones; the others throw "not converted yet" and the screen says so, with a button back to the map).
 ///
 /// [showPerf]: the play screen shows, in a small corner chip, the bake time of the scene's state now on screen (the app's
 /// `?perf=1`). Off by default.

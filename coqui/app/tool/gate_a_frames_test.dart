@@ -3,6 +3,8 @@
 //
 //   cd coqui/app && flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>
 //   (--dart-define=ONLY=la-lluvia-right,el-bizcocho-wrong plays just those)
+//   (--dart-define=TXT=con|tras|no starts the app as the address `?txt=con|tras|no` does: when the story's words show; con is
+//   the default)
 //
 // The real app shell on the harness's fakes (silent clips, the scripted recogniser, the fake clock), at the story's address
 // on a 390 x 844 screen at ratio 2 (pictures of 780 x 1688), the real fonts, motion on. The tool only watches and touches:
@@ -19,6 +21,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:app/src/switches.dart';
 import 'package:coqui_pixel/coqui_pixel.dart'
     show
         Thing,
@@ -38,6 +41,9 @@ import 'gate_a_sheets.dart';
 
 const String _out = String.fromEnvironment('OUT');
 const String _only = String.fromEnvironment('ONLY');
+
+/// `?txt=` of the address: when the story's words show (`con` while the line is spoken, `tras` right after, `no` never).
+const String _txt = String.fromEnvironment('TXT', defaultValue: 'con');
 
 /// The three stories, all at El frente.
 const List<String> _stories = [
@@ -669,6 +675,8 @@ Future<Map<String, dynamic>> _play(
   await app.open(
     stored: seed('vacio'),
     location: '/cuento/$story',
+    // the switch the way the address carries it: the shell reads `?txt=` and hands it to the story
+    switches: AppSwitches.fromQuery({'txt': _txt}),
     size: _screen,
     ratio: _ratio,
     reduceMotion: false,
@@ -691,6 +699,11 @@ Future<Map<String, dynamic>> _play(
   int? startedAt, endAt;
   _Shot? askShot;
   String lastCap = '', lastBub = '';
+  // The words the story holds for the line it is speaking, whether they show or not (with `TXT=no` the runner shows none, so
+  // `caption` and `bubble` are empty): the text of the last line the clip player was asked for, from the story's own lines.
+  var clipsSeen = 0;
+  var lastSaid = '';
+  var newLine = false;
   var lastCam = [for (final n in runner.cam as List) n as num];
   var lastCamChange = -100000;
   dynamic lastPn;
@@ -703,6 +716,7 @@ Future<Map<String, dynamic>> _play(
       'caption': cap,
       'bubble': bub,
       'captionShown': cap.isEmpty ? null : find.text(cap).evaluate().isNotEmpty,
+      'said': lastSaid,
       'cam': [for (final n in runner.cam as List) n],
     };
   }
@@ -769,6 +783,18 @@ Future<Map<String, dynamic>> _play(
         lastCap = cap;
         lastBub = bub;
       }
+      // a line the story began to speak (it reads the runner and the clip player, not the screen)
+      final played = app.clips?.played ?? const <String>[];
+      newLine = false;
+      while (clipsSeen < played.length) {
+        final line = (runner.LINES as Map)[played[clipsSeen++]];
+        if (line is Map && line['text'] is String) {
+          lastSaid = line['text'] as String;
+          newLine = true;
+        }
+      }
+      // with no words on the screen there is no caption change to take a 'line' picture on: take it as the line begins
+      if (newLine && _txt == 'no') schedule('line', t + _lineDelay);
       final cam = [for (final n in runner.cam as List) n as num];
       var camSame = cam.length == lastCam.length;
       for (var i = 0; camSame && i < cam.length; i++) {
@@ -951,6 +977,7 @@ Future<Map<String, dynamic>> _play(
   final index = {
     'story': story,
     'plan': plan,
+    'txt': _txt,
     'screen': {
       'logical': [_screen.width, _screen.height],
       'ratio': _ratio,
@@ -1009,6 +1036,7 @@ Map<String, dynamic>? _pendingInfo(dynamic pn) => pn == null
 void _writeSummary() {
   File('$_out/summary.json').writeAsStringSync(
     const JsonEncoder.withIndent(' ').convert({
+      'txt': _txt,
       'screen': {
         'logical': [_screen.width, _screen.height],
         'ratio': _ratio,
@@ -1029,6 +1057,9 @@ void main() {
       testWidgets('gate A: $name', (tester) async {
         if (_out.isEmpty) {
           fail('give the folder: --dart-define=OUT=<dir>');
+        }
+        if (!const ['con', 'tras', 'no'].contains(_txt)) {
+          fail('TXT is con, tras or no, not "$_txt"');
         }
         Directory(_out).createSync(recursive: true);
         _summary[name] = await _play(tester, story, plan);

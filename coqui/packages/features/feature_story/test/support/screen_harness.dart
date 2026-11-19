@@ -209,6 +209,10 @@ Future<Screen> openScreen(
   }
   await tester.pump(); // the screen builds its frame once it has opened
   await tester.pump();
-  screen.story = stories.firstWhere((s) => s['id'] == id);
+  // a story that is not one of the sample's three (the screen reads it itself, from [course]) has no copy here
+  screen.story = stories.firstWhere(
+    (s) => s['id'] == id,
+    orElse: () => <String, dynamic>{},
+  );
   return screen;
 }

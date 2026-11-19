@@ -92,15 +92,19 @@ class _StoryMicButtonState extends State<StoryMicButton>
         label: 'Micrófono',
         excludeSemantics: true,
         onTap: ready ? widget.onPressed : null,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: ready ? widget.onPressed : null,
-          child: SizedBox(
-            width: 72,
-            height: 72,
-            child: AnimatedBuilder(
-              animation: _a,
-              builder: (context, _) => _disc(s),
+        // the tick is a status, not a button: `#mic[data-s=ok]{pointer-events:none}`
+        child: IgnorePointer(
+          ignoring: s == StoryMicState.ok,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: ready ? widget.onPressed : null,
+            child: SizedBox(
+              width: 72,
+              height: 72,
+              child: AnimatedBuilder(
+                animation: _a,
+                builder: (context, _) => _disc(s),
+              ),
             ),
           ),
         ),
