@@ -44,6 +44,11 @@ abstract final class CallTexts {
   static const libraryFailed =
       'The voice part did not load. Check your connection and try again.';
 
+  /// The grey line under "Call Danny" on a card whose call this build cannot place (`call.available` is false): the
+  /// words the orchestrator decided. v=39 has no such case (its build always could). The module's `callsLater`
+  /// overrides it.
+  static const callsLater = 'Calls with Danny open later.';
+
   /// "Call Danny", the Hablar card's title and the call screen's dialog label. app.html:458
   static const callDanny = 'Call Danny';
 

@@ -137,7 +137,49 @@ void main() {
     });
   });
 
-  group('why a call did not start (until the contract has CallStartError)', () {
+  group('why a call did not start', () {
+    test('a CallStartError says it by its kind, whatever its text says', () {
+      const cases = {
+        CallStartFailure.microphone: CallStartReason.microphone,
+        CallStartFailure.library: CallStartReason.library,
+        CallStartFailure.failed: CallStartReason.failed,
+        CallStartFailure.unavailable: CallStartReason.unavailable,
+      };
+      for (final e in cases.entries) {
+        // a text that the old reading would have taken for another reason
+        expect(
+          callStartReason(
+            CallStartError(
+              e.key,
+              'microphone denied LibraryError NotAvailable',
+            ),
+          ),
+          e.value,
+          reason: '${e.key}',
+        );
+      }
+      // its own text, too
+      expect(
+        callStartReason(
+          const CallStartError(
+            CallStartFailure.failed,
+            'The call did not start.',
+          ),
+        ),
+        CallStartReason.failed,
+      );
+      expect(
+        callStartReason(
+          const CallStartError(
+            CallStartFailure.microphone,
+            'Permission denied',
+            name: 'NotAllowedError',
+          ),
+        ),
+        CallStartReason.microphone,
+      );
+    });
+
     test(
       'a refused microphone, in the words the client and the platform use',
       () {
@@ -152,7 +194,7 @@ void main() {
       },
     );
 
-    test('the library, the build with calls off, and anything else', () {
+    test('anything else that came out of a start is read by its text, as llamada.js reads it: the library, the build with calls off, and the rest', () {
       expect(
         callStartReason('LibraryError: The voice library did not load.'),
         CallStartReason.library,

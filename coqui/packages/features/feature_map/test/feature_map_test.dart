@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'support/map_dev_app.dart';
+import 'support/map_fixture.dart';
 import 'support/map_tester.dart';
 
 void main() {
@@ -37,6 +38,32 @@ void main() {
     // the sample course has one place; the chip names it
     expect(find.text('1 · La casa'), findsOneWidget);
   });
+
+  mapTest(
+    'the tab gives the Today card the review entry\'s title, `CoquiLabels.reviewTitle`',
+    (tester) async {
+      tester.view.devicePixelRatio = 2.625;
+      tester.view.physicalSize = const Size(412, 915) * 2.625;
+      addTearDown(tester.view.reset);
+      // a learner with one word coming back: the plan opens with the review
+      final f = fixture(seed: 'uno');
+      final tab = const MapModule().tab(f.services)!;
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: coquiTheme(),
+          home: Scaffold(body: Builder(builder: tab.builder)),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      expect(find.text(CoquiLabels.reviewTitle), findsOneWidget);
+      expect(find.text('1 word coming back · 3 min'), findsOneWidget);
+      await tester.tap(find.byType(TodayCard));
+      await tester.pump();
+      expect(f.nav.routes, [const ReviewRoute()]);
+    },
+  );
 
   mapTest('the dev entry opens on the fakes, with the corner chip', (
     tester,

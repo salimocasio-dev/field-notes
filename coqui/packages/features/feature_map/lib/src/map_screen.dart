@@ -17,9 +17,11 @@ const Color mapPageColor = Color(0xFF14141F);
 /// The map tab: the chips at the top, the island map scrolling under them, the Today card over its foot, and the
 /// place sheet. The picture is `MapPicture` (a port of mapa.js) shown by `PixelView` at a whole-number scale.
 ///
-/// It draws the whole screen, as the tab bar is drawn over it by the shell (the card and the sheet sit above
-/// the bar's height). [reviewTitle] is the Spanish title of today's review entry, which app.html writes in its
-/// `plan()` and which comes from nowhere in the catalog: with none given the plan has no review entry.
+/// It draws the whole screen, as the tab bar is drawn over it by the shell (the card sits above the bar's
+/// height). The place sheet is not part of it: it opens with `showCoquiSheet`, above everything, the tab bar
+/// included, as v=39's scrim covers the page. [reviewTitle] is the Spanish title of today's review entry, which
+/// app.html writes in its `plan()`: `MapModule` gives `CoquiLabels.reviewTitle`; with none given the plan has no
+/// review entry.
 class MapScreen extends StatefulWidget {
   const MapScreen({
     super.key,
@@ -64,8 +66,6 @@ class _MapScreenState extends State<MapScreen>
 
   /// The picture has been baked and the state laid on it.
   bool _baked = false;
-  int? _sheetPlace;
-  bool _sheetOpen = false;
 
   // what the last layout gave: to open the map scrolled to the frog
   double _viewportH = 0, _scale = 1, _dpr = 1;
@@ -183,16 +183,32 @@ class _MapScreenState extends State<MapScreen>
     }
   }
 
+  // app.html: lugar. The sheet is a route of the root navigator: its scrim covers the tab bar, and a tap on
+  // the scrim, the X, the drag and the back button close it (app.html: cierra, fuera). A story's play disc goes to
+  // the story and closes it, as the old page, which leaves for the story, does.
   void _openSheet(int k) {
     if (!mounted) return;
-    setState(() {
-      _sheetPlace = k;
-      _sheetOpen = true;
-    });
+    final places = _s.course.places;
+    if (k < 0 || k >= places.length) return;
+    final place = places[k];
+    unawaited(
+      showCoquiSheet(
+        context,
+        builder: (context, close) => CoquiSheet(
+          title: place.name,
+          child: PlaceSheetBody(
+            place: place,
+            progress: _s.progress,
+            course: _s.course,
+            onPlay: (id) {
+              close();
+              _s.nav.go(StoryRoute(id));
+            },
+          ),
+        ),
+      ),
+    );
   }
-
-  // app.html: cierra
-  void _closeSheet() => setState(() => _sheetOpen = false);
 
   // app.html: empieza
   void _start(TodayEntry e) {
@@ -215,7 +231,6 @@ class _MapScreenState extends State<MapScreen>
     final aqui = _baked ? _map.STATE.aqui : 0;
     final here = aqui < places.length ? places[aqui] : null;
     final plan = _baked ? _plan() : const <TodayEntry>[];
-    final sheetPlace = _sheetPlace;
     final foot =
         CoquiLayout.tabBarHeight(context) + CoquiLayout.rise(context) + 16;
     return ColoredBox(
@@ -251,25 +266,6 @@ class _MapScreenState extends State<MapScreen>
                 ),
               ),
             ),
-          ExcludeSemantics(
-            excluding: !_sheetOpen,
-            child: CoquiSheetLayer(
-              open: _sheetOpen,
-              onScrimTap: _closeSheet,
-              sheet: sheetPlace != null && sheetPlace < places.length
-                  ? CoquiSheet(
-                      title: places[sheetPlace].name,
-                      onClose: _closeSheet,
-                      child: PlaceSheetBody(
-                        place: places[sheetPlace],
-                        progress: _s.progress,
-                        course: _s.course,
-                        onPlay: (id) => _s.nav.go(StoryRoute(id)),
-                      ),
-                    )
-                  : CoquiSheet(onClose: _closeSheet, child: const SizedBox()),
-            ),
-          ),
         ],
       ),
     );

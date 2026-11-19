@@ -92,17 +92,11 @@ void main() {
       final f = fixture(seed: 'curso');
       await pumpYo(tester, f);
       expect(find.byKey(const Key('about-row')), findsOneWidget);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isFalse,
-      );
+      expect(sheetOpen(tester), isFalse);
       final saves = f.progress.saves;
       await tester.tap(find.byKey(const Key('about-row')));
       await settle(tester);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isTrue,
-      );
+      expect(sheetOpen(tester), isTrue);
       expect(tester.widget<CoquiSheet>(find.byType(CoquiSheet)).modal, isFalse);
       expect(f.progress.saves, saves);
       expect(f.nav.routes, isEmpty);
@@ -139,10 +133,7 @@ void main() {
       await pumpYo(tester, f, about: true);
       await tester.tap(find.byType(CoquiCloseButton));
       await settle(tester);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isFalse,
-      );
+      expect(sheetOpen(tester), isFalse);
     });
 
     testWidgets('a tap on the page above the sheet closes it', (tester) async {
@@ -150,10 +141,7 @@ void main() {
       await pumpYo(tester, f, about: true);
       await tester.tapAt(const Offset(200, 20));
       await settle(tester);
-      expect(
-        tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open,
-        isFalse,
-      );
+      expect(sheetOpen(tester), isFalse);
     });
 
     testWidgets('How it works still opens its own sheet after About was open', (
@@ -180,7 +168,8 @@ void main() {
         expect(hintFinder(), findsOneWidget);
         expect(find.byKey(const Key('install-hint')), findsOneWidget);
         final all = textsOf(tester, find.byType(TabPage));
-        expect(all.take(3).toList(), ['Yo', hint, '🔥 5']);
+        expect(all.take(3).toList(), ['Yo', hint, '5']);
+        expect(find.byType(CoquiFlame), findsOneWidget);
         // a card as v=39 draws them: white, 16 px corners
         final box = tester.widget<Container>(
           find

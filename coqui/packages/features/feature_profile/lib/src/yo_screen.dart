@@ -14,14 +14,11 @@ import 'package:material_ui/material_ui.dart';
 /// as long as the app does, and the app has one [Services].
 final Expando<String> _notePage = Expando<String>('NOTAPAG');
 
-/// What the sheet over Yo shows.
-enum _Sheet { howItWorks, about }
-
 /// The Yo tab (app.html: `yo`): the four numbers, where he is, minutes a day, the switches, the level
 /// check, "How it works". It draws again whenever the progress store saves (`progress.changes`).
 ///
-/// It draws the whole screen, as the tab bar is drawn over it by the shell; its sheets (How it works,
-/// About) sit above the tab bar's height.
+/// It draws the whole screen, as the tab bar is drawn over it by the shell. Its sheets (How it works, About)
+/// open with `showCoquiSheet`, above everything: the scrim dims the tab bar too, as v=39's does.
 class YoScreen extends StatefulWidget {
   const YoScreen({
     super.key,
@@ -45,10 +42,6 @@ class YoScreen extends StatefulWidget {
 class _YoScreenState extends State<YoScreen> {
   StreamSubscription<void>? _changes;
 
-  _Sheet _sheet = _Sheet.howItWorks;
-  bool _sheetOpen = false;
-  int _step = 0;
-
   /// notaHabla(): whether the note is on this draw.
   bool _note = false;
 
@@ -65,13 +58,16 @@ class _YoScreenState extends State<YoScreen> {
   void initState() {
     super.initState();
     final step = widget.howItWorksStep;
-    if (step != null) {
-      _sheet = _Sheet.howItWorks;
-      _step = step;
-      _sheetOpen = true;
-    } else if (widget.aboutOpen) {
-      _sheet = _Sheet.about;
-      _sheetOpen = true;
+    if (step != null || widget.aboutOpen) {
+      // a route cannot be pushed while the page is being built: once the first frame is drawn
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        if (step != null) {
+          _openHow(step);
+        } else {
+          _openAbout();
+        }
+      });
     }
     _listen();
     _initHint();
@@ -147,49 +143,38 @@ class _YoScreenState extends State<YoScreen> {
     if (show != _note) setState(() => _note = show);
   }
 
-  // ---- the sheet ----
+  // ---- the sheets ----
 
-  // app.html: bienvenida(0)
-  void _openHow() => setState(() {
-    _sheet = _Sheet.howItWorks;
-    _step = 0;
-    _sheetOpen = true;
-  });
-
-  void _openAbout() => setState(() {
-    _sheet = _Sheet.about;
-    _sheetOpen = true;
-  });
-
-  // app.html: cierra
-  void _close() => setState(() => _sheetOpen = false);
-
-  // app.html: fuera (a tap on the page above a sheet closes it; the welcome ignores it)
-  void _scrimTap() {
-    if (_sheet == _Sheet.howItWorks &&
-        !jsTruthy(_progress.setting('bienvenida'))) {
-      return;
-    }
-    _close();
-  }
-
-  // app.html: listo
-  void _listo() {
-    _progress.setSetting('bienvenida', 1);
-    _close();
-  }
-
-  CoquiSheet _sheetWidget() {
-    if (_sheet == _Sheet.about) return aboutSheet(onClose: _close);
-    return welcomeSheet(
-      services: _s,
-      step: _step,
-      onStep: (k) => setState(() => _step = k),
-      onNew: _listo,
-      onClose: _close,
-      onLeave: _close,
+  // app.html: bienvenida(0). The page gives the sheet [step] as its first (the dev entry opens the others).
+  void _openHow([int step = 0]) {
+    final seen = jsTruthy(_progress.setting('bienvenida'));
+    final steps = ValueNotifier<int>(step);
+    // `modal:!AJ().bienvenida`: the welcome that has not been finished ignores a tap outside; from Yo it is the
+    // ordinary sheet (the X, the drag, the scrim close it, `cierra()` and `fuera()`)
+    unawaited(
+      showCoquiSheet(
+        context,
+        modal: !seen,
+        builder: (context, close) => welcomeRouteSheet(
+          services: _s,
+          step: steps,
+          onNew: () {
+            // app.html: listo
+            _progress.setSetting('bienvenida', 1);
+            close();
+          },
+          onLeave: close,
+        ),
+      ),
     );
   }
+
+  void _openAbout() => unawaited(
+    showCoquiSheet(
+      context,
+      builder: (context, close) => aboutSheet(onClose: close),
+    ),
+  );
 
   // ---- the page ----
 
@@ -237,13 +222,19 @@ class _YoScreenState extends State<YoScreen> {
                 bottom: CoquiMetrics.s16,
                 child: _StatsGrid(
                   stats: [
-                    ('🔥 ${progress.streak}', yoStreakLabel),
-                    ('$minutes', '${plural(minutes, 'minute')} listened'),
+                    // the flame before the number is drawn (`StatCard.flame`), not the emoji of app.html:473
+                    ('${progress.streak}', yoStreakLabel, true),
+                    (
+                      '$minutes',
+                      '${plural(minutes, 'minute')} listened',
+                      false,
+                    ),
                     (
                       '${words.length}',
                       '${plural(words.length, 'word')} heard',
+                      false,
                     ),
-                    ('$good', '${plural(good, 'word')} good'),
+                    ('$good', '${plural(good, 'word')} good', false),
                   ],
                 ),
               ),
@@ -350,17 +341,6 @@ class _YoScreenState extends State<YoScreen> {
               ),
             ],
           ),
-          ExcludeSemantics(
-            excluding: !_sheetOpen,
-            child: CoquiSheetLayer(
-              open: _sheetOpen,
-              onScrimTap: _scrimTap,
-              modal:
-                  _sheet == _Sheet.howItWorks &&
-                  !jsTruthy(progress.setting('bienvenida')),
-              sheet: _sheetWidget(),
-            ),
-          ),
         ],
       ),
     );
@@ -372,7 +352,8 @@ class _YoScreenState extends State<YoScreen> {
 class _StatsGrid extends StatelessWidget {
   const _StatsGrid({required this.stats});
 
-  final List<(String, String)> stats;
+  /// The value, the label under it, and whether the streak's flame stands before the value.
+  final List<(String, String, bool)> stats;
 
   @override
   Widget build(BuildContext context) {
@@ -381,11 +362,19 @@ class _StatsGrid extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: StatCard(value: stats[i].$1, label: stats[i].$2),
+            child: StatCard(
+              value: stats[i].$1,
+              label: stats[i].$2,
+              flame: stats[i].$3,
+            ),
           ),
           const SizedBox(width: CoquiMetrics.s16),
           Expanded(
-            child: StatCard(value: stats[i + 1].$1, label: stats[i + 1].$2),
+            child: StatCard(
+              value: stats[i + 1].$1,
+              label: stats[i + 1].$2,
+              flame: stats[i + 1].$3,
+            ),
           ),
         ],
       ),

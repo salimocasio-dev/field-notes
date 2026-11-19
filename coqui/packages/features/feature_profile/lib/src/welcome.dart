@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_profile/src/js.dart';
@@ -19,30 +21,25 @@ int minutePillIndex(Object? min) {
 }
 
 // app.html: bienvenida(k)
-/// The sheet of step [step] (0 to 2) of the welcome, as `bienvenida(k)` builds it.
+/// The sheet of step [step] (0 to 2) of the welcome, as `bienvenida(k)` builds it, in place, for the gate
+/// (`CoquiSheetLayer`): the first time it is a modal sheet: no header, a tap outside does nothing, and it can only
+/// be finished (`modal:!AJ().bienvenida`).
 ///
-/// The first time it is a modal sheet: no header, a tap outside does nothing, and it can only be finished
-/// (`modal:!AJ().bienvenida`). Opened again from Yo it is an ordinary sheet: the handle and the X, and
-/// step 1 ends with the level check's paragraph.
-///
-/// [onStep] is `bienvenida(n)`; [onNew] is `listo()`; [onClose] is `cierra()` (the X and the drag). [onLeave]
-/// is called once "I understand some Spanish" has written the setting and gone to the level check: the old page
-/// is left there, a page that is loaded again has no sheet; here the sheet is closed.
+/// [onStep] is `bienvenida(n)`; [onNew] is `listo()`. "I understand some Spanish" writes the setting and goes
+/// to the level check: the old page is left there, a page that is loaded again has no sheet; here the gate closes
+/// when the setting is written.
 CoquiSheet welcomeSheet({
   required Services services,
   required int step,
   required ValueChanged<int> onStep,
   required VoidCallback onNew,
-  VoidCallback? onClose,
-  VoidCallback? onLeave,
 }) {
   final progress = services.progress;
   final seen = jsTruthy(progress.setting('bienvenida')); // AJ().bienvenida
-  final footer = _footer(services, step, onStep, onNew, onLeave);
+  final footer = _footer(services, step, onStep, onNew, null);
   return CoquiSheet(
     key: ValueKey('welcome-step-$step'),
     modal: !seen,
-    onClose: onClose,
     footer: footer,
     child: switch (step) {
       0 => _stepOne(seen),
@@ -50,6 +47,85 @@ CoquiSheet welcomeSheet({
       _ => _stepThree(),
     },
   );
+}
+
+/// The welcome's sheet for `showCoquiSheet`: "How it works" over Yo, where the welcome is opened again. An
+/// ordinary sheet (the handle and the X; the route sets `onClose` and `modal`) and step 1 ends with the level
+/// check's paragraph.
+///
+/// The route builds the sheet once, so the step is a [step] notifier that the body and the footer follow, as
+/// `bienvenida(k)` writes the sheet again: the body starts at the top of its page for each step, and it
+/// draws again whenever the store saves (the minutes pill that was just touched is the one that is on). [onNew]
+/// is `listo()`; [onLeave] is called once "I understand some Spanish" has written the setting and gone to the
+/// level check (the old page is left there): the sheet is closed.
+CoquiSheet welcomeRouteSheet({
+  required Services services,
+  required ValueNotifier<int> step,
+  required VoidCallback onNew,
+  required VoidCallback onLeave,
+}) => CoquiSheet(
+  key: const ValueKey('welcome'),
+  footer: ValueListenableBuilder<int>(
+    valueListenable: step,
+    builder: (context, k, _) =>
+        _footer(services, k, (n) => step.value = n, onNew, onLeave),
+  ),
+  child: _StepBody(services: services, step: step),
+);
+
+/// The body of the welcome's sheet: the page of the step [step] holds, from the top, drawn again when the store
+/// saves.
+class _StepBody extends StatefulWidget {
+  const _StepBody({required this.services, required this.step});
+
+  final Services services;
+  final ValueNotifier<int> step;
+
+  @override
+  State<_StepBody> createState() => _StepBodyState();
+}
+
+class _StepBodyState extends State<_StepBody> {
+  late int _k = widget.step.value;
+  StreamSubscription<void>? _changes;
+
+  ProgressStore get _progress => widget.services.progress;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.step.addListener(_onStep);
+    _changes = _progress.changes.listen((_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.step.removeListener(_onStep);
+    _changes?.cancel();
+    super.dispose();
+  }
+
+  void _onStep() {
+    if (widget.step.value == _k) return;
+    setState(() => _k = widget.step.value);
+    // `sh.innerHTML=...`: the new step's page is new, at its top
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final position = Scrollable.maybeOf(context)?.position;
+      if (position != null && position.hasPixels && position.pixels != 0) {
+        position.jumpTo(0);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => switch (_k) {
+    0 => _stepOne(jsTruthy(_progress.setting('bienvenida'))),
+    1 => _stepTwo(_progress),
+    _ => _stepThree(),
+  };
 }
 
 // `h1` with `style="margin-top:0"`

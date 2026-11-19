@@ -65,7 +65,7 @@ class _MapDevAppState extends State<MapDevApp> {
             MapScreen(
               services: fixtureState.services,
               perf: perf,
-              reviewTitle: q['review'] == '0' ? null : fixtureReviewTitle,
+              reviewTitle: q['review'] == '0' ? null : CoquiLabels.reviewTitle,
               openPlace: place == null ? null : place - 1,
             ),
             Align(

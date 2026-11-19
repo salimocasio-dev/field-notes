@@ -105,6 +105,26 @@ double contrast(Color a, Color b) {
   return (math.max(x, y) + .05) / (math.min(x, y) + .05);
 }
 
+/// What the fake picture source was asked for: the ref, the size in picture pixels and whether it moves.
+typedef PictureAsk = ({PictureRef ref, int width, int height, bool animated});
+
+/// The fake picture source, which also keeps how every picture was asked for.
+class RecordingPictures extends FakePictureSource {
+  /// Every call of [of], in order.
+  final List<PictureAsk> asked = [];
+
+  @override
+  Widget of(
+    PictureRef ref, {
+    int width = 196,
+    int height = 104,
+    bool animated = false,
+  }) {
+    asked.add((ref: ref, width: width, height: height, animated: animated));
+    return super.of(ref, width: width, height: height, animated: animated);
+  }
+}
+
 class Lab {
   Lab(
     this.tester, {
@@ -116,7 +136,7 @@ class Lab {
     store = RecordingStore(vt, clock: FakeClock(storeNow), json: db);
     clips = ScriptedClips(vt, ready: !silent);
     rng = FakeRng(seed);
-    pictures = FakePictureSource();
+    pictures = RecordingPictures();
     services = fakeServices(
       progress: store,
       course: course,
@@ -133,7 +153,7 @@ class Lab {
   late final RecordingStore store;
   late final ScriptedClips clips;
   late final FakeRng rng;
-  late final FakePictureSource pictures;
+  late final RecordingPictures pictures;
   final FakeNavigator nav = FakeNavigator();
   late final Services services;
   final GlobalKey<ReviewScreenState> reviewKey = GlobalKey();

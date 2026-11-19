@@ -18,10 +18,6 @@ import 'support/harness.dart';
 Map<String, dynamic> m(Object? o) => (o as Map).cast<String, dynamic>();
 List<String> strings(Object? o) => (o as List).cast<String>();
 
-/// The sheet is up: the gate's, or the one over Yo.
-bool sheetOpen(WidgetTester tester) =>
-    tester.widget<CoquiSheetLayer>(find.byType(CoquiSheetLayer)).open;
-
 /// The welcome, as `bienvenida(k)` opens it: the gate the first time, "How it works" in Yo afterwards.
 Future<void> pumpWelcome(
   WidgetTester tester,
@@ -171,6 +167,33 @@ void main() {
           );
         }
         expect(f.progress.setting('bienvenida'), 0);
+      },
+    );
+
+    testWidgets(
+      'from How it works each step starts at the top, as `bienvenida(k)` writes the sheet anew',
+      (tester) async {
+        final f = fixture(seed: 'curso');
+        await pumpYo(tester, f, how: 0);
+        // a short phone, so that the body of the sheet scrolls in every step
+        tester.view.physicalSize = const Size(412, 360);
+        await tester.pump();
+        final scroll = tester.state<ScrollableState>(
+          find
+              .descendant(
+                of: find.byType(CoquiSheet),
+                matching: find.byType(Scrollable),
+              )
+              .first,
+        );
+        expect(scroll.position.maxScrollExtent, greaterThan(40));
+        scroll.position.jumpTo(40);
+        await tester.pump();
+        expect(scroll.position.pixels, 40);
+        await tapText(tester, 'Next');
+        expect(dotOf(tester), 1);
+        expect(scroll.position.maxScrollExtent, greaterThan(40));
+        expect(scroll.position.pixels, 0);
       },
     );
 
@@ -390,11 +413,12 @@ void main() {
         ),
       );
       await settle(tester);
-      // the gate's sheet is up; Yo's own sheet (How it works) is closed
+      // the gate's sheet is up, in its layer; Yo's own sheet (How it works) is a route, and it is not open
       final layers = tester.widgetList<CoquiSheetLayer>(
         find.byType(CoquiSheetLayer),
       );
-      expect(layers.map((l) => l.open).toList(), [false, true]);
+      expect(layers.map((l) => l.open).toList(), [true]);
+      expect(find.byType(CoquiSheet), findsOneWidget);
       expect(find.text('Yo'), findsOneWidget);
     });
   });

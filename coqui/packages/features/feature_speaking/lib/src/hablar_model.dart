@@ -44,7 +44,7 @@ List<HablarCard> hablarCards({
   required CourseCatalog course,
   required ProgressStore progress,
   required bool Function() callsAvailable,
-  String callsLater = '',
+  String callsLater = CallTexts.callsLater,
 }) {
   var available = false;
   var asked = false;

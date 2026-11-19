@@ -225,6 +225,30 @@ void main() {
       },
     );
 
+    testWidgets(
+      'six: the two pictures ask for the default 196 x 104, animated, named after the pair and its side',
+      (t) async {
+        final lab = await ready(t);
+        final panels = lab.s.panels!;
+        expect(panels.length, 2);
+        final asked = [
+          for (final a in lab.pictures.asked)
+            if (panels.any((p) => identical(p.ref, a.ref))) a,
+        ];
+        expect(asked.length, 2);
+        for (final a in asked) {
+          expect((a.width, a.height, a.animated), (196, 104, true));
+        }
+        final pair = lab.s.queue[lab.s.index].pair;
+        final right = panels.firstWhere((p) => p.right);
+        final wrong = panels.firstWhere((p) => !p.right);
+        expect(right.ref, PictureRef.of(pair, pair.yes));
+        expect(wrong.ref, PictureRef.of(pair, pair.no));
+        expect(right.ref.name, '${pair.word}.si');
+        expect(wrong.ref.name, '${pair.word}.no');
+      },
+    );
+
     testWidgets('six: the sentence was started again (audio)', (t) async {
       final lab = await ready(t);
       final n0 = lab.clips.plays.length;
