@@ -1,15 +1,8 @@
 {"id": "quien-eres-tu", "title": "¿Quién eres tú?", "pages": [
- {"img": "img/quien-eres-tu-1.png", "clips": ["me_llamo_hermana"]},
- {"img": "img/quien-eres-tu-2.png", "clips": ["y_yo_hermano"]},
- {"img": "img/quien-eres-tu-3.png", "clips": ["cq_yo_me_llamo"]},
- {"img": "img/quien-eres-tu-4.png", "clips": ["ah_tu_hermana"]},
- {"img": "img/quien-eres-tu-5.png", "clips": ["cq_tu_hermana", "si_yo_hermana"]},
- {"img": "img/quien-eres-tu-6.png", "clips": ["ao_espejuelos_q"]},
- {"img": "img/quien-eres-tu-7.png", "clips": ["cq_yo_coqui", "ao_ah_tu"]},
- {"img": "img/quien-eres-tu-8.png", "clips": ["cq_tu_hermano"]},
- {"img": "img/quien-eres-tu-9.png", "clips": ["si_yo_hermano"]},
- {"img": "img/quien-eres-tu-10.png", "clips": ["cq_ella_mama"]},
- {"img": "img/quien-eres-tu-11.png", "clips": ["ao_hola_mama"]},
- {"img": "img/quien-eres-tu-12.png", "clips": ["ao_mis_espejuelos"]},
- {"img": "img/quien-eres-tu-13.png", "clips": ["ao_y_tu_eres", "cq_si_yo_me_llamo"]}
+ {"img": "img/quien-eres-tu-1.png", "clips": ["me_llamo_hermana", "y_yo_hermano", "cq_yo_me_llamo"]},
+ {"img": "img/quien-eres-tu-2.png", "clips": ["ah_tu_hermana", "cq_tu_hermana", "si_yo_hermana"]},
+ {"img": "img/quien-eres-tu-3.png", "clips": ["ao_espejuelos_q", "cq_yo_coqui", "ao_ah_tu"]},
+ {"img": "img/quien-eres-tu-4.png", "clips": ["cq_tu_hermano", "si_yo_hermano", "cq_ella_mama"]},
+ {"img": "img/quien-eres-tu-5.png", "clips": ["ao_hola_mama", "ao_mis_espejuelos", "ao_y_tu_eres"]},
+ {"img": "img/quien-eres-tu-6.png", "clips": ["cq_si_yo_me_llamo"]}
 ]}

@@ -1,15 +1,9 @@
 {"id": "la-bola", "title": "La bola", "pages": [
  {"img": "img/la-bola-1.png", "clips": ["c15_luis_tiene", "c15_carmen_tiene", "c15_coqui_tiene"]},
- {"img": "img/la-bola-2.png", "clips": ["c15_cq_mi"]},
- {"img": "img/la-bola-3.png", "clips": ["c15_l_tira_c_coge"]},
- {"img": "img/la-bola-4.png", "clips": ["c15_c_tira_l_coge"]},
- {"img": "img/la-bola-5.png", "clips": ["c15_ahora_carmen", "c15_cq_dame"]},
- {"img": "img/la-bola-6.png", "clips": ["c15_toma", "c15_cq_gracias"]},
- {"img": "img/la-bola-7.png", "clips": ["c15_cq_coge"]},
- {"img": "img/la-bola-8.png", "clips": ["c15_c_tira_ca_coge"]},
- {"img": "img/la-bola-9.png", "clips": ["c15_quien"]},
- {"img": "img/la-bola-10.png", "clips": ["c15_carmen_no_luis_si"]},
- {"img": "img/la-bola-11.png", "clips": ["c15_ay_canelo", "c15_cq_canelo_dame"]},
- {"img": "img/la-bola-12.png", "clips": ["c15_hay_mas"]},
- {"img": "img/la-bola-13.png", "clips": ["c15_fin1", "c15_fin2", "c15_cq_ay"]}
+ {"img": "img/la-bola-2.png", "clips": ["c15_cq_mi", "c15_l_tira_c_coge", "c15_c_tira_l_coge"]},
+ {"img": "img/la-bola-3.png", "clips": ["c15_ahora_carmen", "c15_cq_dame", "c15_toma"]},
+ {"img": "img/la-bola-4.png", "clips": ["c15_cq_gracias", "c15_cq_coge", "c15_c_tira_ca_coge"]},
+ {"img": "img/la-bola-5.png", "clips": ["c15_quien", "c15_carmen_no_luis_si", "c15_ay_canelo"]},
+ {"img": "img/la-bola-6.png", "clips": ["c15_cq_canelo_dame", "c15_hay_mas", "c15_fin1"]},
+ {"img": "img/la-bola-7.png", "clips": ["c15_fin2", "c15_cq_ay"]}
 ]}

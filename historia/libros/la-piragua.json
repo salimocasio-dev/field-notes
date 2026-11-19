@@ -1,14 +1,7 @@
 {"id": "la-piragua", "title": "La piragua", "pages": [
- {"img": "img/la-piragua-1.png", "clips": ["c21_un_hombre", "c21_una_mujer"]},
- {"img": "img/la-piragua-2.png", "clips": ["c21_hombre_come"]},
- {"img": "img/la-piragua-3.png", "clips": ["c21_mujer_bebe"]},
- {"img": "img/la-piragua-4.png", "clips": ["c21_cq_come"]},
- {"img": "img/la-piragua-5.png", "clips": ["c21_h_gracias"]},
- {"img": "img/la-piragua-6.png", "clips": ["c21_cq_bebe"]},
- {"img": "img/la-piragua-7.png", "clips": ["c21_m_gracias"]},
- {"img": "img/la-piragua-8.png", "clips": ["c21_coqui_come"]},
- {"img": "img/la-piragua-9.png", "clips": ["c21_coqui_bebe"]},
- {"img": "img/la-piragua-10.png", "clips": ["c21_ay"]},
- {"img": "img/la-piragua-11.png", "clips": ["c21_fin"]},
- {"img": "img/la-piragua-12.png", "clips": ["c21_y_pajaro", "c17_cq_no_mas"]}
+ {"img": "img/la-piragua-1.png", "clips": ["c21_un_hombre", "c21_una_mujer", "c21_hombre_come"]},
+ {"img": "img/la-piragua-2.png", "clips": ["c21_mujer_bebe", "c21_cq_come", "c21_h_gracias"]},
+ {"img": "img/la-piragua-3.png", "clips": ["c21_cq_bebe", "c21_m_gracias", "c21_coqui_come"]},
+ {"img": "img/la-piragua-4.png", "clips": ["c21_coqui_bebe", "c21_ay", "c21_fin"]},
+ {"img": "img/la-piragua-5.png", "clips": ["c21_y_pajaro", "c17_cq_no_mas"]}
 ]}

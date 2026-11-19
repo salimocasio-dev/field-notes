@@ -1,12 +1,8 @@
 {"id": "cual", "title": "¿Cuál?", "pages": [
  {"img": "img/cual-1.png", "clips": ["c20_flor", "c20_hay_tres", "c20_un_blanco"]},
- {"img": "img/cual-2.png", "clips": ["c20_un_negro", "c20_un_amarillo"]},
- {"img": "img/cual-3.png", "clips": ["c20_ca_si_blanco"]},
- {"img": "img/cual-4.png", "clips": ["c20_ca_si_negro"]},
- {"img": "img/cual-5.png", "clips": ["c20_dos_pajaros"]},
- {"img": "img/cual-6.png", "clips": ["c20_cq_p_negro"]},
- {"img": "img/cual-7.png", "clips": ["c20_cq_cual", "c20_ca_el_negro"]},
- {"img": "img/cual-8.png", "clips": ["c20_ca_si_amarillo"]},
- {"img": "img/cual-9.png", "clips": ["c20_l_no_canelo"]},
- {"img": "img/cual-10.png", "clips": ["c20_fin", "c20_ca_tu_amigo", "c20_cq_el_amarillo"]}
+ {"img": "img/cual-2.png", "clips": ["c20_un_negro", "c20_un_amarillo", "c20_ca_si_blanco"]},
+ {"img": "img/cual-3.png", "clips": ["c20_ca_si_negro", "c20_dos_pajaros", "c20_cq_p_negro"]},
+ {"img": "img/cual-4.png", "clips": ["c20_cq_cual", "c20_ca_el_negro", "c20_ca_si_amarillo"]},
+ {"img": "img/cual-5.png", "clips": ["c20_l_no_canelo", "c20_fin", "c20_ca_tu_amigo"]},
+ {"img": "img/cual-6.png", "clips": ["c20_cq_el_amarillo"]}
 ]}

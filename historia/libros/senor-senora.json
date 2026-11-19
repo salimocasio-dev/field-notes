@@ -1,14 +1,11 @@
 {"id": "senor-senora", "title": "¡Señor! ¡Señora!", "pages": [
  {"img": "img/senor-senora-1.png", "clips": ["c22_un_senor", "c22_una_senora", "c22_un_joven"]},
  {"img": "img/senor-senora-2.png", "clips": ["c22_perro_viejo", "c22_perro_joven"]},
- {"img": "img/senor-senora-3.png", "clips": ["c22_cq_senor"]},
- {"img": "img/senor-senora-4.png", "clips": ["c22_senor_sombrilla", "c22_cq_dn_senor", "c22_cq_senora"]},
- {"img": "img/senor-senora-5.png", "clips": ["c22_senora_gracias", "c22_cq_dn_senora", "c22_cq_joven"]},
- {"img": "img/senor-senora-6.png", "clips": ["c22_joven_gracias"]},
- {"img": "img/senor-senora-7.png", "clips": ["c22_senora_gracias_coqui"]},
- {"img": "img/senor-senora-8.png", "clips": ["c22_joven_corre", "c22_viejo_no_corre"]},
- {"img": "img/senor-senora-9.png", "clips": ["c22_viejo_camina"]},
- {"img": "img/senor-senora-10.png", "clips": ["c22_ay"]},
- {"img": "img/senor-senora-11.png", "clips": ["c22_l_senor", "c22_donde"]},
- {"img": "img/senor-senora-12.png", "clips": ["c22_fin", "c22_cq_adios"]}
+ {"img": "img/senor-senora-3.png", "clips": ["c22_cq_senor", "c22_senor_sombrilla", "c22_cq_dn_senor"]},
+ {"img": "img/senor-senora-4.png", "clips": ["c22_cq_senora", "c22_senora_gracias", "c22_cq_dn_senora"]},
+ {"img": "img/senor-senora-5.png", "clips": ["c22_cq_joven", "c22_joven_gracias"]},
+ {"img": "img/senor-senora-6.png", "clips": ["c22_senora_gracias_coqui", "c22_joven_corre", "c22_viejo_no_corre"]},
+ {"img": "img/senor-senora-7.png", "clips": ["c22_viejo_camina", "c22_ay", "c22_l_senor"]},
+ {"img": "img/senor-senora-8.png", "clips": ["c22_donde"]},
+ {"img": "img/senor-senora-9.png", "clips": ["c22_fin", "c22_cq_adios"]}
 ]}

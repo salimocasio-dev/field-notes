@@ -7,7 +7,7 @@
   --fast   speed of the machine play (default 8; the pictures do not depend on it)
   --sheets a contact sheet per book (the page picture, its lines under it) into DIR
   --check  only checks the books already written (counts, audio, left-out clips, pictures)
-  --no-hud takes the scenes' own counters (E.hud) off the pictures too; --icon-bubbles keeps the picture bubbles above the speakers
+  --hud keeps the scenes' own counters (E.hud) in the pictures (off by default); --icon-bubbles keeps the picture bubbles above the speakers
   --solve  finds the draws a story's "leer" list was written for (see DRAWS) and prints them; writes nothing
 
 It writes historia/libros/<story id>.json = {"id","title","pages":[{"img":"img/<id>-<n>.png","clips":[...]}]}
@@ -30,9 +30,11 @@ HOW A BOOK IS MADE (all of it mechanical; nothing is read by a person)
    an elige takes its first option. Clips the walk does not walk (said answers, praise) are not added.
 3. Left out: a clip that is the question line ("line") of any ask, decide or elige of the story (all values of its $ variables); the engine's
    generic clips (GENERIC below); a clip already used earlier in the book.
-4. Pages: at most three consecutive kept lines; a new page whenever a scene act (any E.acts call) ran in the play between two kept lines.
-   (Camera moves, {set} and the touches themselves do not count: BREAK_ON.)
+4. Pages: at most three consecutive kept lines. A new page when the camera moved in the play between two kept lines (a camGo that really
+   moved it), or when the canvas saved at the start of the next kept line differs from the page's picture in more than PAGE_DIFF (10%) of its
+   pixels (a pixel differs when any of its colours does). Scene acts, {set} and touches do not break a page by themselves.
 5. The picture of a page is the canvas saved when its first line started.
+   The routines (haz) get no book: nothing is left of them once their question lines are out. They are skipped (SKIP_KINDS).
 6. OVERRIDES: per story, later fixes for what the reviewers flag; never edit the JSON by hand. Each entry is one of
      {"drop": clip}                     leave the clip out of the book
      {"move": clip, "after": other}     put the clip right after another one (or "after": null for the very first place)
@@ -51,9 +53,11 @@ BASE = f"http://127.0.0.1:{PORT}/historia/index.html"
 CHROME = "/usr/bin/google-chrome"
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
 
-# What ends a page (besides the limit of three): a scene act. Names in this set are the kinds of event that break a page ("act" = any E.acts call).
-# Other kinds the log also holds, for a reader who wants to see what a stricter rule would do: "cam", "set". Not in the default.
-BREAK_ON = {"act"}
+# What ends a page besides the limit of three: the camera moving between two lines, or the picture changing: the canvas at the start of the next
+# line differs from the page's picture in more than this share of its pixels.
+PAGE_DIFF = 0.10
+# Kinds of story that get no book (the routines: every line they have is a question line).
+SKIP_KINDS = {"haz"}
 
 # The engine's generic clips (found in historia/juego.js): the praise (bien(): S.bien, a step's "bien", else "muy_bien"), "Ahora tú." (the
 # speaking turns), and the Haz esto reply to a wrong touch ("hz_no_" + what was touched: "No. Esa es la puerta."). The touch names (S.names:
@@ -64,9 +68,9 @@ GENERIC_PREFIX = ("hz_no_",)
 
 # What the picture leaves out of the canvas besides the sign, the answer bubbles and the star effects (see 1 above).
 # The picture bubbles above a speaker (the hand, the heart, the ?, the faces) are speaker markers: a page holds up to three lines, so they are off.
-# The scene's own counters (frog and bird tallies, the card of what is asked: E.hud) are part of the scene canvas and stay; --no-hud takes them off.
+# The scene's own counters (frog and bird tallies, the card of what is asked: E.hud) are off too; --hud keeps them.
 HIDE_ICON_BUBBLES = True
-HIDE_HUD = False
+HIDE_HUD = True
 
 # Per-story fixes (see 6 above). Empty for now.
 OVERRIDES = {}
@@ -197,7 +201,8 @@ HOOK = r"""(cfg)=>{
    if(mark&&mark===id){src='line';mark=null;}
    else if(leads&&leads.includes(id)){src='lead';leads.splice(leads.indexOf(id),1);}
    else if(window.__q&&window.__q===id){src='q';window.__q=null;}
-   ev.push({k:'say',id,src,img:shot()});return _say.apply(this,arguments);};
+   ev.push({k:'say',id,src,img:shot(),cam:cam.map(v=>Math.round(v*10)/10)});return _say.apply(this,arguments);};
+ const _cg=camGo;camGo=function(k,n){if(!at(k))ev.push({k:'camera',to:k});return _cg.apply(this,arguments);};
  const _paso=paso;paso=function(st){
    if(st&&typeof st==='object'&&!st.act){
      if(st.say){mark=sub(st.say);}
@@ -310,19 +315,28 @@ def overrides(sid, lst):
     return lst, pic, brk, join
 
 
-def breaks(e):
-    return (e["k"] == "act" and "act" in BREAK_ON) or (e["k"] == "step" and e["t"] in BREAK_ON)
+def moved_pixels(a, b):
+    """The share of pixels (0..1) that differ between two pictures (data URLs): a pixel differs when any of its colours does."""
+    import base64
+    from PIL import Image
+    import numpy as np
+    A, B = (np.asarray(Image.open(io.BytesIO(base64.b64decode(u.split(",", 1)[1]))).convert("RGB")) for u in (a, b))
+    return float((A != B).any(axis=2).mean())
 
 
 def paginate(sid, lst, ev, pic, brk, join):
-    """Pages of at most three consecutive lines, a new page where a scene act ran between two lines. -> [{"first": event index, "clips": [...], "pic": event index}]"""
+    """Pages of at most three consecutive lines. A new page where the camera moved between two lines, or where the canvas at the start of a line
+    differs from the page's picture in more than PAGE_DIFF of its pixels. -> [{"first": event index, "clips": [...], "pic": event index}]"""
     pages = []
     ev_of = {c: n for c, n, _ in lst}
     for k, (c, n, _) in enumerate(lst):
         new = not pages or len(pages[-1]["clips"]) >= 3 or c in brk
         if not new and c not in join:
             prev = lst[k - 1][1]
-            if any(breaks(e) for e in ev[prev + 1:n]):
+            lo, hi = sorted((prev, n))
+            if any(e["k"] == "camera" for e in ev[lo + 1:hi]) or ev[prev].get("cam") != ev[n].get("cam"):
+                new = True
+            elif moved_pixels(ev[pages[-1]["pic"]]["img"], ev[n]["img"]) > PAGE_DIFF:
                 new = True
         if new:
             at = ev_of[pic[c]] if c in pic else n
@@ -330,16 +344,6 @@ def paginate(sid, lst, ev, pic, brk, join):
         else:
             pages[-1]["clips"].append(c)
     return pages
-
-
-def stats_more(lst, ev, pages):
-    """What a stricter rule would do (information only): pages that hold a camera move or a {set} between two lines, and acts per page."""
-    inner = 0
-    for p in pages:
-        ns = [ev_n for c, ev_n, _ in lst if c in p["clips"]]
-        if len(ns) > 1 and any(e["k"] == "step" and e["t"] in ("cam", "set") for e in ev[ns[0] + 1:ns[-1]]):
-            inner += 1
-    return inner
 
 
 def build(sid, res):
@@ -356,7 +360,7 @@ def build(sid, res):
         if not u:
             raise Stop("no picture could be saved at the start of " + p["clips"][0])
         imgs.append(__import__("base64").b64decode(u.split(",", 1)[1]))
-    info = {"empty": not pages, "left_out": why, "order_flags": [c for c, n, f in lst if f == "order"], "pages_with_cam_or_set": stats_more(lst, ev, pages)}
+    info = {"empty": not pages, "left_out": why, "order_flags": [c for c, n, f in lst if f == "order"]}
     # the lead question check: a lead line that asks something and is not a question line of the story is reported (none exist now)
     Q = question_clips(T)
     for st in all_steps(T):
@@ -506,12 +510,12 @@ async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="*"); ap.add_argument("--jobs", type=int, default=6); ap.add_argument("--fast", default="8")
     ap.add_argument("--sheets"); ap.add_argument("--check", action="store_true"); ap.add_argument("--solve", action="store_true")
-    ap.add_argument("--no-hud", action="store_true"); ap.add_argument("--icon-bubbles", action="store_true")
+    ap.add_argument("--hud", action="store_true"); ap.add_argument("--icon-bubbles", action="store_true")
     a = ap.parse_args()
     global HIDE_HUD, HIDE_ICON_BUBBLES
-    HIDE_HUD = HIDE_HUD or a.no_hud; HIDE_ICON_BUBBLES = HIDE_ICON_BUBBLES and not a.icon_bubbles
-    cs, C = course(); allids = [s for s, _, _ in cs]
-    ids = a.ids or allids
+    HIDE_HUD = HIDE_HUD and not a.hud; HIDE_ICON_BUBBLES = HIDE_ICON_BUBBLES and not a.icon_bubbles
+    cs, C = course(); allids = [s for s, _, _ in cs]; skipped = {s for s, k, _ in cs if k in SKIP_KINDS}
+    ids = [i for i in (a.ids or allids) if i not in skipped]
     for i in ids:
         if i not in allids:
             sys.exit(f"{i} is not a story of curso.js")
@@ -569,7 +573,7 @@ async def main():
         for inf in infos.values():
             for c, w in inf["left_out"]:
                 lo[w] = lo.get(w, 0) + 1
-        print("INFO left out:", json.dumps(lo), "| pages that hold a camera move or a {set} between two of their lines:", sum(i["pages_with_cam_or_set"] for i in infos.values()))
+        print("INFO left out:", json.dumps(lo))
     print("TOTAL", json.dumps(tot)); [print("BAD", b) for b in bad]
     sys.exit(1 if (bad or stops) else 0)
 

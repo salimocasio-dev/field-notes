@@ -1,14 +1,7 @@
 {"id": "d-la-bola", "title": "La bola", "pages": [
- {"img": "img/d-la-bola-1.png", "clips": ["dl01", "dl02"]},
- {"img": "img/d-la-bola-2.png", "clips": ["dl03"]},
- {"img": "img/d-la-bola-3.png", "clips": ["dl04"]},
- {"img": "img/d-la-bola-4.png", "clips": ["dl05"]},
- {"img": "img/d-la-bola-5.png", "clips": ["dl06"]},
- {"img": "img/d-la-bola-6.png", "clips": ["dl07"]},
- {"img": "img/d-la-bola-7.png", "clips": ["dl08"]},
- {"img": "img/d-la-bola-8.png", "clips": ["dl09"]},
- {"img": "img/d-la-bola-9.png", "clips": ["dl10", "dl11"]},
- {"img": "img/d-la-bola-10.png", "clips": ["dl12"]},
- {"img": "img/d-la-bola-11.png", "clips": ["dl13"]},
- {"img": "img/d-la-bola-12.png", "clips": ["dl14"]}
+ {"img": "img/d-la-bola-1.png", "clips": ["dl01", "dl02", "dl03"]},
+ {"img": "img/d-la-bola-2.png", "clips": ["dl04", "dl05", "dl06"]},
+ {"img": "img/d-la-bola-3.png", "clips": ["dl07", "dl08", "dl09"]},
+ {"img": "img/d-la-bola-4.png", "clips": ["dl10", "dl11", "dl12"]},
+ {"img": "img/d-la-bola-5.png", "clips": ["dl13", "dl14"]}
 ]}

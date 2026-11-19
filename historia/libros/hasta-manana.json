@@ -1,12 +1,7 @@
 {"id": "hasta-manana", "title": "Hasta mañana", "pages": [
  {"img": "img/hasta-manana-1.png", "clips": ["p_mira_el_sol"]},
- {"img": "img/hasta-manana-2.png", "clips": ["p_cq_vamos"]},
- {"img": "img/hasta-manana-3.png", "clips": ["p_cq_hm_abuela"]},
- {"img": "img/hasta-manana-4.png", "clips": ["p_mama_hm_coqui"]},
- {"img": "img/hasta-manana-5.png", "clips": ["p_papa_hm"]},
- {"img": "img/hasta-manana-6.png", "clips": ["p_cq_hm"]},
- {"img": "img/hasta-manana-7.png", "clips": ["p_carmen_vamos_coqui"]},
- {"img": "img/hasta-manana-8.png", "clips": ["p_cq_gracias_abuelo"]},
- {"img": "img/hasta-manana-9.png", "clips": ["p_ao_de_nada"]},
- {"img": "img/hasta-manana-10.png", "clips": ["p_familia_adios_hm", "p_cq_adios_hm"]}
+ {"img": "img/hasta-manana-2.png", "clips": ["p_cq_vamos", "p_cq_hm_abuela", "p_mama_hm_coqui"]},
+ {"img": "img/hasta-manana-3.png", "clips": ["p_papa_hm", "p_cq_hm", "p_carmen_vamos_coqui"]},
+ {"img": "img/hasta-manana-4.png", "clips": ["p_cq_gracias_abuelo", "p_ao_de_nada"]},
+ {"img": "img/hasta-manana-5.png", "clips": ["p_familia_adios_hm", "p_cq_adios_hm"]}
 ]}

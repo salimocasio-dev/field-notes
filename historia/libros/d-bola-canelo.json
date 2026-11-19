@@ -1,12 +1,7 @@
 {"id": "d-bola-canelo", "title": "La bola de Canelo", "pages": [
- {"img": "img/d-bola-canelo-1.png", "clips": ["qb01", "qb02"]},
- {"img": "img/d-bola-canelo-2.png", "clips": ["qb03", "qb04"]},
- {"img": "img/d-bola-canelo-3.png", "clips": ["qb05"]},
- {"img": "img/d-bola-canelo-4.png", "clips": ["qb06", "qb07"]},
- {"img": "img/d-bola-canelo-5.png", "clips": ["qb08", "qb09"]},
- {"img": "img/d-bola-canelo-6.png", "clips": ["qb10"]},
- {"img": "img/d-bola-canelo-7.png", "clips": ["qb11"]},
- {"img": "img/d-bola-canelo-8.png", "clips": ["qb12"]},
- {"img": "img/d-bola-canelo-9.png", "clips": ["qb13", "qb14"]},
- {"img": "img/d-bola-canelo-10.png", "clips": ["qb15"]}
+ {"img": "img/d-bola-canelo-1.png", "clips": ["qb01", "qb02", "qb03"]},
+ {"img": "img/d-bola-canelo-2.png", "clips": ["qb04", "qb05", "qb06"]},
+ {"img": "img/d-bola-canelo-3.png", "clips": ["qb07", "qb08", "qb09"]},
+ {"img": "img/d-bola-canelo-4.png", "clips": ["qb10", "qb11", "qb12"]},
+ {"img": "img/d-bola-canelo-5.png", "clips": ["qb13", "qb14", "qb15"]}
 ]}

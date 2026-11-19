@@ -1,13 +1,7 @@
 {"id": "uno-dos-tres", "title": "Uno, dos, tres", "pages": [
  {"img": "img/uno-dos-tres-1.png", "clips": ["c12_parque", "c12_luis_carmen", "c12_perro_abuela"]},
- {"img": "img/uno-dos-tres-2.png", "clips": ["c12_se_llama"]},
- {"img": "img/uno-dos-tres-3.png", "clips": ["c12_cq_hola"]},
- {"img": "img/uno-dos-tres-4.png", "clips": ["c12_vamos_jugar"]},
- {"img": "img/uno-dos-tres-5.png", "clips": ["c12_coqui_camina"]},
- {"img": "img/uno-dos-tres-6.png", "clips": ["c12_coqui_corre"]},
- {"img": "img/uno-dos-tres-7.png", "clips": ["c12_coqui_espera"]},
- {"img": "img/uno-dos-tres-8.png", "clips": ["c12_ahora_si"]},
- {"img": "img/uno-dos-tres-9.png", "clips": ["c12_no_canelo"]},
- {"img": "img/uno-dos-tres-10.png", "clips": ["c12_ven"]},
- {"img": "img/uno-dos-tres-11.png", "clips": ["c12_juega_parque", "c12_cq_uno"]}
+ {"img": "img/uno-dos-tres-2.png", "clips": ["c12_se_llama", "c12_cq_hola", "c12_vamos_jugar"]},
+ {"img": "img/uno-dos-tres-3.png", "clips": ["c12_coqui_camina", "c12_coqui_corre", "c12_coqui_espera"]},
+ {"img": "img/uno-dos-tres-4.png", "clips": ["c12_ahora_si", "c12_no_canelo", "c12_ven"]},
+ {"img": "img/uno-dos-tres-5.png", "clips": ["c12_juega_parque", "c12_cq_uno"]}
 ]}

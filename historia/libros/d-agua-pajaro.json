@@ -1,14 +1,8 @@
 {"id": "d-agua-pajaro", "title": "Agua para el pájaro", "pages": [
- {"img": "img/d-agua-pajaro-1.png", "clips": ["da01"]},
- {"img": "img/d-agua-pajaro-2.png", "clips": ["da02"]},
- {"img": "img/d-agua-pajaro-3.png", "clips": ["da03"]},
- {"img": "img/d-agua-pajaro-4.png", "clips": ["da04"]},
- {"img": "img/d-agua-pajaro-5.png", "clips": ["da05"]},
- {"img": "img/d-agua-pajaro-6.png", "clips": ["da06"]},
- {"img": "img/d-agua-pajaro-7.png", "clips": ["da07", "da08", "da09"]},
- {"img": "img/d-agua-pajaro-8.png", "clips": ["da10", "da11"]},
- {"img": "img/d-agua-pajaro-9.png", "clips": ["da12", "da13"]},
- {"img": "img/d-agua-pajaro-10.png", "clips": ["da14"]},
- {"img": "img/d-agua-pajaro-11.png", "clips": ["da15"]},
- {"img": "img/d-agua-pajaro-12.png", "clips": ["da16"]}
+ {"img": "img/d-agua-pajaro-1.png", "clips": ["da01", "da02", "da03"]},
+ {"img": "img/d-agua-pajaro-2.png", "clips": ["da04", "da05", "da06"]},
+ {"img": "img/d-agua-pajaro-3.png", "clips": ["da07", "da08", "da09"]},
+ {"img": "img/d-agua-pajaro-4.png", "clips": ["da10", "da11", "da12"]},
+ {"img": "img/d-agua-pajaro-5.png", "clips": ["da13", "da14", "da15"]},
+ {"img": "img/d-agua-pajaro-6.png", "clips": ["da16"]}
 ]}

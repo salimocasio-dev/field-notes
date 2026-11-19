@@ -1,14 +1,7 @@
 {"id": "los-botes", "title": "Los botes", "pages": [
  {"img": "img/los-botes-1.png", "clips": ["c19_hay_tres", "c19_un_rojo", "c19_un_azul"]},
- {"img": "img/los-botes-2.png", "clips": ["c19_un_verde"]},
- {"img": "img/los-botes-3.png", "clips": ["c19_luis_azul"]},
- {"img": "img/los-botes-4.png", "clips": ["c19_luis_verde"]},
- {"img": "img/los-botes-5.png", "clips": ["c19_alla_van3"]},
- {"img": "img/los-botes-6.png", "clips": ["c19_cq_rojo"]},
- {"img": "img/los-botes-7.png", "clips": ["c19_l_pez_bote_rojo"]},
- {"img": "img/los-botes-8.png", "clips": ["c19_cq_verde"]},
- {"img": "img/los-botes-9.png", "clips": ["c19_l_pez_bote_verde"]},
- {"img": "img/los-botes-10.png", "clips": ["c19_alla_van"]},
- {"img": "img/los-botes-11.png", "clips": ["c19_ay_rojo"]},
- {"img": "img/los-botes-12.png", "clips": ["c19_fin", "c19_cq_aqui"]}
+ {"img": "img/los-botes-2.png", "clips": ["c19_un_verde", "c19_luis_azul", "c19_luis_verde"]},
+ {"img": "img/los-botes-3.png", "clips": ["c19_alla_van3", "c19_cq_rojo", "c19_l_pez_bote_rojo"]},
+ {"img": "img/los-botes-4.png", "clips": ["c19_cq_verde", "c19_l_pez_bote_verde", "c19_alla_van"]},
+ {"img": "img/los-botes-5.png", "clips": ["c19_ay_rojo", "c19_fin", "c19_cq_aqui"]}
 ]}

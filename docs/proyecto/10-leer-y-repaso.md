@@ -35,8 +35,9 @@ His ask: "Reading and flash card parts of the app need design and feature work. 
 ### What goes in a book (the text)
 - Built by a tool from the story file, mechanically: the story's lines in play order (its "leer" list if it has one, else the walk of beats and final as today, without placeholder hacks: a $ variable takes the value the all-right first draw gives it).
 - Left out: every clip used as the question line of an ask, decide or elige; the engine's generic clips (praise, "Ahora tú.", "Mira.", the sign lines); a clip already used earlier in the book.
-- Pages: consecutive kept lines, at most three, a new page whenever the scene changes (a scene act runs) between two lines.
-- Picture of a page: the scene canvas captured (no UI, no bubbles, no captions) at the moment the page's first line starts in an all-right play of the first draw. Saved as PNG at the art's own size, in historia/libros/img/. The book is historia/libros/<story id>.json: pages of {img, clips}.
+- Pages: consecutive kept lines, at most three; a new page when the camera moves, or when the canvas at the next line's start differs from the page's picture in more than 10% of its pixels (decided Nov 19: "a scene act runs" broke three pages in four into one line).
+- Picture of a page: the scene canvas captured (no UI, no bubbles, no captions, no HUD counters) at the moment the page's first line starts in an all-right play. "First draw" = each draw's first option, except where a story's own "leer" list needs another draw (the tool's DRAWS table). Saved as PNG at the art's own size, in historia/libros/img/. The book is historia/libros/<story id>.json: pages of {img, clips}.
+- Routines (Haz esto) get no book: all their lines are commands. On the shelf they have Listen only.
 - A fresh beginner reviewer reads every book (Spanish text only, as a beginner who has played the story) and flags pages that read wrong (a line out of place, a picture that does not match its lines). Fixes go into a per-story override list in the tool, never by hand in the JSON.
 
 ## Palabras: every word he has met, and how it stands
