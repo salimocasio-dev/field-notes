@@ -242,6 +242,16 @@ frente-set.html is one state of El frente: door open, shutters open, a porch lam
 
 **This is design.** It needs a session that renders and looks. If the orchestrator cannot settle a look question from pages 03, 09 and 11-pixel-engine, it asks Salim with two pictures side by side, before order 14.
 
+**Result (Nov 19): done, merged.** Designed by an Opus agent in three rounds; the orchestrator looked at every round's pictures; three fresh readers saw them with no words.
+- `docs/proyecto/pixel/frente-set.html` (states from the address), `set-kit.js` (the helpers the set added), `frente-sheet.json` (made and checked by `frente-sheet-make.js`), `frente-preview.html` (a dev tool: the old sprite layer on the new set, through the sheet).
+- State parameters (the builder's `setKey`): `door` shut, half, open; `win` shut, open; `lights` 0, 1; `sky` day, storm, storm2, rain, dusk, sunset; `hide` 0, 1; `rustle` none, palma, casa, todo with `side`. 25 baked states, all in `coqui/ref/pp/frente/`.
+- In the set: the house, door, window, big palm, small palm, birdhouse, sun. In the sprite layer: abuela, the frog, the bird, the cloud. The cake stays in the HUD. No porch lamp.
+- Views: `wide`, `casa` and story 3's view at zoom 1; `puerta`, `ventana`, `cuadro` at zoom 2, as in the old game (see page 12 section 5, changed the same day). Each review and level picture has its own centre and zoom in the sheet.
+- What a learner would notice against the old picture: the 30° view; a smaller, narrower house (so that story 3's view holds both palms, the house and the birdhouse); storm, rain, dusk and sunset are baked into the set and characters are no longer dimmed; an open door shows a room (floor and back wall), lit when the lights are on; the potted plant and the old sky clouds are gone; a change of zoom cuts.
+- Readers: every review pair told apart at a glance after round 3 (the "cierra" picture went back to the old idea: a wide door leaf across half the doorway, hiding half of abuela); all eight story sequences followed; the 25 states sorted correctly by door, window, lights, time of day and birdhouse. Their remaining doubts are in the pairs' own design, the same as in the old game (for example sí / no shown by arrows; hola and adiós differing in four things at once).
+- Bake: 46 to 84 ms per state in headless Chrome once warm; a first bake in a fresh page is slower (about 130 to 240 ms). The Dart number is order 14's to measure.
+- Not solved: an open door shows no door leaf (with this camera a leaf opened inward is hidden behind the wall); the frog peeking from behind the half door loses 2 px on his right.
+
 ---
 
 ## Order 10. The Pixel Plays engine in Dart (builder, coqui_pixel)
@@ -398,6 +408,17 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 
 **Done when:** a dev screen plays ten lines back to back with gaps within 60 ms of the pauses asked for; a unit test shows every `SFX` name reaches the audio layer with the old code's numbers; `flutter build apk --debug` passes. How it sounds is Salim's to judge at Gate A.
 
+**Result (Nov 19): done, merged to main.** Built by an Opus builder; the tests and the dev check were run again by the orchestrator.
+- **Started before the phones reported**, on order 00's desktop result (the plugin leaves about 215 ms between lines, Web Audio about 6 ms). On the web everything plays through Web Audio by interop, speech goes straight to the browser's recogniser, storage is localStorage. `just_audio`, `speech_to_text`, `shared_preferences` are used only in phone builds. The iPhone audio session type is one constant, `iosAudioSessionType`, null until the tester's result.
+- The dev check (`node tool/dev_check.mjs` in the package): ten lines back to back, every gap within 10.3 ms of the pause asked for, measured on the output; all 18 SFX fire and make sound; a recognition attempt ends cleanly at 6 s in headless Chrome.
+- 97 tests on vm, 72 in Chrome. Every SFX name's calls equal juego.js's exactly, from juego.js run in node on a recording audio context (`node tool/juego_sonido.mjs`). In phone builds each tone is rendered once to PCM by the Web Audio formulas; against Chrome's own rendering the difference is under 1%.
+- `Coquí Android` run 44569491685: the apk built and installed twice. The app does not use the package yet, so this proves the plugins link, not the phone code.
+- Old keys: `coqui.palabras.v1` is `storage.progress`; `coqui.juego.ult` and `.mem` are `space('juego')` keys `ult` and `mem`; `coqui.leer.tam` is `space('leer')` key `tam`. A space is the prefix `coqui.<name>.`. Nothing is deleted.
+- `Haptics.unlock()` does nothing (the UI plan's unlock pattern is not built). `AppInfo.installed` is true in a phone build. `msToSound` is null when no speech started (callers use `?? 0`). `stop()` stops clips only.
+- For order 15: `preload` cannot say which clips failed, and juego.js falls back to timed lines when a clip is missing; the contract needs a way to tell.
+- Old quirks ported: a tone bypasses the mute button once scheduled; the clip time limit uses the clip's length plus 1 s.
+- Only a real phone can show: how the tones sound through the plugin, speech_to_text on Android and iOS, the iPhone guards, haptics.
+
 ## Order 19. The call connection (builder, coqui_platform)
 
 **From:** historia/llamada.js (`precarga`, `startSession` and its options, the handlers, `installStub`); notas/llamada-decisiones-1.md; page 05, "How the page and Danny talk".
@@ -413,6 +434,15 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 **Build:** colour and type tokens with v=39's exact values; the buttons; the bottom sheet; the tab bar with the raised Mapa disc; the lesson frame; the Ear and Mouth meters; the word card; the fade under lists; `PixelView` as page 12 section 3. A gallery dev screen.
 
 **Done when:** a fresh reader compares the gallery with `ref/pantallas/` and finds no difference a learner would notice, or lists them. `PixelView` tests: a 196 × 216 picture in a 412-wide screen at pixel ratio 2.625 is drawn at 5 device pixels a pixel, unsmoothed, on whole device pixels; it repaints when its `repaint` fires and not otherwise.
+
+**Result (Nov 19): built and merged to main; the fresh reader's comparison is running.** Built by a Sonnet builder; `test_all.sh` run again by the orchestrator on merged main.
+- 137 tokens (40 colours, 49 metrics, 6 shadows, 42 text styles), each with its CSS file and line. 61 tests. A gallery (`tool/dev_main.dart`, 17 sections) and `tool/shots.mjs` to capture it on both phone sizes.
+- Against the old screenshots, in device pixels: most edges identical (chips, the Mapa disc, word cards, stat cards, the lesson dashes and start disc, sheet title); the rest within 1 to 2 px.
+- `PixelView`: 196 × 216 in 412 at 2.625 is 980 × 1080 device pixels, every device pixel equal to its picture pixel; it repaints only on its tick.
+- Text is the platform default (Roboto on the web and Android); the old screenshots were taken in Inter, so widths differ a little. No rule in the old CSS uses Pixelify Sans; a style helper for it exists with ligatures off.
+- **Decided:** a word card's picture is drawn at a whole-number scale, centred on the card's white, never stretched (v=39 stretched it by about 2.47). It is 392 × 208 device pixels on both reference phones, with about 16 CSS px of card showing each side on the Android size and 20 on the iPhone size.
+- The tab bar takes its own five items (`CoquiTabs`); `FeatureTab.icon` cannot carry v=39's drawn icons and is not used. The shell maps by tab id.
+- There is one light look and the dark lesson look; the old CSS has no dark mode.
 
 ## Orders 21 to 25. The features (builders, one each)
 
