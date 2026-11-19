@@ -28,10 +28,6 @@ import 'scripted_call.dart';
 import 'speaking_seeds.dart';
 import 'voice_fixture.dart';
 
-/// What the stand-in for "calls come later on this build" says in the dev entry and the tests: the v=34 line of
-/// ui-decisiones-3.md. The wording is not settled (order 24, "STOP"); this is only so the card can be seen.
-const devCallsLater = 'Calls with Danny open later.';
-
 /// The title of the stand-in entry to the voice test.
 const devVoiceTestEntry = 'Voice test';
 
@@ -244,7 +240,6 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
       reduceMotion: q['reduce'] == '1',
     );
     module = SpeakingModule(
-      callsLater: devCallsLater,
       voiceTest: voiceFixture,
       voiceTestEntry: q['entry'] == '1' ? devVoiceTestEntry : null,
     );

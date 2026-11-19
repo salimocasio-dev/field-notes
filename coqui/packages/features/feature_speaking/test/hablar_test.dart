@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'support/call_rig.dart';
-import 'support/dev_app.dart' show devCallsLater, devVoiceTestEntry;
+import 'support/dev_app.dart' show devVoiceTestEntry;
 import 'support/scripted_call.dart';
 import 'support/world.dart';
 
@@ -207,31 +207,57 @@ void main() {
 
   group('hablar: calls come later on this build', () {
     testWidgets(
-      'call.available false: the open card is grey, has no disc and does not go to the call; it says the line it is given',
+      'call.available false: the open card is grey, has no disc and does not go to the call; by default it says "Calls with Danny open later."',
       (tester) async {
         Phone.android.use(tester);
         final w = await World.create(seed: 'todo', callAvailable: false);
-        await tester.pumpWidget(tab(w, callsLater: devCallsLater));
+        await tester.pumpWidget(tab(w));
         expect(find.byType(PlayButton), findsNothing);
-        expect(find.text(devCallsLater), findsOneWidget);
+        expect(find.text('Calls with Danny open later.'), findsOneWidget);
         expect(find.text('La casa · about 5 min'), findsNothing);
-        await tester.tap(find.text(devCallsLater));
+        await tester.tap(find.text('Calls with Danny open later.'));
         await tester.pump();
         expect(w.nav.routes, isEmpty);
+        expect(find.text('Call Danny'), findsNWidgets(10));
         w.dispose();
       },
     );
 
-    testWidgets('with no line given the card says nothing under its title', (
+    testWidgets('the module\'s `callsLater` overrides the default line', (
       tester,
     ) async {
       Phone.android.use(tester);
       final w = await World.create(seed: 'todo', callAvailable: false);
-      await tester.pumpWidget(tab(w));
-      expect(find.byType(PlayButton), findsNothing);
-      expect(find.text('Call Danny'), findsNWidgets(10));
+      await tester.pumpWidget(tab(w, callsLater: 'Calls are coming.'));
+      expect(find.text('Calls are coming.'), findsOneWidget);
+      expect(find.text('Calls with Danny open later.'), findsNothing);
       w.dispose();
     });
+
+    testWidgets(
+      'an empty `callsLater` leaves the card with nothing under its title',
+      (tester) async {
+        Phone.android.use(tester);
+        final w = await World.create(seed: 'todo', callAvailable: false);
+        await tester.pumpWidget(tab(w, callsLater: ''));
+        expect(find.byType(PlayButton), findsNothing);
+        expect(find.text('Calls with Danny open later.'), findsNothing);
+        expect(find.text('Call Danny'), findsNWidgets(10));
+        w.dispose();
+      },
+    );
+
+    testWidgets(
+      'the line is only on the card of a call this build cannot place',
+      (tester) async {
+        Phone.android.use(tester);
+        final w = await World.create(seed: 'todo'); // the call can be placed
+        await tester.pumpWidget(tab(w));
+        expect(find.text('Calls with Danny open later.'), findsNothing);
+        expect(find.byType(PlayButton), findsWidgets);
+        w.dispose();
+      },
+    );
 
     testWidgets(
       'the voice library is asked for only when an open card is shown (the old precarga)',

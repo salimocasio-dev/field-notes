@@ -9,9 +9,11 @@ import 'package:material_ui/material_ui.dart';
 /// feature_speaking's module: the Hablar tab (id `speak`), the call with Danny (`CallRoute`) and the voice test
 /// (`VoiceTestRoute`).
 ///
-/// Three things v=39 does not settle are given to the module by whoever builds it, and are left out when not given
-/// (order 24, "STOP": see coqui/requests/24-*):
-/// - [callsLater]: the grey line on a call card when `call.available` is false;
+/// The grey line on a call card when `call.available` is false is "Calls with Danny open later." unless
+/// [callsLater] says otherwise.
+///
+/// Two things v=39 does not settle are given to the module by whoever builds it, and are left out when not given
+/// (order 24, "STOP": see coqui/requests/24-feature-speaking-needs-coqui-contracts-voice-test-lines.md):
 /// - [voiceTest]: the twelve lines of the voice test and the Spanish words around them (course text, not code); until
 ///   they come from somewhere, `VoiceTestRoute` is not answered;
 /// - [voiceTestEntry]: the title of the entry to the voice test on the Hablar tab; with none there is no entry.
@@ -23,6 +25,7 @@ class SpeakingModule implements FeatureModule {
     this.showSpeechNote = false,
   });
 
+  /// The line a call card shows when the build cannot place a call; null: "Calls with Danny open later.".
   final String? callsLater;
   final VoiceTestContent? voiceTest;
   final String? voiceTestEntry;

@@ -22,8 +22,8 @@ class HablarTab extends StatefulWidget {
   final Services services;
 
   /// The grey line on the card of a call this build cannot place (`call.available` is false): calls come later on
-  /// this build. v=39 has no such line (its build always could), so the words are the caller's; with none the
-  /// card says nothing under its title. (Order 24, STOP: the wording is not settled.)
+  /// this build. With none given it is `CallTexts.callsLater`, "Calls with Danny open later."; a line given here
+  /// (an empty one too) is what the card says.
   final String? callsLater;
 
   /// The title of an entry to the voice test (`nav.go(VoiceTestRoute())`); null: no entry. v=39 links the test
@@ -123,7 +123,7 @@ class _HablarTabState extends State<HablarTab> {
       course: s.course,
       progress: s.progress,
       callsAvailable: () => s.call.available,
-      callsLater: widget.callsLater ?? '',
+      callsLater: widget.callsLater ?? CallTexts.callsLater,
     );
     final open = wordsOpenForSpeaking(s.progress);
     final voiceTest = widget.voiceTestLabel;
