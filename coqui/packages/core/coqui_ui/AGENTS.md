@@ -24,7 +24,28 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
 - `lib/coqui_ui.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
 - Today the public file holds a library comment and nothing else. `fonts/` holds Pixelify Sans, weights 400 and 700, as `.ttf` (converted from `historia/fuentes/`), with its licence `LICENSE-pixelify-sans.txt` beside them. The pubspec declares the family `Pixelify Sans`. Use it only where page 09 allows: signs on the map, never learning content.
-- Since order 02 it holds `PictureRef`, `PictureSource`, `Services`, `FeatureTab`, `FeatureModule` (page 12, section 3). Later it holds `PixelView` and the shared look (tokens, buttons, bottom sheet, tab bar, lesson frame, meters, word card).
+- Since order 02 it holds `PictureRef`, `PictureSource`, `Services`, `FeatureTab`, `FeatureModule` (page 12, section 3).
+- Since order 20 it also holds `PixelView` and the shared look of v=39:
+  - tokens: `CoquiColors`, `CoquiMetrics`, `CoquiShadows`, `CoquiText`, `pixelifyStyle` (ligatures off), `coquiTheme()`; each says the CSS file and line it comes from;
+  - `CoquiIcons`/`CoquiIcon` (the old SVG path data), `CoquiLayout` (media queries, safe area);
+  - buttons: `CoquiButton`, `PlayButton`, `CoquiCloseButton`, `LessonButton`, `LessonButtonRow`, `LessonStartButton`, `LessonIconButton`, `LessonCloseButton`, `LessonSoundButton`, `LessonTextSizeButton`;
+  - `CoquiSheet`, `CoquiSheetLayer`; `CoquiTabBar`, `CoquiTabs`, `MapChips`; `LessonFrame`, `LessonProgressDashes`, `LessonProgressLine`;
+  - `MeterDots`, `SkillMeter`, `EarMouthMeters`, `WordCard`, `WordGrid`;
+  - cards and rows: `TabPage`, `CollapsingColumn`/`Block` (CSS margin collapse), `ScreenTitle`, `SectionTitle`, `KeyLine`, `EyebrowLabel`, `CoquiCard`, `CoquiRow`, `DividedRows`, `ListRow`, `ShelfRow`, `TodayCard`, `StatCard`, `SegmentedPills`, `CoquiSwitch`, `PageDots`, `PictureFrame`;
+  - `ListFade`, `FadingEdges`.
+  All are dumb: values and callbacks, no feature logic. Every number is copied from the old CSS (v=39), never chosen.
+
+## The gallery
+
+`tool/dev_main.dart` shows every token and every widget in each of its states, one section per reference picture of `coqui/ref/pantallas/` (the file is named under each section). The sample words and titles are placeholders; the labels v=39 hard-codes are copied.
+
+```
+cd coqui/packages/core/coqui_ui
+flutter run -d chrome -t tool/dev_main.dart                       # all sections
+flutter run -d chrome -t tool/dev_main.dart --web-launch-url "/?section=palabras"
+flutter build web -t tool/dev_main.dart --no-web-resources-cdn    # the web build
+node tool/shots.mjs --out <dir>      # builds it, serves it, captures every section at 412 x 915, ratio 2.625, and writes <dir>/pairs.json
+```
 
 ## Run and test it alone
 
