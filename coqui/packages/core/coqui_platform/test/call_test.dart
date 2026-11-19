@@ -76,11 +76,12 @@ Future<List<List<Object?>>> _replay(WidgetTester tester, String name) async {
       f = (seen: false);
       log.add([t, 'sendUserMessage', '(fin)']);
       conv!.sendUserMessage('(fin)');
-      if (!endOnGoodbye)
+      if (!endOnGoodbye) {
         Future<void>.delayed(
           const Duration(milliseconds: 15000),
           () => end('cap'),
         );
+      }
     }
     if (e[0] == 'message' &&
         e[1] == 'agent' &&
