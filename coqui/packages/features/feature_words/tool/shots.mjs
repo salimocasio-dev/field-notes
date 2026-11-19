@@ -227,14 +227,20 @@ async function run(page, dev, steps) {
 }
 
 // ---------- the side by side ----------
-// A page of the browser puts pictures side by side; nothing but Playwright is needed.
+// A page of the browser puts pictures side by side; nothing but Playwright is needed. A reference is decoded once
+// (a whole-page reference is 40 000 device pixels tall) and kept for the stretches of the same picture.
 let sbsPage;
+const sbsSeen = new Set();
 async function sideBySide(refFile, mineFile, outFile, { refCrop, mineCrop, label } = {}) {
-  const ref = readFileSync(refFile).toString('base64');
+  const ref = sbsSeen.has(refFile) ? null : readFileSync(refFile).toString('base64');
+  sbsSeen.add(refFile);
   const mine = readFileSync(mineFile).toString('base64');
-  const r = await sbsPage.evaluate(async ({ ref, mine, refCrop, mineCrop, label }) => {
+  const r = await sbsPage.evaluate(async ({ refKey, ref, mine, refCrop, mineCrop, label }) => {
     const load = (b64) => new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = 'data:image/png;base64,' + b64; });
-    const [a, b] = await Promise.all([load(ref), load(mine)]);
+    window.__refs ??= new Map();
+    if (ref !== null) window.__refs.set(refKey, await load(ref));
+    const a = window.__refs.get(refKey);
+    const b = await load(mine);
     const ca = refCrop ?? { y: 0, h: a.height };
     const cb = mineCrop ?? { y: 0, h: b.height };
     const h = Math.max(ca.h, cb.h), cap = 36, gap = 24;
@@ -251,7 +257,7 @@ async function sideBySide(refFile, mineFile, outFile, { refCrop, mineCrop, label
     g.drawImage(a, 0, ca.y, a.width, ca.h, 0, cap, a.width, ca.h);
     g.drawImage(b, 0, cb.y, b.width, cb.h, a.width + gap, cap, b.width, cb.h);
     return c.toDataURL('image/png').split(',')[1];
-  }, { ref, mine, refCrop, mineCrop, label });
+  }, { refKey: refFile, ref, mine, refCrop, mineCrop, label });
   writeFileSync(outFile, Buffer.from(r, 'base64'));
 }
 const pngSize = (file) => {

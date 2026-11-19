@@ -495,6 +495,35 @@ void main() {
       expect(cardOrder(tester), ['uno', 'dos']);
     });
 
+    testWidgets(
+      'while it reads again after a save the page keeps what it showed; and a tab that is gone by then draws nothing and throws nothing',
+      (tester) async {
+        final slow = _SlowStories(
+          places: [
+            place('a', 1, 'Place one', ['s1']),
+          ],
+          stories: {
+            's1': story('S1', focus: ['uno', 'dos']),
+          },
+        );
+        final rig = Rig(course: slow);
+        rig.played('s1');
+        rig.word('uno');
+        await pumpTab(tester, rig);
+        expect(cardOrder(tester), ['uno']);
+        slow.hold = true;
+        rig.word('dos');
+        await tester.pumpAndSettle();
+        expect(cardOrder(tester), [
+          'uno',
+        ], reason: 'the second reading waits for the story file');
+        await tester.pumpWidget(const SizedBox());
+        slow.release();
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      },
+    );
+
     testWidgets('a touch on a card ticks and opens its sheet', (tester) async {
       final rig = Rig();
       await rig.playSampleStories();
