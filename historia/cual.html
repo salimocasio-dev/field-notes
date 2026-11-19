@@ -36,13 +36,18 @@ canvas{display:block;image-rendering:crisp-edges;image-rendering:pixelated;touch
 #fin h1{margin:0;color:var(--ink);font:600 24px/32px var(--sys);text-align:left}
 #fin p{margin:8px 0 0;color:var(--ink2);font:400 16px/24px var(--sys);text-align:left}
 #fin b{color:var(--ink);font-weight:600}
-/* the end of a Repaso: the title at the top, the session's words with their pictures under two headings (18 px), 16 px apart; the list scrolls in the space above the 56 px button and fades out at its edge */
-#fin.lis{inset:0 0 96px 0;padding:16px 16px 24px;justify-content:flex-start;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 16px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 16px),transparent)}
+/* the end of a Repaso: the title, a summary line, and the session's words with their pictures under two headings (18 px) with a grey line each; one block as wide as the grid, centred; the list scrolls in the space above the 56 px button and fades out at both ends; no sound button and no X (the button is the way out) */
+#fin.lis{inset:0 0 96px 0;padding:16px 16px 24px;justify-content:flex-start;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16px,#000 calc(100% - 16px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 16px,#000 calc(100% - 16px),transparent 100%)}
+#fin.lis>*{max-width:var(--gw,480px)}
 #fin h2{margin:24px 0 0;color:var(--ink);font:600 18px/24px var(--sys);text-align:left}
-.gw{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(var(--c,3),minmax(0,1fr));gap:16px}
+#fin p.sub{margin:4px 0 0;color:var(--ink2);font:400 14px/20px var(--sys)}
+.gw{list-style:none;margin:12px 0 0;padding:0;display:grid;grid-template-columns:repeat(var(--c,3),var(--pw,98px));gap:16px;justify-content:center}
 .gw li{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
 .gw canvas{flex:none;border-radius:0;box-shadow:0 0 0 1.5px var(--line)}   /* each picture in the same 1.5 px frame as in the session; scaled by a whole number (cual.js) */
-.gw span{color:var(--ink);font:400 16px/24px var(--sys);overflow-wrap:anywhere}
+#app[data-s=end] #close,#app[data-s=end] #snd{visibility:hidden}
+/* a right answer: a small check badge in the corner of the picture, with the green ring */
+.opt.chk::after{content:"";position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;background:var(--grn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M8 14.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/28px 28px no-repeat;box-shadow:0 0 0 2px #fff}
+.gw span{min-width:0;max-width:100%;color:var(--ink);font:400 16px/24px var(--sys);overflow-wrap:anywhere}
 #foot{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:16px;padding:0 16px 24px;pointer-events:none}
 #foot>*{pointer-events:auto}
 #go{display:flex;flex:none;width:72px;height:72px;margin-bottom:16px;border-radius:50%;background:var(--grn);align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.35)}   /* the start disc: 40 px above the bottom edge */

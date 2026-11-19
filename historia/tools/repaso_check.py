@@ -1,7 +1,7 @@
 """Checks the Repaso session (historia/cual.html, cual.js) by machine; spec: docs/proyecto/10-leer-y-repaso.md, "Repaso (¿Cuál?): the session".
 Needs a local server on the repo root: COQUI_BASE=http://127.0.0.1:8768 python3 historia/tools/repaso_check.py [only-test-name ...]
 It seeds word records into localStorage (due or not by the palabras clock, window.__PAL_NOW) and plays sessions by touching the options (Cual.toca).
-Prints PASS/FAIL per point and exits 1 if any failed. Tests: cap, order, six, early, reask, end, clock, switches."""
+Prints PASS/FAIL per point and exits 1 if any failed. Tests: cap, six, early, dim, reask, reask_order, end, clock, switches."""
 import sys,os,json,asyncio,glob,re,time
 from playwright.async_api import async_playwright
 BASE=os.environ.get("COQUI_BASE","http://127.0.0.1:8765"); DAY=864e5
@@ -71,11 +71,14 @@ async def t_cap(b):
     NOW=int(1.9e12)
     ws,recs=due_recs(14,NOW)
     pg=await newpage(b,seed(recs,NOW)); await open_(pg,"fast=4")
-    lista=await pg.evaluate("Cual.lista"); line=await text_of(pg,"#fin p"); title=await text_of(pg,"#fin h1")
+    lista=await pg.evaluate("Cual.lista"); line=await text_of(pg,"#fin p:last-of-type"); first=await text_of(pg,"#fin p:first-of-type"); title=await text_of(pg,"#fin h1")
     ok("cap: 14 due, the session asks 10",len(lista)==10,len(lista))
     ok("cap: the 10 most overdue, most overdue first",lista==ws[:10],lista)
     ok("cap: the start line is for this session only: 10 words · about 2 min",line=="10 words · about 2 min",repr(line))
     ok("cap: the start screen title is Repaso",title=="Repaso",title)
+    ok("cap: one line under the title says what to do: Listen, then touch the picture that fits.",first=="Listen, then touch the picture that fits.",repr(first))
+    vis=await pg.evaluate("['#close','#snd'].map(s=>getComputedStyle(document.querySelector(s)).visibility)")
+    ok("cap: the X and the sound button show on the start screen",vis==["visible","visible"],vis)
     ok("cap: the progress bar has 10 segments",await pg.evaluate("document.querySelectorAll('#bar .dot').length")==10)
     await start(pg); seen=await drive(pg)
     ok("cap: all 10 asked, once each, none of the 4 waiting",[s["w"] for s in seen]==ws[:10],[s["w"] for s in seen])
@@ -86,7 +89,7 @@ async def t_cap(b):
     ok("cap: no page errors",not pg.errs,pg.errs[:2]); await pg.context.close()
     # fewer due than 10: only those; the line counts them
     ws,recs=due_recs(3,NOW); pg=await newpage(b,seed(recs,NOW)); await open_(pg,"fast=4")
-    ok("cap: 3 due, 3 asked, 3 words · about 1 min",await pg.evaluate("Cual.lista")==ws and await text_of(pg,"#fin p")=="3 words · about 1 min",await text_of(pg,"#fin p")); await pg.context.close()
+    ok("cap: 3 due, 3 asked, 3 words · about 1 min",await pg.evaluate("Cual.lista")==ws and await text_of(pg,"#fin p:last-of-type")=="3 words · about 1 min",await text_of(pg,"#fin p:last-of-type")); await pg.context.close()
     # the order comes from the due times: reverse them
     ws=WORDS[:12]; recs=[rec(w,NOW-(i+1)*3600e3) for i,w in enumerate(ws)]   # the first is the least overdue
     pg=await newpage(b,seed(recs,NOW)); await open_(pg,"fast=4")
@@ -110,7 +113,7 @@ async def t_six(b):
     tt=await pg.evaluate("Cual.tt[0]"); gap1=(tt["rep"]-tt["fin"])/1000
     ok("six: 6 s after the sentence ended it played again (%.2f s)"%gap1,5.9<=gap1<=6.5,gap1)
     ok("six: the sentence was started again (audio)",await pg.evaluate("window.__starts")==n0+1 if await pg.evaluate("Story.voice") else True,await pg.evaluate("[window.__starts,Story.voice]"))
-    during=await pg.evaluate("Cual.pan"); ok("six: while it plays again no picture is shown yet",not any(p["sign"] for p in during))
+    during=await pg.evaluate("Cual.pan"); ok("six: while it plays again no picture is shown yet, and the pictures are at full brightness (a touch counts)",not any(p["sign"] for p in during) and not any(p["dim"] for p in during),during)
     await pg.wait_for_function("Cual.tt[0].auto",timeout=20000); await pg.wait_for_timeout(100)
     tt=await pg.evaluate("Cual.tt[0]"); gap2=(tt["auto"]-tt["repFin"])/1000
     ok("six: 6 s after it ended again the right picture was shown (%.2f s)"%gap2,5.9<=gap2<=6.5,gap2)
@@ -157,7 +160,9 @@ async def t_reask(b):
     NOW=int(1.9e12); ws,recs=due_recs(7,NOW); snaps={}
     pg=await newpage(b,seed(recs,NOW)); await open_(pg,"fast=4"); await start(pg)
     # asks in the queue order: a (miss) b c [a again] d e f (miss, the end) g [f again, wrong]
-    seen=await drive(pg,plan="wrrrrrwrw",limit=300)   # by ask: 0 a wrong, 1 b, 2 c, 3 a* right, 4 d, 5 e, 6 f wrong, 7 g, 8 f* wrong
+    bars=[]
+    async def bar(pg,k,st): bars.append((k,await pg.evaluate("[document.querySelectorAll('#bar .dot').length,document.querySelectorAll('#bar .dot.on').length]")))
+    seen=await drive(pg,plan="wrrrrrwrw",every=bar,limit=300)   # by ask: 0 a wrong, 1 b, 2 c, 3 a* right, 4 d, 5 e, 6 f wrong, 7 g, 8 f* wrong
     cola=[(s["w"],s["re"]) for s in seen]
     a,bw,c,d,e,f,g=ws
     want=[(a,False),(bw,False),(c,False),(a,True),(d,False),(e,False),(f,False),(g,False),(f,True)]
@@ -175,7 +180,9 @@ async def t_reask(b):
     ok("reask: the miss itself was scored once: a n=1, one fall, due in 10 min; f the same",ra_after["ear"]["n"]==1 and ra_after["ear"]["fallos"]==1 and rf_after["ear"]["n"]==1 and rf_after["ear"]["fallos"]==1 and abs(ra_after["ear"]["due"]-(NOW+10*6e4))<6e4,[ra_after["ear"],])
     rr=[await rec_of(pg,w) for w in (bw,c,d,e,g)]
     ok("reask: the right ones were scored once (n=1, one right)",all(r["ear"]["n"]==1 and len(r["ear"]["aciertos"])==1 for r in rr))
-    ok("reask: the bar grew with the two second asks (9 segments, all lit at the end)",await pg.evaluate("[document.querySelectorAll('#bar .dot').length,document.querySelectorAll('#bar .dot.on').length]")==[9,9],await pg.evaluate("[document.querySelectorAll('#bar .dot').length,document.querySelectorAll('#bar .dot.on').length]"))
+    scored=lambda k: sum(1 for x in seen[:k] if not x["re"])
+    ok("reask: the bar has one segment per word of the session (7) all the time, a second ask adds none; lit = words answered so far",all(n==7 and on==scored(k) for k,(n,on) in bars) and len(bars)==9,bars)
+    ok("reask: the bar is full at the end",await pg.evaluate("[document.querySelectorAll('#bar .dot').length,document.querySelectorAll('#bar .dot.on').length]")==[7,7])
     ok("reask: no page errors",not pg.errs,pg.errs[:2]); await pg.context.close()
 
 async def t_reask_order(b):   # the second ask draws the two pictures afresh: over 10 misses it is neither always the same position nor always the other (chance of a false alarm 2 in 1024)
@@ -187,6 +194,35 @@ async def t_reask_order(b):   # the second ask draws the two pictures afresh: ov
     ok("reask: the second ask's pictures are drawn afresh (same place in %d of 10, not 0 and not 10)"%same,0<same<10,same)
     await pg.context.close()
 
+# ---------------------------------------------------------------- 4b. dim while the sentence plays, full brightness at his turn, the check badge on a right answer, the other picture dims
+async def t_dim(b):
+    NOW=int(1.9e12); ws=["casa","puerta"]; recs=[rec(w,NOW-3600e3*(i+1)) for i,w in enumerate(ws)]
+    pg=await newpage(b,seed(recs,NOW)); await open_(pg,"solo=casa,puerta")   # real speed
+    LUM="k=>{const y=k*(PH+GAP),d=dc.getImageData(0,y,DW,PH).data;let s=0;for(let i=0;i<d.length;i+=4)s+=d[i]+d[i+1]+d[i+2];return s/(d.length/4)/3}"
+    await start(pg); await pg.wait_for_function("Cual.pan",timeout=20000); await pg.wait_for_timeout(300)
+    st=await pg.evaluate("({pan:Cual.pan,listo:Cual.listo,l:[0,1].map(%s)})"%LUM)
+    ok("dim: while the sentence plays both pictures are dimmed",st["listo"] is False and all(p["dim"] for p in st["pan"]),st)
+    await pg.wait_for_function("Cual.listo",timeout=20000); await pg.wait_for_timeout(250)
+    st2=await pg.evaluate("({pan:Cual.pan,l:[0,1].map(%s)})"%LUM)
+    ok("dim: when it ends they come to full brightness (%.0f -> %.0f, %.0f -> %.0f)"%(st["l"][0],st2["l"][0],st["l"][1],st2["l"][1]),not any(p["dim"] for p in st2["pan"]) and all(st2["l"][k]>st["l"][k]*1.3 for k in (0,1)),[st,st2])
+    # right answer
+    right=await pg.evaluate("Cual.pan.findIndex(p=>p.right)"); await pg.evaluate("Cual.toca(%d)"%right); await pg.wait_for_timeout(250)
+    r=await pg.evaluate("""()=>({cls:[...document.querySelectorAll('.opt')].map(o=>o.className),pan:Cual.pan,l:[0,1].map(%s),badge:[...document.querySelectorAll('.opt')].map(o=>{const a=getComputedStyle(o,'::after');return a.content==='none'?null:[a.width,a.height,a.backgroundColor,a.borderRadius]})})"""%LUM)
+    o=1-right
+    ok("dim: right: the green ring and a check badge on the touched picture, none on the other",'ok' in r["cls"][right] and 'chk' in r["cls"][right] and 'ok' not in r["cls"][o] and 'chk' not in r["cls"][o] and r["badge"][right] and r["badge"][right][0]=="28px" and r["badge"][o] is None,[r["cls"],r["badge"]])
+    ok("dim: right: the other picture dims, the right one stays bright (%.0f vs %.0f)"%(r["l"][right],r["l"][o]),r["pan"][o]["dim"] and not r["pan"][right]["dim"] and r["l"][o]<r["l"][right]*.75,[r["pan"],r["l"]])
+    # the next ask: wrong
+    await pg.wait_for_function("Cual.i===1&&Cual.pan",timeout=30000); sp=await pg.evaluate("Cual.pan.every(p=>p.dim)")
+    ok("dim: the next ask starts dimmed again, and the badge of the last one is gone",sp and await pg.evaluate("![...document.querySelectorAll('.opt')].some(o=>o.classList.contains('chk'))"))
+    await pg.wait_for_function("Cual.listo",timeout=20000); right=await pg.evaluate("Cual.pan.findIndex(p=>p.right)"); o=1-right
+    await pg.evaluate("Cual.toca(%d)"%o); await pg.wait_for_timeout(150)
+    w=await pg.evaluate("({cls:[...document.querySelectorAll('.opt')].map(x=>x.className),pan:Cual.pan})")
+    ok("dim: wrong: the touched picture has the red-orange ring and dims, no badge, nothing shown yet on the other",'bad' in w["cls"][o] and w["pan"][o]["dim"] and 'chk' not in " ".join(w["cls"]) and 'ok' not in w["cls"][right],w)
+    await pg.wait_for_function("Cual.pan&&Cual.pan.some(p=>p.sign)",timeout=10000)
+    w=await pg.evaluate("({cls:[...document.querySelectorAll('.opt')].map(x=>x.className),pan:Cual.pan,badge:[...document.querySelectorAll('.opt')].map(x=>getComputedStyle(x,'::after').content)})")
+    ok("dim: wrong, then the right one shows: green ring and the sign, no badge (as today)",'ok' in w["cls"][right] and 'chk' not in " ".join(w["cls"]) and w["pan"][right]["sign"]==1 and not w["pan"][right]["dim"] and w["badge"]==["none","none"],w)
+    ok("dim: no page errors",not pg.errs,pg.errs[:2]); await pg.context.close()
+
 # ---------------------------------------------------------------- 5. the end screen
 async def t_end(b):
     NOW=int(1.9e12); ws,recs=due_recs(9,NOW); results={}
@@ -195,10 +231,15 @@ async def t_end(b):
         await drive(pg,plan,limit=300)
         await pg.wait_for_selector("#fin.lis h2",timeout=20000); await pg.wait_for_timeout(300)
         info=await pg.evaluate("""()=>{const f=document.querySelector('#fin'),dpr=devicePixelRatio,cs=e=>getComputedStyle(e),rgb=c=>c.match(/[\\d.]+/g).slice(0,3).map(Number),L=c=>{const v=rgb(c).map(x=>{x/=255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*v[0]+.7152*v[1]+.0722*v[2]},cr=(a,b)=>{const x=L(a),y=L(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)},bg=cs(document.body).backgroundColor;
-          const groups=[...f.querySelectorAll('h2')].map(h=>({h:h.textContent,words:[...h.nextElementSibling.querySelectorAll('li span')].map(s=>s.textContent),pics:[...h.nextElementSibling.querySelectorAll('li canvas')].map(c=>{const r=c.getBoundingClientRect(),x=c.getContext('2d'),d=x.getImageData(0,0,c.width,c.height).data,seen=new Set();for(let i=0;i<d.length;i+=4*97)seen.add(d[i]+','+d[i+1]+','+d[i+2]);return {w:r.width,h:r.height,dpr,kd:r.width*dpr/196,colours:seen.size,cw:c.width,ch:c.height}})}));
+          const UL=h=>{let u=h.nextElementSibling;while(u&&u.tagName!=='UL')u=u.nextElementSibling;return u};
+          const groups=[...f.querySelectorAll('h2')].map(h=>({h:h.textContent,sub:h.nextElementSibling.tagName==='P'?h.nextElementSibling.textContent:'',words:[...UL(h).querySelectorAll('li span')].map(s=>s.textContent),pics:[...UL(h).querySelectorAll('li canvas')].map(c=>{const r=c.getBoundingClientRect(),x=c.getContext('2d'),d=x.getImageData(0,0,c.width,c.height).data,seen=new Set();for(let i=0;i<d.length;i+=4*97)seen.add(d[i]+','+d[i+1]+','+d[i+2]);return {w:r.width,h:r.height,dpr,kd:r.width*dpr/196,colours:seen.size,cw:c.width,ch:c.height}})}));
           const btn=document.querySelector('#next'),bb=btn.getBoundingClientRect(),fb=f.getBoundingClientRect(),h1=f.querySelector('h1'),h2=f.querySelector('h2'),sp=f.querySelector('li span');
           return {text:f.innerText,h1:h1&&h1.textContent,groups,btn:{t:btn.textContent,h:bb.height,top:bb.top,w:bb.width,vis:bb.height>0},fin:{bottom:fb.bottom,sw:f.scrollWidth,cw:f.clientWidth,sh:f.scrollHeight,ch:f.clientHeight},
             sizes:{h1:cs(h1).fontSize,h2:cs(h2).fontSize,span:cs(sp).fontSize,btn:cs(btn).fontSize},contrast:{h1:cr(cs(h1).color,bg),h2:cr(cs(h2).color,bg),span:cr(cs(sp).color,bg),btn:cr(cs(btn).color,cs(btn).backgroundColor)},cols:cs(f.querySelector('.gw')).gridTemplateColumns.split(' ').length,
+            summary:(f.querySelector('p')||{}).textContent,subs:[...f.querySelectorAll('p.sub')].map(p=>({fs:cs(p).fontSize,c:cr(cs(p).color,bg)})),xs:['#close','#snd'].map(s=>cs(document.querySelector(s)).visibility),
+            centre:(()=>{const u=f.querySelector('.gw').getBoundingClientRect(),r=f.getBoundingClientRect(),t=h1.getBoundingClientRect();return {grid:Math.abs((u.left+u.right)/2-(r.left+r.width/2)),title:Math.abs(t.left-u.left),h2:Math.abs(h2.getBoundingClientRect().left-u.left)}})(),
+            cells:[...f.querySelectorAll('.gw li')].map(li=>{const r=li.getBoundingClientRect(),c=li.querySelector('canvas').getBoundingClientRect(),t=li.querySelector('span').getBoundingClientRect();return {cell:Math.abs(r.width-c.width)<.5,inside:t.right<=r.right+.5&&li.querySelector('span').scrollWidth<=li.querySelector('span').clientWidth+.5,lines:Math.round(t.height/24),w:li.querySelector('span').textContent}}),
+            mask:cs(f).webkitMaskImage||cs(f).maskImage,
             fin_state:window.Cual.fin,dots:[document.querySelectorAll('#bar .dot').length,document.querySelectorAll('#bar .dot.on').length]}}""")
         if shot: await pg.screenshot(path=shot)
         info["pg"]=pg; return info
@@ -213,21 +254,31 @@ async def t_end(b):
     pics=[p for g in info["groups"] for p in g["pics"]]
     ok("end: each word has its picture (a 196 x 104 canvas with more than one colour)",len(pics)==9 and all(p["cw"]==196 and p["ch"]==104 and p["colours"]>3 for p in pics),[(p["cw"],p["ch"],p["colours"]) for p in pics][:3])
     ok("end: pictures are scaled by a whole number of screen pixels (kd=%s)"%pics[0]["kd"],all(abs(p["kd"]-round(p["kd"]))<.005 and p["kd"]>=1 for p in pics),[p["kd"] for p in pics])
-    ok("end: no score number on the screen",not re.search(r"\d",info["text"]),info["text"].replace("\n"," | "))
+    want_line="%d moving up · %d coming back soon"%(len(up),len(soon))
+    ok("end: one summary line under the title: %r"%want_line,info["summary"]==want_line,info["summary"])
+    ok("end: the only digits on the screen are in that line (no score)",not re.search(r"\d",info["text"].replace(want_line,"")),info["text"].replace("\n"," | "))
+    ok("end: a grey line under each group heading",gs["Moving up"]["sub"]=="You'll see these less often" and gs["Coming back soon"]["sub"]=="You'll see these again soon",[g["sub"] for g in info["groups"]])
+    ok("end: ...14 px, contrast 4.5 or more",all(x["fs"]=="14px" and x["c"]>=4.5 for x in info["subs"]) and len(info["subs"])==2,info["subs"])
+    ok("end: no X and no sound button on the end screen",info["xs"]==["hidden","hidden"],info["xs"])
+    ok("end: the grid is centred, and the title and headings line up with its left edge",info["centre"]["grid"]<=1 and info["centre"]["title"]<=1 and info["centre"]["h2"]<=1,info["centre"])
+    ok("end: a cell is as wide as its picture and a word stays inside it (%s wrap to 2 lines)"%[c["w"] for c in info["cells"] if c["lines"]>1],all(c["cell"] and c["inside"] for c in info["cells"]),[c for c in info["cells"] if not (c["cell"] and c["inside"])])
+    ok("end: the list fades out at both ends",info["mask"].count("rgba(0, 0, 0, 0)")==2 and "linear-gradient" in info["mask"],info["mask"])
     ok("end: the title is Done, the button says Back to Palabras and is 48 px or more high",info["h1"]=="Done" and info["btn"]["t"]=="Back to Palabras" and info["btn"]["h"]>=48,[info["h1"],info["btn"]])
     ok("end: sizes: title 24, group headings 18, words 16, button 16",[info["sizes"][k] for k in ("h1","h2","span","btn")]==["24px","18px","16px","16px"],info["sizes"])
     ok("end: contrast of the title, headings, words and button text is at least 4.5",all(v>=4.5 for v in info["contrast"].values()),info["contrast"])
     ok("end: nothing runs sideways; the list ends above the button",info["fin"]["sw"]<=info["fin"]["cw"] and info["fin"]["bottom"]<=info["btn"]["top"]+1,[info["fin"],info["btn"]["top"]])
-    ok("end: the progress bar is full",info["dots"][0]==info["dots"][1]==9+len(soon),info["dots"])
+    ok("end: the progress bar has 9 segments (one per word, none for the second asks), all lit",info["dots"][0]==info["dots"][1]==9,info["dots"])
     # the button leads back to Palabras
     pgx=info["pg"]; await pgx.click("#next"); await pgx.wait_for_timeout(600); ok("end: Back to Palabras goes to app.html?tab=palabras","app.html?tab=palabras" in pgx.url,pgx.url)
     ok("end: no page errors",not pgx.errs,pgx.errs[:2]); await pgx.context.close()
     # a session with only right answers has one group; all wrong has one group
-    info=await go((390,844),2,True,"","allright"); ok("end: all right: only Moving up",[g["h"] for g in info["groups"]]==["Moving up"] and len(info["groups"][0]["words"])==9,[g["h"] for g in info["groups"]]); await info["pg"].context.close()
+    info=await go((390,844),2,True,"","allright"); ok("end: all right: only Moving up, summary 9 moving up",[g["h"] for g in info["groups"]]==["Moving up"] and len(info["groups"][0]["words"])==9 and info["summary"]=="9 moving up",[[g["h"] for g in info["groups"]],info["summary"]]); await info["pg"].context.close()
     # a practice session (nothing due, the schedule untouched): the groups say Right and Missed
     nodue=[rec(w,NOW+3*DAY) for w in ws]; pgp=await newpage(b,seed(nodue,NOW)); await open_(pgp,"fast=4&n=6"); await start(pgp); await drive(pgp,"wrrrw",limit=300)
     await pgp.wait_for_selector("#fin.lis h2",timeout=20000); hs=await pgp.evaluate("[...document.querySelectorAll('#fin h2')].map(h=>h.textContent)"); fp=await pgp.evaluate("Cual.fin"); rp=[await rec_of(pgp,w) for w in ws]
     ok("end: a practice session says Right and Missed, not Moving up and Coming back soon",hs==["Right","Missed"] and fp["practica"] is True and len(fp["soon"])==2,[hs,fp])
+    sm=await pgp.evaluate("[(document.querySelector('#fin p')||{}).textContent,document.querySelectorAll('#fin p.sub').length]")
+    ok("end: a practice session: summary %d right · 2 missed, and no grey line under the headings"%len(fp["up"]),sm==["%d right · 2 missed"%len(fp["up"]),0],sm)
     ok("end: ...and the practice answers moved nothing (no schedule change)",all(r["ear"]["due"]==NOW+3*DAY and len(r["ear"]["aciertos"])==0 and r["ear"]["fallos"]==0 for r in rp))
     ok("end: no page errors (practice)",not pgp.errs,pgp.errs[:2]); await pgp.context.close()
     # other screens: no sideways run, the pictures stay on whole scales, the button is reachable
@@ -267,7 +318,7 @@ async def t_switches(b):
     ok("switches: ?txt=no shows no sentence text during the session",all(c=="|" for c in caps),set(caps))
     ok("switches: no page errors",not pg.errs,pg.errs[:2]); await pg.context.close()
 
-TESTS={"cap":t_cap,"six":t_six,"early":t_early,"reask":t_reask,"reask_order":t_reask_order,"end":t_end,"clock":t_clock,"switches":t_switches}
+TESTS={"cap":t_cap,"six":t_six,"early":t_early,"dim":t_dim,"reask":t_reask,"reask_order":t_reask_order,"end":t_end,"clock":t_clock,"switches":t_switches}
 async def main():
     names=sys.argv[1:] or list(TESTS)
     async with async_playwright() as p:

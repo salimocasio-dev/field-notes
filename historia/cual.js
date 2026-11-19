@@ -5,9 +5,10 @@
    It asks up to 10 words a session: the ones that are due (the scheduler in palabras.js decides), most overdue first; the rest wait.
    With nothing due it plays words he has heard, and those answers do not move the schedule.
    Each answer goes into the word's ear record, with how long he took.
+   While the sentence plays both pictures are dimmed; when it ends they come to full brightness (his turn). A right answer: the green ring, a small check badge, the other picture dims.
    No touch 6 s after the sentence ends: it plays again. 6 s after that the right picture is shown (green ring and the sign) and he touches it; that is a miss.
    A miss comes back once in the same session, three items later (or at the end), the pictures drawn in a new random order; that second ask is not scored and writes nothing.
-   The end shows the session's words with their pictures: "Moving up" (right on the scored ask) and "Coming back soon" (missed). No score number.
+   The end shows a summary line and the session's words with their pictures: "Moving up" (right on the scored ask) and "Coming back soon" (missed). The bar has one segment per word of the session.
    It reuses the scene drawing and the recorded lines of the stories; nothing new is recorded.
    ============================================================ */
 let CU=null,PAN=null,CQ={i:0,lista:[],cola:[],hecho:[],rehecho:[],tt:[],fin:null};
@@ -35,14 +36,14 @@ function dibujaPaneles(){const a=F>>1,keep=W;dc.imageSmoothingEnabled=false;dc.c
   if(!PAN){return;}
   PAN.forEach((p,k)=>{W=p.w;W.fx=p.fx;p.E.draw(c,W,a);if(W.resp)respDraw(c,a);
     const y=k*(PH+GAP),cm=p.cam;dc.drawImage(sc,cm[0],cm[1],cm[2],cm[3],0,y,DW,PH);
-    if(p.dim){dc.fillStyle="rgba(6,14,28,.55)";dc.fillRect(0,y,DW,PH);}});
+    if(p.dim||p.pre){dc.fillStyle=p.dim?"rgba(6,14,28,.55)":"rgba(6,14,28,.5)";dc.fillRect(0,y,DW,PH);}});   // dim = the one that is not it; pre = both, while the sentence plays
   W=keep;}
 function cualLoop(){F++;dibujaPaneles();}
-async function cualItem(it,re){anillo(null);const ok=Math.random()<.5?0:1;   // which panel holds the right picture: drawn fresh at every ask, the second ask of a missed word too
-  PAN=[0,1].map(k=>{const spec=k===ok?it.si:it.no,Ex=ESCENAS[spec.esc||it.esc];return {w:panelW(spec,Ex),E:Ex,cam:spec.cam,right:k===ok,fx:[],dim:0,sign:0};});   // a picture may name another scene to draw it
+async function cualItem(it,re){anillo(null);OPT.forEach(d=>d.classList.remove("chk"));const ok=Math.random()<.5?0:1;   // which panel holds the right picture: drawn fresh at every ask, the second ask of a missed word too
+  PAN=[0,1].map(k=>{const spec=k===ok?it.si:it.no,Ex=ESCENAS[spec.esc||it.esc];return {w:panelW(spec,Ex),E:Ex,cam:spec.cam,right:k===ok,fx:[],dim:0,pre:1,sign:0};});   // pre: dimmed until the sentence ends. A picture may name another scene to draw it
   await wait(500);let got=null,ms=0,tEnd=0,res;const p=new Promise(r=>res=r),T={i:CQ.i,w:it.w,re:!!re};CQ.tt.push(T);
   CQ.toque=k=>{if(!tEnd||got!=null)return;got=k;ms=Math.round((performance.now()-tEnd)*FAST);res();};   // a touch before the sentence ends does not count
-  await say(it.say,0);tEnd=T.fin=performance.now();CQ.listo=CQ.i+1;
+  await say(it.say,0);tEnd=T.fin=performance.now();PAN.forEach(p=>p.pre=0);CQ.listo=CQ.i+1;   // the sentence has ended: full brightness, his turn (it stays so while it plays again: a touch then counts)
   // he waits: 6 s after the sentence ends it plays again (a touch while it plays counts); 6 s after that the right picture is shown, and that is a miss
   await Promise.race([p,wait(SIX)]);
   if(got==null){T.rep=performance.now();await Promise.race([p,say(it.say,0)]);if(got==null){T.repFin=performance.now();await Promise.race([p,wait(SIX)]);}}
@@ -51,7 +52,7 @@ async function cualItem(it,re){anillo(null);const ok=Math.random()<.5?0:1;   // 
   if(!re){const vence=PAL.vence("ear").includes(it.w);   // due now, by the palabras clock (window.__PAL_NOW in a check), not Date.now()
     PAL.responde(it.w,"ear",right,ms,!vence);CQ.hecho.push(auto?{w:it.w,ok:false,ms,auto:1}:{w:it.w,ok:right,ms});}
   else CQ.rehecho.push({w:it.w,ok:right});   // the second ask of a missed word is not scored: nothing is written
-  if(right){anillo(got,"ok");SFX.right();await bien("si_muy_bien");}   // a green ring on the right one
+  if(right){anillo(got,"ok");OPT[got].classList.add("chk");PAN[1-got].dim=1;SFX.right();await bien("si_muy_bien");}   // the green ring and a small check badge on the right one, the other dims
   else{let k;if(auto)k=PAN.findIndex(x=>x.right);   // he did not touch: the right picture is shown at once
     else{SFX.bonk();PAN[got].dim=1;anillo(got,"bad");await wait(500);k=1-got;}   // red-orange on his, then the green ring shows the right one
     PAN[k].sign=1;anillo(k,"ok");let res2;const p2=new Promise(r=>res2=r);   // the green ring and the sign: he touches it
@@ -66,33 +67,37 @@ function cualLista(){const due=PAL.vence("ear"),byW={};CU.items.forEach(it=>byW[
 async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.display="none";pantalla("");foot(0,0,0);estado("play");
   await Promise.race([voiceReady,sleep(6000)]);
   const q=CQ.cola=CQ.lista.map(it=>({it,re:0}));CQ.hecho=[];CQ.rehecho=[];CQ.tt=[];CQ.fin=null;
-  try{for(let i=0;i<q.length;i++){step(i);CQ.i=i;const ok=await cualItem(q[i].it,q[i].re);
-      if(!ok&&!q[i].re){q.splice(Math.min(i+3,q.length),0,{it:q[i].it,re:1});mkDots(q.length);}}   // a miss comes back once, three items later (at the end when fewer are left); the bar grows by that one
-    step(q.length);}catch(e){if(e!=="stop")throw e;return;}
+  try{for(let i=0;i<q.length;i++){step(CQ.hecho.length);CQ.i=i;const ok=await cualItem(q[i].it,q[i].re);   // the bar: one segment per word of the session, lit as each is answered
+      if(!ok&&!q[i].re)q.splice(Math.min(i+3,q.length),0,{it:q[i].it,re:1});}   // a miss comes back once, three items later (at the end when fewer are left); it adds no segment
+    step(CQ.lista.length);}catch(e){if(e!=="stop")throw e;return;}
   PAN=null;CQ.run=0;cualFin();}
 // the end: the session's words, each with its picture, under "Moving up" (right on the scored ask) and "Coming back soon" (missed) — "Right" and "Missed" in a practice session — and the way back to Palabras. No score.
 function miniatura(it){const spec=it.si,Ex=ESCENAS[spec.esc||it.esc],keep=W,a=F>>1,t=document.createElement("canvas"),g=t.getContext("2d");t.width=DW;t.height=PH;g.imageSmoothingEnabled=false;
   W=panelW(spec,Ex);W.fx=[];Ex.draw(c,W,a);if(W.resp)respDraw(c,a);const cm=spec.cam;g.drawImage(sc,cm[0],cm[1],cm[2],cm[3],0,0,DW,PH);W=keep;   // the right picture of the word, drawn as it was in the session
   t.setAttribute("aria-hidden","true");return t;}
-function cualGrupo(f,titulo,its){if(!its.length)return;const h=document.createElement("h2"),ul=document.createElement("ul");h.textContent=titulo;ul.className="gw";
-  its.forEach(it=>{const li=document.createElement("li"),sp=document.createElement("span");sp.textContent=it.w;li.appendChild(miniatura(it));li.appendChild(sp);ul.appendChild(li);});f.appendChild(h);f.appendChild(ul);}
+function cualGrupo(f,titulo,sub,its){if(!its.length)return;const h=document.createElement("h2"),ul=document.createElement("ul");h.textContent=titulo;ul.className="gw";f.appendChild(h);
+  if(sub){const p=document.createElement("p");p.className="sub";p.textContent=sub;f.appendChild(p);}   // a grey line under the heading
+  its.forEach(it=>{const li=document.createElement("li"),sp=document.createElement("span");sp.textContent=it.w;li.appendChild(miniatura(it));li.appendChild(sp);ul.appendChild(li);});f.appendChild(ul);}
 // the pictures are scaled by a whole number of screen pixels (kd); as many columns as fit at the biggest scale that fits, 16 px apart
 function cualGrid(){const f=$("#fin"),us=f.querySelectorAll(".gw");if(!us.length)return;const dpr=window.devicePixelRatio||1,cs=getComputedStyle(f),w=Math.min(480,f.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0));let best=null;
   const top=Math.max(1,Math.floor(140*dpr/DW+.001));   // a picture is at most about 140 px wide: the words are small things to look at, ten fit a screen
   for(const n of [3,2]){const kd=Math.min(top,Math.floor(((w-(n-1)*16)/n)*dpr/DW+.001));if(kd>=1&&(!best||kd>best.kd))best={n,kd};}   // three or two to a row, at the largest whole scale that fits; a tie goes to three
   if(!best)best={n:1,kd:1};   // a screen too narrow or too low in density for two: one to a row
-  us.forEach(u=>u.style.setProperty("--c",best.n));
-  f.querySelectorAll(".gw canvas").forEach(t=>{t.style.width=DW*best.kd/dpr+"px";t.style.height=PH*best.kd/dpr+"px";});}
+  const pw=DW*best.kd/dpr;   // a cell is as wide as its picture (a long word wraps inside it); the grid, and the title and lines above it, are one centred block as wide as the grid
+  f.style.setProperty("--c",best.n);f.style.setProperty("--pw",pw+"px");f.style.setProperty("--gw",(best.n*pw+(best.n-1)*16)+"px");
+  f.querySelectorAll(".gw canvas").forEach(t=>{t.style.width=pw+"px";t.style.height=PH*best.kd/dpr+"px";});}
 addEventListener("resize",()=>{if(CQ.fin)cualGrid();});
 function cualFin(){const up=[],soon=[];   // a practice session moves nothing, so its groups say what happened: Right, Missed
   CQ.lista.forEach(it=>{const h=CQ.hecho.find(x=>x.w===it.w);if(h)(h.ok?up:soon).push(it);});
   CQ.fin={up:up.map(x=>x.w),soon:soon.map(x=>x.w),practica:!!CQ.practica};
-  estado("end",true);pantalla("Done");const f=$("#fin");f.classList.add("lis");cualGrupo(f,CQ.practica?"Right":"Moving up",up);cualGrupo(f,CQ.practica?"Missed":"Coming back soon",soon);f.scrollTop=0;cualGrid();
+  const pr=!!CQ.practica,linea=[up.length&&`${up.length} ${pr?"right":"moving up"}`,soon.length&&`${soon.length} ${pr?"missed":"coming back soon"}`].filter(Boolean).join(" \u00b7 ");   // "8 moving up · 2 coming back soon"
+  estado("end",true);pantalla("Done",[linea]);const f=$("#fin");f.classList.add("lis");
+  cualGrupo(f,pr?"Right":"Moving up",pr?"":"You'll see these less often",up);cualGrupo(f,pr?"Missed":"Coming back soon",pr?"":"You'll see these again soon",soon);f.scrollTop=0;cualGrid();
   $("#next").textContent="Back to Palabras";$("#next").classList.add("blu");$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
 async function cualArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · ¿Cuál?";SALIDA="app.html?tab=palabras";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   cualSize(1,2,DW,PH);mkOpts(2,k=>{if(CQ.toque)CQ.toque(k);});
   CQ.lista=cualLista();mkDots(CQ.lista.length);estado("start",true);const n=CQ.lista.length,min=Math.max(1,Math.round(n*10/60));   // about 10 s a word
-  pantalla("Repaso",n?[`${n} word${n===1?"":"s"} \u00b7 about ${min} min`]:[]);fit();   // the start screen: a title, how long it is, and the disc; the bar has its true number of segments from the start
+  pantalla("Repaso",["Listen, then touch the picture that fits."].concat(n?[`${n} word${n===1?"":"s"} \u00b7 about ${min} min`]:[]));fit();   // the start screen: a title, how long it is, and the disc; the bar has its true number of segments from the start
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}cualRun();};}
-window.Cual={get pan(){return PAN?PAN.map(p=>({right:p.right,sign:p.sign})):null;},get i(){return CQ.i;},get listo(){return CQ.listo===CQ.i+1;},get lista(){return CQ.lista.map(x=>x.w);},get cola(){return CQ.cola.map(x=>({w:x.it.w,re:!!x.re}));},get hecho(){return CQ.hecho;},get rehecho(){return CQ.rehecho;},get tt(){return CQ.tt;},get fin(){return CQ.fin;},toca(k){if(CQ.toque)CQ.toque(k);},get running(){return !!CQ.run;},get speaking(){return speaking;}};
+window.Cual={get pan(){return PAN?PAN.map(p=>({right:p.right,sign:p.sign,dim:!!(p.dim||p.pre),pre:!!p.pre})):null;},get i(){return CQ.i;},get listo(){return CQ.listo===CQ.i+1;},get lista(){return CQ.lista.map(x=>x.w);},get cola(){return CQ.cola.map(x=>({w:x.it.w,re:!!x.re}));},get hecho(){return CQ.hecho;},get rehecho(){return CQ.rehecho;},get tt(){return CQ.tt;},get fin(){return CQ.fin;},toca(k){if(CQ.toque)CQ.toque(k);},get running(){return !!CQ.run;},get speaking(){return speaking;}};
