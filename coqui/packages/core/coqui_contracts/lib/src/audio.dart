@@ -1,7 +1,12 @@
 /// The recorded lines and the made sounds (juego.js, "sound: effects, and the recorded voice").
 abstract interface class ClipPlayer {
   Future<void> unlock(); // call inside the first tap
-  Future<void> preload(Iterable<String> clipIds);
+
+  /// Makes the clips ready to play, and returns the ids that could NOT be made ready (no recording, no
+  /// marks, a failed fetch, a failed decode), in the order given and without duplicates. An empty list
+  /// means every clip asked for is ready. It never throws for a clip that fails. A clip already loaded
+  /// is not loaded again and is not reported. (juego.js: loadVoice and its VOICE flag)
+  Future<List<String>> preload(Iterable<String> clipIds);
   Future<bool> play(
     String clipId, {
     Duration? limit,
