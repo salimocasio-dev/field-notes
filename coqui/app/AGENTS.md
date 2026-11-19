@@ -109,6 +109,16 @@ The tests run the real modules, the real `PalabrasStore`, the real `ContentCatal
 from disk and the real `ScenePictures`; fakes only for sound, speech, the call, the clock, haptics and `AppInfo`
 (`test/support/harness.dart`).
 
+Gate A's pictures (a tool, not a test; it is not run by `flutter test`): `tool/gate_a_frames_test.dart` plays stories 1 to 3
+(El frente), each right and wrong, by touches in the real app on a 390 x 844 screen at ratio 2, and saves what is seen:
+
+```
+flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>   # [--dart-define=ONLY=la-lluvia-right,...]
+flutter test tool/gate_a_sheets_test.dart --dart-define=OUT=<dir>   # the contact sheets again, from the pictures on disk
+```
+
+It writes `<dir>/<story>-<plan>/NN-<kind>.png`, `index.json` and `sheet-NN.png` (4 pictures a sheet), and `<dir>/summary.json`.
+
 The build the live site gets, and the browser checks of it:
 
 ```
