@@ -375,19 +375,12 @@ class _BibliotecaScreen extends StatelessWidget {
       subtitle: sub,
       cover: cover ? _pic(_scene, w: 196, h: 104) : null,
       actions: [
-        CoquiButton(
-          label: 'Listen',
-          icon: CoquiIcons.play,
-          kind: CoquiButtonKind.go,
-          padX: 16,
-          onPressed: () {},
-        ),
+        ShelfButton(label: 'Listen', icon: CoquiIcons.play, onPressed: () {}),
         if (read)
-          CoquiButton(
+          ShelfButton(
             label: 'Read',
             icon: CoquiIcons.read,
             kind: CoquiButtonKind.outline,
-            padX: 16,
             onPressed: () {},
           ),
       ],
@@ -960,36 +953,14 @@ class _LessonButtons extends StatelessWidget {
           const SizedBox(height: 16),
           const LessonButton(label: 'Disabled', onPressed: null),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              SizedBox(
-                width: 72,
-                child: LessonButton(
-                  height: 56,
-                  kind: LessonButtonKind.outline,
-                  fillWidth: false,
-                  onPressed: () {},
-                  child: const CoquiIcon(
-                    CoquiIcons.left,
-                    size: 28,
-                    color: CoquiColors.lessonInk2,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: LessonButton(
-                  height: 56,
-                  fillWidth: false,
-                  onPressed: () {},
-                  child: const CoquiIcon(
-                    CoquiIcons.right,
-                    size: 28,
-                    color: CoquiColors.lessonInk,
-                  ),
-                ),
-              ),
-            ],
+          LessonButtonRow.reader(
+            back: LessonBackButton(onPressed: () {}),
+            next: LessonNextButton(onPressed: () {}),
+          ),
+          const SizedBox(height: 16),
+          LessonButtonRow.reader(
+            back: const LessonBackButton(onPressed: null),
+            next: LessonNextButton(onPressed: () {}),
           ),
         ],
       ),
