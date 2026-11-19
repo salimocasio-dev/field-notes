@@ -23,8 +23,15 @@ The story game: the step runner, the play screen, Listen mode, speaking turns.
 
 - `lib/feature_story.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Since order 02 the file exports a placeholder module (its screen says the feature's name), until this feature's order builds the real one. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
-- Later it holds one thing: its module, a `FeatureModule` (boundary rule 4). It also implements `SceneHost` for play.
+- It exports the module, `StoryModule({scenes})` (a `FeatureModule`: no tab; it answers `StoryRoute`, played or, with `listen`, told straight through). `scenes` makes the scene a story file names: by default `registryScenes`, the real scenes of `coqui_scenes` (`loadScene`: its converted scenes; the others throw "not converted yet" and the screen then shows the lesson frame and its X). It gives the runner the scene's start frog (`juego.js:16`, from the sheet) and whether the frog keeps the old flat shadow (not in a converted scene).
+- The runner, the no-screen player and the screen are under `lib/src/`: `runner/` (pure Dart: `StoryRunner`, a port of historia/juego.js and a `SceneHost`; `StoryTimers`, `StoryView`, `bubble_place.dart`), `play/` (pure Dart: `play(story, plan, draws, seed)`, the trace), `screen/` (Flutter: `StoryScreen` and its widgets).
+
+## How it is built
+
+- Time is `StoryTimers` (juego.js's `setTimeout`/`setInterval` on a clock a host moves: the screen's ticker moves it from `Services.clock`, the player from timer to timer). The runner never reads a real clock and never sleeps.
+- The runner knows nothing of the screen: what is shown is `StoryView` (caption, bubble, dashes, mic state, end buttons); the frame is a `StoryRenderer` (`FrameRenderer` on `drawFrame` for the screen, `HeadlessRenderer` for the player).
+- `play(...)` returns the trace in the shape of `coqui/ref/trazas/<story>/<plan>.json`. `tool/juega.dart <story> <plan> <seed>` plays one story of `historia/` on the stand-in scene and prints it; `tool/differential.dart` plays all 153 recorded runs and compares them whole (`test/differential_test.dart` runs the same). The stand-in is `tool/replay_scene.dart`: it replays what the OLD scene did in each run, recorded from the old page by `tool/ref/record_acts.mjs` into `test/fixtures/acts/` (remake them with that script whenever a story file or juego.js changes, after `coqui/tool/ref/trazas/juega.mjs`). On the real El frente (`test/real_scene.dart`) the same runs are compared in everything but time (`forTimeless`), and whole where the scene's geometry allows.
+- A change to the runner that moves any time, sound, clip, step or draw by one fails the differential test.
 
 ## Run and test it alone
 
