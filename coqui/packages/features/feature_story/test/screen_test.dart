@@ -9,6 +9,7 @@ import 'package:feature_story/feature_story.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:feature_story/src/screen/story_bubble.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,6 +42,19 @@ void main() {
         m.screenFor(const StoryRoute('la-lluvia'), services),
         isA<Widget>(),
       );
+    },
+  );
+
+  testWidgets(
+    'the module hands its TXT setting (when the words show) to the screen: con unless it is told, then the one it is told',
+    (tester) async {
+      final services = fakeServices();
+      TxtMode shown(StoryModule m) =>
+          (m.screenFor(const StoryRoute('la-lluvia'), services)! as StoryScreen)
+              .txt;
+      expect(shown(const StoryModule()), TxtMode.con);
+      expect(shown(const StoryModule(txt: TxtMode.tras)), TxtMode.tras);
+      expect(shown(const StoryModule(txt: TxtMode.no)), TxtMode.no);
     },
   );
 
@@ -498,6 +512,42 @@ void main() {
         );
         await tester.pump(const Duration(milliseconds: 300));
         expect(tester.hasRunningAnimations, isTrue);
+      },
+    );
+  });
+  group('showPerf: the bake time of the state on screen', () {
+    testWidgets('off by default: no corner chip', (tester) async {
+      await openScreen(tester);
+      expect(find.byKey(const Key('story-perf-chip')), findsNothing);
+      expect(find.textContaining('scene bake'), findsNothing);
+    });
+
+    testWidgets(
+      'on: a corner chip under the top bar gives the bake of the state now drawn, as the frame timed it',
+      (tester) async {
+        final s = await openScreen(tester, showPerf: true);
+        final chip = find.byKey(const Key('story-perf-chip'));
+        expect(chip, findsOneWidget);
+        // every state baked so far was timed, and the chip shows the one now on screen
+        expect(s.frame.bakeMs, isNotEmpty);
+        expect(s.frame.bakeMs.length, s.frame.bakes);
+        final now = s.frame.currentBakeMs.value!;
+        expect(s.frame.bakeMs.values, contains(now));
+        expect(
+          find.descendant(
+            of: chip,
+            matching: find.text('scene bake ${now.toStringAsFixed(0)} ms'),
+          ),
+          findsOneWidget,
+        );
+        expect(tester.getTopRight(chip).dx, 412 - 4);
+        expect(
+          tester.getTopLeft(chip).dy,
+          greaterThanOrEqualTo(CoquiMetrics.lessonTopBar),
+        );
+        // the picture and its frame are as without the chip
+        expect(find.byType(LessonFrame), findsOneWidget);
+        expect(find.byType(PixelView), findsOneWidget);
       },
     );
   });

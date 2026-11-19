@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:feature_story/src/runner/renderer.dart';
+import 'package:flutter/foundation.dart' show ValueNotifier;
 import 'package:feature_story/src/screen/scene_frame.dart';
 
 /// Draws the story's frame: the baked set for the world's state, the wind, the shadows, the scene's sprite layer, the
@@ -33,6 +34,13 @@ class FrameRenderer implements StoryRenderer {
   /// How many sets were baked.
   int bakes = 0;
 
+  /// How long each state's bake took, in ms, by its set key (as `SetBakes.bakeMs` of coqui_scenes keeps them).
+  final Map<String, double> bakeMs = {};
+
+  /// The bake time of the state the last frame was drawn in, in ms (null before the first frame): what the screen's
+  /// corner chip shows with `showPerf`.
+  final ValueNotifier<double?> currentBakeMs = ValueNotifier(null);
+
   PpEngine get _e => _engine ??= setup.engine(still: reduceMotion);
 
   @override
@@ -48,10 +56,13 @@ class FrameRenderer implements StoryRenderer {
     final key = scene.setKey(W);
     var baked = _baked[key];
     if (baked == null) {
+      final sw = Stopwatch()..start();
       scene.buildSet(e, PpBuild(e), W);
       baked = _baked[key] = BakedSet.capture(e);
+      bakeMs[key] = sw.elapsedMicroseconds / 1000;
       bakes++;
     }
+    currentBakeMs.value = bakeMs[key];
     drawFrame(
       engine: e,
       baked: baked,

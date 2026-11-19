@@ -27,6 +27,7 @@ class MapScreen extends StatefulWidget {
     super.key,
     required this.services,
     this.perf,
+    this.showPerf = false,
     this.reviewTitle,
     this.openPlace,
     this.onPicture,
@@ -36,6 +37,10 @@ class MapScreen extends StatefulWidget {
 
   /// Where the bake time and the frame times go, if anyone wants them.
   final MapPerf? perf;
+
+  /// Shows the bake time and the frame times in a small chip in a corner, over the map (the app's `?perf=1`). Off by
+  /// default. Without [perf] the screen keeps its own.
+  final bool showPerf;
 
   /// The title the Today card gives its review entry; null: no review entry.
   final String? reviewTitle;
@@ -58,6 +63,9 @@ class _FrameSignal extends ChangeNotifier {
 class _MapScreenState extends State<MapScreen>
     with SingleTickerProviderStateMixin {
   late final MapPicture _map;
+  // where the times go: the one given, or the screen's own when the chip is on and none was given
+  late final MapPerf? _perf =
+      widget.perf ?? (widget.showPerf ? MapPerf() : null);
   final _frames = _FrameSignal();
   final _scroll = ScrollController();
   Ticker? _ticker;
@@ -88,6 +96,7 @@ class _MapScreenState extends State<MapScreen>
     _ticker?.dispose();
     _scroll.dispose();
     _frames.dispose();
+    if (widget.perf == null) _perf?.dispose();
     super.dispose();
   }
 
@@ -97,7 +106,7 @@ class _MapScreenState extends State<MapScreen>
     final sw = Stopwatch()..start();
     _map.bake();
     sw.stop();
-    widget.perf?.recordBake(sw.elapsedMicroseconds / 1000);
+    _perf?.recordBake(sw.elapsedMicroseconds / 1000);
     await _s.course.load();
     if (!mounted) return;
     final st = mapStateOf(_s.progress, _s.course);
@@ -122,7 +131,7 @@ class _MapScreenState extends State<MapScreen>
     final sw = Stopwatch()..start();
     _map.tick(dt);
     sw.stop();
-    widget.perf?.recordFrame(sw.elapsedMicroseconds / 1000);
+    _perf?.recordFrame(sw.elapsedMicroseconds / 1000);
     _frames.fire();
   }
 
@@ -265,6 +274,12 @@ class _MapScreenState extends State<MapScreen>
                   ),
                 ),
               ),
+            ),
+          if (widget.showPerf && _perf != null)
+            Positioned(
+              top: CoquiMetrics.chipsHeight + CoquiLayout.safeTop(context) + 4,
+              right: 4,
+              child: MapPerfChip(_perf),
             ),
         ],
       ),

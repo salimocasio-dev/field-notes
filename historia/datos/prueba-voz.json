@@ -1,0 +1,166 @@
+{
+  "lines": [
+    {
+      "t": "Hola, abuela",
+      "g": [
+        [
+          "hola",
+          [
+            "hola"
+          ]
+        ],
+        [
+          "abuela",
+          [
+            "abuela"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "Sí",
+      "g": [
+        [
+          "sí",
+          [
+            "si"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "No",
+      "g": [
+        [
+          "no",
+          [
+            "no"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "Gracias",
+      "g": [
+        [
+          "gracias",
+          [
+            "gracias"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "Adiós",
+      "g": [
+        [
+          "adiós",
+          [
+            "adios"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "La casa",
+      "g": [
+        [
+          "casa",
+          [
+            "casa"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "La puerta",
+      "g": [
+        [
+          "puerta",
+          [
+            "puerta"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "La ventana",
+      "g": [
+        [
+          "ventana",
+          [
+            "ventana"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "Quiero jugo, por favor",
+      "g": [
+        [
+          "quiero",
+          [
+            "quiero"
+          ]
+        ],
+        [
+          "jugo",
+          [
+            "jugo"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "Me llamo…",
+      "h": "tu nombre",
+      "g": [
+        [
+          "me llamo",
+          [
+            "me llamo"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "¿Cómo estás?",
+      "g": [
+        [
+          "¿cómo estás?",
+          [
+            "como estas"
+          ]
+        ]
+      ]
+    },
+    {
+      "t": "Uno, dos, tres",
+      "g": [
+        [
+          "uno",
+          [
+            "uno",
+            "1"
+          ]
+        ],
+        [
+          "tres",
+          [
+            "tres",
+            "3"
+          ]
+        ]
+      ]
+    }
+  ],
+  "labels": {
+    "listening": "Escuchando…",
+    "processing": "Un momento…",
+    "unavailable": "El micrófono no está disponible.",
+    "again": "Otra vez",
+    "mic": "Micrófono",
+    "next": "Siguiente",
+    "progress": "Progreso"
+  }
+}

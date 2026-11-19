@@ -87,4 +87,64 @@ void main() {
     await tester.pump();
     expect(find.byKey(const Key('perf-chip')), findsNothing);
   });
+
+  mapTest('the tab has no corner chip unless the module is asked for one', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 2.625;
+    tester.view.physicalSize = const Size(412, 915) * 2.625;
+    addTearDown(tester.view.reset);
+    final tab = const MapModule().tab(fakeServices(reduceMotion: true))!;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(body: Builder(builder: tab.builder)),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+    expect(find.byType(PixelView), findsOneWidget);
+    expect(find.byKey(const Key('map-perf-chip')), findsNothing);
+    expect(find.textContaining('bake '), findsNothing);
+  });
+
+  mapTest(
+    'showPerf: the tab shows the bake and the frame times in a corner chip, under the chips bar',
+    (tester) async {
+      tester.view.devicePixelRatio = 2.625;
+      tester.view.physicalSize = const Size(412, 915) * 2.625;
+      addTearDown(tester.view.reset);
+      final tab = const MapModule(showPerf: true)
+          .tab(fakeServices(reduceMotion: false))!;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: Builder(builder: tab.builder)),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(milliseconds: 16));
+      }
+      final chip = find.byKey(const Key('map-perf-chip'));
+      expect(chip, findsOneWidget);
+      final text = tester.widget<Text>(
+        find.descendant(of: chip, matching: find.byType(Text)),
+      );
+      expect(
+        text.data,
+        matches(
+          RegExp(r'^bake \d+ ms · frame max \d+\.\d ms · mean \d+\.\d ms$'),
+        ),
+      );
+      // the bake has run: its time is in the chip (and frames were timed)
+      expect(text.data, isNot(startsWith('bake 0 ms · frame max 0.0')));
+      expect(
+        tester.getTopLeft(chip).dy,
+        greaterThanOrEqualTo(tester.getBottomLeft(find.byType(MapChips)).dy),
+      );
+      expect(tester.getTopRight(chip).dx, 412 - 4);
+      // the ticker would run for ever: take the screen away
+      await tester.pumpWidget(const SizedBox());
+    },
+  );
 }

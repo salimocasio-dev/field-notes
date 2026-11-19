@@ -9,6 +9,8 @@
 //   nivel.json     NV        (historia/nivel.js)
 //   llamadas.json  LLAMADAS  (historia/llamada.js; it lives inside the Llamada closure, see below)
 //   fijos.json     { clips: { <role>: <clip id> }, lineas: { <clip id>: { who, text } }, despedidas: [goodbye words] }
+//   prueba-voz.json { lines: LINES, labels: { listening, processing, unavailable, again, mic, next, progress } }
+//                  (historia/habla-prueba.html, order 26; see "The voice test" below)
 //
 // The data is never copied by hand. curso.js, nivel.js and llamada.js are evaluated as they are in a vm
 // context with the few browser globals they touch stubbed. Every file is then checked: the JSON that was
@@ -48,6 +50,20 @@
 // LLAMADAS is a const inside the Llamada closure, so no script can reach it. Its text, from `const LLAMADAS=`
 // to the matching `}`, is cut out of llamada.js by a bracket scanner and evaluated; the whole file is also
 // evaluated, and Llamada.tiene / Llamada.minutos must agree with the cut-out object.
+//
+// ---- The voice test (habla-prueba.html) ----------------------------------------------------------------
+// LINES is a const inside the page's closure. Its text, from `const LINES=` to the matching `]`, is cut out of the
+// page's one <script> (comments blanked) and evaluated: the twelve lines in order, each as the page gives it:
+// `t` (the text), `h` (the hint under it, only where the page has one), `g` (the targets: [word, [accepted forms]]).
+// The page gives a line no clip (it plays nothing), so the file has none. There must be exactly twelve, each with a
+// text and at least one target with at least one form.
+// The Spanish words the page writes itself, beside the lines (feature_speaking's VoiceTestLabels), each found by a
+// pattern that must match exactly once (else the script stops):
+//   listening, processing   state(): s==="listen"?"<listening>":s==="proc"?"<processing>"
+//   unavailable             showEnd(): RUN.unavailable?"<unavailable>":""
+//   again                   <button class="sec" id="again"><again></button>
+//   mic, next               the aria-label of <button ... id="mic"> and of <button ... id="next">
+//   progress                the aria-label of <div id="bar" role="progressbar">
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -288,6 +304,48 @@ if (!despedidas.length) fail('llamada.js: no goodbye words found in `adios`');
 if (!pairs) fail('no `<id>:{who:"...",text:"..."}` found in juego.js, cual.js or llamada.js: the pattern of the lines written in code is gone (juego.js, loadVoice)');
 if (whoText !== 2 * pairs) fail(`the three files hold ${whoText} \`who:\` and \`text:\` keys, ${2 * pairs} of them in the ${pairs} pair(s) found: a speaker and text of another shape is written in code, decide by hand`);
 writeJson('fijos.json', { clips, lineas, despedidas });
+
+// ---- prueba-voz.json: the voice test's lines and words ----------------------------------------------------------
+const pruebaHtml = read(path.join(HIS, 'habla-prueba.html'));
+const scripts = [...pruebaHtml.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+if (scripts.length !== 1) fail(`habla-prueba.html: expected one inline <script>, found ${scripts.length}`);
+const pruebaCode = blankComments(scripts[0][1], 'habla-prueba.html');
+const linesDecl = [...pruebaCode.matchAll(/\bconst\s+LINES\s*=\s*/g)];
+if (linesDecl.length !== 1) fail(`habla-prueba.html: expected exactly one "const LINES=", found ${linesDecl.length}`);
+const linesAt = linesDecl[0].index + linesDecl[0][0].length;
+if (pruebaCode[linesAt] !== '[') fail('habla-prueba.html: LINES is not an array literal');
+const LINES = vm.runInContext('(' + '[' + balanced(pruebaCode, linesAt) + ']' + ')', ctx);
+if (LINES.length !== 12) fail(`habla-prueba.html: LINES has ${LINES.length} lines, not twelve`);
+LINES.forEach((L, k) => {
+  const at = `habla-prueba.html LINES[${k}]`;
+  const keys = Object.keys(L);
+  if (keys.some((x) => !['t', 'h', 'g'].includes(x))) fail(`${at}: a key other than t, h, g (${keys.join(', ')}): decide by hand`);
+  if (typeof L.t !== 'string' || !L.t) fail(`${at}: no text`);
+  if ('h' in L && (typeof L.h !== 'string' || !L.h)) fail(`${at}: a hint that is not text`);
+  if (!Array.isArray(L.g) || !L.g.length) fail(`${at}: no targets`);
+  L.g.forEach((g, j) => {
+    if (!Array.isArray(g) || g.length !== 2 || typeof g[0] !== 'string' || !Array.isArray(g[1]) || !g[1].length || g[1].some((f) => typeof f !== 'string' || !f)) {
+      fail(`${at}.g[${j}]: a target must be [word, [forms]]`);
+    }
+  });
+});
+// one pattern, one match: the text it captures
+const once = (src, re, what) => {
+  const all = [...src.matchAll(new RegExp(re.source, 'g'))];
+  if (all.length !== 1) fail(`habla-prueba.html: ${what}: the pattern ${re} matched ${all.length} times, not once`);
+  return all[0];
+};
+const st = once(pruebaCode, /s==="listen"\?"([^"\n]+)":s==="proc"\?"([^"\n]+)"/, 'the words of state()');
+const labels = {
+  listening: st[1],
+  processing: st[2],
+  unavailable: once(pruebaCode, /RUN\.unavailable\?"([^"\n]+)":""/, 'the note of showEnd()')[1],
+  again: once(pruebaHtml, /<button class="sec" id="again">([^<\n]+)<\/button>/, 'the again button')[1],
+  mic: once(pruebaHtml, /<button class="disc" id="mic" aria-label="([^"\n]+)">/, 'the mic disc')[1],
+  next: once(pruebaHtml, /<button class="disc" id="next" aria-label="([^"\n]+)">/, 'the next disc')[1],
+  progress: once(pruebaHtml, /<div id="bar" role="progressbar" aria-label="([^"\n]+)">/, 'the progress bar')[1],
+};
+writeJson('prueba-voz.json', { lines: LINES, labels });
 
 // ---- what was found, for the report --------------------------------------------------------------------------------
 console.log('\nrole -> clip id -> where the code names it');

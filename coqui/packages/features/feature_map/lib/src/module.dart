@@ -4,8 +4,12 @@ import 'package:feature_map/src/map_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// feature_map's module: the home map, the Today card and the place sheet. It owns the tab `map` and no route.
+///
+/// [showPerf]: the map shows its bake time and frame times in a small corner chip (the app's `?perf=1`). Off by default.
 class MapModule implements FeatureModule {
-  const MapModule();
+  const MapModule({this.showPerf = false});
+
+  final bool showPerf;
 
   @override
   String get id => 'map';
@@ -15,8 +19,11 @@ class MapModule implements FeatureModule {
     id: 'map',
     label: CoquiTabs.map.label,
     icon: Icons.map,
-    builder: (_) =>
-        MapScreen(services: s, reviewTitle: CoquiLabels.reviewTitle),
+    builder: (_) => MapScreen(
+      services: s,
+      reviewTitle: CoquiLabels.reviewTitle,
+      showPerf: showPerf,
+    ),
   );
 
   @override

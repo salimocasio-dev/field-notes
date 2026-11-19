@@ -41,6 +41,13 @@ class _HablarTabState extends State<HablarTab> {
   StreamSubscription<void>? _sub;
   String? _note;
 
+  /// `call.available` said false: the call library did not load (or this build has no calls). Every read of
+  /// `available` while it is false starts another try at loading the library, and the tab is built again at every
+  /// change of the progress or the screen: with the network down that was a request on each build and a card that
+  /// changed with each answer. So the false answer is kept for as long as this tab state lives, and the tab asks
+  /// again only when it is made again (a screen opened afresh).
+  bool _callsFailed = false;
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +72,13 @@ class _HablarTabState extends State<HablarTab> {
   void dispose() {
     unawaited(_sub?.cancel());
     super.dispose();
+  }
+
+  bool _callsAvailable() {
+    if (_callsFailed) return false;
+    final available = widget.services.call.available;
+    if (!available) _callsFailed = true;
+    return available;
   }
 
   void _call(Place place) {
@@ -122,7 +136,7 @@ class _HablarTabState extends State<HablarTab> {
     final cards = hablarCards(
       course: s.course,
       progress: s.progress,
-      callsAvailable: () => s.call.available,
+      callsAvailable: _callsAvailable,
       callsLater: widget.callsLater ?? CallTexts.callsLater,
     );
     final open = wordsOpenForSpeaking(s.progress);
