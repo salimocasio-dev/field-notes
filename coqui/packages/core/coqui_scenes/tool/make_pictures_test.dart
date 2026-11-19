@@ -105,7 +105,8 @@ void main() {
     key.writeln(
       'story/<story>/<n>.png: each moment at rest of the story\'s recorded "right" run, in order, as the Dart '
       'scene draws the screen (196 x 216: the view, the signs, the plate in the corner), 3x. A moment at rest: '
-      'the state after a step whose view is one of the sheet\'s views, nobody half faded, not the same as the one before.',
+      'the state after a step whose view is one of the sheet\'s views, nobody half faded, not the same as the one before. '
+      'The W of each is the old run\'s, moved to today\'s places by frente-preview.html\'s own rule (remapW).',
     );
     for (final c in moments) {
       writePng(
