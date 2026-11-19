@@ -152,6 +152,23 @@ void main() {
         r.player.loop('rain', false);
       }),
     );
+    test('loop is idempotent: rain off with no rain does nothing; rain on twice starts one rain', () {
+      final r = _Rig();
+      r.player.loop('rain', false);
+      expect(r.log, isEmpty); // not even a context
+      r.player.loop('rain', true);
+      final made = r.graph!.sources.length;
+      r.player.loop('rain', true);
+      r.player.loop('rain', true);
+      expect(r.graph!.sources.length, made);
+      r.player.loop('rain', false);
+      final n = r.log.length;
+      r.player.loop('rain', false);
+      expect(r.log.length, n);
+      expect(r.core.rain, isNull);
+      r.player.loop('rain', true); // and it can start again
+      expect(r.graph!.sources.length, made + 1);
+    });
     test(
       'tone\'s defaults',
       () => _scenario('tone(440,0,.1)', (r) async => r.player.tone(440)),

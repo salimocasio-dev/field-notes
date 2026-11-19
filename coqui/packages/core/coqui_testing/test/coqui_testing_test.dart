@@ -574,7 +574,24 @@ void main() {
       talking.go('danny1');
       expect(talking.outputVolume(), greaterThan(0));
 
-      for (final o in ['mic', 'fail']) {
+      for (final (o, kind, text) in [
+        (
+          'mic',
+          CallStartFailure.microphone,
+          'NotAllowedError: Permission denied',
+        ),
+        ('fail', CallStartFailure.failed, 'Error: The call did not start.'),
+        (
+          'library',
+          CallStartFailure.library,
+          'LibraryError: The voice library did not load.',
+        ),
+        (
+          'unavailable',
+          CallStartFailure.unavailable,
+          'NotAvailable: Calls are off on this build.',
+        ),
+      ]) {
         Object? err;
         unawaited(
           FakeCallSession(stub: {o})
@@ -582,11 +599,17 @@ void main() {
               .catchError((Object e) => err = e),
         );
         await tester.pump(const Duration(seconds: 1));
-        expect(
-          err.toString(),
-          o == 'mic' ? contains('NotAllowedError') : contains('did not start'),
-        );
+        expect(err, isA<CallStartError>().having((e) => e.kind, 'kind', kind));
+        expect('$err', text);
       }
+      Object? off;
+      unawaited(
+        FakeCallSession(available: false)
+            .start(brief, {})
+            .catchError((Object e) => off = e),
+      );
+      await tester.pump();
+      expect((off! as CallStartError).kind, CallStartFailure.unavailable);
     });
   });
 

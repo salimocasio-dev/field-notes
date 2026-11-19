@@ -292,6 +292,19 @@ void main() {
       core.muted = false;
       expect(p.vol, 1);
     });
+    test(
+      'a phone build\'s rain is idempotent too: off with none, on twice',
+      () async {
+        core.calla();
+        core.lluvia();
+        core.lluvia();
+        await Future<void>.delayed(Duration.zero);
+        expect(sink.played, hasLength(1));
+        core.calla();
+        core.calla();
+        expect(sink.played.single.stopped, isTrue);
+      },
+    );
     test('the rain: one looped buffer, 2 s, at .03 times the master; calla stops it', () async {
       core.lluvia();
       core.lluvia();

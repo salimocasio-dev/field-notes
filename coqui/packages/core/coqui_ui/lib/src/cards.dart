@@ -259,8 +259,10 @@ class RowDivider extends StatelessWidget {
   const RowDivider({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const SizedBox(height: 1, child: ColoredBox(color: CoquiColors.line));
+  Widget build(BuildContext context) => SizedBox(
+    height: CoquiLayout.border(context, 1),
+    child: const ColoredBox(color: CoquiColors.line),
+  );
 }
 
 /// Puts a [RowDivider] between [rows].
@@ -355,7 +357,7 @@ class ShelfRow extends StatelessWidget {
     this.subtitle,
     this.cover,
     this.actions = const [],
-    this.coverSize = CoquiMetrics.cover,
+    this.coverSize,
   });
 
   final String title;
@@ -366,52 +368,58 @@ class ShelfRow extends StatelessWidget {
   final Widget? cover;
   final List<Widget> actions;
 
-  /// 72, or 64 on a 360 px phone (`@media (max-width:380px)`). app.html:101
-  final double coverSize;
+  /// 72, or 64 on a phone at most 380 px wide (`@media (max-width:380px)`, where the gap is 12
+  /// instead of 16). Null: by the screen's width. app.html:98, 101
+  final double? coverSize;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: coverSize,
-          height: coverSize,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: CoquiColors.coverFill,
-            borderRadius: BorderRadius.circular(CoquiMetrics.radiusPicture),
-            boxShadow: const [
-              BoxShadow(color: CoquiColors.line, spreadRadius: 1),
-            ],
+  Widget build(BuildContext context) {
+    final small = MediaQuery.sizeOf(context).width <= 380;
+    final size =
+        coverSize ?? (small ? CoquiMetrics.coverSmall : CoquiMetrics.cover);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: size,
+            height: size,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: CoquiColors.coverFill,
+              borderRadius: BorderRadius.circular(CoquiMetrics.radiusPicture),
+              boxShadow: const [
+                BoxShadow(color: CoquiColors.line, spreadRadius: 1),
+              ],
+            ),
+            child: cover,
           ),
-          child: cover,
-        ),
-        const SizedBox(width: CoquiMetrics.s16),
-        Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: CoquiText.rowBold),
-              if (subtitle != null)
-                Text(subtitle!, style: CoquiText.smallMuted),
-              if (actions.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: CoquiMetrics.s8),
-                  child: Wrap(
-                    spacing: CoquiMetrics.s16,
-                    runSpacing: CoquiMetrics.s8,
-                    children: actions,
+          const SizedBox(width: CoquiMetrics.s16),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: CoquiText.rowBold),
+                if (subtitle != null)
+                  Text(subtitle!, style: CoquiText.smallMuted),
+                if (actions.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: CoquiMetrics.s8),
+                    child: Wrap(
+                      spacing: CoquiMetrics.s16,
+                      runSpacing: CoquiMetrics.s8,
+                      children: actions,
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }
 
 /// `.play`: the Today card. The whole card is the button: at least 80 px high, 16
@@ -534,7 +542,10 @@ class SegmentedPills extends StatelessWidget {
                   ),
                   border: Border.all(
                     color: on ? CoquiColors.info : CoquiColors.line2,
-                    width: CoquiMetrics.borderButton,
+                    width: CoquiLayout.border(
+                      context,
+                      CoquiMetrics.borderButton,
+                    ),
                   ),
                 ),
                 child: Text(

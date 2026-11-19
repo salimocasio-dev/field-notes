@@ -1,0 +1,757 @@
+{
+ "note": "Made by tool/llamada_stub.mjs from historia/llamada.js. Do not edit by hand.",
+ "traces": {
+  "natural call": {
+   "opts": [],
+   "log": [
+    [
+     0,
+     "connect",
+     {
+      "conversationId": "stub"
+     }
+    ],
+    [
+     0,
+     "resolved"
+    ],
+    [
+     1200,
+     "mode",
+     "speaking"
+    ],
+    [
+     1200,
+     "message",
+     "agent",
+     "ai",
+     "¡Hola! Soy Danny. ¿Cómo estás?"
+    ],
+    [
+     4000,
+     "mode",
+     "listening"
+    ],
+    [
+     7100,
+     "message",
+     "user",
+     "user",
+     "Hola. Bien, gracias."
+    ],
+    [
+     8200,
+     "mode",
+     "speaking"
+    ],
+    [
+     8200,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Mira. ¿Quieres jugo?"
+    ],
+    [
+     8700,
+     "tool",
+     {
+      "picture": "jugo"
+     }
+    ],
+    [
+     11200,
+     "mode",
+     "listening"
+    ],
+    [
+     14300,
+     "message",
+     "user",
+     "user",
+     "Sí, quiero jugo."
+    ],
+    [
+     15800,
+     "mode",
+     "listening"
+    ],
+    [
+     18400,
+     "message",
+     "user",
+     "user",
+     "Adiós."
+    ],
+    [
+     18400,
+     "sendUserMessage",
+     "(fin)"
+    ],
+    [
+     18800,
+     "mode",
+     "speaking"
+    ],
+    [
+     18800,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Hasta mañana."
+    ],
+    [
+     20800,
+     "mode",
+     "listening"
+    ],
+    [
+     21200,
+     "endSession",
+     "fin"
+    ],
+    [
+     21230,
+     "disconnect",
+     "user"
+    ]
+   ],
+   "sent": [
+    "(fin)"
+   ],
+   "ended": true,
+   "modes": [
+    "speaking",
+    "listening",
+    "speaking",
+    "listening",
+    "listening",
+    "speaking",
+    "listening"
+   ]
+  },
+  "the learner's 'Hasta mañana.'": {
+   "opts": [
+    "hasta"
+   ],
+   "log": [
+    [
+     0,
+     "connect",
+     {
+      "conversationId": "stub"
+     }
+    ],
+    [
+     0,
+     "resolved"
+    ],
+    [
+     1200,
+     "mode",
+     "speaking"
+    ],
+    [
+     1200,
+     "message",
+     "agent",
+     "ai",
+     "¡Hola! Soy Danny. ¿Cómo estás?"
+    ],
+    [
+     4000,
+     "mode",
+     "listening"
+    ],
+    [
+     7100,
+     "message",
+     "user",
+     "user",
+     "Hola. Bien, gracias."
+    ],
+    [
+     8200,
+     "mode",
+     "speaking"
+    ],
+    [
+     8200,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Mira. ¿Quieres jugo?"
+    ],
+    [
+     8700,
+     "tool",
+     {
+      "picture": "jugo"
+     }
+    ],
+    [
+     11200,
+     "mode",
+     "listening"
+    ],
+    [
+     14300,
+     "message",
+     "user",
+     "user",
+     "Sí, quiero jugo."
+    ],
+    [
+     15800,
+     "mode",
+     "listening"
+    ],
+    [
+     18400,
+     "message",
+     "user",
+     "user",
+     "Hasta mañana."
+    ],
+    [
+     18400,
+     "sendUserMessage",
+     "(fin)"
+    ],
+    [
+     18800,
+     "mode",
+     "speaking"
+    ],
+    [
+     18800,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Hasta mañana."
+    ],
+    [
+     20800,
+     "mode",
+     "listening"
+    ],
+    [
+     21200,
+     "endSession",
+     "fin"
+    ],
+    [
+     21230,
+     "disconnect",
+     "user"
+    ]
+   ],
+   "sent": [
+    "(fin)"
+   ],
+   "ended": true,
+   "modes": [
+    "speaking",
+    "listening",
+    "speaking",
+    "listening",
+    "listening",
+    "speaking",
+    "listening"
+   ]
+  },
+  "Danny's own goodbye": {
+   "opts": [
+    "dannybye"
+   ],
+   "log": [
+    [
+     0,
+     "connect",
+     {
+      "conversationId": "stub"
+     }
+    ],
+    [
+     0,
+     "resolved"
+    ],
+    [
+     1200,
+     "mode",
+     "speaking"
+    ],
+    [
+     1200,
+     "message",
+     "agent",
+     "ai",
+     "¡Hola! Soy Danny. ¿Cómo estás?"
+    ],
+    [
+     4000,
+     "mode",
+     "listening"
+    ],
+    [
+     7100,
+     "message",
+     "user",
+     "user",
+     "Hola. Bien, gracias."
+    ],
+    [
+     8200,
+     "mode",
+     "speaking"
+    ],
+    [
+     8200,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Mira. ¿Quieres jugo?"
+    ],
+    [
+     8700,
+     "tool",
+     {
+      "picture": "jugo"
+     }
+    ],
+    [
+     11200,
+     "mode",
+     "listening"
+    ],
+    [
+     14300,
+     "message",
+     "user",
+     "user",
+     "Sí, quiero jugo."
+    ],
+    [
+     15800,
+     "mode",
+     "speaking"
+    ],
+    [
+     15800,
+     "message",
+     "agent",
+     "ai",
+     "Sí. Hasta mañana."
+    ],
+    [
+     17600,
+     "mode",
+     "listening"
+    ],
+    [
+     18000,
+     "endSession",
+     "fin"
+    ],
+    [
+     18030,
+     "disconnect",
+     "user"
+    ]
+   ],
+   "sent": [],
+   "ended": true,
+   "modes": [
+    "speaking",
+    "listening",
+    "speaking",
+    "listening",
+    "speaking",
+    "listening"
+   ]
+  },
+  "goodbye loop": {
+   "opts": [
+    "loop"
+   ],
+   "log": [
+    [
+     0,
+     "connect",
+     {
+      "conversationId": "stub"
+     }
+    ],
+    [
+     0,
+     "resolved"
+    ],
+    [
+     1200,
+     "mode",
+     "speaking"
+    ],
+    [
+     1200,
+     "message",
+     "agent",
+     "ai",
+     "¡Hola! Soy Danny. ¿Cómo estás?"
+    ],
+    [
+     4000,
+     "mode",
+     "listening"
+    ],
+    [
+     7100,
+     "message",
+     "user",
+     "user",
+     "Hola. Bien, gracias."
+    ],
+    [
+     8200,
+     "mode",
+     "speaking"
+    ],
+    [
+     8200,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Mira. ¿Quieres jugo?"
+    ],
+    [
+     8700,
+     "tool",
+     {
+      "picture": "jugo"
+     }
+    ],
+    [
+     11200,
+     "mode",
+     "listening"
+    ],
+    [
+     14300,
+     "message",
+     "user",
+     "user",
+     "Sí, quiero jugo."
+    ],
+    [
+     15800,
+     "mode",
+     "listening"
+    ],
+    [
+     18400,
+     "message",
+     "user",
+     "user",
+     "Adiós."
+    ],
+    [
+     18400,
+     "sendUserMessage",
+     "(fin)"
+    ],
+    [
+     18700,
+     "mode",
+     "speaking"
+    ],
+    [
+     18700,
+     "message",
+     "agent",
+     "ai",
+     "Hasta mañana."
+    ],
+    [
+     20500,
+     "mode",
+     "listening"
+    ],
+    [
+     20900,
+     "endSession",
+     "fin"
+    ],
+    [
+     20930,
+     "disconnect",
+     "user"
+    ]
+   ],
+   "sent": [
+    "(fin)"
+   ],
+   "ended": true,
+   "modes": [
+    "speaking",
+    "listening",
+    "speaking",
+    "listening",
+    "listening",
+    "speaking",
+    "listening"
+   ]
+  },
+  "Danny's own goodbye followed by the loop": {
+   "opts": [
+    "dannybye",
+    "loop"
+   ],
+   "log": [
+    [
+     0,
+     "connect",
+     {
+      "conversationId": "stub"
+     }
+    ],
+    [
+     0,
+     "resolved"
+    ],
+    [
+     1200,
+     "mode",
+     "speaking"
+    ],
+    [
+     1200,
+     "message",
+     "agent",
+     "ai",
+     "¡Hola! Soy Danny. ¿Cómo estás?"
+    ],
+    [
+     4000,
+     "mode",
+     "listening"
+    ],
+    [
+     7100,
+     "message",
+     "user",
+     "user",
+     "Hola. Bien, gracias."
+    ],
+    [
+     8200,
+     "mode",
+     "speaking"
+    ],
+    [
+     8200,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Mira. ¿Quieres jugo?"
+    ],
+    [
+     8700,
+     "tool",
+     {
+      "picture": "jugo"
+     }
+    ],
+    [
+     11200,
+     "mode",
+     "listening"
+    ],
+    [
+     14300,
+     "message",
+     "user",
+     "user",
+     "Sí, quiero jugo."
+    ],
+    [
+     15800,
+     "mode",
+     "speaking"
+    ],
+    [
+     15800,
+     "message",
+     "agent",
+     "ai",
+     "Sí. Hasta mañana."
+    ],
+    [
+     17600,
+     "mode",
+     "listening"
+    ],
+    [
+     18000,
+     "endSession",
+     "fin"
+    ],
+    [
+     18030,
+     "disconnect",
+     "user"
+    ]
+   ],
+   "sent": [],
+   "ended": true,
+   "modes": [
+    "speaking",
+    "listening",
+    "speaking",
+    "listening",
+    "speaking",
+    "listening"
+   ]
+  },
+  "no answer to (fin)": {
+   "opts": [
+    "nofin"
+   ],
+   "log": [
+    [
+     0,
+     "connect",
+     {
+      "conversationId": "stub"
+     }
+    ],
+    [
+     0,
+     "resolved"
+    ],
+    [
+     1200,
+     "mode",
+     "speaking"
+    ],
+    [
+     1200,
+     "message",
+     "agent",
+     "ai",
+     "¡Hola! Soy Danny. ¿Cómo estás?"
+    ],
+    [
+     4000,
+     "mode",
+     "listening"
+    ],
+    [
+     7100,
+     "message",
+     "user",
+     "user",
+     "Hola. Bien, gracias."
+    ],
+    [
+     8200,
+     "mode",
+     "speaking"
+    ],
+    [
+     8200,
+     "message",
+     "agent",
+     "ai",
+     "Eso. Mira. ¿Quieres jugo?"
+    ],
+    [
+     8700,
+     "tool",
+     {
+      "picture": "jugo"
+     }
+    ],
+    [
+     11200,
+     "mode",
+     "listening"
+    ],
+    [
+     14300,
+     "message",
+     "user",
+     "user",
+     "Sí, quiero jugo."
+    ],
+    [
+     15800,
+     "mode",
+     "listening"
+    ],
+    [
+     18400,
+     "message",
+     "user",
+     "user",
+     "Adiós."
+    ],
+    [
+     18400,
+     "sendUserMessage",
+     "(fin)"
+    ],
+    [
+     33400,
+     "endSession",
+     "cap"
+    ],
+    [
+     33430,
+     "disconnect",
+     "user"
+    ]
+   ],
+   "sent": [
+    "(fin)"
+   ],
+   "ended": true,
+   "modes": [
+    "speaking",
+    "listening",
+    "speaking",
+    "listening",
+    "listening"
+   ]
+  },
+  "refused microphone": {
+   "opts": [
+    "mic"
+   ],
+   "log": [
+    [
+     400,
+     "rejected",
+     "NotAllowedError",
+     "Permission denied"
+    ]
+   ],
+   "sent": [],
+   "ended": false,
+   "modes": []
+  },
+  "failed start": {
+   "opts": [
+    "fail"
+   ],
+   "log": [
+    [
+     600,
+     "rejected",
+     "Error",
+     "The call did not start."
+    ]
+   ],
+   "sent": [],
+   "ended": false,
+   "modes": []
+  }
+ }
+}

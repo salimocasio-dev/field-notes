@@ -1,6 +1,7 @@
 /// The Ear and Mouth meters: four dots, filled to the stage (app.html:93-94, 417).
 library;
 
+import 'package:coqui_ui/src/layout.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
@@ -32,7 +33,7 @@ class MeterDots extends StatelessWidget {
               color: i <= n ? CoquiColors.ok : null,
               border: Border.all(
                 color: i <= n ? CoquiColors.ok : CoquiColors.dotOutline,
-                width: CoquiMetrics.dotBorder,
+                width: CoquiLayout.border(context, CoquiMetrics.dotBorder),
               ),
             ),
           ),

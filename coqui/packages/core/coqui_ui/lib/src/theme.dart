@@ -8,6 +8,7 @@
 /// frame (cual.html), which [LessonFrame] draws itself.
 library;
 
+import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -16,6 +17,8 @@ import 'package:material_ui/material_ui.dart';
 /// show a pressed state, not a ripple (app.html:30).
 ThemeData coquiTheme() => ThemeData(
   useMaterial3: true,
+  fontFamily: coquiFontFamily,
+  package: coquiFontPackage,
   brightness: Brightness.light,
   scaffoldBackgroundColor: CoquiColors.bg,
   canvasColor: CoquiColors.bg,

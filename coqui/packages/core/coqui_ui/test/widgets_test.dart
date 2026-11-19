@@ -51,14 +51,43 @@ void main() {
       expect(CoquiText.body.fontSize, 16);
       expect(CoquiText.small.fontSize, 14);
       expect(CoquiText.tab.fontSize, 12);
-      // The system font stack: no family set.
-      expect(CoquiText.body.fontFamily, isNull);
-      expect(CoquiText.h1.fontFamily, isNull);
+      // Roboto, shipped in fonts/ (see fidelity_test.dart for the weights).
+      expect(CoquiText.body.fontFamily, 'packages/coqui_ui/Roboto');
+      expect(CoquiText.h1.fontFamily, 'packages/coqui_ui/Roboto');
     });
     test('Pixelify Sans is written with ligatures off', () {
       final s = pixelifyStyle(fontSize: 20);
-      expect(s.fontFamily, 'Pixelify Sans');
+      expect(s.fontFamily, 'packages/coqui_ui/Pixelify Sans');
       expect(s.fontFeatures, contains(const FontFeature.disable('liga')));
+    });
+  });
+
+  group('labels', () {
+    test('the names v=39 hard-codes, as they are on its pages', () {
+      expect(CoquiLabels.appName, 'Coquí');
+      expect(CoquiLabels.library, 'Biblioteca');
+      expect(CoquiLabels.words, 'Palabras');
+      expect(CoquiLabels.map, 'Mapa');
+      expect(CoquiLabels.speak, 'Hablar');
+      expect(CoquiLabels.me, 'Yo');
+      expect(CoquiLabels.reviewTitle, '¿Cuál?');
+      expect(CoquiLabels.review, 'Repaso');
+    });
+    test('the tab bar\'s five tabs read their names from them', () {
+      expect(CoquiTabs.all.map((t) => t.label), [
+        CoquiLabels.library,
+        CoquiLabels.words,
+        CoquiLabels.map,
+        CoquiLabels.speak,
+        CoquiLabels.me,
+      ]);
+      expect(CoquiTabs.all.map((t) => t.id), [
+        'library',
+        'words',
+        'map',
+        'speak',
+        'me',
+      ]);
     });
   });
 
