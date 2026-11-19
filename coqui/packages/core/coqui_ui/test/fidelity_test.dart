@@ -123,77 +123,86 @@ void main() {
 
   group('hairlines: a CSS border as Chrome draws it', () {
     test('1 px, 1.5 px and 4 px at ratio 2.625 and 3', () {
-      // Chrome floors the CSS width (1.5 to 1) and snaps the box: 3 device pixels at both ratios,
-      // as the reference pictures show (an outline pill's ring is 3 px on both phones).
-      expect(cssBorderWidth(1, 2.625) * 2.625, closeTo(3, 1e-9));
-      expect(cssBorderWidth(1.5, 2.625) * 2.625, closeTo(3, 1e-9));
-      expect(cssBorderWidth(4, 2.625) * 2.625, closeTo(11, 1e-9));
+      // Chrome floors the CSS width (1.5 to 1) and draws exactly that, unrounded: 2.625 device pixels at
+      // ratio 2.625 (two solid rows and a partial one, as the reference pictures show), 3 at ratio 3.
+      expect(cssBorderWidth(1, 2.625) * 2.625, closeTo(2.625, 1e-9));
+      expect(cssBorderWidth(1.5, 2.625) * 2.625, closeTo(2.625, 1e-9));
+      expect(cssBorderWidth(4, 2.625) * 2.625, closeTo(10.5, 1e-9));
       expect(cssBorderWidth(1, 3) * 3, closeTo(3, 1e-9));
       expect(cssBorderWidth(1.5, 3) * 3, closeTo(3, 1e-9));
       expect(cssBorderWidth(4, 3) * 3, closeTo(12, 1e-9));
     });
     test('never below one device pixel', () {
-      expect(cssBorderWidth(0.2, 2.625) * 2.625, closeTo(3, 1e-9));
+      expect(cssBorderWidth(0.2, 2.625) * 2.625, closeTo(2.625, 1e-9));
       expect(cssBorderWidth(1, 1) * 1, closeTo(1, 1e-9));
       expect(cssBorderWidth(1, 0.5) * 0.5, closeTo(1, 1e-9));
     });
 
     for (final ratio in [2.625, 3.0]) {
-      testWidgets('the outline button\'s border is 3 device pixels at $ratio', (
-        tester,
-      ) async {
-        _phone(tester, const Size(412, 915), ratio);
-        final key = GlobalKey();
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: Align(
-                alignment: Alignment.topLeft,
-                child: RepaintBoundary(
-                  key: key,
-                  child: SizedBox(
-                    width: 120,
-                    child: CoquiButton(
-                      label: 'x',
-                      kind: CoquiButtonKind.outline,
-                      full: true,
-                      onPressed: () {},
+      testWidgets(
+        'the outline button\'s border is 1 CSS pixel, not rounded, at $ratio',
+        (tester) async {
+          _phone(tester, const Size(412, 915), ratio);
+          final key = GlobalKey();
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: Align(
+                  alignment: Alignment.topLeft,
+                  child: RepaintBoundary(
+                    key: key,
+                    child: SizedBox(
+                      width: 120,
+                      child: CoquiButton(
+                        label: 'x',
+                        kind: CoquiButtonKind.outline,
+                        full: true,
+                        onPressed: () {},
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-        final boundary =
-            key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-        final px = await tester.runAsync(() async {
-          final image = await boundary.toImage(pixelRatio: ratio);
-          final data = (await image.toByteData())!;
-          final out = Uint32List(image.width * image.height);
-          final view = ByteData.sublistView(data);
-          for (var i = 0; i < out.length; i++) {
-            out[i] = view.getUint32(i * 4, Endian.little);
+          );
+          final boundary =
+              key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+          final px = await tester.runAsync(() async {
+            final image = await boundary.toImage(pixelRatio: ratio);
+            final data = (await image.toByteData())!;
+            final out = Uint32List(image.width * image.height);
+            final view = ByteData.sublistView(data);
+            for (var i = 0; i < out.length; i++) {
+              out[i] = view.getUint32(i * 4, Endian.little);
+            }
+            final r = (w: image.width, h: image.height, px: out);
+            image.dispose();
+            return r;
+          });
+          final w = px!.w;
+          final y = px.h ~/ 2;
+          // The left edge, mid height: solid border pixels (line2, #C9C6BB), then, at 2.625, one row that
+          // is 62% covered (2 + 0.625 = 2.625 device pixels), then nothing: the pill is empty inside.
+          const line2 = 0xFFBBC6C9;
+          var run = 0;
+          while (run < 12 && px.px[y * w + run] == line2) {
+            run++;
           }
-          final r = (w: image.width, h: image.height, px: out);
-          image.dispose();
-          return r;
-        });
-        final w = px!.w;
-        final y = px.h ~/ 2;
-        // The left edge, mid height: solid border pixels (line2, #C9C6BB), then nothing.
-        const line2 = 0xFFBBC6C9;
-        var run = 0;
-        while (run < 12 && px.px[y * w + run] == line2) {
-          run++;
-        }
-        expect(run, 3, reason: 'border thickness in device pixels');
-        expect(
-          px.px[y * w + run] >>> 24,
-          0,
-          reason: 'the pill is empty inside',
-        );
-      });
+          if (ratio == 3.0) {
+            expect(run, 3, reason: 'border thickness in whole device pixels');
+            expect(px.px[y * w + run] >>> 24, 0, reason: 'empty inside');
+          } else {
+            expect(run, 2, reason: 'two solid border pixels');
+            final partial = px.px[y * w + run] >>> 24;
+            expect(
+              partial,
+              closeTo(0.625 * 255, 6),
+              reason: 'then 62.5% covered',
+            );
+            expect(px.px[y * w + run + 1] >>> 24, 0, reason: 'empty inside');
+          }
+        },
+      );
     }
 
     testWidgets(
@@ -468,5 +477,150 @@ void main() {
       expect(pic.right - badge.right, 8);
       expect(badge.top - pic.top, 8);
     });
+  });
+
+  group('the end of a Repaso: the grid of word pictures (cual.js cualGrid)', () {
+    test(
+      'Android 412 at 2.625: three to a row at scale 1, 196 device pixels each',
+      () {
+        final p = lessonGridPlan(
+          contentWidth: 412 - 32,
+          devicePixelRatio: 2.625,
+          pictureWidth: 196,
+        );
+        expect((p.columns, p.scale), (3, 1));
+        expect(p.cellWidth * 2.625, closeTo(196, 1e-9));
+        expect(p.blockWidth, closeTo(3 * 196 / 2.625 + 32, 1e-9));
+      },
+    );
+    test(
+      'iPhone 390 at 3: two to a row at scale 2, 392 device pixels each',
+      () {
+        final p = lessonGridPlan(
+          contentWidth: 390 - 32,
+          devicePixelRatio: 3,
+          pictureWidth: 196,
+        );
+        expect((p.columns, p.scale), (2, 2));
+        expect(p.cellWidth * 3, closeTo(392, 1e-9));
+        expect(p.blockWidth, closeTo(2 * 392 / 3 + 16, 1e-9));
+      },
+    );
+    test(
+      'a picture is at most about 140 px wide; the column is at most 480',
+      () {
+        // 600 wide at ratio 2: 480 of room, but 140 px at ratio 2 is 280 device pixels: scale 1 only.
+        final wide = lessonGridPlan(
+          contentWidth: 568,
+          devicePixelRatio: 2,
+          pictureWidth: 196,
+        );
+        expect((wide.columns, wide.scale), (3, 1));
+        // A 360 wide phone at 3: two to a row at scale 2.
+        final small = lessonGridPlan(
+          contentWidth: 328,
+          devicePixelRatio: 3,
+          pictureWidth: 196,
+        );
+        expect((small.columns, small.scale), (2, 2));
+      },
+    );
+    test('where not even two fit at scale 1: one to a row', () {
+      final p = lessonGridPlan(
+        contentWidth: 100,
+        devicePixelRatio: 1,
+        pictureWidth: 196,
+      );
+      expect((p.columns, p.scale), (1, 1));
+    });
+
+    for (final (size, ratio, columns, devicePx) in [
+      (const Size(412, 915), 2.625, 3, 196.0),
+      (const Size(390, 844), 3.0, 2, 392.0),
+    ]) {
+      testWidgets(
+        '${size.width.toInt()} wide: $columns columns, each picture $devicePx device pixels wide, filling its cell',
+        (tester) async {
+          _phone(tester, size, ratio);
+          final plan = lessonGridPlan(
+            contentWidth: size.width - 32,
+            devicePixelRatio: ratio,
+            pictureWidth: 196,
+          );
+          final pixels = Uint32List(196 * 104);
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: LessonPictureGrid(
+                      plan: plan,
+                      cells: [
+                        for (var i = 0; i < 7; i++)
+                          LessonGridCell(
+                            picture: PixelView(
+                              pixels: pixels,
+                              width: 196,
+                              height: 104,
+                            ),
+                            word: 'w$i',
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+          final pics = tester
+              .widgetList<PixelView>(find.byType(PixelView))
+              .length;
+          expect(pics, 7);
+          final rects = [
+            for (var i = 0; i < 7; i++)
+              tester.getRect(find.byType(PixelView).at(i)),
+          ];
+          // The picture is exactly as wide as its cell, at a whole scale: no strip beside it.
+          expect(rects[0].width * ratio, closeTo(devicePx, 1e-6));
+          expect(rects[0].height * ratio, closeTo(devicePx * 104 / 196, 1e-6));
+          // `columns` to a row, 16 px apart, then the next row 8 + 24 + 16 px lower.
+          final firstRow = rects.where((r) => r.top == rects[0].top).length;
+          expect(firstRow, columns);
+          expect(rects[1].left - rects[0].right, closeTo(16, 1e-6));
+          final rowHeight = rects[0].height + 8 + 24 + 16;
+          expect(rects[columns].top - rects[0].top, closeTo(rowHeight, 1e-6));
+        },
+      );
+    }
+  });
+
+  group('a story\'s end: the title hangs 16 px under the picture', () {
+    for (final size in const [Size(412, 915), Size(390, 844), Size(360, 740)]) {
+      testWidgets('${size.width.toInt()} x ${size.height.toInt()}', (
+        tester,
+      ) async {
+        _phone(tester, size);
+        await tester.pumpWidget(
+          _app(
+            LessonFrame(
+              progress: const LessonProgressDashes(segments: 5, done: 5),
+              picture: const SizedBox(key: Key('pic'), width: 300, height: 330),
+              underPicture: const Text('Story title', key: Key('title')),
+              bottom: [LessonButton(label: 'Next story', onPressed: () {})],
+            ),
+            size: size,
+          ),
+        );
+        final pic = tester.getRect(find.byKey(const Key('pic')));
+        final title = tester.getRect(find.byKey(const Key('title')));
+        // The picture is centred above the 112 px of the bottom zone, under the 56 px top bar.
+        expect(pic.center.dy, closeTo(56 + (size.height - 56 - 112) / 2, 1e-6));
+        // The title: 16 px under the picture, at the left of the 16 px margins.
+        expect(title.top - pic.bottom, closeTo(16, 1e-6));
+        expect(title.left, 16);
+      });
+    }
   });
 }

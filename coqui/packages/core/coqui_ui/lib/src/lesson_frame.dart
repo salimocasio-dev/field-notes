@@ -2,6 +2,8 @@
 /// check, the book and the call (cual.html:11-111, index.html:11-111).
 library;
 
+import 'dart:math' as math;
+
 import 'package:coqui_ui/src/buttons.dart';
 import 'package:coqui_ui/src/icons.dart';
 import 'package:coqui_ui/src/pressable.dart';
@@ -117,6 +119,7 @@ class LessonFrame extends StatelessWidget {
     this.trailing,
     this.picture,
     this.caption,
+    this.underPicture,
     this.bottom = const [],
     this.overlay,
     this.startState = false,
@@ -147,6 +150,15 @@ class LessonFrame extends StatelessWidget {
 
   /// The line under the picture. Null: none.
   final String? caption;
+
+  /// A story's end: the title (24 px semibold, left) hangs 16 px under the picture, wherever the picture
+  /// stands: the frame places it from the picture's own bottom edge, not from a fixed place, so it is the
+  /// same 16 px under the picture on a tall phone and on a short one (`finFit()`, juego.js:391-395; the
+  /// picture is centred above the bottom zone and stays where it was). It is at most 480 px wide, in the
+  /// 16 px side margins. The old page drops it when it does not fit between the picture and the buttons;
+  /// that check needs the height of the buttons, so the caller that can run into it makes it (feature_story's
+  /// `StoryEndTitle` does). Null: none.
+  final Widget? underPicture;
 
   /// What stands in the bottom zone: [LessonStartButton], [LessonButton]s.
   final List<Widget> bottom;
@@ -205,8 +217,9 @@ class LessonFrame extends StatelessWidget {
     ),
   );
 
-  /// The picture with its caption hanging under it: the caption has no height of
-  /// its own, so the picture alone is what gets centred. cual.html:30-33
+  /// The picture with its caption (8 px under it) and a story's end title ([underPicture], 16 px under it)
+  /// hanging under it: neither has a height of its own, so the picture alone is what gets centred.
+  /// cual.html:30-33; juego.js:391-395
   Widget _stage() => Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -235,6 +248,28 @@ class LessonFrame extends StatelessWidget {
           ),
         ),
       ),
+      if (underPicture != null)
+        SizedBox(
+          height: 0,
+          width: double.infinity,
+          child: OverflowBox(
+            alignment: Alignment.topCenter,
+            minHeight: 0,
+            maxHeight: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(top: CoquiMetrics.s16),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: CoquiMetrics.lessonColumnMax,
+                  ),
+                  child: SizedBox(width: double.infinity, child: underPicture),
+                ),
+              ),
+            ),
+          ),
+        ),
     ],
   );
 
@@ -469,4 +504,121 @@ class PictureChoice extends StatelessWidget {
       builder: (context, pressed) => picture,
     );
   }
+}
+
+/// How the end of a Repaso lays out the pictures of its words: [columns] to a row at a whole number
+/// [scale] of device pixels per picture pixel, each picture [cellWidth] logical pixels wide. cual.js:
+/// `cualGrid()` (cual.js:60-65).
+class LessonGridPlan {
+  const LessonGridPlan({
+    required this.columns,
+    required this.scale,
+    required this.cellWidth,
+  });
+
+  final int columns;
+
+  /// Device pixels per picture pixel: a whole number, never below 1.
+  final int scale;
+
+  /// A cell, and so its picture, as wide as `pictureWidth * scale / devicePixelRatio`.
+  final double cellWidth;
+
+  /// `gap:16px` between the cells, across and down. cual.html:46
+  static const double gap = 16;
+
+  /// The grid, and the title and lines above it, are one block this wide, centred
+  /// (`#fin.lis>*{max-width:var(--gw)}`, `--gw` set by `cualGrid()`). cual.html:41
+  double get blockWidth => columns * cellWidth + (columns - 1) * gap;
+}
+
+/// `cualGrid()` (cual.js:60-65): three or two pictures to a row, at the largest whole scale that fits;
+/// a tie goes to three; a picture is at most about 140 px wide (`top`: the words are small things to look
+/// at, ten fit a screen); where not even two fit at scale 1, one to a row.
+///
+/// [contentWidth] is the width of the end screen inside its 16 px side padding (`#fin`'s `clientWidth`
+/// minus its padding), [pictureWidth] the art's width in picture pixels (`DW`, 196).
+LessonGridPlan lessonGridPlan({
+  required double contentWidth,
+  required double devicePixelRatio,
+  required int pictureWidth,
+}) {
+  final w = math.min(CoquiMetrics.lessonColumnMax, contentWidth);
+  final top = math.max(
+    1,
+    (140 * devicePixelRatio / pictureWidth + .001).floor(),
+  );
+  int? columns;
+  int? scale;
+  for (final n in const [3, 2]) {
+    final fit =
+        (((w - (n - 1) * LessonGridPlan.gap) / n) *
+                    devicePixelRatio /
+                    pictureWidth +
+                .001)
+            .floor();
+    final kd = math.min(top, fit);
+    if (kd >= 1 && (scale == null || kd > scale)) {
+      columns = n;
+      scale = kd;
+    }
+  }
+  final kd = scale ?? 1;
+  return LessonGridPlan(
+    columns: columns ?? 1,
+    scale: kd,
+    cellWidth: pictureWidth * kd / devicePixelRatio,
+  );
+}
+
+/// One word of the end screen's grid: its [picture] (a [PixelView] as wide as its cell: it draws itself
+/// at the plan's whole scale) and the [word] under it.
+class LessonGridCell {
+  const LessonGridCell({required this.picture, required this.word});
+  final Widget picture;
+  final String word;
+}
+
+/// `.gw`: the words of a group, each a picture in a 1.5 px ring (`box-shadow:0 0 0 1.5px var(--line)`: a
+/// ring outside the picture that takes no room) and the word under it, 8 px below, 16/24 white; the cells
+/// [LessonGridPlan.gap] apart. The widget is [LessonGridPlan.blockWidth] wide; the picture of a cell
+/// is exactly as wide as its cell, so at the plan's scale it fills it, with no strip. cual.html:46-50
+class LessonPictureGrid extends StatelessWidget {
+  const LessonPictureGrid({super.key, required this.plan, required this.cells});
+
+  final LessonGridPlan plan;
+  final List<LessonGridCell> cells;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: plan.blockWidth,
+    child: Wrap(
+      spacing: LessonGridPlan.gap,
+      runSpacing: LessonGridPlan.gap,
+      children: [
+        for (final cell in cells)
+          SizedBox(
+            width: plan.cellWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DecoratedBox(
+                  decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: CoquiColors.lessonLine,
+                        spreadRadius: 1.5,
+                      ),
+                    ],
+                  ),
+                  child: SizedBox(width: plan.cellWidth, child: cell.picture),
+                ),
+                const SizedBox(height: CoquiMetrics.s8),
+                Text(cell.word, style: CoquiText.lessonWord),
+              ],
+            ),
+          ),
+      ],
+    ),
+  );
 }
