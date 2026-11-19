@@ -146,7 +146,9 @@ Future<void> playLevelState(
       s.touch(1);
       await vt.advance(100);
     case 'resultado-11-historias':
-      await _levelToEnd(s, vt, (story) => story <= 11);
+      // as the reference was made: the first item is touched wrong (the picture before it, "pregunta-tocada"),
+      // then right on every item up to story 11 and wrong after
+      await _levelToEnd(s, vt, (story) => story <= 11, firstWrong: true);
     case 'resultado-1-historia':
       await _levelToEnd(s, vt, (story) => story <= 1);
     case 'resultado-desde-el-principio':
@@ -157,15 +159,17 @@ Future<void> playLevelState(
 Future<void> _levelToEnd(
   LevelCheckSession s,
   VirtualTime vt,
-  bool Function(int story) right,
-) async {
+  bool Function(int story) right, {
+  bool firstWrong = false,
+}) async {
   var acted = -1;
   for (var i = 0; i < 1000000 && s.screen != LessonScreen.end; i++) {
     final ps = s.panels;
     if (ps != null && s.ready && acted != s.index) {
       acted = s.index;
       final r = ps.indexWhere((p) => p.right);
-      s.touch(right(s.currentStory ?? 0) ? r : (r + 1) % 4);
+      final ok = right(s.currentStory ?? 0) && !(firstWrong && s.index == 0);
+      s.touch(ok ? r : (r + 1) % 4);
     }
     if (!vt.fireNext()) break;
     await vt.settle();

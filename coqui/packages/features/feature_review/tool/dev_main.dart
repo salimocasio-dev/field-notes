@@ -94,6 +94,7 @@ class _DevAppState extends State<DevApp> {
   VirtualTime? _vt;
   final GlobalKey<ReviewScreenState> _review = GlobalKey();
   final GlobalKey<LevelCheckScreenState> _level = GlobalKey();
+  final ScrollController _endScroll = ScrollController();
   Object? _error;
 
   Map<String, String> get q => widget.query;
@@ -141,6 +142,13 @@ class _DevAppState extends State<DevApp> {
       await playReviewState(st.session, vt, state, () async {
         await st.pressStart();
       });
+      if (state.endsWith('-al-final')) {
+        // "scroll the list of words to its end"
+        await Future<void>.delayed(const Duration(milliseconds: 600));
+        if (_endScroll.hasClients) {
+          _endScroll.jumpTo(_endScroll.position.maxScrollExtent);
+        }
+      }
     }
   }
 
@@ -175,6 +183,7 @@ class _DevAppState extends State<DevApp> {
                 ),
                 captions: captionsOf(q['txt']),
                 wait: _vt?.wait,
+                endScroll: _endScroll,
               ),
       ),
     );

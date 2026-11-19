@@ -20,10 +20,14 @@ class ReviewScreen extends StatefulWidget {
     this.options = const ReviewOptions(),
     this.captions = CaptionMode.during,
     this.wait,
+    this.endScroll,
   });
 
   final Services services;
   final ReviewOptions options;
+
+  /// The end screen's list, for a dev entry or a test that scrolls it.
+  final ScrollController? endScroll;
   final CaptionMode captions;
 
   /// The host's wait. Left out, a timer is used; tests and the dev entry give a virtual clock's.
@@ -177,7 +181,10 @@ class ReviewEndScreen extends StatelessWidget {
     required this.box,
     required this.end,
     required this.pictures,
+    this.controller,
   });
+
+  final ScrollController? controller;
 
   final LessonBox box;
   final ReviewEnd end;
@@ -257,6 +264,7 @@ class ReviewEndScreen extends StatelessWidget {
             dpr: box.dpr,
           );
           return SingleChildScrollView(
+            controller: controller,
             padding: EdgeInsets.fromLTRB(
               horizontal,
               box.landscape ? 8 : 16,
