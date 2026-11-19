@@ -56,6 +56,7 @@ for dir in packages/core/* packages/features/* app; do
 done
 
 step "flutter build web"
-(cd app && flutter build web)
+# --no-web-resources-cdn: CanvasKit comes from our own site, never from gstatic.
+(cd app && flutter build web --no-web-resources-cdn)
 
 printf '\n== all checks passed\n'
