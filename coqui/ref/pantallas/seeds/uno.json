@@ -1,0 +1,53 @@
+{
+ "palabras": {
+  "abuela": {
+   "w": "abuela",
+   "primera": 1792504800000,
+   "oida": 1,
+   "ear": {
+    "etapa": 4,
+    "paso": 2,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795096800000,
+    "aciertos": [
+     1793368800000,
+     1794232800000,
+     1795010400000
+    ],
+    "ultima": 1795010400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  }
+ },
+ "dias": {
+  "2026-11-19": 1
+ },
+ "cuentos": {},
+ "ajustes": {
+  "min": 30,
+  "todo": 0,
+  "bienvenida": 1,
+  "habla": 1
+ },
+ "minutos": 1,
+ "v": 1
+}

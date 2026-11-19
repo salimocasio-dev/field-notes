@@ -1,0 +1,2273 @@
+{
+ "about": "The English strings v=39 can show, and the pictures (file names, the same on both phones) in which each shows. count 0: not shown in any picture.",
+ "not_shown": [
+  {
+   "string": "All your words",
+   "from": "app.html plan (reached only when there is no story at all)",
+   "note": "unreachable"
+  }
+ ],
+ "strings": [
+  {
+   "string": "Biblioteca",
+   "regex": false,
+   "from": "app.html tabs",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 86,
+   "note": null
+  },
+  {
+   "string": "Palabras",
+   "regex": false,
+   "from": "app.html tabs",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 92,
+   "note": null
+  },
+  {
+   "string": "Mapa",
+   "regex": false,
+   "from": "app.html tabs",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 84,
+   "note": null
+  },
+  {
+   "string": "Hablar",
+   "regex": false,
+   "from": "app.html tabs",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 88,
+   "note": null
+  },
+  {
+   "string": "Yo",
+   "regex": false,
+   "from": "app.html tabs",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "004-bienvenida-paso-3.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png"
+   ],
+   "count": 128,
+   "note": null
+  },
+  {
+   "string": "^🔥 \\d+ days$",
+   "regex": true,
+   "from": "app.html hud (chip)",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png",
+    "009-mapa-nada-jugado.png",
+    "012-mapa-a-medio-curso.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "^🔥 1 day$",
+   "regex": true,
+   "from": "app.html hud (chip), singular",
+   "pictures": [
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "077-mapa-despues-del-nivel.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "077-mapa-despues-del-nivel.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "^\\d+ · (La casa|El parque|La cocina)$",
+   "regex": true,
+   "from": "app.html hud (chip)",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "Today",
+   "regex": false,
+   "from": "app.html hud (Today card)",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png"
+   ],
+   "count": 42,
+   "note": null
+  },
+  {
+   "string": "^Today · 1 of \\d+$",
+   "regex": true,
+   "from": "app.html hud (Today card)",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "¿Cuál?",
+   "regex": false,
+   "from": "app.html plan",
+   "pictures": [
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "018-lugar-abierto-2-a-medias.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "^\\d+ words coming back · \\d+ min$",
+   "regex": true,
+   "from": "app.html plan",
+   "pictures": [
+    "012-mapa-a-medio-curso.png",
+    "012-mapa-a-medio-curso.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^1 word coming back · \\d+ min$",
+   "regex": true,
+   "from": "app.html plan, singular",
+   "pictures": [
+    "011-mapa-una-palabra.png",
+    "011-mapa-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^New story · play it twice · \\d+ min$",
+   "regex": true,
+   "from": "app.html plan",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "009-mapa-nada-jugado.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^Second play · \\d+ min$",
+   "regex": true,
+   "from": "app.html plan",
+   "pictures": [
+    "010-mapa-una-historia-hoy.png",
+    "077-mapa-despues-del-nivel.png",
+    "010-mapa-una-historia-hoy.png",
+    "077-mapa-despues-del-nivel.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "^Listen again · \\d+ min$",
+   "regex": true,
+   "from": "app.html plan",
+   "pictures": [
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "All your words",
+   "regex": false,
+   "from": "app.html plan (reached only when there is no story at all)",
+   "pictures": [],
+   "count": 0,
+   "note": "unreachable"
+  },
+  {
+   "string": "^Place 1 · Grandma's house$",
+   "regex": true,
+   "from": "app.html lugar, curso.js",
+   "pictures": [
+    "015-lugar-abierto-1-nada-jugado.png",
+    "016-lugar-hecho-1.png",
+    "015-lugar-abierto-1-nada-jugado.png",
+    "016-lugar-hecho-1.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "^Place 2 · The park · a fork: either place first$",
+   "regex": true,
+   "from": "app.html lugar, curso.js",
+   "pictures": [
+    "018-lugar-abierto-2-a-medias.png",
+    "018-lugar-abierto-2-a-medias.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^Place 3 · The kitchen · a fork: either place first$",
+   "regex": true,
+   "from": "app.html lugar, curso.js",
+   "pictures": [
+    "019-lugar-abierto-3-nada-jugado.png",
+    "021-lugar-hecho-3.png",
+    "019-lugar-abierto-3-nada-jugado.png",
+    "021-lugar-hecho-3.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Place 4 · The corner shop",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "020-lugar-cerrado-4.png",
+    "028-lugar-sin-construir-4.png",
+    "020-lugar-cerrado-4.png",
+    "028-lugar-sin-construir-4.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Place 5 · The street · a fork: either place first",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "022-lugar-cerrado-5.png",
+    "022-lugar-cerrado-5.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Place 6 · The town square · a fork: either place first",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "023-lugar-cerrado-6.png",
+    "023-lugar-cerrado-6.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Place 7 · The beach · a fork: either place first",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "024-lugar-cerrado-7.png",
+    "024-lugar-cerrado-7.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Place 8 · The diner · a fork: either place first",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "025-lugar-cerrado-8.png",
+    "025-lugar-cerrado-8.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Place 9 · A whole day at home",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "026-lugar-cerrado-9.png",
+    "026-lugar-cerrado-9.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Place 10 · The fort",
+   "regex": false,
+   "from": "curso.js",
+   "pictures": [
+    "027-lugar-cerrado-10.png",
+    "027-lugar-cerrado-10.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "New",
+   "regex": false,
+   "from": "app.html lugar",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "015-lugar-abierto-1-nada-jugado.png",
+    "018-lugar-abierto-2-a-medias.png",
+    "019-lugar-abierto-3-nada-jugado.png",
+    "009-mapa-nada-jugado.png",
+    "015-lugar-abierto-1-nada-jugado.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "Played",
+   "regex": false,
+   "from": "app.html lugar",
+   "pictures": [
+    "016-lugar-hecho-1.png",
+    "017-lugar-hecho-1-al-final.png",
+    "018-lugar-abierto-2-a-medias.png",
+    "021-lugar-hecho-3.png",
+    "016-lugar-hecho-1.png",
+    "017-lugar-hecho-1-al-final.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "^about \\d+ min$|about \\d+ min",
+   "regex": true,
+   "from": "app.html lugar",
+   "pictures": [
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png",
+    "015-lugar-abierto-1-nada-jugado.png",
+    "016-lugar-hecho-1.png",
+    "017-lugar-hecho-1-al-final.png",
+    "018-lugar-abierto-2-a-medias.png"
+   ],
+   "count": 54,
+   "note": null
+  },
+  {
+   "string": "Not built yet.",
+   "regex": false,
+   "from": "app.html lugar",
+   "pictures": [
+    "028-lugar-sin-construir-4.png",
+    "028-lugar-sin-construir-4.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Locked until the places before it are done.",
+   "regex": false,
+   "from": "app.html lugar",
+   "pictures": [
+    "020-lugar-cerrado-4.png",
+    "022-lugar-cerrado-5.png",
+    "023-lugar-cerrado-6.png",
+    "024-lugar-cerrado-7.png",
+    "025-lugar-cerrado-8.png",
+    "026-lugar-cerrado-9.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "^Scenes: ",
+   "regex": true,
+   "from": "app.html lugar",
+   "pictures": [
+    "020-lugar-cerrado-4.png",
+    "022-lugar-cerrado-5.png",
+    "023-lugar-cerrado-6.png",
+    "024-lugar-cerrado-7.png",
+    "025-lugar-cerrado-8.png",
+    "026-lugar-cerrado-9.png"
+   ],
+   "count": 16,
+   "note": null
+  },
+  {
+   "string": "Listen",
+   "regex": false,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png",
+    "047-biblioteca-a-medio-curso.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "049-biblioteca-todo-jugado.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png"
+   ],
+   "count": 42,
+   "note": null
+  },
+  {
+   "string": "Read",
+   "regex": false,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "047-biblioteca-a-medio-curso.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "049-biblioteca-todo-jugado.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "051-biblioteca-queda-una.png",
+    "052-biblioteca-queda-una-al-final.png"
+   ],
+   "count": 29,
+   "note": null
+  },
+  {
+   "string": "✓",
+   "regex": false,
+   "from": "app.html biblioteca (Read ✓)",
+   "pictures": [
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "052-biblioteca-queda-una-al-final.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png"
+   ],
+   "count": 5,
+   "note": null
+  },
+  {
+   "string": "Cuento con dibujos",
+   "regex": false,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Haz esto",
+   "regex": false,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Heard \\d+×",
+   "regex": true,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "047-biblioteca-a-medio-curso.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "049-biblioteca-todo-jugado.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "051-biblioteca-queda-una.png",
+    "052-biblioteca-queda-una-al-final.png"
+   ],
+   "count": 12,
+   "note": null
+  },
+  {
+   "string": "Play a story on the map. You can hear it again here and read it.",
+   "regex": false,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "046-biblioteca-nada-jugado.png",
+    "046-biblioteca-nada-jugado.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^\\d+ more open as you play the map$",
+   "regex": true,
+   "from": "app.html biblioteca",
+   "pictures": [
+    "046-biblioteca-nada-jugado.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png",
+    "046-biblioteca-nada-jugado.png",
+    "048-biblioteca-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "1 more opens as you play the map",
+   "regex": false,
+   "from": "app.html biblioteca, singular",
+   "pictures": [
+    "052-biblioteca-queda-una-al-final.png",
+    "052-biblioteca-queda-una-al-final.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Fin",
+   "regex": false,
+   "from": "app.html pie",
+   "pictures": [
+    "060-libro-ultima-pagina.png",
+    "060-libro-ultima-pagina.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Otra vez",
+   "regex": false,
+   "from": "app.html pie",
+   "pictures": [
+    "018-lugar-abierto-2-a-medias.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "060-libro-ultima-pagina.png",
+    "126-prueba-de-voz-final.png",
+    "127-prueba-de-voz-final-al-final.png",
+    "128-prueba-de-voz-sin-microfono.png"
+   ],
+   "count": 12,
+   "note": null
+  },
+  {
+   "string": "Coquí",
+   "regex": false,
+   "from": "app.html lineaEl (the coquí's label)",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "042-palabra-sin-imagen.png",
+    "044-palabra-bien-oido-4-boca-3.png",
+    "045-palabra-recien-oida-oido-1.png"
+   ],
+   "count": 29,
+   "note": null
+  },
+  {
+   "string": "^\\d+ \\/ \\d+$",
+   "regex": true,
+   "from": "app.html pinta (page count)",
+   "pictures": [
+    "053-libro-primera-pagina-linea-1-luce.png",
+    "054-libro-primera-pagina-linea-2-luce.png",
+    "055-libro-primera-pagina-en-reposo.png",
+    "057-libro-pagina-media-linea-luce.png",
+    "058-libro-pagina-media-en-reposo.png",
+    "059-libro-texto-grande.png"
+   ],
+   "count": 32,
+   "note": null
+  },
+  {
+   "string": "Aa",
+   "regex": false,
+   "from": "app.html (text size)",
+   "pictures": [
+    "053-libro-primera-pagina-linea-1-luce.png",
+    "054-libro-primera-pagina-linea-2-luce.png",
+    "055-libro-primera-pagina-en-reposo.png",
+    "057-libro-pagina-media-linea-luce.png",
+    "058-libro-pagina-media-en-reposo.png",
+    "059-libro-texto-grande.png"
+   ],
+   "count": 18,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Book",
+   "regex": false,
+   "from": "app.html",
+   "pictures": [
+    "053-libro-primera-pagina-linea-1-luce.png",
+    "054-libro-primera-pagina-linea-2-luce.png",
+    "055-libro-primera-pagina-en-reposo.png",
+    "056-libro-tarjeta-de-palabra.png",
+    "057-libro-pagina-media-linea-luce.png",
+    "058-libro-pagina-media-en-reposo.png"
+   ],
+   "count": 20,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Close",
+   "regex": false,
+   "from": "app.html",
+   "pictures": [
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "007-bienvenida-como-funciona-2.png",
+    "008-bienvenida-como-funciona-3.png",
+    "015-lugar-abierto-1-nada-jugado.png",
+    "016-lugar-hecho-1.png"
+   ],
+   "count": 180,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Text size",
+   "regex": false,
+   "from": "app.html",
+   "pictures": [
+    "053-libro-primera-pagina-linea-1-luce.png",
+    "054-libro-primera-pagina-linea-2-luce.png",
+    "055-libro-primera-pagina-en-reposo.png",
+    "056-libro-tarjeta-de-palabra.png",
+    "057-libro-pagina-media-linea-luce.png",
+    "058-libro-pagina-media-en-reposo.png"
+   ],
+   "count": 20,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Previous page",
+   "regex": false,
+   "from": "app.html pie",
+   "pictures": [
+    "053-libro-primera-pagina-linea-1-luce.png",
+    "054-libro-primera-pagina-linea-2-luce.png",
+    "055-libro-primera-pagina-en-reposo.png",
+    "056-libro-tarjeta-de-palabra.png",
+    "057-libro-pagina-media-linea-luce.png",
+    "058-libro-pagina-media-en-reposo.png"
+   ],
+   "count": 20,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Next page",
+   "regex": false,
+   "from": "app.html pie",
+   "pictures": [
+    "053-libro-primera-pagina-linea-1-luce.png",
+    "054-libro-primera-pagina-linea-2-luce.png",
+    "055-libro-primera-pagina-en-reposo.png",
+    "056-libro-tarjeta-de-palabra.png",
+    "057-libro-pagina-media-linea-luce.png",
+    "058-libro-pagina-media-en-reposo.png"
+   ],
+   "count": 18,
+   "note": null
+  },
+  {
+   "string": "Repaso",
+   "regex": false,
+   "from": "app.html palabras, cual.js",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "035-palabras-todo-jugado.png",
+    "036-palabras-todo-jugado-pagina-entera.png",
+    "037-palabras-una-palabra.png"
+   ],
+   "count": 20,
+   "note": null
+  },
+  {
+   "string": "^\\d+ words today · about \\d+ min$",
+   "regex": true,
+   "from": "app.html palabras",
+   "pictures": [
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "^1 word today · about 1 min$",
+   "regex": true,
+   "from": "app.html palabras, singular",
+   "pictures": [
+    "037-palabras-una-palabra.png",
+    "037-palabras-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Start",
+   "regex": false,
+   "from": "app.html palabras, yo",
+   "pictures": [
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "037-palabras-una-palabra.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 32,
+   "note": null
+  },
+  {
+   "string": "Nothing due today",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "035-palabras-todo-jugado.png",
+    "036-palabras-todo-jugado-pagina-entera.png",
+    "078-palabras-despues-del-nivel.png",
+    "029-palabras-nada-jugado.png",
+    "035-palabras-todo-jugado.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "Practice",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "035-palabras-todo-jugado.png",
+    "036-palabras-todo-jugado-pagina-entera.png",
+    "078-palabras-despues-del-nivel.png",
+    "029-palabras-nada-jugado.png",
+    "035-palabras-todo-jugado.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "Ear: you know it when you hear it. Mouth: you can say it.",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "035-palabras-todo-jugado.png",
+    "036-palabras-todo-jugado-pagina-entera.png",
+    "037-palabras-una-palabra.png",
+    "078-palabras-despues-del-nivel.png"
+   ],
+   "count": 12,
+   "note": null
+  },
+  {
+   "string": "Ear",
+   "regex": false,
+   "from": "app.html meter",
+   "pictures": [
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "032-palabras-a-medio-curso-agregar-campo-vacio.png",
+    "033-palabras-a-medio-curso-agregar-campo-escrito.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "035-palabras-todo-jugado.png"
+   ],
+   "count": 34,
+   "note": null
+  },
+  {
+   "string": "Mouth",
+   "regex": false,
+   "from": "app.html meter",
+   "pictures": [
+    "030-palabras-a-medio-curso.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "032-palabras-a-medio-curso-agregar-campo-vacio.png",
+    "033-palabras-a-medio-curso-agregar-campo-escrito.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "035-palabras-todo-jugado.png"
+   ],
+   "count": 34,
+   "note": null
+  },
+  {
+   "string": "Play the first story on the map. Your words show up here.",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "029-palabras-nada-jugado.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "More words",
+   "regex": false,
+   "from": "app.html palabras (a recorded word that no played story brings)",
+   "pictures": [
+    "037-palabras-una-palabra.png",
+    "037-palabras-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Add a word or a goal",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "032-palabras-a-medio-curso-agregar-campo-vacio.png",
+    "033-palabras-a-medio-curso-agregar-campo-escrito.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "036-palabras-todo-jugado-pagina-entera.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "For example: \"talk to my 1-year-old around the house\".",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "032-palabras-a-medio-curso-agregar-campo-vacio.png",
+    "033-palabras-a-medio-curso-agregar-campo-escrito.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "036-palabras-todo-jugado-pagina-entera.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "[placeholder] A word or a goal",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "032-palabras-a-medio-curso-agregar-campo-vacio.png",
+    "033-palabras-a-medio-curso-agregar-campo-escrito.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "036-palabras-todo-jugado-pagina-entera.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "Add",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "029-palabras-nada-jugado.png",
+    "031-palabras-a-medio-curso-pagina-entera.png",
+    "032-palabras-a-medio-curso-agregar-campo-vacio.png",
+    "033-palabras-a-medio-curso-agregar-campo-escrito.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "036-palabras-todo-jugado-pagina-entera.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "Saved. Material for it comes later.",
+   "regex": false,
+   "from": "app.html palabras",
+   "pictures": [
+    "034-palabras-a-medio-curso-agregar-guardado.png",
+    "034-palabras-a-medio-curso-agregar-guardado.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Comes back today",
+   "regex": false,
+   "from": "app.html vuelve",
+   "pictures": [
+    "039-palabra-linea-sonando.png",
+    "040-palabra-al-final.png",
+    "041-palabra-con-boca.png",
+    "043-palabra-vuelve-hoy.png",
+    "045-palabra-recien-oida-oido-1.png",
+    "039-palabra-linea-sonando.png"
+   ],
+   "count": 10,
+   "note": null
+  },
+  {
+   "string": "^Comes back in \\d+ days$",
+   "regex": true,
+   "from": "app.html vuelve",
+   "pictures": [
+    "044-palabra-bien-oido-4-boca-3.png",
+    "044-palabra-bien-oido-4-boca-3.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Comes back in 1 day",
+   "regex": false,
+   "from": "app.html vuelve, singular",
+   "pictures": [
+    "038-palabra-con-imagen-oido-3-vuelve-en-dias.png",
+    "042-palabra-sin-imagen.png",
+    "038-palabra-con-imagen-oido-3-vuelve-en-dias.png",
+    "042-palabra-sin-imagen.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Heard in",
+   "regex": false,
+   "from": "app.html palabra",
+   "pictures": [
+    "038-palabra-con-imagen-oido-3-vuelve-en-dias.png",
+    "039-palabra-linea-sonando.png",
+    "040-palabra-al-final.png",
+    "041-palabra-con-boca.png",
+    "042-palabra-sin-imagen.png",
+    "043-palabra-vuelve-hoy.png"
+   ],
+   "count": 16,
+   "note": null
+  },
+  {
+   "string": "Call Danny",
+   "regex": false,
+   "from": "app.html hablar",
+   "pictures": [
+    "063-hablar-nada-jugado.png",
+    "064-hablar-nada-jugado-pagina-entera.png",
+    "065-hablar-a-medio-curso.png",
+    "066-hablar-a-medio-curso-pagina-entera.png",
+    "067-hablar-todo-jugado.png",
+    "068-hablar-todo-jugado-pagina-entera.png"
+   ],
+   "count": 50,
+   "note": null
+  },
+  {
+   "string": "· about 5 min$",
+   "regex": true,
+   "from": "app.html hablar",
+   "pictures": [
+    "017-lugar-hecho-1-al-final.png",
+    "018-lugar-abierto-2-a-medias.png",
+    "019-lugar-abierto-3-nada-jugado.png",
+    "021-lugar-hecho-3.png",
+    "050-biblioteca-todo-jugado-pagina-entera.png",
+    "052-biblioteca-queda-una-al-final.png"
+   ],
+   "count": 24,
+   "note": null
+  },
+  {
+   "string": "^Opens when you finish ",
+   "regex": true,
+   "from": "app.html hablar",
+   "pictures": [
+    "063-hablar-nada-jugado.png",
+    "064-hablar-nada-jugado-pagina-entera.png",
+    "065-hablar-a-medio-curso.png",
+    "066-hablar-a-medio-curso-pagina-entera.png",
+    "067-hablar-todo-jugado.png",
+    "068-hablar-todo-jugado-pagina-entera.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "^Coming soon · ",
+   "regex": true,
+   "from": "app.html hablar",
+   "pictures": [
+    "067-hablar-todo-jugado.png",
+    "068-hablar-todo-jugado-pagina-entera.png",
+    "067-hablar-todo-jugado.png",
+    "068-hablar-todo-jugado-pagina-entera.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Words open for speaking",
+   "regex": false,
+   "from": "app.html hablar",
+   "pictures": [
+    "064-hablar-nada-jugado-pagina-entera.png",
+    "066-hablar-a-medio-curso-pagina-entera.png",
+    "068-hablar-todo-jugado-pagina-entera.png",
+    "064-hablar-nada-jugado-pagina-entera.png",
+    "066-hablar-a-medio-curso-pagina-entera.png",
+    "068-hablar-todo-jugado-pagina-entera.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "None yet. A word opens once your ear has held it for a few days.",
+   "regex": false,
+   "from": "app.html hablar",
+   "pictures": [
+    "064-hablar-nada-jugado-pagina-entera.png",
+    "064-hablar-nada-jugado-pagina-entera.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "day streak",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "074-yo-todo-jugado.png",
+    "075-yo-una-palabra.png"
+   ],
+   "count": 18,
+   "note": null
+  },
+  {
+   "string": "minutes listened",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "074-yo-todo-jugado.png",
+    "076-yo-nota-sin-voz.png"
+   ],
+   "count": 16,
+   "note": null
+  },
+  {
+   "string": "minute listened",
+   "regex": false,
+   "from": "app.html yo, singular (the number is its own element)",
+   "pictures": [
+    "075-yo-una-palabra.png",
+    "075-yo-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "words heard",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 18,
+   "note": null
+  },
+  {
+   "string": "word heard",
+   "regex": false,
+   "from": "app.html yo, singular",
+   "pictures": [
+    "075-yo-una-palabra.png",
+    "075-yo-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "words good",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 18,
+   "note": null
+  },
+  {
+   "string": "word good",
+   "regex": false,
+   "from": "app.html yo, singular",
+   "pictures": [
+    "075-yo-una-palabra.png",
+    "075-yo-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Where you are",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "^A1 · place \\d+ of 10 · ",
+   "regex": true,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "Minutes a day",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "15",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 28,
+   "note": null
+  },
+  {
+   "string": "30",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 28,
+   "note": null
+  },
+  {
+   "string": "60",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 28,
+   "note": null
+  },
+  {
+   "string": "120",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png"
+   ],
+   "count": 28,
+   "note": null
+  },
+  {
+   "string": "Today's plan is sized to this.",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "Open every place",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "To look ahead. Places not built yet stay empty.",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "Speak in stories",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "007-bienvenida-como-funciona-2.png",
+    "008-bienvenida-como-funciona-3.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png"
+   ],
+   "count": 30,
+   "note": null
+  },
+  {
+   "string": "Some of the coquí's lines become your turn: you say them and the app listens.",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "Speaking in stories isn't available on this phone right now.",
+   "regex": false,
+   "from": "app.html notaHabla",
+   "pictures": [
+    "076-yo-nota-sin-voz.png"
+   ],
+   "count": 1,
+   "note": null
+  },
+  {
+   "string": "Level check",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png"
+   ],
+   "count": 26,
+   "note": null
+  },
+  {
+   "string": "^For people who already understand some Spanish\\. About 3 minutes, touch only\\. Covers the stories built so far\\.$",
+   "regex": true,
+   "from": "app.html yo",
+   "pictures": [
+    "069-yo-nada-jugado.png",
+    "070-yo-a-medio-curso.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "072-yo-ajustes-cambiados.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "074-yo-todo-jugado.png"
+   ],
+   "count": 9,
+   "note": null
+  },
+  {
+   "string": "^For people who already understand some Spanish\\. About 3 minutes, touch only\\. Done: \\d+ stories skipped\\.$",
+   "regex": true,
+   "from": "app.html yo",
+   "pictures": [
+    "080-yo-despues-del-nivel.png",
+    "081-yo-despues-del-nivel-pagina-entera.png",
+    "081-yo-despues-del-nivel-pagina-entera.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "Done: 1 story skipped\\.",
+   "regex": true,
+   "from": "app.html yo, singular",
+   "pictures": [
+    "082-yo-despues-del-nivel-1-historia.png",
+    "082-yo-despues-del-nivel-1-historia.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "How it works",
+   "regex": false,
+   "from": "app.html yo",
+   "pictures": [
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "073-yo-ajustes-cambiados-al-final.png",
+    "081-yo-despues-del-nivel-pagina-entera.png",
+    "082-yo-despues-del-nivel-1-historia.png",
+    "071-yo-a-medio-curso-pagina-entera.png",
+    "073-yo-ajustes-cambiados-al-final.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "Welcome to Coquí",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png"
+   ],
+   "count": 5,
+   "note": null
+  },
+  {
+   "string": "You learn Spanish the way children do: by hearing it, with pictures, in short stories.",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "You answer by touching the picture. What you touch changes what happens.",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "Words come back just before you would forget them.",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "English is only in the menus, to help you find your way.",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "001-bienvenida-paso-1.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "The words of the stories you already understand are yours to keep: each gets one cold check tomorrow, and they are open for speaking now.",
+   "regex": false,
+   "from": "app.html NIVELTXT (How it works, opened again)",
+   "pictures": [
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Next",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "001-bienvenida-paso-1.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "005-bienvenida-como-funciona-1.png",
+    "006-bienvenida-como-funciona-1-al-final.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 34,
+   "note": null
+  },
+  {
+   "string": "How much time a day?",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "Today's plan is sized to it. You can change it in Yo.",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "15 min",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "30 min",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "60 min",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "120 min",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png",
+    "002-bienvenida-paso-2.png",
+    "003-bienvenida-paso-2-60-min.png",
+    "007-bienvenida-como-funciona-2.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "Where do you start?",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png",
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "The level check takes about 3 minutes. You hear a sentence and touch one of four pictures.",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png",
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "I'm new to Spanish",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png",
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "I understand some Spanish",
+   "regex": false,
+   "from": "app.html bienvenida",
+   "pictures": [
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png",
+    "004-bienvenida-paso-3.png",
+    "008-bienvenida-como-funciona-3.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Listen, then touch the picture that fits.",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "083-repaso-inicio.png",
+    "092-repaso-inicio-una-palabra.png",
+    "093-repaso-inicio-practica.png",
+    "083-repaso-inicio.png",
+    "092-repaso-inicio-una-palabra.png",
+    "093-repaso-inicio-practica.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "^\\d+ words · about \\d+ min$",
+   "regex": true,
+   "from": "cual.js",
+   "pictures": [
+    "083-repaso-inicio.png",
+    "093-repaso-inicio-practica.png",
+    "083-repaso-inicio.png",
+    "093-repaso-inicio-practica.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "^1 word · about 1 min$",
+   "regex": true,
+   "from": "cual.js, singular",
+   "pictures": [
+    "092-repaso-inicio-una-palabra.png",
+    "092-repaso-inicio-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Done",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "080-yo-despues-del-nivel.png",
+    "081-yo-despues-del-nivel-pagina-entera.png",
+    "082-yo-despues-del-nivel-1-historia.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "094-repaso-fin-practica.png"
+   ],
+   "count": 11,
+   "note": null
+  },
+  {
+   "string": "^\\d+ moving up",
+   "regex": true,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "coming back soon$",
+   "regex": true,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "^\\d+ right",
+   "regex": true,
+   "from": "cual.js (practice)",
+   "pictures": [
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "094-repaso-fin-practica.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "\\d+ missed$",
+   "regex": true,
+   "from": "cual.js (practice)",
+   "pictures": [
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "094-repaso-fin-practica.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "Moving up",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "You'll see these less often",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Coming back soon",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "You'll see these again soon",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Right",
+   "regex": false,
+   "from": "cual.js (practice)",
+   "pictures": [
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "094-repaso-fin-practica.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "Missed",
+   "regex": false,
+   "from": "cual.js (practice)",
+   "pictures": [
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "095-repaso-fin-practica-al-final.png"
+   ],
+   "count": 3,
+   "note": null
+  },
+  {
+   "string": "Back to Palabras",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
+   ],
+   "count": 8,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Picture 1",
+   "regex": false,
+   "from": "cual.js",
+   "pictures": [
+    "084-repaso-frase-suena-imagenes-oscuras.png",
+    "085-repaso-tu-turno.png",
+    "086-repaso-toque-bien.png",
+    "087-repaso-toque-mal.png",
+    "088-repaso-toque-mal-se-muestra-la-buena.png",
+    "089-repaso-sin-toque-se-muestra-la-buena.png"
+   ],
+   "count": 16,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Sound",
+   "regex": false,
+   "from": "cual.html",
+   "pictures": [
+    "083-repaso-inicio.png",
+    "084-repaso-frase-suena-imagenes-oscuras.png",
+    "085-repaso-tu-turno.png",
+    "086-repaso-toque-bien.png",
+    "087-repaso-toque-mal.png",
+    "088-repaso-toque-mal-se-muestra-la-buena.png"
+   ],
+   "count": 72,
+   "note": null
+  },
+  {
+   "string": "^\\d+ pictures · about \\d+ min$",
+   "regex": true,
+   "from": "nivel.js",
+   "pictures": [
+    "096-nivel-explicacion.png",
+    "096-nivel-explicacion.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Level check done",
+   "regex": false,
+   "from": "nivel.js",
+   "pictures": [
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png",
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "^You already understand the first \\d+ stories\\.$",
+   "regex": true,
+   "from": "nivel.js",
+   "pictures": [
+    "099-nivel-resultado-11-historias.png",
+    "099-nivel-resultado-11-historias.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "You already understand the first 1 story.",
+   "regex": false,
+   "from": "nivel.js, singular",
+   "pictures": [
+    "100-nivel-resultado-1-historia.png",
+    "100-nivel-resultado-1-historia.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "You start at the beginning.",
+   "regex": false,
+   "from": "nivel.js",
+   "pictures": [
+    "101-nivel-resultado-desde-el-principio.png",
+    "101-nivel-resultado-desde-el-principio.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "To the map",
+   "regex": false,
+   "from": "nivel.js",
+   "pictures": [
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png",
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "Play again",
+   "regex": false,
+   "from": "juego.js",
+   "pictures": [
+    "016-lugar-hecho-1.png",
+    "017-lugar-hecho-1-al-final.png",
+    "018-lugar-abierto-2-a-medias.png",
+    "021-lugar-hecho-3.png",
+    "136-cuento-fin-con-un-error.png",
+    "137-cuento-fin-sin-errores.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "Next story",
+   "regex": false,
+   "from": "juego.js",
+   "pictures": [
+    "136-cuento-fin-con-un-error.png",
+    "137-cuento-fin-sin-errores.png",
+    "136-cuento-fin-con-un-error.png",
+    "137-cuento-fin-sin-errores.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Map",
+   "regex": false,
+   "from": "juego.js",
+   "pictures": [
+    "009-mapa-nada-jugado.png",
+    "010-mapa-una-historia-hoy.png",
+    "011-mapa-una-palabra.png",
+    "012-mapa-a-medio-curso.png",
+    "013-mapa-todo-jugado.png",
+    "014-mapa-todo-abierto.png"
+   ],
+   "count": 90,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Micrófono",
+   "regex": false,
+   "from": "index.html",
+   "pictures": [
+    "120-prueba-de-voz-antes-linea-1.png",
+    "121-prueba-de-voz-escuchando.png",
+    "122-prueba-de-voz-un-momento.png",
+    "129-prueba-de-voz-escuchando-con-movimiento.png",
+    "144-cuento-micro-gris-habla-la-app.png",
+    "145-cuento-micro-listo.png"
+   ],
+   "count": 22,
+   "note": null
+  },
+  {
+   "string": "[aria-label] Start",
+   "regex": false,
+   "from": "index.html",
+   "pictures": [
+    "083-repaso-inicio.png",
+    "092-repaso-inicio-una-palabra.png",
+    "093-repaso-inicio-practica.png",
+    "096-nivel-explicacion.png",
+    "102-llamada-inicio.png",
+    "130-cuento-inicio.png"
+   ],
+   "count": 12,
+   "note": null
+  },
+  {
+   "string": "Start call",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "102-llamada-inicio.png",
+    "102-llamada-inicio.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Calling…",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "103-llamada-llamando.png",
+    "117-llamada-llamando-con-movimiento.png",
+    "103-llamada-llamando.png",
+    "117-llamada-llamando-con-movimiento.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Danny",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "063-hablar-nada-jugado.png",
+    "064-hablar-nada-jugado-pagina-entera.png",
+    "065-hablar-a-medio-curso.png",
+    "066-hablar-a-medio-curso-pagina-entera.png",
+    "067-hablar-todo-jugado.png",
+    "068-hablar-todo-jugado-pagina-entera.png"
+   ],
+   "count": 50,
+   "note": null
+  },
+  {
+   "string": "Your turn",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "106-llamada-tu-turno.png",
+    "107-llamada-tu-turno-hablando.png",
+    "106-llamada-tu-turno.png",
+    "107-llamada-tu-turno-hablando.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "One moment",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "108-llamada-un-momento.png",
+    "109-llamada-lo-que-oyo.png",
+    "119-llamada-un-momento-con-puntos.png",
+    "108-llamada-un-momento.png",
+    "109-llamada-lo-que-oyo.png",
+    "119-llamada-un-momento-con-puntos.png"
+   ],
+   "count": 6,
+   "note": null
+  },
+  {
+   "string": "Help",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "104-llamada-conectado.png",
+    "105-llamada-danny-habla.png",
+    "106-llamada-tu-turno.png",
+    "107-llamada-tu-turno-hablando.png",
+    "108-llamada-un-momento.png",
+    "109-llamada-lo-que-oyo.png"
+   ],
+   "count": 20,
+   "note": null
+  },
+  {
+   "string": "Danny will say it again, slowly.",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "111-llamada-ayuda.png",
+    "111-llamada-ayuda.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Call done",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png",
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "^\\d+ min · \\d+ words said$",
+   "regex": true,
+   "from": "llamada.js",
+   "pictures": [
+    "112-llamada-fin-resumen.png",
+    "112-llamada-fin-resumen.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^\\d+ min · 1 word said$",
+   "regex": true,
+   "from": "llamada.js, singular",
+   "pictures": [
+    "113-llamada-fin-una-palabra.png",
+    "113-llamada-fin-una-palabra.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Back to Hablar",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png",
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "The microphone is off. Allow it in your browser to call.",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "114-llamada-error-microfono.png",
+    "114-llamada-error-microfono.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "The call did not start. Check your connection and try again.",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "115-llamada-error-no-empieza.png",
+    "115-llamada-error-no-empieza.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "The voice part did not load. Check your connection and try again.",
+   "regex": false,
+   "from": "llamada.js",
+   "pictures": [
+    "116-llamada-error-biblioteca-de-voz.png",
+    "116-llamada-error-biblioteca-de-voz.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "Tap the mic and say each Spanish line.",
+   "regex": false,
+   "from": "habla-prueba.html",
+   "pictures": [
+    "120-prueba-de-voz-antes-linea-1.png",
+    "121-prueba-de-voz-escuchando.png",
+    "122-prueba-de-voz-un-momento.png",
+    "123-prueba-de-voz-despues-oido-bien.png",
+    "124-prueba-de-voz-despues-no-se-oyo.png",
+    "125-prueba-de-voz-despues-oido-mal.png"
+   ],
+   "count": 14,
+   "note": null
+  },
+  {
+   "string": "Escuchando…",
+   "regex": false,
+   "from": "habla-prueba.html",
+   "pictures": [
+    "121-prueba-de-voz-escuchando.png",
+    "129-prueba-de-voz-escuchando-con-movimiento.png",
+    "121-prueba-de-voz-escuchando.png",
+    "129-prueba-de-voz-escuchando-con-movimiento.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "Un momento…",
+   "regex": false,
+   "from": "habla-prueba.html",
+   "pictures": [
+    "122-prueba-de-voz-un-momento.png",
+    "122-prueba-de-voz-un-momento.png"
+   ],
+   "count": 2,
+   "note": null
+  },
+  {
+   "string": "^Heard right: \\d+ of 12$",
+   "regex": true,
+   "from": "habla-prueba.html",
+   "pictures": [
+    "126-prueba-de-voz-final.png",
+    "128-prueba-de-voz-sin-microfono.png",
+    "126-prueba-de-voz-final.png",
+    "128-prueba-de-voz-sin-microfono.png"
+   ],
+   "count": 4,
+   "note": null
+  },
+  {
+   "string": "El micrófono no está disponible.",
+   "regex": false,
+   "from": "habla-prueba.html",
+   "pictures": [
+    "128-prueba-de-voz-sin-microfono.png",
+    "128-prueba-de-voz-sin-microfono.png"
+   ],
+   "count": 2,
+   "note": null
+  }
+ ]
+}

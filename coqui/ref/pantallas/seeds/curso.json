@@ -1,0 +1,2835 @@
+{
+ "palabras": {
+  "casa": {
+   "w": "casa",
+   "primera": 1794751200000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795091400000,
+    "aciertos": [
+     1794832200000,
+     1795005000000
+    ],
+    "ultima": 1795005000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 4
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "puerta": {
+   "w": "puerta",
+   "primera": 1794751200000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795048209000,
+    "aciertos": [
+     1794832209000
+    ],
+    "ultima": 1794834000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "ventana": {
+   "w": "ventana",
+   "primera": 1794751200000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795091409000,
+    "aciertos": [
+     1794832218000,
+     1795005009000
+    ],
+    "ultima": 1795005009000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 4
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "abuela": {
+   "w": "abuela",
+   "primera": 1794751200000,
+   "oida": 14,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795091418000,
+    "aciertos": [
+     1794832227000,
+     1795005018000
+    ],
+    "ultima": 1795005018000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 4
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "hola": {
+   "w": "hola",
+   "primera": 1794751200000,
+   "oida": 18,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795048236000,
+    "aciertos": [
+     1794832236000
+    ],
+    "ultima": 1794834000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795255200000,
+    "aciertos": [
+     1795039200000
+    ],
+    "ultima": 1795039200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   }
+  },
+  "toca": {
+   "w": "toca",
+   "primera": 1794751200000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795050000000,
+    "aciertos": [
+     1794834000000
+    ],
+    "ultima": 1794834000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "abre": {
+   "w": "abre",
+   "primera": 1794751200000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795048245000,
+    "aciertos": [
+     1794832245000
+    ],
+    "ultima": 1794834600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 5,
+    "bien": 5
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "cierra": {
+   "w": "cierra",
+   "primera": 1794751800000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795048254000,
+    "aciertos": [
+     1794832254000
+    ],
+    "ultima": 1794834600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "sí": {
+   "w": "sí",
+   "primera": 1794751800000,
+   "oida": 14,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795048263000,
+    "aciertos": [
+     1794832263000
+    ],
+    "ultima": 1794834600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795255200000,
+    "aciertos": [
+     1795039200000
+    ],
+    "ultima": 1795039200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   }
+  },
+  "no": {
+   "w": "no",
+   "primera": 1794751800000,
+   "oida": 21,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795091427000,
+    "aciertos": [
+     1794832272000,
+     1795005027000
+    ],
+    "ultima": 1795005027000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "grande": {
+   "w": "grande",
+   "primera": 1794752400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795048281000,
+    "aciertos": [
+     1794832281000
+    ],
+    "ultima": 1794835200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "pequeña": {
+   "w": "pequeña",
+   "primera": 1794752400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051200000,
+    "aciertos": [
+     1794835200000
+    ],
+    "ultima": 1794835200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "adiós": {
+   "w": "adiós",
+   "primera": 1794752400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051200000,
+    "aciertos": [
+     1794835200000
+    ],
+    "ultima": 1794835200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "silla": {
+   "w": "silla",
+   "primera": 1794753000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051800000,
+    "aciertos": [
+     1794835800000
+    ],
+    "ultima": 1794835800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "se sienta": {
+   "w": "se sienta",
+   "primera": 1794753000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051800000,
+    "aciertos": [
+     1794835800000
+    ],
+    "ultima": 1794835800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "vaso": {
+   "w": "vaso",
+   "primera": 1794753000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051800000,
+    "aciertos": [
+     1794835800000
+    ],
+    "ultima": 1794835800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "jugo": {
+   "w": "jugo",
+   "primera": 1794753000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051800000,
+    "aciertos": [
+     1794835800000
+    ],
+    "ultima": 1794835800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795255200000,
+    "aciertos": [
+     1795039200000
+    ],
+    "ultima": 1795039200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   }
+  },
+  "agua": {
+   "w": "agua",
+   "primera": 1794753000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051800000,
+    "aciertos": [
+     1794835800000
+    ],
+    "ultima": 1794835800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "toma": {
+   "w": "toma",
+   "primera": 1794753000000,
+   "oida": 7,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795051800000,
+    "aciertos": [
+     1794835800000
+    ],
+    "ultima": 1794835800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "quiero": {
+   "w": "quiero",
+   "primera": 1794837600000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134600000,
+    "aciertos": [
+     1794918600000
+    ],
+    "ultima": 1794920400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "gracias": {
+   "w": "gracias",
+   "primera": 1794837600000,
+   "oida": 9,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795005009000,
+    "aciertos": [
+     1794918609000
+    ],
+    "ultima": 1794920400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795255200000,
+    "aciertos": [
+     1795039200000
+    ],
+    "ultima": 1795039200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   }
+  },
+  "¿cómo estás?": {
+   "w": "¿cómo estás?",
+   "primera": 1794837600000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134618000,
+    "aciertos": [
+     1794918618000
+    ],
+    "ultima": 1794920400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "bien": {
+   "w": "bien",
+   "primera": 1794837600000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795005027000,
+    "aciertos": [
+     1794918627000
+    ],
+    "ultima": 1794920400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795255200000,
+    "aciertos": [
+     1795039200000
+    ],
+    "ultima": 1795039200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   }
+  },
+  "mamá": {
+   "w": "mamá",
+   "primera": 1794838200000,
+   "oida": 8,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134636000,
+    "aciertos": [
+     1794918636000
+    ],
+    "ultima": 1794921000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "papá": {
+   "w": "papá",
+   "primera": 1794838200000,
+   "oida": 8,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134645000,
+    "aciertos": [
+     1794918645000
+    ],
+    "ultima": 1794921000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "abuelo": {
+   "w": "abuelo",
+   "primera": 1794838200000,
+   "oida": 8,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134654000,
+    "aciertos": [
+     1794918654000
+    ],
+    "ultima": 1794921000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "bebé": {
+   "w": "bebé",
+   "primera": 1794838200000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795005063000,
+    "aciertos": [
+     1794918663000
+    ],
+    "ultima": 1794921000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "familia": {
+   "w": "familia",
+   "primera": 1794838200000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134672000,
+    "aciertos": [
+     1794918672000
+    ],
+    "ultima": 1794921000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "hermano": {
+   "w": "hermano",
+   "primera": 1794838800000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795134681000,
+    "aciertos": [
+     1794918681000
+    ],
+    "ultima": 1794921600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "hermana": {
+   "w": "hermana",
+   "primera": 1794838800000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795137600000,
+    "aciertos": [
+     1794921600000
+    ],
+    "ultima": 1794921600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "él": {
+   "w": "él",
+   "primera": 1794838800000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795137600000,
+    "aciertos": [
+     1794921600000
+    ],
+    "ultima": 1794921600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "ella": {
+   "w": "ella",
+   "primera": 1794838800000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795137600000,
+    "aciertos": [
+     1794921600000
+    ],
+    "ultima": 1794921600000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "yo": {
+   "w": "yo",
+   "primera": 1794839400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795138200000,
+    "aciertos": [
+     1794922200000
+    ],
+    "ultima": 1794922200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "tú": {
+   "w": "tú",
+   "primera": 1794839400000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795138200000,
+    "aciertos": [
+     1794922200000
+    ],
+    "ultima": 1794922200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "soy": {
+   "w": "soy",
+   "primera": 1794839400000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795138200000,
+    "aciertos": [
+     1794922200000
+    ],
+    "ultima": 1794922200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "eres": {
+   "w": "eres",
+   "primera": 1794839400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795138200000,
+    "aciertos": [
+     1794922200000
+    ],
+    "ultima": 1794922200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "me llamo": {
+   "w": "me llamo",
+   "primera": 1794839400000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795138200000,
+    "aciertos": [
+     1794922200000
+    ],
+    "ultima": 1794922200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "niño": {
+   "w": "niño",
+   "primera": 1794924000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795221036000,
+    "aciertos": [
+     1795005036000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "niña": {
+   "w": "niña",
+   "primera": 1794924000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795221045000,
+    "aciertos": [
+     1795005045000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "juega": {
+   "w": "juega",
+   "primera": 1794924000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795221054000,
+    "aciertos": [
+     1795005054000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "flor": {
+   "w": "flor",
+   "primera": 1794924000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795221063000,
+    "aciertos": [
+     1795005063000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "sol": {
+   "w": "sol",
+   "primera": 1794924000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795091472000,
+    "aciertos": [
+     1795005072000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "aquí": {
+   "w": "aquí",
+   "primera": 1794924000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795221081000,
+    "aciertos": [
+     1795005081000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 3,
+    "bien": 3
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "allá": {
+   "w": "allá",
+   "primera": 1794924000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795222800000,
+    "aciertos": [
+     1795006800000
+    ],
+    "ultima": 1795006800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "tiene": {
+   "w": "tiene",
+   "primera": 1794924000000,
+   "oida": 3,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795312800000,
+    "aciertos": [
+     1795096800000
+    ],
+    "ultima": 1795096800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "para": {
+   "w": "para",
+   "primera": 1794924000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1794988800000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "ahora": {
+   "w": "ahora",
+   "primera": 1794924000000,
+   "oida": 5,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1794988800000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "también": {
+   "w": "también",
+   "primera": 1794924000000,
+   "oida": 5,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1794988800000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "¿qué es esto?": {
+   "w": "¿qué es esto?",
+   "primera": 1794924600000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795223400000,
+    "aciertos": [
+     1795007400000
+    ],
+    "ultima": 1795007400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "amigo": {
+   "w": "amigo",
+   "primera": 1794924600000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795223400000,
+    "aciertos": [
+     1795007400000
+    ],
+    "ultima": 1795007400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "mira": {
+   "w": "mira",
+   "primera": 1794924600000,
+   "oida": 9,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795223400000,
+    "aciertos": [
+     1795007400000
+    ],
+    "ultima": 1795007400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "ven": {
+   "w": "ven",
+   "primera": 1794924600000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795223400000,
+    "aciertos": [
+     1795007400000
+    ],
+    "ultima": 1795007400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "pájaro": {
+   "w": "pájaro",
+   "primera": 1794924600000,
+   "oida": 4,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1794988800000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "bizcocho": {
+   "w": "bizcocho",
+   "primera": 1794924600000,
+   "oida": 2,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1794988800000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "vamos": {
+   "w": "vamos",
+   "primera": 1794925200000,
+   "oida": 7,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795224000000,
+    "aciertos": [
+     1795008000000
+    ],
+    "ultima": 1795008000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "hasta mañana": {
+   "w": "hasta mañana",
+   "primera": 1794925200000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795224000000,
+    "aciertos": [
+     1795008000000
+    ],
+    "ultima": 1795008000000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "de nada": {
+   "w": "de nada",
+   "primera": 1794925200000,
+   "oida": 2,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1794988800000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "parque": {
+   "w": "parque",
+   "primera": 1795010400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "perro": {
+   "w": "perro",
+   "primera": 1795010400000,
+   "oida": 7,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "camina": {
+   "w": "camina",
+   "primera": 1795010400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "corre": {
+   "w": "corre",
+   "primera": 1795010400000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "espera": {
+   "w": "espera",
+   "primera": 1795010400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093200000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "uno": {
+   "w": "uno",
+   "primera": 1795010400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 4
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "dos": {
+   "w": "dos",
+   "primera": 1795010400000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 4
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "tres": {
+   "w": "tres",
+   "primera": 1795010400000,
+   "oida": 6,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309200000,
+    "aciertos": [
+     1795093200000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 4,
+    "bien": 4
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "gato": {
+   "w": "gato",
+   "primera": 1795011000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309800000,
+    "aciertos": [
+     1795093800000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "árbol": {
+   "w": "árbol",
+   "primera": 1795011000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309800000,
+    "aciertos": [
+     1795093800000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "hay": {
+   "w": "hay",
+   "primera": 1795011000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309800000,
+    "aciertos": [
+     1795093800000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "¿dónde está?": {
+   "w": "¿dónde está?",
+   "primera": 1795011000000,
+   "oida": 4,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795309800000,
+    "aciertos": [
+     1795093800000
+    ],
+    "ultima": 1795093800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "está": {
+   "w": "está",
+   "primera": 1795011000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795075200000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "con": {
+   "w": "con",
+   "primera": 1795011000000,
+   "oida": 2,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795075200000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "rápido": {
+   "w": "rápido",
+   "primera": 1795011600000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795310400000,
+    "aciertos": [
+     1795094400000
+    ],
+    "ultima": 1795094400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 2
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "despacio": {
+   "w": "despacio",
+   "primera": 1795011600000,
+   "oida": 2,
+   "ear": {
+    "etapa": 3,
+    "paso": 1,
+    "seguidas": 1,
+    "fallos": 0,
+    "gap": 2.5,
+    "due": 1795310400000,
+    "aciertos": [
+     1795094400000
+    ],
+    "ultima": 1795094400000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 2,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "bola": {
+   "w": "bola",
+   "primera": 1795096800000,
+   "oida": 1,
+   "ear": {
+    "etapa": 2,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 1795096800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "tira": {
+   "w": "tira",
+   "primera": 1795096800000,
+   "oida": 1,
+   "ear": {
+    "etapa": 2,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 1795096800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "coge": {
+   "w": "coge",
+   "primera": 1795096800000,
+   "oida": 1,
+   "ear": {
+    "etapa": 2,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 1795096800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "dame": {
+   "w": "dame",
+   "primera": 1795096800000,
+   "oida": 1,
+   "ear": {
+    "etapa": 2,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 1795096800000,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 1,
+    "bien": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "¿quién?": {
+   "w": "¿quién?",
+   "primera": 1795096800000,
+   "oida": 1,
+   "ear": {
+    "etapa": 1,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  }
+ },
+ "dias": {
+  "2026-11-15": 4,
+  "2026-11-16": 8,
+  "2026-11-17": 7,
+  "2026-11-18": 6,
+  "2026-11-19": 4
+ },
+ "cuentos": {
+  "la-lluvia": {
+   "n": 2,
+   "primera": 1794751200000,
+   "ultima": 1794834000000,
+   "perdido": 0
+  },
+  "el-bizcocho": {
+   "n": 2,
+   "primera": 1794751800000,
+   "ultima": 1794834600000,
+   "perdido": 0
+  },
+  "donde-esta-el-pajaro": {
+   "n": 2,
+   "primera": 1794752400000,
+   "ultima": 1794835200000,
+   "perdido": 0
+  },
+  "el-jugo": {
+   "n": 2,
+   "primera": 1794753000000,
+   "ultima": 1794835800000,
+   "perdido": 0
+  },
+  "que-calor": {
+   "n": 2,
+   "primera": 1794837600000,
+   "ultima": 1794920400000,
+   "perdido": 0
+  },
+  "la-familia": {
+   "n": 2,
+   "primera": 1794838200000,
+   "ultima": 1794921000000,
+   "perdido": 0
+  },
+  "la-foto": {
+   "n": 2,
+   "primera": 1794838800000,
+   "ultima": 1794921600000,
+   "perdido": 0
+  },
+  "quien-eres-tu": {
+   "n": 2,
+   "primera": 1794839400000,
+   "ultima": 1794922200000,
+   "perdido": 0
+  },
+  "las-flores": {
+   "n": 2,
+   "primera": 1794924000000,
+   "ultima": 1795006800000,
+   "perdido": 0
+  },
+  "que-es-esto": {
+   "n": 2,
+   "primera": 1794924600000,
+   "ultima": 1795007400000,
+   "perdido": 0
+  },
+  "hasta-manana": {
+   "n": 2,
+   "primera": 1794925200000,
+   "ultima": 1795008000000,
+   "perdido": 0
+  },
+  "uno-dos-tres": {
+   "n": 2,
+   "primera": 1795010400000,
+   "ultima": 1795093200000,
+   "perdido": 0
+  },
+  "donde-esta-el-gato": {
+   "n": 2,
+   "primera": 1795011000000,
+   "ultima": 1795093800000,
+   "perdido": 0
+  },
+  "rapido-despacio": {
+   "n": 2,
+   "primera": 1795011600000,
+   "ultima": 1795094400000,
+   "perdido": 0
+  },
+  "la-bola": {
+   "n": 1,
+   "primera": 1795096800000,
+   "ultima": 1795096800000,
+   "perdido": 0
+  }
+ },
+ "ajustes": {
+  "min": 30,
+  "todo": 0,
+  "bienvenida": 1,
+  "habla": 1
+ },
+ "minutos": 108.89999999999998,
+ "v": 1,
+ "leidos": {
+  "la-familia": 1795042800000
+ },
+ "oidos": {
+  "el-jugo": 1
+ }
+}
