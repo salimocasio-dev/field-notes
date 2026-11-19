@@ -1,0 +1,794 @@
+{
+ "scene": "frente",
+ "file": "historia/escenas/frente.js",
+ "fileSha256": "e5dd9881ec8adc84e23c14e28dbec3bbaeefb6bae8064da4568c8c7e690c6ce2",
+ "sprites": [
+  {
+   "key": "abdedo00",
+   "file": "abdedo00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "499e019bb8cbe80ac6f316cd56a77384bd05e07cbd9bf7cb890f395f285a84ec",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "el-bizcocho/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abdedo10",
+   "file": "abdedo10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "a5d148eb5836e3401a97ba08f095a1682b96e5728d8f73e3bd593fb089c89d14",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "el-bizcocho/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abidle0",
+   "file": "abidle0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "831aa41c06c47834cd9f8bcf6b7631c594ed747e81ba9d3aca38432a7296b82f",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "abidle1",
+   "file": "abidle1.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "77b011061ea8adfd02d4289682063a58a2dd6727b196fe93ba11a68548dfd914",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "la-lluvia/alternate",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "aboffer0",
+   "file": "aboffer0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "8be03d04ff1120c6baf16fb136f4fb5cfbd508d5f9e18f8c08810dc3d621789b",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "el-bizcocho/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abwave00",
+   "file": "abwave00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "c990abc59cbf56be8955cbe792df1c9dc85cf6e577f05131d3c9b6d6888573d8",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "abwave10",
+   "file": "abwave10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "1081a1840c85ca356e18ace6439cce58e73e5859439f8b6eae59a4d91cff1e1f",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "abwave11",
+   "file": "abwave11.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "7ec71c984f6aa533dd37f8439f81219b06a050937334c23a847b5db837cc3cca",
+   "caller": "escenas/frente.js:139:49 AB",
+   "maker": "escenas/frente.js:139:70",
+   "firstRun": "la-lluvia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "avefeliz0",
+   "file": "avefeliz0.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "1081fb6b8328a3774846a0a281144939f4c6e4fd2c4c3e6517e22b1562996445",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "el-bizcocho/alternate",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "avefeliz1",
+   "file": "avefeliz1.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "fbde3ba29770a3b85b681628e697520c4eba025fdeb402e57f463d3c3ddae338",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "donde-esta-el-pajaro/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "aven0",
+   "file": "aven0.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "1081fb6b8328a3774846a0a281144939f4c6e4fd2c4c3e6517e22b1562996445",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "el-bizcocho/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "aven1",
+   "file": "aven1.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "fbde3ba29770a3b85b681628e697520c4eba025fdeb402e57f463d3c3ddae338",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "el-bizcocho/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "averound0",
+   "file": "averound0.rgba",
+   "w": 24,
+   "h": 18,
+   "sha256": "f2dc4a7eeeb51f77e48b14daa2d4c67ef22fc61b3c6c45af2cca75845cc42037",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "el-bizcocho/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "avesleep0",
+   "file": "avesleep0.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "4f6bcc7996946579d2b4c89cf370db213562e3151e28d9242a025955ad772088",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "el-bizcocho/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "avesleep1",
+   "file": "avesleep1.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "fe69ccd82ee313d86758a65db165b7be9c31aed499354de1ce8da6eba4c5c248",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "el-bizcocho/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "avetapa0",
+   "file": "avetapa0.rgba",
+   "w": 18,
+   "h": 14,
+   "sha256": "47a4236468df6d6e1feafc351a9ff441680d25a1edc658807c9c08e5a66c4125",
+   "caller": "escenas/frente.js:82:8 drawAve",
+   "maker": "escenas/frente.js:82:28",
+   "firstRun": "donde-esta-el-pajaro/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "bush",
+   "file": "bush.rgba",
+   "w": 34,
+   "h": 22,
+   "sha256": "a0d30b30c9c8359578f0ae8d5766dcfc82f3b1a5c033b0542c2e458a755ed969",
+   "caller": "escenas/frente.js:42:79 bg",
+   "maker": "engine.js:76:27 mkBush",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "casita",
+   "file": "casita.rgba",
+   "w": 26,
+   "h": 58,
+   "sha256": "8cbaee1dd17fe4ceffb9470d8dd0c11024dda3bc969b531a9197b533d6959ba7",
+   "caller": "escenas/frente.js:100:15 escondite",
+   "maker": "escenas/frente.js:89:29 mkCasita",
+   "firstRun": "donde-esta-el-pajaro/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cloud",
+   "file": "cloud.rgba",
+   "w": 40,
+   "h": 15,
+   "sha256": "496a39e2f0adeab14a8e21adcb78d2ee32e81f1bdf8bbaae3004ee9f5105ae2e",
+   "caller": "escenas/frente.js:48:33 ambient",
+   "maker": "escenas/frente.js:45:28 mkCloud",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "cq.42_0",
+   "file": "cq.42_0.rgba",
+   "w": 15,
+   "h": 13,
+   "sha256": "4866926cd894164433f1af566647b02681594d111cc85decd89826deb25878c0",
+   "caller": "escenas/frente.js:148:71 Object.draw",
+   "maker": "escenas/frente.js:148:91",
+   "firstRun": "la-lluvia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq.42_1",
+   "file": "cq.42_1.rgba",
+   "w": 15,
+   "h": 13,
+   "sha256": "24c8dfba123c082b402da1f1f2f33152219deecaf458c292501b9a040d84926c",
+   "caller": "escenas/frente.js:148:71 Object.draw",
+   "maker": "escenas/frente.js:148:91",
+   "firstRun": "la-lluvia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq.6_0",
+   "file": "cq.6_0.rgba",
+   "w": 20,
+   "h": 17,
+   "sha256": "947dafedb89c34c11b4f0fb938238eca92f96ddb631ffa22c8fd8b6a611397a1",
+   "caller": "escenas/frente.js:143:93 Object.draw",
+   "maker": "escenas/frente.js:143:110",
+   "firstRun": "donde-esta-el-pajaro/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "cq.7_0",
+   "file": "cq.7_0.rgba",
+   "w": 23,
+   "h": 20,
+   "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0",
+   "caller": "escenas/frente.js:131:49 plato",
+   "maker": "escenas/frente.js:131:66",
+   "firstRun": "donde-esta-el-pajaro/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "fr0.5_0_0",
+   "file": "fr0.5_0_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "ccc9046eba8ded6c21aa462b2d07bf03bc2ddb33709ffa1cd15409ff8abaa0df",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "el-bizcocho/wrong",
+   "runs": 8,
+   "variants": 1
+  },
+  {
+   "key": "fr0.5_0_1",
+   "file": "fr0.5_0_1.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "49ccd110ff42404b182a89bd49bdd1375e9e069de3e0e3dd21e0a3fda4d1b5c7",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "d-toc-toc/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "fr0.5_1_0",
+   "file": "fr0.5_1_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "ab43eedd6988bc39da1d2980674bba66d1dd480b1bb41e14e7c1e2acae68f10e",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "el-bizcocho/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "fr0_0_0",
+   "file": "fr0_0_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "f2fed958102e639da73f86289eda1dbd7a6bc8a1f73e07bd00ac3039b802acef",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "fr0_0_1",
+   "file": "fr0_0_1.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "ff165b9e47913b30b7e27c9e3152dca7542789080b211171151bf48ebb873081",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "la-lluvia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "fr0_1_0",
+   "file": "fr0_1_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "4ca703df65cd4d6d53272fa4d0a0212487ead1870aac4ba1b81bf6c25b1b346c",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "el-bizcocho/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "fr0_1_1",
+   "file": "fr0_1_1.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "a84c3423d9cac90b6beb14668f5b5273aed943d5d43c05265393dca7426e19c7",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "la-lluvia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "fr1_0_0",
+   "file": "fr1_0_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "e8e83804177c4c47f24f454738dd2e5acb9c033e41008efb525b523bc51cdde6",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "el-bizcocho/wrong",
+   "runs": 8,
+   "variants": 1
+  },
+  {
+   "key": "fr1_0_1",
+   "file": "fr1_0_1.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "d7d2b9e3d6a91878efed99669418f39b226c10b3b163c3ed958003de0fc83a82",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "d-toc-toc/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "fr1_1_0",
+   "file": "fr1_1_0.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "64ce611f70d623cb576a37b20cfeda87dbce138488aa2c1dab30c5fb563d5245",
+   "caller": "escenas/frente.js:140:15 Object.draw",
+   "maker": "escenas/frente.js:140:56",
+   "firstRun": "el-bizcocho/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "nube",
+   "file": "nube.rgba",
+   "w": 98,
+   "h": 22,
+   "sha256": "c5264e3bbcb6ad709fe4f4f902a30d48566f2a1293bd838d9445bac648fb3a9c",
+   "caller": "escenas/frente.js:167:143",
+   "maker": "escenas/frente.js:53:27 mkNube",
+   "firstRun": "la-lluvia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "palm",
+   "file": "palm.rgba",
+   "w": 56,
+   "h": 74,
+   "sha256": "30fcdb02bc26e339813a67c697dbd7800a26c846975962a2a0f5ae6e8f4d4bc2",
+   "caller": "escenas/frente.js:42:41 bg",
+   "maker": "engine.js:69:27 mkPalm",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "palmita",
+   "file": "palmita.rgba",
+   "w": 42,
+   "h": 56,
+   "sha256": "8491aeace7b5d0b23aa957f138dfef1c6bef6cf8c6cd2861fffa215e60d18a60",
+   "caller": "escenas/frente.js:97:15 escondite",
+   "maker": "escenas/frente.js:93:50 mkPalmita",
+   "firstRun": "donde-esta-el-pajaro/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pot",
+   "file": "pot.rgba",
+   "w": 22,
+   "h": 30,
+   "sha256": "852b66913320fb325300d7abfb6cd0d590e70bc7713133849824a5aad503f6de",
+   "caller": "escenas/frente.js:42:118 bg",
+   "maker": "engine.js:77:26 mkPot",
+   "firstRun": "la-lluvia/right",
+   "runs": 15,
+   "variants": 1
+  }
+ ],
+ "outsideCache": [],
+ "notDumped": [
+  {
+   "key": "cq.7_0",
+   "caller": "juego.js:61:86"
+  },
+  {
+   "key": "cq0.46_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.49_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.49_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.52_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.52_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.5400000000000001_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.55_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.58_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.6200000000000001_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.63_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.63_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.66_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.66_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.69_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.6_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.6_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.7000000000000001_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.72_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.72_01",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.72_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.72_11",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.74_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.74_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.77_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.78_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.79_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.79_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.81_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.81_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.82_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.83_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.84_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.86_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.86_01",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.86_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.8_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.91_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.91_10",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq0.93_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq1_00",
+   "caller": "juego.js:48:44 frog"
+  },
+  {
+   "key": "cq1_10",
+   "caller": "juego.js:48:44 frog"
+  }
+ ],
+ "sites": [
+  {
+   "line": 42,
+   "col": 41,
+   "key": "\"palm\"",
+   "made": [
+    "palm"
+   ]
+  },
+  {
+   "line": 42,
+   "col": 79,
+   "key": "\"bush\"",
+   "made": [
+    "bush"
+   ]
+  },
+  {
+   "line": 42,
+   "col": 118,
+   "key": "\"pot\"",
+   "made": [
+    "pot"
+   ]
+  },
+  {
+   "line": 42,
+   "col": 155,
+   "key": "\"bush\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 48,
+   "col": 33,
+   "key": "\"cloud\"",
+   "made": [
+    "cloud"
+   ]
+  },
+  {
+   "line": 82,
+   "col": 8,
+   "key": "\"ave\"+st+fl",
+   "made": [
+    "avefeliz0",
+    "avefeliz1",
+    "aven0",
+    "aven1",
+    "averound0",
+    "avesleep0",
+    "avesleep1",
+    "avetapa0"
+   ]
+  },
+  {
+   "line": 97,
+   "col": 15,
+   "key": "\"palmita\"",
+   "made": [
+    "palmita"
+   ]
+  },
+  {
+   "line": 100,
+   "col": 15,
+   "key": "\"casita\"",
+   "made": [
+    "casita"
+   ]
+  },
+  {
+   "line": 106,
+   "col": 49,
+   "key": "\"cq.7_0\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 106,
+   "col": 83,
+   "key": "\"aven0\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 122,
+   "col": 15,
+   "key": "\"palmita\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 125,
+   "col": 15,
+   "key": "\"casita\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 131,
+   "col": 49,
+   "key": "\"cq.7_0\"",
+   "made": [
+    "cq.7_0"
+   ]
+  },
+  {
+   "line": 131,
+   "col": 83,
+   "key": "\"aven0\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 139,
+   "col": 49,
+   "key": "\"ab\"+pose+op",
+   "made": [
+    "abdedo00",
+    "abdedo10",
+    "abidle0",
+    "abidle1",
+    "aboffer0",
+    "abwave00",
+    "abwave10",
+    "abwave11"
+   ]
+  },
+  {
+   "line": 140,
+   "col": 15,
+   "key": "\"fr\"+W.door+\"_\"+W.win+\"_\"+W.lamp",
+   "made": [
+    "fr0.5_0_0",
+    "fr0.5_0_1",
+    "fr0.5_1_0",
+    "fr0_0_0",
+    "fr0_0_1",
+    "fr0_1_0",
+    "fr0_1_1",
+    "fr1_0_0",
+    "fr1_0_1",
+    "fr1_1_0"
+   ]
+  },
+  {
+   "line": 143,
+   "col": 93,
+   "key": "\"cq.6_0\"",
+   "made": [
+    "cq.6_0"
+   ]
+  },
+  {
+   "line": 148,
+   "col": 71,
+   "key": "\"cq.42_\"+bl",
+   "made": [
+    "cq.42_0",
+    "cq.42_1"
+   ]
+  },
+  {
+   "line": 167,
+   "col": 143,
+   "key": "\"nube\"",
+   "made": [
+    "nube"
+   ]
+  }
+ ]
+}

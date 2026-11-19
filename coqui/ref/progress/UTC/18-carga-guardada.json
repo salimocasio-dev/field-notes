@@ -1,0 +1,124 @@
+{
+ "id": "18-carga-guardada",
+ "tz": "UTC",
+ "title": "Loading a stored store: unknown keys kept, no cuentos, partial ajustes merged, records missing ear or mouth",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": "{\"palabras\":{\"casa\":{\"w\":\"casa\",\"primera\":1772400000000,\"oida\":2,\"ear\":{\"etapa\":3,\"paso\":2,\"seguidas\":1,\"fallos\":0,\"gap\":2.5,\"due\":1772600000000,\"aciertos\":[1772450000000],\"ultima\":1772450000000,\"aparcada\":0,\"marca\":0,\"n\":2,\"bien\":2},\"mouth\":{\"etapa\":0,\"paso\":1,\"seguidas\":0,\"fallos\":0,\"gap\":0,\"due\":0,\"aciertos\":[],\"ultima\":0,\"aparcada\":0,\"marca\":0,\"n\":0,\"bien\":0}},\"solooreja\":{\"w\":\"solooreja\",\"primera\":1772400000000,\"oida\":1,\"ear\":{\"etapa\":1,\"paso\":1,\"seguidas\":0,\"fallos\":0,\"gap\":1,\"due\":1772500000000,\"aciertos\":[],\"ultima\":0,\"aparcada\":0,\"marca\":0,\"n\":0,\"bien\":0}},\"soloboca\":{\"w\":\"soloboca\",\"primera\":1772400000000,\"oida\":0,\"mouth\":{\"etapa\":0,\"paso\":1,\"seguidas\":0,\"fallos\":0,\"gap\":0,\"due\":0,\"aciertos\":[],\"ultima\":0,\"aparcada\":0,\"marca\":0,\"n\":1,\"bien\":1}}},\"dias\":{\"2026-03-01\":2},\"ajustes\":{\"min\":15,\"habla\":0},\"minutos\":12.5,\"v\":1,\"extra\":[\"la playa\"],\"leidos\":{\"la-lluvia\":1},\"futuro\":{\"x\":1}}",
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {
+    "casa": {
+     "w": "casa",
+     "primera": 1772400000000,
+     "oida": 2,
+     "ear": {
+      "etapa": 3,
+      "paso": 2,
+      "seguidas": 1,
+      "fallos": 0,
+      "gap": 2.5,
+      "due": 1772600000000,
+      "aciertos": [
+       1772450000000
+      ],
+      "ultima": 1772450000000,
+      "aparcada": 0,
+      "marca": 0,
+      "n": 2,
+      "bien": 2
+     },
+     "mouth": {
+      "etapa": 0,
+      "paso": 1,
+      "seguidas": 0,
+      "fallos": 0,
+      "gap": 0,
+      "due": 0,
+      "aciertos": [],
+      "ultima": 0,
+      "aparcada": 0,
+      "marca": 0,
+      "n": 0,
+      "bien": 0
+     }
+    },
+    "solooreja": {
+     "w": "solooreja",
+     "primera": 1772400000000,
+     "oida": 1,
+     "ear": {
+      "etapa": 1,
+      "paso": 1,
+      "seguidas": 0,
+      "fallos": 0,
+      "gap": 1,
+      "due": 1772500000000,
+      "aciertos": [],
+      "ultima": 0,
+      "aparcada": 0,
+      "marca": 0,
+      "n": 0,
+      "bien": 0
+     }
+    },
+    "soloboca": {
+     "w": "soloboca",
+     "primera": 1772400000000,
+     "oida": 0,
+     "mouth": {
+      "etapa": 0,
+      "paso": 1,
+      "seguidas": 0,
+      "fallos": 0,
+      "gap": 0,
+      "due": 0,
+      "aciertos": [],
+      "ultima": 0,
+      "aparcada": 0,
+      "marca": 0,
+      "n": 1,
+      "bien": 1
+     }
+    }
+   },
+   "dias": {
+    "2026-03-01": 2
+   },
+   "cuentos": {},
+   "ajustes": {
+    "min": 15,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 0
+   },
+   "minutos": 12.5,
+   "v": 1,
+   "extra": [
+    "la playa"
+   ],
+   "leidos": {
+    "la-lluvia": 1
+   },
+   "futuro": {
+    "x": 1
+   }
+  },
+  "saved": "{\"palabras\":{\"casa\":{\"w\":\"casa\",\"primera\":1772400000000,\"oida\":2,\"ear\":{\"etapa\":3,\"paso\":2,\"seguidas\":1,\"fallos\":0,\"gap\":2.5,\"due\":1772600000000,\"aciertos\":[1772450000000],\"ultima\":1772450000000,\"aparcada\":0,\"marca\":0,\"n\":2,\"bien\":2},\"mouth\":{\"etapa\":0,\"paso\":1,\"seguidas\":0,\"fallos\":0,\"gap\":0,\"due\":0,\"aciertos\":[],\"ultima\":0,\"aparcada\":0,\"marca\":0,\"n\":0,\"bien\":0}},\"solooreja\":{\"w\":\"solooreja\",\"primera\":1772400000000,\"oida\":1,\"ear\":{\"etapa\":1,\"paso\":1,\"seguidas\":0,\"fallos\":0,\"gap\":1,\"due\":1772500000000,\"aciertos\":[],\"ultima\":0,\"aparcada\":0,\"marca\":0,\"n\":0,\"bien\":0}},\"soloboca\":{\"w\":\"soloboca\",\"primera\":1772400000000,\"oida\":0,\"mouth\":{\"etapa\":0,\"paso\":1,\"seguidas\":0,\"fallos\":0,\"gap\":0,\"due\":0,\"aciertos\":[],\"ultima\":0,\"aparcada\":0,\"marca\":0,\"n\":1,\"bien\":1}}},\"dias\":{\"2026-03-01\":2},\"ajustes\":{\"min\":15,\"habla\":0},\"minutos\":12.5,\"v\":1,\"extra\":[\"la playa\"],\"leidos\":{\"la-lluvia\":1},\"futuro\":{\"x\":1}}"
+ },
+ "steps": [
+  {"i":0,"now":1772452800000,"local":"2026-03-02T12:00:00+00:00","call":"db","args":[],"member":"raw","dart":{},"note":"the getter PAL.db; ProgressStore.raw","returns":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"ajustes":{"min":15,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}}},
+  {"i":1,"now":1772452860000,"local":"2026-03-02T12:01:00+00:00","call":"abiertaHabla","args":["casa"],"member":"openForSpeaking","dart":{"w":"casa"},"returns":true,"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"ajustes":{"min":15,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}}},
+  {"i":2,"now":1772452920000,"local":"2026-03-02T12:02:00+00:00","call":"abiertaHabla","args":["solooreja"],"member":"openForSpeaking","dart":{"w":"solooreja"},"returns":false,"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"ajustes":{"min":15,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}}},
+  {"i":3,"now":1772452980000,"local":"2026-03-02T12:03:00+00:00","call":"abiertaHabla","args":["soloboca"],"member":"openForSpeaking","dart":{"w":"soloboca"},"returns":true,"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"ajustes":{"min":15,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}}},
+  {"i":4,"now":1772453040000,"local":"2026-03-02T12:04:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":0,"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"ajustes":{"min":15,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}}},
+  {"i":5,"now":1772453100000,"local":"2026-03-02T12:05:00+00:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"throws":"Cannot read properties of undefined (reading 'etapa')","store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2},"ajustes":{"min":15,"habla":0},"minutos":12.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}}},
+  {"i":6,"now":1772453160000,"local":"2026-03-02T12:06:00+00:00","call":"minutos","args":[1],"member":"addMinutes","dart":{"m":1},"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":2,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772450000000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{"2026-03-01":2,"2026-03-02":1},"cuentos":{},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":13.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":"same"},
+  {"i":7,"now":1772453220000,"local":"2026-03-02T12:07:00+00:00","call":"cuento","args":[{"id":"la-lluvia","focus_words":["casa","puerta","ventana","abuela","hola","toca","abre"],"_lost":0},[{"word":"casa","asked":"casa","got":"casa","ok":true,"ms":400}]],"member":"storyFinished","dart":{"result":{"id":"la-lluvia","focusWords":["casa","puerta","ventana","abuela","hola","toca","abre"],"backAgain":[],"lost":0,"log":[{"word":"casa","asked":"casa","got":"casa","ok":true,"ms":400}]}},"store":{"palabras":{"casa":{"w":"casa","primera":1772400000000,"oida":3,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":2.5,"due":1772600000000,"aciertos":[1772450000000],"ultima":1772453220000,"aparcada":0,"marca":0,"n":3,"bien":3},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"solooreja":{"w":"solooreja","primera":1772400000000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772500000000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"soloboca":{"w":"soloboca","primera":1772400000000,"oida":0,"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":1,"bien":1}},"puerta":{"w":"puerta","primera":1772453220000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"ventana":{"w":"ventana","primera":1772453220000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abuela":{"w":"abuela","primera":1772453220000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"hola":{"w":"hola","primera":1772453220000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"toca":{"w":"toca","primera":1772453220000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"abre":{"w":"abre","primera":1772453220000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772510400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{"2026-03-01":2,"2026-03-02":2},"cuentos":{"la-lluvia":{"n":1,"primera":1772453220000,"ultima":1772453220000,"perdido":0}},"ajustes":{"min":15,"todo":0,"bienvenida":0,"habla":0},"minutos":13.5,"v":1,"extra":["la playa"],"leidos":{"la-lluvia":1},"futuro":{"x":1}},"saved":"same"}
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "id": "09-intro",
+ "tz": "America/New_York",
+ "title": "Answers while a word is introduced (intro=true): found on a right one, heard on a wrong one, the schedule set once and not moved",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772488800000,"local":"2026-03-02T17:00:00-05:00","call":"responde","args":["sí","ear",false,900,true],"member":"answer","dart":{"w":"sí","skill":"ear","ok":false,"ms":900,"intro":true},"returns":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":1772488800000,"aparcada":0,"marca":0,"n":1,"bien":0},"store":{"palabras":{"sí":{"w":"sí","primera":1772488800000,"oida":0,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":1772488800000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":1,"now":1772488860000,"local":"2026-03-02T17:01:00-05:00","call":"responde","args":["sí","ear",true,900,true],"member":"answer","dart":{"w":"sí","skill":"ear","ok":true,"ms":900,"intro":true},"returns":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":1772488860000,"aparcada":0,"marca":0,"n":2,"bien":1},"store":{"palabras":{"sí":{"w":"sí","primera":1772488800000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":1772488860000,"aparcada":0,"marca":0,"n":2,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":2,"now":1772488920000,"local":"2026-03-02T17:02:00-05:00","call":"responde","args":["sí","ear",true,900,true],"member":"answer","dart":{"w":"sí","skill":"ear","ok":true,"ms":900,"intro":true},"returns":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":1772488920000,"aparcada":0,"marca":0,"n":3,"bien":2},"store":{"palabras":{"sí":{"w":"sí","primera":1772488800000,"oida":0,"ear":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":1772488920000,"aparcada":0,"marca":0,"n":3,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":3,"now":1772546400000,"local":"2026-03-03T09:00:00-05:00","call":"responde","args":["sí","ear",true,900,false],"member":"answer","dart":{"w":"sí","skill":"ear","ok":true,"ms":900,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546400000,"aparcada":0,"marca":0,"n":4,"bien":3},"store":{"palabras":{"sí":{"w":"sí","primera":1772488800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546400000,"aparcada":0,"marca":0,"n":4,"bien":3},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":4,"now":1772546460000,"local":"2026-03-03T09:01:00-05:00","call":"responde","args":["sí","ear",false,900,true],"member":"answer","dart":{"w":"sí","skill":"ear","ok":false,"ms":900,"intro":true},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546460000,"aparcada":0,"marca":0,"n":5,"bien":3},"store":{"palabras":{"sí":{"w":"sí","primera":1772488800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546460000,"aparcada":0,"marca":0,"n":5,"bien":3},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":5,"now":1772546520000,"local":"2026-03-03T09:02:00-05:00","call":"responde","args":["no","mouth",true,500,true],"member":"answer","dart":{"w":"no","skill":"mouth","ok":true,"ms":500,"intro":true},"returns":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772546520000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"sí":{"w":"sí","primera":1772488800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546460000,"aparcada":0,"marca":0,"n":5,"bien":3},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"no":{"w":"no","primera":1772546520000,"oida":0,"ear":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":2,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772614800000,"aciertos":[],"ultima":1772546520000,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"}
+ ]
+}

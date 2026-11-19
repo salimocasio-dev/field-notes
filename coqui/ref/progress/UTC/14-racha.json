@@ -1,0 +1,41 @@
+{
+ "id": "14-racha",
+ "tz": "UTC",
+ "title": "The streak: consecutive day keys (UTC dates of local times), broken by a missing day; minutos marks a day",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772452800000,"local":"2026-03-02T12:00:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":0,"store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772452800000,"local":"2026-03-02T12:00:00+00:00","call":"minutos","args":[2],"member":"addMinutes","dart":{"m":2},"store":{"palabras":{},"dias":{"2026-03-02":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2,"v":1},"saved":"same"},
+  {"i":2,"now":1772539200000,"local":"2026-03-03T12:00:00+00:00","call":"minutos","args":[0.5],"member":"addMinutes","dart":{"m":0.5},"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2.5,"v":1},"saved":"same"},
+  {"i":3,"now":1772539260000,"local":"2026-03-03T12:01:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":2,"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2.5,"v":1},"saved":"same"},
+  {"i":4,"now":1772625600000,"local":"2026-03-04T12:00:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":0,"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2.5,"v":1},"saved":"same"},
+  {"i":5,"now":1772712000000,"local":"2026-03-05T12:00:00+00:00","call":"minutos","args":[1],"member":"addMinutes","dart":{"m":1},"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1,"2026-03-05":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":3.5,"v":1},"saved":"same"},
+  {"i":6,"now":1772712060000,"local":"2026-03-05T12:01:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":1,"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1,"2026-03-05":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":3.5,"v":1},"saved":"same"},
+  {"i":7,"now":1772798400000,"local":"2026-03-06T12:00:00+00:00","call":"minutos","args":[0],"member":"addMinutes","dart":{"m":0},"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1,"2026-03-05":1,"2026-03-06":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":3.5,"v":1},"saved":"same"},
+  {"i":8,"now":1772798460000,"local":"2026-03-06T12:01:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":2,"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1,"2026-03-05":1,"2026-03-06":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":3.5,"v":1},"saved":"same"},
+  {"i":9,"now":1772971200000,"local":"2026-03-08T12:00:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":0,"store":{"palabras":{},"dias":{"2026-03-02":1,"2026-03-03":1,"2026-03-05":1,"2026-03-06":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":3.5,"v":1},"saved":"same"}
+ ]
+}

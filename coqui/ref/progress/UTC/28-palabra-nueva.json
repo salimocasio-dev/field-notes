@@ -1,0 +1,35 @@
+{
+ "id": "28-palabra-nueva",
+ "tz": "UTC",
+ "title": "An answer on a word never met (the record is made by the answer): right fast from gap 0 gives 2.5 days; a miss from gap 0 gives 1",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772452800000,"local":"2026-03-02T12:00:00+00:00","call":"responde","args":["plato","ear",true,900,false],"member":"answer","dart":{"w":"plato","skill":"ear","ok":true,"ms":900,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772668800000,"aciertos":[1772452800000],"ultima":1772452800000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"plato":{"w":"plato","primera":1772452800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772668800000,"aciertos":[1772452800000],"ultima":1772452800000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":1,"now":1772452860000,"local":"2026-03-02T12:01:00+00:00","call":"responde","args":["taza","ear",false,900,false],"member":"answer","dart":{"w":"taza","skill":"ear","ok":false,"ms":900,"intro":false},"returns":{"etapa":0,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1772453460000,"aciertos":[],"ultima":1772452860000,"aparcada":0,"marca":0,"n":1,"bien":0},"store":{"palabras":{"plato":{"w":"plato","primera":1772452800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772668800000,"aciertos":[1772452800000],"ultima":1772452800000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"taza":{"w":"taza","primera":1772452860000,"oida":0,"ear":{"etapa":0,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1772453460000,"aciertos":[],"ultima":1772452860000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":2,"now":1772452920000,"local":"2026-03-02T12:02:00+00:00","call":"responde","args":["taza","mouth",true,2500,false],"member":"answer","dart":{"w":"taza","skill":"mouth","ok":true,"ms":2500,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":0,"due":1772452920000,"aciertos":[1772452920000],"ultima":1772452920000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"plato":{"w":"plato","primera":1772452800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772668800000,"aciertos":[1772452800000],"ultima":1772452800000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"taza":{"w":"taza","primera":1772452860000,"oida":0,"ear":{"etapa":0,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1772453460000,"aciertos":[],"ultima":1772452860000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":0,"due":1772452920000,"aciertos":[1772452920000],"ultima":1772452920000,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":3,"now":1772452980000,"local":"2026-03-02T12:03:00+00:00","call":"vence","args":["ear",1772712000000],"member":"due","dart":{"skill":"ear","at":1772712000000},"returns":["plato"],"store":{"palabras":{"plato":{"w":"plato","primera":1772452800000,"oida":0,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772668800000,"aciertos":[1772452800000],"ultima":1772452800000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"taza":{"w":"taza","primera":1772452860000,"oida":0,"ear":{"etapa":0,"paso":1,"seguidas":0,"fallos":1,"gap":1,"due":1772453460000,"aciertos":[],"ultima":1772452860000,"aparcada":0,"marca":0,"n":1,"bien":0},"mouth":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":0,"due":1772452920000,"aciertos":[1772452920000],"ultima":1772452920000,"aparcada":0,"marca":0,"n":1,"bien":1}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"}
+ ]
+}

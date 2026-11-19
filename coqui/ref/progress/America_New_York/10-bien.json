@@ -1,0 +1,38 @@
+{
+ "id": "10-bien",
+ "tz": "America/New_York",
+ "title": "Good: right on three returns spread over 14 days or more (and not before); a miss drops good back to holding",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772488800000,"local":"2026-03-02T17:00:00-05:00","call":"oida","args":["abuela"],"member":"heard","dart":{"w":"abuela"},"returns":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772528400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772546400000,"local":"2026-03-03T09:00:00-05:00","call":"responde","args":["abuela","ear",true,800,false],"member":"answer","dart":{"w":"abuela","skill":"ear","ok":true,"ms":800,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546400000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1772762400000,"aciertos":[1772546400000],"ultima":1772546400000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":2,"now":1772805600000,"local":"2026-03-06T09:00:00-05:00","call":"responde","args":["abuela","ear",true,800,false],"member":"answer","dart":{"w":"abuela","skill":"ear","ok":true,"ms":800,"intro":false},"returns":{"etapa":3,"paso":2,"seguidas":0,"fallos":0,"gap":6.25,"due":1773345600000,"aciertos":[1772546400000,1772805600000],"ultima":1772805600000,"aparcada":0,"marca":0,"n":2,"bien":2},"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":2,"seguidas":0,"fallos":0,"gap":6.25,"due":1773345600000,"aciertos":[1772546400000,1772805600000],"ultima":1772805600000,"aparcada":0,"marca":0,"n":2,"bien":2},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":3,"now":1773665940000,"local":"2026-03-16T08:59:00-04:00","call":"responde","args":["abuela","ear",true,800,false],"member":"answer","dart":{"w":"abuela","skill":"ear","ok":true,"ms":800,"intro":false},"returns":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":15.625,"due":1775015940000,"aciertos":[1772546400000,1772805600000,1773665940000],"ultima":1773665940000,"aparcada":0,"marca":0,"n":3,"bien":3},"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":2,"seguidas":1,"fallos":0,"gap":15.625,"due":1775015940000,"aciertos":[1772546400000,1772805600000,1773665940000],"ultima":1773665940000,"aparcada":0,"marca":0,"n":3,"bien":3},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":4,"now":1773752400000,"local":"2026-03-17T09:00:00-04:00","call":"responde","args":["abuela","ear",true,800,false],"member":"answer","dart":{"w":"abuela","skill":"ear","ok":true,"ms":800,"intro":false},"returns":{"etapa":3,"paso":3,"seguidas":0,"fallos":0,"gap":39.0625,"due":1777127400000,"aciertos":[1772546400000,1772805600000,1773665940000,1773752400000],"ultima":1773752400000,"aparcada":0,"marca":0,"n":4,"bien":4},"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":3,"seguidas":0,"fallos":0,"gap":39.0625,"due":1777127400000,"aciertos":[1772546400000,1772805600000,1773665940000,1773752400000],"ultima":1773752400000,"aparcada":0,"marca":0,"n":4,"bien":4},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":5,"now":1774875600000,"local":"2026-03-30T09:00:00-04:00","call":"responde","args":["abuela","ear",false,800,false],"member":"answer","dart":{"w":"abuela","skill":"ear","ok":false,"ms":800,"intro":false},"returns":{"etapa":3,"paso":2,"seguidas":0,"fallos":1,"gap":13.020833333333334,"due":1774876200000,"aciertos":[1772546400000,1772805600000,1773665940000,1773752400000],"ultima":1774875600000,"aparcada":0,"marca":0,"n":5,"bien":4},"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":2,"seguidas":0,"fallos":1,"gap":13.020833333333334,"due":1774876200000,"aciertos":[1772546400000,1772805600000,1773665940000,1773752400000],"ultima":1774875600000,"aparcada":0,"marca":0,"n":5,"bien":4},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":6,"now":1774875600000,"local":"2026-03-30T09:00:00-04:00","call":"abiertaHabla","args":["abuela"],"member":"openForSpeaking","dart":{"w":"abuela"},"returns":true,"store":{"palabras":{"abuela":{"w":"abuela","primera":1772488800000,"oida":1,"ear":{"etapa":3,"paso":2,"seguidas":0,"fallos":1,"gap":13.020833333333334,"due":1774876200000,"aciertos":[1772546400000,1772805600000,1773665940000,1773752400000],"ultima":1774875600000,"aparcada":0,"marca":0,"n":5,"bien":4},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"}
+ ]
+}
