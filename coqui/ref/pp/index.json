@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
   "files": 236,
-  "totalBytes": 17056883,
+  "totalBytes": 17056233,
   "entries": [
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/kinds.bin",
@@ -16,17 +16,17 @@
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/pix.bin",
       "bytes": 207360,
-      "sha256": "c509257bf8b90413a917df4000d23e9ef298d0a3ffe32067103bea65a897612c"
+      "sha256": "cf1015acbfda6673f32f4f94db46b109e4b3d27fc20f31abf17076a5ad4ae3ef"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/pix.json",
       "bytes": 370,
-      "sha256": "ef68b36f7122a1578be624c61a9c442095d34f66ecaf491f9ef80cdcfdd10e13"
+      "sha256": "3d410dafd50afedf7c5b703c165390de8b8ce6fe577e74d9edcc5e9ae8eb7af6"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/pix.png",
-      "bytes": 18792,
-      "sha256": "a749a32c5a1a0f8ab1448b26666cd7db2fc7fc7897fd3890ce850a4c5e7365f8"
+      "bytes": 18692,
+      "sha256": "a649b06066855fd8daa557f9b7fe5941bfc54da14bc31a46bf4244bd3ab9dc9f"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/state.json",
@@ -36,12 +36,12 @@
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/zb.bin",
       "bytes": 207360,
-      "sha256": "c52b8e24f6484e24d65f378b365e8e3b1b3f8bf1a8eb72fc0908d457787bfe18"
+      "sha256": "72a3795db91537121e0f7635a6537b396d2c0f5f16ab2b2482344667e3f3b57c"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/zb.json",
       "bytes": 322,
-      "sha256": "5606639b10955e43507580a9b860b340c4b8b47dcb6156c7ac5fabef9555d0e2"
+      "sha256": "333faed1151914c9f2c5d52cfb19636f5ed3a79560e0978924a105ea3faa4da5"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/kinds.bin",
@@ -56,17 +56,17 @@
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/pix.bin",
       "bytes": 207360,
-      "sha256": "faadde7b7837aeec49b335f9f11f89ac8bdc580a4cb111af45378b6a0875bb94"
+      "sha256": "2edd60f972a9b9d0d4aabcf7ee7173a8ce84365cf766c8cd99cd68f96242440a"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/pix.json",
       "bytes": 370,
-      "sha256": "55f37dbf1e29df031a9cd89e409dd92bb1bb9595c8035c2cb40d087eb9ac64f3"
+      "sha256": "d177f58b0baf39b3a761705dd3352d1169a855cb2c3d0b73da11a17252342fd1"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/pix.png",
-      "bytes": 23194,
-      "sha256": "4261bda81e974d2b32ed111b3f5ab3f929ee156bb462d3d5c7c23cf98a5ff893"
+      "bytes": 23097,
+      "sha256": "8bc83411390a35d642f6bfdfc826b8a4fdfb7af06f37ae77e2f6d6747b23024e"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/state.json",
@@ -76,12 +76,12 @@
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/zb.bin",
       "bytes": 207360,
-      "sha256": "8fcae59a6f73cea8ebf43e5afb33cbc238481b2e8e4c3d113964ab2ad1054954"
+      "sha256": "4a2029e5cda78905fab25489b6176364c5fae9902ab6387140663a7efd67bf8f"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-dusk-hide/zb.json",
       "bytes": 322,
-      "sha256": "d4c27eeb1c90d78f81903c8b66e022a8d50ab98ba469fc28617b7b02f34676d3"
+      "sha256": "b1117d63427fa6b19b008bf8c9aa5731ae3381c39ced44d925a82ddfac5f1da5"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/kinds.bin",
@@ -96,17 +96,17 @@
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/pix.bin",
       "bytes": 207360,
-      "sha256": "886b21fcc08cc2a0e172102f7997af0b189b64ff49a211cba66082b3e2271b3b"
+      "sha256": "059437072b60ec643f9ef4eb63f7435df240f8a792ddc9b0fb85d40e64e5f23c"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/pix.json",
       "bytes": 370,
-      "sha256": "fb33edb99d7bd8dbbf591318038f590d6199a45f9f31da164cc99a5a31f622c5"
+      "sha256": "270502eda1b5842d2de425d24b44fd553729b056770bc92d8b3daf11691589d7"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/pix.png",
-      "bytes": 22355,
-      "sha256": "1146d8ad4496e50abd7d62e5298167fa49d06ae5ca4db51974c6b0cfd373a703"
+      "bytes": 22250,
+      "sha256": "a1fdff7ca54b2e05f72d5fb41c3d86bef5a0fac63b8799e63d9ab8a0ee0a44b0"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/state.json",
@@ -116,12 +116,12 @@
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/zb.bin",
       "bytes": 207360,
-      "sha256": "c52b8e24f6484e24d65f378b365e8e3b1b3f8bf1a8eb72fc0908d457787bfe18"
+      "sha256": "72a3795db91537121e0f7635a6537b396d2c0f5f16ab2b2482344667e3f3b57c"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-sunset/zb.json",
       "bytes": 322,
-      "sha256": "5606639b10955e43507580a9b860b340c4b8b47dcb6156c7ac5fabef9555d0e2"
+      "sha256": "333faed1151914c9f2c5d52cfb19636f5ed3a79560e0978924a105ea3faa4da5"
     },
     {
       "path": "frente/door-open-win-open-lights-0-sky-day/kinds.bin",
@@ -136,17 +136,17 @@
     {
       "path": "frente/door-open-win-open-lights-0-sky-day/pix.bin",
       "bytes": 207360,
-      "sha256": "12a102d444d3ce547b4196519299615e0cf708c8459b14d5133e5d8e8a548a09"
+      "sha256": "6cbe5eed59d2de6b05816898b3ad467e324f1897d6ca58ebcf332433846115e6"
     },
     {
       "path": "frente/door-open-win-open-lights-0-sky-day/pix.json",
       "bytes": 370,
-      "sha256": "9adff6f5649a4833df4d99cd3df325a0f030eb017b76bd9d567c066d2d87c9a8"
+      "sha256": "bbbacf771e41aa0328d1810c894f871570854c7591d0434e5e29c1c39e1bb94d"
     },
     {
       "path": "frente/door-open-win-open-lights-0-sky-day/pix.png",
-      "bytes": 19049,
-      "sha256": "226235ac6fdecf3375333469e050b45777566efda0dc2b006c25775850f1d7b9"
+      "bytes": 18960,
+      "sha256": "afca02a6ca31aa7178b27651c50ba8f981cfdfcbcf34db70d4606bee64119c41"
     },
     {
       "path": "frente/door-open-win-open-lights-0-sky-day/state.json",
@@ -176,17 +176,17 @@
     {
       "path": "frente/door-open-win-shut-lights-0-sky-day/pix.bin",
       "bytes": 207360,
-      "sha256": "af2a3f47796a7cb54d108dfc29328bb727ee105feae1744e4bf8704e60b4f3b3"
+      "sha256": "41bb00d85c4a4e1617257791691364e4062d6e12f3ffaef760cff12ddf7487c3"
     },
     {
       "path": "frente/door-open-win-shut-lights-0-sky-day/pix.json",
       "bytes": 370,
-      "sha256": "322fab9faf0cd3b9369f0c62c3d4ea47669ff733d81d7173bb3bd9620d37167f"
+      "sha256": "485e1350cb00f76ee1e81e048ab4d99978bc63df1c6bec7a9e93d396fbae09fc"
     },
     {
       "path": "frente/door-open-win-shut-lights-0-sky-day/pix.png",
-      "bytes": 18716,
-      "sha256": "5cc291f2e2d0b120519fce41dae5d8f803dd415a6097dd3f917658e0f1a15772"
+      "bytes": 18623,
+      "sha256": "60a21c27ef8cb94246249ff8b35e7b7bccab70ba0c478bcd9efbb3e4019cbd12"
     },
     {
       "path": "frente/door-open-win-shut-lights-0-sky-day/state.json",
@@ -216,17 +216,17 @@
     {
       "path": "frente/door-open-win-shut-lights-0-sky-dusk-hide/pix.bin",
       "bytes": 207360,
-      "sha256": "8ab633cd5736187330e596236754e1bc8039524c0bb726a042672ea512f52833"
+      "sha256": "42932e42653fd8c436888cb374528227401f09cb7e583ad14494c7ea8f74e1ae"
     },
     {
       "path": "frente/door-open-win-shut-lights-0-sky-dusk-hide/pix.json",
       "bytes": 370,
-      "sha256": "f92b805fd9500890f57a508b8a731cf7d6a92b574c3a7d3b1f21066ab1ee844b"
+      "sha256": "6b865600f59b46e6a8adb3694f4fe0108bf065a95e1d0af3a951d2600f7dd81a"
     },
     {
       "path": "frente/door-open-win-shut-lights-0-sky-dusk-hide/pix.png",
-      "bytes": 23111,
-      "sha256": "84ca884fd028ab59960a580556d6ee4e7f501a8fa338163f497b3dd728460d81"
+      "bytes": 23023,
+      "sha256": "aa8ccf176d77be58309f3422d332ed72669d1b80389a5444d59c7320030401e0"
     },
     {
       "path": "frente/door-open-win-shut-lights-0-sky-dusk-hide/state.json",
@@ -256,17 +256,17 @@
     {
       "path": "frente/door-open-win-shut-lights-1-sky-storm/pix.bin",
       "bytes": 207360,
-      "sha256": "5190d09430a4c880677c091f65e4797f94c9db0c910f10cefd00408821c687d9"
+      "sha256": "032e0c9a2d38864f63981611a08ffe8365daba2e71bd8dc8923eb0858700875a"
     },
     {
       "path": "frente/door-open-win-shut-lights-1-sky-storm/pix.json",
       "bytes": 370,
-      "sha256": "3a0bbe77b8addd6a5f213df9463637ed38c29785122e947166bf3f51026dce7d"
+      "sha256": "151339c13982fc08d25658e931f86c5ae5ce6d0fbe1647fb7a209aa5e07133be"
     },
     {
       "path": "frente/door-open-win-shut-lights-1-sky-storm/pix.png",
-      "bytes": 22380,
-      "sha256": "705acd49ed45ad103774b4a835d08357a8929bd17195c1670e74fcc9f8e6b1eb"
+      "bytes": 22302,
+      "sha256": "6a599b702771eb755a864821a4ea04df8e0c57e6f8969b3dca670a8a1cadee83"
     },
     {
       "path": "frente/door-open-win-shut-lights-1-sky-storm/state.json",

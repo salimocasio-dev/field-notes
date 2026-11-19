@@ -138,11 +138,10 @@ function make(G) {
   fpt('habla.ventana', 'ventana', [112, 60], 'talkAt abuela in the window (y 38 with a bubble; x 105 with the cake): same offset');
   fpt('habla.dentro.ventana', 'ventana', [112, 37], 'talkAt abuela behind the shut window');
   fpt('mariposa.1', 'ventana', [98, 97], 'the pink butterfly\'s middle (ambient: 98 + 34 sin, 97 + 9 sin)');
-  // behind the half-open door: abuela's head (sprite columns 21 to 38) in the middle of the gap; the frog (cq.6, columns 1 to 18) with
-  // his left side behind the left jamb and the rest whole in the gap, his feet above the threshold
+  // behind the half-open door: the frog (cq.6, columns 1 to 18) with his left side behind the left jamb and the rest in the gap,
+  // his feet above the threshold. (Abuela behind it is drawn where she stands in the doorway: the leaf hides half of her.)
   { const w = F.DOOR1 - F.DOOR0, a = F.HALF_ANGLE, gx = (F.DOOR1 + Math.cos(a) * w) - (F.HY1 - .06 + Math.sin(a) * w) + F.HY1;
     const L = P([F.DOOR0, F.HY1, F.FLOOR]), R = P([gx, F.HY1, F.FLOOR]), mid = (L[0] + R[0]) / 2, ab = abDraw('abuela.puerta');
-    pt('abuela.asoma', { old: [135, 55], screen0: [Math.round(mid - 29.5), ab[1]], world: E.atZ(Math.round(mid - 29.5) + 30, ab[1] + 49, F.FLOOR), what: 'abuela behind the half-open door (W.peek): where her sprite is drawn, her head in the middle of the gap (clipped to puerta.hueco)' });
     pt('cq.asoma', { old: [150, 84], screen0: [Math.floor(L[0]) - 5, Math.round(L[1]) - 17], world: E.atZ(Math.floor(L[0]) - 5 + 10, Math.round(L[1]) - 2, F.FLOOR), what: 'the frog peeking from behind the half-open door (cq.6): his left side hidden by the left jamb, the rest whole in the gap (clipped to puerta.hueco)' }); }
   fpt('dentro.puerta', 'puerta', [166, 53], 'her voice from behind the shut door (bubble quien)');
   fpt('habla.dentro.puerta', 'puerta', [166, 31], 'talkAt abuela behind the shut door');
@@ -381,7 +380,7 @@ function make(G) {
     c(143, 'clip rect [153,53,11,51]', { clip: 'puerta.hueco' });
     c(143, 'drawImage(cq.6, 150, 84)', { point: 'cq.asoma', new: PTS['cq.asoma'].screen });
     c(144, 'clip rect [153,53,11,51]', { clip: 'puerta.hueco' });
-    c(144, 'drawImage(abuela, 135, 55)', { point: 'abuela.asoma', new: PTS['abuela.asoma'].screen });
+    c(144, 'drawImage(abuela, 135, 55)', { spot: 'abuela.puerta', new: abDraw('abuela.puerta') }, 'as in the doorway: the half-open leaf hides about half of her (clip puerta.hueco), as in the old picture');
     c(147, 'clip rect [97,61,30,20]', { clip: 'ventana.hueco' });
     c(147, 'drawImage(abuela, 82, 61)', { point: 'abuela.ventana', new: PTS['abuela.ventana'].screen });
     c(147, 'drawImage(abuela, 75, 61) (W.tab || W.mesa)', { point: 'abuela.ventana.mesa', new: PTS['abuela.ventana.mesa'].screen });

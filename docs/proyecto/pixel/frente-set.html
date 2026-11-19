@@ -46,7 +46,7 @@ const PATH_U = ((DOOR0 + DOOR1) / 2 - STEP) / R2, PATH_V = ((DOOR0 + DOOR1) / 2 
 const BUSH1 = [3.37, -2.28], BUSH2 = [1.47, 6.8];                     // the two bushes
 const PALM_H = 3.6, PALM_LEAN = .3, PALM_SIZE = .62, SPALM_H = 2.1, SPALM_LEAN = .25, SPALM_SIZE = .58;
 const palmTop = (p, h, lean) => [p[0] + lean * .7, p[1] - lean * .5, h];   // where swayPalm puts the crown
-const HALF_ANGLE = Math.PI + .56;                                    // the half-open door: turned .56 rad into the room (a gap wide enough for abuela's whole head)
+const HALF_ANGLE = Math.PI + .34;                                    // the half-open door: turned .34 rad into the room, still across about half the doorway (as the old picture)
 const HZ = 46;                                                        // the horizon, in screen rows: sky above
 const TEAL = [92, 190, 186], WOOD = [150, 98, 56], WHITE = [244, 240, 228];
 
@@ -107,18 +107,15 @@ function house() {
   shadowBox(HX0, HY0, HX1, HY1 - .6, HH + .9, .6);   // kept off the front: the porch is in the sun
 }
 
-// the room behind an opening [a0, a1] of the front wall: a plank floor and the back wall with a skirting board and a framed picture.
+// the room behind an opening [a0, a1] of the front wall: a plank floor and the back wall with a skirting board (no picture: its frame
+// read as lines over abuela's head when she stands in the doorway).
 // Only the part that shows through the opening is drawn (a point of the back wall shows through the front at x + depth, and lower).
 // Dim when the lights are off (a room, not a hole); warm, and giving light, when they are on
 const BACK = HY0 + .08;
 function room(a0, a1, floor) {
-  const on = SET.lights, d = HY1 - BACK, F = on ? [[196, 132, 76], [214, 152, 92], [176, 114, 64]] : [[70, 50, 36], [82, 60, 42], [58, 40, 28]];
+  const on = SET.lights, d = HY1 - BACK, F = on ? [[236, 196, 134], [242, 204, 142], [222, 180, 118]] : [[70, 50, 36], [82, 60, 42], [58, 40, 28]];
   const wallC = (a, z) => {
     if (z < FLOOR + .16) return on ? rgb(170, 110, 64) : rgb(44, 32, 26);                        // skirting board
-    if (a > .05 && a < .55 && z > 1.05 && z < 1.5) {                                               // a framed picture
-      const edge = a < .1 || a > .5 || z < 1.1 || z > 1.45;
-      return edge ? (on ? rgb(150, 96, 50) : rgb(52, 36, 26)) : on ? rgb(120, 170, 200) : rgb(48, 66, 80);
-    }
     const k = (z - FLOOR) / 2;
     return on ? rgb(255, 230 - k * 20, 168 - k * 30) : rgb(66 - k * 14, 72 - k * 14, 74 - k * 12);
   };
@@ -126,8 +123,8 @@ function room(a0, a1, floor) {
     const c = wallC(a, z); if (on) plotGlow(a, BACK, z, c); else plot(a, BACK, z, c);
   }
   if (floor) for (let a = Math.max(HX0 + .02, a0 - d - .15); a <= Math.min(HX1 - .02, a1 + .05); a += ST) for (let b = BACK; b <= HY1 - .01; b += ST) {
-    const plank = Math.floor((a + 5) / .22), seam = ((a + 5) % .22) < .03, pool = on && Math.hypot(a - (a0 + a1) / 2 + .2, b + .35) < .5;
-    const c = pool ? rgb(240, 196, 120) : rgb(...F[seam ? 2 : hash(plank, 3) > .5 ? 1 : 0]);
+    const seam = ((a + 5) % .22) < .03;                                                            // plain boards: no light pool, no blotches
+    const c = rgb(...F[seam ? 2 : 0]);
     if (on) plotGlow(a, b, FLOOR, c); else plot(a, b, FLOOR, c);
   }
 }
@@ -163,8 +160,8 @@ function doorway() {
     // hinged on the right, it swings in: half open it still hides most of the doorway, a dark gap on its left; open, it is out of sight
     // (the sheet's door gap, clip puerta.hueco, is worked out from HALF_ANGLE)
     const ang = SET.door === 'half' ? HALF_ANGLE : Math.PI + 1.45;
-    // the leaf turned toward the light: one step lighter than the shut door, a dark line at its free edge, against the dark gap
-    leaf(DOOR1, HY1 - .06, w, z0, z1, ang, (t, z) => t > .95 ? Wd[0] : t > .8 && t < .9 && Math.abs(z - z0 - 1.17) < .06 ? rgb(250, 210, 80) : Wd[Math.min(4, Wd.indexOf(panel(t, z)) + 1)]);   // with its knob
+    // the leaf as the shut door looks: its panels and its knob, a dark line at its free edge against the gap
+    leaf(DOOR1, HY1 - .06, w, z0, z1, ang, (t, z) => t > .96 ? Wd[0] : t > .82 && t < .9 && Math.abs(z - z0 - 1.17) < .06 ? rgb(250, 210, 80) : panel(t, z));
   }
 }
 

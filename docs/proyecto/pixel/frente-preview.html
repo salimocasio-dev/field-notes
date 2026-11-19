@@ -93,8 +93,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
       case 101: case 126: return off('casita');
       case 102: case 127: return x < 120 ? off('palma') : off('palmita');
       case 143: return pt('cq.asoma', [150, 84]);
-      case 144: return pt('abuela.asoma', [135, 55]);
-      case 153: return off('abuela.puerta');
+      case 144: case 153: return off('abuela.puerta');
       case 152: return CUR === 'drawImage' ? off('abuela.paso') : off('abuela.plato');
       case 172: return W.ab && W.ab.en === 'ventana' ? off('ventana') : off('abuela.puerta');
       case 173: return W.dentro === 'ventana' ? off('ventana') : off('puerta');

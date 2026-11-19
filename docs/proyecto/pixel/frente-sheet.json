@@ -726,12 +726,6 @@
    "what": "the pink butterfly's middle (ambient: 98 + 34 sin, 97 + 9 sin)",
    "screen": [88, 98]
   },
-  "abuela.asoma": {
-   "old": [135, 55],
-   "world": [1.447, 0.1416, 0.16],
-   "what": "abuela behind the half-open door (W.peek): where her sprite is drawn, her head in the middle of the gap (clipped to puerta.hueco)",
-   "screen": [112, 82]
-  },
   "cq.asoma": {
    "old": [150, 84],
    "world": [0.7399, -0.2392, 0.16],
@@ -1363,17 +1357,17 @@
    "face": "gap",
    "world": [
     [0.75, 0, 0.16],
-    [1.8017, 0, 0.16],
-    [1.8017, 0, 2.71],
+    [1.3766, 0, 0.16],
+    [1.3766, 0, 2.71],
     [0.75, 0, 2.71]
    ],
    "screen": [
     [131.79, 123.29],
-    [151.12, 132.96],
-    [151.12, 75.54],
+    [143.31, 129.05],
+    [143.31, 71.63],
     [131.79, 65.87]
    ],
-   "box": [131, 65, 21, 68],
+   "box": [131, 65, 13, 65],
    "what": "the gap between the left jamb and the half-open leaf (door=half), on the front wall (old rect [153,53,11,51], frente.js:143-144): who peeks from behind the door"
   }
  },
@@ -1897,9 +1891,10 @@
    "line": 144,
    "old": "drawImage(abuela, 135, 55)",
    "to": {
-    "point": "abuela.asoma",
-    "new": [112, 82]
-   }
+    "spot": "abuela.puerta",
+    "new": [113, 82]
+   },
+   "note": "as in the doorway: the half-open leaf hides about half of her (clip puerta.hueco), as in the old picture"
   },
   {
    "line": 147,
