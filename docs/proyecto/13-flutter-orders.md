@@ -251,6 +251,17 @@ Page 11-pixel-engine, build step 1. Page 12: sections 1, 2, 4, 6, 7.
 
 **Stop if:** more than 0.5% differ after the porting rules are checked. Report the first twenty differing pixels with both colours. Do not tune constants.
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; the parity tests were run again by the orchestrator on vm and chrome (40 tests each, all pass).
+- Unit values: `hash`, `noise`, `project`, `unproject`, `rampOf` all match the 200 references exactly, on vm and chrome.
+- The island: 0 of 122,880 pixels differ from the JavaScript, on vm and chrome (`pix`, `zb` and `kinds`).
+- El frente's one state (added to this order as a test of the building helpers at S = 26): 0 of 51,840 pixels differ, vm and chrome.
+- An extra scene the builder added for the functions the island and El frente do not reach (`growTree`, `drawLeaves`, `box`, `person`, lit windows, the arrow and dots): 0 of 22,400 pixels differ; one depth value in 22,400 is one float step off.
+- `toInt32` and `imul` are public in coqui_pixel, tested against node.
+- The island, El frente's set and the extra scene are test-only code under `test/support/`; nothing of the map is in `lib/`.
+- A colour is `[r, g, b]`; the palette is `b.C`; `project` returns a record `(sx, sy, d)`.
+- Old-code quirks, ported as they are: `sx | 0` draws a point just left of or above the picture on column or row 0; frente-set.html's curtain uses `%` on a negative number.
+- Open: pp-engine.js carries a one-line attribution, not the MIT text. Order 11 adds the full licence text to the Dart engine file.
+
 ## Order 11. Sprites and the software canvas (builder, coqui_pixel)
 
 Page 12: sections 1, 4, 6, 7. **From:** historia/engine.js, all of it.
