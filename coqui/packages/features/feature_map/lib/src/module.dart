@@ -1,8 +1,9 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_map/src/map_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_map's module. A placeholder until order 13 builds the real one: its screen says the feature's name.
+/// feature_map's module: the home map, the Today card and the place sheet. It owns the tab `map` and no route.
 class MapModule implements FeatureModule {
   const MapModule();
 
@@ -12,19 +13,11 @@ class MapModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: 'map',
-    label: 'feature_map',
+    label: CoquiTabs.map.label,
     icon: Icons.map,
-    builder: (_) => const _Placeholder(),
+    builder: (_) => MapScreen(services: s),
   );
 
   @override
   Widget? screenFor(AppRoute route, Services s) => null;
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text('feature_map'));
 }
