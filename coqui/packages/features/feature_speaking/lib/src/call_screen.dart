@@ -223,11 +223,16 @@ class _CallScreenState extends State<CallScreen> {
     ),
   );
 
+  // `.lo`: at least 20 high. An empty line is nothing, not an empty Text: the text engine gives an empty paragraph 1.5 times its
+  // size, which is 21 here and not the 20 the page has.
   Widget _note({required TextAlign align}) => Semantics(
     liveRegion: true,
     child: ConstrainedBox(
+      key: const ValueKey('call-note'),
       constraints: const BoxConstraints(minHeight: 20),
-      child: Text(c.note, textAlign: align, style: CallText.note),
+      child: c.note.isEmpty
+          ? const SizedBox.shrink()
+          : Text(c.note, textAlign: align, style: CallText.note),
     ),
   );
 

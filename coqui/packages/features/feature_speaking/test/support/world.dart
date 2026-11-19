@@ -1,6 +1,7 @@
 // Services for widget tests: the fakes of coqui_testing on the whole course, at a phone's size.
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:flutter/services.dart' show FontLoader, rootBundle;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -116,4 +117,18 @@ class World {
     await tester.pumpWidget(const SizedBox());
     dispose();
   }
+}
+
+bool _fontsLoaded = false;
+
+/// The shared look's Roboto, in the three files its weights use, so that a test measures text as a phone draws it. Without it a
+/// widget test draws every letter as a square of its size (Flutter's test font) and a line wraps where it would not.
+Future<void> loadCoquiFonts() async {
+  if (_fontsLoaded) return;
+  final loader = FontLoader('packages/coqui_ui/Roboto');
+  for (final f in const ['Regular', 'Medium', 'Bold']) {
+    loader.addFont(rootBundle.load('packages/coqui_ui/fonts/Roboto-$f.ttf'));
+  }
+  await loader.load();
+  _fontsLoaded = true;
 }

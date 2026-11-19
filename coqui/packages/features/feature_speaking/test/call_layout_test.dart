@@ -28,6 +28,8 @@ Finder textStyled(TextStyle style, [String? data]) => find.byWidgetPredicate(
 );
 
 void main() {
+  setUpAll(loadCoquiFonts);
+
   final sizes = (expected['sizes'] as Map<String, dynamic>).entries.toList();
 
   for (final e in sizes) {
@@ -119,7 +121,7 @@ void main() {
           }
           rect(
             '.lo',
-            tester.getRect(textStyled(CallText.note)),
+            tester.getRect(find.byKey(const ValueKey('call-note'))),
             left: false,
             right: false,
           );
