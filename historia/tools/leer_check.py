@@ -79,6 +79,7 @@ async def main():
             b=await p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox","--autoplay-policy=no-user-gesture-required"])
             ctx,pg=await new_page(b,errs=errs);cdp=await ctx.new_cdp_session(pg)
             reqs=[];pg.on("request",lambda r: reqs.append(r.url) if "/audio/" in r.url and r.url.split("?")[0].endswith(".mp3") else None)
+            lreqs=[];pg.on("request",lambda r: lreqs.append(r.url) if "/libros/" in r.url else None)
             await pg.goto(BASE);await until(pg,"()=>!!(window.App&&App.ready)",15000);await pg.evaluate("App.listo()");await pg.evaluate(HOOK)
             check("app ready",await pg.evaluate("!!App.ready"))
             # ------------------------------------------------------------- the shelf
@@ -102,6 +103,10 @@ async def main():
             await until(pg,"()=>document.querySelectorAll('#t-biblioteca .bk').length>=20");await pg.wait_for_timeout(500)
             d=await pg.evaluate("""(()=>{const r=document.querySelector('.bk[data-c=\"d-toc-toc\"]');return r?{on:r.querySelector('.btn.go').getAttribute('onclick'),n:document.querySelectorAll('#t-biblioteca .bk').length}:null})()""")
             check("shelf: picture stories and routines of a finished place, Listen without oir",d is not None and "oir=1" not in d["on"] and "cuento=d-toc-toc" in d["on"],str(d and d["n"]))
+            hz=await pg.evaluate("""[...document.querySelectorAll('#t-biblioteca .bk')].filter(r=>r.dataset.c.startsWith('h-')).map(r=>({c:r.dataset.c,b:[...r.querySelectorAll('button')].map(x=>x.textContent.trim()),img:!!r.querySelector('.cov img'),on:r.querySelector('.btn.go').getAttribute('onclick')}))""")
+            check("shelf: routines (Haz esto) show Listen only, no Read, no cover, the old link",len(hz)>=4 and all(x["b"]==["Listen"] and not x["img"] and "oir=1" not in x["on"] for x in hz),str([x["c"] for x in hz]))
+            check("shelf: no request for a routine's book (no missing-book request)",not [u for u in lreqs if "/libros/h-" in u])
+            check("shelf: a picture story of the finished place keeps its Read button when its book exists",await pg.evaluate("(()=>{const r=document.querySelector('.bk[data-c=\"d-toc-toc\"]');return !!r&&[...r.querySelectorAll('button')].map(x=>x.textContent.trim()).join()==='Listen,Read'})()"))
             # back to two played stories for the rest
             await pg.evaluate("""async()=>{const keep=['el-jugo','que-calor','la-lluvia'];for(const c of Object.keys(PAL.db.cuentos))if(!keep.includes(c))delete PAL.db.cuentos[c];for(const w of Object.keys(PAL.db.palabras))delete PAL.db.palabras[w];
               for(const c of keep){const T=await (await fetch('cuentos/'+c+'.json')).json();PAL.cuento(T,[]);}PAL.save();}""")

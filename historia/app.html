@@ -316,8 +316,8 @@ async function biblioteca(){const my=++BIBT,oi=db().oidos||{},rd=db().leidos||{}
   let cerrado=0;
   const lugares=CURSO.lugares.filter(l=>l.cuentos&&l.cuentos.length).map(l=>{const fin=AJ().todo||l.cuentos.every(hecho),jug=l.cuentos.filter(c=>veces(c)),dib=fin?l.dibujos||[]:[],haz=fin?l.haz||[]:[];
     cerrado+=l.cuentos.length-jug.length+(fin?0:(l.dibujos||[]).length+(l.haz||[]).length);
-    return {l,rows:[...jug.map(c=>[c,"&oir=1",""]),...dib.map(c=>[c,"","Cuento con dibujos"]),...haz.map(c=>[c,"","Haz esto"])]};}).filter(x=>x.rows.length);
-  const bk={};await Promise.all(lugares.flatMap(x=>x.rows.map(r=>libro(r[0]).then(b=>{bk[r[0]]=b;}))));if(my!==BIBT)return;
+    return {l,rows:[...jug.map(c=>[c,"&oir=1",""]),...dib.map(c=>[c,"","Cuento con dibujos"]),...haz.map(c=>[c,"","Haz esto",1])]};}).filter(x=>x.rows.length);   // a routine (Haz esto) has no book: Listen only, and no request for a book
+  const bk={};await Promise.all(lugares.flatMap(x=>x.rows.map(r=>r[3]?0:libro(r[0]).then(b=>{bk[r[0]]=b;}))));if(my!==BIBT)return;
   const fila=([c,q,kind])=>{const b=bk[c],t=CURSO.cuentos[c],p=b&&b.pages&&b.pages[0];
     return `<div class="bk" data-c="${c}"><div class="cov">${p?`<img src="libros/${p.img}" alt="" onerror="this.remove()">`:""}</div>
       <div class="grow"><b>${t.t}</b>${rd[c]?`<span class="okc" role="img" aria-label="Read to the end">${SVG(IC.ok)}</span>`:""}<div class="small mut">${kind?kind+" · ":""}${oi[c]?"Heard "+oi[c]+"× · ":""}about ${t.min} min</div>
