@@ -1,3 +1,6 @@
+@TestOn('vm')
+library;
+
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/coqui_platform.dart';
 import 'package:flutter_test/flutter_test.dart';
