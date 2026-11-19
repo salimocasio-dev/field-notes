@@ -178,7 +178,7 @@ body:not(.ready) .tab,body:not(.ready) nav{visibility:hidden}
 <script src="juego.js?v=38"></script>
 <script src="escenas/kit.js?v=35"></script>
 <script src="escenas/frente.js?v=35"></script>
-<script src="cual.js?v=35"></script>
+<script src="cual.js?v=39"></script>
 <script src="llamada.js?v=37"></script>
 <script>
 "use strict";
@@ -304,9 +304,10 @@ function lugar(i){const l=CURSO.lugares[i],op=abierto(l),prox=(l.cuentos||[]).fi
     :`<p class="mut">${op?"Not built yet.":"Locked until the places before it are done."}</p><p class="small mut">Scenes: ${l.escenas.join(" · ")}</p>`),{title:l.nombre});}
 
 /* ---------- the files the shelf, the book and the word sheet read: each fetched once, when first needed ---------- */
+const BV="?v=39";   // the books and their pictures are fetched at run time: the tag keeps a phone from showing an old copy
 const STO={},STOV={},BOOKS={};   // STO: promises of the story files (STOV: the ones that arrived); BOOKS: promises of libros/<id>.json (null when a story has no book)
 const cuentoJ=c=>STO[c]||(STO[c]=fetch("cuentos/"+c+".json").then(r=>r.ok?r.json():null).catch(()=>null).then(T=>{if(T)STOV[c]=T;return T;}));
-const libro=c=>BOOKS[c]||(BOOKS[c]=fetch("libros/"+c+".json").then(r=>r.ok?r.json():null).catch(()=>null));
+const libro=c=>BOOKS[c]||(BOOKS[c]=fetch("libros/"+c+".json"+BV).then(r=>r.ok?r.json():null).catch(()=>null));
 let READYP=null,HAVE=null;   // audio/ready.json, read once: HAVE is the set of clips that have a recording
 const audioListo=()=>READYP||(READYP=fetch("audio/ready.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null).then(j=>{if(j)HAVE=new Set(j.clips||[]);return j;}));
 const PEND={},EXTRA=new Set();   // recordings a book or a word sheet loaded (EXTRA) and those still on their way (PEND). The engine's own loader decodes a whole story; a book loads one page at a time
@@ -330,7 +331,7 @@ async function biblioteca(){const my=++BIBT,oi=db().oidos||{},rd=db().leidos||{}
     return {l,rows:[...jug.map(c=>[c,"&oir=1",""]),...dib.map(c=>[c,"","Cuento con dibujos"]),...haz.map(c=>[c,"","Haz esto",1])]};}).filter(x=>x.rows.length);   // a routine (Haz esto) has no book: Listen only, and no request for a book
   const bk={};await Promise.all(lugares.flatMap(x=>x.rows.map(r=>r[3]?0:libro(r[0]).then(b=>{bk[r[0]]=b;}))));if(my!==BIBT)return;
   const fila=([c,q,kind])=>{const b=bk[c],t=CURSO.cuentos[c],p=b&&b.lee===true&&b.pages&&b.pages[0],leido=!!rd[c];   // Read and the cover only when the book's own verdict says it reads well ("lee": true)
-    return `<div class="bk" data-c="${c}"><div class="cov">${p?`<img src="libros/${p.img}" alt="" onerror="this.remove()">`:""}</div>
+    return `<div class="bk" data-c="${c}"><div class="cov">${p?`<img src="libros/${p.img}${BV}" alt="" onerror="this.remove()">`:""}</div>
       <div class="grow"><b>${t.t}</b><div class="small mut">${kind?kind+" · ":""}${oi[c]?"Heard "+oi[c]+"× · ":""}about ${t.min} min</div>
       <div class="acts"><button class="btn go" aria-label="Listen: ${t.t}" onclick="tick();location.href='index.html?cuento=${c}${q}&desde=app'">${SVG(IC.play)}Listen</button>${p?`<button class="btn out" aria-label="Read${leido?" again":""}: ${t.t}" onclick="tick();leer('${c}')">${SVG(IC.leer)}Read${leido?' <span class="okc" aria-hidden="true">✓</span>':""}</button>`:""}</div></div></div>`;};
   document.getElementById("t-biblioteca").innerHTML=`<h1>Biblioteca</h1>${lugares.map(x=>`<h2>${x.l.nombre}</h2><div class="card" style="padding:0 16px">${x.rows.map(fila).join("")}</div>`).join("")||`<div class="card mut">Play a story on the map. You can hear it again here and read it.</div>`}
@@ -355,8 +356,8 @@ function cierraLibro(){if(!LEE)return;LEERT++;LOOP++;hush();LEE=null;cierraTarje
 let BACKS=0;addEventListener("popstate",()=>{if(BACKS>0){BACKS--;return;}cierraLibro();});   // the system back button closes the book
 function pinta(){const L=LEE,B=L.B,p=B.pages[L.i],n=B.pages.length,img=document.getElementById("lbimg"),bar=document.getElementById("lbbar");
   document.getElementById("lbcnt").textContent=(L.i+1)+" / "+n;bar.firstElementChild.style.width=(L.i+1)/n*100+"%";bar.setAttribute("aria-valuenow",L.i+1);bar.setAttribute("aria-valuemax",n);bar.setAttribute("aria-valuetext","Page "+(L.i+1)+" of "+n);
-  img.style.visibility="hidden";delete img.dataset.ok;img.onload=()=>{img.dataset.ok=1;ajustaPic();};img.src="libros/"+p.img;
-  if(B.pages[L.i+1]){const nx=new Image();nx.src="libros/"+B.pages[L.i+1].img;}   // the next picture is ready when the page turns
+  img.style.visibility="hidden";delete img.dataset.ok;img.onload=()=>{img.dataset.ok=1;ajustaPic();};img.src="libros/"+p.img+BV;
+  if(B.pages[L.i+1]){const nx=new Image();nx.src="libros/"+B.pages[L.i+1].img+BV;}   // the next picture is ready when the page turns
   L.ids=idsPag(L,L.i);const box=document.getElementById("lbtxt");box.textContent="";box.scrollTop=0;L.ids.forEach(id=>box.appendChild(lineaEl(id)));
   pie();ajustaPic();if(L.i===n-1)marcaLeido();}
 function marcaLeido(){const d=db();d.leidos=d.leidos||{};if(!d.leidos[LEE.id]){d.leidos[LEE.id]=pnow();PAL.save();}}   // completion only: no word record is written

@@ -104,7 +104,7 @@ async def main():
             check("shelf: grouped under the place name",await pg.evaluate("document.querySelector('#t-biblioteca h2').textContent")=="La casa")
             r0=await pg.evaluate("""(()=>{const r=document.querySelector('.bk[data-c=\"que-calor\"]'),im=r.querySelector('.cov img'),bs=[...r.querySelectorAll('button')];
               return {title:r.querySelector('b').textContent,img:im&&im.getAttribute('src'),imgok:im&&im.complete&&im.naturalWidth>0,btn:bs.map(x=>x.textContent.trim()),h:bs.map(x=>x.getBoundingClientRect().height),on:bs.map(x=>x.getAttribute('onclick')),grey:document.querySelector('#t-biblioteca p.small.mut').textContent}})()""")
-            check("shelf row: cover (first page), title, Listen and Read",r0["title"]=="¡Qué calor!" and r0["imgok"] and r0["img"].endswith("que-calor-1.png") and r0["btn"]==["Listen","Read"],str(r0["btn"]))
+            check("shelf row: cover (first page), title, Listen and Read",r0["title"]=="¡Qué calor!" and r0["imgok"] and r0["img"].endswith("que-calor-1.png?v=39") and r0["btn"]==["Listen","Read"],str(r0["btn"]))
             check("shelf row: 48 px buttons",all(h>=48 for h in r0["h"]))
             check("shelf row: the Read button has a book icon, Listen a play icon",await pg.evaluate("(()=>{const r=document.querySelector('.bk[data-c=\"que-calor\"]'),b=r.querySelectorAll('button');return !!b[0].querySelector('svg')&&!!b[1].querySelector('svg')&&!r.querySelector('b + .okc')})()"))
             check("shelf: Listen keeps the link (oir=1)","index.html?cuento=que-calor&oir=1&desde=app" in r0["on"][0])
@@ -437,6 +437,7 @@ async def main():
                 if tl:
                     await pg3.evaluate("App.palabra(%s)"%json.dumps(tl));await pg3.wait_for_timeout(700);await shot(pg3,"word_sheet_no_picture")
                 await ctx3.close()
+            check("every request for a book or a book picture carries ?v=39 (a phone keeps no old copy)",len(lreqs)>20 and all(u.endswith("?v=39") for u in lreqs),str([u for u in lreqs if not u.endswith("?v=39")][:3]))
             check("no page errors",not [e for e in errs if e.startswith("pageerror")],str([e for e in errs if e.startswith("pageerror")][:3]))
             check("no console errors",not [e for e in errs if e.startswith("console")],str([e for e in errs if e.startswith("console")][:3]))
             await b.close()
