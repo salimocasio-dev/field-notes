@@ -556,6 +556,16 @@ The tab bar and routes (`go_router` here only), each `AppRoute` to the module th
 
 **Done when:** on the test site every tab opens; each flow of the plan's "How features work together" works end to end on the sample course.
 
+**Result (Nov 19): done, merged to main.** Built by an Opus builder (the shell) and a Sonnet builder (the wiring to the real Biblioteca, Palabras, voice test and `?txt=`); every check was run again by the orchestrator on the merged branch.
+
+- Checks run by the orchestrator: `test_all.sh` passes whole (21 packages' test runs); `tool/check_app.mjs` passes 72 of 72 on both phone sizes (412 x 915 Android, 390 x 844 iPhone), empty store and mid-course seed; `tool/check_sitio.mjs --build=2` passes.
+- Timing in headless Chrome on this machine (3 runs): navigation to the map's first frame about 1.9 s; map bake 347 to 355 ms (limit 500); map frame mean about 3 ms, slowest 6.8 ms (limit 8); El frente's first bake 91 to 119 ms (limit 150). A phone is slower; not measured on one.
+- Addresses: `#/tab/<id>`, `#/cuento/<id>[?oir=1]`, `#/repaso[?practica=1]`, `#/nivel`, `#/libro/<id>`, `#/llamada/<placeId>`, `#/prueba-voz`. Switches: `?perf=1`, `?callstub=1`, `?mic=stub:` / `?mic=off`, `?txt=con|tras|no` (as the old page's).
+- The only request that leaves the site: the ElevenLabs library from cdn.jsdelivr.net, once Hablar shows an open call card.
+- `tool/juega.dart` at `coqui/tool/` was not made: the story runner's own `packages/features/feature_story/tool/juega.dart` plays a story by rule. Gate A's frames come from a tool of the app (see Gate A's result).
+- Decided on the builders' stops: the phone build reads content from the live site's address (fixed in code); the failure screen says "Coquí could not load. Check your connection." with "Try again"; on a first start the welcome shows before a lesson opened by its address; after one failed load of the call library Hablar says "later" until the app starts again (a retry when the tab is shown again is a later small order in feature_speaking).
+- Left: `check_app.mjs` still accepts the placeholder names for Biblioteca and Palabras in two selectors.
+
 ---
 
 ## Gate A. The map, El frente and stories 1 to 3 to Salim
