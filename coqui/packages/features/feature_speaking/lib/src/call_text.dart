@@ -35,7 +35,6 @@ abstract final class CallTexts {
   static const yourTurn = 'Your turn';
   static const oneMoment = 'One moment';
   static const help = 'Help';
-  static const closeLabel = 'Close';
   static const helpNote = 'Danny will say it again, slowly.';
   static const done = 'Call done';
   static const micOff =
