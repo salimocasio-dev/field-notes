@@ -10,9 +10,96 @@ import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// A block with margins, as CSS has them: the vertical margins of two blocks in
+/// a row do not add, they collapse: the gap is the larger of the two (a negative
+/// one is taken off). A [CollapsingColumn] (and so a [TabPage]) lays its
+/// [BlockWidget]s out that way; anywhere else a block draws its own margins.
+abstract class BlockWidget extends StatelessWidget {
+  const BlockWidget({super.key});
+
+  /// The margin above, in px (may be negative inside a [CollapsingColumn]).
+  double get marginTop;
+
+  /// The margin below.
+  double get marginBottom;
+
+  /// The block itself, without its margins.
+  Widget get content;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(
+      top: marginTop < 0 ? 0 : marginTop,
+      bottom: marginBottom < 0 ? 0 : marginBottom,
+    ),
+    child: content,
+  );
+}
+
+/// Any widget with CSS-style vertical margins.
+class Block extends BlockWidget {
+  const Block({super.key, this.top = 0, this.bottom = 0, required this.child});
+  final double top;
+  final double bottom;
+  final Widget child;
+
+  @override
+  double get marginTop => top;
+  @override
+  double get marginBottom => bottom;
+  @override
+  Widget get content => child;
+}
+
+/// A column that collapses the margins between its [BlockWidget] children the way
+/// CSS block layout does: `.card{margin:0 0 16px}` above `h2{margin:24px 0 16px}`
+/// leaves 24 px, not 40. Other children have no margins.
+class CollapsingColumn extends StatelessWidget {
+  const CollapsingColumn({
+    super.key,
+    required this.children,
+    this.crossAxisAlignment = CrossAxisAlignment.stretch,
+  });
+  final List<Widget> children;
+  final CrossAxisAlignment crossAxisAlignment;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <Widget>[];
+    double? prevBottom;
+    for (final child in children) {
+      final top = child is BlockWidget ? child.marginTop : 0.0;
+      final bottom = child is BlockWidget ? child.marginBottom : 0.0;
+      final gap = prevBottom == null
+          ? (top < 0 ? 0.0 : top)
+          : _collapse(prevBottom, top);
+      if (gap > 0) items.add(SizedBox(height: gap));
+      items.add(child is BlockWidget ? child.content : child);
+      prevBottom = bottom;
+    }
+    if (prevBottom != null && prevBottom > 0) {
+      items.add(SizedBox(height: prevBottom));
+    }
+    return Column(
+      crossAxisAlignment: crossAxisAlignment,
+      mainAxisSize: MainAxisSize.min,
+      children: items,
+    );
+  }
+
+  /// Adjoining margins: the largest positive plus the most negative.
+  static double _collapse(double a, double b) {
+    final pos = [a, b, 0.0].reduce((x, y) => x > y ? x : y);
+    final neg = [a, b, 0.0].reduce((x, y) => x < y ? x : y);
+    final gap = pos + neg;
+    return gap < 0 ? 0 : gap;
+  }
+}
+
 /// A tab's page: scrolls, 16 px side padding, at most 560 px wide and centred,
 /// with room at the foot so the raised Mapa disc never covers content
-/// (`.tab`: `padding:16px 16px calc(var(--navh) + safe + 68px)`). app.html:15
+/// (`.tab`: `padding:16px 16px calc(var(--navh) + safe + 68px)`). Its children
+/// are laid out with CSS margins ([CollapsingColumn]). app.html:15
 class TabPage extends StatelessWidget {
   const TabPage({super.key, required this.children, this.controller});
 
@@ -24,7 +111,7 @@ class TabPage extends StatelessWidget {
     alignment: Alignment.topCenter,
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: CoquiMetrics.columnMax),
-      child: ListView(
+      child: SingleChildScrollView(
         controller: controller,
         padding: EdgeInsets.fromLTRB(
           CoquiMetrics.s16,
@@ -32,38 +119,70 @@ class TabPage extends StatelessWidget {
           CoquiMetrics.s16,
           CoquiLayout.tabPageFoot(context),
         ),
-        children: children,
+        child: CollapsingColumn(children: children),
       ),
     ),
   );
 }
 
 /// `h1`: a screen's title, 24/32 semibold, 8 px above and 16 below. app.html:17
-class ScreenTitle extends StatelessWidget {
+class ScreenTitle extends BlockWidget {
   const ScreenTitle(this.text, {super.key});
   final String text;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(0, CoquiMetrics.s8, 0, CoquiMetrics.s16),
-    child: Text(text, style: CoquiText.h1),
-  );
+  double get marginTop => CoquiMetrics.s8;
+  @override
+  double get marginBottom => CoquiMetrics.s16;
+  @override
+  Widget get content => Text(text, style: CoquiText.h1);
 }
 
 /// `h2`: a section's title, 18/24 medium, 24 px above and 16 below. app.html:18
-class SectionTitle extends StatelessWidget {
+class SectionTitle extends BlockWidget {
   const SectionTitle(this.text, {super.key});
   final String text;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(
-      0,
-      CoquiMetrics.s24,
-      0,
-      CoquiMetrics.s16,
-    ),
-    child: Text(text, style: CoquiText.h2),
+  double get marginTop => CoquiMetrics.s24;
+  @override
+  double get marginBottom => CoquiMetrics.s16;
+  @override
+  Widget get content => Text(text, style: CoquiText.h2);
+}
+
+/// `.keyl`: the one grey line under a section title (`.small.mut`, `margin:-8px 0
+/// 16px`: 8 px under the title). app.html:91
+class KeyLine extends BlockWidget {
+  const KeyLine(this.text, {super.key});
+  final String text;
+
+  @override
+  double get marginTop => -CoquiMetrics.s8;
+  @override
+  double get marginBottom => CoquiMetrics.s16;
+  @override
+  Widget get content => Text(text, style: CoquiText.smallMuted);
+}
+
+/// A picture in its frame: rounded corners ([radius] 8, or 12 for the word
+/// sheet's big picture) on the `#222` that shows behind a picture. Whole-number
+/// scaled pictures go inside it. app.html:95, 112; cual.html:30
+class PictureFrame extends StatelessWidget {
+  const PictureFrame({
+    super.key,
+    required this.child,
+    this.radius = CoquiMetrics.radiusPicture,
+    this.background = CoquiColors.pictureBack,
+  });
+  final Widget child;
+  final double radius;
+  final Color background;
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
+    borderRadius: BorderRadius.circular(radius),
+    child: ColoredBox(color: background, child: child),
   );
 }
 
@@ -80,36 +199,38 @@ class EyebrowLabel extends StatelessWidget {
 
 /// `.card`: white, 16 px corners, 16 px padding, a 1 px ring and a faint shadow,
 /// 16 px of space under it. app.html:20
-class CoquiCard extends StatelessWidget {
+class CoquiCard extends BlockWidget {
   const CoquiCard({
     super.key,
     required this.child,
     this.padding = const EdgeInsets.all(CoquiMetrics.s16),
-    this.margin = const EdgeInsets.only(bottom: CoquiMetrics.s16),
+    this.marginBottom = CoquiMetrics.s16,
     this.disabled = false,
   });
 
   final Widget child;
   final EdgeInsetsGeometry padding;
-  final EdgeInsetsGeometry margin;
+
+  @override
+  final double marginBottom;
 
   /// `.cc.lk`: a locked card, grey (`#F2F1EC`), a ring and no shadow. app.html:132
   final bool disabled;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: margin,
-    child: Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: disabled ? CoquiColors.disabledFill : CoquiColors.card,
-        borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
-        boxShadow: disabled
-            ? const [BoxShadow(color: CoquiColors.line, spreadRadius: 1)]
-            : CoquiShadows.card,
-      ),
-      child: child,
+  double get marginTop => 0;
+
+  @override
+  Widget get content => Container(
+    padding: padding,
+    decoration: BoxDecoration(
+      color: disabled ? CoquiColors.disabledFill : CoquiColors.card,
+      borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
+      boxShadow: disabled
+          ? const [BoxShadow(color: CoquiColors.line, spreadRadius: 1)]
+          : CoquiShadows.card,
     ),
+    child: child,
   );
 }
 
@@ -172,8 +293,8 @@ class ListRow extends StatelessWidget {
     this.onTap,
   });
 
-  /// The title, bold (`<b>`).
-  final String title;
+  /// The title: a [ListRowTitle] (bold, `<b>`), or any text.
+  final Widget title;
 
   /// The grey line under it (`small mut`).
   final Widget? subtitle;
@@ -190,9 +311,10 @@ class ListRow extends StatelessWidget {
           children: [
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: CoquiText.rowBold),
+                  title,
                   if (subtitle != null)
                     DefaultTextStyle(
                       style: CoquiText.smallMuted,
@@ -212,6 +334,15 @@ class ListRow extends StatelessWidget {
     if (onTap == null) return row;
     return Pressable(onPressed: onTap, builder: (context, pressed) => row);
   }
+}
+
+/// The bold title of a [ListRow] (`<b>`, 16 px, 700). app.html:29
+class ListRowTitle extends StatelessWidget {
+  const ListRowTitle(this.text, {super.key});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Text(text, style: CoquiText.rowBold);
 }
 
 /// `.bk`: a row of the shelf: a cover (72 px, 8 px corners, a 1 px ring, grey
@@ -260,6 +391,7 @@ class ShelfRow extends StatelessWidget {
         const SizedBox(width: CoquiMetrics.s16),
         Expanded(
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title, style: CoquiText.rowBold),
@@ -328,6 +460,7 @@ class TodayCard extends StatelessWidget {
             const SizedBox(width: CoquiMetrics.s16),
             Expanded(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(eyebrow.toUpperCase(), style: CoquiText.eyebrow),
@@ -352,7 +485,7 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CoquiCard(
-    margin: EdgeInsets.zero,
+    marginBottom: 0,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [

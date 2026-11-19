@@ -325,8 +325,9 @@ void main() {
         var wrong = 0;
         for (var y = 0; y < 1080; y++) {
           for (var x = 0; x < 980; x++) {
-            if (img.px[y * img.w + x] != pic[(y ~/ 5) * 196 + (x ~/ 5)])
+            if (img.px[y * img.w + x] != pic[(y ~/ 5) * 196 + (x ~/ 5)]) {
               wrong++;
+            }
           }
         }
         expect(

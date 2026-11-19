@@ -63,7 +63,12 @@ class SkillMeter extends StatelessWidget {
         children: [
           SizedBox(
             width: CoquiMetrics.meterLabelWidth,
-            child: Text(label, style: CoquiText.meterLabel),
+            child: Text(
+              label,
+              style: CoquiText.meterLabel,
+              softWrap: false,
+              overflow: TextOverflow.visible,
+            ),
           ),
           const SizedBox(width: CoquiMetrics.s8),
           MeterDots(value: value),
