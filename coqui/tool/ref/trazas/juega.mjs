@@ -4,7 +4,7 @@
 //   node coqui/tool/ref/trazas/juega.mjs                       all 51 files x 3 plans; writes coqui/ref/trazas/ and coqui/ref/sprites/escenas/
 //   node coqui/tool/ref/trazas/juega.mjs --only la-lluvia      one story, three plans, into a scratch folder (--out DIR, default: a temp folder); nothing in the repo changes
 //   node coqui/tool/ref/trazas/juega.mjs --out DIR             everything, into DIR instead of the repo
-//   options: --jobs N (pages at once, default 6)
+//   options: --jobs N (pages at once, default 6); --states DIR (also W, V and cam after every step, one JSONL per run, into DIR: for order 06)
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -24,7 +24,7 @@ const HIST = path.join(ROOT, "historia");
 const SEED = 1, THINK = 700, LIMIT = 4 * 3600e3;
 const PLANS = ["right", "wrong", "alternate"];
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i >= 0 ? process.argv[i + 1] : d; };
-const ONLY = arg("--only", null), JOBS = +arg("--jobs", 6);
+const ONLY = arg("--only", null), JOBS = +arg("--jobs", 6), STATES = arg("--states", null);   // --states DIR: also write W after every step there (for order 06; never into the repo)
 const SCRATCH = ONLY || arg("--out", null) !== null;   // --only or --out: write somewhere else, never into the repo
 const OUT = SCRATCH ? path.resolve(arg("--out", null) || fs.mkdtempSync(path.join(os.tmpdir(), "trazas-"))) : path.join(ROOT, "coqui/ref/trazas");
 const SPR_OUT = SCRATCH ? path.join(OUT, "_sprites") : path.join(ROOT, "coqui/ref/sprites/escenas");
@@ -77,7 +77,12 @@ async function playOne(browser, base, story, plan) {
     }
     await page.evaluate("voiceReady");
     await page.evaluate(DRIVE);
-    const tr = await page.evaluate(cfg => window.__drive(cfg), { plan, think: THINK, limitMs: LIMIT });
+    const tr = await page.evaluate(cfg => window.__drive(cfg), { plan, think: THINK, limitMs: LIMIT, states: !!STATES });
+    if (STATES) {
+      fs.mkdirSync(path.join(STATES, story), { recursive: true });
+      fs.writeFileSync(path.join(STATES, story, plan + ".states.jsonl"), tr.states.map(x => JSON.stringify(x)).join("\n") + "\n");
+      delete tr.states;
+    }
     const spr = await page.evaluate("window.__sprites()");
     return { tr, spr, page, ctx, query, consoleErrors };
   } catch (e) {

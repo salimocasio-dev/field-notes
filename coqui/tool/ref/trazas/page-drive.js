@@ -32,6 +32,10 @@
     else if (k === "say") r.id = sub(st.say);
     else if (k === "act") r.act = st.act;
     T.steps.push(r);
+    if (H.statesOn) { const p0 = _pasoWatched(st, k, path); Promise.resolve(p0).then(() => snapshot(r), () => {}); return p0; }
+    return _pasoWatched(st, k, path);
+  };
+  function _pasoWatched(st, k, path) {
     if (k !== "ask" && k !== "decide" && k !== "elige") return _paso(st);
     const c = { kind: k, st, path, esperas: 0 };
     CH.push(c);   // before the call: ask, decide and elige reach espera() synchronously
@@ -40,7 +44,14 @@
     try { p = _paso(st); } catch (e) { pop(); throw e; }
     Promise.resolve(p).then(pop, pop);
     return p;
-  };
+  }
+  // --states: the world after each step ends (for order 06). Read only; off for the recorded traces.
+  H.states = [];
+  const plain = v => { const seen = new WeakSet(); return JSON.parse(JSON.stringify(v, (k, x) => {
+    if (typeof x === "function") return undefined;
+    if (x && typeof x === "object") { if (x instanceof HTMLCanvasElement) return "[canvas " + x.width + "x" + x.height + "]"; if (seen.has(x)) return "[seen]"; seen.add(x); }
+    return x; })); };
+  const snapshot = r => H.states.push({ n: r ? r.n : null, path: r ? r.path : null, kind: r ? r.kind : "start", t: H.now, cam: cam.slice(), W: plain(W), V: plain(V) });
   let esperas = 0;
   const _espera = espera;
   window.espera = function espera(liveSet, lead, line, o) {
@@ -160,7 +171,9 @@
   window.__drive = async function drive(cfg) {
     const THINK = cfg.think, LIMIT = cfg.limitMs;
     H.drawsAtGo = H.draws;
+    H.statesOn = !!cfg.states;
     document.querySelector("#go").click();
+    if (H.statesOn) snapshot(null);
     let started = false, plan = null, end = null, iters = 0;
     for (;;) {
       await H.drain();
@@ -183,6 +196,7 @@
       choices: T.choices, touches: T.touches, steps: T.steps, clips: T.clips, sounds: T.sounds,
       speech: { turns: JSON.parse(JSON.stringify(HAB.log)), events: T.speech },
       memory: JSON.parse(JSON.stringify(MEM)), errors: H.errors.slice(),
+      states: H.statesOn ? H.states : undefined,
     };
   };
 

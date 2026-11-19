@@ -12,7 +12,10 @@ node coqui/tool/ref/trazas/juega.mjs --only la-lluvia   # one file, three plans,
 node coqui/tool/ref/trazas/juega.mjs --out DIR          # all of it into DIR (DIR/_sprites for the sprites) instead of the repo
 ```
 
-Options: `--jobs N` pages at once (default 6; the output does not depend on it), `--root DIR` a site folder holding `historia/` (only to test the tool on a scratch story).
+Options: `--jobs N` pages at once (default 6; the output does not depend on it); `--states DIR` also writes, per run, `DIR/<story>/<plan>.states.jsonl`:
+one line at the start (`kind: "start"`, right after `fresh()`) and one after every step ends (`n` and `path` as in `steps`), each with `t`, `cam`, `W` and `V`
+(functions left out, canvases as `"[canvas WxH]"`, a repeated object as `"[seen]"`). That is for order 06 (the boxes in every state); about 14 MB, never
+written into the repo, and the traces come out byte-identical with it on (checked). `--root DIR`: a site folder holding `historia/` (only to test the tool on a scratch story).
 Needs Node 22 and the pre-installed Node Playwright with its Chromium (`chromium.launch()`, no options). It starts its own static server of
 the worktree on 127.0.0.1 (a free port); nothing goes to the network. About a minute for all 153 runs. A second run gives byte-identical files.
 
