@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:coqui_ui/coqui_ui.dart';
@@ -72,6 +73,27 @@ void main() {
       expect(CoquiLabels.me, 'Yo');
       expect(CoquiLabels.reviewTitle, '¿Cuál?');
       expect(CoquiLabels.review, 'Repaso');
+    });
+    test(
+      'the book and the shelf: Fin, Otra vez, Cuento con dibujos, Haz esto',
+      () {
+        expect(CoquiLabels.fin, 'Fin');
+        expect(CoquiLabels.again, 'Otra vez');
+        expect(CoquiLabels.pictureStory, 'Cuento con dibujos');
+        expect(CoquiLabels.routine, 'Haz esto');
+      },
+    );
+    test('each label is copied from the line of the old page it names', () {
+      // The old page, read from the repository (this test runs at coqui/packages/core/coqui_ui).
+      final lines = File('../../../../historia/app.html').readAsLinesSync();
+      String line(int n) => lines[n - 1];
+      expect(line(7), contains('<title>${CoquiLabels.appName}</title>'));
+      expect(line(374), contains('"${CoquiLabels.appName}"'));
+      expect(line(331), contains('"${CoquiLabels.pictureStory}"'));
+      expect(line(331), contains('"${CoquiLabels.routine}"'));
+      expect(line(365), contains('>${CoquiLabels.fin}</div>'));
+      expect(line(365), contains('${CoquiLabels.again}</button>'));
+      expect(line(365), contains('>${CoquiLabels.library}</button>'));
     });
     test('the tab bar\'s five tabs read their names from them', () {
       expect(CoquiTabs.all.map((t) => t.label), [
@@ -1079,27 +1101,6 @@ void main() {
         expect(rows, 1);
       },
     );
-
-    testWidgets('ShelfRow: the cover, the title, buttons under it', (
-      tester,
-    ) async {
-      await _phone(tester);
-      await tester.pumpWidget(
-        _app(
-          ShelfRow(
-            title: 'a title',
-            subtitle: 'about 2 min',
-            actions: [CoquiButton(label: 'Listen', onPressed: () {})],
-          ),
-        ),
-      );
-      expect(find.text('Listen'), findsOneWidget);
-      // 16 above, a 72 px cover, 16 below at least.
-      expect(
-        tester.getSize(find.byType(ShelfRow)).height,
-        greaterThanOrEqualTo(104),
-      );
-    });
 
     testWidgets(
       'SegmentedPills reports the tapped index; the chosen one is blue',

@@ -238,57 +238,7 @@ void main() {
     );
   });
 
-  group('shelf button padding is the CSS\'s', () {
-    Future<(Rect, Rect, Rect)> measure(
-      WidgetTester tester,
-      double width,
-    ) async {
-      _phone(tester, Size(width, 800));
-      await tester.pumpWidget(
-        _app(
-          Align(
-            alignment: Alignment.topLeft,
-            child: ShelfButton(
-              label: 'Listen',
-              icon: CoquiIcons.play,
-              onPressed: () {},
-            ),
-          ),
-          size: Size(width, 800),
-        ),
-      );
-      final button = tester.getRect(find.byType(ShelfButton));
-      final icon = tester.getRect(find.byType(CoquiIcon));
-      final text = tester.getRect(find.text('Listen'));
-      return (button, icon, text);
-    }
-
-    testWidgets('412 px phone: 12 px padding, 6 px gap (max-width:420px)', (
-      tester,
-    ) async {
-      final (button, icon, text) = await measure(tester, 412);
-      // ratio 1: the 1.5 px border is 1 px.
-      expect(icon.left - button.left, 1 + 12);
-      expect(text.left - icon.right, 6);
-      expect(button.right - text.right, 1 + 12);
-    });
-    testWidgets('390 px phone: the same', (tester) async {
-      final (button, icon, text) = await measure(tester, 390);
-      expect(icon.left - button.left, 1 + 12);
-      expect(text.left - icon.right, 6);
-    });
-    testWidgets('360 px phone: 10 px padding, 6 px gap (max-width:380px)', (
-      tester,
-    ) async {
-      final (button, icon, text) = await measure(tester, 360);
-      expect(icon.left - button.left, 1 + 10);
-      expect(text.left - icon.right, 6);
-    });
-    testWidgets('wide: 16 px padding, 8 px gap', (tester) async {
-      final (button, icon, text) = await measure(tester, 600);
-      expect(icon.left - button.left, 1 + 16);
-      expect(text.left - icon.right, 8);
-    });
+  group('a plain button keeps the CSS padding', () {
     testWidgets('a plain button keeps 24 px of padding', (tester) async {
       _phone(tester, const Size(412, 800));
       await tester.pumpWidget(
@@ -518,51 +468,5 @@ void main() {
       expect(pic.right - badge.right, 8);
       expect(badge.top - pic.top, 8);
     });
-  });
-
-  group('the book reader frame', () {
-    testWidgets(
-      'top bar, picture, lines, foot at the bottom; the last page gives the picture its room',
-      (tester) async {
-        _phone(tester, const Size(412, 915));
-        Widget frame({required bool last}) => _app(
-          LessonReaderFrame(
-            onClose: () {},
-            progress: const LessonProgressLine(value: 0.2),
-            count: '1 / 5',
-            trailing: LessonTextSizeButton(onPressed: () {}),
-            last: last,
-            picture: const SizedBox(key: Key('pic'), width: 300, height: 300),
-            lines: [
-              BookLine(text: const Text('a line'), lit: true),
-              BookLine(who: 'who', text: const Text('another')),
-            ],
-            foot: [
-              LessonButtonRow.reader(
-                back: LessonBackButton(onPressed: null),
-                next: LessonNextButton(onPressed: () {}),
-              ),
-            ],
-          ),
-        );
-        await tester.pumpWidget(frame(last: false));
-        expect(find.text('1 / 5'), findsOneWidget);
-        expect(find.text('Aa'), findsOneWidget);
-        final first = tester.getRect(find.byKey(const Key('pic')));
-        // The foot: 16 from the bottom, 56 high.
-        final next = tester.getRect(find.byType(LessonNextButton));
-        expect(915 - next.bottom, 16);
-        expect(next.height, 56);
-        // A line is at least 48 high with 12 px corners.
-        expect(
-          tester.getSize(find.byType(BookLine).first).height,
-          greaterThanOrEqualTo(48),
-        );
-        await tester.pumpWidget(frame(last: true));
-        final lastRect = tester.getRect(find.byKey(const Key('pic')));
-        // The last page does not keep the 72 px under the picture, so it stands 36 px lower.
-        expect(lastRect.top - first.top, closeTo(36, 1e-6));
-      },
-    );
   });
 }

@@ -69,9 +69,6 @@ final List<GallerySection> gallerySections = [
     const ['030-palabras-a-medio-curso.png'],
     (c) => const _PalabrasScreen(),
   ),
-  GallerySection('biblioteca', 'Biblioteca: shelf rows in a card', const [
-    '047-biblioteca-a-medio-curso.png',
-  ], (c) => const _BibliotecaScreen()),
   GallerySection('yo', 'Yo: stat cards, a card, pills, switches', const [
     '069-yo-nada-jugado.png',
   ], (c) => const _YoScreen()),
@@ -135,24 +132,6 @@ final List<GallerySection> gallerySections = [
     (c) => const _LessonDuo(),
   ),
   GallerySection(
-    'lesson-book-first',
-    'Book reader, first page: back disabled (35%), next, equal halves',
-    const ['053-libro-primera-pagina-linea-1-luce.png'],
-    (c) => const _LessonBook(0),
-  ),
-  GallerySection(
-    'lesson-book-middle',
-    'Book reader, a middle page: back and next in equal halves',
-    const ['057-libro-pagina-media-linea-luce.png'],
-    (c) => const _LessonBook(1),
-  ),
-  GallerySection(
-    'lesson-book-last',
-    'Book reader, last page: Fin, the back arrow 72 wide, two equal buttons',
-    const ['060-libro-ultima-pagina.png'],
-    (c) => const _LessonBook(2),
-  ),
-  GallerySection(
     'lesson-end',
     'Lesson frame: an end screen with a list, the fade, the 56 px button',
     const ['090-repaso-fin-a-subir-y-a-repasar.png'],
@@ -184,7 +163,6 @@ final List<GallerySection> gallerySections = [
     'Buttons on the light screens: every kind, every state',
     const [
       '030-palabras-a-medio-curso.png',
-      '047-biblioteca-a-medio-curso.png',
       '069-yo-nada-jugado.png',
       '015-lugar-abierto-1-nada-jugado.png',
     ],
@@ -358,56 +336,6 @@ class _PalabrasScreen extends StatelessWidget {
       ],
     ),
   );
-}
-
-class _BibliotecaScreen extends StatelessWidget {
-  const _BibliotecaScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    Widget row(
-      String title,
-      String sub, {
-      bool read = false,
-      bool cover = false,
-    }) => ShelfRow(
-      title: title,
-      subtitle: sub,
-      cover: cover ? _pic(_scene, w: 196, h: 104) : null,
-      actions: [
-        ShelfButton(label: 'Listen', icon: CoquiIcons.play, onPressed: () {}),
-        if (read)
-          ShelfButton(
-            label: 'Read',
-            icon: CoquiIcons.read,
-            kind: CoquiButtonKind.outline,
-            onPressed: () {},
-          ),
-      ],
-    );
-    return _TabScreen(
-      selected: CoquiTabs.libraryId,
-      body: TabPage(
-        children: [
-          const ScreenTitle(CoquiLabels.library),
-          const SectionTitle('Place one'),
-          CoquiCard(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DividedRows(
-              rows: [
-                row('Story one', 'about 2 min'),
-                row('Story two', 'about 3 min'),
-                row('Story three', 'about 3 min'),
-                row('Story four', 'Heard 1× · about 4 min'),
-                row('Story five', 'about 3 min'),
-                row('Story six', 'about 4 min', read: true, cover: true),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _YoScreen extends StatelessWidget {
@@ -860,24 +788,6 @@ class _Buttons extends StatelessWidget {
             ),
           ],
         ),
-        _h('on a shelf row: padding and gap by screen width'),
-        Wrap(
-          spacing: 16,
-          runSpacing: 16,
-          children: [
-            ShelfButton(
-              label: 'Listen',
-              icon: CoquiIcons.play,
-              onPressed: () {},
-            ),
-            ShelfButton(
-              label: 'Read',
-              icon: CoquiIcons.read,
-              kind: CoquiButtonKind.outline,
-              onPressed: () {},
-            ),
-          ],
-        ),
         _h('.btn.full'),
         CoquiButton(label: 'Next', full: true, onPressed: () {}),
         const SizedBox(height: 16),
@@ -963,6 +873,23 @@ class _LessonButtons extends StatelessWidget {
           LessonButtonRow.reader(
             back: const LessonBackButton(onPressed: null),
             next: LessonNextButton(onPressed: () {}),
+          ),
+          const LessonFin(CoquiLabels.fin),
+          LessonButtonRow.readerLast(
+            back: LessonBackButton(onPressed: () {}),
+            again: LessonButton(
+              label: CoquiLabels.again,
+              icon: CoquiIcons.replay,
+              fillWidth: false,
+              height: 56,
+              onPressed: () {},
+            ),
+            shelf: LessonButton(
+              label: CoquiLabels.library,
+              fillWidth: false,
+              height: 56,
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -1317,93 +1244,6 @@ class _WordCards extends StatelessWidget {
       ],
     ),
   );
-}
-
-class _LessonBook extends StatelessWidget {
-  const _LessonBook(this.page);
-
-  /// 0 first page, 1 a middle page, 2 the last page.
-  final int page;
-
-  @override
-  Widget build(BuildContext context) {
-    final last = page == 2;
-    final lines = switch (page) {
-      0 => <Widget>[
-        BookLine(
-          lit: true,
-          text: const Text(
-            'A sample line that is long enough to wrap onto a second line.',
-          ),
-        ),
-        BookLine(
-          text: const Text(
-            'Another sample line, long enough to wrap onto a second line too.',
-          ),
-        ),
-        BookLine(who: 'Who', text: const Text('A short third line.')),
-      ],
-      1 => <Widget>[
-        BookLine(
-          text: const Text(
-            'A sample line that is long enough to wrap onto a second line.',
-          ),
-        ),
-        BookLine(
-          lit: true,
-          text: const Text(
-            'Another sample line, long enough to wrap onto a second line too.',
-          ),
-        ),
-      ],
-      _ => <Widget>[
-        BookLine(text: const Text('A sample line that fits on one line.')),
-        BookLine(text: const Text('Another sample line on one line.')),
-        BookLine(
-          who: 'Who',
-          text: const Text(
-            'A third line that is long enough to wrap onto a second line.',
-          ),
-        ),
-      ],
-    };
-    return LessonReaderFrame(
-      onClose: () {},
-      progress: LessonProgressLine(
-        value: last ? 1 : (page + 1) / 5 * (page == 1 ? 3 / 2 : 1),
-      ),
-      count: last ? '5 / 5' : (page == 0 ? '1 / 5' : '3 / 5'),
-      trailing: LessonTextSizeButton(onPressed: () {}),
-      last: last,
-      picture: PictureFrame(child: _pic(_story, w: 196, h: 216)),
-      lines: lines,
-      foot: [
-        if (last) const LessonFin('Fin'),
-        if (last)
-          LessonButtonRow.readerLast(
-            back: LessonBackButton(onPressed: () {}),
-            again: LessonButton(
-              label: 'Again',
-              icon: CoquiIcons.replay,
-              fillWidth: false,
-              height: 56,
-              onPressed: () {},
-            ),
-            shelf: LessonButton(
-              label: 'Shelf',
-              fillWidth: false,
-              height: 56,
-              onPressed: () {},
-            ),
-          )
-        else
-          LessonButtonRow.reader(
-            back: LessonBackButton(onPressed: page == 0 ? null : () {}),
-            next: LessonNextButton(onPressed: () {}),
-          ),
-      ],
-    );
-  }
 }
 
 class _LessonDuo extends StatelessWidget {

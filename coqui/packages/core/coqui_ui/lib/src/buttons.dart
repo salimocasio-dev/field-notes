@@ -54,7 +54,7 @@ class CoquiButton extends StatelessWidget {
   /// `.btn.full`: the whole width. app.html:23
   final bool full;
 
-  /// 24 by default (`.btn`, app.html:22). The shelf's buttons are [ShelfButton]s.
+  /// 24 by default (`.btn`, app.html:22).
   final double padX;
 
   /// Between the icon and the label: 8 (`.btn{gap:8px}`, app.html:22).
@@ -118,40 +118,6 @@ class CoquiButton extends StatelessWidget {
         );
         return Transform.scale(scale: pressed ? 0.98 : 1, child: body);
       },
-    );
-  }
-}
-
-/// A button on a shelf row (`.bk .btn`): side padding 16 and gap 8; on a phone at most 420 px wide
-/// (`@media (max-width:420px)`) padding 12 and gap 6; at most 380 px wide padding 10 (the gap stays 6).
-/// app.html:99-101
-class ShelfButton extends StatelessWidget {
-  const ShelfButton({
-    super.key,
-    required this.label,
-    required this.onPressed,
-    this.kind = CoquiButtonKind.go,
-    this.icon,
-    this.semanticLabel,
-  });
-
-  final String label;
-  final VoidCallback? onPressed;
-  final CoquiButtonKind kind;
-  final CoquiIconData? icon;
-  final String? semanticLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final w = MediaQuery.sizeOf(context).width;
-    return CoquiButton(
-      label: label,
-      onPressed: onPressed,
-      kind: kind,
-      icon: icon,
-      padX: w <= 380 ? 10 : (w <= 420 ? 12 : 16),
-      gap: w <= 420 ? 6 : 8,
-      semanticLabel: semanticLabel,
     );
   }
 }
