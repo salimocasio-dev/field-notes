@@ -102,14 +102,42 @@ final List<GallerySection> gallerySections = [
     const ['090-repaso-fin-a-subir-y-a-repasar.png'],
     (c) => const _LessonEnd(),
   ),
-  GallerySection('buttons', 'Buttons: every kind, every state', const [
-    '030-palabras-a-medio-curso.png',
-    '047-biblioteca-a-medio-curso.png',
-    '069-yo-nada-jugado.png',
-    '015-lugar-abierto-1-nada-jugado.png',
-    '130-cuento-inicio.png',
-    '090-repaso-fin-a-subir-y-a-repasar.png',
-  ], (c) => const _Buttons()),
+  GallerySection(
+    'sheet-modal',
+    'Bottom sheet: the welcome (modal: no header, a footer with dots and a button)',
+    const ['002-bienvenida-paso-2.png', '001-bienvenida-paso-1.png'],
+    (c) => const _ModalSheetScreen(),
+  ),
+  GallerySection(
+    'words-states',
+    'Meters 0 to 4, word cards: picture, plain tile, a long word, the fades',
+    const [
+      '030-palabras-a-medio-curso.png',
+      '038-palabra-con-imagen-oido-3-vuelve-en-dias.png',
+    ],
+    (c) => const _WordStates(),
+  ),
+  GallerySection(
+    'buttons',
+    'Buttons on the light screens: every kind, every state',
+    const [
+      '030-palabras-a-medio-curso.png',
+      '047-biblioteca-a-medio-curso.png',
+      '069-yo-nada-jugado.png',
+      '015-lugar-abierto-1-nada-jugado.png',
+    ],
+    (c) => const _Buttons(),
+  ),
+  GallerySection(
+    'buttons-lesson',
+    'Buttons on the lesson frame: icon buttons, start disc, 56 px and 48 px buttons',
+    const [
+      '130-cuento-inicio.png',
+      '090-repaso-fin-a-subir-y-a-repasar.png',
+      '053-libro-primera-pagina-linea-1-luce.png',
+    ],
+    (c) => const _LessonButtons(),
+  ),
   GallerySection(
     'pixelview',
     'PixelView: 196 x 216 at 5 device pixels a pixel',
@@ -847,54 +875,93 @@ class _Buttons extends StatelessWidget {
         ),
         _h('sheet close X'),
         CoquiCloseButton(onPressed: () {}),
-        _h('on the lesson frame (dark)'),
-        ColoredBox(
-          color: CoquiColors.lessonBg,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    LessonCloseButton(onPressed: () {}),
-                    LessonSoundButton(onPressed: () {}),
-                    LessonSoundButton(muted: true, onPressed: () {}),
-                    LessonTextSizeButton(onPressed: () {}),
-                    LessonTextSizeButton(big: true, onPressed: () {}),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                LessonStartButton(onPressed: () {}),
-                LessonButton(label: 'Next story', onPressed: () {}),
-                const SizedBox(height: 16),
-                LessonButton(
-                  label: 'Map',
-                  kind: LessonButtonKind.blue,
-                  onPressed: () {},
-                ),
-                const SizedBox(height: 16),
-                LessonButtonRow(
-                  children: [
-                    LessonButton(
-                      label: 'Play again',
-                      kind: LessonButtonKind.outline,
-                      fillWidth: false,
-                      onPressed: () {},
-                    ),
-                    LessonButton(
-                      label: 'Map',
-                      kind: LessonButtonKind.outline,
-                      fillWidth: false,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
       ],
+    ),
+  );
+}
+
+class _LessonButtons extends StatelessWidget {
+  const _LessonButtons();
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: CoquiColors.lessonBg,
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              LessonCloseButton(onPressed: () {}),
+              LessonSoundButton(onPressed: () {}),
+              LessonSoundButton(muted: true, onPressed: () {}),
+              LessonTextSizeButton(onPressed: () {}),
+              LessonTextSizeButton(big: true, onPressed: () {}),
+            ],
+          ),
+          const SizedBox(height: 16),
+          LessonStartButton(onPressed: () {}),
+          LessonButton(label: 'Next story', onPressed: () {}),
+          const SizedBox(height: 16),
+          LessonButton(
+            label: 'Map',
+            kind: LessonButtonKind.blue,
+            onPressed: () {},
+          ),
+          const SizedBox(height: 16),
+          LessonButtonRow(
+            children: [
+              LessonButton(
+                label: 'Play again',
+                kind: LessonButtonKind.outline,
+                fillWidth: false,
+                onPressed: () {},
+              ),
+              LessonButton(
+                label: 'Map',
+                kind: LessonButtonKind.outline,
+                fillWidth: false,
+                onPressed: () {},
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const LessonButton(label: 'Disabled', onPressed: null),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              SizedBox(
+                width: 72,
+                child: LessonButton(
+                  height: 56,
+                  kind: LessonButtonKind.outline,
+                  fillWidth: false,
+                  onPressed: () {},
+                  child: const CoquiIcon(
+                    CoquiIcons.left,
+                    size: 28,
+                    color: CoquiColors.lessonInk2,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: LessonButton(
+                  height: 56,
+                  fillWidth: false,
+                  onPressed: () {},
+                  child: const CoquiIcon(
+                    CoquiIcons.right,
+                    size: 28,
+                    color: CoquiColors.lessonInk,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -1060,4 +1127,126 @@ class _Types extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ModalSheetScreen extends StatelessWidget {
+  const _ModalSheetScreen();
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: CoquiColors.mapWater,
+    child: Stack(
+      children: [
+        Column(
+          children: [
+            MapChips(
+              streak: MapChips.streakLabel(0),
+              place: MapChips.placeLabel(1, 'Place one'),
+            ),
+            Expanded(child: Center(child: _pic(_map, w: 240, h: 352))),
+          ],
+        ),
+        CoquiSheetLayer(
+          open: true,
+          modal: true,
+          sheet: CoquiSheet(
+            modal: true,
+            footer: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const PageDots(count: 3, index: 1),
+                CoquiButton(label: 'Next', full: true, onPressed: () {}),
+              ],
+            ),
+            child: CollapsingColumn(
+              children: [
+                Block(
+                  bottom: 16,
+                  child: Text('How much time a day?', style: CoquiText.h1),
+                ),
+                Block(
+                  bottom: 16,
+                  child: Text(
+                    'Today\'s plan is sized to it. You can change it in Yo.',
+                    style: CoquiText.bodyMuted,
+                  ),
+                ),
+                SegmentedPills(
+                  labels: const ['15 min', '30 min', '60 min', '120 min'],
+                  selected: 1,
+                  onSelected: (_) {},
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class _WordStates extends StatelessWidget {
+  const _WordStates();
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: CoquiColors.bg,
+    child: SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: CollapsingColumn(
+        children: [
+          const SectionTitle('Meters, 0 to 4 (Ear on top, Mouth under)'),
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              for (var n = 0; n <= 4; n++)
+                SizedBox(
+                  width: 128,
+                  child: CoquiCard(
+                    marginBottom: 0,
+                    padding: const EdgeInsets.all(8),
+                    child: EarMouthMeters(ear: n, mouth: 4 - n),
+                  ),
+                ),
+            ],
+          ),
+          const SectionTitle('The word sheet\'s meters (centred)'),
+          const Center(child: EarMouthMeters(ear: 3, mouth: 1, centered: true)),
+          const SectionTitle('Cards: a picture, a plain tile, a long word'),
+          WordGrid(
+            children: [
+              WordCard(word: 'word', picture: _pic(_scene), ear: 2, mouth: 1),
+              const WordCard(word: 'tile', ear: 4, mouth: 4),
+              WordCard(
+                word: 'a rather long word here',
+                picture: _pic(_scene3),
+                ear: 1,
+                mouth: 0,
+              ),
+              const WordCard(
+                word: 'anextraordinarilylongwordwithnobreaks',
+                ear: 0,
+                mouth: 0,
+              ),
+            ],
+          ),
+          const SectionTitle('Fades'),
+          const SizedBox(
+            height: 16,
+            child: ColoredBox(
+              color: CoquiColors.card,
+              child: ListFade(edge: FadeEdge.top),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const SizedBox(
+            height: 16,
+            child: ColoredBox(color: CoquiColors.card, child: ListFade()),
+          ),
+        ],
+      ),
+    ),
+  );
 }

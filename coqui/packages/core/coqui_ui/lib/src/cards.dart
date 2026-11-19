@@ -607,3 +607,37 @@ class CoquiSwitch extends StatelessWidget {
     ),
   );
 }
+
+/// The welcome's step dots: 8 px circles 8 px apart, centred, 8 px above and 16
+/// below; the current step blue (`--info`), the others `#D5D3CC`. The old page
+/// writes them inline in `bienvenida()`. app.html:484
+class PageDots extends StatelessWidget {
+  const PageDots({super.key, required this.count, required this.index});
+
+  final int count;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(
+      top: CoquiMetrics.s8,
+      bottom: CoquiMetrics.s16,
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (var i = 0; i < count; i++) ...[
+          if (i > 0) const SizedBox(width: CoquiMetrics.s8),
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: i == index ? CoquiColors.info : CoquiColors.switchOff,
+            ),
+          ),
+        ],
+      ],
+    ),
+  );
+}
