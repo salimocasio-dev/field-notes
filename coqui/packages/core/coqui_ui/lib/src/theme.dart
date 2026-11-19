@@ -39,7 +39,8 @@ TextTheme _plainLetters(TextTheme t) {
 /// The theme: `--bg` behind the page, `--ink` text, `--ok` as the primary colour,
 /// `--info` as the secondary, `--bad` for errors. No ripples: the old buttons
 /// show a pressed state, not a ripple (app.html:30). Roboto, with ligatures off
-/// ([coquiNoLigatures]), in every style of the text theme.
+/// ([coquiNoLigatures]), in every style of the text theme. The standard visual density, on every
+/// platform, so that Material controls keep their size on the web on a desktop machine.
 ThemeData coquiTheme() {
   final base = _theme();
   return base.copyWith(
@@ -50,6 +51,9 @@ ThemeData coquiTheme() {
 
 ThemeData _theme() => ThemeData(
   useMaterial3: true,
+  // A browser on a desktop machine makes Flutter pick `VisualDensity.compact` (controls 8 px smaller: a
+  // text field 40 px high instead of 48). The old pages have one density, the standard one, everywhere.
+  visualDensity: VisualDensity.standard,
   fontFamily: coquiFontFamily,
   package: coquiFontPackage,
   brightness: Brightness.light,
