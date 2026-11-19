@@ -28,7 +28,7 @@ List<FeatureModule> coquiModules({
   MapModule(showPerf: switches.perf),
   speakingModule(voiceTest: voiceTest),
   const ProfileModule(),
-  StoryModule(showPerf: switches.perf),
+  StoryModule(showPerf: switches.perf, txt: switches.txt),
   const ReviewModule(),
 ];
 

@@ -1,8 +1,10 @@
 // A story played to its end in the real app, on the real El frente.
 import 'dart:convert';
 
+import 'package:app/src/switches.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'support/harness.dart';
 
@@ -81,5 +83,51 @@ void main() {
       expect(find.text('New story · play it twice · 6 min'), findsOneWidget);
     },
     timeout: const Timeout(Duration(minutes: 10)),
+  );
+  testWidgets(
+    '(p) ?txt= reaches the story: its first line shows while it is spoken (con, and with no ?txt=), right after it (tras), never (no)',
+    (tester) async {
+      final first =
+          ((jsonDecode(repoFile('historia/cuentos/la-lluvia.json'))
+                      as Map)['clips']
+                  as Map)['esta_casa']['text']
+              as String;
+      // The virtual ms after Start at which the narrator's first line is on screen (null: not in ten seconds, which is
+      // well past the end of the line)
+      Future<int?> shownAt(Map<String, String> query) async {
+        final app = TestApp(tester);
+        await app.open(
+          stored: seed('curso'),
+          location: '/cuento/la-lluvia',
+          switches: AppSwitches.fromQuery(query),
+          speechAvailable: false,
+        );
+        await app.until(
+          () => find.byType(LessonStartButton).evaluate().isNotEmpty,
+          what: 'the start disc',
+        );
+        await app.tap(find.byType(LessonStartButton));
+        int? at;
+        for (var t = 0; t < 10000; t += 20) {
+          await app.advance(20);
+          if (at == null && find.text(first).evaluate().isNotEmpty) at = t;
+        }
+        expect(app.clips!.played.first, 'esta_casa');
+        await tester.pumpWidget(const SizedBox());
+        return at;
+      }
+
+      final none = await shownAt(const {});
+      final con = await shownAt(const {'txt': 'con'});
+      final tras = await shownAt(const {'txt': 'tras'});
+      final no = await shownAt(const {'txt': 'no'});
+      expect(none, isNotNull);
+      expect(con, none);
+      expect(tras, isNotNull);
+      // right after the line, not while it is spoken (it is two seconds long)
+      expect(tras!, greaterThan(con! + 1000));
+      expect(no, isNull);
+    },
+    timeout: const Timeout(Duration(minutes: 5)),
   );
 }

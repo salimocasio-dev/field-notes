@@ -8,6 +8,7 @@ import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:feature_speaking/feature_speaking.dart';
+import 'package:feature_story/feature_story.dart' show TxtMode;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/harness.dart';
@@ -67,8 +68,8 @@ void main() {
     test('none: nothing on', () {
       final s = AppSwitches.fromQuery(const {});
       expect(
-        (s.perf, s.callStub, s.stubClock, s.micStub, s.micOff),
-        (false, false, 1, null, false),
+        (s.perf, s.callStub, s.stubClock, s.micStub, s.micOff, s.txt),
+        (false, false, 1, null, false, TxtMode.con),
       );
       expect(s.stubOptions, isEmpty);
     });
@@ -94,6 +95,22 @@ void main() {
       expect(AppSwitches.fromQuery(const {'clock': 'x'}).stubClock, 1);
       expect(AppSwitches.fromQuery(const {'clock': '0'}).stubClock, 1);
     });
+    test(
+      '?txt= is con, tras or no, and con for anything else (juego.js: TXT)',
+      () {
+        expect(AppSwitches.fromQuery(const {}).txt, TxtMode.con);
+        expect(AppSwitches.fromQuery(const {'txt': 'con'}).txt, TxtMode.con);
+        expect(AppSwitches.fromQuery(const {'txt': 'tras'}).txt, TxtMode.tras);
+        expect(AppSwitches.fromQuery(const {'txt': 'no'}).txt, TxtMode.no);
+        for (final other in ['', 'NO', 'si', 'tras ', '1']) {
+          expect(
+            AppSwitches.fromQuery({'txt': other}).txt,
+            TxtMode.con,
+            reason: '"$other"',
+          );
+        }
+      },
+    );
   });
 
   group('the content base and the cache rules', () {

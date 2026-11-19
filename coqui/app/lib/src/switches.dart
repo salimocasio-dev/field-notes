@@ -2,6 +2,8 @@
 /// once, when the app starts, and never kept anywhere: they are for the owner's timing and for checks by machine.
 library;
 
+import 'package:feature_story/feature_story.dart' show TxtMode;
+
 /// What the address asked for at the start.
 class AppSwitches {
   const AppSwitches({
@@ -11,6 +13,7 @@ class AppSwitches {
     this.stubClock = 1,
     this.micStub,
     this.micOff = false,
+    this.txt = TxtMode.con,
   });
 
   /// The query of the page's address, as the old pages read theirs (`new URLSearchParams(location.search)`).
@@ -29,6 +32,12 @@ class AppSwitches {
       // juego.js: MQ=Q.get("mic")||"",MICOFF=MQ==="off",STUB=MQ.indexOf("stub:")===0?MQ.slice(5).split("|"):null
       micStub: mic.startsWith('stub:') ? mic.substring(5).split('|') : null,
       micOff: mic == 'off',
+      // juego.js: TXT=["con","tras","no"].includes(Q.get("txt"))?Q.get("txt"):"con"
+      txt: switch (q['txt']) {
+        'tras' => TxtMode.tras,
+        'no' => TxtMode.no,
+        _ => TxtMode.con,
+      },
     );
   }
 
@@ -50,6 +59,10 @@ class AppSwitches {
 
   /// `?mic=off`: recognition is unavailable.
   final bool micOff;
+
+  /// `?txt=con|tras|no`: when a story's words show (as the line is spoken, right after it, never). Anything else, and
+  /// no `?txt=`, is `con`.
+  final TxtMode txt;
 
   static int _clock(String? v) {
     final n = num.tryParse(v ?? '1') ?? 0;
