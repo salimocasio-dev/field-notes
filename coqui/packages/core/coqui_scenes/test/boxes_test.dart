@@ -1,6 +1,7 @@
 // The touch boxes. (1) Every thing of the set lies inside its touch box: in each of the 25 states, each pixel the
-// set's part for that thing drew (set-kit.js `part`, the swaying fronds included at time 0) is inside the box the sheet
-// gives (Sheet.boxOf of its world box). (2) hit, in the old order, returns each thing's key at the centre of its box in
+// set's part for that thing drew (set-kit.js `part`, the swaying fronds included at time 0) is inside the box its touch
+// hits (Sheet.hitBoxOf of its hit world box). Its box (Sheet.boxOf of its world box: what the hint frame goes round, as
+// frente.js's box) may be tighter: the house's and the window's are. (2) hit, in the old order, returns each thing's key at the centre of its box in
 // every state where the thing shows, but where the old order gives the point to a thing tested before it; those are
 // listed in [shadowedBy] (the numbers go to the report).
 import 'dart:convert';
@@ -83,7 +84,7 @@ void main() {
                 t.key.endsWith('_grande'))) {
           continue;
         }
-        final box = scene.sheet.boxOf(t.key, e);
+        final box = scene.sheet.hitBoxOf(t.key, e)!;
         var drawn = 0, out = 0;
         for (var i = 0; i < tags.length; i++) {
           if (tags[i] != t.value) continue;
@@ -249,8 +250,8 @@ const Map<String, String> shadowedBy = {
       'story 3: the bird at the birdhouse, tested after the hiding places',
   'pajaro -> palma_pequena':
       'story 3: the bird in the small palm, tested after the hiding places',
-  'casa -> pajaro':
-      'the bird sits over the middle of the house; it is tested before casa',
+  'casa -> abuela': 'story 3: abuela on the porch stands over the middle of the house\'s box (up to the eaves); she is tested first',
+  'casa_grande -> abuela': 'story 3: the same, for the house as a hiding place',
   'sol -> pajaro': 'the bird circling over the sun; it is tested before sol',
   'sol -> null': 'in a storm the pale sun shows but hit skips the sun (frente.js:197, !W.storm)',
 };
