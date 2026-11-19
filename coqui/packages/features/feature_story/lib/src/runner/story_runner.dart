@@ -996,6 +996,9 @@ class StoryRunner implements SceneHost {
 
   // ---------- the story ----------
 
+  /// `$name` filled from the story's variables (juego.js: `sub`).
+  String fill(String s) => subS(s);
+
   // juego.js: pasos
   @override
   Future<void> pasos(List<Object?>? list) async {
@@ -1179,6 +1182,22 @@ class StoryRunner implements SceneHost {
   void tapMic() {
     final C = HAB.cur;
     if (C != null && HAB.est == 'ready') habEmpieza(C);
+  }
+
+  // juego.js: habMarca
+  /// The targets of a marked clip, or null.
+  List<Target>? habMarca(String id) {
+    final cl = LINES[id];
+    final t = cl is Map ? cl['tu_turno'] : null;
+    if (t is! List || t.isEmpty) return null;
+    final out = <Target>[];
+    for (final x in t) {
+      if (x is! Map) return null;
+      final p = x['palabra'], f = x['formas'];
+      if (p is! String || f is! List || f.isEmpty) return null;
+      out.add((palabra: p, formas: [for (final e in f) e as String]));
+    }
+    return out;
   }
 
   /// The turns' record (juego.js: `HAB.log`).
