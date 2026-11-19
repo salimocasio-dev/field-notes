@@ -307,6 +307,18 @@ Page 12: sections 1, 4, 5, 6, 7. **From:** historia/escenas/kit.js, all of it; f
 
 **Done when:** the kit's sprites in `ref/sprites/` match exactly; tests for the sheet reader, the camera (a view at each edge stays inside the picture; `camGo` passes only whole pixels), `clipTo` on a made-up box; `hit` on a made-up scene returns the same ids as the old `hit` for 50 points (expected values from the old function in node).
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; the package's tests were run again by the orchestrator (400 on vm, 393 on chrome) and `test_all.sh` on merged main.
+- Kit sprites: 469 of 469 exact on vm and chrome. `hit`, `box`, `handAt` and the shared acts equal kit.js run in node (200 `hit` results, 21 act runs).
+- Signs against the old code drawn in headless Chrome: `hand`, `heart`, `star`, `spot`, `twinkle`, `bub`, `bang`, `frog`, `respDraw`, `drawSigns` and the hand over the view at both zooms: 0 pixels differ. The bird: 18 pixels of 57,344 differ, all in its one rotated pose.
+- The camera has zoom 1 and 2 (page 12 section 5 as changed on Nov 19): a same-zoom `camGo` slides in whole pixels with the old positions rounded; a change of zoom is a cut with the old number of steps. `pictureToDisplay` and `displayToPicture` are inverse on the pixel grid.
+- `drawFrame` is the frame recipe as one function. It takes a `BakedSet`, which holds everything a bake leaves behind (pictures, depth, ground, kinds, static shadow, tufts, leaves), about 780 KB a state.
+- `clipToWorld` clips to a polygon of world points, which is how the sheet gives clips.
+- `Sheet.parse(text)` reads `<id>-sheet.json`: things, spots, frames, points, views, remap (by kind: point, cam, crop, x), pictures, level pictures, clips, front, shadows, setKey, code. Against the real frente-sheet.json: every recorded box, view, crop and remap entry is reproduced; screen points within the sheet's own rounding (0.005).
+- SFX: all 18 names make the same calls as juego.js. `Sfx.lluvia` and `calla` keep no state, so `ClipPlayer.loop` must be idempotent (order 19 checks it).
+- `Ctx.setLineDash` added (patio.js). `SceneHost.lib` added (the sprite cache).
+- Order 10's one-state El frente test now runs from a fixture of its own (`frente_nov14.dart`), since order 07 replaced that state.
+- Not in the sheet as data: the heights at which each character casts its shadow (only as text) and the shadow direction (.9, -.1 in frente-set.html). Order 14 ports them from frente-set.html.
+
 ## Order 13. The map (builder, feature_map)
 
 Page 11-pixel-engine, build step 2, decisions 5 to 8. Page 12: sections 1 to 4, 6, 7.

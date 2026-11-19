@@ -9,7 +9,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-/// The files of coqui/ref/pp/ the tests read, as the path under that folder.
+/// The files of coqui/ref/pp/ the tests read, as the path under that folder. (The Nov 14 one-state El frente is not
+/// here: order 07 removed it from coqui/ref/pp/, and its bytes are kept in test/support/fixtures/frente_nov14.dart.)
 const files = [
   'unit/unit.json',
   'unit/unit-s26.json',
@@ -18,10 +19,6 @@ const files = [
   'island/kinds.bin',
   'island/state.json',
   'island/decorate-calls.json',
-  'frente/door-open-shutters-open-lamp-on/pix.bin',
-  'frente/door-open-shutters-open-lamp-on/zb.bin',
-  'frente/door-open-shutters-open-lamp-on/kinds.bin',
-  'frente/door-open-shutters-open-lamp-on/state.json',
 ];
 
 const piece = 4000;
