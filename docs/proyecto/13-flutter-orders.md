@@ -396,6 +396,17 @@ Page 12: sections 1 to 7. **From:** historia/juego.js (all but what orders 12 an
 
 **Done when:** on a fake scene, a unit test for every step kind, and the cases of habla_motor_check.py (every turn heard, every turn missed twice, the mic off, first play with no turn). With El frente merged: the traces of stories 1 to 3 are reproduced: decisions, marks, `lost`, ending, order of clips.
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; its tests were run again by the orchestrator (197) with `flutter analyze` and the boundary check on merged main.
+- `StoryRunner` is juego.js ported line for line, on a virtual clock (timers fire by due time, then creation order). Step kinds, from juego.js lines 320 to 336: string, say, wait, cam, dots, set, if, act, ask, decide, elige, draw, reparte, calc, recuerda, cost; anything else throws.
+- **All 153 recorded runs are reproduced whole**, to the millisecond, with the old scenes' acts replayed from a recording of what each old scene did (no story is independent of its scene's acts, so the builder recorded them from the old page: `tool/ref/record_acts.mjs`).
+- **With the real El frente** (5 files × 3 plans): decisions, marks, steps lost, ending, the order of clips, the steps, the choices, the touches, the random draws and the memory are equal in all 15. Two runs are equal whole. The other 13 differ only in times and in the number of hop sounds, for two reasons that come from the new set, not the runner: the `casa` view is now the same window as `wide`, so `camGo("casa")` no longer slides (about a second shorter where a story used it); and the frog's new spots are nearer, so he takes one hop fewer in some moves (460 ms each). **Accepted**: the game is the same; the pacing is a little quicker in those places. Order 40 compares the other scenes the same way: everything but time and hop sounds.
+- Speaking turns: every case of habla_motor_check.py as a test. The real listener path is tested with the settings of docs/hablar/01-decisiones.md.
+- The play screen: the frame, the dashes, captions, the speech bubble, the mic disc in its five states, the end title with Play again, Next story and Map; Listen mode; a tap is mapped back to the picture and hit-tested by the scene.
+- The no-screen player is `play(...)` inside the feature; its tools are `tool/juega.dart` (on a stand-in scene) and `tool/differential.dart`. There is no `coqui/tool/juega.dart`: a tool outside the package may not import a feature's `src/`, and the real scene needs Flutter's assets, so the comparison with the real scene runs as the feature's test.
+- For the scenes to come: a `set` step's positions written as two-number lists (`respEn`, `casa`, `bolsa`: none in El frente's stories) are not remapped yet; each scene's sheet must name them. Scenes that draw random numbers need the app's `Rng` (El frente draws none).
+- Follow-up decided: the story's clock stops while the app is in the background, so no burst of timers on return.
+- Old faults ported: a second `camGo` during a slide leaves the first one's wait unresolved; `ask` with `bien: false` still says the default praise; in Listen mode an `elige` takes the first option.
+
 ## Order 16. Progress (builder, coqui_progress)
 
 Page 12: sections 1, 2, 6, 7. **From:** historia/palabras.js, rule for rule. Page 08, "Word records and the scheduler".
