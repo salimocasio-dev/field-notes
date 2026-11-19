@@ -60,6 +60,9 @@ class AddBox extends StatelessWidget {
                 hintStyle: text.copyWith(color: _placeholder),
                 filled: true,
                 fillColor: CoquiColors.white,
+                // Material greys a hovered or focused field: the old input stays white
+                hoverColor: const Color(0x00000000),
+                focusColor: const Color(0x00000000),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: CoquiMetrics.s12,
                   vertical: CoquiMetrics.s12,

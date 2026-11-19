@@ -625,6 +625,17 @@ void main() {
       },
     );
 
+    testWidgets(
+      'the field stays white under the pointer and with the focus (Material would grey it)',
+      (tester) async {
+        await open(tester);
+        final d = tester.widget<TextField>(find.byType(TextField)).decoration!;
+        expect((d.filled, d.fillColor), (true, CoquiColors.white));
+        expect(d.hoverColor, const Color(0x00000000));
+        expect(d.focusColor, const Color(0x00000000));
+      },
+    );
+
     testWidgets('what was saved before shows when the tab opens', (
       tester,
     ) async {

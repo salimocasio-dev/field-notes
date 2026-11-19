@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
+import 'package:feature_words/src/balanced_key_line.dart';
 import 'package:feature_words/src/word_sheet.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
@@ -191,7 +192,7 @@ class _WordsTabState extends State<WordsTab> {
                           for (var i = 0; i < v.groups.length; i++) ...[
                             SectionTitle(v.groups[i].name),
                             if (i == 0)
-                              const KeyLine(
+                              const BalancedKeyLine(
                                 'Ear: you know it when you hear it. Mouth: you can say it.',
                               ),
                             WordGrid(
