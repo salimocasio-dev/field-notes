@@ -60,7 +60,7 @@ function make(G) {
     inicio: { world: pathAt(3.55), scale: 1, old: [150, 178], what: 'where every story starts: on the path, near the bottom (juego.js:16 fresh(), cq x 150 y 178 s 1)' },
     patio: { world: pathAt(1.8), scale: .86, old: [123, 150], what: 'LUGAR.patio: on the path in front of the house (also cual.js:21, the frog of every pair picture)' },
     puerta: { world: [doorMid - .2, F.HY1 + .62, F.FLOOR], scale: .72, old: [150, 104], what: 'LUGAR.puerta and LUGAR.casa_grande: on the porch, before the door' },
-    ventana: { world: [winMid + .05, F.HY1 + .62, F.FLOOR], scale: .72, old: [96, 104], what: 'LUGAR.ventana: on the porch, under the window' },
+    ventana: { world: [winMid + .59, F.HY1 + 1.47, 0], scale: .72, old: [96, 104], what: 'LUGAR.ventana: under the window, on the lawn just before the porch, as the old frog stood (on the porch his bubble covered abuela in the window and the window\'s hint frame crossed his eyes). Placed so that every hop count acts.ir gives (round(d / 28)) from the places the stories hop from is the old one' },
     palma_grande: { world: [F.PALM[0] + .55, F.PALM[1] - .05, 0], scale: .74, old: [38, 100], what: 'LUGAR.palma_grande: at the foot of the big palm' },
     palma_pequena: { world: [F.SPALM[0] - .55, F.SPALM[1] + .5, 0], scale: .88, old: [150, 150], what: 'LUGAR.palma_pequena: beside the small palm' },
     casa_pequena: { world: [F.BIRD[0] + .5, F.BIRD[1] - .15, 0], scale: .86, old: [86, 150], what: 'LUGAR.casa_pequena: beside the birdhouse' },
@@ -111,14 +111,14 @@ function make(G) {
   pt('ave.puerta.hueco', { world: [doorMid, F.HY1, F.FLOOR + F.DH * .45], old: [166, 80], what: 'HOLE.puerta and SPOT.casa_grande: the middle of the door' });
   pt('ave.palma', { world: [F.PALM_TOP[0], F.PALM_TOP[1], F.PALM_TOP[2] + .05], old: [56, 52], what: 'SPOT.palma_grande: in the big palm\'s crown' });
   pt('ave.palmita', { world: [F.SPALM_TOP[0], F.SPALM_TOP[1], F.SPALM_TOP[2] + .05], old: [195, 132], what: 'SPOT.palma_pequena: in the small palm\'s crown' });
-  pt('ave.casita', { world: [birdHole[0], birdHole[1] + .12, birdHole[2] - .17], old: [73, 129], what: 'SPOT.casa_pequena: at the birdhouse\'s hole, on its perch' });
+  pt('ave.casita', { world: [F.BIRD[0] + .185, F.BIRD[1] + .185, birdHole[2] - .17], old: [73, 129], what: 'SPOT.casa_pequena: at the birdhouse\'s hole, on its perch: centred on the birdhouse as the old bird was (the hole is on its left face; a bird before the hole hung off the house\'s left side), its feet as low as before' });
   pt('ave.casita.techo', { world: [F.BIRD[0], F.BIRD[1], 2.1], old: [73, 112], what: 'busca_ave casa_pequena: on the birdhouse\'s roof' });
   pt('ave.casita.entra', { world: birdHole, old: [73, 126], what: 'avecasa: into the birdhouse\'s hole' });
   pt('ave.puerta.lado', { world: [F.DOOR1 + .3, F.HY1 + .35, F.FLOOR], old: [176, 100], what: 'busca_ave casa_grande: on the porch beside the door' });
   pt('ave.techo', { world: [F.HX1 - .3, (F.HY0 + F.HY1) / 2, F.HH + F.RISE], old: [196, 30], what: 'fin2: on the roof\'s ridge, right end' });
   pt('ave.cesped', { world: [F.HX1 + 1.6, F.HY1 + .9, 0], old: [196, 120], what: 'tapate: on the lawn right of the porch, where it sits with a wing over its eyes' });
   // the hand sign and the heart
-  pt('mano.casa', { world: [doorMid - 1.1, F.HY1 - .35, F.HH + F.RISE * .55], old: [141, 24], what: 'handAt.casa and handAt.casa_grande: on the roof' });
+  pt('mano.casa', { world: [doorMid - .96, F.HY1 - .49, F.HH + F.RISE * .55], old: [141, 24], what: 'handAt.casa and handAt.casa_grande: on the roof (5 px right of the first place: the thumb cleared abuela\'s hair on the porch, story 3)' });
   pt('mano.puerta', { world: doorC, old: [166, 76], what: 'handAt.puerta, and abuela\'s hand fallback: the middle of the door' });
   pt('mano.ventana', { world: winC, old: [112, 72], what: 'handAt.ventana: the middle of the window' });
   pt('mano.casa_pequena', { world: [F.BIRD[0], F.BIRD[1], 1.5], old: [73, 128], what: 'handAt.casa_pequena: the birdhouse' });
@@ -153,21 +153,25 @@ function make(G) {
 
   /* ---- things: the 14 touch keys ---- */
   const T = F.THINGS;
-  const setThing = (world, hitPad, what, extra = {}) => { const hw = [world[0] - hitPad[0], world[1], world[2], world[3] + hitPad[0], world[4] + hitPad[1], world[5] + hitPad[2]];
-    return Object.assign({ set: true, world: W4(world), box: box(world), hit: { world: W4(hw), box: box(hw) }, what }, extra); };
+  // world and box: what the hint frame goes round (the old box); hit: what a touch hits. `mark`, when given, is a tighter world box for the
+  // frame than the touch box (the 3D box's screen box holds empty corners: the house's reached above the picture, the window's below it)
+  const setThing = (world, hitPad, what, extra = {}, mark = world) => { const hw = [world[0] - hitPad[0], world[1], world[2], world[3] + hitPad[0], world[4] + hitPad[1], world[5] + hitPad[2]];
+    return Object.assign({ set: true, world: W4(mark), box: box(mark), hit: { world: W4(hw), box: box(hw) }, what }, extra); };
+  const houseMark = [F.HX0 - F.EAVE, F.HY0 - F.EAVE, 0, F.HX1 + F.EAVE, F.HY1 + F.EAVE, F.HH];   // up to the eaves: the hip roof's top is level with its back corner
+  const windowMark = [F.WIN0 - .12, F.HY1, F.WZ0 - .12, F.WIN1 + .12, F.HY1 + .06, F.WZ1 + .12];   // the window and its frame, as the old box [93,57,38,28]
   const things = {
     abuela: { sprite: true, why: 'a character (today\'s sprite, drawn 1:1)', box: { puerta: { frame: 'abuela.puerta', old: [151, 56, 29, 49], new: shift([151, 56, 29, 49], FRAMES['abuela.puerta'].offset) }, paso: { frame: 'abuela.paso', old: [110, 58, 36, 50], new: shift([110, 58, 36, 50], FRAMES['abuela.paso'].offset) }, ventana: { clip: 'ventana.hueco', old: [97, 61, 30, 20], what: 'the window opening: clips[ventana.hueco].box' } } },
     palma_pequena: setThing(T.palma_pequena, [0, 0, 0], 'the small palm (story 3: shown when hide=1)', { old: { box: [174, 114, 42, 56], hit: [172, 112, 46, 60] } }),
     casa_pequena: setThing(T.casa_pequena, [.08, .08, 0], 'the birdhouse on its post (story 3: shown when hide=1)', { old: { box: [60, 110, 26, 58], hit: [58, 108, 30, 62] } }),
     palma_grande: setThing(T.palma, [0, 0, 0], 'the big palm, as a hiding place (story 3). The same world box as palma', { old: { box: [34, 34, 48, 72], hit: [34, 34, 48, 74] } }),
-    casa_grande: setThing(T.casa, [0, 0, 0], 'the house, as a hiding place (story 3). The same world box as casa', { old: { box: [60, 17, 166, 90], hit: [57, 16, 171, 95] } }),
+    casa_grande: setThing(T.casa, [0, 0, 0], 'the house, as a hiding place (story 3). The same world box as casa', { old: { box: [60, 17, 166, 90], hit: [57, 16, 171, 95] } }, houseMark),
     pajaro: { sprite: true, why: 'it flies: the bird is today\'s sprite; its box stays relative to it (hit: |x - p[0]| < 16, p[1] - 24 < y < p[1] + 5)' },
     bizcocho: { hud: true, why: 'the plate in the corner of the display (hud), not in the picture. Its hit (frente.js:190) turns a picture point into display pixels with the old zoom (DW / cam[2]); with no zoom that is x - cam[0], y - cam[1]' },
     coqui: { sprite: true, why: 'a character (frogBox around today\'s sprite)' },
     nube: { sprite: true, sky: true, why: 'the storm cloud moves (W.nube.x eases to its tx): today\'s sprite, in the sky, at the same screen places as before (box [x, 0, 98, 22], hit [x - 2, 0, 102, 24])' },
     puerta: setThing(T.puerta, [0, 0, .12], 'the door with its frame; hit adds a little slack', { old: { box: [151, 51, 30, 54], hit: [145, 46, 42, 62] } }),
-    ventana: setThing(T.ventana, [.03, .1, .1], 'the window with its frame, its shutters (open, flat on the wall) and the flower box; hit adds a little slack', { old: { box: [93, 57, 38, 28], hit: [82, 53, 61, 42] } }),
-    casa: setThing(T.casa, [0, 0, 0], 'the house: walls and roof. Its hit replaces both old tests (the roof trapezoid, frente.js:195, and the wall rectangle, frente.js:196)', { old: { box: [60, 17, 166, 90], hit: 'roof: 16 <= y < 42, 88 - 30t <= x <= 196 + 30t (t = (y - 16) / 25); walls [57, 41, 171, 70]' } }),
+    ventana: setThing(T.ventana, [.03, .1, .1], 'the window with its frame, its shutters (open, flat on the wall) and the flower box; hit adds a little slack. The hint frame goes round the window and its frame only', { old: { box: [93, 57, 38, 28], hit: [82, 53, 61, 42] } }, windowMark),
+    casa: setThing(T.casa, [0, 0, 0], 'the house: walls and roof. Its hit replaces both old tests (the roof trapezoid, frente.js:195, and the wall rectangle, frente.js:196)', { old: { box: [60, 17, 166, 90], hit: 'roof: 16 <= y < 42, 88 - 30t <= x <= 196 + 30t (t = (y - 16) / 25); walls [57, 41, 171, 70]' } }, houseMark),
     sol: { set: true, sky: true, screen: { circle: [F.SUN[0], F.SUN[1], 12], box: [F.SUN[0] - 12, 5, 25, 25] }, old: { circle: [210, 17, 12] }, why: 'the sun is baked into the sky (pale in a storm, none in the rain); the sky is screen space. It sits ' + (F.SUN[0] - 210) + ' px right of the old sun, so its touch circle stays clear of the house\'s box: hit (x-' + F.SUN[0] + ')^2 + (y-' + F.SUN[1] + ')^2 < 144' },
     palma: setThing(T.palma, [0, 0, 0], 'the big palm (stories 1 and 2: a free touch)', { old: { box: [34, 36, 30, 70], hit: [34, 36, 30, 70] } }),
   };
@@ -191,7 +195,7 @@ function make(G) {
   const views = {
     wide: view(houseMid, 'the house, the path and the sky: every story\'s usual view', [44, 0, 196, 216]),
     casa: view(houseMid, 'the house (the same window as wide: the house fits it whole)', [51.7, 15, 180.6, 199]),
-    puerta: view([doorMid, F.HY1 + .3, F.FLOOR + 1.0], 'the door, at 2x: the whole door, abuela in it, the frog before it on the porch', [117, 30, 98, 108], 2),
+    puerta: view([doorMid, F.HY1 + .3, F.FLOOR + 1.72], 'the door, at 2x: the whole door, abuela in it, the frog before it on the porch. The frog on the path (patio) is wholly below it, as in the old view (16 px lower, his head showed at its bottom edge)', [117, 30, 98, 108], 2),
     ventana: view([winMid, F.HY1 + .3, F.WZ0 - .15], 'the window, at 2x: the window, abuela in it, the frog under it and leaning in', [84, 24, 98, 108], 2),
     cuadro: view([winMid, F.HY1, F.WZ1 + .15], 'story 1\'s last picture, at 2x: abuela and the frog in the window, the heart over it', [63, 18, 98, 108], 2),
     'wide@donde-esta-el-pajaro': view([F.PALM[0] + 2.085, F.PALM[1] - 2.085, 0], 'story 3\'s own wide view (cam.wide in donde-esta-el-pajaro.json): the big palm, the house, the birdhouse and the small palm together', [30, 0, 196, 216]),
