@@ -7,5 +7,5 @@
   "layout": "row-major, index = y * width + x",
   "note": "the depth buffer after the frame; -1e9 where nothing was drawn",
   "bytes": 207360,
-  "sha256": "47338285c117373b3c9fa9d847b14749737acd71c5b35f864b1c53623a4056ff"
+  "sha256": "8fcae59a6f73cea8ebf43e5afb33cbc238481b2e8e4c3d113964ab2ad1054954"
 }

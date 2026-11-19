@@ -35,10 +35,10 @@ window.PP_SCENE = { w: 240, h: 216, s: 26, originX: +(Q.get('ox') || -2), origin
 <script>
 'use strict';
 /* ---------- the plan of the place (world units) ---------- */
-const HX0 = -2.3, HX1 = 2.3, HY0 = -1.4, HY1 = 0, HH = 2.9;          // the house walls; the front faces +y
+const HX0 = -2.3, HX1 = 2.6, HY0 = -1.4, HY1 = 0, HH = 2.9;          // the house walls; the front faces +y
 const EAVE = .22, RISE = .8;                                          // the roof: overhang, ridge above the eaves
 const FLOOR = .16;                                                    // the porch and the floor inside
-const DOOR0 = .75, DOOR1 = 2.0, DH = 2.55;                             // the doorway, from the porch up
+const DOOR0 = .75, DOOR1 = 2.2, DH = 2.55;                             // the doorway, from the porch up
 const WIN0 = -1.71, WIN1 = -.01, WZ0 = 1.15, WZ1 = 2.4;               // the window opening
 const PORCH = 1.0, STEP = 1.4;                                        // the porch slab's depth, the step's front
 const PALM = [-1.33, 3.51], SPALM = [6.15, 3.32], BIRD = [3.05, 5.66];  // the big palm, the small palm, the birdhouse
@@ -46,7 +46,7 @@ const PATH_U = ((DOOR0 + DOOR1) / 2 - STEP) / R2, PATH_V = ((DOOR0 + DOOR1) / 2 
 const BUSH1 = [3.37, -2.28], BUSH2 = [1.47, 6.8];                     // the two bushes
 const PALM_H = 3.6, PALM_LEAN = .3, PALM_SIZE = .62, SPALM_H = 2.1, SPALM_LEAN = .25, SPALM_SIZE = .58;
 const palmTop = (p, h, lean) => [p[0] + lean * .7, p[1] - lean * .5, h];   // where swayPalm puts the crown
-const HALF_ANGLE = Math.PI + .3;                                     // the half-open door: turned .3 rad into the room
+const HALF_ANGLE = Math.PI + .56;                                    // the half-open door: turned .56 rad into the room (a gap wide enough for abuela's whole head)
 const HZ = 46;                                                        // the horizon, in screen rows: sky above
 const TEAL = [92, 190, 186], WOOD = [150, 98, 56], WHITE = [244, 240, 228];
 
@@ -67,7 +67,7 @@ const SKY = {
   dusk: { bands: [[86, 128, 214], [120, 156, 226], [176, 180, 214], [236, 196, 170], [252, 214, 160]], far: [[150, 160, 150], [186, 186, 164], [128, 140, 134]], near: [[104, 140, 84], [150, 176, 104], [86, 120, 72]], sun: [[226, 120, 40], [246, 160, 60], [255, 200, 100], [255, 232, 160]] },
   sunset: { bands: [[60, 44, 104], [96, 58, 120], [160, 76, 120], [226, 112, 96], [250, 164, 96]], far: [[104, 72, 110], [134, 92, 124], [88, 60, 96]], near: [[70, 70, 90], [96, 92, 104], [58, 58, 78]], sun: [[214, 72, 40], [240, 110, 50], [252, 160, 80], [255, 210, 130]] },
 }[SET.sky];
-const SUN = [210, 17, 10];                                            // the sun stays where the old scene had it (screen space)
+const SUN = [215, 17, 10];   // the sun (screen space): 5 px right of the old one, so its touch circle stays clear of the house's box
 
 /* ---------- the ground ---------- */
 function frontGround(x, y, ix, iy, i) {
@@ -107,17 +107,36 @@ function house() {
   shadowBox(HX0, HY0, HX1, HY1 - .6, HH + .9, .6);   // kept off the front: the porch is in the sun
 }
 
+// the room behind an opening [a0, a1] of the front wall: a plank floor and the back wall with a skirting board and a framed picture.
+// Only the part that shows through the opening is drawn (a point of the back wall shows through the front at x + depth, and lower).
+// Dim when the lights are off (a room, not a hole); warm, and giving light, when they are on
+const BACK = HY0 + .08;
+function room(a0, a1, floor) {
+  const on = SET.lights, d = HY1 - BACK, F = on ? [[196, 132, 76], [214, 152, 92], [176, 114, 64]] : [[70, 50, 36], [82, 60, 42], [58, 40, 28]];
+  const wallC = (a, z) => {
+    if (z < FLOOR + .16) return on ? rgb(170, 110, 64) : rgb(44, 32, 26);                        // skirting board
+    if (a > .05 && a < .55 && z > 1.05 && z < 1.5) {                                               // a framed picture
+      const edge = a < .1 || a > .5 || z < 1.1 || z > 1.45;
+      return edge ? (on ? rgb(150, 96, 50) : rgb(52, 36, 26)) : on ? rgb(120, 170, 200) : rgb(48, 66, 80);
+    }
+    const k = (z - FLOOR) / 2;
+    return on ? rgb(255, 230 - k * 20, 168 - k * 30) : rgb(66 - k * 14, 72 - k * 14, 74 - k * 12);
+  };
+  for (let a = Math.max(HX0 + .02, a0 - d - .15); a <= Math.min(HX1 - .02, a1 - d + .1); a += ST) for (let z = FLOOR; z <= HH - .3; z += ST) {   // inside the house only
+    const c = wallC(a, z); if (on) plotGlow(a, BACK, z, c); else plot(a, BACK, z, c);
+  }
+  if (floor) for (let a = Math.max(HX0 + .02, a0 - d - .15); a <= Math.min(HX1 - .02, a1 + .05); a += ST) for (let b = BACK; b <= HY1 - .01; b += ST) {
+    const plank = Math.floor((a + 5) / .22), seam = ((a + 5) % .22) < .03, pool = on && Math.hypot(a - (a0 + a1) / 2 + .2, b + .35) < .5;
+    const c = pool ? rgb(240, 196, 120) : rgb(...F[seam ? 2 : hash(plank, 3) > .5 ? 1 : 0]);
+    if (on) plotGlow(a, b, FLOOR, c); else plot(a, b, FLOOR, c);
+  }
+}
+
 // the doorway: the frame, what is seen inside, the leaf (shut, half open, open)
 function doorway() {
   const z0 = FLOOR, z1 = FLOOR + DH, w = DOOR1 - DOOR0, on = SET.lights;
   reveal(HY1, DOOR0, DOOR1, z0, z1, .22, on ? [214, 170, 110] : TEAL);
-  // inside: a dark room, or a warm lit one when the lights are on
-  const room = (a, z) => {
-    const k = (z - z0) / DH;
-    if (on) return z < z0 + .35 ? rgb(196, 128, 70) : k > .82 ? rgb(255, 236, 170) : rgb(255, 214 - k * 30, 130 - k * 40);
-    return z < z0 + .35 ? rgb(46, 30, 22) : rgb(...[[28, 16, 10], [36, 22, 14], [50, 32, 22]][clamp(Math.floor(k * 3), 0, 2)]);
-  };
-  paneY(HY1 - .3, DOOR0 - .2, DOOR1 - .15, z0, z1 + .02, room, on);   // only what shows through the doorway
+  room(DOOR0, DOOR1, true);
   // the frame
   const F = rampOf(WHITE);
   for (let z = z0; z <= z1 + .14; z += ST * .5) for (let a = 0; a <= .12; a += ST * .5) { plot(DOOR0 - .14 + a, HY1 + .03, z, F[3]); plot(DOOR1 + .02 + a, HY1 + .03, z, F[2]); }
@@ -153,11 +172,7 @@ function doorway() {
 function windowAndShutters() {
   const on = SET.lights, ww = WIN1 - WIN0, F = rampOf(WHITE);
   reveal(HY1, WIN0, WIN1, WZ0, WZ1, .22, on ? [214, 170, 110] : TEAL);
-  const room = (a, z) => {
-    const k = (z - WZ0) / (WZ1 - WZ0);
-    return on ? rgb(255, 222 - k * 26, 140 - k * 40) : rgb(...[[30, 18, 12], [40, 26, 16], [56, 36, 24]][clamp(Math.floor(k * 3), 0, 2)]);
-  };
-  paneY(HY1 - .3, WIN0 - .2, WIN1 - .15, WZ0 - .1, WZ1 + .02, room, on);   // only what shows through the window
+  room(WIN0, WIN1, false);
   // the frame
   for (let a = WIN0 - .12; a <= WIN1 + .12; a += ST * .5) for (const z of [WZ0 - .12, WZ1]) for (let h = 0; h <= .12; h += ST * .5) plot(a, HY1 + .03, z + h, F[3]);
   for (let z = WZ0 - .12; z <= WZ1 + .12; z += ST * .5) for (const a of [WIN0 - .12, WIN1]) for (let h = 0; h <= .12; h += ST * .5) plot(a + h, HY1 + .03, z, F[3]);
@@ -192,7 +207,10 @@ function windowAndShutters() {
 
 /* ---------- the garden ---------- */
 function garden() {
+  // the big palm's shadow stays off the stone path: on the pale stones it read as a stain (the grass keeps it)
+  const before = shadowMask.slice();
   part('palma', () => swayPalm(PALM[0], PALM[1], PALM_H, PALM_LEAN, 2, PALM_SIZE, LIGHT));
+  for (let i = 0; i < W * H; i++) if (kinds[i] === KIND_ROAD) shadowMask[i] = before[i];
   // two bushes, like the old garden's, where no touch box reaches (right of the house; the front left corner)
   part('arbusto', () => { bush(BUSH1[0], BUSH1[1], .5, lit([96, 150, 70], LIGHT)); bush(BUSH2[0], BUSH2[1], .45, lit(C.leaf, LIGHT)); });
   if (SET.hide) {

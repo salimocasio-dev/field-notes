@@ -16,7 +16,8 @@
   "bird": "a point is under its feet: drawAve draws its bottom at y + 2",
   "frame": "a point named with a frame is the old point plus the frame's offset (a whole number of pixels); points drawn relative to it (a rect, a sprite) move by the same offset",
   "sky": "the sky is screen space: what lives in it (clouds, rain, the sun, the bird circling, the stars of marcador) keeps its old screen numbers",
-  "view": "a view is the 196 x 216 window with x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point (x0 is given)",
+  "view": "a view has a zoom. zoom 1: the 196 x 216 window with x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point. zoom 2: the 98 x 108 region [clamp(round(sx - 49), 0, 142), clamp(round(sy - 54), 0, 108)] shown nearest-neighbour at two screen pixels per picture pixel (region is given). Never a fraction",
+  "viewChange": "between two views of the same zoom the window slides (camGo, whole pixels); between a zoom 1 and a zoom 2 view it cuts: no in-between sizes",
   "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window [clamp(round(sx - 98), 0, 44), clamp(round(sy - 52), 0, 112)]; zoom 2 = the 98 x 52 region [clamp(round(sx - 49), 0, 142), clamp(round(sy - 26), 0, 164)] shown nearest-neighbour at 2 x 2 in the 196 x 104 picture. crop is given. remap's cam and crop entries say what each old rectangle meant; for the pictures themselves pictures wins"
  },
  "setKey": {
@@ -165,7 +166,7 @@
     "puerta": {
      "frame": "abuela.puerta",
      "old": [151, 56, 29, 49],
-     "new": [127, 82, 29, 49]
+     "new": [129, 83, 29, 49]
     },
     "paso": {
      "frame": "abuela.paso",
@@ -223,11 +224,11 @@
   },
   "casa_grande": {
    "set": true,
-   "world": [-2.52, -1.62, 0, 2.52, 0.22, 3.7],
-   "box": [67, -2, 128, 148],
+   "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
+   "box": [67, -2, 133, 150],
    "hit": {
-    "world": [-2.52, -1.62, 0, 2.52, 0.22, 3.7],
-    "box": [67, -2, 128, 148]
+    "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
+    "box": [67, -2, 133, 150]
    },
    "what": "the house, as a hiding place (story 3). The same world box as casa",
    "old": {
@@ -254,11 +255,11 @@
   },
   "puerta": {
    "set": true,
-   "world": [0.61, -0.06, 0, 2.14, 0.06, 2.85],
-   "box": [128, 60, 31, 81],
+   "world": [0.61, -0.06, 0, 2.34, 0.06, 2.85],
+   "box": [128, 60, 35, 83],
    "hit": {
-    "world": [0.61, -0.06, 0, 2.14, 0.06, 2.97],
-    "box": [128, 58, 31, 83]
+    "world": [0.61, -0.06, 0, 2.34, 0.06, 2.97],
+    "box": [128, 58, 35, 85]
    },
    "what": "the door with its frame; hit adds a little slack",
    "old": {
@@ -282,11 +283,11 @@
   },
   "casa": {
    "set": true,
-   "world": [-2.52, -1.62, 0, 2.52, 0.22, 3.7],
-   "box": [67, -2, 128, 148],
+   "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
+   "box": [67, -2, 133, 150],
    "hit": {
-    "world": [-2.52, -1.62, 0, 2.52, 0.22, 3.7],
-    "box": [67, -2, 128, 148]
+    "world": [-2.52, -1.62, 0, 2.82, 0.22, 3.7],
+    "box": [67, -2, 133, 150]
    },
    "what": "the house: walls and roof. Its hit replaces both old tests (the roof trapezoid, frente.js:195, and the wall rectangle, frente.js:196)",
    "old": {
@@ -298,10 +299,13 @@
    "set": true,
    "sky": true,
    "screen": {
-    "circle": [210, 17, 12],
-    "box": [198, 5, 25, 25]
+    "circle": [215, 17, 12],
+    "box": [203, 5, 25, 25]
    },
-   "why": "the sun is baked into the sky (pale in a storm, none in the rain); the sky is screen space, so it stays where it was: hit (x-210)^2 + (y-17)^2 < 144, box [198, 5, 25, 25]"
+   "old": {
+    "circle": [210, 17, 12]
+   },
+   "why": "the sun is baked into the sky (pale in a storm, none in the rain); the sky is screen space. It sits 5 px right of the old sun, so its touch circle stays clear of the house's box: hit (x-215)^2 + (y-17)^2 < 144"
   },
   "palma": {
    "set": true,
@@ -320,26 +324,26 @@
  },
  "spots": {
   "inicio": {
-   "world": [3.8852, 3.9102, 0],
-   "screen": [117.54, 191.66],
+   "world": [3.9852, 3.9102, 0],
+   "screen": [119.38, 192.58],
    "scale": 1,
-   "frog": [102, 167],
+   "frog": [103, 168],
    "old": [150, 178],
    "what": "where every story starts: on the path, near the bottom (juego.js:16 fresh(), cq x 150 y 178 s 1)"
   },
   "patio": {
-   "world": [2.6478, 2.6728, 0],
-   "screen": [117.54, 168.91],
+   "world": [2.7478, 2.6728, 0],
+   "screen": [119.38, 169.83],
    "scale": 0.86,
-   "frog": [102, 144],
+   "frog": [103, 145],
    "old": [123, 150],
    "what": "LUGAR.patio: on the path in front of the house (also cual.js:21, the frog of every pair picture)"
   },
   "puerta": {
-   "world": [1.175, 0.62, 0.16],
-   "screen": [128.2, 132.9],
+   "world": [1.275, 0.62, 0.16],
+   "screen": [130.04, 133.82],
    "scale": 0.72,
-   "frog": [112, 108],
+   "frog": [114, 109],
    "old": [150, 104],
    "what": "LUGAR.puerta and LUGAR.casa_grande: on the porch, before the door"
   },
@@ -376,18 +380,18 @@
    "what": "LUGAR.casa_pequena: beside the birdhouse"
   },
   "puerta.dentro": {
-   "world": [1.375, -0.25, 0.16],
-   "screen": [147.88, 126.74],
+   "world": [1.475, -0.25, 0.16],
+   "screen": [149.71, 127.66],
    "scale": 0.72,
-   "frog": [132, 102],
+   "frog": [134, 103],
    "old": [150, 80],
    "what": "entra por la puerta: hopTo(150,80,2,.72), just inside the doorway"
   },
   "puerta.escondido": {
-   "world": [1.275, -0.45, 0.16],
-   "screen": [149.71, 123.98],
+   "world": [1.375, -0.45, 0.16],
+   "screen": [151.55, 124.9],
    "scale": 0.6,
-   "frog": [134, 99],
+   "frog": [136, 100],
    "old": [150, 82],
    "what": "esconde casa_grande: hopTo(150,82,1,.6), behind the door"
   },
@@ -408,25 +412,25 @@
    "what": "esconde casa_pequena: the frog goes half way to (58,104) four times, into the birdhouse"
   },
   "hola": {
-   "world": [1.025, 0.78, 0.16],
-   "screen": [122.5, 132.99],
+   "world": [1.125, 0.78, 0.16],
+   "screen": [124.34, 133.91],
    "scale": 0.62,
-   "frog": [107, 108],
+   "frog": [108, 109],
    "old": [146, 86],
    "what": "pairs hola.si / adiós.no: the frog at the door, waving (cq x 146 y 86 s .62)"
   },
   "adios": {
-   "world": [3.0882, 1.3132, 0],
-   "screen": [150.63, 160.46],
+   "world": [3.1882, 1.3132, 0],
+   "screen": [152.47, 161.38],
    "scale": 0.85,
-   "frog": [135, 135],
+   "frog": [136, 136],
    "old": [176, 116],
    "what": "pairs hola.no / adiós.si: the frog going away from the door (cq x 176 y 116 s .85)"
   },
   "abuela.puerta": {
-   "world": [1.375, 0.1, 0.16],
-   "screen": [141.44, 129.96],
-   "abuela": [111, 81],
+   "world": [1.475, 0.1, 0.16],
+   "screen": [143.28, 130.88],
+   "abuela": [113, 82],
    "old": [135, 55],
    "what": "ABAT.puerta: in the doorway (and where she peeks from, behind the half-open door)"
   },
@@ -441,7 +445,7 @@
  "lugar": {
   "puerta": {
    "spot": "puerta",
-   "frog": [112, 108],
+   "frog": [114, 109],
    "scale": 0.72
   },
   "ventana": {
@@ -451,12 +455,12 @@
   },
   "patio": {
    "spot": "patio",
-   "frog": [102, 144],
+   "frog": [103, 145],
    "scale": 0.86
   },
   "casa_grande": {
    "spot": "puerta",
-   "frog": [112, 108],
+   "frog": [114, 109],
    "scale": 0.72
   },
   "palma_grande": {
@@ -485,17 +489,17 @@
   },
   "puerta": {
    "old": [166, 78],
-   "world": [1.375, 0, 1.435],
+   "world": [1.475, 0, 1.435],
    "what": "the doorway, its middle (old opening [153,53,26,51])",
-   "screen": [143.28, 100.33],
-   "offset": [-23, 22]
+   "screen": [145.12, 101.25],
+   "offset": [-21, 23]
   },
   "abuela.puerta": {
    "old": [135, 55],
    "spot": "abuela.puerta",
    "what": "abuela in the doorway: where her sprite is drawn",
-   "screen": [111, 81],
-   "offset": [-24, 26]
+   "screen": [113, 82],
+   "offset": [-22, 27]
   },
   "abuela.paso": {
    "old": [94, 57],
@@ -525,6 +529,14 @@
    "screen": [65.42, 167.46],
    "offset": [-8, 41]
   },
+  "abuela.plato": {
+   "old": [94, 57],
+   "spot": "abuela.paso",
+   "nudge": [18, 2],
+   "what": "abuela's plate with the slices left, held in front of her (frente.js:152)",
+   "screen": [85, 73],
+   "offset": [9, 18]
+  },
   "ventana.lado": {
    "old": [112, 71],
    "world": [-0.86, 0, 1.775],
@@ -542,10 +554,10 @@
    "screen": [101.09, 55.45]
   },
   "ave.puerta.posa": {
-   "world": [1.475, 0.2, 2.93],
+   "world": [1.575, 0.2, 2.93],
    "old": [166, 49],
    "what": "PERCH.puerta: on the edge of the roof, over the door (the door frame's top is under the eave: the bird would hide in it)",
-   "screen": [141.44, 69.42]
+   "screen": [143.28, 70.34]
   },
   "ave.ventana.hueco": {
    "world": [-0.86, 0, 1.775],
@@ -554,10 +566,10 @@
    "screen": [102.19, 72.13]
   },
   "ave.puerta.hueco": {
-   "world": [1.375, 0, 1.3075],
+   "world": [1.475, 0, 1.3075],
    "old": [166, 80],
    "what": "HOLE.puerta and SPOT.casa_grande: the middle of the door",
-   "screen": [143.28, 103.2]
+   "screen": [145.12, 104.12]
   },
   "ave.palma": {
    "world": [-1.12, 3.36, 3.65],
@@ -590,34 +602,34 @@
    "screen": [65.42, 167.46]
   },
   "ave.puerta.lado": {
-   "world": [2.3, 0.35, 0.16],
+   "world": [2.5, 0.35, 0.16],
    "old": [176, 100],
    "what": "busca_ave casa_grande: on the porch beside the door",
-   "screen": [153.85, 140.76]
+   "screen": [157.53, 142.6]
   },
   "ave.techo": {
-   "world": [2, -0.7, 3.7],
+   "world": [2.3, -0.7, 3.7],
    "old": [196, 30],
    "what": "fin2: on the roof's ridge, right end",
-   "screen": [167.64, 48.64]
+   "screen": [173.15, 51.4]
   },
   "ave.cesped": {
-   "world": [3.9, 0.9, 0],
+   "world": [4.2, 0.9, 0],
    "old": [196, 120],
    "what": "tapate: on the lawn right of the porch, where it sits with a wing over its eyes",
-   "screen": [173.15, 164.12]
+   "screen": [178.67, 166.88]
   },
   "mano.casa": {
-   "world": [0.275, -0.35, 3.34],
+   "world": [0.375, -0.35, 3.34],
    "old": [141, 24],
    "what": "handAt.casa and handAt.casa_grande: on the roof",
-   "screen": [129.49, 44.1]
+   "screen": [131.33, 45.02]
   },
   "mano.puerta": {
-   "world": [1.375, 0, 1.435],
+   "world": [1.475, 0, 1.435],
    "old": [166, 76],
    "what": "handAt.puerta, and abuela's hand fallback: the middle of the door",
-   "screen": [143.28, 100.33]
+   "screen": [145.12, 101.25]
   },
   "mano.ventana": {
    "world": [-0.86, 0, 1.775],
@@ -714,47 +726,52 @@
    "what": "the pink butterfly's middle (ambient: 98 + 34 sin, 97 + 9 sin)",
    "screen": [88, 98]
   },
+  "abuela.asoma": {
+   "old": [135, 55],
+   "world": [1.447, 0.1416, 0.16],
+   "what": "abuela behind the half-open door (W.peek): where her sprite is drawn, her head in the middle of the gap (clipped to puerta.hueco)",
+   "screen": [112, 82]
+  },
   "cq.asoma": {
-   "frame": "puerta",
    "old": [150, 84],
-   "world": [0.4895, 0, 0.8216],
-   "what": "the frog peeking from behind the half-open door (cq.6), clipped to puerta.hueco",
-   "screen": [127, 106]
+   "world": [0.7399, -0.2392, 0.16],
+   "what": "the frog peeking from behind the half-open door (cq.6): his left side hidden by the left jamb, the rest whole in the gap (clipped to puerta.hueco)",
+   "screen": [126, 106]
   },
   "dentro.puerta": {
    "frame": "puerta",
    "old": [166, 53],
-   "world": [1.3598, 0, 2.5537],
+   "world": [1.4686, 0, 2.5537],
    "what": "her voice from behind the shut door (bubble quien)",
-   "screen": [143, 75]
+   "screen": [145, 76]
   },
   "habla.dentro.puerta": {
    "frame": "puerta",
    "old": [166, 31],
-   "world": [1.3598, 0, 3.5307],
+   "world": [1.4686, 0, 3.5307],
    "what": "talkAt abuela behind the shut door",
-   "screen": [143, 53]
+   "screen": [145, 54]
   },
   "mariposa.2": {
    "frame": "puerta",
    "old": [203, 72],
-   "world": [3.3724, 0, 2.5315],
+   "world": [3.4811, 0, 2.5315],
    "what": "the yellow butterfly's middle (ambient: 203 + 13 sin, 72 + 7 sin)",
-   "screen": [180, 94]
+   "screen": [182, 95]
   },
   "globo.puerta": {
    "frame": "abuela.puerta",
    "old": [147, 69],
-   "world": [0.4418, 0.1699, 1.36],
+   "world": [0.5506, 0.1699, 1.36],
    "what": "abuela's bubble at the door, and on the porch (x 141, y 66 for como): same offset",
-   "screen": [123, 95]
+   "screen": [125, 96]
   },
   "habla.puerta": {
    "frame": "abuela.puerta",
    "old": [156, 56],
-   "world": [-0.0205, -0.782, 1.36],
+   "world": [0.0883, -0.782, 1.36],
    "what": "talkAt abuela at the door (y 47 with a bubble, x 141 for como): same offset",
-   "screen": [132, 82]
+   "screen": [134, 83]
   },
   "habla.paso": {
    "frame": "abuela.paso",
@@ -766,44 +783,56 @@
  },
  "views": {
   "wide": {
-   "world": [0.35, 0, 1.45],
-   "screen": [124.43, 90.57],
-   "x0": 26,
+   "world": [0.5, 0, 1.45],
+   "screen": [127.19, 91.95],
+   "zoom": 1,
+   "x0": 29,
+   "region": null,
    "old": [44, 0, 196, 216],
    "what": "the house, the path and the sky: every story's usual view"
   },
   "casa": {
-   "world": [0.35, 0, 1.45],
-   "screen": [124.43, 90.57],
-   "x0": 26,
+   "world": [0.5, 0, 1.45],
+   "screen": [127.19, 91.95],
+   "zoom": 1,
+   "x0": 29,
+   "region": null,
    "old": [51.7, 15, 180.6, 199],
    "what": "the house (the same window as wide: the house fits it whole)"
   },
   "puerta": {
-   "world": [1.375, 0, 1.435],
-   "screen": [143.28, 100.33],
-   "x0": 44,
+   "world": [1.475, 0.3, 1.16],
+   "screen": [139.6, 110.2],
+   "zoom": 2,
+   "x0": 91,
+   "region": [91, 56, 98, 108],
    "old": [117, 30, 98, 108],
-   "what": "the door"
+   "what": "the door, at 2x: the whole door, abuela in it, the frog before it on the porch"
   },
   "ventana": {
-   "world": [-0.86, 0, 1.775],
-   "screen": [102.19, 72.13],
-   "x0": 4,
+   "world": [-0.86, 0.3, 1],
+   "screen": [96.67, 92.34],
+   "zoom": 2,
+   "x0": 48,
+   "region": [48, 38, 98, 108],
    "old": [84, 24, 98, 108],
-   "what": "the window"
+   "what": "the window, at 2x: the window, abuela in it, the frog under it and leaning in"
   },
   "cuadro": {
-   "world": [-0.86, 0, 1.775],
-   "screen": [102.19, 72.13],
-   "x0": 4,
+   "world": [-0.86, 0, 2.55],
+   "screen": [102.19, 54.68],
+   "zoom": 2,
+   "x0": 53,
+   "region": [53, 1, 98, 108],
    "old": [63, 18, 98, 108],
-   "what": "story 1's last picture: abuela and the frog in the window, the heart over it"
+   "what": "story 1's last picture, at 2x: abuela and the frog in the window, the heart over it"
   },
   "wide@donde-esta-el-pajaro": {
    "world": [0.755, 1.425, 0],
    "screen": [105.68, 140.04],
+   "zoom": 1,
    "x0": 8,
+   "region": null,
    "old": [30, 0, 196, 216],
    "what": "story 3's own wide view (cam.wide in donde-esta-el-pajaro.json): the big palm, the house, the birdhouse and the small palm together"
   }
@@ -845,10 +874,10 @@
    ],
    "to": {
     "point": "puerta.cq",
-    "world": [1.275, 0.5, 1.06]
+    "world": [1.375, 0.5, 1.06]
    },
-   "screen": [132.25, 112.45],
-   "crop": [34, 60, 196, 104],
+   "screen": [134.09, 113.37],
+   "crop": [36, 61, 196, 104],
    "what": "the door with the frog before it"
   },
   {
@@ -857,9 +886,9 @@
    "uses": ["cual-frente.json casa.no.cam"],
    "to": {
     "point": "patio.abajo",
-    "world": [3.4277, 5.8527, 0]
+    "world": [3.5277, 5.8527, 0]
    },
-   "screen": [73.42, 205.31],
+   "screen": [75.26, 206.23],
    "crop": [0, 112, 196, 104],
    "what": "the yard with no house: the bottom of the picture, left (the house's foot still shows: see the report)"
   },
@@ -873,9 +902,9 @@
    ],
    "to": {
     "point": "casa.arriba",
-    "world": [0.35, -1.4, 2.9]
+    "world": [0.5, -1.4, 2.9]
    },
-   "screen": [150.17, 45.05],
+   "screen": [152.93, 46.43],
    "crop": [44, 0, 196, 104],
    "what": "the house: its roof and walls (the top of the picture)"
   },
@@ -900,10 +929,10 @@
    ],
    "to": {
     "point": "respuesta",
-    "world": [-0.8703, 0.7615, 0]
+    "world": [-0.7887, 0.7887, 0]
    },
-   "screen": [88, 119],
-   "crop": [0, 67, 196, 104],
+   "screen": [89, 120],
+   "crop": [0, 68, 196, 104],
    "what": "the answer bubble over the frog at patio (respBox with cam = wide); both sí and no pictures show their one bubble whole"
   },
   {
@@ -915,10 +944,10 @@
    ],
    "to": {
     "point": "respuesta",
-    "world": [-0.8703, 0.7615, 0]
+    "world": [-0.7887, 0.7887, 0]
    },
-   "screen": [88, 119],
-   "crop": [0, 67, 196, 104],
+   "screen": [89, 120],
+   "crop": [0, 68, 196, 104],
    "what": "the answer bubble over the frog at patio (respBox with cam = wide); both sí and no pictures show their one bubble whole"
   },
   {
@@ -927,10 +956,10 @@
    "uses": ["cual-frente.json puerta.si.cam", "cual-frente.json ventana.no.cam", "cual-frente.json abuela.si.cam", "cual-frente.json abuela.no.cam", "cual-frente.json cierra.si.cam", "cual-frente.json cierra.no.cam"],
    "to": {
     "point": "puerta",
-    "world": [1.375, 0, 1.435]
+    "world": [1.475, 0, 1.435]
    },
-   "screen": [143.28, 100.33],
-   "crop": [44, 48, 196, 104],
+   "screen": [145.12, 101.25],
+   "crop": [44, 49, 196, 104],
    "what": "the door"
   },
   {
@@ -959,10 +988,10 @@
    ],
    "to": {
     "point": "puerta.cq",
-    "world": [1.275, 0.5, 1.06]
+    "world": [1.375, 0.5, 1.06]
    },
-   "screen": [132.25, 112.45],
-   "crop": [34, 60, 196, 104],
+   "screen": [134.09, 113.37],
+   "crop": [36, 61, 196, 104],
    "what": "the door with the frog before it"
   },
   {
@@ -975,10 +1004,10 @@
    ],
    "to": {
     "point": "puerta",
-    "world": [1.375, 0, 1.435]
+    "world": [1.475, 0, 1.435]
    },
-   "screen": [143.28, 100.33],
-   "crop": [44, 48, 196, 104],
+   "screen": [145.12, 101.25],
+   "crop": [44, 49, 196, 104],
    "what": "the door"
   },
   {
@@ -999,8 +1028,8 @@
    "to": {
     "spot": "hola"
    },
-   "screen": [122.5, 132.99],
-   "frog": [107, 108],
+   "screen": [124.34, 133.91],
+   "frog": [108, 109],
    "scale": 0.62
   },
   {
@@ -1013,8 +1042,8 @@
    "to": {
     "spot": "adios"
    },
-   "screen": [150.63, 160.46],
-   "frog": [135, 135],
+   "screen": [152.47, 161.38],
+   "frog": [136, 136],
    "scale": 0.85
   },
   {
@@ -1043,10 +1072,10 @@
    ],
    "to": {
     "point": "puerta.cq",
-    "world": [1.275, 0.5, 1.06]
+    "world": [1.375, 0.5, 1.06]
    },
-   "screen": [132.25, 112.45],
-   "x": 132,
+   "screen": [134.09, 113.37],
+   "x": 134,
    "what": "the door with the frog: its middle x"
   },
   {
@@ -1059,33 +1088,33 @@
    ],
    "to": {
     "point": "puerta",
-    "world": [1.375, 0, 1.435]
+    "world": [1.475, 0, 1.435]
    },
-   "screen": [143.28, 100.33],
-   "x": 143,
+   "screen": [145.12, 101.25],
+   "x": 145,
    "what": "the door: its middle x"
   }
  ],
  "pictures": {
   "casa.si": {
-   "world": [0.35, -1.4, 2.9],
-   "screen": [150.17, 45.05],
+   "world": [0.5, -1.4, 2.9],
+   "screen": [152.93, 46.43],
    "zoom": 1,
    "crop": [44, 0, 196, 104],
    "what": "the whole house, its roof at the top"
   },
   "casa.no": {
-   "world": [3.7085, 3.7335, 0],
-   "screen": [117.54, 188.41],
+   "world": [3.8085, 3.7335, 0],
+   "screen": [119.38, 189.33],
    "zoom": 2,
-   "crop": [69, 162, 98, 52],
+   "crop": [70, 163, 98, 52],
    "what": "the yard: the path and the lawn, no part of the house"
   },
   "puerta.si": {
-   "world": [2.8828, 0, 2.4884],
-   "screen": [171, 90.47],
+   "world": [2.8828, 0, 2.4475],
+   "screen": [171, 91.39],
    "zoom": 2,
-   "crop": [122, 64, 98, 52],
+   "crop": [122, 65, 98, 52],
    "what": "the door, close: no window in it"
   },
   "puerta.no": {
@@ -1103,24 +1132,24 @@
    "what": "the window, close: no door in it"
   },
   "ventana.no": {
-   "world": [2.8828, 0, 2.4884],
-   "screen": [171, 90.47],
+   "world": [2.8828, 0, 2.4475],
+   "screen": [171, 91.39],
    "zoom": 2,
-   "crop": [122, 64, 98, 52],
+   "crop": [122, 65, 98, 52],
    "what": "the door, close: no window in it"
   },
   "abuela.si": {
-   "world": [1.375, 0, 1.435],
-   "screen": [143.28, 100.33],
+   "world": [1.475, 0, 1.435],
+   "screen": [145.12, 101.25],
    "zoom": 1,
-   "crop": [44, 48, 196, 104],
+   "crop": [44, 49, 196, 104],
    "what": "the door with abuela in it"
   },
   "abuela.no": {
-   "world": [1.375, 0, 1.435],
-   "screen": [143.28, 100.33],
+   "world": [1.475, 0, 1.435],
+   "screen": [145.12, 101.25],
    "zoom": 1,
-   "crop": [44, 48, 196, 104],
+   "crop": [44, 49, 196, 104],
    "what": "the shut door, nobody"
   },
   "abre.si": {
@@ -1138,78 +1167,78 @@
    "what": "the window, close: shut"
   },
   "cierra.si": {
-   "world": [1.375, 0, 1.741],
-   "screen": [143.28, 93.44],
+   "world": [1.475, 0, 1.741],
+   "screen": [145.12, 94.36],
    "zoom": 2,
-   "crop": [94, 67, 98, 52],
+   "crop": [96, 68, 98, 52],
    "what": "the door, close: half shut, abuela behind it"
   },
   "cierra.no": {
-   "world": [1.375, 0, 1.741],
-   "screen": [143.28, 93.44],
+   "world": [1.475, 0, 1.741],
+   "screen": [145.12, 94.36],
    "zoom": 2,
-   "crop": [94, 67, 98, 52],
+   "crop": [96, 68, 98, 52],
    "what": "the door, close: open, abuela in it"
   },
   "hola.si": {
-   "world": [1.275, 0.5, 1.06],
-   "screen": [132.25, 112.45],
+   "world": [1.375, 0.5, 1.06],
+   "screen": [134.09, 113.37],
    "zoom": 1,
-   "crop": [34, 60, 196, 104],
+   "crop": [36, 61, 196, 104],
    "what": "the door with abuela and the frog: day, waving"
   },
   "hola.no": {
-   "world": [1.275, 0.5, 1.06],
-   "screen": [132.25, 112.45],
+   "world": [1.375, 0.5, 1.06],
+   "screen": [134.09, 113.37],
    "zoom": 1,
-   "crop": [34, 60, 196, 104],
+   "crop": [36, 61, 196, 104],
    "what": "the door at sunset, the frog going"
   },
   "adiós.si": {
-   "world": [1.275, 0.5, 1.06],
-   "screen": [132.25, 112.45],
+   "world": [1.375, 0.5, 1.06],
+   "screen": [134.09, 113.37],
    "zoom": 1,
-   "crop": [34, 60, 196, 104],
+   "crop": [36, 61, 196, 104],
    "what": "the door at sunset, the frog going"
   },
   "adiós.no": {
-   "world": [1.275, 0.5, 1.06],
-   "screen": [132.25, 112.45],
+   "world": [1.375, 0.5, 1.06],
+   "screen": [134.09, 113.37],
    "zoom": 1,
-   "crop": [34, 60, 196, 104],
+   "crop": [36, 61, 196, 104],
    "what": "the door with abuela and the frog: day, waving"
   },
   "sí.si": {
-   "world": [-0.8703, 0.7615, 0],
-   "screen": [88, 119],
+   "world": [-0.7887, 0.7887, 0],
+   "screen": [89, 120],
    "zoom": 2,
-   "crop": [39, 93, 98, 52],
+   "crop": [40, 94, 98, 52],
    "what": "the answer bubble, close: the frog nodding"
   },
   "sí.no": {
-   "world": [-0.8703, 0.7615, 0],
-   "screen": [88, 119],
+   "world": [-0.7887, 0.7887, 0],
+   "screen": [89, 120],
    "zoom": 2,
-   "crop": [39, 93, 98, 52],
+   "crop": [40, 94, 98, 52],
    "what": "the answer bubble, close: the frog shaking his head"
   },
   "no.si": {
-   "world": [-0.8703, 0.7615, 0],
-   "screen": [88, 119],
+   "world": [-0.7887, 0.7887, 0],
+   "screen": [89, 120],
    "zoom": 2,
-   "crop": [39, 93, 98, 52],
+   "crop": [40, 94, 98, 52],
    "what": "the answer bubble, close: the frog shaking his head"
   },
   "no.no": {
-   "world": [-0.8703, 0.7615, 0],
-   "screen": [88, 119],
+   "world": [-0.7887, 0.7887, 0],
+   "screen": [89, 120],
    "zoom": 2,
-   "crop": [39, 93, 98, 52],
+   "crop": [40, 94, 98, 52],
    "what": "the answer bubble, close: the frog nodding"
   },
   "grande.si": {
-   "world": [0.35, -1.4, 2.9],
-   "screen": [150.17, 45.05],
+   "world": [0.5, -1.4, 2.9],
+   "screen": [152.93, 46.43],
    "zoom": 1,
    "crop": [44, 0, 196, 104],
    "what": "the whole house"
@@ -1229,8 +1258,8 @@
    "what": "the birdhouse, close"
   },
   "pequeña.no": {
-   "world": [0.35, -1.4, 2.9],
-   "screen": [150.17, 45.05],
+   "world": [0.5, -1.4, 2.9],
+   "screen": [152.93, 46.43],
    "zoom": 1,
    "crop": [44, 0, 196, 104],
    "what": "the whole house"
@@ -1241,7 +1270,7 @@
    "w": "abuela",
    "index": 0,
    "picture": "abuela.si",
-   "crop": [44, 48, 196, 104],
+   "crop": [44, 49, 196, 104],
    "zoom": 1,
    "old": [143.36, 46, 45.28, 50]
   },
@@ -1249,7 +1278,7 @@
    "w": "puerta",
    "index": 0,
    "picture": "puerta.si",
-   "crop": [122, 64, 98, 52],
+   "crop": [122, 65, 98, 52],
    "zoom": 2,
    "old": [143.36, 46, 45.28, 50]
   },
@@ -1281,7 +1310,7 @@
    "w": "abre",
    "index": 2,
    "picture": "puerta.si",
-   "crop": [122, 64, 98, 52],
+   "crop": [122, 65, 98, 52],
    "zoom": 2,
    "old": [143.36, 46, 45.28, 50]
   },
@@ -1289,7 +1318,7 @@
    "w": "hola",
    "index": 0,
    "picture": "hola.si",
-   "crop": [34, 60, 196, 104],
+   "crop": [36, 61, 196, 104],
    "zoom": 1,
    "old": [112.91, 40, 94.19, 104]
   },
@@ -1297,7 +1326,7 @@
    "w": "hola",
    "index": 1,
    "picture": "adiós.si",
-   "crop": [34, 60, 196, 104],
+   "crop": [36, 61, 196, 104],
    "zoom": 1,
    "old": [112.91, 40, 94.19, 104]
   },
@@ -1334,17 +1363,17 @@
    "face": "gap",
    "world": [
     [0.75, 0, 0.16],
-    [1.2352, 0, 0.16],
-    [1.2352, 0, 2.71],
+    [1.8017, 0, 0.16],
+    [1.8017, 0, 2.71],
     [0.75, 0, 2.71]
    ],
    "screen": [
     [131.79, 123.29],
-    [140.71, 127.75],
-    [140.71, 70.33],
+    [151.12, 132.96],
+    [151.12, 75.54],
     [131.79, 65.87]
    ],
-   "box": [131, 65, 10, 63],
+   "box": [131, 65, 21, 68],
    "what": "the gap between the left jamb and the half-open leaf (door=half), on the front wall (old rect [153,53,11,51], frente.js:143-144): who peeks from behind the door"
   }
  },
@@ -1395,7 +1424,7 @@
    "old": "203+13sin, 72+7sin (yellow butterfly)",
    "to": {
     "point": "mariposa.2",
-    "new": [180, 94]
+    "new": [182, 95]
    },
    "note": "the amplitudes stay"
   },
@@ -1404,7 +1433,7 @@
    "old": "ABAT.puerta [135,55]",
    "to": {
     "spot": "abuela.puerta",
-    "new": [111, 81]
+    "new": [113, 82]
    }
   },
   {
@@ -1545,7 +1574,7 @@
    "old": "PERCH.puerta [166,49]",
    "to": {
     "point": "ave.puerta.posa",
-    "new": [141.44, 69.42]
+    "new": [143.28, 70.34]
    }
   },
   {
@@ -1561,7 +1590,7 @@
    "old": "HOLE.puerta [166,80]",
    "to": {
     "point": "ave.puerta.hueco",
-    "new": [143.28, 103.2]
+    "new": [145.12, 104.12]
    }
   },
   {
@@ -1647,7 +1676,7 @@
    "old": "SPOT.casa_grande [166,80]",
    "to": {
     "point": "ave.puerta.hueco",
-    "new": [143.28, 103.2]
+    "new": [145.12, 104.12]
    }
   },
   {
@@ -1655,7 +1684,7 @@
    "old": "SPOT.casa_grande [166,80] (the copy inside hud)",
    "to": {
     "point": "ave.puerta.hueco",
-    "new": [143.28, 103.2]
+    "new": [145.12, 104.12]
    }
   },
   {
@@ -1854,7 +1883,7 @@
    "old": "drawImage(cq.6, 150, 84)",
    "to": {
     "point": "cq.asoma",
-    "new": [127, 106]
+    "new": [126, 106]
    }
   },
   {
@@ -1868,8 +1897,8 @@
    "line": 144,
    "old": "drawImage(abuela, 135, 55)",
    "to": {
-    "spot": "abuela.puerta",
-    "new": [111, 81]
+    "point": "abuela.asoma",
+    "new": [112, 82]
    }
   },
   {
@@ -1952,8 +1981,21 @@
   },
   {
    "line": 152,
-   "old": "ABAT.paso + (5+i*4, 27), (3, 30)",
-   "to": "relative to abuela.paso: unchanged"
+   "old": "drawImage(abuela, ABAT.paso)",
+   "to": {
+    "spot": "abuela.paso",
+    "new": [85, 73]
+   }
+  },
+  {
+   "line": 152,
+   "old": "her plate: ABAT.paso + (5+i*4, 27), (3, 30)",
+   "to": {
+    "frame": "abuela.plato",
+    "offset": [9, 18],
+    "new": [108, 102]
+   },
+   "note": "every slice and the plate line move by the frame's offset"
   },
   {
    "line": 155,
@@ -2033,8 +2075,8 @@
    "old": "bub at [147,69] / [141,66] (door, porch)",
    "to": {
     "frame": "abuela.puerta",
-    "offset": [-24, 26],
-    "new": [123, 95]
+    "offset": [-22, 27],
+    "new": [125, 96]
    },
    "note": "como: [141,66] + the same offset. The old code uses these for abuela on the porch too: kept"
   },
@@ -2051,7 +2093,7 @@
    "old": "bub quien at [166,53]",
    "to": {
     "point": "dentro.puerta",
-    "new": [143, 75]
+    "new": [145, 76]
    }
   },
   {
@@ -2084,8 +2126,8 @@
    "old": "talkAt puerta [141 or 156, 47 or 56]",
    "to": {
     "frame": "abuela.puerta",
-    "offset": [-24, 26],
-    "new": [132, 82]
+    "offset": [-22, 27],
+    "new": [134, 83]
    },
    "note": "x 141 for como, y 47 with a bubble: the same offset"
   },
@@ -2102,7 +2144,7 @@
    "old": "talkAt dentro [166,31]",
    "to": {
     "point": "habla.dentro.puerta",
-    "new": [143, 53]
+    "new": [145, 54]
    }
   },
   {
@@ -2128,8 +2170,8 @@
    "old": "box abuela puerta [151,56,29,49]",
    "to": {
     "frame": "abuela.puerta",
-    "offset": [-24, 26],
-    "new": [127, 82, 29, 49]
+    "offset": [-22, 27],
+    "new": [129, 83, 29, 49]
    }
   },
   {
@@ -2161,7 +2203,7 @@
    "old": "box casa_grande [60,17,166,90]",
    "to": {
     "thing": "casa_grande",
-    "box": [67, -2, 128, 148]
+    "box": [67, -2, 133, 150]
    }
   },
   {
@@ -2174,7 +2216,7 @@
    "old": "box casa [60,17,166,90]",
    "to": {
     "thing": "casa",
-    "box": [67, -2, 128, 148]
+    "box": [67, -2, 133, 150]
    }
   },
   {
@@ -2182,7 +2224,7 @@
    "old": "box puerta [151,51,30,54]",
    "to": {
     "thing": "puerta",
-    "box": [128, 60, 31, 81]
+    "box": [128, 60, 35, 83]
    }
   },
   {
@@ -2222,7 +2264,7 @@
    "old": "hit casa_grande [57,16,171,95]",
    "to": {
     "thing": "casa_grande",
-    "hit": [67, -2, 128, 148]
+    "hit": [67, -2, 133, 150]
    }
   },
   {
@@ -2245,7 +2287,7 @@
    "old": "hit puerta [145,46,42,62]",
    "to": {
     "thing": "puerta",
-    "hit": [128, 58, 31, 83]
+    "hit": [128, 58, 35, 85]
    }
   },
   {
@@ -2261,7 +2303,7 @@
    "old": "hit casa roof: 16 <= y < 42, 88-30t <= x <= 196+30t",
    "to": {
     "thing": "casa",
-    "hit": [67, -2, 128, 148]
+    "hit": [67, -2, 133, 150]
    },
    "note": "one box replaces both casa tests"
   },
@@ -2270,13 +2312,16 @@
    "old": "hit casa [57,41,171,70]",
    "to": {
     "thing": "casa",
-    "hit": [67, -2, 128, 148]
+    "hit": [67, -2, 133, 150]
    }
   },
   {
    "line": 197,
    "old": "hit sol: (x-210)^2 + (y-17)^2 < 144",
-   "to": "sky: unchanged"
+   "to": {
+    "thing": "sol",
+    "circle": [215, 17, 12]
+   }
   },
   {
    "line": 198,
@@ -2291,7 +2336,7 @@
    "old": "LUGAR.puerta [150,104,0.72]",
    "to": {
     "spot": "puerta",
-    "frog": [112, 108],
+    "frog": [114, 109],
     "scale": 0.72
    }
   },
@@ -2309,7 +2354,7 @@
    "old": "LUGAR.patio [123,150,0.86]",
    "to": {
     "spot": "patio",
-    "frog": [102, 144],
+    "frog": [103, 145],
     "scale": 0.86
    }
   },
@@ -2318,7 +2363,7 @@
    "old": "LUGAR.casa_grande [150,104,0.72]",
    "to": {
     "spot": "puerta",
-    "frog": [112, 108],
+    "frog": [114, 109],
     "scale": 0.72
    }
   },
@@ -2379,17 +2424,17 @@
    "old": "luz stars [150,47],[182,49],[166,43]",
    "to": {
     "frame": "puerta",
-    "offset": [-23, 22],
-    "new": [127, 69]
+    "offset": [-21, 23],
+    "new": [129, 70]
    },
-   "note": "each of the three + the same offset: [[127,69],[159,71],[143,65]]"
+   "note": "each of the three + the same offset: [[129,70],[161,72],[145,66]]"
   },
   {
    "line": 220,
    "old": "hopTo(150, 80, 2, .72)",
    "to": {
     "spot": "puerta.dentro",
-    "frog": [132, 102],
+    "frog": [134, 103],
     "scale": 0.72
    }
   },
@@ -2470,7 +2515,7 @@
    "old": "fin2: aveA(196, 30)",
    "to": {
     "point": "ave.techo",
-    "new": [167.64, 48.64]
+    "new": [173.15, 51.4]
    }
   },
   {
@@ -2503,7 +2548,7 @@
    "old": "tapate: from (250, 60) to (196, 120)",
    "to": {
     "point": "ave.cesped",
-    "new": [173.15, 164.12]
+    "new": [178.67, 166.88]
    },
    "note": "(250, 60) is off the right edge: unchanged"
   },
@@ -2512,7 +2557,7 @@
    "old": "esconde casa_grande: hopTo(150, 82, 1, .6)",
    "to": {
     "spot": "puerta.escondido",
-    "frog": [134, 99],
+    "frog": [136, 100],
     "scale": 0.6
    }
   },
@@ -2534,7 +2579,7 @@
    "old": "busca_ave: [176, 100] (casa_grande)",
    "to": {
     "point": "ave.puerta.lado",
-    "new": [153.85, 140.76]
+    "new": [157.53, 142.6]
    }
   },
   {
@@ -2603,7 +2648,8 @@
    "old": "CAM.wide [44,0,196,216]",
    "to": {
     "view": "wide",
-    "x0": 26
+    "zoom": 1,
+    "x0": 29
    }
   },
   {
@@ -2611,7 +2657,8 @@
    "old": "CAM.casa [51.7,15,180.6,199]",
    "to": {
     "view": "casa",
-    "x0": 26
+    "zoom": 1,
+    "x0": 29
    }
   },
   {
@@ -2619,7 +2666,9 @@
    "old": "CAM.puerta [117,30,98,108]",
    "to": {
     "view": "puerta",
-    "x0": 44
+    "zoom": 2,
+    "x0": 91,
+    "region": [91, 56, 98, 108]
    }
   },
   {
@@ -2627,7 +2676,9 @@
    "old": "CAM.ventana [84,24,98,108]",
    "to": {
     "view": "ventana",
-    "x0": 4
+    "zoom": 2,
+    "x0": 48,
+    "region": [48, 38, 98, 108]
    }
   },
   {
@@ -2635,7 +2686,9 @@
    "old": "CAM.cuadro [63,18,98,108]",
    "to": {
     "view": "cuadro",
-    "x0": 4
+    "zoom": 2,
+    "x0": 53,
+    "region": [53, 1, 98, 108]
    }
   },
   {
@@ -2643,7 +2696,7 @@
    "old": "handAt.casa [141,24]",
    "to": {
     "point": "mano.casa",
-    "new": [129, 44]
+    "new": [131, 45]
    }
   },
   {
@@ -2651,7 +2704,7 @@
    "old": "handAt.puerta [166,76]",
    "to": {
     "point": "mano.puerta",
-    "new": [143, 100]
+    "new": [145, 101]
    }
   },
   {
@@ -2667,7 +2720,7 @@
    "old": "handAt.casa_grande [141,24]",
    "to": {
     "point": "mano.casa",
-    "new": [129, 44]
+    "new": [131, 45]
    }
   },
   {
@@ -2699,7 +2752,7 @@
    "old": "handAt.abuela fallback [166,76]",
    "to": {
     "point": "mano.puerta",
-    "new": [143, 100]
+    "new": [145, 101]
    }
   },
   {
@@ -2715,7 +2768,7 @@
    "old": "fresh(): cq x 150 y 178 s 1",
    "to": {
     "spot": "inicio",
-    "frog": [102, 167],
+    "frog": [103, 168],
     "scale": 1
    },
    "note": "not in frente.js: the host's default frog, for El frente"
@@ -2725,7 +2778,7 @@
    "old": "panelW(): cq x 123 y 150 s .86",
    "to": {
     "spot": "patio",
-    "frog": [102, 144],
+    "frog": [103, 145],
     "scale": 0.86
    },
    "note": "not in frente.js: the frog of a pair picture"

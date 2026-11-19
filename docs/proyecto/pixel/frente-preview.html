@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El frente · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
 <p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/frente.js, unchanged) drawn over the NEW set (frente-set.html), every hard-coded position moved where frente-sheet.json says, then cropped to a view, as the Flutter port will do it.
-Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ventana|cuadro|wide@donde-esta-el-pajaro&amp;F=8&amp;t=0</code>, or <code>?pair=puerta&amp;side=si</code> (a review picture of cual-frente, 196 x 104, zoom 1 or 2 as the sheet says). Serve the repo over http.</p>
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ventana|cuadro|wide@donde-esta-el-pajaro&amp;F=8&amp;t=0</code> (puerta, ventana and cuadro are zoom 2: a 98 x 108 region shown at 2x), or <code>?pair=puerta&amp;side=si</code> (a review picture of cual-frente, 196 x 104, zoom 1 or 2 as the sheet says). Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -82,6 +82,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
     return 0;
   }
   const off = f => SHEET.frames[f].offset;
+  const pt = (n, old) => SHEET.points[n].screen.map((v, i) => Math.round(v) - old[i]);
+  let CUR = '';
   function offsetFor(line, x) {
     switch (line) {
       case 49: return off('ventana');
@@ -90,9 +92,10 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
       case 50: return off('puerta');
       case 101: case 126: return off('casita');
       case 102: case 127: return x < 120 ? off('palma') : off('palmita');
-      case 143: return off('puerta');
-      case 144: case 153: return off('abuela.puerta');
-      case 152: return off('abuela.paso');
+      case 143: return pt('cq.asoma', [150, 84]);
+      case 144: return pt('abuela.asoma', [135, 55]);
+      case 153: return off('abuela.puerta');
+      case 152: return CUR === 'drawImage' ? off('abuela.paso') : off('abuela.plato');
       case 172: return W.ab && W.ab.en === 'ventana' ? off('ventana') : off('abuela.puerta');
       case 173: return W.dentro === 'ventana' ? off('ventana') : off('puerta');
       default: return [0, 0];
@@ -105,7 +108,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
     const X = c, P = CanvasRenderingContext2D.prototype;
     // juego.js frog() draws an old shadow() under him: the engine casts his shadow now (sheet: shadows.dropped)
     const oldShadow = () => /at shadow \([^)]*engine\.js/.test(new Error().stack);
-    const two = name => { X[name] = function (...a) { const L = lineOf(); if (SKIP.has(L) || (name === 'fillRect' && oldShadow())) return; const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P[name].apply(X, a); }; };
+    const two = name => { X[name] = function (...a) { const L = lineOf(); if (SKIP.has(L) || (name === 'fillRect' && oldShadow())) return; CUR = name; const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P[name].apply(X, a); }; };
     ['fillRect', 'clearRect', 'arc', 'ellipse', 'moveTo', 'lineTo'].forEach(two);
     X.fill = function (...a) { const L = lineOf(); if (SKIP.has(L)) return; return P.fill.apply(X, a); };
     X.rect = function (...a) {
@@ -114,7 +117,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
       const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P.rect.apply(X, a);
     };
     X.drawImage = function (...a) {
-      const L = lineOf(); if (SKIP.has(L)) return;
+      const L = lineOf(); if (SKIP.has(L)) return; CUR = 'drawImage';
       const o = offsetFor(L, a[a.length === 9 ? 5 : 1]), i = a.length === 9 ? 5 : 1;
       a[i] += o[0]; a[i + 1] += o[1]; return P.drawImage.apply(X, a);
     };
@@ -133,8 +136,9 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
     E = ESCENAS.frente; F = opts.F == null ? 8 : opts.F; TALK = null;
     const wNew = opts.remap === false ? wOld : remapW(wOld);
     W = wNew; if (!W.fx) W.fx = [];
-    const x0 = opts.crop ? opts.crop[0] : SHEET.views[opts.view || 'wide'].x0;
-    cam = [x0, 0, 196, 216];
+    const V0 = SHEET.views[opts.view || 'wide'], x0 = opts.crop ? opts.crop[0] : V0.x0;
+    // cam as the old code reads it (respBox, fin's stars): the region in picture pixels
+    cam = !opts.crop && V0.zoom === 2 ? V0.region.slice() : [x0, 0, 196, 216];
     // shadows: the frog at his feet (not in the window), abuela at the door or on the porch
     const casts = [];
     const q = W.cq;
@@ -151,7 +155,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
     c.putImageData(img, 0, 0);
     E.draw(c, W, F >> 1);
     if (W.resp) respDraw(c, F >> 1);
-    const cr = opts.crop || [x0, 0, 196, 216], z = opts.zoom || 1;   // zoom 2: the region shown at 2 x 2 screen pixels per picture pixel, nearest neighbour
+    const cr = opts.crop || (V0.zoom === 2 ? V0.region : [x0, 0, 196, 216]), z = opts.crop ? (opts.zoom || 1) : V0.zoom;   // zoom 2: the region shown at 2 x 2 screen pixels per picture pixel, nearest neighbour
     const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
     const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
     g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
