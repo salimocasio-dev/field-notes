@@ -232,7 +232,7 @@ const THINGS = {
   palma_pequena: crownBox(SPALM, palmTop(SPALM, SPALM_H, SPALM_LEAN), 24, 24, 5),
   casa_pequena: (() => { const B = project(BIRD[0], BIRD[1], 0), T = project(BIRD[0], BIRD[1], 2.1); return boxAround(B.sx - 16, T.sy - 4, B.sx + 15, B.sy + 2); })(),
 };
-window.SPOTS = {};                                                    // filled by the sheet's maker; the reference has no characters
+window.SPOTS = {};   // no characters in the reference: the spots are in frente-sheet.json (make.js records SPOTS and SCREEN when a page has them)
 window.FRENTE = { SET, HX0, HX1, HY0, HY1, HH, EAVE, RISE, FLOOR, DOOR0, DOOR1, DH, WIN0, WIN1, WZ0, WZ1, PORCH, STEP, PATH_U, PATH_V, PALM, SPALM, BIRD, HZ, SUN, THINGS,
   PALM_TOP: palmTop(PALM, PALM_H, PALM_LEAN), SPALM_TOP: palmTop(SPALM, SPALM_H, SPALM_LEAN), HALF_ANGLE: Math.PI + .36, buildSet };
 
