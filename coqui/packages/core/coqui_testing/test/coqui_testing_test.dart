@@ -304,9 +304,14 @@ void main() {
     test('twenty clips, fixed lines, goodbye words', () {
       final clip = c.clip('esta_casa')!;
       expect(clip.text, 'Esta es la casa de abuela.');
-      expect(clip.endMs, 360 * 6 + 300);
+      expect(
+        [clip.startMs, clip.endMs],
+        [193, 2041],
+      ); // historia/audio/marcas.json
       expect(clip.url, 'audio/esta_casa.mp3');
-      expect(c.fixedClip('muy_bien'), 'muy_bien');
+      expect(c.fixedClip('story_praise'), 'muy_bien');
+      expect(c.fixedClip('story_your_turn'), 'ahora_tu');
+      expect(FakeCourseCatalog(fixedClips: {'x': 'y'}).fixedClip('x'), 'y');
       expect(() => c.fixedClip('nada'), throwsArgumentError);
       expect(c.goodbyeWords, ['adiós', 'hasta mañana']);
     });
@@ -343,7 +348,7 @@ void main() {
           clips.forEach((k, v) => texts[k] ??= (v as Map)['text'] as String);
         }
         final ids = (jsonDecode(
-          await sampleFile('audio/clips.json'),
+          await sampleFile('audio/marcas.json'),
         ) as Map<String, dynamic>).keys;
         expect(ids, hasLength(20));
         for (final id in ids) {
@@ -591,7 +596,7 @@ void main() {
       await s.course.load();
       final t0 = s.clock.nowMs();
       expect(await s.clips.play('esta_casa'), isTrue);
-      expect(s.clock.nowMs() - t0, 2460);
+      expect(s.clock.nowMs() - t0, 2041 - 193);
       s.progress.heard('casa');
       expect(s.progress.word('casa')!.primera, s.clock.nowMs());
     });

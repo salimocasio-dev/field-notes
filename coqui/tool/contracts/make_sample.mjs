@@ -1,16 +1,17 @@
-// Order 02: the sample course of coqui_testing, from the old files.
+// Order 02: the sample course of coqui_testing, from the course files (historia/cuentos, libros, and order 04's
+// datos/ and audio/marcas.json).
 //
 //   cd coqui && node tool/contracts/make_sample.mjs
 //
 // Writes packages/core/coqui_testing/sample/:
 //   cuentos/   la-lluvia, el-bizcocho, donde-esta-el-pajaro (stories 1 to 3) and cual-frente, copied byte for byte
 //   libros/    la-lluvia, copied byte for byte
-//   datos/curso.json      CURSO (curso.js) with only La casa (El frente's place) and the entries of stories 1 to 3
-//   datos/llamadas.json   LLAMADAS (llamada.js): La casa's call
-//   datos/nivel.json      NV (nivel.js): the items of stories 1 to 3 (s <= 3)
-//   audio/clips.json      twenty clips of stories 1 to 3: {id: {who, text, habla?, marks: [startMs, endMs, lengthMs]}}.
-//                         No audio. The marks are made up the way juego.js times a line it has no recording
-//                         for (dur(): 360 ms a word + 300 ms): start 0, end and length that.
+//   datos/fijos.json      copied byte for byte (the fixed lines by role, and the goodbye words)
+//   datos/curso.json      datos/curso.json with only La casa (El frente's place) and the entries of stories 1 to 3
+//   datos/llamadas.json   datos/llamadas.json: La casa's call
+//   datos/nivel.json      datos/nivel.json: the items of stories 1 to 3 (s <= 3)
+//   audio/marcas.json     audio/marcas.json for twenty clips of stories 1 to 3 (their [startMs, endMs, lengthMs]).
+//                         No audio files.
 //
 // and packages/core/coqui_testing/lib/src/sample_files.dart: the same files as Dart strings, which is what
 // the fake catalog reads (a dev dependency's assets are left out of a web build, so the dev entries could not
@@ -21,7 +22,6 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import vm from 'node:vm';
 import {fileURLToPath} from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -38,23 +38,10 @@ const STORIES = ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro'];
 for (const f of [...STORIES, 'cual-frente']) fs.copyFileSync(path.join(historia, 'cuentos', f + '.json'), path.join(out, 'cuentos', f + '.json'));
 fs.copyFileSync(path.join(historia, 'libros/la-lluvia.json'), path.join(out, 'libros/la-lluvia.json'));
 
-const evalConst = (file, name) => {
-  const text = read(file);
-  const at = text.indexOf('const ' + name + '=');
-  if (at < 0) throw new Error(name + ' is not in ' + file);
-  const i = text.indexOf('=', at) + 1;
-  const open = text[i];
-  const close = open === '[' ? ']' : '}';
-  let depth = 0;
-  let j = i;
-  for (; j < text.length; j++) {
-    if (text[j] === open) depth++;
-    else if (text[j] === close && --depth === 0) break;
-  }
-  return vm.runInNewContext('(' + text.slice(i, j + 1) + ')');
-};
+const datos = (f) => JSON.parse(read('datos/' + f));
+fs.copyFileSync(path.join(historia, 'datos/fijos.json'), path.join(out, 'datos/fijos.json'));
 
-const CURSO = vm.runInNewContext(read('curso.js') + '\n;CURSO');
+const CURSO = datos('curso.json');
 const casa = CURSO.lugares.find((l) => l.id === 'casa');
 if (!casa.escenas.includes('El frente')) throw new Error('La casa is not El frente\'s place any more');
 const curso = {
@@ -62,31 +49,29 @@ const curso = {
   cuentos: Object.fromEntries(STORIES.map((id) => [id, CURSO.cuentos[id]])),
   cual: ['cual-frente'],
 };
-write('datos/curso.json', JSON.stringify(curso, null, 1) + '\n');
-
-const LLAMADAS = evalConst('llamada.js', 'LLAMADAS');
-write('datos/llamadas.json', JSON.stringify({casa: LLAMADAS.casa}, null, 1) + '\n');
-
-const NV = evalConst('nivel.js', 'NV');
-write('datos/nivel.json', JSON.stringify(NV.filter((q) => q.s <= 3), null, 1) + '\n');
+write('datos/curso.json', JSON.stringify(curso, null, 2) + '\n');
+write('datos/llamadas.json', JSON.stringify({casa: datos('llamadas.json').casa}, null, 2) + '\n');
+const NV = datos('nivel.json').filter((q) => q.s <= 3);
+write('datos/nivel.json', JSON.stringify(NV, null, 2) + '\n');
 
 // Twenty clips: the first eight of story 1, then the first six new ones of stories 2 and 3.
+const marcas = JSON.parse(read('audio/marcas.json'));
 const files = STORIES.map((id) => JSON.parse(read('cuentos/' + id + '.json')));
 const take = [8, 6, 6];
 const clips = {};
 files.forEach((s, k) => {
   let n = 0;
-  for (const [id, c] of Object.entries(s.clips)) {
+  for (const id of Object.keys(s.clips)) {
     if (n >= take[k]) break;
     if (clips[id]) continue;
-    const words = (c.text || 'x x').split(/\s+/).length; // juego.js: words(id)
-    const ms = 360 * words + 300; // juego.js: dur(id), with no recording
-    clips[id] = Object.assign({who: c.who, text: c.text}, c.habla ? {habla: c.habla} : {}, {marks: [0, ms, ms]});
+    if (!marcas[id]) throw new Error('no marks for ' + id);
+    clips[id] = marcas[id];
     n++;
   }
 });
 if (Object.keys(clips).length !== 20) throw new Error('twenty clips, not ' + Object.keys(clips).length);
-write('audio/clips.json', JSON.stringify(clips, null, 1) + '\n');
+write('audio/marcas.json', '{\n' + Object.entries(clips).map(([id, m]) => `  ${JSON.stringify(id)}: ${JSON.stringify(m).replace(/,/g, ', ')}`).join(',\n') + '\n}\n');
+for (const f of fs.readdirSync(path.join(out, 'audio'))) if (f !== 'marcas.json') fs.unlinkSync(path.join(out, 'audio', f));
 
 // ---------- the same files, as Dart strings ----------
 const dartString = (text) => {
@@ -112,4 +97,4 @@ for (const p of listed) dart += `  '${p}': ${dartString(fs.readFileSync(path.joi
 dart += '};\n';
 fs.writeFileSync(path.join(coqui, 'packages/core/coqui_testing/lib/src/sample_files.dart'), dart);
 
-console.log('sample course: ' + STORIES.length + ' stories, cual-frente, 1 book, ' + Object.keys(clips).length + ' clips, ' + NV.filter((q) => q.s <= 3).length + ' level items');
+console.log('sample course: ' + STORIES.length + ' stories, cual-frente, 1 book, ' + Object.keys(clips).length + ' clips, ' + NV.length + ' level items');

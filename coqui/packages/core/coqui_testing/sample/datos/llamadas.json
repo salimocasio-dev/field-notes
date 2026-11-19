@@ -1,8 +1,8 @@
 {
- "casa": {
-  "minutos": 5,
-  "job": "Say hello, say who you are, accept a drink and say thanks.",
-  "opening": "¡Hola! Soy Danny. ¿Cómo estás?",
-  "foto": "casa"
- }
+  "casa": {
+    "minutos": 5,
+    "job": "Say hello, say who you are, accept a drink and say thanks.",
+    "opening": "¡Hola! Soy Danny. ¿Cómo estás?",
+    "foto": "casa"
+  }
 }
