@@ -20,7 +20,7 @@ void main() {
     expect(m.id, 'library');
     final tab = m.tab(rig.services)!;
     expect(tab.id, 'library');
-    expect(tab.label, 'Biblioteca');
+    expect(tab.label, CoquiLabels.library);
     expect(
       m.screenFor(const BookRoute('uno'), rig.services),
       isA<BookReader>(),
@@ -108,7 +108,7 @@ void main() {
         await settle(tester);
         expect(find.byType(LibraryShelf), findsOneWidget);
         expect(
-          find.text('Biblioteca'),
+          find.text(CoquiLabels.library),
           findsWidgets,
         ); // the title and the tab bar's label
         // the seed "curso" has played the sample's three stories

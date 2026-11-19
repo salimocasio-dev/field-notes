@@ -53,7 +53,6 @@ class WordPopup extends StatelessWidget {
                     child: PictureFrame(
                       child: pictures.of(
                         PictureRef.of(word.pair, word.pair.yes),
-                        height: 104,
                       ),
                     ),
                   ),

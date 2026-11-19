@@ -6,7 +6,6 @@ import 'dart:ui' as ui;
 
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/press.dart';
-import 'package:feature_library/src/strings.dart';
 import 'package:feature_library/src/word_marks.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -142,7 +141,7 @@ class _BookLineViewState extends State<BookLineView> {
                         SizedBox(
                           height: BookLineMetrics.whoHeight,
                           child: Text(
-                            LibraryStrings.coqui,
+                            CoquiLabels.appName,
                             style: CoquiText.bookWho,
                           ),
                         ),

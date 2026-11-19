@@ -5,7 +5,7 @@ import 'package:feature_library/src/reader.dart';
 import 'package:feature_library/src/shelf.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_library's module: the Biblioteca tab (the shelf of stories, each with Listen and Read) and the
+/// feature_library's module: the library tab (the shelf of stories, each with Listen and Read) and the
 /// book reader (`BookRoute`).
 ///
 /// A book page's picture is a file served by the old site. Nothing in `Services` says where from, so

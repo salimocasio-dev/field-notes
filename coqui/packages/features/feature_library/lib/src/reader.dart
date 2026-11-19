@@ -25,7 +25,7 @@ const double _textMaxFraction = 0.55;
 /// `reservaTxt`: the text area is never taller than half the screen (`lb.clientHeight*.5`). app.html:394
 const double _reserveMaxFraction = 0.5;
 
-/// `--finx`: what the last page's "Fin" adds to the foot, kept as padding under the picture on every other page. app.html:103
+/// `--finx`: what the last page's end word adds to the foot, kept as padding under the picture on every other page. app.html:103
 const double _finExtra = 72;
 
 /// `lbTam`: 20 or 24. app.html:342
@@ -585,78 +585,30 @@ class _BookReaderState extends State<BookReader> {
 
   // app.html: pie
   Widget _foot({required bool last}) {
-    final back = SizedBox(
-      width: last ? 72 : null,
-      child: LessonButton(
-        kind: LessonButtonKind.outline,
-        height: 56,
-        fillWidth: false,
-        semanticLabel: LibraryStrings.previousPage,
-        onPressed: _i == 0 ? null : () => _tick(() => _pag(-1)),
-        child: CoquiIcon(
-          CoquiIcons.left,
-          size: 28,
-          color: CoquiColors.lessonInk,
-        ),
-      ),
+    final back = LessonBackButton(
+      onPressed: _i == 0 ? null : () => _tick(() => _pag(-1)),
     );
-    final Widget row;
-    if (last) {
-      row = Row(
-        children: [
-          back,
-          const SizedBox(width: 16),
-          Expanded(
-            child: LessonButton(
-              height: 56,
+    final Widget row = last
+        ? LessonButtonRow.readerLast(
+            back: back,
+            again: LessonButton(
+              height: CoquiMetrics.primaryHeight,
               fillWidth: false,
+              icon: CoquiIcons.replay,
+              label: CoquiLabels.again,
               onPressed: () => _tick(() => _irPag(0)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CoquiIcon(
-                    CoquiIcons.replay,
-                    size: 20,
-                    color: CoquiColors.lessonInk,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(LibraryStrings.again, style: CoquiText.lessonButton),
-                ],
-              ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: LessonButton(
-              height: 56,
+            shelf: LessonButton(
+              height: CoquiMetrics.primaryHeight,
               fillWidth: false,
-              label: LibraryStrings.shelf,
+              label: CoquiLabels.library,
               onPressed: () => _tick(_close),
             ),
-          ),
-        ],
-      );
-    } else {
-      row = Row(
-        children: [
-          Expanded(child: back),
-          const SizedBox(width: 16),
-          Expanded(
-            child: LessonButton(
-              height: 56,
-              fillWidth: false,
-              semanticLabel: LibraryStrings.nextPage,
-              onPressed: () => _tick(() => _pag(1)),
-              child: CoquiIcon(
-                CoquiIcons.right,
-                size: 28,
-                color: CoquiColors.lessonInk,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
+          )
+        : LessonButtonRow.reader(
+            back: back,
+            next: LessonNextButton(onPressed: () => _tick(() => _pag(1))),
+          );
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: Column(
@@ -664,12 +616,14 @@ class _BookReaderState extends State<BookReader> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (last) ...[
-            // `.lbfin`: 32 px high, 16 px of space above and below, then the 8 px gap of the foot
+            // `.lbfin`: 32 px high, 16 px of space above and below, then the 8 px gap of the foot. Not `LessonFin`: its
+            // height follows the text scale, and the foot of the last page must be exactly `_finExtra` taller than the
+            // others at any text scale, or the picture would move when the last page opens.
             const SizedBox(height: 16),
             SizedBox(
               height: 32,
               child: Center(
-                child: Text(LibraryStrings.fin, style: CoquiText.lessonFin),
+                child: Text(CoquiLabels.fin, style: CoquiText.lessonFin),
               ),
             ),
             const SizedBox(height: 16),

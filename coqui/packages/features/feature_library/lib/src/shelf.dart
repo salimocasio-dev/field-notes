@@ -1,4 +1,4 @@
-/// Biblioteca: the shelf. One row for each story he has played: its cover, the title, Listen and Read.
+/// The shelf (`CoquiLabels.library`). One row for each story he has played: its cover, the title, Listen and Read.
 /// app.html:323-341 (`biblioteca`).
 library;
 
@@ -25,14 +25,14 @@ class ShelfItem {
   /// `&oir=1` on the old Listen link: a story is told straight through; a picture story and a routine are played.
   final bool listen;
 
-  /// `""`, "Cuento con dibujos" or "Haz esto".
+  /// `""`, or the kind of a picture story or a routine (`CoquiLabels.pictureStory`, `CoquiLabels.routine`).
   final String kind;
 
-  /// A routine (Haz esto) has no book: Listen only, and no request for a book.
+  /// A routine has no book: Listen only, and no request for a book.
   final bool routine;
 }
 
-/// The shelf, as the tab of the Biblioteca.
+/// The shelf, as the tab of the library.
 class LibraryShelf extends StatefulWidget {
   const LibraryShelf({
     super.key,
@@ -137,14 +137,14 @@ class _LibraryShelfState extends State<LibraryShelf> {
           ShelfItem(
             id: c,
             listen: false,
-            kind: LibraryStrings.pictureStory,
+            kind: CoquiLabels.pictureStory,
             routine: false,
           ),
         for (final c in haz)
           ShelfItem(
             id: c,
             listen: false,
-            kind: LibraryStrings.routine,
+            kind: CoquiLabels.routine,
             routine: true,
           ),
       ];

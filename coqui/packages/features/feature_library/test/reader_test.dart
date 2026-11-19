@@ -6,7 +6,6 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_library/src/book_line.dart';
-import 'package:feature_library/src/strings.dart';
 import 'package:feature_library/src/word_popup.dart';
 import 'package:feature_library/src/reader.dart';
 import 'package:flutter/rendering.dart';
@@ -303,7 +302,7 @@ void main() {
         for (final l in lineViews(tester)) {
           final who = find.descendant(
             of: line(l.line.id),
-            matching: find.text(LibraryStrings.coqui),
+            matching: find.text(CoquiLabels.appName),
           );
           expect(who, l.line.who == 'tu' ? findsOneWidget : findsNothing);
           expect(
@@ -851,20 +850,20 @@ void main() {
         await pumpReader(tester, rig);
         await toLast(tester);
         expect(count(tester), '4 / 4');
-        final fin = find.text(LibraryStrings.fin);
+        final fin = find.text(CoquiLabels.fin);
         expect(fin, findsOneWidget);
         final againBtn = find.byWidgetPredicate(
           (w) =>
               w is LessonButton &&
-              w.child is Row &&
+              w.icon != null &&
               w.kind == LessonButtonKind.go,
         );
-        final shelfBtn = buttonLabelled(LibraryStrings.shelf);
+        final shelfBtn = buttonLabelled(CoquiLabels.library);
         expect(againBtn, findsOneWidget);
         expect(shelfBtn, findsOneWidget);
         expect(tester.widget<LessonButton>(againBtn).kind, LessonButtonKind.go);
         expect(tester.widget<LessonButton>(shelfBtn).kind, LessonButtonKind.go);
-        expect(find.text(LibraryStrings.again), findsOneWidget);
+        expect(find.text(CoquiLabels.again), findsOneWidget);
         expect(
           find.descendant(of: againBtn, matching: find.byType(CoquiIcon)),
           findsOneWidget,
@@ -897,9 +896,9 @@ void main() {
         final rig = Rig();
         await pumpReader(tester, rig);
         await toLast(tester);
-        final fin = tester.getRect(find.text(LibraryStrings.fin));
+        final fin = tester.getRect(find.text(CoquiLabels.fin));
         final lines = tester.getRect(find.byType(ListView));
-        final row = tester.getRect(buttonLabelled(LibraryStrings.shelf));
+        final row = tester.getRect(buttonLabelled(CoquiLabels.library));
         // the box of "Fin" is 32 high with 16 around it
         expect(row.top - fin.bottom, greaterThanOrEqualTo(16));
         expect(fin.top - lines.bottom, greaterThanOrEqualTo(16));
@@ -941,10 +940,10 @@ void main() {
         final rig = Rig();
         await pumpReader(tester, rig);
         await toLast(tester);
-        await tester.tap(find.text(LibraryStrings.again));
+        await tester.tap(find.text(CoquiLabels.again));
         await settle(tester);
         expect(count(tester), '1 / 4');
-        expect(find.text(LibraryStrings.fin), findsNothing);
+        expect(find.text(CoquiLabels.fin), findsNothing);
       },
     );
 
@@ -954,7 +953,7 @@ void main() {
       final rig = Rig();
       await pumpReader(tester, rig);
       await toLast(tester);
-      await tester.tap(buttonLabelled(LibraryStrings.shelf));
+      await tester.tap(buttonLabelled(CoquiLabels.library));
       await tester.pump();
       expect(rig.nav.backs, 1);
     });
@@ -966,7 +965,7 @@ void main() {
         await pumpReader(tester, rig);
         await toLast(tester);
         final saves = rig.store.saves;
-        await tester.tap(find.text(LibraryStrings.again));
+        await tester.tap(find.text(CoquiLabels.again));
         await settle(tester);
         await toLast(tester);
         expect(rig.store.saves, saves);
@@ -980,7 +979,7 @@ void main() {
         await pumpReader(tester, rig, book: 'cuatro');
         expect(count(tester), '1 / 1');
         expect(rig.progress.hasRead('cuatro'), isTrue);
-        expect(find.text(LibraryStrings.fin), findsOneWidget);
+        expect(find.text(CoquiLabels.fin), findsOneWidget);
         // the back arrow is the small one, disabled; there is no next
         expect(tester.widget<LessonButton>(backButton()).onPressed, isNull);
         expect(nextButton(), findsNothing);

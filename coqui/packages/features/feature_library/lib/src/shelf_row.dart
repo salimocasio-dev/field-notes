@@ -1,10 +1,10 @@
 /// A row of the shelf and its buttons, as `.bk` and `.btn` draw them in app.html:97-101.
 ///
-/// coqui_ui's `ShelfRow` and `CoquiButton` come close, but not on a phone: the cover is as tall as
-/// its picture (72 wide, the book's first page at 196:216, so 79 high: `.cov img{height:auto}`), the
-/// buttons have 12 px of side padding and 6 px between the icon and the label under 420 px (and 10
-/// px, a 12 px gap and a 64 px cover under 380), and Read carries a green check once the book was
-/// read. Request 22-feature-library-needs-coqui-ui-shelf-row-phone.
+/// The shelf row has one user, this feature, so it lives here (decided; coqui_ui no longer has a `ShelfRow`):
+/// the cover is as tall as its picture (72 wide, the book's first page at 196:216, so 79 high:
+/// `.cov img{height:auto}`), the buttons have 12 px of side padding and 6 px between the icon and the label
+/// under 420 px (and 10 px, a 12 px gap and a 64 px cover under 380), and Read carries a green check once the
+/// book was read.
 library;
 
 import 'package:coqui_ui/coqui_ui.dart';
@@ -32,7 +32,7 @@ class ShelfButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String semanticLabel;
 
-  /// The green check after the label (`<span class="okc">✓</span>`), drawn as an icon.
+  /// The green check after the label (the old page's `okc` span), drawn as an icon.
   final bool check;
 
   /// `.bk .btn{padding:0 16px}`, 12 under 420 px, 10 under 380. app.html:99-101
@@ -64,7 +64,7 @@ class ShelfButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
             border: Border.all(
               color: go ? const Color(0x00000000) : CoquiColors.line2,
-              width: CoquiMetrics.borderButton,
+              width: CoquiLayout.border(context, CoquiMetrics.borderButton),
             ),
           ),
           child: Row(
@@ -75,7 +75,7 @@ class ShelfButton extends StatelessWidget {
               SizedBox(width: gap(width)),
               Flexible(child: Text(label, style: style)),
               if (check) ...[
-                // `<span class="okc">✓</span>`: a green check after the label, the button's gap away; drawn, not a glyph,
+                // the old page's `okc` span: a green check after the label, the button's gap away; drawn, not a glyph,
                 // so that it looks the same on every device (a font's own check differs)
                 SizedBox(width: gap(width)),
                 // the glyph's own width is 13 px (it sets how wide the button is); the drawn check is 12 px wide, in the middle of it

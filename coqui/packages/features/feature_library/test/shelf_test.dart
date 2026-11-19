@@ -37,7 +37,7 @@ void main() {
     await pumpShelf(tester, rig);
     expect(find.byType(ShelfEntry), findsNothing);
     expect(find.text(LibraryStrings.emptyShelf), findsOneWidget);
-    expect(find.text('Biblioteca'), findsOneWidget);
+    expect(find.text(CoquiLabels.library), findsOneWidget);
   });
 
   testWidgets('leer_check: shelf lists only the played stories', (
@@ -162,7 +162,7 @@ void main() {
       ]);
       expect(
         entry(tester, 'Dibujo uno').subtitle,
-        'Cuento con dibujos · about 3 min',
+        '${CoquiLabels.pictureStory} · about 3 min',
       );
       await tester.tap(buttonOf('Listen', 'Dibujo uno'));
       expect(rig.nav.last, const StoryRoute('d-uno'));
@@ -176,7 +176,10 @@ void main() {
       await pumpShelf(tester, rig, size: const Size(412, 1800));
       expect(buttonLabels(tester, 'Haz uno'), ['Listen']);
       expect(entry(tester, 'Haz uno').cover, isNull);
-      expect(entry(tester, 'Haz uno').subtitle, 'Haz esto · about 1 min');
+      expect(
+        entry(tester, 'Haz uno').subtitle,
+        '${CoquiLabels.routine} · about 1 min',
+      );
       await tester.tap(buttonOf('Listen', 'Haz uno'));
       expect(rig.nav.last, const StoryRoute('h-uno'));
       expect(rig.course.bookAsked, isNot(contains('h-uno')));
