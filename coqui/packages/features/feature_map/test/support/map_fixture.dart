@@ -1,4 +1,4 @@
-// The course and the progress the map's dev entry and tests run on: the ten places of curso.js
+// The course and the progress the map's dev entry and tests run on (in test/support/ so that a browser can load it): the ten places of curso.js
 // (docs/proyecto/pixel/curso.js; the stories, titles and minutes of the three built places are its own), over
 // the fakes of coqui_testing. This is test data, not feature code: the feature reads every name from the
 // catalog.

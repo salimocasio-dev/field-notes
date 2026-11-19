@@ -5,7 +5,8 @@ import 'package:feature_map/feature_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../tool/dev_main.dart';
+import 'support/map_dev_app.dart';
+import 'support/map_tester.dart';
 
 void main() {
   test('the module is map: it owns the tab map and no route', () {
@@ -18,7 +19,7 @@ void main() {
     expect(m.screenFor(const TabRoute('map'), fakeServices()), isNull);
   });
 
-  testWidgets('the tab builds the map on the fakes', (tester) async {
+  mapTest('the tab builds the map on the fakes', (tester) async {
     tester.view.devicePixelRatio = 2.625;
     tester.view.physicalSize = const Size(412, 915) * 2.625;
     addTearDown(tester.view.reset);
@@ -37,7 +38,7 @@ void main() {
     expect(find.text('1 · La casa'), findsOneWidget);
   });
 
-  testWidgets('the dev entry opens on the fakes, with the corner chip', (
+  mapTest('the dev entry opens on the fakes, with the corner chip', (
     tester,
   ) async {
     tester.view.devicePixelRatio = 2.625;
@@ -53,7 +54,7 @@ void main() {
     expect(find.text('4 · El colmado'), findsOneWidget);
   });
 
-  testWidgets('the dev entry: no corner chip with chip=0', (tester) async {
+  mapTest('the dev entry: no corner chip with chip=0', (tester) async {
     await tester.pumpWidget(devApp(const {'chip': '0', 'reduce': '1'}));
     await tester.pump();
     await tester.pump();

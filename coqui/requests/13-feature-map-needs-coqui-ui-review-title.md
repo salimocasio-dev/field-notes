@@ -20,7 +20,7 @@ El parque, which is another thing), so this item is stopped.
 The review entry is built (its subtitle "N word(s) coming back · M min", its minutes, `nav.go(ReviewRoute())`),
 but `MapScreen` shows it only when it is given a `reviewTitle`. `MapModule` gives none, so the shipped map's
 Today card goes straight to the stories. The dev entry and the tests give the old string `¿Cuál?` from
-`tool/map_fixture.dart` (`fixtureReviewTitle`), so the screenshots and the tests show the card as v=39 does.
+`test/support/map_fixture.dart` (`fixtureReviewTitle`), so the screenshots and the tests show the card as v=39 does.
 When the title has a source, `MapModule.tab` passes it to `MapScreen(reviewTitle: ...)`: one line.
 
 ## Order and branch

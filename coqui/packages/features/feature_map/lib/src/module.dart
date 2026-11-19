@@ -15,7 +15,10 @@ class MapModule implements FeatureModule {
     id: 'map',
     label: CoquiTabs.map.label,
     icon: Icons.map,
-    builder: (_) => MapScreen(services: s),
+    builder: (_) => MapScreen(
+      services: s,
+      // WIRING (request 13-feature-map-needs-coqui-ui-review-title): the coqui_ui constant for the review title goes here as `reviewTitle:`
+    ),
   );
 
   @override

@@ -6,7 +6,7 @@ import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_picture.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../tool/map_fixture.dart';
+import 'support/map_fixture.dart';
 
 void main() {
   group('the state, by app.html', () {

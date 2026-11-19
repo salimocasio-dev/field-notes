@@ -173,23 +173,27 @@ try {
   }
 
   if (flag('--perf')) {
-    // The map with motion on, as it runs: the chip in the corner says what it measured.
-    const ctx = await newContext();
-    const page = await ctx.newPage();
-    await page.goto(`${base}?demo=three`);
-    await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
-    await page.waitForTimeout(8000);
-    // Flutter draws to a canvas: turn its semantics on to read the chip as text.
-    await page.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
-    await page.waitForTimeout(1500);
-    const text = await page.evaluate(() =>
-      [...document.querySelectorAll('flt-semantics')].map((e) => e.textContent || e.getAttribute('aria-label') || '')
-        .find((t) => /bake \d+ ms/.test(t)) || null);
-    const m = text && /bake (\d+) ms · frame max ([\d.]+) ms/.exec(text);
-    perf = m ? { bake_ms: Number(m[1]), slowest_frame_ms: Number(m[2]), chip: text } : { chip: text };
-    console.log('perf:', JSON.stringify(perf));
-    await page.screenshot({ path: join(out, 'perf-motion-on.png') });
-    await ctx.close();
+    // The map with motion on, as it runs, in each of the three demo states: the chip in the corner says what it
+    // measured (the bake, and the slowest frame: updateFrog and draw, not the upload of the picture).
+    perf = {};
+    for (const demo of ['none', 'three', 'all']) {
+      const ctx = await newContext();
+      const page = await ctx.newPage();
+      await page.goto(`${base}?demo=${demo}`);
+      await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
+      await page.waitForTimeout(10000);
+      // Flutter draws to a canvas: turn its semantics on to read the chip as text.
+      await page.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
+      await page.waitForTimeout(1500);
+      const text = await page.evaluate(() =>
+        [...document.querySelectorAll('flt-semantics')].map((e) => e.textContent || e.getAttribute('aria-label') || '')
+          .find((t) => /bake \d+ ms/.test(t)) || null);
+      const m = text && /bake (\d+) ms · frame max ([\d.]+) ms · mean ([\d.]+) ms/.exec(text);
+      perf[demo] = m ? { bake_ms: Number(m[1]), slowest_frame_ms: Number(m[2]), mean_frame_ms: Number(m[3]), chip: text } : { chip: text };
+      console.log(`perf ${demo}:`, JSON.stringify(perf[demo]));
+      await page.screenshot({ path: join(out, `perf-${demo}-motion-on.png`) });
+      await ctx.close();
+    }
   }
 } finally {
   await browser.close();

@@ -1,4 +1,4 @@
-// Makes tool/map_seeds.dart from the progress states of coqui/ref/pantallas/seeds/ (what v=39 keeps under
+// Makes test/support/map_seeds.dart from the progress states of coqui/ref/pantallas/seeds/ (what v=39 keeps under
 // localStorage `coqui.palabras.v1`, made by the old palabras.js), so the dev entry and the tests can open the
 // map in the states the reference pictures were taken in.
 //
@@ -38,7 +38,7 @@ void main(List<String> args) {
     );
     exit(2);
   }
-  final out = File('tool/map_seeds.dart');
+  final out = File('test/support/map_seeds.dart');
   final made = render(seeds);
   if (args.contains('--check')) {
     final same = out.existsSync() && out.readAsStringSync() == made;

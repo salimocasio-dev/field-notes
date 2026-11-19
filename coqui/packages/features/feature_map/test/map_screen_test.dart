@@ -10,7 +10,8 @@ import 'package:flutter/rendering.dart' show RendererBinding;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../tool/map_fixture.dart';
+import 'support/map_fixture.dart';
+import 'support/map_tester.dart';
 
 /// What a test holds of the screen it started.
 class Shown {
@@ -111,9 +112,7 @@ int flagPixels(MapPicture m, int k) {
 }
 
 void main() {
-  testWidgets('the page colour first, then the bake, then the map', (
-    tester,
-  ) async {
+  mapTest('the page colour first, then the bake, then the map', (tester) async {
     phone(tester);
     final f = fixture(seed: 'vacio');
     final perf = MapPerf();
@@ -150,7 +149,7 @@ void main() {
     expect(find.byType(PixelView), findsOneWidget);
   });
 
-  testWidgets(
+  mapTest(
     'tap an open place: the frog hops there, then the place sheet opens',
     (tester) async {
       phone(tester);
@@ -194,7 +193,7 @@ void main() {
     },
   );
 
-  testWidgets(
+  mapTest(
     'a tap on a locked place opens the sheet at once and says it is locked',
     (tester) async {
       phone(tester);
@@ -223,7 +222,7 @@ void main() {
     },
   );
 
-  testWidgets(
+  mapTest(
     '"Open every place" opens a place with no stories: the frog hops, the sheet says it is not built',
     (tester) async {
       phone(tester);
@@ -241,7 +240,7 @@ void main() {
     },
   );
 
-  testWidgets(
+  mapTest(
     'finishing the last story of a place adds its flag and moves the frog',
     (tester) async {
       phone(tester);
@@ -275,7 +274,7 @@ void main() {
     },
   );
 
-  testWidgets('the Today card names the next story; a tap on it goes there', (
+  mapTest('the Today card names the next story; a tap on it goes there', (
     tester,
   ) async {
     phone(tester);
@@ -290,7 +289,7 @@ void main() {
     expect(f.haptics.ticks, 1);
   });
 
-  testWidgets('the Today card: a story played once is a second play', (
+  mapTest('the Today card: a story played once is a second play', (
     tester,
   ) async {
     phone(tester);
@@ -301,7 +300,7 @@ void main() {
     expect(find.text('Second play · 2 min'), findsOneWidget);
   });
 
-  testWidgets('the Today card offers the review first when words are due', (
+  mapTest('the Today card offers the review first when words are due', (
     tester,
   ) async {
     phone(tester);
@@ -315,7 +314,7 @@ void main() {
     expect(f.nav.routes, [const ReviewRoute()]);
   });
 
-  testWidgets('with no title for the review the card goes to the stories', (
+  mapTest('with no title for the review the card goes to the stories', (
     tester,
   ) async {
     phone(tester);
@@ -325,7 +324,7 @@ void main() {
     expect(find.text('La lluvia'), findsOneWidget);
   });
 
-  testWidgets('the chips: the streak and the place', (tester) async {
+  mapTest('the chips: the streak and the place', (tester) async {
     phone(tester);
     final f = fixture(seed: 'curso');
     await showMap(tester, f);
@@ -333,7 +332,7 @@ void main() {
     expect(find.text('2 · El parque'), findsOneWidget);
   });
 
-  testWidgets('a story row calls nav.go(StoryRoute(id))', (tester) async {
+  mapTest('a story row calls nav.go(StoryRoute(id))', (tester) async {
     phone(tester);
     final f = fixture(seed: 'segunda');
     final s = await showMap(tester, f);
@@ -359,7 +358,7 @@ void main() {
     expect(f.nav.routes.last, const StoryRoute('la-lluvia'));
   });
 
-  testWidgets('the sheet closes on the scrim', (tester) async {
+  mapTest('the sheet closes on the scrim', (tester) async {
     phone(tester);
     final f = fixture(seed: 'vacio');
     await showMap(tester, f, openPlace: 3);
@@ -370,7 +369,7 @@ void main() {
     expect(sheetLayer(tester).open, isFalse);
   });
 
-  testWidgets('reduceMotion: everything stands still', (tester) async {
+  mapTest('reduceMotion: everything stands still', (tester) async {
     phone(tester);
     final f = fixture(seed: 'vacio', reduceMotion: true);
     final s = await showMap(tester, f);
@@ -391,7 +390,7 @@ void main() {
     expect(find.text('La cocina'), findsWidgets);
   });
 
-  testWidgets('with motion the picture moves: wind, sea, the arrow', (
+  mapTest('with motion the picture moves: wind, sea, the arrow', (
     tester,
   ) async {
     phone(tester);
@@ -403,7 +402,7 @@ void main() {
     expect(s.perf.frames, greaterThan(5));
   });
 
-  testWidgets('the map opens scrolled to the frog', (tester) async {
+  mapTest('the map opens scrolled to the frog', (tester) async {
     // a small window, so the map has room to scroll: 412 x 448, one device pixel for a pixel
     phone(tester, size: const Size(412, 448), dpr: 1);
     final f = fixture(seed: 'vacio');
@@ -419,7 +418,7 @@ void main() {
     expect(scrollable.position.pixels, closeTo(want, 1));
   });
 
-  testWidgets('a tap that lands on no stop does nothing', (tester) async {
+  mapTest('a tap that lands on no stop does nothing', (tester) async {
     phone(tester);
     final f = fixture(seed: 'vacio');
     final s = await showMap(tester, f);

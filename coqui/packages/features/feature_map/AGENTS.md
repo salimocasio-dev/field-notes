@@ -25,6 +25,7 @@ The home map (page 11), the Today card, the place sheet.
 - Nobody imports another package's `src/`.
 - The file exports one thing: `MapModule` (boundary rule 4), the module with id `map` and the tab `map`. It answers no route.
 - Order 13 built it. `lib/src/map_picture.dart` is a port of pixel/mapa.js (the island; the ten places are in `map_places.dart`, the layout in `map_layout.dart`), pure Dart, so it runs in the golden tests on the VM and in a browser. `map_model.dart` reads the state from the progress store (app.html: `hecho`, `abierto`, `aqui`) and today's plan (`plan`). `map_screen.dart` is the tab: the chips, the scrolling picture through `PixelView`, the Today card, the place sheet. `place_sheet.dart` is the sheet's body.
+- Not ported: the landscape two-column layout of v=39 (the chips and the Today card in a right column). The app is portrait: the phone builds are locked to portrait and the web manifest asks for it. The map tab scrolls, and the place sheet hides its "Place N" line in landscape as v=39 does.
 - The screen draws the whole screen: the card and the sheet sit above the tab bar's height, as in coqui_ui's gallery, so the shell draws the bar over it.
 - `MapScreen.reviewTitle`: the title of the Today card's review entry (Spanish, from app.html's `plan()`) is not in the catalog, so the screen shows that entry only when it is given a title; `MapModule` gives none. See `coqui/requests/13-feature-map-needs-coqui-ui-review-title.md`.
 
@@ -39,9 +40,11 @@ flutter build web -t tool/dev_main.dart --no-web-resources-cdn
 node tool/shots.mjs --out <dir> [--perf]   # builds it, serves it, captures the map, the sheets and the Today card at 412 x 915, ratio 2.625; pairs.json says which reference picture each is held against
 ```
 
+The dev entry's root widget (`MapDevApp`) and the fixture it runs on are in `test/support/` (`map_dev_app.dart`, `map_fixture.dart`, `map_seeds.dart`), because a browser test loads nothing outside `test/`.
+
 The address says what it opens on (all optional): `demo=none|three|all` (mapa.html's three states), `seed=vacio|segunda|uno|curso|casi|todo` (the stored progress of a reference picture of v=39), `todo=1` ("Open every place"), `place=1..10` (go to that place once the map is up), `reduce=1` (reduceMotion), `review=0`, `chip=0`. A corner chip shows the bake time and the slowest frame in ms; it exists only in the dev entry.
 
-Tests: `flutter test` runs them all on the VM. The golden test (`test/map_golden_test.dart`) is pure Dart and also runs in a browser: `flutter test --platform chrome test/map_golden_test.dart` (the other tests import `../tool/`, which the browser runner cannot load). It reads the references of `coqui/ref/pp/map/` as files on the VM and from `test/support/fixtures/ref_map.dart` in the browser: `dart run tool/make_fixtures.dart` makes that file (`--check` says whether it is current). `tool/map_seeds.dart` is made by `dart run tool/make_seeds.dart` from `coqui/ref/pantallas/seeds/`. `tool/map_fixture.dart` is the course (curso.js's ten places) and the progress the dev entry and the tests run on.
+Tests: `flutter test` runs them all on the VM, and `flutter test --platform chrome` runs them all in a browser. The golden test (`test/map_golden_test.dart`) is pure Dart. It reads the references of `coqui/ref/pp/map/` as files on the VM and from `test/support/fixtures/ref_map.dart` in the browser: `dart run tool/make_fixtures.dart` makes that file (`--check` says whether it is current). `test/support/map_seeds.dart` is made by `dart run tool/make_seeds.dart` from `coqui/ref/pantallas/seeds/`. `test/support/map_fixture.dart` is the course (curso.js's ten places) and the progress the dev entry and the tests run on.
 
 At `coqui/`, for the checks every branch passes:
 
