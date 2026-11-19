@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+  <!-- Replaced by flutter build --base-href /field-notes/prueba/ -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <meta name="description" content="Coquí phone test (order 00): audio, microphone, storage and load on a real phone.">
+
+  <!-- Home screen (iPhone and Android) -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Coquí test">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="theme-color" content="#2E6B4F">
+
+  <title>Coquí phone test</title>
+  <link rel="manifest" href="manifest.json">
+  <style>html,body{margin:0;background:#F4F1EA;}</style>
+  <!-- Must run before Flutter: page-start marks, the speech shim and the meters (coqui_meter.js says why). -->
+  <script src="coqui_meter.js"></script>
+</head>
+<body>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
