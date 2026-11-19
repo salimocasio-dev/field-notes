@@ -3,6 +3,7 @@
 library;
 
 import 'package:coqui_ui/src/icons.dart';
+import 'package:coqui_ui/src/labels.dart';
 import 'package:coqui_ui/src/layout.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/text_styles.dart';
@@ -24,8 +25,7 @@ class CoquiTabItem {
 }
 
 /// The five tabs of v=39, in order, with its labels and icons: Biblioteca,
-/// Palabras, Mapa, Hablar, Yo. app.html:192 (`TABS`, labels in Spanish as the
-/// page hard-codes them), app.html:190-191 (`IC`).
+/// Palabras, Mapa, Hablar, Yo (the names are in [CoquiLabels]). app.html:192 (`TABS`), app.html:190-191 (`IC`).
 ///
 /// The shell maps the five `FeatureTab` ids (`library`, `words`, `map`, `speak`,
 /// `me`, as `TabRoute` has them) to these items. `FeatureTab.icon` (an `IconData`)
@@ -39,25 +39,29 @@ abstract final class CoquiTabs {
 
   static final library = CoquiTabItem(
     id: libraryId,
-    label: 'Biblioteca',
+    label: CoquiLabels.library,
     icon: CoquiIcons.book,
   );
   static final words = CoquiTabItem(
     id: wordsId,
-    label: 'Palabras',
+    label: CoquiLabels.words,
     icon: CoquiIcons.cards,
   );
   static final map = CoquiTabItem(
     id: mapId,
-    label: 'Mapa',
+    label: CoquiLabels.map,
     icon: CoquiIcons.map,
   );
   static final speak = CoquiTabItem(
     id: speakId,
-    label: 'Hablar',
+    label: CoquiLabels.speak,
     icon: CoquiIcons.mic,
   );
-  static final me = CoquiTabItem(id: meId, label: 'Yo', icon: CoquiIcons.me);
+  static final me = CoquiTabItem(
+    id: meId,
+    label: CoquiLabels.me,
+    icon: CoquiIcons.me,
+  );
 
   /// The five, in the old order: the map in the middle.
   static final all = [library, words, map, speak, me];
@@ -255,7 +259,10 @@ class _Disc extends StatelessWidget {
         color: selected ? CoquiColors.info : CoquiColors.white,
         border: Border.all(
           color: selected ? CoquiColors.white : CoquiColors.line2,
-          width: selected ? (compact ? 3 : 4) : CoquiMetrics.borderButton,
+          width: CoquiLayout.border(
+            context,
+            selected ? (compact ? 3 : 4) : CoquiMetrics.borderButton,
+          ),
         ),
         boxShadow: selected ? CoquiShadows.mapDiscActive : null,
       ),
@@ -300,9 +307,14 @@ class MapChips extends StatelessWidget {
       CoquiMetrics.s16,
       0,
     ),
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       color: CoquiColors.white,
-      border: Border(bottom: BorderSide(color: CoquiColors.line)),
+      border: Border(
+        bottom: BorderSide(
+          color: CoquiColors.line,
+          width: CoquiLayout.border(context, 1),
+        ),
+      ),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,

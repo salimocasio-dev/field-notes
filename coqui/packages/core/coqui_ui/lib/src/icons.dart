@@ -24,11 +24,15 @@ class IconShape {
   final bool stroke;
 }
 
-/// An icon on a 24 x 24 box, with its stroke width (2, or 2.4 for the lesson's close and sound).
+/// An icon on a 24 x 24 box (28 x 28 for the answer badge's tick, whose SVG has that viewBox), with its
+/// stroke width (2, or 2.4 for the lesson's close and sound, 3 for the tick).
 class CoquiIconData {
-  const CoquiIconData(this.shapes, {this.strokeWidth = 2});
+  const CoquiIconData(this.shapes, {this.strokeWidth = 2, this.viewBox = 24});
   final List<IconShape> shapes;
   final double strokeWidth;
+
+  /// The side of the SVG's square viewBox.
+  final double viewBox;
 }
 
 /// `<rect x y width height rx>` as path data.
@@ -152,10 +156,13 @@ abstract final class CoquiIcons {
     const IconShape('M5 11a7 7 0 0 0 14 0M12 18v3'),
   ]);
 
-  /// The check badge of a right answer. cual.html:49
-  static const badgeCheck = CoquiIconData([
-    IconShape('M8 14.5l4 4 8-9'),
-  ], strokeWidth: 3);
+  /// The tick in the check badge of a right answer: its SVG has a 28 x 28 viewBox, drawn at 28 px
+  /// (stroke 3, round). cual.html:49
+  static const badgeCheck = CoquiIconData(
+    [IconShape('M8 14.5l4 4 8-9')],
+    strokeWidth: 3,
+    viewBox: 28,
+  );
 
   /// The map's tab: the Mapa disc's icon is this same map drawn at 28 px.
   static const mapDisc = map;
@@ -187,7 +194,7 @@ class _IconPainter extends CustomPainter {
     // An SVG draws inside its own box and clips what falls outside it (the book icon's
     // spine runs to y=26).
     canvas.clipRect(Offset.zero & size);
-    final k = size.width / 24;
+    final k = size.width / data.viewBox;
     canvas.scale(k);
     for (final s in data.shapes) {
       final path = parseSvgPath(s.d);

@@ -26,10 +26,11 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
 - Today the public file holds a library comment and nothing else. `fonts/` holds Pixelify Sans, weights 400 and 700, as `.ttf` (converted from `historia/fuentes/`), with its licence `LICENSE-pixelify-sans.txt` beside them. The pubspec declares the family `Pixelify Sans`. Use it only where page 09 allows: signs on the map, never learning content.
 - Since order 02 it holds `PictureRef`, `PictureSource`, `Services`, `FeatureTab`, `FeatureModule` (page 12, section 3).
 - Since order 20 it also holds `PixelView` and the shared look of v=39:
-  - tokens: `CoquiColors`, `CoquiMetrics`, `CoquiShadows`, `CoquiText`, `pixelifyStyle` (ligatures off), `coquiTheme()`; each says the CSS file and line it comes from;
+  - `CoquiLabels`: the Spanish names v=39 hard-codes for its screens and activities (the five tab names, `reviewTitle` "¿Cuál?", `review` "Repaso", the app name), each with its source line. Nothing else Spanish lives in a widget;
+  - tokens: `CoquiColors`, `CoquiMetrics`, `CoquiShadows`, `CoquiText`, `pixelifyStyle` (ligatures off), `coquiTheme()`. Text is Roboto, shipped in `fonts/` (Regular, Medium, Bold; CSS 600 draws with Bold), the same on every platform; borders go through `cssBorderWidth` (whole device pixels); each says the CSS file and line it comes from;
   - `CoquiIcons`/`CoquiIcon` (the old SVG path data), `CoquiLayout` (media queries, safe area);
-  - buttons: `CoquiButton`, `PlayButton`, `CoquiCloseButton`, `LessonButton`, `LessonButtonRow`, `LessonStartButton`, `LessonIconButton`, `LessonCloseButton`, `LessonSoundButton`, `LessonTextSizeButton`;
-  - `CoquiSheet`, `CoquiSheetLayer`; `CoquiTabBar`, `CoquiTabs`, `MapChips`; `LessonFrame`, `LessonProgressDashes`, `LessonProgressLine`;
+  - buttons: `CoquiButton`, `PlayButton`, `CoquiCloseButton`, `ShelfButton`, `LessonButton`, `LessonButtonRow` (`.pair`, `.reader`, `.readerLast`), `LessonBackButton`, `LessonNextButton`, `LessonStartButton`, `LessonIconButton`, `LessonCloseButton`, `LessonSoundButton`, `LessonTextSizeButton`;
+  - `CoquiSheet`, `CoquiSheetLayer`; `CoquiTabBar`, `CoquiTabs`, `MapChips`; `LessonFrame`, `LessonReaderFrame`, `BookLine`, `PictureChoice`, `LessonProgressDashes`, `LessonProgressLine`;
   - `MeterDots`, `SkillMeter`, `EarMouthMeters`, `WordCard`, `WordGrid`;
   - cards and rows: `TabPage`, `CollapsingColumn`/`Block` (CSS margin collapse), `ScreenTitle`, `SectionTitle`, `KeyLine`, `EyebrowLabel`, `CoquiCard`, `CoquiRow`, `DividedRows`, `ListRow`, `ShelfRow`, `TodayCard`, `StatCard`, `SegmentedPills`, `CoquiSwitch`, `PageDots`, `PictureFrame`;
   - `ListFade`, `FadingEdges`.

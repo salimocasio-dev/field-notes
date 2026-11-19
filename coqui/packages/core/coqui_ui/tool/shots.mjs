@@ -68,10 +68,10 @@ if (!existsSync(join(buildDir, 'index.html'))) {
 // so the pairing file cannot drift from what is drawn.
 const src = readFileSync(join(pkg, 'tool', 'gallery', 'screens.dart'), 'utf8');
 const sections = [];
-const re = /GallerySection\(\s*'([^']+)',\s*'([^']*)',\s*(?:const\s*)?\[([^\]]*)\]/g;
+const re = /GallerySection\(\s*'([^']+)',\s*'((?:[^'\\]|\\.)*)',\s*(?:const\s*)?\[([^\]]*)\]/g;
 for (let m; (m = re.exec(src)); ) {
   const refs = [...m[3].matchAll(/'([^']+)'/g)].map((x) => x[1]);
-  sections.push({ name: m[1], title: m[2], refs });
+  sections.push({ name: m[1], title: m[2].replace(/\\(.)/g, '$1'), refs });
 }
 if (!sections.length) {
   console.error('no sections found in tool/gallery/screens.dart');

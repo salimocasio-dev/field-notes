@@ -19,6 +19,22 @@ library;
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// The text font: Roboto, shipped in `fonts/` in the weights below, the same on web, Android and
+/// iOS. The family is declared in this package's pubspec; `package: 'coqui_ui'` lets any app find it.
+const String coquiFontFamily = 'Roboto';
+const String coquiFontPackage = 'coqui_ui';
+
+/// The Roboto file that draws each CSS weight the tokens use (pubspec.yaml declares the same four).
+/// 400 Regular, 500 Medium, 700 Bold. 600 has no file of its own: CSS font matching, given a weight
+/// above 500 and files at 400, 500 and 700, takes the first weight at or above the wanted one, 700, so
+/// 600 draws with the Bold file. No weight is synthesised.
+const Map<int, String> coquiFontFiles = {
+  400: 'fonts/Roboto-Regular.ttf',
+  500: 'fonts/Roboto-Medium.ttf',
+  600: 'fonts/Roboto-Bold.ttf',
+  700: 'fonts/Roboto-Bold.ttf',
+};
+
 TextStyle _s(
   double size,
   double line,
@@ -28,6 +44,8 @@ TextStyle _s(
   List<FontFeature>? features,
 }) => TextStyle(
   inherit: false,
+  fontFamily: coquiFontFamily,
+  package: coquiFontPackage,
   color: color,
   fontSize: size,
   fontWeight: weight,
@@ -211,6 +229,52 @@ abstract final class CoquiText {
     FontWeight.w500,
     CoquiColors.lessonInk2,
   );
+
+  /// Every style above by name (the font test walks it: each style's weight must have a real font file).
+  static Map<String, TextStyle> get all => {
+    'body': body,
+    'h1': h1,
+    'h2': h2,
+    'small': small,
+    'smallMuted': smallMuted,
+    'bodyMuted': bodyMuted,
+    'label': label,
+    'eyebrow': eyebrow,
+    'chip': chip,
+    'button': button,
+    'buttonOutline': buttonOutline,
+    'buttonDisabled': buttonDisabled,
+    'tab': tab,
+    'tabOn': tabOn,
+    'cardWord': cardWord,
+    'cardWordLarge': cardWordLarge,
+    'meterLabel': meterLabel,
+    'todayTitle': todayTitle,
+    'todaySub': todaySub,
+    'rowTitle': rowTitle,
+    'rowBold': rowBold,
+    'ok': ok,
+    'sheetTitle': sheetTitle,
+    'segment': segment,
+    'stat': stat,
+    'lessonCaption': lessonCaption,
+    'lessonH1': lessonH1,
+    'lessonBody': lessonBody,
+    'lessonBodyStrong': lessonBodyStrong,
+    'lessonH2': lessonH2,
+    'lessonSub': lessonSub,
+    'lessonWord': lessonWord,
+    'lessonButton': lessonButton,
+    'lessonButtonOutline': lessonButtonOutline,
+    'lessonAa': lessonAa,
+    'lessonCount': lessonCount,
+    'lessonFin': lessonFin,
+    'bookLine': bookLine,
+    'bookLineBig': bookLineBig,
+    'bookWho': bookWho,
+    'lessonLine': lessonLine,
+    'lessonStateLabel': lessonStateLabel,
+  };
 }
 
 /// The one way to write Pixelify Sans, with ligatures OFF.
@@ -227,6 +291,7 @@ TextStyle pixelifyStyle({
 }) => TextStyle(
   inherit: false,
   fontFamily: 'Pixelify Sans',
+  package: 'coqui_ui',
   fontSize: fontSize,
   fontWeight: fontWeight,
   color: color,

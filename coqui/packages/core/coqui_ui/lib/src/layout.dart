@@ -5,7 +5,25 @@ library;
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// The width, in logical pixels, that a browser draws a CSS border of [css] px. Chrome takes a border
+/// width down to whole CSS pixels (1.5 becomes 1, never below 1) and then snaps the box to device pixels:
+/// at ratio 2.625 both 1 and 1.5 px borders are 3 device pixels, at ratio 3 they are 3 as well (measured
+/// on the reference pictures: an outline pill's ring is 3 device pixels on both phones). Every CSS
+/// border (not a `box-shadow` ring, which a browser draws as it is) goes through this.
+double cssBorderWidth(double css, double devicePixelRatio) {
+  final whole = css.floor() < 1 ? 1 : css.floor();
+  final px = (whole * devicePixelRatio).round();
+  return (px < 1 ? 1 : px) / devicePixelRatio;
+}
+
 abstract final class CoquiLayout {
+  /// [cssBorderWidth] for this screen's device pixel ratio.
+  static double border(BuildContext context, double css) => cssBorderWidth(
+    css,
+    MediaQuery.maybeDevicePixelRatioOf(context) ??
+        View.of(context).devicePixelRatio,
+  );
+
   /// `@media (orientation:landscape) and (max-height:500px)`: a phone on its
   /// side, in app.html (lower tab bar, smaller Mapa disc). app.html:49, 136
   static bool compact(BuildContext context) {
