@@ -439,6 +439,15 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 
 **Done when:** on the scripted fake, events arrive in the order llamada_check.py expects; the web build loads the client without error on the test site. No real call: it needs Salim's microphone and costs his credits.
 
+**Result (Nov 19): built and merged to main; the real library load and a real call are unverified until the test site.** Built by an Opus builder; its tests were run again by the orchestrator (136 on vm, 84 in Chrome).
+- `createCallSession` on the web: `@elevenlabs/client@1.25.0` from the same address, loaded as `precarga` loads it; `startSession` with the same agent id, `connectionType: "websocket"`, the six variables in llamada.js's order (job, minutes and opening from `CallBrief`); `show_picture` answers "shown" and becomes a `Tool` event; the callbacks become `Connected`, `AgentLine`, `Heard`, `Mode`, `CallError`, `Ended`.
+- `available` is false in phone builds, where `callsAllowed` is false, and on the web once the library failed to load (the next read tries again).
+- `CallStub` is `installStub` ported: the same steps, pacing and `?stub=` options. Against the old stub run in node it gives the same callbacks at the same ms in all 8 scenarios of llamada_check.py. Its Spanish test lines are in an asset made from llamada.js, not in code.
+- No call was placed. The library's own code (the npm package, served locally) loads through the same path and `startSession` is a function. The real address is blocked from the build machine.
+- **To check on the test site, with no call started:** on Hablar with an open call card, in the console: `typeof window.ELConv?.startSession + ' ' + window.ELConvError` must print `function undefined`.
+- `ClipPlayer.loop('rain', ...)` is idempotent on the web and in phone builds (tested).
+- Follow-up, order 19b: a reason for a failed start in the contract (microphone, library, failed, unavailable), and the sound context resumed when a call ends (the old page reloaded on leaving a call; this app does not).
+
 ## Order 20. Shared look (builder, coqui_ui)
 
 **From:** the `<style>` of historia/app.html, cual.html, index.html; notas/ui-decisiones-1 to 3; pages 09 and 10; `ref/pantallas/`.
