@@ -4,10 +4,10 @@ Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this
 
 ## Live now
 
-- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=37
+- The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=39
 - Voice test for speaking turns: historia/habla-prueba.html?v=1
 - Story 1 directly: historia/?v=35 . Any story: ?cuento=<id> (the ids are in historia/curso.js). ¿Cuál?: historia/cual.html
-- Script tags carry ?v=35 in index.html, cual.html, app.html and nivel.html (app.html also loads llamada.js). Raise all four when a script changes. Exception: v=36 and v=37 changed only llamada.js, so only its tag in app.html was raised (to ?v=37); the others stay at ?v=35.
+- Script tags: index.html, cual.html, app.html and nivel.html carry them (app.html also loads llamada.js). Raise the tag of every file that changed, in every page that loads it; leave the others. Now: cual.js ?v=39 (app.html, cual.html, nivel.html), juego.js and palabras.js ?v=38, llamada.js ?v=37, the rest ?v=35. The books and their pictures are fetched with ?v=39 in app.html (the constant BV).
 - The audio job also commits ("Audio: cuento") after a push that touches cuentos/. Pull before pushing again, or the push is refused. It records as soon as a story file reaches the branch, so a line pushed early and changed later is recorded twice: do not push new story files until their Spanish has had its last review, and keep test story files out of cuentos/ (a story id may only hold a to z, 0 to 9 and the hyphen).
 
 ## Script lessons so far (what reviewers have caught; check every new script against this before it goes to them)
@@ -48,6 +48,43 @@ Pictures (what readers with no sound and no words could not read)
 
 Pairs
 - No old word in the sentence may fit one picture only. "Mi" or "tu" instead of "un" and "una". The other picture is as lively as the right one. No picture is right twice.
+
+## Nov 19, part 21: Leer, Palabras and Repaso rebuilt, v=39
+
+State on Nov 19. Live: v=39. The decisions and the reasons are on page 10 (10-leer-y-repaso.md); what stands on screen is on page 09 ("Reading and review"). Nothing in the stories, scenes or recordings changed.
+
+### What was built
+- Leer: a picture book of each story he has played. 43 books, 231 pages, 591 lines (historia/libros/<id>.json, pictures in historia/libros/img/). Made mechanically by historia/tools/gen_libros.py from the story files and a machine play of each story. The 8 routines (Haz esto) have no book.
+- Biblioteca (in app.html): per place, a row for each story played: cover, title, Listen and Read; "Read ✓" after the last page. The book reader is full screen: one page at a time, the line playing lit, a speaker icon on each line, a card for words with a picture, "Fin" on the last page. The old Read sheet and its placeholder hacks are gone.
+- Which books show Read: only a book with "lee": true. The per-story verdict is the LEE table in gen_libros.py. 22 books read well; 21 wait for fixes and show Listen only. Fixes go into the tool's per-story overrides, never into the JSON by hand.
+- Palabras (new): every word he has met, by place, with its picture or a plain tile and the Ear and Mouth meters; a word sheet with "Heard in" (lines from stories he has played, each with a play button); "Add a word or a goal" says "Saved. Material for it comes later."
+- Repaso (cual.js, cual.html): up to 10 words a session, the 6 s rule, a miss comes back once (three items later, unscored), an end screen with the session's words in two groups and no score. The due check uses the palabras clock. The scheduler is otherwise unchanged.
+- Last change (decided Nov 19): the end screen's "Back to Palabras" is the green primary button, like the others. repaso_check.py checks the colour.
+- Tags: v=39 raised only the cual.js tag (app.html, cual.html, nivel.html). Book JSON and pictures are fetched with ?v=39. leer_check.py checks that every request for them carries it.
+
+### Fresh reviews and what they found
+- First fresh read of Leer and Palabras: fixes on page 10, "After the first fresh read" (lit line from the first moment, speaker icons, page count, "Fin", the word always spelled, key line, nothing under the tab bar).
+- Beginner review of all 43 books (Spanish text only): 13 read well, 23 needed a look, 7 not worth a book. Mostly mechanical faults: the picture showed the moment before its lines; bare reaction lines with no touch to explain them; game marks in the pictures. Books rebuilt (picture taken at the end of the page's last line, short lines and thank/reply pairs left out, all game marks off).
+- Between the two reviews: a page's picture is taken just before the next kept line starts (the last page: at the story's end), before a camera move if one comes first.
+- Second fresh review of the books: 22 read well (lee true), 21 wait for fixes.
+- Second fresh read of Leer and Palabras: sheets above the tab bar and the Mapa disc, a fade over lists under the tab bar, the book's picture keeps its place, more space round Fin, a lighter word-card scrim.
+- Fresh read of Repaso: start line, dim while the sentence plays, check badge on a right answer, one bar segment per word, end screen summary line and grey lines, grid centred. Page 10, "Repaso after the fresh read".
+
+### Tests (Nov 19, on localhost, the branch as pushed)
+- leer_check.py: 113 checks, 0 failed.
+- repaso_check.py: 96 checks, 96 passed.
+- app_check.py: page ready, plan, shelf, a book that reads well opens, errors [].
+- cual_check.py: a practice session of 10, all right, errors []. With todo=1&n=140: all 128 pairs asked, all right, errors [].
+- nivel_check.py (every item): 48 of 48 right, 32 stories understood, errors [].
+- llamada_check.py: 178 ok, FAILED: 0.
+- habla_motor_check.py: 186 ok, FAILED: 0.
+- gen_libros.py --check: no problem (43 books, 231 pages, 591 lines).
+- matriz.sh over all 51 live stories (plans r and wwwwwwwwww, no mic query), the branch against untouched main (ee1c866): 204 runs. Every run: exit 0, 0 page errors, finished. "lost" is the same in 101 of 102 pairs. The one that differs, Hasta mañana with all wrong, gave 3 on the branch and 2 on main; four more runs of each gave 2 or 3 on both (its draws are random), so no story changed.
+
+### Not done
+- The 21 books that do not read well yet (Listen only until their overrides fix them).
+- The 88 speaking turns for the older stories: not live, waiting on his seven answers.
+- Word-level highlight in reading, themes, pictures for the 28 words without a pair (page 10, "Not now").
 
 ## In work, Nov 14: place 3, scene 4, A comer (stories 33 to 35)
 

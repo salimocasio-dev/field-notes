@@ -33,7 +33,7 @@ Rebuilt in two rounds after the owner called the app "a mess"; the decisions are
 - Lessons (story, ¿Cuál?, level check) are full screen on calm dark grey, the tab bar hidden: a top bar with a close X (works mid-play and returns to where the lesson began), a thin progress bar and the sound button; pictures whole-number scaled; the start disc in the bottom third; at a story's end its last picture stays, with the title and buttons under it.
 - Map: stop states (current ringed, done green, open outlined, locked grey); the Today card never covers a stop; small phones and landscape scroll the map instead of shrinking it.
 - Place sheet: 70% high, a close X, the tab bar stays usable.
-- Biblioteca lists only what he has played; reading audio stops when its sheet closes. Palabras reviews only heard words. Hablar showed calls as "Calls open later" at v=34 (the old test page is no longer linked); v=35 replaces that with the call, below. Each tab keeps its scroll.
+- Biblioteca, Palabras and ¿Cuál? were rebuilt on Nov 19: see "Reading and review (Nov 19)" below and page 10. Hablar showed calls as "Calls open later" at v=34 (the old test page is no longer linked); v=35 replaces that with the call, below. Each tab keeps its scroll.
 - Fixed with it: finished stories now record progress (they recorded nothing before: a `window.PAL` test in juego.js).
 - Round 3 (v=34): map stops show done/current/open/locked with an N/M chip; the place sheet marks the next story; story ends offer Play again and Map; landscape lessons keep their controls in the right column; Hablar is one card; the level check's explanation lives in Yo.
 
@@ -50,9 +50,18 @@ Built from historia/notas/llamada-decisiones-1.md (code: historia/llamada.js). O
 - Landscape (844x390): the picture at the left, the lines and the mic at the right. Small phone (360x640): the picture scales down by whole numbers.
 - Checked with the stub (?callstub=1, page 05): states, sizes, colours and layout at 390x844, 360x640 and 844x390.
 
+## Reading and review (Nov 19, v=39)
+
+Rebuilt from page 10 (10-leer-y-repaso.md); that page has every decision and its reason. Checks: leer_check.py, repaso_check.py, app_check.py, gen_libros.py --check.
+- Biblioteca: per place, one row for each story he has played: a cover (the book's first page), the title, Listen and Read. "Read ✓" once the book was read to its last page. Read shows only for a book that read well (22 of 43 now); the other 21 show Listen only until their own fixes. Routines (Haz esto) show Listen only.
+- The book: full screen on calm dark grey, the tab bar hidden. One page at a time: the picture (whole-number scaled), up to three lines, 20 px type (24 px on the text-size button). The line playing is lit; each line has a speaker icon and plays again on a tap. Words with a picture have a dotted underline; a tap shows the word's picture. Page count "3 / 9". Next and back by arrows or swipe, no auto-advance. The last page says "Fin" with "Otra vez" and "Biblioteca", both green.
+- Palabras: the Repaso card, then every word he has met, by place, with its picture or a plain tile, and the Ear and Mouth meters (four dots each). A tap opens the word sheet: big picture, meters, when it comes back, "Heard in" with a play button on each line. "Add a word or a goal" saves the text and says material comes later.
+- Repaso (¿Cuál?): up to 10 words a session. Both pictures are dim while the sentence plays. No touch for 6 s: the sentence plays again; 6 s more: the right picture is shown and it counts as a miss. A miss comes back once, three items later, unscored. The end screen: a summary line, the words with their pictures under "Moving up" and "Coming back soon" ("Right" and "Missed" after a practice), and a green "Back to Palabras". No score number.
+- Books and their pictures are fetched with ?v=39, so a phone does not keep an old copy.
+
 ## Not done from the doc
 
 - Pitch-contour feedback. (The mic states are built for the call at v=35; the learner's side is a level ring, not a waveform.)
-- Per-word tap-to-jump in reading (tap works per line).
+- Per-word tap-to-jump and word-by-word highlight in reading: tap and highlight work per line (no word timing exists; page 10, "Not now").
 - A rich haptic on unlocking a place; streak freezes; the map at an angle; finished places changing the map's art.
-- 28 story words have no picture pair; they show as plain rows under "More words" in Palabras.
+- 28 story words have no picture pair; they show as plain tiles with the word large in Palabras (page 10, "Not now").
