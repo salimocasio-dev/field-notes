@@ -1,0 +1,4926 @@
+{
+ "scene": "frente",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    44,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "name": "casa",
+   "rect": [
+    51.7,
+    15,
+    180.6,
+    199
+   ]
+  },
+  {
+   "name": "puerta",
+   "rect": [
+    117,
+    30,
+    98,
+    108
+   ]
+  },
+  {
+   "name": "ventana",
+   "rect": [
+    84,
+    24,
+    98,
+    108
+   ]
+  },
+  {
+   "name": "cuadro",
+   "rect": [
+    63,
+    18,
+    98,
+    108
+   ]
+  },
+  {
+   "name": "wide@donde-esta-el-pajaro",
+   "rect": [
+    30,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "full.casa": "s000.full.casa.png",
+    "full.puerta": "s000.full.puerta.png",
+    "full.ventana": "s000.full.ventana.png",
+    "full.cuadro": "s000.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s000.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "nochar.casa": "s000.nochar.casa.png",
+    "nochar.puerta": "s000.full.puerta.png",
+    "nochar.ventana": "s000.nochar.ventana.png",
+    "nochar.cuadro": "s000.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s000.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     150,
+     178,
+     32,
+     27
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@start",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 28,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "start,0-19",
+     "d-toc-toc/wrong": "start,0-19",
+     "d-toc-toc/alternate": "start,0-19",
+     "donde-esta-el-pajaro/right": "start",
+     "donde-esta-el-pajaro/wrong": "start",
+     "donde-esta-el-pajaro/alternate": "start",
+     "el-bizcocho/right": "start",
+     "el-bizcocho/wrong": "start",
+     "el-bizcocho/alternate": "start",
+     "h-frente/right": "start,0-6,17-19",
+     "h-frente/wrong": "start,0-6,17-19",
+     "h-frente/alternate": "start,0-6,17-19",
+     "la-lluvia/right": "start,0-18",
+     "la-lluvia/wrong": "start,0-18",
+     "la-lluvia/alternate": "start,0-18"
+    },
+    "pairs": [
+     "cual-frente:casa.si",
+     "cual-frente:casa.no",
+     "cual-frente:puerta.si",
+     "cual-frente:puerta.no",
+     "cual-frente:ventana.si",
+     "cual-frente:ventana.no",
+     "cual-frente:abuela.no",
+     "cual-frente:abre.no",
+     "cual-frente:sí.si",
+     "cual-frente:sí.no",
+     "cual-frente:no.si",
+     "cual-frente:no.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "full.casa": "s001.full.casa.png",
+    "full.puerta": "s001.full.puerta.png",
+    "full.ventana": "s001.full.ventana.png",
+    "full.cuadro": "s001.full.cuadro.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "nochar.casa": "s001.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s001.nochar.ventana.png",
+    "nochar.cuadro": "s001.nochar.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 9.299038506930978,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     9,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@20",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 143,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "20",
+     "d-toc-toc/wrong": "20",
+     "d-toc-toc/alternate": "20"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "full.casa": "s002.full.casa.png",
+    "full.puerta": "s001.nochar.puerta.png",
+    "full.ventana": "s002.full.ventana.png",
+    "full.cuadro": "s002.full.cuadro.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "nochar.casa": "s002.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s002.full.ventana.png",
+    "nochar.cuadro": "s002.full.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 20.212210157368826,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     20,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@21",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 156,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "21-22",
+     "d-toc-toc/wrong": "21-22",
+     "d-toc-toc/alternate": "21-22",
+     "la-lluvia/wrong": "20-21"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "full.casa": "s003.full.casa.png",
+    "full.puerta": "s003.full.puerta.png",
+    "full.ventana": "s003.full.ventana.png",
+    "full.cuadro": "s003.full.cuadro.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "nochar.casa": "s003.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s003.full.ventana.png",
+    "nochar.cuadro": "s003.full.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 20.46250073533719,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     20,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@23",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 157,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "23",
+     "d-toc-toc/wrong": "23",
+     "d-toc-toc/alternate": "23"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "full.casa": "s004.full.casa.png",
+    "full.puerta": "s004.full.puerta.png",
+    "full.ventana": "s004.full.ventana.png",
+    "full.cuadro": "s004.full.cuadro.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "nochar.casa": "s004.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s004.full.ventana.png",
+    "nochar.cuadro": "s004.full.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 22,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     22,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@24",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 174,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "24-29",
+     "d-toc-toc/wrong": "24-29",
+     "d-toc-toc/alternate": "24-29",
+     "la-lluvia/right": "23-25",
+     "la-lluvia/wrong": "23-25,27",
+     "la-lluvia/alternate": "23-25,27"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "full.casa": "s005.full.casa.png",
+    "full.puerta": "s005.full.puerta.png",
+    "full.ventana": "s005.full.ventana.png",
+    "full.cuadro": "s005.full.cuadro.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "nochar.casa": "s005.nochar.casa.png",
+    "nochar.puerta": "s005.nochar.puerta.png",
+    "nochar.ventana": "s005.nochar.ventana.png",
+    "nochar.cuadro": "s005.nochar.cuadro.png",
+    "bg": "bg.fr0_0_1.png"
+   },
+   "background": [
+    "fr0_0_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 22,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     22,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@30",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 211,
+   "distinctW": 12,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "30-35,42-44",
+     "d-toc-toc/wrong": "30-35,42-44",
+     "d-toc-toc/alternate": "30-35,42-44",
+     "la-lluvia/right": "26-33,35"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "full.casa": "s006.full.casa.png",
+    "full.puerta": "s006.full.puerta.png",
+    "full.ventana": "s006.full.ventana.png",
+    "full.cuadro": "s006.full.cuadro.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "nochar.casa": "s006.nochar.casa.png",
+    "nochar.puerta": "s006.nochar.puerta.png",
+    "nochar.ventana": "s006.nochar.ventana.png",
+    "nochar.cuadro": "s006.nochar.cuadro.png",
+    "bg": "bg.fr1_0_1.png"
+   },
+   "background": [
+    "fr1_0_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 22,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     22,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": [
+     151,
+     56,
+     29,
+     49
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@36",
+   "cam": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "F": 239,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "36-41",
+     "d-toc-toc/wrong": "36-41",
+     "d-toc-toc/alternate": "36-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "full.casa": "s007.full.casa.png",
+    "full.puerta": "s007.full.puerta.png",
+    "full.ventana": "s007.full.ventana.png",
+    "full.cuadro": "s007.full.cuadro.png",
+    "nochar": "s007.full.png",
+    "nochar.wide": "s007.full.wide.png",
+    "nochar.casa": "s007.full.casa.png",
+    "nochar.puerta": "s007.full.puerta.png",
+    "nochar.ventana": "s007.full.ventana.png",
+    "nochar.cuadro": "s007.full.cuadro.png",
+    "bg": "bg.fr0_0_1.png"
+   },
+   "background": [
+    "fr0_0_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.33,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 133.28025827841446,
+     "tx": 140
+    },
+    "nube2": {
+     "x": 35.79963722111596,
+     "tx": 44
+    },
+    "nube3": {
+     "x": 180.21407531692654,
+     "tx": 176
+    },
+    "rain": 1,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     133,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@45",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 323,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "45",
+     "d-toc-toc/wrong": "45",
+     "d-toc-toc/alternate": "45"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "full.casa": "s008.full.casa.png",
+    "full.puerta": "s008.full.puerta.png",
+    "full.ventana": "s008.full.ventana.png",
+    "full.cuadro": "s008.full.cuadro.png",
+    "nochar": "s008.full.png",
+    "nochar.wide": "s008.full.wide.png",
+    "nochar.casa": "s008.full.casa.png",
+    "nochar.puerta": "s008.full.puerta.png",
+    "nochar.ventana": "s008.full.ventana.png",
+    "nochar.cuadro": "s008.full.cuadro.png",
+    "bg": "bg.fr0_0_1.png"
+   },
+   "background": [
+    "fr0_0_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.33,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 137.28141267087014,
+     "tx": 140
+    },
+    "nube2": {
+     "x": 40.682401903434716,
+     "tx": 44
+    },
+    "nube3": {
+     "x": 177.7048767996238,
+     "tx": 176
+    },
+    "rain": 1,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     137,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@46",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 331,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "46",
+     "d-toc-toc/wrong": "46",
+     "d-toc-toc/alternate": "46"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "full.casa": "s009.full.casa.png",
+    "full.puerta": "s009.full.puerta.png",
+    "full.ventana": "s009.full.ventana.png",
+    "full.cuadro": "s009.full.cuadro.png",
+    "nochar": "s009.full.png",
+    "nochar.wide": "s009.full.wide.png",
+    "nochar.casa": "s009.full.casa.png",
+    "nochar.puerta": "s009.full.puerta.png",
+    "nochar.ventana": "s009.full.ventana.png",
+    "nochar.cuadro": "s009.full.cuadro.png",
+    "bg": "bg.fr0_0_1.png"
+   },
+   "background": [
+    "fr0_0_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.33,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 140,
+     "tx": 140
+    },
+    "nube2": {
+     "x": 44,
+     "tx": 44
+    },
+    "nube3": {
+     "x": 176,
+     "tx": 176
+    },
+    "rain": 1,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     140,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@47",
+   "cam": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "F": 343,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "47-48",
+     "d-toc-toc/wrong": "47-48",
+     "d-toc-toc/alternate": "47-48",
+     "la-lluvia/wrong": "37"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s010",
+   "files": {
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "full.casa": "s010.full.casa.png",
+    "full.puerta": "s010.full.puerta.png",
+    "full.ventana": "s010.full.ventana.png",
+    "full.cuadro": "s010.full.cuadro.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
+    "nochar.casa": "s010.nochar.casa.png",
+    "nochar.puerta": "s010.nochar.puerta.png",
+    "nochar.ventana": "s010.nochar.ventana.png",
+    "nochar.cuadro": "s010.nochar.cuadro.png",
+    "bg": "bg.fr0_1_1.png"
+   },
+   "background": [
+    "fr0_1_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.33,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 140,
+     "tx": 140
+    },
+    "nube2": {
+     "x": 44,
+     "tx": 44
+    },
+    "nube3": {
+     "x": 176,
+     "tx": 176
+    },
+    "rain": 1,
+    "rustle": null,
+    "storm": 1,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     140,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "d-toc-toc/right@49",
+   "cam": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "F": 368,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "d-toc-toc/right": "49-54",
+     "d-toc-toc/wrong": "49-54",
+     "d-toc-toc/alternate": "49-54",
+     "la-lluvia/right": "59-61",
+     "la-lluvia/wrong": "35,38-63",
+     "la-lluvia/alternate": "61-63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s011",
+   "files": {
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "full.casa": "s011.full.casa.png",
+    "full.puerta": "s011.full.puerta.png",
+    "full.ventana": "s011.full.ventana.png",
+    "full.cuadro": "s011.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s011.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
+    "nochar.casa": "s011.nochar.casa.png",
+    "nochar.puerta": "s011.nochar.puerta.png",
+    "nochar.ventana": "s011.nochar.ventana.png",
+    "nochar.cuadro": "s011.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s011.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     150,
+     178,
+     32,
+     27
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@0",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 32,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "0-21,23,26-30,32,35-39,41,44-48,50-51",
+     "donde-esta-el-pajaro/wrong": "0-21,23,27-31,33,37-41,43,47-54",
+     "donde-esta-el-pajaro/alternate": "0-21,23,26-30,32,36-40,42,45-52"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s012",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "full.casa": "s012.full.casa.png",
+    "full.puerta": "s011.full.puerta.png",
+    "full.ventana": "s012.full.ventana.png",
+    "full.cuadro": "s012.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s012.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "nochar.casa": "s012.nochar.casa.png",
+    "nochar.puerta": "s011.nochar.puerta.png",
+    "nochar.ventana": "s012.nochar.ventana.png",
+    "nochar.cuadro": "s012.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s012.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": "casa",
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     150,
+     178,
+     32,
+     27
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@22",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 168,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "22,31",
+     "donde-esta-el-pajaro/wrong": "22,32",
+     "donde-esta-el-pajaro/alternate": "22,31"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s013",
+   "files": {
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "full.casa": "s013.full.casa.png",
+    "full.puerta": "s013.full.puerta.png",
+    "full.ventana": "s013.full.ventana.png",
+    "full.cuadro": "s013.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s013.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
+    "nochar.casa": "s013.nochar.casa.png",
+    "nochar.puerta": "s013.nochar.puerta.png",
+    "nochar.ventana": "s013.nochar.ventana.png",
+    "nochar.cuadro": "s013.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s013.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "bg.fr1_0_0.png"
+   },
+   "background": [
+    "fr1_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 1,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": [
+     151,
+     57,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@24",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 220,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "24-25,42-43",
+     "donde-esta-el-pajaro/wrong": "34-36",
+     "donde-esta-el-pajaro/alternate": "24-25,33-35,43-44"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s014",
+   "files": {
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "full.casa": "s014.full.casa.png",
+    "full.puerta": "s014.full.puerta.png",
+    "full.ventana": "s014.full.ventana.png",
+    "full.cuadro": "s014.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s014.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
+    "nochar.casa": "s014.nochar.casa.png",
+    "nochar.puerta": "s014.nochar.puerta.png",
+    "nochar.ventana": "s014.nochar.ventana.png",
+    "nochar.cuadro": "s014.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s014.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": "casa_pequena",
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     88,
+     153,
+     28,
+     24
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": [
+     58,
+     106,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@33",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 327,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "33-34",
+     "donde-esta-el-pajaro/wrong": "24-26"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s015",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "full.casa": "s015.full.casa.png",
+    "full.puerta": "s015.full.puerta.png",
+    "full.ventana": "s015.full.ventana.png",
+    "full.cuadro": "s015.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s015.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
+    "nochar.casa": "s015.nochar.casa.png",
+    "nochar.puerta": "s015.nochar.puerta.png",
+    "nochar.ventana": "s015.nochar.ventana.png",
+    "nochar.cuadro": "s015.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s015.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": "todo",
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@40",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 398,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "40",
+     "donde-esta-el-pajaro/wrong": "42",
+     "donde-esta-el-pajaro/alternate": "41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s016",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "full.casa": "s016.full.casa.png",
+    "full.puerta": "s016.full.puerta.png",
+    "full.ventana": "s016.full.ventana.png",
+    "full.cuadro": "s016.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s016.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
+    "nochar.casa": "s016.nochar.casa.png",
+    "nochar.puerta": "s016.nochar.puerta.png",
+    "nochar.ventana": "s016.nochar.ventana.png",
+    "nochar.cuadro": "s016.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s016.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "bg.fr0_5_0_0.png"
+   },
+   "background": [
+    "fr0.5_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0.5,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": [
+     181,
+     97,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@49",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 529,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "49"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s017",
+   "files": {
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "full.casa": "s017.full.casa.png",
+    "full.puerta": "s017.full.puerta.png",
+    "full.ventana": "s017.full.ventana.png",
+    "full.cuadro": "s017.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s017.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
+    "nochar.casa": "s017.nochar.casa.png",
+    "nochar.puerta": "s017.nochar.puerta.png",
+    "nochar.ventana": "s017.nochar.ventana.png",
+    "nochar.cuadro": "s017.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s017.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 2,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": [
+     161,
+     77,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "donde-esta-el-pajaro/right@52",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 613,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/right": "52-61",
+     "donde-esta-el-pajaro/wrong": "55-64",
+     "donde-esta-el-pajaro/alternate": "53-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s018",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "full.casa": "s018.full.casa.png",
+    "full.puerta": "s018.full.puerta.png",
+    "full.ventana": "s018.full.ventana.png",
+    "full.cuadro": "s018.full.cuadro.png",
+    "full.wide@donde-esta-el-pajaro": "s018.full.wide@donde-esta-el-pajaro.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
+    "nochar.casa": "s018.nochar.casa.png",
+    "nochar.puerta": "s018.nochar.puerta.png",
+    "nochar.ventana": "s018.nochar.ventana.png",
+    "nochar.cuadro": "s018.nochar.cuadro.png",
+    "nochar.wide@donde-esta-el-pajaro": "s018.nochar.wide@donde-esta-el-pajaro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": "palma_grande",
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 1,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     42,
+     106,
+     24,
+     21
+    ],
+    "abuela": [
+     110,
+     58,
+     36,
+     50
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "donde-esta-el-pajaro/wrong@44",
+   "cam": [
+    30,
+    0,
+    196,
+    216
+   ],
+   "F": 525,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-pajaro/wrong": "44-46"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s019",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "full.casa": "s000.full.casa.png",
+    "full.puerta": "s000.full.puerta.png",
+    "full.ventana": "s000.full.ventana.png",
+    "full.cuadro": "s000.full.cuadro.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "nochar.casa": "s000.nochar.casa.png",
+    "nochar.puerta": "s000.full.puerta.png",
+    "nochar.ventana": "s000.nochar.ventana.png",
+    "nochar.cuadro": "s000.nochar.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 1,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 1,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     150,
+     178,
+     32,
+     27
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "el-bizcocho/right@0",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 7,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "0-2,4-5,21-26",
+     "el-bizcocho/wrong": "0-2,4-5,21-26",
+     "el-bizcocho/alternate": "0-2,4-5,21-26"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s020",
+   "files": {
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "full.casa": "s020.full.casa.png",
+    "full.puerta": "s020.full.puerta.png",
+    "full.ventana": "s020.full.ventana.png",
+    "full.cuadro": "s020.full.cuadro.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
+    "nochar.casa": "s020.nochar.casa.png",
+    "nochar.puerta": "s020.nochar.puerta.png",
+    "nochar.ventana": "s020.nochar.ventana.png",
+    "nochar.cuadro": "s020.nochar.cuadro.png",
+    "bg": "bg.fr0_1_0.png"
+   },
+   "background": [
+    "fr0_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 1,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 1,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "el-bizcocho/right@6",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 75,
+   "distinctW": 10,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "3,6-20,27-33",
+     "el-bizcocho/wrong": "3,6-20,27-33",
+     "el-bizcocho/alternate": "3,6-20,27-33"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s021",
+   "files": {
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "full.casa": "s021.full.casa.png",
+    "full.puerta": "s021.full.puerta.png",
+    "full.ventana": "s021.full.ventana.png",
+    "full.cuadro": "s021.full.cuadro.png",
+    "nochar": "s021.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
+    "nochar.casa": "s021.nochar.casa.png",
+    "nochar.puerta": "s021.nochar.puerta.png",
+    "nochar.ventana": "s021.nochar.ventana.png",
+    "nochar.cuadro": "s021.nochar.cuadro.png",
+    "bg": "bg.fr1_1_0.png"
+   },
+   "background": [
+    "fr1_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 1,
+    "dark": 0,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 1,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": [
+     151,
+     56,
+     29,
+     49
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "el-bizcocho/right@35",
+   "cam": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "F": 227,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "35-36",
+     "el-bizcocho/wrong": "35-36",
+     "el-bizcocho/alternate": "35-36"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s022",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "full.casa": "s022.full.casa.png",
+    "full.puerta": "s022.full.puerta.png",
+    "full.ventana": "s022.full.ventana.png",
+    "full.cuadro": "s022.full.cuadro.png",
+    "nochar": "s022.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
+    "nochar.casa": "s021.nochar.casa.png",
+    "nochar.puerta": "s021.nochar.puerta.png",
+    "nochar.ventana": "s021.nochar.ventana.png",
+    "nochar.cuadro": "s021.nochar.cuadro.png",
+    "bg": "bg.fr1_1_0.png"
+   },
+   "background": [
+    "fr1_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "el-bizcocho/right@37",
+   "cam": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "F": 241,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "34,37-41",
+     "el-bizcocho/wrong": "34,37-41",
+     "el-bizcocho/alternate": "34,37-41",
+     "h-frente/right": "12-14",
+     "h-frente/wrong": "12-14",
+     "h-frente/alternate": "12-14"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s023",
+   "files": {
+    "full": "s023.full.png",
+    "full.wide": "s023.full.wide.png",
+    "full.casa": "s023.full.casa.png",
+    "full.puerta": "s023.full.puerta.png",
+    "full.ventana": "s023.full.ventana.png",
+    "full.cuadro": "s023.full.cuadro.png",
+    "nochar": "s023.nochar.png",
+    "nochar.wide": "s023.nochar.wide.png",
+    "nochar.casa": "s023.nochar.casa.png",
+    "nochar.puerta": "s023.nochar.puerta.png",
+    "nochar.ventana": "s023.nochar.ventana.png",
+    "nochar.cuadro": "s023.nochar.cuadro.png",
+    "bg": "bg.fr1_1_0.png"
+   },
+   "background": [
+    "fr1_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": [
+     44,
+     0,
+     66,
+     36
+    ],
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": [
+     105,
+     5,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "el-bizcocho/right@42",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 299,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "42-45",
+     "el-bizcocho/wrong": "42-45",
+     "el-bizcocho/alternate": "42-45"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s024",
+   "files": {
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "full.casa": "s024.full.casa.png",
+    "full.puerta": "s024.full.puerta.png",
+    "full.ventana": "s024.full.ventana.png",
+    "full.cuadro": "s024.full.cuadro.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "nochar.casa": "s024.nochar.casa.png",
+    "nochar.puerta": "s024.nochar.puerta.png",
+    "nochar.ventana": "s024.nochar.ventana.png",
+    "nochar.cuadro": "s024.nochar.cuadro.png",
+    "bg": "bg.fr0_1_0.png"
+   },
+   "background": [
+    "fr0_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": [
+     44,
+     0,
+     66,
+     36
+    ],
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": [
+     96,
+     6,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "el-bizcocho/right@48",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 378,
+   "distinctW": 12,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "48-49,59,63-72",
+     "el-bizcocho/alternate": "57,61-69"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s025",
+   "files": {
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "full.casa": "s025.full.casa.png",
+    "full.puerta": "s025.full.puerta.png",
+    "full.ventana": "s025.full.ventana.png",
+    "full.cuadro": "s025.full.cuadro.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
+    "nochar.casa": "s025.nochar.casa.png",
+    "nochar.puerta": "s025.nochar.puerta.png",
+    "nochar.ventana": "s025.nochar.ventana.png",
+    "nochar.cuadro": "s025.nochar.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": [
+     44,
+     0,
+     66,
+     36
+    ],
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": [
+     191,
+     1,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "el-bizcocho/right@51",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 410,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "46-47,50-58",
+     "el-bizcocho/wrong": "46,49-56",
+     "el-bizcocho/alternate": "46,49-56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s026",
+   "files": {
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "full.casa": "s026.full.casa.png",
+    "full.puerta": "s026.full.puerta.png",
+    "full.ventana": "s026.full.ventana.png",
+    "full.cuadro": "s026.full.cuadro.png",
+    "nochar": "s026.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
+    "nochar.casa": "s024.nochar.casa.png",
+    "nochar.puerta": "s024.nochar.puerta.png",
+    "nochar.ventana": "s024.nochar.ventana.png",
+    "nochar.cuadro": "s024.nochar.cuadro.png",
+    "bg": "bg.fr0_1_0.png"
+   },
+   "background": [
+    "fr0_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": [
+     84,
+     24,
+     33,
+     18
+    ],
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": [
+     151,
+     26,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "el-bizcocho/right@61",
+   "cam": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "F": 500,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/right": "60-62",
+     "el-bizcocho/alternate": "58-60"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s027",
+   "files": {
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "full.casa": "s027.full.casa.png",
+    "full.puerta": "s027.full.puerta.png",
+    "full.ventana": "s027.full.ventana.png",
+    "full.cuadro": "s027.full.cuadro.png",
+    "nochar": "s027.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
+    "nochar.casa": "s027.nochar.casa.png",
+    "nochar.puerta": "s027.nochar.puerta.png",
+    "nochar.ventana": "s027.nochar.ventana.png",
+    "nochar.cuadro": "s027.nochar.cuadro.png",
+    "bg": "bg.fr1_0_0.png"
+   },
+   "background": [
+    "fr1_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": [
+     44,
+     0,
+     66,
+     36
+    ],
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": [
+     167,
+     -8,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "el-bizcocho/wrong@47",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 396,
+   "distinctW": 13,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/wrong": "47-48,57,59-70",
+     "el-bizcocho/alternate": "47-48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s028",
+   "files": {
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "full.casa": "s028.full.casa.png",
+    "full.puerta": "s028.full.puerta.png",
+    "full.ventana": "s028.full.ventana.png",
+    "full.cuadro": "s028.full.cuadro.png",
+    "nochar": "s028.nochar.png",
+    "nochar.wide": "s028.nochar.wide.png",
+    "nochar.casa": "s028.nochar.casa.png",
+    "nochar.puerta": "s028.nochar.puerta.png",
+    "nochar.ventana": "s028.nochar.ventana.png",
+    "nochar.cuadro": "s028.nochar.cuadro.png",
+    "bg": "bg.fr1_0_0.png"
+   },
+   "background": [
+    "fr1_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": [
+     117,
+     30,
+     33,
+     18
+    ],
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": [
+     151,
+     56,
+     29,
+     49
+    ],
+    "pajaro": [
+     151,
+     26,
+     31,
+     28
+    ]
+   },
+   "drawnFrom": "el-bizcocho/wrong@58",
+   "cam": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "F": 547,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "el-bizcocho/wrong": "58"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s029",
+   "files": {
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "full.casa": "s029.full.casa.png",
+    "full.puerta": "s029.full.puerta.png",
+    "full.ventana": "s029.full.ventana.png",
+    "full.cuadro": "s029.full.cuadro.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "nochar.casa": "s029.nochar.casa.png",
+    "nochar.puerta": "s029.nochar.puerta.png",
+    "nochar.ventana": "s029.nochar.ventana.png",
+    "nochar.cuadro": "s029.nochar.cuadro.png",
+    "bg": "bg.fr1_0_0.png"
+   },
+   "background": [
+    "fr1_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 1,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "h-frente/right@8",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 113,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "h-frente/right": "7-11",
+     "h-frente/wrong": "7-11",
+     "h-frente/alternate": "7-11"
+    },
+    "pairs": [
+     "cual-frente:abuela.si",
+     "cual-frente:cierra.no",
+     "cual-frente:hola.si",
+     "cual-frente:adiós.no"
+    ]
+   }
+  },
+  {
+   "id": "s030",
+   "files": {
+    "full": "s030.full.png",
+    "full.wide": "s030.full.wide.png",
+    "full.casa": "s030.full.casa.png",
+    "full.puerta": "s030.full.puerta.png",
+    "full.ventana": "s030.full.ventana.png",
+    "full.cuadro": "s030.full.cuadro.png",
+    "nochar": "s030.nochar.png",
+    "nochar.wide": "s030.nochar.wide.png",
+    "nochar.casa": "s030.nochar.casa.png",
+    "nochar.puerta": "s030.nochar.puerta.png",
+    "nochar.ventana": "s030.nochar.ventana.png",
+    "nochar.cuadro": "s030.nochar.cuadro.png",
+    "bg": "bg.fr0_1_0.png"
+   },
+   "background": [
+    "fr0_1_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "h-frente/right@16",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 187,
+   "distinctW": 20,
+   "reachedBy": {
+    "steps": {
+     "h-frente/right": "15-16,20-30",
+     "h-frente/wrong": "15-16,20-30",
+     "h-frente/alternate": "15-16,20-30"
+    },
+    "pairs": [
+     "cual-frente:abre.si"
+    ]
+   }
+  },
+  {
+   "id": "s031",
+   "files": {
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "full.casa": "s031.full.casa.png",
+    "full.puerta": "s001.full.puerta.png",
+    "full.ventana": "s031.full.ventana.png",
+    "full.cuadro": "s031.full.cuadro.png",
+    "nochar": "s031.nochar.png",
+    "nochar.wide": "s031.nochar.wide.png",
+    "nochar.casa": "s031.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s031.nochar.ventana.png",
+    "nochar.cuadro": "s031.nochar.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 7.231440124338347,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     7,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/right@19",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 213,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/right": "19",
+     "la-lluvia/wrong": "19",
+     "la-lluvia/alternate": "19"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s032",
+   "files": {
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "full.casa": "s032.full.casa.png",
+    "full.puerta": "s001.nochar.puerta.png",
+    "full.ventana": "s032.full.ventana.png",
+    "full.cuadro": "s032.full.cuadro.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
+    "nochar.casa": "s032.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s032.full.ventana.png",
+    "nochar.cuadro": "s032.full.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 19.92117460159166,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     20,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/right@20",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 226,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/right": "20-21",
+     "la-lluvia/alternate": "20-21"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s033",
+   "files": {
+    "full": "s033.full.png",
+    "full.wide": "s033.full.wide.png",
+    "full.casa": "s033.full.casa.png",
+    "full.puerta": "s003.full.puerta.png",
+    "full.ventana": "s033.full.ventana.png",
+    "full.cuadro": "s033.full.cuadro.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
+    "nochar.casa": "s033.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s033.full.ventana.png",
+    "nochar.cuadro": "s033.full.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 21.158975356235445,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     21,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/right@22",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 232,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/right": "22",
+     "la-lluvia/alternate": "22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s034",
+   "files": {
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "full.casa": "s034.full.casa.png",
+    "full.puerta": "s034.full.puerta.png",
+    "full.ventana": "s034.full.ventana.png",
+    "full.cuadro": "s034.full.cuadro.png",
+    "nochar": "s034.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
+    "nochar.casa": "s034.nochar.casa.png",
+    "nochar.puerta": "s034.nochar.puerta.png",
+    "nochar.ventana": "s034.nochar.ventana.png",
+    "nochar.cuadro": "s034.nochar.cuadro.png",
+    "bg": "bg.fr0_1_1.png"
+   },
+   "background": [
+    "fr0_1_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 22,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     22,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/right@36",
+   "cam": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "F": 380,
+   "distinctW": 7,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/right": "34,36-55"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s035",
+   "files": {
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "full.casa": "s035.full.casa.png",
+    "full.puerta": "s035.full.puerta.png",
+    "full.ventana": "s035.full.ventana.png",
+    "full.cuadro": "s035.full.cuadro.png",
+    "nochar": "s035.nochar.png",
+    "nochar.wide": "s035.nochar.wide.png",
+    "nochar.casa": "s035.nochar.casa.png",
+    "nochar.puerta": "s035.nochar.puerta.png",
+    "nochar.ventana": "s035.nochar.ventana.png",
+    "nochar.cuadro": "s035.nochar.cuadro.png",
+    "bg": "bg.fr0_1_1.png"
+   },
+   "background": [
+    "fr0_1_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.33,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 133.28025827841446,
+     "tx": 140
+    },
+    "nube2": {
+     "x": 35.79963722111596,
+     "tx": 44
+    },
+    "nube3": {
+     "x": 180.21407531692654,
+     "tx": 176
+    },
+    "rain": 1,
+    "rustle": null,
+    "storm": 1,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     133,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/right@57",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 464,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/right": "56-58"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s036",
+   "files": {
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "full.casa": "s036.full.casa.png",
+    "full.puerta": "s003.full.puerta.png",
+    "full.ventana": "s036.full.ventana.png",
+    "full.cuadro": "s036.full.cuadro.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
+    "nochar.casa": "s036.nochar.casa.png",
+    "nochar.puerta": "s001.nochar.puerta.png",
+    "nochar.ventana": "s036.full.ventana.png",
+    "nochar.cuadro": "s036.full.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.22,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": {
+     "x": 21.27671880636248,
+     "tx": 22
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     21,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     125,
+     153,
+     28,
+     24
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/wrong@22",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 276,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/wrong": "22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s037",
+   "files": {
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "full.casa": "s037.full.casa.png",
+    "full.puerta": "s037.full.puerta.png",
+    "full.ventana": "s037.full.ventana.png",
+    "full.cuadro": "s037.full.cuadro.png",
+    "nochar": "s037.nochar.png",
+    "nochar.wide": "s037.nochar.wide.png",
+    "nochar.casa": "s037.nochar.casa.png",
+    "nochar.puerta": "s037.nochar.puerta.png",
+    "nochar.ventana": "s037.nochar.ventana.png",
+    "nochar.cuadro": "s037.nochar.cuadro.png",
+    "bg": "bg.fr0_0_1.png"
+   },
+   "background": [
+    "fr0_0_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.27,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 76,
+     "tx": 76
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     76,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     154,
+     111,
+     24,
+     20
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/wrong@28",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 392,
+   "distinctW": 12,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/wrong": "26,28-34,36",
+     "la-lluvia/alternate": "26,28-34,36"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s038",
+   "files": {
+    "full": "s038.full.png",
+    "full.wide": "s038.full.wide.png",
+    "full.casa": "s038.full.casa.png",
+    "full.puerta": "s038.full.puerta.png",
+    "full.ventana": "s038.full.ventana.png",
+    "full.cuadro": "s038.full.cuadro.png",
+    "nochar": "s038.nochar.png",
+    "nochar.wide": "s038.nochar.wide.png",
+    "nochar.casa": "s038.nochar.casa.png",
+    "nochar.puerta": "s038.nochar.puerta.png",
+    "nochar.ventana": "s038.nochar.ventana.png",
+    "nochar.cuadro": "s038.nochar.cuadro.png",
+    "bg": "bg.fr0_1_1.png"
+   },
+   "background": [
+    "fr0_1_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.27,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 76,
+     "tx": 76
+    },
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 1,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     76,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     111,
+     24,
+     20
+    ],
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/alternate@37",
+   "cam": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "F": 453,
+   "distinctW": 8,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/alternate": "35,37-57"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s039",
+   "files": {
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "full.casa": "s039.full.casa.png",
+    "full.puerta": "s039.full.puerta.png",
+    "full.ventana": "s039.full.ventana.png",
+    "full.cuadro": "s039.full.cuadro.png",
+    "nochar": "s039.nochar.png",
+    "nochar.wide": "s039.nochar.wide.png",
+    "nochar.casa": "s039.nochar.casa.png",
+    "nochar.puerta": "s039.nochar.puerta.png",
+    "nochar.ventana": "s039.nochar.ventana.png",
+    "nochar.cuadro": "s039.nochar.cuadro.png",
+    "bg": "bg.fr0_1_1.png"
+   },
+   "background": [
+    "fr0_1_1"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0.33,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 1,
+    "mesa": 0,
+    "nube": {
+     "x": 136.35539432049598,
+     "tx": 140
+    },
+    "nube2": {
+     "x": 35.79963722111596,
+     "tx": 44
+    },
+    "nube3": {
+     "x": 180.21407531692654,
+     "tx": 176
+    },
+    "rain": 1,
+    "rustle": null,
+    "storm": 1,
+    "win": 1
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": [
+     136,
+     0,
+     98,
+     22
+    ],
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": null,
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": [
+     97,
+     61,
+     30,
+     20
+    ],
+    "pajaro": null
+   },
+   "drawnFrom": "la-lluvia/alternate@59",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 553,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "la-lluvia/alternate": "58-60"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s040",
+   "files": {
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "full.casa": "s040.full.casa.png",
+    "full.puerta": "s040.full.puerta.png",
+    "full.ventana": "s040.full.ventana.png",
+    "full.cuadro": "s040.full.cuadro.png",
+    "nochar": "bg.fr0_5_0_0.png",
+    "nochar.wide": "s040.nochar.wide.png",
+    "nochar.casa": "s040.nochar.casa.png",
+    "nochar.puerta": "s040.nochar.puerta.png",
+    "nochar.ventana": "s040.nochar.ventana.png",
+    "nochar.cuadro": "s029.nochar.cuadro.png",
+    "bg": "bg.fr0_5_0_0.png"
+   },
+   "background": [
+    "fr0.5_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0.5,
+    "dusk": 0,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "cual-frente:cierra.si",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-frente:cierra.si"
+    ]
+   }
+  },
+  {
+   "id": "s041",
+   "files": {
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "full.casa": "s041.full.casa.png",
+    "full.puerta": "s041.full.puerta.png",
+    "full.ventana": "s041.full.ventana.png",
+    "full.cuadro": "s041.full.cuadro.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
+    "nochar.casa": "s041.nochar.casa.png",
+    "nochar.puerta": "s041.nochar.puerta.png",
+    "nochar.ventana": "s041.nochar.ventana.png",
+    "nochar.cuadro": "s041.nochar.cuadro.png",
+    "bg": "bg.fr0_5_0_0.png"
+   },
+   "background": [
+    "fr0.5_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0.5,
+    "dusk": 2,
+    "escondite": 0,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": null,
+    "casa_pequena": null,
+    "palma_grande": null,
+    "casa_grande": null,
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": [
+     178,
+     120,
+     28,
+     23
+    ],
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "cual-frente:hola.no",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-frente:hola.no",
+     "cual-frente:adiós.si"
+    ]
+   }
+  },
+  {
+   "id": "s042",
+   "files": {
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "full.casa": "s042.full.casa.png",
+    "full.puerta": "s042.full.puerta.png",
+    "full.ventana": "s042.full.ventana.png",
+    "full.cuadro": "s042.full.cuadro.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
+    "nochar.casa": "s042.nochar.casa.png",
+    "nochar.puerta": "s042.full.puerta.png",
+    "nochar.ventana": "s042.nochar.ventana.png",
+    "nochar.cuadro": "s042.nochar.cuadro.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "fr0_0_0"
+   ],
+   "keys": {
+    "abierto": null,
+    "caliente": 0,
+    "dark": 0,
+    "door": 0,
+    "dusk": 0,
+    "escondite": 1,
+    "lamp": 0,
+    "mesa": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "rain": 0,
+    "rustle": null,
+    "storm": 0,
+    "win": 0
+   },
+   "things": {
+    "palma_pequena": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "casa_pequena": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "casa_grande": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "bizcocho": null,
+    "nube": null,
+    "puerta": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "ventana": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "casa": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null,
+    "pajaro": null
+   },
+   "drawnFrom": "cual-frente:grande.si",
+   "cam": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-frente:grande.si",
+     "cual-frente:grande.no",
+     "cual-frente:pequeña.si",
+     "cual-frente:pequeña.no"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,1686 @@
+{
+ "scene": "patio",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-patio",
+   "w": "niño",
+   "say": "p_c_nino",
+   "sayText": "Es un niño.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     64,
+     118,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 120,
+       "y": 170,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "nino.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     64,
+     118,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 120,
+       "y": 170,
+       "pose": "idle"
+      }
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "nino.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "niña",
+   "say": "p_c_nina",
+   "sayText": "Es una niña.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     40,
+     80,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 86,
+       "y": 136,
+       "pose": "idle"
+      }
+     },
+     "caja": 1,
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "nina.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     40,
+     80,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "mama": {
+       "x": 86,
+       "y": 138,
+       "pose": "idle"
+      }
+     },
+     "caja": 1,
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "nina.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "juega",
+   "say": "p_c_juega",
+   "sayText": "El niño juega.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     30,
+     124,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 126,
+       "y": 172,
+       "pose": "wave"
+      }
+     },
+     "bola": {
+      "x": 140,
+      "y": 172,
+      "h": 30
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "juega.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     30,
+     124,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 126,
+       "y": 172,
+       "pose": "ojos",
+       "lleva": "maceta"
+      }
+     },
+     "bola": {
+      "x": 146,
+      "y": 174
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "juega.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "flor",
+   "say": "p_c_flor",
+   "sayText": "Es una flor.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     16,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "flor.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     16,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "bola": {
+      "x": 48,
+      "y": 188
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "flor.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "sol",
+   "say": "p_n_sol",
+   "sayText": "Es el sol.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     30,
+     0,
+     170,
+     90.2
+    ],
+    "set": {
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "sol.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     30,
+     0,
+     170,
+     90.2
+    ],
+    "set": {
+     "noche": 1,
+     "luna": 1,
+     "osc": 0.6,
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "sol.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "aquí",
+   "say": "p_c_aqui",
+   "sayText": "Carmen dice: La flor está aquí.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     42,
+     118,
+     156,
+     82.8
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "aqui.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     42,
+     118,
+     156,
+     82.8
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [],
+      "R": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ]
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "aqui.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "allá",
+   "say": "p_luis_esta_alla",
+   "sayText": "Luis dice: La flor está allá.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     42,
+     118,
+     156,
+     82.8
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [],
+      "R": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ]
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "alla.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     42,
+     118,
+     156,
+     82.8
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 68,
+       "y": 176,
+       "pose": "idle"
+      }
+     },
+     "flores": {
+      "L": [
+       {
+        "k": 1,
+        "c": 2
+       }
+      ],
+      "R": []
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "alla.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "amigo",
+   "say": "p_c_amigo",
+   "sayText": "Luis dice: Es mi amigo.",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     50,
+     130,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 118,
+       "y": 180,
+       "pose": "offer"
+      }
+     },
+     "cq": {
+      "x": 72,
+      "y": 157,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "amigo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     50,
+     130,
+     113,
+     60
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 118,
+       "y": 180,
+       "pose": "offer"
+      }
+     },
+     "bola": {
+      "x": 90,
+      "y": 182
+     },
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "amigo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "ven",
+   "say": "p_carmen_ven_coqui",
+   "sayText": "Carmen dice: ¡Ven, Coquí!",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 170,
+       "y": 176,
+       "pose": "offer"
+      }
+     },
+     "cq": {
+      "x": 112,
+      "y": 153,
+      "s": 1,
+      "dy": -8,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": {
+      "x": 106,
+      "y": 178,
+      "dir": -1
+     }
+    },
+    "esc": null,
+    "png": "ven.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 170,
+       "y": 176,
+       "pose": "alto",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 64,
+      "y": 153,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "ojos": 1,
+      "ojx": 1,
+      "ojy": -1
+     },
+     "ave": {
+      "mode": "fly",
+      "x": 124,
+      "y": 128,
+      "dir": 1,
+      "st": "n"
+     },
+     "rizo": {
+      "x": 124,
+      "y": 124,
+      "r": 12
+     }
+    },
+    "esc": null,
+    "png": "ven.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "mira",
+   "say": "p_c_mira",
+   "sayText": "Luis dice: ¡Mira, Coquí!",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 160,
+       "y": 178,
+       "pose": "alto",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 102,
+      "y": 155,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null,
+      "ojos": 1,
+      "ojx": 0,
+      "ojy": -1
+     },
+     "ave": {
+      "mode": "fly",
+      "x": 124,
+      "y": 128,
+      "dir": 1,
+      "st": "n"
+     },
+     "rizo": {
+      "x": 124,
+      "y": 124,
+      "r": 12
+     }
+    },
+    "esc": null,
+    "png": "mira.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     40,
+     100,
+     170,
+     90.2
+    ],
+    "set": {
+     "gente": {
+      "luis": {
+       "x": 170,
+       "y": 178,
+       "pose": "offer"
+      }
+     },
+     "cq": {
+      "x": 112,
+      "y": 155,
+      "s": 1,
+      "dy": -8,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": {
+      "x": 106,
+      "y": 180,
+      "dir": -1
+     },
+     "ave": {
+      "mode": "none"
+     }
+    },
+    "esc": null,
+    "png": "mira.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "vamos",
+   "say": "p_carmen_vamos_coqui",
+   "sayText": "Carmen dice: ¡Vamos, Coquí!",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     70,
+     62,
+     150,
+     79.6
+    ],
+    "set": {
+     "porton": 1,
+     "gente": {
+      "carmen": {
+       "x": 168,
+       "y": 120,
+       "pose": "idle",
+       "dir": -1
+      }
+     },
+     "cq": {
+      "x": 128,
+      "y": 99,
+      "s": 0.85,
+      "dy": -6,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": {
+      "x": 134,
+      "y": 132,
+      "dir": -1
+     }
+    },
+    "esc": null,
+    "png": "vamos.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     70,
+     62,
+     150,
+     79.6
+    ],
+    "set": {
+     "gente": {
+      "carmen": {
+       "x": 170,
+       "y": 138,
+       "pose": "ojos",
+       "sent": 1,
+       "lleva": "vaso"
+      }
+     },
+     "cq": {
+      "x": 122,
+      "y": 111,
+      "s": 0.85,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "lleva": "vaso"
+    },
+    "esc": null,
+    "png": "vamos.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-patio",
+   "w": "hasta mañana",
+   "say": "p_cq_hm",
+   "sayText": "¡Hasta mañana!",
+   "si": {
+    "scene": "patio",
+    "cam": [
+     24,
+     40,
+     180,
+     95.5
+    ],
+    "set": {
+     "sol": 3,
+     "soly": 73,
+     "osc": 0.2,
+     "pdoor": 1,
+     "porton": 1,
+     "gente": {
+      "abuela": {
+       "x": 34,
+       "y": 136,
+       "pose": "wave",
+       "dir": 1
+      },
+      "abuelo": {
+       "x": 60,
+       "y": 126,
+       "pose": "wave"
+      },
+      "mama": {
+       "x": 86,
+       "y": 136,
+       "pose": "wave"
+      },
+      "papa": {
+       "x": 112,
+       "y": 126,
+       "pose": "wave"
+      }
+     },
+     "cq": {
+      "x": 130,
+      "y": 101,
+      "s": 0.85,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "hasta_manana.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     24,
+     40,
+     180,
+     95.5
+    ],
+    "set": {
+     "pdoor": 1,
+     "gente": {
+      "abuela": {
+       "x": 34,
+       "y": 136,
+       "pose": "wave",
+       "dir": 1
+      },
+      "abuelo": {
+       "x": 60,
+       "y": 126,
+       "pose": "wave"
+      },
+      "mama": {
+       "x": 86,
+       "y": 136,
+       "pose": "wave"
+      },
+      "papa": {
+       "x": 112,
+       "y": 126,
+       "pose": "wave"
+      }
+     },
+     "cq": {
+      "x": 118,
+      "y": 105,
+      "s": 0.9,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "hasta_manana.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-camino",
+   "w": "parque",
+   "say": "c_n_parque",
+   "sayText": "Es el parque.",
+   "si": {
+    "scene": "camino",
+    "cam": [
+     22,
+     84,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": null,
+    "png": "parque.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "patio",
+    "cam": [
+     22,
+     30,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": -16,
+      "y": -27,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     }
+    },
+    "esc": "patio",
+    "png": "parque.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "puerta",
+   "s": 1,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "puerta",
+     "side": "si",
+     "x": 166,
+     "crop": [
+      143.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "ventana",
+     "side": "si",
+     "x": 112,
+     "crop": [
+      89.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "silla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      143.65,
+      116,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "sol",
+     "side": "si",
+     "x": null,
+     "crop": [
+      74.15,
+      0,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": "nivel.puerta.3.png"
+    }
+   ]
+  },
+  {
+   "w": "hola",
+   "s": 2,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "hola",
+     "side": "si",
+     "x": 160,
+     "crop": [
+      112.91,
+      40,
+      94.19,
+      104
+     ],
+     "scene": "frente",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "adiós",
+     "side": "si",
+     "x": 160,
+     "crop": [
+      112.91,
+      40,
+      94.19,
+      104
+     ],
+     "scene": "frente",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "se sienta",
+     "side": "si",
+     "x": 80,
+     "crop": [
+      50.2,
+      84,
+      59.59,
+      65.8
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "juega",
+     "side": "si",
+     "x": 130,
+     "crop": [
+      93.95,
+      124,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": "nivel.hola.3.png"
+    }
+   ]
+  },
+  {
+   "w": "se sienta",
+   "s": 4,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "se sienta",
+     "side": "si",
+     "x": 80,
+     "crop": [
+      50.2,
+      84,
+      59.59,
+      65.8
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "se sienta",
+     "side": "no",
+     "x": 96,
+     "crop": [
+      66.2,
+      84,
+      59.59,
+      65.8
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.se_sienta.2.png"
+    },
+    {
+     "first": false,
+     "pair": "abuelo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "familia",
+   "s": 6,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "familia",
+     "side": "si",
+     "x": null,
+     "crop": [
+      79.15,
+      60,
+      81.69,
+      90.2
+     ],
+     "scene": "sala",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "hermano",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niña",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.familia.3.png"
+    }
+   ]
+  },
+  {
+   "w": "niña",
+   "s": 9,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "niña",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.nina.0.png"
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.nina.1.png"
+    },
+    {
+     "first": false,
+     "pair": "niña",
+     "side": "no",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.nina.2.png"
+    },
+    {
+     "first": false,
+     "pair": "abuelo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      154.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "flor",
+   "s": 9,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "flor",
+     "side": "si",
+     "x": 60,
+     "crop": [
+      32.83,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.flor.0.png"
+    },
+    {
+     "first": false,
+     "pair": "flor",
+     "side": "no",
+     "x": 60,
+     "crop": [
+      32.83,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.flor.1.png"
+    },
+    {
+     "first": false,
+     "pair": "sol",
+     "side": "no",
+     "x": 150,
+     "crop": [
+      109.15,
+      0,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": "nivel.flor.2.png"
+    },
+    {
+     "first": false,
+     "pair": "silla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      143.65,
+      116,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "juega",
+   "s": 9,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "juega",
+     "side": "si",
+     "x": 130,
+     "crop": [
+      93.95,
+      124,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": "nivel.juega.0.png"
+    },
+    {
+     "first": false,
+     "pair": "juega",
+     "side": "no",
+     "x": 130,
+     "crop": [
+      93.95,
+      124,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": "nivel.juega.1.png"
+    },
+    {
+     "first": false,
+     "pair": "niña",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.juega.2.png"
+    },
+    {
+     "first": false,
+     "pair": "sol",
+     "side": "si",
+     "x": null,
+     "crop": [
+      74.15,
+      0,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": "nivel.juega.3.png"
+    }
+   ]
+  },
+  {
+   "w": "amigo",
+   "s": 10,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "amigo",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      130,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.amigo.0.png"
+    },
+    {
+     "first": false,
+     "pair": "amigo",
+     "side": "no",
+     "x": 100,
+     "crop": [
+      72.83,
+      130,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.amigo.1.png"
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.amigo.2.png"
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "ven",
+   "s": 10,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "ven",
+     "side": "si",
+     "x": 142,
+     "crop": [
+      101.15,
+      100,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": "nivel.ven.0.png"
+    },
+    {
+     "first": false,
+     "pair": "ven",
+     "side": "no",
+     "x": 142,
+     "crop": [
+      101.15,
+      100,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": "nivel.ven.1.png"
+    },
+    {
+     "first": false,
+     "pair": "niño",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      118,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.ven.2.png"
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "vamos",
+   "s": 11,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "vamos",
+     "side": "si",
+     "x": 150,
+     "crop": [
+      113.95,
+      62,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": "nivel.vamos.0.png"
+    },
+    {
+     "first": false,
+     "pair": "vamos",
+     "side": "no",
+     "x": 150,
+     "crop": [
+      113.95,
+      62,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": "nivel.vamos.1.png"
+    },
+    {
+     "first": false,
+     "pair": "ven",
+     "side": "no",
+     "x": 142,
+     "crop": [
+      101.15,
+      100,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": "nivel.vamos.2.png"
+    },
+    {
+     "first": false,
+     "pair": "juega",
+     "side": "si",
+     "x": 130,
+     "crop": [
+      93.95,
+      124,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": "nivel.vamos.3.png"
+    }
+   ]
+  },
+  {
+   "w": "hasta mañana",
+   "s": 11,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "hasta mañana",
+     "side": "si",
+     "x": 120,
+     "crop": [
+      76.75,
+      40,
+      86.49,
+      95.5
+     ],
+     "scene": "patio",
+     "png": "nivel.hasta_manana.0.png"
+    },
+    {
+     "first": false,
+     "pair": "hasta mañana",
+     "side": "no",
+     "x": 120,
+     "crop": [
+      76.75,
+      40,
+      86.49,
+      95.5
+     ],
+     "scene": "patio",
+     "png": "nivel.hasta_manana.1.png"
+    },
+    {
+     "first": false,
+     "pair": "jugo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      103.65,
+      98,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "niña",
+     "side": "si",
+     "x": 100,
+     "crop": [
+      72.83,
+      80,
+      54.34,
+      60
+     ],
+     "scene": "patio",
+     "png": "nivel.hasta_manana.3.png"
+    }
+   ]
+  }
+ ]
+}

@@ -21,8 +21,9 @@ Reads the course, stories, review sets, books, clip list. Pure Dart.
 
 - `lib/coqui_content.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
-- Later it holds the `CourseCatalog` of page 12, section 2, over a `fetch(String path)` the shell gives it.
+- Since order 17 it exports `ContentCatalog`, the `CourseCatalog` of page 12, section 2, over a `FetchText` (`Future<String> Function(String path)`, the path relative to `historia/`, for example `cuentos/la-lluvia.json`) the shell gives it.
+- `load()` reads `datos/curso.json`, `datos/nivel.json`, `datos/llamadas.json`, `datos/fijos.json`, `audio/ready.json`, `audio/marcas.json` and the review sets `curso.json` names. `story(id)` and `book(id)` fetch on demand and keep the answer.
+- A clip's who, text and habla are in the story files: `clip(id)` has them once a story with the clip has been read (the review sets are read by `load()`); before that it has the marks and the url, and the line `datos/fijos.json` holds for it under `lineas` (the lines the old code writes in code: juego.js line 103, `ahora_tu`; made by `coqui/tool/export_datos.mjs`), or an empty `who` and `text` where there is none. A story's own line wins once it has been read. A `fijos.json` without `lineas` is not an error.
 
 ## Run and test it alone
 
@@ -57,3 +58,9 @@ From 03-requirements, "Audio and voice (Nov 13)":
 From 10-leer-y-repaso, "What goes in a book (the text)":
 
 - Routines (Haz esto) get no book: all their lines are commands. On the shelf they have Listen only.
+
+## Test fixtures (order 17)
+
+- `test/content_catalog_test.dart` runs on vm and chrome over a small course embedded as Dart strings (`test/fixture/small_tree.dart`). `test/real_tree_test.dart` is vm only: it reads the real files under `historia/`.
+- The expected answers are the old code's, run in node: `cual.js` `cualCarga()`, `app.html` `pares()` and `oidoEn()`. They are in `test/fixture/small_expected.dart` and `test/fixture/real_expected.json`.
+- To remake all three (after a change in `historia/` or in the old functions): `bash tool/make_fixtures.sh` in this folder. It says "unchanged (byte for byte)" when nothing differs. The scripts are `tool/old_code.mjs` (takes the old functions out of the old files and runs them), `tool/make_expected.mjs` and `tool/make_fixture.mjs`.

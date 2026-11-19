@@ -1,0 +1,711 @@
+{
+ "scene": "campo",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": null,
+    "cestaN": null,
+    "cierra": 0,
+    "flor": null,
+    "mojado": 0,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": null,
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     120,
+     150,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "bola_luis": null,
+    "bola_carmen": null,
+    "bola_cq": null,
+    "perro": null
+   },
+   "drawnFrom": "arriba-abajo/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 92,
+   "reachedBy": {
+    "steps": {
+     "arriba-abajo/right": "start",
+     "arriba-abajo/wrong": "start",
+     "arriba-abajo/alternate": "start",
+     "d-bola-canelo/right": "start",
+     "d-bola-canelo/wrong": "start",
+     "d-bola-canelo/alternate": "start",
+     "h-campo/right": "start",
+     "h-campo/wrong": "start",
+     "h-campo/alternate": "start",
+     "la-bola/right": "start",
+     "la-bola/wrong": "start",
+     "la-bola/alternate": "start",
+     "otra-vez/right": "start,0-105",
+     "otra-vez/wrong": "start,0-69,71-73",
+     "otra-vez/alternate": "start,0-69,71-73"
+    },
+    "pairs": [
+     "cual-campo:bola.si",
+     "cual-campo:tiene.si",
+     "cual-campo:tiene.no",
+     "cual-campo:tira.si",
+     "cual-campo:tira.no",
+     "cual-campo:coge.si",
+     "cual-campo:coge.no",
+     "cual-campo:salta.si",
+     "cual-campo:salta.no",
+     "cual-campo:dame.si",
+     "cual-campo:dame.no",
+     "cual-campo:mi.si",
+     "cual-campo:mi.no",
+     "cual-campo:tu.si",
+     "cual-campo:tu.no",
+     "cual-campo:arriba.si",
+     "cual-campo:arriba.no",
+     "cual-campo:abajo.si",
+     "cual-campo:abajo.no",
+     "cual-campo:más.si",
+     "cual-campo:más.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": [
+     88,
+     208
+    ],
+    "cestaN": null,
+    "cierra": 0,
+    "flor": null,
+    "mojado": 0,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": [
+     77,
+     192,
+     22,
+     18
+    ],
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     132,
+     142,
+     32,
+     27
+    ],
+    "luis": [
+     81,
+     126,
+     22,
+     44
+    ],
+    "carmen": [
+     101,
+     146,
+     22,
+     44
+    ],
+    "bola_luis": null,
+    "bola_carmen": null,
+    "bola_cq": null,
+    "perro": [
+     32,
+     158,
+     28,
+     22
+    ]
+   },
+   "drawnFrom": "arriba-abajo/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 125,
+   "reachedBy": {
+    "steps": {
+     "arriba-abajo/right": "0-91",
+     "arriba-abajo/wrong": "0-106",
+     "arriba-abajo/alternate": "0-97"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": [
+     104,
+     208
+    ],
+    "cestaN": null,
+    "cierra": 0,
+    "flor": null,
+    "mojado": 0,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": [
+     93,
+     192,
+     22,
+     18
+    ],
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     120,
+     150,
+     32,
+     27
+    ],
+    "luis": [
+     77,
+     134,
+     22,
+     44
+    ],
+    "carmen": [
+     175,
+     110,
+     22,
+     44
+    ],
+    "bola_luis": [
+     85,
+     143,
+     18,
+     18
+    ],
+    "bola_carmen": [
+     172.5,
+     122,
+     15,
+     15
+    ],
+    "bola_cq": [
+     129,
+     184,
+     14,
+     14
+    ],
+    "perro": [
+     36,
+     151,
+     28,
+     22
+    ]
+   },
+   "drawnFrom": "d-bola-canelo/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 130,
+   "reachedBy": {
+    "steps": {
+     "d-bola-canelo/right": "0-42",
+     "d-bola-canelo/wrong": "0-42",
+     "d-bola-canelo/alternate": "0-42",
+     "h-campo/right": "0-31",
+     "h-campo/wrong": "0-31",
+     "h-campo/alternate": "0-31",
+     "la-bola/right": "0-95",
+     "la-bola/wrong": "0-113",
+     "la-bola/alternate": "0-102"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": null,
+    "cestaN": null,
+    "cierra": 0,
+    "flor": null,
+    "mojado": 1,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": null,
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "luis": [
+     73,
+     130,
+     22,
+     44
+    ],
+    "carmen": [
+     47,
+     154,
+     22,
+     44
+    ],
+    "bola_luis": [
+     159,
+     190,
+     18,
+     18
+    ],
+    "bola_carmen": [
+     120.5,
+     182,
+     15,
+     15
+    ],
+    "bola_cq": [
+     137,
+     182,
+     14,
+     14
+    ],
+    "perro": [
+     150,
+     168,
+     28,
+     22
+    ]
+   },
+   "drawnFrom": "otra-vez/wrong@74",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 886,
+   "distinctW": 17,
+   "reachedBy": {
+    "steps": {
+     "otra-vez/wrong": "70,74-85,87-89",
+     "otra-vez/alternate": "70,74-95,97-98"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": null,
+    "cestaN": null,
+    "cierra": 0,
+    "flor": null,
+    "mojado": 2,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": null,
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "luis": [
+     73,
+     130,
+     22,
+     44
+    ],
+    "carmen": [
+     47,
+     154,
+     22,
+     44
+    ],
+    "bola_luis": [
+     103,
+     178,
+     18,
+     18
+    ],
+    "bola_carmen": [
+     120.5,
+     182,
+     15,
+     15
+    ],
+    "bola_cq": [
+     137,
+     182,
+     14,
+     14
+    ],
+    "perro": [
+     150,
+     168,
+     28,
+     22
+    ]
+   },
+   "drawnFrom": "otra-vez/wrong@90",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1083,
+   "distinctW": 13,
+   "reachedBy": {
+    "steps": {
+     "otra-vez/wrong": "86,90-100,102-103",
+     "otra-vez/alternate": "96,99-115"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": null,
+    "cestaN": null,
+    "cierra": 0,
+    "flor": null,
+    "mojado": 3,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": null,
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "luis": [
+     73,
+     130,
+     22,
+     44
+    ],
+    "carmen": [
+     47,
+     154,
+     22,
+     44
+    ],
+    "bola_luis": [
+     142,
+     168,
+     18,
+     18
+    ],
+    "bola_carmen": [
+     120.5,
+     182,
+     15,
+     15
+    ],
+    "bola_cq": [
+     137,
+     182,
+     14,
+     14
+    ],
+    "perro": [
+     150,
+     168,
+     28,
+     22
+    ]
+   },
+   "drawnFrom": "otra-vez/wrong@104",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1287,
+   "distinctW": 7,
+   "reachedBy": {
+    "steps": {
+     "otra-vez/wrong": "101,104-120"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.full.png",
+    "nochar.wide": "s006.full.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "campo"
+   ],
+   "keys": {
+    "cesta": null,
+    "cestaN": null,
+    "cierra": 0,
+    "flor": [
+     137,
+     178
+    ],
+    "mojado": 0,
+    "oscuro": 0
+   },
+   "things": {
+    "cesta": null,
+    "arbol": [
+     30,
+     74,
+     60,
+     78
+    ],
+    "juncos": [
+     160,
+     168,
+     60,
+     48
+    ],
+    "campo": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": null,
+    "carmen": null,
+    "bola_luis": null,
+    "bola_carmen": null,
+    "bola_cq": null,
+    "perro": null
+   },
+   "drawnFrom": "cual-campo:bola.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-campo:bola.no"
+    ]
+   }
+  }
+ ]
+}

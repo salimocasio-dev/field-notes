@@ -1,0 +1,4231 @@
+{
+ "scene": "mesa",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 26,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 54,
+   "y": 150,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "plato.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "plato.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "taza.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "taza.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchara.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchara.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tenedor.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tenedor.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 70,
+   "y": 86,
+   "w": 169.5,
+   "h": 90,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cocina.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 70,
+   "y": 90,
+   "w": 169.5,
+   "h": 90,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cocina.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 84,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo hambre.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo hambre.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 100,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "mesa.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo sed.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo sed.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "listo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 100,
+   "y": 126,
+   "w": 56.5,
+   "h": 30,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "comida.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "comida.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 122,
+   "y": 66,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "mesa.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 127,
+   "y": 104,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 127,
+   "y": 116,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchillo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchillo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "listo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 83.33,
+   "y": 150,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "plato.p0",
+     "owner": "level picture",
+     "note": "pair plato.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "plato.p1",
+     "owner": "level picture",
+     "note": "pair plato.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "plato.p2",
+     "owner": "level picture",
+     "note": "pair cuchara.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "plato.p3",
+     "owner": "level picture",
+     "note": "pair taza.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "taza.p0",
+     "owner": "level picture",
+     "note": "pair taza.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "taza.p1",
+     "owner": "level picture",
+     "note": "pair taza.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "taza.p2",
+     "owner": "level picture",
+     "note": "pair plato.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "taza.p3",
+     "owner": "level picture",
+     "note": "pair cuchara.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "cuchara.p0",
+     "owner": "level picture",
+     "note": "pair cuchara.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "cuchara.p1",
+     "owner": "level picture",
+     "note": "pair cuchara.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "cuchara.p2",
+     "owner": "level picture",
+     "note": "pair tenedor.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "cuchara.p3",
+     "owner": "level picture",
+     "note": "pair plato.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 113.33,
+   "y": 84,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tengo hambre.p0",
+     "owner": "level picture",
+     "note": "pair tengo hambre.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "tengo hambre.p1",
+     "owner": "level picture",
+     "note": "pair tengo hambre.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 113.33,
+   "y": 100,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tengo hambre.p2",
+     "owner": "level picture",
+     "note": "pair tengo sed.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 114.67,
+   "y": 126,
+   "w": 27.17,
+   "h": 30,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tengo hambre.p3",
+     "owner": "level picture",
+     "note": "pair comida.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "mesa.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "mesa.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "plato.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "plato.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "taza.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "taza.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchara.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchara.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tenedor.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tenedor.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchillo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchillo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "comida.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "comida.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cocina.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cocina.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo hambre.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo hambre.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo sed.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo sed.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "listo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "listo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 40,
+   "y": 173,
+   "uses": [
+    {
+     "file": "cuentos/la-mesa.json",
+     "at": "beats.53",
+     "owner": "[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 110,
+   "y": 206,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "plato.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "plato.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "taza.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "taza.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchara.si.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchara.no.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tenedor.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tenedor.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 128,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo hambre.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "luis",
+      "mesa",
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo hambre.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "luis",
+      "mesa",
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo sed.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "carmen",
+      "mesa",
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "tengo sed.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "carmen",
+      "mesa",
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 152,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "mesa.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 153,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "listo.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cocina.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cocina.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.no.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 187,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 187,
+   "y": 151,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.no.set.cosas.1",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "mesa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 205,
+   "y": 170,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchillo.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "cuchillo.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 206,
+   "y": 165,
+   "uses": [
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    },
+    {
+     "file": "cuentos/cual-mesa.json",
+     "at": "pone.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (mesa.js:136-149 gente)"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "mesa.js:21",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    92,
+    130,
+    96,
+    30
+   ],
+   "what": "MESA",
+   "comment": "where the floor starts; the table top (x, y of its far edge, width, depth); the four chairs; the counter top; the stove; the row where things stand on the table, and the row for messes"
+  },
+  {
+   "at": "mesa.js:21",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    104,
+    128,
+    152,
+    176
+   ],
+   "what": "SILLA",
+   "comment": "where the floor starts; the table top (x, y of its far edge, width, depth); the four chairs; the counter top; the stove; the row where things stand on the table, and the row for messes"
+  },
+  {
+   "at": "mesa.js:21",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    24,
+    106,
+    62,
+    12
+   ],
+   "what": "MOSTR",
+   "comment": "where the floor starts; the table top (x, y of its far edge, width, depth); the four chairs; the counter top; the stove; the row where things stand on the table, and the row for messes"
+  },
+  {
+   "at": "mesa.js:21",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    190,
+    104,
+    30,
+    42
+   ],
+   "what": "ESTUFA",
+   "comment": "where the floor starts; the table top (x, y of its far edge, width, depth); the four chairs; the counter top; the stove; the row where things stand on the table, and the row for messes"
+  },
+  {
+   "at": "mesa.js:24",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    75,
+    160
+   ],
+   "what": "LUIS",
+   "comment": "where Luis waits at the counter, where abuela stands at the stove, where Canelo lies"
+  },
+  {
+   "at": "mesa.js:24",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    205,
+    170
+   ],
+   "what": "FOGON",
+   "comment": "where Luis waits at the counter, where abuela stands at the stove, where Canelo lies"
+  },
+  {
+   "at": "mesa.js:24",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    196,
+    204
+   ],
+   "what": "CAN",
+   "comment": "where Luis waits at the counter, where abuela stands at the stove, where Canelo lies"
+  },
+  {
+   "at": "mesa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    7
+   ],
+   "what": "Buf(13,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    3.5
+   ],
+   "what": "b.ell(6.5,3.5,5.6,2.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.6,
+    2.8
+   ],
+   "what": "b.ell(6.5,3.5,5.6,2.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    3.2
+   ],
+   "what": "b.ell(6.5,3.2,3.2,1.4,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.2,
+    1.4
+   ],
+   "what": "b.ell(6.5,3.2,3.2,1.4,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    9
+   ],
+   "what": "Buf(13,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    5.5
+   ],
+   "what": "b.ell(6.5,5.5,4.4,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.4,
+    3
+   ],
+   "what": "b.ell(6.5,5.5,4.4,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    3.6
+   ],
+   "what": "b.ell(6.5,3.6,5.6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.6,
+    3
+   ],
+   "what": "b.ell(6.5,3.6,5.6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    3.4
+   ],
+   "what": "b.ell(6.5,3.4,4,1.9,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1.9
+   ],
+   "what": "b.ell(6.5,3.4,4,1.9,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    10
+   ],
+   "what": "Buf(10,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    6,
+    7
+   ],
+   "what": "b.rect(1,2,6,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    2,
+    7
+   ],
+   "what": "b.rect(1,2,2,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    8,
+    6,
+    1
+   ],
+   "what": "b.rect(1,8,6,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    3,
+    1,
+    1
+   ],
+   "what": "b.rect(7,3,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    4,
+    1,
+    3
+   ],
+   "what": "b.rect(8,4,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    7,
+    1,
+    1
+   ],
+   "what": "b.rect(7,7,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    4,
+    2
+   ],
+   "what": "b.rect(2,2,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    10
+   ],
+   "what": "Buf(10,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    6,
+    7
+   ],
+   "what": "b.rect(1,2,6,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    2,
+    7
+   ],
+   "what": "b.rect(1,2,2,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    8,
+    6,
+    1
+   ],
+   "what": "b.rect(1,8,6,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    3,
+    1,
+    1
+   ],
+   "what": "b.rect(7,3,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    4,
+    1,
+    3
+   ],
+   "what": "b.rect(8,4,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    7,
+    1,
+    1
+   ],
+   "what": "b.rect(7,7,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    4,
+    2
+   ],
+   "what": "b.rect(2,2,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:69",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    14
+   ],
+   "what": "Buf(10,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    12
+   ],
+   "what": "b.rect(1,1,8,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    8,
+    8
+   ],
+   "what": "b.rect(1,5,8,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    8,
+    1
+   ],
+   "what": "b.rect(1,5,8,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    2,
+    12
+   ],
+   "what": "b.rect(1,1,2,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    14
+   ],
+   "what": "Buf(10,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    12
+   ],
+   "what": "b.rect(1,1,8,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    2,
+    12
+   ],
+   "what": "b.rect(1,1,2,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:71",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    9
+   ],
+   "what": "Buf(16,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    12,
+    6
+   ],
+   "what": "b.rect(1,2,12,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    12,
+    2
+   ],
+   "what": "b.rect(1,2,12,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    1,
+    2,
+    8
+   ],
+   "what": "b.rect(12,1,2,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    7,
+    12,
+    1
+   ],
+   "what": "b.rect(1,7,12,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    18
+   ],
+   "what": "Buf(9,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    5
+   ],
+   "what": "b.ell(4.5,5,3,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "b.ell(4.5,5,3,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:72",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    9,
+    1,
+    8
+   ],
+   "what": "b.rect(4,9,1,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:73",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    1,
+    4,
+    7
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "mesa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    18
+   ],
+   "what": "Buf(9,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    7,
+    7,
+    2
+   ],
+   "what": "b.rect(1,7,7,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    9,
+    1,
+    8
+   ],
+   "what": "b.rect(4,9,1,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    18
+   ],
+   "what": "Buf(9,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    3.5
+   ],
+   "what": "b.ell(4.5,3.5,2.2,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.2,
+    2.6
+   ],
+   "what": "b.ell(4.5,3.5,2.2,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    3,
+    5,
+    7
+   ],
+   "what": "b.rect(2,3,5,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    3,
+    1,
+    7
+   ],
+   "what": "b.rect(2,3,1,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    3,
+    1,
+    7
+   ],
+   "what": "b.rect(6,3,1,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    10,
+    3,
+    1
+   ],
+   "what": "b.rect(3,10,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    11,
+    3,
+    6
+   ],
+   "what": "b.rect(3,11,3,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    11,
+    1,
+    6
+   ],
+   "what": "b.rect(3,11,1,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    9
+   ],
+   "what": "Buf(10,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    8,
+    4
+   ],
+   "what": "b.rect(1,4,8,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    8,
+    1
+   ],
+   "what": "b.rect(1,4,8,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    8,
+    2
+   ],
+   "what": "b.rect(1,2,8,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1
+   ],
+   "what": "b.px(4,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    1
+   ],
+   "what": "b.px(5,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    11
+   ],
+   "what": "Buf(20,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:76",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    8,
+    20,
+    2
+   ],
+   "what": "b.rect(0,8,20,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    11
+   ],
+   "what": "Buf(11,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    7,
+    4
+   ],
+   "what": "b.rect(2,6,7,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    6,
+    1,
+    4
+   ],
+   "what": "b.rect(3,6,1,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    6,
+    1,
+    4
+   ],
+   "what": "b.rect(6,6,1,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    5
+   ],
+   "what": "b.ell(5.5,5,4.4,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.4,
+    2.6
+   ],
+   "what": "b.ell(5.5,5,4.4,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    1,
+    2,
+    2
+   ],
+   "what": "b.rect(5,1,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    9
+   ],
+   "what": "Buf(12,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    8,
+    6
+   ],
+   "what": "b.rect(2,2,8,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    8,
+    2
+   ],
+   "what": "b.rect(2,2,8,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    2,
+    4
+   ],
+   "what": "b.rect(1,3,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    0,
+    3,
+    2
+   ],
+   "what": "b.rect(4,0,3,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    13
+   ],
+   "what": "Buf(22,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    18,
+    6
+   ],
+   "what": "b.rect(2,6,18,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    20,
+    2
+   ],
+   "what": "b.rect(1,5,20,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    2.4
+   ],
+   "what": "b.ell(p[0],p[1],3,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    7
+   ],
+   "what": "Buf(9,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    3.5
+   ],
+   "what": "b.ell(4.5,3.5,3.6,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2.6
+   ],
+   "what": "b.ell(4.5,3.5,3.6,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    2,
+    1,
+    2
+   ],
+   "what": "b.rect(4,2,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    18
+   ],
+   "what": "Buf(24,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    9
+   ],
+   "what": "b.ell(12,9,9,8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "b.ell(12,9,9,8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    9
+   ],
+   "what": "b.ell(12,9,7,6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    6
+   ],
+   "what": "b.ell(12,9,7,6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    8,
+    2,
+    3
+   ],
+   "what": "b.rect(1,8,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    21,
+    8,
+    2,
+    3
+   ],
+   "what": "b.rect(21,8,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    17
+   ],
+   "what": "Buf(14,17) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    8,
+    14
+   ],
+   "what": "b.rect(2,2,8,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    2,
+    14
+   ],
+   "what": "b.rect(2,2,2,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    5,
+    2,
+    1
+   ],
+   "what": "b.rect(10,5,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    6,
+    1,
+    5
+   ],
+   "what": "b.rect(12,6,1,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    11,
+    2,
+    1
+   ],
+   "what": "b.rect(10,11,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    2,
+    2,
+    2
+   ],
+   "what": "b.rect(0,2,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:83",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    6,
+    12,
+    18
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "mesa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    13
+   ],
+   "what": "Buf(24,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    8
+   ],
+   "what": "b.ell(12,8,10.6,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10.6,
+    4
+   ],
+   "what": "b.ell(12,8,10.6,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    5.5
+   ],
+   "what": "b.ell(12,5.5,10.6,3.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10.6,
+    3.6
+   ],
+   "what": "b.ell(12,5.5,10.6,3.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    9
+   ],
+   "what": "Buf(17,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    5,
+    4
+   ],
+   "what": "b.rect(1,4,5,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    5,
+    2
+   ],
+   "what": "b.rect(1,3,5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    5,
+    2,
+    3
+   ],
+   "what": "b.rect(4,5,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    5,
+    4,
+    3
+   ],
+   "what": "b.rect(9,5,4,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    4,
+    4,
+    1
+   ],
+   "what": "b.rect(9,4,4,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    6,
+    1,
+    2
+   ],
+   "what": "b.rect(9,6,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    1,
+    2,
+    2
+   ],
+   "what": "b.rect(7,1,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    19,
+    8
+   ],
+   "what": "Buf(19,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    4
+   ],
+   "what": "b.ell(8,4,5.4,1.8,[C]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.4,
+    1.8
+   ],
+   "what": "b.ell(8,4,5.4,1.8,[C]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    3
+   ],
+   "what": "b.ell(12,3,3,1.4,[C]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    1.4
+   ],
+   "what": "b.ell(12,3,3,1.4,[C]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "b.ell(4,5,2.4,1.2,[C]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.4,
+    1.2
+   ],
+   "what": "b.ell(4,5,2.4,1.2,[C]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    13,
+    5,
+    3,
+    1
+   ],
+   "what": "b.rect(13,5,3,1,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    3,
+    3,
+    1
+   ],
+   "what": "b.rect(6,3,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    6
+   ],
+   "what": "b.px(17,6,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "b.px(1,1,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    1
+   ],
+   "what": "b.px(17,1,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    21,
+    8
+   ],
+   "what": "Buf(21,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    4
+   ],
+   "what": "b.ell(9,4,7,2.4,[C]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    2.4
+   ],
+   "what": "b.ell(9,4,7,2.4,[C]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    3
+   ],
+   "what": "b.ell(15,3,3.4,1.6,[C]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.4,
+    1.6
+   ],
+   "what": "b.ell(15,3,3.4,1.6,[C]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    6,
+    4,
+    1
+   ],
+   "what": "b.rect(3,6,4,1,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    3,
+    4,
+    1
+   ],
+   "what": "b.rect(6,3,4,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    19,
+    6
+   ],
+   "what": "b.px(19,6,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "b.px(1,1,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    7
+   ],
+   "what": "Buf(34,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:87",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    32,
+    5
+   ],
+   "what": "b.rect(1,1,32,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:87",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    32,
+    1
+   ],
+   "what": "b.rect(1,3,32,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    16
+   ],
+   "what": "Buf(24,16) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    5,
+    18,
+    10
+   ],
+   "what": "b.rect(3,5,18,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    5,
+    4,
+    10
+   ],
+   "what": "b.rect(3,5,4,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    13,
+    18,
+    2
+   ],
+   "what": "b.rect(3,13,18,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    6,
+    2,
+    3
+   ],
+   "what": "b.rect(1,6,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    21,
+    6,
+    2,
+    3
+   ],
+   "what": "b.rect(21,6,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    4,
+    18,
+    2
+   ],
+   "what": "b.rect(3,4,18,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    7
+   ],
+   "what": "Buf(22,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    7
+   ],
+   "what": "b.ell(11,7,9.6,5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9.6,
+    5
+   ],
+   "what": "b.ell(11,7,9.6,5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:89",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    0,
+    4,
+    2
+   ],
+   "what": "b.rect(9,0,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    14
+   ],
+   "what": "Buf(15,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    8,
+    10
+   ],
+   "what": "b.rect(3,3,8,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    3,
+    10
+   ],
+   "what": "b.rect(3,3,3,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    10,
+    2
+   ],
+   "what": "b.rect(2,2,10,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    11,
+    5,
+    2,
+    1
+   ],
+   "what": "b.rect(11,5,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    13,
+    6,
+    1,
+    4
+   ],
+   "what": "b.rect(13,6,1,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    11,
+    10,
+    2,
+    1
+   ],
+   "what": "b.rect(11,10,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    3,
+    3,
+    2
+   ],
+   "what": "b.rect(0,3,3,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    17
+   ],
+   "what": "Buf(14,17) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    8,
+    14
+   ],
+   "what": "b.rect(2,2,8,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    8,
+    10
+   ],
+   "what": "b.rect(2,6,8,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    2,
+    14
+   ],
+   "what": "b.rect(2,2,2,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    5,
+    2,
+    1
+   ],
+   "what": "b.rect(10,5,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    6,
+    1,
+    5
+   ],
+   "what": "b.rect(12,6,1,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    11,
+    2,
+    1
+   ],
+   "what": "b.rect(10,11,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    2,
+    2,
+    2
+   ],
+   "what": "b.rect(0,2,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    8
+   ],
+   "what": "Buf(13,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    4.6
+   ],
+   "what": "b.ell(6.5,4.6,5,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2.6
+   ],
+   "what": "b.ell(6.5,4.6,5,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    2.6
+   ],
+   "what": "b.ell(4.5,2.6,1.6,1.5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.6,
+    1.5
+   ],
+   "what": "b.ell(4.5,2.6,1.6,1.5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8.5,
+    2.8
+   ],
+   "what": "b.ell(8.5,2.8,1.6,1.5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.6,
+    1.5
+   ],
+   "what": "b.ell(8.5,2.8,1.6,1.5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    8
+   ],
+   "what": "Buf(14,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    4.5
+   ],
+   "what": "b.ell(4.5,4.5,3.6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    3
+   ],
+   "what": "b.ell(4.5,4.5,3.6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:93",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    3,
+    1,
+    2
+   ],
+   "what": "b.rect(4,3,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:93",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    3,
+    4,
+    4
+   ],
+   "what": "b.rect(9,3,4,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:93",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    3,
+    4,
+    1
+   ],
+   "what": "b.rect(9,3,4,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    7
+   ],
+   "what": "Buf(13,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    4
+   ],
+   "what": "b.ell(4.5,4,3.6,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2.4
+   ],
+   "what": "b.ell(4.5,4,3.6,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    4
+   ],
+   "what": "b.ell(9,4,3,2.2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    2.2
+   ],
+   "what": "b.ell(9,4,3,2.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3
+   ],
+   "what": "b.px(8,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    8
+   ],
+   "what": "Buf(15,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    3,
+    7,
+    2
+   ],
+   "what": "b.rect(4,3,7,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.7,
+    1.7
+   ],
+   "what": "b.ell(p[0],p[1],1.7,1.7,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    32,
+    18
+   ],
+   "what": "Buf(32,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    12
+   ],
+   "what": "b.ell(16,12,14,5.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    5.4
+   ],
+   "what": "b.ell(16,12,14,5.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    14,
+    24,
+    2
+   ],
+   "what": "b.rect(4,14,24,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    9,
+    2,
+    4
+   ],
+   "what": "b.rect(8,9,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    21,
+    9,
+    2,
+    4
+   ],
+   "what": "b.rect(21,9,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    5
+   ],
+   "what": "b.ell(8,5,5,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2
+   ],
+   "what": "b.ell(8,5,5,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "b.frame(2,2,13,6,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    6
+   ],
+   "what": "b.frame(2,2,13,6,OUT) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    19,
+    2,
+    6,
+    6
+   ],
+   "what": "b.rect(19,2,6,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    1
+   ],
+   "what": "b.frame(18,1,8,8,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    8
+   ],
+   "what": "b.frame(18,1,8,8,OUT) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    26,
+    3,
+    2,
+    1
+   ],
+   "what": "b.rect(26,3,2,1,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    28,
+    4,
+    1,
+    3
+   ],
+   "what": "b.rect(28,4,1,3,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    26,
+    7,
+    2,
+    1
+   ],
+   "what": "b.rect(26,7,2,1,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:97",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    30,
+    8
+   ],
+   "what": "Buf(30,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:97",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    28,
+    5
+   ],
+   "what": "b.rect(1,2,28,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:97",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    28,
+    1
+   ],
+   "what": "b.rect(1,2,28,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:97",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    3,
+    26,
+    3
+   ],
+   "what": "b.rect(2,3,26,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:98",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    20
+   ],
+   "what": "Buf(13,20) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:98",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    11,
+    5,
+    8
+   ],
+   "what": "b.rect(4,11,5,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:98",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    11,
+    2,
+    8
+   ],
+   "what": "b.rect(4,11,2,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:98",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.2,
+    2.2
+   ],
+   "what": "b.ell(f[0]+.5,f[1],2.2,2.2,[f[2]]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    10
+   ],
+   "what": "Buf(12,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:99",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    10,
+    8
+   ],
+   "what": "b.rect(1,1,10,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:99",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    10,
+    1
+   ],
+   "what": "b.rect(1,4,10,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:99",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    7,
+    10,
+    1
+   ],
+   "what": "b.rect(1,7,10,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    8
+   ],
+   "what": "Buf(15,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    4
+   ],
+   "what": "b.ell(7,4,5.4,2.6,[c]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.4,
+    2.6
+   ],
+   "what": "b.ell(7,4,5.4,2.6,[c]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    2.5
+   ],
+   "what": "b.ell(11,2.5,2,1.3,[c]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    1.3
+   ],
+   "what": "b.ell(11,2.5,2,1.3,[c]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    6
+   ],
+   "what": "b.px(2,6,c) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    6
+   ],
+   "what": "b.px(13,6,c) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:119",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    161,
+    1
+   ],
+   "what": "LUGAR.inicio",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:119",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    161,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:132",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    24,
+    196,
+    190
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:137",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:137",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(…,-30,0) [sprite \"ab\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:142",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:154",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:154",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:156",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"puesto\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:159",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    9,
+    -14
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:159",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    14,
+    -18
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:159",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    18,
+    -13
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:175",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:175",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -13,
+    0
+   ],
+   "what": "c.drawImage(im,-13,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:193",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,66,24) args 1,2",
+   "comment": "the card steps aside while three picture bubbles stand at the top"
+  },
+  {
+   "at": "mesa.js:208",
+   "fn": "sienta",
+   "kind": "point",
+   "nums": [
+    152,
+    2
+   ],
+   "what": "mueve(id,p.x,152,2) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:209",
+   "fn": "sale",
+   "kind": "point",
+   "nums": [
+    152,
+    2
+   ],
+   "what": "mueve(id,p.x,152,2) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:209",
+   "fn": "sale",
+   "kind": "point",
+   "nums": [
+    4,
+    152
+   ],
+   "what": "mueve(id,4,152) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:238",
+   "fn": "abuelaa",
+   "kind": "point",
+   "nums": [
+    142,
+    207
+   ],
+   "what": "mueve(\"______\",142,207) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:241",
+   "fn": "inicio24",
+   "kind": "point",
+   "nums": [
+    52,
+    200
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:241",
+   "fn": "inicio24",
+   "kind": "xy",
+   "nums": [
+    36,
+    173
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:262",
+   "fn": "recoge24",
+   "kind": "point",
+   "nums": [
+    4,
+    190
+   ],
+   "what": "mueve(\"____\",4,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:273",
+   "fn": "inicio25",
+   "kind": "point",
+   "nums": [
+    52,
+    200
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:273",
+   "fn": "inicio25",
+   "kind": "xy",
+   "nums": [
+    36,
+    173
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:299",
+   "fn": "turno25a",
+   "kind": "point",
+   "nums": [
+    4,
+    196
+   ],
+   "what": "mueve(\"____\",4,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:311",
+   "fn": "inicio26",
+   "kind": "point",
+   "nums": [
+    70,
+    192
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:311",
+   "fn": "inicio26",
+   "kind": "xy",
+   "nums": [
+    54,
+    165
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:335",
+   "fn": "canelo",
+   "kind": "rect",
+   "nums": [
+    -1,
+    1,
+    -1,
+    1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:345",
+   "fn": "canelo26",
+   "kind": "xy",
+   "nums": [
+    4,
+    200
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:364",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    146,
+    200
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:365",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    110,
+    196
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:365",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    140,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:365",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    166,
+    192
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:366",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    104,
+    163
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:373",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:373",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    124,
+    22
+   ],
+   "what": "heartAt",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:374",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    125,
+    28
+   ],
+   "what": "respEn",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:374",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    1,
+    2,
+    3
+   ],
+   "what": "puestos",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:374",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    188
+   ],
+   "what": "casa",
+   "comment": null
+  },
+  {
+   "at": "mesa.js:374",
+   "fn": null,
+   "kind": "xy",
+   "nums": [
+    104,
+    161
+   ],
+   "what": "x:,y:",
+   "comment": null
+  }
+ ]
+}

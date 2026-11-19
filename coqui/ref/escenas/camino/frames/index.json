@@ -1,0 +1,1354 @@
+{
+ "scene": "camino",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "camino1"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": null,
+    "sinGran": 0,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     44,
+     148,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuela": null,
+    "ave00": null,
+    "ave01": null,
+    "ave02": null,
+    "ave10": null,
+    "ave11": null,
+    "ave12": null,
+    "ave20": null,
+    "ave21": null,
+    "ave22": null,
+    "perro": null,
+    "gato": null
+   },
+   "drawnFrom": "d-corre/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 133,
+   "reachedBy": {
+    "steps": {
+     "d-corre/right": "start,0-58",
+     "d-corre/wrong": "start,0-58",
+     "d-corre/alternate": "start,0-58",
+     "donde-esta-el-gato/right": "start",
+     "donde-esta-el-gato/wrong": "start",
+     "donde-esta-el-gato/alternate": "start",
+     "h-camino/right": "start,0-43",
+     "h-camino/wrong": "start,0-43",
+     "h-camino/alternate": "start,0-43",
+     "rapido-despacio/right": "start",
+     "rapido-despacio/wrong": "start",
+     "rapido-despacio/alternate": "start",
+     "uno-dos-tres/right": "start,0-56",
+     "uno-dos-tres/wrong": "start,0-65",
+     "uno-dos-tres/alternate": "start,0-59"
+    },
+    "pairs": [
+     "cual-camino:perro.si",
+     "cual-camino:perro.no",
+     "cual-camino:gato.si",
+     "cual-camino:gato.no",
+     "cual-camino:árbol.si",
+     "cual-camino:árbol.no",
+     "cual-camino:parque.si",
+     "cual-camino:camina.si",
+     "cual-camino:camina.no",
+     "cual-camino:corre.si",
+     "cual-camino:corre.no",
+     "cual-camino:espera.si",
+     "cual-camino:espera.no",
+     "cual-camino:rápido.si",
+     "cual-camino:rápido.no",
+     "cual-camino:despacio.si",
+     "cual-camino:despacio.no",
+     "cual-camino:hay.si",
+     "cual-camino:hay.no",
+     "cual-camino:uno.si",
+     "cual-camino:uno.no",
+     "cual-camino:dos.si",
+     "cual-camino:dos.no",
+     "cual-camino:tres.si",
+     "cual-camino:tres.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "s001.nochar.png"
+   },
+   "background": [
+    "camino0"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": null,
+    "sinGran": 1,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     176,
+     32,
+     27
+    ],
+    "luis": [
+     51,
+     144,
+     22,
+     44
+    ],
+    "carmen": [
+     81,
+     154,
+     22,
+     44
+    ],
+    "abuela": null,
+    "ave00": null,
+    "ave01": null,
+    "ave02": null,
+    "ave10": null,
+    "ave11": null,
+    "ave12": null,
+    "ave20": null,
+    "ave21": null,
+    "ave22": null,
+    "perro": [
+     40,
+     186,
+     28,
+     22
+    ],
+    "gato": [
+     101,
+     116,
+     24,
+     20
+    ]
+   },
+   "drawnFrom": "donde-esta-el-gato/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 135,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-gato/right": "0-16,23-56,61-80,82-91,93-110",
+     "donde-esta-el-gato/wrong": "0-16,23-56,61-79,82-95,98-124",
+     "donde-esta-el-gato/alternate": "0-16,23-56,61-80,82-90,93-115"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "bg": "s001.nochar.png"
+   },
+   "background": [
+    "camino0"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": [
+     0
+    ],
+    "sinGran": 1,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     176,
+     32,
+     27
+    ],
+    "luis": [
+     51,
+     144,
+     22,
+     44
+    ],
+    "carmen": [
+     81,
+     154,
+     22,
+     44
+    ],
+    "abuela": null,
+    "ave00": [
+     53,
+     83,
+     15,
+     12
+    ],
+    "ave01": [
+     70,
+     78,
+     15,
+     12
+    ],
+    "ave02": [
+     62,
+     93,
+     15,
+     12
+    ],
+    "ave10": [
+     95,
+     79,
+     15,
+     12
+    ],
+    "ave11": null,
+    "ave12": null,
+    "ave20": [
+     137,
+     75,
+     15,
+     12
+    ],
+    "ave21": [
+     154,
+     70,
+     15,
+     12
+    ],
+    "ave22": null,
+    "perro": [
+     40,
+     186,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "donde-esta-el-gato/right@17",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 97,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-gato/right": "17-18",
+     "donde-esta-el-gato/wrong": "17-18",
+     "donde-esta-el-gato/alternate": "17-18"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "s001.nochar.png"
+   },
+   "background": [
+    "camino0"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": [
+     0,
+     1
+    ],
+    "sinGran": 1,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     176,
+     32,
+     27
+    ],
+    "luis": [
+     51,
+     144,
+     22,
+     44
+    ],
+    "carmen": [
+     81,
+     154,
+     22,
+     44
+    ],
+    "abuela": null,
+    "ave00": [
+     53,
+     83,
+     15,
+     12
+    ],
+    "ave01": [
+     70,
+     78,
+     15,
+     12
+    ],
+    "ave02": [
+     62,
+     93,
+     15,
+     12
+    ],
+    "ave10": [
+     95,
+     79,
+     15,
+     12
+    ],
+    "ave11": null,
+    "ave12": null,
+    "ave20": [
+     137,
+     75,
+     15,
+     12
+    ],
+    "ave21": [
+     154,
+     70,
+     15,
+     12
+    ],
+    "ave22": null,
+    "perro": [
+     40,
+     186,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "donde-esta-el-gato/right@19",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 105,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-gato/right": "19-20",
+     "donde-esta-el-gato/wrong": "19-20",
+     "donde-esta-el-gato/alternate": "19-20"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "s001.nochar.png"
+   },
+   "background": [
+    "camino0"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": [
+     0,
+     1,
+     2
+    ],
+    "sinGran": 1,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     176,
+     32,
+     27
+    ],
+    "luis": [
+     51,
+     144,
+     22,
+     44
+    ],
+    "carmen": [
+     81,
+     154,
+     22,
+     44
+    ],
+    "abuela": null,
+    "ave00": [
+     53,
+     83,
+     15,
+     12
+    ],
+    "ave01": [
+     70,
+     78,
+     15,
+     12
+    ],
+    "ave02": [
+     62,
+     93,
+     15,
+     12
+    ],
+    "ave10": [
+     95,
+     79,
+     15,
+     12
+    ],
+    "ave11": null,
+    "ave12": null,
+    "ave20": [
+     137,
+     75,
+     15,
+     12
+    ],
+    "ave21": [
+     154,
+     70,
+     15,
+     12
+    ],
+    "ave22": null,
+    "perro": [
+     40,
+     186,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "donde-esta-el-gato/right@21",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 113,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-gato/right": "21-22",
+     "donde-esta-el-gato/wrong": "21-22",
+     "donde-esta-el-gato/alternate": "21-22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "s001.nochar.png"
+   },
+   "background": [
+    "camino0"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": null,
+    "sinGran": 1,
+    "tumbo": 0,
+    "vuelan": 30
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     176,
+     32,
+     27
+    ],
+    "luis": [
+     51,
+     144,
+     22,
+     44
+    ],
+    "carmen": [
+     81,
+     154,
+     22,
+     44
+    ],
+    "abuela": null,
+    "ave00": [
+     53,
+     83,
+     15,
+     12
+    ],
+    "ave01": [
+     70,
+     78,
+     15,
+     12
+    ],
+    "ave02": null,
+    "ave10": [
+     95,
+     79,
+     15,
+     12
+    ],
+    "ave11": null,
+    "ave12": null,
+    "ave20": [
+     137,
+     75,
+     15,
+     12
+    ],
+    "ave21": [
+     154,
+     70,
+     15,
+     12
+    ],
+    "ave22": [
+     146,
+     85,
+     15,
+     12
+    ],
+    "perro": [
+     136,
+     130,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "donde-esta-el-gato/right@57",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 442,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-gato/right": "57-60",
+     "donde-esta-el-gato/wrong": "57-60",
+     "donde-esta-el-gato/alternate": "57-60"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "bg": "s001.nochar.png"
+   },
+   "background": [
+    "camino0"
+   ],
+   "keys": {
+    "arbusto": null,
+    "arrastra": 0,
+    "galleta": 1,
+    "lit": null,
+    "sinGran": 1,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     47,
+     127,
+     26,
+     22
+    ],
+    "luis": [
+     51,
+     144,
+     22,
+     44
+    ],
+    "carmen": [
+     81,
+     154,
+     22,
+     44
+    ],
+    "abuela": null,
+    "ave00": [
+     53,
+     83,
+     15,
+     12
+    ],
+    "ave01": null,
+    "ave02": null,
+    "ave10": [
+     95,
+     79,
+     15,
+     12
+    ],
+    "ave11": [
+     112,
+     74,
+     15,
+     12
+    ],
+    "ave12": [
+     104,
+     89,
+     15,
+     12
+    ],
+    "ave20": [
+     137,
+     75,
+     15,
+     12
+    ],
+    "ave21": [
+     154,
+     70,
+     15,
+     12
+    ],
+    "ave22": null,
+    "perro": [
+     40,
+     186,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "donde-esta-el-gato/right@81",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 592,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "donde-esta-el-gato/right": "81,92",
+     "donde-esta-el-gato/wrong": "80-81,96-97",
+     "donde-esta-el-gato/alternate": "81,91-92"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "camino1"
+   ],
+   "keys": {
+    "arbusto": [
+     104,
+     188
+    ],
+    "arrastra": 0,
+    "galleta": 0,
+    "lit": null,
+    "sinGran": 0,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     178,
+     125,
+     28,
+     24
+    ],
+    "luis": [
+     77,
+     156,
+     22,
+     44
+    ],
+    "carmen": [
+     35,
+     158,
+     22,
+     44
+    ],
+    "abuela": [
+     55,
+     131,
+     22,
+     51
+    ],
+    "ave00": null,
+    "ave01": null,
+    "ave02": null,
+    "ave10": null,
+    "ave11": null,
+    "ave12": null,
+    "ave20": null,
+    "ave21": null,
+    "ave22": null,
+    "perro": [
+     152,
+     136,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "rapido-despacio/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 64,
+   "reachedBy": {
+    "steps": {
+     "rapido-despacio/right": "0-12,15-60",
+     "rapido-despacio/wrong": "0-12,15-74",
+     "rapido-despacio/alternate": "0-12,15-70"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "bg": "s000.nochar.png"
+   },
+   "background": [
+    "camino1"
+   ],
+   "keys": {
+    "arbusto": [
+     104,
+     188
+    ],
+    "arrastra": -1,
+    "galleta": 0,
+    "lit": null,
+    "sinGran": 0,
+    "tumbo": 0,
+    "vuelan": 0
+   },
+   "things": {
+    "arbol0": [
+     53,
+     74,
+     34,
+     48
+    ],
+    "arbol1": [
+     95,
+     70,
+     34,
+     48
+    ],
+    "arbol2": [
+     137,
+     66,
+     34,
+     48
+    ],
+    "banco": [
+     97,
+     126,
+     32,
+     18
+    ],
+    "grande": [
+     160,
+     16,
+     58,
+     116
+    ],
+    "porton": [
+     22,
+     116,
+     36,
+     60
+    ],
+    "camino": [
+     30,
+     128,
+     170,
+     76
+    ],
+    "parque": [
+     0,
+     100,
+     240,
+     116
+    ]
+   },
+   "characters": {
+    "coqui": [
+     165,
+     128,
+     28,
+     24
+    ],
+    "luis": [
+     77,
+     156,
+     22,
+     44
+    ],
+    "carmen": [
+     35,
+     158,
+     22,
+     44
+    ],
+    "abuela": [
+     55,
+     131,
+     22,
+     51
+    ],
+    "ave00": null,
+    "ave01": null,
+    "ave02": null,
+    "ave10": null,
+    "ave11": null,
+    "ave12": null,
+    "ave20": null,
+    "ave21": null,
+    "ave22": null,
+    "perro": [
+     139,
+     139,
+     28,
+     22
+    ],
+    "gato": null
+   },
+   "drawnFrom": "rapido-despacio/right@13",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 75,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "rapido-despacio/right": "13-14",
+     "rapido-despacio/wrong": "13-14",
+     "rapido-despacio/alternate": "13-14"
+    },
+    "pairs": []
+   }
+  }
+ ]
+}

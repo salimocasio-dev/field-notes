@@ -1,0 +1,6106 @@
+{
+ "scene": "balcon",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  },
+  {
+   "name": "mesa",
+   "rect": [
+    45,
+    36,
+    127,
+    140
+   ]
+  },
+  {
+   "name": "porche",
+   "rect": [
+    35,
+    20,
+    170,
+    187.3
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "full.mesa": "s000.full.mesa.png",
+    "full.porche": "s000.full.porche.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "nochar.mesa": "s000.nochar.mesa.png",
+    "nochar.porche": "s000.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     185,
+     32,
+     27
+    ],
+    "abuela": [
+     165,
+     75,
+     26,
+     50
+    ]
+   },
+   "drawnFrom": "d-agua-pajaro/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 13,
+   "reachedBy": {
+    "steps": {
+     "d-agua-pajaro/right": "start",
+     "d-agua-pajaro/wrong": "start",
+     "d-agua-pajaro/alternate": "start",
+     "el-jugo/right": "start",
+     "el-jugo/wrong": "start",
+     "el-jugo/alternate": "start",
+     "h-balcon/right": "start",
+     "h-balcon/wrong": "start",
+     "h-balcon/alternate": "start",
+     "que-calor/right": "start,0",
+     "que-calor/wrong": "start,0",
+     "que-calor/alternate": "start,0"
+    },
+    "pairs": [
+     "cual-balcon:silla.si",
+     "cual-balcon:silla.no",
+     "cual-balcon:se sienta.si",
+     "cual-balcon:se sienta.no",
+     "cual-balcon:quiero.si",
+     "cual-balcon:quiero.no",
+     "cual-balcon:gracias.si",
+     "cual-balcon:gracias.no",
+     "cual-balcon:¿cómo estás?.si",
+     "cual-balcon:¿cómo estás?.no",
+     "cual-balcon:bien.si",
+     "cual-balcon:bien.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "full.mesa": "s001.full.mesa.png",
+    "full.porche": "s001.full.porche.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "nochar.mesa": "s001.nochar.mesa.png",
+    "nochar.porche": "s001.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     185,
+     32,
+     27
+    ],
+    "abuela": [
+     165,
+     75,
+     26,
+     50
+    ]
+   },
+   "drawnFrom": "d-agua-pajaro/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 55,
+   "reachedBy": {
+    "steps": {
+     "d-agua-pajaro/right": "0-18",
+     "d-agua-pajaro/wrong": "0-18",
+     "d-agua-pajaro/alternate": "0-18",
+     "el-jugo/right": "0-21,94-97",
+     "el-jugo/wrong": "0-21,106-109",
+     "el-jugo/alternate": "0-21,98-101",
+     "h-balcon/right": "0-10,12-13,25,42-57",
+     "h-balcon/wrong": "0-10,12-13,25,42-57",
+     "h-balcon/alternate": "0-10,12-13,25,42-57"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "full.mesa": "s002.full.mesa.png",
+    "full.porche": "s002.full.porche.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "nochar.mesa": "s002.nochar.mesa.png",
+    "nochar.porche": "s002.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 132
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     148,
+     116,
+     24,
+     20
+    ],
+    "abuela": [
+     85,
+     93,
+     26,
+     50
+    ]
+   },
+   "drawnFrom": "d-agua-pajaro/right@19",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 143,
+   "distinctW": 25,
+   "reachedBy": {
+    "steps": {
+     "d-agua-pajaro/right": "19-29",
+     "d-agua-pajaro/wrong": "19-29",
+     "d-agua-pajaro/alternate": "19-29",
+     "el-jugo/right": "22-38,48",
+     "el-jugo/wrong": "22-38,48",
+     "el-jugo/alternate": "22-38,48",
+     "h-balcon/right": "11,14-17",
+     "h-balcon/wrong": "11,14-17",
+     "h-balcon/alternate": "11,14-17"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "full.mesa": "s003.full.mesa.png",
+    "full.porche": "s003.full.porche.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "nochar.mesa": "s003.nochar.mesa.png",
+    "nochar.porche": "s003.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 132,
+      "mano": 1
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "d-agua-pajaro/right@30",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 195,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "d-agua-pajaro/right": "30",
+     "d-agua-pajaro/wrong": "30",
+     "d-agua-pajaro/alternate": "30",
+     "h-balcon/right": "19",
+     "h-balcon/wrong": "19",
+     "h-balcon/alternate": "19"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "full.mesa": "s004.full.mesa.png",
+    "full.porche": "s004.full.porche.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "nochar.mesa": "s004.nochar.mesa.png",
+    "nochar.porche": "s004.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "d-agua-pajaro/right@31",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 217,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "d-agua-pajaro/right": "31-36",
+     "d-agua-pajaro/wrong": "31-36",
+     "d-agua-pajaro/alternate": "31-36",
+     "el-jugo/right": "50-52",
+     "el-jugo/alternate": "50-52",
+     "h-balcon/right": "18,20",
+     "h-balcon/wrong": "18,20",
+     "h-balcon/alternate": "18,20"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "full.mesa": "s005.full.mesa.png",
+    "full.porche": "s005.full.porche.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "nochar.mesa": "s005.nochar.mesa.png",
+    "nochar.porche": "s005.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     112,
+     105,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "d-agua-pajaro/right@37",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 261,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "d-agua-pajaro/right": "37-52",
+     "d-agua-pajaro/wrong": "37-52",
+     "d-agua-pajaro/alternate": "37-52"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "full.mesa": "s006.full.mesa.png",
+    "full.porche": "s006.full.porche.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "nochar.mesa": "s004.nochar.mesa.png",
+    "nochar.porche": "s004.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     98,
+     105,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@39",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 331,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "39-47",
+     "el-jugo/wrong": "39-47",
+     "el-jugo/alternate": "39-47"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "full.mesa": "s007.full.mesa.png",
+    "full.porche": "s007.full.porche.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "nochar.mesa": "s007.nochar.mesa.png",
+    "nochar.porche": "s007.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@53",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 459,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "49,53-57",
+     "el-jugo/alternate": "49,53-57"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "full.mesa": "s008.full.mesa.png",
+    "full.porche": "s008.full.porche.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
+    "nochar.mesa": "s008.nochar.mesa.png",
+    "nochar.porche": "s008.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_silla",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 160,
+      "y": 134
+     },
+     {
+      "id": "vaso_mesa",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": [
+     152,
+     115,
+     17,
+     22
+    ],
+    "vaso_mesa": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@58",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 491,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "58-63",
+     "el-jugo/wrong": "62-67",
+     "el-jugo/alternate": "58-63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "full.mesa": "s009.full.mesa.png",
+    "full.porche": "s009.full.porche.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
+    "nochar.mesa": "s009.nochar.mesa.png",
+    "nochar.porche": "s009.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_silla",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 160,
+      "y": 134
+     },
+     {
+      "id": "vaso_mesa",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 120,
+      "mano": 0
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": [
+     152,
+     115,
+     17,
+     22
+    ],
+    "vaso_mesa": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@65",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 551,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "65-67"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s010",
+   "files": {
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "full.mesa": "s010.full.mesa.png",
+    "full.porche": "s010.full.porche.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
+    "nochar.mesa": "s010.nochar.mesa.png",
+    "nochar.porche": "s010.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_mesa",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 120,
+      "mano": 0
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@68",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 574,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "64,68-72"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s011",
+   "files": {
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "full.mesa": "s011.full.mesa.png",
+    "full.porche": "s011.full.porche.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
+    "nochar.mesa": "s011.nochar.mesa.png",
+    "nochar.porche": "s011.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_grande",
+      "k": "jugo",
+      "t": "g",
+      "lv": 1,
+      "x": 132
+     },
+     {
+      "id": "vaso_pequeno",
+      "k": "jugo",
+      "t": "p",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": [
+     123,
+     105,
+     19,
+     26
+    ],
+    "vaso_pequeno": [
+     101,
+     113,
+     15,
+     18
+    ],
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@73",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 605,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "73-78",
+     "el-jugo/wrong": "81-86",
+     "el-jugo/alternate": "77-82"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s012",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "full.mesa": "s012.full.mesa.png",
+    "full.porche": "s012.full.porche.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "nochar.mesa": "s012.nochar.mesa.png",
+    "nochar.porche": "s012.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_grande",
+      "k": "jugo",
+      "t": "g",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "vaso_pequeno",
+      "k": "jugo",
+      "t": "p",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": [
+     123,
+     105,
+     19,
+     26
+    ],
+    "vaso_pequeno": [
+     101,
+     113,
+     15,
+     18
+    ],
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@80",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 666,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "80-82",
+     "el-jugo/alternate": "84-86"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s013",
+   "files": {
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "full.mesa": "s013.full.mesa.png",
+    "full.porche": "s013.full.porche.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
+    "nochar.mesa": "s013.nochar.mesa.png",
+    "nochar.porche": "s013.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_grande",
+      "k": "jugo",
+      "t": "g",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": [
+     123,
+     105,
+     19,
+     26
+    ],
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@83",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 689,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "79,83-86",
+     "el-jugo/alternate": "83,87-90"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s014",
+   "files": {
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "full.mesa": "s014.full.mesa.png",
+    "full.porche": "s014.full.porche.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
+    "nochar.mesa": "s014.nochar.mesa.png",
+    "nochar.porche": "s014.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "fin1",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108
+     },
+     {
+      "id": "fin2",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@87",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 720,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "87-88",
+     "el-jugo/wrong": "99-100",
+     "el-jugo/alternate": "91-92"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s015",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "full.mesa": "s015.full.mesa.png",
+    "full.porche": "s015.full.porche.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
+    "nochar.mesa": "s015.nochar.mesa.png",
+    "nochar.porche": "s015.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "fin1",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108,
+      "mano": 1
+     },
+     {
+      "id": "fin2",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@89",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 733,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "89",
+     "el-jugo/wrong": "101",
+     "el-jugo/alternate": "93"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s016",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "full.mesa": "s016.full.mesa.png",
+    "full.porche": "s016.full.porche.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
+    "nochar.mesa": "s016.nochar.mesa.png",
+    "nochar.porche": "s016.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "fin1",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 108,
+      "mano": 0
+     },
+     {
+      "id": "fin2",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@90",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 755,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "90-92",
+     "el-jugo/wrong": "102-104",
+     "el-jugo/alternate": "94-96"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s017",
+   "files": {
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "full.mesa": "s017.full.mesa.png",
+    "full.porche": "s017.full.porche.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
+    "nochar.mesa": "s017.nochar.mesa.png",
+    "nochar.porche": "s017.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "fin1",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 108,
+      "mano": 0
+     },
+     {
+      "id": "fin2",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     98,
+     105,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/right@93",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 797,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/right": "93",
+     "el-jugo/wrong": "105",
+     "el-jugo/alternate": "97"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s018",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "full.mesa": "s018.full.mesa.png",
+    "full.porche": "s018.full.porche.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
+    "nochar.mesa": "s018.nochar.mesa.png",
+    "nochar.porche": "s018.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 132
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108,
+      "mano": 1
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@50",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 469,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "50-52"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s019",
+   "files": {
+    "full": "s019.full.png",
+    "full.wide": "s019.full.wide.png",
+    "full.mesa": "s019.full.mesa.png",
+    "full.porche": "s019.full.porche.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
+    "nochar.mesa": "s018.nochar.mesa.png",
+    "nochar.porche": "s018.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@53",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 482,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "53-56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s020",
+   "files": {
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "full.mesa": "s020.full.mesa.png",
+    "full.porche": "s020.full.porche.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
+    "nochar.mesa": "s020.nochar.mesa.png",
+    "nochar.porche": "s020.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     98,
+     105,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@57",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 540,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "49,57-61"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s021",
+   "files": {
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "full.mesa": "s021.full.mesa.png",
+    "full.porche": "s021.full.porche.png",
+    "nochar": "s021.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
+    "nochar.mesa": "s021.nochar.mesa.png",
+    "nochar.porche": "s021.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_silla",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 160,
+      "y": 134,
+      "mano": 1
+     },
+     {
+      "id": "vaso_mesa",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@69",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 604,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "69-71",
+     "el-jugo/alternate": "65-67"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s022",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "full.mesa": "s022.full.mesa.png",
+    "full.porche": "s022.full.porche.png",
+    "nochar": "s021.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
+    "nochar.mesa": "s021.nochar.mesa.png",
+    "nochar.porche": "s021.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_mesa",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@72",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 617,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "72-75",
+     "el-jugo/alternate": "68-71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s023",
+   "files": {
+    "full": "s023.full.png",
+    "full.wide": "s023.full.wide.png",
+    "full.mesa": "s023.full.mesa.png",
+    "full.porche": "s023.full.porche.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s023.nochar.wide.png",
+    "nochar.mesa": "s023.nochar.mesa.png",
+    "nochar.porche": "s023.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_mesa",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     86,
+     105,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@76",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 675,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "68,76-80",
+     "el-jugo/alternate": "64,72-76"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s024",
+   "files": {
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "full.mesa": "s024.full.mesa.png",
+    "full.porche": "s024.full.porche.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "nochar.mesa": "s024.nochar.mesa.png",
+    "nochar.porche": "s024.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_grande",
+      "k": "jugo",
+      "t": "g",
+      "lv": 1,
+      "x": 132
+     },
+     {
+      "id": "vaso_pequeno",
+      "k": "jugo",
+      "t": "p",
+      "lv": 1,
+      "x": 108,
+      "mano": 1
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": [
+     123,
+     105,
+     19,
+     26
+    ],
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@88",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 739,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "88-90"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s025",
+   "files": {
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "full.mesa": "s025.full.mesa.png",
+    "full.porche": "s025.full.porche.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "nochar.mesa": "s024.nochar.mesa.png",
+    "nochar.porche": "s024.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_grande",
+      "k": "jugo",
+      "t": "g",
+      "lv": 1,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": [
+     123,
+     105,
+     19,
+     26
+    ],
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     105,
+     63,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@91",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 754,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "91-94"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s026",
+   "files": {
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "full.mesa": "s026.full.mesa.png",
+    "full.porche": "s026.full.porche.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
+    "nochar.mesa": "s026.nochar.mesa.png",
+    "nochar.porche": "s026.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "vaso_grande",
+      "k": "jugo",
+      "t": "g",
+      "lv": 0,
+      "x": 132
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": [
+     123,
+     105,
+     19,
+     26
+    ],
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "pajaro": [
+     98,
+     105,
+     31,
+     28
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "el-jugo/wrong@95",
+   "cam": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "F": 811,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "el-jugo/wrong": "87,95-98"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s027",
+   "files": {
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "full.mesa": "s027.full.mesa.png",
+    "full.porche": "s027.full.porche.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
+    "nochar.mesa": "s027.nochar.mesa.png",
+    "nochar.porche": "s027.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108,
+      "mano": 1
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "h-balcon/right@22",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 221,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "h-balcon/right": "22",
+     "h-balcon/wrong": "22",
+     "h-balcon/alternate": "22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s028",
+   "files": {
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "full.mesa": "s028.full.mesa.png",
+    "full.porche": "s028.full.porche.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "nochar.mesa": "s005.nochar.mesa.png",
+    "nochar.porche": "s005.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 0,
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 0,
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     124,
+     109,
+     17,
+     22
+    ],
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "h-balcon/right@23",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 243,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-balcon/right": "21,23-24",
+     "h-balcon/wrong": "21,23-24",
+     "h-balcon/alternate": "21,23-24"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s029",
+   "files": {
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "full.mesa": "s029.full.mesa.png",
+    "full.porche": "s029.full.porche.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "nochar.mesa": "s029.nochar.mesa.png",
+    "nochar.porche": "s029.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 108
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 132
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "h-balcon/right@26",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 243,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "h-balcon/right": "26-30",
+     "h-balcon/wrong": "26-30",
+     "h-balcon/alternate": "26-30"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s030",
+   "files": {
+    "full": "s030.full.png",
+    "full.wide": "s030.full.wide.png",
+    "full.mesa": "s030.full.mesa.png",
+    "full.porche": "s030.full.porche.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "nochar.mesa": "s029.nochar.mesa.png",
+    "nochar.porche": "s029.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 108
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 132,
+      "mano": 0
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "h-balcon/right@32",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 313,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "h-balcon/right": "31-35",
+     "h-balcon/wrong": "31-35",
+     "h-balcon/alternate": "31-35"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s031",
+   "files": {
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "full.mesa": "s031.full.mesa.png",
+    "full.porche": "s031.full.porche.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "nochar.mesa": "s029.nochar.mesa.png",
+    "nochar.porche": "s029.nochar.porche.png",
+    "bg": "bg.bal1_0.png"
+   },
+   "background": [
+    "bal1_0"
+   ],
+   "keys": {
+    "door": 1,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 108,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 132,
+      "mano": 0
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "h-balcon/right@37",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 400,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "h-balcon/right": "36-41",
+     "h-balcon/wrong": "36-41",
+     "h-balcon/alternate": "36-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s032",
+   "files": {
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "full.mesa": "s032.full.mesa.png",
+    "full.porche": "s032.full.porche.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
+    "nochar.mesa": "s032.nochar.mesa.png",
+    "nochar.porche": "s032.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     185,
+     32,
+     27
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@1",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "1-18",
+     "que-calor/wrong": "1-18",
+     "que-calor/alternate": "1-18"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s033",
+   "files": {
+    "full": "s033.full.png",
+    "full.wide": "s033.full.wide.png",
+    "full.mesa": "s033.full.mesa.png",
+    "full.porche": "s033.full.porche.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
+    "nochar.mesa": "s033.nochar.mesa.png",
+    "nochar.porche": "s033.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 1
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     106,
+     144,
+     28,
+     24
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@19",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 71,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "19-23",
+     "que-calor/wrong": "19-23",
+     "que-calor/alternate": "19-23"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s034",
+   "files": {
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "full.mesa": "s034.full.mesa.png",
+    "full.porche": "s034.full.porche.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
+    "nochar.mesa": "s034.nochar.mesa.png",
+    "nochar.porche": "s034.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@24",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 89,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "24",
+     "que-calor/wrong": "24",
+     "que-calor/alternate": "24"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s035",
+   "files": {
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "full.mesa": "s035.full.mesa.png",
+    "full.porche": "s035.full.porche.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
+    "nochar.mesa": "s034.nochar.mesa.png",
+    "nochar.porche": "s034.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@26",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 156,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "25-31",
+     "que-calor/wrong": "25-31",
+     "que-calor/alternate": "25-31"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s036",
+   "files": {
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "full.mesa": "s036.full.mesa.png",
+    "full.porche": "s036.full.porche.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
+    "nochar.mesa": "s036.nochar.mesa.png",
+    "nochar.porche": "s036.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 1,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@32",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 238,
+   "distinctW": 21,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "32-37,39-42,44,46-50",
+     "que-calor/wrong": "32-37,39-42,44-47,49-53",
+     "que-calor/alternate": "32-37,39-42,44-47,49-53"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s037",
+   "files": {
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "full.mesa": "s037.full.mesa.png",
+    "full.porche": "s037.full.porche.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
+    "nochar.mesa": "s036.nochar.mesa.png",
+    "nochar.porche": "s036.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 1,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [
+     {
+      "id": "mio",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 132,
+      "mano": 1
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@45",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 343,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "43,45",
+     "que-calor/alternate": "43,48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s038",
+   "files": {
+    "full": "s038.full.png",
+    "full.wide": "s038.full.wide.png",
+    "full.mesa": "s038.full.mesa.png",
+    "full.porche": "s038.full.porche.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s038.nochar.wide.png",
+    "nochar.mesa": "s038.nochar.mesa.png",
+    "nochar.porche": "s038.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 1,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/right@51",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 418,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "que-calor/right": "38,51-66",
+     "que-calor/wrong": "54-55,57-59",
+     "que-calor/alternate": "38,54-61,63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s039",
+   "files": {
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "full.mesa": "s039.full.mesa.png",
+    "full.porche": "s039.full.porche.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s039.nochar.wide.png",
+    "nochar.mesa": "s039.nochar.mesa.png",
+    "nochar.porche": "s039.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 1,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [
+     {
+      "id": "mio",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 132,
+      "mano": 1
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/wrong@48",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 422,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-calor/wrong": "43,48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s040",
+   "files": {
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "full.mesa": "s040.full.mesa.png",
+    "full.porche": "s040.full.porche.png",
+    "nochar": "s040.nochar.png",
+    "nochar.wide": "s040.nochar.wide.png",
+    "nochar.mesa": "s040.nochar.mesa.png",
+    "nochar.porche": "s040.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 1,
+    "fanMesa": 1,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/wrong@61",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 591,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "que-calor/wrong": "38,56,60-64,66"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s041",
+   "files": {
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "full.mesa": "s041.full.mesa.png",
+    "full.porche": "s041.full.porche.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
+    "nochar.mesa": "s041.nochar.mesa.png",
+    "nochar.porche": "s041.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 1,
+    "fanMesa": 1,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [
+     {
+      "id": "aparte",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/wrong@67",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 671,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "que-calor/wrong": "65,67-74"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s042",
+   "files": {
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "full.mesa": "s042.full.mesa.png",
+    "full.porche": "s042.full.porche.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
+    "nochar.mesa": "s042.nochar.mesa.png",
+    "nochar.porche": "s042.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 1,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 132,
+      "mano": 0
+     },
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 108,
+      "mano": 0
+     }
+    ],
+    "vasos": [
+     {
+      "id": "aparte",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     123,
+     104,
+     26,
+     27
+    ],
+    "agua": [
+     99,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": [
+     137,
+     135,
+     26,
+     22
+    ],
+    "abuela": [
+     55,
+     96,
+     34,
+     50
+    ]
+   },
+   "drawnFrom": "que-calor/alternate@64",
+   "cam": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "F": 644,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "que-calor/alternate": "62,64-71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s043",
+   "files": {
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "full.mesa": "s043.full.mesa.png",
+    "full.porche": "s043.full.porche.png",
+    "nochar": "s043.full.png",
+    "nochar.wide": "s043.full.wide.png",
+    "nochar.mesa": "s043.full.mesa.png",
+    "nochar.porche": "s043.full.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "v",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:vaso.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:vaso.si"
+    ]
+   }
+  },
+  {
+   "id": "s044",
+   "files": {
+    "full": "s044.full.png",
+    "full.wide": "s044.full.wide.png",
+    "full.mesa": "s044.full.mesa.png",
+    "full.porche": "s044.full.porche.png",
+    "nochar": "s044.full.png",
+    "nochar.wide": "s044.full.wide.png",
+    "nochar.mesa": "s044.full.mesa.png",
+    "nochar.porche": "s044.full.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "agua",
+      "k": "agua",
+      "x": 120
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": [
+     111,
+     104,
+     26,
+     27
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:vaso.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:vaso.no",
+     "cual-balcon:agua.si"
+    ]
+   }
+  },
+  {
+   "id": "s045",
+   "files": {
+    "full": "s045.full.png",
+    "full.wide": "s045.full.wide.png",
+    "full.mesa": "s045.full.mesa.png",
+    "full.porche": "s045.full.porche.png",
+    "nochar": "s045.full.png",
+    "nochar.wide": "s045.full.wide.png",
+    "nochar.mesa": "s045.full.mesa.png",
+    "nochar.porche": "s045.full.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:jugo.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:jugo.si"
+    ]
+   }
+  },
+  {
+   "id": "s046",
+   "files": {
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "full.mesa": "s043.full.mesa.png",
+    "full.porche": "s043.full.porche.png",
+    "nochar": "s043.full.png",
+    "nochar.wide": "s043.full.wide.png",
+    "nochar.mesa": "s043.full.mesa.png",
+    "nochar.porche": "s043.full.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 120
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": [
+     112,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:jugo.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:jugo.no"
+    ]
+   }
+  },
+  {
+   "id": "s047",
+   "files": {
+    "full": "s047.full.png",
+    "full.wide": "s047.full.wide.png",
+    "full.mesa": "s047.full.mesa.png",
+    "full.porche": "s047.full.porche.png",
+    "nochar": "s047.full.png",
+    "nochar.wide": "s047.full.wide.png",
+    "nochar.mesa": "s047.full.mesa.png",
+    "nochar.porche": "s047.full.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [
+     {
+      "id": "jugo",
+      "k": "jugo",
+      "x": 120
+     }
+    ],
+    "vasos": [],
+    "win": 0
+   },
+   "things": {
+    "jugo": [
+     111,
+     104,
+     26,
+     27
+    ],
+    "agua": null,
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:agua.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:agua.no"
+    ]
+   }
+  },
+  {
+   "id": "s048",
+   "files": {
+    "full": "s048.full.png",
+    "full.wide": "s048.full.wide.png",
+    "full.mesa": "s048.full.mesa.png",
+    "full.porche": "s048.full.porche.png",
+    "nochar": "s048.nochar.png",
+    "nochar.wide": "s048.nochar.wide.png",
+    "nochar.mesa": "s048.nochar.mesa.png",
+    "nochar.porche": "s048.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 0.4,
+      "x": 106
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": [
+     98,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "pajaro": [
+     112,
+     108,
+     31,
+     28
+    ],
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:toma.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:toma.si"
+    ]
+   }
+  },
+  {
+   "id": "s049",
+   "files": {
+    "full": "s049.full.png",
+    "full.wide": "s049.full.wide.png",
+    "full.mesa": "s049.full.mesa.png",
+    "full.porche": "s049.full.porche.png",
+    "nochar": "s049.nochar.png",
+    "nochar.wide": "s049.nochar.wide.png",
+    "nochar.mesa": "s049.nochar.mesa.png",
+    "nochar.porche": "s049.nochar.porche.png",
+    "bg": "bg.bal0_0.png"
+   },
+   "background": [
+    "bal0_0"
+   ],
+   "keys": {
+    "door": 0,
+    "enSuelo": 0,
+    "fanMedio": 0,
+    "fanMesa": 0,
+    "jarras": [],
+    "vasos": [
+     {
+      "id": "agua",
+      "k": "agua",
+      "t": "n",
+      "lv": 1,
+      "x": 108
+     }
+    ],
+    "win": 0
+   },
+   "things": {
+    "jugo": null,
+    "agua": [
+     100,
+     109,
+     17,
+     22
+    ],
+    "vaso_silla": null,
+    "vaso_mesa": null,
+    "vaso_grande": null,
+    "vaso_pequeno": null,
+    "mesa": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "silla_pequena": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "silla_grande": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "puerta": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "ventana": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "balcon": [
+     42,
+     122,
+     156,
+     34
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "pajaro": [
+     117,
+     105,
+     31,
+     28
+    ],
+    "abuela": null
+   },
+   "drawnFrom": "cual-balcon:toma.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-balcon:toma.no"
+    ]
+   }
+  }
+ ]
+}

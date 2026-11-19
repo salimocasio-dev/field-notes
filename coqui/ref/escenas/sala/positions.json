@@ -1,0 +1,2216 @@
+{
+ "scene": "sala",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 46,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 14,
+   "y": 146,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "bebé.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "bebé.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 30,
+   "y": 122,
+   "w": 170,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 35,
+   "y": 60,
+   "w": 170,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 35,
+   "y": 66,
+   "w": 170,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 41,
+   "y": 70,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "mamá.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "mamá.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 44,
+   "y": 132,
+   "w": 150,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "yo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "yo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "tú.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "tú.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 64,
+   "y": 92,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermano.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermano.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermana.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermana.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 75,
+   "y": 70,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "papá.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "papá.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 125,
+   "y": 70,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "abuelo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "abuelo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 42.83,
+   "y": 146,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hermana.p3",
+     "owner": "level picture",
+     "note": "pair bebé.si, centred on x 70 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 70.33,
+   "y": 70,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "abuela.p1",
+     "owner": "level picture",
+     "note": "pair mamá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p3",
+     "owner": "level picture",
+     "note": "pair mamá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mamá.p0",
+     "owner": "level picture",
+     "note": "pair mamá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "familia.p1",
+     "owner": "level picture",
+     "note": "pair mamá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "amigo.p3",
+     "owner": "level picture",
+     "note": "pair mamá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 79.15,
+   "y": 60,
+   "w": 81.69,
+   "h": 90.2,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "familia.p0",
+     "owner": "level picture",
+     "note": "pair familia.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 81.95,
+   "y": 132,
+   "w": 72.09,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p0",
+     "owner": "level picture",
+     "note": "pair tú.si, centred on x 118 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p1",
+     "owner": "level picture",
+     "note": "pair tú.no, centred on x 118 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p2",
+     "owner": "level picture",
+     "note": "pair yo.si, centred on x 118 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 93.33,
+   "y": 92,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "abuela.p3",
+     "owner": "level picture",
+     "note": "pair hermana.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mamá.p3",
+     "owner": "level picture",
+     "note": "pair hermana.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abuelo.p3",
+     "owner": "level picture",
+     "note": "pair hermano.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "familia.p2",
+     "owner": "level picture",
+     "note": "pair hermano.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hermana.p0",
+     "owner": "level picture",
+     "note": "pair hermana.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hermana.p1",
+     "owner": "level picture",
+     "note": "pair hermano.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hermana.p2",
+     "owner": "level picture",
+     "note": "pair hermana.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p3",
+     "owner": "level picture",
+     "note": "pair hermano.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 104.33,
+   "y": 70,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "abuela.p2",
+     "owner": "level picture",
+     "note": "pair papá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "jugo.p3",
+     "owner": "level picture",
+     "note": "pair papá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mamá.p1",
+     "owner": "level picture",
+     "note": "pair papá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abuelo.p2",
+     "owner": "level picture",
+     "note": "pair papá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "ven.p3",
+     "owner": "level picture",
+     "note": "pair papá.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 154.33,
+   "y": 70,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "se sienta.p3",
+     "owner": "level picture",
+     "note": "pair abuelo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mamá.p2",
+     "owner": "level picture",
+     "note": "pair abuelo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abuelo.p0",
+     "owner": "level picture",
+     "note": "pair abuelo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abuelo.p1",
+     "owner": "level picture",
+     "note": "pair abuelo.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "niña.p3",
+     "owner": "level picture",
+     "note": "pair abuelo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 56,
+   "y": 174,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 60,
+   "y": 114,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "puerta"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 62,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 70,
+   "y": 193,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "bebé.si.set.gente.bebe",
+     "owner": "set.gente.bebe",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 74,
+   "y": 197,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "bebé.no.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 80,
+   "y": 179,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "tú.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "tú.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 84,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-foto-familia.json",
+     "at": "beats.9",
+     "owner": "[]",
+     "insideThings": [
+      "sala"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 96,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.si.set.gente.hermana",
+     "owner": "set.gente.hermana",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.no.set.gente.hermana",
+     "owner": "set.gente.hermana",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 97,
+   "y": 112,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.bebe",
+     "owner": "set.gente.bebe",
+     "insideThings": [
+      "mama",
+      "sofa"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 97,
+   "y": 127,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "mamá.si.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "sofa",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "sofa",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "sofa",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 97,
+   "y": 128,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "mamá.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 100,
+   "y": 136,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.si.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 100,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "yo.si.set.gente.hermana",
+     "owner": "set.gente.hermana",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "yo.no.set.gente.hermana",
+     "owner": "set.gente.hermana",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 114,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "mesita",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 120,
+   "y": 146,
+   "uses": [
+    {
+     "file": "cuentos/d-foto-familia.json",
+     "at": "beats.6",
+     "owner": "[]",
+     "insideThings": [
+      "sala"
+     ]
+    },
+    {
+     "file": "cuentos/d-foto-familia.json",
+     "at": "beats.12",
+     "owner": "[]",
+     "insideThings": [
+      "sala"
+     ]
+    },
+    {
+     "file": "cuentos/d-foto-familia.json",
+     "at": "beats.18",
+     "owner": "[]",
+     "insideThings": [
+      "sala"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 120,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermano.si.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "mesita",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermano.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "mesita",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermana.si.set.gente.hermana",
+     "owner": "set.gente.hermana",
+     "insideThings": [
+      "mesita",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "hermana.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "mesita",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 128,
+   "y": 179,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "yo.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "yo.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 131,
+   "y": 127,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "papá.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "sofa",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "papá.no.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "sofa",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "sofa",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 136,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "tú.si.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "tú.no.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 144,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.si.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.no.set.gente.hermano",
+     "owner": "set.gente.hermano",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 148,
+   "y": 114,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "ella.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "papa",
+      "sofa",
+      "lampara"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.hermana",
+     "owner": "set.gente.hermana",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 174,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "él.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "hermano",
+      "sala"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 156,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-foto-familia.json",
+     "at": "beats.15",
+     "owner": "[]",
+     "insideThings": [
+      "sala"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 192,
+   "uses": [
+    {
+     "file": "cuentos/d-foto-familia.json",
+     "at": "beats.26",
+     "owner": "[]",
+     "insideThings": [
+      "hermano",
+      "sala"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 181,
+   "y": 127,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "abuelo.si.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "butaca",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    },
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "familia.si.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "butaca",
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 183,
+   "y": 128,
+   "uses": [
+    {
+     "file": "cuentos/cual-sala.json",
+     "at": "abuelo.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "sala"
+     ],
+     "meaning": "a person's feet: x middle, y the bottom (sala.js:86-92 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 70,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hermana.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 118,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "tú.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "sala.js:49",
+   "fn": "manta",
+   "kind": "rect",
+   "nums": [
+    49,
+    177,
+    58,
+    22
+   ],
+   "what": "fr(g,49,177,58,22,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:49",
+   "fn": "manta",
+   "kind": "rect",
+   "nums": [
+    50,
+    178,
+    56,
+    20
+   ],
+   "what": "fr(g,50,178,56,20,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:49",
+   "fn": "manta",
+   "kind": "rect",
+   "nums": [
+    50,
+    178,
+    56,
+    1
+   ],
+   "what": "fr(g,50,178,56,1,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -11,
+    -1,
+    22,
+    26
+   ],
+   "what": "fr(g,-11,-1,22,26,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -10,
+    0,
+    20,
+    24
+   ],
+   "what": "fr(g,-10,0,20,24,RP.wood[2]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -10,
+    0,
+    20,
+    1
+   ],
+   "what": "fr(g,-10,0,20,1,RP.wood[4]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:53",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -8,
+    2,
+    16,
+    20
+   ],
+   "what": "fr(g,-8,2,16,20,…) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:54",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -8,
+    2,
+    16,
+    20
+   ],
+   "what": "g.rect(-8,2,16,20) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:55",
+   "fn": "marco",
+   "kind": "point",
+   "nums": [
+    -6,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:55",
+   "fn": "marco",
+   "kind": "point",
+   "nums": [
+    1,
+    11
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:55",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    -8,
+    14,
+    16,
+    8
+   ],
+   "what": "fr(g,-8,14,16,8,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:58",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    5,
+    17,
+    4,
+    5
+   ],
+   "what": "fr(g,5,17,4,5,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:58",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    6,
+    18,
+    3,
+    4
+   ],
+   "what": "fr(g,6,18,3,4,RP.tan[3]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:60",
+   "fn": "marco",
+   "kind": "rect",
+   "nums": [
+    0,
+    -3,
+    1,
+    3
+   ],
+   "what": "fr(g,0,-3,1,3,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    97,
+    127,
+    1
+   ],
+   "what": "SITIO.mama",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    131,
+    127,
+    1
+   ],
+   "what": "SITIO.papa",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    181,
+    127,
+    1
+   ],
+   "what": "SITIO.abuelo",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    70,
+    193
+   ],
+   "what": "SITIO.bebe",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    42,
+    168
+   ],
+   "what": "SITIO.abuela",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    150,
+    198
+   ],
+   "what": "SITIO.hermano",
+   "comment": null
+  },
+  {
+   "at": "sala.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    180,
+    198
+   ],
+   "what": "SITIO.hermana",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    30,
+    104,
+    0.7
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    183,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    72,
+    146,
+    0.9
+   ],
+   "what": "LUGAR.huele",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    58,
+    155,
+    1
+   ],
+   "what": "LUGAR.abuela",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    82,
+    125,
+    0.9
+   ],
+   "what": "LUGAR.mama",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    116,
+    125,
+    0.9
+   ],
+   "what": "LUGAR.papa",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    166,
+    125,
+    0.9
+   ],
+   "what": "LUGAR.abuelo",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    88,
+    175,
+    1
+   ],
+   "what": "LUGAR.bebe",
+   "comment": null
+  },
+  {
+   "at": "sala.js:76",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    44,
+    183,
+    1
+   ],
+   "what": "LUGAR.izq",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    100,
+    136
+   ],
+   "what": "PARADOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    140,
+    136
+   ],
+   "what": "PARADOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    70,
+    198
+   ],
+   "what": "APARTE[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    170,
+    198
+   ],
+   "what": "APARTE[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    96,
+    196
+   ],
+   "what": "JUNTOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    144,
+    196
+   ],
+   "what": "JUNTOS[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    198,
+    176
+   ],
+   "what": "CAMARA",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    106,
+    138,
+    30,
+    16
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    98,
+    148,
+    46,
+    18
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    68,
+    84,
+    92,
+    44
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    160,
+    86,
+    42,
+    42
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    64,
+    34,
+    82,
+    30
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    146,
+    62,
+    20,
+    64
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    20,
+    42,
+    42,
+    80
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    160,
+    32,
+    56,
+    54
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    122,
+    240,
+    94
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "sala.js:88",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:88",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(im,-30,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:91",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    0,
+    0,
+    4,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    3,
+    1,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:92",
+   "fn": "Z",
+   "kind": "rect",
+   "nums": [
+    0,
+    4,
+    4,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:99",
+   "fn": "taza",
+   "kind": "rect",
+   "nums": [
+    0,
+    2,
+    4,
+    6
+   ],
+   "what": "hgt",
+   "comment": null
+  },
+  {
+   "at": "sala.js:105",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:105",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "sala.js:162",
+   "fn": "destapa",
+   "kind": "point",
+   "nums": [
+    108,
+    134
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:162",
+   "fn": "destapa",
+   "kind": "point",
+   "nums": [
+    132,
+    134
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:162",
+   "fn": "destapa",
+   "kind": "point",
+   "nums": [
+    120,
+    128
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:163",
+   "fn": "tres",
+   "kind": "point",
+   "nums": [
+    120,
+    140
+   ],
+   "what": "vuelaA(120,140,50,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "sala.js:163",
+   "fn": "tres",
+   "kind": "point",
+   "nums": [
+    50,
+    24
+   ],
+   "what": "vuelaA(120,140,50,24) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "sala.js:174",
+   "fn": "abda",
+   "kind": "point",
+   "nums": [
+    50,
+    24
+   ],
+   "what": "vuelaA(x.x,x.y-30,50,24,1) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "sala.js:180",
+   "fn": "suplato",
+   "kind": "point",
+   "nums": [
+    158,
+    200
+   ],
+   "what": "mueve(\"______\",158,200) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:183",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    1,
+    0.8
+   ],
+   "what": "vuelaA(b.x,b.y-14,q.x+16,q.y+8,1,.8) args 4,5",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    60,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    180,
+    34
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    120,
+    22
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    96,
+    44
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:184",
+   "fn": "final6",
+   "kind": "point",
+   "nums": [
+    150,
+    40
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:188",
+   "fn": "ponecamara",
+   "kind": "point",
+   "nums": [
+    150,
+    172
+   ],
+   "what": "mueve(\"______\",150,172) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:198",
+   "fn": "corren",
+   "kind": "point",
+   "nums": [
+    94,
+    198
+   ],
+   "what": "mueve(\"_______\",94,198,10) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:198",
+   "fn": "corren",
+   "kind": "point",
+   "nums": [
+    66,
+    203
+   ],
+   "what": "mueve(\"_______\",66,203,10) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:214",
+   "fn": "solo",
+   "kind": "point",
+   "nums": [
+    120,
+    146
+   ],
+   "what": "mueve(o.quien,120,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:214",
+   "fn": "solo",
+   "kind": "point",
+   "nums": [
+    72,
+    206
+   ],
+   "what": "mueve(otro,72,206) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    98,
+    146
+   ],
+   "what": "mueve(\"____\",98,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    142,
+    146
+   ],
+   "what": "mueve(\"____\",142,146) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    172,
+    160
+   ],
+   "what": "mueve(\"______\",172,160) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    66,
+    160
+   ],
+   "what": "mueve(\"______\",66,160) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    140,
+    190
+   ],
+   "what": "mueve(\"_______\",140,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:224",
+   "fn": "final7",
+   "kind": "point",
+   "nums": [
+    100,
+    190
+   ],
+   "what": "mueve(\"_______\",100,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:230",
+   "fn": "tropieza",
+   "kind": "point",
+   "nums": [
+    162,
+    176
+   ],
+   "what": "mueve(\"______\",162,176) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:231",
+   "fn": "acerca",
+   "kind": "point",
+   "nums": [
+    192,
+    180
+   ],
+   "what": "mueve(\"______\",192,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:235",
+   "fn": "tapa",
+   "kind": "point",
+   "nums": [
+    192,
+    180
+   ],
+   "what": "mueve(\"______\",192,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    60,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    180,
+    34
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    120,
+    22
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    96,
+    44
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:245",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    150,
+    40
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "sala.js:247",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    150,
+    170
+   ],
+   "what": "mueve(\"______\",150,170) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:247",
+   "fn": "final8",
+   "kind": "point",
+   "nums": [
+    182,
+    172
+   ],
+   "what": "mueve(\"______\",182,172) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "sala.js:259",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "sala.js:259",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    52,
+    48,
+    150,
+    165.3
+   ],
+   "what": "CAM.sofa",
+   "comment": null
+  },
+  {
+   "at": "sala.js:259",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    107,
+    6
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ]
+}

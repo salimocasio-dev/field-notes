@@ -1,0 +1,1213 @@
+{
+ "scene": "lago",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 0,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "pato_blanco": null,
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": null,
+    "pajaro": null,
+    "perro": null
+   },
+   "drawnFrom": "cual/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 181,
+   "reachedBy": {
+    "steps": {
+     "cual/right": "start",
+     "cual/wrong": "start",
+     "cual/alternate": "start",
+     "d-pato-pequeno/right": "start",
+     "d-pato-pequeno/wrong": "start",
+     "d-pato-pequeno/alternate": "start",
+     "h-lago/right": "start,1-37",
+     "h-lago/wrong": "start,1-37",
+     "h-lago/alternate": "start,1-37",
+     "los-botes/right": "start",
+     "los-botes/wrong": "start",
+     "los-botes/alternate": "start",
+     "pan-para-el-pato/right": "start,0-50,87-95",
+     "pan-para-el-pato/wrong": "start,0-50,91,96-109",
+     "pan-para-el-pato/alternate": "start,0-50,97-105"
+    },
+    "pairs": [
+     "cual-lago:pato.si",
+     "cual-lago:pato.no",
+     "cual-lago:pez.si",
+     "cual-lago:pez.no",
+     "cual-lago:pájaro.si",
+     "cual-lago:pájaro.no",
+     "cual-lago:nada.si",
+     "cual-lago:nada.no",
+     "cual-lago:vuela.si",
+     "cual-lago:vuela.no",
+     "cual-lago:rojo.si",
+     "cual-lago:rojo.no",
+     "cual-lago:azul.si",
+     "cual-lago:azul.no",
+     "cual-lago:verde.si",
+     "cual-lago:verde.no",
+     "cual-lago:amarillo.si",
+     "cual-lago:amarillo.no",
+     "cual-lago:blanco.si",
+     "cual-lago:blanco.no",
+     "cual-lago:negro.si",
+     "cual-lago:negro.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": [
+     96,
+     153
+    ],
+    "fila": 0,
+    "flor": [
+     196,
+     119
+    ],
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": [
+     191,
+     103,
+     10,
+     17
+    ],
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     62,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     63,
+     78,
+     22,
+     40
+    ],
+    "carmen": [
+     101,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     127,
+     155,
+     24,
+     18
+    ],
+    "pato_negro": [
+     155,
+     157,
+     24,
+     18
+    ],
+    "pato_amarillo": [
+     141,
+     176,
+     24,
+     18
+    ],
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": null,
+    "pajaro": null,
+    "perro": [
+     32,
+     105,
+     28,
+     16
+    ]
+   },
+   "drawnFrom": "cual/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 91,
+   "reachedBy": {
+    "steps": {
+     "cual/right": "0-86",
+     "cual/wrong": "0-105",
+     "cual/alternate": "0-89",
+     "d-pato-pequeno/right": "0",
+     "d-pato-pequeno/wrong": "0",
+     "d-pato-pequeno/alternate": "0",
+     "h-lago/right": "0",
+     "h-lago/wrong": "0",
+     "h-lago/alternate": "0"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": [
+     58,
+     153
+    ],
+    "fila": 0,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     86,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     85,
+     78,
+     22,
+     40
+    ],
+    "carmen": [
+     31,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     127,
+     155,
+     24,
+     18
+    ],
+    "pato_negro": [
+     155,
+     157,
+     24,
+     18
+    ],
+    "pato_amarillo": [
+     141,
+     176,
+     24,
+     18
+    ],
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": null,
+    "pajaro": null,
+    "perro": null
+   },
+   "drawnFrom": "d-pato-pequeno/right@1",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 20,
+   "reachedBy": {
+    "steps": {
+     "d-pato-pequeno/right": "1-52",
+     "d-pato-pequeno/wrong": "1-52",
+     "d-pato-pequeno/alternate": "1-52"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 0,
+    "flor": null,
+    "pincel": null,
+    "saco": [
+     110,
+     153
+    ]
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     60,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     117,
+     110,
+     22,
+     44
+    ],
+    "carmen": [
+     185,
+     73,
+     22,
+     44
+    ],
+    "pato_blanco": null,
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": [
+     36,
+     145,
+     20,
+     22
+    ],
+    "bote_azul": [
+     58,
+     145,
+     20,
+     22
+    ],
+    "bote_verde": [
+     80,
+     145,
+     20,
+     22
+    ],
+    "pez": null,
+    "pajaro": null,
+    "perro": null
+   },
+   "drawnFrom": "los-botes/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 3,
+   "distinctW": 227,
+   "reachedBy": {
+    "steps": {
+     "los-botes/right": "0-103",
+     "los-botes/wrong": "0-133",
+     "los-botes/alternate": "0-120"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 6,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     33,
+     114,
+     22,
+     40
+    ],
+    "carmen": [
+     61,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     130,
+     167,
+     24,
+     18
+    ],
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": [
+     70,
+     182,
+     22,
+     18
+    ],
+    "pajaro": [
+     142,
+     107,
+     20,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "pan-para-el-pato/right@51",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 512,
+   "distinctW": 12,
+   "reachedBy": {
+    "steps": {
+     "pan-para-el-pato/right": "51-55",
+     "pan-para-el-pato/wrong": "51-55",
+     "pan-para-el-pato/alternate": "51-55"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 5,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     33,
+     114,
+     22,
+     40
+    ],
+    "carmen": [
+     61,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     130,
+     167,
+     24,
+     18
+    ],
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": [
+     79,
+     182,
+     22,
+     18
+    ],
+    "pajaro": [
+     142,
+     107,
+     20,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "pan-para-el-pato/right@56",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 525,
+   "distinctW": 15,
+   "reachedBy": {
+    "steps": {
+     "pan-para-el-pato/right": "56-65",
+     "pan-para-el-pato/wrong": "56-58,60-63",
+     "pan-para-el-pato/alternate": "56-58,60-63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 4,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     33,
+     114,
+     22,
+     40
+    ],
+    "carmen": [
+     61,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     108,
+     101,
+     24,
+     18
+    ],
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": [
+     79,
+     182,
+     22,
+     18
+    ],
+    "pajaro": [
+     106,
+     54,
+     20,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "pan-para-el-pato/right@66",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 614,
+   "distinctW": 17,
+   "reachedBy": {
+    "steps": {
+     "pan-para-el-pato/right": "66-75",
+     "pan-para-el-pato/wrong": "59,64-71",
+     "pan-para-el-pato/alternate": "59,64-71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 3,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     33,
+     114,
+     22,
+     40
+    ],
+    "carmen": [
+     61,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     130,
+     167,
+     24,
+     18
+    ],
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": [
+     76,
+     182,
+     22,
+     18
+    ],
+    "pajaro": [
+     142,
+     107,
+     20,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "pan-para-el-pato/right@76",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 699,
+   "distinctW": 14,
+   "reachedBy": {
+    "steps": {
+     "pan-para-el-pato/right": "76-86",
+     "pan-para-el-pato/wrong": "72-74,76-78",
+     "pan-para-el-pato/alternate": "72-81"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 2,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     33,
+     114,
+     22,
+     40
+    ],
+    "carmen": [
+     61,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     108,
+     101,
+     24,
+     18
+    ],
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": [
+     81,
+     182,
+     22,
+     18
+    ],
+    "pajaro": [
+     156,
+     28,
+     20,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "pan-para-el-pato/wrong@79",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 793,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "pan-para-el-pato/wrong": "75,79-85",
+     "pan-para-el-pato/alternate": "82-86,88-91"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
+    "bg": "bg.lago.png"
+   },
+   "background": [
+    "lago"
+   ],
+   "keys": {
+    "bolsa": null,
+    "fila": 1,
+    "flor": null,
+    "pincel": null,
+    "saco": null
+   },
+   "things": {
+    "flor": null,
+    "juncos": [
+     178,
+     120,
+     40,
+     46
+    ],
+    "poste": [
+     147,
+     120,
+     10,
+     36
+    ],
+    "muelle": [
+     26,
+     150,
+     112,
+     17
+    ],
+    "agua": [
+     0,
+     118,
+     240,
+     98
+    ],
+    "lago": [
+     0,
+     94,
+     240,
+     122
+    ]
+   },
+   "characters": {
+    "coqui": [
+     100,
+     125,
+     32,
+     27
+    ],
+    "luis": [
+     33,
+     114,
+     22,
+     40
+    ],
+    "carmen": [
+     61,
+     110,
+     22,
+     44
+    ],
+    "pato_blanco": [
+     130,
+     167,
+     24,
+     18
+    ],
+    "pato_negro": null,
+    "pato_amarillo": null,
+    "ave_blanco": null,
+    "ave_negro": null,
+    "bote_rojo": null,
+    "bote_azul": null,
+    "bote_verde": null,
+    "pez": [
+     77,
+     182,
+     22,
+     18
+    ],
+    "pajaro": [
+     142,
+     107,
+     20,
+     18
+    ],
+    "perro": null
+   },
+   "drawnFrom": "pan-para-el-pato/wrong@86",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 875,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "pan-para-el-pato/wrong": "86-90,92-95",
+     "pan-para-el-pato/alternate": "87,92-96"
+    },
+    "pairs": []
+   }
+  }
+ ]
+}

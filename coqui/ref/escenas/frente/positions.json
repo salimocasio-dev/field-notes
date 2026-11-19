@@ -1,0 +1,2051 @@
+{
+ "scene": "frente",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 18,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 0,
+   "y": 94,
+   "w": 180,
+   "h": 96,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "grande.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "pequeña.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 30,
+   "y": 0,
+   "w": 196,
+   "h": 216,
+   "uses": [
+    {
+     "file": "cuentos/donde-esta-el-pajaro.json",
+     "at": "cam.wide",
+     "owner": "story view",
+     "note": "replaces the scene's view wide for this story (juego.js:413)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 44,
+   "y": 40,
+   "w": 196,
+   "h": 104,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "hola.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "hola.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "adiós.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "adiós.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 44,
+   "y": 120,
+   "w": 180,
+   "h": 96,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "casa.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 52,
+   "y": 8,
+   "w": 180,
+   "h": 96,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "casa.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "grande.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "pequeña.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 55,
+   "y": 46,
+   "w": 94,
+   "h": 50,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "puerta.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "ventana.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "abre.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "abre.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 55,
+   "y": 96,
+   "w": 109,
+   "h": 58,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "sí.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "no.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 115,
+   "y": 96,
+   "w": 109,
+   "h": 58,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "sí.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "no.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 135,
+   "y": 46,
+   "w": 94,
+   "h": 50,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "puerta.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "ventana.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "abuela.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "abuela.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "cierra.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "cierra.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 89.36,
+   "y": 46,
+   "w": 45.28,
+   "h": 50,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "puerta.p1",
+     "owner": "level picture",
+     "note": "pair ventana.si, centred on x 112 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p0",
+     "owner": "level picture",
+     "note": "pair abre.si, centred on x 112 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p1",
+     "owner": "level picture",
+     "note": "pair abre.no, centred on x 112 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "silla.p3",
+     "owner": "level picture",
+     "note": "pair ventana.si, centred on x 112 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 112.91,
+   "y": 40,
+   "w": 94.19,
+   "h": 104,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p0",
+     "owner": "level picture",
+     "note": "pair hola.si, centred on x 160 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p1",
+     "owner": "level picture",
+     "note": "pair adiós.si, centred on x 160 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 143.36,
+   "y": 46,
+   "w": 45.28,
+   "h": 50,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "abuela.p0",
+     "owner": "level picture",
+     "note": "pair abuela.si, centred on x 166 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "puerta.p0",
+     "owner": "level picture",
+     "note": "pair puerta.si, centred on x 166 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p2",
+     "owner": "level picture",
+     "note": "pair puerta.si, centred on x 166 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/donde-esta-el-pajaro.json",
+     "at": "beats.1.then.0.set.ave",
+     "owner": "set.ave",
+     "meaning": "the bird: frente.js:78-79 avePos; mode head puts it on the frog's head, x and y unused"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 146,
+   "y": 86,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "hola.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "casa"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "adiós.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "casa"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 116,
+   "uses": [
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "hola.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-frente.json",
+     "at": "adiós.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 112,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "puerta.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "silla.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 160,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 166,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "abuela.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "puerta.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "frente.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    135,
+    55
+   ],
+   "what": "ABAT.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    82,
+    61
+   ],
+   "what": "ABAT.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    94,
+    57
+   ],
+   "what": "ABAT.paso",
+   "comment": null
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    108,
+    75,
+    20,
+    2
+   ],
+   "what": "fr(c,108,75,20,2,RP.wood[3]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    108,
+    77,
+    20,
+    1
+   ],
+   "what": "fr(c,108,77,20,1,RP.wood[0]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    110,
+    78,
+    2,
+    3
+   ],
+   "what": "fr(c,110,78,2,3,RP.wood[1]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    124,
+    78,
+    2,
+    3
+   ],
+   "what": "fr(c,124,78,2,3,RP.wood[1]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    111,
+    74,
+    14,
+    1
+   ],
+   "what": "fr(c,111,74,14,1,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    112,
+    68,
+    12,
+    6
+   ],
+   "what": "fr(c,112,68,12,6,SPONGE) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    112,
+    67,
+    12,
+    2
+   ],
+   "what": "fr(c,112,67,12,2,FROST) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    111,
+    67,
+    1,
+    7
+   ],
+   "what": "fr(c,111,67,1,7,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    124,
+    67,
+    1,
+    7
+   ],
+   "what": "fr(c,124,67,1,7,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    112,
+    66,
+    12,
+    1
+   ],
+   "what": "fr(c,112,66,12,1,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    117,
+    65,
+    2,
+    2
+   ],
+   "what": "fr(c,117,65,2,2,RP.red[2]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    57
+   ],
+   "what": "PERCH.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    49
+   ],
+   "what": "PERCH.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    71
+   ],
+   "what": "HOLE.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    80
+   ],
+   "what": "HOLE.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    56,
+    52
+   ],
+   "what": "SPOT.palma_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    195,
+    132
+   ],
+   "what": "SPOT.palma_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    73,
+    129
+   ],
+   "what": "SPOT.casa_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    80
+   ],
+   "what": "SPOT.casa_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    70,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,70,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    75,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,75,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    69,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,69,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    74,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,74,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    44,
+    40,
+    2,
+    2
+   ],
+   "what": "fr(c,44,40,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    80,
+    46,
+    2,
+    2
+   ],
+   "what": "fr(c,80,46,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    180,
+    120,
+    2,
+    2
+   ],
+   "what": "fr(c,180,120,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    208,
+    126,
+    2,
+    2
+   ],
+   "what": "fr(c,208,126,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:111",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "plato(g,5,6,W.mios||0,\"__\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    56,
+    52
+   ],
+   "what": "SPOT.palma_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    195,
+    132
+   ],
+   "what": "SPOT.palma_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    73,
+    129
+   ],
+   "what": "SPOT.casa_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    166,
+    80
+   ],
+   "what": "SPOT.casa_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    70,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,70,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    75,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,75,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    69,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,69,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    74,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,74,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    44,
+    40,
+    2,
+    2
+   ],
+   "what": "fr(c,44,40,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    80,
+    46,
+    2,
+    2
+   ],
+   "what": "fr(c,80,46,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    180,
+    120,
+    2,
+    2
+   ],
+   "what": "fr(c,180,120,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    208,
+    126,
+    2,
+    2
+   ],
+   "what": "fr(c,208,126,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:140",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"fr\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:143",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    153,
+    53,
+    11,
+    51
+   ],
+   "what": "c.rect(153,53,11,51) [sprite \"cq.6_0\"] args 0,1",
+   "comment": "the frog peeks out from behind the door"
+  },
+  {
+   "at": "frente.js:143",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    150,
+    84
+   ],
+   "what": "c.drawImage(…,150,84) [sprite \"cq.6_0\"] args 1,2",
+   "comment": "the frog peeks out from behind the door"
+  },
+  {
+   "at": "frente.js:144",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    153,
+    53,
+    11,
+    51
+   ],
+   "what": "c.rect(153,53,11,51) args 0,1",
+   "comment": "she is behind the door as it opens"
+  },
+  {
+   "at": "frente.js:144",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    135,
+    55
+   ],
+   "what": "c.drawImage(AB(\"____\",0),135,55) args 1,2",
+   "comment": "she is behind the door as it opens"
+  },
+  {
+   "at": "frente.js:147",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    97,
+    61,
+    30,
+    20
+   ],
+   "what": "c.rect(97,61,30,20) args 0,1",
+   "comment": "head and shoulders in the window"
+  },
+  {
+   "at": "frente.js:149",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    114,
+    62
+   ],
+   "what": "towel(c,114,62) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:151",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    110,
+    64
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:151",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    120,
+    62
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:151",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    127,
+    66
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:155",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -6,
+    0
+   ],
+   "what": "[]",
+   "comment": "he is going: dust behind, facing away"
+  },
+  {
+   "at": "frente.js:155",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -11,
+    -2
+   ],
+   "what": "[]",
+   "comment": "he is going: dust behind, facing away"
+  },
+  {
+   "at": "frente.js:155",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -16,
+    1
+   ],
+   "what": "[]",
+   "comment": "he is going: dust behind, facing away"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    -1
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    1,
+    -1
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    0
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    1,
+    0
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    -1
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:163",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    210,
+    17
+   ],
+   "what": "c.arc(210,17,10,0,7) args 0,1",
+   "comment": "the sun goes pale"
+  },
+  {
+   "at": "frente.js:164",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:165",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": "late afternoon, then sunset"
+  },
+  {
+   "at": "frente.js:165",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,40) args 0,1",
+   "comment": "late afternoon, then sunset"
+  },
+  {
+   "at": "frente.js:170",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:172",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    112,
+    60
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:179",
+   "fn": "talkAt",
+   "kind": "point",
+   "nums": [
+    112,
+    37
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:179",
+   "fn": "talkAt",
+   "kind": "point",
+   "nums": [
+    166,
+    31
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:181",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    97,
+    61,
+    30,
+    20
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:181",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    110,
+    58,
+    36,
+    50
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:181",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    151,
+    56,
+    29,
+    49
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    34,
+    34,
+    48,
+    72
+   ],
+   "what": "e.palma_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    174,
+    114,
+    42,
+    56
+   ],
+   "what": "e.palma_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    60,
+    110,
+    26,
+    58
+   ],
+   "what": "e.casa_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    60,
+    17,
+    166,
+    90
+   ],
+   "what": "e.casa_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:184",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    60,
+    17,
+    166,
+    90
+   ],
+   "what": "casa",
+   "comment": null
+  },
+  {
+   "at": "frente.js:184",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    151,
+    51,
+    30,
+    54
+   ],
+   "what": "puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:184",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    93,
+    57,
+    38,
+    28
+   ],
+   "what": "ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:187",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    172,
+    112,
+    46,
+    60
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:187",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    58,
+    108,
+    30,
+    62
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:187",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    34,
+    34,
+    48,
+    74
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:188",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    57,
+    16,
+    171,
+    95
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:193",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    145,
+    46,
+    42,
+    62
+   ],
+   "what": "inb(…)",
+   "comment": "a finger slightly off still counts"
+  },
+  {
+   "at": "frente.js:194",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    82,
+    53,
+    61,
+    42
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:196",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    57,
+    41,
+    171,
+    70
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:198",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    34,
+    36,
+    30,
+    70
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    104,
+    0.72
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    96,
+    104,
+    0.72
+   ],
+   "what": "LUGAR.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    123,
+    150,
+    0.86
+   ],
+   "what": "LUGAR.patio",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    104,
+    0.72
+   ],
+   "what": "LUGAR.casa_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    38,
+    100,
+    0.74
+   ],
+   "what": "LUGAR.palma_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    150,
+    0.88
+   ],
+   "what": "LUGAR.palma_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    86,
+    150,
+    0.86
+   ],
+   "what": "LUGAR.casa_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    22,
+    76,
+    140
+   ],
+   "what": "NX",
+   "comment": null
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    92,
+    54
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    132,
+    56
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    112,
+    50
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    150,
+    47
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    182,
+    49
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    166,
+    43
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:220",
+   "fn": "entra",
+   "kind": "point",
+   "nums": [
+    150,
+    80
+   ],
+   "what": "hopTo(150,80,2,.72) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:244",
+   "fn": "pajaro",
+   "kind": "xy",
+   "nums": [
+    -12,
+    40
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:246",
+   "fn": "bonk",
+   "kind": "point",
+   "nums": [
+    150,
+    26
+   ],
+   "what": "aveA(150,26,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:249",
+   "fn": "come",
+   "kind": "point+",
+   "nums": [
+    1,
+    0.7,
+    0.4
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:253",
+   "fn": "fin2",
+   "kind": "point",
+   "nums": [
+    196,
+    30
+   ],
+   "what": "aveA(196,30,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:258",
+   "fn": "tapa",
+   "kind": "xy",
+   "nums": [
+    -10,
+    60
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:259",
+   "fn": "tapa",
+   "kind": "point",
+   "nums": [
+    250,
+    -20
+   ],
+   "what": "aveA(250,-20,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:267",
+   "fn": "tapate",
+   "kind": "xy",
+   "nums": [
+    250,
+    60
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:267",
+   "fn": "tapate",
+   "kind": "point",
+   "nums": [
+    196,
+    120
+   ],
+   "what": "aveA(196,120,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:269",
+   "fn": "esconde",
+   "kind": "point",
+   "nums": [
+    150,
+    82
+   ],
+   "what": "hopTo(150,82,1,.6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:273",
+   "fn": "busca_ave",
+   "kind": "point",
+   "nums": [
+    176,
+    100
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:273",
+   "fn": "busca_ave",
+   "kind": "point",
+   "nums": [
+    73,
+    112
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:277",
+   "fn": "devuelve",
+   "kind": "xy",
+   "nums": [
+    250,
+    30
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:279",
+   "fn": "avecasa",
+   "kind": "xy",
+   "nums": [
+    200,
+    40
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:279",
+   "fn": "avecasa",
+   "kind": "point",
+   "nums": [
+    73,
+    126
+   ],
+   "what": "aveA(73,126,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    60,
+    20
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    180,
+    24
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    120,
+    12
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    100,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    150,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "what": "ESCENAS.frente.CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    51.7,
+    15,
+    180.6,
+    199
+   ],
+   "what": "ESCENAS.frente.CAM.casa",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "what": "ESCENAS.frente.CAM.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "what": "ESCENAS.frente.CAM.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    63,
+    18,
+    98,
+    108
+   ],
+   "what": "ESCENAS.frente.CAM.cuadro",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    141,
+    24
+   ],
+   "what": "handAt.casa",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    76
+   ],
+   "what": "handAt.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    72
+   ],
+   "what": "handAt.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    141,
+    24
+   ],
+   "what": "handAt.casa_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    73,
+    128
+   ],
+   "what": "handAt.casa_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    56,
+    60
+   ],
+   "what": "handAt.palma_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    195,
+    140
+   ],
+   "what": "handAt.palma_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    76
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    103,
+    26
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ]
+}

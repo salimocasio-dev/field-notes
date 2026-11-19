@@ -1,0 +1,13137 @@
+{
+ "scene": "nevera",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/right": "start",
+     "jugo-de-china/wrong": "start",
+     "jugo-de-china/alternate": "start",
+     "no-hay-leche/right": "start",
+     "no-hay-leche/wrong": "start",
+     "no-hay-leche/alternate": "start",
+     "para-los-pajaros/right": "start",
+     "para-los-pajaros/wrong": "start",
+     "para-los-pajaros/alternate": "start"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     155,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     173,
+     154,
+     22,
+     44
+    ],
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     188,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     182,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     192,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     161,
+     103,
+     18,
+     23
+    ],
+    "v_azul": [
+     171,
+     103,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 101,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/right": "0-15,18,21-23,26-28,31,33-38,40-46,48-53,55-61,63-127",
+     "jugo-de-china/wrong": "0-15,18,21-23,26-28,31,33-38,40-46,48-53,55-61,63-96,99-112,115-125,127",
+     "jugo-de-china/alternate": "0-15,18,21-23,26-28,31,33-38,40-46,48-53,55-61,63-107,110-132"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [],
+    "vista": {
+     "id": "v_verde"
+    }
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     155,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     173,
+     154,
+     22,
+     44
+    ],
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     188,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     182,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     192,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     161,
+     103,
+     18,
+     23
+    ],
+    "v_azul": [
+     171,
+     103,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/right@16",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 73,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/right": "16-17,32,47,62",
+     "jugo-de-china/wrong": "16-17,32,47,62",
+     "jugo-de-china/alternate": "16-17,32,47,62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [],
+    "vista": {
+     "id": "v_amarillo"
+    }
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     155,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     173,
+     154,
+     22,
+     44
+    ],
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     188,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     182,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     192,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     161,
+     103,
+     18,
+     23
+    ],
+    "v_azul": [
+     171,
+     103,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/right@19",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 85,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/right": "19-20,24-25,29-30",
+     "jugo-de-china/wrong": "19-20,24-25,29-30,97-98",
+     "jugo-de-china/alternate": "19-20,24-25,29-30"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [],
+    "vista": {
+     "id": "v_rojo"
+    }
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     153,
+     148,
+     22,
+     44
+    ],
+    "carmen": [
+     169,
+     154,
+     22,
+     44
+    ],
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     158,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": [
+     182,
+     103,
+     18,
+     23
+    ],
+    "v_amarillo": [
+     192,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": [
+     181,
+     79,
+     18,
+     23
+    ],
+    "v_azul": [
+     194,
+     79,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/right@39",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 321,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/right": "39,54",
+     "jugo-de-china/wrong": "39,54",
+     "jugo-de-china/alternate": "39,54"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "a",
+    "repisa": [],
+    "vista": {
+     "id": "v_azul"
+    }
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     158,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": [
+     181,
+     79,
+     18,
+     23
+    ],
+    "v_azul": [
+     194,
+     79,
+     18,
+     23
+    ],
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/wrong@113",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1311,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/wrong": "113-114",
+     "jugo-de-china/alternate": "108-109"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "j",
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     186,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": null,
+    "v_amarillo": [
+     192,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/wrong@128",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1519,
+   "distinctW": 8,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/wrong": "126,128-130,133-144"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": "j",
+    "repisa": [],
+    "vista": {
+     "id": "v_amarillo"
+    }
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": null,
+    "carmen": null,
+    "abuelo": [
+     164,
+     42,
+     24,
+     56
+    ],
+    "mama": [
+     186,
+     42,
+     24,
+     56
+    ],
+    "papa": [
+     148,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": [
+     133,
+     103,
+     18,
+     23
+    ],
+    "mant": [
+     169,
+     79,
+     18,
+     23
+    ],
+    "jarra": [
+     147,
+     103,
+     18,
+     23
+    ],
+    "v_verde": null,
+    "v_amarillo": [
+     192,
+     103,
+     18,
+     23
+    ],
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "jugo-de-china/wrong@131",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1529,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "jugo-de-china/wrong": "131-132"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     131,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 8,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "0-10,23,27-30",
+     "no-hay-leche/wrong": "0-10,23,27-30",
+     "no-hay-leche/alternate": "0-10,23,27-30"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     131,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@11",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 37,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "11,31",
+     "no-hay-leche/wrong": "11,31",
+     "no-hay-leche/alternate": "11,31"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s010",
+   "files": {
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 1
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     131,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@12",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 67,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "12-14",
+     "no-hay-leche/wrong": "12-14",
+     "no-hay-leche/alternate": "12-14"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s011",
+   "files": {
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 1
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@16",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 138,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "16-18",
+     "no-hay-leche/wrong": "16-18",
+     "no-hay-leche/alternate": "16-18"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s012",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 1
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@19",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 267,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "15,19-21",
+     "no-hay-leche/wrong": "15,19-21",
+     "no-hay-leche/alternate": "15,19-21"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s013",
+   "files": {
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@22",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 316,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "22",
+     "no-hay-leche/wrong": "22",
+     "no-hay-leche/alternate": "22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s014",
+   "files": {
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@24",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 378,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "24-26",
+     "no-hay-leche/wrong": "24-26",
+     "no-hay-leche/alternate": "24-26"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s015",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 2,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@32",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 553,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "32,57",
+     "no-hay-leche/wrong": "32,57",
+     "no-hay-leche/alternate": "32,57"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s016",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@34",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 592,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "34-36,59-61",
+     "no-hay-leche/wrong": "34-36,59-61",
+     "no-hay-leche/alternate": "34-36,59-61"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s017",
+   "files": {
+    "full": "s017.full.png",
+    "full.wide": "s017.full.wide.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@37",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 727,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "33,37-38,41,45-47,50,54-55,58,62-64",
+     "no-hay-leche/wrong": "33,37-38,41,45-47,50,54-55,58,62-64",
+     "no-hay-leche/alternate": "33,37-38,41,45-47,50,54-55,58,62-64"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s018",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@39",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 754,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "39,48",
+     "no-hay-leche/wrong": "39,48",
+     "no-hay-leche/alternate": "39,48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s019",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 2,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@40",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 770,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "40,49",
+     "no-hay-leche/wrong": "40,49",
+     "no-hay-leche/alternate": "40,49"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s020",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@42",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 808,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "42-44,51-53",
+     "no-hay-leche/wrong": "42-44,51-53",
+     "no-hay-leche/alternate": "42-44,51-53"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s021",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s017.nochar.png",
+    "nochar.wide": "s017.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@56",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1187,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "56",
+     "no-hay-leche/wrong": "56",
+     "no-hay-leche/alternate": "56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s022",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "nochar": "s022.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@65",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1455,
+   "distinctW": 7,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "65-70,88,93-100,103,108-113",
+     "no-hay-leche/wrong": "65-70",
+     "no-hay-leche/alternate": "65-70"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s023",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s023.full.wide.png",
+    "nochar": "s022.nochar.png",
+    "nochar.wide": "s023.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@71",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1464,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "71",
+     "no-hay-leche/wrong": "71",
+     "no-hay-leche/alternate": "71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s024",
+   "files": {
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@72",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1476,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "72",
+     "no-hay-leche/wrong": "72,75-78",
+     "no-hay-leche/alternate": "72"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s025",
+   "files": {
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@75",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1546,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "74-77",
+     "no-hay-leche/wrong": "74",
+     "no-hay-leche/alternate": "74-77"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s026",
+   "files": {
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "nochar": "s026.nochar.png",
+    "nochar.wide": "s026.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@78",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1681,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "73,78-85",
+     "no-hay-leche/alternate": "73,78-85"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s027",
+   "files": {
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "nochar": "s027.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@86",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1703,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "86",
+     "no-hay-leche/alternate": "86,90-93"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s028",
+   "files": {
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "nochar": "s028.nochar.png",
+    "nochar.wide": "s028.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 2,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@87",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1718,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "87,102",
+     "no-hay-leche/alternate": "87"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s029",
+   "files": {
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@90",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1766,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "89-92,104-107",
+     "no-hay-leche/alternate": "89"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s030",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s030.full.wide.png",
+    "nochar": "s022.nochar.png",
+    "nochar.wide": "s030.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 3,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@101",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1923,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "101"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s031",
+   "files": {
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "nochar": "s031.nochar.png",
+    "nochar.wide": "s031.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 0,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/right@114",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2228,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/right": "114-117",
+     "no-hay-leche/alternate": "119-122"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s032",
+   "files": {
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     170,
+     94,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@79",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1806,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "79-82"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s033",
+   "files": {
+    "full": "s033.full.png",
+    "full.wide": "s033.full.wide.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@83",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1965,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "73,83-90",
+     "no-hay-leche/alternate": "88,98-105"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s034",
+   "files": {
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "nochar": "s034.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@91",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1996,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "91,95-98",
+     "no-hay-leche/alternate": "106"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s035",
+   "files": {
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "nochar": "s035.nochar.png",
+    "nochar.wide": "s035.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 2,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@92",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2011,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "92",
+     "no-hay-leche/alternate": "107"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s036",
+   "files": {
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@94",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2056,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "94",
+     "no-hay-leche/alternate": "109-112"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s037",
+   "files": {
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "nochar": "s037.nochar.png",
+    "nochar.wide": "s037.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 1,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     170,
+     94,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@99",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2233,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "99-102"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s038",
+   "files": {
+    "full": "s038.full.png",
+    "full.wide": "s038.full.wide.png",
+    "nochar": "s038.nochar.png",
+    "nochar.wide": "s038.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 1,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@103",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2381,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "93,103-110"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s039",
+   "files": {
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "nochar": "s039.nochar.png",
+    "nochar.wide": "s039.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 1,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     129,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@111",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2412,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "111,115-118"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s040",
+   "files": {
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "nochar": "s040.nochar.png",
+    "nochar.wide": "s040.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 2,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 1,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@112",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2427,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "112"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s041",
+   "files": {
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 1,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@114",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2473,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "114"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s042",
+   "files": {
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 0,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     170,
+     94,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@119",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2649,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "119-122"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s043",
+   "files": {
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "nochar": "s043.nochar.png",
+    "nochar.wide": "s043.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 0,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/wrong@123",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2797,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/wrong": "113,123-132"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s044",
+   "files": {
+    "full": "s044.full.png",
+    "full.wide": "s044.full.wide.png",
+    "nochar": "s044.nochar.png",
+    "nochar.wide": "s044.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     },
+     {
+      "id": "moneda",
+      "k": "moneda",
+      "x": 178
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     170,
+     94,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/alternate@94",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1983,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/alternate": "94-97"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s045",
+   "files": {
+    "full": "s045.full.png",
+    "full.wide": "s045.full.wide.png",
+    "nochar": "s045.nochar.png",
+    "nochar.wide": "s045.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {
+     "carrito": 1
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "tarro",
+      "k": "tarro",
+      "v": 2,
+      "x": 205,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     161,
+     42,
+     24,
+     56
+    ],
+    "carmen": [
+     167,
+     160,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": [
+     194,
+     152,
+     22,
+     56
+    ],
+    "papa": [
+     146,
+     42,
+     24,
+     56
+    ],
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "no-hay-leche/alternate@113",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2360,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "no-hay-leche/alternate": "108,113-118"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s046",
+   "files": {
+    "full": "s046.full.png",
+    "full.wide": "s046.full.wide.png",
+    "nochar": "s046.nochar.png",
+    "nochar.wide": "s046.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 3
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     }
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 153
+      },
+      {
+       "x": 158
+      }
+     ],
+     "cosas": []
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "0-8",
+     "para-los-pajaros/wrong": "0-8",
+     "para-los-pajaros/alternate": "0-8"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s047",
+   "files": {
+    "full": "s047.full.png",
+    "full.wide": "s047.full.wide.png",
+    "nochar": "s047.nochar.png",
+    "nochar.wide": "s047.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 3
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     },
+     "cajonver": 1
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 153
+      },
+      {
+       "x": 158
+      }
+     ],
+     "cosas": []
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@9",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 38,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "9-10",
+     "para-los-pajaros/wrong": "9-10",
+     "para-los-pajaros/alternate": "9-10"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s048",
+   "files": {
+    "full": "s046.full.png",
+    "full.wide": "s046.full.wide.png",
+    "nochar": "s046.nochar.png",
+    "nochar.wide": "s046.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 3
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 153
+      },
+      {
+       "x": 158
+      }
+     ],
+     "cosas": []
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     83,
+     123,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@11",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 51,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "11-12",
+     "para-los-pajaros/wrong": "11-12",
+     "para-los-pajaros/alternate": "11-12"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s049",
+   "files": {
+    "full": "s049.full.png",
+    "full.wide": "s049.full.wide.png",
+    "nochar": "s049.nochar.png",
+    "nochar.wide": "s049.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 2
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 153
+      },
+      {
+       "x": 158
+      }
+     ],
+     "cosas": []
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     185,
+     127,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": [
+     178,
+     102,
+     18,
+     23
+    ],
+    "t_fruta": [
+     196,
+     103,
+     18,
+     23
+    ]
+   },
+   "drawnFrom": "para-los-pajaros/right@13",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 75,
+   "distinctW": 8,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "13-17,19-20",
+     "para-los-pajaros/wrong": "13-17,19-20",
+     "para-los-pajaros/alternate": "13-17,19-20"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s050",
+   "files": {
+    "full": "s050.full.png",
+    "full.wide": "s050.full.wide.png",
+    "nochar": "s050.nochar.png",
+    "nochar.wide": "s050.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 2
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      {
+       "k": "platofruta"
+      },
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "panecillo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": [
+     196,
+     103,
+     18,
+     23
+    ]
+   },
+   "drawnFrom": "para-los-pajaros/right@21",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 143,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "18,21-25",
+     "para-los-pajaros/wrong": "18,21-25",
+     "para-los-pajaros/alternate": "18,21-25"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s051",
+   "files": {
+    "full": "s051.full.png",
+    "full.wide": "s051.full.wide.png",
+    "nochar": "s051.nochar.png",
+    "nochar.wide": "s051.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "panecillo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     185,
+     127,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": [
+     196,
+     102,
+     18,
+     23
+    ],
+    "t_fruta": [
+     178,
+     103,
+     18,
+     23
+    ]
+   },
+   "drawnFrom": "para-los-pajaros/right@26",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 221,
+   "distinctW": 10,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "26-29,31-32",
+     "para-los-pajaros/wrong": "26-29,31-32",
+     "para-los-pajaros/alternate": "26-29,31-32"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s052",
+   "files": {
+    "full": "s052.full.png",
+    "full.wide": "s052.full.wide.png",
+    "nochar": "s052.nochar.png",
+    "nochar.wide": "s052.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 3,
+      "manzana": 3
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "platofruta"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": [
+     196,
+     102,
+     18,
+     23
+    ],
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@33",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 284,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "30,33-38",
+     "para-los-pajaros/wrong": "30,33-38",
+     "para-los-pajaros/alternate": "30,33-38"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s053",
+   "files": {
+    "full": "s053.full.png",
+    "full.wide": "s053.full.wide.png",
+    "nochar": "s053.nochar.png",
+    "nochar.wide": "s053.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 2,
+      "manzana": 2
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "platofruta"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     131,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@39",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 354,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "39-40",
+     "para-los-pajaros/wrong": "39-40",
+     "para-los-pajaros/alternate": "39-40"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s054",
+   "files": {
+    "full": "s054.full.png",
+    "full.wide": "s054.full.wide.png",
+    "nochar": "s054.nochar.png",
+    "nochar.wide": "s054.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 2,
+      "manzana": 2
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@42",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 425,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "41-46",
+     "para-los-pajaros/wrong": "41-46",
+     "para-los-pajaros/alternate": "41-46"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s055",
+   "files": {
+    "full": "s055.full.png",
+    "full.wide": "s055.full.wide.png",
+    "nochar": "s054.nochar.png",
+    "nochar.wide": "s054.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     131,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@47",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 475,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "47-48",
+     "para-los-pajaros/wrong": "47-48",
+     "para-los-pajaros/alternate": "47-48"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s056",
+   "files": {
+    "full": "s056.full.png",
+    "full.wide": "s056.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s056.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "manzana"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@50",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 546,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "49-56",
+     "para-los-pajaros/wrong": "49-56",
+     "para-los-pajaros/alternate": "49-56"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s057",
+   "files": {
+    "full": "s057.full.png",
+    "full.wide": "s057.full.wide.png",
+    "nochar": "s057.nochar.png",
+    "nochar.wide": "s057.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "manzana"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@57",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 583,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "57",
+     "para-los-pajaros/wrong": "57",
+     "para-los-pajaros/alternate": "57"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s058",
+   "files": {
+    "full": "s058.full.png",
+    "full.wide": "s058.full.wide.png",
+    "nochar": "s058.nochar.png",
+    "nochar.wide": "s058.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@59",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 628,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "59",
+     "para-los-pajaros/wrong": "59",
+     "para-los-pajaros/alternate": "59"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s059",
+   "files": {
+    "full": "s059.full.png",
+    "full.wide": "s059.full.wide.png",
+    "nochar": "s059.nochar.png",
+    "nochar.wide": "s059.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@60",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 637,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "58,60-62",
+     "para-los-pajaros/wrong": "58,60-62",
+     "para-los-pajaros/alternate": "58,60-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s060",
+   "files": {
+    "full": "s060.full.png",
+    "full.wide": "s060.full.wide.png",
+    "nochar": "s060.nochar.png",
+    "nochar.wide": "s060.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": null,
+      "x": 166,
+      "e": 2,
+      "viejo": false
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": "manchas",
+      "x": 186,
+      "e": 2,
+      "viejo": true
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@63",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 656,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "63",
+     "para-los-pajaros/wrong": "63",
+     "para-los-pajaros/alternate": "63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s061",
+   "files": {
+    "full": "s061.full.png",
+    "full.wide": "s061.full.wide.png",
+    "nochar": "s061.nochar.png",
+    "nochar.wide": "s061.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "manzana",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": null,
+      "x": 166,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@65",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 701,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "65",
+     "para-los-pajaros/wrong": "65",
+     "para-los-pajaros/alternate": "65"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s062",
+   "files": {
+    "full": "s062.full.png",
+    "full.wide": "s062.full.wide.png",
+    "nochar": "s062.nochar.png",
+    "nochar.wide": "s062.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "manzana",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@66",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 710,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "64,66-78",
+     "para-los-pajaros/wrong": "64,66-78",
+     "para-los-pajaros/alternate": "64,66-78"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s063",
+   "files": {
+    "full": "s063.full.png",
+    "full.wide": "s063.full.wide.png",
+    "nochar": "s063.nochar.png",
+    "nochar.wide": "s063.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 1
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      {
+       "k": "platofruta"
+      },
+      null
+     ],
+     "cajon": {
+      "guineo": 1,
+      "manzana": 1
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "manzana",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@79",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 730,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "79-80",
+     "para-los-pajaros/wrong": "79-80",
+     "para-los-pajaros/alternate": "79-80"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s064",
+   "files": {
+    "full": "s064.full.png",
+    "full.wide": "s064.full.wide.png",
+    "nochar": "s064.nochar.png",
+    "nochar.wide": "s064.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "manzana",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": [
+     196,
+     102,
+     18,
+     23
+    ],
+    "t_fruta": [
+     178,
+     103,
+     18,
+     23
+    ]
+   },
+   "drawnFrom": "para-los-pajaros/right@81",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 804,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "81-87",
+     "para-los-pajaros/wrong": "81-87",
+     "para-los-pajaros/alternate": "81-87"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s065",
+   "files": {
+    "full": "s065.full.png",
+    "full.wide": "s065.full.wide.png",
+    "nochar": "s065.nochar.png",
+    "nochar.wide": "s065.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "platofruta"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": [
+     196,
+     102,
+     18,
+     23
+    ],
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@89",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 912,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "89,91",
+     "para-los-pajaros/alternate": "89,91"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s066",
+   "files": {
+    "full": "s066.full.png",
+    "full.wide": "s066.full.wide.png",
+    "nochar": "s066.nochar.png",
+    "nochar.wide": "s066.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "platofruta"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     135,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@92",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 939,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "88,90,92-94",
+     "para-los-pajaros/alternate": "88,90,92-94"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s067",
+   "files": {
+    "full": "s067.full.png",
+    "full.wide": "s067.full.wide.png",
+    "nochar": "s067.nochar.png",
+    "nochar.wide": "s067.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@96",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1018,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "96,98"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s068",
+   "files": {
+    "full": "s068.full.png",
+    "full.wide": "s068.full.wide.png",
+    "nochar": "s068.nochar.png",
+    "nochar.wide": "s068.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      },
+      {
+       "k": "manzana"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@99",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1031,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "95,97,99-101"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s069",
+   "files": {
+    "full": "s069.full.png",
+    "full.wide": "s069.full.wide.png",
+    "nochar": "s069.nochar.png",
+    "nochar.wide": "s069.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      },
+      {
+       "k": "manzana"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true,
+      "dy": 0
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@102",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1039,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "102"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s070",
+   "files": {
+    "full": "s070.full.png",
+    "full.wide": "s070.full.wide.png",
+    "nochar": "s070.nochar.png",
+    "nochar.wide": "s070.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      },
+      {
+       "k": "manzana"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@104",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1095,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "104,106"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s071",
+   "files": {
+    "full": "s071.full.png",
+    "full.wide": "s071.full.wide.png",
+    "nochar": "s071.nochar.png",
+    "nochar.wide": "s071.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      },
+      {
+       "k": "manzana"
+      },
+      {
+       "k": "manzana"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     135,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/right@107",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1116,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/right": "103,105,107-112"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s072",
+   "files": {
+    "full": "s072.full.png",
+    "full.wide": "s072.full.wide.png",
+    "nochar": "s072.nochar.png",
+    "nochar.wide": "s072.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": [
+     178,
+     103,
+     18,
+     23
+    ]
+   },
+   "drawnFrom": "para-los-pajaros/wrong@89",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1012,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "89-93"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s073",
+   "files": {
+    "full": "s073.full.png",
+    "full.wide": "s073.full.wide.png",
+    "nochar": "s073.nochar.png",
+    "nochar.wide": "s073.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      },
+      {
+       "x": 178,
+       "bueno": 0,
+       "k": "platofruta",
+       "v": "vieja"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     170,
+     127,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/wrong@94",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1094,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "88,94-97"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s074",
+   "files": {
+    "full": "s074.full.png",
+    "full.wide": "s074.full.wide.png",
+    "nochar": "s074.nochar.png",
+    "nochar.wide": "s074.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      },
+      {
+       "x": 178,
+       "bueno": 1,
+       "k": "manzana"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/wrong@99",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1178,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "99-103"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s075",
+   "files": {
+    "full": "s075.full.png",
+    "full.wide": "s075.full.wide.png",
+    "nochar": "s075.nochar.png",
+    "nochar.wide": "s075.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 193,
+       "come": 1
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      },
+      {
+       "x": 178,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 187,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/wrong@104",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1256,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "98,104-107"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s076",
+   "files": {
+    "full": "s076.full.png",
+    "full.wide": "s076.full.wide.png",
+    "nochar": "s076.nochar.png",
+    "nochar.wide": "s076.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 193,
+       "come": 1
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      },
+      {
+       "x": 178,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 187,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true,
+      "dy": 0
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/wrong@108",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1264,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "108"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s077",
+   "files": {
+    "full": "s077.full.png",
+    "full.wide": "s077.full.wide.png",
+    "nochar": "s077.nochar.png",
+    "nochar.wide": "s077.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 193,
+       "come": 1,
+       "fijo": 1
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      },
+      {
+       "x": 178,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 187,
+       "bueno": 1,
+       "k": "manzana",
+       "v": null
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/wrong@110",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1321,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "110-114"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s078",
+   "files": {
+    "full": "s078.full.png",
+    "full.wide": "s078.full.wide.png",
+    "nochar": "s078.nochar.png",
+    "nochar.wide": "s078.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": []
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 193,
+       "come": 1,
+       "fijo": 1
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "panecillo"
+      },
+      {
+       "x": 178,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 187,
+       "bueno": 1,
+       "k": "manzana",
+       "v": null
+      },
+      {
+       "x": 196,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/wrong@115",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1388,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/wrong": "109,115-121"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s079",
+   "files": {
+    "full": "s079.full.png",
+    "full.wide": "s079.full.wide.png",
+    "nochar": "s079.nochar.png",
+    "nochar.wide": "s079.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 158,
+       "come": 0
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "manzana"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/alternate@96",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1067,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/alternate": "96-100"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s080",
+   "files": {
+    "full": "s080.full.png",
+    "full.wide": "s080.full.wide.png",
+    "nochar": "s080.nochar.png",
+    "nochar.wide": "s080.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 178,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/alternate@101",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1144,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/alternate": "95,101-104"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s081",
+   "files": {
+    "full": "s081.full.png",
+    "full.wide": "s081.full.wide.png",
+    "nochar": "s081.nochar.png",
+    "nochar.wide": "s081.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 178,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_guineo",
+      "k": "guineo",
+      "v": "manchas",
+      "x": 166,
+      "e": 2,
+      "viejo": true,
+      "dy": 0
+     },
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/alternate@105",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1152,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/alternate": "105"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s082",
+   "files": {
+    "full": "s082.full.png",
+    "full.wide": "s082.full.wide.png",
+    "nochar": "s082.nochar.png",
+    "nochar.wide": "s082.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 178,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [
+     {
+      "id": "s_manzana",
+      "k": "manzana",
+      "v": null,
+      "x": 186,
+      "e": 2,
+      "viejo": false,
+      "dy": 0
+     }
+    ],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     123,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/alternate@107",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1208,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/alternate": "107,109"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s083",
+   "files": {
+    "full": "s083.full.png",
+    "full.wide": "s083.full.wide.png",
+    "nochar": "s083.nochar.png",
+    "nochar.wide": "s083.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 1,
+    "canasta": {
+     "x": 156,
+     "items": [
+      {
+       "k": "panecillo"
+      },
+      {
+       "k": "manzana"
+      }
+     ]
+    },
+    "cesta": {
+     "n": 0
+    },
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "h": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "cajon": {
+      "guineo": 0,
+      "manzana": 0
+     },
+     "cajonver": 0
+    },
+    "patio": {
+     "aves": [
+      {
+       "x": 175,
+       "come": 1,
+       "fijo": 1
+      },
+      {
+       "x": 184,
+       "come": 1
+      },
+      {
+       "x": 163,
+       "come": 0
+      }
+     ],
+     "cosas": [
+      {
+       "x": 169,
+       "bueno": 1,
+       "k": "manzana"
+      },
+      {
+       "x": 178,
+       "bueno": 0,
+       "k": "guineo",
+       "v": "manchas"
+      }
+     ]
+    },
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": [
+     50,
+     24,
+     36,
+     18
+    ],
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     165,
+     32,
+     27
+    ],
+    "luis": [
+     135,
+     154,
+     22,
+     44
+    ],
+    "carmen": [
+     179,
+     158,
+     22,
+     44
+    ],
+    "abuelo": [
+     195,
+     42,
+     24,
+     56
+    ],
+    "mama": null,
+    "papa": null,
+    "abuela": [
+     135,
+     129,
+     22,
+     51
+    ],
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "para-los-pajaros/alternate@110",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 1229,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "para-los-pajaros/alternate": "106,108,110-115"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s084",
+   "files": {
+    "full": "s084.full.png",
+    "full.wide": "s084.full.wide.png",
+    "nochar": "s084.nochar.png",
+    "nochar.wide": "s084.nochar.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 0,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 0,
+     "h": []
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": null,
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": null,
+    "carmen": [
+     139,
+     156,
+     22,
+     44
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "cual-nevera:leche.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 22,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-nevera:leche.si",
+     "cual-nevera:leche.no",
+     "cual-nevera:queso.si",
+     "cual-nevera:queso.no",
+     "cual-nevera:busca.si",
+     "cual-nevera:busca.no",
+     "cual-nevera:fruta.si",
+     "cual-nevera:fruta.no",
+     "cual-nevera:guineo.si",
+     "cual-nevera:guineo.no",
+     "cual-nevera:manzana.si",
+     "cual-nevera:manzana.no",
+     "cual-nevera:china.si",
+     "cual-nevera:china.no",
+     "cual-nevera:pan.si",
+     "cual-nevera:pan.no",
+     "cual-nevera:mantequilla.si",
+     "cual-nevera:mantequilla.no",
+     "cual-nevera:lleno.si",
+     "cual-nevera:lleno.no",
+     "cual-nevera:vacío.si",
+     "cual-nevera:vacío.no"
+    ]
+   }
+  },
+  {
+   "id": "s085",
+   "files": {
+    "full": "s085.full.png",
+    "full.wide": "s085.full.wide.png",
+    "nochar": "s085.full.png",
+    "nochar.wide": "s085.full.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 0,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      null,
+      {
+       "k": "queso",
+       "v": 3
+      }
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": null,
+    "queso": [
+     68,
+     56,
+     26,
+     26
+    ],
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": null,
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "cual-nevera:no hay.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-nevera:no hay.si"
+    ]
+   }
+  },
+  {
+   "id": "s086",
+   "files": {
+    "full": "s086.full.png",
+    "full.wide": "s086.full.wide.png",
+    "nochar": "s086.full.png",
+    "nochar.wide": "s086.full.wide.png",
+    "bg": "bg.nevera.png"
+   },
+   "background": [
+    "nevera"
+   ],
+   "keys": {
+    "banco": 0,
+    "canasta": null,
+    "cesta": null,
+    "encima": null,
+    "mos": {},
+    "nev": {
+     "abierta": 1,
+     "soporte": 1,
+     "h": [
+      {
+       "k": "leche",
+       "v": 4
+      },
+      null
+     ]
+    },
+    "patio": {},
+    "pila": null,
+    "repisa": [],
+    "vista": null
+   },
+   "things": {
+    "leche": [
+     42,
+     56,
+     26,
+     26
+    ],
+    "queso": null,
+    "mantequilla": null,
+    "cesta": null,
+    "frutas": [
+     44,
+     60,
+     48,
+     48
+    ],
+    "pan": null,
+    "guineo": null,
+    "manzana": null,
+    "china": null,
+    "nevera": [
+     40,
+     40,
+     56,
+     116
+    ],
+    "cocina": [
+     22,
+     16,
+     196,
+     198
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "luis": null,
+    "carmen": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "abuela": null,
+    "red": null,
+    "mant": null,
+    "jarra": null,
+    "v_verde": null,
+    "v_amarillo": null,
+    "v_rojo": null,
+    "v_azul": null,
+    "t_pan": null,
+    "t_fruta": null
+   },
+   "drawnFrom": "cual-nevera:no hay.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-nevera:no hay.no"
+    ]
+   }
+  }
+ ]
+}

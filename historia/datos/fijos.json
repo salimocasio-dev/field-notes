@@ -6,6 +6,12 @@
     "review_praise_right": "si_muy_bien",
     "review_praise_after_miss": "muy_bien"
   },
+  "lineas": {
+    "ahora_tu": {
+      "who": "narr",
+      "text": "Ahora tú."
+    }
+  },
   "despedidas": [
     "adiós",
     "hasta mañana"

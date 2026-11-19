@@ -1,0 +1,13351 @@
+{
+ "scene": "patio",
+ "F": "each state is drawn at the frame counter it had in the run: floor(t/70), moved on past a blink; review pictures at F=8",
+ "views": [
+  {
+   "name": "wide",
+   "rect": [
+    22,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "states": [
+  {
+   "id": "s000",
+   "files": {
+    "full": "s000.full.png",
+    "full.wide": "s000.full.wide.png",
+    "nochar": "s000.nochar.png",
+    "nochar.wide": "s000.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "d-buenas-noches/right@start",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 11,
+   "reachedBy": {
+    "steps": {
+     "d-buenas-noches/right": "start",
+     "d-buenas-noches/wrong": "start",
+     "d-buenas-noches/alternate": "start",
+     "d-la-bola/right": "start,0",
+     "d-la-bola/wrong": "start,0",
+     "d-la-bola/alternate": "start,0",
+     "h-patio/right": "start",
+     "h-patio/wrong": "start",
+     "h-patio/alternate": "start",
+     "hasta-manana/right": "start",
+     "hasta-manana/wrong": "start",
+     "hasta-manana/alternate": "start",
+     "las-flores/right": "start",
+     "las-flores/wrong": "start",
+     "las-flores/alternate": "start",
+     "que-es-esto/right": "start",
+     "que-es-esto/wrong": "start",
+     "que-es-esto/alternate": "start"
+    },
+    "pairs": [
+     "cual-patio:niño.si",
+     "cual-patio:niño.no",
+     "cual-patio:flor.no",
+     "cual-patio:sol.si",
+     "cual-patio:amigo.si",
+     "cual-patio:amigo.no",
+     "cual-patio:ven.si",
+     "cual-patio:mira.no",
+     "cual-patio:vamos.no",
+     "cual-camino:parque.no"
+    ]
+   }
+  },
+  {
+   "id": "s001",
+   "files": {
+    "full": "s001.full.png",
+    "full.wide": "s001.full.wide.png",
+    "nochar": "s001.nochar.png",
+    "nochar.wide": "s001.nochar.wide.png",
+    "bg": "bg.cielo3_patio01.png"
+   },
+   "background": [
+    "cielo3",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0.12,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 73
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     59,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     116,
+     22,
+     44
+    ],
+    "carmen": [
+     177,
+     114,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     49,
+     70,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "d-buenas-noches/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "d-buenas-noches/right": "0-8",
+     "d-buenas-noches/wrong": "0-8",
+     "d-buenas-noches/alternate": "0-8",
+     "hasta-manana/right": "0-2",
+     "hasta-manana/wrong": "0-2",
+     "hasta-manana/alternate": "0-2"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s002",
+   "files": {
+    "full": "s002.full.png",
+    "full.wide": "s002.full.wide.png",
+    "nochar": "s002.nochar.png",
+    "nochar.wide": "s002.nochar.wide.png",
+    "bg": "bg.cielo3_patio01.png"
+   },
+   "background": [
+    "cielo3",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0.3,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": [
+     125,
+     120,
+     22,
+     44
+    ],
+    "carmen": [
+     159,
+     116,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     49,
+     70,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "d-buenas-noches/right@9",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 31,
+   "distinctW": 37,
+   "reachedBy": {
+    "steps": {
+     "d-buenas-noches/right": "9-32",
+     "d-buenas-noches/wrong": "9-32",
+     "d-buenas-noches/alternate": "9-32",
+     "hasta-manana/right": "3-26",
+     "hasta-manana/wrong": "3-26",
+     "hasta-manana/alternate": "3-26"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s003",
+   "files": {
+    "full": "s003.full.png",
+    "full.wide": "s003.full.wide.png",
+    "nochar": "s003.nochar.png",
+    "nochar.wide": "s003.nochar.wide.png",
+    "bg": "bg.cielo3_patio00.png"
+   },
+   "background": [
+    "cielo3",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0.3,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "d-buenas-noches/right@33",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 144,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "d-buenas-noches/right": "33-35",
+     "d-buenas-noches/wrong": "33-35",
+     "d-buenas-noches/alternate": "33-35"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s004",
+   "files": {
+    "full": "s004.full.png",
+    "full.wide": "s004.full.wide.png",
+    "nochar": "s004.nochar.png",
+    "nochar.wide": "s004.nochar.wide.png",
+    "bg": "bg.cielo4_patio00.png"
+   },
+   "background": [
+    "cielo4",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 1,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 1,
+    "osc": 0.6,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "d-buenas-noches/right@36",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 168,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "d-buenas-noches/right": "36-47",
+     "d-buenas-noches/wrong": "36-47",
+     "d-buenas-noches/alternate": "36-47"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s005",
+   "files": {
+    "full": "s005.full.png",
+    "full.wide": "s005.full.wide.png",
+    "nochar": "s005.nochar.png",
+    "nochar.wide": "s005.nochar.wide.png",
+    "bg": "bg.cielo4_patio00.png"
+   },
+   "background": [
+    "cielo4",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 1,
+    "brillo": 1,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 1,
+    "osc": 0.6,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "d-buenas-noches/right@48",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 269,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "d-buenas-noches/right": "48-50",
+     "d-buenas-noches/wrong": "48-50",
+     "d-buenas-noches/alternate": "48-50"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s006",
+   "files": {
+    "full": "s006.full.png",
+    "full.wide": "s006.full.wide.png",
+    "nochar": "s006.nochar.png",
+    "nochar.wide": "s006.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     33,
+     109,
+     26,
+     22
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "d-la-bola/right@1",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 13,
+   "reachedBy": {
+    "steps": {
+     "d-la-bola/right": "1-33",
+     "d-la-bola/wrong": "1-33",
+     "d-la-bola/alternate": "1-33"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s007",
+   "files": {
+    "full": "s007.full.png",
+    "full.wide": "s007.full.wide.png",
+    "nochar": "s007.nochar.png",
+    "nochar.wide": "s007.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 233
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     189,
+     117,
+     26,
+     22
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     155,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     49,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     147,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "d-la-bola/right@34",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 240,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "d-la-bola/right": "34-40",
+     "d-la-bola/wrong": "34-40",
+     "d-la-bola/alternate": "34-40"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s008",
+   "files": {
+    "full": "s008.full.png",
+    "full.wide": "s008.full.wide.png",
+    "nochar": "s008.nochar.png",
+    "nochar.wide": "s008.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 13,
+   "reachedBy": {
+    "steps": {
+     "h-patio/right": "0-14",
+     "h-patio/wrong": "0-14",
+     "h-patio/alternate": "0-14"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s009",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 130
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/right@16",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 137,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/right": "15-16"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s010",
+   "files": {
+    "full": "s010.full.png",
+    "full.wide": "s010.full.wide.png",
+    "nochar": "s010.nochar.png",
+    "nochar.wide": "s010.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 130
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/right@18",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 155,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/right": "17-19"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s011",
+   "files": {
+    "full": "s011.full.png",
+    "full.wide": "s011.full.wide.png",
+    "nochar": "s011.nochar.png",
+    "nochar.wide": "s011.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 130
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/right@20",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 155,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "h-patio/right": "20-22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s012",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 130
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/right@24",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 201,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/right": "23-24"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s013",
+   "files": {
+    "full": "s013.full.png",
+    "full.wide": "s013.full.wide.png",
+    "nochar": "s013.nochar.png",
+    "nochar.wide": "s013.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 130
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/right@26",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 237,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "h-patio/right": "25-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s014",
+   "files": {
+    "full": "s014.full.png",
+    "full.wide": "s014.full.wide.png",
+    "nochar": "s014.nochar.png",
+    "nochar.wide": "s014.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 223
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/wrong@16",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 230,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/wrong": "15-16"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s015",
+   "files": {
+    "full": "s015.full.png",
+    "full.wide": "s015.full.wide.png",
+    "nochar": "s015.nochar.png",
+    "nochar.wide": "s015.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 223
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/wrong@18",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 267,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/wrong": "17-19"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s016",
+   "files": {
+    "full": "s016.full.png",
+    "full.wide": "s016.full.wide.png",
+    "nochar": "s016.nochar.png",
+    "nochar.wide": "s016.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 223
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/wrong@20",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 267,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "h-patio/wrong": "20-22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s017",
+   "files": {
+    "full": "s012.full.png",
+    "full.wide": "s012.full.wide.png",
+    "nochar": "s012.nochar.png",
+    "nochar.wide": "s012.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 223
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/wrong@24",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 331,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/wrong": "23-24"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s018",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 223
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/wrong@26",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 384,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "h-patio/wrong": "25-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s019",
+   "files": {
+    "full": "s009.full.png",
+    "full.wide": "s009.full.wide.png",
+    "nochar": "s009.nochar.png",
+    "nochar.wide": "s009.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 167
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/alternate@16",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 174,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/alternate": "15-16"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s020",
+   "files": {
+    "full": "s020.full.png",
+    "full.wide": "s020.full.wide.png",
+    "nochar": "s020.nochar.png",
+    "nochar.wide": "s020.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 167
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/alternate@18",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 211,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/alternate": "17-19"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s021",
+   "files": {
+    "full": "s021.full.png",
+    "full.wide": "s021.full.wide.png",
+    "nochar": "s021.nochar.png",
+    "nochar.wide": "s021.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 167
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     106,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/alternate@20",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 211,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "h-patio/alternate": "20-22"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s022",
+   "files": {
+    "full": "s022.full.png",
+    "full.wide": "s022.full.wide.png",
+    "nochar": "s022.nochar.png",
+    "nochar.wide": "s022.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 167
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/alternate@24",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 257,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "h-patio/alternate": "23-24"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s023",
+   "files": {
+    "full": "s018.full.png",
+    "full.wide": "s018.full.wide.png",
+    "nochar": "s018.nochar.png",
+    "nochar.wide": "s018.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 167
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     139,
+     106,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     155,
+     137,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "h-patio/alternate@26",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 309,
+   "distinctW": 6,
+   "reachedBy": {
+    "steps": {
+     "h-patio/alternate": "25-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s024",
+   "files": {
+    "full": "s024.full.png",
+    "full.wide": "s024.full.wide.png",
+    "nochar": "s024.nochar.png",
+    "nochar.wide": "s024.nochar.wide.png",
+    "bg": "bg.cielo4_patio01.png"
+   },
+   "background": [
+    "cielo4",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 1,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 1,
+    "osc": 0.6,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     178,
+     32,
+     27
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": [
+     127,
+     94,
+     22,
+     44
+    ],
+    "carmen": [
+     175,
+     126,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     49,
+     70,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "hasta-manana/right@27",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 238,
+   "distinctW": 47,
+   "reachedBy": {
+    "steps": {
+     "hasta-manana/right": "27-55",
+     "hasta-manana/wrong": "27-67",
+     "hasta-manana/alternate": "27-64"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s025",
+   "files": {
+    "full": "s025.full.png",
+    "full.wide": "s025.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
+    "bg": "bg.cielo4_patio11.png"
+   },
+   "background": [
+    "cielo4",
+    "patio11"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 1,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 1,
+    "osc": 0.6,
+    "pdoor": 1,
+    "porton": 1,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     130,
+     108,
+     28,
+     23
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": [
+     159,
+     80,
+     22,
+     44
+    ],
+    "carmen": [
+     187,
+     122,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     51,
+     72,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "hasta-manana/right@56",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 465,
+   "distinctW": 10,
+   "reachedBy": {
+    "steps": {
+     "hasta-manana/right": "56-59",
+     "hasta-manana/wrong": "68-74",
+     "hasta-manana/alternate": "65-71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s026",
+   "files": {
+    "full": "s026.full.png",
+    "full.wide": "s026.full.wide.png",
+    "nochar": "s025.nochar.png",
+    "nochar.wide": "s025.nochar.wide.png",
+    "bg": "bg.cielo4_patio11.png"
+   },
+   "background": [
+    "cielo4",
+    "patio11"
+   ],
+   "keys": {
+    "aro": 1,
+    "brillo": 1,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 1,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 1,
+    "osc": 0.6,
+    "pdoor": 1,
+    "porton": 1,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 109
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     130,
+     108,
+     28,
+     23
+    ],
+    "pajaro": [
+     168,
+     63,
+     20,
+     22
+    ],
+    "luis": [
+     159,
+     80,
+     22,
+     44
+    ],
+    "carmen": [
+     187,
+     122,
+     22,
+     44
+    ],
+    "bebe": [
+     86,
+     81,
+     22,
+     28
+    ],
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     51,
+     72,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "hasta-manana/right@60",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 520,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "hasta-manana/right": "60-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s027",
+   "files": {
+    "full": "s027.full.png",
+    "full.wide": "s027.full.wide.png",
+    "nochar": "s027.nochar.png",
+    "nochar.wide": "s027.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     75,
+     92,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     167,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 33,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "0-32",
+     "las-flores/wrong": "0-32",
+     "las-flores/alternate": "0-32"
+    },
+    "pairs": [
+     "cual-patio:niña.si",
+     "cual-patio:niña.no"
+    ]
+   }
+  },
+  {
+   "id": "s028",
+   "files": {
+    "full": "s028.full.png",
+    "full.wide": "s028.full.wide.png",
+    "nochar": "s028.nochar.png",
+    "nochar.wide": "s028.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      }
+     ],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@34",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 245,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "33-35",
+     "las-flores/wrong": "33-35",
+     "las-flores/alternate": "33-35"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s029",
+   "files": {
+    "full": "s029.full.png",
+    "full.wide": "s029.full.wide.png",
+    "nochar": "s029.nochar.png",
+    "nochar.wide": "s029.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@37",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 295,
+   "distinctW": 9,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "36-41",
+     "las-flores/wrong": "36-41",
+     "las-flores/alternate": "36-41"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s030",
+   "files": {
+    "full": "s030.full.png",
+    "full.wide": "s030.full.wide.png",
+    "nochar": "s030.nochar.png",
+    "nochar.wide": "s030.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@43",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 360,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "42-44",
+     "las-flores/wrong": "42-44",
+     "las-flores/alternate": "42-44"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s031",
+   "files": {
+    "full": "s031.full.png",
+    "full.wide": "s031.full.wide.png",
+    "nochar": "s031.nochar.png",
+    "nochar.wide": "s031.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@46",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 410,
+   "distinctW": 15,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "45-58",
+     "las-flores/wrong": "45-58",
+     "las-flores/alternate": "45-58"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s032",
+   "files": {
+    "full": "s032.full.png",
+    "full.wide": "s032.full.wide.png",
+    "nochar": "s032.nochar.png",
+    "nochar.wide": "s032.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@60",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 522,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "59-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s033",
+   "files": {
+    "full": "s033.full.png",
+    "full.wide": "s033.full.wide.png",
+    "nochar": "s033.nochar.png",
+    "nochar.wide": "s033.nochar.wide.png",
+    "bg": "bg.cielo0_patio01.png"
+   },
+   "background": [
+    "cielo0",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@63",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 537,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "63-65"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s034",
+   "files": {
+    "full": "s034.full.png",
+    "full.wide": "s034.full.wide.png",
+    "nochar": "s034.nochar.png",
+    "nochar.wide": "s034.nochar.wide.png",
+    "bg": "bg.cielo0_patio01.png"
+   },
+   "background": [
+    "cielo0",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@67",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 586,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "66-67"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s035",
+   "files": {
+    "full": "s035.full.png",
+    "full.wide": "s035.full.wide.png",
+    "nochar": "s035.nochar.png",
+    "nochar.wide": "s035.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@68",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 586,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "68-77"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s036",
+   "files": {
+    "full": "s036.full.png",
+    "full.wide": "s036.full.wide.png",
+    "nochar": "s036.nochar.png",
+    "nochar.wide": "s036.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@79",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 639,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "78-79"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s037",
+   "files": {
+    "full": "s037.full.png",
+    "full.wide": "s037.full.wide.png",
+    "nochar": "s037.nochar.png",
+    "nochar.wide": "s037.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/right@80",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 676,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "las-flores/right": "80-86"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s038",
+   "files": {
+    "full": "s038.full.png",
+    "full.wide": "s038.full.wide.png",
+    "nochar": "s038.nochar.png",
+    "nochar.wide": "s038.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@60",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 620,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "60-61",
+     "las-flores/alternate": "60-61"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s039",
+   "files": {
+    "full": "s039.full.png",
+    "full.wide": "s039.full.wide.png",
+    "nochar": "s039.nochar.png",
+    "nochar.wide": "s039.nochar.wide.png",
+    "bg": "bg.cielo1_patio00.png"
+   },
+   "background": [
+    "cielo1",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@62",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 643,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "62",
+     "las-flores/alternate": "62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s040",
+   "files": {
+    "full": "s040.full.png",
+    "full.wide": "s040.full.wide.png",
+    "nochar": "s040.nochar.png",
+    "nochar.wide": "s040.nochar.wide.png",
+    "bg": "bg.cielo1_patio00.png"
+   },
+   "background": [
+    "cielo1",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     149,
+     84,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@63",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 687,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "59,63-65",
+     "las-flores/alternate": "59,63-65"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s041",
+   "files": {
+    "full": "s041.full.png",
+    "full.wide": "s041.full.wide.png",
+    "nochar": "s041.nochar.png",
+    "nochar.wide": "s041.nochar.wide.png",
+    "bg": "bg.cielo1_patio01.png"
+   },
+   "background": [
+    "cielo1",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@66",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 701,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "66-68",
+     "las-flores/alternate": "66-68"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s042",
+   "files": {
+    "full": "s042.full.png",
+    "full.wide": "s042.full.wide.png",
+    "nochar": "s042.nochar.png",
+    "nochar.wide": "s042.nochar.wide.png",
+    "bg": "bg.cielo1_patio01.png"
+   },
+   "background": [
+    "cielo1",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@70",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 740,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "70-71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s043",
+   "files": {
+    "full": "s043.full.png",
+    "full.wide": "s043.full.wide.png",
+    "nochar": "s043.nochar.png",
+    "nochar.wide": "s043.nochar.wide.png",
+    "bg": "bg.cielo2_patio01.png"
+   },
+   "background": [
+    "cielo2",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@72",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 763,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "72"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s044",
+   "files": {
+    "full": "s044.full.png",
+    "full.wide": "s044.full.wide.png",
+    "nochar": "s044.nochar.png",
+    "nochar.wide": "s044.nochar.wide.png",
+    "bg": "bg.cielo2_patio01.png"
+   },
+   "background": [
+    "cielo2",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 7
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@73",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 812,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "69,73"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s045",
+   "files": {
+    "full": "s045.full.png",
+    "full.wide": "s045.full.wide.png",
+    "nochar": "s045.nochar.png",
+    "nochar.wide": "s045.nochar.wide.png",
+    "bg": "bg.cielo2_patio00.png"
+   },
+   "background": [
+    "cielo2",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 7
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@74",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 812,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "74-83"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s046",
+   "files": {
+    "full": "s046.full.png",
+    "full.wide": "s046.full.wide.png",
+    "nochar": "s046.nochar.png",
+    "nochar.wide": "s046.nochar.wide.png",
+    "bg": "bg.cielo2_patio00.png"
+   },
+   "background": [
+    "cielo2",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 7
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      },
+      {
+       "k": 0,
+       "c": 8
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@85",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 864,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "85-86"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s047",
+   "files": {
+    "full": "s047.full.png",
+    "full.wide": "s047.full.wide.png",
+    "nochar": "s047.nochar.png",
+    "nochar.wide": "s047.nochar.wide.png",
+    "bg": "bg.cielo3_patio00.png"
+   },
+   "background": [
+    "cielo3",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 7
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      },
+      {
+       "k": 0,
+       "c": 8
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 73
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     59,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@87",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 887,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "87"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s048",
+   "files": {
+    "full": "s048.full.png",
+    "full.wide": "s048.full.wide.png",
+    "nochar": "s048.nochar.png",
+    "nochar.wide": "s048.nochar.wide.png",
+    "bg": "bg.cielo3_patio00.png"
+   },
+   "background": [
+    "cielo3",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      },
+      {
+       "k": 0,
+       "c": 8
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 73
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     59,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@88",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 930,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "84,88"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s049",
+   "files": {
+    "full": "s049.full.png",
+    "full.wide": "s049.full.wide.png",
+    "nochar": "s048.nochar.png",
+    "nochar.wide": "s048.nochar.wide.png",
+    "bg": "bg.cielo3_patio00.png"
+   },
+   "background": [
+    "cielo3",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 1,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 6
+      },
+      {
+       "k": 0,
+       "c": 8
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 73
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     59,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/wrong@89",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 960,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "las-flores/wrong": "89-95"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s050",
+   "files": {
+    "full": "s050.full.png",
+    "full.wide": "s050.full.wide.png",
+    "nochar": "s050.nochar.png",
+    "nochar.wide": "s050.nochar.wide.png",
+    "bg": "bg.cielo1_patio01.png"
+   },
+   "background": [
+    "cielo1",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 6
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": [
+     31,
+     65,
+     22,
+     51
+    ],
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/alternate@70",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 693,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/alternate": "69-70"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s051",
+   "files": {
+    "full": "s051.full.png",
+    "full.wide": "s051.full.wide.png",
+    "nochar": "s051.nochar.png",
+    "nochar.wide": "s051.nochar.wide.png",
+    "bg": "bg.cielo1_patio00.png"
+   },
+   "background": [
+    "cielo1",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 6
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     145,
+     128,
+     22,
+     44
+    ],
+    "carmen": [
+     73,
+     128,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/alternate@71",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 693,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "las-flores/alternate": "71-80"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s052",
+   "files": {
+    "full": "s052.full.png",
+    "full.wide": "s052.full.wide.png",
+    "nochar": "s052.nochar.png",
+    "nochar.wide": "s052.nochar.wide.png",
+    "bg": "bg.cielo1_patio00.png"
+   },
+   "background": [
+    "cielo1",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 6
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 7
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 1,
+    "soly": 40
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     26,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/alternate@82",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 745,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/alternate": "82-83"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s053",
+   "files": {
+    "full": "s053.full.png",
+    "full.wide": "s053.full.wide.png",
+    "nochar": "s053.nochar.png",
+    "nochar.wide": "s053.nochar.wide.png",
+    "bg": "bg.cielo2_patio00.png"
+   },
+   "background": [
+    "cielo2",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 6
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 7
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/alternate@84",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 768,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/alternate": "84"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s054",
+   "files": {
+    "full": "s054.full.png",
+    "full.wide": "s054.full.wide.png",
+    "nochar": "s054.nochar.png",
+    "nochar.wide": "s054.nochar.wide.png",
+    "bg": "bg.cielo2_patio00.png"
+   },
+   "background": [
+    "cielo2",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 8
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 7
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     69,
+     84,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/alternate@85",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 811,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "las-flores/alternate": "81,85"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s055",
+   "files": {
+    "full": "s055.full.png",
+    "full.wide": "s055.full.wide.png",
+    "nochar": "s055.nochar.png",
+    "nochar.wide": "s055.nochar.wide.png",
+    "bg": "bg.cielo2_patio00.png"
+   },
+   "background": [
+    "cielo2",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 1,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 0,
+       "c": 4
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 8
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 0,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 2,
+    "soly": 56
+   },
+   "things": {
+    "saco": null,
+    "caja": [
+     104,
+     112,
+     32,
+     24
+    ],
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     42,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     104,
+     150,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     161,
+     132,
+     22,
+     44
+    ],
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     165,
+     115,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "las-flores/alternate@86",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 839,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "las-flores/alternate": "86-92"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s056",
+   "files": {
+    "full": "s056.full.png",
+    "full.wide": "s056.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s056.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     33,
+     109,
+     26,
+     22
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/right@0",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 2,
+   "distinctW": 57,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/right": "0-7,9,11-42",
+     "que-es-esto/wrong": "0-7,9,11-75",
+     "que-es-esto/alternate": "0-7,9,11-42"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s057",
+   "files": {
+    "full": "s057.full.png",
+    "full.wide": "s057.full.wide.png",
+    "nochar": "s057.nochar.png",
+    "nochar.wide": "s057.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 78
+    },
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/right@8",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 85,
+   "distinctW": 3,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/right": "8,10",
+     "que-es-esto/alternate": "8,10"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s058",
+   "files": {
+    "full": "s058.full.png",
+    "full.wide": "s058.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s058.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "vaso"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     33,
+     109,
+     26,
+     22
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     64,
+     89,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/right@45",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 515,
+   "distinctW": 18,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/right": "43-53,55",
+     "que-es-esto/alternate": "43-62,64-65"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s059",
+   "files": {
+    "full": "s059.full.png",
+    "full.wide": "s059.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s059.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "vaso",
+     "silla"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/right@56",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 613,
+   "distinctW": 4,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/right": "54,56-59,61-62"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s060",
+   "files": {
+    "full": "s060.full.png",
+    "full.wide": "s060.full.wide.png",
+    "nochar": "s060.nochar.png",
+    "nochar.wide": "s060.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "vaso",
+     "silla",
+     "bola"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/right@63",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 698,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/right": "60,63"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s061",
+   "files": {
+    "full": "s061.full.png",
+    "full.wide": "s061.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s061.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "vaso",
+     "silla",
+     "bola",
+     "flor"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     118,
+     122,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/right@64",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 741,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/right": "64-68"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s062",
+   "files": {
+    "full": "s057.full.png",
+    "full.wide": "s057.full.wide.png",
+    "nochar": "s057.nochar.png",
+    "nochar.wide": "s057.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 150,
+     "y": 40,
+     "r": 18,
+     "f": 93
+    },
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/wrong@8",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 100,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/wrong": "8,10"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s063",
+   "files": {
+    "full": "s063.full.png",
+    "full.wide": "s063.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s063.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "bola"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     118,
+     122,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/wrong@76",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 977,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/wrong": "76-80"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s064",
+   "files": {
+    "full": "s059.full.png",
+    "full.wide": "s064.full.wide.png",
+    "nochar": "s056.nochar.png",
+    "nochar.wide": "s064.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "vaso",
+     "bola"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/alternate@66",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 789,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/alternate": "63,66"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s065",
+   "files": {
+    "full": "s065.full.png",
+    "full.wide": "s065.full.wide.png",
+    "nochar": "s060.nochar.png",
+    "nochar.wide": "s065.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": [
+     "vaso",
+     "bola",
+     "silla"
+    ],
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 0
+      },
+      {
+       "k": 1,
+       "c": 1
+      },
+      {
+       "k": 1,
+       "c": 2
+      },
+      {
+       "k": 1,
+       "c": 3
+      },
+      {
+       "k": 1,
+       "c": 4
+      }
+     ],
+     "R": [
+      {
+       "k": 1,
+       "c": 5
+      },
+      {
+       "k": 1,
+       "c": 6
+      },
+      {
+       "k": 1,
+       "c": 7
+      },
+      {
+       "k": 1,
+       "c": 8
+      },
+      {
+       "k": 1,
+       "c": 9
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": {
+     "x": 164,
+     "y": 165,
+     "ab": 0
+    },
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": [
+     151,
+     142,
+     26,
+     24
+    ],
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     112,
+     140,
+     32,
+     27
+    ],
+    "pajaro": [
+     118,
+     122,
+     20,
+     22
+    ],
+    "luis": [
+     179,
+     120,
+     22,
+     40
+    ],
+    "carmen": [
+     39,
+     116,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "que-es-esto/alternate@67",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 827,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {
+     "que-es-esto/alternate": "67-71"
+    },
+    "pairs": []
+   }
+  },
+  {
+   "id": "s066",
+   "files": {
+    "full": "s066.full.png",
+    "full.wide": "s066.full.wide.png",
+    "nochar": "s066.nochar.png",
+    "nochar.wide": "s066.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [
+      {
+       "k": 1,
+       "c": 2
+      }
+     ],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": [
+     115,
+     128,
+     22,
+     44
+    ],
+    "carmen": null,
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": [
+     133,
+     159,
+     14,
+     14
+    ]
+   },
+   "drawnFrom": "cual-patio:juega.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 5,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:juega.si",
+     "cual-patio:juega.no",
+     "cual-patio:flor.si",
+     "cual-patio:aquí.si",
+     "cual-patio:allá.no"
+    ]
+   }
+  },
+  {
+   "id": "s067",
+   "files": {
+    "full": "s067.full.png",
+    "full.wide": "s067.full.wide.png",
+    "nochar": "s067.nochar.png",
+    "nochar.wide": "s067.nochar.wide.png",
+    "bg": "bg.cielo4_patio00.png"
+   },
+   "background": [
+    "cielo4",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 1,
+    "noche": 1,
+    "osc": 0.6,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": null,
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "cual-patio:sol.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:sol.no"
+    ]
+   }
+  },
+  {
+   "id": "s068",
+   "files": {
+    "full": "s068.full.png",
+    "full.wide": "s068.full.wide.png",
+    "nochar": "s068.nochar.png",
+    "nochar.wide": "s068.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": [
+      {
+       "k": 1,
+       "c": 2
+      }
+     ]
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": null,
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": [
+     57,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "cual-patio:aquí.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:aquí.no",
+     "cual-patio:allá.si"
+    ]
+   }
+  },
+  {
+   "id": "s069",
+   "files": {
+    "full": "s069.full.png",
+    "full.wide": "s069.full.wide.png",
+    "nochar": "s069.nochar.png",
+    "nochar.wide": "s069.nochar.wide.png",
+    "bg": "bg.cielo0_patio00.png"
+   },
+   "background": [
+    "cielo0",
+    "patio00"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 0,
+    "rizo": {
+     "x": 124,
+     "y": 124,
+     "r": 12
+    },
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     64,
+     153,
+     32,
+     27
+    ],
+    "pajaro": [
+     114,
+     108,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": [
+     159,
+     132,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "cual-patio:ven.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 2,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:ven.no",
+     "cual-patio:mira.si"
+    ]
+   }
+  },
+  {
+   "id": "s070",
+   "files": {
+    "full": "s070.full.png",
+    "full.wide": "s070.full.wide.png",
+    "nochar": "s070.nochar.png",
+    "nochar.wide": "s070.nochar.wide.png",
+    "bg": "bg.cielo0_patio10.png"
+   },
+   "background": [
+    "cielo0",
+    "patio10"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 0,
+    "porton": 1,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     130,
+     103,
+     28,
+     23
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": [
+     157,
+     76,
+     22,
+     44
+    ],
+    "bebe": null,
+    "abuela": null,
+    "abuelo": null,
+    "mama": null,
+    "papa": null,
+    "bola": null
+   },
+   "drawnFrom": "cual-patio:vamos.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:vamos.si"
+    ]
+   }
+  },
+  {
+   "id": "s071",
+   "files": {
+    "full": "s071.full.png",
+    "full.wide": "s071.full.wide.png",
+    "nochar": "s071.nochar.png",
+    "nochar.wide": "s071.nochar.wide.png",
+    "bg": "bg.cielo3_patio11.png"
+   },
+   "background": [
+    "cielo3",
+    "patio11"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0.2,
+    "pdoor": 1,
+    "porton": 1,
+    "rizo": null,
+    "saco": null,
+    "sol": 3,
+    "soly": 73
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     59,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     132,
+     105,
+     28,
+     23
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     49,
+     70,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "cual-patio:hasta mañana.si",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:hasta mañana.si"
+    ]
+   }
+  },
+  {
+   "id": "s072",
+   "files": {
+    "full": "s072.full.png",
+    "full.wide": "s072.full.wide.png",
+    "nochar": "s072.nochar.png",
+    "nochar.wide": "s072.nochar.wide.png",
+    "bg": "bg.cielo0_patio01.png"
+   },
+   "background": [
+    "cielo0",
+    "patio01"
+   ],
+   "keys": {
+    "aro": 0,
+    "brillo": 0,
+    "caja": 0,
+    "canasta": null,
+    "estrella": 0,
+    "flores": {
+     "L": [],
+     "R": []
+    },
+    "luna": 0,
+    "noche": 0,
+    "osc": 0,
+    "pdoor": 1,
+    "porton": 0,
+    "rizo": null,
+    "saco": null,
+    "sol": 0,
+    "soly": 24
+   },
+   "things": {
+    "saco": null,
+    "caja": null,
+    "camaL": [
+     40,
+     160,
+     56,
+     38
+    ],
+    "camaR": [
+     144,
+     160,
+     56,
+     38
+    ],
+    "sol": [
+     86,
+     10,
+     28,
+     28
+    ],
+    "porton": [
+     127,
+     70,
+     40,
+     43
+    ],
+    "nido": [
+     170,
+     60,
+     22,
+     16
+    ],
+    "arbol": [
+     168,
+     8,
+     60,
+     106
+    ],
+    "puerta": [
+     27,
+     57,
+     30,
+     56
+    ],
+    "casa": [
+     0,
+     14,
+     61,
+     100
+    ],
+    "cerca": [
+     60,
+     80,
+     180,
+     33
+    ],
+    "patio": [
+     0,
+     113,
+     240,
+     103
+    ]
+   },
+   "characters": {
+    "coqui": [
+     120,
+     107,
+     29,
+     25
+    ],
+    "pajaro": [
+     171,
+     46,
+     20,
+     22
+    ],
+    "luis": null,
+    "carmen": null,
+    "bebe": null,
+    "abuela": [
+     23,
+     85,
+     22,
+     51
+    ],
+    "abuelo": [
+     49,
+     70,
+     22,
+     56
+    ],
+    "mama": [
+     75,
+     80,
+     22,
+     56
+    ],
+    "papa": [
+     101,
+     70,
+     22,
+     56
+    ],
+    "bola": null
+   },
+   "drawnFrom": "cual-patio:hasta mañana.no",
+   "cam": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "F": 8,
+   "distinctW": 1,
+   "reachedBy": {
+    "steps": {},
+    "pairs": [
+     "cual-patio:hasta mañana.no"
+    ]
+   }
+  }
+ ]
+}

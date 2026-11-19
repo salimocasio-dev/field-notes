@@ -1,0 +1,11839 @@
+{
+ "scene": "frente",
+ "file": "historia/escenas/frente.js",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "sha256": "e5dd9881ec8adc84e23c14e28dbec3bbaeefb6bae8064da4568c8c7e690c6ce2",
+ "stories": [
+  "d-toc-toc",
+  "donde-esta-el-pajaro",
+  "el-bizcocho",
+  "h-frente",
+  "la-lluvia"
+ ],
+ "reviewFile": "cual-frente",
+ "hostPage": "historia/index.html?cuento=d-toc-toc&fast=1",
+ "background": {
+  "functions": [
+   "bg"
+  ],
+  "at": [
+   "frente.js:12 bg(door,win,lamp)",
+   "frente.js:140 spr(\"fr\"+W.door+\"_\"+W.win+\"_\"+W.lamp, ()=>bg(W.door,W.win,W.lamp))"
+  ],
+  "keys": [
+   "door",
+   "win",
+   "lamp"
+  ],
+  "keysCheck": "no two states with the same values of these keys have a different background sprite",
+  "sprites": [
+   {
+    "key": "fr0_0_0",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr0_0_1",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr1_0_1",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr0_1_1",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr1_0_0",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr0.5_0_0",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr0_1_0",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   },
+   {
+    "key": "fr1_1_0",
+    "maker": "()=>bg(W.door,W.win,W.lamp)",
+    "readsW": [
+     "door",
+     "lamp",
+     "win"
+    ],
+    "askedAt": "frente.js:140"
+   }
+  ]
+ },
+ "given": {
+  "kit": false,
+  "note": "El frente was written before the kit: no KIT.escena; ESCENAS.frente is built by hand (frente.js:299-302)",
+  "object": "frente.js:299 ESCENAS.frente={...}",
+  "keys": [
+   "SW",
+   "SH",
+   "CAM",
+   "handAt",
+   "heartAt",
+   "fresh",
+   "draw",
+   "box",
+   "hit",
+   "poke",
+   "acts",
+   "stake",
+   "talkAt",
+   "hud"
+  ],
+  "CAM": {
+   "wide": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "casa": [
+    51.7,
+    15,
+    180.6,
+    199
+   ],
+   "puerta": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "ventana": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "cuadro": [
+    63,
+    18,
+    98,
+    108
+   ]
+  },
+  "heartAt": [
+   103,
+   26
+  ],
+  "handAt": {
+   "casa": [
+    141,
+    24
+   ],
+   "puerta": [
+    166,
+    76
+   ],
+   "ventana": [
+    112,
+    72
+   ],
+   "casa_grande": [
+    141,
+    24
+   ],
+   "casa_pequena": [
+    73,
+    128
+   ],
+   "palma_grande": [
+    56,
+    60
+   ],
+   "palma_pequena": [
+    195,
+    140
+   ],
+   "abuela": [
+    166,
+    81
+   ]
+  },
+  "handAtGetters": {
+   "casa": null,
+   "puerta": null,
+   "ventana": null,
+   "casa_grande": null,
+   "casa_pequena": null,
+   "palma_grande": null,
+   "palma_pequena": null,
+   "abuela": "getter: get abuela(){const b=box(\"abuela\",W);return b?[Math.round(b[0]+b[2]/2),Math.round(b[1]+b[3]/2)]:[166,76];}"
+  },
+  "box": {
+   "line": 181,
+   "fn": "function box(k,W){if(k===\"abuela\")return W&&W.ab&&W.ab.en===\"ventana\"?[97,61,30,20]:W&&W.ab&&W.ab.en===\"paso\"?[110,58,36,50]:[151,56,29,49];\n  const e={palma_grande:[34,34,48,72],palma_pequena:[174,114,42,56],casa_pequena:[60,110,26,58],casa_grande:[60,17,166,90]}[k];if(e)return e;\n  if(k===\"nube\")return [Math.round(W&&W.nube?W.nube.x:0),0,98,22];\n  return {casa:[60,17,166,90],puerta:[151,51,30,54],ventana:[93,57,38,28]}[k];}"
+  },
+  "hit": {
+   "line": 185,
+   "order": [
+    {
+     "id": "abuela",
+     "line": 186,
+     "if": "W.ab",
+     "test": "inside box('abuela',W): ventana [97,61,30,20], paso [110,58,36,50], else [151,56,29,49] (frente.js:181)",
+     "at": "frente.js:186"
+    },
+    {
+     "id": "palma_pequena",
+     "line": 187,
+     "if": "W.escondite",
+     "test": "inside [172,112,46,60]",
+     "at": "frente.js:187"
+    },
+    {
+     "id": "casa_pequena",
+     "line": 187,
+     "if": "W.escondite",
+     "test": "inside [58,108,30,62]",
+     "at": "frente.js:187"
+    },
+    {
+     "id": "palma_grande",
+     "line": 187,
+     "if": "W.escondite",
+     "test": "inside [34,34,48,74]",
+     "at": "frente.js:187"
+    },
+    {
+     "id": "casa_grande",
+     "line": 188,
+     "if": "W.escondite",
+     "test": "inside [57,16,171,95] and not inside abuela's box when W.ab",
+     "at": "frente.js:188"
+    },
+    {
+     "id": "pajaro",
+     "line": 189,
+     "if": "W.ave && W.ave.mode!=='none'",
+     "test": "|x-p[0]|<16 and p[1]-24<y<p[1]+5, p = avePos(W.ave) (frente.js:78)",
+     "at": "frente.js:189"
+    },
+    {
+     "id": "bizcocho",
+     "line": 190,
+     "if": "W.plato!=null",
+     "test": "in the view: (x-cam[0])*DW/cam[2] < 66 and (y-cam[1])*DH/cam[3] < 36 (the plate in the corner, drawn by hud)",
+     "at": "frente.js:190"
+    },
+    {
+     "id": "coqui",
+     "line": 191,
+     "if": "W.cq.vis",
+     "test": "inside frogBox(W.cq) (juego.js:46)",
+     "at": "frente.js:191"
+    },
+    {
+     "id": "nube",
+     "line": 192,
+     "if": "W.storm && W.nube",
+     "test": "inside [W.nube.x-2,0,102,24]",
+     "at": "frente.js:192"
+    },
+    {
+     "id": "puerta",
+     "line": 193,
+     "if": "always",
+     "test": "inside [145,46,42,62] (box() says [151,51,30,54])",
+     "at": "frente.js:193"
+    },
+    {
+     "id": "ventana",
+     "line": 194,
+     "if": "always",
+     "test": "inside [82,53,61,42] (box() says [93,57,38,28])",
+     "at": "frente.js:194"
+    },
+    {
+     "id": "casa",
+     "line": 195,
+     "if": "always",
+     "test": "the roof: 16<=y<42 and 88-30t<=x<=196+30t, t=(y-16)/25 (frente.js:195); or inside [57,41,171,70] (frente.js:196)",
+     "at": "frente.js:195"
+    },
+    {
+     "id": "sol",
+     "line": 197,
+     "if": "!W.storm",
+     "test": "(x-210)^2+(y-17)^2<144",
+     "at": "frente.js:197"
+    },
+    {
+     "id": "palma",
+     "line": 198,
+     "if": "always",
+     "test": "inside [34,36,30,70]: the big palm bg() draws at 30,34 (frente.js:42, mkPalm)",
+     "at": "frente.js:198"
+    }
+   ],
+   "rects": {
+    "abuela": null,
+    "palma_pequena": [
+     172,
+     112,
+     46,
+     60
+    ],
+    "casa_pequena": [
+     58,
+     108,
+     30,
+     62
+    ],
+    "palma_grande": [
+     34,
+     34,
+     48,
+     74
+    ],
+    "casa_grande": [
+     57,
+     16,
+     171,
+     95
+    ],
+    "puerta": [
+     145,
+     46,
+     42,
+     62
+    ],
+    "ventana": [
+     82,
+     53,
+     61,
+     42
+    ],
+    "casa": [
+     57,
+     16,
+     171,
+     95
+    ],
+    "sol": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "palma": [
+     34,
+     36,
+     30,
+     70
+    ]
+   }
+  },
+  "consts": {
+   "ABAT": {
+    "line": 61,
+    "value": {
+     "puerta": [
+      135,
+      55
+     ],
+     "ventana": [
+      82,
+      61
+     ],
+     "paso": [
+      94,
+      57
+     ]
+    }
+   },
+   "PERCH": {
+    "line": 77,
+    "value": {
+     "ventana": [
+      112,
+      57
+     ],
+     "puerta": [
+      166,
+      49
+     ]
+    }
+   },
+   "SPOT": {
+    "line": 88,
+    "value": {
+     "palma_grande": [
+      56,
+      52
+     ],
+     "palma_pequena": [
+      195,
+      132
+     ],
+     "casa_pequena": [
+      73,
+      129
+     ],
+     "casa_grande": [
+      166,
+      80
+     ]
+    }
+   },
+   "LUGAR": {
+    "line": 205,
+    "value": {
+     "puerta": [
+      150,
+      104,
+      0.72
+     ],
+     "ventana": [
+      96,
+      104,
+      0.72
+     ],
+     "patio": [
+      123,
+      150,
+      0.86
+     ],
+     "casa_grande": [
+      150,
+      104,
+      0.72
+     ],
+     "palma_grande": [
+      38,
+      100,
+      0.74
+     ],
+     "palma_pequena": [
+      150,
+      150,
+      0.88
+     ],
+     "casa_pequena": [
+      86,
+      150,
+      0.86
+     ]
+    }
+   },
+   "NX": {
+    "line": 205,
+    "value": [
+     22,
+     76,
+     140
+    ]
+   },
+   "HOLE": {
+    "line": 77,
+    "value": {
+     "ventana": [
+      112,
+      71
+     ],
+     "puerta": [
+      166,
+      80
+     ]
+    }
+   },
+   "SPOT_copies": "SPOT is declared twice, frente.js:88 and frente.js:113 (the second inside hud(), with mkCasita, mkPalmita, escondite, dish, plato: a pasted copy)"
+  },
+  "fresh": {
+   "fn": "()=>({trozo:null,hojas:null,asoma:0,escondite:0,rustle:null,abierto:null,piernas:0,dusk:0,rondas:0,mios:0,tapado:0,ave:null,plato:null,mesa:0,abIn:null,caliente:0,door:0,win:0,lamp:0,peek:0,ab:null,storm:0,nube:null,nube2:null,nube3:null,dark:0,rain:0,wet:0,gotas:0,flash:0,dentro:null,tab:null,shake:0})",
+   "line": 301
+  },
+  "acts": {
+   "own": [
+    "abcierra",
+    "abentra",
+    "abre",
+    "abrir",
+    "asoma",
+    "atardece",
+    "atras",
+    "avecasa",
+    "baja",
+    "bonk",
+    "burbuja",
+    "busca_ave",
+    "calla",
+    "cerrar",
+    "come",
+    "cuadro",
+    "dentro",
+    "devuelve",
+    "entra",
+    "esconde",
+    "fin",
+    "fin2",
+    "gana",
+    "gotas",
+    "ir",
+    "limpia",
+    "llueve",
+    "luz",
+    "marcador",
+    "mira",
+    "mueve",
+    "pajaro",
+    "posa",
+    "pose",
+    "regala",
+    "sale",
+    "tapa",
+    "tapate",
+    "tocar",
+    "trueno",
+    "vete",
+    "vetecq"
+   ],
+   "shared": []
+  },
+  "functions": {
+   "fresh": {
+    "line": 301
+   },
+   "draw": {
+    "line": 139
+   },
+   "box": {
+    "line": 181
+   },
+   "hit": {
+    "line": 185
+   },
+   "poke": {
+    "line": 200
+   },
+   "stake": {
+    "line": 293
+   },
+   "talkAt": {
+    "line": 177
+   },
+   "hud": {
+    "line": 111
+   }
+  }
+ },
+ "thingIds": [
+  "abuela",
+  "palma_pequena",
+  "casa_pequena",
+  "palma_grande",
+  "casa_grande",
+  "pajaro",
+  "bizcocho",
+  "coqui",
+  "nube",
+  "puerta",
+  "ventana",
+  "casa",
+  "sol",
+  "palma"
+ ],
+ "things": {
+  "abuela": {
+   "moves": true,
+   "fresh": {
+    "si": false,
+    "box": [
+     151,
+     56,
+     29,
+     49
+    ],
+    "hand": [
+     166,
+     81
+    ]
+   },
+   "boxReads": [
+    "ab",
+    "ab.en"
+   ],
+   "siReads": [
+    "ab"
+   ],
+   "handReads": [
+    "ab",
+    "ab.en"
+   ],
+   "bySnapshot": [
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "d-toc-toc/right": "start,0-35,42-48",
+      "d-toc-toc/wrong": "start,0-35,42-48",
+      "d-toc-toc/alternate": "start,0-35,42-48",
+      "donde-esta-el-pajaro/right": "start,59-61",
+      "donde-esta-el-pajaro/wrong": "start,62-64",
+      "donde-esta-el-pajaro/alternate": "start,60-62",
+      "el-bizcocho/right": "start,0-2,4-5,21-26,34,37-58",
+      "el-bizcocho/wrong": "start,0-2,4-5,21-26,34,37-56",
+      "el-bizcocho/alternate": "start,0-2,4-5,21-26,34,37-56",
+      "h-frente/right": "start,0-8,11-19,21",
+      "h-frente/wrong": "start,0-8,11-19,21",
+      "h-frente/alternate": "start,0-8,11-19,21",
+      "la-lluvia/right": "start,0-33,35",
+      "la-lluvia/wrong": "start,0-34,36-37",
+      "la-lluvia/alternate": "start,0-34,36",
+      "cual-frente:casa.si": "picture",
+      "cual-frente:casa.no": "picture",
+      "cual-frente:puerta.si": "picture",
+      "cual-frente:puerta.no": "picture",
+      "cual-frente:ventana.si": "picture",
+      "cual-frente:ventana.no": "picture",
+      "cual-frente:abuela.no": "picture",
+      "cual-frente:abre.no": "picture",
+      "cual-frente:cierra.si": "picture",
+      "cual-frente:hola.no": "picture",
+      "cual-frente:adiós.si": "picture",
+      "cual-frente:sí.si": "picture",
+      "cual-frente:sí.no": "picture",
+      "cual-frente:no.si": "picture",
+      "cual-frente:no.no": "picture",
+      "cual-frente:grande.si": "picture",
+      "cual-frente:grande.no": "picture",
+      "cual-frente:pequeña.si": "picture",
+      "cual-frente:pequeña.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      151,
+      56,
+      29,
+      49
+     ],
+     "at": {
+      "d-toc-toc/right": "36-41",
+      "d-toc-toc/wrong": "36-41",
+      "d-toc-toc/alternate": "36-41",
+      "el-bizcocho/right": "35-36",
+      "el-bizcocho/wrong": "35-36,57-70",
+      "el-bizcocho/alternate": "35-36",
+      "h-frente/right": "9-10",
+      "h-frente/wrong": "9-10",
+      "h-frente/alternate": "9-10",
+      "cual-frente:abuela.si": "picture",
+      "cual-frente:cierra.no": "picture",
+      "cual-frente:hola.si": "picture",
+      "cual-frente:adiós.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      97,
+      61,
+      30,
+      20
+     ],
+     "at": {
+      "d-toc-toc/right": "49-54",
+      "d-toc-toc/wrong": "49-54",
+      "d-toc-toc/alternate": "49-54",
+      "el-bizcocho/right": "3,6-20,27-33,59-72",
+      "el-bizcocho/wrong": "3,6-20,27-33",
+      "el-bizcocho/alternate": "3,6-20,27-33,57-69",
+      "h-frente/right": "20,22-30",
+      "h-frente/wrong": "20,22-30",
+      "h-frente/alternate": "20,22-30",
+      "la-lluvia/right": "34,36-61",
+      "la-lluvia/wrong": "35,38-63",
+      "la-lluvia/alternate": "35,37-63",
+      "cual-frente:abre.si": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      110,
+      58,
+      36,
+      50
+     ],
+     "at": {
+      "donde-esta-el-pajaro/right": "0-58",
+      "donde-esta-el-pajaro/wrong": "0-61",
+      "donde-esta-el-pajaro/alternate": "0-59"
+     }
+    }
+   ]
+  },
+  "palma_pequena": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     174,
+     114,
+     42,
+     56
+    ],
+    "hand": [
+     195,
+     140
+    ]
+   },
+   "boxReads": [],
+   "siReads": [
+    "escondite"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      174,
+      114,
+      42,
+      56
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      174,
+      114,
+      42,
+      56
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "casa_pequena": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     60,
+     110,
+     26,
+     58
+    ],
+    "hand": [
+     73,
+     128
+    ]
+   },
+   "boxReads": [],
+   "siReads": [
+    "escondite"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      60,
+      110,
+      26,
+      58
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      60,
+      110,
+      26,
+      58
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "palma_grande": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     34,
+     34,
+     48,
+     72
+    ],
+    "hand": [
+     56,
+     60
+    ]
+   },
+   "boxReads": [],
+   "siReads": [
+    "escondite"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      34,
+      34,
+      48,
+      72
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      34,
+      34,
+      48,
+      72
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "casa_grande": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "hand": [
+     141,
+     24
+    ]
+   },
+   "boxReads": [],
+   "siReads": [
+    "escondite"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      60,
+      17,
+      166,
+      90
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      60,
+      17,
+      166,
+      90
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "pajaro": {
+   "moves": true,
+   "fresh": {
+    "si": false,
+    "box": null,
+    "hand": null
+   },
+   "boxReads": [],
+   "siReads": [
+    "ave",
+    "ave.mode"
+   ],
+   "handReads": [],
+   "bySnapshot": [
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "d-toc-toc/right": "start,0-54",
+      "d-toc-toc/wrong": "start,0-54",
+      "d-toc-toc/alternate": "start,0-54",
+      "donde-esta-el-pajaro/right": "start,0-5,7,19-23,26-32,35-41,44-45,56-61",
+      "donde-esta-el-pajaro/wrong": "start,0-5,7,19-24,27-34,37-44,47-48,59-64",
+      "donde-esta-el-pajaro/alternate": "start,0-5,7,19-23,26-33,36-42,45-46,57-62",
+      "el-bizcocho/right": "start,0-40",
+      "el-bizcocho/wrong": "start,0-40",
+      "el-bizcocho/alternate": "start,0-40",
+      "h-frente/right": "start,0-30",
+      "h-frente/wrong": "start,0-30",
+      "h-frente/alternate": "start,0-30",
+      "la-lluvia/right": "start,0-61",
+      "la-lluvia/wrong": "start,0-63",
+      "la-lluvia/alternate": "start,0-63",
+      "cual-frente:casa.si": "picture",
+      "cual-frente:casa.no": "picture",
+      "cual-frente:puerta.si": "picture",
+      "cual-frente:puerta.no": "picture",
+      "cual-frente:ventana.si": "picture",
+      "cual-frente:ventana.no": "picture",
+      "cual-frente:abuela.si": "picture",
+      "cual-frente:abuela.no": "picture",
+      "cual-frente:abre.si": "picture",
+      "cual-frente:abre.no": "picture",
+      "cual-frente:cierra.si": "picture",
+      "cual-frente:cierra.no": "picture",
+      "cual-frente:hola.si": "picture",
+      "cual-frente:hola.no": "picture",
+      "cual-frente:adiós.si": "picture",
+      "cual-frente:adiós.no": "picture",
+      "cual-frente:sí.si": "picture",
+      "cual-frente:sí.no": "picture",
+      "cual-frente:no.si": "picture",
+      "cual-frente:no.no": "picture",
+      "cual-frente:grande.si": "picture",
+      "cual-frente:grande.no": "picture",
+      "cual-frente:pequeña.si": "picture",
+      "cual-frente:pequeña.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      58,
+      106,
+      31,
+      28
+     ],
+     "at": {
+      "donde-esta-el-pajaro/right": "6,8-18,33-34",
+      "donde-esta-el-pajaro/wrong": "6,8-18,35-36",
+      "donde-esta-el-pajaro/alternate": "6,8-18,34-35"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      151,
+      57,
+      31,
+      28
+     ],
+     "at": {
+      "donde-esta-el-pajaro/right": "24-25,42-43",
+      "donde-esta-el-pajaro/wrong": "25-26,45-46",
+      "donde-esta-el-pajaro/alternate": "24-25,43-44"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      181,
+      97,
+      31,
+      28
+     ],
+     "at": {
+      "donde-esta-el-pajaro/right": "46-47,49",
+      "donde-esta-el-pajaro/wrong": "49-50,52",
+      "donde-esta-el-pajaro/alternate": "47-48,50"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      161,
+      77,
+      31,
+      28
+     ],
+     "at": {
+      "donde-esta-el-pajaro/right": "48,50-55"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      58,
+      89,
+      31,
+      28
+     ],
+     "at": {
+      "donde-esta-el-pajaro/wrong": "51,53-58",
+      "donde-esta-el-pajaro/alternate": "49,51-56"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      105,
+      5,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "41-42"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      129,
+      0,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "43"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      155,
+      -6,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "44-45"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      96,
+      6,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "48"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      110,
+      5,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "49"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      191,
+      1,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "51"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      173,
+      6,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "46-47,50"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      117,
+      -5,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "52-53"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      151,
+      26,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "54-71",
+      "el-bizcocho/wrong": "52-56,58-59",
+      "el-bizcocho/alternate": "52-62,64-66"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      181,
+      7,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/right": "72"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      157,
+      4,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "41-42"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      131,
+      -2,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "43"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      107,
+      -7,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "44-45"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      167,
+      -8,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "47"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      147,
+      2,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "48"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      119,
+      3,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "46,49"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      172,
+      -8,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "50-51"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      161,
+      5,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "60"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      136,
+      -1,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "61"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      111,
+      -6,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "57,62-63,65"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      93,
+      6,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "66-67"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      124,
+      132,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/wrong": "64,68-70",
+      "el-bizcocho/alternate": "63,67-69"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      166,
+      -7,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "41-42"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      184,
+      -7,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "43"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      191,
+      -2,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "44-45"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      79,
+      -2,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "47"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      174,
+      -8,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "48"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      99,
+      -8,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "46,49"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      80,
+      1,
+      31,
+      28
+     ],
+     "at": {
+      "el-bizcocho/alternate": "50-51"
+     }
+    }
+   ]
+  },
+  "bizcocho": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     44,
+     0,
+     66,
+     36
+    ],
+    "hand": null
+   },
+   "boxReads": [],
+   "siReads": [
+    "plato"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      44,
+      0,
+      66,
+      36
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s007",
+      "s008",
+      "s019",
+      "s020",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s035",
+      "s036",
+      "s037",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      117,
+      30,
+      33,
+      18
+     ],
+     "states": [
+      "s006",
+      "s009",
+      "s021",
+      "s022"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      84,
+      24,
+      33,
+      18
+     ],
+     "states": [
+      "s010",
+      "s034",
+      "s038"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      30,
+      0,
+      66,
+      36
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      44,
+      0,
+      66,
+      36
+     ],
+     "states": [
+      "s023",
+      "s024",
+      "s025",
+      "s027"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      84,
+      24,
+      33,
+      18
+     ],
+     "states": [
+      "s026"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      117,
+      30,
+      33,
+      18
+     ],
+     "states": [
+      "s028"
+     ]
+    }
+   ]
+  },
+  "coqui": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": null,
+    "hand": null
+   },
+   "boxReads": [],
+   "siReads": [
+    "cq",
+    "cq.vis"
+   ],
+   "handReads": [],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": null,
+     "at": {
+      "d-toc-toc/right": "start,0-41",
+      "d-toc-toc/wrong": "start,0-41",
+      "d-toc-toc/alternate": "start,0-41",
+      "donde-esta-el-pajaro/right": "start,0-48,50-60",
+      "donde-esta-el-pajaro/wrong": "start,0-51,53-63",
+      "donde-esta-el-pajaro/alternate": "start,0-49,51-61",
+      "el-bizcocho/right": "start,0-72",
+      "el-bizcocho/wrong": "start,0-70",
+      "el-bizcocho/alternate": "start,0-69",
+      "h-frente/right": "start,0-30",
+      "h-frente/wrong": "start,0-30",
+      "h-frente/alternate": "start,0-30",
+      "la-lluvia/right": "start,0-33,35-53",
+      "la-lluvia/wrong": "start,0-34,36-55",
+      "la-lluvia/alternate": "start,0-34,36-55",
+      "cual-frente:hola.si": "picture",
+      "cual-frente:hola.no": "picture",
+      "cual-frente:adiós.si": "picture",
+      "cual-frente:adiós.no": "picture",
+      "cual-frente:sí.si": "picture",
+      "cual-frente:sí.no": "picture",
+      "cual-frente:no.si": "picture",
+      "cual-frente:no.no": "picture"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "d-toc-toc/right": "42-54",
+      "d-toc-toc/wrong": "42-54",
+      "d-toc-toc/alternate": "42-54",
+      "donde-esta-el-pajaro/right": "49,61",
+      "donde-esta-el-pajaro/wrong": "52,64",
+      "donde-esta-el-pajaro/alternate": "50,62",
+      "la-lluvia/right": "34,54-61",
+      "la-lluvia/wrong": "35,56-63",
+      "la-lluvia/alternate": "35,56-63",
+      "cual-frente:casa.si": "picture",
+      "cual-frente:casa.no": "picture",
+      "cual-frente:puerta.si": "picture",
+      "cual-frente:puerta.no": "picture",
+      "cual-frente:ventana.si": "picture",
+      "cual-frente:ventana.no": "picture",
+      "cual-frente:abuela.si": "picture",
+      "cual-frente:abuela.no": "picture",
+      "cual-frente:abre.si": "picture",
+      "cual-frente:abre.no": "picture",
+      "cual-frente:cierra.si": "picture",
+      "cual-frente:cierra.no": "picture",
+      "cual-frente:grande.si": "picture",
+      "cual-frente:grande.no": "picture",
+      "cual-frente:pequeña.si": "picture",
+      "cual-frente:pequeña.no": "picture"
+     }
+    }
+   ]
+  },
+  "nube": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": [
+     0,
+     0,
+     98,
+     22
+    ],
+    "hand": null
+   },
+   "boxReads": [
+    "nube",
+    "nube.x"
+   ],
+   "siReads": [
+    "nube",
+    "storm"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": false,
+     "box": [
+      0,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s000",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      9,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      20,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s002",
+      "s003",
+      "s032"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      22,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s004",
+      "s005",
+      "s006",
+      "s034"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      133,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s007",
+      "s035"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      137,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s008"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      140,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s009",
+      "s010"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      7,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s031"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      21,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s033",
+      "s036"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      76,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s037",
+      "s038"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      136,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s039"
+     ]
+    }
+   ]
+  },
+  "puerta": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     151,
+     51,
+     30,
+     54
+    ],
+    "hand": [
+     166,
+     76
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      151,
+      51,
+      30,
+      54
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "ventana": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     93,
+     57,
+     38,
+     28
+    ],
+    "hand": [
+     112,
+     72
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      93,
+      57,
+      38,
+      28
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "casa": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     60,
+     17,
+     166,
+     90
+    ],
+    "hand": [
+     141,
+     24
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      60,
+      17,
+      166,
+      90
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  },
+  "sol": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     198,
+     5,
+     25,
+     25
+    ],
+    "hand": null
+   },
+   "boxReads": [],
+   "siReads": [
+    "storm"
+   ],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      198,
+      5,
+      25,
+      25
+     ],
+     "states": [
+      "s000",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      198,
+      5,
+      25,
+      25
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039"
+     ]
+    }
+   ]
+  },
+  "palma": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     34,
+     36,
+     30,
+     70
+    ],
+    "hand": null
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      34,
+      36,
+      30,
+      70
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  }
+ },
+ "hitTest": {
+  "grid": "every 3rd pixel of 240 x 216, in every distinct W",
+  "idsAnswered": [
+   "abuela",
+   "bizcocho",
+   "casa",
+   "casa_grande",
+   "casa_pequena",
+   "coqui",
+   "nube",
+   "pajaro",
+   "palma",
+   "palma_grande",
+   "palma_pequena",
+   "puerta",
+   "sol",
+   "ventana"
+  ],
+  "answers": {
+   "sol": {
+    "n": 6994,
+    "states": 202,
+    "at": [
+     207,
+     6
+    ]
+   },
+   "casa": {
+    "n": 232145,
+    "states": 215,
+    "at": [
+     87,
+     18
+    ]
+   },
+   "palma": {
+    "n": 37124,
+    "states": 215,
+    "at": [
+     36,
+     36
+    ]
+   },
+   "puerta": {
+    "n": 57629,
+    "states": 215,
+    "at": [
+     147,
+     48
+    ]
+   },
+   "ventana": {
+    "n": 56180,
+    "states": 215,
+    "at": [
+     84,
+     54
+    ]
+   },
+   "coqui": {
+    "n": 17082,
+    "states": 260,
+    "at": [
+     150,
+     180
+    ]
+   },
+   "nube": {
+    "n": 23936,
+    "states": 88,
+    "at": [
+     9,
+     0
+    ]
+   },
+   "abuela": {
+    "n": 19572,
+    "states": 152,
+    "at": [
+     153,
+     57
+    ]
+   },
+   "casa_grande": {
+    "n": 103868,
+    "states": 76,
+    "at": [
+     57,
+     18
+    ]
+   },
+   "palma_grande": {
+    "n": 29184,
+    "states": 76,
+    "at": [
+     36,
+     36
+    ]
+   },
+   "casa_pequena": {
+    "n": 15960,
+    "states": 76,
+    "at": [
+     60,
+     108
+    ]
+   },
+   "palma_pequena": {
+    "n": 22800,
+    "states": 76,
+    "at": [
+     174,
+     114
+    ]
+   },
+   "pajaro": {
+    "n": 4475,
+    "states": 55,
+    "at": [
+     183,
+     111
+    ]
+   },
+   "bizcocho": {
+    "n": 20581,
+    "states": 46,
+    "at": [
+     0,
+     0
+    ]
+   }
+  },
+  "onlyInList": [],
+  "notInList": []
+ },
+ "namedInFiles": {
+  "$b": {
+   "$var": true,
+   "where": [
+    "el-bizcocho:beats.37.right.0.then.2 ask",
+    "la-lluvia:beats.17 pick"
+   ]
+  },
+  "$resp": {
+   "$var": true,
+   "where": [
+    "el-bizcocho:beats.45 pick"
+   ]
+  },
+  "$tipo_$tam": {
+   "$var": true,
+   "where": [
+    "donde-esta-el-pajaro:beats.21 pick",
+    "donde-esta-el-pajaro:beats.27 pick",
+    "donde-esta-el-pajaro:beats.33 pick"
+   ]
+  },
+  "$tipo_grande": {
+   "$var": true,
+   "where": [
+    "donde-esta-el-pajaro:beats.21 decide",
+    "donde-esta-el-pajaro:beats.27 decide"
+   ]
+  },
+  "$tipo_pequena": {
+   "$var": true,
+   "where": [
+    "donde-esta-el-pajaro:beats.21 decide",
+    "donde-esta-el-pajaro:beats.27 decide"
+   ]
+  },
+  "abuela": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:names",
+    "donde-esta-el-pajaro/wrong touch (wrong-poke)",
+    "donde-esta-el-pajaro/alternate touch (wrong-poke)",
+    "el-bizcocho:names",
+    "el-bizcocho/wrong touch (wrong-poke)",
+    "el-bizcocho/alternate touch (wrong-poke)",
+    "h-frente:beats.12 decide",
+    "h-frente:beats.12 pick",
+    "h-frente/right choice beats.12 live",
+    "h-frente/right touch (right)",
+    "h-frente/wrong choice beats.12 live",
+    "h-frente/wrong touch (retry)",
+    "… 3 more"
+   ]
+  },
+  "bizcocho": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:names"
+   ]
+  },
+  "casa": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:names",
+    "la-lluvia:beats.2 ask",
+    "la-lluvia:names",
+    "la-lluvia/right choice beats.2 live",
+    "la-lluvia/right touch (right)",
+    "la-lluvia/wrong choice beats.2 live",
+    "la-lluvia/wrong touch (right)",
+    "la-lluvia/alternate choice beats.2 live",
+    "la-lluvia/alternate touch (right)"
+   ]
+  },
+  "casa_grande": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:beats.4 ask",
+    "donde-esta-el-pajaro:beats.33 decide",
+    "donde-esta-el-pajaro:beats.37 elige (answer bubbles)",
+    "donde-esta-el-pajaro:names",
+    "donde-esta-el-pajaro/right choice beats.4 live",
+    "donde-esta-el-pajaro/right choice beats.21 live",
+    "donde-esta-el-pajaro/right choice beats.27 live",
+    "donde-esta-el-pajaro/right choice beats.33 live",
+    "donde-esta-el-pajaro/right choice beats.37 live",
+    "donde-esta-el-pajaro/right touch (right)",
+    "donde-esta-el-pajaro/right touch (first)",
+    "donde-esta-el-pajaro/wrong choice beats.4 live",
+    "… 13 more"
+   ]
+  },
+  "casa_pequena": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:beats.6 ask",
+    "donde-esta-el-pajaro:beats.33 decide",
+    "donde-esta-el-pajaro:beats.37 elige (answer bubbles)",
+    "donde-esta-el-pajaro:names",
+    "donde-esta-el-pajaro/right choice beats.6 live",
+    "donde-esta-el-pajaro/right choice beats.21 live",
+    "donde-esta-el-pajaro/right choice beats.27 live",
+    "donde-esta-el-pajaro/right choice beats.33 live",
+    "donde-esta-el-pajaro/right choice beats.37 live",
+    "donde-esta-el-pajaro/right touch (right)",
+    "donde-esta-el-pajaro/wrong choice beats.6 live",
+    "donde-esta-el-pajaro/wrong choice beats.21 live",
+    "… 13 more"
+   ]
+  },
+  "coqui": {
+   "$var": false,
+   "where": [
+    "d-toc-toc:names",
+    "donde-esta-el-pajaro:names",
+    "el-bizcocho:names",
+    "h-frente:names",
+    "la-lluvia:names"
+   ]
+  },
+  "no": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:beats.30 ask",
+    "el-bizcocho:beats.45 decide (say: answer bubbles)",
+    "el-bizcocho:beats.47 elige (answer bubbles)",
+    "el-bizcocho/right choice beats.30 live",
+    "el-bizcocho/right choice beats.45 live",
+    "el-bizcocho/right choice beats.47 live",
+    "el-bizcocho/right touch (right)",
+    "el-bizcocho/wrong choice beats.30 live",
+    "el-bizcocho/wrong choice beats.45 live",
+    "el-bizcocho/wrong choice beats.47 live",
+    "el-bizcocho/wrong touch (right)",
+    "el-bizcocho/wrong touch (wrong)",
+    "… 6 more"
+   ]
+  },
+  "nube": {
+   "$var": false,
+   "where": [
+    "la-lluvia:names"
+   ]
+  },
+  "pajaro": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:names",
+    "el-bizcocho:names"
+   ]
+  },
+  "palma": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:names",
+    "la-lluvia:names"
+   ]
+  },
+  "palma_grande": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:beats.9 set",
+    "donde-esta-el-pajaro:beats.33 decide",
+    "donde-esta-el-pajaro:names",
+    "donde-esta-el-pajaro/right choice beats.33 live",
+    "donde-esta-el-pajaro/wrong choice beats.33 live",
+    "donde-esta-el-pajaro/wrong touch (wrong)",
+    "donde-esta-el-pajaro/alternate choice beats.33 live"
+   ]
+  },
+  "palma_pequena": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:beats.11 set",
+    "donde-esta-el-pajaro:beats.33 decide",
+    "donde-esta-el-pajaro:names",
+    "donde-esta-el-pajaro/right choice beats.33 live",
+    "donde-esta-el-pajaro/wrong choice beats.33 live",
+    "donde-esta-el-pajaro/alternate choice beats.33 live"
+   ]
+  },
+  "puerta": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:beats.37 decide",
+    "el-bizcocho:names",
+    "el-bizcocho/right choice beats.37 live",
+    "el-bizcocho/right touch (right)",
+    "el-bizcocho/wrong choice beats.37 live",
+    "el-bizcocho/wrong touch (wrong-poke)",
+    "el-bizcocho/wrong touch (retry)",
+    "el-bizcocho/alternate choice beats.37 live",
+    "el-bizcocho/alternate touch (retry)",
+    "h-frente:beats.2 decide",
+    "h-frente:beats.2 pick",
+    "h-frente:beats.3 decide",
+    "… 58 more"
+   ]
+  },
+  "si": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:beats.29 ask",
+    "el-bizcocho:beats.45 decide (say: answer bubbles)",
+    "el-bizcocho:beats.47 elige (answer bubbles)",
+    "el-bizcocho/right choice beats.29 live",
+    "el-bizcocho/right choice beats.45 live",
+    "el-bizcocho/right choice beats.47 live",
+    "el-bizcocho/right touch (right)",
+    "el-bizcocho/right touch (first)",
+    "el-bizcocho/wrong choice beats.29 live",
+    "el-bizcocho/wrong choice beats.45 live",
+    "el-bizcocho/wrong choice beats.47 live",
+    "el-bizcocho/wrong touch (right)",
+    "… 4 more"
+   ]
+  },
+  "sol": {
+   "$var": false,
+   "where": [
+    "donde-esta-el-pajaro:names",
+    "el-bizcocho:names",
+    "la-lluvia:names",
+    "la-lluvia/wrong touch (wrong-poke)"
+   ]
+  },
+  "ventana": {
+   "$var": false,
+   "where": [
+    "el-bizcocho:beats.3 ask",
+    "el-bizcocho:beats.37 decide",
+    "el-bizcocho:names",
+    "el-bizcocho/right choice beats.3 live",
+    "el-bizcocho/right choice beats.37 live",
+    "el-bizcocho/right choice beats.37.right.0.then.2 live",
+    "el-bizcocho/right touch (right)",
+    "el-bizcocho/wrong choice beats.3 live",
+    "el-bizcocho/wrong choice beats.37 live",
+    "el-bizcocho/wrong touch (right)",
+    "el-bizcocho/wrong touch (wrong)",
+    "el-bizcocho/alternate choice beats.3 live",
+    "… 62 more"
+   ]
+  }
+ },
+ "views": {
+  "wide": [
+   44,
+   0,
+   196,
+   216
+  ],
+  "casa": [
+   51.7,
+   15,
+   180.6,
+   199
+  ],
+  "puerta": [
+   117,
+   30,
+   98,
+   108
+  ],
+  "ventana": [
+   84,
+   24,
+   98,
+   108
+  ],
+  "cuadro": [
+   63,
+   18,
+   98,
+   108
+  ]
+ },
+ "storyViews": [
+  {
+   "name": "wide@donde-esta-el-pajaro",
+   "rect": [
+    30,
+    0,
+    196,
+    216
+   ]
+  }
+ ],
+ "fresh": {
+  "d-toc-toc": {
+   "scene": {
+    "trozo": null,
+    "hojas": null,
+    "asoma": 0,
+    "escondite": 0,
+    "rustle": null,
+    "abierto": null,
+    "piernas": 0,
+    "dusk": 0,
+    "rondas": 0,
+    "mios": 0,
+    "tapado": 0,
+    "ave": null,
+    "plato": null,
+    "mesa": 0,
+    "abIn": null,
+    "caliente": 0,
+    "door": 0,
+    "win": 0,
+    "lamp": 0,
+    "peek": 0,
+    "ab": null,
+    "storm": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "dark": 0,
+    "rain": 0,
+    "wet": 0,
+    "gotas": 0,
+    "flash": 0,
+    "dentro": null,
+    "tab": null,
+    "shake": 0
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 150,
+      "y": 178,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "trozo": null,
+     "hojas": null,
+     "asoma": 0,
+     "escondite": 0,
+     "rustle": null,
+     "abierto": null,
+     "piernas": 0,
+     "dusk": 0,
+     "rondas": 0,
+     "mios": 0,
+     "tapado": 0,
+     "ave": null,
+     "plato": null,
+     "mesa": 0,
+     "abIn": null,
+     "caliente": 0,
+     "door": 0,
+     "win": 0,
+     "lamp": 0,
+     "peek": 0,
+     "ab": null,
+     "storm": 0,
+     "nube": null,
+     "nube2": null,
+     "nube3": null,
+     "dark": 0,
+     "rain": 0,
+     "wet": 0,
+     "gotas": 0,
+     "flash": 0,
+     "dentro": null,
+     "tab": null,
+     "shake": 0
+    },
+    "cam": [
+     44,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "donde-esta-el-pajaro": {
+   "scene": {
+    "trozo": null,
+    "hojas": null,
+    "asoma": 0,
+    "escondite": 0,
+    "rustle": null,
+    "abierto": null,
+    "piernas": 0,
+    "dusk": 0,
+    "rondas": 0,
+    "mios": 0,
+    "tapado": 0,
+    "ave": null,
+    "plato": null,
+    "mesa": 0,
+    "abIn": null,
+    "caliente": 0,
+    "door": 0,
+    "win": 0,
+    "lamp": 0,
+    "peek": 0,
+    "ab": null,
+    "storm": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "dark": 0,
+    "rain": 0,
+    "wet": 0,
+    "gotas": 0,
+    "flash": 0,
+    "dentro": null,
+    "tab": null,
+    "shake": 0
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 150,
+      "y": 178,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "trozo": null,
+     "hojas": null,
+     "asoma": 0,
+     "escondite": 0,
+     "rustle": null,
+     "abierto": null,
+     "piernas": 0,
+     "dusk": 0,
+     "rondas": 0,
+     "mios": 0,
+     "tapado": 0,
+     "ave": null,
+     "plato": null,
+     "mesa": 0,
+     "abIn": null,
+     "caliente": 0,
+     "door": 0,
+     "win": 0,
+     "lamp": 0,
+     "peek": 0,
+     "ab": null,
+     "storm": 0,
+     "nube": null,
+     "nube2": null,
+     "nube3": null,
+     "dark": 0,
+     "rain": 0,
+     "wet": 0,
+     "gotas": 0,
+     "flash": 0,
+     "dentro": null,
+     "tab": null,
+     "shake": 0
+    },
+    "cam": [
+     44,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "el-bizcocho": {
+   "scene": {
+    "trozo": null,
+    "hojas": null,
+    "asoma": 0,
+    "escondite": 0,
+    "rustle": null,
+    "abierto": null,
+    "piernas": 0,
+    "dusk": 0,
+    "rondas": 0,
+    "mios": 0,
+    "tapado": 0,
+    "ave": null,
+    "plato": null,
+    "mesa": 0,
+    "abIn": null,
+    "caliente": 0,
+    "door": 0,
+    "win": 0,
+    "lamp": 0,
+    "peek": 0,
+    "ab": null,
+    "storm": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "dark": 0,
+    "rain": 0,
+    "wet": 0,
+    "gotas": 0,
+    "flash": 0,
+    "dentro": null,
+    "tab": null,
+    "shake": 0
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 150,
+      "y": 178,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "trozo": null,
+     "hojas": null,
+     "asoma": 0,
+     "escondite": 0,
+     "rustle": null,
+     "abierto": null,
+     "piernas": 0,
+     "dusk": 0,
+     "rondas": 0,
+     "mios": 0,
+     "tapado": 0,
+     "ave": null,
+     "plato": null,
+     "mesa": 0,
+     "abIn": null,
+     "caliente": 0,
+     "door": 0,
+     "win": 0,
+     "lamp": 0,
+     "peek": 0,
+     "ab": null,
+     "storm": 0,
+     "nube": null,
+     "nube2": null,
+     "nube3": null,
+     "dark": 0,
+     "rain": 0,
+     "wet": 0,
+     "gotas": 0,
+     "flash": 0,
+     "dentro": null,
+     "tab": null,
+     "shake": 0
+    },
+    "cam": [
+     44,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "h-frente": {
+   "scene": {
+    "trozo": null,
+    "hojas": null,
+    "asoma": 0,
+    "escondite": 0,
+    "rustle": null,
+    "abierto": null,
+    "piernas": 0,
+    "dusk": 0,
+    "rondas": 0,
+    "mios": 0,
+    "tapado": 0,
+    "ave": null,
+    "plato": null,
+    "mesa": 0,
+    "abIn": null,
+    "caliente": 0,
+    "door": 0,
+    "win": 0,
+    "lamp": 0,
+    "peek": 0,
+    "ab": null,
+    "storm": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "dark": 0,
+    "rain": 0,
+    "wet": 0,
+    "gotas": 0,
+    "flash": 0,
+    "dentro": null,
+    "tab": null,
+    "shake": 0
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 150,
+      "y": 178,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "trozo": null,
+     "hojas": null,
+     "asoma": 0,
+     "escondite": 0,
+     "rustle": null,
+     "abierto": null,
+     "piernas": 0,
+     "dusk": 0,
+     "rondas": 0,
+     "mios": 0,
+     "tapado": 0,
+     "ave": null,
+     "plato": null,
+     "mesa": 0,
+     "abIn": null,
+     "caliente": 0,
+     "door": 0,
+     "win": 0,
+     "lamp": 0,
+     "peek": 0,
+     "ab": null,
+     "storm": 0,
+     "nube": null,
+     "nube2": null,
+     "nube3": null,
+     "dark": 0,
+     "rain": 0,
+     "wet": 0,
+     "gotas": 0,
+     "flash": 0,
+     "dentro": null,
+     "tab": null,
+     "shake": 0
+    },
+    "cam": [
+     44,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "la-lluvia": {
+   "scene": {
+    "trozo": null,
+    "hojas": null,
+    "asoma": 0,
+    "escondite": 0,
+    "rustle": null,
+    "abierto": null,
+    "piernas": 0,
+    "dusk": 0,
+    "rondas": 0,
+    "mios": 0,
+    "tapado": 0,
+    "ave": null,
+    "plato": null,
+    "mesa": 0,
+    "abIn": null,
+    "caliente": 0,
+    "door": 0,
+    "win": 0,
+    "lamp": 0,
+    "peek": 0,
+    "ab": null,
+    "storm": 0,
+    "nube": null,
+    "nube2": null,
+    "nube3": null,
+    "dark": 0,
+    "rain": 0,
+    "wet": 0,
+    "gotas": 0,
+    "flash": 0,
+    "dentro": null,
+    "tab": null,
+    "shake": 0
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 150,
+      "y": 178,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "trozo": null,
+     "hojas": null,
+     "asoma": 0,
+     "escondite": 0,
+     "rustle": null,
+     "abierto": null,
+     "piernas": 0,
+     "dusk": 0,
+     "rondas": 0,
+     "mios": 0,
+     "tapado": 0,
+     "ave": null,
+     "plato": null,
+     "mesa": 0,
+     "abIn": null,
+     "caliente": 0,
+     "door": 0,
+     "win": 0,
+     "lamp": 0,
+     "peek": 0,
+     "ab": null,
+     "storm": 0,
+     "nube": null,
+     "nube2": null,
+     "nube3": null,
+     "dark": 0,
+     "rain": 0,
+     "wet": 0,
+     "gotas": 0,
+     "flash": 0,
+     "dentro": null,
+     "tab": null,
+     "shake": 0
+    },
+    "cam": [
+     44,
+     0,
+     196,
+     216
+    ]
+   }
+  }
+ },
+ "states": {
+  "count": 43,
+  "distinctW": 291,
+  "snapshots": 891,
+  "grouping": "same background sprite(s), the same set things shown with the same boxes, the same values of the set keys",
+  "setKeys": [
+   "abierto",
+   "caliente",
+   "dark",
+   "door",
+   "dusk",
+   "escondite",
+   "lamp",
+   "mesa",
+   "nube",
+   "nube2",
+   "nube3",
+   "rain",
+   "rustle",
+   "storm",
+   "win"
+  ],
+  "setThings": [
+   "palma_pequena",
+   "casa_pequena",
+   "palma_grande",
+   "casa_grande",
+   "bizcocho",
+   "nube",
+   "puerta",
+   "ventana",
+   "casa",
+   "sol",
+   "palma"
+  ],
+  "movingThings": [
+   "abuela",
+   "pajaro",
+   "coqui"
+  ],
+  "propKeys": [],
+  "index": "frames/index.json"
+ },
+ "wKeys": {
+  "ab": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abcierra",
+     "abentra",
+     "abre",
+     "abrir",
+     "burbuja",
+     "calla",
+     "cerrar",
+     "cuadro",
+     "entra",
+     "pose",
+     "vete"
+    ],
+    "otherCode": [
+     "poke"
+    ],
+    "seenAfter": {
+     "act abcierra": 3,
+     "act abentra": 3,
+     "act abre": 18,
+     "act abrir": 3,
+     "act burbuja": 3,
+     "act calla": 3,
+     "act cuadro": 4,
+     "act entra": 3,
+     "act pose": 42,
+     "act vete": 6,
+     "set": 9
+    },
+    "setIn": [
+     "cual-frente:abre.si",
+     "cual-frente:abuela.si",
+     "cual-frente:adiós.no",
+     "cual-frente:cierra.no",
+     "cual-frente:hola.si",
+     "donde-esta-el-pajaro:beats.0",
+     "h-frente:beats.11.right.1",
+     "h-frente:beats.5.right.1"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 10,
+   "values": [
+    {
+     "v": null,
+     "n": 139
+    },
+    {
+     "v": {
+      "en": "paso",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     },
+     "n": 69
+    },
+    {
+     "v": {
+      "en": "ventana",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     },
+     "n": 44
+    },
+    {
+     "v": {
+      "en": "ventana",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "n": 14
+    },
+    {
+     "v": {
+      "en": "puerta",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     },
+     "n": 11
+    },
+    {
+     "v": {
+      "en": "ventana",
+      "pose": "offer",
+      "bub": null,
+      "al": 1
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "en": "ventana",
+      "pose": "wave",
+      "bub": "como",
+      "al": 1
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "en": "ventana",
+      "pose": "dedo",
+      "bub": null,
+      "al": 1
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "en": "puerta",
+      "pose": "offer",
+      "bub": null,
+      "al": 1
+     },
+     "n": 2
+    }
+   ]
+  },
+  "abIn": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abcierra",
+     "vete"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abcierra": 3,
+     "act vete": 3,
+     "set": 3
+    },
+    "setIn": [
+     "el-bizcocho:beats.0",
+     "el-bizcocho:beats.43"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "other",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 269
+    },
+    {
+     "v": "ventana",
+     "n": 18
+    },
+    {
+     "v": "puerta",
+     "n": 4
+    }
+   ]
+  },
+  "abierto": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "limpia",
+     "mira",
+     "tapa"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act limpia": 3,
+     "line": 2,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 283
+    },
+    {
+     "v": "casa_pequena",
+     "n": 5
+    },
+    {
+     "v": "palma_grande",
+     "n": 3
+    }
+   ]
+  },
+  "asoma": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "busca_ave",
+     "esconde"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act busca_ave": 1,
+     "act esconde": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 290
+    },
+    {
+     "v": 1,
+     "n": 1
+    }
+   ]
+  },
+  "ave": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "avecasa",
+     "devuelve",
+     "limpia",
+     "mira",
+     "pajaro",
+     "sale",
+     "tapa",
+     "tapate"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act avecasa": 6,
+     "act bonk": 1,
+     "act busca_ave": 3,
+     "act fin2": 3,
+     "act limpia": 9,
+     "act pajaro": 3,
+     "act posa": 3,
+     "act regala": 2,
+     "act sale": 7,
+     "act tapa": 9,
+     "act tapate": 3,
+     "cost": 3,
+     "say": 5
+    },
+    "setIn": [
+     "donde-esta-el-pajaro:beats.1.then.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 25,
+   "values": [
+    {
+     "v": null,
+     "n": 170
+    },
+    {
+     "v": {
+      "mode": "circle",
+      "x": 206,
+      "y": 22,
+      "dir": 1,
+      "st": "n"
+     },
+     "n": 14
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 250,
+      "y": -20,
+      "dir": 1,
+      "st": "n"
+     },
+     "n": 13
+    },
+    {
+     "v": {
+      "mode": "circle",
+      "x": 196,
+      "y": 24,
+      "dir": 1,
+      "st": "n",
+      "slice": 0
+     },
+     "n": 12
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 73,
+      "y": 126,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 10
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 73,
+      "y": 129,
+      "dir": 1,
+      "st": "feliz"
+     },
+     "n": 10
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 166,
+      "y": 80,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 8
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 166,
+      "y": 49,
+      "dir": -1,
+      "st": "n",
+      "slice": 0
+     },
+     "n": 7
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 196,
+      "y": 120,
+      "dir": -1,
+      "st": "tapa"
+     },
+     "n": 6
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 166,
+      "y": 49,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 6
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 73,
+      "y": 112,
+      "dir": 1,
+      "st": "n"
+     },
+     "n": 5
+    },
+    {
+     "v": {
+      "mode": "circle",
+      "x": 150,
+      "y": 26,
+      "dir": 1,
+      "st": "n"
+     },
+     "n": 5
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 166,
+      "y": 80,
+      "dir": 1,
+      "st": "feliz"
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 250,
+      "y": -20,
+      "dir": 1,
+      "st": "feliz"
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 166,
+      "y": 80,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 176,
+      "y": 100,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 73,
+      "y": 129,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 166,
+      "y": 80,
+      "dir": 1,
+      "st": "feliz"
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 73,
+      "y": 129,
+      "dir": 1,
+      "st": "feliz"
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "mode": "none",
+      "x": 73,
+      "y": 129,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 196,
+      "y": 30,
+      "dir": 1,
+      "st": "n"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "head",
+      "x": 139,
+      "y": 155,
+      "dir": -1,
+      "st": "n",
+      "slice": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "head",
+      "x": 139,
+      "y": 155,
+      "dir": -1,
+      "st": "round",
+      "slice": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "head",
+      "x": 139,
+      "y": 155,
+      "dir": 1,
+      "st": "n",
+      "slice": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "head",
+      "x": 139,
+      "y": 155,
+      "dir": 1,
+      "st": "feliz",
+      "slice": 0
+     },
+     "n": 1
+    }
+   ]
+  },
+  "caliente": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "vete"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act vete": 3,
+     "set": 3
+    },
+    "setIn": [
+     "el-bizcocho:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 273
+    },
+    {
+     "v": 1,
+     "n": 18
+    }
+   ]
+  },
+  "cq": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "burbuja",
+     "calla",
+     "come",
+     "devuelve",
+     "fin2",
+     "gana",
+     "marcador",
+     "regala"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abrir": 9,
+     "act asoma": 3,
+     "act atras": 15,
+     "act baja": 3,
+     "act bonk": 1,
+     "act burbuja": 18,
+     "act busca_ave": 3,
+     "act calla": 18,
+     "act cerrar": 7,
+     "act come": 1,
+     "act entra": 6,
+     "act esconde": 3,
+     "act fin2": 1,
+     "act gana": 5,
+     "act gotas": 3,
+     "act ir": 15,
+     "act limpia": 9,
+     "act luz": 3,
+     "act tocar": 6,
+     "act vetecq": 3,
+     "if": 2,
+     "line": 9,
+     "say": 20
+    },
+    "setIn": [
+     "cual-frente:adiós.no",
+     "cual-frente:adiós.si",
+     "cual-frente:hola.no",
+     "cual-frente:hola.si"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 28,
+   "values": [
+    {
+     "v": {
+      "x": 123,
+      "y": 150,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 91
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 56
+    },
+    {
+     "v": {
+      "x": 150,
+      "y": 104,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 45
+    },
+    {
+     "v": {
+      "x": 150,
+      "y": 178,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 26
+    },
+    {
+     "v": {
+      "x": 98,
+      "y": 58,
+      "s": 0.46,
+      "dy": 0,
+      "al": 0,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 12
+    },
+    {
+     "v": {
+      "x": 123,
+      "y": 150,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "lluvia"
+     },
+     "n": 11
+    },
+    {
+     "v": {
+      "x": 150,
+      "y": 70,
+      "s": 0.72,
+      "dy": 0,
+      "al": 0,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 8
+    },
+    {
+     "v": {
+      "x": 123,
+      "y": 150,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 5
+    },
+    {
+     "v": {
+      "x": 150,
+      "y": 104,
+      "s": 0.72,
+      "dy": -4.702282018339786,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "x": 86,
+      "y": 150,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "x": 237,
+      "y": 162,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 38,
+      "y": 100,
+      "s": 0.74,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "hola"
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 59.75,
+      "y": 106.875,
+      "s": 0.5400000000000001,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": -3.5267115137548393,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 92,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "mal"
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "bien"
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 123,
+      "y": 150,
+      "s": 0.86,
+      "dy": -3.526711513754839,
+      "al": 1,
+      "vis": 1,
+      "bub": "lluvia"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 86,
+      "y": 150,
+      "s": 0.86,
+      "dy": -4.702282018339786,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 150,
+      "y": 82,
+      "s": 0.6,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "amor"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": -3.5267115137548393,
+      "al": 1,
+      "vis": 1,
+      "bub": "amor"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": -2.351141009169893,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 96,
+      "y": 104,
+      "s": 0.72,
+      "dy": -2.351141009169893,
+      "al": 1,
+      "vis": 1,
+      "bub": "mal"
+     },
+     "n": 1
+    }
+   ]
+  },
+  "dark": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "llueve",
+     "trueno"
+    ],
+    "otherCode": [
+     "stake"
+    ],
+    "seenAfter": {
+     "act llueve": 5,
+     "act luz": 2,
+     "act trueno": 6,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 203
+    },
+    {
+     "v": 0.22,
+     "n": 48
+    },
+    {
+     "v": 0.33,
+     "n": 20
+    },
+    {
+     "v": 0.27,
+     "n": 20
+    }
+   ]
+  },
+  "dentro": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "calla",
+     "dentro"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act calla": 6,
+     "act dentro": 6
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 282
+    },
+    {
+     "v": "puerta",
+     "n": 9
+    }
+   ]
+  },
+  "door": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abcierra",
+     "abentra",
+     "abre",
+     "abrir",
+     "busca_ave",
+     "cerrar",
+     "entra",
+     "esconde",
+     "limpia",
+     "mira"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abre": 7,
+     "act abrir": 3,
+     "act bonk": 1,
+     "act busca_ave": 1,
+     "act cerrar": 3,
+     "act entra": 3,
+     "act esconde": 1,
+     "act limpia": 6,
+     "if": 2,
+     "line": 2,
+     "say": 4
+    },
+    "setIn": [
+     "cual-frente:abuela.no",
+     "cual-frente:abuela.si",
+     "cual-frente:adiós.no",
+     "cual-frente:adiós.si",
+     "cual-frente:cierra.no",
+     "cual-frente:cierra.si",
+     "cual-frente:hola.no",
+     "cual-frente:hola.si"
+    ]
+   },
+   "readBy": {
+    "background": true,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "background",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": 0,
+     "n": 235
+    },
+    {
+     "v": 1,
+     "n": 53
+    },
+    {
+     "v": 0.5,
+     "n": 3
+    }
+   ]
+  },
+  "dusk": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "atardece"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act atardece": 3,
+     "set": 3
+    },
+    "setIn": [
+     "cual-frente:adiós.si",
+     "cual-frente:hola.no",
+     "donde-esta-el-pajaro:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": 0,
+     "n": 215
+    },
+    {
+     "v": 1,
+     "n": 61
+    },
+    {
+     "v": 2,
+     "n": 15
+    }
+   ]
+  },
+  "escondite": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 3
+    },
+    "setIn": [
+     "cual-frente:grande.no",
+     "cual-frente:grande.si",
+     "cual-frente:pequeña.no",
+     "cual-frente:pequeña.si",
+     "donde-esta-el-pajaro:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 215
+    },
+    {
+     "v": 1,
+     "n": 76
+    }
+   ]
+  },
+  "flash": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "llueve",
+     "trueno"
+    ],
+    "otherCode": [
+     "poke",
+     "stake"
+    ],
+    "seenAfter": {
+     "act llueve": 5,
+     "act luz": 2,
+     "act trueno": 6,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 11,
+   "values": [
+    {
+     "v": 0,
+     "n": 203
+    },
+    {
+     "v": 199,
+     "n": 19
+    },
+    {
+     "v": 128,
+     "n": 15
+    },
+    {
+     "v": 304,
+     "n": 15
+    },
+    {
+     "v": 463,
+     "n": 9
+    },
+    {
+     "v": 242,
+     "n": 7
+    },
+    {
+     "v": 214,
+     "n": 7
+    },
+    {
+     "v": 303,
+     "n": 6
+    },
+    {
+     "v": 332,
+     "n": 5
+    },
+    {
+     "v": 444,
+     "n": 3
+    },
+    {
+     "v": 533,
+     "n": 2
+    }
+   ]
+  },
+  "fx": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act abre": 3,
+     "act abrir": 3,
+     "act atras": 2,
+     "act avecasa": 5,
+     "act cerrar": 6,
+     "act fin": 4,
+     "act fin2": 1,
+     "act gana": 3,
+     "act ir": 3,
+     "act limpia": 2,
+     "act luz": 6,
+     "act marcador": 2,
+     "act pose": 3,
+     "act sale": 3,
+     "ask": 13,
+     "cam": 12,
+     "if": 2,
+     "say": 15,
+     "wait": 6
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 48,
+   "values": [
+    {
+     "v": [],
+     "n": 226
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         101,
+         63
+        ],
+        [
+         123,
+         65
+        ],
+        [
+         112,
+         55
+        ],
+        [
+         93,
+         71
+        ],
+        [
+         131,
+         71
+        ],
+        [
+         112,
+         65
+        ]
+       ],
+       "f0": 249
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         101,
+         63
+        ],
+        [
+         123,
+         65
+        ],
+        [
+         112,
+         55
+        ],
+        [
+         93,
+         71
+        ],
+        [
+         131,
+         71
+        ],
+        [
+         112,
+         65
+        ]
+       ],
+       "f0": 397
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         101,
+         63
+        ],
+        [
+         123,
+         65
+        ],
+        [
+         112,
+         55
+        ],
+        [
+         93,
+         71
+        ],
+        [
+         131,
+         71
+        ],
+        [
+         112,
+         65
+        ]
+       ],
+       "f0": 323
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 12,
+       "pts": [
+        [
+         92,
+         54
+        ],
+        [
+         132,
+         56
+        ],
+        [
+         112,
+         50
+        ],
+        [
+         150,
+         47
+        ],
+        [
+         182,
+         49
+        ],
+        [
+         166,
+         43
+        ]
+       ],
+       "f0": 204
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         112
+        ],
+        [
+         82,
+         114
+        ],
+        [
+         73,
+         104
+        ],
+        [
+         56,
+         139
+        ],
+        [
+         90,
+         139
+        ],
+        [
+         73,
+         122
+        ]
+       ],
+       "f0": 323
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         19
+        ],
+        [
+         222,
+         21
+        ],
+        [
+         143,
+         11
+        ],
+        [
+         56,
+         62
+        ],
+        [
+         230,
+         62
+        ],
+        [
+         141,
+         18
+        ]
+       ],
+       "f0": 230
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         97,
+         59
+        ],
+        [
+         127,
+         61
+        ],
+        [
+         112,
+         51
+        ],
+        [
+         89,
+         71
+        ],
+        [
+         135,
+         71
+        ],
+        [
+         112,
+         66
+        ]
+       ],
+       "f0": 226
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         97,
+         59
+        ],
+        [
+         127,
+         61
+        ],
+        [
+         112,
+         51
+        ],
+        [
+         89,
+         71
+        ],
+        [
+         135,
+         71
+        ],
+        [
+         112,
+         66
+        ]
+       ],
+       "f0": 356
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         97,
+         59
+        ],
+        [
+         127,
+         61
+        ],
+        [
+         112,
+         51
+        ],
+        [
+         89,
+         71
+        ],
+        [
+         135,
+         71
+        ],
+        [
+         112,
+         66
+        ]
+       ],
+       "f0": 281
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         97,
+         59
+        ],
+        [
+         127,
+         61
+        ],
+        [
+         112,
+         51
+        ],
+        [
+         89,
+         71
+        ],
+        [
+         135,
+         71
+        ],
+        [
+         112,
+         66
+        ]
+       ],
+       "f0": 172
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 12,
+       "pts": [
+        [
+         92,
+         54
+        ],
+        [
+         132,
+         56
+        ],
+        [
+         112,
+         50
+        ],
+        [
+         150,
+         47
+        ],
+        [
+         182,
+         49
+        ],
+        [
+         166,
+         43
+        ]
+       ],
+       "f0": 285
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         97,
+         59
+        ],
+        [
+         127,
+         61
+        ],
+        [
+         112,
+         51
+        ],
+        [
+         89,
+         71
+        ],
+        [
+         135,
+         71
+        ],
+        [
+         112,
+         66
+        ]
+       ],
+       "f0": 215
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 12,
+       "pts": [
+        [
+         92,
+         54
+        ],
+        [
+         132,
+         56
+        ],
+        [
+         112,
+         50
+        ],
+        [
+         150,
+         47
+        ],
+        [
+         182,
+         49
+        ],
+        [
+         166,
+         43
+        ]
+       ],
+       "f0": 385
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         97,
+         59
+        ],
+        [
+         127,
+         61
+        ],
+        [
+         112,
+         51
+        ],
+        [
+         89,
+         71
+        ],
+        [
+         135,
+         71
+        ],
+        [
+         112,
+         66
+        ]
+       ],
+       "f0": 187
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         155,
+         53
+        ],
+        [
+         177,
+         55
+        ],
+        [
+         166,
+         45
+        ],
+        [
+         147,
+         78
+        ],
+        [
+         185,
+         78
+        ],
+        [
+         166,
+         70
+        ]
+       ],
+       "f0": 348
+      },
+      {
+       "t": "star",
+       "n": 12,
+       "pts": [
+        [
+         92,
+         54
+        ],
+        [
+         132,
+         56
+        ],
+        [
+         112,
+         50
+        ],
+        [
+         150,
+         47
+        ],
+        [
+         182,
+         49
+        ],
+        [
+         166,
+         43
+        ]
+       ],
+       "f0": 357
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 40,
+       "pts": [
+        [
+         71,
+         32
+        ],
+        [
+         153,
+         34
+        ],
+        [
+         92,
+         26
+        ],
+        [
+         134,
+         28
+        ],
+        [
+         69,
+         72
+        ],
+        [
+         155,
+         72
+        ]
+       ],
+       "f0": 400
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         19
+        ],
+        [
+         222,
+         21
+        ],
+        [
+         143,
+         11
+        ],
+        [
+         56,
+         62
+        ],
+        [
+         230,
+         62
+        ],
+        [
+         141,
+         18
+        ]
+       ],
+       "f0": 24
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         112
+        ],
+        [
+         82,
+         114
+        ],
+        [
+         73,
+         104
+        ],
+        [
+         56,
+         139
+        ],
+        [
+         90,
+         139
+        ],
+        [
+         73,
+         122
+        ]
+       ],
+       "f0": 71
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         19
+        ],
+        [
+         222,
+         21
+        ],
+        [
+         143,
+         11
+        ],
+        [
+         56,
+         62
+        ],
+        [
+         230,
+         62
+        ],
+        [
+         141,
+         18
+        ]
+       ],
+       "f0": 215
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         19
+        ],
+        [
+         222,
+         21
+        ],
+        [
+         143,
+         11
+        ],
+        [
+         56,
+         62
+        ],
+        [
+         230,
+         62
+        ],
+        [
+         141,
+         18
+        ]
+       ],
+       "f0": 439
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 30,
+       "pts": [
+        [
+         60,
+         20
+        ],
+        [
+         180,
+         24
+        ],
+        [
+         120,
+         12
+        ],
+        [
+         100,
+         30
+        ],
+        [
+         150,
+         30
+        ]
+       ],
+       "f0": 611
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         19
+        ],
+        [
+         222,
+         21
+        ],
+        [
+         143,
+         11
+        ],
+        [
+         56,
+         62
+        ],
+        [
+         230,
+         62
+        ],
+        [
+         141,
+         18
+        ]
+       ],
+       "f0": 38
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         112
+        ],
+        [
+         82,
+         114
+        ],
+        [
+         73,
+         104
+        ],
+        [
+         56,
+         139
+        ],
+        [
+         90,
+         139
+        ],
+        [
+         73,
+         122
+        ]
+       ],
+       "f0": 100
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         64,
+         112
+        ],
+        [
+         82,
+         114
+        ],
+        [
+         73,
+         104
+        ],
+        [
+         56,
+         139
+        ],
+        [
+         90,
+         139
+        ],
+        [
+         73,
+         122
+        ]
+       ],
+       "f0": 85
+      }
+     ],
+     "n": 1
+    }
+   ]
+  },
+  "glow": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 291
+    }
+   ]
+  },
+  "gotas": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "entra",
+     "gotas"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act entra": 4,
+     "act gotas": 4
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": 0,
+     "n": 281
+    },
+    {
+     "v": 157,
+     "n": 9
+    },
+    {
+     "v": 494,
+     "n": 1
+    }
+   ]
+  },
+  "heart": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "fin",
+     "fin2",
+     "marcador"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act fin": 4,
+     "act fin2": 1,
+     "act marcador": 2,
+     "set": 3
+    },
+    "setIn": [
+     "h-frente:beats.12.right.3"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 276
+    },
+    {
+     "v": 1,
+     "n": 15
+    }
+   ]
+  },
+  "hojas": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "mira"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "line": 2,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": null,
+     "n": 252
+    },
+    {
+     "v": {
+      "x": 73,
+      "y": 129,
+      "f": 310
+     },
+     "n": 16
+    },
+    {
+     "v": {
+      "x": 73,
+      "y": 129,
+      "f": 222
+     },
+     "n": 12
+    },
+    {
+     "v": {
+      "x": 56,
+      "y": 52,
+      "f": 499
+     },
+     "n": 11
+    }
+   ]
+  },
+  "lamp": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "luz"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act luz": 6
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": true,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "background",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 230
+    },
+    {
+     "v": 1,
+     "n": 61
+    }
+   ]
+  },
+  "lost": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "devuelve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act luz": 2,
+     "cost": 7,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 201
+    },
+    {
+     "v": 1,
+     "n": 58
+    },
+    {
+     "v": 2,
+     "n": 23
+    },
+    {
+     "v": 3,
+     "n": 9
+    }
+   ]
+  },
+  "mesa": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "vete"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act vete": 3,
+     "set": 3
+    },
+    "setIn": [
+     "el-bizcocho:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 273
+    },
+    {
+     "v": 1,
+     "n": 18
+    }
+   ]
+  },
+  "mios": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "devuelve",
+     "gana"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act gana": 5
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 253
+    },
+    {
+     "v": 2,
+     "n": 15
+    },
+    {
+     "v": 1,
+     "n": 13
+    },
+    {
+     "v": 3,
+     "n": 10
+    }
+   ]
+  },
+  "nube": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "llueve",
+     "trueno"
+    ],
+    "otherCode": [
+     "stake"
+    ],
+    "seenAfter": {
+     "act abcierra": 3,
+     "act atras": 6,
+     "act cuadro": 2,
+     "act gotas": 3,
+     "act llueve": 5,
+     "act luz": 2,
+     "act trueno": 6,
+     "line": 9,
+     "say": 4
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 14,
+   "values": [
+    {
+     "v": null,
+     "n": 203
+    },
+    {
+     "v": {
+      "x": 22,
+      "tx": 22
+     },
+     "n": 32
+    },
+    {
+     "v": {
+      "x": 76,
+      "tx": 76
+     },
+     "n": 20
+    },
+    {
+     "v": {
+      "x": 140,
+      "tx": 140
+     },
+     "n": 16
+    },
+    {
+     "v": {
+      "x": 20.212210157368826,
+      "tx": 22
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "x": 19.92117460159166,
+      "tx": 22
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "x": 7.231440124338347,
+      "tx": 22
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 133.28025827841446,
+      "tx": 140
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 21.158975356235445,
+      "tx": 22
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 9.299038506930978,
+      "tx": 22
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 20.46250073533719,
+      "tx": 22
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 137.28141267087014,
+      "tx": 140
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 21.27671880636248,
+      "tx": 22
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 136.35539432049598,
+      "tx": 140
+     },
+     "n": 1
+    }
+   ]
+  },
+  "nube2": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "llueve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abcierra": 3,
+     "act cuadro": 2,
+     "act llueve": 5,
+     "line": 3,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": null,
+     "n": 271
+    },
+    {
+     "v": {
+      "x": 44,
+      "tx": 44
+     },
+     "n": 16
+    },
+    {
+     "v": {
+      "x": 35.79963722111596,
+      "tx": 44
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 40.682401903434716,
+      "tx": 44
+     },
+     "n": 1
+    }
+   ]
+  },
+  "nube3": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "llueve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abcierra": 3,
+     "act cuadro": 2,
+     "act llueve": 5,
+     "line": 3,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": null,
+     "n": 271
+    },
+    {
+     "v": {
+      "x": 176,
+      "tx": 176
+     },
+     "n": 16
+    },
+    {
+     "v": {
+      "x": 180.21407531692654,
+      "tx": 176
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 177.7048767996238,
+      "tx": 176
+     },
+     "n": 1
+    }
+   ]
+  },
+  "peek": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abre"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": [
+     "cual-frente:adiós.si",
+     "cual-frente:cierra.si",
+     "cual-frente:hola.no"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 289
+    },
+    {
+     "v": 1,
+     "n": 2
+    }
+   ]
+  },
+  "piernas": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "busca_ave",
+     "esconde"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act busca_ave": 2,
+     "act esconde": 2
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 289
+    },
+    {
+     "v": 1,
+     "n": 2
+    }
+   ]
+  },
+  "plato": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "come",
+     "regala"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act come": 1,
+     "act regala": 2,
+     "cost": 3,
+     "set": 3
+    },
+    "setIn": [
+     "el-bizcocho:beats.33"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": true,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 5,
+   "values": [
+    {
+     "v": null,
+     "n": 245
+    },
+    {
+     "v": 3,
+     "n": 21
+    },
+    {
+     "v": 2,
+     "n": 15
+    },
+    {
+     "v": 1,
+     "n": 8
+    },
+    {
+     "v": 0,
+     "n": 2
+    }
+   ]
+  },
+  "polvo": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": [
+     "cual-frente:adiós.si",
+     "cual-frente:hola.no"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 290
+    },
+    {
+     "v": 1,
+     "n": 1
+    }
+   ]
+  },
+  "rain": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "llueve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act llueve": 5,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 271
+    },
+    {
+     "v": 1,
+     "n": 20
+    }
+   ]
+  },
+  "resp": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act pose": 3,
+     "line": 3
+    },
+    "setIn": [
+     "cual-frente:no.no",
+     "cual-frente:no.si",
+     "cual-frente:sí.no",
+     "cual-frente:sí.si"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": null,
+     "n": 286
+    },
+    {
+     "v": [
+      "si",
+      "no"
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      "si"
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      "no"
+     ],
+     "n": 1
+    }
+   ]
+  },
+  "respOn": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act abrir": 3,
+     "act tocar": 3,
+     "ask": 3,
+     "cam": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 291
+    }
+   ]
+  },
+  "respVoz": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act abre": 3,
+     "act esconde": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 291
+    }
+   ]
+  },
+  "rondas": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 3
+    },
+    "setIn": [
+     "donde-esta-el-pajaro:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 216
+    },
+    {
+     "v": 1,
+     "n": 75
+    }
+   ]
+  },
+  "rustle": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "limpia",
+     "mira",
+     "mueve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act mueve": 9,
+     "line": 4,
+     "say": 5
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 285
+    },
+    {
+     "v": "casa",
+     "n": 3
+    },
+    {
+     "v": "todo",
+     "n": 3
+    }
+   ]
+  },
+  "shake": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "cuadro"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 291
+    }
+   ]
+  },
+  "spot": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 291
+    }
+   ]
+  },
+  "storm": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "trueno"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act trueno": 6
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 203
+    },
+    {
+     "v": 1,
+     "n": 88
+    }
+   ]
+  },
+  "tab": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "cuadro"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act cuadro": 6
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 285
+    },
+    {
+     "v": "seco",
+     "n": 5
+    },
+    {
+     "v": "mojado",
+     "n": 1
+    }
+   ]
+  },
+  "tapado": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "tapa"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 291
+    }
+   ]
+  },
+  "trozo": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "come"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 291
+    }
+   ]
+  },
+  "twinkle": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 9
+    },
+    "setIn": [
+     "donde-esta-el-pajaro:beats.11",
+     "donde-esta-el-pajaro:beats.13",
+     "donde-esta-el-pajaro:beats.9"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 289
+    },
+    {
+     "v": "palma_grande",
+     "n": 1
+    },
+    {
+     "v": "palma_pequena",
+     "n": 1
+    }
+   ]
+  },
+  "wet": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "entra",
+     "llueve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act entra": 1,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 285
+    },
+    {
+     "v": 1,
+     "n": 6
+    }
+   ]
+  },
+  "win": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abcierra",
+     "abre",
+     "abrir",
+     "cerrar"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abcierra": 3,
+     "act abre": 11,
+     "act abrir": 9,
+     "act cerrar": 4,
+     "line": 2
+    },
+    "setIn": [
+     "cual-frente:abre.no",
+     "cual-frente:abre.si"
+    ]
+   },
+   "readBy": {
+    "background": true,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "background",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 197
+    },
+    {
+     "v": 1,
+     "n": 94
+    }
+   ]
+  }
+ },
+ "spriteLayer": [
+  {
+   "key": "@frente.js:140 · bg",
+   "class": "background",
+   "maker": "bg",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:140",
+   "code": "c.drawImage(spr(\"fr\"+W.door+\"_\"+W.win+\"_\"+W.lamp,()=>bg(W.door,W.win,W.lamp)),0,0);",
+   "sites": [
+    "frente.js:140"
+   ],
+   "chain": [
+    "Object.draw@frente.js:140"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      0,
+      0,
+      240,
+      216
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "ambient @frente.js:141 · mkCloud",
+   "class": "prop or effect",
+   "maker": "mkCloud",
+   "method": "drawImage",
+   "functions": [
+    "ambient"
+   ],
+   "drawCall": "frente.js:141",
+   "code": "if(!W.storm&&!W.dusk)ambient(c);",
+   "sites": [
+    "frente.js:48"
+   ],
+   "chain": [
+    "ambient@frente.js:48",
+    "Object.draw@frente.js:141"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s040",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      250,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000",
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      244,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      241,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      233,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      224,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      245,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      231,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      229,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      225,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      223,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      222,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s020",
+      "s029"
+     ]
+    },
+    {
+     "box": [
+      220,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      218,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      216,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      214,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000",
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      205,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      193,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s000",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      190,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s022"
+     ]
+    },
+    {
+     "box": [
+      188,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s022",
+      "s030"
+     ]
+    },
+    {
+     "box": [
+      181,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s022",
+      "s030"
+     ]
+    },
+    {
+     "box": [
+      175,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      174,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      172,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      156,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      155,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      148,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      145,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      142,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      138,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      125,
+      0,
+      40,
+      15
+     ],
+     "states": [
+      "s026"
+     ]
+    },
+    {
+     "more": 49
+    }
+   ]
+  },
+  {
+   "key": "ambient > fly @frente.js:141",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "ambient",
+    "fly"
+   ],
+   "drawCall": "frente.js:141",
+   "code": "if(!W.storm&&!W.dusk)ambient(c);",
+   "sites": [
+    "frente.js:47"
+   ],
+   "chain": [
+    "?@frente.js:47",
+    "fly@frente.js:47",
+    "ambient@frente.js:49",
+    "Object.draw@frente.js:141"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s040",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      101,
+      74,
+      122,
+      30
+     ],
+     "states": [
+      "s000",
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      115,
+      78,
+      98,
+      27
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      120,
+      80,
+      90,
+      33
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      128,
+      66,
+      68,
+      45
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      119,
+      69,
+      76,
+      31
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      115,
+      77,
+      99,
+      28
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      125,
+      67,
+      73,
+      42
+     ],
+     "states": [
+      "s000",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      125,
+      68,
+      76,
+      33
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      126,
+      67,
+      68,
+      35
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      123,
+      68,
+      71,
+      33
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      116,
+      71,
+      80,
+      27
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      108,
+      71,
+      92,
+      23
+     ],
+     "states": [
+      "s020",
+      "s029"
+     ]
+    },
+    {
+     "box": [
+      98,
+      71,
+      109,
+      21
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      95,
+      77,
+      112,
+      18
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      95,
+      78,
+      110,
+      17
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      92,
+      78,
+      115,
+      14
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      69,
+      74,
+      149,
+      25
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      80,
+      68,
+      137,
+      46
+     ],
+     "states": [
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      85,
+      73,
+      129,
+      34
+     ],
+     "states": [
+      "s022"
+     ]
+    },
+    {
+     "box": [
+      86,
+      75,
+      119,
+      33
+     ],
+     "states": [
+      "s022"
+     ]
+    },
+    {
+     "box": [
+      118,
+      78,
+      86,
+      20
+     ],
+     "states": [
+      "s022"
+     ]
+    },
+    {
+     "box": [
+      121,
+      71,
+      74,
+      24
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      127,
+      72,
+      73,
+      19
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      133,
+      69,
+      69,
+      23
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      102,
+      79,
+      119,
+      28
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      96,
+      81,
+      128,
+      29
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      85,
+      77,
+      135,
+      35
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      73,
+      70,
+      151,
+      43
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      62,
+      70,
+      156,
+      35
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      70,
+      64,
+      139,
+      43
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "more": 65
+    }
+   ]
+  },
+  {
+   "key": "escondite @frente.js:142",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "escondite"
+   ],
+   "drawCall": "frente.js:142",
+   "code": "if(W.escondite)escondite(c,a);",
+   "sites": [
+    "frente.js:101",
+    "frente.js:102"
+   ],
+   "chain": [
+    "escondite@frente.js:102",
+    "Object.draw@frente.js:142"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s015"
+   ],
+   "boxes": [
+    {
+     "box": [
+      44,
+      40,
+      166,
+      88
+     ],
+     "states": [
+      "s015"
+     ]
+    },
+    {
+     "box": [
+      69,
+      130,
+      9,
+      7
+     ],
+     "states": [
+      "s011"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "escondite @frente.js:142 · mkCasita",
+   "class": "prop or effect",
+   "maker": "mkCasita",
+   "method": "drawImage",
+   "functions": [
+    "escondite"
+   ],
+   "drawCall": "frente.js:142",
+   "code": "if(W.escondite)escondite(c,a);",
+   "sites": [
+    "frente.js:100"
+   ],
+   "chain": [
+    "escondite@frente.js:100",
+    "Object.draw@frente.js:142"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      60,
+      110,
+      26,
+      58
+     ],
+     "states": [
+      "s011",
+      "s013",
+      "s014",
+      "s016",
+      "s017",
+      "s018",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      59,
+      110,
+      26,
+      58
+     ],
+     "states": [
+      "s012",
+      "s015"
+     ]
+    },
+    {
+     "box": [
+      61,
+      110,
+      26,
+      58
+     ],
+     "states": [
+      "s012",
+      "s015"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "escondite @frente.js:142 · mkPalmita",
+   "class": "prop or effect",
+   "maker": "mkPalmita",
+   "method": "drawImage",
+   "functions": [
+    "escondite"
+   ],
+   "drawCall": "frente.js:142",
+   "code": "if(W.escondite)escondite(c,a);",
+   "sites": [
+    "frente.js:97"
+   ],
+   "chain": [
+    "escondite@frente.js:97",
+    "Object.draw@frente.js:142"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      174,
+      114,
+      42,
+      56
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s016",
+      "s017",
+      "s018",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      175,
+      114,
+      42,
+      56
+     ],
+     "states": [
+      "s015"
+     ]
+    },
+    {
+     "box": [
+      173,
+      114,
+      42,
+      56
+     ],
+     "states": [
+      "s015"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:143 · mkCoqui",
+   "class": "character",
+   "maker": "mkCoqui",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:143",
+   "code": "if(W.asoma&&W.door===.5){c.save();c.beginPath();c.rect(153,53,11,51);c.clip();c.drawImage(spr(\"cq.6_0\",()=>mkCoqui(.6,0,0)),150,84);c.restore();}   // the frog peeks out from behind the door",
+   "sites": [
+    "frente.js:143"
+   ],
+   "chain": [
+    "Object.draw@frente.js:143"
+   ],
+   "clipped": [
+    "frente.js:143"
+   ],
+   "states": [
+    "s016"
+   ],
+   "boxes": [
+    {
+     "box": [
+      150,
+      84,
+      20,
+      17
+     ],
+     "states": [
+      "s016"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:144 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:144",
+   "code": "if(W.peek&&W.door===.5){c.save();c.beginPath();c.rect(153,53,11,51);c.clip();c.drawImage(AB(\"idle\",0),135,55);c.restore();}   // she is behind the door as it opens",
+   "sites": [
+    "frente.js:144"
+   ],
+   "chain": [
+    "Object.draw@frente.js:144"
+   ],
+   "clipped": [
+    "frente.js:144"
+   ],
+   "states": [
+    "s040",
+    "s041"
+   ],
+   "boxes": [
+    {
+     "box": [
+      135,
+      55,
+      48,
+      51
+     ],
+     "states": [
+      "s040",
+      "s041"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:147 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:147",
+   "code": "if(ab.en===\"ventana\"){c.save();c.beginPath();c.rect(97,61,30,20);c.clip();if(W.win===1&&W.mesa)mesa(c);c.drawImage(AB(pose,op),W.tab||W.mesa?75:82,61);   // head and shoulders in the window",
+   "sites": [
+    "frente.js:147"
+   ],
+   "chain": [
+    "Object.draw@frente.js:147"
+   ],
+   "clipped": [
+    "frente.js:147"
+   ],
+   "states": [
+    "s010",
+    "s020",
+    "s024",
+    "s026",
+    "s030",
+    "s034",
+    "s035",
+    "s038",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      82,
+      61,
+      48,
+      51
+     ],
+     "states": [
+      "s010",
+      "s024",
+      "s026",
+      "s030",
+      "s034",
+      "s035",
+      "s038",
+      "s039"
+     ]
+    },
+    {
+     "box": [
+      75,
+      61,
+      48,
+      51
+     ],
+     "states": [
+      "s010",
+      "s020"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "mesa @frente.js:147",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "mesa"
+   ],
+   "drawCall": "frente.js:147",
+   "code": "if(ab.en===\"ventana\"){c.save();c.beginPath();c.rect(97,61,30,20);c.clip();if(W.win===1&&W.mesa)mesa(c);c.drawImage(AB(pose,op),W.tab||W.mesa?75:82,61);   // head and shoulders in the window",
+   "sites": [
+    "frente.js:64",
+    "frente.js:65",
+    "frente.js:66"
+   ],
+   "chain": [
+    "mesa@frente.js:64",
+    "Object.draw@frente.js:147"
+   ],
+   "clipped": [
+    "frente.js:147"
+   ],
+   "states": [
+    "s020"
+   ],
+   "boxes": [
+    {
+     "box": [
+      108,
+      56,
+      20,
+      25
+     ],
+     "states": [
+      "s020"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:148 · mkCoqui",
+   "class": "character",
+   "maker": "mkCoqui",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:148",
+   "code": "if(W.tab){const bl=(F%47)<2?1:0,sh=W.shake&&a%2?1:0;c.drawImage(spr(\"cq.42_\"+bl,()=>mkCoqui(.42,bl,0)),112+sh,W.tab===\"mojado\"?68:67);   // and the frog beside her",
+   "sites": [
+    "frente.js:148"
+   ],
+   "chain": [
+    "Object.draw@frente.js:148"
+   ],
+   "clipped": [
+    "frente.js:147"
+   ],
+   "states": [
+    "s010"
+   ],
+   "boxes": [
+    {
+     "box": [
+      112,
+      67,
+      15,
+      13
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      112,
+      68,
+      15,
+      13
+     ],
+     "states": [
+      "s010"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:149",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:149",
+   "code": "if(W.tab===\"mojado\"){towel(c,114,62);for(let k=0;k<2;k++)fr(c,113+k*13,70+((F+k*4)%8),1,2,\"#8CC4F8\");}}",
+   "sites": [
+    "frente.js:149"
+   ],
+   "chain": [
+    "Object.draw@frente.js:149"
+   ],
+   "clipped": [
+    "frente.js:147"
+   ],
+   "states": [
+    "s010"
+   ],
+   "boxes": [
+    {
+     "box": [
+      113,
+      71,
+      14,
+      6
+     ],
+     "states": [
+      "s010"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "towel @frente.js:149",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "towel"
+   ],
+   "drawCall": "frente.js:149",
+   "code": "if(W.tab===\"mojado\"){towel(c,114,62);for(let k=0;k<2;k++)fr(c,113+k*13,70+((F+k*4)%8),1,2,\"#8CC4F8\");}}",
+   "sites": [
+    "frente.js:58",
+    "frente.js:59"
+   ],
+   "chain": [
+    "?@frente.js:58",
+    "towel@frente.js:58",
+    "Object.draw@frente.js:149"
+   ],
+   "clipped": [
+    "frente.js:147"
+   ],
+   "states": [
+    "s010"
+   ],
+   "boxes": [
+    {
+     "box": [
+      113,
+      61,
+      13,
+      8
+     ],
+     "states": [
+      "s010"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:152",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:152",
+   "code": "else if(ab.en===\"paso\"){c.drawImage(AB(pose,op),ABAT.paso[0],ABAT.paso[1]);if(W.rondas){const n=3-(W.mios||0)-(W.lost||0);for(let i=0;i<n;i++){fr(c,ABAT.paso[0]+5+i*4,ABAT.paso[1]+27,4,3,SPONGE);fr(c,ABAT.paso[0]+5+i*4,A …",
+   "sites": [
+    "frente.js:152"
+   ],
+   "chain": [
+    "Object.draw@frente.js:152"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s018"
+   ],
+   "boxes": [
+    {
+     "box": [
+      97,
+      84,
+      15,
+      4
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s018"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:152 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:152",
+   "code": "else if(ab.en===\"paso\"){c.drawImage(AB(pose,op),ABAT.paso[0],ABAT.paso[1]);if(W.rondas){const n=3-(W.mios||0)-(W.lost||0);for(let i=0;i<n;i++){fr(c,ABAT.paso[0]+5+i*4,ABAT.paso[1]+27,4,3,SPONGE);fr(c,ABAT.paso[0]+5+i*4,A …",
+   "sites": [
+    "frente.js:152"
+   ],
+   "chain": [
+    "Object.draw@frente.js:152"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018"
+   ],
+   "boxes": [
+    {
+     "box": [
+      94,
+      57,
+      48,
+      51
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:153 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:153",
+   "code": "else c.drawImage(AB(pose,op),ABAT.puerta[0],ABAT.puerta[1]);",
+   "sites": [
+    "frente.js:153"
+   ],
+   "chain": [
+    "Object.draw@frente.js:153"
+   ],
+   "clipped": null,
+   "states": [
+    "s006",
+    "s021",
+    "s027",
+    "s028",
+    "s029"
+   ],
+   "boxes": [
+    {
+     "box": [
+      135,
+      55,
+      48,
+      51
+     ],
+     "states": [
+      "s006",
+      "s021",
+      "s027",
+      "s028",
+      "s029"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:155",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:155",
+   "code": "if(q.vis&&W.polvo){const b=frogBox(q);[[-6,0],[-11,-2],[-16,1]].forEach((d,i)=>{fr(c,b.x+d[0],b.y+b.h-3+d[1],3-(i>1?1:0),2,\"#E8DCC0\");});fr(c,b.x+b.w+1,b.y+b.h-6,4,1,OUT);fr(c,b.x+b.w+4,b.y+b.h-7,1,3,OUT);}   // he is go …",
+   "sites": [
+    "frente.js:155"
+   ],
+   "chain": [
+    "?@frente.js:155",
+    "Object.draw@frente.js:155"
+   ],
+   "clipped": null,
+   "states": [
+    "s041"
+   ],
+   "boxes": [
+    {
+     "box": [
+      162,
+      136,
+      49,
+      7
+     ],
+     "states": [
+      "s041"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:156",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:156",
+   "code": "if(q.vis){c.globalAlpha=q.al;frog(c,q,a);c.globalAlpha=1;const b=frogBox(q);",
+   "sites": [
+    "frente.js:156"
+   ],
+   "chain": [
+    "Object.draw@frente.js:156"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s036",
+    "s037",
+    "s038",
+    "s041"
+   ],
+   "boxes": [
+    {
+     "box": [
+      153,
+      203,
+      25,
+      3
+     ],
+     "states": [
+      "s000",
+      "s011",
+      "s012",
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      157,
+      129,
+      17,
+      3
+     ],
+     "states": [
+      "s000",
+      "s004",
+      "s005",
+      "s006",
+      "s013",
+      "s024",
+      "s025",
+      "s029",
+      "s030",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      103,
+      129,
+      17,
+      3
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s004",
+      "s005",
+      "s009",
+      "s010",
+      "s019",
+      "s020",
+      "s022",
+      "s024",
+      "s025",
+      "s027",
+      "s030",
+      "s031",
+      "s034",
+      "s037",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      128,
+      175,
+      21,
+      3
+     ],
+     "states": [
+      "s000",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s011",
+      "s012",
+      "s015",
+      "s017",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s032",
+      "s033",
+      "s036",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      91,
+      175,
+      21,
+      3
+     ],
+     "states": [
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      45,
+      125,
+      17,
+      3
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      103,
+      117,
+      17,
+      3
+     ],
+     "states": [
+      "s019",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      155,
+      111,
+      15,
+      3
+     ],
+     "states": [
+      "s029"
+     ]
+    },
+    {
+     "box": [
+      181,
+      141,
+      21,
+      3
+     ],
+     "states": [
+      "s041"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:156 · mkCoqui",
+   "class": "character",
+   "maker": "mkCoqui",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:156",
+   "code": "if(q.vis){c.globalAlpha=q.al;frog(c,q,a);c.globalAlpha=1;const b=frogBox(q);",
+   "sites": [
+    "frente.js:156"
+   ],
+   "chain": [
+    "Object.draw@frente.js:156"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s036",
+    "s037",
+    "s038",
+    "s041"
+   ],
+   "boxes": [
+    {
+     "box": [
+      150,
+      178,
+      32,
+      27
+     ],
+     "states": [
+      "s000",
+      "s011",
+      "s012",
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      154,
+      111,
+      24,
+      20
+     ],
+     "states": [
+      "s000",
+      "s004",
+      "s005",
+      "s006",
+      "s013",
+      "s024",
+      "s025",
+      "s029",
+      "s030",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      100,
+      111,
+      24,
+      20
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s004",
+      "s005",
+      "s009",
+      "s010",
+      "s019",
+      "s020",
+      "s022",
+      "s024",
+      "s025",
+      "s027",
+      "s030",
+      "s031",
+      "s034",
+      "s037",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      125,
+      153,
+      28,
+      24
+     ],
+     "states": [
+      "s000",
+      "s002",
+      "s004",
+      "s005",
+      "s011",
+      "s012",
+      "s015",
+      "s017",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s032",
+      "s033",
+      "s036",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      125,
+      149,
+      28,
+      24
+     ],
+     "states": [
+      "s003"
+     ]
+    },
+    {
+     "box": [
+      154,
+      106,
+      24,
+      20
+     ],
+     "states": [
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      88,
+      148,
+      28,
+      24
+     ],
+     "states": [
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      88,
+      153,
+      28,
+      24
+     ],
+     "states": [
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      42,
+      106,
+      24,
+      21
+     ],
+     "states": [
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      100,
+      107,
+      24,
+      20
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      100,
+      99,
+      24,
+      20
+     ],
+     "states": [
+      "s019",
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      100,
+      109,
+      24,
+      20
+     ],
+     "states": [
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      152,
+      95,
+      21,
+      18
+     ],
+     "states": [
+      "s029"
+     ]
+    },
+    {
+     "box": [
+      178,
+      120,
+      28,
+      23
+     ],
+     "states": [
+      "s041"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:157",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:157",
+   "code": "if(W.wet)for(let k=0;k<3;k++)fr(c,b.x+3+k*Math.round(b.w/3),b.y+((F*2+k*5)%12),1,2,\"#8CC4F8\");",
+   "sites": [
+    "frente.js:157"
+   ],
+   "chain": [
+    "Object.draw@frente.js:157"
+   ],
+   "clipped": null,
+   "states": [
+    "s009",
+    "s010"
+   ],
+   "boxes": [
+    {
+     "box": [
+      103,
+      112,
+      17,
+      9
+     ],
+     "states": [
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      103,
+      114,
+      17,
+      9
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      103,
+      111,
+      17,
+      12
+     ],
+     "states": [
+      "s010"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:158",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:158",
+   "code": "if(W.gotas){const t=F-W.gotas;for(let k=0;k<3;k++){const y=Math.min(b.y+2,b.y-26+(t-k*3)*5);if(t>=k*3)fr(c,b.x+5+k*Math.round(b.w/4),y,2,3,\"#8CC4F8\");}}}",
+   "sites": [
+    "frente.js:158"
+   ],
+   "chain": [
+    "Object.draw@frente.js:158"
+   ],
+   "clipped": null,
+   "states": [
+    "s004",
+    "s005",
+    "s006",
+    "s038"
+   ],
+   "boxes": [
+    {
+     "box": [
+      130,
+      155,
+      16,
+      3
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      159,
+      113,
+      14,
+      3
+     ],
+     "states": [
+      "s004",
+      "s005",
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      105,
+      113,
+      14,
+      3
+     ],
+     "states": [
+      "s038"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "drawAve @frente.js:159",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "drawAve"
+   ],
+   "drawCall": "frente.js:159",
+   "code": "drawAve(c,W.ave);",
+   "sites": [
+    "frente.js:85",
+    "frente.js:86"
+   ],
+   "chain": [
+    "drawAve@frente.js:86",
+    "Object.draw@frente.js:159"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s013",
+    "s014",
+    "s024",
+    "s027"
+   ],
+   "boxes": [
+    {
+     "box": [
+      71,
+      102,
+      5,
+      4
+     ],
+     "states": [
+      "s011",
+      "s013"
+     ]
+    },
+    {
+     "box": [
+      164,
+      53,
+      5,
+      4
+     ],
+     "states": [
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      155,
+      118,
+      4,
+      5
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      137,
+      128,
+      5,
+      4
+     ],
+     "states": [
+      "s024"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "drawAve @frente.js:159 · mkAve",
+   "class": "character",
+   "maker": "mkAve",
+   "method": "drawImage",
+   "functions": [
+    "drawAve"
+   ],
+   "drawCall": "frente.js:159",
+   "code": "drawAve(c,W.ave);",
+   "sites": [
+    "frente.js:83"
+   ],
+   "chain": [
+    "drawAve@frente.js:83",
+    "Object.draw@frente.js:159"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s013",
+    "s014",
+    "s016",
+    "s017",
+    "s018",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028"
+   ],
+   "boxes": [
+    {
+     "box": [
+      58.6,
+      109,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s011",
+      "s013",
+      "s014"
+     ]
+    },
+    {
+     "box": [
+      151.6,
+      60,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s013",
+      "s014",
+      "s018"
+     ]
+    },
+    {
+     "box": [
+      181.6,
+      100,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s011",
+      "s016"
+     ]
+    },
+    {
+     "box": [
+      161.6,
+      80,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s011",
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      58.6,
+      92,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s011",
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      105.6,
+      8,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      129.6,
+      3,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      155.6,
+      -3,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      96.6,
+      9,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      110.6,
+      8,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      191.6,
+      4,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      173.6,
+      9,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      117.6,
+      -2,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      151.6,
+      29,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028"
+     ]
+    },
+    {
+     "box": [
+      181.6,
+      10,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      157.6,
+      7,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      131.6,
+      1,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      107.6,
+      -4,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      167.6,
+      -5,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      147.6,
+      5,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      119.6,
+      6,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      172.6,
+      -5,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      161.6,
+      8,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      136.6,
+      2,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      111.6,
+      -3,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      93.6,
+      9,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      124.6,
+      135,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s024",
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      119.8,
+      128,
+      38.4,
+      28.8
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      166.6,
+      -4,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      184.6,
+      -4,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s023"
+     ]
+    },
+    {
+     "more": 5
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:163",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fill",
+   "functions": [],
+   "drawCall": "frente.js:163",
+   "code": "if(W.storm){c.fillStyle=\"rgba(150,160,176,.62)\";c.beginPath();c.arc(210,17,10,0,7);c.fill();}   // the sun goes pale",
+   "sites": [
+    "frente.js:163"
+   ],
+   "chain": [
+    "Object.draw@frente.js:163"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      200,
+      7,
+      20,
+      20
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:164",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:164",
+   "code": "if(W.dark){c.fillStyle=\"rgba(14,22,46,\"+W.dark+\")\";c.fillRect(0,0,SW,SH);}",
+   "sites": [
+    "frente.js:164"
+   ],
+   "chain": [
+    "Object.draw@frente.js:164"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      0,
+      0,
+      240,
+      216
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:165",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:165",
+   "code": "if(W.dusk){c.fillStyle=W.dusk>1?\"rgba(40,24,70,.42)\":\"rgba(255,120,50,.16)\";c.fillRect(0,0,SW,SH);if(W.dusk>1){c.fillStyle=\"rgba(255,190,90,.25)\";c.fillRect(0,0,SW,40);}}   // late afternoon, then sunset",
+   "sites": [
+    "frente.js:165"
+   ],
+   "chain": [
+    "Object.draw@frente.js:165"
+   ],
+   "clipped": null,
+   "states": [
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s041"
+   ],
+   "boxes": [
+    {
+     "box": [
+      0,
+      0,
+      240,
+      216
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s041"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:167 · mkNube",
+   "class": "prop or effect",
+   "maker": "mkNube",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "frente.js:167",
+   "code": "[W.nube3,W.nube2,W.nube].forEach(n=>{if(!n)return;n.x+=(n.tx-n.x)*.14;if(Math.abs(n.tx-n.x)<.6)n.x=n.tx;const x=Math.round(n.x);c.drawImage(spr(\"nube\",mkNube),x,0);",
+   "sites": [
+    "frente.js:167"
+   ],
+   "chain": [
+    "?@frente.js:167",
+    "Object.draw@frente.js:167"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      11,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      20,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s002",
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      21,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s003",
+      "s033",
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      22,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s004",
+      "s005",
+      "s006",
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      37,
+      0,
+      241,
+      22
+     ],
+     "states": [
+      "s007",
+      "s035",
+      "s039"
+     ]
+    },
+    {
+     "box": [
+      41,
+      0,
+      234,
+      22
+     ],
+     "states": [
+      "s008"
+     ]
+    },
+    {
+     "box": [
+      44,
+      0,
+      230,
+      22
+     ],
+     "states": [
+      "s009",
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      9,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s031"
+     ]
+    },
+    {
+     "box": [
+      76,
+      0,
+      98,
+      22
+     ],
+     "states": [
+      "s037",
+      "s038"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:168",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:168",
+   "code": "if(!W.rain)for(let i=0;i<16;i++)fr(c,x+9+(i*23+F*2)%80,21+(i*7+F*4)%26,1,4,\"#C4DCF6\");});   // rain already falling from the cloud, far off",
+   "sites": [
+    "frente.js:168"
+   ],
+   "chain": [
+    "?@frente.js:168",
+    "Object.draw@frente.js:167"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s036",
+    "s037",
+    "s038"
+   ],
+   "boxes": [
+    {
+     "box": [
+      21,
+      21,
+      71,
+      29
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      33,
+      21,
+      71,
+      29
+     ],
+     "states": [
+      "s002",
+      "s033",
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      36,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s003"
+     ]
+    },
+    {
+     "box": [
+      37,
+      21,
+      70,
+      28
+     ],
+     "states": [
+      "s004",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      40,
+      21,
+      71,
+      28
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      31,
+      21,
+      70,
+      29
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      33,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      31,
+      21,
+      80,
+      28
+     ],
+     "states": [
+      "s006",
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      31,
+      22,
+      80,
+      28
+     ],
+     "states": [
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      32,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s002",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      22,
+      21,
+      70,
+      28
+     ],
+     "states": [
+      "s031"
+     ]
+    },
+    {
+     "box": [
+      36,
+      21,
+      71,
+      28
+     ],
+     "states": [
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      37,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      39,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      31,
+      21,
+      70,
+      28
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      35,
+      21,
+      71,
+      29
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      38,
+      21,
+      71,
+      29
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      35,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      37,
+      21,
+      71,
+      29
+     ],
+     "states": [
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      38,
+      21,
+      71,
+      28
+     ],
+     "states": [
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      39,
+      21,
+      71,
+      28
+     ],
+     "states": [
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      18,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s031"
+     ]
+    },
+    {
+     "box": [
+      34,
+      21,
+      71,
+      29
+     ],
+     "states": [
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      33,
+      22,
+      70,
+      28
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      92,
+      21,
+      71,
+      28
+     ],
+     "states": [
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      85,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      89,
+      22,
+      70,
+      28
+     ],
+     "states": [
+      "s037",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      18,
+      22,
+      80,
+      28
+     ],
+     "states": [
+      "s031"
+     ]
+    },
+    {
+     "box": [
+      31,
+      22,
+      71,
+      28
+     ],
+     "states": [
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      35,
+      21,
+      70,
+      29
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "more": 10
+    }
+   ]
+  },
+  {
+   "key": "rain @frente.js:169",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "rain"
+   ],
+   "drawCall": "frente.js:169",
+   "code": "if(W.rain)rain(c);",
+   "sites": [
+    "frente.js:55",
+    "frente.js:56"
+   ],
+   "chain": [
+    "rain@frente.js:55",
+    "Object.draw@frente.js:169"
+   ],
+   "clipped": null,
+   "states": [
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s035",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      -1,
+      3,
+      238,
+      218
+     ],
+     "states": [
+      "s007"
+     ]
+    },
+    {
+     "box": [
+      -1,
+      1,
+      238,
+      218
+     ],
+     "states": [
+      "s008"
+     ]
+    },
+    {
+     "box": [
+      2,
+      3,
+      238,
+      218
+     ],
+     "states": [
+      "s009",
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      0,
+      2,
+      238,
+      218
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      1,
+      0,
+      238,
+      218
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      -1,
+      2,
+      238,
+      218
+     ],
+     "states": [
+      "s010",
+      "s035"
+     ]
+    },
+    {
+     "box": [
+      -2,
+      2,
+      242,
+      218
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      0,
+      1,
+      238,
+      218
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      2,
+      1,
+      238,
+      218
+     ],
+     "states": [
+      "s009",
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      0,
+      2,
+      240,
+      217
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      0,
+      0,
+      238,
+      218
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      -1,
+      0,
+      238,
+      218
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "box": [
+      2,
+      0,
+      238,
+      218
+     ],
+     "states": [
+      "s039"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:172",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:172",
+   "code": "if(ab&&ab.bub){const at=ab.en===\"ventana\"?[112,60]:[ab.bub===\"como\"?141:147,ab.bub===\"como\"?66:69];bub(c,ab.bub,at[0],at[1],a);}",
+   "sites": [
+    "frente.js:172"
+   ],
+   "chain": [
+    "Object.draw@frente.js:172"
+   ],
+   "clipped": null,
+   "states": [
+    "s010",
+    "s034",
+    "s038"
+   ],
+   "boxes": [
+    {
+     "box": [
+      96,
+      40,
+      33,
+      18
+     ],
+     "states": [
+      "s010",
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      96,
+      41,
+      33,
+      18
+     ],
+     "states": [
+      "s038"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:173",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:173",
+   "code": "if(W.dentro)bub(c,\"quien\",W.dentro===\"ventana\"?112:166,W.dentro===\"ventana\"?59:53,a);",
+   "sites": [
+    "frente.js:173"
+   ],
+   "chain": [
+    "Object.draw@frente.js:173"
+   ],
+   "clipped": null,
+   "states": [
+    "s005",
+    "s037"
+   ],
+   "boxes": [
+    {
+     "box": [
+      155,
+      33,
+      23,
+      18
+     ],
+     "states": [
+      "s005",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      155,
+      34,
+      23,
+      18
+     ],
+     "states": [
+      "s037"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@frente.js:174",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [],
+   "drawCall": "frente.js:174",
+   "code": "if(q.vis&&q.bub){const b=frogBox(q);bub(c,q.bub,b.x+(b.w>>1),b.y,a);}",
+   "sites": [
+    "frente.js:174"
+   ],
+   "chain": [
+    "Object.draw@frente.js:174"
+   ],
+   "clipped": null,
+   "states": [
+    "s002",
+    "s003",
+    "s004",
+    "s010",
+    "s019",
+    "s020",
+    "s027",
+    "s029",
+    "s032",
+    "s033",
+    "s034",
+    "s036",
+    "s038"
+   ],
+   "boxes": [
+    {
+     "box": [
+      128,
+      134,
+      23,
+      18
+     ],
+     "states": [
+      "s002",
+      "s003",
+      "s004",
+      "s032",
+      "s033",
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      128,
+      133,
+      23,
+      18
+     ],
+     "states": [
+      "s002",
+      "s004",
+      "s032",
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      105,
+      92,
+      15,
+      17
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      105,
+      93,
+      15,
+      17
+     ],
+     "states": [
+      "s020"
+     ]
+    },
+    {
+     "box": [
+      105,
+      91,
+      15,
+      18
+     ],
+     "states": [
+      "s010",
+      "s019",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      105,
+      92,
+      15,
+      18
+     ],
+     "states": [
+      "s019",
+      "s034"
+     ]
+    },
+    {
+     "box": [
+      132,
+      134,
+      15,
+      18
+     ],
+     "states": [
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      104,
+      89,
+      17,
+      21
+     ],
+     "states": [
+      "s010",
+      "s034",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      154,
+      73,
+      17,
+      21
+     ],
+     "states": [
+      "s029"
+     ]
+    }
+   ]
+  }
+ ],
+ "positionsInFile": [
+  {
+   "at": "frente.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    135,
+    55
+   ],
+   "what": "ABAT.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    82,
+    61
+   ],
+   "what": "ABAT.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    94,
+    57
+   ],
+   "what": "ABAT.paso",
+   "comment": null
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    108,
+    75,
+    20,
+    2
+   ],
+   "what": "fr(c,108,75,20,2,RP.wood[3]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    108,
+    77,
+    20,
+    1
+   ],
+   "what": "fr(c,108,77,20,1,RP.wood[0]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    110,
+    78,
+    2,
+    3
+   ],
+   "what": "fr(c,110,78,2,3,RP.wood[1]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:64",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    124,
+    78,
+    2,
+    3
+   ],
+   "what": "fr(c,124,78,2,3,RP.wood[1]) args 1,2",
+   "comment": "a table inside, with the cake on it"
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    111,
+    74,
+    14,
+    1
+   ],
+   "what": "fr(c,111,74,14,1,\"_______\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    112,
+    68,
+    12,
+    6
+   ],
+   "what": "fr(c,112,68,12,6,SPONGE) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    112,
+    67,
+    12,
+    2
+   ],
+   "what": "fr(c,112,67,12,2,FROST) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    111,
+    67,
+    1,
+    7
+   ],
+   "what": "fr(c,111,67,1,7,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    124,
+    67,
+    1,
+    7
+   ],
+   "what": "fr(c,124,67,1,7,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    112,
+    66,
+    12,
+    1
+   ],
+   "what": "fr(c,112,66,12,1,OUT) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:65",
+   "fn": "mesa",
+   "kind": "rect",
+   "nums": [
+    117,
+    65,
+    2,
+    2
+   ],
+   "what": "fr(c,117,65,2,2,RP.red[2]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    57
+   ],
+   "what": "PERCH.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    49
+   ],
+   "what": "PERCH.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    71
+   ],
+   "what": "HOLE.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    80
+   ],
+   "what": "HOLE.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    56,
+    52
+   ],
+   "what": "SPOT.palma_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    195,
+    132
+   ],
+   "what": "SPOT.palma_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    73,
+    129
+   ],
+   "what": "SPOT.casa_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    80
+   ],
+   "what": "SPOT.casa_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    70,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,70,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    75,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,75,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    69,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,69,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:101",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    74,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,74,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    44,
+    40,
+    2,
+    2
+   ],
+   "what": "fr(c,44,40,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    80,
+    46,
+    2,
+    2
+   ],
+   "what": "fr(c,80,46,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    180,
+    120,
+    2,
+    2
+   ],
+   "what": "fr(c,180,120,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:102",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    208,
+    126,
+    2,
+    2
+   ],
+   "what": "fr(c,208,126,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:111",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "plato(g,5,6,W.mios||0,\"__\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    56,
+    52
+   ],
+   "what": "SPOT.palma_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    195,
+    132
+   ],
+   "what": "SPOT.palma_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    73,
+    129
+   ],
+   "what": "SPOT.casa_pequena",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:113",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    166,
+    80
+   ],
+   "what": "SPOT.casa_grande",
+   "comment": "where the bird hides in each"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    70,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,70,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    75,
+    130,
+    2,
+    6
+   ],
+   "what": "fr(c,75,130,2,6,RP.tan[2]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    69,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,69,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:126",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    74,
+    135,
+    4,
+    2
+   ],
+   "what": "fr(c,74,135,4,2,RP.tan[4]) args 1,2",
+   "comment": "the frog's legs sticking out"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    44,
+    40,
+    2,
+    2
+   ],
+   "what": "fr(c,44,40,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    80,
+    46,
+    2,
+    2
+   ],
+   "what": "fr(c,80,46,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    180,
+    120,
+    2,
+    2
+   ],
+   "what": "fr(c,180,120,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:127",
+   "fn": "escondite",
+   "kind": "rect",
+   "nums": [
+    208,
+    126,
+    2,
+    2
+   ],
+   "what": "fr(c,208,126,2,2,RP.grn[4]) args 1,2",
+   "comment": "leaves rustle"
+  },
+  {
+   "at": "frente.js:140",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"fr\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:143",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    153,
+    53,
+    11,
+    51
+   ],
+   "what": "c.rect(153,53,11,51) [sprite \"cq.6_0\"] args 0,1",
+   "comment": "the frog peeks out from behind the door"
+  },
+  {
+   "at": "frente.js:143",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    150,
+    84
+   ],
+   "what": "c.drawImage(…,150,84) [sprite \"cq.6_0\"] args 1,2",
+   "comment": "the frog peeks out from behind the door"
+  },
+  {
+   "at": "frente.js:144",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    153,
+    53,
+    11,
+    51
+   ],
+   "what": "c.rect(153,53,11,51) args 0,1",
+   "comment": "she is behind the door as it opens"
+  },
+  {
+   "at": "frente.js:144",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    135,
+    55
+   ],
+   "what": "c.drawImage(AB(\"____\",0),135,55) args 1,2",
+   "comment": "she is behind the door as it opens"
+  },
+  {
+   "at": "frente.js:147",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    97,
+    61,
+    30,
+    20
+   ],
+   "what": "c.rect(97,61,30,20) args 0,1",
+   "comment": "head and shoulders in the window"
+  },
+  {
+   "at": "frente.js:149",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    114,
+    62
+   ],
+   "what": "towel(c,114,62) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "frente.js:151",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    110,
+    64
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:151",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    120,
+    62
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:151",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    127,
+    66
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:155",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -6,
+    0
+   ],
+   "what": "[]",
+   "comment": "he is going: dust behind, facing away"
+  },
+  {
+   "at": "frente.js:155",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -11,
+    -2
+   ],
+   "what": "[]",
+   "comment": "he is going: dust behind, facing away"
+  },
+  {
+   "at": "frente.js:155",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -16,
+    1
+   ],
+   "what": "[]",
+   "comment": "he is going: dust behind, facing away"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    -1
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    1,
+    -1
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    0
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    1,
+    0
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    -1
+   ],
+   "what": "[]",
+   "comment": "leaves fly as he looks"
+  },
+  {
+   "at": "frente.js:163",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    210,
+    17
+   ],
+   "what": "c.arc(210,17,10,0,7) args 0,1",
+   "comment": "the sun goes pale"
+  },
+  {
+   "at": "frente.js:164",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:165",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": "late afternoon, then sunset"
+  },
+  {
+   "at": "frente.js:165",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,40) args 0,1",
+   "comment": "late afternoon, then sunset"
+  },
+  {
+   "at": "frente.js:170",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:172",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    112,
+    60
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:179",
+   "fn": "talkAt",
+   "kind": "point",
+   "nums": [
+    112,
+    37
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:179",
+   "fn": "talkAt",
+   "kind": "point",
+   "nums": [
+    166,
+    31
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:181",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    97,
+    61,
+    30,
+    20
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:181",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    110,
+    58,
+    36,
+    50
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:181",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    151,
+    56,
+    29,
+    49
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    34,
+    34,
+    48,
+    72
+   ],
+   "what": "e.palma_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    174,
+    114,
+    42,
+    56
+   ],
+   "what": "e.palma_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    60,
+    110,
+    26,
+    58
+   ],
+   "what": "e.casa_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:182",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    60,
+    17,
+    166,
+    90
+   ],
+   "what": "e.casa_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:184",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    60,
+    17,
+    166,
+    90
+   ],
+   "what": "casa",
+   "comment": null
+  },
+  {
+   "at": "frente.js:184",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    151,
+    51,
+    30,
+    54
+   ],
+   "what": "puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:184",
+   "fn": "box",
+   "kind": "rect",
+   "nums": [
+    93,
+    57,
+    38,
+    28
+   ],
+   "what": "ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:187",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    172,
+    112,
+    46,
+    60
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:187",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    58,
+    108,
+    30,
+    62
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:187",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    34,
+    34,
+    48,
+    74
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:188",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    57,
+    16,
+    171,
+    95
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:193",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    145,
+    46,
+    42,
+    62
+   ],
+   "what": "inb(…)",
+   "comment": "a finger slightly off still counts"
+  },
+  {
+   "at": "frente.js:194",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    82,
+    53,
+    61,
+    42
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:196",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    57,
+    41,
+    171,
+    70
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:198",
+   "fn": "hit",
+   "kind": "rect",
+   "nums": [
+    34,
+    36,
+    30,
+    70
+   ],
+   "what": "inb(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    104,
+    0.72
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    96,
+    104,
+    0.72
+   ],
+   "what": "LUGAR.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    123,
+    150,
+    0.86
+   ],
+   "what": "LUGAR.patio",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    104,
+    0.72
+   ],
+   "what": "LUGAR.casa_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    38,
+    100,
+    0.74
+   ],
+   "what": "LUGAR.palma_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    150,
+    0.88
+   ],
+   "what": "LUGAR.palma_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    86,
+    150,
+    0.86
+   ],
+   "what": "LUGAR.casa_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:205",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    22,
+    76,
+    140
+   ],
+   "what": "NX",
+   "comment": null
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    92,
+    54
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    132,
+    56
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    112,
+    50
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    150,
+    47
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    182,
+    49
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:210",
+   "fn": "luz",
+   "kind": "point",
+   "nums": [
+    166,
+    43
+   ],
+   "what": "pts[]",
+   "comment": "the lights come on inside"
+  },
+  {
+   "at": "frente.js:220",
+   "fn": "entra",
+   "kind": "point",
+   "nums": [
+    150,
+    80
+   ],
+   "what": "hopTo(150,80,2,.72) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:244",
+   "fn": "pajaro",
+   "kind": "xy",
+   "nums": [
+    -12,
+    40
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:246",
+   "fn": "bonk",
+   "kind": "point",
+   "nums": [
+    150,
+    26
+   ],
+   "what": "aveA(150,26,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:249",
+   "fn": "come",
+   "kind": "point+",
+   "nums": [
+    1,
+    0.7,
+    0.4
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "frente.js:253",
+   "fn": "fin2",
+   "kind": "point",
+   "nums": [
+    196,
+    30
+   ],
+   "what": "aveA(196,30,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:258",
+   "fn": "tapa",
+   "kind": "xy",
+   "nums": [
+    -10,
+    60
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:259",
+   "fn": "tapa",
+   "kind": "point",
+   "nums": [
+    250,
+    -20
+   ],
+   "what": "aveA(250,-20,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:267",
+   "fn": "tapate",
+   "kind": "xy",
+   "nums": [
+    250,
+    60
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:267",
+   "fn": "tapate",
+   "kind": "point",
+   "nums": [
+    196,
+    120
+   ],
+   "what": "aveA(196,120,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:269",
+   "fn": "esconde",
+   "kind": "point",
+   "nums": [
+    150,
+    82
+   ],
+   "what": "hopTo(150,82,1,.6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:273",
+   "fn": "busca_ave",
+   "kind": "point",
+   "nums": [
+    176,
+    100
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:273",
+   "fn": "busca_ave",
+   "kind": "point",
+   "nums": [
+    73,
+    112
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:277",
+   "fn": "devuelve",
+   "kind": "xy",
+   "nums": [
+    250,
+    30
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:279",
+   "fn": "avecasa",
+   "kind": "xy",
+   "nums": [
+    200,
+    40
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "frente.js:279",
+   "fn": "avecasa",
+   "kind": "point",
+   "nums": [
+    73,
+    126
+   ],
+   "what": "aveA(73,126,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    60,
+    20
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    180,
+    24
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    120,
+    12
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    100,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:281",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    150,
+    30
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    44,
+    0,
+    196,
+    216
+   ],
+   "what": "ESCENAS.frente.CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    51.7,
+    15,
+    180.6,
+    199
+   ],
+   "what": "ESCENAS.frente.CAM.casa",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    117,
+    30,
+    98,
+    108
+   ],
+   "what": "ESCENAS.frente.CAM.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    84,
+    24,
+    98,
+    108
+   ],
+   "what": "ESCENAS.frente.CAM.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:299",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    63,
+    18,
+    98,
+    108
+   ],
+   "what": "ESCENAS.frente.CAM.cuadro",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    141,
+    24
+   ],
+   "what": "handAt.casa",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    76
+   ],
+   "what": "handAt.puerta",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    72
+   ],
+   "what": "handAt.ventana",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    141,
+    24
+   ],
+   "what": "handAt.casa_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    73,
+    128
+   ],
+   "what": "handAt.casa_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    56,
+    60
+   ],
+   "what": "handAt.palma_grande",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    195,
+    140
+   ],
+   "what": "handAt.palma_pequena",
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    166,
+    76
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "frente.js:300",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    103,
+    26
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ],
+ "judgments": [
+  "Characters, for the frames without them: frog, drawAve, bub, fly, towel (functions) and the lines frente.js:143, frente.js:144, frente.js:146, frente.js:147, frente.js:148, frente.js:149, frente.js:151, frente.js:152, frente.js:153, frente.js:155, frente.js:156, frente.js:157, frente.js:158, frente.js:160, frente.js:172, frente.js:173, frente.js:174; kept: mesa (config.mjs CHARS). frente.js:47-50 ambient(): two butterflies (fly, left out) and a small white cloud that drifts with the frame counter (kept: it is sky).",
+  "States are grouped without the character keys cq, ab, ave, tab, shake, wet, gotas, polvo, piernas, asoma, peek, tapado, dentro, trozo, hojas and the sign and stamp keys (config.mjs); a thing whose box reads only those keys (movingThings) does not separate states either: its box in every snapshot is in things[id].bySnapshot. The frame of a state shows the characters where the first snapshot of that state had them.",
+  "The frames are the scene's draw() only: juego.js's signs (the big hand, the frame around a thing, stars, the heart, answer bubbles) are not drawn; the views add the scene's hud() as the play screen does.",
+  "Each frame starts with the canvas default imageSmoothingEnabled = true (the old page keeps whatever the last frame left; order 05 found it on by default)."
+ ]
+}
