@@ -21,7 +21,8 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
 
 - `lib/coqui_pixel.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Since order 02 it holds `Thing`, `Scene`, `SceneHost` and `Sfx` (page 12, section 4), and `PpEngine`, `PpBuild`, `Sprite`, `Ctx` as shells that throw until orders 10 and 11 fill them in.
+- Since order 02 it holds `Thing`, `Scene`, `SceneHost` and `Sfx` (page 12, section 4), and `Sprite`, `Ctx` as shells that throw until order 11 fills them in.
+- Since order 10 it holds `PpEngine` and `PpBuild` (the port of pp-engine.js and of the palette and building helpers of mapa.js), and `toInt32` and `imul` (page 12, section 6).
 
 ## Run and test it alone
 
@@ -30,6 +31,15 @@ cd coqui/packages/core/coqui_pixel
 dart test -p vm
 dart test -p chrome   # needs CHROME_EXECUTABLE, see the runbook
 ```
+
+The parity tests compare the Dart engine with pictures the old code made (`coqui/ref/pp/`, and `test/support/fixtures/extra_ref.dart` for what the island and El frente do not reach). On the vm they read the reference files; in chrome they read a Dart fixture made from the same files:
+
+```
+dart run tool/make_fixtures.dart [--check]    # test/support/fixtures/ref_pp.dart, from coqui/ref/pp/ (remake it when the reference changes)
+node tool/make_extra_ref.mjs [--check]        # test/support/fixtures/extra_ref.dart, from the old pp-engine.js and mapa.js
+```
+
+The map's island and El frente's set are built by test-only code under `test/support/`; the real ones are orders 13 and 14's.
 
 At `coqui/`, for the checks every branch passes:
 

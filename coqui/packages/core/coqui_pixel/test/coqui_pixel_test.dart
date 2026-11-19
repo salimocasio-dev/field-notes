@@ -143,9 +143,6 @@ void main() {
   });
 
   group('shells', () {
-    test('the engine and its helpers are order 10\'s', () {
-      expect(() => PpEngine(w: 240, h: 216, s: 26), _unimplemented('order 10'));
-    });
     test('the canvas is order 11\'s', () {
       expect(() => Ctx(Uint32List(4), 2, 2), _unimplemented('order 11'));
     });
