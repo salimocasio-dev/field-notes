@@ -1,6 +1,7 @@
 {
   "id": "island",
   "kind": "island",
+  "browser": "Chromium 157.0.8103.78",
   "source": "coqui/tool/ref/pp/island.html (loads docs/proyecto/pixel/pp-engine.js and mapa.js)",
   "note": "The map island with no places. Same engine settings as mapa.html. Nothing after decorate(): no flushShadows, bakeOcclusion, applyShadows or shadeEdges, no places, no frog, no flags, no plates.",
   "steps": [

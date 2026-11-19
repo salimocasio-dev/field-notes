@@ -57,6 +57,8 @@ The existing `frente/door-open-shutters-open-lamp-on` entry passes only `s`, `ox
 
 ## Notes
 
+- `hash` and `noise` use `Math.sin`, and `Math.sin` is not the same function in every JavaScript engine. In Chrome 157 it gives exactly what glibc's `sin` gives (checked against Python's `math.sin` on 3 inputs); the same 200 inputs in Node 22 (V8 12.4) give a different last few digits for 5 of the 200 `hash` values and 9 of the 200 `noise` values, by up to 7.3e-12. `project`, `unproject` and `rampOf` are exact in both. The order's 1e-9 for `hash` and `noise` is right; the data names the Chrome that made it (`browser` in `state.json` and in the unit files' `settings`). The island's three buffers, run in plain Node (the old files in a `vm` with a stub canvas), match the Chrome ones byte for byte.
+
 - Sizes: about 5.3 MB for the folder, most of it the raw buffers.
 - The PNGs are made with Node's zlib (level 9). They are byte-identical between runs on one machine; another Node version can compress differently, so the `.bin` files and their hashes, not the PNGs, are what a test should rely on.
 - `lib.js` (PNG writer, SHA-256, index) is the same file in `ref/ctx/` and `ref/sprites/`; each part stands alone.

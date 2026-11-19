@@ -89,6 +89,7 @@ function dumpBuffers(dir, got) {
   writeBuffer(dir, 'kinds', kinds, W, H, 'uint8', 'KIND_NONE 0, SAND 1, WATER 2, GRASS 3, ROAD 4');
   L.write(path.join(dir, 'pix.png'), L.png(W, H, pix));
 }
+let BROWSER = '';
 const hashes = got => [got.pix, got.zb, got.kinds].map(b => L.sha256(Buffer.from(b, 'base64'))).join(' ');
 
 async function doState(browser, job) {
@@ -99,7 +100,7 @@ async function doState(browser, job) {
   fs.rmSync(dir, { recursive: true, force: true });
   dumpBuffers(dir, a.got);
   L.write(path.join(dir, 'state.json'), L.json(Object.assign({
-    id: job.id, kind: job.kind, source: job.page + job.query,
+    id: job.id, kind: job.kind, source: job.page + job.query, browser: BROWSER,
     clock: 'requestAnimationFrame queued and run once with timestamp 0; performance.now() = 0; Date.now() = 1700000000000; so the frame is time 0',
     mathRandomCalls: a.got.randomCalls,
     engine: a.got.engine, counts: a.got.counts,
@@ -132,7 +133,7 @@ async function doIsland(browser) {
     'slabSides()', 'growGrass()', 'groundZ.set(zb)', 'decorate()',
   ];
   L.write(path.join(dir, 'state.json'), L.json({
-    id: 'island', kind: 'island', source: 'coqui/tool/ref/pp/island.html (loads docs/proyecto/pixel/pp-engine.js and mapa.js)',
+    id: 'island', kind: 'island', browser: BROWSER, source: 'coqui/tool/ref/pp/island.html (loads docs/proyecto/pixel/pp-engine.js and mapa.js)',
     note: 'The map island with no places. Same engine settings as mapa.html. Nothing after decorate(): no flushShadows, bakeOcclusion, applyShadows or shadeEdges, no places, no frog, no flags, no plates.',
     steps, engine: a.got.engine, counts: a.got.counts, decorateCalls: c.log.length, mathRandomCalls: a.got.randomCalls,
   }));
@@ -196,6 +197,7 @@ async function doUnit(browser) {
       await page.goto('file://' + path.join(__dirname, 'unit.html') + '?' + u.q);
       const d = await page.evaluate(() => window.UNIT);
       if (problems.length) throw new Error('unit: ' + problems.join('; '));
+      d.settings.browser = BROWSER;
       const keys = u.only || ['hash', 'noise', 'project', 'unproject', 'rampOf'];
       keys.forEach(k => assert.strictEqual(d[k].length, 200));
       const text = unitText(d, keys);
@@ -210,6 +212,7 @@ async function doUnit(browser) {
 
 (async () => {
   const browser = await chromium.launch();
+  BROWSER = 'Chromium ' + browser.version();
   try {
     if (want('island')) await doIsland(browser);
     for (const job of STATES) if (want(job.id)) await doState(browser, job);

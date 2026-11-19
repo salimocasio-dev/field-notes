@@ -2,6 +2,7 @@
   "id": "map/hecho-0",
   "kind": "mapa",
   "source": "docs/proyecto/pixel/mapa.html?hecho=0",
+  "browser": "Chromium 157.0.8103.78",
   "clock": "requestAnimationFrame queued and run once with timestamp 0; performance.now() = 0; Date.now() = 1700000000000; so the frame is time 0",
   "mathRandomCalls": 0,
   "engine": {

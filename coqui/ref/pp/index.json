@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
   "files": 44,
-  "totalBytes": 5285725,
+  "totalBytes": 5285990,
   "entries": [
     {
       "path": "frente/door-open-shutters-open-lamp-on/kinds.bin",
@@ -30,8 +30,8 @@
     },
     {
       "path": "frente/door-open-shutters-open-lamp-on/state.json",
-      "bytes": 1091,
-      "sha256": "36d65703fb7b09920c2d39fbaed6380e4e714a432f8b2e2d1993f766cb02cf4d"
+      "bytes": 1130,
+      "sha256": "f3ee2f0a77a582dcdfe8dbeedd2efd1aafa05288a415b2488ffc5d597a3c928a"
     },
     {
       "path": "frente/door-open-shutters-open-lamp-on/zb.bin",
@@ -80,8 +80,8 @@
     },
     {
       "path": "island/state.json",
-      "bytes": 1360,
-      "sha256": "afcf5f62fca92842587d91f39b0f2d2bd6e803172566cca31625e1af146ce9a9"
+      "bytes": 1399,
+      "sha256": "ee83e2e6ed69fb87ded41cf95f300383b04561c21081f3d49279e493f870d9dd"
     },
     {
       "path": "island/zb.bin",
@@ -120,8 +120,8 @@
     },
     {
       "path": "map/hecho-0/state.json",
-      "bytes": 1329,
-      "sha256": "e4c00d15d7f99155373cc36d9682f929a266938f2814523f04b2a2c082dbb0ca"
+      "bytes": 1368,
+      "sha256": "f5f9e930a4532dec394bf9b87021c19fae456f1fc101c8adb9a42830fa0f30a3"
     },
     {
       "path": "map/hecho-0/zb.bin",
@@ -160,8 +160,8 @@
     },
     {
       "path": "map/hecho-10/state.json",
-      "bytes": 1321,
-      "sha256": "14f005c93caa9e9a4a55589974d83e1bb2b6c2af55fca823c93447c3524d111f"
+      "bytes": 1360,
+      "sha256": "4c5426a7dc9580f2afca1e2e9f58ea72356895ac9d0f73b7558b5080ac14ad87"
     },
     {
       "path": "map/hecho-10/zb.bin",
@@ -200,8 +200,8 @@
     },
     {
       "path": "map/hecho-3/state.json",
-      "bytes": 1327,
-      "sha256": "4ac478bc30c5201ae3768ccccd971515b534ac37a334250247cde831aed56de2"
+      "bytes": 1366,
+      "sha256": "fc97ee5e3a886b7c56b62039b3bf08e9e928eb3c18ed79e6e46f608eef889298"
     },
     {
       "path": "map/hecho-3/zb.bin",
@@ -215,13 +215,13 @@
     },
     {
       "path": "unit/unit-s26.json",
-      "bytes": 49636,
-      "sha256": "00f62f5f0c1a5db251dfa9242d774d630af4cce5a2171bf6b14e66f382ee7404"
+      "bytes": 49671,
+      "sha256": "9670a2c4f312b5e36115578495de5b43bd3f5ec226d655f6b48d96d8541aa13a"
     },
     {
       "path": "unit/unit.json",
-      "bytes": 89555,
-      "sha256": "175ee948698d9204b9dab37c58a51337a4124a907056e2f84103e3c520da6191"
+      "bytes": 89590,
+      "sha256": "ff4eb6fb565d6303441d19890d38fec36f4acbe07279f2188724ebe4c877f3da"
     }
   ]
 }
