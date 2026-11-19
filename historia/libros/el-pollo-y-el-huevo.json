@@ -1,4 +1,4 @@
-{"id": "el-pollo-y-el-huevo", "title": "El pollo y el huevo", "lee": true, "pages": [
+{"id": "el-pollo-y-el-huevo", "title": "El pollo y el huevo", "lee": false, "pages": [
  {"img": "img/el-pollo-y-el-huevo-1.png", "clips": ["c28_hace", "c28_aqui_pollo", "c28_aqui_huevo"]},
  {"img": "img/el-pollo-y-el-huevo-2.png", "clips": ["c28_huele_bien", "c28_toma_sal", "c28_pollo_tiene_sal"]},
  {"img": "img/el-pollo-y-el-huevo-3.png", "clips": ["c28_huevo_tiene_sal", "c28_mama_huele", "c28_ab_mira"]},

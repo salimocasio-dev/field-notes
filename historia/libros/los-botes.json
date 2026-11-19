@@ -1,4 +1,4 @@
-{"id": "los-botes", "title": "Los botes", "lee": true, "pages": [
+{"id": "los-botes", "title": "Los botes", "lee": false, "pages": [
  {"img": "img/los-botes-1.png", "clips": ["c19_hay_tres", "c19_un_rojo", "c19_un_azul"]},
  {"img": "img/los-botes-2.png", "clips": ["c19_un_verde", "c19_luis_azul", "c19_luis_verde"]},
  {"img": "img/los-botes-3.png", "clips": ["c19_alla_van3", "c19_l_pez_bote_rojo", "c19_l_pez_bote_verde"]},

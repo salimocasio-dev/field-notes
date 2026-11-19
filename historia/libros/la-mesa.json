@@ -1,4 +1,4 @@
-{"id": "la-mesa", "title": "La mesa", "lee": true, "pages": [
+{"id": "la-mesa", "title": "La mesa", "lee": false, "pages": [
  {"img": "img/la-mesa-1.png", "clips": ["c24_esta_mesa", "c24_aqui_plato", "c24_aqui_taza"]},
  {"img": "img/la-mesa-2.png", "clips": ["c24_familia", "c24_bebe_mama", "c24_cq_pone_plato"]},
  {"img": "img/la-mesa-3.png", "clips": ["c24_ab_pone_bizcocho", "c24_luis_pone_taza", "c24_y_chocolate"]},

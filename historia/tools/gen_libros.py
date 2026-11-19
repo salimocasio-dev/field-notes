@@ -6,12 +6,14 @@
   --jobs   stories played at once (default 6)
   --fast   speed of the machine play (default 8; the pictures do not depend on it)
   --sheets a contact sheet per book (the page picture, its lines under it) into DIR
+  --lee-only sets the "lee" field of the books already written again from LEE (no play); then checks
   --check  only checks the books already written (counts, audio, left-out clips, pictures)
   --hud keeps the scenes' own counters (E.hud) in the pictures (off by default); --icon-bubbles keeps the picture bubbles above the speakers
   --solve  finds the draws a story's "leer" list was written for (see DRAWS) and prints them; writes nothing
 
 It writes historia/libros/<story id>.json = {"id","title","lee":true,"pages":[{"img":"img/<id>-<n>.png","clips":[...]}]}
-("lee": the book gets a Read button; true for every book until the review decides otherwise)
+("lee": the book gets a Read button. Written from LEE below: the per-story verdict from the fresh beginner review of Nov 19; true only
+for "reads well", false for every other book, which stays built for later overrides)
 and the page pictures historia/libros/img/<id>-<n>.png. Serves the repo on port 8767 if nothing answers there. Needs playwright,
 a Chrome at /usr/bin/google-chrome, node (to read curso.js) and PIL (sheets and checks).
 
@@ -77,6 +79,12 @@ GENERIC_PREFIX = ("hz_no_",)
 # The scene's own counters (frog and bird tallies, the card of what is asked: E.hud) are off too; --hud keeps them.
 HIDE_ICON_BUBBLES = True
 HIDE_HUD = True
+
+# The verdict of the fresh beginner review of Nov 19 (the second one): true only for "reads well". A story not listed here is false.
+LEE = {s: True for s in (
+    "la-familia", "quien-eres-tu", "hasta-manana", "d-toc-toc", "d-agua-pajaro", "d-bizcocho-bebe", "d-foto-familia", "d-la-bola",
+    "d-buenas-noches", "donde-esta-el-gato", "rapido-despacio", "el-bebe-duerme", "d-corre", "d-bola-canelo", "d-pato-pequeno",
+    "d-piragua-luis", "d-vamos-a-casa", "la-cuchara", "tengo-hambre", "arroz-con-habichuelas", "no-hay-leche", "jugo-de-china")}
 
 # Per-story fixes (see 6 above). Empty for now.
 OVERRIDES = {}
@@ -421,7 +429,7 @@ def build(sid, res):
     lst = kept(T, sid, lines, ev, why, unclear)
     lst, pic, brk, join = overrides(sid, lst)
     pages = paginate(sid, lst, ev, pic, brk, join)
-    book = {"id": sid, "title": T["title"], "lee": True, "pages": [{"img": f"img/{sid}-{i + 1}.png", "clips": p["clips"]} for i, p in enumerate(pages)]}
+    book = {"id": sid, "title": T["title"], "lee": LEE.get(sid, False), "pages": [{"img": f"img/{sid}-{i + 1}.png", "clips": p["clips"]} for i, p in enumerate(pages)]}
     imgs = []
     for p in pages:
         u = p["img"]
@@ -486,8 +494,8 @@ def check(ids, rd, verbose=True):
         tot["books"] += 1
         if B["id"] != sid or not B["title"]:
             bad.append((sid, "id or title"))
-        if B.get("lee") is not True:
-            bad.append((sid, 'no "lee": true'))
+        if B.get("lee") is not LEE.get(sid, False):
+            bad.append((sid, f'"lee" is {B.get("lee")}, the review says {LEE.get(sid, False)}'))
         for i, pg in enumerate(B["pages"]):
             tot["pages"] += 1; tot["lines"] += len(pg["clips"])
             if not 1 <= len(pg["clips"]) <= 3:
@@ -582,7 +590,7 @@ async def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="*"); ap.add_argument("--jobs", type=int, default=6); ap.add_argument("--fast", default="8")
     ap.add_argument("--sheets"); ap.add_argument("--check", action="store_true"); ap.add_argument("--solve", action="store_true")
-    ap.add_argument("--hud", action="store_true"); ap.add_argument("--icon-bubbles", action="store_true")
+    ap.add_argument("--lee-only", action="store_true"); ap.add_argument("--hud", action="store_true"); ap.add_argument("--icon-bubbles", action="store_true")
     a = ap.parse_args()
     global HIDE_HUD, HIDE_ICON_BUBBLES
     HIDE_HUD = HIDE_HUD and not a.hud; HIDE_ICON_BUBBLES = HIDE_ICON_BUBBLES and not a.icon_bubbles
@@ -592,6 +600,12 @@ async def main():
         if i not in allids:
             sys.exit(f"{i} is not a story of curso.js")
     rd = ready()
+    if a.lee_only:   # only the "lee" field of the books already written is set again from LEE: no play, no page or picture changes
+        for sid in ids:
+            f = os.path.join(OUT, sid + ".json"); t = open(f, encoding="utf8").read()
+            t2 = re.sub(r'"lee": (true|false)', '"lee": ' + json.dumps(LEE.get(sid, False)), t, count=1)
+            open(f, "w", encoding="utf8").write(t2)
+        a.check = True
     if a.check:
         tot, bad = check(ids, rd); print(json.dumps(tot)); [print("BAD", b) for b in bad]; sys.exit(1 if bad else 0)
     srv = serve()

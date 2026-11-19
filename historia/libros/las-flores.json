@@ -1,4 +1,4 @@
-{"id": "las-flores", "title": "Las flores", "lee": true, "pages": [
+{"id": "las-flores", "title": "Las flores", "lee": false, "pages": [
  {"img": "img/las-flores-1.png", "clips": ["p_es_el_patio", "p_luis_nino", "p_carmen_nina"]},
  {"img": "img/las-flores-2.png", "clips": ["p_nino_juega_bola", "p_nina_tiene_flor", "p_mira_el_sol"]},
  {"img": "img/las-flores-3.png", "clips": ["p_es_el_sol", "p_carmen_si_esta_aqui", "p_carmen_esta_alla"]},

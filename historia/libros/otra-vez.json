@@ -1,4 +1,4 @@
-{"id": "otra-vez", "title": "¡Otra vez!", "lee": true, "pages": [
+{"id": "otra-vez", "title": "¡Otra vez!", "lee": false, "pages": [
  {"img": "img/otra-vez-1.png", "clips": ["c17_canelo_tiene", "c15_l_canelo_dame", "c17_l_es_mi"]},
  {"img": "img/otra-vez-2.png", "clips": ["c17_ca_esta_mi", "c17_l_esta_tu", "c17_cq_es_tu"]},
  {"img": "img/otra-vez-3.png", "clips": ["c17_l_si_mi", "c17_cq_es_mi", "c17_l_si_tu"]},

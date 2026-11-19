@@ -1,4 +1,4 @@
-{"id": "el-jugo", "title": "El jugo", "lee": true, "pages": [
+{"id": "el-jugo", "title": "El jugo", "lee": false, "pages": [
  {"img": "img/el-jugo-1.png", "clips": ["cq_que_calor", "ven_balcon", "silla_de_abuela"]},
  {"img": "img/el-jugo-2.png", "clips": ["se_sienta_silla", "silla_es_pequena", "abuela_entra"]},
  {"img": "img/el-jugo-3.png", "clips": ["dos_vasos", "pone_vasos", "vaso_de_jugo"]},

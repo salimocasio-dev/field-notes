@@ -1,4 +1,4 @@
-{"id": "cual", "title": "¿Cuál?", "lee": true, "pages": [
+{"id": "cual", "title": "¿Cuál?", "lee": false, "pages": [
  {"img": "img/cual-1.png", "clips": ["c20_flor", "c20_hay_tres", "c20_un_blanco"]},
  {"img": "img/cual-2.png", "clips": ["c20_un_negro", "c20_un_amarillo", "c20_ca_si_blanco"]},
  {"img": "img/cual-3.png", "clips": ["c20_ca_si_negro", "c20_dos_pajaros", "c20_cq_p_negro"]},

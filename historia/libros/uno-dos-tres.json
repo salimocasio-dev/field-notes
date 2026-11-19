@@ -1,4 +1,4 @@
-{"id": "uno-dos-tres", "title": "Uno, dos, tres", "lee": true, "pages": [
+{"id": "uno-dos-tres", "title": "Uno, dos, tres", "lee": false, "pages": [
  {"img": "img/uno-dos-tres-1.png", "clips": ["c12_parque", "c12_luis_carmen", "c12_perro_abuela"]},
  {"img": "img/uno-dos-tres-2.png", "clips": ["c12_se_llama", "c12_vamos_jugar", "c12_coqui_camina"]},
  {"img": "img/uno-dos-tres-3.png", "clips": ["c12_coqui_corre", "c12_coqui_espera", "c12_ahora_si"]},

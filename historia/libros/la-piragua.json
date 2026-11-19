@@ -1,4 +1,4 @@
-{"id": "la-piragua", "title": "La piragua", "lee": true, "pages": [
+{"id": "la-piragua", "title": "La piragua", "lee": false, "pages": [
  {"img": "img/la-piragua-1.png", "clips": ["c21_un_hombre", "c21_una_mujer", "c21_hombre_come"]},
  {"img": "img/la-piragua-2.png", "clips": ["c21_mujer_bebe", "c21_cq_come", "c21_cq_bebe"]},
  {"img": "img/la-piragua-3.png", "clips": ["c21_coqui_come", "c21_coqui_bebe", "c21_ay"]},

@@ -1,4 +1,4 @@
-{"id": "el-bizcocho", "title": "El bizcocho", "lee": true, "pages": [
+{"id": "el-bizcocho", "title": "El bizcocho", "lee": false, "pages": [
  {"img": "img/el-bizcocho-1.png", "clips": ["ventana_cerrada"]},
  {"img": "img/el-bizcocho-2.png", "clips": ["tiene_bizcocho", "quieres_hola", "ahora_no"]},
  {"img": "img/el-bizcocho-3.png", "clips": ["ab_cierra_ventana"]},

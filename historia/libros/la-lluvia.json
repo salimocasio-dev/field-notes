@@ -1,4 +1,4 @@
-{"id": "la-lluvia", "title": "La lluvia", "lee": true, "pages": [
+{"id": "la-lluvia", "title": "La lluvia", "lee": false, "pages": [
  {"img": "img/la-lluvia-1.png", "clips": ["esta_casa"]},
  {"img": "img/la-lluvia-2.png", "clips": ["mira_casa"]},
  {"img": "img/la-lluvia-3.png", "clips": ["esta_puerta"]},

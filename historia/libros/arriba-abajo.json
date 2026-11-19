@@ -1,4 +1,4 @@
-{"id": "arriba-abajo", "title": "¡Arriba! ¡Abajo!", "lee": true, "pages": [
+{"id": "arriba-abajo", "title": "¡Arriba! ¡Abajo!", "lee": false, "pages": [
  {"img": "img/arriba-abajo-1.png", "clips": ["c16_mira_arriba", "c16_l_ay", "c16_coqui_salta"]},
  {"img": "img/arriba-abajo-2.png", "clips": ["c16_ahora_abajo", "c16_luis_tiene", "c16_l_vamos"]},
  {"img": "img/arriba-abajo-3.png", "clips": ["c16_coqui_tiene", "c16_va_arriba", "c16_va_abajo"]},

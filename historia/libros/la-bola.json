@@ -1,4 +1,4 @@
-{"id": "la-bola", "title": "La bola", "lee": true, "pages": [
+{"id": "la-bola", "title": "La bola", "lee": false, "pages": [
  {"img": "img/la-bola-1.png", "clips": ["c15_luis_tiene", "c15_carmen_tiene", "c15_coqui_tiene"]},
  {"img": "img/la-bola-2.png", "clips": ["c15_l_tira_c_coge", "c15_c_tira_l_coge", "c15_ahora_carmen"]},
  {"img": "img/la-bola-3.png", "clips": ["c15_cq_dame", "c15_cq_coge", "c15_c_tira_ca_coge"]},

@@ -1,4 +1,4 @@
-{"id": "donde-esta-el-pajaro", "title": "¿Dónde está el pájaro?", "lee": true, "pages": [
+{"id": "donde-esta-el-pajaro", "title": "¿Dónde está el pájaro?", "lee": false, "pages": [
  {"img": "img/donde-esta-el-pajaro-1.png", "clips": ["grande_casa", "casa_del_pajaro", "mira_palmas"]},
  {"img": "img/donde-esta-el-pajaro-2.png", "clips": ["una_palma_grande", "una_palma_pequena", "quiere_jugar"]},
  {"img": "img/donde-esta-el-pajaro-3.png", "clips": ["vamos_jugar", "aqui_esta"]},

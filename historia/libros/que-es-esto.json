@@ -1,4 +1,4 @@
-{"id": "que-es-esto", "title": "¿Qué es esto?", "lee": true, "pages": [
+{"id": "que-es-esto", "title": "¿Qué es esto?", "lee": false, "pages": [
  {"img": "img/que-es-esto-1.png", "clips": ["p_cq_hola_luis_amigo", "p_luis_pajaro_amigo", "p_carmen_coqui_amigo"]},
  {"img": "img/que-es-esto-2.png", "clips": ["p_cq_es_flor", "p_luis_si_es_flor", "p_cq_que_es_esto"]},
  {"img": "img/que-es-esto-3.png", "clips": ["p_luis_es_un_vaso", "p_luis_no_amigo", "p_luis_es_bola"]},

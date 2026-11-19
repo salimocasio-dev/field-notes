@@ -1,4 +1,4 @@
-{"id": "pan-para-el-pato", "title": "Pan para el pato", "lee": true, "pages": [
+{"id": "pan-para-el-pato", "title": "Pan para el pato", "lee": false, "pages": [
  {"img": "img/pan-para-el-pato-1.png", "clips": ["c18_lago", "c18_hay_pato", "c18_pato_nada"]},
  {"img": "img/pan-para-el-pato-2.png", "clips": ["c18_hay_pez", "c18_pez_nada", "c18_hay_pajaro"]},
  {"img": "img/pan-para-el-pato-3.png", "clips": ["c18_pajaro_vuela", "c18_tiene_pan", "c18_come"]},

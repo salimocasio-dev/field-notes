@@ -1,4 +1,4 @@
-{"id": "para-los-pajaros", "title": "Para los pájaros", "lee": true, "pages": [
+{"id": "para-los-pajaros", "title": "Para los pájaros", "lee": false, "pages": [
  {"img": "img/para-los-pajaros-1.png", "clips": ["c31_vamos", "c31_busca", "c31_aqui_pan"]},
  {"img": "img/para-los-pajaros-2.png", "clips": ["c31_aqui_fruta", "c31_aqui_gm", "c31_huele_pan"]},
  {"img": "img/para-los-pajaros-3.png", "clips": ["c31_fo_pan", "c31_tira_pan", "c31_pajaro_pan"]},
