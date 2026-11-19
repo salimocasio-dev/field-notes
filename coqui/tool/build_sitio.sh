@@ -14,11 +14,16 @@
 #   1. flutter pub get at coqui/
 #   2. flutter build web --release, served from /field-notes/app/, CanvasKit from our own site
 #      (never from gstatic), the build number compiled in, no service worker
-#   3. takes out what the site must not carry: the service worker file, .last_build_id, the
-#      source maps and the debug symbols
-#   4. fails if anything in the result would be dropped by GitHub Pages (Jekyll drops every name
+#   3. fails if the build's config (in flutter_bootstrap.js) names a renderer other than
+#      canvaskit or a compile target other than dart2js: the next step drops the files of the
+#      other kinds, so a Flutter whose default changed must not go through silently
+#   4. takes out what the site must not carry: the service worker file, .last_build_id, the
+#      source maps and the debug symbols, and the skwasm, wimp and webparagraph CanvasKit
+#      variants (a dart2js + CanvasKit build loads only canvaskit/ and canvaskit/chromium/)
+#   5. fails if anything in the result would be dropped by GitHub Pages (Jekyll drops every name
 #      that starts with "_" or "."), if a file starts with Jekyll front matter, if anything could
-#      register a service worker, or if the base path or the build number did not get in
+#      register a service worker, if canvaskit/ holds anything but the four files kept, or if
+#      the base path or the build number did not get in
 set -euo pipefail
 
 [ $# -eq 1 ] || { echo "usage: bash tool/build_sitio.sh <out dir>" >&2; exit 2; }
@@ -49,10 +54,36 @@ step "flutter build web (build $build)"
   --dart-define=COQUI_BUILD="$build" \
   -o "$out")
 
+step "the build is dart2js + CanvasKit"
+# flutter_bootstrap.js holds `_flutter.buildConfig = {...};`. Every build it lists that names a
+# renderer or a compile target must name canvaskit and dart2js (an entry that names neither is
+# fine), and one entry must name both. The loader starts with no settings (checked below), so
+# it cannot be asked for the skwasm or webparagraph variants either.
+python3 -I - "$out/flutter_bootstrap.js" <<'PY' || fail "the build is not dart2js + CanvasKit; the next step would drop files it needs"
+import json, re, sys
+src = open(sys.argv[1], encoding="utf-8").read()
+m = re.search(r"_flutter\.buildConfig\s*=\s*", src)
+if not m:
+    sys.exit("no _flutter.buildConfig in flutter_bootstrap.js")
+cfg, _ = json.JSONDecoder().raw_decode(src, m.end())
+builds = cfg.get("builds") or []
+print("buildConfig builds:", json.dumps(builds), "useLocalCanvasKit:", cfg.get("useLocalCanvasKit"))
+bad = [b for b in builds if b.get("renderer", "canvaskit") != "canvaskit" or b.get("compileTarget", "dart2js") != "dart2js"]
+if bad:
+    sys.exit("builds that are not dart2js + canvaskit: %s" % json.dumps(bad))
+if not any(b.get("renderer") == "canvaskit" and b.get("compileTarget") == "dart2js" for b in builds):
+    sys.exit("no build entry names dart2js + canvaskit")
+if cfg.get("useLocalCanvasKit") is not True:
+    sys.exit("useLocalCanvasKit is not true: CanvasKit would come from gstatic")
+PY
+
 step "take out what the site must not carry"
 # The tool still writes flutter_service_worker.js (empty with --pwa-strategy=none).
 rm -f "$out/flutter_service_worker.js" "$out/.last_build_id"
 find "$out" -type f \( -name '*.map' -o -name '*.symbols' \) -delete
+# CanvasKit variants a dart2js + CanvasKit build never loads: skwasm and wimp belong to the other
+# renderer; webparagraph is loaded only when the loader is given preferWebParagraph (it is not).
+rm -rf "$out"/canvaskit/skwasm* "$out"/canvaskit/wimp* "$out/canvaskit/webparagraph"
 # A script's last line may point at a source map that is no longer there.
 find "$out" -type f -name '*.js' -exec sed -i '/^\/\/# sourceMappingURL=.*\.map$/d' {} +
 
@@ -66,6 +97,13 @@ while IFS= read -r -d '' f; do
   ! head -c 4 "$f" | cmp -s - <(printf -- '---\n') || fail "starts with Jekyll front matter: $f"
 done < <(find "$out" -type f -print0)
 [ ! -e "$out/flutter_service_worker.js" ] || fail "a service worker file is left"
+# canvaskit/ holds exactly what is loaded: the full variant (Safari, Firefox) and the Chromium one.
+kept="canvaskit/canvaskit.js
+canvaskit/canvaskit.wasm
+canvaskit/chromium/canvaskit.js
+canvaskit/chromium/canvaskit.wasm"
+[ "$(cd "$out" && find canvaskit -type f | LC_ALL=C sort)" = "$kept" ] \
+  || fail "canvaskit/ does not hold exactly the four files kept; it holds: $(cd "$out" && find canvaskit -type f | LC_ALL=C sort | tr '\n' ' ')"
 # Nothing may register a service worker: the bootstrap starts the loader with no settings
 # (_flutter.loader.load();), and nothing else calls it.
 [ "$(grep -c '_flutter\.loader\.load(' "$out/flutter_bootstrap.js")" = 1 ] \

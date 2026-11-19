@@ -21,6 +21,11 @@
 //     plus viewport-fit). They are printed as INFO lines, not checked.
 //   - console: an error fails; a warning fails except Chrome's own "GL Driver Message" notes, which the
 //     headless software GPU prints
+//   - both CanvasKit variants a dart2js + CanvasKit build loads work: the Chromium one
+//     (canvaskit/chromium/, what Chrome loads) and the full one (canvaskit/, what Safari and Firefox
+//     load). Only Chromium is installed here, so the second pass hides Intl.v8BreakIterator, which is
+//     what makes the loader choose the full variant. Each pass must show the words, answer 200 to
+//     every request, send none outside 127.0.0.1, print no error, and request the variant it should.
 // The screenshot is phone size (390 x 844), deviceScaleFactor 1.
 import fs from 'node:fs';
 import http from 'node:http';
@@ -92,21 +97,41 @@ check(!names.includes('flutter_service_worker.js'), 'no flutter_service_worker.j
 
 // ---- the page ---------------------------------------------------------------------------------------------
 const browser = await chromium.launch();
-const context = await browser.newContext({
-  viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true,
-});
-const page = await context.newPage();
-const consoleProblems = [];
-const pageErrors = [];
-const requests = [];
-const failedRequests = [];
+const phone = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true };
 const gpuNote = /GL Driver Message/; // Chrome's software GPU in headless mode, not the app
-page.on('console', (m) => {
-  if (m.type() === 'error' || (m.type() === 'warning' && !gpuNote.test(m.text()))) consoleProblems.push(`${m.type()}: ${m.text()}`);
-});
-page.on('pageerror', (e) => pageErrors.push(String(e)));
-page.on('request', (r) => requests.push(r.url()));
-page.on('requestfailed', (r) => failedRequests.push(`${r.url()} ${r.failure()?.errorText}`));
+// What a page did: its console problems, uncaught errors, requests and failed requests.
+const watch = (pg) => {
+  const w = { consoleProblems: [], pageErrors: [], requests: [], failedRequests: [] };
+  pg.on('console', (m) => {
+    if (m.type() === 'error' || (m.type() === 'warning' && !gpuNote.test(m.text()))) w.consoleProblems.push(`${m.type()}: ${m.text()}`);
+  });
+  pg.on('pageerror', (e) => w.pageErrors.push(String(e)));
+  pg.on('request', (r) => w.requests.push(r.url()));
+  pg.on('requestfailed', (r) => w.failedRequests.push(`${r.url()} ${r.failure()?.errorText}`));
+  return w;
+};
+// The words of the page, from Flutter's accessibility tree (see below).
+const wordsOf = async (pg) => {
+  await pg.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
+  await pg.waitForTimeout(1000);
+  return pg.evaluate(() => [...document.querySelectorAll('flt-semantics')]
+    .map((e) => (e.getAttribute('aria-label') || e.textContent || '').trim()).filter(Boolean));
+};
+// The same checks of what a page did, for either pass.
+const checkTraffic = (label, w, servedFrom) => {
+  const seen = served.slice(servedFrom);
+  const outside = w.requests.filter((u) => !u.startsWith(ORIGIN) && !u.startsWith('data:') && !u.startsWith('blob:'));
+  check(outside.length === 0, `${label}: no request leaves 127.0.0.1 (${w.requests.length} requests)`, outside.join(', '));
+  const notFound = seen.filter((s) => s.status !== 200);
+  check(notFound.length === 0, `${label}: every request to the server answered 200 (${seen.length})`, notFound.map((s) => `${s.status} ${s.url}`).join(', '));
+  check(w.failedRequests.length === 0, `${label}: no failed request`, w.failedRequests.join(', '));
+  check(w.consoleProblems.length === 0 && w.pageErrors.length === 0, `${label}: no console error or warning, no page error`,
+    [...w.consoleProblems, ...w.pageErrors].join(' | '));
+};
+
+const context = await browser.newContext(phone);
+const page = await context.newPage();
+const watched = watch(page);
 
 await page.goto(`${ORIGIN}${PREFIX}`, { waitUntil: 'load' });
 await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
@@ -114,10 +139,7 @@ await page.waitForTimeout(3000); // the first frame
 
 // The app draws on a canvas. Its words are read from Flutter's accessibility tree, which the
 // page builds when the (invisible) "Enable accessibility" button is activated.
-await page.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
-await page.waitForTimeout(1000);
-const words = await page.evaluate(() => [...document.querySelectorAll('flt-semantics')]
-  .map((e) => (e.getAttribute('aria-label') || e.textContent || '').trim()).filter(Boolean));
+const words = await wordsOf(page);
 check(words.includes('Coquí'), 'the page shows "Coquí"', `tree: ${JSON.stringify(words)}`);
 check(words.includes(`build ${BUILD}`), `the page shows "build ${BUILD}"`);
 
@@ -169,14 +191,10 @@ const regs = await page.evaluate(async () => (await navigator.serviceWorker.getR
 check(regs === 0, 'no service worker is registered', `${regs} registrations`);
 check(!served.some((s) => /service_worker/.test(s.url)), 'no service worker file was requested');
 
-// requests
-const outside = requests.filter((u) => !u.startsWith(ORIGIN) && !u.startsWith('data:') && !u.startsWith('blob:'));
-check(outside.length === 0, `no request leaves 127.0.0.1 (${requests.length} requests)`, outside.join(', '));
-const notFound = served.filter((s) => s.status !== 200);
-check(notFound.length === 0, 'every request to the server answered 200', notFound.map((s) => `${s.status} ${s.url}`).join(', '));
-check(failedRequests.length === 0, 'no failed request', failedRequests.join(', '));
-check(consoleProblems.length === 0 && pageErrors.length === 0, 'no console error or warning, no page error',
-  [...consoleProblems, ...pageErrors].join(' | '));
+// requests (the whole first pass; the server's list started empty)
+checkTraffic('chromium variant', watched, 0);
+check(served.some((x) => x.url === `${PREFIX}canvaskit/chromium/canvaskit.wasm`) && !served.some((x) => x.url === `${PREFIX}canvaskit/canvaskit.wasm`),
+  'chromium variant: canvaskit/chromium/canvaskit.wasm was loaded, and not the full variant');
 
 // the screenshot: phone size, and not blank
 const png = await page.screenshot({ path: SHOT || undefined });
@@ -193,6 +211,23 @@ const colours = await page.evaluate(async (b64) => {
   return { w: img.width, h: img.height, colours: seen.size };
 }, png.toString('base64'));
 check(colours.w === 390 && colours.h === 844 && colours.colours > 2, 'the screenshot is 390 x 844 and not blank', `${colours.w}x${colours.h}, ${colours.colours} colours${SHOT ? `, saved to ${SHOT}` : ''}`);
+
+// ---- second pass: the full CanvasKit variant (Safari, Firefox) -----------------------------------------
+const mark = served.length;
+const context2 = await browser.newContext(phone);
+await context2.addInitScript(() => { delete Intl.v8BreakIterator; });
+const page2 = await context2.newPage();
+const watched2 = watch(page2);
+await page2.goto(`${ORIGIN}${PREFIX}`, { waitUntil: 'load' });
+await page2.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
+await page2.waitForTimeout(3000);
+const words2 = await wordsOf(page2);
+check(words2.includes('Coquí') && words2.includes(`build ${BUILD}`), 'full variant: the page shows "Coquí" and "build ' + BUILD + '"', `tree: ${JSON.stringify(words2)}`);
+checkTraffic('full variant', watched2, mark);
+const seen2 = served.slice(mark).map((x) => x.url);
+check(seen2.includes(`${PREFIX}canvaskit/canvaskit.wasm`) && seen2.includes(`${PREFIX}canvaskit/canvaskit.js`) && !seen2.some((u) => u.includes('/canvaskit/chromium/')),
+  'full variant: canvaskit/canvaskit.js and .wasm were loaded, and nothing from canvaskit/chromium/');
+check(seen2.every((u) => !/skwasm|wimp|webparagraph/.test(u)), 'neither pass asked for a skwasm, wimp or webparagraph file');
 
 await browser.close();
 server.close();
