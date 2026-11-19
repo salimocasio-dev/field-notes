@@ -1,0 +1,183 @@
+{
+ "esta_casa": {
+  "who": "narr",
+  "text": "Esta es la casa de abuela.",
+  "marks": [
+   0,
+   2460,
+   2460
+  ]
+ },
+ "mira_casa": {
+  "who": "narr",
+  "text": "Mira la casa de abuela.",
+  "marks": [
+   0,
+   2100,
+   2100
+  ]
+ },
+ "puedes_casa": {
+  "who": "narr",
+  "text": "¿Puedes tocar la casa?",
+  "marks": [
+   0,
+   1740,
+   1740
+  ]
+ },
+ "muy_bien": {
+  "who": "narr",
+  "text": "¡Muy bien!",
+  "marks": [
+   0,
+   1020,
+   1020
+  ]
+ },
+ "esta_puerta": {
+  "who": "narr",
+  "text": "Esta es la puerta de la casa.",
+  "marks": [
+   0,
+   2820,
+   2820
+  ]
+ },
+ "cerrada": {
+  "who": "narr",
+  "text": "Está cerrada.",
+  "marks": [
+   0,
+   1020,
+   1020
+  ]
+ },
+ "donde_puerta": {
+  "who": "narr",
+  "text": "¿Dónde está la puerta?",
+  "marks": [
+   0,
+   1740,
+   1740
+  ]
+ },
+ "mira_ventana": {
+  "who": "narr",
+  "text": "Mira la ventana.",
+  "marks": [
+   0,
+   1380,
+   1380
+  ]
+ },
+ "ventana_cerrada": {
+  "who": "narr",
+  "text": "La ventana está cerrada.",
+  "marks": [
+   0,
+   1740,
+   1740
+  ]
+ },
+ "puedes_abrir": {
+  "who": "narr",
+  "text": "¿Puedes abrir la ventana?",
+  "marks": [
+   0,
+   1740,
+   1740
+  ]
+ },
+ "si_muy_bien": {
+  "who": "narr",
+  "text": "¡Sí! ¡Muy bien!",
+  "marks": [
+   0,
+   1380,
+   1380
+  ]
+ },
+ "tiene_bizcocho": {
+  "who": "narr",
+  "text": "Mira. Abuela tiene un bizcocho.",
+  "marks": [
+   0,
+   2100,
+   2100
+  ]
+ },
+ "quieres_hola": {
+  "who": "narr",
+  "text": "Abuela dice: ¡Hola! ¿Quieres bizcocho?",
+  "habla": "abuela",
+  "marks": [
+   0,
+   2100,
+   2100
+  ]
+ },
+ "cq_si": {
+  "who": "tu",
+  "text": "¡Sí!",
+  "marks": [
+   0,
+   660,
+   660
+  ]
+ },
+ "grande_casa": {
+  "who": "narr",
+  "text": "La casa de abuela es grande.",
+  "marks": [
+   0,
+   2460,
+   2460
+  ]
+ },
+ "puedes_casa_grande": {
+  "who": "narr",
+  "text": "¿Puedes tocar la casa grande?",
+  "marks": [
+   0,
+   2100,
+   2100
+  ]
+ },
+ "casa_del_pajaro": {
+  "who": "narr",
+  "text": "Mira. Esta es la casa del pájaro.",
+  "marks": [
+   0,
+   2820,
+   2820
+  ]
+ },
+ "es_pequena": {
+  "who": "narr",
+  "text": "Es pequeña.",
+  "marks": [
+   0,
+   1020,
+   1020
+  ]
+ },
+ "donde_pequena": {
+  "who": "narr",
+  "text": "¿Dónde está la casa pequeña?",
+  "marks": [
+   0,
+   2100,
+   2100
+  ]
+ },
+ "mira_palmas": {
+  "who": "narr",
+  "text": "Mira las palmas.",
+  "marks": [
+   0,
+   1380,
+   1380
+  ]
+ }
+}

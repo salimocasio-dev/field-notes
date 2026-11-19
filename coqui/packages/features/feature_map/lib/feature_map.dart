@@ -1,2 +1,4 @@
 /// The home map, the Today card and the place sheet.
 library;
+
+export 'package:feature_map/src/module.dart';

@@ -19,3 +19,12 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
+
+flutter:
+  # The sample course (made by coqui/tool/contracts/make_sample.mjs). Other packages
+  # read it as packages/coqui_testing/sample/...
+  assets:
+    - sample/cuentos/
+    - sample/libros/
+    - sample/datos/
+    - sample/audio/

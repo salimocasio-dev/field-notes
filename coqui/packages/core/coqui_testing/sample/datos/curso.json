@@ -1,0 +1,60 @@
+{
+ "lugares": [
+  {
+   "id": "casa",
+   "n": 1,
+   "nombre": "La casa",
+   "en": "Grandma's house",
+   "cuentos": [
+    "la-lluvia",
+    "el-bizcocho",
+    "donde-esta-el-pajaro",
+    "el-jugo",
+    "que-calor",
+    "la-familia",
+    "la-foto",
+    "quien-eres-tu",
+    "las-flores",
+    "que-es-esto",
+    "hasta-manana"
+   ],
+   "dibujos": [
+    "d-toc-toc",
+    "d-agua-pajaro",
+    "d-bizcocho-bebe",
+    "d-foto-familia",
+    "d-la-bola",
+    "d-buenas-noches"
+   ],
+   "haz": [
+    "h-frente",
+    "h-balcon",
+    "h-sala",
+    "h-patio"
+   ],
+   "escenas": [
+    "El frente",
+    "El balcón",
+    "La sala",
+    "El patio"
+   ]
+  }
+ ],
+ "cuentos": {
+  "la-lluvia": {
+   "t": "La lluvia",
+   "min": 2
+  },
+  "el-bizcocho": {
+   "t": "El bizcocho",
+   "min": 3
+  },
+  "donde-esta-el-pajaro": {
+   "t": "¿Dónde está el pájaro?",
+   "min": 3
+  }
+ },
+ "cual": [
+  "cual-frente"
+ ]
+}
