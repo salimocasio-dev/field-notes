@@ -357,7 +357,7 @@ Page 12: sections 1, 2, 6, 7. **Build:** `CourseCatalog` over a `fetch(String pa
 - `pairFor` takes the exact word first, then the normalized form: bebé/bebe and tú/tu are different words that normalize the same.
 - A clip's speaker and text are known once a story that has it is read; before that `clip(id)` gives marks and url with empty text. The url is `audio/<id>.mp3?v=<ready.json's v>`, as juego.js builds it.
 - Old behaviour, ported: "Heard in" for bebé also returns lines of the verb bebe (the accent is dropped); the same for tú and tu.
-- Open: juego.js line 103 adds the line "Ahora tú." in code for a story with speaking turns. Decided: it moves into `fijos.json` (`lineas`), read by the catalog. Order 17b.
+- juego.js line 103 wrote the line "Ahora tú." in code. Done as order 17b (merged): `fijos.json` has `lineas` (clip id to speaker and text, found by `export_datos.mjs` from the old code), and `clip(id)` uses it until a story that has the clip is read. It is the only such line in juego.js, cual.js and llamada.js.
 
 ## Order 18. Audio, storage, haptics, speech (builder, coqui_platform)
 
