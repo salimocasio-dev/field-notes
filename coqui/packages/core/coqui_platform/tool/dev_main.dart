@@ -193,10 +193,9 @@ class _DevScreenState extends State<DevScreen> {
         ),
     };
     final sw = Stopwatch()..start();
-    await player.preload(lines);
-    final missing = lines.where((id) => webSoundCore.clips[id] == null);
+    final missing = await player.preload(lines);
     say(
-      'preload: ${lines.length - missing.length} of ${lines.length} fetched and decoded in ${sw.elapsedMilliseconds} ms',
+      'preload: ${lines.length - missing.length} of ${lines.length} fetched and decoded in ${sw.elapsedMilliseconds} ms; not ready: ${missing.isEmpty ? '[]' : missing}',
     );
     if (missing.isNotEmpty) throw StateError('not loaded: $missing');
   }

@@ -383,7 +383,7 @@ void main() {
       p.loop('rain', false);
       expect(p.looping, isEmpty);
       await p.unlock();
-      await p.preload(['a']);
+      expect(await p.preload(['a']), isEmpty);
       await p.stop();
       expect(
         [p.unlocked, p.preloaded, p.stops],
@@ -397,6 +397,45 @@ void main() {
 
     test('without lengths every clip plays', () async {
       expect(await FakeClipPlayer().play('x'), isTrue);
+    });
+
+    test('preload gives back the clips that are not ready', () async {
+      final p = FakeClipPlayer(lengthOf: (id) => id == 'none' ? null : 900);
+      expect(p.failing, isEmpty);
+      expect(await p.preload(['a', 'b']), isEmpty);
+      expect(await p.preload([]), isEmpty);
+      // A clip with no ClipInfo (lengthOf gives null), once, where it first stands.
+      expect(await p.preload(['b', 'none', 'a', 'none', 'b']), ['none']);
+      // Clips told to fail: in the order given, no duplicates, whatever else is asked for.
+      p.failing = {'a', 'b', 'c'};
+      expect(await p.preload(['c', 'none', 'ok', 'a', 'c', 'b', 'a']), [
+        'c',
+        'none',
+        'a',
+        'b',
+      ]);
+      // A retry gives what the set holds then.
+      p.failing.remove('a');
+      p.failing.remove('c');
+      expect(await p.preload(['a', 'b', 'c']), ['b']);
+      p.failing = {};
+      expect(await p.preload(['a', 'b', 'c']), isEmpty);
+      // Every call is recorded as it came, duplicates and all.
+      expect(p.preloaded, [
+        ...['a', 'b'],
+        ...['b', 'none', 'a', 'none', 'b'],
+        ...['c', 'none', 'ok', 'a', 'c', 'b', 'a'],
+        ...['a', 'b', 'c'],
+        ...['a', 'b', 'c'],
+      ]);
+      // An iterable that can be read once.
+      expect(await p.preload(['none', 'a'].map((id) => id)), ['none']);
+    });
+
+    test('without lengths nothing is unknown; only the failing fail', () async {
+      final p = FakeClipPlayer()..failing = {'y'};
+      expect(await p.preload(['x', 'y', 'y', 'x']), ['y']);
+      expect(p.played, isEmpty);
     });
   });
 
@@ -599,6 +638,15 @@ void main() {
       expect(s.clock.nowMs() - t0, 2041 - 193);
       s.progress.heard('casa');
       expect(s.progress.word('casa')!.primera, s.clock.nowMs());
+    });
+
+    test('its clip player does not have a clip the course lacks', () async {
+      final s = fakeServices();
+      await s.course.load();
+      expect(
+        await s.clips.preload(['esta_casa', 'nada', 'esta_casa', 'nada']),
+        ['nada'],
+      );
     });
 
     test('takes what it is given', () {

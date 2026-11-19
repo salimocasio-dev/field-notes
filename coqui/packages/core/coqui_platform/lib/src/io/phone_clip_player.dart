@@ -70,9 +70,17 @@ class PhoneClipPlayer implements ClipPlayer {
     }
   }
 
+  /// Fetches each clip's file once and gives back the ids that are not ready, in the order given and
+  /// without duplicates: no [ClipInfo], a file that cannot be had (the phone decodes at [play], not
+  /// here). A clip already fetched is not reported. Never throws for a clip that fails.
   @override
-  Future<void> preload(Iterable<String> clipIds) async {
-    await Future.wait([for (final id in clipIds) _load(id)]);
+  Future<List<String>> preload(Iterable<String> clipIds) async {
+    final ids = {...clipIds}.toList();
+    final files = await Future.wait([for (final id in ids) _load(id)]);
+    return [
+      for (var i = 0; i < ids.length; i++)
+        if (files[i] == null) ids[i],
+    ];
   }
 
   @override
