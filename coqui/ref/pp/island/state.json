@@ -1,0 +1,47 @@
+{
+  "id": "island",
+  "kind": "island",
+  "source": "coqui/tool/ref/pp/island.html (loads docs/proyecto/pixel/pp-engine.js and mapa.js)",
+  "note": "The map island with no places. Same engine settings as mapa.html. Nothing after decorate(): no flushShadows, bakeOcclusion, applyShadows or shadeEdges, no places, no frog, no flags, no plates.",
+  "steps": [
+    "zb.fill(-1e9); pix.fill(0); kinds.fill(0); waterPix.length = 0;   // the first four statements of bake()",
+    "for iy in 0..H-1, ix in 0..W-1:  g = unproject(ix + .5, iy + .5); i = iy*W + ix; c = groundColor(g.x, g.y, ix, iy, i);  if c == 0 continue;  pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS",
+    "slabSides()",
+    "growGrass()",
+    "groundZ.set(zb)",
+    "decorate()"
+  ],
+  "engine": {
+    "W": 256,
+    "H": 480,
+    "S": 8,
+    "originX": 0,
+    "originY": 36,
+    "OX": 128,
+    "OY": 276,
+    "SHADOW_X": 0.9,
+    "SHADOW_Y": -0.1,
+    "STILL": false,
+    "SIN": 0.5,
+    "COS": 0.8660254037844386,
+    "R2": 1.4142135623730951,
+    "WIND_FPS": 8,
+    "GRADIENT_Y": 0.21650635094610965,
+    "EDGE": 0.28,
+    "PP_SCENE": {
+      "w": 256,
+      "h": 480,
+      "s": 8,
+      "originY": 36,
+      "shadowX": 0.9,
+      "shadowY": -0.1
+    }
+  },
+  "counts": {
+    "tufts": 9930,
+    "leaves": 0,
+    "waterPix": 19599
+  },
+  "decorateCalls": 77,
+  "mathRandomCalls": 0
+}

@@ -1,0 +1,227 @@
+{
+  "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
+  "files": 44,
+  "totalBytes": 5285725,
+  "entries": [
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/kinds.bin",
+      "bytes": 51840,
+      "sha256": "f74bf8809a4a821f4a44374ebe7212097b9279da3b9b3154c1a0f015b755be12"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/kinds.json",
+      "bytes": 305,
+      "sha256": "0ba5856a1368ddf8cffdf87d959cb2c3b65553321d6dd450a79004c1f1647554"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/pix.bin",
+      "bytes": 207360,
+      "sha256": "0724cb1c8d9f864db7c8bd5276ab497665424d17510b4dea3aa033fcb02fb7ad"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/pix.json",
+      "bytes": 370,
+      "sha256": "593673e751ba9a943db0496d80e78092de98752f7297b5970d4462c45191d998"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/pix.png",
+      "bytes": 15465,
+      "sha256": "4afcda00956398c99d0a4dec82664916c7904c588467c0e5064f3886a0953034"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/state.json",
+      "bytes": 1091,
+      "sha256": "36d65703fb7b09920c2d39fbaed6380e4e714a432f8b2e2d1993f766cb02cf4d"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/zb.bin",
+      "bytes": 207360,
+      "sha256": "19e51d9a06baa3c48b4fa7873f62a47a5bd601c85a56df7caee4f77a6849990f"
+    },
+    {
+      "path": "frente/door-open-shutters-open-lamp-on/zb.json",
+      "bytes": 322,
+      "sha256": "e47db36f77723e3bbee7405bfa1bcb8ecc838ef6cca4dee4ff298df1f1ec3d16"
+    },
+    {
+      "path": "island/calls.md",
+      "bytes": 9068,
+      "sha256": "bb0ff982c3257749c0a4bfe743584aa335f493c01d71222ad1f97e309f199e98"
+    },
+    {
+      "path": "island/decorate-calls.json",
+      "bytes": 7550,
+      "sha256": "6331860b9abbba0f2d6a2ce3f73a26d7efc46671c9294b284d63bb669935367a"
+    },
+    {
+      "path": "island/kinds.bin",
+      "bytes": 122880,
+      "sha256": "6aa5860f9b951e479167cc1c04513aca56d2379471bf5ea4a0f94e7be996acd5"
+    },
+    {
+      "path": "island/kinds.json",
+      "bytes": 306,
+      "sha256": "b43b2040b23822d410b800822f4b75b068d6cac8bf412b698a3d474fef380435"
+    },
+    {
+      "path": "island/pix.bin",
+      "bytes": 491520,
+      "sha256": "b5991ae8e8c5cf182d87ba43bc6ce85a85d8e923486731ed2f510d9035713405"
+    },
+    {
+      "path": "island/pix.json",
+      "bytes": 370,
+      "sha256": "3ffe56c8960af9423852673b2b862711aff694d75a941bc8cd1b0164ca06025d"
+    },
+    {
+      "path": "island/pix.png",
+      "bytes": 39190,
+      "sha256": "cee11009ed7896dd6a6eecc61de524261c0cc456a97c21d994a9aed2bd68d943"
+    },
+    {
+      "path": "island/state.json",
+      "bytes": 1360,
+      "sha256": "afcf5f62fca92842587d91f39b0f2d2bd6e803172566cca31625e1af146ce9a9"
+    },
+    {
+      "path": "island/zb.bin",
+      "bytes": 491520,
+      "sha256": "8dc2c4b252549437dc9ff4f829ba493d0345398292c30614c6a2087325f63702"
+    },
+    {
+      "path": "island/zb.json",
+      "bytes": 322,
+      "sha256": "3b9f10df1922f6be7023e3347a27bca6924f382acef882975c4a90fcdcda5d79"
+    },
+    {
+      "path": "map/hecho-0/kinds.bin",
+      "bytes": 122880,
+      "sha256": "9f2d1499fdedb771ed363efa9677abfcfdb319c92bb9c728e7dd1af116eb126e"
+    },
+    {
+      "path": "map/hecho-0/kinds.json",
+      "bytes": 306,
+      "sha256": "ec36061702bc0622ab532410b6c71291fb54b860febe8971483654c41734dc48"
+    },
+    {
+      "path": "map/hecho-0/pix.bin",
+      "bytes": 491520,
+      "sha256": "7eec85885536b8a718f5ff19ade258a444dd8fc0ad1b2f6928fb381802149902"
+    },
+    {
+      "path": "map/hecho-0/pix.json",
+      "bytes": 370,
+      "sha256": "5f56f5aae5948e70863baf733e43bc877907e41610fd92795a91820893299d87"
+    },
+    {
+      "path": "map/hecho-0/pix.png",
+      "bytes": 57903,
+      "sha256": "524336077fa1717214ed64b0e5fe2cfad5b1df83b26a7f545a10613b287145e8"
+    },
+    {
+      "path": "map/hecho-0/state.json",
+      "bytes": 1329,
+      "sha256": "e4c00d15d7f99155373cc36d9682f929a266938f2814523f04b2a2c082dbb0ca"
+    },
+    {
+      "path": "map/hecho-0/zb.bin",
+      "bytes": 491520,
+      "sha256": "7f366d9e58a78567cf26012b0b0be615009a2783a083a8fd0171fa196d21c6bc"
+    },
+    {
+      "path": "map/hecho-0/zb.json",
+      "bytes": 322,
+      "sha256": "1aa147c4a4ce4d5ab6663455e34a37634fecb3e9828f7e6ec1e6e22d1c344db8"
+    },
+    {
+      "path": "map/hecho-10/kinds.bin",
+      "bytes": 122880,
+      "sha256": "9f2d1499fdedb771ed363efa9677abfcfdb319c92bb9c728e7dd1af116eb126e"
+    },
+    {
+      "path": "map/hecho-10/kinds.json",
+      "bytes": 306,
+      "sha256": "ec36061702bc0622ab532410b6c71291fb54b860febe8971483654c41734dc48"
+    },
+    {
+      "path": "map/hecho-10/pix.bin",
+      "bytes": 491520,
+      "sha256": "5858e193ce90d50ff5e962020b40126d273df0040fa3e78d38b2c4300a7e7efb"
+    },
+    {
+      "path": "map/hecho-10/pix.json",
+      "bytes": 370,
+      "sha256": "66e22d14a447e3ad597251c5aace0375b32ac8d2106d8b401564d3fb37417dbb"
+    },
+    {
+      "path": "map/hecho-10/pix.png",
+      "bytes": 57740,
+      "sha256": "1b38bf2174be9b5bcce84c3fd60ef7f293f5137c65aa665e937cea56ddf01a27"
+    },
+    {
+      "path": "map/hecho-10/state.json",
+      "bytes": 1321,
+      "sha256": "14f005c93caa9e9a4a55589974d83e1bb2b6c2af55fca823c93447c3524d111f"
+    },
+    {
+      "path": "map/hecho-10/zb.bin",
+      "bytes": 491520,
+      "sha256": "1718c619c96ce32399dc0bd4169382abbbda537c3b04b580f9a357774dd9677b"
+    },
+    {
+      "path": "map/hecho-10/zb.json",
+      "bytes": 322,
+      "sha256": "95c0816d97e93795575383e67e3fd4b6e70e354537c6027084206c47b20ca2bd"
+    },
+    {
+      "path": "map/hecho-3/kinds.bin",
+      "bytes": 122880,
+      "sha256": "9f2d1499fdedb771ed363efa9677abfcfdb319c92bb9c728e7dd1af116eb126e"
+    },
+    {
+      "path": "map/hecho-3/kinds.json",
+      "bytes": 306,
+      "sha256": "ec36061702bc0622ab532410b6c71291fb54b860febe8971483654c41734dc48"
+    },
+    {
+      "path": "map/hecho-3/pix.bin",
+      "bytes": 491520,
+      "sha256": "aec184c1985db8e2113fb0ac73b3950838e6dc175f8e0a5fb7991cac93a761ad"
+    },
+    {
+      "path": "map/hecho-3/pix.json",
+      "bytes": 370,
+      "sha256": "8b55bd01a9bcfd24bc2b892f06c0de2adde664104b73f8371e5574c76bd0da18"
+    },
+    {
+      "path": "map/hecho-3/pix.png",
+      "bytes": 57961,
+      "sha256": "1475ffe81f7149397bf2727fa32ec4d9610a3ee80579c6f1ed8a337fac64786f"
+    },
+    {
+      "path": "map/hecho-3/state.json",
+      "bytes": 1327,
+      "sha256": "4ac478bc30c5201ae3768ccccd971515b534ac37a334250247cde831aed56de2"
+    },
+    {
+      "path": "map/hecho-3/zb.bin",
+      "bytes": 491520,
+      "sha256": "50aaac484f514f2dade59af392d27761b80bb119adeab61d39e4c8d50a6b13d1"
+    },
+    {
+      "path": "map/hecho-3/zb.json",
+      "bytes": 322,
+      "sha256": "da1b8a9af598a53e6502ff3ae24004f54bb2f09a080383a7c621f4c37b699211"
+    },
+    {
+      "path": "unit/unit-s26.json",
+      "bytes": 49636,
+      "sha256": "00f62f5f0c1a5db251dfa9242d774d630af4cce5a2171bf6b14e66f382ee7404"
+    },
+    {
+      "path": "unit/unit.json",
+      "bytes": 89555,
+      "sha256": "175ee948698d9204b9dab37c58a51337a4124a907056e2f84103e3c520da6191"
+    }
+  ]
+}

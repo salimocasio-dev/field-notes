@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Map island, no places</title></head><body>
+<canvas id="c"></canvas>
+<!-- The map's engine settings, exactly as docs/proyecto/pixel/mapa.html sets them. The old files are loaded, not copied. -->
+<script>window.PP_SCENE = { w: 256, h: 480, s: 8, originY: 36, shadowX: .9, shadowY: -.1 };</script>
+<script src="../../../../docs/proyecto/pixel/pp-engine.js"></script>
+<script src="../../../../docs/proyecto/pixel/mapa.js"></script>
+<script>
+'use strict';
+/* The island of the map with no places: ground, slabSides, growGrass, decorate, and nothing after.
+   This is mapa.js bake() (lines 411 to 430) without its two place passes and everything that follows decorate().
+   `patches` stays empty because no place is run. */
+function buildIsland() {
+  zb.fill(-1e9);                 // bake(): the first four statements
+  pix.fill(0);
+  kinds.fill(0);
+  waterPix.length = 0;
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {   // bake(): the ground loop, as it is
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundColor(g.x, g.y, ix, iy, i);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1;
+    zb[i] = (g.x + g.y) / R2 * COS;
+  }
+  slabSides();
+  growGrass();
+  groundZ.set(zb);
+  decorate();
+}
+// the same build, with a log of what decorate() asks the engine to draw (palm, bush, sphere called by decorate itself)
+function buildIslandLogged() {
+  const log = [], real = { palm, bush, sphere };
+  let depth = 0;
+  const wrap = name => function (...a) {
+    if (depth === 0) log.push({ fn: name, args: a.map(v => (Array.isArray(v) ? v.slice() : v)) });
+    depth++;
+    try { return real[name].apply(this, a); } finally { depth--; }
+  };
+  palm = wrap('palm'); bush = wrap('bush'); sphere = wrap('sphere');
+  try { buildIsland(); } finally { palm = real.palm; bush = real.bush; sphere = real.sphere; }
+  return log;
+}
+</script></body></html>
