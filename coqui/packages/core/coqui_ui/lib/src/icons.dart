@@ -204,8 +204,8 @@ class CoquiFlame extends StatelessWidget {
   /// The font size of the text beside it, in px.
   final double fontSize;
 
-  /// The space between the flame's box and the text that follows it: 0.26 em.
-  static double gapFor(double fontSize) => fontSize * 0.26;
+  /// The space between the flame's box and the text that follows it: 0.29 em.
+  static double gapFor(double fontSize) => fontSize * 0.29;
 
   @override
   Widget build(BuildContext context) => ExcludeSemantics(

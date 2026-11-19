@@ -521,8 +521,8 @@ void main() {
       expect(MapChips.streakLabel(0), '0 days');
       expect(MapChips.streakLabel(1), '1 day');
       expect(MapChips.streakLabel(5), '5 days');
-      // The flame is 0.86 em wide and 1.1 em tall at the chip's 14 px: 12 x 15.4 px, 0.26 em
-      // (3.64 px) before the text.
+      // The flame is 0.86 em wide and 1.1 em tall at the chip's 14 px: 12 x 15.4 px, 0.29 em
+      // (4.06 px) before the text.
       final box = tester.getRect(find.byType(CoquiFlame));
       expect(box.width, closeTo(16.8, 1e-9));
       expect(box.height, closeTo(16.8, 1e-9));

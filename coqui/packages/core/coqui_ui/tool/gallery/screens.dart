@@ -1183,49 +1183,52 @@ class _WordMeters extends StatelessWidget {
             CoquiCard(
               marginBottom: 0,
               padding: EdgeInsets.zero,
-              child: SizedBox(
-                height: 120,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: ClipRect(
-                        child: OverflowBox(
-                          alignment: Alignment.center,
-                          minHeight: 0,
-                          maxHeight: 8 * 24,
-                          child: Column(
-                            children: [
-                              for (var i = 1; i <= 8; i++)
-                                SizedBox(
-                                  height: 24,
-                                  child: Center(
-                                    child: Text(
-                                      'a line of the list, $i',
-                                      style: CoquiText.body,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
+                child: SizedBox(
+                  height: 120,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRect(
+                          child: OverflowBox(
+                            alignment: Alignment.center,
+                            minHeight: 0,
+                            maxHeight: 8 * 24,
+                            child: Column(
+                              children: [
+                                for (var i = 1; i <= 8; i++)
+                                  SizedBox(
+                                    height: 24,
+                                    child: Center(
+                                      child: Text(
+                                        'a line of the list, $i',
+                                        style: CoquiText.body,
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      child: ListFade(
-                        edge: FadeEdge.top,
-                        color: CoquiColors.card,
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        child: ListFade(
+                          edge: FadeEdge.top,
+                          color: CoquiColors.card,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: ListFade(color: CoquiColors.card),
-                    ),
-                  ],
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: ListFade(color: CoquiColors.card),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -412,7 +412,7 @@ class TodayCard extends StatelessWidget {
 /// A stat of Yo: a card with a big number and a grey word under it, centred, no
 /// space under it (the grid puts 16 px between). The streak's has the flame before its number
 /// ([flame]: the fire emoji glyph the old page writes in front of it, drawn as [CoquiFlame] at the number's
-/// size, 0.26 em before the digits). app.html:472
+/// size, 0.29 em before the digits). app.html:472
 class StatCard extends StatelessWidget {
   const StatCard({
     super.key,
