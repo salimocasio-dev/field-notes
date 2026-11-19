@@ -53,7 +53,7 @@ The mic's pulse, the call's rings and dots and the story mic's rings and dots ar
 ## Things that look wrong in the old app itself (not fixed)
 
 - Everything built so far played (`mapa-todo-jugado`, `yo-todo-jugado`): the chip says "1 · La casa", the frog stands on place 1 with an "11/11" chip, and Yo says "A1 · place 1 of 10 · La casa". `aqui()` in app.html gives place 1 when no built place is unfinished.
-- A word with no picture pair ("toca", "con", "está", "¿quién?" ...) is never asked in Repaso, yet it gets a return date: in `todo-jugado` 28 such words are overdue for good ("Nothing due today" stays), and by `vuelve()` their sheets read "Comes back today".
+- A word with no picture pair ("toca", "con", "está", "¿quién?" ...) is never asked in Repaso, yet it gets a return date, and a day-one meeting sets it due. In `todo-jugado` that is why Palabras says "Nothing due today" while `PAL.vence('ear')` still lists words (28 in the seed): `plan()` and `palabras()` count only words with a pair. Their word sheets say "Comes back today" or "Comes back in N days" for a return that no screen ever asks.
 - A place that has stories is "open" whether or not the places before it are done (place 3 in `lugar-abierto-3-nada-jugado`). "Locked until the places before it are done." appears only on places that have no stories yet.
 - In the call, while Danny speaks his new line, the learner's last line stays in green under it (`llamada-danny-con-imagen`).
 - Repaso: page 10 says the right picture gets "the green ring and the sign"; cual.js sets a `sign` flag that nothing draws. Only the green ring shows (`repaso-toque-mal-se-muestra-la-buena`).
