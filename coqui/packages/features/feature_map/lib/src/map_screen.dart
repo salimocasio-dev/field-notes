@@ -26,6 +26,8 @@ class MapScreen extends StatefulWidget {
     required this.services,
     this.perf,
     this.reviewTitle,
+    this.openPlace,
+    this.onPicture,
   });
 
   final Services services;
@@ -35,6 +37,13 @@ class MapScreen extends StatefulWidget {
 
   /// The title the Today card gives its review entry; null: no review entry.
   final String? reviewTitle;
+
+  /// For a dev entry and its screenshots: once the map is up, go to this place (0 to 9) as if it had been
+  /// tapped.
+  final int? openPlace;
+
+  /// For tests: given the picture the screen draws, as soon as it is made.
+  final void Function(MapPicture picture)? onPicture;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -67,6 +76,7 @@ class _MapScreenState extends State<MapScreen>
   void initState() {
     super.initState();
     _map = MapPicture(still: _s.reduceMotion, onHop: _hopSound);
+    widget.onPicture?.call(_map);
     _changes = _s.progress.changes.listen((_) => _progressChanged());
     // the first frame shows the page colour; the bake comes after it
     WidgetsBinding.instance.addPostFrameCallback((_) => _bake());
@@ -101,6 +111,8 @@ class _MapScreenState extends State<MapScreen>
     }
     setState(() {});
     WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToFrog());
+    final go = widget.openPlace;
+    if (go != null) _visit(go);
   }
 
   // mapa.html: frame
@@ -149,9 +161,13 @@ class _MapScreenState extends State<MapScreen>
   // mapa.html: the click on the canvas
   void _onTapPixel(int x, int y) {
     if (!_baked || _map.FROG.path != null) return;
-    final k = _map.stopAt(x + .5, y + .5);
-    final places = _s.course.places;
-    if (k < 0 || k >= places.length) return;
+    _visit(_map.stopAt(x + .5, y + .5));
+  }
+
+  // mapa.html: what a tap on stop k does
+  void _visit(int k) {
+    if (!_baked || _map.FROG.path != null) return;
+    if (k < 0 || k >= _s.course.places.length) return;
     _s.haptics.tick();
     if (_map.STATE.abierto[k] && k != _map.FROG.at) {
       if (_s.reduceMotion) {

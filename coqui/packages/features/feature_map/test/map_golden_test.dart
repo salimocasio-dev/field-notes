@@ -16,7 +16,8 @@ import 'support/ref_data.dart';
 
 void main() {
   final bakeWatch = Stopwatch()..start();
-  final map = MapPicture(); // `still` is false: the references are made with motion on
+  final map =
+      MapPicture(); // `still` is false: the references are made with motion on
   map.bake();
   bakeWatch.stop();
 
