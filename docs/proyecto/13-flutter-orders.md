@@ -131,6 +131,15 @@ New files beside the stories. The old site does not read them.
 
 **Done when:** every clip has marks; ten, picked at random, match what the old page computes in Chrome within 5 ms; a dry run of the audio job records 0 clips.
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; every check below was run again by the orchestrator.
+- `node coqui/tool/export_datos.mjs`: the four files in `historia/datos/`; a second run is byte-identical.
+- `historia/audio/marcas.json`: all 1,582 clips of ready.json. Made by `historia/tools/marcas.py` (ffmpeg), which `voz.py` now calls for the clips it records. `voz.yml` installs ffmpeg if the runner lacks it.
+- All clips were checked against Chrome, not ten (`node coqui/tool/check_marcas.mjs`). At the clips' own rate, 24 kHz: every mark within 0.5 ms.
+- **Differs from "within 5 ms":** at Chrome's default rate (44.1 kHz) 25 clips have an end mark more than 5 ms off, the worst 31 ms, and one start mark is 7 ms off. The old page's `trim` gives different marks on different devices (up to 31 ms between 24 and 44.1 kHz), because the hiss at a clip's tail sits just under its threshold. The marks are kept at the clips' own rate. Decided by the orchestrator.
+- `fijos.json`: `story_your_turn` ahora_tu, `story_praise` muy_bien, `review_praise_right` si_muy_bien, `review_praise_after_miss` muy_bien, and `story_routine_no_prefix` hz_no_ (a prefix: juego.js builds `"hz_no_" + thing`). Goodbye words: adiós, hasta mañana. llamada.js names no clip.
+- Dry run of the audio job (`python3 coqui/tool/dry_voz.py`): 0 new clips of 1,582.
+- Two mp3 files are on disk but not in ready.json (`abuela_abre`, `c22_senor_sombrero`); they have no marks.
+
 ## Order 05. Reference data from the old code (orchestrator)
 
 Made by scripts in `coqui/tool/ref/`, written to `coqui/ref/`, committed.
