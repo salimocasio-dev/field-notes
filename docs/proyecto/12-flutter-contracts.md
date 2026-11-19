@@ -204,6 +204,8 @@ class Sprite { final int w, h; final Uint32List px; }
 /// The software canvas the sprite layer draws with. Same operations and meaning as the browser's 2D canvas,
 /// writing into a picture. Images are sampled nearest-neighbour unless `smoothing` is on (the old code turns
 /// it on in three places in sala.js; nowhere else).
+/// Decided Nov 19: the old scene canvas smoothed by default, so sprites at fractional positions were blurred. The new one
+/// does not: an unscaled, unrotated drawImage lands on its position rounded to a whole pixel, `(x + 0.5).floor()`.
 class Ctx {
   Ctx(Uint32List target, int w, int h);
   void save(); void restore(); void translate(double x, double y); void scale(double x, double y); void rotate(double a);
