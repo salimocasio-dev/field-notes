@@ -290,10 +290,11 @@ The builder ports `<id>-set.html` to `buildSet` and proves it against the JavaSc
 
 **The camera.** The old game draws 240 × 216, then stretches a view rectangle to 196 × 216, by amounts that are not whole numbers. Page 11-pixel-engine, decision 3, forbids that. So:
 
-- A view never zooms. It is a 196 × 216 window that slides over the 240 × 216 picture.
-- A view's place: the window centred on the sheet's world point for that view, kept inside the picture.
-- `camGo` slides the window in whole pixels.
-- A review or level-check picture is the 196-wide window at its `cam`'s remapped centre, 104 high. No stretch.
+- (Changed Nov 19 by the orchestrator. The first text here said "a view never zooms". That over-applied decision 3, which forbids only a fractional scale: the old close views are 98 × 108, exactly 2×. Only the old `casa` view was fractional, 1.085×.)
+- A view has a centre and a zoom of 1 or 2. Zoom 1: the 196 × 216 window over the 240 × 216 picture. Zoom 2: a 98 × 108 region, each picture pixel drawn as a 2 × 2 block. No other zoom; a fractional scale is never drawn, not for one frame.
+- A view's place: centred on the sheet's world point for that view, kept inside the picture. The sheet gives each view its zoom: an old 98 × 108 view is zoom 2, every other view is zoom 1.
+- `camGo` between two views of the same zoom slides in whole pixels. Between views of different zoom it is a cut: the camera is at the target from the first step, and `camGo` still takes the time it takes today.
+- A review or level-check picture is a whole-number crop too: zoom 1 is the 196 × 104 window; zoom 2 is a 98 × 52 region doubled. The sheet gives each picture its centre and zoom.
 
 **The frame, every tick:**
 
