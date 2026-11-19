@@ -26,8 +26,8 @@ The home map (page 11), the Today card, the place sheet.
 - The file exports one thing: `MapModule` (boundary rule 4), the module with id `map` and the tab `map`. It answers no route.
 - Order 13 built it. `lib/src/map_picture.dart` is a port of pixel/mapa.js (the island; the ten places are in `map_places.dart`, the layout in `map_layout.dart`), pure Dart, so it runs in the golden tests on the VM and in a browser. `map_model.dart` reads the state from the progress store (app.html: `hecho`, `abierto`, `aqui`) and today's plan (`plan`). `map_screen.dart` is the tab: the chips, the scrolling picture through `PixelView`, the Today card, the place sheet. `place_sheet.dart` is the sheet's body.
 - Not ported: the landscape two-column layout of v=39 (the chips and the Today card in a right column). The app is portrait: the phone builds are locked to portrait and the web manifest asks for it. The map tab scrolls, and the place sheet hides its "Place N" line in landscape as v=39 does.
-- The screen draws the whole screen: the card and the sheet sit above the tab bar's height, as in coqui_ui's gallery, so the shell draws the bar over it.
-- `MapScreen.reviewTitle`: the title of the Today card's review entry (Spanish, from app.html's `plan()`) is not in the catalog, so the screen shows that entry only when it is given a title; `MapModule` gives none. See `coqui/requests/13-feature-map-needs-coqui-ui-review-title.md`.
+- The screen draws the whole screen: the card sits above the tab bar's height, as in coqui_ui's gallery, so the shell draws the bar over it. The place sheet opens with `showCoquiSheet` (a route of the root navigator), so its scrim dims the tab bar too, as v=39's does.
+- `MapScreen.reviewTitle`: the title of the Today card's review entry (app.html's `plan()`); the screen shows that entry only when it is given a title, and `MapModule` gives `CoquiLabels.reviewTitle`.
 
 ## Run and test it alone
 

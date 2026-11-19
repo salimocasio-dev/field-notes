@@ -10,10 +10,6 @@ import 'package:coqui_ui/coqui_ui.dart';
 
 import 'map_seeds.dart';
 
-/// app.html: `plan()` writes the title of the review entry itself, and nothing in the catalog holds it. The
-/// dev entry and the tests give it to the screen, as a stand-in for what is decided.
-const fixtureReviewTitle = '¿Cuál?';
-
 /// curso.js: the places, as [id, n, nombre, en, fork, scenes].
 const _placeRows = <List<Object?>>[
   [
