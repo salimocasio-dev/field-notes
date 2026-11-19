@@ -16,9 +16,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'review_differential_test.dart' show deepEqual, expectList, norm;
 import 'support/fixture_catalog.dart';
 import 'support/recording_store.dart';
-import 'support/scripted_clips.dart';
+import '../tool/support/scripted_clips.dart';
 import 'support/snapshots.dart';
-import 'support/virtual_time.dart';
+import '../tool/support/virtual_time.dart';
 
 void main() {
   final fixture = readFixture('level_sessions.json');
@@ -91,7 +91,11 @@ void main() {
       }
 
       expectList(trace, ex['trace'] as List, 'the pictures over time');
-      expectList(store.calls, ex['calls'] as List, 'calls to the progress store (PAL.presume)');
+      expectList(
+        store.calls,
+        ex['calls'] as List,
+        'calls to the progress store (PAL.presume)',
+      );
       expectList(clips.plays, ex['plays'] as List, 'clips played');
       expectList(clips.stops, ex['stops'] as List, 'clips stopped');
       expectList(clips.tones, ex['tones'] as List, 'tones');
@@ -111,7 +115,11 @@ void main() {
       expect(session.screenLines, (res['pantalla'] as Map)['ps']);
       expect(session.screen.name, (res['estado'] as List)[0]);
       expect(rng.draws, ex['draws'], reason: 'draws of the random source');
-      expect(rng.inner.next(), ex['nextDraw'], reason: 'the next draw (same place in the stream)');
+      expect(
+        rng.inner.next(),
+        ex['nextDraw'],
+        reason: 'the next draw (same place in the stream)',
+      );
     });
   }
 }

@@ -162,12 +162,19 @@ EndGrid endGridFor({
   var bestKd = 0;
   final top = math.max(1, (140 * dpr / pictureWidth + .001).floor());
   for (final n in [3, 2]) {
-    final kd = math.min(top, (((w - (n - 1) * 16) / n) * dpr / pictureWidth + .001).floor());
+    final kd = math.min(
+      top,
+      (((w - (n - 1) * 16) / n) * dpr / pictureWidth + .001).floor(),
+    );
     if (kd >= 1 && (bestN == null || kd > bestKd)) {
       bestN = n;
       bestKd = kd;
     }
   }
   // a screen too narrow or too low in density for two: one to a row
-  return EndGrid(columns: bestN ?? 1, scale: bestN == null ? 1 : bestKd, dpr: dpr);
+  return EndGrid(
+    columns: bestN ?? 1,
+    scale: bestN == null ? 1 : bestKd,
+    dpr: dpr,
+  );
 }

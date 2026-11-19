@@ -3,7 +3,7 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 
-import 'virtual_time.dart';
+import '../../tool/support/virtual_time.dart';
 
 class RecordingStore extends FakeProgressStore {
   RecordingStore(this.vt, {required Clock super.clock, super.json});

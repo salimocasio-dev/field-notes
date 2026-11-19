@@ -16,9 +16,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'support/fixture_catalog.dart';
 import 'support/recording_store.dart';
-import 'support/scripted_clips.dart';
+import '../tool/support/scripted_clips.dart';
 import 'support/snapshots.dart';
-import 'support/virtual_time.dart';
+import '../tool/support/virtual_time.dart';
 
 Object? norm(Object? x) => jsonDecode(jsonEncode(x));
 
@@ -92,7 +92,9 @@ void main() {
         progress: store,
         clips: clips,
         wait: vt.wait,
-        options: optionsOf((sc['query'] as Map?)?.cast<String, dynamic>() ?? {}),
+        options: optionsOf(
+          (sc['query'] as Map?)?.cast<String, dynamic>() ?? {},
+        ),
         warm: shown.add,
       );
 
@@ -100,7 +102,11 @@ void main() {
       session.prepare();
       await vt.settle();
       final start = ex['start'] as Map<String, dynamic>;
-      expect([for (final p in session.list) p.word], start['lista'], reason: 'the words of the session');
+      expect(
+        [for (final p in session.list) p.word],
+        start['lista'],
+        reason: 'the words of the session',
+      );
       expect(session.practice, start['practica']);
       expect(session.screenTitle, (start['pantalla'] as Map)['h']);
       expect(session.screenLines, (start['pantalla'] as Map)['ps']);
@@ -145,7 +151,11 @@ void main() {
       }
 
       expectList(trace, ex['trace'] as List, 'the pictures over time');
-      expectList(store.calls, ex['calls'] as List, 'calls to the progress store');
+      expectList(
+        store.calls,
+        ex['calls'] as List,
+        'calls to the progress store',
+      );
       expectList(clips.plays, ex['plays'] as List, 'clips played');
       expectList(clips.stops, ex['stops'] as List, 'clips stopped');
       expectList(clips.tones, ex['tones'] as List, 'tones');
@@ -191,7 +201,10 @@ void main() {
         'timings (Cual.tt)',
       );
       final end = session.end!;
-      expect(norm({'up': end.up, 'soon': end.soon, 'practica': end.practice}), res['fin']);
+      expect(
+        norm({'up': end.up, 'soon': end.soon, 'practica': end.practice}),
+        res['fin'],
+      );
       expectList(
         [
           for (final g in end.groups)
@@ -205,7 +218,11 @@ void main() {
       expect(session.screen.name, (res['estado'] as List)[0]);
 
       expect(rng.draws, ex['draws'], reason: 'draws of the random source');
-      expect(rng.inner.next(), ex['nextDraw'], reason: 'the next draw (same place in the stream)');
+      expect(
+        rng.inner.next(),
+        ex['nextDraw'],
+        reason: 'the next draw (same place in the stream)',
+      );
       // the pictures of the next ask were asked for (a hint the old page has no counterpart of)
       expect(shown.every((l) => l.length == 2), isTrue);
     });

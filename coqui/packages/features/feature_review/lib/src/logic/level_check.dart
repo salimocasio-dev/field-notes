@@ -71,7 +71,11 @@ class LevelAnswer {
 
 /// nivel.js: NQ.fin.
 class LevelResult {
-  LevelResult({required this.frontier, required this.stories, required this.words});
+  LevelResult({
+    required this.frontier,
+    required this.stories,
+    required this.words,
+  });
 
   /// S0: how many stories he is presumed to understand.
   final int frontier;
@@ -104,7 +108,8 @@ class LevelCheckSession extends LessonBase {
   List<LevelItem> get items => course.levelItems;
 
   /// NN: how many pictures it asks at most.
-  int get total => options.all ? items.length : math.min(levelCap, items.length);
+  int get total =>
+      options.all ? items.length : math.min(levelCap, items.length);
 
   /// PASO: how far a right answer moves him up: the list grows with every scene, the check must still reach its
   /// top in about a dozen items.
@@ -117,6 +122,9 @@ class LevelCheckSession extends LessonBase {
   List<LevelPanel>? panels;
   final List<OptionRing> rings = List.filled(4, OptionRing.none);
   LevelResult? result;
+
+  /// nivel.js: `window.__cur`: the story of the item being asked (the machine checks read it).
+  int? currentStory;
   int _listo = -1;
   bool get ready => _listo == index;
   void Function(int k)? _toque;
@@ -136,7 +144,10 @@ class LevelCheckSession extends LessonBase {
     final ids = <String>{};
     for (final q in items) {
       final pair = _pairs[q.pictures[0][0] as String];
-      if (pair != null) ids.add(pair.say); // the sentence of the first picture's word is the one that plays
+      if (pair != null) {
+        // the sentence of the first picture's word is the one that plays
+        ids.add(pair.say);
+      }
     }
     loadVoice(ids);
   }
@@ -174,7 +185,9 @@ class LevelCheckSession extends LessonBase {
   LevelPanel _panel(List<Object?> pic, bool right) {
     final word = pic[0] as String;
     final it = _pairs[word];
-    if (it == null) throw StateError('the level check has no review pair for "$word"');
+    if (it == null) {
+      throw StateError('the level check has no review pair for "$word"');
+    }
     final spec = pic[1] == 'no' ? it.no : it.yes;
     final cm = spec.cam;
     final h = cm[3];
@@ -232,6 +245,7 @@ class LevelCheckSession extends LessonBase {
           if (i >= nv.length) break;
         }
         usados.add(i);
+        currentStory = nv[i].step;
         step(n);
         index = n;
         changed();
@@ -261,9 +275,7 @@ class LevelCheckSession extends LessonBase {
     }
     panels = null;
     final s0 = frontier(answers, nv);
-    final ids = [
-      for (final l in course.places) ...l.stories,
-    ].take(s0).toList();
+    final ids = [for (final l in course.places) ...l.stories].take(s0).toList();
     final pal = <String>[];
     for (final id in ids) {
       try {
@@ -291,10 +303,15 @@ class LevelCheckSession extends LessonBase {
   Future<LevelAnswer> _item(LevelItem q, int place) async {
     _anillo(null);
     final orden = [0, 1, 2, 3];
-    jsSort<int>(orden, (a, b) => rng.next() - .5); // where the right picture sits is drawn fresh
+    jsSort<int>(
+      orden,
+      (a, b) => rng.next() - .5,
+    ); // where the right picture sits is drawn fresh
     final it = _pairs[q.pictures[0][0] as String];
     if (it == null) {
-      throw StateError('the level check has no review pair for "${q.pictures[0][0]}"');
+      throw StateError(
+        'the level check has no review pair for "${q.pictures[0][0]}"',
+      );
     }
     panels = [for (final k in orden) _panel(q.pictures[k], k == 0)];
     changed();
@@ -325,7 +342,9 @@ class LevelCheckSession extends LessonBase {
       while (!done) {
         await sleep(levelReplayEvery);
         if (done) break;
-        if (got == null && speaking == 0 && my == runId) unawaited(playClip(it.say));
+        if (got == null && speaking == 0 && my == runId) {
+          unawaited(playClip(it.say));
+        }
       }
     }());
     await p.future;

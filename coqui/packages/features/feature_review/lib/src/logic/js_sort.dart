@@ -454,13 +454,7 @@ class _TimSort<T> {
           work[dest--] = tempArray[cursorTemp--];
           if (--lengthB == 1) return 1;
 
-          k = _gallopLeft(
-            tempArray,
-            work[cursorA],
-            0,
-            lengthB,
-            lengthB - 1,
-          );
+          k = _gallopLeft(tempArray, work[cursorA], 0, lengthB, lengthB - 1);
           nofWinsB = lengthB - k;
           if (nofWinsB > 0) {
             dest -= nofWinsB;

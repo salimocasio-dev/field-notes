@@ -3,10 +3,8 @@ import 'package:coqui_ui/coqui_ui.dart' show PictureRef;
 import 'package:feature_review/src/logic/level_check.dart';
 import 'package:feature_review/src/logic/review_session.dart';
 
-List<String> _classes(OptionRing r, {bool check = false}) => [
-  if (check) 'chk',
-  if (r != OptionRing.none) r.name,
-]..sort();
+List<String> _classes(OptionRing r, {bool check = false}) =>
+    [if (check) 'chk', if (r != OptionRing.none) r.name]..sort();
 
 Map<String, Object?> reviewSnapshot(ReviewSession s) {
   final asking = s.running && s.index < s.queue.length;
@@ -54,4 +52,5 @@ bool sameRef(PictureRef a, PictureRef b) =>
     a.scene == b.scene &&
     identical(a.set, b.set) &&
     a.cam.length == b.cam.length &&
-    [for (var i = 0; i < a.cam.length; i++) a.cam[i] == b.cam[i]].every((x) => x);
+    [for (var i = 0; i < a.cam.length; i++) a.cam[i] == b.cam[i]]
+        .every((x) => x);

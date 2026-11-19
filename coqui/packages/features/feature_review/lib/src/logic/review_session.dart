@@ -64,7 +64,12 @@ class QueueItem {
 
 /// cual.js: CQ.hecho: the answer to a scored ask. `auto`: he did not touch, the right picture was shown.
 class ReviewAnswer {
-  ReviewAnswer(this.word, {required this.ok, required this.ms, this.auto = false});
+  ReviewAnswer(
+    this.word, {
+    required this.ok,
+    required this.ms,
+    this.auto = false,
+  });
   final String word;
   final bool ok;
   final int ms;
@@ -197,7 +202,9 @@ class ReviewSession extends LessonBase {
   // he has heard (those answers do not move the schedule)
   List<ReviewPair> _makeList() {
     final due = progress.due(Skill.ear);
-    final byWord = <String, ReviewPair>{for (final it in course.pairs) it.word: it};
+    final byWord = <String, ReviewPair>{
+      for (final it in course.pairs) it.word: it,
+    };
     var lista = <ReviewPair>[
       for (final w in due)
         if (byWord.containsKey(w)) byWord[w]!,
@@ -273,7 +280,9 @@ class ReviewSession extends LessonBase {
   Future<bool> _item(ReviewPair it, bool again) async {
     _anillo(null);
     checks.fillRange(0, checks.length, false);
-    final ok = rng.next() < .5 ? 0 : 1; // which panel holds the right picture: drawn fresh at every ask
+    final ok = rng.next() < .5
+        ? 0
+        : 1; // which panel holds the right picture: drawn fresh at every ask
     panels = [
       for (var k = 0; k < 2; k++)
         ReviewPanel(
@@ -290,7 +299,8 @@ class ReviewSession extends LessonBase {
     final t = ReviewAsk(index, it.word, again);
     asks.add(t);
     _toque = (k) {
-      if (tEnd == null || got != null) return; // a touch before the sentence ends does not count
+      // a touch before the sentence ends does not count
+      if (tEnd == null || got != null) return;
       got = k;
       ms = clock.nowMs() - tEnd;
       p.complete();
@@ -347,14 +357,18 @@ class ReviewSession extends LessonBase {
     } else {
       int k;
       if (auto) {
-        k = panels!.indexWhere((x) => x.right); // he did not touch: the right picture is shown at once
+        k = panels!.indexWhere(
+          (x) => x.right,
+        ); // he did not touch: the right picture is shown at once
       } else {
         sfxBonk();
         panels![got!].dim = true;
         _anillo(got, OptionRing.bad);
         changed();
         await waitMs(500);
-        k = 1 - got!; // red-orange on his, then the green ring shows the right one
+        k =
+            1 -
+            got!; // red-orange on his, then the green ring shows the right one
       }
       panels![k].sign = true;
       _anillo(k, OptionRing.ok);
@@ -402,7 +416,8 @@ class ReviewSession extends LessonBase {
     }
     final pr = practice;
     final line = [
-      if (up.isNotEmpty) '${up.length} ${pr ? ReviewStrings.right : ReviewStrings.movingUp}',
+      if (up.isNotEmpty)
+        '${up.length} ${pr ? ReviewStrings.right : ReviewStrings.movingUp}',
       if (soon.isNotEmpty)
         '${soon.length} ${pr ? ReviewStrings.missed : ReviewStrings.comingBackSoon}',
     ].join(' · ');

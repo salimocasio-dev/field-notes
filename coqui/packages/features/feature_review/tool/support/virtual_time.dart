@@ -47,6 +47,32 @@ class VirtualTime implements Clock {
     return true;
   }
 
+  /// Fires every timer due up to the virtual time [t] (letting microtasks run after each), then the clock stands at
+  /// [t]. For a driver that stops the lesson at an instant.
+  Future<void> advanceTo(int t) async {
+    while (_timers.isNotEmpty) {
+      var best = _timers.first;
+      for (final x in _timers) {
+        if (x.at < best.at || (x.at == best.at && x.id < best.id)) best = x;
+      }
+      if (best.at > t) break;
+      fireNext();
+      await settle();
+    }
+    if (now < t) now = t;
+  }
+
+  /// Advances [ms] of virtual time.
+  Future<void> advance(int ms) => advanceTo(now + ms);
+
+  /// Fires timers one at a time until [done] is true (or there are none left): the lesson runs on by itself.
+  Future<void> runUntil(bool Function() done, {int limit = 100000}) async {
+    await settle();
+    for (var i = 0; i < limit && !done() && fireNext(); i++) {
+      await settle();
+    }
+  }
+
   /// Lets every pending microtask run (a timer comes after all of them).
   Future<void> settle() => Future<void>.delayed(Duration.zero);
 }

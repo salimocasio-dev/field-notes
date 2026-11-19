@@ -33,9 +33,9 @@ List<int> structured(int n, int seed) {
 }
 
 void main() {
-  final fixture =
-      jsonDecode(File('test/fixtures/sort.json').readAsStringSync())
-          as Map<String, dynamic>;
+  final fixture = jsonDecode(
+    File('test/fixtures/sort.json').readAsStringSync(),
+  ) as Map<String, dynamic>;
   final cases = [
     for (final c in fixture['cases'] as List) c as Map<String, dynamic>,
   ];
@@ -45,50 +45,44 @@ void main() {
     expect(cases.where((c) => c['kind'] == 'structured').length, 50);
   });
 
-  test(
-    'the old shuffle (random() - .5): same order and same number of draws as Node, n = 0 to 500',
-    () {
-      var checked = 0;
-      for (final c in cases.where((c) => c['kind'] == 'shuffle')) {
-        final n = c['n'] as int;
-        final rnd = Mulberry32(c['seed'] as int);
-        var calls = 0;
-        final a = List<int>.generate(n, (i) => i);
-        jsSort<int>(a, (x, y) {
-          calls++;
-          return rnd.next() - 0.5;
-        });
-        final why = 'n=$n seed=${c['seed']}';
-        expect(calls, c['calls'], reason: '$why: number of draws');
-        expect(fnv(a), c['hash'], reason: '$why: result');
-        if (c['result'] != null) {
-          expect(a, (c['result'] as List).cast<int>(), reason: why);
-        }
-        checked++;
+  test('the old shuffle (random() - .5): same order and same number of draws as Node, n = 0 to 500', () {
+    var checked = 0;
+    for (final c in cases.where((c) => c['kind'] == 'shuffle')) {
+      final n = c['n'] as int;
+      final rnd = Mulberry32(c['seed'] as int);
+      var calls = 0;
+      final a = List<int>.generate(n, (i) => i);
+      jsSort<int>(a, (x, y) {
+        calls++;
+        return rnd.next() - 0.5;
+      });
+      final why = 'n=$n seed=${c['seed']}';
+      expect(calls, c['calls'], reason: '$why: number of draws');
+      expect(fnv(a), c['hash'], reason: '$why: result');
+      if (c['result'] != null) {
+        expect(a, (c['result'] as List).cast<int>(), reason: why);
       }
-      expect(checked, greaterThan(150));
-    },
-  );
+      checked++;
+    }
+    expect(checked, greaterThan(150));
+  });
 
-  test(
-    'a consistent comparison on data with runs and ties (merges, galloping): the same calls in the same order as Node',
-    () {
-      for (final c in cases.where((c) => c['kind'] == 'structured')) {
-        final n = c['n'] as int;
-        final data = structured(n, c['seed'] as int);
-        final items = List<int>.generate(n, (i) => i);
-        final seq = <int>[];
-        jsSort<int>(items, (x, y) {
-          seq
-            ..add(x)
-            ..add(y);
-          return data[x] - data[y];
-        });
-        final why = 'n=$n seed=${c['seed']}';
-        expect(seq.length ~/ 2, c['calls'], reason: '$why: number of calls');
-        expect(fnv(seq), c['calls_hash'], reason: '$why: sequence of calls');
-        expect(fnv(items), c['hash'], reason: '$why: result');
-      }
-    },
-  );
+  test('a consistent comparison on data with runs and ties (merges, galloping): the same calls in the same order as Node', () {
+    for (final c in cases.where((c) => c['kind'] == 'structured')) {
+      final n = c['n'] as int;
+      final data = structured(n, c['seed'] as int);
+      final items = List<int>.generate(n, (i) => i);
+      final seq = <int>[];
+      jsSort<int>(items, (x, y) {
+        seq
+          ..add(x)
+          ..add(y);
+        return data[x] - data[y];
+      });
+      final why = 'n=$n seed=${c['seed']}';
+      expect(seq.length ~/ 2, c['calls'], reason: '$why: number of calls');
+      expect(fnv(seq), c['calls_hash'], reason: '$why: sequence of calls');
+      expect(fnv(items), c['hash'], reason: '$why: result');
+    }
+  });
 }
