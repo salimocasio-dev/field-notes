@@ -384,6 +384,19 @@ class _Learner {
     );
   }
 
+  /// Whether the story took the answer of [pn] as the right one: what `decide` calls `first` (the pick, or a `vale`). A
+  /// touch that answers an ask or an elige is right; one that answers a decide with anything else is not (the step
+  /// goes on to its `wrong` branch, or asks again for a free answer).
+  bool isRight(dynamic pn) {
+    if (pn.kind != 'decide') return true;
+    final st = decideStep(pn);
+    final vale = [
+      for (final v in (st?['vale'] as List? ?? const []))
+        r.fill(v as String) as String,
+    ];
+    return pn.got == pn.pick || vale.contains(pn.got);
+  }
+
   /// A touch has been made for [w] (play.dart: the act of a touch want).
   void touched(_Want w) {
     final I = info[w.pn];
@@ -439,11 +452,14 @@ List<num> _nums(Object? x) => [for (final n in x! as List) n as num];
 
 /// A point on the screen, with the story's own coordinates for it.
 class _Point {
-  _Point(this.screen, this.dx, this.dy, this.px, this.py, this.how);
+  _Point(this.screen, this.dx, this.dy, this.px, this.py, this.how, this.what);
 
   final Offset screen;
   final int dx, dy;
   final double px, py;
+
+  /// What the story's rule for a touch gives at this point (it is the thing asked for).
+  final String? what;
 
   /// `hand` / `box` (play.dart's own point for a touch), or `region` (the middle of what the hit test gives the thing).
   final String how;
@@ -493,6 +509,7 @@ _Point? _pointFor(WidgetTester tester, dynamic r, String k) {
       p.x,
       p.y,
       how,
+      whatAt(dx, dy),
     );
   }
 
@@ -870,17 +887,42 @@ Future<Map<String, dynamic>> _play(
         break;
       }
       final pn2 = want.pn;
+      final waiting = _pendingInfo(pn2);
+      // what the finger meets at that point: the picture, or something over it (a speech bubble)
+      final hitPath = _hitPath(tester, p.screen);
+      final fxBefore = (runner.W['fx'] as List).length;
       await tester.tapAt(p.screen);
       await tester.pump();
       learner.touched(want);
-      // the story took it as right when the wait it was in is answered by it
-      final right = pn2.done == true && pn2.got != null;
+      final answered = pn2.done == true && pn2.got != null;
+      final right = answered && learner.isRight(pn2);
+      final poked =
+          (runner.W['fx'] as List).length > fxBefore || pn2.busy == true;
       final touch = {
         'ms': t,
         'key': k,
         'why': want.why,
         'right': right,
+        'answered': answered,
+        'result': answered
+            ? (right ? 'answered right' : 'answered wrong')
+            : poked
+            ? 'poke: the story named it and asked again'
+            : 'nothing happened',
+        'reachesPicture': hitPath.$1,
+        'hitPath': hitPath.$2,
         'got': pn2.got,
+        'hitTest': p.what,
+        'waiting': waiting,
+        'after': {
+          'busy': pn2.busy,
+          'speaking': runner.speaking,
+          'lastFx': (runner.W['fx'] as List).isEmpty
+              ? null
+              : (runner.W['fx'] as List).last['t'],
+          'pendingIsSame': identical(runner.pending, pn2),
+          'habEst': runner.HAB.est,
+        },
         'screen': [p.screen.dx, p.screen.dy],
         'display': [p.dx, p.dy],
         'picture': [p.px, p.py],
@@ -892,6 +934,7 @@ Future<Map<String, dynamic>> _play(
         'right': right,
         'why': want.why,
         'point': p.how,
+        'result': touch['result'],
       });
     }
   } catch (e, s) {
@@ -940,6 +983,14 @@ Future<Map<String, dynamic>> _play(
   return result;
 }
 
+/// Whether a touch at [at] reaches the picture (`RenderPixelView`), and the first render objects it meets.
+(bool, List<String>) _hitPath(WidgetTester tester, Offset at) {
+  final result = HitTestResult();
+  tester.binding.hitTestInView(result, at, tester.view.viewId);
+  final names = [for (final e in result.path) e.target.runtimeType.toString()];
+  return (names.contains('RenderPixelView'), names.take(4).toList());
+}
+
 Map<String, dynamic>? _pendingInfo(dynamic pn) => pn == null
     ? null
     : {
@@ -947,6 +998,8 @@ Map<String, dynamic>? _pendingInfo(dynamic pn) => pn == null
         'live': [...(pn.live as List)],
         'pick': pn.pick,
         'sign': pn.sign,
+        'lock': pn.lock,
+        'voz': pn.voz,
         'asked': pn.asked,
         'busy': pn.busy,
         'done': pn.done,
