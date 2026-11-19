@@ -23,8 +23,9 @@ Hablar: the call with Danny, the voice test.
 
 - `lib/feature_speaking.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Since order 02 the file exports a placeholder module (its screen says the feature's name), until this feature's order builds the real one. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
-- Later it holds one thing: its module, a `FeatureModule` (boundary rule 4).
+- The file exports one thing: `SpeakingModule`, a `FeatureModule` (boundary rule 4). Since order 24 it is the real one: the tab `speak` (Hablar), `CallRoute` (the call with Danny) and `VoiceTestRoute`. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; its address parameters are listed at the head of `test/support/dev_app.dart`; `web/` is there for it.
+- Three things v=39 does not settle are given to the module by whoever builds it (`callsLater`, `voiceTest`, `voiceTestEntry`; see coqui/requests/24-*).
+- `tool/shots.mjs` takes each reference state on both phones and pairs it with its reference picture; `tool/llamada_expected.mjs` runs the old call code to give the expected values of `test/llamada_expected_test.dart`, and `tool/llamada_layout.mjs` the old page's boxes for `test/call_layout_test.dart` (both re-run with `--check`); `tool/make_seeds.dart` and `tool/make_fixtures.dart` make `test/support/speaking_seeds.dart` and `test/support/fixtures/course_fixture.dart`.
 
 ## Run and test it alone
 
