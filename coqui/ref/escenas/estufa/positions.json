@@ -1,0 +1,5397 @@
+{
+ "scene": "estufa",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 35,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 52,
+   "y": 148,
+   "w": 94.2,
+   "h": 50,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huevo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 58,
+   "y": 90,
+   "w": 139,
+   "h": 74,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 58,
+   "y": 104,
+   "w": 139,
+   "h": 74,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 60,
+   "y": 92,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 60,
+   "y": 150,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "habichuelas.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "habichuelas.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 70,
+   "y": 84,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "arroz.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "arroz.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huevo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 146,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "olla.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "olla.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "ya.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "ya.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 98,
+   "y": 100,
+   "w": 56.5,
+   "h": 30,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "caliente.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "caliente.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "frío.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 98,
+   "y": 148,
+   "w": 94.2,
+   "h": 50,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 110,
+   "y": 84,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "frío.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 116,
+   "y": 86,
+   "w": 105.5,
+   "h": 56,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 157,
+   "y": 84,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "pollo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "pollo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 79.54,
+   "y": 150,
+   "w": 36.23,
+   "h": 40,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "olla.p2",
+     "owner": "level picture",
+     "note": "pair habichuelas.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 89.54,
+   "y": 84,
+   "w": 36.23,
+   "h": 40,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arroz.p0",
+     "owner": "level picture",
+     "note": "pair arroz.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "arroz.p1",
+     "owner": "level picture",
+     "note": "pair arroz.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "pollo.p2",
+     "owner": "level picture",
+     "note": "pair arroz.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 112.67,
+   "y": 100,
+   "w": 27.17,
+   "h": 30,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "caliente.p0",
+     "owner": "level picture",
+     "note": "pair caliente.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "caliente.p1",
+     "owner": "level picture",
+     "note": "pair caliente.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "caliente.p2",
+     "owner": "level picture",
+     "note": "pair frío.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 113.33,
+   "y": 146,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arroz.p3",
+     "owner": "level picture",
+     "note": "pair olla.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "olla.p0",
+     "owner": "level picture",
+     "note": "pair olla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "olla.p1",
+     "owner": "level picture",
+     "note": "pair olla.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "olla.p3",
+     "owner": "level picture",
+     "note": "pair ya.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "caliente.p3",
+     "owner": "level picture",
+     "note": "pair olla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 122.46,
+   "y": 148,
+   "w": 45.28,
+   "h": 50,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pollo.p3",
+     "owner": "level picture",
+     "note": "pair sal.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 176.54,
+   "y": 84,
+   "w": 36.23,
+   "h": 40,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arroz.p2",
+     "owner": "level picture",
+     "note": "pair pollo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "pollo.p0",
+     "owner": "level picture",
+     "note": "pair pollo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "pollo.p1",
+     "owner": "level picture",
+     "note": "pair pollo.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "arroz.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "arroz.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "habichuelas.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "habichuelas.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "olla.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "olla.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "pollo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "pollo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huevo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huevo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "caliente.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "caliente.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "frío.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "frío.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "ya.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "ya.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 82,
+   "y": 158,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 84,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 84,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "habichuelas.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "habichuelas.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huevo.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 110,
+   "y": 157,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.si.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "inicio",
+      "centro"
+     ],
+     "insideThings": [
+      "estufa",
+      "cocina"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.no.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "inicio",
+      "centro"
+     ],
+     "insideThings": [
+      "estufa",
+      "cocina"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "olla.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "olla.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "ya.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "ya.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 126,
+   "y": 127,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "caliente.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "estufa",
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "caliente.no.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "estufa",
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "frío.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "estufa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 113,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "olla1",
+      "estufa",
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.si.set.vuelos.0",
+     "owner": "set.vuelos[]",
+     "insideThings": [
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.no.set.vuelos.0",
+     "owner": "set.vuelos[]",
+     "insideThings": [
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 156,
+   "y": 164,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "cuidado.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 157,
+   "y": 181,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.si.set.vuelos.1",
+     "owner": "set.vuelos[]",
+     "insideThings": [
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.no.set.vuelos.1",
+     "owner": "set.vuelos[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 158,
+   "y": 187,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.si.set.vuelos.2",
+     "owner": "set.vuelos[]",
+     "insideThings": [
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.no.set.vuelos.2",
+     "owner": "set.vuelos[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 158,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.si.set.mat",
+     "owner": "set.mat",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "the small plate (estufa.js:160)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "sal.no.set.mat",
+     "owner": "set.mat",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "the small plate (estufa.js:160)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 152,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.si.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "hace.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet (estufa.js:117-127 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 195,
+   "y": 123,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "pollo.si.set.plata",
+     "owner": "set.plata",
+     "insideThings": [
+      "pzhuevo",
+      "cocina"
+     ],
+     "meaning": "the big plate (estufa.js:159)"
+    },
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "pollo.no.set.plata",
+     "owner": "set.plata",
+     "insideThings": [
+      "pzhuevo",
+      "cocina"
+     ],
+     "meaning": "the big plate (estufa.js:159)"
+    }
+   ]
+  },
+  {
+   "kind": "rect",
+   "x": 106,
+   "y": 104,
+   "w": 90,
+   "h": 117,
+   "uses": [
+    {
+     "file": "cuentos/cual-estufa.json",
+     "at": "huele.si.set.olor",
+     "owner": "set.olor",
+     "insideThings": [
+      "estufa",
+      "cocina"
+     ],
+     "meaning": "the smell line from x0, y0 to x1, y1 (estufa.js:138)"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "estufa.js:19",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    86,
+    106,
+    80,
+    54
+   ],
+   "what": "EST",
+   "comment": "the floor; the counter tops; the stove (x, y of its top, width, height); the two burners; the left and right counters (x, width); the frog's stool"
+  },
+  {
+   "at": "estufa.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    107,
+    145
+   ],
+   "what": "FX",
+   "comment": "the floor; the counter tops; the stove (x, y of its top, width, height); the two burners; the left and right counters (x, width); the frog's stool"
+  },
+  {
+   "at": "estufa.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    54
+   ],
+   "what": "IZQ",
+   "comment": "the floor; the counter tops; the stove (x, y of its top, width, height); the two burners; the left and right counters (x, width); the frog's stool"
+  },
+  {
+   "at": "estufa.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    172,
+    46
+   ],
+   "what": "DER",
+   "comment": "the floor; the counter tops; the stove (x, y of its top, width, height); the two burners; the left and right counters (x, width); the frog's stool"
+  },
+  {
+   "at": "estufa.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    126,
+    184
+   ],
+   "what": "BANCO",
+   "comment": "the floor; the counter tops; the stove (x, y of its top, width, height); the two burners; the left and right counters (x, width); the frog's stool"
+  },
+  {
+   "at": "estufa.js:20",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    208
+   ],
+   "what": "CUBO",
+   "comment": "cups that were put aside stand on the front of the stove"
+  },
+  {
+   "at": "estufa.js:22",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    82,
+    174
+   ],
+   "what": "LADO[]",
+   "comment": "where a cook stands at the left and at the right of the stove; the helper at the left counter; whoever comes in for something"
+  },
+  {
+   "at": "estufa.js:22",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    171,
+    176
+   ],
+   "what": "LADO[]",
+   "comment": "where a cook stands at the left and at the right of the stove; the helper at the left counter; whoever comes in for something"
+  },
+  {
+   "at": "estufa.js:22",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    42,
+    176
+   ],
+   "what": "AYUDA",
+   "comment": "where a cook stands at the left and at the right of the stove; the helper at the left counter; whoever comes in for something"
+  },
+  {
+   "at": "estufa.js:22",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    200,
+    180
+   ],
+   "what": "PUERTA",
+   "comment": "where a cook stands at the left and at the right of the stove; the helper at the left counter; whoever comes in for something"
+  },
+  {
+   "at": "estufa.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    24
+   ],
+   "what": "Buf(34,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:47",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    8,
+    26,
+    14
+   ],
+   "what": "b.rect(4,8,26,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:47",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    8,
+    5,
+    14
+   ],
+   "what": "b.rect(4,8,5,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:47",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    19,
+    26,
+    3
+   ],
+   "what": "b.rect(4,19,26,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:47",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    10,
+    3,
+    4
+   ],
+   "what": "b.rect(1,10,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:47",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    30,
+    10,
+    3,
+    4
+   ],
+   "what": "b.rect(30,10,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:48",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    8
+   ],
+   "what": "b.ell(17,8,13,5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:48",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    5
+   ],
+   "what": "b.ell(17,8,13,5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:48",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    8.4
+   ],
+   "what": "b.ell(17,8.4,11,3.8,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:48",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    3.8
+   ],
+   "what": "b.ell(17,8.4,11,3.8,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    21,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    19,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    19,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    10,
+    3,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    13,
+    2,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    20,
+    11,
+    4,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    27,
+    12,
+    2,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    24
+   ],
+   "what": "Buf(34,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    46,
+    14
+   ],
+   "what": "Buf(46,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    8
+   ],
+   "what": "b.ell(17,8,15,5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    5
+   ],
+   "what": "b.ell(17,8,15,5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    7.4
+   ],
+   "what": "b.ell(17,7.4,12.6,3.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12.6,
+    3.6
+   ],
+   "what": "b.ell(17,7.4,12.6,3.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    31,
+    7,
+    13,
+    3
+   ],
+   "what": "b.rect(31,7,13,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:53",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    31,
+    7,
+    13,
+    1
+   ],
+   "what": "b.rect(31,7,13,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    11
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    13
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    15
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    16
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    22
+   ],
+   "what": "Buf(20,22) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    14,
+    16,
+    7
+   ],
+   "what": "b.rect(2,14,16,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    14,
+    4,
+    7
+   ],
+   "what": "b.rect(2,14,4,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    18,
+    16,
+    3
+   ],
+   "what": "b.rect(2,18,16,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    12,
+    13,
+    2
+   ],
+   "what": "b.rect(4,12,13,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    10,
+    6,
+    2
+   ],
+   "what": "b.rect(12,10,6,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    5,
+    16,
+    16
+   ],
+   "what": "b.rect(2,5,16,16,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    5,
+    4,
+    16
+   ],
+   "what": "b.rect(2,5,4,16,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    18,
+    16,
+    3
+   ],
+   "what": "b.rect(2,18,16,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    5
+   ],
+   "what": "b.ell(10,5,7,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    2.6
+   ],
+   "what": "b.ell(10,5,7,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    14
+   ],
+   "what": "Buf(22,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    10
+   ],
+   "what": "b.ell(11,10,8,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3.4
+   ],
+   "what": "b.ell(11,10,8,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    6
+   ],
+   "what": "b.ell(11,6,9.6,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9.6,
+    4
+   ],
+   "what": "b.ell(11,6,9.6,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "b.ell(11,5,7.8,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.8,
+    3.4
+   ],
+   "what": "b.ell(11,5,7.8,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    3.6
+   ],
+   "what": "b.ell(11,3.6,5,2.2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:55",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2.2
+   ],
+   "what": "b.ell(11,3.6,5,2.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    11
+   ],
+   "what": "Buf(11,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    7,
+    5
+   ],
+   "what": "b.rect(1,5,7,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    2,
+    5
+   ],
+   "what": "b.rect(1,5,2,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    6,
+    2,
+    1
+   ],
+   "what": "b.rect(8,6,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    7,
+    1,
+    2
+   ],
+   "what": "b.rect(9,7,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    3.6
+   ],
+   "what": "b.ell(4.5,3.6,3.6,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2.6
+   ],
+   "what": "b.ell(4.5,3.6,3.6,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.px(3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    4
+   ],
+   "what": "b.px(6,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2
+   ],
+   "what": "b.px(4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    3.6
+   ],
+   "what": "b.ell(4.5,3.6,3.6,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2.6
+   ],
+   "what": "b.ell(4.5,3.6,3.6,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.px(3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    4
+   ],
+   "what": "b.px(6,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    4,
+    5,
+    2
+   ],
+   "what": "b.rect(2,4,5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    13
+   ],
+   "what": "Buf(24,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    9
+   ],
+   "what": "b.ell(12,9,9,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    3.4
+   ],
+   "what": "b.ell(12,9,9,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    5
+   ],
+   "what": "b.ell(12,5,10.6,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10.6,
+    4
+   ],
+   "what": "b.ell(12,5,10.6,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    4.8
+   ],
+   "what": "b.ell(12,4.8,8.6,2.8,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:57",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8.6,
+    2.8
+   ],
+   "what": "b.ell(12,4.8,8.6,2.8,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    7
+   ],
+   "what": "Buf(11,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    4
+   ],
+   "what": "b.ell(5.5,4,4.4,2.4,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.4,
+    2.4
+   ],
+   "what": "b.ell(5.5,4,4.4,2.4,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.px(3,3,C[0]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    5
+   ],
+   "what": "b.px(7,5,C[0]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    7
+   ],
+   "what": "Buf(15,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    3.5
+   ],
+   "what": "b.ell(7.5,3.5,6.6,2.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.6,
+    2.8
+   ],
+   "what": "b.ell(7.5,3.5,6.6,2.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    3.2
+   ],
+   "what": "b.ell(7.5,3.2,4,1.5,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1.5
+   ],
+   "what": "b.ell(7.5,3.2,4,1.5,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:60",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    16
+   ],
+   "what": "Buf(6,16) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:60",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    4,
+    5
+   ],
+   "what": "b.rect(1,1,4,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:60",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    2,
+    9
+   ],
+   "what": "b.rect(2,6,2,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    8
+   ],
+   "what": "Buf(18,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    4
+   ],
+   "what": "b.ell(5,4,4,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2.6
+   ],
+   "what": "b.ell(5,4,4,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "b.px(4,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    3
+   ],
+   "what": "b.px(6,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    3,
+    9,
+    2
+   ],
+   "what": "b.rect(8,3,9,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    18
+   ],
+   "what": "Buf(6,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:62",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    2,
+    12
+   ],
+   "what": "b.rect(2,1,2,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    14
+   ],
+   "what": "b.ell(3,14,2.6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    3
+   ],
+   "what": "b.ell(3,14,2.6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    11
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    13
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    22
+   ],
+   "what": "Buf(20,22) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    12,
+    18
+   ],
+   "what": "b.rect(3,3,12,18,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    8,
+    12,
+    13
+   ],
+   "what": "b.rect(3,8,12,13,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    3,
+    18
+   ],
+   "what": "b.rect(3,3,3,18,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    15,
+    6,
+    2,
+    1
+   ],
+   "what": "b.rect(15,6,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    17,
+    7,
+    1,
+    7
+   ],
+   "what": "b.rect(17,7,1,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    15,
+    14,
+    2,
+    1
+   ],
+   "what": "b.rect(15,14,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    2,
+    2
+   ],
+   "what": "b.rect(1,3,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    12
+   ],
+   "what": "Buf(12,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    7,
+    7
+   ],
+   "what": "b.rect(1,4,7,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    2,
+    7
+   ],
+   "what": "b.rect(1,4,2,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    10,
+    7,
+    1
+   ],
+   "what": "b.rect(1,10,7,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    5,
+    2,
+    1
+   ],
+   "what": "b.rect(8,5,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    6,
+    1,
+    3
+   ],
+   "what": "b.rect(10,6,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    9,
+    2,
+    1
+   ],
+   "what": "b.rect(8,9,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    4,
+    5,
+    2
+   ],
+   "what": "b.rect(2,4,5,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    3,
+    4
+   ],
+   "what": "b.rect(1,1,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "b.px(1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "b.px(2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    0,
+    3,
+    4
+   ],
+   "what": "b.rect(5,0,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    0
+   ],
+   "what": "b.px(5,0,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    1
+   ],
+   "what": "b.px(6,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    0,
+    1,
+    3
+   ],
+   "what": "b.rect(3,0,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    1,
+    1,
+    2
+   ],
+   "what": "b.rect(6,1,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    9
+   ],
+   "what": "Buf(15,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    5
+   ],
+   "what": "g.ell(7.5,5,6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    3
+   ],
+   "what": "g.ell(7.5,5,6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    8
+   ],
+   "what": "Buf(13,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    4
+   ],
+   "what": "b.ell(6.5,4,5,2.8,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2.8
+   ],
+   "what": "b.ell(6.5,4,5,2.8,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.px(3,3,C[0]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    5
+   ],
+   "what": "b.px(9,5,C[0]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    2
+   ],
+   "what": "b.px(6,2,C[2]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    19,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    10
+   ],
+   "what": "Buf(24,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    6,
+    22,
+    3
+   ],
+   "what": "b.rect(1,6,22,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    6,
+    22,
+    1
+   ],
+   "what": "b.rect(1,6,22,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.4,
+    2.2
+   ],
+   "what": "b.ell(q[0],q[1]-1,2.4,2.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    6
+   ],
+   "what": "b.frame(q[0]-3,q[1]-4,6,6,OUT) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    9
+   ],
+   "what": "Buf(24,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    5
+   ],
+   "what": "b.ell(12,5,10.6,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10.6,
+    3.4
+   ],
+   "what": "b.ell(12,5,10.6,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    4.6
+   ],
+   "what": "b.ell(12,4.6,7.6,2,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.6,
+    2
+   ],
+   "what": "b.ell(12,4.6,7.6,2,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:69",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    16
+   ],
+   "what": "Buf(6,16) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    1,
+    13
+   ],
+   "what": "b.rect(1,1,1,13,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    1,
+    1,
+    13
+   ],
+   "what": "b.rect(4,1,1,13,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    0,
+    4,
+    2
+   ],
+   "what": "b.rect(1,0,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    6
+   ],
+   "what": "Buf(11,6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    3
+   ],
+   "what": "b.ell(5.5,3,4.6,2.2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.6,
+    2.2
+   ],
+   "what": "b.ell(5.5,3,4.6,2.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    10
+   ],
+   "what": "Buf(16,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    5
+   ],
+   "what": "b.ell(6,5,5,3.6,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    3.6
+   ],
+   "what": "b.ell(6,5,5,3.6,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    4,
+    4,
+    2
+   ],
+   "what": "b.rect(10,4,4,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    4
+   ],
+   "what": "b.ell(14,4,1.4,1.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.4,
+    1.4
+   ],
+   "what": "b.ell(14,4,1.4,1.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    6
+   ],
+   "what": "b.ell(14,6,1.4,1.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.4,
+    1.4
+   ],
+   "what": "b.ell(14,6,1.4,1.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    9
+   ],
+   "what": "Buf(14,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    4.5
+   ],
+   "what": "b.ell(7,4.5,5.6,3.4,W1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.6,
+    3.4
+   ],
+   "what": "b.ell(7,4.5,5.6,3.4,W1) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    4
+   ],
+   "what": "b.ell(7,4,2.2,1.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.2,
+    1.8
+   ],
+   "what": "b.ell(7,4,2.2,1.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    5
+   ],
+   "what": "b.px(2,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    6
+   ],
+   "what": "b.px(11,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    7
+   ],
+   "what": "b.px(4,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    9
+   ],
+   "what": "Buf(8,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    4.6
+   ],
+   "what": "b.ell(4,4.6,2.8,3.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.8,
+    3.6
+   ],
+   "what": "b.ell(4,4.6,2.8,3.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    12
+   ],
+   "what": "Buf(8,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    6,
+    6
+   ],
+   "what": "b.rect(1,5,6,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    4,
+    5
+   ],
+   "what": "b.rect(2,6,4,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    1,
+    6
+   ],
+   "what": "b.rect(1,5,1,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    3,
+    4,
+    2
+   ],
+   "what": "b.rect(2,3,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2.4
+   ],
+   "what": "b.ell(4,2.4,2.6,1.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    1.8
+   ],
+   "what": "b.ell(4,2.4,2.6,1.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    2
+   ],
+   "what": "b.px(3,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2
+   ],
+   "what": "b.px(5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1
+   ],
+   "what": "b.px(4,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    7
+   ],
+   "what": "Buf(34,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:76",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    32,
+    5
+   ],
+   "what": "b.rect(1,1,32,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:76",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    32,
+    1
+   ],
+   "what": "b.rect(1,3,32,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    8
+   ],
+   "what": "Buf(7,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    8
+   ],
+   "what": "Buf(11,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    5.4
+   ],
+   "what": "b.ell(5.5,5.4,4.6,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.6,
+    2.4
+   ],
+   "what": "b.ell(5.5,5.4,4.6,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    3.4
+   ],
+   "what": "b.ell(5.5,3.4,2.6,2,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2
+   ],
+   "what": "b.ell(5.5,3.4,2.6,2,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    0
+   ],
+   "what": "b.px(5,0,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    46,
+    9
+   ],
+   "what": "Buf(46,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:79",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    44,
+    5
+   ],
+   "what": "b.rect(1,3,44,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:79",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    44,
+    1
+   ],
+   "what": "b.rect(1,3,44,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:79",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    4,
+    42,
+    3
+   ],
+   "what": "b.rect(2,4,42,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    20
+   ],
+   "what": "Buf(22,20) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    5,
+    16,
+    14
+   ],
+   "what": "b.rect(3,5,16,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    5,
+    4,
+    14
+   ],
+   "what": "b.rect(3,5,4,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    16,
+    16,
+    3
+   ],
+   "what": "b.rect(3,16,16,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "b.ell(11,5,8.6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8.6,
+    3
+   ],
+   "what": "b.ell(11,5,8.6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "b.ell(11,5,6.6,2,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.6,
+    2
+   ],
+   "what": "b.ell(11,5,6.6,2,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    12
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    13
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    15
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    15
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    18
+   ],
+   "what": "Buf(14,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    12,
+    13
+   ],
+   "what": "b.rect(1,4,12,13,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    2,
+    13
+   ],
+   "what": "b.rect(1,4,2,13,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    7,
+    10,
+    10
+   ],
+   "what": "b.rect(2,7,10,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    10,
+    3
+   ],
+   "what": "b.rect(2,1,10,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    10,
+    1
+   ],
+   "what": "b.rect(2,1,10,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    9
+   ],
+   "what": "Buf(15,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    5.5
+   ],
+   "what": "b.ell(7.5,5.5,6.6,2.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.6,
+    2.8
+   ],
+   "what": "b.ell(7.5,5.5,6.6,2.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "b.ell(…,4,3,2,…) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.4,
+    3
+   ],
+   "what": "b.ell(…,4.4,3,2,…) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    12
+   ],
+   "what": "Buf(24,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    8
+   ],
+   "what": "b.ell(12,8,10.6,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10.6,
+    3.4
+   ],
+   "what": "b.ell(12,8,10.6,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.4,
+    2
+   ],
+   "what": "b.ell(q[0],q[1],3.4,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    9
+   ],
+   "what": "Buf(13,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    6
+   ],
+   "what": "b.ell(6.5,6,5.6,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.6,
+    2.4
+   ],
+   "what": "b.ell(6.5,6,5.6,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    4
+   ],
+   "what": "b.ell(6.5,4,3.6,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2
+   ],
+   "what": "b.ell(6.5,4,3.6,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    8
+   ],
+   "what": "Buf(7,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    14
+   ],
+   "what": "Buf(10,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    12
+   ],
+   "what": "b.rect(1,1,8,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    8,
+    9
+   ],
+   "what": "b.rect(1,4,8,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    2,
+    12
+   ],
+   "what": "b.rect(1,1,2,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    1,
+    9
+   ],
+   "what": "b.rect(1,4,1,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "what": "b.rect(3,3,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.px(3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    6,
+    3,
+    3
+   ],
+   "what": "b.rect(5,6,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "b.px(5,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "Buf(9,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2.6
+   ],
+   "what": "b.ell(2.6,2.6,2.2,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.2,
+    2
+   ],
+   "what": "b.ell(2.6,2.6,2.2,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "b.line(4,4,8,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "b.line(4,4,8,7,\"_______\") args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "b.line(4,5,7,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    7
+   ],
+   "what": "b.line(4,5,7,7,\"_______\") args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    19,
+    3,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    21,
+    20,
+    4,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    30,
+    19,
+    3,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    16,
+    5,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    16,
+    13,
+    6,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    25,
+    12,
+    6,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    32,
+    15,
+    6,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    21,
+    17,
+    10,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    44,
+    36
+   ],
+   "what": "Buf(44,36) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    33
+   ],
+   "what": "b.ell(5,33,5,2.2,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2.2
+   ],
+   "what": "b.ell(5,33,5,2.2,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    39,
+    33
+   ],
+   "what": "b.ell(39,33,5,2.2,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2.2
+   ],
+   "what": "b.ell(39,33,5,2.2,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    13
+   ],
+   "what": "Buf(8,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:89",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    4,
+    4,
+    8
+   ],
+   "what": "b.rect(2,4,4,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:89",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    4,
+    1,
+    8
+   ],
+   "what": "b.rect(2,4,1,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "b.ell(4,3,2.6,2.2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2.2
+   ],
+   "what": "b.ell(4,3,2.6,2.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:89",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    0,
+    2,
+    2
+   ],
+   "what": "b.rect(3,0,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:90",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    14
+   ],
+   "what": "Buf(10,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    12
+   ],
+   "what": "b.rect(1,1,8,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    8,
+    9
+   ],
+   "what": "b.rect(1,4,8,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    2,
+    12
+   ],
+   "what": "b.rect(1,1,2,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "what": "b.rect(3,3,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:90",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    6,
+    3,
+    3
+   ],
+   "what": "b.rect(5,6,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    13
+   ],
+   "what": "Buf(22,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    9
+   ],
+   "what": "b.ell(11,9,8,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3.4
+   ],
+   "what": "b.ell(11,9,8,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "b.ell(11,5,9.6,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9.6,
+    4
+   ],
+   "what": "b.ell(11,5,9.6,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    4.6
+   ],
+   "what": "b.ell(11,4.6,7.6,2.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.6,
+    2.8
+   ],
+   "what": "b.ell(11,4.6,7.6,2.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    13,
+    0,
+    2,
+    5
+   ],
+   "what": "b.rect(13,0,2,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    26,
+    20
+   ],
+   "what": "Buf(26,20) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    22,
+    4
+   ],
+   "what": "b.rect(2,1,22,4,RP.wood[3]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    22,
+    1
+   ],
+   "what": "b.rect(2,1,22,1,RP.wood[4]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    5,
+    3,
+    14
+   ],
+   "what": "b.rect(4,5,3,14,RP.wood[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    19,
+    5,
+    3,
+    14
+   ],
+   "what": "b.rect(19,5,3,14,RP.wood[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    11,
+    16,
+    2
+   ],
+   "what": "b.rect(5,11,16,2,RP.wood[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:96",
+   "fn": "llama",
+   "kind": "point",
+   "nums": [
+    -13,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:96",
+   "fn": "llama",
+   "kind": "point",
+   "nums": [
+    -7,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:96",
+   "fn": "llama",
+   "kind": "point",
+   "nums": [
+    -1,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:96",
+   "fn": "llama",
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:96",
+   "fn": "llama",
+   "kind": "point",
+   "nums": [
+    11,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point+",
+   "nums": [
+    -6,
+    2,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point+",
+   "nums": [
+    1,
+    -4,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point+",
+   "nums": [
+    6,
+    1,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point+",
+   "nums": [
+    -2,
+    -10,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point",
+   "nums": [
+    -7,
+    0
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point",
+   "nums": [
+    0,
+    -4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:97",
+   "fn": "vapor",
+   "kind": "point",
+   "nums": [
+    6,
+    -1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:114",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    16,
+    196,
+    198
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:118",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:118",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(…,-30,0) [sprite \"ab\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:121",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:131",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:131",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:133",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"estufa\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:134",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    176,
+    22,
+    38,
+    36
+   ],
+   "what": "c.rect(176,22,38,36) [sprite \"pm\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:135",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    38,
+    50
+   ],
+   "what": "tenida(c,\"____\",38,50,0,0,v) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:135",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    50,
+    50
+   ],
+   "what": "tenida(c,\"______\",50,50,0,0,v) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:141",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    -5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:141",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -6,
+    0
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:141",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    6,
+    0
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:169",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,66,24) args 1,2",
+   "comment": "the card steps aside while three picture bubbles stand at the top"
+  },
+  {
+   "at": "estufa.js:208",
+   "fn": "ultimas27",
+   "kind": "point",
+   "nums": [
+    0,
+    1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:210",
+   "fn": "saca",
+   "kind": "rect",
+   "nums": [
+    -1,
+    1,
+    -1,
+    1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:225",
+   "fn": "sirve27",
+   "kind": "point",
+   "nums": [
+    0,
+    1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:225",
+   "fn": "sirve27",
+   "kind": "point+",
+   "nums": [
+    0,
+    2,
+    1
+   ],
+   "what": "of(…)",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:225",
+   "fn": "sirve27",
+   "kind": "point+",
+   "nums": [
+    1,
+    2,
+    0
+   ],
+   "what": "of(…)",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:233",
+   "fn": "final27",
+   "kind": "point",
+   "nums": [
+    155,
+    202
+   ],
+   "what": "mueve(\"____\",155,202) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:233",
+   "fn": "final27",
+   "kind": "point",
+   "nums": [
+    204,
+    202
+   ],
+   "what": "mueve(\"______\",204,202) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:265",
+   "fn": "entran28",
+   "kind": "point",
+   "nums": [
+    178,
+    198
+   ],
+   "what": "mueve(\"____\",178,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:265",
+   "fn": "entran28",
+   "kind": "point",
+   "nums": [
+    199,
+    206
+   ],
+   "what": "mueve(\"______\",199,206) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:267",
+   "fn": "platobebe",
+   "kind": "xy",
+   "nums": [
+    94,
+    181
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:296",
+   "fn": "niega",
+   "kind": "rect",
+   "nums": [
+    1,
+    -1,
+    1,
+    -1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:330",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:330",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    124,
+    24
+   ],
+   "what": "heartAt",
+   "comment": null
+  },
+  {
+   "at": "estufa.js:331",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    125,
+    46
+   ],
+   "what": "respEn",
+   "comment": null
+  }
+ ]
+}

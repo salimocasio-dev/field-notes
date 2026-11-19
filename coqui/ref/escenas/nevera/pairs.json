@@ -1,0 +1,1622 @@
+{
+ "scene": "nevera",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-nevera",
+   "w": "leche",
+   "say": "m_n_carmen_leche",
+   "sayText": "Carmen toma leche.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     124,
+     152,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "bebe": {
+        "k": "claro",
+        "v": "leche"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "leche.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     124,
+     152,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "bebe": {
+        "k": "claro",
+        "v": 1
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "leche.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "queso",
+   "say": "m_n_el_queso",
+   "sayText": "Mira el queso.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     132,
+     97,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "platoazul",
+       "x": 160,
+       "y": 123,
+       "z": 300
+      },
+      {
+       "k": "queso",
+       "v": 3,
+       "x": 160,
+       "y": 121,
+       "z": 301
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "queso.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     132,
+     97,
+     56.5,
+     30
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "mantequilla",
+       "v": 3,
+       "x": 160,
+       "y": 122,
+       "z": 300
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "queso.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "no hay",
+   "say": "m_n_no_hay_leche",
+   "sayText": "No hay leche.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     36,
+     50,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 1,
+      "soporte": 1,
+      "h": [
+       null,
+       {
+        "k": "queso",
+        "v": 3
+       }
+      ]
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "no_hay.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     36,
+     50,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 1,
+      "soporte": 1,
+      "h": [
+       {
+        "k": "leche",
+        "v": 4
+       },
+       null
+      ]
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "no_hay.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "busca",
+   "say": "m_n_papa_busca",
+   "sayText": "Papá busca el pan.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     127,
+     36,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 184,
+       "y": 120,
+       "dir": 1,
+       "fuera": 1,
+       "alza": {
+        "k": "bolsa",
+        "v": "abuelo",
+        "e": 1,
+        "dx": 12,
+        "dy": 2
+       },
+       "piensa": {
+        "k": "panecillo",
+        "e": 2
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "busca.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     127,
+     36,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 184,
+       "y": 120,
+       "dir": -1,
+       "fuera": 1,
+       "come": {
+        "k": "rebanada"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "busca.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "fruta",
+   "say": "m_n_mi_fruta",
+   "sayText": "Mira mi fruta.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuelo": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "alza": {
+        "k": "platofruta",
+        "dx": 16,
+        "dy": 12
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "fruta.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuelo": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "alza": {
+        "k": "platorollo",
+        "dx": 16,
+        "dy": 12
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "fruta.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "guineo",
+   "say": "m_n_bebe_guineo",
+   "sayText": "El bebé come guineo.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "mama": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "bebe": "come",
+       "bebecosa": {
+        "k": "guineo",
+        "v": "medio"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "guineo.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "mama": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "bebe": "come",
+       "bebecosa": {
+        "k": "manzana"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "guineo.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "manzana",
+   "say": "m_n_mi_manzana",
+   "sayText": "Mira mi manzana.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "manzana"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "manzana.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "china"
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "manzana.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "china",
+   "say": "m_n_tu_china",
+   "sayText": "Dame tu china, por favor.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 140,
+       "y": 204,
+       "dir": 1,
+       "pose": "offer"
+      },
+      "abuelo": {
+       "x": 184,
+       "y": 204,
+       "dir": -1,
+       "alza": {
+        "k": "china",
+        "dx": 16,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "china.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     110,
+     146,
+     113,
+     60
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "carmen": {
+       "x": 140,
+       "y": 204,
+       "dir": 1,
+       "pose": "offer"
+      },
+      "abuelo": {
+       "x": 184,
+       "y": 204,
+       "dir": -1,
+       "alza": {
+        "k": "guineo",
+        "dx": 18,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "china.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "pan",
+   "say": "c31_aqui_pan",
+   "sayText": "Aquí hay pan.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "cesta",
+       "v": 4,
+       "x": 166,
+       "y": 122,
+       "z": 300
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "pan.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {},
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "ollaarroz",
+       "x": 166,
+       "y": 122,
+       "z": 300
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "pan.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "mantequilla",
+   "say": "c32_le_pone",
+   "sayText": "Abuela le pone mantequilla al pan.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 158,
+       "y": 157,
+       "dir": 1,
+       "pose": "offer"
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "mantequilla",
+       "v": 3,
+       "x": 178,
+       "y": 119,
+       "z": 300
+      },
+      {
+       "k": "untando",
+       "x": 198,
+       "y": 124,
+       "z": 301
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "mantequilla.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     132,
+     92,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "abuela": {
+       "x": 158,
+       "y": 157,
+       "dir": 1,
+       "pose": "offer"
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [
+      {
+       "k": "platoazul",
+       "x": 178,
+       "y": 120,
+       "z": 300
+      },
+      {
+       "k": "queso",
+       "v": 3,
+       "x": 178,
+       "y": 118,
+       "z": 301
+      },
+      {
+       "k": "conqueso",
+       "x": 198,
+       "y": 124,
+       "z": 302
+      }
+     ],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "mantequilla.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "lleno",
+   "say": "m_n_plato_lleno",
+   "sayText": "El plato está lleno.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "platolleno",
+        "dx": 15,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "lleno.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     118,
+     154,
+     94.2,
+     50
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "luis": {
+       "x": 150,
+       "y": 200,
+       "dir": 1,
+       "alza": {
+        "k": "plato",
+        "dx": 15,
+        "dy": 10
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "lleno.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-nevera",
+   "w": "vacío",
+   "say": "m_n_mi_vaso_vacio",
+   "sayText": "Mi vaso está vacío.",
+   "si": {
+    "scene": "nevera",
+    "cam": [
+     116,
+     142,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "alza": {
+        "k": "claroalreves",
+        "dx": 15,
+        "dy": -4
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "vacio.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "nevera",
+    "cam": [
+     116,
+     142,
+     75.3,
+     40
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null
+     },
+     "gente": {
+      "papa": {
+       "x": 150,
+       "y": 204,
+       "dir": 1,
+       "bebe": {
+        "k": "claro",
+        "v": 1
+       }
+      }
+     },
+     "nev": {
+      "abierta": 0,
+      "h": []
+     },
+     "mos": {},
+     "patio": {},
+     "repisa": [],
+     "cesta": null,
+     "canasta": null,
+     "cosas": [],
+     "vuelos": [],
+     "banco": 0,
+     "encima": null,
+     "tarjeta": null,
+     "pila": null,
+     "vista": null
+    },
+    "esc": null,
+    "png": "vacio.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "leche",
+   "s": 30,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "leche",
+     "side": "si",
+     "x": null,
+     "crop": [
+      138.67,
+      152,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.leche.0.png"
+    },
+    {
+     "first": false,
+     "pair": "leche",
+     "side": "no",
+     "x": null,
+     "crop": [
+      138.67,
+      152,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.leche.1.png"
+    },
+    {
+     "first": false,
+     "pair": "queso",
+     "side": "si",
+     "x": null,
+     "crop": [
+      146.67,
+      97,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.leche.2.png"
+    },
+    {
+     "first": false,
+     "pair": "pan",
+     "side": "si",
+     "x": null,
+     "crop": [
+      151.54,
+      92,
+      36.23,
+      40
+     ],
+     "scene": "nevera",
+     "png": "nivel.leche.3.png"
+    }
+   ]
+  },
+  {
+   "w": "queso",
+   "s": 30,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "queso",
+     "side": "si",
+     "x": null,
+     "crop": [
+      146.67,
+      97,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.queso.0.png"
+    },
+    {
+     "first": false,
+     "pair": "queso",
+     "side": "no",
+     "x": null,
+     "crop": [
+      146.67,
+      97,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.queso.1.png"
+    },
+    {
+     "first": false,
+     "pair": "leche",
+     "side": "si",
+     "x": null,
+     "crop": [
+      138.67,
+      152,
+      27.17,
+      30
+     ],
+     "scene": "nevera",
+     "png": "nivel.queso.2.png"
+    },
+    {
+     "first": false,
+     "pair": "fruta",
+     "side": "si",
+     "x": null,
+     "crop": [
+      139.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "nevera",
+     "png": "nivel.queso.3.png"
+    }
+   ]
+  },
+  {
+   "w": "guineo",
+   "s": 31,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "guineo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      139.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "nevera",
+     "png": "nivel.guineo.0.png"
+    },
+    {
+     "first": false,
+     "pair": "guineo",
+     "side": "no",
+     "x": null,
+     "crop": [
+      139.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "nevera",
+     "png": "nivel.guineo.1.png"
+    },
+    {
+     "first": false,
+     "pair": "china",
+     "side": "si",
+     "x": null,
+     "crop": [
+      139.33,
+      146,
+      54.34,
+      60
+     ],
+     "scene": "nevera",
+     "png": "nivel.guineo.2.png"
+    },
+    {
+     "first": false,
+     "pair": "pan",
+     "side": "no",
+     "x": null,
+     "crop": [
+      151.54,
+      92,
+      36.23,
+      40
+     ],
+     "scene": "nevera",
+     "png": "nivel.guineo.3.png"
+    }
+   ]
+  },
+  {
+   "w": "lleno",
+   "s": 32,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "lleno",
+     "side": "si",
+     "x": null,
+     "crop": [
+      142.46,
+      154,
+      45.28,
+      50
+     ],
+     "scene": "nevera",
+     "png": "nivel.lleno.0.png"
+    },
+    {
+     "first": false,
+     "pair": "lleno",
+     "side": "no",
+     "x": null,
+     "crop": [
+      142.46,
+      154,
+      45.28,
+      50
+     ],
+     "scene": "nevera",
+     "png": "nivel.lleno.1.png"
+    },
+    {
+     "first": false,
+     "pair": "vacío",
+     "side": "si",
+     "x": null,
+     "crop": [
+      135.54,
+      142,
+      36.23,
+      40
+     ],
+     "scene": "nevera",
+     "png": "nivel.lleno.2.png"
+    },
+    {
+     "first": false,
+     "pair": "mantequilla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      151.54,
+      92,
+      36.23,
+      40
+     ],
+     "scene": "nevera",
+     "png": "nivel.lleno.3.png"
+    }
+   ]
+  }
+ ]
+}

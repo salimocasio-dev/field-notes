@@ -1,0 +1,820 @@
+{
+ "scene": "frente",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "drawn": "cual.html and nivel.html as they are, every scene loaded (cual.js:18-20), F=8; a review picture is the cam rectangle stretched to 196 x 104, a level picture the crop stretched to 96 x 106",
+ "pairs": [
+  {
+   "file": "cual-frente",
+   "w": "casa",
+   "say": "esta_casa",
+   "sayText": "Esta es la casa de abuela.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     52,
+     8,
+     180,
+     96
+    ],
+    "set": null,
+    "esc": null,
+    "png": "casa.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     44,
+     120,
+     180,
+     96
+    ],
+    "set": null,
+    "esc": null,
+    "png": "casa.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "puerta",
+   "say": "puerta",
+   "sayText": "Es la puerta.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": null,
+    "esc": null,
+    "png": "puerta.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ],
+    "set": null,
+    "esc": null,
+    "png": "puerta.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "ventana",
+   "say": "ventana",
+   "sayText": "Es la ventana.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ],
+    "set": null,
+    "esc": null,
+    "png": "ventana.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": null,
+    "esc": null,
+    "png": "ventana.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "abuela",
+   "say": "abuela",
+   "sayText": "Esta es abuela.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     }
+    },
+    "esc": null,
+    "png": "abuela.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 0
+    },
+    "esc": null,
+    "png": "abuela.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "abre",
+   "say": "abre_ventana",
+   "sayText": "Abuela abre la ventana.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "win": 1,
+     "ab": {
+      "en": "ventana",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     }
+    },
+    "esc": null,
+    "png": "abre.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     55,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "win": 0
+    },
+    "esc": null,
+    "png": "abre.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "cierra",
+   "say": "ab_cierra_puerta",
+   "sayText": "Abuela cierra la puerta.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 0.5,
+     "peek": 1
+    },
+    "esc": null,
+    "png": "cierra.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     135,
+     46,
+     94,
+     50
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "idle",
+      "bub": null,
+      "al": 1
+     }
+    },
+    "esc": null,
+    "png": "cierra.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "hola",
+   "say": "hola_abuela",
+   "sayText": "¡Hola, abuela!",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     44,
+     40,
+     196,
+     104
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "cq": {
+      "x": 146,
+      "y": 86,
+      "s": 0.62,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "hola"
+     }
+    },
+    "esc": null,
+    "png": "hola.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     44,
+     40,
+     196,
+     104
+    ],
+    "set": {
+     "door": 0.5,
+     "peek": 1,
+     "dusk": 2,
+     "cq": {
+      "x": 176,
+      "y": 116,
+      "s": 0.85,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": 1
+    },
+    "esc": null,
+    "png": "hola.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "adiós",
+   "say": "adios_abuela",
+   "sayText": "¡Adiós, abuela!",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     44,
+     40,
+     196,
+     104
+    ],
+    "set": {
+     "door": 0.5,
+     "peek": 1,
+     "dusk": 2,
+     "cq": {
+      "x": 176,
+      "y": 116,
+      "s": 0.85,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "polvo": 1
+    },
+    "esc": null,
+    "png": "adios.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     44,
+     40,
+     196,
+     104
+    ],
+    "set": {
+     "door": 1,
+     "ab": {
+      "en": "puerta",
+      "pose": "wave",
+      "bub": null,
+      "al": 1
+     },
+     "cq": {
+      "x": 146,
+      "y": 86,
+      "s": 0.62,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "hola"
+     }
+    },
+    "esc": null,
+    "png": "adios.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "sí",
+   "say": "cq_si",
+   "sayText": "¡Sí!",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     55,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "si"
+     ]
+    },
+    "esc": null,
+    "png": "si.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     115,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "no"
+     ]
+    },
+    "esc": null,
+    "png": "si.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "no",
+   "say": "cq_no",
+   "sayText": "¡No!",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     115,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "no"
+     ]
+    },
+    "esc": null,
+    "png": "no.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     55,
+     96,
+     109,
+     58
+    ],
+    "set": {
+     "resp": [
+      "si"
+     ]
+    },
+    "esc": null,
+    "png": "no.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "grande",
+   "say": "n_casa_grande",
+   "sayText": "Es la casa grande.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     52,
+     8,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    },
+    "esc": null,
+    "png": "grande.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     0,
+     94,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    },
+    "esc": null,
+    "png": "grande.no.png",
+    "samePixelsAsOther": false
+   }
+  },
+  {
+   "file": "cual-frente",
+   "w": "pequeña",
+   "say": "n_casa_pequena",
+   "sayText": "Es la casa pequeña.",
+   "si": {
+    "scene": "frente",
+    "cam": [
+     0,
+     94,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    },
+    "esc": null,
+    "png": "pequena.si.png",
+    "samePixelsAsOther": false
+   },
+   "no": {
+    "scene": "frente",
+    "cam": [
+     52,
+     8,
+     180,
+     96
+    ],
+    "set": {
+     "escondite": 1
+    },
+    "esc": null,
+    "png": "pequena.no.png",
+    "samePixelsAsOther": false
+   }
+  }
+ ],
+ "level": [
+  {
+   "w": "abuela",
+   "s": 1,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "abuela",
+     "side": "si",
+     "x": 166,
+     "crop": [
+      143.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.abuela.0.png"
+    },
+    {
+     "first": false,
+     "pair": "mamá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      70.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "papá",
+     "side": "si",
+     "x": null,
+     "crop": [
+      104.33,
+      70,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "hermana",
+     "side": "si",
+     "x": null,
+     "crop": [
+      93.33,
+      92,
+      54.34,
+      60
+     ],
+     "scene": "sala",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "puerta",
+   "s": 1,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "puerta",
+     "side": "si",
+     "x": 166,
+     "crop": [
+      143.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.puerta.0.png"
+    },
+    {
+     "first": false,
+     "pair": "ventana",
+     "side": "si",
+     "x": 112,
+     "crop": [
+      89.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.puerta.1.png"
+    },
+    {
+     "first": false,
+     "pair": "silla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      143.65,
+      116,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "sol",
+     "side": "si",
+     "x": null,
+     "crop": [
+      74.15,
+      0,
+      81.69,
+      90.2
+     ],
+     "scene": "patio",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "abre",
+   "s": 2,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "abre",
+     "side": "si",
+     "x": 112,
+     "crop": [
+      89.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.abre.0.png"
+    },
+    {
+     "first": false,
+     "pair": "abre",
+     "side": "no",
+     "x": 112,
+     "crop": [
+      89.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.abre.1.png"
+    },
+    {
+     "first": false,
+     "pair": "puerta",
+     "side": "si",
+     "x": 166,
+     "crop": [
+      143.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.abre.2.png"
+    },
+    {
+     "first": false,
+     "pair": "jugo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      103.65,
+      98,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "hola",
+   "s": 2,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "hola",
+     "side": "si",
+     "x": 160,
+     "crop": [
+      112.91,
+      40,
+      94.19,
+      104
+     ],
+     "scene": "frente",
+     "png": "nivel.hola.0.png"
+    },
+    {
+     "first": false,
+     "pair": "adiós",
+     "side": "si",
+     "x": 160,
+     "crop": [
+      112.91,
+      40,
+      94.19,
+      104
+     ],
+     "scene": "frente",
+     "png": "nivel.hola.1.png"
+    },
+    {
+     "first": false,
+     "pair": "se sienta",
+     "side": "si",
+     "x": 80,
+     "crop": [
+      50.2,
+      84,
+      59.59,
+      65.8
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "juega",
+     "side": "si",
+     "x": 130,
+     "crop": [
+      93.95,
+      124,
+      72.09,
+      79.6
+     ],
+     "scene": "patio",
+     "png": null
+    }
+   ]
+  },
+  {
+   "w": "silla",
+   "s": 4,
+   "pictures": [
+    {
+     "first": true,
+     "pair": "silla",
+     "side": "si",
+     "x": null,
+     "crop": [
+      143.65,
+      116,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "silla",
+     "side": "no",
+     "x": null,
+     "crop": [
+      103.65,
+      116,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "jugo",
+     "side": "si",
+     "x": null,
+     "crop": [
+      103.65,
+      98,
+      32.69,
+      36.1
+     ],
+     "scene": "balcon",
+     "png": null
+    },
+    {
+     "first": false,
+     "pair": "ventana",
+     "side": "si",
+     "x": 112,
+     "crop": [
+      89.36,
+      46,
+      45.28,
+      50
+     ],
+     "scene": "frente",
+     "png": "nivel.silla.3.png"
+    }
+   ]
+  }
+ ]
+}

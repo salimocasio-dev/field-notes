@@ -1,0 +1,1538 @@
+{
+ "scene": "balcon",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 26,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 14,
+   "y": 52,
+   "w": 186,
+   "h": 98.7,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "quiero.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "quiero.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "¿cómo estás?.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "¿cómo estás?.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 18,
+   "y": 84,
+   "w": 124,
+   "h": 65.8,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "se sienta.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "se sienta.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 82,
+   "y": 94,
+   "w": 124,
+   "h": 65.8,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "bien.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "bien.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 92,
+   "w": 76,
+   "h": 40.3,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 86,
+   "y": 98,
+   "w": 68,
+   "h": 36.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "vaso.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "vaso.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "jugo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "jugo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "agua.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "agua.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 86,
+   "y": 116,
+   "w": 68,
+   "h": 36.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "silla.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 126,
+   "y": 116,
+   "w": 68,
+   "h": 36.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "silla.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 49.31,
+   "y": 52,
+   "w": 89.39,
+   "h": 98.7,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p0",
+     "owner": "level picture",
+     "note": "pair quiero.si, centred on x 94 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p1",
+     "owner": "level picture",
+     "note": "pair quiero.no, centred on x 94 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p2",
+     "owner": "level picture",
+     "note": "pair ¿cómo estás?.si, centred on x 94 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 50.2,
+   "y": 84,
+   "w": 59.59,
+   "h": 65.8,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p2",
+     "owner": "level picture",
+     "note": "pair se sienta.si, centred on x 80 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "se sienta.p0",
+     "owner": "level picture",
+     "note": "pair se sienta.si, centred on x 80 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 66.2,
+   "y": 84,
+   "w": 59.59,
+   "h": 65.8,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "se sienta.p1",
+     "owner": "level picture",
+     "note": "pair se sienta.no, centred on x 96 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 103.65,
+   "y": 98,
+   "w": 32.69,
+   "h": 36.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "abre.p3",
+     "owner": "level picture",
+     "note": "pair jugo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "silla.p2",
+     "owner": "level picture",
+     "note": "pair jugo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "jugo.p0",
+     "owner": "level picture",
+     "note": "pair jugo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "jugo.p1",
+     "owner": "level picture",
+     "note": "pair agua.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "hasta mañana.p2",
+     "owner": "level picture",
+     "note": "pair jugo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 103.65,
+   "y": 116,
+   "w": 32.69,
+   "h": 36.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "silla.p1",
+     "owner": "level picture",
+     "note": "pair silla.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 143.65,
+   "y": 116,
+   "w": 32.69,
+   "h": 36.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "puerta.p2",
+     "owner": "level picture",
+     "note": "pair silla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "silla.p0",
+     "owner": "level picture",
+     "note": "pair silla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "jugo.p2",
+     "owner": "level picture",
+     "note": "pair silla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "flor.p3",
+     "owner": "level picture",
+     "note": "pair silla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 84,
+   "y": 129,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.si.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "abuela",
+      "silla_grande"
+     ],
+     "insideThings": [
+      "abuela",
+      "silla_grande",
+      "balcon"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.no.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "abuela",
+      "silla_grande"
+     ],
+     "insideThings": [
+      "abuela",
+      "silla_grande",
+      "balcon"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 94,
+   "y": 147,
+   "uses": [
+    {
+     "file": "cuentos/que-calor.json",
+     "at": "beats.0.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "silla.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "silla.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "vaso.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "vaso.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "jugo.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "jugo.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "agua.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "agua.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "se sienta.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "quiero.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "quiero.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "¿cómo estás?.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "¿cómo estás?.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "bien.si.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "bien.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 106,
+   "y": 130,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "bien.si.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "balcon",
+      "ventana"
+     ],
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "bien.no.set.cq",
+     "owner": "set.cq",
+     "lugar": [
+      "balcon",
+      "ventana"
+     ],
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 106,
+   "y": 148,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "se sienta.no.set.ab",
+     "owner": "set.ab",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "abuela standing: her feet at x, y (balcon.js:123 draws mkAbuela at x-30, y-50); en: silla puts her in the big chair at ABS (balcon.js:95) whatever x, y say"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 120,
+   "y": 86,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.si.set.ave",
+     "owner": "set.ave",
+     "insideThings": [
+      "ventana"
+     ],
+     "meaning": "the bird's feet (kit.js:25 avePos)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "gracias.no.set.ave",
+     "owner": "set.ave",
+     "insideThings": [
+      "ventana"
+     ],
+     "meaning": "the bird's feet (kit.js:25 avePos)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 127,
+   "y": 128,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.si.set.ave",
+     "owner": "set.ave",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "the bird's feet (kit.js:25 avePos)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 132,
+   "y": 128,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.no.set.ave",
+     "owner": "set.ave",
+     "insideThings": [
+      "mesa",
+      "balcon"
+     ],
+     "meaning": "the bird's feet (kit.js:25 avePos)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 80,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "hola.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "se sienta.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 94,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "quiero.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 96,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "se sienta.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 106,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.si.set.vasos.0",
+     "owner": "set.vasos[]",
+     "note": "x alone (y comes from the scene)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 108,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "toma.no.set.vasos.0",
+     "owner": "set.vasos[]",
+     "note": "x alone (y comes from the scene)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 120,
+   "uses": [
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "vaso.si.set.vasos.0",
+     "owner": "set.vasos[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "vaso.no.set.jarras.0",
+     "owner": "set.jarras[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "jugo.si.set.vasos.0",
+     "owner": "set.vasos[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "jugo.no.set.vasos.0",
+     "owner": "set.vasos[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "agua.si.set.jarras.0",
+     "owner": "set.jarras[]",
+     "note": "x alone (y comes from the scene)"
+    },
+    {
+     "file": "cuentos/cual-balcon.json",
+     "at": "agua.no.set.jarras.0",
+     "owner": "set.jarras[]",
+     "note": "x alone (y comes from the scene)"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "balcon.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    13
+   ],
+   "what": "VT.n",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    17
+   ],
+   "what": "VT.g",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    9
+   ],
+   "what": "VT.p",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    108,
+    132
+   ],
+   "what": "X2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    101,
+    113,
+    127,
+    139
+   ],
+   "what": "X4",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    48,
+    102
+   ],
+   "what": "SILLA",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    148,
+    120
+   ],
+   "what": "SILLITA",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    51,
+    96
+   ],
+   "what": "ABS",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    86
+   ],
+   "what": "PERCH",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    160,
+    135
+   ],
+   "what": "ASIENTO",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    178,
+    125
+   ],
+   "what": "AB.puerta",
+   "comment": "where abuela stands (her feet)"
+  },
+  {
+   "at": "balcon.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    98,
+    143
+   ],
+   "what": "AB.mesa",
+   "comment": "where abuela stands (her feet)"
+  },
+  {
+   "at": "balcon.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    94,
+    147
+   ],
+   "what": "AB.lado",
+   "comment": "where abuela stands (her feet)"
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    185,
+    1
+   ],
+   "what": "LUGAR.jardin",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    106,
+    130,
+    0.8
+   ],
+   "what": "LUGAR.balcon",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    141,
+    0.86
+   ],
+   "what": "LUGAR.mesa",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    141,
+    0.86
+   ],
+   "what": "LUGAR.junto",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    134,
+    130,
+    0.8
+   ],
+   "what": "LUGAR.decir",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    144,
+    109,
+    0.72
+   ],
+   "what": "LUGAR.silla_pequena",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    132,
+    0.8
+   ],
+   "what": "LUGAR.suelo",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    84,
+    129,
+    0.8
+   ],
+   "what": "LUGAR.abuela",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    84,
+    129,
+    0.8
+   ],
+   "what": "LUGAR.silla_grande",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    162,
+    125,
+    0.76
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    106,
+    130,
+    0.8
+   ],
+   "what": "LUGAR.ventana",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:102",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    55,
+    96,
+    34,
+    50
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "balcon.js:105",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    94,
+    124,
+    52,
+    25
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    162,
+    54,
+    32,
+    68
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    178,
+    84
+   ],
+   "what": "hand",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    93,
+    54,
+    54,
+    36
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    70
+   ],
+   "what": "hand",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    42,
+    122,
+    156,
+    34
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:116",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:116",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:121",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"bal\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:124",
+   "fn": "dePie",
+   "kind": "rect",
+   "nums": [
+    165,
+    57,
+    24,
+    69
+   ],
+   "what": "c.rect(165,57,24,69) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:132",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    8
+   ],
+   "what": "jarra(c,0,8,\"____\") args 1,2",
+   "comment": "she tips the water jug over her own head"
+  },
+  {
+   "at": "balcon.js:136",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    94,
+    125
+   ],
+   "what": "c.drawImage(spr(\"____\",mkMesa),94,125) [sprite \"mesa\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:139",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    98,
+    157
+   ],
+   "what": "medio(c,98,157,-1) args 1,2",
+   "comment": "the two halves of her fan, on the floor"
+  },
+  {
+   "at": "balcon.js:139",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    110,
+    158
+   ],
+   "what": "medio(c,110,158,1) args 1,2",
+   "comment": "the two halves of her fan, on the floor"
+  },
+  {
+   "at": "balcon.js:153",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:179",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "tanteo(g,5,5,W.mios||0,\"__\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:206",
+   "fn": "bebecq",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:209",
+   "fn": "abbebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:213",
+   "fn": "avebebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    60,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    180,
+    54
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    120,
+    42
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    96,
+    64
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    150,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:225",
+   "fn": "lleva",
+   "kind": "point+",
+   "nums": [
+    0.4,
+    0.7,
+    1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:227",
+   "fn": "bebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:245",
+   "fn": "cqbebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:246",
+   "fn": "cqhielo",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": "he drinks the water, and squirts a little fountain"
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    60,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    180,
+    54
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    120,
+    42
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    96,
+    64
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    150,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "what": "CAM.mesa",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "what": "CAM.porche",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    107,
+    31
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ]
+}

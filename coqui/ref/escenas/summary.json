@@ -1,0 +1,127 @@
+{
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "nivelJsonSameAsNV": true,
+ "scenes": [
+  {
+   "id": "frente",
+   "things": 14,
+   "states": 43,
+   "distinctW": 291,
+   "views": 5,
+   "pairs": 12,
+   "level": 5,
+   "positions": 18,
+   "frames": 471
+  },
+  {
+   "id": "balcon",
+   "things": 13,
+   "states": 50,
+   "distinctW": 288,
+   "views": 3,
+   "pairs": 10,
+   "level": 9,
+   "positions": 26,
+   "frames": 335
+  },
+  {
+   "id": "sala",
+   "things": 16,
+   "states": 27,
+   "distinctW": 338,
+   "views": 2,
+   "pairs": 11,
+   "level": 12,
+   "positions": 46,
+   "frames": 156
+  },
+  {
+   "id": "patio",
+   "things": 21,
+   "states": 73,
+   "distinctW": 397,
+   "views": 1,
+   "pairs": 13,
+   "level": 11,
+   "positions": 73,
+   "frames": 278
+  },
+  {
+   "id": "camino",
+   "things": 22,
+   "states": 9,
+   "distinctW": 352,
+   "views": 1,
+   "pairs": 13,
+   "level": 4,
+   "positions": 35,
+   "frames": 31
+  },
+  {
+   "id": "campo",
+   "things": 10,
+   "states": 7,
+   "distinctW": 385,
+   "views": 1,
+   "pairs": 11,
+   "level": 4,
+   "positions": 66,
+   "frames": 26
+  },
+  {
+   "id": "lago",
+   "things": 19,
+   "states": 10,
+   "distinctW": 597,
+   "views": 1,
+   "pairs": 11,
+   "level": 4,
+   "positions": 48,
+   "frames": 41
+  },
+  {
+   "id": "banco",
+   "things": 20,
+   "states": 49,
+   "distinctW": 419,
+   "views": 1,
+   "pairs": 12,
+   "level": 4,
+   "positions": 62,
+   "frames": 171
+  },
+  {
+   "id": "mesa",
+   "things": 19,
+   "states": 141,
+   "distinctW": 391,
+   "views": 1,
+   "pairs": 12,
+   "level": 4,
+   "positions": 26,
+   "frames": 536
+  },
+  {
+   "id": "estufa",
+   "things": 17,
+   "states": 164,
+   "distinctW": 387,
+   "views": 1,
+   "pairs": 12,
+   "level": 4,
+   "positions": 35,
+   "frames": 625
+  },
+  {
+   "id": "nevera",
+   "things": 26,
+   "states": 87,
+   "distinctW": 360,
+   "views": 1,
+   "pairs": 12,
+   "level": 4,
+   "positions": 29,
+   "frames": 321
+  }
+ ]
+}

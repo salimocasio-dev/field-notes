@@ -1,0 +1,5816 @@
+{
+ "scene": "nevera",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 29,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 36,
+   "y": 50,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "no hay.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "no hay.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 110,
+   "y": 146,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "fruta.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "fruta.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "guineo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "guineo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 116,
+   "y": 142,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "vacío.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "vacío.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 118,
+   "y": 154,
+   "w": 94.2,
+   "h": 50,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "manzana.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "manzana.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "lleno.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "lleno.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 124,
+   "y": 152,
+   "w": 56.5,
+   "h": 30,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "leche.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "leche.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 127,
+   "y": 36,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "busca.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "busca.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 132,
+   "y": 92,
+   "w": 75.3,
+   "h": 40,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "pan.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "pan.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 132,
+   "y": 97,
+   "w": 56.5,
+   "h": 30,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 135.54,
+   "y": 142,
+   "w": 36.23,
+   "h": 40,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "lleno.p2",
+     "owner": "level picture",
+     "note": "pair vacío.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 138.67,
+   "y": 152,
+   "w": 27.17,
+   "h": 30,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "leche.p0",
+     "owner": "level picture",
+     "note": "pair leche.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "leche.p1",
+     "owner": "level picture",
+     "note": "pair leche.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "queso.p2",
+     "owner": "level picture",
+     "note": "pair leche.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 139.33,
+   "y": 146,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "queso.p3",
+     "owner": "level picture",
+     "note": "pair fruta.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "guineo.p0",
+     "owner": "level picture",
+     "note": "pair guineo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "guineo.p1",
+     "owner": "level picture",
+     "note": "pair guineo.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "guineo.p2",
+     "owner": "level picture",
+     "note": "pair china.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 142.46,
+   "y": 154,
+   "w": 45.28,
+   "h": 50,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "lleno.p0",
+     "owner": "level picture",
+     "note": "pair lleno.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "lleno.p1",
+     "owner": "level picture",
+     "note": "pair lleno.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 146.67,
+   "y": 97,
+   "w": 27.17,
+   "h": 30,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "leche.p2",
+     "owner": "level picture",
+     "note": "pair queso.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "queso.p0",
+     "owner": "level picture",
+     "note": "pair queso.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "queso.p1",
+     "owner": "level picture",
+     "note": "pair queso.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 151.54,
+   "y": 92,
+   "w": 36.23,
+   "h": 40,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "leche.p3",
+     "owner": "level picture",
+     "note": "pair pan.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "guineo.p3",
+     "owner": "level picture",
+     "note": "pair pan.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "lleno.p3",
+     "owner": "level picture",
+     "note": "pair mantequilla.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "leche.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "leche.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "no hay.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "no hay.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "busca.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "busca.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "fruta.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "fruta.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "guineo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "guineo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "manzana.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "manzana.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "pan.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "pan.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "lleno.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "lleno.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "vacío.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "vacío.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "leche.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "leche.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "manzana.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "manzana.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "lleno.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "lleno.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "fruta.si.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "fruta.no.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "guineo.si.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "guineo.no.set.gente.mama",
+     "owner": "set.gente.mama",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "vacío.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "vacío.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 158,
+   "y": 157,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.si.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.no.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 121,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.si.set.cosas.1",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.no.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 123,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "queso.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 166,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "pan.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "pan.no.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 118,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.no.set.cosas.1",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 119,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 120,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.no.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 184,
+   "y": 120,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "busca.si.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "busca.no.set.gente.papa",
+     "owner": "set.gente.papa",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 184,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.si.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "china.no.set.gente.abuelo",
+     "owner": "set.gente.abuelo",
+     "insideThings": [
+      "cocina"
+     ],
+     "meaning": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 198,
+   "y": 124,
+   "uses": [
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.si.set.cosas.1",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    },
+    {
+     "file": "cuentos/cual-nevera.json",
+     "at": "mantequilla.no.set.cosas.2",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "cocina"
+     ]
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "nevera.js:15",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    40,
+    40,
+    56,
+    116
+   ],
+   "what": "NEV",
+   "comment": "the floor; the counter top; the fridge (x, y, width, height); the counter (x, width); the frog's stool"
+  },
+  {
+   "at": "nevera.js:15",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    110,
+    108
+   ],
+   "what": "MOS",
+   "comment": "the floor; the counter top; the fridge (x, y, width, height); the counter (x, width); the frog's stool"
+  },
+  {
+   "at": "nevera.js:15",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    192
+   ],
+   "what": "BANCO",
+   "comment": "the floor; the counter top; the fridge (x, y, width, height); the counter (x, width); the frog's stool"
+  },
+  {
+   "at": "nevera.js:15",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    150,
+    36,
+    64,
+    62
+   ],
+   "what": "VEN",
+   "comment": "the floor; the counter top; the fridge (x, y, width, height); the counter (x, width); the frog's stool"
+  },
+  {
+   "at": "nevera.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    55,
+    79
+   ],
+   "what": "HUECO[]",
+   "comment": "the four places on the two shelves of the fridge; under them, the drawer"
+  },
+  {
+   "at": "nevera.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    81,
+    79
+   ],
+   "what": "HUECO[]",
+   "comment": "the four places on the two shelves of the fridge; under them, the drawer"
+  },
+  {
+   "at": "nevera.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    55,
+    105
+   ],
+   "what": "HUECO[]",
+   "comment": "the four places on the two shelves of the fridge; under them, the drawer"
+  },
+  {
+   "at": "nevera.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    81,
+    105
+   ],
+   "what": "HUECO[]",
+   "comment": "the four places on the two shelves of the fridge; under them, the drawer"
+  },
+  {
+   "at": "nevera.js:42",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    19
+   ],
+   "what": "Buf(12,19) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:42",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    8,
+    12
+   ],
+   "what": "b.rect(2,6,8,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:42",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    2,
+    4,
+    4
+   ],
+   "what": "b.rect(4,2,4,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:42",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    6,
+    2,
+    12
+   ],
+   "what": "b.rect(2,6,2,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:42",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    0,
+    4,
+    2
+   ],
+   "what": "b.rect(4,0,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    13
+   ],
+   "what": "Buf(18,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:44",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    10
+   ],
+   "what": "b.rect(1,10,w,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    11
+   ],
+   "what": "Buf(20,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    8.4
+   ],
+   "what": "b.ell(10,8.4,9,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    2
+   ],
+   "what": "b.ell(10,8.4,9,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "b.rect(4,3,w,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "b.rect(4,3,w,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:46",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    7
+   ],
+   "what": "b.rect(4,7,w,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:48",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    36,
+    16
+   ],
+   "what": "Buf(36,16) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:48",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    12,
+    34,
+    3
+   ],
+   "what": "b.rect(1,12,34,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:48",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    12,
+    34,
+    1
+   ],
+   "what": "b.rect(1,12,34,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    9
+   ],
+   "what": "Buf(13,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    5
+   ],
+   "what": "b.ell(6.5,5,5.4,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.4,
+    3
+   ],
+   "what": "b.ell(6.5,5,5.4,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    4.6
+   ],
+   "what": "b.ell(6.5,4.6,3.6,1.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    1.8
+   ],
+   "what": "b.ell(6.5,4.6,3.6,1.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    7,
+    3
+   ],
+   "what": "b.rect(3,3,7,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    4
+   ],
+   "what": "b.px(5,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3
+   ],
+   "what": "b.px(8,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    44,
+    13
+   ],
+   "what": "Buf(44,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    9
+   ],
+   "what": "b.ell(22,9,18,3.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    3.6
+   ],
+   "what": "b.ell(22,9,18,3.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    5
+   ],
+   "what": "b.ell(22,5,21,4.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    21,
+    4.6
+   ],
+   "what": "b.ell(22,5,21,4.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    4.6
+   ],
+   "what": "b.ell(22,4.6,18,3.2,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:51",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    3.2
+   ],
+   "what": "b.ell(22,4.6,18,3.2,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    10
+   ],
+   "what": "Buf(16,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    3
+   ],
+   "what": "b.cap(2,3,8,7,1.9,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "b.cap(2,3,8,7,1.9,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "b.cap(8,7,13,3,1.9,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    3
+   ],
+   "what": "b.cap(8,7,13,3,1.9,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1,
+    1
+   ],
+   "what": "b.px(1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    1
+   ],
+   "what": "b.px(14,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    7,
+    2,
+    3
+   ],
+   "what": "b.rect(5,7,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    7,
+    2,
+    3
+   ],
+   "what": "b.rect(9,7,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "b.cap(8,7,13,3,1.9,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    3
+   ],
+   "what": "b.cap(8,7,13,3,1.9,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    7,
+    2,
+    3
+   ],
+   "what": "b.rect(7,7,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    8,
+    2,
+    2
+   ],
+   "what": "b.rect(9,8,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    8,
+    2,
+    2
+   ],
+   "what": "b.rect(5,8,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    5
+   ],
+   "what": "b.px(6,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:52",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    6
+   ],
+   "what": "b.px(9,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    11
+   ],
+   "what": "Buf(11,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    6.5
+   ],
+   "what": "b.ell(3,6.5,2.6,3.6,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    3.6
+   ],
+   "what": "b.ell(3,6.5,2.6,3.6,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    6.5
+   ],
+   "what": "b.ell(8,6.5,2.6,3.6,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    3.6
+   ],
+   "what": "b.ell(8,6.5,2.6,3.6,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    4,
+    1,
+    5
+   ],
+   "what": "b.rect(0,4,1,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    4,
+    1,
+    5
+   ],
+   "what": "b.rect(10,4,1,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    6
+   ],
+   "what": "b.px(3,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "b.px(8,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    6.4
+   ],
+   "what": "b.ell(3.6,6.4,3,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "b.ell(3.6,6.4,3,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.4,
+    6.4
+   ],
+   "what": "b.ell(7.4,6.4,3,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "b.ell(7.4,6.4,3,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    1,
+    1,
+    3
+   ],
+   "what": "b.rect(5,1,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    1
+   ],
+   "what": "b.px(6,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    4
+   ],
+   "what": "b.px(2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "b.px(5,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:53",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    9
+   ],
+   "what": "b.px(4,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    11
+   ],
+   "what": "Buf(11,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    6.5
+   ],
+   "what": "b.ell(3,6.5,2.8,3.4,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.8,
+    3.4
+   ],
+   "what": "b.ell(3,6.5,2.8,3.4,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    6.5
+   ],
+   "what": "b.ell(8,6.5,2.8,3.4,C) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.8,
+    3.4
+   ],
+   "what": "b.ell(8,6.5,2.8,3.4,C) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    6
+   ],
+   "what": "b.px(3,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "b.px(8,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    6
+   ],
+   "what": "b.ell(5.5,6,4.4,4.2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.4,
+    4.2
+   ],
+   "what": "b.ell(5.5,6,4.4,4.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2
+   ],
+   "what": "b.px(5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    2
+   ],
+   "what": "b.px(6,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:54",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    4,
+    2,
+    2
+   ],
+   "what": "b.rect(3,4,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:56",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    13
+   ],
+   "what": "Buf(10,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    11
+   ],
+   "what": "b.rect(1,1,8,11,C[0]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    3,
+    11
+   ],
+   "what": "b.rect(1,1,3,11,C[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:56",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    1
+   ],
+   "what": "b.rect(1,1,8,1,C[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    16
+   ],
+   "what": "Buf(16,16) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    8
+   ],
+   "what": "b.ell(8,8,7,7,[C[0],C[1]]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    7
+   ],
+   "what": "b.ell(8,8,7,7,[C[0],C[1]]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    8
+   ],
+   "what": "b.ell(8,8,5,5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:58",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "b.ell(8,8,5,5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    7
+   ],
+   "what": "Buf(15,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    3.5
+   ],
+   "what": "b.ell(7.5,3.5,6.6,2.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.6,
+    2.8
+   ],
+   "what": "b.ell(7.5,3.5,6.6,2.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    3.2
+   ],
+   "what": "b.ell(7.5,3.2,4,1.5,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:59",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1.5
+   ],
+   "what": "b.ell(7.5,3.2,4,1.5,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    8
+   ],
+   "what": "Buf(13,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    4.4
+   ],
+   "what": "b.ell(6.5,4.4,5.6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.6,
+    3
+   ],
+   "what": "b.ell(6.5,4.4,5.6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    2,
+    1,
+    3
+   ],
+   "what": "b.rect(4,2,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    2,
+    1,
+    3
+   ],
+   "what": "b.rect(8,2,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    4,
+    2,
+    2
+   ],
+   "what": "b.rect(3,4,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    5,
+    2,
+    1
+   ],
+   "what": "b.rect(8,5,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    25,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    15
+   ],
+   "what": "Buf(34,15) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    3
+   ],
+   "what": "b.ell(q[0],q[1],5,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    7,
+    28,
+    7
+   ],
+   "what": "b.rect(3,7,28,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:62",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    7,
+    30,
+    2
+   ],
+   "what": "b.rect(2,7,30,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    12
+   ],
+   "what": "Buf(22,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    8.4
+   ],
+   "what": "b.ell(11,8.4,10,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    3
+   ],
+   "what": "b.ell(11,8.4,10,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    6
+   ],
+   "what": "b.cap(4,6,9,8,1.7,g) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "b.cap(4,6,9,8,1.7,g) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    5.4
+   ],
+   "what": "b.ell(15,5.4,3.6,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    3.4
+   ],
+   "what": "b.ell(15,5.4,3.6,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    15,
+    1,
+    1,
+    2
+   ],
+   "what": "b.rect(15,1,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    13,
+    5,
+    2,
+    2
+   ],
+   "what": "b.rect(13,5,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    7,
+    2,
+    1
+   ],
+   "what": "b.rect(6,7,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    17
+   ],
+   "what": "Buf(13,17) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    11,
+    12
+   ],
+   "what": "b.rect(1,4,11,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    3,
+    12
+   ],
+   "what": "b.rect(1,4,3,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    11,
+    2
+   ],
+   "what": "b.rect(1,4,11,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    9,
+    7,
+    4
+   ],
+   "what": "b.rect(3,9,7,4,C[0]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    10,
+    5,
+    2
+   ],
+   "what": "b.rect(4,10,5,2,C[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    3
+   ],
+   "what": "b.ell(6.5,3,4,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:64",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2.4
+   ],
+   "what": "b.ell(6.5,3,4,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:65",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    3,
+    16,
+    29
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "nevera.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    44,
+    18
+   ],
+   "what": "Buf(44,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    9,
+    40,
+    8
+   ],
+   "what": "b.rect(2,9,40,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    42,
+    9
+   ],
+   "what": "b.rect(1,1,42,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    7
+   ],
+   "what": "Buf(16,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:66",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    14,
+    5
+   ],
+   "what": "b.rect(1,1,14,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    8
+   ],
+   "what": "Buf(18,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    6
+   ],
+   "what": "b.ell(9,6,8,1.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    1.8
+   ],
+   "what": "b.ell(9,6,8,1.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    3.4
+   ],
+   "what": "b.ell(9,3.4,4.6,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.6,
+    3
+   ],
+   "what": "b.ell(9,3.4,4.6,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    5,
+    8,
+    1
+   ],
+   "what": "b.rect(5,5,8,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    38,
+    6
+   ],
+   "what": "Buf(38,6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    36,
+    3
+   ],
+   "what": "b.rect(1,2,36,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    36,
+    1
+   ],
+   "what": "b.rect(1,2,36,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    6
+   ],
+   "what": "Buf(6,6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.ell(3,3,2.6,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2.6
+   ],
+   "what": "b.ell(3,3,2.6,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:71",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    13
+   ],
+   "what": "Buf(24,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    22,
+    11
+   ],
+   "what": "b.rect(1,1,22,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    22,
+    1
+   ],
+   "what": "b.rect(1,1,22,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:71",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2
+   ],
+   "what": "b.ell(x,y,2.6,2,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:71",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.4,
+    1.8
+   ],
+   "what": "b.ell(x,y-0.4,2.4,1.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.8,
+    3.2
+   ],
+   "what": "b.ell(5.5,4*n-4*i,3.8,3.2,C[i%3]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    19
+   ],
+   "what": "Buf(16,19) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    14,
+    14
+   ],
+   "what": "b.rect(1,4,14,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    2,
+    14
+   ],
+   "what": "b.rect(1,4,2,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    1,
+    10,
+    3
+   ],
+   "what": "b.rect(3,1,10,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    1,
+    10,
+    1
+   ],
+   "what": "b.rect(3,1,10,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.5,
+    8
+   ],
+   "what": "b.ell(5.5,8,2.6,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2
+   ],
+   "what": "b.ell(5.5,8,2.6,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    7
+   ],
+   "what": "b.px(4,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    7
+   ],
+   "what": "b.px(6,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    8
+   ],
+   "what": "b.ell(11,8,1.8,1.6,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.8,
+    1.6
+   ],
+   "what": "b.ell(11,8,1.8,1.6,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    9,
+    3,
+    2
+   ],
+   "what": "b.rect(10,9,3,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    2
+   ],
+   "what": "b.ell(4+i*4,15,2,2,…) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    17
+   ],
+   "what": "Buf(14,17) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    12,
+    14
+   ],
+   "what": "b.rect(1,2,12,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    0,
+    2,
+    3
+   ],
+   "what": "b.rect(6,0,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    6,
+    4,
+    8
+   ],
+   "what": "b.rect(5,6,4,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    4,
+    2,
+    2
+   ],
+   "what": "b.rect(6,4,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    3,
+    2,
+    1
+   ],
+   "what": "b.rect(6,3,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "b.frame(4,5,6,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    10
+   ],
+   "what": "b.frame(4,5,6,10,\"_______\") args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    11
+   ],
+   "what": "b.px(6,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    10
+   ],
+   "what": "b.px(9,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    8
+   ],
+   "what": "Buf(14,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    12,
+    2
+   ],
+   "what": "b.rect(1,5,12,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    6,
+    12,
+    1
+   ],
+   "what": "b.rect(1,6,12,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    11,
+    2,
+    2,
+    4
+   ],
+   "what": "b.rect(11,2,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "b.px(4,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    4
+   ],
+   "what": "b.px(7,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2
+   ],
+   "what": "b.px(5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    7
+   ],
+   "what": "Buf(16,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    4.4
+   ],
+   "what": "b.ell(8,4.4,7,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    2
+   ],
+   "what": "b.ell(8,4.4,7,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    4
+   ],
+   "what": "b.ell(8,4,4,1,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1
+   ],
+   "what": "b.ell(8,4,4,1,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    6
+   ],
+   "what": "Buf(20,6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    3
+   ],
+   "what": "b.ell(10,3,9,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    2
+   ],
+   "what": "b.ell(10,3,9,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    24
+   ],
+   "what": "Buf(22,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    2,
+    1,
+    12
+   ],
+   "what": "b.rect(10,2,1,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10.5,
+    3
+   ],
+   "what": "b.ell(10.5,3,9,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    2.6
+   ],
+   "what": "b.ell(10.5,3,9,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    13,
+    16,
+    7
+   ],
+   "what": "b.rect(3,13,16,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    13,
+    16,
+    2
+   ],
+   "what": "b.rect(3,13,16,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    21
+   ],
+   "what": "b.ell(7,21,2.4,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.4,
+    2.4
+   ],
+   "what": "b.ell(7,21,2.4,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    21
+   ],
+   "what": "b.ell(15,21,2.4,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.4,
+    2.4
+   ],
+   "what": "b.ell(15,21,2.4,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    9
+   ],
+   "what": "Buf(11,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "b.ell(5,5,3.6,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2.6
+   ],
+   "what": "b.ell(5,5,3.6,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    6,
+    5,
+    2
+   ],
+   "what": "b.rect(3,6,5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.8,
+    1.8
+   ],
+   "what": "b.ell(dn?8.4:8,dn?5.6:3,1.8,1.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    4,
+    2,
+    1
+   ],
+   "what": "b.rect(0,4,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    8,
+    1,
+    1
+   ],
+   "what": "b.rect(4,8,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:80",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    8,
+    1,
+    1
+   ],
+   "what": "b.rect(6,8,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    18,
+    13
+   ],
+   "what": "Buf(18,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    3.4
+   ],
+   "what": "b.ell(q[0],q[1],3.6,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    10,
+    14,
+    2
+   ],
+   "what": "b.rect(2,10,14,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    23,
+    29
+   ],
+   "what": "Buf(23,29) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    13,
+    25
+   ],
+   "what": "b.rect(3,3,13,25,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    2,
+    25
+   ],
+   "what": "b.rect(3,3,2,25,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    16,
+    7,
+    3,
+    1
+   ],
+   "what": "b.rect(16,7,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    19,
+    8,
+    1,
+    11
+   ],
+   "what": "b.rect(19,8,1,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    16,
+    19,
+    3,
+    1
+   ],
+   "what": "b.rect(16,19,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:83",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    2,
+    2
+   ],
+   "what": "b.rect(1,3,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:84",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    13
+   ],
+   "what": "Buf(9,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    7,
+    11
+   ],
+   "what": "b.rect(1,1,7,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    2,
+    11
+   ],
+   "what": "b.rect(1,1,2,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    3,
+    5,
+    9
+   ],
+   "what": "b.rect(2,3,5,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:84",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    3,
+    5,
+    9
+   ],
+   "what": "b.rect(2,3,5,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    28,
+    8
+   ],
+   "what": "Buf(28,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    4.4
+   ],
+   "what": "b.ell(13,4.4,11,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    2.4
+   ],
+   "what": "b.ell(13,4.4,11,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "b.ell(5,5,4,1.6,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1.6
+   ],
+   "what": "b.ell(5,5,4,1.6,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    3.4
+   ],
+   "what": "b.ell(22,3.4,4,1.6,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    1.6
+   ],
+   "what": "b.ell(22,3.4,4,1.6,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:85",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    3,
+    7,
+    1
+   ],
+   "what": "b.rect(8,3,7,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    9
+   ],
+   "what": "Buf(12,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    6
+   ],
+   "what": "b.ell(6,6,5,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    2.4
+   ],
+   "what": "b.ell(6,6,5,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    3.4
+   ],
+   "what": "b.ell(6,3.4,2.6,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:86",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.6,
+    2.6
+   ],
+   "what": "b.ell(6,3.4,2.6,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    10
+   ],
+   "what": "Buf(17,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8.5,
+    6.6
+   ],
+   "what": "b.ell(8.5,6.6,7.6,2.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.6,
+    2.8
+   ],
+   "what": "b.ell(8.5,6.6,7.6,2.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:87",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    2.2
+   ],
+   "what": "b.ell(6+i*5,4.6-i,3.6,2.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:88",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "Buf(4,5) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:88",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    0,
+    2,
+    4
+   ],
+   "what": "b.rect(1,0,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    0
+   ],
+   "what": "b.rect(2,0,3,h-3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    0
+   ],
+   "what": "b.rect(2,0,1,h-3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:89",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "b.ell(3.5,h-2,2,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    24
+   ],
+   "what": "Buf(24,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    12
+   ],
+   "what": "b.ell(12,12,11,11,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    11
+   ],
+   "what": "b.ell(12,12,11,11,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    12
+   ],
+   "what": "b.ell(12,12,7.4,7.4,[C[0],C[1]]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.4,
+    7.4
+   ],
+   "what": "b.ell(12,12,7.4,7.4,[C[0],C[1]]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    12
+   ],
+   "what": "b.ell(12,12,5.2,5.2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.2,
+    5.2
+   ],
+   "what": "b.ell(12,12,5.2,5.2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:91",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    9,
+    2,
+    2
+   ],
+   "what": "b.rect(9,9,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    12
+   ],
+   "what": "Buf(22,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    8.4
+   ],
+   "what": "b.ell(11,8.4,10,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    3
+   ],
+   "what": "b.ell(11,8.4,10,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    5
+   ],
+   "what": "b.ell(11,5,6.4,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.4,
+    3.4
+   ],
+   "what": "b.ell(11,5,6.4,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    3,
+    1,
+    3
+   ],
+   "what": "b.rect(8,3,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:92",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    13,
+    3,
+    1,
+    3
+   ],
+   "what": "b.rect(13,3,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    14
+   ],
+   "what": "Buf(22,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    10.4
+   ],
+   "what": "b.ell(11,10.4,10,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    3
+   ],
+   "what": "b.ell(11,10.4,10,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    6
+   ],
+   "what": "b.ell(7.5,6,5.4,4.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.4,
+    4.4
+   ],
+   "what": "b.ell(7.5,6,5.4,4.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14.5,
+    6.4
+   ],
+   "what": "b.ell(14.5,6.4,5,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:93",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    4
+   ],
+   "what": "b.ell(14.5,6.4,5,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    7
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    21,
+    6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    24,
+    8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    19,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    34,
+    24
+   ],
+   "what": "Buf(34,24) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    8,
+    26,
+    14
+   ],
+   "what": "b.rect(4,8,26,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    8,
+    5,
+    14
+   ],
+   "what": "b.rect(4,8,5,14,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    19,
+    26,
+    3
+   ],
+   "what": "b.rect(4,19,26,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    10,
+    3,
+    4
+   ],
+   "what": "b.rect(1,10,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    30,
+    10,
+    3,
+    4
+   ],
+   "what": "b.rect(30,10,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    8
+   ],
+   "what": "b.ell(17,8,13,5,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    5
+   ],
+   "what": "b.ell(17,8,13,5,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    17,
+    8.4
+   ],
+   "what": "b.ell(17,8.4,11,3.8,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:94",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    3.8
+   ],
+   "what": "b.ell(17,8.4,11,3.8,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    13
+   ],
+   "what": "Buf(22,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    8
+   ],
+   "what": "b.ell(10,8,8.4,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8.4,
+    4
+   ],
+   "what": "b.ell(10,8,8.4,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    7.4
+   ],
+   "what": "b.ell(8,7.4,4.6,2.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.6,
+    2.4
+   ],
+   "what": "b.ell(8,7.4,4.6,2.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    7
+   ],
+   "what": "b.line(12,7,20,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    2
+   ],
+   "what": "b.line(12,7,20,2,\"_______\") args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    8
+   ],
+   "what": "b.line(12,8,20,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    3
+   ],
+   "what": "b.line(12,8,20,3,\"_______\") args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:96",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    18,
+    1,
+    3,
+    2
+   ],
+   "what": "b.rect(18,1,3,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:97",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    13
+   ],
+   "what": "Buf(22,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:97",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    8
+   ],
+   "what": "b.ell(10,8,8.4,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:97",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8.4,
+    4
+   ],
+   "what": "b.ell(10,8,8.4,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:97",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    6,
+    2,
+    2
+   ],
+   "what": "b.rect(8,6,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:97",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    5,
+    2,
+    2
+   ],
+   "what": "b.rect(12,5,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:98",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    19
+   ],
+   "what": "Buf(9,19) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:98",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    7,
+    11
+   ],
+   "what": "b.rect(1,1,7,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:98",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    2,
+    11
+   ],
+   "what": "b.rect(1,1,2,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:98",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    7,
+    1
+   ],
+   "what": "b.rect(1,1,7,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:98",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    15,
+    1,
+    2
+   ],
+   "what": "b.rect(4,15,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    26,
+    9
+   ],
+   "what": "Buf(26,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    12,
+    5
+   ],
+   "what": "b.ell(12,5,10,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    3
+   ],
+   "what": "b.ell(12,5,10,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    3
+   ],
+   "what": "b.ell(22,3,2.4,1.4,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2.4,
+    1.4
+   ],
+   "what": "b.ell(22,3,2.4,1.4,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    2
+   ],
+   "what": "b.ell(3,2,1.6,1,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:99",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.6,
+    1
+   ],
+   "what": "b.ell(3,2,1.6,1,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:100",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "Buf(4,5) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:100",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    0,
+    2,
+    4
+   ],
+   "what": "b.rect(1,0,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:101",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    26,
+    20
+   ],
+   "what": "Buf(26,20) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:101",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    22,
+    4
+   ],
+   "what": "b.rect(2,1,22,4,RP.wood[3]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:101",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    22,
+    1
+   ],
+   "what": "b.rect(2,1,22,1,RP.wood[4]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:101",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    5,
+    3,
+    14
+   ],
+   "what": "b.rect(4,5,3,14,RP.wood[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:101",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    19,
+    5,
+    3,
+    14
+   ],
+   "what": "b.rect(19,5,3,14,RP.wood[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:101",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    11,
+    16,
+    2
+   ],
+   "what": "b.rect(5,11,16,2,RP.wood[1]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:104",
+   "fn": "hedor",
+   "kind": "point+",
+   "nums": [
+    -5,
+    0,
+    5
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "nevera.js:118",
+   "fn": "nevera",
+   "kind": "point",
+   "nums": [
+    80,
+    106
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "nevera.js:119",
+   "fn": "nevera",
+   "kind": "point+",
+   "nums": [
+    72,
+    104,
+    136
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "nevera.js:138",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    16,
+    196,
+    198
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:142",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:142",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(…,-30,0) [sprite \"ab\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:145",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:154",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:154",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:156",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"nevera\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -7,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -2,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:162",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    7,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:171",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -3,
+    -2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:171",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    2,
+    -6
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:171",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    -10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:181",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,66,24) args 1,2",
+   "comment": "the card steps aside while three picture bubbles stand at the top"
+  },
+  {
+   "at": "nevera.js:206",
+   "fn": "inicio30",
+   "kind": "xy",
+   "nums": [
+    142,
+    180
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:206",
+   "fn": "inicio30",
+   "kind": "xy",
+   "nums": [
+    178,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:206",
+   "fn": "inicio30",
+   "kind": "xy",
+   "nums": [
+    205,
+    208
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:208",
+   "fn": "inicio30",
+   "kind": "xy",
+   "nums": [
+    114,
+    86
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:208",
+   "fn": "inicio30",
+   "kind": "xy",
+   "nums": [
+    132,
+    86
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:214",
+   "fn": "mira30",
+   "kind": "point",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "mueve(\"______\",94,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:216",
+   "fn": "sale30",
+   "kind": "point",
+   "nums": [
+    172,
+    180
+   ],
+   "what": "mueve(\"______\",172,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:216",
+   "fn": "sale30",
+   "kind": "point",
+   "nums": [
+    244,
+    196
+   ],
+   "what": "mueve(\"______\",244,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:222",
+   "fn": "mandado",
+   "kind": "point",
+   "nums": [
+    98,
+    170
+   ],
+   "what": "mueve(\"____\",98,170) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:225",
+   "fn": "mandado",
+   "kind": "point",
+   "nums": [
+    242,
+    188
+   ],
+   "what": "mueve(\"____\",242,188) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:231",
+   "fn": "turno30",
+   "kind": "point",
+   "nums": [
+    142,
+    180
+   ],
+   "what": "mueve(\"______\",142,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:239",
+   "fn": "inicio31",
+   "kind": "xy",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:239",
+   "fn": "inicio31",
+   "kind": "xy",
+   "nums": [
+    146,
+    198
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:239",
+   "fn": "inicio31",
+   "kind": "xy",
+   "nums": [
+    190,
+    202
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:243",
+   "fn": "cajon31",
+   "kind": "point",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "mueve(\"______\",94,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:245",
+   "fn": "lote",
+   "kind": "point",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "mueve(\"______\",94,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:245",
+   "fn": "lote",
+   "kind": "point",
+   "nums": [
+    196,
+    178
+   ],
+   "what": "mueve(\"______\",196,178) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:248",
+   "fn": "huele31",
+   "kind": "point",
+   "nums": [
+    134,
+    180
+   ],
+   "what": "mueve(\"______\",134,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:255",
+   "fn": "resto31",
+   "kind": "point",
+   "nums": [
+    146,
+    180
+   ],
+   "what": "mueve(\"______\",146,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:259",
+   "fn": "sostienen",
+   "kind": "point",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "mueve(\"______\",94,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:259",
+   "fn": "sostienen",
+   "kind": "point",
+   "nums": [
+    134,
+    182
+   ],
+   "what": "mueve(\"______\",134,182) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:261",
+   "fn": "huelemanos",
+   "kind": "point",
+   "nums": [
+    168,
+    196
+   ],
+   "what": "mueve(\"______\",168,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:261",
+   "fn": "huelemanos",
+   "kind": "point",
+   "nums": [
+    134,
+    180
+   ],
+   "what": "mueve(\"______\",134,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:266",
+   "fn": "nino31",
+   "kind": "point",
+   "nums": [
+    162,
+    192
+   ],
+   "what": "mueve(o.a,162,192) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:275",
+   "fn": "abuelo31",
+   "kind": "point",
+   "nums": [
+    184,
+    178
+   ],
+   "what": "mueve(\"______\",184,178) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:275",
+   "fn": "abuelo31",
+   "kind": "point",
+   "nums": [
+    146,
+    180
+   ],
+   "what": "mueve(\"______\",146,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:277",
+   "fn": "abuelaa31",
+   "kind": "point",
+   "nums": [
+    134,
+    180
+   ],
+   "what": "mueve(\"______\",134,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:280",
+   "fn": "lotes31",
+   "kind": "point",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "mueve(\"______\",94,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:280",
+   "fn": "lotes31",
+   "kind": "point",
+   "nums": [
+    134,
+    180
+   ],
+   "what": "mueve(\"______\",134,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:282",
+   "fn": "final31",
+   "kind": "point",
+   "nums": [
+    134,
+    180
+   ],
+   "what": "mueve(\"______\",134,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:282",
+   "fn": "final31",
+   "kind": "point",
+   "nums": [
+    160,
+    192
+   ],
+   "what": "mueve(\"____\",160,192) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:286",
+   "fn": "inicio32",
+   "kind": "xy",
+   "nums": [
+    140,
+    180
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:286",
+   "fn": "inicio32",
+   "kind": "xy",
+   "nums": [
+    166,
+    192
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:286",
+   "fn": "inicio32",
+   "kind": "xy",
+   "nums": [
+    184,
+    198
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:293",
+   "fn": "exprime",
+   "kind": "point",
+   "nums": [
+    148,
+    180
+   ],
+   "what": "mueve(\"______\",148,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:296",
+   "fn": "unta",
+   "kind": "point",
+   "nums": [
+    158,
+    180
+   ],
+   "what": "mueve(\"______\",158,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:296",
+   "fn": "unta",
+   "kind": "point",
+   "nums": [
+    140,
+    180
+   ],
+   "what": "mueve(\"______\",140,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:302",
+   "fn": "vierte",
+   "kind": "point",
+   "nums": [
+    0.35,
+    0.7
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "nevera.js:307",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    186,
+    190
+   ],
+   "what": "mueve(\"____\",186,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:307",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    206,
+    198
+   ],
+   "what": "mueve(\"______\",206,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:308",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    164,
+    192
+   ],
+   "what": "mueve(\"____\",164,192) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:308",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    180,
+    198
+   ],
+   "what": "mueve(\"______\",180,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:309",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    240,
+    192
+   ],
+   "what": "mueve(\"____\",240,192) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:309",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    246,
+    198
+   ],
+   "what": "mueve(\"______\",246,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:310",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    186,
+    190
+   ],
+   "what": "mueve(\"____\",186,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:310",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    206,
+    198
+   ],
+   "what": "mueve(\"______\",206,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:311",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    240,
+    190
+   ],
+   "what": "mueve(\"____\",240,190) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:311",
+   "fn": "ninos32",
+   "kind": "point",
+   "nums": [
+    246,
+    198
+   ],
+   "what": "mueve(\"______\",246,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:317",
+   "fn": "abuelamira",
+   "kind": "point",
+   "nums": [
+    200,
+    184
+   ],
+   "what": "mueve(\"______\",200,184) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:317",
+   "fn": "abuelamira",
+   "kind": "point",
+   "nums": [
+    216,
+    196
+   ],
+   "what": "mueve(\"______\",216,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:317",
+   "fn": "abuelamira",
+   "kind": "point",
+   "nums": [
+    158,
+    180
+   ],
+   "what": "mueve(\"______\",158,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:318",
+   "fn": "abuelasale",
+   "kind": "point",
+   "nums": [
+    244,
+    196
+   ],
+   "what": "mueve(\"______\",244,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:319",
+   "fn": "abuelavuelve",
+   "kind": "point",
+   "nums": [
+    140,
+    180
+   ],
+   "what": "mueve(\"______\",140,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:327",
+   "fn": "final32",
+   "kind": "point",
+   "nums": [
+    94,
+    174
+   ],
+   "what": "mueve(\"______\",94,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:327",
+   "fn": "final32",
+   "kind": "point",
+   "nums": [
+    146,
+    180
+   ],
+   "what": "mueve(\"______\",146,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:336",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    162,
+    186
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:336",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    190,
+    192
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:340",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    150,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:340",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    60,
+    200
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:346",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:346",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    124,
+    24
+   ],
+   "what": "heartAt",
+   "comment": null
+  },
+  {
+   "at": "nevera.js:347",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    142,
+    10
+   ],
+   "what": "respEn",
+   "comment": null
+  }
+ ]
+}

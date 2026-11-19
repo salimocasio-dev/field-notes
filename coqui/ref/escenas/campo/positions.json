@@ -1,0 +1,4040 @@
+{
+ "scene": "campo",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 66,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 4,
+   "y": 84,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "arriba.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 14,
+   "y": 78,
+   "w": 150,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "abajo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "abajo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 74,
+   "y": 126,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "dame.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "dame.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 112,
+   "w": 134,
+   "h": 71.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 100,
+   "y": 150,
+   "w": 75,
+   "h": 39.8,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "bola.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "bola.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 108,
+   "y": 150,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 120,
+   "y": 150,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "arriba.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 36.83,
+   "y": 84,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p0",
+     "owner": "level picture",
+     "note": "pair arriba.si, centred on x 64 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 53.95,
+   "y": 78,
+   "w": 72.09,
+   "h": 79.6,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p2",
+     "owner": "level picture",
+     "note": "pair abajo.si, centred on x 90 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 86.83,
+   "y": 126,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p0",
+     "owner": "level picture",
+     "note": "pair mi.si, centred on x 114 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 98.83,
+   "y": 126,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p1",
+     "owner": "level picture",
+     "note": "pair mi.no, centred on x 126 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 99.8,
+   "y": 112,
+   "w": 64.39,
+   "h": 71.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p1",
+     "owner": "level picture",
+     "note": "pair tira.no, centred on x 132 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 100.83,
+   "y": 126,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p2",
+     "owner": "level picture",
+     "note": "pair dame.si, centred on x 128 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p2",
+     "owner": "level picture",
+     "note": "pair dame.no, centred on x 128 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 101.8,
+   "y": 112,
+   "w": 64.39,
+   "h": 71.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p0",
+     "owner": "level picture",
+     "note": "pair tira.si, centred on x 134 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p1",
+     "owner": "level picture",
+     "note": "pair coge.no, centred on x 134 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p2",
+     "owner": "level picture",
+     "note": "pair tira.si, centred on x 134 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 102.83,
+   "y": 126,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p3",
+     "owner": "level picture",
+     "note": "pair tiene.si, centred on x 130 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p3",
+     "owner": "level picture",
+     "note": "pair tiene.si, centred on x 130 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 105.8,
+   "y": 112,
+   "w": 64.39,
+   "h": 71.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p0",
+     "owner": "level picture",
+     "note": "pair coge.si, centred on x 138 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 119.48,
+   "y": 150,
+   "w": 36.05,
+   "h": 39.8,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p3",
+     "owner": "level picture",
+     "note": "pair salta.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p3",
+     "owner": "level picture",
+     "note": "pair salta.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 148.83,
+   "y": 150,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p1",
+     "owner": "level picture",
+     "note": "pair arriba.no, centred on x 176 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": -16,
+   "y": -27,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "bola.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "bola.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "arriba.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "arriba.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 1,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.no.set.bolas.a.vuela",
+     "owner": "set.bolas.a.vuela",
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.si.set.bolas.a.vuela",
+     "owner": "set.bolas.a.vuela",
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 1,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.si.set.bolas.a.vuela",
+     "owner": "set.bolas.a.vuela",
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.no.set.bolas.a.vuela",
+     "owner": "set.bolas.a.vuela",
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 46,
+   "y": 87,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "abajo.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "arbol"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 64,
+   "y": 152,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "arriba.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 80,
+   "y": 127,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "abajo.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "arbol",
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 88,
+   "y": 155,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "dame.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "dame.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 92,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 94,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.si.set.bolas.b",
+     "owner": "set.bolas.b",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 108,
+   "y": 159,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 110,
+   "y": 182,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 40,
+   "uses": [
+    {
+     "file": "cuentos/h-campo.json",
+     "at": "beats.1.set.respEn",
+     "owner": "set.respEn"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 112,
+   "y": 182,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 122,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 124,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 124,
+   "y": 182,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.si.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "campo"
+     ],
+     "meaning": "the dog's feet (campo.js:77 perro)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.no.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "campo"
+     ],
+     "meaning": "the dog's feet (campo.js:77 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 128,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.no.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "campo"
+     ],
+     "meaning": "the dog's feet (campo.js:77 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 137,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "bola.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "bola.no.set.flor",
+     "owner": "set.flor",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a flower's foot (campo.js:105)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 137,
+   "y": 186,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.si.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "campo"
+     ],
+     "meaning": "the dog's feet (campo.js:77 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 138,
+   "y": 183,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 138,
+   "y": 187,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "perro",
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.no.set.bolas.b",
+     "owner": "set.bolas.b",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 142,
+   "y": 183,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tiene.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 143,
+   "y": 189,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 144,
+   "y": 153,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 146,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 182,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "dame.si.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "dame.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tu.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a person's feet (campo.js:72-75 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 179,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "mi.si.set.bolas.b",
+     "owner": "set.bolas.b",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 155,
+   "y": 179,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 187,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "salta.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "juncos",
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 188,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.si.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "juncos",
+      "campo"
+     ],
+     "meaning": "the dog's feet (campo.js:77 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 168,
+   "y": 192,
+   "uses": [
+    {
+     "file": "cuentos/d-bola-canelo.json",
+     "at": "beats.27",
+     "owner": "[]",
+     "insideThings": [
+      "perro",
+      "juncos",
+      "campo"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 172,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "tira.si.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "juncos",
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    },
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "coge.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "juncos",
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/d-bola-canelo.json",
+     "at": "beats.37",
+     "owner": "[]",
+     "insideThings": [
+      "perro",
+      "juncos",
+      "campo"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 176,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "arriba.no.set.bolas.a",
+     "owner": "set.bolas.a",
+     "insideThings": [
+      "juncos",
+      "campo"
+     ],
+     "meaning": "a ball (campo.js:90 unaBola, bolaXY)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 197,
+   "uses": [
+    {
+     "file": "cuentos/cual-campo.json",
+     "at": "más.no.set.perro",
+     "owner": "set.perro",
+     "insideThings": [
+      "perro",
+      "juncos",
+      "campo"
+     ],
+     "meaning": "the dog's feet (campo.js:77 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 64,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 90,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 114,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 126,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 128,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 130,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 132,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 134,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "tira.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "mi.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 138,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "coge.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 176,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "arriba.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "campo.js:15",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    60,
+    152
+   ],
+   "what": "ARBOL",
+   "comment": "the tree's foot, its crown, the fork where a ball sticks, Canelo's spot"
+  },
+  {
+   "at": "campo.js:15",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    60,
+    100,
+    30,
+    26
+   ],
+   "what": "COPA",
+   "comment": "the tree's foot, its crown, the fork where a ball sticks, Canelo's spot"
+  },
+  {
+   "at": "campo.js:15",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    64,
+    116
+   ],
+   "what": "HORQ",
+   "comment": "the tree's foot, its crown, the fork where a ball sticks, Canelo's spot"
+  },
+  {
+   "at": "campo.js:15",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    46,
+    168
+   ],
+   "what": "SITIO",
+   "comment": "the tree's foot, its crown, the fork where a ball sticks, Canelo's spot"
+  },
+  {
+   "at": "campo.js:16",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    232,
+    228,
+    74,
+    54
+   ],
+   "what": "AGUA",
+   "comment": "the pond (an ellipse off the corner) and the reeds along its edge"
+  },
+  {
+   "at": "campo.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    170,
+    201
+   ],
+   "what": "JUNCOS[]",
+   "comment": "the pond (an ellipse off the corner) and the reeds along its edge"
+  },
+  {
+   "at": "campo.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    184,
+    190
+   ],
+   "what": "JUNCOS[]",
+   "comment": "the pond (an ellipse off the corner) and the reeds along its edge"
+  },
+  {
+   "at": "campo.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    198,
+    182
+   ],
+   "what": "JUNCOS[]",
+   "comment": "the pond (an ellipse off the corner) and the reeds along its edge"
+  },
+  {
+   "at": "campo.js:16",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    211,
+    177
+   ],
+   "what": "JUNCOS[]",
+   "comment": "the pond (an ellipse off the corner) and the reeds along its edge"
+  },
+  {
+   "at": "campo.js:48",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    120,
+    150,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "campo.js:48",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    120,
+    150,
+    1
+   ],
+   "what": "LUGAR.inicio",
+   "comment": null
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    88,
+    178
+   ],
+   "what": "CASA.luis",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    186,
+    154
+   ],
+   "what": "CASA.carmen",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    136,
+    196
+   ],
+   "what": "PIES",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    104,
+    208
+   ],
+   "what": "CESTA",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    40,
+    173
+   ],
+   "what": "PILA[]",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    52,
+    174
+   ],
+   "what": "PILA[]",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    46,
+    169
+   ],
+   "what": "PILA[]",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:49",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    46,
+    177
+   ],
+   "what": "PILA[]",
+   "comment": "where the children stand, where the frog's ball lies, the basket, Canelo's pile"
+  },
+  {
+   "at": "campo.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    112,
+    194
+   ],
+   "what": "FILA[]",
+   "comment": "story 17's row of balls; the water's edge; where a ball hides in the reeds"
+  },
+  {
+   "at": "campo.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    128,
+    195
+   ],
+   "what": "FILA[]",
+   "comment": "story 17's row of balls; the water's edge; where a ball hides in the reeds"
+  },
+  {
+   "at": "campo.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    144,
+    194
+   ],
+   "what": "FILA[]",
+   "comment": "story 17's row of balls; the water's edge; where a ball hides in the reeds"
+  },
+  {
+   "at": "campo.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    190,
+    198
+   ],
+   "what": "ORILLA",
+   "comment": "story 17's row of balls; the water's edge; where a ball hides in the reeds"
+  },
+  {
+   "at": "campo.js:50",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    180,
+    197
+   ],
+   "what": "JUNCO",
+   "comment": "story 17's row of balls; the water's edge; where a ball hides in the reeds"
+  },
+  {
+   "at": "campo.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    160,
+    168,
+    60,
+    48
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "campo.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    188,
+    190
+   ],
+   "what": "hand",
+   "comment": null
+  },
+  {
+   "at": "campo.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    100,
+    240,
+    116
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "campo.js:74",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": "the kit draws the offering arm on the other side: turn it to the side he faces"
+  },
+  {
+   "at": "campo.js:79",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:79",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    -13,
+    0
+   ],
+   "what": "c.drawImage(im,-13,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:81",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    22,
+    12
+   ],
+   "what": "gotas(c,R(o.x)-11,R(o.y)-12,22,12,4) args 3,4",
+   "comment": "he drips"
+  },
+  {
+   "at": "campo.js:86",
+   "fn": "rana",
+   "kind": "rect",
+   "nums": [
+    0,
+    2.5,
+    4,
+    6
+   ],
+   "what": "ry",
+   "comment": "the wetter he is, the wider the puddle he stands in"
+  },
+  {
+   "at": "campo.js:89",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:89",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:91",
+   "fn": "unaBola",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(im,0,0,im.width,im.height-R(r*.7),p[0]-(im.width>>1),…,im.width,im.height-R(r*.7)) args 1,2",
+   "comment": "in the pond: half under"
+  },
+  {
+   "at": "campo.js:96",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(spr(\"_____\",fondo),0,0) [sprite \"campo\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -26,
+    -10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    24,
+    -14
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -18,
+    14
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    22,
+    10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    -28
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -14,
+    -8
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    10,
+    -14
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    20,
+    -4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -4,
+    -18
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:97",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    190,
+    186
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -3,
+    -13
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    1,
+    -13
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -3,
+    -9
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    1,
+    -9
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -1,
+    -15
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -1,
+    -8
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -4,
+    -11
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:105",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    2,
+    -11
+   ],
+   "what": "[]",
+   "comment": "a flower (a picture pair)"
+  },
+  {
+   "at": "campo.js:110",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": "his eyes are shut: all is dark but him"
+  },
+  {
+   "at": "campo.js:115",
+   "fn": "flecha",
+   "kind": "rect",
+   "nums": [
+    0,
+    3,
+    7,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:115",
+   "fn": "flecha",
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    5,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:115",
+   "fn": "flecha",
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    3,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:115",
+   "fn": "flecha",
+   "kind": "rect",
+   "nums": [
+    3,
+    0,
+    1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:119",
+   "fn": "flechita",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:119",
+   "fn": "flechita",
+   "kind": "point",
+   "nums": [
+    -1,
+    -1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:119",
+   "fn": "flechita",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:119",
+   "fn": "flechita",
+   "kind": "point",
+   "nums": [
+    -2,
+    -2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:119",
+   "fn": "flechita",
+   "kind": "point",
+   "nums": [
+    -2,
+    2
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:120",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    1,
+    0
+   ],
+   "what": "flechita(x+37,y+10,1,0) args 2,3",
+   "comment": "one arm forward; the ball flies away from him"
+  },
+  {
+   "at": "campo.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    9,
+    10
+   ],
+   "what": "[]",
+   "comment": "both hands up; the ball drops into them"
+  },
+  {
+   "at": "campo.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    27,
+    10
+   ],
+   "what": "[]",
+   "comment": "both hands up; the ball drops into them"
+  },
+  {
+   "at": "campo.js:121",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    0,
+    1
+   ],
+   "what": "flechita(x+34,y+12,0,1) args 2,3",
+   "comment": "both hands up; the ball drops into them"
+  },
+  {
+   "at": "campo.js:122",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    1,
+    1.3
+   ],
+   "what": "g.scale(1,1.3) args 0,1",
+   "comment": "stretched tall: up"
+  },
+  {
+   "at": "campo.js:123",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    1.15,
+    0.65
+   ],
+   "what": "g.scale(1.15,.65) args 0,1",
+   "comment": "crouched flat: down"
+  },
+  {
+   "at": "campo.js:124",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    13,
+    0
+   ],
+   "what": "[]",
+   "comment": "in the air, his shadow below, lines down to the ground"
+  },
+  {
+   "at": "campo.js:124",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    25,
+    0
+   ],
+   "what": "[]",
+   "comment": "in the air, his shadow below, lines down to the ground"
+  },
+  {
+   "at": "campo.js:125",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    -10,
+    -9
+   ],
+   "what": "g.drawImage(im,-10,-9) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:126",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "[]",
+   "comment": "the ball goes from him into a hand that reaches in from the edge"
+  },
+  {
+   "at": "campo.js:126",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    2,
+    0
+   ],
+   "what": "[]",
+   "comment": "the ball goes from him into a hand that reaches in from the edge"
+  },
+  {
+   "at": "campo.js:126",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    4,
+    0
+   ],
+   "what": "[]",
+   "comment": "the ball goes from him into a hand that reaches in from the edge"
+  },
+  {
+   "at": "campo.js:126",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    3,
+    -1
+   ],
+   "what": "[]",
+   "comment": "the ball goes from him into a hand that reaches in from the edge"
+  },
+  {
+   "at": "campo.js:126",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    3,
+    1
+   ],
+   "what": "[]",
+   "comment": "the ball goes from him into a hand that reaches in from the edge"
+  },
+  {
+   "at": "campo.js:130",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,66,24) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:133",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    1,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:133",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:133",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    9,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:133",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    13,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:134",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    6,
+    0,
+    2,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:134",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    5,
+    3,
+    4,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:134",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    4,
+    6,
+    6,
+    3
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:134",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    3,
+    9,
+    8,
+    4
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:134",
+   "fn": "hud",
+   "kind": "rect",
+   "nums": [
+    4,
+    13,
+    6,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:156",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    196,
+    205
+   ],
+   "what": "d[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:156",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    207,
+    198
+   ],
+   "what": "d[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:156",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    200,
+    212
+   ],
+   "what": "d[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:156",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    212,
+    208
+   ],
+   "what": "d[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:156",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    0,
+    7
+   ],
+   "what": "vuela(n,…,0,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:156",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "vuela(n,d,4,5,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:159",
+   "fn": "nueva",
+   "kind": "point",
+   "nums": [
+    10,
+    6
+   ],
+   "what": "vuela(\"__\",a,10,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:159",
+   "fn": "nueva",
+   "kind": "point",
+   "nums": [
+    10,
+    6
+   ],
+   "what": "vuela(\"__\",PIES,10,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:181",
+   "fn": "lleva",
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "vuela(o.b||\"__\",PIES,4,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:202",
+   "fn": "bajan",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"____\",…,3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:202",
+   "fn": "bajan",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"______\",…,3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:206",
+   "fn": "bienA",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"____\",[lu.x-13,lu.y+5],3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:206",
+   "fn": "bienA",
+   "kind": "point",
+   "nums": [
+    0,
+    8
+   ],
+   "what": "vuela(\"__\",PIES,0,8,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:207",
+   "fn": "bienA",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"__\",PIES,3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:210",
+   "fn": "malA",
+   "kind": "point",
+   "nums": [
+    16,
+    8
+   ],
+   "what": "vuela(\"__\",…,16,8) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:210",
+   "fn": "malA",
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "vuela(\"____\",\"____\",8,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:211",
+   "fn": "malA",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"__\",PIES,3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:213",
+   "fn": "esconden",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"____\",…,3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:213",
+   "fn": "esconden",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"______\",…,3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:213",
+   "fn": "esconden",
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "vuela(\"__\",PIES,4,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:213",
+   "fn": "esconden",
+   "kind": "point",
+   "nums": [
+    166,
+    160
+   ],
+   "what": "mueve(\"____\",166,160) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:213",
+   "fn": "esconden",
+   "kind": "point",
+   "nums": [
+    190,
+    156
+   ],
+   "what": "mueve(\"______\",190,156) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:217",
+   "fn": "devuelve",
+   "kind": "point",
+   "nums": [
+    0,
+    8
+   ],
+   "what": "vuela(\"__\",PIES,0,8,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:225",
+   "fn": "final15",
+   "kind": "point",
+   "nums": [
+    70,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:225",
+   "fn": "final15",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:225",
+   "fn": "final15",
+   "kind": "point",
+   "nums": [
+    136,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:225",
+   "fn": "final15",
+   "kind": "point",
+   "nums": [
+    110,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:225",
+   "fn": "final15",
+   "kind": "point",
+   "nums": [
+    170,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:228",
+   "fn": "inicio16",
+   "kind": "point",
+   "nums": [
+    88,
+    208
+   ],
+   "what": "W.cesta",
+   "comment": null
+  },
+  {
+   "at": "campo.js:228",
+   "fn": "inicio16",
+   "kind": "xy",
+   "nums": [
+    92,
+    170
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:228",
+   "fn": "inicio16",
+   "kind": "xy",
+   "nums": [
+    112,
+    190
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:228",
+   "fn": "inicio16",
+   "kind": "xy",
+   "nums": [
+    46,
+    178
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:228",
+   "fn": "inicio16",
+   "kind": "xy",
+   "nums": [
+    132,
+    142
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:232",
+   "fn": "bajoarbol",
+   "kind": "point",
+   "nums": [
+    52,
+    138
+   ],
+   "what": "hopTo(52,138,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:235",
+   "fn": "tumba",
+   "kind": "point",
+   "nums": [
+    104,
+    190
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:235",
+   "fn": "tumba",
+   "kind": "point",
+   "nums": [
+    50,
+    140
+   ],
+   "what": "hopTo(50,140,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:235",
+   "fn": "tumba",
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "vuela(\"_____\",[104,190],8,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:236",
+   "fn": "ruedabajo",
+   "kind": "point",
+   "nums": [
+    150,
+    196
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:236",
+   "fn": "ruedabajo",
+   "kind": "point",
+   "nums": [
+    10,
+    6
+   ],
+   "what": "vuela(\"_____\",[150,196],10,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:236",
+   "fn": "ruedabajo",
+   "kind": "point",
+   "nums": [
+    0,
+    7
+   ],
+   "what": "vuela(\"_____\",…,0,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:239",
+   "fn": "luisbusca",
+   "kind": "point",
+   "nums": [
+    44,
+    138
+   ],
+   "what": "hopTo(44,138,2,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:239",
+   "fn": "luisbusca",
+   "kind": "point",
+   "nums": [
+    4,
+    7
+   ],
+   "what": "vuela(\"_____\",\"____\",4,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:243",
+   "fn": "listos",
+   "kind": "point",
+   "nums": [
+    74,
+    204
+   ],
+   "what": "mueve(\"______\",74,204) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:243",
+   "fn": "listos",
+   "kind": "point",
+   "nums": [
+    136,
+    150
+   ],
+   "what": "hopTo(136,150,2,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:243",
+   "fn": "listos",
+   "kind": "point",
+   "nums": [
+    46,
+    178
+   ],
+   "what": "perroA(46,178,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:244",
+   "fn": "listos",
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "vuela(\"_____\",\"____\",8,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:245",
+   "fn": "listo16",
+   "kind": "point",
+   "nums": [
+    136,
+    150
+   ],
+   "what": "hopTo(136,150,2,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:246",
+   "fn": "listo16",
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "vuela(\"_____\",\"____\",8,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:249",
+   "fn": "tiro",
+   "kind": "point+",
+   "nums": [
+    178,
+    186,
+    30
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:249",
+   "fn": "tiro",
+   "kind": "point",
+   "nums": [
+    16,
+    8
+   ],
+   "what": "ranaSalta(16,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:250",
+   "fn": "tiro",
+   "kind": "point+",
+   "nums": [
+    176,
+    190,
+    0
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:250",
+   "fn": "tiro",
+   "kind": "point",
+   "nums": [
+    0,
+    10
+   ],
+   "what": "vuela(\"_____\",…,0,10,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:250",
+   "fn": "tiro",
+   "kind": "point",
+   "nums": [
+    16,
+    8
+   ],
+   "what": "ranaSalta(16,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:252",
+   "fn": "alacesta",
+   "kind": "point",
+   "nums": [
+    14,
+    7
+   ],
+   "what": "vuela(\"_____\",…,14,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:254",
+   "fn": "turno16a",
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "vuela(\"_____\",\"____\",8,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:254",
+   "fn": "turno16a",
+   "kind": "point",
+   "nums": [
+    150,
+    128
+   ],
+   "what": "hopTo(150,128,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:254",
+   "fn": "turno16a",
+   "kind": "point",
+   "nums": [
+    140,
+    180
+   ],
+   "what": "perroA(140,180,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:255",
+   "fn": "turno16b",
+   "kind": "point+",
+   "nums": [
+    176,
+    190,
+    0
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:255",
+   "fn": "turno16b",
+   "kind": "point",
+   "nums": [
+    0,
+    11
+   ],
+   "what": "vuela(\"_____\",[176,190,0],0,11,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:255",
+   "fn": "turno16b",
+   "kind": "point",
+   "nums": [
+    14,
+    8
+   ],
+   "what": "brinco(pe,14,8) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:258",
+   "fn": "prepcarmen",
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "vuela(\"_____\",\"____\",8,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:259",
+   "fn": "acarmen",
+   "kind": "point",
+   "nums": [
+    30,
+    9
+   ],
+   "what": "vuela(\"_____\",\"______\",30,9) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:259",
+   "fn": "acarmen",
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "brinco(ca,8,7) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:259",
+   "fn": "acarmen",
+   "kind": "point",
+   "nums": [
+    22,
+    8
+   ],
+   "what": "vuela(\"_____\",\"____\",22,8) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:259",
+   "fn": "acarmen",
+   "kind": "point",
+   "nums": [
+    74,
+    204
+   ],
+   "what": "mueve(\"______\",74,204) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:260",
+   "fn": "trasturno",
+   "kind": "point",
+   "nums": [
+    46,
+    178
+   ],
+   "what": "perroA(46,178,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:260",
+   "fn": "trasturno",
+   "kind": "point",
+   "nums": [
+    136,
+    150
+   ],
+   "what": "hopTo(136,150,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:263",
+   "fn": "esconde16",
+   "kind": "xy",
+   "nums": [
+    136,
+    136
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:268",
+   "fn": "busca",
+   "kind": "point",
+   "nums": [
+    84,
+    188
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:268",
+   "fn": "busca",
+   "kind": "point",
+   "nums": [
+    46,
+    140
+   ],
+   "what": "hopTo(46,140,3,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:268",
+   "fn": "busca",
+   "kind": "point",
+   "nums": [
+    6,
+    6
+   ],
+   "what": "vuela(\"_____\",[84,188],6,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:268",
+   "fn": "busca",
+   "kind": "point",
+   "nums": [
+    70,
+    160
+   ],
+   "what": "hopTo(70,160,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:269",
+   "fn": "busca",
+   "kind": "point",
+   "nums": [
+    160,
+    166
+   ],
+   "what": "hopTo(160,166,3,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    98,
+    188
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    150,
+    196
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    80,
+    166
+   ],
+   "what": "perroA(80,166,\"___\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    9,
+    6
+   ],
+   "what": "brinco(pe,9,6) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    6,
+    7
+   ],
+   "what": "vuela(\"_____\",[98,188],6,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    112,
+    190
+   ],
+   "what": "perroA(112,190,\"___\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    10,
+    7
+   ],
+   "what": "vuela(\"_____\",[150,196],10,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:273",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    160,
+    196
+   ],
+   "what": "perroA(160,196,\"___\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:274",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    176,
+    203
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:274",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    166,
+    198
+   ],
+   "what": "perroA(166,198,\"___\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:274",
+   "fn": "perrotumba",
+   "kind": "point",
+   "nums": [
+    3,
+    4
+   ],
+   "what": "vuela(\"_____\",[176,203],3,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:277",
+   "fn": "aluis",
+   "kind": "point",
+   "nums": [
+    12,
+    7
+   ],
+   "what": "vuela(\"_____\",\"____\",12,7,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:278",
+   "fn": "vuelve16",
+   "kind": "point",
+   "nums": [
+    136,
+    136
+   ],
+   "what": "hopTo(136,136,3,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:280",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    104,
+    180
+   ],
+   "what": "mueve(\"____\",104,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:280",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    76,
+    202
+   ],
+   "what": "mueve(\"______\",76,202) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:280",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    136,
+    136
+   ],
+   "what": "hopTo(136,136,2,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:280",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    50,
+    196
+   ],
+   "what": "perroA(50,196,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:281",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    8,
+    6
+   ],
+   "what": "vuela(\"_____\",\"____\",8,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:282",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    156,
+    186
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:282",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    50,
+    12
+   ],
+   "what": "vuela(\"_____\",…,50,12) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:282",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    56,
+    12
+   ],
+   "what": "vuela(\"_____\",[156,186],56,12) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:282",
+   "fn": "sol",
+   "kind": "point",
+   "nums": [
+    5,
+    6
+   ],
+   "what": "vuela(\"_____\",…,5,6,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:284",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    150,
+    194
+   ],
+   "what": "mueve(\"____\",150,194) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:284",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    128,
+    202
+   ],
+   "what": "mueve(\"______\",128,202) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:284",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    148,
+    146
+   ],
+   "what": "hopTo(148,146,2,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:285",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    96,
+    180
+   ],
+   "what": "mueve(\"____\",96,180) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:285",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    168,
+    176
+   ],
+   "what": "mueve(\"______\",168,176) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:285",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    118,
+    142
+   ],
+   "what": "hopTo(118,142,2,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:287",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    70,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:287",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:287",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    136,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:287",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    110,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:287",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    170,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:287",
+   "fn": "final16",
+   "kind": "point",
+   "nums": [
+    24,
+    12
+   ],
+   "what": "ranaSalta(24,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:289",
+   "fn": "saltan",
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "brinco(lu,9,8) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:289",
+   "fn": "saltan",
+   "kind": "point",
+   "nums": [
+    9,
+    8
+   ],
+   "what": "brinco(ca,9,8) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:289",
+   "fn": "saltan",
+   "kind": "point",
+   "nums": [
+    40,
+    14
+   ],
+   "what": "ranaSalta(40,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:289",
+   "fn": "saltan",
+   "kind": "point",
+   "nums": [
+    40,
+    14
+   ],
+   "what": "ranaSalta(40,14) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:292",
+   "fn": "inicio17",
+   "kind": "xy",
+   "nums": [
+    84,
+    174
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:292",
+   "fn": "inicio17",
+   "kind": "xy",
+   "nums": [
+    58,
+    198
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:292",
+   "fn": "inicio17",
+   "kind": "xy",
+   "nums": [
+    196,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:292",
+   "fn": "inicio17",
+   "kind": "xy",
+   "nums": [
+    112,
+    140
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:294",
+   "fn": "carmenfila",
+   "kind": "point",
+   "nums": [
+    58,
+    198
+   ],
+   "what": "mueve(\"______\",58,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:296",
+   "fn": "sube17",
+   "kind": "point",
+   "nums": [
+    160,
+    190
+   ],
+   "what": "perroA(160,190,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:298",
+   "fn": "alafila",
+   "kind": "point",
+   "nums": [
+    164,
+    188
+   ],
+   "what": "perroA(164,188,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:300",
+   "fn": "perrocoge",
+   "kind": "point",
+   "nums": [
+    160,
+    190
+   ],
+   "what": "perroA(160,190,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:302",
+   "fn": "suelta17",
+   "kind": "point",
+   "nums": [
+    4,
+    5
+   ],
+   "what": "vuela(n,FILA[i],4,5,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:306",
+   "fn": "tira17",
+   "kind": "point+",
+   "nums": [
+    176,
+    186,
+    22
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:306",
+   "fn": "tira17",
+   "kind": "point",
+   "nums": [
+    26,
+    9
+   ],
+   "what": "vuela(n,[176,186,22],26,9) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:306",
+   "fn": "tira17",
+   "kind": "point",
+   "nums": [
+    168,
+    188
+   ],
+   "what": "perroA(168,188,\"___\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:306",
+   "fn": "tira17",
+   "kind": "point",
+   "nums": [
+    16,
+    5
+   ],
+   "what": "brinco(pe,16,5) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:307",
+   "fn": "tira17",
+   "kind": "point",
+   "nums": [
+    30,
+    10
+   ],
+   "what": "vuela(n,…,30,10) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:310",
+   "fn": "tira17",
+   "kind": "point",
+   "nums": [
+    164,
+    188
+   ],
+   "what": "perroA(164,188,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:312",
+   "fn": "da17",
+   "kind": "point",
+   "nums": [
+    112,
+    140
+   ],
+   "what": "hopTo(112,140,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:313",
+   "fn": "da17",
+   "kind": "point",
+   "nums": [
+    84,
+    174
+   ],
+   "what": "mueve(\"____\",84,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:317",
+   "fn": "malA17",
+   "kind": "point",
+   "nums": [
+    168,
+    206
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:317",
+   "fn": "malA17",
+   "kind": "point",
+   "nums": [
+    22,
+    8
+   ],
+   "what": "vuela(n,[168,206],22,8) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:318",
+   "fn": "vuelvefila",
+   "kind": "point",
+   "nums": [
+    180,
+    204
+   ],
+   "what": "perroA(180,204,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:318",
+   "fn": "vuelvefila",
+   "kind": "point",
+   "nums": [
+    0,
+    10
+   ],
+   "what": "vuela(n,FILA[i],0,10,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:318",
+   "fn": "vuelvefila",
+   "kind": "point",
+   "nums": [
+    164,
+    188
+   ],
+   "what": "perroA(164,188,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:319",
+   "fn": "jadea",
+   "kind": "point",
+   "nums": [
+    150,
+    192
+   ],
+   "what": "perroA(150,192,\"____\",8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:322",
+   "fn": "lleva17",
+   "kind": "point",
+   "nums": [
+    112,
+    140
+   ],
+   "what": "hopTo(112,140,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:323",
+   "fn": "luisfila",
+   "kind": "point",
+   "nums": [
+    84,
+    174
+   ],
+   "what": "mueve(\"____\",84,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:326",
+   "fn": "aguanta",
+   "kind": "point",
+   "nums": [
+    164,
+    188
+   ],
+   "what": "perroA(164,188,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:326",
+   "fn": "aguanta",
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "vuela(\"__\",FILA[2],4,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:328",
+   "fn": "sacude",
+   "kind": "point",
+   "nums": [
+    164,
+    188
+   ],
+   "what": "perroA(164,188,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:331",
+   "fn": "turno17",
+   "kind": "xy",
+   "nums": [
+    40,
+    150
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "campo.js:331",
+   "fn": "turno17",
+   "kind": "point",
+   "nums": [
+    58,
+    198
+   ],
+   "what": "mueve(\"______\",58,198) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "campo.js:332",
+   "fn": "trasturno17",
+   "kind": "point",
+   "nums": [
+    0,
+    9
+   ],
+   "what": "vuela(\"__\",FILA[2],0,9,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:332",
+   "fn": "trasturno17",
+   "kind": "point",
+   "nums": [
+    164,
+    188
+   ],
+   "what": "perroA(164,188,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:333",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    170,
+    197
+   ],
+   "what": "vuela(…)",
+   "comment": null
+  },
+  {
+   "at": "campo.js:333",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    160,
+    196
+   ],
+   "what": "perroA(160,196,\"____\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "campo.js:333",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    0,
+    4
+   ],
+   "what": "vuela(\"__\",[170,197],0,4,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "campo.js:334",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    70,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:334",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:334",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    136,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:334",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    110,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:334",
+   "fn": "final17",
+   "kind": "point",
+   "nums": [
+    170,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "campo.js:342",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "campo.js:342",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    110,
+    30
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ]
+}

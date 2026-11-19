@@ -1,0 +1,4712 @@
+{
+ "scene": "banco",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 62,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 64,
+   "y": 154,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "viejo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "viejo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "duerme.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "duerme.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "triste.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "triste.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 136,
+   "w": 124.3,
+   "h": 66,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "mujer.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "mujer.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señora.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señora.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "joven.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "joven.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 88,
+   "y": 106,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "hombre.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "hombre.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señor.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señor.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "come.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "come.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "cansado.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "cansado.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "contento.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "contento.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 112,
+   "y": 116,
+   "w": 90,
+   "h": 47.8,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 93.33,
+   "y": 154,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "viejo.p0",
+     "owner": "level picture",
+     "note": "pair viejo.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "viejo.p1",
+     "owner": "level picture",
+     "note": "pair viejo.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "viejo.p2",
+     "owner": "level picture",
+     "note": "pair duerme.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "viejo.p3",
+     "owner": "level picture",
+     "note": "pair triste.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "triste.p0",
+     "owner": "level picture",
+     "note": "pair triste.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "triste.p1",
+     "owner": "level picture",
+     "note": "pair triste.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 116.11,
+   "y": 136,
+   "w": 59.77,
+   "h": 66,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p0",
+     "owner": "level picture",
+     "note": "pair señora.si, centred on x 146 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p1",
+     "owner": "level picture",
+     "note": "pair señora.no, centred on x 146 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p3",
+     "owner": "level picture",
+     "note": "pair mujer.no, centred on x 146 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 117.33,
+   "y": 106,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "come.p0",
+     "owner": "level picture",
+     "note": "pair come.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "come.p1",
+     "owner": "level picture",
+     "note": "pair come.no, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "come.p3",
+     "owner": "level picture",
+     "note": "pair cansado.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p2",
+     "owner": "level picture",
+     "note": "pair señor.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "triste.p2",
+     "owner": "level picture",
+     "note": "pair contento.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "triste.p3",
+     "owner": "level picture",
+     "note": "pair cansado.si, centred on the pair's camera (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 130.35,
+   "y": 116,
+   "w": 43.29,
+   "h": 47.8,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "come.p2",
+     "owner": "level picture",
+     "note": "pair bebe.si, centred on x 152 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "hombre.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "hombre.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "mujer.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "mujer.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señor.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señor.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "joven.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "joven.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "viejo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "viejo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "come.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "come.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "duerme.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "duerme.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "cansado.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "cansado.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "contento.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "contento.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "triste.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "triste.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 28,
+   "y": 183,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 44,
+   "y": 210,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.casa",
+     "owner": "set.casa",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "where the walk home ends (banco.js acts)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 51,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.0.set.gente.piraguero",
+     "owner": "set.gente.piraguero",
+     "insideThings": [
+      "carmen",
+      "carro",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.gente.piraguero",
+     "owner": "set.gente.piraguero",
+     "insideThings": [
+      "carro",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.gente.piraguero",
+     "owner": "set.gente.piraguero",
+     "insideThings": [
+      "perro_viejo",
+      "carro",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 54,
+   "y": 194,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.perros.viejo",
+     "owner": "set.perros.viejo",
+     "insideThings": [
+      "perro_viejo",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 62,
+   "y": 206,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.0.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 66,
+   "y": 55,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.palomas.0",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 76,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.gente.abuela",
+     "owner": "set.gente.abuela",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 78,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.24",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 83,
+   "y": 56,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.palomas.1",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 86,
+   "y": 190,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.0.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 87,
+   "y": 161,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.gente.senor",
+     "owner": "set.gente.senor",
+     "insideThings": [
+      "banco0",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 88,
+   "y": 181,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.0.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "luis",
+      "parque"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 90,
+   "y": 194,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.perros.joven",
+     "owner": "set.perros.joven",
+     "insideThings": [
+      "perro_joven",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 92,
+   "y": 210,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.perros.canelo",
+     "owner": "set.perros.canelo",
+     "insideThings": [
+      "perro",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 96,
+   "y": 161,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.gente.mujer",
+     "owner": "set.gente.mujer",
+     "insideThings": [
+      "banco0",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 100,
+   "y": 57,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.0.set.palomas.0",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    },
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.palomas.0",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    },
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.palomas.2",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 104,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "perro",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 104,
+   "y": 208,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.0.set.casa",
+     "owner": "set.casa",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "where the walk home ends (banco.js acts)"
+    },
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.29",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 106,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señora.si.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señora.no.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 117,
+   "y": 57,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.palomas.3",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 118,
+   "y": 179,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 118,
+   "y": 208,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.35",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 120,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "viejo.si.set.perros.viejo",
+     "owner": "set.perros.viejo",
+     "insideThings": [
+      "perro_viejo",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "viejo.no.set.perros.joven",
+     "owner": "set.perros.joven",
+     "insideThings": [
+      "perro_joven",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "duerme.si.set.perros.canelo",
+     "owner": "set.perros.canelo",
+     "insideThings": [
+      "perro",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "duerme.no.set.perros.canelo",
+     "owner": "set.perros.canelo",
+     "insideThings": [
+      "perro",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "triste.si.set.perros.canelo",
+     "owner": "set.perros.canelo",
+     "insideThings": [
+      "perro",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "triste.no.set.perros.canelo",
+     "owner": "set.perros.canelo",
+     "insideThings": [
+      "perro",
+      "parque"
+     ],
+     "meaning": "a dog's feet (banco.js:175 perro)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 124,
+   "y": 188,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.17",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 126,
+   "y": 208,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 134,
+   "y": 57,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.palomas.4",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 134,
+   "y": 206,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.casa",
+     "owner": "set.casa",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "where the walk home ends (banco.js acts)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 135,
+   "y": 161,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.0.set.gente.mujer",
+     "owner": "set.gente.mujer",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 138,
+   "y": 161,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.gente.joven",
+     "owner": "set.gente.joven",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 144,
+   "y": 161,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "hombre.si.set.gente.hombre",
+     "owner": "set.gente.hombre",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "hombre.no.set.gente.mujer",
+     "owner": "set.gente.mujer",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señor.si.set.gente.senor",
+     "owner": "set.gente.senor",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señor.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "come.si.set.gente.hombre",
+     "owner": "set.gente.hombre",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "come.no.set.gente.hombre",
+     "owner": "set.gente.hombre",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "cansado.si.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "cansado.no.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "contento.si.set.gente.hombre",
+     "owner": "set.gente.hombre",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "contento.no.set.gente.hombre",
+     "owner": "set.gente.hombre",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 146,
+   "y": 145,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.no.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 146,
+   "y": 198,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "mujer.si.set.gente.mujer",
+     "owner": "set.gente.mujer",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "mujer.no.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "joven.si.set.gente.joven",
+     "owner": "set.gente.joven",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "joven.no.set.gente.senor",
+     "owner": "set.gente.senor",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 186,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.8",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 149,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.si.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 158,
+   "y": 190,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.11",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 150,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.cosas.0",
+     "owner": "set.cosas[]",
+     "insideThings": [
+      "banco1",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 160,
+   "y": 198,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señora.si.set.gente.mujer",
+     "owner": "set.gente.mujer",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    },
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "señora.no.set.gente.joven",
+     "owner": "set.gente.joven",
+     "insideThings": [
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 162,
+   "y": 149,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.si.set.palomas.0",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro",
+      "farol",
+      "banco1",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 164,
+   "y": 149,
+   "uses": [
+    {
+     "file": "cuentos/cual-banco.json",
+     "at": "bebe.no.set.palomas.0",
+     "owner": "set.palomas[]",
+     "insideThings": [
+      "pajaro",
+      "farol",
+      "banco1",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 168,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.20",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 170,
+   "y": 191,
+   "uses": [
+    {
+     "file": "cuentos/d-piragua-luis.json",
+     "at": "beats.38",
+     "owner": "[]",
+     "insideThings": [
+      "pajaro",
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 186,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.21",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 188,
+   "y": 197,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.7",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    },
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.12",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 188,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.47",
+     "owner": "[]",
+     "insideThings": [
+      "parque"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 192,
+   "y": 161,
+   "uses": [
+    {
+     "file": "cuentos/h-banco.json",
+     "at": "beats.0.set.gente.senor",
+     "owner": "set.gente.senor",
+     "insideThings": [
+      "banco2",
+      "parque"
+     ],
+     "meaning": "a person's feet; sent: sitting on the bench (banco.js:155-163 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 240,
+   "y": 202,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.41",
+     "owner": "[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 246,
+   "y": 197,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.11",
+     "owner": "[]"
+    },
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.15",
+     "owner": "[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 246,
+   "y": 198,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.44",
+     "owner": "[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 246,
+   "y": 204,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.45",
+     "owner": "[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 250,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.49",
+     "owner": "[]"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 250,
+   "y": 208,
+   "uses": [
+    {
+     "file": "cuentos/d-vamos-a-casa.json",
+     "at": "beats.42",
+     "owner": "[]"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 146,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "señora.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 152,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "come.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "banco.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    96,
+    150
+   ],
+   "what": "BANCOS[]",
+   "comment": "where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate"
+  },
+  {
+   "at": "banco.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    144,
+    150
+   ],
+   "what": "BANCOS[]",
+   "comment": "where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate"
+  },
+  {
+   "at": "banco.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    192,
+    150
+   ],
+   "what": "BANCOS[]",
+   "comment": "where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate"
+  },
+  {
+   "at": "banco.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    47,
+    178
+   ],
+   "what": "CARRO",
+   "comment": "where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate"
+  },
+  {
+   "at": "banco.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    168,
+    154
+   ],
+   "what": "FAROL",
+   "comment": "where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate"
+  },
+  {
+   "at": "banco.js:19",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    188,
+    197
+   ],
+   "what": "PORTON",
+   "comment": "where the paving starts; the three benches (the middle of the seat); the cart; the lamp post; where one stands at the gate"
+  },
+  {
+   "at": "banco.js:60",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    13
+   ],
+   "what": "Buf(9,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:60",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    4
+   ],
+   "what": "b.ell(4.5,4,3.6,3.4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:60",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    3.4
+   ],
+   "what": "b.ell(4.5,4,3.6,3.4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:60",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    2,
+    2,
+    2
+   ],
+   "what": "b.rect(2,2,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:60",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    12
+   ],
+   "what": "b.px(4,12,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    18
+   ],
+   "what": "Buf(13,18) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6.5,
+    6
+   ],
+   "what": "b.ell(6.5,6,5.6,5.2,[\"_______\"]) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5.6,
+    5.2
+   ],
+   "what": "b.ell(6.5,6,5.6,5.2,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    4,
+    4
+   ],
+   "what": "b.rect(1,5,4,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    1,
+    4,
+    7
+   ],
+   "what": "b.rect(5,1,4,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    5,
+    3,
+    4
+   ],
+   "what": "b.rect(9,5,3,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    2,
+    2,
+    3
+   ],
+   "what": "b.rect(3,2,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    2,
+    2,
+    3
+   ],
+   "what": "b.rect(9,2,2,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    17
+   ],
+   "what": "b.px(6,17,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    8
+   ],
+   "what": "Buf(7,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:62",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    7
+   ],
+   "what": "b.px(3,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    13
+   ],
+   "what": "Buf(7,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    5,
+    8
+   ],
+   "what": "b.rect(1,4,5,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    2,
+    8
+   ],
+   "what": "b.rect(1,4,2,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    3,
+    3
+   ],
+   "what": "b.rect(2,1,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    6,
+    5,
+    1
+   ],
+   "what": "b.rect(1,6,5,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:63",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    0,
+    3,
+    1
+   ],
+   "what": "b.rect(2,0,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:64",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    13
+   ],
+   "what": "Buf(7,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    5,
+    8
+   ],
+   "what": "b.rect(1,4,5,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    1,
+    3,
+    3
+   ],
+   "what": "b.rect(2,1,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    11,
+    5,
+    1
+   ],
+   "what": "b.rect(1,11,5,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:64",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    0,
+    3,
+    1
+   ],
+   "what": "b.rect(2,0,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:65",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    16,
+    8
+   ],
+   "what": "Buf(16,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    1,
+    8,
+    5
+   ],
+   "what": "b.rect(4,1,8,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    1,
+    8,
+    1
+   ],
+   "what": "b.rect(4,1,8,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    4,
+    8,
+    1
+   ],
+   "what": "b.rect(4,4,8,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:65",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    6,
+    14,
+    1
+   ],
+   "what": "b.rect(1,6,14,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:66",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    32
+   ],
+   "what": "Buf(11,32) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:66",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    6,
+    1,
+    24
+   ],
+   "what": "b.rect(5,6,1,24,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:66",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    1,
+    1,
+    6
+   ],
+   "what": "b.rect(5,1,1,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:66",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    0,
+    3,
+    1
+   ],
+   "what": "b.rect(6,0,3,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:66",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    1,
+    1,
+    3
+   ],
+   "what": "b.rect(9,1,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:66",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    30,
+    1,
+    2
+   ],
+   "what": "b.rect(5,30,1,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:67",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    11
+   ],
+   "what": "Buf(15,11) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    13,
+    9
+   ],
+   "what": "b.rect(1,1,13,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    13,
+    2
+   ],
+   "what": "b.rect(1,1,13,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    13,
+    1
+   ],
+   "what": "b.rect(1,5,13,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:67",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    6,
+    4,
+    3,
+    3
+   ],
+   "what": "b.rect(6,4,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    17
+   ],
+   "what": "Buf(15,17) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    13,
+    13
+   ],
+   "what": "b.rect(1,3,13,13,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    13,
+    2
+   ],
+   "what": "b.rect(1,3,13,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    8,
+    9,
+    6
+   ],
+   "what": "b.rect(3,8,9,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    8,
+    9,
+    1
+   ],
+   "what": "b.rect(3,8,9,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    0,
+    5,
+    3
+   ],
+   "what": "b.rect(5,0,5,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:68",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    11
+   ],
+   "what": "b.px(7,11,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:69",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    30
+   ],
+   "what": "Buf(8,30) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    2,
+    26
+   ],
+   "what": "b.rect(3,3,2,26,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    1,
+    5,
+    2
+   ],
+   "what": "b.rect(3,1,5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    2,
+    1,
+    3
+   ],
+   "what": "b.rect(7,2,1,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:69",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    28,
+    2,
+    1
+   ],
+   "what": "b.rect(3,28,2,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    13
+   ],
+   "what": "Buf(13,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    11,
+    7
+   ],
+   "what": "b.rect(1,5,11,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    11,
+    2
+   ],
+   "what": "b.rect(1,5,11,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    6,
+    8
+   ],
+   "what": "b.px(6,8,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    1,
+    1,
+    4
+   ],
+   "what": "b.rect(3,1,1,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    1,
+    1,
+    4
+   ],
+   "what": "b.rect(9,1,1,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:70",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    0,
+    7,
+    1
+   ],
+   "what": "b.rect(3,0,7,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:71",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    7
+   ],
+   "what": "Buf(14,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    9,
+    5
+   ],
+   "what": "b.rect(1,1,9,5,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    9,
+    1
+   ],
+   "what": "b.rect(1,1,9,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:71",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    9,
+    4,
+    5,
+    2
+   ],
+   "what": "b.rect(9,4,5,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    4
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:72",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    8
+   ],
+   "what": "Buf(15,8) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:72",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    13,
+    6
+   ],
+   "what": "b.rect(1,1,13,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:72",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    7,
+    1,
+    1,
+    6
+   ],
+   "what": "b.rect(7,1,1,6,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:73",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    13
+   ],
+   "what": "Buf(10,13) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    8,
+    9
+   ],
+   "what": "b.rect(1,3,8,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    3,
+    3,
+    9
+   ],
+   "what": "b.rect(1,3,3,9,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    8,
+    2
+   ],
+   "what": "b.rect(1,1,8,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:73",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    0,
+    6,
+    1
+   ],
+   "what": "b.rect(2,0,6,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    1
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    5
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    13,
+    7
+   ],
+   "what": "Buf(13,7) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    2,
+    7,
+    3
+   ],
+   "what": "b.rect(3,2,7,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:74",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    1.6,
+    1.6
+   ],
+   "what": "b.ell(p[0],p[1],1.6,1.6,[\"_______\"]) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:75",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    28,
+    16
+   ],
+   "what": "Buf(28,16) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    26,
+    10
+   ],
+   "what": "b.rect(1,5,26,10,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    5,
+    26,
+    2
+   ],
+   "what": "b.rect(1,5,26,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    13,
+    26,
+    2
+   ],
+   "what": "b.rect(1,13,26,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    2,
+    22,
+    3
+   ],
+   "what": "b.rect(3,2,22,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:75",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    12,
+    8,
+    4,
+    2
+   ],
+   "what": "b.rect(12,8,4,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    12
+   ],
+   "what": "Buf(8,12) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    4
+   ],
+   "what": "b.ell(4,4,3,3,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.ell(4,4,3,3,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:76",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "b.px(3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:76",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    7,
+    2,
+    4
+   ],
+   "what": "b.rect(3,7,2,4,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    11
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    15,
+    10
+   ],
+   "what": "Buf(15,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    13,
+    3
+   ],
+   "what": "b.rect(1,4,13,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    4,
+    1,
+    7,
+    3
+   ],
+   "what": "b.rect(4,1,7,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    5,
+    2,
+    2,
+    2
+   ],
+   "what": "b.rect(5,2,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    8,
+    2,
+    2,
+    2
+   ],
+   "what": "b.rect(8,2,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    4,
+    13,
+    1
+   ],
+   "what": "b.rect(1,4,13,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:77",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7.5,
+    1.8
+   ],
+   "what": "b.ell(x,7.5,1.8,1.8,[\"_______\"]) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:78",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    9
+   ],
+   "what": "Buf(9,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    7,
+    7
+   ],
+   "what": "b.rect(1,1,7,7,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    1,
+    7,
+    2
+   ],
+   "what": "b.rect(1,1,7,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:78",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "what": "b.rect(3,3,3,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    9
+   ],
+   "what": "Buf(11,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    5,
+    5.5
+   ],
+   "what": "b.ell(5,5.5,4,2.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4,
+    2.6
+   ],
+   "what": "b.ell(5,5.5,4,2.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    8,
+    2.5
+   ],
+   "what": "b.ell(8,2.5,2,2,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "b.ell(8,2.5,2,2,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    2
+   ],
+   "what": "b.px(9,2,OUT) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:79",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    10,
+    3,
+    1,
+    1
+   ],
+   "what": "b.rect(10,3,1,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    20,
+    10
+   ],
+   "what": "Buf(20,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    10,
+    5
+   ],
+   "what": "b.ell(10,5,9,4,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:80",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    4
+   ],
+   "what": "b.ell(10,5,9,4,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    9
+   ],
+   "what": "Buf(9,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    4.5,
+    4.5
+   ],
+   "what": "b.ell(4.5,4.5,3.6,3.6,…) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:81",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    3.6,
+    3.6
+   ],
+   "what": "b.ell(4.5,4.5,3.6,3.6,…) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:81",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    2,
+    4,
+    5,
+    1
+   ],
+   "what": "b.rect(2,4,5,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:82",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    22,
+    6
+   ],
+   "what": "Buf(22,6) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    20,
+    3
+   ],
+   "what": "b.rect(1,2,20,3,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    1,
+    2,
+    20,
+    1
+   ],
+   "what": "b.rect(1,2,20,1,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    1,
+    2,
+    2
+   ],
+   "what": "b.rect(0,1,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:82",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    20,
+    1,
+    2,
+    2
+   ],
+   "what": "b.rect(20,1,2,2,\"_______\") args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:124",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    18,
+    150,
+    1
+   ],
+   "what": "LUGAR.inicio",
+   "comment": null
+  },
+  {
+   "at": "banco.js:124",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    180,
+    1
+   ],
+   "what": "LUGAR.centro",
+   "comment": null
+  },
+  {
+   "at": "banco.js:135",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    60,
+    240,
+    156
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "banco.js:152",
+   "fn": "animo",
+   "kind": "point",
+   "nums": [
+    8,
+    2
+   ],
+   "what": "[]",
+   "comment": "heavy lids, a flat mouth, sweat, puffs of breath"
+  },
+  {
+   "at": "banco.js:152",
+   "fn": "animo",
+   "kind": "point",
+   "nums": [
+    11,
+    -1
+   ],
+   "what": "[]",
+   "comment": "heavy lids, a flat mouth, sweat, puffs of breath"
+  },
+  {
+   "at": "banco.js:152",
+   "fn": "animo",
+   "kind": "point",
+   "nums": [
+    14,
+    -4
+   ],
+   "what": "[]",
+   "comment": "heavy lids, a flat mouth, sweat, puffs of breath"
+  },
+  {
+   "at": "banco.js:157",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:157",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -30,
+    0
+   ],
+   "what": "c.drawImage(…,-30,0) [sprite \"ab\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:159",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:164",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    27,
+    29
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:179",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:179",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    -13,
+    0
+   ],
+   "what": "c.drawImage(im,-13,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:181",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    -14,
+    10
+   ],
+   "what": "c.drawImage(cosa(\"____\"),-14,10) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:182",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    14,
+    -20
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:182",
+   "fn": "perro",
+   "kind": "point",
+   "nums": [
+    21,
+    -27
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:187",
+   "fn": "coche",
+   "kind": "point",
+   "nums": [
+    -4,
+    -1
+   ],
+   "what": "[]",
+   "comment": "tears fly out from under the hood"
+  },
+  {
+   "at": "banco.js:187",
+   "fn": "coche",
+   "kind": "point",
+   "nums": [
+    2,
+    -3
+   ],
+   "what": "[]",
+   "comment": "tears fly out from under the hood"
+  },
+  {
+   "at": "banco.js:187",
+   "fn": "coche",
+   "kind": "point",
+   "nums": [
+    9,
+    -2
+   ],
+   "what": "[]",
+   "comment": "tears fly out from under the hood"
+  },
+  {
+   "at": "banco.js:187",
+   "fn": "coche",
+   "kind": "point",
+   "nums": [
+    15,
+    -1
+   ],
+   "what": "[]",
+   "comment": "tears fly out from under the hood"
+  },
+  {
+   "at": "banco.js:190",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:190",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:192",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(spr(\"_____\",fondo),0,0) [sprite \"banco\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:193",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    64,
+    26
+   ],
+   "what": "c.arc(64,26,9,0,7) args 0,1",
+   "comment": "the moon"
+  },
+  {
+   "at": "banco.js:193",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    64,
+    26
+   ],
+   "what": "c.arc(64,26,8,0,7) args 0,1",
+   "comment": "the moon"
+  },
+  {
+   "at": "banco.js:193",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    60,
+    22,
+    3,
+    3
+   ],
+   "what": "c.fillRect(60,22,3,3) args 0,1",
+   "comment": "the moon"
+  },
+  {
+   "at": "banco.js:193",
+   "fn": "draw",
+   "kind": "rect",
+   "nums": [
+    66,
+    28,
+    2,
+    2
+   ],
+   "what": "c.fillRect(66,28,2,2) args 0,1",
+   "comment": "the moon"
+  },
+  {
+   "at": "banco.js:194",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    84,
+    6
+   ],
+   "what": "c.drawImage(spr(\"_____\",fondo),84,6,46,38,196,6,46,38) [sprite \"banco\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:194",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    196,
+    6
+   ],
+   "what": "c.drawImage(spr(\"_____\",fondo),84,6,46,38,196,6,46,38) [sprite \"banco\"] args 5,6",
+   "comment": null
+  },
+  {
+   "at": "banco.js:194",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:195",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:200",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:200",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -7,
+    -12
+   ],
+   "what": "c.drawImage(im,-7,-12) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    3,
+    0
+   ],
+   "what": "u(3,0,1,10) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    1,
+    10
+   ],
+   "what": "u(3,0,1,10) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    11,
+    0
+   ],
+   "what": "u(11,0,1,9) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    1,
+    9
+   ],
+   "what": "u(11,0,1,9) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    3,
+    0
+   ],
+   "what": "u(3,0,9,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    9,
+    2
+   ],
+   "what": "u(3,0,9,2) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    0,
+    8
+   ],
+   "what": "u(0,8,4,3) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "u(0,8,4,3) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    8,
+    7
+   ],
+   "what": "u(8,7,4,3) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:212",
+   "fn": "nota",
+   "kind": "point",
+   "nums": [
+    4,
+    3
+   ],
+   "what": "u(8,7,4,3) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:217",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "g.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:217",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "tenida(g,\"_______\",0,0) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:218",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "g.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:218",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "tenida(g,\"____\",0,0,-.75-t*.15) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "banco.js:219",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    22,
+    24
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:219",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    26,
+    27
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:219",
+   "fn": "respIcon",
+   "kind": "point",
+   "nums": [
+    31,
+    23
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:222",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,66,24) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    110,
+    127
+   ],
+   "what": "POSA[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    158,
+    127
+   ],
+   "what": "POSA[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    176,
+    127
+   ],
+   "what": "POSA[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    208,
+    127
+   ],
+   "what": "POSA[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    182,
+    188
+   ],
+   "what": "JUGEN[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    195,
+    196
+   ],
+   "what": "JUGEN[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    183,
+    209
+   ],
+   "what": "JUGEN[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:238",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    196,
+    211
+   ],
+   "what": "JUGEN[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:250",
+   "fn": "llanto",
+   "kind": "point+",
+   "nums": [
+    0,
+    0.24,
+    0.48
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:251",
+   "fn": "risa",
+   "kind": "rect",
+   "nums": [
+    0,
+    0.12,
+    0.24,
+    0.36
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:252",
+   "fn": "sollozo",
+   "kind": "point",
+   "nums": [
+    0,
+    0.3
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:255",
+   "fn": "coquiS",
+   "kind": "point",
+   "nums": [
+    0,
+    0.5
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:256",
+   "fn": "palmas",
+   "kind": "point",
+   "nums": [
+    0,
+    0.14
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:267",
+   "fn": "inicio21",
+   "kind": "xy",
+   "nums": [
+    62,
+    206
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:268",
+   "fn": "inicio21",
+   "kind": "point",
+   "nums": [
+    124,
+    206
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "banco.js:273",
+   "fn": "nuevas",
+   "kind": "point",
+   "nums": [
+    104,
+    182
+   ],
+   "what": "mueve(\"______\",104,182) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:273",
+   "fn": "nuevas",
+   "kind": "point",
+   "nums": [
+    150,
+    182
+   ],
+   "what": "mueve(\"______\",150,182) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:273",
+   "fn": "nuevas",
+   "kind": "point",
+   "nums": [
+    62,
+    206
+   ],
+   "what": "mueve(\"______\",62,206) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:278",
+   "fn": "acaban",
+   "kind": "point",
+   "nums": [
+    104,
+    182
+   ],
+   "what": "mueve(\"______\",104,182) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:278",
+   "fn": "acaban",
+   "kind": "point",
+   "nums": [
+    150,
+    182
+   ],
+   "what": "mueve(\"______\",150,182) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:278",
+   "fn": "acaban",
+   "kind": "point",
+   "nums": [
+    62,
+    206
+   ],
+   "what": "mueve(\"______\",62,206) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:284",
+   "fn": "empieza",
+   "kind": "point+",
+   "nums": [
+    0,
+    0.2,
+    0.4
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:284",
+   "fn": "empieza",
+   "kind": "point+",
+   "nums": [
+    0,
+    0.25,
+    0.5
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:297",
+   "fn": "final21",
+   "kind": "point",
+   "nums": [
+    -34,
+    2
+   ],
+   "what": "en[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:297",
+   "fn": "final21",
+   "kind": "point",
+   "nums": [
+    -22,
+    12
+   ],
+   "what": "en[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:297",
+   "fn": "final21",
+   "kind": "point",
+   "nums": [
+    26,
+    14
+   ],
+   "what": "en[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:297",
+   "fn": "final21",
+   "kind": "point",
+   "nums": [
+    44,
+    -6
+   ],
+   "what": "en[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:302",
+   "fn": "inicio22",
+   "kind": "xy",
+   "nums": [
+    176,
+    208
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:302",
+   "fn": "inicio22",
+   "kind": "xy",
+   "nums": [
+    148,
+    186
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:303",
+   "fn": "inicio22",
+   "kind": "xy",
+   "nums": [
+    72,
+    163
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:303",
+   "fn": "inicio22",
+   "kind": "xy",
+   "nums": [
+    167,
+    187
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:304",
+   "fn": "inicio22",
+   "kind": "xy",
+   "nums": [
+    90,
+    193
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:304",
+   "fn": "inicio22",
+   "kind": "xy",
+   "nums": [
+    38,
+    193
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:305",
+   "fn": "inicio22",
+   "kind": "point",
+   "nums": [
+    124,
+    205
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "banco.js:306",
+   "fn": "alcarro",
+   "kind": "point",
+   "nums": [
+    80,
+    184
+   ],
+   "what": "en.senor",
+   "comment": null
+  },
+  {
+   "at": "banco.js:306",
+   "fn": "alcarro",
+   "kind": "point",
+   "nums": [
+    96,
+    188
+   ],
+   "what": "en.mujer",
+   "comment": null
+  },
+  {
+   "at": "banco.js:306",
+   "fn": "alcarro",
+   "kind": "point",
+   "nums": [
+    112,
+    184
+   ],
+   "what": "en.joven",
+   "comment": null
+  },
+  {
+   "at": "banco.js:309",
+   "fn": "bolsa",
+   "kind": "point",
+   "nums": [
+    122,
+    174
+   ],
+   "what": "mueve(\"______\",122,174) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:309",
+   "fn": "bolsa",
+   "kind": "point",
+   "nums": [
+    158,
+    210
+   ],
+   "what": "mueve(\"______\",158,210) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:311",
+   "fn": "hueso",
+   "kind": "point",
+   "nums": [
+    146,
+    176
+   ],
+   "what": "mueve(\"______\",146,176) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:311",
+   "fn": "hueso",
+   "kind": "point",
+   "nums": [
+    158,
+    210
+   ],
+   "what": "mueve(\"______\",158,210) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:316",
+   "fn": "luisve",
+   "kind": "point",
+   "nums": [
+    112,
+    178
+   ],
+   "what": "mueve(\"____\",112,178) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:317",
+   "fn": "luiscaja",
+   "kind": "point",
+   "nums": [
+    148,
+    186
+   ],
+   "what": "mueve(\"____\",148,186) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:318",
+   "fn": "sale22",
+   "kind": "point",
+   "nums": [
+    100,
+    205
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "banco.js:318",
+   "fn": "sale22",
+   "kind": "point",
+   "nums": [
+    36,
+    193
+   ],
+   "what": "perroA(\"_____\",36,193,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:318",
+   "fn": "sale22",
+   "kind": "point",
+   "nums": [
+    64,
+    194
+   ],
+   "what": "perroA(\"_____\",64,194,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:326",
+   "fn": "luisguarda",
+   "kind": "point",
+   "nums": [
+    148,
+    186
+   ],
+   "what": "mueve(\"____\",148,186) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:327",
+   "fn": "perros22",
+   "kind": "point",
+   "nums": [
+    38,
+    193
+   ],
+   "what": "L",
+   "comment": null
+  },
+  {
+   "at": "banco.js:327",
+   "fn": "perros22",
+   "kind": "point",
+   "nums": [
+    90,
+    193
+   ],
+   "what": "D",
+   "comment": null
+  },
+  {
+   "at": "banco.js:330",
+   "fn": "cola22",
+   "kind": "point",
+   "nums": [
+    82,
+    186
+   ],
+   "what": "en[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:330",
+   "fn": "cola22",
+   "kind": "point",
+   "nums": [
+    104,
+    186
+   ],
+   "what": "en[]",
+   "comment": null
+  },
+  {
+   "at": "banco.js:331",
+   "fn": "cola22",
+   "kind": "point",
+   "nums": [
+    128,
+    205
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "banco.js:334",
+   "fn": "final22",
+   "kind": "point",
+   "nums": [
+    124,
+    190
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "banco.js:334",
+   "fn": "final22",
+   "kind": "point",
+   "nums": [
+    190,
+    204
+   ],
+   "what": "mueve(\"______\",190,204) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:339",
+   "fn": "inicio23",
+   "kind": "xy",
+   "nums": [
+    38,
+    210
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:340",
+   "fn": "inicio23",
+   "kind": "xy",
+   "nums": [
+    164,
+    176
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:340",
+   "fn": "inicio23",
+   "kind": "xy",
+   "nums": [
+    112,
+    208
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:340",
+   "fn": "inicio23",
+   "kind": "xy",
+   "nums": [
+    184,
+    178
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:341",
+   "fn": "inicio23",
+   "kind": "point",
+   "nums": [
+    156,
+    207
+   ],
+   "what": "W.casa",
+   "comment": null
+  },
+  {
+   "at": "banco.js:342",
+   "fn": "alegra",
+   "kind": "point",
+   "nums": [
+    70,
+    190
+   ],
+   "what": "ranaA(70,190) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:343",
+   "fn": "cojin",
+   "kind": "point",
+   "nums": [
+    38,
+    210
+   ],
+   "what": "mueve(\"______\",38,210) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:344",
+   "fn": "abuelallega",
+   "kind": "xy",
+   "nums": [
+    250,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:344",
+   "fn": "abuelallega",
+   "kind": "point",
+   "nums": [
+    124,
+    180
+   ],
+   "what": "perroA(\"______\",124,180,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:347",
+   "fn": "canelo23",
+   "kind": "point",
+   "nums": [
+    196,
+    208
+   ],
+   "what": "perroA(\"______\",196,208,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:347",
+   "fn": "canelo23",
+   "kind": "point",
+   "nums": [
+    124,
+    180
+   ],
+   "what": "perroA(\"______\",124,180,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:349",
+   "fn": "pelota",
+   "kind": "point",
+   "nums": [
+    124,
+    180
+   ],
+   "what": "perroA(\"______\",124,180,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:365",
+   "fn": "rie",
+   "kind": "point+",
+   "nums": [
+    0,
+    0.12,
+    0.24
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "banco.js:369",
+   "fn": "turno23a",
+   "kind": "point",
+   "nums": [
+    92,
+    192
+   ],
+   "what": "mueve(\"____\",92,192) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:372",
+   "fn": "tres23",
+   "kind": "point",
+   "nums": [
+    190,
+    204
+   ],
+   "what": "palomaA(pg,190,204) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:372",
+   "fn": "tres23",
+   "kind": "point",
+   "nums": [
+    150,
+    150
+   ],
+   "what": "palomaA(pg,150,150) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:372",
+   "fn": "tres23",
+   "kind": "point",
+   "nums": [
+    196,
+    204
+   ],
+   "what": "perroA(\"______\",196,204,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:372",
+   "fn": "tres23",
+   "kind": "point",
+   "nums": [
+    124,
+    199
+   ],
+   "what": "perroA(\"______\",124,199,\"___\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:373",
+   "fn": "tres23",
+   "kind": "xy",
+   "nums": [
+    70,
+    196
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:380",
+   "fn": "ayudamal",
+   "kind": "point",
+   "nums": [
+    70,
+    190
+   ],
+   "what": "ranaA(70,190) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:384",
+   "fn": "resto",
+   "kind": "point",
+   "nums": [
+    70,
+    196
+   ],
+   "what": "mueve(\"______\",70,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:385",
+   "fn": "resto",
+   "kind": "point",
+   "nums": [
+    38,
+    210
+   ],
+   "what": "mueve(\"______\",38,210) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:391",
+   "fn": "sevan23",
+   "kind": "point",
+   "nums": [
+    250,
+    200
+   ],
+   "what": "mueve(\"______\",250,200) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:391",
+   "fn": "sevan23",
+   "kind": "point",
+   "nums": [
+    250,
+    206
+   ],
+   "what": "mueve(\"______\",250,206) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:391",
+   "fn": "sevan23",
+   "kind": "point",
+   "nums": [
+    250,
+    196
+   ],
+   "what": "mueve(\"____\",250,196) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:391",
+   "fn": "sevan23",
+   "kind": "point",
+   "nums": [
+    250,
+    210
+   ],
+   "what": "perroA(\"______\",250,210,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "banco.js:391",
+   "fn": "sevan23",
+   "kind": "point",
+   "nums": [
+    232,
+    204
+   ],
+   "what": "ranaA(232,204,4) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "banco.js:406",
+   "fn": "rebota",
+   "kind": "rect",
+   "nums": [
+    -6,
+    -10,
+    -6,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "banco.js:416",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    186,
+    200
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:416",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    150,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:417",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    112,
+    180
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:417",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    40,
+    204
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:417",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    68,
+    206
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:418",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    52,
+    208
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:419",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    130,
+    175
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:419",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    164,
+    176
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:419",
+   "fn": "prueba",
+   "kind": "xy",
+   "nums": [
+    124,
+    180
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "banco.js:425",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "banco.js:425",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    110,
+    30
+   ],
+   "what": "heartAt",
+   "comment": null
+  },
+  {
+   "at": "banco.js:426",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    64
+   ],
+   "what": "respEn",
+   "comment": null
+  }
+ ]
+}

@@ -1,0 +1,2298 @@
+{
+ "scene": "lago",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "count": 48,
+ "kinds": "point: an x, y; x: an x alone; cam: a camera rectangle (x, y, w, h); rect: another rectangle; crop: a level-check crop; numbers: a list of numbers that is not a place",
+ "positions": [
+  {
+   "kind": "cam",
+   "x": 44,
+   "y": 112,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pato.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pato.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "vuela.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "verde.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "verde.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 84,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 84,
+   "y": 116,
+   "w": 100,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "blanco.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "blanco.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 96,
+   "y": 30,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "nada.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "vuela.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "cam",
+   "x": 100,
+   "y": 156,
+   "w": 113,
+   "h": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pez.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pez.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "nada.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "rojo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "rojo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "azul.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "azul.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "amarillo.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "amarillo.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "negro.si.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "negro.no.cam",
+     "owner": "pair picture",
+     "note": "the rectangle of the 240 x 216 picture stretched to 196 x 104 (cual.js:38)"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 68.83,
+   "y": 112,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p1",
+     "owner": "level picture",
+     "note": "pair vuela.no, centred on x 96 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p2",
+     "owner": "level picture",
+     "note": "pair verde.si, centred on x 96 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 72.83,
+   "y": 112,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p0",
+     "owner": "level picture",
+     "note": "pair pato.si, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p1",
+     "owner": "level picture",
+     "note": "pair pato.no, centred on x 100 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 108.95,
+   "y": 116,
+   "w": 48.09,
+   "h": 53.1,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p3",
+     "owner": "level picture",
+     "note": "pair blanco.si, centred on x 133 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 122.83,
+   "y": 156,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p2",
+     "owner": "level picture",
+     "note": "pair nada.si, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p0",
+     "owner": "level picture",
+     "note": "pair rojo.si, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p1",
+     "owner": "level picture",
+     "note": "pair rojo.no, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p3",
+     "owner": "level picture",
+     "note": "pair azul.si, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p0",
+     "owner": "level picture",
+     "note": "pair negro.si, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p1",
+     "owner": "level picture",
+     "note": "pair negro.no, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p2",
+     "owner": "level picture",
+     "note": "pair amarillo.no, centred on x 150 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 124.83,
+   "y": 30,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p0",
+     "owner": "level picture",
+     "note": "pair vuela.si, centred on x 152 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 128.83,
+   "y": 156,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p2",
+     "owner": "level picture",
+     "note": "pair pez.si, centred on x 156 (nivel.js:75-76), drawn into 96 x 106"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p3",
+     "owner": "level picture",
+     "note": "pair pez.si, centred on x 156 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "crop",
+   "x": 148.83,
+   "y": 156,
+   "w": 54.34,
+   "h": 60,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p3",
+     "owner": "level picture",
+     "note": "pair pájaro.no, centred on x 176 (nivel.js:75-76), drawn into 96 x 106"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 0,
+   "y": 0,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pato.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pato.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pez.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pez.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "nada.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "nada.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "vuela.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "vuela.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "rojo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "rojo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "azul.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "azul.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "verde.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "verde.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "amarillo.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "amarillo.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "blanco.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "blanco.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "negro.si.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "negro.no.set.cq",
+     "owner": "set.cq",
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 42,
+   "y": 154,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.1.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "muelle",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a person's feet (lago.js:89 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 58,
+   "y": 153,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.1.set.bolsa",
+     "owner": "set.bolsa",
+     "insideThings": [
+      "muelle",
+      "agua",
+      "lago"
+     ],
+     "meaning": "the bag of bread's foot (lago.js:122)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 64,
+   "y": 118,
+   "uses": [
+    {
+     "file": "cuentos/h-lago.json",
+     "at": "beats.1.set.gente.carmen",
+     "owner": "set.gente.carmen",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a person's feet (lago.js:89 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 86,
+   "y": 125,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.1.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 96,
+   "y": 118,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.1.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a person's feet (lago.js:89 gente)"
+    },
+    {
+     "file": "cuentos/h-lago.json",
+     "at": "beats.1.set.gente.luis",
+     "owner": "set.gente.luis",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a person's feet (lago.js:89 gente)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 96,
+   "y": 153,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "verde.si.set.botes.a",
+     "owner": "set.botes.a",
+     "insideThings": [
+      "muelle",
+      "agua",
+      "lago"
+     ]
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "verde.no.set.botes.a",
+     "owner": "set.botes.a",
+     "insideThings": [
+      "muelle",
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 96,
+   "y": 154,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "vuela.no.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro",
+      "muelle",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 100,
+   "y": 154,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pato.si.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "muelle",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pato.no.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro",
+      "muelle",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 104,
+   "y": 125,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.37",
+     "owner": "[]",
+     "insideThings": [
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 104,
+   "y": 172,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.33",
+     "owner": "[]",
+     "insideThings": [
+      "pato_blanco",
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 108,
+   "y": 125,
+   "uses": [
+    {
+     "file": "cuentos/h-lago.json",
+     "at": "beats.1.set.cq",
+     "owner": "set.cq",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "the frog: frogBox(cq) (juego.js:46) is x+(32-w)/2, y+27-h, w = round(30s)+2, h = round(25s)+2; his feet are at y+27, his middle at x+16"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 124,
+   "y": 176,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.34",
+     "owner": "[]",
+     "insideThings": [
+      "pato_negro",
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 133,
+   "y": 140,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "blanco.si.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "blanco.no.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 140,
+   "y": 119,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.si.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 143,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.no.set.pan",
+     "owner": "set.pan",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "the bread (lago.js:126)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 62,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "nada.no.set.patos.a",
+     "owner": "set.patos.a",
+     "meaning": "a duck (lago.js:96 pato)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 188,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "nada.si.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 190,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "rojo.si.set.botes.a",
+     "owner": "set.botes.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ]
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "rojo.no.set.botes.a",
+     "owner": "set.botes.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ]
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "amarillo.si.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "amarillo.no.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "negro.si.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "negro.no.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 150,
+   "y": 192,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "azul.si.set.peces.a",
+     "owner": "set.peces.a",
+     "insideThings": [
+      "pez",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a fish (lago.js:99 pez)"
+    },
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "azul.no.set.peces.a",
+     "owner": "set.peces.a",
+     "insideThings": [
+      "pez",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a fish (lago.js:99 pez)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 60,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "vuela.si.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 122,
+   "uses": [
+    {
+     "file": "cuentos/h-lago.json",
+     "at": "beats.14.set.aves.a",
+     "owner": "set.aves.a",
+     "insideThings": [
+      "pajaro",
+      "poste",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a bird (lago.js:102 ave)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 152,
+   "y": 178,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.39",
+     "owner": "[]",
+     "insideThings": [
+      "pato_amarillo",
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 156,
+   "y": 186,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pájaro.no.set.peces.a",
+     "owner": "set.peces.a",
+     "insideThings": [
+      "pez",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a fish (lago.js:99 pez)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 156,
+   "y": 190,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pez.no.set.patos.a",
+     "owner": "set.patos.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a duck (lago.js:96 pato)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 156,
+   "y": 196,
+   "uses": [
+    {
+     "file": "cuentos/cual-lago.json",
+     "at": "pez.si.set.peces.a",
+     "owner": "set.peces.a",
+     "insideThings": [
+      "agua",
+      "lago"
+     ],
+     "meaning": "a fish (lago.js:99 pez)"
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 164,
+   "y": 200,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.23",
+     "owner": "[]",
+     "insideThings": [
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 178,
+   "y": 184,
+   "uses": [
+    {
+     "file": "cuentos/d-pato-pequeno.json",
+     "at": "beats.19",
+     "owner": "[]",
+     "insideThings": [
+      "agua",
+      "lago"
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "point",
+   "x": 192,
+   "y": 192,
+   "uses": [
+    {
+     "file": "cuentos/h-lago.json",
+     "at": "beats.14.set.peces.a",
+     "owner": "set.peces.a",
+     "insideThings": [
+      "pez",
+      "agua",
+      "lago"
+     ],
+     "meaning": "a fish (lago.js:99 pez)"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 96,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 100,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 133,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 150,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "rojo.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p1",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "negro.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 152,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p0",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 156,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p2",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    },
+    {
+     "file": "nivel.js NV",
+     "at": "vuela.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  },
+  {
+   "kind": "x",
+   "x": 176,
+   "uses": [
+    {
+     "file": "nivel.js NV",
+     "at": "pato.p3",
+     "owner": "level crop centre",
+     "note": "the x the square crop is centred on"
+    }
+   ]
+  }
+ ],
+ "inSceneFile": [
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    26,
+    152,
+    112,
+    13
+   ],
+   "what": "MUELLE",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    152,
+    146
+   ],
+   "what": "POSTE",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    40,
+    141
+   ],
+   "what": "PM[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    133,
+    141
+   ],
+   "what": "PM[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    190,
+    150
+   ],
+   "what": "JUNCOS[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    200,
+    144
+   ],
+   "what": "JUNCOS[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    210,
+    152
+   ],
+   "what": "JUNCOS[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    196,
+    158
+   ],
+   "what": "JUNCOS[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    206,
+    162
+   ],
+   "what": "JUNCOS[]",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:17",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    178,
+    116
+   ],
+   "what": "ORILLA",
+   "comment": "where the water starts; the dock; the post; the reeds; Carmen's place on the far bank"
+  },
+  {
+   "at": "lago.js:60",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    100,
+    125,
+    1
+   ],
+   "what": "LUGAR.inicio",
+   "comment": null
+  },
+  {
+   "at": "lago.js:60",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    100,
+    125,
+    1
+   ],
+   "what": "LUGAR.muelle",
+   "comment": null
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    46,
+    68,
+    90
+   ],
+   "what": "FX",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    150,
+    172
+   ],
+   "what": "SALE[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    168,
+    180
+   ],
+   "what": "SALE[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    152,
+    190
+   ],
+   "what": "SALE[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    182,
+    166
+   ],
+   "what": "PEGA[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    196,
+    172
+   ],
+   "what": "PEGA[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    210,
+    168
+   ],
+   "what": "PEGA[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:61",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    190,
+    178
+   ],
+   "what": "PEGA[]",
+   "comment": "the row of boats along the front of the dock; where a boat is set on the water; where boats stick in the reeds"
+  },
+  {
+   "at": "lago.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    -14,
+    -9
+   ],
+   "what": "OFF[]",
+   "comment": "story 20: seven places for the three ducks, from the dock outward"
+  },
+  {
+   "at": "lago.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    14,
+    -7
+   ],
+   "what": "OFF[]",
+   "comment": "story 20: seven places for the three ducks, from the dock outward"
+  },
+  {
+   "at": "lago.js:63",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    0,
+    12
+   ],
+   "what": "OFF[]",
+   "comment": "story 20: seven places for the three ducks, from the dock outward"
+  },
+  {
+   "at": "lago.js:76",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    178,
+    120,
+    40,
+    46
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "lago.js:77",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    0,
+    94,
+    240,
+    122
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "lago.js:91",
+   "fn": "gente",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:97",
+   "fn": "pato",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:97",
+   "fn": "pato",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(im,0,0,26,18,-13,…,26,18) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:97",
+   "fn": "pato",
+   "kind": "point",
+   "nums": [
+    -13,
+    -21
+   ],
+   "what": "c.drawImage(im,-13,-21) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:100",
+   "fn": "pez",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:100",
+   "fn": "pez",
+   "kind": "point",
+   "nums": [
+    -9,
+    -6
+   ],
+   "what": "c.drawImage(im,-9,-6) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:102",
+   "fn": "ave",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:102",
+   "fn": "ave",
+   "kind": "point",
+   "nums": [
+    -7,
+    -12
+   ],
+   "what": "c.drawImage(im,-7,-12) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:105",
+   "fn": "bote",
+   "kind": "point",
+   "nums": [
+    -10,
+    -19
+   ],
+   "what": "c.drawImage(im,-10,-19) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:110",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:110",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "lago.js:112",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(spr(\"____\",fondo),0,0) [sprite \"lago\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -3,
+    -14
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    1,
+    -14
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -3,
+    -10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    1,
+    -10
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    -16
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -1,
+    -9
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    -4,
+    -12
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:113",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    2,
+    -12
+   ],
+   "what": "[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:124",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -1,
+    1
+   ],
+   "what": "c.scale(-1,1) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:124",
+   "fn": "d",
+   "kind": "point",
+   "nums": [
+    -13,
+    0
+   ],
+   "what": "c.drawImage(im,-13,0) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:137",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    3,
+    3
+   ],
+   "what": "tarjeta(g,3,3,66,24) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:176",
+   "fn": "inicio18",
+   "kind": "xy",
+   "nums": [
+    44,
+    154
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:176",
+   "fn": "inicio18",
+   "kind": "xy",
+   "nums": [
+    72,
+    154
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:176",
+   "fn": "inicio18",
+   "kind": "xy",
+   "nums": [
+    100,
+    125
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:177",
+   "fn": "inicio18",
+   "kind": "xy",
+   "nums": [
+    142,
+    184
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:177",
+   "fn": "inicio18",
+   "kind": "xy",
+   "nums": [
+    92,
+    192
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:180",
+   "fn": "baja",
+   "kind": "point",
+   "nums": [
+    142,
+    184
+   ],
+   "what": "patoA(\"______\",142,184,…) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:180",
+   "fn": "baja",
+   "kind": "point",
+   "nums": [
+    142,
+    184
+   ],
+   "what": "salpica(142,184) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:185",
+   "fn": "orilla",
+   "kind": "point",
+   "nums": [
+    124,
+    126
+   ],
+   "what": "patoA(\"______\",124,126,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:185",
+   "fn": "orilla",
+   "kind": "point",
+   "nums": [
+    120,
+    118
+   ],
+   "what": "patoA(\"______\",120,118,\"____\",4) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:186",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    124,
+    126
+   ],
+   "what": "patoA(\"______\",124,126,\"____\",4) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:186",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    124,
+    128
+   ],
+   "what": "salpica(124,128) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "lago.js:186",
+   "fn": "alagua",
+   "kind": "point",
+   "nums": [
+    142,
+    184
+   ],
+   "what": "patoA(\"______\",142,184,\"____\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:197",
+   "fn": "final18",
+   "kind": "point",
+   "nums": [
+    70,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:197",
+   "fn": "final18",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:197",
+   "fn": "final18",
+   "kind": "point",
+   "nums": [
+    136,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:197",
+   "fn": "final18",
+   "kind": "point",
+   "nums": [
+    110,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:197",
+   "fn": "final18",
+   "kind": "point",
+   "nums": [
+    170,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:202",
+   "fn": "inicio19",
+   "kind": "point",
+   "nums": [
+    110,
+    153
+   ],
+   "what": "W.saco",
+   "comment": null
+  },
+  {
+   "at": "lago.js:202",
+   "fn": "inicio19",
+   "kind": "xy",
+   "nums": [
+    128,
+    154
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:202",
+   "fn": "inicio19",
+   "kind": "xy",
+   "nums": [
+    60,
+    125
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:208",
+   "fn": "luiscoge",
+   "kind": "point",
+   "nums": [
+    128,
+    154
+   ],
+   "what": "mueve(\"____\",128,154) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:222",
+   "fn": "pezviene",
+   "kind": "xy",
+   "nums": [
+    232,
+    192
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:222",
+   "fn": "pezviene",
+   "kind": "point",
+   "nums": [
+    134,
+    192
+   ],
+   "what": "pezA(\"_\",134,192,16) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:238",
+   "fn": "final19",
+   "kind": "point",
+   "nums": [
+    70,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:238",
+   "fn": "final19",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:238",
+   "fn": "final19",
+   "kind": "point",
+   "nums": [
+    136,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:238",
+   "fn": "final19",
+   "kind": "point",
+   "nums": [
+    110,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:238",
+   "fn": "final19",
+   "kind": "point",
+   "nums": [
+    170,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:241",
+   "fn": "inicio20",
+   "kind": "point",
+   "nums": [
+    96,
+    153
+   ],
+   "what": "W.bolsa",
+   "comment": null
+  },
+  {
+   "at": "lago.js:241",
+   "fn": "inicio20",
+   "kind": "point",
+   "nums": [
+    196,
+    119
+   ],
+   "what": "W.flor",
+   "comment": null
+  },
+  {
+   "at": "lago.js:241",
+   "fn": "inicio20",
+   "kind": "xy",
+   "nums": [
+    74,
+    118
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:241",
+   "fn": "inicio20",
+   "kind": "xy",
+   "nums": [
+    112,
+    154
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:241",
+   "fn": "inicio20",
+   "kind": "xy",
+   "nums": [
+    62,
+    125
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:241",
+   "fn": "inicio20",
+   "kind": "xy",
+   "nums": [
+    46,
+    119
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:242",
+   "fn": "inicio20",
+   "kind": "point+",
+   "nums": [
+    0,
+    1,
+    2
+   ],
+   "what": "W.orden",
+   "comment": null
+  },
+  {
+   "at": "lago.js:242",
+   "fn": "inicio20",
+   "kind": "xy",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:254",
+   "fn": "llegan20",
+   "kind": "xy",
+   "nums": [
+    -10,
+    60
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:254",
+   "fn": "llegan20",
+   "kind": "xy",
+   "nums": [
+    250,
+    50
+   ],
+   "what": "x:,y:",
+   "comment": null
+  },
+  {
+   "at": "lago.js:259",
+   "fn": "palmas",
+   "kind": "point",
+   "nums": [
+    4,
+    6
+   ],
+   "what": "panA(…,4,6) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:259",
+   "fn": "palmas",
+   "kind": "point",
+   "nums": [
+    0,
+    22
+   ],
+   "what": "panA([p[0],p[1]-6],0,22) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point+",
+   "nums": [
+    104,
+    118,
+    131
+   ],
+   "what": "xs",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point",
+   "nums": [
+    70,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point",
+   "nums": [
+    196,
+    70
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point",
+   "nums": [
+    136,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point",
+   "nums": [
+    110,
+    90
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point",
+   "nums": [
+    170,
+    96
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "lago.js:272",
+   "fn": "final20",
+   "kind": "point",
+   "nums": [
+    136,
+    172
+   ],
+   "what": "patoA(k,136,172,\"____\",6) args 1,2",
+   "comment": null
+  },
+  {
+   "at": "lago.js:279",
+   "fn": "mecebote",
+   "kind": "rect",
+   "nums": [
+    -2,
+    1,
+    -1,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "lago.js:294",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "lago.js:294",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    110,
+    30
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ]
+}

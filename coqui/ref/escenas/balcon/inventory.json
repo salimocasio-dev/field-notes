@@ -1,0 +1,9916 @@
+{
+ "scene": "balcon",
+ "file": "historia/escenas/balcon.js",
+ "made": "node coqui/tool/ref/escenas/make.mjs",
+ "sha256": "956790ed17d736d18204385dbeaf2d4dd861d6096e2ef9e5f0fa1dbd58943f7d",
+ "stories": [
+  "d-agua-pajaro",
+  "el-jugo",
+  "h-balcon",
+  "que-calor"
+ ],
+ "reviewFile": "cual-balcon",
+ "hostPage": "historia/index.html?cuento=d-agua-pajaro&fast=1",
+ "background": {
+  "functions": [
+   "bg"
+  ],
+  "at": [
+   "balcon.js:15 bg(door,win)",
+   "balcon.js:121 spr(\"bal\"+W.door+\"_\"+W.win, ()=>bg(W.door,W.win))"
+  ],
+  "keys": [
+   "door",
+   "win"
+  ],
+  "keysCheck": "no two states with the same values of these keys have a different background sprite",
+  "sprites": [
+   {
+    "key": "bal0_0",
+    "maker": "()=>bg(W.door,W.win)",
+    "readsW": [
+     "door",
+     "win"
+    ],
+    "askedAt": "balcon.js:121"
+   },
+   {
+    "key": "bal1_0",
+    "maker": "()=>bg(W.door,W.win)",
+    "readsW": [
+     "door",
+     "win"
+    ],
+    "askedAt": "balcon.js:121"
+   }
+  ]
+ },
+ "given": {
+  "kit": true,
+  "call": "balcon.js:262 KIT.escena({...})",
+  "keys": [
+   "id",
+   "CAM",
+   "heartAt",
+   "lugar",
+   "cosas",
+   "fresh",
+   "draw",
+   "hud",
+   "poke",
+   "acts",
+   "stake",
+   "talkAt",
+   "respIcon",
+   "estado"
+  ],
+  "CAM": {
+   "wide": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "mesa": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "porche": [
+    35,
+    20,
+    170,
+    187.3
+   ]
+  },
+  "heartAt": [
+   107,
+   31
+  ],
+  "heartAtDefault": null,
+  "lugar": {
+   "jardin": [
+    104,
+    185,
+    1
+   ],
+   "balcon": [
+    106,
+    130,
+    0.8
+   ],
+   "mesa": [
+    104,
+    141,
+    0.86
+   ],
+   "junto": [
+    104,
+    141,
+    0.86
+   ],
+   "decir": [
+    134,
+    130,
+    0.8
+   ],
+   "silla_pequena": [
+    144,
+    109,
+    0.72
+   ],
+   "suelo": [
+    150,
+    132,
+    0.8
+   ],
+   "abuela": [
+    84,
+    129,
+    0.8
+   ],
+   "silla_grande": [
+    84,
+    129,
+    0.8
+   ],
+   "puerta": [
+    162,
+    125,
+    0.76
+   ],
+   "ventana": [
+    106,
+    130,
+    0.8
+   ]
+  },
+  "cosas": [
+   {
+    "id": "jugo",
+    "m": 0,
+    "si": {
+     "fn": "w=>!!enMesa(id)&&!enMesa(id).mano",
+     "line": 101
+    },
+    "box": {
+     "fn": "()=>cajaDe(enMesa(id))",
+     "line": 101
+    }
+   },
+   {
+    "id": "agua",
+    "m": 0,
+    "si": {
+     "fn": "w=>!!enMesa(id)&&!enMesa(id).mano",
+     "line": 101
+    },
+    "box": {
+     "fn": "()=>cajaDe(enMesa(id))",
+     "line": 101
+    }
+   },
+   {
+    "id": "vaso_silla",
+    "m": 0,
+    "si": {
+     "fn": "w=>!!enMesa(id)&&!enMesa(id).mano",
+     "line": 101
+    },
+    "box": {
+     "fn": "()=>cajaDe(enMesa(id))",
+     "line": 101
+    }
+   },
+   {
+    "id": "vaso_mesa",
+    "m": 0,
+    "si": {
+     "fn": "w=>!!enMesa(id)&&!enMesa(id).mano",
+     "line": 101
+    },
+    "box": {
+     "fn": "()=>cajaDe(enMesa(id))",
+     "line": 101
+    }
+   },
+   {
+    "id": "vaso_grande",
+    "m": 0,
+    "si": {
+     "fn": "w=>!!enMesa(id)&&!enMesa(id).mano",
+     "line": 101
+    },
+    "box": {
+     "fn": "()=>cajaDe(enMesa(id))",
+     "line": 101
+    }
+   },
+   {
+    "id": "vaso_pequeno",
+    "m": 0,
+    "si": {
+     "fn": "w=>!!enMesa(id)&&!enMesa(id).mano",
+     "line": 101
+    },
+    "box": {
+     "fn": "()=>cajaDe(enMesa(id))",
+     "line": 101
+    }
+   },
+   {
+    "id": "abuela",
+    "si": {
+     "fn": "w=>!!w.ab&&w.ab.al>.5",
+     "line": 104
+    },
+    "box": {
+     "fn": "w=>w.ab.en===\"silla\"?[55,96,34,50]:[Math.round(w.ab.x)-13,Math.round(w.ab.y)-50,26,50]",
+     "line": 102
+    },
+    "m": 1
+   },
+   {
+    "id": "mesa",
+    "box": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "m": 0
+   },
+   {
+    "id": "silla_pequena",
+    "box": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "m": 2
+   },
+   {
+    "id": "silla_grande",
+    "box": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "m": 2
+   },
+   {
+    "id": "puerta",
+    "box": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "m": 2,
+    "hand": [
+     178,
+     84
+    ]
+   },
+   {
+    "id": "ventana",
+    "box": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "m": 1,
+    "hand": [
+     120,
+     70
+    ]
+   },
+   {
+    "id": "balcon",
+    "box": [
+     42,
+     122,
+     156,
+     34
+    ],
+    "m": 0
+   }
+  ],
+  "fresh": {
+   "fn": "()=>({door:0,win:0,ab:{en:\"puerta\",x:AB.puerta[0],y:AB.puerta[1],pose:\"idle\",bub:null,al:1,trae:0},ave:null,vasos:[],jarras:[],abvaso:null,vierte:null,sobre:0,abanico:0,trozos:0,enSuelo:0,fuente:0,fanMedio:0,bebiendo:0,vmios:null,vsuyos:null,cqfan:0,fanMesa:0,\n    calor:0,fresco:0,sudor:0,rojo:0,azul:0,splash:0,rondas:0,mios:0,termo:0,cq:{x:LUGAR.jardin[0],y:LUGAR.jardin[1],s:1,dy:0,al:1,vis:1,bub:null}})",
+   "line": 263
+  },
+  "acts": {
+   "own": [
+    "abbebe",
+    "abcoge",
+    "abentra",
+    "absale",
+    "absienta",
+    "aparta",
+    "avebebe",
+    "avesilla",
+    "aveva",
+    "aveventana",
+    "bebe",
+    "bebecq",
+    "coge",
+    "cqbebe",
+    "cqhielo",
+    "dafan",
+    "deja",
+    "fanmesa",
+    "fin",
+    "final",
+    "gana",
+    "lleva",
+    "marcador",
+    "muestra",
+    "ofrece",
+    "pone",
+    "pone2",
+    "recibe",
+    "recoge",
+    "rompe",
+    "sirve",
+    "sube",
+    "suelta"
+   ],
+   "shared": [
+    "burbuja",
+    "calla",
+    "ir",
+    "pose"
+   ]
+  },
+  "other": {},
+  "functions": {
+   "draw": {
+    "line": 120
+   },
+   "hud": {
+    "line": 179
+   },
+   "poke": {
+    "line": 258
+   },
+   "stake": {
+    "line": 256
+   },
+   "talkAt": {
+    "line": 157
+   },
+   "respIcon": {
+    "line": 160
+   },
+   "estado": {
+    "line": 260
+   }
+  },
+  "hitOrder": {
+   "rule": "kit.js:120-125: things with z (in cosas order), then the bird (aveHit), then the frog (frogBox), then the rest in cosas order; each box widened by m (default 3) on every side",
+   "order": [
+    "pajaro",
+    "coqui",
+    "jugo",
+    "agua",
+    "vaso_silla",
+    "vaso_mesa",
+    "vaso_grande",
+    "vaso_pequeno",
+    "abuela",
+    "mesa",
+    "silla_pequena",
+    "silla_grande",
+    "puerta",
+    "ventana",
+    "balcon"
+   ],
+   "slack": {
+    "jugo": 0,
+    "agua": 0,
+    "vaso_silla": 0,
+    "vaso_mesa": 0,
+    "vaso_grande": 0,
+    "vaso_pequeno": 0,
+    "abuela": 1,
+    "mesa": 0,
+    "silla_pequena": 2,
+    "silla_grande": 2,
+    "puerta": 2,
+    "ventana": 1,
+    "balcon": 0
+   }
+  }
+ },
+ "thingIds": [
+  "jugo",
+  "agua",
+  "vaso_silla",
+  "vaso_mesa",
+  "vaso_grande",
+  "vaso_pequeno",
+  "abuela",
+  "mesa",
+  "silla_pequena",
+  "silla_grande",
+  "puerta",
+  "ventana",
+  "balcon"
+ ],
+ "things": {
+  "jugo": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": "error: Cannot read properties of undefined (reading 't')",
+    "hand": null
+   },
+   "boxReads": [
+    "jarras",
+    "vasos"
+   ],
+   "siReads": [
+    "jarras",
+    "vasos"
+   ],
+   "handReads": [
+    "jarras",
+    "vasos"
+   ],
+   "byState": [
+    {
+     "si": false,
+     "box": "error: Cannot read properties of undefined (reading 't')",
+     "states": [
+      "s000",
+      "s001",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s043",
+      "s044",
+      "s046",
+      "s048",
+      "s049"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      124,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s002",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s018",
+      "s019",
+      "s020",
+      "s027",
+      "s028"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      124,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s003"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      99,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s029",
+      "s030",
+      "s031"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      123,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s032",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      123,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s033"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      112,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s045"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      111,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s047"
+     ]
+    }
+   ]
+  },
+  "agua": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": "error: Cannot read properties of undefined (reading 't')",
+    "hand": null
+   },
+   "boxReads": [
+    "jarras",
+    "vasos"
+   ],
+   "siReads": [
+    "jarras",
+    "vasos"
+   ],
+   "handReads": [
+    "jarras",
+    "vasos"
+   ],
+   "byState": [
+    {
+     "si": false,
+     "box": "error: Cannot read properties of undefined (reading 't')",
+     "states": [
+      "s000",
+      "s001",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s043",
+      "s045",
+      "s047"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      100,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s028",
+      "s049"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      100,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s018",
+      "s027"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      123,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s029",
+      "s030",
+      "s031"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      99,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      111,
+      104,
+      26,
+      27
+     ],
+     "states": [
+      "s044"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      112,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s046"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      98,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s048"
+     ]
+    }
+   ]
+  },
+  "vaso_silla": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": "error: Cannot read properties of undefined (reading 't')",
+    "hand": null
+   },
+   "boxReads": [
+    "jarras",
+    "vasos"
+   ],
+   "siReads": [
+    "jarras",
+    "vasos"
+   ],
+   "handReads": [
+    "jarras",
+    "vasos"
+   ],
+   "byState": [
+    {
+     "si": false,
+     "box": "error: Cannot read properties of undefined (reading 't')",
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      152,
+      115,
+      17,
+      22
+     ],
+     "states": [
+      "s008",
+      "s009"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      152,
+      115,
+      17,
+      22
+     ],
+     "states": [
+      "s021"
+     ]
+    }
+   ]
+  },
+  "vaso_mesa": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": "error: Cannot read properties of undefined (reading 't')",
+    "hand": null
+   },
+   "boxReads": [
+    "jarras",
+    "vasos"
+   ],
+   "siReads": [
+    "jarras",
+    "vasos"
+   ],
+   "handReads": [
+    "jarras",
+    "vasos"
+   ],
+   "byState": [
+    {
+     "si": false,
+     "box": "error: Cannot read properties of undefined (reading 't')",
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      112,
+      109,
+      17,
+      22
+     ],
+     "states": [
+      "s008",
+      "s009",
+      "s010",
+      "s021",
+      "s022",
+      "s023"
+     ]
+    }
+   ]
+  },
+  "vaso_grande": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": "error: Cannot read properties of undefined (reading 't')",
+    "hand": null
+   },
+   "boxReads": [
+    "jarras",
+    "vasos"
+   ],
+   "siReads": [
+    "jarras",
+    "vasos"
+   ],
+   "handReads": [
+    "jarras",
+    "vasos"
+   ],
+   "byState": [
+    {
+     "si": false,
+     "box": "error: Cannot read properties of undefined (reading 't')",
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      123,
+      105,
+      19,
+      26
+     ],
+     "states": [
+      "s011",
+      "s012",
+      "s013",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    }
+   ]
+  },
+  "vaso_pequeno": {
+   "moves": false,
+   "fresh": {
+    "si": false,
+    "box": "error: Cannot read properties of undefined (reading 't')",
+    "hand": null
+   },
+   "boxReads": [
+    "jarras",
+    "vasos"
+   ],
+   "siReads": [
+    "jarras",
+    "vasos"
+   ],
+   "handReads": [
+    "jarras",
+    "vasos"
+   ],
+   "byState": [
+    {
+     "si": false,
+     "box": "error: Cannot read properties of undefined (reading 't')",
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    },
+    {
+     "si": true,
+     "box": [
+      101,
+      113,
+      15,
+      18
+     ],
+     "states": [
+      "s011",
+      "s012"
+     ]
+    },
+    {
+     "si": false,
+     "box": [
+      101,
+      113,
+      15,
+      18
+     ],
+     "states": [
+      "s024"
+     ]
+    }
+   ]
+  },
+  "abuela": {
+   "moves": true,
+   "fresh": {
+    "si": true,
+    "box": [
+     165,
+     75,
+     26,
+     50
+    ],
+    "hand": [
+     178,
+     100
+    ]
+   },
+   "boxReads": [
+    "ab",
+    "ab.en",
+    "ab.x",
+    "ab.y"
+   ],
+   "siReads": [
+    "ab",
+    "ab.al"
+   ],
+   "handReads": [
+    "ab",
+    "ab.en",
+    "ab.x",
+    "ab.y"
+   ],
+   "bySnapshot": [
+    {
+     "si": true,
+     "box": [
+      165,
+      75,
+      26,
+      50
+     ],
+     "at": {
+      "d-agua-pajaro/right": "start,0-9",
+      "d-agua-pajaro/wrong": "start,0-9",
+      "d-agua-pajaro/alternate": "start,0-9",
+      "el-jugo/right": "start,0-10",
+      "el-jugo/wrong": "start,0-10",
+      "el-jugo/alternate": "start,0-10",
+      "h-balcon/right": "start,0-6",
+      "h-balcon/wrong": "start,0-6",
+      "h-balcon/alternate": "start,0-6",
+      "que-calor/right": "start,",
+      "que-calor/wrong": "start,",
+      "que-calor/alternate": "start,"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      55,
+      96,
+      34,
+      50
+     ],
+     "at": {
+      "d-agua-pajaro/right": "10-14,26-52",
+      "d-agua-pajaro/wrong": "10-14,26-52",
+      "d-agua-pajaro/alternate": "10-14,26-52",
+      "el-jugo/right": "11-17,29-97",
+      "el-jugo/wrong": "11-17,29-109",
+      "el-jugo/alternate": "11-17,29-101",
+      "h-balcon/right": "7-11,15-57",
+      "h-balcon/wrong": "7-11,15-57",
+      "h-balcon/alternate": "7-11,15-57",
+      "que-calor/right": "0-66",
+      "que-calor/wrong": "0-74",
+      "que-calor/alternate": "0-71",
+      "cual-balcon:se sienta.si": "picture",
+      "cual-balcon:quiero.si": "picture",
+      "cual-balcon:quiero.no": "picture",
+      "cual-balcon:gracias.si": "picture",
+      "cual-balcon:gracias.no": "picture",
+      "cual-balcon:¿cómo estás?.si": "picture",
+      "cual-balcon:¿cómo estás?.no": "picture"
+     }
+    },
+    {
+     "si": false,
+     "box": null,
+     "at": {
+      "d-agua-pajaro/right": "15-16",
+      "d-agua-pajaro/wrong": "15-16",
+      "d-agua-pajaro/alternate": "15-16",
+      "el-jugo/right": "18-19",
+      "el-jugo/wrong": "18-19",
+      "el-jugo/alternate": "18-19",
+      "h-balcon/right": "12",
+      "h-balcon/wrong": "12",
+      "h-balcon/alternate": "12",
+      "cual-balcon:silla.si": "picture",
+      "cual-balcon:silla.no": "picture",
+      "cual-balcon:vaso.si": "picture",
+      "cual-balcon:vaso.no": "picture",
+      "cual-balcon:jugo.si": "picture",
+      "cual-balcon:jugo.no": "picture",
+      "cual-balcon:agua.si": "picture",
+      "cual-balcon:agua.no": "picture",
+      "cual-balcon:toma.si": "picture",
+      "cual-balcon:toma.no": "picture",
+      "cual-balcon:bien.si": "picture",
+      "cual-balcon:bien.no": "picture"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      85,
+      93,
+      26,
+      50
+     ],
+     "at": {
+      "d-agua-pajaro/right": "17-25",
+      "d-agua-pajaro/wrong": "17-25",
+      "d-agua-pajaro/alternate": "17-25",
+      "el-jugo/right": "20-28",
+      "el-jugo/wrong": "20-28",
+      "el-jugo/alternate": "20-28",
+      "h-balcon/right": "13-14",
+      "h-balcon/wrong": "13-14",
+      "h-balcon/alternate": "13-14"
+     }
+    },
+    {
+     "si": true,
+     "box": [
+      93,
+      98,
+      26,
+      50
+     ],
+     "at": {
+      "cual-balcon:se sienta.no": "picture"
+     }
+    }
+   ]
+  },
+  "mesa": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     94,
+     124,
+     52,
+     25
+    ],
+    "hand": [
+     120,
+     137
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      94,
+      124,
+      52,
+      25
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  "silla_pequena": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     148,
+     120,
+     24,
+     30
+    ],
+    "hand": [
+     160,
+     135
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      148,
+      120,
+      24,
+      30
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  "silla_grande": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     48,
+     102,
+     40,
+     48
+    ],
+    "hand": [
+     68,
+     126
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      48,
+      102,
+      40,
+      48
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  "puerta": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     162,
+     54,
+     32,
+     68
+    ],
+    "hand": [
+     178,
+     84
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      162,
+      54,
+      32,
+      68
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  "ventana": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     93,
+     54,
+     54,
+     36
+    ],
+    "hand": [
+     120,
+     70
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      93,
+      54,
+      54,
+      36
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  "balcon": {
+   "moves": false,
+   "fresh": {
+    "si": true,
+    "box": [
+     42,
+     122,
+     156,
+     34
+    ],
+    "hand": [
+     120,
+     139
+    ]
+   },
+   "boxReads": [],
+   "siReads": [],
+   "handReads": [],
+   "byState": [
+    {
+     "si": true,
+     "box": [
+      42,
+      122,
+      156,
+      34
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  }
+ },
+ "hitTest": {
+  "grid": "every 3rd pixel of 240 x 216, in every distinct W",
+  "idsAnswered": [
+   "abuela",
+   "agua",
+   "balcon",
+   "coqui",
+   "jugo",
+   "mesa",
+   "pajaro",
+   "puerta",
+   "silla_grande",
+   "silla_pequena",
+   "vaso_grande",
+   "vaso_mesa",
+   "vaso_pequeno",
+   "vaso_silla",
+   "ventana"
+  ],
+  "answers": {
+   "ventana": {
+    "n": 63546,
+    "states": 288,
+    "at": [
+     93,
+     54
+    ]
+   },
+   "puerta": {
+    "n": 79052,
+    "states": 288,
+    "at": [
+     162,
+     54
+    ]
+   },
+   "abuela": {
+    "n": 54649,
+    "states": 275,
+    "at": [
+     165,
+     75
+    ]
+   },
+   "silla_grande": {
+    "n": 23084,
+    "states": 288,
+    "at": [
+     48,
+     102
+    ]
+   },
+   "silla_pequena": {
+    "n": 21645,
+    "states": 288,
+    "at": [
+     147,
+     120
+    ]
+   },
+   "balcon": {
+    "n": 50803,
+    "states": 288,
+    "at": [
+     42,
+     123
+    ]
+   },
+   "mesa": {
+    "n": 29655,
+    "states": 288,
+    "at": [
+     96,
+     126
+    ]
+   },
+   "coqui": {
+    "n": 18895,
+    "states": 274,
+    "at": [
+     105,
+     186
+    ]
+   },
+   "agua": {
+    "n": 7637,
+    "states": 133,
+    "at": [
+     102,
+     111
+    ]
+   },
+   "jugo": {
+    "n": 8302,
+    "states": 137,
+    "at": [
+     126,
+     111
+    ]
+   },
+   "pajaro": {
+    "n": 11260,
+    "states": 107,
+    "at": [
+     114,
+     105
+    ]
+   },
+   "vaso_mesa": {
+    "n": 868,
+    "states": 26,
+    "at": [
+     114,
+     111
+    ]
+   },
+   "vaso_silla": {
+    "n": 336,
+    "states": 8,
+    "at": [
+     153,
+     117
+    ]
+   },
+   "vaso_grande": {
+    "n": 1710,
+    "states": 28,
+    "at": [
+     123,
+     105
+    ]
+   },
+   "vaso_pequeno": {
+    "n": 390,
+    "states": 13,
+    "at": [
+     102,
+     114
+    ]
+   }
+  },
+  "onlyInList": [],
+  "notInList": []
+ },
+ "namedInFiles": {
+  "$d": {
+   "$var": true,
+   "where": [
+    "el-jugo:beats.44 pick",
+    "que-calor:beats.39 pick"
+   ]
+  },
+  "$otro": {
+   "$var": true,
+   "where": [
+    "h-balcon:beats.27 decide",
+    "h-balcon:beats.27 pick"
+   ]
+  },
+  "$w": {
+   "$var": true,
+   "where": [
+    "que-calor:beats.35.then.2 decide (say: answer bubbles)",
+    "que-calor:beats.35.else.10 decide (say: answer bubbles)"
+   ]
+  },
+  "$z": {
+   "$var": true,
+   "where": [
+    "que-calor:beats.35.then.8 decide (say: answer bubbles)",
+    "que-calor:beats.35.else.4 decide (say: answer bubbles)"
+   ]
+  },
+  "abuela": {
+   "$var": false,
+   "where": [
+    "el-jugo:names",
+    "el-jugo/wrong touch (wrong-poke)",
+    "el-jugo/alternate touch (wrong-poke)",
+    "h-balcon:beats.8 alias",
+    "h-balcon:beats.9 alias",
+    "h-balcon:beats.20 vale",
+    "h-balcon:beats.21 vale",
+    "h-balcon:beats.25 alias",
+    "h-balcon:beats.27 alias",
+    "h-balcon/right choice beats.20 live",
+    "h-balcon/right choice beats.21 live",
+    "h-balcon/wrong choice beats.20 live",
+    "… 4 more"
+   ]
+  },
+  "agua": {
+   "$var": false,
+   "where": [
+    "d-agua-pajaro:beats.23 set",
+    "el-jugo:beats.23 set",
+    "el-jugo:beats.28 ask",
+    "el-jugo:beats.44 decide",
+    "el-jugo:names",
+    "el-jugo/right choice beats.28 live",
+    "el-jugo/right choice beats.44 live",
+    "el-jugo/right touch (right)",
+    "el-jugo/wrong choice beats.28 live",
+    "el-jugo/wrong choice beats.44 live",
+    "el-jugo/wrong touch (right)",
+    "el-jugo/wrong touch (wrong-poke)",
+    "… 50 more"
+   ]
+  },
+  "balcon": {
+   "$var": false,
+   "where": [
+    "el-jugo:names",
+    "que-calor:names"
+   ]
+  },
+  "coqui": {
+   "$var": false,
+   "where": [
+    "d-agua-pajaro:names",
+    "el-jugo:names",
+    "h-balcon:names",
+    "que-calor:names"
+   ]
+  },
+  "de_nada": {
+   "$var": false,
+   "where": [
+    "que-calor:beats.27 ask",
+    "que-calor:beats.35.then.2 decide (say: answer bubbles)",
+    "que-calor:beats.35.then.2 pick",
+    "que-calor:beats.35.else.10 decide (say: answer bubbles)",
+    "que-calor:beats.35.else.10 pick",
+    "que-calor/right choice beats.27 live",
+    "que-calor/right choice beats.35.else.10 live",
+    "que-calor/right touch (right)",
+    "que-calor/wrong choice beats.27 live",
+    "que-calor/wrong choice beats.35.else.10 live",
+    "que-calor/wrong touch (right)",
+    "que-calor/wrong touch (retry)",
+    "… 3 more"
+   ]
+  },
+  "gracias": {
+   "$var": false,
+   "where": [
+    "que-calor:beats.35.then.8 decide (say: answer bubbles)",
+    "que-calor:beats.35.then.8 pick",
+    "que-calor:beats.35.else.4 decide (say: answer bubbles)",
+    "que-calor:beats.35.else.4 pick",
+    "que-calor/right choice beats.35.else.4 live",
+    "que-calor/right touch (right)",
+    "que-calor/wrong choice beats.35.else.4 live",
+    "que-calor/wrong touch (retry)",
+    "que-calor/alternate choice beats.35.else.4 live",
+    "que-calor/alternate touch (retry)"
+   ]
+  },
+  "jugo": {
+   "$var": false,
+   "where": [
+    "d-agua-pajaro:beats.21 set",
+    "el-jugo:beats.21 set",
+    "el-jugo:beats.29 ask",
+    "el-jugo:beats.44 decide",
+    "el-jugo:names",
+    "el-jugo/right choice beats.29 live",
+    "el-jugo/right choice beats.44 live",
+    "el-jugo/right touch (right)",
+    "el-jugo/wrong choice beats.29 live",
+    "el-jugo/wrong choice beats.44 live",
+    "el-jugo/wrong touch (wrong-poke)",
+    "el-jugo/wrong touch (right)",
+    "… 39 more"
+   ]
+  },
+  "mesa": {
+   "$var": false,
+   "where": [
+    "el-jugo:names",
+    "h-balcon:beats.3 set",
+    "h-balcon:beats.7 decide",
+    "h-balcon:beats.8 decide",
+    "h-balcon:beats.9 decide",
+    "h-balcon:beats.9 pick",
+    "h-balcon:beats.27 decide",
+    "h-balcon/right choice beats.7 live",
+    "h-balcon/right choice beats.8 live",
+    "h-balcon/right choice beats.9 live",
+    "h-balcon/right choice beats.27 live",
+    "h-balcon/right touch (right)",
+    "… 12 more"
+   ]
+  },
+  "pajaro": {
+   "$var": false,
+   "where": [
+    "el-jugo:names"
+   ]
+  },
+  "por_favor": {
+   "$var": false,
+   "where": [
+    "que-calor/right choice beats.35.else.4 live",
+    "que-calor/right choice beats.35.else.10 live",
+    "que-calor/wrong choice beats.35.else.4 live",
+    "que-calor/wrong choice beats.35.else.10 live",
+    "que-calor/wrong touch (wrong)",
+    "que-calor/alternate choice beats.35.else.4 live",
+    "que-calor/alternate choice beats.35.else.10 live",
+    "que-calor/alternate touch (wrong)"
+   ]
+  },
+  "puerta": {
+   "$var": false,
+   "where": [
+    "el-jugo:names",
+    "que-calor:names"
+   ]
+  },
+  "silla_grande": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.11 ask",
+    "el-jugo:names",
+    "el-jugo/right choice beats.11 live",
+    "el-jugo/right touch (right)",
+    "el-jugo/wrong choice beats.11 live",
+    "el-jugo/wrong touch (right)",
+    "el-jugo/alternate choice beats.11 live",
+    "el-jugo/alternate touch (right)",
+    "h-balcon:beats.7 decide",
+    "h-balcon:beats.7 pick",
+    "h-balcon:beats.8 decide",
+    "h-balcon:beats.9 decide",
+    "… 22 more"
+   ]
+  },
+  "silla_pequena": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.13 ask",
+    "el-jugo:names",
+    "el-jugo/right choice beats.13 live",
+    "el-jugo/right touch (right)",
+    "el-jugo/wrong choice beats.13 live",
+    "el-jugo/wrong touch (right)",
+    "el-jugo/alternate choice beats.13 live",
+    "el-jugo/alternate touch (right)",
+    "h-balcon:beats.7 decide",
+    "h-balcon:beats.8 decide",
+    "h-balcon:beats.8 pick",
+    "h-balcon:beats.9 decide",
+    "… 25 more"
+   ]
+  },
+  "vaso_$l": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.53 pick"
+   ]
+  },
+  "vaso_$t": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.62 pick"
+   ]
+  },
+  "vaso_grande": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.57 set",
+    "el-jugo:beats.62 decide",
+    "el-jugo:names",
+    "el-jugo/right choice beats.62 live",
+    "el-jugo/right touch (right)",
+    "el-jugo/wrong choice beats.62 live",
+    "el-jugo/alternate choice beats.62 live",
+    "el-jugo/alternate touch (right)"
+   ]
+  },
+  "vaso_mesa": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.50 set",
+    "el-jugo:beats.53 decide",
+    "el-jugo:names",
+    "el-jugo/right choice beats.53 live",
+    "el-jugo/right touch (right)",
+    "el-jugo/wrong choice beats.53 live",
+    "el-jugo/alternate choice beats.53 live"
+   ]
+  },
+  "vaso_pequeno": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.59 set",
+    "el-jugo:beats.62 decide",
+    "el-jugo:names",
+    "el-jugo/right choice beats.62 live",
+    "el-jugo/wrong choice beats.62 live",
+    "el-jugo/wrong touch (wrong)",
+    "el-jugo/alternate choice beats.62 live"
+   ]
+  },
+  "vaso_silla": {
+   "$var": false,
+   "where": [
+    "el-jugo:beats.48 set",
+    "el-jugo:beats.53 decide",
+    "el-jugo:names",
+    "el-jugo/right choice beats.53 live",
+    "el-jugo/wrong choice beats.53 live",
+    "el-jugo/wrong touch (wrong)",
+    "el-jugo/alternate choice beats.53 live",
+    "el-jugo/alternate touch (wrong)"
+   ]
+  },
+  "ventana": {
+   "$var": false,
+   "where": [
+    "el-jugo:names",
+    "que-calor:names"
+   ]
+  }
+ },
+ "views": {
+  "wide": [
+   22,
+   0,
+   196,
+   216
+  ],
+  "mesa": [
+   45,
+   36,
+   127,
+   140
+  ],
+  "porche": [
+   35,
+   20,
+   170,
+   187.3
+  ]
+ },
+ "storyViews": [],
+ "fresh": {
+  "d-agua-pajaro": {
+   "scene": {
+    "door": 0,
+    "win": 0,
+    "ab": {
+     "en": "puerta",
+     "x": 178,
+     "y": 125,
+     "pose": "idle",
+     "bub": null,
+     "al": 1,
+     "trae": 0
+    },
+    "ave": null,
+    "vasos": [],
+    "jarras": [],
+    "abvaso": null,
+    "vierte": null,
+    "sobre": 0,
+    "abanico": 0,
+    "trozos": 0,
+    "enSuelo": 0,
+    "fuente": 0,
+    "fanMedio": 0,
+    "bebiendo": 0,
+    "vmios": null,
+    "vsuyos": null,
+    "cqfan": 0,
+    "fanMesa": 0,
+    "calor": 0,
+    "fresco": 0,
+    "sudor": 0,
+    "rojo": 0,
+    "azul": 0,
+    "splash": 0,
+    "rondas": 0,
+    "mios": 0,
+    "termo": 0,
+    "cq": {
+     "x": 104,
+     "y": 185,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 185,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "door": 0,
+     "win": 0,
+     "ab": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "ave": null,
+     "vasos": [],
+     "jarras": [],
+     "abvaso": null,
+     "vierte": null,
+     "sobre": 0,
+     "abanico": 0,
+     "trozos": 0,
+     "enSuelo": 0,
+     "fuente": 0,
+     "fanMedio": 0,
+     "bebiendo": 0,
+     "vmios": null,
+     "vsuyos": null,
+     "cqfan": 0,
+     "fanMesa": 0,
+     "calor": 0,
+     "fresco": 0,
+     "sudor": 0,
+     "rojo": 0,
+     "azul": 0,
+     "splash": 0,
+     "rondas": 0,
+     "mios": 0,
+     "termo": 0
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "el-jugo": {
+   "scene": {
+    "door": 0,
+    "win": 0,
+    "ab": {
+     "en": "puerta",
+     "x": 178,
+     "y": 125,
+     "pose": "idle",
+     "bub": null,
+     "al": 1,
+     "trae": 0
+    },
+    "ave": null,
+    "vasos": [],
+    "jarras": [],
+    "abvaso": null,
+    "vierte": null,
+    "sobre": 0,
+    "abanico": 0,
+    "trozos": 0,
+    "enSuelo": 0,
+    "fuente": 0,
+    "fanMedio": 0,
+    "bebiendo": 0,
+    "vmios": null,
+    "vsuyos": null,
+    "cqfan": 0,
+    "fanMesa": 0,
+    "calor": 0,
+    "fresco": 0,
+    "sudor": 0,
+    "rojo": 0,
+    "azul": 0,
+    "splash": 0,
+    "rondas": 0,
+    "mios": 0,
+    "termo": 0,
+    "cq": {
+     "x": 104,
+     "y": 185,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 185,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "door": 0,
+     "win": 0,
+     "ab": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "ave": null,
+     "vasos": [],
+     "jarras": [],
+     "abvaso": null,
+     "vierte": null,
+     "sobre": 0,
+     "abanico": 0,
+     "trozos": 0,
+     "enSuelo": 0,
+     "fuente": 0,
+     "fanMedio": 0,
+     "bebiendo": 0,
+     "vmios": null,
+     "vsuyos": null,
+     "cqfan": 0,
+     "fanMesa": 0,
+     "calor": 0,
+     "fresco": 0,
+     "sudor": 0,
+     "rojo": 0,
+     "azul": 0,
+     "splash": 0,
+     "rondas": 0,
+     "mios": 0,
+     "termo": 0
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "h-balcon": {
+   "scene": {
+    "door": 0,
+    "win": 0,
+    "ab": {
+     "en": "puerta",
+     "x": 178,
+     "y": 125,
+     "pose": "idle",
+     "bub": null,
+     "al": 1,
+     "trae": 0
+    },
+    "ave": null,
+    "vasos": [],
+    "jarras": [],
+    "abvaso": null,
+    "vierte": null,
+    "sobre": 0,
+    "abanico": 0,
+    "trozos": 0,
+    "enSuelo": 0,
+    "fuente": 0,
+    "fanMedio": 0,
+    "bebiendo": 0,
+    "vmios": null,
+    "vsuyos": null,
+    "cqfan": 0,
+    "fanMesa": 0,
+    "calor": 0,
+    "fresco": 0,
+    "sudor": 0,
+    "rojo": 0,
+    "azul": 0,
+    "splash": 0,
+    "rondas": 0,
+    "mios": 0,
+    "termo": 0,
+    "cq": {
+     "x": 104,
+     "y": 185,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 185,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "door": 0,
+     "win": 0,
+     "ab": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "ave": null,
+     "vasos": [],
+     "jarras": [],
+     "abvaso": null,
+     "vierte": null,
+     "sobre": 0,
+     "abanico": 0,
+     "trozos": 0,
+     "enSuelo": 0,
+     "fuente": 0,
+     "fanMedio": 0,
+     "bebiendo": 0,
+     "vmios": null,
+     "vsuyos": null,
+     "cqfan": 0,
+     "fanMesa": 0,
+     "calor": 0,
+     "fresco": 0,
+     "sudor": 0,
+     "rojo": 0,
+     "azul": 0,
+     "splash": 0,
+     "rondas": 0,
+     "mios": 0,
+     "termo": 0
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  },
+  "que-calor": {
+   "scene": {
+    "door": 0,
+    "win": 0,
+    "ab": {
+     "en": "puerta",
+     "x": 178,
+     "y": 125,
+     "pose": "idle",
+     "bub": null,
+     "al": 1,
+     "trae": 0
+    },
+    "ave": null,
+    "vasos": [],
+    "jarras": [],
+    "abvaso": null,
+    "vierte": null,
+    "sobre": 0,
+    "abanico": 0,
+    "trozos": 0,
+    "enSuelo": 0,
+    "fuente": 0,
+    "fanMedio": 0,
+    "bebiendo": 0,
+    "vmios": null,
+    "vsuyos": null,
+    "cqfan": 0,
+    "fanMesa": 0,
+    "calor": 0,
+    "fresco": 0,
+    "sudor": 0,
+    "rojo": 0,
+    "azul": 0,
+    "splash": 0,
+    "rondas": 0,
+    "mios": 0,
+    "termo": 0,
+    "cq": {
+     "x": 104,
+     "y": 185,
+     "s": 1,
+     "dy": 0,
+     "al": 1,
+     "vis": 1,
+     "bub": null
+    }
+   },
+   "page": {
+    "W": {
+     "cq": {
+      "x": 104,
+      "y": 185,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "spot": null,
+     "twinkle": null,
+     "glow": null,
+     "fx": [],
+     "heart": 0,
+     "lost": 0,
+     "resp": null,
+     "door": 0,
+     "win": 0,
+     "ab": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "ave": null,
+     "vasos": [],
+     "jarras": [],
+     "abvaso": null,
+     "vierte": null,
+     "sobre": 0,
+     "abanico": 0,
+     "trozos": 0,
+     "enSuelo": 0,
+     "fuente": 0,
+     "fanMedio": 0,
+     "bebiendo": 0,
+     "vmios": null,
+     "vsuyos": null,
+     "cqfan": 0,
+     "fanMesa": 0,
+     "calor": 0,
+     "fresco": 0,
+     "sudor": 0,
+     "rojo": 0,
+     "azul": 0,
+     "splash": 0,
+     "rondas": 0,
+     "mios": 0,
+     "termo": 0
+    },
+    "cam": [
+     22,
+     0,
+     196,
+     216
+    ]
+   }
+  }
+ },
+ "states": {
+  "count": 50,
+  "distinctW": 288,
+  "snapshots": 889,
+  "grouping": "same background sprite(s), the same set things shown with the same boxes, the same values of the set keys",
+  "setKeys": [
+   "door",
+   "enSuelo",
+   "fanMedio",
+   "fanMesa",
+   "jarras",
+   "vasos",
+   "win"
+  ],
+  "setThings": [
+   "jugo",
+   "agua",
+   "vaso_silla",
+   "vaso_mesa",
+   "vaso_grande",
+   "vaso_pequeno",
+   "mesa",
+   "silla_pequena",
+   "silla_grande",
+   "puerta",
+   "ventana",
+   "balcon"
+  ],
+  "movingThings": [
+   "abuela"
+  ],
+  "propKeys": [],
+  "index": "frames/index.json"
+ },
+ "wKeys": {
+  "ab": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abcoge",
+     "aparta",
+     "burbuja",
+     "calla",
+     "dafan",
+     "lleva",
+     "marcador",
+     "ofrece",
+     "pone2",
+     "pose",
+     "recibe",
+     "recoge",
+     "rompe",
+     "sirve"
+    ],
+    "otherCode": [
+     "poke"
+    ],
+    "seenAfter": {
+     "act abentra": 9,
+     "act absale": 9,
+     "act absienta": 18,
+     "act aparta": 2,
+     "act bebe": 12,
+     "act burbuja": 22,
+     "act calla": 22,
+     "act final": 2,
+     "act ir": 2,
+     "act lleva": 9,
+     "act marcador": 3,
+     "act ofrece": 3,
+     "act pone2": 9,
+     "act pose": 24,
+     "act recibe": 3,
+     "act recoge": 3,
+     "act rompe": 3,
+     "act sirve": 3,
+     "ask": 2,
+     "line": 2,
+     "say": 3,
+     "set": 3
+    },
+    "setIn": [
+     "cual-balcon:agua.no",
+     "cual-balcon:agua.si",
+     "cual-balcon:bien.no",
+     "cual-balcon:bien.si",
+     "cual-balcon:gracias.no",
+     "cual-balcon:gracias.si",
+     "cual-balcon:jugo.no",
+     "cual-balcon:jugo.si",
+     "cual-balcon:quiero.no",
+     "cual-balcon:quiero.si",
+     "cual-balcon:se sienta.no",
+     "cual-balcon:se sienta.si",
+     "cual-balcon:silla.no",
+     "cual-balcon:silla.si",
+     "cual-balcon:toma.no",
+     "cual-balcon:toma.si",
+     "cual-balcon:vaso.no",
+     "cual-balcon:vaso.si",
+     "cual-balcon:¿cómo estás?.no",
+     "cual-balcon:¿cómo estás?.si",
+     "que-calor:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 24,
+   "values": [
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "vaso",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 97
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 96
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "fan",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 28
+    },
+    {
+     "v": {
+      "en": "camina",
+      "x": 98,
+      "y": 143,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 13
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": null,
+      "al": 0,
+      "trae": 0
+     },
+     "n": 10
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "wave",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 8
+    },
+    {
+     "v": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 7
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "vaso",
+      "bub": "no",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 4
+    },
+    {
+     "v": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "idle",
+      "bub": null,
+      "al": 0,
+      "trae": 0
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "en": "camina",
+      "x": 98,
+      "y": 143,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 1
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": "calor",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": "amor",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "fan",
+      "bub": "calor",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "vaso",
+      "bub": "q",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "en": "puerta",
+      "x": 178,
+      "y": 125,
+      "pose": "wave",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "fan",
+      "bub": "como",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "fan",
+      "bub": "quiere_agua",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "fan",
+      "bub": "no_jugo_si_agua",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "fan",
+      "bub": "q",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "camina",
+      "x": 106,
+      "y": 148,
+      "pose": "idle",
+      "bub": null,
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": "quiere_agua",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "bebe",
+      "bub": "amor",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": "como",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "en": "silla",
+      "x": 94,
+      "y": 147,
+      "pose": "idle",
+      "bub": "agua_q",
+      "al": 1,
+      "trae": 0
+     },
+     "n": 1
+    }
+   ]
+  },
+  "abanico": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "recoge",
+     "rompe"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act recoge": 3,
+     "act rompe": 3,
+     "set": 3
+    },
+    "setIn": [
+     "que-calor:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "other",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 245
+    },
+    {
+     "v": 1,
+     "n": 43
+    }
+   ]
+  },
+  "abvaso": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abbebe",
+     "abcoge",
+     "aparta",
+     "bebe",
+     "lleva",
+     "ofrece",
+     "recibe"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abbebe": 9,
+     "act abcoge": 9,
+     "act aparta": 2,
+     "act bebe": 12,
+     "act lleva": 9,
+     "act ofrece": 3,
+     "act recibe": 3,
+     "line": 2,
+     "say": 3
+    },
+    "setIn": [
+     "cual-balcon:gracias.si",
+     "cual-balcon:quiero.no"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": null,
+     "n": 258
+    },
+    {
+     "v": {
+      "k": "agua",
+      "lv": 1
+     },
+     "n": 17
+    },
+    {
+     "v": {
+      "k": "jugo",
+      "lv": 1
+     },
+     "n": 12
+    },
+    {
+     "v": {
+      "k": "agua",
+      "lv": 0.5
+     },
+     "n": 1
+    }
+   ]
+  },
+  "ave": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act avesilla": 6,
+     "act aveva": 13,
+     "act aveventana": 7,
+     "act marcador": 3
+    },
+    "setIn": [
+     "cual-balcon:gracias.no",
+     "cual-balcon:gracias.si",
+     "cual-balcon:toma.no",
+     "cual-balcon:toma.si"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 10,
+   "values": [
+    {
+     "v": null,
+     "n": 181
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 120,
+      "y": 86,
+      "dir": -1,
+      "st": "n",
+      "dip": 0
+     },
+     "n": 67
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 113,
+      "y": 128,
+      "dir": 1,
+      "st": "n",
+      "dip": 0
+     },
+     "n": 14
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 160,
+      "y": 135,
+      "dir": -1,
+      "st": "n",
+      "dip": 0
+     },
+     "n": 13
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 101,
+      "y": 128,
+      "dir": 1,
+      "st": "n",
+      "dip": 0
+     },
+     "n": 6
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 127,
+      "y": 128,
+      "dir": -1,
+      "st": "n",
+      "dip": 0
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 120,
+      "y": 86,
+      "dir": -1,
+      "st": "n"
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 160,
+      "y": 135,
+      "dir": -1,
+      "st": "round",
+      "dip": 0
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 127,
+      "y": 128,
+      "dir": -1,
+      "st": "n",
+      "dip": 3
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "mode": "sit",
+      "x": 132,
+      "y": 128,
+      "dir": -1,
+      "st": "round"
+     },
+     "n": 1
+    }
+   ]
+  },
+  "azul": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "bebe"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act bebe": 12
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 12,
+   "values": [
+    {
+     "v": 0,
+     "n": 202
+    },
+    {
+     "v": 173,
+     "n": 26
+    },
+    {
+     "v": 187,
+     "n": 17
+    },
+    {
+     "v": 414,
+     "n": 10
+    },
+    {
+     "v": 544,
+     "n": 10
+    },
+    {
+     "v": 469,
+     "n": 10
+    },
+    {
+     "v": 582,
+     "n": 3
+    },
+    {
+     "v": 327,
+     "n": 2
+    },
+    {
+     "v": 438,
+     "n": 2
+    },
+    {
+     "v": 383,
+     "n": 2
+    },
+    {
+     "v": 766,
+     "n": 2
+    },
+    {
+     "v": 739,
+     "n": 2
+    }
+   ]
+  },
+  "bebiendo": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "bebecq",
+     "cqbebe",
+     "cqhielo"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 288
+    }
+   ]
+  },
+  "calor": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "bebecq"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act bebecq": 10,
+     "set": 9
+    },
+    "setIn": [
+     "cual-balcon:bien.no",
+     "d-agua-pajaro:beats.0",
+     "d-agua-pajaro:beats.32",
+     "el-jugo:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 176
+    },
+    {
+     "v": 3,
+     "n": 75
+    },
+    {
+     "v": 2,
+     "n": 23
+    },
+    {
+     "v": 1,
+     "n": 14
+    }
+   ]
+  },
+  "cq": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "burbuja",
+     "calla",
+     "cqbebe",
+     "gana",
+     "marcador"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act burbuja": 15,
+     "act calla": 15,
+     "act coge": 3,
+     "act deja": 3,
+     "act ir": 30,
+     "act marcador": 3,
+     "act muestra": 3,
+     "act sube": 12,
+     "say": 18,
+     "wait": 3
+    },
+    "setIn": [
+     "cual-balcon:bien.no",
+     "cual-balcon:bien.si",
+     "cual-balcon:gracias.no",
+     "cual-balcon:gracias.si"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 20,
+   "values": [
+    {
+     "v": {
+      "x": 104,
+      "y": 141,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 115
+    },
+    {
+     "v": {
+      "x": 134,
+      "y": 130,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 71
+    },
+    {
+     "v": {
+      "x": 144,
+      "y": 109,
+      "s": 0.72,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 49
+    },
+    {
+     "v": {
+      "x": 123,
+      "y": 150,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null
+     },
+     "n": 14
+    },
+    {
+     "v": {
+      "x": 106,
+      "y": 130,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 9
+    },
+    {
+     "v": {
+      "x": 104,
+      "y": 185,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 6
+    },
+    {
+     "v": {
+      "x": 144,
+      "y": 109,
+      "s": 0.72,
+      "dy": -4.702282018339786,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 6
+    },
+    {
+     "v": {
+      "x": 84,
+      "y": 129,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "amor"
+     },
+     "n": 3
+    },
+    {
+     "v": {
+      "x": 104,
+      "y": 141,
+      "s": 0.86,
+      "dy": -3.5267115137548393,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 84,
+      "y": 129,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 134,
+      "y": 130,
+      "s": 0.8,
+      "dy": -3.5267115137548393,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 2
+    },
+    {
+     "v": {
+      "x": 104,
+      "y": 185,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "calor"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 104,
+      "y": 141,
+      "s": 0.86,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "mal"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 104,
+      "y": 141,
+      "s": 0.86,
+      "dy": -3.5267115137548393,
+      "al": 1,
+      "vis": 1,
+      "bub": "mal"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 134,
+      "y": 130,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "bien"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 134,
+      "y": 130,
+      "s": 0.8,
+      "dy": -3.5267115137548393,
+      "al": 1,
+      "vis": 1,
+      "bub": "bien"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 104,
+      "y": 141,
+      "s": 0.86,
+      "dy": -2.351141009169893,
+      "al": 1,
+      "vis": 1,
+      "bub": null
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 84,
+      "y": 129,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "mal"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 106,
+      "y": 130,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "bien"
+     },
+     "n": 1
+    },
+    {
+     "v": {
+      "x": 106,
+      "y": 130,
+      "s": 0.8,
+      "dy": 0,
+      "al": 1,
+      "vis": 1,
+      "bub": "calor"
+     },
+     "n": 1
+    }
+   ]
+  },
+  "cqfan": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "dafan"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act dafan": 2
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 277
+    },
+    {
+     "v": 1,
+     "n": 11
+    }
+   ]
+  },
+  "door": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 9
+    },
+    "setIn": [
+     "d-agua-pajaro:beats.0",
+     "el-jugo:beats.0",
+     "h-balcon:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": true,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "background",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 1,
+     "n": 202
+    },
+    {
+     "v": 0,
+     "n": 86
+    }
+   ]
+  },
+  "enSuelo": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "recoge",
+     "rompe"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act recoge": 3,
+     "act rompe": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 264
+    },
+    {
+     "v": 1,
+     "n": 24
+    }
+   ]
+  },
+  "fanMedio": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "recoge"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act recoge": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 267
+    },
+    {
+     "v": 1,
+     "n": 21
+    }
+   ]
+  },
+  "fanMesa": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "fanmesa"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act fanmesa": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 282
+    },
+    {
+     "v": 1,
+     "n": 6
+    }
+   ]
+  },
+  "fresco": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "bebe",
+     "final"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act bebe": 12,
+     "act final": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "other",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 202
+    },
+    {
+     "v": 1,
+     "n": 49
+    },
+    {
+     "v": 2,
+     "n": 36
+    },
+    {
+     "v": 9,
+     "n": 1
+    }
+   ]
+  },
+  "fuente": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "cqhielo"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 288
+    }
+   ]
+  },
+  "fx": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act abentra": 4,
+     "act absienta": 3,
+     "act bebe": 3,
+     "act bebecq": 6,
+     "act coge": 6,
+     "act fin": 1,
+     "act ir": 12,
+     "act marcador": 1,
+     "act pone2": 9,
+     "act pose": 3,
+     "act recibe": 3,
+     "act rompe": 2,
+     "ask": 7,
+     "line": 8,
+     "say": 6,
+     "wait": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 40,
+   "values": [
+    {
+     "v": [],
+     "n": 236
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         52,
+         104
+        ],
+        [
+         84,
+         106
+        ],
+        [
+         68,
+         96
+        ],
+        [
+         44,
+         126
+        ],
+        [
+         92,
+         126
+        ],
+        [
+         68,
+         120
+        ]
+       ],
+       "f0": 468
+      }
+     ],
+     "n": 5
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         52,
+         104
+        ],
+        [
+         84,
+         106
+        ],
+        [
+         68,
+         96
+        ],
+        [
+         44,
+         126
+        ],
+        [
+         92,
+         126
+        ],
+        [
+         68,
+         120
+        ]
+       ],
+       "f0": 617
+      }
+     ],
+     "n": 5
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         52,
+         104
+        ],
+        [
+         84,
+         106
+        ],
+        [
+         68,
+         96
+        ],
+        [
+         44,
+         126
+        ],
+        [
+         92,
+         126
+        ],
+        [
+         68,
+         120
+        ]
+       ],
+       "f0": 524
+      }
+     ],
+     "n": 5
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 8,
+       "pts": [
+        [
+         132,
+         108
+        ],
+        [
+         108,
+         108
+        ]
+       ],
+       "f0": 134
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         152,
+         122
+        ],
+        [
+         168,
+         124
+        ],
+        [
+         160,
+         114
+        ],
+        [
+         144,
+         135
+        ],
+        [
+         176,
+         135
+        ],
+        [
+         160,
+         129
+        ]
+       ],
+       "f0": 112
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 8,
+       "pts": [
+        [
+         132,
+         108
+        ],
+        [
+         108,
+         108
+        ]
+       ],
+       "f0": 183
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         104,
+         111
+        ],
+        [
+         113,
+         113
+        ],
+        [
+         109,
+         103
+        ],
+        [
+         96,
+         120
+        ],
+        [
+         121,
+         120
+        ],
+        [
+         109,
+         114
+        ]
+       ],
+       "f0": 235
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         128,
+         111
+        ],
+        [
+         137,
+         113
+        ],
+        [
+         133,
+         103
+        ],
+        [
+         120,
+         120
+        ],
+        [
+         145,
+         120
+        ],
+        [
+         133,
+         114
+        ]
+       ],
+       "f0": 260
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 30,
+       "pts": [
+        [
+         60,
+         50
+        ],
+        [
+         180,
+         54
+        ],
+        [
+         120,
+         42
+        ],
+        [
+         96,
+         64
+        ],
+        [
+         150,
+         60
+        ]
+       ],
+       "f0": 830
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         152,
+         122
+        ],
+        [
+         168,
+         124
+        ],
+        [
+         160,
+         114
+        ],
+        [
+         144,
+         135
+        ],
+        [
+         176,
+         135
+        ],
+        [
+         160,
+         129
+        ]
+       ],
+       "f0": 140
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 8,
+       "pts": [
+        [
+         132,
+         108
+        ],
+        [
+         108,
+         108
+        ]
+       ],
+       "f0": 212
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         104,
+         111
+        ],
+        [
+         113,
+         113
+        ],
+        [
+         109,
+         103
+        ],
+        [
+         96,
+         120
+        ],
+        [
+         121,
+         120
+        ],
+        [
+         109,
+         114
+        ]
+       ],
+       "f0": 278
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         128,
+         111
+        ],
+        [
+         137,
+         113
+        ],
+        [
+         133,
+         103
+        ],
+        [
+         120,
+         120
+        ],
+        [
+         145,
+         120
+        ],
+        [
+         133,
+         114
+        ]
+       ],
+       "f0": 318
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         152,
+         122
+        ],
+        [
+         168,
+         124
+        ],
+        [
+         160,
+         114
+        ],
+        [
+         144,
+         135
+        ],
+        [
+         176,
+         135
+        ],
+        [
+         160,
+         129
+        ]
+       ],
+       "f0": 126
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 8,
+       "pts": [
+        [
+         132,
+         108
+        ],
+        [
+         108,
+         108
+        ]
+       ],
+       "f0": 197
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         128,
+         111
+        ],
+        [
+         137,
+         113
+        ],
+        [
+         133,
+         103
+        ],
+        [
+         120,
+         120
+        ],
+        [
+         145,
+         120
+        ],
+        [
+         133,
+         114
+        ]
+       ],
+       "f0": 289
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         152,
+         122
+        ],
+        [
+         168,
+         124
+        ],
+        [
+         160,
+         114
+        ],
+        [
+         144,
+         135
+        ],
+        [
+         176,
+         135
+        ],
+        [
+         160,
+         129
+        ]
+       ],
+       "f0": 74
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         128,
+         111
+        ],
+        [
+         137,
+         113
+        ],
+        [
+         133,
+         103
+        ],
+        [
+         120,
+         120
+        ],
+        [
+         145,
+         120
+        ],
+        [
+         133,
+         114
+        ]
+       ],
+       "f0": 175
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         104,
+         111
+        ],
+        [
+         113,
+         113
+        ],
+        [
+         109,
+         103
+        ],
+        [
+         96,
+         120
+        ],
+        [
+         121,
+         120
+        ],
+        [
+         109,
+         114
+        ]
+       ],
+       "f0": 214
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         152,
+         122
+        ],
+        [
+         168,
+         124
+        ],
+        [
+         160,
+         114
+        ],
+        [
+         144,
+         135
+        ],
+        [
+         176,
+         135
+        ],
+        [
+         160,
+         129
+        ]
+       ],
+       "f0": 445
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         152,
+         122
+        ],
+        [
+         168,
+         124
+        ],
+        [
+         160,
+         114
+        ],
+        [
+         144,
+         135
+        ],
+        [
+         176,
+         135
+        ],
+        [
+         160,
+         129
+        ]
+       ],
+       "f0": 111
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 8,
+       "pts": [
+        [
+         132,
+         108
+        ],
+        [
+         108,
+         108
+        ]
+       ],
+       "f0": 189
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         128,
+         111
+        ],
+        [
+         137,
+         113
+        ],
+        [
+         133,
+         103
+        ],
+        [
+         120,
+         120
+        ],
+        [
+         145,
+         120
+        ],
+        [
+         133,
+         114
+        ]
+       ],
+       "f0": 249
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "t": "star",
+       "n": 16,
+       "pts": [
+        [
+         104,
+         111
+        ],
+        [
+         113,
+         113
+        ],
+        [
+         109,
+         103
+        ],
+        [
+         96,
+         120
+        ],
+        [
+         121,
+         120
+        ],
+        [
+         109,
+         114
+        ]
+       ],
+       "f0": 307
+      }
+     ],
+     "n": 1
+    }
+   ]
+  },
+  "glow": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 288
+    }
+   ]
+  },
+  "heart": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "fin",
+     "marcador"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act fin": 1,
+     "act marcador": 2,
+     "set": 6
+    },
+    "setIn": [
+     "d-agua-pajaro:beats.49",
+     "h-balcon:beats.27.right.3"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 277
+    },
+    {
+     "v": 1,
+     "n": 11
+    }
+   ]
+  },
+  "jarras": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "pone"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act deja": 3,
+     "act lleva": 9,
+     "act muestra": 3,
+     "act pone": 6,
+     "set": 3
+    },
+    "setIn": [
+     "cual-balcon:agua.no",
+     "cual-balcon:agua.si",
+     "cual-balcon:vaso.no",
+     "h-balcon:beats.23"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 10,
+   "values": [
+    {
+     "v": [],
+     "n": 207
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 132,
+       "mano": 0
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 108,
+       "mano": 0
+      }
+     ],
+     "n": 51
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 132
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 108
+      }
+     ],
+     "n": 11
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 108,
+       "mano": 0
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 132,
+       "mano": 0
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 108
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 132,
+       "mano": 0
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 108
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 132,
+       "mano": 1
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 108
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 132,
+       "mano": 0
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 108
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "id": "agua",
+       "k": "agua",
+       "x": 120
+      }
+     ],
+     "n": 1
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "x": 120
+      }
+     ],
+     "n": 1
+    }
+   ]
+  },
+  "lost": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act fanmesa": 1,
+     "cost": 4,
+     "say": 4
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 220
+    },
+    {
+     "v": 1,
+     "n": 39
+    },
+    {
+     "v": 2,
+     "n": 17
+    },
+    {
+     "v": 3,
+     "n": 12
+    }
+   ]
+  },
+  "mios": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "gana"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act gana": 5
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 242
+    },
+    {
+     "v": 1,
+     "n": 19
+    },
+    {
+     "v": 2,
+     "n": 17
+    },
+    {
+     "v": 3,
+     "n": 10
+    }
+   ]
+  },
+  "resp": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 288
+    }
+   ]
+  },
+  "respOn": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act absienta": 6,
+     "act lleva": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 288
+    }
+   ]
+  },
+  "respVoz": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "act burbuja": 2,
+     "ask": 3,
+     "elige": 3,
+     "say": 1
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": null,
+     "n": 246
+    },
+    {
+     "v": {
+      "de_nada": "cq_de_nada",
+      "por_favor": "cq_por_favor",
+      "gracias": "cq_gracias"
+     },
+     "n": 42
+    }
+   ]
+  },
+  "rojo": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [
+     "stake"
+    ],
+    "seenAfter": {
+     "act fanmesa": 1,
+     "say": 4
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 6,
+   "values": [
+    {
+     "v": 0,
+     "n": 267
+    },
+    {
+     "v": 332,
+     "n": 7
+    },
+    {
+     "v": 346,
+     "n": 5
+    },
+    {
+     "v": 542,
+     "n": 3
+    },
+    {
+     "v": 671,
+     "n": 3
+    },
+    {
+     "v": 644,
+     "n": 3
+    }
+   ]
+  },
+  "rondas": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 6
+    },
+    "setIn": [
+     "el-jugo:beats.38",
+     "el-jugo:final.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 221
+    },
+    {
+     "v": 1,
+     "n": 67
+    }
+   ]
+  },
+  "sobre": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "final"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 288
+    }
+   ]
+  },
+  "splash": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "final"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 288
+    }
+   ]
+  },
+  "spot": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 288
+    }
+   ]
+  },
+  "sudor": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "bebe",
+     "final",
+     "rompe"
+    ],
+    "otherCode": [
+     "stake"
+    ],
+    "seenAfter": {
+     "act bebe": 11,
+     "act fanmesa": 1,
+     "act final": 2,
+     "act rompe": 3,
+     "say": 1,
+     "set": 3
+    },
+    "setIn": [
+     "que-calor:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 219
+    },
+    {
+     "v": 2,
+     "n": 51
+    },
+    {
+     "v": 1,
+     "n": 12
+    },
+    {
+     "v": 3,
+     "n": 6
+    }
+   ]
+  },
+  "termo": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 3
+    },
+    "setIn": [
+     "que-calor:beats.0"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "sign or stamp",
+   "distinctValues": 2,
+   "values": [
+    {
+     "v": 0,
+     "n": 221
+    },
+    {
+     "v": 1,
+     "n": 67
+    }
+   ]
+  },
+  "trozos": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "rompe"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act rompe": 3
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 4,
+   "values": [
+    {
+     "v": 0,
+     "n": 243
+    },
+    {
+     "v": 248,
+     "n": 17
+    },
+    {
+     "v": 234,
+     "n": 16
+    },
+    {
+     "v": 220,
+     "n": 12
+    }
+   ]
+  },
+  "twinkle": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {
+     "set": 48
+    },
+    "setIn": [
+     "d-agua-pajaro:beats.21",
+     "d-agua-pajaro:beats.23",
+     "d-agua-pajaro:beats.25",
+     "el-jugo:beats.21",
+     "el-jugo:beats.23",
+     "el-jugo:beats.25",
+     "el-jugo:beats.48",
+     "el-jugo:beats.50",
+     "el-jugo:beats.52",
+     "el-jugo:beats.57",
+     "el-jugo:beats.59",
+     "el-jugo:beats.61",
+     "h-balcon:beats.17",
+     "h-balcon:beats.19",
+     "h-balcon:beats.3",
+     "h-balcon:beats.5"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "sign or stamp",
+   "distinctValues": 8,
+   "values": [
+    {
+     "v": null,
+     "n": 272
+    },
+    {
+     "v": "jugo",
+     "n": 3
+    },
+    {
+     "v": "vaso_grande",
+     "n": 3
+    },
+    {
+     "v": "vaso_pequeno",
+     "n": 3
+    },
+    {
+     "v": "agua",
+     "n": 2
+    },
+    {
+     "v": "vaso_silla",
+     "n": 2
+    },
+    {
+     "v": "vaso_mesa",
+     "n": 2
+    },
+    {
+     "v": "mesa",
+     "n": 1
+    }
+   ]
+  },
+  "ultimo": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [
+     "bebecq"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act bebecq": 16
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "other",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 177
+    },
+    {
+     "v": "agua",
+     "n": 61
+    },
+    {
+     "v": "jugo",
+     "n": 50
+    }
+   ]
+  },
+  "ultimoAve": {
+   "fresh": false,
+   "writtenBy": {
+    "actsInCode": [
+     "avebebe"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act avebebe": 11
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "other",
+   "distinctValues": 3,
+   "values": [
+    {
+     "v": null,
+     "n": 187
+    },
+    {
+     "v": "jugo",
+     "n": 58
+    },
+    {
+     "v": "agua",
+     "n": 43
+    }
+   ]
+  },
+  "vasos": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "abcoge",
+     "cqbebe",
+     "cqhielo",
+     "marcador",
+     "pone2",
+     "sirve"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act abcoge": 9,
+     "act aparta": 2,
+     "act avebebe": 13,
+     "act bebecq": 17,
+     "act burbuja": 4,
+     "act coge": 12,
+     "act cqbebe": 1,
+     "act cqhielo": 2,
+     "act marcador": 3,
+     "act pone2": 9,
+     "act recibe": 3,
+     "act sirve": 12,
+     "set": 3
+    },
+    "setIn": [
+     "cual-balcon:jugo.no",
+     "cual-balcon:jugo.si",
+     "cual-balcon:toma.no",
+     "cual-balcon:toma.si",
+     "cual-balcon:vaso.si",
+     "h-balcon:beats.14"
+    ]
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": true,
+    "hud": false
+   },
+   "role": "set (separates states)",
+   "distinctValues": 36,
+   "values": [
+    {
+     "v": [],
+     "n": 138
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 1,
+       "x": 132
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108
+      }
+     ],
+     "n": 25
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 0,
+       "x": 132,
+       "mano": 0
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "t": "n",
+       "lv": 0,
+       "x": 108
+      }
+     ],
+     "n": 11
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_grande",
+       "k": "jugo",
+       "t": "g",
+       "lv": 1,
+       "x": 132
+      },
+      {
+       "id": "vaso_pequeno",
+       "k": "jugo",
+       "t": "p",
+       "lv": 1,
+       "x": 108
+      }
+     ],
+     "n": 9
+    },
+    {
+     "v": [
+      {
+       "id": "aparte",
+       "k": "jugo",
+       "t": "n",
+       "lv": 1,
+       "x": 120
+      }
+     ],
+     "n": 8
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 0,
+       "x": 132,
+       "mano": 0
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_silla",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 160,
+       "y": 134
+      },
+      {
+       "id": "vaso_mesa",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 120
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_grande",
+       "k": "jugo",
+       "t": "g",
+       "lv": 0,
+       "x": 132,
+       "mano": 0
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "fin1",
+       "k": "agua",
+       "t": "n",
+       "lv": 0,
+       "x": 108,
+       "mano": 0
+      },
+      {
+       "id": "fin2",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 132
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_mesa",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 120
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_mesa",
+       "k": "agua",
+       "t": "n",
+       "lv": 0,
+       "x": 120
+      }
+     ],
+     "n": 6
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 0,
+       "x": 132
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108
+      }
+     ],
+     "n": 5
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 1,
+       "x": 132,
+       "mano": 1
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_grande",
+       "k": "jugo",
+       "t": "g",
+       "lv": 0,
+       "x": 132,
+       "mano": 0
+      },
+      {
+       "id": "vaso_pequeno",
+       "k": "jugo",
+       "t": "p",
+       "lv": 1,
+       "x": 108
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_silla",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 160,
+       "y": 134,
+       "mano": 1
+      },
+      {
+       "id": "vaso_mesa",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 120
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_grande",
+       "k": "jugo",
+       "t": "g",
+       "lv": 0,
+       "x": 132
+      }
+     ],
+     "n": 4
+    },
+    {
+     "v": [
+      {
+       "id": "fin1",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108
+      },
+      {
+       "id": "fin2",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "fin1",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108,
+       "mano": 1
+      },
+      {
+       "id": "fin2",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "fin1",
+       "k": "agua",
+       "t": "n",
+       "lv": 0,
+       "x": 108,
+       "mano": 0
+      },
+      {
+       "id": "fin2",
+       "k": "agua",
+       "t": "n",
+       "lv": 0,
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 1,
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 0,
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_grande",
+       "k": "jugo",
+       "t": "g",
+       "lv": 1,
+       "x": 132
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 0,
+       "x": 132,
+       "mano": 0
+      },
+      {
+       "id": "agua",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 108,
+       "mano": 1
+      }
+     ],
+     "n": 3
+    },
+    {
+     "v": [
+      {
+       "id": "jugo",
+       "k": "jugo",
+       "t": "n",
+       "lv": 0,
+       "x": 132,
+       "mano": 0
+      }
+     ],
+     "n": 2
+    },
+    {
+     "v": [
+      {
+       "id": "vaso_silla",
+       "k": "agua",
+       "t": "n",
+       "lv": 1,
+       "x": 160,
+       "y": 134
+      },
+      {
+       "id": "vaso_mesa",
+       "k": "agua",
+       "t": "n",
+       "lv": 0,
+       "x": 120,
+       "mano": 0
+      }
+     ],
+     "n": 2
+    }
+   ]
+  },
+  "vierte": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "lleva"
+    ],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "character",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": null,
+     "n": 288
+    }
+   ]
+  },
+  "vmios": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [
+     "gana"
+    ],
+    "otherCode": [],
+    "seenAfter": {
+     "act gana": 5
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "other",
+   "distinctValues": 5,
+   "values": [
+    {
+     "v": null,
+     "n": 242
+    },
+    {
+     "v": [
+      "jugo"
+     ],
+     "n": 19
+    },
+    {
+     "v": [
+      "jugo",
+      "agua",
+      "jugo"
+     ],
+     "n": 10
+    },
+    {
+     "v": [
+      "jugo",
+      "jugo"
+     ],
+     "n": 10
+    },
+    {
+     "v": [
+      "jugo",
+      "agua"
+     ],
+     "n": 7
+    }
+   ]
+  },
+  "vsuyos": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [
+     "stake"
+    ],
+    "seenAfter": {
+     "cost": 4
+    },
+    "setIn": []
+   },
+   "readBy": {
+    "background": false,
+    "spriteLayer": false,
+    "hitTest": false,
+    "hud": true
+   },
+   "role": "other",
+   "distinctValues": 5,
+   "values": [
+    {
+     "v": null,
+     "n": 241
+    },
+    {
+     "v": [
+      "agua"
+     ],
+     "n": 16
+    },
+    {
+     "v": [
+      "jugo"
+     ],
+     "n": 11
+    },
+    {
+     "v": [
+      "jugo",
+      "agua"
+     ],
+     "n": 11
+    },
+    {
+     "v": [
+      "jugo",
+      "agua",
+      "jugo"
+     ],
+     "n": 9
+    }
+   ]
+  },
+  "win": {
+   "fresh": true,
+   "writtenBy": {
+    "actsInCode": [],
+    "otherCode": [],
+    "seenAfter": {},
+    "setIn": []
+   },
+   "readBy": {
+    "background": true,
+    "spriteLayer": true,
+    "hitTest": false,
+    "hud": false
+   },
+   "role": "background",
+   "distinctValues": 1,
+   "values": [
+    {
+     "v": 0,
+     "n": 288
+    }
+   ]
+  }
+ },
+ "spriteLayer": [
+  {
+   "key": "@balcon.js:121 · bg",
+   "class": "background",
+   "maker": "bg",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "balcon.js:121",
+   "code": "c.drawImage(spr(\"bal\"+W.door+\"_\"+W.win,()=>bg(W.door,W.win)),0,0);",
+   "sites": [
+    "balcon.js:121"
+   ],
+   "chain": [
+    "Object.draw@balcon.js:121"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      0,
+      0,
+      240,
+      216
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "dePie @balcon.js:126",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "dePie"
+   ],
+   "drawCall": "balcon.js:126",
+   "code": "if(ab&&ab.en!==\"silla\"&&ab.y<144)dePie();                                             // behind the furniture",
+   "sites": [
+    "balcon.js:125"
+   ],
+   "chain": [
+    "dePie@balcon.js:125",
+    "Object.draw@balcon.js:126"
+   ],
+   "clipped": null,
+   "states": [
+    "s001"
+   ],
+   "boxes": [
+    {
+     "box": [
+      69,
+      119,
+      22,
+      3
+     ],
+     "states": [
+      "s001"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "dePie @balcon.js:126 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [
+    "dePie"
+   ],
+   "drawCall": "balcon.js:126",
+   "code": "if(ab&&ab.en!==\"silla\"&&ab.y<144)dePie();                                             // behind the furniture",
+   "sites": [
+    "balcon.js:124"
+   ],
+   "chain": [
+    "dePie@balcon.js:124",
+    "Object.draw@balcon.js:126"
+   ],
+   "clipped": [
+    "balcon.js:124"
+   ],
+   "states": [
+    "s000",
+    "s001",
+    "s002"
+   ],
+   "boxes": [
+    {
+     "box": [
+      148,
+      75,
+      48,
+      51
+     ],
+     "states": [
+      "s000",
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      68,
+      93,
+      48,
+      51
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "dePie > vaso @balcon.js:126",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "dePie",
+    "vaso"
+   ],
+   "drawCall": "balcon.js:126",
+   "code": "if(ab&&ab.en!==\"silla\"&&ab.y<144)dePie();                                             // behind the furniture",
+   "sites": [
+    "balcon.js:81",
+    "balcon.js:82",
+    "balcon.js:83",
+    "balcon.js:84",
+    "balcon.js:85"
+   ],
+   "chain": [
+    "vaso@balcon.js:81",
+    "dePie@balcon.js:125",
+    "Object.draw@balcon.js:126"
+   ],
+   "clipped": null,
+   "states": [
+    "s001"
+   ],
+   "boxes": [
+    {
+     "box": [
+      70,
+      101,
+      22,
+      19
+     ],
+     "states": [
+      "s001"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@balcon.js:127 · mkSillaG",
+   "class": "prop or effect",
+   "maker": "mkSillaG",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "balcon.js:127",
+   "code": "c.drawImage(spr(\"sillaG\",mkSillaG),SILLA[0],SILLA[1]);",
+   "sites": [
+    "balcon.js:127"
+   ],
+   "chain": [
+    "Object.draw@balcon.js:127"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      48,
+      102,
+      40,
+      48
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@balcon.js:129 · KIT.mkAbuelaS",
+   "class": "character",
+   "maker": "KIT.mkAbuelaS",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "balcon.js:129",
+   "code": "c.drawImage(spr(\"abS\"+pose+habla,()=>KIT.mkAbuelaS(pose,habla,0)),ABS[0],ABS[1]);",
+   "sites": [
+    "balcon.js:129"
+   ],
+   "chain": [
+    "Object.draw@balcon.js:129"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      51,
+      96,
+      52,
+      50
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "abanico @balcon.js:130",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "abanico"
+   ],
+   "drawCall": "balcon.js:130",
+   "code": "if(ab.pose===\"fan\"){const d=(F>>2)%2;if(W.fanMedio)medio(c,ABS[0]+31+d,ABS[1]+16,1);else abanico(c,ABS[0]+31+d,ABS[1]+16,8,-60,60);}",
+   "sites": [
+    "balcon.js:176",
+    "balcon.js:177"
+   ],
+   "chain": [
+    "abanico@balcon.js:176",
+    "Object.draw@balcon.js:130"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s032",
+    "s033",
+    "s034",
+    "s035"
+   ],
+   "boxes": [
+    {
+     "box": [
+      74,
+      103,
+      17,
+      12
+     ],
+     "states": [
+      "s000",
+      "s032",
+      "s033",
+      "s034",
+      "s035"
+     ]
+    },
+    {
+     "box": [
+      75,
+      103,
+      17,
+      12
+     ],
+     "states": [
+      "s032",
+      "s033",
+      "s035"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "medio > abanico @balcon.js:130",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "medio",
+    "abanico"
+   ],
+   "drawCall": "balcon.js:130",
+   "code": "if(ab.pose===\"fan\"){const d=(F>>2)%2;if(W.fanMedio)medio(c,ABS[0]+31+d,ABS[1]+16,1);else abanico(c,ABS[0]+31+d,ABS[1]+16,8,-60,60);}",
+   "sites": [
+    "balcon.js:176",
+    "balcon.js:177"
+   ],
+   "chain": [
+    "abanico@balcon.js:176",
+    "medio@balcon.js:178",
+    "Object.draw@balcon.js:130"
+   ],
+   "clipped": null,
+   "states": [
+    "s038",
+    "s040",
+    "s041",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      81,
+      103,
+      10,
+      12
+     ],
+     "states": [
+      "s038",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      82,
+      103,
+      10,
+      12
+     ],
+     "states": [
+      "s038",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "vaso @balcon.js:131",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "vaso"
+   ],
+   "drawCall": "balcon.js:131",
+   "code": "if(W.abvaso){const bb=ab.pose===\"bebe\";vaso(c,ABS[0]+(bb?30:36),ABS[1]+(bb?17:28),\"n\",W.abvaso.k,W.abvaso.lv);}",
+   "sites": [
+    "balcon.js:81",
+    "balcon.js:82",
+    "balcon.js:83",
+    "balcon.js:84",
+    "balcon.js:85"
+   ],
+   "chain": [
+    "vaso@balcon.js:81",
+    "Object.draw@balcon.js:131"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s007",
+    "s010",
+    "s013",
+    "s019",
+    "s022",
+    "s025",
+    "s030",
+    "s031",
+    "s035",
+    "s036",
+    "s038",
+    "s040",
+    "s041",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      82,
+      111,
+      11,
+      14
+     ],
+     "states": [
+      "s000",
+      "s007",
+      "s010",
+      "s019",
+      "s022",
+      "s030",
+      "s035",
+      "s036",
+      "s038",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      82,
+      106,
+      11,
+      19
+     ],
+     "states": [
+      "s013",
+      "s025",
+      "s031",
+      "s036",
+      "s038",
+      "s040"
+     ]
+    },
+    {
+     "box": [
+      76,
+      100,
+      11,
+      14
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gota @balcon.js:134",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "gota"
+   ],
+   "drawCall": "balcon.js:134",
+   "code": "for(let k=0;k<(W.sudor||0);k++){const t=(F+k*5)%12;gota(c,ABS[0]+17+(k-1)*(8+t),ABS[1]+6-Math.round(t*1.2)+Math.round(t*t/9));}}   // she is hot: drops of sweat",
+   "sites": [
+    "balcon.js:114"
+   ],
+   "chain": [
+    "gota@balcon.js:114",
+    "Object.draw@balcon.js:134"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      48,
+      99,
+      5,
+      6
+     ],
+     "states": [
+      "s030"
+     ]
+    },
+    {
+     "box": [
+      54,
+      97,
+      5,
+      6
+     ],
+     "states": [
+      "s031",
+      "s035"
+     ]
+    },
+    {
+     "box": [
+      56,
+      98,
+      5,
+      6
+     ],
+     "states": [
+      "s030",
+      "s031",
+      "s035"
+     ]
+    },
+    {
+     "box": [
+      52,
+      97,
+      5,
+      6
+     ],
+     "states": [
+      "s030",
+      "s035"
+     ]
+    },
+    {
+     "box": [
+      47,
+      100,
+      5,
+      6
+     ],
+     "states": [
+      "s031"
+     ]
+    },
+    {
+     "box": [
+      56,
+      97,
+      15,
+      7
+     ],
+     "states": [
+      "s000",
+      "s032",
+      "s036",
+      "s039",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      58,
+      97,
+      13,
+      9
+     ],
+     "states": [
+      "s032",
+      "s035",
+      "s036",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      52,
+      97,
+      19,
+      9
+     ],
+     "states": [
+      "s032",
+      "s036",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      48,
+      97,
+      23,
+      8
+     ],
+     "states": [
+      "s032",
+      "s036",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      55,
+      97,
+      16,
+      6
+     ],
+     "states": [
+      "s032",
+      "s033",
+      "s036",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      51,
+      97,
+      20,
+      9
+     ],
+     "states": [
+      "s032",
+      "s036",
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      47,
+      97,
+      24,
+      9
+     ],
+     "states": [
+      "s033",
+      "s036",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      53,
+      97,
+      18,
+      8
+     ],
+     "states": [
+      "s034",
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      58,
+      100,
+      5,
+      6
+     ],
+     "states": [
+      "s035"
+     ]
+    },
+    {
+     "box": [
+      50,
+      97,
+      21,
+      8
+     ],
+     "states": [
+      "s036",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      57,
+      97,
+      14,
+      8
+     ],
+     "states": [
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      54,
+      97,
+      17,
+      7
+     ],
+     "states": [
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      49,
+      98,
+      5,
+      6
+     ],
+     "states": [
+      "s035",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      55,
+      97,
+      25,
+      8
+     ],
+     "states": [
+      "s040"
+     ]
+    },
+    {
+     "box": [
+      57,
+      97,
+      33,
+      9
+     ],
+     "states": [
+      "s040"
+     ]
+    },
+    {
+     "box": [
+      47,
+      97,
+      41,
+      9
+     ],
+     "states": [
+      "s041"
+     ]
+    },
+    {
+     "box": [
+      48,
+      97,
+      39,
+      8
+     ],
+     "states": [
+      "s041"
+     ]
+    },
+    {
+     "box": [
+      53,
+      97,
+      29,
+      8
+     ],
+     "states": [
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      49,
+      98,
+      22,
+      6
+     ],
+     "states": [
+      "s036"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@balcon.js:135 · mkSillaP",
+   "class": "prop or effect",
+   "maker": "mkSillaP",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "balcon.js:135",
+   "code": "c.drawImage(spr(\"sillaP\",mkSillaP),SILLITA[0],SILLITA[1]);",
+   "sites": [
+    "balcon.js:135"
+   ],
+   "chain": [
+    "Object.draw@balcon.js:135"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      148,
+      120,
+      24,
+      30
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "@balcon.js:136 · mkMesa",
+   "class": "prop or effect",
+   "maker": "mkMesa",
+   "method": "drawImage",
+   "functions": [],
+   "drawCall": "balcon.js:136",
+   "code": "c.drawImage(spr(\"mesa\",mkMesa),94,125);",
+   "sites": [
+    "balcon.js:136"
+   ],
+   "chain": [
+    "Object.draw@balcon.js:136"
+   ],
+   "clipped": null,
+   "states": "all",
+   "boxes": [
+    {
+     "box": [
+      94,
+      125,
+      52,
+      24
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s033",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042",
+      "s043",
+      "s044",
+      "s045",
+      "s046",
+      "s047",
+      "s048",
+      "s049"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "vaso @balcon.js:137",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "vaso"
+   ],
+   "drawCall": "balcon.js:137",
+   "code": "(W.vasos||[]).forEach(v=>{if(!v.mano)vaso(c,v.x,v.y||MESA_Y,v.t,v.k,v.lv);});",
+   "sites": [
+    "balcon.js:81",
+    "balcon.js:82",
+    "balcon.js:83",
+    "balcon.js:84",
+    "balcon.js:85"
+   ],
+   "chain": [
+    "vaso@balcon.js:81",
+    "?@balcon.js:137",
+    "Object.draw@balcon.js:137"
+   ],
+   "clipped": null,
+   "states": [
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s041",
+    "s042",
+    "s043",
+    "s045",
+    "s046",
+    "s048",
+    "s049"
+   ],
+   "boxes": [
+    {
+     "box": [
+      103,
+      110,
+      35,
+      19
+     ],
+     "states": [
+      "s002",
+      "s004",
+      "s005",
+      "s006",
+      "s028"
+     ]
+    },
+    {
+     "box": [
+      103,
+      115,
+      11,
+      14
+     ],
+     "states": [
+      "s003",
+      "s049"
+     ]
+    },
+    {
+     "box": [
+      127,
+      110,
+      11,
+      19
+     ],
+     "states": [
+      "s007",
+      "s018",
+      "s019",
+      "s020",
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      115,
+      115,
+      51,
+      20
+     ],
+     "states": [
+      "s008",
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      115,
+      115,
+      11,
+      14
+     ],
+     "states": [
+      "s010",
+      "s021",
+      "s022",
+      "s023",
+      "s043",
+      "s046"
+     ]
+    },
+    {
+     "box": [
+      104,
+      106,
+      35,
+      23
+     ],
+     "states": [
+      "s011",
+      "s012"
+     ]
+    },
+    {
+     "box": [
+      126,
+      106,
+      13,
+      23
+     ],
+     "states": [
+      "s013",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      103,
+      115,
+      35,
+      14
+     ],
+     "states": [
+      "s014",
+      "s016",
+      "s017"
+     ]
+    },
+    {
+     "box": [
+      127,
+      115,
+      11,
+      14
+     ],
+     "states": [
+      "s015"
+     ]
+    },
+    {
+     "box": [
+      115,
+      110,
+      11,
+      19
+     ],
+     "states": [
+      "s041",
+      "s042",
+      "s045"
+     ]
+    },
+    {
+     "box": [
+      101,
+      115,
+      11,
+      14
+     ],
+     "states": [
+      "s048"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "medio > abanico @balcon.js:138",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "medio",
+    "abanico"
+   ],
+   "drawCall": "balcon.js:138",
+   "code": "if(W.fanMesa)medio(c,121,MESA_Y,1);",
+   "sites": [
+    "balcon.js:176",
+    "balcon.js:177"
+   ],
+   "chain": [
+    "abanico@balcon.js:176",
+    "medio@balcon.js:178",
+    "Object.draw@balcon.js:138"
+   ],
+   "clipped": null,
+   "states": [
+    "s040",
+    "s041"
+   ],
+   "boxes": [
+    {
+     "box": [
+      120,
+      119,
+      10,
+      12
+     ],
+     "states": [
+      "s040",
+      "s041"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "medio > abanico @balcon.js:139",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "medio",
+    "abanico"
+   ],
+   "drawCall": "balcon.js:139",
+   "code": "if(W.enSuelo){medio(c,98,157,-1);medio(c,110,158,1);}   // the two halves of her fan, on the floor",
+   "sites": [
+    "balcon.js:176",
+    "balcon.js:177"
+   ],
+   "chain": [
+    "abanico@balcon.js:176",
+    "medio@balcon.js:178",
+    "Object.draw@balcon.js:139"
+   ],
+   "clipped": null,
+   "states": [
+    "s036",
+    "s037",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      90,
+      148,
+      29,
+      13
+     ],
+     "states": [
+      "s036",
+      "s037",
+      "s039"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "jarra @balcon.js:140",
+   "class": "prop or effect",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "jarra"
+   ],
+   "drawCall": "balcon.js:140",
+   "code": "(W.jarras||[]).forEach(v=>{if(!v.mano)jarra(c,v.x,MESA_Y,v.k);});",
+   "sites": [
+    "balcon.js:88",
+    "balcon.js:89",
+    "balcon.js:90",
+    "balcon.js:91",
+    "balcon.js:92"
+   ],
+   "chain": [
+    "jarra@balcon.js:88",
+    "?@balcon.js:140",
+    "Object.draw@balcon.js:140"
+   ],
+   "clipped": null,
+   "states": [
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042",
+    "s044",
+    "s047"
+   ],
+   "boxes": [
+    {
+     "box": [
+      100,
+      107,
+      42,
+      22
+     ],
+     "states": [
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      100,
+      107,
+      18,
+      22
+     ],
+     "states": [
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      112,
+      107,
+      18,
+      22
+     ],
+     "states": [
+      "s044",
+      "s047"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "dePie @balcon.js:141 · mkAbuela",
+   "class": "character",
+   "maker": "mkAbuela",
+   "method": "drawImage",
+   "functions": [
+    "dePie"
+   ],
+   "drawCall": "balcon.js:141",
+   "code": "if(ab&&ab.en!==\"silla\"&&ab.y>=144)dePie();",
+   "sites": [
+    "balcon.js:124"
+   ],
+   "chain": [
+    "dePie@balcon.js:124",
+    "Object.draw@balcon.js:141"
+   ],
+   "clipped": null,
+   "states": [
+    "s000"
+   ],
+   "boxes": [
+    {
+     "box": [
+      76,
+      98,
+      48,
+      51
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "rana @balcon.js:143",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "rana"
+   ],
+   "drawCall": "balcon.js:143",
+   "code": "if(q.vis){c.globalAlpha=q.al;rana(c,q,a);c.globalAlpha=1;const b=frogBox(q),dy=Math.round(q.dy);",
+   "sites": [
+    "balcon.js:118"
+   ],
+   "chain": [
+    "rana@balcon.js:118",
+    "Object.draw@balcon.js:143"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      107,
+      210,
+      25,
+      3
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      112,
+      155,
+      19,
+      3
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      109,
+      166,
+      21,
+      3
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      90,
+      154,
+      19,
+      3
+     ],
+     "states": [
+      "s000",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      140,
+      155,
+      19,
+      3
+     ],
+     "states": [
+      "s001",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      151,
+      134,
+      17,
+      3
+     ],
+     "states": [
+      "s001"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "rana @balcon.js:143 · mkCoqui",
+   "class": "character",
+   "maker": "mkCoqui",
+   "method": "drawImage",
+   "functions": [
+    "rana"
+   ],
+   "drawCall": "balcon.js:143",
+   "code": "if(q.vis){c.globalAlpha=q.al;rana(c,q,a);c.globalAlpha=1;const b=frogBox(q),dy=Math.round(q.dy);",
+   "sites": [
+    "balcon.js:119"
+   ],
+   "chain": [
+    "rana@balcon.js:119",
+    "Object.draw@balcon.js:143"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s027",
+    "s028",
+    "s029",
+    "s030",
+    "s031",
+    "s032",
+    "s033",
+    "s034",
+    "s035",
+    "s036",
+    "s037",
+    "s038",
+    "s039",
+    "s040",
+    "s041",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      104,
+      185,
+      32,
+      27
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      109,
+      135,
+      26,
+      22
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      148,
+      116,
+      24,
+      20
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      106,
+      144,
+      28,
+      24
+     ],
+     "states": [
+      "s001",
+      "s002",
+      "s003",
+      "s004",
+      "s005",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s017",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026",
+      "s027",
+      "s028",
+      "s029",
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      106,
+      140,
+      28,
+      24
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      87,
+      134,
+      26,
+      22
+     ],
+     "states": [
+      "s000",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      137,
+      135,
+      26,
+      22
+     ],
+     "states": [
+      "s001",
+      "s029",
+      "s030",
+      "s031",
+      "s032",
+      "s034",
+      "s035",
+      "s036",
+      "s037",
+      "s038",
+      "s039",
+      "s040",
+      "s041",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      148,
+      111,
+      24,
+      20
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      137,
+      131,
+      26,
+      22
+     ],
+     "states": [
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      106,
+      142,
+      28,
+      24
+     ],
+     "states": [
+      "s033"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "gota @balcon.js:144",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "gota"
+   ],
+   "drawCall": "balcon.js:144",
+   "code": "for(let k=0;k<(W.calor||0);k++){const t=(F+k*5)%12,x=b.x+Math.round(b.w/2)+(k-1)*(7+t),y=b.y+dy+3-Math.round(t*1.4)+Math.round(t*t/9);gota(c,x,y);}   // drops of sweat: one for every drink he still needs",
+   "sites": [
+    "balcon.js:114"
+   ],
+   "chain": [
+    "gota@balcon.js:114",
+    "Object.draw@balcon.js:144"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s003",
+    "s004",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026"
+   ],
+   "boxes": [
+    {
+     "box": [
+      109,
+      181,
+      21,
+      11
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      103,
+      182,
+      33,
+      9
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      112,
+      132,
+      31,
+      9
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      113,
+      132,
+      29,
+      10
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      150,
+      113,
+      31,
+      9
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      147,
+      113,
+      25,
+      7
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      143,
+      113,
+      33,
+      9
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      140,
+      113,
+      39,
+      8
+     ],
+     "states": [
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      148,
+      113,
+      23,
+      9
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      142,
+      112,
+      35,
+      8
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      149,
+      112,
+      21,
+      11
+     ],
+     "states": [
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      108,
+      141,
+      23,
+      9
+     ],
+     "states": [
+      "s003",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      110,
+      141,
+      13,
+      9
+     ],
+     "states": [
+      "s004",
+      "s007",
+      "s011"
+     ]
+    },
+    {
+     "box": [
+      107,
+      132,
+      29,
+      8
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      141,
+      113,
+      37,
+      7
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      146,
+      113,
+      27,
+      7
+     ],
+     "states": [
+      "s001",
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      101,
+      141,
+      37,
+      7
+     ],
+     "states": [
+      "s002",
+      "s008",
+      "s014",
+      "s021",
+      "s022",
+      "s023",
+      "s025"
+     ]
+    },
+    {
+     "box": [
+      103,
+      141,
+      33,
+      9
+     ],
+     "states": [
+      "s002"
+     ]
+    },
+    {
+     "box": [
+      104,
+      140,
+      31,
+      11
+     ],
+     "states": [
+      "s002",
+      "s006",
+      "s011",
+      "s018",
+      "s019",
+      "s020",
+      "s024",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      110,
+      141,
+      31,
+      9
+     ],
+     "states": [
+      "s006",
+      "s011",
+      "s018",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      105,
+      141,
+      29,
+      8
+     ],
+     "states": [
+      "s006",
+      "s019"
+     ]
+    },
+    {
+     "box": [
+      107,
+      141,
+      25,
+      7
+     ],
+     "states": [
+      "s002",
+      "s008",
+      "s021"
+     ]
+    },
+    {
+     "box": [
+      107,
+      141,
+      16,
+      6
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      103,
+      141,
+      20,
+      9
+     ],
+     "states": [
+      "s004"
+     ]
+    },
+    {
+     "box": [
+      108,
+      141,
+      15,
+      7
+     ],
+     "states": [
+      "s007",
+      "s017",
+      "s021",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      100,
+      141,
+      23,
+      8
+     ],
+     "states": [
+      "s008"
+     ]
+    },
+    {
+     "box": [
+      106,
+      141,
+      17,
+      7
+     ],
+     "states": [
+      "s008",
+      "s022"
+     ]
+    },
+    {
+     "box": [
+      100,
+      143,
+      5,
+      6
+     ],
+     "states": [
+      "s009",
+      "s012"
+     ]
+    },
+    {
+     "box": [
+      108,
+      142,
+      5,
+      6
+     ],
+     "states": [
+      "s009"
+     ]
+    },
+    {
+     "box": [
+      101,
+      142,
+      5,
+      6
+     ],
+     "states": [
+      "s010"
+     ]
+    },
+    {
+     "more": 18
+    }
+   ]
+  },
+  {
+   "key": "medio > abanico @balcon.js:145",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "medio",
+    "abanico"
+   ],
+   "drawCall": "balcon.js:145",
+   "code": "if(W.cqfan)medio(c,b.x-2+((F>>2)%2),b.y+dy+Math.round(b.h*.6),-1);   // his half of the fan: he keeps it, and fans himself",
+   "sites": [
+    "balcon.js:176",
+    "balcon.js:177"
+   ],
+   "chain": [
+    "abanico@balcon.js:176",
+    "medio@balcon.js:178",
+    "Object.draw@balcon.js:145"
+   ],
+   "clipped": null,
+   "states": [
+    "s038",
+    "s042"
+   ],
+   "boxes": [
+    {
+     "box": [
+      127,
+      139,
+      10,
+      12
+     ],
+     "states": [
+      "s038",
+      "s042"
+     ]
+    },
+    {
+     "box": [
+      128,
+      139,
+      10,
+      12
+     ],
+     "states": [
+      "s038",
+      "s042"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "vaso @balcon.js:147",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "vaso"
+   ],
+   "drawCall": "balcon.js:147",
+   "code": "const m=(W.vasos||[]).find(v=>v.mano);if(m){if(W.bebiendo)vaso(c,b.x+Math.round(b.w/2)+1,b.y+dy+Math.round(b.h*.74),m.t,m.k,m.lv);else vaso(c,b.x+b.w+1,b.y+dy+Math.round(b.h*.8),m.t,m.k,m.lv);}",
+   "sites": [
+    "balcon.js:81",
+    "balcon.js:82",
+    "balcon.js:83",
+    "balcon.js:84",
+    "balcon.js:85"
+   ],
+   "chain": [
+    "vaso@balcon.js:81",
+    "Object.draw@balcon.js:147"
+   ],
+   "clipped": null,
+   "states": [
+    "s003",
+    "s015",
+    "s018",
+    "s021",
+    "s024",
+    "s027",
+    "s037",
+    "s039"
+   ],
+   "boxes": [
+    {
+     "box": [
+      130,
+      145,
+      11,
+      19
+     ],
+     "states": [
+      "s003"
+     ]
+    },
+    {
+     "box": [
+      130,
+      150,
+      11,
+      14
+     ],
+     "states": [
+      "s015",
+      "s018",
+      "s021",
+      "s027"
+     ]
+    },
+    {
+     "box": [
+      131,
+      149,
+      9,
+      15
+     ],
+     "states": [
+      "s024"
+     ]
+    },
+    {
+     "box": [
+      159,
+      140,
+      11,
+      14
+     ],
+     "states": [
+      "s037"
+     ]
+    },
+    {
+     "box": [
+      159,
+      135,
+      11,
+      19
+     ],
+     "states": [
+      "s039"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "jarra @balcon.js:148",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "jarra"
+   ],
+   "drawCall": "balcon.js:148",
+   "code": "const j=(W.jarras||[]).find(v=>v.mano===1);if(j)jarra(c,b.x+b.w+7,b.y+dy+b.h,j.k);}",
+   "sites": [
+    "balcon.js:88",
+    "balcon.js:89",
+    "balcon.js:90",
+    "balcon.js:91",
+    "balcon.js:92"
+   ],
+   "chain": [
+    "jarra@balcon.js:88",
+    "Object.draw@balcon.js:148"
+   ],
+   "clipped": null,
+   "states": [
+    "s033"
+   ],
+   "boxes": [
+    {
+     "box": [
+      133,
+      145,
+      18,
+      22
+     ],
+     "states": [
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      133,
+      147,
+      18,
+      22
+     ],
+     "states": [
+      "s033"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "drawAve @balcon.js:150 · mkAve",
+   "class": "character",
+   "maker": "mkAve",
+   "method": "drawImage",
+   "functions": [
+    "drawAve"
+   ],
+   "drawCall": "balcon.js:150",
+   "code": "KIT.drawAve(c,W.ave);",
+   "sites": [
+    "kit.js:28"
+   ],
+   "chain": [
+    "Object.drawAve@kit.js:28",
+    "Object.draw@balcon.js:150"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s002",
+    "s004",
+    "s005",
+    "s006",
+    "s007",
+    "s008",
+    "s009",
+    "s010",
+    "s011",
+    "s012",
+    "s013",
+    "s014",
+    "s015",
+    "s016",
+    "s017",
+    "s018",
+    "s019",
+    "s020",
+    "s021",
+    "s022",
+    "s023",
+    "s024",
+    "s025",
+    "s026",
+    "s048",
+    "s049"
+   ],
+   "boxes": [
+    {
+     "box": [
+      112.6,
+      108,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s004",
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      145.6,
+      115,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s005",
+      "s006"
+     ]
+    },
+    {
+     "box": [
+      98.6,
+      108,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s002",
+      "s006",
+      "s016",
+      "s017",
+      "s019",
+      "s020",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      105.6,
+      66,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s000",
+      "s001",
+      "s002",
+      "s004",
+      "s006",
+      "s007",
+      "s008",
+      "s009",
+      "s010",
+      "s011",
+      "s012",
+      "s013",
+      "s014",
+      "s015",
+      "s016",
+      "s018",
+      "s019",
+      "s020",
+      "s021",
+      "s022",
+      "s023",
+      "s024",
+      "s025",
+      "s026"
+     ]
+    },
+    {
+     "box": [
+      86.6,
+      108,
+      28.8,
+      22.4
+     ],
+     "states": [
+      "s022",
+      "s023"
+     ]
+    },
+    {
+     "box": [
+      140.8,
+      108,
+      38.4,
+      28.8
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      103.82,
+      106.79,
+      36.01,
+      33.47
+     ],
+     "states": [
+      "s048"
+     ]
+    },
+    {
+     "box": [
+      112.8,
+      101,
+      38.4,
+      28.8
+     ],
+     "states": [
+      "s049"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "drawAve > Z @balcon.js:150",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "drawAve",
+    "Z"
+   ],
+   "drawCall": "balcon.js:150",
+   "code": "KIT.drawAve(c,W.ave);",
+   "sites": [
+    "kit.js:29"
+   ],
+   "chain": [
+    "Z@kit.js:29",
+    "Object.drawAve@kit.js:29",
+    "Object.draw@balcon.js:150"
+   ],
+   "clipped": null,
+   "states": [
+    "s001",
+    "s049"
+   ],
+   "boxes": [
+    {
+     "box": [
+      169,
+      87,
+      17,
+      19
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      141,
+      80,
+      17,
+      19
+     ],
+     "states": [
+      "s049"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "bub2 @balcon.js:154",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "bub2"
+   ],
+   "drawCall": "balcon.js:154",
+   "code": "if(ab&&ab.bub){const at=talkAt(\"abuela\",W);bub2(c,ab.bub,at[0],at[1]+38,a);}",
+   "sites": [
+    "balcon.js:116"
+   ],
+   "chain": [
+    "bub2@balcon.js:116",
+    "Object.draw@balcon.js:154"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s018",
+    "s021",
+    "s024",
+    "s032",
+    "s033",
+    "s036",
+    "s038"
+   ],
+   "boxes": [
+    {
+     "box": [
+      54,
+      57,
+      30,
+      34
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      56,
+      57,
+      26,
+      36
+     ],
+     "states": [
+      "s018",
+      "s021",
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      56,
+      55,
+      26,
+      36
+     ],
+     "states": [
+      "s021",
+      "s024",
+      "s036",
+      "s038"
+     ]
+    },
+    {
+     "box": [
+      54,
+      59,
+      30,
+      34
+     ],
+     "states": [
+      "s000",
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      36,
+      55,
+      66,
+      36
+     ],
+     "states": [
+      "s032",
+      "s033"
+     ]
+    },
+    {
+     "box": [
+      44,
+      55,
+      50,
+      36
+     ],
+     "states": [
+      "s032",
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      54,
+      55,
+      30,
+      36
+     ],
+     "states": [
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      44,
+      57,
+      50,
+      36
+     ],
+     "states": [
+      "s036"
+     ]
+    },
+    {
+     "box": [
+      54,
+      57,
+      30,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      36,
+      57,
+      66,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      46,
+      57,
+      46,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  },
+  {
+   "key": "bub2 @balcon.js:155",
+   "class": "character",
+   "maker": null,
+   "method": "fillRect",
+   "functions": [
+    "bub2"
+   ],
+   "drawCall": "balcon.js:155",
+   "code": "if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}",
+   "sites": [
+    "balcon.js:116"
+   ],
+   "chain": [
+    "bub2@balcon.js:116",
+    "Object.draw@balcon.js:155"
+   ],
+   "clipped": null,
+   "states": [
+    "s000",
+    "s001",
+    "s005",
+    "s032"
+   ],
+   "boxes": [
+    {
+     "box": [
+      96,
+      149,
+      50,
+      36
+     ],
+     "states": [
+      "s001"
+     ]
+    },
+    {
+     "box": [
+      106,
+      108,
+      30,
+      36
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      86,
+      98,
+      30,
+      34
+     ],
+     "states": [
+      "s005"
+     ]
+    },
+    {
+     "box": [
+      136,
+      97,
+      30,
+      36
+     ],
+     "states": [
+      "s032"
+     ]
+    },
+    {
+     "box": [
+      86,
+      100,
+      30,
+      34
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      86,
+      98,
+      30,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      108,
+      99,
+      30,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    },
+    {
+     "box": [
+      98,
+      99,
+      50,
+      36
+     ],
+     "states": [
+      "s000"
+     ]
+    }
+   ]
+  }
+ ],
+ "positionsInFile": [
+  {
+   "at": "balcon.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    9,
+    13
+   ],
+   "what": "VT.n",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    11,
+    17
+   ],
+   "what": "VT.g",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:79",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    7,
+    9
+   ],
+   "what": "VT.p",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    108,
+    132
+   ],
+   "what": "X2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    101,
+    113,
+    127,
+    139
+   ],
+   "what": "X4",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    48,
+    102
+   ],
+   "what": "SILLA",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    148,
+    120
+   ],
+   "what": "SILLITA",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    51,
+    96
+   ],
+   "what": "ABS",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    86
+   ],
+   "what": "PERCH",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:95",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    160,
+    135
+   ],
+   "what": "ASIENTO",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    178,
+    125
+   ],
+   "what": "AB.puerta",
+   "comment": "where abuela stands (her feet)"
+  },
+  {
+   "at": "balcon.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    98,
+    143
+   ],
+   "what": "AB.mesa",
+   "comment": "where abuela stands (her feet)"
+  },
+  {
+   "at": "balcon.js:96",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    94,
+    147
+   ],
+   "what": "AB.lado",
+   "comment": "where abuela stands (her feet)"
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    185,
+    1
+   ],
+   "what": "LUGAR.jardin",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    106,
+    130,
+    0.8
+   ],
+   "what": "LUGAR.balcon",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    141,
+    0.86
+   ],
+   "what": "LUGAR.mesa",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    104,
+    141,
+    0.86
+   ],
+   "what": "LUGAR.junto",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    134,
+    130,
+    0.8
+   ],
+   "what": "LUGAR.decir",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    144,
+    109,
+    0.72
+   ],
+   "what": "LUGAR.silla_pequena",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    150,
+    132,
+    0.8
+   ],
+   "what": "LUGAR.suelo",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    84,
+    129,
+    0.8
+   ],
+   "what": "LUGAR.abuela",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    84,
+    129,
+    0.8
+   ],
+   "what": "LUGAR.silla_grande",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    162,
+    125,
+    0.76
+   ],
+   "what": "LUGAR.puerta",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:97",
+   "fn": null,
+   "kind": "point+",
+   "nums": [
+    106,
+    130,
+    0.8
+   ],
+   "what": "LUGAR.ventana",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:102",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    55,
+    96,
+    34,
+    50
+   ],
+   "what": null,
+   "comment": null
+  },
+  {
+   "at": "balcon.js:105",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    94,
+    124,
+    52,
+    25
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    162,
+    54,
+    32,
+    68
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    178,
+    84
+   ],
+   "what": "hand",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    93,
+    54,
+    54,
+    36
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    120,
+    70
+   ],
+   "what": "hand",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:106",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    42,
+    122,
+    156,
+    34
+   ],
+   "what": "box",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:116",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    2,
+    2
+   ],
+   "what": "c.scale(2,2) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:116",
+   "fn": "bub2",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "bub(c,k,0,0,a) args 2,3",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:121",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.drawImage(…,0,0) [sprite \"bal\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:124",
+   "fn": "dePie",
+   "kind": "rect",
+   "nums": [
+    165,
+    57,
+    24,
+    69
+   ],
+   "what": "c.rect(165,57,24,69) [sprite \"ab\"] args 0,1",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:132",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    8
+   ],
+   "what": "jarra(c,0,8,\"____\") args 1,2",
+   "comment": "she tips the water jug over her own head"
+  },
+  {
+   "at": "balcon.js:136",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    94,
+    125
+   ],
+   "what": "c.drawImage(spr(\"____\",mkMesa),94,125) [sprite \"mesa\"] args 1,2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:139",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    98,
+    157
+   ],
+   "what": "medio(c,98,157,-1) args 1,2",
+   "comment": "the two halves of her fan, on the floor"
+  },
+  {
+   "at": "balcon.js:139",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    110,
+    158
+   ],
+   "what": "medio(c,110,158,1) args 1,2",
+   "comment": "the two halves of her fan, on the floor"
+  },
+  {
+   "at": "balcon.js:153",
+   "fn": "draw",
+   "kind": "point",
+   "nums": [
+    0,
+    0
+   ],
+   "what": "c.fillRect(0,0,SW,SH) args 0,1",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:179",
+   "fn": "hud",
+   "kind": "point",
+   "nums": [
+    5,
+    5
+   ],
+   "what": "tanteo(g,5,5,W.mios||0,\"__\") args 1,2",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:206",
+   "fn": "bebecq",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:209",
+   "fn": "abbebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:213",
+   "fn": "avebebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    60,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    180,
+    54
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    120,
+    42
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    96,
+    64
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:219",
+   "fn": "marcador",
+   "kind": "point",
+   "nums": [
+    150,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:225",
+   "fn": "lleva",
+   "kind": "point+",
+   "nums": [
+    0.4,
+    0.7,
+    1
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:227",
+   "fn": "bebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:245",
+   "fn": "cqbebe",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:246",
+   "fn": "cqhielo",
+   "kind": "point+",
+   "nums": [
+    0.66,
+    0.33,
+    0
+   ],
+   "what": "for(…)",
+   "comment": "he drinks the water, and squirts a little fountain"
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    60,
+    50
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    180,
+    54
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    120,
+    42
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    96,
+    64
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:253",
+   "fn": "fin",
+   "kind": "point",
+   "nums": [
+    150,
+    60
+   ],
+   "what": "pts[]",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    22,
+    0,
+    196,
+    216
+   ],
+   "what": "CAM.wide",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    45,
+    36,
+    127,
+    140
+   ],
+   "what": "CAM.mesa",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "rect",
+   "nums": [
+    35,
+    20,
+    170,
+    187.3
+   ],
+   "what": "CAM.porche",
+   "comment": null
+  },
+  {
+   "at": "balcon.js:262",
+   "fn": null,
+   "kind": "point",
+   "nums": [
+    107,
+    31
+   ],
+   "what": "heartAt",
+   "comment": null
+  }
+ ],
+ "judgments": [
+  "Characters, for the frames without them: rana, dePie, drawAve, bub2, gota (functions) and the lines balcon.js:129, balcon.js:130, balcon.js:131, balcon.js:132, balcon.js:133, balcon.js:134, balcon.js:143, balcon.js:144, balcon.js:145, balcon.js:146, balcon.js:147, balcon.js:148, balcon.js:149, balcon.js:151, balcon.js:152, balcon.js:154, balcon.js:155 (config.mjs CHARS).",
+  "States are grouped without the character keys cq, ab, ave, calor, sudor, abvaso, sobre, splash, vierte, bebiendo, cqfan, fuente and the sign and stamp keys (config.mjs); a thing whose box reads only those keys (movingThings) does not separate states either: its box in every snapshot is in things[id].bySnapshot. The frame of a state shows the characters where the first snapshot of that state had them.",
+  "The frames are the scene's draw() only: juego.js's signs (the big hand, the frame around a thing, stars, the heart, answer bubbles) are not drawn; the views add the scene's hud() as the play screen does.",
+  "Each frame starts with the canvas default imageSmoothingEnabled = true (the old page keeps whatever the last frame left; order 05 found it on by default)."
+ ]
+}
