@@ -1,14 +1,18 @@
 import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:coqui_testing/src/sample_files.dart';
 
 /// Reads a file of the sample course by its path under `sample/` (for example `cuentos/la-lluvia.json`).
 typedef SampleFetch = Future<String> Function(String path);
 
-/// The sample course, read from coqui_testing's assets.
-Future<String> sampleAsset(String path) =>
-    rootBundle.loadString('packages/coqui_testing/sample/$path');
+/// A file of the sample course, exactly as it is in coqui_testing/sample/ (kept as Dart strings in
+/// sample_files.dart, so it reads the same in a test, a dev entry and a web build).
+Future<String> sampleFile(String path) async {
+  final text = sampleFiles[path];
+  if (text == null) throw StateError('no file "$path" in the sample course');
+  return text;
+}
 
 /// The course catalog over the sample course (coqui_testing/sample/, made by coqui/tool/contracts/make_sample.mjs):
 /// La casa (El frente's place), stories 1 to 3 (la-lluvia, el-bizcocho, donde-esta-el-pajaro), the review set
@@ -28,7 +32,7 @@ class FakeCourseCatalog implements CourseCatalog {
     SampleFetch? fetch,
     Map<String, String>? fixedClips,
     List<String>? goodbyeWords,
-  }) : fetch = fetch ?? sampleAsset,
+  }) : fetch = fetch ?? sampleFile,
        fixedClips =
            fixedClips ??
            const {

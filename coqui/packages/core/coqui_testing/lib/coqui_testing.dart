@@ -11,4 +11,5 @@ export 'package:coqui_testing/src/fake_platform.dart';
 export 'package:coqui_testing/src/fake_progress.dart';
 export 'package:coqui_testing/src/fake_services.dart';
 export 'package:coqui_testing/src/fake_speech.dart';
+export 'package:coqui_testing/src/sample_files.dart';
 export 'package:coqui_testing/src/feature_dev_app.dart';

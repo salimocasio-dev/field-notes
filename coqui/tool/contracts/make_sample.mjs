@@ -12,7 +12,12 @@
 //                         No audio. The marks are made up the way juego.js times a line it has no recording
 //                         for (dur(): 360 ms a word + 300 ms): start 0, end and length that.
 //
-// Nothing in historia/ is changed. Run it again when one of those files changes.
+// and packages/core/coqui_testing/lib/src/sample_files.dart: the same files as Dart strings, which is what
+// the fake catalog reads (a dev dependency's assets are left out of a web build, so the dev entries could not
+// read the files themselves). A test checks the strings against the files.
+//
+// Nothing in historia/ is changed. Run it again when one of those files changes, then
+// dart format packages/core/coqui_testing.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -82,5 +87,29 @@ files.forEach((s, k) => {
 });
 if (Object.keys(clips).length !== 20) throw new Error('twenty clips, not ' + Object.keys(clips).length);
 write('audio/clips.json', JSON.stringify(clips, null, 1) + '\n');
+
+// ---------- the same files, as Dart strings ----------
+const dartString = (text) => {
+  let o = "'";
+  for (const ch of text) {
+    const c = ch.codePointAt(0);
+    if (ch === "'" || ch === '\\' || ch === '$') o += '\\' + ch;
+    else if (c < 0x20 || c > 0x7e) o += '\\u{' + c.toString(16) + '}';
+    else o += ch;
+  }
+  return o + "'";
+};
+const listed = [];
+for (const dir of ['cuentos', 'libros', 'datos', 'audio']) {
+  for (const f of fs.readdirSync(path.join(out, dir)).sort()) listed.push(dir + '/' + f);
+}
+let dart =
+  '// Made by coqui/tool/contracts/make_sample.mjs from coqui_testing/sample/. Do not edit by hand.\n' +
+  '// Re-run: cd coqui && node tool/contracts/make_sample.mjs && dart format packages/core/coqui_testing\n\n' +
+  '/// Every file of the sample course, by its path under sample/, exactly as the file is.\n' +
+  'const Map<String, String> sampleFiles = {\n';
+for (const p of listed) dart += `  '${p}': ${dartString(fs.readFileSync(path.join(out, p), 'utf8'))},\n`;
+dart += '};\n';
+fs.writeFileSync(path.join(coqui, 'packages/core/coqui_testing/lib/src/sample_files.dart'), dart);
 
 console.log('sample course: ' + STORIES.length + ' stories, cual-frente, 1 book, ' + Object.keys(clips).length + ' clips, ' + NV.filter((q) => q.s <= 3).length + ' level items');

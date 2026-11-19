@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -319,18 +320,37 @@ void main() {
       expect(await c.linesWith('casa', ['nada']), isEmpty);
     });
 
-    test('the sample files are the old files, byte for byte (checked by make_sample.mjs); every clip is in a story', () async {
-      final texts = <String, String>{};
-      for (final id in ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro']) {
-        final clips = (await c.story(id))['clips'] as Map<String, dynamic>;
-        clips.forEach((k, v) => texts[k] ??= (v as Map)['text'] as String);
-      }
-      for (final id
-          in jsonDecode(await sampleAsset('audio/clips.json')).keys
-              as Iterable<String>) {
-        expect(texts[id], c.clip(id)!.text);
-      }
-    });
+    test(
+      'the sample files are the files in sample/, and every clip is in a story',
+      () async {
+        final onDisk = [
+          for (final f in Directory(
+            'sample',
+          ).listSync(recursive: true).whereType<File>())
+            f.path.substring('sample/'.length),
+        ]..sort();
+        expect(sampleFiles.keys.toList()..sort(), onDisk);
+        for (final p in onDisk) {
+          expect(
+            sampleFiles[p],
+            File('sample/$p').readAsStringSync(),
+            reason: p,
+          );
+        }
+        final texts = <String, String>{};
+        for (final id in ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro']) {
+          final clips = (await c.story(id))['clips'] as Map<String, dynamic>;
+          clips.forEach((k, v) => texts[k] ??= (v as Map)['text'] as String);
+        }
+        final ids = (jsonDecode(
+          await sampleFile('audio/clips.json'),
+        ) as Map<String, dynamic>).keys;
+        expect(ids, hasLength(20));
+        for (final id in ids) {
+          expect(texts[id], c.clip(id)!.text);
+        }
+      },
+    );
   });
 
   group('FakeClipPlayer', () {
