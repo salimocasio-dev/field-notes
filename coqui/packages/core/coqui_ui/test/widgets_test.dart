@@ -62,6 +62,35 @@ void main() {
     });
   });
 
+  group('labels', () {
+    test('the names v=39 hard-codes, as they are on its pages', () {
+      expect(CoquiLabels.appName, 'Coquí');
+      expect(CoquiLabels.library, 'Biblioteca');
+      expect(CoquiLabels.words, 'Palabras');
+      expect(CoquiLabels.map, 'Mapa');
+      expect(CoquiLabels.speak, 'Hablar');
+      expect(CoquiLabels.me, 'Yo');
+      expect(CoquiLabels.reviewTitle, '¿Cuál?');
+      expect(CoquiLabels.review, 'Repaso');
+    });
+    test('the tab bar\'s five tabs read their names from them', () {
+      expect(CoquiTabs.all.map((t) => t.label), [
+        CoquiLabels.library,
+        CoquiLabels.words,
+        CoquiLabels.map,
+        CoquiLabels.speak,
+        CoquiLabels.me,
+      ]);
+      expect(CoquiTabs.all.map((t) => t.id), [
+        'library',
+        'words',
+        'map',
+        'speak',
+        'me',
+      ]);
+    });
+  });
+
   group('icons', () {
     test('every icon\'s path data parses', () {
       for (final icon in [

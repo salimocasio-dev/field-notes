@@ -266,7 +266,7 @@ class _MapScreen extends StatelessWidget {
           bottom: CoquiLayout.tabBarHeight(context) + CoquiMetrics.rise + 16,
           child: TodayCard(
             eyebrow: 'Today · 1 of 6',
-            title: 'Review',
+            title: CoquiLabels.reviewTitle,
             subtitle: '10 words coming back · 6 min',
             onPressed: () {},
           ),
@@ -316,7 +316,7 @@ class _PalabrasScreen extends StatelessWidget {
     selected: CoquiTabs.wordsId,
     body: TabPage(
       children: [
-        const ScreenTitle('Palabras'),
+        const ScreenTitle(CoquiLabels.words),
         CoquiCard(
           child: CoquiRow(
             minHeight: 0,
@@ -325,7 +325,7 @@ class _PalabrasScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Repaso', style: CoquiText.rowBold),
+                    Text(CoquiLabels.review, style: CoquiText.rowBold),
                     Text(
                       '10 words today · about 2 min',
                       style: CoquiText.smallMuted,
@@ -389,7 +389,7 @@ class _BibliotecaScreen extends StatelessWidget {
       selected: CoquiTabs.libraryId,
       body: TabPage(
         children: [
-          const ScreenTitle('Biblioteca'),
+          const ScreenTitle(CoquiLabels.library),
           const SectionTitle('Place one'),
           CoquiCard(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -418,7 +418,7 @@ class _YoScreen extends StatelessWidget {
     selected: CoquiTabs.meId,
     body: TabPage(
       children: [
-        const ScreenTitle('Yo'),
+        const ScreenTitle(CoquiLabels.me),
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Column(
@@ -809,7 +809,9 @@ class _LessonEnd extends StatelessWidget {
         ),
       ),
     ),
-    bottom: [LessonButton(label: 'Back to Palabras', onPressed: () {})],
+    bottom: [
+      LessonButton(label: 'Back to ${CoquiLabels.words}', onPressed: () {}),
+    ],
   );
 }
 
