@@ -147,7 +147,8 @@ The site and the phone builds (order 03; the orchestrator's):
 
 ```
 bash tool/build_sitio.sh <out dir>   # the web app as the live site wants it. COQUI_BUILD=<n> sets the number it shows ("build dev" without)
-node tool/check_sitio.mjs <out dir> [--shot=<png>]   # that build, served at /field-notes/app/, opened in headless Chrome at phone size
+node tool/check_sitio.mjs <out dir> [--shot=<png>]   # order 03's check of the empty app (its "build <n>" text is gone since order 26): that build, served at /field-notes/app/, opened in headless Chrome at phone size
+node tool/check_app.mjs <out dir> --out=<dir>        # order 26: that build at /field-notes/app/ beside the repo's historia/, every tab and lesson on both phone sizes, screenshots, ?perf=1 timings
 bash tool/dry_sitio.sh               # dry run of the "commit to main" step of coqui-sitio.yml, on a local repo
 dart run tool/make_icons.dart        # the placeholder web icons in app/web/ (replaced after order 11)
 bash tool/check_apk.sh key|emulator <apk>   # what coqui-android.yml checks about the debug apk
