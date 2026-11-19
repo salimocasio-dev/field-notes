@@ -12,7 +12,7 @@
 //   &later=1                      the call cannot be placed on this build (call.available is false)
 //   &entry=1                      the Hablar tab has an entry to the voice test
 //   &mic=stub:a|b|...  or  &mic=off   the voice test's scripted recogniser, as habla-prueba.html's ?mic=;
-//                                 &micwait=ms holds each result back that much more
+//                                 &micwait=ms holds each result back that much more, &speechwait=ms the end of speech
 //   &reduce=1                     reduceMotion: nothing animates (as the reference pictures were taken)
 //   &bar=0                        no tab bar under the Hablar tab
 import 'dart:async';
@@ -105,9 +105,12 @@ class DevCall extends ScriptedCall {
 /// The scripted recogniser of coqui_testing, with `micwait` ms more before each result (so a picture can be taken
 /// of "Un momento…", which lasts 120 ms on the fake).
 class DevSpeech implements SpeechListener {
-  DevSpeech(this.fake, this.extraMs);
+  DevSpeech(this.fake, this.extraMs, [this.speechEndMs = 0]);
   final FakeSpeechListener fake;
   final int extraMs;
+
+  /// ms more before the end of speech is reported.
+  final int speechEndMs;
 
   @override
   Future<bool> available() => fake.available();
@@ -123,14 +126,17 @@ class DevSpeech implements SpeechListener {
       limit: limit,
       maxAlternatives: maxAlternatives,
     );
-    return extraMs == 0 ? t : _Slow(t, extraMs);
+    return extraMs == 0 && speechEndMs == 0
+        ? t
+        : _Slow(t, extraMs, speechEndMs);
   }
 }
 
 class _Slow implements SpeechTurn {
-  _Slow(this.inner, this.ms);
+  _Slow(this.inner, this.ms, this.endMs);
   final SpeechTurn inner;
   final int ms;
+  final int endMs;
 
   @override
   Future<SpeechResult> get result async {
@@ -140,7 +146,10 @@ class _Slow implements SpeechTurn {
   }
 
   @override
-  Future<void> get speechEnd => inner.speechEnd;
+  Future<void> get speechEnd async {
+    await inner.speechEnd;
+    await Future<void>.delayed(Duration(milliseconds: endMs));
+  }
 
   @override
   void cancel() => inner.cancel();
@@ -219,6 +228,7 @@ class _SpeakingDevAppState extends State<SpeakingDevApp> {
               mic.startsWith('stub:') ? mic.substring(5) : voiceStubOfPictures,
             ),
       int.tryParse(q['micwait'] ?? '') ?? 0,
+      int.tryParse(q['speechwait'] ?? '') ?? 0,
     );
     final seed = speakingSeeds[q['seed'] ?? 'todo'] ?? speakingSeeds['todo']!;
     services = fakeServices(

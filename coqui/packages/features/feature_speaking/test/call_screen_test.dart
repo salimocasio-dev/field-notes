@@ -396,6 +396,17 @@ void main() {
         for (final word in ['hola', 'gracias', 'bien']) {
           expect(find.text(word), findsOneWidget);
         }
+        // each word is a pill as wide as its word, side by side (not one full-width bar for each)
+        Rect chip(String w) => rectOf(
+          tester,
+          find.ancestor(of: find.text(w), matching: find.byType(DecoratedBox)),
+        );
+        expect(chip('hola').width, lessThan(100));
+        expect(chip('hola').height, 32);
+        expect(
+          (chip('hola').center.dy - chip('gracias').center.dy).abs(),
+          lessThan(2),
+        );
         expect(find.text('Start call'), findsNothing);
         expect(find.text('Help'), findsNothing);
         final back = find.widgetWithText(LessonButton, 'Back to Hablar');

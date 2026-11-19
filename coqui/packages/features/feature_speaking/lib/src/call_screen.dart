@@ -289,11 +289,8 @@ class _CallScreenState extends State<CallScreen> {
     );
   }
 
-  /// `.lchips span`: at least 32 high, 12 px at the sides, a 1.5 px ring, a pill.
-  Widget _chip(String word) => Container(
-    constraints: const BoxConstraints(minHeight: 32),
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    alignment: Alignment.center,
+  /// `.lchips span`: at least 32 high, 12 px at the sides, a 1.5 px ring, a pill; as wide as its word.
+  Widget _chip(String word) => DecoratedBox(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
@@ -301,7 +298,16 @@ class _CallScreenState extends State<CallScreen> {
         width: CoquiLayout.border(context, 1.5),
       ),
     ),
-    child: Text(CallTexts.chip(word), style: CallText.chip),
+    child: ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 32),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Center(
+          widthFactor: 1,
+          child: Text(CallTexts.chip(word), style: CallText.chip),
+        ),
+      ),
+    ),
   );
 
   // ---- portrait ----
