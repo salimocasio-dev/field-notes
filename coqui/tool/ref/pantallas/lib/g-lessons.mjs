@@ -59,7 +59,10 @@ export async function repaso(C) {
       await adv(pg, 70);
     }
     await until(pg, '!!Cual.fin', 60000); await adv(pg, 300);
-    await S(pg, 'fin-a-subir-y-a-repasar', [...s2, '(second and third word missed)', 'touch the right picture on every other ask, the two missed words come back once'], seed);
+    const sEnd = [...s2, '(second and third word missed)', 'touch the right picture on every other ask, the two missed words come back once'];
+    await S(pg, 'fin-a-subir-y-a-repasar', sEnd, seed);
+    await pg.evaluate("{const f=document.getElementById('fin');f.scrollTop=f.scrollHeight;}"); await adv(pg, 100);
+    await S(pg, 'fin-a-subir-y-a-repasar-al-final', [...sEnd, 'scroll the list of words to its end'], seed);
     await pg.context().close();
   }
   {   // one word due: "1 word · about 1 min"
@@ -88,7 +91,10 @@ export async function repaso(C) {
       await adv(pg, 70);
     }
     await until(pg, '!!Cual.fin', 60000); await adv(pg, 300);
-    await S(pg, 'fin-practica', [...st, 'touch the green start disc', 'touch the right picture on every ask but the third and the sixth (touch the wrong one, then the right one)'], seed);
+    const sEnd = [...st, 'touch the green start disc', 'touch the right picture on every ask but the third and the sixth (touch the wrong one, then the right one)'];
+    await S(pg, 'fin-practica', sEnd, seed);
+    await pg.evaluate("{const f=document.getElementById('fin');f.scrollTop=f.scrollHeight;}"); await adv(pg, 100);
+    await S(pg, 'fin-practica-al-final', [...sEnd, 'scroll the list of words to its end'], seed);
     await pg.context().close();
   }
 }

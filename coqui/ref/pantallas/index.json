@@ -105,8 +105,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 90853,
-   "sha256": "12ca12b1fb153f4101abf58650a78e4daeba43640349cb480d777c591d3babe7"
+   "bytes": 90874,
+   "sha256": "feb61fe450b07d0c4d5b741060b2520fc03f21a6d9b708fbb3483fe24df0994b"
   },
   {
    "file": "android-412x915/003-bienvenida-paso-2-60-min.png",
@@ -125,8 +125,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 90789,
-   "sha256": "dc83dd937a3a67a2723363002c1c2c7090a91044a93cabf161cdb28bf843431d"
+   "bytes": 90809,
+   "sha256": "e71c5674988cd41c3476711e92c4266c187ea73df6a2b8bf57dac1a39b12f21d"
   },
   {
    "file": "android-412x915/004-bienvenida-paso-3.png",
@@ -146,8 +146,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 93322,
-   "sha256": "a04c988c97429540dd65369e1b827e8eba65237d4915a34325722f16cc0cb5be"
+   "bytes": 93604,
+   "sha256": "c1f3054d2fea59d9c19f6713c0474c0d7cabd71444baa57773eeef2296ea528e"
   },
   {
    "file": "android-412x915/005-bienvenida-como-funciona-1.png",
@@ -244,8 +244,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 119163,
-   "sha256": "22a2d9bfffe3291ef5128c5d395bf822449e9d4cc66961deda91436a5f26ed1e"
+   "bytes": 119156,
+   "sha256": "b15c9813becfa2e7ccdf13e0450fdbad8b1281f15e2d947d547474dc0052c58e"
   },
   {
    "file": "android-412x915/010-mapa-una-historia-hoy.png",
@@ -262,8 +262,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 117454,
-   "sha256": "0712bc4fcae3f1c185b116a09a4a97134ef49bbd05758e92a89050bfc54ad098"
+   "bytes": 117568,
+   "sha256": "0bd42d5264354c751171d404fd350e2cb1deb2f8c6d9a4793456ed0cd78e7fdd"
   },
   {
    "file": "android-412x915/011-mapa-una-palabra.png",
@@ -280,8 +280,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 118784,
-   "sha256": "3007d5c684072e571918bdf72603689efef69293a14871e186ca0c9dde7e39c6"
+   "bytes": 118777,
+   "sha256": "b6ebf769e63c43290e75d79bfeec9de09542ab294d8aa89c0eb538b53738dc21"
   },
   {
    "file": "android-412x915/012-mapa-a-medio-curso.png",
@@ -298,8 +298,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 121010,
-   "sha256": "c1c5db723912eba196168925cc0f1fa647379252ce67a05ff23425da3d6ee78f"
+   "bytes": 120987,
+   "sha256": "1a1c992b2296e99ed57ff1d7c391b492e2607a419d3e27a1c8eed9db52caffe8"
   },
   {
    "file": "android-412x915/013-mapa-todo-jugado.png",
@@ -316,8 +316,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 116836,
-   "sha256": "a5518507c6a696e08322d2ed1e42fd64e42041b73c4911878532d0fc72b8a1b4"
+   "bytes": 116824,
+   "sha256": "e242f25c83273aeeb5f87fac9d474fff28de9d0a597b9e2d10b603a543205cb7"
   },
   {
    "file": "android-412x915/014-mapa-todo-abierto.png",
@@ -336,8 +336,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 116824,
-   "sha256": "7880ceace6a2b538c5dea3b2cc108d5c4ec8f57b83910c0855a70fd758cf8057"
+   "bytes": 116587,
+   "sha256": "58a53695d892430383305173ce0183db16e51747a248957aae9c67570ab43670"
   },
   {
    "file": "android-412x915/015-lugar-abierto-1-nada-jugado.png",
@@ -451,8 +451,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 107222,
-   "sha256": "964a8b4594c3a3b7e35f8e90c0f654805d484a01d45e189dce87be9609955438"
+   "bytes": 107199,
+   "sha256": "100edab97d9f3f72230de86f797ea88d622d700b95dbb2582cd2aaa1a15fc266"
   },
   {
    "file": "android-412x915/021-lugar-hecho-3.png",
@@ -489,8 +489,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 108832,
-   "sha256": "2b39b7049007ecc4fbd357e2665ddd953c214bfd9b88a2441dcb557a47170672"
+   "bytes": 108809,
+   "sha256": "5e1ae7b41ef423fdac36c22dbd40c0b65013881d2af25d8e13d492ca487ebc38"
   },
   {
    "file": "android-412x915/023-lugar-cerrado-6.png",
@@ -508,8 +508,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 110888,
-   "sha256": "1a5619e5f50da63adbee95bd58043c8f38c15e353df377b8f41ecaf65bc2ce3a"
+   "bytes": 110868,
+   "sha256": "c9ec57e233a6f42b64702e1d796ee8e9fd722cb872743dd6460b634508a4f7bf"
   },
   {
    "file": "android-412x915/024-lugar-cerrado-7.png",
@@ -527,8 +527,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 108033,
-   "sha256": "1f50e9d86cddae9f0c6e4059dc82a77661b7e9fb065767f0e9f833aac7289cb2"
+   "bytes": 108011,
+   "sha256": "bda01b09131e62f69bd782d46dff772d372f40738489d8c54375962e09d1c217"
   },
   {
    "file": "android-412x915/025-lugar-cerrado-8.png",
@@ -546,8 +546,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 109883,
-   "sha256": "9b2194d4f05965ec1bb18b4f2ffbd7460fd463ac75614b469535ac1a9cf2544c"
+   "bytes": 109860,
+   "sha256": "25064bf3d957261aa6bfc086f60d9021783f4f918f83298986472807e69db890"
   },
   {
    "file": "android-412x915/026-lugar-cerrado-9.png",
@@ -565,8 +565,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 111883,
-   "sha256": "ebed91e1384052224296dc2931a0524df8a7c67409ac23583f965c38c7e16407"
+   "bytes": 111860,
+   "sha256": "8b36013a23a8b28ef9b81746bed1c9f741ab13dabcaea113b12849061dc46a04"
   },
   {
    "file": "android-412x915/027-lugar-cerrado-10.png",
@@ -584,8 +584,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 107754,
-   "sha256": "ba418b7a4c31e261bd6b8c8a68de0036febdfbd2302313147656813ed0c28846"
+   "bytes": 107734,
+   "sha256": "12e01c5718ab91cc2d648e0a3d86b800570cb18da8a26239ba4b5e87d4a633c8"
   },
   {
    "file": "android-412x915/028-lugar-sin-construir-4.png",
@@ -605,8 +605,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 100676,
-   "sha256": "e4e83d2f49acc7595178b1fc4638d0cf9687ef643818cc47d7265cdca7bc5894"
+   "bytes": 100677,
+   "sha256": "43e5355f9e777ad48e184838e420c5e602580949ebd3d6862176e16512df3282"
   },
   {
    "file": "android-412x915/029-palabras-nada-jugado.png",
@@ -1077,8 +1077,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 90199,
-   "sha256": "1afa674aec155c98b6db12e282db08ebdd4db8c7b3d5b7de434282c414a8e7c1"
+   "bytes": 90183,
+   "sha256": "b07ead76a6caace93894eccb746f3f74e80d4f0f06971173c9e4e1c5b29374bb"
   },
   {
    "file": "android-412x915/054-libro-primera-pagina-linea-2-luce.png",
@@ -1097,8 +1097,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 90262,
-   "sha256": "192e4044542e2f06ce96306de427b7996e6fddc53b7ae1107820d6c0f460b681"
+   "bytes": 90125,
+   "sha256": "70716ea0e35d8a7549e319b78ca03de2f727f6e0f1500d38c1a263d80b01bd56"
   },
   {
    "file": "android-412x915/055-libro-primera-pagina-en-reposo.png",
@@ -1117,8 +1117,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 88367,
-   "sha256": "3eb5fc9a15baf8943f4deb0c994f30ddfbe0d38bf4b3fb075a4b04491d917b67"
+   "bytes": 88267,
+   "sha256": "b12a4cc309c72f167392ecc179308faf4b3d74826b3f62fe934fafbef9c0a577"
   },
   {
    "file": "android-412x915/056-libro-tarjeta-de-palabra.png",
@@ -1138,8 +1138,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 90718,
-   "sha256": "40a1e4a6c52be139c8c9d38fcdea7785a500ff723dd181bc20b5097c54c47689"
+   "bytes": 90713,
+   "sha256": "aa2857810aa2a0d8dbfcc7abe22413d43317f0f9ed53668e5e6a9ab12427b850"
   },
   {
    "file": "android-412x915/057-libro-pagina-media-linea-luce.png",
@@ -1159,8 +1159,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 78940,
-   "sha256": "8aba9a2aebd1d21d9d7adc42f56ccc2bfc40ee174a821cbba32a596a5da274d2"
+   "bytes": 78934,
+   "sha256": "fdfda064cf46e80502e0637f7b139a1b390e9ed498b0fa7111fa407a875ab0f3"
   },
   {
    "file": "android-412x915/058-libro-pagina-media-en-reposo.png",
@@ -1180,8 +1180,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 77021,
-   "sha256": "b262dd0e2b5d28854008393314c0bc645946257bbf84a90a22ced72a27fe020c"
+   "bytes": 77008,
+   "sha256": "ae58d55444e6c81526ca18e037df47d1e3187c74381add49eb4091a798aeade0"
   },
   {
    "file": "android-412x915/059-libro-texto-grande.png",
@@ -1202,8 +1202,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 75474,
-   "sha256": "779bc6e8ae6b1a46f5e86a19666d1c51b43c15bf977747442fa9f80b6e69bea6"
+   "bytes": 75449,
+   "sha256": "dff9d14545fe643bfa1050275bc2a4395eeda4a524dbf05d024325feed22dd3e"
   },
   {
    "file": "android-412x915/060-libro-ultima-pagina.png",
@@ -1225,8 +1225,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 83325,
-   "sha256": "969ce0fee3b81e7932a5bcdb537a68c7b7639df3f1e320b8e2eeda638eb7ff6d"
+   "bytes": 83346,
+   "sha256": "2da7d776adcdc4422ba3a9d7e36809c9790b13f3d2550e20b0a91ac3c538ffc8"
   },
   {
    "file": "android-412x915/061-libro-cuento-con-dibujos-primera-pagina.png",
@@ -1244,8 +1244,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 51306,
-   "sha256": "c21b75ade7a7923197b497b4e777ca658c433b88708edc4b3491828b7f52be4a"
+   "bytes": 51233,
+   "sha256": "35de6349e04fe13577fade9e6976dee581fe06c9e29f9389c81cf3c394e7d9f0"
   },
   {
    "file": "android-412x915/062-libro-cuento-con-dibujos-pagina-6-linea-del-coqui.png",
@@ -1265,8 +1265,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 73421,
-   "sha256": "d4a5edc47b7184b22210a8a575af090a013e295832dd0b6e8673fa6e74d50044"
+   "bytes": 73384,
+   "sha256": "7f609ec557afde6e734e990bcb19c2951a66184bc374c168a1b8e5e08ea2941e"
   },
   {
    "file": "android-412x915/063-hablar-nada-jugado.png",
@@ -1546,8 +1546,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 118261,
-   "sha256": "134ce0974b491badec4db59b5eeabc3111c36885b1a05dc4e86b34182bd9ba28"
+   "bytes": 118243,
+   "sha256": "238e7f86e471b7689ae964d72aae76cae34e21d8f9a1ac9f59428edf57f860fb"
   },
   {
    "file": "android-412x915/078-palabras-despues-del-nivel.png",
@@ -1815,7 +1815,32 @@
    "sha256": "e61c4f2f4e2a1df999ca5f6be2bb3f6284442f3b2b1f4f0a2af95f23548a5f0f"
   },
   {
-   "file": "android-412x915/091-repaso-inicio-una-palabra.png",
+   "file": "android-412x915/091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+   "device": "android-412x915",
+   "screen": "repaso",
+   "state": "fin-a-subir-y-a-repasar-al-final",
+   "url": "historia/cual.html",
+   "seed": "curso",
+   "steps": [
+    "open historia/cual.html with the stored progress \"curso\" (coqui.palabras.v1 = seeds/curso.json), the clock at 19 Nov 2026 12:00 (Puerto Rico)",
+    "touch the green start disc",
+    "(first word answered right)",
+    "wait until the second sentence ends",
+    "touch the wrong picture",
+    "(second and third word missed)",
+    "touch the right picture on every other ask, the two missed words come back once",
+    "scroll the list of words to its end"
+   ],
+   "orders": [
+    23,
+    20
+   ],
+   "full_page": false,
+   "bytes": 93682,
+   "sha256": "e61c4f2f4e2a1df999ca5f6be2bb3f6284442f3b2b1f4f0a2af95f23548a5f0f"
+  },
+  {
+   "file": "android-412x915/092-repaso-inicio-una-palabra.png",
    "device": "android-412x915",
    "screen": "repaso",
    "state": "inicio-una-palabra",
@@ -1833,7 +1858,7 @@
    "sha256": "8a1ef3d00e1f3d524cd532b8fe88887f546ff388d9ca8cf47375dccaef33c41d"
   },
   {
-   "file": "android-412x915/092-repaso-inicio-practica.png",
+   "file": "android-412x915/093-repaso-inicio-practica.png",
    "device": "android-412x915",
    "screen": "repaso",
    "state": "inicio-practica",
@@ -1851,7 +1876,7 @@
    "sha256": "0afb392b10e8f77ea1893ccf3939fa39cb8bf0dbb25d183f365d76f209833816"
   },
   {
-   "file": "android-412x915/093-repaso-fin-practica.png",
+   "file": "android-412x915/094-repaso-fin-practica.png",
    "device": "android-412x915",
    "screen": "repaso",
    "state": "fin-practica",
@@ -1871,7 +1896,28 @@
    "sha256": "4f9778787215643bd5511d3fedc9cca47131a7b577b931d60c8b70e306b35f4a"
   },
   {
-   "file": "android-412x915/094-nivel-explicacion.png",
+   "file": "android-412x915/095-repaso-fin-practica-al-final.png",
+   "device": "android-412x915",
+   "screen": "repaso",
+   "state": "fin-practica-al-final",
+   "url": "historia/cual.html",
+   "seed": "todo",
+   "steps": [
+    "open historia/cual.html with the stored progress \"todo\" (coqui.palabras.v1 = seeds/todo.json), the clock at 19 Nov 2026 12:00 (Puerto Rico)",
+    "touch the green start disc",
+    "touch the right picture on every ask but the third and the sixth (touch the wrong one, then the right one)",
+    "scroll the list of words to its end"
+   ],
+   "orders": [
+    23,
+    20
+   ],
+   "full_page": false,
+   "bytes": 69926,
+   "sha256": "4f9778787215643bd5511d3fedc9cca47131a7b577b931d60c8b70e306b35f4a"
+  },
+  {
+   "file": "android-412x915/096-nivel-explicacion.png",
    "device": "android-412x915",
    "screen": "nivel",
    "state": "explicacion",
@@ -1889,7 +1935,7 @@
    "sha256": "0d0ec3359642eedcfdb96415b188b93cd4c903daedd5a80ffd2b00e88c2f120d"
   },
   {
-   "file": "android-412x915/095-nivel-pregunta-suena.png",
+   "file": "android-412x915/097-nivel-pregunta-suena.png",
    "device": "android-412x915",
    "screen": "nivel",
    "state": "pregunta-suena",
@@ -1909,7 +1955,7 @@
    "sha256": "b3a82a66d2244a5db1c21d39ac1cf35b865a33e087daffb02cac0e85411f74e5"
   },
   {
-   "file": "android-412x915/096-nivel-pregunta-tocada.png",
+   "file": "android-412x915/098-nivel-pregunta-tocada.png",
    "device": "android-412x915",
    "screen": "nivel",
    "state": "pregunta-tocada",
@@ -1930,7 +1976,7 @@
    "sha256": "f74d3aaf1c9d75726331244434672b2ce1a06c6a3eebb9feece70fa7629de2b9"
   },
   {
-   "file": "android-412x915/097-nivel-resultado-11-historias.png",
+   "file": "android-412x915/099-nivel-resultado-11-historias.png",
    "device": "android-412x915",
    "screen": "nivel",
    "state": "resultado-11-historias",
@@ -1950,7 +1996,7 @@
    "sha256": "359353911c87daafec2c6f1b2c296904457174739db9da39b8c085865c33ab24"
   },
   {
-   "file": "android-412x915/098-nivel-resultado-1-historia.png",
+   "file": "android-412x915/100-nivel-resultado-1-historia.png",
    "device": "android-412x915",
    "screen": "nivel",
    "state": "resultado-1-historia",
@@ -1970,7 +2016,7 @@
    "sha256": "b7cd544e52a506c36040aa560dafe5d7b53e7265c9233c77301dc28ef1acd143"
   },
   {
-   "file": "android-412x915/099-nivel-resultado-desde-el-principio.png",
+   "file": "android-412x915/101-nivel-resultado-desde-el-principio.png",
    "device": "android-412x915",
    "screen": "nivel",
    "state": "resultado-desde-el-principio",
@@ -1990,7 +2036,7 @@
    "sha256": "7fefc34a76f0bdf637e61782dfc510a297d2a34713dd7485f66d7a7d8e71366f"
   },
   {
-   "file": "android-412x915/100-llamada-inicio.png",
+   "file": "android-412x915/102-llamada-inicio.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "inicio",
@@ -2009,7 +2055,7 @@
    "sha256": "4f28c6d6aa59189048c268356643532dfa06b8b81678783408e388141ad8161f"
   },
   {
-   "file": "android-412x915/101-llamada-llamando.png",
+   "file": "android-412x915/103-llamada-llamando.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "llamando",
@@ -2029,7 +2075,7 @@
    "sha256": "39732acee7af619c35aabef756298a539c2e2c160f9ff12483252017e46e6cef"
   },
   {
-   "file": "android-412x915/102-llamada-conectado.png",
+   "file": "android-412x915/104-llamada-conectado.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "conectado",
@@ -2050,7 +2096,7 @@
    "sha256": "887e365015ab0c6634f5959bda1d6485907ac205874b6e6535f3a2dc1919e59d"
   },
   {
-   "file": "android-412x915/103-llamada-danny-habla.png",
+   "file": "android-412x915/105-llamada-danny-habla.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "danny-habla",
@@ -2072,7 +2118,7 @@
    "sha256": "4117d18eff3f1b44dd0682292f04586270f226cf2e7765342d1741e27edd30fc"
   },
   {
-   "file": "android-412x915/104-llamada-tu-turno.png",
+   "file": "android-412x915/106-llamada-tu-turno.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "tu-turno",
@@ -2095,7 +2141,7 @@
    "sha256": "8f0fbdf45545f5ae530d60212f8cd028875bc0380d219af41ae8037e22bd0f02"
   },
   {
-   "file": "android-412x915/105-llamada-tu-turno-hablando.png",
+   "file": "android-412x915/107-llamada-tu-turno-hablando.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "tu-turno-hablando",
@@ -2115,11 +2161,11 @@
     20
    ],
    "full_page": false,
-   "bytes": 49762,
-   "sha256": "62ca14f7390289d51c29d5a91a94d4168d59602593f103b61b397b4ef9c2e73c"
+   "bytes": 49932,
+   "sha256": "6878482d0661b86a9e3273bb7387f0ea1a2ed147b6f44b779d069bd24c7d04cb"
   },
   {
-   "file": "android-412x915/106-llamada-un-momento.png",
+   "file": "android-412x915/108-llamada-un-momento.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "un-momento",
@@ -2144,7 +2190,7 @@
    "sha256": "3b7c5684179c3f11506b5d1b8dff44838e44c9fce5089d29efa82be8e7bcad0c"
   },
   {
-   "file": "android-412x915/107-llamada-lo-que-oyo.png",
+   "file": "android-412x915/109-llamada-lo-que-oyo.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "lo-que-oyo",
@@ -2170,7 +2216,7 @@
    "sha256": "a6ee78c4b43881e83289e876e14d00669f4456e04f3d2ff1aa77ebcb267cbb1a"
   },
   {
-   "file": "android-412x915/108-llamada-danny-con-imagen.png",
+   "file": "android-412x915/110-llamada-danny-con-imagen.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "danny-con-imagen",
@@ -2198,7 +2244,7 @@
    "sha256": "24b70816d07c7ee00e7e43f069a3b76d4c8f8a677d2a7df2819bb02f0809821e"
   },
   {
-   "file": "android-412x915/109-llamada-ayuda.png",
+   "file": "android-412x915/111-llamada-ayuda.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "ayuda",
@@ -2227,7 +2273,7 @@
    "sha256": "f53d977886fac6b1ff8d7c622e52bcadd4a45a41b35068795a4d6d723b745e54"
   },
   {
-   "file": "android-412x915/110-llamada-fin-resumen.png",
+   "file": "android-412x915/112-llamada-fin-resumen.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "fin-resumen",
@@ -2258,7 +2304,7 @@
    "sha256": "d5517aa9ac4abd3fd783971194b9820ad3a665540e1eb15ae79c7df0af8ae03e"
   },
   {
-   "file": "android-412x915/111-llamada-fin-una-palabra.png",
+   "file": "android-412x915/113-llamada-fin-una-palabra.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "fin-una-palabra",
@@ -2281,7 +2327,7 @@
    "sha256": "9bc352dd93354d5906b8267710d9706c7ffb5513801f995645b6937353d851a4"
   },
   {
-   "file": "android-412x915/112-llamada-error-microfono.png",
+   "file": "android-412x915/114-llamada-error-microfono.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "error-microfono",
@@ -2302,7 +2348,7 @@
    "sha256": "e3855acdf3ed44daececb2797b66b41e1fcaa597acfc29e8f50dde1af0c43526"
   },
   {
-   "file": "android-412x915/113-llamada-error-no-empieza.png",
+   "file": "android-412x915/115-llamada-error-no-empieza.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "error-no-empieza",
@@ -2323,7 +2369,7 @@
    "sha256": "e82f1b4eb1be220efc55ddd6690478023b02865873271d31302887154b17506f"
   },
   {
-   "file": "android-412x915/114-llamada-error-biblioteca-de-voz.png",
+   "file": "android-412x915/116-llamada-error-biblioteca-de-voz.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "error-biblioteca-de-voz",
@@ -2344,7 +2390,7 @@
    "sha256": "7983ca2543844191dc037b05ebf80e8ef11796c87118dfb07afcfe311fb7b3be"
   },
   {
-   "file": "android-412x915/115-llamada-llamando-con-movimiento.png",
+   "file": "android-412x915/117-llamada-llamando-con-movimiento.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "llamando-con-movimiento",
@@ -2364,7 +2410,7 @@
    "sha256": "ee0f4724b62e047e7407a04a79f02e16eee8e0ebafb003ce8576c1c787ed2e37"
   },
   {
-   "file": "android-412x915/116-llamada-danny-habla-con-ondas.png",
+   "file": "android-412x915/118-llamada-danny-habla-con-ondas.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "danny-habla-con-ondas",
@@ -2382,11 +2428,11 @@
     20
    ],
    "full_page": false,
-   "bytes": 61011,
-   "sha256": "6425e85f9005a0069505d2791f8a74c72da4227145b3e0ddb3bcf58a961d8a75"
+   "bytes": 60451,
+   "sha256": "68e73f0e4151074919714a149094fd2b1bfc214ee2f3b7c8440ea50fe31e2b1b"
   },
   {
-   "file": "android-412x915/117-llamada-un-momento-con-puntos.png",
+   "file": "android-412x915/119-llamada-un-momento-con-puntos.png",
    "device": "android-412x915",
    "screen": "llamada",
    "state": "un-momento-con-puntos",
@@ -2407,7 +2453,7 @@
    "sha256": "16094ae3b0a5e0409df5d3c585cbdff0079e3a216154193e5a4b90add5ca0810"
   },
   {
-   "file": "android-412x915/118-prueba-de-voz-antes-linea-1.png",
+   "file": "android-412x915/120-prueba-de-voz-antes-linea-1.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "antes-linea-1",
@@ -2425,7 +2471,7 @@
    "sha256": "08a7d47339eef072ee4cc8a1572ec8a3a81c5d4757f76deb2add2494b8d0693d"
   },
   {
-   "file": "android-412x915/119-prueba-de-voz-escuchando.png",
+   "file": "android-412x915/121-prueba-de-voz-escuchando.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "escuchando",
@@ -2444,7 +2490,7 @@
    "sha256": "f4acd1928d85b118a168b38268d13781822284f96048cec331ac63199b757394"
   },
   {
-   "file": "android-412x915/120-prueba-de-voz-un-momento.png",
+   "file": "android-412x915/122-prueba-de-voz-un-momento.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "un-momento",
@@ -2464,7 +2510,7 @@
    "sha256": "b25e05a91e710a2e37333b9298ac9b0f5f50c0a4c360b102e0ea48f07d0eac9d"
   },
   {
-   "file": "android-412x915/121-prueba-de-voz-despues-oido-bien.png",
+   "file": "android-412x915/123-prueba-de-voz-despues-oido-bien.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "despues-oido-bien",
@@ -2481,10 +2527,10 @@
    ],
    "full_page": false,
    "bytes": 37573,
-   "sha256": "8d4419f6221f8bae0eccf53d1f3638ffd510bb203f168a1b90cbac4e63882300"
+   "sha256": "63658f39074c548db3e4852762c2e4a647bfb6a7fa817cc7c89e22aa6cb80368"
   },
   {
-   "file": "android-412x915/122-prueba-de-voz-despues-no-se-oyo.png",
+   "file": "android-412x915/124-prueba-de-voz-despues-no-se-oyo.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "despues-no-se-oyo",
@@ -2502,10 +2548,10 @@
    ],
    "full_page": false,
    "bytes": 32036,
-   "sha256": "3b2e65d453ff9a148569e449b0df8f6495fbfabd67c7a6af50b5b2b92cf43ca0"
+   "sha256": "4ef400ae8c42ffee8446850d89da6b0c6c06d15f04ee6cfce571a8a08df34273"
   },
   {
-   "file": "android-412x915/123-prueba-de-voz-despues-oido-mal.png",
+   "file": "android-412x915/125-prueba-de-voz-despues-oido-mal.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "despues-oido-mal",
@@ -2525,7 +2571,7 @@
    "sha256": "01f4517df58578006955a531857fba0d1455c6f7a2507eafb7f29f32fcbb018d"
   },
   {
-   "file": "android-412x915/124-prueba-de-voz-final.png",
+   "file": "android-412x915/126-prueba-de-voz-final.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "final",
@@ -2544,7 +2590,27 @@
    "sha256": "8c1383e4b6e9f1454678354046b1a2c12f1a7afeb2685c5500711dedc281b315"
   },
   {
-   "file": "android-412x915/125-prueba-de-voz-sin-microfono.png",
+   "file": "android-412x915/127-prueba-de-voz-final-al-final.png",
+   "device": "android-412x915",
+   "screen": "prueba-de-voz",
+   "state": "final-al-final",
+   "url": "historia/habla-prueba.html?mic=stub:hola abuela|none|no/nó|gracias|adios|la caza|puerta|ventana|quiero jugo por favor|me llamo Ana|como estas|uno dos tres",
+   "seed": null,
+   "steps": [
+    "open historia/habla-prueba.html?mic=stub:hola abuela|none|no/nó|gracias|adios|la caza|puerta|ventana|quiero jugo por favor|me llamo Ana|como estas|uno dos tres with nothing stored, the clock at 19 Nov 2026 12:00 (Puerto Rico)",
+    "say all twelve lines: touch the mic disc, then the next arrow, twelve times",
+    "scroll the list of lines to its end"
+   ],
+   "orders": [
+    24,
+    20
+   ],
+   "full_page": false,
+   "bytes": 94741,
+   "sha256": "dec49a72a00027be7501c5345694150b731cea82f3cca09acd38819097a2e0e4"
+  },
+  {
+   "file": "android-412x915/128-prueba-de-voz-sin-microfono.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "sin-microfono",
@@ -2562,7 +2628,7 @@
    "sha256": "45bb41ac1a6cf973a6d5bf0b981b88010c137997c85437ccf0e7bb9dced644c9"
   },
   {
-   "file": "android-412x915/126-prueba-de-voz-escuchando-con-movimiento.png",
+   "file": "android-412x915/129-prueba-de-voz-escuchando-con-movimiento.png",
    "device": "android-412x915",
    "screen": "prueba-de-voz",
    "state": "escuchando-con-movimiento",
@@ -2581,7 +2647,7 @@
    "sha256": "49944bf5e9c2e5824a73df486ccf65a28d639a8e9abb858f6851a100f8eba5e2"
   },
   {
-   "file": "android-412x915/127-cuento-inicio.png",
+   "file": "android-412x915/130-cuento-inicio.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "inicio",
@@ -2599,7 +2665,7 @@
    "sha256": "90f6d5d1f190d87e698b87a969dfd9e93ff37b76b1dbc0ebcfe19384e27ee8c7"
   },
   {
-   "file": "android-412x915/128-cuento-subtitulo-del-narrador.png",
+   "file": "android-412x915/131-cuento-subtitulo-del-narrador.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "subtitulo-del-narrador",
@@ -2619,7 +2685,7 @@
    "sha256": "cf2b7660b7f6349d5ddcb986f65fbaf12b469dfccbd00fc2d42b7b5ce69c3495"
   },
   {
-   "file": "android-412x915/129-cuento-senal-de-tocar.png",
+   "file": "android-412x915/132-cuento-senal-de-tocar.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "senal-de-tocar",
@@ -2639,7 +2705,7 @@
    "sha256": "44f22540247c59fa09981768e4c423c3d1e4ac48a6246428d2bd0b555dce9834"
   },
   {
-   "file": "android-412x915/130-cuento-globo-de-dialogo.png",
+   "file": "android-412x915/133-cuento-globo-de-dialogo.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "globo-de-dialogo",
@@ -2660,7 +2726,7 @@
    "sha256": "febed62f2007fe0831a656555a7af236048cc22b420dcc4a7caceaf56bb15541"
   },
   {
-   "file": "android-412x915/131-cuento-toque-equivocado.png",
+   "file": "android-412x915/134-cuento-toque-equivocado.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "toque-equivocado",
@@ -2682,7 +2748,7 @@
    "sha256": "4ab50745fe680617fd906feaccc0d8c1e7d2fb488e6fb9e8941942e7aacdf594"
   },
   {
-   "file": "android-412x915/132-cuento-senal-despues-del-error.png",
+   "file": "android-412x915/135-cuento-senal-despues-del-error.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "senal-despues-del-error",
@@ -2704,7 +2770,7 @@
    "sha256": "f2d68257396ab6c49dfa05a9ba4781c63a7773df6856b7cdd245f6c6184f290b"
   },
   {
-   "file": "android-412x915/133-cuento-fin-con-un-error.png",
+   "file": "android-412x915/136-cuento-fin-con-un-error.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "fin-con-un-error",
@@ -2726,7 +2792,7 @@
    "sha256": "3d76fa9496e4b90475a927ec2bc5f0bda503f6dd3ab36db65af0d98da9a8a11a"
   },
   {
-   "file": "android-412x915/134-cuento-fin-sin-errores.png",
+   "file": "android-412x915/137-cuento-fin-sin-errores.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "fin-sin-errores",
@@ -2750,7 +2816,7 @@
    "sha256": "6a4b7235a93210e9ee7a96c778821e4d2aa6740c51f6b19ead7c40a132af1ebe"
   },
   {
-   "file": "android-412x915/135-cuento-sin-texto.png",
+   "file": "android-412x915/138-cuento-sin-texto.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "sin-texto",
@@ -2770,7 +2836,7 @@
    "sha256": "1df1f348cceb7aa4ba10dd93b54399f7dbfc1967b469f3c637ba0d122c3d174f"
   },
   {
-   "file": "android-412x915/136-cuento-sin-texto-senal-de-tocar.png",
+   "file": "android-412x915/139-cuento-sin-texto-senal-de-tocar.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "sin-texto-senal-de-tocar",
@@ -2790,7 +2856,7 @@
    "sha256": "8a078fd449d26b435cd56fea62121e83eda94fd6426136e8c7215f980cf00951"
   },
   {
-   "file": "android-412x915/137-cuento-escuchar-en-marcha.png",
+   "file": "android-412x915/140-cuento-escuchar-en-marcha.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "escuchar-en-marcha",
@@ -2810,7 +2876,7 @@
    "sha256": "c20fa2958d28cb086c19e74f6fdf248fbfc7f79e229631607d9be09f37afccb1"
   },
   {
-   "file": "android-412x915/138-cuento-escuchar-fin.png",
+   "file": "android-412x915/141-cuento-escuchar-fin.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "escuchar-fin",
@@ -2830,7 +2896,7 @@
    "sha256": "6eaa220a0e9d60f32e05f3b33aa4e6856cabf0f97ac0faaf4d10d934182c9075"
   },
   {
-   "file": "android-412x915/139-cuento-burbujas-si-no.png",
+   "file": "android-412x915/142-cuento-burbujas-si-no.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "burbujas-si-no",
@@ -2851,7 +2917,7 @@
    "sha256": "6d2ab67d9070d4158c2a6593aa5f9981bdc50d1b0343d02877687edff9c3b65c"
   },
   {
-   "file": "android-412x915/140-cuento-burbujas-con-dibujos.png",
+   "file": "android-412x915/143-cuento-burbujas-con-dibujos.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "burbujas-con-dibujos",
@@ -2872,7 +2938,7 @@
    "sha256": "c74476ff32197f8066f376faacd242ceb099252ac8f1c0a5c940c93a4de4b4a7"
   },
   {
-   "file": "android-412x915/141-cuento-micro-gris-habla-la-app.png",
+   "file": "android-412x915/144-cuento-micro-gris-habla-la-app.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-gris-habla-la-app",
@@ -2893,7 +2959,7 @@
    "sha256": "af33cf7464589aa163260f00d4d6c013da8e22358adffcd706783040c2d79eef"
   },
   {
-   "file": "android-412x915/142-cuento-micro-listo.png",
+   "file": "android-412x915/145-cuento-micro-listo.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-listo",
@@ -2914,7 +2980,7 @@
    "sha256": "49209782c28aed2e6a9686dc577b83cde754e58cc714863fcd55384b920220a8"
   },
   {
-   "file": "android-412x915/143-cuento-micro-escuchando.png",
+   "file": "android-412x915/146-cuento-micro-escuchando.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-escuchando",
@@ -2936,7 +3002,7 @@
    "sha256": "56074a855df72747818666951316a17516ab4afe4060bf5151603acea2052f6f"
   },
   {
-   "file": "android-412x915/144-cuento-micro-un-momento.png",
+   "file": "android-412x915/147-cuento-micro-un-momento.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-un-momento",
@@ -2959,7 +3025,7 @@
    "sha256": "cd306f0ab749ae831df07ca350d34fed13bd38d4b49be330a4827b7adde8824a"
   },
   {
-   "file": "android-412x915/145-cuento-micro-oido.png",
+   "file": "android-412x915/148-cuento-micro-oido.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-oido",
@@ -2982,7 +3048,7 @@
    "sha256": "7c3a7a44ef2d2823dc2a6c19b4f243ae97df36aaf208fdbe9ccc44ed14379a2e"
   },
   {
-   "file": "android-412x915/146-cuento-micro-escuchando-con-movimiento.png",
+   "file": "android-412x915/149-cuento-micro-escuchando-con-movimiento.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-escuchando-con-movimiento",
@@ -3004,7 +3070,7 @@
    "sha256": "707a699584d40bb68e4dd055507119809ba3d6a55b7a20464ffc3116fcbfe283"
   },
   {
-   "file": "android-412x915/147-cuento-micro-un-momento-con-movimiento.png",
+   "file": "android-412x915/150-cuento-micro-un-momento-con-movimiento.png",
    "device": "android-412x915",
    "screen": "cuento",
    "state": "micro-un-momento-con-movimiento",
@@ -3060,8 +3126,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 96235,
-   "sha256": "e6e0ea6f8f73c29a3c8e33daa6bb49b296a4d46e4cf17374dd4b06ca6bf41698"
+   "bytes": 96356,
+   "sha256": "7f827e7b658454e58575605cb1ed084c9ceaf7c592cc48aafdaf3e9f70ec913b"
   },
   {
    "file": "iphone-390x844/003-bienvenida-paso-2-60-min.png",
@@ -3080,8 +3146,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 95645,
-   "sha256": "b42aaa7eef53f32e9f5f13ee5757674ccd2c84215b45468f5fc41afbea22130d"
+   "bytes": 95942,
+   "sha256": "dce920d01da9ddf6e6b24c18caabdf6edd099aff4b1dc218792d2ddf544fd8de"
   },
   {
    "file": "iphone-390x844/004-bienvenida-paso-3.png",
@@ -3101,8 +3167,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 100090,
-   "sha256": "41126f9758eef3aa6a287d79cf0ba8148f9f6aa68bc89928e1223f26ee432c86"
+   "bytes": 100122,
+   "sha256": "4d351313a548e87247f2f1fca4863e444a83a8d8918855e5706efefefdea4a03"
   },
   {
    "file": "iphone-390x844/005-bienvenida-como-funciona-1.png",
@@ -3199,8 +3265,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 129155,
-   "sha256": "f0057304b357989a8dc2f7df1cea11a6d718f5778d2ce10b5506bcf688eaf80e"
+   "bytes": 129162,
+   "sha256": "3f7b49283664b9b5db5cfb661ffeb9b77731210c5a2a868710762c1b7de3ffb7"
   },
   {
    "file": "iphone-390x844/010-mapa-una-historia-hoy.png",
@@ -3217,8 +3283,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 126360,
-   "sha256": "a6a2608051721646b2dec23c9fc910ccfc48a4ed41414e5702d8464326fa2ea2"
+   "bytes": 126359,
+   "sha256": "9acb353ea4bf3371bdda2eeb31fb4887e2eb85d083a3ebfc81c1ddf2f991044d"
   },
   {
    "file": "iphone-390x844/011-mapa-una-palabra.png",
@@ -3235,8 +3301,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 128186,
-   "sha256": "4a6914cbb29c8dc54abeb7648c5c00468e0a460d5673f45c4850170a4b47d256"
+   "bytes": 128185,
+   "sha256": "892da7d9b38b858dcd9c1b4aaea45c937e0c75cad7e5a2228455e9f37e82c564"
   },
   {
    "file": "iphone-390x844/012-mapa-a-medio-curso.png",
@@ -3253,8 +3319,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 130106,
-   "sha256": "87ec07c9ee01da432b3e0a567d93479c4a3f2316343d86bf7a66f9e8f4ac101a"
+   "bytes": 130093,
+   "sha256": "710af94f16d21edd662ef70bad7fdd1aa0b5780cf0c5b9946c5598dfc2ffe1fc"
   },
   {
    "file": "iphone-390x844/013-mapa-todo-jugado.png",
@@ -3271,8 +3337,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 126125,
-   "sha256": "b45ce7b4bb38dbfceab9ffd3602056f47698bbfecb6bf9270fbbaceb4d477cd8"
+   "bytes": 126133,
+   "sha256": "883eb117631d0c623f1b7f7914493a8131578857e772e8c139d1fce1f6cfee7d"
   },
   {
    "file": "iphone-390x844/014-mapa-todo-abierto.png",
@@ -3291,8 +3357,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 125373,
-   "sha256": "bf4f2710bcc07cbc3f05faf43bfdb66e7ab3fd708e4ab867c5c340ccc717c752"
+   "bytes": 125267,
+   "sha256": "b194bb57f3581ef53d87d920a0a7992c5f9fc1a290aeccbf03938f5fae09243a"
   },
   {
    "file": "iphone-390x844/015-lugar-abierto-1-nada-jugado.png",
@@ -3406,8 +3472,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 115702,
-   "sha256": "c2414b13441a2109946977a36f24630a2b9c6aae5600c6f1705872c73329cb00"
+   "bytes": 115689,
+   "sha256": "5bc38c639f452f1611be782f9fb5fd675c28b7794b6f7f0ec21cc5d7e766fb09"
   },
   {
    "file": "iphone-390x844/021-lugar-hecho-3.png",
@@ -3444,8 +3510,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 115955,
-   "sha256": "207f37d527026c23cbdcbe49be1b8350b94875464ac045e315633d4b4002daaa"
+   "bytes": 115941,
+   "sha256": "57d963782304ee01c38a6dc6b0b8172eb7c35c3694e9e1add3a5f594c5884cf7"
   },
   {
    "file": "iphone-390x844/023-lugar-cerrado-6.png",
@@ -3463,8 +3529,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 119901,
-   "sha256": "d55351e836728e5ba0d6c829196fd403d1b000fffbdbb8bca37bc92f7c94869f"
+   "bytes": 119888,
+   "sha256": "1c77a4266359ae17bea0b89dbe71c9f9b5d9109316288194f7f067b4c229de8c"
   },
   {
    "file": "iphone-390x844/024-lugar-cerrado-7.png",
@@ -3482,8 +3548,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 116030,
-   "sha256": "8434029475bc1da9890066b8d2724031b68199ce234f48317bf553c8581bf5d8"
+   "bytes": 116016,
+   "sha256": "59c6060a2d630cd9efabb96eabe0600520c66e46abbbecc57988adda3b1aada2"
   },
   {
    "file": "iphone-390x844/025-lugar-cerrado-8.png",
@@ -3501,8 +3567,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 117264,
-   "sha256": "bddbd048bc66dd1837f28185b3a64bcabe0bba1901ec25f29a808d67d372737b"
+   "bytes": 117250,
+   "sha256": "4427558f788b9d894790aaaeefecdca9726f49091913540455ab05a9db6c9181"
   },
   {
    "file": "iphone-390x844/026-lugar-cerrado-9.png",
@@ -3520,8 +3586,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 119734,
-   "sha256": "f2eb7a48169fd63abbf724f11d1d09a262c76ae238a001921a18bc0fa8f361d2"
+   "bytes": 119721,
+   "sha256": "2047925071e82c3b16d32a790e08051550ee9a54dba7d74f5e0ab1cd37d68651"
   },
   {
    "file": "iphone-390x844/027-lugar-cerrado-10.png",
@@ -3539,8 +3605,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 115557,
-   "sha256": "74cf82f52c83049fca477e8fb8cd2147b26d26e76de0e05dd5b3ed9b53da2e04"
+   "bytes": 115544,
+   "sha256": "01adf3d5fdebf045d1dbe31fee06e8038b68483a1fee97b569af9d704367399b"
   },
   {
    "file": "iphone-390x844/028-lugar-sin-construir-4.png",
@@ -3560,8 +3626,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 107285,
-   "sha256": "256a102a72298764132ec61be9cfa4483d4145964d67298cbbc6ef6111296905"
+   "bytes": 107366,
+   "sha256": "6ec283f0c1857981732ce195d4c45b8609f7e6662c645177c25f1a73f1e6fd5d"
   },
   {
    "file": "iphone-390x844/029-palabras-nada-jugado.png",
@@ -3939,8 +4005,8 @@
     20
    ],
    "full_page": true,
-   "bytes": 1034358,
-   "sha256": "9d58f480368fd04ed8995377beb7e4fa7ffd86183b4bf085733a1bbcc866d007"
+   "bytes": 1034106,
+   "sha256": "137704c0a429f603fde228470fb13f62fe0068e61099fbe0ff80e66c0d0872aa"
   },
   {
    "file": "iphone-390x844/049-biblioteca-todo-jugado.png",
@@ -4501,8 +4567,8 @@
     20
    ],
    "full_page": false,
-   "bytes": 127111,
-   "sha256": "8bb41e664211e24eabd6b434d542c1f24dcf5e3a21aca1436f17fa0edd1a4563"
+   "bytes": 127095,
+   "sha256": "0ac061d985ebff691ed70508bc14642739a3171dda1a0f3434ca1796f2724329"
   },
   {
    "file": "iphone-390x844/078-palabras-despues-del-nivel.png",
@@ -4770,7 +4836,32 @@
    "sha256": "d685d5264ba4036d31c1299b099ce59b72ac4d3c496e517e01239d4f00fa70c9"
   },
   {
-   "file": "iphone-390x844/091-repaso-inicio-una-palabra.png",
+   "file": "iphone-390x844/091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+   "device": "iphone-390x844",
+   "screen": "repaso",
+   "state": "fin-a-subir-y-a-repasar-al-final",
+   "url": "historia/cual.html",
+   "seed": "curso",
+   "steps": [
+    "open historia/cual.html with the stored progress \"curso\" (coqui.palabras.v1 = seeds/curso.json), the clock at 19 Nov 2026 12:00 (Puerto Rico)",
+    "touch the green start disc",
+    "(first word answered right)",
+    "wait until the second sentence ends",
+    "touch the wrong picture",
+    "(second and third word missed)",
+    "touch the right picture on every other ask, the two missed words come back once",
+    "scroll the list of words to its end"
+   ],
+   "orders": [
+    23,
+    20
+   ],
+   "full_page": false,
+   "bytes": 98663,
+   "sha256": "9efad39ef48a4e258f0452b191aad0d6a8f14a4c81e39afa92f11ac8c0f630bf"
+  },
+  {
+   "file": "iphone-390x844/092-repaso-inicio-una-palabra.png",
    "device": "iphone-390x844",
    "screen": "repaso",
    "state": "inicio-una-palabra",
@@ -4788,7 +4879,7 @@
    "sha256": "2cc3b2668ce3c8e315b284c5071f32a3c7a7b6309496115517ad9226d13e34e2"
   },
   {
-   "file": "iphone-390x844/092-repaso-inicio-practica.png",
+   "file": "iphone-390x844/093-repaso-inicio-practica.png",
    "device": "iphone-390x844",
    "screen": "repaso",
    "state": "inicio-practica",
@@ -4806,7 +4897,7 @@
    "sha256": "0fc0a6d9a9175801e1ac808ec6e782848e4b4a8653014b93c33c2a408ae4ace3"
   },
   {
-   "file": "iphone-390x844/093-repaso-fin-practica.png",
+   "file": "iphone-390x844/094-repaso-fin-practica.png",
    "device": "iphone-390x844",
    "screen": "repaso",
    "state": "fin-practica",
@@ -4826,7 +4917,28 @@
    "sha256": "a7a31d0ad06e281fad1e55def2e31223126d417c9870ad28f27db3ad89a15403"
   },
   {
-   "file": "iphone-390x844/094-nivel-explicacion.png",
+   "file": "iphone-390x844/095-repaso-fin-practica-al-final.png",
+   "device": "iphone-390x844",
+   "screen": "repaso",
+   "state": "fin-practica-al-final",
+   "url": "historia/cual.html",
+   "seed": "todo",
+   "steps": [
+    "open historia/cual.html with the stored progress \"todo\" (coqui.palabras.v1 = seeds/todo.json), the clock at 19 Nov 2026 12:00 (Puerto Rico)",
+    "touch the green start disc",
+    "touch the right picture on every ask but the third and the sixth (touch the wrong one, then the right one)",
+    "scroll the list of words to its end"
+   ],
+   "orders": [
+    23,
+    20
+   ],
+   "full_page": false,
+   "bytes": 74055,
+   "sha256": "80d42380c434969027b5b1a6cac7248a2f851a4c52af64d5a05cacf207c82b47"
+  },
+  {
+   "file": "iphone-390x844/096-nivel-explicacion.png",
    "device": "iphone-390x844",
    "screen": "nivel",
    "state": "explicacion",
@@ -4844,7 +4956,7 @@
    "sha256": "7e03c67eae5b1a8753e7630467db9ed0aa9ca630338b27867b868775c48d6002"
   },
   {
-   "file": "iphone-390x844/095-nivel-pregunta-suena.png",
+   "file": "iphone-390x844/097-nivel-pregunta-suena.png",
    "device": "iphone-390x844",
    "screen": "nivel",
    "state": "pregunta-suena",
@@ -4864,7 +4976,7 @@
    "sha256": "366b9c6fe0970166f1934ddc015d943d1e83dbf9dfbaac1450d75f385df21bb9"
   },
   {
-   "file": "iphone-390x844/096-nivel-pregunta-tocada.png",
+   "file": "iphone-390x844/098-nivel-pregunta-tocada.png",
    "device": "iphone-390x844",
    "screen": "nivel",
    "state": "pregunta-tocada",
@@ -4885,7 +4997,7 @@
    "sha256": "4192ffc2880c9516dee25e292a45582d677f62a265c8fc620ade395ee7232a9f"
   },
   {
-   "file": "iphone-390x844/097-nivel-resultado-11-historias.png",
+   "file": "iphone-390x844/099-nivel-resultado-11-historias.png",
    "device": "iphone-390x844",
    "screen": "nivel",
    "state": "resultado-11-historias",
@@ -4905,7 +5017,7 @@
    "sha256": "f2c35232af99877c7baeb13778edf9e622cf225906b199444aff85075edb6f99"
   },
   {
-   "file": "iphone-390x844/098-nivel-resultado-1-historia.png",
+   "file": "iphone-390x844/100-nivel-resultado-1-historia.png",
    "device": "iphone-390x844",
    "screen": "nivel",
    "state": "resultado-1-historia",
@@ -4925,7 +5037,7 @@
    "sha256": "efc7ea008468691f9004b97662828182bdb6e1d8e0a15f46e686b02ef862db6f"
   },
   {
-   "file": "iphone-390x844/099-nivel-resultado-desde-el-principio.png",
+   "file": "iphone-390x844/101-nivel-resultado-desde-el-principio.png",
    "device": "iphone-390x844",
    "screen": "nivel",
    "state": "resultado-desde-el-principio",
@@ -4945,7 +5057,7 @@
    "sha256": "bc058f747cfb6fa7cf4fd6af3d19313b88d2874a8f70f71a09769d50f9765c3e"
   },
   {
-   "file": "iphone-390x844/100-llamada-inicio.png",
+   "file": "iphone-390x844/102-llamada-inicio.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "inicio",
@@ -4964,7 +5076,7 @@
    "sha256": "956b63ca28ad9689c779d1806d13d5eea10e536d2d245ae67431381a72131bed"
   },
   {
-   "file": "iphone-390x844/101-llamada-llamando.png",
+   "file": "iphone-390x844/103-llamada-llamando.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "llamando",
@@ -4984,7 +5096,7 @@
    "sha256": "3cf46e9a8ad13d12e8695d69fec54b5d0ae8b9184a5b573e5185ee030017f875"
   },
   {
-   "file": "iphone-390x844/102-llamada-conectado.png",
+   "file": "iphone-390x844/104-llamada-conectado.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "conectado",
@@ -5005,7 +5117,7 @@
    "sha256": "05e4e7dad23ea149ae9e701cbdd984576fd754b983fcb1b3fee43587925c027d"
   },
   {
-   "file": "iphone-390x844/103-llamada-danny-habla.png",
+   "file": "iphone-390x844/105-llamada-danny-habla.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "danny-habla",
@@ -5027,7 +5139,7 @@
    "sha256": "0078f13bf1c29c1db4001030ea46aeeacf6b77177d973fc4b0113fe4fc0254ee"
   },
   {
-   "file": "iphone-390x844/104-llamada-tu-turno.png",
+   "file": "iphone-390x844/106-llamada-tu-turno.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "tu-turno",
@@ -5050,7 +5162,7 @@
    "sha256": "9b6f05aa7a719292fcdea7c720ced4ce27d611cbe83a92ff43af9aa9c48cbb20"
   },
   {
-   "file": "iphone-390x844/105-llamada-tu-turno-hablando.png",
+   "file": "iphone-390x844/107-llamada-tu-turno-hablando.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "tu-turno-hablando",
@@ -5070,11 +5182,11 @@
     20
    ],
    "full_page": false,
-   "bytes": 55088,
-   "sha256": "8bcbf2ab82d02430c437c6d1b51a863c7c51f197b99e5fe787293bf2509b6c0b"
+   "bytes": 55075,
+   "sha256": "98eeea7f41d568bdb6bb1284d7f4518e7e12cb83a8adf83abd8ea76b7d153097"
   },
   {
-   "file": "iphone-390x844/106-llamada-un-momento.png",
+   "file": "iphone-390x844/108-llamada-un-momento.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "un-momento",
@@ -5099,7 +5211,7 @@
    "sha256": "65f833f2645222b9dd1f62936d8a4169f7764effe1b053c63e5349c9019c093c"
   },
   {
-   "file": "iphone-390x844/107-llamada-lo-que-oyo.png",
+   "file": "iphone-390x844/109-llamada-lo-que-oyo.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "lo-que-oyo",
@@ -5125,7 +5237,7 @@
    "sha256": "52ec226c7c2220846ca8c10ffd0662af2fec7c9fc41e12515f07b3f9a576c47e"
   },
   {
-   "file": "iphone-390x844/108-llamada-danny-con-imagen.png",
+   "file": "iphone-390x844/110-llamada-danny-con-imagen.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "danny-con-imagen",
@@ -5153,7 +5265,7 @@
    "sha256": "37e3e4121185be2f450cd1f98851fb42bf81245fd95542523c5719298b8fd9d4"
   },
   {
-   "file": "iphone-390x844/109-llamada-ayuda.png",
+   "file": "iphone-390x844/111-llamada-ayuda.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "ayuda",
@@ -5182,7 +5294,7 @@
    "sha256": "6c031145e3a68137b8ad309ddf261dbb395320bd4c8196fb5ebdafac46d90521"
   },
   {
-   "file": "iphone-390x844/110-llamada-fin-resumen.png",
+   "file": "iphone-390x844/112-llamada-fin-resumen.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "fin-resumen",
@@ -5213,7 +5325,7 @@
    "sha256": "3b0b51a46dbdb2d5d3075040ad930a1ca4c1ddfacdb1142f6331f07c0a33d0fb"
   },
   {
-   "file": "iphone-390x844/111-llamada-fin-una-palabra.png",
+   "file": "iphone-390x844/113-llamada-fin-una-palabra.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "fin-una-palabra",
@@ -5236,7 +5348,7 @@
    "sha256": "270d0eb7aa622a86e51e3e4644b1457fe99fbb2023987997dd794bcd71e55750"
   },
   {
-   "file": "iphone-390x844/112-llamada-error-microfono.png",
+   "file": "iphone-390x844/114-llamada-error-microfono.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "error-microfono",
@@ -5257,7 +5369,7 @@
    "sha256": "55b65e32e040b247fab8efe37aa9336d222dda3e01667f9637c955e4c42a8552"
   },
   {
-   "file": "iphone-390x844/113-llamada-error-no-empieza.png",
+   "file": "iphone-390x844/115-llamada-error-no-empieza.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "error-no-empieza",
@@ -5278,7 +5390,7 @@
    "sha256": "3b7ebafc231d1b1869d4b49ed1e28d81f404f1e9caf2ff5fa6992763a32c3879"
   },
   {
-   "file": "iphone-390x844/114-llamada-error-biblioteca-de-voz.png",
+   "file": "iphone-390x844/116-llamada-error-biblioteca-de-voz.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "error-biblioteca-de-voz",
@@ -5299,7 +5411,7 @@
    "sha256": "59c41a68d7d6a24268865160f9d65fa019545047c7867c1c53431f6030f5374e"
   },
   {
-   "file": "iphone-390x844/115-llamada-llamando-con-movimiento.png",
+   "file": "iphone-390x844/117-llamada-llamando-con-movimiento.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "llamando-con-movimiento",
@@ -5319,7 +5431,7 @@
    "sha256": "41b71d6f5126e5dfc1c2748d78f42cb0d35bc2ff1246c7d0117e61d75b29e0a2"
   },
   {
-   "file": "iphone-390x844/116-llamada-danny-habla-con-ondas.png",
+   "file": "iphone-390x844/118-llamada-danny-habla-con-ondas.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "danny-habla-con-ondas",
@@ -5337,11 +5449,11 @@
     20
    ],
    "full_page": false,
-   "bytes": 64548,
-   "sha256": "bbfed0dfdb940147dd87f2378295ab64fbea7235a035f3076b109bce33c6f206"
+   "bytes": 65075,
+   "sha256": "bdcb5b68f16a16ab8b14801591e8b21fdc2d7904c684be07fedbc1927e00a7cf"
   },
   {
-   "file": "iphone-390x844/117-llamada-un-momento-con-puntos.png",
+   "file": "iphone-390x844/119-llamada-un-momento-con-puntos.png",
    "device": "iphone-390x844",
    "screen": "llamada",
    "state": "un-momento-con-puntos",
@@ -5362,7 +5474,7 @@
    "sha256": "d1e19cd4a6c05d8cd5aaa19cd8271ed5d1d4a3888b53e6f6d0b40b57a677e00c"
   },
   {
-   "file": "iphone-390x844/118-prueba-de-voz-antes-linea-1.png",
+   "file": "iphone-390x844/120-prueba-de-voz-antes-linea-1.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "antes-linea-1",
@@ -5380,7 +5492,7 @@
    "sha256": "0f78c83fd7835f848b67bd160b5fa3b0f96e822d1bd23059618fcc36b686e94d"
   },
   {
-   "file": "iphone-390x844/119-prueba-de-voz-escuchando.png",
+   "file": "iphone-390x844/121-prueba-de-voz-escuchando.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "escuchando",
@@ -5399,7 +5511,7 @@
    "sha256": "2d4d961a9af7bb57a990921d3421d73bf33997c4c0d19dba86b59c4ab73f42ea"
   },
   {
-   "file": "iphone-390x844/120-prueba-de-voz-un-momento.png",
+   "file": "iphone-390x844/122-prueba-de-voz-un-momento.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "un-momento",
@@ -5419,7 +5531,7 @@
    "sha256": "aca5be6cf521851fc6e02c36db0a78375a0f5dc3a3323bea7512a621b85cb366"
   },
   {
-   "file": "iphone-390x844/121-prueba-de-voz-despues-oido-bien.png",
+   "file": "iphone-390x844/123-prueba-de-voz-despues-oido-bien.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "despues-oido-bien",
@@ -5435,11 +5547,11 @@
     20
    ],
    "full_page": false,
-   "bytes": 42054,
-   "sha256": "dba026b98d6e75cf485d5c99dac1df29d28324603ccd396922ba4487b1edb57d"
+   "bytes": 42058,
+   "sha256": "a925c263399e3d9d4996a83801884eb2890a1586c19c2063d1a4084c4f25c7f0"
   },
   {
-   "file": "iphone-390x844/122-prueba-de-voz-despues-no-se-oyo.png",
+   "file": "iphone-390x844/124-prueba-de-voz-despues-no-se-oyo.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "despues-no-se-oyo",
@@ -5460,7 +5572,7 @@
    "sha256": "9b4d31bb167b21011e559d6bc49386d51fe5dd9e7c9ad4c7b174ac28dd8768fa"
   },
   {
-   "file": "iphone-390x844/123-prueba-de-voz-despues-oido-mal.png",
+   "file": "iphone-390x844/125-prueba-de-voz-despues-oido-mal.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "despues-oido-mal",
@@ -5476,11 +5588,11 @@
     20
    ],
    "full_page": false,
-   "bytes": 39585,
-   "sha256": "0ae6e86de6f78ea90a39db649007341cd96fc668afd6c4e4f5ef6a0434fb9c62"
+   "bytes": 39589,
+   "sha256": "ddd38d53861312cd0ee21fa3e0d9192bb4c5fd4bf43047bec3b9ebb9e1d7f88f"
   },
   {
-   "file": "iphone-390x844/124-prueba-de-voz-final.png",
+   "file": "iphone-390x844/126-prueba-de-voz-final.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "final",
@@ -5499,7 +5611,27 @@
    "sha256": "9313e5927357b67b25e3604e71a09a1fc34ea6847ab779f6a3b0110423668c9b"
   },
   {
-   "file": "iphone-390x844/125-prueba-de-voz-sin-microfono.png",
+   "file": "iphone-390x844/127-prueba-de-voz-final-al-final.png",
+   "device": "iphone-390x844",
+   "screen": "prueba-de-voz",
+   "state": "final-al-final",
+   "url": "historia/habla-prueba.html?mic=stub:hola abuela|none|no/nó|gracias|adios|la caza|puerta|ventana|quiero jugo por favor|me llamo Ana|como estas|uno dos tres",
+   "seed": null,
+   "steps": [
+    "open historia/habla-prueba.html?mic=stub:hola abuela|none|no/nó|gracias|adios|la caza|puerta|ventana|quiero jugo por favor|me llamo Ana|como estas|uno dos tres with nothing stored, the clock at 19 Nov 2026 12:00 (Puerto Rico)",
+    "say all twelve lines: touch the mic disc, then the next arrow, twelve times",
+    "scroll the list of lines to its end"
+   ],
+   "orders": [
+    24,
+    20
+   ],
+   "full_page": false,
+   "bytes": 104431,
+   "sha256": "d046e1734fa5d0f2561204e4472678dad801af08c4f33fd5aae6b58e945e99de"
+  },
+  {
+   "file": "iphone-390x844/128-prueba-de-voz-sin-microfono.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "sin-microfono",
@@ -5517,7 +5649,7 @@
    "sha256": "13f731468b081408804169c03d4a684ceddcb4355b6dd4089c95761c4fd52cfa"
   },
   {
-   "file": "iphone-390x844/126-prueba-de-voz-escuchando-con-movimiento.png",
+   "file": "iphone-390x844/129-prueba-de-voz-escuchando-con-movimiento.png",
    "device": "iphone-390x844",
    "screen": "prueba-de-voz",
    "state": "escuchando-con-movimiento",
@@ -5536,7 +5668,7 @@
    "sha256": "6644e3c1d8fec19dbade94ba555c279a1a83f3afd458592c8ddbc792ef66e2aa"
   },
   {
-   "file": "iphone-390x844/127-cuento-inicio.png",
+   "file": "iphone-390x844/130-cuento-inicio.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "inicio",
@@ -5554,7 +5686,7 @@
    "sha256": "8a2ebf9734e66eccf69e347cbcc1e7f6e1e7510390277ae2bf9cea18523854a3"
   },
   {
-   "file": "iphone-390x844/128-cuento-subtitulo-del-narrador.png",
+   "file": "iphone-390x844/131-cuento-subtitulo-del-narrador.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "subtitulo-del-narrador",
@@ -5574,7 +5706,7 @@
    "sha256": "de224c845626da5a61268394a76b64a29965621400f03009651ba57d8c38af4a"
   },
   {
-   "file": "iphone-390x844/129-cuento-senal-de-tocar.png",
+   "file": "iphone-390x844/132-cuento-senal-de-tocar.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "senal-de-tocar",
@@ -5594,7 +5726,7 @@
    "sha256": "0c036aa430e02a56cc54c8e6fb97ec10cdb7e1cc7b3ba85f9c5c3bc85189013f"
   },
   {
-   "file": "iphone-390x844/130-cuento-globo-de-dialogo.png",
+   "file": "iphone-390x844/133-cuento-globo-de-dialogo.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "globo-de-dialogo",
@@ -5615,7 +5747,7 @@
    "sha256": "5122c0bd6e40176663c8ce322f368f54d38090e7e95a2d333f315bc314100868"
   },
   {
-   "file": "iphone-390x844/131-cuento-toque-equivocado.png",
+   "file": "iphone-390x844/134-cuento-toque-equivocado.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "toque-equivocado",
@@ -5637,7 +5769,7 @@
    "sha256": "b395032610f13aaf880ae4410f4d5529b8f643a0afb6cabd3608c1076a6bc953"
   },
   {
-   "file": "iphone-390x844/132-cuento-senal-despues-del-error.png",
+   "file": "iphone-390x844/135-cuento-senal-despues-del-error.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "senal-despues-del-error",
@@ -5659,7 +5791,7 @@
    "sha256": "3bf03c1cee403869c0ace17cc0839f75cecf3598501d0a7a035ca191086b6a88"
   },
   {
-   "file": "iphone-390x844/133-cuento-fin-con-un-error.png",
+   "file": "iphone-390x844/136-cuento-fin-con-un-error.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "fin-con-un-error",
@@ -5681,7 +5813,7 @@
    "sha256": "c5d87736deae0e47d30982ce3f8bdf9c24b55b2f7b6232b0b1785b8a4871a4d8"
   },
   {
-   "file": "iphone-390x844/134-cuento-fin-sin-errores.png",
+   "file": "iphone-390x844/137-cuento-fin-sin-errores.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "fin-sin-errores",
@@ -5705,7 +5837,7 @@
    "sha256": "864b955425efca5245aabfcddabbee7b37ceada8f14886132da961f6bc85459c"
   },
   {
-   "file": "iphone-390x844/135-cuento-sin-texto.png",
+   "file": "iphone-390x844/138-cuento-sin-texto.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "sin-texto",
@@ -5725,7 +5857,7 @@
    "sha256": "74a128da971a51118d1396498c9ebdbdd734019592b02338d5f2d319f16eafd4"
   },
   {
-   "file": "iphone-390x844/136-cuento-sin-texto-senal-de-tocar.png",
+   "file": "iphone-390x844/139-cuento-sin-texto-senal-de-tocar.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "sin-texto-senal-de-tocar",
@@ -5745,7 +5877,7 @@
    "sha256": "e028fe9bc32bbfbae339949b130114e31e02861ec16d9351a9bea5c91140cf5d"
   },
   {
-   "file": "iphone-390x844/137-cuento-escuchar-en-marcha.png",
+   "file": "iphone-390x844/140-cuento-escuchar-en-marcha.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "escuchar-en-marcha",
@@ -5765,7 +5897,7 @@
    "sha256": "a7f9378eb94b86bdab62ed52f8cf080cc3f7f7412a3c149d05d7eb1acb7791ef"
   },
   {
-   "file": "iphone-390x844/138-cuento-escuchar-fin.png",
+   "file": "iphone-390x844/141-cuento-escuchar-fin.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "escuchar-fin",
@@ -5785,7 +5917,7 @@
    "sha256": "583fd0b4c21aba7a1ea23e0d09f684ba57544465f62577e183540b294da6a28f"
   },
   {
-   "file": "iphone-390x844/139-cuento-burbujas-si-no.png",
+   "file": "iphone-390x844/142-cuento-burbujas-si-no.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "burbujas-si-no",
@@ -5806,7 +5938,7 @@
    "sha256": "33e71653b4f91db8d8f3950872253aa2d4f5f75f21b2cd748147c652ca79b2e4"
   },
   {
-   "file": "iphone-390x844/140-cuento-burbujas-con-dibujos.png",
+   "file": "iphone-390x844/143-cuento-burbujas-con-dibujos.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "burbujas-con-dibujos",
@@ -5827,7 +5959,7 @@
    "sha256": "c4f66a688fe8764f2c9d3b09cd0ce7d8fc0e71eab504fd84de93966d6b1bb141"
   },
   {
-   "file": "iphone-390x844/141-cuento-micro-gris-habla-la-app.png",
+   "file": "iphone-390x844/144-cuento-micro-gris-habla-la-app.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-gris-habla-la-app",
@@ -5848,7 +5980,7 @@
    "sha256": "0985376364b7ebedfbc46fbb13d2d7bf898e4d65297bdd2d2852fa5684f714c7"
   },
   {
-   "file": "iphone-390x844/142-cuento-micro-listo.png",
+   "file": "iphone-390x844/145-cuento-micro-listo.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-listo",
@@ -5869,7 +6001,7 @@
    "sha256": "28c13147a0c4faa2898bd48349497d9497d54260a7b2f8609cbd379da51b5ad0"
   },
   {
-   "file": "iphone-390x844/143-cuento-micro-escuchando.png",
+   "file": "iphone-390x844/146-cuento-micro-escuchando.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-escuchando",
@@ -5891,7 +6023,7 @@
    "sha256": "2d3db31b737f501e4f00af7bc6fcb2f6ac2ee69ba507311cdb921c73b1ae4549"
   },
   {
-   "file": "iphone-390x844/144-cuento-micro-un-momento.png",
+   "file": "iphone-390x844/147-cuento-micro-un-momento.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-un-momento",
@@ -5914,7 +6046,7 @@
    "sha256": "571e37cf4de0f8088a292a99e64e3b9a6fd364ee32c07d4f57229b1d165a9c32"
   },
   {
-   "file": "iphone-390x844/145-cuento-micro-oido.png",
+   "file": "iphone-390x844/148-cuento-micro-oido.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-oido",
@@ -5934,10 +6066,10 @@
    ],
    "full_page": false,
    "bytes": 47638,
-   "sha256": "faa3b3d578143c8034bf3075aabe088f978d61520bb00f45b35a5511fc87c437"
+   "sha256": "ec70ae5cf259ac373bd0dce1fbf323517741d2f131c46e5c7c66fa294c117070"
   },
   {
-   "file": "iphone-390x844/146-cuento-micro-escuchando-con-movimiento.png",
+   "file": "iphone-390x844/149-cuento-micro-escuchando-con-movimiento.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-escuchando-con-movimiento",
@@ -5959,7 +6091,7 @@
    "sha256": "372a705924f86e15a46040ee96f120018e3671b9c9946b7992828ee60e32911e"
   },
   {
-   "file": "iphone-390x844/147-cuento-micro-un-momento-con-movimiento.png",
+   "file": "iphone-390x844/150-cuento-micro-un-momento-con-movimiento.png",
    "device": "iphone-390x844",
    "screen": "cuento",
    "state": "micro-un-momento-con-movimiento",

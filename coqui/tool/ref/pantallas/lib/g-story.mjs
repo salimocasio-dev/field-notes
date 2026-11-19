@@ -136,11 +136,9 @@ export async function micro(C) {
     if (!motion) await S(pg, 'micro-listo', [...st, 'wait until the mic is ready (green disc, white mic; the bubble holds a mic)'], mo);
     await tap(pg, '#mic');
     await until(pg, `Story.hab.est==='listening'`, 2000, 70); await adv(pg, 70);
-    if (motion) await freeze(pg, 600);
-    await S(pg, 'micro-escuchando' + tag, [...st, 'wait until the mic is ready', 'touch the mic'], mo);
+    await S(pg, 'micro-escuchando' + tag, [...st, 'wait until the mic is ready', 'touch the mic'], motion ? { motion: true, freeze: 600 } : mo);
     await until(pg, `Story.hab.est==='processing'`, 3000, 70);   // the dots show for 0.12 s of the stub's own time: no step after it
-    if (motion) await freeze(pg, 300);
-    await S(pg, 'micro-un-momento' + tag, [...st, 'wait until the mic is ready', 'touch the mic', 'wait: he has spoken, the app is thinking (three dots)'], mo);
+    await S(pg, 'micro-un-momento' + tag, [...st, 'wait until the mic is ready', 'touch the mic', 'wait: he has spoken, the app is thinking (three dots)'], motion ? { motion: true, freeze: 300 } : mo);
     if (!motion) {
       await until(pg, `Story.hab.est==='ok'`, 3000, 70); await adv(pg, 70);
       await S(pg, 'micro-oido', [...st, 'wait until the mic is ready', 'touch the mic', 'wait: the stub hears "si"'], mo);

@@ -68,7 +68,7 @@ export const INIT = `
 const initSeed = (json) => `try{if(!localStorage.getItem('coqui.palabras.v1')){localStorage.setItem('coqui.palabras.v1',${JSON.stringify(json)});}}catch(e){}`;
 
 export async function launch() {
-  return chromium.launch({ args: ['--mute-audio', '--autoplay-policy=no-user-gesture-required'] });
+  return chromium.launch({ args: ['--mute-audio', '--autoplay-policy=no-user-gesture-required', '--disable-threaded-animation', ...(process.env.PANTALLAS_CHROME_FLAGS || '').split(' ').filter(Boolean)] });
 }
 
 // a new phone context and page: the clock paused at T0 + 1 s (it moves only when `adv` says so), storage seeded with the given palabras.v1 JSON (a string) if any
@@ -84,6 +84,9 @@ export async function newPage(browser, dev, { seed = null, routes = null, extraI
   if (routes) await routes(pg, ctx);
   await pg.clock.install({ time: T0 });
   await pg.clock.pauseAt(T0 + 1000);
+  // performance.now() of the fake clock starts a few real milliseconds late and so differs by 1 to 3 ms from one load to the next (Date.now() does not): it is made
+  // Date.now() - T0, exact, so that what depends on it (the map frog's bob, the call's rings and ring thickness, a speaking turn) is the same every run. Added after the clock's own script.
+  await pg.addInitScript(`(() => { const f = () => Date.now() - ${T0}; try { Object.defineProperty(performance, 'now', { value: f, configurable: true, writable: true }); } catch (e) { try { performance.now = f; } catch (e2) {} } })();`);
   return pg;
 }
 
@@ -136,6 +139,15 @@ const VISIBLE_TEXT = `() => {
   return out;
 }`;
 
+// Chromium rasterises a page a little differently from one load to the next (a few pixels of anti-aliasing on icons and shadows). Hiding the root element and showing it
+// again, just before the picture, makes it build the page from scratch the same way every time (tested: 14 of 14 identical where 2 of 7 were not). The scroll positions
+// of the page and of every scrolling box are put back by hand; CSS animations start again at 0, so a picture with motion pins them after this (opts.freeze).
+const CANON = `() => {
+  const sc = [...document.querySelectorAll('*')].filter(e => e.scrollTop || e.scrollLeft).map(e => [e, e.scrollTop, e.scrollLeft]), wx = scrollX, wy = scrollY, d = document.documentElement;
+  d.style.display = 'none'; void d.offsetHeight; d.style.display = ''; void d.offsetHeight;
+  sc.forEach(([e, t, l]) => { e.scrollTop = t; e.scrollLeft = l; }); scrollTo(wx, wy);
+}`;
+
 export class Recorder {
   constructor(dev, sink) { this.dev = dev; this.n = 0; this.items = []; this.sink = sink; }
   // screen, state: the words of the file name. meta: { url, steps[], orders[], seed }. The picture is of the page's viewport, or, with full: true, of the whole
@@ -153,6 +165,10 @@ export class Recorder {
       await pg.evaluate('scrollTo(0,0)');
       await untilReal(pg, 'document.documentElement.scrollHeight===innerHeight');
     }
+    await pg.evaluate(`(${CANON})()`);
+    await untilReal(pg, 'document.readyState==="complete"');
+    await new Promise(r => setTimeout(r, 80));
+    if (opts.freeze != null) { await pg.evaluate(t => document.getAnimations().forEach(a => { a.pause(); a.currentTime = t; }), opts.freeze); await new Promise(r => setTimeout(r, 250)); }   // the compositor takes the paused time a frame or two later
     const buf = await pg.screenshot({ animations: opts.motion ? 'allow' : 'disabled', caret: 'hide', scale: 'device', type: 'png' });
     const text = await pg.evaluate(`(${VISIBLE_TEXT})()`);
     if (opts.full) { await pg.setViewportSize({ width: this.dev.w, height: this.dev.h }); await untilReal(pg, `innerHeight===${this.dev.h}`); }

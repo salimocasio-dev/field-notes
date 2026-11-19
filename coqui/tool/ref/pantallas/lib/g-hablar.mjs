@@ -98,12 +98,12 @@ export async function llamadaMovimiento(C) {
   const pg = await openCall(C, seed, '?tab=hablar&callstub=1&stub=manual', true);
   const base = [open(seed, url) + ', prefers-reduced-motion off, animations pinned at 0.6 s', 'touch the green call disc of "Call Danny / La casa"', 'touch the call disc'];
   await tap(pg, '#llam .ldisc');
-  await untilReal(pg, `Llamada.estado==='connecting'&&!!CallStub.opts`); await adv(pg, 100); await freeze(pg, 450);
-  await C.shot(pg, 'llamada', 'llamando-con-movimiento', { url, seed, orders: SPEAK, steps: base }, { motion: true });
-  await go(pg, 'connect'); await go(pg, 'danny1'); await adv(pg, 1200); await freeze(pg, 600);
-  await C.shot(pg, 'llamada', 'danny-habla-con-ondas', { url, seed, orders: SPEAK, steps: [...base, 'CallStub.go("connect")', 'CallStub.go("danny1") and 1.2 s'] }, { motion: true });
-  await go(pg, 'you1'); await go(pg, 'talk1'); await adv(pg, 700); await go(pg, 'quiet1'); await until(pg, `Llamada.estado==='proc'`, 5000); await adv(pg, 100); await freeze(pg, 300);
-  await C.shot(pg, 'llamada', 'un-momento-con-puntos', { url, seed, orders: SPEAK, steps: [...base, 'CallStub.go("connect"), ("danny1"), ("you1"), ("talk1"), ("quiet1")'] }, { motion: true });
+  await untilReal(pg, `Llamada.estado==='connecting'&&!!CallStub.opts`); await adv(pg, 100);
+  await C.shot(pg, 'llamada', 'llamando-con-movimiento', { url, seed, orders: SPEAK, steps: base }, { motion: true, freeze: 450 });
+  await go(pg, 'connect'); await go(pg, 'danny1'); await adv(pg, 1200);
+  await C.shot(pg, 'llamada', 'danny-habla-con-ondas', { url, seed, orders: SPEAK, steps: [...base, 'CallStub.go("connect")', 'CallStub.go("danny1") and 1.2 s'] }, { motion: true, freeze: 600 });
+  await go(pg, 'you1'); await go(pg, 'talk1'); await adv(pg, 700); await go(pg, 'quiet1'); await until(pg, `Llamada.estado==='proc'`, 5000); await adv(pg, 100);
+  await C.shot(pg, 'llamada', 'un-momento-con-puntos', { url, seed, orders: SPEAK, steps: [...base, 'CallStub.go("connect"), ("danny1"), ("you1"), ("talk1"), ("quiet1")'] }, { motion: true, freeze: 300 });
   await pg.context().close();
 }
 
@@ -137,7 +137,10 @@ export async function pruebaDeVoz(C) {
   }
   await tap(pg, '#next'); await adv(pg, 100);
   await untilReal(pg, `document.getElementById('app').dataset.s==='end'`);
-  await S(pg, 'final', [fresh, 'say all twelve lines: touch the mic disc, then the next arrow, twelve times']);
+  const sFin = [fresh, 'say all twelve lines: touch the mic disc, then the next arrow, twelve times'];
+  await S(pg, 'final', sFin);
+  await pg.evaluate("{const f=document.getElementById('finscroll');f.scrollTop=f.scrollHeight;}"); await adv(pg, 100);
+  await S(pg, 'final-al-final', [...sFin, 'scroll the list of lines to its end']);
   await pg.context().close();
 
   // the microphone cannot be used: ?mic=off
@@ -153,7 +156,7 @@ export async function pruebaDeVoz(C) {
   await pg3.goto(`${C.base}/${url}`);
   await untilReal(pg3, `document.getElementById('app').dataset.s==='ready'`);
   await tap(pg3, '#mic');
-  await until(pg3, `document.getElementById('app').dataset.s==='listen'`, 2000); await adv(pg3, 70); await freeze(pg3, 700);
-  await C.shot(pg3, 'prueba-de-voz', 'escuchando-con-movimiento', { url, seed: null, steps: [fresh + ', prefers-reduced-motion off, animations pinned at 0.7 s', 'touch the mic disc'], orders: SPEAK }, { motion: true });
+  await until(pg3, `document.getElementById('app').dataset.s==='listen'`, 2000); await adv(pg3, 70);
+  await C.shot(pg3, 'prueba-de-voz', 'escuchando-con-movimiento', { url, seed: null, steps: [fresh + ', prefers-reduced-motion off, animations pinned at 0.7 s', 'touch the mic disc'], orders: SPEAK }, { motion: true, freeze: 700 });
   await pg3.context().close();
 }

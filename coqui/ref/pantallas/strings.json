@@ -35,7 +35,7 @@
     "013-mapa-todo-jugado.png",
     "014-mapa-todo-abierto.png"
    ],
-   "count": 88,
+   "count": 92,
    "note": null
   },
   {
@@ -80,7 +80,7 @@
     "005-bienvenida-como-funciona-1.png",
     "006-bienvenida-como-funciona-1-al-final.png"
    ],
-   "count": 126,
+   "count": 128,
    "note": null
   },
   {
@@ -581,11 +581,11 @@
     "018-lugar-abierto-2-a-medias.png",
     "050-biblioteca-todo-jugado-pagina-entera.png",
     "060-libro-ultima-pagina.png",
-    "124-prueba-de-voz-final.png",
-    "125-prueba-de-voz-sin-microfono.png",
-    "018-lugar-abierto-2-a-medias.png"
+    "126-prueba-de-voz-final.png",
+    "127-prueba-de-voz-final-al-final.png",
+    "128-prueba-de-voz-sin-microfono.png"
    ],
-   "count": 10,
+   "count": 12,
    "note": null
   },
   {
@@ -1669,11 +1669,11 @@
    "from": "cual.js",
    "pictures": [
     "083-repaso-inicio.png",
-    "091-repaso-inicio-una-palabra.png",
-    "092-repaso-inicio-practica.png",
+    "092-repaso-inicio-una-palabra.png",
+    "093-repaso-inicio-practica.png",
     "083-repaso-inicio.png",
-    "091-repaso-inicio-una-palabra.png",
-    "092-repaso-inicio-practica.png"
+    "092-repaso-inicio-una-palabra.png",
+    "093-repaso-inicio-practica.png"
    ],
    "count": 6,
    "note": null
@@ -1684,9 +1684,9 @@
    "from": "cual.js",
    "pictures": [
     "083-repaso-inicio.png",
-    "092-repaso-inicio-practica.png",
+    "093-repaso-inicio-practica.png",
     "083-repaso-inicio.png",
-    "092-repaso-inicio-practica.png"
+    "093-repaso-inicio-practica.png"
    ],
    "count": 4,
    "note": null
@@ -1696,8 +1696,8 @@
    "regex": true,
    "from": "cual.js, singular",
    "pictures": [
-    "091-repaso-inicio-una-palabra.png",
-    "091-repaso-inicio-una-palabra.png"
+    "092-repaso-inicio-una-palabra.png",
+    "092-repaso-inicio-una-palabra.png"
    ],
    "count": 2,
    "note": null
@@ -1711,10 +1711,10 @@
     "081-yo-despues-del-nivel-pagina-entera.png",
     "082-yo-despues-del-nivel-1-historia.png",
     "090-repaso-fin-a-subir-y-a-repasar.png",
-    "093-repaso-fin-practica.png",
-    "081-yo-despues-del-nivel-pagina-entera.png"
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "094-repaso-fin-practica.png"
    ],
-   "count": 9,
+   "count": 11,
    "note": null
   },
   {
@@ -1723,9 +1723,10 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
     "090-repaso-fin-a-subir-y-a-repasar.png"
    ],
-   "count": 2,
+   "count": 3,
    "note": null
   },
   {
@@ -1734,9 +1735,10 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
     "090-repaso-fin-a-subir-y-a-repasar.png"
    ],
-   "count": 2,
+   "count": 3,
    "note": null
   },
   {
@@ -1744,10 +1746,11 @@
    "regex": true,
    "from": "cual.js (practice)",
    "pictures": [
-    "093-repaso-fin-practica.png",
-    "093-repaso-fin-practica.png"
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "094-repaso-fin-practica.png"
    ],
-   "count": 2,
+   "count": 3,
    "note": null
   },
   {
@@ -1755,10 +1758,11 @@
    "regex": true,
    "from": "cual.js (practice)",
    "pictures": [
-    "093-repaso-fin-practica.png",
-    "093-repaso-fin-practica.png"
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "094-repaso-fin-practica.png"
    ],
-   "count": 2,
+   "count": 3,
    "note": null
   },
   {
@@ -1767,9 +1771,10 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
     "090-repaso-fin-a-subir-y-a-repasar.png"
    ],
-   "count": 2,
+   "count": 3,
    "note": null
   },
   {
@@ -1778,9 +1783,11 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
-    "090-repaso-fin-a-subir-y-a-repasar.png"
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
    ],
-   "count": 2,
+   "count": 4,
    "note": null
   },
   {
@@ -1789,9 +1796,11 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
-    "090-repaso-fin-a-subir-y-a-repasar.png"
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
    ],
-   "count": 2,
+   "count": 4,
    "note": null
   },
   {
@@ -1800,9 +1809,11 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
-    "090-repaso-fin-a-subir-y-a-repasar.png"
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "090-repaso-fin-a-subir-y-a-repasar.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
    ],
-   "count": 2,
+   "count": 4,
    "note": null
   },
   {
@@ -1810,10 +1821,11 @@
    "regex": false,
    "from": "cual.js (practice)",
    "pictures": [
-    "093-repaso-fin-practica.png",
-    "093-repaso-fin-practica.png"
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "094-repaso-fin-practica.png"
    ],
-   "count": 2,
+   "count": 3,
    "note": null
   },
   {
@@ -1821,9 +1833,11 @@
    "regex": false,
    "from": "cual.js (practice)",
    "pictures": [
-    "093-repaso-fin-practica.png"
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
+    "095-repaso-fin-practica-al-final.png"
    ],
-   "count": 1,
+   "count": 3,
    "note": null
   },
   {
@@ -1832,11 +1846,13 @@
    "from": "cual.js",
    "pictures": [
     "090-repaso-fin-a-subir-y-a-repasar.png",
-    "093-repaso-fin-practica.png",
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png",
+    "094-repaso-fin-practica.png",
+    "095-repaso-fin-practica-al-final.png",
     "090-repaso-fin-a-subir-y-a-repasar.png",
-    "093-repaso-fin-practica.png"
+    "091-repaso-fin-a-subir-y-a-repasar-al-final.png"
    ],
-   "count": 4,
+   "count": 8,
    "note": null
   },
   {
@@ -1874,8 +1890,8 @@
    "regex": true,
    "from": "nivel.js",
    "pictures": [
-    "094-nivel-explicacion.png",
-    "094-nivel-explicacion.png"
+    "096-nivel-explicacion.png",
+    "096-nivel-explicacion.png"
    ],
    "count": 2,
    "note": null
@@ -1885,12 +1901,12 @@
    "regex": false,
    "from": "nivel.js",
    "pictures": [
-    "097-nivel-resultado-11-historias.png",
-    "098-nivel-resultado-1-historia.png",
-    "099-nivel-resultado-desde-el-principio.png",
-    "097-nivel-resultado-11-historias.png",
-    "098-nivel-resultado-1-historia.png",
-    "099-nivel-resultado-desde-el-principio.png"
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png",
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png"
    ],
    "count": 6,
    "note": null
@@ -1900,8 +1916,8 @@
    "regex": true,
    "from": "nivel.js",
    "pictures": [
-    "097-nivel-resultado-11-historias.png",
-    "097-nivel-resultado-11-historias.png"
+    "099-nivel-resultado-11-historias.png",
+    "099-nivel-resultado-11-historias.png"
    ],
    "count": 2,
    "note": null
@@ -1911,8 +1927,8 @@
    "regex": false,
    "from": "nivel.js, singular",
    "pictures": [
-    "098-nivel-resultado-1-historia.png",
-    "098-nivel-resultado-1-historia.png"
+    "100-nivel-resultado-1-historia.png",
+    "100-nivel-resultado-1-historia.png"
    ],
    "count": 2,
    "note": null
@@ -1922,8 +1938,8 @@
    "regex": false,
    "from": "nivel.js",
    "pictures": [
-    "099-nivel-resultado-desde-el-principio.png",
-    "099-nivel-resultado-desde-el-principio.png"
+    "101-nivel-resultado-desde-el-principio.png",
+    "101-nivel-resultado-desde-el-principio.png"
    ],
    "count": 2,
    "note": null
@@ -1933,12 +1949,12 @@
    "regex": false,
    "from": "nivel.js",
    "pictures": [
-    "097-nivel-resultado-11-historias.png",
-    "098-nivel-resultado-1-historia.png",
-    "099-nivel-resultado-desde-el-principio.png",
-    "097-nivel-resultado-11-historias.png",
-    "098-nivel-resultado-1-historia.png",
-    "099-nivel-resultado-desde-el-principio.png"
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png",
+    "099-nivel-resultado-11-historias.png",
+    "100-nivel-resultado-1-historia.png",
+    "101-nivel-resultado-desde-el-principio.png"
    ],
    "count": 6,
    "note": null
@@ -1952,8 +1968,8 @@
     "017-lugar-hecho-1-al-final.png",
     "018-lugar-abierto-2-a-medias.png",
     "021-lugar-hecho-3.png",
-    "133-cuento-fin-con-un-error.png",
-    "134-cuento-fin-sin-errores.png"
+    "136-cuento-fin-con-un-error.png",
+    "137-cuento-fin-sin-errores.png"
    ],
    "count": 14,
    "note": null
@@ -1963,10 +1979,10 @@
    "regex": false,
    "from": "juego.js",
    "pictures": [
-    "133-cuento-fin-con-un-error.png",
-    "134-cuento-fin-sin-errores.png",
-    "133-cuento-fin-con-un-error.png",
-    "134-cuento-fin-sin-errores.png"
+    "136-cuento-fin-con-un-error.png",
+    "137-cuento-fin-sin-errores.png",
+    "136-cuento-fin-con-un-error.png",
+    "137-cuento-fin-sin-errores.png"
    ],
    "count": 4,
    "note": null
@@ -1991,12 +2007,12 @@
    "regex": false,
    "from": "index.html",
    "pictures": [
-    "118-prueba-de-voz-antes-linea-1.png",
-    "119-prueba-de-voz-escuchando.png",
-    "120-prueba-de-voz-un-momento.png",
-    "126-prueba-de-voz-escuchando-con-movimiento.png",
-    "141-cuento-micro-gris-habla-la-app.png",
-    "142-cuento-micro-listo.png"
+    "120-prueba-de-voz-antes-linea-1.png",
+    "121-prueba-de-voz-escuchando.png",
+    "122-prueba-de-voz-un-momento.png",
+    "129-prueba-de-voz-escuchando-con-movimiento.png",
+    "144-cuento-micro-gris-habla-la-app.png",
+    "145-cuento-micro-listo.png"
    ],
    "count": 22,
    "note": null
@@ -2007,11 +2023,11 @@
    "from": "index.html",
    "pictures": [
     "083-repaso-inicio.png",
-    "091-repaso-inicio-una-palabra.png",
-    "092-repaso-inicio-practica.png",
-    "094-nivel-explicacion.png",
-    "100-llamada-inicio.png",
-    "127-cuento-inicio.png"
+    "092-repaso-inicio-una-palabra.png",
+    "093-repaso-inicio-practica.png",
+    "096-nivel-explicacion.png",
+    "102-llamada-inicio.png",
+    "130-cuento-inicio.png"
    ],
    "count": 12,
    "note": null
@@ -2021,8 +2037,8 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "100-llamada-inicio.png",
-    "100-llamada-inicio.png"
+    "102-llamada-inicio.png",
+    "102-llamada-inicio.png"
    ],
    "count": 2,
    "note": null
@@ -2032,10 +2048,10 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "101-llamada-llamando.png",
-    "115-llamada-llamando-con-movimiento.png",
-    "101-llamada-llamando.png",
-    "115-llamada-llamando-con-movimiento.png"
+    "103-llamada-llamando.png",
+    "117-llamada-llamando-con-movimiento.png",
+    "103-llamada-llamando.png",
+    "117-llamada-llamando-con-movimiento.png"
    ],
    "count": 4,
    "note": null
@@ -2060,10 +2076,10 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "104-llamada-tu-turno.png",
-    "105-llamada-tu-turno-hablando.png",
-    "104-llamada-tu-turno.png",
-    "105-llamada-tu-turno-hablando.png"
+    "106-llamada-tu-turno.png",
+    "107-llamada-tu-turno-hablando.png",
+    "106-llamada-tu-turno.png",
+    "107-llamada-tu-turno-hablando.png"
    ],
    "count": 4,
    "note": null
@@ -2073,12 +2089,12 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "106-llamada-un-momento.png",
-    "107-llamada-lo-que-oyo.png",
-    "117-llamada-un-momento-con-puntos.png",
-    "106-llamada-un-momento.png",
-    "107-llamada-lo-que-oyo.png",
-    "117-llamada-un-momento-con-puntos.png"
+    "108-llamada-un-momento.png",
+    "109-llamada-lo-que-oyo.png",
+    "119-llamada-un-momento-con-puntos.png",
+    "108-llamada-un-momento.png",
+    "109-llamada-lo-que-oyo.png",
+    "119-llamada-un-momento-con-puntos.png"
    ],
    "count": 6,
    "note": null
@@ -2088,12 +2104,12 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "102-llamada-conectado.png",
-    "103-llamada-danny-habla.png",
-    "104-llamada-tu-turno.png",
-    "105-llamada-tu-turno-hablando.png",
-    "106-llamada-un-momento.png",
-    "107-llamada-lo-que-oyo.png"
+    "104-llamada-conectado.png",
+    "105-llamada-danny-habla.png",
+    "106-llamada-tu-turno.png",
+    "107-llamada-tu-turno-hablando.png",
+    "108-llamada-un-momento.png",
+    "109-llamada-lo-que-oyo.png"
    ],
    "count": 20,
    "note": null
@@ -2103,8 +2119,8 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "109-llamada-ayuda.png",
-    "109-llamada-ayuda.png"
+    "111-llamada-ayuda.png",
+    "111-llamada-ayuda.png"
    ],
    "count": 2,
    "note": null
@@ -2114,10 +2130,10 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "110-llamada-fin-resumen.png",
-    "111-llamada-fin-una-palabra.png",
-    "110-llamada-fin-resumen.png",
-    "111-llamada-fin-una-palabra.png"
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png",
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png"
    ],
    "count": 4,
    "note": null
@@ -2127,8 +2143,8 @@
    "regex": true,
    "from": "llamada.js",
    "pictures": [
-    "110-llamada-fin-resumen.png",
-    "110-llamada-fin-resumen.png"
+    "112-llamada-fin-resumen.png",
+    "112-llamada-fin-resumen.png"
    ],
    "count": 2,
    "note": null
@@ -2138,8 +2154,8 @@
    "regex": true,
    "from": "llamada.js, singular",
    "pictures": [
-    "111-llamada-fin-una-palabra.png",
-    "111-llamada-fin-una-palabra.png"
+    "113-llamada-fin-una-palabra.png",
+    "113-llamada-fin-una-palabra.png"
    ],
    "count": 2,
    "note": null
@@ -2149,10 +2165,10 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "110-llamada-fin-resumen.png",
-    "111-llamada-fin-una-palabra.png",
-    "110-llamada-fin-resumen.png",
-    "111-llamada-fin-una-palabra.png"
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png",
+    "112-llamada-fin-resumen.png",
+    "113-llamada-fin-una-palabra.png"
    ],
    "count": 4,
    "note": null
@@ -2162,8 +2178,8 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "112-llamada-error-microfono.png",
-    "112-llamada-error-microfono.png"
+    "114-llamada-error-microfono.png",
+    "114-llamada-error-microfono.png"
    ],
    "count": 2,
    "note": null
@@ -2173,8 +2189,8 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "113-llamada-error-no-empieza.png",
-    "113-llamada-error-no-empieza.png"
+    "115-llamada-error-no-empieza.png",
+    "115-llamada-error-no-empieza.png"
    ],
    "count": 2,
    "note": null
@@ -2184,8 +2200,8 @@
    "regex": false,
    "from": "llamada.js",
    "pictures": [
-    "114-llamada-error-biblioteca-de-voz.png",
-    "114-llamada-error-biblioteca-de-voz.png"
+    "116-llamada-error-biblioteca-de-voz.png",
+    "116-llamada-error-biblioteca-de-voz.png"
    ],
    "count": 2,
    "note": null
@@ -2195,12 +2211,12 @@
    "regex": false,
    "from": "habla-prueba.html",
    "pictures": [
-    "118-prueba-de-voz-antes-linea-1.png",
-    "119-prueba-de-voz-escuchando.png",
-    "120-prueba-de-voz-un-momento.png",
-    "121-prueba-de-voz-despues-oido-bien.png",
-    "122-prueba-de-voz-despues-no-se-oyo.png",
-    "123-prueba-de-voz-despues-oido-mal.png"
+    "120-prueba-de-voz-antes-linea-1.png",
+    "121-prueba-de-voz-escuchando.png",
+    "122-prueba-de-voz-un-momento.png",
+    "123-prueba-de-voz-despues-oido-bien.png",
+    "124-prueba-de-voz-despues-no-se-oyo.png",
+    "125-prueba-de-voz-despues-oido-mal.png"
    ],
    "count": 14,
    "note": null
@@ -2210,10 +2226,10 @@
    "regex": false,
    "from": "habla-prueba.html",
    "pictures": [
-    "119-prueba-de-voz-escuchando.png",
-    "126-prueba-de-voz-escuchando-con-movimiento.png",
-    "119-prueba-de-voz-escuchando.png",
-    "126-prueba-de-voz-escuchando-con-movimiento.png"
+    "121-prueba-de-voz-escuchando.png",
+    "129-prueba-de-voz-escuchando-con-movimiento.png",
+    "121-prueba-de-voz-escuchando.png",
+    "129-prueba-de-voz-escuchando-con-movimiento.png"
    ],
    "count": 4,
    "note": null
@@ -2223,8 +2239,8 @@
    "regex": false,
    "from": "habla-prueba.html",
    "pictures": [
-    "120-prueba-de-voz-un-momento.png",
-    "120-prueba-de-voz-un-momento.png"
+    "122-prueba-de-voz-un-momento.png",
+    "122-prueba-de-voz-un-momento.png"
    ],
    "count": 2,
    "note": null
@@ -2234,10 +2250,10 @@
    "regex": true,
    "from": "habla-prueba.html",
    "pictures": [
-    "124-prueba-de-voz-final.png",
-    "125-prueba-de-voz-sin-microfono.png",
-    "124-prueba-de-voz-final.png",
-    "125-prueba-de-voz-sin-microfono.png"
+    "126-prueba-de-voz-final.png",
+    "128-prueba-de-voz-sin-microfono.png",
+    "126-prueba-de-voz-final.png",
+    "128-prueba-de-voz-sin-microfono.png"
    ],
    "count": 4,
    "note": null
@@ -2247,8 +2263,8 @@
    "regex": false,
    "from": "habla-prueba.html",
    "pictures": [
-    "125-prueba-de-voz-sin-microfono.png",
-    "125-prueba-de-voz-sin-microfono.png"
+    "128-prueba-de-voz-sin-microfono.png",
+    "128-prueba-de-voz-sin-microfono.png"
    ],
    "count": 2,
    "note": null
