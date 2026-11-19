@@ -59,7 +59,7 @@ async function cualItem(it,re){anillo(null);const ok=Math.random()<.5?0:1;   // 
   await wait(400);return right;}
 // which words this pass asks: the ones due, most overdue first; with nothing due, every word he has heard (those answers do not move the schedule)
 function cualLista(){const due=PAL.vence("ear"),byW={};CU.items.forEach(it=>byW[it.w]=it);
-  let lista=due.filter(w=>byW[w]).map(w=>byW[w]);
+  let lista=due.filter(w=>byW[w]).map(w=>byW[w]);CQ.practica=!lista.length;   // nothing due: a practice session, the schedule is not touched
   if(!lista.length){const oidas=Object.keys(PAL.db.palabras).filter(w=>byW[w]);lista=(oidas.length&&!Q.get("todo")?oidas.map(w=>byW[w]):CU.items.slice());lista.sort(()=>Math.random()-.5);}
   if(Q.get("solo")){const so=Q.get("solo").split(",");lista=CU.items.filter(it=>so.includes(it.w));}   // for the machine check: only these words
   return lista.slice(0,+(Q.get("n")||CAP));}
@@ -70,7 +70,7 @@ async function cualRun(){runId++;hush();callaLetras();CQ.run=1;$("#go").style.di
       if(!ok&&!q[i].re){q.splice(Math.min(i+3,q.length),0,{it:q[i].it,re:1});mkDots(q.length);}}   // a miss comes back once, three items later (at the end when fewer are left); the bar grows by that one
     step(q.length);}catch(e){if(e!=="stop")throw e;return;}
   PAN=null;CQ.run=0;cualFin();}
-// the end: the session's words, each with its picture, under "Moving up" (right on the scored ask) and "Coming back soon" (missed), and the way back to Palabras. No score.
+// the end: the session's words, each with its picture, under "Moving up" (right on the scored ask) and "Coming back soon" (missed) — "Right" and "Missed" in a practice session — and the way back to Palabras. No score.
 function miniatura(it){const spec=it.si,Ex=ESCENAS[spec.esc||it.esc],keep=W,a=F>>1,t=document.createElement("canvas"),g=t.getContext("2d");t.width=DW;t.height=PH;g.imageSmoothingEnabled=false;
   W=panelW(spec,Ex);W.fx=[];Ex.draw(c,W,a);if(W.resp)respDraw(c,a);const cm=spec.cam;g.drawImage(sc,cm[0],cm[1],cm[2],cm[3],0,0,DW,PH);W=keep;   // the right picture of the word, drawn as it was in the session
   t.setAttribute("aria-hidden","true");return t;}
@@ -84,14 +84,15 @@ function cualGrid(){const f=$("#fin"),us=f.querySelectorAll(".gw");if(!us.length
   us.forEach(u=>u.style.setProperty("--c",best.n));
   f.querySelectorAll(".gw canvas").forEach(t=>{t.style.width=DW*best.kd/dpr+"px";t.style.height=PH*best.kd/dpr+"px";});}
 addEventListener("resize",()=>{if(CQ.fin)cualGrid();});
-function cualFin(){const up=[],soon=[];CQ.lista.forEach(it=>{const h=CQ.hecho.find(x=>x.w===it.w);if(h)(h.ok?up:soon).push(it);});
-  CQ.fin={up:up.map(x=>x.w),soon:soon.map(x=>x.w)};
-  estado("end",true);pantalla("Done");const f=$("#fin");f.classList.add("lis");cualGrupo(f,"Moving up",up);cualGrupo(f,"Coming back soon",soon);f.scrollTop=0;cualGrid();
+function cualFin(){const up=[],soon=[];   // a practice session moves nothing, so its groups say what happened: Right, Missed
+  CQ.lista.forEach(it=>{const h=CQ.hecho.find(x=>x.w===it.w);if(h)(h.ok?up:soon).push(it);});
+  CQ.fin={up:up.map(x=>x.w),soon:soon.map(x=>x.w),practica:!!CQ.practica};
+  estado("end",true);pantalla("Done");const f=$("#fin");f.classList.add("lis");cualGrupo(f,CQ.practica?"Right":"Moving up",up);cualGrupo(f,CQ.practica?"Missed":"Coming back soon",soon);f.scrollTop=0;cualGrid();
   $("#next").textContent="Back to Palabras";$("#next").classList.add("blu");$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
 async function cualArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · ¿Cuál?";SALIDA="app.html?tab=palabras";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   cualSize(1,2,DW,PH);mkOpts(2,k=>{if(CQ.toque)CQ.toque(k);});
   CQ.lista=cualLista();mkDots(CQ.lista.length);estado("start",true);const n=CQ.lista.length,min=Math.max(1,Math.round(n*10/60));   // about 10 s a word
-  pantalla("Review",n?[`${n} word${n===1?"":"s"} \u00b7 about ${min} min`]:[]);fit();   // the start screen: a title, how long it is, and the disc; the bar has its true number of segments from the start
+  pantalla("Repaso",n?[`${n} word${n===1?"":"s"} \u00b7 about ${min} min`]:[]);fit();   // the start screen: a title, how long it is, and the disc; the bar has its true number of segments from the start
   $("#go").onclick=()=>{try{ac().resume();}catch(e){}cualRun();};}
 window.Cual={get pan(){return PAN?PAN.map(p=>({right:p.right,sign:p.sign})):null;},get i(){return CQ.i;},get listo(){return CQ.listo===CQ.i+1;},get lista(){return CQ.lista.map(x=>x.w);},get cola(){return CQ.cola.map(x=>({w:x.it.w,re:!!x.re}));},get hecho(){return CQ.hecho;},get rehecho(){return CQ.rehecho;},get tt(){return CQ.tt;},get fin(){return CQ.fin;},toca(k){if(CQ.toque)CQ.toque(k);},get running(){return !!CQ.run;},get speaking(){return speaking;}};

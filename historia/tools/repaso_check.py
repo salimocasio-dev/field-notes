@@ -75,7 +75,7 @@ async def t_cap(b):
     ok("cap: 14 due, the session asks 10",len(lista)==10,len(lista))
     ok("cap: the 10 most overdue, most overdue first",lista==ws[:10],lista)
     ok("cap: the start line is for this session only: 10 words · about 2 min",line=="10 words · about 2 min",repr(line))
-    ok("cap: the start screen keeps its title",title=="Review",title)
+    ok("cap: the start screen title is Repaso",title=="Repaso",title)
     ok("cap: the progress bar has 10 segments",await pg.evaluate("document.querySelectorAll('#bar .dot').length")==10)
     await start(pg); seen=await drive(pg)
     ok("cap: all 10 asked, once each, none of the 4 waiting",[s["w"] for s in seen]==ws[:10],[s["w"] for s in seen])
@@ -208,7 +208,7 @@ async def t_end(b):
     ok("end: two groups, Moving up then Coming back soon",[g["h"] for g in info["groups"]]==["Moving up","Coming back soon"],[g["h"] for g in info["groups"]])
     ok("end: Moving up holds the words right on the scored ask, in session order",gs["Moving up"]["words"]==up,[gs["Moving up"]["words"],up])
     ok("end: Coming back soon holds the missed ones (%d)"%len(soon),gs["Coming back soon"]["words"]==soon and len(soon)>=1,[gs["Coming back soon"]["words"],soon])
-    ok("end: every word of the session is there once (9)",sorted(gs["Moving up"]["words"]+gs["Coming back soon"]["words"])==sorted(ws) and info["fin_state"]=={"up":up,"soon":soon},info["fin_state"])
+    ok("end: every word of the session is there once (9)",sorted(gs["Moving up"]["words"]+gs["Coming back soon"]["words"])==sorted(ws) and info["fin_state"]=={"up":up,"soon":soon,"practica":False},info["fin_state"])
     ok("end: a missed word that is right on its second ask is still under Coming back soon",all(w in gs["Coming back soon"]["words"] for w in soon))
     pics=[p for g in info["groups"] for p in g["pics"]]
     ok("end: each word has its picture (a 196 x 104 canvas with more than one colour)",len(pics)==9 and all(p["cw"]==196 and p["ch"]==104 and p["colours"]>3 for p in pics),[(p["cw"],p["ch"],p["colours"]) for p in pics][:3])
@@ -224,6 +224,12 @@ async def t_end(b):
     ok("end: no page errors",not pgx.errs,pgx.errs[:2]); await pgx.context.close()
     # a session with only right answers has one group; all wrong has one group
     info=await go((390,844),2,True,"","allright"); ok("end: all right: only Moving up",[g["h"] for g in info["groups"]]==["Moving up"] and len(info["groups"][0]["words"])==9,[g["h"] for g in info["groups"]]); await info["pg"].context.close()
+    # a practice session (nothing due, the schedule untouched): the groups say Right and Missed
+    nodue=[rec(w,NOW+3*DAY) for w in ws]; pgp=await newpage(b,seed(nodue,NOW)); await open_(pgp,"fast=4&n=6"); await start(pgp); await drive(pgp,"wrrrw",limit=300)
+    await pgp.wait_for_selector("#fin.lis h2",timeout=20000); hs=await pgp.evaluate("[...document.querySelectorAll('#fin h2')].map(h=>h.textContent)"); fp=await pgp.evaluate("Cual.fin"); rp=[await rec_of(pgp,w) for w in ws]
+    ok("end: a practice session says Right and Missed, not Moving up and Coming back soon",hs==["Right","Missed"] and fp["practica"] is True and len(fp["soon"])==2,[hs,fp])
+    ok("end: ...and the practice answers moved nothing (no schedule change)",all(r["ear"]["due"]==NOW+3*DAY and len(r["ear"]["aciertos"])==0 and r["ear"]["fallos"]==0 for r in rp))
+    ok("end: no page errors (practice)",not pgp.errs,pgp.errs[:2]); await pgp.context.close()
     # other screens: no sideways run, the pictures stay on whole scales, the button is reachable
     for vp,dpr,mob,tag in (((360,640),3,True,"small phone 360x640 @3x"),((844,390),2,True,"landscape 844x390 @2x"),((393,852),3,True,"393x852 @3x")):
         info=await go(vp,dpr,mob,"wrwrrwrr",tag)
