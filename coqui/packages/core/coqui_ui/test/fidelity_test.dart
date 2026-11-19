@@ -21,6 +21,21 @@ void _phone(WidgetTester tester, Size size, [double ratio = 1]) {
   addTearDown(tester.view.reset);
 }
 
+/// `usWeightClass` of the OS/2 table of a TrueType file.
+int _weightClass(Uint8List font) {
+  final d = ByteData.sublistView(font);
+  final tables = d.getUint16(4);
+  for (var i = 0; i < tables; i++) {
+    final at = 12 + i * 16;
+    final tag = String.fromCharCodes(font.sublist(at, at + 4));
+    if (tag == 'OS/2') {
+      final offset = d.getUint32(at + 8);
+      return d.getUint16(offset + 4);
+    }
+  }
+  throw StateError('no OS/2 table');
+}
+
 void main() {
   group('fonts: every weight has a real file', () {
     // pubspec.yaml: the `weight:` and `asset:` pairs of the family `Roboto`.
@@ -44,24 +59,26 @@ void main() {
       expect(declared, coquiFontFiles);
     });
 
-    test(
-      'each declared file exists and is a different face for 400, 500 and 700',
-      () {
-        for (final f in declared.values) {
-          expect(File(f).existsSync(), isTrue, reason: f);
-          expect(File(f).lengthSync(), greaterThan(100000), reason: f);
-        }
-        expect(declared[400], isNot(declared[500]));
-        expect(declared[500], isNot(declared[700]));
-        expect(declared[400], isNot(declared[700]));
-        // 600 has no face of its own: it draws with the 700 file, as CSS matching picks.
-        expect(declared[600], declared[700]);
+    test('each weight has a file of its own, cut from one source, and the licence is the OFL', () {
+      for (final f in declared.values) {
+        expect(File(f).existsSync(), isTrue, reason: f);
+        expect(File(f).lengthSync(), greaterThan(30000), reason: f);
+      }
+      // Four weights, four different files: 600 is SemiBold, never Bold.
+      expect(declared.values.toSet().length, 4);
+      expect(declared[600], 'fonts/Roboto-SemiBold.ttf');
+      // The weight each file says it is (OS/2 usWeightClass), so a file cannot sit under the wrong weight.
+      for (final e in declared.entries) {
         expect(
-          File('fonts/LICENSE-roboto.txt').readAsStringSync(),
-          contains('Apache License'),
+          _weightClass(File(e.value).readAsBytesSync()),
+          e.key,
+          reason: e.value,
         );
-      },
-    );
+      }
+      final licence = File('fonts/LICENSE-roboto.txt').readAsStringSync();
+      expect(licence, contains('SIL OPEN FONT LICENSE Version 1.1'));
+      expect(licence, isNot(contains('Apache License')));
+    });
 
     test('every CoquiText style is Roboto at a weight that has a file; none is synthesised', () {
       final all = CoquiText.all;
@@ -87,7 +104,15 @@ void main() {
           reason: '${e.key} is $weight',
         );
         expect(File(declared[weight]!).existsSync(), isTrue, reason: e.key);
+        // The file under that weight really is that weight (600 is SemiBold, not Bold).
+        expect(
+          _weightClass(File(declared[weight]!).readAsBytesSync()),
+          weight,
+          reason: '${e.key}: the file for $weight',
+        );
       }
+      // 600 is drawn by styles of the tokens, and by a file of its own.
+      expect(all.values.where((s) => s.fontWeight!.value == 600), isNotEmpty);
     });
 
     test('the weights the tokens use', () {
