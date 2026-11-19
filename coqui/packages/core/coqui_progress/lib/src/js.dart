@@ -35,11 +35,14 @@ double jsNumberAt(Map<String, dynamic> m, String key) {
 /// A number as it is kept in the store: a whole value is an integer (as JSON.stringify writes
 /// it, and as `jsonDecode` reads it back), anything else stays a double.
 num jsNumberOut(double v) {
-  if (v.isFinite && v == v.truncateToDouble() && v.abs() <= 9007199254740992) {
+  if (v.isFinite && v == v.truncateToDouble() && v.abs() <= _maxSafe) {
     return v.toInt();
   }
   return v;
 }
+
+/// 2^53: up to here a whole double is exactly an integer.
+const double _maxSafe = 9007199254740992;
 
 /// `Object.assign(target, source)` for what `JSON.parse` can give: an object copies its keys,
 /// an array its indexes, a string its characters; null and the other primitives copy nothing.
@@ -72,10 +75,16 @@ void _write(StringBuffer out, Object? v) {
     out.write('null');
   } else if (v is bool) {
     out.write(v ? 'true' : 'false');
-  } else if (v is int) {
-    out.write(v);
-  } else if (v is double) {
-    out.write(v.isFinite ? jsNumberToString(v) : 'null');
+  } else if (v is num) {
+    // Not `v is int` / `v is double`: in a browser 5.0, -0.0 and Infinity are all ints.
+    final d = v.toDouble();
+    if (!d.isFinite) {
+      out.write('null');
+    } else if (d == d.truncateToDouble() && d.abs() <= _maxSafe) {
+      out.write(d.toInt());
+    } else {
+      out.write(jsNumberToString(d));
+    }
   } else if (v is String) {
     out.write(jsonEncode(v));
   } else if (v is Map) {

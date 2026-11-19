@@ -12,7 +12,7 @@
 //    numbers, and compares the text the store wrote byte for byte: it is JSON.stringify of the store, which
 //    is what palabras.js saved.
 //  - index.json as text.
-//  - numberCases: doubles with what JSON.stringify writes for each, to test jsNumberToString.
+//  - numberCases and stringCases: values with what JSON.stringify writes for each, to test jsonStringify.
 //
 // The result is formatted with `dart format`.
 import { execFileSync } from 'node:child_process';
@@ -90,6 +90,22 @@ lines.push('const numberCases = <(double, String)>[');
 for (const x of numbers) {
   const literal = Object.is(x, -0) ? '-0.0' : x.toExponential();
   lines.push(`  (${literal}, '${JSON.stringify(x)}'),`);
+}
+lines.push('];');
+lines.push('');
+
+// ---- strings: what JSON.stringify writes -------------------------------------------------------
+const units = [];
+for (let u = 0; u <= 0x20; u++) units.push([u]);
+for (const u of [0x22, 0x27, 0x2f, 0x5c, 0x7f, 0x80, 0x9f, 0xa0, 0xad, 0x2028, 0x2029, 0xd7ff, 0xd800, 0xdbff, 0xdc00, 0xdfff, 0xe000, 0xfeff, 0xfff0, 0xffff]) units.push([u]);
+units.push([0xd83d, 0xde00], [0xd83d], [0xde00, 0xd83d], [0x61, 0xd800, 0x62], [0xd83d, 0xde00, 0xde00]);
+const words = ['casa', 'tú', '¿cómo estás?', 'adiós', 'niño', 'a"b', 'a\\b', "it's", '$x', 'línea\nnueva', ''];
+lines.push('/// A string, as UTF-16 code units, and what JSON.stringify writes for it.');
+lines.push('const stringCases = <(List<int>, String)>[');
+for (const u of units) lines.push(`  (<int>[${u.join(', ')}], ${dartString(JSON.stringify(String.fromCharCode(...u)))}),`);
+for (const w of words) {
+  const u = Array.from({ length: w.length }, (_, i) => w.charCodeAt(i));
+  lines.push(`  (<int>[${u.join(', ')}], ${dartString(JSON.stringify(w))}),`);
 }
 lines.push('];');
 lines.push('');
