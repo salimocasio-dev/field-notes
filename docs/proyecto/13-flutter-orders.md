@@ -280,6 +280,15 @@ Page 12: sections 1, 4, 6, 7. **From:** historia/engine.js, all of it.
 
 **Stop if:** a sprite differs in one pixel. That is a porting error, not a tolerance.
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; the package's tests were run again by the orchestrator (184 on vm, 179 on chrome, all pass) and `test_all.sh` on merged main.
+- Sprites: 445 of 445 of engine.js reproduced exactly, every pixel, on vm and chrome, by replaying each recorded call.
+- Canvas sheet: all 40 cases pass. 25 are exact (every fillRect, plain, scaled and flipped drawImage, the clip rectangles). The rest are under the 3% limit; the worst is a 1-pixel stroke at 2.05%.
+- `SpriteLib` holds what were engine.js's globals (the sprite cache keyed as before, `GL`, `GC`); one per game. The stateless makers keep their old names at top level.
+- `Ctx` copies the browser's integer blending, which is why the exact cases are exact. Smoothing is off by default; an unscaled, unrotated sprite lands on `(x + 0.5).floor()`.
+- The full MIT text of Pixel Plays is at the top of `pp_engine.dart` and in `LICENSE-pixel-plays.txt`, fetched from the Pixel Plays repository.
+- For order 12: patio.js calls `setLineDash`, which `Ctx` lacks; `translate`, `scale`, `rotate` take doubles.
+- Old-code quirks ported as they are: `bubble` leaves the fill colour transparent; `pointer()` has terms that always add 0.
+
 ## Order 12. The scene kit, the signs, the frame (builder, coqui_pixel)
 
 Page 12: sections 1, 4, 5, 6, 7. **From:** historia/escenas/kit.js, all of it; from historia/juego.js: `hand`, `heart`, `star`, `spot`, the twinkle and glow, the answer bubbles (`respDraw`, `BUBL`, `bx`), `frogBox`, the frog's draw (juego.js line 48 on), the view and its slide (`cam`, `camGo`).
