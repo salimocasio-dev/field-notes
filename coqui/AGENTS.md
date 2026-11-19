@@ -111,6 +111,7 @@ All at `coqui/` unless it says otherwise.
 ```
 flutter pub get
 dart run tool/check_boundaries.dart
+dart run tool/check_boundaries.dart --base main   # a lane branch against another ref
 dart test tool/test                  # the check script's own tests
 dart format .                        # fix formatting
 dart format --output=none --set-exit-if-changed .

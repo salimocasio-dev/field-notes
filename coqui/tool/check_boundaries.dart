@@ -1,6 +1,8 @@
 // The boundary check. Pure Dart, no packages.
 //
 //   dart run tool/check_boundaries.dart            (at coqui/)
+//   dart run tool/check_boundaries.dart --base REF  compare a lane branch with REF
+//                                                   (default origin/main, else main)
 //
 // It prints one line per problem and exits with 1, or exits with 0.
 //
@@ -159,11 +161,16 @@ const skippedNames = {'build', 'node_modules'};
 
 Future<void> main(List<String> args) async {
   var root = Directory.current;
+  String? base;
   for (var i = 0; i < args.length; i++) {
     if (args[i] == '--root' && i + 1 < args.length) {
       root = Directory(args[++i]);
+    } else if (args[i] == '--base' && i + 1 < args.length) {
+      base = args[++i];
     } else {
-      stderr.writeln('usage: dart run tool/check_boundaries.dart [--root DIR]');
+      stderr.writeln(
+        'usage: dart run tool/check_boundaries.dart [--root DIR] [--base REF]',
+      );
       exit(64);
     }
   }
@@ -176,7 +183,7 @@ Future<void> main(List<String> args) async {
       break;
     }
   }
-  final problems = await checkBoundaries(root, branch: branch);
+  final problems = await checkBoundaries(root, branch: branch, base: base);
   if (problems.isEmpty) {
     stdout.writeln('check_boundaries: ok');
     return;

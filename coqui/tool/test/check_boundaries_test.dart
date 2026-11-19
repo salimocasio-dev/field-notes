@@ -407,6 +407,18 @@ import 'package:feature_words/feature_words.dart';
       expect(await check(branch: null), isEmpty);
     });
 
+    test('compares with the ref it is given', () async {
+      git.branch('lane/feature_words/5');
+      src('feature_map', 'lib/src/m.dart', '// changed\n');
+      git.commit('work');
+      git.branch('lane/feature_words/6');
+      src('feature_words', 'lib/src/a.dart', '// changed\n');
+      git.commit('more work');
+      // against main both commits show; against the first branch only one
+      expect(await check(branch: null), hasLength(1));
+      expect(await check(branch: null, base: 'lane/feature_words/5'), isEmpty);
+    });
+
     test('fails clearly when there is nothing to compare with', () async {
       git.branch('lane/feature_words/5');
       git.run(['branch', '-D', 'main']);
