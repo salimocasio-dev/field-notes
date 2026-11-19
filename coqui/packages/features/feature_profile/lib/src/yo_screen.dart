@@ -52,6 +52,9 @@ class _YoScreenState extends State<YoScreen> {
   /// notaHabla(): whether the note is on this draw.
   bool _note = false;
 
+  /// The recogniser is being asked (a store that saves twice in a row asks once).
+  bool _asking = false;
+
   /// New: the install hint is on screen.
   bool _hint = false;
 
@@ -116,7 +119,14 @@ class _YoScreenState extends State<YoScreen> {
 
   // app.html: notaHabla. `habDisp()` is the recogniser's `available()`; the day is the clock's, UTC.
   Future<void> _checkNote() async {
-    final available = await _s.speech.available();
+    if (_asking) return;
+    _asking = true;
+    final bool available;
+    try {
+      available = await _s.speech.available();
+    } finally {
+      _asking = false;
+    }
     if (!mounted) return;
     var show = false;
     if (!available) {

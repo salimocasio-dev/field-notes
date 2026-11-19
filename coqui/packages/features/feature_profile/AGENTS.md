@@ -23,8 +23,8 @@ Yo, the welcome, settings, About.
 
 - `lib/feature_profile.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Since order 02 the file exports a placeholder module (its screen says the feature's name), until this feature's order builds the real one. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
-- Later it holds one thing: its module, a `FeatureModule` (boundary rule 4).
+- Since order 25 the file exports two things: `ProfileModule` (the tab `me`, the Yo screen) and `WelcomeGate`, the widget the shell wraps the app in so that the welcome (app.html: `bienvenida`, `listo`) shows over everything while the `bienvenida` setting is not set: `WelcomeGate(services: s, child: app)`.
+- The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
 
 ## Run and test it alone
 
@@ -42,7 +42,14 @@ dart format --output=none --set-exit-if-changed .
 flutter analyze
 ```
 
-A dev entry that starts the feature on the fakes comes with order 02. It lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_profile`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
+The dev entry lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_profile`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
+
+## Order 25: what is here
+
+- `lib/src/yo_screen.dart` (the Yo tab: `yo`, `notaHabla`, the install hint, About, the build number), `welcome.dart` (the sheet of each welcome step, shared by the gate and "How it works"), `welcome_gate.dart`, `about_sheet.dart`, `install_hint.dart`, `texts.dart` (every English line, with its place in app.html), `js.dart` (the JavaScript truthiness, rounding and plural the old code leans on), `licence_text.dart` (made).
+- The dev entry's address says the state (`tool/dev_main.dart` lists them): `?seed=curso`, `?screen=welcome&step=1`, `?how=2`, `?about=1`, `?mic=off`, `?ios=1`, `?do=min:120,todo,habla`, `?build=39`. The root widget and its fixture are in `test/support/dev_app.dart`, so the tests run the same.
+- Made files (each has a `--check`): `dart run tool/make_licence.dart` (the licence text from coqui_pixel's file), `dart run tool/make_seeds.dart` (`coqui/ref/pantallas/seeds/` into `test/support/seeds.dart`), `node tool/make_course.mjs` (the ten places of `historia/curso.js` into `test/support/course_places.dart`), `node tool/old_expected.mjs` (what the old `yo`, `bienvenida`, `listo` and `notaHabla` do, run in node on the real palabras.js, into `test/support/old_expected.dart`).
+- `node tool/shots.mjs` builds the dev entry for the web and captures each state of the order's reference pictures on both phones, with a pairing JSON and side-by-side pictures (the reference, the shot, the difference).
 
 ## Lines that apply
 

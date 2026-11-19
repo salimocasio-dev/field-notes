@@ -23,7 +23,8 @@ const text = [
   '// ignore_for_file: lines_longer_than_80_chars',
   '',
   '/// The ten places of the old course, as curso.js writes them (`Place.fromJson` reads this).',
-  'const String coursePlacesJson = ' + quote(JSON.stringify(lugares)) + ';',
+  'const String coursePlacesJson =',
+  '    ' + quote(JSON.stringify(lugares)) + ';',
   '',
 ].join('\n');
 if (process.argv.includes('--check')) {

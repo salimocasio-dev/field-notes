@@ -270,12 +270,13 @@ const text = [
   '// ignore_for_file: lines_longer_than_80_chars',
   '',
   '/// What the old page does, as JSON (see tool/old_expected.mjs for its shape).',
-  'const String oldExpectedJson = ' + JSON.stringify(JSON.stringify(out)).replace(/\$/g, '\\$').replace(/'/g, "\\'").replace(/^"|"$/g, "'").replace(/\\"/g, '"') + ';',
+  'const String oldExpectedJson =',
+  '    ' + JSON.stringify(JSON.stringify(out)).replace(/\$/g, '\\$').replace(/'/g, "\\'").replace(/^"|"$/g, "'").replace(/\\"/g, '"') + ';',
   '',
 ].join('\n');
 // the Dart literal must read back as the same data (a Dart and a JavaScript single-quoted string agree on these escapes)
 {
-  const lit = text.match(/oldExpectedJson = ('[\s\S]*');\n/)[1];
+  const lit = text.match(/oldExpectedJson =\n {4}('[\s\S]*');\n/)[1];
   if (JSON.stringify(JSON.parse(eval(lit))) !== JSON.stringify(out)) throw new Error('the Dart literal does not read back as the data');
 }
 if (process.argv.includes('--check')) {

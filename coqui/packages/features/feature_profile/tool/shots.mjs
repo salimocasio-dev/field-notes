@@ -66,7 +66,7 @@ if (!existsSync(join(buildDir, 'index.html'))) {
 // `ref`: the file name of the reference picture (the same on both phones); null for a state v=39 has no picture of
 // (the three new things). `whole`: the viewport is made as tall as the reference picture, as the old pictures of the
 // whole page were taken. `scroll`: 'end' wheels the page to its end, a number wheels that many CSS px, 'sheet' wheels
-// the open sheet to its end.
+// the open sheet to its end, 'level-check' as far as the old picture of the Level check card is.
 const states = [
   { name: 'bienvenida-paso-1', ref: '001-bienvenida-paso-1.png', query: 'screen=welcome&step=0' },
   { name: 'bienvenida-paso-2', ref: '002-bienvenida-paso-2.png', query: 'screen=welcome&step=1' },
@@ -122,9 +122,11 @@ const pngSize = (file) => {
 const browser = await chromium.launch();
 const pairs = {
   about: 'Each shot of the Yo tab and the welcome, and the reference picture of v=39 it is held against.',
-  devices: chosen.map((d) => ({ id: d.id, css_px: [d.width, d.height], device_scale_factor: d.ratio })),
+  devices: Object.values(devices).map((d) => ({ id: d.id, css_px: [d.width, d.height], device_scale_factor: d.ratio })),
   shots: [],
 };
+// a run of some states or one phone keeps the entries of the others that an earlier run made
+const keep = existsSync(join(out, 'pairs.json')) ? JSON.parse(readFileSync(join(out, 'pairs.json'), 'utf8')).shots : [];
 try {
   for (const dev of chosen) {
     mkdirSync(join(out, dev.id), { recursive: true });
@@ -147,9 +149,16 @@ try {
       await page.goto(`${base}?${s.query}`);
       await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
       await page.waitForTimeout(3500); // a first frame, then time for the fonts and the sheet's slide
-      if (s.scroll === 'end' || s.scroll === 'level-check') {
+      if (s.scroll === 'end') {
         await page.mouse.move(dev.width / 2, 200);
         await page.mouse.wheel(0, 5000);
+        await page.waitForTimeout(800);
+      } else if (s.scroll === 'level-check') {
+        // the old picture has the Level check card scrolled into view: its page is 163 CSS px (412 wide) or 255
+        // (390 wide) down, measured on the reference pictures (the second row of numbers, 075 against 082)
+        await page.mouse.move(dev.width / 2, 200);
+        // (this Flutter web scrolls a wheel's delta divided by the device pixel ratio twice: 163 CSS px is 1123, 255 is 2295)
+        await page.mouse.wheel(0, Math.round((dev.width === 412 ? 163 : 255) * dev.ratio * dev.ratio));
         await page.waitForTimeout(800);
       } else if (s.scroll === 'sheet') {
         await page.mouse.move(dev.width / 2, height - 300);
@@ -170,13 +179,15 @@ try {
       await ctx.close();
     }
   }
+  const made = new Set(pairs.shots.map((p) => `${p.device}/${p.name}`));
+  pairs.shots = [...keep.filter((p) => !made.has(`${p.device}/${p.name}`)), ...pairs.shots];
   writeFileSync(join(out, 'pairs.json'), JSON.stringify(pairs, null, 2) + '\n');
 
   // ---- the side-by-side pictures: the reference, the shot, and where they differ ----
   const sbs = join(out, 'side-by-side');
   for (const p of pairs.shots) {
     if (!p.reference) continue;
-    const dev = chosen.find((d) => d.id === p.device);
+    if (!made.has(`${p.device}/${p.name}`)) continue;
     mkdirSync(join(sbs, p.device), { recursive: true });
     const ref = readFileSync(join(refRoot, p.device, p.reference.split('/').pop())).toString('base64');
     const mine = readFileSync(join(out, p.shot)).toString('base64');
