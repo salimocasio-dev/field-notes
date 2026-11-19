@@ -13,8 +13,10 @@ dependencies:
     sdk: flutter
   coqui_contracts: any
   coqui_ui: any
+  material_ui: ^1.11.1
 
 dev_dependencies:
+  coqui_testing: any
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() => runApp(const CoquiApp());
 
@@ -8,19 +8,9 @@ class CoquiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WidgetsApp(
+    return const MaterialApp(
       title: 'Coquí',
-      color: const Color(0xFFFFFFFF),
-      builder: (context, _) => const ColoredBox(
-        color: Color(0xFFFFFFFF),
-        child: Center(
-          child: Text(
-            'Coquí',
-            textDirection: TextDirection.ltr,
-            style: TextStyle(color: Color(0xFF000000), fontSize: 32),
-          ),
-        ),
-      ),
+      home: Scaffold(body: Center(child: Text('Coquí'))),
     );
   }
 }
