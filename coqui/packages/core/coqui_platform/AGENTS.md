@@ -21,13 +21,16 @@ Audio, speech recognition, the call connection, storage, haptics. The only packa
 
 - `lib/coqui_platform.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- After order 18 it gives `createClipPlayer`, `createSpeechListener`, `openStorage` (`CoquiStorage`: `progress` and `space(name)`), `createHaptics`, `createAppInfo`, and the build settings `coquiBuild`, `coquiCallsAllowed`, `iosAudioSessionType`. Order 19 adds `CallSession`. All browser code stays behind a conditional import (`src/web/`); the plugins are in `src/io/`.
+- After order 18 it gives `createClipPlayer`, `createSpeechListener`, `openStorage` (`CoquiStorage`: `progress` and `space(name)`), `createHaptics`, `createAppInfo`, and the build settings `coquiBuild`, `coquiCallsAllowed`, `iosAudioSessionType`. Order 19 added `createCallSession` (`CallStub`, `CallStubScript`, `dannyAgentId`, `elevenLabsClientUrl`). All browser code stays behind a conditional import (`src/web/`); the plugins are in `src/io/`.
+- Order 19b: `CallSession.start` throws only the contract's `CallStartError` (`CallStartFailure.microphone` when the client's error name and message match llamada.js's microphone test, `library` when the voice library did not load, `failed` otherwise, `unavailable` in a phone build or with calls off); its text stays `<name>: <message>`.
+- Order 19b: the call suspends the shared sound context at start (llamada.js's `AC.suspend()`) and resumes it once when the call is over (its `Ended`, a failed start, or `end()`), so story audio works after a call without a reload; a phone build suspends nothing and resumes nothing.
 
 ## Order 18's own tools
 
 - `node tool/juego_sonido.mjs`: juego.js's sound code run in node on a recording AudioContext; writes `test/fixtures/juego_sonido.json` (byte-identical on a re-run).
+- `node tool/llamada_stub.mjs`: llamada.js run in node with `?callstub=1`; writes `assets/call_stub.json` (the stub's test lines), `test/fixtures/llamada_stub_trace.json` (what the old stub does in each llamada_check.py scenario) and `test/fixtures/llamada_stub_js.dart` (installStub's own source, the fake JS client of the Chrome tests). Byte-identical on a re-run.
 - `flutter test --platform chrome`: the interop tests (`test/web_test.dart`; `flutter test` alone skips them).
-- `flutter build web -t tool/dev_main.dart --no-web-resources-cdn`, then `node tool/dev_check.mjs`: the dev screen in headless Chromium, with the worktree's `historia/audio/` (gaps on the output bus, the made sounds, one recognition, storage, haptics, AppInfo).
+- `flutter build web -t tool/dev_main.dart --no-web-resources-cdn`, then `node tool/dev_check.mjs`: the dev screen in headless Chromium, with the worktree's `historia/audio/` (gaps on the output bus, the made sounds, one recognition, storage, haptics, AppInfo, the call library's load, a stub call). `--el=<dir>` serves a local `lib.iife.js` of `@elevenlabs/client@1.25.0` (from the npm package) in place of the CDN, which is blocked from the build machine.
 
 ## Run and test it alone
 

@@ -1,0 +1,126 @@
+#!/usr/bin/env node
+// The pictures of docs/proyecto/pixel/frente-preview.html (the old sprite layer on the new set, through the sheet: what
+// the Dart scene must draw), rendered in headless Chrome, for the comparison test (test/preview_test.dart).
+//
+//   node tool/preview_shots.mjs --states DIR --out DIR [--fixture]
+//
+// --states: the folder `node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR` wrote (W after every step of every
+//   run of El frente's five stories). --out: where every picture and cases.json go. --fixture: also write the package's
+//   fixture, test/support/fixtures/preview_fixture.dart: the cases the test keeps and their pictures (PNG, base64; a
+//   picture two cases share is kept once), read by test/preview_test.dart on the vm and in Chrome.
+// Run it in coqui/packages/core/coqui_scenes. It serves the repository over 127.0.0.1 (a free port); nothing goes to the
+// network. Needs Node 22 and the pre-installed Playwright (`require('playwright')`).
+//
+// The cases, by a fixed rule:
+//   pair.<word>.<side>: the 24 pictures of cual-frente (PV.pair), and level.<word>.<index>: the level pictures of the
+//     sheet (PV.pair of the picture each names).
+//   story.<story>.<plan>.<n>: every moment at rest of every run: the state after a step whose view is one of the sheet's
+//     views exactly (not mid-slide), with no character half faded (the frog seen at al 1, abuela at al 1), skipping a
+//     state equal to the one kept just before it in that run. Drawn at the frame counter it had, floor(t / 70), wind
+//     time 0. The fixture keeps the "right" plan's moments whose place in their story is a multiple of 3, and the first
+//     moment of each view.
+import fs from 'node:fs';
+import path from 'node:path';
+import http from 'node:http';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { chromium } = require('playwright');
+
+const arg = (k, d) => { const i = process.argv.indexOf(k); return i < 0 ? d : process.argv[i + 1]; };
+const STATES = arg('--states', null), OUT = arg('--out', null), FIXTURE = process.argv.includes('--fixture');
+if (!STATES || !OUT) { console.error('usage: node tool/preview_shots.mjs --states DIR --out DIR [--fixture]'); process.exit(2); }
+const PKG = process.cwd(), ROOT = path.resolve(PKG, '../../../..');
+if (!fs.existsSync(path.join(ROOT, 'docs/proyecto/pixel/frente-preview.html'))) { console.error('run this in coqui/packages/core/coqui_scenes'); process.exit(2); }
+
+const STORIES = ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro', 'd-toc-toc', 'h-frente'], PLANS = ['right', 'wrong', 'alternate'];
+const SHEET = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/proyecto/pixel/frente-sheet.json'), 'utf8'));
+const CUAL = JSON.parse(fs.readFileSync(path.join(ROOT, 'historia/cuentos/cual-frente.json'), 'utf8'));
+const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
+const viewOf = cam => Object.keys(SHEET.views).find(k => same(SHEET.views[k].old, cam)) || null;
+
+function cases() {
+  const out = [];
+  const spec = (w, side) => { const it = CUAL.items.find(i => i.w === w); return { set: it[side].set || null, cam: it[side].cam }; };
+  for (const it of CUAL.items) for (const side of ['si', 'no']) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side }, spec(it.w, side)));
+  for (const L of SHEET.level) { const [w, s] = L.picture.split('.'); out.push(Object.assign({ id: `level.${L.w}.${L.index}`, kind: 'pair', word: w, side: s }, spec(w, s))); }
+  const seenView = new Set();
+  for (const st of STORIES) for (const plan of PLANS) {
+    const lines = fs.readFileSync(path.join(STATES, st, plan + '.states.jsonl'), 'utf8').trim().split('\n').map(l => JSON.parse(l));
+    let prev = null, n = 0;
+    for (const s of lines) {
+      const view = viewOf(s.cam);
+      if (!view) continue;
+      const W = s.W, q = W.cq;
+      if (q.vis && q.al !== 1) continue;
+      if (W.ab && W.ab.al != null && W.ab.al !== 1) continue;
+      const key = JSON.stringify([s.cam, W]);
+      if (key === prev) continue;
+      prev = key;
+      const c = { id: `story.${st}.${plan}.${String(n).padStart(3, '0')}`, kind: 'story', story: st, plan, n, step: s.path, view, F: Math.floor(s.t / 70), W };
+      c.keep = plan === 'right' && (n % 3 === 0 || !seenView.has(view));
+      if (plan === 'right') seenView.add(view);
+      out.push(c);
+      n++;
+    }
+  }
+  return out;
+}
+
+function server() {
+  const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json', '.png': 'image/png' };
+  const s = http.createServer((req, res) => {
+    const u = decodeURIComponent(new URL(req.url, 'http://x').pathname), f = path.join(ROOT, u);
+    if (!f.startsWith(ROOT + path.sep) || !fs.existsSync(f) || !fs.statSync(f).isFile()) { res.writeHead(404); res.end(); return; }
+    res.writeHead(200, { 'Content-Type': types[path.extname(f)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
+    fs.createReadStream(f).pipe(res);
+  });
+  return new Promise(r => s.listen(0, '127.0.0.1', () => r(s)));
+}
+
+(async () => {
+  const all = cases();
+  const srv = await server(), base = `http://127.0.0.1:${srv.address().port}`;
+  const browser = await chromium.launch();
+  const page = await (await browser.newContext({ viewport: { width: 800, height: 900 }, deviceScaleFactor: 1 })).newPage();
+  const errs = [];
+  page.on('pageerror', e => errs.push(String(e)));
+  await page.goto(base + '/docs/proyecto/pixel/frente-preview.html');
+  await page.evaluate(() => window.PREVIEW.done);
+  fs.mkdirSync(OUT, { recursive: true });
+  const pngs = {};
+  for (const c of all) {
+    const url = c.kind === 'pair'
+      ? await page.evaluate(([w, s]) => window.PREVIEW.pair(w, s), [c.word, c.side])
+      : await page.evaluate(([w, v, F]) => window.PREVIEW.render(window.PREVIEW.baseW(w), { view: v, F, t: 0 }), [c.W, c.view, c.F]);
+    const png = Buffer.from(url.split(',')[1], 'base64');
+    c.file = c.id + '.png';
+    fs.writeFileSync(path.join(OUT, c.file), png);
+    if (c.kind === 'pair' || c.keep) { c.png = png.toString('base64'); }
+  }
+  await browser.close();
+  srv.close();
+  if (errs.length) { console.error(errs.join('\n')); process.exit(1); }
+  const strip = c => { const o = Object.assign({}, c); delete o.keep; delete o.png; return o; };
+  fs.writeFileSync(path.join(OUT, 'cases.json'), JSON.stringify(all.map(strip), null, 1) + '\n');
+  if (FIXTURE) {
+    const kept = all.filter(c => c.kind === 'pair' || c.keep), pics = [], at = {};
+    for (const c of kept) { if (!(c.png in at)) { at[c.png] = pics.length; pics.push(c.png); } c.picture = at[c.png]; }
+    const piece = s => { const o = []; for (let i = 0; i < s.length; i += 4000) o.push("    '" + s.slice(i, i + 4000) + "',"); return o.join('\n'); };
+    const dart = [
+      '// Made by tool/preview_shots.mjs --fixture from docs/proyecto/pixel/frente-preview.html in headless Chrome. Do not edit.',
+      '// ignore_for_file: lines_longer_than_80_chars',
+      '',
+      '/// The cases the comparison keeps (JSON: id, kind, and what to draw), each with `picture`: its index in [previewPictures].',
+      "const String previewCases = r'''" + JSON.stringify(kept.map(c => Object.assign(strip(c), { picture: c.picture }))) + "''';",
+      '',
+      '/// What the preview drew for them: PNG files, base64 in pieces.',
+      'const List<List<String>> previewPictures = [',
+      ...pics.map(p => '  [\n' + piece(p) + '\n  ],'),
+      '];',
+      '',
+    ].join('\n');
+    fs.writeFileSync(path.join(PKG, 'test/support/fixtures/preview_fixture.dart'), dart);
+  }
+  console.log(`${all.length} pictures in ${OUT}` + (FIXTURE ? `; ${all.filter(c => c.kind === 'pair' || c.keep).length} kept in test/support/fixtures/preview_fixture.dart` : ''));
+})().catch(e => { console.error(e); process.exit(1); });

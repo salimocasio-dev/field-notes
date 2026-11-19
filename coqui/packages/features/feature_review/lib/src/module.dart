@@ -1,8 +1,13 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_review/src/ui/level_check_screen.dart';
+import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_review's module. A placeholder until order 23 builds the real one: its screen says the feature's name.
+/// feature_review's module: Repaso (¿Cuál?) and the level check. Both are full-screen lessons: no tab.
+///
+/// `ReviewRoute.practice` is not read: like the old page (cual.js: cualLista), the screen decides by itself,
+/// from the store, whether anything is due and so whether this is a practice session.
 class ReviewModule implements FeatureModule {
   const ReviewModule();
 
@@ -13,16 +18,9 @@ class ReviewModule implements FeatureModule {
   FeatureTab? tab(Services s) => null;
 
   @override
-  Widget? screenFor(AppRoute route, Services s) =>
-      route is ReviewRoute || route is LevelCheckRoute
-      ? const _Placeholder()
-      : null;
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text('feature_review'));
+  Widget? screenFor(AppRoute route, Services s) => switch (route) {
+    ReviewRoute() => ReviewScreen(services: s),
+    LevelCheckRoute() => LevelCheckScreen(services: s),
+    _ => null,
+  };
 }

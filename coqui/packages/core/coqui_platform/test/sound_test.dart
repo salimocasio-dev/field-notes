@@ -7,8 +7,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_platform/src/audio/graph.dart';
 import 'package:coqui_platform/src/audio/graph_clip_player.dart';
 import 'package:coqui_platform/src/audio/sound_core.dart';
+import 'package:coqui_platform/src/io/phone_clip_player.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/recording_graph.dart';
@@ -73,6 +75,43 @@ class _Rig {
   void endLast() => graph!.sources.last.ended!();
 }
 
+/// A graph whose decode fails for the files whose bytes (their id) are in [broken].
+class _DecodeGraph extends RecordingGraph {
+  _DecodeGraph(this.broken) : super([]);
+  final Set<String> broken;
+
+  @override
+  Future<AudioBufferH> decodeAudioData(Uint8List bytes) {
+    if (broken.contains(String.fromCharCodes(bytes))) {
+      throw const FormatException('EncodingError: unable to decode audio data');
+    }
+    return super.decodeAudioData(bytes);
+  }
+}
+
+/// A player whose clips are every id but 'none' (no ClipInfo); a fetch fails for the ids in [noFile], a
+/// decode for the ids in [noDecode]. Each fetched file's bytes are its id.
+class _Flaky {
+  _Flaky() {
+    player = GraphClipPlayer(
+      core: SoundCore(() => graph),
+      clipInfo: (id) => id == 'none' ? null : _info(id, 0, 1000),
+      base: Uri.parse('https://example.test/'),
+      fetch: (u) async {
+        final id = u.pathSegments.last.split('.').first;
+        fetched.add(id);
+        if (noFile.contains(id)) throw const SocketExceptionLike();
+        return Uint8List.fromList(id.codeUnits);
+      },
+    );
+  }
+
+  final Set<String> noFile = {}, noDecode = {};
+  final List<String> fetched = [];
+  late final _DecodeGraph graph = _DecodeGraph(noDecode);
+  late final GraphClipPlayer player;
+}
+
 Future<void> _scenario(String key, Future<void> Function(_Rig r) f) async {
   final r = _Rig();
   await f(r);
@@ -113,6 +152,23 @@ void main() {
         r.player.loop('rain', false);
       }),
     );
+    test('loop is idempotent: rain off with no rain does nothing; rain on twice starts one rain', () {
+      final r = _Rig();
+      r.player.loop('rain', false);
+      expect(r.log, isEmpty); // not even a context
+      r.player.loop('rain', true);
+      final made = r.graph!.sources.length;
+      r.player.loop('rain', true);
+      r.player.loop('rain', true);
+      expect(r.graph!.sources.length, made);
+      r.player.loop('rain', false);
+      final n = r.log.length;
+      r.player.loop('rain', false);
+      expect(r.log.length, n);
+      expect(r.core.rain, isNull);
+      r.player.loop('rain', true); // and it can start again
+      expect(r.graph!.sources.length, made + 1);
+    });
     test(
       'tone\'s defaults',
       () => _scenario('tone(440,0,.1)', (r) async => r.player.tone(440)),
@@ -280,6 +336,209 @@ void main() {
       expect(hook, 2);
       expect(r.graph!.resumes, 2);
       expect(r.log.first, ['new', 'context']);
+    });
+  });
+
+  group('preload gives back the clips that could not be made ready', () {
+    test('every clip ready: an empty list', () async {
+      final r = _Rig();
+      expect(await r.player.preload(['ab_bien_y_tu', 'x']), isEmpty);
+      expect(await r.player.preload(const []), isEmpty);
+      expect(r.core.clips.keys, containsAll(['ab_bien_y_tu', 'x']));
+    });
+    test(
+      'a clip with no ClipInfo is reported, and nothing is fetched for it',
+      () async {
+        final r = _Rig();
+        expect(await r.player.preload(['nada']), ['nada']);
+        expect(r.fetched, isEmpty);
+      },
+    );
+    test(
+      'a clip whose fetch fails is reported; the others are ready',
+      () async {
+        final f = _Flaky()..noFile.add('b');
+        expect(await f.player.preload(['a', 'b', 'c']), ['b']);
+        expect(f.fetched, ['a', 'b', 'c']);
+        expect(f.player.core.clips.keys, ['a', 'c']);
+      },
+    );
+    test(
+      'a clip whose decode fails is reported; the others are ready',
+      () async {
+        final f = _Flaky()..noDecode.add('b');
+        expect(await f.player.preload(['a', 'b', 'c']), ['b']);
+        expect(f.fetched, ['a', 'b', 'c']);
+        expect(f.player.core.clips.keys, ['a', 'c']);
+      },
+    );
+    test('a retry after a failure tries again, and gives an empty list when it works', () async {
+      final f = _Flaky()
+        ..noFile.add('a')
+        ..noDecode.add('b');
+      expect(await f.player.preload(['a', 'b', 'c']), ['a', 'b']);
+      expect(f.fetched, ['a', 'b', 'c']);
+      expect(await f.player.preload(['a', 'b', 'c']), ['a', 'b']);
+      expect(f.fetched, [
+        'a',
+        'b',
+        'c',
+        'a',
+        'b',
+      ]); // c is loaded: not fetched again
+      f
+        ..noFile.clear()
+        ..noDecode.clear();
+      expect(await f.player.preload(['a', 'b', 'c']), isEmpty);
+      expect(f.fetched, ['a', 'b', 'c', 'a', 'b', 'a', 'b']);
+      expect(
+        f.graph.decoded,
+        hasLength(3),
+      ); // c, a, b: each decoded once, c not again
+      expect(f.player.core.clips.keys, ['c', 'a', 'b']);
+    });
+    test('the ids come in the order given, each once', () async {
+      final f = _Flaky()
+        ..noFile.add('e')
+        ..noDecode.add('d');
+      expect(
+        await f.player.preload([
+          'e',
+          'a',
+          'none',
+          'd',
+          'e',
+          'a',
+          'none',
+          'd',
+          'b',
+        ]),
+        ['e', 'none', 'd'],
+      );
+      expect(f.fetched, ['e', 'a', 'd', 'b']);
+    });
+    test(
+      'a clip already loaded is not loaded again and is not reported',
+      () async {
+        final f = _Flaky();
+        expect(await f.player.preload(['a']), isEmpty);
+        f.noFile.add('a');
+        f.noDecode.add('a');
+        expect(await f.player.preload(['a', 'a']), isEmpty);
+        expect(f.fetched, ['a']);
+        expect(f.graph.decoded, hasLength(1));
+      },
+    );
+    test(
+      'two preloads at once of a clip that fails: both report it, one fetch',
+      () async {
+        final f = _Flaky()..noFile.add('a');
+        final both = await Future.wait([
+          f.player.preload(['a', 'b']),
+          f.player.preload(['a']),
+        ]);
+        expect(both, [
+          ['a'],
+          ['a'],
+        ]);
+        expect(f.fetched, ['a', 'b']);
+      },
+    );
+    test('it takes any iterable, read once', () async {
+      final f = _Flaky()..noFile.add('b');
+      expect(await f.player.preload({'a', 'b'}.map((id) => id)), ['b']);
+    });
+  });
+
+  group('PhoneClipPlayer.preload, against a server on this machine', () {
+    // A file is had when its id starts with 'ok', refused (404) when it starts with 'no' (and when it
+    // starts with 'late', until [lateReady]), cut off when it starts with 'cut' (200, then the connection
+    // closes before the body).
+    late HttpServer server;
+    late Uri base;
+    final hits = <String>[];
+    var lateReady = false;
+
+    PhoneClipPlayer make({Uri? at}) => PhoneClipPlayer(
+      effects: SoundCore(() => RecordingGraph([])),
+      clipInfo: (id) => id == 'none' ? null : _info(id, 0, 1000),
+      base: at ?? base,
+    );
+
+    setUp(() async {
+      hits.clear();
+      lateReady = false;
+      server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      base = Uri.parse('http://127.0.0.1:${server.port}/historia/');
+      server.listen((rq) async {
+        final id = rq.uri.pathSegments.last.split('.').first;
+        hits.add(id);
+        if (id.startsWith('no') || (id.startsWith('late') && !lateReady)) {
+          rq.response.statusCode = 404;
+        } else if (id.startsWith('cut')) {
+          final c = await rq.response.detachSocket(writeHeaders: false);
+          c.write('HTTP/1.1 200 OK\r\ncontent-length: 100\r\n\r\nabc');
+          await c.flush();
+          c.destroy();
+          return;
+        } else {
+          rq.response.add(id.codeUnits);
+        }
+        await rq.response.close();
+      });
+    });
+    tearDown(() => server.close(force: true));
+
+    test('every clip had: an empty list', () async {
+      final p = make();
+      expect(await p.preload(['ok1', 'ok2']), isEmpty);
+      expect(await p.preload(const []), isEmpty);
+      expect(hits, ['ok1', 'ok2']);
+    });
+    test(
+      'no ClipInfo, a refused file, a cut-off file: each reported',
+      () async {
+        final p = make();
+        expect(await p.preload(['ok1', 'none', 'no1', 'cut1']), [
+          'none',
+          'no1',
+          'cut1',
+        ]);
+        expect(
+          hits,
+          unorderedEquals(['ok1', 'no1', 'cut1']),
+        ); // none: no request
+      },
+    );
+    test('a server that cannot be reached: every clip reported', () async {
+      final dead = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      final gone = Uri.parse('http://127.0.0.1:${dead.port}/');
+      await dead.close(force: true);
+      expect(await make(at: gone).preload(['ok1', 'ok2']), ['ok1', 'ok2']);
+    });
+    test(
+      'a retry after a refusal fetches again, and then the clip is ready',
+      () async {
+        final p = make();
+        expect(await p.preload(['late1']), ['late1']);
+        lateReady = true;
+        expect(await p.preload(['late1']), isEmpty);
+        expect(await p.preload(['late1']), isEmpty);
+        expect(hits, ['late1', 'late1']);
+      },
+    );
+    test('order, no duplicates, a loaded clip not fetched again, a retry fetches again', () async {
+      final p = make();
+      expect(await p.preload(['ok1']), isEmpty);
+      expect(
+        await p.preload(['no1', 'ok1', 'none', 'no2', 'no1', 'ok1', 'none']),
+        ['no1', 'none', 'no2'],
+      );
+      expect(hits.where((h) => h == 'ok1'), hasLength(1));
+      expect(hits.where((h) => h == 'no1'), hasLength(1));
+      expect(await p.preload(['no2', 'no1']), ['no2', 'no1']);
+      expect(hits.where((h) => h == 'no1'), hasLength(2));
+      expect(hits.where((h) => h == 'no2'), hasLength(2));
     });
   });
 }

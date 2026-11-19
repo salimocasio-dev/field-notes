@@ -13,6 +13,7 @@ export 'package:coqui_ui/src/cards.dart';
 export 'package:coqui_ui/src/contracts.dart';
 export 'package:coqui_ui/src/fades.dart';
 export 'package:coqui_ui/src/icons.dart';
+export 'package:coqui_ui/src/labels.dart';
 export 'package:coqui_ui/src/layout.dart';
 export 'package:coqui_ui/src/lesson_frame.dart';
 export 'package:coqui_ui/src/meters.dart';

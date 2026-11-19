@@ -3,6 +3,7 @@
 library;
 
 import 'package:coqui_ui/src/icons.dart';
+import 'package:coqui_ui/src/labels.dart';
 import 'package:coqui_ui/src/layout.dart';
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/text_styles.dart';
@@ -24,8 +25,7 @@ class CoquiTabItem {
 }
 
 /// The five tabs of v=39, in order, with its labels and icons: Biblioteca,
-/// Palabras, Mapa, Hablar, Yo. app.html:192 (`TABS`, labels in Spanish as the
-/// page hard-codes them), app.html:190-191 (`IC`).
+/// Palabras, Mapa, Hablar, Yo (the names are in [CoquiLabels]). app.html:192 (`TABS`), app.html:190-191 (`IC`).
 ///
 /// The shell maps the five `FeatureTab` ids (`library`, `words`, `map`, `speak`,
 /// `me`, as `TabRoute` has them) to these items. `FeatureTab.icon` (an `IconData`)
@@ -39,25 +39,29 @@ abstract final class CoquiTabs {
 
   static final library = CoquiTabItem(
     id: libraryId,
-    label: 'Biblioteca',
+    label: CoquiLabels.library,
     icon: CoquiIcons.book,
   );
   static final words = CoquiTabItem(
     id: wordsId,
-    label: 'Palabras',
+    label: CoquiLabels.words,
     icon: CoquiIcons.cards,
   );
   static final map = CoquiTabItem(
     id: mapId,
-    label: 'Mapa',
+    label: CoquiLabels.map,
     icon: CoquiIcons.map,
   );
   static final speak = CoquiTabItem(
     id: speakId,
-    label: 'Hablar',
+    label: CoquiLabels.speak,
     icon: CoquiIcons.mic,
   );
-  static final me = CoquiTabItem(id: meId, label: 'Yo', icon: CoquiIcons.me);
+  static final me = CoquiTabItem(
+    id: meId,
+    label: CoquiLabels.me,
+    icon: CoquiIcons.me,
+  );
 
   /// The five, in the old order: the map in the middle.
   static final all = [library, words, map, speak, me];
@@ -255,7 +259,10 @@ class _Disc extends StatelessWidget {
         color: selected ? CoquiColors.info : CoquiColors.white,
         border: Border.all(
           color: selected ? CoquiColors.white : CoquiColors.line2,
-          width: selected ? (compact ? 3 : 4) : CoquiMetrics.borderButton,
+          width: CoquiLayout.border(
+            context,
+            selected ? (compact ? 3 : 4) : CoquiMetrics.borderButton,
+          ),
         ),
         boxShadow: selected ? CoquiShadows.mapDiscActive : null,
       ),
@@ -272,21 +279,22 @@ class _Disc extends StatelessWidget {
 /// the top) with a hairline under it, two flat labels (no pill, no shadow, not
 /// tappable) centred 24 px apart: the streak and the place. app.html:38-39
 ///
-/// The old page writes them in `hud()` (app.html:286): `"🔥 " + N + " day" +
+/// The old page writes them in `hud()` (app.html:286): `"(fire emoji) " + N + " day" +
 /// (N === 1 ? "" : "s")` and `N + " · " + place name`. [streakLabel] and
-/// [placeLabel] write the same strings.
+/// [placeLabel] write the same strings, except that the flame is not a character here: it is
+/// drawn ([CoquiFlame], the size and place of the glyph on references 010 and 012), so that no emoji
+/// font is asked for.
 class MapChips extends StatelessWidget {
   const MapChips({super.key, required this.streak, required this.place});
 
-  /// The first chip, e.g. `🔥 5 days`.
+  /// The first chip's text, e.g. `5 days` ([streakLabel]); the flame before it is drawn by the chip.
   final String streak;
 
   /// The second chip, e.g. `2 · El parque`.
   final String place;
 
-  /// `"🔥 " + n + " day" + (n === 1 ? "" : "s")`. app.html:286
-  static String streakLabel(int days) =>
-      '\u{1F525} $days day${days == 1 ? '' : 's'}';
+  /// `n + " day" + (n === 1 ? "" : "s")`: the text after the flame of `"(fire emoji) " + n + " day" + ...`. app.html:286
+  static String streakLabel(int days) => '$days day${days == 1 ? '' : 's'}';
 
   /// `n + " · " + name`. app.html:286
   static String placeLabel(int number, String name) => '$number · $name';
@@ -300,13 +308,20 @@ class MapChips extends StatelessWidget {
       CoquiMetrics.s16,
       0,
     ),
-    decoration: const BoxDecoration(
+    decoration: BoxDecoration(
       color: CoquiColors.white,
-      border: Border(bottom: BorderSide(color: CoquiColors.line)),
+      border: Border(
+        bottom: BorderSide(
+          color: CoquiColors.line,
+          width: CoquiLayout.border(context, 1),
+        ),
+      ),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        CoquiFlame(fontSize: CoquiText.chip.fontSize!),
+        SizedBox(width: CoquiFlame.gapFor(CoquiText.chip.fontSize!)),
         Text(streak, style: CoquiText.chip, maxLines: 1),
         const SizedBox(width: CoquiMetrics.s24),
         Text(place, style: CoquiText.chip, maxLines: 1),

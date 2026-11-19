@@ -272,3 +272,139 @@ class CoquiSheetLayer extends StatelessWidget {
     );
   }
 }
+
+/// The sheets that are open, one per root navigator: a second [showCoquiSheet] while one is open is
+/// ignored, as the old page ignores a second open (`abre()` finds the one sheet already there).
+final _openSheets = Expando<Future<void>>('open CoquiSheet');
+
+/// Opens a [CoquiSheet] above everything, the shell's tab bar included, and completes when it closes.
+///
+/// v=39's scrim covers the whole page and the tab bar (`#sheetbg{position:fixed;inset:0;z-index:11}`),
+/// and the sheet stands above it, over the tab bar and the raised Mapa disc (`#sheet{z-index:12}`;
+/// `bottom: navh + rise + safe-area`, or 0 when [modal]). So the sheet is a route of the *root* navigator:
+/// the scrim is the route's barrier (`rgba(0,0,0,.35)`, fading in 200 ms), the sheet slides up in 200 ms,
+/// and nothing under it takes a touch. app.html:67-73
+///
+/// [builder] makes the sheet; it is given a `close` callback (for a button in its footer: the welcome's).
+/// This function sets the sheet's `onClose` (the X, and the drag down past 72 px, both call `close`) and its
+/// `modal` (to [modal]), so the builder writes neither. The ways to close a sheet:
+///
+/// - the X, a drag of the header down past 72 px, a tap on the scrim, the system back button: each closes it;
+/// - `close`, from inside it, closes it;
+/// - a [modal] sheet (the welcome) has no X and no drag, ignores a tap on the scrim, and ignores the system
+///   back button: it must be finished, and its own button calls `close`.
+///
+/// Opening a sheet while one is open does nothing and returns the future of the one that is open. The
+/// future completes when the sheet is popped (its slide out takes 200 ms more). Use [CoquiSheet] and
+/// [CoquiSheetLayer] for a sheet in place inside a screen.
+Future<void> showCoquiSheet(
+  BuildContext context, {
+  required CoquiSheet Function(BuildContext context, VoidCallback close)
+  builder,
+  bool modal = false,
+}) {
+  final navigator = Navigator.of(context, rootNavigator: true);
+  final open = _openSheets[navigator];
+  if (open != null) return open;
+  final route = _CoquiSheetRoute(
+    builder: builder,
+    modal: modal,
+    themes: InheritedTheme.capture(from: context, to: navigator.context),
+  );
+  final future = navigator.push<void>(route).whenComplete(() {
+    _openSheets[navigator] = null;
+  });
+  _openSheets[navigator] = future;
+  return future;
+}
+
+class _CoquiSheetRoute extends PopupRoute<void> {
+  _CoquiSheetRoute({
+    required this.builder,
+    required this.modal,
+    required this.themes,
+  });
+
+  final CoquiSheet Function(BuildContext context, VoidCallback close) builder;
+  final bool modal;
+  final CapturedThemes themes;
+
+  /// `#sheetbg` `rgba(0,0,0,.35)`. app.html:68
+  @override
+  Color? get barrierColor => CoquiColors.scrim;
+
+  /// A tap on the scrim closes the sheet; the modal welcome ignores it. app.html:68-73
+  @override
+  bool get barrierDismissible => !modal;
+
+  @override
+  String? get barrierLabel => null;
+
+  /// `transition:transform .2s`. app.html:70-71
+  @override
+  Duration get transitionDuration => const Duration(milliseconds: 200);
+
+  void _close() {
+    final navigator = this.navigator;
+    if (navigator == null || !isActive) return;
+    if (isCurrent) {
+      navigator.pop();
+    } else {
+      navigator.removeRoute(this);
+    }
+  }
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    final slide = CurvedAnimation(parent: animation, curve: Curves.ease);
+    return themes.wrap(
+      PopScope(
+        // The system back button closes a sheet; the welcome cannot be closed that way.
+        canPop: !modal,
+        child: Builder(
+          builder: (context) {
+            final sheet = builder(context, _close);
+            final bottom = modal
+                ? 0.0
+                : CoquiLayout.navHeight(context) +
+                      CoquiLayout.rise(context) +
+                      CoquiLayout.safeBottom(context);
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: bottom,
+                  child: SlideTransition(
+                    position: Tween(
+                      begin: const Offset(0, 1.2),
+                      end: Offset.zero,
+                    ).animate(slide),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: CoquiSheet(
+                        key: sheet.key,
+                        title: sheet.title,
+                        footer: sheet.footer,
+                        titleVisible: sheet.titleVisible,
+                        scrollController: sheet.scrollController,
+                        modal: modal,
+                        onClose: modal ? null : _close,
+                        child: sheet.child,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

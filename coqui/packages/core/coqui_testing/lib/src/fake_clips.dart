@@ -17,7 +17,10 @@ typedef FakeTone = ({
 /// (true) and moves [clock] on by that length, or by [play]'s `limit` when that is shorter (false: cut
 /// off); a clip [lengthOf] does not know does not play (false, as juego.js's playClip without the clip).
 /// Without [lengthOf] every clip plays to its end and no time passes. Tones, noise bursts and loops are
-/// only recorded.
+/// only recorded. [preload] records its ids and gives back the ones that are not ready: those in [failing]
+/// and, when [lengthOf] is given, those it does not know (no clip, as no ClipInfo); every other clip is
+/// ready. The fake keeps no list of what was loaded: a clip stays reported while it is in [failing] or
+/// unknown, and is reported no more when it is taken out.
 ///
 /// What it does not do: no sound, no decoding, no gaps between lines; [muted] changes nothing it returns.
 class FakeClipPlayer implements ClipPlayer {
@@ -32,8 +35,12 @@ class FakeClipPlayer implements ClipPlayer {
   /// Every clip [play] was asked for, in order.
   final List<String> played = [];
 
-  /// Every clip [preload] was given, in order.
+  /// Every clip [preload] was given, in order (duplicates and all, as it was asked).
   final List<String> preloaded = [];
+
+  /// The clips [preload] reports as not ready (a failed fetch or decode), empty to start with. Change it
+  /// between calls: a retry gives what the set holds then.
+  Set<String> failing = {};
 
   /// Every tone, in order.
   final List<FakeTone> tones = [];
@@ -57,8 +64,15 @@ class FakeClipPlayer implements ClipPlayer {
   Future<void> unlock() async => unlocked = true;
 
   @override
-  Future<void> preload(Iterable<String> clipIds) async =>
-      preloaded.addAll(clipIds);
+  Future<List<String>> preload(Iterable<String> clipIds) async {
+    final ids = clipIds.toList();
+    preloaded.addAll(ids);
+    final f = lengthOf;
+    return [
+      for (final id in {...ids})
+        if (failing.contains(id) || (f != null && f(id) == null)) id,
+    ];
+  }
 
   @override
   Future<bool> play(String clipId, {Duration? limit}) async {

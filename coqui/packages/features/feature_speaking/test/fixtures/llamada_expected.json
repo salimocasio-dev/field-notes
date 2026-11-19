@@ -1,0 +1,434 @@
+{
+  "about": "What historia/llamada.js records for each script, made by tool/llamada_expected.mjs. Do not edit.",
+  "variables": {
+    "place": "La casa",
+    "job": "Say hello, say who you are, accept a drink and say thanks.",
+    "minutes": "5",
+    "opening": "¡Hola! Soy Danny. ¿Cómo estás?",
+    "words_open": [
+      "casa",
+      "puerta",
+      "ventana",
+      "abuela",
+      "hola",
+      "toca",
+      "abre",
+      "cierra",
+      "sí",
+      "no",
+      "grande",
+      "pequeña",
+      "adiós",
+      "silla",
+      "se sienta",
+      "vaso",
+      "jugo",
+      "agua",
+      "toma",
+      "quiero",
+      "gracias",
+      "¿cómo estás?",
+      "bien",
+      "mamá",
+      "papá",
+      "abuelo",
+      "bebé",
+      "familia",
+      "hermano",
+      "hermana",
+      "él",
+      "ella",
+      "yo",
+      "tú",
+      "soy",
+      "eres",
+      "me llamo",
+      "niño",
+      "niña",
+      "juega",
+      "flor",
+      "sol",
+      "aquí",
+      "allá",
+      "¿qué es esto?",
+      "amigo",
+      "mira",
+      "ven",
+      "vamos",
+      "hasta mañana"
+    ],
+    "words_heard": "",
+    "keys": [
+      "place",
+      "job",
+      "words_open",
+      "words_heard",
+      "minutes",
+      "opening"
+    ]
+  },
+  "scripts": [
+    {
+      "name": "the stub walk",
+      "steps": [
+        {
+          "go": "danny1"
+        },
+        {
+          "go": "you1"
+        },
+        {
+          "say": "Hola. Bien, gracias."
+        },
+        {
+          "go": "danny2"
+        },
+        {
+          "go": "you2"
+        },
+        {
+          "say": "Sí, quiero jugo."
+        },
+        {
+          "go": "you3"
+        },
+        {
+          "say": "Adiós."
+        }
+      ],
+      "answers": [
+        [
+          "hola",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "gracias",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "bien",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "sí",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "jugo",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "quiero",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "adiós",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "hola",
+        "gracias",
+        "bien",
+        "sí",
+        "jugo",
+        "quiero",
+        "adiós"
+      ],
+      "sent": [
+        "(fin)"
+      ]
+    },
+    {
+      "name": "accents, capitals and punctuation",
+      "steps": [
+        {
+          "say": "¿CÓMO ESTÁS? Me llamo Ana."
+        },
+        {
+          "say": "mamá, PAPÁ y el abuelo"
+        },
+        {
+          "say": "La niña y el niño juegan."
+        }
+      ],
+      "answers": [
+        [
+          "¿cómo estás?",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "me llamo",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "mamá",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "papá",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "abuelo",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "él",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "niño",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "niña",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "¿cómo estás?",
+        "me llamo",
+        "mamá",
+        "papá",
+        "abuelo",
+        "él",
+        "niño",
+        "niña"
+      ],
+      "sent": []
+    },
+    {
+      "name": "words only on their boundaries",
+      "steps": [
+        {
+          "say": "Las casas son grandes"
+        },
+        {
+          "say": "abuelos, solamente"
+        },
+        {
+          "say": "la casa grande"
+        }
+      ],
+      "answers": [
+        [
+          "casa",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "grande",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "casa",
+        "grande"
+      ],
+      "sent": []
+    },
+    {
+      "name": "a word said twice is recorded once",
+      "steps": [
+        {
+          "say": "hola hola hola"
+        },
+        {
+          "say": "Hola, abuela"
+        },
+        {
+          "say": "abuela, hola"
+        }
+      ],
+      "answers": [
+        [
+          "hola",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "abuela",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "hola",
+        "abuela"
+      ],
+      "sent": []
+    },
+    {
+      "name": "the page's own messages are not his words",
+      "steps": [
+        {
+          "say": "(ayuda)"
+        },
+        {
+          "say": "(fin) hola"
+        },
+        {
+          "say": "  (casa)"
+        },
+        {
+          "say": "puerta"
+        }
+      ],
+      "answers": [
+        [
+          "puerta",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "puerta"
+      ],
+      "sent": []
+    },
+    {
+      "name": "a phrase of two words",
+      "steps": [
+        {
+          "say": "me llamo"
+        },
+        {
+          "say": "me  llamo Ana, tengo sed"
+        },
+        {
+          "say": "hasta mañana"
+        }
+      ],
+      "answers": [
+        [
+          "me llamo",
+          "mouth",
+          true,
+          "null"
+        ],
+        [
+          "hasta mañana",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "me llamo",
+        "hasta mañana"
+      ],
+      "sent": [
+        "(fin)"
+      ]
+    },
+    {
+      "name": "a speaking turn is open when the line comes",
+      "steps": [
+        {
+          "go": "danny1"
+        },
+        {
+          "go": "you1"
+        },
+        {
+          "go": "talk1"
+        },
+        {
+          "wait": 600
+        },
+        {
+          "go": "quiet1"
+        },
+        {
+          "say": "gracias"
+        }
+      ],
+      "answers": [
+        [
+          "gracias",
+          "mouth",
+          true,
+          "int"
+        ]
+      ],
+      "said": [
+        "gracias"
+      ],
+      "sent": []
+    },
+    {
+      "name": "nothing of the place",
+      "steps": [
+        {
+          "say": "buenas tardes"
+        },
+        {
+          "say": "xyz"
+        }
+      ],
+      "answers": [],
+      "said": [],
+      "sent": []
+    },
+    {
+      "name": "Danny's goodbye is not the learner's",
+      "steps": [
+        {
+          "agent": "Sí. Hasta mañana."
+        },
+        {
+          "say": "bien"
+        }
+      ],
+      "answers": [
+        [
+          "bien",
+          "mouth",
+          true,
+          "null"
+        ]
+      ],
+      "said": [
+        "bien"
+      ],
+      "sent": []
+    }
+  ]
+}

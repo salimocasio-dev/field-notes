@@ -242,6 +242,16 @@ frente-set.html is one state of El frente: door open, shutters open, a porch lam
 
 **This is design.** It needs a session that renders and looks. If the orchestrator cannot settle a look question from pages 03, 09 and 11-pixel-engine, it asks Salim with two pictures side by side, before order 14.
 
+**Result (Nov 19): done, merged.** Designed by an Opus agent in three rounds; the orchestrator looked at every round's pictures; three fresh readers saw them with no words.
+- `docs/proyecto/pixel/frente-set.html` (states from the address), `set-kit.js` (the helpers the set added), `frente-sheet.json` (made and checked by `frente-sheet-make.js`), `frente-preview.html` (a dev tool: the old sprite layer on the new set, through the sheet).
+- State parameters (the builder's `setKey`): `door` shut, half, open; `win` shut, open; `lights` 0, 1; `sky` day, storm, storm2, rain, dusk, sunset; `hide` 0, 1; `rustle` none, palma, casa, todo with `side`. 25 baked states, all in `coqui/ref/pp/frente/`.
+- In the set: the house, door, window, big palm, small palm, birdhouse, sun. In the sprite layer: abuela, the frog, the bird, the cloud. The cake stays in the HUD. No porch lamp.
+- Views: `wide`, `casa` and story 3's view at zoom 1; `puerta`, `ventana`, `cuadro` at zoom 2, as in the old game (see page 12 section 5, changed the same day). Each review and level picture has its own centre and zoom in the sheet.
+- What a learner would notice against the old picture: the 30° view; a smaller, narrower house (so that story 3's view holds both palms, the house and the birdhouse); storm, rain, dusk and sunset are baked into the set and characters are no longer dimmed; an open door shows a room (floor and back wall), lit when the lights are on; the potted plant and the old sky clouds are gone; a change of zoom cuts.
+- Readers: every review pair told apart at a glance after round 3 (the "cierra" picture went back to the old idea: a wide door leaf across half the doorway, hiding half of abuela); all eight story sequences followed; the 25 states sorted correctly by door, window, lights, time of day and birdhouse. Their remaining doubts are in the pairs' own design, the same as in the old game (for example sí / no shown by arrows; hola and adiós differing in four things at once).
+- Bake: 46 to 84 ms per state in headless Chrome once warm; a first bake in a fresh page is slower (about 130 to 240 ms). The Dart number is order 14's to measure.
+- Not solved: an open door shows no door leaf (with this camera a leaf opened inward is hidden behind the wall); the frog peeking from behind the half door loses 2 px on his right.
+
 ---
 
 ## Order 10. The Pixel Plays engine in Dart (builder, coqui_pixel)
@@ -297,6 +307,18 @@ Page 12: sections 1, 4, 5, 6, 7. **From:** historia/escenas/kit.js, all of it; f
 
 **Done when:** the kit's sprites in `ref/sprites/` match exactly; tests for the sheet reader, the camera (a view at each edge stays inside the picture; `camGo` passes only whole pixels), `clipTo` on a made-up box; `hit` on a made-up scene returns the same ids as the old `hit` for 50 points (expected values from the old function in node).
 
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; the package's tests were run again by the orchestrator (400 on vm, 393 on chrome) and `test_all.sh` on merged main.
+- Kit sprites: 469 of 469 exact on vm and chrome. `hit`, `box`, `handAt` and the shared acts equal kit.js run in node (200 `hit` results, 21 act runs).
+- Signs against the old code drawn in headless Chrome: `hand`, `heart`, `star`, `spot`, `twinkle`, `bub`, `bang`, `frog`, `respDraw`, `drawSigns` and the hand over the view at both zooms: 0 pixels differ. The bird: 18 pixels of 57,344 differ, all in its one rotated pose.
+- The camera has zoom 1 and 2 (page 12 section 5 as changed on Nov 19): a same-zoom `camGo` slides in whole pixels with the old positions rounded; a change of zoom is a cut with the old number of steps. `pictureToDisplay` and `displayToPicture` are inverse on the pixel grid.
+- `drawFrame` is the frame recipe as one function. It takes a `BakedSet`, which holds everything a bake leaves behind (pictures, depth, ground, kinds, static shadow, tufts, leaves), about 780 KB a state.
+- `clipToWorld` clips to a polygon of world points, which is how the sheet gives clips.
+- `Sheet.parse(text)` reads `<id>-sheet.json`: things, spots, frames, points, views, remap (by kind: point, cam, crop, x), pictures, level pictures, clips, front, shadows, setKey, code. Against the real frente-sheet.json: every recorded box, view, crop and remap entry is reproduced; screen points within the sheet's own rounding (0.005).
+- SFX: all 18 names make the same calls as juego.js. `Sfx.lluvia` and `calla` keep no state, so `ClipPlayer.loop` must be idempotent (order 19 checks it).
+- `Ctx.setLineDash` added (patio.js). `SceneHost.lib` added (the sprite cache).
+- Order 10's one-state El frente test now runs from a fixture of its own (`frente_nov14.dart`), since order 07 replaced that state.
+- Not in the sheet as data: the heights at which each character casts its shadow (only as text) and the shadow direction (.9, -.1 in frente-set.html). Order 14 ports them from frente-set.html.
+
 ## Order 13. The map (builder, feature_map)
 
 Page 11-pixel-engine, build step 2, decisions 5 to 8. Page 12: sections 1 to 4, 6, 7.
@@ -317,6 +339,16 @@ Page 11-pixel-engine, build step 2, decisions 5 to 8. Page 12: sections 1 to 4, 
 - A fresh reader, shown the three states with no words, says which places are open, done and locked, and where the frog is.
 - Then, on Salim's phone (the orchestrator sends the link with the seven steps of page 00 done): bake under 500 ms, frame under 8 ms, read off the corner chip. Over: report the numbers. Do not change the look.
 
+**Result (Nov 19): built and merged to main; the reader's look and the phone numbers are open.** Built by a Sonnet builder; its tests were run again by the orchestrator (47 on vm, 47 in Chrome) and `test_all.sh` on merged main.
+- The map frame at time 0 differs from the JavaScript in 0 of 122,880 pixels in each of the three states, on vm and in Chrome.
+- Tested: tap an open place (hop with the old tone, then the sheet); tap a locked place; finishing a place's last story adds its flag and moves the frog; the Today card names the next story; a story row opens the story; reduced motion stands still; the first frame is empty and the bake follows; the map opens scrolled to the frog.
+- In headless Chrome on the shared build machine (release build): bake 376 to 769 ms, mean frame 3.4 to 4.9 ms, slowest frame 10 to 38 ms. Over the limits there; the real numbers are his phone's, at Gate A. The look was not changed.
+- The review entry's title on the Today card is `CoquiLabels.reviewTitle` in coqui_ui (a fixed label of v=39, like the tab names). The map module has one marked line where it is passed; the shell order wires it.
+- Not ported: v=39's sideways two-column layout (the app is portrait).
+- Around the island is mapa.html's dark page colour with dots, not the old blue checker: the map is new art.
+- Old quirks ported: once every built story is played the frog and chip sit on place 1; the frog stays squashed through a trip of several hops; the bake runs every place twice.
+- For the shell: keep the map tab alive (a rebuilt tab bakes again, about half a second); draw the tab bar over the tab.
+
 ## Order 14. El frente in Dart (builder, coqui_scenes)
 
 Page 11-pixel-engine, build step 3. Page 12: sections 1 to 7. Step b of section 5.
@@ -336,6 +368,19 @@ Page 11-pixel-engine, build step 3. Page 12: sections 1 to 7. Step b of section 
 
 **Stop if:** frente.js holds a screen position the sheet has no name for. Report it with its line. Do not place it.
 
+**Result (Nov 19): done, merged to main.** Built by an Opus builder; its tests were run again by the orchestrator (205 on vm, 204 in Chrome) and `test_all.sh` on merged main. One line was changed by the orchestrator at the merge (the still host's `preload`, after order 02b changed the contract).
+- The set: all 25 states equal the JavaScript references exactly (0 of 51,840 elements differ in `pix`, `zb` and `kinds`), on vm and in Chrome.
+- The 22 sprites frente.js makes for itself: exact.
+- The whole picture against `frente-preview.html` in headless Chrome: 513 pictures (the 33 review and level pictures, and 480 moments at rest from all 15 recorded runs): none has a pixel differing by more than 24 in a channel; 380 are bit-identical; the other 133 differ only along clip edges. 91 of them are a committed test.
+- No position in frente.js lacked a sheet entry.
+- Touch boxes: every pixel a set thing draws lies inside its box in all 25 states (the small palm puts 3 of 912 pixels outside when it rustles to one side). `hit` at each box's middle gives the thing's key, except where the old test order says otherwise (listed in the test with reasons).
+- `ScenePictures` is the picture source: all 24 pair pictures and 9 level pictures draw; a scene not yet converted says "not converted yet".
+- **The pattern for the next ten scenes** (in the package's AGENTS.md): `set_kit.dart` (shared); per scene `<id>_set.dart` (the set, call for call), `<id>_places.dart` (every place, read from the sheet), `<id>.dart` (the old scene file line for line, as a `SetScene`); the sheet copied into `assets/sheets/` by `tool/make_sheets.dart`; the same six tests.
+- Bake time in a release web build, on the build machine while other builders loaded it (load average about 15): median 86 to 209 ms, slowest (the first bake, which also builds the ground) 289 to 703 ms. Over 150 ms in the loaded runs. To be measured again on a quiet machine and on his phone.
+- Decided after the report: shadows are cast only while a character is more than half faded in (as the preview the readers saw does); the cake plate's touch area is tested in display coordinates, so it matches the plate at either zoom; the frog's shadow on the porch stays at ground height, as in the preview. Order 14b applies them.
+- `PictureRef` gets a `name`: abuela.si and cierra.no share scene, state and view and differ only in their crop.
+- Old faults ported: `draw()` moves the clouds, so state changes with the frame rate; `come` and `regala` throw when abuela is at the step.
+
 ## Order 15. The story runner and play screen (builder, feature_story)
 
 Page 12: sections 1 to 7. **From:** historia/juego.js (all but what orders 12 and 18 take), historia/index.html, docs/hablar/01-decisiones.md, page 09 (the lesson frame, the mic states), page 07 ("A decision, as the engine runs it").
@@ -350,6 +395,17 @@ Page 12: sections 1 to 7. **From:** historia/juego.js (all but what orders 12 an
 - A player with no screen, as a library function `play(story, plan, draws, seed)` returning a trace in the shape of `ref/trazas/`. The orchestrator wraps it as `coqui/tool/juega.dart`.
 
 **Done when:** on a fake scene, a unit test for every step kind, and the cases of habla_motor_check.py (every turn heard, every turn missed twice, the mic off, first play with no turn). With El frente merged: the traces of stories 1 to 3 are reproduced: decisions, marks, `lost`, ending, order of clips.
+
+**Result (Nov 19): done, merged to main.** Built by a Sonnet builder; its tests were run again by the orchestrator (197) with `flutter analyze` and the boundary check on merged main.
+- `StoryRunner` is juego.js ported line for line, on a virtual clock (timers fire by due time, then creation order). Step kinds, from juego.js lines 320 to 336: string, say, wait, cam, dots, set, if, act, ask, decide, elige, draw, reparte, calc, recuerda, cost; anything else throws.
+- **All 153 recorded runs are reproduced whole**, to the millisecond, with the old scenes' acts replayed from a recording of what each old scene did (no story is independent of its scene's acts, so the builder recorded them from the old page: `tool/ref/record_acts.mjs`).
+- **With the real El frente** (5 files × 3 plans): decisions, marks, steps lost, ending, the order of clips, the steps, the choices, the touches, the random draws and the memory are equal in all 15. Two runs are equal whole. The other 13 differ only in times and in the number of hop sounds, for two reasons that come from the new set, not the runner: the `casa` view is now the same window as `wide`, so `camGo("casa")` no longer slides (about a second shorter where a story used it); and the frog's new spots are nearer, so he takes one hop fewer in some moves (460 ms each). **Accepted**: the game is the same; the pacing is a little quicker in those places. Order 40 compares the other scenes the same way: everything but time and hop sounds.
+- Speaking turns: every case of habla_motor_check.py as a test. The real listener path is tested with the settings of docs/hablar/01-decisiones.md.
+- The play screen: the frame, the dashes, captions, the speech bubble, the mic disc in its five states, the end title with Play again, Next story and Map; Listen mode; a tap is mapped back to the picture and hit-tested by the scene.
+- The no-screen player is `play(...)` inside the feature; its tools are `tool/juega.dart` (on a stand-in scene) and `tool/differential.dart`. There is no `coqui/tool/juega.dart`: a tool outside the package may not import a feature's `src/`, and the real scene needs Flutter's assets, so the comparison with the real scene runs as the feature's test.
+- For the scenes to come: a `set` step's positions written as two-number lists (`respEn`, `casa`, `bolsa`: none in El frente's stories) are not remapped yet; each scene's sheet must name them. Scenes that draw random numbers need the app's `Rng` (El frente draws none).
+- Follow-up decided: the story's clock stops while the app is in the background, so no burst of timers on return.
+- Old faults ported: a second `camGo` during a slide leaves the first one's wait unresolved; `ask` with `bien: false` still says the default praise; in Listen mode an `elige` takes the first option.
 
 ## Order 16. Progress (builder, coqui_progress)
 
@@ -398,6 +454,17 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 
 **Done when:** a dev screen plays ten lines back to back with gaps within 60 ms of the pauses asked for; a unit test shows every `SFX` name reaches the audio layer with the old code's numbers; `flutter build apk --debug` passes. How it sounds is Salim's to judge at Gate A.
 
+**Result (Nov 19): done, merged to main.** Built by an Opus builder; the tests and the dev check were run again by the orchestrator.
+- **Started before the phones reported**, on order 00's desktop result (the plugin leaves about 215 ms between lines, Web Audio about 6 ms). On the web everything plays through Web Audio by interop, speech goes straight to the browser's recogniser, storage is localStorage. `just_audio`, `speech_to_text`, `shared_preferences` are used only in phone builds. The iPhone audio session type is one constant, `iosAudioSessionType`, null until the tester's result.
+- The dev check (`node tool/dev_check.mjs` in the package): ten lines back to back, every gap within 10.3 ms of the pause asked for, measured on the output; all 18 SFX fire and make sound; a recognition attempt ends cleanly at 6 s in headless Chrome.
+- 97 tests on vm, 72 in Chrome. Every SFX name's calls equal juego.js's exactly, from juego.js run in node on a recording audio context (`node tool/juego_sonido.mjs`). In phone builds each tone is rendered once to PCM by the Web Audio formulas; against Chrome's own rendering the difference is under 1%.
+- `Coquí Android` run 44569491685: the apk built and installed twice. The app does not use the package yet, so this proves the plugins link, not the phone code.
+- Old keys: `coqui.palabras.v1` is `storage.progress`; `coqui.juego.ult` and `.mem` are `space('juego')` keys `ult` and `mem`; `coqui.leer.tam` is `space('leer')` key `tam`. A space is the prefix `coqui.<name>.`. Nothing is deleted.
+- `Haptics.unlock()` does nothing (the UI plan's unlock pattern is not built). `AppInfo.installed` is true in a phone build. `msToSound` is null when no speech started (callers use `?? 0`). `stop()` stops clips only.
+- For order 15: `preload` cannot say which clips failed, and juego.js falls back to timed lines when a clip is missing; the contract needs a way to tell.
+- Old quirks ported: a tone bypasses the mute button once scheduled; the clip time limit uses the clip's length plus 1 s.
+- Only a real phone can show: how the tones sound through the plugin, speech_to_text on Android and iOS, the iPhone guards, haptics.
+
 ## Order 19. The call connection (builder, coqui_platform)
 
 **From:** historia/llamada.js (`precarga`, `startSession` and its options, the handlers, `installStub`); notas/llamada-decisiones-1.md; page 05, "How the page and Danny talk".
@@ -406,6 +473,15 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 
 **Done when:** on the scripted fake, events arrive in the order llamada_check.py expects; the web build loads the client without error on the test site. No real call: it needs Salim's microphone and costs his credits.
 
+**Result (Nov 19): built and merged to main; the real library load and a real call are unverified until the test site.** Built by an Opus builder; its tests were run again by the orchestrator (136 on vm, 84 in Chrome).
+- `createCallSession` on the web: `@elevenlabs/client@1.25.0` from the same address, loaded as `precarga` loads it; `startSession` with the same agent id, `connectionType: "websocket"`, the six variables in llamada.js's order (job, minutes and opening from `CallBrief`); `show_picture` answers "shown" and becomes a `Tool` event; the callbacks become `Connected`, `AgentLine`, `Heard`, `Mode`, `CallError`, `Ended`.
+- `available` is false in phone builds, where `callsAllowed` is false, and on the web once the library failed to load (the next read tries again).
+- `CallStub` is `installStub` ported: the same steps, pacing and `?stub=` options. Against the old stub run in node it gives the same callbacks at the same ms in all 8 scenarios of llamada_check.py. Its Spanish test lines are in an asset made from llamada.js, not in code.
+- No call was placed. The library's own code (the npm package, served locally) loads through the same path and `startSession` is a function. The real address is blocked from the build machine.
+- **To check on the test site, with no call started:** on Hablar with an open call card, in the console: `typeof window.ELConv?.startSession + ' ' + window.ELConvError` must print `function undefined`.
+- `ClipPlayer.loop('rain', ...)` is idempotent on the web and in phone builds (tested).
+- Order 19b (done, merged): `CallSession.start` throws `CallStartError` with a `kind` (microphone, library, failed, unavailable) whose text is the old `<Name>: <message>`; the session resumes the sound context when a call ends or fails to start (the old page reloaded on leaving a call; this app does not).
+
 ## Order 20. Shared look (builder, coqui_ui)
 
 **From:** the `<style>` of historia/app.html, cual.html, index.html; notas/ui-decisiones-1 to 3; pages 09 and 10; `ref/pantallas/`.
@@ -413,6 +489,24 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 **Build:** colour and type tokens with v=39's exact values; the buttons; the bottom sheet; the tab bar with the raised Mapa disc; the lesson frame; the Ear and Mouth meters; the word card; the fade under lists; `PixelView` as page 12 section 3. A gallery dev screen.
 
 **Done when:** a fresh reader compares the gallery with `ref/pantallas/` and finds no difference a learner would notice, or lists them. `PixelView` tests: a 196 × 216 picture in a 412-wide screen at pixel ratio 2.625 is drawn at 5 device pixels a pixel, unsmoothed, on whole device pixels; it repaints when its `repaint` fires and not otherwise.
+
+**Round 2 (Nov 19), after the fresh reader's first comparison, merged to main; a second reader is comparing.** The reader found what the builder's own comparison had missed, all fixed in round 2:
+- Weights 500 and 600 drew as regular and bold drew too heavy: the web build carried only Roboto Regular. The app now ships Roboto Regular, Medium and Bold itself (from the Flutter SDK's own fonts, Apache 2.0 licence beside them), one look on every platform; CSS 600 uses Bold, as a browser would choose among those three.
+- 1-pixel borders were a device pixel too thick. Borders now follow what Chrome does (the CSS width floored, then snapped), through one helper.
+- The shelf's "Listen" button missed a `max-width: 420px` rule of the old CSS; its padding and gap now match to within 1 px.
+- The reader's Back and Next row is equal halves; the last page's row and a story's end pair are there too; a disabled Back has the old colours exactly.
+- Repaso's answer screen: the unchosen picture is dimmed (55%, measured on the old screenshots), and the tick badge has the old size and place.
+- `CoquiLabels`: the app name, the five tab names, "¿Cuál?" and "Repaso".
+- Left as they are: bold words are a little narrower than in the old screenshots (Roboto against Inter); baselines sit up to 3 device pixels off for the same reason.
+
+**Result (Nov 19), round 1: built and merged to main.** Built by a Sonnet builder; `test_all.sh` run again by the orchestrator on merged main.
+- 137 tokens (40 colours, 49 metrics, 6 shadows, 42 text styles), each with its CSS file and line. 61 tests. A gallery (`tool/dev_main.dart`, 17 sections) and `tool/shots.mjs` to capture it on both phone sizes.
+- Against the old screenshots, in device pixels: most edges identical (chips, the Mapa disc, word cards, stat cards, the lesson dashes and start disc, sheet title); the rest within 1 to 2 px.
+- `PixelView`: 196 × 216 in 412 at 2.625 is 980 × 1080 device pixels, every device pixel equal to its picture pixel; it repaints only on its tick.
+- Text is the platform default (Roboto on the web and Android); the old screenshots were taken in Inter, so widths differ a little. No rule in the old CSS uses Pixelify Sans; a style helper for it exists with ligatures off.
+- **Decided:** a word card's picture is drawn at a whole-number scale, centred on the card's white, never stretched (v=39 stretched it by about 2.47). It is 392 × 208 device pixels on both reference phones, with about 16 CSS px of card showing each side on the Android size and 20 on the iPhone size.
+- The tab bar takes its own five items (`CoquiTabs`); `FeatureTab.icon` cannot carry v=39's drawn icons and is not used. The shell maps by tab id.
+- There is one light look and the dark lesson look; the old CSS has no dark mode.
 
 ## Orders 21 to 25. The features (builders, one each)
 
@@ -427,6 +521,22 @@ Page 12: sections 1, 2, 3, 6, 7. One package, fakes only, a dev entry. Screens r
 | 25 | feature_profile | app.html: `yo`, `bienvenida`, `listo` | none exists: one test per behaviour | The build number. About: "Map and scene engine: Pixel Plays by Amir Mushich (MIT)" with the licence text. On iPhone web, not installed: a one-time hint, "To install: Share, then Add to Home Screen". The level check opens by `nav.go(LevelCheckRoute())` |
 
 **Done when (each):** its tests pass, count in the report; its dev entry runs alone; a fresh reader compares its screens with `ref/pantallas/`.
+
+**Results (Nov 19).** Each feature was built by a Sonnet builder on its own branch; the orchestrator ran its tests again and `test_all.sh` on merged main. The fresh readers' comparisons of the features' screens come after the shared look's round 3 and the integration pass.
+
+- **Order 23, Repaso and the level check: merged to main.** 199 tests. The logic is plain Dart, compared with the old code run in node: 41 seeded Repaso sessions (520 asks, 887 store calls with their arguments and times, 5,415 random draws at the same place in the stream, every picture's side) and 28 level-check sessions (361 items, the 28 `presume` calls) are reproduced exactly. cual.js and nivel.js shuffle with `sort(() => Math.random() - .5)`, so V8's own sort was ported to get the same order. One test for each check of repaso_check.py (96), cual_check.py (3) and nivel_check.py (14). On both phones the 19 reference pictures match in geometry within 4 device pixels.
+  - Ported as the code is, not as the pages say: Repaso never adds minutes; the X in Repaso goes to Palabras; `ReviewRoute(practice:)` is not read (the old page decides: nothing due means practice).
+  - Old faults ported: Repaso sets a sign flag nothing draws; a level item naming a word with no pair crashes.
+  - Open for the integration pass: the level check's cells are 96 × 106 picture pixels, so `PictureSource.of` takes a width and a height (order 20 round 3 changes the contract).
+- **Order 25, Yo and the welcome: merged to main.** 169 tests; the whole Yo page equals the old `yo()` for each of the 8 reference states; 56 old handlers were run in node and replayed by tapping the control. `WelcomeGate` wraps the app and shows the welcome until it is finished. New: the build number at the foot of Yo; an About row with "Map and scene engine: Pixel Plays by Amir Mushich (MIT)" and the licence; the one-time hint "To install: Share, then Add to Home Screen" on an iPhone in Safari, as a card under the title, remembered once shown.
+  - The speaking note uses `speech.available()`, which covers no recogniser, no network, a denied permission and a failed turn earlier in the session.
+  - Found: the streak's flame is an emoji, and Flutter on the web fetches an emoji font for it from Google's servers. Order 20 round 3 makes it a drawn icon.
+  - Old faults ported: with everything played Yo says "place 1 of 10"; the second and third switch cards get an accidental top line.
+- **Order 21, Palabras: built, on its branch** (100 tests; the 36 reference pictures matched on both phones). It was built before the shared look's round 2, so it gets one adaptation pass before merging.
+- **Order 22, Biblioteca and Leer: built, on its branch** (109 tests, 58 of them named after leer_check.py's checks; on the Android size the shelf and the reader match the old screens within 0.4 CSS px). Same adaptation pass. The book reader's layout stays in this feature (it has one user). On the iPhone size the book picture is one whole-number step larger than in the old screenshots where Roboto's narrower lines leave more room.
+- **Order 24, Hablar: merged to main.** 129 tests. The call's logic is a plain class on the `CallSession`, the `Clock`, the catalog and the store. One test for every check of llamada_check.py (the natural call, each goodbye rule, no answer to the end message, the 6-minute and 7-minute rules, a refused microphone, a failed start, Help). The words recorded as mouth answers equal what llamada.js records for the same 9 scripts (24 `PAL.responde` calls, from the old page run in headless Chrome with its own stub). Every part of the call screen and the voice test is within 0.6 px of the old page's own boxes at four screen sizes. No call was placed.
+  - Decided after its report: when calls are off on a build the card says "Calls with Danny open later." (the line of UI round 3, historia/notas/ui-decisiones-3.md). The voice test has no entry in the app, as in v=39, where nothing links to it: it is reached by its address only; its twelve lines and its Spanish labels are exported from habla-prueba.html into a data file and passed to the module by the shell. The speaking note stays in Yo.
+  - Old faults ported: Hablar lists words by ear stage, not by `abiertaHabla`; saying "el" records "él" (accents are ignored); the 7-minute stop cannot fire in a real call (the end message at 6:00 plus the 15-second cap ends it at 6:15).
 
 ## Order 26. The shell (orchestrator)
 

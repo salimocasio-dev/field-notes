@@ -259,8 +259,10 @@ class RowDivider extends StatelessWidget {
   const RowDivider({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const SizedBox(height: 1, child: ColoredBox(color: CoquiColors.line));
+  Widget build(BuildContext context) => SizedBox(
+    height: CoquiLayout.border(context, 1),
+    child: const ColoredBox(color: CoquiColors.line),
+  );
 }
 
 /// Puts a [RowDivider] between [rows].
@@ -345,75 +347,6 @@ class ListRowTitle extends StatelessWidget {
   Widget build(BuildContext context) => Text(text, style: CoquiText.rowBold);
 }
 
-/// `.bk`: a row of the shelf: a cover (72 px, 8 px corners, a 1 px ring, grey
-/// until it has a picture), the title, a grey line, and the buttons under them,
-/// 8 px above and 16 apart; 16 px above and below. app.html:97-99
-class ShelfRow extends StatelessWidget {
-  const ShelfRow({
-    super.key,
-    required this.title,
-    this.subtitle,
-    this.cover,
-    this.actions = const [],
-    this.coverSize = CoquiMetrics.cover,
-  });
-
-  final String title;
-  final String? subtitle;
-
-  /// The cover's picture, or null for the grey tile. It is drawn
-  /// [coverSize] wide.
-  final Widget? cover;
-  final List<Widget> actions;
-
-  /// 72, or 64 on a 360 px phone (`@media (max-width:380px)`). app.html:101
-  final double coverSize;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: coverSize,
-          height: coverSize,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: CoquiColors.coverFill,
-            borderRadius: BorderRadius.circular(CoquiMetrics.radiusPicture),
-            boxShadow: const [
-              BoxShadow(color: CoquiColors.line, spreadRadius: 1),
-            ],
-          ),
-          child: cover,
-        ),
-        const SizedBox(width: CoquiMetrics.s16),
-        Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: CoquiText.rowBold),
-              if (subtitle != null)
-                Text(subtitle!, style: CoquiText.smallMuted),
-              if (actions.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: CoquiMetrics.s8),
-                  child: Wrap(
-                    spacing: CoquiMetrics.s16,
-                    runSpacing: CoquiMetrics.s8,
-                    children: actions,
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 /// `.play`: the Today card. The whole card is the button: at least 80 px high, 16
 /// px padding, 16 px corners, white, a deep soft shadow; the green 48 px disc, then
 /// an eyebrow (12 px upper case), the title (18 semibold) and a grey line (14). app.html:54-58
@@ -477,23 +410,48 @@ class TodayCard extends StatelessWidget {
 }
 
 /// A stat of Yo: a card with a big number and a grey word under it, centred, no
-/// space under it (the grid puts 16 px between). app.html:472
+/// space under it (the grid puts 16 px between). The streak's has the flame before its number
+/// ([flame]: the fire emoji glyph the old page writes in front of it, drawn as [CoquiFlame] at the number's
+/// size, 0.29 em before the digits). app.html:472
 class StatCard extends StatelessWidget {
-  const StatCard({super.key, required this.value, required this.label});
+  const StatCard({
+    super.key,
+    required this.value,
+    required this.label,
+    this.flame = false,
+  });
   final String value;
   final String label;
+  final bool flame;
 
   @override
-  Widget build(BuildContext context) => CoquiCard(
-    marginBottom: 0,
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(value, style: CoquiText.stat, textAlign: TextAlign.center),
-        Text(label, style: CoquiText.smallMuted, textAlign: TextAlign.center),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final number = Text(
+      value,
+      style: CoquiText.stat,
+      textAlign: TextAlign.center,
+    );
+    return CoquiCard(
+      marginBottom: 0,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (flame)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CoquiFlame(fontSize: CoquiText.stat.fontSize!),
+                SizedBox(width: CoquiFlame.gapFor(CoquiText.stat.fontSize!)),
+                number,
+              ],
+            )
+          else
+            number,
+          Text(label, style: CoquiText.smallMuted, textAlign: TextAlign.center),
+        ],
+      ),
+    );
+  }
 }
 
 /// `.seg`: pills in a row of equal width, 16 px apart; the chosen one is blue
@@ -534,7 +492,10 @@ class SegmentedPills extends StatelessWidget {
                   ),
                   border: Border.all(
                     color: on ? CoquiColors.info : CoquiColors.line2,
-                    width: CoquiMetrics.borderButton,
+                    width: CoquiLayout.border(
+                      context,
+                      CoquiMetrics.borderButton,
+                    ),
                   ),
                 ),
                 child: Text(
