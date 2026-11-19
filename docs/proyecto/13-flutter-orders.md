@@ -81,6 +81,14 @@ Each answer picks a route. Nothing here shows course pictures.
 
 **Done when:** both phones' results are in page 08; each route is written into order 18.
 
+**State (Nov 19): live, waiting for the two phones.** https://salimocasio-dev.github.io/field-notes/prueba/?v=1 . Built by an Opus builder; played through by the orchestrator in headless Chrome (all six tests end in a result, no errors); the 24 live files match the build byte for byte.
+- Desktop Chrome, test 1: just_audio leaves a median of about 215 ms between lines (it only notices a clip's end every 250 ms or so); Web Audio about 6 ms.
+- Test 4 on an iPhone runs under both audio session types (`playback`, then `play-and-record`), so order 18 gets the type that works.
+- The page uses Roboto, not Pixelify Sans: Pixelify's "fi" ligature reads as "A" and its 5 looks like S. Order 20 must turn ligatures off wherever Pixelify Sans is used.
+- A just_audio fault on the web: a second `setAudioSources` on the same player keeps the first playlist (just_audio_web 0.4.16). For order 18.
+- speech_to_text on the web never sets `maxAlternatives`; the page wraps `webkitSpeechRecognition` to ask for 5. For order 18.
+- Safari's storage rule is not confirmed (webkit.org is blocked from the build machine). Unverified: 7 days of Safari use without a visit clears a site's storage; a home-screen app counts separately.
+
 ## Order 01. Workspace, runbook, checks, CI (orchestrator)
 
 - `coqui/` as in the plan's "The layout". Every package a shell: `pubspec.yaml` (`resolution: workspace`, only the dependencies its row allows), `lib/<package>.dart`, `lib/src/`, `test/`, `AGENTS.md`.
@@ -112,6 +120,17 @@ Each answer picks a route. Nothing here shows course pictures.
 
 **Done when:** everything compiles; each dev entry opens; the report lists every member added beyond page 12.
 
+**Result (Nov 19): done, merged to main.** Built by an Opus builder; `bash coqui/tool/test_all.sh` run again by the orchestrator on merged main (passes).
+- coqui_contracts: 51 tests on vm and on chrome. `normalize` matches `PAL.norm` on 30 strings (and 2,000 random ones in the generator); Dart has no NFD, so a table of 628 code points is generated from the old regex. Mulberry32 seed 1 matches node on ten values.
+- **Differs from page 12:** `SkillRecord.due` is a `num`: palabras.js line 33 (`e.due=t+e.gap*DAY`) can store a fraction, and a real run does (six rights, five misses, one right gives `due = 1794283613888.889`). Every other time field is whole and stays `int`.
+- Added beyond page 12, each from the old code: `Scene.SW`, `SH`; `Scene.box`, `hit`, `handAt` declared; `hud(c, W, a)`; `stake(lost, max, en)` returning a Future; `talkAt(who, W)`; `respIcon(c, k, x, y, w, h, a)`; `estado(W)`; `Scene.host` (the old globals); `CallSession.inputVolume()`, `outputVolume()`, and `start` throws when a call cannot start; `PictureRef.of(pair, side)`; `Sfx` with the 18 names of juego.js (right, toc, blip, creak, hop, coqui, win, luz, drop, trueno, lluvia, calla, suave, pio, slam, bonk, munch, swoop).
+- In page 12 but not in the old code (kept): `Scene.setKey`, `buildSet`, `remap`, `Thing.world`, `CallSession.setVolume`, `available`, `ProgressStore.changes`, `AppInfo.callsAllowed`, `isIos`, `isAndroid`, `installed`.
+- `PpEngine`, `PpBuild`, `Sprite`, `Ctx` are shells for orders 10 and 11. `Ctx` starts with smoothing off.
+- coqui_testing: a fake for every interface and `fakeServices()`. The sample course (El frente, stories 1 to 3, cual-frente, the book la-lluvia, 20 clips with real marks) is embedded as Dart strings, checked byte for byte against the copied files: a dev dependency's assets are left out of a web build.
+- The fake progress store is not the scheduler (no gaps, no due dates, no 4 am rule): tests seed due words by hand.
+- A dev entry in each feature: `tool/dev_main.dart`, with a placeholder module. Each builds for the web.
+- `PAL.rec` is called by no page, so it has no member.
+
 ## Order 03. Site build; Android and iOS builds (orchestrator)
 
 - One workflow that deploys Pages from Actions: the repo's static files as they are, plus `flutter build web --base-href /field-notes/app/` under `app/`. Change the Pages source to "GitHub Actions".
@@ -121,6 +140,15 @@ Each answer picks a route. Nothing here shows course pictures.
 - `web/manifest.json` and `web/index.html`: name Coquí, `display: standalone`, portrait, the coquí icon (rendered from `mkCoqui` after order 11; a placeholder until then), `translate="no"`, `<meta name="google" content="notranslate">`, the Apple touch icon and web-app meta tags.
 
 **Done when:** https://salimocasio-dev.github.io/field-notes/app/ serves the empty app; the old site works at its old addresses (checked with the GitHub API as page 07 says); a dry run shows the audio job would start the site build; the Android artifact installs on an emulator, twice in a row.
+
+**Result (Nov 19): built and merged to main.** Built by a Sonnet builder; the local checks were run again by the orchestrator on merged main.
+- **Differs from the order:** the Pages source is not changed (that setting cannot be reached from the build machine). Pages keeps serving main. `.github/workflows/coqui-sitio.yml` builds the web app and commits it to `app/` on main when `coqui/BUILD` changes (or by hand). `coqui/BUILD` is the build number; the orchestrator raises it when a build should go live. `voz.yml` is not changed.
+- `bash coqui/tool/build_sitio.sh <dir>`: the same build, locally. 16 MB, 26 files, no service worker, CanvasKit from our own site, only the two CanvasKit variants a dart2js build loads. `node coqui/tool/check_sitio.mjs <dir>` and `bash coqui/tool/dry_sitio.sh` (the commit step against a local repo: main moved, nothing new, main moved twice) pass.
+- Android (`coqui-android.yml`, on every push to main under `coqui/`): run 44548671591 built the debug apk, signed with the key in the repo, installed it twice on an emulator and started it. The apk is the artifact `coqui-debug-apk`.
+- iOS (`coqui-ios.yml`, weekly and by hand): run 44548671850 built `Runner.app` unsigned. Standard GitHub-hosted runners are free in public repositories (github/docs, billing, github-actions.md: "The use of standard GitHub-hosted runners is free: In public repositories").
+- App id `dev.salimocasio.coqui`. Portrait only on Android and iOS. Bluetooth permissions left out on purpose (no extra prompt). The icon is a placeholder until order 11.
+- Flutter's engine replaces the page's viewport meta at start, so pinch zoom up to 5x is allowed. Accepted for now.
+- Theme colour #5C94FC, page background #F6F5F1, from historia/app.html.
 
 ## Order 04. Content exports and clip marks (orchestrator)
 
