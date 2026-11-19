@@ -1,5 +1,6 @@
 """Plays the ¿Cuál? pass by machine. python3 historia/tools/cual_check.py <plan r/w per item> [extra-query] [outdir]"""
-import sys,asyncio,json
+import sys,asyncio,json,os
+BASE=os.environ.get("COQUI_BASE","http://127.0.0.1:8765")   # the local server (COQUI_BASE=http://127.0.0.1:8768 for a worktree)
 from playwright.async_api import async_playwright
 PLAN=sys.argv[1]; EXTRA=sys.argv[2] if len(sys.argv)>2 else ""; OUT=sys.argv[3] if len(sys.argv)>3 else None
 async def main():
@@ -7,7 +8,7 @@ async def main():
         b=await p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox","--autoplay-policy=no-user-gesture-required"])
         pg=await (await b.new_context(viewport={"width":390,"height":844},device_scale_factor=2,is_mobile=True,has_touch=True)).new_page();errs=[]
         pg.on("pageerror",lambda e: errs.append(str(e)))
-        await pg.goto("http://127.0.0.1:8765/historia/cual.html?fast=3&"+EXTRA); await pg.wait_for_timeout(2500); await pg.click("#go")
+        await pg.goto(BASE+"/historia/cual.html?fast=3&"+EXTRA); await pg.wait_for_timeout(2500); await pg.click("#go")
         k=0;last=-1;n=0
         for i in range(40000):   # 40000 x ~60 ms: todo=1&n=140 (128 pairs) needs more than the 8000 it had (it stopped at 114)
             await pg.wait_for_timeout(60)

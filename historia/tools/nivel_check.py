@@ -1,6 +1,7 @@
 # Plays the level check by machine (needs the local server on 8765): python3 historia/tools/nivel_check.py "" <outdir> todo   (plan "" = all right, or r/w per item; outdir must exist, or - for no frames; todo = every item)
 """Plays the level check by machine. python3 nivel_check.py <plan r/w per item, or 'k<N>' = right on the first N stories> <outdir|->"""
-import sys,asyncio,json
+import sys,asyncio,json,os
+BASE=os.environ.get("COQUI_BASE","http://127.0.0.1:8765")   # the local server (COQUI_BASE=http://127.0.0.1:8768 for a worktree)
 from playwright.async_api import async_playwright
 PLAN=sys.argv[1]; OUT=sys.argv[2] if len(sys.argv)>2 else "-"
 async def main():
@@ -8,7 +9,7 @@ async def main():
         b=await p.chromium.launch(executable_path="/usr/bin/google-chrome",args=["--no-sandbox","--autoplay-policy=no-user-gesture-required"])
         pg=await (await b.new_context(viewport={"width":390,"height":844},device_scale_factor=2,is_mobile=True,has_touch=True)).new_page();errs=[]
         pg.on("pageerror",lambda e: errs.append(str(e)))
-        await pg.goto("http://127.0.0.1:8765/historia/nivel.html?fast=4&rec=1"+("&todo=1" if len(sys.argv)>3 else "")); await pg.wait_for_timeout(2500); await pg.evaluate("PAL.reset()"); await pg.click("#go")
+        await pg.goto(BASE+"/historia/nivel.html?fast=4&rec=1"+("&todo=1" if len(sys.argv)>3 else "")); await pg.wait_for_timeout(2500); await pg.evaluate("PAL.reset()"); await pg.click("#go")
         last=-1;k=0;n=0
         for i in range(4000):
             await pg.wait_for_timeout(60)
