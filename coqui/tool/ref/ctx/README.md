@@ -31,7 +31,7 @@ A second run gives byte-identical files. `make.js` renders the sheet twice in tw
 - The context is wrapped in a recorder. Every method call and every property set is logged as it is made, then done. So `ops` is what the browser ran, not what someone meant it to run. A call or property that `Ctx` does not have (for example `setLineDash`, `getImageData`) stops the run.
 - Colours are written as the code wrote them (`"#2A1810"`, `"rgba(30,24,90,.32)"`) with the bytes the canvas turns them into: `[r, g, b, a8]`, `a8 = round(alpha * 255)` (checked in Chrome: `.32` gives 82, `.16` gives 41, `.5` gives 128).
 - `drawImage` with three or five arguments is the op `drawImage`; with nine, `drawImageRect`. The image is a key of `sources`.
-- Parameters are taken from real calls in `historia/` where there is one (`refs` names the line, found by its text; `check.js` fails if the old file's line has changed). Cases 4 (half positions, partly), 5 and 23 follow the order's list and have no matching call.
+- Parameters are taken from real calls in `historia/` where there is one (`refs` names the line, found by its text; `check.js` fails if the old file's line has changed). Cases 5 and 23 follow the order's list and have no matching call; case 4 is the nearest (an ellipse at fractional centre).
 
 ## The kinds
 
@@ -59,6 +59,6 @@ A second run gives byte-identical files. `make.js` renders the sheet twice in tw
 
 - The browser's default for `imageSmoothingEnabled` is `true`, and the old scene context `c` (juego.js line 12) is never set to `false` for the whole frame: only `dc` is (juego.js line 74), and a few scene functions set `c` to `false` and leave it. So a sprite drawn at a fractional position in the old game is bilinear. Cases 22 to 25 are drawn with smoothing on for that reason. Every other case has smoothing off, as the order says.
 - An `arc` or `ellipse` with a sweep of 2 pi or more (the old code writes `7`) is a full circle. `arc(x, y, r, Math.PI, 0)` goes clockwise from pi to 0: the upper half.
-- A tile is straight (not premultiplied) alpha; the canvas stores premultiplied, so a translucent pixel over a transparent tile can come back a step off in its colour channels (cases 6 and 26 to 28 show it where it matters).
+- A tile is straight (not premultiplied) alpha, as `getImageData` returns it. Only cases 6 and 23 start on a transparent tile and keep transparent pixels (case 23 has partly transparent edges: the canvas stores premultiplied, so their colour channels can be a step off what a straight-alpha blend gives). The other 38 tiles are fully opaque.
 - `cases.json` names the Chrome that drew it (`browser`). Another Chrome can differ at the edge of antialiased shapes.
 - `lib.js` (PNG writer, SHA-256, index) is the same file in `ref/pp/` and `ref/sprites/`.

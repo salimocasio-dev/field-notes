@@ -1,22 +1,22 @@
 {
   "what": "canvas reference: 40 cases, their source sprites and the contact sheet",
   "files": 53,
-  "totalBytes": 832474,
+  "totalBytes": 832746,
   "entries": [
     {
       "path": "cases.json",
-      "bytes": 64940,
-      "sha256": "adda90612005c8044402f1f25a2a8748f9adcff2d7639bafa24c22a2856531c5"
+      "bytes": 64916,
+      "sha256": "469480224a457afc90a5a86e759376d6ef33b009c9639a9986cf06006537a5a7"
     },
     {
       "path": "cases.md",
-      "bytes": 5145,
-      "sha256": "3b6ec5cbf32de7dabf745266d31541121c446c104966263dff8558a0798d9f7b"
+      "bytes": 5204,
+      "sha256": "1fd796aeceef9338aa9d600cdf8a5ed5cac93e204bb8f9201ab25a37de73415d"
     },
     {
       "path": "sheet.png",
-      "bytes": 67449,
-      "sha256": "81edb21df19b79b41e3d2a71289a5b872ac7300bb281d9ff880b2cc8ef21b4f3"
+      "bytes": 67686,
+      "sha256": "539c002e6c0bb5aa158110ef0c9c6cb1831e37f94a20c94231b23cdb854c5be8"
     },
     {
       "path": "sources/abuela.bin",
@@ -181,7 +181,7 @@
     {
       "path": "tiles/23.bin",
       "bytes": 16384,
-      "sha256": "68eb0b3ff453a29793d3cc9ea92c8173ca41ef3a21bcde8a313c5302b95740b9"
+      "sha256": "c2cf0dc1a75ef3e0630348e95c68a301685f062289a440f0464f9379ce1a9e40"
     },
     {
       "path": "tiles/24.bin",

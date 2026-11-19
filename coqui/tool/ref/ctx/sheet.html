@@ -156,7 +156,7 @@ add({ kind: 'drawImage-rotate-0.5', title: 'flipped and rotated: scale(-1, 1), r
 add({ kind: 'drawImage-smoothing', title: 'the frog mid-hop: y = 24 - 7 sin(pi/5) = 19.886, smoothing on (the scene canvas default)', smoothing: true, bg: SKY,
   refs: [['historia/juego.js', 'q.dy=-7*Math.sin(Math.PI*i/n)', 'the hop'], ['historia/escenas/banco.js', 'g.drawImage(spr("cq"+q.s+"_"+bl+op,()=>mkCoqui(q.s,bl,op)),b.x,b.y+dy)', 'drawn at b.y + dy']],
   run(c) { c.drawImage(S.coqui, 16, 24 + -7 * Math.sin(Math.PI * 1 / 5)); } });
-add({ kind: 'drawImage-smoothing', title: 'half-pixel position, both axes, smoothing on', smoothing: true, bg: CREAM,
+add({ kind: 'drawImage-smoothing', title: 'half-pixel position, both axes, smoothing on, on a transparent tile (edges come out partly transparent)', smoothing: true, bg: null,
   refs: [],
   run(c) { c.drawImage(S.abuela, 8.5, 6.5); } });
 add({ kind: 'drawImage-smoothing', title: 'smoothing on: abuela down to 20 x 18, the frog up by 1.5 (the blur of "borroso")', smoothing: true, bg: GRASS,

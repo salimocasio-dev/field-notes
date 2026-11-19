@@ -26,7 +26,7 @@ Made by `coqui/tool/ref/ctx/make.js`. Each case is a 64 x 64 tile; `cases.json` 
 | 20 | drawImage-rotate-0.5 | the frog pulled off his feet: rotate(-.5) about his middle, drawn from -w/2, -h/2 | escenas/camino.js:89 |
 | 21 | drawImage-rotate-0.5 | flipped and rotated: scale(-1, 1), rotate(-.5) | escenas/lago.js:100 |
 | 22 | drawImage-smoothing | the frog mid-hop: y = 24 - 7 sin(pi/5) = 19.886, smoothing on (the scene canvas default) | juego.js:156, escenas/banco.js:166 |
-| 23 | drawImage-smoothing | half-pixel position, both axes, smoothing on | synthetic (the order's list) |
+| 23 | drawImage-smoothing | half-pixel position, both axes, smoothing on, on a transparent tile (edges come out partly transparent) | synthetic (the order's list) |
 | 24 | drawImage-smoothing | smoothing on: abuela down to 20 x 18, the frog up by 1.5 (the blur of "borroso") | escenas/sala.js:120, escenas/sala.js:137 |
 | 25 | drawImage-smoothing | the frog pulled off his feet, rotate(-.5), smoothing on (same call as the rotate case, other setting) | escenas/camino.js:89 |
 | 26 | globalAlpha-0.5 | the frog at globalAlpha .5 over abuela | escenas/banco.js:166 |

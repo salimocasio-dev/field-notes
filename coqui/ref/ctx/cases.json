@@ -1102,14 +1102,12 @@
     {
       "n": 23,
       "kind": "drawImage-smoothing",
-      "title": "half-pixel position, both axes, smoothing on",
+      "title": "half-pixel position, both axes, smoothing on, on a transparent tile (edges come out partly transparent)",
       "file": "tiles/23.bin",
-      "sha256": "68eb0b3ff453a29793d3cc9ea92c8173ca41ef3a21bcde8a313c5302b95740b9",
+      "sha256": "c2cf0dc1a75ef3e0630348e95c68a301685f062289a440f0464f9379ce1a9e40",
       "refs": [],
       "ops": [
         ["imageSmoothingEnabled",true],
-        ["fillStyle","#FBF0D2",[251,240,210,255]],
-        ["fillRect",0,0,64,64],
         ["drawImage","abuela",8.5,6.5]
       ]
     },
