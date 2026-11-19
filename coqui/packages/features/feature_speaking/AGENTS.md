@@ -23,7 +23,7 @@ Hablar: the call with Danny, the voice test.
 
 - `lib/feature_speaking.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
+- Since order 02 the file exports a placeholder module (its screen says the feature's name), until this feature's order builds the real one. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
 - Later it holds one thing: its module, a `FeatureModule` (boundary rule 4).
 
 ## Run and test it alone

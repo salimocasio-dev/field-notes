@@ -1,3 +1,4 @@
+import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/src/frente/frente.dart';
 import 'package:coqui_scenes/src/balcon/balcon.dart';
 import 'package:coqui_scenes/src/sala/sala.dart';
@@ -12,10 +13,7 @@ import 'package:coqui_scenes/src/nevera/nevera.dart';
 
 /// The eleven scenes, by id, in this order. Each id maps to the factory of its
 /// scene. Every factory throws until its scene is converted.
-///
-/// The factory is typed `Object Function()` for now. Order 02 writes the
-/// `Scene` type and types it.
-const Map<String, Object Function()> sceneRegistry = {
+const Map<String, Scene Function()> sceneRegistry = {
   'frente': createFrente,
   'balcon': createBalcon,
   'sala': createSala,

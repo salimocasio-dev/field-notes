@@ -22,8 +22,7 @@ A fake for every interface, and a tiny sample course.
 
 - `lib/coqui_testing.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
-- Later it holds a fake for every interface of page 12, section 2 (in memory; a settable clock; a scripted `SpeechListener`; a scripted `CallSession`), and the sample course.
+- Since order 02 it holds a fake for every interface of page 12, sections 2 and 3, `fakeServices`, `FeatureDevApp` and the sample course (`sample/`, read through `lib/src/sample_files.dart`; both made by `coqui/tool/contracts/make_sample.mjs`). Each fake's doc comment says what it does and does not do.
 
 ## Run and test it alone
 

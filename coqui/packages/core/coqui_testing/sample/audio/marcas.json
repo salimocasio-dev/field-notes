@@ -1,0 +1,22 @@
+{
+  "esta_casa": [193, 2041, 3024],
+  "mira_casa": [164, 1901, 2880],
+  "puedes_casa": [194, 1836, 2856],
+  "muy_bien": [167, 1007, 1992],
+  "esta_puerta": [206, 2288, 3288],
+  "cerrada": [196, 1433, 2448],
+  "donde_puerta": [157, 1803, 2808],
+  "mira_ventana": [168, 1547, 2592],
+  "ventana_cerrada": [187, 2032, 3024],
+  "puedes_abrir": [200, 2010, 3024],
+  "si_muy_bien": [207, 2648, 3648],
+  "tiene_bizcocho": [166, 3913, 4896],
+  "quieres_hola": [205, 4312, 5328],
+  "cq_si": [215, 693, 1872],
+  "grande_casa": [190, 2256, 3288],
+  "puedes_casa_grande": [201, 2272, 3240],
+  "casa_del_pajaro": [166, 4046, 5064],
+  "es_pequena": [193, 1311, 2352],
+  "donde_pequena": [167, 2209, 3216],
+  "mira_palmas": [172, 1750, 2736]
+}

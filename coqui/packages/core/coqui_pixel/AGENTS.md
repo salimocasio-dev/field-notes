@@ -21,8 +21,7 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
 
 - `lib/coqui_pixel.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Today the file holds a library comment and nothing else.
-- Later it holds `PpEngine`, `PpBuild`, `Sprite`, `Ctx`, `Thing`, `Scene`, `SceneHost` and the scene kit (page 12, section 4).
+- Since order 02 it holds `Thing`, `Scene`, `SceneHost` and `Sfx` (page 12, section 4), and `PpEngine`, `PpBuild`, `Sprite`, `Ctx` as shells that throw until orders 10 and 11 fill them in.
 
 ## Run and test it alone
 
