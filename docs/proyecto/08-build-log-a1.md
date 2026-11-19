@@ -2,6 +2,14 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 19, part 23: the shell, build 3, Gate A ready
+
+- The shell (order 26) is on main with every real feature; builds 2 and 3 were published by raising `coqui/BUILD` (the live files were compared with the build, 457 of 457 equal, for build 2; see below for 3).
+- A tool plays stories 1 to 3 in the real app by touches and saves every screen (`coqui/app/tool/gate_a_frames_test.dart`). It found three faults (bubble swallowed touches; end title over "Play again"; empty frame for an unconverted scene); all fixed with tests.
+- Three fresh readers read the screens with no sound and no words. Eleven of their findings were checked against the old page: five fixed in El frente's sheet, five the same in the old app and left, one (answer cards over abuela in the doorway) left for after Gate A.
+- Spent: nothing. No audio recorded (dry run: 0 new clips).
+- Problems caused by the orchestrator's own work: a brief let a lane branch change files outside its package (the boundary check caught it; the branch was renamed to an orchestrator branch); a builder's commits carried the wrong attribution line (corrected before the push). One Android CI run failed on an outage of Gradle's plugin server; the re-run passed.
+
 ## Nov 19, part 22: the Flutter move, first session
 
 The whole record is page 13 (each order's result under its heading) and page 11-flutter-plan ("Decisions made here", the rows marked Nov 19). In short:
