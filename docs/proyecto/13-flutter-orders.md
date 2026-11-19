@@ -499,6 +499,18 @@ Page 12: sections 1, 2, 6, 7. **From:** historia/juego.js, "sound: effects, and 
 - `CoquiLabels`: the app name, the five tab names, "¿Cuál?" and "Repaso".
 - Left as they are: bold words are a little narrower than in the old screenshots (Roboto against Inter); baselines sit up to 3 device pixels off for the same reason.
 
+**Round 3 and integration 1 (Nov 19), merged to main.** A second fresh reader confirmed round 2's fixes and found a smaller set; a fresh builder fixed them, and two integration builders brought the other packages in line. `test_all.sh` passes on the merged tree.
+- Roboto ships in four weights from one source (`@fontsource/roboto` 5.3.0, SIL OFL 1.1, converted to .ttf): 400, 500, 600, 700 each have their own file. Semibold text is now within 1 to 4% of the old screenshots' stem width (it was 13 to 18% heavier).
+- Ligatures are off in every text style: "fi" drew joined, so "first" read as "fırst". In an app for learning to read, every letter is plain.
+- The streak's flame is a drawn icon. As an emoji, Flutter on the web would fetch an emoji font from Google's servers. A test fails on any character under `lib/` that the shipped fonts lack; the gallery's screenshot run fails on any request that leaves the machine (378 requests, none left).
+- `showCoquiSheet` opens a sheet above everything, the tab bar included, as v=39's scrim covers the page. The map's place sheet and Yo's sheets use it.
+- The review's end grid follows cual.js's rule (2 columns on the narrow phone, 3 on the wide one); a story's end title hangs 16 px under the picture at every height.
+- **Contract changes:** `PictureRef` has a `name` (`<word>.si`, `<word>.no`, `nivel.<word>.<index>`); `PictureSource.of(ref, {width = 196, height = 104, animated})` takes the picture's size in picture pixels and has no `scale`.
+- In coqui_scenes: a picture is found by its name in the sheet; a level-check cell (96 × 106) is always drawn at zoom 1, centred where its review picture is centred (at zoom 2 a cell is smaller than the door or the window); **a scene not yet converted shows its old pictures**, the 415 PNGs order 06 saved (half a megabyte), until it is converted, when they are removed.
+- The book reader's frame and line, and the shelf row, were removed from coqui_ui: Biblioteca has its own, and nothing else uses them.
+- The 1-pixel strip at the edge of screenshots taken at 412 × 915 at 2.625 does not appear at a whole-pixel phone size.
+- Not re-read by a third fresh reader: the readers compare the real feature screens at Gate A instead.
+
 **Result (Nov 19), round 1: built and merged to main.** Built by a Sonnet builder; `test_all.sh` run again by the orchestrator on merged main.
 - 137 tokens (40 colours, 49 metrics, 6 shadows, 42 text styles), each with its CSS file and line. 61 tests. A gallery (`tool/dev_main.dart`, 17 sections) and `tool/shots.mjs` to capture it on both phone sizes.
 - Against the old screenshots, in device pixels: most edges identical (chips, the Mapa disc, word cards, stat cards, the lesson dashes and start disc, sheet title); the rest within 1 to 2 px.
