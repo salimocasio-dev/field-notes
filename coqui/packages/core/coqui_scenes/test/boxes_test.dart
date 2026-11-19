@@ -80,8 +80,9 @@ void main() {
         if (!st.hide &&
             (t.key == 'palma_pequena' ||
                 t.key == 'casa_pequena' ||
-                t.key.endsWith('_grande')))
+                t.key.endsWith('_grande'))) {
           continue;
+        }
         final box = scene.sheet.boxOf(t.key, e);
         var drawn = 0, out = 0;
         for (var i = 0; i < tags.length; i++) {
@@ -91,8 +92,9 @@ void main() {
           if (x < box[0] ||
               x >= box[0] + box[2] ||
               y < box[1] ||
-              y >= box[1] + box[3])
+              y >= box[1] + box[3]) {
             out++;
+          }
         }
         rows.add(
           '${r['id']} ${t.key} (part ${t.value}): $out of $drawn drawn pixels outside $box',
@@ -119,14 +121,16 @@ void main() {
                   ix,
                   iy,
                 ) ==
-                0)
+                0) {
               continue;
+            }
             drawn++;
             if (ix < box[0] ||
                 ix >= box[0] + box[2] ||
                 iy < box[1] ||
-                iy >= box[1] + box[3])
+                iy >= box[1] + box[3]) {
               out++;
+            }
           }
         }
         rows.add('${r['id']} sol: $out of $drawn drawn pixels outside $box');
@@ -202,11 +206,12 @@ void main() {
         }
         final got = scene.hit(mid[0], mid[1], W);
         checked++;
-        if (got != k) misses.add('$k -> $got');
-        if (got != k)
+        if (got != k) {
+          misses.add('$k -> $got');
           rows.add(
             'hit $name: the middle of $k (${mid[0]}, ${mid[1]}) gives $got',
           );
+        }
       }
     }
     rows.add(

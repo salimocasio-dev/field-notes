@@ -20,8 +20,8 @@ import 'support/report.dart';
 /// The call that made a sprite, from its key and where the old page made it: null for a sprite of a dropped line.
 Sprite Function()? replay(String key, String caller) {
   final line = int.parse(caller.split(':')[1]);
-  if (const {42, 97, 100, 140}.contains(line))
-    return null; // dropped: the set draws them
+  // dropped: the set draws them
+  if (const {42, 97, 100, 140}.contains(line)) return null;
   if (line == 139) {
     // AB(pose, op): spr("ab"+pose+op, ()=>mkAbuela(pose, op))
     final pose = key.substring(2, key.length - 1), op = key[key.length - 1];

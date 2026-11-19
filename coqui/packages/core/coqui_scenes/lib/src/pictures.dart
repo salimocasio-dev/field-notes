@@ -271,7 +271,29 @@ class _ScenePictureState extends State<_ScenePicture>
     _start();
   }
 
+  @override
+  void didUpdateWidget(_ScenePicture old) {
+    super.didUpdateWidget(old);
+    if (old.source != widget.source ||
+        old.ref.toString() != widget.ref.toString() ||
+        old.name != widget.name ||
+        old.height != widget.height ||
+        old.animated != widget.animated) {
+      _ticker?.dispose();
+      _ticker = null;
+      _shot = null;
+      _pixels = null;
+      _error = null;
+      _frameNo = pictureF;
+      _start();
+    }
+  }
+
+  // a newer start (the widget changed meanwhile) wins
+  int _gen = 0;
+
   Future<void> _start() async {
+    final gen = ++_gen;
     try {
       if (widget.height != reviewH) {
         throw PictureError(
@@ -279,7 +301,7 @@ class _ScenePictureState extends State<_ScenePicture>
         );
       }
       final shot = await widget.source._prepare(widget.ref, widget.name);
-      if (!mounted) return;
+      if (!mounted || gen != _gen) return;
       setState(() {
         _shot = shot;
         _pixels = ScenePictures._draw(shot, _frameNo);
@@ -290,7 +312,7 @@ class _ScenePictureState extends State<_ScenePicture>
         unawaited(ticker.start());
       }
     } catch (e) {
-      if (mounted) setState(() => _error = e);
+      if (mounted && gen == _gen) setState(() => _error = e);
     }
   }
 
