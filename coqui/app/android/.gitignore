@@ -1,0 +1,19 @@
+gradle-wrapper.jar
+/.gradle
+/captures/
+/gradlew
+/gradlew.bat
+/local.properties
+GeneratedPluginRegistrant.java
+.cxx/
+
+# Remember to never publicly share your keystore.
+# See https://flutter.dev/to/reference-keystore
+key.properties
+**/*.keystore
+**/*.jks
+
+# The one exception: debug.keystore is the standard Android debug key (alias androiddebugkey,
+# password android). It is not a secret. It is kept in the repo so that every build is signed
+# with the same key and installs over the last one. It is not for the store.
+!/debug.keystore
