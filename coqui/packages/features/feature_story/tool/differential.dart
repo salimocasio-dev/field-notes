@@ -39,8 +39,9 @@ Future<String?> compareWithScene(
   String story,
   String plan,
   Directory trazas,
-  Scene Function(Rng rng) sceneFor,
-) async {
+  Scene Function(Rng rng) sceneFor, {
+  List<String> Function(Map<String, dynamic> W, int now)? thingOrder,
+}) async {
   final committed = jsonDecode(
     File('${trazas.path}/$story/$plan.json').readAsStringSync(),
   ) as Map<String, dynamic>;
@@ -53,6 +54,7 @@ Future<String?> compareWithScene(
     course: course,
     progress: ToolProgress(),
     storySha256: sha256Hex(course.storyBytes(story)),
+    thingOrder: thingOrder,
   );
   final errs = trace['errors'];
   if (errs is List && errs.isNotEmpty) {

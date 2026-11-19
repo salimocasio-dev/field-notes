@@ -317,8 +317,8 @@ class StoryRunner implements SceneHost {
   // ---------- starting ----------
 
   // juego.js: arranca (after the story is fetched and its scene loaded)
-  /// Gets the story ready to be played: the scene's views, the progress dashes, the voice, the tick. Call once, before
-  /// [start].
+  /// Gets the story ready to be played: the scene's views, the progress dashes, the tick, and the voice, which loads while
+  /// the start disc is shown ([run] waits for it, 6 s at most). Call once, before [start].
   Future<void> init() async {
     final camOver = S['cam'];
     _cams = {for (final e in E.CAM.entries) e.key: List<num>.of(e.value)};
@@ -337,7 +337,6 @@ class StoryRunner implements SceneHost {
     voiceReady = loadVoice();
     timers.setInterval(_loop, TICK);
     draw();
-    await voiceReady;
   }
 
   void _loadMemory() {
@@ -906,6 +905,17 @@ class StoryRunner implements SceneHost {
     tapThing(what, x, y);
   }
 
+  // juego.js: tap (the start of its `if(pn&&!pn.done)` branch)
+  /// What a touch on [what] counts as while [pn] is waited for: before the door has a name, the door is the house
+  /// (`loose`), and a story may let one thing stand for another (`alias`).
+  String touchedAs(Pending pn, String what) {
+    var w = what;
+    if (pn.loose && (w == 'puerta' || w == 'ventana')) w = 'casa';
+    final al = pn.alias;
+    if (al != null && jsTruthy(al[w])) w = al[w] as String;
+    return w;
+  }
+
   // juego.js: tap, from the hit test on
   /// A touch on a named thing, at ([x], [y]). [tap] finds the thing by the hit test; a player with no screen names it.
   void tapThing(String what, num x, num y) {
@@ -927,11 +937,7 @@ class StoryRunner implements SceneHost {
       nm = names[what] as String;
     }
     if (pn != null && !pn.done) {
-      var w = what;
-      // before the door has a name, the door is the house
-      if (pn.loose && (w == 'puerta' || w == 'ventana')) w = 'casa';
-      final al = pn.alias;
-      if (al != null && jsTruthy(al[w])) w = al[w] as String;
+      final w = touchedAs(pn, what);
       if (pn.live.contains(w) && !(pn.lock && !pn.asked)) {
         pn.done = true;
         pn.ms = pn.tEnd != null && pn.tEnd != 0

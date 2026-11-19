@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../tool/differential.dart';
 import '../tool/disk_course.dart';
+import '../tool/frente_order.dart';
 import 'real_scene.dart';
 
 void main() {
@@ -61,6 +62,7 @@ void main() {
                 plan,
                 trazas,
                 (rng) => realScene('frente', rng),
+                thingOrder: frenteThingOrder,
               ),
               isNull,
               reason: '$s $plan',

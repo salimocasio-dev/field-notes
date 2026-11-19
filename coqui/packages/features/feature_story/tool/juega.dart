@@ -11,6 +11,7 @@ import 'package:feature_story/src/play/play.dart';
 import 'package:feature_story/src/play/trace_json.dart';
 
 import 'disk_course.dart';
+import 'frente_order.dart';
 import 'sha256.dart';
 import 'stand_in_scene.dart';
 import 'tool_progress.dart';
@@ -62,6 +63,7 @@ Future<Map<String, dynamic>> playFromDisk(
     course: course,
     progress: ToolProgress(),
     storySha256: sha256Hex(course.storyBytes(story)),
+    thingOrder: file['scene'] == 'frente' ? frenteThingOrder : null,
   );
 }
 

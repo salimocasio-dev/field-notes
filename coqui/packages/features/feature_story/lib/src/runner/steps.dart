@@ -532,7 +532,7 @@ extension _Steps on StoryRunner {
         if (id != null && VOICE && _has(id)) {
           await playClip(id);
         } else {
-          await sleep((id == null ? 0 : dur(id)) * 1000 / FAST);
+          await sleep(dur(id ?? '') * 1000 / FAST);
         }
         SINLETRAS = false;
         W['respOn'] = null;

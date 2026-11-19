@@ -188,30 +188,6 @@ class _Want {
   void Function() act;
 }
 
-/// El frente has no list of things (frente.js: `hit()` only): the order of its `hit()`, each with the condition `hit()`
-/// tests (README, "The learner").
-final List<(String, bool Function(Map<String, dynamic>))> _frenteOrder = [
-  ('abuela', (W) => jsTruthy(W['ab'])),
-  ('palma_pequena', (W) => jsTruthy(W['escondite'])),
-  ('casa_pequena', (W) => jsTruthy(W['escondite'])),
-  ('palma_grande', (W) => jsTruthy(W['escondite'])),
-  ('casa_grande', (W) => jsTruthy(W['escondite'])),
-  (
-    'pajaro',
-    (W) {
-      final a = W['ave'];
-      return a is Map && jsTruthy(a) && a['mode'] != 'none';
-    },
-  ),
-  ('bizcocho', (W) => W['plato'] != null),
-  ('nube', (W) => jsTruthy(W['storm']) && jsTruthy(W['nube'])),
-  ('puerta', (W) => true),
-  ('ventana', (W) => true),
-  ('casa', (W) => true),
-  ('sol', (W) => !jsTruthy(W['storm'])),
-  ('palma', (W) => true),
-];
-
 class _Driver {
   _Driver({
     required this.runner,
@@ -249,12 +225,6 @@ class _Driver {
     final W = runner.W;
     final order = thingOrder;
     if (order != null) return order(W, timers.now);
-    if (scene.cosas.isEmpty && scene.id == 'frente') {
-      return [
-        for (final e in _frenteOrder)
-          if (e.$2(W)) e.$1,
-      ];
-    }
     return [
       for (final Thing t in scene.cosas)
         if ((t.si == null || t.si!(W)) && _boxOf(t, W) != null) t.id,
@@ -267,13 +237,8 @@ class _Driver {
   }
 
   // as tap() maps a touch
-  bool counts(Pending pn, String w0) {
-    var w = w0;
-    if (pn.loose && (w == 'puerta' || w == 'ventana')) w = 'casa';
-    final al = pn.alias;
-    if (al != null && jsTruthy(al[w])) w = al[w] as String;
-    return pn.live.contains(w);
-  }
+  bool counts(Pending pn, String w) =>
+      pn.live.contains(runner.touchedAs(pn, w));
 
   // an ask: the first thing in the scene's list that is not the asked one and that the touch would not count as it
   String? wrongPoke(Pending pn) {
@@ -484,7 +449,7 @@ Future<void> _drain() {
 /// - [storySha256], [list], [place], [page]: the trace's own fields, as the recording tool writes them. [list] and
 ///   [place] are found in the catalog's places when not given.
 /// - [thingOrder]: the scene's things in the order the wrong-touch rule reads them (given the world and the story's time),
-///   when the scene's `cosas` is not it.
+///   when the scene's `cosas` is not it (El frente has no list: its order is that of its `hit()`).
 /// - [micStub]: the stub's results, if a story with speaking turns is played (the learner writes into it).
 Future<Map<String, dynamic>> play({
   required Map<String, dynamic> story,

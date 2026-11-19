@@ -222,6 +222,7 @@ class Rig {
       session: session,
     );
     await runner.init();
+    await runner.voiceReady; // the voice loads while the start disc is shown
     return Rig._(runner, timers, player, p, sc, m, sounds, c, st ?? <String>[]);
   }
 
