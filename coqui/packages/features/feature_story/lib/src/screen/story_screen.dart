@@ -55,7 +55,7 @@ class StoryScreen extends StatefulWidget {
 }
 
 class _StoryScreenState extends State<StoryScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   StoryRunner? _runner;
   FrameRenderer? _frame;
   Ticker? _ticker;
@@ -63,12 +63,32 @@ class _StoryScreenState extends State<StoryScreen>
   Size _stage = Size.zero;
   final GlobalKey _stageKey = GlobalKey(), _micKey = GlobalKey();
 
+  /// The app is not in the foreground (its lifecycle state is not `resumed`): the story's clock is held.
+  bool _held = false;
+
   Services get _s => widget.services;
 
   @override
   void initState() {
     super.initState();
+    final lifecycle = WidgetsBinding.instance.lifecycleState;
+    _held = lifecycle != null && lifecycle != AppLifecycleState.resumed;
+    WidgetsBinding.instance.addObserver(this);
     unawaited(_open());
+  }
+
+  // The story's clock does not advance while the app is out of sight: the runner stops pumping its timers and
+  // holds its virtual clock, and on the return it goes on from where it stopped.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _held = state != AppLifecycleState.resumed;
+    final r = _runner;
+    if (r == null) return;
+    if (_held) {
+      r.holdClock();
+    } else {
+      r.resumeClock();
+    }
   }
 
   Future<void> _open() async {
@@ -110,6 +130,7 @@ class _StoryScreenState extends State<StoryScreen>
       );
       runner.view.addListener(_repaint.ping);
       runner.bubbleMetrics = _metrics;
+      if (_held) runner.holdClock(); // opened while the app was out of sight
       await runner.init();
       if (!mounted) {
         runner.leave();
@@ -163,6 +184,7 @@ class _StoryScreenState extends State<StoryScreen>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _ticker?.dispose();
     final r = _runner;
     if (r != null) {

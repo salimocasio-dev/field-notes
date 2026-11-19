@@ -241,6 +241,9 @@ class StoryRunner implements SceneHost {
   late final Signs _signs;
   late int _origin;
 
+  /// The clock's time when the story's clock was held, or null while it runs ([holdClock]).
+  int? _heldAt;
+
   /// Where the game puts the frog when a play starts (juego.js, `fresh`: `cq x 150 y 178 s 1`), as the scene's sheet says
   /// (its `code` entry for `juego.js:16`: a spot). Null: the old numbers.
   final ({int x, int y, num scale}) Function()? startFrog;
@@ -452,7 +455,26 @@ class StoryRunner implements SceneHost {
   int now() => timers.now;
 
   /// The live host's tick: moves the story's time to the clock's. Call it from the frame callback and before a tap.
-  void pump() => timers.advanceTo(clock.nowMs() - _origin);
+  /// While the clock is held ([holdClock]) it does nothing: no timer fires and the story's time stays where it is.
+  void pump() {
+    if (_heldAt != null) return;
+    timers.advanceTo(clock.nowMs() - _origin);
+  }
+
+  /// The app has left the foreground: the story's time stops, and [pump] with it. A story is a play on a clock the
+  /// app moves; time the app spent out of sight is not time of the story. Does nothing when it is held already.
+  void holdClock() => _heldAt ??= clock.nowMs();
+
+  /// The app is back: the story goes on from where it stopped, at the pace of the clock again. The time spent away
+  /// is taken out of the clock's, so the first [pump] after it fires nothing that was not due before the app left
+  /// (no burst of timers, no jump), and what was waiting fires in its order, as the frames go by. Does nothing when
+  /// the clock is not held.
+  void resumeClock() {
+    final h = _heldAt;
+    if (h == null) return;
+    _heldAt = null;
+    _origin += clock.nowMs() - h;
+  }
 
   // ---------- one frame ----------
 
@@ -775,24 +797,11 @@ class StoryRunner implements SceneHost {
       px.frogBox(q);
 
   // juego.js: frog
+  // `shadow: false` where the scene casts the frog's shadow in the engine (`frogShadow`): the old flat shadow is
+  // then not drawn, and nothing else changes.
   @override
-  void frog(Ctx g, Map<String, dynamic> q, int a) {
-    if (frogShadow) {
-      _signs.frog(g, q, a);
-      return;
-    }
-    // Without the old shadow. A copy of what coqui_scenes' `StillHost.frog` does, until `Signs.frog` has its `shadow` flag
-    // (order 12b): to be replaced by `_signs.frog(g, q, a, shadow: false)`.
-    final b = px.frogBox(q);
-    final bl = F % 47 < 2 ? 1 : 0,
-        op = ((q['bub'] == 'hola' || TALK == 'coqui') && a % 2 != 0) ? 1 : 0;
-    final sc = q['s'] as num;
-    g.drawImage(
-      lib.spr('cq${jsNum(sc)}_$bl$op', () => mkCoqui(sc, bl, op != 0)),
-      b.x,
-      b.y + jsRound(q['dy'] as num),
-    );
-  }
+  void frog(Ctx g, Map<String, dynamic> q, int a) =>
+      _signs.frog(g, q, a, shadow: frogShadow);
 
   @override
   void star(Ctx g, num x, num y, num s, [bool hot = false]) =>
