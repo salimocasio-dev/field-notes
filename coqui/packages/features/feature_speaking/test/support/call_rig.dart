@@ -9,6 +9,7 @@ import 'package:feature_speaking/src/call_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'fixtures/course_fixture.dart';
+import 'scripted_call.dart';
 
 /// The sample course with curso.json's ten places and the focus words of La casa's eleven stories (the three
 /// the sample has, and the eight it has not: llamada.js reads every one of them).
@@ -26,6 +27,13 @@ class FixtureCourse extends FakeCourseCatalog {
           return sampleFile(path);
         },
       );
+
+  /// False: no story can be read (llamada.js's `fetch` of the story files failing).
+  bool readable = true;
+
+  @override
+  Future<Map<String, dynamic>> story(String id) =>
+      readable ? super.story(id) : Future.error(StateError('no story: $id'));
 
   late final List<Place> _all = [
     for (final l in jsonDecode(fixturePlacesJson) as List)
@@ -62,7 +70,7 @@ class CallRig {
 
   final FakeClock clock;
   final RecordingProgress progress;
-  final FakeCallSession call;
+  final ScriptedCall call;
   final FixtureCourse course;
   final FakeClipPlayer clips;
   late CallController controller;
@@ -72,6 +80,7 @@ class CallRig {
   static Future<CallRig> create({
     Set<String> stub = const {},
     int casa = 11,
+    Object? startError,
   }) async {
     final clock = FakeClock();
     final progress = RecordingProgress(clock: clock);
@@ -80,7 +89,7 @@ class CallRig {
     final rig = CallRig._(
       clock,
       progress,
-      FakeCallSession(stub: stub),
+      ScriptedCall(stub: stub, startError: startError),
       course,
       FakeClipPlayer(),
     );

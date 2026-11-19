@@ -26,6 +26,7 @@ abstract final class CallText {
   /// `.ld` Danny's line: 18/24 white. llamada.js:99
   static final line = CoquiText.lessonBody.copyWith(
     fontSize: 18,
+    height: 24 / 18,
     color: CoquiColors.lessonInk,
   );
 

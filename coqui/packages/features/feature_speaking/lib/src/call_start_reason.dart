@@ -28,8 +28,8 @@ final RegExp _micErrorLate = RegExp(
 CallStartReason callStartReason(Object error) {
   final text = '$error';
   if (_micError.hasMatch(text)) return CallStartReason.microphone;
-  if (text.startsWith('LibraryError')) return CallStartReason.library;
-  if (text.startsWith('NotAvailable')) return CallStartReason.unavailable;
+  if (text.contains('LibraryError')) return CallStartReason.library;
+  if (text.contains('NotAvailable')) return CallStartReason.unavailable;
   return CallStartReason.failed;
 }
 
