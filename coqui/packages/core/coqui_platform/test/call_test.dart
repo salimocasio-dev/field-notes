@@ -193,6 +193,20 @@ class _Conv implements Conv {
   void setVolume(double v) => calls.add('volume $v');
 }
 
+class _ConvCallSessionRig {
+  _ConvCallSessionRig(this.lib) {
+    s = ConvCallSession(
+      library: lib,
+      callsAllowed: true,
+      beforeStart: () => calls.add('suspend'),
+      afterCall: () => calls.add('resume'),
+    );
+  }
+  final _Lib lib;
+  final List<String> calls = [];
+  late final ConvCallSession s;
+}
+
 ConvCallSession _session(
   _Lib lib, {
   bool allowed = true,
@@ -314,11 +328,9 @@ void main() {
       expect(
         () => _session(lib).start(_brief, _vars),
         throwsA(
-          isA<CallStartException>().having(
-            (e) => '$e',
-            'text',
-            'NotAllowedError: Permission denied',
-          ),
+          isA<CallStartError>()
+              .having((e) => '$e', 'text', 'NotAllowedError: Permission denied')
+              .having((e) => e.kind, 'kind', CallStartFailure.microphone),
         ),
       );
     });
@@ -357,6 +369,96 @@ void main() {
     });
   });
 
+  group('a failed start: llamada.js\'s three lines as the contract\'s kinds (order 19b)', () {
+    for (final (name, message, kind) in [
+      ('NotAllowedError', 'Permission denied', CallStartFailure.microphone),
+      (
+        'NotFoundError',
+        'Requested device not found',
+        CallStartFailure.microphone,
+      ),
+      ('Error', 'Permission dismissed', CallStartFailure.microphone),
+      ('Error', 'The call did not start.', CallStartFailure.failed),
+      ('SessionConnectionError', 'socket closed', CallStartFailure.failed),
+    ]) {
+      test('"$name: $message" is $kind', () async {
+        final lib = _Lib(error: ConvStartError(name, message));
+        await expectLater(
+          _session(lib).start(_brief, _vars),
+          throwsA(
+            isA<CallStartError>()
+                .having((e) => e.kind, 'kind', kind)
+                .having((e) => '$e', 'text', '$name: $message'),
+          ),
+        );
+      });
+    }
+  });
+
+  group('the sound after a call (order 19b): suspended at start, back when it is over', () {
+    _ConvCallSessionRig rig({bool loads = true, ConvStartError? error}) =>
+        _ConvCallSessionRig(_Lib(loads: loads, error: error));
+    test('Ended gives it back, once', () async {
+      final r = rig();
+      await r.s.start(_brief, _vars);
+      expect(r.calls, ['suspend']);
+      r.lib.opts!.onDisconnect({'reason': 'agent'});
+      await r.s.end();
+      expect(r.calls, ['suspend', 'resume']);
+    });
+    test(
+      'end() gives it back (and the Ended after it does not again)',
+      () async {
+        final r = rig();
+        await r.s.start(_brief, _vars);
+        await r.s.end();
+        r.lib.opts!.onDisconnect({'reason': 'user'});
+        expect(r.calls, ['suspend', 'resume']);
+      },
+    );
+    test(
+      'a failed start gives it back: the library, the microphone, the call',
+      () async {
+        for (final r in [
+          rig(loads: false),
+          rig(error: const ConvStartError('NotAllowedError', 'x')),
+          rig(error: const ConvStartError('Error', 'y')),
+        ]) {
+          await expectLater(
+            r.s.start(_brief, _vars),
+            throwsA(isA<CallStartError>()),
+          );
+          expect(r.calls, ['suspend', 'resume']);
+        }
+      },
+    );
+    test('X while calling gives it back at once', () async {
+      final r = rig();
+      r.lib.gate = Completer<void>();
+      final f = r.s.start(_brief, _vars);
+      while (r.lib.opts == null) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      await r.s.end();
+      expect(r.calls, ['suspend', 'resume']);
+      r.lib.gate!.complete();
+      await f;
+      expect(r.calls, ['suspend', 'resume']);
+    });
+    test('no calls here: nothing suspended, nothing to give back', () async {
+      final calls = <String>[];
+      final s = ConvCallSession(
+        library: null,
+        callsAllowed: false,
+        beforeStart: () => calls.add('suspend'),
+        afterCall: () => calls.add('resume'),
+      );
+      await expectLater(s.start(_brief, _vars), throwsA(isA<CallStartError>()));
+      await s.end();
+      expect(calls, isEmpty);
+    });
+  });
+
   group('available', () {
     test('without the library: false after trying, and start throws', () async {
       final lib = _Lib(loads: false);
@@ -371,10 +473,10 @@ void main() {
       await expectLater(
         s.start(_brief, _vars),
         throwsA(
-          isA<CallStartException>().having(
-            (e) => e.name,
-            'name',
-            'LibraryError',
+          isA<CallStartError>().having(
+            (e) => e.kind,
+            'kind',
+            CallStartFailure.library,
           ),
         ),
       );
@@ -391,7 +493,13 @@ void main() {
         expect(s.available, isFalse);
         await expectLater(
           s.start(_brief, _vars),
-          throwsA(isA<CallStartException>()),
+          throwsA(
+            isA<CallStartError>().having(
+              (e) => e.kind,
+              'kind',
+              CallStartFailure.unavailable,
+            ),
+          ),
         );
         expect(lib.tries, 0);
       },
@@ -402,11 +510,9 @@ void main() {
       await expectLater(
         s.start(_brief, _vars),
         throwsA(
-          isA<CallStartException>().having(
-            (e) => e.name,
-            'name',
-            'NotAvailable',
-          ),
+          isA<CallStartError>()
+              .having((e) => e.name, 'name', 'NotAvailable')
+              .having((e) => e.kind, 'kind', CallStartFailure.unavailable),
         ),
       );
     });
@@ -468,10 +574,7 @@ void main() {
         Object? err;
         s.start(_brief, _vars).catchError((Object e) => err = e);
         await tester.pump(const Duration(milliseconds: 700));
-        expect(
-          err,
-          isA<CallStartException>().having((e) => e.name, 'name', name),
-        );
+        expect(err, isA<CallStartError>().having((e) => e.name, 'name', name));
       }
     });
     testWidgets('manual: nothing moves until go; Danny ends the call', (

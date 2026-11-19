@@ -203,6 +203,9 @@ class _DevScreenState extends State<DevScreen> {
       }
       if (e is Ended && !done.isCompleted) done.complete();
     });
+    // order 19b: the sound context, before, during and after the call
+    String ctx() => webSoundCore.context?.state ?? 'none';
+    final states = <String>[ctx()];
     final sw = Stopwatch()..start();
     await call.start(
       CallBrief(
@@ -214,12 +217,20 @@ class _DevScreenState extends State<DevScreen> {
       ),
       const {'place': 'place', 'words_open': '', 'words_heard': ''},
     );
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    states.add(ctx());
     await done.future.timeout(const Duration(seconds: 40), onTimeout: () {});
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    states.add(ctx());
+    say(
+      'stub call: the sound context before, during, after: ${states.join(', ')}',
+    );
     report['stubCall'] = {
       'events': ev,
       'sent': stub.sent,
       'ended': stub.ended,
       'ms': sw.elapsedMilliseconds,
+      'contextStates': states,
     };
     stub.dispose();
   }

@@ -318,4 +318,48 @@ void main() {
       expect(names, hasLength(7));
     });
   });
+
+  group('a call that cannot start (order 19b)', () {
+    test('four kinds; the text is <name>: <message>, the name the client\'s own or one for the kind', () {
+      expect(CallStartFailure.values, hasLength(4));
+      expect(
+        '${const CallStartError(CallStartFailure.microphone, 'Permission denied')}',
+        'NotAllowedError: Permission denied',
+      );
+      expect(
+        '${const CallStartError(CallStartFailure.microphone, 'x', name: 'NotFoundError')}',
+        'NotFoundError: x',
+      );
+      expect(
+        '${const CallStartError(CallStartFailure.library, 'y')}',
+        'LibraryError: y',
+      );
+      expect(
+        '${const CallStartError(CallStartFailure.failed, 'The call did not start.')}',
+        'Error: The call did not start.',
+      );
+      expect(
+        '${const CallStartError(CallStartFailure.unavailable, 'z')}',
+        'NotAvailable: z',
+      );
+    });
+    test('llamada.js\'s microphone test still reads it', () {
+      final mic = RegExp(
+        r'NotAllowed|PermissionDenied|NotFound|Permission|microphone|denied',
+        caseSensitive: false,
+      );
+      expect(
+        mic.hasMatch(
+          '${const CallStartError(CallStartFailure.microphone, 'Permission denied')}',
+        ),
+        isTrue,
+      );
+      expect(
+        mic.hasMatch(
+          '${const CallStartError(CallStartFailure.failed, 'The call did not start.')}',
+        ),
+        isFalse,
+      );
+    });
+  });
 }

@@ -10,17 +10,21 @@ const dannyAgentId = 'agent_3301m795q3xtfpx8c99zc0s870vm';
 const elevenLabsClientUrl =
     'https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.25.0/+esm';
 
-/// Why [CallSession.start] could not start a call: the client's own error (a refused microphone is
-/// "NotAllowedError"), "LibraryError" when the voice library did not load, "NotAvailable" where calls
-/// are off. The text is `<name>: <message>`.
-class CallStartException implements Exception {
-  const CallStartException(this.name, this.message);
-  final String name;
-  final String message;
+// llamada.js, inicia: the microphone line is shown when the error's name and message match this.
+final _microphone = RegExp(
+  r'NotAllowed|PermissionDenied|NotFound|Permission|microphone|denied',
+  caseSensitive: false,
+);
 
-  @override
-  String toString() => '$name: $message';
-}
+/// startSession's error as a [CallStartError]: microphone when llamada.js would say "The microphone is
+/// off", else failed ("The call did not start"). The client's own name is kept.
+CallStartError callStartError(String name, String message) => CallStartError(
+  _microphone.hasMatch('$name $message')
+      ? CallStartFailure.microphone
+      : CallStartFailure.failed,
+  message,
+  name: name,
+);
 
 /// The call with Danny, ported from llamada.js's connection: the library loaded once ahead (precarga),
 /// `startSession` with the agent, `connectionType: "websocket"`, the six dynamic variables and the
@@ -31,11 +35,15 @@ class CallStartException implements Exception {
 /// [available]: false without a library (phone builds) or where calls are off; on the web false once a
 /// try to load the library has failed. Reading it starts the load (the old page loads it when Hablar
 /// shows the open card, before any tap); a failed load is tried again on the next read.
+///
+/// The shared sound is suspended at start ([beforeStart], as llamada.js) and given back when the call ends
+/// ([afterCall], order 19b): at its [Ended], at a failed start, or at [end], once per start.
 class ConvCallSession implements CallSession {
   ConvCallSession({
     required this.library,
     required this.callsAllowed,
     this.beforeStart,
+    this.afterCall,
   });
 
   /// Null in a phone build.
@@ -44,6 +52,18 @@ class ConvCallSession implements CallSession {
 
   /// Runs at start, before the library is asked for the call (llamada.js, inicia: `AC.suspend()`).
   final void Function()? beforeStart;
+
+  /// Runs once when the call that [beforeStart] began is over (order 19b: the sound context resumed).
+  final void Function()? afterCall;
+  bool _suspended = false;
+
+  void _resume() {
+    if (!_suspended) return;
+    _suspended = false;
+    try {
+      afterCall?.call();
+    } catch (_) {}
+  }
 
   final StreamController<CallEvent> _events =
       StreamController<CallEvent>.broadcast(sync: true);
@@ -70,8 +90,8 @@ class ConvCallSession implements CallSession {
   Future<void> start(CallBrief brief, Map<String, String> variables) async {
     final l = library;
     if (!callsAllowed || l == null) {
-      throw const CallStartException(
-        'NotAvailable',
+      throw const CallStartError(
+        CallStartFailure.unavailable,
         'Calls are off on this build.',
       );
     }
@@ -80,9 +100,11 @@ class ConvCallSession implements CallSession {
     try {
       beforeStart?.call();
     } catch (_) {}
+    _suspended = true;
     if (!await l.load()) {
-      throw const CallStartException(
-        'LibraryError',
+      _resume();
+      throw const CallStartError(
+        CallStartFailure.library,
         'The voice library did not load.',
       );
     }
@@ -117,12 +139,15 @@ class ConvCallSession implements CallSession {
             },
           },
           onConnect: (_) => _emit(my, const Connected()),
-          onDisconnect: (d) => _emit(
-            my,
-            Ended(
-              d is Map && d['reason'] is String ? d['reason'] as String : '',
-            ),
-          ),
+          onDisconnect: (d) {
+            if (my == _run) _resume();
+            _emit(
+              my,
+              Ended(
+                d is Map && d['reason'] is String ? d['reason'] as String : '',
+              ),
+            );
+          },
           onError: (e) => _emit(my, CallError(_errorText(e))),
           onMessage: (m) {
             if (m is! Map) return;
@@ -138,9 +163,11 @@ class ConvCallSession implements CallSession {
         ),
       );
     } on ConvStartError catch (e) {
-      throw CallStartException(e.name, e.message);
+      _resume();
+      throw callStartError(e.name, e.message);
     } catch (e) {
-      throw CallStartException('Error', '$e');
+      _resume();
+      throw CallStartError(CallStartFailure.failed, '$e');
     }
     if (my != _run || _cancelled == my) {
       // he closed the screen while it was still calling: the late answer is ended at once
@@ -202,6 +229,7 @@ class ConvCallSession implements CallSession {
   /// Ends the session. Still calling: the answer, when it comes, is ended at once.
   @override
   Future<void> end() async {
+    _resume();
     final c = _conv;
     _conv = null;
     if (c == null) {

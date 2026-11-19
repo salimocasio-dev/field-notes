@@ -16,7 +16,7 @@ library;
 export 'package:coqui_platform/src/audio/graph_clip_player.dart'
     show ClipLookup;
 export 'package:coqui_platform/src/call/call_session.dart'
-    show CallStartException, dannyAgentId, elevenLabsClientUrl;
+    show dannyAgentId, elevenLabsClientUrl;
 export 'package:coqui_platform/src/call/call_stub.dart'
     show CallStub, CallStubScript;
 export 'package:coqui_platform/src/info/app_info.dart'

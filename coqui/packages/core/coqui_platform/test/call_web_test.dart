@@ -7,6 +7,8 @@ import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_platform/coqui_platform.dart'
+    show CallStub, CallStubScript;
 import 'package:coqui_platform/src/call/call_session.dart';
 import 'package:coqui_platform/src/web/el_conv.dart';
 import 'package:coqui_platform/src/web/web_platform.dart';
@@ -169,7 +171,7 @@ void main() {
     await expectLater(
       _session().start(_brief, _vars),
       throwsA(
-        isA<CallStartException>().having(
+        isA<CallStartError>().having(
           (e) => '$e',
           'text',
           'NotAllowedError: Permission denied',
@@ -183,7 +185,7 @@ void main() {
     await expectLater(
       _session().start(_brief, _vars),
       throwsA(
-        isA<CallStartException>().having(
+        isA<CallStartError>().having(
           (e) => e.message,
           'message',
           'The call did not start.',
@@ -230,6 +232,92 @@ void main() {
     expect(_js("CallStub.sent.join(' ')"), '(fin)');
   }, timeout: const Timeout(Duration(seconds: 60)));
 
+  group(
+    'the sound after a call (order 19b), on the web player\'s own context',
+    () {
+      final script = CallStubScript({
+        'lines': {
+          for (final k in [
+            'danny1',
+            'heard1',
+            'danny2',
+            'heard2',
+            'heard3',
+            'danny3',
+            'finReply',
+            'heard3Hasta',
+            'loopEven',
+            'loopOdd',
+          ])
+            k: k,
+        },
+        'picture': {'picture': 'p'},
+        'connect': {'conversationId': 'stub'},
+        'micError': {'name': 'NotAllowedError', 'message': 'Permission denied'},
+        'failError': {'name': 'Error', 'message': 'The call did not start.'},
+      });
+      // flutter test's Chrome lets no AudioContext run without a tap, so the context's own suspend and
+      // resume are watched here (tool/dev_check.mjs sees the real states, with autoplay allowed).
+      List<Object?> calls() => _js('window.__acCalls.slice()') as List<Object?>;
+      setUpAll(() {
+        _js(
+          "window.__acCalls=[];for(const k of ['suspend','resume']){const f=AudioContext.prototype[k];"
+          "AudioContext.prototype[k]=function(){window.__acCalls.push(k);return Promise.resolve();};}0",
+        );
+        webSoundCore.ac();
+      });
+      setUp(() => _js('window.__acCalls.length=0,0'));
+
+      test('suspended at start, resumed at its Ended', () async {
+        final stub = CallStub(script, options: {'manual'});
+        final s = createCallSession(appInfo: createAppInfo(), stub: stub);
+        final f = s.start(_brief, _vars);
+        while (stub.opts == null) {
+          await _ms(1);
+        }
+        stub.go('connect');
+        await f;
+        expect(calls(), ['suspend']);
+        stub.go('end'); // Danny ends it
+        await _ms(10);
+        expect(calls(), ['suspend', 'resume']);
+        await s.end();
+        expect(calls(), ['suspend', 'resume']); // once
+        stub.dispose();
+      });
+      test('resumed at end()', () async {
+        final stub = CallStub(script, options: {'manual'});
+        final s = createCallSession(appInfo: createAppInfo(), stub: stub);
+        final f = s.start(_brief, _vars);
+        while (stub.opts == null) {
+          await _ms(1);
+        }
+        stub.go('connect');
+        await f;
+        await s.end();
+        await _ms(100);
+        expect(calls(), ['suspend', 'resume']);
+        stub.dispose();
+      });
+      test('resumed after a failed start (microphone refused)', () async {
+        final stub = CallStub(script, options: {'mic'});
+        final s = createCallSession(appInfo: createAppInfo(), stub: stub);
+        await expectLater(
+          s.start(_brief, _vars),
+          throwsA(
+            isA<CallStartError>().having(
+              (e) => e.kind,
+              'kind',
+              CallStartFailure.microphone,
+            ),
+          ),
+        );
+        expect(calls(), ['suspend', 'resume']);
+        stub.dispose();
+      });
+    },
+  );
+
   group('loading the library (precarga)', () {
     test('a module that gives Conversation: loaded, available', () async {
       globalContext.delete('ELConv'.toJS);
@@ -259,11 +347,7 @@ void main() {
       await expectLater(
         s.start(_brief, _vars),
         throwsA(
-          isA<CallStartException>().having(
-            (e) => e.name,
-            'name',
-            'LibraryError',
-          ),
+          isA<CallStartError>().having((e) => e.name, 'name', 'LibraryError'),
         ),
       );
     });
