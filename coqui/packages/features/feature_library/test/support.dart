@@ -321,8 +321,10 @@ class TimedClips implements ClipPlayer {
   Future<void> unlock() async => unlocked = true;
 
   @override
-  Future<void> preload(Iterable<String> clipIds) async =>
-      preloaded.addAll(clipIds);
+  Future<List<String>> preload(Iterable<String> clipIds) async {
+    preloaded.addAll(clipIds);
+    return const [];
+  }
 
   @override
   Future<bool> play(String clipId, {Duration? limit}) {

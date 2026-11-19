@@ -12,9 +12,13 @@ FakePictureSource devPictures() => FakePictureSource(frames: syntheticFrame);
 /// `0xAABBGGRR`.
 int _rgb(int r, int g, int b) => 0xFF000000 | (b << 16) | (g << 8) | r;
 
-/// A 196 x [height] picture of bands (sky, wall, floor) and a block that moves with the scene's name and the camera.
-Widget? syntheticFrame(PictureRef ref, {required int height, int? scale}) {
-  const w = 196;
+/// A [width] x [height] picture of bands (sky, wall, floor) and a block that moves with the scene's name and the camera.
+Widget? syntheticFrame(
+  PictureRef ref, {
+  required int width,
+  required int height,
+}) {
+  final w = width;
   final seed =
       ref.scene.codeUnits.fold<int>(7, (a, c) => (a * 31 + c) & 0xFFFF) +
       ref.cam.fold<int>(0, (a, c) => a + c.toInt());

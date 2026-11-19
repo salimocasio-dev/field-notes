@@ -25,7 +25,7 @@ class DevClips implements ClipPlayer {
   Future<void> unlock() async {}
 
   @override
-  Future<void> preload(Iterable<String> clipIds) async {}
+  Future<List<String>> preload(Iterable<String> clipIds) async => const [];
 
   @override
   Future<bool> play(String clipId, {Duration? limit}) {
