@@ -65,3 +65,10 @@ His ask: "Reading and flash card parts of the app need design and feature work. 
 - Book: the line playing is lit on every page; each line has a small speaker icon (tap to hear it again); words with a picture carry a faint dotted underline; a page count "3 / 9" beside the progress bar; the last page says "Fin" above its buttons, both buttons in the app's green style (no blue), "Otra vez" with a replay icon.
 - Shelf: the Read button has a book icon; a read book shows "Read ✓" in place of a bare check.
 - Palabras: one key line under the grid title: "Ear: you know it when you hear it. Mouth: you can say it."; a word with no picture is a plain tile with the word large (no empty picture box); the word sheet keeps the word in its header when scrolled; the word is bold inside its "Heard in" lines.
+
+## After the beginner review of the books (Nov 19)
+The fresh reviewer read all 43 books: 13 read well (most of them the picture stories, d-*), 23 need a look, 7 are not worth a book. The faults are mostly mechanical:
+- The picture shows the moment before its lines (taken at the first line's start). From now: the picture of a page is taken when its last line ends (the action of its lines has happened).
+- Bare reaction lines to a touch the reader never sees read as nonsense ("¡Sí!", "¡Mmm!", "No más.", "¡Ay, no!", "Gracias" and "De nada" with no giving). From now: a line is left out of a book when, without its speaker tag ("X dice:", the coquí label), it has two words or fewer; a "Gracias" or "De nada" line is left out with it when its pair is left out.
+- Game marks in the pictures (highlight rings, enlarged held things, thought and picture bubbles, the touch sign): off in every captured picture.
+- Then the same kind of fresh beginner review again, on all books. A book whose verdict is not "reads well" gets no Read button (Listen only) until its own overrides fix it; the shelf shows only books that read well. Overrides are listed in the tool, per story, never by hand in the JSON.
