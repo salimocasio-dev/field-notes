@@ -105,7 +105,7 @@ abstract final class CoquiIcons {
     IconShape(
       'M12 6c-2-1.5-5-2-8-2v14c3 0 6 .5 8 2 2-1.5 5-2 8-2V4c-3 0-6 .5-8 2z',
     ),
-    IconShape('M12 6v20'),
+    IconShape('M12 6v14'),
   ]);
 
   /// `IC.otra` (the replay arrow). app.html:191
@@ -184,6 +184,9 @@ class _IconPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    // An SVG draws inside its own box and clips what falls outside it (the book icon's
+    // spine runs to y=26).
+    canvas.clipRect(Offset.zero & size);
     final k = size.width / 24;
     canvas.scale(k);
     for (final s in data.shapes) {

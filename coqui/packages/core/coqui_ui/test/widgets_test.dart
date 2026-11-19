@@ -88,12 +88,22 @@ void main() {
         CoquiIcons.badgeCheck,
       ]) {
         for (final shape in icon.shapes) {
-          final b = parseSvgPath(shape.d).getBounds();
-          expect(b.width + b.height, greaterThan(0), reason: shape.d);
-          expect(b.left, greaterThanOrEqualTo(0), reason: shape.d);
-          expect(b.right, lessThanOrEqualTo(24.001), reason: shape.d);
-          expect(b.top, greaterThanOrEqualTo(-0.001), reason: shape.d);
-          expect(b.bottom, lessThanOrEqualTo(24.001), reason: shape.d);
+          // The curve itself, not its control points (getBounds is loose on arcs).
+          var minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+          for (final m in parseSvgPath(shape.d).computeMetrics()) {
+            for (var d = 0.0; d <= m.length; d += 0.1) {
+              final p = m.getTangentForOffset(d)!.position;
+              if (p.dx < minX) minX = p.dx;
+              if (p.dx > maxX) maxX = p.dx;
+              if (p.dy < minY) minY = p.dy;
+              if (p.dy > maxY) maxY = p.dy;
+            }
+          }
+          expect(maxX - minX + maxY - minY, greaterThan(0), reason: shape.d);
+          expect(minX, greaterThanOrEqualTo(-0.01), reason: shape.d);
+          expect(maxX, lessThanOrEqualTo(24.01), reason: shape.d);
+          expect(minY, greaterThanOrEqualTo(-0.01), reason: shape.d);
+          expect(maxY, lessThanOrEqualTo(24.01), reason: shape.d);
         }
       }
     });
