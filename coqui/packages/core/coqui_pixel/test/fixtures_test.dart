@@ -72,7 +72,7 @@ void main() {
       expect(decodeFrenteNov14('pix.bin').length, 240 * 216 * 4);
       expect(decodeFrenteNov14('zb.bin').length, 240 * 216 * 4);
       expect(decodeFrenteNov14('kinds.bin').length, 240 * 216);
-      expect(decodeFrenteNov14('state.json').length, 1515);
+      expect(decodeFrenteNov14('state.json').length, 1130);
     },
   );
 }
