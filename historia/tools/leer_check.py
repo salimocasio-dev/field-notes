@@ -245,7 +245,10 @@ async def main():
             await pg.evaluate("window.__PAL_NOW=Date.now()+3*864e5;App.ver('palabras')");await until(pg,"()=>document.querySelectorAll('#t-palabras .wc').length>0");await pg.wait_for_timeout(300)
             rp=await pg.evaluate("[document.querySelector('#repaso').textContent,document.querySelector('#repaso').closest('.row').querySelector('.btn').textContent]");due=await pg.evaluate("PAL.vence('ear').filter(w=>CU.items.some(i=>i.w===w)).length")
             m=re.match(r"(\d+) words? today · about (\d+) min$",rp[0])
-            check("Repaso card, words due: 'N words today · about M min' and Start",m is not None and int(m.group(1))==due>0 and int(m.group(2))>=1 and rp[1]=="Start",str(rp))
+            check("Repaso card, words due: N is the session size (at most 10), 'N words today · about M min', and Start",m is not None and due>10 and int(m.group(1))==min(due,10)==10 and int(m.group(2))==2 and rp[1]=="Start",str(rp)+" due="+str(due))
+            check("the Today card on the map has the same cap",await pg.evaluate("App.plan()[0].d")=="10 words coming back")
+            await pg.evaluate("""()=>{const ws=Object.values(PAL.db.palabras).filter(r=>CU.items.some(i=>i.w===r.w));ws.slice(3).forEach(r=>{r.ear.due=Date.now()+30*864e5;});PAL.save();App.ver('palabras');}""");await pg.wait_for_timeout(1200)
+            rp=await pg.evaluate("document.querySelector('#repaso').textContent");check("Repaso card with fewer than 10 due: N is the due count",rp=="3 words today · about 1 min" and await pg.evaluate("App.plan()[0].d")=="3 words coming back",rp)
             await pg.evaluate("window.__PAL_NOW=undefined;App.ver('palabras')");await until(pg,"()=>document.querySelectorAll('#t-palabras .wc').length>0");await pg.wait_for_timeout(300)
             # a long page, scrolled to a mixed part
             await pg.evaluate("window.scrollTo(0,900)");await pg.wait_for_timeout(300)
@@ -343,7 +346,7 @@ async def main():
               "book_page_3_large_text":"Page 3 with the large text size (24 px): the Aa button toggled. Look for: nothing overlaps, the picture is smaller or the same, lines still readable.",
               "book_last_page":"The last page: the progress bar is full; the bottom row has the back arrow, an outline 'Otra vez' (read again) and a blue 'Biblioteca' (back to the shelf). No next arrow, nothing starts by itself.",
               "shelf_after_reading_check":"The shelf after reading the first book to its last page: a small green check after that story's title. Nothing else changed.",
-              "palabras_top":"Palabras tab. Top card 'Repaso' with '19 words today · about 2 min' and a green Start button. Under it the words he has met, grouped by place (heading = place name). Each card: the word's picture (or a plain grey tile when the word has no picture), the word, and two four-dot meters 'Ear' and 'Mouth'. A word whose Ear meter has fewer than 2 dots shows '?' instead of the spelling.",
+              "palabras_top":"Palabras tab. Top card 'Repaso' with '10 words today · about 2 min' (the session size: at most 10 words, however many are due) and a green Start button. Under it the words he has met, grouped by place (heading = place name). Each card: the word's picture (or a plain grey tile when the word has no picture), the word, and two four-dot meters 'Ear' and 'Mouth'. A word whose Ear meter has fewer than 2 dots shows '?' instead of the spelling.",
               "palabras_cards":"Palabras scrolled down: more cards with different Ear/Mouth dots, '?' cards, a plain tile card, then the next place heading if any.",
               "word_sheet_with_heard_in":"Tapping a card opens a bottom sheet: the big picture, the word (or '?'), the Ear and Mouth meters, 'Comes back ...' in English, and 'Heard in' with up to five lines from played stories that contain the word, each with a green play button (the story's own recording). Spanish exactly as recorded.",
               "word_sheet_scrolled":"The same sheet scrolled to show the rest of the 'Heard in' lines.",

@@ -264,7 +264,7 @@ function landmark(g,id,x,y,op){g.save();g.globalAlpha=op?1:.55;const R=(a,b,w,h,
 
 /* today's plan: returns first, then new stories (up to three a day, each twice), then replays, sized to his minutes */
 function plan(){const due=PAL.vence("ear").filter(w=>!CU||CU.items.some(it=>it.w===w)),out=[],min=AJ().min;let used=0;
-  if(due.length)out.push({t:"¿Cuál?",d:due.length+" word"+(due.length>1?"s":"")+" coming back",m:Math.min(6,2+Math.ceil(due.length/3)),href:"cual.html?desde=app"});
+  if(due.length){const nd=Math.min(due.length,10);out.push({t:"¿Cuál?",d:nd+" word"+(nd>1?"s":"")+" coming back",m:Math.min(6,2+Math.ceil(nd/3)),href:"cual.html?desde=app"});}   // a session is at most 10 words; the rest wait, and no backlog count is shown
   const cs=CURSO.lugares.flatMap(l=>l.cuentos||[]),hoyD=new Date().toDateString(),nuevosHoy=cs.filter(c=>db().cuentos[c]&&new Date(db().cuentos[c].primera).toDateString()===hoyD).length,
     nuevos=cs.filter(c=>veces(c)<2).slice(0,Math.max(0,3-nuevosHoy+cs.filter(c=>veces(c)===1).length));
   for(const c of nuevos){if(used>=min&&out.length)break;const x=CURSO.cuentos[c],m=x.min*(veces(c)?1:2);out.push({t:x.t,d:veces(c)?"Second play":"New story · play it twice",m,c});used+=m;}
@@ -401,7 +401,7 @@ async function palabras(){const my=++PALT,P=pares().m,recs=Object.values(db().pa
   for(const pass of ["focus_words","back_again"])for(const l of CURSO.lugares)for(const c of l.cuentos||[]){const T=STOV[c];if(!T||!veces(c))continue;for(const w of T[pass]||[])if(!lugarDe.has(w))lugarDe.set(w,{l,k:k++});}
   const grupos=CURSO.lugares.map(l=>({n:l.nombre,ws:recs.filter(r=>(lugarDe.get(r.w)||{}).l===l).sort((a,b)=>lugarDe.get(a.w).k-lugarDe.get(b.w).k)})).filter(g=>g.ws.length),sin=recs.filter(r=>!lugarDe.has(r.w));
   if(sin.length)grupos.push({n:"More words",ws:sin});
-  const due=PAL.vence("ear").filter(w=>P.has(w)),askable=recs.filter(r=>r.ear.etapa>0&&P.has(r.w)),n=due.length,min=Math.max(1,Math.round(Math.min(n,10)*10/60));   // ¿Cuál? asks only words he has heard that have a picture pair; a session is up to 10 words
+  const due=PAL.vence("ear").filter(w=>P.has(w)),askable=recs.filter(r=>r.ear.etapa>0&&P.has(r.w)),n=Math.min(due.length,10),min=Math.max(1,Math.round(n*10/60));   // ¿Cuál? asks only words he has heard that have a picture pair; a session is up to 10 words
   const rev=n?{t:n+" word"+(n>1?"s":"")+" today · about "+min+" min",b:"Start"}:{t:"Nothing due today",b:"Practice"},off=!n&&!askable.length,ex=db().extra||[];
   const card=r=>{const sp=r.ear.etapa>=2;return `<button class="wc" data-w="${esc(r.w)}" aria-label="${sp?esc(r.w):"Word"}: ear ${r.ear.etapa} of 4, mouth ${mouthOf(r).etapa} of 4">${P.has(r.w)?'<canvas width="196" height="104"></canvas>':'<div class="tile"></div>'}<div class="t"><div class="w">${sp?esc(r.w):"?"}</div>${meter("Ear",r.ear.etapa)}${meter("Mouth",mouthOf(r).etapa)}</div></button>`;};   // spelling shows from ear stage 2; before that a "?"
   document.getElementById("t-palabras").innerHTML=`<h1>Palabras</h1>
