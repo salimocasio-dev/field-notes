@@ -133,6 +133,95 @@ class _DevScreenState extends State<DevScreen> {
     await _lines();
     await _sounds();
     await _speech();
+    await _callLibrary();
+    await _stubCall();
+  }
+
+  /// Order 19: the voice library, loaded as the old page loads it, never a call. `?el=<url>` imports that
+  /// module in place of the pinned client (dev_check serves a local copy of the same version).
+  Future<void> _callLibrary() async {
+    final q = Uri.parse(web.window.location.href).queryParameters;
+    final url = q['el'] == null
+        ? elevenLabsClientUrl
+        : Uri.parse(web.document.baseURI).resolve(q['el']!).toString();
+    final call = createCallSession(appInfo: createAppInfo(), libraryUrl: url);
+    final sw = Stopwatch()..start();
+    var avail = call.available; // reading it starts the load (precarga)
+    while (sw.elapsedMilliseconds < 20000 &&
+        !globalContext.has('ELConv') &&
+        !globalContext.has('ELConvError')) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+    avail = call.available;
+    final type = globalContext.has('ELConv')
+        ? (globalContext.getProperty<JSObject>('ELConv'.toJS))
+              .getProperty<JSAny?>('startSession'.toJS)
+              .typeofEquals('function')
+        : false;
+    final err = globalContext.has('ELConvError')
+        ? globalContext.getProperty<JSString>('ELConvError'.toJS).toDart
+        : null;
+    report['callLibrary'] = {
+      'url': url,
+      'pinned': url == elevenLabsClientUrl,
+      'startSessionIsFunction': type,
+      'error': err,
+      'available': avail,
+      'ms': sw.elapsedMilliseconds,
+    };
+    say(
+      'call library: $url ${type ? 'loaded, ELConv.startSession is a function' : 'not loaded${err == null ? '' : ': $err'}'}; '
+      'available $avail (${sw.elapsedMilliseconds} ms); no call placed',
+    );
+  }
+
+  /// Order 19: the old page's ?callstub=1 through the package's CallSession, as the call screen gets it.
+  Future<void> _stubCall() async {
+    final stub = CallStub(await CallStubScript.load());
+    final call = createCallSession(appInfo: createAppInfo(), stub: stub);
+    final ev = <String>[];
+    var speaking = 0;
+    final done = Completer<void>();
+    call.events.listen((e) {
+      final t = switch (e) {
+        Connected() => 'Connected',
+        AgentLine(:final text) => 'AgentLine $text',
+        Heard(:final text) => 'Heard $text',
+        Mode(:final mode) => 'Mode $mode',
+        Tool(:final name, :final args) => 'Tool $name ${jsonEncode(args)}',
+        CallError(:final message) => 'CallError $message',
+        Ended(:final reason) => 'Ended $reason',
+      };
+      ev.add(t);
+      say('stub call: $t');
+      if (e is Heard && e.text == stub.script.line('heard3')) {
+        call.send('(fin)');
+      }
+      if (e is Mode && e.mode == 'speaking') speaking++;
+      if (e is Mode && e.mode == 'listening' && speaking == 3) {
+        Timer(const Duration(milliseconds: 400), call.end);
+      }
+      if (e is Ended && !done.isCompleted) done.complete();
+    });
+    final sw = Stopwatch()..start();
+    await call.start(
+      CallBrief(
+        placeId: 'casa',
+        minutes: 5,
+        job: 'job',
+        opening: 'opening',
+        photo: 'casa',
+      ),
+      const {'place': 'place', 'words_open': '', 'words_heard': ''},
+    );
+    await done.future.timeout(const Duration(seconds: 40), onTimeout: () {});
+    report['stubCall'] = {
+      'events': ev,
+      'sent': stub.sent,
+      'ended': stub.ended,
+      'ms': sw.elapsedMilliseconds,
+    };
+    stub.dispose();
   }
 
   Future<void> _info() async {

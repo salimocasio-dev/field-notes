@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/src/audio/graph_clip_player.dart';
 import 'package:coqui_platform/src/audio/sound_core.dart';
+import 'package:coqui_platform/src/call/call_session.dart';
+import 'package:coqui_platform/src/call/call_stub.dart';
+import 'package:coqui_platform/src/web/el_conv.dart';
 import 'package:coqui_platform/src/info/app_info.dart';
 import 'package:coqui_platform/src/speech/recognition.dart';
 import 'package:coqui_platform/src/storage/spaces.dart';
@@ -135,3 +139,28 @@ Haptics createHaptics() {
 }
 
 AppInfo createAppInfo() => FixedAppInfo.web(browserFacts());
+
+/// The call with Danny: the ElevenLabs client at the old page's pinned version, by interop. With [stub],
+/// the old page's `?callstub=1` instead (a scripted call, no network). [libraryUrl] is for tests and the
+/// dev screen: the module to import in place of the pinned client.
+CallSession createCallSession({
+  required AppInfo appInfo,
+  CallStub? stub,
+  String libraryUrl = elevenLabsClientUrl,
+}) => ConvCallSession(
+  library: stub ?? JsConvLibrary(libraryUrl),
+  callsAllowed: appInfo.callsAllowed,
+  beforeStart: _suspendSound,
+);
+
+// llamada.js, inicia: `try{if(AC)AC.suspend();}catch(e){}`, before the microphone opens
+void _suspendSound() {
+  final g = webSoundCore.context;
+  if (g is! WebAudioGraph) return;
+  final c = g.ctx;
+  if (c.isA<web.AudioContext>()) {
+    unawaited(
+      (c as web.AudioContext).suspend().toDart.catchError((Object _) => null),
+    );
+  }
+}
