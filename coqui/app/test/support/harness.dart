@@ -171,6 +171,7 @@ class TestApp {
     double ratio = 2.625,
     bool reduceMotion = true,
     List<String> micStub = const [],
+    bool speechAvailable = true,
   }) async {
     tester.view.physicalSize = Size(size.width * ratio, size.height * ratio);
     tester.view.devicePixelRatio = ratio;
@@ -179,7 +180,7 @@ class TestApp {
         FakeAccessibilityFeatures(disableAnimations: reduceMotion);
     addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
     spaces = Spaces({progressKey: ?stored});
-    speech = FakeSpeechListener(results: micStub);
+    speech = FakeSpeechListener(results: micStub, isAvailable: speechAvailable);
     call = FakeCallSession(stub: switches.stubOptions);
     addTearDown(call.dispose);
     await tester.pumpWidget(
