@@ -6,7 +6,7 @@
 name: Coquí Android
 on:
   push:
-    branches: [main]
+    branches: [main, "lane/coqui_platform/**"]   # the platform lane holds the plugins, so its branch is built for Android before it is merged
     paths: ["coqui/**"]
 permissions:
   contents: read
