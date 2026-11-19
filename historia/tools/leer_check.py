@@ -153,11 +153,11 @@ async def main():
             check("back arrow disabled on page 1",await pg.evaluate("document.getElementById('lbback').disabled"))
             # audio stops on page change and on close
             await pg.evaluate("App.cierraLibro()");await pg.wait_for_timeout(400)
-            await pg.click('.bk[data-c="que-calor"] .btn.out');await until(pg,"()=>App.libro.open&&speaking>0",15000)
-            await pg.evaluate("window.__log.length=0");await until(pg,"()=>speaking>0&&window.__log.length>0")
-            n0=len(await pg.evaluate("window.__log"));await pg.click("#lbnext");await pg.wait_for_timeout(1200)
-            lg=await pg.evaluate("window.__log");ids1=(await pg.evaluate("App.libro"))["ids"]
-            check("page change: the playing line is cut off and the new page's lines follow",all(e["end"] is not None for e in lg[:n0]) and lg[0]["ok"] is False and all(e["id"] in ids1 for e in lg[n0:]),"%d before the turn"%n0)
+            await pg.evaluate("window.__log.length=0")
+            await pg.click('.bk[data-c="que-calor"] .btn.out');await until(pg,"()=>App.libro.open&&speaking>0&&window.__log.length>0",15000)
+            sp=await pg.evaluate("(()=>{const s=speaking,n=window.__log.length;document.getElementById('lbnext').click();return [s,n]})()");await pg.wait_for_timeout(1200)
+            lg=await pg.evaluate("window.__log");ids1=(await pg.evaluate("App.libro"))["ids"];n0=sp[1]
+            check("page change: the playing line is cut off and the new page's lines follow",sp[0]>0 and all(e["end"] is not None for e in lg[:n0]) and lg[n0-1]["ok"] is False and len(lg)>n0 and all(e["id"] in ids1 for e in lg[n0:]),"%d before the turn, %d after"%(n0,len(lg)-n0))
             await until(pg,"()=>speaking>0",8000)
             await pg.click("#lbx");await pg.wait_for_timeout(300)
             st=await pg.evaluate("({sp:speaking,live:live.size,open:App.libro.open,nav:getComputedStyle(document.querySelector('nav')).display})")
@@ -309,7 +309,7 @@ async def main():
                 box=await pg3.evaluate("(()=>{const s=[...document.querySelectorAll('#lbtxt .bw')].find(x=>x.textContent==='casa')||document.querySelector('#lbtxt .bw');const r=s.getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]})()")
                 await pg3.mouse.click(box[0],box[1]);await pg3.wait_for_timeout(600);await shot(pg3,"book_word_card_and_underlines")
                 await pg3.mouse.click(40,60);await pg3.wait_for_timeout(300)
-                await pg3.evaluate("App.pag(2)");await quiet(pg3,30000);await pg3.click("#lbaa");await pg3.wait_for_timeout(500);await shot(pg3,"book_page_3_large_text")
+                await pg3.evaluate("window.__log.length=0;App.pag(2)");await until(pg3,"()=>window.__log.length>0",15000);await quiet(pg3,30000);await pg3.click("#lbaa");await pg3.wait_for_timeout(500);await shot(pg3,"book_page_3_large_text")
                 await pg3.click("#lbaa")
                 n3=await pg3.evaluate("App.libro.n")
                 for _ in range(n3): await pg3.evaluate("App.pag(1)")
@@ -334,6 +334,20 @@ async def main():
         if srv: srv.terminate()
     if FAKED: print("note: books faked for the check:",", ".join(sorted(FAKED)))
     if FRAMES:
-        (FRAMES.parent/(FRAMES.name+"_key.txt")).write_text("\n".join("%s  %s"%k for k in KEY)+"\n");print("frames:",FRAMES)
+        head=("Frames of the Coquí app's new Biblioteca shelf, book reader and Palabras tab (historia/app.html), phone size 390x844 at 2x (780x1688 px), made by historia/tools/leer_check.py --frames.\n"
+              "The app teaches Spanish to an English speaker. Rules: English only in menus and labels; the Spanish is shown exactly as recorded; no translations anywhere; no self-rating buttons.\n"
+              "The reader sees a picture book of a story he has already played."+(" Plain coloured tiles with a number are books the picture tool had not made when the check ran (the check fakes them); judge the layout, not those tiles." if FAKED else "")+"\n\n")
+        desc={"shelf_before_reading":"Biblioteca tab. One card per place (heading = place name), one row per story already played: a small cover (the book's first page), the title, a green Listen button and an outline Read button. The grey line at the bottom counts what is still closed. Look for: nothing cut off, buttons 48 px high and 16 px apart, readable grey text.",
+              "book_first_page_line_lit":"The book, page 1 of a story: full screen, the tab bar is gone. Top: close X (left), a thin progress bar, 'Aa' text-size button (right). Middle: the page picture. Below: up to three lines of text, the line being read aloud is lit (green background). Bottom: back arrow (disabled on page 1) and a green next arrow. Look for: the lit line, the picture sharp (pixel art, not blurred), text large and readable.",
+              "book_word_card_and_underlines":"The same page after tapping the word 'casa' (a word that has a picture): a white card pops over the page showing that word's picture and the word; the page is dimmed; every 'casa' in the lines is underlined in green. Any tap closes the card. No translation.",
+              "book_page_3_large_text":"Page 3 with the large text size (24 px): the Aa button toggled. Look for: nothing overlaps, the picture is smaller or the same, lines still readable.",
+              "book_last_page":"The last page: the progress bar is full; the bottom row has the back arrow, an outline 'Otra vez' (read again) and a blue 'Biblioteca' (back to the shelf). No next arrow, nothing starts by itself.",
+              "shelf_after_reading_check":"The shelf after reading the first book to its last page: a small green check after that story's title. Nothing else changed.",
+              "palabras_top":"Palabras tab. Top card 'Repaso' with '19 words today · about 2 min' and a green Start button. Under it the words he has met, grouped by place (heading = place name). Each card: the word's picture (or a plain grey tile when the word has no picture), the word, and two four-dot meters 'Ear' and 'Mouth'. A word whose Ear meter has fewer than 2 dots shows '?' instead of the spelling.",
+              "palabras_cards":"Palabras scrolled down: more cards with different Ear/Mouth dots, '?' cards, a plain tile card, then the next place heading if any.",
+              "word_sheet_with_heard_in":"Tapping a card opens a bottom sheet: the big picture, the word (or '?'), the Ear and Mouth meters, 'Comes back ...' in English, and 'Heard in' with up to five lines from played stories that contain the word, each with a green play button (the story's own recording). Spanish exactly as recorded.",
+              "word_sheet_scrolled":"The same sheet scrolled to show the rest of the 'Heard in' lines.",
+              "word_sheet_no_picture":"The sheet of a word that has no picture: no picture block, the word, the meters, the return line, and its 'Heard in' lines."}
+        (FRAMES.parent/(FRAMES.name+"_key.txt")).write_text(head+"\n".join("%s\n    %s\n"%(f,desc.get(n,n)) for f,n in KEY));print("frames:",FRAMES)
     print("%d checks, %d failed"%(N[0],len(FAILS)));sys.exit(1 if FAILS else 0)
 asyncio.run(main())
