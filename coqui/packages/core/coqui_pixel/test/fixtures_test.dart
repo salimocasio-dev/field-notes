@@ -11,10 +11,12 @@ import 'dart:io';
 import 'support/fixture_decode.dart';
 import 'support/fixtures/ref_ctx.dart';
 import 'support/fixtures/ref_kit.dart';
+import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
 import 'support/ref_data.dart';
 import 'support/ref_files.dart';
+import 'support/sheet_text.dart';
 
 void main() {
   test('every fixture file is the file in coqui/ref/pp/', () {
@@ -75,4 +77,8 @@ void main() {
       expect(decodeFrenteNov14('state.json').length, 1130);
     },
   );
+
+  test('the sheet fixture is the text of El frente\'s sheet', () {
+    expect(frenteSheetJson, frenteSheetText());
+  });
 }

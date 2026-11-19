@@ -5,7 +5,7 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
 - Kind: pure Dart (no Flutter SDK).
 - Replaces: docs/proyecto/pixel/pp-engine.js, the building helpers in mapa.js, historia/engine.js, escenas/kit.js, the signs and marks in juego.js.
 - One package is one lane. Branch: `lane/coqui_pixel/<order number>`.
-- Work orders: 10, 11 and 12, one after another. (Order 12's sheet reader is not built yet: it waits for the set designer's final format.)
+- Work orders: 10, 11 and 12, one after another.
 - The runbook is `../../../AGENTS.md`. Read it first.
 
 ## May depend on
@@ -33,7 +33,9 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
   - `kit.dart` (kit.js): `mkAve`, `mkAbuelaS`, `mkPersona`, `mkBebe`, `mkPerro`, `mkCesta`, `mano`, `tarjeta`, `FAM`, `PIEL`, `PELO`, `PX`, `Who` (the `who` object of `mkPersona`, a class; `copyWith` is `Object.assign`), and `Escena`, the base class of a scene (`box`, `hit`, `handAt`, the shared acts `ir`, `burbuja`, `calla`, `pose`, `fin`, the bird: `avePos`, `drawAve`, `aveA`, `aveVa`, `aveHit`). A scene's own acts are `ownActs` (kit.js's `d.acts`); `acts` is that map with the shared acts added where the scene has none of the name. A flag the old code tests for truth is a `bool`.
   - `signs.dart` (juego.js, "signs and marks"): `hand`, `heart`, `star`, `spot`, `bang`, `frogBox`, `HAND`, `HEART`, `BUB`, `newBUBL()`, and `Signs`, which reads the game's state through a `SceneHost` and a `Scene` (`twinkle`, `bub`, `frog`, `respBox`, `bx`, `respDraw`, `drawSigns`: everything juego.js's `draw` puts over the scene, in its order; `handPoint`). `glow` (a field of `W` in juego.js) is never drawn in the old code, so it is not here.
   - `camera.dart` (juego.js: `cam`, `camGo`, `at`; page 12 section 5 as corrected Nov 19): a view is a centre and a zoom of 1 or 2 (`viewAt`): `cam` stays `[x, y, w, h]`, 196 × 216 at zoom 1 and 98 × 108 at zoom 2, so `zoomOf(cam)` is the old `DW / cam[2]`. `pictureToDisplay` and `displayToPicture` map a point through the view. `CamSlide` is `camGo`: a slide in whole pixels between views of one zoom, a cut between two zooms, the same number of frames as the old one. `reviewRegion` and `reviewCrop` are the review and level-check picture (196 × 104, zoom 1 or 2).
-  - `frame.dart`: `drawFrame`, the frame recipe of section 5 as one function that holds no state; `faceCorners` and `clipTo` (a face `'x'` or `'y'` of a thing's world box, as the building helpers name them, as the clip).
+  - `frame.dart`: `drawFrame`, the frame recipe of section 5 as one function that holds no state; `clipToWorld` (the projection of a list of world points as the clip: the sheet's `clips` are world polygons), and on top of it `facePoints`, `faceCorners`, `clipTo` (a face `'x'` or `'y'` of a thing's world box, as the building helpers name them).
+  - `baked_set.dart`: `BakedSet`, one baked state of a set with everything a bake leaves behind (the baked picture and depth, `ground`, `groundZ`, `kinds`, `staticShadow`, the tufts and leaves). `BakedSet.capture(engine)` right after a bake; `drawFrame` restores it first, so one engine can serve every state.
+  - `sheet.dart`: `Sheet`, a scene's `<id>-sheet.json` parsed from its text (the caller reads the file) into typed parts: `things`, `spots`, `lugar`, `frames`, `points`, `views`, the `remap` table, `pictures`, `level`, `clips`, `front`, `shadows`, `setKey` (the table, not the function from W), `code`. A field it does not know is kept (`raw`, `unknown`) and ignored. What needs the engine takes it: `boxOf`, `hitBoxOf`, `screenOf`, `frogAt`, `abuelaAt`, `lugarOf`, `viewOf`, `pictureRegion`, `pictureCrop`, `clipPolygon`. `remap(kind, old)` (and `remapPoint`, `remapCam`, `remapCrop`, `remapX`) throws `SheetError` naming a position the table does not have.
   - `js.dart`: `jsNum` (a number as JavaScript joins it to a string, for sprite-cache keys) and `jsTruthy`.
   - `Ctx.setLineDash`, and `SceneHost.lib` (the game's one `SpriteLib`, which the old code reached as the global `spr`).
 
@@ -68,6 +70,12 @@ node tool/make_kit_ref.mjs [--check]     # test/support/fixtures/ref_kit_logic.d
 node tool/make_signs_ref.mjs [--check]   # test/support/fixtures/ref_signs.dart: the signs of juego.js and the bird of kit.js drawn by headless Chrome (132 cases)
 node tool/make_dash_ref.mjs [--check]    # test/support/fixtures/ref_dash.dart: setLineDash, 12 cases drawn by headless Chrome
 ```
+
+```
+dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart: docs/proyecto/pixel/frente-sheet.json as a string, for chrome
+```
+
+`test/pp_frente_test.dart` rebuilds the Nov 14 one-state El frente (an old frente-set.html) as a test of `PpBuild`'s helpers at S = 26. That picture is no longer in `coqui/ref/pp/` (order 07 replaced it with El frente's 25 states): its bytes are `test/support/fixtures/frente_nov14.dart`, read on every platform, and nothing makes that file again. The 25 states are order 14's.
 
 The made-up scene of `make_kit_ref.mjs` is written again in `test/support/kit_scene.dart`: keep the two the same. The Node scripts need Node 22 and the pre-installed Node Playwright (`require('playwright')`). A fixture is formatted the way `dart format` leaves it, so the format check passes.
 
