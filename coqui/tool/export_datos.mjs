@@ -28,7 +28,11 @@
 // pair was not found, also stops the script, so nothing is added or lost without a decision.
 // As a second net, every other string literal in those three files that is equal to a clip id of
 // ready.json is listed in NOT_CLIPS with the reason it is not a clip; an unexplained one stops the script.
-// A name built at run time ("hz_no_"+thing) is printed as a dynamic family and not exported.
+// A name built at run time ("hz_no_"+thing) cannot be an id: it is a PREFIX. A role whose name ends in `_prefix`
+// holds a prefix, not an id. Its prefix is found by the DYNAMIC pattern: a string literal of lower-case letters,
+// digits and underscores that ends in "_" and is followed by "+", in the same file. It must still be there (else the
+// script stops), and at least one id of ready.json must start with it. The "is in ready.json" check for ids is not
+// made for prefix roles. Every other name built at run time is printed as a dynamic family and not exported.
 //
 // The goodbye words: the string literals in the second argument of dice(n,"...") inside llamada.js's
 // `adios` function (the learner's or Danny's goodbye, either one ends the call).
@@ -52,6 +56,7 @@ const fail = (msg) => { console.error('export_datos: ' + msg); process.exit(1); 
 const ROLES = [
   ['juego.js', 'ahora_tu',    'story_your_turn'],           // "Ahora tú.": said before and between his speaking attempts
   ['juego.js', 'muy_bien',    'story_praise'],              // the default of bien(): after a right move when the story names no S.bien
+  ['juego.js', 'hz_no_',      'story_routine_no_prefix'],   // a wrong touch in a do-this routine: "hz_no_" + the thing touched (a PREFIX)
   ['cual.js',  'si_muy_bien', 'review_praise_right'],       // "¡Sí! ¡Muy bien!" after a right touch
   ['cual.js',  'muy_bien',    'review_praise_after_miss'],  // "¡Muy bien!" after he touches the shown answer to a miss
 ];
@@ -226,12 +231,18 @@ for (const file of FILES) {
   // the second net
   for (const m of src.matchAll(/"([^"\\\n]+)"|'([^'\\\n]+)'/g)) { const s = m[1] ?? m[2]; if (inReady.has(s)) { const k = file + '\0' + s; if (!naive.has(k)) naive.set(k, []); naive.get(k).push(lineOf(src, m.index)); } }
 }
+const isPrefix = (role) => role.endsWith('_prefix');
+for (const [file, prefix, role] of ROLES) {
+  if (!isPrefix(role)) continue;
+  if (!dynamic.some((d) => d[0] === file && d[2] === prefix)) fail(`role ${role}: ${file} no longer builds a name from "${prefix}" + something`);
+  if (!ready.clips.some((c) => c.startsWith(prefix))) fail(`role ${role}: no id in audio/ready.json starts with "${prefix}"`);
+}
 for (const k of found.keys()) {
   const [file, id] = k.split('\0');
   if (!inReady.has(id)) fail(`${file}:${found.get(k)[0]} names the clip "${id}", which is not in audio/ready.json`);
   if (!ROLES.some((r) => r[0] === file && r[1] === id)) fail(`${file}:${found.get(k)[0]} names the clip "${id}": it needs a role in ROLES`);
 }
-for (const [file, id, role] of ROLES) if (!found.has(file + '\0' + id)) fail(`role ${role}: ${file} no longer names "${id}"`);
+for (const [file, id, role] of ROLES) if (!isPrefix(role) && !found.has(file + '\0' + id)) fail(`role ${role}: ${file} no longer names "${id}"`);
 const dismissed = new Set(NOT_CLIPS.map((r) => r[0] + '\0' + r[1]));
 for (const [k, lines] of naive) {
   if (found.has(k)) continue;
@@ -253,7 +264,11 @@ writeJson('fijos.json', { clips, despedidas });
 
 // ---- what was found, for the report --------------------------------------------------------------------------------
 console.log('\nrole -> clip id -> where the code names it');
-for (const [file, id, role] of ROLES) console.log(`  ${role.padEnd(26)} ${id.padEnd(12)} ${[...new Set(found.get(file + '\0' + id))].sort((x, y) => x - y).map((l) => `${file}:${l}`).join(' ')}`);
+for (const [file, id, role] of ROLES) {
+  const where = isPrefix(role) ? dynamic.filter((d) => d[0] === file && d[2] === id).map((d) => `${file}:${d[1]}`).join(' ') + `  (a prefix; ${ready.clips.filter((c) => c.startsWith(id)).length} ids in ready.json start with it)`
+    : [...new Set(found.get(file + '\0' + id))].sort((x, y) => x - y).map((l) => `${file}:${l}`).join(' ');
+  console.log(`  ${role.padEnd(26)} ${id.padEnd(12)} ${where}`);
+}
 console.log('goodbye words: ' + JSON.stringify(despedidas));
-for (const [file, line, prefix] of dynamic) console.log(`dynamic, not exported: ${file}:${line} builds "${prefix}" + a name at run time (${ready.clips.filter((c) => c.startsWith(prefix)).length} such ids are in ready.json)`);
+for (const [file, line, prefix] of dynamic) if (!ROLES.some((r) => isPrefix(r[2]) && r[0] === file && r[1] === prefix)) console.log(`dynamic, not exported: ${file}:${line} builds "${prefix}" + a name at run time (${ready.clips.filter((c) => c.startsWith(prefix)).length} such ids are in ready.json)`);
 for (const [file, id, why] of NOT_CLIPS) console.log(`not a clip: ${file} "${id}" (lines ${naive.get(file + '\0' + id).join(', ')}): ${why}`);

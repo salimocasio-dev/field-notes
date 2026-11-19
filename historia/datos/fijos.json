@@ -2,6 +2,7 @@
   "clips": {
     "story_your_turn": "ahora_tu",
     "story_praise": "muy_bien",
+    "story_routine_no_prefix": "hz_no_",
     "review_praise_right": "si_muy_bien",
     "review_praise_after_miss": "muy_bien"
   },

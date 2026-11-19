@@ -106,4 +106,11 @@ else:
         import marcas
         print("marks made for", marcas.update(nuevos), "clips")
     except Exception as e:
-        print("WARNING: marcas.json was not updated:", e, "- run python3 historia/tools/marcas.py")
+        try:
+            have = json.load(open(os.path.join(HERE, "audio", "marcas.json"), encoding="utf-8"))
+        except Exception:
+            have = {}
+        left = sorted(set(nuevos) | (set(hechos) - set(have)))   # the clips just made, and any that had no marks before
+        print("WARNING: marcas.json was not updated:", e)
+        print("WARNING: left without marks:", " ".join(left) or "(none)")
+        print("WARNING: python3 historia/tools/marcas.py", " ".join(nuevos), "fills them")

@@ -1,4 +1,6 @@
 """The start and end marks of every recorded clip: historia/audio/marcas.json.
+The marks are made at each file's own sample rate (24 kHz), the one reading every device agrees on. The old page
+resampled to the device's rate first, so its marks moved with the device (44.1 against 48 kHz: up to 21 ms).
 
     {"<clip id>": [startMs, endMs, lengthMs], ...}      sorted by id, one clip per line
 
