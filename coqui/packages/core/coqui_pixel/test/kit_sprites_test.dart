@@ -2,7 +2,6 @@
 // recorded call and compared pixel for pixel. A sprite that differs in one pixel is a porting error, not a tolerance.
 // On the vm the reference is read from the files, in a browser from the fixture made from them.
 import 'package:coqui_pixel/coqui_pixel.dart';
-import 'package:coqui_pixel/src/colour.dart';
 import 'package:test/test.dart';
 
 import 'support/compare.dart';

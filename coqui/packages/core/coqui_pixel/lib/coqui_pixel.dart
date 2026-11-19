@@ -7,6 +7,9 @@ library;
 
 export 'package:coqui_pixel/src/baked_set.dart';
 export 'package:coqui_pixel/src/camera.dart';
+
+/// `"#RRGGBB"` as the int `0xFFBBGGRR`.
+export 'package:coqui_pixel/src/colour.dart' show hexColour;
 export 'package:coqui_pixel/src/ctx.dart';
 export 'package:coqui_pixel/src/frame.dart';
 export 'package:coqui_pixel/src/int32.dart';
