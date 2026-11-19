@@ -6,6 +6,7 @@ import 'dart:math' as math;
 
 import 'package:coqui_pixel/src/colour.dart';
 import 'package:coqui_pixel/src/ctx.dart';
+import 'package:coqui_pixel/src/js.dart';
 import 'package:coqui_pixel/src/scene.dart';
 import 'package:coqui_pixel/src/sprite.dart';
 
@@ -28,15 +29,6 @@ typedef Act = Future<void> Function(Map<String, dynamic> o);
 
 // JavaScript: Math.round
 int _round(num v) => (v + 0.5).floor();
-
-/// JavaScript's truth of a value from a JSON-shaped map: not null, not false, not 0, not NaN, not "".
-bool _truthy(Object? v) {
-  if (v == null) return false;
-  if (v is bool) return v;
-  if (v is num) return v != 0 && !v.isNaN;
-  if (v is String) return v.isNotEmpty;
-  return true;
-}
 
 /// A list of numbers from what a thing's box or hand holds: `[27, 57, 30, 56]` or a list read from a file.
 List<num>? _nums(Object? v) {
@@ -700,7 +692,7 @@ abstract class Escena extends Scene {
     }
     if (aveHit(x, y)) return 'pajaro';
     final q = w['cq'] as Map<String, dynamic>, fb = host.frogBox(q);
-    if (_truthy(q['vis']) &&
+    if (jsTruthy(q['vis']) &&
         x >= fb.x &&
         x < fb.x + fb.w &&
         y >= fb.y &&
@@ -718,7 +710,7 @@ abstract class Escena extends Scene {
   List<num>? handAt(String k) {
     final t = cosa(k);
     if (t == null) return null;
-    if (_truthy(t.hand)) {
+    if (jsTruthy(t.hand)) {
       final h = t.hand;
       return _nums(h is Function ? h(_W) : h);
     }
@@ -730,7 +722,7 @@ abstract class Escena extends Scene {
 
   // kit.js: comunes.ir
   Future<void> _ir(Map<String, dynamic> o) async {
-    final a = o['a'], key = _truthy(a) ? a : o['en'];
+    final a = o['a'], key = jsTruthy(a) ? a : o['en'];
     final L = key is String ? lugar[key] : null;
     if (L == null) return;
     final q = _cq();
@@ -754,27 +746,28 @@ abstract class Escena extends Scene {
       _cq()['bub'] = o['que'];
       host.SFX.coqui();
       host.bounce(6);
-    } else if (_truthy(_W['ab'])) {
+    } else if (jsTruthy(_W['ab'])) {
       (_W['ab'] as Map<String, dynamic>)['bub'] = o['que'];
     }
   }
 
   // kit.js: comunes.calla
   Future<void> _calla(Map<String, dynamic> o) async {
-    if (_truthy(_W['ab'])) (_W['ab'] as Map<String, dynamic>)['bub'] = null;
+    if (jsTruthy(_W['ab'])) (_W['ab'] as Map<String, dynamic>)['bub'] = null;
     _cq()['bub'] = null;
   }
 
   // kit.js: comunes.pose
   Future<void> _pose(Map<String, dynamic> o) async {
-    if (_truthy(_W['ab']))
+    if (jsTruthy(_W['ab'])) {
       (_W['ab'] as Map<String, dynamic>)['pose'] = o['que'];
+    }
   }
 
   // kit.js: comunes.fin
   Future<void> _fin(Map<String, dynamic> o) async {
     final b = host.cam, W = _W;
-    if (!_truthy(W['lost'])) {
+    if (!jsTruthy(W['lost'])) {
       W['heart'] = 1;
       host.SFX.win();
       host.fx({
@@ -808,7 +801,7 @@ abstract class Escena extends Scene {
       final q = _cq(), b = host.frogBox(q);
       return [b.x + b.w / 2, b.y + _round(q['dy'] as num) + 2];
     }
-    final dip = _truthy(v['dip']) ? v['dip'] as num : 0;
+    final dip = jsTruthy(v['dip']) ? v['dip'] as num : 0;
     return [_round(v['x'] as num), _round((v['y'] as num) + dip)];
   }
 
@@ -816,16 +809,16 @@ abstract class Escena extends Scene {
   void drawAve(Ctx c, Map<String, dynamic>? v) {
     if (v == null || v['mode'] == 'none') return;
     final F = host.F, p = avePos(v);
-    final stv = v['st'], st = _truthy(stv) ? stv as String : 'n';
+    final stv = v['st'], st = jsTruthy(stv) ? stv as String : 'n';
     final fl = v['mode'] == 'fly' ? (F >> 1) % 2 : 0;
     final im = host.lib.spr('kave$st$fl', () => mkAve(st, fl != 0));
     final w = im.w, h = im.h;
-    final dir = _truthy(v['dir']) ? v['dir'] as num : 1;
+    final dir = jsTruthy(v['dir']) ? v['dir'] as num : 1;
     final H = _round(h * AVK);
     c.save();
     c.smoothing = false;
     c.translate(p[0].toDouble(), (p[1] - H + 2).toDouble());
-    if (_truthy(v['dip'])) {
+    if (jsTruthy(v['dip'])) {
       c.translate(0, H.toDouble());
       c.rotate(dir * .5);
       c.translate(0, -H.toDouble());
@@ -877,7 +870,7 @@ abstract class Escena extends Scene {
   // the bird flies to a spot and lands there
   Future<void> aveVa(num tx, num ty, [int? n, int? dir]) async {
     final W = _W, have = W['ave'];
-    if (!_truthy(have) || (have as Map<String, dynamic>)['mode'] == 'none') {
+    if (!jsTruthy(have) || (have as Map<String, dynamic>)['mode'] == 'none') {
       W['ave'] = <String, dynamic>{
         'mode': 'fly',
         'x': kitSW + 12,
@@ -901,7 +894,7 @@ abstract class Escena extends Scene {
   // kit.js: aveHit
   bool aveHit(num x, num y) {
     final v = _W['ave'];
-    if (!_truthy(v) || (v as Map<String, dynamic>)['mode'] == 'none') {
+    if (!jsTruthy(v) || (v as Map<String, dynamic>)['mode'] == 'none') {
       return false;
     }
     final p = avePos(v);

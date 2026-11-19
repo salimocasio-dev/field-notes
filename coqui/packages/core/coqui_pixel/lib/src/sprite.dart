@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 import 'package:coqui_pixel/src/ctx.dart';
 import 'package:coqui_pixel/src/int32.dart';
-import 'package:coqui_pixel/src/js_num.dart';
+import 'package:coqui_pixel/src/js.dart';
 
 /// Port of historia/engine.js: Buf, RP, OUT, bay, hs, rgb, fr, every mk* sprite, sky, grass, shadow, face, coqui, bubble, GL, GC.
 ///
