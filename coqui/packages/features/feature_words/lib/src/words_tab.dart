@@ -45,6 +45,18 @@ class _WordsTabState extends State<WordsTab> {
   }
 
   @override
+  void didUpdateWidget(WordsTab old) {
+    super.didUpdateWidget(old);
+    final a = old.services;
+    final b = widget.services;
+    if (!identical(a.progress, b.progress) || !identical(a.course, b.course)) {
+      unawaited(_changes?.cancel());
+      _changes = b.progress.changes.listen((_) => unawaited(_load()));
+      unawaited(_load());
+    }
+  }
+
+  @override
   void dispose() {
     unawaited(_changes?.cancel());
     _scroll.dispose();

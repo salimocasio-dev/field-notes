@@ -46,23 +46,28 @@ class AddBox extends StatelessWidget {
               style: CoquiText.smallMuted,
             ),
           ),
-          TextField(
-            controller: controller,
-            style: text,
-            cursorColor: CoquiColors.ink,
-            decoration: InputDecoration(
-              isDense: true,
-              hintText: 'A word or a goal',
-              hintStyle: text.copyWith(color: _placeholder),
-              filled: true,
-              fillColor: CoquiColors.white,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: CoquiMetrics.s12,
-                vertical: CoquiMetrics.s12,
+          // the field is 48 px whatever the app's density (a web build on a desktop platform is compact)
+          Theme(
+            data: Theme.of(context)
+                .copyWith(visualDensity: VisualDensity.standard),
+            child: TextField(
+              controller: controller,
+              style: text,
+              cursorColor: CoquiColors.ink,
+              decoration: InputDecoration(
+                isDense: true,
+                hintText: 'A word or a goal',
+                hintStyle: text.copyWith(color: _placeholder),
+                filled: true,
+                fillColor: CoquiColors.white,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: CoquiMetrics.s12,
+                  vertical: CoquiMetrics.s12,
+                ),
+                border: border,
+                enabledBorder: border,
+                focusedBorder: border,
               ),
-              border: border,
-              enabledBorder: border,
-              focusedBorder: border,
             ),
           ),
           const SizedBox(height: CoquiMetrics.s16),

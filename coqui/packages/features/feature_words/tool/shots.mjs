@@ -95,10 +95,15 @@ const base = `http://127.0.0.1:${server.address().port}/`;
 // ---------- driving the page ----------
 const wait = (page, ms) => page.waitForTimeout(ms);
 
-// The semantic node of a label ("casa: ear 3 of 4, mouth 0 of 4" is found by "casa: ear"), or null.
+// The semantic node of a label, or null. A button that holds a Text (the Add button) has its label as its text
+// content; the others (a card, a play button) carry it as their aria-label ("casa: ear 3 of 4, mouth 0 of 4" is
+// found by the prefix "casa: ear").
 async function node(page, label, { prefix = true } = {}) {
   const sel = prefix ? `flt-semantics[aria-label^="${label}"]` : `flt-semantics[aria-label="${label}"]`;
-  const box = await page.locator(sel).first().boundingBox().catch(() => null);
+  let box = await page.locator(sel).first().boundingBox({ timeout: 1500 }).catch(() => null);
+  if (!box && !prefix) {
+    box = await page.locator('flt-semantics[role="button"]', { hasText: new RegExp(`^${label}$`) }).first().boundingBox({ timeout: 1500 }).catch(() => null);
+  }
   return box;
 }
 
@@ -108,17 +113,59 @@ const scrollInfo = (page) => page.evaluate(() => {
   return e ? { top: e.scrollTop, height: e.scrollHeight, view: e.clientHeight } : null;
 });
 
+// A wheel turn of `d` (the browser's deltaY) moves the dev entry's page by about 0.145 * d css px, whatever the
+// size asked (Flutter web scales the wheel it is given); `calibrate` measures it once per page.
+const factor = new WeakMap();
+async function calibrate(page, dev) {
+  const btn = () => page.locator('flt-semantics[role="button"]', { hasText: /^(Start|Practice)$/ }).first().boundingBox({ timeout: 1500 }).catch(() => null);
+  const y0 = await btn();
+  if (!y0) { factor.set(page, 0.145); return; }
+  await page.mouse.move(dev.width / 2, dev.height / 2);
+  await page.mouse.wheel(0, 300);
+  await wait(page, 600);
+  const y1 = await btn();
+  const k = y1 ? (y0.y - y1.y) / 300 : 0;
+  factor.set(page, k > 0.02 ? k : 0.145);
+  if (k > 0.02) { await page.mouse.wheel(0, -300); await wait(page, 600); }
+}
+
+// Scrolls by about `dy` css px (negative: up) with the pointer at (x, y).
 async function wheel(page, dev, dy, x = dev.width / 2, y = dev.height / 2) {
   await page.mouse.move(x, y);
-  // one wheel step at a time: Flutter turns each into one scroll of that many css px
-  let left = dy;
-  while (Math.abs(left) > 0) {
-    const step = Math.sign(left) * Math.min(Math.abs(left), 1500);
+  let raw = dy / (factor.get(page) ?? 0.145);
+  while (Math.abs(raw) >= 1) {
+    const step = Math.sign(raw) * Math.min(Math.abs(raw), 2000);
     await page.mouse.wheel(0, step);
-    left -= step;
-    await wait(page, 60);
+    raw -= step;
+    await wait(page, 50);
   }
-  await wait(page, 350);
+  await wait(page, 450);
+}
+
+// Scrolls the page to `target` css px from its top (the semantics tree says where it stands).
+async function scrollTo(page, dev, target) {
+  for (let i = 0; i < 12; i++) {
+    const info = await scrollInfo(page);
+    const cur = info ? info.top : 0;
+    if (Math.abs(target - cur) < 1.5) return cur;
+    await wheel(page, dev, target - cur);
+  }
+  return (await scrollInfo(page))?.top ?? 0;
+}
+
+// The old script's `getElementById('extra').scrollIntoView({block:'center'})`: the field of "Add a word or a goal" at the
+// middle of the screen, or as near as the page's foot lets it be.
+async function centerField(page, dev) {
+  const field = () => page.locator('input[aria-label="A word or a goal"]').first().boundingBox({ timeout: 1500 }).catch(() => null);
+  let last = null;
+  for (let i = 0; i < 40; i++) {
+    const box = await field();
+    const mid = box ? box.y + box.height / 2 : null;
+    if (mid !== null && Math.abs(mid - dev.height / 2) < 2) return;
+    if (mid !== null && last !== null && Math.abs(mid - last) < 1) return; // the foot: it cannot go further
+    last = mid;
+    await wheel(page, dev, mid === null ? 800 : mid - dev.height / 2);
+  }
 }
 
 // Brings a card into the middle of the screen (Playwright's own scroll-into-view of the old script), then touches it.
@@ -132,7 +179,7 @@ async function touchCard(page, dev, word) {
       return;
     }
     if (box && mid !== null && Math.abs(mid - dev.height / 2) > 8) await wheel(page, dev, mid - dev.height / 2);
-    else await wheel(page, dev, 600);
+    else await wheel(page, dev, 500);
   }
   throw new Error(`no card for "${word}"`);
 }
@@ -147,11 +194,11 @@ const sheetBody = (dev) => {
 async function run(page, dev, steps) {
   for (const s of steps) {
     if (s.do === 'whole') continue; // the caller handles it
-    if (s.do === 'pageEnd') await wheel(page, dev, 40000);
+    if (s.do === 'pageEnd') await centerField(page, dev);
     else if (s.do === 'card') { await touchCard(page, dev, s.word); await wait(page, 900); }
     else if (s.do === 'sheetEnd') {
       const b = sheetBody(dev);
-      await wheel(page, dev, 40000, dev.width / 2, (b.top + b.bottom) / 2);
+      await wheel(page, dev, 6000, dev.width / 2, (b.top + b.bottom) / 2);
     } else if (s.do === 'playFirst') {
       // the first line's button, brought to the middle of the sheet's body (as Playwright's click did)
       const b = sheetBody(dev);
@@ -174,6 +221,7 @@ async function run(page, dev, steps) {
       if (!box) throw new Error('no Add button');
       await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
       await wait(page, 900);
+      await centerField(page, dev);
     }
   }
 }
@@ -241,12 +289,15 @@ try {
       const page = await ctx.newPage();
       const errors = [];
       page.on('pageerror', (e) => errors.push(String(e)));
-      page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+      page.on('console', (m) => { if (m.type() === 'error' && !m.text().startsWith('Failed to load resource')) errors.push(m.text()); });
+      // the one 404 there is, assets/FontManifest.json (the build has no font of its own), is not an error
+      page.on('response', (r) => { if (r.status() >= 400 && !r.url().endsWith('/assets/FontManifest.json')) errors.push(`${r.status()} ${r.url()}`); });
       await page.goto(`${base}?state=${pic.seed}`);
       await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
       await wait(page, 3500);
       await page.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
       await wait(page, 1200);
+      await calibrate(page, dev);
       const entry = { device: dev.id, name, screen: pic.screen, state: pic.state, seed: pic.seed, reference: join(refDir, pic.file), orders: pic.orders };
       if (!whole) {
         await run(page, dev, steps);
@@ -258,15 +309,10 @@ try {
       } else {
         // the whole page: the reference is one picture as tall as the page; the dev entry is scrolled through
         const refCss = refSize.h / dev.ratio;
-        const info0 = await scrollInfo(page);
         const stretch = dev.height - 100; // css px of the page each shot is used for (the tab bar's zone is left out)
         const tiles = [];
-        let top = 0;
         for (let k = 0; ; k++) {
-          const want = k * stretch;
-          const now = (await scrollInfo(page))?.top ?? 0;
-          if (want !== now) await wheel(page, dev, want - now);
-          const at = (await scrollInfo(page))?.top ?? 0;
+          const at = await scrollTo(page, dev, k * stretch);
           const file = join(out, dev.id, `${name}-${String(k).padStart(2, '0')}.png`);
           await page.screenshot({ path: file });
           const info = await scrollInfo(page);
@@ -284,7 +330,6 @@ try {
             });
           }
           tiles.push({ scrollTop: at, mine: file, sideBySide: sbs });
-          top = at;
           if (last || k > 60) break;
         }
         const end = await scrollInfo(page);
@@ -295,7 +340,6 @@ try {
           referenceSize: refSize,
           note: 'page heights are css px; mine is the scroll extent of the dev entry (the content and its foot padding)',
         });
-        void info0; void top;
       }
       if (errors.length) entry.errors = errors;
       pairs.pictures.push(entry);
@@ -307,5 +351,14 @@ try {
   await browser.close();
   server.close();
 }
-writeFileSync(join(out, 'pairs.json'), JSON.stringify(pairs, null, 2) + '\n');
+// pairs.json keeps what an earlier run (another --device, or --only) wrote for the pictures this run did not take
+const pairsFile = join(out, 'pairs.json');
+if (existsSync(pairsFile)) {
+  const old = JSON.parse(readFileSync(pairsFile, 'utf8'));
+  const key = (e) => `${e.device}/${e.name}`;
+  const taken = new Set(pairs.pictures.map(key));
+  pairs.pictures = [...old.pictures.filter((e) => !taken.has(key(e))), ...pairs.pictures];
+}
+pairs.pictures.sort((a, b) => (a.device + a.name).localeCompare(b.device + b.name));
+writeFileSync(pairsFile, JSON.stringify(pairs, null, 2) + '\n');
 console.log(`pairs: ${join(out, 'pairs.json')}`);

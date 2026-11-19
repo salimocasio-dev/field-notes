@@ -19,6 +19,8 @@ Widget devApp({String? state, Services? services}) {
     debugShowCheckedModeBanner: false,
     title: 'Coquí dev: feature_words',
     theme: coquiTheme(),
+    // the old page shows no scroll bar on a phone
+    scrollBehavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
     home: Scaffold(
       body: Builder(
         builder: (context) => Stack(
