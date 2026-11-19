@@ -2,6 +2,8 @@
 /// check, the book and the call (cual.html:11-111, index.html:11-111).
 library;
 
+import 'dart:math' as math;
+
 import 'package:coqui_ui/src/buttons.dart';
 import 'package:coqui_ui/src/icons.dart';
 import 'package:coqui_ui/src/pressable.dart';
@@ -117,6 +119,7 @@ class LessonFrame extends StatelessWidget {
     this.trailing,
     this.picture,
     this.caption,
+    this.underPicture,
     this.bottom = const [],
     this.overlay,
     this.startState = false,
@@ -147,6 +150,15 @@ class LessonFrame extends StatelessWidget {
 
   /// The line under the picture. Null: none.
   final String? caption;
+
+  /// A story's end: the title (24 px semibold, left) hangs 16 px under the picture, wherever the picture
+  /// stands: the frame places it from the picture's own bottom edge, not from a fixed place, so it is the
+  /// same 16 px under the picture on a tall phone and on a short one (`finFit()`, juego.js:391-395; the
+  /// picture is centred above the bottom zone and stays where it was). It is at most 480 px wide, in the
+  /// 16 px side margins. The old page drops it when it does not fit between the picture and the buttons;
+  /// that check needs the height of the buttons, so the caller that can run into it makes it (feature_story's
+  /// `StoryEndTitle` does). Null: none.
+  final Widget? underPicture;
 
   /// What stands in the bottom zone: [LessonStartButton], [LessonButton]s.
   final List<Widget> bottom;
@@ -205,8 +217,9 @@ class LessonFrame extends StatelessWidget {
     ),
   );
 
-  /// The picture with its caption hanging under it: the caption has no height of
-  /// its own, so the picture alone is what gets centred. cual.html:30-33
+  /// The picture with its caption (8 px under it) and a story's end title ([underPicture], 16 px under it)
+  /// hanging under it: neither has a height of its own, so the picture alone is what gets centred.
+  /// cual.html:30-33; juego.js:391-395
   Widget _stage() => Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -235,6 +248,28 @@ class LessonFrame extends StatelessWidget {
           ),
         ),
       ),
+      if (underPicture != null)
+        SizedBox(
+          height: 0,
+          width: double.infinity,
+          child: OverflowBox(
+            alignment: Alignment.topCenter,
+            minHeight: 0,
+            maxHeight: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(top: CoquiMetrics.s16),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: CoquiMetrics.lessonColumnMax,
+                  ),
+                  child: SizedBox(width: double.infinity, child: underPicture),
+                ),
+              ),
+            ),
+          ),
+        ),
     ],
   );
 
@@ -345,152 +380,6 @@ class LessonFrame extends StatelessWidget {
   }
 }
 
-/// The frame of the book reader (`#libro`): the same dark frame as [LessonFrame], laid out for a page of
-/// reading. A top bar (close X, a thin [progress] line, the page [count] "3 / 9", the text size button
-/// [trailing]); the [picture] centred in the room that is left; the [lines] under it (gap 4,
-/// at most 55% of the screen's height, scrolling); the [foot] (a [LessonButtonRow], "Fin") at the bottom,
-/// 8 px above, 16 at the sides and below, 8 apart. Everything is at most 560 px wide and centred. The
-/// last page ([last]) takes no extra room under the picture for its "Fin" (the other pages keep 72 px,
-/// so the picture stands in the same place on every page). app.html:103-123
-class LessonReaderFrame extends StatelessWidget {
-  const LessonReaderFrame({
-    super.key,
-    this.onClose,
-    this.progress,
-    this.count,
-    this.trailing,
-    this.picture,
-    this.lines = const [],
-    this.foot = const [],
-    this.last = false,
-  });
-
-  final VoidCallback? onClose;
-  final Widget? progress;
-
-  /// The page count, e.g. `3 / 9`.
-  final String? count;
-
-  /// The text size button ([LessonTextSizeButton]).
-  final Widget? trailing;
-  final Widget? picture;
-
-  /// [BookLine]s.
-  final List<Widget> lines;
-  final List<Widget> foot;
-  final bool last;
-
-  @override
-  Widget build(BuildContext context) {
-    final safe = MediaQuery.paddingOf(context);
-    return ColoredBox(
-      color: CoquiColors.lessonBg,
-      child: Padding(
-        padding: EdgeInsets.only(
-          left: safe.left,
-          right: safe.right,
-          bottom: safe.bottom,
-        ),
-        child: Column(
-          children: [
-            SizedBox(
-              height: CoquiMetrics.lessonTopBar + safe.top,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(8, safe.top, 8, 0),
-                child: Row(
-                  children: [
-                    LessonCloseButton(onPressed: onClose),
-                    const SizedBox(width: CoquiMetrics.s16),
-                    Expanded(child: progress ?? const SizedBox.shrink()),
-                    if (count != null) ...[
-                      const SizedBox(width: CoquiMetrics.s16),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(minWidth: 40),
-                        child: Text(
-                          count!,
-                          textAlign: TextAlign.right,
-                          style: CoquiText.lessonCount,
-                        ),
-                      ),
-                    ],
-                    if (trailing != null) ...[
-                      const SizedBox(width: CoquiMetrics.s16),
-                      trailing!,
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxWidth: CoquiMetrics.readerColumnMax,
-                  ),
-                  child: LayoutBuilder(
-                    builder: (context, box) => Column(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              CoquiMetrics.s16,
-                              CoquiMetrics.s8,
-                              CoquiMetrics.s16,
-                              CoquiMetrics.s8 + (last ? 0 : 72),
-                            ),
-                            child: Center(child: picture),
-                          ),
-                        ),
-                        ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: box.maxHeight * 0.55,
-                          ),
-                          child: SingleChildScrollView(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                for (var i = 0; i < lines.length; i++) ...[
-                                  if (i > 0) const SizedBox(height: 4),
-                                  lines[i],
-                                ],
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: CoquiMetrics.readerColumnMax,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      for (var i = 0; i < foot.length; i++) ...[
-                        if (i > 0) const SizedBox(height: 8),
-                        foot[i],
-                      ],
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 /// `.lbfin`: "Fin" above the last page's buttons: 24/32 semibold white, centred, 16 px above and below.
 /// app.html:121
 class LessonFin extends StatelessWidget {
@@ -501,105 +390,6 @@ class LessonFin extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
     child: Text(text, textAlign: TextAlign.center, style: CoquiText.lessonFin),
-  );
-}
-
-/// `.lbl`: one line of a book: at least 48 px high, 12 px corners, padding 9 / 12, the text 20 on 30 (24 on
-/// 36 with [big]) white, a speaker glyph (20 px in a 24 px box, `#9A9AA6`) at the right, 12 px from the
-/// text; an optional [who] label above (12/16 semibold). The line playing ([lit]) is `#245A3B` with a
-/// 4 px `#3DDC84` bar down its left edge and a green speaker; a pressed line is `#2A2A32`. app.html:114-117
-class BookLine extends StatelessWidget {
-  const BookLine({
-    super.key,
-    required this.text,
-    this.who,
-    this.lit = false,
-    this.big = false,
-    this.onTap,
-  });
-
-  /// The line: a [Text] (or a [Text.rich] with the dotted words).
-  final Widget text;
-  final String? who;
-  final bool lit;
-  final bool big;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) => Pressable(
-    onPressed: onTap,
-    semanticsButton: onTap != null,
-    builder: (context, pressed) {
-      final body = Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 30),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (who != null) Text(who!, style: CoquiText.bookWho),
-                    DefaultTextStyle(
-                      style: big ? CoquiText.bookLineBig : CoquiText.bookLine,
-                      child: text,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: Center(
-                  child: CoquiIcon(
-                    CoquiIcons.volume,
-                    size: 20,
-                    color: lit
-                        ? CoquiColors.bookLineLitBar
-                        : CoquiColors.bookSpeaker,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-      final surface = lit
-          ? CoquiColors.bookLineLit
-          : (pressed ? CoquiColors.bookLinePressed : null);
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
-        child: lit
-            ? Stack(
-                children: [
-                  const Positioned.fill(
-                    child: ColoredBox(color: CoquiColors.bookLineLitBar),
-                  ),
-                  // The inset 4 px bar: the lit surface, 4 px to the right, rounded as the line is.
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: surface,
-                        borderRadius: BorderRadius.circular(
-                          CoquiMetrics.radiusButton,
-                        ),
-                      ),
-                      child: body,
-                    ),
-                  ),
-                ],
-              )
-            : ColoredBox(
-                color: surface ?? const Color(0x00000000),
-                child: body,
-              ),
-      );
-    },
   );
 }
 
@@ -714,4 +504,121 @@ class PictureChoice extends StatelessWidget {
       builder: (context, pressed) => picture,
     );
   }
+}
+
+/// How the end of a Repaso lays out the pictures of its words: [columns] to a row at a whole number
+/// [scale] of device pixels per picture pixel, each picture [cellWidth] logical pixels wide. cual.js:
+/// `cualGrid()` (cual.js:60-65).
+class LessonGridPlan {
+  const LessonGridPlan({
+    required this.columns,
+    required this.scale,
+    required this.cellWidth,
+  });
+
+  final int columns;
+
+  /// Device pixels per picture pixel: a whole number, never below 1.
+  final int scale;
+
+  /// A cell, and so its picture, as wide as `pictureWidth * scale / devicePixelRatio`.
+  final double cellWidth;
+
+  /// `gap:16px` between the cells, across and down. cual.html:46
+  static const double gap = 16;
+
+  /// The grid, and the title and lines above it, are one block this wide, centred
+  /// (`#fin.lis>*{max-width:var(--gw)}`, `--gw` set by `cualGrid()`). cual.html:41
+  double get blockWidth => columns * cellWidth + (columns - 1) * gap;
+}
+
+/// `cualGrid()` (cual.js:60-65): three or two pictures to a row, at the largest whole scale that fits;
+/// a tie goes to three; a picture is at most about 140 px wide (`top`: the words are small things to look
+/// at, ten fit a screen); where not even two fit at scale 1, one to a row.
+///
+/// [contentWidth] is the width of the end screen inside its 16 px side padding (`#fin`'s `clientWidth`
+/// minus its padding), [pictureWidth] the art's width in picture pixels (`DW`, 196).
+LessonGridPlan lessonGridPlan({
+  required double contentWidth,
+  required double devicePixelRatio,
+  required int pictureWidth,
+}) {
+  final w = math.min(CoquiMetrics.lessonColumnMax, contentWidth);
+  final top = math.max(
+    1,
+    (140 * devicePixelRatio / pictureWidth + .001).floor(),
+  );
+  int? columns;
+  int? scale;
+  for (final n in const [3, 2]) {
+    final fit =
+        (((w - (n - 1) * LessonGridPlan.gap) / n) *
+                    devicePixelRatio /
+                    pictureWidth +
+                .001)
+            .floor();
+    final kd = math.min(top, fit);
+    if (kd >= 1 && (scale == null || kd > scale)) {
+      columns = n;
+      scale = kd;
+    }
+  }
+  final kd = scale ?? 1;
+  return LessonGridPlan(
+    columns: columns ?? 1,
+    scale: kd,
+    cellWidth: pictureWidth * kd / devicePixelRatio,
+  );
+}
+
+/// One word of the end screen's grid: its [picture] (a [PixelView] as wide as its cell: it draws itself
+/// at the plan's whole scale) and the [word] under it.
+class LessonGridCell {
+  const LessonGridCell({required this.picture, required this.word});
+  final Widget picture;
+  final String word;
+}
+
+/// `.gw`: the words of a group, each a picture in a 1.5 px ring (`box-shadow:0 0 0 1.5px var(--line)`: a
+/// ring outside the picture that takes no room) and the word under it, 8 px below, 16/24 white; the cells
+/// [LessonGridPlan.gap] apart. The widget is [LessonGridPlan.blockWidth] wide; the picture of a cell
+/// is exactly as wide as its cell, so at the plan's scale it fills it, with no strip. cual.html:46-50
+class LessonPictureGrid extends StatelessWidget {
+  const LessonPictureGrid({super.key, required this.plan, required this.cells});
+
+  final LessonGridPlan plan;
+  final List<LessonGridCell> cells;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: plan.blockWidth,
+    child: Wrap(
+      spacing: LessonGridPlan.gap,
+      runSpacing: LessonGridPlan.gap,
+      children: [
+        for (final cell in cells)
+          SizedBox(
+            width: plan.cellWidth,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DecoratedBox(
+                  decoration: const BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: CoquiColors.lessonLine,
+                        spreadRadius: 1.5,
+                      ),
+                    ],
+                  ),
+                  child: SizedBox(width: plan.cellWidth, child: cell.picture),
+                ),
+                const SizedBox(height: CoquiMetrics.s8),
+                Text(cell.word, style: CoquiText.lessonWord),
+              ],
+            ),
+          ),
+      ],
+    ),
+  );
 }
