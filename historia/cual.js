@@ -93,7 +93,7 @@ function cualFin(){const up=[],soon=[];   // a practice session moves nothing, s
   const pr=!!CQ.practica,linea=[up.length&&`${up.length} ${pr?"right":"moving up"}`,soon.length&&`${soon.length} ${pr?"missed":"coming back soon"}`].filter(Boolean).join(" \u00b7 ");   // "8 moving up · 2 coming back soon"
   estado("end",true);pantalla("Done",[linea]);const f=$("#fin");f.classList.add("lis");
   cualGrupo(f,pr?"Right":"Moving up",pr?"":"You'll see these less often",up);cualGrupo(f,pr?"Missed":"Coming back soon",pr?"":"You'll see these again soon",soon);f.scrollTop=0;cualGrid();
-  $("#next").textContent="Back to Palabras";$("#next").classList.add("blu");$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
+  $("#next").textContent="Back to Palabras";$("#next").onclick=()=>salir("app.html?tab=palabras");foot(1,0,0);}
 async function cualArranca(){CU=await cualCarga();S=CU;E=ESCENAS.frente;SW=E.SW;SH=E.SH;sc.width=SW;sc.height=SH;
   document.title="Coquí · ¿Cuál?";SALIDA="app.html?tab=palabras";W=EMPTY();cam=E.CAM.wide.slice();voiceReady=loadVoice();setInterval(cualLoop,TICK);
   cualSize(1,2,DW,PH);mkOpts(2,k=>{if(CQ.toque)CQ.toque(k);});
