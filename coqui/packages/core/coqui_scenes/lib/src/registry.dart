@@ -12,7 +12,8 @@ import 'package:coqui_scenes/src/estufa/estufa.dart';
 import 'package:coqui_scenes/src/nevera/nevera.dart';
 
 /// The eleven scenes, by id, in this order. Each id maps to the factory of its
-/// scene. Every factory throws until its scene is converted.
+/// scene. A converted scene's factory needs its sheet read first (`loadScene`);
+/// every other factory throws until its scene is converted.
 const Map<String, Scene Function()> sceneRegistry = {
   'frente': createFrente,
   'balcon': createBalcon,

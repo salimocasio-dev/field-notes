@@ -1,0 +1,323 @@
+// The dev entry of coqui_scenes: El frente on its own, drawn by the Dart scene on the still host.
+//
+//   flutter run -d chrome -t tool/dev_main.dart          (in this package)
+//   flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart
+//
+// The address says what to show:
+//   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
+//                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
+//   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
+//   ?page=bake                         every baked state of the sheet, each baked on a fresh engine's cache, one after the
+//                                      other; the times are on the page and in `window.coquiBakes` (JSON) for a script
+// Every page shows how long each state it baked took, in ms.
+import 'dart:convert';
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
+import 'dart:typed_data';
+
+import 'package:coqui_pixel/coqui_pixel.dart';
+import 'package:coqui_scenes/coqui_scenes.dart';
+import 'package:coqui_scenes/src/frente/frente_set.dart';
+import 'package:coqui_ui/coqui_ui.dart';
+import 'package:material_ui/material_ui.dart';
+
+void main() => runApp(const DevApp());
+
+class DevApp extends StatelessWidget {
+  const DevApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final q = Uri.base.queryParameters;
+    final Widget page = switch (q['page']) {
+      'pairs' => const PairsPage(),
+      'bake' => const BakePage(),
+      _ => ScenePage(
+        w: q['w'] == null
+            ? const {}
+            : jsonDecode(q['w']!) as Map<String, dynamic>,
+        view: q['view'] ?? 'wide',
+        F: int.tryParse(q['F'] ?? '') ?? 8,
+      ),
+    };
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(brightness: Brightness.dark),
+      home: Scaffold(body: SafeArea(child: page)),
+    );
+  }
+}
+
+Widget bakeTimes(Map<String, double> ms) => Text(
+  ms.entries
+      .map((e) => 'bake ${e.key}: ${e.value.toStringAsFixed(1)} ms')
+      .join('\n'),
+  style: const TextStyle(fontSize: 12, fontFamily: 'monospace'),
+);
+
+/// The scene in one state, through one view: the screen the game shows (the view, the signs, hud and the hand).
+class ScenePage extends StatefulWidget {
+  const ScenePage({
+    super.key,
+    required this.w,
+    required this.view,
+    required this.F,
+  });
+
+  final Map<String, dynamic> w;
+  final String view;
+  final int F;
+
+  @override
+  State<ScenePage> createState() => _ScenePageState();
+}
+
+class _ScenePageState extends State<ScenePage> {
+  StillFrame? _frame;
+  Uint32List? _px;
+  Object? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    () async {
+      try {
+        final f = await ScenePictures().frameOf('frente');
+        f.host.fresh();
+        final W = f.host.W..addAll(widget.w);
+        final cam = f.scene.sheet.viewOf(widget.view, f.scene.projection);
+        f.draw(W, F: widget.F, cam: cam);
+        setState(() {
+          _frame = f;
+          _px = Uint32List.fromList(f.display);
+        });
+      } catch (e) {
+        setState(() => _error = e);
+      }
+    }();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_error != null) return Text('$_error');
+    final px = _px, f = _frame;
+    if (px == null || f == null) return const SizedBox();
+    return ListView(
+      padding: const EdgeInsets.all(12),
+      children: [
+        SizedBox(
+          width: 392,
+          child: PixelView(pixels: px, width: displayW, height: displayH),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'set ${f.scene.setKey(f.host.W)}, view ${widget.view} ${f.host.cam}, F ${widget.F}',
+        ),
+        bakeTimes(f.bakes.bakeMs),
+      ],
+    );
+  }
+}
+
+/// The 12 review pairs of cual-frente (the content's states and views, read from the sheet's picture names) and the
+/// level pictures, through ScenePictures.
+class PairsPage extends StatefulWidget {
+  const PairsPage({super.key});
+
+  @override
+  State<PairsPage> createState() => _PairsPageState();
+}
+
+class _PairsPageState extends State<PairsPage> {
+  final source = ScenePictures();
+  Sheet? _sheet;
+  StillFrame? _frame;
+
+  @override
+  void initState() {
+    super.initState();
+    () async {
+      final f = await source.frameOf('frente');
+      setState(() {
+        _frame = f;
+        _sheet = f.scene.sheet;
+      });
+    }();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sheet = _sheet;
+    if (sheet == null) return const SizedBox();
+    // each picture of the sheet, by name; the state of each is the pair's (cual-frente.json), given here as the
+    // preview gives it: the page shows how ScenePictures draws a named picture
+    Widget pic(String name) => SizedBox(
+      width: 196,
+      child: source.ofPicture(
+        PictureRef(
+          scene: 'frente',
+          set: pairSets[name] ?? const {},
+          cam: const [0, 0, 196, 104],
+        ),
+        name,
+      ),
+    );
+    final words = <String>{
+      for (final k in sheet.pictures.keys) k.split('.').first,
+    };
+    return ListView(
+      padding: const EdgeInsets.all(12),
+      children: [
+        for (final w in words)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Wrap(
+              spacing: 8,
+              children: [pic('$w.si'), pic('$w.no'), Text(w)],
+            ),
+          ),
+        const Divider(),
+        for (final l in sheet.level)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Wrap(
+              spacing: 8,
+              children: [
+                pic(l.picture),
+                Text('level ${l.word} ${l.index}: ${l.picture}'),
+              ],
+            ),
+          ),
+        bakeTimes(_frame?.bakes.bakeMs ?? const {}),
+      ],
+    );
+  }
+}
+
+/// The state of each review picture of cual-frente (historia/cuentos/cual-frente.json), for the dev page.
+const Map<String, Map<String, dynamic>> pairSets = {
+  'abuela.si': {
+    'door': 1,
+    'ab': {'en': 'puerta', 'pose': 'idle', 'bub': null, 'al': 1},
+  },
+  'abuela.no': {'door': 0},
+  'abre.si': {
+    'win': 1,
+    'ab': {'en': 'ventana', 'pose': 'idle', 'bub': null, 'al': 1},
+  },
+  'abre.no': {'win': 0},
+  'cierra.si': {'door': .5, 'peek': 1},
+  'cierra.no': {
+    'door': 1,
+    'ab': {'en': 'puerta', 'pose': 'idle', 'bub': null, 'al': 1},
+  },
+  'hola.si': {
+    'door': 1,
+    'ab': {'en': 'puerta', 'pose': 'wave', 'bub': null, 'al': 1},
+    'cq': {
+      'x': 146,
+      'y': 86,
+      's': .62,
+      'dy': 0,
+      'al': 1,
+      'vis': 1,
+      'bub': 'hola',
+    },
+  },
+  'hola.no': {
+    'door': .5,
+    'peek': 1,
+    'dusk': 2,
+    'cq': {
+      'x': 176,
+      'y': 116,
+      's': .85,
+      'dy': 0,
+      'al': 1,
+      'vis': 1,
+      'bub': null,
+    },
+    'polvo': 1,
+  },
+  'adiós.si': {
+    'door': .5,
+    'peek': 1,
+    'dusk': 2,
+    'cq': {
+      'x': 176,
+      'y': 116,
+      's': .85,
+      'dy': 0,
+      'al': 1,
+      'vis': 1,
+      'bub': null,
+    },
+    'polvo': 1,
+  },
+  'adiós.no': {
+    'door': 1,
+    'ab': {'en': 'puerta', 'pose': 'wave', 'bub': null, 'al': 1},
+    'cq': {
+      'x': 146,
+      'y': 86,
+      's': .62,
+      'dy': 0,
+      'al': 1,
+      'vis': 1,
+      'bub': 'hola',
+    },
+  },
+  'sí.si': {
+    'resp': ['si'],
+  },
+  'sí.no': {
+    'resp': ['no'],
+  },
+  'no.si': {
+    'resp': ['no'],
+  },
+  'no.no': {
+    'resp': ['si'],
+  },
+  'grande.si': {'escondite': 1},
+  'grande.no': {'escondite': 1},
+  'pequeña.si': {'escondite': 1},
+  'pequeña.no': {'escondite': 1},
+};
+
+/// Every baked state of the sheet, baked one after the other on a fresh engine (the first bake also makes the ground
+/// and its grass, as the set reference's first bake in a page does), each timed.
+class BakePage extends StatefulWidget {
+  const BakePage({super.key});
+
+  @override
+  State<BakePage> createState() => _BakePageState();
+}
+
+class _BakePageState extends State<BakePage> {
+  final Map<String, double> _ms = {};
+  bool _done = false;
+
+  @override
+  void initState() {
+    super.initState();
+    () async {
+      final f = await ScenePictures().frameOf('frente');
+      final bakes = SetBakes(f.scene);
+      for (final b in f.scene.sheet.setKey.baked) {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+        final key = FrenteState.fromQuery(b.query).key;
+        bakes.bakeKey(key);
+        setState(() => _ms[key] = bakes.bakeMs[key]!);
+      }
+      globalContext['coquiBakes'] = jsonEncode(_ms).toJS;
+      setState(() => _done = true);
+    }();
+  }
+
+  @override
+  Widget build(BuildContext context) => ListView(
+    padding: const EdgeInsets.all(12),
+    children: [Text(_done ? 'done' : 'baking'), bakeTimes(_ms)],
+  );
+}
