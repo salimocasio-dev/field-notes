@@ -26,6 +26,10 @@ class CoquiTabItem {
 /// The five tabs of v=39, in order, with its labels and icons: Biblioteca,
 /// Palabras, Mapa, Hablar, Yo. app.html:192 (`TABS`, labels in Spanish as the
 /// page hard-codes them), app.html:190-191 (`IC`).
+///
+/// The shell maps the five `FeatureTab` ids (`library`, `words`, `map`, `speak`,
+/// `me`, as `TabRoute` has them) to these items. `FeatureTab.icon` (an `IconData`)
+/// is not used by the tab bar: v=39's icons are hand-drawn paths, [CoquiIcons].
 abstract final class CoquiTabs {
   static const libraryId = 'library';
   static const wordsId = 'words';
@@ -63,6 +67,9 @@ abstract final class CoquiTabs {
 /// hairline on top, five equal tabs in a column at most 560 px wide; the tab
 /// whose id is [raisedId] is the round disc standing [CoquiMetrics.rise] above
 /// the bar. Its label sits with the others'. The selected tab is blue.
+///
+/// The tabs are [CoquiTabItem]s, normally [CoquiTabs.all]; the bar never reads
+/// `FeatureTab.icon` or `FeatureTab.label`. (The shell maps each tab id to its item.)
 ///
 /// The widget's own height is `rise + navHeight + safe area`: the region above
 /// the bar is transparent and passes touches through, except on the disc. Use

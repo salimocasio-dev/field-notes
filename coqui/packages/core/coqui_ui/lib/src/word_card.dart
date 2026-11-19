@@ -9,9 +9,13 @@ import 'package:material_ui/material_ui.dart';
 
 /// `.wc`: a white card, 16 px corners, a 1 px ring and a faint shadow.
 ///
-/// With a [picture]: the picture on top (a 196:104 box on `#222`, the picture
-/// stretched to fill it, nearest neighbour, as v=39's canvas is), then the word
-/// (18/24 semibold) and the two meters, padded 8 / 12 / 12. Without: `.np`, a
+/// With a [picture]: a picture area on top, 196:104 and as wide as the card (v=39's
+/// `.wc canvas{aspect-ratio:196/104}`, app.html:89), on `#222` (`.wc canvas{background:#222}`,
+/// app.html:89, [CoquiColors.pictureBack]). The picture stands in it at the largest whole
+/// number of device pixels per picture pixel that fits the card's width ([PixelView]'s own
+/// rule: page 11-pixel-engine, decision 3), centred, never stretched and never cropped;
+/// the `#222` shows in the bands round it. Then the word (18/24 semibold) and the two
+/// meters, padded 8 / 12 / 12. Without: `.np`, a
 /// plain tile with the word large (24/32 semibold, centred, at least 72 px high,
 /// breaking anywhere in a long word) and the meters under it; no empty picture
 /// box. The word is always spelled. app.html:88-92
@@ -33,8 +37,9 @@ class WordCard extends StatelessWidget {
   /// Mouth stage, 0 to 4.
   final int mouth;
 
-  /// What the card shows above the word: a widget that draws a 196 x 104
-  /// picture (it is scaled to fill the card's width). Null: a plain tile.
+  /// What the card shows above the word: a [PixelView] of a 196 x 104 picture (any
+  /// widget that sizes itself by the width it is given). It is centred in the picture
+  /// area at its own whole-number scale. Null: a plain tile.
   final Widget? picture;
 
   /// The card's tap (opens the word sheet).
@@ -61,7 +66,7 @@ class WordCard extends StatelessWidget {
             aspectRatio: CoquiMetrics.wordPictureAspect,
             child: ColoredBox(
               color: CoquiColors.pictureBack,
-              child: FittedBox(fit: BoxFit.fill, child: picture),
+              child: Center(child: picture),
             ),
           ),
           Padding(

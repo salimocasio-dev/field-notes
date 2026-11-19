@@ -56,7 +56,8 @@ abstract final class CoquiColors {
   /// `.cov` cover placeholder. app.html:98
   static const coverFill = Color(0xFFECEAE3);
 
-  /// `.wc canvas`, `.wsp` behind a picture. app.html:89, 95
+  /// `.wc canvas{background:#222}` and `.wsp{background:#222}`: the colour behind a picture, so the
+  /// bands round a whole-number-scaled picture in a word card show it. app.html:89, 95
   static const pictureBack = Color(0xFF222222);
 
   /// `.sw::before` switch track, off. app.html:33

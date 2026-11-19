@@ -1,6 +1,6 @@
 // Screenshots of the gallery for the reader (order 20).
 //
-//   node tool/shots.mjs [--out <dir>] [--no-build] [--only name,name] [--build-dir <dir>]
+//   node tool/shots.mjs [--out <dir>] [--no-build] [--only name,name] [--build-dir <dir>] [--device android|iphone]
 //
 // Builds the gallery for the web (`flutter build web -t tool/dev_main.dart
 // --no-web-resources-cdn`), serves it on a free local port, and with Playwright
@@ -34,6 +34,17 @@ const flag = (name) => args.includes(name);
 const out = resolve(opt('--out', join(pkg, 'build', 'gallery-shots')));
 const buildDir = resolve(opt('--build-dir', join(pkg, 'build', 'gallery-web')));
 const only = opt('--only', '').split(',').filter(Boolean);
+// The two reference phones of coqui/ref/pantallas: Android 412 x 915 at 2.625 (the default),
+// iPhone 390 x 844 at 3.
+const devices = {
+  android: { id: 'android-412x915', width: 412, height: 915, ratio: 2.625 },
+  iphone: { id: 'iphone-390x844', width: 390, height: 844, ratio: 3 },
+};
+const device = devices[opt('--device', 'android')];
+if (!device) {
+  console.error('--device is android or iphone');
+  process.exit(1);
+}
 mkdirSync(out, { recursive: true });
 
 if (!flag('--no-build')) {
@@ -87,13 +98,17 @@ await new Promise((ok) => server.listen(0, '127.0.0.1', ok));
 const base = `http://127.0.0.1:${server.address().port}/`;
 
 const browser = await chromium.launch();
-const pairs = { size: '412x915 css px, deviceScaleFactor 2.625', reference_folder: 'coqui/ref/pantallas/android-412x915/', sections: [] };
+const pairs = {
+  size: `${device.width}x${device.height} css px, deviceScaleFactor ${device.ratio}`,
+  reference_folder: `coqui/ref/pantallas/${device.id}/`,
+  sections: [],
+};
 try {
   for (const s of sections) {
     if (only.length && !only.includes(s.name)) continue;
     const ctx = await browser.newContext({
-      viewport: { width: 412, height: 915 },
-      deviceScaleFactor: 2.625,
+      viewport: { width: device.width, height: device.height },
+      deviceScaleFactor: device.ratio,
       hasTouch: true,
       isMobile: true,
       locale: 'en-US',
