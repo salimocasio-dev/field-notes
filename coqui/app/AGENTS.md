@@ -41,7 +41,8 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
 - `lib/src/navigator.dart`: `ShellNavigator`, the `AppNavigator` (see "Addresses" below).
 - `lib/src/content.dart`: the content base and the cache rules. `lib/src/switches.dart`: the address switches.
   `lib/src/scripted_speech.dart`: the recogniser of `?mic=stub:` / `?mic=off`. `lib/src/voice_test_data.dart`: the voice
-  test's file read.
+  test's file read; `modules.dart` builds from it the `VoiceTestContent` of `SpeakingModule(voiceTest:)`, so `#/prueba-voz`
+  opens the voice test (no entry to it on a tab: v=39 links it from nowhere).
 - `web/index.html` carries `translate="no"`, `<meta name="google" content="notranslate">`, the old app's viewport and
   theme-color, the Apple web-app tags, the title "Coquí", and v=39's page colour (#F6F5F1) behind everything until the
   first frame. No service worker. `web/manifest.json` and `web/icons/` are the home-screen app. The Flutter engine
