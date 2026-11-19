@@ -1,13 +1,22 @@
 #!/usr/bin/env node
-// Order 03, proof of the site build: opens a build made by tool/build_sitio.sh in headless Chrome,
-// served the way GitHub Pages serves it (under /field-notes/app/), at phone size.
+// Order 03's proof of the site build, brought up to date for the app of order 26: opens a build made by
+// tool/build_sitio.sh in headless Chrome, served the way GitHub Pages serves it (the build under /field-notes/app/, the
+// repository's own historia/ at /field-notes/historia/), at phone size.
 //
 //   node coqui/tool/check_sitio.mjs <build dir> [--shot=<png file>] [--build=<n>]
 //
-// Serves <build dir> on a free port of 127.0.0.1 at /field-notes/app/ (Playwright is installed
-// globally on this machine; it is not a dependency of the repo). Checks, and exits 1 if any fails:
-//   - the page shows "Coquí" and "build <n>" (--build, default dev), read from Flutter's
-//     accessibility tree, and the page paints (the screenshot is not blank)
+// --build is the build number the app was built with (COQUI_BUILD, the workflow reads it from coqui/BUILD); without
+// it, the number in coqui/BUILD. Pass --build=dev for a build made without COQUI_BUILD.
+//
+// Serves <build dir> on a free port of 127.0.0.1 at /field-notes/app/, and every other /field-notes/... path from the
+// repository this script is in (so the content the app reads is the real historia/). Playwright is installed globally
+// on this machine; it is not a dependency of the repo. Checks, and exits 1 if any fails:
+//   - the app starts: with the welcome done (the seed of coqui/ref/pantallas/seeds/vacio.json in localStorage, as
+//     check_app.mjs does) it opens on the map: the address is #/tab/map, the tab bar's five names are there, and the
+//     map's place chip ("1 . La casa") is, all read from Flutter's accessibility tree; the screenshot is not blank
+//   - it reads its content from /field-notes/historia/ (datos/curso.json, audio/ready.json, audio/marcas.json,
+//     datos/prueba-voz.json: each asked for there and answered 200), and nothing from inside /field-notes/app/
+//   - it shows the build number: the Yo tab (the only place the app shows it) says "build <n>"
 //   - no console error or warning, no uncaught page error, no failed request
 //   - no request leaves 127.0.0.1 (CanvasKit and the fonts come from the build itself)
 //   - the manifest, every icon it names, and the favicon answer 200 and decode as pictures of the
@@ -24,13 +33,14 @@
 //   - both CanvasKit variants a dart2js + CanvasKit build loads work: the Chromium one
 //     (canvaskit/chromium/, what Chrome loads) and the full one (canvaskit/, what Safari and Firefox
 //     load). Only Chromium is installed here, so the second pass hides Intl.v8BreakIterator, which is
-//     what makes the loader choose the full variant. Each pass must show the words, answer 200 to
-//     every request, send none outside 127.0.0.1, print no error, and request the variant it should.
+//     what makes the loader choose the full variant. Each pass must open the map and show the build number,
+//     answer 200 to every request, send none outside 127.0.0.1, print no error, and request the variant it should.
 // The screenshot is phone size (390 x 844), deviceScaleFactor 1.
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const { chromium } = createRequire(import.meta.url)('playwright');
 
@@ -42,27 +52,36 @@ if (!dir || !fs.existsSync(path.join(dir, 'index.html'))) {
   process.exit(2);
 }
 const ROOT = path.resolve(dir);
-const BUILD = flag('build', 'dev');
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const BUILD = flag('build', fs.readFileSync(path.join(REPO, 'coqui/BUILD'), 'utf8').trim());
 const SHOT = flag('shot', '');
 const PREFIX = '/field-notes/app/';
+const HISTORIA = '/field-notes/historia/';
+// the progress with the welcome done and nothing played (check_app.mjs puts seeds in the same way)
+const SEED = fs.readFileSync(path.join(REPO, 'coqui/ref/pantallas/seeds/vacio.json'), 'utf8').replace(/\n/g, '');
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json',
   '.png': 'image/png', '.wasm': 'application/wasm', '.otf': 'font/otf', '.ttf': 'font/ttf', '.frag': 'text/plain',
+  '.mp3': 'audio/mpeg', '.svg': 'image/svg+xml', '.css': 'text/css',
 };
 
-// ---- the server: only /field-notes/app/..., everything else is a 404 --------------------------------
+// ---- the server: /field-notes/app/ is the build, the rest of /field-notes/ the repository, everything else a 404 ---------
 const served = []; // { url, status }
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://x');
   let status = 404;
   let body = 'not found';
   let type = 'text/plain';
-  if (url.pathname.startsWith(PREFIX)) {
-    let rel = decodeURIComponent(url.pathname.slice(PREFIX.length));
+  const p = decodeURIComponent(url.pathname);
+  let root = null;
+  let rel = null;
+  if (p.startsWith(PREFIX)) { root = ROOT; rel = p.slice(PREFIX.length); }
+  else if (p.startsWith('/field-notes/')) { root = REPO; rel = p.slice('/field-notes/'.length); }
+  if (root !== null) {
     if (rel === '' || rel.endsWith('/')) rel += 'index.html';
-    const file = path.resolve(ROOT, rel);
-    if (file.startsWith(ROOT + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) {
+    const file = path.resolve(root, rel);
+    if (file.startsWith(root + path.sep) && fs.existsSync(file) && fs.statSync(file).isFile()) {
       status = 200;
       body = fs.readFileSync(file);
       type = TYPES[path.extname(file)] || 'application/octet-stream';
@@ -110,12 +129,68 @@ const watch = (pg) => {
   pg.on('requestfailed', (r) => w.failedRequests.push(`${r.url()} ${r.failure()?.errorText}`));
   return w;
 };
-// The words of the page, from Flutter's accessibility tree (see below).
-const wordsOf = async (pg) => {
-  await pg.evaluate(() => document.querySelector('flt-semantics-placeholder')?.click());
-  await pg.waitForTimeout(1000);
-  return pg.evaluate(() => [...document.querySelectorAll('flt-semantics')]
-    .map((e) => (e.getAttribute('aria-label') || e.textContent || '').trim()).filter(Boolean));
+// The app draws on a canvas. What is on screen is read from Flutter's accessibility tree, which the page builds when the
+// (invisible) "Enable accessibility" button is activated: on a phone it fills the view, and a click at its exact middle
+// turns the tree on (as TalkBack's tap does; check_app.mjs does the same).
+const enableSemantics = async (pg) => {
+  await pg.waitForSelector('flt-semantics-placeholder', { state: 'attached', timeout: 60000 });
+  await pg.evaluate(() => {
+    const p = document.querySelector('flt-semantics-placeholder');
+    const r = p.getBoundingClientRect();
+    p.dispatchEvent(new MouseEvent('click', { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, bubbles: true }));
+  });
+  await pg.waitForFunction(() => document.querySelectorAll('flt-semantics').length > 0, null, { timeout: 30000 });
+};
+const nodesOf = (pg) => pg.evaluate(() => [...document.querySelectorAll('flt-semantics')].map((e) => {
+  const r = e.getBoundingClientRect();
+  const label = (e.getAttribute('aria-label') || '').trim();
+  let own = '';
+  for (const c of e.childNodes) if (c.nodeType === 3 || (c.nodeType === 1 && c.tagName !== 'FLT-SEMANTICS' && c.tagName !== 'FLT-SEMANTICS-CONTAINER')) own += c.textContent;
+  return { text: (label || own).trim(), x: r.x + r.width / 2, y: r.y + r.height / 2, w: r.width, h: r.height };
+}).filter((n) => n.text && n.w > 0 && n.h > 0));
+// a node's label can hold several lines (a card's title and its line under it): each line is matched alone too
+const says = (n, re) => re.test(n.text) || n.text.split('\n').some((l) => re.test(l.trim()));
+const wordsOf = async (pg) => (await nodesOf(pg)).map((n) => n.text);
+// Waits for the page to say something that matches [re]; the words on screen when it never does.
+const waitSays = async (pg, re, what, timeout = 30000) => {
+  const t0 = Date.now();
+  for (;;) {
+    const ns = await nodesOf(pg);
+    if (ns.some((n) => says(n, re))) return ns;
+    if (Date.now() - t0 > timeout) throw new Error(`${what} never came; on screen: ${JSON.stringify(ns.map((n) => n.text)).slice(0, 600)}`);
+    await pg.waitForTimeout(250);
+  }
+};
+// One pass over the app, for either variant: opens it with the welcome done, finds the map, opens Yo, reads the build.
+// Returns what it saw, for the checks.
+const openApp = async (pg, label) => {
+  await pg.goto(`${ORIGIN}${PREFIX}`, { waitUntil: 'load' });
+  await pg.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
+  await enableSemantics(pg);
+  const seen = { label };
+  try {
+    const onMap = await waitSays(pg, /^1 · La casa$/, 'the map\'s place chip', 60000);
+    seen.tabBar = ['Biblioteca', 'Palabras', 'Mapa', 'Hablar', 'Yo'].filter((t) => !onMap.some((n) => n.text === t));
+    seen.mapAddress = new URL(pg.url()).hash;
+    seen.mapWords = onMap.map((n) => n.text);
+  } catch (e) {
+    seen.mapError = String(e.message || e);
+  }
+  return seen;
+};
+// Yo is the one place the app shows the build number: its tab, then the line "build <n>".
+const readBuild = async (pg, seen) => {
+  try {
+    const ns = await nodesOf(pg);
+    const yo = ns.filter((n) => n.text === 'Yo').pop(); // the tab bar's
+    if (!yo) throw new Error('no Yo in the tab bar');
+    await pg.mouse.click(yo.x, yo.y);
+    await pg.waitForFunction(() => location.hash === '#/tab/me', null, { timeout: 15000 });
+    const onYo = await waitSays(pg, /^build \S+$/, 'Yo\'s build line', 30000);
+    seen.build = onYo.map((n) => n.text).filter((t) => /^build \S+$/.test(t));
+  } catch (e) {
+    seen.buildError = String(e.message || e);
+  }
 };
 // The same checks of what a page did, for either pass.
 const checkTraffic = (label, w, servedFrom) => {
@@ -129,19 +204,42 @@ const checkTraffic = (label, w, servedFrom) => {
     [...w.consoleProblems, ...w.pageErrors].join(' | '));
 };
 
-const context = await browser.newContext(phone);
+// An empty browser, with the progress of a learner who has done the welcome and played nothing (the first screen is then the map).
+const newContext = async (extra) => {
+  const c = await browser.newContext(phone);
+  await c.addInitScript((seed) => {
+    if (!localStorage.getItem('coqui.palabras.v1')) localStorage.setItem('coqui.palabras.v1', seed);
+  }, SEED);
+  if (extra) await c.addInitScript(extra);
+  return c;
+};
+// What the checks of one pass say about [seen] (the app's start and its build line).
+const checkApp = (label, seen) => {
+  check(!seen.mapError, `${label}: the app starts on the map (the place chip "1 · La casa")`, seen.mapError || '');
+  check(seen.mapAddress === '#/tab/map', `${label}: the address is #/tab/map`, seen.mapAddress);
+  check(seen.tabBar && seen.tabBar.length === 0, `${label}: the tab bar names Biblioteca, Palabras, Mapa, Hablar and Yo`,
+    `missing: ${JSON.stringify(seen.tabBar)}; on screen: ${JSON.stringify(seen.mapWords).slice(0, 400)}`);
+  check(!seen.buildError && JSON.stringify(seen.build) === JSON.stringify([`build ${BUILD}`]),
+    `${label}: Yo shows "build ${BUILD}"`, seen.buildError || JSON.stringify(seen.build));
+};
+
+const context = await newContext();
 const page = await context.newPage();
 const watched = watch(page);
 
-await page.goto(`${ORIGIN}${PREFIX}`, { waitUntil: 'load' });
-await page.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
-await page.waitForTimeout(3000); // the first frame
-
-// The app draws on a canvas. Its words are read from Flutter's accessibility tree, which the
-// page builds when the (invisible) "Enable accessibility" button is activated.
-const words = await wordsOf(page);
-check(words.includes('Coquí'), 'the page shows "Coquí"', `tree: ${JSON.stringify(words)}`);
-check(words.includes(`build ${BUILD}`), `the page shows "build ${BUILD}"`);
+const first = await openApp(page, 'chromium variant');
+// the screenshot is of the map, before the tab is changed
+await page.waitForTimeout(600);
+const png = await page.screenshot({ path: SHOT || undefined });
+await readBuild(page, first);
+checkApp('chromium variant', first);
+// the content comes from /field-notes/historia/ (the base the app takes from its own address: ../historia/)
+const answered = (u) => served.some((x) => x.url === u && x.status === 200);
+const content = ['datos/curso.json', 'audio/ready.json', 'audio/marcas.json', 'datos/prueba-voz.json'];
+check(content.every((f) => answered(`${HISTORIA}${f}`)), 'the content is read from /field-notes/historia/ (' + content.join(', ') + ')',
+  content.filter((f) => !answered(`${HISTORIA}${f}`)).map((f) => `not answered: ${f}`).join(', '));
+check(!served.some((x) => x.url.startsWith(PREFIX) && /\.json$/.test(x.url) && /curso|ready|marcas|prueba-voz|cuentos|libros/.test(x.url)),
+  'none of the content is asked for inside /field-notes/app/');
 
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 check(/<html lang="en" translate="no">/.test(html) && /<meta name="google" content="notranslate">/.test(html),
@@ -196,8 +294,7 @@ checkTraffic('chromium variant', watched, 0);
 check(served.some((x) => x.url === `${PREFIX}canvaskit/chromium/canvaskit.wasm`) && !served.some((x) => x.url === `${PREFIX}canvaskit/canvaskit.wasm`),
   'chromium variant: canvaskit/chromium/canvaskit.wasm was loaded, and not the full variant');
 
-// the screenshot: phone size, and not blank
-const png = await page.screenshot({ path: SHOT || undefined });
+// the screenshot (of the map, taken above): phone size, and not blank
 const colours = await page.evaluate(async (b64) => {
   const img = new Image();
   img.src = `data:image/png;base64,${b64}`;
@@ -214,15 +311,12 @@ check(colours.w === 390 && colours.h === 844 && colours.colours > 2, 'the screen
 
 // ---- second pass: the full CanvasKit variant (Safari, Firefox) -----------------------------------------
 const mark = served.length;
-const context2 = await browser.newContext(phone);
-await context2.addInitScript(() => { delete Intl.v8BreakIterator; });
+const context2 = await newContext(() => { delete Intl.v8BreakIterator; });
 const page2 = await context2.newPage();
 const watched2 = watch(page2);
-await page2.goto(`${ORIGIN}${PREFIX}`, { waitUntil: 'load' });
-await page2.waitForSelector('flt-glass-pane', { state: 'attached', timeout: 60000 });
-await page2.waitForTimeout(3000);
-const words2 = await wordsOf(page2);
-check(words2.includes('Coquí') && words2.includes(`build ${BUILD}`), 'full variant: the page shows "Coquí" and "build ' + BUILD + '"', `tree: ${JSON.stringify(words2)}`);
+const second = await openApp(page2, 'full variant');
+await readBuild(page2, second);
+checkApp('full variant', second);
 checkTraffic('full variant', watched2, mark);
 const seen2 = served.slice(mark).map((x) => x.url);
 check(seen2.includes(`${PREFIX}canvaskit/canvaskit.wasm`) && seen2.includes(`${PREFIX}canvaskit/canvaskit.js`) && !seen2.some((u) => u.includes('/canvaskit/chromium/')),
