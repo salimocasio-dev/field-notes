@@ -1,8 +1,10 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_profile/src/yo_screen.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// feature_profile's module. A placeholder until order 25 builds the real one: its screen says the feature's name.
+/// feature_profile's module: the Yo tab. It owns the tab `me` and no route. The welcome is not a tab: the
+/// shell wraps the app in [WelcomeGate] (exported beside this module).
 class ProfileModule implements FeatureModule {
   const ProfileModule();
 
@@ -12,19 +14,11 @@ class ProfileModule implements FeatureModule {
   @override
   FeatureTab? tab(Services s) => FeatureTab(
     id: 'me',
-    label: 'feature_profile',
+    label: CoquiLabels.me,
     icon: Icons.person,
-    builder: (_) => const _Placeholder(),
+    builder: (_) => YoScreen(services: s),
   );
 
   @override
   Widget? screenFor(AppRoute route, Services s) => null;
-}
-
-class _Placeholder extends StatelessWidget {
-  const _Placeholder();
-
-  @override
-  Widget build(BuildContext context) =>
-      const Center(child: Text('feature_profile'));
 }
