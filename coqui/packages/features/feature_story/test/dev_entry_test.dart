@@ -6,9 +6,14 @@ import 'package:material_ui/material_ui.dart';
 import '../tool/dev_main.dart';
 
 Future<void> settle(WidgetTester tester) async {
-  for (var i = 0; i < 20; i++) {
+  // the sample course is read, El frente's sheet too, and its first set is baked: real time
+  for (
+    var i = 0;
+    i < 1000 && find.byType(LessonStartButton).evaluate().isEmpty;
+    i++
+  ) {
     await tester.runAsync(
-      () => Future<void>.delayed(const Duration(milliseconds: 5)),
+      () => Future<void>.delayed(const Duration(milliseconds: 10)),
     );
     await tester.pump();
   }

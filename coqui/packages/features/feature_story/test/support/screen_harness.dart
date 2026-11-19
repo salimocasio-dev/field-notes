@@ -65,6 +65,9 @@ class Screen {
   final Services services;
   late StoryRunner runner;
   late FrameRenderer frame;
+
+  /// The screen has told us its runner.
+  bool opened = false;
   late Map<String, dynamic> story;
 
   /// Lets [ms] of time go by, in steps of 20 ms, the clock and the frames together.
@@ -189,16 +192,21 @@ Future<Screen> openScreen(
         onOpen: (r, f) {
           screen.runner = r;
           screen.frame = f;
+          screen.opened = true;
         },
       ),
     ),
   );
-  for (var i = 0; i < 10; i++) {
+  // the screen is open when it has told us (reading the story, the scene's sheet and baking its first set take real time);
+  // a story whose scene cannot be made never tells: give it a moment
+  for (var i = 0; i < 400 && !screen.opened; i++) {
     await tester.runAsync(
       () => Future<void>.delayed(const Duration(milliseconds: 5)),
     );
     await tester.pump();
   }
-  screen.story = stories.firstWhere((s) => s['id'] == id || true);
+  await tester.pump(); // the screen builds its frame once it has opened
+  await tester.pump();
+  screen.story = stories.firstWhere((s) => s['id'] == id);
   return screen;
 }
