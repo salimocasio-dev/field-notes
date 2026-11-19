@@ -251,35 +251,20 @@ class _MarksPainter extends CustomPainter {
       textDirection: TextDirection.ltr,
       textScaler: textScaler,
     )..layout(maxWidth: size.width);
-    final metrics = tp.computeLineMetrics();
-    for (final m in marks) {
-      final isSolid = m.k == solid;
-      for (final b in markBoxes(tp, m)) {
-        final base = _baselineOf(metrics, b);
-        final top = base + offset;
-        if (isSolid) {
+    for (final u in markUnderlines(tp, marks, solid)) {
+      if (u.solid) {
+        canvas.drawRect(u.rect, Paint()..color = CoquiColors.bookLineLitBar);
+      } else {
+        final paint = Paint()..color = dotted;
+        for (var x = u.rect.left; x < u.rect.right; x += 2 * dot) {
+          final r = x + dot > u.rect.right ? u.rect.right : x + dot;
           canvas.drawRect(
-            Rect.fromLTRB(b.left, top, b.right, top + solidThickness),
-            Paint()..color = CoquiColors.bookLineLitBar,
+            Rect.fromLTRB(x, u.rect.top, r, u.rect.bottom),
+            paint,
           );
-        } else {
-          final paint = Paint()..color = dotted;
-          for (var x = b.left; x < b.right; x += 2 * dot) {
-            final r = x + dot > b.right ? b.right : x + dot;
-            canvas.drawRect(Rect.fromLTRB(x, top, r, top + dot), paint);
-          }
         }
       }
     }
-  }
-
-  static double _baselineOf(List<ui.LineMetrics> lines, TextBox b) {
-    for (final l in lines) {
-      if (l.baseline >= b.top - 0.5 && l.baseline <= b.bottom + 0.5) {
-        return l.baseline;
-      }
-    }
-    return b.bottom;
   }
 
   @override
@@ -296,6 +281,51 @@ class _MarksPainter extends CustomPainter {
     }
     return true;
   }
+}
+
+/// One line under a word that has a picture: where it is, and whether it is the solid green one.
+class MarkUnderline {
+  const MarkUnderline(this.rect, {required this.solid});
+
+  /// The line itself: as wide as the word's letters, 2 px high when dotted, 3 px when solid; its top 5 px under the baseline.
+  final Rect rect;
+  final bool solid;
+}
+
+/// The underlines of [marks] in the laid-out text [tp]: one for each line a word is on; [solid] is the picture word that
+/// has been tapped (`.bw.uw`), the others are dotted (`.bw`).
+List<MarkUnderline> markUnderlines(
+  TextPainter tp,
+  List<WordMark> marks,
+  int? solid,
+) {
+  final lines = tp.computeLineMetrics();
+  final out = <MarkUnderline>[];
+  for (final m in marks) {
+    final isSolid = m.k == solid;
+    for (final b in markBoxes(tp, m)) {
+      var base = b.bottom;
+      for (final l in lines) {
+        if (l.baseline >= b.top - 0.5 && l.baseline <= b.bottom + 0.5) {
+          base = l.baseline;
+          break;
+        }
+      }
+      final top = base + _MarksPainter.offset;
+      out.add(
+        MarkUnderline(
+          Rect.fromLTRB(
+            b.left,
+            top,
+            b.right,
+            top + (isSolid ? _MarksPainter.solidThickness : _MarksPainter.dot),
+          ),
+          solid: isSolid,
+        ),
+      );
+    }
+  }
+  return out;
 }
 
 /// The boxes a mark's letters take, one for each line the word is on (as tight as the glyphs' own height).

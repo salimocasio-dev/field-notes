@@ -15,6 +15,7 @@ class DevClips implements ClipPlayer {
 
   final List<String> played = [];
   final List<Completer<bool>> _pending = [];
+  final List<Timer> _timers = [];
   int _plays = 0;
 
   @override
@@ -34,16 +35,23 @@ class DevClips implements ClipPlayer {
     _pending.add(done);
     if (hold != null && _plays == hold) return done.future;
     final ms = ((lengthOf(clipId) ?? 0) / speed).round();
-    Timer(Duration(milliseconds: ms), () {
+    late final Timer timer;
+    timer = Timer(Duration(milliseconds: ms), () {
+      _timers.remove(timer);
       if (!done.isCompleted) done.complete(true);
       _pending.remove(done);
     });
+    _timers.add(timer);
     return done.future;
   }
 
   @override
   Future<void> stop() async {
     _plays = 0;
+    for (final t in _timers) {
+      t.cancel();
+    }
+    _timers.clear();
     for (final c in _pending) {
       if (!c.isCompleted) c.complete(false);
     }

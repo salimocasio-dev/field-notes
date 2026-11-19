@@ -1,7 +1,6 @@
 // What the tests of the shelf and the reader share: a small course whose pieces the test sets, a clip player that
 // takes the time a clip takes (the fake clock of the test moves it), and a picture the books can show.
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
@@ -13,7 +12,6 @@ import 'package:feature_library/src/reader.dart';
 import 'package:feature_library/src/shelf.dart';
 import 'package:feature_library/src/shelf_row.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -125,10 +123,12 @@ class TestCourse implements CourseCatalog {
                ...((s['clips'] as Map).keys.cast<String>()),
            };
 
+  @override
   final List<Place> places;
   final Map<String, StoryMeta> metas;
   final Map<String, Book> books;
   final Map<String, Map<String, dynamic>> stories;
+  @override
   final List<ReviewPair> pairs;
 
   /// The clips that have a recording (and so marks).
@@ -466,15 +466,19 @@ Future<void> pumpReader(
   Size size = const Size(412, 915),
   double ratio = 2.625,
   Services? services,
-  double textScale = 1,
+  double textScale = 0.55,
 }) async {
   tester.view.physicalSize = size * ratio;
   tester.view.devicePixelRatio = ratio;
   addTearDown(tester.view.reset);
   final s = services ?? rig.services;
   await tester.pumpWidget(
+    const SizedBox(),
+  ); // a new screen, not the old one given new services
+  await tester.pumpWidget(
     MaterialApp(
       debugShowCheckedModeBanner: false,
+      builder: (context, child) => _scaled(context, child, textScale),
       home: Builder(
         builder: (context) => rig.module.screenFor(BookRoute(book), s)!,
       ),

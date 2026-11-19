@@ -3,9 +3,7 @@
 import 'dart:async';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
-import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
-import 'package:feature_library/src/shelf.dart';
 import 'package:feature_library/src/shelf_row.dart';
 import 'package:feature_library/src/strings.dart';
 import 'package:flutter_test/flutter_test.dart';

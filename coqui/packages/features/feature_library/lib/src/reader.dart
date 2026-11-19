@@ -218,11 +218,28 @@ class _BookReaderState extends State<BookReader> {
     _loop++;
     _hush();
     _uwTimer?.cancel();
+    for (final t in _waitTimers) {
+      t.cancel();
+    }
+    _waitTimers.clear();
+    for (final w in _waits) {
+      if (!w.isCompleted) {
+        w.complete(); // the loops see that they are not current and end
+      }
+    }
+    _waits.clear();
   }
 
   // app.html: cierraLibro
   void _close() {
     _stopAll();
+    if (mounted) {
+      setState(() {
+        _lit = null;
+        _card = null; // cierraTarjeta
+        _uw = null; // quitaUw
+      });
+    }
     _s.nav.back();
   }
 
@@ -267,9 +284,22 @@ class _BookReaderState extends State<BookReader> {
     setState(() => _lit = id);
   }
 
-  // app.html: sleep (the page's own wait)
-  Future<void> _sleep(num ms) =>
-      Future<void>.delayed(Duration(microseconds: (ms * 1000).round()));
+  // app.html: sleep (the page's own wait). The waits are kept so that leaving the screen can end them.
+  final Set<Completer<void>> _waits = {};
+  final Set<Timer> _waitTimers = {};
+
+  Future<void> _sleep(num ms) {
+    final done = Completer<void>();
+    late final Timer timer;
+    timer = Timer(Duration(microseconds: (ms * 1000).round()), () {
+      _waitTimers.remove(timer);
+      _waits.remove(done);
+      if (!done.isCompleted) done.complete();
+    });
+    _waitTimers.add(timer);
+    _waits.add(done);
+    return done.future;
+  }
 
   // juego.js: dur (a line with no recording is read in its own time)
   double _dur(String id) {
