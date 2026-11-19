@@ -14,6 +14,7 @@ import 'package:feature_story/src/screen/frame_renderer.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
 import 'package:feature_story/src/screen/story_end.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
+import 'package:feature_story/src/screen/story_not_ready.dart';
 import 'package:feature_story/src/screen/story_picture.dart';
 import 'package:flutter/scheduler.dart' show Ticker;
 import 'package:material_ui/material_ui.dart';
@@ -71,6 +72,9 @@ class _StoryScreenState extends State<StoryScreen>
   /// The app is not in the foreground (its lifecycle state is not `resumed`): the story's clock is held.
   bool _held = false;
 
+  /// The story's scene is not converted yet: the screen says so (`StoryNotReady`) instead of showing the empty frame.
+  bool _notConverted = false;
+
   Services get _s => widget.services;
 
   @override
@@ -100,7 +104,14 @@ class _StoryScreenState extends State<StoryScreen>
     try {
       await _s.course.load();
       final story = await _s.course.story(widget.route.id);
-      final scene = await widget.scenes(story['scene'] as String, _s.rng);
+      final StoryScene scene;
+      try {
+        scene = await widget.scenes(story['scene'] as String, _s.rng);
+      } on UnimplementedError {
+        // the scene is not converted yet (`registryScenes`, coqui_scenes' `loadScene`): not a fault, the screen says so
+        if (mounted) setState(() => _notConverted = true);
+        return;
+      }
       final frame = FrameRenderer(
         setup: scene.frame,
         reduceMotion: _s.reduceMotion,
@@ -148,7 +159,8 @@ class _StoryScreenState extends State<StoryScreen>
         _frame = frame;
       });
     } catch (e, st) {
-      // no story, or no scene for it: the frame stays as it is, with its way out; the framework hears why
+      // no story, or no scene for it (any failure but a scene not converted yet): the frame stays as it is, with its way out;
+      // the framework hears why
       FlutterError.reportError(
         FlutterErrorDetails(exception: e, stack: st, library: 'feature_story'),
       );
@@ -208,6 +220,7 @@ class _StoryScreenState extends State<StoryScreen>
   @override
   Widget build(BuildContext context) {
     final r = _runner, frame = _frame;
+    if (_notConverted) return StoryNotReady(onClose: _close);
     if (r == null || frame == null) {
       // loading, or no story: the frame alone, with its way out
       return LessonFrame(

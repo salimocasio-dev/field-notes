@@ -164,12 +164,8 @@ void main() {
     );
 
     testWidgets(
-      'a scene that is not converted yet: the lesson frame and its way out, nothing else',
+      'a scene that is not converted yet: the lesson frame and its X, the line "This story is not in the new app yet." and the button "Back to the map" (it was the empty frame and a reported error: see not_converted_test.dart)',
       (tester) async {
-        final errors = <FlutterErrorDetails>[];
-        final old = FlutterError.onError;
-        FlutterError.onError = errors.add;
-        addTearDown(() => FlutterError.onError = old);
         await openScreen(
           tester,
           id: 'la-lluvia',
@@ -178,7 +174,12 @@ void main() {
         expect(find.byType(LessonFrame), findsOneWidget);
         expect(find.byType(LessonCloseButton), findsOneWidget);
         expect(find.byType(LessonStartButton), findsNothing);
-        expect(errors.single.exception, isA<UnimplementedError>());
+        expect(
+          find.text('This story is not in the new app yet.'),
+          findsOneWidget,
+        );
+        expect(find.text('Back to the map'), findsOneWidget);
+        expect(tester.takeException(), isNull);
       },
     );
   });
