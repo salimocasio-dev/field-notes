@@ -34,11 +34,7 @@ int _round(num v) => (v + 0.5).floor();
 // set-kit.js: lit
 /// The same light on one colour, for pixels drawn each frame (swaying leaves).
 List<num> lit(List<num> c, Light? L) => L != null
-    ? [
-        c[0] * L.m[0] + L.a[0],
-        c[1] * L.m[1] + L.a[1],
-        c[2] * L.m[2] + L.a[2],
-      ]
+    ? [c[0] * L.m[0] + L.a[0], c[1] * L.m[1] + L.a[1], c[2] * L.m[2] + L.a[2]]
     : c;
 
 /// Port of set-kit.js. Its module-level state (`glowZ`, `slabTops`, `PART_TAGS`, `PART_LEAVES`) is fields; it draws
@@ -112,7 +108,8 @@ class SetKit {
   // set-kit.js: skyBands
   /// A sky of dithered bands, from tones[0] at the top to the last tone at the horizon.
   int skyBands(List<List<num>> tones, num y0, num y1, int ix, int iy) {
-    final t = e.clamp<double>((iy + .5 - y0) / (y1 - y0), 0, 1) * (tones.length - 1);
+    final t =
+        e.clamp<double>((iy + .5 - y0) / (y1 - y0), 0, 1) * (tones.length - 1);
     return _rgbOf(
       tones[e.clamp((t + e.bayerAt(ix, iy) - .5).floor(), 0, tones.length - 1)],
     );
@@ -121,7 +118,9 @@ class SetKit {
   // set-kit.js: skyDisc
   /// A disc in the sky (the sun), screen space, with a lit rim to the upper left. 0 outside it.
   int skyDisc(num cx, num cy, num r, List<List<num>> tones, int ix, int iy) {
-    final dx = ix + .5 - cx, dy = iy + .5 - cy, d = math.sqrt(dx * dx + dy * dy) / r;
+    final dx = ix + .5 - cx,
+        dy = iy + .5 - cy,
+        d = math.sqrt(dx * dx + dy * dy) / r;
     if (d > 1) return 0;
     final l = e.clamp<double>(1 - d * .55 - (dx + dy) / r * .25, 0, 1);
     return _rgbOf(
@@ -142,7 +141,8 @@ class SetKit {
     int ix,
     int iy,
   ) {
-    final y1 = base - 13 - 6 * math.sin(ix * .029 + 1) - 3 * math.sin(ix * .083);
+    final y1 =
+        base - 13 - 6 * math.sin(ix * .029 + 1) - 3 * math.sin(ix * .083);
     final y2 = base - 6 - 3 * math.sin(ix * .047 + 3) - 2 * math.sin(ix * .13);
     if (iy + .5 >= y2) {
       return _rgbOf(
@@ -181,7 +181,9 @@ class SetKit {
     num boards = 0,
   ]) {
     for (num a = a0; a <= a1; a += ST) {
-      final hs = holes.where((h) => a > h[0] && a < h[1]).toList(); // the holes this column crosses
+      final hs = holes
+          .where((h) => a > h[0] && a < h[1])
+          .toList(); // the holes this column crosses
       for (num z = z0; z <= z1; z += ST) {
         var hole = false;
         for (var k = 0; k < hs.length; k++) {
@@ -375,12 +377,14 @@ class SetKit {
             fx = (hx - (x - xc).abs()) / hy,
             f = math.min(math.min(fy, fx), 1);
         final front = fy <= fx,
-            along = (front ? fy : fx) * hy; // how far up the slope from the eave
+            along =
+                (front ? fy : fx) * hy; // how far up the slope from the eave
         final r = (along / ROW).floor(), t = along.remainder(ROW) / ROW;
         // along the eave, the tiles staggered row by row
         final run = front ? x : y,
-            s =
-                ((run / TILE + r.remainder(2) * .5).remainder(1) + 1).remainder(1);
+            s = ((run / TILE + r.remainder(2) * .5).remainder(1) + 1).remainder(
+              1,
+            );
         final tile = (run / TILE + r.remainder(2) * .5).floor();
         var lit = front ? (y > yc ? 3 : 2) : (x > xc ? 1 : 2);
         if (t < .22) {
@@ -469,8 +473,7 @@ class SetKit {
             pz = top[2] + .3 * t * size - 1.3 * t * t * size,
             w = (.3 * math.sin(t * math.pi) + .03) * size;
         for (num s = -1; s <= 1; s += .12) {
-          final leaflet =
-              s.abs() > .2 && (t * 40).truncate().remainder(2) == 0;
+          final leaflet = s.abs() > .2 && (t * 40).truncate().remainder(2) == 0;
           if (leaflet && s.abs() > .7) continue;
           keepPlot(
             pixels,
@@ -478,9 +481,7 @@ class SetKit {
             py + dx * w * s,
             pz - s.abs() * w * .5,
             R[e.clamp(
-              _round(
-                2.2 + (dx + dy) * .6 - s.abs() * .8 + (s > 0 ? .4 : -.2),
-              ),
+              _round(2.2 + (dx + dy) * .6 - s.abs() * .8 + (s > 0 ? .4 : -.2)),
               0,
               4,
             )],
@@ -528,7 +529,14 @@ class SetKit {
       );
     }
     for (num z = .2; z < h; z += .15) {
-      e.castShadow(x + lean * z / h * .5, y - lean * z / h * .3, z, .15 * size, 1, .1);
+      e.castShadow(
+        x + lean * z / h * .5,
+        y - lean * z / h * .3,
+        z,
+        .15 * size,
+        1,
+        .1,
+      );
     }
     return top;
   }

@@ -37,7 +37,9 @@ class FrenteState {
   /// frente-set.html: `pick(...)` of each parameter from a query (`?door=half&win=shut&...`); a value the page does not
   /// allow takes its default, as there.
   factory FrenteState.fromQuery(String query) {
-    final q = Uri.splitQueryString(query.startsWith('?') ? query.substring(1) : query);
+    final q = Uri.splitQueryString(
+      query.startsWith('?') ? query.substring(1) : query,
+    );
     String pick(String k, List<String> allowed, String def) {
       final v = q[k];
       return v != null && allowed.contains(v) ? v : def;
@@ -47,7 +49,14 @@ class FrenteState {
       door: pick('door', const ['shut', 'half', 'open'], 'shut'),
       win: pick('win', const ['shut', 'open'], 'shut'),
       lights: pick('lights', const ['0', '1'], '0') == '1',
-      sky: pick('sky', const ['day', 'storm', 'storm2', 'rain', 'dusk', 'sunset'], 'day'),
+      sky: pick('sky', const [
+        'day',
+        'storm',
+        'storm2',
+        'rain',
+        'dusk',
+        'sunset',
+      ], 'day'),
       hide: pick('hide', const ['0', '1'], '0') == '1',
       rustle: pick('rustle', const ['none', 'palma', 'casa', 'todo'], 'none'),
       side: pick('side', const ['-1', '1'], '1') == '1' ? 1 : -1,
@@ -56,8 +65,11 @@ class FrenteState {
 
   /// A key of the sheet's `setKey` table (`"shut-shut-0-day-0-none"`, with `-1` or `--1` after a rustle) read back.
   factory FrenteState.fromKey(String key) {
-    final m = RegExp(r'^(\w+)-(\w+)-([01])-(\w+)-([01])-(\w+)(?:-(-?1))?$').firstMatch(key);
-    if (m == null) throw ArgumentError.value(key, 'key', 'not a key of El frente\'s set');
+    final m = RegExp(r'^(\w+)-(\w+)-([01])-(\w+)-([01])-(\w+)(?:-(-?1))?$')
+        .firstMatch(key);
+    if (m == null) {
+      throw ArgumentError.value(key, 'key', 'not a key of El frente\'s set');
+    }
     return FrenteState(
       door: m[1]!,
       win: m[2]!,
@@ -102,61 +114,188 @@ class SkyTones {
 /// frente-set.html: `SKY`, by sky.
 const Map<String, SkyTones> SKIES = {
   'day': SkyTones(
-    [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]],
-    [[116, 180, 162], [156, 208, 188], [94, 158, 144]],
-    [[78, 158, 94], [124, 203, 122], [62, 136, 80]],
-    [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]],
+    [
+      [58, 134, 230],
+      [85, 159, 242],
+      [120, 186, 250],
+      [162, 211, 255],
+      [208, 234, 255],
+    ],
+    [
+      [116, 180, 162],
+      [156, 208, 188],
+      [94, 158, 144],
+    ],
+    [
+      [78, 158, 94],
+      [124, 203, 122],
+      [62, 136, 80],
+    ],
+    [
+      [220, 150, 30],
+      [248, 200, 56],
+      [255, 224, 112],
+      [255, 244, 176],
+    ],
   ),
   'storm': SkyTones(
-    [[72, 82, 100], [88, 98, 116], [104, 114, 132], [124, 134, 150], [146, 154, 168]],
-    [[86, 116, 112], [104, 134, 128], [74, 102, 100]],
-    [[60, 104, 72], [80, 124, 88], [50, 90, 62]],
-    [[150, 156, 170], [170, 176, 188], [186, 192, 202]],
+    [
+      [72, 82, 100],
+      [88, 98, 116],
+      [104, 114, 132],
+      [124, 134, 150],
+      [146, 154, 168],
+    ],
+    [
+      [86, 116, 112],
+      [104, 134, 128],
+      [74, 102, 100],
+    ],
+    [
+      [60, 104, 72],
+      [80, 124, 88],
+      [50, 90, 62],
+    ],
+    [
+      [150, 156, 170],
+      [170, 176, 188],
+      [186, 192, 202],
+    ],
   ),
   'storm2': SkyTones(
-    [[60, 68, 86], [74, 84, 102], [90, 100, 118], [108, 118, 134], [128, 136, 152]],
-    [[76, 104, 102], [92, 120, 116], [66, 92, 90]],
-    [[52, 94, 66], [70, 112, 80], [44, 80, 56]],
-    [[132, 138, 152], [150, 156, 170], [164, 170, 182]],
+    [
+      [60, 68, 86],
+      [74, 84, 102],
+      [90, 100, 118],
+      [108, 118, 134],
+      [128, 136, 152],
+    ],
+    [
+      [76, 104, 102],
+      [92, 120, 116],
+      [66, 92, 90],
+    ],
+    [
+      [52, 94, 66],
+      [70, 112, 80],
+      [44, 80, 56],
+    ],
+    [
+      [132, 138, 152],
+      [150, 156, 170],
+      [164, 170, 182],
+    ],
   ),
   'rain': SkyTones(
-    [[50, 56, 74], [62, 70, 88], [76, 84, 102], [92, 100, 118], [110, 118, 134]],
-    [[66, 92, 92], [82, 106, 104], [58, 82, 82]],
-    [[46, 84, 60], [62, 100, 72], [40, 72, 50]],
+    [
+      [50, 56, 74],
+      [62, 70, 88],
+      [76, 84, 102],
+      [92, 100, 118],
+      [110, 118, 134],
+    ],
+    [
+      [66, 92, 92],
+      [82, 106, 104],
+      [58, 82, 82],
+    ],
+    [
+      [46, 84, 60],
+      [62, 100, 72],
+      [40, 72, 50],
+    ],
     null,
   ),
   'dusk': SkyTones(
-    [[86, 128, 214], [120, 156, 226], [176, 180, 214], [236, 196, 170], [252, 214, 160]],
-    [[150, 160, 150], [186, 186, 164], [128, 140, 134]],
-    [[104, 140, 84], [150, 176, 104], [86, 120, 72]],
-    [[226, 120, 40], [246, 160, 60], [255, 200, 100], [255, 232, 160]],
+    [
+      [86, 128, 214],
+      [120, 156, 226],
+      [176, 180, 214],
+      [236, 196, 170],
+      [252, 214, 160],
+    ],
+    [
+      [150, 160, 150],
+      [186, 186, 164],
+      [128, 140, 134],
+    ],
+    [
+      [104, 140, 84],
+      [150, 176, 104],
+      [86, 120, 72],
+    ],
+    [
+      [226, 120, 40],
+      [246, 160, 60],
+      [255, 200, 100],
+      [255, 232, 160],
+    ],
   ),
   'sunset': SkyTones(
-    [[60, 44, 104], [96, 58, 120], [160, 76, 120], [226, 112, 96], [250, 164, 96]],
-    [[104, 72, 110], [134, 92, 124], [88, 60, 96]],
-    [[70, 70, 90], [96, 92, 104], [58, 58, 78]],
-    [[214, 72, 40], [240, 110, 50], [252, 160, 80], [255, 210, 130]],
+    [
+      [60, 44, 104],
+      [96, 58, 120],
+      [160, 76, 120],
+      [226, 112, 96],
+      [250, 164, 96],
+    ],
+    [
+      [104, 72, 110],
+      [134, 92, 124],
+      [88, 60, 96],
+    ],
+    [
+      [70, 70, 90],
+      [96, 92, 104],
+      [58, 58, 78],
+    ],
+    [
+      [214, 72, 40],
+      [240, 110, 50],
+      [252, 160, 80],
+      [255, 210, 130],
+    ],
   ),
 };
 
 /* ---------- the plan of the place (world units) ---------- */
 
-const double HX0 = -2.3, HX1 = 2.6, HY0 = -1.4, HY1 = 0, HH = 2.9; // the house walls; the front faces +y
+const double HX0 = -2.3,
+    HX1 = 2.6,
+    HY0 = -1.4,
+    HY1 = 0,
+    HH = 2.9; // the house walls; the front faces +y
 const double EAVE = .22, RISE = .8; // the roof: overhang, ridge above the eaves
 const double FLOOR = .16; // the porch and the floor inside
-const double DOOR0 = .75, DOOR1 = 2.2, DH = 2.55; // the doorway, from the porch up
-const double WIN0 = -1.71, WIN1 = -.01, WZ0 = 1.15, WZ1 = 2.4; // the window opening
-const double PORCH = 1.0, STEP = 1.4; // the porch slab's depth, the step's front
-const List<double> PALM = [-1.33, 3.51], SPALM = [6.15, 3.32], BIRD = [3.05, 5.66]; // the big palm, the small palm, the birdhouse
+const double DOOR0 = .75,
+    DOOR1 = 2.2,
+    DH = 2.55; // the doorway, from the porch up
+const double WIN0 = -1.71,
+    WIN1 = -.01,
+    WZ0 = 1.15,
+    WZ1 = 2.4; // the window opening
+const double PORCH = 1.0,
+    STEP = 1.4; // the porch slab's depth, the step's front
+const List<double> PALM = [-1.33, 3.51],
+    SPALM = [6.15, 3.32],
+    BIRD = [3.05, 5.66]; // the big palm, the small palm, the birdhouse
 final double R2 = math.sqrt2;
 // where the path leaves the step
-final double PATH_U = ((DOOR0 + DOOR1) / 2 - STEP) / R2, PATH_V = ((DOOR0 + DOOR1) / 2 + STEP) / R2;
+final double PATH_U = ((DOOR0 + DOOR1) / 2 - STEP) / R2,
+    PATH_V = ((DOOR0 + DOOR1) / 2 + STEP) / R2;
 const List<double> BUSH1 = [3.37, -2.28], BUSH2 = [1.47, 6.8]; // the two bushes
-const double PALM_H = 3.6, PALM_LEAN = .3, PALM_SIZE = .62, SPALM_H = 2.1, SPALM_LEAN = .25, SPALM_SIZE = .58;
+const double PALM_H = 3.6,
+    PALM_LEAN = .3,
+    PALM_SIZE = .62,
+    SPALM_H = 2.1,
+    SPALM_LEAN = .25,
+    SPALM_SIZE = .58;
 // the half-open door: turned .34 rad into the room, still across about half the doorway (as the old picture)
 const double HALF_ANGLE = math.pi + .34;
 const double HZ = 46; // the horizon, in screen rows: sky above
-const List<int> TEAL = [92, 190, 186], WOOD = [150, 98, 56], WHITE = [244, 240, 228];
+const List<int> TEAL = [92, 190, 186],
+    WOOD = [150, 98, 56],
+    WHITE = [244, 240, 228];
 // the sun (screen space): 5 px right of the old one, so its touch circle stays clear of the house's box
 const List<num> SUN = [215, 17, 10];
 
@@ -211,7 +350,12 @@ class FrenteSet {
           half - u.abs() < .05;
       return gap
           ? e.rgb(C.stone[0] * .62, C.stone[1] * .62, C.stone[2] * .62)
-          : b.toneOf(C.pave, .35 + e.hash(r, c) * .5 + (e.hash(ix, iy) - .5) * .2, ix, iy);
+          : b.toneOf(
+              C.pave,
+              .35 + e.hash(r, c) * .5 + (e.hash(ix, iy) - .5) * .2,
+              ix,
+              iy,
+            );
     }
     e.kinds[i] = e.KIND_GRASS;
     final t = e.noise(x * .45, y * .45) * 1.1 + (e.hash(ix, iy) - .5) * .5;
@@ -223,9 +367,21 @@ class FrenteSet {
 
   // frente-set.html: house
   void house() {
-    const holeD = [DOOR0, DOOR1, FLOOR, FLOOR + DH], holeW = [WIN0, WIN1, WZ0, WZ1];
+    const holeD = [DOOR0, DOOR1, FLOOR, FLOOR + DH],
+        holeW = [WIN0, WIN1, WZ0, WZ1];
     k.part('casa', () {
-      k.blockHoles(HX0, HY0, 0, HX1, HY1, HH, TEAL, [holeD, holeW], .21, true); // wooden siding, like the old picture's
+      k.blockHoles(
+        HX0,
+        HY0,
+        0,
+        HX1,
+        HY1,
+        HH,
+        TEAL,
+        [holeD, holeW],
+        .21,
+        true,
+      ); // wooden siding, like the old picture's
       // a darker band at the foot of the walls, and the shade under the eaves
       b.onWall('y', HY1, HX0, HX1, 0, .3, e.rampOf(TEAL)[1]);
       b.onWall('x', HX1, HY0, HY1, 0, .3, e.rampOf(TEAL)[0]);
@@ -239,7 +395,16 @@ class FrenteSet {
           e.plot(HX0 + a, HY1 + .02, z, e.rampOf(WHITE)[2]);
         }
       }
-      k.hipRoof(HX0 - EAVE, HY0 - EAVE, HX1 + EAVE, HY1 + EAVE, HH, RISE, C.red, WHITE);
+      k.hipRoof(
+        HX0 - EAVE,
+        HY0 - EAVE,
+        HX1 + EAVE,
+        HY1 + EAVE,
+        HH,
+        RISE,
+        C.red,
+        WHITE,
+      );
     });
     k.part('puerta', doorway);
     k.part('ventana', windowAndShutters);
@@ -248,7 +413,14 @@ class FrenteSet {
       k.slab(HX0 - .1, HY1, HX1 + .1, HY1 + PORCH, FLOOR, C.stone);
       k.slab(DOOR0 - .15, HY1 + PORCH, DOOR1 + .15, STEP, .08, C.stone);
     });
-    b.shadowBox(HX0, HY0, HX1, HY1 - .6, HH + .9, .6); // kept off the front: the porch is in the sun
+    b.shadowBox(
+      HX0,
+      HY0,
+      HX1,
+      HY1 - .6,
+      HH + .9,
+      .6,
+    ); // kept off the front: the porch is in the sun
   }
 
   // the room behind an opening [a0, a1] of the front wall: a plank floor and the back wall with a skirting board (no
@@ -261,10 +433,19 @@ class FrenteSet {
   void room(num a0, num a1, bool floor) {
     final on = SET.lights, d = HY1 - BACK;
     final F = on
-        ? const [[236, 196, 134], [242, 204, 142], [222, 180, 118]]
-        : const [[70, 50, 36], [82, 60, 42], [58, 40, 28]];
+        ? const [
+            [236, 196, 134],
+            [242, 204, 142],
+            [222, 180, 118],
+          ]
+        : const [
+            [70, 50, 36],
+            [82, 60, 42],
+            [58, 40, 28],
+          ];
     int wallC(num a, num z) {
-      if (z < FLOOR + .16) return on ? e.rgb(170, 110, 64) : e.rgb(44, 32, 26); // skirting board
+      // skirting board
+      if (z < FLOOR + .16) return on ? e.rgb(170, 110, 64) : e.rgb(44, 32, 26);
       final kk = (z - FLOOR) / 2;
       return on
           ? e.rgb(255, 230 - kk * 20, 168 - kk * 30)
@@ -272,7 +453,11 @@ class FrenteSet {
     }
 
     // inside the house only
-    for (num a = math.max(HX0 + .02, a0 - d - .15); a <= math.min(HX1 - .02, a1 - d + .1); a += ST) {
+    for (
+      num a = math.max(HX0 + .02, a0 - d - .15);
+      a <= math.min(HX1 - .02, a1 - d + .1);
+      a += ST
+    ) {
       for (num z = FLOOR; z <= HH - .3; z += ST) {
         final c = wallC(a, z);
         if (on) {
@@ -283,9 +468,15 @@ class FrenteSet {
       }
     }
     if (floor) {
-      for (num a = math.max(HX0 + .02, a0 - d - .15); a <= math.min(HX1 - .02, a1 + .05); a += ST) {
+      for (
+        num a = math.max(HX0 + .02, a0 - d - .15);
+        a <= math.min(HX1 - .02, a1 + .05);
+        a += ST
+      ) {
         for (num bb = BACK; bb <= HY1 - .01; bb += ST) {
-          final seam = (a + 5).remainder(.22) < .03; // plain boards: no light pool, no blotches
+          final seam =
+              (a + 5).remainder(.22) <
+              .03; // plain boards: no light pool, no blotches
           final fc = F[seam ? 2 : 0];
           final c = e.rgb(fc[0], fc[1], fc[2]);
           if (on) {
@@ -345,11 +536,23 @@ class FrenteSet {
     }
 
     if (SET.door == 'shut') {
-      k.paneY(HY1 - .06, DOOR0, DOOR1, z0, z1, (a, z) => panel((DOOR1 - a) / w, z));
+      k.paneY(
+        HY1 - .06,
+        DOOR0,
+        DOOR1,
+        z0,
+        z1,
+        (a, z) => panel((DOOR1 - a) / w, z),
+      );
       // the knob, on the left (free) side
       for (num a = 0; a <= .1; a += ST * .4) {
         for (num z = 0; z <= .1; z += ST * .4) {
-          e.plot(DOOR0 + .14 + a, HY1 - .03, z0 + 1.15 + z, e.rgb(250, 210, 80));
+          e.plot(
+            DOOR0 + .14 + a,
+            HY1 - .03,
+            z0 + 1.15 + z,
+            e.rgb(250, 210, 80),
+          );
         }
       }
       // the lights on inside: a thin line of light round the shut door
@@ -462,7 +665,15 @@ class FrenteSet {
       }
     }
     // the flower box under the window
-    b.block(WIN0 - .15, HY1, WZ0 - .45, WIN1 + .15, HY1 + .32, WZ0 - .17, C.wood);
+    b.block(
+      WIN0 - .15,
+      HY1,
+      WZ0 - .45,
+      WIN1 + .15,
+      HY1 + .32,
+      WZ0 - .17,
+      C.wood,
+    );
     const flowers = [
       [255, 143, 184],
       [255, 224, 112],
@@ -486,7 +697,11 @@ class FrenteSet {
   void garden() {
     // the big palm's shadow stays off the stone path: on the pale stones it read as a stain (the grass keeps it)
     final before = Uint8List.fromList(e.shadowMask);
-    k.part('palma', () => k.swayPalm(PALM[0], PALM[1], PALM_H, PALM_LEAN, 2, PALM_SIZE, LIGHT));
+    k.part(
+      'palma',
+      () =>
+          k.swayPalm(PALM[0], PALM[1], PALM_H, PALM_LEAN, 2, PALM_SIZE, LIGHT),
+    );
     for (var i = 0; i < e.W * e.H; i++) {
       if (e.kinds[i] == KIND_ROAD) e.shadowMask[i] = before[i];
     }
@@ -497,8 +712,9 @@ class FrenteSet {
     });
     if (SET.hide) {
       // one pixel to the side on screen
-      double sh(String side) =>
-          SET.rustle == side || SET.rustle == 'todo' ? SET.side / (e.S * R2) : 0;
+      double sh(String side) => SET.rustle == side || SET.rustle == 'todo'
+          ? SET.side / (e.S * R2)
+          : 0;
       k.part(
         'palma_pequena',
         () => k.swayPalm(
@@ -511,7 +727,10 @@ class FrenteSet {
           LIGHT,
         ),
       );
-      k.part('casa_pequena', () => k.birdhouse(BIRD[0] + sh('casa'), BIRD[1] - sh('casa'), LIGHT));
+      k.part(
+        'casa_pequena',
+        () => k.birdhouse(BIRD[0] + sh('casa'), BIRD[1] - sh('casa'), LIGHT),
+      );
     }
   }
 
@@ -536,7 +755,9 @@ class FrenteSet {
     if (cache == null) {
       for (var iy = 0; iy < e.H; iy++) {
         for (var ix = 0; ix < e.W; ix++) {
-          final g = e.unproject(ix + .5, iy + .5), i = iy * e.W + ix, c = frontGround(g.x, g.y, ix, iy, i);
+          final g = e.unproject(ix + .5, iy + .5),
+              i = iy * e.W + ix,
+              c = frontGround(g.x, g.y, ix, iy, i);
           if (c == 0) continue;
           e.pix[i] = c;
           e.ground[i] = 1;
