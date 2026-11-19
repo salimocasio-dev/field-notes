@@ -1,0 +1,48 @@
+{
+ "note": "Made by tool/llamada_stub.mjs from historia/llamada.js (installStub). Test text of the old page's stub. Do not edit by hand.",
+ "steps": [
+  "connect",
+  "danny1",
+  "you1",
+  "talk1",
+  "quiet1",
+  "heard1",
+  "danny2",
+  "you2",
+  "talk2",
+  "quiet2",
+  "heard2",
+  "you3",
+  "talk3",
+  "quiet3",
+  "heard3",
+  "danny3",
+  "end"
+ ],
+ "lines": {
+  "danny1": "¡Hola! Soy Danny. ¿Cómo estás?",
+  "heard1": "Hola. Bien, gracias.",
+  "danny2": "Eso. Mira. ¿Quieres jugo?",
+  "heard2": "Sí, quiero jugo.",
+  "heard3": "Adiós.",
+  "danny3": "Sí. Hasta mañana.",
+  "finReply": "Eso. Hasta mañana.",
+  "heard3Hasta": "Hasta mañana.",
+  "loopEven": "Hasta mañana.",
+  "loopOdd": "Adiós."
+ },
+ "picture": {
+  "picture": "jugo"
+ },
+ "connect": {
+  "conversationId": "stub"
+ },
+ "micError": {
+  "name": "NotAllowedError",
+  "message": "Permission denied"
+ },
+ "failError": {
+  "name": "Error",
+  "message": "The call did not start."
+ }
+}
