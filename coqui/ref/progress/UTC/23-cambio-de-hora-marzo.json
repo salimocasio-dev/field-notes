@@ -1,0 +1,38 @@
+{
+ "id": "23-cambio-de-hora-marzo",
+ "tz": "UTC",
+ "title": "Across the US clock change on Mar 8 2026: nextMorning adds 24 hours to 4:00, so in New York the word is due at 5:00",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772913600000,"local":"2026-03-07T20:00:00+00:00","call":"oida","args":["jugo"],"member":"heard","dart":{"w":"jugo"},"returns":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772942400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}},"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772942400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772944200000,"local":"2026-03-08T04:30:00+00:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":["jugo"],"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772942400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":2,"now":1772946000000,"local":"2026-03-08T05:00:00+00:00","call":"vence","args":["ear"],"member":"due","dart":{"skill":"ear","at":null},"returns":["jugo"],"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":1,"paso":1,"seguidas":0,"fallos":0,"gap":1,"due":1772942400000,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":3,"now":1772946060000,"local":"2026-03-08T05:01:00+00:00","call":"responde","args":["jugo","ear",true,700,false],"member":"answer","dart":{"w":"jugo","skill":"ear","ok":true,"ms":700,"intro":false},"returns":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773162060000,"aciertos":[1772946060000],"ultima":1772946060000,"aparcada":0,"marca":0,"n":1,"bien":1},"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773162060000,"aciertos":[1772946060000],"ultima":1772946060000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":"same"},
+  {"i":4,"now":1773007200000,"local":"2026-03-08T22:00:00+00:00","call":"minutos","args":[1],"member":"addMinutes","dart":{"m":1},"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773162060000,"aciertos":[1772946060000],"ultima":1772946060000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{"2026-03-08":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":1,"v":1},"saved":"same"},
+  {"i":5,"now":1773093600000,"local":"2026-03-09T22:00:00+00:00","call":"minutos","args":[1],"member":"addMinutes","dart":{"m":1},"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773162060000,"aciertos":[1772946060000],"ultima":1772946060000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{"2026-03-08":1,"2026-03-09":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2,"v":1},"saved":"same"},
+  {"i":6,"now":1773093660000,"local":"2026-03-09T22:01:00+00:00","call":"racha","args":[],"member":"streak","dart":{},"returns":2,"store":{"palabras":{"jugo":{"w":"jugo","primera":1772913600000,"oida":1,"ear":{"etapa":3,"paso":1,"seguidas":1,"fallos":0,"gap":2.5,"due":1773162060000,"aciertos":[1772946060000],"ultima":1772946060000,"aparcada":0,"marca":0,"n":1,"bien":1},"mouth":{"etapa":0,"paso":1,"seguidas":0,"fallos":0,"gap":0,"due":0,"aciertos":[],"ultima":0,"aparcada":0,"marca":0,"n":0,"bien":0}}},"dias":{"2026-03-08":1,"2026-03-09":1},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":2,"v":1},"saved":"same"}
+ ]
+}

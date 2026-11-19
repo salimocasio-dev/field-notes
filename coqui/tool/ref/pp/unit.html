@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Engine unit values</title></head><body>
+<canvas id="c"></canvas>
+<script>
+const Q = new URLSearchParams(location.search);
+window.PP_SCENE = { w: +Q.get('w'), h: +Q.get('h'), s: +Q.get('s'), originX: +(Q.get('ox') || 0), originY: +(Q.get('oy') || 0), shadowX: +Q.get('shx'), shadowY: +Q.get('shy') };
+</script>
+<script src="../../../../docs/proyecto/pixel/pp-engine.js"></script>
+<script>
+'use strict';
+/* 200 fixed inputs for each of hash, noise, project, unproject, rampOf. Closed formulas only: no Math.random, no clock.
+   Eight blocks of 25 per function: small whole numbers, half-way values, large values, negatives, values the map and the
+   scenes really pass, pixel coordinates, irrational steps, tiny and huge. */
+const N = 200;
+const half = n => n / 2;
+function xy(k) {                                        // inputs of hash and noise
+  const b = Math.floor(k / 25), j = k % 25;
+  switch (b) {
+    case 0: return [(j % 5) - 2, Math.floor(j / 5) - 2];                                   // whole numbers, 0 and negatives
+    case 1: return [half((j * 7) % 21 - 10), half((j * 13) % 21 - 10) + (j % 2) * .5];     // half-way values
+    case 2: return [(j - 12) * 8191.5, ((j * 7) % 25 - 12) * 4093.25];                     // large
+    case 3: return [-(j + 1) * .37, -(j + 1) * .61 + 5];                                   // negative fractions
+    case 4: return [((j * 37) % 61 - 30) * .33 + 4, ((j * 53) % 97 - 58) * .33];           // like noise(u*.33+4, v*.33) on the map
+    case 5: return [(j * 17) % 256, (j * 29) % 480];                                       // pixel coordinates
+    case 6: return [(j - 12) * 0.6180339887498949, j * j * -0.7071067811865476 + 3];       // irrational steps
+    default: return j === 0 ? [0, 0] : [(j % 2 ? -1 : 1) * Math.pow(10, (j % 8) - 3), (j % 3 === 0 ? -1 : 1) * Math.pow(10, 7 - (j % 11)) / 10];   // 0, then tiny and huge
+  }
+}
+function xyz(k) {                                       // inputs of project: world x, y, z
+  const b = Math.floor(k / 25), j = k % 25;
+  switch (b) {
+    case 0: return [(j % 5) - 2, Math.floor(j / 5) - 2, j % 4];
+    case 1: return [half((j * 7) % 21 - 10), half((j * 13) % 21 - 10), half(j % 9)];
+    case 2: return [(j - 12) * 4093.5, ((j * 7) % 25 - 12) * 2047.25, (j % 5) * 1001.5];
+    case 3: return [-(j + 1) * .37, -(j + 1) * .61, 0 - (j % 6) * .5];
+    case 4: return [((j * 37) % 61 - 30) * 1.7, ((j * 53) % 97 - 58) * .9, (j % 12) * .3];
+    case 5: return [(j * 17) % 61 - 30, (j * 29) % 107 - 53, ((j * 3) % 8) * .25];
+    case 6: return [(j - 12) * 0.6180339887498949, j * -0.7071067811865476 + 3, j * 0.1];
+    default: return j === 0 ? [0, 0, 0] : [(j % 2 ? -1 : 1) * Math.pow(10, (j % 6) - 2), (j % 3 === 0 ? -1 : 1) * Math.pow(10, 4 - (j % 7)), (j % 4) * 2.5];
+  }
+}
+function sxy(k) {                                       // inputs of unproject: screen x, y
+  const b = Math.floor(k / 25), j = k % 25;
+  switch (b) {
+    case 0: return [(j % 5) * 50 - 100, Math.floor(j / 5) * 60 - 100];
+    case 1: return [(j * 11) % 257 + .5, (j * 23) % 481 + .5];                             // pixel centres, as ix + .5
+    case 2: return [(j - 12) * 8191.5, ((j * 7) % 25 - 12) * 4093.25];
+    case 3: return [-(j + 1) * 3.7, -(j + 1) * 6.1];
+    case 4: return [(j * 37) % 256 + (j % 4) * .25, (j * 53) % 480 + (j % 3) * .125];
+    case 5: return [(j * 17) % 256, (j * 29) % 480];
+    case 6: return [(j - 12) * 61.80339887498949, j * j * 0.7071067811865476 - 40];
+    default: return j === 0 ? [0, 0] : [(j % 2 ? -1 : 1) * Math.pow(10, (j % 6) - 1), (j % 3 === 0 ? -1 : 1) * Math.pow(10, 5 - (j % 7))];
+  }
+}
+function col(k) {                                       // inputs of rampOf: an [r, g, b] colour
+  const fixed = [[0, 0, 0], [255, 255, 255], [128, 128, 128], [1, 1, 1], [254, 254, 254], [255, 0, 0], [0, 255, 0], [0, 0, 255],
+    [216, 206, 184], [40, 36, 46], [244, 240, 228], [140, 96, 60], [74, 134, 62], [206, 56, 44], [255, 226, 130], [150, 150, 156],   // map palette entries
+    [196, 120, 90], [236, 230, 214], [214, 196, 150].map(v => v * .94), [214, 196, 150].map(v => v * .9)];                          // and the products mapa.js builds
+  if (k < fixed.length) return fixed[k];
+  const j = k - fixed.length;
+  return [(j * 37) % 256 + (j % 4) * .25, (j * 91) % 256 + (j % 3) * .5, (j * 53) % 256 + (j % 5) * .2].map(v => Math.min(255, v));
+}
+let at = '';
+const clean = v => { if (Object.is(v, -0) || !Number.isFinite(v)) throw new Error('unit value ' + (Object.is(v, -0) ? '-0' : v) + ' cannot be written to JSON, at ' + at); return v; };
+const f32 = new Float32Array(1), u32 = new Uint32Array(f32.buffer);
+function compute() {
+  const out = { settings: { W, H, S, OX, OY, SIN, COS, R2, SHADOW_X, SHADOW_Y }, hash: [], noise: [], project: [], unproject: [], rampOf: [] };
+  for (let k = 0; k < N; k++) {
+    at = 'k=' + k;
+    const [x, y] = xy(k);
+    out.hash.push({ x: clean(x), y: clean(y), v: clean(hash(x, y)) });
+    out.noise.push({ x: clean(x), y: clean(y), v: clean(noise(x, y)) });
+    const [px, py, pz] = xyz(k), p = project(px, py, pz);
+    f32[0] = p.d;
+    out.project.push({ x: clean(px), y: clean(py), z: clean(pz), sx: clean(p.sx), sy: clean(p.sy), d: clean(p.d), ix: p.sx | 0, iy: p.sy | 0, d32: clean(f32[0]), d32bits: u32[0] });
+    const [sx, sy] = sxy(k), q = unproject(sx, sy);
+    out.unproject.push({ sx: clean(sx), sy: clean(sy), x: clean(q.x), y: clean(q.y) });
+    const c = col(k);
+    out.rampOf.push({ c: c.map(clean), ramp: rampOf(c.slice()) });
+  }
+  return out;
+}
+window.UNIT = compute();
+</script></body></html>

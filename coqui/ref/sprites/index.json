@@ -1,0 +1,167 @@
+{
+  "what": "sprites of engine.js and kit.js, as RGBA, with the call that made each",
+  "files": 32,
+  "totalBytes": 7913844,
+  "entries": [
+    {
+      "path": "engine/bgCasa.bin",
+      "bytes": 288000,
+      "sha256": "e1fd037552a2bef9cc488661fc54266d7f4794119ab14391c067a8d55ba3dbd0"
+    },
+    {
+      "path": "engine/bgParque.bin",
+      "bytes": 144000,
+      "sha256": "090870bdb739e3fadf09aed531d08f7dcd816b73475d4ff915d97d3cfeaef6a4"
+    },
+    {
+      "path": "engine/bubble.bin",
+      "bytes": 98304,
+      "sha256": "107269aae8c1e07bf97aae71caff01f5461cf0f26bb27208bcab0dfd5f10e414"
+    },
+    {
+      "path": "engine/face.bin",
+      "bytes": 1152,
+      "sha256": "86dcc2490a1ba726013c86a598844bd9a74eea5531a13e8cb9420745383df4af"
+    },
+    {
+      "path": "engine/glyph.bin",
+      "bytes": 4608,
+      "sha256": "c51e364585e76fc905b206fe01995b15264d4a9781329ebf10464a11c6b8e6ec"
+    },
+    {
+      "path": "engine/grass.bin",
+      "bytes": 1360320,
+      "sha256": "a5482053d92d5dc91c4f29e11068c6f0cf2f79a0c715499ee9343775825bd0ce"
+    },
+    {
+      "path": "engine/mkAbuela.bin",
+      "bytes": 137088,
+      "sha256": "e36698934775b71e620ea488afe714f8fa317ab08c714530372c38027902bd3b"
+    },
+    {
+      "path": "engine/mkBall.bin",
+      "bytes": 1936,
+      "sha256": "9ef407d43e9f718d34f7dd8dd5f9b9fc2bb1894e239d3a9d66be2a4702728774"
+    },
+    {
+      "path": "engine/mkBush.bin",
+      "bytes": 2992,
+      "sha256": "a0d30b30c9c8359578f0ae8d5766dcfc82f3b1a5c033b0542c2e458a755ed969"
+    },
+    {
+      "path": "engine/mkCoqui.bin",
+      "bytes": 764672,
+      "sha256": "25862487637fae3c84fa4c26bf9eb33b71e5ff0de7a67c5fc5752d8d76c57dee"
+    },
+    {
+      "path": "engine/mkCup.bin",
+      "bytes": 2640,
+      "sha256": "77787d359e3960ad9b1b759078895dc70f6786c9c5b7c1220fe578da989cfa27"
+    },
+    {
+      "path": "engine/mkDog.bin",
+      "bytes": 27200,
+      "sha256": "cecf88cfc9dac5a01439053c03c90367d915fb150c95a9168d080e8955973ace"
+    },
+    {
+      "path": "engine/mkPalm.bin",
+      "bytes": 16576,
+      "sha256": "30fcdb02bc26e339813a67c697dbd7800a26c846975962a2a0f5ae6e8f4d4bc2"
+    },
+    {
+      "path": "engine/mkPot.bin",
+      "bytes": 2640,
+      "sha256": "852b66913320fb325300d7abfb6cd0d590e70bc7713133849824a5aad503f6de"
+    },
+    {
+      "path": "engine/mkTree.bin",
+      "bytes": 11904,
+      "sha256": "858f6d7ba8c9625b804c33e852a2b548eb2ad3715f1ed2e31f0b14406039187d"
+    },
+    {
+      "path": "engine/pointer.bin",
+      "bytes": 24576,
+      "sha256": "bdf9c026e9c7a967d7bc1eb5ab438b2f29cddc74ff480d9e8ed5d25c004f0a4e"
+    },
+    {
+      "path": "engine/shadow.bin",
+      "bytes": 13824,
+      "sha256": "1adb410f7900a8f6ac0a5d72ea2ba35cad356eb2c9dd99c96a7e88f3d70707ed"
+    },
+    {
+      "path": "engine/sky.bin",
+      "bytes": 412800,
+      "sha256": "487f197cb2165df1b14c5c47a2a73b963a90bb225d05a07eb11fd41b5a88d2e7"
+    },
+    {
+      "path": "engine/sparks.bin",
+      "bytes": 13824,
+      "sha256": "ff9486143f697aa88e67226d4ed895948e13b75ac89486e8f4e9d2759fd06ea5"
+    },
+    {
+      "path": "engine/sprites.json",
+      "bytes": 123996,
+      "sha256": "3e749db928418d6dbbdfebab70214097936f367e1e3aa96a153abde1665bbdc9"
+    },
+    {
+      "path": "engine/talk.bin",
+      "bytes": 15360,
+      "sha256": "c501a2519c528b31d2327d253173b1733ed672fa9b1e8e685da7b41a47fe8c45"
+    },
+    {
+      "path": "kit/mano.bin",
+      "bytes": 1760,
+      "sha256": "41e49aa24552510fe1112a89ed0a84d2cb5f29a139bb2abe62c9e108b3202cb6"
+    },
+    {
+      "path": "kit/mkAbuelaS.bin",
+      "bytes": 249600,
+      "sha256": "35515e840f5f63d7def42ba0ea01dd5ed886f2a9c205e281461da80e7bad9e64"
+    },
+    {
+      "path": "kit/mkAve.bin",
+      "bytes": 9504,
+      "sha256": "04bef7929ea168454f3e0ce8d46af88d8263030e86acd415bc60bbdddbc0f62b"
+    },
+    {
+      "path": "kit/mkBebe.bin",
+      "bytes": 46592,
+      "sha256": "07e4c7cb9775ddd980a51afd2d7308f56b819ab24d3928385f638c8fa11a7d6b"
+    },
+    {
+      "path": "kit/mkCesta.bin",
+      "bytes": 960,
+      "sha256": "ab823264909170c0559bbb4a21bdf9b2a6ecab9879b6e04a9bf2ad1b2a55762e"
+    },
+    {
+      "path": "kit/mkPerro.bin",
+      "bytes": 42240,
+      "sha256": "f178c4d2da879774804c68a7d0eab00c9137f2f39d69c182111dc172610b782f"
+    },
+    {
+      "path": "kit/mkPersona.bin",
+      "bytes": 3715200,
+      "sha256": "c03a88cf2260827e0bb7489e985f64390694abf0f1b60fbadfd7e51256fd1aa6"
+    },
+    {
+      "path": "kit/sprites.json",
+      "bytes": 155024,
+      "sha256": "430279e2297e7df917b090d760233da94eb72734fd8f35f8ce9ade2cd6cf8ada"
+    },
+    {
+      "path": "kit/tarjeta.bin",
+      "bytes": 90552,
+      "sha256": "5b0c95c0baa84a35b1354108bedb9c1b5869bd3df2160e7a68376edec5ed5007"
+    },
+    {
+      "path": "sheet-engine.png",
+      "bytes": 72684,
+      "sha256": "32def4e4a4325e9b6d53c8d052ab94c409296af7c4081f7caa619ee3a957d8ae"
+    },
+    {
+      "path": "sheet-kit.png",
+      "bytes": 61316,
+      "sha256": "9cbc50f6667ced62b3bf4976f669e8e462e4a3be50ef210978cfa13b5b60d0ce"
+    }
+  ]
+}

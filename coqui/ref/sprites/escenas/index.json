@@ -1,0 +1,131 @@
+{
+ "made": "node coqui/tool/ref/trazas/juega.mjs (the sprites are read after each story run)",
+ "format": "see coqui/tool/ref/escenas_sprites/README.md",
+ "scenes": [
+  {
+   "scene": "balcon",
+   "files": 32,
+   "keys": 32,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 6,
+   "sites": 12,
+   "sitesNeverReached": [],
+   "bytes": 590148
+  },
+  {
+   "scene": "banco",
+   "files": 120,
+   "keys": 120,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 12,
+   "sitesNeverReached": [],
+   "bytes": 834784
+  },
+  {
+   "scene": "camino",
+   "files": 241,
+   "keys": 241,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 20,
+   "sitesNeverReached": [],
+   "bytes": 1139232
+  },
+  {
+   "scene": "campo",
+   "files": 34,
+   "keys": 34,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 9,
+   "sitesNeverReached": [],
+   "bytes": 358408
+  },
+  {
+   "scene": "estufa",
+   "files": 82,
+   "keys": 82,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 7,
+   "sitesNeverReached": [],
+   "bytes": 445040
+  },
+  {
+   "scene": "frente",
+   "files": 37,
+   "keys": 37,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 42,
+   "sites": 19,
+   "sitesNeverReached": [],
+   "bytes": 2214152
+  },
+  {
+   "scene": "lago",
+   "files": 72,
+   "keys": 72,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 18,
+   "sitesNeverReached": [],
+   "bytes": 445448
+  },
+  {
+   "scene": "mesa",
+   "files": 76,
+   "keys": 76,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 9,
+   "sitesNeverReached": [
+    "156:24 spr(\"puesto\")"
+   ],
+   "bytes": 512176
+  },
+  {
+   "scene": "nevera",
+   "files": 93,
+   "keys": 93,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 2,
+   "sites": 6,
+   "sitesNeverReached": [],
+   "bytes": 442624
+  },
+  {
+   "scene": "patio",
+   "files": 75,
+   "keys": 75,
+   "differsBetweenRuns": [],
+   "outsideCache": 0,
+   "notDumped": 7,
+   "sites": 14,
+   "sitesNeverReached": [],
+   "bytes": 1739832
+  },
+  {
+   "scene": "sala",
+   "files": 75,
+   "keys": 74,
+   "differsBetweenRuns": [
+    "bor"
+   ],
+   "outsideCache": 1,
+   "notDumped": 2,
+   "sites": 18,
+   "sitesNeverReached": [],
+   "bytes": 737184
+  }
+ ]
+}

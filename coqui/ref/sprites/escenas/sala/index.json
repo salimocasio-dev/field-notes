@@ -1,0 +1,1133 @@
+{
+ "scene": "sala",
+ "file": "historia/escenas/sala.js",
+ "fileSha256": "54dbd31b03925565b0baa751d515beef5961a88a817b6adcd63eacaa118b43f5",
+ "sprites": [
+  {
+   "key": "abdedo00",
+   "file": "abdedo00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "499e019bb8cbe80ac6f316cd56a77384bd05e07cbd9bf7cb890f395f285a84ec",
+   "caller": "escenas/sala.js:88:120 gente",
+   "maker": "escenas/sala.js:88:144",
+   "firstRun": "la-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abdedo10",
+   "file": "abdedo10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "a5d148eb5836e3401a97ba08f095a1682b96e5728d8f73e3bd593fb089c89d14",
+   "caller": "escenas/sala.js:88:120 gente",
+   "maker": "escenas/sala.js:88:144",
+   "firstRun": "la-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "abidle0",
+   "file": "abidle0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "831aa41c06c47834cd9f8bcf6b7631c594ed747e81ba9d3aca38432a7296b82f",
+   "caller": "escenas/sala.js:88:120 gente",
+   "maker": "escenas/sala.js:88:144",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "aboffer0",
+   "file": "aboffer0.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "8be03d04ff1120c6baf16fb136f4fb5cfbd508d5f9e18f8c08810dc3d621789b",
+   "caller": "escenas/sala.js:88:120 gente",
+   "maker": "escenas/sala.js:88:144",
+   "firstRun": "la-familia/right",
+   "runs": 10,
+   "variants": 1
+  },
+  {
+   "key": "abwave00",
+   "file": "abwave00.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "c990abc59cbf56be8955cbe792df1c9dc85cf6e577f05131d3c9b6d6888573d8",
+   "caller": "escenas/sala.js:88:120 gente",
+   "maker": "escenas/sala.js:88:144",
+   "firstRun": "la-familia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "abwave10",
+   "file": "abwave10.rgba",
+   "w": 48,
+   "h": 51,
+   "sha256": "1081a1840c85ca356e18ace6439cce58e73e5859439f8b6eae59a4d91cff1e1f",
+   "caller": "escenas/sala.js:88:120 gente",
+   "maker": "escenas/sala.js:88:144",
+   "firstRun": "la-familia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "bbclap0",
+   "file": "bbclap0.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "3c95c9ab20b1041b2929166f26f788351c59cad67f0f0265e0fb649dc9cf5acc",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "bbclap1",
+   "file": "bbclap1.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "9bf424b8d23b899b6068bf31b71a7933befd50920f826595207c1f4f80f0c53d",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "bbcome0",
+   "file": "bbcome0.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "2687ed30d25750a927f00d7fb38c8a0280b1079c6b87dae63ea76f1a70e0db70",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "la-familia/right",
+   "runs": 5,
+   "variants": 1
+  },
+  {
+   "key": "bbcome1",
+   "file": "bbcome1.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "2687ed30d25750a927f00d7fb38c8a0280b1079c6b87dae63ea76f1a70e0db70",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "la-familia/right",
+   "runs": 5,
+   "variants": 1
+  },
+  {
+   "key": "bbidle0",
+   "file": "bbidle0.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "00e338ad3634301a41705dbe9123d8cd25c18f24d6f2649d9e55b636235d66e5",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "bbidle1",
+   "file": "bbidle1.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "00e338ad3634301a41705dbe9123d8cd25c18f24d6f2649d9e55b636235d66e5",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "bbllora0",
+   "file": "bbllora0.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "0d110bdb5f4c6f78e450ee8490826d5f53ac87f013ee4bfaee33003ba7db5a96",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "d-bizcocho-bebe/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "bbllora1",
+   "file": "bbllora1.rgba",
+   "w": 26,
+   "h": 28,
+   "sha256": "817040cda7fde979a488794937dd95d9f62354fed2a5d20db3442ac7b04a56a1",
+   "caller": "escenas/sala.js:87:44 gente",
+   "maker": "escenas/sala.js:87:69",
+   "firstRun": "d-bizcocho-bebe/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "bor",
+   "file": "bor.0.rgba",
+   "w": 20,
+   "h": 18,
+   "sha256": "24f0cc54342c73d752db344eac2e9981923a6944083534d0e64a58a28506394a",
+   "caller": "escenas/sala.js:120:25 Object.draw",
+   "maker": "escenas/sala.js:120:57",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 3,
+   "variants": 2,
+   "scratch": "sala.js line 120: a 20x18 canvas the scene draws the whole picture into, smoothed, every frame W.borroso is set (the blur). Not a fixed sprite: its pixels are the last such frame of the run, so they differ between runs. Do not compare it."
+  },
+  {
+   "key": "bor",
+   "file": "bor.1.rgba",
+   "w": 20,
+   "h": 18,
+   "sha256": "1551b7b8657814c532e4e0affc2467a75be5be4398ed7ca69fd56683db41a6da",
+   "caller": "escenas/sala.js:120:25 Object.draw",
+   "maker": "escenas/sala.js:120:57",
+   "firstRun": "quien-eres-tu/wrong",
+   "runs": 3,
+   "variants": 2,
+   "scratch": "sala.js line 120: a 20x18 canvas the scene draws the whole picture into, smoothed, every frame W.borroso is set (the blur). Not a fixed sprite: its pixels are the last such frame of the run, so they differ between runs. Do not compare it."
+  },
+  {
+   "key": "butaca",
+   "file": "butaca.rgba",
+   "w": 42,
+   "h": 44,
+   "sha256": "a06ea580de345e18868f928f1e5ff3b36f258897e1c9658b09c5c64b89351ec5",
+   "caller": "escenas/sala.js:110:53 Object.draw",
+   "maker": "escenas/sala.js:40:29 mkButaca",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "cq.5_f",
+   "file": "cq.5_f.rgba",
+   "w": 17,
+   "h": 15,
+   "sha256": "3a44a8f6fd0da7f110483c0d0e247f28fd4b6efabf21780087e6b872ff0419ad",
+   "caller": "escenas/sala.js:56:74",
+   "maker": "escenas/sala.js:56:91",
+   "firstRun": "la-foto/right",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "cq.7_0",
+   "file": "cq.7_0.rgba",
+   "w": 23,
+   "h": 20,
+   "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0",
+   "caller": "escenas/sala.js:132:54 Object.hud",
+   "maker": "escenas/sala.js:132:71",
+   "firstRun": "la-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.7_00",
+   "file": "cq0.7_00.rgba",
+   "w": 23,
+   "h": 20,
+   "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.8_00",
+   "file": "cq0.8_00.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "6e77fd58c97a563ad7b03ce3758417cc5f9f3562866b535fd210a254f51a1bee",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq0.93_00",
+   "file": "cq0.93_00.rgba",
+   "w": 30,
+   "h": 25,
+   "sha256": "3ca96c6a12e5a90f1347e007e679346b30f4a6519d83f39a77db6c2d30c17b32",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/wrong",
+   "runs": 7,
+   "variants": 1
+  },
+  {
+   "key": "cq0.93_10",
+   "file": "cq0.93_10.rgba",
+   "w": 30,
+   "h": 25,
+   "sha256": "e36b689010650f38d2f987cb6b79b14d3f865e41422687d17a3fd857ae23ef7b",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/wrong",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "cq0.95_00",
+   "file": "cq0.95_00.rgba",
+   "w": 31,
+   "h": 26,
+   "sha256": "ec9e8588f62fc00f674a6dafce02f10f68bf10fc2bda569635031edb3791f6d0",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.95_10",
+   "file": "cq0.95_10.rgba",
+   "w": 31,
+   "h": 26,
+   "sha256": "83b52cd5496c75ec6a95540c701693cffb511021d6ea1cf2f95c10ce51a3ee46",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq0.97_00",
+   "file": "cq0.97_00.rgba",
+   "w": 31,
+   "h": 26,
+   "sha256": "6b604ddbdb8130de8427ec372cbbd1d18d1ffa332717b38e6707550a93493b9f",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/wrong",
+   "runs": 7,
+   "variants": 1
+  },
+  {
+   "key": "cq0.97_10",
+   "file": "cq0.97_10.rgba",
+   "w": 31,
+   "h": 26,
+   "sha256": "830d4df05e4bc4658cc0b5da201e0323bf0e5c8dd22176e3043e8ad086291103",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "cq0.9_00",
+   "file": "cq0.9_00.rgba",
+   "w": 29,
+   "h": 25,
+   "sha256": "534d015ee13d318ea4cda5ff8e30b216309cddc82bb4245bc23d748dd2521e8e",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.9_10",
+   "file": "cq0.9_10.rgba",
+   "w": 29,
+   "h": 25,
+   "sha256": "c6afd01dcb91dfb5365f11c1da698a45c4f84505733198300901e22de603b4fe",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 10,
+   "variants": 1
+  },
+  {
+   "key": "cq1_00",
+   "file": "cq1_00.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "c8717ae68b12349fc7daf8a06388dca414e1c3dbec78c5211e91e0f8ebf3bffc",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "cq1_01",
+   "file": "cq1_01.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "8aa6c2bbdb6f3fc9dac64144c1532663d41216ddb9af0dbb9dc8d97eb971bba2",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq1_10",
+   "file": "cq1_10.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "d5972b548da9b40ec44c1f8369c54552ec37031c5750bc9df9bb40898ff292f3",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "cq1_11",
+   "file": "cq1_11.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "0a07089e57b3c811b41a2bd3a980b80b82cdf046da17ff6368d544a2748d9768",
+   "caller": "escenas/sala.js:102:15 rana",
+   "maker": "escenas/sala.js:102:42",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "lamp1",
+   "file": "lamp1.rgba",
+   "w": 20,
+   "h": 64,
+   "sha256": "b4b21d45e2e4b7793cccfd708bfe8b3496568585237774a4f1a7032f95a1d1b9",
+   "caller": "escenas/sala.js:109:15 Object.draw",
+   "maker": "escenas/sala.js:109:42",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "mesita",
+   "file": "mesita.rgba",
+   "w": 46,
+   "h": 18,
+   "sha256": "9cfdd1ffc52554341767c28a83bc018347684bff5df14a56425604fd01613fff",
+   "caller": "escenas/sala.js:114:40 Object.d",
+   "maker": "escenas/sala.js:45:29 mkMesita",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "pabuelofoto00",
+   "file": "pabuelofoto00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "536a2047c44ce0cd7456a062f7fcd9dd1b21935adbac517bb5bc869207448c6b",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pabueloidle00",
+   "file": "pabueloidle00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "7bfbdca75fdf2697fe1737bbf476ad08131b04d8c018751dccc44801311b2604",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pabueloidle01",
+   "file": "pabueloidle01.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "c02d4ebbb7485ac49281aaa9b421b450e4253745fc0f2c90fa5fba314815357c",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "pabueloidle01z",
+   "file": "pabueloidle01z.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "d7ce44cfff182e6cb8d8108f7813bc30e44dd88897cc8adf4aa3277224893bb4",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pabuelotaza001",
+   "file": "pabuelotaza001.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "a2b9f87ee23a14770919c7bad9c38754d7eea51fc34f6bbd88fb60307d2a78dd",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pabuelotaza00arriba",
+   "file": "pabuelotaza00arriba.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "0484cb7b6844a3d811bc48ef3ced3311672e1e90f955401f07b93f9ef0d5fbee",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pabuelowave001",
+   "file": "pabuelowave001.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "b71b9d19621b0636653b6fa1315d7b07245ef3356a41062650e9fcefaabe19ed",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pabuelowave101",
+   "file": "pabuelowave101.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "06b1c2acaf798705011f595fd776e027eb4fa8c459aebad0058f2033f3357bca",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pfhermana",
+   "file": "pfhermana.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "0f458c009a0d087bd47bb1dd0ecef1dab84637c95b822cb77f650466170897a1",
+   "caller": "escenas/sala.js:57:70",
+   "maker": "escenas/sala.js:57:90",
+   "firstRun": "la-foto/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pfhermano",
+   "file": "pfhermano.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "808f88ba1715c4aac35e11ad848fdb7f29539151eaf1fa7555f14874a1da87ab",
+   "caller": "escenas/sala.js:135:24 Object.hud",
+   "maker": "escenas/sala.js:135:55",
+   "firstRun": "la-foto/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pfmama",
+   "file": "pfmama.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "8e0937311ec5e252e2760e540dd4145b1b6ccea614e11500ce9b127cdd45274d",
+   "caller": "escenas/sala.js:57:70",
+   "maker": "escenas/sala.js:57:90",
+   "firstRun": "la-foto/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pfpapa",
+   "file": "pfpapa.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "9f5171b08315846d65e4145a40dc9cbc2d4bd74f1ac56a4a4d8da6d28604a570",
+   "caller": "escenas/sala.js:57:70",
+   "maker": "escenas/sala.js:57:90",
+   "firstRun": "d-foto-familia/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "phermanaidle00",
+   "file": "phermanaidle00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "0f458c009a0d087bd47bb1dd0ecef1dab84637c95b822cb77f650466170897a1",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "phermanatu00",
+   "file": "phermanatu00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "429f65e7a6882fc188146354d33d011d2b1b2a52cceb64ed1f12f3edb11cf82f",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "phermanawave000",
+   "file": "phermanawave000.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "fc9e4a78177c5966bad7032cc8bdce95d829b47ad6f76ddae6497ce8d361ae4d",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "phermanawave100",
+   "file": "phermanawave100.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "00332acac59222e6d6be110dfadf01a5589aa110223352d6b4cf932c79f661ce",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "phermanayo00",
+   "file": "phermanayo00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "dffadd8047413100f4a9bd27d9a1b6dc40a8f715e199df1e28729b91010d2867",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "phermanoidle00",
+   "file": "phermanoidle00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "808f88ba1715c4aac35e11ad848fdb7f29539151eaf1fa7555f14874a1da87ab",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "phermanoidle10",
+   "file": "phermanoidle10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "4282504dc2d7ed80ebef814ef2c9afc4d48d8395ff00ff2ca71ae025602fa0b8",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "quien-eres-tu/alternate",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "phermanoojos00",
+   "file": "phermanoojos00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "a4635503877defb9c22916497cfbfbf94e427ae9c92f47ae9999de67ea6d5cec",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "quien-eres-tu/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "phermanowave000",
+   "file": "phermanowave000.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "98cf5269b410868321f5e83aac9aebd99c493a23abbd2a596054159f63d3c63c",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "phermanowave100",
+   "file": "phermanowave100.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "54b176072474e3b378ba07cea6adf0563c9611babfe2de8d5e1a3c3493037f4e",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pmamaidle00",
+   "file": "pmamaidle00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "8e0937311ec5e252e2760e540dd4145b1b6ccea614e11500ce9b127cdd45274d",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pmamaidle01",
+   "file": "pmamaidle01.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "475a8e7d4a61b49af98ac1b16d0c014517a03d15130bb47917972be99afa04b1",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "pmamawave000",
+   "file": "pmamawave000.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "f143b2eb23c88fd30e492f1be24fabf05e3daa962626c44f5479d2677a33a9f1",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "pmamawave001",
+   "file": "pmamawave001.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "a198950539e271af68ed53d05f9e650ad5b3eee30f5c92510ad2edaa20d7c6c1",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pmamawave100",
+   "file": "pmamawave100.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "17c655e183eb49452c21fe6c791d8fe70f5ab83f85c7d5acb6a797229a0d5f46",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "pmamawave101",
+   "file": "pmamawave101.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "4ef40031dc807d7189c8a49846043d52556a47e371d1ec7cb9a88d35b341603b",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pot",
+   "file": "pot.rgba",
+   "w": 22,
+   "h": 30,
+   "sha256": "852b66913320fb325300d7abfb6cd0d590e70bc7713133849824a5aad503f6de",
+   "caller": "escenas/sala.js:32:41 bg",
+   "maker": "engine.js:77:26 mkPot",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "ppapaidle00",
+   "file": "ppapaidle00.rgba",
+   "w": 48,
+   "h": 56,
+   "sha256": "9f5171b08315846d65e4145a40dc9cbc2d4bd74f1ac56a4a4d8da6d28604a570",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-foto/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "ppapaidle01",
+   "file": "ppapaidle01.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "b2b455bd0f3f6b072708f632e4b2307dadcac55de55bb6adf593a3926db03bb5",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "ppapaidle11",
+   "file": "ppapaidle11.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "f8d4ab45093dee34672f774a200851435cc637f1141584fdacdaf20bf3e25cc2",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "h-sala/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "ppapawave001",
+   "file": "ppapawave001.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "dd59615417d2b4985ab40597b77c33dc9d3c5b97a080bbbb14a4aabf76caa1c1",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "ppapawave101",
+   "file": "ppapawave101.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "f7ca5179a5539de43a031f933be5026c6cc0a8987ddcb776bae2cb4bb0b621e3",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "ppapawave111",
+   "file": "ppapawave111.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "40b0c09a53b76638eae51591e915ae540b600969ea0fde420ab9783f1c907a95",
+   "caller": "escenas/sala.js:90:238 gente",
+   "maker": "escenas/sala.js:90:252",
+   "firstRun": "la-familia/alternate",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "sala",
+   "file": "sala.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "508f6104ba6fd28f3562580290a0c954c210393c765d21fa70197beba41e9011",
+   "caller": "escenas/sala.js:107:15 Object.draw",
+   "maker": "escenas/sala.js:17:23 bg",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "sofa",
+   "file": "sofa.rgba",
+   "w": 92,
+   "h": 46,
+   "sha256": "0ccc73f4767ab27396b0c919d553621e5facab41cc7fcf85e7c711939c113c7c",
+   "caller": "escenas/sala.js:110:15 Object.draw",
+   "maker": "escenas/sala.js:34:27 mkSofa",
+   "firstRun": "la-familia/right",
+   "runs": 18,
+   "variants": 1
+  },
+  {
+   "key": "trozo0",
+   "file": "trozo0.rgba",
+   "w": 13,
+   "h": 11,
+   "sha256": "4d06577cbd4e0bb588906b67bd0cea0b68b21fe78820426dd1bf90957aeb1e5b",
+   "caller": "escenas/sala.js:65:46 trozo",
+   "maker": "escenas/sala.js:65:73",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "trozo1",
+   "file": "trozo1.rgba",
+   "w": 13,
+   "h": 11,
+   "sha256": "98424b77e5b01d8491b8cedb084824480e4e347f8693bf5d05652f6e18ecc858",
+   "caller": "escenas/sala.js:65:46 trozo",
+   "maker": "escenas/sala.js:65:73",
+   "firstRun": "la-familia/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "vis",
+   "file": "vis.rgba",
+   "w": 5,
+   "h": 5,
+   "sha256": "9c6ccf4dd9d443d0a5f0f434b64c36206855d013dd1b5d764a4ca558d8cacf7b",
+   "caller": "escenas/sala.js:137:18 Object.hud",
+   "maker": "escenas/sala.js:137:50",
+   "firstRun": "la-foto/right",
+   "runs": 3,
+   "variants": 1
+  }
+ ],
+ "outsideCache": [
+  {
+   "made": "escenas/sala.js:190:82 retrato",
+   "file": "outside-0.rgba",
+   "w": 128,
+   "h": 80,
+   "sha256": "538883c4a835853692148386cc1d9a906bdc535035356101d3b4224d167d0833",
+   "atLoad": false,
+   "firstRun": "d-foto-familia/right",
+   "runs": 3
+  }
+ ],
+ "notDumped": [
+  {
+   "key": "cq.7_0",
+   "caller": "juego.js:61:86"
+  },
+  {
+   "key": "cqv0",
+   "caller": "juego.js:59:17"
+  }
+ ],
+ "sites": [
+  {
+   "line": 32,
+   "col": 41,
+   "key": "\"pot\"",
+   "made": [
+    "pot"
+   ]
+  },
+  {
+   "line": 56,
+   "col": 74,
+   "key": "\"cq.5_f\"",
+   "made": [
+    "cq.5_f"
+   ]
+  },
+  {
+   "line": 57,
+   "col": 32,
+   "key": "\"abidle0\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 57,
+   "col": 70,
+   "key": "\"pf\"+id",
+   "made": [
+    "pfhermana",
+    "pfmama",
+    "pfpapa"
+   ]
+  },
+  {
+   "line": 65,
+   "col": 46,
+   "key": "\"trozo\"+(mord?1:0)",
+   "made": [
+    "trozo0",
+    "trozo1"
+   ]
+  },
+  {
+   "line": 87,
+   "col": 44,
+   "key": "\"bb\"+e+(a%2)",
+   "made": [
+    "bbclap0",
+    "bbclap1",
+    "bbcome0",
+    "bbcome1",
+    "bbidle0",
+    "bbidle1",
+    "bbllora0",
+    "bbllora1"
+   ]
+  },
+  {
+   "line": 88,
+   "col": 120,
+   "key": "\"ab\"+pose+habla",
+   "made": [
+    "abdedo00",
+    "abdedo10",
+    "abidle0",
+    "aboffer0",
+    "abwave00",
+    "abwave10"
+   ]
+  },
+  {
+   "line": 90,
+   "col": 238,
+   "key": "k",
+   "made": [
+    "pabuelofoto00",
+    "pabueloidle00",
+    "pabueloidle01",
+    "pabueloidle01z",
+    "pabuelotaza001",
+    "pabuelotaza00arriba",
+    "pabuelowave001",
+    "pabuelowave101",
+    "phermanaidle00",
+    "phermanatu00",
+    "phermanawave000",
+    "phermanawave100",
+    "phermanayo00",
+    "phermanoidle00",
+    "phermanoidle10",
+    "phermanoojos00",
+    "phermanowave000",
+    "phermanowave100",
+    "pmamaidle00",
+    "pmamaidle01",
+    "pmamawave000",
+    "pmamawave001",
+    "pmamawave100",
+    "pmamawave101",
+    "ppapaidle00",
+    "ppapaidle01",
+    "ppapaidle11",
+    "ppapawave001",
+    "ppapawave101",
+    "ppapawave111"
+   ]
+  },
+  {
+   "line": 102,
+   "col": 15,
+   "key": "\"cq\"+q.s+\"_\"+bl+op",
+   "made": [
+    "cq0.7_00",
+    "cq0.8_00",
+    "cq0.93_00",
+    "cq0.93_10",
+    "cq0.95_00",
+    "cq0.95_10",
+    "cq0.97_00",
+    "cq0.97_10",
+    "cq0.9_00",
+    "cq0.9_10",
+    "cq1_00",
+    "cq1_01",
+    "cq1_10",
+    "cq1_11"
+   ]
+  },
+  {
+   "line": 107,
+   "col": 15,
+   "key": "\"sala\"",
+   "made": [
+    "sala"
+   ]
+  },
+  {
+   "line": 109,
+   "col": 15,
+   "key": "\"lamp\"+(W.luz?1:0)",
+   "made": [
+    "lamp1"
+   ]
+  },
+  {
+   "line": 110,
+   "col": 15,
+   "key": "\"sofa\"",
+   "made": [
+    "sofa"
+   ]
+  },
+  {
+   "line": 110,
+   "col": 53,
+   "key": "\"butaca\"",
+   "made": [
+    "butaca"
+   ]
+  },
+  {
+   "line": 114,
+   "col": 40,
+   "key": "\"mesita\"",
+   "made": [
+    "mesita"
+   ]
+  },
+  {
+   "line": 120,
+   "col": 25,
+   "key": "\"bor\"",
+   "made": [
+    "bor"
+   ]
+  },
+  {
+   "line": 132,
+   "col": 54,
+   "key": "\"cq.7_0\"",
+   "made": [
+    "cq.7_0"
+   ]
+  },
+  {
+   "line": 135,
+   "col": 24,
+   "key": "\"pf\"+W.visor.quien",
+   "made": [
+    "pfhermano"
+   ]
+  },
+  {
+   "line": 137,
+   "col": 18,
+   "key": "\"vis\"",
+   "made": [
+    "vis"
+   ]
+  }
+ ]
+}

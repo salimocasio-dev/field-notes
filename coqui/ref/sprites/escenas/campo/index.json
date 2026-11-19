@@ -1,0 +1,525 @@
+{
+ "scene": "campo",
+ "file": "historia/escenas/campo.js",
+ "fileSha256": "a80ecdd7d425375e7bebe8ba4aac16faedd335b2bc03741bd0f0c388e41d70fc",
+ "sprites": [
+  {
+   "key": "bolaC",
+   "file": "bolaC.rgba",
+   "w": 14,
+   "h": 14,
+   "sha256": "f8cfcdaaeaf384a1a8dc2030c7373102b641b0770d13cc70a23f5c12e1a1e1b9",
+   "caller": "escenas/campo.js:90:57 unaBola",
+   "maker": "escenas/campo.js:90:76",
+   "firstRun": "la-bola/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "bolaL",
+   "file": "bolaL.rgba",
+   "w": 17,
+   "h": 17,
+   "sha256": "ec3ef709d151cc0bf08902c825270b354cae6813f012a3b930ee570ad878abd9",
+   "caller": "escenas/campo.js:90:57 unaBola",
+   "maker": "escenas/campo.js:90:76",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "bolaq",
+   "file": "bolaq.rgba",
+   "w": 13,
+   "h": 13,
+   "sha256": "94fb83a595522cf655c9d30f318624027c1a3b0dfc6ccac0d9265d486dc461f4",
+   "caller": "escenas/campo.js:90:57 unaBola",
+   "maker": "escenas/campo.js:90:76",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "campo",
+   "file": "campo.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "d9079142f8010aafad28c48240972725c672ab1968e132d0b61babc46ed63620",
+   "caller": "escenas/campo.js:96:15 Object.draw",
+   "maker": "escenas/campo.js:20:26 fondo",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "cesta",
+   "file": "cesta.rgba",
+   "w": 20,
+   "h": 12,
+   "sha256": "ab823264909170c0559bbb4a21bdf9b2a6ecab9879b6e04a9bf2ad1b2a55762e",
+   "caller": "escenas/campo.js:103:202 Object.d",
+   "maker": "escenas/kit.js:156:28 mkCesta",
+   "firstRun": "la-bola/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq.6_0",
+   "file": "cq.6_0.rgba",
+   "w": 20,
+   "h": 17,
+   "sha256": "947dafedb89c34c11b4f0fb938238eca92f96ddb631ffa22c8fd8b6a611397a1",
+   "caller": "escenas/campo.js:116:43 Object.respIcon",
+   "maker": "escenas/campo.js:116:60",
+   "firstRun": "la-bola/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "cq0.86_00",
+   "file": "cq0.86_00.rgba",
+   "w": 28,
+   "h": 24,
+   "sha256": "e42b89706fa3c7281cca42e208b2affcc9fad768d08fa3bc5965dd3bc4597030",
+   "caller": "escenas/campo.js:87:34 rana",
+   "maker": "escenas/campo.js:87:61",
+   "firstRun": "arriba-abajo/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "cq1_00",
+   "file": "cq1_00.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "c8717ae68b12349fc7daf8a06388dca414e1c3dbec78c5211e91e0f8ebf3bffc",
+   "caller": "escenas/campo.js:87:34 rana",
+   "maker": "escenas/campo.js:87:61",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "cq1_01",
+   "file": "cq1_01.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "8aa6c2bbdb6f3fc9dac64144c1532663d41216ddb9af0dbb9dc8d97eb971bba2",
+   "caller": "escenas/campo.js:87:34 rana",
+   "maker": "escenas/campo.js:87:61",
+   "firstRun": "la-bola/alternate",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "cq1_10",
+   "file": "cq1_10.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "d5972b548da9b40ec44c1f8369c54552ec37031c5750bc9df9bb40898ff292f3",
+   "caller": "escenas/campo.js:87:34 rana",
+   "maker": "escenas/campo.js:87:61",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenidle0",
+   "file": "pccarmenidle0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "0f458c009a0d087bd47bb1dd0ecef1dab84637c95b822cb77f650466170897a1",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenidle1",
+   "file": "pccarmenidle1.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "ccf2e584ae7ff3a5ca21aa551a5e861a150d9d2000eb40533bb62a730f283ef2",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "h-campo/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenoffer0",
+   "file": "pccarmenoffer0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "53ca8722e122d5d2ff49da385c7ceeb350cdffafc177ecc71879c53e6e454b6c",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pccarmentu0",
+   "file": "pccarmentu0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "429f65e7a6882fc188146354d33d011d2b1b2a52cceb64ed1f12f3edb11cf82f",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "otra-vez/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenwave00",
+   "file": "pccarmenwave00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "fc9e4a78177c5966bad7032cc8bdce95d829b47ad6f76ddae6497ce8d361ae4d",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenwave10",
+   "file": "pccarmenwave10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "00332acac59222e6d6be110dfadf01a5589aa110223352d6b4cf932c79f661ce",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "h-campo/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluisidle0",
+   "file": "pcluisidle0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "808f88ba1715c4aac35e11ad848fdb7f29539151eaf1fa7555f14874a1da87ab",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pcluisidle1",
+   "file": "pcluisidle1.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "4282504dc2d7ed80ebef814ef2c9afc4d48d8395ff00ff2ca71ae025602fa0b8",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "pcluisoffer0",
+   "file": "pcluisoffer0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "925d9f3489e855bd355c15ea5d7538e9f7049b6b6222b4143c45df2988196e72",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pcluistu0",
+   "file": "pcluistu0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "895890b6d2eb90eb65836bd980b5569e86f9dc1b47274c6e6536d23880e49d19",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "otra-vez/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluiswave00",
+   "file": "pcluiswave00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "98cf5269b410868321f5e83aac9aebd99c493a23abbd2a596054159f63d3c63c",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pcluisyo0",
+   "file": "pcluisyo0.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "4f75ff3f636acbe15028661bff656347b1c9b9cbc3d7db3dd2be8b632ab2885b",
+   "caller": "escenas/campo.js:73:113 gente",
+   "maker": "escenas/campo.js:73:144",
+   "firstRun": "otra-vez/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pebark0",
+   "file": "pebark0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "218d590160dd96957c520b83dbfc564f8eca445485ea3d61635a675a0782f558",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pebark1",
+   "file": "pebark1.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "600f2f054110dbdfbffb538f59171e2e02b82a7a211425da08a14524a8bfca93",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/wrong",
+   "runs": 13,
+   "variants": 1
+  },
+  {
+   "key": "peeat0",
+   "file": "peeat0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "ea8cf5680d7ba33358f0d0d48c9bf2b65d7a9d7f2d4b7ab04c3371ac02b36288",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "otra-vez/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "peeat1",
+   "file": "peeat1.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "755f7e8831d006080b0f89539078ee9728ed21277a02cfe07498cd4a24ef8d0d",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "otra-vez/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pehusmea0",
+   "file": "pehusmea0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "53d640caa0dc846e86df90db58f9f7561970f063962bbd68a19c735b754de9f8",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "arriba-abajo/wrong",
+   "runs": 5,
+   "variants": 1
+  },
+  {
+   "key": "pehusmea1",
+   "file": "pehusmea1.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "fe33378fc8b2687702bc5b81d5ade66fd0f555de03c8a8ca453d248f44849533",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "arriba-abajo/wrong",
+   "runs": 5,
+   "variants": 1
+  },
+  {
+   "key": "pelie0",
+   "file": "pelie0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "cb6666c6617ba030b148426ea8bd75b46e5ad1c9f4a174a6f7b03aac58199576",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "perun0",
+   "file": "perun0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "524e83ec83e6b7f714015b1c28bf20a12fa6c4c79fba8dc1f218b51f4bd4f3f2",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 11,
+   "variants": 1
+  },
+  {
+   "key": "perun1",
+   "file": "perun1.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "1a81b16d4fefa215935b81807ed139d8c304ecb7a7b5585832dd03392ce60064",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 11,
+   "variants": 1
+  },
+  {
+   "key": "pesit0",
+   "file": "pesit0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "218d590160dd96957c520b83dbfc564f8eca445485ea3d61635a675a0782f558",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pewalk0",
+   "file": "pewalk0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "8521740601b30f8a4c3e47952de2a127180f906880c1f90844bacaf5e080120c",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "pewalk1",
+   "file": "pewalk1.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "c74c231302bec6fae20dff3f6417c10ee2d7dc7d66eedb69cd0bc8e0f3c3a928",
+   "caller": "escenas/campo.js:77:196 perro",
+   "maker": "escenas/campo.js:77:218",
+   "firstRun": "la-bola/right",
+   "runs": 12,
+   "variants": 1
+  }
+ ],
+ "outsideCache": [],
+ "notDumped": [
+  {
+   "key": "cqv0",
+   "caller": "juego.js:59:17"
+  },
+  {
+   "key": "cqv1",
+   "caller": "juego.js:59:17"
+  }
+ ],
+ "sites": [
+  {
+   "line": 73,
+   "col": 113,
+   "key": "\"pc\"+id+pose+habla",
+   "made": [
+    "pccarmenidle0",
+    "pccarmenidle1",
+    "pccarmenoffer0",
+    "pccarmentu0",
+    "pccarmenwave00",
+    "pccarmenwave10",
+    "pcluisidle0",
+    "pcluisidle1",
+    "pcluisoffer0",
+    "pcluistu0",
+    "pcluiswave00",
+    "pcluisyo0"
+   ]
+  },
+  {
+   "line": 77,
+   "col": 196,
+   "key": "\"pe\"+o.pose+f",
+   "made": [
+    "pebark0",
+    "pebark1",
+    "peeat0",
+    "peeat1",
+    "pehusmea0",
+    "pehusmea1",
+    "pelie0",
+    "perun0",
+    "perun1",
+    "pesit0",
+    "pewalk0",
+    "pewalk1"
+   ]
+  },
+  {
+   "line": 87,
+   "col": 34,
+   "key": "\"cq\"+q.s+\"_\"+bl+op",
+   "made": [
+    "cq0.86_00",
+    "cq1_00",
+    "cq1_01",
+    "cq1_10"
+   ]
+  },
+  {
+   "line": 90,
+   "col": 57,
+   "key": "\"bola\"+o.k",
+   "made": [
+    "bolaC",
+    "bolaL",
+    "bolaq"
+   ]
+  },
+  {
+   "line": 96,
+   "col": 15,
+   "key": "\"campo\"",
+   "made": [
+    "campo"
+   ]
+  },
+  {
+   "line": 103,
+   "col": 77,
+   "key": "\"bolaq\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 103,
+   "col": 202,
+   "key": "\"cesta\"",
+   "made": [
+    "cesta"
+   ]
+  },
+  {
+   "line": 116,
+   "col": 43,
+   "key": "\"cq.6_0\"",
+   "made": [
+    "cq.6_0"
+   ]
+  },
+  {
+   "line": 116,
+   "col": 80,
+   "key": "\"bolaq\"",
+   "made": [],
+   "madeElsewhere": true
+  }
+ ]
+}

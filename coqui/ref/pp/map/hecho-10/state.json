@@ -1,0 +1,56 @@
+{
+  "id": "map/hecho-10",
+  "kind": "mapa",
+  "source": "docs/proyecto/pixel/mapa.html?hecho=10",
+  "browser": "Chromium 157.0.8103.78",
+  "clock": "requestAnimationFrame queued and run once with timestamp 0; performance.now() = 0; Date.now() = 1700000000000; so the frame is time 0",
+  "mathRandomCalls": 0,
+  "engine": {
+    "W": 256,
+    "H": 480,
+    "S": 8,
+    "originX": 0,
+    "originY": 36,
+    "OX": 128,
+    "OY": 276,
+    "SHADOW_X": 0.9,
+    "SHADOW_Y": -0.1,
+    "STILL": false,
+    "SIN": 0.5,
+    "COS": 0.8660254037844386,
+    "R2": 1.4142135623730951,
+    "WIND_FPS": 8,
+    "GRADIENT_Y": 0.21650635094610965,
+    "EDGE": 0.28,
+    "PP_SCENE": {
+      "w": 256,
+      "h": 480,
+      "s": 8,
+      "originY": 36,
+      "shadowX": 0.9,
+      "shadowY": -0.1
+    }
+  },
+  "counts": {
+    "tufts": 9559,
+    "leaves": 610,
+    "waterPix": 19814
+  },
+  "places": ["casa", "parque", "cocina", "colmado", "calle", "plaza", "playa", "fonda", "casa2", "fuerte"],
+  "hecho": [true, true, true, true, true, true, true, true, true, true],
+  "abierto": [true, true, true, true, true, true, true, true, true, true],
+  "aqui": 9,
+  "N": 10,
+  "time": 0,
+  "frog": {
+    "at": 9,
+    "x": -32.526911934581186,
+    "y": -32.526911934581186,
+    "z": 0,
+    "yaw": 0.7853981633974483,
+    "path": null,
+    "t": 0,
+    "squash": 0,
+    "onArrive": null
+  }
+}

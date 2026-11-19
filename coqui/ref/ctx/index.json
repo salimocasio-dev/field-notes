@@ -1,0 +1,272 @@
+{
+  "what": "canvas reference: 40 cases, their source sprites and the contact sheet",
+  "files": 53,
+  "totalBytes": 832746,
+  "entries": [
+    {
+      "path": "cases.json",
+      "bytes": 64916,
+      "sha256": "469480224a457afc90a5a86e759376d6ef33b009c9639a9986cf06006537a5a7"
+    },
+    {
+      "path": "cases.md",
+      "bytes": 5204,
+      "sha256": "1fd796aeceef9338aa9d600cdf8a5ed5cac93e204bb8f9201ab25a37de73415d"
+    },
+    {
+      "path": "sheet.png",
+      "bytes": 67686,
+      "sha256": "539c002e6c0bb5aa158110ef0c9c6cb1831e37f94a20c94231b23cdb854c5be8"
+    },
+    {
+      "path": "sources/abuela.bin",
+      "bytes": 9792,
+      "sha256": "831aa41c06c47834cd9f8bcf6b7631c594ed747e81ba9d3aca38432a7296b82f"
+    },
+    {
+      "path": "sources/ball.bin",
+      "bytes": 1936,
+      "sha256": "9ef407d43e9f718d34f7dd8dd5f9b9fc2bb1894e239d3a9d66be2a4702728774"
+    },
+    {
+      "path": "sources/bush.bin",
+      "bytes": 2992,
+      "sha256": "a0d30b30c9c8359578f0ae8d5766dcfc82f3b1a5c033b0542c2e458a755ed969"
+    },
+    {
+      "path": "sources/coqui.bin",
+      "bytes": 3456,
+      "sha256": "c8717ae68b12349fc7daf8a06388dca414e1c3dbec78c5211e91e0f8ebf3bffc"
+    },
+    {
+      "path": "sources/coqui5.bin",
+      "bytes": 1020,
+      "sha256": "3a44a8f6fd0da7f110483c0d0e247f28fd4b6efabf21780087e6b872ff0419ad"
+    },
+    {
+      "path": "sources/coqui6.bin",
+      "bytes": 1360,
+      "sha256": "947dafedb89c34c11b4f0fb938238eca92f96ddb631ffa22c8fd8b6a611397a1"
+    },
+    {
+      "path": "sources/coqui7.bin",
+      "bytes": 1840,
+      "sha256": "c7f300a8de318e58629154aeaaa997779078adb9b9dacc119c312f4e28bd81d0"
+    },
+    {
+      "path": "sources/cup.bin",
+      "bytes": 2640,
+      "sha256": "77787d359e3960ad9b1b759078895dc70f6786c9c5b7c1220fe578da989cfa27"
+    },
+    {
+      "path": "sources/pot.bin",
+      "bytes": 2640,
+      "sha256": "852b66913320fb325300d7abfb6cd0d590e70bc7713133849824a5aad503f6de"
+    },
+    {
+      "path": "sources/tree.bin",
+      "bytes": 11904,
+      "sha256": "858f6d7ba8c9625b804c33e852a2b548eb2ad3715f1ed2e31f0b14406039187d"
+    },
+    {
+      "path": "tiles/01.bin",
+      "bytes": 16384,
+      "sha256": "9fa14d250abeb73596bdb7551c2aa9367420f5e3ad4d2397130180f505873ef0"
+    },
+    {
+      "path": "tiles/02.bin",
+      "bytes": 16384,
+      "sha256": "049988911f0b39d8a0d55b3f1091e25d50b47930da95d21e4211c2c2f3264f56"
+    },
+    {
+      "path": "tiles/03.bin",
+      "bytes": 16384,
+      "sha256": "b520182c8de042a84e597c1027195c8f0e81aed429de450a21f68ea1b0a0a022"
+    },
+    {
+      "path": "tiles/04.bin",
+      "bytes": 16384,
+      "sha256": "3634633bf39d370a5a839fc5d5d4f44c5f3d6254e5bea10ba14f3d0316bd9246"
+    },
+    {
+      "path": "tiles/05.bin",
+      "bytes": 16384,
+      "sha256": "3eba79d8bf70bce695514306f36d6f75d3b763db027de71bc2a3dec4adc146a0"
+    },
+    {
+      "path": "tiles/06.bin",
+      "bytes": 16384,
+      "sha256": "141ede117bf99d6a891ea0510bd325f941147d4cdc95d5a720b5b8d22efb1be6"
+    },
+    {
+      "path": "tiles/07.bin",
+      "bytes": 16384,
+      "sha256": "dcfec8e51921022b80d792883164f25d9a4bdfc69d1d7145424d3d8a675b9579"
+    },
+    {
+      "path": "tiles/08.bin",
+      "bytes": 16384,
+      "sha256": "ed207ea066ac438462ee90443a494ee90bf3a7571b78254843944312a06bb9e3"
+    },
+    {
+      "path": "tiles/09.bin",
+      "bytes": 16384,
+      "sha256": "9a758f27ec4041fbf5283090fd8b317d16c66986ec32a1a8a4ce882ce4edb524"
+    },
+    {
+      "path": "tiles/10.bin",
+      "bytes": 16384,
+      "sha256": "bfe00ced6912637bb539f997db0083a01348376aa906776d91c1b07978647b92"
+    },
+    {
+      "path": "tiles/11.bin",
+      "bytes": 16384,
+      "sha256": "fff2539bd4dfd0d1539a3055313e64d069e850277fc69f81b1692e38d9c673a1"
+    },
+    {
+      "path": "tiles/12.bin",
+      "bytes": 16384,
+      "sha256": "a23b0d1f190c6f6e6a99be5964c6df30c1f4bb60f4bd734a78af2904d9fb7de8"
+    },
+    {
+      "path": "tiles/13.bin",
+      "bytes": 16384,
+      "sha256": "814fb8c2c66a3e26486870b647d638167544a067529d78ea979dac2eda20b2be"
+    },
+    {
+      "path": "tiles/14.bin",
+      "bytes": 16384,
+      "sha256": "3d822bbccbb174f146c35082f5480609a8073fb3c4b0a2a925f06f01dec3b8d4"
+    },
+    {
+      "path": "tiles/15.bin",
+      "bytes": 16384,
+      "sha256": "c028f1f798674c6eee5e38a72d40d56e1461ec1daebeca1ff95d815727b5f532"
+    },
+    {
+      "path": "tiles/16.bin",
+      "bytes": 16384,
+      "sha256": "5338303f7ddcc52ea335440427b9a3cb9fde0e493535ee9e6f334a02568ee8e9"
+    },
+    {
+      "path": "tiles/17.bin",
+      "bytes": 16384,
+      "sha256": "1f6b219be740d55677ce0ed6d1bccea6396fd22a8d7e70ecc0568a710b5d7289"
+    },
+    {
+      "path": "tiles/18.bin",
+      "bytes": 16384,
+      "sha256": "641a64ccba69314d4061cc20389163f9418c4c071669ac8a8764af9d62f5e402"
+    },
+    {
+      "path": "tiles/19.bin",
+      "bytes": 16384,
+      "sha256": "d20ef59f54c408f884cdc434acb8c854fa2c742c3a2e8c3268566293eb328e01"
+    },
+    {
+      "path": "tiles/20.bin",
+      "bytes": 16384,
+      "sha256": "e0945ec645aa399b0b9b822a91fc6caab46c9f912f47f5b5e111871e3b6837a5"
+    },
+    {
+      "path": "tiles/21.bin",
+      "bytes": 16384,
+      "sha256": "2e3dab6e393799e2a9bff9c2868047f423acceaf9f11689e45b3798c527f1a8c"
+    },
+    {
+      "path": "tiles/22.bin",
+      "bytes": 16384,
+      "sha256": "9f6c12c0ec9d99bc706ff83e7052a69ef97af7ec7a7b6e6e691ea7a48fc7977a"
+    },
+    {
+      "path": "tiles/23.bin",
+      "bytes": 16384,
+      "sha256": "c2cf0dc1a75ef3e0630348e95c68a301685f062289a440f0464f9379ce1a9e40"
+    },
+    {
+      "path": "tiles/24.bin",
+      "bytes": 16384,
+      "sha256": "f70e7c11283c1c923570c8aea23de50bbd6999e352d9df136426133725e1db2b"
+    },
+    {
+      "path": "tiles/25.bin",
+      "bytes": 16384,
+      "sha256": "3b0027173ad8bb7a47861a63fb6a9a4c71e3ade037dfc21504fe871e8120bfb8"
+    },
+    {
+      "path": "tiles/26.bin",
+      "bytes": 16384,
+      "sha256": "27572d2be405f5ac929abcc2e937a5a881e5d2fb8aaa77e2bb9a9213800fa6e3"
+    },
+    {
+      "path": "tiles/27.bin",
+      "bytes": 16384,
+      "sha256": "86fe7d7daa588323e81d50f116563ba0b910586de56df91a4b9d92af17b3eeba"
+    },
+    {
+      "path": "tiles/28.bin",
+      "bytes": 16384,
+      "sha256": "e2f545d9fdfbd0ee973a42f6ced7562900cd68a704720e5e608818598eb34db1"
+    },
+    {
+      "path": "tiles/29.bin",
+      "bytes": 16384,
+      "sha256": "d6776d51a16114be55ff47d74daaf7da9db9d75ec2c7d077e6a774b415ad9fe4"
+    },
+    {
+      "path": "tiles/30.bin",
+      "bytes": 16384,
+      "sha256": "1275d8ccc00b692fc03ef22989414f51a45f7a3ad654805e77cc0bb59862b5d1"
+    },
+    {
+      "path": "tiles/31.bin",
+      "bytes": 16384,
+      "sha256": "2aa30ae351f3a5b6332c840d6604dad3cf567db0b6538a05601c1a377cc9037a"
+    },
+    {
+      "path": "tiles/32.bin",
+      "bytes": 16384,
+      "sha256": "b767202433dcb7c9c96169cd0593c3b24ed1cdbc6b3f2febc915adaad4e2e3fa"
+    },
+    {
+      "path": "tiles/33.bin",
+      "bytes": 16384,
+      "sha256": "5fb7b7d6563449d5bee26c91bbf7342cc55344ad74df12d3efc415cecbb66f43"
+    },
+    {
+      "path": "tiles/34.bin",
+      "bytes": 16384,
+      "sha256": "b74782f10cbc2834fc94a216127545470881e8cd85c00666582c94ffb2bb75de"
+    },
+    {
+      "path": "tiles/35.bin",
+      "bytes": 16384,
+      "sha256": "b4d473c2f567507c6d0467ff89b9456a5c339d05c905cec6ded9491f901668cc"
+    },
+    {
+      "path": "tiles/36.bin",
+      "bytes": 16384,
+      "sha256": "7bebbd014be91473102771b8d47ddff1cbba4147adce2e07e6aae44e466c46bb"
+    },
+    {
+      "path": "tiles/37.bin",
+      "bytes": 16384,
+      "sha256": "08f49f0c3a246c59c55bd7640ccbc3b4cf86ee7c045a397dd531f20f83221ab9"
+    },
+    {
+      "path": "tiles/38.bin",
+      "bytes": 16384,
+      "sha256": "91478f588370c6ce86f10bb8501e9d2e93eb269933d25c0c9281b0b149886fdb"
+    },
+    {
+      "path": "tiles/39.bin",
+      "bytes": 16384,
+      "sha256": "e1c301dadaad8f5738e01161861f3e396e0f530f83ce538c865390cb02d672f8"
+    },
+    {
+      "path": "tiles/40.bin",
+      "bytes": 16384,
+      "sha256": "5cc02a4db27308d3447acce9ecfe8fbd049ab8d3af3e007fafd03a40dba4165d"
+    }
+  ]
+}

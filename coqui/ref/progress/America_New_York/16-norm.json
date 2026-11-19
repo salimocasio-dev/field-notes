@@ -1,0 +1,50 @@
+{
+ "id": "16-norm",
+ "tz": "America/New_York",
+ "title": "norm: accents, ñ, case, punctuation, numbers, null and undefined, non-strings",
+ "source": "historia/palabras.js",
+ "sourceSha256": "f6a16b9853f472413731bee5cd9626104f40c09460c9f8d97b9ab86cff385539",
+ "setup": {
+  "stored": null,
+  "storage": "memory",
+  "clock": "hook"
+ },
+ "dartReplayable": true,
+ "initial": {
+  "store": {
+   "palabras": {},
+   "dias": {},
+   "cuentos": {},
+   "ajustes": {
+    "min": 30,
+    "todo": 0,
+    "bienvenida": 0,
+    "habla": 1
+   },
+   "minutos": 0,
+   "v": 1
+  },
+  "saved": null
+ },
+ "steps": [
+  {"i":0,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["¡Hola, abuela!"],"member":"normalize","dart":{"s":"¡Hola, abuela!"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" hola abuela ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":1,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["Sí"],"member":"normalize","dart":{"s":"Sí"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" si ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":2,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["  ¿Cómo   estás?  "],"member":"normalize","dart":{"s":"  ¿Cómo   estás?  "},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" como estas ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":3,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["PEQUEÑA"],"member":"normalize","dart":{"s":"PEQUEÑA"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" pequena ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":4,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["adiós"],"member":"normalize","dart":{"s":"adiós"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" adios ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":5,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["pingüino"],"member":"normalize","dart":{"s":"pingüino"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" pinguino ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":6,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":[""],"member":"normalize","dart":{"s":""},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":"  ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":7,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":[null],"member":"normalize","dart":{"s":null},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":"  ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":8,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":[null],"member":"normalize","dart":{"s":null},"undefinedArgs":[0],"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":"  ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":9,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":[42],"member":"normalize","dart":null,"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" 42 ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":10,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["1, 2, 3"],"member":"normalize","dart":{"s":"1, 2, 3"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" 1 2 3 ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":11,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["Él-y-ella"],"member":"normalize","dart":{"s":"Él-y-ella"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" el y ella ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":12,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["café́"],"member":"normalize","dart":{"s":"café́"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" cafe ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":13,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["ÁÉÍÓÚ áéíóú ü"],"member":"normalize","dart":{"s":"ÁÉÍÓÚ áéíóú ü"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" aeiou aeiou u ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":14,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["😀 sol"],"member":"normalize","dart":{"s":"😀 sol"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" sol ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":15,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["a\tb\nc"],"member":"normalize","dart":{"s":"a\tb\nc"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" a b c ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":16,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":["NÃO ção"],"member":"normalize","dart":{"s":"NÃO ção"},"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" nao cao ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":17,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":[true],"member":"normalize","dart":null,"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" true ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null},
+  {"i":18,"now":1772470800000,"local":"2026-03-02T12:00:00-05:00","call":"norm","args":[["a","b"]],"member":"normalize","dart":null,"note":"normalize() is a top-level function of coqui_contracts, not a ProgressStore member","returns":" a b ","store":{"palabras":{},"dias":{},"cuentos":{},"ajustes":{"min":30,"todo":0,"bienvenida":0,"habla":1},"minutos":0,"v":1},"saved":null}
+ ]
+}
