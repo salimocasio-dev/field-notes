@@ -1,0 +1,1082 @@
+{
+ "scene": "lago",
+ "file": "historia/escenas/lago.js",
+ "fileSha256": "b15f6a3164786fbf3479fde77deae77541f9db1a71966bcd96ca479744814197",
+ "sprites": [
+  {
+   "key": "bolsa",
+   "file": "bolsa.rgba",
+   "w": 12,
+   "h": 13,
+   "sha256": "04177ddc3641b52473be3f3985ab1793f3f041d274d50c70feef992f6b7124c5",
+   "caller": "escenas/lago.js:92:36 gente",
+   "maker": "escenas/lago.js:58:28 mkBolsa",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "btazul",
+   "file": "btazul.rgba",
+   "w": 20,
+   "h": 20,
+   "sha256": "855102034d60698d1c66e295b19766468e69ad7e30b4932e23d015760ac11e5c",
+   "caller": "escenas/lago.js:104:53 bote",
+   "maker": "escenas/lago.js:104:70",
+   "firstRun": "los-botes/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "btmadera",
+   "file": "btmadera.rgba",
+   "w": 20,
+   "h": 20,
+   "sha256": "faada6185930d0b0eb8e006f4c4439c513dbd6be168c77919e62ec2df69dd290",
+   "caller": "escenas/lago.js:94:43",
+   "maker": "escenas/lago.js:94:58",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "btrojo",
+   "file": "btrojo.rgba",
+   "w": 20,
+   "h": 20,
+   "sha256": "4820b2ab9e1d967d879c3af175e184ab47e1e9754193f1f20c12bfbac2e94e03",
+   "caller": "escenas/lago.js:104:53 bote",
+   "maker": "escenas/lago.js:104:70",
+   "firstRun": "los-botes/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "btverde",
+   "file": "btverde.rgba",
+   "w": 20,
+   "h": 20,
+   "sha256": "f82727deaca4658aee1332e8a2cb9b5079972c6831c97f04928c68a387b5e237",
+   "caller": "escenas/lago.js:104:53 bote",
+   "maker": "escenas/lago.js:104:70",
+   "firstRun": "los-botes/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq1_00",
+   "file": "cq1_00.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "c8717ae68b12349fc7daf8a06388dca414e1c3dbec78c5211e91e0f8ebf3bffc",
+   "caller": "escenas/lago.js:107:34 rana",
+   "maker": "escenas/lago.js:107:61",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "cq1_01",
+   "file": "cq1_01.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "8aa6c2bbdb6f3fc9dac64144c1532663d41216ddb9af0dbb9dc8d97eb971bba2",
+   "caller": "escenas/lago.js:107:34 rana",
+   "maker": "escenas/lago.js:107:61",
+   "firstRun": "pan-para-el-pato/wrong",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "cq1_10",
+   "file": "cq1_10.rgba",
+   "w": 32,
+   "h": 27,
+   "sha256": "d5972b548da9b40ec44c1f8369c54552ec37031c5750bc9df9bb40898ff292f3",
+   "caller": "escenas/lago.js:107:34 rana",
+   "maker": "escenas/lago.js:107:61",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "jn0",
+   "file": "jn0.rgba",
+   "w": 22,
+   "h": 34,
+   "sha256": "d0dfb27d63e9fa3e6b76bac181c8c707b25d9b6b9377f7601a39ca74d6bc4ca6",
+   "caller": "escenas/lago.js:116:58 Object.d",
+   "maker": "escenas/lago.js:116:73",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "jn1",
+   "file": "jn1.rgba",
+   "w": 22,
+   "h": 34,
+   "sha256": "16808fca0a69aaa6855b8793bcd909338cb1a8e2d3f77613aa98618df2c408b9",
+   "caller": "escenas/lago.js:116:58 Object.d",
+   "maker": "escenas/lago.js:116:73",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "jn2",
+   "file": "jn2.rgba",
+   "w": 22,
+   "h": 34,
+   "sha256": "c5c99c487058d1341cd96aa1aacf18365de7120efba0b8cb96357070e5dfebaa",
+   "caller": "escenas/lago.js:116:58 Object.d",
+   "maker": "escenas/lago.js:116:73",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "jn3",
+   "file": "jn3.rgba",
+   "w": 22,
+   "h": 34,
+   "sha256": "13b25b677d59f2e83f33ed43bc5103ba279491065a7df27d37a3467f55dd61f1",
+   "caller": "escenas/lago.js:116:58 Object.d",
+   "maker": "escenas/lago.js:116:73",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "jn4",
+   "file": "jn4.rgba",
+   "w": 22,
+   "h": 34,
+   "sha256": "a063eb7c2933a8166f2100639144712b0b018dd9f8edb6136e24371ab44b6cc6",
+   "caller": "escenas/lago.js:116:58 Object.d",
+   "maker": "escenas/lago.js:116:73",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "lago",
+   "file": "lago.rgba",
+   "w": 240,
+   "h": 216,
+   "sha256": "f5ca379959fade7e7c4d7ce7b4faa226e87e451220381bd3689947d76a0c4b11",
+   "caller": "escenas/lago.js:112:15 Object.draw",
+   "maker": "escenas/lago.js:23:26 fondo",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pan",
+   "file": "pan.rgba",
+   "w": 11,
+   "h": 10,
+   "sha256": "9bb2ea7850f4c8e3958f83a073383e2397df6c14469f82f6617308b0933bd53b",
+   "caller": "escenas/lago.js:108:42 rana",
+   "maker": "escenas/lago.js:57:26 mkPan",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenidle00",
+   "file": "pccarmenidle00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "0f458c009a0d087bd47bb1dd0ecef1dab84637c95b822cb77f650466170897a1",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 15,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenidle10",
+   "file": "pccarmenidle10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "ccf2e584ae7ff3a5ca21aa551a5e861a150d9d2000eb40533bb62a730f283ef2",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 5,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenoffer00",
+   "file": "pccarmenoffer00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "53ca8722e122d5d2ff49da385c7ceeb350cdffafc177ecc71879c53e6e454b6c",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenojos00",
+   "file": "pccarmenojos00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "099c900e1b3383d08e4f265ea99fe8a8041a258ed5f6cb8681988d022250bc63",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pccarmentu00",
+   "file": "pccarmentu00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "429f65e7a6882fc188146354d33d011d2b1b2a52cceb64ed1f12f3edb11cf82f",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "pccarmenwave000",
+   "file": "pccarmenwave000.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "fc9e4a78177c5966bad7032cc8bdce95d829b47ad6f76ddae6497ce8d361ae4d",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "pcluisidle00",
+   "file": "pcluisidle00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "808f88ba1715c4aac35e11ad848fdb7f29539151eaf1fa7555f14874a1da87ab",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluisidle01",
+   "file": "pcluisidle01.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "d9ba39fa7f35bc897fe7e6257197bd87777627b427a034ffaa41b30783fbc59e",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "pcluisidle10",
+   "file": "pcluisidle10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "4282504dc2d7ed80ebef814ef2c9afc4d48d8395ff00ff2ca71ae025602fa0b8",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/wrong",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "pcluisidle11",
+   "file": "pcluisidle11.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "1d45de1199132c0f517e69b911d8937373be1b2142cbd156e60f65bbbbcd9dc1",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 2,
+   "variants": 1
+  },
+  {
+   "key": "pcluisoffer00",
+   "file": "pcluisoffer00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "925d9f3489e855bd355c15ea5d7538e9f7049b6b6222b4143c45df2988196e72",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluisoffer10",
+   "file": "pcluisoffer10.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "12d1da061c42f58439dc5fca8853301b23dfc93d5645d68a304a23a044a0aeea",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/wrong",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "pcluisojos00",
+   "file": "pcluisojos00.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "a4635503877defb9c22916497cfbfbf94e427ae9c92f47ae9999de67ea6d5cec",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluiswave000",
+   "file": "pcluiswave000.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "98cf5269b410868321f5e83aac9aebd99c493a23abbd2a596054159f63d3c63c",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluiswave001",
+   "file": "pcluiswave001.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "a1396602c567d7104f50e2bf2cd61e4bc436ea3d3923d08cbda51a4c4c0569d0",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pcluiswave100",
+   "file": "pcluiswave100.rgba",
+   "w": 48,
+   "h": 44,
+   "sha256": "54b176072474e3b378ba07cea6adf0563c9611babfe2de8d5e1a3c3493037f4e",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pcluiswave101",
+   "file": "pcluiswave101.rgba",
+   "w": 48,
+   "h": 41,
+   "sha256": "3fa070de42268c3a906fb82179efbb6898f84c7d48f48375e7314fb72ca271df",
+   "caller": "escenas/lago.js:90:89 gente",
+   "maker": "escenas/lago.js:90:133",
+   "firstRun": "d-pato-pequeno/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pebark0",
+   "file": "pebark0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "218d590160dd96957c520b83dbfc564f8eca445485ea3d61635a675a0782f558",
+   "caller": "escenas/lago.js:124:106 Object.d",
+   "maker": "escenas/lago.js:124:128",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pebark1",
+   "file": "pebark1.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "600f2f054110dbdfbffb538f59171e2e02b82a7a211425da08a14524a8bfca93",
+   "caller": "escenas/lago.js:124:106 Object.d",
+   "maker": "escenas/lago.js:124:128",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pelie0",
+   "file": "pelie0.rgba",
+   "w": 30,
+   "h": 22,
+   "sha256": "cb6666c6617ba030b148426ea8bd75b46e5ad1c9f4a174a6f7b03aac58199576",
+   "caller": "escenas/lago.js:124:106 Object.d",
+   "maker": "escenas/lago.js:124:128",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjazul00",
+   "file": "pjazul00.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "af90f77f6246828d2af4763fe6a8dace0d91825d2af5f5d044c024c08de799be",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjazul01",
+   "file": "pjazul01.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "60dd1317ef4f29df889f1a58dd33ddb30eb8ebb3d33bed6f2c5d965359351248",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pjazul10",
+   "file": "pjazul10.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "af90f77f6246828d2af4763fe6a8dace0d91825d2af5f5d044c024c08de799be",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjazul11",
+   "file": "pjazul11.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "98e1ce0f10f4d0ec9da5dab1f071a2eaa0ea3ab7cbb73c23224c253ca7630112",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pjblanco00",
+   "file": "pjblanco00.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "eac211851e311aba33e9c15b3ad73a8d8919050d2b067f92f2642d1c93288e14",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjblanco01",
+   "file": "pjblanco01.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "9d25119b6513db688361348cad10d746087d1413f9f610330a49c9ee9ee3ea4f",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjblanco10",
+   "file": "pjblanco10.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "eac211851e311aba33e9c15b3ad73a8d8919050d2b067f92f2642d1c93288e14",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjblanco11",
+   "file": "pjblanco11.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "7ee2a4727bf1ba7d0834947a3163065fe83105fda5242c7047b7415879d0b24a",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjnegro00",
+   "file": "pjnegro00.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "c94bd5dd0cc2bc75cb68d1f0580bac038a7ef505dc8424003008f1409a44266f",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjnegro01",
+   "file": "pjnegro01.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "2512edb7a9f2cb09c1266fcd35c823e8b74d8254d4964b49707c9d4e40cc6f25",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjnegro10",
+   "file": "pjnegro10.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "c94bd5dd0cc2bc75cb68d1f0580bac038a7ef505dc8424003008f1409a44266f",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pjnegro11",
+   "file": "pjnegro11.rgba",
+   "w": 15,
+   "h": 12,
+   "sha256": "52e924dcafa645cd44acf4570350323acbf4188a1237fcb1417fde6a92b216b3",
+   "caller": "escenas/lago.js:102:89 ave",
+   "maker": "escenas/lago.js:102:110",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "poazul",
+   "file": "poazul.rgba",
+   "w": 16,
+   "h": 16,
+   "sha256": "e952276754b0916ce7382573ceea4de8e8cfc7d7caffd7afd1c016b6ccfe630f",
+   "caller": "escenas/lago.js:134:93 Object.respIcon",
+   "maker": "escenas/lago.js:134:108",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "porojo",
+   "file": "porojo.rgba",
+   "w": 16,
+   "h": 16,
+   "sha256": "fab649d655cc2054e6e3764cc67e53c9a127e269d4262693a304f5102341367b",
+   "caller": "escenas/lago.js:134:93 Object.respIcon",
+   "maker": "escenas/lago.js:134:108",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "poverde",
+   "file": "poverde.rgba",
+   "w": 16,
+   "h": 16,
+   "sha256": "54ba13ce9587ccd8bf952834ca63a58a89a298159d81e0cd0d00678816e644cc",
+   "caller": "escenas/lago.js:134:93 Object.respIcon",
+   "maker": "escenas/lago.js:134:108",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ptamarilloanda0",
+   "file": "ptamarilloanda0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "612e476b228e372364d9234cdf86b8cf17783aa7dd012ee1264379916d230004",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "ptamarilloanda1",
+   "file": "ptamarilloanda1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "3ac3d5fa381d30de6171a5bfb00e7af6bced5cc5dad7e5c4f70a7167ead54399",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "ptamarillonada0",
+   "file": "ptamarillonada0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "0527b4a7448d228b5d3583b45ef30b499d4162faeedcdbd2365dc9483728d8af",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "ptamarillonada1",
+   "file": "ptamarillonada1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "0527b4a7448d228b5d3583b45ef30b499d4162faeedcdbd2365dc9483728d8af",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ptamarillovuela0",
+   "file": "ptamarillovuela0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "0e9217cae9841209bfa2720502533a531e403148db3233306eda5cd1a7a93a31",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ptamarillovuela1",
+   "file": "ptamarillovuela1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "b5a176cf894023d13b05245d3c2e96c8c5c977b28077559fb4b35315672af0d4",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ptblancoanda0",
+   "file": "ptblancoanda0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "95f655cab17baaff8501868613b03fe7fee9c961f63c9f344b8f8fee61fca9bd",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "ptblancoanda1",
+   "file": "ptblancoanda1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "b29184e6cef1b9c1eb8396123e5e31957b05f9e4daca419bb6e6ff40a6d62543",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 4,
+   "variants": 1
+  },
+  {
+   "key": "ptblanconada0",
+   "file": "ptblanconada0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "feb175d4a2a40233be68ee385cfced3a7b2d0b8c607d870c86029aaf4f5796a6",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "ptblanconada1",
+   "file": "ptblanconada1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "feb175d4a2a40233be68ee385cfced3a7b2d0b8c607d870c86029aaf4f5796a6",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 12,
+   "variants": 1
+  },
+  {
+   "key": "ptblancovuela0",
+   "file": "ptblancovuela0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "17426b570aaac94213c9343ae1b28535dc699630122af4965c4a4957eea16c49",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ptblancovuela1",
+   "file": "ptblancovuela1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "2a69daf955bbc474a55eff2d413c94ed6205ba3047d274e97f41fc9e26cfc3e9",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ptnegroanda0",
+   "file": "ptnegroanda0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "5e7ae2f4d8ae1901f8eccffc2149129b32fae24e80cd660dac5d5c831a47c8df",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "ptnegroanda1",
+   "file": "ptnegroanda1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "0174bca6331bde3205a6f4af35dbc593d73764b6e884ebbaf7047e70363ba662",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "ptnegronada0",
+   "file": "ptnegronada0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "30634b66c9dd22983310badec05eb0d16a10d076703ea74472d07dddfd8da9ed",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 9,
+   "variants": 1
+  },
+  {
+   "key": "ptnegronada1",
+   "file": "ptnegronada1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "30634b66c9dd22983310badec05eb0d16a10d076703ea74472d07dddfd8da9ed",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "ptnegrovuela0",
+   "file": "ptnegrovuela0.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "821a39f7e08b0995aeadfd2ff85be718c185d088f241a4a9b07862de44bc1faa",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "ptnegrovuela1",
+   "file": "ptnegrovuela1.rgba",
+   "w": 26,
+   "h": 22,
+   "sha256": "8ce3b174c0a211044365ab49923547a0197dad71645165f3fc45198449e5d10e",
+   "caller": "escenas/lago.js:96:169 pato",
+   "maker": "escenas/lago.js:96:193",
+   "firstRun": "cual/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pzazul",
+   "file": "pzazul.rgba",
+   "w": 18,
+   "h": 11,
+   "sha256": "149bbdcb3897928ea2dfbabe3c39b20eede8b7b9bf4438a6f07d33c1f098f573",
+   "caller": "escenas/lago.js:99:52 pez",
+   "maker": "escenas/lago.js:99:69",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pzpardo",
+   "file": "pzpardo.rgba",
+   "w": 18,
+   "h": 11,
+   "sha256": "a46b0dad8f9ff75448914c6c5676d2a1d1e672e6b3d10e1a468252bd29909bdb",
+   "caller": "escenas/lago.js:99:52 pez",
+   "maker": "escenas/lago.js:99:69",
+   "firstRun": "pan-para-el-pato/right",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pzrojo",
+   "file": "pzrojo.rgba",
+   "w": 18,
+   "h": 11,
+   "sha256": "c5050d7154db856969b094e94fd65ce2150ba85c5f0f06ad70fbaa37b9b92fa8",
+   "caller": "escenas/lago.js:99:52 pez",
+   "maker": "escenas/lago.js:99:69",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pzverde",
+   "file": "pzverde.rgba",
+   "w": 18,
+   "h": 11,
+   "sha256": "294df7aebec268e99b86862045f6e8e4826ee82c12c0fc0382692a4fdc86863a",
+   "caller": "escenas/lago.js:99:52 pez",
+   "maker": "escenas/lago.js:99:69",
+   "firstRun": "los-botes/right",
+   "runs": 3,
+   "variants": 1
+  }
+ ],
+ "outsideCache": [],
+ "notDumped": [
+  {
+   "key": "cqv0",
+   "caller": "juego.js:59:17"
+  },
+  {
+   "key": "cqv1",
+   "caller": "juego.js:59:17"
+  }
+ ],
+ "sites": [
+  {
+   "line": 90,
+   "col": 89,
+   "key": "\"pc\"+id+pose+habla+(p.sent?1:0)",
+   "made": [
+    "pccarmenidle00",
+    "pccarmenidle10",
+    "pccarmenoffer00",
+    "pccarmenojos00",
+    "pccarmentu00",
+    "pccarmenwave000",
+    "pcluisidle00",
+    "pcluisidle01",
+    "pcluisidle10",
+    "pcluisidle11",
+    "pcluisoffer00",
+    "pcluisoffer10",
+    "pcluisojos00",
+    "pcluiswave000",
+    "pcluiswave001",
+    "pcluiswave100",
+    "pcluiswave101"
+   ]
+  },
+  {
+   "line": 92,
+   "col": 36,
+   "key": "\"bolsa\"",
+   "made": [
+    "bolsa"
+   ]
+  },
+  {
+   "line": 93,
+   "col": 24,
+   "key": "\"pan\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 94,
+   "col": 43,
+   "key": "\"bt\"+k",
+   "made": [
+    "btmadera"
+   ]
+  },
+  {
+   "line": 96,
+   "col": 169,
+   "key": "\"pt\"+o.k+pose+f",
+   "made": [
+    "ptamarilloanda0",
+    "ptamarilloanda1",
+    "ptamarillonada0",
+    "ptamarillonada1",
+    "ptamarillovuela0",
+    "ptamarillovuela1",
+    "ptblancoanda0",
+    "ptblancoanda1",
+    "ptblanconada0",
+    "ptblanconada1",
+    "ptblancovuela0",
+    "ptblancovuela1",
+    "ptnegroanda0",
+    "ptnegroanda1",
+    "ptnegronada0",
+    "ptnegronada1",
+    "ptnegrovuela0",
+    "ptnegrovuela1"
+   ]
+  },
+  {
+   "line": 99,
+   "col": 52,
+   "key": "\"pz\"+o.c",
+   "made": [
+    "pzazul",
+    "pzpardo",
+    "pzrojo",
+    "pzverde"
+   ]
+  },
+  {
+   "line": 102,
+   "col": 89,
+   "key": "\"pj\"+o.c+f+v",
+   "made": [
+    "pjazul00",
+    "pjazul01",
+    "pjazul10",
+    "pjazul11",
+    "pjblanco00",
+    "pjblanco01",
+    "pjblanco10",
+    "pjblanco11",
+    "pjnegro00",
+    "pjnegro01",
+    "pjnegro10",
+    "pjnegro11"
+   ]
+  },
+  {
+   "line": 103,
+   "col": 24,
+   "key": "\"pan\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 104,
+   "col": 53,
+   "key": "\"bt\"+o.c",
+   "made": [
+    "btazul",
+    "btrojo",
+    "btverde"
+   ]
+  },
+  {
+   "line": 107,
+   "col": 34,
+   "key": "\"cq\"+q.s+\"_\"+bl+op",
+   "made": [
+    "cq1_00",
+    "cq1_01",
+    "cq1_10"
+   ]
+  },
+  {
+   "line": 108,
+   "col": 42,
+   "key": "\"pan\"",
+   "made": [
+    "pan"
+   ]
+  },
+  {
+   "line": 112,
+   "col": 15,
+   "key": "\"lago\"",
+   "made": [
+    "lago"
+   ]
+  },
+  {
+   "line": 116,
+   "col": 58,
+   "key": "\"jn\"+i",
+   "made": [
+    "jn0",
+    "jn1",
+    "jn2",
+    "jn3",
+    "jn4"
+   ]
+  },
+  {
+   "line": 121,
+   "col": 66,
+   "key": "\"pan\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 122,
+   "col": 53,
+   "key": "\"bolsa\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 124,
+   "col": 106,
+   "key": "\"pe\"+o.pose+f",
+   "made": [
+    "pebark0",
+    "pebark1",
+    "pelie0"
+   ]
+  },
+  {
+   "line": 126,
+   "col": 76,
+   "key": "\"pan\"",
+   "made": [],
+   "madeElsewhere": true
+  },
+  {
+   "line": 134,
+   "col": 93,
+   "key": "\"po\"+c",
+   "made": [
+    "poazul",
+    "porojo",
+    "poverde"
+   ]
+  }
+ ]
+}
