@@ -247,7 +247,7 @@ extension _Steps on StoryRunner {
   Future<void> _elige(Map<String, dynamic> st) async {
     final ops = [for (final o in st['options'] as List) o as String];
     W['respVoz'] = null;
-    W['resp'] = st['elige'] == 'say' && !OIR ? ops : null;
+    W['resp'] = st['kind'] == 'say' && !OIR ? ops : null;
     final saidMap = st['said'] as Map?;
     final ids = [
       for (final k in ops) saidMap != null && jsTruthy(saidMap[k]) ? subS(saidMap[k]) : '',
