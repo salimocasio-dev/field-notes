@@ -8,7 +8,7 @@
 //   curso.json     CURSO     (historia/curso.js)
 //   nivel.json     NV        (historia/nivel.js)
 //   llamadas.json  LLAMADAS  (historia/llamada.js; it lives inside the Llamada closure, see below)
-//   fijos.json     { clips: { <role>: <clip id> }, despedidas: [goodbye words] }
+//   fijos.json     { clips: { <role>: <clip id> }, lineas: { <clip id>: { who, text } }, despedidas: [goodbye words] }
 //
 // The data is never copied by hand. curso.js, nivel.js and llamada.js are evaluated as they are in a vm
 // context with the few browser globals they touch stubbed. Every file is then checked: the JSON that was
@@ -33,6 +33,14 @@
 // digits and underscores that ends in "_" and is followed by "+", in the same file. It must still be there (else the
 // script stops), and at least one id of ready.json must start with it. The "is in ready.json" check for ids is not
 // made for prefix roles. Every other name built at run time is printed as a dynamic family and not exported.
+//
+// LINEAS. A clip whose speaker and text the old code writes in code, because no story file has them:
+// an object literal `<id>:{who:"<who>",text:"<text>"}` in juego.js, cual.js or llamada.js (juego.js, loadVoice, adds
+// ahora_tu: {who:"narr",text:"Ahora tú."} to a story's lines). Each one found goes into `lineas`, under its clip id,
+// as {who, text}, read from the code and never copied. The id must be in ready.json and the speaker one of its voices.
+// The script stops when none is found (the pattern is gone), when one of the pair's two words (`who:` and `text:`) is
+// written anywhere else in those files (a pair of another shape: decide by hand), or when one id has two different lines.
+// A story's own line for the same id wins over this one (juego.js: `!LINES.<id>`); that is for the reader of the file.
 //
 // The goodbye words: the string literals in the second argument of dice(n,"...") inside llamada.js's
 // `adios` function (the learner's or Danny's goodbye, either one ends the call).
@@ -209,6 +217,10 @@ const inReady = new Set(ready.clips);
 const found = new Map();   // "file\0id" -> [line, ...]
 const add = (file, id, line) => { const k = file + '\0' + id; if (!found.has(k)) found.set(k, []); found.get(k).push(line); };
 const dynamic = [];
+const lineas = {};   // clip id -> {who, text}: the lines written in code
+let whoText = 0;     // how many `who:` and `text:` keys the three files hold, to see none is left out
+let pairs = 0;
+const where = new Map();   // clip id -> where the code writes its line
 const naive = new Map();   // the second net: every literal of the raw text that is a clip id
 for (const file of FILES) {
   const raw = read(path.join(HIS, file));
@@ -226,6 +238,19 @@ for (const file of FILES) {
   for (const m of src.matchAll(/\bhave\.has\(\s*(?:"([^"]*)"|'([^']*)')\s*\)/g)) add(file, m[1] ?? m[2], lineOf(src, m.index));
   for (const m of src.matchAll(/\bLINES\.([A-Za-z_$][\w$]*)/g)) add(file, m[1], lineOf(src, m.index));
   for (const m of src.matchAll(/\bLINES\[\s*(?:"([^"]*)"|'([^']*)')\s*\]/g)) add(file, m[1] ?? m[2], lineOf(src, m.index));
+  // 4. LINEAS: <id>:{who:"...",text:"..."}
+  const quoted = String.raw`(?:"([^"\\\n]*)"|'([^'\\\n]*)')`;
+  const pair = new RegExp(String.raw`([A-Za-z_$][\w$]*)\s*:\s*\{\s*who\s*:\s*${quoted}\s*,\s*text\s*:\s*${quoted}\s*\}`, 'g');
+  for (const m of src.matchAll(pair)) {
+    const id = m[1], who = m[2] ?? m[3], text = m[4] ?? m[5], at = `${file}:${lineOf(src, m.index)}`;
+    if (!inReady.has(id)) fail(`${at} writes the line of "${id}", which is not in audio/ready.json`);
+    if (!Object.hasOwn(ready.voces, who)) fail(`${at} gives "${id}" the speaker "${who}", which is not a voice of audio/ready.json (${Object.keys(ready.voces).join(', ')})`);
+    if (Object.hasOwn(lineas, id) && (lineas[id].who !== who || lineas[id].text !== text)) fail(`${at}: "${id}" has two different lines in code`);
+    lineas[id] = { who, text };
+    where.set(id, [...(where.get(id) ?? []), at]);
+    pairs++;
+  }
+  whoText += [...src.matchAll(/\bwho\s*:/g)].length + [...src.matchAll(/\btext\s*:/g)].length;
   // names built at run time
   for (const m of src.matchAll(/(?:"|')([a-z][a-z0-9_]*_)(?:"|')\s*\+/g)) dynamic.push([file, lineOf(src, m.index), m[1]]);
   // the second net
@@ -260,7 +285,9 @@ if (!adios) fail('llamada.js: no `const adios=`');
 const adiosEnd = code.indexOf('\n', adios.index);
 const despedidas = [...code.slice(adios.index, adiosEnd).matchAll(/\bdice\(\s*\w+\s*,\s*(?:"([^"]*)"|'([^']*)')\s*\)/g)].map((m) => m[1] ?? m[2]);
 if (!despedidas.length) fail('llamada.js: no goodbye words found in `adios`');
-writeJson('fijos.json', { clips, despedidas });
+if (!pairs) fail('no `<id>:{who:"...",text:"..."}` found in juego.js, cual.js or llamada.js: the pattern of the lines written in code is gone (juego.js, loadVoice)');
+if (whoText !== 2 * pairs) fail(`the three files hold ${whoText} \`who:\` and \`text:\` keys, ${2 * pairs} of them in the ${pairs} pair(s) found: a speaker and text of another shape is written in code, decide by hand`);
+writeJson('fijos.json', { clips, lineas, despedidas });
 
 // ---- what was found, for the report --------------------------------------------------------------------------------
 console.log('\nrole -> clip id -> where the code names it');
@@ -269,6 +296,7 @@ for (const [file, id, role] of ROLES) {
     : [...new Set(found.get(file + '\0' + id))].sort((x, y) => x - y).map((l) => `${file}:${l}`).join(' ');
   console.log(`  ${role.padEnd(26)} ${id.padEnd(12)} ${where}`);
 }
+for (const [id, line] of Object.entries(lineas)) console.log(`line written in code: ${id.padEnd(12)} ${JSON.stringify(line)}  ${where.get(id).join(' ')}`);
 console.log('goodbye words: ' + JSON.stringify(despedidas));
 for (const [file, line, prefix] of dynamic) if (!ROLES.some((r) => isPrefix(r[2]) && r[0] === file && r[1] === prefix)) console.log(`dynamic, not exported: ${file}:${line} builds "${prefix}" + a name at run time (${ready.clips.filter((c) => c.startsWith(prefix)).length} such ids are in ready.json)`);
 for (const [file, id, why] of NOT_CLIPS) console.log(`not a clip: ${file} "${id}" (lines ${naive.get(file + '\0' + id).join(', ')}): ${why}`);

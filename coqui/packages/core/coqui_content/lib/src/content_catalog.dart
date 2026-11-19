@@ -19,7 +19,8 @@ typedef FetchText = Future<String> Function(String path);
 /// Who speaks and what a clip says are in the story files, so a clip's [ClipInfo] has its [ClipInfo.who] and
 /// [ClipInfo.text] (and [ClipInfo.habla]) only once a story that has the clip has been read: the review sets by
 /// [load], the others by [story], [linesWith] or any call that reads one. Before that [clip] gives what the old code
-/// knows of a clip it has not read a line for: its marks and its url, with an empty `who` and `text`.
+/// knows of a clip it has not read a line for: its marks and its url, and the line `fijos.json` holds for it under
+/// `lineas` (the lines the old code writes in code, juego.js, loadVoice) or, with none, an empty `who` and `text`.
 class ContentCatalog implements CourseCatalog {
   ContentCatalog(this._fetch);
 
@@ -35,6 +36,8 @@ class ContentCatalog implements CourseCatalog {
   List<LevelItem> _levelItems = const [];
   Map<String, CallBrief> _calls = const {};
   Map<String, String> _fixed = const {};
+  // fijos.json, lineas: the lines the old code writes in code, by clip id
+  Map<String, _Line> _written = const {};
   List<String> _goodbye = const [];
 
   // audio/ready.json: the clips that have a recording (null: the file could not be read), and its `v`
@@ -137,6 +140,7 @@ class ContentCatalog implements CourseCatalog {
         ),
     };
     _fixed = Map<String, String>.from(fixed['clips'] as Map);
+    _written = _writtenLines(fixed['lineas']);
     _goodbye = _strings(fixed['despedidas']);
     _have = readyJson.have;
     _version = readyJson.version;
@@ -159,6 +163,24 @@ class ContentCatalog implements CourseCatalog {
   static Map<String, dynamic> _object(Object? j, String path) {
     if (j is Map) return Map<String, dynamic>.from(j);
     throw FormatException('$path: a JSON object was expected');
+  }
+
+  // fijos.json, lineas: { <clip id>: { who, text } }. A file without it has none.
+  static Map<String, _Line> _writtenLines(Object? j) {
+    if (j == null) return const {};
+    if (j is! Map) {
+      throw const FormatException(
+        'datos/fijos.json: lineas must be an object of clip id -> {who, text}',
+      );
+    }
+    return {
+      for (final e in j.entries)
+        e.key as String: e.value is Map
+            ? _Line.from(e.value as Map)
+            : throw FormatException(
+                'datos/fijos.json: lineas.${e.key} must be {who, text}',
+              ),
+    };
   }
 
   // app.html, audioListo: audio/ready.json, read once; a file that cannot be read is null, and then no clip has a
@@ -261,14 +283,16 @@ class ContentCatalog implements CourseCatalog {
   CallBrief? callFor(String placeId) => _calls[placeId];
 
   /// A clip that has a recording (it is in `audio/ready.json`) and marks (`audio/marcas.json`); otherwise null.
-  /// Its `who`, `text` and `habla` are those of the first story read that has the line, empty until one has been.
+  /// Its `who`, `text` and `habla` are those of the first story read that has the line. Until one has been, they are
+  /// the line `fijos.json` gives it under `lineas`, and empty where it has none (juego.js: a story's own line wins,
+  /// `!LINES.<id>`).
   /// The url is juego.js's: `audio/<id>.mp3?v=<ready.json's v>`.
   @override
   ClipInfo? clip(String id) {
     final marks = _marks[id];
     final have = _have;
     if (marks == null || have == null || !have.contains(id)) return null;
-    final line = _lines[id];
+    final line = _lines[id] ?? _written[id];
     return ClipInfo(
       id: id,
       who: line?.who ?? '',

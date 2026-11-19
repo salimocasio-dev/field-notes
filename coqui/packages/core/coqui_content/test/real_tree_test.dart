@@ -291,6 +291,39 @@ void main() {
       }
     });
 
+    test('a line the old code writes in code is there right after load, as fijos.json has it', () async {
+      final lineas = Map<String, dynamic>.from(
+        (_json('datos/fijos.json') as Map)['lineas'] as Map,
+      );
+      expect(lineas, isNotEmpty);
+      final fresh = ContentCatalog(_read);
+      await fresh.load(); // no story read
+      expect(lineas.keys, contains(fresh.fixedClip('story_your_turn')));
+      for (final e in lineas.entries) {
+        final c = fresh.clip(e.key);
+        final line = e.value as Map;
+        expect(c, isNotNull, reason: e.key);
+        expect([c!.who, c.text], [line['who'], line['text']], reason: e.key);
+        expect(c.endMs, greaterThan(c.startMs), reason: e.key);
+      }
+      expect(fresh.clip(fresh.fixedClip('story_your_turn'))!.who, 'narr');
+      // a story that has the same id says the same, and is the one that wins once it is read
+      for (final sid in storyFiles) {
+        final clips = (_json('cuentos/$sid.json') as Map)['clips'] as Map;
+        for (final e in lineas.entries) {
+          final own = clips[e.key];
+          if (own == null) continue;
+          await fresh.story(sid);
+          final c = fresh.clip(e.key)!;
+          expect(
+            [c.who, c.text],
+            [(own as Map)['who'], own['text']],
+            reason: sid,
+          );
+        }
+      }
+    });
+
     test('the fixed lines have marks, except a prefix', () {
       final roles = (_json('datos/fijos.json') as Map)['clips'] as Map;
       for (final e in roles.entries) {
