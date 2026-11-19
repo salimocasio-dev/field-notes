@@ -42,6 +42,22 @@ String render(Directory historia) {
   return b.toString();
 }
 
+/// What `dart format` makes of [text] (the file is kept formatted, as the repository's checks want it).
+String formatted(String text) {
+  final dir = Directory.systemTemp.createTempSync('make_fixtures');
+  try {
+    final f = File('${dir.path}/course_fixture.dart')..writeAsStringSync(text);
+    final r = Process.runSync('dart', ['format', f.path]);
+    if (r.exitCode != 0) {
+      stderr.writeln('dart format failed: ${r.stderr}');
+      exit(2);
+    }
+    return f.readAsStringSync();
+  } finally {
+    dir.deleteSync(recursive: true);
+  }
+}
+
 void main(List<String> args) {
   final historia = Directory('../../../../historia');
   if (!historia.existsSync()) {
@@ -51,7 +67,7 @@ void main(List<String> args) {
     exit(2);
   }
   final out = File('test/support/fixtures/course_fixture.dart');
-  final made = render(historia);
+  final made = formatted(render(historia));
   if (args.contains('--check')) {
     final same = out.existsSync() && out.readAsStringSync() == made;
     stdout.writeln(
