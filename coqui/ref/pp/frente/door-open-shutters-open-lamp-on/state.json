@@ -1,0 +1,48 @@
+{
+  "id": "frente/door-open-shutters-open-lamp-on",
+  "kind": "set",
+  "source": "docs/proyecto/pixel/frente-set.html?s=26&ox=-30&oy=40",
+  "browser": "Chromium 157.0.8103.78",
+  "clock": "requestAnimationFrame queued and run once with timestamp 0; performance.now() = 0; Date.now() = 1700000000000; so the frame is time 0",
+  "mathRandomCalls": 0,
+  "engine": {
+    "W": 240,
+    "H": 216,
+    "S": 26,
+    "originX": -30,
+    "originY": 40,
+    "OX": 90,
+    "OY": 148,
+    "SHADOW_X": 0.9,
+    "SHADOW_Y": -0.1,
+    "STILL": false,
+    "SIN": 0.5,
+    "COS": 0.8660254037844386,
+    "R2": 1.4142135623730951,
+    "WIND_FPS": 8,
+    "GRADIENT_Y": 0.06661733875264912,
+    "EDGE": 0.28,
+    "PP_SCENE": {
+      "w": 240,
+      "h": 216,
+      "s": 26,
+      "originX": -30,
+      "originY": 40,
+      "shadowX": 0.9,
+      "shadowY": -0.1
+    }
+  },
+  "counts": {
+    "tufts": 8332,
+    "leaves": 0,
+    "waterPix": 0
+  },
+  "spots": {
+    "abuela": [1.05, 0.2, 0.16],
+    "coqui": [1.05, 3, 0]
+  },
+  "screen": {
+    "abuela": [105.6270598642227, 155.88781951453814],
+    "coqui": [54.149686193842044, 185.22917202947173]
+  }
+}

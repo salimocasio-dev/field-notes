@@ -1,0 +1,97 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Sprites of engine.js and kit.js</title></head><body>
+<!-- The old engine and kit are loaded as they are. Nothing here makes a sprite by itself: every sprite is a call of an old function. -->
+<script src="../../../../historia/engine.js"></script>
+<script src="../../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* The catalogue. Each entry is one call of an old function over argument values the code base uses
+   (found by reading the scenes, juego.js, cual.js, nivel.js and app.html; the lists are written out below with the reason).
+   An entry is either
+     - a maker: the function returns the picture (mk*, bg*), or
+     - a drawer: the function draws on a context or a Buf that the entry makes first (glyph, face, bubble, shadow, sky, grass, ...);
+       the entry says the size of that transparent canvas (`target`). */
+const fam = (name, assign) => Object.assign({}, KIT.FAM[name], assign || {});
+const ENTRIES = {};          // function name -> [entry]
+const ORDER = [];            // function names, in the order they are listed
+function add(group, fn, args, o) {
+  const e = Object.assign({ group, fn, args }, o);
+  if (!ENTRIES[group + ':' + fn]) { ENTRIES[group + ':' + fn] = []; ORDER.push(group + ':' + fn); }
+  ENTRIES[group + ':' + fn].push(e);
+}
+const slug = a => JSON.stringify(a).replace(/[\[\]"{}]/g, '').replace(/[:,]/g, '_');
+
+function build(tarjetas) {
+  // ---------- engine.js: makers ----------
+  // mkCoqui(s, blink, open). s is the frog's size. juego.js hopTo sets q.s = Math.round(x * 100) / 100, so every hundredth between
+  // the smallest size the scenes use (.42 in frente.js, .5 from the hide-and-seek `max(.5, ...)`) and 1 is possible: all of them, both blinks, both mouths.
+  // camino.js enT gives s = 1 - .14 t, not rounded: t in twentieths. frente.js `q.s = Math.max(.5, q.s - .08)`, four times from the sizes of frente's LUGAR.
+  const sizes = [];
+  const seen = new Set();
+  const addS = (s, why) => { if (!seen.has(s)) { seen.add(s); sizes.push([s, why]); } };
+  for (let k = 40; k <= 100; k++) addS(k / 100, 'hundredth');
+  for (let k = 0; k <= 20; k++) addS(1 - .14 * (k / 20), 'camino enT, t = ' + k + '/20');
+  for (const s0 of [.72, .86, .88, .74, 1]) { let s = s0; for (let i = 0; i < 4; i++) { s = Math.max(.5, s - .08); addS(s, 'frente esconde from ' + s0); } }
+  for (const [s, why] of sizes) for (const bl of [0, 1]) for (const op of [0, 1]) add('engine', 'mkCoqui', [s, bl, op], { id: 'mkCoqui/s' + s + '_b' + bl + '_o' + op, note: why, make: () => mkCoqui(s, bl, op) });
+  // mkAbuela(pose, open): every pose the function draws, both mouths
+  for (const p of ['idle', 'wave0', 'wave1', 'dedo0', 'dedo1', 'offer', 'bless']) for (const op of [0, 1]) add('engine', 'mkAbuela', [p, op], { id: 'mkAbuela/' + p + '_o' + op, make: () => mkAbuela(p, op) });
+  for (const w of [0, 1]) add('engine', 'mkDog', [w], { id: 'mkDog/w' + w, make: () => mkDog(w) });
+  for (const [n, f] of [['mkTree', mkTree], ['mkPalm', mkPalm], ['mkBall', mkBall], ['mkCup', mkCup], ['mkBush', mkBush], ['mkPot', mkPot]]) add('engine', n, [], { id: n, make: () => f() });
+  for (const o of [0, 1]) add('engine', 'bgCasa', [o], { id: 'bgCasa/o' + o, make: () => bgCasa(o) });
+  add('engine', 'bgParque', [], { id: 'bgParque', make: () => bgParque() });
+
+  // ---------- engine.js: drawers ----------
+  const onCanvas = (w, h, fn) => () => { const cv = document.createElement('canvas'); cv.width = w; cv.height = h; fn(cv.getContext('2d')); return cv; };
+  const onBuf = (w, h, fn) => () => { const b = new Buf(w, h); fn(b); return b.done(); };
+  // sky(b, W, hz) and grass(b, y0, W, H): the calls in balcon, banco, camino, campo, frente, lago, patio, bgCasa, bgParque
+  for (const hz of [84, 96, 100, 150]) add('engine', 'sky', [240, hz], { id: 'sky/hz' + hz, target: { kind: 'Buf', w: 240, h: hz }, make: onBuf(240, hz, b => sky(b, 240, hz)) });
+  for (const [y0, H] of [[150, 216], [92, 133], [100, 216], [96, 216], [94, 120], [110, 216], [96, 150], [86, 150]]) add('engine', 'grass', [y0, 240, H], { id: 'grass/y' + y0 + '_h' + H, target: { kind: 'Buf', w: 240, h: H }, make: onBuf(240, H, b => grass(b, y0, 240, H)) });
+  for (const k of Object.keys(GL)) add('engine', 'glyph', [k, 2, 2], { id: 'glyph/' + k, target: { kind: 'canvas', w: 12, h: 12 }, make: onCanvas(12, 12, c => glyph(c, k, 2, 2)) });
+  for (const ok of [true, false]) add('engine', 'face', [6, 6, ok], { id: 'face/' + ok, target: { kind: 'canvas', w: 12, h: 12 }, make: onCanvas(12, 12, c => face(c, 6, 6, ok)) });
+  // bubble(c, list, tx, ty, f): the lists of BUBL in juego.js that use engine.js's icons; f only matters as f % 2
+  for (const [name, list] of [['como', ['ok', 'q', 'sad']], ['bien', ['ok']], ['mal', ['sad']], ['quien', ['hand', 'q']]]) for (const f of [0, 1]) add('engine', 'bubble', [list, 32, 40, f], { id: 'bubble/' + name + '_f' + f, target: { kind: 'canvas', w: 64, h: 48 }, make: onCanvas(64, 48, c => bubble(c, list, 32, 40, f)) });
+  // shadow(c, x, y, w): juego.js draws shadow(g, b.x + 2, q.y + 25, b.w - 5) with b.w = round(30 s) + 2: widths 10 to 27 for s from .42 to 1
+  for (let w = 10; w <= 27; w++) add('engine', 'shadow', [2, 1, w], { id: 'shadow/w' + w, target: { kind: 'canvas', w: 32, h: 6 }, make: onCanvas(32, 6, c => shadow(c, 2, 1, w)) });
+  // pointer, sparks, talk: defined in engine.js, called nowhere in historia/ (the counts in the index say so): one sample each
+  for (const f of [0, 1]) add('engine', 'pointer', [[24, 28, 16, 12], f], { id: 'pointer/f' + f, target: { kind: 'canvas', w: 64, h: 48 }, make: onCanvas(64, 48, c => pointer(c, [24, 28, 16, 12], f)) });
+  for (const f of [0, 1]) add('engine', 'sparks', [[[8, 8], [24, 12], [40, 8], [16, 28]], f], { id: 'sparks/f' + f, target: { kind: 'canvas', w: 48, h: 36 }, make: onCanvas(48, 36, c => sparks(c, [[8, 8], [24, 12], [40, 8], [16, 28]], f)) });
+  for (const f of [0, 1]) for (const d of [1, -1]) add('engine', 'talk', [20, 16, f, d], { id: 'talk/f' + f + '_d' + d, target: { kind: 'canvas', w: 40, h: 24 }, make: onCanvas(40, 24, c => talk(c, 20, 16, f, d)) });
+
+  // ---------- kit.js: makers ----------
+  // mkAve(st, fl): st n, sleep, feliz, round (kit.js and the scenes); fl is (F >> 1) % 2 or 0
+  for (const st of ['n', 'sleep', 'feliz', 'round']) for (const fl of [0, 1]) add('kit', 'mkAve', [st, fl], { id: 'mkAve/' + st + '_f' + fl, make: () => KIT.mkAve(st, fl) });
+  // mkAbuelaS(pose, open, pies): the poses its comment lists; pies 1 in sala.js
+  for (const p of ['idle', 'fan0', 'fan1', 'vaso', 'bebe', 'zzz']) for (const op of [0, 1]) for (const pies of [0, 1]) add('kit', 'mkAbuelaS', [p, op, pies], { id: 'mkAbuelaS/' + p + '_o' + op + '_p' + pies, make: () => KIT.mkAbuelaS(p, op, pies) });
+  // mkPersona(w, pose, open, sent): w is a member of FAM (every scene's QUIEN and sala's FAM[id]); estufa.js and nevera.js add { dormido: 1 };
+  // sala.js adds { gafas: p.gafas } for abuelo ("arriba" while he looks for them). All nine poses, both mouths, standing and sitting.
+  const POSES = ['idle', 'wave0', 'wave1', 'offer', 'yo', 'tu', 'foto', 'taza', 'ojos'];
+  const people = [];
+  for (const n of Object.keys(KIT.FAM)) people.push([n, null]);
+  for (const n of Object.keys(KIT.FAM)) people.push([n, { dormido: 1 }]);
+  people.push(['abuelo', { gafas: 'arriba' }]);
+  for (const [n, as] of people) for (const p of POSES) for (const op of [0, 1]) for (const sent of [0, 1]) {
+    const w = { fam: n }; if (as) w.assign = as;
+    add('kit', 'mkPersona', [w, p, op, sent], { id: 'mkPersona/' + n + (as ? '+' + slug(as) : '') + '/' + p + '_o' + op + '_s' + sent, make: () => KIT.mkPersona(fam(n, as), p, op, sent) });
+  }
+  // mkBebe(est, f): est is p.bebe or p.est in the scenes: idle, clap, llora, come (the four it draws) and duerme, rie, cal, carmen (draw as idle)
+  for (const e of ['idle', 'clap', 'llora', 'come', 'duerme', 'rie', 'cal', 'carmen']) for (const f of [0, 1]) add('kit', 'mkBebe', [e, f], { id: 'mkBebe/' + e + '_f' + f, make: () => KIT.mkBebe(e, f) });
+  // mkPerro(pose, f): the poses of perro in camino, campo, lago, mesa
+  for (const p of ['lie', 'panza', 'sit', 'eat', 'bark', 'husmea', 'run', 'walk']) for (const f of [0, 1]) add('kit', 'mkPerro', [p, f], { id: 'mkPerro/' + p + '_f' + f, make: () => KIT.mkPerro(p, f) });
+  add('kit', 'mkCesta', [], { id: 'mkCesta', make: () => KIT.mkCesta() });
+  // ---------- kit.js: drawers ----------
+  // tarjeta(g, x, y, w, h): every size written as numbers in historia/ (found by make.js), drawn at (3, 3)
+  for (const [w, h] of tarjetas) add('kit', 'tarjeta', [3, 3, w, h], { id: 'tarjeta/' + w + 'x' + h, target: { kind: 'canvas', w: w + 8, h: h + 8 }, make: onCanvas(w + 8, h + 8, c => KIT.tarjeta(c, 3, 3, w, h)) });
+  add('kit', 'mano', [3, 2], { id: 'mano', target: { kind: 'canvas', w: 20, h: 22 }, make: onCanvas(20, 22, c => KIT.mano(c, 3, 2)) });
+  return ORDER.map(k => [k, ENTRIES[k].length]);
+}
+window.build = build;
+
+const b64 = u => { let s = ''; for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
+// run one function's entries: [{ id, args, w, h, rgba }]
+window.RUN = key => ENTRIES[key].map(e => {
+  const cv = e.make();
+  const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
+  return { id: e.id, fn: e.fn, args: e.args, note: e.note || null, target: e.target || null, w: cv.width, h: cv.height, rgba: b64(d) };
+});
+// the descriptors of FAM, as data (functions as their source text)
+window.FAM_JSON = () => JSON.parse(JSON.stringify(KIT.FAM, (k, v) => (typeof v === 'function' ? { function: String(v) } : v)));
+</script></body></html>

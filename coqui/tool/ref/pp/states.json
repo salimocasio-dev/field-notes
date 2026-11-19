@@ -1,0 +1,6 @@
+[
+  { "id": "map/hecho-0",  "kind": "mapa", "page": "docs/proyecto/pixel/mapa.html", "query": "?hecho=0" },
+  { "id": "map/hecho-3",  "kind": "mapa", "page": "docs/proyecto/pixel/mapa.html", "query": "?hecho=3" },
+  { "id": "map/hecho-10", "kind": "mapa", "page": "docs/proyecto/pixel/mapa.html", "query": "?hecho=10" },
+  { "id": "frente/door-open-shutters-open-lamp-on", "kind": "set", "page": "docs/proyecto/pixel/frente-set.html", "query": "?s=26&ox=-30&oy=40" }
+]
