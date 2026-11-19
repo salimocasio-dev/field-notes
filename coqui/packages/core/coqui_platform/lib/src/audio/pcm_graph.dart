@@ -120,7 +120,8 @@ class PcmGraph implements AudioGraph {
       if (stop != null && stop - start < len) len = stop - start;
     }
     if (len <= 0) return;
-    final frames = (len * sampleRate).ceil();
+    // (less a hair: a stop at t + dur + .02 comes out .12000000000000011 s after t, not .12)
+    final frames = (len * sampleRate - 1e-6).ceil();
     final key = [
       s.key(start),
       for (final b in baked) b.key(start),

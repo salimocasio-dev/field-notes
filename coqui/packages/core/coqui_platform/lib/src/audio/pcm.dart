@@ -119,8 +119,27 @@ double waveNormalisation(String type, double rate) {
   }();
 }
 
+/// Which band-limited tables the browser plays a basic waveform from at [f] Hz: the two tables' numbers
+/// of partials and how far between them it is (Chrome, PeriodicWave::WaveDataForFundamentalFrequency:
+/// three tables per octave, each with 2^(-1/3) of the partials of the one before, the higher one
+/// chosen just in time to drop a partial before it would alias; the two tables are mixed).
+({int fewer, int more, double between}) tablesFor(double f, double rate) {
+  final size = 2 * fullPartials(rate);
+  final ranges = (3 * math.log(size) / math.ln2).ceil();
+  final lowest = rate / size;
+  final ratio = f > 0 ? f.abs() / lowest : .5;
+  final cents = math.log(ratio) / math.ln2 * 1200;
+  var range = 1 + cents / 400;
+  range = range.clamp(0, ranges - 1).toDouble();
+  final r1 = range.toInt(), r2 = r1 < ranges - 1 ? r1 + 1 : r1;
+  int partials(int r) =>
+      (math.pow(2, -r * 400 / 1200) * fullPartials(rate)).toInt();
+  return (fewer: partials(r2), more: partials(r1), between: range - r1);
+}
+
 /// An OscillatorNode from [start] (s, its first sample) for [n] samples at [rate]: the phase moves on
-/// by the frequency at each sample; each sample is the sum of the wave's partials below half the rate.
+/// by the frequency at each sample; each sample is the wave's partial sum from the two tables
+/// [tablesFor] picks (a table of P partials holds harmonics 1 to P - 1), mixed, then normalised.
 Float32List renderOscillator({
   required String type,
   required ParamTimeline frequency,
@@ -129,7 +148,6 @@ Float32List renderOscillator({
   required double rate,
 }) {
   final out = Float32List(n);
-  final nyquist = rate / 2;
   final scale = waveNormalisation(type, rate);
   final coef = <double>[];
   var phase = 0.0; // in cycles
@@ -138,17 +156,20 @@ Float32List renderOscillator({
     if (type == 'sine') {
       out[i] = math.sin(2 * math.pi * phase);
     } else {
-      final kMax = f <= 0 ? 0 : (nyquist / f).floor();
-      while (coef.length < kMax) {
+      final t = tablesFor(f, rate);
+      while (coef.length < t.more) {
         coef.add(waveCoefficient(type, coef.length + 1));
       }
-      var s = 0.0;
+      var fewer = 0.0, more = 0.0;
       final w = 2 * math.pi * phase;
-      for (var k = 1; k <= kMax; k++) {
+      for (var k = 1; k < t.more; k++) {
         final c = coef[k - 1];
-        if (c != 0) s += c * math.sin(k * w);
+        if (c == 0) continue;
+        final v = c * math.sin(k * w);
+        more += v;
+        if (k < t.fewer) fewer += v;
       }
-      out[i] = s * scale;
+      out[i] = ((1 - t.between) * more + t.between * fewer) * scale;
     }
     phase += f / rate;
     phase -= phase.floorToDouble();

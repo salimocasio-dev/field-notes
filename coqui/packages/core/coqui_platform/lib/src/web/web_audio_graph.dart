@@ -8,7 +8,10 @@ import 'package:web/web.dart' as web;
 /// The browser's Web Audio as an [AudioGraph]: every call goes straight through to the context and its
 /// nodes, as juego.js makes it.
 class WebAudioGraph implements AudioGraph {
-  WebAudioGraph(this.ctx) : destination = WebNode(ctx.destination);
+  /// [output] stands in for the speaker (the dev screen puts its meter there); the context's own
+  /// destination without it.
+  WebAudioGraph(this.ctx, {web.AudioNode? output})
+    : destination = WebNode(output ?? ctx.destination);
 
   /// juego.js: `new (window.AudioContext || window.webkitAudioContext)()`.
   factory WebAudioGraph.create() {
