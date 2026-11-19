@@ -17,7 +17,11 @@ const _muted = Color(0xFF4A564F);
 const _paper = Color(0xFFF4F1EA);
 const _green = Color(0xFF2E6B4F);
 const _white = Color(0xFFFFFFFF);
-const _font = 'PixelifySans';
+
+/// Roboto as Flutter bundles it locally (assets/fonts/fallback, no CDN). Not Pixelify Sans: its fi/fl
+/// ligatures read as "A" and its 5 looks like S, and a tester must not misread an instruction or a number.
+const _font = 'Roboto';
+const _tnum = [FontFeature.tabularFigures()];
 
 void main() {
   final mainMs = nowMs();
@@ -73,6 +77,7 @@ class TestApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       textStyle: const TextStyle(
         fontFamily: _font,
+        fontFeatures: _tnum,
         fontSize: 17,
         color: _ink,
         height: 1.25,

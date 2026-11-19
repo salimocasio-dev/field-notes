@@ -16,10 +16,3 @@ dependencies:
 dev_dependencies:
   flutter_lints: ^6.0.0
 
-flutter:
-  fonts:
-    - family: PixelifySans
-      fonts:
-        - asset: assets/fonts/PixelifySans-400.ttf
-        - asset: assets/fonts/PixelifySans-700.ttf
-          weight: 700
