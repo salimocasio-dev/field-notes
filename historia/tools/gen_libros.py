@@ -38,14 +38,15 @@ HOW A BOOK IS MADE (all of it mechanical; nothing is read by a person)
    moved it, or other camera values at the two line starts), or when the canvas saved at the start of the next kept line differs from the page's
    picture so far (the canvas at the end of its current last line) in more than PAGE_DIFF (10%) of its pixels (a pixel differs when any of its
    colours does). Scene acts, {set} and touches do not break a page by themselves.
-5. The picture of a page is the canvas saved when its last line has ended (the clip and the pause after it).
+5. The picture of a page is the canvas just before the next kept line starts (the last page: when the story ends, before the end card), so the
+   acts that follow its lines are in it; if a camera move comes first, just before that move.
    The routines (haz) get no book: nothing is left of them once their question lines are out. They are skipped (SKIP_KINDS).
 6. OVERRIDES: per story, later fixes for what the reviewers flag; never edit the JSON by hand. Each entry is one of
      {"drop": clip}                     leave the clip out of the book
      {"move": clip, "after": other}     put the clip right after another one (or "after": null for the very first place)
      {"break": clip}                    a page starts at this clip
      {"join": clip}                     no page break before this clip (the page limit of three still holds)
-     {"pic": clip, "at": other}         the page that starts at clip takes its picture from where the line 'other' ended
+     {"pic": clip, "at": other}         the page that starts at clip takes its picture from the end of the line 'other' instead
    It is empty for now.
 """
 import sys, os, re, io, json, time, asyncio, subprocess, socket, itertools, argparse, shutil
@@ -214,7 +215,8 @@ HOOK = r"""(cfg)=>{
    else if(window.__q&&window.__q===id){src='q';window.__q=null;}
    const e={k:'say',id,src,img:shot(),cam:cam.map(v=>Math.round(v*10)/10)};ev.push(e);
    return _say.apply(this,arguments).then(v=>{e.end=shot();e.ecam=cam.map(v=>Math.round(v*10)/10);return v;});};   // e.img: the canvas when the line starts; e.end: when it has ended (clip and pause)
- const _cg=camGo;camGo=function(k,n){if(!at(k))ev.push({k:'camera',to:k});return _cg.apply(this,arguments);};
+ const _cg=camGo;camGo=function(k,n){if(!at(k))ev.push({k:'camera',to:k,img:shot()});return _cg.apply(this,arguments);};   // img: the canvas just before the camera moves
+ const _pt=pantalla;pantalla=function(h,ps){if(h)ev.push({k:'storyend',img:shot()});return _pt.apply(this,arguments);};   // the story is over: the canvas just before the end card
  const _paso=paso;paso=function(st){
    if(st&&typeof st==='object'&&!st.act){
      if(st.say){mark=sub(st.say);}
@@ -368,10 +370,28 @@ def moved_pixels(a, b):
     return float((A != B).any(axis=2).mean())
 
 
+def page_img(ev, last, nxt, over=None):
+    """The picture of a page, as a data URL: the canvas just before the next kept line starts (the last page: when the story ends, before the end
+    card), so the acts that follow the page's lines are in it; when a camera move comes first, just before that move. `over`: the event of a
+    line (OVERRIDES "pic") whose end canvas is the picture instead."""
+    if over is not None:
+        return ev[over].get("end") or ev[over]["img"]
+    hi = nxt if nxt is not None and nxt > last else len(ev)
+    for e in ev[last + 1:hi]:
+        if e["k"] == "camera" and e.get("img"):
+            return e["img"]
+    if nxt is not None and nxt > last:
+        return ev[nxt]["img"]
+    for e in ev[last + 1:]:
+        if e["k"] == "storyend" and e.get("img"):
+            return e["img"]
+    return ev[last].get("end") or ev[last]["img"]
+
+
 def paginate(sid, lst, ev, pic, brk, join):
     """Pages of at most three consecutive lines. A new page where the camera moved between two lines, or where the canvas at the start of the next
     line differs from the page's picture (the canvas at the end of its last line so far) in more than PAGE_DIFF of its pixels.
-    The picture of a page is the canvas when its last line has ended. -> [{"clips": [...], "pic": event index whose end canvas is the picture}]"""
+    The picture of a page is page_img(). -> [{"clips": [...], "last": event index of its last line, "img": its picture (data URL)}]"""
     pages = []
     ev_of = {c: n for c, n, _ in lst}
     for k, (c, n, _) in enumerate(lst):
@@ -387,8 +407,9 @@ def paginate(sid, lst, ev, pic, brk, join):
             pages.append({"clips": [c], "last": n})
         else:
             pages[-1]["clips"].append(c); pages[-1]["last"] = n
-    for pg in pages:
-        pg["pic"] = ev_of[pic[pg["clips"][0]]] if pg["clips"][0] in pic else pg["last"]
+    for i, pg in enumerate(pages):
+        nxt = ev_of[pages[i + 1]["clips"][0]] if i + 1 < len(pages) else None
+        pg["img"] = page_img(ev, pg["last"], nxt, ev_of.get(pic.get(pg["clips"][0])))
     return pages
 
 
@@ -403,9 +424,9 @@ def build(sid, res):
     book = {"id": sid, "title": T["title"], "lee": True, "pages": [{"img": f"img/{sid}-{i + 1}.png", "clips": p["clips"]} for i, p in enumerate(pages)]}
     imgs = []
     for p in pages:
-        u = ev[p["pic"]].get("end") or ev[p["pic"]].get("img")
+        u = p["img"]
         if not u:
-            raise Stop("no picture could be saved at the end of " + p["clips"][-1])
+            raise Stop("no picture could be saved for the page of " + p["clips"][-1])
         imgs.append(__import__("base64").b64decode(u.split(",", 1)[1]))
     info = {"empty": not pages, "unclear": unclear, "left_out": why, "order_flags": [c for c, n, f in lst if f == "order"]}
     # the lead question check: a lead line that asks something and is not a question line of the story is reported (none exist now)
