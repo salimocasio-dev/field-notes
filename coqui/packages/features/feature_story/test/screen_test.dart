@@ -9,6 +9,7 @@ import 'package:feature_story/feature_story.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
+import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:feature_story/src/screen/story_bubble.dart';
 import 'package:feature_story/src/screen/story_mic.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,6 +42,19 @@ void main() {
         m.screenFor(const StoryRoute('la-lluvia'), services),
         isA<Widget>(),
       );
+    },
+  );
+
+  testWidgets(
+    'the module hands its TXT setting (when the words show) to the screen: con unless it is told, then the one it is told',
+    (tester) async {
+      final services = fakeServices();
+      TxtMode shown(StoryModule m) =>
+          (m.screenFor(const StoryRoute('la-lluvia'), services)! as StoryScreen)
+              .txt;
+      expect(shown(const StoryModule()), TxtMode.con);
+      expect(shown(const StoryModule(txt: TxtMode.tras)), TxtMode.tras);
+      expect(shown(const StoryModule(txt: TxtMode.no)), TxtMode.no);
     },
   );
 

@@ -4,3 +4,5 @@
 library;
 
 export 'package:feature_story/src/module.dart';
+// The setting `StoryModule(txt:)` takes.
+export 'package:feature_story/src/runner/story_options.dart' show TxtMode;

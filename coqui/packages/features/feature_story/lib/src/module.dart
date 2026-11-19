@@ -1,6 +1,7 @@
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_story/src/runner/speech_session.dart';
+import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/screen/scene_frame.dart';
 import 'package:feature_story/src/screen/story_screen.dart';
 import 'package:material_ui/material_ui.dart';
@@ -17,11 +18,19 @@ final SpeechSession _speech = SpeechSession();
 ///
 /// [showPerf]: the play screen shows, in a small corner chip, the bake time of the scene's state now on screen (the app's
 /// `?perf=1`). Off by default.
+///
+/// [txt]: when the words show (juego.js: TXT, the old page's `?txt=`): `con` while the line is spoken (the default),
+/// `tras` right after it, `no` never.
 class StoryModule implements FeatureModule {
-  const StoryModule({this.scenes = registryScenes, this.showPerf = false});
+  const StoryModule({
+    this.scenes = registryScenes,
+    this.showPerf = false,
+    this.txt = TxtMode.con,
+  });
 
   final SceneFactory scenes;
   final bool showPerf;
+  final TxtMode txt;
 
   @override
   String get id => 'story';
@@ -38,6 +47,7 @@ class StoryModule implements FeatureModule {
           scenes: scenes,
           session: _speech,
           showPerf: showPerf,
+          txt: txt,
         )
       : null;
 }
