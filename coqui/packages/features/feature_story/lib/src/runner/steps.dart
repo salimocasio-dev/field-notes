@@ -281,10 +281,11 @@ extension _Steps on StoryRunner {
         for (var i = 0; i < ops.length; i++) ops[i]: habMarca(ids[i])!,
       });
     }
+    final line = jsTruthy(st['line']) ? subS(st['line']) : null;
     final me = await _esperaW(
       ops,
       st['lead'] as List<Object?>?,
-      subS(st['line']),
+      line,
       EsperaOpts(kind: 'elige', turno: tu),
     );
     V['elegido'] = me.got;

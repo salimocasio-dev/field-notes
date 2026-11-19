@@ -185,6 +185,7 @@ class Rig {
     Map<String, String> mem = const {},
     SpeechSession? session,
     VirtualClipPlayer Function(StoryTimers, CourseCatalog)? playerFor,
+    SpeechListener? speech,
   }) async {
     final timers = StoryTimers();
     final c = course ?? TestCourse();
@@ -202,7 +203,7 @@ class Rig {
       E: sc,
       course: c,
       clips: player,
-      speech: NoSpeech(),
+      speech: speech ?? NoSpeech(),
       progress: p,
       rng: rng ?? Mulberry32(1),
       clock: _Clock(timers),

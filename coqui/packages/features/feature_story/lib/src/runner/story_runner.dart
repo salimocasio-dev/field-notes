@@ -1081,7 +1081,8 @@ class StoryRunner implements SceneHost {
   // juego.js: step
   /// Lights the first [n] progress dashes.
   void step(num n) {
-    view.dotsLit = n.toInt();
+    // `dots.forEach((d, i) => d.classList.toggle("on", i < n))`: a dash is lit when its index is under n
+    view.dotsLit = n <= 0 ? 0 : n.ceil();
     view.changed();
   }
 

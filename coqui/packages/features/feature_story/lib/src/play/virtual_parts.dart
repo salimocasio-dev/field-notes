@@ -19,8 +19,9 @@ class VirtualClipPlayer implements ClipPlayer {
   final CourseCatalog course;
   final List<Completer<bool>> _playing = [];
 
-  /// Every clip [play] was asked for, in order.
+  /// Every clip [play] was asked for, in order, and the time limit each was given.
   final List<String> played = [];
+  final List<Duration?> limits = [];
 
   @override
   bool muted = false;
@@ -37,6 +38,7 @@ class VirtualClipPlayer implements ClipPlayer {
   @override
   Future<bool> play(String clipId, {Duration? limit}) {
     played.add(clipId);
+    limits.add(limit);
     final c = Completer<bool>();
     _playing.add(c);
     int? lim;

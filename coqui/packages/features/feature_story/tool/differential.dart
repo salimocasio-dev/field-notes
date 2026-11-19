@@ -9,6 +9,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:coqui_contracts/coqui_contracts.dart' show Rng;
+import 'package:coqui_pixel/coqui_pixel.dart' show Scene;
 import 'package:feature_story/src/play/play.dart';
 import 'package:feature_story/src/play/trace_json.dart';
 
@@ -28,6 +30,33 @@ Map<String, dynamic> forComparison(Map<String, dynamic> t) {
       },
   ];
   return c;
+}
+
+/// One recorded run of the old page played by the runner on a scene of the caller's. Returns the first difference, or null
+/// when the two traces are equal.
+Future<String?> compareWithScene(
+  DiskCourse course,
+  String story,
+  String plan,
+  Directory trazas,
+  Scene Function(Rng rng) sceneFor,
+) async {
+  final committed = jsonDecode(File('${trazas.path}/$story/$plan.json').readAsStringSync()) as Map<String, dynamic>;
+  final file = await course.story(story);
+  final trace = await play(
+    story: file,
+    plan: plan,
+    seed: committed['seed'] as int,
+    sceneFor: sceneFor,
+    course: course,
+    progress: ToolProgress(),
+    storySha256: sha256Hex(course.storyBytes(story)),
+  );
+  final errs = trace['errors'];
+  if (errs is List && errs.isNotEmpty) {
+    return 'the run failed: ${(errs.first as String).split('\n').take(4).join(' | ')}';
+  }
+  return firstDifference(forComparison(committed), forComparison(trace));
 }
 
 /// One recorded run of the old page played by the runner on the replay scene. Returns the first difference, or null when
