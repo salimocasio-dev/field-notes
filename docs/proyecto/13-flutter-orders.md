@@ -511,6 +511,20 @@ Page 12: sections 1, 2, 3, 6, 7. One package, fakes only, a dev entry. Screens r
 
 **Done when (each):** its tests pass, count in the report; its dev entry runs alone; a fresh reader compares its screens with `ref/pantallas/`.
 
+**Results (Nov 19).** Each feature was built by a Sonnet builder on its own branch; the orchestrator ran its tests again and `test_all.sh` on merged main. The fresh readers' comparisons of the features' screens come after the shared look's round 3 and the integration pass.
+
+- **Order 23, Repaso and the level check: merged to main.** 199 tests. The logic is plain Dart, compared with the old code run in node: 41 seeded Repaso sessions (520 asks, 887 store calls with their arguments and times, 5,415 random draws at the same place in the stream, every picture's side) and 28 level-check sessions (361 items, the 28 `presume` calls) are reproduced exactly. cual.js and nivel.js shuffle with `sort(() => Math.random() - .5)`, so V8's own sort was ported to get the same order. One test for each check of repaso_check.py (96), cual_check.py (3) and nivel_check.py (14). On both phones the 19 reference pictures match in geometry within 4 device pixels.
+  - Ported as the code is, not as the pages say: Repaso never adds minutes; the X in Repaso goes to Palabras; `ReviewRoute(practice:)` is not read (the old page decides: nothing due means practice).
+  - Old faults ported: Repaso sets a sign flag nothing draws; a level item naming a word with no pair crashes.
+  - Open for the integration pass: the level check's cells are 96 × 106 picture pixels, so `PictureSource.of` takes a width and a height (order 20 round 3 changes the contract).
+- **Order 25, Yo and the welcome: merged to main.** 169 tests; the whole Yo page equals the old `yo()` for each of the 8 reference states; 56 old handlers were run in node and replayed by tapping the control. `WelcomeGate` wraps the app and shows the welcome until it is finished. New: the build number at the foot of Yo; an About row with "Map and scene engine: Pixel Plays by Amir Mushich (MIT)" and the licence; the one-time hint "To install: Share, then Add to Home Screen" on an iPhone in Safari, as a card under the title, remembered once shown.
+  - The speaking note uses `speech.available()`, which covers no recogniser, no network, a denied permission and a failed turn earlier in the session.
+  - Found: the streak's flame is an emoji, and Flutter on the web fetches an emoji font for it from Google's servers. Order 20 round 3 makes it a drawn icon.
+  - Old faults ported: with everything played Yo says "place 1 of 10"; the second and third switch cards get an accidental top line.
+- **Order 21, Palabras: built, on its branch** (100 tests; the 36 reference pictures matched on both phones). It was built before the shared look's round 2, so it gets one adaptation pass before merging.
+- **Order 22, Biblioteca and Leer: built, on its branch** (109 tests, 58 of them named after leer_check.py's checks; on the Android size the shelf and the reader match the old screens within 0.4 CSS px). Same adaptation pass. The book reader's layout stays in this feature (it has one user). On the iPhone size the book picture is one whole-number step larger than in the old screenshots where Roboto's narrower lines leave more room.
+- **Order 24, Hablar: building.**
+
 ## Order 26. The shell (orchestrator)
 
 The tab bar and routes (`go_router` here only), each `AppRoute` to the module that answers `screenFor`; `Services` wired to the real packages; the first-start import of the old keys when the new store is empty; `reduceMotion` from `MediaQuery.disableAnimations`; the first tap calls `clips.unlock()`; `coqui/tool/juega.dart`.
