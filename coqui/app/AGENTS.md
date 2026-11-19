@@ -1,0 +1,52 @@
+# app
+
+The shell: tabs, routes, wiring, web/, android/, ios/.
+
+- Kind: Flutter package.
+- Replaces: app.html's tab bar and page switching.
+- Orders: 03 (site build; Android and iOS builds) and 26 (the shell). Both are the orchestrator's.
+- The runbook is `../AGENTS.md`. Read it first.
+
+## May depend on
+
+- The plan's row: everything.
+- Coquí packages: every package in the workspace.
+- Third party: `go_router` ^18.1.4. Only here.
+- Dev only: `flutter_lints`, `flutter_test` (from the SDK).
+- Nothing else. Routing (`go_router`) lives here and nowhere else.
+
+## Public surface
+
+- None. This is the app, not a library.
+- `lib/main.dart` starts the app. Today it shows an empty app: the text "Coquí", centred.
+- `lib/src/modules.dart` is the one list of feature modules. Today it is empty. Its comment names the seven features in tab order.
+- `web/index.html` carries `translate="no"` and `<meta name="google" content="notranslate">`.
+- The Android and iOS folders, the web manifest and the icons are order 03. They are not here yet.
+
+## Run and test it alone
+
+```
+cd coqui/app
+flutter test
+flutter run -d chrome
+flutter build web
+```
+
+## Lines that apply
+
+Quoted exactly from the pages. Where this file and a page differ, the page wins.
+
+From 03-requirements, "The app structure":
+
+- "You made the whole app the map and game., when the map is just one part and it's how you interact with the lessons. The rest of the app should still exist."
+- UI vision: a simple welcome explaining how it works; A1→A2 as a classic Super Mario Bros. 3 style world map (16-bit, seen at an angle, roads, numbered stops, landmarks; places match what is learned), worked through daily; a profile showing where he is; a simple streak; a way to add words or state a goal ("I want to be able to speak to my 1-year-old son around the house") and get extra material; course adjusted to time commitment.
+
+From 09-ui-plan, "What the doc says, in short":
+
+- Home is the 16-bit course map, in the centre tab of a persistent bottom tab bar (3 to 5 tabs). Map = home; flashcards/review; library/reading; stats/profile; optional community.
+- Lessons go full screen; the tab bar hides and comes back on exit. Learning screens are calm (white, off-white or dark grey); colour only for meaning (green right, red/orange wrong, blue/purple system and active tab).
+- Each tab keeps its state (scroll, place in a deck).
+
+From 03-requirements, "His instructions to the build chat (Nov 13)":
+
+- "Why are the captions English. Everything should be in spanish." (The code was all Spanish; most likely his phone translated the page. Pages are now marked do-not-translate.) Then: "It's good. Continue". So: nothing on screen in a lesson may turn into English, by any route.
