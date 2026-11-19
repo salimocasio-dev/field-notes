@@ -181,7 +181,7 @@ function make(G) {
     puerta: view(doorC, 'the door', [117, 30, 98, 108]),
     ventana: view(winC, 'the window', [84, 24, 98, 108]),
     cuadro: view(winC, 'story 1\'s last picture: abuela and the frog in the window, the heart over it', [63, 18, 98, 108]),
-    'wide@donde-esta-el-pajaro': view([F.PALM[0] + 2.2, F.PALM[1] - 2.2, 0], 'story 3\'s own wide view (cam.wide in donde-esta-el-pajaro.json): the big palm, the house, the birdhouse and the small palm together', [30, 0, 196, 216]),
+    'wide@donde-esta-el-pajaro': view([F.PALM[0] + 2.085, F.PALM[1] - 2.085, 0], 'story 3\'s own wide view (cam.wide in donde-esta-el-pajaro.json): the big palm, the house, the birdhouse and the small palm together', [30, 0, 196, 216]),
   };
 
   /* ---- remap: every distinct position of positions.json ---- */
@@ -238,6 +238,8 @@ function make(G) {
       side: { values: ['-1', '1'], fromW: 'only when rustle is not none: (F >> 1) % 2 ? 1 : -1 (escondite()\'s sh(), frente.js:94); the rustling prop sits one pixel left or right' },
     },
     key: 'door + win + lights + sky + hide + rustle (+ side), e.g. "shut-shut-0-day-0-none"',
+    baked: JSON.parse(fs.readFileSync(path.join(REPO, 'coqui/tool/ref/pp/states.json'), 'utf8')).filter(e => e.id.startsWith('frente/')).map(e => ({ ref: 'coqui/ref/pp/' + e.id, query: e.query })),
+    bakedWhy: 'every state the stories, pairs and level pictures reach (coqui/ref/escenas/frente and a replay of the five stories), plus the rustle palma states a story can reach; each is a reference in coqui/ref/pp/frente/',
     notRead: 'W.abierto (escondite() reads it into a constant it never uses), W.mesa and W.caliente (the cake inside the window: sprite layer), W.nube, W.nube2, W.nube3, W.rain (moving: sprite layer; W.rain only picks the sky)',
     old: 'the old background sprite key was "fr" + door + "_" + win + "_" + lamp; the old W.storm / W.dark / W.dusk overlays (frente.js:163-165) are now the sky parameter',
   };

@@ -73,7 +73,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
 
   /* ---------- the old canvas, moved line by line ---------- */
   const KEY = new Set([48, 49, 50, 97, 100, 101, 102, 122, 125, 126, 127, 140, 143, 144, 147, 148, 149, 151, 152, 153, 163, 164, 165, 172, 173]);
-  const SKIP = new Set([97, 100, 122, 125, 140, 163, 164, 165]);
+  let SKIP = new Set([97, 100, 122, 125, 140, 163, 164, 165]);
+  const SKIP_NEW = SKIP, SKIP_OLDLIGHT = new Set([97, 100, 122, 125, 140]);
   Error.stackTraceLimit = 64;   // the bubbles' icons are drawn ten calls deep
   function lineOf() {
     const st = new Error().stack.split('\n');
@@ -100,7 +101,9 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
   function wrap() {
     if (wrapped) return; wrapped = true;
     const X = c, P = CanvasRenderingContext2D.prototype;
-    const two = name => { X[name] = function (...a) { const L = lineOf(); if (SKIP.has(L)) return; const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P[name].apply(X, a); }; };
+    // juego.js frog() draws an old shadow() under him: the engine casts his shadow now (sheet: shadows.dropped)
+    const oldShadow = () => /at shadow \([^)]*engine\.js/.test(new Error().stack);
+    const two = name => { X[name] = function (...a) { const L = lineOf(); if (SKIP.has(L) || (name === 'fillRect' && oldShadow())) return; const o = offsetFor(L, a[0]); a[0] += o[0]; a[1] += o[1]; return P[name].apply(X, a); }; };
     ['fillRect', 'clearRect', 'arc', 'ellipse', 'moveTo', 'lineTo'].forEach(two);
     X.fill = function (...a) { const L = lineOf(); if (SKIP.has(L)) return; return P.fill.apply(X, a); };
     X.rect = function (...a) {
@@ -121,7 +124,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
     return Object.assign({ cq: { x: 150, y: 178, s: 1, dy: 0, al: 1, vis: 1, bub: null }, spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, E0.fresh({}), over || {});
   }
   PV.baseW = baseW;
-  // opts: view (a sheet view name) or crop [x0, y0, w, h]; F (frame counter, default 8); t (wind time); remap (default true); hud
+  // opts: view (a sheet view name) or crop [x0, y0, w, h]; F (frame counter, default 8); t (wind time); remap (default true); hud; oldLight
   PV.render = async function (wOld, opts = {}) {
     await ready; wrap();
     if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
@@ -138,7 +141,10 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|casa|puerta|ven
       const s = SHEET.spots['abuela.' + W.ab.en].world;
       for (let z = .3; z <= 2; z += .35) casts.push([s[0], s[1], z + s[2], .35]);
     }
-    const img = await setFrame(setOf(W), opts.t || 0, casts);
+    // opts.oldLight (for comparing only): the set in daylight and the old washes of frente.js:163-165 laid over everything, characters too
+    SKIP = opts.oldLight ? SKIP_OLDLIGHT : SKIP_NEW;
+    const st = setOf(W); if (opts.oldLight) st.sky = 'day';
+    const img = await setFrame(st, opts.t || 0, casts);
     c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
     c.putImageData(img, 0, 0);
     E.draw(c, W, F >> 1);

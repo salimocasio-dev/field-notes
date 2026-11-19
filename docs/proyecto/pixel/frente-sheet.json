@@ -51,6 +51,109 @@
    }
   },
   "key": "door + win + lights + sky + hide + rustle (+ side), e.g. \"shut-shut-0-day-0-none\"",
+  "baked": [
+   {
+    "ref": "coqui/ref/pp/frente/door-half-win-shut-lights-0-sky-day",
+    "query": "?door=half&win=shut&lights=0&sky=day&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-half-win-shut-lights-0-sky-dusk-hide",
+    "query": "?door=half&win=shut&lights=0&sky=dusk&hide=1&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-half-win-shut-lights-0-sky-sunset",
+    "query": "?door=half&win=shut&lights=0&sky=sunset&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-open-win-open-lights-0-sky-day",
+    "query": "?door=open&win=open&lights=0&sky=day&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-open-win-shut-lights-0-sky-day",
+    "query": "?door=open&win=shut&lights=0&sky=day&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-open-win-shut-lights-0-sky-dusk-hide",
+    "query": "?door=open&win=shut&lights=0&sky=dusk&hide=1&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-open-win-shut-lights-1-sky-storm",
+    "query": "?door=open&win=shut&lights=1&sky=storm&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-open-lights-0-sky-day",
+    "query": "?door=shut&win=open&lights=0&sky=day&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-open-lights-1-sky-rain",
+    "query": "?door=shut&win=open&lights=1&sky=rain&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-open-lights-1-sky-storm",
+    "query": "?door=shut&win=open&lights=1&sky=storm&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-open-lights-1-sky-storm2",
+    "query": "?door=shut&win=open&lights=1&sky=storm2&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-day",
+    "query": "?door=shut&win=shut&lights=0&sky=day&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-day-hide",
+    "query": "?door=shut&win=shut&lights=0&sky=day&hide=1&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-storm",
+    "query": "?door=shut&win=shut&lights=0&sky=storm&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-sunset-hide",
+    "query": "?door=shut&win=shut&lights=0&sky=sunset&hide=1&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-1-sky-rain",
+    "query": "?door=shut&win=shut&lights=1&sky=rain&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-1-sky-storm",
+    "query": "?door=shut&win=shut&lights=1&sky=storm&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-1-sky-storm2",
+    "query": "?door=shut&win=shut&lights=1&sky=storm2&hide=0&rustle=none&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-palma-side--1",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=palma&side=-1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-palma-side-1",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=palma&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-casa-side--1",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=casa&side=-1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-casa-side-1",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=casa&side=1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-todo-side--1",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=todo&side=-1"
+   },
+   {
+    "ref": "coqui/ref/pp/frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-todo-side-1",
+    "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=todo&side=1"
+   }
+  ],
+  "bakedWhy": "every state the stories, pairs and level pictures reach (coqui/ref/escenas/frente and a replay of the five stories), plus the rustle palma states a story can reach; each is a reference in coqui/ref/pp/frente/",
   "notRead": "W.abierto (escondite() reads it into a constant it never uses), W.mesa and W.caliente (the cake inside the window: sprite layer), W.nube, W.nube2, W.nube3, W.rain (moving: sprite layer; W.rain only picks the sky)",
   "old": "the old background sprite key was \"fr\" + door + \"_\" + win + \"_\" + lamp; the old W.storm / W.dark / W.dusk overlays (frente.js:163-165) are now the sky parameter"
  },
@@ -689,9 +792,9 @@
    "what": "story 1's last picture: abuela and the frog in the window, the heart over it"
   },
   "wide@donde-esta-el-pajaro": {
-   "world": [0.87, 1.31, 0],
-   "screen": [109.91, 140.04],
-   "x0": 12,
+   "world": [0.755, 1.425, 0],
+   "screen": [105.68, 140.04],
+   "x0": 8,
    "old": [30, 0, 196, 216],
    "what": "story 3's own wide view (cam.wide in donde-esta-el-pajaro.json): the big palm, the house, the birdhouse and the small palm together"
   }
@@ -719,7 +822,7 @@
    "to": {
     "view": "wide@donde-esta-el-pajaro"
    },
-   "x0": 12,
+   "x0": 8,
    "what": "story 3's wide view"
   },
   {
