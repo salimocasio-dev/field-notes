@@ -2,6 +2,17 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 19, part 22: the Flutter move, first session
+
+The whole record is page 13 (each order's result under its heading) and page 11-flutter-plan ("Decisions made here", the rows marked Nov 19). In short:
+
+- Built by agents, checked by the orchestrator by running each "Done when": the workspace and its boundary check (01), the contracts and fakes (02), the site and phone builds in CI (03), the data exports and clip marks (04), the reference data from the old code (05: engine, canvas, sprites, the scheduler's 31 sequences in two time zones, 153 recorded story runs, 300 screenshots), the scene inventories (06), El frente's set and sheet (07), the engine, sprites, canvas, kit, camera and frame in Dart (10 to 12), the map (13), El frente in Dart (14), the story runner (15), the scheduler (16), the content reader (17), audio, speech and storage (18), the call connection (19), the shared look (20), the five other features (21 to 25).
+- What was proven by machine: the Dart engine draws the island, the map's three states and El frente's 25 states with 0 pixels different from the JavaScript; 445 + 469 sprites exact; the scheduler gives the same store after every one of 361 + 163 recorded calls, in UTC and US Eastern, on the VM and in Chrome; all 153 recorded story runs are reproduced whole with the old scenes' acts replayed, and with the real El frente everything but time and hop sounds; 41 Repaso sessions and 28 level-check sessions equal the old code's, draw for draw; ten recorded lines play back to back within 10 ms of the pause asked for.
+- What fresh readers saw (no words): the old scenes' frames; El frente's set, pairs, views and stories in three rounds, then its final "cierra" pair; the map's three states; the shared look against the old screenshots, twice. Their findings and what was done about each are in page 13 under orders 06, 07, 13 and 20.
+- Guesses: that his phones will show what desktop Chrome showed for the audio plugin; that Roboto, which the app ships, is what his Android draws today's app in (the reference screenshots were taken in Inter on the build machine).
+- Spent: nothing. No call was placed, no audio was recorded (the audio job's dry run says 0 new clips after every change under `historia/`).
+- Problems caused by the orchestrator's own work: the first check of the live site was blocked by the network policy (a new environment was needed); a contract change (`preload`) broke one line in a package being built in parallel, fixed at the merge; a decision to show abuela's whole face at the half-open door followed a reader who took the old design for a fault, and was reversed a round later; one push to main went out before the full test run, which then failed on a timing flake (since made deterministic).
+
 ## Live now
 
 - The app: https://salimocasio-dev.github.io/field-notes/historia/app.html?v=39
