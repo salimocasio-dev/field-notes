@@ -12,8 +12,10 @@ One folder per scene (its set, its scene), and the pictures other features ask f
 
 - The plan's row: pixel, contracts, ui.
 - Coquí packages: `coqui_contracts`, `coqui_pixel`, `coqui_ui`.
-- Third party: none.
-- Dev only: `flutter_lints`, `flutter_test` (from the SDK).
+- Third party: `material_ui` ^1.11.1.
+- Dev only: `flutter_lints`, `flutter_test` (from the SDK), and `coqui_testing` (the fakes).
+- `coqui_testing` goes under `dev_dependencies` only. Tests and `tool/` import it. Nothing under `lib/` does.
+- Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.
 - Nothing else. A package that is not listed here is added by a request in `coqui/requests/`, not by you.
 - `dart run tool/check_boundaries.dart` (at `coqui/`) fails the branch otherwise.
 

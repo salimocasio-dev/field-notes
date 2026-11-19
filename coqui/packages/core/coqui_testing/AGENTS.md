@@ -12,8 +12,9 @@ A fake for every interface, and a tiny sample course.
 
 - The plan's row: contracts, ui.
 - Coquí packages: `coqui_contracts`, `coqui_ui`.
-- Third party: none.
+- Third party: `material_ui` ^1.11.1.
 - Dev only: `flutter_lints`, `flutter_test` (from the SDK).
+- Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.
 - Nothing else. A package that is not listed here is added by a request in `coqui/requests/`, not by you.
 - `dart run tool/check_boundaries.dart` (at `coqui/`) fails the branch otherwise.
 

@@ -10,10 +10,12 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
 
 ## May depend on
 
-- The plan's row: Flutter only.
-- Coquí packages: none.
-- Third party: none.
+- The plan's row: contracts, Flutter.
+  The plan's table says "Flutter only". The orchestrator changed it on Nov 19, 2026: page 12, section 3 needs the contracts, and contracts depends on nothing.
+- Coquí packages: `coqui_contracts`.
+- Third party: `material_ui` ^1.11.1.
 - Dev only: `flutter_lints`, `flutter_test` (from the SDK).
+- Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.
 - Nothing else. A package that is not listed here is added by a request in `coqui/requests/`, not by you.
 - `dart run tool/check_boundaries.dart` (at `coqui/`) fails the branch otherwise.
 

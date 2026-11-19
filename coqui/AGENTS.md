@@ -40,28 +40,30 @@ coqui/
 
 ### The packages and what each may depend on
 
-This is the plan's table "Packages: what each replaces and what it may depend on", without its "Replaces" column. `app` may depend on everything.
+This is the plan's table "Packages: what each replaces and what it may depend on", without its "Replaces" column, with the changes noted under it. `app` may depend on everything.
 
-| Package | Kind | May depend on |
-| --- | --- | --- |
-| coqui_contracts | pure Dart | nothing |
-| coqui_progress | pure Dart | contracts |
-| coqui_content | pure Dart | contracts |
-| coqui_platform | Flutter | contracts, plugins |
-| coqui_pixel | pure Dart | contracts |
-| coqui_scenes | Flutter | pixel, contracts, ui |
-| coqui_ui | Flutter | Flutter only |
-| coqui_testing | Flutter | contracts, ui |
-| feature_map | Flutter | contracts, ui, pixel |
-| feature_story | Flutter | contracts, ui, pixel, scenes |
-| feature_review | Flutter | contracts, ui |
-| feature_words | Flutter | contracts, ui |
-| feature_library | Flutter | contracts, ui |
-| feature_speaking | Flutter | contracts, ui |
-| feature_profile | Flutter | contracts, ui |
-| app | Flutter | everything |
+| Package | Kind | May depend on | Dev only |
+| --- | --- | --- | --- |
+| coqui_contracts | pure Dart | nothing | - |
+| coqui_progress | pure Dart | contracts | - |
+| coqui_content | pure Dart | contracts | - |
+| coqui_platform | Flutter | contracts, plugins | - |
+| coqui_pixel | pure Dart | contracts | - |
+| coqui_scenes | Flutter | pixel, contracts, ui | coqui_testing |
+| coqui_ui | Flutter | contracts, Flutter | - |
+| coqui_testing | Flutter | contracts, ui | - |
+| feature_map | Flutter | contracts, ui, pixel | coqui_testing |
+| feature_story | Flutter | contracts, ui, pixel, scenes | coqui_testing |
+| feature_review | Flutter | contracts, ui | coqui_testing |
+| feature_words | Flutter | contracts, ui | coqui_testing |
+| feature_library | Flutter | contracts, ui | coqui_testing |
+| feature_speaking | Flutter | contracts, ui | coqui_testing |
+| feature_profile | Flutter | contracts, ui | coqui_testing |
+| app | Flutter | everything | coqui_testing |
 
-"Flutter only" means the Flutter SDK and no Coquí package. "plugins" means the third-party packages below.
+"Flutter" means the Flutter SDK. "plugins" means the third-party packages below. "Dev only" is a `dev_dependencies` entry: tests and `tool/` use it, nothing under `lib/` does.
+
+The orchestrator changed two things in the plan's table on Nov 19, 2026. coqui_ui's row was "Flutter only" and is now "contracts, Flutter": page 12, section 3 needs the contracts, and contracts depends on nothing. `coqui_testing` is a dev dependency of the seven features, coqui_scenes and app, so a feature can run and test on the fakes. It is not allowed anywhere else, and never under `dependencies`.
 
 ## The boundary rules
 
@@ -77,6 +79,25 @@ The check script enforces 1 to 5 on every branch.
 8. Content is data. Code builders do not edit content. Content builders do not edit code.
 9. No Spanish text and no clip id in engine or feature code. They come from content.
 
+## Rules the orchestrator added (Nov 19, 2026)
+
+The check script enforces these too, with the plan's rules 1 to 5.
+
+- [f] Nobody imports `package:flutter/material.dart`. Flutter 3.50 deprecates it. Import `package:material_ui/material_ui.dart` instead. No lint is suppressed to get round this.
+- [g] `coqui_testing` is a dev dependency, in the places the table above names. Files under `lib/` never import it. Tests and `tool/` do.
+- A feature's dev entry, the file that starts it on the fakes, is `tool/dev_main.dart` in the feature, not `lib/dev_main.dart`. `lib/` may only import what is under `dependencies`.
+- Web builds always use `--no-web-resources-cdn`: CanvasKit comes from our own site, never from gstatic.
+- Builders do not push (see "Where this page differs from page 12, section 7").
+
+## Requests
+
+When you need something from a package you may not touch, or a package that is not in the list, you file a request and carry on with the fake or a local copy.
+
+- One request per file, in `coqui/requests/`.
+- The name is `<order number>-<your package>-needs-<target package>-<short-slug>.md`. Lower case, hyphens. For example `21-feature-words-needs-coqui-ui-picture-tile.md`.
+- Four headings: "What I need" (the exact member or behaviour), "Why" (the order line that needs it), "What I am using meanwhile" (the fake or local copy), "Order and branch".
+- A lane branch may add files in `coqui/requests/` and nowhere outside its own package.
+
 ## Third-party packages
 
 - These, and no others. Each is added now, at this version.
@@ -90,6 +111,7 @@ The check script enforces 1 to 5 on every branch.
 | shared_preferences | ^2.5.6 | coqui_platform only |
 | web | ^1.1.2 | coqui_platform only |
 | go_router | ^18.1.4 | app only |
+| material_ui | ^1.11.1 | every Flutter package that draws widgets: coqui_ui, coqui_testing, coqui_scenes, the seven features, app. Not the pure Dart packages, not coqui_platform |
 | collection | ^1.19.1 | any package |
 | flutter_lints | ^6.0.0 | Flutter packages, dev only |
 | lints | ^6.0.0 | pure Dart packages, dev only |
@@ -117,6 +139,7 @@ dart format .                        # fix formatting
 dart format --output=none --set-exit-if-changed .
 flutter analyze
 bash tool/test_all.sh                # all of the above, every test, and the web build
+(cd app && flutter build web --no-web-resources-cdn)   # always with this flag
 ```
 
 In a package:
@@ -124,6 +147,7 @@ In a package:
 ```
 dart test -p vm && dart test -p chrome    # pure Dart packages
 flutter test                              # Flutter packages
+flutter run -d chrome -t tool/dev_main.dart   # a feature, on the fakes (order 02 adds the file)
 ```
 
 `tool/test_all.sh` is what CI runs (`.github/workflows/coqui.yml`). Both run the same steps in the same order.
@@ -179,9 +203,16 @@ Other rules:
 - The boundary check: `dart run tool/check_boundaries.dart` at `coqui/`.
 - A feature alone: `flutter run -d chrome -t lib/dev_main.dart` in the feature.
 - A story played with no screen: `dart run tool/juega.dart <story> <plan> <seed>` at `coqui/` (after order 15).
-- Git: branch `lane/<package>/<order number>`, your own worktree, commit small, push often. Never push to main. Never open a pull request. Never touch `historia/`, `docs/` or another package.
+- Git: branch `lane/<package>/<order number>`, your own worktree. Commit small on your branch. Do not push: the orchestrator checks your branch, then merges and pushes. Never push to main. Never open a pull request. Never touch `historia/`, `docs/` or another package.
 - Nothing that costs money: no ElevenLabs calls or tests, no push under `historia/cuentos/` (it starts the paid audio job), no accounts, no keys.
 - Report, short: what you did; each check and its number; what failed; requests filed; anything you had to choose (there should be nothing). Never claim a check you did not run.
+
+## Where this page differs from page 12, section 7
+
+By the orchestrator's decision of Nov 19, 2026:
+
+- Git: builders do not push. Page 12, section 7 said "push often". It now says: commit small on your branch, and do not push. The orchestrator checks your branch, then merges and pushes.
+- A feature's dev entry is `tool/dev_main.dart`, run with `flutter run -d chrome -t tool/dev_main.dart` in the feature. Where section 7 says `lib/dev_main.dart`, read `tool/dev_main.dart`. Reason: `lib/` may only import packages under `dependencies`, and the dev entry needs `coqui_testing`, which is a dev dependency.
 
 ## Audio (costs money: read carefully)
 

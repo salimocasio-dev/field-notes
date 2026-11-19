@@ -10,15 +10,17 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
 ## May depend on
 
 - The plan's row: everything.
-- Coquí packages: every package in the workspace.
-- Third party: `go_router` ^18.1.4. Only here.
-- Dev only: `flutter_lints`, `flutter_test` (from the SDK).
+- Coquí packages: every package in the workspace (`coqui_testing` as a dev dependency only).
+- Third party: `go_router` ^18.1.4 (only here), `material_ui` ^1.11.1.
+- Dev only: `flutter_lints`, `flutter_test` (from the SDK), and `coqui_testing` (the fakes).
+- `coqui_testing` goes under `dev_dependencies` only. Nothing under `lib/` imports it.
+- Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.
 - Nothing else. Routing (`go_router`) lives here and nowhere else.
 
 ## Public surface
 
 - None. This is the app, not a library.
-- `lib/main.dart` starts the app. Today it shows an empty app: the text "Coquí", centred.
+- `lib/main.dart` starts the app. Today it shows an empty `MaterialApp` titled "Coquí" with the text "Coquí", centred.
 - `lib/src/modules.dart` is the one list of feature modules. Today it is empty. Its comment names the seven features in tab order.
 - `web/index.html` carries `translate="no"` and `<meta name="google" content="notranslate">`.
 - The Android and iOS folders, the web manifest and the icons are order 03. They are not here yet.
@@ -29,7 +31,7 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
 cd coqui/app
 flutter test
 flutter run -d chrome
-flutter build web
+flutter build web --no-web-resources-cdn
 ```
 
 ## Lines that apply

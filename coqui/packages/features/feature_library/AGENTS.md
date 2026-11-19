@@ -12,8 +12,10 @@ Biblioteca and the book reader (Leer).
 
 - The plan's row: contracts, ui.
 - Coquí packages: `coqui_contracts`, `coqui_ui`.
-- Third party: none.
-- Dev only: `flutter_lints`, `flutter_test` (from the SDK).
+- Third party: `material_ui` ^1.11.1.
+- Dev only: `flutter_lints`, `flutter_test` (from the SDK), and `coqui_testing` (the fakes).
+- `coqui_testing` goes under `dev_dependencies` only. Tests and `tool/` import it. Nothing under `lib/` does.
+- Material widgets come from `package:material_ui/material_ui.dart`. Nobody imports `package:flutter/material.dart`.
 - Nothing else. A package that is not listed here is added by a request in `coqui/requests/`, not by you.
 - `dart run tool/check_boundaries.dart` (at `coqui/`) fails the branch otherwise.
 
@@ -40,7 +42,7 @@ dart format --output=none --set-exit-if-changed .
 flutter analyze
 ```
 
-A dev entry that starts the feature on the fakes comes with order 02: `flutter run -d chrome -t lib/dev_main.dart` in `coqui/packages/features/feature_library`.
+A dev entry that starts the feature on the fakes comes with order 02. It lives in `tool/dev_main.dart`, not in `lib/` (`lib/` may not import `coqui_testing`): `flutter run -d chrome -t tool/dev_main.dart` in `coqui/packages/features/feature_library`. Page 12, section 7 says `lib/dev_main.dart`; the orchestrator changed that on Nov 19, 2026.
 
 ## Lines that apply
 
