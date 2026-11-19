@@ -305,6 +305,207 @@ import 'package:feature_words/feature_words.dart';
     });
   });
 
+  group('[a] coqui_ui, material_ui and coqui_testing (Nov 19 decisions)', () {
+    test('passes: coqui_ui lists coqui_contracts', () async {
+      package('coqui_ui', deps: ['coqui_contracts', 'material_ui']);
+      expect(await check(), isEmpty);
+    });
+
+    test('fails: coqui_ui lists another Coquí package', () async {
+      package('coqui_ui', deps: ['coqui_contracts', 'coqui_pixel']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('coqui_ui lists coqui_pixel'));
+      expect(problems.single, contains('its row allows coqui_contracts'));
+    });
+
+    test(
+      'passes: material_ui in a feature, coqui_ui, scenes and app',
+      () async {
+        package('feature_words', deps: ['coqui_ui', 'material_ui']);
+        package('coqui_ui', deps: ['coqui_contracts', 'material_ui']);
+        package('coqui_scenes', deps: ['coqui_ui', 'material_ui']);
+        package('app', deps: ['coqui_ui', 'material_ui']);
+        expect(await check(), isEmpty);
+      },
+    );
+
+    test('fails: material_ui in a pure Dart package', () async {
+      package('coqui_pixel', deps: ['coqui_contracts', 'material_ui']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[a]'));
+      expect(problems.single, contains('coqui_pixel lists material_ui'));
+    });
+
+    test('fails: material_ui in coqui_platform', () async {
+      package('coqui_platform', deps: ['coqui_contracts', 'material_ui']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('coqui_platform lists material_ui'));
+    });
+
+    test(
+      'passes: coqui_testing as a dev dependency where it is allowed',
+      () async {
+        package(
+          'feature_words',
+          deps: ['coqui_ui'],
+          devDeps: ['coqui_testing'],
+        );
+        package('coqui_scenes', deps: ['coqui_ui'], devDeps: ['coqui_testing']);
+        package('app', deps: ['coqui_ui'], devDeps: ['coqui_testing']);
+        expect(await check(), isEmpty);
+      },
+    );
+
+    test('fails: coqui_testing under dependencies', () async {
+      package('feature_words', deps: ['coqui_ui', 'coqui_testing']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[a]'));
+      expect(
+        problems.single,
+        contains(
+          'feature_words lists coqui_testing in dependencies: it is a dev '
+          'dependency only',
+        ),
+      );
+    });
+
+    test('fails: app lists coqui_testing under dependencies', () async {
+      package('app', deps: ['coqui_ui', 'coqui_testing']);
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('app lists coqui_testing in dep'));
+    });
+
+    test('fails: coqui_testing where it is not allowed, even as dev', () async {
+      package(
+        'coqui_ui',
+        deps: ['coqui_contracts'],
+        devDeps: ['coqui_testing'],
+      );
+      package(
+        'coqui_progress',
+        deps: ['coqui_contracts'],
+        devDeps: ['coqui_testing'],
+      );
+      package(
+        'coqui_pixel',
+        deps: ['coqui_contracts'],
+        devDeps: ['coqui_testing'],
+      );
+      package(
+        'coqui_platform',
+        deps: ['coqui_contracts'],
+        devDeps: ['coqui_testing'],
+      );
+      final problems = await check();
+      expect(problems, hasLength(4));
+      for (final name in [
+        'coqui_ui',
+        'coqui_progress',
+        'coqui_pixel',
+        'coqui_platform',
+      ]) {
+        expect(
+          problems.where((p) => p.contains('$name lists coqui_testing')),
+          hasLength(1),
+          reason: name,
+        );
+      }
+    });
+  });
+
+  group('[f] nobody imports package:flutter/material.dart', () {
+    test('fails: a file in lib/ imports it', () async {
+      package('feature_words', deps: ['coqui_ui']);
+      src(
+        'feature_words',
+        'lib/src/words.dart',
+        "import 'package:flutter/material.dart';\n",
+      );
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[f]'));
+      expect(problems.single, contains('package:flutter/material.dart'));
+      expect(problems.single, contains('package:material_ui/material_ui.dart'));
+      expect(
+        problems.single,
+        startsWith('packages/features/feature_words/lib/src/words.dart:1:'),
+      );
+    });
+
+    test('fails: a test, or an export, imports it', () async {
+      package('feature_words', deps: ['coqui_ui']);
+      src(
+        'feature_words',
+        'test/a_test.dart',
+        "import 'package:flutter/material.dart' show Text;\n",
+      );
+      src(
+        'feature_words',
+        'lib/feature_words.dart',
+        "export 'package:flutter/material.dart';\n",
+      );
+      expect(await check(), hasLength(2));
+    });
+
+    test('passes: material_ui and the other Flutter libraries', () async {
+      package('feature_words', deps: ['coqui_ui', 'material_ui']);
+      src('feature_words', 'lib/src/words.dart', '''
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:material_ui/material_ui.dart';
+''');
+      expect(await check(), isEmpty);
+    });
+  });
+
+  group('[g] lib/ never imports coqui_testing', () {
+    test('passes: tests and tool/ import it', () async {
+      package('feature_words', deps: ['coqui_ui'], devDeps: ['coqui_testing']);
+      src(
+        'feature_words',
+        'test/a_test.dart',
+        "import 'package:coqui_testing/coqui_testing.dart';\n",
+      );
+      src(
+        'feature_words',
+        'tool/dev_main.dart',
+        "import 'package:coqui_testing/coqui_testing.dart';\n",
+      );
+      expect(await check(), isEmpty);
+    });
+
+    test('fails: a file in lib/ imports it, though it is listed', () async {
+      package('feature_words', deps: ['coqui_ui'], devDeps: ['coqui_testing']);
+      src(
+        'feature_words',
+        'lib/dev_main.dart',
+        "import 'package:coqui_testing/coqui_testing.dart';\n",
+      );
+      final problems = await check();
+      expect(problems, hasLength(1));
+      expect(problems.single, contains('[g]'));
+      expect(
+        problems.single,
+        startsWith('packages/features/feature_words/lib/dev_main.dart:1:'),
+      );
+    });
+
+    test('coqui_testing may import itself in lib/', () async {
+      package('coqui_testing', deps: ['coqui_contracts', 'coqui_ui']);
+      src(
+        'coqui_testing',
+        'lib/src/a.dart',
+        "import 'package:coqui_testing/src/b.dart';\n",
+      );
+      expect(await check(), isEmpty);
+    });
+  });
+
   group('[d] a lane branch changes only its own package and requests/', () {
     late Git git;
 

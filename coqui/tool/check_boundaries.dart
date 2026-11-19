@@ -14,25 +14,39 @@
 //   [d] the branch is `lane/<package>/...` and changes a file outside that
 //       package's folder and requests/
 //   [e] a feature's pubspec or imports name another feature
+// Added by the orchestrator on Nov 19, 2026 (not in the plan's rules):
+//   [f] a Dart file imports package:flutter/material.dart (deprecated in
+//       Flutter 3.50; the code uses package:material_ui/material_ui.dart)
+//   [g] a file under lib/ imports coqui_testing (it is a dev dependency, for
+//       tests and tool/ only)
 //
-// The tables below are data. They are copied from the plan.
+// The tables below are data. They are copied from the plan, with the
+// orchestrator's changes of Nov 19, 2026 noted where they differ.
 
 import 'dart:io';
 
 /// One row of the plan's table "Packages: what each replaces and what it may
 /// depend on". [dir] is relative to coqui/. [flutter] is false for the pure
 /// Dart packages. [workspace] is the "May depend on" column, as package names.
+/// [devWorkspace] are workspace packages the package may list under
+/// dev_dependencies only.
 class PackageRule {
   const PackageRule(
     this.dir, {
     required this.flutter,
     this.workspace = const {},
+    this.devWorkspace = const {},
   });
 
   final String dir;
   final bool flutter;
   final Set<String> workspace;
+  final Set<String> devWorkspace;
 }
+
+/// coqui_testing (the fakes): a dev dependency of the seven features,
+/// coqui_scenes and app. Never under dependencies, never imported from lib/.
+const _testingDev = {'coqui_testing'};
 
 const _everything = {
   'coqui_contracts',
@@ -42,7 +56,6 @@ const _everything = {
   'coqui_pixel',
   'coqui_scenes',
   'coqui_ui',
-  'coqui_testing',
   'feature_map',
   'feature_story',
   'feature_review',
@@ -52,9 +65,14 @@ const _everything = {
   'feature_profile',
 };
 
-/// The plan's package table. "Flutter only" is the empty set: the Flutter SDK
-/// and no Coquí package. "plugins" in coqui_platform's row is the third-party
-/// table below. `app` may depend on everything.
+/// The plan's package table. "plugins" in coqui_platform's row is the
+/// third-party table below. `app` may depend on everything, and lists
+/// coqui_testing as a dev dependency only.
+///
+/// Two changes by the orchestrator, Nov 19, 2026: coqui_ui's row is
+/// "contracts, Flutter" (the plan says "Flutter only"; page 12, section 3 needs
+/// the contracts), and coqui_testing is a dev dependency of the features,
+/// coqui_scenes and app.
 const packageRules = <String, PackageRule>{
   'coqui_contracts': PackageRule(
     'packages/core/coqui_contracts',
@@ -84,8 +102,13 @@ const packageRules = <String, PackageRule>{
     'packages/core/coqui_scenes',
     flutter: true,
     workspace: {'coqui_pixel', 'coqui_contracts', 'coqui_ui'},
+    devWorkspace: _testingDev,
   ),
-  'coqui_ui': PackageRule('packages/core/coqui_ui', flutter: true),
+  'coqui_ui': PackageRule(
+    'packages/core/coqui_ui',
+    flutter: true,
+    workspace: {'coqui_contracts'},
+  ),
   'coqui_testing': PackageRule(
     'packages/core/coqui_testing',
     flutter: true,
@@ -95,38 +118,50 @@ const packageRules = <String, PackageRule>{
     'packages/features/feature_map',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui', 'coqui_pixel'},
+    devWorkspace: _testingDev,
   ),
   'feature_story': PackageRule(
     'packages/features/feature_story',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui', 'coqui_pixel', 'coqui_scenes'},
+    devWorkspace: _testingDev,
   ),
   'feature_review': PackageRule(
     'packages/features/feature_review',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui'},
+    devWorkspace: _testingDev,
   ),
   'feature_words': PackageRule(
     'packages/features/feature_words',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui'},
+    devWorkspace: _testingDev,
   ),
   'feature_library': PackageRule(
     'packages/features/feature_library',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui'},
+    devWorkspace: _testingDev,
   ),
   'feature_speaking': PackageRule(
     'packages/features/feature_speaking',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui'},
+    devWorkspace: _testingDev,
   ),
   'feature_profile': PackageRule(
     'packages/features/feature_profile',
     flutter: true,
     workspace: {'coqui_contracts', 'coqui_ui'},
+    devWorkspace: _testingDev,
   ),
-  'app': PackageRule('app', flutter: true, workspace: _everything),
+  'app': PackageRule(
+    'app',
+    flutter: true,
+    workspace: _everything,
+    devWorkspace: _testingDev,
+  ),
 };
 
 /// Third-party packages that only some packages may list. Builders may not add
@@ -137,6 +172,21 @@ const thirdPartyOnly = <String, Set<String>>{
   'shared_preferences': {'coqui_platform'},
   'web': {'coqui_platform'},
   'go_router': {'app'},
+  // The Material widgets (Nov 19, 2026). In every Flutter package that draws
+  // widgets: not in coqui_platform, and not in the pure Dart packages.
+  'material_ui': {
+    'coqui_ui',
+    'coqui_testing',
+    'coqui_scenes',
+    'feature_map',
+    'feature_story',
+    'feature_review',
+    'feature_words',
+    'feature_library',
+    'feature_speaking',
+    'feature_profile',
+    'app',
+  },
 };
 
 /// Third-party packages any package may list.
@@ -345,10 +395,18 @@ List<String> _checkPubspec(_Package package, PackageRule rule) {
       return;
     }
     if (packageRules.containsKey(dep)) {
-      if (!rule.workspace.contains(dep)) {
+      if (rule.devWorkspace.contains(dep)) {
+        if (!dev) {
+          problems.add(
+            '$where: [a] ${package.name} lists $dep in dependencies: it is a '
+            'dev dependency only',
+          );
+        }
+      } else if (!rule.workspace.contains(dep)) {
         problems.add(
           '$where: [a] ${package.name} lists $dep: its row allows '
-          '${_list(rule.workspace)}',
+          '${_list(rule.workspace)}'
+          '${rule.devWorkspace.isEmpty ? '' : ' (dev only: ${_list(rule.devWorkspace)})'}',
         );
       }
       return;
@@ -418,10 +476,23 @@ List<String> _checkImports(Directory root, _Package package) {
   };
   for (final file in _dartFiles(package.dir)) {
     final path = _rel(root, file.path);
+    final inLib = _rel(package.dir, file.path).startsWith('lib/');
     for (final use in _packageUris(file.readAsStringSync())) {
       final target = use.package;
       if (target == package.name) continue;
       final where = '$path:${use.line}';
+      if (target == 'flutter' && use.path == 'material.dart') {
+        problems.add(
+          '$where: [f] ${package.name} imports package:flutter/material.dart: '
+          'it is deprecated; import package:material_ui/material_ui.dart',
+        );
+      }
+      if (target == 'coqui_testing' && inLib) {
+        problems.add(
+          '$where: [g] ${package.name} imports package:coqui_testing in lib/: '
+          'the fakes are for tests and tool/ only',
+        );
+      }
       if (isFeature && target.startsWith('feature_')) {
         problems.add(
           '$where: [e] ${package.name} imports $target: a feature never '
