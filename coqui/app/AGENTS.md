@@ -20,10 +20,12 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
 ## Public surface
 
 - None. This is the app, not a library.
-- `lib/main.dart` starts the app. Today it shows an empty `MaterialApp` titled "Coquí" with the text "Coquí", centred.
+- `lib/main.dart` starts the app. Today it shows an empty `MaterialApp` titled "Coquí" with the text "Coquí", centred, and under it, small, "build <n>": the number comes from `String.fromEnvironment('COQUI_BUILD', defaultValue: 'dev')`, which the site workflow sets from `coqui/BUILD`.
 - `lib/src/modules.dart` is the one list of feature modules. Today it is empty. Its comment names the seven features in tab order.
-- `web/index.html` carries `translate="no"` and `<meta name="google" content="notranslate">`.
-- The Android and iOS folders, the web manifest and the icons are order 03. They are not here yet.
+- `web/index.html` carries `translate="no"`, `<meta name="google" content="notranslate">`, the old app's viewport and theme-color, and the Apple web-app tags. `web/manifest.json` and `web/icons/` (placeholders made by `../tool/make_icons.dart`) are the home-screen app. The Flutter engine rewrites the page's `lang` and viewport when it starts (see `../tool/check_sitio.mjs`).
+- `android/`: application id `dev.salimocasio.coqui`, display name "Coquí". `RECORD_AUDIO` and `INTERNET`, and the `RecognitionService` query, as the speech_to_text README gives them. `android/debug.keystore` is the standard Android debug key, not a secret: it is in the repo so every build installs over the last. Not for the store. The gradle files are Kotlin (`build.gradle.kts`).
+- `ios/`: bundle id `dev.salimocasio.coqui`, display name "Coquí", the microphone and speech-recognition usage lines in `Runner/Info.plist`. Built unsigned, weekly, by CI.
+- Do not run `flutter create` here again. If a platform file must change, change it by hand.
 
 ## Run and test it alone
 
@@ -33,6 +35,8 @@ flutter test
 flutter run -d chrome
 flutter build web --no-web-resources-cdn
 ```
+
+The build the live site gets, and a check of it: `bash ../tool/build_sitio.sh <dir>`, then `node ../tool/check_sitio.mjs <dir>`.
 
 ## Lines that apply
 

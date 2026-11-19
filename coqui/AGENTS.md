@@ -20,7 +20,8 @@ coqui/
   .flutter-version    the pinned Flutter: 3.50.0
   analysis_options.yaml   the one analysis file
   requests/           what a builder needs from a package it may not touch
-  tool/               check_boundaries.dart, test_all.sh, exports, reference dumps
+  tool/               check_boundaries.dart, test_all.sh, exports, reference dumps, the site and phone build scripts
+  BUILD               the build number the site workflow publishes (one line)
   ref/                reference data made from the old code
   app/                the shell
   packages/core/      coqui_contracts, coqui_progress, coqui_content, coqui_platform,
@@ -141,6 +142,18 @@ flutter analyze
 bash tool/test_all.sh                # all of the above, every test, and the web build
 (cd app && flutter build web --no-web-resources-cdn)   # always with this flag
 ```
+
+The site and the phone builds (order 03; the orchestrator's):
+
+```
+bash tool/build_sitio.sh <out dir>   # the web app as the live site wants it. COQUI_BUILD=<n> sets the number it shows ("build dev" without)
+node tool/check_sitio.mjs <out dir> [--shot=<png>]   # that build, served at /field-notes/app/, opened in headless Chrome at phone size
+bash tool/dry_sitio.sh               # dry run of the "commit to main" step of coqui-sitio.yml, on a local repo
+dart run tool/make_icons.dart        # the placeholder web icons in app/web/ (replaced after order 11)
+bash tool/check_apk.sh key|emulator <apk>   # what coqui-android.yml checks about the debug apk
+```
+
+How the app gets onto the live site: Pages keeps serving the repo root of main. `.github/workflows/coqui-sitio.yml` builds the app and commits it to `app/` at the repo root of main. It starts only when `coqui/BUILD` (one line: the build number) changes on main, or by hand. Only the orchestrator raises that number. Never edit `app/` at the repo root by hand: the next build replaces it. Android and iOS: `coqui-android.yml` (debug apk on every push to main touching `coqui/`, installed twice on an emulator) and `coqui-ios.yml` (weekly, `flutter build ios --no-codesign`).
 
 In a package:
 
