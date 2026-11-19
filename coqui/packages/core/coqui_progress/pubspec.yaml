@@ -1,0 +1,16 @@
+name: coqui_progress
+description: "Word records and the scheduler. Pure Dart."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  coqui_contracts: any
+  collection: ^1.19.1
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.32.0

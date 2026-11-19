@@ -1,0 +1,16 @@
+name: coqui_pixel
+description: "The Pixel Plays engine, the set-building helpers, the sprite library, the software canvas and the scene kit. Pure Dart."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  coqui_contracts: any
+  collection: ^1.19.1
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.32.0

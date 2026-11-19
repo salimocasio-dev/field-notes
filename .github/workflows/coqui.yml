@@ -1,0 +1,31 @@
+# The checks of the Flutter app in coqui/: pub get, the boundary check, format, analyze,
+# every package's tests, and the web build. The steps are in coqui/tool/test_all.sh, which
+# is also what a builder runs on their own machine, so the two cannot drift.
+# The Flutter version is the one in coqui/.flutter-version.
+name: Coquí
+on:
+  push:
+    paths: ["coqui/**", ".github/workflows/coqui.yml"]
+  pull_request:
+    paths: ["coqui/**", ".github/workflows/coqui.yml"]
+permissions:
+  contents: read
+jobs:
+  coqui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The lane check compares the branch with main.
+          fetch-depth: 0
+      - name: Read the pinned Flutter version
+        id: pin
+        run: echo "flutter=$(tr -d '[:space:]' < coqui/.flutter-version)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.pin.outputs.flutter }}
+          channel: stable
+          cache: true
+      - name: Run every check
+        run: bash coqui/tool/test_all.sh

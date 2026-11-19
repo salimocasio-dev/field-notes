@@ -1,0 +1,22 @@
+name: feature_profile
+description: "Yo, the welcome, settings, About."
+version: 0.0.1
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: ^3.14.0
+  flutter: 3.50.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  coqui_contracts: any
+  coqui_ui: any
+  material_ui: ^1.11.1
+
+dev_dependencies:
+  coqui_testing: any
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
