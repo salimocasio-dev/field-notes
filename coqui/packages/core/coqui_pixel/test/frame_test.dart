@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:test/test.dart';
 
-import 'support/signs_replay.dart' show SignScene;
+import 'support/signs_replay.dart' show SignScene, flatBaked;
 
 /// The steps, in the order they happen, as the frame makes them.
 class _Log {
@@ -128,8 +128,7 @@ _run({
     ..hudCtx = dc;
   drawFrame(
     engine: engine,
-    bakedPix: baked,
-    bakedZ: bakedZ ?? Float32List(240 * 216),
+    baked: flatBaked(baked, zb: bakedZ),
     scene: scene,
     W: {},
     F: F,
@@ -215,17 +214,22 @@ void main() {
       final baked = Uint32List(240 * 216)..fillRange(0, 240 * 216, 0xFF808080);
       final log = _Log();
       final engine = PpEngine(w: 240, h: 216, s: 26, originX: -30, originY: 40);
-      engine.ground.fillRange(0, 240 * 216, 1);
       final zb = Float32List(240 * 216);
+      // all ground, at the depth the baked picture has: nothing stands on it
+      final bakedSet = BakedSet(
+        pix: baked,
+        zb: zb,
+        ground: Uint8List(240 * 216)..fillRange(0, 240 * 216, 1),
+        groundZ: zb,
+        kinds: Uint8List(240 * 216),
+        staticShadow: Uint8List(240 * 216),
+      );
       final display = Uint32List(196 * 216);
       final scene = _Scene(log, display);
       void frame(List<ShadowCast> shadows) {
-        // the baked depth is the ground's: nothing stands on it
-        engine.groundZ.setAll(0, zb);
         drawFrame(
           engine: engine,
-          bakedPix: baked,
-          bakedZ: zb,
+          baked: bakedSet,
           scene: scene..sceneCtx = Ctx(engine.pix, 240, 216),
           W: {},
           F: 3,

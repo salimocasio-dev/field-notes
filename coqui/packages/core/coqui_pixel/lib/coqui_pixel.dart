@@ -5,6 +5,7 @@
 /// (`Escena`, the people, the bird), the signs, the camera and the frame recipe are order 12's.
 library;
 
+export 'package:coqui_pixel/src/baked_set.dart';
 export 'package:coqui_pixel/src/camera.dart';
 export 'package:coqui_pixel/src/ctx.dart';
 export 'package:coqui_pixel/src/frame.dart';

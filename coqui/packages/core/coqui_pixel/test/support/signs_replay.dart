@@ -55,6 +55,19 @@ List<SignCase> loadSignCases() {
 Uint32List signReference(SignCase c) =>
     readU32(_file('px/${c.n.toString().padLeft(3, '0')}.bin'));
 
+/// A baked set that is one flat picture: no ground, no tufts, no leaves.
+BakedSet flatBaked(Uint32List pix, {Float32List? zb}) {
+  final n = pix.length;
+  return BakedSet(
+    pix: pix,
+    zb: zb ?? Float32List(n),
+    ground: Uint8List(n),
+    groundZ: Float32List(n),
+    kinds: Uint8List(n),
+    staticShadow: Uint8List(n),
+  );
+}
+
 /// What the scene `E` of a case says (its boxes, its hand points, its heart, whether it draws inside a picture
 /// answer): a [Scene] that answers from the case's tables.
 class SignScene extends Scene {
@@ -192,8 +205,7 @@ SignResult replaySign(SignCase c) {
       final baked = Uint32List(240 * 216)..fillRange(0, 240 * 216, 0xFF241A0E);
       drawFrame(
         engine: engine,
-        bakedPix: baked,
-        bakedZ: Float32List(240 * 216),
+        baked: flatBaked(baked),
         scene: scene,
         W: host.W,
         F: host.F,

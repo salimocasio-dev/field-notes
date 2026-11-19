@@ -3,6 +3,7 @@
 
 import 'dart:typed_data';
 
+import 'package:coqui_pixel/src/baked_set.dart';
 import 'package:coqui_pixel/src/camera.dart';
 import 'package:coqui_pixel/src/ctx.dart';
 import 'package:coqui_pixel/src/pp_engine.dart';
@@ -21,8 +22,9 @@ const int _displayBackground = 0xFF241A0E;
 /// One frame: the same five steps, in this order, every tick. The function holds no state of its own; everything it
 /// changes is in what it is given.
 ///
-/// 1. Copy the baked set for the state ([bakedPix], [bakedZ]: what `scene.setKey(W)` names) into the picture
-///    ([engine]'s `pix` and `zb`, 240 × 216).
+/// 1. Restore the baked set for the state ([baked]: what `scene.setKey(W)` names) into [engine]: everything a bake leaves
+///    behind (the ground, its depth, the kinds, the static shadow, the tufts and leaves; [BakedSet]), and its picture
+///    and depth into `pix` and `zb` (240 × 216).
 /// 2. `drawLeaves` and `drawTufts`: the wind, in steps of 1 / `WIND_FPS` second, still when the engine is (`STILL`,
 ///    the OS asking for reduced motion). Time is [F] ticks of [tick] ms.
 /// 3. Cast the shadow of each character in [shadows], and `applyShadows` (the leaves' shadows go with them).
@@ -33,12 +35,11 @@ const int _displayBackground = 0xFF241A0E;
 ///    points in the picture, [Signs.handPoint]; null: no hand) are drawn on [display] through [dc]. Any other size of
 ///    [cam] throws: a fractional scale is never drawn.
 ///
-/// [c] draws on [engine]'s `pix`, [dc] on [display]. [engine] is the one the baked set was made with, so its ground,
-/// `kinds`, `groundZ` and `staticShadow` are the ones of the set (only `pix` and `zb` are copied here).
+/// [c] draws on [engine]'s `pix`, [dc] on [display]. One engine can serve every state of a set: each frame starts by
+/// putting its state back.
 void drawFrame({
   required PpEngine engine,
-  required Uint32List bakedPix,
-  required Float32List bakedZ,
+  required BakedSet baked,
   required Scene scene,
   required Map<String, dynamic> W,
   required int F,
@@ -53,8 +54,7 @@ void drawFrame({
 }) {
   final a = F >> 1;
   // 1. the baked set
-  engine.pix.setAll(0, bakedPix);
-  engine.zb.setAll(0, bakedZ);
+  baked.restoreInto(engine);
   // 2. the wind (mapa.js: `windT = STILL ? 0 : Math.floor(time * WIND_FPS) / WIND_FPS`, time in seconds)
   final windT = engine.STILL
       ? 0.0
@@ -72,6 +72,8 @@ void drawFrame({
   // 5. the window at cam, then hud and the hand
   _copyView(engine, display, cam);
   scene.hud(dc, W, a);
+  // juego.js line 77: `E.handAt[W.spot]` with no such key is a TypeError there; here no hand is drawn (the caller gives
+  // no handPoint, or `Signs.handPoint` gives null)
   if (handPoint != null) {
     // juego.js: `z = DW / cam[2]` is 1 or 2, `hx = Math.round((p[0] - cam[0]) * z) - 4 * k`
     const k = 3;
@@ -102,28 +104,24 @@ void _copyView(PpEngine e, Uint32List display, List<num> cam) {
   }
 }
 
-/// The corners of one face of a world box, on screen, in order round the face: from the bottom corner nearest the
-/// box's low end, along the bottom, up, and back along the top. [world] is `x0, y0, z0, x1, y1, z1`. A face is named
-/// as the building helpers name it (mapa.js: `onWall(face, at, ...)`): `'y'` is the wall on `y = y1`, `'x'` the wall
-/// on `x = x1`, the two walls the camera sees. Each corner is the engine's `project` of the corner's world point.
-List<({double sx, double sy})> faceCorners(
-  PpEngine e,
-  List<num> world,
-  String face,
-) {
-  final x0 = world[0], y0 = world[1], z0 = world[2];
-  final x1 = world[3], y1 = world[4], z1 = world[5];
-  final List<List<num>> pts;
+/// The world points of one face of a world box, in order round the face: from the bottom corner nearest the box's low
+/// end, along the bottom, up, and back along the top. [world] is `x0, y0, z0, x1, y1, z1`. A face is named as the building
+/// helpers name it (mapa.js: `onWall(face, at, ...)`): `'y'` is the wall on `y = y1`, `'x'` the wall on `x = x1`, the
+/// two walls the camera sees.
+List<List<double>> facePoints(List<num> world, String face) {
+  final x0 = world[0].toDouble(), y0 = world[1].toDouble();
+  final z0 = world[2].toDouble(), x1 = world[3].toDouble();
+  final y1 = world[4].toDouble(), z1 = world[5].toDouble();
   switch (face) {
     case 'y':
-      pts = [
+      return [
         [x0, y1, z0],
         [x1, y1, z0],
         [x1, y1, z1],
         [x0, y1, z1],
       ];
     case 'x':
-      pts = [
+      return [
         [x1, y0, z0],
         [x1, y1, z0],
         [x1, y1, z1],
@@ -132,28 +130,46 @@ List<({double sx, double sy})> faceCorners(
     default:
       throw ArgumentError.value(face, 'face', "a face is 'x' or 'y'");
   }
-  return [
-    for (final p in pts)
-      (() {
-        final s = e.project(p[0], p[1], p[2]);
-        return (sx: s.sx, sy: s.sy);
-      })(),
-  ];
 }
 
-/// Clips [c] to [face] of [thing]'s world box, as the old code clipped to a window or a doorway: `c.beginPath()`, the
-/// face's four corners on screen ([faceCorners]), `c.clip()`. Call it between `save` and `restore`. [thing] must be
-/// part of the set (it has a [Thing.world]).
-void clipTo(Ctx c, PpEngine engine, Thing thing, String face) {
-  final world = thing.world;
-  if (world == null) {
-    throw ArgumentError('${thing.id} has no world box: it is not in the set');
-  }
-  final p = faceCorners(engine, world, face);
+/// A list of world points `[x, y, z]` on the screen: the engine's `project` of each.
+List<({double sx, double sy})> projectPoints(
+  PpEngine e,
+  List<List<num>> points,
+) => [
+  for (final p in points)
+    (() {
+      final s = e.project(p[0], p[1], p[2]);
+      return (sx: s.sx, sy: s.sy);
+    })(),
+];
+
+/// The corners of one face of a world box, on screen, in the order of [facePoints]: the engine's `project` of each.
+List<({double sx, double sy})> faceCorners(
+  PpEngine e,
+  List<num> world,
+  String face,
+) => projectPoints(e, facePoints(world, face));
+
+/// Clips [c] to the polygon the world [points] make on the screen, as the old code clipped to a rectangle (a window, a
+/// doorway): `c.beginPath()`, each point projected by the engine, `c.clip()`. A sheet's `clips` are world polygons (four
+/// points on a wall); this is what a scene calls for them. Call it between `save` and `restore`.
+void clipToWorld(Ctx c, PpEngine engine, List<List<num>> points) {
+  final p = projectPoints(engine, points);
   c.beginPath();
   c.moveTo(p[0].sx, p[0].sy);
   for (var i = 1; i < p.length; i++) {
     c.lineTo(p[i].sx, p[i].sy);
   }
   c.clip();
+}
+
+/// Clips [c] to [face] of [thing]'s world box: [clipToWorld] of [facePoints]. [thing] must be part of the set (it has a
+/// [Thing.world]).
+void clipTo(Ctx c, PpEngine engine, Thing thing, String face) {
+  final world = thing.world;
+  if (world == null) {
+    throw ArgumentError('${thing.id} has no world box: it is not in the set');
+  }
+  clipToWorld(c, engine, facePoints(world, face));
 }
