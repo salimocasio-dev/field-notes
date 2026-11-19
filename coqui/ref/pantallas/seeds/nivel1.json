@@ -1,0 +1,295 @@
+{
+ "palabras": {
+  "casa": {
+   "w": "casa",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "puerta": {
+   "w": "puerta",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "ventana": {
+   "w": "ventana",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "abuela": {
+   "w": "abuela",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "hola": {
+   "w": "hola",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "toca": {
+   "w": "toca",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  },
+  "abre": {
+   "w": "abre",
+   "primera": 1795104000000,
+   "oida": 0,
+   "ear": {
+    "etapa": 3,
+    "paso": 2,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 1,
+    "due": 1795161600000,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0,
+    "presunta": 1
+   },
+   "mouth": {
+    "etapa": 0,
+    "paso": 1,
+    "seguidas": 0,
+    "fallos": 0,
+    "gap": 0,
+    "due": 0,
+    "aciertos": [],
+    "ultima": 0,
+    "aparcada": 0,
+    "marca": 0,
+    "n": 0,
+    "bien": 0
+   }
+  }
+ },
+ "dias": {
+  "2026-11-19": 1
+ },
+ "cuentos": {
+  "la-lluvia": {
+   "n": 1,
+   "primera": 1795104000000,
+   "ultima": 1795104000000,
+   "presunto": 1
+  }
+ },
+ "ajustes": {
+  "min": 30,
+  "todo": 0,
+  "bienvenida": 1,
+  "habla": 1
+ },
+ "minutos": 0,
+ "v": 1,
+ "nivel": {
+  "t": 1795104000000,
+  "log": [
+   {
+    "i": 0,
+    "w": "abuela",
+    "s": 1,
+    "ok": true,
+    "ms": 134
+   },
+   {
+    "i": 4,
+    "w": "silla",
+    "s": 4,
+    "ok": false,
+    "ms": 140
+   },
+   {
+    "i": 3,
+    "w": "hola",
+    "s": 2,
+    "ok": false,
+    "ms": 131
+   },
+   {
+    "i": 2,
+    "w": "abre",
+    "s": 2,
+    "ok": false,
+    "ms": 81
+   }
+  ],
+  "historias": 1
+ }
+}
