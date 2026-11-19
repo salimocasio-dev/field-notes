@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:coqui_ui/src/pixel_view.dart' show RenderPixelView;
@@ -22,11 +23,31 @@ Uint32List _picture(int w, int h, int Function(int x, int y) at) {
   return p;
 }
 
-Future<void> _settle(WidgetTester tester) async {
-  await tester.runAsync(
-    () => Future<void>.delayed(const Duration(milliseconds: 120)),
+/// Waits until the [PixelView] on screen is drawing a picture, and returns it. With [than], a picture
+/// other than that one: the new upload of a changed or ticked view.
+///
+/// The picture is made by the engine, off the test's fake clock (`ui.decodeImageFromPixels`), and how long
+/// that takes depends on the load of the machine. So nothing here waits for a set time: each round gives
+/// the event loop a short real turn, pumps one frame, and looks. It stops the moment the picture is there,
+/// or after [maxPumps] rounds (more than 20 s) with a message that says what never arrived.
+Future<ui.Image> _waitForPicture(
+  WidgetTester tester, {
+  ui.Image? than,
+  int maxPumps = 3000,
+}) async {
+  for (var round = 0; round < maxPumps; round++) {
+    final image = _ro(tester).image;
+    if (image != null && !identical(image, than)) return image;
+    // A short real yield, so that the engine's decoder gets the machine: a poll, not a wait for a set time.
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 5)),
+    );
+    await tester.pump();
+  }
+  fail(
+    'the PixelView never drew ${than == null ? 'its first picture' : 'a new picture'} '
+    'in $maxPumps pumps (each one a turn of the real event loop and a frame)',
   );
-  await tester.pump();
 }
 
 /// The boundary's pixels as 0xAABBGGRR values, width x height in device pixels.
@@ -230,7 +251,7 @@ void main() {
           ),
         ),
       );
-      await _settle(tester);
+      await _waitForPicture(tester);
       final img = await _capture(tester, key, ratio);
       // The boundary is at a fractional place, so find the drawn block.
       var minX = img.w, minY = img.h, maxX = -1, maxY = -1;
@@ -307,7 +328,7 @@ void main() {
             ),
           ),
         );
-        await _settle(tester);
+        await _waitForPicture(tester);
         final img = await _capture(tester, key, ratio);
         var maxX = -1;
         var maxY = -1;
@@ -358,7 +379,7 @@ void main() {
           ),
         ),
       );
-      await _settle(tester);
+      await _waitForPicture(tester);
       final img = await _capture(tester, key, 2.0);
       expect(img.w, 20);
       expect(img.h, 10);
@@ -402,19 +423,21 @@ void main() {
           ),
         ),
       );
-      await _settle(tester);
+      final first = await _waitForPicture(tester);
       final ro = _ro(tester);
       var img = await _capture(tester, key, 2.0);
       expect(img.px.every((c) => c == red), isTrue, reason: 'first picture');
 
-      // The game draws into the list but does not tick: nothing is redrawn.
+      // The game draws into the list but does not tick: nothing is uploaded, so there is nothing to wait
+      // for, and nothing is redrawn.
       pixels.fillRange(0, pixels.length, green);
       final before = ro.paintCount;
       for (var i = 0; i < 5; i++) {
         await tester.pump(const Duration(milliseconds: 16));
-        await _settle(tester);
+        await tester.runAsync(() => Future<void>.delayed(Duration.zero));
       }
       expect(ro.paintCount, before, reason: 'no tick, no paint');
+      expect(ro.image, same(first), reason: 'no tick, no new picture');
       img = await _capture(tester, key, 2.0);
       expect(
         img.px.every((c) => c == red),
@@ -422,9 +445,9 @@ void main() {
         reason: 'still the old one',
       );
 
-      // The tick: the new pixels are drawn.
+      // The tick: the new pixels are uploaded, and drawn when they arrive.
       tick.notifyListeners();
-      await _settle(tester);
+      final second = await _waitForPicture(tester, than: first);
       expect(ro.paintCount, greaterThan(before), reason: 'the tick repaints');
       img = await _capture(tester, key, 2.0);
       expect(
@@ -436,8 +459,9 @@ void main() {
       // And then it is still again.
       final after = ro.paintCount;
       await tester.pump(const Duration(milliseconds: 16));
-      await _settle(tester);
+      await tester.runAsync(() => Future<void>.delayed(Duration.zero));
       expect(ro.paintCount, after);
+      expect(ro.image, same(second));
     });
 
     testWidgets('a different pixel list is a new picture', (tester) async {
@@ -459,9 +483,9 @@ void main() {
         ),
       );
       await tester.pumpWidget(build(_picture(2, 2, (x, y) => red)));
-      await _settle(tester);
+      final first = await _waitForPicture(tester);
       await tester.pumpWidget(build(_picture(2, 2, (x, y) => blue)));
-      await _settle(tester);
+      await _waitForPicture(tester, than: first);
       final img = await _capture(tester, key, 1.0);
       expect(img.px.every((c) => c == blue), isTrue);
     });
