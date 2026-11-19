@@ -91,7 +91,7 @@ abstract interface class CourseCatalog {
 
 abstract interface class ClipPlayer {
   Future<void> unlock();                         // call inside the first tap
-  Future<void> preload(Iterable<String> clipIds);
+  Future<List<String>> preload(Iterable<String> clipIds);   // the ids that could NOT be made ready; empty = all ready (changed Nov 19, order 02b)
   Future<bool> play(String clipId, {Duration? limit});   // true when it played to its end mark
   void tone(double hz, {double at = 0, double dur = .1, String wave = 'square', double vol = .05, double? toHz});
   void noiseBurst({double vol = 1});             // thunder

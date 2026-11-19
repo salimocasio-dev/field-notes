@@ -4,6 +4,8 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/src/audio/graph_clip_player.dart';
 import 'package:coqui_platform/src/audio/pcm_graph.dart';
 import 'package:coqui_platform/src/audio/sound_core.dart';
+import 'package:coqui_platform/src/call/call_session.dart';
+import 'package:coqui_platform/src/call/call_stub.dart';
 import 'package:coqui_platform/src/info/app_info.dart';
 import 'package:coqui_platform/src/io/just_audio_sink.dart';
 import 'package:coqui_platform/src/io/phone_clip_player.dart';
@@ -68,3 +70,11 @@ AppInfo createAppInfo() => FixedAppInfo(
   isAndroid: Platform.isAndroid,
   installed: true,
 );
+
+/// No calls in a phone build until there is a token server (page 11, "Phones"): [CallSession.available]
+/// is false and [CallSession.start] throws. [stub] and [libraryUrl] are the web's and are not used here.
+CallSession createCallSession({
+  required AppInfo appInfo,
+  CallStub? stub,
+  String libraryUrl = elevenLabsClientUrl,
+}) => ConvCallSession(library: null, callsAllowed: false);

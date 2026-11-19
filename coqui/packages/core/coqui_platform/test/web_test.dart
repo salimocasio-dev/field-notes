@@ -144,11 +144,46 @@ void main() {
         base: Uri.parse('https://example.test/'),
         fetch: (_) async => wavBytes,
       );
-      await p.preload(['a']);
+      expect(await p.preload(['a']), isEmpty);
       final c = core.clips['a']!;
       expect(c.t0, .1);
       expect(c.t1, .9);
       expect(c.buf.duration, closeTo(1, .01));
+    });
+
+    test('a clip the browser cannot decode, and a clip with no ClipInfo, are reported; a retry tries again', () async {
+      final core = SoundCore(
+        () => WebAudioGraph(web.OfflineAudioContext(1.toJS, 44100, 44100)),
+      );
+      var served = Uint8List.fromList([1, 2, 3, 4]); // not audio
+      var fetches = 0;
+      final p = GraphClipPlayer(
+        core: core,
+        clipInfo: (id) => id == 'none'
+            ? null
+            : ClipInfo(
+                id: id,
+                who: 'narr',
+                text: '',
+                startMs: 0,
+                endMs: 900,
+                url: 'audio/$id.wav',
+              ),
+        base: Uri.parse('https://example.test/'),
+        fetch: (_) async {
+          fetches++;
+          return served;
+        },
+      );
+      expect(await p.preload(['bad', 'none', 'bad']), ['bad', 'none']);
+      expect(fetches, 1);
+      expect(core.clips, isEmpty);
+      served = _wav(44100, 1.0);
+      expect(await p.preload(['none', 'bad']), ['none']);
+      expect(fetches, 2);
+      expect(core.clips.keys, ['bad']);
+      expect(await p.preload(['bad', 'none']), ['none']);
+      expect(fetches, 2);
     });
   });
 

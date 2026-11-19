@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:coqui_ui/coqui_ui.dart';
@@ -51,14 +52,64 @@ void main() {
       expect(CoquiText.body.fontSize, 16);
       expect(CoquiText.small.fontSize, 14);
       expect(CoquiText.tab.fontSize, 12);
-      // The system font stack: no family set.
-      expect(CoquiText.body.fontFamily, isNull);
-      expect(CoquiText.h1.fontFamily, isNull);
+      // Roboto, shipped in fonts/ (see fidelity_test.dart for the weights).
+      expect(CoquiText.body.fontFamily, 'packages/coqui_ui/Roboto');
+      expect(CoquiText.h1.fontFamily, 'packages/coqui_ui/Roboto');
     });
     test('Pixelify Sans is written with ligatures off', () {
       final s = pixelifyStyle(fontSize: 20);
-      expect(s.fontFamily, 'Pixelify Sans');
+      expect(s.fontFamily, 'packages/coqui_ui/Pixelify Sans');
       expect(s.fontFeatures, contains(const FontFeature.disable('liga')));
+    });
+  });
+
+  group('labels', () {
+    test('the names v=39 hard-codes, as they are on its pages', () {
+      expect(CoquiLabels.appName, 'Coquí');
+      expect(CoquiLabels.library, 'Biblioteca');
+      expect(CoquiLabels.words, 'Palabras');
+      expect(CoquiLabels.map, 'Mapa');
+      expect(CoquiLabels.speak, 'Hablar');
+      expect(CoquiLabels.me, 'Yo');
+      expect(CoquiLabels.reviewTitle, '¿Cuál?');
+      expect(CoquiLabels.review, 'Repaso');
+    });
+    test(
+      'the book and the shelf: Fin, Otra vez, Cuento con dibujos, Haz esto',
+      () {
+        expect(CoquiLabels.fin, 'Fin');
+        expect(CoquiLabels.again, 'Otra vez');
+        expect(CoquiLabels.pictureStory, 'Cuento con dibujos');
+        expect(CoquiLabels.routine, 'Haz esto');
+      },
+    );
+    test('each label is copied from the line of the old page it names', () {
+      // The old page, read from the repository (this test runs at coqui/packages/core/coqui_ui).
+      final lines = File('../../../../historia/app.html').readAsLinesSync();
+      String line(int n) => lines[n - 1];
+      expect(line(7), contains('<title>${CoquiLabels.appName}</title>'));
+      expect(line(374), contains('"${CoquiLabels.appName}"'));
+      expect(line(331), contains('"${CoquiLabels.pictureStory}"'));
+      expect(line(331), contains('"${CoquiLabels.routine}"'));
+      expect(line(365), contains('>${CoquiLabels.fin}</div>'));
+      expect(line(365), contains('${CoquiLabels.again}</button>'));
+      expect(line(365), contains('>${CoquiLabels.library}</button>'));
+    });
+    test('the tab bar\'s five tabs read their names from them', () {
+      expect(CoquiTabs.all.map((t) => t.label), [
+        CoquiLabels.library,
+        CoquiLabels.words,
+        CoquiLabels.map,
+        CoquiLabels.speak,
+        CoquiLabels.me,
+      ]);
+      expect(CoquiTabs.all.map((t) => t.id), [
+        'library',
+        'words',
+        'map',
+        'speak',
+        'me',
+      ]);
     });
   });
 
@@ -462,12 +513,87 @@ void main() {
           ),
         ),
       );
-      expect(find.text('\u{1F525} 1 day'), findsOneWidget);
+      // The flame is drawn, not a character: the text has none of the emoji.
+      expect(find.text('1 day'), findsOneWidget);
+      expect(find.byType(CoquiFlame), findsOneWidget);
       expect(find.text('2 · a place'), findsOneWidget);
       expect(tester.getSize(find.byType(MapChips)), const Size(412, 48));
-      expect(MapChips.streakLabel(0), '\u{1F525} 0 days');
-      expect(MapChips.streakLabel(5), '\u{1F525} 5 days');
+      expect(MapChips.streakLabel(0), '0 days');
+      expect(MapChips.streakLabel(1), '1 day');
+      expect(MapChips.streakLabel(5), '5 days');
+      // The flame is 0.86 em wide and 1.1 em tall at the chip's 14 px: 12 x 15.4 px, 0.29 em
+      // (4.06 px) before the text.
+      final box = tester.getRect(find.byType(CoquiFlame));
+      expect(box.width, closeTo(16.8, 1e-9));
+      expect(box.height, closeTo(16.8, 1e-9));
+      expect(
+        tester.getRect(find.text('1 day')).left - box.right,
+        closeTo(CoquiFlame.gapFor(14), 1e-6),
+      );
     });
+
+    testWidgets('the flame is two tones that the icon colour does not tint', (
+      tester,
+    ) async {
+      await _phone(tester);
+      await tester.pumpWidget(
+        _app(
+          const Align(
+            alignment: Alignment.topLeft,
+            child: CoquiFlame(fontSize: 24),
+          ),
+        ),
+      );
+      expect(
+        tester.getSize(find.byType(CoquiFlame)).width,
+        closeTo(28.8, 1e-9),
+      );
+      final shapes = CoquiIcons.flame.shapes;
+      expect(shapes.length, 2);
+      expect(shapes[0].color, CoquiColors.flameBody);
+      expect(shapes[1].color, CoquiColors.flameCore);
+      expect(CoquiColors.flameBody, const Color(0xFFFF7003));
+      expect(CoquiColors.flameCore, const Color(0xFFFFF293));
+      for (final s in shapes) {
+        expect(s.fill, isTrue);
+        expect(s.stroke, isFalse);
+        // The path reads, and sits inside the 24 x 24 box.
+        final b = parseSvgPath(s.d).getBounds();
+        expect(b.left, greaterThanOrEqualTo(0));
+        expect(b.top, greaterThanOrEqualTo(0));
+        expect(b.right, lessThanOrEqualTo(24));
+        expect(b.bottom, lessThanOrEqualTo(24));
+      }
+      // 21.7 high, 17.4 wide: the 0.86 : 1.1 of the glyph.
+      final body = parseSvgPath(shapes[0].d).getBounds();
+      expect(body.height, closeTo(21.7, 0.2));
+      expect(body.width / body.height, closeTo(12.2 / 15.6, 0.03));
+    });
+
+    testWidgets(
+      'StatCard with the flame: the flame, then the number, then the word',
+      (tester) async {
+        await _phone(tester);
+        await tester.pumpWidget(
+          _app(
+            const Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: 180,
+                child: StatCard(value: '5', label: 'day streak', flame: true),
+              ),
+            ),
+          ),
+        );
+        expect(find.byType(CoquiFlame), findsOneWidget);
+        expect(find.text('5'), findsOneWidget);
+        expect(find.text('\u{1F525} 5'), findsNothing);
+        final flame = tester.getRect(find.byType(CoquiFlame));
+        final number = tester.getRect(find.text('5'));
+        expect(flame.right, lessThan(number.left));
+        expect(number.left - flame.right, closeTo(CoquiFlame.gapFor(24), 1e-6));
+      },
+    );
   });
 
   group('sheet', () {
@@ -1050,27 +1176,6 @@ void main() {
         expect(rows, 1);
       },
     );
-
-    testWidgets('ShelfRow: the cover, the title, buttons under it', (
-      tester,
-    ) async {
-      await _phone(tester);
-      await tester.pumpWidget(
-        _app(
-          ShelfRow(
-            title: 'a title',
-            subtitle: 'about 2 min',
-            actions: [CoquiButton(label: 'Listen', onPressed: () {})],
-          ),
-        ),
-      );
-      expect(find.text('Listen'), findsOneWidget);
-      // 16 above, a 72 px cover, 16 below at least.
-      expect(
-        tester.getSize(find.byType(ShelfRow)).height,
-        greaterThanOrEqualTo(104),
-      );
-    });
 
     testWidgets(
       'SegmentedPills reports the tapped index; the chosen one is blue',

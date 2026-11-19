@@ -49,10 +49,56 @@ final class Ended extends CallEvent {
   final String reason;
 }
 
+/// Why a call could not start (llamada.js, inicia, and the line its call screen shows for each).
+enum CallStartFailure {
+  /// The microphone was refused: startSession's error name and message match
+  /// `/NotAllowed|PermissionDenied|NotFound|Permission|microphone|denied/i`.
+  /// "The microphone is off. Allow it in your browser to call."
+  microphone,
+
+  /// The voice library did not load (precarga gave false).
+  /// "The voice part did not load. Check your connection and try again."
+  library,
+
+  /// startSession failed in any other way.
+  /// "The call did not start. Check your connection and try again."
+  failed,
+
+  /// No calls here: a phone build, or a build with calls off (`AppInfo.callsAllowed`). The old page has no
+  /// such case; the call screen is never opened there (the card says calls come later).
+  unavailable,
+}
+
+/// What [CallSession.start] throws when the call cannot start (order 19b). Its text is `<name>: <message>`:
+/// [name] is the client's own error name where there is one (a refused microphone is "NotAllowedError"),
+/// so llamada.js's own test on the error's name and message still works on `'$e'`.
+class CallStartError implements Exception {
+  const CallStartError(this.kind, this.message, {String? name})
+    : name =
+          name ??
+          (kind == CallStartFailure.microphone
+              ? 'NotAllowedError'
+              : kind == CallStartFailure.library
+              ? 'LibraryError'
+              : kind == CallStartFailure.unavailable
+              ? 'NotAvailable'
+              : 'Error');
+
+  final CallStartFailure kind;
+  final String message;
+
+  /// The error's name: the client's own, or one for the kind.
+  final String name;
+
+  @override
+  String toString() => '$name: $message';
+}
+
 /// The call with Danny (llamada.js: startSession and the conversation it returns).
 abstract interface class CallSession {
   bool get available; // false in a phone build until there is a token server
-  /// Starts the session. Throws when it cannot start: the microphone is refused, or the call fails.
+  /// Starts the session. Throws [CallStartError], and nothing else, when the call cannot start: the
+  /// microphone is refused, the voice library did not load, the call fails, or there are no calls here.
   Future<void> start(CallBrief brief, Map<String, String> variables);
   Stream<CallEvent> get events;
   void send(String text);

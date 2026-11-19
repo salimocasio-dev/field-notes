@@ -120,6 +120,12 @@ abstract final class CoquiColors {
   /// `#go` start disc shadow, `rgba(0,0,0,.35)`. cual.html:53
   static const discShadow = Color(0x59000000);
 
+  /// The dim laid over a picture that is not the answer: `rgba(6,14,28,.55)`. cual.js:39
+  static const optionDimUnchosen = Color(0x8C060E1C);
+
+  /// The dim over both pictures while the sentence plays: `rgba(6,14,28,.5)`. cual.js:39
+  static const optionDimWhileSentence = Color(0x80060E1C);
+
   /// `--ink3` the faintest text on a lesson screen. habla-prueba.html:9
   static const lessonInk3 = Color(0xFF8E8E98);
 
@@ -140,6 +146,13 @@ abstract final class CoquiColors {
 
   /// `.lbl .spk` the speaker glyph beside a book line. app.html:116
   static const bookSpeaker = Color(0xFF9A9AA6);
+
+  /// The streak's flame, its body: the median colour of the inside of the fire emoji glyph the old chip shows
+  /// (`hud()`, app.html:286), measured on references 012 (both phones): `#FF7003`.
+  static const flameBody = Color(0xFFFF7003);
+
+  /// The streak's flame, its core: the median of the glyph's yellow part, `#FFF293`. Same measure.
+  static const flameCore = Color(0xFFFFF293);
 }
 
 /// Sizes in logical pixels (CSS px). The old app uses an 8-point grid.
@@ -223,6 +236,17 @@ abstract final class CoquiMetrics {
 
   /// `.dot` height. cual.html:20
   static const double dotHeight = 6;
+
+  /// The reader's foot row and column: `.lbfoot{max-width:560px;padding:8px 16px 16px}`, its buttons 56 px
+  /// high, the back arrow on the last page 72 wide (`.lbb.ar`). app.html:120, 122-123
+  static const double readerColumnMax = 560;
+  static const double readerBackWidth = 72;
+
+  /// `.opt.chk::after` the check badge: 28 px, 8 px from the picture's top and right, a 2 px white ring
+  /// outside it. cual.html:49
+  static const double badgeSize = 28;
+  static const double badgeInset = 8;
+  static const double badgeRing = 2;
 
   /// `#main` padding at the foot: the start disc (72) and the 40 px under it. cual.html:27
   static const double lessonFootReserve = 112;

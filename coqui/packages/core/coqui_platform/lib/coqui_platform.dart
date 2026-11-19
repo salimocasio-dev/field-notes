@@ -15,12 +15,17 @@ library;
 
 export 'package:coqui_platform/src/audio/graph_clip_player.dart'
     show ClipLookup;
+export 'package:coqui_platform/src/call/call_session.dart'
+    show dannyAgentId, elevenLabsClientUrl;
+export 'package:coqui_platform/src/call/call_stub.dart'
+    show CallStub, CallStubScript;
 export 'package:coqui_platform/src/info/app_info.dart'
     show coquiBuild, coquiCallsAllowed, iosAudioSessionType;
 export 'package:coqui_platform/src/io/io_platform.dart'
     if (dart.library.js_interop) 'package:coqui_platform/src/web/web_platform.dart'
     show
         createAppInfo,
+        createCallSession,
         createClipPlayer,
         createHaptics,
         createSpeechListener,

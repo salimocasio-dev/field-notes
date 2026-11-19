@@ -3,6 +3,7 @@
 //   dart run tool/make_sprite_fixtures.dart          (in this package) writes
 //       test/support/fixtures/ref_sprites.dart  (coqui/ref/sprites/engine/)
 //       test/support/fixtures/ref_ctx.dart      (coqui/ref/ctx/: cases.json, the tiles, the source sprites)
+//       test/support/fixtures/ref_kit.dart      (coqui/ref/sprites/kit/, order 12)
 //   dart run tool/make_sprite_fixtures.dart --check  says whether those files are the ones the reference data gives
 //
 // A test in a browser cannot read files, so the reference data goes into Dart files: each file below as base64, in
@@ -64,6 +65,7 @@ void main(List<String> args) {
     ...listFiles(ref, 'ctx/tiles'),
     ...listFiles(ref, 'ctx/sources'),
   ];
+  final kitFiles = listFiles(ref, 'sprites/kit');
   final outputs = {
     'test/support/fixtures/ref_sprites.dart': render(
       ref,
@@ -76,6 +78,12 @@ void main(List<String> args) {
       'refCtxFixture',
       'coqui/ref/ctx/',
       ctxFiles,
+    ),
+    'test/support/fixtures/ref_kit.dart': render(
+      ref,
+      'refKitFixture',
+      'coqui/ref/sprites/kit/',
+      kitFiles,
     ),
   };
   if (args.contains('--check')) {

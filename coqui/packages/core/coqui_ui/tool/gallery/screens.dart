@@ -69,9 +69,6 @@ final List<GallerySection> gallerySections = [
     const ['030-palabras-a-medio-curso.png'],
     (c) => const _PalabrasScreen(),
   ),
-  GallerySection('biblioteca', 'Biblioteca: shelf rows in a card', const [
-    '047-biblioteca-a-medio-curso.png',
-  ], (c) => const _BibliotecaScreen()),
   GallerySection('yo', 'Yo: stat cards, a card, pills, switches', const [
     '069-yo-nada-jugado.png',
   ], (c) => const _YoScreen()),
@@ -92,9 +89,60 @@ final List<GallerySection> gallerySections = [
   ], (c) => const _LessonStart()),
   GallerySection(
     'lesson-answer',
-    'Lesson frame: two pictures, a caption, a right answer',
+    'Picture choice: the other picture dimmed, a right answer with its check badge',
     const ['086-repaso-toque-bien.png'],
-    (c) => const _LessonAnswer(),
+    (c) => _LessonChoice(
+      caption: 'A sample caption.',
+      first: (p) => PictureChoice(dim: ChoiceDim.unchosen, child: p),
+      second: (p) =>
+          PictureChoice(ring: ChoiceRing.right, check: true, child: p),
+    ),
+  ),
+  GallerySection(
+    'lesson-choice-miss',
+    'Picture choice: a wrong touch: red-orange ring and dimmed; the right one still plain in its grey frame, before it turns green',
+    const ['087-repaso-toque-mal.png'],
+    (c) => _LessonChoice(
+      caption: 'A sample caption.',
+      progressDone: 1,
+      first: (p) => PictureChoice(child: p),
+      second: (p) => PictureChoice(
+        ring: ChoiceRing.wrong,
+        dim: ChoiceDim.unchosen,
+        child: p,
+      ),
+    ),
+  ),
+  GallerySection(
+    'lesson-choice-wrong',
+    'Picture choice: a wrong touch (red-orange ring, dimmed) and the right one shown (green ring)',
+    const ['088-repaso-toque-mal-se-muestra-la-buena.png'],
+    (c) => _LessonChoice(
+      caption: 'A sample caption.',
+      progressDone: 1,
+      first: (p) => PictureChoice(ring: ChoiceRing.right, child: p),
+      second: (p) => PictureChoice(
+        ring: ChoiceRing.wrong,
+        dim: ChoiceDim.unchosen,
+        child: p,
+      ),
+    ),
+  ),
+  GallerySection(
+    'lesson-choice-sentence',
+    'Picture choice: both pictures dimmed while the sentence plays, its caption under them',
+    const ['084-repaso-frase-suena-imagenes-oscuras.png'],
+    (c) => _LessonChoice(
+      caption: 'A sample caption.',
+      first: (p) => PictureChoice(dim: ChoiceDim.whileSentence, child: p),
+      second: (p) => PictureChoice(dim: ChoiceDim.whileSentence, child: p),
+    ),
+  ),
+  GallerySection(
+    'lesson-duo',
+    'Lesson frame: a story\'s end: Play again and Map in equal halves, Next story under them',
+    const ['136-cuento-fin-con-un-error.png'],
+    (c) => const _LessonDuo(),
   ),
   GallerySection(
     'lesson-end',
@@ -109,20 +157,25 @@ final List<GallerySection> gallerySections = [
     (c) => const _ModalSheetScreen(),
   ),
   GallerySection(
-    'words-states',
-    'Meters 0 to 4, word cards: picture, plain tile, a long word, the fades',
+    'words-meters',
+    'Meters 0 to 4, the word sheet\'s centred meters, the fades',
     const [
       '030-palabras-a-medio-curso.png',
       '038-palabra-con-imagen-oido-3-vuelve-en-dias.png',
     ],
-    (c) => const _WordStates(),
+    (c) => const _WordMeters(),
+  ),
+  GallerySection(
+    'words-cards',
+    'Word cards: picture, plain tile, a long word, a long unbroken word',
+    const ['030-palabras-a-medio-curso.png'],
+    (c) => const _WordCards(),
   ),
   GallerySection(
     'buttons',
     'Buttons on the light screens: every kind, every state',
     const [
       '030-palabras-a-medio-curso.png',
-      '047-biblioteca-a-medio-curso.png',
       '069-yo-nada-jugado.png',
       '015-lugar-abierto-1-nada-jugado.png',
     ],
@@ -204,7 +257,7 @@ class _MapScreen extends StatelessWidget {
           bottom: CoquiLayout.tabBarHeight(context) + CoquiMetrics.rise + 16,
           child: TodayCard(
             eyebrow: 'Today · 1 of 6',
-            title: 'Review',
+            title: CoquiLabels.reviewTitle,
             subtitle: '10 words coming back · 6 min',
             onPressed: () {},
           ),
@@ -254,7 +307,7 @@ class _PalabrasScreen extends StatelessWidget {
     selected: CoquiTabs.wordsId,
     body: TabPage(
       children: [
-        const ScreenTitle('Palabras'),
+        const ScreenTitle(CoquiLabels.words),
         CoquiCard(
           child: CoquiRow(
             minHeight: 0,
@@ -263,7 +316,7 @@ class _PalabrasScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Repaso', style: CoquiText.rowBold),
+                    Text(CoquiLabels.review, style: CoquiText.rowBold),
                     Text(
                       '10 words today · about 2 min',
                       style: CoquiText.smallMuted,
@@ -298,63 +351,6 @@ class _PalabrasScreen extends StatelessWidget {
   );
 }
 
-class _BibliotecaScreen extends StatelessWidget {
-  const _BibliotecaScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    Widget row(
-      String title,
-      String sub, {
-      bool read = false,
-      bool cover = false,
-    }) => ShelfRow(
-      title: title,
-      subtitle: sub,
-      cover: cover ? _pic(_scene, w: 196, h: 104) : null,
-      actions: [
-        CoquiButton(
-          label: 'Listen',
-          icon: CoquiIcons.play,
-          kind: CoquiButtonKind.go,
-          padX: 16,
-          onPressed: () {},
-        ),
-        if (read)
-          CoquiButton(
-            label: 'Read',
-            icon: CoquiIcons.read,
-            kind: CoquiButtonKind.outline,
-            padX: 16,
-            onPressed: () {},
-          ),
-      ],
-    );
-    return _TabScreen(
-      selected: CoquiTabs.libraryId,
-      body: TabPage(
-        children: [
-          const ScreenTitle('Biblioteca'),
-          const SectionTitle('Place one'),
-          CoquiCard(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: DividedRows(
-              rows: [
-                row('Story one', 'about 2 min'),
-                row('Story two', 'about 3 min'),
-                row('Story three', 'about 3 min'),
-                row('Story four', 'Heard 1× · about 4 min'),
-                row('Story five', 'about 3 min'),
-                row('Story six', 'about 4 min', read: true, cover: true),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _YoScreen extends StatelessWidget {
   const _YoScreen();
 
@@ -363,7 +359,7 @@ class _YoScreen extends StatelessWidget {
     selected: CoquiTabs.meId,
     body: TabPage(
       children: [
-        const ScreenTitle('Yo'),
+        const ScreenTitle(CoquiLabels.me),
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Column(
@@ -371,7 +367,11 @@ class _YoScreen extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: StatCard(value: '\u{1F525} 0', label: 'day streak'),
+                    child: StatCard(
+                      value: '0',
+                      label: 'day streak',
+                      flame: true,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   const Expanded(
@@ -632,62 +632,30 @@ class _LessonStart extends StatelessWidget {
   );
 }
 
-class _LessonAnswer extends StatelessWidget {
-  const _LessonAnswer();
-
-  Widget _opt(
-    Uint32List p, {
-    Color ring = CoquiColors.lessonLine,
-    double w = 1.5,
-    bool check = false,
-  }) => Stack(
-    clipBehavior: Clip.none,
-    children: [
-      DecoratedBox(
-        position: DecorationPosition.foreground,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: ring,
-            width: w,
-            strokeAlign: BorderSide.strokeAlignOutside,
-          ),
-        ),
-        child: _pic(p),
-      ),
-      if (check)
-        Positioned(
-          right: 8,
-          top: 8,
-          child: Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: CoquiColors.lessonGreen,
-              border: Border.all(color: Colors.white, width: 2),
-            ),
-            child: const CoquiIcon(
-              CoquiIcons.badgeCheck,
-              size: 28,
-              color: Colors.white,
-            ),
-          ),
-        ),
-    ],
-  );
+class _LessonChoice extends StatelessWidget {
+  const _LessonChoice({
+    required this.first,
+    required this.second,
+    this.caption,
+    this.progressDone = 0,
+  });
+  final PictureChoice Function(Widget picture) first;
+  final PictureChoice Function(Widget picture) second;
+  final String? caption;
+  final int progressDone;
 
   @override
   Widget build(BuildContext context) => LessonFrame(
     onClose: () {},
     onSound: () {},
-    progress: const LessonProgressDashes(segments: 10, done: 0),
-    caption: 'A sample caption.',
+    progress: LessonProgressDashes(segments: 10, done: progressDone),
+    caption: caption,
     picture: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _opt(_scene3),
+        first(_pic(_scene3)),
         const SizedBox(height: 24),
-        _opt(_scene, ring: CoquiColors.lessonGreen, w: 3, check: true),
+        second(_pic(_scene)),
       ],
     ),
   );
@@ -696,10 +664,12 @@ class _LessonAnswer extends StatelessWidget {
 class _LessonEnd extends StatelessWidget {
   const _LessonEnd();
 
-  /// cual.js draws these at 1 device pixel a picture pixel on this phone: 196 / 2.625 css px.
-  static const _pw = 196 / 2.625;
-
-  Widget _group(String title, String sub, List<String> words) => Column(
+  Widget _group(
+    LessonGridPlan plan,
+    String title,
+    String sub,
+    List<String> words,
+  ) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const SizedBox(height: 24),
@@ -707,32 +677,13 @@ class _LessonEnd extends StatelessWidget {
       const SizedBox(height: 4),
       Text(sub, style: CoquiText.lessonSub),
       const SizedBox(height: 12),
-      Wrap(
-        spacing: 16,
-        runSpacing: 16,
-        children: [
+      // cual.js `cualGrid()`: two or three to a row at the largest whole scale that fits; the picture of
+      // a cell is as wide as its cell, so it fills it.
+      LessonPictureGrid(
+        plan: plan,
+        cells: [
           for (final w in words)
-            SizedBox(
-              width: _pw,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DecoratedBox(
-                    position: DecorationPosition.foreground,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: CoquiColors.lessonLine,
-                        width: 1.5,
-                        strokeAlign: BorderSide.strokeAlignOutside,
-                      ),
-                    ),
-                    child: SizedBox(width: _pw, child: _pic(_scene2)),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(w, style: CoquiText.lessonWord),
-                ],
-              ),
-            ),
+            LessonGridCell(picture: _pic(_scene2), word: w),
         ],
       ),
     ],
@@ -748,45 +699,65 @@ class _LessonEnd extends StatelessWidget {
       right: 0,
       top: 0,
       bottom: 96 - 24 - 24,
-      child: FadingEdges(
-        top: 16,
-        bottom: 16,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 3 * _pw + 2 * 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Done', style: CoquiText.lessonH1),
-                  const SizedBox(height: 8),
-                  Text(
-                    '8 moving up · 2 coming back soon',
-                    style: CoquiText.lessonBody,
+      child: LayoutBuilder(
+        builder: (context, box) {
+          // `#fin` is the whole width, with 16 px of padding at each side.
+          final plan = lessonGridPlan(
+            contentWidth: box.maxWidth - 32,
+            devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
+            pictureWidth: 196,
+          );
+          return FadingEdges(
+            top: 16,
+            bottom: 16,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              child: Center(
+                // the title, the lines and the grid are one block as wide as the grid, centred
+                child: SizedBox(
+                  width: plan.blockWidth,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Done', style: CoquiText.lessonH1),
+                      const SizedBox(height: 8),
+                      Text(
+                        '8 moving up · 2 coming back soon',
+                        style: CoquiText.lessonBody,
+                      ),
+                      _group(
+                        plan,
+                        'Moving up',
+                        'You\'ll see these less often',
+                        [
+                          'one',
+                          'two',
+                          'three',
+                          'four',
+                          'five',
+                          'six',
+                          'seven',
+                          'eight',
+                        ],
+                      ),
+                      _group(
+                        plan,
+                        'Coming back soon',
+                        'You\'ll see these again soon',
+                        ['nine', 'ten'],
+                      ),
+                    ],
                   ),
-                  _group('Moving up', 'You\'ll see these less often', [
-                    'one',
-                    'two',
-                    'three',
-                    'four',
-                    'five',
-                    'six',
-                    'seven',
-                    'eight',
-                  ]),
-                  _group('Coming back soon', 'You\'ll see these again soon', [
-                    'nine',
-                    'ten',
-                  ]),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     ),
-    bottom: [LessonButton(label: 'Back to Palabras', onPressed: () {})],
+    bottom: [
+      LessonButton(label: 'Back to ${CoquiLabels.words}', onPressed: () {}),
+    ],
   );
 }
 
@@ -804,7 +775,7 @@ class _Buttons extends StatelessWidget {
     child: ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        _h('.btn blue (primary), .btn.go green, .btn.out outline, disabled'),
+        _h('.btn: blue (primary), .btn.go green, .btn.out outline'),
         Wrap(
           spacing: 16,
           runSpacing: 16,
@@ -820,36 +791,18 @@ class _Buttons extends StatelessWidget {
               kind: CoquiButtonKind.outline,
               onPressed: () {},
             ),
-            const CoquiButton(
-              label: 'Start',
-              kind: CoquiButtonKind.go,
-              onPressed: null,
-            ),
-            const CoquiButton(
-              label: 'Start',
-              kind: CoquiButtonKind.outline,
-              onPressed: null,
-            ),
           ],
         ),
-        _h('with an icon (Listen, Read)'),
-        Wrap(
+        _h('disabled: .btn:disabled'),
+        const Wrap(
           spacing: 16,
           runSpacing: 16,
           children: [
+            CoquiButton(label: 'Next', onPressed: null),
             CoquiButton(
-              label: 'Listen',
-              icon: CoquiIcons.play,
-              kind: CoquiButtonKind.go,
-              padX: 16,
-              onPressed: () {},
-            ),
-            CoquiButton(
-              label: 'Read',
-              icon: CoquiIcons.read,
+              label: 'Start',
               kind: CoquiButtonKind.outline,
-              padX: 16,
-              onPressed: () {},
+              onPressed: null,
             ),
           ],
         ),
@@ -874,7 +827,10 @@ class _Buttons extends StatelessWidget {
           ],
         ),
         _h('sheet close X'),
-        CoquiCloseButton(onPressed: () {}),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: CoquiCloseButton(onPressed: () {}),
+        ),
       ],
     ),
   );
@@ -910,55 +866,48 @@ class _LessonButtons extends StatelessWidget {
             onPressed: () {},
           ),
           const SizedBox(height: 16),
-          LessonButtonRow(
-            children: [
-              LessonButton(
-                label: 'Play again',
-                kind: LessonButtonKind.outline,
-                fillWidth: false,
-                onPressed: () {},
-              ),
-              LessonButton(
-                label: 'Map',
-                kind: LessonButtonKind.outline,
-                fillWidth: false,
-                onPressed: () {},
-              ),
-            ],
+          LessonButtonRow.pair(
+            first: LessonButton(
+              label: 'Play again',
+              kind: LessonButtonKind.outline,
+              fillWidth: false,
+              onPressed: () {},
+            ),
+            second: LessonButton(
+              label: 'Map',
+              kind: LessonButtonKind.outline,
+              fillWidth: false,
+              onPressed: () {},
+            ),
           ),
           const SizedBox(height: 16),
           const LessonButton(label: 'Disabled', onPressed: null),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              SizedBox(
-                width: 72,
-                child: LessonButton(
-                  height: 56,
-                  kind: LessonButtonKind.outline,
-                  fillWidth: false,
-                  onPressed: () {},
-                  child: const CoquiIcon(
-                    CoquiIcons.left,
-                    size: 28,
-                    color: CoquiColors.lessonInk2,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: LessonButton(
-                  height: 56,
-                  fillWidth: false,
-                  onPressed: () {},
-                  child: const CoquiIcon(
-                    CoquiIcons.right,
-                    size: 28,
-                    color: CoquiColors.lessonInk,
-                  ),
-                ),
-              ),
-            ],
+          LessonButtonRow.reader(
+            back: LessonBackButton(onPressed: () {}),
+            next: LessonNextButton(onPressed: () {}),
+          ),
+          const SizedBox(height: 16),
+          LessonButtonRow.reader(
+            back: const LessonBackButton(onPressed: null),
+            next: LessonNextButton(onPressed: () {}),
+          ),
+          const LessonFin(CoquiLabels.fin),
+          LessonButtonRow.readerLast(
+            back: LessonBackButton(onPressed: () {}),
+            again: LessonButton(
+              label: CoquiLabels.again,
+              icon: CoquiIcons.replay,
+              fillWidth: false,
+              height: 56,
+              onPressed: () {},
+            ),
+            shelf: LessonButton(
+              label: CoquiLabels.library,
+              fillWidth: false,
+              height: 56,
+              onPressed: () {},
+            ),
           ),
         ],
       ),
@@ -1024,24 +973,26 @@ class _Colours extends StatelessWidget {
   ];
 
   Widget _swatch((String, Color, String) s, Color text) => Padding(
-    padding: const EdgeInsets.only(bottom: 4),
+    padding: const EdgeInsets.only(bottom: 5),
     child: Row(
       children: [
         Container(
-          width: 40,
+          width: 34,
           height: 28,
           decoration: BoxDecoration(
             color: s.$2,
             border: Border.all(color: const Color(0x33888888)),
           ),
         ),
-        const SizedBox(width: 12),
-        Text(
-          '${s.$1}  #${(s.$2.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}  ${s.$3}',
-          style: CoquiText.small.copyWith(
-            color: text,
-            fontSize: 12,
-            height: 1.3,
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            '${s.$1}\n#${(s.$2.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}  ${s.$3}',
+            style: CoquiText.small.copyWith(
+              color: text,
+              fontSize: 11,
+              height: 1.2,
+            ),
           ),
         ),
       ],
@@ -1051,21 +1002,30 @@ class _Colours extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ColoredBox(
     color: CoquiColors.bg,
-    child: ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        for (final s in _light) _swatch(s, CoquiColors.ink),
-        const SizedBox(height: 12),
-        ColoredBox(
-          color: CoquiColors.lessonBg,
-          child: Padding(
-            padding: const EdgeInsets.all(8),
+    child: Padding(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
             child: Column(
-              children: [for (final s in _dark) _swatch(s, Colors.white)],
+              children: [for (final s in _light) _swatch(s, CoquiColors.ink)],
             ),
           ),
-        ),
-      ],
+          const SizedBox(width: 8),
+          Expanded(
+            child: ColoredBox(
+              color: CoquiColors.lessonBg,
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: Column(
+                  children: [for (final s in _dark) _swatch(s, Colors.white)],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
@@ -1186,67 +1146,179 @@ class _ModalSheetScreen extends StatelessWidget {
   );
 }
 
-class _WordStates extends StatelessWidget {
-  const _WordStates();
+class _WordMeters extends StatelessWidget {
+  const _WordMeters();
 
   @override
   Widget build(BuildContext context) => ColoredBox(
     color: CoquiColors.bg,
-    child: SingleChildScrollView(
+    child: ListView(
       padding: const EdgeInsets.all(16),
-      child: CollapsingColumn(
-        children: [
-          const SectionTitle('Meters, 0 to 4 (Ear on top, Mouth under)'),
-          Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            children: [
-              for (var n = 0; n <= 4; n++)
-                SizedBox(
-                  width: 128,
-                  child: CoquiCard(
-                    marginBottom: 0,
-                    padding: const EdgeInsets.all(8),
-                    child: EarMouthMeters(ear: n, mouth: 4 - n),
+      children: [
+        CollapsingColumn(
+          children: [
+            const SectionTitle('Meters, 0 to 4 (Ear on top, Mouth under)'),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                for (var n = 0; n <= 4; n++)
+                  SizedBox(
+                    width: 128,
+                    child: CoquiCard(
+                      marginBottom: 0,
+                      padding: const EdgeInsets.all(8),
+                      child: EarMouthMeters(ear: n, mouth: 4 - n),
+                    ),
+                  ),
+              ],
+            ),
+            const SectionTitle('The word sheet\'s meters (centred)'),
+            const Center(
+              child: EarMouthMeters(ear: 3, mouth: 1, centered: true),
+            ),
+            const SectionTitle('Fades: top, bottom (16 px, over a white card)'),
+            // A white card whose lines run past both edges: the fades take the lines out softly (a fade
+            // over an empty white card would show nothing).
+            CoquiCard(
+              marginBottom: 0,
+              padding: EdgeInsets.zero,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(CoquiMetrics.radiusCard),
+                child: SizedBox(
+                  height: 120,
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRect(
+                          child: OverflowBox(
+                            alignment: Alignment.center,
+                            minHeight: 0,
+                            maxHeight: 8 * 24,
+                            child: Column(
+                              children: [
+                                for (var i = 1; i <= 8; i++)
+                                  SizedBox(
+                                    height: 24,
+                                    child: Center(
+                                      child: Text(
+                                        'a line of the list, $i',
+                                        style: CoquiText.body,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        child: ListFade(
+                          edge: FadeEdge.top,
+                          color: CoquiColors.card,
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: ListFade(color: CoquiColors.card),
+                      ),
+                    ],
                   ),
                 ),
-            ],
-          ),
-          const SectionTitle('The word sheet\'s meters (centred)'),
-          const Center(child: EarMouthMeters(ear: 3, mouth: 1, centered: true)),
-          const SectionTitle('Cards: a picture, a plain tile, a long word'),
-          WordGrid(
-            children: [
-              WordCard(word: 'word', picture: _pic(_scene), ear: 2, mouth: 1),
-              const WordCard(word: 'tile', ear: 4, mouth: 4),
-              WordCard(
-                word: 'a rather long word here',
-                picture: _pic(_scene3),
-                ear: 1,
-                mouth: 0,
               ),
-              const WordCard(
-                word: 'anextraordinarilylongwordwithnobreaks',
-                ear: 0,
-                mouth: 0,
-              ),
-            ],
-          ),
-          const SectionTitle('Fades'),
-          const SizedBox(
-            height: 16,
-            child: ColoredBox(
-              color: CoquiColors.card,
-              child: ListFade(edge: FadeEdge.top),
             ),
-          ),
-          const SizedBox(height: 8),
-          const SizedBox(
-            height: 16,
-            child: ColoredBox(color: CoquiColors.card, child: ListFade()),
-          ),
-        ],
-      ),
+            const SectionTitle('Fading edges (a list scrolling out, 24 px)'),
+            SizedBox(
+              height: 120,
+              child: FadingEdges(
+                top: 24,
+                bottom: 24,
+                child: ColoredBox(
+                  color: CoquiColors.ink,
+                  child: Center(
+                    child: Text(
+                      'a mask',
+                      style: CoquiText.body.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     ),
+  );
+}
+
+class _WordCards extends StatelessWidget {
+  const _WordCards();
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(
+    color: CoquiColors.bg,
+    child: ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        CollapsingColumn(
+          children: [
+            const SectionTitle('Cards: a picture, a plain tile, a long word'),
+            WordGrid(
+              children: [
+                WordCard(word: 'word', picture: _pic(_scene), ear: 2, mouth: 1),
+                const WordCard(word: 'tile', ear: 4, mouth: 4),
+                WordCard(
+                  word: 'a rather long word here',
+                  picture: _pic(_scene3),
+                  ear: 1,
+                  mouth: 0,
+                ),
+                const WordCard(
+                  word: 'anextraordinarilylongwordwithnobreaks',
+                  ear: 0,
+                  mouth: 0,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
+
+class _LessonDuo extends StatelessWidget {
+  const _LessonDuo();
+
+  @override
+  Widget build(BuildContext context) => LessonFrame(
+    onClose: () {},
+    onSound: () {},
+    progress: const LessonProgressDashes(segments: 5, done: 5),
+    picture: PictureFrame(child: _pic(_story, w: 196, h: 216)),
+    // `finFit()` (juego.js:391): the title hangs 16 px under the picture, wherever the picture stands.
+    underPicture: Text('Story title', style: CoquiText.lessonH1),
+    bottom: [
+      LessonButtonRow.pair(
+        first: LessonButton(
+          label: 'Play again',
+          kind: LessonButtonKind.outline,
+          fillWidth: false,
+          onPressed: () {},
+        ),
+        second: LessonButton(
+          label: 'Map',
+          kind: LessonButtonKind.outline,
+          fillWidth: false,
+          onPressed: () {},
+        ),
+      ),
+      LessonButton(label: 'Next story', onPressed: () {}),
+    ],
   );
 }

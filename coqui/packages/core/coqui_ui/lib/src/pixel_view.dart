@@ -221,6 +221,9 @@ class RenderPixelView extends RenderBox {
   Size get deviceSize =>
       Size((_w * _scale).toDouble(), (_h * _scale).toDouble());
 
+  /// The picture being drawn: null until the first upload has arrived (for tests, which wait for it).
+  ui.Image? get image => _image;
+
   set image(ui.Image? v) {
     if (identical(v, _image)) return;
     _image = v;

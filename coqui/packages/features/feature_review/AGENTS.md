@@ -23,8 +23,17 @@ Repaso (¿Cuál?) and the level check.
 
 - `lib/feature_review.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
-- Since order 02 the file exports a placeholder module (its screen says the feature's name), until this feature's order builds the real one. The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
-- Later it holds one thing: its module, a `FeatureModule` (boundary rule 4).
+- It holds one thing: its module, `ReviewModule`, a `FeatureModule` (boundary rule 4). Since order 23 it answers `ReviewRoute` (Repaso) and `LevelCheckRoute` (the level check), full-screen lessons, and has no tab. `ReviewRoute.practice` is not read: like cual.js, the screen decides from the store whether anything is due.
+- The dev entry is `tool/dev_main.dart`: `flutter run -d chrome -t tool/dev_main.dart`; `web/` is there for it.
+
+## What is where (order 23)
+
+- `lib/src/logic/`: the lessons as plain Dart taking `Rng`, `Clock`, the catalog, the store, a clip player and the host's `wait`: `review_session.dart` (cual.js), `level_check.dart` (nivel.js), `lesson_base.dart` (the voice, captions and sounds of juego.js), `js_sort.dart` (V8's `Array.prototype.sort`, so that `list.sort(() => Math.random() - .5)` draws as the old page does).
+- `lib/src/ui/`: the screens from coqui_ui (`review_screen.dart`, `level_check_screen.dart`), the page's layout arithmetic (`block_layout.dart`), local stand-ins that stay local (`lesson_parts.dart`: the lesson's text screen, the choice that takes the touch when the finger goes down; the Repaso end list): the answer to order 23's requests. The level check's cells are `PictureRef.ofLevel` pictures, asked for 96 x 106 (`test/level_picture_ref_test.dart` checks that ref against the crop this package made itself, over every item of `historia/datos/nivel.json`).
+- `test/`: the differential tests (`*_differential_test.dart`, `js_sort_test.dart`, `layout_test.dart`) against the old code run in Node, and the widget tests (`review_screen_test.dart`, `review_end_test.dart`, `level_screen_test.dart`, `strings_test.dart`), one for each check of `repaso_check.py`, `cual_check.py` and `nivel_check.py`.
+- `tool/diff/`: the Node scripts that run cual.js and nivel.js (`old_harness.mjs`, `runs.mjs`) and write `test/fixtures/` (`make_fixture.mjs`, `sort_probe.mjs`). Re-run: `node tool/diff/make_fixture.mjs`; the files come out byte for byte the same.
+- `tool/dev_main.dart`, `dev_states.dart`, `dev_data.g.dart` (made by `node tool/embed_dev_data.mjs` from `historia/` and `ref/pantallas/seeds/`), `support/`: the dev entry. Its address parameters are in the file's header (`?screen=review|level&seed=curso&state=tu-turno`).
+- `tool/shots.mjs` (screenshots of every reference state on both phones, side by side with the old pictures, `pairs.json`) and `tool/compare.mjs` (the same numbers measured from both pictures).
 
 ## Run and test it alone
 

@@ -383,7 +383,7 @@ void main() {
       p.loop('rain', false);
       expect(p.looping, isEmpty);
       await p.unlock();
-      await p.preload(['a']);
+      expect(await p.preload(['a']), isEmpty);
       await p.stop();
       expect(
         [p.unlocked, p.preloaded, p.stops],
@@ -397,6 +397,45 @@ void main() {
 
     test('without lengths every clip plays', () async {
       expect(await FakeClipPlayer().play('x'), isTrue);
+    });
+
+    test('preload gives back the clips that are not ready', () async {
+      final p = FakeClipPlayer(lengthOf: (id) => id == 'none' ? null : 900);
+      expect(p.failing, isEmpty);
+      expect(await p.preload(['a', 'b']), isEmpty);
+      expect(await p.preload([]), isEmpty);
+      // A clip with no ClipInfo (lengthOf gives null), once, where it first stands.
+      expect(await p.preload(['b', 'none', 'a', 'none', 'b']), ['none']);
+      // Clips told to fail: in the order given, no duplicates, whatever else is asked for.
+      p.failing = {'a', 'b', 'c'};
+      expect(await p.preload(['c', 'none', 'ok', 'a', 'c', 'b', 'a']), [
+        'c',
+        'none',
+        'a',
+        'b',
+      ]);
+      // A retry gives what the set holds then.
+      p.failing.remove('a');
+      p.failing.remove('c');
+      expect(await p.preload(['a', 'b', 'c']), ['b']);
+      p.failing = {};
+      expect(await p.preload(['a', 'b', 'c']), isEmpty);
+      // Every call is recorded as it came, duplicates and all.
+      expect(p.preloaded, [
+        ...['a', 'b'],
+        ...['b', 'none', 'a', 'none', 'b'],
+        ...['c', 'none', 'ok', 'a', 'c', 'b', 'a'],
+        ...['a', 'b', 'c'],
+        ...['a', 'b', 'c'],
+      ]);
+      // An iterable that can be read once.
+      expect(await p.preload(['none', 'a'].map((id) => id)), ['none']);
+    });
+
+    test('without lengths nothing is unknown; only the failing fail', () async {
+      final p = FakeClipPlayer()..failing = {'y'};
+      expect(await p.preload(['x', 'y', 'y', 'x']), ['y']);
+      expect(p.played, isEmpty);
     });
   });
 
@@ -535,7 +574,24 @@ void main() {
       talking.go('danny1');
       expect(talking.outputVolume(), greaterThan(0));
 
-      for (final o in ['mic', 'fail']) {
+      for (final (o, kind, text) in [
+        (
+          'mic',
+          CallStartFailure.microphone,
+          'NotAllowedError: Permission denied',
+        ),
+        ('fail', CallStartFailure.failed, 'Error: The call did not start.'),
+        (
+          'library',
+          CallStartFailure.library,
+          'LibraryError: The voice library did not load.',
+        ),
+        (
+          'unavailable',
+          CallStartFailure.unavailable,
+          'NotAvailable: Calls are off on this build.',
+        ),
+      ]) {
         Object? err;
         unawaited(
           FakeCallSession(stub: {o})
@@ -543,35 +599,120 @@ void main() {
               .catchError((Object e) => err = e),
         );
         await tester.pump(const Duration(seconds: 1));
-        expect(
-          err.toString(),
-          o == 'mic' ? contains('NotAllowedError') : contains('did not start'),
-        );
+        expect(err, isA<CallStartError>().having((e) => e.kind, 'kind', kind));
+        expect('$err', text);
       }
+      Object? off;
+      unawaited(
+        FakeCallSession(available: false)
+            .start(brief, {})
+            .catchError((Object e) => off = e),
+      );
+      await tester.pump();
+      expect((off! as CallStartError).kind, CallStartFailure.unavailable);
     });
   });
 
   group('FakePictureSource', () {
     final ref = PictureRef(scene: 'frente', cam: [52, 8, 180, 96]);
 
+    void phone(WidgetTester tester, double dpr) {
+      tester.view.devicePixelRatio = dpr;
+      tester.view.physicalSize = const Size(800, 800) * dpr;
+      addTearDown(tester.view.reset);
+    }
+
+    // no limit on the width: the picture takes its own width in logical pixels
+    Widget unlimited(Widget picture) => UnconstrainedBox(child: picture);
+
+    Size boxOf(WidgetTester tester) =>
+        tester.getSize(find.byType(ColoredBox).first);
+
     testWidgets('a labelled grey box the size of the picture', (tester) async {
+      phone(tester, 1);
       final p = FakePictureSource();
-      await tester.pumpWidget(Center(child: p.of(ref, scale: 2)));
+      await tester.pumpWidget(unlimited(p.of(ref)));
       expect(find.text('frente 52,8,180,96'), findsOneWidget);
-      expect(tester.getSize(find.byType(SizedBox).first), const Size(392, 208));
+      expect(boxOf(tester), const Size(196, 104));
+      await tester.pumpWidget(unlimited(p.of(ref, width: 96, height: 106)));
+      expect(boxOf(tester), const Size(96, 106));
       await p.warm([ref]);
-      expect([p.shown.length, p.warmed.length], [1, 1]);
+      expect([p.shown.length, p.warmed.length], [2, 1]);
+    });
+
+    testWidgets(
+      'it is laid out as PixelView is: whole device pixels per picture pixel, a tight box filled',
+      (tester) async {
+        final p = FakePictureSource();
+        phone(tester, 2.625);
+        // no limit: the whole number of device pixels the picture's own width holds (2 of 2.625)
+        await tester.pumpWidget(unlimited(p.of(ref)));
+        expect(boxOf(tester), const Size(196 * 2 / 2.625, 104 * 2 / 2.625));
+        // a box of 3 device pixels per picture pixel
+        await tester.pumpWidget(
+          Center(
+            child: SizedBox(width: 196 * 3 / 2.625, child: p.of(ref)),
+          ),
+        );
+        expect(boxOf(tester).width, closeTo(196 * 3 / 2.625, 1e-9));
+        expect(boxOf(tester).height, closeTo(104 * 3 / 2.625, 1e-9));
+        // the width a column gives it: 5 whole device pixels per picture pixel hold in 980 device pixels
+        await tester.pumpWidget(
+          Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(width: 980 / 2.625, child: p.of(ref)),
+          ),
+        );
+        expect(boxOf(tester).width, closeTo(980 / 2.625, 1e-9));
+        expect(boxOf(tester).height, closeTo(104 * 5 / 2.625, 1e-9));
+        // the width given by [width]: a cell of 96 x 106
+        await tester.pumpWidget(unlimited(p.of(ref, width: 96, height: 106)));
+        expect(boxOf(tester), const Size(96 * 2 / 2.625, 106 * 2 / 2.625));
+        // a tight box is filled (the caller sizes the box, not the picture)
+        await tester.pumpWidget(
+          Center(child: SizedBox(width: 300, height: 120, child: p.of(ref))),
+        );
+        expect(boxOf(tester), const Size(300, 120));
+        // a box too narrow for one device pixel per picture pixel is not scaled below 1, it is clipped to
+        await tester.pumpWidget(
+          Center(child: SizedBox(width: 50, child: p.of(ref))),
+        );
+        expect(boxOf(tester).width, 50);
+      },
+    );
+
+    testWidgets('a picture with a name shows it above the scene and camera', (
+      tester,
+    ) async {
+      phone(tester, 1);
+      final p = FakePictureSource();
+      final named = PictureRef(
+        scene: 'frente',
+        cam: [52, 8, 180, 96],
+        name: 'abuela.si',
+      );
+      await tester.pumpWidget(unlimited(p.of(named)));
+      expect(find.text('abuela.si'), findsOneWidget);
+      expect(find.text('frente 52,8,180,96'), findsOneWidget);
+      await tester.pumpWidget(unlimited(p.of(ref)));
+      expect(find.text('abuela.si'), findsNothing);
+      expect(find.text('frente 52,8,180,96'), findsOneWidget);
     });
 
     testWidgets('a saved frame replaces the box, callers unchanged', (
       tester,
     ) async {
+      phone(tester, 1);
+      int? asked;
       final p = FakePictureSource(
-        frames: (r, {required height, scale}) =>
-            Text('frame of ${r.scene}', textDirection: TextDirection.ltr),
+        frames: (r, {required width, required height}) {
+          asked = width * 1000 + height;
+          return Text('frame of ${r.scene}', textDirection: TextDirection.ltr);
+        },
       );
-      await tester.pumpWidget(Center(child: p.of(ref)));
+      await tester.pumpWidget(Center(child: p.of(ref, width: 96, height: 106)));
       expect(find.text('frame of frente'), findsOneWidget);
+      expect(asked, 96106);
     });
   });
 
@@ -599,6 +740,15 @@ void main() {
       expect(s.clock.nowMs() - t0, 2041 - 193);
       s.progress.heard('casa');
       expect(s.progress.word('casa')!.primera, s.clock.nowMs());
+    });
+
+    test('its clip player does not have a clip the course lacks', () async {
+      final s = fakeServices();
+      await s.course.load();
+      expect(
+        await s.clips.preload(['esta_casa', 'nada', 'esta_casa', 'nada']),
+        ['nada'],
+      );
     });
 
     test('takes what it is given', () {

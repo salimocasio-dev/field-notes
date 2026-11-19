@@ -10,10 +10,13 @@ import 'dart:io';
 
 import 'support/fixture_decode.dart';
 import 'support/fixtures/ref_ctx.dart';
+import 'support/fixtures/ref_kit.dart';
+import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
 import 'support/ref_data.dart';
 import 'support/ref_files.dart';
+import 'support/sheet_text.dart';
 
 void main() {
   test('every fixture file is the file in coqui/ref/pp/', () {
@@ -29,7 +32,12 @@ void main() {
   test('every sprite and canvas fixture file is the file in coqui/ref/', () {
     expect(refSpritesFixture, isNotEmpty);
     expect(refCtxFixture, isNotEmpty);
-    for (final entry in {...refSpritesFixture, ...refCtxFixture}.entries) {
+    expect(refKitFixture, isNotEmpty);
+    for (final entry in {
+      ...refSpritesFixture,
+      ...refCtxFixture,
+      ...refKitFixture,
+    }.entries) {
       final fromFile = File('../../../ref/${entry.key}').readAsBytesSync();
       expect(base64Decode(entry.value.join()), fromFile, reason: entry.key);
       expect(refFile(entry.key), fromFile, reason: entry.key);
@@ -44,6 +52,10 @@ void main() {
           if (f is File) 'sprites/engine/${f.uri.pathSegments.last}',
       };
       expect(refSpritesFixture.keys.toSet(), onDisk);
+      expect(refKitFixture.keys.toSet(), {
+        for (final f in Directory('../../../ref/sprites/kit').listSync())
+          if (f is File) 'sprites/kit/${f.uri.pathSegments.last}',
+      });
       expect(
         refCtxFixture.keys.where((k) => k.startsWith('ctx/tiles/')).length,
         40,
@@ -55,4 +67,18 @@ void main() {
       expect(refCtxFixture.containsKey('ctx/cases.json'), isTrue);
     },
   );
+
+  test(
+    'the Nov 14 one-state El frente is whole (it is in no folder any more)',
+    () {
+      expect(decodeFrenteNov14('pix.bin').length, 240 * 216 * 4);
+      expect(decodeFrenteNov14('zb.bin').length, 240 * 216 * 4);
+      expect(decodeFrenteNov14('kinds.bin').length, 240 * 216);
+      expect(decodeFrenteNov14('state.json').length, 1130);
+    },
+  );
+
+  test('the sheet fixture is the text of El frente\'s sheet', () {
+    expect(frenteSheetJson, frenteSheetText());
+  });
 }

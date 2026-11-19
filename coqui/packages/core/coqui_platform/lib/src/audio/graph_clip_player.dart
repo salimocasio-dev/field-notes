@@ -73,9 +73,17 @@ class GraphClipPlayer implements ClipPlayer {
     }
   }
 
+  /// Loads each clip once (see [load]) and gives back the ids that are not ready, in the order given and
+  /// without duplicates: no [ClipInfo], a failed fetch, a failed decode. A clip already loaded is not
+  /// reported. Never throws for a clip that fails.
   @override
-  Future<void> preload(Iterable<String> clipIds) async {
-    await Future.wait([for (final id in clipIds) load(id)]);
+  Future<List<String>> preload(Iterable<String> clipIds) async {
+    final ids = {...clipIds}.toList();
+    final loaded = await Future.wait([for (final id in ids) load(id)]);
+    return [
+      for (var i = 0; i < ids.length; i++)
+        if (loaded[i] == null) ids[i],
+    ];
   }
 
   @override
