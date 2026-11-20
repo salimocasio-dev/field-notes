@@ -1,4 +1,4 @@
-// A story whose scene is not converted yet (every story from el-jugo on, at the balcon and the scenes after it): the
+// A story whose scene is not converted yet (every story from la-familia on, at the sala and the scenes after it): the
 // screen says so, in the middle of the lesson frame, with one button back to the map, and shows nothing else but the X.
 // Any other failure to open a story keeps the lesson frame and its X, as before.
 import 'dart:convert';
@@ -11,16 +11,17 @@ import 'package:material_ui/material_ui.dart';
 
 import 'support/screen_harness.dart';
 
-/// The sample course, and the real `el-jugo` of historia/ (a story at the balcon, which is not converted yet).
-class _WithJugo extends EditedCourse {
-  _WithJugo() : super((id, f) {});
+/// The sample course, and the real `la-familia` of historia/ (a story at the sala, which is not converted yet; El balcón's
+/// el-jugo was this test's story until order 30b converted it).
+class _WithFamilia extends EditedCourse {
+  _WithFamilia() : super((id, f) {});
 
   @override
-  Future<Map<String, dynamic>> story(String id) => id == 'el-jugo'
+  Future<Map<String, dynamic>> story(String id) => id == 'la-familia'
       ? Future.value(
           jsonDecode(
             File(
-              '${Directory.current.path}/../../../../historia/cuentos/el-jugo.json',
+              '${Directory.current.path}/../../../../historia/cuentos/la-familia.json',
             ).readAsStringSync(),
           ) as Map<String, dynamic>,
         )
@@ -32,12 +33,12 @@ const _button = 'Back to the map';
 
 void main() {
   testWidgets(
-    'el-jugo on the real registry: the line and one button in the middle of the frame, and nothing else but the X',
+    'la-familia on the real registry: the line and one button in the middle of the frame, and nothing else but the X',
     (tester) async {
       final s = await openScreen(
         tester,
-        id: 'el-jugo',
-        course: _WithJugo(),
+        id: 'la-familia',
+        course: _WithFamilia(),
         scenes: registryScenes,
       );
       expect(tester.takeException(), isNull);
@@ -80,8 +81,8 @@ void main() {
   testWidgets('the button closes the lesson as the X does', (tester) async {
     final viaButton = await openScreen(
       tester,
-      id: 'el-jugo',
-      course: _WithJugo(),
+      id: 'la-familia',
+      course: _WithFamilia(),
       scenes: registryScenes,
     );
     await tester.tap(find.text(_button));
@@ -93,8 +94,8 @@ void main() {
   testWidgets('the X still closes it', (tester) async {
     final s = await openScreen(
       tester,
-      id: 'el-jugo',
-      course: _WithJugo(),
+      id: 'la-familia',
+      course: _WithFamilia(),
       scenes: registryScenes,
     );
     await tester.tap(find.byType(LessonCloseButton));
@@ -108,7 +109,7 @@ void main() {
       final s = await openScreen(
         tester,
         id: 'la-lluvia',
-        scenes: (id, rng) => registryScenes('balcon', rng),
+        scenes: (id, rng) => registryScenes('sala', rng),
       );
       expect(find.text(_line), findsOneWidget);
       await tester.tap(find.text(_button));

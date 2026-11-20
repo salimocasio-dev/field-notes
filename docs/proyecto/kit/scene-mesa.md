@@ -1,0 +1,67 @@
+# Scene sheet: mesa
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/mesa/inventory.json and historia/escenas/mesa.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: la-cuchara, la-mesa, tengo-hambre
+- Review file: cual-mesa
+- Words already taught here: cuchara, tenedor, cuchillo, comida, mesa, plato, taza, pone, tengo hambre, tengo sed, listo, cocina
+- Stakes used: almuerzo, mantel, merienda
+- Who speaks here ("habla"): abuela, abuelo, carmen, luis, mama, papa
+- Things he can touch: abuela, abuelo, bandeja, bebe, carmen, cocina, comidas, coqui, estufa, luis, mama, mesa, muestra, ofrece, olla, papa, perro, platos, tazas, vasos
+- Spots (for ir): inicio, centro
+- Views (for cam): wide
+- Names already recorded (thing: clip): abuela: abuela, abuelo: n_abuelo, bebe: m_n_bebe, carmen: p_n_carmen, cocina: m_n_cocina, coqui: yo_coqui, luis: p_n_luis, mama: esta_es_mama, mesa: n_mesa, papa: n_papa, perro: c_n_perro
+- Shared acts: burbuja, calla, fin, ir
+- Acts:
+    - abuelaa: abuela goes to somebody's place, or back to the stove. sirve: with the slices and the jug in her hands (e.g. {"act": "abuelaa", "a": "abuelo", "sirve": 1} in la-mesa)
+    - abuelada: abuela takes a plate or a glass off the counter and puts it on the floor in front of the frog (e.g. {"act": "abuelada", "k": "sed", "suelto": 1} in tengo-hambre)
+    - abuelalleva (e.g. {"act": "abuelalleva", "a": "luis", "k": "agua"} in tengo-hambre)
+    - acaba26 (e.g. {"act": "acaba26", "quien": "luis,carmen"} in tengo-hambre)
+    - arregla25: whoever went without the thing for his dish gets it back from the one who holds it (not used by any story yet)
+    - canelo: Canelo has it: what was put aside at the edge of the table, or what stands untouched in front of the frog (e.g. {"act": "canelo", "de": "coqui"} in tengo-hambre)
+    - canelo26: the turn: Canelo comes in, sits down in front of the counter and whines (used in tengo-hambre)
+    - casa (used in la-cuchara)
+    - come25: he eats with what he has in his hand; with the wrong thing the food drops onto the cloth (e.g. {"act": "come25", "a": "mama"} in la-cuchara)
+    - corta24: after the turn: three slices on the board, three cups of chocolate in the jug (used in la-mesa)
+    - echa26 (used in tengo-hambre)
+    - elige25: round B: one of the two who still hold a thing up gets the dish for the other one's thing (e.g. {"act": "elige25", "no": "$pn"} in la-cuchara)
+    - entra (e.g. {"act": "entra", "quien": "carmen", "silla": 2} in la-mesa)
+    - entran24 (e.g. {"act": "entran24", "suelto": 1} in la-mesa)
+    - final24 (used in la-mesa)
+    - final26 (used in tengo-hambre)
+    - g (not used by any story yet)
+    - inicio24: story 24: La mesa (used in la-mesa)
+    - inicio25: There is one spoon, one fork and one knife. Each is in the tray (W.bandeja), held up (alza) or in a hand at a dish (mano). (used in la-cuchara)
+    - inicio26: From the turn on there are four plates and four glasses, one of each for abuelo, mamá, papá and the frog. W.tuvo[who] is what he has had; W.perdio[who] is what Canelo had instead. (used in tengo-hambre)
+    - lista24 (used in la-mesa)
+    - llama: the frog calls for one: whoever has it passes it along and gets the other one's thing back (e.g. {"act": "llama", "a": "carmen", "k": "cuchara"} in la-cuchara)
+    - llena26: abuela fills plates and glasses and stands them on the counter. fin: the pot and the jug are empty after that (e.g. {"act": "llena26", "n": 2} in tengo-hambre)
+    - lleva26: the frog takes a plate or a glass to somebody: from the counter, or out of abuela's hand (e.g. {"act": "lleva26", "a": "luis", "k": "comida"} in tengo-hambre)
+    - luisalza (e.g. {"act": "luisalza", "k": "cuchillo"} in la-cuchara)
+    - luispone (e.g. {"act": "luispone", "k": "taza", "a": "abuelo", "suelto": 1} in la-mesa)
+    - marca (e.g. {"act": "marca", "que": "ok"} in la-cuchara)
+    - muestra: one of a kind is lifted off the counter, or out of the tray, to be looked at (e.g. {"act": "muestra", "k": "cuchara"} in la-cuchara)
+    - ofrece26: abuela takes a plate or a glass off the counter and holds it out (e.g. {"act": "ofrece26", "k": "comida"} in tengo-hambre)
+    - pan25: bread for everybody (used in la-cuchara)
+    - piensa: a thought: what he would like (e.g. {"act": "piensa", "quien": "coqui", "k": "sed"} in tengo-hambre)
+    - plato25: abuela brings a dish from the stove. d: sopa, espa, pan; or para: the thing it is eaten with (e.g. {"act": "plato25", "a": "mama", "d": "sopa", "suelto": 1} in la-cuchara)
+    - pon: the frog fetches a plate or a cup from the counter and sets it down at somebody's place (e.g. {"act": "pon", "k": "plato", "a": "abuelo", "suelto": 1} in la-mesa)
+    - prueba: everybody at once, to look at the drawing (not used by any story yet)
+    - quita26 (used in tengo-hambre)
+    - rana (e.g. {"act": "rana", "x": 40, "y": 173, "suelto": 1} in la-mesa)
+    - ranatoma: the frog has what stands in front of him (used in tengo-hambre)
+    - recoge24 (used in la-mesa)
+    - reparte24: Luis deals: a plate to one, a cup to the other (e.g. {"act": "reparte24", "p": "mama", "t": "papa"} in la-mesa)
+    - reparte26: the ending: what is left on the counter goes round, a plate and a glass for each, as far as it goes (used in tengo-hambre)
+    - sale (not used by any story yet)
+    - salen26 (used in tengo-hambre)
+    - sirve: abuela serves: the slice onto the plate, the chocolate into the cup (e.g. {"act": "sirve", "a": "abuelo", "k": "plato", "suelto": 1} in la-mesa)
+    - sirvemal: she serves what she asked for onto what he brought: the slice breaks on the cup, the chocolate runs off the plate (e.g. {"act": "sirvemal", "a": "$pa", "k": "$ka"} in la-mesa)
+    - tapa26 (used in tengo-hambre)
+    - termina25: a dish is finished: abuela takes it, and the thing goes up to be seen (e.g. {"act": "termina25", "a": "mama", "queda": 1} in la-cuchara)
+    - tira24: the baby pulls the cloth: everything slides to mamá's end and over the edge. Abuelo lifts his in time (used in la-mesa)
+    - toma26: he eats, or drinks, what stands in front of him (e.g. {"act": "toma26", "a": "luis"} in tengo-hambre)
+    - turno25a: the turn: Luis gathers the three into the tray and takes it out; abuela has more; he comes back and deals them out again (used in la-cuchara)
+    - turno25b (e.g. {"act": "turno25b", "ha": "$ha", "hb": "$hb", "hc": "$hc"} in la-cuchara)
+    - util: the frog takes a spoon, a fork or a knife to somebody: out of the tray, or from whoever has it. vuelve: the wrong one in that hand goes back to where it came from (e.g. {"act": "util", "a": "mama", "k": "cuchara"} in la-cuchara)
+    - ya (used in la-cuchara)

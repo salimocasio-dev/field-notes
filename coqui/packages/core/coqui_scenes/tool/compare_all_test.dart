@@ -1,17 +1,23 @@
 // Every picture tool/preview_shots.mjs wrote (every moment at rest of every recorded run, the review and level
-// pictures) against the Dart frame, on the vm, as test/preview_test.dart does for the fixture's few:
+// pictures) against the Dart frame, on the vm, as test/preview_test.dart (test/balcon_preview_test.dart) does for the
+// fixture's few:
 //
-//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> flutter test tool/compare_all_test.dart
+//   COQUI_PREVIEW_DIR=<--out of preview_shots.mjs> COQUI_REPORT_DIR=<dir> [COQUI_SCENE=balcon] flutter test tool/compare_all_test.dart
+//
+// COQUI_SCENE is the scene the pictures are of (frente when not set); the report is preview-all.vm.txt for El frente,
+// preview-all-<scene>.vm.txt for another.
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:coqui_scenes/coqui_scenes.dart';
+import 'package:coqui_scenes/src/balcon/balcon.dart';
 import 'package:coqui_scenes/src/frente/frente.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../test/support/balcon_preview_remap.dart';
 import '../test/support/channels.dart';
 import '../test/support/preview_remap.dart';
 import '../test/support/report.dart';
@@ -26,14 +32,24 @@ Future<Uint32List> decodePng(Uint8List bytes) async {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   final dir = Platform.environment['COQUI_PREVIEW_DIR'];
+  final id = Platform.environment['COQUI_SCENE'] ?? 'frente';
   test('every picture of the preview against the Dart frame', () async {
     if (dir == null) {
       markTestSkipped('set COQUI_PREVIEW_DIR');
       return;
     }
     final pictures = ScenePictures();
-    final frame = await pictures.frameOf('frente');
-    final scene = frame.scene as Frente;
+    final frame = await pictures.frameOf(id);
+    final scene = frame.scene;
+    // the preview's own rule for moving a recorded W to the new places (a dev tool's, per scene)
+    Map<String, dynamic> moved(Map<String, dynamic> w) => switch (scene) {
+      Frente f => previewRemapW(previewBaseW(f.fresh(const {}), w), f.sheet),
+      Balcon b => balconPreviewRemapW(
+        balconPreviewBaseW(b.fresh(const {}), w),
+        b.sheet,
+      ),
+      _ => throw StateError('no preview rule for $id'),
+    };
     final rows = <String>[];
     var over = 0, max = 0.0, exact = 0;
     final cases = (jsonDecode(
@@ -45,17 +61,14 @@ void main() {
       if (c['kind'] == 'pair') {
         got = await pictures.pixels(
           PictureRef(
-            scene: 'frente',
+            scene: id,
             set: (c['set'] as Map<String, dynamic>?) ?? const {},
             cam: (c['cam'] as List).cast<num>(),
           ),
           name: '${c['word']}.${c['side']}',
         );
       } else {
-        final W = previewRemapW(
-          previewBaseW(scene.fresh(const {}), c['W'] as Map<String, dynamic>),
-          scene.sheet,
-        );
+        final W = moved(c['W'] as Map<String, dynamic>);
         final cam = scene.sheet.viewOf(c['view'] as String, scene.projection);
         frame.draw(W, F: c['F'] as int, cam: cam, tick: 0, allSigns: false);
         got = cropZoom(frame.picture, 240, cam, 196 ~/ cam[2]);
@@ -72,7 +85,7 @@ void main() {
     rows.add(
       '${cases.length} pictures: $exact identical, $over over 2%, the most ${max.toStringAsFixed(2)}%',
     );
-    report('preview-all', rows);
+    report(id == 'frente' ? 'preview-all' : 'preview-all-$id', rows);
     expect(over, 0, reason: rows.last);
   }, timeout: const Timeout(Duration(minutes: 20)));
 }
