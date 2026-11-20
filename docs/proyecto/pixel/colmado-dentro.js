@@ -197,7 +197,7 @@ const CD = (() => {
     // a round wall clock above the pier between the window and the door, over everyone's head. Drawn as a picture of one-pixel cells (13 x 13) on the
     // pixel where the wall point (bc, zc) falls, so it is the same in every framing: a dark rim 2 px thick, a white face, two dark hands (10 past 10)
     // and four dark dots at 12, 3, 6 and 9, nothing else
-    part('reloj', () => {
+    if (o.reloj) part('reloj', () => {      // off unless asked for: at 13 px it was read as a vent or a plate, and no story of place 4 needs a clock
       const bc = (VW1 + .1 + PD0 - .12) / 2, zc = 2.95, c0 = project(.08, bc, zc), cx = Math.floor(c0.sx), cy = Math.floor(c0.sy);
       const RIM = rgb(62, 42, 34), FACE = rgb(252, 250, 244), INK = rgb(32, 26, 28);
       const hands = new Set(['0,0', '-1,-1', '1,-1', '2,-1', '3,-2']), dots = new Set(['0,-3', '3,0', '0,3', '-3,0']);
