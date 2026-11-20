@@ -43,11 +43,10 @@ void main() {
 
   test('front: three parts of the set drawn again at their old lines', () {
     expect(sheet.front, ['silla_grande', 'silla_pequena', 'mesa']);
-    expect({for (final p in sheet.frontParts.values) p.name: p.line}, {
-      'silla_grande': 127,
-      'silla_pequena': 135,
-      'mesa': 136,
-    });
+    expect(
+      {for (final p in sheet.frontParts.values) p.name: p.line},
+      {'silla_grande': 127, 'silla_pequena': 135, 'mesa': 136},
+    );
     expect(sheet.frontParts['mesa']!.replaces, contains('mkMesa'));
     expect(sheet.frontPlane, contains('tan(30 deg)'));
     expect(sheet.frontHow, contains('bakedZ[i] >'));
@@ -64,12 +63,15 @@ void main() {
   });
 
   test('the baked states: four queries, no reference folder named', () {
-    expect([for (final b in sheet.setKey.baked) b.query], [
-      '?door=shut&win=shut',
-      '?door=open&win=shut',
-      '?door=shut&win=open',
-      '?door=open&win=open',
-    ]);
+    expect(
+      [for (final b in sheet.setKey.baked) b.query],
+      [
+        '?door=shut&win=shut',
+        '?door=open&win=shut',
+        '?door=shut&win=open',
+        '?door=open&win=open',
+      ],
+    );
     expect(sheet.setKey.baked.every((b) => b.ref == null), isTrue);
     expect(sheet.setKey.baked.first.reached, contains('que-calor'));
     expect(sheet.setKey.params.keys, ['door', 'win']);
@@ -78,7 +80,11 @@ void main() {
   test('the spots: the engine puts each where the sheet records it', () {
     for (final s in sheet.spots.values) {
       final p = sheet.screenOf(s.name, e);
-      expect([p.x, p.y], [near(s.screen[0]), near(s.screen[1])], reason: s.name);
+      expect(
+        [p.x, p.y],
+        [near(s.screen[0]), near(s.screen[1])],
+        reason: s.name,
+      );
       if (s.scale != null) {
         final f = sheet.frogAt(s.name, e);
         expect([f.x, f.y], s.frog, reason: s.name);
@@ -99,23 +105,29 @@ void main() {
     expect(sheet.lugar['junto']!.spot, 'mesa');
   });
 
-  test('the things of the set: each box is the engine\'s box of its world box', () {
-    for (final t in sheet.things.values) {
-      if (t.world == null) continue;
-      expect(sheet.boxOf(t.id, e), t.box, reason: t.id);
-      expect(sheet.hitBoxOf(t.id, e), t.hit!.box, reason: t.id);
-    }
-    expect(sheet.things['abuela']!.places!['silla']!.box, hasLength(4));
-  });
+  test(
+    'the things of the set: each box is the engine\'s box of its world box',
+    () {
+      for (final t in sheet.things.values) {
+        if (t.world == null) continue;
+        expect(sheet.boxOf(t.id, e), t.box, reason: t.id);
+        expect(sheet.hitBoxOf(t.id, e), t.hit!.box, reason: t.id);
+      }
+      expect(sheet.things['abuela']!.places!['silla']!.box, hasLength(4));
+    },
+  );
 
-  test('views and pictures: the engine gives the windows the sheet records', () {
-    for (final v in sheet.views.values) {
-      expect(sheet.viewOf(v.name, e), v.cam, reason: v.name);
-    }
-    for (final p in sheet.pictures.values) {
-      expect(sheet.pictureRegion(p.name, e), p.crop, reason: p.name);
-    }
-  });
+  test(
+    'views and pictures: the engine gives the windows the sheet records',
+    () {
+      for (final v in sheet.views.values) {
+        expect(sheet.viewOf(v.name, e), v.cam, reason: v.name);
+      }
+      for (final p in sheet.pictures.values) {
+        expect(sheet.pictureRegion(p.name, e), p.crop, reason: p.name);
+      }
+    },
+  );
 
   test('remap: a pair rectangle names its pictures and their crops; an abuela point her ab; a level x nothing', () {
     final cam = sheet.remapCam([86, 98, 68, 36.1]);

@@ -417,14 +417,17 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
   }
 
   // balcon-preview.html: PREVIEW.front (sheet: front). A piece of furniture's own pixels, drawn again at its old line,
-  // only where that pixel is nearer than abuela: bakedZ[i] > vAb / COS - (row + .5 - OY) * tan 30 / S
+  // only where that pixel is nearer than abuela: bakedZ[i] > vAb / COS - (row + .5 - OY) * tan 30 / S. A frame drawn
+  // with no set (a player with no screen draws the sprite layer on a scratch picture) has none to draw again.
   void front(String part) {
     final ab = W['ab'] as Map<String, dynamic>?;
     if (ab == null || ab['al'] == 0) return;
-    final e = _frameEngine, s = _setFrame, Z = _setZ, list = _frontNow?[part];
-    if (e == null || s == null || Z == null || list == null) {
+    final e = _frameEngine, s = _setFrame, Z = _setZ;
+    if (e == null || s == null || Z == null) return;
+    final list = _frontNow?[part];
+    if (list == null) {
       throw StateError(
-        'balcon: the furniture in front needs the set as framed (drawFrame), and the part tags of its state',
+        'balcon: the part tags of the state ${setKey(W)} are not known: its set was not baked by this scene',
       );
     }
     final COS = math.sqrt(3) / 2, T30 = math.tan(math.pi / 6);
@@ -911,6 +914,10 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
       final b = frogBox(q);
       bub2(c, q['bub'] as String, b.x + (b.w.toInt() >> 1), b.y + 2, a);
     }
+    // the set as framed is this frame's only (drawFrame gives it again before the next)
+    _frameEngine = null;
+    _setFrame = null;
+    _setZ = null;
   }
 
   // balcon.js: talkAt

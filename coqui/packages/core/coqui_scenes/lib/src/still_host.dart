@@ -48,9 +48,8 @@ class _Silent implements ClipPlayer {
   );
   final to = c.to;
   if (to is String) {
-    final m = RegExp(
-      r'cq x (-?[\d.]+) y (-?[\d.]+) s (-?[\d.]+)',
-    ).firstMatch(c.old);
+    final m = RegExp(r'cq x (-?[\d.]+) y (-?[\d.]+) s (-?[\d.]+)')
+        .firstMatch(c.old);
     if (m != null) {
       return (
         x: int.parse(m[1]!),
