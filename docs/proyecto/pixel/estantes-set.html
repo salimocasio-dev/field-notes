@@ -17,7 +17,7 @@ const SET = {
   mesa: Q.get('mesa') === '1',
   t: +(Q.get('t') || 0),
 };
-const ORIGIN = [-242, -95];                                          // the second run of shelves (x 72..154), the ladder, the table (x 11..60) and 60 px of open floor under the run; only wall and floor at the left edge (the first run, the counter and the chair are out of the picture)
+const ORIGIN = [-222, -95];                                          // the second run of shelves (x 72..154), the ladder, the table (x 11..60) and 60 px of open floor under the run; only wall and floor at the left edge (the first run, the counter and the chair are out of the picture)
 window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
 </script>
 <script src="pp-engine.js"></script>
