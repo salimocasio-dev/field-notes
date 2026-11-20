@@ -18,6 +18,8 @@
 // The cases, by a fixed rule:
 //   pair.<word>.<side>: the 24 pictures of cual-frente (PV.pair), and level.<word>.<index>: the level pictures of the
 //     sheet (PV.pair of the picture each names).
+//   blur.<k> (La sala only): five moments of quien-eres-tu's right run with W.borroso set (the blur keeps its smoothing),
+//     all kept.
 //   story.<story>.<plan>.<n>: every moment at rest of every run: the state after a step whose view is one of the sheet's
 //     views exactly (not mid-slide), with no character half faded (the frog seen at al 1, abuela at al 1), skipping a
 //     state equal to the one kept just before it in that run. Drawn at the frame counter it had, floor(t / 70), wind
@@ -79,6 +81,13 @@ function cases() {
       out.push(c);
       n++;
     }
+  }
+  // La sala's blur (W.borroso: sala.js:120 and :121 keep their smoothing, the sheet's smoothing.places): no moment at rest
+  // has it (it is on for 1.1 s inside acts.tropieza), so five moments of quien-eres-tu's right run are drawn with it set
+  if (SCENE === 'sala') {
+    const lines = fs.readFileSync(path.join(STATES, 'quien-eres-tu', 'right.states.jsonl'), 'utf8').trim().split('\n').map(l => JSON.parse(l));
+    [5, 12, 20, 30, 40].forEach((i, k) => { const s = lines[Math.min(i, lines.length - 1)];
+      out.push({ id: `blur.${k}`, kind: 'story', story: 'quien-eres-tu', plan: 'right', n: i, step: s.path, view: 'wide', F: Math.floor(s.t / 70), W: Object.assign({}, s.W, { borroso: 1 }), acts: actsOf('quien-eres-tu'), keep: true }); });
   }
   return out;
 }
