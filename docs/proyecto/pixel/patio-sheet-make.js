@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-/* El patio's sheet (order 32a): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
+/* El patio's sheet (order 32a, round 2: the yard built on the world's axes, the house wall on the left, the fence on the far right): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
    Run from the repo root:  node docs/proyecto/pixel/patio-sheet-make.js        (needs Node 22 and the pre-installed Playwright)
    It reads the set's plan (window.PATIO_SET) and its part map from patio-set.html in headless Chrome, for every baked state; measures the old
    sprite layer's bubbles and people (historia/ engine.js, juego.js, kit.js, escenas/patio.js, as they are); projects every world point with the
@@ -137,10 +137,12 @@ function make(G) {
   const boxAround = (sx0, sy0, sx1, sy1) => { const S = E.S, d = (sx1 - sx0) / S, uc = ((sx0 + sx1) / 2 - E.OX) / S;
     const vmax = (sy1 - E.OY) / (S * .5), vmin = vmax - d, z1 = (vmin * .5 - (sy0 - E.OY) / S) / E.COS;
     const xc = (uc + (vmin + vmax) / 2) / E.R2, yc = ((vmin + vmax) / 2 - uc) / E.R2, e = d * E.R2 / 4; return [xc - e, yc - e, 0, xc + e, yc + e, z1]; };
-  // a thing square to the camera, [u0, u1] x [v0, v1] x [z0, z1] (set-kit.js UVW): its screen box, and the square world box with that screen box
-  const uvScreen = (u0, u1, v0, v1, z0, z1) => { const xs = [], ys = []; for (const u of [u0, u1]) for (const v of [v0, v1]) for (const z of [z0, z1]) { const q = E.project(...E.UVW(u, v, z)); xs.push(q.sx); ys.push(q.sy); }
-    return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; };
-  const uvThing = (u0, u1, v0, v1, z0, z1) => { const s = uvScreen(u0, u1, v0, v1, z0, z1); return boxAround(s[0], s[1], s[2], s[3]); };
+  // a thing made of several world boxes (a gate's posts and its leaf, shut and open; a house's wall and roof): the screen box round all their
+  // corners, and the square world box with that screen box (set-kit.js boxAround), so the sheet's thing is one box as page 12 asks
+  const screenOf = boxes => { const xs = [], ys = []; for (const w of boxes) for (const q of corners(w)) { xs.push(q.sx); ys.push(q.sy); } return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; };
+  const worldThing = (...boxes) => { const s = screenOf(boxes); return boxAround(s[0], s[1], s[2], s[3]); };
+  // the same, cut to the picture (a wall that runs off the picture: its touch box is the part on the screen)
+  const worldThingIn = (...boxes) => { const s = screenOf(boxes); return boxAround(Math.max(0, s[0]), Math.max(0, s[1]), Math.min(E.W, s[2]), Math.min(E.H, s[3])); };
 
   /* ---- the floor rule: the yard is built round the old picture, so a place on its lawn stays where it was on the screen ---- */
   // a frog place q (juego.js frogBox: his middle q.x + 16, his feet row q.y + 25): the ground point under (q.x + 16, q.y + 25); new q = old q.
@@ -150,14 +152,23 @@ function make(G) {
   const personQ = w => { const s = P(w); return [Math.round(s[0]), Math.round(s[1]) + 1]; };
 
   /* ---- the places that move (the floor rule keeps every other one). Each is an exact piece of patio.js source and its replacement ---- */
-  const DOORX = Math.round(E.OX + F.DU * E.S);   // the new doorway's middle on the screen
+  // abuela in the back door (acts.asoma): on its step, at its front edge (as the old one: the old step's front row 116), in the door's middle;
+  // whoever goes in (acts.seva) walks to the step's front, in the door's middle, and is gone
+  const ASOMA_W = [F.STEP[1] - .04, F.DM, 0], SEVA_W = [F.STEP[1] + .1, F.DM, 0];
+  const ASOMA = personQ(ASOMA_W), SEVA = personQ(SEVA_W);
+  // the gate: whoever walks there with the frog (acts.juntos, acts.luiscorre) ends right of it, before its right post, as the old one
+  const JUNTOS = [166, 116];
   const MOVES = [
     { line: lineOf('const CAMA='), act: '*', src: 'SOLY=[24,40,56,73]', to: 'SOLY=[26,40,56,73]', sky: [['soly', 24, 26]],
       why: 'the sun at its highest 2 px lower: its touch box ([SOLX - 14, soly - 14, 28, 28]) and so its hint frame (12 px round it) wholly inside the view (las-flores and h-patio ask for the sun; at soly 24 the frame reached 2 px over the picture\'s top). W.soly 24 in a recorded run is 26' },
-    { line: lineOf('async asoma()'), act: 'asoma', src: 'W.gente.abuela={x:42,y:116,pose:"wave",dir:1}', to: 'W.gente.abuela={x:' + (DOORX - 1) + ',y:116,pose:"wave",dir:1}', pts: [['abuela', [42, 116], [DOORX - 1, 116]]],
-      why: 'acts.asoma: abuela in the middle of the back door. The doorway is ' + (DOORX - 42) + ' px further right than the old one (the whole door and who stands in it 8 px inside the wide view, as El balcón and La sala keep it); she stands where the old one had her, in its middle' },
-    { line: lineOf('async seva(o)'), act: 'seva', src: 'await mueve(id,44,118)', to: 'await mueve(id,' + (DOORX - 1) + ',118)', pts: [[null, [44, 118], [DOORX - 1, 118]]],
-      why: 'acts.seva: whoever goes in walks to the middle of the back door (moved with it), then is gone' },
+    { line: lineOf('async asoma()'), act: 'asoma', src: 'W.gente.abuela={x:42,y:116,pose:"wave",dir:1}', to: 'W.gente.abuela={x:' + ASOMA[0] + ',y:' + ASOMA[1] + ',pose:"wave",dir:1}', pts: [['abuela', [42, 116], ASOMA]],
+      why: 'acts.asoma: abuela in the back door, on its step at its front edge, in the door\'s middle (the old one\'s place in the old door). The door stands on the house wall, seen at the angle: its middle is 6 px right of the old one (the whole door and who stands in it inside the wide view with a margin, as El balcón and La sala keep it), and she stands on the step, which comes out from the wall towards the yard: ' + (ASOMA[0] - 42) + ' px right, ' + (ASOMA[1] - 116) + ' lower' },
+    { line: lineOf('async seva(o)'), act: 'seva', src: 'await mueve(id,44,118)', to: 'await mueve(id,' + SEVA[0] + ',' + SEVA[1] + ')', pts: [[null, [44, 118], SEVA]],
+      why: 'acts.seva: whoever goes in walks to the back door (the step\'s front, in the door\'s middle: moved with it), then is gone' },
+    { line: lineOf('async juntos(o)'), act: 'juntos', src: 'await Promise.all([mueve(id,170,124),acts.ir({a:"porton"})])', to: 'await Promise.all([mueve(id,' + JUNTOS + '),acts.ir({a:"porton"})])', pts: [[null, [170, 124], JUNTOS]],
+      why: 'acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands 17 rows further back than the old one; the walk follows it 8 rows up and 4 px left (as far as the fence behind them allows: lawn under the feet across the whole body). The frog\'s place at the gate (LUGAR.porton) stays: moved up, its hop counts would change' },
+    { line: lineOf('async luiscorre()'), act: 'luiscorre', src: 'await mueve("luis",170,124,8)', to: 'await mueve("luis",' + JUNTOS + ',8)', pts: [['luis', [170, 124], JUNTOS]],
+      why: 'acts.luiscorre: Luis runs to the gate (then opens it, acts.abre): to the same place as acts.juntos' },
     { line: lineOf('async inicio9()'), act: 'inicio9', src: 'carmen:{x:86,y:136,pose:"idle"}}', to: 'carmen:{x:94,y:137,pose:"idle"}}', pts: [['carmen', [86, 136], [94, 137]]],
       why: 'acts.inicio9: Carmen 8 px further right, in front of the crate\'s left corner: the hint hand pointing at her (las-flores beats.12) was on the frog\'s face, at the door\'s place (LUGAR.inicio)' },
     { line: lineOf('async inicio10()'), act: 'inicio10', src: 'carmen:{x:50,y:160,pose:"idle",dir:1}', to: 'carmen:{x:37,y:178,pose:"idle",dir:1}', pts: [['carmen', [50, 160], [37, 178]]],
@@ -177,29 +188,39 @@ function make(G) {
   for (const k of ['L', 'R']) SPOTS['detras.' + k] = { world: personW(OLD.DETRAS[k]), old: OLD.DETRAS[k], what: 'DETRAS.' + k + ': a child behind bed ' + k + ', planting (acts.dale, final9)' };
   for (const k of ['luis', 'carmen']) SPOTS['espera.' + k] = { world: personW(OLD.ESPERA[k]), old: OLD.ESPERA[k], what: 'ESPERA.' + k + ': ' + k + ' waits (acts.anda a = espera)' };
   OLD.LADOS.forEach((p, i) => { SPOTS['lados.' + i] = { world: personW(p), old: p, what: 'LADOS[' + i + ']: a child either side of the crate, hands out (acts.lados)' }; });
-  SPOTS.asoma = { world: MOVES[1].pts[0][3], old: [42, 116], what: 'acts.asoma: abuela in the back door (moved: see moves)' };
-  SPOTS.seva = { world: MOVES[2].pts[0][3], old: [44, 118], what: 'acts.seva: the back door\'s threshold, where whoever goes in is last seen (moved: see moves)' };
+  SPOTS.asoma = { world: MOVES[1].pts[0][3], old: [42, 116], what: 'acts.asoma: abuela in the back door, on its step (moved: see moves)' };
+  SPOTS.seva = { world: MOVES[2].pts[0][3], old: [44, 118], what: 'acts.seva: before the back door\'s step, where whoever goes in is last seen (moved: see moves)' };
+  SPOTS.juntos = { world: MOVES[3].pts[0][3], old: [170, 124], what: 'acts.juntos, acts.luiscorre: right of the gate, before its right post (moved: see moves)' };
   for (const s of Object.values(SPOTS)) { s.new = s.scale != null ? frogQ(s.world) : personQ(s.world); }
-  SPOTS.asoma.new = MOVES[1].pts[0][2]; SPOTS.seva.new = MOVES[2].pts[0][2];
+  SPOTS.asoma.new = MOVES[1].pts[0][2]; SPOTS.seva.new = MOVES[2].pts[0][2]; SPOTS.juntos.new = MOVES[3].pts[0][2];
 
   /* ---- the named points of the set ---- */
   const PTS = {}, pt = (k, o) => { PTS[k] = o; };
   const nestTop = E.project(...E.UVW(F.NEST[0], F.NEST[1], F.NEST_Z));
   pt('nido', { screen: [181, 66], old: [181, 66], world: W4(E.UVW(F.NEST[0], F.NEST[1], F.NEST_Z)), what: 'the bird on its nest (W.ave x, y: its feet): fresh(), aveVa(181, 66) in aveloop, avenido, alnido. The nest (the set) is on a branch of the flamboyán, its rim under the bird\'s feet, as the old one; its middle on the screen at ' + [Math.round(nestTop.sx), Math.round(nestTop.sy)] });
-  pt('cerca.ave', { screen: [178, 83], old: [178, 83], what: 'inicio11: the bird sits on the fence\'s top, right of the gate (W.ave x 178, y 83): the boards\' top row there is the old one' });
-  pt('sol', { screen: [OLD.SOLX, null], old: [OLD.SOLX, OLD.SOLY], heights: [26, 40, 56, 73], what: 'the sun (sol(c, SOLX, soly, n, brilla)): drawn by the sprite layer behind the set (sheet: behind); SOLX unchanged, SOLY[0] 2 px lower (moves); it sets behind the fence (soly 109: hidden), as the old one' });
+  pt('cerca.ave', { screen: [178, 83], old: [178, 83], what: 'inicio11: the bird sits on the fence, right of the gate (W.ave x 178, y 83): on the cap of a fence post there, whose top is under its feet (the fence\'s boards run down to the right, a flat cap takes both feet)' });
+  pt('sol', { screen: [OLD.SOLX, null], old: [OLD.SOLX, OLD.SOLY], heights: [26, 40, 56, 73], what: 'the sun (sol(c, SOLX, soly, n, brilla)): drawn by the sprite layer behind the set (sheet: behind); SOLX unchanged, SOLY[0] 2 px lower (moves); it goes down where the old one did, now in the gap between the house and the fence, behind the field and the low hills (soly 109: hidden)' });
   pt('luna', { screen: [150, 26], old: [150, 26], what: 'luna(c, 150, 26): the moon, behind the set (sheet: behind)' });
-  pt('estrellas', { screen: [[60, 18], [84, 40], [124, 12], [150, 36], [40, 46], [112, 58], [72, 64], [140, 60]], what: 'ESTRELLAS: the stars, behind the set (sheet: behind): the house\'s roof hides the one at 40, 46 as the old picture did' });
+  pt('estrellas', { screen: [[60, 18], [84, 40], [124, 12], [150, 36], [40, 46], [112, 58], [72, 64], [140, 60]], what: 'ESTRELLAS: the stars, behind the set (sheet: behind): the house hides the ones at 40, 46 (as the old picture did), 60, 18 and 72, 64 (the house now reaches further up and right); the other five are in the sky' });
   pt('corazon', { screen: [118, 36], old: [118, 36], what: 'heartAt: the heart of a happy ending: in the sky between the house and the tree (unchanged)' });
-  pt('caja', { screen: [104, 112], old: [104, 112], what: 'mkCaja at (104, 112): the crate of potted flowers on the lawn before the fence (the sprite layer, its sort y 136): its bottom row 135 on the lawn, the fence\'s foot (row 112) behind its top' });
+  pt('caja', { screen: [104, 112], old: [104, 112], what: 'mkCaja at (104, 112): the crate of potted flowers on the lawn (the sprite layer, its sort y 136): its bottom row 135 on the lawn, the lawn behind it up to the far corner' });
   for (const k of ['L', 'R']) pt('hoyos.' + k, { screen: F.HOLES[k], old: F.HOLES[k], what: 'hoyo(' + k + ', i): the five holes of bed ' + k + ' (the set draws them at the old points): a flower (florEn) stands in each' });
 
   /* ---- things: the 21 touch keys ---- */
   const T = (world, what, extra = {}) => Object.assign({ set: true, world: W4(world), box: box(world), what }, extra);
   const person = id => ({ sprite: true, why: 'a person (today\'s sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged' });
   const sh = (x0, y0, x1, y1) => boxAround(x0, y0, x1, y1);
+  const LAWN_TOP = Math.floor(E.project(F.CX, F.CY, 0).sy);                // the far corner's row: the lawn's highest
   const crown = (() => { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (const i of G.leafPix) { const x = i % 240, y = Math.floor(i / 240); x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } return [x0, y0, x1 + 1, y1 + 1]; })();
-  const trunkFoot = E.project(...E.UVW(F.TREE[0], F.TREE[1], 0));
+  const trunkFoot = E.project(...E.UVW(F.TREE[0], F.TREE[1], 0)), gw = F.GX1 - F.GX0;
+  const gatePosts = [F.GP0, F.GP1].map(x => [x - F.GPW - .04, F.CY + .02 - F.GPW - .04, 0, x + F.GPW + .04, F.CY + .02 + F.GPW + .04, F.GPH + .07]);
+  // the leaf, shut and open: its two sides (GH high) and its arched top's middle (GH + GARCH), so the box follows the arch
+  const leafAt = (x0, y0, x1, y1) => [[x0, y0, 0, x0, y0, .05 + F.GH], [(x0 + x1) / 2, (y0 + y1) / 2, 0, (x0 + x1) / 2, (y0 + y1) / 2, .05 + F.GH + F.GARCH], [x1, y1, 0, x1, y1, .05 + F.GH]];
+  const gateShut = leafAt(F.GX0, F.CY - .03, F.GX1, F.CY - .03), gateOpen = leafAt(F.GX0, F.CY - .03, F.GX0 + Math.cos(F.GATE_OPEN) * gw, F.CY - .03 - Math.sin(F.GATE_OPEN) * gw);
+  const doorBox = [F.CX - .06, F.D0 - F.DF, 0, F.CX + .03, F.D1 + F.DF, F.FLOOR + F.DH + F.DF];
+  const xe = F.CX + F.EAVE, xw = F.CX - F.HDEPTH - F.EAVE, ye = F.YH - F.EAVE;
+  const houseBoxes = [[F.CX, F.YH, 0, F.CX, F.YW, F.HH], [xw, ye, F.HH, xe, F.YW + 1, F.HH + F.RISE], [F.STEP[0], F.STEP[2], 0, F.STEP[1], F.STEP[3], F.FLOOR]];
+  const fenceBox = [F.FX0, F.CY - .07, 0, F.FX1, F.CY + .07 + .15, F.FH + .11];
   const bedBox = k => { const b = F.BEDS[k]; return sh(b.sx - F.BED_RX, b.sy - F.BED_RY - 16, b.sx + F.BED_RX, b.sy + F.BED_RY + 2); };
   const things = {
     luis: person('luis'), carmen: person('carmen'), bebe: person('bebe'), abuela: person('abuela'), abuelo: person('abuelo'), mama: person('mama'), papa: person('papa'),
@@ -209,18 +230,18 @@ function make(G) {
     camaL: T(bedBox('L'), 'bed L: the earth (the set, painted on the lawn at the old ellipse) and the flowers over it (the sprite layer): the box round both, as the old one', { old: { box: [40, 160, 56, 38] } }),
     camaR: T(bedBox('R'), 'bed R, as bed L', { old: { box: [144, 160, 56, 38] } }),
     sol: { sprite: true, prop: true, why: 'the sun (the sprite layer, drawn behind the set: sheet behind): box [SOLX - 14, soly - 14, 28, 28] while !W.noche and soly < 80, unchanged (SOLY[0] 26: moves)' },
-    porton: T(uvThing(F.GP0, F.GP1 + F.GPW, -.1, .1, 0, F.GPH + .1), 'the garden gate: its two posts and the leaf between them (open: the leaf swung out on its left post, its top over the fence)', { old: { box: [127, 70, 40, 43] },
-      hand: [Math.round(E.OX + (F.GU0 + F.GU1) / 2 * E.S), 100], handWhy: 'the hint hand\'s point (kit.js cosas: hand, as El frente\'s house has one): the leaf\'s lower half, 8 px under the box\'s middle, so the hand is on no face of whoever waits before the gate (Luis, hasta-manana beats.32; the old box\'s middle put it on his face)' }),
+    porton: T(worldThing(...gatePosts, ...gateShut, ...gateOpen), 'the garden gate in the fence: its two posts and the leaf between them, shut and open (open: the leaf swung out 120 degrees on its near post, almost edge on behind it, its top over the fence)', { old: { box: [127, 70, 40, 43] },
+      hand: (() => { const q = E.project(F.GP0, F.CY + .02, F.GPH + .07); return [Math.round(q.sx), Math.round(q.sy) + 1]; })(), handWhy: 'the hint hand\'s point (kit.js cosas: hand, as El frente\'s house has one): the near post\'s cap, the gate\'s top left. The hand hangs 54 rows below its point; Luis waits before the gate (hasta-manana beats.32, at 138, 138), right of it (beats.5, 178, 126) and further right (h-patio beats.12, 180, 150): from the cap the hand ends over his head and left of him (lower on the leaf, or at its middle, it is on his face)' }),
     nido: T(sh(170, 60, 192, 76), 'the nest on its branch (the box round it and the bird on it, as the old one)', { old: { box: [170, 60, 22, 16] } }),
     arbol: T(sh(crown[0], crown[1], crown[2], Math.ceil(trunkFoot.sy) + 3), 'the flamboyán: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk', { old: { box: [168, 8, 60, 106] } }),
     pajaro: { sprite: true, why: 'the bird (kit.js drawAve, sprite layer): box [p.x - 10, p.y - 20, 20, 22] at avePos, unchanged' },
-    puerta: T(uvThing(F.DU0 - F.DF, F.DU1 + F.DF, -.06, .06, 0, F.FLOOR + F.DH + F.DF), 'the back door in its white frame', { old: { box: [27, 57, 30, 56] } }),
-    casa: T(uvThing(F.HU0, F.HU1 + F.EAVE, F.RIDGE_V, F.EAVE, 0, F.HH + F.RISE), 'the back of the house: its wall and its roof (to the picture\'s left edge)', { old: { box: [0, 14, 61, 100] } }),
-    cerca: T(uvThing(F.FU0, F.FU1, -.1, .1, 0, F.FH + .05), 'the fence, from the house to the picture\'s right edge', { old: { box: [60, 80, 180, 33] } }),
-    patio: T((() => { const s = [0, 113, 240, 216]; return boxAround(s[0], s[1], s[2], s[3]); })(), 'the lawn, from the foot of the house and the fence (row 113) to the bottom, the whole width, as the old box: last in the hit order', { old: { box: [0, 113, 240, 103] } }),
+    puerta: T(worldThing(doorBox), 'the back door in its white frame, on the house wall', { old: { box: [27, 57, 30, 56] } }),
+    casa: T(worldThingIn(...houseBoxes), 'the back of the house: its wall (from its far corner down off the picture\'s left edge), its step and its roof; the box is the part on the picture', { old: { box: [0, 14, 61, 100] } }),
+    cerca: T(worldThingIn(fenceBox), 'the fence, from the far corner to the picture\'s right edge (the box is the part on the picture)', { old: { box: [60, 80, 180, 33] } }),
+    patio: T((() => { const s = [0, LAWN_TOP, 240, 216]; return boxAround(s[0], s[1], s[2], s[3]); })(), 'the lawn, from the far corner (row ' + LAWN_TOP + ') to the bottom, the whole width: last in the hit order', { old: { box: [0, 113, 240, 103] } }),
   };
   // the yard's box is the lawn's own screen rectangle (a square world box can only reach it so: the lawn is a plane)
-  things.patio.box = [0, 113, 240, 103];
+  things.patio.box = [0, LAWN_TOP, 240, 216 - LAWN_TOP];
 
   /* ---- views: one, zoom 1, the old wide window ---- */
   const views = { wide: { zoom: 1, x0: 22, world: floor(120, 150), region: null, old: [22, 0, 196, 216], what: 'the yard: the back of the house with its door, the fence with the gate, the flamboyán with the nest, the two beds, the sky' } };
@@ -277,8 +298,23 @@ function make(G) {
     key: 'hora + "-" + door + "-" + gate, e.g. "dia-shut-shut"',
     baked: STATES.map(k => ({ key: k, query: '?' + queryOf(k) })),
     bakedWhy: 'order 06 found 73 states: what makes them is the sky (W.sol, W.noche, W.osc), the back door, the gate, the crate, the flowers in the beds and the sack. Only the hour, the door and the gate are the set\'s; the crate, the flowers, the sack, the ball, the sun, the moon and the stars are drawn by the sprite layer, so these 15 baked states draw all 73 (and every review and level picture)',
-    plan: 'patio-set.html also takes plan = esquina: the other candidate of the look question (see layout.candidates). The builder ports plan = frente only',
   };
+
+  /* ---- where the lines run, and what moved from its old screen point ---- */
+  const wallRow = sx => r2(E.project(F.CX, F.CX - (sx - E.OX) / E.S * E.R2, 0).sy), fenceRow = sx => r2(E.project(F.CY + (sx - E.OX) / E.S * E.R2, F.CY, 0).sy);
+  const corner = E.project(F.CX, F.CY, 0), houseEnd = E.project(F.CX, F.YH, 0), gateMid = E.project((F.GX0 + F.GX1) / 2, F.CY, 0);
+  const LINES_WHAT = {
+    corner: [r2(corner.sx), r2(corner.sy)], cornerWhat: 'the far corner (where the two lines meet), on the screen',
+    wall: { foot: 'row = ' + r2(wallRow(0)) + ' - x / 2', leftEdge: [0, wallRow(0)], viewLeft: [22, wallRow(22)], farEnd: [r2(houseEnd.sx), r2(houseEnd.sy)], what: 'the house wall\'s foot: from the house\'s far corner down to the left; it leaves the picture at its left edge (and the view at x 22)' },
+    fence: { foot: 'row = ' + r2(fenceRow(0)) + ' + x / 2', rightEdge: [240, fenceRow(240)], viewRight: [218, fenceRow(218)], what: 'the fence\'s foot: from the far corner down to the right; it leaves the picture at its right edge (and the view at x 218)' },
+    gap: 'between the house\'s far corner (x ' + r2(houseEnd.sx) + ') and the fence\'s first post (x ' + Math.round(E.project(F.POSTS[0], F.CY + .07, 0).sx - 4) + '): the field and the hills, where the sun goes down',
+  };
+  const MOVED_WHAT = [
+    'the back door: its middle 6 px right of the old one (x 42 to 48), its threshold on the house wall\'s foot (row ' + Math.round(wallRow(48) - F.FLOOR * E.COS * E.S) + ', the old 112); box ' + JSON.stringify(things.puerta.box) + ' (old [27, 57, 30, 56]). Follow it: abuela in the door (asoma) and whoever goes in (seva), in moves',
+    'the gate: its middle 3 px left of the old one (x 147 to ' + Math.round(gateMid.sx) + '), its foot on the fence\'s line, ' + Math.round(112 - gateMid.sy) + ' rows further back (row 112 to ' + Math.round(gateMid.sy) + '); box ' + JSON.stringify(things.porton.box) + ' (old [127, 70, 40, 43]). Follows it: the walk to the gate (juntos, luiscorre), in moves. Not moved: the frog\'s two places there, LUGAR.porton (his feet ' + (OLD.LUGAR.porton[1] + 25 - Math.round(fenceRow(OLD.LUGAR.porton[0] + 16))) + ' rows before the fence\'s line, the old 17) and LUGAR.sale (where he fades, ' + (OLD.LUGAR.sale[1] + 25 - Math.round(fenceRow(OLD.LUGAR.sale[0] + 16))) + ' rows before it, the old 3 rows past it): moved up as far as the gate, their hop counts to other places would change (porton: 4 rows at the most keep them all; sale: 3)',
+    'the flamboyán: its trunk\'s foot ' + Math.round(trunkFoot.sy - 114) + ' rows lower (row 114 to ' + Math.round(trunkFoot.sy) + '), at the same x (204), a little in front of the fence: the trunk is longer; its crown where the old one was (its left lobe 4 px right, clear of the gate\'s box). Nothing follows: the frog at the tree (LUGAR.arbol) is before the trunk as before',
+    'unchanged: the nest (181, 66) and every landing of the bird on it; the bird on the fence (178, 83), now on a post\'s cap; the ball in the tree (196, 64); the sun (SOLX 100), the moon (150, 26)',
+  ];
 
   return {
     scene: 'patio',
@@ -293,12 +329,13 @@ function make(G) {
       pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were',
     },
     layout: {
-      what: 'the yard seen square on: the house\'s back wall and the fence stand on one straight line across the picture (v = 0, the old picture\'s row 112, where the yard begins), turned to face the camera, as the old picture had them. The camera is the engine\'s, unchanged (30 degrees; shadows to screen right); the walls are turned to it (set-kit.js UVW, planeQuad), so the back of the house shows as a flat wall under its roof\'s long slope, its hip at the right end. On the left the house (teal siding, white corner board, the back door in its white frame on a stone step, red tiles); from its corner to the right edge the wooden fence, with the cream garden gate between two taller posts in the middle; right of the gate, a little in front of the fence, the flamboyán (green crown with red flowers), the nest on a branch at its left; the lawn before them with the two beds of earth at the old ellipses; the sky over the fence. Through the open gate a path of flat stones goes on over the grass; the open leaf shows over the fence, swung out on its left post. Through the open door a dim room',
-      why: 'the old picture is a wall line (house and fence) at row 112 with every place on the lawn before it and a big sky above it, where the sun sets behind the fence, the bird flies its loop and the fireflies leave. Built on the world\'s axes, a wall line runs across the picture at a slant (26.6 degrees): with the places kept, either the house or the fence would cut through where people stand, and the corner of a house wall and a fence (as La sala\'s two walls) rises to a peak over the middle of the picture, where the sun must set. Square to the camera, the line is the old one: the door, the gate, the tree, the sun and every place keep their screen points',
-      candidates: { frente: 'kept: the house wall and the fence square to the camera (this sheet)', esquina: 'patio-set.html?plan=esquina: the other candidate, the house wall (facing +x, in shade) and the fence (facing +y) on the world\'s axes, meeting in a corner over the middle of the picture, as La sala\'s room. The door, the gate and the tree are near their old places; the sun at SOLX 100 would set behind the corner\'s fence 30 rows too high, so SOLX would move. No sheet is made for it' },
+      what: 'the yard built as La sala is: two walls on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture\'s sides and bottom. On the LEFT the back of the house: its back wall on x = ' + F.CX + ' (it faces +x, in shade, teal siding as El frente\'s side wall), from its far corner (a white corner board, screen x ' + Math.round(E.project(F.CX, F.YH, 0).sx) + ') down off the picture\'s left edge; in it the back door in its white frame on a stone step (screen x ' + things.puerta.box[0] + ' to ' + (things.puerta.box[0] + things.puerta.box[2]) + '); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = ' + F.CY + ' (it faces +y, lit), from the far corner off the picture\'s right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x ' + things.porton.box[0] + ' to ' + (things.porton.box[0] + things.porton.box[2]) + '); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence\'s first post the yard opens on a field and low hills (the horizon at row ' + F.HZ + '), where the sun goes down. Through the open gate a path of flat stones goes out over the field; the open leaf, swung out on its near post, stands almost edge on behind it (as the old picture\'s open gate), its top over the fence. Through the open door a dim room',
+      lines: LINES_WHAT,
+      why: 'page 11 decision 9 and the owner\'s three approved sets (El frente, El balcón, La sala): walls run along the world\'s axes and are seen at the engine\'s angle. Every place on the lawn keeps its old screen point (rules.floor): the two lines are as low as those places allow, so the corner is as low as it can be. The fence\'s line is held up by the ball beside Luis (inicio9, 174, 128: only lawn behind the ball, so the fence\'s foot is above row 115 at x 181), the wall\'s by abuela at the far left (hasta mañana, 34, 135). The old sun sank at x 100, right where the corner rises: a house wall there would hide it at every height, so the house ends short of the corner and the sun goes down in the gap, behind the field and the hills',
+      moved: MOVED_WHAT,
     },
     behind: {
-      what: 'the sky is the set\'s (baked per hour); what moves or twinkles in it is the sprite layer\'s, drawn behind the set: the sun (sol(), its rays turning with F, sinking with W.soly), the moon (luna()) and the stars (ESTRELLAS, twinkling). Each is drawn first in the sprite layer, then the set\'s own pixels are drawn again inside its box wherever the set has drawn anything (bakedZ > -1e8, and the leaves of that frame): the sky objects are farther than everything (depth -1e9, SetOverSprites). So the sun sets behind the fence, and the roof hides the star at 40, 46, as the old picture had them',
+      what: 'the sky is the set\'s (baked per hour); what moves or twinkles in it is the sprite layer\'s, drawn behind the set: the sun (sol(), its rays turning with F, sinking with W.soly), the moon (luna()) and the stars (ESTRELLAS, twinkling). Each is drawn first in the sprite layer, then the set\'s own pixels are drawn again inside its box wherever the set has drawn anything (bakedZ > -1e8, and the leaves of that frame): the sky objects are farther than everything (depth -1e9, SetOverSprites). The hills are the set\'s, at depth ' + F.HILL_Z + ' (farther than any of the set\'s things, nearer than the sky objects). So the sun goes down behind the field and the hills in the gap between the house and the fence, and the house hides the stars at 40, 46 (as the old picture did), 60, 18 and 72, 64',
       items: [
         { at: 'patio.js:131', what: 'the stars (W.estrella, W.noche)', boxes: 'each star [x - 1, y - 1, 4, 4]' },
         { at: 'patio.js:132', what: 'the moon (W.luna) at 150, 26; the sun at SOLX, soly (W.soly < 110)', boxes: 'moon [139, 15, 24, 22]; sun [SOLX - 21, soly - 21, 42, 42] (its rays)' },
@@ -434,15 +471,15 @@ function make(G) {
     c(L('async alnido()'), 'alnido: KIT.aveVa(181,66,9,-1)', { point: 'nido', new: PTS.nido.screen });
     c(L('if(mio>=3){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,40]'), 'final10: the stars [60,40] [150,44] [104,30] [80,60] [130,56]', 'screen effect: unchanged (in the sky)');
     c(L('async inicio11()'), 'inicio11: abuela {x:34,y:136}, abuelo {x:60,y:126}, mama {x:86,y:136}, bebe {x:97,y:109,z:137} (in mamá\'s arms), papa {x:112,y:126}', { floor: [[34, 136], [60, 126], [86, 136], [112, 126]].map(personW), new: [[34, 136], [60, 126], [86, 136], [112, 126]] }, 'the floor rule: the same screen places; the baby relative to mamá');
-    c(L('luis:{x:150,y:160,pose:"idle",dir:-1}'), 'inicio11: luis {x:150,y:160}, carmen {x:188,y:158}; ave {x:178,y:83} on the fence', { floor: [personW([150, 160]), personW([188, 158])], new: [[150, 160], [188, 158]], point: 'cerca.ave' }, 'the floor rule; the bird on the fence\'s top (points cerca.ave)');
-    c(L('async juntos(o)'), 'juntos: mueve(id,170,124)', fl([170, 124]), 'the floor rule: the same screen place');
+    c(L('luis:{x:150,y:160,pose:"idle",dir:-1}'), 'inicio11: luis {x:150,y:160}, carmen {x:188,y:158}; ave {x:178,y:83} on the fence', { floor: [personW([150, 160]), personW([188, 158])], new: [[150, 160], [188, 158]], point: 'cerca.ave' }, 'the floor rule; the bird on the fence, on a post\'s cap (points cerca.ave)');
+    c(L('async juntos(o)'), 'juntos: mueve(id,170,124)', { spot: 'juntos', new: SPOTS.juntos.new }, 'moved (see moves): right of the gate');
     c(L('async vuelveluis()'), 'vuelveluis: mueve("luis",138,138)', fl([138, 138]), 'the floor rule: the same screen place');
     c(L('async alcentro(o)'), 'alcentro: +o.x || 160, +o.y || 190', fl([160, 190]), 'the floor rule: the same screen place');
     c(L('async viene(o)'), 'viene: mueve("carmen",186,174), mueve("abuelo",52,174)', { floor: [personW([186, 174]), personW([52, 174])], new: [[186, 174], [52, 174]] }, 'the floor rule: the same screen places');
-    c(L('async luiscorre()'), 'luiscorre: mueve("luis",170,124,8)', fl([170, 124]), 'the floor rule: the same screen place');
+    c(L('async luiscorre()'), 'luiscorre: mueve("luis",170,124,8)', { spot: 'juntos', new: SPOTS.juntos.new }, 'moved (see moves): right of the gate');
     c(L('if(con>=3){W.aro=1;'), 'final11: the stars [110,70] [170,66] [140,56] [124,96] [160,96]', 'screen effect: unchanged');
     c(L('else{const l={id:"nueva",est:"mov",x:214,y:120'), 'final11: a firefly comes from 214,120; luzA(l, f[0]+12, f[1]-8, 14, 1)', 'over the yard: unchanged; relative to the frog');
-    c(L('async sevan()'), 'sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)', 'the bird in the air: unchanged; the frog out through the gate (LUGAR.sale)');
+    c(L('async sevan()'), 'sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)', 'the bird in the air: unchanged; the frog to the gate (LUGAR.sale, unchanged: see layout.moved), where he fades');
     c(L('if(t==="luces"){const l='), 'stake: luzA(l,226,58,14,0)', 'screen: the firefly leaves to the top right, unchanged');
     c(L('KIT.escena({id:"patio"'), 'CAM.wide [22,0,196,216]', { view: 'wide', zoom: 1, x0: views.wide.x0 });
     c(L('KIT.escena({id:"patio"'), 'heartAt [118,36]', { point: 'corazon', new: PTS.corazon.screen });
@@ -536,11 +573,26 @@ function check(sh, G) {
     const L = Math.min(...who.map(r => r[0])), R = Math.max(...who.map(r => r[0] + r[2])), T = Math.min(...who.map(r => r[1]));
     if (L - x0 < 8 || x0 + 196 - R < 8 || T < 8) P.push('wide view: the door or who stands in it is ' + Math.min(L - x0, x0 + 196 - R, T) + ' px from its edge (keep 8)');
     notes.push('wide view (x0 ' + x0 + '): the door, its frame and abuela in it from x ' + L + ' to ' + R + ' (' + (L - x0) + ' px from the left side), from row ' + T);
-    const tag = TAGS['dia-shut-shut'], top = E.project(...E.UVW(F.DU, .03, F.FLOOR + F.DH + F.DF)); let n = 0;
-    for (let y = Math.floor(top.sy) - 1; y >= 0 && tag[y * 240 + Math.round(top.sx)] === 'casa'; y--) n++;
-    // (the wall's own pixels: under the roof's fascia)
-    if (n < 6) P.push('a strip of wall: over the door ' + n + ' px');
+    // the strip: the wall's rows between the frame's top and the wall's top (the fascia's foot), in the door's middle column, all the house's
+    const tag = TAGS['dia-shut-shut'], top = E.project(F.CX + .03, F.DM, F.FLOOR + F.DH + F.DF), wtop = E.project(F.CX, F.DM, F.HH - .12), x = Math.floor(top.sx); let n = 0, bad = 0;
+    for (let y = Math.floor(top.sy) - 1; y >= Math.ceil(wtop.sy); y--) { n++; if (tag[y * 240 + x] !== 'casa') bad++; }
+    if (n < 6 || bad) P.push('a strip of wall: over the door ' + n + ' px, ' + bad + ' of them not the wall');
     notes.push('a strip of wall: ' + n + ' px of wall over the door\'s frame, under the roof\'s fascia'); }
+
+  /* the hint frames of the things on the walls and in the sky (box +- 12): the door, the gate (its box holds the leaf shut and open), the nest,
+     the sun at each height wholly inside the view, asked or not; the tree's is reported (its crown is the old one, wider than the view allows) */
+  { const fr = b => [b[0] - FRAME_OUT, b[1] - FRAME_OUT, b[2] + 2 * FRAME_OUT, b[3] + 2 * FRAME_OUT], out = [];
+    const items = [['the door', sh.things.puerta.box], ['the gate', sh.things.porton.box], ['the nest', sh.things.nido.box]].concat([26, 40, 56, 73].map(y => ['the sun at ' + y, [86, y - 14, 28, 28]]));
+    for (const [k, b] of items) { const f = fr(b); if (!within(f, VIEW)) P.push('hint frame: ' + k + ' ' + JSON.stringify(b) + ' +- ' + FRAME_OUT + ' is not inside the view'); else out.push(k + ' ' + Math.min(f[0] - x0, x0 + 196 - f[0] - f[2], f[1], 216 - f[1] - f[3])); }
+    const t = fr(sh.things.arbol.box);
+    notes.push('hint frames, asked or not: the door, the gate, the nest and the sun at each height inside the view (px from its edge: ' + out.join(', ') + '); the tree\'s ' + JSON.stringify(t) + ' is not (' + (x0 + 196 - t[0] - t[2]) + ' px on the right, ' + t[1] + ' at the top), as the old one: no story or pair asks for the tree'); }
+
+  /* the walk to the door and to the gate ends there: seva on the door's step, in the door's width; juntos right of the gate, before its right post */
+  { const d = sh.things.puerta.box, sv = sh.spots.seva.new, as = sh.spots.asoma.new, j = sh.spots.juntos.new, g = sh.things.porton.box;
+    for (const [k, p] of [['seva', sv], ['asoma', as]]) if (p[0] < d[0] || p[0] > d[0] + d[2] || p[1] < d[1] + d[3] - 6 || p[1] > d[1] + d[3] + 6) P.push('the walk to the door: ' + k + ' ' + p + ' is not at the door ' + JSON.stringify(d));
+    const postFoot = E.project(F.GP1, F.CY, 0);
+    if (j[0] - postFoot.sx > 12 || j[0] < postFoot.sx || j[1] - postFoot.sy > 16) P.push('the walk to the gate: juntos ' + j + ' is not at the gate (its right post\'s foot ' + [Math.round(postFoot.sx), Math.round(postFoot.sy)] + ')');
+    notes.push('walks: whoever goes in ends at ' + sv + ', on the door\'s step in its width (the door ' + d[0] + ' to ' + (d[0] + d[2]) + ', its foot row ' + (d[1] + d[3]) + '); abuela in the door at ' + as + '; the walk to the gate ends at ' + j + ', ' + Math.round(j[0] - postFoot.sx) + ' px right of its right post\'s foot and ' + Math.round(j[1] - postFoot.sy) + ' rows before it'); }
 
   /* the nest: the bird on it rests on it (the nest's rim under its feet, seen); the bird on the fence stands on the boards' tops */
   { const tag = TAGS['dia-shut-shut'], ave = G.M.ave;
@@ -562,7 +614,7 @@ function check(sh, G) {
         if (K[h[1] * 240 + h[0]] !== G.K.road) P.push('beds ' + key + ': the hole at ' + h + ' is not in the earth'); }
       const crate = [104, 113, 32, 23], n = countIn(tag, crate, ['casa', 'puerta', 'escalon', 'porton', 'arbol', 'nido']); if (n) P.push('crate ' + key + ': ' + n + ' px of the set behind the crate');
       let lawn = 0; for (let x = 105; x < 135; x++) if (K[135 * 240 + x] === G.K.grass) lawn++; if (lawn < 28) P.push('crate ' + key + ': its bottom row is on ' + lawn + ' px of lawn'); }
-    notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the lawn, in every baked state; the crate\'s bottom row on the lawn; behind its flowers the lawn, the fence\'s and the gate post\'s foot (row 112) behind its top row, as the old picture'); }
+    notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the lawn, in every baked state; the crate\'s bottom row on the lawn, nothing of the set behind it'); }
 
   /* the sun sets behind the fence: its disc (r 11 at SOLX, soly) wholly in the sky at its first three heights, nearly at the fourth (on the fence,
      as the old), and wholly behind the set at 109 (after puesta); in every hour it is drawn in */
@@ -571,7 +623,7 @@ function check(sh, G) {
       for (const sy of [26, 40, 56, 73, 109]) { let n = 0, sky = 0; for (let y = sy - 11; y <= sy + 11; y++) for (let x = 89; x <= 111; x++) { if ((x + .5 - 100) ** 2 + (y + .5 - sy) ** 2 > 121) continue; n++; if (Z[y * 240 + x] < -1e8) sky++; }
         const f = sky / n; if ((sy <= 56 && f < 1) || (sy === 73 && f < .85) || (sy === 109 && f > 0)) P.push('sun ' + key + ': at soly ' + sy + ' ' + Math.round(f * 100) + '% of its disc is in the sky');
         if (key.startsWith('ocaso-shut-shut') || key === 'dia-shut-shut') sunNotes.push(sy + ': ' + Math.round(f * 100) + '%'); } }
-    notes.push('sun: the part of its disc in the sky at soly ' + [...new Set(sunNotes)].join(', ') + ' (the old: the fence hid 2 rows at 73, all at 109)'); }
+    notes.push('sun: the part of its disc in the sky at soly ' + [...new Set(sunNotes)].join(', ') + ' (the old: the fence hid 2 rows at 73, all at 109; now the field, the hills and the far corner\'s lawn)'); }
 
   /* every moment of every run */
   const runs = storyStates();
@@ -632,13 +684,16 @@ function check(sh, G) {
       if (p.z) continue;                                                       // the baby in mamá's arms
       const k = JSON.stringify([id, Math.round(p.x), Math.round(p.y), !!p.sent, key]); if (floorSeen.has(k)) continue; floorSeen.add(k);
       if (p.sent) nSit++; else nFloor++;
-      const v = vAt(Math.round(p.x), Math.round(p.y) - 1);
-      if (v < 0 && !(id === 'abuela' && v > -.4)) P.push('ground: ' + where + ' ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ' stands beyond the house and the fence (v ' + r2(v) + ')');
-      const n = nearer(key, body(id, p), v, SOLID);
+      const v = vAt(Math.round(p.x), Math.round(p.y) - 1), g = E.atZ(Math.round(p.x), Math.round(p.y) - 1, 0);
+      const inDoor = id === 'abuela' && g[0] > F.CX - .4 && g[1] > F.D0 && g[1] < F.D1;
+      if ((g[0] < F.CX + .05 && !inDoor) || g[1] < F.CY + .05) P.push('ground: ' + where + ' ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ' stands ' + (g[1] < F.CY + .05 ? 'behind the fence' : g[1] > F.YH ? 'inside the house' : 'beyond the far corner') + ' (x ' + r2(g[0]) + ', y ' + r2(g[1]) + ')');
+      const onStep = g[0] > F.STEP[0] - .05 && g[0] < F.STEP[1] + .15 && g[1] > F.STEP[2] && g[1] < F.STEP[3];   // on the door's step, in the doorway: the step is under them, the frame's foot beside them
+      const n = nearer(key, body(id, p), v, onStep ? SOLID.filter(k => k !== 'escalon' && k !== 'puerta') : SOLID);
       if (n) P.push('ground: ' + where + ' ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ': ' + n + ' px of the set nearer than them inside their body');
     }
     const q = w.cq; if (q && q.vis) { const k = JSON.stringify(['cq', q.x, q.y, q.s, key]); if (!floorSeen.has(k)) { floorSeen.add(k); nFloor++;
-      const b = frogBox(q), n = nearer(key, [b.x, b.y, b.w, b.h], vAt(b.x + b.w / 2, q.y + 25), SOLID);
+      const b = frogBox(q), n = nearer(key, [b.x, b.y, b.w, b.h], vAt(b.x + b.w / 2, q.y + 25), SOLID), g = E.atZ(b.x + b.w / 2, q.y + 25, 0);
+      if (g[0] < F.CX + .05 || g[1] < F.CY + .05) P.push('ground: ' + where + ' the frog at ' + q.x + ',' + q.y + ' is beyond the house or the fence');
       if (n) P.push('ground: ' + where + ' the frog at ' + q.x + ',' + q.y + ': ' + n + ' px of the set nearer than him inside his box'); } }
   };
   const actsOf = st => new Set((JSON.stringify(st).match(/"act":\s*"[a-z0-9]+"/g) || []).map(a => a.split('"')[3]));
@@ -700,7 +755,7 @@ function check(sh, G) {
   notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), the hint hand on no face; ' + nC + ' answer cards inside the view, over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
   if (cardHand.size) notes.push('NOT the scene\'s: the hand juego.js draws at an answer card (the left one) reaches onto the frog\'s face, 46 px under it, in every scene (the card\'s place and the hand are the game\'s, respBox and hand()): at the asks for ' + [...cardHand].join(', '));
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, at any moment; the "q" of duda, encoge and turno at their steps; the frog\'s "amor"): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corners (' + worstBoard + ' px), on no face');
-  notes.push('ground: ' + nFloor + ' distinct places where someone stands (and the frog), ' + nSit + ' where someone sits on the grass: on the lawn (or the back door\'s step), nothing of the house, the fence, the gate or the tree nearer than them inside their body');
+  notes.push('ground: ' + nFloor + ' distinct places where someone stands (and the frog), ' + nSit + ' where someone sits on the grass: on the lawn of the yard (x > CX, y > CY; abuela in the doorway), none behind the fence or inside the house, nothing of the house, the fence, the gate or the tree nearer than them inside their body');
 
   /* standing over sitting: no standing person's sprite covers more of a sitting one's face than the old picture did at that moment */
   let nSO = 0; const soSeen = new Set(), soOld = new Set();

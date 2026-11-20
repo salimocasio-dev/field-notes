@@ -18,15 +18,35 @@
   "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were"
  },
  "layout": {
-  "what": "the yard seen square on: the house's back wall and the fence stand on one straight line across the picture (v = 0, the old picture's row 112, where the yard begins), turned to face the camera, as the old picture had them. The camera is the engine's, unchanged (30 degrees; shadows to screen right); the walls are turned to it (set-kit.js UVW, planeQuad), so the back of the house shows as a flat wall under its roof's long slope, its hip at the right end. On the left the house (teal siding, white corner board, the back door in its white frame on a stone step, red tiles); from its corner to the right edge the wooden fence, with the cream garden gate between two taller posts in the middle; right of the gate, a little in front of the fence, the flamboyán (green crown with red flowers), the nest on a branch at its left; the lawn before them with the two beds of earth at the old ellipses; the sky over the fence. Through the open gate a path of flat stones goes on over the grass; the open leaf shows over the fence, swung out on its left post. Through the open door a dim room",
-  "why": "the old picture is a wall line (house and fence) at row 112 with every place on the lawn before it and a big sky above it, where the sun sets behind the fence, the bird flies its loop and the fireflies leave. Built on the world's axes, a wall line runs across the picture at a slant (26.6 degrees): with the places kept, either the house or the fence would cut through where people stand, and the corner of a house wall and a fence (as La sala's two walls) rises to a peak over the middle of the picture, where the sun must set. Square to the camera, the line is the old one: the door, the gate, the tree, the sun and every place keep their screen points",
-  "candidates": {
-   "frente": "kept: the house wall and the fence square to the camera (this sheet)",
-   "esquina": "patio-set.html?plan=esquina: the other candidate, the house wall (facing +x, in shade) and the fence (facing +y) on the world's axes, meeting in a corner over the middle of the picture, as La sala's room. The door, the gate and the tree are near their old places; the sun at SOLX 100 would set behind the corner's fence 30 rows too high, so SOLX would move. No sheet is made for it"
-  }
+  "what": "the yard built as La sala is: two walls on the world's axes, seen at the engine's 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture's sides and bottom. On the LEFT the back of the house: its back wall on x = -1.85 (it faces +x, in shade, teal siding as El frente's side wall), from its far corner (a white corner board, screen x 76) down off the picture's left edge; in it the back door in its white frame on a stone step (screen x 35 to 61); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = -1.55 (it faces +y, lit), from the far corner off the picture's right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x 124 to 163); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence's first post the yard opens on a field and low hills (the horizon at row 84), where the sun goes down. Through the open gate a path of flat stones goes out over the field; the open leaf, swung out on its near post, stands almost edge on behind it (as the old picture's open gate), its top over the fence. Through the open door a dim room",
+  "lines": {
+   "corner": [114.48, 80.75],
+   "cornerWhat": "the far corner (where the two lines meet), on the screen",
+   "wall": {
+    "foot": "row = 137.99 - x / 2",
+    "leftEdge": [0, 137.99],
+    "viewLeft": [22, 126.99],
+    "farEnd": [75.88, 100.05],
+    "what": "the house wall's foot: from the house's far corner down to the left; it leaves the picture at its left edge (and the view at x 22)"
+   },
+   "fence": {
+    "foot": "row = 23.5 + x / 2",
+    "rightEdge": [240, 143.5],
+    "viewRight": [218, 132.5],
+    "what": "the fence's foot: from the far corner down to the right; it leaves the picture at its right edge (and the view at x 218)"
+   },
+   "gap": "between the house's far corner (x 75.88) and the fence's first post (x 114): the field and the hills, where the sun goes down"
+  },
+  "why": "page 11 decision 9 and the owner's three approved sets (El frente, El balcón, La sala): walls run along the world's axes and are seen at the engine's angle. Every place on the lawn keeps its old screen point (rules.floor): the two lines are as low as those places allow, so the corner is as low as it can be. The fence's line is held up by the ball beside Luis (inicio9, 174, 128: only lawn behind the ball, so the fence's foot is above row 115 at x 181), the wall's by abuela at the far left (hasta mañana, 34, 135). The old sun sank at x 100, right where the corner rises: a house wall there would hide it at every height, so the house ends short of the corner and the sun goes down in the gap, behind the field and the hills",
+  "moved": [
+   "the back door: its middle 6 px right of the old one (x 42 to 48), its threshold on the house wall's foot (row 112, the old 112); box [35,45,26,76] (old [27, 57, 30, 56]). Follow it: abuela in the door (asoma) and whoever goes in (seva), in moves",
+   "the gate: its middle 3 px left of the old one (x 147 to 144), its foot on the fence's line, 17 rows further back (row 112 to 95); box [124,36,39,70] (old [127, 70, 40, 43]). Follows it: the walk to the gate (juntos, luiscorre), in moves. Not moved: the frog's two places there, LUGAR.porton (his feet 33 rows before the fence's line, the old 17) and LUGAR.sale (where he fades, 10 rows before it, the old 3 rows past it): moved up as far as the gate, their hop counts to other places would change (porton: 4 rows at the most keep them all; sale: 3)",
+   "the flamboyán: its trunk's foot 18 rows lower (row 114 to 132), at the same x (204), a little in front of the fence: the trunk is longer; its crown where the old one was (its left lobe 4 px right, clear of the gate's box). Nothing follows: the frog at the tree (LUGAR.arbol) is before the trunk as before",
+   "unchanged: the nest (181, 66) and every landing of the bird on it; the bird on the fence (178, 83), now on a post's cap; the ball in the tree (196, 64); the sun (SOLX 100), the moon (150, 26)"
+  ]
  },
  "behind": {
-  "what": "the sky is the set's (baked per hour); what moves or twinkles in it is the sprite layer's, drawn behind the set: the sun (sol(), its rays turning with F, sinking with W.soly), the moon (luna()) and the stars (ESTRELLAS, twinkling). Each is drawn first in the sprite layer, then the set's own pixels are drawn again inside its box wherever the set has drawn anything (bakedZ > -1e8, and the leaves of that frame): the sky objects are farther than everything (depth -1e9, SetOverSprites). So the sun sets behind the fence, and the roof hides the star at 40, 46, as the old picture had them",
+  "what": "the sky is the set's (baked per hour); what moves or twinkles in it is the sprite layer's, drawn behind the set: the sun (sol(), its rays turning with F, sinking with W.soly), the moon (luna()) and the stars (ESTRELLAS, twinkling). Each is drawn first in the sprite layer, then the set's own pixels are drawn again inside its box wherever the set has drawn anything (bakedZ > -1e8, and the leaves of that frame): the sky objects are farther than everything (depth -1e9, SetOverSprites). The hills are the set's, at depth -10000000 (farther than any of the set's things, nearer than the sky objects). So the sun goes down behind the field and the hills in the gap between the house and the fence, and the house hides the stars at 40, 46 (as the old picture did), 60, 18 and 72, 64",
   "items": [
    {
     "at": "patio.js:131",
@@ -118,8 +138,7 @@
     "query": "?hora=noche&door=open&gate=open"
    }
   ],
-  "bakedWhy": "order 06 found 73 states: what makes them is the sky (W.sol, W.noche, W.osc), the back door, the gate, the crate, the flowers in the beds and the sack. Only the hour, the door and the gate are the set's; the crate, the flowers, the sack, the ball, the sun, the moon and the stars are drawn by the sprite layer, so these 15 baked states draw all 73 (and every review and level picture)",
-  "plan": "patio-set.html also takes plan = esquina: the other candidate of the look question (see layout.candidates). The builder ports plan = frente only"
+  "bakedWhy": "order 06 found 73 states: what makes them is the sky (W.sol, W.noche, W.osc), the back door, the gate, the crate, the flowers in the beds and the sack. Only the hour, the door and the gate are the set's; the crate, the flowers, the sack, the ball, the sun, the moon and the stars are drawn by the sprite layer, so these 15 baked states draw all 73 (and every review and level picture)"
  },
  "things": {
   "luis": {
@@ -191,14 +210,14 @@
   },
   "porton": {
    "set": true,
-   "world": [-0.2828, -1.7514, 0, 0.805, -0.6636, 1.2272],
-   "box": [127, 65, 40, 49],
-   "what": "the garden gate: its two posts and the leaf between them (open: the leaf swung out on its left post, its top over the fence)",
+   "world": [-0.765, -2.045, 0, 0.265, -1.015, 2.1986],
+   "box": [124, 36, 39, 70],
+   "what": "the garden gate in the fence: its two posts and the leaf between them, shut and open (open: the leaf swung out 120 degrees on its near post, almost edge on behind it, its top over the fence)",
    "old": {
     "box": [127, 70, 40, 43]
    },
-   "hand": [147, 100],
-   "handWhy": "the hint hand's point (kit.js cosas: hand, as El frente's house has one): the leaf's lower half, 8 px under the box's middle, so the hand is on no face of whoever waits before the gate (Luis, hasta-manana beats.32; the old box's middle put it on his face)"
+   "hand": [129, 45],
+   "handWhy": "the hint hand's point (kit.js cosas: hand, as El frente's house has one): the near post's cap, the gate's top left. The hand hangs 54 rows below its point; Luis waits before the gate (hasta-manana beats.32, at 138, 138), right of it (beats.5, 178, 126) and further right (h-patio beats.12, 180, 150): from the cap the hand ends over his head and left of him (lower on the leaf, or at its middle, it is on his face)"
   },
   "nido": {
    "set": true,
@@ -211,8 +230,8 @@
   },
   "arbol": {
    "set": true,
-   "world": [0.4623, -3.9435, 0, 2.5837, -1.8222, 3.3753],
-   "box": [162, 3, 78, 116],
+   "world": [1.4958, -3.0188, 0, 3.5083, -1.0063, 4.1747],
+   "box": [166, 3, 74, 132],
    "what": "the flamboyán: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk",
    "old": {
     "box": [168, 8, 60, 106]
@@ -224,36 +243,36 @@
   },
   "puerta": {
    "set": true,
-   "world": [-2.8415, 1.102, 0, -1.9293, 2.0142, 2.0945],
-   "box": [30, 48, 35, 65],
-   "what": "the back door in its white frame",
+   "world": [-2.21, 1.7212, 0, -1.52, 2.4112, 2.77],
+   "box": [35, 45, 26, 76],
+   "what": "the back door in its white frame, on the house wall",
    "old": {
     "box": [27, 57, 30, 56]
    }
   },
   "casa": {
    "set": true,
-   "world": [-5.2258, -0.1917, 0, -2.3403, 2.6938, 2.0063],
-   "box": [-26, 17, 107, 99],
-   "what": "the back of the house: its wall and its roof (to the picture's left edge)",
+   "world": [-1.6454, 2.5682, 0, 0.6682, 4.8818, 5.3509],
+   "box": [0, 0, 86, 164],
+   "what": "the back of the house: its wall (from its far corner down off the picture's left edge), its step and its roof; the box is the part on the picture",
    "old": {
     "box": [0, 14, 61, 100]
    }
   },
   "cerca": {
    "set": true,
-   "world": [-3.6443, -6.0702, 0, 1.2837, -1.1422, -2.5282],
-   "box": [74, 22, 182, 149],
-   "what": "the fence, from the house to the picture's right edge",
+   "world": [0.5132, -2.4904, 0, 4.0368, 1.0332, 2.0495],
+   "box": [110, 47, 130, 112],
+   "what": "the fence, from the far corner to the picture's right edge (the box is the part on the picture)",
    "old": {
     "box": [60, 80, 180, 33]
    }
   },
   "patio": {
    "set": true,
-   "world": [-0.8703, -0.8703, 0, 5.6569, 5.6569, -0.755],
-   "box": [0, 113, 240, 103],
-   "what": "the lawn, from the foot of the house and the fence (row 113) to the bottom, the whole width, as the old box: last in the hit order",
+   "world": [-0.8703, -0.8703, 0, 5.6569, 5.6569, 0.7106],
+   "box": [0, 80, 240, 136],
+   "what": "the lawn, from the far corner (row 80) to the bottom, the whole width: last in the hit order",
    "old": {
     "box": [0, 113, 240, 103]
    }
@@ -395,16 +414,22 @@
    "what": "LADOS[1]: a child either side of the crate, hands out (acts.lados)"
   },
   "asoma": {
-   "world": [-1.8222, 2.1485, 0],
-   "new": [47, 116],
+   "world": [-1.6318, 2.0669, 0],
+   "new": [52, 117],
    "old": [42, 116],
-   "what": "acts.asoma: abuela in the back door (moved: see moves)"
+   "what": "acts.asoma: abuela in the back door, on its step (moved: see moves)"
   },
   "seva": {
-   "world": [-1.7134, 2.2573, 0],
-   "new": [47, 118],
+   "world": [-1.4958, 2.0397, 0],
+   "new": [55, 118],
    "old": [44, 118],
-   "what": "acts.seva: the back door's threshold, where whoever goes in is last seen (moved: see moves)"
+   "what": "acts.seva: before the back door's step, where whoever goes in is last seen (moved: see moves)"
+  },
+  "juntos": {
+   "world": [1.4142, -1.0879, 0],
+   "new": [166, 116],
+   "old": [170, 124],
+   "what": "acts.juntos, acts.luiscorre: right of the gate, before its right post (moved: see moves)"
   }
  },
  "lugar": {
@@ -1227,13 +1252,13 @@
   "nido": {
    "screen": [181, 66],
    "old": [181, 66],
-   "world": [2.0974, -1.2206, 2.3121],
+   "world": [2.6874, -0.6305, 2.7938],
    "what": "the bird on its nest (W.ave x, y: its feet): fresh(), aveVa(181, 66) in aveloop, avenido, alnido. The nest (the set) is on a branch of the flamboyán, its rim under the bird's feet, as the old one; its middle on the screen at 181,68"
   },
   "cerca.ave": {
    "screen": [178, 83],
    "old": [178, 83],
-   "what": "inicio11: the bird sits on the fence's top, right of the gate (W.ave x 178, y 83): the boards' top row there is the old one"
+   "what": "inicio11: the bird sits on the fence, right of the gate (W.ave x 178, y 83): on the cap of a fence post there, whose top is under its feet (the fence's boards run down to the right, a flat cap takes both feet)"
   },
   "sol": {
    "screen": [100, null],
@@ -1242,7 +1267,7 @@
     [24, 40, 56, 73]
    ],
    "heights": [26, 40, 56, 73],
-   "what": "the sun (sol(c, SOLX, soly, n, brilla)): drawn by the sprite layer behind the set (sheet: behind); SOLX unchanged, SOLY[0] 2 px lower (moves); it sets behind the fence (soly 109: hidden), as the old one"
+   "what": "the sun (sol(c, SOLX, soly, n, brilla)): drawn by the sprite layer behind the set (sheet: behind); SOLX unchanged, SOLY[0] 2 px lower (moves); it goes down where the old one did, now in the gap between the house and the fence, behind the field and the low hills (soly 109: hidden)"
   },
   "luna": {
    "screen": [150, 26],
@@ -1260,7 +1285,7 @@
     [72, 64],
     [140, 60]
    ],
-   "what": "ESTRELLAS: the stars, behind the set (sheet: behind): the house's roof hides the one at 40, 46 as the old picture did"
+   "what": "ESTRELLAS: the stars, behind the set (sheet: behind): the house hides the ones at 40, 46 (as the old picture did), 60, 18 and 72, 64 (the house now reaches further up and right); the other five are in the sky"
   },
   "corazon": {
    "screen": [118, 36],
@@ -1270,7 +1295,7 @@
   "caja": {
    "screen": [104, 112],
    "old": [104, 112],
-   "what": "mkCaja at (104, 112): the crate of potted flowers on the lawn before the fence (the sprite layer, its sort y 136): its bottom row 135 on the lawn, the fence's foot (row 112) behind its top"
+   "what": "mkCaja at (104, 112): the crate of potted flowers on the lawn (the sprite layer, its sort y 136): its bottom row 135 on the lawn, the lawn behind it up to the far corner"
   },
   "hoyos.L": {
    "screen": [
@@ -2709,31 +2734,61 @@
    "line": 208,
    "act": "asoma",
    "src": "W.gente.abuela={x:42,y:116,pose:\"wave\",dir:1}",
-   "to": "W.gente.abuela={x:47,y:116,pose:\"wave\",dir:1}",
+   "to": "W.gente.abuela={x:52,y:117,pose:\"wave\",dir:1}",
    "places": [
     {
      "who": "abuela",
      "old": [42, 116],
-     "new": [47, 116],
-     "world": [-1.8222, 2.1485, 0]
+     "new": [52, 117],
+     "world": [-1.6318, 2.0669, 0]
     }
    ],
-   "why": "acts.asoma: abuela in the middle of the back door. The doorway is 6 px further right than the old one (the whole door and who stands in it 8 px inside the wide view, as El balcón and La sala keep it); she stands where the old one had her, in its middle"
+   "why": "acts.asoma: abuela in the back door, on its step at its front edge, in the door's middle (the old one's place in the old door). The door stands on the house wall, seen at the angle: its middle is 6 px right of the old one (the whole door and who stands in it inside the wide view with a margin, as El balcón and La sala keep it), and she stands on the step, which comes out from the wall towards the yard: 10 px right, 1 lower"
   },
   {
    "line": 240,
    "act": "seva",
    "src": "await mueve(id,44,118)",
-   "to": "await mueve(id,47,118)",
+   "to": "await mueve(id,55,118)",
    "places": [
     {
      "who": "whoever",
      "old": [44, 118],
-     "new": [47, 118],
-     "world": [-1.7134, 2.2573, 0]
+     "new": [55, 118],
+     "world": [-1.4958, 2.0397, 0]
     }
    ],
-   "why": "acts.seva: whoever goes in walks to the middle of the back door (moved with it), then is gone"
+   "why": "acts.seva: whoever goes in walks to the back door (the step's front, in the door's middle: moved with it), then is gone"
+  },
+  {
+   "line": 295,
+   "act": "juntos",
+   "src": "await Promise.all([mueve(id,170,124),acts.ir({a:\"porton\"})])",
+   "to": "await Promise.all([mueve(id,166,116),acts.ir({a:\"porton\"})])",
+   "places": [
+    {
+     "who": "whoever",
+     "old": [170, 124],
+     "new": [166, 116],
+     "world": [1.4142, -1.0879, 0]
+    }
+   ],
+   "why": "acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands 17 rows further back than the old one; the walk follows it 8 rows up and 4 px left (as far as the fence behind them allows: lawn under the feet across the whole body). The frog's place at the gate (LUGAR.porton) stays: moved up, its hop counts would change"
+  },
+  {
+   "line": 308,
+   "act": "luiscorre",
+   "src": "await mueve(\"luis\",170,124,8)",
+   "to": "await mueve(\"luis\",166,116,8)",
+   "places": [
+    {
+     "who": "luis",
+     "old": [170, 124],
+     "new": [166, 116],
+     "world": [1.4142, -1.0879, 0]
+    }
+   ],
+   "why": "acts.luiscorre: Luis runs to the gate (then opens it, acts.abre): to the same place as acts.juntos"
   },
   {
    "line": 195,
@@ -3143,8 +3198,8 @@
    "old": "box porton [127,70,40,43]",
    "to": {
     "thing": "porton",
-    "box": [127, 65, 40, 49],
-    "hand": [147, 100]
+    "box": [124, 36, 39, 70],
+    "hand": [129, 45]
    },
    "note": "and hand: the hint hand's point (new: the old had none, so the box's middle)"
   },
@@ -3161,7 +3216,7 @@
    "old": "box arbol [168,8,60,106]",
    "to": {
     "thing": "arbol",
-    "box": [162, 3, 78, 116]
+    "box": [166, 3, 74, 132]
    }
   },
   {
@@ -3174,7 +3229,7 @@
    "old": "box puerta [27,57,30,56]",
    "to": {
     "thing": "puerta",
-    "box": [30, 48, 35, 65]
+    "box": [35, 45, 26, 76]
    }
   },
   {
@@ -3182,7 +3237,7 @@
    "old": "box casa [0,14,61,100]",
    "to": {
     "thing": "casa",
-    "box": [-26, 17, 107, 99]
+    "box": [0, 0, 86, 164]
    }
   },
   {
@@ -3190,7 +3245,7 @@
    "old": "box cerca [60,80,180,33]",
    "to": {
     "thing": "cerca",
-    "box": [74, 22, 182, 149]
+    "box": [110, 47, 130, 112]
    }
   },
   {
@@ -3198,7 +3253,7 @@
    "old": "box patio [0,113,240,103]",
    "to": {
     "thing": "patio",
-    "box": [0, 113, 240, 103]
+    "box": [0, 80, 240, 136]
    }
   },
   {
@@ -3381,7 +3436,7 @@
    "old": "asoma: W.gente.abuela={x:42,y:116,...}",
    "to": {
     "spot": "asoma",
-    "new": [47, 116]
+    "new": [52, 117]
    },
    "note": "moved (see moves)"
   },
@@ -3425,7 +3480,7 @@
    "old": "seva: mueve(id,44,118)",
    "to": {
     "spot": "seva",
-    "new": [47, 118]
+    "new": [55, 118]
    },
    "note": "moved (see moves)"
   },
@@ -3527,16 +3582,16 @@
     ],
     "point": "cerca.ave"
    },
-   "note": "the floor rule; the bird on the fence's top (points cerca.ave)"
+   "note": "the floor rule; the bird on the fence, on a post's cap (points cerca.ave)"
   },
   {
    "line": 295,
    "old": "juntos: mueve(id,170,124)",
    "to": {
-    "floor": [1.9581, -0.7615, 0],
-    "new": [170, 124]
+    "spot": "juntos",
+    "new": [166, 116]
    },
-   "note": "the floor rule: the same screen place"
+   "note": "moved (see moves): right of the gate"
   },
   {
    "line": 296,
@@ -3575,10 +3630,10 @@
    "line": 308,
    "old": "luiscorre: mueve(\"luis\",170,124,8)",
    "to": {
-    "floor": [1.9581, -0.7615, 0],
-    "new": [170, 124]
+    "spot": "juntos",
+    "new": [166, 116]
    },
-   "note": "the floor rule: the same screen place"
+   "note": "moved (see moves): right of the gate"
   },
   {
    "line": 313,
@@ -3593,7 +3648,7 @@
   {
    "line": 318,
    "old": "sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)",
-   "to": "the bird in the air: unchanged; the frog out through the gate (LUGAR.sale)"
+   "to": "the bird in the air: unchanged; the frog to the gate (LUGAR.sale, unchanged: see layout.moved), where he fades"
   },
   {
    "line": 323,
@@ -3643,16 +3698,18 @@
    "hops: 91 pairs of LUGAR places, every count as the old one (round(d / 30), 1 to 4, kit.js acts.ir); the places keep their screen points, so every distance is the old one",
    "greenery: the crown's lower left lobe reaches 280 px into the bird's box on its nest (behind the bird: the sprite layer draws the bird over it, as the old picture did)",
    "greenery: no pixel the crown's leaves can take (at any wind step) inside the box of the gate, the nest, the door, the house, the beds, the sun at any of its heights or the bird on the fence; the set's parts are arbol, casa, cerca, escalon, nido, porton, puerta (the step is the door's): nothing decorative",
-   "wide view (x0 22): the door, its frame and abuela in it from x 30 to 65 (8 px from the left side), from row 48",
-   "a strip of wall: 33 px of wall over the door's frame, under the roof's fascia",
+   "wide view (x0 22): the door, its frame and abuela in it from x 33 to 68 (11 px from the left side), from row 45",
+   "a strip of wall: 7 px of wall over the door's frame, under the roof's fascia",
+   "hint frames, asked or not: the door, the gate, the nest and the sun at each height inside the view (px from its edge: the door 1, the gate 24, the nest 14, the sun at 26 0, the sun at 40 14, the sun at 56 30, the sun at 73 47); the tree's [154,-9,98,156] is not (-34 px on the right, -9 at the top), as the old one: no story or pair asks for the tree",
+   "walks: whoever goes in ends at 55,118, on the door's step in its width (the door 35 to 61, its foot row 121); abuela in the door at 52,117; the walk to the gate ends at 166,116, 7 px right of its right post's foot and 13 rows before it",
    "perch: the bird on its nest has the nest under its feet (6 of 6 columns, its feet row 67); on the fence (inicio11), the boards' tops under its feet (6 of 6)",
-   "beds: each of the ten holes is in its bed's earth where the old one was; behind every flower's head (9 x 9 over its hole) only the lawn, in every baked state; the crate's bottom row on the lawn; behind its flowers the lawn, the fence's and the gate post's foot (row 112) behind its top row, as the old picture",
-   "sun: the part of its disc in the sky at soly 26: 100%, 40: 100%, 56: 100%, 73: 91%, 109: 0% (the old: the fence hid 2 rows at 73, all at 109)",
+   "beds: each of the ten holes is in its bed's earth where the old one was; behind every flower's head (9 x 9 over its hole) only the lawn, in every baked state; the crate's bottom row on the lawn, nothing of the set behind it",
+   "sun: the part of its disc in the sky at soly 26: 100%, 40: 100%, 56: 100%, 73: 98%, 109: 0% (the old: the fence hid 2 rows at 73, all at 109; now the field, the hills and the far corner's lawn)",
    "ball: at its 4 places on the lawn the lawn alone behind it (in the tree, by the nest, as the old: the crown)",
    "asks: 69 distinct asks (for abuela, bola, camaL, camaR, carmen, es_flor, es_silla, gracias_abuelo, hm, hm_abuela, ir, luis, pajaro, porton, q_que, sol, ver): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), the hint hand on no face; 52 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
    "NOT the scene's: the hand juego.js draws at an answer card (the left one) reaches onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for ir, es_flor, q_que, es_silla",
    "bubbles: 84 bubbles at 1128 moments of 18 runs (d-buenas-noches, d-la-bola, h-patio, hasta-manana, las-flores, que-es-esto), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; the \"q\" of duda, encoge and turno at their steps; the frog's \"amor\"): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corners (0 px), on no face",
-   "ground: 109 distinct places where someone stands (and the frog), 1 where someone sits on the grass: on the lawn (or the back door's step), nothing of the house, the fence, the gate or the tree nearer than them inside their body",
+   "ground: 109 distinct places where someone stands (and the frog), 1 where someone sits on the grass: on the lawn of the yard (x > CX, y > CY; abuela in the doorway), none behind the fence or inside the house, nothing of the house, the fence, the gate or the tree nearer than them inside their body",
    "standing over sitting: at 158 distinct moments no standing person's sprite covers more of a sitting person's face (the baby in mamá's arms, Luis on the grass) than the old picture did there",
    "pairs, what differs (the same window both sides): nino: luis only in si, carmen only in no; nina: carmen only in si, mama only in no; juega: luis pose/lleva, bola; flor: flores, bola; sol: noche, luna, osc; aqui: flores; alla: flores; amigo: bola, the frog x/y/vis; ven: carmen pose/dir, ave, polvo, rizo, the frog x/dy/ojos/ojx/ojy; mira: luis x/pose/dir, ave, rizo, polvo, the frog x/dy/ojos/ojx/ojy; vamos: carmen x/y/pose/dir/sent/lleva, porton, polvo, lleva, the frog x/y/dy; hasta_manana: soly, sol, osc, porton, the frog x/y/s",
    "pairs: 25 review pictures (and the 27 level pictures, the same pictures): everyone, the frog, the ball and the sun or moon whole in their crop, on clear ground",

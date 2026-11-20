@@ -297,9 +297,9 @@ function planeFace(face, at, a0, a1, z0, z1, fn) {
   }
 }
 
-/* ---------- a yard seen square on (order 32a, El patio) ---------- */
-// screen-aligned ground coordinates: u across the picture (to the right), v towards the camera (down the picture); world x, y from them.
-// A face at v = const faces the camera square on (its normal (1, 1) / R2): a wall, a fence, a gate drawn with it shows as a flat rectangle
+/* ---------- screen-aligned ground coordinates, and flat faces of any direction (order 32a, El patio) ---------- */
+// screen-aligned ground coordinates: u across the picture (to the right), v towards the camera (down the picture); world x, y from them
+// (El patio places its tree's crown with them: a lobe's middle at a given screen point)
 const UVW = (u, v, z = 0) => [(u + v) / R2, (v - u) / R2, z];
 // a flat parallelogram P0 + a e1 + b e2 (a, b from 0 to 1), drawn pixel by pixel on the screen with plot()'s depth test: every pixel whose
 // middle's sight line meets it takes fn(a, b) there (0: nothing drawn). One sample a pixel, as planeFace, for a face of any direction
