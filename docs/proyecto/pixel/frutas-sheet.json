@@ -286,9 +286,9 @@
    "width": 0.7
   },
   "cajon_b": {
-   "world": [6.7, 2.16, 0.7],
-   "screen": [135, 164],
-   "depth": 5.7756,
+   "world": [6.95, 2.16, 0.7],
+   "screen": [140, 166],
+   "depth": 5.9287,
    "scale": 1,
    "kind": "ledge",
    "what": "the second crate of story 44, .7 wide",
@@ -421,8 +421,8 @@
     "ok": true,
     "lines": [
      "frog-places: the two places are 63.95 px apart (needs 30) and in each story the frog's box clears the small things on the ledge: story 42 repisa.izq: monedas4 clear, monedas2 clear; story 43 repisa.izq: canasta clear; story 44 repisa.izq: cajon_a clear, cajon_b clear",
-     "       info: the frog's boxes repisa.izq [82,120,111,143], repisa.der [139,149,168,172]; the things' boxes monedas4 [112,147,129,158], monedas2 [132,157,142,165], canasta [139,158,161,176], cajon_a [111,144,129,160], cajon_b [126,151,144,168]",
-     "       info: each place against every thing, whatever the story: repisa.izq against every thing: monedas4 clear, monedas2 clear, canasta clear, cajon_a clear, cajon_b clear; repisa.der against every thing: monedas4 clear, monedas2 overlaps 4 x 9, canasta overlaps 23 x 15, cajon_a clear, cajon_b overlaps 6 x 18"
+     "       info: the frog's boxes repisa.izq [82,120,111,143], repisa.der [139,149,168,172]; the things' boxes monedas4 [112,147,129,158], monedas2 [132,157,142,165], canasta [139,158,161,176], cajon_a [111,144,129,160], cajon_b [130,153,149,170]",
+     "       info: each place against every thing, whatever the story: repisa.izq against every thing: monedas4 clear, monedas2 clear, canasta clear, cajon_a clear, cajon_b clear; repisa.der against every thing: monedas4 clear, monedas2 overlaps 4 x 9, canasta overlaps 23 x 15, cajon_a clear, cajon_b overlaps 11 x 18"
     ],
     "frog": {
      "sep": [
@@ -450,17 +450,16 @@
        "repisa.der",
        "cajon_b",
        44,
-       [6, 18]
+       [11, 18]
       ]
      ]
     }
    },
    {
     "name": "cajones-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "cajones-apart: cajon_a (x 5.9) box [111,144,129,160] and cajon_b (x 6.7) box [126,151,144,168] overlap by 4 px across and 10 down (the brief's x are kept; a crate is .7 wide, so a stand-in 0.7 x 0.3 x 0.34)",
-     "    nearest passing: cajon_b at x 6.91 (+0.21) (now 6.7), or cajon_a at x 5.68 (-0.22) (now 5.9)"
+     "cajones-apart: story 44's two crates do not overlap each other: cajon_a (x 5.9) box [111,144,129,160] and cajon_b (x 6.95) box [130,153,149,170]"
     ]
    },
    {

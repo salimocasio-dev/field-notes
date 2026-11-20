@@ -214,7 +214,7 @@ async function make(G, proj, base, bins, ext, carro) {
   add('monedas2', [6.7, ym, CF.LZ], 'ledge', 'her two other coins, .2 apart, under the guineos (story 42)', { dir: [1, 0, 0], row: { n: 2, step: FOOT.moneda_paso } });
   add('canasta', [7.5, ym, CF.LZ], 'ledge', 'abuela\'s basket on the ledge, lined with a cloth with three hollows (story 43)');
   add('cajon_a', [5.9, ym, CF.LZ], 'ledge', 'the first crate of story 44, .7 wide', { width: .7 });
-  add('cajon_b', [6.7, ym, CF.LZ], 'ledge', 'the second crate of story 44, .7 wide', { width: .7 });
+  add('cajon_b', [6.95, ym, CF.LZ], 'ledge', 'the second crate of story 44, .7 wide', { width: .7 });
   add('bolsa', [CF.TX1 - .5, ym, CF.LZ], 'ledge', 'a paper bag on the ledge');
   add('bajo', [cmx, cmy, ch], 'point', 'where a thing lands on the low crate: its top middle');
   add('vuelo', [7.2, 2.7, 1.6], 'point', 'the top of the arc of a tossed thing, between the ledge and abuela\'s basket');
