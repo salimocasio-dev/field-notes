@@ -28,8 +28,9 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's factory makes the real
-  scene (its sheet read first: `loadScene`); the other ten are stubs that throw `UnimplementedError('not converted yet')`.
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's and El balcón's factories make
+  the real scenes (their sheets read first: `loadScene`); the other nine are stubs that throw
+  `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -46,10 +47,40 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   stale). To convert a scene: add the id to `convertedScenes` (`lib/src/converted_scenes.dart`, the one list the app and the
   tools read), point the registry at the real factory, and run `dart run tool/make_old_pictures.dart` (below): the scene's
   old pictures go.
+- `coqui/ref/pp/<id>/`: the set's baked states, made by `node coqui/tool/ref/pp/make.js --states <file>` with one line per
+  state of the sheet's `setKey.baked` (`{"id": "<id>/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/<id>-set.html",
+  "query": "?door=shut&win=shut"}`): El balcón's four were made so (order 30b; `coqui/tool/ref/pp/states.json` does not list them).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
   `shadows_test`. A browser test reads fixtures under `test/support/fixtures/`, each made by a tool with `--check`.
+
+## A scene written on the kit (order 30b, El balcón; the pattern for the scenes after it)
+
+El frente was written before the kit; balcon.js and the scenes after it call `KIT.escena`. Their port is an `Escena` (coqui_pixel)
+that `implements SetScene` (`class Balcon extends Escena implements SetScene, SetOverSprites`): the kit gives `box`, `hit`,
+`handAt`, the shared acts and the bird; the scene's own acts are `ownActs`; `buildSet` and `frogShadow` are written in the scene
+(an `implements` inherits nothing). What El balcón needed that El frente did not, and how it is done:
+
+- **Its glyphs and bubbles** (`GL.sol`, ..., `Object.assign(BUBL, ...)` at load): put into the game's tables when the scene is
+  given its host (the `host` setter).
+- **Its random draws** (`azar`: `Math.random() < .5`, which side each glass and jug is on): from the game's one `Rng`, given to the
+  constructor (`Balcon(sheet, rng:)`, as the tests do), or else the host's (`(host as dynamic).rng`: the story runner holds the
+  game's `Rng` as `rng`; the registry's factories take none). The trace's random draws are then the old run's.
+- **The furniture in front** (the sheet's `front.parts`): the old picture drew the big chair, the small chair and the table as
+  sprites after abuela when she stood behind them. They are in the set now; at each old line the scene draws the set's own
+  pixels of that part again (balcon-preview.html `PREVIEW.front`), only where the pixel is nearer than abuela (the sheet's
+  `front.plane`). The pixels of each part are the set reference's `part()` tags, recorded at the first bake of each state
+  (`SetKit.PART_TAGS`); the set as the frame shows it comes from `drawFrame` (`SetOverSprites.setFramed`). A frame drawn with no set
+  (the player with no screen, `HeadlessRenderer`) draws nothing again.
+- **Places the stories and pairs write**: `remap` also gives abuela's spot (`ab`), a point's rounded screen place, a level crop's
+  x as it is, and a pair rectangle's crop when the sheet names its pictures. `ScenePictures.pictureW` also remaps a list of things
+  placed by `x` alone (the glasses and jugs of a pair: the remap's `x` kind). `frogOfCode` reads the old numbers of a `code` entry
+  whose place is not used (`"cq x 150 y 178 s 1"`: El balcón's `juego.js:16` and `cual.js:21`).
+- Files: `lib/src/balcon/balcon_set.dart`, `balcon_places.dart` (the sheet's places, `ptRound` as the preview's `ptR`),
+  `balcon.dart`. Tests: `balcon_set_test`, `balcon_sprites_test`, `balcon_preview_test`, `balcon_boxes_test`,
+  `balcon_pictures_test`, `balcon_acts_test` (with the shadows and the furniture in front). The preview's rule for moving a
+  recorded W is `test/support/balcon_preview_remap.dart` (a dev tool's, per scene).
 
 ## Pictures: by name, the size rule, old pictures until converted
 
@@ -88,13 +119,16 @@ One folder per scene (its set, its scene), and the pictures other features ask f
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/ for the browser set test
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/
-node tool/preview_shots.mjs --states DIR --out DIR [--fixture]   frente-preview.html's pictures (DIR from
-                                                  node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR)
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/ and coqui/ref/pp/balcon/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/ and .../balcon/
+node tool/preview_shots.mjs [--scene balcon] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+                                                  node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
+                                                  the scene's stories)
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon] flutter test tool/compare_all_test.dart   every picture of
+                                                  preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon]   bake times
 ```
 
 Numbers for a report: `COQUI_REPORT_DIR=DIR flutter test` writes them on the vm; `--dart-define=COQUI_SHOW=true`

@@ -11,6 +11,7 @@ import 'dart:io';
 import 'support/fixture_decode.dart';
 import 'support/fixtures/ref_ctx.dart';
 import 'support/fixtures/ref_kit.dart';
+import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
@@ -80,5 +81,9 @@ void main() {
 
   test('the sheet fixture is the text of El frente\'s sheet', () {
     expect(frenteSheetJson, frenteSheetText());
+  });
+
+  test('the sheet fixture is the text of El balcón\'s sheet', () {
+    expect(balconSheetJson, balconSheetText());
   });
 }

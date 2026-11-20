@@ -1,0 +1,67 @@
+# Scene sheet: sala
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/sala/inventory.json and historia/escenas/sala.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: d-bizcocho-bebe, d-foto-familia, h-sala, la-familia, la-foto, quien-eres-tu
+- Review file: cual-sala
+- Words already taught here: mamá, papá, abuelo, bebé, familia, hermano, hermana, él, ella, yo, tú, soy, eres, me llamo
+- Stakes used: cafe, fotos, none, plato
+- Who speaks here ("habla"): abuela, abuelo, hermana, hermano, mama, papa
+- Things he can touch: abuela, abuelo, bebe, bizcocho, butaca, coqui, fotos, hermana, hermano, lampara, mama, mesita, papa, puerta, sala, sofa, ventana
+- Spots (for ir): puerta, centro, huele, abuela, mama, papa, abuelo, bebe, izq
+- Views (for cam): wide, sofa
+- Names already recorded (thing: clip): abuela: abuela, abuelo: n_abuelo, bebe: n_bebe, bizcocho: un_bizcocho, butaca: n_butaca, coqui: yo_coqui, fotos: n_fotos, hermana: n_hermana, hermano: n_hermano, lampara: n_lampara, mama: esta_es_mama, mesita: n_mesa, papa: n_papa, puerta: puerta, sala: n_sala, sofa: n_sofa, ventana: ventana
+- Shared acts: burbuja, fin, ir
+- Acts:
+    - abda: abuela swaps: the bitten slice to his plate, a whole one from his plate to the one who was named (e.g. {"act": "abda", "de": "$x", "a": "$p"} in la-familia)
+    - abva: abuelo walks over to mamá or papá (e.g. {"act": "abva", "a": "$mo"} in quien-eres-tu)
+    - acerca (used in quien-eres-tu)
+    - anda (e.g. {"act": "anda", "quien": "hermana", "x": "120", "y": "146"} in d-foto-familia)
+    - atras (used in la-familia)
+    - beso (used in la-familia)
+    - camara (used in d-foto-familia)
+    - come: one happy bite; the slice stays on that person's plate until everyone eats together at the end (e.g. {"act": "come", "quien": "mama"} in d-bizcocho-bebe)
+    - comen (used in d-bizcocho-bebe)
+    - corazon (used in quien-eres-tu)
+    - corren: the boy and the girl run in and hug the baby (used in d-foto-familia)
+    - cqcome: the frog gets his plate from abuela and eats (used in d-bizcocho-bebe)
+    - da: the frog carries it to someone (e.g. {"act": "da", "en": "mama"} in d-bizcocho-bebe)
+    - dale: abuela puts a slice from the dish in the frog's hands (used in d-bizcocho-bebe)
+    - despierta (used in d-bizcocho-bebe)
+    - destapa (used in d-bizcocho-bebe)
+    - dispara: a photo for the wall. ok: the frog and that person, straight. Not ok: that person alone, the frog's foot at the edge, crooked. (e.g. {"act": "dispara", "con": "hermana", "ok": "1", "solo": "1"} in d-foto-familia)
+    - duerme: the cover comes off: seven slices. Three fly to his plate in the corner. (used in d-bizcocho-bebe)
+    - entra (not used by any story yet)
+    - espejuelos: the baby, on mamá's arm, pulls the glasses down onto his nose (used in quien-eres-tu)
+    - fin8 (used in quien-eres-tu)
+    - final6 (used in la-familia)
+    - final7: the wall, then everyone together for one last photo (used in d-foto-familia)
+    - final8 (used in quien-eres-tu)
+    - flash (used in la-foto)
+    - gira (used in quien-eres-tu)
+    - huele: the frog goes straight to the covered cake and sniffs; abuela wags a finger (used in la-familia)
+    - inicio8: the start of story 8: the children by the frog, abuelo wandering with his coffee, his glasses up on his head; the photos from La foto on the wall (used in quien-eres-tu)
+    - junto: the frog hops beside someone (e.g. {"act": "junto", "en": "hermana"} in la-foto)
+    - lados: two people take their places, left and right; which side each is on is drawn fresh (e.g. {"act": "lados", "a": "hermano", "b": "hermana", "donde": "juntos"} in la-foto)
+    - llora (used in d-bizcocho-bebe)
+    - muerde: the wrong person takes one bite. The bitten slice goes onto the frog's plate. (e.g. {"act": "muerde", "quien": "$x"} in la-familia)
+    - ninos (used in h-sala)
+    - nitido (used in la-foto)
+    - palmada (used in quien-eres-tu)
+    - pies: the camera goes off at abuelo's feet: a photo of his slippers (used in la-foto)
+    - ponecamara: abuelo puts the camera down on the low table (used in d-foto-familia)
+    - prueba: a photo under the sign: a flash, and it pops up for a moment (e.g. {"act": "prueba", "con": "hermana"} in la-foto)
+    - quitavisor (used in la-foto)
+    - retrato: the camera on the table goes off by itself: the photo of everyone, big, over the room (used in d-foto-familia)
+    - rie (used in quien-eres-tu)
+    - saluda (e.g. {"act": "saluda", "quien": "bebe"} in d-bizcocho-bebe)
+    - sientan (used in d-foto-familia)
+    - solo: one child alone in the middle; the camera's little window shows a blur (e.g. {"act": "solo", "quien": "$n"} in la-foto)
+    - suelta (e.g. {"act": "suelta", "quien": "$cb"} in quien-eres-tu)
+    - suplato: she brings the frog his own plate (used in d-bizcocho-bebe)
+    - tapa: a child creeps up behind the frog and covers his eyes (e.g. {"act": "tapa", "quien": "$cb"} in quien-eres-tu)
+    - todos (used in h-sala)
+    - tres (used in la-familia)
+    - tropieza (used in quien-eres-tu)
+    - ultimo: the last slice on the dish goes to the one who has had none (e.g. {"act": "ultimo", "a": "$nd"} in la-familia)
+    - vuelve (used in d-bizcocho-bebe)

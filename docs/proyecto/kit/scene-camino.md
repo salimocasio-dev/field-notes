@@ -1,0 +1,73 @@
+# Scene sheet: camino
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/camino/inventory.json and historia/escenas/camino.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: d-corre, donde-esta-el-gato, h-camino, rapido-despacio, uno-dos-tres
+- Review file: cual-camino
+- Words already taught here: gato, árbol, hay, uno, dos, tres, ¿dónde está?, rápido, despacio, parque, perro, camina, corre, espera
+- Stakes used: galletas, guineos, none, puesto
+- Who speaks here ("habla"): abuela, carmen, luis
+- Things he can touch: abuela, arbol0, arbol1, arbol2, ave00, ave01, ave02, ave10, ave11, ave12, ave20, ave21, ave22, banco, camino, carmen, coqui, gato, grande, luis, parque, perro, porton
+- Spots (for ir): inicio, centro, banco, arbol0, arbol1, arbol2, gran
+- Views (for cam): wide
+- Names already recorded (thing: clip): abuela: abuela, arbol0: c_n_arbol, arbol1: c_n_arbol, arbol2: c_n_arbol, ave00: c_n_pajaro, ave01: c_n_pajaro, ave02: c_n_pajaro, ave10: c_n_pajaro, ave11: c_n_pajaro, ave12: c_n_pajaro, ave20: c_n_pajaro, ave21: c_n_pajaro, ave22: c_n_pajaro, banco: c_n_banco, camino: c_n_camino, carmen: p_n_carmen, coqui: yo_coqui, gato: c_n_gato, grande: c_n_grande, luis: p_n_luis, parque: c_n_parque, perro: c_n_perro, porton: p_n_porton
+- Shared acts: burbuja, fin, ir
+- Acts:
+    - acaricia (used in donde-esta-el-gato)
+    - agarra (used in donde-esta-el-gato)
+    - alinicio (not used by any story yet)
+    - anda (not used by any story yet)
+    - arbusto: behind the bush: only the leash shows (used in rapido-despacio)
+    - asoma (used in d-corre)
+    - cae: the leash jerks, a guineo falls out, and Canelo eats it (used in rapido-despacio)
+    - carmenva (e.g. {"act": "carmenva", "en": "$gx"} in donde-esta-el-gato)
+    - carmenvuelve (used in donde-esta-el-gato)
+    - cuenta: Luis counts on his fingers: one, two, three (e.g. {"act": "cuenta", "queda": 1} in d-corre)
+    - cuentaaves (not used by any story yet)
+    - demo: the rule, shown once: Canelo cannot wait; Luis shakes his head; Canelo walks back (used in uno-dos-tres)
+    - demo2 (used in uno-dos-tres)
+    - desigual: the dog goes at the pace that was called, the frog at the other: the leash jerks (e.g. {"act": "desigual", "p": "$wb", "f": "$x"} in rapido-despacio)
+    - escapa: the dog pulls loose; the birds fly up; the cat jumps about and is gone in the leaves (used in donde-esta-el-gato)
+    - esconde: the cat's face goes back in; all three trees shake; where it goes next is not seen (used in donde-esta-el-gato)
+    - final12 (used in uno-dos-tres)
+    - final13 (used in donde-esta-el-gato)
+    - final14 (used in rapido-despacio)
+    - galletacesta (used in donde-esta-el-gato)
+    - gatoa (e.g. {"act": "gatoa", "x": 46, "y": 172, "corre": 1, "que": "sit", "dir": 1} in d-corre)
+    - gatoarbol: the cat goes to a tree; the story learns which count sits in it (n), the other two (oa, ob, in an order drawn fresh), and one other for a bubble (m) (e.g. {"act": "gatoarbol", "en": 0} in d-corre)
+    - gatocesta (used in donde-esta-el-gato)
+    - gatocome: the cat eats this round's biscuit: a heart in the corner, for good (used in donde-esta-el-gato)
+    - inicio12: story 12: do what Luis calls (used in d-corre)
+    - inicio13: story 13: the cat in the trees (used in donde-esta-el-gato)
+    - inicio14: story 14: the walk back with the dog (used in rapido-despacio)
+    - ladra (used in donde-esta-el-gato)
+    - ladra3 (used in uno-dos-tres)
+    - lame (used in uno-dos-tres)
+    - lit (e.g. {"act": "lit", "n": "1"} in donde-esta-el-gato)
+    - luisno (used in d-corre)
+    - luisrie (used in d-corre)
+    - luzn: the tree with that many birds twinkles (e.g. {"act": "luzn", "n": "1"} in donde-esta-el-gato)
+    - masde: wrong word: even more of the same (e.g. {"act": "masde", "que": "$sa"} in rapido-despacio)
+    - mirarriba (used in donde-esta-el-gato)
+    - para: the dog stops dead, nose in a flower (used in rapido-despacio)
+    - paseo: the two of them go on down the path. modo: trota (his easy trot), husmea (creeping, the snail keeps up), corre (flat out, the frog pulled off his feet), ligero (long quick steps) (e.g. {"act": "paseo", "modo": "trota", "d": ".06"} in rapido-despacio)
+    - perroa (e.g. {"act": "perroa", "x": 70, "y": 186, "corre": 1, "que": "bark", "dir": -1} in d-corre)
+    - perrocome: Canelo jumps and gobbles it: a paw mark in the corner (used in donde-esta-el-gato)
+    - perrocome2 (used in donde-esta-el-gato)
+    - posan: the birds fly up and settle again: how many sit in each tree (e.g. {"act": "posan", "p": "$pz"} in donde-esta-el-gato)
+    - ranaa: Escuchar: the frog alone goes to a stone (the dog stays where he is); a tree shakes (e.g. {"act": "ranaa", "a": 4} in d-corre)
+    - rie (not used by any story yet)
+    - ronda: one call for both of them. Right (or under the sign): both do it and end one stone on. After a wrong move that was put right: the frog does it on the spot. (e.g. {"act": "ronda", "modo": "corre"} in d-corre)
+    - ronda2: a call for each of them: f is the frog's, c is Carmen's (e.g. {"act": "ronda2", "f": "espera", "c": "corre"} in uno-dos-tres)
+    - ronronea (used in donde-esta-el-gato)
+    - saca (used in donde-esta-el-gato)
+    - sacude (e.g. {"act": "sacude", "en": "grande"} in h-camino)
+    - sale (e.g. {"act": "sale", "modo": "trota"} in rapido-despacio)
+    - saluda (e.g. {"act": "saluda", "quien": "luis"} in d-corre)
+    - sevan (used in rapido-despacio)
+    - situacion: what the dog is doing, for him to see: he bolts and keeps pulling, or he has stopped (e.g. {"act": "situacion", "que": "corre"} in rapido-despacio)
+    - tira (used in rapido-despacio)
+    - tropieza (used in rapido-despacio)
+    - trota (used in rapido-despacio)
+    - va: one of them goes to a stone, in one of three ways: camina (easy steps), corre (flat out, dust), espera (stands quite still) (e.g. {"act": "va", "quien": "carmen", "modo": "corre", "a": 5} in d-corre)
+    - vuelveperro (used in rapido-despacio)

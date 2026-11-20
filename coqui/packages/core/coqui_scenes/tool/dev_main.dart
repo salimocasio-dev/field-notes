@@ -7,8 +7,9 @@
 //   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
 //                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
 //   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
-//   ?page=bake                         every baked state of the sheet, each baked on a fresh engine's cache, one after the
-//                                      other; the times are on the page and in `window.coquiBakes` (JSON) for a script
+//   ?page=bake[&scene=balcon]          every baked state of the sheet (El frente's, or the scene given), each baked on a
+//                                      fresh engine's cache, one after the other; the times are on the page and in
+//                                      `window.coquiBakes` (JSON) for a script
 // Every page shows how long each state it baked took, in ms.
 import 'dart:convert';
 import 'dart:js_interop';
@@ -17,6 +18,7 @@ import 'dart:typed_data';
 
 import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
+import 'package:coqui_scenes/src/balcon/balcon_set.dart';
 import 'package:coqui_scenes/src/frente/frente_set.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
@@ -314,11 +316,14 @@ class _BakePageState extends State<BakePage> {
   void initState() {
     super.initState();
     () async {
-      final f = await ScenePictures().frameOf('frente');
+      final id = Uri.base.queryParameters['scene'] ?? 'frente';
+      final f = await ScenePictures().frameOf(id);
       final bakes = SetBakes(f.scene);
       for (final b in f.scene.sheet.setKey.baked) {
         await Future<void>.delayed(const Duration(milliseconds: 20));
-        final key = FrenteState.fromQuery(b.query).key;
+        final key = id == 'balcon'
+            ? BalconState.fromQuery(b.query).key
+            : FrenteState.fromQuery(b.query).key;
         bakes.bakeKey(key);
         setState(() => _ms[key] = bakes.bakeMs[key]!);
       }

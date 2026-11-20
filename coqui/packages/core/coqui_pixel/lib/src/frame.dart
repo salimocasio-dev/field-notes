@@ -15,6 +15,15 @@ import 'package:coqui_pixel/src/signs.dart';
 /// from several heights (El frente's abuela: `z` from .3 to 2 in steps of .35 over her spot) has one entry for each.
 typedef ShadowCast = ({double x, double y, double z, double r});
 
+/// A scene whose sprite layer draws parts of the set again over what it has drawn so far (a sheet's `front.parts`:
+/// El balcón's furniture, which the old picture drew as sprites after the characters behind it). [drawFrame] calls
+/// [setFramed] after step 3, before the sprite layer: [engine]'s `pix` is then the set as this frame shows it (the baked
+/// set, the wind, the shadows), and [baked] is the state it was restored from (its `zb` is the set's own depth). The
+/// scene keeps what it needs of them and draws them again at its old lines, in its `draw`.
+abstract interface class SetOverSprites {
+  void setFramed(PpEngine engine, BakedSet baked, Map<String, dynamic> W);
+}
+
 /// The colour the display picture starts as: `"#0E1A24"` (juego.js: `dc.fillStyle="#0E1A24";dc.fillRect(0,0,DW,DH)`).
 const int _displayBackground = 0xFF241A0E;
 
@@ -28,7 +37,8 @@ const int _displayBackground = 0xFF241A0E;
 /// 2. `drawLeaves` and `drawTufts`: the wind, in steps of 1 / `WIND_FPS` second, still when the engine is (`STILL`,
 ///    the OS asking for reduced motion). Time is [F] ticks of [tick] ms.
 /// 3. Cast the shadow of each character in [shadows], and `applyShadows` (the leaves' shadows go with them).
-/// 4. The sprite layer, [scene]'s `draw(c, W, a)` with `a = F >> 1`, then [signs] (the game's signs: the answer
+/// 4. The sprite layer, [scene]'s `draw(c, W, a)` with `a = F >> 1` (a [SetOverSprites] scene is first given the set
+///    as framed), then [signs] (the game's signs: the answer
 ///    bubbles, the twinkle, the "touch this" frame, the effects, the heart; [Signs.drawSigns]).
 /// 5. Crop the picture by [cam] (`[x, y, w, h]`: a 196 × 216 window at zoom 1, a 98 × 108 region drawn as 2 × 2 blocks
 ///    at zoom 2) into [display], 196 × 216; then the scene's `hud` and the hand sign ([handPoint]: where the hand
@@ -67,6 +77,8 @@ void drawFrame({
   }
   engine.applyShadows(engine.groundZ);
   // 4. the sprite layer, then the game's signs
+  final over = scene is SetOverSprites ? scene as SetOverSprites : null;
+  over?.setFramed(engine, baked, W);
   scene.draw(c, W, a);
   signs(c, a);
   // 5. the window at cam, then hud and the hand

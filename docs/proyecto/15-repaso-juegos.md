@@ -108,18 +108,19 @@ It kept the scored game on each word's own picture pair and changed the sentence
 
 So no picture the course has can score a new sentence fairly. What can: he hears the sentence and says which word was in it.
 
-## Asked of Salim (Nov 20), no answer yet
+## Asked of Salim (Nov 20), and his answer
 
-Which word was in it needs him to read the tiles or to hear them.
+Which word was in it needs him to read the tiles or to hear them. He was offered: written tiles decide the Ear score (no cost, bends "reading gets no tracking until A2"); or each word recorded alone, once, so that every tile can be heard.
 
-1. Written tiles decide the Ear score. No cost. It bends "reading gets no tracking until A2": a slip in reading counts against his ear.
-2. Each of the 156 words recorded alone, once (about 1,500 characters), so that every tile can be heard. No reading needed.
+**His answer, Nov 20: "You're approved for those recordings."**
 
-Recommended: 2. Built so that it works either way: written tiles, with a speaker on each that plays as soon as the word's clip exists (23 words have one today).
+- The orchestrator had said the recordings would use ElevenLabs credits. That was wrong. Recorded lines are made by the audio job with his free Azure Speech account (page 05: 500,000 characters a month free; the tier cannot bill). ElevenLabs is only the live calls. He was told.
+- The clips are listed in one new file, `historia/cuentos/palabras-solas.json` (made by `coqui/tool/make_palabras_solas.py`): one clip per tracked word that has no clip of the word alone yet, in Karina's voice like the narrator. This order allows that one file under `historia/cuentos/`. The audio job records them when the file reaches main.
+- When every tile of an item has its clip, the tiles show a speaker and he can answer by ear alone.
 
 ## What this does not do
 
-- No new recordings, no new story text, nothing changed under `historia/cuentos/`.
+- No new story text. The only new recordings are the single words he approved; the only new file under `historia/cuentos/` is their list.
 - No change to the schedule or to what Ear and Mouth mean.
 - No English outside menus, no translation, no typing.
 - Biblioteca is a separate question (order 27).

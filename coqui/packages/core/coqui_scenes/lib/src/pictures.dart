@@ -207,6 +207,14 @@ class ScenePictures implements PictureSource {
         v['y'] = r[1];
         if (r.length > 2) v['s'] = r[2];
       }
+      // a list of things placed by their x alone (El balcón's glasses and jugs on the table: the remap's `x` kind)
+      if (v is List) {
+        for (final t in v) {
+          if (t is Map && t['x'] is num && !t.containsKey('y')) {
+            t['x'] = scene.remap([t['x'] as num])[0];
+          }
+        }
+      }
     }
     w.addAll(own);
     return w;

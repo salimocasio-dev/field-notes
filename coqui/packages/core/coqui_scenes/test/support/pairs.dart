@@ -2,16 +2,21 @@ import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 
+import 'fixtures/balcon_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
 
 /// The 12 review pairs of cual-frente, as the content gives them (word, and each side's state and view), from the cases
 /// of the preview comparison (tool/preview_shots.mjs reads them from historia/cuentos/cual-frente.json).
-List<ReviewPair> frentePairs() {
-  final cases = (jsonDecode(previewCases) as List)
-      .cast<Map<String, dynamic>>()
-      .where(
-        (c) => c['kind'] == 'pair' && (c['id'] as String).startsWith('pair.'),
-      );
+List<ReviewPair> frentePairs() => _pairsOf('frente', previewCases);
+
+/// The 10 review pairs of cual-balcon, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene balcon reads
+/// them from historia/cuentos/cual-balcon.json).
+List<ReviewPair> balconPairs() => _pairsOf('balcon', balconPreviewCases);
+
+List<ReviewPair> _pairsOf(String scene, String json) {
+  final cases = (jsonDecode(json) as List).cast<Map<String, dynamic>>().where(
+    (c) => c['kind'] == 'pair' && (c['id'] as String).startsWith('pair.'),
+  );
   final byWord = <String, Map<String, PictureSpec>>{};
   for (final c in cases) {
     (byWord[c['word'] as String] ??= {})[c['side'] as String] = PictureSpec(
@@ -24,7 +29,7 @@ List<ReviewPair> frentePairs() {
       ReviewPair(
         word: e.key,
         say: e.key,
-        scene: 'frente',
+        scene: scene,
         yes: e.value['si']!,
         no: e.value['no']!,
       ),

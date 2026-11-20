@@ -266,9 +266,9 @@ void main() {
                 .buffer
                 .asUint8List();
             final was = await oldPicture(tester, ref.scene, ref.name!);
-            if (ref.scene == 'frente') {
+            if (convertedScenes.contains(ref.scene)) {
               // a converted scene: drawn by its engine, not the old picture
-              expect(convertedScenes, contains('frente'));
+              expect(convertedScenes, contains(ref.scene));
               expect(px, isNot(equals(was)), reason: '${ref.name}');
               frente++;
             } else {

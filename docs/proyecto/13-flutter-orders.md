@@ -622,6 +622,19 @@ Designed by Opus agents in four rounds; the orchestrator looked at each round's 
 - Not solved: in combinations no story reaches, the frog's bubble can cover abuela's face (frog before the door with her in the doorway). The roof is 15% of the wide view.
 - Bake: 76 to 136 ms warm in headless Chrome, 145 to 162 ms the first time.
 
+### Order 30 (balcon), step b. **Result (Nov 20): done, merged; stories 4 and 5 play in the app (build 4).**
+
+Ported by an Opus builder; three files it could not touch were finished by a Sonnet builder; the faults a fresh reader found in the real app were fixed by an Opus builder in the set and the port together. The orchestrator ran `test_all.sh` on the branch (passes whole) and looked at the before-and-after pictures.
+
+- All four baked states: 0 of 51,840 pixels differ from the JavaScript. Preview pictures: 529, 468 identical, none over 2%, the most 0.18%. El frente unchanged.
+- The stories at balcon (el-jugo, que-calor, d-agua-pajaro, h-balcon) reproduce their recorded runs except in time: abuela's walk to her chair is 350 ms longer; the view no longer slides (all three views are one window), so el-jugo is 0.3 to 1.4 s shorter and que-calor 640 ms.
+- In the real app el-jugo and que-calor play to the end by touches, right and wrong, no touch lost.
+- New for later scenes: `Sheet` reads a set with no frames, front parts, numbers and more; `SetOverSprites` (the set's own pixels drawn again over a sprite where they are nearer); the registry gives a scene the runner's random source; the tools take `--scene`; the Gate A frames tool takes `STORIES=`.
+- What the reader of the real app found and the fifth round fixed, now checked by the sheet maker at all 869 moments of the 12 recorded runs: every bubble wholly inside the view and clear of the score and thermometer boards (abuela's bubble goes beside her head while the boards are up; her chair moved 6 px); every set of drinks on the table side by side (her folded fan sits at the table's front); a change of view moves nothing; every hint frame inside the view.
+- Over the limit: the first bake of a balcon state takes 205 to 313 ms in a release web build on the build machine (limit 150; El frente about 100). Later bakes 114 to 198 ms. Accepted for now; a speed-up is a later order.
+- Left as the old game has it: the glass beside abuela's head; a glass on the floor beside the frog when he carries it; the board game's asks with no hint; the two answer cards that look alike.
+- Not solved: the door's hint frame reaches 3 px past the view (no story asks for the door); `coqui_scenes`' picture widget fails when it is given another picture in place (found by order 27; a fix is queued).
+
 ## Order 40. Every story against its recorded runs (orchestrator)
 
 Replay all of `ref/trazas/` with `tool/juega.dart`. Any run that differs is fixed in its lane by an order naming the story and the first step that differs.

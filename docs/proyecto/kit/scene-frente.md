@@ -1,0 +1,53 @@
+# Scene sheet: frente
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/frente/inventory.json and historia/escenas/frente.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: d-toc-toc, donde-esta-el-pajaro, el-bizcocho, h-frente, la-lluvia
+- Review file: cual-frente
+- Words already taught here: grande, pequeña, adiós, cierra, sí, no, abre, casa, puerta, ventana, abuela, hola, toca
+- Stakes used: bizcocho, none, nube, rondas
+- Who speaks here ("habla"): abuela
+- Things he can touch: abuela, bizcocho, casa, casa_grande, casa_pequena, coqui, nube, pajaro, palma, palma_grande, palma_pequena, puerta, sol, ventana
+- Spots (for ir): puerta, ventana, patio, casa_grande, palma_grande, palma_pequena, casa_pequena
+- Views (for cam): wide, casa, puerta, ventana, cuadro
+- Names already recorded (thing: clip): abuela: abuela, bizcocho: un_bizcocho, casa: casa, casa_grande: n_casa_grande, casa_pequena: n_casa_pequena, coqui: yo_coqui, nube: lluvia, pajaro: un_pajaro, palma: palma, palma_grande: n_palma_grande, palma_pequena: n_palma_pequena, puerta: puerta, sol: sol, ventana: ventana
+- Shared acts: 
+- Acts:
+    - abcierra (e.g. {"act": "abcierra", "que": "puerta"} in d-toc-toc)
+    - abentra (used in donde-esta-el-pajaro)
+    - abre (e.g. {"act": "abre", "que": "puerta"} in d-toc-toc)
+    - abrir: story 2 (e.g. {"act": "abrir", "que": "ventana"} in el-bizcocho)
+    - asoma (used in el-bizcocho)
+    - atardece (used in donde-esta-el-pajaro)
+    - atras (used in d-toc-toc)
+    - avecasa (used in donde-esta-el-pajaro)
+    - baja (used in el-bizcocho)
+    - bonk (e.g. {"act": "bonk", "en": "$a"} in el-bizcocho)
+    - busca_ave (e.g. {"act": "busca_ave", "en": "casa_grande"} in donde-esta-el-pajaro)
+    - cerrar (e.g. {"act": "cerrar", "en": "$b"} in el-bizcocho)
+    - come (used in el-bizcocho)
+    - cuadro: the last picture: grandma and the frog at the window (used in d-toc-toc)
+    - dentro (e.g. {"act": "dentro", "en": "puerta"} in d-toc-toc)
+    - devuelve (used in donde-esta-el-pajaro)
+    - entra: in he goes: by the door, or with a jump through the window (e.g. {"act": "entra", "por": "puerta"} in d-toc-toc)
+    - esconde (e.g. {"act": "esconde", "en": "casa_grande"} in donde-esta-el-pajaro)
+    - fin: the ending: heart and stars when nothing was lost (used in d-toc-toc)
+    - fin2 (used in el-bizcocho)
+    - gana (used in donde-esta-el-pajaro)
+    - gotas: a few drops catch him just before he is in (used in d-toc-toc)
+    - limpia (used in donde-esta-el-pajaro)
+    - llueve (used in d-toc-toc)
+    - luz (used in d-toc-toc)
+    - marcador (used in donde-esta-el-pajaro)
+    - mira (not used by any story yet)
+    - mueve (e.g. {"act": "mueve", "que": "$tipo"} in donde-esta-el-pajaro)
+    - pajaro (used in el-bizcocho)
+    - posa (e.g. {"act": "posa", "en": "$ave"} in el-bizcocho)
+    - regala (used in el-bizcocho)
+    - sale (e.g. {"act": "sale", "en": "casa_pequena"} in donde-esta-el-pajaro)
+    - tapa: story 3 (used in donde-esta-el-pajaro)
+    - tapate (used in donde-esta-el-pajaro)
+    - tocar: the frog goes there and knocks (e.g. {"act": "tocar", "en": "puerta"} in d-toc-toc)
+    - trueno: thunder: the storm cloud shows at the edge of the sky (used in d-toc-toc)
+    - vete (used in el-bizcocho)
+    - vetecq (used in donde-esta-el-pajaro)

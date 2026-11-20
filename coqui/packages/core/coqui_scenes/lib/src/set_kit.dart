@@ -376,6 +376,13 @@ class SetKit {
         final fy = (hy - (y - yc).abs()) / hy,
             fx = (hx - (x - xc).abs()) / hy,
             f = math.min(math.min(fy, fx), 1);
+        {
+          // off the picture: plot() would drop it (order 30a: skipped before the work, the same pixels)
+          final p = e.project(x, y, z + rise * f),
+              ix = p.sx.truncate(),
+              iy = p.sy.truncate();
+          if (ix < 0 || iy < 0 || ix >= W || iy >= H) continue;
+        }
         final front = fy <= fx,
             along =
                 (front ? fy : fx) * hy; // how far up the slope from the eave
@@ -602,6 +609,95 @@ class SetKit {
         yc = ((vmin + vmax) / 2 - uc) / R2,
         ex = d * R2 / 4;
     return [xc - ex, yc - ex, 0, xc + ex, yc + ex, z1];
+  }
+
+  /* ---------- furniture turned to any angle (order 30a, El balcón) ---------- */
+
+  // set-kit.js: faceBase
+  /// The shade of a vertical face by the way it faces: like block()'s walls, +y faces lit (2.4), +x faces in shade (1.3),
+  /// in between by angle. (nx, ny): the face's outward normal on the ground.
+  double faceBase(num nx, num ny) =>
+      e.clamp<double>(1.3 + 1.1 * math.atan2(ny, nx) / (math.pi / 2), 1, 2.9);
+
+  // set-kit.js: turnedBox
+  /// A box turned by ang: its width axis along (cos ang, sin ang), half-width hw; its depth axis along (-sin ang,
+  /// cos ang), half-depth hd. ang = -pi / 4 turns its front (+depth) to the camera. fn(s, t, z, face) may give a colour
+  /// (s across, t in depth; face 'top' or the side: 'front', 'back', 'left', 'right'); otherwise (0, or no fn) the face
+  /// is shaded from c. Only faces turned towards the camera are drawn.
+  void turnedBox(
+    num cx,
+    num cy,
+    num z0,
+    num z1,
+    num hw,
+    num hd,
+    num ang,
+    List<num> c, [
+    int Function(num s, num t, num z, String face)? fn,
+  ]) {
+    final ax = math.cos(ang), ay = math.sin(ang), bx = -ay, by = ax;
+    List<num> P(num s, num t) => [cx + ax * s + bx * t, cy + ay * s + by * t];
+    void put(num s, num t, num z, String face, num base, num g1, num g2) {
+      final p = P(s, t), col = fn == null ? 0 : fn(s, t, z, face);
+      e.plot(p[0], p[1], z, col != 0 ? col : b.shade(c, base, g1, g2));
+    }
+
+    for (num s = -hw; s <= hw + 1e-9; s += ST * .7) {
+      for (num t = -hd; t <= hd + 1e-9; t += ST * .7) {
+        put(s, t, z1, 'top', 3.4, cx + s, cy + t);
+      }
+    }
+    final sides = <(String, double, double, List<num> Function(num), num)>[
+      ('front', bx, by, (s) => [s, hd], hw),
+      ('back', -bx, -by, (s) => [s, -hd], hw),
+      ('right', ax, ay, (t) => [hw, t], hd),
+      ('left', -ax, -ay, (t) => [-hw, t], hd),
+    ];
+    for (final (face, nx, ny, at, half) in sides) {
+      if (nx + ny < -1e-6) continue; // turned away from the camera
+      final base = faceBase(nx, ny);
+      for (num k = -half; k <= half + 1e-9; k += ST * .7) {
+        for (num z = z0; z <= z1 + 1e-9; z += ST * .7) {
+          final st = at(k);
+          put(st[0], st[1], z, face, base, k + cx, z);
+        }
+      }
+    }
+  }
+
+  // set-kit.js: drum
+  /// An upright cylinder (a table's top, its foot, a flower pot): the top disc and the side that faces the camera.
+  /// top(dx, dy) may colour the disc (0: shaded from c).
+  void drum(
+    num cx,
+    num cy,
+    num z0,
+    num z1,
+    num r,
+    List<num> c, [
+    int Function(num a, num b)? top,
+  ]) {
+    for (num a = -r; a <= r; a += ST * .7) {
+      for (num bb = -r; bb <= r; bb += ST * .7) {
+        if (a * a + bb * bb > r * r) continue;
+        final col = top == null ? 0 : top(a, bb);
+        e.plot(
+          cx + a,
+          cy + bb,
+          z1,
+          col != 0 ? col : b.shade(c, 3.4, cx + a, cy + bb),
+        );
+      }
+    }
+    final n = math.max(12, (2 * math.pi * r / (ST * .6)).ceil());
+    for (var k = 0; k < n; k++) {
+      final f = k / n * 2 * math.pi, nx = math.cos(f), ny = math.sin(f);
+      if (nx + ny < -.3) continue;
+      final base = faceBase(nx, ny);
+      for (num z = z0; z <= z1 + 1e-9; z += ST * .7) {
+        e.plot(cx + nx * r, cy + ny * r, z, b.shade(c, base, f * 3, z));
+      }
+    }
   }
 
   /* ---------- for the checks: which object drew each pixel ---------- */

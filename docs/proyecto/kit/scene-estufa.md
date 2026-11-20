@@ -1,0 +1,79 @@
+# Scene sheet: estufa
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/estufa/inventory.json and historia/escenas/estufa.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: arroz-con-habichuelas, cuidado, el-pollo-y-el-huevo
+- Review file: cual-estufa
+- Words already taught here: arroz, habichuelas, olla, hace, caliente, frío, cuidado, ya, pollo, huevo, sal, huele
+- Stakes used: comida, merienda
+- Who speaks here ("habla"): abuela, abuelo, carmen, luis, mama, papa
+- Things he can touch: abuela, abuelo, bandeja, carmen, cocina, coqui, estufa, jarra, luis, mama, olla0, olla1, papa, pzhuevo, pzpollo, saco, sarten, tazon
+- Spots (for ir): inicio, centro
+- Views (for cam): wide
+- Names already recorded (thing: clip): abuela: abuela, abuelo: n_abuelo, carmen: p_n_carmen, cocina: m_n_cocina, coqui: yo_coqui, luis: p_n_luis, mama: esta_es_mama, papa: n_papa
+- Shared acts: burbuja, calla, fin, ir, pose
+- Acts:
+    - apaga: the flame under a pot goes out, or is lit again; a pot that stays on after it is ready boils over: foam down the stove, its flame out, a cup's worth gone (e.g. {"act": "apaga", "a": "olla1"} in arroz-con-habichuelas)
+    - aparte: whoever has his cup goes out with it (e.g. {"act": "aparte", "quien": "papa"} in cuidado)
+    - asoma (used in cuidado)
+    - cara (e.g. {"act": "cara", "a": "luis"} in el-pollo-y-el-huevo)
+    - carmenecha: Carmen tips one in (e.g. {"act": "carmenecha", "k": "arroz", "a": "abuela", "suelto": 1} in arroz-con-habichuelas)
+    - come28 (e.g. {"act": "come28", "a": "luis"} in el-pollo-y-el-huevo)
+    - copa: Luis gives the frog a clean cup; the frog fills it at the pot or at the jug and carries it over (used in cuidado)
+    - cuchara (e.g. {"act": "cuchara", "a": "abuela", "suelto": 1} in arroz-con-habichuelas)
+    - dabebe: the frog takes a piece from that plate to the baby: it eats it, or throws it on the floor (e.g. {"act": "dabebe", "k": "pollo"} in el-pollo-y-el-huevo)
+    - derrama (e.g. {"act": "derrama", "a": "$oe"} in arroz-con-habichuelas)
+    - dora (used in cuidado)
+    - echa: the frog tips a cup of rice or of beans into a cook's pot (e.g. {"act": "echa", "k": "arroz", "a": "abuela", "suelto": 1} in arroz-con-habichuelas)
+    - enciende (e.g. {"act": "enciende", "a": "$of"} in arroz-con-habichuelas)
+    - entramama (used in el-pollo-y-el-huevo)
+    - entran28: Luis and Carmen run in to the right counter (used in el-pollo-y-el-huevo)
+    - familia27: the family looks in at the window; Carmen hands the plates out, and they eat there (used in arroz-con-habichuelas)
+    - final27: the plates are in their hands: Luis's is the left one, abuela's the middle one, Carmen's the right one. Whoever has a short plate looks into it first (e.g. {"act": "final27", "suelto": 1} in arroz-con-habichuelas)
+    - final28 (used in el-pollo-y-el-huevo)
+    - final29: the ending: Carmen and abuela take a fritter each; the third, if there is one, is the frog's. A clean cup for abuela, and one for the frog, as far as they go (used in cuidado)
+    - frie: abuela drops a ball of batter into the pan; the oil bubbles over it, and it fries a moment; she looks in (used in cuidado)
+    - g (e.g. {"act": "g", "quien": "$ca", "pose": "offer", "ms": 300} in arroz-con-habichuelas)
+    - humo (e.g. {"act": "humo", "k": "pollo"} in el-pollo-y-el-huevo)
+    - inicio27: Three cups of rice and three of beans for three plates: one cup is one plate's worth. W.fuegos[i].n is how many cups are in the pot. (used in arroz-con-habichuelas)
+    - inicio28: Abuela and the wide pan are on the left, with the tray; mamá and the baby stand beside her. Luis and Carmen eat at the right counter. Pieces are fried two at a time, a drumstick and an egg. The shaker stands on the edge of the stove. (used in el-pollo-y-el-huevo)
+    - inicio29: Abuela, the pan, the board of batter and the fritter plate are on the left; Luis, the pot of hot chocolate, the jug of cold chocolate and the cups are on the right, where people come in. (used in cuidado)
+    - limpia: she turns away to wipe the plate, her back to the pan (used in cuidado)
+    - llena: Luis fills a clean cup himself, and hands it over (e.g. {"act": "llena", "k": "cal"} in cuidado)
+    - luisbebe (e.g. {"act": "luisbebe", "a": "$pb"} in cuidado)
+    - luiscome: the turn: Luis crosses to the plate, takes the first fritter and eats it (used in cuidado)
+    - luisda (e.g. {"act": "luisda", "a": "abuelo", "suelto": 1} in cuidado)
+    - madrecome (used in el-pollo-y-el-huevo)
+    - marca (e.g. {"act": "marca", "que": "ok"} in arroz-con-habichuelas)
+    - mira28: abuela turns to the baby; her back is to the pan (used in el-pollo-y-el-huevo)
+    - muerde (e.g. {"act": "muerde", "a": "carmen"} in el-pollo-y-el-huevo)
+    - niega: the cup is not the one he wanted: he shakes his head; Luis takes it, drinks it himself, and lays the empty cup on its side (e.g. {"act": "niega", "a": "$pb"} in cuidado)
+    - nota (e.g. {"act": "nota", "k": "fa"} in arroz-con-habichuelas)
+    - otravez27: the pots come off; Carmen fills three cups from the sack of rice and three from the jar of beans (used in arroz-con-habichuelas)
+    - par: a new pair from the tray goes into the pan, and abuela shakes salt over the pan. sinsal: that piece got none, and nobody can see it (used in el-pollo-y-el-huevo)
+    - parami: the other piece of the last pair is the frog's (e.g. {"act": "parami", "suelto": 1} in el-pollo-y-el-huevo)
+    - pide: a cook holds an empty cup up: his pot wants more (e.g. {"act": "pide", "a": "abuela"} in arroz-con-habichuelas)
+    - piensa (e.g. {"act": "piensa", "quien": "abuelo", "k": "cal"} in cuidado)
+    - piensa28 (e.g. {"act": "piensa28", "quien": "carmen"} in el-pollo-y-el-huevo)
+    - platobebe: abuela holds both pieces out on a plate; the baby waves its arms at it (used in el-pollo-y-el-huevo)
+    - platos27: abuela, Luis and Carmen go to the right counter and set three plates out; only the frog is at the stove. vuelve: they come back (used in arroz-con-habichuelas)
+    - prueba: everything at once, to look at the drawing (not used by any story yet)
+    - quema28 (e.g. {"act": "quema28", "k": "$sa"} in el-pollo-y-el-huevo)
+    - quema29: too long: smoke; abuela turns round and lifts a black fritter out onto the edge of the stove (used in cuidado)
+    - ranallena (e.g. {"act": "ranallena", "k": "cal", "a": "papa", "suelto": 1} in cuidado)
+    - resto29 (used in cuidado)
+    - saca: the cook shakes his head and lifts out what does not belong in his pot, into the waste bucket (e.g. {"act": "saca", "a": "$ca"} in arroz-con-habichuelas)
+    - saca29: the frog lifts the fritter out, golden, onto the plate; or, too soon, it is pale and soft and falls on the floor beside the stove (used in cuidado)
+    - sala: the frog shakes salt over the drumstick or the egg in the pan (e.g. {"act": "sala", "k": "pollo", "suelto": 1} in el-pollo-y-el-huevo)
+    - salplato: the frog salts a piece on somebody's plate: a second helping is a white heap (e.g. {"act": "salplato", "a": "carmen", "k": "$sb"} in el-pollo-y-el-huevo)
+    - sirve27: the plates are filled: one cup's worth of each on a plate, as far as the pots go; from a burnt pot the food is black (used in arroz-con-habichuelas)
+    - sirve28: the pair goes onto somebody's plate at the right counter; he eats what is good and leaves what is black or too salty (e.g. {"act": "sirve28", "a": "luis"} in el-pollo-y-el-huevo)
+    - toma28: the frog takes the shaker, or puts it back (e.g. {"act": "toma28", "suelto": 1} in el-pollo-y-el-huevo)
+    - ultimas27: each cook tips in the last cup of his own thing, if one is left (used in arroz-con-habichuelas)
+    - ultimo (used in el-pollo-y-el-huevo)
+    - unaolla: one pot of water goes on the stove, at its cook's burner (e.g. {"act": "unaolla", "a": "$ca"} in arroz-con-habichuelas)
+    - vacia28: the tray is empty: she tips it towards us (used in el-pollo-y-el-huevo)
+    - ventana27 (e.g. {"act": "ventana27", "suelto": 1} in arroz-con-habichuelas)
+    - viene: somebody comes in at the door and stands at the right; lugar 2: a second one beside him (e.g. {"act": "viene", "quien": "papa"} in cuidado)
+    - voltea: she turns round: by now the smoke hangs over the whole pan. She turns the piece he called: golden if it was the one that smoked, and then the smoke clears (e.g. {"act": "voltea", "k": "pollo", "vuelta": 1} in el-pollo-y-el-huevo)
+    - ya (used in arroz-con-habichuelas)
