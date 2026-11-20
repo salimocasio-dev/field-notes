@@ -7,19 +7,23 @@
    The state comes from the address; these become the builder's setKey:
      hora   = manana | tarde      the sky
      puerta = shut | open         the shop door
-     camion = 0 | 1               don Pepe's truck at the kerb (story 44)
+     carro  = 0 | 1               don Pepe's hand cart on the pavement, left of the scale (story 44)
+     aguja  = 0 | medio | libra   a red needle on the scale's dial, at 12, 3 or 6 o'clock (for the readers' renders only: in the game it is a sprite)
      t = wind time (0 for the reference); ox, oy = the origin
+   The game shows a 196 x 216 window of this 240 x 216 picture; the origin is chosen so everything a player touches (the sign, the door, the
+   awning, the stand, the scale, the low crate, the post) lies inside the picture with a margin and inside any window x0 = 22 +- a few pixels.
    It draws one frame: the baked set. No characters. */
 const Q = new URLSearchParams(location.search);
 const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
 const SET = {
   hora: pick('hora', ['manana', 'tarde'], 'manana'),
   puerta: pick('puerta', ['shut', 'open'], 'open'),
-  camion: Q.get('camion') === '1',
-  puesto: true, muro: false,
+  carro: Q.get('carro') === '1',
+  aguja: pick('aguja', ['0', 'medio', 'libra'], ''),
+  puesto: true,
   t: +(Q.get('t') || 0),
 };
-window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || -84), originY: +(Q.get('oy') || -40), shadowX: .9, shadowY: -.1 };
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || -68), originY: +(Q.get('oy') || -10), shadowX: .9, shadowY: -.1 };
 </script>
 <script src="pp-engine.js"></script>
 <script src="mapa.js"></script>
@@ -27,8 +31,8 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 <script src="colmado-fuera.js"></script>
 <script>
 'use strict';
-const HZ = 34;                                                       // the horizon, in screen rows: sky above
 function buildSet() {
+  const HZ = CF.skyPlan(SET).HZ;                                     // the horizon, in screen rows: sky above (from where the roof's far edge falls)
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
   tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
   for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {

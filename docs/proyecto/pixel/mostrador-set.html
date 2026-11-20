@@ -25,7 +25,7 @@ const SET = {
   props: Q.get('props') === '1',
   t: +(Q.get('t') || 0),
 };
-const ORIGIN = SET.donde === 'calle' ? [-38, -6] : [-7, -32];        // calle: the door and the sign in the middle, the stand at the right. dentro: the first run of shelves, the counter and the chair whole with 7 px to spare at the right; the street door with its open leaf (x 1..49), the window (53..90) and the register (87..124) are inside the picture, so inside a 196-px window at x0 = 0 or 1 (without the leaf: x0 = 0..17)
+const ORIGIN = SET.donde === 'calle' ? [-46, -6] : [-7, -32];        // calle: the door and the sign in the middle third, the whole stand, the crate and the post inside the picture. dentro: the first run of shelves, the counter and the chair whole; the street door, the shop window and the register inside
 window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
 </script>
 <script src="pp-engine.js"></script>
@@ -40,7 +40,7 @@ function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
   tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
   if (SET.donde === 'calle') {                                       // the shop front, from the street (story 36's first beat)
-    const HZ = 30, o = { hora: SET.hora, puerta: SET.puerta, muro: true, puesto: true };
+    const o = { hora: SET.hora, puerta: SET.puerta, puesto: true, solX: 206 }, HZ = CF.skyPlan(o).HZ;
     for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
       const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = CF.groundAt(g.x, g.y, ix, iy, i, HZ);
       if (!c) continue;
