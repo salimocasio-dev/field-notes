@@ -19,6 +19,7 @@ export 'package:coqui_ui/src/layout.dart';
 export 'package:coqui_ui/src/lesson_frame.dart';
 export 'package:coqui_ui/src/meters.dart';
 export 'package:coqui_ui/src/pixel_view.dart' show PixelView, pixelViewScale;
+export 'package:coqui_ui/src/pressable.dart';
 export 'package:coqui_ui/src/sheet.dart';
 export 'package:coqui_ui/src/tab_bar.dart';
 export 'package:coqui_ui/src/text_styles.dart';
