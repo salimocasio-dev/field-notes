@@ -1,0 +1,1561 @@
+{
+ "id": "cual-comer",
+ "title": "¿Cuál?",
+ "place": "La cocina",
+ "scene": "comer",
+ "tipo": "cual",
+ "stake": {
+  "thing": "none",
+  "steps": 0
+ },
+ "note": "The next-day pass for A comer.",
+ "clips": {
+  "m_c_quieres": {
+   "who": "narr",
+   "text": "¿Quieres pan?"
+  },
+  "m_c_que_quieres": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: ¿Qué quieres?"
+  },
+  "m_c_me_gusta": {
+   "who": "narr",
+   "habla": "luis",
+   "text": "Luis dice: Me gusta el pollo."
+  },
+  "m_c_no_me_gusta": {
+   "who": "narr",
+   "habla": "carmen",
+   "text": "Carmen dice: No me gusta la manzana."
+  },
+  "m_c_rico": {
+   "who": "narr",
+   "text": "¡El bizcocho está rico!"
+  },
+  "m_c_buen_provecho": {
+   "who": "narr",
+   "text": "¡Buen provecho!"
+  },
+  "m_c_tambien": {
+   "who": "narr",
+   "text": "Luis come pan. Carmen también."
+  },
+  "m_c_todo": {
+   "who": "narr",
+   "text": "Canelo se lo come todo."
+  },
+  "m_c_cafe": {
+   "who": "narr",
+   "text": "Mamá toma café."
+  },
+  "m_c_azucar": {
+   "who": "narr",
+   "text": "Abuela le pone azúcar al café."
+  },
+  "m_c_un_poco": {
+   "who": "narr",
+   "text": "Un poco de arroz, por favor."
+  },
+  "m_c_mucho": {
+   "who": "narr",
+   "text": "Aquí hay mucho jugo."
+  },
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  }
+ },
+ "items": [
+  {
+   "w": "quieres",
+   "say": "m_c_quieres",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 96,
+       "y": 184,
+       "dir": 1,
+       "pose": "offer",
+       "tiene": [
+        {
+         "k": "rollo",
+         "dx": 27,
+         "dy": 30,
+         "v": "ce"
+        }
+       ]
+      },
+      "luis": {
+       "x": 150,
+       "y": 184,
+       "dir": -1,
+       "pose": "offer"
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 112,
+       "y": 184,
+       "dir": 1
+      },
+      "luis": {
+       "x": 152,
+       "y": 184,
+       "dir": -1,
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 14,
+         "dy": 24,
+         "dos": 7,
+         "v": ""
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "cesta",
+       "x": 88,
+       "y": 172,
+       "v": "4:0",
+       "e": 1
+      },
+      {
+       "k": "interroga",
+       "x": 152,
+       "y": 134,
+       "e": 2,
+       "z": 900
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "¿qué quieres?",
+   "say": "m_c_que_quieres",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 140,
+       "y": 184,
+       "dir": -1,
+       "tiene": [
+        {
+         "k": "uten",
+         "ax": 9,
+         "ay": 21,
+         "bx": 20,
+         "by": 18,
+         "load": "",
+         "o": {
+          "rx": 3,
+          "ry": 2
+         }
+        },
+        {
+         "k": "uten",
+         "ax": -9,
+         "ay": 21,
+         "bx": -20,
+         "by": 18,
+         "load": "",
+         "o": {
+          "rx": 3,
+          "ry": 2
+         }
+        }
+       ]
+      },
+      "carmen": {
+       "x": 76,
+       "y": 184,
+       "dir": 1
+      }
+     },
+     "cosas": [
+      {
+       "k": "olla",
+       "x": 116,
+       "y": 176,
+       "v": "lleno0",
+       "vapor": 1,
+       "e": 1
+      },
+      {
+       "k": "olla",
+       "x": 164,
+       "y": 176,
+       "v": "lleno0",
+       "vapor": 1,
+       "e": 1
+      },
+      {
+       "k": "interroga",
+       "x": 140,
+       "y": 128,
+       "e": 2,
+       "z": 900
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 142,
+       "y": 184,
+       "dir": -1,
+       "pose": "offer",
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 24,
+         "dy": 30,
+         "e": 1,
+         "v": "rm"
+        }
+       ]
+      },
+      "carmen": {
+       "x": 94,
+       "y": 184,
+       "dir": 1
+      }
+     },
+     "cosas": [
+      {
+       "k": "interroga",
+       "x": 142,
+       "y": 128,
+       "e": 2,
+       "z": 900
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "me gusta",
+   "say": "m_c_me_gusta",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "luis": {
+       "x": 124,
+       "y": 184,
+       "dir": 1,
+       "boca": 1,
+       "come": {
+        "k": "muslo",
+        "v": "b",
+        "e": 1,
+        "dx": 15
+       }
+      }
+     },
+     "cosas": [
+      {
+       "k": "corazon",
+       "x": 150,
+       "y": 132,
+       "e": 2,
+       "z": 900
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "luis": {
+       "x": 104,
+       "y": 184,
+       "dir": 1,
+       "tiene": [
+        {
+         "k": "muslo",
+         "dx": 24,
+         "dy": 30
+        }
+       ]
+      },
+      "carmen": {
+       "x": 172,
+       "y": 184,
+       "dir": -1,
+       "pose": "offer"
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "no me gusta",
+   "say": "m_c_no_me_gusta",
+   "si": {
+    "cam": [
+     26,
+     138,
+     106,
+     56
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "carmen": {
+       "x": 68,
+       "y": 194,
+       "dir": 1,
+       "cara": "ceno",
+       "tiene": [
+        {
+         "k": "platoma",
+         "dx": 17,
+         "dy": 22,
+         "dos": 9
+        }
+       ]
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     26,
+     138,
+     106,
+     56
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "carmen": {
+       "x": 68,
+       "y": 194,
+       "dir": 1,
+       "cara": "calma",
+       "tiene": [
+        {
+         "k": "platoma",
+         "dx": 17,
+         "dy": 22,
+         "una": 1
+        },
+        {
+         "k": "brazo",
+         "gx": 3,
+         "gy": 11,
+         "sh": -1
+        }
+       ]
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "rico",
+   "say": "m_c_rico",
+   "si": {
+    "cam": [
+     112,
+     128,
+     98,
+     52
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuelo": {
+       "x": 176,
+       "y": 194,
+       "dir": -1,
+       "cara": "feliz",
+       "tiene": [
+        {
+         "k": "tenedor",
+         "dx": 17,
+         "dy": 49,
+         "gx": 17,
+         "gy": 46
+        },
+        {
+         "k": "brazo",
+         "gx": -1,
+         "gy": 22,
+         "sh": -1
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "bizcocho",
+       "x": 156,
+       "y": 174,
+       "v": "b2",
+       "e": 1
+      },
+      {
+       "k": "corazon",
+       "x": 191,
+       "y": 143,
+       "e": 1,
+       "z": 900
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     112,
+     128,
+     98,
+     52
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuelo": {
+       "x": 176,
+       "y": 194,
+       "dir": -1,
+       "cara": "asco",
+       "giro": 2,
+       "tiene": [
+        {
+         "k": "brazo",
+         "gx": 22,
+         "gy": 25,
+         "sh": 1
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "bizcocho",
+       "x": 138,
+       "y": 174,
+       "v": "b1",
+       "e": 1
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "buen provecho",
+   "say": "m_c_buen_provecho",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "mama": {
+       "x": 90,
+       "y": 132,
+       "dir": 1,
+       "sent": 1,
+       "come": {
+        "k": "tenedor",
+        "dx": 12
+       }
+      },
+      "abuelo": {
+       "x": 114,
+       "y": 132,
+       "dir": 1,
+       "sent": 1,
+       "come": {
+        "k": "tenedor",
+        "dx": 12
+       }
+      },
+      "carmen": {
+       "x": 138,
+       "y": 132,
+       "dir": 1,
+       "sent": 1,
+       "come": {
+        "k": "tenedor",
+        "dx": 12
+       }
+      },
+      "luis": {
+       "x": 200,
+       "y": 168,
+       "dir": -1,
+       "pose": "wave0",
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 20,
+         "dy": 30,
+         "v": ""
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "id": "pl_mama",
+       "k": "plato",
+       "x": 90,
+       "y": 127,
+       "v": "r",
+       "rollos": []
+      },
+      {
+       "id": "pl_abuelo",
+       "k": "plato",
+       "x": 114,
+       "y": 127,
+       "v": "r",
+       "rollos": []
+      },
+      {
+       "id": "pl_carmen",
+       "k": "plato",
+       "x": 138,
+       "y": 127,
+       "v": "r",
+       "rollos": []
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "luis": {
+       "x": 70,
+       "y": 186,
+       "dir": 1,
+       "boca": 1,
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 10,
+         "dy": 24,
+         "dos": 7,
+         "e": 1
+        }
+       ]
+      },
+      "carmen": {
+       "x": 112,
+       "y": 186,
+       "dir": 1,
+       "boca": 1,
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 10,
+         "dy": 22,
+         "dos": 7,
+         "e": 1
+        }
+       ]
+      },
+      "abuelo": {
+       "x": 160,
+       "y": 186,
+       "dir": -1,
+       "boca": 1,
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 10,
+         "dy": 26,
+         "dos": 7,
+         "e": 1
+        }
+       ]
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "también",
+   "say": "m_c_tambien",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "luis": {
+       "x": 100,
+       "y": 182,
+       "dir": 1,
+       "come": {
+        "k": "rollo",
+        "v": "mo:c",
+        "e": 1,
+        "dx": 14
+       }
+      },
+      "carmen": {
+       "x": 152,
+       "y": 182,
+       "dir": -1,
+       "come": {
+        "k": "rollo",
+        "v": "mo:m",
+        "e": 1,
+        "dx": 14
+       }
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "luis": {
+       "x": 100,
+       "y": 182,
+       "dir": 1,
+       "come": {
+        "k": "rollo",
+        "v": "mo:c",
+        "e": 1,
+        "dx": 14
+       }
+      },
+      "carmen": {
+       "x": 152,
+       "y": 182,
+       "dir": -1
+      }
+     },
+     "cosas": [],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "todo",
+   "say": "m_c_todo",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {},
+     "cosas": [
+      {
+       "k": "cuenco",
+       "x": 158,
+       "y": 177,
+       "v": "limpio",
+       "e": 2
+      }
+     ],
+     "vuelos": [],
+     "perro": {
+      "x": 114,
+      "y": 179,
+      "pose": "husmea",
+      "dir": 1,
+      "lengua": 1,
+      "e": 2
+     },
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {},
+     "cosas": [
+      {
+       "k": "cuenco",
+       "x": 164,
+       "y": 177,
+       "v": "lleno",
+       "e": 2
+      }
+     ],
+     "vuelos": [],
+     "perro": {
+      "x": 118,
+      "y": 177,
+      "pose": "walk",
+      "dir": -1,
+      "granos": 1,
+      "e": 2
+     },
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "café",
+   "say": "m_c_cafe",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "mama": {
+       "x": 108,
+       "y": 184,
+       "dir": 1,
+       "tiene": [
+        {
+         "k": "taza",
+         "dx": 12,
+         "dy": 26,
+         "v": "negro",
+         "vapor": 1,
+         "vn": 1,
+         "dos": 6
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "cafetera",
+       "x": 160,
+       "y": 160,
+       "e": 1,
+       "vapor": 1,
+       "vdy": 24,
+       "vn": 1
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "mama": {
+       "x": 108,
+       "y": 184,
+       "dir": 1,
+       "tiene": [
+        {
+         "k": "vasojugo",
+         "dx": 12,
+         "dy": 26,
+         "dos": 5
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "cafetera",
+       "x": 160,
+       "y": 160,
+       "e": 1
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "azúcar",
+   "say": "m_c_azucar",
+   "si": {
+    "cam": [
+     86,
+     130,
+     98,
+     52
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 104,
+       "y": 182,
+       "dir": 1,
+       "L": 10,
+       "tiene": [
+        {
+         "k": "uten",
+         "ax": 15,
+         "ay": 39,
+         "bx": 30,
+         "by": 39,
+         "load": "azuM",
+         "o": {
+          "plata": 1,
+          "rx": 3,
+          "ry": 2
+         }
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "sombra",
+       "x": 136,
+       "y": 174
+      },
+      {
+       "k": "taza",
+       "x": 136,
+       "y": 172,
+       "v": "negro"
+      },
+      {
+       "k": "sombra",
+       "x": 160,
+       "y": 174
+      },
+      {
+       "k": "azucarera",
+       "x": 160,
+       "y": 172,
+       "tomada": 1
+      },
+      {
+       "k": "granob",
+       "x": 131,
+       "y": 150,
+       "z": 900
+      },
+      {
+       "k": "granob",
+       "x": 137,
+       "y": 152,
+       "z": 900
+      },
+      {
+       "k": "granob",
+       "x": 134,
+       "y": 156,
+       "z": 900
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     86,
+     130,
+     98,
+     52
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 104,
+       "y": 182,
+       "dir": 1,
+       "tiene": [
+        {
+         "k": "lechera",
+         "dx": 20.7,
+         "dy": 27.2,
+         "v": "T",
+         "gx": 12.2,
+         "gy": 29,
+         "flip": false,
+         "chorro": {
+          "h": 8,
+          "col": "#FFFFFF",
+          "fino": 1
+         }
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "sombra",
+       "x": 136,
+       "y": 174
+      },
+      {
+       "k": "taza",
+       "x": 136,
+       "y": 172,
+       "v": "claro"
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "un poco",
+   "say": "m_c_un_poco",
+   "si": {
+    "cam": [
+     86,
+     130,
+     98,
+     52
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 100,
+       "y": 182,
+       "dir": 1,
+       "tiene": [
+        {
+         "k": "uten",
+         "ax": 19,
+         "ay": 30,
+         "bx": 28,
+         "by": 25,
+         "load": "",
+         "o": {
+          "rx": 4,
+          "ry": 3
+         }
+        }
+       ]
+      },
+      "carmen": {
+       "x": 164,
+       "y": 182,
+       "dir": -1,
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 11,
+         "dy": 18,
+         "dos": 8,
+         "v": "poco"
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "sombra",
+       "x": 128,
+       "y": 174
+      },
+      {
+       "k": "olla",
+       "x": 128,
+       "y": 172,
+       "v": "lleno0"
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     86,
+     130,
+     98,
+     52
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {
+      "abuela": {
+       "x": 100,
+       "y": 182,
+       "dir": 1,
+       "tiene": [
+        {
+         "k": "uten",
+         "ax": 19,
+         "ay": 30,
+         "bx": 30,
+         "by": 32,
+         "load": "ARR",
+         "o": {
+          "rx": 4,
+          "ry": 3
+         }
+        }
+       ]
+      },
+      "carmen": {
+       "x": 164,
+       "y": 182,
+       "dir": -1,
+       "tiene": [
+        {
+         "k": "plato",
+         "dx": 11,
+         "dy": 18,
+         "dos": 8,
+         "v": "mucho"
+        }
+       ]
+      }
+     },
+     "cosas": [
+      {
+       "k": "sombra",
+       "x": 128,
+       "y": 174
+      },
+      {
+       "k": "olla",
+       "x": 128,
+       "y": 172,
+       "v": "lleno0"
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  },
+  {
+   "w": "mucho",
+   "say": "m_c_mucho",
+   "si": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {},
+     "cosas": [
+      {
+       "k": "jugo",
+       "x": 128,
+       "y": 164
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   },
+   "no": {
+    "cam": [
+     32,
+     80,
+     196,
+     104
+    ],
+    "set": {
+     "cq": {
+      "x": 0,
+      "y": 0,
+      "s": 1,
+      "dy": 0,
+      "al": 1,
+      "vis": 0,
+      "bub": null,
+      "hace": null,
+      "piensa": null,
+      "tiene": [],
+      "sobre": 1
+     },
+     "gente": {},
+     "cosas": [
+      {
+       "k": "jugopoco",
+       "x": 128,
+       "y": 164
+      }
+     ],
+     "vuelos": [],
+     "perro": null,
+     "tarjeta": null,
+     "marcas": null,
+     "sitio": {}
+    }
+   }
+  }
+ ]
+}
