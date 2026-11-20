@@ -15,7 +15,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|sofa&amp;F=8&am
    1. sala.js is fetched and every screen position it holds is replaced by the sheet's (points, spots, things' boxes, views); bg(), the
       lamp, the sofa, the armchair, the blanket, the low table and the frames' wood and nail are taken out; the low table's place in the
       drawing order is kept by drawing the set's own pixels of it again over the characters drawn before it, where nearer (sheet: front);
-      each photo is clipped to its frame's opening in the set (sheet: clips) and turned as the set's frame is.
+      each photo is drawn in marco()'s own coordinates at its frame (sheet: points foto.i, turned by its angle when crooked) and clipped to the
+      frame's opening in the set (sheet: clips).
    2. W in old positions needs no moving: the room is built round the old picture, so every floor place keeps its screen place (sheet:
       rules.floor). Only what stood on the old furniture moves with it (the cake, the camera, the photos).
    3. The set for setKey(W) is drawn by sala-set.html in a hidden frame, with the characters' shadows cast (frame()).
@@ -80,7 +81,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|sofa&amp;F=8&am
 
   /* ---------- the set, one hidden frame per state; the front mask; the frames' openings ---------- */
   const SETS = {};
-  function setOf(w) { const f = w.fotos || []; return { luz: w.luz === 0 ? '0' : '1', fotos: [0, 1, 2].map(i => f[i] && !f[i].ok ? '1' : '0').join(''), top: new URLSearchParams(location.search).get('top') || 'liso' }; }
+  function setOf(w) { const f = w.fotos || []; return { luz: w.luz === 0 ? '0' : '1', fotos: [0, 1, 2].map(i => f[i] && !f[i].ok ? '1' : '0').join('') }; }
   PV.setOf = setOf;
   let CUR = null;
   async function setFrame(st, t, casts) {

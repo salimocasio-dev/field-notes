@@ -18,13 +18,13 @@
   "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were"
  },
  "room": {
-  "what": "a doll's house cut: of the room's four walls only the two far ones stand, the left one (facing +x, in shade: the door to the porch and the three frames) and the back one (facing +y, lit: the window). The two near walls are not built. The floor runs past the picture's bottom and sides, so no cut edge of it shows; the standing walls are cut at 3.2 (a strip of wall over the door and the window), their cut tops a white edge. Furniture is turned to face the camera (as El balcón's chairs): the sofa stands across the corner, so the family sits in a row as in the old picture",
+  "what": "a doll's house cut: of the room's four walls only the two far ones stand, the left one (facing +x, in shade: the door to the porch and the three frames) and the back one (facing +y, lit: the window). The two near walls are not built. The floor runs past the picture's bottom and sides, so no cut edge of it shows; the standing walls are cut at 3.2 (a strip of wall over the door and the window), their cut tops a white edge. Furniture is turned to face the camera (as El balcón's chairs): the sofa stands across the corner, so the family sits in a row as in the old picture. The frames hang turned to the camera too (round 2): upright pictures on wires from nails, so the photos are upright and whole at the old size: three 20 x 27 frames 2 px apart, their nails at one height on the wall, so they step up towards the corner with it, between the door's casing and the corner with 3 px to spare each side (a crooked one turns two corners 2.9 px out: counterclockwise, over the lower frame on its left and under the higher one on its right). The lamp stands in the corner, its foot on the floor seen over the sofa's back, as tall as the old one (its shade over the frames). Through the door: the porch's tiles (El balcón's), 2.6 out, its stone edge, and the lawn 0.3 lower beyond",
   "why": "the old picture is a wall and a floor that fill the frame, every place in it on that floor; a near wall, even cut low, would stand across the frog's floor and over feet, and a cut edge of the floor would be a line across the room. The two far walls are where the old door (left) and window (right) were; the corner between them is behind the sofa, as the old wall was"
  },
  "top": {
-  "liso": "candidate a (the one built on): above the cut walls a flat calm dark grey (rgb 38, 36, 44), a little lighter than the lesson screen's #1B1B1F: the picture reads as a room seen from above, nothing outside competes with it",
-  "patio": "candidate b (?top=patio, kept): above the cut walls the lawn round the house, far behind it: the cut-open house stands in its yard, as El frente's house. A fresh look reads it as grass where the ceiling would be",
-  "chosen": "liso"
+  "liso": "above the cut walls a flat calm dark grey (rgb 38, 36, 44), a little lighter than the lesson screen's #1B1B1F: the picture reads as a room seen from above, nothing outside competes with it",
+  "chosen": "liso",
+  "decided": "the orchestrator (round 2): top = liso. Round 1's candidate b (the lawn round the house behind the cut walls) is gone, and top is no longer a parameter of the set"
  },
  "smoothing": {
   "what": "sala.js turns smoothing on in three places; the new canvas (Ctx) does not smooth unless told, so each keeps its smoothing on (Ctx.smoothing = true) exactly there, over the new picture",
@@ -56,10 +56,6 @@
    "fotos": {
     "values": "three characters, 0 or 1, one a frame, left to right",
     "fromW": "for i in 0..2: W.fotos[i] && !W.fotos[i].ok ? \"1\" (crooked) : \"0\". A photo in a frame (its people, the frog's foot, the slippers) is the sprite layer's: marco()"
-   },
-   "top": {
-    "values": ["liso", "patio"],
-    "fromW": "not from W: the look of the room's cut-open top (see top); the game uses liso"
    }
   },
   "key": "luz + \"-\" + fotos, e.g. \"1-000\"",
@@ -173,18 +169,18 @@
   },
   "fotos": {
    "set": true,
-   "world": [0, 0.65, 1.4743, 0.1, 3.8682, 2.6184],
-   "box": [68, 22, 62, 57],
-   "what": "the three picture frames on the left wall, crooked or straight (the box round them all, as the old one)",
+   "world": [-2.5293, -0.6255, 0, -0.6255, 1.2782, 0.8438],
+   "box": [70, 27, 70, 54],
+   "what": "the three picture frames on the left wall, crooked or straight, with their nails (the box round them all, as the old one; a square world box whose corners have that screen box)",
    "old": {
     "box": [64, 34, 82, 30]
    }
   },
   "lampara": {
    "set": true,
-   "world": [0.61, -0.02, 0, 1.29, 0.66, 2.42],
-   "box": [139, 25, 26, 68],
-   "what": "the floor lamp, its foot to its shade",
+   "world": [0, -0.12, 0, 0.68, 0.56, 3],
+   "box": [129, 6, 26, 81],
+   "what": "the floor lamp in the corner, its foot to its shade",
    "old": {
     "box": [146, 62, 20, 64]
    }
@@ -736,40 +732,46 @@
    "what": "W.camMesa: the camera on the low table (16 x 10 at x, y), its bottom a row in front of the top's middle"
   },
   "foto.0": {
-   "screen": [82, 47],
+   "screen": [83, 52],
    "angle": 0,
+   "nail": [83, 49],
    "old": [86, 40],
-   "what": "marco(c, 0, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.0"
+   "what": "marco(c, 0, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.0. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
   },
   "foto.0.torcida": {
-   "screen": [82, 48],
-   "angle": 0.1789,
+   "screen": [79.791, 52.3869],
+   "angle": -0.24,
+   "nail": [83, 49],
    "old": [86, 40],
-   "what": "marco(c, 0, f): translate here (the old translate(x + 10, y + 2)); rotate(angle) (the old .24 + .05 sin(F / 6 + i): the frame is baked crooked, so it no longer swings); clip to clips.foto.0.torcida"
+   "what": "marco(c, 0, f): translate here (the old translate(x + 10, y + 2)); rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings); clip to clips.foto.0.torcida. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
   },
   "foto.1": {
-   "screen": [101, 38],
+   "screen": [105, 41],
    "angle": 0,
+   "nail": [105, 38],
    "old": [110, 40],
-   "what": "marco(c, 1, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.1"
+   "what": "marco(c, 1, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.1. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
   },
   "foto.1.torcida": {
-   "screen": [101, 39],
-   "angle": 0.181,
+   "screen": [101.791, 41.3869],
+   "angle": -0.24,
+   "nail": [105, 38],
    "old": [110, 40],
-   "what": "marco(c, 1, f): translate here (the old translate(x + 10, y + 2)); rotate(angle) (the old .24 + .05 sin(F / 6 + i): the frame is baked crooked, so it no longer swings); clip to clips.foto.1.torcida"
+   "what": "marco(c, 1, f): translate here (the old translate(x + 10, y + 2)); rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings); clip to clips.foto.1.torcida. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
   },
   "foto.2": {
-   "screen": [121, 28],
+   "screen": [127, 30],
    "angle": 0,
+   "nail": [127, 27],
    "old": [134, 40],
-   "what": "marco(c, 2, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.2"
+   "what": "marco(c, 2, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.2. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
   },
   "foto.2.torcida": {
-   "screen": [120, 29],
-   "angle": 0.1786,
+   "screen": [123.791, 30.3869],
+   "angle": -0.24,
+   "nail": [127, 27],
    "old": [134, 40],
-   "what": "marco(c, 2, f): translate here (the old translate(x + 10, y + 2)); rotate(angle) (the old .24 + .05 sin(F / 6 + i): the frame is baked crooked, so it no longer swings); clip to clips.foto.2.torcida"
+   "what": "marco(c, 2, f): translate here (the old translate(x + 10, y + 2)); rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings); clip to clips.foto.2.torcida. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
   },
   "corazon": {
    "screen": [107, 6],
@@ -1839,108 +1841,108 @@
    "thing": "fotos",
    "face": "the opening of frame 0",
    "world": [
-    [0.05, 3.55, 2.41],
-    [0.05, 2.85, 2.41],
-    [0.05, 2.85, 1.63],
-    [0.05, 3.55, 1.63]
+    [0.05, 3.5355, 2.376],
+    [0.05, 2.6652, 2.0207],
+    [0.05, 2.6652, 0.9993],
+    [0.05, 3.5355, 1.3546]
    ],
    "screen": [
-    [75.65, 53.83],
-    [88.52, 47.39],
-    [88.52, 64.96],
-    [75.65, 71.39]
+    [75, 54],
+    [91, 54],
+    [91, 77],
+    [75, 77]
    ],
-   "box": [75, 47, 14, 25],
+   "box": [75, 54, 16, 23],
    "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 0 is drawn clipped to this quad (screen), set before the translate"
   },
   "foto.0.torcida": {
    "thing": "fotos",
    "face": "the opening of frame 0, crooked",
    "world": [
-    [0.05, 3.5828, 2.4984],
-    [0.05, 2.9028, 2.332],
-    [0.05, 3.0882, 1.5743],
-    [0.05, 3.7682, 1.7407]
+    [0.05, 3.6717, 2.3325],
+    [0.05, 2.8264, 2.1563],
+    [0.05, 2.529, 1.0427],
+    [0.05, 3.3744, 1.2189]
    ],
    "screen": [
-    [75.05, 52.14],
-    [87.55, 49.63],
-    [84.14, 68.4],
-    [71.64, 70.9]
+    [72.4957, 56.2312],
+    [88.0371, 52.428],
+    [93.5043, 74.7688],
+    [77.9629, 78.572]
    ],
-   "box": [71, 49, 17, 22],
+   "box": [72, 52, 22, 27],
    "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 0 is drawn clipped to this quad (screen), set before the translate"
   },
   "foto.1": {
    "thing": "fotos",
    "face": "the opening of frame 1",
    "world": [
-    [0.05, 2.5, 2.41],
-    [0.05, 1.8, 2.41],
-    [0.05, 1.8, 1.63],
-    [0.05, 2.5, 1.63]
+    [0.05, 2.3389, 2.376],
+    [0.05, 1.4686, 2.0207],
+    [0.05, 1.4686, 0.9993],
+    [0.05, 2.3389, 1.3546]
    ],
    "screen": [
-    [94.96, 44.18],
-    [107.83, 37.74],
-    [107.83, 55.3],
-    [94.96, 61.74]
+    [97, 43],
+    [113, 43],
+    [113, 66],
+    [97, 66]
    ],
-   "box": [94, 37, 14, 25],
+   "box": [97, 43, 16, 23],
    "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 1 is drawn clipped to this quad (screen), set before the translate"
   },
   "foto.1.torcida": {
    "thing": "fotos",
    "face": "the opening of frame 1, crooked",
    "world": [
-    [0.05, 2.5328, 2.4984],
-    [0.05, 1.8528, 2.332],
-    [0.05, 2.0382, 1.5743],
-    [0.05, 2.7182, 1.7407]
+    [0.05, 2.4751, 2.3325],
+    [0.05, 1.6298, 2.1563],
+    [0.05, 1.3324, 1.0427],
+    [0.05, 2.1777, 1.2189]
    ],
    "screen": [
-    [94.35, 42.49],
-    [106.86, 39.98],
-    [103.45, 58.75],
-    [90.95, 61.25]
+    [94.4957, 45.2312],
+    [110.0371, 41.428],
+    [115.5043, 63.7688],
+    [99.9629, 67.572]
    ],
-   "box": [90, 39, 17, 23],
+   "box": [94, 41, 22, 27],
    "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 1 is drawn clipped to this quad (screen), set before the translate"
   },
   "foto.2": {
    "thing": "fotos",
    "face": "the opening of frame 2",
    "world": [
-    [0.05, 1.45, 2.41],
-    [0.05, 0.75, 2.41],
-    [0.05, 0.75, 1.63],
-    [0.05, 1.45, 1.63]
+    [0.05, 1.1422, 2.376],
+    [0.05, 0.272, 2.0207],
+    [0.05, 0.272, 0.9993],
+    [0.05, 1.1422, 1.3546]
    ],
    "screen": [
-    [114.26, 34.52],
-    [127.13, 28.09],
-    [127.13, 45.65],
-    [114.26, 52.09]
+    [119, 32],
+    [135, 32],
+    [135, 55],
+    [119, 55]
    ],
-   "box": [114, 28, 14, 25],
+   "box": [119, 32, 16, 23],
    "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 2 is drawn clipped to this quad (screen), set before the translate"
   },
   "foto.2.torcida": {
    "thing": "fotos",
    "face": "the opening of frame 2, crooked",
    "world": [
-    [0.05, 1.4828, 2.4984],
-    [0.05, 0.8028, 2.332],
-    [0.05, 0.9882, 1.5743],
-    [0.05, 1.6682, 1.7407]
+    [0.05, 1.2785, 2.3325],
+    [0.05, 0.4331, 2.1563],
+    [0.05, 0.1357, 1.0427],
+    [0.05, 0.9811, 1.2189]
    ],
    "screen": [
-    [113.66, 32.83],
-    [126.16, 30.33],
-    [122.75, 49.1],
-    [110.25, 51.6]
+    [116.4957, 34.2312],
+    [132.0371, 30.428],
+    [137.5043, 52.7688],
+    [121.9629, 56.572]
    ],
-   "box": [110, 30, 17, 22],
+   "box": [116, 30, 22, 27],
    "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 2 is drawn clipped to this quad (screen), set before the translate"
   }
  },
@@ -2251,28 +2253,28 @@
     "points": ["foto.0", "foto.1", "foto.2", "foto.0.torcida", "foto.1.torcida", "foto.2.torcida"],
     "new": [
      [
-      [82, 47],
-      [82, 48],
-      0.1789
+      [83, 52],
+      [79.791, 52.3869],
+      -0.24
      ],
      [
-      [101, 38],
-      [101, 39],
-      0.181
+      [105, 41],
+      [101.791, 41.3869],
+      -0.24
      ],
      [
-      [121, 28],
-      [120, 29],
-      0.1786
+      [127, 30],
+      [123.791, 30.3869],
+      -0.24
      ]
     ]
    },
-   "note": "translate to points.foto.i (or foto.i.torcida, then rotate by its angle: baked crooked, no swing)"
+   "note": "translate to points.foto.i (or foto.i.torcida, then rotate by its angle: the frame turned about its middle, baked crooked, no swing). Everything marco() draws of a photo keeps its frame coordinates"
   },
   {
    "line": 53,
    "old": "marco: fr(g,-11,-1,22,26,OUT) fr(g,-10,0,20,24,wood) fr(g,-10,0,20,1,wood) fr(g,-8,2,16,20, f ? \"#BFE0F0\" : \"#FBF0D2\")",
-   "to": "the frame and the empty paper: dropped (the set). With a photo (f): fr(g, -10, 0, 20, 24, \"#BFE0F0\") inside the clip, the photo's ground"
+   "to": "the frame and the empty paper: dropped (the set: the frame is [-10, 0, 20, 27] in these coordinates, the opening [-8, 2, 16, 23]). With a photo (f): fr(g, -14, -6, 28, 34, \"#BFE0F0\") inside the clip, the photo's ground"
   },
   {
    "line": 54,
@@ -2295,7 +2297,7 @@
   {
    "line": 60,
    "old": "marco: the nail fr(g,0,-3,1,3,OUT)",
-   "to": "dropped: the set (each frame hangs from a nail on a wire)"
+   "to": "dropped: the set (each frame hangs on a wire from a nail, the nail 3 rows over the frame's top: points foto.i nail)"
   },
   {
    "line": 75,
@@ -2525,7 +2527,7 @@
    "old": "box fotos [64,34,82,30]",
    "to": {
     "thing": "fotos",
-    "box": [68, 22, 62, 57]
+    "box": [70, 27, 70, 54]
    }
   },
   {
@@ -2533,7 +2535,7 @@
    "old": "box lampara [146,62,20,64]",
    "to": {
     "thing": "lampara",
-    "box": [139, 25, 26, 68]
+    "box": [129, 6, 26, 81]
    }
   },
   {
@@ -2980,9 +2982,9 @@
    "to": {
     "points": ["foto.0", "foto.1", "foto.2"],
     "new": [
-     [82, 59],
-     [101, 50],
-     [121, 40]
+     [83, 66],
+     [105, 55],
+     [127, 44]
     ]
    },
    "note": "over the middle of frame i (the old 86 + i * 24, 50 was the old frame's)"
@@ -2992,9 +2994,9 @@
    "old": "final7 stars at [86 + i * 24, 50]",
    "to": {
     "new": [
-     [82, 59],
-     [101, 50],
-     [121, 40]
+     [83, 66],
+     [105, 55],
+     [127, 44]
     ]
    },
    "note": "over the middle of frame i, as line 209"
@@ -3069,10 +3071,14 @@
    "wide view (x0 22): the door, its open leaf and who stands in it from x 34 to 72 (12 px from the left side), from row 50",
    "views: wide zoom 1 x0 22, sofa zoom 1 x0 22: a change of view moves nothing",
    "a strip of wall: 16 px of wall over the door's frame, 10 px over the window's curtain rod, before the wall's cut top",
-   "seats: an empty sofa shows 6 rows of its seat, the armchair 6; hanging: the 3 nails seen over the frames",
-   "hanging: each frame hangs on a wire from a nail in the left wall (sala-set.html frames(); crooked ones turned about that nail); the lamp stands on its round foot on the floor; the curtains hang from a rod on two brackets",
+   "seats: an empty sofa shows 6 rows of its seat, the armchair 6; the curtains hang from a rod on two brackets",
+   "frames: in all 5 baked states each of the 3 hangs on the left wall from its own nail, seen, on a wire (9 px of wire at the least), the whole frame seen (nothing of the set over it), its opening its paper; no two frames share a pixel; inside their touch box [70,27,70,54] the set drew only the wall, the frames and 25 px of the lamp's foot in its corner (the frames are hit first there: COSAS order). Straight ones upright (angle 0), a crooked one turned -0.24 rad (counterclockwise, 13.75 degrees) about its middle (its corners 4.02 px from the upright one's); every frame pixel on the left wall, .85 or more over the floor",
+   "lamp: it stands in the corner (0.34,0.22); its foot shows (66 px of the lamp in the 13 x 7 round its front edge), 1 row of floor in front of it before the sofa's back",
+   "door: through it, from the threshold up, the porch's tiles and edge (827 px) then the lawn beyond (152 px), in each of its 23 columns",
    "table: its top spans x 98..144, rows 147..156; the cake's dish [104,151,34,3] and the camera [113,143,16,10] stand on it, their bottoms 3 and 4 rows from its front edge; plain floor and sofa behind them",
    "table: the cake and the camera are never on it at once (1101 moments)",
+   "photos: 89 photos of a person at 44 distinct moments (hermana, hermano, mama, papa): each whole (the 16 x 22 of the sprite, at 1:1, upright or turned with its crooked frame) inside its frame's opening, 0 px from its edge at the least (its sides on the opening's: 16 wide in 16, as the old); no corner card (but the photo of everyone) and no one over any pixel of it",
+   "standing over sitting: at 139 distinct moments no standing person's sprite covers more of a sitting person's face (eyes to chin) than the old picture did there (none does, nor in the old); one stands before a sitting one's body, not the face, as abuela before abuelo, abuela before mama, abuela before papa, abuelo before bebe, hermana before papa, hermano before papa, papa before mama, every one as in the old picture",
    "asks: 45 distinct asks: every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), the hint hand on no face; 16 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
    "NOT the scene's: the hand juego.js draws at an answer card (the left one) reaches 7 px onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for yo_coqui, tu_hermana, tu_hermano, $bien_papa",
    "bubbles: 177 bubbles at 1101 moments of 18 runs (d-bizcocho-bebe, d-foto-familia, h-sala, la-familia, la-foto, quien-eres-tu), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, abuelo's \"q\", the frog's \"amor\"): wholly inside the view (1 px from its edge at the least), clear of the cards shown in the corner (0 px), on no face",

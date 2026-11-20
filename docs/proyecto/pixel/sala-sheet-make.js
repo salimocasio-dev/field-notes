@@ -22,16 +22,17 @@ const STATES = ['000', '100', '110', '111', '010'];          // the frames' croo
   const page = await browser.newPage();
   const errs = [];
   page.on('pageerror', e => errs.push(String(e)));
-  const G = { parts: {}, z: {} };
+  const G = { parts: {}, z: {}, owner: {}, hits: {}, kinds: {} };
   for (const fotos of STATES) {
     await page.goto('file://' + path.join(__dirname, 'sala-set.html') + '?tags=1&fotos=' + fotos);
     const g = await page.evaluate(() => {
       const o = {}; for (const [k, v] of Object.entries(SALA)) if (typeof v !== 'function' && k !== 'SET') o[k] = v;
       const parts = {}; TAGS.forEach((t, i) => { if (t) (parts[t] = parts[t] || []).push(i); });
-      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z) };
+      // the frames' own map (which frame drew each pixel, and what) and the ground's kinds (porch or lawn through the door)
+      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), owner: Array.from(FRAMEPIX.owner), hits: Array.from(FRAMEPIX.hits), kinds: Array.from(kinds), K: { road: KIND_ROAD, grass: KIND_GRASS } };
     });
-    if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S });
-    G.parts[fotos] = g.parts; G.z[fotos] = g.z;
+    if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K });
+    G.parts[fotos] = g.parts; G.z[fotos] = g.z; G.owner[fotos] = g.owner; G.hits[fotos] = g.hits; G.kinds[fotos] = g.kinds;
   }
   if (errs.length) throw new Error(errs.join('; '));
   G.M = await measure(await browser.newPage());
@@ -71,8 +72,8 @@ async function measure(page) {
       let hx0 = 1e9, hx1 = -1e9; for (let i = 0; i < cv.width * cv.height; i++) { const x = i % cv.width, y = i / cv.width | 0; if (d[i * 4 + 3] && y < y0 + 10) { hx0 = Math.min(hx0, x); hx1 = Math.max(hx1, x); } }
       return { box: [x0 - ox, y0 - oy, x1 - x0 + 1, y1 - y0 + 1], head: (hx0 + hx1 + 1) / 2 - ox }; };
     const people = {};
-    for (const id of Object.keys(KIT.FAM)) for (const sent of [0, 1]) { const im = KIT.mkPersona(KIT.FAM[id], 'idle', 0, sent); people[id + (sent ? '.sent' : '')] = opaque(im, KIT.PX, im.height - 1); }
-    { const im = mkAbuela('idle', 0); people.abuela = opaque(im, 30, 50); }
+    for (const id of Object.keys(KIT.FAM)) for (const sent of [0, 1]) { const im = KIT.mkPersona(KIT.FAM[id], 'idle', 0, sent); people[id + (sent ? '.sent' : '')] = Object.assign(opaque(im, KIT.PX, im.height - 1), { h: im.height }); }
+    { const im = mkAbuela('idle', 0); people.abuela = Object.assign(opaque(im, 30, 50), { h: 51 }); }
     { const im = KIT.mkBebe('idle', 0); people.bebe = opaque(im, 13, 28); }
     // each person's opaque pixels, row by row ([row, first column, last column] relative to the feet, facing right), for every pose sala.js gives
     const rowsOf = (cv, ox, oy) => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data, out = [];
@@ -101,6 +102,9 @@ const hop = d => d < 3 ? 0 : Math.max(1, Math.min(4, Math.round(d / 30)));   // 
 
 /* ---------- the old scene's numbers (historia/escenas/sala.js, read as text: they must be what the file says) ---------- */
 const SALA_JS = fs.readFileSync(path.join(REPO, 'historia/escenas/sala.js'), 'utf8');
+// the photo of a person in a frame (marco(): sala.js:57): 16 x 22 of their sprite (its columns from PX - 8, abuela's from 22; rows 0 to 21), drawn at
+// (q.length > 1 ? -10 + k * 2 : -8, 3) in frame coordinates
+const PHOTO = (() => { const a = 'sx=id==="abuela"?22:KIT.PX-8;g.drawImage(im,sx,0,16,22,q.length>1?-10+k*2:-8,3,16,22)'; if (!SALA_JS.includes(a)) throw new Error('sala.js changed: marco() photo'); return { sx: -8, y: 3, w: 16, h: 22 }; })();
 const lit = (re, what) => { const m = SALA_JS.match(re); if (!m) throw new Error('sala.js changed: ' + what); return JSON.parse(m[1]); };
 const OLD = {
   PARADOS: lit(/PARADOS=(\[\[[^\]]*\],\[[^\]]*\]\])/, 'PARADOS'), APARTE: lit(/APARTE=(\[\[[^\]]*\],\[[^\]]*\]\])/, 'APARTE'),
@@ -118,6 +122,7 @@ function make(G) {
   const box = w => { const xs = [], ys = []; for (const x of [w[0], w[3]]) for (const y of [w[1], w[4]]) for (const z of [w[2], w[5]]) { const q = E.project(x, y, z); xs.push(q.sx); ys.push(q.sy); }
     const x0 = Math.floor(Math.min(...xs)), y0 = Math.floor(Math.min(...ys)); return [x0, y0, Math.ceil(Math.max(...xs)) - x0, Math.ceil(Math.max(...ys)) - y0]; };
   const floor = (sx, sy) => W4(E.atZ(sx, sy, 0));
+  const onWall = (sx, sy) => { const y = (E.OX - sx) * E.R2 / E.S, z = (y / E.R2 * E.SIN - (sy - E.OY) / E.S) / E.COS; return W4([.05, y, z]); };   // the left wall's face under a screen point
   // the box (square on the ground) whose 8 projected corners have the screen box [sx0, sy0] - [sx1, sy1] (set-kit.js boxAround)
   const boxAround = (sx0, sy0, sx1, sy1) => { const S = E.S, d = (sx1 - sx0) / S, uc = ((sx0 + sx1) / 2 - E.OX) / S;
     const vmax = (sy1 - E.OY) / (S * .5), vmin = vmax - d, z1 = (vmin * .5 - (sy0 - E.OY) / S) / E.COS;
@@ -176,19 +181,14 @@ function make(G) {
   const mesTop = P([F.MES_C[0], F.MES_C[1], F.MES_H]), ty = Math.round(mesTop[1]);
   pt('bizcocho', { screen: [Math.round(mesTop[0]) - 13, ty - 9], old: [107, 138], what: 'bizcocho(c, x, y, n): the cake on its dish on the low table: the dish (x - 4 .. x + 30, rows y + 9 .. y + 11) on the table top, its bottom a row in front of the top\'s middle' });
   pt('camMesa', { screen: [Math.round(mesTop[0]) - 8, ty - 8], old: [113, 139], what: 'W.camMesa: the camera on the low table (16 x 10 at x, y), its bottom a row in front of the top\'s middle' });
-  // the frames: each photo is drawn as marco() draws it, translated to point foto.i (the old translate(x + 10, y + 2)), turned by its angle when
-  // crooked, clipped to clips foto.i (or foto.i.torcida): the opening of the set's frame
-  const FR = [];
-  for (let i = 0; i < 3; i++) for (const crooked of [false, true]) {
-    const th = crooked ? F.TILT : 0, ny = F.FY[i], nz = F.FZ + F.FH / 2 + .08;
-    const toW = (r, q) => { const c = Math.cos(th), s = Math.sin(th); const rr = r * c + q * s, qq = -r * s + q * c; return [.05, ny - rr, nz + qq]; };
-    const ow = F.FW / 2 - F.FO, oh = F.FH / 2 - F.FO, mid = -F.FH / 2 - .08;
-    const quad = [[-ow, mid + oh], [ow, mid + oh], [ow, mid - oh], [-ow, mid - oh]].map(([r, q]) => W4(toW(r, q)));
-    const cs = P(toW(0, mid)), up = P(toW(0, mid + .2)), ang = Math.atan2(up[0] - cs[0], cs[1] - up[1]);   // the screen angle of the frame's up, clockwise
-    const o = [Math.round(cs[0] + 12 * Math.sin(ang)), Math.round(cs[1] - 12 * Math.cos(ang))];             // (0, 12) of marco() turned by ang lands on the opening's middle
-    FR.push({ i, crooked, quad, screen: quad.map(P), centre: cs, origin: o, angle: r4(crooked ? ang : 0) });
-  }
-  for (const f of FR) pt('foto.' + f.i + (f.crooked ? '.torcida' : ''), { screen: f.origin, angle: f.angle, old: [86 + f.i * 24, 40], what: 'marco(c, ' + f.i + ', f): translate here (the old translate(x + 10, y + 2)); ' + (f.crooked ? 'rotate(angle) (the old .24 + .05 sin(F / 6 + i): the frame is baked crooked, so it no longer swings)' : 'no rotation') + '; clip to clips.foto.' + f.i + (f.crooked ? '.torcida' : '') });
+  // the frames (round 2): upright pictures hanging on wires from nails in the left wall, turned to face the camera (sala-set.html frames()). Each
+  // photo is drawn as marco() draws it, in marco()'s own coordinates: translate to point foto.i, rotate by its angle when crooked (about the frame's middle),
+  // clipped to clips foto.i (or foto.i.torcida): the opening of the set's frame, frame coordinates [-8, 8) x [2, 25) (the old [-8, 8) x [2, 22),
+  // three rows longer, so the whole 16 x 22 photo of a person, drawn at (-8, 3), is inside it)
+  const FR = F.FRAMES.map(f => { const o = f.opening;
+    return { i: f.i, crooked: f.crooked, quad: o.map(p => onWall(p[0], p[1])), screen: o.map(p => [r4(p[0]), r4(p[1])]), frame: f.frame.map(p => [r4(p[0]), r4(p[1])]), nail: f.nail,
+      centre: [(o[0][0] + o[2][0]) / 2, (o[0][1] + o[2][1]) / 2], origin: [r4(f.P[0]), r4(f.P[1])], angle: r4(f.angle) }; });
+  for (const f of FR) pt('foto.' + f.i + (f.crooked ? '.torcida' : ''), { screen: f.origin, angle: f.angle, nail: f.nail, old: [86 + f.i * 24, 40], what: 'marco(c, ' + f.i + ', f): translate here (the old translate(x + 10, y + 2)); ' + (f.crooked ? 'rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings)' : 'no rotation') + '; clip to clips.foto.' + f.i + (f.crooked ? '.torcida' : '') + '. The frame (the set) is marco()\'s [-10, 0, 20, 27] there, the nail ' + (1 + F.FWIRE) + ' rows over its top' });
   pt('corazon', { screen: [107, 6], old: [107, 6], what: 'heartAt: the heart of a happy ending (its top left): over the corner of the room, the backdrop behind it (unchanged)' });
   pt('hud.plato', { screen: [50, 24], old: [50, 24], what: 'vuelaA(..., 50, 24): a slice flies to the plate card in the view\'s top left (hud tarjeta 3, 3): picture x = wide x0 + 28; the wide window is the old one, so unchanged' });
   const dCake = [PTS.bizcocho.screen[0] - 107, PTS.bizcocho.screen[1] - 138];
@@ -201,17 +201,17 @@ function make(G) {
   const turned = (c, hw, hd, z1, what, old) => { const s = turnedScreen(c, hw, hd, 0, z1), w = boxAround(s[0], s[1], s[2], s[3]);
     return T(w, what, { turned: { centre: W4(c), halfWidth: r4(hw), halfDepth: r4(hd), height: z1, angle: r4(F.TURN) }, old }); };
   const person = id => ({ sprite: true, why: 'a person (today\'s sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged' });
-  // the frames: the box round all three, crooked or not
-  const fr3 = FR.flatMap(f => f.quad); const fx = fr3.map(p => p[1]), fz = fr3.map(p => p[2]);
-  const frW = [0, Math.min(...fx) - .1, Math.min(...fz) - .1, .1, Math.max(...fx) + .1, Math.max(...fz) + .12];
+  // the frames: the box round all three, crooked or not, their nails and wires (a screen box, as a square world box: set-kit.js boxAround)
+  const frS = FR.flatMap(f => f.frame.concat([f.nail, [f.nail[0] + 1, f.nail[1]]]));
+  const frW = boxAround(Math.floor(Math.min(...frS.map(p => p[0]))), Math.floor(Math.min(...frS.map(p => p[1]))), Math.ceil(Math.max(...frS.map(p => p[0]))), Math.ceil(Math.max(...frS.map(p => p[1]))));
   const things = {
     hermano: person('hermano'), hermana: person('hermana'), bebe: person('bebe'), abuela: person('abuela'), mama: person('mama'), papa: person('papa'), abuelo: person('abuelo'),
     bizcocho: { sprite: true, prop: true, why: 'the cake on its dish (sprite layer): box [x - 1, y, 30, 16] at points.bizcocho (old [106, 138, 30, 16] at 107, 138)', box: [PTS.bizcocho.screen[0] - 1, PTS.bizcocho.screen[1], 30, 16] },
     mesita: turned(F.MES_C, F.MES_HW, F.MES_HD, F.MES_H, 'the low table, turned to the camera', { box: [98, 148, 46, 18] }),
     sofa: turned(F.SOFA_C, F.SOFA_HW, F.SOFA_HD, 1.32, 'the long sofa, turned to the camera', { box: [68, 84, 92, 44] }),
     butaca: turned(F.BUT_C, F.BUT_HW, F.BUT_HD, 1.22, 'abuelo\'s armchair, turned to the camera', { box: [160, 86, 42, 42] }),
-    fotos: T(frW, 'the three picture frames on the left wall, crooked or straight (the box round them all, as the old one)', { old: { box: [64, 34, 82, 30] } }),
-    lampara: T([F.LAMP[0] - .34, F.LAMP[1] - .34, 0, F.LAMP[0] + .34, F.LAMP[1] + .34, 2.42], 'the floor lamp, its foot to its shade', { old: { box: [146, 62, 20, 64] } }),
+    fotos: T(frW, 'the three picture frames on the left wall, crooked or straight, with their nails (the box round them all, as the old one; a square world box whose corners have that screen box)', { old: { box: [64, 34, 82, 30] } }),
+    lampara: T([F.LAMP[0] - .34, F.LAMP[1] - .34, 0, F.LAMP[0] + .34, F.LAMP[1] + .34, F.LAMP_H], 'the floor lamp in the corner, its foot to its shade', { old: { box: [146, 62, 20, 64] } }),
     puerta: (() => { const pts = []; for (const z of [0, F.DH + .14]) { pts.push([.03, F.D0 - .14, z], [.03, F.D1 + .14, z], [.06, F.D1 + .16, z], [F.DOORX1, F.D1 + .16 + F.LEAF_DY, z]); }
       const s = pts.map(p => E.project(...p)), w = boxAround(Math.min(...s.map(q => q.sx)), Math.min(...s.map(q => q.sy)), Math.max(...s.map(q => q.sx)), Math.max(...s.map(q => q.sy)));
       return T(w, 'the doorway with its frame and the open leaf (the box round their real corners, as a square world box: the leaf stands out of the wall)', { old: { box: [20, 42, 42, 80] } }); })(),
@@ -277,7 +277,6 @@ function make(G) {
     params: {
       luz: { values: ['1', '0'], fromW: 'W.luz: the floor lamp lit (1) or not (0); every story keeps it lit (the old mkLampara(W.luz) draws both)' },
       fotos: { values: 'three characters, 0 or 1, one a frame, left to right', fromW: 'for i in 0..2: W.fotos[i] && !W.fotos[i].ok ? "1" (crooked) : "0". A photo in a frame (its people, the frog\'s foot, the slippers) is the sprite layer\'s: marco()' },
-      top: { values: ['liso', 'patio'], fromW: 'not from W: the look of the room\'s cut-open top (see top); the game uses ' + 'liso' },
     },
     key: 'luz + "-" + fotos, e.g. "1-000"',
     baked: STATES.map(f => ({ query: '?luz=1&fotos=' + f, reached: { '000': 'every story\'s start, la-familia, d-bizcocho-bebe, quien-eres-tu, h-sala, d-foto-familia (all its photos straight), the pairs', '100': 'la-foto wrong (one crooked photo)', '110': 'la-foto wrong (two)', '111': 'la-foto wrong (three: the slippers)', '010': 'la-foto alternate' }[f] })),
@@ -298,13 +297,13 @@ function make(G) {
       pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were',
     },
     room: {
-      what: 'a doll\'s house cut: of the room\'s four walls only the two far ones stand, the left one (facing +x, in shade: the door to the porch and the three frames) and the back one (facing +y, lit: the window). The two near walls are not built. The floor runs past the picture\'s bottom and sides, so no cut edge of it shows; the standing walls are cut at ' + F.WH + ' (a strip of wall over the door and the window), their cut tops a white edge. Furniture is turned to face the camera (as El balcón\'s chairs): the sofa stands across the corner, so the family sits in a row as in the old picture',
+      what: 'a doll\'s house cut: of the room\'s four walls only the two far ones stand, the left one (facing +x, in shade: the door to the porch and the three frames) and the back one (facing +y, lit: the window). The two near walls are not built. The floor runs past the picture\'s bottom and sides, so no cut edge of it shows; the standing walls are cut at ' + F.WH + ' (a strip of wall over the door and the window), their cut tops a white edge. Furniture is turned to face the camera (as El balcón\'s chairs): the sofa stands across the corner, so the family sits in a row as in the old picture. The frames hang turned to the camera too (round 2): upright pictures on wires from nails, so the photos are upright and whole at the old size: three 20 x 27 frames 2 px apart, their nails at one height on the wall, so they step up towards the corner with it, between the door\'s casing and the corner with 3 px to spare each side (a crooked one turns two corners 2.9 px out: counterclockwise, over the lower frame on its left and under the higher one on its right). The lamp stands in the corner, its foot on the floor seen over the sofa\'s back, as tall as the old one (its shade over the frames). Through the door: the porch\'s tiles (El balcón\'s), ' + F.PORCH_D + ' out, its stone edge, and the lawn ' + F.PORCH_DROP + ' lower beyond',
       why: 'the old picture is a wall and a floor that fill the frame, every place in it on that floor; a near wall, even cut low, would stand across the frog\'s floor and over feet, and a cut edge of the floor would be a line across the room. The two far walls are where the old door (left) and window (right) were; the corner between them is behind the sofa, as the old wall was',
     },
     top: {
-      liso: 'candidate a (the one built on): above the cut walls a flat calm dark grey (' + 'rgb 38, 36, 44' + '), a little lighter than the lesson screen\'s #1B1B1F: the picture reads as a room seen from above, nothing outside competes with it',
-      patio: 'candidate b (?top=patio, kept): above the cut walls the lawn round the house, far behind it: the cut-open house stands in its yard, as El frente\'s house. A fresh look reads it as grass where the ceiling would be',
+      liso: 'above the cut walls a flat calm dark grey (rgb 38, 36, 44), a little lighter than the lesson screen\'s #1B1B1F: the picture reads as a room seen from above, nothing outside competes with it',
       chosen: 'liso',
+      decided: 'the orchestrator (round 2): top = liso. Round 1\'s candidate b (the lawn round the house behind the cut walls) is gone, and top is no longer a parameter of the set',
     },
     smoothing: {
       what: 'sala.js turns smoothing on in three places; the new canvas (Ctx) does not smooth unless told, so each keeps its smoothing on (Ctx.smoothing = true) exactly there, over the new picture',
@@ -380,12 +379,12 @@ function make(G) {
     c(17, 'bg(): the room', 'dropped: the set');
     c(32, 'bg(): the plant pot at 212, 94', 'dropped: the set (planta)');
     c(49, 'manta: fr(g,49,177,58,22) fr(g,50,178,56,20) fr(g,50,178,56,1); the white squares 52..104, 180..197', 'dropped: the set (manta, the same place on the screen)');
-    c(52, 'marco: x = 76 + i * 24, y = 38; translate(x + 10, y + 2); rotate(.24 + .05 sin(F / 6 + i)) when !f.ok', { points: ['foto.0', 'foto.1', 'foto.2', 'foto.0.torcida', 'foto.1.torcida', 'foto.2.torcida'], new: [0, 1, 2].map(i => [PTS['foto.' + i].screen, PTS['foto.' + i + '.torcida'].screen, PTS['foto.' + i + '.torcida'].angle]) }, 'translate to points.foto.i (or foto.i.torcida, then rotate by its angle: baked crooked, no swing)');
-    c(53, 'marco: fr(g,-11,-1,22,26,OUT) fr(g,-10,0,20,24,wood) fr(g,-10,0,20,1,wood) fr(g,-8,2,16,20, f ? "#BFE0F0" : "#FBF0D2")', 'the frame and the empty paper: dropped (the set). With a photo (f): fr(g, -10, 0, 20, 24, "#BFE0F0") inside the clip, the photo\'s ground');
+    c(52, 'marco: x = 76 + i * 24, y = 38; translate(x + 10, y + 2); rotate(.24 + .05 sin(F / 6 + i)) when !f.ok', { points: ['foto.0', 'foto.1', 'foto.2', 'foto.0.torcida', 'foto.1.torcida', 'foto.2.torcida'], new: [0, 1, 2].map(i => [PTS['foto.' + i].screen, PTS['foto.' + i + '.torcida'].screen, PTS['foto.' + i + '.torcida'].angle]) }, 'translate to points.foto.i (or foto.i.torcida, then rotate by its angle: the frame turned about its middle, baked crooked, no swing). Everything marco() draws of a photo keeps its frame coordinates');
+    c(53, 'marco: fr(g,-11,-1,22,26,OUT) fr(g,-10,0,20,24,wood) fr(g,-10,0,20,1,wood) fr(g,-8,2,16,20, f ? "#BFE0F0" : "#FBF0D2")', 'the frame and the empty paper: dropped (the set: the frame is [-10, 0, 20, 27] in these coordinates, the opening [-8, 2, 16, 23]). With a photo (f): fr(g, -14, -6, 28, 34, "#BFE0F0") inside the clip, the photo\'s ground');
     c(54, 'marco: g.rect(-8,2,16,20); g.clip()', { clips: ['foto.0', 'foto.1', 'foto.2', 'foto.0.torcida', 'foto.1.torcida', 'foto.2.torcida'] }, 'the clip is the quad of the set\'s opening, in picture coordinates: set it before the translate');
     c(55, 'marco: the slippers: fr(g,-8,14,16,8) and the shoes at [-6,10], [1,11]', 'relative to the frame: unchanged');
     c(58, 'marco: the frog\'s foot: fr(g,5,17,4,5) fr(g,6,18,3,4)', 'relative to the frame: unchanged');
-    c(60, 'marco: the nail fr(g,0,-3,1,3,OUT)', 'dropped: the set (each frame hangs from a nail on a wire)');
+    c(60, 'marco: the nail fr(g,0,-3,1,3,OUT)', 'dropped: the set (each frame hangs on a wire from a nail, the nail ' + (1 + F.FWIRE) + ' rows over the frame\'s top: points foto.i nail)');
     for (const [k, v] of Object.entries(OLD.SITIO)) c(75, 'SITIO.' + k + ' ' + JSON.stringify(v), { spot: 'sitio.' + k, new: SPOTS['sitio.' + k].new.concat(v.slice(2)) });
     for (const [k, v] of Object.entries(OLD.LUGAR)) c(76, 'LUGAR.' + k + ' ' + JSON.stringify(v), { spot: 'frog.' + k, new: SPOTS['frog.' + k].new.concat([v[2]]) });
     OLD.PARADOS.forEach((p, i) => c(77, 'PARADOS[' + i + '] ' + JSON.stringify(p), { spot: 'parados.' + i, new: SPOTS['parados.' + i].new }));
@@ -462,6 +461,9 @@ const HANDR = [-12, 0, 36, 54];        // juego.js hand(): 12 x 15 cells of 3 px
 const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
 const within = (r, c) => r[0] >= c[0] && r[1] >= c[1] && r[0] + r[2] <= c[0] + c[2] && r[1] + r[3] <= c[1] + c[3];
 const gapTo = (a, b) => Math.max(b[0] - (a[0] + a[2]), a[0] - (b[0] + b[2]), b[1] - (a[1] + a[3]), a[1] - (b[1] + b[3]));
+// inside a convex polygon; a point within eps px of an edge counts as inside
+const inPoly = (q, x, y, eps = 0) => { let s = 0; for (let k = 0; k < q.length; k++) { const a = q[k], b = q[(k + 1) % q.length], c = ((b[0] - a[0]) * (y - a[1]) - (b[1] - a[1]) * (x - a[0])) / Math.hypot(b[0] - a[0], b[1] - a[1]); if (Math.abs(c) <= Math.abs(eps)) continue; const sg = Math.sign(c); if (s && sg !== s) return false; s = sg; } return true; };
+const wallAt = (E, sx, sy) => { const y = (E.OX - sx) * E.R2 / E.S, z = (y / E.R2 * E.SIN - (sy - E.OY) / E.S) / E.COS; return [0, y, z]; };
 const frogBox = q => { const w = Math.round(30 * q.s) + 2, h = Math.round(25 * q.s) + 2; return { x: Math.round(q.x + (32 - w) / 2), y: q.y + 27 - h, w, h }; };
 
 function storyStates() {
@@ -543,10 +545,52 @@ function check(sh, G) {
         const pf = E.project(f[0], f[1], .52), pb = E.project(b[0], b[1], .52); let n = 0; for (let y = Math.ceil(pb.sy); y < Math.floor(pf.sy); y++) if (tag[y * 240 + Math.round(pf.sx)] === part) n++; rows = Math.max(rows, n); } return rows; };
     const so = seatRows(F.SOFA_C, F.SOFA_HW, F.SOFA_HD, 'sofa'), bu = seatRows(F.BUT_C, F.BUT_HW, F.BUT_HD, 'butaca');
     if (so < 5 || bu < 5) P.push('seats: the sofa\'s seat shows ' + so + ' rows, the armchair\'s ' + bu + ' (keep 5)');
-    let nails = 0; for (let i = 0; i < 3; i++) { const q = E.project(.09, F.FY[i], F.FZ + F.FH / 2 + .08); if (tag[Math.floor(q.sy) * 240 + Math.floor(q.sx)] === 'fotos') nails++; }
-    if (nails < 3) P.push('hanging: ' + (3 - nails) + ' frames\' nails are not seen');
-    notes.push('seats: an empty sofa shows ' + so + ' rows of its seat, the armchair ' + bu + '; hanging: the 3 nails seen over the frames'); }
-  notes.push('hanging: each frame hangs on a wire from a nail in the left wall (sala-set.html frames(); crooked ones turned about that nail); the lamp stands on its round foot on the floor; the curtains hang from a rod on two brackets');
+    notes.push('seats: an empty sofa shows ' + so + ' rows of its seat, the armchair ' + bu + '; the curtains hang from a rod on two brackets'); }
+
+  /* the frames (round 2): in every baked state each hangs whole on the left wall from its own nail, seen; no two frames share a pixel; nothing of the
+     set but the wall and the frames inside their touch box; the opening wholly seen; a crooked one turned TILT beside upright ones */
+  { let worstWire = 99, minShift = 99, lampIn = 0; const fb = sh.things.fotos.box;
+    const countParts = (tag, b) => { const o = {}; for (let y = b[1]; y < b[1] + b[3]; y++) for (let x = b[0]; x < b[0] + b[2]; x++) { const t = tag[y * 240 + x]; if (t) o[t] = (o[t] || 0) + 1; } return o; };
+    for (const key of Object.keys(G.parts)) { const own = G.owner[key], hits = G.hits[key], tag = TAGS[key];
+      const two = hits.filter(h => h === 2).length; if (two) P.push('frames ' + key + ': ' + two + ' px where two frames meet');
+      for (let i = 0; i < 3; i++) { const crooked = key[i] === '1', f = sh.points['foto.' + i + (crooked ? '.torcida' : '')], n = f.nail, ni = n[1] * 240 + n[0];
+        if (own[ni] !== i * 4 + 3 || tag[ni] !== 'fotos') P.push('hanging ' + key + ': frame ' + i + '\'s nail ' + JSON.stringify(n) + ' is not seen');
+        let wire = 0; own.forEach((o, j) => { if (o === i * 4 + 2 && tag[j] === 'fotos') wire++; }); worstWire = Math.min(worstWire, wire);
+        if (wire < 4) P.push('hanging ' + key + ': frame ' + i + '\'s wire shows ' + wire + ' px');
+        // the frame and its opening: every pixel whose middle is inside the frame is this frame's, seen (nothing of the set over it); inside the
+        // opening, its paper
+        for (const [what, q, kinds] of [['opening', sh.clips['foto.' + i + (crooked ? '.torcida' : '')].screen, [1]], ['frame', F.FRAMES[i * 2 + (crooked ? 1 : 0)].frame, [0, 1, 2, 3]]]) { let inside = 0, seen = 0;
+          for (let y = Math.floor(Math.min(...q.map(p => p[1]))); y <= Math.ceil(Math.max(...q.map(p => p[1]))); y++) for (let x = Math.floor(Math.min(...q.map(p => p[0]))); x <= Math.ceil(Math.max(...q.map(p => p[0]))); x++) {
+            if (!inPoly(q, x + .5, y + .5, -1e-6)) continue; inside++; const o = own[y * 240 + x]; if (o >> 2 === i && kinds.includes(o & 3) && tag[y * 240 + x] === 'fotos') seen++; }
+          if (seen !== inside) P.push('frames ' + key + ': frame ' + i + '\'s ' + what + ' shows ' + seen + ' of its ' + inside + ' px'); }
+        // on the wall: every pixel the frame drew (its wire and nail too) on the left wall's face, under its cut top, .9 or more over the floor
+        const off = []; own.forEach((o, j) => { if (o >> 2 !== i) return; const w = wallAt(E, j % 240 + .5, Math.floor(j / 240) + .5); if (!(w[1] > 0 && w[1] < F.YL && w[2] > .85 && w[2] < F.WH)) off.push([j % 240, Math.floor(j / 240), o & 3].concat(w.slice(1).map(r2))); });
+        if (off.length) P.push('frames ' + key + ': ' + off.length + ' px of frame ' + i + ' off the wall or lower than .85 over the floor: ' + JSON.stringify(off.slice(0, 4)));
+        if (crooked) { const s0 = F.FRAMES[i * 2].frame, s1 = F.FRAMES[i * 2 + 1].frame; minShift = Math.min(minShift, Math.max(...s0.map((p, k) => Math.hypot(p[0] - s1[k][0], p[1] - s1[k][1])))); }
+      }
+      for (const [t, n] of Object.entries(countParts(tag, fb))) if (!['fotos', 'pared', 'lampara'].includes(t)) P.push('frames ' + key + ': inside the frames\' touch box ' + JSON.stringify(fb) + ' the set also drew ' + n + ' px of ' + t);
+      lampIn = Math.max(lampIn, countParts(tag, fb).lampara || 0);
+    }
+    for (let i = 0; i < 3; i++) { if (sh.points['foto.' + i].angle !== 0) P.push('frames: frame ' + i + ' straight is turned ' + sh.points['foto.' + i].angle); if (Math.abs(sh.points['foto.' + i + '.torcida'].angle - F.TILT) > 1e-4 || Math.abs(F.TILT) < .2) P.push('frames: frame ' + i + ' crooked is turned ' + sh.points['foto.' + i + '.torcida'].angle); }
+    notes.push('frames: in all ' + Object.keys(G.parts).length + ' baked states each of the 3 hangs on the left wall from its own nail, seen, on a wire (' + worstWire + ' px of wire at the least), the whole frame seen (nothing of the set over it), its opening its paper; no two frames share a pixel; inside their touch box ' + JSON.stringify(fb) + ' the set drew only the wall, the frames and ' + lampIn + ' px of the lamp\'s foot in its corner (the frames are hit first there: COSAS order). Straight ones upright (angle 0), a crooked one turned ' + F.TILT + ' rad (counterclockwise, ' + r2(Math.abs(F.TILT) * 180 / Math.PI) + ' degrees) about its middle (its corners ' + r2(minShift) + ' px from the upright one\'s); every frame pixel on the left wall, .85 or more over the floor'); }
+
+  /* the lamp stands on the floor: its foot's front edge seen, floor in front of it */
+  { const tag = TAGS['000'], Z = G.z['000'], c = [F.LAMP[0] + .22 / E.R2, F.LAMP[1] + .22 / E.R2], q = E.project(c[0], c[1], 0), x = Math.round(q.sx), y = Math.floor(q.sy);
+    let foot = 0; for (let yy = y - 6; yy <= y; yy++) for (let xx = x - 6; xx <= x + 6; xx++) if (tag[yy * 240 + xx] === 'lampara') foot++;
+    let floorRows = 0; for (let yy = y + 1; yy < y + 12 && !tag[yy * 240 + x] && Z[yy * 240 + x] > -1e8; yy++) floorRows++;
+    if (tag[(y - 1) * 240 + x] !== 'lampara' || floorRows < 1) P.push('lamp: its foot\'s front edge at ' + x + ',' + y + ' is ' + tag[(y - 1) * 240 + x] + ', ' + floorRows + ' rows of floor in front of it');
+    notes.push('lamp: it stands in the corner (' + F.LAMP + '); its foot shows (' + foot + ' px of the lamp in the 13 x 7 round its front edge), ' + floorRows + (floorRows === 1 ? ' row' : ' rows') + ' of floor in front of it before the sofa\'s back'); }
+
+  /* the door: through it the porch first (its tiles, from the threshold up), the lawn beyond (above) */
+  { const tag = TAGS['000'], K = G.kinds['000'], Z = G.z['000'], cols = []; let porch = 0, lawn = 0, bad = 0;
+    const a = E.project(0, F.D0, 0), b = E.project(0, F.D1, F.DH);
+    for (let x = Math.ceil(b.sx); x < Math.floor(a.sx); x++) { let seenLawn = false, n = 0;
+      for (let y = 215; y >= 0; y--) { const i = y * 240 + x; if (tag[i] || Z[i] < -1e8) { if (n) break; continue; }
+        const g = E.atZ(x + .5, y + .5, 0); if (g[0] >= 0) continue;                     // the room's own floor, before the threshold
+        n++; if (K[i] === G.K.road) { porch++; if (seenLawn) bad++; } else if (K[i] === G.K.grass) { lawn++; seenLawn = true; } }
+      cols.push(n); }
+    if (bad || porch < 3 * lawn || !lawn) P.push('door: through it ' + porch + ' px of porch, ' + lawn + ' of lawn, ' + bad + ' px of porch above lawn');
+    notes.push('door: through it, from the threshold up, the porch\'s tiles and edge (' + porch + ' px) then the lawn beyond (' + lawn + ' px), in each of its ' + cols.length + ' columns'); }
 
   /* the cake and the camera on the low table */
   const top = (() => { const c = F.MES_C, a = F.TURN, ax = Math.cos(a), ay = Math.sin(a), bx = -ay, by = ax, xs = [], ys = [];
@@ -688,6 +732,45 @@ function check(sh, G) {
       const hp = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : [Math.round(b[0] + b[2] / 2), Math.round(b[1] + b[3] / 2)], hr = [Math.round(hp[0]) + HANDR[0], Math.round(hp[1]) + HANDR[1], HANDR[2], HANDR[3]]; nH++;
       for (const [fn, f] of faces) if (meets(hr, f)) { if (rb && fn === 'the frog\'s face') { cardHand.add(spot); continue; } P.push('hand: ' + where + ' the hand ' + JSON.stringify(hr) + ' is on ' + fn + ' ' + JSON.stringify(f)); }
     }); }
+  /* the photos (round 2): at every moment a photo of a person shows, the whole of it (the 16 x 22 of their sprite marco() draws, the face and more)
+     is inside its frame's opening, at 1:1, upright or turned with a crooked frame; no corner card (but the photo of everyone, over the whole room
+     at the end, as before) and no one's sprite is over any opaque pixel of it */
+  const tr = (pt, q) => { const a = pt.angle, c = Math.cos(a), s = Math.sin(a); return [pt.screen[0] + q[0] * c - q[1] * s, pt.screen[1] + q[0] * s + q[1] * c]; };
+  let nPh = 0, nPhM = 0, worstIn = 99; const phSeen = new Set(), phWho = new Set();
+  for (const r of runs) { forRun(r); for (const L of r.lines) { const w = remapW(L.W), fotos = w.fotos || [];
+    if (!fotos.some(f => f && f.q)) continue;
+    const boards = boardsOf(w, x0).filter(b => b[0] !== 'the photo of everyone'), key = JSON.stringify([fotos, w.gente, w.cq, boards]); if (phSeen.has(key)) continue; phSeen.add(key); nPhM++;
+    fotos.forEach((f, i) => { if (!f || !f.q) return; const k = 'foto.' + i + (f.ok ? '' : '.torcida'), pt = sh.points[k], clip = sh.clips[k].screen;
+      f.q.forEach((id, n) => { if (id === 'coqui') return; nPh++; phWho.add(id);
+        const x = f.q.length > 1 ? -10 + n * 2 : -8, rect = [[x, PHOTO.y], [x + PHOTO.w, PHOTO.y], [x + PHOTO.w, PHOTO.y + PHOTO.h], [x, PHOTO.y + PHOTO.h]].map(q => tr(pt, q));
+        const where = r.story.id + ' ' + r.plan + ' ' + L.path + ': the photo of ' + id + ' in frame ' + i + (f.ok ? '' : ' (crooked)');
+        if (!rect.every(c => inPoly(clip, c[0], c[1], .01))) P.push('photo: ' + where + ' ' + JSON.stringify(rect.map(c => c.map(r2))) + ' is not wholly inside the opening ' + JSON.stringify(clip));
+        else for (const c of rect) for (let e = 0; e < 4; e++) { const a = clip[e], b = clip[(e + 1) % 4], len = Math.hypot(b[0] - a[0], b[1] - a[1]); worstIn = Math.min(worstIn, Math.abs((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])) / len); }
+        // its opaque pixels (the sprite's rows 0..21, columns sx..sx + 15), each pixel's middle on the screen
+        const m = G.M.people[id], rows = G.M.masks[id + '.idle'], top = m.h - 1, sx0 = id === 'abuela' ? 22 - 30 : -8; let hit = null;
+        for (const [dy, a, b] of rows) { const row = dy + top; if (row < 0 || row >= PHOTO.h) continue;
+          for (let col = Math.max(a, sx0); col <= Math.min(b, sx0 + PHOTO.w - 1); col++) { const c = tr(pt, [x + col - sx0 + .5, PHOTO.y + row + .5]), px = Math.floor(c[0]), py = Math.floor(c[1]), cell = [px, py, 1, 1];
+            for (const [bn, bb] of boards) if (meets(cell, bb)) hit = hit || bn;
+            for (const [pid, pp] of people(w)) if (maskMeets(pid, pp, cell)) hit = hit || pid + '\'s sprite';
+            if (w.cq && w.cq.vis && !(w.cq.al < .5)) { const fb = frogBox(w.cq); if (meets(cell, [fb.x, fb.y + Math.round(w.cq.dy || 0), fb.w, fb.h])) hit = hit || 'the frog'; } } }
+        if (hit) P.push('photo: ' + where + ': ' + hit + ' is over it'); }); }); } }
+  notes.push('photos: ' + nPh + ' photos of a person at ' + nPhM + ' distinct moments (' + [...phWho].sort().join(', ') + '): each whole (the 16 x 22 of the sprite, at 1:1, upright or turned with its crooked frame) inside its frame\'s opening, ' + r2(worstIn) + ' px from its edge at the least (its sides on the opening\'s: 16 wide in 16, as the old); no corner card (but the photo of everyone) and no one over any pixel of it');
+
+  /* standing over sitting (round 2): no standing person's sprite covers more of a sitting person's face (sheet talk.faces) than the old picture did at
+     that moment (sala.js as it is: the run's own places, drawn in its order) */
+  let nSO = 0, nSOold = 0; const soSeen = new Set(), soOld = new Set();
+  const drawOrder = w => Object.keys(w.gente || {}).filter(id => shown(w.gente[id])).map((id, k) => [id, w.gente[id].z || w.gente[id].y, k]).sort((a, b) => a[1] - b[1] || a[2] - b[2]).map(e => e[0]);
+  const coverFaces = (w, bodies) => { const ord = drawOrder(w), out = {};
+    ord.forEach((t, ti) => { const pt = w.gente[t]; if (!pt.sent && !pt.z) return; const face = faceOf(t, pt);
+      ord.slice(ti + 1).forEach(sid => { const ps = w.gente[sid]; if (ps.sent || ps.z) return; const n = maskMeets(sid, ps, face); if (n) out[sid + '>' + t] = n;
+        if (bodies && maskMeets(sid, ps, body(t, pt))) bodies.add(sid + ' before ' + t); }); });
+    return out; };
+  const bodiesNew = new Set(), bodiesOld = new Set();
+  for (const r of runs) { forRun(r); for (const L of r.lines) { const wn = remapW(L.W), key = JSON.stringify([wn.gente, L.W.gente]); if (soSeen.has(key)) continue; soSeen.add(key); nSO++;
+    const cn = coverFaces(wn, bodiesNew), co = coverFaces(L.W, bodiesOld);
+    for (const [pair, n] of Object.entries(cn)) { if ((co[pair] || 0) < n) P.push('standing over sitting: ' + r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + pair.replace('>', '\'s sprite covers ') + '\'s face, ' + n + ' px (the old picture: ' + (co[pair] || 0) + ')'); else soOld.add(r.story.id + ' ' + pair + ' ' + n); } } }
+  notes.push('standing over sitting: at ' + nSO + ' distinct moments no standing person\'s sprite covers more of a sitting person\'s face (eyes to chin) than the old picture did there' + (soOld.size ? ' (' + soOld.size + ' covers, each as in the old)' : ' (none does, nor in the old)') + '; one stands before a sitting one\'s body, not the face, as ' + [...bodiesNew].sort().join(', ') + (([...bodiesNew].every(b => bodiesOld.has(b))) ? ', every one as in the old picture' : ''));
+
   notes.push('asks: ' + nF + ' distinct asks: every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), the hint hand on no face; ' + nC + ' answer cards inside the view, over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
   if (cardHand.size) notes.push('NOT the scene\'s: the hand juego.js draws at an answer card (the left one) reaches 7 px onto the frog\'s face, 46 px under it, in every scene (the card\'s place and the hand are the game\'s, respBox and hand()): at the asks for ' + [...cardHand].join(', '));
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, abuelo\'s "q", the frog\'s "amor"): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corner (' + worstBoard + ' px), on no face');
