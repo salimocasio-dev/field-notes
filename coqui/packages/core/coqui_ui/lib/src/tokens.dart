@@ -147,6 +147,18 @@ abstract final class CoquiColors {
   /// `.lbl .spk` the speaker glyph beside a book line. app.html:116
   static const bookSpeaker = Color(0xFF9A9AA6);
 
+  // ---- Repaso's games (order 27): the tiles on the lesson frame. Not in v=39; chosen to sit between the frame
+  // (`--bg`) and its lines (`--line`), so a tile reads as a thing to touch and a ring still shows round it.
+
+  /// A word or speaker tile's face.
+  static const lessonTile = Color(0xFF2A2A31);
+
+  /// A tile while the finger is down on it.
+  static const lessonTilePressed = Color(0xFF34343D);
+
+  /// The "N in a row" chip.
+  static const lessonChip = Color(0xFF2A2A31);
+
   /// The streak's flame, its body: the median colour of the inside of the fire emoji glyph the old chip shows
   /// (`hud()`, app.html:286), measured on references 012 (both phones): `#FF7003`.
   static const flameBody = Color(0xFFFF7003);

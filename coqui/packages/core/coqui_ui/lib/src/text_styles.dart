@@ -239,6 +239,16 @@ abstract final class CoquiText {
     CoquiColors.lessonInk2,
   );
 
+  /// Repaso's games (order 27): a written word on a tile, 20/28 medium white (the book's line size: learning
+  /// content, read at arm's length).
+  static final lessonTile = _s(20, 28, FontWeight.w500, CoquiColors.lessonInk);
+
+  /// The one line saying what to do in a game: 16/24 `--ink2`.
+  static final lessonHint = _s(16, 24, FontWeight.w400, CoquiColors.lessonInk2);
+
+  /// The "N in a row" chip: 14/20 semibold `--ink2`.
+  static final lessonChip = _s(14, 20, FontWeight.w600, CoquiColors.lessonInk2);
+
   /// Every style above by name (the font test walks it: each style's weight must have a real font file).
   static Map<String, TextStyle> get all => {
     'body': body,
@@ -283,6 +293,9 @@ abstract final class CoquiText {
     'bookWho': bookWho,
     'lessonLine': lessonLine,
     'lessonStateLabel': lessonStateLabel,
+    'lessonTile': lessonTile,
+    'lessonHint': lessonHint,
+    'lessonChip': lessonChip,
   };
 }
 
