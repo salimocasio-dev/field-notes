@@ -266,3 +266,33 @@ function tagLeaves(frameZ) {
     }
   }
 }
+
+/* ---------- a room seen from inside (order 31a, La sala) ---------- */
+// the reveal of a hole in a +x wall: the faces of the wall's thickness seen through it from above, `deep` into the wall
+// (the jamb at a0, which faces +y, and the sill)
+function revealX(at, a0, a1, z0, z1, deep, c) {
+  for (let t = 0; t <= deep; t += ST * .5) {
+    for (let z = z0; z <= z1; z += ST * .5) plot(at - t, a0, z, rampOf(c)[2]);
+    for (let a = a0; a <= a1; a += ST * .5) plot(at - t, a, z0, rampOf(c)[3]);
+  }
+}
+// a wall face drawn pixel by pixel on the screen (order 31a): every pixel of the picture whose sight line meets the plane x = at (face 'x', facing
+// +x) or y = at (face 'y', facing +y) inside [a0, a1] (along the wall) x [z0, z1] takes fn(a, z) there (0: a hole, nothing drawn), with the depth
+// test of plot(). One sample a pixel, where wallX / wallY step every ST (about 13 a pixel at S = 26): the same picture of a flat face, far cheaper
+function planeFace(face, at, a0, a1, z0, z1, fn) {
+  const xs = [], ys = [];
+  for (const a of [a0, a1]) for (const z of [z0, z1]) { const p = face === 'x' ? project(at, a, z) : project(a, at, z); xs.push(p.sx); ys.push(p.sy); }
+  const ix0 = Math.max(0, Math.floor(Math.min(...xs))), ix1 = Math.min(W - 1, Math.ceil(Math.max(...xs))), iy0 = Math.max(0, Math.floor(Math.min(...ys))), iy1 = Math.min(H - 1, Math.ceil(Math.max(...ys)));
+  for (let iy = iy0; iy <= iy1; iy++) for (let ix = ix0; ix <= ix1; ix++) {
+    const u = (ix + .5 - OX) / S, k = (iy + .5 - OY) / S;                    // u = (x - y) / R2; k = v SIN - z COS
+    const x = face === 'x' ? at : at + u * R2, y = face === 'x' ? at - u * R2 : at, a = face === 'x' ? y : x;
+    if (a < a0 || a > a1) continue;
+    const v = (x + y) / R2, z = (v * SIN - k) / COS;
+    if (z < z0 || z > z1) continue;
+    const d = v * COS + z * SIN, i = iy * W + ix;
+    if (d <= zb[i]) continue;
+    const col = fn(a, z);
+    if (!col) continue;
+    zb[i] = d; pix[i] = col;
+  }
+}

@@ -1,0 +1,343 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La sala: abuela's living room, seen from inside, as a set on the Pixel Plays engine (order 31a).
+   A room of the same house as El frente and El balcón: the same wooden door with its white frame, the same porch tiles (the floor),
+   the same light (shadows to screen right) and scale (the door 2.55 tall, about abuela's height).
+   The room is cut open as a doll's house: of its four walls only the two far ones stand (the left one with the door to the porch and
+   the three pictures, the back one with the window); the two near walls are not built, and the floor runs past the bottom and the
+   sides of the picture, so no cut edge of it shows. The standing walls are cut a strip above the door and the window: their cut tops
+   show as a white edge, and above them the plain dark backdrop (the orchestrator's decision, top=liso; round 1's patio candidate is gone).
+   Round 2 (the fresh readers): the three frames hang as upright pictures on wires from nails, turned to face the camera (as the
+   furniture), so each photo is upright and whole at the old size, the three in a row stepping up the wall with its slope; a crooked one
+   is turned 13.75 degrees beside upright ones. The lamp stands in the corner, as tall as the old one, its foot on the floor seen over the
+   sofa's back. Through the door the porch (El balcón's tiles) and its edge, the lawn beyond and lower.
+   The state comes from the address; these become the builder's setKey:
+     luz   = 1 | 0           W.luz (the floor lamp lit; every story keeps it lit)
+     fotos = three of 0 | 1  the frames (frames 0, 1, 2): 1 hangs crooked (W.fotos[i] && !W.fotos[i].ok); a photo in it is the sprite layer's
+     t     = wind time in seconds (0 for the reference); ox, oy = the origin (defaults are La sala's)
+   It draws one frame: the baked set, then drawLeaves(t) and drawTufts(t). No characters. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = {
+  luz: pick('luz', ['0', '1'], '1') === '1',
+  fotos: /^[01]{3}$/.test(Q.get('fotos') || '') ? Q.get('fotos') : '000',
+  t: +(Q.get('t') || 0),
+};
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || 20), originY: +(Q.get('oy') || -33), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script>
+'use strict';
+/* ---------- the plan of the room (world units). The corner of the two standing walls is (0, 0); the room is x >= 0, y >= 0 ---------- */
+// the left wall stands on x = 0 and faces +x (in shade); the back wall stands on y = 0 and faces +y (lit). Both are T thick
+const T = .22, WH = 3.2;                                              // the walls' thickness and the height they are cut at
+const YL = 8.2, XR = 6.2;                                             // how far each wall runs (past the picture's left and right edges)
+const D0 = 4.0, D1 = 5.3, DH = 2.55;                                // the door to the porch, on the left wall (y from D0 to D1)
+const LEAF_ANG = 1.0;                                                 // the leaf, open into the room: turned this far from the wall's normal (+x) towards +y
+// the three picture frames (round 2): each hangs on a wire from a nail in the left wall, an upright picture turned to face the camera, so its
+// photo is upright and whole at the old size. NAILS: the nail's pixel in the picture, on the left wall; the three nails at one height on the wall
+// (z 2.5), so the frames step up towards the corner with it, 2 px apart, over the sofa and clear of the heads of whoever sits or stands before it;
+// 3 px from the door's casing and from the corner, so a crooked one (two corners 2.9 px out) stays on the wall
+const NAILS = [[83, 49], [105, 38], [127, 27]];
+const FPW = 20, FPH = 27, FWIRE = 2, FMOULD = 2;                      // a frame in pixels: width, height, the wire's rows from the nail to its top, the moulding
+const TILT = -.24;                                                    // a crooked frame: turned by this (the old marco's .24, counterclockwise), about its middle (it slid on its wire)
+const W0 = 1.86, W1 = 3.36, WZ0 = 1.3, WZ1 = 2.55;                    // the window, on the back wall (x from W0 to W1)
+const TURN = -Math.PI / 4;                                            // the furniture turned to face the camera (as El balcón's chairs)
+const TEAL = [92, 190, 186], WOOD = [150, 98, 56], WHITE = [244, 240, 228];
+const TILE = [[238, 220, 176], [224, 198, 144], [184, 154, 106]];     // El balcón's porch tiles (the old sala's floor colours too)
+const WALLP = [252, 238, 196];                                        // the wallpaper (old: #F4E0B0 .. #F8E8C0)
+const SOFA = [62, 154, 138], SOFA_D = [46, 122, 110], ORNG = [242, 166, 80], ORNG_D = [220, 132, 48];
+const PINK = [255, 184, 212], LAMPY = [255, 224, 112], CREAMY = [255, 251, 234];
+const BLANKET = [168, 216, 240];
+
+/* where the furniture stands: a centre on the floor, half-width (across the screen) and half-depth, the height */
+const at = (sx, sy) => { const g = unproject(sx, sy); return [g.x, g.y]; };   // the floor point under a screen point
+const SOFA_C = at(114, 127 - .45 * S * SIN), SOFA_HW = 46 / S, SOFA_HD = .45;
+const BUT_C = at(181, 127 - .44 * S * SIN), BUT_HW = 21 / S, BUT_HD = .44;
+const MES_C = at(121, 166 - .36 * S * SIN), MES_HW = 23 / S, MES_HD = .36, MES_H = .44;
+const MANTA_C = at(78, 188), MANTA_HW = 29 / S, MANTA_HD = 11 / (S * SIN);
+const LAMP = [.34, .22], PLANT = [4.45, .3];    // the lamp in the corner (round 2, from .95, .32): its foot on the floor seen over the sofa's back
+const LAMP_H = 3.0;                            // its height (round 2, from 2.42): as the old one, taller than abuela (64 px to her 51, here 3.0 to 2.55); its shade over the frames
+
+/* ---------- the floor: El balcón's porch tiles; through the door the porch itself, in the sun, its edge, and the lawn beyond ---------- */
+const tileAt = (a, b, k) => {
+  const ta = a / .5, tb = b / .5, ea = ta - Math.floor(ta), eb = tb - Math.floor(tb);
+  if (ea < .07 || eb < .07) return rgb(...TILE[2].map(v => v * k));
+  return rgb(...TILE[(Math.floor(ta) + Math.floor(tb)) % 2 ? 1 : 0].map(v => v * k));
+};
+// through the door (round 2): the porch, El balcón's tiled floor, at the room's floor level, PORCH_D out from the wall, then its stone edge, and
+// the lawn PORCH_DROP lower (El balcón's FLOOR) beyond it. A floor point (x < 0, y) is seen on the sight line that crosses the wall at y - x,
+// -.8165 x high: only the band of sight lines through the doorway (y - x from D0 to D1, with a margin) is outside ground, out to OUT_X (the
+// doorway's top); above the cut walls the backdrop shows. PORCH_D: El balcón's porch is 3.0 deep, which leaves 2 rows of lawn at the
+// doorway's top; at 2.6 the porch fills its lower five sixths and the lawn shows beyond as a strip
+const PORCH_D = 2.6, PORCH_DROP = .3, PORCH_EDGE = .1, OUT_X = -3.6;
+function floorGround(x, y, ix, iy, i) {
+  if (x >= 0 && y >= 0) { kinds[i] = KIND_ROAD; return tileAt(x, y, 1); }
+  if (x < 0 && x > OUT_X && x - y > -D1 - .4 && x - y < -D0 + .4) {
+    if (x > -PORCH_D + PORCH_EDGE) { kinds[i] = KIND_ROAD; return tileAt(x, y, 1.04); }
+    if (x > -PORCH_D) { kinds[i] = KIND_ROAD; return rampOf(C.stone)[3]; }      // the porch's edge, its top lit
+    // the lawn, PORCH_DROP below the porch: the sight line through this pixel meets it further out (x and y less by PORCH_DROP * COS / SIN / R2)
+    const k = PORCH_DROP * COS / SIN / R2, gx = x - k, gy = y - k;
+    kinds[i] = KIND_GRASS;
+    const t = noise(gx * .45, gy * .45) * 1.1 + (hash(ix, iy) - .5) * .5;
+    return rgb(...GRASS[clamp(Math.floor(t * 4.2) + 1, 0, 4)]);
+  }
+  return 0;
+}
+
+/* ---------- the walls ---------- */
+// the wallpaper: plain, a faint stripe; on the face in shade (+x) one ramp step darker, as block() shades its +x faces
+function paper(lit, a, z, ix) {
+  if (z < .16) return rampOf(WOOD)[z > .13 ? 3 : lit ? 2 : 1];                                   // the skirting board, its lit top edge
+  const stripe = ((a + 10) % .48) < .05 ? -.45 : 0;
+  return rampOf(WALLP)[clamp(Math.floor((lit ? 3.3 : 2.35) + stripe + (bayerAt(a * 72 | 0, z * 83 | 0) - .5) * .3), 0, 4)];
+}
+function walls() {
+  part('pared', () => {
+    // the left wall (faces +x), the door cut out of it; the back wall (faces +y), the window cut out of it
+    // (pixel by pixel on the screen: set-kit.js planeFace; the walls were most of the bake with wallX's ST steps)
+    planeFace('x', 0, 0, YL, 0, WH, (a, z) => a > D0 && a < D1 && z < DH ? 0 : paper(false, a, z));
+    planeFace('y', 0, 0, XR, 0, WH, (a, z) => a > W0 && a < W1 && z > WZ0 && z < WZ1 ? 0 : paper(true, a, z));
+    // their cut tops: the wall's thickness, white
+    const E = rampOf(WHITE);
+    for (let b = -T; b <= YL; b += ST * .8) for (let t = -T; t <= 0; t += ST * .8) plot(t, b, WH, E[b < 0 ? 3 : 3]);
+    for (let a = 0; a <= XR; a += ST * .8) for (let t = -T; t <= 0; t += ST * .8) plot(a, t, WH, E[3]);
+    for (let b = -T; b <= YL; b += ST * .8) plot(0, b, WH - .02, E[2]);
+    for (let a = 0; a <= XR; a += ST * .8) plot(a, 0, WH - .02, E[3]);
+  });
+  part('puerta', doorway);
+  part('ventana', windowAndCurtains);
+  part('fotos', frames);
+}
+
+/* ---------- the door to the porch: the frame, the porch seen through it, the leaf open against the wall ---------- */
+function doorway() {
+  const F = rampOf(WHITE), Wd = rampOf(WOOD), w = D1 - D0;
+  revealX(0, D0, D1, 0, DH, T, WALLP);
+  // the white casing round the opening (as El balcón's door frame)
+  for (let z = 0; z <= DH + .14; z += ST * .5) for (let a = 0; a <= .12; a += ST * .5) { plot(.03, D0 - .14 + a, z, F[2]); plot(.03, D1 + .02 + a, z, F[2]); }
+  for (let a = D0 - .14; a <= D1 + .14; a += ST * .5) for (let z = DH; z <= DH + .14; z += ST * .5) plot(.03, a, z, F[2]);
+  // the leaf, open into the room and back against the wall, hinged at the far jamb (El balcón's panels)
+  const panel = (t, z) => {
+    const u = t * w, edge = u < .08 || u > w - .08 || z < .08 || z > DH - .08;
+    const inPanel = u > .22 && u < w - .22 && ((z > .3 && z < 1.1) || (z > 1.3 && z < DH - .25));
+    const rim = inPanel && (u < .28 || u > w - .28 || Math.abs(z - .3) < .06 || Math.abs(z - 1.1) < .06 || Math.abs(z - 1.3) < .06 || Math.abs(z - (DH - .25)) < .06);
+    return Wd[edge ? 0 : rim ? 0 : inPanel ? 2 : 1];
+  };
+  leaf(.06, D1 + .16, w, 0, DH, LEAF_ANG, (t, z) => t > .96 ? Wd[0] : panel(t, z));
+  // the knob
+  { const hx = .06 + Math.cos(LEAF_ANG) * (w - .16), hy = D1 + .16 + Math.sin(LEAF_ANG) * (w - .16);
+    for (let a = 0; a <= .1; a += ST * .4) for (let z = 0; z <= .1; z += ST * .4) plot(hx + .03, hy + a, 1.15 + z, rgb(250, 210, 80)); }
+}
+
+/* ---------- the window: white frame and bars, the sky and a branch outside, pink curtains on a wooden rod ---------- */
+function windowAndCurtains() {
+  const F = rampOf(WHITE);
+  reveal(0, W0, W1, WZ0, WZ1, T, WALLP);
+  const mid = (W0 + W1) / 2, zm = WZ0 + (WZ1 - WZ0) * .55;
+  paneY(-T + .02, W0, W1, WZ0, WZ1, (a, z) => {
+    const bar = Math.abs(a - mid) < .05 || Math.abs(z - zm) < .05;
+    if (bar) return F[3];
+    const lx = (a - (W1 - .35)) / .42, lz = (z - (WZ1 - .32)) / .2, lx2 = (a - (W1 - .75)) / .3, lz2 = (z - (WZ1 - .2)) / .14;
+    if (lx * lx + lz * lz < 1 || lx2 * lx2 + lz2 * lz2 < 1) return rgb(...(lz < -.3 && lx2 * lx2 + lz2 * lz2 >= 1 ? [46, 154, 72] : [76, 188, 88]));
+    const k = (z - WZ0) / (WZ1 - WZ0);
+    return rgb(...[[162, 211, 255], [120, 186, 250], [85, 159, 242]][clamp(Math.floor(k * 3 + (hash(a * 40 | 0, z * 40 | 0) - .5) * .6), 0, 2)]);
+  });
+  // the frame round the opening and the sill
+  for (let a = W0 - .12; a <= W1 + .12; a += ST * .5) for (const z of [WZ0 - .12, WZ1]) for (let h = 0; h <= .12; h += ST * .5) plot(a, .03, z + h, F[3]);
+  for (let z = WZ0 - .12; z <= WZ1 + .12; z += ST * .5) for (const a of [W0 - .12, W1]) for (let h = 0; h <= .12; h += ST * .5) plot(a + h, .03, z, F[3]);
+  block(W0 - .2, 0, WZ0 - .2, W1 + .2, .14, WZ0 - .12, WHITE);
+  // the curtains, gathered at each side, and the rod
+  const P = rampOf(PINK), cw = .42, cz0 = WZ0 - .45, cz1 = WZ1 + .3;
+  for (const [a0, side] of [[W0 - cw - .02, -1], [W1 + .02, 1]]) {
+    for (let a = 0; a <= cw; a += ST * .4) for (let z = cz0; z <= cz1; z += ST * .5) {
+      const fold = Math.sin((a / cw) * Math.PI * 3), y = .1 + .05 * fold;
+      plot(a0 + a, y, z, P[clamp(Math.round(2.6 + fold * .9 + (side < 0 ? -.2 : 0)), 0, 4)]);
+    }
+  }
+  const Wd = rampOf(WOOD);
+  for (let a = W0 - cw - .15; a <= W1 + cw + .15; a += ST * .5) for (let h = 0; h <= .07; h += ST * .5) { plot(a, .16, cz1 + .02 + h, Wd[2]); plot(a, .16 + h * .5, cz1 + .02, Wd[1]); }
+  for (const a of [W0 - cw - .17, W1 + cw + .13]) for (let h = 0; h <= .1; h += ST * .4) for (let q = 0; q <= .06; q += ST * .4) plot(a + q, .17, cz1 - .01 + h, Wd[3]);
+}
+
+/* ---------- the three picture frames (round 2): upright pictures hanging on wires from nails in the left wall ---------- */
+// Each frame is turned to face the camera, as the furniture is, so it shows as an upright rectangle: drawn pixel by pixel on the screen, in
+// front of the wall (the wall's own depth at that pixel, a hair nearer), so the furniture and the lamp still stand in front of it.
+// Frame coordinates (the old marco()'s): x across, y down, its origin at (0, 0); the frame [-10, 10) x [0, FPH), the opening (a photo in it is
+// the sprite layer's) [-8, 8) x [FMOULD, FPH - FMOULD); the nail's pixel centre at (.5, -FWIRE - .5) of a straight frame. A crooked frame
+// (fotos[i] = 1) is turned by TILT about its middle (0, FPH / 2), as a picture that slid on its wire: the nail stays, the wire runs from it to the
+// turned frame's top. Counterclockwise, the two corners it turns out are its top left (over the lower frame on its left) and its bottom right
+// (under the higher frame on its right), so it stays off both. (Turned about the nail, or clockwise, it would reach 3 to 7 px into them.) On the screen,
+// frame point q lands at P + R(angle) q (canvas translate(P), rotate(angle): the sheet's points)
+const FRAME_BOX = [-FPW / 2, 0, FPW / 2, FPH], FRAME_OPEN = [-FPW / 2 + FMOULD, FMOULD, FPW / 2 - FMOULD, FPH - FMOULD];
+const rot = (a, p) => [p[0] * Math.cos(a) - p[1] * Math.sin(a), p[0] * Math.sin(a) + p[1] * Math.cos(a)];
+function frameGeom(i, crooked = SET.fotos[i] === '1') {
+  const a = crooked ? TILT : 0, [nx, ny] = NAILS[i], C = [nx, ny + 1 + FWIRE + FPH / 2], d = rot(a, [0, -FPH / 2]);
+  const P = [C[0] + d[0], C[1] + d[1]];
+  const toScreen = q => { const r = rot(a, q); return [P[0] + r[0], P[1] + r[1]]; };
+  const toFrame = (sx, sy) => rot(-a, [sx - P[0], sy - P[1]]);
+  const corners = r => [[r[0], r[1]], [r[2], r[1]], [r[2], r[3]], [r[0], r[3]]].map(toScreen);
+  return { i, crooked, angle: a, nail: [nx, ny], P, toScreen, toFrame, frame: corners(FRAME_BOX), opening: corners(FRAME_OPEN) };
+}
+// the left wall's face (x = 0) under a pixel: its point (y, z) and depth, as planeFace finds it
+function onLeftWall(ix, iy) {
+  const u = (ix + .5 - OX) / S, k = (iy + .5 - OY) / S, y = -u * R2, v = y / R2, z = (v * SIN - k) / COS;
+  return { y, z, d: v * COS + z * SIN };
+}
+// which frame drew each pixel, and what (for the checks: FRAME_OWNER = frame * 4 + 0 moulding, 1 opening, 2 wire, 3 nail; FRAME_HITS: how many frames)
+const FRAME_OWNER = new Int8Array(W * H), FRAME_HITS = new Uint8Array(W * H);
+function frames() {
+  const Wd = rampOf(WOOD), DARK = rgb(42, 24, 16), WIRE = rgb(60, 44, 34), NAIL = rgb(40, 30, 24), PAPER = rgb(...RP_CREAM3), PAPER_D = rgb(214, 196, 150);
+  FRAME_OWNER.fill(-1); FRAME_HITS.fill(0);
+  const put = (ix, iy, col, i, kind) => {
+    if (ix < 0 || iy < 0 || ix >= W || iy >= H) return;
+    const w = onLeftWall(ix, iy), j = iy * W + ix, d = w.d + .01;
+    if (FRAME_OWNER[j] >= 0 && FRAME_OWNER[j] >> 2 !== i) { FRAME_HITS[j] = 2; return; }   // two frames on one pixel: the checks refuse it
+    if (d <= zb[j] && FRAME_OWNER[j] < 0) return;                                          // (its own pixels: the nail goes over the wire's end)
+    zb[j] = d; pix[j] = col; FRAME_HITS[j] = 1;
+    FRAME_OWNER[j] = i * 4 + kind;
+  };
+  for (let i = 0; i < 3; i++) {
+    const g = frameGeom(i), xs = g.frame.map(p => p[0]), ys = g.frame.map(p => p[1]);
+    for (let iy = Math.floor(Math.min(...ys)) - 1; iy <= Math.ceil(Math.max(...ys)) + 1; iy++) for (let ix = Math.floor(Math.min(...xs)) - 1; ix <= Math.ceil(Math.max(...xs)) + 1; ix++) {
+      const [fx, fy] = g.toFrame(ix + .5, iy + .5);
+      if (fx < FRAME_BOX[0] || fx >= FRAME_BOX[2] || fy < FRAME_BOX[1] || fy >= FRAME_BOX[3]) continue;
+      const cx = Math.floor(fx), cy = Math.floor(fy);
+      if (fx >= FRAME_OPEN[0] && fx < FRAME_OPEN[2] && fy >= FRAME_OPEN[1] && fy < FRAME_OPEN[3]) {
+        put(ix, iy, cy === FRAME_OPEN[1] || cx === FRAME_OPEN[0] ? PAPER_D : PAPER, i, 1);       // the paper, the moulding's shadow on its top and left
+        continue;
+      }
+      const edge = cx === FRAME_BOX[0] || cx === FRAME_BOX[2] - 1 || cy === FRAME_BOX[1] || cy === FRAME_BOX[3] - 1;
+      put(ix, iy, edge ? DARK : cy === FRAME_BOX[1] + 1 ? Wd[4] : cx === FRAME_BOX[2] - 2 || cy === FRAME_BOX[3] - 2 ? Wd[1] : Wd[2], i, 0);
+    }
+    // the wire, from the nail to two points on the frame's top, and the nail
+    const nc = [g.nail[0] + .5, g.nail[1] + .5];
+    for (const tx of [-4.5, 5.5]) { const e = g.toScreen([tx, .5]);
+      for (let t = 0; t <= 1; t += .05) { const sx = nc[0] + (e[0] - nc[0]) * t, sy = nc[1] + (e[1] - nc[1]) * t, ix = Math.floor(sx), iy = Math.floor(sy);
+        if (FRAME_OWNER[iy * W + ix] >> 2 === i && (FRAME_OWNER[iy * W + ix] & 3) !== 2) continue; put(ix, iy, WIRE, i, 2); } }
+    put(g.nail[0], g.nail[1], NAIL, i, 3);
+  }
+}
+const RP_CREAM3 = [251, 240, 210];
+
+/* ---------- the furniture, turned to face the camera ---------- */
+// flat bands for upholstery (shade()'s grain reads as dirt on cloth): the top lit, the front a step down, the side in shade
+const cloth = c => (s, t, z, face) => rampOf(c)[face === 'top' ? 3 : face === 'front' ? 2 : 1];
+const atT = (c, s, t) => [c[0] + Math.cos(TURN) * s - Math.sin(TURN) * t, c[1] + Math.sin(TURN) * s + Math.cos(TURN) * t];
+function furniture() {
+  // the long sofa: feet, a base, two seat cushions, the back, the arms
+  part('sofa', () => {
+    const c = SOFA_C, hw = SOFA_HW, hd = SOFA_HD;
+    for (const s of [-hw + .12, hw - .12]) for (const t of [-hd + .1, hd - .1]) { const p = atT(c, s, t); turnedBox(p[0], p[1], 0, .12, .05, .05, TURN, WOOD); }
+    turnedBox(c[0], c[1], .12, .38, hw, hd, TURN, SOFA_D, cloth(SOFA_D));
+    for (const k of [-1, 1]) { const p = atT(c, k * (hw - .2) / 2 + k * .0, .05); turnedBox(p[0], p[1], .38, .52, (hw - .26) / 2 - .02, hd - .05, TURN, SOFA, (s, t, z, face) => face === 'top' && (t > hd - .14) ? rgb(138, 208, 190) : cloth(SOFA)(s, t, z, face)); }
+    { const p = atT(c, 0, -hd + .14); turnedBox(p[0], p[1], .38, 1.32, hw - .1, .14, TURN, SOFA, (s, t, z, face) => face === 'front' && ((s + 4) * S | 0) % 3 === 0 && (z * S * .87 | 0) % 3 === 0 && z < 1.25 && z > .55 ? rampOf(SOFA)[1] : cloth(SOFA)(s, t, z, face)); }
+    for (const k of [-1, 1]) { const p = atT(c, k * (hw - .12), 0); turnedBox(p[0], p[1], .12, .78, .12, hd, TURN, SOFA, cloth(SOFA)); }
+  });
+  // abuelo's armchair (la butaca), orange
+  part('butaca', () => {
+    const c = BUT_C, hw = BUT_HW, hd = BUT_HD;
+    for (const s of [-hw + .1, hw - .1]) for (const t of [-hd + .1, hd - .1]) { const p = atT(c, s, t); turnedBox(p[0], p[1], 0, .12, .05, .05, TURN, WOOD); }
+    turnedBox(c[0], c[1], .12, .38, hw, hd, TURN, ORNG_D, cloth(ORNG_D));
+    { const p = atT(c, 0, .05); turnedBox(p[0], p[1], .38, .52, hw - .26, hd - .05, TURN, ORNG, cloth(ORNG)); }
+    { const p = atT(c, 0, -hd + .14); turnedBox(p[0], p[1], .38, 1.22, hw - .1, .14, TURN, ORNG, (s, t, z, face) => face === 'front' && Math.abs(((s + 2) % .27) - .135) < .025 && Math.abs(((z + 2) % .27) - .135) < .025 ? rgb(138, 66, 18) : cloth(ORNG)(s, t, z, face)); }
+    for (const k of [-1, 1]) { const p = atT(c, k * (hw - .13), 0); turnedBox(p[0], p[1], .12, .8, .13, hd, TURN, ORNG, cloth(ORNG)); }
+  });
+  // the low table: four legs, a stretcher, the top
+  part('mesita', () => {
+    const c = MES_C, hw = MES_HW, hd = MES_HD, h = MES_H;
+    for (const s of [-hw + .12, hw - .12]) for (const t of [-hd + .08, hd - .08]) { const p = atT(c, s, t); turnedBox(p[0], p[1], 0, h - .08, .05, .05, TURN, WOOD); }
+    turnedBox(c[0], c[1], .16, .2, hw - .14, .03, TURN, WOOD);
+    turnedBox(c[0], c[1], h - .08, h, hw, hd, TURN, WOOD, (s, t, z, face) => face === 'top' ? shade(WOOD, 3.3 + (Math.abs(t) > hd - .05 || Math.abs(s) > hw - .05 ? .6 : 0), s * 3, t * 9) : 0);
+  });
+  // the floor lamp in the corner: a round foot, a thin pole, the shade (lit: warm yellow; off: cream)
+  part('lampara', () => {
+    const [x, y] = LAMP, G = [148, 148, 166];
+    drum(x, y, 0, .05, .22, G);
+    drum(x, y, .05, LAMP_H - .5, .035, G);
+    const sh = SET.luz ? LAMPY : CREAMY, R = rampOf(sh), z0 = LAMP_H - .52;
+    for (let z = z0; z <= LAMP_H; z += ST * .6) {
+      const k = (z - z0) / .52, r = .34 - .16 * k, n = Math.ceil(2 * Math.PI * r / (ST * .5));
+      for (let m = 0; m < n; m++) { const f = m / n * 2 * Math.PI, nx = Math.cos(f), ny = Math.sin(f); if (nx + ny < -.4) continue;
+        plot(x + nx * r, y + ny * r, z, R[clamp(Math.round((SET.luz ? 3.2 : 2.6) + (nx + ny) * .35 + (k > .9 ? .6 : 0)), 0, 4)]); }
+    }
+    drum(x, y, LAMP_H - .02, LAMP_H, .18, sh);
+  });
+  // the baby's blanket on the floor: pale blue, white squares
+  part('manta', () => {
+    const c = MANTA_C;
+    turnedBox(c[0], c[1], 0, .025, MANTA_HW, MANTA_HD, TURN, BLANKET, (s, t, z, face) => {
+      if (face !== 'top') return rgb(120, 170, 200);
+      const ps = (s + MANTA_HW) * S / 4, pt = (t + MANTA_HD) * S * SIN / 4;
+      if (t < -MANTA_HD + .06) return rgb(220, 238, 255);
+      return ((ps | 0) + (pt | 0)) % 2 && (ps % 1) < .5 && (pt % 1) < .5 ? rgb(255, 255, 255) : rgb(...BLANKET);
+    });
+  });
+  // a plant in a pot by the back wall, at the right
+  part('planta', () => {
+    const [x, y] = PLANT;
+    drum(x, y, 0, .42, .24, [206, 112, 64]);
+    drum(x, y, .38, .44, .27, [226, 132, 80]);
+    for (const [dx, dy, dz, r] of [[0, 0, .74, .28], [-.17, .12, .64, .19], [.15, .14, .66, .2], [.04, -.1, .9, .17]]) sphere(x + dx, y + dy, dz, r, C.leaf, 'rough');
+  });
+}
+
+/* ---------- bake one state ---------- */
+let GROUND_CACHE = null;
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  if (!GROUND_CACHE) {
+    for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+      const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = floorGround(g.x, g.y, ix, iy, i);
+      if (!c) continue;
+      pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+    }
+    growGrass();
+    GROUND_CACHE = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
+  } else {
+    pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
+  }
+  groundZ.set(zb);
+  walls();
+  furniture();
+  // the furniture's shadows on the floor: small and low, under each piece (as El balcón's)
+  castShadow(SOFA_C[0], SOFA_C[1], .3, SOFA_HW * .7);
+  castShadow(BUT_C[0], BUT_C[1], .3, BUT_HW * .85);
+  castShadow(MES_C[0], MES_C[1], .25, MES_HW * .6);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  skyFill(() => rgb(...BACKDROP));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+const BACKDROP = [38, 36, 44];   // above the cut walls (top=liso, the orchestrator's decision): a flat calm dark grey, a little lighter than the lesson screen's #1B1B1F
+
+const DOORX1 = .06 + Math.cos(LEAF_ANG) * (D1 - D0) + .05, LEAF_DY = Math.sin(LEAF_ANG) * (D1 - D0);
+// each frame's geometry, straight and crooked (screen numbers: the sheet's points foto.i and clips)
+const FRAMES = [0, 1, 2].flatMap(i => [false, true].map(c => { const g = frameGeom(i, c); return { i, crooked: c, angle: g.angle, nail: g.nail, P: g.P, frame: g.frame, opening: g.opening }; }));
+window.SALA = { SET, T, WH, YL, XR, D0, D1, DH, LEAF_ANG, DOORX1, LEAF_DY, NAILS, FPW, FPH, FWIRE, FMOULD, FRAME_BOX, FRAME_OPEN, FRAMES, TILT, PORCH_D, PORCH_DROP, OUT_X, W0, W1, WZ0, WZ1, TURN, SOFA_C, SOFA_HW, SOFA_HD, BUT_C, BUT_HW, BUT_HD, MES_C, MES_HW, MES_HD, MES_H, MANTA_C, MANTA_HW, MANTA_HD, LAMP, LAMP_H, PLANT, buildSet };
+
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT); drawTufts(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.FRAMEPIX = { owner: FRAME_OWNER, hits: FRAME_HITS };
+window.frame = frame;
+</script></body></html>
