@@ -59,7 +59,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **Goal he can see:** on the counter, two cups; over the frog, a thought of abuela holding a cup. On the paper holder beside the register, five bright sheets of gift paper. Don Pepe wraps what people buy.
 - **At stake:** the sheets of paper (four, once the game begins). Don Pepe wraps at once whatever is pushed along the counter to him: paper, string, a bow. A thing wrapped that was not the one asked for is unwrapped again, and its sheet is torn. Two customers need a sheet each, abuela's cup needs one, and one is over.
 - **New words:** caro, barato, catorce, quince, dieciséis.
-- **Back again:** taza, olla, plato, vaso, dólar, ¿cuánto es?, paga, quiero, compra, once to trece, grande, pequeño, abuela, por favor, gracias, de nada.
+- **Back again:** taza, olla, plato, vaso, dólar, ¿cuánto es?, paga, quiero, compra, once to trece, grande, pequeño, abuela, por favor, gracias, adiós.
 
 **Start:** the frog on the counter with his jar of dollars (from story 45). Two cups stand in front of him: a large one with a gold rim, tag 16; a small one with a flower, tag 14.
 
@@ -68,7 +68,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 1. NARR: "Coquí compra una taza." Don Pepe lays a hand on the large cup. NARR: "Don Pepe dice: Esta taza es cara: dieciséis dólares." On the small one. NARR: "Don Pepe dice: Y esta taza es barata: catorce dólares." The frog looks into his jar: not many bills. Ask (signed, the small cup): "¿Dónde está la taza barata?" He touches it. The frog pays. NARR: "Coquí paga catorce dólares."
 2. NARR: "Don Pepe dice: ¿Para quién es la taza?" COQUÍ [TURN: abuela (abuela)]: "Es para abuela." Don Pepe points at the gift paper and stands the cup beside it, for later.
 3. The señora comes in. Two pots on the counter: a large one, tag 16; a small one, tag 15. NARR: "Don Pepe dice: La olla grande es cara: dieciséis dólares. La olla pequeña es barata: quince dólares." NARR: "La señora dice: Quiero la olla cara, por favor." Ask (signed, the large pot): "Toca la olla cara." He touches it: the frog pushes it along to don Pepe, who wraps it in a blink: paper, string, a bow. Four sheets are left; don Pepe taps the holder. NARR: "La señora paga dieciséis dólares."
-4. Luis comes in with a bag of his own. Two plates on the counter: tag 14 and tag 15. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Este, catorce dólares. Y este, quince dólares." NARR: "Luis dice: Quiero el plato de quince dólares." Ask (signed, the plate with tag 15): "¿Dónde está el plato de quince dólares?" He touches it. NARR: "Luis paga quince dólares." Luis slips it into his own bag: no paper. NARR: "Luis dice: ¡Gracias, Coquí!" COQUÍ [TURN: de nada (de nada)]: "¡De nada!"
+4. Luis comes in with a bag of his own. Two plates on the counter: tag 14 and tag 15. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Este, catorce dólares. Y este, quince dólares." NARR: "Luis dice: Quiero el plato de quince dólares." Ask (signed, the plate with tag 15): "¿Dónde está el plato de quince dólares?" He touches it. NARR: "Luis paga quince dólares." Luis slips it into his own bag: no paper. NARR: "Luis dice: ¡Gracias, Coquí! ¡Adiós!" COQUÍ [TURN: adiós (adiós, adios)]: "¡Adiós, Luis!"
 
 **The turn**
 
@@ -93,7 +93,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **Fewest hearings before a word can cost:** caro 3 (steps 1, 3, 3), barato 3 (steps 1, 1, 3); catorce 3 (steps 1, 1, 4), quince 5 (steps 3, 4, 4, 4, 4), dieciséis 3 (steps 1, 3, 3).
 **A miss is filed under:** caro or barato (A); the number asked for (B).
 **Chance without the Spanish:** one in two. In A the picture shows which is dear; the line says which is wanted. In B both tags are in view; the line picks one.
-**Speaking turns:** two (steps 2, 4): abuela; de nada.
+**Speaking turns:** two (steps 2, 4): abuela; adiós.
 
 ---
 

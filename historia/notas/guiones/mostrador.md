@@ -43,7 +43,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 **The ending**
 
-10. Don Pepe comes back with the butter. NARR: "Don Pepe dice: ¡La mantequilla! Aquí tiene." The last tick. He looks into the dish (two coins) and at the tray. NARR: "Abuela dice: ¿Quieres un quesito, Coquí?" **(new: quesito; the picture carries it)** COQUÍ [TURN: por favor (por favor)]: "¡Sí, por favor!"
+10. Don Pepe comes back with the butter. NARR: "Don Pepe dice: ¡La mantequilla! Aquí tiene." The last tick. He looks into the dish (two coins) and at the tray. NARR: "Abuela dice: ¿Quieres un quesito, Coquí?" **(new: quesito; the picture carries it)** COQUÍ [TURN: sí (sí, si)]: "¡Sí, por favor!"
     - Three quesitos left: abuela and the frog eat one each; the third goes into the bag. COQUÍ: "¡Mmm! ¡Qué rico!" Stars and a heart.
     - Two left: one each. COQUÍ: "¡Mmm! ¡Qué rico!"
     - One left: abuela breaks it in two; half each.
@@ -52,7 +52,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 **Fewest hearings before a word can cost:** necesito 3 (steps 4, 5, 6). Not deciding: colmado 3 (steps 1, 1, 2); buenos días 4 before the game; aquí tiene 2 before the game, said to abuela, and 3 or more by the end.
 **A miss is filed under:** necesito.
 **Chance without the Spanish:** one in two, in each round on its own. The order is drawn, both things stand on the counter and the basket is shut. A learner who knows the old word "tengo" and not "necesito" is right every time: the owner is told.
-**Speaking turns:** three (steps 3, 10, 11): me llamo; por favor; adiós.
+**Speaking turns:** three (steps 3, 10, 11): me llamo; sí; adiós. ("por favor" and "de nada" are not tracked words of any story, so no turn is filed under them.)
 
 ---
 

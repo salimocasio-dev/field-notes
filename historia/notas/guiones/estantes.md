@@ -44,8 +44,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 8. Luis looks in the box and finds the glasses. NARR: "Luis busca en la caja." NARR: "Luis dice: ¡Aquí tiene, don Pepe!" Don Pepe puts them on. The frog tosses up what is left, one by one.
 9. The bell: the señora and the señor come in. NARR: "La señora dice: ¡Buenos días!" COQUÍ [TURN: buenos días (buenos días, buenos dias)]: "¡Buenos días, señora!" NARR: "La señora dice: Necesito tres botellas." NARR: "El señor dice: Y yo necesito tres latas." Don Pepe counts the shelf with his finger. NARR: "Don Pepe dice: ¿Cuántas botellas hay?"
     - Nothing lost: NARR: "Don Pepe dice: Una, dos, tres. Aquí tiene." She takes three bottles; the señor three cans. Stars and a heart.
-    - A bottle lost: NARR: "Don Pepe dice: Una, dos. No hay más botellas." She gets two and looks at her empty hand.
-    - A can lost: the señor gets two. NARR: "Don Pepe dice: No hay más latas."
+    - A bottle lost: NARR: "Don Pepe dice: Una, dos. No hay más botellas." She gets two and looks at her empty hand. (Two bottles lost: "Don Pepe dice: Una. No hay más botellas.")
+    - A can lost (one or two): the señor gets what there is. NARR: "Don Pepe dice: No hay más latas."
+    - Each kind has its own line: with nothing lost of a kind, its customer gets three.
 
 **Fewest hearings before a word can cost:** lata 5 (steps 1, 1, 2, 2, 4), botella 3 (steps 1, 3, 4). Not deciding: caja 3 (steps 1, 1, 8); ¿cuántas? 2 before the game, 1 after.
 **A miss is filed under:** lata or botella, whichever was asked for.
@@ -109,7 +110,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 1. Luis shows the note. NARR: "Luis dice: Abuela necesita diez botellas." **(the drink is malta; it is never named in a line that decides)** The frog hops along the box, bottle by bottle. NARR: "¿Cuántas botellas hay en la caja? Una, dos, tres, cuatro, cinco, seis, siete."
 2. Don Pepe climbs; the ladder wobbles and the bottles on the top shelf rattle. NARR: "Don Pepe dice: ¡Ay! ¡Cuidado!" He takes a bottle down and hands it to Luis, who puts it in the box. NARR: "Don Pepe dice: Aquí va otra botella." Ask (signed, the number bubble that says "ocho"; the other bubble says "siete"): "¿Cuántas hay ahora?" He touches it. NARR: "¡Ocho! Ocho botellas."
-3. NARR: "Don Pepe dice: ¿Otra?" COQUÍ [TURN: sí (sí, si), por favor (por favor)]: "¡Sí, por favor!" Another comes down. Ask (signed, the bubble "nueve"; the other says "ocho"): "¿Y ahora?" He touches it. NARR: "¡Nueve! Nueve botellas."
+3. NARR: "Don Pepe dice: ¿Otra?" COQUÍ [TURN: sí (sí, si)]: "¡Sí, por favor!" Another comes down. Ask (signed, the bubble "nueve"; the other says "ocho"): "¿Y ahora?" He touches it. NARR: "¡Nueve! Nueve botellas."
 4. NARR: "Don Pepe dice: Y otra." It goes in: the box is full. NARR: "¡Diez! Diez botellas para abuela." Luis carries the box to the door and sets it down there.
 
 **The turn**
@@ -134,7 +135,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 **Fewest hearings before a word can cost:** ocho 2 by the narrator and once as the signed answer (step 2); nueve the same (step 3); diez 5 (steps 1, 4, 4, 5, 5). Not deciding: otra 4 before the game. "Otro" and "ocho" are never next to each other: after "otra botella" the count comes as its own line.
 **A miss is filed under:** the number that was right (ocho or nueve).
 **Chance without the Spanish:** one in two, in each round on its own: both bubbles look the same and only speak.
-**Speaking turns:** two (steps 3, 9): sí and por favor; adiós.
+**Speaking turns:** two (steps 3, 9): sí; adiós.
 
 ---
 
@@ -171,3 +172,7 @@ Acts (name: what it does; story and step):
 - `fila` {n, una}: don Pepe lays a row of n cans can by can, in time with the counting line (40: 1, 2, 6). `redes` {a, b}: two nets of cans stand on the crate (40: 3, 6, 7). `pone` {n, ok}: a net is carried over and its row laid; not ok: don Pepe counts it, shakes his head, and two cans fall out on the way back and roll out of the door (40: 3, 4, 6, 7). `bandera`: the flag (40: 4, 8). `tumba`: Canelo runs in, the pyramid falls, he runs out with the drawing; Luis brings him back (40: 5). `resto` {n}: the crate tipped to show what is left; the top is made of it (40: 8).
 - `cajade` {quien, n}: a box of ten holes with n bottles, seen from above, beside the frog (41: 1, 5). `pasa` {a, n}: don Pepe hands n bottles down, one at a time, into a box (41: 2, 3, 4, 6, 7). `lleva` {quien}: a box is carried to the door, or out (41: 4, 8, 9). `abre41`: he opens the last bottle for the frog (41: 8).
 - `final`: stars and a heart when nothing was lost.
+- `ya`: waits for an act that was started with `suelto: 1` (as in every scene). The counting acts (`cuenta`, `fila`, `pasa`) and `lanza`, `tumba` are started with `suelto: 1`, their line is said while they run, then `ya`.
+- `abre39`: don Pepe opens the big box (39: 1). `busca39`: he feels for his glasses and does not find them (39: 5). `mira` {quien, a}: somebody looks at something: don Pepe at his drawing (40: 1), at the frog (40: 5), along the top shelf (41: 8); Luis round the shop (40: 9); a customer at an empty hand or an empty hole (39: 9; 41: 8). `nota41`: Luis shows abuela's note (41: 1). `tiembla`: the ladder wobbles and the bottles rattle (41: 2). `niega41`: don Pepe starts to hand down the wrong number; Luis shakes his head and holds up the box (41: 6, 7). `saluda` {quien}: somebody waves (41: 9). `brilla`: the engine's own `{"set": {"twinkle": key}}` (the box asked about, 41: 6, 7).
+- The number bubbles are di_siete, di_ocho, di_nueve, di_diez; each speaks its number in the frog's voice ("¡Siete!", "¡Ocho!", "¡Nueve!", "¡Diez!").
+- Values: `gafas` que caen or halla; `cuenta` quien luis, pepe or coqui; `lanza` ok 1 or 0; `lleva` quien the box's owner.
