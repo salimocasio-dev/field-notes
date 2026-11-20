@@ -18,7 +18,9 @@
 //     /field-notes/historia/audio/; the browser's back from it returns to the map, and so does its X;
 //   - the book reader, Repaso's start, the level check's start, Hablar and Yo render;
 //   - mid-course seed: Repaso (the games of page 15) starts, and one item is played by touches until it writes an Ear
-//     answer;
+//     answer; when a "Touch the word you heard" item is shown (the first, or the next of the first six items), the
+//     clips of its three words said alone (w_*.mp3, and the clip each of its three words has in historia/datos/repaso.json)
+//     have been asked for from /field-notes/historia/audio/, and each of its tiles has a speaker;
 //   - reloading on a lesson's address (#/nivel) opens that lesson again;
 //   - every request stays on the local server, except the ElevenLabs library's (cdn.jsdelivr.net/npm/@elevenlabs/...),
 //     which is allowed only once Hablar shows an open call card (the seed: La casa is done); every request that
@@ -49,6 +51,7 @@ const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const ONLY = flag('only', '');
 const PERF_RUNS = +flag('perf-runs', '3');
 const SEED = fs.readFileSync(path.join(REPO, 'coqui/ref/pantallas/seeds/curso.json'), 'utf8').replace(/\n/g, '');
+const REPASO = JSON.parse(fs.readFileSync(path.join(REPO, 'historia/datos/repaso.json'), 'utf8'));
 const FIRST_LINE = JSON.parse(fs.readFileSync(path.join(REPO, 'historia/cuentos/la-lluvia.json'), 'utf8')).clips.esta_casa.text;
 
 const TYPES = {
@@ -273,47 +276,91 @@ async function run(phone, state) {
       if (after !== len) throw new Error(`history.length was ${len}, is ${after}`);
     });
   } else {
+    let repasoFrom = 0; // the requests from the moment Repaso is opened
     await step('Repaso opens from the map\'s Today card, at its start', async () => {
+      repasoFrom = served.length;
       await tapText(page, /^¿Cuál\?$/);
       await page.waitForFunction(() => location.hash === '#/repaso', null, { timeout: 15000 });
       await waitFor(page, has(/^Start$/), 'Repaso\'s start disc', 30000);
       await shot(page, `${tag}-05-repaso-start`);
     });
-    await step('Repaso: Start, and one item of the games (page 15) is played: an Ear answer is written', async () => {
+    await step('Repaso: Start, and one item of the games (page 15) is played: an Ear answer is written; a "Touch the word you heard" item has asked for its words\' clips', async () => {
       const earAnswers = () => page.evaluate(() => {
         const db = JSON.parse(localStorage.getItem('coqui.palabras.v1') || '{}');
         return Object.values(db.palabras || {}).reduce((n, r) => n + ((r.ear && r.ear.n) || 0), 0);
       });
-      const before = await earAnswers();
-      await tapText(page, /^Start$/);
-      const line = /^Listen\. Touch the (word you heard|picture that fits)\.$/;
-      const ns0 = await waitFor(page, has(line), 'the first game\'s line', 30000);
-      const game = ns0.find((n) => says(n, line));
-      const words = game.text.includes('word');
-      await page.waitForTimeout(800);
-      await shot(page, `${tag}-05b-repaso-${words ? 'que-oyes' : 'cual'}`);
-      // the options under the line: ¿Cuál?'s two pictures, or ¿Qué oyes?'s three word tiles; touched in turn (a touch
-      // before the sentence ends does not count; after a wrong one only the right one is taken) until it is answered
       const vp = PHONES[phone].viewport;
-      const t0 = Date.now();
-      let after = before;
-      while (after === before) {
-        if (Date.now() - t0 > 40000) throw new Error('no answer was written in 40 s');
-        const ns = await nodes(page);
-        const opts = words
-          ? ns.filter((n) => n.role === 'button' && n.y > game.y + 10 && n.y < vp.height - 120 && !/^(Hear the word|Close|Sound|Hear it again)$/.test(n.text) && !line.test(n.text))
-          : ns.filter((n) => /^Picture \d$/.test(n.text));
-        if (!opts.length) throw new Error(`no option under the line; on screen: ${JSON.stringify(ns.map((n) => n.text)).slice(0, 400)}`);
-        for (const o of opts) {
-          await page.mouse.click(o.x, o.y);
-          await page.waitForTimeout(700);
-          after = await earAnswers();
-          if (after !== before) break;
+      const line = /^Listen\. Touch the (word you heard|picture that fits)\.$/;
+      // the options under the line: ¿Cuál?'s two pictures, or ¿Qué oyes?'s three word tiles
+      const optionsOf = (ns, game, words) => (words
+        ? ns.filter((n) => n.role === 'button' && n.y > game.y + 10 && n.y < vp.height - 120 && !/^(Hear the word|Close|Sound|Hear it again|Next)$/.test(n.text) && !line.test(n.text))
+        : ns.filter((n) => /^Picture \d$/.test(n.text)));
+      // The clips of the three words said alone were asked for when Repaso opened (w_*.mp3 for the words that have no clip
+      // in a story), the item's own three words' clips among them, and each tile has its speaker.
+      const wordClipsAsked = async (ns, game) => {
+        const asked = served.slice(repasoFrom).filter((x) => x.status === 200 && /^\/field-notes\/historia\/audio\/[^/?]+\.mp3(\?|$)/.test(x.url)).map((x) => x.url.split('?')[0].split('/').pop().replace(/\.mp3$/, ''));
+        const solas = asked.filter((id) => /^w_/.test(id));
+        if (!solas.length) throw new Error('no request for a w_*.mp3 under /field-notes/historia/audio/ since Repaso opened; asked: ' + [...new Set(asked)].slice(0, 12).join(', '));
+        const tiles = optionsOf(ns, game, true).map((n) => n.text);
+        if (tiles.length !== 3) throw new Error(`the item has ${tiles.length} word tiles (${tiles.join(' | ')}), not 3`);
+        const clipOf = (w) => { const r = REPASO.palabras.find((x) => x.w === w); if (!r || !r.solo) throw new Error(`repaso.json has no clip of the word alone for "${w}"`); return r.solo; };
+        const missing = tiles.map(clipOf).filter((id) => !asked.includes(id));
+        if (missing.length) throw new Error(`the clips of the item's words were not asked for: ${missing.join(', ')} (tiles ${tiles.join(' | ')})`);
+        const speakers = ns.filter((n) => n.text === 'Hear the word').length;
+        if (speakers !== 3) throw new Error(`${speakers} speakers on the three tiles, not 3`);
+        check(true, `${tag}: a "Touch the word you heard" item is shown: ${solas.length} clips w_*.mp3 asked for (e.g. ${solas[0]}.mp3), and the clips of its three words (${tiles.map(clipOf).join(', ')}), each tile with its speaker`);
+      };
+      // Touches the item's options in turn until an Ear answer is written (a touch before the sentence ends does not
+      // count; after a wrong one only the right one is taken).
+      const answer = async (game, words, before) => {
+        const t0 = Date.now();
+        let after = before;
+        while (after === before) {
+          if (Date.now() - t0 > 40000) throw new Error('no answer was written in 40 s');
+          const opts = optionsOf(await nodes(page), game, words);
+          if (!opts.length) throw new Error(`no option under the line; on screen: ${JSON.stringify((await nodes(page)).map((n) => n.text)).slice(0, 400)}`);
+          for (const o of opts) {
+            await page.mouse.click(o.x, o.y);
+            await page.waitForTimeout(700);
+            after = await earAnswers();
+            if (after !== before) break;
+          }
         }
+        if (after !== before + 1) throw new Error(`ear answers went from ${before} to ${after}`);
+        return after;
+      };
+      let ear = await earAnswers();
+      const first = ear;
+      await tapText(page, /^Start$/);
+      let hearChecked = false;
+      for (let item = 1; item <= 6; item++) {
+        const ns0 = await waitFor(page, has(line), `item ${item}'s line (the first six items are asked: ¿Cuál? and ¿Qué oyes? take turns for three, then a play game)`, 30000);
+        const game = ns0.find((n) => says(n, line));
+        const words = game.text.includes('word');
+        await page.waitForTimeout(800);
+        const ns = await nodes(page);
+        if (item === 1) await shot(page, `${tag}-05b-repaso-${words ? 'que-oyes' : 'cual'}`);
+        if (words && !hearChecked) {
+          await wordClipsAsked(ns, game);
+          hearChecked = true;
+          if (item > 1) await shot(page, `${tag}-05b-repaso-que-oyes-item-${item}`);
+        }
+        ear = await answer(game, words, ear);
+        if (item === 1) {
+          await page.waitForTimeout(1500);
+          await shot(page, `${tag}-05c-repaso-answered`);
+        }
+        if (hearChecked) break;
+        // not the game: on to the next item (a wrong touch leaves the right one to be touched; Next shows then)
+        for (let k = 0; k < 20 && !has(/^Next$/)(await nodes(page)); k++) {
+          const opts = optionsOf(await nodes(page), game, words);
+          if (opts.length) await page.mouse.click(opts[k % opts.length].x, opts[k % opts.length].y);
+          await page.waitForTimeout(500);
+        }
+        await tapText(page, /^Next$/);
       }
-      if (after !== before + 1) throw new Error(`ear answers went from ${before} to ${after}`);
-      await page.waitForTimeout(1500);
-      await shot(page, `${tag}-05c-repaso-answered`);
+      if (!hearChecked) throw new Error('no "Touch the word you heard" item among the first six items of the session');
+      if (ear <= first) throw new Error('no Ear answer was written');
       await page.goBack();
       await page.waitForFunction(() => location.hash === '#/tab/map', null, { timeout: 15000 });
     });
