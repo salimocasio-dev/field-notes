@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La caja · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
-<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La caja (caja-set.html, drawn in a hidden frame) with the characters and the small things drawn over it as sprites, each placed from caja-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. The numerals of the amount are drawn on a pale plate over the register's amount window (hidden by anything nearer than the window), the two answer keys as cards over the picture at the sheet's boxes. Then cropped to the 196 x 216 view <code>wide</code>. The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the small things (box of cans, tags, cups, paper holder, jar, ball, bills) are stand-ins drawn here, not final art.
-Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code>?m=3</code> story 46, <code>?m=4</code> story 47. Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La caja (caja-set.html, drawn in a hidden frame) with the characters and the small things drawn over it as sprites, each placed from caja-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. The amount (the sheet's thing <code>importe</code>: a pale plate 13 x 9 with two numerals of 5 x 7, its middle on the screen point of the register's amount window) is drawn in front of the register (hidden only by a sprite nearer than the window), the price tags stand at the sheet's <code>etiqueta</code> offset from their thing, the two answer keys are cards over the picture at the sheet's boxes. Then cropped to the 196 x 216 view <code>wide</code>. The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the small things (box of cans, tags, cups, paper holder, jar, ball, bills) are stand-ins drawn here, not final art.
+Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code>?m=3</code> story 46, <code>?m=4</code> story 47. The make reads the moments through <code>PREVIEW.inspect(m)</code> (<code>?nodraw=1</code> skips the first drawing). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -19,8 +19,8 @@ Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code
    3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on its screen column. A sprite pixel is hidden
       where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
       depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins.
-   4. The amount's numerals (5 x 7 px each) are painted centred on the register's amount window (sheet: spots.ventana_caja) where no sprite is nearer than the window;
-      the two answer keys are drawn over the picture at the sheet's boxes (spots.tecla_a, tecla_b), over everything.
+   4. The amount (sheet: things.importe, a 13 x 9 plate with two numerals of 5 x 7, its middle on spots.ventana_caja) is drawn where no sprite is nearer than the window;
+      a price tag stands at spots.<thing>.etiqueta.dw from its thing (a world offset); the two answer keys are drawn over the picture at the sheet's boxes (spots.tecla_a, tecla_b), over everything.
    5. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide). */
 (() => {
   const A = new URLSearchParams(location.search);
@@ -92,30 +92,35 @@ Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code
   };
   // a held thing drawn over the person's own sprite
   const holding = (s, k, x, y, a) => { const c2 = document.createElement('canvas'); c2.width = s.cv.width; c2.height = s.cv.height; const g = c2.getContext('2d'); g.drawImage(s.cv, 0, 0); g.drawImage(thing(k, a), x, y); return Object.assign({}, s, { cv: c2 }); };
-  // a price tag stands in front of its thing (nearer the customer: towards +y, and a little towards -x, so that the thing behind it shows beside it)
-  const TAG_OFF = [-.05, .3, 0];
-  const tagFor = (at, n) => ({ at, off: TAG_OFF, s: () => SP.thing('tag', n) });
+  // a price tag stands in front of its thing (nearer the customer: towards +y, and a little towards -x, so that the thing behind it shows beside it): the sheet's etiqueta.dw of the thing's spot
+  const tagFor = (at, n) => ({ at, off: SHEET.spots[at].etiqueta.dw, s: () => SP.thing('tag', n) });
 
   /* ---------- the four moments (hora tarde: the set's own default, the afternoon of story 45) ---------- */
   const MOMENTS = {
-    1: { what: 'story 45, afternoon: don Pepe at pepe.caja, the frog on the shelf at coqui.repisa (scale .8, no shadow), Luis at cliente with a box of cans at cosa_cliente and a tag reading 11 in front of it, three bills at clip, the amount window showing 11, the two answer keys showing 11 and 10',
+    1: { what: 'story 45, afternoon: don Pepe at pepe.caja, the frog on the floor at coqui.frente, Luis at cliente with a box of cans at cosa_cliente and a tag reading 11 in front of it, three bills at clip, the amount (importe) showing 11, the two answer keys showing 11 and 10',
       set: { hora: 'tarde' }, amount: 11, cards: [11, 10],
-      layers: () => [{ at: 'pepe.caja', s: () => SP.pepe(), who: 'adulto' }, { at: 'coqui.repisa', s: () => SP.coqui(.8), who: null },
+      layers: () => [{ at: 'pepe.caja', s: () => SP.pepe(), who: 'adulto' }, { at: 'coqui.frente', s: () => SP.coqui(1), who: 'coqui' },
         { at: 'cliente', s: () => SP.persona(LUIS), who: 'nino' },
         { at: 'cosa_cliente', s: () => SP.thing('latas') }, tagFor('cosa_cliente', 11), { at: 'clip', s: () => SP.hanging('billetes') }] },
     2: { what: 'the line: the señora at cliente, the señor at cola1, a child at cola2, don Pepe at pepe.empaca holding a tag up with its blank back to us',
       set: { hora: 'tarde' },
       layers: () => [{ at: 'pepe.empaca', s: () => SP.pepe('wave0'), who: 'adulto' }, { at: 'pepe.empaca', offPx: [10, -46], s: () => SP.thing('tagback') },
         { at: 'cliente', s: () => SP.persona(SENORA), who: 'adulto' }, { at: 'cola1', s: () => SP.persona(SENOR), who: 'adulto' }, { at: 'cola2', s: () => SP.persona(NINO3), who: 'nino' }] },
-    3: { what: 'story 46: two cups at cosa_a and cosa_b with tags 16 and 14 in front, the paper holder at papel with four sheets, the frog on the counter at (3.0, 2.4, CH) with a small jar (at frasco)',
+    3: { what: 'story 46: two cups at cosa_a and cosa_b with tags 16 and 14 in front, the paper holder at papel with four sheets, the frog on the floor at coqui.frente, the empty jar at frasco',
       set: { hora: 'tarde' },
       layers: () => [{ at: 'cosa_a', s: () => SP.thing('taza') }, tagFor('cosa_a', 16), { at: 'cosa_b', s: () => SP.thing('taza') }, tagFor('cosa_b', 14), { at: 'papel', s: () => SP.thing('papel') },
-        { world: [3.0, 2.4, 1], s: () => SP.coqui(1), who: null }, { at: 'frasco', s: () => SP.thing('frasco', 0, false) }] },
+        { at: 'coqui.frente', s: () => SP.coqui(1), who: 'coqui' }, { at: 'frasco', s: () => SP.thing('frasco', 0, false) }] },
     4: { what: 'story 47: the jar at frasco half full with two lines on its glass, the ball on the sill at bola, three children outside the window at ninos_fuera, Luis at cliente holding a bill with 20 on it',
       set: { hora: 'tarde' },
       layers: () => [{ at: 'frasco', s: () => SP.thing('frasco', 5, true) }, { at: 'bola', s: () => SP.thing('bola') },
         { at: 'ninos_fuera.1', s: () => SP.persona(LUIS), who: null }, { at: 'ninos_fuera.2', s: () => SP.persona(CARMEN), who: null }, { at: 'ninos_fuera.3', s: () => SP.persona(NINO3), who: null },
         { at: 'cliente', s: () => holding(SP.persona(LUIS), 'billete20', 24, 26), who: 'nino' }] },
+  };
+  // not a moment: every small thing of the counter stood on its spot, the price tags in front of those that have one (the make's check "the frog's box covers none of them")
+  const EXTRA = {
+    counter: { set: { hora: 'tarde' },
+      layers: () => [{ at: 'cosa_cliente', s: () => SP.thing('latas') }, tagFor('cosa_cliente', 11), { at: 'cosa_a', s: () => SP.thing('taza') }, tagFor('cosa_a', 16), { at: 'cosa_b', s: () => SP.thing('taza') }, tagFor('cosa_b', 14),
+        { at: 'papel', s: () => SP.thing('papel') }, { at: 'taza_abuela', s: () => SP.thing('taza') }, { at: 'frasco', s: () => SP.thing('frasco', 0, false) }] },
   };
   const RADIUS = () => SHEET.shadows.radius;
 
@@ -128,30 +133,52 @@ Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code
     return fr.contentWindow;
   }
 
+  /* ---------- the placed sprites of a moment: where each stands (and what it draws), shared by the picture and by the make's checks ---------- */
+  const layersOf = (M, w) => M.layers().map(l => {
+    let sp = null, world, sx, sy, d;
+    if (l.at) { sp = SHEET.spots[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at); world = sp.world; sx = sp.screen[0]; sy = sp.screen[1]; d = sp.depth; }
+    else world = l.world;
+    if (l.off || l.world) { if (l.off) world = [world[0] + l.off[0], world[1] + l.off[1], world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
+    return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
+  });
+  // the pixels a placed sprite draws, as [X, Y, hidden by the set (the depth rule), the sprite's own depth plane] on the 240 x 216 picture
+  const inkOf = (l, Z, S, bias) => {
+    const c = l.spr, id = c.cv.getContext('2d').getImageData(0, 0, c.cv.width, c.cv.height).data, dx = l.offPx ? l.offPx[0] : 0, dy = l.offPx ? l.offPx[1] : 0, px = [];
+    for (let py = 0; py < c.cv.height; py++) for (let qx = 0; qx < c.cv.width; qx++) {
+      if (!id[(py * c.cv.width + qx) * 4 + 3]) continue;
+      const X = l.sx - c.ax + qx + dx, Y = l.sy - c.ay + py + dy; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue;
+      const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+      px.push([X, Y, Z[Y * 240 + X] > plane + bias ? 1 : 0, plane]);
+    }
+    return px;
+  };
+  // for the make: every layer of a moment (or of EXTRA: the counter things stood on their spots) with its spot, its character kind and its drawn pixels
+  PV.inspect = async function (m) {
+    await ready;
+    const M = EXTRA[m] || MOMENTS[m], w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S, bias = SHEET.front.bias;
+    return { m, set: M.set, amount: M.amount === undefined ? null : M.amount, layers: layersOf(M, w).map(l => ({ at: l.at || null, who: l.who === undefined ? null : l.who, sx: l.sx, sy: l.sy, d: l.d, world: l.world, ax: l.spr.ax, ay: l.spr.ay, px: inkOf(l, Z, S, bias) })) };
+  };
+
   /* ---------- a picture ---------- */
   PV.render = async function (m, opts = {}) {
     await ready;
     const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
     const w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S;
     // the layers: where each sprite stands
-    const LS = M.layers().map(l => {
-      let sp = null, world, sx, sy, d;
-      if (l.at) { sp = SHEET.spots[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at); world = sp.world; sx = sp.screen[0]; sy = sp.screen[1]; d = sp.depth; }
-      else world = l.world;
-      if (l.off || l.world) { if (l.off) world = [world[0] + l.off[0], world[1] + l.off[1], world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
-      return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
-    });
+    const LS = layersOf(M, w);
     // the shadows: for those who stand on the floor (z 0): at the world x, y of their spot
     const casts = [];
     for (const l of LS) if (l.who !== undefined && l.who !== null && l.world[2] === 0 && !(l.at && SHEET.shadows.none.includes(l.at))) casts.push([l.world[0], l.world[1], 0, l.who === 'coqui' ? RADIUS().coqui : l.who === 'nino' ? RADIUS().ninos : RADIUS().adultos]);
     const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
     for (const l of LS) {
       const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data, dx = l.offPx ? l.offPx[0] : 0, dy = l.offPx ? l.offPx[1] : 0;
+      const clip = l.sp && l.sp.clip;                                                // a spot with a clip box [x, y, w, h]: the sprite shows only inside it (the children outside the shop window, if the sheet clips them)
       for (let py = 0; py < c.cv.height; py++) {
         const Y = l.sy - c.ay + py + dy; if (Y < 0 || Y >= 216) continue;
         const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
         for (let px = 0; px < c.cv.width; px++) {
           const X = l.sx - c.ax + px + dx; if (X < 0 || X >= 240) continue;
+          if (clip && (X < clip[0] || X >= clip[0] + clip[2] || Y < clip[1] || Y >= clip[1] + clip[3])) continue;
           const o = (py * c.cv.width + px) * 4; if (!id[o + 3]) continue;
           const i = Y * 240 + X;
           if (Z[i] > (flat ? l.d : plane) + bias) continue;                          // a set pixel nearer than the feet hides it
@@ -160,13 +187,13 @@ Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code
         }
       }
     }
-    // the amount: two numerals of 5 x 7 centred on the amount window. The set's window (sheet: spots.ventana_caja.pane) is smaller than the numerals (11 x 7), so they are drawn dark on a pale
-    // plate one pixel wider all round (13 x 9) in the window's colour: a stand-in for a window that fits them. A sprite nearer than the window hides them
+    // the amount (sheet: things.importe): a pale plate 13 x 9 with two numerals of 5 x 7, its middle on the register's amount window (spots.ventana_caja), drawn in front of the register;
+    // a sprite nearer than the window hides it
     if (M.amount != null) {
-      const vc = SHEET.spots.ventana_caja, ww = numW(M.amount, F57, 1, 1), x0 = vc.screen[0] - (ww >> 1), y0 = vc.screen[1] - 3;
+      const vc = SHEET.spots[SHEET.things.importe.at], [pw, ph] = SHEET.things.importe.size, ww = numW(M.amount, F57, 1, 1), px0 = vc.screen[0] - (pw >> 1), py0 = vc.screen[1] - (ph >> 1);
       const paint = (X, Y, c) => { const i = Y * 240 + X; if (zs[i] > vc.depth) return; out[i * 4] = c[0]; out[i * 4 + 1] = c[1]; out[i * 4 + 2] = c[2]; out[i * 4 + 3] = 255; };
-      for (let y = -1; y <= 7; y++) for (let x = -1; x <= ww; x++) paint(x0 + x, y0 + y, [226, 242, 212]);
-      numeral(M.amount, F57, 1, 1, (x, y) => paint(x0 + x, y0 + y, [20, 48, 28]));
+      for (let y = 0; y < ph; y++) for (let x = 0; x < pw; x++) paint(px0 + x, py0 + y, [226, 242, 212]);
+      numeral(M.amount, F57, 1, 1, (x, y) => paint(px0 + ((pw - ww) >> 1) + x, py0 + ((ph - 7) >> 1) + y, [20, 48, 28]));
     }
     if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
     // the two answer keys: cards over the picture, at the sheet's boxes
@@ -188,6 +215,6 @@ Address: <code>?m=1</code> story 45 (default), <code>?m=2</code> the line, <code
     document.getElementById('cap').textContent = 'm=' + m + ': ' + M.what + '.';
     return cv.toDataURL();
   };
-  PV.done = ready.then(() => PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
+  PV.done = ready.then(() => A.get('nodraw') === '1' ? null : PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
 })();
 </script></body></html>

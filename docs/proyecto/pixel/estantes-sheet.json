@@ -122,9 +122,9 @@
    "what": "the frog on the floor"
   },
   "luis.piso": {
-   "world": [15.2, 4.4, 0],
-   "screen": [97, 193],
-   "depth": 12.0025,
+   "world": [15.4, 4.6, 0],
+   "screen": [97, 197],
+   "depth": 12.2474,
    "scale": 1,
    "kind": "person",
    "what": "Luis on the floor"
@@ -154,17 +154,17 @@
    "what": "the crate of cans (story 40)"
   },
   "red_a": {
-   "world": [13.6, 3.2, 0.35],
-   "screen": [89, 160],
-   "depth": 10.4629,
+   "world": [13.3, 3.4, 0.35],
+   "screen": [80, 159],
+   "depth": 10.4016,
    "scale": 1,
    "kind": "object",
    "what": "the first net of cans, on the crate"
   },
   "red_b": {
-   "world": [14.25, 3.2, 0.35],
-   "screen": [101, 166],
-   "depth": 10.8609,
+   "world": [14.6, 3, 0.35],
+   "screen": [111, 167],
+   "depth": 10.9528,
    "scale": 1,
    "kind": "object",
    "what": "the second net of cans, on the crate"
@@ -322,9 +322,9 @@
    "what": "the señora waiting at the left edge"
   },
   "cola2": {
-   "world": [10.7, 4, 0],
-   "screen": [21, 148],
-   "depth": 9.0019,
+   "world": [10.5, 4.3, 0],
+   "screen": [12, 149],
+   "depth": 9.0631,
    "scale": 1,
    "kind": "person",
    "what": "the señor waiting at the left edge"
@@ -347,9 +347,9 @@
    "footprint": [1, 0.5]
   },
   "caja_senora": {
-   "world": [11.5, 4.5, 0],
-   "screen": [27, 160],
-   "depth": 9.798,
+   "world": [11.3, 4.8, 0],
+   "screen": [18, 161],
+   "depth": 9.8592,
    "scale": 1,
    "kind": "box",
    "what": "the señora's bottle box (its middle; about 1.0 x .5, the long side along x)",
@@ -365,17 +365,17 @@
    "footprint": [1, 0.5]
   },
   "senora.caja": {
-   "world": [11.2, 4.1, 0],
-   "screen": [29, 154],
-   "depth": 9.3693,
+   "world": [11, 4.4, 0],
+   "screen": [19, 155],
+   "depth": 9.4305,
    "scale": 1,
    "kind": "person",
    "what": "the señora standing by her box"
   },
   "senor.caja": {
-   "world": [13.6, 5.4, 0],
-   "screen": [49, 188],
-   "depth": 11.6351,
+   "world": [13.9, 5.3, 0],
+   "screen": [56, 189],
+   "depth": 11.7576,
    "scale": 1,
    "kind": "person",
    "what": "the señor standing by his box"
@@ -397,9 +397,9 @@
    "what": "Canelo bumping the table"
   },
   "perro.rana": {
-   "world": [14.5, 4, 0],
-   "screen": [91, 183],
-   "depth": 11.3289,
+   "world": [14.3, 4.8, 0],
+   "screen": [73, 189],
+   "depth": 11.6963,
    "scale": 1,
    "kind": "animal",
    "what": "Canelo sitting beside the frog"
@@ -477,7 +477,7 @@
     "name": "people-apart",
     "ok": true,
     "lines": [
-     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 17.26 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 21.1 px"
+     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 26.31 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 16.28 px"
     ]
    },
    {
@@ -533,7 +533,7 @@
     "name": "bottle-boxes-apart",
     "ok": true,
     "lines": [
-     "bottle-boxes-apart: the three boxes' footprints (1.0 x .5, long side along x) do not overlap each other or the table's box on screen: caja_abuela / caja_senora apart 31.24 px; caja_abuela / caja_senor apart 8.22 px; caja_abuela / mesa apart 12.33 px; caja_senora / caja_senor apart 8.22 px; caja_senora / mesa apart 0.82 px; caja_senor / mesa apart 9.04 px"
+     "bottle-boxes-apart: the three boxes' footprints (1.0 x .5, long side along x) do not overlap each other or the table's box on screen: caja_abuela / caja_senora apart 34.53 px; caja_abuela / caja_senor apart 8.22 px; caja_abuela / mesa apart 12.33 px; caja_senora / caja_senor apart 11.51 px; caja_senora / mesa apart 5.76 px; caja_senor / mesa apart 9.04 px"
     ]
    },
    {

@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El mostrador · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
 <p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El mostrador (mostrador-set.html, drawn in a hidden frame, goods off: they are sprites) with the characters and the small things drawn over it as sprites, each placed from mostrador-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. Then cropped to the 196 x 216 view (the calle picture: the sheet's calle.views.calle). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the small things (tray, dish, coins, goods, malts, límbers, basket, bag, the rooster) are stand-ins drawn here, not final art.
-Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken down, <code>?m=3</code> the game of story 36, <code>?m=4</code> story 37, <code>?m=5</code> story 38, <code>?m=6</code> the street, in the morning (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+The make reads the moments through <code>PREVIEW.inspect(m)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken down, <code>?m=3</code> the game of story 36, <code>?m=4</code> story 37, <code>?m=5</code> story 38, <code>?m=6</code> the street, in the morning (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -109,9 +109,9 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
         ...shelf(['pan', 'leche']), { at: 'cosa_a', s: () => SP.thing('pan') }, { at: 'cosa_b', s: () => SP.thing('leche') },
         { at: 'cliente', s: () => holding(SP.persona(SENORA), 'cesta', 26, 32), who: 'adulto' }, { at: 'cola1', s: () => SP.persona(SENOR), who: 'adulto' },
         { at: 'bandeja', s: () => SP.thing('bandeja') }, { at: 'platillo', s: () => SP.thing('platillo') }] },
-    4: { what: 'story 37: Carmen at nino.frente with a bag, five coins in a row at monedas (towards +x, .22 apart), don Pepe at pepe.mostrador, the frog at coqui.frente, the row of malts at maltas',
+    4: { what: 'story 37: Carmen at nino.frente with a bag, five coins in a row at monedas (towards +x, .22 apart), don Pepe at pepe.mostrador, the frog at coqui.frente2 (v3: the frog\'s place whenever a child stands at nino.frente), the row of malts at maltas',
       set: { hora: 'manana', atras: 'shut', nevera: 0 },
-      layers: () => [{ at: 'pepe.mostrador', s: () => SP.pepe(), who: 'adulto' }, { at: 'nino.frente', s: () => holding(SP.persona(FAM.hermana), 'bolsa', 25, 27), who: 'nino' }, { at: 'coqui.frente', s: () => SP.coqui(), who: 'coqui' },
+      layers: () => [{ at: 'pepe.mostrador', s: () => SP.pepe(), who: 'adulto' }, { at: 'nino.frente', s: () => holding(SP.persona(FAM.hermana), 'bolsa', 25, 27), who: 'nino' }, { at: 'coqui.frente2', s: () => SP.coqui(), who: 'coqui' },
         ...shelf(),
         ...[0, 1, 2, 3, 4].map(i => ({ at: 'monedas', off: [i * SHEET.spots.monedas.step, 0, 0], s: () => SP.thing('moneda') })),
         ...[-.15, 0, .15].map(dx => ({ at: 'maltas', off: [dx, 0, 0], s: () => SP.thing('maltas') }))] },
@@ -137,18 +137,38 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
     return fr.contentWindow;
   }
 
+  /* ---------- the placed sprites of a moment: where each stands (and what it draws), shared by the picture and by the make's checks ---------- */
+  const layersOf = (M, w) => M.layers().map(l => {
+    const sp = (M.calle ? SHEET.calle.spots : SHEET.spots)[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
+    let world = sp.world, sx = sp.screen[0], sy = sp.screen[1], d = sp.depth;
+    if (l.off) { world = [sp.world[0] + l.off[0], sp.world[1] + l.off[1], sp.world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
+    return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
+  });
+  // the pixels a placed sprite draws, as [X, Y, hidden by the set (the depth rule), the sprite's own depth plane] on the 240 x 216 picture
+  const inkOf = (l, Z, S, bias) => {
+    const c = l.spr, id = c.cv.getContext('2d').getImageData(0, 0, c.cv.width, c.cv.height).data, px = [];
+    for (let py = 0; py < c.cv.height; py++) for (let qx = 0; qx < c.cv.width; qx++) {
+      if (!id[(py * c.cv.width + qx) * 4 + 3]) continue;
+      const X = l.sx - c.ax + qx, Y = l.sy - c.ay + py; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue;
+      const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+      px.push([X, Y, Z[Y * 240 + X] > plane + bias ? 1 : 0, plane]);
+    }
+    return px;
+  };
+  // for the make: every layer of a moment with its spot, its character kind and its drawn pixels
+  PV.inspect = async function (m) {
+    await ready;
+    const M = MOMENTS[m], w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S, bias = SHEET.front.bias;
+    return { m, set: M.set, calle: !!M.calle, layers: layersOf(M, w).map(l => ({ at: l.at, who: l.who === undefined ? null : l.who, sx: l.sx, sy: l.sy, d: l.d, world: l.world, ax: l.spr.ax, ay: l.spr.ay, px: inkOf(l, Z, S, bias) })) };
+  };
+
   /* ---------- a picture ---------- */
   PV.render = async function (m, opts = {}) {
     await ready;
     const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
     const w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S;
     // the layers: where each sprite stands
-    const LS = M.layers().map(l => {
-      const sp = (M.calle ? SHEET.calle.spots : SHEET.spots)[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
-      let world = sp.world, sx = sp.screen[0], sy = sp.screen[1], d = sp.depth;
-      if (l.off) { world = [sp.world[0] + l.off[0], sp.world[1] + l.off[1], sp.world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
-      return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
-    });
+    const LS = layersOf(M, w);
     // the shadows: for those who stand on the floor (z 0): at the world x, y of their spot; none outside the door
     const casts = [];
     for (const l of LS) if (l.who !== undefined && l.who !== null && l.sp.world[2] === 0 && !SHEET.shadows.none.includes(l.at)) casts.push([l.world[0], l.world[1], 0, l.who === 'coqui' ? RADIUS().coqui : l.who === 'nino' ? RADIUS().ninos : RADIUS().adultos]);
@@ -177,6 +197,6 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
     document.getElementById('cap').textContent = 'm=' + m + ': ' + M.what + '.';
     return cv.toDataURL();
   };
-  PV.done = ready.then(() => PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
+  PV.done = ready.then(() => A.get('nodraw') === '1' ? null : PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
 })();
 </script></body></html>

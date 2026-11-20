@@ -1,6 +1,6 @@
 {
  "scene": "mostrador",
- "made": "node docs/proyecto/pixel/mostrador-sheet-make.js, from mostrador-set.html (window.MOSTRADOR.CD, CF) and the design of El mostrador (version 2, with the calle state). A new scene: no old scene, no remap.",
+ "made": "node docs/proyecto/pixel/mostrador-sheet-make.js, from mostrador-set.html (window.MOSTRADOR.CD, CF) and the design of El mostrador (version 2, with the calle state, and the orchestrator's pass 3). A new scene: no old scene, no remap.",
  "S": 26,
  "origin": {
   "originX": -7,
@@ -204,15 +204,23 @@
    "depth": 4.8377,
    "scale": 1,
    "kind": "person",
-   "what": "the frog on the floor, in front of the counter"
+   "what": "the frog on the floor, in front of the counter, in story 36 (with abuela at abuela.frente)"
   },
-  "coqui.mostrador": {
-   "world": [3, 2.38, 1],
-   "screen": [124, 103],
-   "depth": 3.7946,
+  "coqui.frente2": {
+   "world": [3.4, 3.7, 0],
+   "screen": [107, 141],
+   "depth": 4.3478,
    "scale": 1,
    "kind": "person",
-   "what": "the frog's one place on the counter top, right of the register (it casts no shadow)"
+   "what": "the frog's place on the floor whenever a child stands at nino.frente (story 37); an alternative of coqui.frente"
+  },
+  "coqui.mostrador": {
+   "world": [3.2, 2.38, 1],
+   "screen": [128, 105],
+   "depth": 3.917,
+   "scale": 1,
+   "kind": "person",
+   "what": "the frog's one place on the counter top, right of the register (it casts no shadow); it may overlap the register's side shelf, not its body"
   },
   "abuela.frente": {
    "world": [3, 4.1, 0],
@@ -236,12 +244,7 @@
    "depth": 5.3889,
    "scale": 1,
    "kind": "person",
-   "what": "Luis or Carmen at the counter",
-   "moved": {
-    "from": [5.9, 3.6, 0],
-    "dx": -0.7,
-    "why": "it was 0 px from the silla's pixels; now 4 px (needs 4)"
-   }
+   "what": "Luis or Carmen at the counter"
   },
   "nino.puerta_dentro": {
    "world": [0.7, 5.4, 0],
@@ -292,28 +295,28 @@
    "what": "on the pavement, seen through the street door (no shadow)"
   },
   "ninos_puerta.1": {
-   "world": [0.6, 3.9, 0],
-   "screen": [52, 117],
-   "depth": 2.7557,
+   "world": [0.6, 4, 0],
+   "screen": [50, 118],
+   "depth": 2.8169,
    "scale": 1,
    "kind": "person",
-   "what": "child 1 of the three just inside the street door (story 38: they wait there, each with a coin); group ninos_puerta"
+   "what": "child 1 of the three just inside the street door, the one behind (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top 14 rows)"
   },
   "ninos_puerta.2": {
-   "world": [0.6, 4.5, 0],
-   "screen": [41, 123],
-   "depth": 3.1231,
+   "world": [1, 5.05, 0],
+   "screen": [39, 132],
+   "depth": 3.7049,
    "scale": 1,
    "kind": "person",
-   "what": "child 2 of the three just inside the street door (story 38: they wait there, each with a coin); group ninos_puerta"
+   "what": "child 2 of the three just inside the street door, in front, left (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top 14 rows)"
   },
   "ninos_puerta.3": {
-   "world": [1.1, 5.1, 0],
-   "screen": [39, 133],
-   "depth": 3.7967,
+   "world": [1.75, 4.5, 0],
+   "screen": [62, 133],
+   "depth": 3.8273,
    "scale": 1,
    "kind": "person",
-   "what": "child 3 of the three just inside the street door (story 38: they wait there, each with a coin); group ninos_puerta"
+   "what": "child 3 of the three just inside the street door, in front, right (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top 14 rows)"
   },
   "bandeja": {
    "world": [5.6, 2.38, 1],
@@ -387,9 +390,9 @@
    }
   },
   "limber_lejos": {
-   "world": [3.55, 2.5, 1],
-   "screen": [132, 109],
-   "depth": 4.2049,
+   "world": [3.75, 2.5, 1],
+   "screen": [136, 111],
+   "depth": 4.3273,
    "scale": 1,
    "kind": "counter",
    "what": "a límber at the frog's end"
@@ -478,6 +481,24 @@
  "groups": {
   "ninos_puerta": ["ninos_puerta.1", "ninos_puerta.2", "ninos_puerta.3"]
  },
+ "alternatives": {
+  "groups": [
+   ["pepe.mostrador", "pepe.silla"],
+   ["coqui.mostrador", "coqui.frente", "coqui.frente2"],
+   ["abuela.frente", "abuela.silla"],
+   ["cliente", "abuela.frente"],
+   ["nino.frente", "nino.puerta_dentro"]
+  ],
+  "vsGroup": {
+   "ninos_puerta": ["nino.puerta_dentro", "cola1", "cola2"]
+  },
+  "what": "spots that are never in the same picture, so the people-apart and sprites-apart checks do not compare them: each list of groups is alternatives of each other (one body has one place at a time; cliente and abuela.frente: abuela is the customer of story 36, the señora of story 38 stands at cliente); vsGroup: the spots listed are alternatives of the whole group (ninos_puerta is together: its three children are compared with each other, never with these)"
+ },
+ "notes": [
+  "bandeja, platillo and maltas stay where the design has them: they belong to stories without the freezer (nevera = 0), which is why they may lie under the freezer's footprint when nevera = 1 (see the info line of counter-spots-on-top)",
+  "v3: the spots whose numbers the orchestrator gave (nino.frente, coqui.frente, coqui.frente2, coqui.mostrador, limber_lejos, ninos_puerta.1 to .3, the calle spots) are final and are not moved by the old clearance rule; spots-clear reports one that is nearer than 4 px and the nearest x that would pass",
+  "the calle view's x0 22 is accepted by the orchestrator and final (views.calle.final)"
+ ],
  "views": {
   "dentro": {
    "world": [3.2, 2.9, 0],
@@ -489,19 +510,6 @@
   }
  },
  "moved": [
-  {
-   "spot": "nino.frente",
-   "from": [5.9, 3.6, 0],
-   "to": [5.2, 3.6, 0],
-   "dx": -0.7,
-   "clearBefore": 0,
-   "clearAfter": 4,
-   "against": "silla",
-   "otherSide": {
-    "to": 6.73,
-    "dx": 0.83
-   }
-  },
   {
    "spot": "limber_pepe",
    "from": [4.75, 2.45, 1],
@@ -562,20 +570,20 @@
   },
   "spots": {
    "abuela.acera": {
-    "world": [2.4, 2.6, 0],
-    "screen": [70, 148],
-    "depth": 3.0619,
+    "world": [1.2, 2.7, 0],
+    "screen": [46, 138],
+    "depth": 2.3883,
     "scale": 1,
     "kind": "person",
-    "what": "abuela on the pavement in front of the door"
+    "what": "abuela on the pavement in front of the door (v3: (1.2, 2.7, 0))"
    },
    "coqui.acera": {
-    "world": [3.2, 2.9, 0],
-    "screen": [80, 158],
-    "depth": 3.7355,
+    "world": [3, 2.9, 0],
+    "screen": [76, 156],
+    "depth": 3.613,
     "scale": 1,
     "kind": "person",
-    "what": "the frog on the pavement, right of abuela"
+    "what": "the frog on the pavement, right of abuela (v3: (3.0, 2.9, 0))"
    },
    "puerta_calle": {
     "world": [1.65, 0.4, 0],
@@ -604,11 +612,11 @@
   },
   "views": {
    "calle": {
-    "provisional": true,
+    "final": true,
     "zoom": 1,
     "x0": 22,
     "region": [22, 0, 196, 216],
-    "what": "PROVISIONAL (the design gives no calle view): the 196 x 216 window centred on the middle of the bounding box of the calle spots and the colmado box, clamped to the picture (x0 = clamp(round(mid - 98), 0, 44))"
+    "what": "FINAL (accepted by the orchestrator): the 196 x 216 window over the 240 x 216 calle picture at x0 22; the check calle-in-view holds every calle spot and the colmado box inside it"
    }
   },
   "shadows": {
@@ -640,17 +648,15 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 45 spot points (every spot but pepe.fuera) inside the 240 x 216 picture and the dentro window [21, 217) x [0, 216)"
+     "spots-in-view: 46 spot points (every spot but pepe.fuera) inside the 240 x 216 picture and the dentro window [21, 217) x [0, 216)"
     ]
    },
    {
     "name": "people-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "people-apart: 1 pair(s) closer than 10 px (screen points):",
-     "  cliente 97,137 ~ abuela.frente 93,141: 5.66 px",
-     "       closest pairs: cliente 97,137 ~ abuela.frente 93,141 5.66 px; ninos_puerta.2 41,123 ~ ninos_puerta.3 39,133 10.2 px; nino.puerta_dentro 27,132 ~ ninos_puerta.3 39,133 12.04 px; ninos_puerta.1 52,117 ~ ninos_puerta.2 41,123 12.53 px; coqui.frente 130,149 ~ nino.frente 142,157 14.42 px",
-     "       without cliente ~ abuela.frente the closest pair is ninos_puerta.2 ~ ninos_puerta.3 10.2 px"
+     "people-apart: 89 pairs of the 15 people spots that are on screen together are at least 10 px apart (closest: coqui.frente2 ~ cliente 10.77 px, coqui.frente2 ~ abuela.frente 14 px, coqui.frente ~ nino.frente 14.42 px; alternatives of one body, pepe.atras and pepe.estante.* are not compared)",
+     "       closest pairs: coqui.frente2 107,141 ~ cliente 97,137 10.77 px; coqui.frente2 107,141 ~ abuela.frente 93,141 14 px; coqui.frente 130,149 ~ nino.frente 142,157 14.42 px; cola1 78,136 ~ abuela.frente 93,141 15.81 px; ninos_puerta.1 50,118 ~ ninos_puerta.2 39,132 17.8 px"
     ]
    },
    {
@@ -796,8 +802,8 @@
     "name": "spots-clear",
     "ok": true,
     "lines": [
-     "spots-clear: 23 spots (counter-top ones from the register; coqui.mostrador, limber_pepe, limber_lejos also from the freezer; floor spots in front of the counter from the chair) keep at least 4 px from those pixels; nearest: nino.frente 4 px (silla), limber_pepe 4 px (caja+nevera), coqui.mostrador 7.21 px (caja+nevera)",
-     "       moved from the design to clear it: nino.frente x 5.9 -> 5.2 (-0.7, silla: 0 -> 4 px; the nearest clear place on the other side: x 6.73, +0.83); limber_pepe x 4.75 -> 4.65 (-0.1, caja + nevera: 2 -> 4 px; the nearest clear place on the other side: none on the counter)",
+     "spots-clear: 24 spots (counter-top ones from the register; coqui.mostrador, limber_pepe, limber_lejos also from the freezer; floor spots in front of the counter from the chair) keep at least 4 px from those pixels; nearest: nino.frente 4 px (silla), limber_pepe 4 px (caja+nevera), coqui.mostrador 11.18 px (caja+nevera)",
+     "       moved from the design to clear it: limber_pepe x 4.75 -> 4.65 (-0.1, caja + nevera: 2 -> 4 px; the nearest clear place on the other side: none on the counter)",
      "       info, not a check: counter-top spots of the stories WITHOUT the freezer (nevera = 0) that lie under or within 4 px of its pixels, left where the design has them: bandeja 0 px, platillo 0 px, maltas 0 px"
     ],
     "leftNearFreezer": [
@@ -807,24 +813,362 @@
     ]
    },
    {
+    "name": "sprites-apart",
+    "ok": false,
+    "lines": [
+     "sprites-apart: 2 pair(s) with overlapping boxes and feet closer than 12 px up-down:",
+     "  moment 3: cliente [97,137] (24 wide) ~ cola1 [78,136] (24 wide): 19 px sideways (the boxes need 24), 1 px up-down (needs 12): short by 5 px sideways or 11 px up-down",
+     "  moment 5: ninos_puerta.2 [39,132] (24 wide) ~ ninos_puerta.3 [62,133] (24 wide): 23 px sideways (the boxes need 24), 1 px up-down (needs 12): short by 1 px sideways or 11 px up-down",
+     "       nearest passing, moment 3 cliente ~ cola1: cliente 2.9,3.75,0: x 2.9 -> 3.13 (+0.23) or y 3.75 -> 3.52 (-0.23); or cola1 2.3,4.2,0: x 2.3 -> 2.05 (-0.25) or y 4.2 -> 4.45 (+0.25)",
+     "       nearest passing, moment 5 ninos_puerta.2 ~ ninos_puerta.3: ninos_puerta.2 1,5.05,0: x 1 -> 0.99 (-0.01) or y 5.05 -> 5.06 (+0.01); or ninos_puerta.3 1.75,4.5,0: x 1.75 -> 1.76 (+0.01) or y 4.5 -> 4.49 (-0.01)",
+     "       closest in each moment (px across / px down): m1 pepe.mostrador ~ coqui.frente 28/29 (needs 28 across or 12 down); m2 pepe.estante.leche ~ coqui.frente 1/46 (needs 28 across or 12 down); m3 cliente ~ cola1 19/1 (needs 24 across or 12 down); m4 pepe.mostrador ~ nino.frente 16/37 (needs 24 across or 12 down); m5 ninos_puerta.1 ~ ninos_puerta.2 11/14 (needs 24 across or 12 down); m6 abuela.acera ~ coqui.acera 30/18 (needs 28 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "pepe.mostrador",
+      "b": "abuela.frente",
+      "across": 65,
+      "down": 21,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "pepe.mostrador",
+      "b": "coqui.frente",
+      "across": 28,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "abuela.frente",
+      "b": "coqui.frente",
+      "across": 37,
+      "down": 8,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pepe.estante.leche",
+      "b": "abuela.frente",
+      "across": 38,
+      "down": 38,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "pepe.estante.leche",
+      "b": "coqui.frente",
+      "across": 1,
+      "down": 46,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "abuela.frente",
+      "b": "coqui.frente",
+      "across": 37,
+      "down": 8,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela.silla",
+      "b": "coqui.mostrador",
+      "across": 29,
+      "down": 66,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela.silla",
+      "b": "cliente",
+      "across": 60,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "abuela.silla",
+      "b": "cola1",
+      "across": 79,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui.mostrador",
+      "b": "cliente",
+      "across": 31,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "coqui.mostrador",
+      "b": "cola1",
+      "across": 50,
+      "down": 31,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "cliente",
+      "b": "cola1",
+      "across": 19,
+      "down": 1,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 4,
+      "a": "pepe.mostrador",
+      "b": "nino.frente",
+      "across": 16,
+      "down": 37,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "pepe.mostrador",
+      "b": "coqui.frente2",
+      "across": 51,
+      "down": 21,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "nino.frente",
+      "b": "coqui.frente2",
+      "across": 35,
+      "down": 16,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pepe.silla",
+      "b": "coqui.mostrador",
+      "across": 59,
+      "down": 29,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pepe.silla",
+      "b": "cliente",
+      "across": 90,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pepe.silla",
+      "b": "ninos_puerta.1",
+      "across": 137,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pepe.silla",
+      "b": "ninos_puerta.2",
+      "across": 148,
+      "down": 2,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "pepe.silla",
+      "b": "ninos_puerta.3",
+      "across": 125,
+      "down": 1,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.mostrador",
+      "b": "cliente",
+      "across": 31,
+      "down": 32,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.mostrador",
+      "b": "ninos_puerta.1",
+      "across": 78,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.mostrador",
+      "b": "ninos_puerta.2",
+      "across": 89,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "coqui.mostrador",
+      "b": "ninos_puerta.3",
+      "across": 66,
+      "down": 28,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cliente",
+      "b": "ninos_puerta.1",
+      "across": 47,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cliente",
+      "b": "ninos_puerta.2",
+      "across": 58,
+      "down": 5,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "cliente",
+      "b": "ninos_puerta.3",
+      "across": 35,
+      "down": 4,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ninos_puerta.1",
+      "b": "ninos_puerta.2",
+      "across": 11,
+      "down": 14,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ninos_puerta.1",
+      "b": "ninos_puerta.3",
+      "across": 12,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "ninos_puerta.2",
+      "b": "ninos_puerta.3",
+      "across": 23,
+      "down": 1,
+      "needAcross": 24,
+      "ok": false
+     },
+     {
+      "moment": 6,
+      "a": "abuela.acera",
+      "b": "coqui.acera",
+      "across": 30,
+      "down": 18,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "ninos-puerta-heads",
+    "ok": true,
+    "lines": [
+     "ninos-puerta-heads: the three heads (top 14 rows of each child) show in moment 5: ninos_puerta.1 50,118: head rows 77 to 90 (182 px, 182 shown by the set); no row covered; ninos_puerta.2 39,132: head rows 91 to 104 (244 px, 244 shown by the set); no row covered; ninos_puerta.3 62,133: head rows 92 to 105 (182 px, 182 shown by the set); no row covered"
+    ],
+    "heads": [
+     "ninos_puerta.1 50,118: head rows 77 to 90 (182 px, 182 shown by the set); no row covered",
+     "ninos_puerta.2 39,132: head rows 91 to 104 (244 px, 244 shown by the set); no row covered",
+     "ninos_puerta.3 62,133: head rows 92 to 105 (182 px, 182 shown by the set); no row covered"
+    ]
+   },
+   {
+    "name": "frog-register-body",
+    "ok": false,
+    "lines": [
+     "frog-register-body: the frog on the counter:",
+     "  moment 3: 20 px of the frog lie on the register's body",
+     "  moment 5: 20 px of the frog lie on the register's body",
+     "       moment 3 the frog at coqui.mostrador [128,105] (536 px shown, box [113,81,142,104]): 20 px on the register's body (810 px, box [87,64,120,100]; the boxes overlap 8 across, 20 down), 55 px on the side shelf (69 px)",
+     "       moment 5 the frog at coqui.mostrador [128,105] (536 px shown, box [113,81,142,104]): 20 px on the register's body (810 px, box [87,64,120,100]; the boxes overlap 8 across, 20 down), 55 px on the side shelf (69 px)",
+     "       nearest passing for coqui.mostrador 3.2,2.38,1 (0 px on the body): y 2.38 -> 2.19 (-0.19); along x alone: x 3.45 [133,107], its feet are 15.62 px from the register's pixels and 23.77 px from the freezer's"
+    ],
+    "overlap": [
+     {
+      "moment": 3,
+      "bodyPx": 20,
+      "shelfPx": 55,
+      "boxOverlap": [8, 20]
+     },
+     {
+      "moment": 5,
+      "bodyPx": 20,
+      "shelfPx": 55,
+      "boxOverlap": [8, 20]
+     }
+    ]
+   },
+   {
     "name": "calle-in-view",
     "ok": true,
     "lines": [
-     "calle-in-view: 4 spots (abuela.acera 70,148, coqui.acera 80,158, puerta_calle 97,121, gallo 170,106) and the colmado box [83,30,43,98] inside the calle picture and the calle window [22, 218) x [0, 216)"
+     "calle-in-view: 4 spots (abuela.acera 46,138, coqui.acera 76,156, puerta_calle 97,121, gallo 170,106) and the colmado box [83,30,43,98] inside the calle picture and the calle window [22, 218) x [0, 216)"
     ]
    },
    {
     "name": "calle-people-apart",
     "ok": true,
     "lines": [
-     "calle-people-apart: abuela.acera 70,148 ~ coqui.acera 80,158: 14.14 px (needs 10)"
+     "calle-people-apart: abuela.acera 46,138 ~ coqui.acera 76,156: 30 px sideways (needs 28); 18 px up-down"
+    ]
+   },
+   {
+    "name": "calle-abuela-clear-of-scale",
+    "ok": true,
+    "lines": [
+     "calle-abuela-clear-of-scale: abuela.acera 46,138: her box [34,88,24,50] holds none of the 329 scale pixels (dial, chains, plate; their box columns 78..92, rows 101..135); the box is 21 px clear of them (her drawn silhouette in moment 6 is 20.62 px from the nearest)"
     ]
    },
    {
     "name": "calle-places",
     "ok": true,
     "lines": [
-     "calle-places: abuela.acera and coqui.acera on the pavement (y 2.6, 2.9 <= CF.PAVE 4.3); puerta_calle x 1.65 in the door (CF.D0 .. CF.D1 = 1 .. 2.3) and inside the colmado box; gallo at x 6.2, y 1, z 2.78 (the awning's front edge, its middle) and the pixel there is the awning in all 4 calle states"
+     "calle-places: abuela.acera and coqui.acera on the pavement (y 2.7, 2.9 <= CF.PAVE 4.3); puerta_calle x 1.65 in the door (CF.D0 .. CF.D1 = 1 .. 2.3) and inside the colmado box; gallo at x 6.2, y 1, z 2.78 (the awning's front edge, its middle) and the pixel there is the awning in all 4 calle states"
     ]
    }
   ]

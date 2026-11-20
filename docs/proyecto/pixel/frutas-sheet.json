@@ -152,25 +152,37 @@
    "what": "don Pepe at the shop door"
   },
   "pepe.carro": {
-   "world": [3, 3.35, 0],
-   "screen": [46, 156],
-   "depth": 3.8886,
+   "world": [1.9, 3.35, 0],
+   "screen": [25, 146],
+   "depth": 3.215,
    "scale": 1,
    "kind": "person",
-   "what": "don Pepe at the hand cart's handles (.9 left of the cart's middle, same y)"
+   "what": "don Pepe at the hand cart's handles: the v3 brief gives (1.9, 3.35, 0) and says to step x down by .1 until his drawn pixels do not cover the cart's handle; `stepped` lists what each x covered",
+   "stepped": {
+    "start": 1.9,
+    "step": -0.1,
+    "handle": "the pixels of part carro whose world x (read back from the baked depth) is left of the bed's left end CF.CART x - .95 by more than .05: the two rails and the cross-grip",
+    "tries": [
+     {
+      "x": 1.9,
+      "coveredPx": 0,
+      "handlePx": 35
+     }
+    ]
+   }
   },
   "pepe.pesa": {
-   "world": [3.5, 2.6, 0],
-   "screen": [69, 154],
-   "depth": 3.7355,
+   "world": [1.9, 2.7, 0],
+   "screen": [37, 140],
+   "depth": 2.8169,
    "scale": 1,
    "kind": "person",
    "what": "don Pepe beside the scale"
   },
   "abuela.delante": {
-   "world": [6.6, 3.2, 0],
-   "screen": [115, 188],
-   "depth": 6.0012,
+   "world": [7.4, 4, 0],
+   "screen": [115, 203],
+   "depth": 6.981,
    "scale": 1,
    "kind": "person",
    "what": "abuela in front of the stand"
@@ -183,34 +195,26 @@
    "kind": "person",
    "what": "abuela beside the low crate"
   },
-  "coqui.repisa.1": {
-   "world": [5.075, 2.16, 0.7],
-   "screen": [106, 149],
-   "depth": 4.7805,
+  "repisa.izq": {
+   "world": [4.7, 2.16, 0.7],
+   "screen": [99, 145],
+   "depth": 4.5509,
    "scale": 1,
    "kind": "frog",
-   "what": "the frog on the ledge, at a quarter of its length (x 3.95 to 8.45), in the middle of its depth"
+   "what": "the frog on the ledge, left place (x 4.7, in the middle of the ledge's depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)"
   },
-  "coqui.repisa.2": {
-   "world": [6.2, 2.16, 0.7],
-   "screen": [126, 159],
-   "depth": 5.4694,
+  "repisa.der": {
+   "world": [7.7, 2.16, 0.7],
+   "screen": [154, 173],
+   "depth": 6.388,
    "scale": 1,
    "kind": "frog",
-   "what": "the frog on the ledge, at a half of its length (x 3.95 to 8.45), in the middle of its depth"
-  },
-  "coqui.repisa.3": {
-   "world": [7.325, 2.16, 0.7],
-   "screen": [147, 169],
-   "depth": 6.1584,
-   "scale": 1,
-   "kind": "frog",
-   "what": "the frog on the ledge, at three quarters of its length (x 3.95 to 8.45), in the middle of its depth"
+   "what": "the frog on the ledge, right place (x 7.7, in the middle of the ledge's depth, z CF.LZ)"
   },
   "cabra.poste": {
-   "world": [9.65, 1.85, 0],
-   "screen": [195, 204],
-   "depth": 7.0423,
+   "world": [9.9, 2.35, 0],
+   "screen": [191, 211],
+   "depth": 7.5016,
    "scale": 1,
    "kind": "goat",
    "what": "the goat by its post, standing"
@@ -232,9 +236,9 @@
    "what": "la señora leaning out of the shop door"
   },
   "monedas4": {
-   "world": [4.5, 2.16, 0.7],
-   "screen": [95, 143],
-   "depth": 4.4284,
+   "world": [5.6, 2.16, 0.7],
+   "screen": [115, 154],
+   "depth": 5.102,
    "scale": 1,
    "kind": "ledge",
    "what": "abuela's four coins in a row on the ledge, .2 apart (story 42); the first coin here, the row runs towards +x",
@@ -245,9 +249,9 @@
    }
   },
   "monedas2": {
-   "world": [6, 2.16, 0.7],
-   "screen": [123, 157],
-   "depth": 5.347,
+   "world": [6.7, 2.16, 0.7],
+   "screen": [135, 164],
+   "depth": 5.7756,
    "scale": 1,
    "kind": "ledge",
    "what": "her two other coins, .2 apart, under the guineos (story 42)",
@@ -266,9 +270,9 @@
    "what": "abuela's basket on the ledge, lined with a cloth with three hollows (story 43)"
   },
   "cajon_a": {
-   "world": [5.3, 2.16, 0.7],
-   "screen": [110, 151],
-   "depth": 4.9183,
+   "world": [5.9, 2.16, 0.7],
+   "screen": [121, 156],
+   "depth": 5.2857,
    "scale": 1,
    "kind": "ledge",
    "what": "the first crate of story 44, .7 wide",
@@ -367,7 +371,7 @@
    "cabra": 0.4
   },
   "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the pavement (z 0)",
-  "none": ["coqui.repisa.1", "coqui.repisa.2", "coqui.repisa.3"],
+  "none": ["repisa.izq", "repisa.der"],
   "onLedge": "the frog on the ledge casts none: the ledge is not ground (a shadow cast at the pavement under him would show in front of the stand)"
  },
  "checks": {
@@ -380,7 +384,7 @@
     "name": "in-view",
     "ok": true,
     "lines": [
-     "in-view: 23 spot points (every spot but lista) and 11 thing boxes inside the 240 x 216 picture and the wide window [21, 217) x [0, 216); in all 10 states of the set (surtido verduras and frutas, carro 0 and 1, the door shut and open, both hours) the drawn pixels of the door, the scale, the stand, its bins, the low crate and the post, and with carro = 1 the cart, are inside it (hand cart (carro = 1) pixels [26,135,91,168], pepe.carro 46,156); the goat's 30-px box at its post is inside"
+     "in-view: 22 spot points (every spot but lista) and 11 thing boxes inside the 240 x 216 picture and the wide window [21, 217) x [0, 216); in all 10 states of the set (surtido verduras and frutas, carro 0 and 1, the door shut and open, both hours) the drawn pixels of the door, the scale, the stand, its bins, the low crate and the post, and with carro = 1 the cart, are inside it (hand cart (carro = 1) pixels [26,135,91,168], pepe.carro 25,146); the goat's 30-px box at its post is inside"
     ]
    },
    {
@@ -398,85 +402,56 @@
    },
    {
     "name": "abuela-clear-of-bins",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "abuela-clear-of-bins: 2 assortment(s) with a bin covered by abuela at abuela.delante 115,188 (mkAbuela, 26 x 50 px drawn, her pixels over the bins' pixels, not hidden by the depth rule):",
-     "  verduras: her head's top is at row 138, the ledge's front edge at her column 115 is at row 156.64 (18.64 rows above); her drawn box columns 102 to 127, rows 138 to 187; she covers tomates 2 of its 303 px (1%, rows 138 to 139), cebollas 38 of its 389 px (10%, rows 138 to 145); she also shows over: puesto 333, ground 522",
-     "  frutas: her head's top is at row 138, the ledge's front edge at her column 115 is at row 156.64 (18.64 rows above); her drawn box columns 102 to 127, rows 138 to 187; she covers aguacates 31 of its 417 px (7%, rows 138 to 142); she also shows over: puesto 342, ground 522"
+     "abuela-clear-of-bins: abuela at abuela.delante 115,203 covers no bin in either assortment",
+     "       verduras: her head's top is at row 153, the ledge's front edge at her column 115 is at row 156.64 (3.64 rows above); her drawn box columns 102 to 127, rows 153 to 202; she covers no bin; she also shows over: puesto 126, ground 769",
+     "       frutas: her head's top is at row 153, the ledge's front edge at her column 115 is at row 156.64 (3.64 rows above); her drawn box columns 102 to 127, rows 153 to 202; she covers no bin; she also shows over: puesto 126, ground 769"
     ]
    },
    {
     "name": "frog-places",
     "ok": false,
     "lines": [
-     "frog-places: 10 finding(s) on the frog's three places on the ledge (places 106,149 126,159 147,169; ledge things' sizes: rules.footprints):",
-     "  coqui.repisa.1 106,149 ~ coqui.repisa.2 126,159: 22.36 px (needs 30; horizontally 20)",
-     "  coqui.repisa.2 126,159 ~ coqui.repisa.3 147,169: 23.26 px (needs 30; horizontally 21)",
-     "  coqui.repisa.1 106,149 (frog box [91,125,120,148]) overlaps monedas4 (story 42, box [92,136,109,148]) by 18 px across and 13 down",
-     "  coqui.repisa.1 106,149 (frog box [91,125,120,148]) overlaps cajon_a (story 44, box [100,138,118,155]) by 19 px across and 11 down",
-     "  coqui.repisa.2 126,159 (frog box [111,135,140,158]) overlaps monedas2 (story 42, box [120,150,129,158]) by 10 px across and 9 down",
-     "  coqui.repisa.2 126,159 (frog box [111,135,140,158]) overlaps canasta (story 43, box [139,158,161,176]) by 2 px across and 1 down",
-     "  coqui.repisa.2 126,159 (frog box [111,135,140,158]) overlaps cajon_a (story 44, box [100,138,118,155]) by 8 px across and 18 down",
-     "  coqui.repisa.2 126,159 (frog box [111,135,140,158]) overlaps cajon_b (story 44, box [126,151,144,168]) by 15 px across and 8 down",
-     "  coqui.repisa.3 147,169 (frog box [132,145,161,168]) overlaps canasta (story 43, box [139,158,161,176]) by 23 px across and 11 down",
-     "  coqui.repisa.3 147,169 (frog box [132,145,161,168]) overlaps cajon_b (story 44, box [126,151,144,168]) by 13 px across and 18 down",
-     "       info: the places as the preview moments use them: m1 (story 42) coqui.repisa.2: monedas4 clear, monedas2 overlaps by 10 px; m3 (story 43) coqui.repisa.3: canasta overlaps by 23 px; m4 (story 44) coqui.repisa.1: cajon_a overlaps by 19 px, cajon_b clear",
-     "       info: spacing of the places: 1-2 22.36 px, 2-3 23.26 px, 1-3 45.62 px; the ledge is 82 px long on screen, so a quarter of it is 20.5 px"
+     "frog-places: 1 finding(s) on the frog's two places on the ledge (places 99,145 154,173; ledge things' sizes: rules.footprints):",
+     "  story 44: repisa.izq 99,145 (frog box [84,121,113,144]) overlaps cajon_a (box [111,144,129,160]) by 3 px across and 1 down",
+     "    nearest passing: cajon_a at x 6.01 (+0.11) (now 5.9), or repisa.izq at x 4.61 (-0.09) (now 4.7)",
+     "       info: the frog's boxes repisa.izq [84,121,113,144], repisa.der [139,149,168,172]; the things' boxes monedas4 [112,147,129,158], monedas2 [132,157,142,165], canasta [139,158,161,176], cajon_a [111,144,129,160], cajon_b [126,151,144,168]",
+     "       info: each place against every thing, whatever the story: repisa.izq against every thing: monedas4 clear, monedas2 clear, canasta clear, cajon_a overlaps 3 x 1, cajon_b clear; repisa.der against every thing: monedas4 clear, monedas2 overlaps 4 x 9, canasta overlaps 23 x 15, cajon_a clear, cajon_b overlaps 6 x 18"
     ],
     "frog": {
      "sep": [
-      ["coqui.repisa.1", "coqui.repisa.2", 22.36],
-      ["coqui.repisa.2", "coqui.repisa.3", 23.26],
-      ["coqui.repisa.1", "coqui.repisa.3", 45.62]
+      ["repisa.izq", "repisa.der", 61.72]
+     ],
+     "story": [
+      [42, "repisa.izq"],
+      [43, "repisa.izq"],
+      [44, "repisa.izq"]
      ],
      "hits": [
       [
-       "coqui.repisa.1",
-       "monedas4",
-       42,
-       [18, 13]
-      ],
-      [
-       "coqui.repisa.1",
+       "repisa.izq",
        "cajon_a",
        44,
-       [19, 11]
+       [3, 1]
       ],
       [
-       "coqui.repisa.2",
+       "repisa.der",
        "monedas2",
        42,
-       [10, 9]
+       [4, 9]
       ],
       [
-       "coqui.repisa.2",
+       "repisa.der",
        "canasta",
        43,
-       [2, 1]
+       [23, 15]
       ],
       [
-       "coqui.repisa.2",
-       "cajon_a",
-       44,
-       [8, 18]
-      ],
-      [
-       "coqui.repisa.2",
+       "repisa.der",
        "cajon_b",
        44,
-       [15, 8]
-      ],
-      [
-       "coqui.repisa.3",
-       "canasta",
-       43,
-       [23, 11]
-      ],
-      [
-       "coqui.repisa.3",
-       "cajon_b",
-       44,
-       [13, 18]
+       [6, 18]
       ]
      ]
     }
@@ -485,17 +460,19 @@
     "name": "goat-reach",
     "ok": true,
     "lines": [
-     "goat-reach: abuela.junto_cabra 157,206 and cabra.poste 195,204 are 38.05 px apart (needs 14); the goat's head at cabra.cajon 194,191 is -1 across and 13 rows above its feet, inside its 30 x 24 box, on the low crate's top middle (z 0.34); its neck stretched down must put the head tip there",
-     "       info, not a check: the goat drawn in front of the post: 96 post pixels under its box, 0 of them nearer than its plane + 0.3 (hide it)",
-     "       info, not a check: cabra.poste 9.65,1.85,0 is INSIDE the low crate's footprint (x 8.95 to 9.7, y 1.25 to 1.95)"
+     "goat-reach: abuela.junto_cabra 157,206 and cabra.poste 191,211 are 34.37 px apart (needs 14); the goat's head at cabra.cajon 194,191 is 3 across and 20 rows above its feet, inside its 30 x 24 box, on the low crate's top middle (z 0.34); its neck stretched down must put the head tip there",
+     "       info, not a check: the goat drawn in front of the post: 0 post pixels under its box, 0 of them nearer than its plane + 0.3 (hide it)",
+     "       info, not a check: cabra.poste 9.9,2.35,0 is outside the low crate's footprint (x 8.95 to 9.7, y 1.25 to 1.95)"
     ]
    },
    {
     "name": "cart-clear",
     "ok": true,
     "lines": [
-     "cart-clear: carro = 1: pepe.carro 46,156 is inside the window; the cart (pixels [26,135,91,168]) is 10 px clear of abuela at abuela.delante (her pixels columns 102 to 127, rows 138 to 187; the boxes are 10 px apart; needs 10)",
-     "       info, not a check: don Pepe at pepe.carro: 709 of his 834 drawn pixels show (125 hidden by carro)"
+     "cart-clear: carro = 1: pepe.carro 25,146 is inside the window; the cart (pixels [26,135,91,168]) is 13 px clear of abuela at abuela.delante (her pixels columns 102 to 127, rows 153 to 202; the boxes are 10 px apart; needs 10)",
+     "       info, not a check: pepe.carro x stepped from 1.9 by -0.1: x 1.9 covers 0 of the 35 handle pixels -> x 1.9",
+     "       info, not a check: his drawn box at pepe.carro is columns 13 to 36, rows 93 to 145 and the window starts at column 21: 8 of his 24 columns are left of the window",
+     "       info, not a check: don Pepe at pepe.carro: 834 of his 834 drawn pixels show ()"
     ]
    },
    {
@@ -508,10 +485,8 @@
      "       senora.puerta 78,115 in verduras carro 0 puerta open manana: 766 of 878 drawn pixels show (112 hidden by pesa)",
      "       pepe.detras 159,161 in verduras carro 1 puerta open manana: 461 of 834 drawn pixels show (63 hidden by toldo, 134 hidden by puesto, 109 hidden by papas, 67 hidden by platanos)",
      "       pepe.puerta 76,116 in verduras carro 1 puerta open manana: 716 of 834 drawn pixels show (118 hidden by pesa)",
-     "       pepe.carro 46,156 in verduras carro 1 puerta open manana: 709 of 834 drawn pixels show (125 hidden by carro)",
-     "       pepe.pesa 69,154 in verduras carro 1 puerta open manana: 664 of 834 drawn pixels show (170 hidden by carro)",
      "       senora.puerta 78,115 in verduras carro 1 puerta open manana: 766 of 878 drawn pixels show (112 hidden by pesa)",
-     "       pepe.pesa stands 5 px right of the dial's column and 50 rows below its centre: his box columns 57 to 80, rows 101 to 153 against the dial and pan box 56, 97, 15, 35 (x, y, w, h); his shown pixels lie over 214 of the 329 pixels the set draws in the dial and pan box (carro 0), and with carro = 1 214 (the cart hides 170 of his pixels)"
+     "       pepe.pesa stands -27 px right of the dial's column and 36 rows below its centre: his box columns 25 to 48, rows 87 to 139 against the dial and pan box 56, 97, 15, 35 (x, y, w, h); his shown pixels lie over 0 of the 329 pixels the set draws in the dial and pan box (carro 0), and with carro = 1 0 (the cart hides 0 of his pixels)"
     ]
    }
   ]

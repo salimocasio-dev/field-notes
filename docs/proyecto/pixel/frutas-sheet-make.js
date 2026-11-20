@@ -33,6 +33,8 @@ const CART_GAP = 10;                                     // px between the hand 
 const GOAT = { w: 30, h: 24, ax: 15 };                   // the goat's sprite box (about 30 x 24, its middle column on the spot, its bottom edge on the spot's row)
 // the sizes of the small things on the ledge, for the check "the frog's places are clear of them". The coin and the crate are the spec's (coins .2 apart;
 // each crate .7 wide); the rest are the stand-ins' of frutas-preview.html (not final art): a coin 7 x 7 px, a crate .7 x .3 x .34 and the basket .9 x .3 x .3 (world x, y, z)
+// the frog's place in each story that puts something on the ledge (v3 brief: 43 and 44 at repisa.izq; story 42's place is not in the brief: repisa.izq too, see the report)
+const FROG_STORY = [[42, 'repisa.izq'], [43, 'repisa.izq'], [44, 'repisa.izq']];
 const FOOT = { moneda: [7, 7], moneda_paso: .2, cajon: [.7, .3, .34], canasta: [.9, .3, .3] };
 
 // the design's states of the set: surtido x carro x puerta in the morning, and the afternoon in two of them
@@ -78,7 +80,8 @@ const keyOf = s => s.surtido + ' carro ' + s.carro + ' puerta ' + s.puerta + ' '
   }
   await load('tags=1&' + qOf(STATES[0]));
   const ext = await extents(page, load, STATES, G);                           // the pixels that the window must hold
-  const sheet = await make(G, proj, base, bins, ext);
+  const carro = await stepCarro(page, load, SIL);                             // pepe.carro: x stepped down from 1.9 by .1 until he does not cover the cart's handle
+  const sheet = await make(G, proj, base, bins, ext, carro);
   const probes = await probeSets(page, sheet, load, SIL);
   const results = checks(sheet, probes, SIL, G);
   sheet.checks = { person: PERSON, results };
@@ -119,6 +122,37 @@ async function silhouettes(sp) {
   });
 }
 
+/* ---------- pepe.carro: the v3 brief gives (1.9, 3.35, 0) and says: if he covers the cart's handle, step x down by .1 until he does not.
+   He covers the handle where a pixel he draws (not hidden by the depth rule) lies on a pixel of the handle (carro = 1, the morning, the door open, verduras) ---------- */
+const CARRO_START = 1.9, CARRO_Y = 3.35;
+async function stepCarro(page, load, SIL) {
+  await load('tags=1&' + qOf({ hora: 'manana', puerta: 'open', carro: 1, surtido: 'verduras' }));
+  return page.evaluate(arg => {
+    const { px, x0, y, bias } = arg, CF = FRUTAS.CF, COS = Math.sqrt(3) / 2, R2 = Math.SQRT2, T30 = Math.tan(Math.PI / 6), Z = DEPTH.z;
+    const edge = CF.CART[0] - .95 - .05;
+    const isHandle = i => {
+      if (TAGS[i] !== 'carro') return false;
+      const X = i % W, Y = (i / W) | 0, b = (X + .5 - OX) / S, syp = (Y + .5 - OY) / S, z = (Z[i] - 2 * COS * syp) / 2, a = 2 * (syp + z * COS);
+      return (a + b) * R2 / 2 < edge;
+    };
+    let handle = 0; for (let i = 0; i < TAGS.length; i++) if (isHandle(i)) handle++;
+    const tries = [];
+    for (let k = 0; k < 40; k++) {
+      const x = Math.round((x0 - k * .1) * 10) / 10, q = project(x, y, 0), sx = Math.round(q.sx), sy = Math.round(q.sy);
+      let cov = 0;
+      for (let n = 0; n < px.length; n += 2) {
+        const X = sx + px[n], Y = sy + px[n + 1]; if (X < 0 || X >= W || Y < 0 || Y >= H) continue;
+        const i = Y * W + X, plane = q.d + (sy - (Y + .5)) * T30 / S;
+        if (Z[i] > plane + bias) continue;
+        if (isHandle(i)) cov++;
+      }
+      tries.push({ x, covered: cov, handle });
+      if (!cov) return { x, tries };
+    }
+    return { x: null, tries };
+  }, { px: SIL.pepe.px, x0: CARRO_START, y: CARRO_Y, bias: BIAS });
+}
+
 /* ---------- what the set drew, by part (tags=1): the pixel box of each ---------- */
 async function partsOf(page) {
   return page.evaluate(() => {
@@ -155,8 +189,8 @@ async function extents(page, load, STATES, G) {
 }
 
 /* ---------- the sheet ---------- */
-async function make(G, proj, base, bins, ext) {
-  const CF = G.CF;
+async function make(G, proj, base, bins, ext, carro) {
+  const CF = G.CF, carroX = carro.x;
   const P1 = async p => (await proj([p]))[0];
   const scr = ([sx, sy]) => [Math.round(sx), Math.round(sy)];
   const ym = (CF.TY1 + CF.LY1) / 2;                                                    // the middle of the ledge's depth
@@ -169,19 +203,20 @@ async function make(G, proj, base, bins, ext) {
   const add = (name, w, kind, what, extra) => D.push([name, w, kind, what, extra]);
   add('pepe.detras', [6.3, .5, 0], 'person', 'don Pepe behind the stand, between it and the wall (the stand hides him up to his waist)');
   add('pepe.puerta', [1.65, .35, 0], 'person', 'don Pepe at the shop door');
-  add('pepe.carro', [CF.CART[0] - .9, CF.CART[1], 0], 'person', 'don Pepe at the hand cart\'s handles (.9 left of the cart\'s middle, same y)');
-  add('pepe.pesa', [CF.PESA_DIAL.x + .75, CF.PESA_DIAL.y + .5, 0], 'person', 'don Pepe beside the scale');
-  add('abuela.delante', [6.6, 3.2, 0], 'person', 'abuela in front of the stand');
+  add('pepe.carro', [carroX, 3.35, 0], 'person', 'don Pepe at the hand cart\'s handles: the v3 brief gives (1.9, 3.35, 0) and says to step x down by .1 until his drawn pixels do not cover the cart\'s handle; `stepped` lists what each x covered');
+  add('pepe.pesa', [1.9, 2.7, 0], 'person', 'don Pepe beside the scale');
+  add('abuela.delante', [7.4, 4.0, 0], 'person', 'abuela in front of the stand');
   add('abuela.junto_cabra', [8.7, 3.0, 0], 'person', 'abuela beside the low crate');
-  [1, 2, 3].forEach(i => add('coqui.repisa.' + i, [lx(i / 4), ym, CF.LZ], 'frog', 'the frog on the ledge, at ' + ['a quarter', 'a half', 'three quarters'][i - 1] + ' of its length (x ' + r2(L0) + ' to ' + r2(L1) + '), in the middle of its depth'));
-  add('cabra.poste', [CF.POST[0] - .45, CF.POST[1] + .25, 0], 'goat', 'the goat by its post, standing');
+  add('repisa.izq', [4.7, ym, CF.LZ], 'frog', 'the frog on the ledge, left place (x 4.7, in the middle of the ledge\'s depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)');
+  add('repisa.der', [7.7, ym, CF.LZ], 'frog', 'the frog on the ledge, right place (x 7.7, in the middle of the ledge\'s depth, z CF.LZ)');
+  add('cabra.poste', [9.9, 2.35, 0], 'goat', 'the goat by its post, standing');
   add('cabra.cajon', [cmx, cmy, ch], 'head', 'where the goat\'s head is when it eats from the low crate: the crate\'s top middle (the goat\'s feet stay on cabra.poste)');
   add('senora.puerta', [1.65, .25, 0], 'person', 'la señora leaning out of the shop door');
-  add('monedas4', [CF.TX0 + .5, ym, CF.LZ], 'ledge', 'abuela\'s four coins in a row on the ledge, .2 apart (story 42); the first coin here, the row runs towards +x', { dir: [1, 0, 0], row: { n: 4, step: FOOT.moneda_paso } });
-  add('monedas2', [6.0, ym, CF.LZ], 'ledge', 'her two other coins, .2 apart, under the guineos (story 42)', { dir: [1, 0, 0], row: { n: 2, step: FOOT.moneda_paso } });
-  add('canasta', [CF.TX1 - .9, ym, CF.LZ], 'ledge', 'abuela\'s basket on the ledge, lined with a cloth with three hollows (story 43)');
-  add('cajon_a', [CF.TX0 + 1.3, ym, CF.LZ], 'ledge', 'the first crate of story 44, .7 wide', { width: .7 });
-  add('cajon_b', [CF.TX0 + 2.7, ym, CF.LZ], 'ledge', 'the second crate of story 44, .7 wide', { width: .7 });
+  add('monedas4', [5.6, ym, CF.LZ], 'ledge', 'abuela\'s four coins in a row on the ledge, .2 apart (story 42); the first coin here, the row runs towards +x', { dir: [1, 0, 0], row: { n: 4, step: FOOT.moneda_paso } });
+  add('monedas2', [6.7, ym, CF.LZ], 'ledge', 'her two other coins, .2 apart, under the guineos (story 42)', { dir: [1, 0, 0], row: { n: 2, step: FOOT.moneda_paso } });
+  add('canasta', [7.5, ym, CF.LZ], 'ledge', 'abuela\'s basket on the ledge, lined with a cloth with three hollows (story 43)');
+  add('cajon_a', [5.9, ym, CF.LZ], 'ledge', 'the first crate of story 44, .7 wide', { width: .7 });
+  add('cajon_b', [6.7, ym, CF.LZ], 'ledge', 'the second crate of story 44, .7 wide', { width: .7 });
   add('bolsa', [CF.TX1 - .5, ym, CF.LZ], 'ledge', 'a paper bag on the ledge');
   add('bajo', [cmx, cmy, ch], 'point', 'where a thing lands on the low crate: its top middle');
   add('vuelo', [7.2, 2.7, 1.6], 'point', 'the top of the arc of a tossed thing, between the ledge and abuela\'s basket');
@@ -198,6 +233,7 @@ async function make(G, proj, base, bins, ext) {
     if (d[4]) Object.assign(s, d[4]);
     spots[d[0]] = s; depth[d[0]] = q[2];
   });
+  spots['pepe.carro'].stepped = { start: CARRO_START, step: -.1, handle: 'the pixels of part carro whose world x (read back from the baked depth) is left of the bed\'s left end CF.CART x - .95 by more than .05: the two rails and the cross-grip', tries: carro.tries.map(t => ({ x: t.x, coveredPx: t.covered, handlePx: t.handle })) };
   // abuela's list is a card of the game's own
   spots['lista'] = { drawn: false, kind: 'card', what: 'abuela\'s list is a card of the game\'s own, not in the picture' };
   // the hanging hand of guineos: its place is read from what the set drew (part 'guineos', tags=1)
@@ -274,7 +310,7 @@ async function make(G, proj, base, bins, ext) {
       radius: { adultos: .35, cabra: .4 },
       byCharacter: { pepe: .35, abuela: .35, senora: .35, cabra: .4 },
       at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the pavement (z 0)',
-      none: ['coqui.repisa.1', 'coqui.repisa.2', 'coqui.repisa.3'],
+      none: ['repisa.izq', 'repisa.der'],
       onLedge: 'the frog on the ledge casts none: the ledge is not ground (a shadow cast at the pavement under him would show in front of the stand)',
     },
   };
@@ -432,13 +468,13 @@ function checks(sheet, probes, SIL, G) {
     if (!bad.length) OUTS[OUTS.length - 1].lines.push(...lines.map(l => '       ' + l));
   }
 
-  // 4. the frog's three places: at least 30 px apart, each clear of the small things on the ledge of the stories that use them
+  // 4. the frog's two places on the ledge: at least 30 px apart, and in each story the frog's place is clear of the small things on the ledge of that story
+  //    (v3: 43 and 44 put the frog at repisa.izq, the brief says so; story 42's place is NOT in the brief: it is taken as repisa.izq too, an open point of the report)
   {
     const bad = [], lines = [];
-    const pl = [1, 2, 3].map(i => 'coqui.repisa.' + i);
+    const pl = ['repisa.izq', 'repisa.der'];
     const d = (a, b) => Math.hypot(px(a)[0] - px(b)[0], px(a)[1] - px(b)[1]);
-    const pairs = [[pl[0], pl[1]], [pl[1], pl[2]], [pl[0], pl[2]]];
-    const sep = pairs.map(([a, b]) => [a, b, d(a, b)]);
+    const sep = [[pl[0], pl[1], d(pl[0], pl[1])]];
     for (const [a, b, v] of sep) if (v < MIN_FROG) bad.push(a + ' ' + px(a) + ' ~ ' + b + ' ' + px(b) + ': ' + r2(v) + ' px (needs ' + MIN_FROG + '; horizontally ' + Math.abs(px(a)[0] - px(b)[0]) + ')');
     // the boxes: [x0, y0, x1, y1] in pixels, inclusive
     const cb = SIL.coqui.box, frog = n => [px(n)[0] + cb[0], px(n)[1] + cb[1], px(n)[0] + cb[2], px(n)[1] + cb[3]];
@@ -447,21 +483,38 @@ function checks(sheet, probes, SIL, G) {
       const q = []; for (const xx of [x - wdt / 2, x + wdt / 2]) for (const yy of [y - dep / 2, y + dep / 2]) for (const zz of [z, z + h]) q.push(project3(G, xx, yy, zz));
       return [Math.floor(Math.min(...q.map(p => p[0]))), Math.floor(Math.min(...q.map(p => p[1]))), Math.ceil(Math.max(...q.map(p => p[0]))) - 1, Math.ceil(Math.max(...q.map(p => p[1]))) - 1];
     };
-    const coin = (name, n) => { const w = S[name].world, out = []; for (let i = 0; i < n; i++) { const q = project3(G, w[0] + i * FOOT.moneda_paso, w[1], w[2]), sx = Math.round(q[0]), sy = Math.round(q[1]); out.push([sx - (FOOT.moneda[0] >> 1), sy - FOOT.moneda[1], sx - (FOOT.moneda[0] >> 1) + FOOT.moneda[0] - 1, sy - 1]); } return [Math.min(...out.map(b => b[0])), Math.min(...out.map(b => b[1])), Math.max(...out.map(b => b[2])), Math.max(...out.map(b => b[3]))]; };
+    const coin = (name, n, x0) => { const w = S[name].world, out = []; for (let i = 0; i < n; i++) { const q = project3(G, (x0 === undefined ? w[0] : x0) + i * FOOT.moneda_paso, w[1], w[2]), sx = Math.round(q[0]), sy = Math.round(q[1]); out.push([sx - (FOOT.moneda[0] >> 1), sy - FOOT.moneda[1], sx - (FOOT.moneda[0] >> 1) + FOOT.moneda[0] - 1, sy - 1]); } return [Math.min(...out.map(b => b[0])), Math.min(...out.map(b => b[1])), Math.max(...out.map(b => b[2])), Math.max(...out.map(b => b[3]))]; };
     const things = [['monedas4', 42, coin('monedas4', 4)], ['monedas2', 42, coin('monedas2', 2)],
       ['canasta', 43, wbox(S['canasta'].world[0], FOOT.canasta[0], FOOT.canasta[1], FOOT.canasta[2])],
       ['cajon_a', 44, wbox(S['cajon_a'].world[0], FOOT.cajon[0], FOOT.cajon[1], FOOT.cajon[2])], ['cajon_b', 44, wbox(S['cajon_b'].world[0], FOOT.cajon[0], FOOT.cajon[1], FOOT.cajon[2])]];
     const overlap = (a, b) => { const w = Math.min(a[2], b[2]) - Math.max(a[0], b[0]) + 1, h = Math.min(a[3], b[3]) - Math.max(a[1], b[1]) + 1; return w > 0 && h > 0 ? [w, h] : null; };
     const hits = [];
     for (const p of pl) for (const [t, story, box] of things) { const o = overlap(frog(p), box); if (o) hits.push([p, t, story, o]); }
-    for (const [p, t, story, o] of hits) bad.push(p + ' ' + px(p) + ' (frog box [' + frog(p) + ']) overlaps ' + t + ' (story ' + story + ', box [' + things.find(x => x[0] === t)[2] + ']) by ' + o[0] + ' px across and ' + o[1] + ' down');
-    const moments = [['m1 (story 42)', 'coqui.repisa.2', ['monedas4', 'monedas2']], ['m3 (story 43)', 'coqui.repisa.3', ['canasta']], ['m4 (story 44)', 'coqui.repisa.1', ['cajon_a', 'cajon_b']]];
-    const mline = moments.map(([m, p, ts]) => m + ' ' + p + ': ' + ts.map(t => { const h = hits.find(x => x[0] === p && x[1] === t); return t + (h ? ' overlaps by ' + h[3][0] + ' px' : ' clear'); }).join(', ')).join('; ');
-    add('frog-places', bad, 'the three places are at least ' + MIN_FROG + ' px apart (' + sep.map(([a, b, v]) => a.slice(-1) + '-' + b.slice(-1) + ' ' + r2(v)).join(', ') + ') and the frog\'s box clears monedas4, monedas2, canasta, cajon_a and cajon_b',
-      [bad.length + ' finding(s) on the frog\'s three places on the ledge (places ' + pl.map(p => px(p)).join(' ') + '; ledge things\' sizes: rules.footprints):'].concat(bad.map(b => '  ' + b)));
-    OUTS[OUTS.length - 1].lines.push('       info: the places as the preview moments use them: ' + mline);
-    OUTS[OUTS.length - 1].lines.push('       info: spacing of the places: ' + sep.map(([a, b, v]) => a.slice(-1) + '-' + b.slice(-1) + ' ' + r2(v) + ' px').join(', ') + '; the ledge is ' + r2((S['coqui.repisa.3'].screen[0] - S['coqui.repisa.1'].screen[0]) * 2) + ' px long on screen, so a quarter of it is ' + r2((S['coqui.repisa.3'].screen[0] - S['coqui.repisa.1'].screen[0]) / 2) + ' px');
-    OUTS[OUTS.length - 1].frog = { sep: sep.map(([a, b, v]) => [a, b, r2(v)]), hits: hits.map(h => [h[0], h[1], h[2], h[3]]) };
+    for (const [story, place] of FROG_STORY) {
+      for (const [t, st, box] of things) if (st === story) {
+        const o = overlap(frog(place), box);
+        if (o) bad.push('story ' + story + ': ' + place + ' ' + px(place) + ' (frog box [' + frog(place) + ']) overlaps ' + t + ' (box [' + box + ']) by ' + o[0] + ' px across and ' + o[1] + ' down');
+      }
+    }
+    // where a number of the brief makes a story fail: the nearest x (steps of .01) of the thing, and of the frog's place, that clears the overlap; the brief's own numbers are kept
+    const nearestClear = (story, place, t) => {
+      const wx = S[t].world[0], px0 = S[place].world[0], ym2 = S[place].world[1], lz = S[place].world[2];
+      const thingBox = x => t.startsWith('moneda') ? coin(t, t === 'monedas4' ? 4 : 2, x) : wbox(x, t === 'canasta' ? FOOT.canasta[0] : FOOT.cajon[0], t === 'canasta' ? FOOT.canasta[1] : FOOT.cajon[1], t === 'canasta' ? FOOT.canasta[2] : FOOT.cajon[2]);
+      const frogBox = x => { const q = project3(G, x, ym2, lz), sx = Math.round(q[0]), sy = Math.round(q[1]); return [sx + cb[0], sy + cb[1], sx + cb[2], sy + cb[3]]; };
+      const find = (f) => { for (let k = 1; k <= 200; k++) for (const sg of [1, -1]) { const dx = sg * k * .01; if (f(dx)) return dx; } return null; };
+      const dThing = find(dx => !overlap(frogBox(px0), thingBox(wx + dx))), dFrog = find(dx => !overlap(frogBox(px0 + dx), thingBox(wx)));
+      const fmt = (v, base) => v === null ? 'none within 2.0' : r2(base + v) + ' (' + (v > 0 ? '+' : '') + r2(v) + ')';
+      return 'nearest passing: ' + t + ' at x ' + fmt(dThing, wx) + ' (now ' + wx + '), or ' + place + ' at x ' + fmt(dFrog, px0) + ' (now ' + px0 + ')';
+    };
+    const hints = [];
+    for (const [story, place] of FROG_STORY) for (const [t, st, box] of things) if (st === story && overlap(frog(place), box)) hints.push('    ' + nearestClear(story, place, t));
+    const mline = FROG_STORY.map(([story, place]) => 'story ' + story + ' ' + place + ': ' + things.filter(t => t[1] === story).map(t => { const h = hits.find(x => x[0] === place && x[1] === t[0]); return t[0] + (h ? ' overlaps by ' + h[3][0] + ' px across, ' + h[3][1] + ' down' : ' clear'); }).join(', ')).join('; ');
+    const other = pl.map(p => p + ' against every thing: ' + (things.map(t => { const h = hits.find(x => x[0] === p && x[1] === t[0]); return t[0] + (h ? ' overlaps ' + h[3][0] + ' x ' + h[3][1] : ' clear'); }).join(', '))).join('; ');
+    add('frog-places', bad, 'the two places are ' + r2(sep[0][2]) + ' px apart (needs ' + MIN_FROG + ') and in each story the frog\'s box clears the small things on the ledge: ' + mline,
+      [bad.length + ' finding(s) on the frog\'s two places on the ledge (places ' + pl.map(p => px(p)).join(' ') + '; ledge things\' sizes: rules.footprints):'].concat(bad.map(b => '  ' + b), hints));
+    OUTS[OUTS.length - 1].lines.push('       info: the frog\'s boxes ' + pl.map(p => p + ' [' + frog(p) + ']').join(', ') + '; the things\' boxes ' + things.map(t => t[0] + ' [' + t[2] + ']').join(', '));
+    OUTS[OUTS.length - 1].lines.push('       info: each place against every thing, whatever the story: ' + other);
+    OUTS[OUTS.length - 1].frog = { sep: sep.map(([a, b, v]) => [a, b, r2(v)]), story: FROG_STORY, hits: hits.map(h => [h[0], h[1], h[2], h[3]]) };
   }
 
   // 5. abuela.junto_cabra and cabra.poste at least 14 px apart; the goat's head at cabra.cajon reaches the crate's top
@@ -491,6 +544,9 @@ function checks(sheet, probes, SIL, G) {
     const po = cart1.people['pepe.carro'];
     add('cart-clear', bad, 'carro = 1: pepe.carro ' + s.screen + ' is inside the window; the cart (pixels [' + b + ']) is ' + c.gapExact + ' px clear of abuela at abuela.delante (her pixels columns ' + ab[0] + ' to ' + ab[2] + ', rows ' + ab[1] + ' to ' + ab[3] + '; the boxes are ' + gap + ' px apart; needs ' + CART_GAP + ')',
       ['with carro = 1:'].concat(bad.map(x => '  ' + x)));
+    const hs = sheet.spots['pepe.carro'].stepped, cut = Math.max(0, x0 - po.box[0]);
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: pepe.carro x stepped from ' + hs.start + ' by ' + hs.step + ': ' + hs.tries.map(t => 'x ' + t.x + ' covers ' + t.coveredPx + ' of the ' + t.handlePx + ' handle pixels').join('; ') + ' -> x ' + sheet.spots['pepe.carro'].world[0]);
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: his drawn box at pepe.carro is columns ' + po.box[0] + ' to ' + po.box[2] + ', rows ' + po.box[1] + ' to ' + po.box[3] + ' and the window starts at column ' + x0 + ': ' + (cut ? cut + ' of his ' + (po.box[2] - po.box[0] + 1) + ' columns are left of the window' : 'all of him is inside the window'));
     OUTS[OUTS.length - 1].lines.push('       info, not a check: don Pepe at pepe.carro: ' + po.vis + ' of his ' + po.total + ' drawn pixels show (' + Object.entries(po.hidBy).map(([t, n]) => n + ' hidden by ' + t).join(', ') + ')');
   }
 

@@ -137,11 +137,11 @@ Address: <code>?m=1</code> story 42 opening, <code>?m=2</code> story 42 game, <c
   /* ---------- the four moments ---------- */
   const moneda = (at, n) => Array.from({ length: n }, (_, i) => ({ at, off: [i * .2, 0, 0], s: () => SP.thing('moneda') }));
   const MOMENTS = {
-    1: { what: 'story 42, opening: morning, the stand of verduras. Don Pepe at pepe.detras, abuela at abuela.delante with a basket, the frog at coqui.repisa.2, four coins at monedas4 and two at monedas2, the goat at cabra.poste',
+    1: { what: 'story 42, opening: morning, the stand of verduras. Don Pepe at pepe.detras, abuela at abuela.delante with a basket, the frog at repisa.izq, four coins at monedas4 and two at monedas2, the goat at cabra.poste',
       set: { hora: 'manana', puerta: 'open', carro: 0, surtido: 'verduras', aguja: '' },
       layers: () => [{ at: 'pepe.detras', s: () => SP.pepe(), who: 'adulto' },
         { at: 'abuela.delante', s: () => holding(SP.abuela(), [[thing('cesta'), 23, 32]]), who: 'adulto' },
-        { at: 'coqui.repisa.2', s: () => SP.coqui(), who: null },
+        { at: 'repisa.izq', s: () => SP.coqui(), who: null },
         ...moneda('monedas4', 4), ...moneda('monedas2', 2),
         { at: 'cabra.poste', s: () => SP.cabra('stand'), who: 'cabra' }] },
     2: { what: 'story 42, the game: abuela at abuela.junto_cabra holding her basket with both hands, a potato in the air at vuelo, the goat\'s head at the low crate (its feet at cabra.poste)',
@@ -149,21 +149,21 @@ Address: <code>?m=1</code> story 42 opening, <code>?m=2</code> story 42 game, <c
       layers: () => [{ at: 'abuela.junto_cabra', s: () => holding(SP.abuela(), [[thing('cesta'), 23, 32], [hands([22, 37], 0), 0, 33]]), who: 'adulto' },
         { at: 'vuelo', s: () => SP.thing('papa') },
         { at: 'cabra.poste', s: () => SP.cabra('come'), who: 'cabra' }] },
-    3: { what: 'story 43: the stand of frutas. Abuela at abuela.delante holding a big and a small aguacate, the basket at canasta with a limón in its first hollow, don Pepe at pepe.detras with a knife, the frog at coqui.repisa.3',
+    3: { what: 'story 43: the stand of frutas. Abuela at abuela.delante holding a big and a small aguacate, the basket at canasta with a limón in its first hollow, don Pepe at pepe.detras with a knife, the frog at repisa.izq',
       set: { hora: 'manana', puerta: 'open', carro: 0, surtido: 'frutas', aguja: '' },
       layers: () => [{ at: 'pepe.detras', s: () => holding(SP.pepe(), [[thing('cuchillo'), 35, 21]]), who: 'adulto' },
         { at: 'abuela.delante', s: () => holding(SP.abuela(), [[thing('aguacate_g'), 36, 25], [thing('aguacate_p'), 13, 30], [hands([40, 17], 0), 0, 33]]), who: 'adulto' },
         { at: 'canasta', s: () => SP.thing('canasta') },
         { at: 'canasta', px: [-7, -8], dd: .05, s: () => SP.thing('limon') },
-        { at: 'coqui.repisa.3', s: () => SP.coqui(), who: null }] },
-    4: { what: 'story 44: the stand of verduras, the hand cart there, the needle at medio. Don Pepe at pepe.pesa, four limones on the pan, a fresh crate at cajon_a and yesterday\'s at cajon_b, abuela at abuela.delante, the frog at coqui.repisa.1',
+        { at: 'repisa.izq', s: () => SP.coqui(), who: null }] },
+    4: { what: 'story 44: the stand of verduras, the hand cart there, the needle at medio. Don Pepe at pepe.pesa, four limones on the pan, a fresh crate at cajon_a and yesterday\'s at cajon_b, abuela at abuela.delante, the frog at repisa.izq',
       set: { hora: 'manana', puerta: 'open', carro: 1, surtido: 'verduras', aguja: 'medio' },
       layers: () => [{ at: 'pepe.pesa', s: () => SP.pepe(), who: 'adulto' },
         ...[[-3, 0], [3, 0], [-1, 3], [4, 3]].map(([dx, dy]) => ({ at: 'plato', px: [dx, dy], s: () => SP.thing('limon') })),
         { at: 'cajon_a', s: () => SP.thing('cajon', true) },
         { at: 'cajon_b', s: () => SP.thing('cajon', false) }, { at: 'cajon_b', px: [-3, -17], s: () => SP.thing('mosca') },
         { at: 'abuela.delante', s: () => SP.abuela(), who: 'adulto' },
-        { at: 'coqui.repisa.1', s: () => SP.coqui(), who: null }] },
+        { at: 'repisa.izq', s: () => SP.coqui(), who: null }] },
   };
   const RADIUS = () => SHEET.shadows.radius;
   // the sprites added by &also=: one for each spot named
