@@ -222,13 +222,23 @@ Future<WordsView> buildWordsView(Services s) async {
   );
 }
 
-/// Of [lines], the shortest one in which [word] stands as a word (not only inside another word); null when none.
+/// Of [lines], the shortest one in which [word] stands as a word, with its own accents (case and the punctuation
+/// round it aside): "Esta es abuela." is not a line of "está". Null when none.
 HeardLine? shortestLine(List<HeardLine> lines, String word) {
   final tokens = wordTokens(word);
+  final exact = _bare(word);
   HeardLine? best;
   for (final l in lines) {
-    if (occurrences(l.text, [tokens]).isEmpty) continue;
+    final hit = occurrences(l.text, [
+      tokens,
+    ]).any((o) => _bare(l.text.substring(o.a, o.z)) == exact);
+    if (!hit) continue;
     if (best == null || l.text.length < best.text.length) best = l;
   }
   return best;
 }
+
+final RegExp _edges = RegExp(r'^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$', unicode: true);
+
+// lower case, without the punctuation at either end ("¿Dónde está?" -> "dónde está")
+String _bare(String s) => s.toLowerCase().replaceAll(_edges, '');

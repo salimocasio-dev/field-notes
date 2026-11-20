@@ -8,7 +8,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
-import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/words_view.dart';
 import 'package:feature_words/src/word_tile.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
@@ -133,15 +133,10 @@ void main() {
             plain++;
             expect(c.picture, isNull, reason: w);
             final lines = await m.rig.course.linesWith(w, played);
-            final shortest = [
-              for (final l in lines)
-                if (occurrences(l.text, [wordTokens(w)]).isNotEmpty) l.text,
-            ]..sort((a, b) => a.length - b.length);
-            expect(
-              c.line,
-              shortest.isEmpty ? isNull : shortest.first,
-              reason: w,
-            );
+            expect(c.line, shortestLine(lines, w)?.text, reason: w);
+            if (c.line != null) {
+              expect(lines.map((l) => l.text), contains(c.line), reason: w);
+            }
           }
         }
         expect(pictured, greaterThan(0));

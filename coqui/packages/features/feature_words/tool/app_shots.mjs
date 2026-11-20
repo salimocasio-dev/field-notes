@@ -184,11 +184,11 @@ async function take(name, seed, steps) {
     }
   }
   if (tall) {
-    // stretches of STEP px from the top of the view, until the wheel moves the page no further
+    // stretches of STEP css px from the top of the view, until the wheel moves the page no further
     const STEP = 2000;
     const parts = [];
     let last = null;
-    for (let k = 0; k < 20; k++) {
+    for (let k = 0; k < 60; k++) {
       const p = path.join(OUT, `.${name}-${k}.png`);
       await page.waitForTimeout(1200);
       await page.screenshot({ path: p });
@@ -196,8 +196,12 @@ async function take(name, seed, steps) {
       if (last && buf.equals(last)) { fs.rmSync(p); break; }
       parts.push(p);
       last = buf;
+      // one wheel event moves the page at most 500 px
       await page.mouse.move(W / 2, 400);
-      await page.mouse.wheel(0, STEP);
+      for (let i = 0; i < STEP / 500; i++) {
+        await page.mouse.wheel(0, 500);
+        await page.waitForTimeout(60);
+      }
     }
     const py = spawnSync('python3', ['-I', path.join(HERE, 'stitch_shots.py'), file, String(STEP * RATIO), ...parts], { encoding: 'utf8' });
     if (py.status !== 0) throw new Error(`stitch: ${py.stderr}`);

@@ -40,6 +40,7 @@ Rig fourteen() {
           lines: {
             'l1': 'Abuela está en la casa con mamá.',
             'l2': 'Está aquí.',
+            'l0': 'Esta sí.', // shorter, but "esta", not "está"
             'l3': 'Con el gato.',
           },
         ),
@@ -275,7 +276,7 @@ void main() {
 
   group('the cards', () {
     testWidgets(
-      'a word with no picture shows the shortest line he heard it in, the word bold in it',
+      'a word with no picture shows the shortest line he heard it in with its own accents, the word bold in it',
       (tester) async {
         final rig = fourteen();
         await pumpTab(tester, rig);
