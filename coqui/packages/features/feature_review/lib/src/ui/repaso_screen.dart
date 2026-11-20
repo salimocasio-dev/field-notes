@@ -336,23 +336,27 @@ class RepasoScreenState extends State<RepasoScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // (1) the line saying what to do, and the chip's place
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        gameInstruction(it.kind),
-                        style: CoquiText.lessonHint,
+                // (1) the line saying what to do, and the chip's place: as high as the tallest of the six lines, so
+                // that what is under it is in the same place in every game
+                SizedBox(
+                  height: _headerH(context, it.kind, width),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          gameInstruction(it.kind),
+                          style: CoquiText.lessonHint,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: CoquiMetrics.s12),
-                    StreakChip(
-                      count: s.streak,
-                      from: repasoStreakFrom,
-                      reserve: true,
-                    ),
-                  ],
+                      const SizedBox(width: CoquiMetrics.s12),
+                      StreakChip(
+                        count: s.streak,
+                        from: repasoStreakFrom,
+                        reserve: true,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: _gap),
                 // (2) the round speaker

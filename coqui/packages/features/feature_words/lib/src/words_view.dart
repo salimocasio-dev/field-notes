@@ -110,14 +110,19 @@ Future<WordsView> buildWordsView(Services s) async {
   if (sin.isNotEmpty) {
     groups.add(PlaceGroup('More words', sin.map(entry).toList()));
   }
-  // ¿Cuál? asks only words he has heard that have a picture pair; a session is up to 10 words
+  // Repaso asks the words it can serve (page 15: a word with a picture pair, or one a sentence he has heard can score;
+  // the one rule lives in coqui_contracts, where the session asks it too); a course that has not read the games' data
+  // plays today's ¿Cuál?, which asks only words that have a picture pair. A session is up to 10 words.
+  final serving = repasoServing(course, progress);
+  bool serves(String w) =>
+      serving != null ? serving.canServe(w) : pairs.containsKey(w);
   final due = [
     for (final w in progress.due(Skill.ear))
-      if (pairs.containsKey(w)) w,
+      if (serves(w)) w,
   ];
   final askable = [
     for (final r in recs)
-      if (r.ear.etapa > 0 && pairs.containsKey(r.w)) r,
+      if (r.ear.etapa > 0 && serves(r.w)) r,
   ];
   final n = math.min(due.length, 10);
   final min = math.max(1, (n * 10 / 60 + 0.5).floor());

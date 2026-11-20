@@ -485,28 +485,10 @@ class PictureChoice extends StatelessWidget {
           ),
         ),
         if (check)
-          Positioned(
+          const Positioned(
             right: CoquiMetrics.badgeInset,
             top: CoquiMetrics.badgeInset,
-            child: Container(
-              width: CoquiMetrics.badgeSize,
-              height: CoquiMetrics.badgeSize,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: CoquiColors.lessonGreen,
-                boxShadow: [
-                  BoxShadow(
-                    color: CoquiColors.lessonInk,
-                    spreadRadius: CoquiMetrics.badgeRing,
-                  ),
-                ],
-              ),
-              child: const CoquiIcon(
-                CoquiIcons.badgeCheck,
-                size: CoquiMetrics.badgeSize,
-                color: CoquiColors.lessonInk,
-              ),
-            ),
+            child: CheckBadge(),
           )
         else if (cross)
           const Positioned(

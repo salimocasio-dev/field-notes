@@ -1,8 +1,6 @@
 // Repaso's games on screen: the module's choice (the games, or today's ¿Cuál? when the data is missing), and a whole
 // session played by touches on both phone sizes, with reduced motion and a larger text size: nothing overflows,
 // every target is where a finger finds it.
-import 'dart:convert';
-
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -15,187 +13,8 @@ import 'package:feature_review/src/ui/review_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../tool/support/scripted_clips.dart';
-import '../tool/support/virtual_time.dart';
-import 'support/recording_store.dart';
 import 'support/repaso_course.dart';
-
-/// A 1 x 1 picture (the book pictures are not read in a widget test).
-final MemoryImage _dot = MemoryImage(
-  base64Decode(
-    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-  ),
-);
-
-class Screen {
-  Screen(
-    this.t, {
-    String? json,
-    int seed = 3,
-    bool speech = true,
-    List<String> heard = const [],
-  }) : vt = VirtualTime(settler: t.idle) {
-    store = RecordingStore(
-      vt,
-      clock: FakeClock(curseNow),
-      json: json ?? seedJson('curso'),
-    );
-    clips = ScriptedClips(vt);
-    services = fakeServices(
-      progress: store,
-      course: RepasoTestCourse(),
-      clips: clips,
-      clock: vt,
-      rng: FakeRng(seed),
-      nav: nav,
-      speech: FakeSpeechListener(
-        results: heard,
-        isAvailable: speech,
-        instant: true,
-      ),
-      reduceMotion: true,
-    );
-  }
-
-  final WidgetTester t;
-  final VirtualTime vt;
-  late final RecordingStore store;
-  late final ScriptedClips clips;
-  late final Services services;
-  final FakeNavigator nav = FakeNavigator();
-  final GlobalKey<RepasoScreenState> key = GlobalKey();
-
-  RepasoSession get s => key.currentState!.session;
-
-  Future<void> open({
-    double w = 390,
-    double h = 844,
-    double dpr = 3,
-    double text = 1,
-  }) async {
-    t.view.devicePixelRatio = dpr;
-    t.view.physicalSize = Size(w * dpr, h * dpr);
-    addTearDown(t.view.reset);
-    t.platformDispatcher.accessibilityFeaturesTestValue =
-        FakeAccessibilityFeatures(disableAnimations: true);
-    addTearDown(t.platformDispatcher.clearAccessibilityFeaturesTestValue);
-    await t.pumpWidget(
-      MaterialApp(
-        theme: coquiTheme(),
-        home: Builder(
-          builder: (context) => MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: TextScaler.linear(text)),
-            child: RepasoScreen(
-              key: key,
-              services: services,
-              data: realRepaso,
-              wait: vt.wait,
-              imageProvider: (_) => _dot,
-            ),
-          ),
-        ),
-      ),
-    );
-    await settle();
-  }
-
-  Future<void> settle() async {
-    await vt.settle();
-    await t.pump(const Duration(milliseconds: 50));
-    expect(t.takeException(), isNull);
-  }
-
-  Future<void> down(Finder f) async {
-    final g = await t.startGesture(t.getCenter(f));
-    await g.up();
-    await settle();
-  }
-
-  bool _needsMe(QueueEntry? acted) =>
-      s.canNext ||
-      s.choices.any((c) => c.sign) ||
-      s.mic == MicState.ready ||
-      (s.yourTurn && !identical(acted, s.entry));
-
-  /// Plays the session to its end by touches: everything right, the first scored item wrong. [each] sees every
-  /// moment where he acts.
-  Future<void> play({Future<void> Function(String moment)? each}) async {
-    await t.tap(find.byType(LessonStartButton));
-    await settle();
-    QueueEntry? acted;
-    var n = 0;
-    for (var g = 0; g < 3000 && s.screen != LessonScreen.end; g++) {
-      await vt.runUntil(() => s.screen == LessonScreen.end || _needsMe(acted));
-      await t.pump(const Duration(milliseconds: 50));
-      expect(t.takeException(), isNull);
-      if (s.screen == LessonScreen.end) break;
-      final it = s.item!;
-      if (s.canNext) {
-        await each?.call('next ${it.kind.name}');
-        await t.tap(find.text(RepasoStrings.next));
-      } else if (s.choices.any((c) => c.sign)) {
-        await each?.call('shown ${it.kind.name}');
-        final k = s.choices.indexWhere((c) => c.sign);
-        await _touch(it, k);
-      } else if (s.mic == MicState.ready) {
-        await each?.call('mic');
-        await t.tap(find.byType(RepasoMic));
-      } else if (s.yourTurn && !identical(acted, s.entry)) {
-        acted = s.entry;
-        await each?.call('turn ${it.kind.name}');
-        final r = s.choices.indexWhere((c) => c.right);
-        switch (it) {
-          case CualItem() || HearItem() || WhereItem():
-            await _touch(it, n == 0 ? (r == 0 ? 1 : 0) : r);
-          case BuildItem():
-            for (final w in it.order) {
-              final k = s.choices.indexWhere((c) => !c.done && c.label == w);
-              final tile = find
-                  .descendant(
-                    of: find.byType(TileTray).last,
-                    matching: find.byType(WordTile),
-                  )
-                  .at(k);
-              // the bank can reach below the visible part of the screen (the test font is wider than the real one)
-              await t.ensureVisible(tile);
-              await t.tap(tile);
-              await settle();
-            }
-          case MatchItem():
-            for (var i = 0; i < 4; i++) {
-              await t.ensureVisible(find.byType(SpeakerTile).at(i));
-              await t.tap(find.byType(SpeakerTile).at(i));
-              await settle();
-              final word = find
-                  .descendant(
-                    of: find.byType(Row),
-                    matching: find.byType(WordTile),
-                  )
-                  .at(it.wordOrder.indexOf(i));
-              await t.ensureVisible(word);
-              await t.tap(word);
-              await settle();
-            }
-          case SayItem():
-            break;
-        }
-        n++;
-      }
-      await settle();
-    }
-    await t.pump(const Duration(milliseconds: 400));
-  }
-
-  Future<void> _touch(GameItem it, int k) async {
-    if (it is HearItem) {
-      await t.tap(find.byType(WordTile).at(k));
-      await settle();
-    } else {
-      await down(find.byType(PictureChoice).at(k));
-    }
-  }
-}
+import 'support/repaso_screen_rig.dart';
 
 void main() {
   testWidgets(
@@ -219,7 +38,7 @@ void main() {
       final r =
           ReviewModule(
                 imageUrl: (p) => 'x/$p',
-                imageProvider: (u) => _dot,
+                imageProvider: (u) => dotPicture,
               ).screenFor(const ReviewRoute(), withData)!
               as RepasoScreen;
       expect(r.imageUrl('img/a.png'), 'x/img/a.png');
