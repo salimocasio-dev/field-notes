@@ -1,0 +1,58 @@
+# Scene sheet: nevera
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/nevera/inventory.json and historia/escenas/nevera.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: jugo-de-china, no-hay-leche, para-los-pajaros
+- Review file: cual-nevera
+- Words already taught here: china, mantequilla, lleno, vacío, leche, queso, no hay, busca, fruta, guineo, manzana, pan
+- Stakes used: comida, jugo, monedas
+- Who speaks here ("habla"): abuela, abuelo, carmen, luis, mama
+- Things he can touch: abuela, abuelo, carmen, cesta, cocina, coqui, frutas, jarra, leche, luis, mama, mant, nevera, papa, queso, red, t_fruta, t_pan, v_amarillo, v_azul, v_rojo, v_verde
+- Spots (for ir): inicio, centro
+- Views (for cam): wide
+- Names already recorded (thing: clip): abuela: abuela, abuelo: n_abuelo, carmen: p_n_carmen, cocina: m_n_cocina, coqui: yo_coqui, luis: p_n_luis, mama: esta_es_mama, nevera: c30_nevera, papa: n_papa
+- Shared acts: burbuja, calla, fin, ir, pose
+- Acts:
+    - abuelaa31 (used in para-los-pajaros)
+    - abuelamira: abuela looks into the green cup and the yellow one; then she turns to the bread, or (sale) goes to the door with a plate of bread, her back to the cups (used in jugo-de-china)
+    - abuelasale (used in jugo-de-china)
+    - abuelavuelve (used in jugo-de-china)
+    - abuelo31: abuelo, in the yard at the window: trae (he lays a guineo and a manzana on the sill; viejo: the one with black spots on our side), tira (he tosses the one named to the birds), come (he eats the one that is left), da (he hands it in and abuela lays it in the picnic basket), mira (he turns the one that is left: spots) (e.g. {"act": "abuelo31", "que": "trae", "viejo": "guineo"} in para-los-pajaros)
+    - cajon31: abuela pulls the drawer out and tips it towards us (ver), or pushes it shut (e.g. {"act": "cajon31", "ver": 1} in para-los-pajaros)
+    - comparten: mamá and the children share out what stands on the counter: its empty bottle, or its rind, stays there (used in no-hay-leche)
+    - consume30: the first picture: mamá fills the baby's bottle (the holder is empty); abuela lays cheese on bread for Luis (e.g. {"act": "consume30", "suelto": 1} in no-hay-leche)
+    - exprime: abuela squeezes a china into the jug (one mark more); todo: the last ones: she fills the green cup and the yellow cup, and the jug to its fourth mark; the net is empty (e.g. {"act": "exprime", "suelto": 1} in jugo-de-china)
+    - final30: the ending: the frog tosses papá the coins left in his jar; papá buys a piragua at the cart: one scoop for each coin (used in no-hay-leche)
+    - final31: the ending: the lid half shut; Luis carries the picnic basket, and they go (used in para-los-pajaros)
+    - final32: the ending: abuela takes the two clear glasses down and pours what is left: first into the cup of the child whose juice is gone, then into her own glass, then into the frog's (used in jugo-de-china)
+    - g (not used by any story yet)
+    - huele31: abuela bends over the tray and smells without lifting: one thing (a), or both, one after the other (orden: which first) (e.g. {"act": "huele31", "a": "pan", "suelto": 1} in para-los-pajaros)
+    - huelemanos: she bends to the hands of one, then of the other (orden: which first), and turns to the picnic basket (e.g. {"act": "huelemanos", "orden": 1} in para-los-pajaros)
+    - inicio30: The fridge has one holder for the bottle of milk and one dish for the cheese: W.nev.h[0], W.nev.h[1]. Papá, in the yard, fetches what the frog sends him for, for a coin. Whatever he brings, Luis carries to the fridge: a thing whose place is taken stays on the counter. (used in no-hay-leche)
+    - inicio31: The tray stands on the counter under the window: two places. What the frog or abuelo throws out lands on the yard wall, and a bird comes to it. A good thing thrown out stays there with its bird to the end (bueno); an old one is gone by the next throw. (used in para-los-pajaros)
+    - inicio32: Four metal cups: green and yellow are the children's, red and blue the grown-ups'. A cup is {id, n: 1 full, 0 empty}. The jug has four marks. Nobody sees into a metal cup from the side: a round picture shows it from above when W.vista names it. (used in jugo-de-china)
+    - lleva32: the frog carries a cup to the sink and tips it over the dishwater. A full one: the juice is in the dishwater. The cup goes in to be washed (e.g. {"act": "lleva32", "a": "v_rojo"} in jugo-de-china)
+    - lote: abuela sets a roll and a plate of fruit on the tray. viejo: which of the two is old; izq: which stands at the left (e.g. {"act": "lote", "viejo": "pan", "izq": "pan"} in para-los-pajaros)
+    - lotes31 (e.g. {"act": "lotes31", "viejo": "$ka", "izq": "$za", "luis": "$qb", "abuelo": "$ke"} in para-los-pajaros)
+    - mama32: mamá, at the window: trae (she sets the red cup and the blue cup on the sill, looks down into them, and turns her face away; vacio: which is empty), lleva (she carries out the cups that stand on the sill) (e.g. {"act": "mama32", "que": "trae", "vacio": "azul"} in jugo-de-china)
+    - mandado: the errand. The frog tosses papá the coin from the sill, or one out of his own jar when the sill is bare (carta: he holds that card up first); papá goes off and is back with the thing; Luis carries it to the fridge. Its place is empty: he puts it in. Its place is taken: he throws a hand up and stands it on the counter (e.g. {"act": "mandado", "k": "leche", "suelto": 1} in no-hay-leche)
+    - marca (e.g. {"act": "marca", "que": "ok"} in jugo-de-china)
+    - mira30: abuela goes to the fridge: she opens it wide (abre "todo"), or a little and looks in (abre "poco"); toma: she takes the last cheese for her plate. She speaks from there (e.g. {"act": "mira30", "abre": "todo"} in no-hay-leche)
+    - mirapila: whoever lost his juice in the dishwater comes to the window and looks in (used in jugo-de-china)
+    - nino31: a child: eats the fruit in his hands (come), lays it in the picnic basket (guarda), or turns it over: black spots (manchas) (e.g. {"act": "nino31", "a": "carmen", "suelto": 1} in para-los-pajaros)
+    - ninos32: the children: toman (each takes his cup; bebe: that one drinks his up), dejan (they set the cups on the counter and take bread in both hands, their backs to the cups), salen (out of the door, con: with the cups), entran (in at the door with their cups; vacio: whose is empty), corren (they set the cups down and run out) (e.g. {"act": "ninos32", "que": "toman", "bebe": "carmen"} in jugo-de-china)
+    - nota (not used by any story yet)
+    - prueba: everything at once, to look at the drawing (not used by any story yet)
+    - quita: the frog takes the fruit out of a child's hands and tosses it out of the window (e.g. {"act": "quita", "a": "luis"} in para-los-pajaros)
+    - resto31: abuela gives what is left on the tray to a child, who eats it; or (guarda) lays it in the picnic basket; or (voltea) turns it over: spots (e.g. {"act": "resto31", "a": "carmen", "suelto": 1} in para-los-pajaros)
+    - sacamoneda: after a miss the sill is bare: the frog takes a coin out of his own jar and lays it on the sill (used in no-hay-leche)
+    - sale30: then she shuts it (if she had only looked in), lays one coin on the sill, takes her plate and goes out of the door (used in no-hay-leche)
+    - setnev: what is in the fridge now, whether we see it or not (falta: the thing that has run out) (e.g. {"act": "setnev", "falta": "leche"} in no-hay-leche)
+    - sostienen: abuela takes a guineo and a manzana out of the drawer; Luis holds one and Carmen the other (luis: which Luis holds) (e.g. {"act": "sostienen", "luis": "guineo"} in para-los-pajaros)
+    - tira31: the frog hops onto the counter and tosses a thing from the tray out of the window onto the wall; a bird has it (e.g. {"act": "tira31", "a": "t_pan", "suelto": 1} in para-los-pajaros)
+    - turno30: the turn: the piragua man's cart; the frog hops to his jar; abuela shows the three coins she has left (used in no-hay-leche)
+    - turno31: the turn: abuelo puts his hat on; three more birds; the three last lots come out, one for each hollow: the last roll and plate on the tray (izq, viejo), the last guineo and manzana out of the drawer into the children's hands (luis), and the two abuelo holds up (used in para-los-pajaros)
+    - unta: abuela butters a slice from the plate on the sill and gives it to somebody, who eats it (e.g. {"act": "unta", "a": "luis", "suelto": 1} in jugo-de-china)
+    - vierte: the frog hops onto the counter and tips the big jug from behind it: he cannot see into the cup. Into a full cup the juice runs over: a puddle beside the cup and one under it, with drops between. They stay. The jug is a mark lower either way (e.g. {"act": "vierte", "a": "v_amarillo"} in jugo-de-china)
+    - vista: the round picture over a cup: on, or off (e.g. {"act": "vista", "a": "v_verde"} in jugo-de-china)
+    - ya (used in jugo-de-china)

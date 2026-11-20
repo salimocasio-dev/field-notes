@@ -1,0 +1,48 @@
+# Scene sheet: balcon
+
+For story writers (see 16-story-kit). Made from coqui/ref/escenas/balcon/inventory.json and historia/escenas/balcon.js by hojas_escena.py on Nov 20 2026. Regenerate after the scene changes; do not edit by hand.
+
+- Stories: d-agua-pajaro, el-jugo, h-balcon, que-calor
+- Review file: cual-balcon
+- Words already taught here: silla, se sienta, vaso, jugo, agua, toma, quiero, gracias, ¿cómo estás?, bien
+- Stakes used: calor, none, rondas
+- Who speaks here ("habla"): abuela
+- Things he can touch: abuela, agua, balcon, coqui, jugo, mesa, pajaro, puerta, silla_grande, silla_pequena, vaso_grande, vaso_mesa, vaso_pequeno, vaso_silla, ventana
+- Spots (for ir): jardin, balcon, mesa, junto, decir, silla_pequena, suelo, abuela, silla_grande, puerta, ventana
+- Views (for cam): wide, mesa, porche
+- Names already recorded (thing: clip): abuela: abuela, agua: n_agua, balcon: n_balcon, coqui: yo_coqui, jugo: n_jugo, mesa: n_mesa, pajaro: un_pajaro, puerta: puerta, silla_grande: n_silla_abuela, silla_pequena: n_silla_pequena, vaso_grande: n_vaso_grande, vaso_mesa: n_vaso_mesa, vaso_pequeno: n_vaso_pequeno, vaso_silla: n_vaso_silla, ventana: ventana
+- Shared acts: burbuja, calla, ir, pose
+- Acts:
+    - abbebe (used in el-jugo)
+    - abcoge: abuela takes a glass (from the table, or back out of the frog's hand) and drinks it: that one was hers (e.g. {"act": "abcoge", "en": "$o"} in el-jugo)
+    - abentra: she gets up and goes in through the door (used in d-agua-pajaro)
+    - absale: and comes back with two glasses for the table (used in d-agua-pajaro)
+    - absienta: abuela walks to her chair and sits down (used in d-agua-pajaro)
+    - aparta: she will not drink that one: she puts the glass down on the table, and it stays there (used in que-calor)
+    - avebebe (e.g. {"act": "avebebe", "en": "agua"} in d-agua-pajaro)
+    - avesilla (used in d-agua-pajaro)
+    - aveva: the bird flies down beside a glass, drinks it, and goes to sit on the small chair (e.g. {"act": "aveva", "en": "agua"} in d-agua-pajaro)
+    - aveventana (used in el-jugo)
+    - bebe: she drinks, and cools down a step (used in h-balcon)
+    - bebecq (used in d-agua-pajaro)
+    - coge: the frog picks a glass up from the table, puts it back, or drinks the one he holds (e.g. {"act": "coge", "en": "jugo"} in d-agua-pajaro)
+    - cqbebe (used in que-calor)
+    - cqhielo (used in que-calor)
+    - dafan: she hands him the other half; or, after a wrong answer, it is left on the table (used in que-calor)
+    - deja (used in h-balcon)
+    - fanmesa (used in que-calor)
+    - fin: the ending: heart and stars when nothing was lost (used in que-calor)
+    - final: the last picture, by how hot it got (used in que-calor)
+    - gana (used in el-jugo)
+    - lleva: the frog carries a jug to her and fills her glass (e.g. {"act": "lleva", "en": "agua"} in h-balcon)
+    - marcador: the ending of El jugo: who drank more decides who gets the small chair (used in el-jugo)
+    - muestra: the frog, eager, holds up a jug to show her; then puts it back (e.g. {"act": "muestra", "en": "jugo"} in que-calor)
+    - ofrece: she fills a glass for the frog and holds it out; he takes it (e.g. {"act": "ofrece", "en": "$bebida"} in que-calor)
+    - pone: the two jugs on the table. Which side each is on is drawn fresh. (used in h-balcon)
+    - pone2 (used in d-agua-pajaro)
+    - recibe (used in que-calor)
+    - recoge: he picks up the two halves of her fan and gives them to her. She fans herself with one half, and keeps it. (used in que-calor)
+    - rompe (used in que-calor)
+    - sirve: she fills fresh glasses (e.g. {"act": "sirve", "que": "ja"} in el-jugo)
+    - sube (used in d-agua-pajaro)
+    - suelta (not used by any story yet)
