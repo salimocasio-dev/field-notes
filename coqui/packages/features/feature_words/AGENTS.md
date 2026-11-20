@@ -24,15 +24,20 @@ Palabras.
 - `lib/feature_words.dart` is the one public file. Everything else is under `lib/src/`.
 - Nobody imports another package's `src/`.
 - It exports one thing: its module, `WordsModule` (boundary rule 4). Its id is `words`; `tab(s)` is the Palabras tab; `screenFor` answers `TabRoute('words')` with the same screen and every other route with null.
-- Since order 21 the screen is the Palabras tab of v=39 (`lib/src/`): `words_view.dart` (app.html `palabras`: what is shown, worked out from `Services.progress` and `Services.course`), `words_tab.dart` (the tab), `word_sheet.dart` (`palabra` and `oyeLinea`: the word sheet's content, opened with coqui_ui's `showCoquiSheet` so that its scrim dims the tab bar), `add_box.dart` (`extra`), `balanced_key_line.dart` (the key line, see "Stand-ins"), `text_rules.dart` (`occs`, `vuelve`). The tab reads the store again after every save of it. "Palabras" and "Repaso" come from `CoquiLabels`.
+- Since order 21 the screen is the Palabras tab of v=39 (`lib/src/`): `words_view.dart` (app.html `palabras`: what is shown, worked out from `Services.progress` and `Services.course`), `words_tab.dart` (the tab), `word_sheet.dart` (`palabra` and `oyeLinea`: the word sheet's content, opened with coqui_ui's `showCoquiSheet` so that its scrim dims the tab bar), `add_box.dart` (`extra`), `balanced_key_line.dart` (balanced grey lines, see "Stand-ins"), `text_rules.dart` (`occs`, `vuelve`). Since order 27 also `word_tile.dart` (the card, its grid, the Today tag, the one-row meters and their key) and `find_box.dart` (Find a word); `words_view.dart` holds the pills' filter (`WordFilter`, `shownGroups`), the stage names (`stageName`) and, for a word with no picture, the line its card shows (`shortestLine`). The tab reads the store again after every save of it. "Palabras" and "Repaso" come from `CoquiLabels`.
 - The dev entry is `tool/dev_main.dart` (below); `web/` is there for it.
+
+## Order 27 (Nov 20): what changed from the port of v=39
+
+Palabras is no longer a straight copy of the old tab. The pills All / Today / Good and one count line; Today = the words today's Repaso asks (due, with a pair, the first 10, most overdue first), tagged "Today" on their cards; Good = ear stage 4. Each place heading carries its counts. The card: the picture fills the card's width (one whole scale larger when the largest that fits leaves it under 3/4 of the width, sides cut), the meters in one row (speaker, microphone, four small dots each), a word with no picture shows the shortest "Heard in" line it stands in. Find a word behind a button beside the pills (more than 12 words). The word sheet names each meter's stage (Not yet, Heard, Found, Holding, Good: palabras.js). Requests: `coqui/requests/27-*.md`.
 
 ## Stand-ins
 
 What this package carries because the shared packages do not have it. The requests for them are answered (the files in `coqui/requests/` are gone); these stay in the package.
 
 - `AddBox` (`lib/src/add_box.dart`): the text field of "Add a word or a goal", a Material `TextField` set to the look of v=39's `input` (48 px, white, a `--line2` ring through `CoquiLayout.border`, 12 px corners, the browser's grey placeholder). coqui_ui has no text field; `coquiTheme()` gives the standard density.
-- `BalancedKeyLine` and `BalancedText` (`lib/src/balanced_key_line.dart`): the grey key line under the first place title, with `text-wrap: balance` (`KeyLine` of coqui_ui does not balance its lines).
+- `BalancedKeyLine` and `BalancedText` (`lib/src/balanced_key_line.dart`): a grey line with `text-wrap: balance` (`KeyLine` of coqui_ui does not balance its lines); since order 27 the count line under the pills uses `BalancedText`.
+- Since order 27: `WordTile`, `TileGrid`, `TodayTag`, `SkillDot`, `SmallDots`, `SkillKey`, `FindBox`, `FindButton` (see `coqui/requests/27-feature-words-needs-coqui-ui-palabras-parts.md`).
 - The full sample course (`tool/make_dev_data.mjs`, `tool/dev_data/`): the whole of `historia/` behind `FakeCourseCatalog(fetch:)` and the seeds of `coqui/ref/pantallas/seeds/`, so that the dev entry shows every reference state. coqui_testing's sample course holds three stories.
 - `DevPictures` and `DevClips` (`tool/dev_services.dart`): grey pictures with the real source's geometry and a clip player whose clips play for their own length, for the dev entry and the screenshots. `GateClips` (`test/support.dart`) is the player of the tests: its clips end when the test says.
 
@@ -50,6 +55,7 @@ node tool/make_dev_data.mjs && dart format tool    # after a change in coqui/ref
 
 - `?state=` is the stored progress it starts in: a seed of `coqui/ref/pantallas/seeds/`, loaded through the fake store's `import`. The clock stands at 19 Nov 2026, 12:00 in Puerto Rico, as in the old pictures.
 - The fakes are set up in `tool/dev_services.dart`: the whole course of `historia/` behind `FakeCourseCatalog(fetch:)`, a clip that plays for its length, grey pictures with the real source's geometry (see "Stand-ins").
+- `tool/app_shots.mjs <build of coqui/tool/build_sitio.sh> --out=<dir>` (order 27): the tab in the whole app (real pictures, the real course of `historia/`) in every state, at 390 x 844 and ratio 2 by default (`--width`, `--height`, `--ratio`, `--text=1.3` for the text size); whole pages are put together by `tool/stitch_shots.py`.
 - `tool/shots.mjs` takes each picture of `coqui/ref/pantallas/` that order 21 uses on both phones, drives the page through its accessibility tree, and writes the pictures, a side by side with each reference, and `pairs.json`.
 
 ## Run and test it alone
