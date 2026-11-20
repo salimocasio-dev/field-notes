@@ -675,8 +675,16 @@ class RepasoSession extends LessonBase {
     var wrongs = 0;
     var found = 0;
     final p = Completer<void>();
+    // a wrong word keeps its red-orange ring until the next touch
+    void clearWrong() {
+      for (final c in choices) {
+        if (c.ring == OptionRing.bad) c.ring = OptionRing.none;
+      }
+    }
+
     _onSpeaker = (i) {
       if (speakers[i].done || p.isCompleted) return;
+      clearWrong();
       selectedSpeaker = i;
       for (var j = 0; j < speakers.length; j++) {
         if (!speakers[j].done) {
@@ -690,6 +698,7 @@ class RepasoSession extends LessonBase {
     _onChoice = (k) {
       final s = selectedSpeaker;
       if (s == null || choices[k].done || p.isCompleted) return;
+      clearWrong();
       if (it.wordOrder[k] == s) {
         hush();
         speakers[s]
@@ -707,7 +716,9 @@ class RepasoSession extends LessonBase {
         if (found == it.words.length) p.complete();
       } else {
         wrongs++;
-        choices[k].shakes++;
+        choices[k]
+          ..shakes += 1
+          ..ring = OptionRing.bad;
         sfxBonk();
         changed();
       }

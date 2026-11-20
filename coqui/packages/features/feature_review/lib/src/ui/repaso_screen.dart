@@ -485,9 +485,6 @@ class RepasoScreenState extends State<RepasoScreen> {
                   check: s.choices[i].check,
                   shake: s.choices[i].shakes,
                   still: _still,
-                  look: s.selectedSpeaker == null && !s.choices[i].done
-                      ? TileLook.waiting
-                      : TileLook.normal,
                   onTap: s.choices[i].done ? null : () => s.touch(i),
                 ),
               ),
@@ -503,13 +500,19 @@ class RepasoScreenState extends State<RepasoScreen> {
     final s = session;
     final dpr = MediaQuery.devicePixelRatioOf(context);
     final n = s.choices.length;
-    final perRow = n <= 2 ? n : 2;
-    final rows = (n / perRow).ceil();
-    final k = bookScale(
-      aw: (room.width - (perRow - 1) * CoquiMetrics.s16) / perRow,
-      ah: (room.height - 56 - 16 - 80 - (rows - 1) * CoquiMetrics.s16) / rows,
-      dpr: dpr,
-    );
+    // the pictures as big as they can be at one whole scale: in one, two or three columns, whichever gives the
+    // largest (a tie: more to a row); the room less the speaker above and a line of text under
+    final h = room.height - 56 - CoquiMetrics.s24 - 64;
+    var k = 0;
+    for (var cols = 1; cols <= n; cols++) {
+      final rows = (n / cols).ceil();
+      final kk = bookScale(
+        aw: (room.width - (cols - 1) * CoquiMetrics.s16) / cols,
+        ah: (h - (rows - 1) * CoquiMetrics.s16) / rows,
+        dpr: dpr,
+      );
+      if (kk >= k) k = kk;
+    }
     Widget pic(int i) {
       final c = s.choices[i];
       return _signed(

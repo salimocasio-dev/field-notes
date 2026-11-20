@@ -110,12 +110,16 @@ class _TileFace extends StatelessWidget {
       children: [
         face,
         if (check) const Positioned(right: -6, top: -10, child: _CheckBadge()),
+        // on a tile the sign sits inside its left end and points at the word (above it, it would cover the line
+        // that says what to do)
         if (sign)
           Positioned(
-            left: 0,
-            right: 0,
-            top: -TouchSign.size - 4,
-            child: Center(child: TouchSign(still: calm)),
+            left: 6,
+            top: 0,
+            bottom: 0,
+            child: Center(
+              child: TouchSign(still: calm, pointing: AxisDirection.right),
+            ),
           ),
       ],
     );
@@ -151,10 +155,17 @@ class _CheckBadge extends StatelessWidget {
 /// The big sign for what to touch: a 44 px green disc with a white arrow pointing down at the thing, that grows and
 /// shrinks a little (still with reduced motion, or [still]). Over a picture or a tile whose answer is shown.
 class TouchSign extends StatefulWidget {
-  const TouchSign({super.key, this.still = false});
+  const TouchSign({
+    super.key,
+    this.still = false,
+    this.pointing = AxisDirection.down,
+  });
 
   static const double size = 44;
   final bool still;
+
+  /// Where the arrow points: down at a picture under it, right at a word beside it.
+  final AxisDirection pointing;
 
   @override
   State<TouchSign> createState() => _TouchSignState();
@@ -212,8 +223,8 @@ class _TouchSignState extends State<TouchSign>
           color: CoquiColors.lessonGreen,
           boxShadow: [BoxShadow(color: CoquiColors.lessonInk, spreadRadius: 2)],
         ),
-        child: const RotatedBox(
-          quarterTurns: 1,
+        child: RotatedBox(
+          quarterTurns: widget.pointing == AxisDirection.down ? 1 : 0,
           child: CoquiIcon(
             CoquiIcons.right,
             size: 30,
