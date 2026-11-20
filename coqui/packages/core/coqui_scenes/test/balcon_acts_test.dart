@@ -144,6 +144,22 @@ void main() {
         'calla': ((W) {}, {}),
         'pose': ((W) {}, {'que': 'wave'}),
       };
+  test('the registry\'s factory gives the scene its random source: pone draws once, from it', () async {
+    final draws = _Draws(Mulberry32(1));
+    final made = sceneRegistry['balcon']!(rng: draws) as Balcon;
+    final f = StillFrame(made)..host.fresh();
+    await made.acts['pone']!({});
+    expect(draws.n, 1);
+    final side = Mulberry32(1).next() < .5 ? 0 : 1;
+    final jarras = f.host.W['jarras'] as List;
+    expect((jarras[0] as Map)['x'], made.X2[side]);
+    expect((jarras[1] as Map)['x'], made.X2[1 - side]);
+    // made without one, a scene that draws says so
+    final without = sceneRegistry['balcon']!() as Balcon;
+    StillFrame(without).host.fresh();
+    await expectLater(without.acts['pone']!({}), throwsStateError);
+  });
+
   test('every act of balcon.js has a run here', () {
     expect(
       runs.keys.map((k) => k.split('.').first).toSet(),
@@ -275,4 +291,18 @@ void main() {
     expect(nearer, greaterThan(0));
     expect(hers, greaterThan(0));
   });
+}
+
+/// A random source that counts its draws.
+class _Draws implements Rng {
+  _Draws(this._inner);
+
+  final Rng _inner;
+  int n = 0;
+
+  @override
+  double next() {
+    n++;
+    return _inner.next();
+  }
 }

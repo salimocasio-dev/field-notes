@@ -9,9 +9,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:coqui_contracts/coqui_contracts.dart' show Mulberry32;
+import 'package:coqui_pixel/coqui_pixel.dart' show Escena;
+import 'package:coqui_scenes/coqui_scenes.dart' show SetScene, StillFrame;
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:feature_story/src/play/trace_json.dart' show firstDifference;
+import 'package:feature_story/src/play/virtual_parts.dart' show CountingRng;
+import 'package:feature_story/src/screen/scene_frame.dart' show registryScenes;
 
 import '../tool/differential.dart';
 import '../tool/disk_course.dart';
@@ -120,13 +125,13 @@ void main() {
         '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
         () async {
           for (final plan in ['right', 'wrong', 'alternate']) {
-            final scene = await realScene('balcon');
+            // a new scene for each run, given the run's random source
             final d = await compareWithScene(
               course,
               s,
               plan,
               trazas,
-              (rng) => scene,
+              await realSceneFor('balcon'),
               startFrog: startFrogOf,
               frogShadow: frogShadowOf,
             );
@@ -159,6 +164,22 @@ void main() {
         },
       );
     }
+    // the screen's scene factory gives the scene the story runner's random source (`_s.rng`): `pone` draws which side each jug
+    // is on, once, from it; El frente draws none
+    test(
+      'registryScenes gives the scene the random source it is given',
+      () async {
+        final rng = CountingRng(Mulberry32(1));
+        final made = await registryScenes('balcon', rng);
+        StillFrame(made.scene as SetScene).host.fresh();
+        expect(rng.draws, 0);
+        await (made.scene as Escena).acts['pone']!({});
+        expect(rng.draws, 1);
+        final frente = CountingRng(Mulberry32(1));
+        await registryScenes('frente', frente);
+        expect(frente.draws, 0);
+      },
+    );
     tearDownAll(() {
       final dir = Platform.environment['COQUI_REPORT_DIR'];
       if (dir == null) return;

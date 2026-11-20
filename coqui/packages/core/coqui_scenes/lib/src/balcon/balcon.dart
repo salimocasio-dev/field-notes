@@ -18,8 +18,9 @@ import 'package:coqui_scenes/src/balcon/balcon_set.dart';
 import 'package:coqui_scenes/src/scene_set.dart';
 import 'package:coqui_scenes/src/sheet_cache.dart';
 
-/// The scene "balcon", made from its sheet (the registry's factory: the sheet must be read first, `loadScene`).
-Scene createBalcon() => Balcon(sheetOf('balcon'));
+/// The scene "balcon", made from its sheet (the registry's factory: the sheet must be read first, `loadScene`), drawing its
+/// random numbers from [rng], the game's one random source.
+Scene createBalcon({Rng? rng}) => Balcon(sheetOf('balcon'), rng: rng);
 
 // JavaScript: Math.round
 int _round(num v) => (v + 0.5).floor();
@@ -228,8 +229,8 @@ final Map<String, Map<String, Int32List>> _frontPixels = {};
 /// The scene "El balcón" (balcon.js: `KIT.escena({id:"balcon", ...})`). Its set is [BalconSet]; this is the sprite
 /// layer and what can happen here.
 class Balcon extends Escena implements SetScene, SetOverSprites {
-  /// [rng] is the game's one random source (balcon.js `azar`: `Math.random()`). Without it the scene draws from its
-  /// host's (the story runner's `rng`).
+  /// [rng] is the game's one random source (balcon.js `azar`: `Math.random()`): the story runner's. A scene made without it
+  /// (a picture, a test of its sprites) draws no random number.
   Balcon(this.sheet, {Rng? rng}) : _rngGiven = rng {
     _p = BalconPlaces(sheet, balconEngine());
     final p = _p;
@@ -1037,9 +1038,13 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
     }
   }
 
-  // DECISION(order 30b): the scene's random draws come from the game's one Rng, as Math.random was one: given here, or
-  // the host's (the story runner holds it as `rng`; the registry's factories take none)
-  Rng get _rng => _rngGiven ?? (host as dynamic).rng as Rng;
+  // DECISION(order 30b): the scene's random draws come from the game's one Rng, as Math.random was one: the one the registry's
+  // factory is given (`createBalcon`, from the story runner's `rng`)
+  Rng get _rng =>
+      _rngGiven ??
+      (throw StateError(
+        'El balcón was made without a random source (Rng) but draws a random number',
+      ));
   bool azar() => _rng.next() < .5;
 
   // balcon.js: abCamina
