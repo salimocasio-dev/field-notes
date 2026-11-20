@@ -373,75 +373,12 @@
    "what": "the señora standing by her box"
   },
   "senor.caja": {
-   "world": [13.9, 5.3, 0],
-   "screen": [56, 189],
-   "depth": 11.7576,
+   "world": [12.8, 4.8, 0],
+   "screen": [45, 175],
+   "depth": 10.7778,
    "scale": 1,
    "kind": "person",
-   "what": "the señor standing by his box (v3b: x stepped up by 0.05 from 13.9 until he is 28 px or more sideways from coqui.piso, at most +0.6; none passed, so 13.9 is kept: see `stepped`)",
-   "stepped": {
-    "from": 13.9,
-    "step": 0.05,
-    "max": 0.6,
-    "needSideways": 28,
-    "tries": [
-     {
-      "x": 13.9,
-      "sideways": 11
-     },
-     {
-      "x": 13.95,
-      "sideways": 10
-     },
-     {
-      "x": 14,
-      "sideways": 9
-     },
-     {
-      "x": 14.05,
-      "sideways": 8
-     },
-     {
-      "x": 14.1,
-      "sideways": 7
-     },
-     {
-      "x": 14.15,
-      "sideways": 6
-     },
-     {
-      "x": 14.2,
-      "sideways": 5
-     },
-     {
-      "x": 14.25,
-      "sideways": 4
-     },
-     {
-      "x": 14.3,
-      "sideways": 4
-     },
-     {
-      "x": 14.35,
-      "sideways": 3
-     },
-     {
-      "x": 14.4,
-      "sideways": 2
-     },
-     {
-      "x": 14.45,
-      "sideways": 1
-     },
-     {
-      "x": 14.5,
-      "sideways": 0
-     }
-    ],
-    "result": "none passed: kept at 13.9",
-    "nearestAbove": 16,
-    "nearestBelow": 12.95
-   }
+   "what": "the señor standing behind his box, clear of the frog: the frog is never behind a grown-up (the orchestrator's number, Nov 20)"
   },
   "perro.entra": {
    "world": [10.5, 4.2, 0],
@@ -592,8 +529,8 @@
     "name": "people-apart",
     "ok": true,
     "lines": [
-     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 26.31 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 16.28 px",
-     "       info, not a check: senor.caja stepped x 13.9 +0.05 ... +0.6 for 28 px or more sideways from coqui.piso 67,177: 13.9 -> 11 px, 13.95 -> 10 px, 14 -> 9 px, 14.05 -> 8 px, 14.1 -> 7 px, 14.15 -> 6 px, 14.2 -> 5 px, 14.25 -> 4 px, 14.3 -> 4 px, 14.35 -> 3 px, 14.4 -> 2 px, 14.45 -> 1 px, 14.5 -> 0 px; NONE PASSES within +0.6, so x 13.9 is kept (56,189, 11 px sideways); the nearest x that would pass (steps of .05): above 16, below 12.95"
+     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 26.31 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 22.09 px",
+     "       info, not a check: senor.caja 45,175 against coqui.piso 67,177: 22 px sideways, 2 rows behind the frog"
     ]
    },
    {

@@ -175,7 +175,7 @@ async function make(G, proj, bb, SPR) {
   add('caja_senora', [11.3, 4.8, 0], 'box', 'the señora\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
   add('caja_senor', [13.0, 5.0, 0], 'box', 'the señor\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
   add('senora.caja', [11.0, 4.4, 0], 'person', 'the señora standing by her box');
-  add('senor.caja', [senX === null ? SENOR.from : senX, 5.3, 0], 'person', 'the señor standing by his box (v3b: x stepped up by ' + SENOR.step + ' from ' + SENOR.from + ' until he is ' + SENOR.sideways + ' px or more sideways from coqui.piso, at most +' + SENOR.max + '; ' + (senX === null ? 'none passed, so ' + SENOR.from + ' is kept: see `stepped`' : 'x ' + senX) + ')', { stepped: { from: SENOR.from, step: SENOR.step, max: SENOR.max, needSideways: SENOR.sideways, tries: senTries.map(t => ({ x: t[0], sideways: t[1] })), result: senX === null ? 'none passed: kept at ' + SENOR.from : senX, nearestAbove: nearestUp ? nearestUp[0] : null, nearestBelow: nearestDown ? nearestDown[0] : null } });
+  add('senor.caja', [12.8, 4.8, 0], 'person', 'the señor standing behind his box, clear of the frog: the frog is never behind a grown-up (the orchestrator\'s number, Nov 20)');
   add('perro.entra', [10.5, 4.2, 0], 'animal', 'Canelo coming in');
   add('perro.mesa', [11.7, 4.2, 0], 'animal', 'Canelo bumping the table');
   add('perro.rana', [dogX, FROG[1], 0], 'animal', 'Canelo sitting beside the frog (v3b: the frog\'s y, x ' + dogX + ': the frog\'s x stepped up by .05 until his box is ' + DOG_GAP + ' px clear of the frog\'s box on the screen\'s right)', { stepped: { from: FROG[0], step: .05, needGap: DOG_GAP, gapAt: dogTries.filter((t, i) => i % 4 === 0 || i === dogTries.length - 1).map(t => ({ x: t[0], gap: t[1] })), result: dogX } });
@@ -348,9 +348,9 @@ function checks(sheet, probes, bb, SPR) {
       seen.push(g + ' (' + ns.join(', ') + ') least ' + r2(least) + ' px');
     }
     add('people-apart', near, 'every pair in each group at least ' + MIN_APART + ' px apart: ' + seen.join('; '), list(near.length + ' pair(s) closer than ' + MIN_APART + ' px (screen points):', near));
-    // info (v3b): senor.caja stepped up by .05 from 13.9 (at most +.6) until 28 px or more sideways from coqui.piso
-    const st = S['senor.caja'].stepped, fr = S['coqui.piso'].screen, sc = S['senor.caja'].screen;
-    OUTS[OUTS.length - 1].lines.push('       info, not a check: senor.caja stepped x ' + st.from + ' +' + st.step + ' ... +' + st.max + ' for ' + st.needSideways + ' px or more sideways from coqui.piso ' + fr + ': ' + st.tries.map(t => t.x + ' -> ' + t.sideways + ' px').join(', ') + '; ' + (typeof st.result === 'number' ? 'first that passes: x ' + st.result : 'NONE PASSES within +' + st.max + ', so x ' + st.from + ' is kept (' + sc + ', ' + Math.abs(sc[0] - fr[0]) + ' px sideways); the nearest x that would pass (steps of .05): above ' + st.nearestAbove + ', below ' + st.nearestBelow));
+    // info: senor.caja is the orchestrator's number (behind his box, the frog never behind a grown-up)
+    const fr = S['coqui.piso'].screen, sc = S['senor.caja'].screen;
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: senor.caja ' + sc + ' against coqui.piso ' + fr + ': ' + Math.abs(sc[0] - fr[0]) + ' px sideways, ' + (fr[1] - sc[1]) + ' rows behind the frog');
   }
 
   // 3b. (v2) the frog and the things near him: screen points at least 14 px apart; and don Pepe's column behind the table at least 22 px from the pyramid's axis
