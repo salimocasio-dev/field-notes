@@ -215,9 +215,9 @@
    "what": "the frog's place on the floor whenever a child stands at nino.frente (story 37); an alternative of coqui.frente"
   },
   "coqui.mostrador": {
-   "world": [3.2, 2.38, 1],
-   "screen": [128, 105],
-   "depth": 3.917,
+   "world": [3.45, 2.38, 1],
+   "screen": [133, 107],
+   "depth": 4.0701,
    "scale": 1,
    "kind": "person",
    "what": "the frog's one place on the counter top, right of the register (it casts no shadow); it may overlap the register's side shelf, not its body"
@@ -255,12 +255,12 @@
    "what": "Carmen looking out of the street door, inside"
   },
   "cliente": {
-   "world": [2.9, 3.75, 0],
-   "screen": [97, 137],
-   "depth": 4.0723,
+   "world": [3.15, 3.75, 0],
+   "screen": [102, 139],
+   "depth": 4.2254,
    "scale": 1,
    "kind": "person",
-   "what": "the customer being served"
+   "what": "the customer being served (v3b: (3.15, 3.75, 0))"
   },
   "cola1": {
    "world": [2.3, 4.2, 0],
@@ -311,9 +311,9 @@
    "what": "child 2 of the three just inside the street door, in front, left (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top 14 rows)"
   },
   "ninos_puerta.3": {
-   "world": [1.75, 4.5, 0],
-   "screen": [62, 133],
-   "depth": 3.8273,
+   "world": [1.8, 4.5, 0],
+   "screen": [63, 134],
+   "depth": 3.8579,
    "scale": 1,
    "kind": "person",
    "what": "child 3 of the three just inside the street door, in front, right (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top 14 rows)"
@@ -390,9 +390,9 @@
    }
   },
   "limber_lejos": {
-   "world": [3.75, 2.5, 1],
-   "screen": [136, 111],
-   "depth": 4.3273,
+   "world": [3.95, 2.6, 1],
+   "screen": [138, 114],
+   "depth": 4.511,
    "scale": 1,
    "kind": "counter",
    "what": "a límber at the frog's end"
@@ -487,16 +487,17 @@
    ["coqui.mostrador", "coqui.frente", "coqui.frente2"],
    ["abuela.frente", "abuela.silla"],
    ["cliente", "abuela.frente"],
+   ["coqui.frente2", "cliente"],
    ["nino.frente", "nino.puerta_dentro"]
   ],
   "vsGroup": {
    "ninos_puerta": ["nino.puerta_dentro", "cola1", "cola2"]
   },
-  "what": "spots that are never in the same picture, so the people-apart and sprites-apart checks do not compare them: each list of groups is alternatives of each other (one body has one place at a time; cliente and abuela.frente: abuela is the customer of story 36, the señora of story 38 stands at cliente); vsGroup: the spots listed are alternatives of the whole group (ninos_puerta is together: its three children are compared with each other, never with these)"
+  "what": "spots that are never in the same picture, so the people-apart and sprites-apart checks do not compare them: each list of groups is alternatives of each other (one body has one place at a time; cliente and abuela.frente: abuela is the customer of story 36, the señora of story 38 stands at cliente; coqui.frente2 and cliente never stand together: the frog of story 37 has no customer); vsGroup: the spots listed are alternatives of the whole group (ninos_puerta is together: its three children are compared with each other, never with these)"
  },
  "notes": [
   "bandeja, platillo and maltas stay where the design has them: they belong to stories without the freezer (nevera = 0), which is why they may lie under the freezer's footprint when nevera = 1 (see the info line of counter-spots-on-top)",
-  "v3: the spots whose numbers the orchestrator gave (nino.frente, coqui.frente, coqui.frente2, coqui.mostrador, limber_lejos, ninos_puerta.1 to .3, the calle spots) are final and are not moved by the old clearance rule; spots-clear reports one that is nearer than 4 px and the nearest x that would pass",
+  "v3: the spots whose numbers the orchestrator gave (nino.frente, coqui.frente, coqui.frente2, coqui.mostrador, limber_lejos, cliente, ninos_puerta.1 to .3, the calle spots) are final and are not moved by the old clearance rule; spots-clear reports one that is nearer than 4 px and the nearest x that would pass",
   "the calle view's x0 22 is accepted by the orchestrator and final (views.calle.final)"
  ],
  "views": {
@@ -655,8 +656,8 @@
     "name": "people-apart",
     "ok": true,
     "lines": [
-     "people-apart: 89 pairs of the 15 people spots that are on screen together are at least 10 px apart (closest: coqui.frente2 ~ cliente 10.77 px, coqui.frente2 ~ abuela.frente 14 px, coqui.frente ~ nino.frente 14.42 px; alternatives of one body, pepe.atras and pepe.estante.* are not compared)",
-     "       closest pairs: coqui.frente2 107,141 ~ cliente 97,137 10.77 px; coqui.frente2 107,141 ~ abuela.frente 93,141 14 px; coqui.frente 130,149 ~ nino.frente 142,157 14.42 px; cola1 78,136 ~ abuela.frente 93,141 15.81 px; ninos_puerta.1 50,118 ~ ninos_puerta.2 39,132 17.8 px"
+     "people-apart: 88 pairs of the 15 people spots that are on screen together are at least 10 px apart (closest: coqui.frente2 ~ abuela.frente 14 px, coqui.frente ~ nino.frente 14.42 px, cola1 ~ abuela.frente 15.81 px; alternatives of one body, pepe.atras and pepe.estante.* are not compared)",
+     "       closest pairs: coqui.frente2 107,141 ~ abuela.frente 93,141 14 px; coqui.frente 130,149 ~ nino.frente 142,157 14.42 px; cola1 78,136 ~ abuela.frente 93,141 15.81 px; ninos_puerta.1 50,118 ~ ninos_puerta.2 39,132 17.8 px; abuela.silla 157,171 ~ nino.frente 142,157 20.52 px"
     ]
    },
    {
@@ -802,7 +803,7 @@
     "name": "spots-clear",
     "ok": true,
     "lines": [
-     "spots-clear: 24 spots (counter-top ones from the register; coqui.mostrador, limber_pepe, limber_lejos also from the freezer; floor spots in front of the counter from the chair) keep at least 4 px from those pixels; nearest: nino.frente 4 px (silla), limber_pepe 4 px (caja+nevera), coqui.mostrador 11.18 px (caja+nevera)",
+     "spots-clear: 24 spots (counter-top ones from the register; coqui.mostrador, limber_pepe, limber_lejos also from the freezer; floor spots in front of the counter from the chair) keep at least 4 px from those pixels; nearest: nino.frente 4 px (silla), limber_pepe 4 px (caja+nevera), coqui.mostrador 15.62 px (caja+nevera)",
      "       moved from the design to clear it: limber_pepe x 4.75 -> 4.65 (-0.1, caja + nevera: 2 -> 4 px; the nearest clear place on the other side: none on the counter)",
      "       info, not a check: counter-top spots of the stories WITHOUT the freezer (nevera = 0) that lie under or within 4 px of its pixels, left where the design has them: bandeja 0 px, platillo 0 px, maltas 0 px"
     ],
@@ -814,14 +815,10 @@
    },
    {
     "name": "sprites-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "sprites-apart: 2 pair(s) with overlapping boxes and feet closer than 12 px up-down:",
-     "  moment 3: cliente [97,137] (24 wide) ~ cola1 [78,136] (24 wide): 19 px sideways (the boxes need 24), 1 px up-down (needs 12): short by 5 px sideways or 11 px up-down",
-     "  moment 5: ninos_puerta.2 [39,132] (24 wide) ~ ninos_puerta.3 [62,133] (24 wide): 23 px sideways (the boxes need 24), 1 px up-down (needs 12): short by 1 px sideways or 11 px up-down",
-     "       nearest passing, moment 3 cliente ~ cola1: cliente 2.9,3.75,0: x 2.9 -> 3.13 (+0.23) or y 3.75 -> 3.52 (-0.23); or cola1 2.3,4.2,0: x 2.3 -> 2.05 (-0.25) or y 4.2 -> 4.45 (+0.25)",
-     "       nearest passing, moment 5 ninos_puerta.2 ~ ninos_puerta.3: ninos_puerta.2 1,5.05,0: x 1 -> 0.99 (-0.01) or y 5.05 -> 5.06 (+0.01); or ninos_puerta.3 1.75,4.5,0: x 1.75 -> 1.76 (+0.01) or y 4.5 -> 4.49 (-0.01)",
-     "       closest in each moment (px across / px down): m1 pepe.mostrador ~ coqui.frente 28/29 (needs 28 across or 12 down); m2 pepe.estante.leche ~ coqui.frente 1/46 (needs 28 across or 12 down); m3 cliente ~ cola1 19/1 (needs 24 across or 12 down); m4 pepe.mostrador ~ nino.frente 16/37 (needs 24 across or 12 down); m5 ninos_puerta.1 ~ ninos_puerta.2 11/14 (needs 24 across or 12 down); m6 abuela.acera ~ coqui.acera 30/18 (needs 28 across or 12 down)"
+     "sprites-apart: 31 pairs in the 6 moments of the preview (m1 (pepe.mostrador, abuela.frente, coqui.frente); m2 (pepe.estante.leche, abuela.frente, coqui.frente); m3 (abuela.silla, coqui.mostrador, cliente, cola1); m4 (pepe.mostrador, nino.frente, coqui.frente2); m5 (pepe.silla, coqui.mostrador, cliente, ninos_puerta.1, ninos_puerta.2, ninos_puerta.3); m6 (abuela.acera, coqui.acera)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down (the frog 32 wide, grown-up 24, child 24); the pairs that do overlap sideways: m2 pepe.estante.leche ~ coqui.frente (1 px across, 46 down), m3 abuela.silla ~ coqui.mostrador (24 px across, 64 down), m4 pepe.mostrador ~ nino.frente (16 px across, 37 down), m5 ninos_puerta.1 ~ ninos_puerta.2 (11 px across, 14 down), m5 ninos_puerta.1 ~ ninos_puerta.3 (13 px across, 16 down)",
+     "       closest in each moment (px across / px down): m1 pepe.mostrador ~ coqui.frente 28/29 (needs 28 across or 12 down); m2 pepe.estante.leche ~ coqui.frente 1/46 (needs 28 across or 12 down); m3 abuela.silla ~ coqui.mostrador 24/64 (needs 28 across or 12 down); m4 pepe.mostrador ~ nino.frente 16/37 (needs 24 across or 12 down); m5 ninos_puerta.1 ~ ninos_puerta.2 11/14 (needs 24 across or 12 down); m6 abuela.acera ~ coqui.acera 30/18 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
@@ -882,8 +879,8 @@
       "moment": 3,
       "a": "abuela.silla",
       "b": "coqui.mostrador",
-      "across": 29,
-      "down": 66,
+      "across": 24,
+      "down": 64,
       "needAcross": 28,
       "ok": true
      },
@@ -891,8 +888,8 @@
       "moment": 3,
       "a": "abuela.silla",
       "b": "cliente",
-      "across": 60,
-      "down": 34,
+      "across": 55,
+      "down": 32,
       "needAcross": 24,
       "ok": true
      },
@@ -918,8 +915,8 @@
       "moment": 3,
       "a": "coqui.mostrador",
       "b": "cola1",
-      "across": 50,
-      "down": 31,
+      "across": 55,
+      "down": 29,
       "needAcross": 28,
       "ok": true
      },
@@ -927,10 +924,10 @@
       "moment": 3,
       "a": "cliente",
       "b": "cola1",
-      "across": 19,
-      "down": 1,
+      "across": 24,
+      "down": 3,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 4,
@@ -963,8 +960,8 @@
       "moment": 5,
       "a": "pepe.silla",
       "b": "coqui.mostrador",
-      "across": 59,
-      "down": 29,
+      "across": 54,
+      "down": 27,
       "needAcross": 28,
       "ok": true
      },
@@ -972,8 +969,8 @@
       "moment": 5,
       "a": "pepe.silla",
       "b": "cliente",
-      "across": 90,
-      "down": 3,
+      "across": 85,
+      "down": 5,
       "needAcross": 24,
       "ok": true
      },
@@ -999,8 +996,8 @@
       "moment": 5,
       "a": "pepe.silla",
       "b": "ninos_puerta.3",
-      "across": 125,
-      "down": 1,
+      "across": 124,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -1017,8 +1014,8 @@
       "moment": 5,
       "a": "coqui.mostrador",
       "b": "ninos_puerta.1",
-      "across": 78,
-      "down": 13,
+      "across": 83,
+      "down": 11,
       "needAcross": 28,
       "ok": true
      },
@@ -1026,8 +1023,8 @@
       "moment": 5,
       "a": "coqui.mostrador",
       "b": "ninos_puerta.2",
-      "across": 89,
-      "down": 27,
+      "across": 94,
+      "down": 25,
       "needAcross": 28,
       "ok": true
      },
@@ -1035,8 +1032,8 @@
       "moment": 5,
       "a": "coqui.mostrador",
       "b": "ninos_puerta.3",
-      "across": 66,
-      "down": 28,
+      "across": 70,
+      "down": 27,
       "needAcross": 28,
       "ok": true
      },
@@ -1044,8 +1041,8 @@
       "moment": 5,
       "a": "cliente",
       "b": "ninos_puerta.1",
-      "across": 47,
-      "down": 19,
+      "across": 52,
+      "down": 21,
       "needAcross": 24,
       "ok": true
      },
@@ -1053,8 +1050,8 @@
       "moment": 5,
       "a": "cliente",
       "b": "ninos_puerta.2",
-      "across": 58,
-      "down": 5,
+      "across": 63,
+      "down": 7,
       "needAcross": 24,
       "ok": true
      },
@@ -1062,8 +1059,8 @@
       "moment": 5,
       "a": "cliente",
       "b": "ninos_puerta.3",
-      "across": 35,
-      "down": 4,
+      "across": 39,
+      "down": 5,
       "needAcross": 24,
       "ok": true
      },
@@ -1080,8 +1077,8 @@
       "moment": 5,
       "a": "ninos_puerta.1",
       "b": "ninos_puerta.3",
-      "across": 12,
-      "down": 15,
+      "across": 13,
+      "down": 16,
       "needAcross": 24,
       "ok": true
      },
@@ -1089,10 +1086,10 @@
       "moment": 5,
       "a": "ninos_puerta.2",
       "b": "ninos_puerta.3",
-      "across": 23,
-      "down": 1,
+      "across": 24,
+      "down": 2,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 6,
@@ -1109,37 +1106,32 @@
     "name": "ninos-puerta-heads",
     "ok": true,
     "lines": [
-     "ninos-puerta-heads: the three heads (top 14 rows of each child) show in moment 5: ninos_puerta.1 50,118: head rows 77 to 90 (182 px, 182 shown by the set); no row covered; ninos_puerta.2 39,132: head rows 91 to 104 (244 px, 244 shown by the set); no row covered; ninos_puerta.3 62,133: head rows 92 to 105 (182 px, 182 shown by the set); no row covered"
+     "ninos-puerta-heads: the three heads (top 14 rows of each child) show in moment 5: ninos_puerta.1 50,118: head rows 77 to 90 (182 px, 182 shown by the set); no row covered; ninos_puerta.2 39,132: head rows 91 to 104 (244 px, 244 shown by the set); no row covered; ninos_puerta.3 63,134: head rows 93 to 106 (182 px, 182 shown by the set); no row covered"
     ],
     "heads": [
      "ninos_puerta.1 50,118: head rows 77 to 90 (182 px, 182 shown by the set); no row covered",
      "ninos_puerta.2 39,132: head rows 91 to 104 (244 px, 244 shown by the set); no row covered",
-     "ninos_puerta.3 62,133: head rows 92 to 105 (182 px, 182 shown by the set); no row covered"
+     "ninos_puerta.3 63,134: head rows 93 to 106 (182 px, 182 shown by the set); no row covered"
     ]
    },
    {
     "name": "frog-register-body",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-register-body: the frog on the counter:",
-     "  moment 3: 20 px of the frog lie on the register's body",
-     "  moment 5: 20 px of the frog lie on the register's body",
-     "       moment 3 the frog at coqui.mostrador [128,105] (536 px shown, box [113,81,142,104]): 20 px on the register's body (810 px, box [87,64,120,100]; the boxes overlap 8 across, 20 down), 55 px on the side shelf (69 px)",
-     "       moment 5 the frog at coqui.mostrador [128,105] (536 px shown, box [113,81,142,104]): 20 px on the register's body (810 px, box [87,64,120,100]; the boxes overlap 8 across, 20 down), 55 px on the side shelf (69 px)",
-     "       nearest passing for coqui.mostrador 3.2,2.38,1 (0 px on the body): y 2.38 -> 2.19 (-0.19); along x alone: x 3.45 [133,107], its feet are 15.62 px from the register's pixels and 23.77 px from the freezer's"
+     "frog-register-body: the frog on the counter at coqui.mostrador 133,107 overlaps the register's body by 0 px (it may overlap the side shelf): moment 3 the frog at coqui.mostrador [133,107] (536 px shown, box [118,83,147,106]): 0 px on the register's body (810 px, box [87,64,120,100]; the boxes overlap 3 across, 18 down), 10 px on the side shelf (69 px); moment 5 the frog at coqui.mostrador [133,107] (536 px shown, box [118,83,147,106]): 0 px on the register's body (810 px, box [87,64,120,100]; the boxes overlap 3 across, 18 down), 10 px on the side shelf (69 px)"
     ],
     "overlap": [
      {
       "moment": 3,
-      "bodyPx": 20,
-      "shelfPx": 55,
-      "boxOverlap": [8, 20]
+      "bodyPx": 0,
+      "shelfPx": 10,
+      "boxOverlap": [3, 18]
      },
      {
       "moment": 5,
-      "bodyPx": 20,
-      "shelfPx": 55,
-      "boxOverlap": [8, 20]
+      "bodyPx": 0,
+      "shelfPx": 10,
+      "boxOverlap": [3, 18]
      }
     ]
    },

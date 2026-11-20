@@ -213,15 +213,15 @@
    "depth": 0.5236,
    "scale": 1,
    "kind": "person",
-   "what": "child 1 of the three outside the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the left pane; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of each child; no clip"
+   "what": "child 1 of the three outside, at the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the pane on the VW0 side; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of the child; no clip"
   },
   "ninos_fuera.2": {
-   "world": [-0.8, 1.5, 0],
-   "screen": [89, 84],
-   "depth": 0.4287,
+   "world": [-0.3, 4.3, 0],
+   "screen": [46, 115],
+   "depth": 2.4495,
    "scale": 1,
    "kind": "person",
-   "what": "child 2 of the three outside the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: between the two heads, 0.3 further from the wall than the other two; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of each child; no clip"
+   "what": "child 2 of the three outside, in the open street doorway, looking in (no shadow); group ninos_fuera. v3b: (x, 4.3, 0), the first x of -0.3 to -0.8 (steps of 0.1) that shows 20 rows or more of him in the door opening and no pixel over the wall or the door frame: x -0.3"
   },
   "ninos_fuera.3": {
    "world": [-0.5, 2.245, 0],
@@ -229,7 +229,7 @@
    "depth": 1.0686,
    "scale": 1,
    "kind": "person",
-   "what": "child 3 of the three outside the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the right pane; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of each child; no clip"
+   "what": "child 3 of the three outside, at the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the pane on the VW1 side; x -0.5, the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and 20 rows or more of the child; no clip"
   },
   "ninos_dentro.1": {
    "world": [1.1, 4.4, 0],
@@ -380,11 +380,10 @@
     "name": "ninos-fuera-through-window",
     "ok": true,
     "lines": [
-     "ninos-fuera-through-window: the way chosen: PLACEMENT, x -0.5 (child 2 at -0.8), no clip. Zero pixels of the three children show outside the panes (over the wall, the sill or the frame) in both hours, and each shows at least 20 rows through the glass: ninos_fuera.1 30 rows (30 from the top of the head; 331 of 600 pixels); ninos_fuera.2 29 rows (0 from the top of the head; 132 of 724 pixels); ninos_fuera.3 30 rows (30 from the top of the head; 354 of 600 pixels) (ninos_fuera.1 -0.5,1.355,0 -> 97,86; ninos_fuera.2 -0.8,1.5,0 -> 89,84; ninos_fuera.3 -0.5,2.245,0 -> 81,94)",
-     "       the x's tried, in order (outside the panes / rows through the glass of child 1, 2, 3, in the afternoon): x -0.4 2/29 0/30 0/28 no; x -0.5 0/30 0/29 0/30 PASSES; x -0.6 0/30 0/25 0/30 PASSES; x -0.7 0/30 0/0 0/30 no; x -0.8 0/26 0/0 0/29 no; x -0.9 0/0 0/0 0/1 no; x -1 0/0 0/0 0/0 no; x -1.1 0/0 0/0 0/0 no; x -1.2 0/0 0/0 0/0 no",
-     "       pane middles on the wall (y): 1.86, 2.75 (left pane y 1.45,2.26, mullion 2.26,2.34, right pane y 2.34,3.15); a pixel of part vitrina is glass when its world x (from the baked depth) is left of -0.25",
-     "       manana ninos_fuera.1 0 px outside the panes; manana ninos_fuera.2 0 px outside the panes; manana ninos_fuera.3 0 px outside the panes; tarde ninos_fuera.1 0 px outside the panes; tarde ninos_fuera.2 0 px outside the panes; tarde ninos_fuera.3 0 px outside the panes",
-     "       info, not a check: in moment 4's finished picture (the nearer child hides the one behind it) what is left of each: ninos_fuera.1 313 px in 27 rows (columns 91..103); ninos_fuera.2 1 px in 1 rows (columns 94..94); ninos_fuera.3 354 px in 30 rows (columns 74..87)"
+     "ninos-fuera-through-window: the way chosen: PLACEMENT, x -0.5, no clip. Zero pixels of the two children at the window show outside the panes (over the wall, the sill or the frame) in both hours, and each shows at least 20 rows through the glass: ninos_fuera.1 30 rows (30 from the top of the head; 331 of 600 pixels); ninos_fuera.3 30 rows (30 from the top of the head; 354 of 600 pixels) (ninos_fuera.1 -0.5,1.355,0 -> 97,86; ninos_fuera.3 -0.5,2.245,0 -> 81,94)",
+     "       the x's tried, in order (outside the panes / rows through the glass of child 1, 3, in the afternoon): x -0.4 2/29 0/28 no; x -0.5 0/30 0/30 PASSES; x -0.6 0/30 0/30 PASSES; x -0.7 0/30 0/30 PASSES; x -0.8 0/26 0/29 PASSES; x -0.9 0/0 0/1 no; x -1 0/0 0/0 no; x -1.1 0/0 0/0 no; x -1.2 0/0 0/0 no",
+     "       pane middles on the wall (y): 1.86, 2.75 (VW0-side pane y 1.45,2.26, mullion 2.26,2.34, VW1-side pane y 2.34,3.15); a pixel of part vitrina is glass when its world x (from the baked depth) is left of -0.25",
+     "       manana ninos_fuera.1 0 px outside the panes; manana ninos_fuera.3 0 px outside the panes; tarde ninos_fuera.1 0 px outside the panes; tarde ninos_fuera.3 0 px outside the panes"
     ],
     "way": "placement",
     "ninos": {
@@ -405,11 +404,6 @@
         {
          "outside": 0,
          "over": {},
-         "rows": 30
-        },
-        {
-         "outside": 0,
-         "over": {},
          "rows": 28
         }
        ]
@@ -422,11 +416,6 @@
          "outside": 0,
          "over": {},
          "rows": 30
-        },
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 29
         },
         {
          "outside": 0,
@@ -447,28 +436,18 @@
         {
          "outside": 0,
          "over": {},
-         "rows": 25
-        },
-        {
-         "outside": 0,
-         "over": {},
          "rows": 30
         }
        ]
       },
       {
        "x": -0.7,
-       "ok": false,
+       "ok": true,
        "kids": [
         {
          "outside": 0,
          "over": {},
          "rows": 30
-        },
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 0
         },
         {
          "outside": 0,
@@ -479,17 +458,12 @@
       },
       {
        "x": -0.8,
-       "ok": false,
+       "ok": true,
        "kids": [
         {
          "outside": 0,
          "over": {},
          "rows": 26
-        },
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 0
         },
         {
          "outside": 0,
@@ -502,11 +476,6 @@
        "x": -0.9,
        "ok": false,
        "kids": [
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 0
-        },
         {
          "outside": 0,
          "over": {},
@@ -532,11 +501,6 @@
          "outside": 0,
          "over": {},
          "rows": 0
-        },
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 0
         }
        ]
       },
@@ -544,11 +508,6 @@
        "x": -1.1,
        "ok": false,
        "kids": [
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 0
-        },
         {
          "outside": 0,
          "over": {},
@@ -574,13 +533,71 @@
          "outside": 0,
          "over": {},
          "rows": 0
-        },
-        {
-         "outside": 0,
-         "over": {},
-         "rows": 0
         }
        ]
+      }
+     ]
+    }
+   },
+   {
+    "name": "nino-fuera-in-doorway",
+    "ok": true,
+    "lines": [
+     "nino-fuera-in-doorway: ninos_fuera.2 -0.3,4.3,0 -> 46,115 (x -0.3, the first of -0.3, -0.4, -0.5, -0.6, -0.7, -0.8 that passes): manana: 41 rows in the door opening (603 of 724 pixels), 0 px over the wall or the door frame; tarde: 41 rows in the door opening (603 of 724 pixels), 0 px over the wall or the door frame",
+     "       the x's tried (rows in the opening / px over the wall or the frame, afternoon): x -0.3 41/0 PASSES; x -0.4 41/0 PASSES; x -0.5 41/0 PASSES; x -0.6 41/0 PASSES; x -0.7 41/0 PASSES; x -0.8 38/0 PASSES; a pixel of part puerta is the street when its world x (from the baked depth) is left of -0.04 (the backdrop at x -.5 and the pavement; the frame is at x .03)",
+     "       info, not a check: in moment 4's finished picture what is left of each child outside: ninos_fuera.1 313 px in 27 rows (columns 91..103); ninos_fuera.2 603 px in 41 rows (columns 40..56); ninos_fuera.3 354 px in 30 rows (columns 74..87)"
+    ],
+    "door": {
+     "x": -0.3,
+     "ok": true,
+     "tried": [
+      {
+       "x": -0.3,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 603
+      },
+      {
+       "x": -0.4,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 565
+      },
+      {
+       "x": -0.5,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 484
+      },
+      {
+       "x": -0.6,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 402
+      },
+      {
+       "x": -0.7,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 41,
+       "visible": 322
+      },
+      {
+       "x": -0.8,
+       "ok": true,
+       "outside": 0,
+       "over": {},
+       "rows": 38,
+       "visible": 159
       }
      ]
     }
@@ -624,7 +641,7 @@
     "name": "importe-clear",
     "ok": true,
     "lines": [
-     "importe-clear: in the 4 moments no pixel of any sprite that stands there covers importe's plate [117,75,13,9] (13 x 9, middle on ventana_caja 123,79, depth 3.4779): m1 6 sprites, 0 px, m2 5 sprites, 0 px, m3 7 sprites, 0 px, m4 6 sprites, 0 px"
+     "importe-clear: in the 4 moments no pixel of any sprite that stands there covers importe's plate [117,75,13,9] (13 x 9, middle on ventana_caja 123,79, depth 3.4779): m1 6 sprites, 0 px, m2 6 sprites, 0 px, m3 7 sprites, 0 px, m4 7 sprites, 0 px"
     ]
    }
   ]

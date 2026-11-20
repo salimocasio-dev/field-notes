@@ -378,7 +378,70 @@
    "depth": 11.7576,
    "scale": 1,
    "kind": "person",
-   "what": "the señor standing by his box"
+   "what": "the señor standing by his box (v3b: x stepped up by 0.05 from 13.9 until he is 28 px or more sideways from coqui.piso, at most +0.6; none passed, so 13.9 is kept: see `stepped`)",
+   "stepped": {
+    "from": 13.9,
+    "step": 0.05,
+    "max": 0.6,
+    "needSideways": 28,
+    "tries": [
+     {
+      "x": 13.9,
+      "sideways": 11
+     },
+     {
+      "x": 13.95,
+      "sideways": 10
+     },
+     {
+      "x": 14,
+      "sideways": 9
+     },
+     {
+      "x": 14.05,
+      "sideways": 8
+     },
+     {
+      "x": 14.1,
+      "sideways": 7
+     },
+     {
+      "x": 14.15,
+      "sideways": 6
+     },
+     {
+      "x": 14.2,
+      "sideways": 5
+     },
+     {
+      "x": 14.25,
+      "sideways": 4
+     },
+     {
+      "x": 14.3,
+      "sideways": 4
+     },
+     {
+      "x": 14.35,
+      "sideways": 3
+     },
+     {
+      "x": 14.4,
+      "sideways": 2
+     },
+     {
+      "x": 14.45,
+      "sideways": 1
+     },
+     {
+      "x": 14.5,
+      "sideways": 0
+     }
+    ],
+    "result": "none passed: kept at 13.9",
+    "nearestAbove": 16,
+    "nearestBelow": 12.95
+   }
   },
   "perro.entra": {
    "world": [10.5, 4.2, 0],
@@ -397,12 +460,64 @@
    "what": "Canelo bumping the table"
   },
   "perro.rana": {
-   "world": [14.3, 4.8, 0],
-   "screen": [73, 189],
-   "depth": 11.6963,
+   "world": [15.4, 4.3, 0],
+   "screen": [102, 194],
+   "depth": 12.0637,
    "scale": 1,
    "kind": "animal",
-   "what": "Canelo sitting beside the frog"
+   "what": "Canelo sitting beside the frog (v3b: the frog's y, x 15.4: the frog's x stepped up by .05 until his box is 4 px clear of the frog's box on the screen's right)",
+   "stepped": {
+    "from": 13.5,
+    "step": 0.05,
+    "needGap": 4,
+    "gapAt": [
+     {
+      "x": 13.5,
+      "gap": -31
+     },
+     {
+      "x": 13.7,
+      "gap": -27
+     },
+     {
+      "x": 13.9,
+      "gap": -24
+     },
+     {
+      "x": 14.1,
+      "gap": -20
+     },
+     {
+      "x": 14.3,
+      "gap": -16
+     },
+     {
+      "x": 14.5,
+      "gap": -12
+     },
+     {
+      "x": 14.7,
+      "gap": -9
+     },
+     {
+      "x": 14.9,
+      "gap": -5
+     },
+     {
+      "x": 15.1,
+      "gap": -1
+     },
+     {
+      "x": 15.3,
+      "gap": 2
+     },
+     {
+      "x": 15.4,
+      "gap": 4
+     }
+    ],
+    "result": 15.4
+   }
   },
   "puerta_lata": {
    "world": [9.8744, 4, 0],
@@ -477,7 +592,8 @@
     "name": "people-apart",
     "ok": true,
     "lines": [
-     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 26.31 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 16.28 px"
+     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 26.31 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 16.28 px",
+     "       info, not a check: senor.caja stepped x 13.9 +0.05 ... +0.6 for 28 px or more sideways from coqui.piso 67,177: 13.9 -> 11 px, 13.95 -> 10 px, 14 -> 9 px, 14.05 -> 8 px, 14.1 -> 7 px, 14.15 -> 6 px, 14.2 -> 5 px, 14.25 -> 4 px, 14.3 -> 4 px, 14.35 -> 3 px, 14.4 -> 2 px, 14.45 -> 1 px, 14.5 -> 0 px; NONE PASSES within +0.6, so x 13.9 is kept (56,189, 11 px sideways); the nearest x that would pass (steps of .05): above 16, below 12.95"
     ]
    },
    {
@@ -506,6 +622,13 @@
     "ok": true,
     "lines": [
      "pepe-mesa-column-apart-pyramid: pepe.mesa's column 82 is 26 px from the pyramid's axis (mesa.fila.0, column 56) (at least 22)"
+    ]
+   },
+   {
+    "name": "perro-clear-of-frog",
+    "ok": true,
+    "lines": [
+     "perro-clear-of-frog: perro.rana 102,194 (Canelo's box [86,172,115,193]) is 4 px clear of the frog at coqui.piso 67,177 (box [52,153,81,176]) on the screen's right (needs 4); the boxes share 5 rows; x 15.4 is the first of the frog's x 13.5 + .05 k that gives it"
     ]
    },
    {

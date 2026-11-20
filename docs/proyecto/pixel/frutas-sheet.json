@@ -157,18 +157,25 @@
    "depth": 3.215,
    "scale": 1,
    "kind": "person",
-   "what": "don Pepe at the hand cart's handles: the v3 brief gives (1.9, 3.35, 0) and says to step x down by .1 until his drawn pixels do not cover the cart's handle; `stepped` lists what each x covered",
+   "what": "don Pepe at the hand cart's handles: (2.35, 3.35, 0) so that he is whole inside the window, or (1.9, 3.35, 0) if at 2.35 he covers more than 10 pixels of the cart's handle; `stepped` lists what each covered",
    "stepped": {
-    "start": 1.9,
-    "step": -0.1,
+    "try": 2.35,
+    "keep": 1.9,
+    "maxHandlePx": 10,
     "handle": "the pixels of part carro whose world x (read back from the baked depth) is left of the bed's left end CF.CART x - .95 by more than .05: the two rails and the cross-grip",
     "tries": [
+     {
+      "x": 2.35,
+      "coveredPx": 14,
+      "handlePx": 35
+     },
      {
       "x": 1.9,
       "coveredPx": 0,
       "handlePx": 35
      }
-    ]
+    ],
+    "chosen": 1.9
    }
   },
   "pepe.pesa": {
@@ -196,12 +203,12 @@
    "what": "abuela beside the low crate"
   },
   "repisa.izq": {
-   "world": [4.7, 2.16, 0.7],
-   "screen": [99, 145],
-   "depth": 4.5509,
+   "world": [4.6, 2.16, 0.7],
+   "screen": [97, 144],
+   "depth": 4.4896,
    "scale": 1,
    "kind": "frog",
-   "what": "the frog on the ledge, left place (x 4.7, in the middle of the ledge's depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)"
+   "what": "the frog on the ledge, left place (x 4.6, in the middle of the ledge's depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)"
   },
   "repisa.der": {
    "world": [7.7, 2.16, 0.7],
@@ -411,17 +418,15 @@
    },
    {
     "name": "frog-places",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-places: 1 finding(s) on the frog's two places on the ledge (places 99,145 154,173; ledge things' sizes: rules.footprints):",
-     "  story 44: repisa.izq 99,145 (frog box [84,121,113,144]) overlaps cajon_a (box [111,144,129,160]) by 3 px across and 1 down",
-     "    nearest passing: cajon_a at x 6.01 (+0.11) (now 5.9), or repisa.izq at x 4.61 (-0.09) (now 4.7)",
-     "       info: the frog's boxes repisa.izq [84,121,113,144], repisa.der [139,149,168,172]; the things' boxes monedas4 [112,147,129,158], monedas2 [132,157,142,165], canasta [139,158,161,176], cajon_a [111,144,129,160], cajon_b [126,151,144,168]",
-     "       info: each place against every thing, whatever the story: repisa.izq against every thing: monedas4 clear, monedas2 clear, canasta clear, cajon_a overlaps 3 x 1, cajon_b clear; repisa.der against every thing: monedas4 clear, monedas2 overlaps 4 x 9, canasta overlaps 23 x 15, cajon_a clear, cajon_b overlaps 6 x 18"
+     "frog-places: the two places are 63.95 px apart (needs 30) and in each story the frog's box clears the small things on the ledge: story 42 repisa.izq: monedas4 clear, monedas2 clear; story 43 repisa.izq: canasta clear; story 44 repisa.izq: cajon_a clear, cajon_b clear",
+     "       info: the frog's boxes repisa.izq [82,120,111,143], repisa.der [139,149,168,172]; the things' boxes monedas4 [112,147,129,158], monedas2 [132,157,142,165], canasta [139,158,161,176], cajon_a [111,144,129,160], cajon_b [126,151,144,168]",
+     "       info: each place against every thing, whatever the story: repisa.izq against every thing: monedas4 clear, monedas2 clear, canasta clear, cajon_a clear, cajon_b clear; repisa.der against every thing: monedas4 clear, monedas2 overlaps 4 x 9, canasta overlaps 23 x 15, cajon_a clear, cajon_b overlaps 6 x 18"
     ],
     "frog": {
      "sep": [
-      ["repisa.izq", "repisa.der", 61.72]
+      ["repisa.izq", "repisa.der", 63.95]
      ],
      "story": [
       [42, "repisa.izq"],
@@ -429,12 +434,6 @@
       [44, "repisa.izq"]
      ],
      "hits": [
-      [
-       "repisa.izq",
-       "cajon_a",
-       44,
-       [3, 1]
-      ],
       [
        "repisa.der",
        "monedas2",
@@ -457,6 +456,14 @@
     }
    },
    {
+    "name": "cajones-apart",
+    "ok": false,
+    "lines": [
+     "cajones-apart: cajon_a (x 5.9) box [111,144,129,160] and cajon_b (x 6.7) box [126,151,144,168] overlap by 4 px across and 10 down (the brief's x are kept; a crate is .7 wide, so a stand-in 0.7 x 0.3 x 0.34)",
+     "    nearest passing: cajon_b at x 6.91 (+0.21) (now 6.7), or cajon_a at x 5.68 (-0.22) (now 5.9)"
+    ]
+   },
+   {
     "name": "goat-reach",
     "ok": true,
     "lines": [
@@ -470,7 +477,7 @@
     "ok": true,
     "lines": [
      "cart-clear: carro = 1: pepe.carro 25,146 is inside the window; the cart (pixels [26,135,91,168]) is 13 px clear of abuela at abuela.delante (her pixels columns 102 to 127, rows 153 to 202; the boxes are 10 px apart; needs 10)",
-     "       info, not a check: pepe.carro x stepped from 1.9 by -0.1: x 1.9 covers 0 of the 35 handle pixels -> x 1.9",
+     "       info, not a check: pepe.carro: tried x 2.35 (kept only if he covers at most 10 handle pixels, else 1.9): x 2.35 covers 14 of the 35 handle pixels; x 1.9 covers 0 of the 35 handle pixels -> x 1.9 (the fallback: he covers more than 10 at 2.35)",
      "       info, not a check: his drawn box at pepe.carro is columns 13 to 36, rows 93 to 145 and the window starts at column 21: 8 of his 24 columns are left of the window",
      "       info, not a check: don Pepe at pepe.carro: 834 of his 834 drawn pixels show ()"
     ]

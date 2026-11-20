@@ -4,6 +4,8 @@
    Run from the repo root:  node docs/proyecto/pixel/estantes-sheet-make.js        (needs Node 22 and the pre-installed Playwright, Chrome at /usr/bin/google-chrome)
    A NEW scene: no old scene file, no old positions, no remap. It loads the set (window.ESTANTES.CD: the room's constants) in headless Chrome,
    projects every world point with the engine's own project() (pp-engine.js), and writes the spots, things, view, shadows and the depth rule.
+   Pass 3b: perro.rana is stepped (x up by .05 from the frog's x, the frog's y) until Canelo's box is 4 px clear of the frog's box on the screen's right (the boxes of the pixels the two
+   sprites draw, from estantes-preview.html, PREVIEW.boxes); senor.caja is stepped up by .05 from 13.9 (at most +.6) until he is 28 px or more sideways from coqui.piso.
    Then it checks the sheet and prints one line per check; it exits 1 when one fails (the sheet is written first). A second run writes the same bytes.
    The set is asked for at http://127.0.0.1:8765 (the dev server for the repo root; override with ESTANTES_BASE), but every request to it is answered
    from the files of THIS tree (the server's root may be another checkout of the repo): a new file here is seen before it is merged.
@@ -21,6 +23,12 @@ const PAGE = BASE + '/docs/proyecto/pixel/estantes-set.html';
 const CHROME = '/usr/bin/google-chrome';
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.png': 'image/png' };
 
+// every request to BASE is answered from the files of this tree
+const serve = route => {
+  const u = new URL(route.request().url()), f = path.join(REPO, decodeURIComponent(u.pathname));
+  if (!f.startsWith(REPO + path.sep) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) return route.fulfill({ status: 404, body: 'not found' });
+  route.fulfill({ status: 200, contentType: MIME[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
+};
 const r4 = v => Math.round(v * 1e4) / 1e4, r2 = v => Math.round(v * 100) / 100;
 const W4 = p => p.map(r4);
 
@@ -30,17 +38,17 @@ const MIN_APART = 12;                                    // px between two peopl
 const FLOOR_LEFT = 20;                                   // px of floor wanted left of the table in the view
 const DIBUJO_CLEAR = 8;                                  // px between the drawing's point and the hanging plantains
 const STATES = [[0, 0], [1, 0], [0, 1], [1, 1]];         // anillos, mesa
+const FROG = [13.5, 4.3, 0];                             // coqui.piso
+const DOG_GAP = 4;                                       // px between the frog's box and Canelo's, on the screen's right (v3b)
+const SENOR = { from: 13.9, step: .05, max: .6, sideways: 28 };   // senor.caja: x stepped up from 13.9 until he is 28 px or more sideways from coqui.piso, within +.6 (v3b)
 
 (async () => {
   const browser = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {});
   const page = await browser.newPage();
   const errs = [];
   page.on('pageerror', e => errs.push(String(e)));
-  await page.route(BASE + '/**', route => {
-    const u = new URL(route.request().url()), f = path.join(REPO, decodeURIComponent(u.pathname));
-    if (!f.startsWith(REPO + path.sep) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) return route.fulfill({ status: 404, body: 'not found' });
-    route.fulfill({ status: 200, contentType: MIME[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
-  });
+  await page.route(BASE + '/**', serve);
+  const SPR = await spriteBoxes(browser, errs);                                // the boxes of the pixels the frog and Canelo draw (the preview's sprites)
   const load = async (q) => { await page.goto(PAGE + '?' + q + EXTRA); };
   await load('tags=1&anillos=1&mesa=1');
   const G = await page.evaluate(() => { const o = {}; for (const [k, v] of Object.entries(ESTANTES.CD)) if (typeof v !== 'function') o[k] = v; return { CD: o, scene: PP_SCENE, W, H, S, OX, OY }; });
@@ -56,10 +64,10 @@ const STATES = [[0, 0], [1, 0], [0, 1], [1, 1]];         // anillos, mesa
     }
     return out;
   });
-  const sheet = await make(G, proj, bb);
+  const sheet = await make(G, proj, bb, SPR);
   // the checks that read the set's own pixels: every state of the set (anillos x mesa), each pixel tagged by the part that drew it (tags=1)
   const probes = await probeSets(page, sheet, load);
-  const results = checks(sheet, probes, bb);
+  const results = checks(sheet, probes, bb, SPR);
   sheet.checks = { results };
   const out = compact(JSON.stringify(sheet, null, 1)) + '\n';
   fs.writeFileSync(OUT, out);
@@ -71,6 +79,18 @@ const STATES = [[0, 0], [1, 0], [0, 1], [1, 1]];         // anillos, mesa
   if (bad.length) { console.log('CHECK FAILED: ' + bad.map(r => r.name).join(', ')); process.exit(1); }
   console.log('check: all ' + results.length + ' checks ok');
 })().catch(e => { console.error(e); process.exit(1); });
+
+// the boxes of the pixels the frog and Canelo draw, from the preview's sprites: [x0, y0, x1, y1] from the anchor column and the bottom edge (the spot's row)
+async function spriteBoxes(browser, errs) {
+  const p = await browser.newPage();
+  p.on('pageerror', e => errs.push('preview: ' + String(e)));
+  await p.route(BASE + '/**', serve);
+  await p.goto(BASE + '/docs/proyecto/pixel/estantes-preview.html?nodraw=1');
+  await p.evaluate(() => window.PREVIEW.done);
+  const out = await p.evaluate(() => window.PREVIEW.boxes());
+  await p.close();
+  return out;
+}
 
 // an array of numbers or plain words goes on one line
 const ITEM = '(?:-?[\\d.]+|"[\\w.=+&?-]+")';
@@ -87,7 +107,7 @@ function ringOffsets() {
 }
 
 /* ---------- the sheet ---------- */
-async function make(G, proj, bb) {
+async function make(G, proj, bb, SPR) {
   const CD = G.CD, SZ = CD.SZ, SD = CD.SD, E0 = CD.E2X0, E1 = CD.E2X1, [MX, MY] = CD.MESA, MH = CD.MESA_H, PIE = CD.ESCALERA_PIE, ALTO = CD.ESCALERA_ALTO;
   const S = G.S, OX = G.OX, OY = G.OY, R2 = Math.SQRT2;
   const scr = ([sx, sy]) => [Math.round(sx), Math.round(sy)];
@@ -109,6 +129,26 @@ async function make(G, proj, bb) {
   // puerta_lata: the left edge of the window at floor level, y 4.0
   const lx = 4.0 + (x0 - OX) * R2 / S;
 
+  /* ---- v3b: perro.rana (Canelo sits beside the frog) and senor.caja, stepped ----
+     perro.rana: the y of coqui.piso, x up by .05 from the frog's x, until the dog's box (the pixels he draws) is DOG_GAP px clear of the frog's box on the screen's right: the empty columns between
+     the frog's right edge and the dog's left edge. senor.caja: x up by .05 from SENOR.from (at most +SENOR.max) until his spot is SENOR.sideways px or more sideways from coqui.piso; none: it stays */
+  const cand = [], nDog = 160, nSen = Math.round(SENOR.max / SENOR.step);
+  for (let k = 0; k <= nDog; k++) cand.push([r4(FROG[0] + k * .05), FROG[1], 0]);
+  for (let k = 0; k <= nSen; k++) cand.push([r4(SENOR.from + k * SENOR.step), 5.3, 0]);
+  const cp = (await proj(cand.concat([FROG]))).map(q => [Math.round(q[0]), Math.round(q[1])]), fq = cp[cp.length - 1];
+  const frogBox = [fq[0] + SPR.coqui[0], fq[1] + SPR.coqui[1], fq[0] + SPR.coqui[2], fq[1] + SPR.coqui[3]];
+  const dogTries = [];
+  let dogK = -1;
+  for (let k = 0; k <= nDog; k++) { const q = cp[k], left = q[0] + SPR.perro[0], gap = left - frogBox[2] - 1; if (k <= 60 || dogK < 0) dogTries.push([cand[k][0], gap]); if (gap >= DOG_GAP) { dogK = k; break; } }
+  if (dogK < 0) throw new Error('no x puts Canelo ' + DOG_GAP + ' px clear of the frog');
+  const dogX = cand[dogK][0];
+  const senTries = []; let senX = null;
+  for (let k = 0; k <= nSen; k++) { const q = cp[nDog + 1 + k], dx = Math.abs(q[0] - fq[0]); senTries.push([cand[nDog + 1 + k][0], dx]); if (dx >= SENOR.sideways && senX === null) senX = cand[nDog + 1 + k][0]; }
+  // where it would pass beyond the allowed +.6 (for the report only): the least x above and below 13.9 (steps of .05) that is 28 px sideways from the frog
+  const far = []; for (let k = -60; k <= 120; k++) far.push([r4(SENOR.from + k * .05), 5.3, 0]);
+  const fp = (await proj(far)).map(q => Math.round(q[0]));
+  const nearestUp = far.find((w, i) => w[0] > SENOR.from && Math.abs(fp[i] - fq[0]) >= SENOR.sideways), nearestDown = far.slice().reverse().find((w, i2) => { const i = far.length - 1 - i2; return w[0] < SENOR.from && Math.abs(fp[i] - fq[0]) >= SENOR.sideways; });
+
   /* ---- spots: the ground (or the shelf top, the table top, the rung) under the feet; frog scale 1 everywhere ---- */
   const D = [];                                                                       // [name, world, kind, what, extra]
   const add = (name, w, kind, what, extra) => D.push([name, w, kind, what, extra]);
@@ -117,7 +157,7 @@ async function make(G, proj, bb) {
   add('pepe.mesa', [12.9, 2.9, 0], 'person', 'don Pepe behind the display table, at its right end, clear of the pyramid');
   add('pepe.entra', [10.6, 3.0, 0], 'person', 'don Pepe coming in from the left with the big box');
   add('coqui.cajon', [15.0, 3.2, .3], 'person', 'the frog on his crate; the crate is a sprite .3 high under him (its bottom middle on ground)');
-  add('coqui.piso', [13.5, 4.3, 0], 'person', 'the frog on the floor');
+  add('coqui.piso', FROG, 'person', 'the frog on the floor');
   add('luis.piso', [15.4, 4.6, 0], 'person', 'Luis on the floor');
   add('luis.cajas', [15.4, 3.6, 0], 'person', 'Luis where he counts and holds a box up');
   add('caja_grande', [12.9, 2.4, 0], 'object', 'the big cardboard box of the delivery');
@@ -135,10 +175,10 @@ async function make(G, proj, bb) {
   add('caja_senora', [11.3, 4.8, 0], 'box', 'the señora\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
   add('caja_senor', [13.0, 5.0, 0], 'box', 'the señor\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
   add('senora.caja', [11.0, 4.4, 0], 'person', 'the señora standing by her box');
-  add('senor.caja', [13.9, 5.3, 0], 'person', 'the señor standing by his box');
+  add('senor.caja', [senX === null ? SENOR.from : senX, 5.3, 0], 'person', 'the señor standing by his box (v3b: x stepped up by ' + SENOR.step + ' from ' + SENOR.from + ' until he is ' + SENOR.sideways + ' px or more sideways from coqui.piso, at most +' + SENOR.max + '; ' + (senX === null ? 'none passed, so ' + SENOR.from + ' is kept: see `stepped`' : 'x ' + senX) + ')', { stepped: { from: SENOR.from, step: SENOR.step, max: SENOR.max, needSideways: SENOR.sideways, tries: senTries.map(t => ({ x: t[0], sideways: t[1] })), result: senX === null ? 'none passed: kept at ' + SENOR.from : senX, nearestAbove: nearestUp ? nearestUp[0] : null, nearestBelow: nearestDown ? nearestDown[0] : null } });
   add('perro.entra', [10.5, 4.2, 0], 'animal', 'Canelo coming in');
   add('perro.mesa', [11.7, 4.2, 0], 'animal', 'Canelo bumping the table');
-  add('perro.rana', [14.3, 4.8, 0], 'animal', 'Canelo sitting beside the frog');
+  add('perro.rana', [dogX, FROG[1], 0], 'animal', 'Canelo sitting beside the frog (v3b: the frog\'s y, x ' + dogX + ': the frog\'s x stepped up by .05 until his box is ' + DOG_GAP + ' px clear of the frog\'s box on the screen\'s right)', { stepped: { from: FROG[0], step: .05, needGap: DOG_GAP, gapAt: dogTries.filter((t, i) => i % 4 === 0 || i === dogTries.length - 1).map(t => ({ x: t[0], gap: t[1] })), result: dogX } });
   add('puerta_lata', [lx, 4.0, 0], 'edge', 'where a can rolls out of the picture: the left edge of the window (the first column, x0) at floor level, y 4.0');
   const pr = await proj(D.map(d => d[1]));
   const spots = {};
@@ -267,7 +307,7 @@ const penetration = (A, B) => {
   return least;
 };
 
-function checks(sheet, probes, bb) {
+function checks(sheet, probes, bb, SPR) {
   const S = sheet.spots, T = sheet.things, V = sheet.views.wide, OUTS = [];
   const add = (name, bad, okLine, failLines) => OUTS.push({ name, ok: !bad.length, lines: bad.length ? [name + ': ' + failLines[0], ...failLines.slice(1)] : [name + ': ' + okLine] });
   const list = (head, bad) => [head].concat(bad.map(l => '  ' + l));
@@ -308,6 +348,9 @@ function checks(sheet, probes, bb) {
       seen.push(g + ' (' + ns.join(', ') + ') least ' + r2(least) + ' px');
     }
     add('people-apart', near, 'every pair in each group at least ' + MIN_APART + ' px apart: ' + seen.join('; '), list(near.length + ' pair(s) closer than ' + MIN_APART + ' px (screen points):', near));
+    // info (v3b): senor.caja stepped up by .05 from 13.9 (at most +.6) until 28 px or more sideways from coqui.piso
+    const st = S['senor.caja'].stepped, fr = S['coqui.piso'].screen, sc = S['senor.caja'].screen;
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: senor.caja stepped x ' + st.from + ' +' + st.step + ' ... +' + st.max + ' for ' + st.needSideways + ' px or more sideways from coqui.piso ' + fr + ': ' + st.tries.map(t => t.x + ' -> ' + t.sideways + ' px').join(', ') + '; ' + (typeof st.result === 'number' ? 'first that passes: x ' + st.result : 'NONE PASSES within +' + st.max + ', so x ' + st.from + ' is kept (' + sc + ', ' + Math.abs(sc[0] - fr[0]) + ' px sideways); the nearest x that would pass (steps of .05): above ' + st.nearestAbove + ', below ' + st.nearestBelow));
   }
 
   // 3b. (v2) the frog and the things near him: screen points at least 14 px apart; and don Pepe's column behind the table at least 22 px from the pyramid's axis
@@ -321,6 +364,15 @@ function checks(sheet, probes, bb) {
     apart('frog-floor-apart-abuela-box', 'coqui.piso', 'caja_abuela', 14, '');
     const a = S['pepe.mesa'].screen[0], b = S['mesa.fila.0'].screen[0], d = Math.abs(a - b);
     add('pepe-mesa-column-apart-pyramid', d < 22 ? [1] : [], 'pepe.mesa\'s column ' + a + ' is ' + d + ' px from the pyramid\'s axis (mesa.fila.0, column ' + b + ') (at least 22)', ['pepe.mesa\'s column ' + a + ' is ' + d + ' px from the pyramid\'s axis (mesa.fila.0, column ' + b + '), closer than 22 px']);
+  }
+
+  // 3c. (v3b) Canelo at perro.rana: his box (the pixels he draws) is DOG_GAP px or more clear of the frog's box (the pixels he draws) on the screen's right: the empty columns between the frog's right edge
+  //     and the dog's left edge. The frog's box at coqui.piso, the dog's at perro.rana, both from the preview's sprites
+  {
+    const f = S['coqui.piso'].screen, d = S['perro.rana'].screen;
+    const fb = [f[0] + SPR.coqui[0], f[1] + SPR.coqui[1], f[0] + SPR.coqui[2], f[1] + SPR.coqui[3]], db = [d[0] + SPR.perro[0], d[1] + SPR.perro[1], d[0] + SPR.perro[2], d[1] + SPR.perro[3]];
+    const gap = db[0] - fb[2] - 1, rowsOverlap = Math.min(fb[3], db[3]) - Math.max(fb[1], db[1]) + 1;
+    add('perro-clear-of-frog', gap < DOG_GAP ? [1] : [], 'perro.rana ' + d + ' (Canelo\'s box [' + db + ']) is ' + gap + ' px clear of the frog at coqui.piso ' + f + ' (box [' + fb + ']) on the screen\'s right (needs ' + DOG_GAP + '); the boxes share ' + (rowsOverlap > 0 ? rowsOverlap + ' rows' : 'no rows') + '; x ' + S['perro.rana'].world[0] + ' is the first of the frog\'s x ' + FROG[0] + ' + .05 k that gives it', ['perro.rana ' + d + ' (Canelo\'s box [' + db + ']) is ' + gap + ' px clear of the frog\'s box [' + fb + '] (needs ' + DOG_GAP + ')']);
   }
 
   // 4. the shelf places: each on a shelf top (part estantes2, tags=1), and the ones the ladder is in front of

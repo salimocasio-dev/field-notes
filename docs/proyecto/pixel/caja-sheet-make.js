@@ -45,7 +45,8 @@ const ETIQUETA = { dw: [-0.05, 0.3, 0], box: [11, 10] }; // the price tag of eve
 const IMPORTE = { size: [13, 9], digits: { count: 2, size: [5, 7], gap: 1 } };   // the amount: a pale plate with two numerals, its middle on the screen point of ventana_caja (v3)
 const GLASS_X = -.25;                                    // a pixel of part vitrina whose world x (read back from the baked depth) is left of this is the window's glass (the backdrop pane is at x -.5); right of it, the frame or the sill
 const NINOS_X = [-.4, -.5, -.6, -.7, -.8, -.9, -1.0, -1.1, -1.2];   // the x's tried for the children outside the window, in this order (v3)
-const NINOS_DEEPER = .3;                                 // the middle child stands this much further from the wall than the other two
+const DOOR_XS = [-.3, -.4, -.5, -.6, -.7, -.8];          // the x's tried for the child in the street doorway (v3b), in this order; his y is the door's middle (PD0 + PD1) / 2 = 4.3
+const STREET_X = -.04;                                   // a pixel of part puerta whose world x (read back from the baked depth) is left of this is the street seen through the doorway (the backdrop at x -.5, the pavement); right of it, the frame, the leaf, the wall
 
 (async () => {
   const browser = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {});
@@ -90,43 +91,52 @@ const ITEM = '(?:-?[\\d.]+|"[\\w.=+&?-]+")';
 const compact = t => t.replace(new RegExp('\\[\\n\\s+(' + ITEM + '(?:,\\n\\s+' + ITEM + ')*)\\n\\s+\\]', 'g'), (m, a) => '[' + a.replace(/,\n\s+/g, ', ') + ']');
 
 
-/* ---------- the children outside the shop window (v3): they show ONLY through the panes: not one pixel over the wall, the sill or beside the frame ----------
-   Child 1's head is in the middle of the left pane, child 3's in the middle of the right pane (their column on the screen is the pane's middle column: y = the pane's middle y + x, since a
-   point at (x, y) is in the column of the wall point (0, y + x)), child 2 is between them (the same: its column is the middle of theirs) and NINOS_DEEPER further from the wall.
-   Tried for x = -.4, -.5 ... -1.2 in that order, the first that shows zero pixels outside the panes and 20 rows or more of each child is used. If none does: x = -.5 and a `clip` box on the three spots. */
+/* ---------- the children outside (v3, v3b): two at the shop window, one in the street doorway ----------
+   WINDOW (children 1 and 3): they show ONLY through the panes: not one pixel over the wall, the sill or beside the frame. Child 1's head is in the middle of the pane on the VW0 side, child 3's in the middle
+   of the one on the VW1 side (their column on the screen is the pane's middle column: y = the pane's middle y + x, since a point at (x, y) is in the column of the wall point (0, y + x)). Tried for x = -.4,
+   -.5 ... -1.2 in that order, the first that shows zero pixels outside the panes and 20 rows or more of each is used. If none does: x = -.5 and a `clip` box on the two spots.
+   DOORWAY (child 2, v3b): at (x, 4.3, 0), in the open street doorway, looking in. Tried for x = -.3, -.4 ... -.8 in that order, the first that shows 20 rows or more of him in the door opening and no pixel
+   over the wall or the door frame is used. If none does: (-.3, 4.3, 0) is left. */
 async function stepNinos(page, SP, G) {
   const masks = [SP.luis, SP.carmen, SP.nino3].map(m => ({ ax: m.ax, bottom: m.bottom, px: m.px }));
   return page.evaluate(arg => {
-    const { masks, XS, deeper, bias, glassX, minRows } = arg, CD = CAJA.CD, COS = Math.sqrt(3) / 2, R2 = Math.SQRT2, T30 = Math.tan(Math.PI / 6), Z = DEPTH.z;
+    const { masks, XS, DXS, bias, glassX, streetX, minRows } = arg, CD = CAJA.CD, COS = Math.sqrt(3) / 2, R2 = Math.SQRT2, T30 = Math.tan(Math.PI / 6), Z = DEPTH.z;
     const r4 = v => Math.round(v * 1e4) / 1e4;
     const mid = (CD.VW0 + CD.VW1) / 2, m0 = mid - .04, m1 = mid + .04;                // the mullion: y m0 .. m1 on the wall (colmado-dentro.js: a bar .08 wide at (VW0 + VW1) / 2 - .04)
     const pane = [[CD.VW0, m0], [m1, CD.VW1]], yc = pane.map(p => (p[0] + p[1]) / 2);   // the two panes' y ranges on the wall, and their middles
-    const spotsAt = x => [[x, yc[0] + x], [x - deeper, (x - deeper) + (yc[0] + yc[1]) / 2], [x, yc[1] + x]].map(p => [r4(p[0]), r4(p[1]), 0]);
-    const run = x => {
-      const sp = spotsAt(x), kids = [];
-      sp.forEach((w, c) => {
-        const q = project(w[0], w[1], w[2]), sx = Math.round(q.sx), sy = Math.round(q.sy), m = masks[c];
-        let vis = 0, outside = 0; const rows = new Set(), over = {};
-        for (const [px, py] of m.px) {
-          const X = sx - m.ax + px, Y = sy - m.bottom + py; if (X < 0 || X >= W || Y < 0 || Y >= H) continue;
-          const i = Y * W + X, plane = q.d + (sy - (Y + .5)) * T30 / S;
-          if (Z[i] > plane + bias) continue;
-          vis++;
-          const b = (X + .5 - OX) / S, syp = (Y + .5 - OY) / S, z = (Z[i] - 2 * COS * syp) / 2, a = 2 * (syp + z * COS), wx = (a + b) * R2 / 2;
-          if (TAGS[i] === 'vitrina' && wx < glassX) rows.add(Y); else { outside++; over[(TAGS[i] || 'none')] = (over[(TAGS[i] || 'none')] || 0) + 1; }
-        }
-        kids.push({ world: w, screen: [sx, sy], visible: vis, outside, over, rows: rows.size });
-      });
+    // what a child shows: the pixels the depth rule leaves visible, over a set pixel that is `inside` (x read back from the baked depth) or not
+    const measure = (w, m, inside) => {
+      const q = project(w[0], w[1], w[2]), sx = Math.round(q.sx), sy = Math.round(q.sy);
+      let vis = 0, outside = 0; const rows = new Set(), over = {};
+      for (const [px, py] of m.px) {
+        const X = sx - m.ax + px, Y = sy - m.bottom + py; if (X < 0 || X >= W || Y < 0 || Y >= H) continue;
+        const i = Y * W + X, plane = q.d + (sy - (Y + .5)) * T30 / S;
+        if (Z[i] > plane + bias) continue;
+        vis++;
+        const b = (X + .5 - OX) / S, syp = (Y + .5 - OY) / S, z = (Z[i] - 2 * COS * syp) / 2, a = 2 * (syp + z * COS), wx = (a + b) * R2 / 2;
+        if (inside(TAGS[i], wx)) rows.add(Y); else { outside++; over[(TAGS[i] || 'none')] = (over[(TAGS[i] || 'none')] || 0) + 1; }
+      }
+      return { world: w, screen: [sx, sy], visible: vis, outside, over, rows: rows.size };
+    };
+    const glass = (t, wx) => t === 'vitrina' && wx < glassX, street = (t, wx) => t === 'puerta' && wx < streetX;
+    const runWin = x => {
+      const sp = [[x, yc[0] + x], [x, yc[1] + x]].map(p => [r4(p[0]), r4(p[1]), 0]);
+      const kids = sp.map((w, c) => measure(w, masks[c === 0 ? 0 : 2], glass));
       return { x, spots: sp, kids, ok: kids.every(k => k.outside === 0 && k.rows >= minRows) };
     };
-    const tried = XS.map(run), hit = tried.find(t => t.ok);
+    const tried = XS.map(runWin), hit = tried.find(t => t.ok);
     // the panes' screen box (the frame's inner edge: the hole in the wall, y VW0 .. VW1, z VZ0 .. VZ1), for the clip if no x passes
     const cs = []; for (const y of [CD.VW0, CD.VW1]) for (const z of [CD.VZ0, CD.VZ1]) { const q = project(0, y, z); cs.push([q.sx, q.sy]); }
     const x0 = Math.floor(Math.min(...cs.map(c => c[0]))), y0 = Math.floor(Math.min(...cs.map(c => c[1])));
     const box = [x0, y0, Math.ceil(Math.max(...cs.map(c => c[0]))) - x0, Math.ceil(Math.max(...cs.map(c => c[1]))) - y0];
-    const used = hit || run(-.5);
-    return { x: used.x, spots: used.spots, clip: hit ? null : box, tried: tried.map(t => ({ x: t.x, ok: t.ok, kids: t.kids.map(k => ({ outside: k.outside, over: k.over, rows: k.rows })) })), pane: { y: pane, middle: yc, mullion: [m0, m1] } };
-  }, { masks, XS: NINOS_X, deeper: NINOS_DEEPER, bias: BIAS, glassX: GLASS_X, minRows: MIN_HEAD_ROWS });
+    const used = hit || runWin(-.5);
+    // the doorway
+    const dy = (CD.PD0 + CD.PD1) / 2;
+    const dTried = DXS.map(x => { const k = measure([x, r4(dy), 0], masks[1], street); return Object.assign({ x, ok: k.outside === 0 && k.rows >= minRows }, k); });
+    const dHit = dTried.find(t => t.ok), dUsed = dHit || dTried[0];
+    return { x: used.x, spots: used.spots, clip: hit ? null : box, tried: tried.map(t => ({ x: t.x, ok: t.ok, kids: t.kids.map(k => ({ outside: k.outside, over: k.over, rows: k.rows })) })), pane: { y: pane, middle: yc, mullion: [m0, m1] },
+      door: { ok: !!dHit, x: dUsed.x, spot: dUsed.world, tried: dTried.map(t => ({ x: t.x, ok: t.ok, outside: t.outside, over: t.over, rows: t.rows, visible: t.visible })) } };
+  }, { masks, XS: NINOS_X, DXS: DOOR_XS, bias: BIAS, glassX: GLASS_X, streetX: STREET_X, minRows: MIN_HEAD_ROWS });
 }
 
 /* ---------- the preview's moments: caja-preview.html, read through PREVIEW.inspect (every layer of a moment: its spot, its kind, its drawn pixels [X, Y, hidden by the set, plane]) ---------- */
@@ -197,7 +207,9 @@ async function make(G, proj, SP, ninos) {
   D.push(['clip', [CD.CAJA_GAVETA[0] + .35, CD.CAJA_GAVETA[1], CD.CAJA_GAVETA[2] + .3], 'face', 'the frog\'s bills, clipped on the register\'s front face at its right top corner (CD.CAJA_GAVETA: .35 to the right, .3 up)']);
   D.push(['ventana_caja', CD.CAJA_VENTANA.slice(), 'window', 'the register\'s amount window (CD.CAJA_VENTANA): the numerals of the amount are drawn here, two digits, about 5 x 7 px each']);
   D.push(['bola', [.16, WMID, CD.VZ0 - .04], 'sill', 'the ball on the sill inside the shop window (x .16, the window\'s middle y, the sill\'s top)']);
-  ninos.spots.forEach((w, i) => person('ninos_fuera.' + (i + 1), w, 'child ' + (i + 1) + ' of the three outside the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: ' + ['its head in the middle of the left pane', 'between the two heads, ' + NINOS_DEEPER + ' further from the wall than the other two', 'its head in the middle of the right pane'][i] + '; x ' + ninos.x + (ninos.clip ? ', no x passed, so x -0.5 and a clip box on the three spots' : ', the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and ' + MIN_HEAD_ROWS + ' rows or more of each child; no clip'), ninos.clip ? { clip: ninos.clip } : undefined));
+  [ninos.spots[0], ninos.door.spot, ninos.spots[1]].forEach((w, i) => person('ninos_fuera.' + (i + 1), w, i === 1
+    ? 'child 2 of the three outside, in the open street doorway, looking in (no shadow); group ninos_fuera. v3b: (x, 4.3, 0), the first x of -0.3 to -0.8 (steps of 0.1) that shows ' + MIN_HEAD_ROWS + ' rows or more of him in the door opening and no pixel over the wall or the door frame' + (ninos.door.ok ? ': x ' + ninos.door.x : ': none passed, so (-0.3, 4.3, 0) is left')
+    : 'child ' + (i + 1) + ' of the three outside, at the shop window, seen through its panes only (no shadow); group ninos_fuera. v3: its head in the middle of the ' + (i === 0 ? 'pane on the VW0 side' : 'pane on the VW1 side') + '; x ' + ninos.x + (ninos.clip ? ', no x passed, so x -0.5 and a clip box' : ', the first x of -0.4 to -1.2 (steps of 0.1) that shows zero pixels outside the panes and ' + MIN_HEAD_ROWS + ' rows or more of the child; no clip'), i !== 1 && ninos.clip ? { clip: ninos.clip } : undefined));
   [[1.1, 4.4], [1.7, 4.9], [2.4, 5.4]].forEach(([x, y], i) => person('ninos_dentro.' + (i + 1), [x, y, 0], 'child ' + (i + 1) + ' of the three inside; group ninos_dentro'));
   person('puerta', [.5, DY, 0], 'just inside the street door');
   const pr = await proj(D.map(d => d[1]));
@@ -387,11 +399,11 @@ function checks(sheet, probes, SP, G, PVD, ninos) {
     OUTS[OUTS.length - 1].pepe = { above: r2(above), hiddenRows: r2(hidden), edgeRow: r2(ed.sy), columns: cols.size, columnsHiddenByRegister: hid.size, fraction: r4(frac), worstRowFraction: r4(worst), pixels: px.length, pixelsHiddenByRegister: nHid, rowsClearFromTop: clear };
   }
 
-  // 4. (v3) the children outside the window show ONLY through the panes: not one pixel over the wall, the sill or beside the frame; each shows MIN_HEAD_ROWS rows or more (rows with a pixel the depth rule leaves visible over the glass).
-  //    Measured on the sheet's own spots in both hours (a clip box, if the sheet has one, hides what lies outside it); `ninos` is the stepping that chose x
+  // 4. (v3) the children at the window (1 and 3) show ONLY through the panes: not one pixel over the wall, the sill or beside the frame; each shows MIN_HEAD_ROWS rows or more (rows with a pixel the depth rule leaves visible
+  //    over the glass). Measured on the sheet's own spots in both hours (a clip box, if the sheet has one, hides what lies outside it); `ninos` is the stepping that chose x
   {
-    const bad = [], info = [], over = [];
-    for (const hora of ['manana', 'tarde']) for (const k of probes[hora].kids) {
+    const bad = [], info = [], over = [], WIN = ['ninos_fuera.1', 'ninos_fuera.3'];
+    for (const hora of ['manana', 'tarde']) for (const k of probes[hora].kids.filter(k => WIN.includes(k.name))) {
       const vis = k.px.filter(p => !p[2]), glass = vis.filter(p => p[3] === 'vitrina' && p[4] < GLASS_X), outsideP = vis.filter(p => !(p[3] === 'vitrina' && p[4] < GLASS_X));
       const rowsV = [...new Set(glass.map(p => p[1]))].sort((a, b) => a - b), top = Math.min(...k.px.map(p => p[1]));
       const contiguous = (() => { let n = 0; for (let r = top; rowsV.includes(r); r++) n++; return n; })();
@@ -401,23 +413,40 @@ function checks(sheet, probes, SP, G, PVD, ninos) {
       if (outsideP.length) bad.push(hora + ' ' + k.name + ': ' + outsideP.length + ' pixels show outside the panes (' + Object.entries(where).map(([t, n]) => n + ' over ' + t).join(', ') + ')');
       if (rowsV.length < MIN_HEAD_ROWS) bad.push(hora + ' ' + k.name + ': ' + rowsV.length + ' rows through the panes (needs ' + MIN_HEAD_ROWS + ')');
     }
-    const kids = ['ninos_fuera.1', 'ninos_fuera.2', 'ninos_fuera.3'].map(k => k + ' ' + S[k].world + ' -> ' + S[k].screen);
-    add('ninos-fuera-through-window', bad, 'the way chosen: ' + (ninos.clip ? 'a clip box ' + ninos.clip + ' on the three spots, x -.5' : 'PLACEMENT, x ' + ninos.x + ' (child 2 at ' + r2(ninos.x - NINOS_DEEPER) + '), no clip') + '. Zero pixels of the three children show outside the panes (over the wall, the sill or the frame) in both hours, and each shows at least ' + MIN_HEAD_ROWS + ' rows through the glass: ' + info.join('; ') + ' (' + kids.join('; ') + ')', ['children outside:'].concat(bad).map((l, i) => i ? '  ' + l : l));
-    OUTS[OUTS.length - 1].lines.push('       the x\'s tried, in order (outside the panes / rows through the glass of child 1, 2, 3, in the afternoon): ' + ninos.tried.map(t => 'x ' + t.x + ' ' + t.kids.map(k => k.outside + '/' + k.rows).join(' ') + (t.ok ? ' PASSES' : ' no')).join('; '));
-    OUTS[OUTS.length - 1].lines.push('       pane middles on the wall (y): ' + ninos.pane.middle.map(r2).join(', ') + ' (left pane y ' + ninos.pane.y[0].map(r2) + ', mullion ' + ninos.pane.mullion.map(r2) + ', right pane y ' + ninos.pane.y[1].map(r2) + '); a pixel of part vitrina is glass when its world x (from the baked depth) is left of ' + GLASS_X);
+    const kids = WIN.map(k => k + ' ' + S[k].world + ' -> ' + S[k].screen);
+    add('ninos-fuera-through-window', bad, 'the way chosen: ' + (ninos.clip ? 'a clip box ' + ninos.clip + ' on the two spots, x -.5' : 'PLACEMENT, x ' + ninos.x + ', no clip') + '. Zero pixels of the two children at the window show outside the panes (over the wall, the sill or the frame) in both hours, and each shows at least ' + MIN_HEAD_ROWS + ' rows through the glass: ' + info.join('; ') + ' (' + kids.join('; ') + ')', ['children at the window:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    OUTS[OUTS.length - 1].lines.push('       the x\'s tried, in order (outside the panes / rows through the glass of child 1, 3, in the afternoon): ' + ninos.tried.map(t => 'x ' + t.x + ' ' + t.kids.map(k => k.outside + '/' + k.rows).join(' ') + (t.ok ? ' PASSES' : ' no')).join('; '));
+    OUTS[OUTS.length - 1].lines.push('       pane middles on the wall (y): ' + ninos.pane.middle.map(r2).join(', ') + ' (VW0-side pane y ' + ninos.pane.y[0].map(r2) + ', mullion ' + ninos.pane.mullion.map(r2) + ', VW1-side pane y ' + ninos.pane.y[1].map(r2) + '); a pixel of part vitrina is glass when its world x (from the baked depth) is left of ' + GLASS_X);
     OUTS[OUTS.length - 1].lines.push('       ' + over.join('; '));
-    // info: in moment 4 the finished picture, where the nearer child hides the one behind it (between two sprites the nearer pixel wins)
+    OUTS[OUTS.length - 1].way = ninos.clip ? 'clip' : 'placement';
+    OUTS[OUTS.length - 1].ninos = { x: ninos.x, clip: ninos.clip, tried: ninos.tried };
+  }
+
+  // 4b. (v3b) child 2 in the open street doorway, looking in (ninos_fuera.2): MIN_HEAD_ROWS rows or more of him show in the door opening (rows with a pixel the depth rule leaves visible over the street seen through
+  //     it) and no pixel of him shows over the wall or the door frame (any other set pixel). Both hours; his x was stepped -.3 ... -.8 (first that passes; none: (-.3, 4.3, 0) is left)
+  {
+    const k0 = 'ninos_fuera.2', bad = [], lines = [];
+    for (const hora of ['manana', 'tarde']) {
+      const k = probes[hora].kids.find(q => q.name === k0), vis = k.px.filter(p => !p[2]), st = vis.filter(p => p[3] === 'puerta' && p[4] < STREET_X), outsideP = vis.filter(p => !(p[3] === 'puerta' && p[4] < STREET_X));
+      const rowsV = new Set(st.map(p => p[1])), where = {}; for (const p of outsideP) where[p[3] || 'none'] = (where[p[3] || 'none'] || 0) + 1;
+      lines.push(hora + ': ' + rowsV.size + ' rows in the door opening (' + st.length + ' of ' + k.px.length + ' pixels), ' + outsideP.length + ' px over the wall or the door frame' + (outsideP.length ? ' (' + Object.entries(where).map(([t, n]) => n + ' over ' + t).join(', ') + ')' : ''));
+      if (rowsV.size < MIN_HEAD_ROWS) bad.push(hora + ': ' + rowsV.size + ' rows in the door opening (needs ' + MIN_HEAD_ROWS + ')');
+      if (outsideP.length) bad.push(hora + ': ' + outsideP.length + ' pixels over the wall or the door frame (' + Object.entries(where).map(([t, n]) => n + ' over ' + t).join(', ') + ')');
+    }
+    const dr = ninos.door;
+    add('nino-fuera-in-doorway', bad, k0 + ' ' + S[k0].world + ' -> ' + S[k0].screen + ' (x ' + dr.x + (dr.ok ? ', the first of ' + DOOR_XS.join(', ') + ' that passes' : ': NONE PASSED, (-0.3, 4.3, 0) is left') + '): ' + lines.join('; '), [k0 + ' ' + S[k0].world + ' -> ' + S[k0].screen + ':'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    OUTS[OUTS.length - 1].lines.push('       the x\'s tried (rows in the opening / px over the wall or the frame, afternoon): ' + dr.tried.map(t => 'x ' + t.x + ' ' + t.rows + '/' + t.outside + (t.ok ? ' PASSES' : ' no')).join('; ') + '; a pixel of part puerta is the street when its world x (from the baked depth) is left of ' + STREET_X + ' (the backdrop at x -.5 and the pavement; the frame is at x .03)');
+    // info: in moment 4's finished picture
     {
-      const L = PVD[4].layers, win = new Map();                                   // for each picture pixel the nearest sprite pixel of the moment that the set leaves visible
+      const L = PVD[4].layers, win = new Map();
       for (const [n, l] of L.entries()) for (const p of l.px) if (!p[2]) { const k = p[0] + ',' + p[1], w = win.get(k); if (!w || p[3] > w[0]) win.set(k, [p[3], n]); }
       const shown = L.map((l, n) => ({ at: l.at, n })).filter(o => o.at && o.at.startsWith('ninos_fuera.')).map(o => {
         const px = L[o.n].px.filter(p => !p[2] && win.get(p[0] + ',' + p[1])[1] === o.n);
         return o.at + ' ' + px.length + ' px in ' + new Set(px.map(p => p[1])).size + ' rows' + (px.length ? ' (columns ' + Math.min(...px.map(p => p[0])) + '..' + Math.max(...px.map(p => p[0])) + ')' : '');
       });
-      OUTS[OUTS.length - 1].lines.push('       info, not a check: in moment 4\'s finished picture (the nearer child hides the one behind it) what is left of each: ' + shown.join('; '));
+      OUTS[OUTS.length - 1].lines.push('       info, not a check: in moment 4\'s finished picture what is left of each child outside: ' + shown.join('; '));
     }
-    OUTS[OUTS.length - 1].way = ninos.clip ? 'clip' : 'placement';
-    OUTS[OUTS.length - 1].ninos = { x: ninos.x, clip: ninos.clip, tried: ninos.tried };
+    OUTS[OUTS.length - 1].door = { x: dr.x, ok: dr.ok, tried: dr.tried };
   }
 
   // 5. the two key cards inside the window and clear of the frog's head (coqui.frente, 25 rows) and of a 53-row customer at cliente

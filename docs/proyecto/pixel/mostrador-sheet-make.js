@@ -46,7 +46,7 @@ const FIXED = new Set(['nino.frente', 'coqui.frente', 'coqui.frente2', 'coqui.mo
 const WIDTH = { coqui: 32, adulto: 24, nino: 24 }, UPDOWN = 12;
 // v3: the alternatives: spots of one body (or of a story's other version) that are never in the same picture; the people-apart check does not compare them.
 // ALT: groups whose members are alternatives of each other. ALT_VS_GROUP: spots that are alternatives of every member of a group (a group is together: its members are compared with each other)
-const ALT = [['pepe.mostrador', 'pepe.silla'], ['coqui.mostrador', 'coqui.frente', 'coqui.frente2'], ['abuela.frente', 'abuela.silla'], ['cliente', 'abuela.frente'], ['nino.frente', 'nino.puerta_dentro']];
+const ALT = [['pepe.mostrador', 'pepe.silla'], ['coqui.mostrador', 'coqui.frente', 'coqui.frente2'], ['abuela.frente', 'abuela.silla'], ['cliente', 'abuela.frente'], ['coqui.frente2', 'cliente'], ['nino.frente', 'nino.puerta_dentro']];
 const ALT_VS_GROUP = { ninos_puerta: ['nino.puerta_dentro', 'cola1', 'cola2'] };
 const HEAD_ROWS = 14;                                    // the head of a child: the top 14 rows of the sprite
 const CALLE_SIDEWAYS = 28;                               // abuela.acera and coqui.acera: px apart sideways
@@ -149,17 +149,17 @@ async function makeDentro(G, proj) {
   person('pepe.silla', [5.2, 1.15, 0], 'don Pepe sitting behind the counter with his fan (story 38)');
   person('coqui.frente', [4.4, 3.5, 0], 'the frog on the floor, in front of the counter, in story 36 (with abuela at abuela.frente)');
   person('coqui.frente2', [3.4, 3.7, 0], 'the frog\'s place on the floor whenever a child stands at nino.frente (story 37); an alternative of coqui.frente');
-  person('coqui.mostrador', [3.2, 2.38, CH], 'the frog\'s one place on the counter top, right of the register (it casts no shadow); it may overlap the register\'s side shelf, not its body');
+  person('coqui.mostrador', [3.45, 2.38, CH], 'the frog\'s one place on the counter top, right of the register (it casts no shadow); it may overlap the register\'s side shelf, not its body');
   person('abuela.frente', [3.0, 4.1, 0], 'abuela standing in front of the counter');
   person('abuela.silla', [CD.SILLA[0], CD.SILLA[1], .45], 'abuela sitting in the waiting chair (CD.SILLA); z .45 is the chair\'s seat top (colmado-dentro.js chairs()); the sitting sprite is anchored by her lap, rules.anchor');
   person('nino.frente', [5.2, 3.6, 0], 'Luis or Carmen at the counter');
   person('nino.puerta_dentro', [.7, 5.4, 0], 'Carmen looking out of the street door, inside');
-  person('cliente', [2.9, 3.75, 0], 'the customer being served');
+  person('cliente', [3.15, 3.75, 0], 'the customer being served (v3b: (3.15, 3.75, 0))');
   person('cola1', [2.3, 4.2, 0], 'waiting, first');
   person('cola2', [1.6, 4.7, 0], 'waiting, second');
   person('puerta', [.45, DY, 0], 'just inside the street door');
   person('fuera', [-.35, DY, 0], 'on the pavement, seen through the street door (no shadow)');
-  [[.6, 4.0, 'the one behind'], [1.0, 5.05, 'in front, left'], [1.75, 4.5, 'in front, right']].forEach(([x, y, where], i) => person('ninos_puerta.' + (i + 1), [x, y, 0], 'child ' + (i + 1) + ' of the three just inside the street door, ' + where + ' (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top ' + HEAD_ROWS + ' rows)'));
+  [[.6, 4.0, 'the one behind'], [1.0, 5.05, 'in front, left'], [1.8, 4.5, 'in front, right']].forEach(([x, y, where], i) => person('ninos_puerta.' + (i + 1), [x, y, 0], 'child ' + (i + 1) + ' of the three just inside the street door, ' + where + ' (story 38: they wait there, each with a coin); group ninos_puerta: all three heads must show (the head is the top ' + HEAD_ROWS + ' rows)'));
   onCounter('bandeja', 5.6, 2.38, 'the tray of quesitos');
   onCounter('platillo', 5.0, 2.15, 'the coin dish');
   onCounter('cosa_a', 3.6, 2.5, 'the first of the two things in front of the frog');
@@ -168,7 +168,7 @@ async function makeDentro(G, proj) {
   onCounter('monedas', 4.6, 2.62, 'the first of Carmen\'s coins; the row runs towards +x (dir), .22 apart (step)');
   onCounter('maltas', 5.95, 2.15, 'the malts');
   onCounter('limber_pepe', 4.75, 2.45, 'a límber at don Pepe\'s end');
-  onCounter('limber_lejos', 3.75, 2.5, 'a límber at the frog\'s end');
+  onCounter('limber_lejos', 3.95, 2.6, 'a límber at the frog\'s end');
   onCounter('bolsa', 4.45, 2.55, 'the bag being packed');
   for (const [k, s, x] of GOODS) D.push(['estante.' + k, [x, .19, SZ[s] + .06], 'shelf', 'where ' + k + ' stands on its shelf (the plank\'s top)']);
 
@@ -260,11 +260,11 @@ async function makeDentro(G, proj) {
     alternatives: {
       groups: ALT,
       vsGroup: ALT_VS_GROUP,
-      what: 'spots that are never in the same picture, so the people-apart and sprites-apart checks do not compare them: each list of groups is alternatives of each other (one body has one place at a time; cliente and abuela.frente: abuela is the customer of story 36, the señora of story 38 stands at cliente); vsGroup: the spots listed are alternatives of the whole group (ninos_puerta is together: its three children are compared with each other, never with these)',
+      what: 'spots that are never in the same picture, so the people-apart and sprites-apart checks do not compare them: each list of groups is alternatives of each other (one body has one place at a time; cliente and abuela.frente: abuela is the customer of story 36, the señora of story 38 stands at cliente; coqui.frente2 and cliente never stand together: the frog of story 37 has no customer); vsGroup: the spots listed are alternatives of the whole group (ninos_puerta is together: its three children are compared with each other, never with these)',
     },
     notes: [
       'bandeja, platillo and maltas stay where the design has them: they belong to stories without the freezer (nevera = 0), which is why they may lie under the freezer\'s footprint when nevera = 1 (see the info line of counter-spots-on-top)',
-      'v3: the spots whose numbers the orchestrator gave (nino.frente, coqui.frente, coqui.frente2, coqui.mostrador, limber_lejos, ninos_puerta.1 to .3, the calle spots) are final and are not moved by the old clearance rule; spots-clear reports one that is nearer than ' + CLEAR + ' px and the nearest x that would pass',
+      'v3: the spots whose numbers the orchestrator gave (nino.frente, coqui.frente, coqui.frente2, coqui.mostrador, limber_lejos, cliente, ninos_puerta.1 to .3, the calle spots) are final and are not moved by the old clearance rule; spots-clear reports one that is nearer than ' + CLEAR + ' px and the nearest x that would pass',
       'the calle view\'s x0 ' + CALLE_X0 + ' is accepted by the orchestrator and final (views.calle.final)',
     ],
     views,

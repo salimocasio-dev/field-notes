@@ -122,13 +122,13 @@ async function silhouettes(sp) {
   });
 }
 
-/* ---------- pepe.carro: the v3 brief gives (1.9, 3.35, 0) and says: if he covers the cart's handle, step x down by .1 until he does not.
+/* ---------- pepe.carro: the brief (v3b) gives (2.35, 3.35, 0) so that he is whole inside the window; if he then covers more than CARRO_MAX pixels of the cart's handle, (1.9, 3.35, 0) is kept.
    He covers the handle where a pixel he draws (not hidden by the depth rule) lies on a pixel of the handle (carro = 1, the morning, the door open, verduras) ---------- */
-const CARRO_START = 1.9, CARRO_Y = 3.35;
+const CARRO_TRY = 2.35, CARRO_KEEP = 1.9, CARRO_Y = 3.35, CARRO_MAX = 10;
 async function stepCarro(page, load, SIL) {
   await load('tags=1&' + qOf({ hora: 'manana', puerta: 'open', carro: 1, surtido: 'verduras' }));
-  return page.evaluate(arg => {
-    const { px, x0, y, bias } = arg, CF = FRUTAS.CF, COS = Math.sqrt(3) / 2, R2 = Math.SQRT2, T30 = Math.tan(Math.PI / 6), Z = DEPTH.z;
+  const r = await page.evaluate(arg => {
+    const { px, xs, y, bias } = arg, CF = FRUTAS.CF, COS = Math.sqrt(3) / 2, R2 = Math.SQRT2, T30 = Math.tan(Math.PI / 6), Z = DEPTH.z;
     const edge = CF.CART[0] - .95 - .05;
     const isHandle = i => {
       if (TAGS[i] !== 'carro') return false;
@@ -136,21 +136,19 @@ async function stepCarro(page, load, SIL) {
       return (a + b) * R2 / 2 < edge;
     };
     let handle = 0; for (let i = 0; i < TAGS.length; i++) if (isHandle(i)) handle++;
-    const tries = [];
-    for (let k = 0; k < 40; k++) {
-      const x = Math.round((x0 - k * .1) * 10) / 10, q = project(x, y, 0), sx = Math.round(q.sx), sy = Math.round(q.sy);
-      let cov = 0;
+    return { handle, tries: xs.map(x => {
+      const q = project(x, y, 0), sx = Math.round(q.sx), sy = Math.round(q.sy);
+      let cov = 0, left = 0;
       for (let n = 0; n < px.length; n += 2) {
         const X = sx + px[n], Y = sy + px[n + 1]; if (X < 0 || X >= W || Y < 0 || Y >= H) continue;
         const i = Y * W + X, plane = q.d + (sy - (Y + .5)) * T30 / S;
         if (Z[i] > plane + bias) continue;
         if (isHandle(i)) cov++;
       }
-      tries.push({ x, covered: cov, handle });
-      if (!cov) return { x, tries };
-    }
-    return { x: null, tries };
-  }, { px: SIL.pepe.px, x0: CARRO_START, y: CARRO_Y, bias: BIAS });
+      return { x, covered: cov, handle, screen: [sx, sy] };
+    }) };
+  }, { px: SIL.pepe.px, xs: [CARRO_TRY, CARRO_KEEP], y: CARRO_Y, bias: BIAS });
+  return { x: r.tries[0].covered > CARRO_MAX ? CARRO_KEEP : CARRO_TRY, tries: r.tries };
 }
 
 /* ---------- what the set drew, by part (tags=1): the pixel box of each ---------- */
@@ -203,11 +201,11 @@ async function make(G, proj, base, bins, ext, carro) {
   const add = (name, w, kind, what, extra) => D.push([name, w, kind, what, extra]);
   add('pepe.detras', [6.3, .5, 0], 'person', 'don Pepe behind the stand, between it and the wall (the stand hides him up to his waist)');
   add('pepe.puerta', [1.65, .35, 0], 'person', 'don Pepe at the shop door');
-  add('pepe.carro', [carroX, 3.35, 0], 'person', 'don Pepe at the hand cart\'s handles: the v3 brief gives (1.9, 3.35, 0) and says to step x down by .1 until his drawn pixels do not cover the cart\'s handle; `stepped` lists what each x covered');
+  add('pepe.carro', [carroX, 3.35, 0], 'person', 'don Pepe at the hand cart\'s handles: (2.35, 3.35, 0) so that he is whole inside the window, or (1.9, 3.35, 0) if at 2.35 he covers more than ' + CARRO_MAX + ' pixels of the cart\'s handle; `stepped` lists what each covered');
   add('pepe.pesa', [1.9, 2.7, 0], 'person', 'don Pepe beside the scale');
   add('abuela.delante', [7.4, 4.0, 0], 'person', 'abuela in front of the stand');
   add('abuela.junto_cabra', [8.7, 3.0, 0], 'person', 'abuela beside the low crate');
-  add('repisa.izq', [4.7, ym, CF.LZ], 'frog', 'the frog on the ledge, left place (x 4.7, in the middle of the ledge\'s depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)');
+  add('repisa.izq', [4.6, ym, CF.LZ], 'frog', 'the frog on the ledge, left place (x 4.6, in the middle of the ledge\'s depth, z CF.LZ); the frog of stories 42, 43 and 44 (v3: two places on the ledge, not three)');
   add('repisa.der', [7.7, ym, CF.LZ], 'frog', 'the frog on the ledge, right place (x 7.7, in the middle of the ledge\'s depth, z CF.LZ)');
   add('cabra.poste', [9.9, 2.35, 0], 'goat', 'the goat by its post, standing');
   add('cabra.cajon', [cmx, cmy, ch], 'head', 'where the goat\'s head is when it eats from the low crate: the crate\'s top middle (the goat\'s feet stay on cabra.poste)');
@@ -233,7 +231,7 @@ async function make(G, proj, base, bins, ext, carro) {
     if (d[4]) Object.assign(s, d[4]);
     spots[d[0]] = s; depth[d[0]] = q[2];
   });
-  spots['pepe.carro'].stepped = { start: CARRO_START, step: -.1, handle: 'the pixels of part carro whose world x (read back from the baked depth) is left of the bed\'s left end CF.CART x - .95 by more than .05: the two rails and the cross-grip', tries: carro.tries.map(t => ({ x: t.x, coveredPx: t.covered, handlePx: t.handle })) };
+  spots['pepe.carro'].stepped = { try: CARRO_TRY, keep: CARRO_KEEP, maxHandlePx: CARRO_MAX, handle: 'the pixels of part carro whose world x (read back from the baked depth) is left of the bed\'s left end CF.CART x - .95 by more than .05: the two rails and the cross-grip', tries: carro.tries.map(t => ({ x: t.x, coveredPx: t.covered, handlePx: t.handle })), chosen: carro.x };
   // abuela's list is a card of the game's own
   spots['lista'] = { drawn: false, kind: 'card', what: 'abuela\'s list is a card of the game\'s own, not in the picture' };
   // the hanging hand of guineos: its place is read from what the set drew (part 'guineos', tags=1)
@@ -508,6 +506,15 @@ function checks(sheet, probes, SIL, G) {
     };
     const hints = [];
     for (const [story, place] of FROG_STORY) for (const [t, st, box] of things) if (st === story && overlap(frog(place), box)) hints.push('    ' + nearestClear(story, place, t));
+    // (v3b) the two crates of story 44: their boxes do not overlap each other (reported, not moved): its own check below
+    const cA = things.find(t => t[0] === 'cajon_a')[2], cB = things.find(t => t[0] === 'cajon_b')[2], cOv = overlap(cA, cB);
+    let cHint = '';
+    if (cOv) {
+      const wa = S['cajon_a'].world[0], wb = S['cajon_b'].world[0], bx = x => wbox(x, FOOT.cajon[0], FOOT.cajon[1], FOOT.cajon[2]);
+      const find = f => { for (let k = 1; k <= 200; k++) for (const sg of [1, -1]) { const dx = sg * k * .01; if (f(dx)) return dx; } return null; };
+      const dB = find(dx => !overlap(cA, bx(wb + dx))), dA = find(dx => !overlap(bx(wa + dx), cB));
+      cHint = 'nearest passing: cajon_b at x ' + (dB === null ? 'none within 2.0' : r2(wb + dB) + ' (' + (dB > 0 ? '+' : '') + r2(dB) + ')') + ' (now ' + wb + '), or cajon_a at x ' + (dA === null ? 'none within 2.0' : r2(wa + dA) + ' (' + (dA > 0 ? '+' : '') + r2(dA) + ')') + ' (now ' + wa + ')';
+    }
     const mline = FROG_STORY.map(([story, place]) => 'story ' + story + ' ' + place + ': ' + things.filter(t => t[1] === story).map(t => { const h = hits.find(x => x[0] === place && x[1] === t[0]); return t[0] + (h ? ' overlaps by ' + h[3][0] + ' px across, ' + h[3][1] + ' down' : ' clear'); }).join(', ')).join('; ');
     const other = pl.map(p => p + ' against every thing: ' + (things.map(t => { const h = hits.find(x => x[0] === p && x[1] === t[0]); return t[0] + (h ? ' overlaps ' + h[3][0] + ' x ' + h[3][1] : ' clear'); }).join(', '))).join('; ');
     add('frog-places', bad, 'the two places are ' + r2(sep[0][2]) + ' px apart (needs ' + MIN_FROG + ') and in each story the frog\'s box clears the small things on the ledge: ' + mline,
@@ -515,6 +522,8 @@ function checks(sheet, probes, SIL, G) {
     OUTS[OUTS.length - 1].lines.push('       info: the frog\'s boxes ' + pl.map(p => p + ' [' + frog(p) + ']').join(', ') + '; the things\' boxes ' + things.map(t => t[0] + ' [' + t[2] + ']').join(', '));
     OUTS[OUTS.length - 1].lines.push('       info: each place against every thing, whatever the story: ' + other);
     OUTS[OUTS.length - 1].frog = { sep: sep.map(([a, b, v]) => [a, b, r2(v)]), story: FROG_STORY, hits: hits.map(h => [h[0], h[1], h[2], h[3]]) };
+    const wcA = S['cajon_a'].world[0], wcB = S['cajon_b'].world[0];
+    add('cajones-apart', cOv ? [1] : [], 'story 44\'s two crates do not overlap each other: cajon_a (x ' + wcA + ') box [' + cA + '] and cajon_b (x ' + wcB + ') box [' + cB + ']', ['cajon_a (x ' + wcA + ') box [' + cA + '] and cajon_b (x ' + wcB + ') box [' + cB + '] overlap by ' + (cOv ? cOv[0] : 0) + ' px across and ' + (cOv ? cOv[1] : 0) + ' down (the brief\'s x are kept; a crate is .7 wide, so a stand-in ' + FOOT.cajon.join(' x ') + ')', '    ' + cHint]);
   }
 
   // 5. abuela.junto_cabra and cabra.poste at least 14 px apart; the goat's head at cabra.cajon reaches the crate's top
@@ -545,7 +554,7 @@ function checks(sheet, probes, SIL, G) {
     add('cart-clear', bad, 'carro = 1: pepe.carro ' + s.screen + ' is inside the window; the cart (pixels [' + b + ']) is ' + c.gapExact + ' px clear of abuela at abuela.delante (her pixels columns ' + ab[0] + ' to ' + ab[2] + ', rows ' + ab[1] + ' to ' + ab[3] + '; the boxes are ' + gap + ' px apart; needs ' + CART_GAP + ')',
       ['with carro = 1:'].concat(bad.map(x => '  ' + x)));
     const hs = sheet.spots['pepe.carro'].stepped, cut = Math.max(0, x0 - po.box[0]);
-    OUTS[OUTS.length - 1].lines.push('       info, not a check: pepe.carro x stepped from ' + hs.start + ' by ' + hs.step + ': ' + hs.tries.map(t => 'x ' + t.x + ' covers ' + t.coveredPx + ' of the ' + t.handlePx + ' handle pixels').join('; ') + ' -> x ' + sheet.spots['pepe.carro'].world[0]);
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: pepe.carro: tried x ' + hs.try + ' (kept only if he covers at most ' + hs.maxHandlePx + ' handle pixels, else ' + hs.keep + '): ' + hs.tries.map(t => 'x ' + t.x + ' covers ' + t.coveredPx + ' of the ' + t.handlePx + ' handle pixels').join('; ') + ' -> x ' + sheet.spots['pepe.carro'].world[0] + (hs.chosen === hs.keep ? ' (the fallback: he covers more than ' + hs.maxHandlePx + ' at ' + hs.try + ')' : ''));
     OUTS[OUTS.length - 1].lines.push('       info, not a check: his drawn box at pepe.carro is columns ' + po.box[0] + ' to ' + po.box[2] + ', rows ' + po.box[1] + ' to ' + po.box[3] + ' and the window starts at column ' + x0 + ': ' + (cut ? cut + ' of his ' + (po.box[2] - po.box[0] + 1) + ' columns are left of the window' : 'all of him is inside the window'));
     OUTS[OUTS.length - 1].lines.push('       info, not a check: don Pepe at pepe.carro: ' + po.vis + ' of his ' + po.total + ' drawn pixels show (' + Object.entries(po.hidBy).map(([t, n]) => n + ' hidden by ' + t).join(', ') + ')');
   }
