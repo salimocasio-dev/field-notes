@@ -146,7 +146,7 @@ for k in ("verde","amarillo"):
     for e in EST: c["c32_ab_%s_%s"%(k,e)]=AB("El vaso %s está %s."%(COL[k],EST[e]))
 AL={"luis":"v_verde","carmen":"v_amarillo"}; V2=["v_verde","v_amarillo"]
 def vista(a,*pasos): return [act("vista",a=a)]+list(pasos)+[act("vista",a="")]
-s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"nevera","next":None,
+s32={"id":"jugo-de-china","title":"Jugo de china","place":"La cocina","scene":"nevera","next":"que-quieres",
  "goal":"Give everybody juice from the last jug.","stake":{"thing":"jugo","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["china","mantequilla","lleno","vacío"],"back_again":["vaso","jugo","hace calor","hace","pone","pan","toma","mi","quiero","más","por favor","ahora","familia","verde","amarillo","rojo","azul","gracias","no hay"],
  "also_heard":["ponle","le pone"],"names":BASE,"palabras":{"vacio":"vacío"},"clips":c,

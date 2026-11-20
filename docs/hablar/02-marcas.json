@@ -1020,5 +1020,59 @@
     ]
    }
   ]
+ },
+ "que-quieres": {
+  "bien_gracias": [
+   {
+    "palabra": "bien",
+    "formas": [
+     "bien"
+    ]
+   }
+  ],
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   }
+  ]
+ },
+ "buen-provecho": {
+  "c34_cq_lleno": [
+   {
+    "palabra": "lleno",
+    "formas": [
+     "lleno"
+    ]
+   }
+  ],
+  "c34_cq_bp_papa": [
+   {
+    "palabra": "papá",
+    "formas": [
+     "papa"
+    ]
+   }
+  ]
+ },
+ "cafe-con-azucar": {
+  "bien_gracias": [
+   {
+    "palabra": "bien",
+    "formas": [
+     "bien"
+    ]
+   }
+  ],
+  "cq_gracias_abuela": [
+   {
+    "palabra": "gracias",
+    "formas": [
+     "gracias"
+    ]
+   }
+  ]
  }
 }

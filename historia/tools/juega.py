@@ -10,6 +10,9 @@
   extra    more query, for example a=ventana&ave=puerta (fixes draws)
   base-url default http://127.0.0.1:8765/historia/index.html (serve the repo first: python3 -m http.server 8765)
   TL=1     prints when each spoken line starts and ends, and marks stretches with no voice.
+  Speaking turns: the query may carry the test switches of docs/hablar/01-decisiones.md (mic=stub:..., mic=off, abiertas=todas). Whenever the mic is ready the tool taps it, and it
+           touches nothing while a turn is going on. It then prints "turnos:" (each turn: id:kind:result:tries; result ok or fallo, - when he never got to answer), "micdecide=N"
+           (polls with the mic showing inside a decide: must be 0), "turnstart:" (the clips just before each turn started) and "played:" (every clip played, in order).
   WRAP=1   screenshots include the words on screen (bubbles and caption), not only the picture.
 
 Needs: pip install playwright, and a Chrome at /usr/bin/google-chrome.
@@ -22,7 +25,8 @@ URL=f"{BASE}?cuento={CUENTO}&fast={FASTV}"+("&"+EXTRA if EXTRA else "")
 STATE="""()=>{const W=Story.W,p=Story.pending,V=Story.V;return {live:p?p.live.join('|'):null,kind:p?p.kind:null,pick:p?p.pick:null,sign:p?p.sign:null,asked:p?p.asked:0,lock:p?p.lock:false,
  V:JSON.stringify(V),lost:W.lost,door:W.door,win:W.win,lamp:W.lamp,ab:W.ab?W.ab.en+'-'+W.ab.pose:null,vis:W.cq.vis,cq:W.cq.x+','+W.cq.y,bub:W.cq.bub,rain:W.rain,tab:W.tab,heart:W.heart,
  plato:W.plato,ave:W.ave?W.ave.mode+'-'+(W.ave.st||''):null,resp:W.resp?W.resp.join('|'):null,extra:Story.scene?Story.scene():'',
- running:Story.running,dots:document.querySelectorAll('.dot.on').length,cap:Story.cap,bubt:Story.bub}}"""
+ running:Story.running,dots:document.querySelectorAll('.dot.on').length,cap:Story.cap,bubt:Story.bub,hab:Story.hab}}"""
+SPY="""()=>{window.__c=[];const _l=letras;letras=function(id){window.__c.push(id);return _l.apply(this,arguments);};}"""   # letras(id) runs whenever a line is said, with or without recordings
 class Log(list):
     def append(self,x): super().append(x); print(x,flush=True)
 async def main():
@@ -40,17 +44,26 @@ async def main():
             n+=1; await pg.wait_for_timeout(320); await shot.screenshot(path=f"{OUT}/{n:02d}_{tag}.png")
         if os.environ.get("TL"):
             await pg.evaluate("""()=>{window.__t=[];const _p=playClip;playClip=function(id){const e={id,t0:performance.now()};__t.push(e);const pr=_p(id);pr.then(()=>{e.t1=performance.now();});return pr;};}""")
-        t0=time.time(); await pg.click("#go"); last=None; seen=None; k=0; log=Log(); tapped=None
+        await pg.evaluate(SPY)
+        t0=time.time(); await pg.click("#go"); last=None; seen=None; k=0; log=Log(); tapped=None; micw=0; micdec=0; starts=[]; prev=""; nlog=0
         for i in range(9000):
             await pg.wait_for_timeout(40)
             s=await pg.evaluate(STATE)
-            sig=json.dumps({x:s[x] for x in ("live","sign","lost","door","win","lamp","ab","vis","rain","tab","heart","dots","bub","plato","ave","resp","cap","bubt","extra")})
+            s["mic"]=s["hab"]["est"]
+            if s["mic"]!=prev and not prev and len(s["hab"]["log"])>nlog: nlog=len(s["hab"]["log"]); starts.append(s["hab"]["log"][-1]["id"]+" after "+",".join((await pg.evaluate("__c.slice(-3)"))))   # a turn begins: the clips just before it
+            prev=s["mic"]
+            if s["mic"] and s["kind"]=="decide": micdec+=1
+            sig=json.dumps({x:s[x] for x in ("live","sign","lost","door","win","lamp","ab","vis","rain","tab","heart","dots","bub","plato","ave","resp","cap","bubt","extra","mic")})
             if sig!=last:
-                last=sig; log.append(f"{time.time()-t0:5.1f}s d{s['dots']} CAP=[{s['cap']}] BUB=[{s['bubt']}] live={s['live']} sign={s['sign']} lost={s['lost']} door={s['door']} win={s['win']} ab={s['ab']} frog={'in' if not s['vis'] else s['cq']} cqbub={s['bub']} plato={s['plato']} ave={s['ave']} resp={s['resp']} {s['extra']}")
+                last=sig; log.append(f"{time.time()-t0:5.1f}s d{s['dots']} CAP=[{s['cap']}] BUB=[{s['bubt']}] live={s['live']} sign={s['sign']} lost={s['lost']} door={s['door']} win={s['win']} ab={s['ab']} frog={'in' if not s['vis'] else s['cq']} cqbub={s['bub']} plato={s['plato']} ave={s['ave']} resp={s['resp']} mic={s['mic']} {s['extra']}")
                 key=(s["sign"],s["lost"],s["door"],s["win"],s["ab"],s["plato"],s["ave"],s["resp"],s["tab"],s["heart"],s["rain"],s["lamp"],s["extra"],s["bubt"] if os.environ.get("WRAP") else "")
                 if key!=seen: seen=key; await snap(f"d{s['dots']}_L{s['lost']}")
             if not s["live"]: tapped=None
-            if s["live"] and (s["asked"]) and (s["live"],s["pick"],s["sign"],s["cap"])!=tapped:
+            if s["hab"]["mic"]=="ready":   # a speaking turn: the mic is tapped when it is ready (its answers come from ?mic=stub:...)
+                micw+=1
+                if micw>=4: micw=0; await pg.click("#mic")
+            else: micw=0
+            if s["live"] and (s["asked"]) and not s["mic"] and (s["live"],s["pick"],s["sign"],s["cap"])!=tapped:
                 live=s["live"].split("|")
                 if len(live)==1: tgt=live[0]
                 else:
@@ -65,6 +78,9 @@ async def main():
             if not s["running"] and i>40: break
         await snap("end")
         print("took %.1fs at fast=%s"%(time.time()-t0,FASTV)); print("log:",await pg.evaluate("JSON.stringify(Story.log)"))
+        hl=await pg.evaluate("Story.hab.log"); print("turnos:"," ".join("%s:%s:%s:%s"%(x["id"],x["tipo"],x["est"] or "-",x["intentos"]) for x in hl)); print("micdecide=%d"%micdec)
+        for x in starts: print("turnstart:",x)
+        print("played:"," ".join(await pg.evaluate("__c")))
         if os.environ.get("TL"):
             tl=await pg.evaluate("__t"); base=tl[0]["t0"]; prev=None
             for e in tl:
