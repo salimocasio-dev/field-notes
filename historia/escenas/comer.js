@@ -25,7 +25,7 @@ const QUIEN={luis:FAM.hermano,carmen:FAM.hermana,abuelo:Object.assign({},FAM.abu
 const PLATO=["#2A5C9C","#4A86C8","#8CB8E8"];   // the plates are blue: nothing white is lost on them
 const TAN=["#A8682C","#C8853C","#E2A85A"],CHOC=["#2A1408","#5A2E14","#8A5A34"],MANT="#FFE070",ARROZ=["#C88A10","#F2C028","#FFE870"];
 const CERA=["#7A8AB8","#C4D0F0","#FFFFFF"];   // the white-blue china of the bowls
-const LIQ={negro:"#0C0806",marron:"#3A1A0A",palido:"#EBD3AC",leche:"#FFFFFF",vacia:"#4A84E0",azu:"#0C0806"};   // seen from above: black coffee near black, a deep chocolate for much coffee, a very pale milky coffee for a little, pure white milk, and the empty cup shows its own mid blue inside   // what is in a cup, seen from above
+const LIQ={negro:"#0C0806",marron:"#3A1A0A",claro:"#B8804A",palido:"#EBD3AC",leche:"#FFFFFF",vacia:"#4A84E0",azu:"#0C0806"};   // seen from above: black coffee near black, a deep chocolate for much coffee, a light brown (milk in it) for the pair, a very pale milky coffee for a little, pure white milk, and the empty cup shows its own mid blue inside   // what is in a cup, seen from above
 
 /* ---------- the picture ---------- */
 function fondo(){const b=new Buf(SW,SH),Wd=RP.wood,M=MOSTR,E=ESTUFA;
@@ -100,14 +100,29 @@ function mkTaza(v,sp){const b=new Buf(17,17);v=v||"";const monton=/\+$/.test(v);
   if(v==="vacia"){b.ell(6.6,7,4.9,2,[LIQ.vacia]);b.px(4,6,"#9CC0F4");b.px(5,6,"#9CC0F4");}   // empty: the cup's own mid blue inside, no liquid
   else if(mitad){b.ell(6.6,6.8,4.9,2.1,[LIQ.vacia]);b.ell(6.6,7.8,3.6,1.3,[L]);}
   else if(v==="leche")b.ell(6.6,7.1,4.8,1.9,["#FFFFFF"]);
-  else{b.ell(6.6,7.1,4.8,1.9,[L]);if(v==="negro"||v==="azu")b.px(4,6,"#5A3A28");if(v==="marron")b.px(4,6,"#A87848");if(v==="palido")b.px(4,6,"#F0CC88");}
+  else{b.ell(6.6,7.1,4.8,1.9,[L]);if(v==="negro"||v==="azu")b.px(4,6,"#5A3A28");if(v==="marron")b.px(4,6,"#A87848");if(v==="claro")b.px(4,6,"#E4B884");if(v==="palido")b.px(4,6,"#F0CC88");}
   if(v==="azu"){b.ell(6.6,6.4,3.8,2.2,["#C8BEA0","#E6DDC2","#F6F0DC"]);b.ell(6.6,4.8,2.2,1.5,["#E6DDC2","#F6F0DC"]);[[4,6],[6,5],[8,6],[5,7],[7,4],[9,7]].forEach(q=>b.px(q[0],q[1],hs(q[0],q[1])%2?"#9A8A66":"#FFFBEA"));sp=1;}   // too much sugar: an off-white heap of grains on the coffee, and a spoon
   if(monton){b.ell(6.6,6,3,1.8,["#C8CEE0","#FFFFFF"]);b.px(6,4,"#FFFFFF");b.px(8,5,"#FFFFFF");}   // a small white heap of sugar on the coffee, for a moment before it is stirred in
   if(sp){b.rect(7,0,2,8,"#E0E0EC");b.rect(8,0,1,8,"#8A8A9A");b.rect(7,0,1,1,"#FFFFFF");}
   return b.outline().done();}
+// the milk jug, drawn from its shape (a round belly, a neck with a rim, a beak, a ring handle) turned by ang (clockwise): each pixel asks which part of the jug it is on, so a turned jug is as clean as a straight one
+function mkLechera(ang){const S=16,b=new Buf(S,S),cx=S/2,cy=S/2+.4,cs=Math.cos(ang),sn=Math.sin(ang),W=["#8CA0D4","#BCCCEE","#E8EFFC","#FFFFFF"];
+  const tri=(u,v)=>{const A=[1.8,-5.3],B=[5.5,-4.3],C=[1.9,-2.5],sg=(p,q,r)=>(p[0]-r[0])*(q[1]-r[1])-(q[0]-r[0])*(p[1]-r[1]),P=[u,v],d1=sg(P,A,B),d2=sg(P,B,C),d3=sg(P,C,A);return !((d1<0||d2<0||d3<0)&&(d1>0||d2>0||d3>0));};
+  for(let y=0;y<S;y++)for(let x=0;x<S;x++){const dx=x+.5-cx,dy=y+.5-cy,u=dx*cs+dy*sn,v=-dx*sn+dy*cs;
+    const bel=(u/4.3)**2+((v-1.3)/3.5)**2<=1,neck=u>=-2&&u<=2&&v>=-4.6&&v<=-1.3,rim=u>=-2.7&&u<=2.7&&v>=-5.2&&v<=-3.9,beak=tri(u,v),hd=((u+4.7)/2.3)**2+((v-.1)/3)**2,ring=hd<=1&&hd>=.3&&u<-3;
+    if(bel||neck||rim||beak){const t=-u*.11-v*.09+.5+(hs(x,y)%3-1)*.02;b.px(x,y,t>.72?W[3]:t>.42?W[2]:t>.14?W[1]:W[0]);}
+    else if(ring)b.px(x,y,hd>.7||u<-5.4?"#7C90C8":"#AEC0E8");}
+  const c=b.outline().done();c.pico=[cx+5.4*cs-(-4.4)*sn,cy+5.4*sn+(-4.4)*cs];return c;}
 const COSA={
   // a blue plate, 17 x 10 (15 wide: a little wider than a roll, narrower than a grown-up's shoulders); v: what lies on it. "r" rice, "r2" less, "r1" a little, "o" a mound, "rm" rice and a mound, "h" a mound mixed into the rice (a heap), "mi" crumbs, "p1".."p3" mounds
-  plato(v){const b=new Buf(17,10);b.ell(8.5,5.4,7.4,3.1,PLATO);b.ell(8.5,5,5.2,2,["#6AA0DC","#A8CCF0"]);v=v||"";
+  // the same plate with a very small heap of rice ("poco": 5 px wide) or a mountain of it ("mucho": wider than the middle of the plate, 9 px high, a few grains fallen beside it); 17 x 19, the plate in the bottom 10 rows
+  platoA(v){const b=new Buf(17,19);b.ell(8.5,14.4,7.4,3,PLATO);b.ell(8.5,14,5.2,2,["#6AA0DC","#A8CCF0"]);
+    if(v==="poco"){b.ell(8.5,13.3,2.6,1.5,ARROZ);b.px(7,12,"#FFF4B0");b.px(9,13,"#B87A10");}
+    else{b.ell(8.5,13.2,6.3,2.4,["#C88A10","#F2C028","#FFE060"]);b.ell(8.5,10.6,5.2,4.4,ARROZ);b.ell(8.5,7.8,3.2,3.2,ARROZ);
+      [[7,5],[9,6],[6,8],[10,9],[8,11],[5,12],[12,12],[7,13],[11,14],[8,9],[9,12],[4,10],[12,10]].forEach(q=>b.px(q[0],q[1],hs(q[0],q[1])%2?"#FFF4B0":"#B87A10"));
+      [[2,15],[4,16],[13,16],[14,15],[11,17]].forEach(q=>b.px(q[0],q[1],"#F2C028"));b.px(14,15,"#FFF4B0");}   // grains on the rim, beside the heap
+    return b.outline().done();},
+  plato(v){if(v==="poco"||v==="mucho")return COSA.platoA(v);const b=new Buf(17,10);b.ell(8.5,5.4,7.4,3.1,PLATO);b.ell(8.5,5,5.2,2,["#6AA0DC","#A8CCF0"]);v=v||"";
     if(v==="r"||v==="rm"||v==="h"){b.ell(8.5,4.8,4.6,1.8,["#C88A10","#F2C028","#FFE060"]);[[6,4],[9,5],[11,4],[7,6]].forEach(q=>b.px(q[0],q[1],hs(q[0],q[1])%2?"#FFF4B0":"#B87A10"));}
     if(v==="r2"){b.ell(8.5,4.9,3.4,1.4,["#C88A10","#F2C028","#FFE060"]);[[7,5],[10,4]].forEach(q=>b.px(q[0],q[1],hs(q[0],q[1])%2?"#FFF4B0":"#B87A10"));}
     if(v==="r1"){b.ell(8.5,4.9,2,.9,["#C88A10","#F2C028","#FFE060"]);b.px(8,4,"#FFF4B0");}
@@ -194,12 +209,20 @@ const COSA={
   taza(v){return mkTaza(v,0);},
   // a cup with a spoon standing in it (sugar was stirred in)
   tazacu(v){return mkTaza(v,1);},
-  // the sugar bowl, 22 x 20: a deep green bowl, a white heap of sugar over its rim, one spoon standing in it (v "0": the frog has taken the spoon)
-  azucarera(v){const b=new Buf(22,20),n=Math.max(0,Math.min(3,+(v==null?3:v)));
-    b.ell(11,15,9.4,4,["#1E5A3A","#2E8A5A","#4CBC80"]);b.rect(2,11,18,5,"#2E8A5A");b.rect(2,11,3,5,"#4CBC80");b.rect(16,11,4,5,"#1E5A3A");b.ell(11,16,8.6,3,["#1E5A3A","#2E8A5A"]);
-    b.ell(11,10.6,9.4,2.8,["#4CBC80","#8CE0A8"]);
-    b.ell(11,8,7.8,4.6,["#C8BEA0","#E6DDC2","#F6F0DC"]);b.ell(11,5.8,4.8,3,["#E6DDC2","#F6F0DC"]);[[8,7],[12,6],[14,8],[10,9],[13,10],[9,5],[13,4]].forEach(q=>b.px(q[0],q[1],hs(q[0],q[1])%2?"#9A8A66":"#FFFBEA"));
-    if(n>0){b.rect(15,0,1,9,"#8A8A9A");b.rect(16,0,1,9,"#C8C8D4");b.ell(15.8,1,1.8,1.4,["#C8C8D4","#F8F8FF"]);}
+  // the sugar bowl, 22 x 20: white china with a blue band and two small ear handles, a heap of white sugar over its rim with four cubes on top and two light-blue glints, one teaspoon standing in it (v "0": the spoon is gone). v "L3" / "L0": the same on the table, 38 x 20 (the bowl in the middle), with its lid lying beside it on the right
+  azucarera(v){const s=String(v==null?3:v),lid=s[0]==="L",n=Math.max(0,Math.min(3,+(lid?s.slice(1):s)||0)),W=lid?38:22,ox=(W-22)>>1,b=new Buf(W,20);
+    const Rc=(x,y,w,h,c)=>b.rect(x+ox,y,w,h,c),Pp=(x,y,c)=>b.px(x+ox,y,c),row=(y,x0,x1,f)=>{for(let x=x0;x<=x1;x++)Pp(x,y,f(x,y));};
+    const china=(x,y)=>x<=5?"#F4F8FF":x<=8?"#DCE6F8":x<=12?"#C0CEEC":x<=14?"#9CAEDA":"#7A8EC4";   // cool white china, light from the left
+    [[10,4,17],[11,4,17],[12,4,17],[13,4,17],[14,4,17],[15,5,16],[16,6,15],[17,7,14]].forEach(r=>row(r[0],r[1],r[2],china));   // the body
+    row(10,4,17,x=>x<=8?"#FFFFFF":x<=14?"#E4ECFA":"#B4C4E8");row(11,4,17,x=>"#8CA0D0");   // the lip, and the line under it
+    row(13,4,17,x=>"#6AA8F8");row(14,4,17,x=>x>=15?"#1E4FA8":"#2E6CD0");   // the blue band
+    row(15,5,16,x=>x<=6?"#DCE6F8":x<=12?"#9CAEDA":"#7A8EC4");row(16,6,15,x=>x<=8?"#B4C4E8":x<=12?"#7A8EC4":"#6478B0");row(17,7,14,x=>x<=9?"#8CA0D0":"#6478B0");
+    [[1,1],[18,0]].forEach(h=>{const x=h[0],L=h[1];Rc(x,12,3,1,L?"#F4F8FF":"#C0CEEC");Rc(x,16,3,1,L?"#9CAEDA":"#6478B0");Rc(L?x:x+2,13,1,3,L?"#DCE6F8":"#7A8EC4");});   // two ear handles, small rings hanging from the sides
+    [[4,9,12],[5,8,13],[6,7,14],[7,5,16],[8,4,17],[9,4,17]].forEach(r=>row(r[0],r[1],r[2],(x,y)=>{const t=(hs(x,y)%7);return t===0?"#B4C4E8":t===1?"#E4ECFA":"#FFFFFF";}));   // the heap of white sugar: bright, with grains
+    [[5,6],[9,3],[13,6],[9,6]].forEach(q=>{Rc(q[0],q[1],3,3,"#FFFFFF");Rc(q[0],q[1]+2,3,1,"#7A8EC4");Rc(q[0]+2,q[1],1,2,"#9CAEDA");Rc(q[0],q[1],1,1,"#FFFFFF");});   // four small square cubes
+    [[7,4],[12,9]].forEach(q=>{Pp(q[0],q[1],"#6CC4FF");Pp(q[0]+1,q[1],"#A8DCFF");});   // two light-blue glints
+    if(n>0){Rc(15,0,1,9,"#8A8A9A");Rc(16,0,1,9,"#C8C8D4");b.ell(15.8+ox,1,1.8,1.4,["#C8C8D4","#F8F8FF"]);}   // the teaspoon
+    if(lid){b.ell(33,17.4,4.7,1.7,["#6478B0","#9CAEDA"]);b.ell(33,15.6,4.2,2.7,["#8CA0D4","#DCE6F8","#FFFFFF"]);for(let x=28;x<38;x++)if(b.has(x,17))b.px(x,17,"#2E6CD0");b.rect(32,12,2,3,"#9CAEDA");b.rect(32,12,2,2,"#2E6CD0");b.px(32,12,"#6AA8F8");}   // the lid, face up: a low dome with a blue band round its rim and a blue knob
     return b.outline().done();},
   // the big pot of coffee (enamel, blue, a spout and a handle), 18 x 21; pico: the lip
   cafetera(){const b=new Buf(18,21);b.rect(4,7,10,12,"#2A5C9C");b.rect(4,7,2,12,"#6AA0DC");b.rect(4,16,10,3,"#1A3C6C");b.ell(9,6.6,5.4,2,["#1A3C6C","#2A5C9C"]);b.rect(7,2,3,3,"#141418");b.rect(2,7,2,2,"#2A5C9C");b.rect(1,6,2,2,"#2A5C9C");b.rect(14,8,2,9,"#141418");b.rect(13,8,3,2,"#141418");b.rect(13,15,3,2,"#141418");b.px(7,11,"#FFFFFF");b.px(10,14,"#FFFFFF");const c=b.outline().done();c.pico=[1,7];return c;},
@@ -226,7 +249,11 @@ const COSA={
   // a teaspoon lying on the table, 12 x 4: a handle and a small bowl
   cucharilla(){const b=new Buf(12,4);b.rect(1,1,7,1,"#C8C8D4");b.rect(1,2,6,1,"#8A8A9A");b.ell(9,1.8,1.9,1.2,["#8A8A9A","#F8F8FF"]);return b.outline().done();},
   // a slice of cake: a wedge with frosting on top and a layer of jam in its side. On a small plate (22 x 16); a bite of it on a fork (14 x 14); a whole slice on a fork (22 x 16)
-  bizcocho(){const b=new Buf(22,16);b.ell(11,12.6,10.4,3.2,PLATO);b.ell(11,12,7.4,2,["#6AA0DC","#A8CCF0"]);tajada(b,3,1);return b.outline().done();},
+  bizcocho(v){const b=new Buf(22,16);b.ell(11,12.6,10.4,3.2,PLATO);b.ell(11,12,7.4,2,["#6AA0DC","#A8CCF0"]);tajada(b,3,1);
+    const muerde=(cx,cy,r)=>{for(let y=0;y<b.h;y++)for(let x=0;x<b.w;x++)if(b.has(x,y)&&b.d[(y*b.w+x)*4]>180&&Math.hypot(x+.5-cx,y+.5-cy)<r+1.5)b.px(x,y,"#F8E4B0");borra(b,cx,cy,r);};   // a bite: a round piece gone, the cut shows pale sponge along its edge
+    if(v==="b2"){muerde(7,8.2,5.4);[[9,13],[11,13],[13,13]].forEach(q=>b.px(q[0],q[1],"#E8D8C0"));}   // a big bite gone from the left of the slice, crumbs on the plate
+    if(v==="b1")muerde(8.6,8.8,2.3);   // one small bite from its left side
+    return b.outline().done();},
   bizcochoT(){const b=new Buf(16,15);tajada(b,0,2,.55);b.rect(8,9,7,1,"#C8C8D4");b.rect(10,10,1,5,"#C8C8D4");b.rect(11,10,1,5,"#8A8A9A");b.rect(3,8,1,3,"#C8C8D4");b.rect(6,8,1,3,"#C8C8D4");return b.outline().done();},
   bizcochoL(){const b=new Buf(24,18);tajada(b,0,0,1);b.rect(15,12,8,1,"#C8C8D4");b.rect(17,13,1,5,"#C8C8D4");b.rect(18,13,1,5,"#8A8A9A");b.rect(4,11,1,4,"#C8C8D4");b.rect(8,11,1,4,"#C8C8D4");b.rect(12,11,1,4,"#C8C8D4");return b.outline().done();},
   entero(){const b=new Buf(26,16);b.ell(13,10,11.6,4.6,["#C88A30","#E8B050","#F8DC90"]);b.ell(13,6.8,11.6,4.2,["#F2E4D0","#FFF4E0","#FFFFFF"]);[7,13,19].forEach(x=>b.px(x,5,"#D0302A"));return b.outline().done();},
@@ -239,14 +266,12 @@ const COSA={
   sombra(){const b=new Buf(22,6);b.ell(11,3,10,2.4,["#E69C94"]);return b.done();},   // the shadow of a cup or a plate on the cloth, so that it sits and does not float
   granos(){const b=new Buf(8,5);[[1,1],[3,3],[5,0],[6,3]].forEach(q=>b.px(q[0],q[1],"#F6F0DC"));return b.outline().done();},
   grano(){const b=new Buf(2,2);b.rect(0,0,2,2,"#FFFFFF");return b.outline().done();},   // a grain falling from the spoon: two white pixels square
+  granob(){const b=new Buf(4,4);b.rect(1,1,2,2,"#FFFFFF");return b.outline().done();},   // the same grain with its dark edge, so that it shows on the white of the cloth (the pair)
   jarra(v){const b=new Buf(23,29),n=v==null?4:+v;b.rect(3,3,13,25,"#DCF2FA");b.rect(3,3,2,25,"#F2FBFF");if(n>0)b.rect(4,27-n*5,11,n*5,"#F08818");for(let i=1;i<=4;i++)b.rect(11,27-i*5,5,1,"#4A5A6A");b.rect(16,7,3,1,"#B8D8E8");b.rect(19,8,1,11,"#B8D8E8");b.rect(16,19,3,1,"#B8D8E8");b.rect(1,3,2,2,"#DCF2FA");return b.outline().done();},
   jugo(){const b=new Buf(23,29);b.rect(3,3,13,25,"#DCF2FA");b.rect(3,3,2,25,"#F2FBFF");b.rect(4,27-20,11,20,"#F08818");b.rect(4,7,11,2,"#FFB040");b.rect(16,7,3,1,"#B8D8E8");b.rect(19,8,1,11,"#B8D8E8");b.rect(16,19,3,1,"#B8D8E8");b.rect(1,3,2,2,"#DCF2FA");return b.outline().done();},
   jugopoco(){const b=new Buf(23,29);b.rect(3,3,13,25,"#DCF2FA");b.rect(3,3,2,25,"#F2FBFF");b.rect(4,25,11,2,"#F08818");b.rect(4,24,11,1,"#FFB040");b.rect(16,7,3,1,"#B8D8E8");b.rect(19,8,1,11,"#B8D8E8");b.rect(16,19,3,1,"#B8D8E8");b.rect(1,3,2,2,"#DCF2FA");return b.outline().done();},
-  // the milk jug for the pair: a plain white pitcher with a pouring lip on the left and a ring handle on the right, 24 x 26; pico: the lip
-  jarraleche(){const b=new Buf(24,26);b.rect(5,8,13,16,"#F8FAFE");b.rect(4,13,15,11,"#F8FAFE");b.rect(5,8,3,16,"#FFFFFF");b.rect(15,10,3,14,"#D4DCEC");b.rect(4,20,15,4,"#D4DCEC");
-    b.rect(6,5,11,4,"#F8FAFE");b.rect(1,4,6,3,"#F8FAFE");b.rect(6,5,11,1,"#FFFFFF");   // the rim and the lip
-    b.rect(19,9,4,2,"#D4DCEC");b.rect(21,10,2,10,"#D4DCEC");b.rect(19,19,4,2,"#D4DCEC");   // the handle: a ring (its hole stays open)
-    const c=b.outline().done();c.pico=[0,5];return c;},
+  // the milk jug for the pair: a small white pitcher, about 12 x 11, a round belly, a pouring spout and a ring handle; v "T": tipped (26 degrees, to pour to the right: the handle up on the left, the spout down on the right); pico: the lip of the spout
+  lechera(v){return mkLechera(v==="T"?.45:0);},
   // a glass of orange juice, 9 x 13
   vasojugo(){const b=new Buf(9,13);b.rect(1,1,7,11,"#DCF2FA");b.rect(1,1,2,11,"#F2FBFF");b.rect(2,4,5,8,"#F08818");b.rect(2,3,5,1,"#FFB040");return b.outline().done();},
   // a big hand, laid flat on the belly (v: the colour of the skin)
@@ -277,7 +302,9 @@ function ovalo(c,cx,cy,rx,ry,col){for(let j=-ry;j<=ry;j++){const hw=Math.round(r
 // steam: two soft wisps that rise, sway and fade
 function vapor(c,x,y,n,h){const t=(F>>2)%12,H=Math.min(h||9,9);c.save();for(let i=0;i<(n||2);i++){const dx=i*7-3;for(let k=0;k<H;k++){const sw=Math.round(Math.sin((k+t*1.2+i*4)/2.4)*2.4);c.globalAlpha=Math.max(.12,.85-k*14/H*.065);fr(c,x+dx+sw-1,y-k,3,1,"#B8C4D4");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");}}c.restore();}
 // a stream falling from y0 to y1: 4 pixels wide, solid, it leaves the lip sideways (dir: -1 to the left, 1 to the right) and bends down, and splashes
-function chorro(c,x,y0,y1,col,dir){if(y1<=y0)return;const dd=dir||-1,n=y1-y0,wd=/^#F[BF]F[BF]F[4F]$/i.test(col)?6:4,h2=wd>>1;   // milk is a thick white stream (6 px), coffee a thinner one
+function chorro(c,x,y0,y1,col,dir,fino){if(y1<=y0)return;
+  if(fino){const h=y1-y0;fr(c,x-2,y0,1,h,OUT);fr(c,x+1,y0,1,h,OUT);fr(c,x-1,y0,2,h,col);fr(c,x-2,y1,4,1,col);return;}   // fino: a thin straight stream, 2 px wide (milk into a cup), with a small ripple where it lands
+  const dd=dir||-1,n=y1-y0,wd=/^#F[BF]F[BF]F[4F]$/i.test(col)?6:4,h2=wd>>1;   // milk is a thick white stream (6 px), coffee a thinner one
   for(let j=0;j<n;j++){const t=j/Math.max(1,n),off=dd*Math.round(3*(1-Math.pow(1-t,2))*Math.min(1,n/6)),xx=x+off;fr(c,xx-h2-1,y0+j,1,1,OUT);fr(c,xx+h2,y0+j,1,1,OUT);fr(c,xx-h2,y0+j,wd,1,col);}
   const t=F%4,xb=x+dd*3;fr(c,xb-4,y1-1,9,2,OUT);fr(c,xb-3,y1-1,7,1,col);if(t<2){fr(c,xb-5,y1-3,2,2,col);fr(c,xb+4,y1-4,1,2,col);}else{fr(c,xb+4,y1-3,2,2,col);fr(c,xb-5,y1-4,1,2,col);}}
 // a thick line (an arm, a handle) with a dark edge
@@ -293,8 +320,8 @@ function cucharon(c,x0,y0,x1,y1,load,o){o=o||{};const mad=o.plata?["#C8C8D4","#8
   if(load==="monton")heap(2,1,"#F2C028","#FFF4B0");
   else if(load==="monton1"){heap(1,1,"#F2C028","#FFF4B0");}
   else if(load==="azu"){heap(rx,1,"#FFFFFF","#B4BEE0");fr(c,cx+1,cy-1,1,1,"#C8D0E8");}   // sugar: off-white grains in a small heap
-  else if(load==="arr"){ovalo(c,cx,cy-2,4,3,OUT);ovalo(c,cx,cy-2,3,2,"#DCDCE8");ovalo(c,cx,cy-3,2,1,"#F0F0F6");fr(c,cx-1,cy-3,1,1,"#FFFFFF");ovalo(c,cx,cy+1,rx,ry,mad[1]);}   // one small scoop of white rice: a plain white mound in the bowl, about a third of the big one
-  else if(load==="ARR"){ovalo(c,cx,cy-4,6,5,OUT);ovalo(c,cx,cy-4,5,4,"#DCDCE8");ovalo(c,cx,cy-5,4,3,"#F0F0F6");ovalo(c,cx,cy-6,2,2,"#FFFFFF");[[-3,-4],[2,-5],[3,-2],[0,-7]].forEach(g=>fr(c,cx+g[0],cy+g[1],1,1,"#B8B8CC"));ovalo(c,cx,cy,rx,ry,mad[1]);}   // one huge heaped scoop (the pair): a big heap over the small bowl
+  else if(load==="azuM"){ovalo(c,cx,cy-3,4,3,OUT);ovalo(c,cx,cy-3,3,2,"#FFFFFF");ovalo(c,cx,cy-4,2,1,"#FFFFFF");fr(c,cx-2,cy-2,1,1,"#B4C0E0");fr(c,cx+1,cy-3,1,1,"#B4C0E0");fr(c,cx+2,cy-2,1,1,"#B4C0E0");fr(c,cx-1,cy-5,1,1,"#9CD8FF");}   // a teaspoon heaped with white sugar: a white mound over the bowl, a few grains showing, one light-blue glint
+  else if(load==="ARR"){ovalo(c,cx,cy-3,5,3,OUT);ovalo(c,cx,cy-3,4,2,ARROZ[1]);ovalo(c,cx,cy-4,3,1,ARROZ[2]);[[-3,-3],[2,-2],[3,-3],[-1,-4],[0,-2],[-2,-5]].forEach(g=>fr(c,cx+g[0],cy+g[1],1,1,hs(g[0]+9,g[1]+9)%2?"#FFF4B0":"#B87A10"));}   // one huge heaped spoonful of yellow rice
   else if(load==="c"){ovalo(c,cx,cy-1,rx,1,CHOC[1]);fr(c,cx-1,cy-2,1,1,"#C89A74");}
   else if(load==="m"){ovalo(c,cx,cy-1,rx,1,MANT);fr(c,cx-1,cy-2,1,1,"#FFFBE0");}}
 
@@ -332,12 +359,26 @@ function mkPersonaN(w,open,sent,pie){const t=w.nino?7:11,l=sent?4:(w.nino?7:11),
   if(w.peinado==="calvo"){b.ell(X-6,9.5,2,3.4,P);b.ell(X+6,9.5,2,3.4,P);}
   else if(w.peinado==="trenzas"){b.ell(X,5.6,6.4,3,P);b.cap(X-7,9,X-8,19,1.6,P);b.cap(X+7,9,X+8,19,1.6,P);b.rect(X-10,19,4,3,w.lazo||"#FFE070");b.rect(X+6,19,4,3,w.lazo||"#FFE070");b.px(X,3,P[2]);}
   else{b.ell(X,5.4,6.4,w.peinado==="largo"?3.2:2.8,P);if(w.peinado==="corto"){b.rect(X-6,6,1,4,P[1]);b.rect(X+5,6,1,4,P[0]);}}
-  if(w.dormido){b.rect(X-4,11,3,1,"#20140A");b.rect(X+1,11,3,1,"#20140A");}else{b.px(X-3,11,"#20140A");b.px(X+2,11,"#20140A");}b.px(X-4,13,"#E08A70");b.px(X+3,13,"#E08A70");
-  if(w.gafas===1){b.frame(X-5,9,4,4,dark);b.frame(X,9,4,4,dark);b.px(X-1,10,dark);if(!w.dormido){b.px(X-3,11,"#20140A");b.px(X+2,11,"#20140A");}}
+  const XF=X+(w.giro||0);   // the features of the face; w.giro: his head turned a little (the face slides to one side)
+  if(w.dormido){b.rect(XF-4,11,3,1,"#20140A");b.rect(XF+1,11,3,1,"#20140A");}else{b.px(XF-3,11,"#20140A");b.px(XF+2,11,"#20140A");}b.px(XF-4,13,"#E08A70");b.px(XF+3,13,"#E08A70");
+  if(w.gafas===1){b.frame(XF-5,9,4,4,dark);b.frame(XF,9,4,4,dark);b.px(XF-1,10,dark);if(!w.dormido){b.px(XF-3,11,"#20140A");b.px(XF+2,11,"#20140A");}}
   else if(w.gafas==="arriba"){b.frame(X-5,3,4,3,dark);b.frame(X,3,4,3,dark);b.px(X-1,4,dark);b.rect(X-4,11,3,1,"#20140A");b.rect(X+1,11,3,1,"#20140A");}
-  if(w.bigote){b.rect(X-4,14,8,2,P[2]);b.rect(X-4,15,2,1,P[1]);b.rect(X+2,15,2,1,P[1]);if(open)b.rect(X-1,16,3,1,"#7A1C1C");}
+  if(w.bigote){b.rect(XF-4,14,8,2,P[2]);b.rect(XF-4,15,2,1,P[1]);b.rect(XF+2,15,2,1,P[1]);if(open)b.rect(XF-1,16,3,1,"#7A1C1C");}
   else if(open)b.rect(X-1,15,3,2,"#7A1C1C");else{b.rect(X-2,15,4,1,"#7A2A1A");b.px(X-3,14,"#7A2A1A");b.px(X+2,14,"#7A2A1A");}
+  if(w.cara==="feliz"||w.cara==="asco")caraAbuelo(b,XF,w.cara);
   return b.outline().done();}
+// the two faces of abuelo with the cake (drawn over his plain face; the glasses stay on): feliz: eyes shut with joy (an arch in each lens), flushed cheeks, a wide open laughing mouth with teeth and a tongue; asco: brows slanting down, eyes squeezed, a mouth turned down and his tongue out. x: the middle of his face
+function caraAbuelo(b,x,cara){const K="#20140A",cr="#EEDCB0";
+  [x-4,x+1].forEach(lx=>b.rect(lx,10,2,2,cr));   // the lenses are clear, the eyes are drawn on them
+  if(cara==="feliz"){
+    [x-4,x+1].forEach(lx=>{b.px(lx,10,K);b.px(lx+1,10,K);});
+    [x-4,x-3,x+2,x+3].forEach(px=>b.px(px,13,"#EE7E6A"));
+    b.rect(x-4,16,8,1,"#7A1C1C");b.rect(x-3,17,6,1,"#FFFFFF");b.px(x-4,17,"#7A1C1C");b.px(x+3,17,"#7A1C1C");b.rect(x-4,18,8,1,"#8A1C1C");b.rect(x-2,18,4,1,"#EE6A78");b.rect(x-3,19,6,1,"#8A1C1C");b.rect(x-1,19,2,1,"#EE6A78");}
+  else{
+    [[x-5,6],[x-4,6],[x-3,7],[x-2,7],[x+4,6],[x+3,6],[x+2,7],[x+1,7]].forEach(q=>b.rect(q[0],q[1],1,1,K));
+    b.px(x-4,10,K);b.px(x-3,11,K);b.px(x+2,10,K);b.px(x+1,11,K);
+    b.rect(x-3,16,6,1,"#5A1A10");b.px(x-4,17,"#5A1A10");b.px(x+3,17,"#5A1A10");
+    b.rect(x-1,17,3,3,"#F07890");b.rect(x,17,1,3,"#C8506A");}}
 // abuela standing, no arms (48 x 51, her middle at 24)
 function mkAbuelaN(open,pie){const b=new Buf(48,51),X=24,S=RP.skin,P=RP.purp,lf=2,L1=pie===1?lf:0,L2=pie===2?lf:0;
   b.ell(X-4,47.5-L1,3.4,1.9,["#3A2414"]);b.ell(X+4,47.5-L2,3.4,1.9,["#3A2414"]);
@@ -379,10 +420,10 @@ function brazoJ(c,sx,sy,hx,hy,L,sl,pi,lado,quien){
   seg(sx,sy,e[0],e[1],(x,y)=>fr(c,x-2,y-2,th+2,th+2,OUT));seg(e[0],e[1],hx,hy,(x,y)=>fr(c,x-2,y-2,5,5,OUT));
   seg(sx,sy,e[0],e[1],(x,y)=>fr(c,x-1,y-1,th,th,sl));seg(e[0],e[1],hx,hy,(x,y)=>fr(c,x-1,y-1,3,3,pi));
   return e;}
-const GRIP={tazacu:[6,3],rollo:[-4,2],plato:[0,3],taza:[6,3],tenedor:[0,3],cuchara:[0,4],muslo:[8,0],vasojugo:[0,2],bizcochoT:[2,6],bizcochoL:[5,8],bebe:[0,8],bebeH:[0,8],pano:[0,0],cafetera:[7,6],jarrita:[5,2],cazo:[6,1],jarraleche:[8,3],bandeja:[10,3,1],olla:[10,1,1],fuente:[11,2,1],tenedorH:[0,0],monton:[0,2],platoma:[0,6],platoH:[0,6],bizcocho:[0,4],jarra:[0,2],jugo:[0,2]};
+const GRIP={tazacu:[6,3],rollo:[-4,2],plato:[0,3],taza:[6,3],tenedor:[0,3],cuchara:[0,4],muslo:[8,0],vasojugo:[0,2],bizcochoT:[2,6],bizcochoL:[5,8],bebe:[0,8],bebeH:[0,8],pano:[0,0],cafetera:[7,6],jarrita:[5,2],cazo:[6,1],bandeja:[10,3,1],olla:[10,1,1],fuente:[11,2,1],tenedorH:[0,0],monton:[0,2],platoma:[0,6],platoH:[0,6],bizcocho:[0,4],jarra:[0,2],jugo:[0,2]};
 function agarres(it,ix,iy,fl){const base=String(it.k).replace(/^tilt/,""),e=it.e||1,g=GRIP[base]||[0,3];let gx=g[0]*e,gy=g[1]*e;if(/^tilt/.test(it.k)){const A=it.v==="suave"?-0.55:-0.9,cs=Math.cos(A),sn=Math.sin(A),nx=gx*cs-gy*sn,ny=gx*sn+gy*cs;gx=nx;gy=ny;}
   const sg=fl?-1:1;if(it.una)return [[ix,iy+gy]];if(it.dos){const h=typeof it.dos==="number"?it.dos:11;return [[ix-h,iy+gy],[ix+h,iy+gy]];}return g[2]?[[ix+sg*gx,iy+gy],[ix-sg*gx,iy+gy]]:[[ix+sg*gx,iy+gy]];}
-const CONASA=new Set(["taza","cafetera","jarrita","cazo","jarraleche"]);   // what has its handle on the right of the drawing: it is turned so that the handle is on the side of his body
+const CONASA=new Set(["taza","cafetera","jarrita","cazo"]);   // what has its handle on the right of the drawing: it is turned so that the handle is on the side of his body
 const comeFl=(co,d)=>CONASA.has(co.k)?d>0:(d<0&&co.k!=="tenedor");   // what is at the mouth: a cup has its handle on the side of the body
 const CUE=id=>{const w=QUIEN[id]||{},p=(W&&W.gente&&W.gente[id])||{},c=id==="abuela"?{L:8,sx:7}:w.nino?{L:7,sx:5.5}:{L:9,sx:7};if(p.L)c.L=p.L;return c;};   // p.L: a longer arm for a moment (reaching over the table)
 // the hands of somebody, absolute: [{x,y,s: side of the picture (-1 left, 1 right), it, k}] (those that hold, point, wave, or carry a thing to the mouth)
@@ -416,7 +457,7 @@ function cuerpo(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const w=QUIE
   if(id==="abuela"){
     if(p.sent){const top=y-48,hb=(habla||p.abre||p.boca)?1:0;const im=spr("abSN"+hb,()=>recolor(mkAbuelaSN(hb),APRON));if(d<0){c.save();c.translate(x,top);c.scale(-1,1);c.drawImage(im,-17,0);c.restore();}else c.drawImage(im,x-17,top);brazosQuietos(c,id,p,a,vivos);return;}
     const top=y-50+bob,hb=(habla||p.abre||p.boca)?1:0;c.save();c.translate(x,top);if(d<0)c.scale(-1,1);c.drawImage(spr("abN"+hb+pie,()=>recolor(mkAbuelaN(hb,pie),APRON)),-24,0);c.restore();brazosQuietos(c,id,p,a,vivos);return;}
-  const op=(habla||p.boca||p.sopla)?1:0,w2=p.cierra?Object.assign({},w,{dormido:1}):w,im=spr("pmN"+id+op+(p.sent?1:0)+pie+(p.cierra?"c":""),()=>mkPersonaN(w2,op,p.sent,pie)),top=y-im.height+1+bob+(p.dy||0);
+  const cf=p.cara==="feliz"||p.cara==="asco",gi=(p.giro||0)*d,op=(habla||p.boca||p.sopla)?1:0,w2=(p.cierra||cf||gi)?Object.assign({},w,p.cierra?{dormido:1}:{},cf?{cara:p.cara}:{},gi?{giro:gi}:{}):w,im=spr("pmN"+id+op+(p.sent?1:0)+pie+(p.cierra?"c":"")+(cf?p.cara:"")+(gi||""),()=>mkPersonaN(w2,op,p.sent,pie)),top=y-im.height+1+bob+(p.dy||0);
   c.save();c.translate(x,top);if(d<0)c.scale(-1,1);c.drawImage(im,-KIT.PX,0);c.restore();
   brazosQuietos(c,id,p,a,vivos);
   const sk=(w.piel||RP.skin)[2];
@@ -448,7 +489,7 @@ function objetos(c,id,a){const p=W.gente[id];if(!p||p.vis===0)return;const x=R(p
     if(it.k==="plato")(it.rollos||[]).forEach(r=>rolloD(c,ix+(r.dx||0),iy+3,r,a));
     if(it.k==="fuente"&&!it.ang){(it.montones||[]).slice().sort((m,n)=>(m.dy||0)-(n.dy||0)).forEach(m=>tenidaC(c,"monton",ix+m.dx,iy+6+(m.dy==null?-4:m.dy)));if(it.tenedor)tenidaC(c,"tenedorH",ix+it.tenedor.dx,iy+4.5-it.tenedor.dy);}
     if(it.vapor)vapor(c,ix,iy-(it.e||1)*9-2,it.vn||1,it.vh);
-    if(it.chorro){const im=cosa(it.k,it.v),e=it.e||1;if(im.pico){const px=ix+(im.pico[0]-im.width/2)*e*(fl?-1:1),py=iy+(im.pico[1]-im.height/2)*e+1;chorro(c,R(px),R(py),R(py)+it.chorro.h,it.chorro.col,fl?1:-1);}}}   // a stream from the lip of what he pours
+    if(it.chorro){const im=cosa(it.k,it.v),e=it.e||1;if(im.pico){const px=ix+(im.pico[0]-im.width/2)*e*(fl?-1:1),py=iy+(im.pico[1]-im.height/2)*e+1;chorro(c,R(px),R(py),R(py)+it.chorro.h,it.chorro.col,fl?1:-1,it.chorro.fino);}}}   // a stream from the lip of what he pours
   if(p.come){const co=p.come,my=y-bocaY(id,p)+(a%2),cxx=x+d*(co.dx==null?13:co.dx);tenidaC(c,co.k,cxx,my+(co.dy||0),co.e||1,co.v,comeFl(co,d));if(co.vapor)vapor(c,cxx,my-8,1);}
   if(p.bebe2)tenidaC(c,"taza",x+d*14,y-bocaY(id,p)+3-(a%2),1,p.bebe2,comeFl({k:"taza"},d));
   for(const m of ms)mano(c,m.x,m.y,pi);}
@@ -499,7 +540,7 @@ function cosaDibuja(c,o,a){const k=o.k;
   if(k==="tabla"){tenida(c,"tabla",o.x,o.y);if(o.rollo)rolloD(c,o.x,o.y-3,o.rollo,a);return;}
   if(k==="fuente"){tenida(c,"fuente",o.x,o.y);(o.montones||[]).slice().sort((m,n)=>(m.dy||0)-(n.dy||0)).forEach(m=>tenida(c,"monton",o.x+m.dx,o.y+(m.dy==null?-4:m.dy)));if(o.tenedor)tenida(c,"tenedorH",o.x+o.tenedor.dx,o.y-(o.tenedor.dy==null?4:o.tenedor.dy),0,1);return;}
   if(k==="olla"){tenida(c,"olla",o.x,o.y,0,1,o.v);if(o.vapor&&o.v!=="vacio")vapor(c,o.x,o.y-22,2);return;}
-  tenida(c,k==="taza"&&o.sp?"tazacu":k,o.x,o.y,0,o.e||1,k==="azucarera"?(o.tomada?"0":String(Math.min(3,o.spoons==null?3:o.spoons))):o.v);
+  tenida(c,k==="taza"&&o.sp?"tazacu":k,o.x,o.y,0,o.e||1,k==="azucarera"?"L"+(o.tomada?"0":String(Math.min(3,o.spoons==null?3:o.spoons))):o.v);
   if(o.vapor&&!(k==="cesta"&&nCesta()<1))vapor(c,o.x+(o.vdx||0),o.y-(o.vdy==null?(k==="cesta"?18:k==="taza"?15:12):o.vdy),o.vn||2,o.vh);}
 // ONE rule for the layers, for every scene and every frame: whoever is behind the table (not seated, his feet above the table's near edge and between its two ends) is drawn behind everybody who sits, together with everything he holds and his arms, and the cloth hides what is below its far edge; so a walker behind the table never shows a head, a tray, a plate or a hand over a seated face, and an arm never floats over the cloth while its body is hidden. The seated and the children at the corners (est) have their hands over the cloth; everybody else is sorted by his feet.
 const detrasMesa=p=>!p.sent&&!p.est&&p.z==null&&p.y<TZ&&p.x>62&&p.x<190;
