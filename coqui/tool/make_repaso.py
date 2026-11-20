@@ -66,8 +66,8 @@ drawn for one sentence, with a DIFFERENT sentence each time, but only a sentence
                             `si` letter; `par_frases` of a word = its pair's own sentence, then its `par` items (no text twice). Without
                             --veredictos-par no item is `par` and `par_frases` is the own sentence only (the tool says so).
   `no_juntas` of a word: the other tracked words that must never be a wrong written tile beside a sentence with that word, nor in a matching
-  round with it: (a) accent twins, (b) one a whole-word part of the other (accents folded), (c) the same first NO_JUNTAS_PREFIX letters
-  (both of at least that many), (d) equal length and one letter apart, (e) one is the other plus a final s or es. Letters are those of the
+  round with it: (a) accent twins, (b) one a whole-word part of the other (accents folded), (c) the same first NO_JUNTAS_PREFIX (3) letters
+  when both are single words, NO_JUNTAS_PREFIX_PHRASE (4) when one is a phrase (both of at least that many), (d) equal length and one letter apart, (e) one is the other plus a final s or es. Letters are those of the
   words with accents folded and spaces and signs taken out. `tokens_extra_prohibidos` of an item: the tracked words in its sentence (accents
   folded, a final s or es allowed), which can never be a wrong tile for it.
 
@@ -123,7 +123,8 @@ KS = (3, 11, 22, 32)
 PAR_VALUES = ("A", "B", "ambas", "ninguna", "duda")    # what a reader may say about a sentence and a picture pair
 PAR_SCALE = 4                                          # the pair's pictures on par.png: 4x nearest neighbour
 PAR_GROUPS = 5                                         # grupos.json
-NO_JUNTAS_PREFIX = 4                                   # rule (c) of no_juntas: the same first four letters
+NO_JUNTAS_PREFIX = 3                                   # rule (c) of no_juntas: the same first three letters for two single words
+NO_JUNTAS_PREFIX_PHRASE = 4                            # ... and four when one of the two is a phrase (has a space)
 PAR_BUCKETS = ["1", "2", "3-4", "5-9", "10+"]
 EXPECTED_WORDS = 156
 ENGINE_ALLRIGHT = {"lost": 0, "wet": 0}      # what the engine holds when every answer is right
@@ -1932,7 +1933,8 @@ def load_veredictos_par(vdir, index):
 NO_JUNTAS_RULES = OrderedDict([
     ("a", "accent twins (equal after folding accents)"),
     ("b", "one is a whole-word part of the other, which is a phrase (accents folded)"),
-    ("c", "the same first %d letters after folding accents, both of at least %d letters" % (NO_JUNTAS_PREFIX, NO_JUNTAS_PREFIX)),
+    ("c", "the same first %d letters after folding accents, both of at least %d letters (%d when one of the two is a phrase)" % (
+        NO_JUNTAS_PREFIX, NO_JUNTAS_PREFIX, NO_JUNTAS_PREFIX_PHRASE)),
     ("d", "equal length, differing in exactly one letter after folding accents"),
     ("e", "one is the other plus a final s or es"),
 ])
@@ -1957,7 +1959,8 @@ def no_juntas_pairs(words):
             out["a"].append(pair)
         if a != b and (has_run(a, b) or has_run(b, a)):
             out["b"].append(pair)
-        if len(la) >= NO_JUNTAS_PREFIX and len(lb) >= NO_JUNTAS_PREFIX and la[:NO_JUNTAS_PREFIX] == lb[:NO_JUNTAS_PREFIX]:
+        k = NO_JUNTAS_PREFIX if len(a) == 1 and len(b) == 1 else NO_JUNTAS_PREFIX_PHRASE
+        if len(la) >= k and len(lb) >= k and la[:k] == lb[:k]:
             out["c"].append(pair)
         if len(la) == len(lb) and sum(1 for x, y in zip(la, lb) if x != y) == 1:
             out["d"].append(pair)
@@ -2158,6 +2161,85 @@ def build_final(R, V, PV=None):
                         ("mezcla", "Fisher-Yates from the end; the swap partner of position i is int(first 16 hex digits of SHA-256 of "
                                    "'<word>|<i>' in UTF-8 and NFC) mod (i + 1)")])
     return OrderedDict([("meta", meta), ("palabras", palabras), ("paginas", paginas)])
+
+
+# ---------------------------------------------------------------------------------------------------------------- 11. the app's file
+# historia/datos/repaso.json: only what the games of page 15 need, read by the app (coqui_content). Written with --app.
+
+APP_VERSION = 1
+
+
+def solo_clips(D, words):
+    """{word: clip} for each tracked word that has a recorded clip whose whole text is the word (case, accents kept, signs and spaces
+    ignored: the folded tokens are equal). The first such clip in course order (map stories, then picture stories, then the other files;
+    then the clip id)."""
+    want = OrderedDict((w, ftoks(w)) for w in words)
+    found = {}
+    for sid in sorted(D.story, key=lambda x: (story_rank(D, x), x)):
+        for cid in sorted(D.story[sid].get("clips", {})):
+            if cid not in D.audio:
+                continue
+            ft = ftoks(D.story[sid]["clips"][cid].get("text") or "")
+            for w, t in want.items():
+                if t and ft == t and w not in found:
+                    found[w] = cid
+    return OrderedDict((w, found[w]) for w in words if w in found)
+
+
+def build_app(R, final):
+    """The app's file from the final data: {"v", "frases": [sentence], "palabras": [word]}. A sentence (clip, cuento, text, tokens, `prohibidas`:
+    the tracked words in it, `img`: its book picture when the readers judged it to show the sentence, else null, `oyes`, `arma`) is kept once
+    and named by its place in `frases`. A word: `w`, `lugar` (its place), `puntua`, `solo` (the clip of the word alone, or null), `no_juntas`,
+    `cual` (its picture pair's sentences: clip, text, cuento, null for the pair's own), `frases` (its sentences for ¿Qué oyes? and Arma la
+    frase, in the fixed order, as indexes), `donde` (sentence index, `otras`: the fair wrong pictures), `dilo` (clip, cuento, text, formas,
+    antes: the clip before it, img)."""
+    D = R["D"]
+    place = {w["word"]: w["place"] for w in R["words"]}
+    solo = solo_clips(D, [w["word"] for w in R["words"]])
+    frases, index = [], {}
+
+    def sentence(it):
+        img = it["pagina"]["img"] if (it["pagina"] and not it["propia_dudosa"]) else None
+        rec = OrderedDict([("clip", it["clip"]), ("cuento", it["cuento"]), ("text", it["text"]), ("tokens", it["tokens"]),
+                           ("prohibidas", it["tokens_extra_prohibidos"]), ("img", img), ("oyes", it["que_oyes"]), ("arma", it["arma"])])
+        key = (it["clip"], it["cuento"])
+        if key in index:
+            assert frases[index[key]] == rec, key
+        else:
+            index[key] = len(frases)
+            frases.append(rec)
+        return index[key]
+
+    palabras = []
+    for w in final["palabras"]:
+        refs = [sentence(it) for it in w["frases"] if it["que_oyes"] or it["arma"]]
+        donde = []
+        for it in w["frases"]:
+            if it["cual"]:
+                k = sentence(it)
+                book = it["pagina"]["book"]
+                donde.append(OrderedDict([("frase", k), ("otras", [D.book[book]["pages"][n - 1]["img"] for n in it["cual"]])]))
+        story_of = {}
+        for it in w["frases"]:
+            if it["par"]:
+                story_of.setdefault(it["text"], it["cuento"])
+        cual = []
+        for i, f in enumerate(w["par_frases"]):
+            cual.append(OrderedDict([("clip", f["clip"]), ("text", f["text"]), ("cuento", None if i == 0 else story_of[f["text"]])]))
+        dilo = []
+        for d in w["dilo"]:
+            k = index.get((d["clip"], d["cuento"]))
+            img = frases[k]["img"] if k is not None else None
+            dilo.append(OrderedDict([("clip", d["clip"]), ("cuento", d["cuento"]), ("text", clip_text(D, d["cuento"], d["clip"])),
+                                     ("formas", d["formas"]), ("antes", d["antes"]["clip"]), ("img", img)]))
+        palabras.append(OrderedDict([("w", w["word"]), ("lugar", place[w["word"]]), ("puntua", w["puntua"]), ("solo", solo.get(w["word"])),
+                                     ("no_juntas", w["no_juntas"]), ("cual", cual), ("frases", refs), ("donde", donde), ("dilo", dilo)]))
+    return OrderedDict([("v", APP_VERSION), ("frases", frases), ("palabras", palabras)])
+
+
+def app_bytes(app):
+    """The file's bytes: compact JSON (UTF-8, no ASCII escapes), keys in the order built, one newline at the end."""
+    return (json.dumps(app, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
 
 
 def write_resumen_final(R, final, path):
@@ -2451,17 +2533,23 @@ def main(argv=None):
     ap.add_argument("--veredictos", metavar="DIR", help="with --final or --hojas-par: the verdicts of every book")
     ap.add_argument("--veredictos-par", metavar="DIR", help="with --veredictos and --final: the verdicts of every word that has a pair sheet")
     ap.add_argument("--final", metavar="FILE", help="with --veredictos: write the final data here, and resumen-final.md beside it")
+    ap.add_argument("--app", metavar="FILE", help="with --veredictos (and --veredictos-par): write the app's slim file here (historia/datos/repaso.json)")
+    ap.add_argument("--check", action="store_true", help="with --app: write nothing; exit 1 when FILE is not what the tool makes now")
     a = ap.parse_args(argv)
     if a.final and not a.veredictos:
         ap.error("--final needs --veredictos")
+    if a.app and not a.veredictos:
+        ap.error("--app needs --veredictos")
+    if a.check and not a.app:
+        ap.error("--check goes with --app")
     if a.hojas_par and not a.veredictos:
         ap.error("--hojas-par needs --veredictos")
-    if a.veredictos and not (a.final or a.hojas_par):
-        ap.error("--veredictos goes with --final or --hojas-par")
-    if a.veredictos_par and not a.final:
-        ap.error("--veredictos-par goes with --veredictos and --final")
-    if sum([a.hojas_libro, bool(a.valida_veredictos), bool(a.valida_veredictos_par), a.hojas_par, bool(a.final)]) > 1:
-        ap.error("one of --hojas-libro, --valida-veredictos, --valida-veredictos-par, --hojas-par, --final at a time")
+    if a.veredictos and not (a.final or a.hojas_par or a.app):
+        ap.error("--veredictos goes with --final, --app or --hojas-par")
+    if a.veredictos_par and not (a.final or a.app):
+        ap.error("--veredictos-par goes with --veredictos and --final or --app")
+    if sum([a.hojas_libro, bool(a.valida_veredictos), bool(a.valida_veredictos_par), a.hojas_par, bool(a.final or a.app)]) > 1:
+        ap.error("one of --hojas-libro, --valida-veredictos, --valida-veredictos-par, --hojas-par, --final / --app at a time")
     root = a.repo or Path(__file__).resolve().parents[2]
     out = Path(a.out)
     if a.valida_veredictos:
@@ -2472,7 +2560,7 @@ def main(argv=None):
         faults, notes = valida_veredictos_par(a.valida_veredictos_par, out)
         report_faults(faults, notes, len(list(Path(a.valida_veredictos_par).glob("*.json"))))
         return 1 if faults else 0
-    if a.final or a.hojas_par:
+    if a.final or a.hojas_par or a.app:
         R, books, faults, notes = checked_books(out, a.veredictos, root)
         if faults:
             report_faults(faults, notes, len(list(Path(a.veredictos).glob("*.json"))))
@@ -2502,6 +2590,22 @@ def main(argv=None):
         else:
             print("note: no --veredictos-par: no item is `par`, and the `par_frases` of a word with a pair is its own sentence only")
         final = build_final(R, V, PV)
+        if a.app:
+            ap_ = Path(a.app)
+            want = app_bytes(build_app(R, final))
+            if a.check:
+                have = ap_.read_bytes() if ap_.is_file() else None
+                if have != want:
+                    print("STALE: %s is %s; write it again with --app (without --check)" % (ap_, "missing" if have is None else "not what the tool makes now"))
+                    return 1
+                print("ok: %s is what the tool makes (%d bytes)" % (ap_, len(want)))
+            else:
+                ap_.parent.mkdir(parents=True, exist_ok=True)
+                ap_.write_bytes(want)
+                app = json.loads(want)
+                print("app file %s: %d bytes, %d sentences, %d words" % (ap_, len(want), len(app["frases"]), len(app["palabras"])))
+        if not a.final:
+            return 0
         fp = Path(a.final)
         fp.parent.mkdir(parents=True, exist_ok=True)
         jdump(final, fp)
