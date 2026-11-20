@@ -37,23 +37,21 @@ Future<(ContentCatalog, Files)> _loaded([Map<String, String>? changes]) async {
 
 void main() {
   group('load', () {
-    test(
-      'reads the six data files and the review sets, and no story or book',
-      () async {
-        final (catalog, files) = await _loaded();
-        expect(catalog.loaded, isTrue);
-        expect(files.calls.toSet(), {
-          'datos/curso.json',
-          'datos/nivel.json',
-          'datos/llamadas.json',
-          'datos/fijos.json',
-          'audio/ready.json',
-          'audio/marcas.json',
-          for (final f in _curso['cual'] as List) 'cuentos/$f.json',
-        });
-        expect(files.calls, hasLength(files.calls.toSet().length));
-      },
-    );
+    test('reads the six data files, datos/repaso.json and the review sets, and no story or book', () async {
+      final (catalog, files) = await _loaded();
+      expect(catalog.loaded, isTrue);
+      expect(files.calls.toSet(), {
+        'datos/curso.json',
+        'datos/nivel.json',
+        'datos/llamadas.json',
+        'datos/fijos.json',
+        'audio/ready.json',
+        'audio/marcas.json',
+        'datos/repaso.json',
+        for (final f in _curso['cual'] as List) 'cuentos/$f.json',
+      });
+      expect(files.calls, hasLength(files.calls.toSet().length));
+    });
 
     test(
       'two calls, one of them while the first runs, read each file once',
@@ -123,6 +121,41 @@ void main() {
           ),
         ),
       );
+    });
+
+    test('datos/repaso.json missing or broken is no error: repaso is null and the rest loads', () async {
+      for (final bad in [
+        null,
+        'nope',
+        '[1]',
+        '{"v":1}',
+        '{"v":9,"frases":[],"palabras":[]}',
+      ]) {
+        final files = {...smallTree}..remove('datos/repaso.json');
+        if (bad != null) files['datos/repaso.json'] = bad;
+        final catalog = ContentCatalog(Files(files).call);
+        await catalog.load();
+        expect(catalog.loaded, isTrue, reason: '$bad');
+        expect(catalog.repaso, isNull, reason: '$bad');
+        expect(catalog.pairs, isNotEmpty, reason: '$bad');
+      }
+    });
+
+    test('datos/repaso.json that reads is repaso, read once', () async {
+      final files = Files({
+        ...smallTree,
+        'datos/repaso.json':
+            '{"v":1,"frases":[{"clip":"a","cuento":"s","text":"T a b.","tokens":["t","a","b"],"prohibidas":[],"img":null,"oyes":true,"arma":true}],'
+            '"palabras":[{"w":"t","lugar":"casa","puntua":"que_oyes","solo":null,"no_juntas":[],"cual":[],"frases":[0],"donde":[],"dilo":[]}]}',
+      });
+      final catalog = ContentCatalog(files.call);
+      expect(catalog.repaso, isNull);
+      await catalog.load();
+      await catalog.load();
+      expect(catalog, isA<RepasoCatalog>());
+      expect(catalog.repaso!.word('t')!.sentences, [0]);
+      expect(catalog.repaso!.sentences.single.clip, 'a');
+      expect(files.count('datos/repaso.json'), 1);
     });
 
     test('audio/ready.json that cannot be read is no error (audioListo): no clip has a recording', () async {

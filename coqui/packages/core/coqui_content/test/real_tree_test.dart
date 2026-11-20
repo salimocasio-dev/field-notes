@@ -170,6 +170,55 @@ void main() {
     });
   });
 
+  test('datos/repaso.json reads: 156 words; every clip it names is a recorded line with marks, every story a story of '
+      'the course, every picture a book picture on disk', () {
+    final r = catalog.repaso;
+    expect(r, isNotNull);
+    expect(r!.words, hasLength(156));
+    final stories = (oldCurso['cuentos'] as Map).keys.toSet();
+    final clips = <String>{
+      for (final s in r.sentences) s.clip,
+      for (final w in r.words) ...[
+        for (final p in w.pairLines) p.clip,
+        for (final d in w.say) ...[d.clip, d.before],
+        ?w.solo,
+      ],
+    };
+    for (final c in clips) {
+      expect(catalog.clip(c), isNotNull, reason: c);
+    }
+    final pictures = <String>{
+      for (final s in r.sentences) ?s.picture,
+      for (final w in r.words) ...[
+        for (final d in w.where) ...d.others,
+        for (final d in w.say) ?d.picture,
+      ],
+    };
+    expect(pictures, isNotEmpty);
+    for (final p in pictures) {
+      expect(
+        File('${_historia.path}/libros/$p').existsSync(),
+        isTrue,
+        reason: p,
+      );
+    }
+    for (final s in r.sentences) {
+      expect(stories, contains(s.story), reason: s.clip);
+    }
+    for (final w in r.words) {
+      for (final p in w.pairLines.skip(1)) {
+        expect(stories, contains(p.story), reason: '${w.word} ${p.clip}');
+      }
+      expect(w.pairLines.isEmpty || w.pairLines.first.story == null, isTrue);
+      // a word with a pair has the pair's own sentence first
+      final pair = catalog.pairFor(w.word);
+      if (w.pairLines.isNotEmpty) expect(w.pairLines.first.clip, pair!.say);
+      for (final d in w.where) {
+        expect(r.sentences[d.sentence].picture, isNotNull, reason: w.word);
+      }
+    }
+  });
+
   group('stories and books load', () {
     test('all 62 story files load, and each is the file', () async {
       for (final id in storyFiles) {

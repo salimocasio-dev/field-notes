@@ -21,7 +21,10 @@ typedef FetchText = Future<String> Function(String path);
 /// [load], the others by [story], [linesWith] or any call that reads one. Before that [clip] gives what the old code
 /// knows of a clip it has not read a line for: its marks and its url, and the line `fijos.json` holds for it under
 /// `lineas` (the lines the old code writes in code, juego.js, loadVoice) or, with none, an empty `who` and `text`.
-class ContentCatalog implements CourseCatalog {
+///
+/// [load] also reads `datos/repaso.json` (Repaso's games, page 15) into [repaso]. That file is not needed to start:
+/// when it is missing or cannot be read, [repaso] is null and nothing else changes (Repaso then plays today's game).
+class ContentCatalog implements CourseCatalog, RepasoCatalog {
   ContentCatalog(this._fetch);
 
   final FetchText _fetch;
@@ -39,6 +42,7 @@ class ContentCatalog implements CourseCatalog {
   // fijos.json, lineas: the lines the old code writes in code, by clip id
   Map<String, _Line> _written = const {};
   List<String> _goodbye = const [];
+  RepasoData? _repaso;
 
   // audio/ready.json: the clips that have a recording (null: the file could not be read), and its `v`
   Set<String>? _have;
@@ -89,6 +93,7 @@ class ContentCatalog implements CourseCatalog {
     final fijos = _json('datos/fijos.json');
     final ready = _readReady();
     final marcas = _json('audio/marcas.json');
+    final repaso = _readRepaso();
     final reviews = [for (final f in sets) story(f)];
     for (final f in <Future<Object?>>[
       nivel,
@@ -148,6 +153,7 @@ class ContentCatalog implements CourseCatalog {
       for (final e in marks.entries)
         e.key: [for (final m in e.value as List) (m as num).toInt()],
     };
+    _repaso = await repaso;
     _loaded = true;
   }
 
@@ -182,6 +188,20 @@ class ContentCatalog implements CourseCatalog {
               ),
     };
   }
+
+  // datos/repaso.json: Repaso's games. Missing or broken, it is null: the load goes on without it.
+  Future<RepasoData?> _readRepaso() async {
+    try {
+      return RepasoData.fromJson(
+        _object(await _json('datos/repaso.json'), 'datos/repaso.json'),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  RepasoData? get repaso => _repaso;
 
   // app.html, audioListo: audio/ready.json, read once; a file that cannot be read is null, and then no clip has a
   // recording and oidoEn does not filter. `v` goes into every clip's url (juego.js, loadVoice: `j.v||0`).
