@@ -22,6 +22,7 @@ class LessonProgressDashes extends StatelessWidget {
     required this.segments,
     required this.done,
     this.dense = false,
+    this.missed = const {},
   });
 
   /// How many dashes.
@@ -31,10 +32,16 @@ class LessonProgressDashes extends StatelessWidget {
   final int done;
   final bool dense;
 
+  /// Dashes (by place, from 0) that are red-orange, not green or grey: a Repaso item that was missed and has not yet
+  /// been answered when it came back. Shown whether or not [done] reaches them.
+  final Set<int> missed;
+
   @override
   Widget build(BuildContext context) => Semantics(
     label: 'Progress',
-    value: '$done of $segments',
+    value: missed.isEmpty
+        ? '$done of $segments'
+        : '$done of $segments, ${missed.length} to come back',
     excludeSemantics: true,
     child: Center(
       child: ConstrainedBox(
@@ -48,7 +55,9 @@ class LessonProgressDashes extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   height: CoquiMetrics.dotHeight,
                   decoration: BoxDecoration(
-                    color: i < done
+                    color: missed.contains(i)
+                        ? CoquiColors.lessonBad
+                        : i < done
                         ? CoquiColors.lessonGreen
                         : CoquiColors.dotOff,
                     borderRadius: BorderRadius.circular(dense ? 1 : 3),
@@ -432,6 +441,7 @@ class PictureChoice extends StatelessWidget {
     this.ring = ChoiceRing.none,
     this.dim = ChoiceDim.none,
     this.check = false,
+    this.cross = false,
     this.onTap,
     this.semanticLabel,
   });
@@ -439,7 +449,10 @@ class PictureChoice extends StatelessWidget {
   final Widget child;
   final ChoiceRing ring;
   final ChoiceDim dim;
+
+  /// The check badge of a right touch, or (the same corner) the round X badge of a wrong one.
   final bool check;
+  final bool cross;
   final VoidCallback? onTap;
   final String? semanticLabel;
 
@@ -494,6 +507,12 @@ class PictureChoice extends StatelessWidget {
                 color: CoquiColors.lessonInk,
               ),
             ),
+          )
+        else if (cross)
+          const Positioned(
+            right: CoquiMetrics.badgeInset,
+            top: CoquiMetrics.badgeInset,
+            child: WrongBadge(),
           ),
       ],
     );
@@ -504,6 +523,37 @@ class PictureChoice extends StatelessWidget {
       builder: (context, pressed) => picture,
     );
   }
+}
+
+/// The round badge with an X that marks a wrong touch, where a right one has its check: 28 px red-orange with a
+/// white X and a white ring (the twin of the check badge: the same size, the same ring).
+class WrongBadge extends StatelessWidget {
+  const WrongBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: 'Wrong',
+    excludeSemantics: true,
+    child: Container(
+      width: CoquiMetrics.badgeSize,
+      height: CoquiMetrics.badgeSize,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: CoquiColors.lessonBad,
+        boxShadow: [
+          BoxShadow(
+            color: CoquiColors.lessonInk,
+            spreadRadius: CoquiMetrics.badgeRing,
+          ),
+        ],
+      ),
+      child: const CoquiIcon(
+        CoquiIcons.badgeCross,
+        size: CoquiMetrics.badgeSize,
+        color: CoquiColors.lessonInk,
+      ),
+    ),
+  );
 }
 
 /// How the end of a Repaso lays out the pictures of its words: [columns] to a row at a whole number

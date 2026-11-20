@@ -6,7 +6,10 @@
 /// finished that story.
 library;
 
+import 'package:coqui_contracts/src/course.dart';
 import 'package:coqui_contracts/src/json.dart';
+import 'package:coqui_contracts/src/normalize.dart';
+import 'package:coqui_contracts/src/progress.dart';
 
 /// How a word's Ear is scored (`puntua`): by ¿Cuál? and ¿Qué oyes?, by ¿Qué oyes? only, or by no game.
 /// A word with a picture pair is `cual` in the file; it gets ¿Qué oyes? too when it has sentences for it.
@@ -216,4 +219,134 @@ class RepasoData {
 abstract interface class RepasoCatalog {
   /// The file, read by `load()`; null when it is missing or cannot be read (Repaso then plays today's ¿Cuál?).
   RepasoData? get repaso;
+}
+
+// ---- which words Repaso can serve (one rule, for the session and for every count shown outside it)
+
+/// Whether he has finished the story [id]: played it to its end (a story the level check only presumed does not
+/// count until he plays it), or, a picture story, heard it to its end.
+bool repasoStoryFinished(ProgressStore p, String id) {
+  final r = p.story(id);
+  if (r != null) {
+    final presumed = r.presunto != null && r.presunto != 0 ? 1 : 0;
+    if (r.n > presumed) return true;
+  }
+  final oidos = p.raw['oidos'];
+  if (oidos is Map) {
+    final v = oidos[id];
+    if (v is num && v > 0) return true;
+  }
+  return false;
+}
+
+/// The words of [s], lower case, accents and signs gone (`normalize`, PAL.norm, split).
+List<String> repasoTokens(String s) => [
+  for (final t in normalize(s).trim().split(' '))
+    if (t.isNotEmpty) t,
+];
+
+/// What Repaso may ask of one learner now (page 15, "The session"): the sentences of the stories he has finished,
+/// the words he has met, the course's picture pairs. The session's plan and the counts the Palabras tab and the map
+/// show ("N words today") all ask this one place, so they cannot drift: a word can be served when ¿Cuál? has a
+/// sentence of his for it (its picture pair and a finished story), or ¿Qué oyes? has one with two fair wrong tiles.
+///
+/// It reads the progress once as it is when asked for its first answer; make a new one for a new moment.
+class RepasoServing {
+  RepasoServing({
+    required this.data,
+    required this.progress,
+    required Iterable<ReviewPair> pairs,
+  }) : _pairWords = {for (final p in pairs) p.word};
+
+  final RepasoData data;
+  final ProgressStore progress;
+  final Set<String> _pairWords;
+
+  final Map<String, bool> _finished = {};
+
+  /// Whether the story is finished (null: a sentence of the pair itself, always his).
+  bool finished(String? story) =>
+      story == null ||
+      (_finished[story] ??= repasoStoryFinished(progress, story));
+
+  /// The words he has met that the data knows, in the data's (course) order.
+  late final List<RepasoWord> met = [
+    for (final w in data.words)
+      if (progress.word(w.word) != null) w,
+  ];
+
+  final Map<String, List<String>> _folded = {};
+  List<String> _tokensOf(String s) => _folded[s] ??= repasoTokens(s);
+
+  final Map<RepasoSentence, Set<String>> _inSentence = {};
+  Set<String> _wordsIn(RepasoSentence s) =>
+      _inSentence[s] ??= {..._tokensOf(s.text), ...s.tokens.expand(_tokensOf)};
+
+  /// Whether the course has a picture pair for the word.
+  bool hasPair(RepasoWord w) => _pairWords.contains(w.word);
+
+  /// The word's ¿Cuál? sentences he may get: its pair's own, and the others whose story he has finished. None when
+  /// the course has no pair for it.
+  List<RepasoPairLine> cualLines(RepasoWord w) => !hasPair(w)
+      ? const []
+      : [
+          for (final l in w.pairLines)
+            if (finished(l.story)) l,
+        ];
+
+  bool _hearable(RepasoWord w, RepasoSentence s) =>
+      s.forHearing && finished(s.story) && wrongTileChoices(w, s).length >= 2;
+
+  /// The word's ¿Qué oyes? sentences he may get, in the fixed order: from finished stories, with two fair wrong
+  /// tiles among the words he has met.
+  List<RepasoSentence> hearSentences(RepasoWord w) => [
+    for (final k in w.sentences)
+      if (_hearable(w, data.sentences[k])) data.sentences[k],
+  ];
+
+  /// Whether some game can score the word now.
+  bool servable(RepasoWord w) =>
+      cualLines(w).isNotEmpty ||
+      w.sentences.any((k) => _hearable(w, data.sentences[k]));
+
+  /// Whether Repaso can serve the word [text] now: the data knows it and some game can score it.
+  bool canServe(String text) {
+    final w = data.word(text);
+    return w != null && servable(w);
+  }
+
+  /// The words other than [target] that may stand as a wrong written tile beside [s], in the data's order: words he
+  /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
+  /// `no_juntas` of the target or of any tracked word in the sentence.
+  List<RepasoWord> wrongTileChoices(
+    RepasoWord target,
+    RepasoSentence s, {
+    bool singleWords = false,
+  }) {
+    final inSentence = _wordsIn(s);
+    final banned = <String>{
+      target.word,
+      ...target.apart,
+      ...s.forbidden,
+      for (final x in s.forbidden) ...?data.word(x)?.apart,
+    };
+    return [
+      for (final m in met)
+        if (!banned.contains(m.word) &&
+            !m.apart.contains(target.word) &&
+            !_tokensOf(m.word).any(inSentence.contains) &&
+            (!singleWords || _tokensOf(m.word).length == 1))
+          m,
+    ];
+  }
+}
+
+/// What Repaso may serve this learner now, or null when the course has not read `datos/repaso.json` (then Repaso is
+/// today's ¿Cuál?, which asks the words that have a picture pair, and the counts say the same).
+RepasoServing? repasoServing(CourseCatalog course, ProgressStore progress) {
+  final c = course;
+  if (c is! RepasoCatalog) return null;
+  final d = (c as RepasoCatalog).repaso;
+  if (d == null) return null;
+  return RepasoServing(data: d, progress: progress, pairs: course.pairs);
 }

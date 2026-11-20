@@ -95,27 +95,176 @@ void main() {
     },
   );
 
-  testWidgets('the sign moves, and is still with reduced motion', (t) async {
-    await t.pumpWidget(_app(const TouchSign()));
-    await t.pump(const Duration(milliseconds: 450));
-    final moving = t.widget<Transform>(
-      find.descendant(
-        of: find.byType(TouchSign),
-        matching: find.byType(Transform),
-      ),
-    );
-    expect(moving.transform.getMaxScaleOnAxis(), greaterThan(1.01));
-    await t.pumpWidget(_app(const TouchSign(), still: true));
-    await t.pump(const Duration(milliseconds: 450));
-    final still = t.widget<Transform>(
-      find.descendant(
-        of: find.byType(TouchSign),
-        matching: find.byType(Transform),
-      ),
-    );
-    expect(still.transform.getMaxScaleOnAxis(), 1);
-    expect(t.hasRunningAnimations, isFalse);
-  });
+  testWidgets(
+    'the sign is the pointing hand (touch_app) white on a green disc, over the middle of its tile, and takes no touch',
+    (t) async {
+      var taps = 0;
+      await t.pumpWidget(
+        _app(
+          SizedBox(
+            width: 300,
+            child: WordTile(
+              word: 'puerta',
+              expand: true,
+              sign: true,
+              onTap: () => taps++,
+            ),
+          ),
+          still: true,
+        ),
+      );
+      // the hand, not a chevron or an arrow
+      final icon = t.widget<CoquiIcon>(
+        find.descendant(
+          of: find.byType(TouchSign),
+          matching: find.byType(CoquiIcon),
+        ),
+      );
+      expect(icon.data, same(CoquiIcons.touchApp));
+      expect(icon.color, CoquiColors.lessonInk);
+      final disc =
+          t
+                  .widget<Container>(
+                    find
+                        .descendant(
+                          of: find.byType(TouchSign),
+                          matching: find.byType(Container),
+                        )
+                        .first,
+                  )
+                  .decoration!
+              as BoxDecoration;
+      expect(
+        (disc.shape, disc.color),
+        (BoxShape.circle, CoquiColors.lessonGreen),
+      );
+      // the middle of the tile: not a corner, not an edge
+      final tile = t.getRect(find.byType(WordTile));
+      expect(
+        (t.getCenter(find.byType(TouchSign)) - tile.center).distance,
+        lessThan(.5),
+      );
+      // a touch at the very middle (on the sign) is a touch on the tile
+      await t.tapAt(tile.center);
+      expect(taps, 1);
+    },
+  );
+
+  testWidgets(
+    'the sign bounces gently, and is still with reduced motion (the hand does not turn into an arrow)',
+    (t) async {
+      Offset at() {
+        final m = t
+            .widget<Transform>(
+              find.descendant(
+                of: find.byType(TouchSign),
+                matching: find.byType(Transform),
+              ),
+            )
+            .transform
+            .getTranslation();
+        return Offset(m.x, m.y);
+      }
+
+      await t.pumpWidget(_app(const TouchSign()));
+      await t.pump(const Duration(milliseconds: 350));
+      expect(at().dy, lessThan(-1));
+      expect(at().dy, greaterThanOrEqualTo(-TouchSign.bounce));
+      expect(at().dx, 0);
+      await t.pumpWidget(_app(const TouchSign(), still: true));
+      await t.pump(const Duration(milliseconds: 350));
+      expect(at().dy, 0);
+      expect(t.hasRunningAnimations, isFalse);
+    },
+  );
+
+  testWidgets(
+    'a wrong touch: the red-orange ring and a round X badge at the corner where a right one has its check',
+    (t) async {
+      Future<Rect> badge(Widget w) async {
+        await t.pumpWidget(_app(SizedBox(width: 300, height: 100, child: w)));
+        final b = find.byType(WrongBadge);
+        return b.evaluate().isEmpty ? Rect.zero : t.getRect(b);
+      }
+
+      final tile = WordTile(
+        word: 'sol',
+        expand: true,
+        ring: ChoiceRing.wrong,
+        cross: true,
+      );
+      final cross = await badge(
+        Align(alignment: Alignment.topLeft, child: tile),
+      );
+      final tileBox = t.getRect(find.byType(WordTile));
+      expect(find.byType(WrongBadge), findsOneWidget);
+      expect(
+        cross.size,
+        const Size(CoquiMetrics.badgeSize, CoquiMetrics.badgeSize),
+      );
+      final b = _border(t, find.byType(WordTile))!;
+      expect((b.top.color, b.top.width), (CoquiColors.lessonBad, 3.0));
+      final ok = WordTile(
+        word: 'sol',
+        expand: true,
+        ring: ChoiceRing.right,
+        check: true,
+      );
+      await badge(Align(alignment: Alignment.topLeft, child: ok));
+      final check = t.getRect(find.byType(CoquiIcon).last);
+      // the same corner: the right edge and the top of the tile
+      expect((cross.right - tileBox.right), closeTo(6, .5));
+      expect((cross.top - tileBox.top), closeTo(-10, .5));
+      expect(check.right, closeTo(cross.right, .5));
+      expect(check.top, closeTo(cross.top, .5));
+      // a picture: the same corner as its check
+      await t.pumpWidget(
+        _app(
+          const PictureChoice(
+            ring: ChoiceRing.wrong,
+            cross: true,
+            child: SizedBox(width: 120, height: 80),
+          ),
+        ),
+      );
+      final pic = t.getRect(find.byType(PictureChoice));
+      final x = t.getRect(find.byType(WrongBadge));
+      expect(x.right, closeTo(pic.right - CoquiMetrics.badgeInset, .5));
+      expect(x.top, closeTo(pic.top + CoquiMetrics.badgeInset, .5));
+      expect(find.bySemanticsLabel('Wrong'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'a number badge sits beside the check, on a tile and on a speaker tile',
+    (t) async {
+      await t.pumpWidget(
+        _app(
+          const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SpeakerTile(onTap: null, check: true, number: 2),
+              SizedBox(width: 24),
+              WordTile(word: 'sol', check: true, number: 2),
+            ],
+          ),
+        ),
+      );
+      expect(find.text('2'), findsNWidgets(2));
+      final ticks = find.byWidgetPredicate(
+        (w) => w is CoquiIcon && w.data == CoquiIcons.badgeCheck,
+      );
+      expect(ticks, findsNWidgets(2));
+      for (var i = 0; i < 2; i++) {
+        final n = t.getRect(find.byType(NumberBadge).at(i));
+        final c = t.getRect(ticks.at(i));
+        // beside the check, to its left, on the same line
+        expect(n.right, lessThanOrEqualTo(c.left + 6));
+        expect((n.center.dy - c.center.dy).abs(), lessThan(6));
+        expect(n.size, const Size(NumberBadge.size, NumberBadge.size));
+      }
+    },
+  );
 
   testWidgets('a wrong tile shakes back once; not with reduced motion', (
     t,
@@ -267,6 +416,145 @@ void main() {
     await t.pumpWidget(_app(const StreakChip(count: 12)));
     expect(find.text('12 in a row'), findsOneWidget);
   });
+
+  testWidgets(
+    'the streak chip with its place reserved: the same room whether it shows or not, so a line beside it never moves',
+    (t) async {
+      Future<(Size, Size)> sizes(int n) async {
+        await t.pumpWidget(
+          _app(
+            SizedBox(
+              width: 358,
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text('Listen. Touch the word you heard.'),
+                  ),
+                  StreakChip(count: n, reserve: true),
+                ],
+              ),
+            ),
+            // half size: the test font (every glyph a whole em wide) is wider than Roboto
+            text: .5,
+          ),
+        );
+        return (
+          t.getSize(find.byType(StreakChip)),
+          t.getSize(find.byType(Expanded)),
+        );
+      }
+
+      final none = await sizes(0);
+      final shown = await sizes(7);
+      final long = await sizes(99);
+      expect(none.$1, const Size(StreakChip.reservedWidth, 32));
+      expect(shown, none);
+      expect(long, none);
+      expect(find.text('99 in a row'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'the round speaker: 64 px, plays on a touch, pulses while the sentence sounds, still with reduced motion',
+    (t) async {
+      var n = 0;
+      await t.pumpWidget(_app(RoundSpeaker(onTap: () => n++)));
+      expect(
+        t.getSize(find.bySemanticsLabel('Hear it again')),
+        const Size(RoundSpeaker.size, RoundSpeaker.size),
+      );
+      await t.tap(find.bySemanticsLabel('Hear it again'));
+      expect(n, 1);
+      // not sounding: no ring, nothing animates
+      expect(t.hasRunningAnimations, isFalse);
+      Size ring() => t.getSize(
+        find
+            .descendant(
+              of: find.byType(RoundSpeaker),
+              matching: find.byType(Container),
+            )
+            .first,
+      );
+      await t.pumpWidget(_app(RoundSpeaker(onTap: () {}, playing: true)));
+      expect(t.hasRunningAnimations, isTrue);
+      final a = ring();
+      await t.pump(const Duration(milliseconds: 400));
+      final b = ring();
+      expect(a, isNot(b)); // it grows
+      // its own room does not change: a sentence that starts or ends moves nothing
+      final room = t.getSize(find.byType(RoundSpeaker));
+      await t.pumpWidget(_app(RoundSpeaker(onTap: () {})));
+      expect(t.getSize(find.byType(RoundSpeaker)), room);
+      await t.pumpWidget(
+        _app(RoundSpeaker(onTap: () {}, playing: true), still: true),
+      );
+      await t.pump(const Duration(milliseconds: 400));
+      expect(t.hasRunningAnimations, isFalse);
+      expect(find.byType(RoundSpeaker), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'an empty slot keeps the room of the tile that left it, shows nothing, and takes no touch',
+    (t) async {
+      var taps = 0;
+      await t.pumpWidget(
+        _app(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              WordTile(word: 'pájaro', onTap: () => taps++),
+              WordTile(
+                word: 'pájaro',
+                look: TileLook.empty,
+                onTap: () => taps++,
+              ),
+            ],
+          ),
+        ),
+      );
+      final full = t.getSize(find.byType(WordTile).first);
+      final empty = t.getSize(find.byType(WordTile).last);
+      expect(empty, full);
+      // the word is not drawn in the slot
+      expect(
+        t
+            .widgetList<Opacity>(find.byType(Opacity))
+            .where((o) => o.opacity == 0),
+        isNotEmpty,
+      );
+      await t.tap(find.byType(WordTile).last);
+      expect(taps, 0);
+    },
+  );
+
+  testWidgets(
+    'the progress bar: a missed item\'s dash is red-orange (not green, not grey) wherever it stands',
+    (t) async {
+      await t.pumpWidget(
+        _app(
+          const SizedBox(
+            width: 300,
+            child: LessonProgressDashes(segments: 5, done: 3, missed: {1, 4}),
+          ),
+        ),
+      );
+      await t.pumpAndSettle();
+      final colors = [
+        for (final c in t.widgetList<AnimatedContainer>(
+          find.byType(AnimatedContainer),
+        ))
+          (c.decoration! as BoxDecoration).color,
+      ];
+      expect(colors, [
+        CoquiColors.lessonGreen,
+        CoquiColors.lessonBad,
+        CoquiColors.lessonGreen,
+        CoquiColors.dotOff,
+        CoquiColors.lessonBad,
+      ]);
+    },
+  );
 
   test('the new text styles are complete, with ligatures off', () {
     for (final s in [

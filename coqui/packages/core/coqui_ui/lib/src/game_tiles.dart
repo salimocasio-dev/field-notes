@@ -1,17 +1,18 @@
 /// The parts of Repaso's games (order 27, docs/proyecto/15-repaso-juegos.md) on the dark lesson frame: a written word
-/// tile (with a speaker on it when the word can be heard alone), a speaker tile, a tray that lays tiles out, the
-/// "N in a row" chip and the big sign for what to touch.
+/// tile (with a speaker on it when the word can be heard alone), a speaker tile, the round speaker of a game, a tray
+/// that lays tiles out, the "N in a row" chip and the sign for what to touch.
 ///
 /// Dumb, as every widget here: values and callbacks. They follow the lesson's look (page 09): calm, plain, the
 /// answer's rings as [PictureChoice] draws them (green right, red-orange wrong, white the one chosen), a right
-/// answer never in a colour that reads as wrong, and the sign for what to touch big. Targets are 56 px high at
-/// least (48 is the floor), 8 px apart in a tray.
+/// answer never in a colour that reads as wrong, a wrong one marked by a round badge with an X where a right one has
+/// its check, and the sign for what to touch big, over the middle of it. Targets are 56 px high at least (48 is the
+/// floor), 8 px apart in a tray.
 library;
 
 import 'dart:math' as math;
 
 import 'package:coqui_ui/src/icons.dart';
-import 'package:coqui_ui/src/lesson_frame.dart' show ChoiceRing;
+import 'package:coqui_ui/src/lesson_frame.dart' show ChoiceRing, WrongBadge;
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
@@ -25,8 +26,12 @@ enum TileLook {
   /// Shown while the sentence plays: there, dimmed, not touchable yet.
   waiting,
 
-  /// Not the answer, after an answer; or a tile that has gone up into the sentence.
+  /// Not the answer, after an answer.
   dim,
+
+  /// The place of a tile that is not there: an empty slot of its size, a faint outline, nothing in it (a tile of the
+  /// bank that has gone up into the sentence; a place in the sentence that is not filled).
+  empty,
 }
 
 const double _tileHeight = 56;
@@ -40,15 +45,17 @@ Color? _ringColor(ChoiceRing r) => switch (r) {
 };
 
 /// The face every tile shares: 56 px high at least, radius 12, the tile colour, a 1.5 px `--line` frame or a 3 px
-/// answer ring, dimmed when [look] says so; the check badge of a right answer at its right edge; the big [TouchSign]
-/// above it when [sign]. [shake] moves it side to side once each time it grows (a wrong tile jumps back), unless
-/// [still].
+/// answer ring, dimmed when [look] says so; at its right edge the check badge of a right answer ([check]) or the
+/// X badge of a wrong one ([cross]), with a small [number] badge beside it; the [TouchSign] over its middle when
+/// [sign]. [shake] moves it side to side once each time it grows (a wrong tile jumps back), unless [still].
 class _TileFace extends StatelessWidget {
   const _TileFace({
     required this.child,
     required this.look,
     required this.ring,
     required this.check,
+    required this.cross,
+    required this.number,
     required this.sign,
     required this.pressed,
     required this.shake,
@@ -60,6 +67,8 @@ class _TileFace extends StatelessWidget {
   final TileLook look;
   final ChoiceRing ring;
   final bool check;
+  final bool cross;
+  final int? number;
   final bool sign;
   final bool pressed;
   final int shake;
@@ -68,23 +77,35 @@ class _TileFace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rc = _ringColor(ring);
+    final empty = look == TileLook.empty;
+    final rc = empty ? null : _ringColor(ring);
     Widget face = Container(
       constraints: BoxConstraints(minHeight: _tileHeight, minWidth: minWidth),
       padding: const EdgeInsets.symmetric(horizontal: CoquiMetrics.s16),
       decoration: BoxDecoration(
-        color: pressed ? CoquiColors.lessonTilePressed : CoquiColors.lessonTile,
+        color: empty
+            ? null
+            : (pressed
+                  ? CoquiColors.lessonTilePressed
+                  : CoquiColors.lessonTile),
         borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
         border: Border.all(
-          color: rc ?? CoquiColors.lessonLine,
+          color: empty
+              ? CoquiColors.lessonLine.withValues(alpha: .6)
+              : (rc ?? CoquiColors.lessonLine),
           width: rc == null ? CoquiMetrics.borderButton : _ringWidth,
         ),
       ),
-      child: Align(widthFactor: 1, heightFactor: 1, child: child),
+      child: Align(
+        widthFactor: 1,
+        heightFactor: 1,
+        // an empty slot keeps the room of what stood in it, and shows nothing of it
+        child: empty ? Opacity(opacity: 0, child: child) : child,
+      ),
     );
     face = Opacity(
       opacity: switch (look) {
-        TileLook.normal => 1,
+        TileLook.normal || TileLook.empty => 1,
         TileLook.waiting => .5,
         TileLook.dim => .35,
       },
@@ -110,15 +131,18 @@ class _TileFace extends StatelessWidget {
       children: [
         face,
         if (check) const Positioned(right: -6, top: -10, child: _CheckBadge()),
-        // on a tile the sign sits inside its left end and points at the word (above it, it would cover the line
-        // that says what to do)
-        if (sign)
+        if (cross) const Positioned(right: -6, top: -10, child: WrongBadge()),
+        if (number != null)
           Positioned(
-            left: 6,
-            top: 0,
-            bottom: 0,
-            child: Center(
-              child: TouchSign(still: calm, pointing: AxisDirection.right),
+            right: (check || cross) ? 28 : -4,
+            top: (check || cross) ? -7 : -8,
+            child: NumberBadge(number: number!),
+          ),
+        // the sign is over the middle of the tile, and takes no touch: a finger on it is a finger on the tile
+        if (sign)
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Center(child: TouchSign(still: calm)),
             ),
           ),
       ],
@@ -152,20 +176,50 @@ class _CheckBadge extends StatelessWidget {
   );
 }
 
-/// The big sign for what to touch: a 44 px green disc with a white arrow pointing down at the thing, that grows and
-/// shrinks a little (still with reduced motion, or [still]). Over a picture or a tile whose answer is shown.
+/// A small round number (1 to 4) that marks which matched pair a tile belongs to (Parejas): white, with a dark digit.
+class NumberBadge extends StatelessWidget {
+  const NumberBadge({super.key, required this.number});
+
+  /// The size of the disc.
+  static const double size = 22;
+  final int number;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: 'Pair $number',
+    excludeSemantics: true,
+    child: Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: CoquiColors.lessonInk,
+      ),
+      child: Text(
+        '$number',
+        style: CoquiText.lessonChip.copyWith(
+          fontSize: 13,
+          height: 1,
+          fontWeight: FontWeight.w700,
+          color: CoquiColors.lessonBg,
+        ),
+      ),
+    ),
+  );
+}
+
+/// The sign for what to touch: Material's pointing hand (`touch_app`), white on a 44 px green disc, that bounces
+/// gently (still with reduced motion, or [still]). It goes over the middle of the picture or tile whose answer is
+/// shown, never on a border between two things; it takes no touch itself.
 class TouchSign extends StatefulWidget {
-  const TouchSign({
-    super.key,
-    this.still = false,
-    this.pointing = AxisDirection.down,
-  });
+  const TouchSign({super.key, this.still = false});
 
   static const double size = 44;
-  final bool still;
 
-  /// Where the arrow points: down at a picture under it, right at a word beside it.
-  final AxisDirection pointing;
+  /// How far up the bounce takes it.
+  static const double bounce = 5;
+  final bool still;
 
   @override
   State<TouchSign> createState() => _TouchSignState();
@@ -175,7 +229,7 @@ class _TouchSignState extends State<TouchSign>
     with SingleTickerProviderStateMixin {
   late final AnimationController _a = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 900),
+    duration: const Duration(milliseconds: 700),
   );
 
   bool get _still =>
@@ -209,24 +263,31 @@ class _TouchSignState extends State<TouchSign>
   }
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label: 'Touch here',
-    child: AnimatedBuilder(
-      animation: _a,
-      builder: (context, child) =>
-          Transform.scale(scale: 1 + .1 * _a.value, child: child),
-      child: Container(
-        width: TouchSign.size,
-        height: TouchSign.size,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: CoquiColors.lessonGreen,
-          boxShadow: [BoxShadow(color: CoquiColors.lessonInk, spreadRadius: 2)],
+  Widget build(BuildContext context) => IgnorePointer(
+    child: Semantics(
+      label: 'Touch here',
+      child: AnimatedBuilder(
+        animation: _a,
+        builder: (context, child) => Transform.translate(
+          offset: Offset(
+            0,
+            -TouchSign.bounce * Curves.easeInOut.transform(_a.value),
+          ),
+          child: child,
         ),
-        child: RotatedBox(
-          quarterTurns: widget.pointing == AxisDirection.down ? 1 : 0,
-          child: CoquiIcon(
-            CoquiIcons.right,
+        child: Container(
+          width: TouchSign.size,
+          height: TouchSign.size,
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: CoquiColors.lessonGreen,
+            boxShadow: [
+              BoxShadow(color: CoquiColors.lessonInk, spreadRadius: 2),
+            ],
+          ),
+          child: const CoquiIcon(
+            CoquiIcons.touchApp,
             size: 30,
             color: CoquiColors.lessonInk,
           ),
@@ -247,6 +308,8 @@ class WordTile extends StatelessWidget {
     this.look = TileLook.normal,
     this.ring = ChoiceRing.none,
     this.check = false,
+    this.cross = false,
+    this.number,
     this.sign = false,
     this.shake = 0,
     this.still = false,
@@ -258,7 +321,11 @@ class WordTile extends StatelessWidget {
   final VoidCallback? onSpeaker;
   final TileLook look;
   final ChoiceRing ring;
+
+  /// The check badge of a right touch; the X badge of a wrong one; a pair's number beside either.
   final bool check;
+  final bool cross;
+  final int? number;
   final bool sign;
   final int shake;
   final bool still;
@@ -273,14 +340,16 @@ class WordTile extends StatelessWidget {
       textAlign: TextAlign.center,
       style: CoquiText.lessonTile,
     );
-    final speaker = onSpeaker;
+    final speaker = look == TileLook.empty ? null : onSpeaker;
     Widget tile = Pressable(
-      onPressed: onTap,
-      semanticLabel: word,
+      onPressed: look == TileLook.empty ? null : onTap,
+      semanticLabel: look == TileLook.empty ? '' : word,
       builder: (context, pressed) => _TileFace(
         look: look,
         ring: ring,
         check: check,
+        cross: cross,
+        number: number,
         sign: sign,
         pressed: pressed,
         shake: shake,
@@ -348,6 +417,8 @@ class SpeakerTile extends StatelessWidget {
     this.look = TileLook.normal,
     this.ring = ChoiceRing.none,
     this.check = false,
+    this.cross = false,
+    this.number,
     this.playing = false,
     this.still = false,
     this.width = 88,
@@ -360,6 +431,8 @@ class SpeakerTile extends StatelessWidget {
   final TileLook look;
   final ChoiceRing ring;
   final bool check;
+  final bool cross;
+  final int? number;
   final bool playing;
   final bool still;
   final double width;
@@ -372,6 +445,8 @@ class SpeakerTile extends StatelessWidget {
       look: look,
       ring: ring,
       check: check,
+      cross: cross,
+      number: number,
       sign: false,
       pressed: pressed,
       shake: 0,
@@ -421,21 +496,36 @@ class TileTray extends StatelessWidget {
   }
 }
 
-/// "4 in a row": a small pill of right answers in a row. Nothing below [from].
+/// "4 in a row": a small pill of right answers in a row. Nothing below [from]. With [reserve] the pill's place is
+/// kept when there is nothing to show (a line that stands beside it does not change its width when the pill comes).
 class StreakChip extends StatelessWidget {
-  const StreakChip({super.key, required this.count, this.from = 3});
+  const StreakChip({
+    super.key,
+    required this.count,
+    this.from = 3,
+    this.reserve = false,
+  });
+
+  /// The width a reserved place has: room for "99 in a row".
+  static const double reservedWidth = 132;
+  static const double height = 32;
 
   final int count;
   final int from;
+  final bool reserve;
 
   @override
   Widget build(BuildContext context) {
-    if (count < from) return const SizedBox.shrink();
-    return Semantics(
+    if (count < from) {
+      return reserve
+          ? const SizedBox(width: reservedWidth, height: height)
+          : const SizedBox.shrink();
+    }
+    final chip = Semantics(
       label: '$count in a row',
       excludeSemantics: true,
       child: Container(
-        height: 32,
+        height: height,
         padding: const EdgeInsets.symmetric(horizontal: CoquiMetrics.s12),
         decoration: BoxDecoration(
           color: CoquiColors.lessonChip,
@@ -453,6 +543,144 @@ class StreakChip extends StatelessWidget {
             Text('$count in a row', style: CoquiText.lessonChip),
           ],
         ),
+      ),
+    );
+    if (!reserve) return chip;
+    return SizedBox(
+      width: reservedWidth,
+      height: height,
+      child: Align(alignment: Alignment.centerRight, child: chip),
+    );
+  }
+}
+
+/// The round speaker of a game that plays a sentence: 64 px, the same size and place in every such game. A touch
+/// plays the sentence again. While the sentence sounds ([playing]) a ring pulses round it (a still ring with
+/// reduced motion, or [still]).
+class RoundSpeaker extends StatefulWidget {
+  const RoundSpeaker({
+    super.key,
+    required this.onTap,
+    this.playing = false,
+    this.still = false,
+    this.label = 'Hear it again',
+  });
+
+  /// The disc.
+  static const double size = 64;
+
+  /// The room the pulse needs round the disc (the ring grows by this much on every side).
+  static const double pulse = 10;
+
+  final VoidCallback? onTap;
+  final bool playing;
+  final bool still;
+
+  /// What a screen reader says.
+  final String label;
+
+  @override
+  State<RoundSpeaker> createState() => _RoundSpeakerState();
+}
+
+class _RoundSpeakerState extends State<RoundSpeaker>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _a = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  );
+
+  bool get _calm =>
+      widget.still || MediaQuery.maybeDisableAnimationsOf(context) == true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _sync();
+  }
+
+  @override
+  void didUpdateWidget(RoundSpeaker old) {
+    super.didUpdateWidget(old);
+    _sync();
+  }
+
+  void _sync() {
+    if (widget.playing && !_calm) {
+      if (!_a.isAnimating) _a.repeat();
+    } else {
+      _a.stop();
+      _a.value = 0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _a.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const box = RoundSpeaker.size + 2 * RoundSpeaker.pulse;
+    return SizedBox(
+      width: box,
+      height: box,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (widget.playing)
+            IgnorePointer(
+              child: AnimatedBuilder(
+                animation: _a,
+                builder: (context, _) {
+                  final t = _calm ? .5 : _a.value;
+                  final r = RoundSpeaker.size / 2 + RoundSpeaker.pulse * t;
+                  return Container(
+                    width: 2 * r,
+                    height: 2 * r,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: CoquiColors.bookLineLitBar.withValues(
+                          alpha: .9 * (1 - t),
+                        ),
+                        width: 3,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          Pressable(
+            onPressed: widget.onTap,
+            semanticLabel: widget.label,
+            builder: (context, pressed) => Container(
+              width: RoundSpeaker.size,
+              height: RoundSpeaker.size,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: pressed
+                    ? CoquiColors.lessonTilePressed
+                    : CoquiColors.lessonTile,
+                border: Border.all(
+                  color: widget.playing
+                      ? CoquiColors.bookLineLitBar
+                      : CoquiColors.lessonLine,
+                  width: CoquiMetrics.borderButton,
+                ),
+              ),
+              child: CoquiIcon(
+                CoquiIcons.lessonSound,
+                size: 30,
+                color: widget.playing
+                    ? CoquiColors.lessonInk
+                    : CoquiColors.lessonInk2,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
