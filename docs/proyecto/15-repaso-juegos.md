@@ -32,8 +32,8 @@ Older words of his that bind this (page 03): "the pictures are an aid to the lis
 - Each word gets one scored item. Around them, about four play items that score nothing. About 14 items, 4 minutes.
 - The mix does not wait for a word to be well known. Every session from the second day has at least three kinds of game.
 - A missed item shows its answer, and comes back once three items later: the same sentence, the same game, not scored. At most five come back in a session.
-- Each game has one plain English line saying what to do (menus may be English): "Touch the picture that fits." "Touch the word you heard." "Put the words in order." "Match each sound to its word." "Which moment is it?" "Say it."
-- A row of right answers shows as a small count ("4 in a row"). The end screen says how many he got right the first time, and lists each word with the sentence it was asked in; a tap plays it. No lives and no clock.
+- Each game has one plain English line saying what to do (menus may be English): "Listen. Touch the picture that fits." (¿Cuál? and ¿Dónde? say the same line) "Listen. Touch the word you heard." "Listen. Touch the words in the order you hear. Two don't belong." "Touch a sound, then its word." "Listen. Say what comes next."
+- A row of right answers shows as a small count ("4 in a row"). The end screen says "N of M words right the first time" (M is the session's scored words; the play games do not count) and lists every one of those words in one of two lists, "Got it the first time" and "Coming back soon", each with the sentence it was asked in; a tap plays it. No lives and no clock.
 - Repaso counts toward the day's minutes, so a day with only Repaso keeps the streak. Today it does not.
 - Silence, in the scored game only: 6 s after the sentence it plays again; 6 s more, the answer is shown and it is a miss (as today). The play games never time out.
 
@@ -52,7 +52,7 @@ Play: these score nothing for Ear. They use the session's words in still other s
 
 | Game | What he does |
 |---|---|
-| **Arma la frase** | Hears a sentence of 3 to 6 words. Its words are tiles in a mixed order, lower case, no punctuation, with two extra tiles. He touches them in order; a wrong tile jumps back. Lines with a name, a repeated word or a "says" tag are not used. |
+| **Arma la frase** | Hears a sentence of 3 to 6 words. Its words are tiles in a mixed order, lower case, no punctuation, with two extra tiles. Under them is an empty answer line (no places, so the answer cannot be read from the shapes of slots; its height for two rows is there from the start). He touches the tile of the next word of the sentence: it goes onto the line, one after another from the left, and has the green border at once. Any other tile stays in the bank, red-orange with an X for about a second, and the item counts as missed; he goes on. A tile on the line stays (every placed tile is right). Lines with a name, a repeated word or a "says" tag are not used. |
 | **Parejas** | Four speaker tiles and four written words. A speaker plays a sentence; he touches the word that is in it. Right pairs lock. The four are chosen so that each word is in its own sentence only and no two are easily taken for each other. |
 | **¿Dónde?** | Hears a sentence and touches the picture of its moment, among two or three pictures of the same story. Only for the sentences where readers found fair wrong pictures (163 items, 64 words). |
 | **Dilo** | Only for a word that is open for speaking (today's rule: some days after he first hears it), only with a line that has decided accepted forms, only when the microphone works and "Speak in stories" is on. He hears what comes just before the line in its story (the question or the cue), not the line itself, so it is not an echo; where a line has nothing before it, it is not used. Heard right: a Mouth answer right. Anything else writes nothing. What the app heard is shown, as on the call screen. |

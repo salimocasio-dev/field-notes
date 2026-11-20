@@ -80,9 +80,16 @@ List<TodayEntry> todayPlan({
   required Clock clock,
 }) {
   final out = <TodayEntry>[];
+  // the words Repaso can serve (one rule, page 15, asked in coqui_contracts); with no games' data, today's: a word that
+  // has a picture pair
+  final serving = repasoServing(course, progress);
   final due = progress
       .due(Skill.ear)
-      .where((w) => course.pairs.any((p) => p.word == w))
+      .where(
+        (w) => serving != null
+            ? serving.canServe(w)
+            : course.pairs.any((p) => p.word == w),
+      )
       .toList();
   final minSetting = progress.setting('min');
   final min = minSetting is num ? minSetting : 30;

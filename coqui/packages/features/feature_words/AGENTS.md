@@ -25,6 +25,9 @@ Palabras.
 - Nobody imports another package's `src/`.
 - It exports one thing: its module, `WordsModule` (boundary rule 4). Its id is `words`; `tab(s)` is the Palabras tab; `screenFor` answers `TabRoute('words')` with the same screen and every other route with null.
 - Since order 21 the screen is the Palabras tab of v=39 (`lib/src/`): `words_view.dart` (app.html `palabras`: what is shown, worked out from `Services.progress` and `Services.course`), `words_tab.dart` (the tab), `word_sheet.dart` (`palabra` and `oyeLinea`: the word sheet's content, opened with coqui_ui's `showCoquiSheet` so that its scrim dims the tab bar), `add_box.dart` (`extra`), `balanced_key_line.dart` (the key line, see "Stand-ins"), `text_rules.dart` (`occs`, `vuelve`). The tab reads the store again after every save of it. "Palabras" and "Repaso" come from `CoquiLabels`.
+- The Repaso card's count ("N words today") and Practice are the words Repaso can serve (`repasoServing` in coqui_contracts:
+  the session asks the same rule), not only the words with a picture pair; with no games' data (`repasoServing` null),
+  today's rule. `test/repaso_count_test.dart`.
 - The dev entry is `tool/dev_main.dart` (below); `web/` is there for it.
 
 ## Stand-ins

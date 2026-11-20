@@ -316,6 +316,20 @@ void main() {
       expect(c.goodbyeWords, ['adiós', 'hasta mañana']);
     });
 
+    test('Repaso\'s games: none in the sample; given, or read from datos/repaso.json', () async {
+      expect(c, isA<RepasoCatalog>());
+      expect(c.repaso, isNull);
+      final given = RepasoData(sentences: [], words: []);
+      expect(FakeCourseCatalog(repaso: given).repaso, same(given));
+      final read = FakeCourseCatalog(
+        fetch: (path) => path == 'datos/repaso.json'
+            ? Future.value('{"v":1,"frases":[],"palabras":[]}')
+            : sampleFile(path),
+      );
+      await read.load();
+      expect(read.repaso!.words, isEmpty);
+    });
+
     test('lines a word was heard in (oidoEn)', () async {
       final ls = await c.linesWith('casa', ['la-lluvia', 'el-bizcocho']);
       expect(ls, hasLength(5));

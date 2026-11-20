@@ -253,6 +253,63 @@ void main() {
       skip: kIsWeb,
     );
 
+    testWidgets(
+      'a picture handed another picture in place shows the new one and no error box, animated or not',
+      (tester) async {
+        final source = ScenePictures(pairs: pairs, bundle: testBundle());
+        final casa = byWord['casa']!, abuela = byWord['abuela']!;
+        final refs = [
+          PictureRef.of(casa, casa.yes),
+          PictureRef.of(casa, casa.no),
+          PictureRef.of(abuela, abuela.yes),
+        ];
+        final drawn = [
+          for (final r in refs)
+            (await tester.runAsync(() => source.pixels(r)))!,
+        ];
+        expect(drawn[0], isNot(drawn[1]));
+        expect(drawn[1], isNot(drawn[2]));
+
+        // one tree, the same widget in the same place each time: a state that is handed another picture
+        Future<void> handed(int k, {required bool animated}) async {
+          await show(tester, source.of(refs[k], animated: animated));
+          final reason = 'picture $k, animated: $animated';
+          expect(tester.takeException(), isNull, reason: reason);
+          expect(
+            find.byType(Text),
+            findsNothing,
+            reason: '$reason: no error box (${errorText(tester)})',
+          );
+          final view = tester.widget<PixelView>(find.byType(PixelView));
+          expect(view.pixels, drawn[k], reason: '$reason: the new picture');
+        }
+
+        await handed(0, animated: false);
+        // another picture, not animated, then the same pictures animated: the first ticker
+        await handed(1, animated: false);
+        await handed(0, animated: true);
+        // an animated picture handed another animated picture: a second ticker (and a third, and one after a still one)
+        await handed(1, animated: true);
+        await handed(2, animated: true);
+        await handed(0, animated: false);
+        await handed(2, animated: true);
+        // and it goes on moving after all that
+        final view = tester.widget<PixelView>(find.byType(PixelView));
+        final first = List<int>.of(view.pixels);
+        for (var i = 0; i < 10; i++) {
+          await tester.pump(const Duration(milliseconds: 70));
+        }
+        expect(
+          view.pixels,
+          isNot(first),
+          reason: 'the last picture is animated',
+        );
+        await settle(tester);
+      },
+      // as 'an animated picture keeps ticking': the picture's upload in a browser leaves a pending zero-length timer
+      skip: kIsWeb,
+    );
+
     testWidgets('warm bakes the states ahead', (tester) async {
       final source = ScenePictures(bundle: testBundle());
       final p = byWord['abuela']!;

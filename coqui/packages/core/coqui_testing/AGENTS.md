@@ -24,6 +24,9 @@ A fake for every interface, and a tiny sample course.
 - Nobody imports another package's `src/`.
 - Since order 02 it holds a fake for every interface of page 12, sections 2 and 3, `fakeServices`, `FeatureDevApp` and the sample course (`sample/`, read through `lib/src/sample_files.dart`; both made by `coqui/tool/contracts/make_sample.mjs`). Each fake's doc comment says what it does and does not do.
 
+- Order 27: `FakeCourseCatalog` is also a `RepasoCatalog`: `repaso` is what the constructor is given, or `datos/repaso.json`
+  read through its fetch when there is one (the sample course has none: null).
+
 ## Run and test it alone
 
 ```

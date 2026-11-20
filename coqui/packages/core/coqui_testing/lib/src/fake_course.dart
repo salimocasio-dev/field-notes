@@ -26,16 +26,24 @@ Future<String> sampleFile(String path) async {
 /// [goodbyeWords] are fijos.json's `clips` and `despedidas`, unless the constructor is given others. [linesWith]
 /// is app.html's oidoEn over the given stories, in the order given (without its ready.json filter).
 ///
+/// Repaso's games ([repaso], a [RepasoCatalog]): the [RepasoData] the constructor is given; with none, `load` reads
+/// `datos/repaso.json` through [fetch] if it is there and reads (the sample course has no such file: then null, and
+/// Repaso plays today's ¿Cuál?).
+///
 /// What it does not do: a story or book that is not in the sample: [story] throws, [book] gives null. A clip
 /// without marks in the sample: [clip] gives null. [fixedClip] throws on a role it does not know. No audio files.
-class FakeCourseCatalog implements CourseCatalog {
+class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
   FakeCourseCatalog({
     SampleFetch? fetch,
     Map<String, String>? fixedClips,
     List<String>? goodbyeWords,
+    this.repaso,
   }) : fetch = fetch ?? sampleFile,
        _fixedGiven = fixedClips,
        _goodbyeGiven = goodbyeWords;
+
+  @override
+  RepasoData? repaso;
 
   final SampleFetch fetch;
   final Map<String, String>? _fixedGiven;
@@ -119,6 +127,15 @@ class FakeCourseCatalog implements CourseCatalog {
         if (lines[e.key] != null)
           e.key: _clip(e.key, lines[e.key]!, (e.value as List).cast<num>()),
     };
+    if (repaso == null) {
+      try {
+        repaso = RepasoData.fromJson(
+          await _json('datos/repaso.json') as Map<String, dynamic>,
+        );
+      } catch (_) {
+        repaso = null;
+      }
+    }
     _loaded = true;
   }
 
