@@ -262,8 +262,9 @@ void main() {
                 final r = t.getRect(f.at(i));
                 expect(r.width, greaterThan(0));
                 // it can be scrolled to; the first tile of a game starts on screen
-                if (i == 0)
-                  expect(screen.contains(r.topLeft), isTrue, reason: '$m');
+                if (i == 0) {
+                  expect(screen.contains(r.topLeft), isTrue, reason: m);
+                }
               }
             }
           },
