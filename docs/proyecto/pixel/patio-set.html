@@ -100,8 +100,8 @@ const SKIES = {   // top to the horizon, as the old cielo(n)
 };
 const LIGHTS = {   // the light of the hour on the set: c * m + a (set-kit.js lightPass)
   dia: null,
-  tarde: { m: [.97, .95, .9], a: [10, 6, 0], litTufts: true },
-  tarde2: { m: [.84, .84, .74], a: [28, 12, 6], litTufts: true },      // El frente's dusk, less red on the lawn (round 2: El frente's turned it brown here)
+  tarde: { m: [.97, .95, .9], a: [10, 6, 0] },
+  tarde2: { m: [.8, .86, .74], a: [24, 12, 6] },        // El frente's dusk, less red on the lawn (round 2: El frente's turned it brown here; round 4, on El frente's grass, less red again: it read olive)
   // round 2: the sun is down behind the hills: a dim light, a little warm, that leaves the lawn green (round 1's turned it brown: red over green)
   ocaso: { m: [.74, .86, .88], a: [14, 4, 16] },
   crepusculo: { m: [.62, .74, .86], a: [8, 6, 26] },                  // the dusk after it: dimmer and bluer, the lawn a grey green
@@ -115,13 +115,22 @@ const HILLS = SET.hora === 'noche' ? { far: [[44, 50, 56], [52, 58, 62], [38, 44
   : { far: [[124, 178, 160], [160, 204, 182], [104, 158, 142]], near: [[86, 150, 96], [122, 184, 118], [70, 130, 82]] };
 
 /* ---------- the ground: the lawn and the beds; beyond the yard the field (and through the gate a path) ---------- */
-// round 3: the lawn is the yard's own grass, greener than the engine's meadow (GRASS: round 2's read "very yellow", and the yellow and orange
-// flowers were lost on it) and calm: two neighbouring tones, Bayer-mixed, over a faint slow noise (round 2's noise made a lighter patch in the
-// middle that read as a mound). Its blades (growGrass) take the same tones (tuftLit, tuftDark: this page's own copies of the engine's)
-const LAWN = [[30, 70, 44], [44, 100, 52], [64, 131, 61], [80, 148, 67], [112, 172, 80]];
-const BLADE = [2, 2, 2, 3, 3];                                       // a blade's tones: the lawn's own two, the tip a step lighter
-for (let k = 0; k < 5; k++) { const c = LAWN[BLADE[k]]; tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
-const lawnAt = (x, y, ix, iy) => { const t = 2.5 + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25; return rgb(...LAWN[clamp(Math.floor(t), 2, 3)]); };
+// round 4: the lawn is the same grass as El frente's and El balcón's lawns: the engine's GRASS ramp (frente-set.html's frontGround), centred
+// where El frente's lawn is (its mean tone 2.95 of the ramp's 0..4; here 3.0), but calm, as round 3's was: mostly one tone, Bayer-mixed with
+// its two neighbours, over a faint slow noise (no lighter patch that reads as a mound; El frente's own noise spreads it over four tones). Its
+// blades (growGrass) take the same tones, the tip a step lighter (tuftLit, tuftDark: this page's own copies of the engine's)
+const LAWN = GRASS, LAWN_T = 3.45, BLADE = [2, 2, 3, 3, 4];
+// Round 4: the blades take the light of the hour as the lawn under them does (lit, set-kit.js), at every hour: the engine's way at dusk and at
+// night (lightPass darkTufts: every blade in its shade colour) turns this ramp's light tones olive brown, specks of brown on a green lawn
+for (let k = 0; k < 5; k++) { const c = lit(LAWN[BLADE[k]], LIGHT); tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
+// round 4: round the beds the grass is darker, most behind the row of flower heads (the same ramp, a tone and more down: its two darkest
+// tones mixed), so that each head (its yellow ones, on this lighter lawn, above all) is seen against dark lawn; no blades there. An ellipse
+// over each bed, raised HALO[0] rows (the heads stand 9 to 18 rows over the holes; flowers.py measures 20 to 25 over them), radii HALO[1], HALO[2]; full inside q < HALO[3] - HALO[4], fading out to HALO[3]
+const HALO = [11, 35, 22, 1.2, .5], HALO_DARK = 1.3;
+const backOf = (ix, iy) => { let d = 0; for (const k of ['L', 'R']) { const b = BEDS[k], dx = (ix + .5 - b.sx) / HALO[1], dy = (iy + .5 - (b.sy - HALO[0])) / HALO[2];
+  d = Math.max(d, clamp((HALO[3] - dx * dx - dy * dy) / HALO[4], 0, 1)); } return d; };
+const lawnAt = (x, y, ix, iy) => { const d = backOf(ix, iy), t = LAWN_T - d * HALO_DARK + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
+  return rgb(...LAWN[clamp(Math.floor(t), d > 0 ? 1 : 2, 4)]); };
 // the beds (round 3: dug earth, not a mat): a ragged edge, loose clods (a lit top, a dark underside), a low rim of thrown-up earth at the
 // back, the five holes each a dark pit with a lit lip on its far side
 const inBed = (ix, iy, k) => { const b = BEDS[k], dx = (ix + .5 - b.sx) / BED_RX, dy = (iy + .5 - b.sy) / BED_RY, a = Math.atan2(dy, dx);
@@ -405,6 +414,7 @@ function buildSet() {
       pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
     }
     growGrass();
+    { const keep = tufts.filter(t => backOf(t.ix, t.iy) <= .5); tufts.length = 0; tufts.push(...keep); }   // round 4: no blades in the dark grass round the beds
     GROUND_CACHE = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
   } else {
     pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
@@ -421,7 +431,7 @@ function buildSet() {
   flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   hills();
-  if (LIGHT) lightPass(LIGHT.m, LIGHT.a, !LIGHT.litTufts);
+  if (LIGHT) lightPass(LIGHT.m, LIGHT.a, false);                       // (the blades are lit already: tuftLit)
   const day = SET.hora === 'dia' || SET.hora === 'tarde';
   skyFill((ix, iy) => {
     if (day) for (const [cx, cy, s] of CLOUDS) {

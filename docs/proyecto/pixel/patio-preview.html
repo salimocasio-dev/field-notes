@@ -17,7 +17,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
       the sun, the moon and the stars are drawn where they were, then the set's own pixels again over them wherever the set drew anything
       (sheet: behind); the bubbles go where sheet.talk says.
    2. W in old positions needs no moving: the yard is built round the old picture, so every place on the lawn keeps its screen place (sheet:
-      rules.floor), but for the places in moves (the scene's acts) and the story positions remap moves (applied for the story being shown).
+      rules.floor), but for the places in moves (the scene's acts; the frog at LUGAR.porton and LUGAR.sale, who "cq") and the story positions
+      remap moves (applied for the story being shown).
    3. The set for setKey(W) is drawn by patio-set.html in a hidden frame, with the characters' shadows cast (frame()).
    4. The picture is cropped to the view (196 x 216 at x0 22) or the pair's crop (196 x 104, or 98 x 52 at zoom 2). */
 (() => {
@@ -100,6 +101,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
       const m = MV.find(q => (q.who === 'whoever' || q.who === id) && q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y));
       if (m) { p.x = m.new[0]; p.y = m.new[1]; if (m.z != null) p.z = m.z; continue; }
       const r = RM.find(e => e.old[0] === Math.round(p.x) && e.old[1] === Math.round(p.y)); if (r) { p.x = r.new[0]; p.y = r.new[1]; } }
+    // round 4: the frog at one of his places that moved (moves, places who "cq": LUGAR.porton and LUGAR.sale, which followed the gate)
+    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } }
     if (w.soly === 24) w.soly = 26;
     const en = SHEET.moves.find(m => m.respEn && (!acts || acts.has(m.act))); if (en && w.gente && w.gente.abuela && w.gente.mama) w.respEn = en.respEn;
     return w; };

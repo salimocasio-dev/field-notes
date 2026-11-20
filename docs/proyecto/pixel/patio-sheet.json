@@ -18,7 +18,7 @@
   "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were"
  },
  "layout": {
-  "what": "the yard built as La sala is: two walls on the world's axes, seen at the engine's 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture's sides and bottom. On the LEFT the back of the house: its back wall on x = -1.904392167527876 (it faces +x, in shade, teal siding as El frente's side wall), from its far corner (a white corner board, screen x 76) down off the picture's left edge; in it the back door in its white frame on a stone step (screen x 34 to 69); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = -1.604392167527876 (it faces +y, lit), from the far corner off the picture's right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x 115 to 163); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence's first post the yard opens on a field and low hills (the horizon at row 84), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the yard's own green, calm (two neighbouring tones), no blooms in its grass round the beds, the crate and the ball; the beds are turned earth in lumps, a hole for each flower",
+  "what": "the yard built as La sala is: two walls on the world's axes, seen at the engine's 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture's sides and bottom. On the LEFT the back of the house: its back wall on x = -1.904392167527876 (it faces +x, in shade, teal siding as El frente's side wall), from its far corner (a white corner board, screen x 76) down off the picture's left edge; in it the back door in its white frame on a stone step (screen x 34 to 69); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = -1.604392167527876 (it faces +y, lit), from the far corner off the picture's right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x 115 to 163); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence's first post the yard opens on a field and low hills (the horizon at row 84), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the same grass as El frente's and El balcón's (round 4: the engine's GRASS ramp, centred where El frente's lawn is), calm (mostly one tone, Bayer-mixed with its neighbours), no blooms in its grass round the beds, the crate and the ball; round each bed the grass is darker, most behind its row of flower heads, with no blades (round 4: each head seen against dark lawn); the beds are turned earth in lumps, a hole for each flower",
   "lines": {
    "corner": [114.48, 79.75],
    "cornerWhat": "the far corner (where the two lines meet), on the screen",
@@ -39,29 +39,29 @@
   },
   "gate": {
    "porton": {
-    "at": [128, 104],
-    "before": 34.5,
-    "old": 17,
-    "best": [
-     [121, 96],
-     30
-    ]
+    "at": [126, 86],
+    "before": 17.5,
+    "oldPicture": 17,
+    "round3": {
+     "at": [128, 104],
+     "before": 34.5
+    }
    },
    "sale": {
-    "at": [134, 84],
-    "before": 11.5,
-    "old": -3,
-    "best": [
-     [133, 81],
-     9
-    ]
+    "at": [130, 68],
+    "before": -2.5,
+    "oldPicture": -3,
+    "round3": {
+     "at": [134, 84],
+     "before": 11.5
+    }
    },
-   "what": "the frog's two places at the gate (LUGAR.porton: he stops at it; LUGAR.sale: he goes out through it and fades), in rows his feet are in front of the fence's line at his column (< 0: past it). The old picture: porton 17 rows before its gate, sale 3 rows past it. Here: porton 34.5 rows before (17.5 more than the old), sale 11.5 rows before (14.5 short of the old). Not reached, and it cannot be with the old hop counts: the nearest any place keeping all 13 of its hop counts comes is porton 30 rows before at 121,96, sale 9 before at 133,81 (the fence's line cannot come down to them: the round 3 rule of 5 rows of lawn). Along the fence the gap is the same wherever the gate stands (its line is straight), so the gate stands where both his places are inside its opening's columns (x 135 to 157: porton's middle 144, sale's 150): that fails least"
+   "what": "the frog's two places at the gate (LUGAR.porton: he stops at it; LUGAR.sale: he goes out through it and fades), in rows his feet are in front of the fence's line at his column (< 0: past it). The old picture: porton 17 rows before its gate, sale 3 rows past it. Round 4: they follow the gate (moves): porton 17.5 rows before it, his middle at x 142 (the opening x 135 to 157); sale 2.5 rows past it, on the path, his box between the posts. Round 3 had left them where the old hop counts put them: porton 34.5 rows before, sale 11.5 rows before (on the lawn). So some hop counts of pairs with porton or sale are not the old ones: hops lists them"
   },
   "why": "page 11 decision 9 and the owner's three approved sets (El frente, El balcón, La sala): walls run along the world's axes and are seen at the engine's angle. Every place on the lawn keeps its old screen point (rules.floor). Round 3: everyone on the lawn has at least 5 rows of lawn between their feet and the foot of what stands behind them (round 2 put the lines as low as the places allowed, and the frog read as standing on the wall's base, the boy on the fence's): the wall's line went up 1 row, held by the frog at the door (LUGAR.puerta) before the door's step; the fence's 1 row, held by Carmen at the open gate (pair vamos, 168, 120) and the walk to the gate; the trunk stands against the fence, held by the frog at the tree. The old sun sank at x 100, right where the corner rises: a house wall there would hide it at every height, so the house ends short of the corner and the sun goes down in the gap, behind the field and the hills",
   "moved": [
    "the back door: its middle 10 px right of the old one (x 42 to 52), 1.5 units wide (round 3; the old opening 30 px), its threshold on the house wall's foot (row 109, the old 112); box [34,40,35,80] (old [27, 57, 30, 56]). Follow it: abuela in the door (asoma) and whoever goes in (seva), in moves",
-   "the gate: its middle 1 px left of the old one (x 147 to 146), its posts at x 133 and 159, its foot on the fence's line, 16 rows further back (row 112 to 96); box [115,42,48,63] (old [127, 70, 40, 43]; it holds the leaf shut and swung open into the yard). Follows it: the walk to the gate (juntos, luiscorre), in moves. Not moved: the frog's two places there (layout.gate)",
+   "the gate: its middle 1 px left of the old one (x 147 to 146), its posts at x 133 and 159, its foot on the fence's line, 16 rows further back (row 112 to 96); box [115,42,48,63] (old [127, 70, 40, 43]; it holds the leaf shut and swung open into the yard). Follow it: the walk to the gate (juntos, luiscorre) and (round 4) the frog's two places there, LUGAR.porton and LUGAR.sale (layout.gate), in moves",
    "the flamboyán: its trunk's foot 13 rows lower (row 114 to 127), at the same x (204), against the fence (round 3: 0.12 in front of it, round 2 .35): the trunk is longer; its crown where the old one was (its left lobe 4 px right, clear of the gate's box). Nothing follows: the frog at the tree (LUGAR.arbol) is before the trunk, 5 rows of lawn and more between them",
    "the sixth star: from (112, 58) to [100,44] (moves)",
    "unchanged: the nest (181, 66) and every landing of the bird on it; the bird on the fence (178, 83), on a post's cap; the ball in the tree (196, 64); the sun (SOLX 100), the moon (150, 26)"
@@ -372,11 +372,11 @@
    "what": "LUGAR.abuela: the frog"
   },
   "frog.porton": {
-   "world": [1.5774, 0.272, 0],
-   "new": [128, 104],
+   "world": [0.5439, -0.6527, 0],
+   "new": [126, 86],
    "scale": 0.85,
    "old": [128, 104],
-   "what": "LUGAR.porton: the frog"
+   "what": "LUGAR.porton: the frog at the gate, on the lawn before its opening (moved: see moves)"
   },
   "frog.arbol": {
    "world": [3.5899, -0.8703, 0],
@@ -393,11 +393,11 @@
    "what": "LUGAR.luisC: the frog"
   },
   "frog.sale": {
-   "world": [0.6527, -0.9791, 0],
-   "new": [134, 84],
+   "world": [-0.3264, -1.7406, 0],
+   "new": [130, 68],
    "scale": 0.5,
    "old": [134, 84],
-   "what": "LUGAR.sale: the frog"
+   "what": "LUGAR.sale: the frog through the gate, on the path just past the fence's line, where he fades (moved: see moves)"
   },
   "detras.L": {
    "world": [2.0125, 4.841, 0],
@@ -517,7 +517,7 @@
   },
   "porton": {
    "spot": "frog.porton",
-   "q": [128, 104],
+   "q": [126, 86],
    "scale": 0.85,
    "old": [128, 104]
   },
@@ -535,12 +535,79 @@
   },
   "sale": {
    "spot": "frog.sale",
-   "q": [134, 84],
+   "q": [130, 68],
    "scale": 0.5,
    "old": [134, 84]
   }
  },
  "hops": [
+  {
+   "a": "centro",
+   "b": "sale",
+   "old": 3,
+   "new": 4,
+   "dOld": 98.67,
+   "dNew": 113.03
+  },
+  {
+   "a": "caja",
+   "b": "sale",
+   "old": 2,
+   "new": 3,
+   "dOld": 72.5,
+   "dNew": 86.02
+  },
+  {
+   "a": "camaL",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 71.02,
+   "dNew": 85.91
+  },
+  {
+   "a": "camaR",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 60.83,
+   "dNew": 78.41
+  },
+  {
+   "a": "luis",
+   "b": "porton",
+   "old": 1,
+   "new": 2,
+   "dOld": 39.4,
+   "dNew": 55.79
+  },
+  {
+   "a": "carmen",
+   "b": "porton",
+   "old": 2,
+   "new": 3,
+   "dOld": 70.94,
+   "dNew": 77.67
+  },
+  {
+   "a": "carmenA",
+   "b": "sale",
+   "old": 1,
+   "new": 2,
+   "dOld": 38.83,
+   "dNew": 51.26
+  },
+  {
+   "a": "luisC",
+   "b": "sale",
+   "old": 2,
+   "new": 3,
+   "dOld": 67.68,
+   "dNew": 79.62
+  }
+ ],
+ "hopsWhat": "round 4: each pair of LUGAR places whose hop count (kit.js acts.ir: round(d / 30), 1 to 4, d the screen distance between the two frog points) is not the old one, with the old and the new count and distance; every one has porton or sale (their places followed the gate: moves). Every other pair keeps its count (hopsAll: all 91 pairs). acts.sevan hops 3 times to sale from wherever he is, whatever the distance",
+ "hopsAll": [
   {
    "a": "puerta",
    "b": "inicio",
@@ -619,7 +686,7 @@
    "old": 3,
    "new": 3,
    "dOld": 98,
-   "dNew": 98
+   "dNew": 97.67
   },
   {
    "a": "puerta",
@@ -643,7 +710,7 @@
    "old": 4,
    "new": 4,
    "dOld": 105.91,
-   "dNew": 105.91
+   "dNew": 106.28
   },
   {
    "a": "inicio",
@@ -715,7 +782,7 @@
    "old": 3,
    "new": 3,
    "dOld": 88.84,
-   "dNew": 88.84
+   "dNew": 97.84
   },
   {
    "a": "inicio",
@@ -739,7 +806,7 @@
    "old": 4,
    "new": 4,
    "dOld": 105.26,
-   "dNew": 105.26
+   "dNew": 113.17
   },
   {
    "a": "centro",
@@ -803,7 +870,7 @@
    "old": 3,
    "new": 3,
    "dOld": 77.79,
-   "dNew": 77.79
+   "dNew": 94.59
   },
   {
    "a": "centro",
@@ -825,9 +892,9 @@
    "a": "centro",
    "b": "sale",
    "old": 3,
-   "new": 3,
+   "new": 4,
    "dOld": 98.67,
-   "dNew": 98.67
+   "dNew": 113.03
   },
   {
    "a": "caja",
@@ -883,7 +950,7 @@
    "old": 2,
    "new": 2,
    "dOld": 51.88,
-   "dNew": 51.88
+   "dNew": 67.68
   },
   {
    "a": "caja",
@@ -905,9 +972,9 @@
    "a": "caja",
    "b": "sale",
    "old": 2,
-   "new": 2,
+   "new": 3,
    "dOld": 72.5,
-   "dNew": 72.5
+   "dNew": 86.02
   },
   {
    "a": "camaL",
@@ -953,9 +1020,9 @@
    "a": "camaL",
    "b": "porton",
    "old": 2,
-   "new": 2,
+   "new": 3,
    "dOld": 71.02,
-   "dNew": 71.02
+   "dNew": 85.91
   },
   {
    "a": "camaL",
@@ -979,7 +1046,7 @@
    "old": 3,
    "new": 3,
    "dOld": 91.3,
-   "dNew": 91.3
+   "dNew": 104
   },
   {
    "a": "camaR",
@@ -1017,9 +1084,9 @@
    "a": "camaR",
    "b": "porton",
    "old": 2,
-   "new": 2,
+   "new": 3,
    "dOld": 60.83,
-   "dNew": 60.83
+   "dNew": 78.41
   },
   {
    "a": "camaR",
@@ -1043,7 +1110,7 @@
    "old": 3,
    "new": 3,
    "dOld": 81.58,
-   "dNew": 81.58
+   "dNew": 96.75
   },
   {
    "a": "luis",
@@ -1073,9 +1140,9 @@
    "a": "luis",
    "b": "porton",
    "old": 1,
-   "new": 1,
+   "new": 2,
    "dOld": 39.4,
-   "dNew": 39.4
+   "dNew": 55.79
   },
   {
    "a": "luis",
@@ -1099,7 +1166,7 @@
    "old": 2,
    "new": 2,
    "dOld": 60.17,
-   "dNew": 60.17
+   "dNew": 74.22
   },
   {
    "a": "carmen",
@@ -1121,9 +1188,9 @@
    "a": "carmen",
    "b": "porton",
    "old": 2,
-   "new": 2,
+   "new": 3,
    "dOld": 70.94,
-   "dNew": 70.94
+   "dNew": 77.67
   },
   {
    "a": "carmen",
@@ -1147,7 +1214,7 @@
    "old": 3,
    "new": 3,
    "dOld": 85.44,
-   "dNew": 85.44
+   "dNew": 92.02
   },
   {
    "a": "carmenA",
@@ -1163,7 +1230,7 @@
    "old": 1,
    "new": 1,
    "dOld": 20,
-   "dNew": 20
+   "dNew": 33.11
   },
   {
    "a": "carmenA",
@@ -1185,9 +1252,9 @@
    "a": "carmenA",
    "b": "sale",
    "old": 1,
-   "new": 1,
+   "new": 2,
    "dOld": 38.83,
-   "dNew": 38.83
+   "dNew": 51.26
   },
   {
    "a": "abuela",
@@ -1195,7 +1262,7 @@
    "old": 3,
    "new": 3,
    "dOld": 87.86,
-   "dNew": 87.86
+   "dNew": 100.96
   },
   {
    "a": "abuela",
@@ -1219,7 +1286,7 @@
    "old": 4,
    "new": 4,
    "dOld": 107.2,
-   "dNew": 107.2
+   "dNew": 118.34
   },
   {
    "a": "porton",
@@ -1227,7 +1294,7 @@
    "old": 2,
    "new": 2,
    "dOld": 58.55,
-   "dNew": 58.55
+   "dNew": 65.39
   },
   {
    "a": "porton",
@@ -1235,7 +1302,7 @@
    "old": 2,
    "new": 2,
    "dOld": 48.17,
-   "dNew": 48.17
+   "dNew": 61.77
   },
   {
    "a": "porton",
@@ -1243,7 +1310,7 @@
    "old": 1,
    "new": 1,
    "dOld": 20.88,
-   "dNew": 20.88
+   "dNew": 18.44
   },
   {
    "a": "arbol",
@@ -1259,15 +1326,15 @@
    "old": 2,
    "new": 2,
    "dOld": 59.06,
-   "dNew": 59.06
+   "dNew": 71.22
   },
   {
    "a": "luisC",
    "b": "sale",
    "old": 2,
-   "new": 2,
+   "new": 3,
    "dOld": 67.68,
-   "dNew": 67.68
+   "dNew": 79.62
   }
  ],
  "points": {
@@ -2819,7 +2886,7 @@
      "world": [1.387, -1.0607, 0]
     }
    ],
-   "why": "acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands 16 rows further back than the old one; the walk follows it 8 rows up and 5 px left (as far as the fence behind them allows: 5 rows of lawn between the feet and the fence's foot, round 3). The frog's place at the gate (LUGAR.porton) stays: moved up, its hop counts would change (layout.gate)"
+   "why": "acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands 16 rows further back than the old one; the walk follows it 8 rows up and 5 px left (as far as the fence behind them allows: 5 rows of lawn between the feet and the fence's foot, round 3). The frog's place at the gate (LUGAR.porton) went up with the gate too (round 4, below): he stands left of the one who walks, before the opening"
   },
   {
    "line": 308,
@@ -2835,6 +2902,36 @@
     }
    ],
    "why": "acts.luiscorre: Luis runs to the gate (then opens it, acts.abre): to the same place as acts.juntos"
+  },
+  {
+   "line": 86,
+   "act": "*",
+   "src": "porton:[128,104,.85]",
+   "to": "porton:[126,86,.85]",
+   "places": [
+    {
+     "who": "cq",
+     "old": [128, 104],
+     "new": [126, 86],
+     "world": [0.5439, -0.6527, 0]
+    }
+   ],
+   "why": "round 4: LUGAR.porton, the frog at the gate (acts.ir a porton; acts.juntos), follows the gate: on the lawn before its opening, 17.5 rows before the fence's line (the old picture: 17; round 3 left him 34.5 rows before it, where the old hop counts put him), his middle at x 142 inside the opening's columns. -2 px, -18 rows. W.cq at (128, 104) in a recorded run is here (places: who cq). Some hop counts change: hops"
+  },
+  {
+   "line": 86,
+   "act": "*",
+   "src": "sale:[134,84,.5]",
+   "to": "sale:[130,68,.5]",
+   "places": [
+    {
+     "who": "cq",
+     "old": [134, 84],
+     "new": [130, 68],
+     "world": [-0.3264, -1.7406, 0]
+    }
+   ],
+   "why": "round 4: LUGAR.sale, where the frog fades (acts.sevan: three hops from the gate), is through the opening, on the path 2.5 rows past the fence's line (the old picture: 3; round 3: 11.5 rows before it, on the lawn), his box wholly between the posts: he is seen to go out through the gate before he fades. -4 px, -16 rows. Some hop counts change: hops"
   },
   {
    "line": 195,
@@ -3128,7 +3225,8 @@
    "old": "LUGAR.porton [128,104,0.85]",
    "to": {
     "spot": "frog.porton",
-    "new": [128, 104, 0.85]
+    "new": [126, 86, 0.85],
+    "moved": "round 4: follows the gate (see moves; hop counts: hops)"
    }
   },
   {
@@ -3152,7 +3250,8 @@
    "old": "LUGAR.sale [134,84,0.5]",
    "to": {
     "spot": "frog.sale",
-    "new": [134, 84, 0.5]
+    "new": [130, 68, 0.5],
+    "moved": "round 4: follows the gate (see moves; hop counts: hops)"
    }
   },
   {
@@ -3698,7 +3797,7 @@
   {
    "line": 318,
    "old": "sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)",
-   "to": "the bird in the air: unchanged; the frog to the gate (LUGAR.sale, unchanged: see layout.moved), where he fades"
+   "to": "the bird in the air: unchanged; the frog out through the gate (LUGAR.sale, moved: see moves), where he fades"
   },
   {
    "line": 323,
@@ -3745,7 +3844,7 @@
  "checks": {
   "notes": [
    "inventory: 21 things (old 21), 14 frog places (old 14), 1 view (old 1), 73 positions (old 73), 12 review pairs of cual-patio and cual-camino's parque.no (25 pictures), 27 level pictures (old 27), 120 places of patio.js named in code",
-   "hops: 91 pairs of LUGAR places, every count as the old one (round(d / 30), 1 to 4, kit.js acts.ir); the places keep their screen points, so every distance is the old one",
+   "hops: 91 pairs of LUGAR places (round(d / 30), 1 to 4, kit.js acts.ir): every count as the old one but these 8, each with porton or sale (round 4: their places followed the gate; the other 12 places keep their points), exactly sheet hops: centro - sale 3 -> 4, caja - sale 2 -> 3, camaL - porton 2 -> 3, camaR - porton 2 -> 3, luis - porton 1 -> 2, carmen - porton 2 -> 3, carmenA - sale 1 -> 2, luisC - sale 2 -> 3",
    "greenery: the crown's lower left lobe reaches 280 px into the bird's box on its nest (behind the bird: the sprite layer draws the bird over it, as the old picture did)",
    "greenery: no pixel the crown's leaves can take (at any wind step) inside the box of the gate, the nest, the door, the house, the beds, the sun at any of its heights or the bird on the fence; the set's parts are arbol, casa, cerca, escalon, nido, porton, puerta (the step is the door's): nothing decorative",
    "wide view (x0 22): the door, its frame and abuela in it from x 33 to 72 (11 px from the left side), from row 40",
@@ -3755,16 +3854,19 @@
    "walks: whoever goes in ends at 59,115, on the door's step in its width (the door 34 to 69, its foot row 120); abuela in the door at 52,108; the walk to the gate ends at 165,116, 6 px right of its right post's foot and 14 rows before it",
    "perch: the bird on its nest has the nest under its feet (6 of 6 columns, its feet row 67); on the fence (inicio11), the boards' tops under its feet (6 of 6)",
    "beds: each of the ten holes is in its bed's earth where the old one was; behind every flower's head (9 x 9 over its hole) only the lawn, in every baked state; the crate's bottom row on the lawn, nothing of the set behind it",
+   "lawn (round 4): El frente's grass (GRASS), green at every hour (mean colour of the lawn, El frente's by day hue 76: dia 117,140,61 (hue 77); tarde 123,139,54 (hue 71); tarde2 117,132,51 (hue 71); ocaso 100,124,69 (hue 86); crepusculo 80,110,78 (hue 116); noche 71,96,79 (hue 139)); a yellow flower head at each hole stands out from the lawn over it by 61 at the least (mean CIE76, flowers.py's measure; the old picture 57 at every hole, round 3 58)",
    "sun: the part of its disc in the sky at soly 26: 100%, 40: 100%, 56: 100%, 73: 98%, 109: 0% (the old: the fence hid 2 rows at 73, all at 109; now the field, the hills and the far corner's lawn)",
    "gate (round 3): shut, its leaf fills 99% of the opening (571 px); open, the opening has no pixel of the gate or the fence, and 100 px of the path (day; 100 at night); the open leaf stands in the yard beside it, its face 18.04 px wide on the screen (round 2: edge on)",
-   "door (round 3): open, the doorway is a dim room: its pixels' mean / brightest luminance dia 54/72, tarde 58/74, tarde2 61/75, ocaso 52/68, ocaso 52/68, crepusculo 47/61, noche 44/56, noche 44/56 (0 to 255; El frente's dim room is about 60)",
+   "door (round 3): open, the doorway is a dim room: its pixels' mean / brightest luminance dia 54/72, tarde 58/74, tarde2 59/74, ocaso 52/68, ocaso 52/68, crepusculo 47/61, noche 44/56, noche 44/56 (0 to 255; El frente's dim room is about 60)",
    "stars: 60,18 hidden, 84,40 in the sky, 124,12 in the sky, 150,36 in the sky, 40,46 hidden, 100,44 in the sky, 72,64 hidden, 140,60 hidden (none half hidden, none touching the set, in the night states)",
+   "hops in the recorded runs: the frog walks from place to place puerta - centro (6), puerta - arbol (3), centro - arbol (3), centro - caja (3), centro - porton (4), abuela - porton (3), centro - abuela (3), centro - luisC (2), porton - luisC (2), inicio - centro (3), inicio - caja (3), puerta - luis (8), luis - carmen (6), puerta - carmenA (1), luis - carmenA (1); none of these takes a hop more or less (sevan, porton to sale, hops 3 times, as before)",
    "ball: at its 4 places on the lawn the lawn alone behind it, at least 5 rows of lawn between it and the foot of the fence behind it, its ground point on the lawn, where its shadow is cast (shadows.bola) (in the tree, by the nest, as the old: the crown; no shadow)",
    "asks: 69 distinct asks (for abuela, bola, camaL, camaR, carmen, es_flor, es_silla, gracias_abuelo, hm, hm_abuela, ir, luis, pajaro, porton, q_que, sol, ver): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), the hint hand on no face; 52 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
    "NOT the scene's: the hand juego.js draws at an answer card (the left one) reaches onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for ir, es_flor, q_que, es_silla",
-   "bubbles: 85 bubbles at 1128 moments of 18 runs (d-buenas-noches, d-la-bola, h-patio, hasta-manana, las-flores, que-es-esto), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; the \"q\" of duda, encoge and turno at their steps; the frog's \"amor\"): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corners (0 px), on no face",
+   "bubbles: 84 bubbles at 1128 moments of 18 runs (d-buenas-noches, d-la-bola, h-patio, hasta-manana, las-flores, que-es-esto), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; the \"q\" of duda, encoge and turno at their steps; the frog's \"amor\"): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corners (0 px), on no face",
    "clear lawn (round 3): at every place where someone stands, at every column of their feet, at least 5 rows of lawn between their feet and the foot of what stands behind them; the least: behind the wall or the step 5 rows, d-la-bola right beats.0: the frog at 30,104; the fence or the gate 6 rows, hasta-manana right beats.5.after.0: luis at 165,116; the trunk 7 rows, d-la-bola right beats.20: the frog at 186,112",
    "ground: 109 distinct places where someone stands (and the frog), 1 where someone sits on the grass: on the lawn of the yard (x > CX, y > CY; abuela in the doorway), none behind the fence or inside the house, nothing of the house, the fence, the gate or the tree nearer than them inside their body",
+   "the frog at the gate (round 4): porton 126,86, 17.5 rows before the fence's line (the old picture 17, round 3 34.5), his middle at x 142 (the opening x 137 to 154); sale 130,68, 2.5 rows past it (the old 3; round 3 11.5 rows before it, on the lawn), on the path, his box x 138 to 154 between the posts (their pixels at x 135 and 156). On his way out (15 steps of 3 hops, in 3 open-gate states) no pixel of the leaf, the posts, the fence or the set nearer than him; at sale his bubbles inside the view, on no face (3 runs); nobody where he stands (42 moments at the gate, and his way out): the nearest anyone comes is 0.94 (hasta-manana alternate final.3: luis at 165,116, the frog at 126,86)",
    "standing over sitting: at 158 distinct moments no standing person's sprite covers more of a sitting person's face (the baby in mamá's arms, Luis on the grass) than the old picture did there",
    "pair vamos.si: the gate whole in the picture, 99% of its opening seen (open: the path through it)",
    "pair vamos.no: the gate whole in the picture, 100% of its opening seen (shut: the leaf in it)",

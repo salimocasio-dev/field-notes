@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-/* El patio's sheet (order 32a, rounds 2 and 3: the yard built on the world's axes, the house wall on the left, the fence on the far right): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
+/* El patio's sheet (order 32a, rounds 2 to 4: the yard built on the world's axes, the house wall on the left, the fence on the far right): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
    Run from the repo root:  node docs/proyecto/pixel/patio-sheet-make.js        (needs Node 22 and the pre-installed Playwright)
    It reads the set's plan (window.PATIO_SET) and its part map from patio-set.html in headless Chrome, for every baked state; measures the old
    sprite layer's bubbles and people (historia/ engine.js, juego.js, kit.js, escenas/patio.js, as they are); projects every world point with the
@@ -161,6 +161,12 @@ function make(G) {
   // the gate: whoever walks there with the frog (acts.juntos, acts.luiscorre) ends right of it, before its right post, as the old one
   const JUNTOS = [165, 116];
   const STAR6 = '[100,44]';
+  // round 4: the frog's two places at the gate follow the gate (LUGAR, frog points q: his middle q.x + 16, his feet row q.y + 25). PORTON: on the
+  // lawn before the opening, 17.5 rows before the fence's line (the old picture: 17), his middle at x 142, inside the opening's columns, left of
+  // its middle so that Luis (juntos, right of the gate) has his own ground. SALE: through the opening, on the path 2.5 rows past the fence's line
+  // (the old: 3), his box (at .5) wholly between the posts, a pixel clear of each. Of every such pair of points, 7 hop counts change at the least (with him at x 137, the opening's left edge); here 8, with him before the opening
+  const PORTON4 = [126, 86], SALE4 = [130, 68];
+  const gap4 = q => r2((q[1] + 25) - E.project(F.CY + (q[0] + 16 - E.OX) / E.S * E.R2, F.CY, 0).sy);   // rows his feet are before the fence's line (< 0: past it)
   const MOVES = [
     { line: lineOf('const CAMA='), act: '*', src: 'SOLY=[24,40,56,73]', to: 'SOLY=[26,40,56,73]', sky: [['soly', 24, 26]],
       why: 'the sun at its highest 2 px lower: its touch box ([SOLX - 14, soly - 14, 28, 28]) and so its hint frame (12 px round it) wholly inside the view (las-flores and h-patio ask for the sun; at soly 24 the frame reached 2 px over the picture\'s top). W.soly 24 in a recorded run is 26' },
@@ -171,9 +177,13 @@ function make(G) {
     { line: lineOf('async seva(o)'), act: 'seva', src: 'await mueve(id,44,118)', to: 'await mueve(id,' + SEVA[0] + ',' + SEVA[1] + ')', pts: [[null, [44, 118], SEVA]],
       why: 'acts.seva: whoever goes in walks to the back door (the step\'s front, in the door\'s middle: moved with it), then is gone' },
     { line: lineOf('async juntos(o)'), act: 'juntos', src: 'await Promise.all([mueve(id,170,124),acts.ir({a:"porton"})])', to: 'await Promise.all([mueve(id,' + JUNTOS + '),acts.ir({a:"porton"})])', pts: [[null, [170, 124], JUNTOS]],
-      why: 'acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands ' + Math.round(112 - E.project((F.GX0 + F.GX1) / 2, F.CY, 0).sy) + ' rows further back than the old one; the walk follows it ' + (124 - JUNTOS[1]) + ' rows up and ' + (170 - JUNTOS[0]) + ' px left (as far as the fence behind them allows: 5 rows of lawn between the feet and the fence\'s foot, round 3). The frog\'s place at the gate (LUGAR.porton) stays: moved up, its hop counts would change (layout.gate)' },
+      why: 'acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands ' + Math.round(112 - E.project((F.GX0 + F.GX1) / 2, F.CY, 0).sy) + ' rows further back than the old one; the walk follows it ' + (124 - JUNTOS[1]) + ' rows up and ' + (170 - JUNTOS[0]) + ' px left (as far as the fence behind them allows: 5 rows of lawn between the feet and the fence\'s foot, round 3). The frog\'s place at the gate (LUGAR.porton) went up with the gate too (round 4, below): he stands left of the one who walks, before the opening' },
     { line: lineOf('async luiscorre()'), act: 'luiscorre', src: 'await mueve("luis",170,124,8)', to: 'await mueve("luis",' + JUNTOS + ',8)', pts: [['luis', [170, 124], JUNTOS]],
       why: 'acts.luiscorre: Luis runs to the gate (then opens it, acts.abre): to the same place as acts.juntos' },
+    { line: lineOf('porton:[128,104,.85]'), act: '*', src: 'porton:[128,104,.85]', to: 'porton:[' + PORTON4 + ',.85]', pts: [['cq', [128, 104], PORTON4]],
+      why: 'round 4: LUGAR.porton, the frog at the gate (acts.ir a porton; acts.juntos), follows the gate: on the lawn before its opening, ' + gap4(PORTON4) + ' rows before the fence\'s line (the old picture: 17; round 3 left him ' + gap4([128, 104]) + ' rows before it, where the old hop counts put him), his middle at x ' + (PORTON4[0] + 16) + ' inside the opening\'s columns. ' + (PORTON4[0] - 128) + ' px, ' + (PORTON4[1] - 104) + ' rows. W.cq at (128, 104) in a recorded run is here (places: who cq). Some hop counts change: hops' },
+    { line: lineOf('sale:[134,84,.5]'), act: '*', src: 'sale:[134,84,.5]', to: 'sale:[' + SALE4 + ',.5]', pts: [['cq', [134, 84], SALE4]],
+      why: 'round 4: LUGAR.sale, where the frog fades (acts.sevan: three hops from the gate), is through the opening, on the path ' + (-gap4(SALE4)) + ' rows past the fence\'s line (the old picture: 3; round 3: ' + gap4([134, 84]) + ' rows before it, on the lawn), his box wholly between the posts: he is seen to go out through the gate before he fades. ' + (SALE4[0] - 134) + ' px, ' + (SALE4[1] - 84) + ' rows. Some hop counts change: hops' },
     { line: lineOf('async inicio9()'), act: 'inicio9', src: 'carmen:{x:86,y:136,pose:"idle"}}', to: 'carmen:{x:94,y:137,pose:"idle"}}', pts: [['carmen', [86, 136], [94, 137]]],
       why: 'acts.inicio9: Carmen 8 px further right, in front of the crate\'s left corner: the hint hand pointing at her (las-flores beats.12) was on the frog\'s face, at the door\'s place (LUGAR.inicio)' },
     { line: lineOf('async inicio10()'), act: 'inicio10', src: 'carmen:{x:50,y:160,pose:"idle",dir:1}', to: 'carmen:{x:37,y:178,pose:"idle",dir:1}', pts: [['carmen', [50, 160], [37, 178]]],
@@ -186,7 +196,7 @@ function make(G) {
       respEn: [164, 4],
       why: 'acts.inicio11: Luis waits right of the gate, by the fence, Carmen in front of the tree: the hint hand pointing at the gate (hasta-manana beats.5) was on Luis\'s face. And the answer cards stand in the sky at the top right (W.respEn, juego.js: "a scene that needs its people seen while he chooses puts the bubbles elsewhere", as banco, mesa, estufa, nevera and comer do): over the frog, at abuela\'s place and in the middle, they covered the family and Luis (hasta-manana beats.10, 25)' },
   ];
-  for (const m of MOVES) for (const q of m.pts || []) q.push(W4(personW(q[2])));   // (the baby's: the ground under its place in mamá's arms; it is not on the ground)
+  for (const m of MOVES) for (const q of m.pts || []) q.push(q[0] === 'cq' ? frogW(q[2]) : W4(personW(q[2])));   // (the baby's: the ground under its place in mamá's arms; it is not on the ground; the frog's: under his feet, rules.floor)
 
   const SPOTS = {};
   for (const [k, v] of Object.entries(OLD.LUGAR)) SPOTS['frog.' + k] = { world: frogW(v), scale: v[2], old: v.slice(0, 2), what: 'LUGAR.' + k + ': the frog' };
@@ -199,6 +209,9 @@ function make(G) {
   SPOTS.juntos = { world: MV('juntos').pts[0][3], old: [170, 124], what: 'acts.juntos, acts.luiscorre: right of the gate, before its right post (moved: see moves)' };
   for (const s of Object.values(SPOTS)) { s.new = s.scale != null ? frogQ(s.world) : personQ(s.world); }
   SPOTS.asoma.new = MV('asoma').pts[0][2]; SPOTS.seva.new = MV('seva').pts[0][2]; SPOTS.juntos.new = MV('juntos').pts[0][2];
+  // round 4: the frog's two places at the gate (moves)
+  Object.assign(SPOTS['frog.porton'], { world: frogW(PORTON4), new: PORTON4, what: 'LUGAR.porton: the frog at the gate, on the lawn before its opening (moved: see moves)' });
+  Object.assign(SPOTS['frog.sale'], { world: frogW(SALE4), new: SALE4, what: 'LUGAR.sale: the frog through the gate, on the path just past the fence\'s line, where he fades (moved: see moves)' });
 
   /* ---- the named points of the set ---- */
   const PTS = {}, pt = (k, o) => { PTS[k] = o; };
@@ -289,11 +302,13 @@ function make(G) {
 
   // hop counts: every pair of LUGAR places, old against new
   const lugar = {}; for (const [k, v] of Object.entries(OLD.LUGAR)) lugar[k] = { spot: 'frog.' + k, q: SPOTS['frog.' + k].new, scale: v[2], old: v.slice(0, 2) };
-  const hops = [], names = Object.keys(lugar);
+  const hopsAll = [], names = Object.keys(lugar);
   for (let i = 0; i < names.length; i++) for (let j = i + 1; j < names.length; j++) {
     const a = lugar[names[i]], b = lugar[names[j]], dOld = Math.hypot(a.old[0] - b.old[0], a.old[1] - b.old[1]), dNew = Math.hypot(a.q[0] - b.q[0], a.q[1] - b.q[1]);
-    hops.push({ a: names[i], b: names[j], old: hop(dOld), new: hop(dNew), dOld: r2(dOld), dNew: r2(dNew) });
+    hopsAll.push({ a: names[i], b: names[j], old: hop(dOld), new: hop(dNew), dOld: r2(dOld), dNew: r2(dNew) });
   }
+  // round 4: the pairs whose count is not the old one (each has porton or sale: their places followed the gate)
+  const hops = hopsAll.filter(h => h.old !== h.new);
 
   const setKey = {
     params: {
@@ -315,18 +330,12 @@ function make(G) {
     fence: { foot: 'row = ' + r2(fenceRow(0)) + ' + x / 2', rightEdge: [240, fenceRow(240)], viewRight: [218, fenceRow(218)], what: 'the fence\'s foot: from the far corner down to the right; it leaves the picture at its right edge (and the view at x 218)' },
     gap: 'between the house\'s far corner (x ' + r2(houseEnd.sx) + ') and the fence\'s first post (x ' + Math.round(E.project(F.POSTS[0], F.CY + .07, 0).sx - 4) + '): the field and the hills, where the sun goes down',
   };
-  // the frog's two places at the gate (order 32a round 3, item 9): where they are against the gate's line, and the best any place could do that
-  // keeps every hop count (searched: every screen point within 60 px)
+  // the frog's two places at the gate (round 4: they follow the gate): where they are against the fence's line, the old picture's and round 3's
   const feetGap = q => (q[1] + 25) - fenceRow(q[0] + 16);                   // rows his feet are in front of the fence's line (< 0: past it)
-  const best = k => { const L = OLD.LUGAR, me = L[k]; let b = null;
-    for (let x = me[0] - 60; x <= me[0] + 60; x++) for (let y = me[1] - 60; y <= me[1] + 40; y++) {
-      let ok = true; for (const [j, q] of Object.entries(L)) { if (j === k) continue; if (hop(Math.hypot(x - q[0], y - q[1])) !== hop(Math.hypot(me[0] - q[0], me[1] - q[1]))) { ok = false; break; } }
-      if (ok && (!b || feetGap([x, y]) < b[1])) b = [[x, y], r2(feetGap([x, y]))]; }
-    return b; };
-  const GATE9 = { porton: { at: OLD.LUGAR.porton.slice(0, 2), before: r2(feetGap(OLD.LUGAR.porton)), old: 17, best: best('porton') }, sale: { at: OLD.LUGAR.sale.slice(0, 2), before: r2(feetGap(OLD.LUGAR.sale)), old: -3, best: best('sale') } };
+  const GATE9 = Object.fromEntries([['porton', PORTON4, 17], ['sale', SALE4, -3]].map(([k, q, o]) => [k, { at: q, before: r2(feetGap(q)), oldPicture: o, round3: { at: OLD.LUGAR[k].slice(0, 2), before: r2(feetGap(OLD.LUGAR[k])) } }]));
   const MOVED_WHAT = [
     'the back door: its middle 10 px right of the old one (x 42 to 52), 1.5 units wide (round 3; the old opening 30 px), its threshold on the house wall\'s foot (row ' + Math.round(wallRow(52) - F.FLOOR * E.COS * E.S) + ', the old 112); box ' + JSON.stringify(things.puerta.box) + ' (old [27, 57, 30, 56]). Follow it: abuela in the door (asoma) and whoever goes in (seva), in moves',
-    'the gate: its middle 1 px left of the old one (x 147 to ' + Math.round(gateMid.sx) + '), its posts at x 133 and 159, its foot on the fence\'s line, ' + Math.round(112 - gateMid.sy) + ' rows further back (row 112 to ' + Math.round(gateMid.sy) + '); box ' + JSON.stringify(things.porton.box) + ' (old [127, 70, 40, 43]; it holds the leaf shut and swung open into the yard). Follows it: the walk to the gate (juntos, luiscorre), in moves. Not moved: the frog\'s two places there (layout.gate)',
+    'the gate: its middle 1 px left of the old one (x 147 to ' + Math.round(gateMid.sx) + '), its posts at x 133 and 159, its foot on the fence\'s line, ' + Math.round(112 - gateMid.sy) + ' rows further back (row 112 to ' + Math.round(gateMid.sy) + '); box ' + JSON.stringify(things.porton.box) + ' (old [127, 70, 40, 43]; it holds the leaf shut and swung open into the yard). Follow it: the walk to the gate (juntos, luiscorre) and (round 4) the frog\'s two places there, LUGAR.porton and LUGAR.sale (layout.gate), in moves',
     'the flamboyán: its trunk\'s foot ' + Math.round(trunkFoot.sy - 114) + ' rows lower (row 114 to ' + Math.round(trunkFoot.sy) + '), at the same x (204), against the fence (round 3: ' + F.TREE_OFF + ' in front of it, round 2 .35): the trunk is longer; its crown where the old one was (its left lobe 4 px right, clear of the gate\'s box). Nothing follows: the frog at the tree (LUGAR.arbol) is before the trunk, 5 rows of lawn and more between them',
     'the sixth star: from (112, 58) to ' + STAR6 + ' (moves)',
     'unchanged: the nest (181, 66) and every landing of the bird on it; the bird on the fence (178, 83), on a post\'s cap; the ball in the tree (196, 64); the sun (SOLX 100), the moon (150, 26)',
@@ -345,9 +354,9 @@ function make(G) {
       pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were',
     },
     layout: {
-      what: 'the yard built as La sala is: two walls on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture\'s sides and bottom. On the LEFT the back of the house: its back wall on x = ' + F.CX + ' (it faces +x, in shade, teal siding as El frente\'s side wall), from its far corner (a white corner board, screen x ' + Math.round(E.project(F.CX, F.YH, 0).sx) + ') down off the picture\'s left edge; in it the back door in its white frame on a stone step (screen x ' + things.puerta.box[0] + ' to ' + (things.puerta.box[0] + things.puerta.box[2]) + '); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = ' + F.CY + ' (it faces +y, lit), from the far corner off the picture\'s right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x ' + things.porton.box[0] + ' to ' + (things.porton.box[0] + things.porton.box[2]) + '); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence\'s first post the yard opens on a field and low hills (the horizon at row ' + F.HZ + '), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the yard\'s own green, calm (two neighbouring tones), no blooms in its grass round the beds, the crate and the ball; the beds are turned earth in lumps, a hole for each flower',
+      what: 'the yard built as La sala is: two walls on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture\'s sides and bottom. On the LEFT the back of the house: its back wall on x = ' + F.CX + ' (it faces +x, in shade, teal siding as El frente\'s side wall), from its far corner (a white corner board, screen x ' + Math.round(E.project(F.CX, F.YH, 0).sx) + ') down off the picture\'s left edge; in it the back door in its white frame on a stone step (screen x ' + things.puerta.box[0] + ' to ' + (things.puerta.box[0] + things.puerta.box[2]) + '); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = ' + F.CY + ' (it faces +y, lit), from the far corner off the picture\'s right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x ' + things.porton.box[0] + ' to ' + (things.porton.box[0] + things.porton.box[2]) + '); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence\'s first post the yard opens on a field and low hills (the horizon at row ' + F.HZ + '), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the same grass as El frente\'s and El balcón\'s (round 4: the engine\'s GRASS ramp, centred where El frente\'s lawn is), calm (mostly one tone, Bayer-mixed with its neighbours), no blooms in its grass round the beds, the crate and the ball; round each bed the grass is darker, most behind its row of flower heads, with no blades (round 4: each head seen against dark lawn); the beds are turned earth in lumps, a hole for each flower',
       lines: LINES_WHAT,
-      gate: Object.assign(GATE9, { what: 'the frog\'s two places at the gate (LUGAR.porton: he stops at it; LUGAR.sale: he goes out through it and fades), in rows his feet are in front of the fence\'s line at his column (< 0: past it). The old picture: porton 17 rows before its gate, sale 3 rows past it. Here: porton ' + GATE9.porton.before + ' rows before (' + r2(GATE9.porton.before - 17) + ' more than the old), sale ' + GATE9.sale.before + ' rows before (' + r2(GATE9.sale.before + 3) + ' short of the old). Not reached, and it cannot be with the old hop counts: the nearest any place keeping all 13 of its hop counts comes is porton ' + GATE9.porton.best[1] + ' rows before at ' + GATE9.porton.best[0] + ', sale ' + GATE9.sale.best[1] + ' before at ' + GATE9.sale.best[0] + ' (the fence\'s line cannot come down to them: the round 3 rule of 5 rows of lawn). Along the fence the gap is the same wherever the gate stands (its line is straight), so the gate stands where both his places are inside its opening\'s columns (x 135 to 157: porton\'s middle ' + (OLD.LUGAR.porton[0] + 16) + ', sale\'s ' + (OLD.LUGAR.sale[0] + 16) + '): that fails least' }),
+      gate: Object.assign(GATE9, { what: 'the frog\'s two places at the gate (LUGAR.porton: he stops at it; LUGAR.sale: he goes out through it and fades), in rows his feet are in front of the fence\'s line at his column (< 0: past it). The old picture: porton 17 rows before its gate, sale 3 rows past it. Round 4: they follow the gate (moves): porton ' + GATE9.porton.before + ' rows before it, his middle at x ' + (PORTON4[0] + 16) + ' (the opening x 135 to 157); sale ' + (-GATE9.sale.before) + ' rows past it, on the path, his box between the posts. Round 3 had left them where the old hop counts put them: porton ' + GATE9.porton.round3.before + ' rows before, sale ' + GATE9.sale.round3.before + ' rows before (on the lawn). So some hop counts of pairs with porton or sale are not the old ones: hops lists them' }),
       why: 'page 11 decision 9 and the owner\'s three approved sets (El frente, El balcón, La sala): walls run along the world\'s axes and are seen at the engine\'s angle. Every place on the lawn keeps its old screen point (rules.floor). Round 3: everyone on the lawn has at least 5 rows of lawn between their feet and the foot of what stands behind them (round 2 put the lines as low as the places allowed, and the frog read as standing on the wall\'s base, the boy on the fence\'s): the wall\'s line went up ' + F.LIFT_W + ' row, held by the frog at the door (LUGAR.puerta) before the door\'s step; the fence\'s ' + F.LIFT_F + ' row, held by Carmen at the open gate (pair vamos, 168, 120) and the walk to the gate; the trunk stands against the fence, held by the frog at the tree. The old sun sank at x 100, right where the corner rises: a house wall there would hide it at every height, so the house ends short of the corner and the sun goes down in the gap, behind the field and the hills',
       moved: MOVED_WHAT,
     },
@@ -363,6 +372,8 @@ function make(G) {
     spots: Object.fromEntries(Object.entries(SPOTS).map(([k, s]) => [k, Object.assign({ world: s.world, new: s.new }, s.scale != null ? { scale: s.scale } : {}, { old: s.old, what: s.what })])),
     lugar,
     hops,
+    hopsWhat: 'round 4: each pair of LUGAR places whose hop count (kit.js acts.ir: round(d / 30), 1 to 4, d the screen distance between the two frog points) is not the old one, with the old and the new count and distance; every one has porton or sale (their places followed the gate: moves). Every other pair keeps its count (hopsAll: all ' + hopsAll.length + ' pairs). acts.sevan hops 3 times to sale from wherever he is, whatever the distance',
+    hopsAll,
     points: PTS,
     views,
     remap,
@@ -426,7 +437,7 @@ function make(G) {
     c(L('const CAMA='), 'CAMA L [40,176,56,20], R [144,176,56,20]', 'the beds (the set paints each at the old ellipse: middle (c[0] + 28, c[1] + 10), radii 28, 10); hoyo() unchanged', 'points.hoyos.L, hoyos.R');
     c(L('const CAMA='), 'SOLX=100, SOLY=[24,40,56,73]', { moved: 'SOLY=[26,40,56,73]' }, 'see moves');
     c(L('const ESTRELLAS='), 'ESTRELLAS [60,18] [84,40] [124,12] [150,36] [40,46] [112,58] [72,64] [140,60]', { moved: 'the sixth, [112,58], to ' + STAR6, point: 'estrellas' }, 'behind the set (sheet behind); see moves');
-    for (const [k, v] of Object.entries(OLD.LUGAR)) c(LINES.findIndex(l => l.includes(k + ':' + JSON.stringify(v).replace(/0\./g, '.'))) + 1, 'LUGAR.' + k + ' ' + JSON.stringify(v), { spot: 'frog.' + k, new: SPOTS['frog.' + k].new.concat([v[2]]) });
+    for (const [k, v] of Object.entries(OLD.LUGAR)) c(LINES.findIndex(l => l.includes(k + ':' + JSON.stringify(v).replace(/0\./g, '.'))) + 1, 'LUGAR.' + k + ' ' + JSON.stringify(v), Object.assign({ spot: 'frog.' + k, new: SPOTS['frog.' + k].new.concat([v[2]]) }, k === 'porton' || k === 'sale' ? { moved: 'round 4: follows the gate (see moves; hop counts: hops)' } : {}));
     for (const k of ['L', 'R']) c(L('const DETRAS='), 'DETRAS.' + k + ' ' + JSON.stringify(OLD.DETRAS[k]), { spot: 'detras.' + k, new: SPOTS['detras.' + k].new });
     for (const k of ['luis', 'carmen']) c(L('const DETRAS='), 'ESPERA.' + k + ' ' + JSON.stringify(OLD.ESPERA[k]), { spot: 'espera.' + k, new: SPOTS['espera.' + k].new });
     OLD.LADOS.forEach((p, i) => c(L('const DETRAS='), 'LADOS[' + i + '] ' + JSON.stringify(p), { spot: 'lados.' + i, new: SPOTS['lados.' + i].new }));
@@ -497,7 +508,7 @@ function make(G) {
     c(L('async luiscorre()'), 'luiscorre: mueve("luis",170,124,8)', { spot: 'juntos', new: SPOTS.juntos.new }, 'moved (see moves): right of the gate');
     c(L('if(con>=3){W.aro=1;'), 'final11: the stars [110,70] [170,66] [140,56] [124,96] [160,96]', 'screen effect: unchanged');
     c(L('else{const l={id:"nueva",est:"mov",x:214,y:120'), 'final11: a firefly comes from 214,120; luzA(l, f[0]+12, f[1]-8, 14, 1)', 'over the yard: unchanged; relative to the frog');
-    c(L('async sevan()'), 'sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)', 'the bird in the air: unchanged; the frog to the gate (LUGAR.sale, unchanged: see layout.moved), where he fades');
+    c(L('async sevan()'), 'sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)', 'the bird in the air: unchanged; the frog out through the gate (LUGAR.sale, moved: see moves), where he fades');
     c(L('if(t==="luces"){const l='), 'stake: luzA(l,226,58,14,0)', 'screen: the firefly leaves to the top right, unchanged');
     c(L('KIT.escena({id:"patio"'), 'CAM.wide [22,0,196,216]', { view: 'wide', zoom: 1, x0: views.wide.x0 });
     c(L('KIT.escena({id:"patio"'), 'heartAt [118,36]', { point: 'corazon', new: PTS.corazon.screen });
@@ -561,8 +572,18 @@ function check(sh, G) {
   notes.push('inventory: ' + Object.keys(sh.things).length + ' things (old ' + inv.thingIds.length + '), ' + Object.keys(sh.lugar).length + ' frog places (old ' + Object.keys(inv.given.lugar).length + '), ' + Object.keys(sh.views).length + ' view (old ' + Object.keys(inv.given.CAM).length + '), ' + sh.remap.length + ' positions (old ' + pos.positions.length + '), ' + cual.items.length + ' review pairs of cual-patio and cual-camino\'s parque.no (' + pairSides.length + ' pictures), ' + sh.level.length + ' level pictures (old ' + nLevel + '), ' + pos.inSceneFile.length + ' places of patio.js named in code');
 
   /* hops */
-  for (const h of sh.hops) if (h.old !== h.new) P.push('hops ' + h.a + ' - ' + h.b + ': old ' + h.old + ', new ' + h.new);
-  notes.push('hops: ' + sh.hops.length + ' pairs of LUGAR places, every count as the old one (round(d / 30), 1 to 4, kit.js acts.ir); the places keep their screen points, so every distance is the old one');
+  // round 4: every pair counted again from the places (old points: patio.js; new: lugar); the pairs whose count changed are exactly sh.hops, and
+  // each of them has porton or sale (the places that followed the gate). (The frog's walks in the recorded runs: after the runs, below)
+  { const L = sh.lugar, ks = Object.keys(L), changed = [];
+    for (let i = 0; i < ks.length; i++) for (let j = i + 1; j < ks.length; j++) { const a = L[ks[i]], b = L[ks[j]];
+      const o = hop(Math.hypot(a.old[0] - b.old[0], a.old[1] - b.old[1])), n = hop(Math.hypot(a.q[0] - b.q[0], a.q[1] - b.q[1]));
+      if (o !== n) { changed.push(ks[i] + '-' + ks[j] + ' ' + o + ' ' + n); if (![ks[i], ks[j]].some(k => k === 'porton' || k === 'sale')) P.push('hops ' + ks[i] + ' - ' + ks[j] + ': old ' + o + ', new ' + n + ' (neither is porton nor sale)'); } }
+    const listed = sh.hops.map(h => h.a + '-' + h.b + ' ' + h.old + ' ' + h.new);
+    for (const c of changed) if (!listed.includes(c)) P.push('hops: ' + c + ' changed and is not in sheet hops');
+    for (const c of listed) if (!changed.includes(c)) P.push('hops: sheet hops lists ' + c + ', which is not what the places give');
+    if (sh.hopsAll.length !== ks.length * (ks.length - 1) / 2) P.push('hopsAll: ' + sh.hopsAll.length + ' pairs');
+    for (const k of Object.keys(L)) if (k !== 'porton' && k !== 'sale' && (L[k].q[0] !== L[k].old[0] || L[k].q[1] !== L[k].old[1])) P.push('lugar ' + k + ': moved from ' + L[k].old + ' to ' + L[k].q);
+    notes.push('hops: ' + sh.hopsAll.length + ' pairs of LUGAR places (round(d / 30), 1 to 4, kit.js acts.ir): every count as the old one but these ' + sh.hops.length + ', each with porton or sale (round 4: their places followed the gate; the other 12 places keep their points), exactly sheet hops: ' + sh.hops.map(h => h.a + ' - ' + h.b + ' ' + h.old + ' -> ' + h.new).join(', ')); }
 
   /* the set's pixels: which part drew each, its depth */
   const tagMap = key => { const m = new Array(240 * 216).fill(null); for (const [k, list] of Object.entries(G.parts[key])) for (const i of list) m[i] = k; return m; };
@@ -648,6 +669,21 @@ function check(sh, G) {
       let lawn = 0; for (let x = 105; x < 135; x++) if (K[135 * 240 + x] === G.K.grass) lawn++; if (lawn < 28) P.push('crate ' + key + ': its bottom row is on ' + lawn + ' px of lawn'); }
     notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the lawn, in every baked state; the crate\'s bottom row on the lawn, nothing of the set behind it'); }
 
+  /* round 4: the lawn is El frente's grass (the engine's GRASS ramp) and green at every hour (its mean colour: green over red and over blue, its
+     hue 65 degrees or more, yellow green to green, as El frente\'s by day (76); not olive or brown, hue 20 to 60, at dusk or at night); each flower head stands out on the lawn right over and beside it (the yellow petal, the old
+     picture's least: its mean CIE76 difference to the lawn pixels 2 to 7 rows over the head, 4 px either side, as flowers.py measures it, by
+     day, at least the old picture's 57) */
+  { const lab = c => { const f = u => { u /= 255; return u > .04045 ? ((u + .055) / 1.055) ** 2.4 : u / 12.92; }, [r, g, b] = c.map(f), X = (.4124 * r + .3576 * g + .1805 * b) / .9505, Y = .2126 * r + .7152 * g + .0722 * b, Z = (.0193 * r + .1192 * g + .9505 * b) / 1.089, h = t => t > .008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116; return [116 * h(Y) - 16, 500 * (h(X) - h(Y)), 200 * (h(Y) - h(Z))]; };
+    const dE = (a, b) => Math.hypot(...lab(a).map((v, k) => v - lab(b)[k])), hours = [];
+    for (const key of STATES.filter(k => k.endsWith('-shut-shut'))) { const C = G.rgb[key], K = G.kinds[key]; let n = 0, m = [0, 0, 0];
+      for (let y = 120; y < 216; y++) for (let x = 0; x < 240; x++) { const i = y * 240 + x; if (K[i] !== G.K.grass) continue; n++; for (let k = 0; k < 3; k++) m[k] += C[i * 3 + k]; }
+      m = m.map(v => Math.round(v / n)); const hue = Math.round(60 * (2 + (m[2] - m[0]) / (m[1] - Math.min(m[0], m[2])))); hours.push(key.split('-')[0] + ' ' + m.join(',') + ' (hue ' + hue + ')');
+      if (!(m[1] > m[0] && m[1] > m[2] && hue >= 65)) P.push('lawn ' + key + ': its mean colour ' + m + ' (hue ' + hue + ') is not green'); }
+    const C = G.rgb['dia-shut-shut'], YEL = [255, 224, 112], least = [];
+    for (const k of ['L', 'R']) for (const h of F.HOLES[k]) { let s = 0, n = 0; for (let y = h[1] - 25; y < h[1] - 19; y++) for (let x = h[0] - 4; x <= h[0] + 4; x++) { const i = y * 240 + x; s += dE(YEL, [C[i * 3], C[i * 3 + 1], C[i * 3 + 2]]); n++; }
+      least.push(Math.round(s / n)); if (s / n < 57) P.push('flowers: a yellow head at ' + h + ' stands out ' + Math.round(s / n) + ' from the lawn over it (the old picture: 57)'); }
+    notes.push('lawn (round 4): El frente\'s grass (GRASS), green at every hour (mean colour of the lawn, El frente\'s by day hue 76: ' + hours.join('; ') + '); a yellow flower head at each hole stands out from the lawn over it by ' + Math.min(...least) + ' at the least (mean CIE76, flowers.py\'s measure; the old picture 57 at every hole, round 3 58)'); }
+
   /* the sun sets behind the fence: its disc (r 11 at SOLX, soly) wholly in the sky at its first three heights, nearly at the fourth (on the fence,
      as the old), and wholly behind the set at 109 (after puesta); in every hour it is drawn in */
   { const sunNotes = [];
@@ -697,7 +733,14 @@ function check(sh, G) {
 
   /* every moment of every run */
   const runs = storyStates();
-  const at = (st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
+  // round 4: the frog's walks between LUGAR places in the recorded runs (the old code's): which of them take a hop more or less now (sheet hops)
+  { const L = sh.lugar, ks = Object.keys(L), at = {}; for (const k of ks) at[L[k].old.join(',')] = k; const walks = new Map();
+    for (const r of runs) { let prev = null;
+      for (const ln of r.lines) { const q = ln.W.cq; if (!q || !q.vis) continue; const k = at[q.x + ',' + q.y]; if (!k) { prev = null; continue; }
+        if (prev && prev !== k) { const pr = [prev, k].sort((x, y) => ks.indexOf(x) - ks.indexOf(y)).join(' - '); walks.set(pr, (walks.get(pr) || 0) + 1); } prev = k; } }
+    const hit = [...walks.keys()].filter(w => sh.hops.some(h => h.a + ' - ' + h.b === w));
+    notes.push('hops in the recorded runs: the frog walks from place to place ' + [...walks.entries()].map(([k, n]) => k + ' (' + n + ')').join(', ') + '; ' + (hit.length ? 'a hop more or less in ' + hit.join(', ') : 'none of these takes a hop more or less') + ' (sevan, porton to sale, hops 3 times, as before)'); }
+  const at =(st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
   const sub = (x, V) => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
   const alto = (id, p) => id === 'abuela' ? 51 : id === 'bebe' ? 28 : (['luis', 'carmen'].includes(id) ? (p && p.sent ? 40 : 44) : (p && p.sent ? 49 : 56));
   const shown = p => p && p.vis !== 0 && !(p.al != null && p.al <= .3);
@@ -717,6 +760,7 @@ function check(sh, G) {
     for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; const m = MV.find(q => (q.who === 'whoever' || q.who === id) && q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y));
       if (m) { p.x = m.new[0]; p.y = m.new[1]; if (m.z != null) p.z = m.z; } }
     for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; const m = RM.find(q => q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y)); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } }   // round 4: the frog at the gate
     if (w.soly === 24) w.soly = 26;
     if (EN && w.gente && w.gente.abuela && w.gente.mama) w.respEn = EN;   // after inicio11 (the family is there)
     return w; };
@@ -850,6 +894,49 @@ function check(sh, G) {
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, at any moment; the "q" of duda, encoge and turno at their steps; the frog\'s "amor"): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corners (' + worstBoard + ' px), on no face');
   notes.push('clear lawn (round 3): at every place where someone stands, at every column of their feet, at least ' + CLEAR + ' rows of lawn between their feet and the foot of what stands behind them; the least: behind the wall or the step ' + clearLeast.wall.join(' rows, ') + '; the fence or the gate ' + clearLeast.fence.join(' rows, ') + '; the trunk ' + clearLeast.tree.join(' rows, '));
   notes.push('ground: ' + nFloor + ' distinct places where someone stands (and the frog), ' + nSit + ' where someone sits on the grass: on the lawn of the yard (x > CX, y > CY; abuela in the doorway), none behind the fence or inside the house, nothing of the house, the fence, the gate or the tree nearer than them inside their body');
+
+  /* round 4: the frog at the gate and out through it. LUGAR.porton: 15 to 19 rows before the fence's line, his middle inside the opening's
+     columns; LUGAR.sale: 2 to 5 rows past it, on the path, his whole box inside the opening's columns. His way out (acts.sevan: hopTo(sale, 3 hops)
+     from the gate, every step as juego.js hopTo makes it, his box raised by dy): no pixel of the gate's leaf, its posts, the fence or anything of
+     the set nearer than him inside his box, in every state with the gate open. At sale his bubbles (his "amor") inside the view, on no face. And
+     nobody stands where he stands: at the gate at every moment of every run, and at each step of his way out, his ground point and anyone's at
+     least the sum of their shadows' radii apart (sheet shadows: .45 and .35, a child .3) */
+  { const L = sh.lugar, PT = L.porton.q, SA = L.sale.q, opX = openingPx.map(i => i % 240), o0 = Math.min(...opX), o1 = Math.max(...opX);
+    const fenceAt = sx => E.project(F.CY + (sx - E.OX) / E.S * E.R2, F.CY, 0).sy, gapOf = q => r2((q.y + 25) - fenceAt(q.x + 16));   // (rules.floor: his middle q.x + 16)
+    const qP = { x: PT[0], y: PT[1], s: L.porton.scale, dy: 0, al: 1, vis: 1 }, qS = { x: SA[0], y: SA[1], s: L.sale.scale, dy: 0, al: 1, vis: 1 }, bP = frogBox(qP), bS = frogBox(qS);
+    const gP = gapOf(qP), gS = gapOf(qS);
+    if (gP < 15 || gP > 19 || bP.x + bP.w / 2 < o0 || bP.x + bP.w / 2 > o1) P.push('the frog at the gate (porton ' + PT + '): ' + gP + ' rows before the fence\'s line, his middle at x ' + (bP.x + bP.w / 2) + ' (keep 15 to 19 rows, x ' + o0 + ' to ' + o1 + ')');
+    if (gS > -2 || gS < -5) P.push('the frog leaving (sale ' + SA + '): ' + (-gS) + ' rows past the fence\'s line (keep 2 to 5)');
+    const OPEN = STATES.filter(k => k.endsWith('-open'));
+    // between the posts: no pixel of the gate or the fence in the columns of his box, one more each side, at the rows of his box (with the gate open)
+    let postL = -1, postR = 999; for (const key of OPEN) { const tag = TAGS[key];
+      for (let y = bS.y; y < bS.y + bS.h; y++) for (let x = bS.x - 12; x < bS.x + bS.w + 12; x++) if (tag[y * 240 + x] === 'porton' || tag[y * 240 + x] === 'cerca') { if (x < bS.x + bS.w / 2) postL = Math.max(postL, x); else postR = Math.min(postR, x); } }
+    if (postL >= bS.x - 1 || postR <= bS.x + bS.w) P.push('the frog leaving (sale ' + SA + '): his box x ' + bS.x + ' to ' + (bS.x + bS.w - 1) + ' is not between the posts (x ' + postL + ' and ' + postR + ', a pixel clear)');
+    for (const key of OPEN) { const K = G.kinds[key], fx = Math.round(bS.x + bS.w / 2), fy = SA[1] + 25; if (K[fy * 240 + fx] !== G.K.road) P.push('the frog leaving ' + key + ': his feet (' + fx + ',' + fy + ') are not on the path'); }
+    // his way out, step by step (juego.js hopTo)
+    const steps = []; { const s0 = L.porton.scale, s1 = L.sale.scale; for (let h = 0; h < 3; h++) { const s = Math.round((s0 + (s1 - s0) * (h + 1) / 3) * 100) / 100;
+      for (let i = 1; i <= 5; i++) { const t = (h + i / 5) / 3; steps.push({ x: Math.round(PT[0] + (SA[0] - PT[0]) * t), y: Math.round(PT[1] + (SA[1] - PT[1]) * t), s, dy: -7 * Math.sin(Math.PI * i / 5), al: 1, vis: 1 }); } } }
+    let worstNear = 0;
+    for (const key of OPEN) for (const q of [qP].concat(steps)) { const b = frogBox(q), n = nearer(key, [b.x, b.y + Math.round(q.dy), b.w, b.h], vAt(b.x + b.w / 2, q.y + 25), SOLID);
+      if (n) P.push('the frog leaving ' + key + ' at ' + q.x + ',' + q.y + ' (s ' + q.s + ', dy ' + r2(q.dy) + '): ' + n + ' px of the set nearer than him inside his box'); worstNear = Math.max(worstNear, n); }
+    // nobody where he stands
+    const R0 = .45, rOf = id => id === 'bebe' ? .25 : (id === 'luis' || id === 'carmen') ? .3 : .35, gFrog = q => { const b = frogBox(q); return E.atZ(b.x + b.w / 2, q.y + 25, 0); };
+    let least = [99, '']; const apart = (where, w, q) => { const g = gFrog(q);
+      for (const [id, p] of people(w)) { if (p.z) continue; const h = E.atZ(Math.round(p.x), Math.round(p.y) - 1, 0), d = Math.hypot(g[0] - h[0], g[1] - h[1]);
+        if (d < least[0]) least = [r2(d), where + ': ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ', the frog at ' + q.x + ',' + q.y];
+        if (d < R0 + rOf(id)) P.push('nobody where he stands: ' + where + ' ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ' is ' + r2(d) + ' from the frog at ' + q.x + ',' + q.y + ' (keep ' + r2(R0 + rOf(id)) + ')'); } };
+    let nAt = 0, nOut = 0;
+    for (const r of runs) { forRun(r); for (const ln of r.lines) { const w = remapW(ln.W), q = w.cq;
+      if (q && q.vis && ((q.x === PT[0] && q.y === PT[1]) || (q.x === SA[0] && q.y === SA[1]))) { nAt++; apart(r.story.id + ' ' + r.plan + ' ' + ln.path, w, q); }
+      const st = ln.path && at(r.story, ln.path);
+      if (st && st.act === 'sevan') { nOut++;
+        for (const q2 of steps) apart(r.story.id + ' ' + r.plan + ' ' + ln.path + ' (on his way out)', w, q2);
+        // at sale, before he fades: his bubbles
+        const w2 = JSON.parse(JSON.stringify(w)); w2.cq = Object.assign({}, qS, { bub: null }); const boards = boardsOf(w2, x0), faces = facesOf(w2);
+        for (const [who, rect] of bubblesOf(w2)) if (/^the frog/.test(who)) judge(r.story.id + ' ' + r.plan + ' ' + ln.path + ': at sale, ' + who, rect, VIEW, boards, faces); } } }
+    if (!nOut) P.push('the frog leaving: no run reaches acts.sevan');
+    notes.push('the frog at the gate (round 4): porton ' + PT + ', ' + gP + ' rows before the fence\'s line (the old picture 17, round 3 ' + sh.layout.gate.porton.round3.before + '), his middle at x ' + (bP.x + bP.w / 2) + ' (the opening x ' + o0 + ' to ' + o1 + '); sale ' + SA + ', ' + (-gS) + ' rows past it (the old 3; round 3 ' + sh.layout.gate.sale.round3.before + ' rows before it, on the lawn), on the path, his box x ' + bS.x + ' to ' + (bS.x + bS.w - 1) + ' between the posts (their pixels at x ' + postL + ' and ' + postR + '). On his way out (' + steps.length + ' steps of 3 hops, in ' + OPEN.length + ' open-gate states) no pixel of the leaf, the posts, the fence or the set nearer than him; at sale his bubbles inside the view, on no face (' + nOut + ' runs); nobody where he stands (' + nAt + ' moments at the gate, and his way out): the nearest anyone comes is ' + least[0] + ' (' + least[1] + ')');
+  }
 
   /* standing over sitting: no standing person's sprite covers more of a sitting one's face than the old picture did at that moment */
   let nSO = 0; const soSeen = new Set(), soOld = new Set();
