@@ -37,16 +37,13 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
     SampleFetch? fetch,
     Map<String, String>? fixedClips,
     List<String>? goodbyeWords,
-    RepasoData? repaso,
+    this.repaso,
   }) : fetch = fetch ?? sampleFile,
        _fixedGiven = fixedClips,
-       _goodbyeGiven = goodbyeWords,
-       _repaso = repaso;
-
-  RepasoData? _repaso;
+       _goodbyeGiven = goodbyeWords;
 
   @override
-  RepasoData? get repaso => _repaso;
+  RepasoData? repaso;
 
   final SampleFetch fetch;
   final Map<String, String>? _fixedGiven;
@@ -130,13 +127,13 @@ class FakeCourseCatalog implements CourseCatalog, RepasoCatalog {
         if (lines[e.key] != null)
           e.key: _clip(e.key, lines[e.key]!, (e.value as List).cast<num>()),
     };
-    if (_repaso == null) {
+    if (repaso == null) {
       try {
-        _repaso = RepasoData.fromJson(
+        repaso = RepasoData.fromJson(
           await _json('datos/repaso.json') as Map<String, dynamic>,
         );
       } catch (_) {
-        _repaso = null;
+        repaso = null;
       }
     }
     _loaded = true;
