@@ -3,7 +3,7 @@
  "made": "node docs/proyecto/pixel/estantes-sheet-make.js, from estantes-set.html (window.ESTANTES.CD) and the design of Los estantes. A new scene: no old scene, no remap.",
  "S": 26,
  "origin": {
-  "originX": -242,
+  "originX": -222,
   "originY": -95
  },
  "picture": [240, 216],
@@ -39,13 +39,13 @@
   "estante": {
    "set": true,
    "world": [10.95, 0.02, 0, 15.05, 0.4, 3.05],
-   "box": [71, 45, 84, 111],
+   "box": [91, 45, 84, 111],
    "what": "the second run of shelves, a poke: from the uprights' outer faces, from the wall to the low cupboard's front, up to the uprights' tops (what colmado-dentro.js draws as part estantes2)"
   },
   "mesa": {
    "set": true,
    "world": [11.45, 3.2, 0, 13.15, 4.2, 0.55],
-   "box": [11, 135, 50, 38],
+   "box": [31, 135, 50, 38],
    "what": "the low display table, a poke: the cloth's top and its hanging edges, down to the floor",
    "when": "mesa = 1"
   },
@@ -70,7 +70,7 @@
  "spots": {
   "pepe.pie": {
    "world": [12.3, 1.5, 0],
-   "screen": [77, 140],
+   "screen": [97, 140],
    "depth": 8.4507,
    "scale": 1,
    "kind": "person",
@@ -78,100 +78,100 @@
   },
   "pepe.escalera": {
    "world": [13, 0.8292, 1.46],
-   "screen": [102, 107],
+   "screen": [122, 107],
    "depth": 9.1986,
    "scale": 1,
    "kind": "person",
    "what": "don Pepe on the ladder, his feet on the rung nearest z 1.3 (z 1.46, the fourth of seven); x and y from the ladder's line between ESCALERA_PIE and ESCALERA_ALTO"
   },
   "pepe.mesa": {
-   "world": [12.1, 2.9, 0],
-   "screen": [47, 151],
-   "depth": 9.1856,
+   "world": [12.9, 2.9, 0],
+   "screen": [82, 158],
+   "depth": 9.6755,
    "scale": 1,
    "kind": "person",
-   "what": "don Pepe behind the display table"
+   "what": "don Pepe behind the display table, at its right end, clear of the pyramid"
   },
   "pepe.entra": {
    "world": [10.6, 3, 0],
-   "screen": [18, 138],
+   "screen": [38, 138],
    "depth": 8.3283,
    "scale": 1,
    "kind": "person",
    "what": "don Pepe coming in from the left with the big box"
   },
   "coqui.cajon": {
-   "world": [14.1, 3.3, 0.3],
-   "screen": [77, 166],
-   "depth": 10.8053,
+   "world": [15, 3.2, 0.3],
+   "screen": [115, 174],
+   "depth": 11.2952,
    "scale": 1,
    "kind": "person",
    "what": "the frog on his crate; the crate is a sprite .3 high under him (its bottom middle on ground)",
    "ground": {
-    "world": [14.1, 3.3, 0],
-    "screen": [77, 173],
-    "depth": 10.6553
+    "world": [15, 3.2, 0],
+    "screen": [115, 180],
+    "depth": 11.1452
    }
   },
   "coqui.piso": {
-   "world": [13.4, 4, 0],
-   "screen": [51, 173],
-   "depth": 10.6553,
+   "world": [13.5, 4.3, 0],
+   "screen": [67, 177],
+   "depth": 10.9002,
    "scale": 1,
    "kind": "person",
    "what": "the frog on the floor"
   },
   "luis.piso": {
-   "world": [14.9, 3.9, 0],
-   "screen": [80, 186],
-   "depth": 11.5126,
+   "world": [15.2, 4.4, 0],
+   "screen": [97, 193],
+   "depth": 12.0025,
    "scale": 1,
    "kind": "person",
    "what": "Luis on the floor"
   },
   "luis.cajas": {
-   "world": [13.8, 4.4, 0],
-   "screen": [51, 180],
-   "depth": 11.1452,
+   "world": [15.4, 3.6, 0],
+   "screen": [115, 188],
+   "depth": 11.6351,
    "scale": 1,
    "kind": "person",
    "what": "Luis where he counts and holds a box up"
   },
   "caja_grande": {
-   "world": [13.3, 2.7, 0],
-   "screen": [73, 160],
-   "depth": 9.798,
+   "world": [12.9, 2.4, 0],
+   "screen": [91, 154],
+   "depth": 9.3693,
    "scale": 1,
    "kind": "object",
    "what": "the big cardboard box of the delivery"
   },
   "cajon_latas": {
-   "world": [13.5, 3.9, 0],
-   "screen": [54, 173],
-   "depth": 10.6553,
+   "world": [13.9, 3.2, 0],
+   "screen": [95, 170],
+   "depth": 10.4716,
    "scale": 1,
    "kind": "object",
    "what": "the crate of cans (story 40)"
   },
   "red_a": {
-   "world": [13.2, 3.8, 0.35],
-   "screen": [51, 161],
-   "depth": 10.5853,
+   "world": [13.6, 3.2, 0.35],
+   "screen": [89, 160],
+   "depth": 10.4629,
    "scale": 1,
    "kind": "object",
    "what": "the first net of cans, on the crate"
   },
   "red_b": {
-   "world": [13.9, 3.8, 0.35],
-   "screen": [64, 168],
-   "depth": 11.014,
+   "world": [14.25, 3.2, 0.35],
+   "screen": [101, 166],
+   "depth": 10.8609,
    "scale": 1,
    "kind": "object",
    "what": "the second net of cans, on the crate"
   },
   "estante.medio.0": {
    "world": [11.42, 0.19, 2.01],
-   "screen": [84, 74],
+   "screen": [104, 74],
    "depth": 8.1146,
    "scale": 1,
    "kind": "shelf",
@@ -179,7 +179,7 @@
   },
   "estante.medio.1": {
    "world": [11.98, 0.19, 2.01],
-   "screen": [95, 80],
+   "screen": [115, 80],
    "depth": 8.4576,
    "scale": 1,
    "kind": "shelf",
@@ -187,7 +187,7 @@
   },
   "estante.medio.2": {
    "world": [12.58, 0.19, 2.01],
-   "screen": [106, 85],
+   "screen": [126, 85],
    "depth": 8.825,
    "scale": 1,
    "kind": "shelf",
@@ -195,7 +195,7 @@
   },
   "estante.medio.3": {
    "world": [13.4, 0.19, 2.01],
-   "screen": [121, 93],
+   "screen": [141, 93],
    "depth": 9.3271,
    "scale": 1,
    "kind": "shelf",
@@ -203,7 +203,7 @@
   },
   "estante.medio.4": {
    "world": [14, 0.19, 2.01],
-   "screen": [132, 98],
+   "screen": [152, 98],
    "depth": 9.6946,
    "scale": 1,
    "kind": "shelf",
@@ -211,7 +211,7 @@
   },
   "estante.medio.5": {
    "world": [14.6, 0.19, 2.01],
-   "screen": [143, 104],
+   "screen": [163, 104],
    "depth": 10.062,
    "scale": 1,
    "kind": "shelf",
@@ -219,7 +219,7 @@
   },
   "estante.alto.0": {
    "world": [11.5, 0.19, 2.66],
-   "screen": [86, 61],
+   "screen": [106, 61],
    "depth": 8.4886,
    "scale": 1,
    "kind": "shelf",
@@ -227,7 +227,7 @@
   },
   "estante.alto.1": {
    "world": [12, 0.19, 2.66],
-   "screen": [95, 65],
+   "screen": [115, 65],
    "depth": 8.7948,
    "scale": 1,
    "kind": "shelf",
@@ -235,7 +235,7 @@
   },
   "estante.alto.2": {
    "world": [12.5, 0.19, 2.66],
-   "screen": [104, 70],
+   "screen": [124, 70],
    "depth": 9.101,
    "scale": 1,
    "kind": "shelf",
@@ -243,7 +243,7 @@
   },
   "estante.alto.3": {
    "world": [13, 0.19, 2.66],
-   "screen": [114, 74],
+   "screen": [134, 74],
    "depth": 9.4072,
    "scale": 1,
    "kind": "shelf",
@@ -251,7 +251,7 @@
   },
   "estante.alto.4": {
    "world": [13.5, 0.19, 2.66],
-   "screen": [123, 79],
+   "screen": [143, 79],
    "depth": 9.7134,
    "scale": 1,
    "kind": "shelf",
@@ -259,7 +259,7 @@
   },
   "estante.alto.5": {
    "world": [14, 0.19, 2.66],
-   "screen": [132, 84],
+   "screen": [152, 84],
    "depth": 10.0196,
    "scale": 1,
    "kind": "shelf",
@@ -267,7 +267,7 @@
   },
   "estante.alto.6": {
    "world": [14.5, 0.19, 2.66],
-   "screen": [141, 88],
+   "screen": [161, 88],
    "depth": 10.3258,
    "scale": 1,
    "kind": "shelf",
@@ -275,7 +275,7 @@
   },
   "mesa.fila.0": {
    "world": [12.3, 3.7, 0.55],
-   "screen": [36, 148],
+   "screen": [56, 148],
    "depth": 10.073,
    "scale": 1,
    "kind": "table",
@@ -283,7 +283,7 @@
   },
   "mesa.fila.1": {
    "world": [12.3, 3.7, 0.85],
-   "screen": [36, 141],
+   "screen": [56, 141],
    "depth": 10.223,
    "scale": 1,
    "kind": "table",
@@ -291,7 +291,7 @@
   },
   "mesa.fila.2": {
    "world": [12.3, 3.7, 1.15],
-   "screen": [36, 134],
+   "screen": [56, 134],
    "depth": 10.373,
    "scale": 1,
    "kind": "table",
@@ -299,7 +299,7 @@
   },
   "mesa.fila.3": {
    "world": [12.3, 3.7, 1.45],
-   "screen": [36, 127],
+   "screen": [56, 127],
    "depth": 10.523,
    "scale": 1,
    "kind": "table",
@@ -307,7 +307,7 @@
   },
   "dibujo": {
    "world": [9.6, 0, 1.75],
-   "screen": [54, 62],
+   "screen": [74, 62],
    "depth": 6.7538,
    "scale": 1,
    "kind": "wall",
@@ -315,7 +315,7 @@
   },
   "cola1": {
    "world": [11, 3.4, 0],
-   "screen": [18, 145],
+   "screen": [38, 145],
    "depth": 8.8182,
    "scale": 1,
    "kind": "person",
@@ -323,7 +323,7 @@
   },
   "cola2": {
    "world": [10.7, 4, 0],
-   "screen": [1, 148],
+   "screen": [21, 148],
    "depth": 9.0019,
    "scale": 1,
    "kind": "person",
@@ -331,16 +331,16 @@
   },
   "entra": {
    "world": [10.4, 3.7, 0],
-   "screen": [1, 143],
+   "screen": [21, 143],
    "depth": 8.6345,
    "scale": 1,
    "kind": "person",
    "what": "where somebody appears coming in"
   },
   "caja_abuela": {
-   "world": [13, 4.3, 0],
-   "screen": [38, 172],
-   "depth": 10.594,
+   "world": [14.4, 4, 0],
+   "screen": [89, 182],
+   "depth": 11.2677,
    "scale": 1,
    "kind": "box",
    "what": "the first bottle box of story 41, on the floor, seen from above (its middle; about 1.0 x .5, the long side along x)",
@@ -348,7 +348,7 @@
   },
   "caja_senora": {
    "world": [11.5, 4.5, 0],
-   "screen": [7, 160],
+   "screen": [27, 160],
    "depth": 9.798,
    "scale": 1,
    "kind": "box",
@@ -356,9 +356,9 @@
    "footprint": [1, 0.5]
   },
   "caja_senor": {
-   "world": [12.2, 5.1, 0],
-   "screen": [9, 172],
-   "depth": 10.594,
+   "world": [13, 5, 0],
+   "screen": [45, 178],
+   "depth": 11.0227,
    "scale": 1,
    "kind": "box",
    "what": "the señor's bottle box (its middle; about 1.0 x .5, the long side along x)",
@@ -366,23 +366,23 @@
   },
   "senora.caja": {
    "world": [11.2, 4.1, 0],
-   "screen": [9, 154],
+   "screen": [29, 154],
    "depth": 9.3693,
    "scale": 1,
    "kind": "person",
    "what": "the señora standing by her box"
   },
   "senor.caja": {
-   "world": [12.6, 5.5, 0],
-   "screen": [9, 179],
-   "depth": 11.0839,
+   "world": [13.6, 5.4, 0],
+   "screen": [49, 188],
+   "depth": 11.6351,
    "scale": 1,
    "kind": "person",
    "what": "the señor standing by his box"
   },
   "perro.entra": {
    "world": [10.5, 4.2, 0],
-   "screen": [-6, 148],
+   "screen": [14, 148],
    "depth": 9.0019,
    "scale": 1,
    "kind": "animal",
@@ -390,7 +390,7 @@
   },
   "perro.mesa": {
    "world": [11.7, 4.2, 0],
-   "screen": [16, 159],
+   "screen": [36, 159],
    "depth": 9.7367,
    "scale": 1,
    "kind": "animal",
@@ -398,16 +398,16 @@
   },
   "perro.rana": {
    "world": [14.5, 4, 0],
-   "screen": [71, 183],
+   "screen": [91, 183],
    "depth": 11.3289,
    "scale": 1,
    "kind": "animal",
    "what": "Canelo sitting beside the frog"
   },
   "puerta_lata": {
-   "world": [10.6359, 4, 0],
-   "screen": [0, 148],
-   "depth": 8.9626,
+   "world": [9.8744, 4, 0],
+   "screen": [6, 141],
+   "depth": 8.4963,
    "scale": 1,
    "kind": "edge",
    "what": "where a can rolls out of the picture: the left edge of the window (the first column, x0) at floor level, y 4.0"
@@ -420,12 +420,12 @@
  },
  "views": {
   "wide": {
-   "world": [14.8664, 2.9, 0],
-   "screen": [98, 176.32],
+   "world": [14.1049, 2.9, 0],
+   "screen": [104, 169.32],
    "zoom": 1,
-   "x0": 0,
-   "region": [0, 0, 196, 216],
-   "what": "the one view: the 196 x 216 window over the 240 x 216 picture, x0 = clamp(round(sx - 98), 0, 44) for sx the projection of this world point (the floor point on the window's middle column, on y = 2.9). x0 = 0: the leftmost the picture allows: no x0 gives the table 20 px of floor on its left (its left edge is column 11); this keeps the whole run of shelves (columns 72..154), the ladder (84..118) and the table (11..60) in the window and gives the table the most floor"
+   "x0": 6,
+   "region": [6, 0, 196, 216],
+   "what": "the one view: the 196 x 216 window over the 240 x 216 picture, x0 = clamp(round(sx - 98), 0, 44) for sx the projection of this world point (the floor point on the window's middle column, on y = 2.9). x0 = 6: the middle of the x0 values (0..11) that keep the whole run of shelves (columns 92..174), the ladder (104..138) and the table (31..80) in the window with 20 px of floor left of the table"
   }
  },
  "front": {
@@ -461,26 +461,51 @@
   "results": [
    {
     "name": "spots-in-view",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "spots-in-view: spots outside (the window's edge is x0 0):",
-     "  perro.entra -6,148 outside the picture"
+     "spots-in-view: 42 spot points inside the 240 x 216 picture and the wide window [6, 202) x [0, 216)"
     ]
    },
    {
     "name": "things-in-view",
     "ok": true,
     "lines": [
-     "things-in-view: 2 things with a box (estante 71,45,84,111, mesa 11,135,50,38) inside the wide window"
+     "things-in-view: 2 things with a box (estante 91,45,84,111, mesa 31,135,50,38) inside the wide window"
     ]
    },
    {
     "name": "people-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "people-apart: 2 pair(s) closer than 12 px (screen points):",
-     "  group 2: coqui.piso 51,173 ~ luis.cajas 51,180: 7 px",
-     "  group 3: luis.cajas 51,180 ~ coqui.piso 51,173: 7 px"
+     "people-apart: every pair in each group at least 12 px apart: group 1 (pepe.pie, coqui.cajon, luis.piso, cola1, cola2) least 17.26 px; group 2 (pepe.mesa, coqui.piso, luis.cajas, perro.mesa) least 24.21 px; group 3 (senora.caja, senor.caja, luis.cajas, coqui.piso) least 21.1 px"
+    ]
+   },
+   {
+    "name": "frog-crate-apart-big-box",
+    "ok": true,
+    "lines": [
+     "frog-crate-apart-big-box: coqui.cajon 115,174 is 31.24 px from caja_grande 91,154 (at least 14)"
+    ]
+   },
+   {
+    "name": "frog-floor-apart-crate-of-cans",
+    "ok": true,
+    "lines": [
+     "frog-floor-apart-crate-of-cans: coqui.piso 67,177 is 28.86 px from cajon_latas 95,170 (at least 14)"
+    ]
+   },
+   {
+    "name": "frog-floor-apart-abuela-box",
+    "ok": true,
+    "lines": [
+     "frog-floor-apart-abuela-box: coqui.piso 67,177 is 22.56 px from caja_abuela 89,182 (at least 14)"
+    ]
+   },
+   {
+    "name": "pepe-mesa-column-apart-pyramid",
+    "ok": true,
+    "lines": [
+     "pepe-mesa-column-apart-pyramid: pepe.mesa's column 82 is 26 px from the pyramid's axis (mesa.fila.0, column 56) (at least 22)"
     ]
    },
    {
@@ -494,7 +519,7 @@
     "name": "pepe-escalera-in-picture",
     "ok": true,
     "lines": [
-     "pepe-escalera-in-picture: rows 54..106 of his 53 (feet on row 106, top on row 54) inside rows 0..215; his 48-px canvas spans columns 78,125 of 0..239"
+     "pepe-escalera-in-picture: rows 54..106 of his 53 (feet on row 106, top on row 54) inside rows 0..215; his 48-px canvas spans columns 98,145 of 0..239"
     ]
    },
    {
@@ -506,26 +531,23 @@
    },
    {
     "name": "bottle-boxes-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "bottle-boxes-apart: boxes overlapping on screen (least penetration along the edges' normals, of the footprint's parallelogram; the table by the hull of its box):",
-     "  caja_abuela and the table overlap on screen by 2.47 px",
-     "  all pairs: caja_abuela / caja_senora apart 8.22 px; caja_abuela / caja_senor apart 4.93 px; caja_abuela / mesa overlap 2.47 px; caja_senora / caja_senor apart 1.64 px; caja_senora / mesa apart 0.82 px; caja_senor / mesa apart 10.69 px"
+     "bottle-boxes-apart: the three boxes' footprints (1.0 x .5, long side along x) do not overlap each other or the table's box on screen: caja_abuela / caja_senora apart 31.24 px; caja_abuela / caja_senor apart 8.22 px; caja_abuela / mesa apart 12.33 px; caja_senora / caja_senor apart 8.22 px; caja_senora / mesa apart 0.82 px; caja_senor / mesa apart 9.04 px"
     ]
    },
    {
     "name": "view-holds-set",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "view-holds-set: the window does not hold what the design asks:",
-     "  the table's left edge is column 11: only 11 px of floor between the window's left edge (x0 0) and the table, not 20 (x0 is already 0: the picture has no more room on the left)"
+     "view-holds-set: x0 6: the run (columns 92,174), the ladder (104,138) and the table (31,80) are in the window 6,201, with 25 px of floor left of the table"
     ]
    },
    {
     "name": "dibujo-clear",
     "ok": true,
     "lines": [
-     "dibujo-clear: the drawing's point 54,62 is inside the window, on the wall, 15.8 px from the nearest plantain pixel (needs 8)"
+     "dibujo-clear: the drawing's point 74,62 is inside the window, on the wall, 15.8 px from the nearest plantain pixel (needs 8)"
     ]
    },
    {
@@ -539,14 +561,14 @@
     "name": "boxes-cover-set",
     "ok": true,
     "lines": [
-     "boxes-cover-set: estante pixels [72,45,154,154] in box [71,45,84,111]; mesa pixels [11,135,60,169] in box [11,135,50,38] (1 px tolerance)"
+     "boxes-cover-set: estante pixels [92,45,174,154] in box [91,45,84,111]; mesa pixels [31,135,80,169] in box [31,135,50,38] (1 px tolerance)"
     ]
    },
    {
     "name": "mesa-fila-on-cloth",
     "ok": true,
     "lines": [
-     "mesa-fila-on-cloth: the pixel at mesa.fila.0 36,148 is drawn by part mesa (the cloth), in both states with the table"
+     "mesa-fila-on-cloth: the pixel at mesa.fila.0 56,148 is drawn by part mesa (the cloth), in both states with the table"
     ]
    }
   ]

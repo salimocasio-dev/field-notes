@@ -114,16 +114,16 @@ async function make(G, proj, bb) {
   const add = (name, w, kind, what, extra) => D.push([name, w, kind, what, extra]);
   add('pepe.pie', [12.3, 1.5, 0], 'person', 'don Pepe at the foot of the ladder, left of it');
   add('pepe.escalera', onLadder, 'person', 'don Pepe on the ladder, his feet on the rung nearest z 1.3 (z ' + r4(rung) + ', the fourth of seven); x and y from the ladder\'s line between ESCALERA_PIE and ESCALERA_ALTO');
-  add('pepe.mesa', [12.1, 2.9, 0], 'person', 'don Pepe behind the display table');
+  add('pepe.mesa', [12.9, 2.9, 0], 'person', 'don Pepe behind the display table, at its right end, clear of the pyramid');
   add('pepe.entra', [10.6, 3.0, 0], 'person', 'don Pepe coming in from the left with the big box');
-  add('coqui.cajon', [14.1, 3.3, .3], 'person', 'the frog on his crate; the crate is a sprite .3 high under him (its bottom middle on ground)');
-  add('coqui.piso', [13.4, 4.0, 0], 'person', 'the frog on the floor');
-  add('luis.piso', [14.9, 3.9, 0], 'person', 'Luis on the floor');
-  add('luis.cajas', [13.8, 4.4, 0], 'person', 'Luis where he counts and holds a box up');
-  add('caja_grande', [13.3, 2.7, 0], 'object', 'the big cardboard box of the delivery');
-  add('cajon_latas', [13.5, 3.9, 0], 'object', 'the crate of cans (story 40)');
-  add('red_a', [13.2, 3.8, .35], 'object', 'the first net of cans, on the crate');
-  add('red_b', [13.9, 3.8, .35], 'object', 'the second net of cans, on the crate');
+  add('coqui.cajon', [15.0, 3.2, .3], 'person', 'the frog on his crate; the crate is a sprite .3 high under him (its bottom middle on ground)');
+  add('coqui.piso', [13.5, 4.3, 0], 'person', 'the frog on the floor');
+  add('luis.piso', [15.2, 4.4, 0], 'person', 'Luis on the floor');
+  add('luis.cajas', [15.4, 3.6, 0], 'person', 'Luis where he counts and holds a box up');
+  add('caja_grande', [12.9, 2.4, 0], 'object', 'the big cardboard box of the delivery');
+  add('cajon_latas', [13.9, 3.2, 0], 'object', 'the crate of cans (story 40)');
+  add('red_a', [13.6, 3.2, .35], 'object', 'the first net of cans, on the crate');
+  add('red_b', [14.25, 3.2, .35], 'object', 'the second net of cans, on the crate');
   for (let k = 0; k < 6; k++) add('estante.medio.' + k, [E0 + ringDx[k], .19, SZ[1] + .06], 'shelf', 'ring place ' + k + ' on the middle shelf, at the ring the set draws (x = E2X0 + ' + ringDx[k] + '); the shelf top');
   for (let k = 0; k < 7; k++) add('estante.alto.' + k, [E0 + .5 + k * (E1 - E0 - 1) / 6, .19, SZ[2] + .06], 'shelf', 'bottle place ' + k + ' on the top shelf, evenly from E2X0 + .5 to E2X1 - .5; the shelf top');
   for (let r = 0; r < 4; r++) add('mesa.fila.' + r, [MX, MY, MH + r * .3], 'table', 'the middle of row ' + r + ' of the pyramid on the table top (row 0 on the cloth, each row .3 higher)');
@@ -131,11 +131,11 @@ async function make(G, proj, bb) {
   add('cola1', [11.0, 3.4, 0], 'person', 'the señora waiting at the left edge');
   add('cola2', [10.7, 4.0, 0], 'person', 'the señor waiting at the left edge');
   add('entra', [10.4, 3.7, 0], 'person', 'where somebody appears coming in');
-  add('caja_abuela', [13.0, 4.3, 0], 'box', 'the first bottle box of story 41, on the floor, seen from above (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
+  add('caja_abuela', [14.4, 4.0, 0], 'box', 'the first bottle box of story 41, on the floor, seen from above (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
   add('caja_senora', [11.5, 4.5, 0], 'box', 'the señora\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
-  add('caja_senor', [12.2, 5.1, 0], 'box', 'the señor\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
+  add('caja_senor', [13.0, 5.0, 0], 'box', 'the señor\'s bottle box (its middle; about 1.0 x .5, the long side along x)', { footprint: [1.0, .5] });
   add('senora.caja', [11.2, 4.1, 0], 'person', 'the señora standing by her box');
-  add('senor.caja', [12.6, 5.5, 0], 'person', 'the señor standing by his box');
+  add('senor.caja', [13.6, 5.4, 0], 'person', 'the señor standing by his box');
   add('perro.entra', [10.5, 4.2, 0], 'animal', 'Canelo coming in');
   add('perro.mesa', [11.7, 4.2, 0], 'animal', 'Canelo bumping the table');
   add('perro.rana', [14.5, 4.0, 0], 'animal', 'Canelo sitting beside the frog');
@@ -147,8 +147,9 @@ async function make(G, proj, bb) {
     spots[d[0]] = Object.assign({ world: W4(d[1]), screen: scr(q), depth: r4(q[2]), scale: 1, kind: d[2], what: d[3] }, d[4] || {});
   });
   // the crate under the frog stands on the floor under him
-  const gq = (await proj([[14.1, 3.3, 0]]))[0];
-  spots['coqui.cajon'].ground = { world: [14.1, 3.3, 0], screen: scr(gq), depth: r4(gq[2]) };
+  const gw = [D.find(d => d[0] === 'coqui.cajon')[1][0], D.find(d => d[0] === 'coqui.cajon')[1][1], 0];
+  const gq = (await proj([gw]))[0];
+  spots['coqui.cajon'].ground = { world: W4(gw), screen: scr(gq), depth: r4(gq[2]) };
 
   /* ---- things he can touch ---- */
   const boxOf = async w => {
@@ -307,6 +308,19 @@ function checks(sheet, probes, bb) {
       seen.push(g + ' (' + ns.join(', ') + ') least ' + r2(least) + ' px');
     }
     add('people-apart', near, 'every pair in each group at least ' + MIN_APART + ' px apart: ' + seen.join('; '), list(near.length + ' pair(s) closer than ' + MIN_APART + ' px (screen points):', near));
+  }
+
+  // 3b. (v2) the frog and the things near him: screen points at least 14 px apart; and don Pepe's column behind the table at least 22 px from the pyramid's axis
+  {
+    const apart = (name, a, b, min, why) => {
+      const pa = S[a].screen, pb = S[b].screen, d = Math.hypot(pa[0] - pb[0], pa[1] - pb[1]);
+      add(name, d < min ? [1] : [], a + ' ' + pa + ' is ' + r2(d) + ' px from ' + b + ' ' + pb + ' (at least ' + min + ')' + why, [a + ' ' + pa + ' is ' + r2(d) + ' px from ' + b + ' ' + pb + ', closer than ' + min + ' px']);
+    };
+    apart('frog-crate-apart-big-box', 'coqui.cajon', 'caja_grande', 14, '');
+    apart('frog-floor-apart-crate-of-cans', 'coqui.piso', 'cajon_latas', 14, '');
+    apart('frog-floor-apart-abuela-box', 'coqui.piso', 'caja_abuela', 14, '');
+    const a = S['pepe.mesa'].screen[0], b = S['mesa.fila.0'].screen[0], d = Math.abs(a - b);
+    add('pepe-mesa-column-apart-pyramid', d < 22 ? [1] : [], 'pepe.mesa\'s column ' + a + ' is ' + d + ' px from the pyramid\'s axis (mesa.fila.0, column ' + b + ') (at least 22)', ['pepe.mesa\'s column ' + a + ' is ' + d + ' px from the pyramid\'s axis (mesa.fila.0, column ' + b + '), closer than 22 px']);
   }
 
   // 4. the shelf places: each on a shelf top (part estantes2, tags=1), and the ones the ladder is in front of
