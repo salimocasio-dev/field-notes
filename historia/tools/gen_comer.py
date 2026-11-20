@@ -186,7 +186,7 @@ VC={"di_poco":"c35_cq_poco","di_mucho":"c35_cq_mucho"}
 def paso35(p,q,pq,qq,sign):   # step 2/3: abuelo and papá ask; the sign is on the one who asks for sugar
     return [act("tienden35",a="abuelo,papa"),act("trae35"),act("llena35"),pq,qq,
       ask(sign,None,after=[act("azucar35",a=sign,suelto=1),"c35_coqui_pone",act("ya"),act("cafe35",a="papa" if sign=="abuelo" else "abuelo")],then=[act("bajan35",a="abuelo,papa"),act("vuelve35")])]
-s35={"id":"cafe-con-azucar","title":"Café con azúcar","place":"La cocina","scene":"comer","next":None,
+s35={"id":"cafe-con-azucar","title":"Café con azúcar","place":"La cocina","scene":"comer","next":"el-colmado",
  "goal":"Give everybody the cup he asks for.","stake":{"thing":"café","steps":2},"dots":9,"bien":"si_muy_bien",
  "focus_words":["café","azúcar","un poco","mucho"],"back_again":["leche","taza","toma","más","por favor","huele a","le pone","no hay","rico","sí","quieres"],
  "also_heard":[],"names":BASE,"palabras":{"azucar":"azúcar","poco":"un poco","mucho":"mucho"},"clips":c,

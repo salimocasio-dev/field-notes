@@ -1,36 +1,48 @@
 # La caja (place 4, scene 4): stories 45, 46, 47. Regenerates the JSON; never edit the JSON by hand.
-# Script: historia/notas/guiones/caja.md (draft 2, after the two reviews). Every quoted line of the script is exactly one clip, word for word.
-# The scene `caja` is not built yet: acts, things, spots and speaker keys are the ones of the script's Needs list, nothing else.
+# Script: historia/notas/guiones/caja.md (draft 2, with its Needs list as it stands now). Every quoted line of the script is exactly one clip, word for word.
+# The scene `caja` is not built yet: acts, things, spots and speaker keys are the ones of the script's Needs list, nothing else (plus the acts every scene has: marca, ya, fin, ir).
+# The register's ring is `suena` {n}; `marca` is only the card's star or cross.
+# Run order for the twelve stories of El colmado: gen_mostrador, gen_estantes, gen_frutas, gen_caja (each sees only what was recorded before it).
 import json,glob,os,re,collections
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)),".."))
 N=lambda t:{"who":"narr","text":t}
 T=lambda t:{"who":"tu","text":t}
 def D(quien,pre,t): return {"who":"narr","habla":quien,"text":pre+" dice: "+t}
 PE=lambda t:D("pepe","Don Pepe",t); L=lambda t:D("luis","Luis",t); CA=lambda t:D("carmen","Carmen",t); SA=lambda t:D("senora","La señora",t); SE=lambda t:D("senor","El señor",t)
+tw=lambda k:{"set":{"twinkle":k}}                                              # the engine's twinkle on a thing he can touch
 def act(_n,**k): return dict({"act":_n},**k)
+def gesto(quien,que,**k): return act("gesto",quien=quien,que=que,**k)
+def con(a,*lines): return [dict(a,suelto=1)]+list(lines)+[act("ya")]          # an act that runs in time with a spoken line: started loose, the line, then `ya`
 def ask(k,line,then=None,after=None,**kw): return dict({"ask":k,"lead":[],"line":line,"then":then or [],"after":after or []},**kw)
 X=[act("marca",que="x"),{"cost":1}]                      # the card's cross, then one step of the stake
-OK=act("marca",que="ok")                                  # the card's star (the act `marca` with {que}; the register's window is `marca` with {n})
+OK=act("marca",que="ok")                                  # the card's star (the act `marca` with {que}; the register's window is `suena`)
 CARD={"set":{"tarjeta":"rondas","marcas":[None,None]}}   # every story of this place has two scored rounds: the card shows two places
 PAL={"10":"diez","11":"once","12":"doce","13":"trece","14":"catorce","15":"quince","16":"dieciséis","17":"diecisiete","18":"dieciocho","19":"diecinueve","20":"veinte"}
-# an earlier story's focus words that a speaking turn may use (stories 36 to 44 are built elsewhere: their new words, from the order)
+# an earlier story's focus words that a speaking turn may use (stories 36 to 44 are in cuentos/ as well: their new words, from the order)
 FOCUS_36_44=["colmado","buenos días","necesito","aquí tiene","¿tiene…?","¿algo más?","bolsa","compra","esto","eso","vende","buenas tardes","lata","botella","caja","¿cuántos?","cuatro","cinco","seis","siete",
              "ocho","nueve","diez","otro","tomate","cebolla","papa","plátano","aguacate","piña","limón","bueno","malo","libra","medio","fresco"]
-MINE=("cuanto-es","caro-y-barato","el-cambio")
-# a clip whose text and speaker are already recorded under another id keeps that id (nothing is recorded twice); the stories of this run feed it too, in order
-EX=collections.defaultdict(collections.Counter)
-for f in glob.glob("cuentos/*.json"):
-    if any(m in f for m in MINE) or "/z" in f: continue
-    for cid,cl in json.load(open(f,encoding="utf-8")).get("clips",{}).items(): EX[(cl.get("who"),cl.get("habla"),cl["text"])][cid]+=1
+MINE=("cuanto-es","caro-y-barato","el-cambio")   # this generator's stories: not seen
+# a clip whose text and speaker are already recorded under another id keeps that id (nothing is recorded twice); the stories of this run feed it too, in order.
+# Ties go to the id most used, then to the earliest story of the course.
+ORD={}
+for i,s in enumerate(re.findall(r'"([a-z0-9-]+)"',"".join(re.findall(r'cuentos:\[(.*?)\]',open("curso.js",encoding="utf-8").read(),re.S)))): ORD.setdefault(s,i)
+EX=collections.defaultdict(dict)   # (who, habla, text) -> {clip id: [stories that have it, first place in the course]}
+def ex_add(cid,cl,o=9999):
+    e=EX[(cl.get("who"),cl.get("habla"),cl["text"])].setdefault(cid,[0,o]); e[0]+=1; e[1]=min(e[1],o)
+for f in sorted(glob.glob("cuentos/*.json")):
+    nm=os.path.basename(f)[:-5]
+    if nm in MINE or nm.startswith("z"): continue
+    for cid,cl in json.load(open(f,encoding="utf-8")).get("clips",{}).items(): ex_add(cid,cl,ORD.get(nm,9999))
+def best(k): return min(EX[k],key=lambda cid:(-EX[k][cid][0],EX[k][cid][1],cid))
 DIN=set()   # ids that are put together in the story ("c45_pepe_$pa"): never renamed
 def reuse(st,turnos):
     ren={}
     for cid,cl in list(st["clips"].items()):
         if "$" in cid or cid in DIN: continue
         k=(cl.get("who"),cl.get("habla"),cl["text"])
-        if k in EX:
-            best=EX[k].most_common(1)[0][0]
-            if best!=cid: ren[cid]=best
+        if k in EX and EX[k]:
+            b=best(k)
+            if b!=cid: ren[cid]=b
     def fx(o):
         if isinstance(o,str): return ren.get(o,o)
         if isinstance(o,list): return [fx(x) for x in o]
@@ -49,7 +61,7 @@ def reuse(st,turnos):
         cid=ren.get(cid,cid)
         if cid in out["clips"] and cid in played: out["clips"][cid]["tu_turno"]=t
         else: print("MISSING TURN LINE",out["id"],cid)
-    for cid,cl in out["clips"].items(): EX[(cl.get("who"),cl.get("habla"),cl["text"])][cid]+=1
+    for cid,cl in out["clips"].items(): ex_add(cid,cl)
     return out
 TG=lambda *p:[{"palabra":w,"formas":list(f)} for w,f in p]
 comunes={"si_muy_bien":N("¡Sí! ¡Muy bien!"),"yo_coqui":T("¡Coquí!"),"p_n_luis":N("Este es Luis."),"b_n_senor":N("Es un señor."),"b_n_senora":N("Es una señora.")}
@@ -76,30 +88,31 @@ def ronda45(s,q):
      {"calc":u,"cond":"%s=tecla_a"%k,"then":"$"+p,"else":"$"+d},{"calc":v,"cond":"%s=tecla_a"%k,"then":"$"+d,"else":"$"+p},
      {"decide":"do","options":["tecla_a","tecla_b"],"pick":"$"+k,"tests":"$"+p,"lock":True,"mudo":True,
       "lead":[act("cliente",quien=q,precio="$"+p,ver=0),"c45_%s_cuanto"%q,"c45_pepe_$"+p,act("teclas",a="$"+u,b="$"+v)],"line":"c45_pepe_$"+p,
-      "right":[act("marca",n="$"+p),{"if":"ok","then":[act("etiqueta",ver=1),act("paga",quien=q,n="$"+p),"c45_%s_paga_$%s"%(q,p),OK],"else":[act("paga",quien=q,n="$"+p)]}],
-      "wrong":[act("marca",n="$"+d),act("etiqueta",ver=1)]+X+["c45_no_$"+p,
+      "right":[act("suena",n="$"+p),{"if":"ok","then":[act("etiqueta",ver=1),act("paga",quien=q,n="$"+p),"c45_%s_paga_$%s"%(q,p),OK],"else":[act("paga",quien=q,n="$"+p)]},act("sale",quien=q)],
+      "wrong":[act("suena",n="$"+d),act("etiqueta",ver=1),gesto(q,"no")]+X+["c45_no_$"+p,
                {"if":"%s=up"%e,"then":[act("clip",quita=1,a="cliente")],"else":[act("clip",quita=1,a="gaveta")]}]}]
 s45={"id":"cuanto-es","title":"¿Cuánto es?","place":"El colmado","scene":"caja","next":"caro-y-barato",
  "goal":"Ring each price on the register's keys, so the three dollars under the clip are still there when don Pepe pays his helper.","stake":{"thing":"dólar","steps":2},"dots":7,"bien":"si_muy_bien",
- "focus_words":["¿cuánto es?","dólar","paga","once","doce","trece"],"back_again":["diez","tres","colmado","compra","buenas tardes","señor","señora","gracias","aquí tiene","olla","arroz"],
+ "focus_words":["¿cuánto es?","dólar","paga","once","doce","trece"],"formas_foco":{"dólar":["dólares"]},
+ "back_again":["diez","tres","colmado","compra","buenas tardes","señor","señora","gracias","aquí tiene","olla","arroz"],
  "also_heard":[],"names":{"luis":"p_n_luis","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"11":"once","12":"doce","13":"trece"},"clips":c,
  "beats":[act("ir",a="repisa"),{"wait":500},
   # 1: the drawer, the three bills under the clip, thanks (a speaking turn)
   act("gaveta",abre=1),"c45_caja",act("clip",n=3),"c45_pepe_cuenta","c45_cq_gracias",
   # 2 to 4: three signed asks, one key each (the key 11, 12, 13); the other key is the number below
   {"dots":1},act("cliente",quien="luis",cosa="latas",precio="11",ver=1),"c45_luis_cuanto","c45_pepe_11",act("teclas",a="10",b="11"),
-  ask("tecla_b","c45_donde_11",after=[act("marca",n="11")],then=[act("paga",quien="luis",n="11"),"c45_luis_paga"]),
+  ask("tecla_b","c45_donde_11",after=[act("suena",n="11")],then=[act("paga",quien="luis",n="11"),"c45_luis_paga",act("sale",quien="luis")]),
   {"dots":2},act("cliente",quien="senor",cosa="olla",precio="12",ver=1),"c45_senor_hola","c45_cq_buenas","c45_senor_cuanto","c45_pepe_12",act("teclas",a="12",b="11"),
-  ask("tecla_a","c45_toca_12",after=[act("marca",n="12")],then=[act("paga",quien="senor",n="12"),"c45_senor_paga_12"]),
+  ask("tecla_a","c45_toca_12",after=[act("suena",n="12")],then=[act("paga",quien="senor",n="12"),"c45_senor_paga_12",act("sale",quien="senor")]),
   {"dots":3},act("cliente",quien="senora",cosa="arroz",precio="13",ver=1),"c45_senora_cuanto","c45_pepe_13",act("teclas",a="12",b="13"),
-  ask("tecla_b","c45_y_13",after=[act("marca",n="13")],then=[act("paga",quien="senora",n="13"),"c45_senora_paga_13"]),
+  ask("tecla_b","c45_y_13",after=[act("suena",n="13")],then=[act("paga",quien="senora",n="13"),"c45_senora_paga_13",act("sale",quien="senora")]),
   # 5: the turn: a line forms, the tags turn their backs
-  {"dots":4},act("cola",n=2),act("aviso"),"c45_pepe_aviso",CARD,{"wait":400},
+  {"dots":4},act("cola",n=2),gesto("pepe","empaca"),act("aviso"),"c45_pepe_aviso",CARD,{"wait":400},
   # 6: A, the señora; 7: B, the señor. Each drawn afresh
   {"dots":5}]+ronda45("a","senora")+[{"dots":6}]+ronda45("b","senor"),
  "final":[{"dots":7},   # 8: the shop is empty; what is left under the clip, by what was lost
-  {"if":"lost=0","then":["c45_toma3",act("paga45",n=3),act("final")],"else":[{"if":"lost=1","then":["c45_toma2",act("paga45",n=2)],"else":["c45_toma1",act("paga45",n=1)]}]},
-  "c45_hasta"],
+  {"if":"lost=0","then":["c45_toma3",act("paga45",n=3)],"else":[{"if":"lost=1","then":["c45_toma2",act("paga45",n=2)],"else":["c45_toma1",act("paga45",n=1)]}]},
+  "c45_hasta",gesto("coqui","saluda"),act("fin")],
  "leer":["c45_caja","c45_pepe_cuenta","c45_cq_gracias","c45_luis_cuanto","c45_pepe_11","c45_donde_11","c45_luis_paga","c45_senor_hola","c45_cq_buenas","c45_senor_cuanto","c45_pepe_12","c45_toca_12","c45_senor_paga_12",
   "c45_senora_cuanto","c45_pepe_13","c45_y_13","c45_senora_paga_13","c45_pepe_aviso","c45_senora_cuanto","c45_pepe_11","c45_senora_paga_11","c45_senor_cuanto","c45_pepe_13","c45_senor_paga_13","c45_toma3","c45_hasta"]}
 s45=reuse(s45,{"c45_cq_gracias":TG(("gracias",["gracias"])),"c45_cq_buenas":TG(("buenas tardes",["buenas tardes"]),("señor",["señor","senor"]))})
@@ -114,7 +127,7 @@ c.update({"c46_compra":N("Coquí compra una taza."),"c46_pepe_cara":PE("Esta taz
  "c46_pepe_ollas":PE("La olla grande es cara: dieciséis dólares. La olla pequeña es barata: quince dólares."),"c46_senora_olla":SA("Quiero la olla cara, por favor."),"c46_toca_olla":N("Toca la olla cara."),
  "c46_senora_paga16":N("La señora paga dieciséis dólares."),"c46_luis_cuanto":L("¿Cuánto es?"),"c46_pepe_platos":PE("Este, catorce dólares. Y este, quince dólares."),
  "c46_luis_plato":L("Quiero el plato de quince dólares."),"c46_donde_plato":N("¿Dónde está el plato de quince dólares?"),"c46_luis_paga15":N("Luis paga quince dólares."),
- "c46_luis_gracias":L("¡Gracias, Coquí!"),"c46_cq_denada":T("¡De nada!"),"c46_pepe_rapido":PE("¡Rápido, Coquí!"),
+ "c46_luis_gracias_adios":L("¡Gracias, Coquí! ¡Adiós!"),"c46_cq_adios_luis":T("¡Adiós, Luis!"),"c46_pepe_rapido":PE("¡Rápido, Coquí!"),
  "c46_pepe_abuela":PE("Y esto es para tu abuela."),"c46_no_hay_papel":N("No hay más papel."),"c46_cq_mira":T("¡Abuela! ¡Mira!")})
 for w in ("caro","barato"):
     c["c46_vaso_"+w]=SE("Quiero el vaso %s, por favor."%w); c["c46_no_vaso_"+w]=N("No, Coquí. Mira. Este vaso es %s."%w); DIN.update(["c46_vaso_"+w,"c46_no_vaso_"+w])
@@ -129,28 +142,28 @@ def par46(s,kind):
 def decide46(s,kind,quien,quien_pre,tests,line,noline,ka,pa):
     u,v="u"+s,"v"+s
     return {"decide":"do","options":["cosa_a","cosa_b"],"pick":"$"+ka,"tests":tests,"lock":True,"mudo":True,
-      "lead":[act("par",k=kind,a="$"+u,b="$"+v),line],"line":line,
-      "right":[act("empuja",cual="$"+ka),act("envuelve",ok=1),act("paga",quien=quien,n="$"+pa),{"if":"ok","then":[OK]}],
-      "wrong":[act("empuja",cual="$x"),act("envuelve",ok=1)]+X+[noline,act("envuelve",ok=0)]}
+      "lead":[act("cliente",quien=quien),act("par",k=kind,a="$"+u,b="$"+v),line],"line":line,
+      "right":[act("empuja",cual="$"+ka),act("envuelve",ok=1),act("paga",quien=quien,n="$"+pa),{"if":"ok","then":[OK]},act("sale",quien=quien)],
+      "wrong":[act("empuja",cual="$x"),act("envuelve",ok=1),gesto(quien,"no")]+X+[noline,act("envuelve",ok=0)]}
 s46={"id":"caro-y-barato","title":"Caro y barato","place":"El colmado","scene":"caja","next":"el-cambio",
  "goal":"Buy abuela a cup, then push to don Pepe the one each customer asks for: every wrong one he wraps tears a sheet of the gift paper that abuela's cup needs.","stake":{"thing":"papel","steps":2},"dots":7,"bien":"si_muy_bien",
- "focus_words":["caro","barato","catorce","quince","dieciséis"],
- "back_again":["taza","olla","plato","vaso","dólar","¿cuánto es?","paga","quiero","compra","once","doce","trece","grande","pequeño","abuela","por favor","gracias","de nada"],
+ "focus_words":["caro","barato","catorce","quince","dieciséis"],"formas_foco":{"caro":["cara"],"barato":["barata"]},
+ "back_again":["taza","olla","plato","vaso","dólar","¿cuánto es?","paga","quiero","compra","once","doce","trece","grande","pequeño","abuela","por favor","gracias","adiós"],
  "also_heard":["papel"],"names":{"luis":"p_n_luis","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"14":"catorce","15":"quince","16":"dieciséis"},"clips":c,
  "beats":[act("papel",n=5),{"wait":500},
   # 1: the two cups, caro and barato said (taught), the signed ask on the cheap one, the frog pays
-  {"dots":1},act("par",k="taza",a="16",b="14"),"c46_compra","c46_pepe_cara","c46_pepe_barata",
+  {"dots":1},act("par",k="taza",a="16",b="14"),"c46_compra",gesto("pepe","mano",a="cosa_a"),"c46_pepe_cara",gesto("pepe","mano",a="cosa_b"),"c46_pepe_barata",gesto("coqui","mira",a="frasco"),
   ask("cosa_b","c46_donde_taza",then=[act("paga",quien="coqui",n="14"),"c46_cq_paga"]),
   # 2: for whom (a speaking turn)
-  "c46_pepe_quien","c46_cq_abuela",
+  "c46_pepe_quien","c46_cq_abuela",gesto("pepe","senala",a="papel"),
   # 3: the señora; the large pot (cara): the frog pushes it, don Pepe wraps it, four sheets left
-  {"dots":2},act("par",k="olla",a="16",b="15"),"c46_pepe_ollas","c46_senora_olla",
-  ask("cosa_a","c46_toca_olla",after=[act("empuja",cual="cosa_a"),act("envuelve",ok=1),act("papel",n=4)],then=[act("paga",quien="senora",n="16"),"c46_senora_paga16"]),
-  # 4: Luis; the plate of fifteen; he has a bag of his own, no paper; his thanks, answered (a speaking turn)
-  {"dots":3},act("par",k="plato",a="14",b="15"),"c46_luis_cuanto","c46_pepe_platos","c46_luis_plato",
-  ask("cosa_b","c46_donde_plato",then=[act("paga",quien="luis",n="15"),"c46_luis_paga15","c46_luis_gracias","c46_cq_denada"]),
+  {"dots":2},act("cliente",quien="senora"),act("par",k="olla",a="16",b="15"),"c46_pepe_ollas","c46_senora_olla",
+  ask("cosa_a","c46_toca_olla",after=[act("empuja",cual="cosa_a"),act("envuelve",ok=1),act("papel",n=4)],then=[act("paga",quien="senora",n="16"),"c46_senora_paga16",act("sale",quien="senora")]),
+  # 4: Luis; the plate of fifteen; he has a bag of his own, no paper; his thanks and goodbye, answered (a speaking turn)
+  {"dots":3},act("cliente",quien="luis"),act("par",k="plato",a="14",b="15"),"c46_luis_cuanto","c46_pepe_platos","c46_luis_plato",
+  ask("cosa_b","c46_donde_plato",then=[act("paga",quien="luis",n="15"),"c46_luis_paga15",gesto("luis","bolsa"),"c46_luis_gracias_adios","c46_cq_adios_luis",act("sale",quien="luis")]),
   # 5: the turn: a line of people with hats and balloons, don Pepe wraps without a look
-  {"dots":4},act("cola",n=2),"c46_pepe_rapido",CARD,{"wait":400},
+  {"dots":4},act("cola",n=2),gesto("pepe","nudillos"),"c46_pepe_rapido",CARD,{"wait":400},
   # 6: A, the señor: caro or barato (drawn), two glasses
   {"dots":5}]+par46("a","vaso")+[{"draw":"wa","options":["caro","barato"],"other":"oa"},{"calc":"ka","cond":"wa=caro","then":"$ca","else":"$ea"},{"calc":"ra","cond":"wa=caro","then":"$ha","else":"$la"},
   decide46("a","vaso","senor","El señor","$wa","c46_vaso_$wa","c46_no_vaso_$oa","ka","ra"),
@@ -159,11 +172,12 @@ s46={"id":"caro-y-barato","title":"Caro y barato","place":"El colmado","scene":"
   {"calc":"nb","cond":"wb=caro","then":"$hb","else":"$lb"},{"calc":"ob","cond":"wb=caro","then":"$lb","else":"$hb"},
   decide46("b","taza","senora","La señora","$nb","c46_taza_$nb","c46_no_taza_$ob","kb","nb")],
  "final":[{"dots":7},   # 8: abuela's cup, by the sheets left (two sheets left = nothing lost); 9: the frog carries it out
-  {"if":"lost=0","then":[act("regalo46",n=2),"c46_pepe_abuela",act("final")],"else":[{"if":"lost=1","then":[act("regalo46",n=1),"c46_pepe_abuela"],"else":[act("regalo46",n=0),"c46_no_hay_papel"]}]},
-  "c46_cq_mira"],
+  gesto("pepe","mira",a="papel"),gesto("pepe","mira",a="taza"),
+  {"if":"lost=0","then":[act("regalo46",n=2),"c46_pepe_abuela"],"else":[{"if":"lost=1","then":[act("regalo46",n=1),"c46_pepe_abuela"],"else":[act("regalo46",n=0),"c46_no_hay_papel"]}]},
+  gesto("coqui","sale_taza"),"c46_cq_mira",act("fin")],
  "leer":["c46_compra","c46_pepe_cara","c46_pepe_barata","c46_donde_taza","c46_cq_paga","c46_pepe_quien","c46_cq_abuela","c46_pepe_ollas","c46_senora_olla","c46_toca_olla","c46_senora_paga16","c46_luis_cuanto","c46_pepe_platos","c46_luis_plato","c46_donde_plato","c46_luis_paga15",
-  "c46_luis_gracias","c46_cq_denada","c46_pepe_rapido","c46_vaso_barato","c46_taza_15","c46_pepe_abuela","c46_cq_mira"]}
-s46=reuse(s46,{"c46_cq_abuela":TG(("abuela",["abuela"])),"c46_cq_denada":TG(("de nada",["de nada"]))})
+  "c46_luis_gracias_adios","c46_cq_adios_luis","c46_pepe_rapido","c46_vaso_barato","c46_taza_15","c46_pepe_abuela","c46_cq_mira"]}
+s46=reuse(s46,{"c46_cq_abuela":TG(("abuela",["abuela"])),"c46_cq_adios_luis":TG(("adiós",["adiós","adios"]))})
 json.dump(s46,open("cuentos/caro-y-barato.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
@@ -171,7 +185,7 @@ json.dump(s46,open("cuentos/caro-y-barato.json","w",encoding="utf-8"),ensure_asc
 # Every customer pays with one twenty. The price is diecisiete or dieciocho (drawn afresh each round); the keys are 17 and 18 for seventeen, 18 and 17 or 18 and 19 for eighteen (never sixteen beside seventeen).
 c=dict(comunes); c["p_n_carmen"]=N("Esta es Carmen.")
 c.update({"c47_aqui_ninos":N("Aquí están los niños."),"c47_pepe_quieren":PE("¿Qué quieren los niños?"),"c47_cq_bola":T("¡Una bola!"),"c47_aqui_chavos":N("Aquí están los chavos de los niños. Necesitan más chavos."),
- "c47_luis_cuanto":L("¿Cuánto es?"),"c47_donde_17":N("¿Dónde está el diecisiete?"),"c47_luis_paga20":N("Luis paga con veinte dólares."),
+ "c47_luis_cuanto":L("¿Cuánto es?"),"c47_donde_17":N("¿Dónde está el diecisiete?"),"c47_luis_paga17":N("Luis paga diecisiete dólares con un billete de veinte."),
  "c47_pepe_cambio_luis":PE("Aquí tienes tu cambio: dieciocho, diecinueve y veinte."),"c47_toca_18":N("Toca el dieciocho."),"c47_pepe_cambio_carmen":PE("Aquí tienes tu cambio: diecinueve y veinte."),
  "c47_carmen_quien":CA("¿Para quién es el cambio?"),"c47_cq_ninos":T("¡Para los niños!"),"c47_pepe_aviso":PE("Coquí, ¡la caja, por favor!"),
  "c47_mas_chavos":N("Más chavos para la bola."),"c47_vengan":PE("¡Vengan, niños!"),"c47_compran":N("Los niños compran la bola."),"c47_cq_adios":T("¡Adiós, niños!"),
@@ -189,30 +203,31 @@ def ronda47(s,q):
      {"calc":u,"cond":"%s=tecla_a"%k,"then":"$"+p,"else":"$"+d},{"calc":v,"cond":"%s=tecla_a"%k,"then":"$"+d,"else":"$"+p},
      {"decide":"do","options":["tecla_a","tecla_b"],"pick":"$"+k,"tests":"$"+p,"lock":True,"mudo":True,
       "lead":[act("cliente",quien=q,precio="$"+p,ver=0),"c47_%s_cuanto"%q,"c47_pepe_$"+p,act("paga",quien=q,n="$"+p,con=20),act("teclas",a="$"+u,b="$"+v)],"line":"c47_pepe_$"+p,
-      "right":[act("marca",n="$"+p),{"if":"ok","then":[act("etiqueta",ver=1),"c47_%s_paga20"%q,"c47_cambio_$"+p,
-                                                     {"if":"%s=17"%p,"then":[act("cambio",n=3,ok=1)],"else":[act("cambio",n=2,ok=1)]},"c47_mas_chavos",OK],
-                       "else":[{"if":"%s=17"%p,"then":[act("cambio",n=3,ok=0)],"else":[act("cambio",n=2,ok=0)]}]}],
-      "wrong":[act("marca",n="$"+d),act("etiqueta",ver=1)]+X+["c47_no_$"+p]}]
+      "right":[act("suena",n="$"+p),{"if":"ok","then":[act("etiqueta",ver=1),"c47_%s_paga20"%q,
+                                                     {"if":"%s=17"%p,"then":con(act("cambio",n=3,ok=1),"c47_cambio_17"),"else":con(act("cambio",n=2,ok=1),"c47_cambio_18")},"c47_mas_chavos",OK],
+                       "else":[{"if":"%s=17"%p,"then":[act("cambio",n=3,ok=0)],"else":[act("cambio",n=2,ok=0)]}]},act("sale",quien=q)],
+      "wrong":[act("suena",n="$"+d),act("etiqueta",ver=1),act("cuenta47",ok=0)]+X+["c47_no_$"+p]}]
 s47={"id":"el-cambio","title":"El cambio","place":"El colmado","scene":"caja",
  "goal":"Ring each price on the register's keys, so the change goes into the jar and the children can buy the ball.","stake":{"thing":"cambio","steps":2},"dots":6,"bien":"si_muy_bien",
- "focus_words":["cambio","chavos","diecisiete","dieciocho","diecinueve","veinte"],"back_again":["dólar","¿cuánto es?","paga","bola","niño","quiere","dieciséis","compra","para","aquí tiene","mañana"],
- "also_heard":["faltan","mañana"],"names":{"luis":"p_n_luis","carmen":"p_n_carmen","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"17":"diecisiete","18":"dieciocho"},"clips":c,
- "beats":[{"wait":500},
-  # 1: the children at the window; the ball; a speaking turn
-  act("ninos47",que="ventana"),"c47_aqui_ninos","c47_pepe_quieren","c47_cq_bola","c47_aqui_chavos",
+ "focus_words":["cambio","chavos","diecisiete","dieciocho","diecinueve","veinte"],"formas_foco":{},"back_again":["dólar","¿cuánto es?","paga","bola","niño","quiere","dieciséis","compra","para","aquí tiene","mañana"],
+ "also_heard":["billete","faltan","mañana"],"names":{"luis":"p_n_luis","carmen":"p_n_carmen","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"17":"diecisiete","18":"dieciocho"},"clips":c,
+ "beats":[{"wait":500},act("frasco",n=0),
+  # 1: the children at the window; the ball and the jar twinkle; a speaking turn
+  act("ninos47",que="ventana"),tw("bola"),"c47_aqui_ninos",tw(None),"c47_pepe_quieren","c47_cq_bola",tw("frasco"),"c47_aqui_chavos",tw(None),
   # 2 and 3: two signed asks (the key 17, the key 18); Luis and Carmen pay with a twenty and give the change to the children's jar
   {"dots":1},act("cliente",quien="luis",cosa="olla",precio="17",ver=1),act("paga",quien="luis",n="17",con=20),"c47_luis_cuanto","c47_pepe_17",act("teclas",a="17",b="18"),
-  ask("tecla_a","c47_donde_17",after=[act("marca",n="17")],then=["c47_luis_paga20","c47_pepe_cambio_luis",act("cambio",n=3,ok=1)]),
+  ask("tecla_a","c47_donde_17",after=[act("suena",n="17")],then=["c47_luis_paga17"]+con(act("cambio",n=3,ok=1),"c47_pepe_cambio_luis")+[gesto("luis","senala",a="ninos")]),
   {"dots":2},act("cliente",quien="carmen",cosa="sarten",precio="18",ver=1),act("paga",quien="carmen",n="18",con=20),"c47_pepe_18",act("teclas",a="19",b="18"),
-  ask("tecla_b","c47_toca_18",after=[act("marca",n="18")],then=["c47_pepe_cambio_carmen","c47_carmen_quien","c47_cq_ninos",act("cambio",n=2,ok=1)]),
-  # 4: the turn: two fingers at the window, a line forms
-  {"dots":3},act("ninos47",que="dos"),act("cola",n=2),"c47_pepe_aviso",CARD,{"wait":400},
-  # 5: A, the señora; 6: B, the señor. Each drawn afresh
-  {"dots":4}]+ronda47("a","senora")+[{"dots":5}]+ronda47("b","senor"),
- "final":[{"dots":6},"c47_vengan",act("ninos47",que="entran"),   # 7: the jar and its lines, by what was lost
-  {"if":"lost=0","then":[{"set":{"vitrina":0}},"c47_compran",act("ninos47",que="salen"),"c47_cq_adios",act("final")],"else":["c47_faltan"]},
-  "c47_pepe_gracias"],
- "leer":["c47_aqui_ninos","c47_pepe_quieren","c47_cq_bola","c47_aqui_chavos","c47_luis_cuanto","c47_pepe_17","c47_donde_17","c47_luis_paga20","c47_pepe_cambio_luis","c47_pepe_18","c47_toca_18","c47_pepe_cambio_carmen","c47_carmen_quien","c47_cq_ninos","c47_pepe_aviso",
+  ask("tecla_b","c47_toca_18",after=[act("suena",n="18")],then=con(act("cambio",n=2,ok=1),"c47_pepe_cambio_carmen")+[gesto("carmen","mira",a="frasco"),"c47_carmen_quien","c47_cq_ninos",act("frasco",n=1)]),
+  # 4: the turn: two fingers at the window, a line forms, the tags turn their backs
+  {"dots":3},act("ninos47",que="dos"),act("cola",n=2),gesto("pepe","empaca"),"c47_pepe_aviso",CARD,{"wait":400},
+  # 5: A, the señora; 6: B, the señor. Each drawn afresh. The jar's level after each: one line higher for each right answer
+  {"dots":4}]+ronda47("a","senora")+[{"if":"lost=0","then":[act("frasco",n=2)],"else":[act("frasco",n=1)]},{"dots":5}]
+  +ronda47("b","senor")+[{"if":"lost=0","then":[act("frasco",n=3)],"else":[{"if":"lost=1","then":[act("frasco",n=2)],"else":[act("frasco",n=1)]}]}],
+ "final":[{"dots":6},act("muestra47"),"c47_vengan",act("ninos47",que="entran"),   # 7: the jar and its lines, by what was lost
+  {"if":"lost=0","then":[{"set":{"vitrina":0}},"c47_compran",act("ninos47",que="salen"),"c47_cq_adios"],"else":["c47_faltan"]},
+  "c47_pepe_gracias",gesto("coqui","saluda"),act("fin")],
+ "leer":["c47_aqui_ninos","c47_pepe_quieren","c47_cq_bola","c47_aqui_chavos","c47_luis_cuanto","c47_pepe_17","c47_donde_17","c47_luis_paga17","c47_pepe_cambio_luis","c47_pepe_18","c47_toca_18","c47_pepe_cambio_carmen","c47_carmen_quien","c47_cq_ninos","c47_pepe_aviso",
   "c47_senora_cuanto","c47_pepe_17","c47_senora_paga20","c47_cambio_17","c47_mas_chavos","c47_senor_cuanto","c47_pepe_18","c47_senor_paga20","c47_cambio_18","c47_mas_chavos","c47_vengan","c47_compran","c47_cq_adios","c47_pepe_gracias"]}
 s47=reuse(s47,{"c47_cq_bola":TG(("bola",["bola"])),"c47_cq_ninos":TG(("niño",["niños","ninos"]))})
 json.dump(s47,open("cuentos/el-cambio.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
@@ -232,7 +247,7 @@ print(len(seen),"clips,",new,"new,",chars,"characters to record,",clash,"clashes
 # every id the steps name (with no variable in it) is in the story's clips; every `leer` id too; every speaking turn is on a word of an earlier story
 earlier=set(FOCUS_36_44)
 for f in glob.glob("cuentos/*.json"):
-    if any(m in f for m in MINE): continue
+    if os.path.basename(f)[:-5] in MINE: continue
     earlier.update(json.load(open(f,encoding="utf-8")).get("focus_words") or [])
 for st in (s45,s46,s47):
     txt=json.dumps({"b":st["beats"],"f":st["final"]},ensure_ascii=False)
