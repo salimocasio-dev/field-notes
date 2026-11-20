@@ -13,13 +13,19 @@
   "project": "pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
   "frog": "a spot is the ground (or seat, or step) under his feet: q.x = round(sx) - 16, q.y = round(sy) - 25; q.s = the spot's scale",
   "abuela": "standing: a spot is the ground under her feet: ab.x = round(sx), ab.y = round(sy) + 1 (balcon.js:123 draws her at ab.x - 30, ab.y - 50). Sitting: points.ABS.screen is the sprite's top left",
-  "table": "a glass or jug on the table stands with its bottom on MESA_Y at the x of a mesa.* point (all on the row through the table's middle)",
+  "table": "a glass or jug on the table stands with its bottom on MESA_Y at the x of a mesa.* point (all on one row, a little in front of the table's middle, each base inside the top)",
   "relative": "what the old code draws relative to a character, a glass, ABS or the frog (offsets like ABS[0]+31, v.x+lado*19, b.x+b.w+1) keeps its offsets",
   "sky": "screen-space effects keep their old numbers: the red flash (W.rojo), the bird coming in from SW+12, 30, the stars of marcador and fin",
   "view": "a view has a zoom; here all three are zoom 1: the 196 x 216 window with x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point. Never a fraction",
   "viewChange": "between two zoom 1 views the window slides (camGo, whole pixels)",
   "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window [clamp(round(sx - 98), 0, 44), clamp(round(sy - 52), 0, 112)]; zoom 2 = the 98 x 52 region [clamp(round(sx - 49), 0, 142), clamp(round(sy - 26), 0, 164)] shown nearest-neighbour at 2 x 2 in the 196 x 104 picture. crop is given. The old rectangles (remap cam and crop) say which pictures they were",
   "walk": "abCamina walks abuela in a straight screen line between her spots, as before, now between the new spots"
+ },
+ "roof": {
+  "set": "b",
+  "kept": "b",
+  "other": "a",
+  "what": "a design choice for the orchestrator (round 2), not a state: balcon-set.html?roof=b (the default) is a short roof over the back of the porch, the house 0.4 deep: the roof is 15% of the wide view; ?roof=a is round 1's roof over the whole porch on two posts, the house 2.2 deep: 26%. Every spot, point, box, view and picture of this sheet is the same for both (the eaves stay just over the door's frame); node balcon-sheet-make.js --roof=a checks the set with roof a"
  },
  "setKey": {
   "params": {
@@ -77,7 +83,7 @@
    "why": "the glass on the small chair. A glass (or a jug, for jugo and agua in que-calor) in the sprite layer: box = cajaDe (balcon.js:100), relative to where it stands: unchanged",
    "where": {
     "seat": "ASIENTO",
-    "box": [146, 111, 17, 22]
+    "box": [154, 115, 17, 22]
    }
   },
   "vaso_mesa": {
@@ -86,7 +92,7 @@
    "why": "the glass on the table. A glass (or a jug, for jugo and agua in que-calor) in the sprite layer: box = cajaDe (balcon.js:100), relative to where it stands: unchanged",
    "where": {
     "table": "mesa.centro",
-    "box": [101, 87, 17, 22]
+    "box": [105, 97, 17, 22]
    }
   },
   "vaso_grande": {
@@ -111,34 +117,34 @@
    "box": {
     "silla": {
      "old": [55, 96, 34, 50],
-     "new": [47, 55, 34, 50]
+     "new": [33, 48, 34, 50]
     }
    }
   },
   "mesa": {
    "set": true,
-   "world": [-1.2, 0.37, 0, 0.3, 1.87, 1.25],
-   "box": [81, 92, 56, 56],
+   "world": [-1.6758, -0.316, 0, -0.3323, 1.0275, 0.4868],
+   "box": [88, 98, 50, 37],
    "hit": {
-    "world": [-1.2, 0.37, 0, 0.3, 1.87, 1.25],
-    "box": [81, 92, 56, 56]
+    "world": [-1.6758, -0.316, 0, -0.3323, 1.0275, 0.4868],
+    "box": [88, 98, 50, 37]
    },
-   "what": "the small round table, foot to top",
+   "what": "the round table, foot to top (round: the box is its screen box, as a square world box, as the turned chairs)",
    "old": {
     "box": [94, 124, 52, 25]
    }
   },
   "silla_pequena": {
    "set": true,
-   "world": [0.7725, -0.1175, 0, 1.3947, 0.5047, 0.8583],
-   "box": [142, 114, 24, 32],
+   "world": [1.1525, -0.1575, 0, 1.7747, 0.4647, 0.8583],
+   "box": [150, 117, 24, 32],
    "hit": {
-    "world": [0.7725, -0.1175, 0, 1.3947, 0.5047, 0.8583],
-    "box": [142, 114, 24, 32]
+    "world": [1.1525, -0.1575, 0, 1.7747, 0.4647, 0.8583],
+    "box": [150, 117, 24, 32]
    },
    "what": "the small yellow chair (turned to the camera: the box is the screen box of its 8 corners, as a square world box)",
    "turned": {
-    "centre": [1.55, 0.66],
+    "centre": [1.93, 0.62],
     "halfWidth": 0.44,
     "halfDepth": 0.3,
     "height": 1.32,
@@ -150,15 +156,15 @@
   },
   "silla_grande": {
    "set": true,
-   "world": [-4.1604, -0.0804, 0, -3.1139, 0.9661, 1.2429],
-   "box": [43, 61, 40, 48],
+   "world": [-4.9104, -0.0804, 0, -3.8639, 0.9661, 1.2429],
+   "box": [29, 54, 40, 48],
    "hit": {
-    "world": [-4.1604, -0.0804, 0, -3.1139, 0.9661, 1.2429],
-    "box": [43, 61, 40, 48]
+    "world": [-4.9104, -0.0804, 0, -3.8639, 0.9661, 1.2429],
+    "box": [29, 54, 40, 48]
    },
    "what": "abuela's big chair (turned to the camera, as silla_pequena)",
    "turned": {
-    "centre": [-3.1, 0.98],
+    "centre": [-3.85, 0.98],
     "halfWidth": 0.74,
     "halfDepth": 0.5,
     "height": 1.82,
@@ -170,11 +176,11 @@
   },
   "puerta": {
    "set": true,
-   "world": [1.51, -0.06, 0, 3.24, 0.06, 2.99],
-   "box": [164, 74, 35, 85],
+   "world": [2.36, -0.06, 0, 3.94, 0.06, 2.99],
+   "box": [180, 81, 32, 84],
    "hit": {
-    "world": [1.51, -0.06, 0, 3.24, 0.06, 2.99],
-    "box": [164, 74, 35, 85]
+    "world": [2.36, -0.06, 0, 3.94, 0.06, 2.99],
+    "box": [180, 81, 32, 84]
    },
    "what": "the door with its frame",
    "old": {
@@ -183,16 +189,16 @@
    },
    "hand": {
     "point": "mano.puerta",
-    "new": [182, 107]
+    "new": [196, 115]
    }
   },
   "ventana": {
    "set": true,
-   "world": [-3, 0, 0.85, -0.2, 0.32, 2.67],
-   "box": [76, 40, 59, 70],
+   "world": [-2.31, 0, 1.48, -0.01, 0.3, 3.02],
+   "box": [90, 38, 48, 60],
    "hit": {
-    "world": [-3, 0, 0.85, -0.2, 0.32, 2.67],
-    "box": [76, 40, 59, 70]
+    "world": [-2.31, 0, 1.48, -0.01, 0.3, 3.02],
+    "box": [90, 38, 48, 60]
    },
    "what": "the window with its frame, its shutters (open, flat on the wall) and the flower box",
    "old": {
@@ -201,18 +207,18 @@
    },
    "hand": {
     "point": "mano.ventana",
-    "new": [109, 70]
+    "new": [117, 64]
    }
   },
   "balcon": {
    "set": true,
-   "world": [-2.05, 1.45, 0, 3.4, 2.2, 0.3],
-   "box": [59, 115, 115, 65],
+   "world": [-1.5, 2.1, 0, 3.7, 3, 0.3],
+   "box": [55, 126, 113, 64],
    "hit": {
-    "world": [-2.05, 1.45, 0, 3.4, 2.2, 0.3],
-    "box": [59, 115, 115, 65]
+    "world": [-1.5, 2.1, 0, 3.7, 3, 0.3],
+    "box": [55, 126, 113, 64]
    },
-   "what": "the porch floor: its open front strip, from abuela's chair to the door (the whole floor's box would take in the wall and the roof's posts: with this camera the porch is a slanting band, and a box cannot follow it). Last in the hit order, as before",
+   "what": "the porch floor: its open front strip, before the furniture, from abuela's chair to the door (the whole floor's box would take in the wall and the roof's posts: with this camera the porch is a slanting band, and a box cannot follow it). Last in the hit order, as before",
    "old": {
     "box": [42, 122, 156, 34]
    }
@@ -220,170 +226,170 @@
  },
  "spots": {
   "jardin": {
-   "world": [2.872, 4.472, 0],
-   "screen": [108.58, 195.51],
+   "world": [3.2364, 4.5962, 0],
+   "screen": [113, 200],
    "scale": 1,
-   "frog": [93, 171],
+   "frog": [97, 175],
    "old": [104, 185],
    "what": "LUGAR.jardin: on the path, near the bottom: where every story starts (fresh)"
   },
   "sube": {
-   "world": [1.947, 3.547, 0],
-   "screen": [108.58, 178.5],
+   "world": [2.2573, 3.6171, 0],
+   "screen": [113, 182],
    "scale": 0.9,
-   "frog": [93, 154],
+   "frog": [97, 157],
    "old": [104, 168],
    "what": "acts.sube: hopTo(LUGAR.jardin[0], 168, 1, .9): on the path, at the foot of the steps"
   },
   "balcon": {
-   "world": [0.956, 1.581, 0.3],
-   "screen": [126.51, 144.57],
+   "world": [1.3193, 2.0264, 0.3],
+   "screen": [125, 152],
    "scale": 0.8,
-   "frog": [111, 120],
+   "frog": [109, 127],
    "old": [106, 130],
-   "what": "LUGAR.balcon and LUGAR.ventana: on the porch, before the table"
+   "what": "LUGAR.balcon and LUGAR.ventana: on the porch, before the table (in front of its foot)"
   },
   "mesa": {
-   "world": [1.003, 2.37, 0.2],
-   "screen": [112.87, 154.5],
+   "world": [1.4009, 2.5975, 0.3],
+   "screen": [116, 158],
    "scale": 0.86,
-   "frog": [97, 130],
+   "frog": [100, 133],
    "old": [104, 141],
-   "what": "LUGAR.mesa and LUGAR.junto: on the top step, before the table (where he takes a glass)"
+   "what": "LUGAR.mesa and LUGAR.junto: on the porch, before the table, near the steps but well inside the porch (where he takes a glass)"
   },
   "decir": {
-   "world": [2.23, 1.82, 0.3],
-   "screen": [145.54, 158.47],
+   "world": [2.9783, 2.3256, 0.3],
+   "screen": [150, 170],
    "scale": 0.8,
-   "frog": [130, 133],
+   "frog": [134, 145],
    "old": [134, 130],
-   "what": "LUGAR.decir: on the porch, before the small chair (where he speaks to abuela)"
+   "what": "LUGAR.decir: on the porch, out in front of the small chair, clear of it (where he speaks to abuela)"
   },
   "silla_pequena": {
-   "world": [1.694, 0.633, 0.75],
-   "screen": [157.51, 132.5],
+   "world": [1.93, 0.62, 0.75],
+   "screen": [162.08, 134.55],
    "scale": 0.72,
-   "frog": [142, 108],
+   "frog": [146, 110],
    "old": [144, 109],
    "what": "LUGAR.silla_pequena: on the small chair's seat (rana(): sitting there he has no shadow)"
   },
   "suelo": {
-   "world": [2.994, 1.716, 0.3],
-   "screen": [161.5, 164.54],
+   "world": [3.3318, 1.972, 0.3],
+   "screen": [163, 170],
    "scale": 0.8,
-   "frog": [146, 140],
+   "frog": [147, 145],
    "old": [150, 132],
-   "what": "LUGAR.suelo: on the porch floor, between the small chair and the door"
+   "what": "LUGAR.suelo: on the porch floor, out in front of the small chair, towards the door, clear of it"
   },
   "abuela": {
-   "world": [-0.513, 1.418, 0.3],
-   "screen": [102.5, 129.56],
+   "world": [0.313, 2.5975, 0.3],
+   "screen": [96, 148],
    "scale": 0.8,
-   "frog": [87, 105],
+   "frog": [80, 123],
    "old": [84, 129],
-   "what": "LUGAR.abuela and LUGAR.silla_grande: on the porch, before abuela's feet when she sits"
+   "what": "LUGAR.abuela and LUGAR.silla_grande: on the porch, out in front of abuela's chair and the table's left side"
   },
   "puerta": {
-   "world": [3.645, 1.279, 0.3],
-   "screen": [181.5, 166.51],
+   "world": [3.359, 0.6394, 0.3],
+   "screen": [188, 158],
    "scale": 0.76,
-   "frog": [166, 142],
+   "frog": [172, 133],
    "old": [162, 125],
-   "what": "LUGAR.puerta: on the porch, before the door, a step out from it so that his bubble stays under abuela's face when she stands in the doorway (Gate A)"
+   "what": "LUGAR.puerta: on the porch, before the door"
   },
   "abuela.puerta": {
-   "world": [2.375, 0.1, 0.3],
-   "screen": [179.83, 144],
-   "ab": [180, 145],
+   "world": [3.15, 0.1, 0.3],
+   "screen": [194.07, 151.12],
+   "ab": [194, 152],
    "old": [178, 125],
    "what": "AB.puerta: in the doorway (drawn clipped to clips[puerta.hueco])"
   },
   "abuela.mesa": {
-   "world": [-1, 0.4, 0.3],
-   "screen": [112.26, 115.73],
-   "ab": [112, 117],
+   "world": [0.42, 0.42, 0.3],
+   "screen": [138, 128.97],
+   "ab": [138, 130],
    "old": [98, 143],
-   "what": "AB.mesa: behind the table, its left side, where she puts the glasses down (pone2): the table covers her legs (front)"
+   "what": "AB.mesa: on the floor at the table's right (the door's) side, as deep as its middle: her feet show; the glasses on her tray reach over the table top; the table's rim covers her left hip (front)"
   },
   "abuela.lado": {
-   "world": [-1.85, 1.48, 0.3],
-   "screen": [76.78, 117.84],
-   "ab": [77, 119],
+   "world": [-1.8899, 0.9929, 0.3],
+   "screen": [85, 113],
+   "ab": [85, 114],
    "old": [94, 147],
-   "what": "AB.lado: beside her big chair, before the table: where she stands up from it and sits down in it"
+   "what": "AB.lado: beside her big chair, on the floor right of it and before the table's left edge: where she stands up from it and sits down in it"
   },
   "abuela.camina": {
-   "world": [-1.65, 1.73, 0.3],
-   "screen": [75.86, 121.98],
-   "ab": [76, 123],
+   "world": [-1.5635, 1.1017, 0.3],
+   "screen": [89, 117],
+   "ab": [89, 118],
    "old": [106, 148],
-   "what": "pair se sienta.no: abuela standing on the porch beside her chair (ab en camina at 106, 148)"
+   "what": "pair se sienta.no: abuela standing on the porch beside her chair, clear of it (ab en camina at 106, 148)"
   }
  },
  "lugar": {
   "jardin": {
    "spot": "jardin",
-   "q": [93, 171],
+   "q": [97, 175],
    "scale": 1,
    "old": [104, 185, 1]
   },
   "balcon": {
    "spot": "balcon",
-   "q": [111, 120],
+   "q": [109, 127],
    "scale": 0.8,
    "old": [106, 130, 0.8]
   },
   "mesa": {
    "spot": "mesa",
-   "q": [97, 130],
+   "q": [100, 133],
    "scale": 0.86,
    "old": [104, 141, 0.86]
   },
   "junto": {
    "spot": "mesa",
-   "q": [97, 130],
+   "q": [100, 133],
    "scale": 0.86,
    "old": [104, 141, 0.86]
   },
   "decir": {
    "spot": "decir",
-   "q": [130, 133],
+   "q": [134, 145],
    "scale": 0.8,
    "old": [134, 130, 0.8]
   },
   "silla_pequena": {
    "spot": "silla_pequena",
-   "q": [142, 108],
+   "q": [146, 110],
    "scale": 0.72,
    "old": [144, 109, 0.72]
   },
   "suelo": {
    "spot": "suelo",
-   "q": [146, 140],
+   "q": [147, 145],
    "scale": 0.8,
    "old": [150, 132, 0.8]
   },
   "abuela": {
    "spot": "abuela",
-   "q": [87, 105],
+   "q": [80, 123],
    "scale": 0.8,
    "old": [84, 129, 0.8]
   },
   "silla_grande": {
    "spot": "abuela",
-   "q": [87, 105],
+   "q": [80, 123],
    "scale": 0.8,
    "old": [84, 129, 0.8]
   },
   "puerta": {
    "spot": "puerta",
-   "q": [166, 142],
+   "q": [172, 133],
    "scale": 0.76,
    "old": [162, 125, 0.76]
   },
   "ventana": {
    "spot": "balcon",
-   "q": [111, 120],
+   "q": [109, 127],
    "scale": 0.8,
    "old": [106, 130, 0.8]
   }
@@ -395,7 +401,7 @@
    "old": 2,
    "new": 2,
    "dOld": 55.04,
-   "dNew": 54.08
+   "dNew": 49.48
   },
   {
    "a": "jardin",
@@ -403,7 +409,7 @@
    "old": 1,
    "new": 1,
    "dOld": 44,
-   "dNew": 41.19
+   "dNew": 42.11
   },
   {
    "a": "jardin",
@@ -411,7 +417,7 @@
    "old": 1,
    "new": 1,
    "dOld": 44,
-   "dNew": 41.19
+   "dNew": 42.11
   },
   {
    "a": "jardin",
@@ -419,7 +425,7 @@
    "old": 2,
    "new": 2,
    "dOld": 62.65,
-   "dNew": 53.04
+   "dNew": 47.63
   },
   {
    "a": "jardin",
@@ -427,7 +433,7 @@
    "old": 3,
    "new": 3,
    "dOld": 85.88,
-   "dNew": 79.81
+   "dNew": 81.4
   },
   {
    "a": "jardin",
@@ -435,7 +441,7 @@
    "old": 2,
    "new": 2,
    "dOld": 70.18,
-   "dNew": 61.4
+   "dNew": 58.31
   },
   {
    "a": "jardin",
@@ -443,7 +449,7 @@
    "old": 2,
    "new": 2,
    "dOld": 59.46,
-   "dNew": 66.27
+   "dNew": 54.71
   },
   {
    "a": "jardin",
@@ -451,7 +457,7 @@
    "old": 2,
    "new": 2,
    "dOld": 59.46,
-   "dNew": 66.27
+   "dNew": 54.71
   },
   {
    "a": "jardin",
@@ -459,7 +465,7 @@
    "old": 3,
    "new": 3,
    "dOld": 83.45,
-   "dNew": 78.55
+   "dNew": 85.96
   },
   {
    "a": "jardin",
@@ -467,7 +473,7 @@
    "old": 2,
    "new": 2,
    "dOld": 55.04,
-   "dNew": 54.08
+   "dNew": 49.48
   },
   {
    "a": "balcon",
@@ -475,7 +481,7 @@
    "old": 1,
    "new": 1,
    "dOld": 11.18,
-   "dNew": 17.2
+   "dNew": 10.82
   },
   {
    "a": "balcon",
@@ -483,7 +489,7 @@
    "old": 1,
    "new": 1,
    "dOld": 11.18,
-   "dNew": 17.2
+   "dNew": 10.82
   },
   {
    "a": "balcon",
@@ -491,7 +497,7 @@
    "old": 1,
    "new": 1,
    "dOld": 28,
-   "dNew": 23.02
+   "dNew": 30.81
   },
   {
    "a": "balcon",
@@ -499,7 +505,7 @@
    "old": 1,
    "new": 1,
    "dOld": 43.42,
-   "dNew": 33.24
+   "dNew": 40.72
   },
   {
    "a": "balcon",
@@ -507,7 +513,7 @@
    "old": 1,
    "new": 1,
    "dOld": 44.05,
-   "dNew": 40.31
+   "dNew": 42.05
   },
   {
    "a": "balcon",
@@ -515,7 +521,7 @@
    "old": 1,
    "new": 1,
    "dOld": 22.02,
-   "dNew": 28.3
+   "dNew": 29.27
   },
   {
    "a": "balcon",
@@ -523,7 +529,7 @@
    "old": 1,
    "new": 1,
    "dOld": 22.02,
-   "dNew": 28.3
+   "dNew": 29.27
   },
   {
    "a": "balcon",
@@ -531,7 +537,7 @@
    "old": 2,
    "new": 2,
    "dOld": 56.22,
-   "dNew": 59.24
+   "dNew": 63.29
   },
   {
    "a": "balcon",
@@ -555,7 +561,7 @@
    "old": 1,
    "new": 1,
    "dOld": 31.95,
-   "dNew": 33.14
+   "dNew": 36.06
   },
   {
    "a": "mesa",
@@ -563,7 +569,7 @@
    "old": 2,
    "new": 2,
    "dOld": 51.22,
-   "dNew": 50.09
+   "dNew": 51.43
   },
   {
    "a": "mesa",
@@ -571,7 +577,7 @@
    "old": 2,
    "new": 2,
    "dOld": 46.87,
-   "dNew": 50.01
+   "dNew": 48.51
   },
   {
    "a": "mesa",
@@ -579,7 +585,7 @@
    "old": 1,
    "new": 1,
    "dOld": 23.32,
-   "dNew": 26.93
+   "dNew": 22.36
   },
   {
    "a": "mesa",
@@ -587,7 +593,7 @@
    "old": 1,
    "new": 1,
    "dOld": 23.32,
-   "dNew": 26.93
+   "dNew": 22.36
   },
   {
    "a": "mesa",
@@ -595,7 +601,7 @@
    "old": 2,
    "new": 2,
    "dOld": 60.17,
-   "dNew": 70.04
+   "dNew": 72
   },
   {
    "a": "mesa",
@@ -603,7 +609,7 @@
    "old": 1,
    "new": 1,
    "dOld": 11.18,
-   "dNew": 17.2
+   "dNew": 10.82
   },
   {
    "a": "junto",
@@ -611,7 +617,7 @@
    "old": 1,
    "new": 1,
    "dOld": 31.95,
-   "dNew": 33.14
+   "dNew": 36.06
   },
   {
    "a": "junto",
@@ -619,7 +625,7 @@
    "old": 2,
    "new": 2,
    "dOld": 51.22,
-   "dNew": 50.09
+   "dNew": 51.43
   },
   {
    "a": "junto",
@@ -627,7 +633,7 @@
    "old": 2,
    "new": 2,
    "dOld": 46.87,
-   "dNew": 50.01
+   "dNew": 48.51
   },
   {
    "a": "junto",
@@ -635,7 +641,7 @@
    "old": 1,
    "new": 1,
    "dOld": 23.32,
-   "dNew": 26.93
+   "dNew": 22.36
   },
   {
    "a": "junto",
@@ -643,7 +649,7 @@
    "old": 1,
    "new": 1,
    "dOld": 23.32,
-   "dNew": 26.93
+   "dNew": 22.36
   },
   {
    "a": "junto",
@@ -651,7 +657,7 @@
    "old": 2,
    "new": 2,
    "dOld": 60.17,
-   "dNew": 70.04
+   "dNew": 72
   },
   {
    "a": "junto",
@@ -659,7 +665,7 @@
    "old": 1,
    "new": 1,
    "dOld": 11.18,
-   "dNew": 17.2
+   "dNew": 10.82
   },
   {
    "a": "decir",
@@ -667,7 +673,7 @@
    "old": 1,
    "new": 1,
    "dOld": 23.26,
-   "dNew": 27.73
+   "dNew": 37
   },
   {
    "a": "decir",
@@ -675,7 +681,7 @@
    "old": 1,
    "new": 1,
    "dOld": 16.12,
-   "dNew": 17.46
+   "dNew": 13
   },
   {
    "a": "decir",
@@ -683,7 +689,7 @@
    "old": 2,
    "new": 2,
    "dOld": 50.01,
-   "dNew": 51.31
+   "dNew": 58.31
   },
   {
    "a": "decir",
@@ -691,7 +697,7 @@
    "old": 2,
    "new": 2,
    "dOld": 50.01,
-   "dNew": 51.31
+   "dNew": 58.31
   },
   {
    "a": "decir",
@@ -699,7 +705,7 @@
    "old": 1,
    "new": 1,
    "dOld": 28.44,
-   "dNew": 37.11
+   "dNew": 39.85
   },
   {
    "a": "decir",
@@ -707,7 +713,7 @@
    "old": 1,
    "new": 1,
    "dOld": 28,
-   "dNew": 23.02
+   "dNew": 30.81
   },
   {
    "a": "silla_pequena",
@@ -715,7 +721,7 @@
    "old": 1,
    "new": 1,
    "dOld": 23.77,
-   "dNew": 32.25
+   "dNew": 35.01
   },
   {
    "a": "silla_pequena",
@@ -723,7 +729,7 @@
    "old": 2,
    "new": 2,
    "dOld": 63.25,
-   "dNew": 55.08
+   "dNew": 67.27
   },
   {
    "a": "silla_pequena",
@@ -731,7 +737,7 @@
    "old": 2,
    "new": 2,
    "dOld": 63.25,
-   "dNew": 55.08
+   "dNew": 67.27
   },
   {
    "a": "silla_pequena",
@@ -739,7 +745,7 @@
    "old": 1,
    "new": 1,
    "dOld": 24.08,
-   "dNew": 41.62
+   "dNew": 34.71
   },
   {
    "a": "silla_pequena",
@@ -747,7 +753,7 @@
    "old": 1,
    "new": 1,
    "dOld": 43.42,
-   "dNew": 33.24
+   "dNew": 40.72
   },
   {
    "a": "suelo",
@@ -755,7 +761,7 @@
    "old": 2,
    "new": 2,
    "dOld": 66.07,
-   "dNew": 68.6
+   "dNew": 70.52
   },
   {
    "a": "suelo",
@@ -763,7 +769,7 @@
    "old": 2,
    "new": 2,
    "dOld": 66.07,
-   "dNew": 68.6
+   "dNew": 70.52
   },
   {
    "a": "suelo",
@@ -771,7 +777,7 @@
    "old": 1,
    "new": 1,
    "dOld": 13.89,
-   "dNew": 20.1
+   "dNew": 27.73
   },
   {
    "a": "suelo",
@@ -779,7 +785,7 @@
    "old": 1,
    "new": 1,
    "dOld": 44.05,
-   "dNew": 40.31
+   "dNew": 42.05
   },
   {
    "a": "abuela",
@@ -795,7 +801,7 @@
    "old": 3,
    "new": 3,
    "dOld": 78.1,
-   "dNew": 87.24
+   "dNew": 92.54
   },
   {
    "a": "abuela",
@@ -803,7 +809,7 @@
    "old": 1,
    "new": 1,
    "dOld": 22.02,
-   "dNew": 28.3
+   "dNew": 29.27
   },
   {
    "a": "silla_grande",
@@ -811,7 +817,7 @@
    "old": 3,
    "new": 3,
    "dOld": 78.1,
-   "dNew": 87.24
+   "dNew": 92.54
   },
   {
    "a": "silla_grande",
@@ -819,7 +825,7 @@
    "old": 1,
    "new": 1,
    "dOld": 22.02,
-   "dNew": 28.3
+   "dNew": 29.27
   },
   {
    "a": "puerta",
@@ -827,133 +833,133 @@
    "old": 2,
    "new": 2,
    "dOld": 56.22,
-   "dNew": 59.24
+   "dNew": 63.29
   }
  ],
  "points": {
   "ABS": {
-   "world": [-3.1, 0.98, 0.8],
+   "world": [-3.85, 0.98, 0.8],
    "old": [51, 96],
-   "screen": [43, 55],
+   "screen": [29, 48],
    "what": "ABS: abuela sitting in her big chair (the sprite's top left: her middle, sprite x 17, 3 px left of the chair's middle so her feet stay before it and off the table; her lap, row 36, on its seat). Everything drawn with her (the fan, her glass, the jug over her head, sweat, the splash and its puddle, her bubble) is relative to it: unchanged"
   },
   "mesa.izq": {
-   "world": [-0.7764, 1.4464, 1.25],
+   "world": [-0.3688, 1.6439, 1.05],
    "old": [108, 128],
    "what": "X2[0]: the left place on the table top",
-   "screen": [97.13, 106.01]
+   "screen": [101, 116.08]
   },
   "mesa.der": {
-   "world": [-0.1236, 0.7936, 1.25],
+   "world": [0.2839, 0.9912, 1.05],
    "old": [132, 128],
    "what": "X2[1]: the right place on the table top (also acts.recibe x 132)",
-   "screen": [121.14, 106.01]
+   "screen": [125, 116.08]
   },
   "mesa.centro": {
-   "world": [-0.45, 1.12, 1.25],
+   "world": [-0.0424, 1.3176, 1.05],
    "old": [120, 128],
    "what": "the middle of the table top (dos(\"sm\") vaso_mesa x 120, acts.aparta x 120, the pairs' glass or jug at 120; acts.aveva's test v.x < 120)",
-   "screen": [109.14, 106.01]
+   "screen": [113, 116.08]
   },
   "mesa.toma": {
-   "world": [-0.8307, 1.5007, 1.25],
+   "world": [-0.4232, 1.6983, 1.05],
    "old": [106, 128],
    "what": "pair toma.si: the glass at x 106",
-   "screen": [95.14, 106.01]
+   "screen": [99, 116.08]
   },
   "mesa.abanico": {
-   "world": [-0.4228, 1.0928, 1.25],
+   "world": [-0.0152, 1.2904, 1.05],
    "old": [121, 128],
    "what": "W.fanMesa: medio(c, 121, MESA_Y, 1): her half fan left on the table",
-   "screen": [110.14, 106.01]
+   "screen": [114, 116.08]
   },
   "ave.mesa.toma": {
-   "world": [-0.2596, 0.9296, 1.25],
+   "world": [0.1479, 1.1272, 1.05],
    "old": [127, 128],
    "what": "pair toma.si: the bird on the table, drinking from the glass at 106 (x 127)",
-   "screen": [116.14, 106.01]
+   "screen": [120, 116.08]
   },
   "ave.mesa.der": {
-   "world": [-0.1236, 0.7936, 1.25],
+   "world": [0.2839, 0.9912, 1.05],
    "old": [132, 128],
    "what": "pair toma.no: the bird asleep on the table at 132",
-   "screen": [121.14, 106.01]
+   "screen": [125, 116.08]
   },
   "ASIENTO": {
-   "world": [1.55, 0.66, 0.75],
+   "world": [1.93, 0.62, 0.75],
    "old": [160, 135],
    "what": "ASIENTO: the small chair's seat: vaso_silla stands on it (its bottom at y - 1), the bird sits on it (avesilla, marcador)",
-   "screen": [154.36, 131.43]
+   "screen": [162.08, 134.55]
   },
   "PERCH": {
-   "world": [-1.15, 0.07, 2.67],
+   "world": [-2.5, 0.3, 1.7],
    "old": [120, 86],
-   "what": "PERCH: the bird on top of the window frame (aveventana; the pairs gracias). Not the flower box as before: with this camera the box is just over the table top, and the bird stood among the glasses and jugs; up here it is clear of them and of the frog's bubble at LUGAR.abuela",
-   "screen": [115.57, 57.95]
+   "what": "PERCH: the bird on the flower box (aveventana; the pairs gracias), on its bare left end past the window: its feet on the box's front edge, the plain wall behind it, between the window and abuela's head, above the drinks and clear of them",
+   "screen": [86.52, 69.5]
   },
   "suelo.abanico.1": {
-   "world": [-2.15, 1.93, 0.3],
+   "world": [-2.3794, 1.3737, 0.3],
    "old": [98, 157],
    "what": "W.enSuelo: medio(c, 98, 157, -1): one half of her fan on the floor before her chair",
-   "screen": [62.99, 119.22]
+   "screen": [69, 112]
   },
   "suelo.abanico.2": {
-   "world": [-1.65, 1.78, 0.3],
+   "world": [-1.9443, 1.1561, 0.3],
    "old": [110, 158],
    "what": "W.enSuelo: medio(c, 110, 158, 1): the other half",
-   "screen": [74.94, 122.44]
+   "screen": [81, 114]
   },
   "corazon": {
-   "world": [-2.1, 0, 4.4],
+   "world": [-1.4142, 0, 3.775],
    "old": [107, 31],
-   "what": "heartAt: the heart of a happy ending (its top left), over the window on the roof's edge, clear of the bird on the window (PERCH)",
-   "screen": [99.39, 9.62]
+   "what": "heartAt: the heart of a happy ending (its top left): high over the window, in the middle of the wide view, clear of the bird (PERCH) and of abuela's bubble",
+   "screen": [112, 30]
   },
   "mano.puerta": {
-   "world": [2.375, 0, 1.881],
+   "world": [3.15, 0, 1.881],
    "old": [178, 84],
    "what": "cosas puerta hand: on the door, high (above abuela's face when she stands in it? no: see checks.hands)",
-   "screen": [181.66, 107.48]
+   "screen": [195.91, 114.6]
   },
   "mano.ventana": {
-   "world": [-1.6, 0, 1.925],
+   "world": [-1.16, 0, 2.35],
    "old": [120, 70],
    "what": "cosas ventana hand: the middle of the window",
-   "screen": [108.58, 69.95]
+   "screen": [116.67, 64.42]
   }
  },
  "MESA_Y": {
   "old": 128,
-  "new": 106,
-  "what": "MESA_Y: the row the glasses and jugs stand on (their bottom), the table top through its middle"
+  "new": 116,
+  "what": "MESA_Y: the row the glasses and jugs stand on (their bottom): DROW px in front of the table top's middle"
  },
  "behind": {
   "old": 144,
-  "new": 146,
-  "what": "balcon.js:126 and :141: ab.y < this: abuela standing is always drawn at :126, before the furniture (AB.mesa 117, AB.lado 119, camina 123, the door 145); the furniture covers her only where it is nearer (front)"
+  "new": 153,
+  "what": "balcon.js:126 and :141: ab.y < this: abuela standing is always drawn at :126, before the furniture (AB.mesa 130, AB.lado 114, camina 118, the door 152); the furniture covers her only where it is nearer (front)"
  },
  "views": {
   "wide": {
-   "world": [0.725, 2.04, 0.3],
-   "screen": [113.82, 146.66],
+   "world": [-0.1765, 1.1289, 0.3],
+   "screen": [114, 130],
    "zoom": 1,
    "x0": 16,
    "region": null,
    "old": [22, 0, 196, 216],
-   "what": "the porch between its two posts, the path and the frog on it: every story's usual view"
+   "what": "the porch from abuela's chair to the door, the path and the frog on it: every story's usual view"
   },
   "mesa": {
-   "world": [-0.45, 1.12, 1.25],
-   "screen": [109.14, 106.01],
+   "world": [-0.26, 1.1, 1.05],
+   "screen": [113, 112.08],
    "zoom": 1,
-   "x0": 11,
+   "x0": 15,
    "region": null,
    "old": [45, 36, 127, 140],
    "what": "the table in the middle (old: a 1.54x close view of the table; a zoom 1 window here, page 12 section 5)"
   },
   "porche": {
-   "world": [0.725, 2.04, 0.3],
-   "screen": [113.82, 146.66],
+   "world": [-0.1765, 1.1289, 0.3],
+   "screen": [114, 130],
    "zoom": 1,
    "x0": 16,
    "region": null,
@@ -985,27 +991,27 @@
    },
    "crops": {
     "quiero.si": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     },
     "quiero.no": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     },
     "gracias.si": {
-     "crop": [0, 27, 196, 104],
+     "crop": [0, 46, 196, 104],
      "zoom": 1
     },
     "gracias.no": {
-     "crop": [0, 27, 196, 104],
+     "crop": [0, 46, 196, 104],
      "zoom": 1
     },
     "¿cómo estás?.si": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     },
     "¿cómo estás?.no": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     }
    },
@@ -1020,11 +1026,11 @@
    },
    "crops": {
     "se sienta.si": {
-     "crop": [0, 33, 196, 104],
+     "crop": [0, 40, 196, 104],
      "zoom": 1
     },
     "se sienta.no": {
-     "crop": [0, 33, 196, 104],
+     "crop": [0, 40, 196, 104],
      "zoom": 1
     }
    },
@@ -1039,11 +1045,11 @@
    },
    "crops": {
     "bien.si": {
-     "crop": [29, 62, 196, 104],
+     "crop": [27, 88, 196, 104],
      "zoom": 1
     },
     "bien.no": {
-     "crop": [29, 62, 196, 104],
+     "crop": [27, 88, 196, 104],
      "zoom": 1
     }
    },
@@ -1058,11 +1064,11 @@
    },
    "crops": {
     "toma.si": {
-     "crop": [60, 71, 98, 52],
+     "crop": [64, 83, 98, 52],
      "zoom": 2
     },
     "toma.no": {
-     "crop": [60, 71, 98, 52],
+     "crop": [64, 83, 98, 52],
      "zoom": 2
     }
    },
@@ -1077,27 +1083,27 @@
    },
    "crops": {
     "vaso.si": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     },
     "vaso.no": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     },
     "jugo.si": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     },
     "jugo.no": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     },
     "agua.si": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     },
     "agua.no": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     }
    },
@@ -1112,7 +1118,7 @@
    },
    "crops": {
     "silla.no": {
-     "crop": [82, 61, 98, 52],
+     "crop": [80, 40, 98, 52],
      "zoom": 2
     }
    },
@@ -1127,7 +1133,7 @@
    },
    "crops": {
     "silla.si": {
-     "crop": [105, 102, 98, 52],
+     "crop": [129, 106, 98, 52],
      "zoom": 2
     }
    },
@@ -1150,15 +1156,15 @@
    },
    "crops": {
     "quiero.si": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     },
     "quiero.no": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     },
     "¿cómo estás?.si": {
-     "crop": [0, 17, 196, 104],
+     "crop": [0, 0, 196, 104],
      "zoom": 1
     }
    },
@@ -1176,11 +1182,11 @@
    },
    "crops": {
     "se sienta.si": {
-     "crop": [0, 33, 196, 104],
+     "crop": [0, 40, 196, 104],
      "zoom": 1
     },
     "se sienta.no": {
-     "crop": [0, 33, 196, 104],
+     "crop": [0, 40, 196, 104],
      "zoom": 1
     }
    },
@@ -1197,11 +1203,11 @@
    },
    "crops": {
     "se sienta.si": {
-     "crop": [0, 33, 196, 104],
+     "crop": [0, 40, 196, 104],
      "zoom": 1
     },
     "se sienta.no": {
-     "crop": [0, 33, 196, 104],
+     "crop": [0, 40, 196, 104],
      "zoom": 1
     }
    },
@@ -1222,11 +1228,11 @@
    },
    "crops": {
     "jugo.si": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     },
     "agua.si": {
-     "crop": [60, 74, 98, 52],
+     "crop": [64, 86, 98, 52],
      "zoom": 2
     }
    },
@@ -1243,7 +1249,7 @@
    },
    "crops": {
     "silla.no": {
-     "crop": [82, 61, 98, 52],
+     "crop": [80, 40, 98, 52],
      "zoom": 2
     }
    },
@@ -1263,7 +1269,7 @@
    },
    "crops": {
     "silla.si": {
-     "crop": [105, 102, 98, 52],
+     "crop": [129, 106, 98, 52],
      "zoom": 2
     }
    },
@@ -1276,7 +1282,7 @@
    "to": {
     "spot": "abuela"
    },
-   "frog": [87, 105],
+   "frog": [80, 123],
    "scale": 0.8
   },
   {
@@ -1307,7 +1313,7 @@
    "to": {
     "spot": "abuela.lado"
    },
-   "ab": [77, 119],
+   "ab": [85, 114],
    "what": "set.ab with en silla: drawn at ABS; x, y are where she stands up to (AB.lado)"
   },
   {
@@ -1317,7 +1323,7 @@
    "to": {
     "spot": "balcon"
    },
-   "frog": [111, 120],
+   "frog": [109, 127],
    "scale": 0.8
   },
   {
@@ -1327,7 +1333,7 @@
    "to": {
     "spot": "abuela.camina"
    },
-   "ab": [76, 123]
+   "ab": [89, 118]
   },
   {
    "kind": "point",
@@ -1336,7 +1342,7 @@
    "to": {
     "point": "PERCH"
    },
-   "screen": [116, 58]
+   "screen": [87, 70]
   },
   {
    "kind": "point",
@@ -1345,7 +1351,7 @@
    "to": {
     "point": "ave.mesa.toma"
    },
-   "screen": [116, 106]
+   "screen": [120, 116]
   },
   {
    "kind": "point",
@@ -1354,7 +1360,7 @@
    "to": {
     "point": "ave.mesa.der"
    },
-   "screen": [121, 106]
+   "screen": [125, 116]
   },
   {
    "kind": "x",
@@ -1399,8 +1405,8 @@
    "to": {
     "point": "mesa.toma"
    },
-   "screen": [95, 106],
-   "x": 95,
+   "screen": [99, 116],
+   "x": 99,
    "what": "x on the table top (y is MESA_Y)"
   },
   {
@@ -1410,8 +1416,8 @@
    "to": {
     "point": "mesa.izq"
    },
-   "screen": [97, 106],
-   "x": 97,
+   "screen": [101, 116],
+   "x": 101,
    "what": "x on the table top (y is MESA_Y)"
   },
   {
@@ -1421,150 +1427,150 @@
    "to": {
     "point": "mesa.centro"
    },
-   "screen": [109, 106],
-   "x": 109,
+   "screen": [113, 116],
+   "x": 113,
    "what": "x on the table top (y is MESA_Y)"
   }
  ],
  "pictures": {
   "silla.si": {
-   "world": [1.55, 0.66, 0.92],
-   "screen": [154.36, 127.6],
+   "world": [1.6729, -0.5029, 0.3],
+   "screen": [178, 132],
    "zoom": 2,
-   "crop": [105, 102, 98, 52],
+   "crop": [129, 106, 98, 52],
    "what": "the small yellow chair, close: no table in it"
   },
   "silla.no": {
-   "world": [-0.3731, 0, 1.6681],
-   "screen": [131.14, 87.01],
+   "world": [-0.4895, 0, 2.5537],
+   "screen": [129, 66],
    "zoom": 2,
-   "crop": [82, 61, 98, 52],
-   "what": "the table and the window, close: no chair in it"
+   "crop": [80, 40, 98, 52],
+   "what": "the window and its flower box, close: no chair in it (round 2: the whole table cannot be framed at zoom 2 without a chair, so the window, whole, is the picture that is not a chair)"
   },
   "vaso.si": {
-   "world": [-0.45, 1.12, 1.5],
-   "screen": [109.14, 100.38],
+   "world": [-1.1828, 0.177, 0.3],
+   "screen": [113, 112],
    "zoom": 2,
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "what": "the table, close: a glass of water on it"
   },
   "vaso.no": {
-   "world": [-0.45, 1.12, 1.5],
-   "screen": [109.14, 100.38],
+   "world": [-1.1828, 0.177, 0.3],
+   "screen": [113, 112],
    "zoom": 2,
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "what": "the table, close: a jug of water on it"
   },
   "jugo.si": {
-   "world": [-0.45, 1.12, 1.5],
-   "screen": [109.14, 100.38],
+   "world": [-1.1828, 0.177, 0.3],
+   "screen": [113, 112],
    "zoom": 2,
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "what": "the table, close: a glass of juice"
   },
   "jugo.no": {
-   "world": [-0.45, 1.12, 1.5],
-   "screen": [109.14, 100.38],
+   "world": [-1.1828, 0.177, 0.3],
+   "screen": [113, 112],
    "zoom": 2,
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "what": "the table, close: a glass of water"
   },
   "agua.si": {
-   "world": [-0.45, 1.12, 1.5],
-   "screen": [109.14, 100.38],
+   "world": [-1.1828, 0.177, 0.3],
+   "screen": [113, 112],
    "zoom": 2,
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "what": "the table, close: a jug of water"
   },
   "agua.no": {
-   "world": [-0.45, 1.12, 1.5],
-   "screen": [109.14, 100.38],
+   "world": [-1.1828, 0.177, 0.3],
+   "screen": [113, 112],
    "zoom": 2,
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "what": "the table, close: a jug of juice"
   },
   "se sienta.si": {
-   "world": [-3.1409, -0.802, 0.3],
-   "screen": [95, 85],
+   "world": [-2.6786, -0.5029, 0.3],
+   "screen": [98, 92],
    "zoom": 1,
-   "crop": [0, 33, 196, 104],
+   "crop": [0, 40, 196, 104],
    "what": "abuela sitting in her big chair, the table beside her"
   },
   "se sienta.no": {
-   "world": [-3.1409, -0.802, 0.3],
-   "screen": [95, 85],
+   "world": [-2.6786, -0.5029, 0.3],
+   "screen": [98, 92],
    "zoom": 1,
-   "crop": [0, 33, 196, 104],
+   "crop": [0, 40, 196, 104],
    "what": "abuela standing beside her big chair"
   },
   "toma.si": {
-   "world": [-0.45, 1.12, 1.65],
-   "screen": [109.14, 97.01],
+   "world": [-1.346, 0.0139, 0.3],
+   "screen": [113, 109],
    "zoom": 2,
-   "crop": [60, 71, 98, 52],
+   "crop": [64, 83, 98, 52],
    "what": "the table, close: the bird drinking from a glass"
   },
   "toma.no": {
-   "world": [-0.45, 1.12, 1.65],
-   "screen": [109.14, 97.01],
+   "world": [-1.346, 0.0139, 0.3],
+   "screen": [113, 109],
    "zoom": 2,
-   "crop": [60, 71, 98, 52],
+   "crop": [64, 83, 98, 52],
    "what": "the table, close: the bird asleep beside a full glass"
   },
   "quiero.si": {
-   "world": [-4.3376, -1.346, 0.3],
-   "screen": [83, 69],
+   "world": [-4.8543, -2.6786, 0.3],
+   "screen": [98, 52],
    "zoom": 1,
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "what": "abuela in her chair, a bubble: she wants water"
   },
   "quiero.no": {
-   "world": [-4.3376, -1.346, 0.3],
-   "screen": [83, 69],
+   "world": [-4.8543, -2.6786, 0.3],
+   "screen": [98, 52],
    "zoom": 1,
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "what": "abuela in her chair, drinking, a heart"
   },
   "gracias.si": {
-   "world": [-3.7936, -0.802, 0.3],
-   "screen": [83, 79],
+   "world": [-2.3522, -0.1765, 0.3],
+   "screen": [98, 98],
    "zoom": 1,
-   "crop": [0, 27, 196, 104],
+   "crop": [0, 46, 196, 104],
    "what": "abuela gives the frog a glass, the frog's heart"
   },
   "gracias.no": {
-   "world": [-3.7936, -0.802, 0.3],
-   "screen": [83, 79],
+   "world": [-2.3522, -0.1765, 0.3],
+   "screen": [98, 98],
    "zoom": 1,
-   "crop": [0, 27, 196, 104],
+   "crop": [0, 46, 196, 104],
    "what": "abuela without a glass, the frog sad"
   },
   "¿cómo estás?.si": {
-   "world": [-4.3376, -1.346, 0.3],
-   "screen": [83, 69],
+   "world": [-4.8543, -2.6786, 0.3],
+   "screen": [98, 52],
    "zoom": 1,
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "what": "abuela in her chair asks how he is (ok, ?, sad)"
   },
   "¿cómo estás?.no": {
-   "world": [-4.3376, -1.346, 0.3],
-   "screen": [83, 69],
+   "world": [-4.8543, -2.6786, 0.3],
+   "screen": [98, 52],
    "zoom": 1,
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "what": "abuela in her chair asks about water"
   },
   "bien.si": {
-   "world": [-0.6932, -0.0949, 0.3],
-   "screen": [127, 114],
+   "world": [0.6666, 1.3737, 0.3],
+   "screen": [125, 140],
    "zoom": 1,
-   "crop": [29, 62, 196, 104],
+   "crop": [27, 88, 196, 104],
    "what": "the frog on the porch, ok"
   },
   "bien.no": {
-   "world": [-0.6932, -0.0949, 0.3],
-   "screen": [127, 114],
+   "world": [0.6666, 1.3737, 0.3],
+   "screen": [125, 140],
    "zoom": 1,
-   "crop": [29, 62, 196, 104],
+   "crop": [27, 88, 196, 104],
    "what": "the frog on the porch, hot and sweating"
   }
  },
@@ -1573,7 +1579,7 @@
    "w": "puerta",
    "index": 2,
    "picture": "silla.si",
-   "crop": [105, 102, 98, 52],
+   "crop": [129, 106, 98, 52],
    "zoom": 2,
    "old": [143.65, 116, 32.69, 36.1]
   },
@@ -1581,7 +1587,7 @@
    "w": "abre",
    "index": 3,
    "picture": "jugo.si",
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "zoom": 2,
    "old": [103.65, 98, 32.69, 36.1]
   },
@@ -1589,7 +1595,7 @@
    "w": "hola",
    "index": 2,
    "picture": "se sienta.si",
-   "crop": [0, 33, 196, 104],
+   "crop": [0, 40, 196, 104],
    "zoom": 1,
    "old": [50.2, 84, 59.59, 65.8]
   },
@@ -1597,7 +1603,7 @@
    "w": "silla",
    "index": 0,
    "picture": "silla.si",
-   "crop": [105, 102, 98, 52],
+   "crop": [129, 106, 98, 52],
    "zoom": 2,
    "old": [143.65, 116, 32.69, 36.1]
   },
@@ -1605,7 +1611,7 @@
    "w": "silla",
    "index": 1,
    "picture": "silla.no",
-   "crop": [82, 61, 98, 52],
+   "crop": [80, 40, 98, 52],
    "zoom": 2,
    "old": [103.65, 116, 32.69, 36.1]
   },
@@ -1613,7 +1619,7 @@
    "w": "silla",
    "index": 2,
    "picture": "jugo.si",
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "zoom": 2,
    "old": [103.65, 98, 32.69, 36.1]
   },
@@ -1621,7 +1627,7 @@
    "w": "jugo",
    "index": 0,
    "picture": "jugo.si",
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "zoom": 2,
    "old": [103.65, 98, 32.69, 36.1]
   },
@@ -1629,7 +1635,7 @@
    "w": "jugo",
    "index": 1,
    "picture": "agua.si",
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "zoom": 2,
    "old": [103.65, 98, 32.69, 36.1]
   },
@@ -1637,7 +1643,7 @@
    "w": "jugo",
    "index": 2,
    "picture": "silla.si",
-   "crop": [105, 102, 98, 52],
+   "crop": [129, 106, 98, 52],
    "zoom": 2,
    "old": [143.65, 116, 32.69, 36.1]
   },
@@ -1645,7 +1651,7 @@
    "w": "se sienta",
    "index": 0,
    "picture": "se sienta.si",
-   "crop": [0, 33, 196, 104],
+   "crop": [0, 40, 196, 104],
    "zoom": 1,
    "old": [50.2, 84, 59.59, 65.8]
   },
@@ -1653,7 +1659,7 @@
    "w": "se sienta",
    "index": 1,
    "picture": "se sienta.no",
-   "crop": [0, 33, 196, 104],
+   "crop": [0, 40, 196, 104],
    "zoom": 1,
    "old": [66.2, 84, 59.59, 65.8]
   },
@@ -1661,7 +1667,7 @@
    "w": "quiero",
    "index": 0,
    "picture": "quiero.si",
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "zoom": 1,
    "old": [49.31, 52, 89.39, 98.7]
   },
@@ -1669,7 +1675,7 @@
    "w": "quiero",
    "index": 1,
    "picture": "quiero.no",
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "zoom": 1,
    "old": [49.31, 52, 89.39, 98.7]
   },
@@ -1677,7 +1683,7 @@
    "w": "quiero",
    "index": 2,
    "picture": "¿cómo estás?.si",
-   "crop": [0, 17, 196, 104],
+   "crop": [0, 0, 196, 104],
    "zoom": 1,
    "old": [49.31, 52, 89.39, 98.7]
   },
@@ -1685,7 +1691,7 @@
    "w": "flor",
    "index": 3,
    "picture": "silla.si",
-   "crop": [105, 102, 98, 52],
+   "crop": [129, 106, 98, 52],
    "zoom": 2,
    "old": [143.65, 116, 32.69, 36.1]
   },
@@ -1693,7 +1699,7 @@
    "w": "hasta mañana",
    "index": 2,
    "picture": "jugo.si",
-   "crop": [60, 74, 98, 52],
+   "crop": [64, 86, 98, 52],
    "zoom": 2,
    "old": [103.65, 98, 32.69, 36.1]
   }
@@ -1703,18 +1709,18 @@
    "thing": "puerta",
    "face": "opening",
    "world": [
-    [1.65, 0, -0.15],
-    [3.1, 0, -0.15],
-    [3.1, 0, 2.85],
-    [1.65, 0, 2.85]
+    [2.5, 0, -0.15],
+    [3.8, 0, -0.15],
+    [3.8, 0, 2.85],
+    [2.5, 0, 2.85]
    ],
    "screen": [
-    [168.33, 146.54],
-    [194.99, 159.87],
-    [194.99, 92.32],
-    [168.33, 78.99]
+    [183.96, 154.36],
+    [207.86, 166.31],
+    [207.86, 98.76],
+    [183.96, 86.81]
    ],
-   "box": [168, 78, 27, 82],
+   "box": [183, 86, 25, 81],
    "what": "the doorway on the front wall, carried .45 below the floor so her feet stay whole (old rect [165,57,24,69], balcon.js:124): abuela standing in the door (ab.en puerta) is drawn clipped to it"
   }
  },
@@ -1755,7 +1761,7 @@
   "balcon.js:121 c.drawImage(bg) -> the set, for setKey(W)",
   "balcon.js:127, :135, :136 the big chair, the small chair, the table sprites -> the set (and front: their pixels again at those lines)",
   "balcon.js:118 the frog's dotted shadow -> the engine's cast shadow (shadows.coqui)",
-  "balcon.js:50 the two hanging plants of bg() are not in the set: under a roof this high (its eaves at 5, so that the door and window show whole from this camera) they would hang in front of the window and the door, over their touch boxes (decision 14). The two bushes and the two posts are"
+  "balcon.js:50 the two hanging plants of bg() are not in the set: from this camera they would hang in front of the window and the door, over their touch boxes (decision 14). The two bushes are; the posts only with roof=a"
  ],
  "code": [
   {
@@ -1768,7 +1774,7 @@
    "old": "X2=[108,132]",
    "to": {
     "points": ["mesa.izq", "mesa.der"],
-    "new": [97, 121]
+    "new": [101, 125]
    }
   },
   {
@@ -1780,7 +1786,7 @@
    "line": 95,
    "old": "MESA_Y=128",
    "to": {
-    "MESA_Y": 106
+    "MESA_Y": 116
    }
   },
   {
@@ -1798,7 +1804,7 @@
    "old": "ABS=[51,96]",
    "to": {
     "point": "ABS",
-    "new": [43, 55]
+    "new": [29, 48]
    }
   },
   {
@@ -1806,7 +1812,7 @@
    "old": "PERCH=[120,86]",
    "to": {
     "point": "PERCH",
-    "new": [116, 58]
+    "new": [87, 70]
    }
   },
   {
@@ -1814,7 +1820,7 @@
    "old": "ASIENTO=[160,135]",
    "to": {
     "point": "ASIENTO",
-    "new": [154, 131]
+    "new": [162, 135]
    }
   },
   {
@@ -1822,7 +1828,7 @@
    "old": "AB.puerta [178,125]",
    "to": {
     "spot": "abuela.puerta",
-    "new": [180, 145]
+    "new": [194, 152]
    }
   },
   {
@@ -1830,7 +1836,7 @@
    "old": "AB.mesa [98,143]",
    "to": {
     "spot": "abuela.mesa",
-    "new": [112, 117]
+    "new": [138, 130]
    }
   },
   {
@@ -1838,7 +1844,7 @@
    "old": "AB.lado [94,147]",
    "to": {
     "spot": "abuela.lado",
-    "new": [77, 119]
+    "new": [85, 114]
    }
   },
   {
@@ -1846,7 +1852,7 @@
    "old": "LUGAR.jardin [104,185,1]",
    "to": {
     "spot": "jardin",
-    "new": [93, 171, 1]
+    "new": [97, 175, 1]
    }
   },
   {
@@ -1854,7 +1860,7 @@
    "old": "LUGAR.balcon [106,130,0.8]",
    "to": {
     "spot": "balcon",
-    "new": [111, 120, 0.8]
+    "new": [109, 127, 0.8]
    }
   },
   {
@@ -1862,7 +1868,7 @@
    "old": "LUGAR.mesa [104,141,0.86]",
    "to": {
     "spot": "mesa",
-    "new": [97, 130, 0.86]
+    "new": [100, 133, 0.86]
    }
   },
   {
@@ -1870,7 +1876,7 @@
    "old": "LUGAR.junto [104,141,0.86]",
    "to": {
     "spot": "mesa",
-    "new": [97, 130, 0.86]
+    "new": [100, 133, 0.86]
    }
   },
   {
@@ -1878,7 +1884,7 @@
    "old": "LUGAR.decir [134,130,0.8]",
    "to": {
     "spot": "decir",
-    "new": [130, 133, 0.8]
+    "new": [134, 145, 0.8]
    }
   },
   {
@@ -1886,7 +1892,7 @@
    "old": "LUGAR.silla_pequena [144,109,0.72]",
    "to": {
     "spot": "silla_pequena",
-    "new": [142, 108, 0.72]
+    "new": [146, 110, 0.72]
    }
   },
   {
@@ -1894,7 +1900,7 @@
    "old": "LUGAR.suelo [150,132,0.8]",
    "to": {
     "spot": "suelo",
-    "new": [146, 140, 0.8]
+    "new": [147, 145, 0.8]
    }
   },
   {
@@ -1902,7 +1908,7 @@
    "old": "LUGAR.abuela [84,129,0.8]",
    "to": {
     "spot": "abuela",
-    "new": [87, 105, 0.8]
+    "new": [80, 123, 0.8]
    }
   },
   {
@@ -1910,7 +1916,7 @@
    "old": "LUGAR.silla_grande [84,129,0.8]",
    "to": {
     "spot": "abuela",
-    "new": [87, 105, 0.8]
+    "new": [80, 123, 0.8]
    }
   },
   {
@@ -1918,7 +1924,7 @@
    "old": "LUGAR.puerta [162,125,0.76]",
    "to": {
     "spot": "puerta",
-    "new": [166, 142, 0.76]
+    "new": [172, 133, 0.76]
    }
   },
   {
@@ -1926,7 +1932,7 @@
    "old": "LUGAR.ventana [106,130,0.8]",
    "to": {
     "spot": "balcon",
-    "new": [111, 120, 0.8]
+    "new": [109, 127, 0.8]
    }
   },
   {
@@ -1938,7 +1944,7 @@
    "line": 102,
    "old": "abCaja silla [55,96,34,50]",
    "to": {
-    "new": [47, 55, 34, 50]
+    "new": [33, 48, 34, 50]
    },
    "note": "ABS + [4, 0, 34, 50]; standing: relative, unchanged"
   },
@@ -1947,7 +1953,7 @@
    "old": "box mesa [94,124,52,25]",
    "to": {
     "thing": "mesa",
-    "box": [81, 92, 56, 56]
+    "box": [88, 98, 50, 37]
    }
   },
   {
@@ -1955,7 +1961,7 @@
    "old": "box silla_pequena [SILLITA,24,30] = [148,120,24,30]",
    "to": {
     "thing": "silla_pequena",
-    "box": [142, 114, 24, 32]
+    "box": [150, 117, 24, 32]
    }
   },
   {
@@ -1963,7 +1969,7 @@
    "old": "box silla_grande [SILLA,40,48] = [48,102,40,48]",
    "to": {
     "thing": "silla_grande",
-    "box": [43, 61, 40, 48]
+    "box": [29, 54, 40, 48]
    }
   },
   {
@@ -1971,7 +1977,7 @@
    "old": "box puerta [162,54,32,68]",
    "to": {
     "thing": "puerta",
-    "box": [164, 74, 35, 85]
+    "box": [180, 81, 32, 84]
    }
   },
   {
@@ -1979,7 +1985,7 @@
    "old": "hand puerta [178,84]",
    "to": {
     "point": "mano.puerta",
-    "new": [182, 107]
+    "new": [196, 115]
    }
   },
   {
@@ -1987,7 +1993,7 @@
    "old": "box ventana [93,54,54,36]",
    "to": {
     "thing": "ventana",
-    "box": [76, 40, 59, 70]
+    "box": [90, 38, 48, 60]
    }
   },
   {
@@ -1995,7 +2001,7 @@
    "old": "hand ventana [120,70]",
    "to": {
     "point": "mano.ventana",
-    "new": [109, 70]
+    "new": [117, 64]
    }
   },
   {
@@ -2003,7 +2009,7 @@
    "old": "box balcon [42,122,156,34]",
    "to": {
     "thing": "balcon",
-    "box": [59, 115, 115, 65]
+    "box": [55, 126, 113, 64]
    }
   },
   {
@@ -2042,7 +2048,7 @@
    "line": 126,
    "old": "ab.y < 144",
    "to": {
-    "behind": 146
+    "behind": 153
    }
   },
   {
@@ -2057,7 +2063,7 @@
    "old": "mkAbuelaS at ABS",
    "to": {
     "point": "ABS",
-    "new": [43, 55]
+    "new": [29, 48]
    }
   },
   {
@@ -2109,7 +2115,7 @@
    "old": "fanMesa: medio(c, 121, MESA_Y, 1)",
    "to": {
     "point": "mesa.abanico",
-    "new": [110, 106]
+    "new": [114, 116]
    }
   },
   {
@@ -2117,7 +2123,7 @@
    "old": "enSuelo: medio(c, 98, 157, -1)",
    "to": {
     "point": "suelo.abanico.1",
-    "new": [63, 119]
+    "new": [69, 112]
    }
   },
   {
@@ -2125,7 +2131,7 @@
    "old": "enSuelo: medio(c, 110, 158, 1)",
    "to": {
     "point": "suelo.abanico.2",
-    "new": [75, 122]
+    "new": [81, 114]
    }
   },
   {
@@ -2137,7 +2143,7 @@
    "line": 141,
    "old": "ab.y >= 144",
    "to": {
-    "behind": 146
+    "behind": 153
    }
   },
   {
@@ -2215,7 +2221,7 @@
    "old": "dos(\"sm\"): vaso_silla at ASIENTO[0], ASIENTO[1] - 1; vaso_mesa at x 120",
    "to": {
     "point": "mesa.centro",
-    "new": [109, 106]
+    "new": [113, 116]
    },
    "note": "ASIENTO: line 95"
   },
@@ -2234,7 +2240,7 @@
    "old": "sube: hopTo(LUGAR.jardin[0], 168, 1, .9)",
    "to": {
     "spot": "sube",
-    "frog": [93, 154],
+    "frog": [97, 157],
     "x": "LUGAR.jardin[0] (the same x: yes)"
    }
   },
@@ -2263,7 +2269,7 @@
    "old": "aveva: lado = v.x < 120 ? 1 : -1; to v.x + lado * 19, v.y || MESA_Y",
    "to": {
     "point": "mesa.centro",
-    "x": 109
+    "x": 113
    },
    "note": "the test x is the table's middle; the 19 stays: the bird lands on the table on the middle's side of the glass"
   },
@@ -2299,7 +2305,7 @@
    "old": "aparta: the glass she puts down: x 120",
    "to": {
     "point": "mesa.centro",
-    "x": 109
+    "x": 113
    }
   },
   {
@@ -2307,7 +2313,7 @@
    "old": "recibe: his glass: x 132",
    "to": {
     "point": "mesa.der",
-    "x": 121
+    "x": 125
    }
   },
   {
@@ -2370,7 +2376,7 @@
    "to": {
     "view": "mesa",
     "zoom": 1,
-    "x0": 11
+    "x0": 15
    }
   },
   {
@@ -2387,7 +2393,7 @@
    "old": "heartAt [107,31]",
    "to": {
     "point": "corazon",
-    "new": [99, 10]
+    "new": [112, 30]
    }
   },
   {

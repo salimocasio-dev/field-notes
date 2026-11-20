@@ -4,12 +4,14 @@
 'use strict';
 /* El balcón: abuela's porch, seen from the yard, as a set on the Pixel Plays engine (order 30a).
    The same house as El frente (teal siding, white trim, red tiles, the wooden door, the louvred shutters and the flower box),
-   seen closer, from the side where its porch is: a tiled porch under the roof, on white posts, with abuela's big chair, a small round
-   table and a small yellow chair.
+   seen closer, from the side where its porch is: a tiled porch, abuela's big chair, a round table under the window and a small
+   yellow chair beside the door.
    The state comes from the address; these become the builder's setKey:
      door = shut | open        W.door 0 | 1
      win  = shut | open        W.win 0 | 1 (the shutters; the stories keep them shut)
      t    = wind time in seconds (0 for the reference); ox, oy = the origin (defaults are El balcón's)
+   And one design choice, for the orchestrator (round 2): roof = b (the default: a short roof over the back of the porch, no posts)
+   or a (round 1's: the roof over the whole porch on two posts, the house 2.2 deep). Every frog, abuela and thing spot is the same in both.
    It draws one frame: the baked set, then drawLeaves(t) and drawTufts(t). No characters. */
 const Q = new URLSearchParams(location.search);
 const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
@@ -17,6 +19,7 @@ const SET = {
   door: pick('door', ['shut', 'open'], 'shut'),
   win: pick('win', ['shut', 'open'], 'shut'),
   t: +(Q.get('t') || 0),
+  roof: pick('roof', ['a', 'b'], 'b'),
 };
 window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || 18), originY: +(Q.get('oy') || 20), shadowX: .9, shadowY: -.1 };
 </script>
@@ -26,20 +29,28 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 <script>
 'use strict';
 /* ---------- the plan of the place (world units; the porch front faces +y, like El frente's house) ---------- */
-const HX0 = -4.3, HX1 = 5.9, HY0 = -2.2, HY1 = 0;                    // the house walls behind the porch (it runs on past the door, so the right post stands clear of abuela at the door)
+// Round 2 (the fresh readers): the table is bigger and stands under the window, which is higher, so the drinks have plain wall behind them;
+// abuela serves standing on the floor at the table's door side; the small chair has a gap to the door frame; the frog's spots are on open floor
+const ROOF_B = SET.roof === 'b';
+const HX0 = -5.8, HX1 = 7.8, HY1 = 0;                                 // the house wall behind the porch
+const HY0 = ROOF_B ? -.4 : -2.2;                                      // the house's depth behind the wall (only its roof shows it: b keeps it shallow, so less roof)
 const FLOOR = .3;                                                     // the porch floor, two steps up from the lawn
-const PD = 2.2;                                                       // the porch's depth
-const EAVE = .25, HF = 5.0, RISE = 1.0;                               // the roof over house and porch: eaves at HF, ridge RISE above
-const DOOR0 = 1.65, DOOR1 = 3.1, DH = 2.55;                           // the doorway, from the porch floor up
-const WIN0 = -2.45, WIN1 = -.75, WZ0 = FLOOR + 1.0, WZ1 = FLOOR + 2.25;   // the window opening
-const POSTS = [[-3.5, PD - .16], [5.75, PD - .16]];                     // the two posts that hold the roof, at the two ends of what is seen
-const STEP0 = -.15, STEP1 = 1.35;                                     // the steps (x), in front of the table
-const TABLE = [-.45, 1.12], TABLE_R = .75, TABLE_H = .95;             // the round table: its middle, radius, height above the floor
-const SILLA = [-3.1, .98], SILLA_HW = .74, SILLA_HD = .5;             // abuela's big chair, turned to the camera
-const SILLITA = [1.55, .66], SILLITA_HW = .44, SILLITA_HD = .3;       // the small yellow chair, turned to the camera
+const PD = 3.0;                                                       // the porch's depth
+const DOOR0 = 2.5, DOOR1 = 3.8, DH = 2.55;                            // the doorway, from the porch floor up
+const TABLE = [-.26, 1.1], TABLE_R = .95, TABLE_H = .75;               // the round table: its middle, radius, height above the floor
+const XW = TABLE[0] - TABLE[1];                                       // the wall behind the table, from the camera (a sight line keeps x - y)
+const WIN0 = XW - .4, WIN1 = XW + .8, WZ0 = FLOOR + 1.5, WZ1 = FLOOR + 2.6;   // the window opening: over the table, its top level with the door's
+const BOX0 = -2.95, BOX1 = WIN1 + .15, BZ0 = WZ0 - .32, BZ1 = WZ0 - .1, BOXD = .3;   // the flower box: long to the left, where the bird perches on its end
+const EAVE = .25, RISE = ROOF_B ? .45 : 1.0;                           // the roof: eaves EAVE past the walls, the ridge RISE above the eaves
+const RY1 = ROOF_B ? 1.1 : PD + EAVE;                                 // b: the roof covers the back of the porch only (over the furniture); a: all of it
+const HF = Math.ceil((FLOOR + DH + .14 + Math.tan(Math.PI / 6) * Math.SQRT2 * RY1 - .2) * 20) / 20;   // the eaves: as low as lets the door's frame show whole
+const POSTS = ROOF_B ? [] : [[HX0 + .2, PD - .16], [7.6, PD - .16]];       // a: two posts hold the roof's front corners
+const STEP0 = .94, STEP1 = 2.34;                                      // the steps (x), at the porch's front
+const SILLA = [-3.85, .98], SILLA_HW = .74, SILLA_HD = .5;             // abuela's big chair, turned to the camera
+const SILLITA = [1.93, .62], SILLITA_HW = .44, SILLITA_HD = .3;        // the small yellow chair, turned to the camera, clear of the door frame
 const TURN = -Math.PI / 4;                                            // furniture turned to face the camera
 const PATH_U = (STEP0 + STEP1) / 2 - PD, PATH_V = (STEP0 + STEP1) / 2 + PD + .7;   // where the path leaves the lower step (u = x - y, v = x + y)
-const BUSH1 = [-2.6, 3.4], BUSH2 = [5.6, 2.8];
+const BUSH1 = [-4.4, 4.6], BUSH2 = [5.2, 4.2];
 const HZ = 40;                                                        // the horizon, in screen rows: sky above
 const TEAL = [92, 190, 186], WOOD = [150, 98, 56], WHITE = [244, 240, 228], POST_C = [251, 240, 210];
 const TILE = [[238, 220, 176], [224, 198, 144], [184, 154, 106]];     // the old porch's tiles: light, dark, the joints
@@ -64,7 +75,7 @@ function yardGround(x, y, ix, iy, i) {
 }
 
 /* ---------- the roof's height over a ground point (hipRoof's own formula), for clipping the walls under it ---------- */
-const RX0 = HX0 - EAVE, RY0 = HY0 - EAVE, RX1 = HX1 + EAVE, RY1 = PD + EAVE;
+const RX0 = HX0 - EAVE, RY0 = HY0 - EAVE, RX1 = HX1 + EAVE;
 function roofZ(x, y) {
   const xc = (RX0 + RX1) / 2, yc = (RY0 + RY1) / 2, hy = (RY1 - RY0) / 2, hx = (RX1 - RX0) / 2;
   const fy = (hy - Math.abs(y - yc)) / hy, fx = (hx - Math.abs(x - xc)) / hy;
@@ -96,9 +107,10 @@ function house() {
   });
   part('puerta', doorway);
   part('ventana', windowAndShutters);
+  part('jardinera', flowerBox);
 }
 // the room behind an opening (as El frente's, lights off: a dim room, not a hole)
-const BACK = HY0 + .08;
+const BACK = -1.2;                                                     // as deep as round 1's: only the doorway and the window show it
 function room(a0, a1, floor) {
   const d = HY1 - BACK;
   for (let a = Math.max(HX0 + .02, a0 - d - .15); a <= Math.min(HX1 - .02, a1 - d + .1); a += ST) for (let z = FLOOR; z <= FLOOR + DH + .4; z += ST) {
@@ -149,8 +161,14 @@ function windowAndShutters() {
       plot(WIN0 - .14 - lw + a, HY1 + .05, z, col); plot(WIN1 + .14 + a, HY1 + .05, z, col);
     }
   }
-  block(WIN0 - .15, HY1, WZ0 - .45, WIN1 + .15, HY1 + .32, WZ0 - .17, C.wood);
-  for (let k = 0; k < 9; k++) sphere(WIN0 - .05 + k * (ww + .1) / 8, HY1 + .18, WZ0 - .14, .1, [[255, 143, 184], [255, 224, 112], [244, 88, 74]][k % 3], 'solid');
+}
+
+function flowerBox() {
+  const ww = WIN1 - WIN0;
+  // the flower box: the flowers under the window; its left end, past the window, bare: the bird's perch (sheet: points.PERCH)
+  block(BOX0, HY1, BZ0, BOX1, HY1 + BOXD, BZ1, C.wood);
+  for (let a = BOX0 + .04; a <= BOX1 - .04; a += ST * .5) for (let b = HY1 + .04; b <= HY1 + BOXD - .04; b += ST * .5) plot(a, b, BZ1 + .005, rgb(...(a < WIN0 - .2 ? [120, 82, 52] : [96, 66, 44])));
+  for (let k = 0; k < 9; k++) sphere(WIN0 - .05 + k * (ww + .1) / 8, HY1 + .16, BZ1 + .03, .1, [[255, 143, 184], [255, 224, 112], [244, 88, 74]][k % 3], 'solid');
 }
 
 /* ---------- the porch: the tiled floor, the stone base and steps, the posts, the roof ---------- */
@@ -262,7 +280,7 @@ function buildSet() {
 }
 
 window.SPOTS = {};
-window.BALCON = { SET, HX0, HX1, HY0, HY1, FLOOR, PD, EAVE, HF, RISE, DOOR0, DOOR1, DH, WIN0, WIN1, WZ0, WZ1, POSTS, STEP0, STEP1, TABLE, TABLE_R, TABLE_H, SILLA, SILLA_HW, SILLA_HD, SILLITA, SILLITA_HW, SILLITA_HD, TURN, PATH_U, PATH_V, BUSH1, BUSH2, HZ, buildSet };
+window.BALCON = { SET, ROOF: SET.roof, HX0, HX1, HY0, HY1, FLOOR, PD, EAVE, HF, RISE, RY1, DOOR0, DOOR1, DH, WIN0, WIN1, WZ0, WZ1, BOX0, BOX1, BZ0, BZ1, BOXD, POSTS, STEP0, STEP1, TABLE, TABLE_R, TABLE_H, SILLA, SILLA_HW, SILLA_HD, SILLITA, SILLITA_HW, SILLITA_HD, TURN, PATH_U, PATH_V, BUSH1, BUSH2, HZ, buildSet };
 
 if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
 const t0 = performance.now();
