@@ -254,16 +254,16 @@ void main() {
     s.k.PART_TAGS = List<String?>.filled(240 * 216, null);
     s.buildSet();
     final tags = s.k.PART_TAGS!, Z = e.bakedZ;
-    final COS = math.sqrt(3) / 2, T30 = math.tan(math.pi / 6);
+    final cos30 = math.sqrt(3) / 2, tan30 = math.tan(math.pi / 6);
     final u = (128 - e.OX) / e.S,
-        v = (scene.BEHIND - 6 - 1 - e.OY + .3 * COS * e.S) / (e.S * .5);
+        v = (scene.BEHIND - 6 - 1 - e.OY + .3 * cos30 * e.S) / (e.S * .5);
     final vAb = ((u + v) / math.sqrt2 + (v - u) / math.sqrt2) / math.sqrt2;
     var nearer = 0, hers = 0;
     for (var y = scene.BEHIND - 6 - 50; y < scene.BEHIND - 6; y++) {
       for (var x = 128 - 30; x < 128 + 30; x++) {
         final i = y * 240 + x;
         if (tags[i] == 'mesa' &&
-            Z[i] > vAb / COS - (y + .5 - e.OY) * T30 / e.S) {
+            Z[i] > vAb / cos30 - (y + .5 - e.OY) * tan30 / e.S) {
           nearer++;
           // the table's pixel, not hers
           expect(withAb[i], none[i], reason: 'pixel $x, $y');

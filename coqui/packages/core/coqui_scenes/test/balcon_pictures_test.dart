@@ -3,7 +3,6 @@
 // zoom 1 at the centre of their entries' crops. (The same checks as El frente's in pictures_test.dart.)
 import 'dart:typed_data';
 
-import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
