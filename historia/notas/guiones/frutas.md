@@ -169,4 +169,15 @@ Acts (name: what it does; story and step):
 - `huele` {k, grande}: abuela takes two of a kind, presses and smells each (43: 4, 6, 7). `pone43` {cual, ok}: the frog lays one in the next hollow; not ok: flies over it and its neighbour, and both go onto the low crate (43: 4, 6, 7). `canasta43`: the basket shown from above (43: 8).
 - `sale` / `vuelve` {quien}: don Pepe into the shop, or into his truck, and back (43: 4, 7; 44: 5, 8). `limon44`: he cuts a limón and gives the frog a slice; the frog's face puckers (44: 2). `vuelca44` {k}: yesterday's crate, dragged, knocks the fresh one over: half of it onto the low crate (44: 6, 7).
 - `cajones` {k, lado}: the fresh crate and yesterday's of one thing side by side (44: 6, 7). `pesa` {k, n}: things onto the scale; the needle to half or full; then into a bag in abuela's basket (44: 2, 6, 7, 8). `marca44` {que}: his hand on the full mark, on the half mark (44: 3).
+- `brilla`: a thing twinkles: the engine's own `{"set": {"twinkle": key}}` (the bins in 42: 2, 4; the piña in 43: 4; the fresh crates in 44: 1).
+- `piensa` {quien, k}: a thought over somebody: a pot of soup over abuela (42: 1), a guineo over the frog (42: 1).
+- `mano` {k}: don Pepe lays a hand on a bin, or takes one thing out of it and holds it up (42: 2, 4; 43: 1).
+- `abuela` {a, que}: abuela goes to a spot (delante, junto_cabra); que: `lista` (she holds her list up), `guarda` (the list into her pocket), `monedero` (she looks into her purse), `monedas` (she looks at the coins left, then at the frog) (42: 5, 8; 44: 4, 5).
+- `aparta42`: don Pepe pulls the bins of potatoes and plantains back from the goat (42: 5).
+- `suelta` {quien, que}: somebody drops what he holds onto the low crate: the bad aguacate, the small limón, the other fruit of a round, or both (43: 2, 3, 5, 6). The goat's `come` follows.
+- `llama43`: the señora leans out of the shop door and calls (43: 4).
+- `ayer44` {k}: yesterday's crate of a thing twinkles; its fly circles (44: 1).
+- `empuja44` {cual}: the frog pushes a crate off the ledge onto the low crate (44: 6, 7; the goat's `caja` follows).
+- `bolsas44`: the scale shows each bag in turn (44: 8).
+- Values: `lista` hecho 0 lights, 1 ticks; `pesa` n 0.5 or 1; `marca44` que medio or libra; `cajones` lado a or b: the side of the fresh crate; `huele` grande: which of fruta_a, fruta_b is the big one (fruta_a); `sale` / `vuelve` take `a`: tienda or camion.
 - `final`: stars and a heart when nothing was lost.
