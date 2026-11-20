@@ -530,10 +530,13 @@ void main() {
         }
       }
       // each converted scene's sheet has exactly the pictures the content asks of it
-      expect(inSheet, [
-        for (final sheet in sheets.values)
-          sheet.pictures.length + sheet.level.length,
-      ].reduce((a, b) => a + b));
+      expect(
+        inSheet,
+        [
+          for (final sheet in sheets.values)
+            sheet.pictures.length + sheet.level.length,
+        ].reduce((a, b) => a + b),
+      );
       expect(inOld + inSheet, refs.length);
       expect(
         oldHashes.length,
