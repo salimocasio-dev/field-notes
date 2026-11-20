@@ -331,7 +331,10 @@ class RepasoSession extends LessonBase {
       if (n != 0) '$n word${n == 1 ? '' : 's'} · about ${m < 1 ? 1 : m} min',
     ]);
     loadVoice({
-      for (final q in queue) ?q.item?.clip,
+      // each scored item's sentence, and the clips of its word tiles said alone (¿Qué oyes?: a touch on a tile's speaker
+      // plays one, and must not wait for a fetch)
+      for (final q in queue)
+        if (q.item case final it?) ...[?it.clip, ..._clipsOf(it)],
       course.fixedClip('review_praise_right'),
       course.fixedClip('review_praise_after_miss'),
     });

@@ -74,7 +74,9 @@ Page 15 (docs/proyecto/15-repaso-juegos.md) is the design; where it and page 10 
   `DashMark.skipped`, a lighter grey than "not reached", when "Can't speak now" ended it), keeps it to the end, and a
   return neither repaints it nor has a dash; `barCurrent` is the dash of the item on screen (a return: of the item it
   answers again), drawn with a white outline. Speakers on ¿Qué oyes? tiles only when every tile has a clip of its word
-  alone (`HearItem.speakers`). ¿Dónde? stacks its pictures at the largest whole scale that fits and has two when three
+  alone (`HearItem.speakers`; all 156 words have one now, in a story or in `historia/cuentos/palabras-solas.json`, so
+  every item shows them); the session preloads those clips with the sentences when it is prepared (`prepare`), so a touch
+  on a tile's speaker plays at once, and does not answer. ¿Dónde? stacks its pictures at the largest whole scale that fits and has two when three
   could not be 150 px wide each (`ui/repaso_layout.dart`, `WhereItem.picturesFor`, `RepasoSession.wherePictures`).
   Arma la frase: an empty answer line with a baseline, no slots (their widths gave the answer away); the next word of the
   sentence he touches goes onto the line, from the left, green at once (`RepasoSession.placed`), any other tile stays in

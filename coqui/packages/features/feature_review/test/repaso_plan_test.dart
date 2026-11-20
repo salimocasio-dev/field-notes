@@ -1,5 +1,6 @@
 // The plan of Repaso's games (page 15): which words, which game, which sentence, which tiles; on the real data file.
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -121,6 +122,63 @@ void main() {
     }
     expect(n, greaterThan(1400));
     expect(none, 0);
+  });
+
+  test('¿Qué oyes? over EVERY item the plan can make for a learner who has finished every story: all three tiles have a recorded clip of their word alone, so every item shows speakers', () {
+    // the clips that can be played: in audio/ready.json and with marks in audio/marcas.json
+    Object? read(String f) => jsonDecode(
+      File('${repoRoot.path}/historia/audio/$f').readAsStringSync(),
+    );
+    final recorded = {
+      ...((read('ready.json') as Map)['clips'] as List).cast<String>(),
+    }.intersection((read('marcas.json') as Map).keys.cast<String>().toSet());
+    for (final w in data.words) {
+      expect(w.solo, isNotNull, reason: w.word);
+      expect(recorded, contains(w.solo), reason: w.word);
+    }
+    final all = learner(everythingJson(data));
+    var items = 0;
+    for (final seed in [1, 2, 3]) {
+      final pl = planner(all, seed: seed);
+      for (final w in data.words) {
+        for (final s in pl.hearSentences(w)) {
+          // every word that could be a wrong tile has one, and so has the target
+          for (final m in pl.wrongTileChoices(w, s)) {
+            expect(
+              recorded,
+              contains(m.solo),
+              reason: '${w.word} | ${s.text} | ${m.word}',
+            );
+          }
+          final item = pl.hearItem(w, s);
+          items++;
+          final why = '${w.word} | ${s.text} | ${item.tiles}';
+          expect(item.tiles, hasLength(3), reason: why);
+          expect(item.solo, [
+            for (final t in item.tiles) data.word(t)!.solo,
+          ], reason: why);
+          expect(item.solo.every(recorded.contains), isTrue, reason: why);
+          expect(item.speakers, isTrue, reason: why);
+        }
+      }
+    }
+    expect(items, greaterThan(3 * 1400));
+    // and the items a session makes: every word with one ¿Qué oyes? at its turn (an odd count of answers)
+    final json = jsonDecode(everythingJson(data)) as Map<String, dynamic>;
+    for (final e in (json['palabras'] as Map).values) {
+      ((e as Map)['ear'] as Map)['n'] = 1;
+    }
+    final pl = planner(learner(jsonEncode(json)));
+    final queue = pl.queue(pl.sessionWords(cap: 1000).words);
+    final hears = [
+      for (final q in queue)
+        if (q.item case final HearItem it) it,
+    ];
+    expect(hears, hasLength(greaterThan(100)));
+    for (final it in hears) {
+      expect(it.speakers, isTrue, reason: '${it.word} | ${it.tiles}');
+      expect(it.solo.every(recorded.contains), isTrue, reason: it.word);
+    }
   });
 
   test('Arma la frase: over every sentence usable for it, the two extra tiles are fair and not words of it', () {

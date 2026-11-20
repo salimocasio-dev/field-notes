@@ -93,7 +93,8 @@ flutter test tool/repaso_shots_test.dart --dart-define=OUT=<dir>   # 390 x 844 a
 It plays sessions until every game has been answered once right and once wrong, with at least two words missed in the
 first, a returned item, a Parejas slip, Dilo's listening and not-heard tries, and the end screens (top and bottom of the
 list). It fails the run if any picture has an `ErrorWidget` or a picture that failed to draw (coqui_scenes' own red box),
-if a game's layout moved between the moment it was asked and a later one, or if an end screen leaves out a scored word.
+if a game's layout moved between the moment it was asked and a later one, if an end screen leaves out a scored word, or if
+a "Touch the word you heard" item is asked with a tile that has no speaker (every word has a clip of itself said alone).
 
 ## Address switches
 

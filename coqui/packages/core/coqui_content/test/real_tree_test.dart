@@ -431,6 +431,58 @@ void main() {
       }
     });
 
+    test('a word said alone (w_*) resolves from a catalog that has read no story: its address, its marks, its line', () async {
+      // the tree is recorded (the 133 clips of palabras-solas are in ready.json, marcas.json and audio/)
+      expect(_solasState(), _Solas.recorded);
+      final fresh = ContentCatalog(_read);
+      await fresh.load(); // no story read, palabras-solas least of all
+      final ready = _json('audio/ready.json') as Map<String, dynamic>;
+      final marks = _json('audio/marcas.json') as Map<String, dynamic>;
+      final solas = _json('cuentos/$_solasId.json') as Map<String, dynamic>;
+      final clips = Map<String, dynamic>.from(solas['clips'] as Map);
+      expect(clips, hasLength(_solasClipCount));
+      for (final e in clips.entries) {
+        final c = fresh.clip(e.key);
+        final m = marks[e.key] as List;
+        final line = e.value as Map;
+        expect(c, isNotNull, reason: e.key);
+        expect(c!.url, 'audio/${e.key}.mp3?v=${ready['v']}', reason: e.key);
+        expect([c.startMs, c.endMs], [m[0], m[1]], reason: e.key);
+        expect(c.endMs, greaterThan(c.startMs), reason: e.key);
+        expect(
+          [c.who, c.text, c.habla],
+          [line['who'], line['text'], null],
+          reason: e.key,
+        );
+        expect(
+          File('${_historia.path}/${c.url.split('?').first}').existsSync(),
+          isTrue,
+          reason: e.key,
+        );
+      }
+      // a word's clip in the repaso data is one of them or a clip of a story, and every one has a ClipInfo
+      final words = (_json('datos/repaso.json') as Map)['palabras'] as List;
+      expect(words, hasLength(156));
+      var alone = 0;
+      for (final w in words) {
+        final id = (w as Map)['solo'] as String?;
+        expect(id, isNotNull, reason: '${w['w']}');
+        expect(fresh.clip(id!), isNotNull, reason: id);
+        if (clips.containsKey(id)) alone++;
+      }
+      expect(alone, 133);
+      // it is not a story and not a review set
+      expect(fresh.meta(_solasId), isNull);
+      expect(fresh.pairs, hasLength(128));
+      expect([
+        for (final p in fresh.places) ...[
+          ...p.stories,
+          ...p.routines,
+          ...p.pictureStories,
+        ],
+      ], isNot(contains(_solasId)));
+    });
+
     test('a clip that is on disk but not in ready.json has no ClipInfo', () {
       final ready = ((_json('audio/ready.json') as Map)['clips'] as List)
           .toSet();

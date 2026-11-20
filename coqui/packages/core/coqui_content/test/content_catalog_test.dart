@@ -48,6 +48,7 @@ void main() {
         'audio/ready.json',
         'audio/marcas.json',
         'datos/repaso.json',
+        'cuentos/palabras-solas.json',
         for (final f in _curso['cual'] as List) 'cuentos/$f.json',
       });
       expect(files.calls, hasLength(files.calls.toSet().length));
@@ -465,6 +466,110 @@ void main() {
       );
       expect(after.url, before.url);
       expect([after.startMs, after.endMs], [before.startMs, before.endMs]);
+    });
+
+    test('the words said alone (cuentos/palabras-solas.json): their line is known at load, and the file is no story and no review set', () async {
+      final solas = jsonEncode({
+        'id': 'palabras-solas',
+        'title': 'Palabras',
+        'tipo': 'palabras',
+        'clips': {
+          'w_casa': {'who': 'narr', 'text': 'Casa.'},
+          'w_tu_a': {'who': 'narr', 'text': 'Tú.'},
+          'w_sin_voz': {'who': 'narr', 'text': 'Sin voz.'},
+        },
+      });
+      final changes = {
+        'cuentos/palabras-solas.json': solas,
+        'audio/ready.json': jsonEncode({
+          ..._ready,
+          'clips': [..._ready['clips'] as List, 'w_casa', 'w_tu_a'],
+        }),
+        'audio/marcas.json': jsonEncode({
+          ..._marks,
+          'w_casa': [150, 900, 1200],
+          'w_tu_a': [160, 700, 1000],
+        }),
+      };
+      final (catalog, files) = await _loaded(changes);
+      final (plain, _) = await _loaded();
+      for (final (id, text) in [('w_casa', 'Casa.'), ('w_tu_a', 'Tú.')]) {
+        final c = catalog.clip(id)!;
+        expect([c.id, c.who, c.text, c.habla], [id, 'narr', text, null]);
+        expect(c.url, 'audio/$id.mp3?v=${_ready['v']}');
+      }
+      expect(
+        [catalog.clip('w_casa')!.startMs, catalog.clip('w_casa')!.endMs],
+        [150, 900],
+      );
+      expect(catalog.clip('w_sin_voz'), isNull, reason: 'no recording');
+      // not a story, not a review set: nothing else the catalog says changes, and no story was asked for
+      expect(catalog.meta('palabras-solas'), isNull);
+      expect([
+        for (final p in catalog.places) ...[...p.stories, ...p.routines],
+      ], isNot(contains('palabras-solas')));
+      expect(catalog.pairs.length, plain.pairs.length);
+      expect(
+        [for (final p in catalog.pairs) p.word],
+        [for (final p in plain.pairs) p.word],
+      );
+      expect(files.count('cuentos/palabras-solas.json'), 1);
+      // the other clips are as they were
+      final id = (_ready['clips'] as List).first as String;
+      expect(catalog.clip(id)!.text, plain.clip(id)!.text);
+      // a story that has the same id says its own line once it has been read (juego.js: a story's own line wins)
+      final story = _tree('cuentos/la-lluvia.json');
+      (story['clips'] as Map)['w_casa'] = {
+        'who': 'abuela',
+        'text': 'Casa, casa.',
+      };
+      final (own, _) = await _loaded({
+        ...changes,
+        'cuentos/la-lluvia.json': jsonEncode(story),
+      });
+      expect(own.clip('w_casa')!.text, 'Casa.');
+      await own.story('la-lluvia');
+      expect(
+        [own.clip('w_casa')!.who, own.clip('w_casa')!.text],
+        ['abuela', 'Casa, casa.'],
+      );
+    });
+
+    test('the file of the words said alone missing or broken is no error: the clip has marks and a url and no line', () async {
+      final ready = {
+        ..._ready,
+        'clips': [..._ready['clips'] as List, 'w_casa'],
+      };
+      final marks = {
+        ..._marks,
+        'w_casa': [150, 900, 1200],
+      };
+      for (final bad in [
+        null,
+        'nope',
+        '[1]',
+        '{}',
+        '{"clips":[]}',
+        '{"clips":{"w_casa":7}}',
+      ]) {
+        final files = {
+          ...smallTree,
+          'audio/ready.json': jsonEncode(ready),
+          'audio/marcas.json': jsonEncode(marks),
+        };
+        if (bad != null) files['cuentos/palabras-solas.json'] = bad;
+        final catalog = ContentCatalog(Files(files).call);
+        await catalog.load();
+        expect(catalog.loaded, isTrue, reason: '$bad');
+        final c = catalog.clip('w_casa')!;
+        expect(
+          [c.who, c.text, c.url],
+          ['', '', 'audio/w_casa.mp3?v=${_ready['v']}'],
+          reason: '$bad',
+        );
+        expect([c.startMs, c.endMs], [150, 900], reason: '$bad');
+        expect(catalog.pairs, isNotEmpty, reason: '$bad');
+      }
     });
 
     test('a clip with a habla form keeps it', () async {

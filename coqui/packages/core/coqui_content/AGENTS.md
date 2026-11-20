@@ -28,6 +28,12 @@ Reads the course, stories, review sets, books, clip list. Pure Dart.
 - Order 27: `ContentCatalog` is also a `RepasoCatalog`: `load()` reads `datos/repaso.json` into `repaso`, beside the
   other files; when it is missing or cannot be read, `repaso` is null and the load goes on (Repaso then plays today's game).
 
+- Order 27 (the words said alone): `load()` also reads `cuentos/palabras-solas.json`, the one file of `cuentos/` the course
+  names nowhere (each tracked word alone, clips `w_<word>`; `tipo` "palabras"). It is not a story and not a review set: no
+  `meta`, no pair, no place lists it. Its clips are known like the others, by `clip(id)`, with their who and text from load
+  on (a story that has the same id wins once it is read). Missing or unreadable, it is no error: those clips then have
+  their marks and url and no line, like any clip no story has been read for.
+
 ## Run and test it alone
 
 ```

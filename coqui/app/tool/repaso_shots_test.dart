@@ -17,7 +17,9 @@
 // It also checks, and fails the run when it finds: an `ErrorWidget` in the tree at any picture, or a picture that
 // failed to draw (the scenes' own red error box); a game whose layout moved between the moment it was asked and any
 // later one (the instruction line, the chip's place, the round speaker, the tiles and pictures, the reveal's place,
-// Next's place); the end screen not listing every scored word of its session once.
+// Next's place); the end screen not listing every scored word of its session once; a "Touch the word you heard"
+// (¿Qué oyes?) item that is asked without a speaker on each of its three word tiles (every word has a clip of itself
+// said alone: the tiles must all show one, and none of the tiles may lack it).
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -131,6 +133,9 @@ class _Shots {
   int errorChecks = 0;
   int layoutChecks = 0;
 
+  /// How many ¿Qué oyes? items were checked for a speaker on each of their three tiles.
+  int speakerChecks = 0;
+
   /// The layout of the item on screen when it was asked (null between items).
   List<(String, Rect)>? baseline;
 
@@ -154,6 +159,32 @@ class _Shots {
         '$where: a picture failed to draw: '
         '${[for (final t in text.evaluate()) (t.widget as Text).data].join(' | ')}',
       );
+    }
+  }
+
+  /// A ¿Qué oyes? item, asked: its three word tiles each have a speaker (the tile's `onSpeaker`, and the speaker drawn in it).
+  /// Every word has a clip of itself said alone, so an item without them means the clips did not reach the tiles.
+  void checkSpeakers(String where) {
+    speakerChecks++;
+    final tiles = find.byType(WordTile);
+    if (tiles.evaluate().length != 3) {
+      fail('$where: ${tiles.evaluate().length} word tiles, not 3');
+    }
+    for (var k = 0; k < 3; k++) {
+      final tile = tester.widget<WordTile>(tiles.at(k));
+      final drawn = find.descendant(
+        of: tiles.at(k),
+        matching: find.byWidgetPredicate(
+          (w) => w is CoquiIcon && identical(w.data, CoquiIcons.lessonSound),
+        ),
+      );
+      if (tile.onSpeaker == null || drawn.evaluate().length != 1) {
+        fail(
+          '$where: the tile "${tile.word}" has no speaker '
+          '(onSpeaker ${tile.onSpeaker == null ? 'null' : 'set'}, '
+          '${drawn.evaluate().length} speaker drawn)',
+        );
+      }
     }
   }
 
@@ -228,6 +259,7 @@ class _Shots {
     checkNoErrorBoxes(where);
     if (moment == 'asked') {
       baseline = geometry();
+      if (what['game'] == _games['HearItem']) checkSpeakers(where);
     } else if (what['screen'] == null) {
       checkLayout(where);
     }
@@ -602,6 +634,11 @@ void main() {
       await app.tap(find.text('Back to Palabras'));
       await app.settle(rounds: 5);
     }
+    expect(
+      shots.speakerChecks,
+      greaterThan(1),
+      reason: 'no ¿Qué oyes? item was asked',
+    );
     // the praise of the last item, cut short by Next, is a clip of the harness still counting its length
     await app.advance(5000);
     File('${dir.path}/index.json').writeAsStringSync(
@@ -620,6 +657,8 @@ void main() {
           'layout equal to the item\'s first, pictures checked':
               shots.layoutChecks,
           'end screens listing every scored word once': endsChecked,
+          '¿Qué oyes? items asked with a speaker on each of the three tiles':
+              shots.speakerChecks,
         },
         'pictures': shots.index,
       }),

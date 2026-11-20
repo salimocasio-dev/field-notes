@@ -296,13 +296,19 @@ void main() {
     }
   });
 
-  HearItem hearOf(List<RepasoWord> tiles) => HearItem(
-    word: tiles.first.word,
-    sentence: realRepaso.sentences.first,
-    tiles: [for (final w in tiles) w.word],
-    answer: 0,
-    solo: [for (final w in tiles) w.solo],
-  );
+  /// An item with [tiles] and their clips of the word alone; [lacking]: the places of the tiles whose clip is taken away
+  /// (every word of the data file has one now, so a word with none is made by hand).
+  HearItem hearOf(List<RepasoWord> tiles, {Set<int> lacking = const {}}) =>
+      HearItem(
+        word: tiles.first.word,
+        sentence: realRepaso.sentences.first,
+        tiles: [for (final w in tiles) w.word],
+        answer: 0,
+        solo: [
+          for (var i = 0; i < tiles.length; i++)
+            lacking.contains(i) ? null : tiles[i].solo,
+        ],
+      );
 
   test('a speaker touched on a ¿Qué oyes? tile plays the word alone and is not silence', () async {
     final b = Bench(seed: 2);
@@ -327,16 +333,102 @@ void main() {
     await b.leave();
   });
 
+  test('the session preloads the word clips of its ¿Qué oyes? items with the sentences', () async {
+    // a learner who has finished every story, each word at its turn for ¿Qué oyes? (an odd count of answers)
+    final json = jsonDecode(everythingJson(realRepaso)) as Map<String, dynamic>;
+    for (final e in (json['palabras'] as Map).values) {
+      ((e as Map)['ear'] as Map)['n'] = 1;
+    }
+    final b = Bench(json: jsonEncode(json), seed: 4);
+    final hears = [
+      for (final q in b.s.queue)
+        if (q.item case final HearItem it) it,
+    ];
+    expect(hears, isNotEmpty);
+    expect(
+      b.clips.preloaded.toSet(),
+      containsAll({
+        for (final it in hears) ...[it.clip, ...it.solo.nonNulls],
+      }),
+    );
+    for (final it in hears) {
+      expect(it.speakers, isTrue, reason: it.word);
+      expect(
+        b.clips.preloaded.toSet(),
+        containsAll(it.solo.nonNulls.toSet()),
+        reason: it.word,
+      );
+    }
+    // the item as it comes back after a miss has the same clips (they are loaded already, and still the tiles' own)
+    final back = hears.first.rearranged(.5);
+    expect({...back.solo}, {...hears.first.solo});
+    await b.leave();
+  });
+
+  test('over EVERY word: a touch on a ¿Qué oyes? tile\'s speaker plays that word\'s clip and does not answer; a touch on the tile answers (right, and wrong)', () async {
+    final all = everythingJson(realRepaso);
+    var items = 0, words = 0;
+    for (final w in realRepaso.words) {
+      for (final right in [true, false]) {
+        final b = Bench(json: all, seed: 2);
+        final sentences = b.s.planner.hearSentences(w);
+        if (sentences.isEmpty) continue;
+        if (right) words++;
+        final item = b.s.planner.hearItem(w, sentences.first);
+        final why = '${w.word} | ${item.tiles} | ${item.solo}';
+        expect(item.speakers, isTrue, reason: why);
+        b.s.queue = [QueueEntry.scored(item)];
+        await b.reach(0);
+        expect(b.s.yourTurn, isTrue, reason: why);
+        expect([for (final c in b.s.choices) c.clip], item.solo, reason: why);
+        // a touch on each tile's speaker plays that tile's word, and answers nothing
+        for (var k = 0; k < 3; k++) {
+          final plays = b.clips.plays.length;
+          b.s.touchSpeaker(k);
+          await b.vt.settle();
+          expect(b.clips.plays.length, plays + 1, reason: why);
+          expect(b.clips.plays.last['id'], item.solo[k], reason: why);
+          expect(b.s.answers, isEmpty, reason: why);
+          expect(b.s.yourTurn, isTrue, reason: why);
+          expect(
+            b.s.choices.every(
+              (c) =>
+                  c.ring == OptionRing.none && !c.check && !c.cross && !c.sign,
+            ),
+            isTrue,
+            reason: why,
+          );
+        }
+        // a touch on the tile answers: the right word is right, another is wrong
+        b.s.touch(right ? item.answer : (item.answer + 1) % 3);
+        await b.vt.settle();
+        expect(b.s.answers, hasLength(1), reason: why);
+        expect(
+          (b.s.answers.single.word, b.s.answers.single.ok),
+          (w.word, right),
+          reason: why,
+        );
+        await b.leave();
+        items++;
+      }
+    }
+    expect(
+      words,
+      greaterThan(140),
+    ); // the words that have a sentence for ¿Qué oyes?
+    expect(items, 2 * words);
+  });
+
   test('H: speakers on the word tiles only when every tile of the item has a clip of its word alone; else none', () async {
     final solo = realRepaso.words.where((w) => w.solo != null).toList();
-    final plain = realRepaso.words.where((w) => w.solo == null).toList();
+    expect(solo, hasLength(156));
     expect(hearOf(solo.take(3).toList()).speakers, isTrue);
-    for (final mix in [
-      [solo[0], solo[1], plain[0]],
-      [solo[0], plain[0], plain[1]],
-      [plain[0], plain[1], plain[2]],
+    for (final lacking in [
+      {2},
+      {1, 2},
+      {0, 1, 2},
     ]) {
-      final item = hearOf(mix);
+      final item = hearOf(solo.take(3).toList(), lacking: lacking);
       expect(item.speakers, isFalse);
       final b = Bench(seed: 2);
       b.s.queue = [QueueEntry.scored(item)];
