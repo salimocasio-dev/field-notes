@@ -7,7 +7,8 @@ _a, whatever the order and whether or not the other word gets a clip; the cases 
 of word (plain, with an accent, a phrase, a question, an exclamation, a word that begins with a sign), that a word with a clip of its
 own already gets none (case, signs and a whole text only; an accent counts), that an id of another file is a Fault, the order, the
 shape of the file and its bytes, and, on a made-up tree, that the tool never reads its own file (two runs give the same bytes),
-that --check says 0 for the file it made and 1 for a missing or a changed one, and that nothing but the one file is written.
+that --check says 0 for the file it made and 1 for a missing or a changed one, that nothing but the one file is written, and that a
+STAGED file (one in historia/cuentos/ that the course does not name) is not read: not for a word's own clip, not for an id.
 `dart test tool/test` does not see this file (it looks for *_test.dart).
 """
 import contextlib
@@ -311,13 +312,51 @@ class WholeTool(unittest.TestCase):
         self.assertNotIn("w_casa", json.loads(self.file.read_text(encoding="utf-8"))["clips"])
 
     def test_an_id_clash_stops_and_writes_nothing(self):
-        write(self.root / "historia" / "cuentos" / "s3.json", {"id": "s3", "clips": {"w_casa": {"who": "narr", "text": "Algo."}}})
+        write(self.root / "historia" / "cuentos" / "s2.json", {
+            "id": "s2", "title": "S2", "focus_words": ["tu", "está", "esta"], "back_again": ["¿cómo estás?", "no más", "casa"],
+            "clips": {"c_nomas": {"who": "narr", "text": "No más."}, "d_tu": {"who": "narr", "text": "Tu casa."},
+                      "w_casa": {"who": "narr", "text": "Algo."}}})      # a file the course names has the id of a clip this tool would make
         code, out, err = run("--repo", str(self.root))
         self.assertEqual(code, 1)
         self.assertIn("STOP", err)
         self.assertIn("w_casa", err)
         self.assertFalse(self.file.exists())
         self.assertEqual(run("--repo", str(self.root), "--check")[0], 1)
+
+    def stage(self, name="s9", clips=None):
+        """A STAGED file: in historia/cuentos/, named by no place and no review set of the course."""
+        write(self.root / "historia" / "cuentos" / (name + ".json"), {"id": name, "title": "Staged", "clips": clips if clips is not None else {
+            "x_casa": {"who": "narr", "text": "¡Casa!"},          # the whole text of a tracked word that has no clip of its own in the course
+            "x_tu": {"who": "narr", "text": "Tu."},               # (so is this: tu is a word of the course, and a clip of its own here does not count)
+            "w_esta": {"who": "narr", "text": "Algo que no es la palabra."}}})   # an id this tool makes, with another text
+
+    def test_a_staged_file_is_not_read_the_file_is_the_same_with_it_and_without(self):
+        run("--repo", str(self.root))
+        plain = self.file.read_bytes()
+        self.stage()
+        self.stage("s8", {"y_no": {"who": "narr", "text": "No más."}})
+        self.file.unlink()
+        code, out, err = run("--repo", str(self.root))
+        self.assertEqual((code, err), (0, ""), out)
+        self.assertEqual(self.file.read_bytes(), plain)                       # the same bytes as without the staged files
+        self.assertEqual(len(json.loads(plain.decode("utf-8"))["clips"]), 6)  # casa and tu still get theirs; esta keeps its id
+        code, out, _ = run("--repo", str(self.root), "--check")
+        self.assertEqual(code, 0, out)
+        self.assertIn("6 clips", out)
+
+    def test_a_staged_file_that_is_not_even_a_story_file_is_not_read(self):
+        run("--repo", str(self.root))
+        plain = self.file.read_bytes()
+        (self.root / "historia" / "cuentos" / "s9.json").write_text("{ this is not json", encoding="utf-8")
+        code, _, err = run("--repo", str(self.root), "--check")
+        self.assertEqual((code, err), (0, ""))
+        self.assertEqual(self.file.read_bytes(), plain)
+
+    def test_the_clips_read_are_those_of_the_files_the_course_names(self):
+        self.stage()
+        got = ps.existing_clips(self.root)
+        self.assertEqual(sorted(c for c, _ in got), ["a_hola", "b_casa", "c_nomas", "d_tu", "e_x"])
+        self.assertNotIn("x_casa", [c for c, _ in got])
 
 
 if __name__ == "__main__":

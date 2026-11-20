@@ -40,7 +40,7 @@ flutter analyze
 step "tests: the boundary check's own"
 dart test tool/test
 
-step "data: make_repaso.py's tests, and historia/datos/repaso.json is what the tool makes"
+step "data: the tests of make_repaso.py and make_palabras_solas.py; historia/datos/repaso.json and historia/cuentos/palabras-solas.json are what the tools make"
 python3 tool/test/test_make_repaso.py 2>&1 | tail -n 3
 repaso_tmp="$(mktemp -d)"
 trap 'rm -rf "$repaso_tmp"' EXIT
@@ -48,6 +48,8 @@ python3 tool/make_repaso.py --out "$repaso_tmp" --hojas-libro
 python3 tool/make_repaso.py --out "$repaso_tmp" --veredictos tool/repaso/veredictos --hojas-par
 python3 tool/make_repaso.py --out "$repaso_tmp" --veredictos tool/repaso/veredictos \
   --veredictos-par tool/repaso/veredictos-par --app ../historia/datos/repaso.json --check
+python3 tool/test/test_make_palabras_solas.py 2>&1 | tail -n 3
+python3 tool/make_palabras_solas.py --check
 
 # Pure Dart packages (no Flutter SDK in their pubspec) run on the VM and in Chrome.
 # Flutter packages run with flutter test.
