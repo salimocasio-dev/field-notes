@@ -77,7 +77,7 @@ The fridge as in story 31: the tray on the counter under the window, the picnic 
 6. Abuela sets a roll on the tray. NARR: "Aquí hay pan para el parque." A bird lands on the yard wall. The frog hops onto the counter and tosses the roll out to it. NARR: "¡Coquí le tira el pan al pájaro! El pájaro se come el pan."
 7. NARR: "Abuela dice: ¡Coquí! ¡El pan es para el parque!" COQUÍ: "¡El pájaro tiene hambre!"
 8. Abuela looks into the basket. NARR: "En la canasta hay una manzana y un guineo." NARR: "Abuela dice: No hay mucha comida."
-9. Luis takes the basket; they all go to the door, the frog last. NARR: "Abuela dice: ¡Vamos al parque!" NARR: "Luis y Carmen van al parque. Y Coquí también." COQUÍ: "¡Adiós, pajarito!" **(new: pajarito)** A heart.
+9. Luis takes the basket; Luis and Carmen go out at the door. NARR: "Luis y Carmen van al parque." The frog waves from his stool. COQUÍ: "¡Adiós, Luis! ¡Adiós, Carmen!" A heart.
 
 ### 5. El café de abuela (A comer)
 
@@ -112,11 +112,11 @@ The table as in story 24: abuelo, mamá (with the baby) and papá sit at the bar
 6. "¿Quién tiene una taza?" (Mamá waves.) Abuelo and papá, who have a plate each, are the other answers.
 7. Two parts: "Toca al bebé y a papá." (The baby claps; papá waves.) Abuelo is the other answer; a touch on mamá is only a poke. "¡Muy bien!" A heart.
 
-Wrong-touch lines: "No, esa es la mesa." "No, esos son los platos." "No, esas son las tazas." For people, the lines already recorded.
+Wrong-touch lines: "No. Esa es la mesa." (the line already recorded for El balcón's routine) "No, esos son los platos." "No, esas son las tazas." For people, the lines already recorded.
 
 ### B. En la estufa
 
-The stove as in story 27: two pots on the stove, both lit, abuela at the left one and Luis at the right one; the sack of rice and the jar of beans on the counter, with the cups; Carmen beside them; the frog in front.
+The stove as in story 27: two pots on the stove, both lit, Luis at the left one and abuela at the right one (the scene's own sides); the sack of rice and the jar of beans on the counter, with the cups; Carmen beside them; the frog in front.
 
 1. "¿Dónde está el arroz?" (The sack twinkles.) The jar of beans and the pots are the other answers.
 2. "Toca las habichuelas." (The jar twinkles.) The sack and the pots are the other answers. A pot is not asked for here.
@@ -164,7 +164,7 @@ Two fresh reviewers saw draft 1 with only the owner's rules: one as a beginner, 
 
 Fixed after the beginner: bare labels are whole sentences now ("Aquí hay sopa para abuelo."); papá's beat in story 1 has its own small trouble; Canelo is seen to be thirsty and ends content beside the frog (story 2); the second mirror beat of story 3 is one step, and "No hay más" (which needed empty pots) is "¡No más chocolate!"; abuelo's two fruit beats are one (story 4); abuelo's and Carmen's cups are shown empty and one repeated line is gone (story 5). Routines: nothing twinkles before the touch; in each opening group one answer is never asked for; A line 5 is a plate for papá and line 6 asks who has a cup; B's cold pot goes out just before its question; C asks for the empty cup twice and never the full one; D's line on "mucho café" has one nearly empty cup against a full one.
 
-Fixed after the Spanish: "Ese chocolate está caliente." (a bare "Está caliente." after "No, Luis." can be heard as said of Luis, which is vulgar); "se come", "se bebe" for finishing one whole thing; "le pone más café a abuelo", "le pone azúcar al café" (a bare "le pone café" hangs); "Toma, Coquí. Más comida." for "Otra vez."; plural lines for the piles of plates and cups; "una olla" where there are two; "¡Adiós, pajarito!" ("pájaro" called at somebody is an insult); "le tira el pan al pájaro"; "Luis ya no tiene sed."; spaghetti is named.
+Fixed after the Spanish: "Ese chocolate está caliente." (a bare "Está caliente." after "No, Luis." can be heard as said of Luis, which is vulgar); "se come", "se bebe" for finishing one whole thing; "le pone más café a abuelo", "le pone azúcar al café" (a bare "le pone café" hangs); "Toma, Coquí. Más comida." for "Otra vez."; plural lines for the piles of plates and cups; "una olla" where there are two; the frog no longer calls "¡Adiós, pájaro!" ("pájaro" called at somebody is an insult): he says goodbye to the children; "le tira el pan al pájaro"; "Luis ya no tiene sed."; spaghetti is named.
 
 Left as written: abuela's "Un plato para abuelo." and "Una taza para mamá." are her own lines from story 24, already recorded; they are what she says, not labels. "pone" stays his word where a Puerto Rican speaker would say "echa" (café, jugo): told to the owner. "Más arroz" in routine B leans on which cook has the rice; small. Two of the reviewer's notes were mistaken: "pájaro" and "tira" are words of place 2.
 
@@ -173,3 +173,7 @@ Left as written: abuela's "Un plato para abuelo." and "Una taza para mamá." are
 ## Needs
 
 Nothing new: this set is content only. For the builder who turns it into files: stage each beat with the acts in the scenes' sheets and with `set` steps; report every beat that cannot be staged as written, with the nearest thing the scene can already do, and do not write scene code.
+
+## As built (Nov 20)
+
+Stories 1 to 4 and routines A to C are generated by historia/tools/gen_escuchar_cocina.py with the scenes' own acts and no new code; each plays by machine to its end. Story 5 and routine D wait for A comer's pictures. Staged otherwise than written, with what the scenes can do: Luis walks round with the tray from the door (1); a wrong utensil leaves a smear on the cloth (1); Canelo drags the glass to his corner, where it lies spilled (2); thoughts show a cup, cold or steaming (3); Luis's empty cups go into the bucket (3); abuelo is at the window from the start (4); the frog stays on his stool at the end, so he says goodbye to the children (4). Not shown, because the scenes have no such picture: the frog turning or laughing, Luis smiling. A bug of the old stove scene was met and worked round, not fixed (the site is frozen): a cup held by mamá is drawn as the baby; mamá's cup is held by a hidden stand-in. It is also in story 29's own path, and is to be reported to the scenes lane with order 38.

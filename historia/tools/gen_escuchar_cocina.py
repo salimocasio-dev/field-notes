@@ -192,9 +192,8 @@ c.do({"dots":5},act("lote",izq="pan"),{"set":{"cosas":[TRAY,{"id":"t_pan","k":"p
 c.do(act("tira31",a="t_pan",suelto=1)); c.say(N("¡Coquí le tira el pan al pájaro! El pájaro se come el pan.")); c.do(act("ya"))
 c.say(AB("¡Coquí! ¡El pan es para el parque!")); c.say(T("¡El pájaro tiene hambre!"))
 c.do(act("abuelaa31")); c.say(N("En la canasta hay una manzana y un guineo.")); c.say(AB("No hay mucha comida."))
-c.say(AB("¡Vamos al parque!"))
-c.do(g("luis",alza={"k":"canasta","e":1,"dx":6,"dy":-6}),{"set":{"canasta":None}},act("ninos32",que="salen")); c.say(N("Luis y Carmen van al parque. Y Coquí también."))
-c.say(T("¡Adiós, pajarito!")); c.do(*CORAZON)
+c.do(g("luis",alza={"k":"canasta","e":1,"dx":6,"dy":-6}),{"set":{"canasta":None}},act("ninos32",que="salen")); c.say(N("Luis y Carmen van al parque."))
+c.say(T("¡Adiós, Luis! ¡Adiós, Carmen!")); c.do(*CORAZON)
 guarda(c,"Comida para el parque","nevera","escucha",5)
 
 # =============== Haz esto ===============
@@ -204,13 +203,13 @@ def lee(c,k): c.leer.append(k); return k
 
 # ---- A. En la mesa ----
 c=Cuento("h-mesa","wa")
-nos(c,{"platos":"esos son los platos.","tazas":"esas son las tazas.","mesa_m":"esa es la mesa."})   # the touch on the table is aliased to mesa_m: hz_no_mesa already means "No. Esa es la mesa." (h-balcon)
+nos(c,{"platos":"esos son los platos.","tazas":"esas son las tazas."}); c.clips["hz_no_mesa"]=N("No. Esa es la mesa.")   # the table: the line already recorded for h-balcon
 c.clips.update({k:BASECLIPS[k] for k in ("p_n_luis","abuela","esta_es_mama","n_papa","n_abuelo","m_n_bebe","m_n_cocina","yo_coqui")})
 c.do(act("inicio24"),{"set":{"sitio":{"abuelo":0,"papa":1,"mama":3}}},sienta("abuelo",0),sienta("papa",1),sienta("mama",3),g("abuela",x=48,y=168,dir=1),{"wait":500})   # abuela and Luis at the counter, three at the table, the plates and cups on the counter
 MU=lambda k:[act("muestra",k=k),{"wait":700},act("muestra",k="")]
-AMESA={"mesa":"mesa_m"}
-c.do({"dots":1}); orden(c,"¿Dónde están los platos?","platos",["platos","tazas","mesa_m"],MU("plato"),alias=AMESA)
-orden(c,"Toca las tazas.","tazas",["platos","tazas","mesa_m"],MU("taza"),alias=AMESA)
+AMESA=None
+c.do({"dots":1}); orden(c,"¿Dónde están los platos?","platos",["platos","tazas","mesa"],MU("plato"),alias=AMESA)
+orden(c,"Toca las tazas.","tazas",["platos","tazas","mesa"],MU("taza"),alias=AMESA)
 c.do({"dots":2}); orden(c,None,"platos",["platos","tazas"],[act("pon",k="plato",a="abuelo"),act("casa")],clip=AB("Un plato para abuelo."))
 orden(c,None,"tazas",["platos","tazas"],[act("pon",k="taza",a="mama"),act("casa")],clip=AB("Una taza para mamá."))
 orden(c,None,"platos",["platos","tazas"],[act("pon",k="plato",a="papa"),act("casa")],clip=AB("Un plato para papá."))
