@@ -1,4 +1,4 @@
-# Las frutas: three stories (draft 1)
+# Las frutas: three stories (draft 2, after the two reviews)
 
 Place 4, El colmado. Scene 3 of 4 (scene id `frutas`). Stories 42 to 44. He has finished stories 1 to 41.
 
@@ -14,7 +14,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 ## Story 42: La sopa de abuela
 
-- **Goal he can see:** abuela's six coins in a row on the ledge, and the hand of guineos the frog keeps looking at. Four coins buy the four things for her soup; what is left is for guineos.
+- **Goal he can see:** abuela's six coins on the ledge: four together, and two apart under the hand of guineos the frog keeps looking at (a thought of a guineo over him). Four coins buy the four things for her soup; the two apart are for guineos.
 - **At stake:** the coins (6). The frog tosses each thing into abuela's basket. A thing she did not ask for bounces off the rim onto the low crate, the goat eats it, and don Pepe holds his hand out: it costs a coin all the same.
 - **New words:** tomate, cebolla, papa, plátano.
 - **Back again:** necesito, compra, dame, tira, coge, buenos días, tengo hambre, guineo, come, hay, aquí, por favor, ¿algo más?
@@ -23,34 +23,34 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The opening** (big sign)
 
-1. NARR: "Don Pepe dice: ¡Buenos días!" COQUÍ [TURN: buenos días (buenos días, buenos dias)]: "¡Buenos días, don Pepe!" A thought over abuela: a pot of soup. NARR: "Abuela compra comida para la sopa." **(sopa: heard in La cocina's listening set)** She lays her six coins on the ledge. The frog looks at the guineos. NARR: "Abuela dice: Coquí, ¿tienes hambre?" COQUÍ [TURN: tengo hambre (tengo hambre)]: "¡Sí, tengo hambre!"
-2. Each bin twinkles as don Pepe lays a hand on it. NARR: "Don Pepe dice: Aquí hay tomates. Aquí hay cebollas. Aquí hay papas. Y aquí hay plátanos."
-3. The tomato lights on the list. NARR: "Abuela dice: Necesito un tomate." Ask (signed, the tomatoes): "¿Dónde están los tomates?" He touches them: the frog tosses a tomato; abuela catches it in her basket; a coin goes to don Pepe. NARR: "Abuela compra un tomate." A tick.
-4. NARR: "Don Pepe dice: ¿Algo más?" The onion lights. NARR: "Abuela dice: Sí. Una cebolla, por favor." Ask (signed, the onions): "Toca las cebollas." He touches them: toss, catch, coin. NARR: "Abuela compra una cebolla." A tick.
+1. NARR: "Don Pepe dice: ¡Buenos días!" COQUÍ [TURN: buenos días (buenos días, buenos dias)]: "¡Buenos días, don Pepe!" A thought over abuela: a pot of soup. NARR: "Abuela compra las cosas para la sopa." **(sopa: heard in La cocina's listening set)** She lays her coins on the ledge: four together, two under the guineos.
+2. Don Pepe lays a hand on two bins; each twinkles. NARR: "Don Pepe dice: Aquí hay tomates. Y aquí hay cebollas." The tomato lights on the list. NARR: "Abuela dice: Necesito un tomate." Ask (signed, the tomatoes): "¿Dónde están los tomates?" He touches them: the frog tosses a tomato; abuela catches it in her basket; a coin goes to don Pepe. NARR: "Abuela compra un tomate." A tick.
+3. NARR: "Don Pepe dice: ¿Algo más?" The onion lights. NARR: "Abuela dice: Sí. Una cebolla, por favor." Ask (signed, the onions): "Toca las cebollas." He touches them: toss, catch, coin. NARR: "Abuela compra una cebolla." A tick.
+4. NARR: "Don Pepe dice: ¿Algo más?" NARR: "Abuela dice: Sí. Necesito papas y plátanos." Don Pepe lays a hand on the last two bins; each twinkles. NARR: "Don Pepe dice: Aquí hay papas. Y aquí hay plátanos."
 
 **The turn**
 
-5. The goat stretches its neck to the end of the plantain bin, takes a plátano and eats it. NARR: "¡Ay! La cabra se come un plátano." **(new: cabra)** Don Pepe pulls the bins of potatoes and plantains back from it. NARR: "Don Pepe dice: ¡No! Las papas y los plátanos no son para ti." Abuela, laughing, steps back beside the low crate; she holds her basket with both hands and looks at her list, not at the frog. The card shows two places. The signs go.
+5. The goat stretches its neck to the end of the plantain bin, takes a plátano and eats it. NARR: "¡Ay! La cabra se come un plátano." **(new: cabra)** Don Pepe pulls the two bins back from it. NARR: "Don Pepe dice: ¡No! Las papas y los plátanos no son para ti." Abuela, laughing, puts her list in her pocket and steps back beside the low crate; she holds her basket with both hands. The card shows two places. The signs go.
 
-**The game.** Two things are still on the list: a papa and a plátano. Abuela asks for one (drawn); in round B for the other. Each round two bins twinkle once and are the two he can toss from: the one asked for and one other (drawn from the other three).
+**The game.** The soup takes two more things, each a papa or a plátano: each round abuela asks for one, drawn afresh (so the same thing can be asked for twice). The two bins he can toss from are the potatoes and the plantains.
 
 6. **Decision A, touch a bin (two bins; tests the word asked).** NARR: "Abuela dice: Coquí, dame una papa." or NARR: "Abuela dice: Coquí, dame un plátano."
-   - Right: toss, catch; a coin to don Pepe. NARR: "Abuela compra una papa." (Or: "…un plátano.") A tick; a star.
-   - Wrong: the frog tosses the other thing; it bounces off the basket's rim onto the low crate; the goat eats it; don Pepe holds his hand out and abuela gives him a coin. A cross. NARR: "No, Coquí. Mira. Estas son las papas." (Or: "Estos son los plátanos.") The sign is on the right bin; he touches it: toss, catch, coin, tick.
-7. **Decision B, the other thing.** As A.
+   - Right: toss, catch; a coin to don Pepe. NARR: "Abuela compra una papa." (Or: "…un plátano.") A star.
+   - Wrong: the frog tosses the other thing; it bounces off the basket's rim onto the low crate; the goat eats it; don Pepe holds his hand out and abuela gives him a coin. A cross. NARR: "No, Coquí. Mira. Estas son las papas." (Or: "Estos son los plátanos.") The sign is on the right bin; he touches it: toss, catch, coin.
+7. **Decision B, the same game, drawn again.** As A.
 
 **The ending**
 
-8. The list is all ticks. NARR: "Abuela tiene un tomate, una cebolla, una papa y un plátano." She looks at the coins that are left.
+8. Abuela looks at the coins that are left under the guineos, and at the frog. NARR: "Abuela dice: Coquí, ¿tienes hambre?" COQUÍ [TURN: tengo hambre (tengo hambre)]: "¡Sí, tengo hambre!"
     - Two coins: NARR: "Abuela compra dos guineos." One for the frog, one for herself; they eat. COQUÍ: "¡Gracias, abuela!" Stars and a heart.
     - One coin: NARR: "Abuela compra un guineo." It is the frog's. COQUÍ: "¡Gracias, abuela!"
     - No coin: abuela shows her empty hand; the goat chews; the frog looks at the guineos.
 9. NARR: "Abuela dice: ¡Adiós, don Pepe! Vamos a casa, Coquí."
 
-**Fewest hearings before a word can cost:** papa 2 and plátano 3 before the game (steps 2 and 5), 4 each by the end. Not deciding: tomate 4, cebolla 4.
+**Fewest hearings before a word can cost:** papa 3 and plátano 4 before the game (steps 4, 4, 5). Not deciding: tomate 4, cebolla 4.
 **A miss is filed under:** papa or plátano, whichever was asked for.
-**Chance without the Spanish:** one in two. A learner who has only the tomato and the onion (the two signed ones) can rule those bins out when they are the other bin: the owner is told; the other bin is drawn from all three so that it is a signed one two times in three.
-**Speaking turns:** two (step 1 twice, with abuela's line between them): buenos días; tengo hambre.
+**Chance without the Spanish:** one in two, in each round on its own.
+**Speaking turns:** two (steps 1, 8): buenos días; tengo hambre.
 
 ---
 
@@ -59,81 +59,93 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **Goal he can see:** abuela's basket on the ledge, lined with a cloth with three hollows: for a limón, an aguacate and a piña.
 - **At stake:** the good fruit in the basket (3). From outside a bad fruit looks like a good one. A bad one laid in the basket spoils the fruit beside it: flies over both, and both go to the goat.
 - **New words:** aguacate, piña, limón, bueno, malo.
-- **Back again:** grande, pequeño, fruta, compra, me gusta, fo, huele, mira, espera, canasta (heard), no hay.
+- **Back again:** grande, pequeño, fruta, compra, necesito, me gusta, fo, mira, ¿tiene…?, canasta (heard), no hay.
 
 **Start:** abuela in front of the stand; don Pepe behind it with his knife; the frog on the ledge beside the basket.
 
 **The opening** (big sign)
 
-1. NARR: "Abuela compra fruta." Each bin twinkles under don Pepe's hand. NARR: "Don Pepe dice: Aquí hay aguacates. Aquí hay piñas. Y aquí hay limones."
-2. Don Pepe cuts an aguacate in two: green inside. NARR: "Don Pepe dice: ¡Mira! Este aguacate está bueno." He holds a slice out to the frog. NARR: "Don Pepe dice: ¿Te gusta el aguacate?" **(te gusta: heard)** COQUÍ [TURN: me gusta (me gusta)]: "¡Sí, me gusta!" The frog eats it.
-3. He cuts another: black inside, a fly. NARR: "Don Pepe dice: ¡Fo! Este aguacate está malo." He drops it on the low crate; the goat eats it. NARR: "El aguacate malo es para la cabra."
-4. Abuela takes two limones, a big one and a small one, presses each and smells it; her face says nothing. NARR: "Abuela dice: El limón grande está bueno. El limón pequeño está malo." Ask (signed, the big lemon): "¿Dónde está el limón bueno?" He touches it: the frog lays it in the first hollow. Abuela drops the small one on the low crate. NARR: "El limón malo es para la cabra."
+1. NARR: "Abuela dice: Necesito fruta." Don Pepe takes an aguacate from its bin. NARR: "Don Pepe dice: Aquí hay aguacates." He cuts it in two: green inside. NARR: "Don Pepe dice: ¡Mira! Este aguacate está bueno." He holds a slice out to the frog. NARR: "Don Pepe dice: ¿Te gusta el aguacate?" **(te gusta: heard)** COQUÍ [TURN: me gusta (me gusta)]: "¡Sí, me gusta!" The frog eats it.
+2. He cuts another: black inside, a fly. NARR: "Don Pepe dice: ¡Fo! Este aguacate está malo." He drops it on the low crate; the goat eats it. NARR: "El aguacate malo es para la cabra."
+3. NARR: "Abuela dice: ¿Tiene limones?" NARR: "Don Pepe dice: Sí. Aquí hay limones." Abuela takes two, a big one and a small one, presses each and smells it, the same way; her face says nothing. NARR: "Abuela dice: El limón grande está bueno. El limón pequeño está malo." Ask (signed, the big lemon): "¿Dónde está el limón bueno?" He touches it: the frog lays it in the first hollow. Abuela drops the small one on the low crate. NARR: "El limón malo es para la cabra."
 
 **The turn**
 
-5. The señora calls from the shop door. NARR: "La señora dice: ¡Don Pepe! ¿Cuánto es?" **(¿cuánto es?: heard)** Don Pepe goes in, his knife in his hand. NARR: "Don Pepe dice: ¡Espera, abuela!" Nobody can cut a fruit open now: only abuela's hands and nose know. The card shows two places. The signs go.
+4. A piña twinkles on the stand. NARR: "Abuela dice: ¡Mira, Coquí! Piñas." The señora calls from the shop door. NARR: "La señora dice: ¡Don Pepe! ¿Cuánto es?" **(¿cuánto es?: heard)** Don Pepe goes in, his knife in his hand. NARR: "Don Pepe dice: ¡Espere, por favor!" **(espere: heard)** Nobody can cut a fruit open now: only abuela's hands and nose know. The card shows two places. The signs go.
 
-**The game.** Abuela takes two of a kind, a big one and a small one, presses and smells each, and says one line. Which of the two is good, and which of the four lines she says, is drawn. He touches the one for the basket: the good one.
+**The game.** Abuela takes two of a kind, a big one and a small one, presses and smells each in the same way, and says one line. Which of the two is good, and which of the four lines she says, is drawn. He touches the one for the basket: the good one.
 
-6. **Decision A, touch a fruit (two aguacates; tests bueno or malo).** One of: NARR: "Abuela dice: El aguacate grande está bueno." / "Abuela dice: El aguacate grande está malo." / "Abuela dice: El aguacate pequeño está bueno." / "Abuela dice: El aguacate pequeño está malo."
+5. **Decision A, touch a fruit (two aguacates; tests bueno or malo).** One of: NARR: "Abuela dice: El aguacate grande está bueno." / "Abuela dice: El aguacate grande está malo." / "Abuela dice: El aguacate pequeño está bueno." / "Abuela dice: El aguacate pequeño está malo."
    - Right: the frog lays it in the second hollow; abuela drops the other on the low crate. A star.
    - Wrong: the frog lays the bad one in the basket, beside the limón; flies come over both. A cross. NARR: "Abuela dice: ¡Fo!" NARR: "No, Coquí. Mira. Este aguacate está malo." Abuela drops both on the low crate; the goat eats. The sign is on the good one; he touches it; it goes into its hollow.
-7. **Decision B, touch a fruit (two piñas).** The four lines with "La piña grande…" / "La piña pequeña…" and "buena" / "mala". Right and wrong as in A; a bad piña spoils the aguacate beside it.
+6. **Decision B, touch a fruit (two piñas).** The four lines with "La piña grande…" / "La piña pequeña…" and "buena" / "mala". Right and wrong as in A; a bad piña spoils the aguacate beside it.
 
 **The ending**
 
-8. Don Pepe comes back out. NARR: "Don Pepe dice: ¿Qué compra abuela?" COQUÍ [TURN: fruta (fruta)]: "Abuela compra fruta." Abuela lifts the basket; the three hollows are seen from above.
+7. Don Pepe comes back out. NARR: "Don Pepe dice: ¿Qué compra tu abuela?" COQUÍ [TURN: fruta (fruta)]: "Abuela compra fruta." Abuela lifts the basket; the three hollows are seen from above.
     - Nothing lost: NARR: "Abuela tiene un limón, un aguacate y una piña. ¡La fruta está buena!" Stars and a heart.
     - The limón gone (a miss in A): NARR: "Abuela dice: ¡Ay! No hay limón."
     - The aguacate gone (a miss in B): NARR: "Abuela dice: ¡Ay! No hay aguacate." (After two misses both lines, and only the piña is in the basket.)
-9. The goat chews. NARR: "Y la cabra está contenta."
+8. NARR: "Abuela dice: ¡Adiós, don Pepe!" The goat chews.
 
-**Fewest hearings before a word can cost:** bueno 3 (steps 2, 4, 4), malo 4 (steps 3, 3, 4, 4). Aguacate 5 before the game; piña 1 before its round (step 1) and its own line: the fruit is told by the picture, not by the word. Not deciding: limón 5, piña 3 by the end.
+**Fewest hearings before a word can cost:** bueno 3 (steps 1, 3, 3), malo 4 (steps 2, 2, 3, 3). Aguacate 5 before the game; piña once before its round: the fruit is told by the picture, the line's deciding word is bueno or malo. Not deciding: limón 5, piña 3 by the end.
 **A miss is filed under:** bueno or malo, whichever was in the line.
-**Chance without the Spanish:** one in two. "Grande" and "pequeño" are old words and only say which fruit the line is about.
-**Speaking turns:** two (steps 2, 8): me gusta; fruta.
+**Chance without the Spanish:** one in two. "Grande" and "pequeño" are old words and only say which fruit the line is about. For the artist: abuela's pressing and smelling is the same for a good fruit and a bad one.
+**Speaking turns:** two (steps 1, 7): me gusta; fruta.
 
 ---
 
 ## Story 44: Una libra
 
-- **Goal he can see:** don Pepe's truck has come: two crates fresh from the farm stand on the ledge, shining, with drops of water and green leaves: tomatoes and onions, a pound in each. Beside each stands yesterday's crate of the same thing: dull, wrinkled, a fly. Abuela's list: a pound of tomatoes, a pound of onions (two pictures, each with the dial at its full mark).
-- **At stake:** the fresh ones. The goat's rope is long enough for the crate that stands nearest it. When the wrong crate is handled, the goat gets half of the fresh one: abuela gets half a pound.
+- **Goal he can see:** don Pepe's truck has come: two crates fresh from the farm stand on the ledge, shining, with drops of water and green leaves: tomatoes and onions, a pound in each. Beside each stands yesterday's crate of the same thing: dull, wrinkled, a fly. Abuela's list is on the card from the first frame: tomatoes and onions, each with the dial at its full mark.
+- **At stake:** the fresh ones. A wrong move sends half of a fresh crate onto the low crate, where the goat eats it: abuela gets half a pound.
 - **New words:** libra, medio (heard as media libra), fresco.
-- **Back again:** tomate, cebolla, limón, malo, bueno, necesito, para, sopa (heard), cabra (heard), buenos días, compra.
+- **Back again:** tomate, cebolla, limón, malo, necesito, para, sopa (heard), cabra (heard), buenos días, compra, gracias, tengo hambre.
 
-**Start:** the truck at the left edge; don Pepe lifts the last fresh crate onto the ledge. Abuela with her basket. The frog on the ledge.
+**Start:** the truck at the left edge; don Pepe lifts the last fresh crate onto the ledge. Abuela with her basket and her list. The frog on the ledge.
 
 **The opening** (big sign)
 
-1. NARR: "Don Pepe dice: ¡Buenos días! ¡Mira! Fruta fresca." The fresh crates twinkle. NARR: "Estos tomates están frescos." Yesterday's crate; a fly. NARR: "Y estos tomates están malos."
-2. NARR: "Abuela dice: ¿Tiene limones frescos?" Don Pepe lifts a small fresh crate of limones from the truck. NARR: "Don Pepe dice: Sí. Limones frescos." Ask (signed, the fresh limones): "¿Dónde están los limones frescos?" He touches them: the frog rolls four onto the scale; the needle goes to the half mark. NARR: "Don Pepe dice: Media libra de limones." Abuela nods; they go into her basket. NARR: "Abuela compra media libra de limones."
-3. Don Pepe lays his hand on the dial's full mark. NARR: "Don Pepe dice: Esto es una libra." He lays it on the half mark. NARR: "Don Pepe dice: Y esto es media libra." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, don Pepe!"
-4. Abuela shows her list. NARR: "Abuela dice: Necesito una libra de tomates y una libra de cebollas. Para la sopa."
+1. The fresh crates twinkle. NARR: "Don Pepe dice: ¡Buenos días! ¡Mira! ¡Tomates frescos! ¡Cebollas frescas!" Yesterday's crate of tomatoes; a fly. NARR: "Y estos tomates están malos." Ask (signed, the fresh tomatoes): "¿Dónde están los tomates frescos?" He touches them: they shine.
+2. NARR: "Abuela dice: ¿Tiene limones frescos?" Don Pepe lifts a small fresh crate of limones off the truck, cuts one and gives the frog a slice; the frog's face puckers. NARR: "Don Pepe dice: Sí. Toma, Coquí. Un limón fresco." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, don Pepe!"
+3. NARR: "Abuela dice: Media libra, por favor." Don Pepe rolls four limones onto the scale; the needle goes to the half mark; he lays a finger on it. NARR: "Don Pepe dice: Media libra de limones." Then he lays his finger on the full mark. NARR: "Don Pepe dice: Y esto es una libra." The limones go into abuela's basket. NARR: "Abuela compra media libra de limones."
+4. Abuela holds up her list. NARR: "Abuela dice: Necesito una libra de tomates y una libra de cebollas. Para la sopa."
 
 **The turn**
 
-5. Don Pepe climbs into his truck to move it. NARR: "Don Pepe dice: Coquí, mira la fruta. ¡Y mira la cabra!" The goat pulls at its rope and looks at the crates. Abuela looks into her purse. The card shows two places. The signs go.
+5. Don Pepe climbs into his truck to move it. NARR: "Don Pepe dice: Coquí, ¡ojo con la cabra!" **(ojo con: heard; the picture carries it)** The goat pulls at its rope and looks at the crates. Abuela looks into her purse. The card shows two places. The signs go.
 
-**The game.** Round A is the tomatoes, round B the onions. Each round the two crates of that thing stand side by side on the ledge, the fresh one and yesterday's (which side is drawn). One of two lines is said (drawn; round B says the other one). He touches the crate the line is about.
+**The game.** Round A is the tomatoes, round B the onions. Each round the two crates of that thing stand side by side on the ledge, the fresh one and yesterday's (which side is drawn). One of two lines is said, drawn afresh each round. He touches the crate the line is about.
 
 6. **Decision A, touch a crate (two crates; tests fresco or malo).** NARR: "Abuela dice: Los tomates frescos son para la sopa." (he touches the fresh crate: it goes onto the scale) or NARR: "Abuela dice: Los tomates malos son para la cabra." (he touches yesterday's crate: the frog pushes it onto the low crate).
    - Right, "frescos": the fresh tomatoes go onto the scale; the needle goes to the full mark. NARR: "Una libra de tomates." A star. Right, "malos": the goat eats yesterday's tomatoes; then the fresh ones are weighed. NARR: "Una libra de tomates." A star.
-   - Wrong: he touches the other crate. For "frescos": yesterday's tomatoes go onto the scale; abuela smells them. NARR: "Abuela dice: ¡Fo!" Meanwhile the goat has its head in the fresh crate, left alone beside it. For "malos": the frog pushes the fresh crate to the goat. Either way: half the fresh tomatoes are eaten. A cross. NARR: "No, Coquí. Mira. Estos tomates están frescos." The sign is on the right crate; he touches it. What is left of the fresh ones is weighed: the needle stops at the half mark. NARR: "Media libra de tomates."
-7. **Decision B, the onions: the other line.** "Abuela dice: Las cebollas frescas son para la sopa." or "Abuela dice: Las cebollas malas son para la cabra." Right and wrong as in A. NARR: "Una libra de cebollas." (Or: "Media libra de cebollas.")
+   - Wrong, "frescos" (he touched yesterday's crate): the frog drags it towards the scale; it knocks the fresh crate over, and half the fresh tomatoes roll onto the low crate; the goat eats them. Abuela smells yesterday's. NARR: "Abuela dice: ¡Fo!" A cross. NARR: "No, Coquí. Mira. Estos tomates están frescos." The sign is on the fresh crate; he touches it. What is left is weighed: the needle stops at the half mark. NARR: "Media libra de tomates."
+   - Wrong, "malos" (he touched the fresh crate): the frog pushes the fresh crate onto the low crate; the goat eats half before abuela pulls it back. A cross. NARR: "No, Coquí. Mira. Estos tomates están malos." The sign is on yesterday's crate; he touches it: it goes to the goat. What is left of the fresh ones is weighed: the half mark. NARR: "Media libra de tomates."
+7. **Decision B, the onions: drawn again.** "Abuela dice: Las cebollas frescas son para la sopa." or "Abuela dice: Las cebollas malas son para la cabra." Right and wrong as in A ("Estas cebollas están frescas." / "Estas cebollas están malas."). NARR: "Una libra de cebollas." (Or: "Media libra de cebollas.")
 
 **The ending**
 
-8. Don Pepe comes back. NARR: "Don Pepe dice: ¿Qué compra abuela?" The scale shows each bag in turn.
+8. Don Pepe comes back; the scale shows each bag in turn.
     - Nothing lost: NARR: "Abuela compra una libra de tomates y una libra de cebollas." Stars and a heart.
     - One or two misses: the line with "media libra" for what was lost: "Abuela compra media libra de tomates y una libra de cebollas." / "…una libra de tomates y media libra de cebollas." / "…media libra de tomates y media libra de cebollas."
-9. NARR: "Abuela dice: ¡Vamos, Coquí! Hago sopa." **(hago: heard)** COQUÍ [TURN: tengo hambre (tengo hambre)]: "¡Tengo hambre!"
+9. NARR: "Abuela dice: ¡Vamos, Coquí! Voy a hacer la sopa." **(voy a hacer: heard)** COQUÍ [TURN: tengo hambre (tengo hambre)]: "¡Tengo hambre!"
 
-**Fewest hearings before a word can cost:** fresco 5 (steps 1, 1, 2, 2, 2), malo 1 here (step 1) and taught in story 43. Not deciding: libra 6 or more, media libra 3 or more on a clean run (steps 2, 2, 3).
+**Fewest hearings before a word can cost:** fresco 5 (steps 1, 1, 1, 2, 2), malo once here (step 1) and taught in story 43. Not deciding: libra 5 or more, media libra 3 or more on a clean run (step 3).
 **A miss is filed under:** fresco or malo, whichever was in the line.
-**Chance without the Spanish:** one in two: the picture shows which crate is fresh, and only the line says which one is wanted.
-**Speaking turns:** two (steps 3, 9): gracias; tengo hambre.
+**Chance without the Spanish:** one in two, in each round on its own: the picture shows which crate is fresh, and only the line says which one is wanted.
+**Speaking turns:** two (steps 2, 9): gracias; tengo hambre.
+
+---
+
+## Reviews (Nov 20)
+
+Two fresh reviewers saw draft 1 with only the owner's rules: one as a beginner, one for Puerto Rican Spanish.
+
+Fixed after the beginner: no round is solved by what the round before left over (42 and 44 draw each round afresh; in 42 the list goes into abuela's pocket before the game and both bins are the two things still to buy); the bins are named two at a time, when they are needed, not in a row of four; 42's coins lie four and two, the two under the guineos; 42's two turns are far apart; 43's last turn answers a question the story set up; 44 shows its list from the first frame, has one signed ask, and every loss is a result of the frog's own move; the line after a miss names the crate the sign is on.
+
+Fixed after the Spanish: don Pepe says usted to abuela ("¡Espere, por favor!") and "tu abuela" to the frog; "las cosas para la sopa"; "Voy a hacer la sopa."; tomatoes and onions are not called "fruta"; "¡ojo con la cabra!" for keeping an eye on it.
+
+Left as written: the goat always gets the bad fruit, so its last picture does not change (43); 42 and 44 share the turn "tengo hambre", as spaced practice. "Sopa" and "cabra" were weighed against "sancocho" and "chiva" and kept.
 
 ---
 
@@ -155,6 +167,6 @@ Acts (name: what it does; story and step):
 - `monedas` {n}: abuela's row of coins (42). `guineos` {n}: the ending, two, one or none (42: 8).
 - `corta` {k, bueno}: don Pepe cuts an aguacate: green or black inside (43: 2, 3). `prueba43`: he holds a slice out; the frog eats it (43: 2).
 - `huele` {k, grande}: abuela takes two of a kind, presses and smells each (43: 4, 6, 7). `pone43` {cual, ok}: the frog lays one in the next hollow; not ok: flies over it and its neighbour, and both go onto the low crate (43: 4, 6, 7). `canasta43`: the basket shown from above (43: 8).
-- `sale` / `vuelve` {quien}: don Pepe into the shop, or into his truck, and back (43: 5, 8; 44: 5, 8).
+- `sale` / `vuelve` {quien}: don Pepe into the shop, or into his truck, and back (43: 4, 7; 44: 5, 8). `limon44`: he cuts a limón and gives the frog a slice; the frog's face puckers (44: 2). `vuelca44` {k}: yesterday's crate, dragged, knocks the fresh one over: half of it onto the low crate (44: 6, 7).
 - `cajones` {k, lado}: the fresh crate and yesterday's of one thing side by side (44: 6, 7). `pesa` {k, n}: things onto the scale; the needle to half or full; then into a bag in abuela's basket (44: 2, 6, 7, 8). `marca44` {que}: his hand on the full mark, on the half mark (44: 3).
 - `final`: stars and a heart when nothing was lost.
