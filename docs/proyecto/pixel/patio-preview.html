@@ -127,6 +127,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
       if (!SETS[key]) await setFrame(st, 0, []);
       const fw = SETS[key].contentWindow, cs = [];
       for (const [sx, sy, zs, r] of feet) { const g = fw.unproject(sx, sy); for (const z of zs) cs.push([g.x, g.y, z, r]); }
+      // the ball's shadow (sheet: shadows.bola): on the lawn under it, lying or in the air
+      if (W.bola) { const g = fw.unproject(Math.round(W.bola.x), Math.round(W.bola.y) - 1); if (g.x > fw.PATIO_SET.CX + .05 && g.y > fw.PATIO_SET.CY + .05) cs.push([g.x, g.y, .05, .28]); }
       c.putImageData(await setFrame(st, opts.t || 0, cs), 0, 0);
     }
     E.draw(c, W, F >> 1);
