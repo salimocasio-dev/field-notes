@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
+import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -89,6 +90,72 @@ Future<void> answerRight(
   }
 }
 
+/// Plays a session of Repaso's games through its screen to its end screen, every answer right: the right picture or
+/// tile, the words of Arma la frase in order, each sound of Parejas to its word; a shown answer is touched, Next is
+/// pressed. [onItem] sees each item when his turn comes.
+Future<void> playRepaso(
+  TestApp app, {
+  Future<void> Function(dynamic session)? onItem,
+  int maxMs = 15 * 60 * 1000,
+}) async {
+  final tester = app.tester;
+  Object? acted;
+  for (var t = 0; ; t += 200) {
+    if (t > maxMs) fail('Repaso did not end');
+    final s = stateNamed(tester, 'RepasoScreen').session;
+    if ((s.screen as Enum).name == 'end') return;
+    final choices = (s.choices as List<dynamic>?) ?? const [];
+    final kind = s.item?.runtimeType.toString();
+    if (s.canNext as bool) {
+      await app.tap(find.widgetWithText(LessonButton, 'Next'));
+    } else if (choices.any((c) => c.sign as bool)) {
+      final k = choices.indexWhere((c) => c.sign as bool);
+      await _touchChoice(app, kind, k);
+    } else if ((s.yourTurn as bool) && !identical(acted, s.entry)) {
+      acted = s.entry;
+      await onItem?.call(s);
+      final r = choices.indexWhere((c) => c.right as bool);
+      switch (kind) {
+        case 'CualItem' || 'HearItem' || 'WhereItem':
+          await _touchChoice(app, kind, r);
+        case 'BuildItem':
+          for (final w in (s.item.order as List).cast<String>()) {
+            final k = (s.choices as List<dynamic>).indexWhere(
+              (c) => !(c.done as bool) && c.label == w,
+            );
+            await app.tap(
+              find
+                  .descendant(
+                    of: find.byType(TileTray).last,
+                    matching: find.byType(WordTile),
+                  )
+                  .at(k),
+            );
+          }
+        case 'MatchItem':
+          final order = (s.item.wordOrder as List).cast<int>();
+          for (var i = 0; i < 4; i++) {
+            await app.tap(find.byType(SpeakerTile).at(i));
+            await app.tap(find.byType(WordTile).at(order.indexOf(i)));
+          }
+      }
+    }
+    await app.advance(200);
+  }
+}
+
+Future<void> _touchChoice(TestApp app, String? kind, int k) async {
+  if (kind == 'HearItem') {
+    await app.tap(find.byType(WordTile).at(k));
+    return;
+  }
+  final g = await app.tester.startGesture(
+    app.tester.getCenter(find.byType(PictureChoice).at(k)),
+  );
+  await g.up();
+  await app.tester.pump();
+}
+
 void main() {
   testWidgets(
     '(e) Listen on Biblioteca\'s shelf: the story told straight through, '
@@ -142,11 +209,18 @@ void main() {
   );
 
   testWidgets(
-    '(f, g) Repaso from the Today card: answered, it writes ear answers; its pictures come from ScenePictures '
-    '(El frente: the new scene; another scene: its old picture); it ends on Palabras',
+    '(f, g) Repaso from the Today card: the games of page 15; answered, they write ear answers; ¿Cuál?\'s pictures '
+    'come from ScenePictures (El frente: the new scene; another scene: its old picture); it ends on Palabras',
     (tester) async {
       final app = TestApp(tester);
-      await app.open(stored: seed('curso'));
+      // the mid-course seed with every word's count of answers made even, so that each word with a picture pair is
+      // asked by ¿Cuál? (page 15: ¿Cuál? and ¿Qué oyes? take turns by that count) and its pictures are seen
+      final db = jsonDecode(seed('curso')) as Map<String, dynamic>;
+      for (final r in (db['palabras'] as Map).values) {
+        final ear = (r as Map)['ear'] as Map;
+        ear['n'] = (ear['n'] as int) ~/ 2 * 2;
+      }
+      await app.open(stored: jsonEncode(db), speechAvailable: false);
       expect(app.services.pictures, isA<ScenePictures>());
       final before = answers(app, 'ear');
       // the Today card's first entry is the review (¿Cuál?); Palabras' Start goes the same way (test (m))
@@ -154,15 +228,33 @@ void main() {
       await app.tap(find.byType(TodayCard));
       await app.settle();
       expect(app.lessonShown, isTrue);
-      expect(byTypeName('ReviewScreen'), findsOneWidget);
+      expect(byTypeName('RepasoScreen'), findsOneWidget);
       await app.tap(find.byType(LessonStartButton));
       var frente = 0, old = 0;
-      await answerRight(
+      final kinds = <String>{};
+      await playRepaso(
         app,
-        'ReviewScreen',
-        onAsk: (panels) async {
-          for (var k = 0; k < panels.length; k++) {
-            final ref = panels[k].ref as PictureRef;
+        onItem: (s) async {
+          kinds.add(s.item.runtimeType.toString());
+
+          if (s.item.runtimeType.toString() != 'CualItem') return;
+          await app.settle(rounds: 4); // the pictures are read from the assets
+          // no picture failed to draw (coqui_scenes puts its own red box where one does): the pictures of two
+          // ¿Cuál? items in a row are each their own, not one picture handed another pair
+          expect(
+            find.byWidgetPredicate(
+              (w) => w is ColoredBox && w.color == const Color(0xFF3A1E24),
+            ),
+            findsNothing,
+          );
+          expect(find.byType(ErrorWidget), findsNothing);
+          final choices = s.choices as List<dynamic>;
+          for (var k = 0; k < choices.length; k++) {
+            final pair = s.item.pair as ReviewPair;
+            final ref = PictureRef.of(
+              pair,
+              (choices[k].right as bool) ? pair.yes : pair.no,
+            );
             final view = find.descendant(
               of: byTypeName('OptionTouch').at(k),
               matching: find.byType(PixelView),
@@ -189,6 +281,11 @@ void main() {
       );
       expect(frente, greaterThan(0), reason: 'no El frente picture was asked');
       expect(old, greaterThan(0), reason: 'no picture of another scene');
+      // both scored games and the play games came
+      expect(
+        kinds,
+        containsAll(['CualItem', 'HearItem', 'BuildItem', 'MatchItem']),
+      );
       // ear answers, for the words asked
       final after = answers(app, 'ear');
       final moved = [
@@ -196,11 +293,18 @@ void main() {
           if (after[w] != before[w]) w,
       ];
       expect(moved.length, greaterThanOrEqualTo(5));
+      // the session's minutes went to the day
+      expect(
+        (storedDb(app)['minutos'] as num),
+        greaterThan(jsonDecode(seed('curso'))['minutos'] as num),
+      );
       // "Back to Palabras": Repaso always ends on Palabras (cual.js: SALIDA)
       await app.tap(find.text('Back to Palabras'));
       await app.settle(rounds: 5);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'words');
+      // the praise of the last item, cut short by Next, is a clip of the harness still counting its length
+      await app.advance(5000);
     },
     timeout: const Timeout(Duration(minutes: 10)),
   );
@@ -218,7 +322,7 @@ void main() {
     await app.tap(find.text('Start'));
     await app.settle();
     expect(app.lessonShown, isTrue);
-    expect(byTypeName('ReviewScreen'), findsOneWidget);
+    expect(byTypeName('RepasoScreen'), findsOneWidget);
     await app.tap(find.byType(LessonCloseButton));
     await app.settle(rounds: 5);
     expect(app.tabBarShown, isTrue);

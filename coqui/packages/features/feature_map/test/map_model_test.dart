@@ -1,6 +1,7 @@
 // The map's pure parts: the state read from the progress (app.html: hecho, abierto, aqui), today's plan
 // (app.html: plan), the road the frog hops, the hop itself, the nearest stop to a tap, the grey of a locked place.
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_testing/coqui_testing.dart';
 import 'package:feature_map/src/map_layout.dart';
 import 'package:feature_map/src/map_model.dart';
 import 'package:feature_map/src/map_picture.dart';
@@ -146,6 +147,69 @@ void main() {
         clock: bare.clock,
       );
       expect(none.any((e) => e.review), isFalse);
+    });
+
+    test('N: a due word with no picture pair is offered when Repaso can serve it (a sentence of a story he has finished); with no games\' data, today\'s rule', () {
+      final f = fixture(seed: 'vacio');
+      final progress = FakeProgressStore(clock: f.clock)
+        ..storyFinished(StoryResult(id: 's1'));
+      void word(String w, {required bool due}) => progress.put(
+        WordRecord(
+          w: w,
+          primera: f.clock.nowMs(),
+          ear: SkillRecord(
+            etapa: 1,
+            due: f.clock.nowMs() + (due ? -1 : 30) * 864e5,
+          ),
+        ),
+      );
+      // mesa is due and has no picture pair; sol and luna are met (the two wrong tiles beside its sentence)
+      word('mesa', due: true);
+      word('sol', due: false);
+      word('luna', due: false);
+      RepasoWord w(String x, {List<int> sentences = const []}) => RepasoWord(
+        word: x,
+        place: 'casa',
+        scoring: RepasoScoring.queOyes,
+        sentences: sentences,
+      );
+      final games = RepasoData(
+        sentences: [
+          RepasoSentence(
+            clip: 'a',
+            story: 's1',
+            text: 'Abuela pone la mesa.',
+            tokens: const ['abuela', 'pone', 'la', 'mesa'],
+            forbidden: const ['mesa'],
+            forHearing: true,
+            forBuilding: false,
+          ),
+        ],
+        words: [
+          w('mesa', sentences: const [0]),
+          w('sol'),
+          w('luna'),
+        ],
+      );
+      List<TodayEntry> planFor(MapFixtureCourse c) =>
+          todayPlan(progress: progress, course: c, clock: f.clock);
+      // the games' data read: mesa is served, so the card offers the review
+      final withData = MapFixtureCourse()..repaso = games;
+      expect(planFor(withData).first.review, isTrue);
+      expect(planFor(withData).first.line, '1 word coming back');
+      // no data: no word has a pair, so the review is not offered (today's rule)
+      expect(planFor(MapFixtureCourse()).any((e) => e.review), isFalse);
+      // a story he has not finished: mesa's sentence is not his yet
+      final unfinished = FakeProgressStore(clock: f.clock)
+        ..put(progress.word('mesa')!);
+      expect(
+        todayPlan(
+          progress: unfinished,
+          course: withData,
+          clock: f.clock,
+        ).any((e) => e.review),
+        isFalse,
+      );
     });
 
     test('everything built played: listen again, six times at most', () {

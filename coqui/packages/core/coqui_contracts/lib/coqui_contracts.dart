@@ -17,5 +17,6 @@ export 'package:coqui_contracts/src/mulberry32.dart';
 export 'package:coqui_contracts/src/normalize.dart';
 export 'package:coqui_contracts/src/platform.dart';
 export 'package:coqui_contracts/src/progress.dart';
+export 'package:coqui_contracts/src/repaso.dart';
 export 'package:coqui_contracts/src/routes.dart';
 export 'package:coqui_contracts/src/speech.dart';

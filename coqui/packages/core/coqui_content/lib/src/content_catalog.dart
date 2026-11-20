@@ -21,7 +21,16 @@ typedef FetchText = Future<String> Function(String path);
 /// [load], the others by [story], [linesWith] or any call that reads one. Before that [clip] gives what the old code
 /// knows of a clip it has not read a line for: its marks and its url, and the line `fijos.json` holds for it under
 /// `lineas` (the lines the old code writes in code, juego.js, loadVoice) or, with none, an empty `who` and `text`.
-class ContentCatalog implements CourseCatalog {
+///
+/// [load] also reads `datos/repaso.json` (Repaso's games, page 15) into [repaso]. That file is not needed to start:
+/// when it is missing or cannot be read, [repaso] is null and nothing else changes (Repaso then plays today's game).
+///
+/// And it reads `cuentos/palabras-solas.json`, the one file of `cuentos/` the course names nowhere: each tracked word
+/// said alone (clips `w_<word>`, for the word tiles of Repaso). It is not a story and not a review set (no [meta], no
+/// pair, no place lists it); its clips are known like any other, by [clip], with their who and text from load on. When
+/// it is missing or cannot be read nothing else changes (its clips then have no line, as any clip no story has been read
+/// for).
+class ContentCatalog implements CourseCatalog, RepasoCatalog {
   ContentCatalog(this._fetch);
 
   final FetchText _fetch;
@@ -39,6 +48,9 @@ class ContentCatalog implements CourseCatalog {
   // fijos.json, lineas: the lines the old code writes in code, by clip id
   Map<String, _Line> _written = const {};
   List<String> _goodbye = const [];
+  RepasoData? _repaso;
+  // cuentos/palabras-solas.json: the lines of the words said alone, by clip id (empty when the file is not there)
+  Map<String, _Line> _alone = const {};
 
   // audio/ready.json: the clips that have a recording (null: the file could not be read), and its `v`
   Set<String>? _have;
@@ -89,6 +101,8 @@ class ContentCatalog implements CourseCatalog {
     final fijos = _json('datos/fijos.json');
     final ready = _readReady();
     final marcas = _json('audio/marcas.json');
+    final repaso = _readRepaso();
+    final alone = _readAlone();
     final reviews = [for (final f in sets) story(f)];
     for (final f in <Future<Object?>>[
       nivel,
@@ -148,6 +162,8 @@ class ContentCatalog implements CourseCatalog {
       for (final e in marks.entries)
         e.key: [for (final m in e.value as List) (m as num).toInt()],
     };
+    _repaso = await repaso;
+    _alone = await alone;
     _loaded = true;
   }
 
@@ -181,6 +197,37 @@ class ContentCatalog implements CourseCatalog {
                 'datos/fijos.json: lineas.${e.key} must be {who, text}',
               ),
     };
+  }
+
+  // datos/repaso.json: Repaso's games. Missing or broken, it is null: the load goes on without it.
+  Future<RepasoData?> _readRepaso() async {
+    try {
+      return RepasoData.fromJson(
+        _object(await _json('datos/repaso.json'), 'datos/repaso.json'),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  RepasoData? get repaso => _repaso;
+
+  // the address of the file of the words said alone, under historia/ (the course names it nowhere)
+  static const _solasPath = 'cuentos/palabras-solas.json';
+
+  // cuentos/palabras-solas.json: { clips: { <clip id>: { who, text } } }. Missing or broken, it has no line: the load goes on.
+  Future<Map<String, _Line>> _readAlone() async {
+    try {
+      final clips = _object(await _json(_solasPath), _solasPath)['clips'];
+      return {
+        if (clips is Map)
+          for (final e in clips.entries)
+            if (e.value is Map) e.key as String: _Line.from(e.value as Map),
+      };
+    } catch (_) {
+      return const {};
+    }
   }
 
   // app.html, audioListo: audio/ready.json, read once; a file that cannot be read is null, and then no clip has a
@@ -284,15 +331,15 @@ class ContentCatalog implements CourseCatalog {
 
   /// A clip that has a recording (it is in `audio/ready.json`) and marks (`audio/marcas.json`); otherwise null.
   /// Its `who`, `text` and `habla` are those of the first story read that has the line. Until one has been, they are
-  /// the line `fijos.json` gives it under `lineas`, and empty where it has none (juego.js: a story's own line wins,
-  /// `!LINES.<id>`).
+  /// the line `palabras-solas.json` gives it (a word said alone), else the line `fijos.json` gives it under `lineas`,
+  /// and empty where it has none (juego.js: a story's own line wins, `!LINES.<id>`).
   /// The url is juego.js's: `audio/<id>.mp3?v=<ready.json's v>`.
   @override
   ClipInfo? clip(String id) {
     final marks = _marks[id];
     final have = _have;
     if (marks == null || have == null || !have.contains(id)) return null;
-    final line = _lines[id] ?? _written[id];
+    final line = _lines[id] ?? _alone[id] ?? _written[id];
     return ClipInfo(
       id: id,
       who: line?.who ?? '',

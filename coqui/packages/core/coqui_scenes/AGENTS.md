@@ -108,6 +108,10 @@ that `implements SetScene` (`class Balcon extends Escena implements SetScene, Se
   asset list in `pubspec.yaml`, and the test fixtures `old_sample.dart`, `old_hashes.dart`) for every scene NOT in
   `convertedScenes`, and removes the folder of any other; `--check` fails when something is stale or when a folder exists for a
   converted scene; it also fails for every picture a course item names that has no file.
+- **A picture handed another picture in place** (the same widget with another ref, name, size or `animated`) starts over and
+  shows the new one: its state mixes in `TickerProviderStateMixin`, because it disposes its ticker and starts another, which
+  a single-ticker state refuses (Flutter threw and the picture showed the red error box). `test/pictures_test.dart` ("handed
+  another picture in place") pumps one picture, then others in its place, animated and not.
 - The next scene's order: add it to `convertedScenes`, make its sheet (`level` and `pictures` entries for every picture the
   content asks of it), run `make_sheets.dart` and `make_old_pictures.dart`, and add its tests to `pictures_test` as El frente's.
 - Shadows: a character casts his engine shadow only while more than half faded in (`al > .5`), as the preview does it.

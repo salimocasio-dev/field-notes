@@ -597,6 +597,18 @@ First, by the orchestrator: frames of stories 1 to 3 (all right, all wrong) from
 
 **Steps:** an inventory of how many recorded sentences each word has (a Sonnet reader); the design of the games from it, by the orchestrator, reviewed by fresh reviewers before it reaches him (page 03: a self-review does not count); the build by Opus; a fresh reader on the built screens; the link. New recordings are not made without telling him the amount first.
 
+**Result (Nov 20): the review games are built, merged and live as build 5. Biblioteca is not started (his answer on what a real reader holds is still owed).**
+
+- The design is page 15, in its fourth version. Three earlier versions fell: to two fresh reviewers (the game chosen by how well a word is known would have been one game for two months; reading must not decide the Ear score; saying a line back is not hearing it), then to ten readers who judged every candidate sentence against the pictures the course has (the books' pictures prove too little: 163 fair items of 1,481; the words' own picture pairs fit almost only their own sentence: 139 of 1,294). What holds: he hears a sentence he has not been asked before and says which word was in it.
+- Data: `coqui/tool/make_repaso.py` chooses the sentences (565 clean recorded sentences; a word has 9 in the middle; 141 words have three or more) and writes `historia/datos/repaso.json` (183 KB); the readers' verdicts are its inputs, in `coqui/tool/repaso/`. `test_all.sh` checks the file is current.
+- Recorded, with his approval: each of the 133 words that had no clip of the word alone (`historia/cuentos/palabras-solas.json`, made by `coqui/tool/make_palabras_solas.py`): 814 characters on his free Azure account, Karina's voice. All 156 words now have such a clip, so every word tile has a speaker and can be answered by ear. The orchestrator had first told him this would use ElevenLabs credits; that was wrong and he was told.
+- The session (feature_review; contracts, content and coqui_ui gained what it needs): up to 10 words; one scored item a word (¿Cuál? with the word's own pair and ¿Qué oyes? in a new sentence, in turn); a play item after every third (Arma la frase, Parejas, ¿Dónde?, Dilo); a miss is shown and comes back once, in another order; every item ends with Next; a bar of one segment an item, coloured by its first answer; "N in a row"; an end screen with the missed words first; the session's time counts toward the day.
+- Built by an Opus builder, then three rounds of fixes by Sonnet builders from four fresh readers of the screens (a crash in the pictures when two picture items followed each other; wrong answers too faint; the layout jumping; the word-order game's slots giving the answer away; the bar; the end screen hiding the missed words). The last reader: "probably yes" to doing it again tomorrow. The orchestrator ran `test_all.sh` on the branch (passes whole) and looked at each round's screens.
+- For a learner who has finished stories 1 to 3 / 11 / 22 / 32: words with both scored games 11 / 47 / 88 / 124; ¿Cuál? only 1 / 0 / 0 / 4; ¿Qué oyes? only 0 / 9 / 18 / 26; none 1 / 1 / 1 / 2.
+- The counts on the Palabras card and the map's Today card use the same rule as Repaso.
+- Not done, or his to judge: how the single words sound (the orchestrator cannot hear); whether picking the word out of a new sentence is the "differing context" he means; the speaking game on his phones (the phone test results are still owed); the picture pairs that a reader could not decide (sí and no as arrows, adiós), which are the old pairs.
+- Parked, not merged: the tidier Biblioteca shelf (`orden/27-bib`) and Palabras tab (`lane/feature_words/27`).
+
 ---
 
 ## Orders 30 to 39. The other scenes, one at a time
