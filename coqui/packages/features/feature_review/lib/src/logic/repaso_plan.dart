@@ -29,13 +29,16 @@ const List<GameKind> playKinds = [
   GameKind.say,
 ];
 
-/// One line of English per game (menus may be English), page 15 "The session".
+/// The plain English line that says what to do in each game (menus may be English), page 15 "The session". A game that
+/// plays a sentence starts with "Listen."; Parejas, where he starts with a touch, and Dilo, where the mic is the
+/// answer, do not.
 String gameInstruction(GameKind k) => switch (k) {
-  GameKind.cual => 'Touch the picture that fits.',
-  GameKind.hear => 'Touch the word you heard.',
-  GameKind.build => 'Put the words in order.',
-  GameKind.match => 'Match each sound to its word.',
-  GameKind.where => 'Which moment is it?',
+  GameKind.cual => 'Listen. Touch the picture that fits.',
+  GameKind.hear => 'Listen. Touch the word you heard.',
+  GameKind.build =>
+    "Listen. Put the words in the order you hear. Two don't belong.",
+  GameKind.match => 'Touch a sound, then its word.',
+  GameKind.where => 'Listen. Touch the picture it goes with.',
   GameKind.say => 'Say it.',
 };
 
@@ -84,6 +87,11 @@ class CualItem extends GameItem {
   String get clip => line.clip;
   @override
   String get text => line.text;
+
+  /// The same sentence and pair with the pictures the other way round (a missed item comes back like this: never the
+  /// identical picture).
+  CualItem rearranged() =>
+      CualItem(word: word, pair: pair, line: line, rightPanel: 1 - rightPanel);
 }
 
 /// ¿Qué oyes?: a sentence and three written tiles; [answer] is the tile of the word that was in it.
@@ -101,10 +109,47 @@ class HearItem extends GameItem {
 
   /// The clip of each tile's word said alone, or null.
   final List<String?> solo;
+
+  /// Whether the tiles show a speaker each: only when every tile of the item has a clip of its word alone (a speaker
+  /// on some tiles and not on others would say which are the ones to look at).
+  bool get speakers => solo.every((c) => c != null);
   @override
   String get clip => sentence.clip;
   @override
   String get text => sentence.text;
+
+  /// The same sentence and tiles in an order that is not the one they had (a missed item comes back like this: never
+  /// the identical arrangement). [pick] is a number in [0, 1) from the session's random source.
+  HearItem rearranged(double pick) {
+    final n = tiles.length;
+    // every order of the tiles but the one they are in, in a fixed order: n! - 1 of them
+    final orders = _permutations(n).where((o) {
+      for (var i = 0; i < n; i++) {
+        if (o[i] != i) return true;
+      }
+      return false;
+    }).toList();
+    final o =
+        orders[(pick * orders.length).floor().clamp(0, orders.length - 1)];
+    return HearItem(
+      word: word,
+      sentence: sentence,
+      tiles: [for (final i in o) tiles[i]],
+      answer: o.indexOf(answer),
+      solo: [for (final i in o) solo[i]],
+    );
+  }
+}
+
+List<List<int>> _permutations(int n) {
+  if (n <= 1) return [List<int>.generate(n, (i) => i)];
+  final out = <List<int>>[];
+  for (final rest in _permutations(n - 1)) {
+    for (var at = 0; at <= rest.length; at++) {
+      out.add([...rest.take(at), n - 1, ...rest.skip(at)]);
+    }
+  }
+  return out;
 }
 
 /// Arma la frase: the sentence's words ([order]) and the tiles in their mixed order with two extra words ([pool]).
@@ -141,21 +186,38 @@ class MatchItem extends GameItem {
   String? get text => null;
 }
 
-/// ¿Dónde?: the sentence and two or three pictures of its story; [answer] is its own.
+/// ¿Dónde?: the sentence and two or three pictures of its story; [answer] is its own. [farthest] is the fair wrong
+/// picture that is farthest from its own in the story: the one wrong picture of an item that has only two.
 class WhereItem extends GameItem {
   WhereItem({
     required String word,
     required this.sentence,
     required this.pictures,
     required this.answer,
-  }) : super(GameKind.where, word);
+    String? farthest,
+  }) : farthest =
+           farthest ??
+           pictures.firstWhere((p) => p != pictures[answer], orElse: () => ''),
+       super(GameKind.where, word);
   final RepasoSentence sentence;
   final List<String> pictures;
   final int answer;
+  final String farthest;
   @override
   String get clip => sentence.clip;
   @override
   String get text => sentence.text;
+
+  /// The pictures of the item when the screen has room for [n] of them: all of them, or, for two, its own and the
+  /// farthest wrong one, in the order they have.
+  List<String> picturesFor(int n) {
+    if (n >= pictures.length || farthest.isEmpty) return pictures;
+    final own = pictures[answer];
+    return [
+      for (final p in pictures)
+        if (p == own || p == farthest) p,
+    ];
+  }
 }
 
 /// Dilo: he hears the clip before the line ([line].before) and says the line.
@@ -172,32 +234,30 @@ class SayItem extends GameItem {
 /// A place in the session's queue: a scored item, a play slot (its item is chosen when it is reached), or a missed
 /// item asked again (unscored).
 class QueueEntry {
-  QueueEntry.scored(GameItem this.item) : again = false, slot = false;
-  QueueEntry.again(GameItem this.item) : again = true, slot = false;
-  QueueEntry.slot() : item = null, again = false, slot = true;
+  QueueEntry.scored(GameItem this.item)
+    : again = false,
+      slot = false,
+      origin = null;
+  QueueEntry.again(GameItem this.item, {this.origin})
+    : again = true,
+      slot = false;
+  QueueEntry.slot() : item = null, again = false, slot = true, origin = null;
 
   /// A play item given as it is (a test, a tool).
-  QueueEntry.play(GameItem this.item) : again = false, slot = false;
+  QueueEntry.play(GameItem this.item)
+    : again = false,
+      slot = false,
+      origin = null;
   GameItem? item;
   final bool again;
   final bool slot;
+
+  /// A return: the entry whose miss it answers (the bar's dash for that item goes red-orange until this is answered).
+  final QueueEntry? origin;
 }
 
-/// Whether he has finished the story [id]: played it to its end (a story the level check only presumed does not
-/// count until he plays it), or, a picture story, heard it to its end.
-bool storyFinished(ProgressStore p, String id) {
-  final r = p.story(id);
-  if (r != null) {
-    final presumed = r.presunto != null && r.presunto != 0 ? 1 : 0;
-    if (r.n > presumed) return true;
-  }
-  final oidos = p.raw['oidos'];
-  if (oidos is Map) {
-    final v = oidos[id];
-    if (v is num && v > 0) return true;
-  }
-  return false;
-}
+/// Whether he has finished the story [id] (the rule lives in coqui_contracts, where every count asks it too).
+bool storyFinished(ProgressStore p, String id) => repasoStoryFinished(p, id);
 
 /// Whether the Ear record's last answer was a miss: a miss since the last right one, or the miss that parked it
 /// (palabras.js: a third miss sets `aparcada` a week after that answer and clears `fallos`).
@@ -287,15 +347,17 @@ class RepasoPlanner {
     for (final p in pairs) p.word: p,
   };
 
-  final Map<String, bool> _finished = {};
-  bool finished(String? story) =>
-      story == null || (_finished[story] ??= storyFinished(progress, story));
+  /// Which sentences and words are his to be asked: the one rule, shared with the counts outside Repaso.
+  late final RepasoServing serving = RepasoServing(
+    data: data,
+    progress: progress,
+    pairs: pairs,
+  );
+
+  bool finished(String? story) => serving.finished(story);
 
   /// The words he has met that the data knows, in the data's (course) order.
-  late final List<RepasoWord> met = [
-    for (final w in data.words)
-      if (progress.word(w.word) != null) w,
-  ];
+  List<RepasoWord> get met => serving.met;
 
   /// The sentences of the session's items so far (no two items share one).
   final Set<String> used = {};
@@ -304,26 +366,14 @@ class RepasoPlanner {
 
   /// The word's ¿Cuál? sentences he may get: its pair's own, and the others whose story he has finished. None
   /// when the course has no pair for it.
-  List<RepasoPairLine> cualLines(RepasoWord w) => _pairOf[w.word] == null
-      ? const []
-      : [
-          for (final l in w.pairLines)
-            if (finished(l.story)) l,
-        ];
+  List<RepasoPairLine> cualLines(RepasoWord w) => serving.cualLines(w);
 
   /// The word's ¿Qué oyes? sentences he may get, in the fixed order: from finished stories, with two fair wrong
   /// tiles among the words he has met.
-  List<RepasoSentence> hearSentences(RepasoWord w) => [
-    for (final k in w.sentences)
-      if (data.sentences[k].forHearing &&
-          finished(data.sentences[k].story) &&
-          wrongTileChoices(w, data.sentences[k]).length >= 2)
-        data.sentences[k],
-  ];
+  List<RepasoSentence> hearSentences(RepasoWord w) => serving.hearSentences(w);
 
   /// Whether some game can score the word now.
-  bool servable(RepasoWord w) =>
-      cualLines(w).isNotEmpty || hearSentences(w).isNotEmpty;
+  bool servable(RepasoWord w) => serving.servable(w);
 
   /// The words other than [target] that may stand as a wrong written tile beside [s], in the data's order: words he
   /// has met, not in the sentence (none of their words is a word of it), not in its forbidden list, not in the
@@ -332,26 +382,7 @@ class RepasoPlanner {
     RepasoWord target,
     RepasoSentence s, {
     bool singleWords = false,
-  }) {
-    final inSentence = {
-      ...foldedTokens(s.text),
-      ...s.tokens.expand(foldedTokens),
-    };
-    final banned = <String>{
-      target.word,
-      ...target.apart,
-      ...s.forbidden,
-      for (final x in s.forbidden) ...?data.word(x)?.apart,
-    };
-    return [
-      for (final m in met)
-        if (!banned.contains(m.word) &&
-            !m.apart.contains(target.word) &&
-            !foldedTokens(m.word).any(inSentence.contains) &&
-            (!singleWords || foldedTokens(m.word).length == 1))
-          m,
-    ];
-  }
+  }) => serving.wrongTileChoices(target, s, singleWords: singleWords);
 
   /// Two wrong tiles for [s]: [wrongTileChoices] mixed by the session's random source, the words of the target's place
   /// first; the second is not one the first must not meet. Null when there are not two.
@@ -652,6 +683,7 @@ class RepasoPlanner {
         sentence: s,
         pictures: pics,
         answer: pics.indexOf(s.picture!),
+        farthest: d.others.isEmpty ? null : d.others.first,
       );
     }
     return null;

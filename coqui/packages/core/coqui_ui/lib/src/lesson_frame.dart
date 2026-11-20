@@ -525,6 +525,32 @@ class PictureChoice extends StatelessWidget {
   }
 }
 
+/// The check badge of a right answer: 28 px green with a white tick and a white ring (`.opt.chk::after`).
+class CheckBadge extends StatelessWidget {
+  const CheckBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: CoquiMetrics.badgeSize,
+    height: CoquiMetrics.badgeSize,
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      color: CoquiColors.lessonGreen,
+      boxShadow: [
+        BoxShadow(
+          color: CoquiColors.lessonInk,
+          spreadRadius: CoquiMetrics.badgeRing,
+        ),
+      ],
+    ),
+    child: const CoquiIcon(
+      CoquiIcons.badgeCheck,
+      size: CoquiMetrics.badgeSize,
+      color: CoquiColors.lessonInk,
+    ),
+  );
+}
+
 /// The round badge with an X that marks a wrong touch, where a right one has its check: 28 px red-orange with a
 /// white X and a white ring (the twin of the check badge: the same size, the same ring).
 class WrongBadge extends StatelessWidget {

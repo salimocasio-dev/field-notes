@@ -151,28 +151,30 @@ class Screen {
           case BuildItem():
             for (final w in it.order) {
               final k = s.choices.indexWhere((c) => !c.done && c.label == w);
-              await t.tap(
-                find
-                    .descendant(
-                      of: find.byType(TileTray).last,
-                      matching: find.byType(WordTile),
-                    )
-                    .at(k),
-              );
+              final tile = find
+                  .descendant(
+                    of: find.byType(TileTray).last,
+                    matching: find.byType(WordTile),
+                  )
+                  .at(k);
+              // the bank can reach below the visible part of the screen (the test font is wider than the real one)
+              await t.ensureVisible(tile);
+              await t.tap(tile);
               await settle();
             }
           case MatchItem():
             for (var i = 0; i < 4; i++) {
+              await t.ensureVisible(find.byType(SpeakerTile).at(i));
               await t.tap(find.byType(SpeakerTile).at(i));
               await settle();
-              await t.tap(
-                find
-                    .descendant(
-                      of: find.byType(Row),
-                      matching: find.byType(WordTile),
-                    )
-                    .at(it.wordOrder.indexOf(i)),
-              );
+              final word = find
+                  .descendant(
+                    of: find.byType(Row),
+                    matching: find.byType(WordTile),
+                  )
+                  .at(it.wordOrder.indexOf(i));
+              await t.ensureVisible(word);
+              await t.tap(word);
               await settle();
             }
           case SayItem():
@@ -271,7 +273,7 @@ void main() {
         );
         expect(sc.s.screen, LessonScreen.end);
         expect(find.text('Done'), findsOneWidget);
-        expect(find.text('9 of 10 right the first time'), findsOneWidget);
+        expect(find.text('9 of 10 words right the first time'), findsOneWidget);
         for (final k in [
           'turn cual',
           'turn hear',
@@ -335,7 +337,9 @@ void main() {
     await sc.settle();
     await sc.vt.runUntil(() => sc.s.heard.isNotEmpty);
     await sc.settle();
-    expect(find.text('algo'), findsOneWidget);
+    // what the app heard, as "Heard: ..." in normal-size text, and "Try again" under the mic
+    expect(find.text('Heard: algo'), findsOneWidget);
+    expect(find.text(RepasoStrings.tryAgain), findsOneWidget);
     await sc.vt.runUntil(() => sc.s.mic == MicState.ready);
     await sc.settle();
     await t.tap(find.text(RepasoStrings.cantSpeak));

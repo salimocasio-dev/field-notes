@@ -12,7 +12,8 @@ library;
 import 'dart:math' as math;
 
 import 'package:coqui_ui/src/icons.dart';
-import 'package:coqui_ui/src/lesson_frame.dart' show ChoiceRing, WrongBadge;
+import 'package:coqui_ui/src/lesson_frame.dart'
+    show CheckBadge, ChoiceRing, WrongBadge;
 import 'package:coqui_ui/src/pressable.dart';
 import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
@@ -79,15 +80,22 @@ class _TileFace extends StatelessWidget {
   Widget build(BuildContext context) {
     final empty = look == TileLook.empty;
     final rc = empty ? null : _ringColor(ring);
+    // the frame is drawn over the face (a foreground decoration): a ring that comes or goes takes no room, so a tile
+    // never changes its size, and nothing round it moves, when it is touched
     Widget face = Container(
       constraints: BoxConstraints(minHeight: _tileHeight, minWidth: minWidth),
-      padding: const EdgeInsets.symmetric(horizontal: CoquiMetrics.s16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: CoquiMetrics.s16 + CoquiMetrics.borderButton,
+      ),
       decoration: BoxDecoration(
         color: empty
             ? null
             : (pressed
                   ? CoquiColors.lessonTilePressed
                   : CoquiColors.lessonTile),
+        borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
+      ),
+      foregroundDecoration: BoxDecoration(
         borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
         border: Border.all(
           color: empty
@@ -130,7 +138,7 @@ class _TileFace extends StatelessWidget {
       fit: StackFit.passthrough,
       children: [
         face,
-        if (check) const Positioned(right: -6, top: -10, child: _CheckBadge()),
+        if (check) const Positioned(right: -6, top: -10, child: CheckBadge()),
         if (cross) const Positioned(right: -6, top: -10, child: WrongBadge()),
         if (number != null)
           Positioned(
@@ -148,32 +156,6 @@ class _TileFace extends StatelessWidget {
       ],
     );
   }
-}
-
-/// The check badge of a right answer, as [PictureChoice] has it: 28 px green with a white tick and a white ring.
-class _CheckBadge extends StatelessWidget {
-  const _CheckBadge();
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: CoquiMetrics.badgeSize,
-    height: CoquiMetrics.badgeSize,
-    decoration: const BoxDecoration(
-      shape: BoxShape.circle,
-      color: CoquiColors.lessonGreen,
-      boxShadow: [
-        BoxShadow(
-          color: CoquiColors.lessonInk,
-          spreadRadius: CoquiMetrics.badgeRing,
-        ),
-      ],
-    ),
-    child: const CoquiIcon(
-      CoquiIcons.badgeCheck,
-      size: CoquiMetrics.badgeSize,
-      color: CoquiColors.lessonInk,
-    ),
-  );
 }
 
 /// A small round number (1 to 4) that marks which matched pair a tile belongs to (Parejas): white, with a dark digit.
@@ -546,10 +528,15 @@ class StreakChip extends StatelessWidget {
       ),
     );
     if (!reserve) return chip;
+    // inside its reserved place the pill shrinks to fit (a larger text size, a longer count), never overflows it
     return SizedBox(
       width: reservedWidth,
       height: height,
-      child: Align(alignment: Alignment.centerRight, child: chip),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerRight,
+        child: chip,
+      ),
     );
   }
 }

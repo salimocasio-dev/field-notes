@@ -1,13 +1,21 @@
 // Repaso's games (page 15) as a fresh reader sees them: the real app, the mid-course seed, sessions played by touches,
-// every item at its three moments (asked, answered, answer shown), saved as pictures in play order.
+// every item at its moments (asked; answered, right after the touch; the answer shown with the sign, after a wrong
+// touch; revealed, after the right thing was touched; and for each game its own: Arma la frase's placed tiles,
+// Parejas' matched pairs, Dilo's listening and not-heard tries), saved as pictures in play order.
 //
 //   cd coqui/app && flutter test tool/repaso_shots_test.dart --dart-define=OUT=<dir>
 //
 // The real app shell on the harness's fakes (timed silent clips, the scripted recogniser, the fake clock) at 390 x 844,
 // ratio 2 (pictures of 780 x 1688), the real fonts, reduced motion. The book pictures are the files of historia/libros/
-// (a stand-in for the network, as the site would serve them). The first session is a whole one of ten words; more
-// sessions follow until each game has been answered once right and once wrong. Writes <dir>/NNN-<moment>.png and
-// <dir>/index.json: for each picture the session, the game, the word, the sentence and what was touched.
+// (a stand-in for the network, as the site would serve them). The first session is a whole one of ten words, with at
+// least two words missed; more sessions follow until each game has been answered once right and once wrong. Writes
+// <dir>/NNN-<moment>.png and <dir>/index.json: for each picture the session, the game, the word, the sentence and
+// what was touched.
+//
+// It also checks, and fails the run when it finds: an `ErrorWidget` in the tree at any picture, or a picture that
+// failed to draw (the scenes' own red error box); a game whose layout moved between the moment it was asked and any
+// later one (the instruction line, the chip's place, the round speaker, the tiles and pictures, the reveal's place,
+// Next's place); the end screen not listing every scored word of its session once.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -17,6 +25,7 @@ import 'dart:ui' as ui;
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart' show FontLoader;
 import 'package:flutter_test/flutter_test.dart';
 
@@ -116,12 +125,101 @@ class _Shots {
   final Directory dir;
   final List<Map<String, Object?>> index = [];
 
+  /// How many pictures were checked for error boxes, and for layout against their item's first.
+  int errorChecks = 0;
+  int layoutChecks = 0;
+
+  /// The layout of the item on screen when it was asked (null between items).
+  List<(String, Rect)>? baseline;
+
+  /// An `ErrorWidget` in the tree, or a picture that could not be drawn (coqui_scenes puts its own red box, a
+  /// `ColoredBox` of 0xFF3A1E24 with the error's text, where a picture failed): the run fails.
+  void checkNoErrorBoxes(String where) {
+    errorChecks++;
+    final errors = find.byType(ErrorWidget).evaluate();
+    if (errors.isNotEmpty) {
+      fail(
+        '$where: an ErrorWidget is in the tree: '
+        '${[for (final e in errors) (e.widget as ErrorWidget).message].join(' | ')}',
+      );
+    }
+    final failed = find.byWidgetPredicate(
+      (w) => w is ColoredBox && w.color == const Color(0xFF3A1E24),
+    );
+    if (failed.evaluate().isNotEmpty) {
+      final text = find.descendant(of: failed, matching: find.byType(Text));
+      fail(
+        '$where: a picture failed to draw: '
+        '${[for (final t in text.evaluate()) (t.widget as Text).data].join(' | ')}',
+      );
+    }
+  }
+
+  /// Where the fixed parts of a game are: the instruction line, the chip's place, the round speaker, the tiles,
+  /// pictures and sounds, Dilo's mic, the reveal's place, Next's place.
+  List<(String, Rect)> geometry() {
+    final out = <(String, Rect)>[];
+    void add(String name, Finder f) {
+      final n = f.evaluate().length;
+      for (var i = 0; i < n; i++) {
+        out.add(('$name[$i]', tester.getRect(f.at(i))));
+      }
+    }
+
+    add(
+      'instruction',
+      find.byWidgetPredicate(
+        (w) => w is Text && w.style == CoquiText.lessonHint,
+      ),
+    );
+    add('chip', find.byType(StreakChip));
+    add('speaker', find.byType(RoundSpeaker));
+    add('picture', find.byType(PictureChoice));
+    add('tile', find.byType(WordTile));
+    add('sound', find.byType(SpeakerTile));
+    add('mic', byTypeName('RepasoMic'));
+    add('reveal', find.byKey(const ValueKey('reveal')));
+    add('next', find.byKey(const ValueKey('next-slot')));
+    return out;
+  }
+
+  /// The layout is the one the item had when it was asked: nothing moved.
+  void checkLayout(String where) {
+    final base = baseline;
+    if (base == null) return;
+    layoutChecks++;
+    final now = geometry();
+    final moved = <String>[];
+    if (now.length != base.length) {
+      moved.add('${base.length} parts then, ${now.length} now');
+    } else {
+      for (var i = 0; i < now.length; i++) {
+        final a = base[i].$2, b = now[i].$2;
+        if ((a.left - b.left).abs() > .01 ||
+            (a.top - b.top).abs() > .01 ||
+            (a.width - b.width).abs() > .01 ||
+            (a.height - b.height).abs() > .01) {
+          moved.add('${now[i].$1}: $a -> $b');
+        }
+      }
+    }
+    if (moved.isNotEmpty) fail('$where: the layout moved: ${moved.join('; ')}');
+  }
+
   Future<void> shoot(String moment, Map<String, Object?> what) async {
     for (var i = 0; i < 2; i++) {
       await tester.runAsync(
         () => Future<void>.delayed(const Duration(milliseconds: 15)),
       );
       await tester.pump();
+    }
+    final n = index.length + 1;
+    final where = 'picture $n ($moment, ${what['game'] ?? what['screen']})';
+    checkNoErrorBoxes(where);
+    if (moment == 'asked') {
+      baseline = geometry();
+    } else if (what['screen'] == null) {
+      checkLayout(where);
     }
     final view = tester.binding.renderViews.first;
     final layer = view.debugLayer! as OffsetLayer;
@@ -132,7 +230,6 @@ class _Shots {
       image.dispose();
       return Uint8List.fromList(b);
     });
-    final n = index.length + 1;
     final file = '${n.toString().padLeft(3, '0')}-$moment.png';
     File('${dir.path}/$file').writeAsBytesSync(png!);
     index.add({'n': n, 'file': file, 'moment': moment, ...what});
@@ -175,6 +272,9 @@ void main() {
     // right and wrong, each game: how many of each have been played
     final done = <String, Set<bool>>{for (final g in _games.keys) g: {}};
     bool covered() => done.values.every((s) => s.length == 2);
+    var returned = 0;
+    var wrongTotal = 0;
+    var endsChecked = 0;
 
     for (
       var session = 1;
@@ -185,6 +285,7 @@ void main() {
       await app.settle(rounds: 10);
       dynamic s() => stateNamed(tester, 'RepasoScreen').session;
       final words = [for (final w in s().words as List) w.word as String];
+      shots.baseline = null;
       await shots.shoot('start', {
         'session': session,
         'screen': 'start',
@@ -192,9 +293,13 @@ void main() {
       });
       await app.tap(find.byType(LessonStartButton));
       Object? acted;
-      var shownFor = -1;
+      Object? shotFor; // the entry whose sign / reveal has been taken
+      Object? revealFor;
       Map<String, Object?> about = {};
       var touched = '';
+      var wrongItem = false;
+      var micTries = 0;
+      var missed = 0; // scored items answered wrong in this session
       for (var t = 0; ; t += 100) {
         if (t > 30 * 60 * 1000) fail('session $session did not end');
         final ss = s();
@@ -208,20 +313,36 @@ void main() {
           return l.isNotEmpty ? l : 'picture ${k + 1}';
         }
 
+        Future<void> touchChoice(int k) async {
+          if (kind == 'HearItem') {
+            await app.tap(find.byType(WordTile).at(k));
+          } else {
+            final g = await tester.startGesture(
+              tester.getCenter(find.byType(PictureChoice).at(k)),
+            );
+            await g.up();
+            await tester.pump();
+          }
+        }
+
         if (item != null &&
             (ss.yourTurn as bool) &&
             !identical(acted, ss.entry)) {
           acted = ss.entry;
           final again = ss.again as bool;
-          // this item: right or wrong? the first of each game one way, the next the other way
-          final want = done[kind]!.contains(false)
-              ? true
-              : done[kind]!.contains(true)
+          // this item: right or wrong? the scored items of a session start with two misses; then the first of each
+          // game is wrong, the second right
+          final seen = done[kind]!;
+          final want = (item.scored as bool) && !again && missed < 2
               ? false
-              : (kind == 'HearItem' ||
-                    kind == 'MatchItem' ||
-                    kind == 'SayItem');
+              : seen.isEmpty
+              ? false
+              : seen.length == 1
+              ? !seen.single
+              : true;
           final right = again ? true : want;
+          wrongItem = !right;
+          micTries = 0;
           final text =
               (item.text as String?) ??
               (kind == 'SayItem' ? item.line.text as String : null);
@@ -238,41 +359,68 @@ void main() {
             if (kind == 'SayItem') 'heard_first': item.line.before,
             'options': [for (var k = 0; k < choices.length; k++) label(k)],
           };
+          if (again) returned++;
+          if (!right) wrongTotal++;
+          if ((item.scored as bool) && !again && !right) missed++;
           await app.settle(rounds: 8);
           await shots.shoot('asked', {...about, 'touched': null});
           final r = choices.indexWhere((c) => c.right as bool);
           final w = r == 0 ? 1 : 0;
           switch (kind) {
-            case 'CualItem' || 'WhereItem':
+            case 'CualItem' || 'WhereItem' || 'HearItem':
               final k = right ? r : w;
               touched = label(k);
-              final g = await tester.startGesture(
-                tester.getCenter(find.byType(PictureChoice).at(k)),
-              );
-              await g.up();
-              await tester.pump();
-            case 'HearItem':
-              final k = right ? r : w;
-              touched = label(k);
-              await app.tap(find.byType(WordTile).at(k));
+              await touchChoice(k);
             case 'BuildItem':
               final order = (item.order as List).cast<String>();
-              final tray = find.descendant(
-                of: find.byType(TileTray).last,
-                matching: find.byType(WordTile),
-              );
+              Finder tile(int k) => find
+                  .descendant(
+                    of: find.byType(TileTray).last,
+                    matching: find.byType(WordTile),
+                  )
+                  .at(k);
               final taps = <String>[];
-              if (!right) {
-                final k = choices.indexWhere((c) => c.label != order.first);
-                taps.add(label(k));
-                await app.tap(tray.at(k));
-              }
-              for (final x in order) {
-                final k = (s().choices as List<dynamic>).indexWhere(
+              Future<void> place(String x) async {
+                final k = (ss.choices as List<dynamic>).indexWhere(
                   (c) => !(c.done as bool) && c.label == x,
                 );
                 taps.add(x);
-                await app.tap(tray.at(k));
+                await app.tap(tile(k));
+              }
+
+              if (!right) {
+                final k = choices.indexWhere((c) => c.label != order.first);
+                taps.add(label(k));
+                await app.tap(tile(k));
+                await shots.shoot('answered', {
+                  ...about,
+                  'right': false,
+                  'touched': taps.last,
+                });
+              }
+              for (var n = 0; n < order.length; n++) {
+                await place(order[n]);
+                if (n == 1 && order.length > 2) {
+                  await app.settle(rounds: 2);
+                  await shots.shoot('placed', {
+                    ...about,
+                    'touched': taps.join(' / '),
+                  });
+                  // a tile in the sentence goes back to the bank when touched, and is put in again
+                  final line = find.descendant(
+                    of: find.byType(TileTray).first,
+                    matching: find.byType(WordTile),
+                  );
+                  await app.tap(line.at(1));
+                  await app.settle(rounds: 2);
+                  await shots.shoot('returned', {
+                    ...about,
+                    'touched':
+                        '${taps.last} (touched in the sentence: back to the bank)',
+                  });
+                  taps.removeLast();
+                  await place(order[1]);
+                }
               }
               touched = taps.join(' / ');
             case 'MatchItem':
@@ -283,17 +431,28 @@ void main() {
                 await app.tap(find.byType(SpeakerTile).at(i));
                 if (!right && i == 0) {
                   final k = (order.indexOf(i) + 1) % 4;
-                  taps.add('sound 1 -> ${words[order[k]]}');
+                  taps.add('sound 1 -> ${words[order[k]]} (a slip)');
                   await app.tap(find.byType(WordTile).at(k));
-                  await app.settle(rounds: 2);
                   await shots.shoot('answered', {
                     ...about,
                     'right': false,
                     'touched': taps.last,
                   });
+                  await app.advance(1100); // the flash clears
+                  await shots.shoot('cleared', {
+                    ...about,
+                    'touched': taps.last,
+                  });
                 }
                 taps.add('sound ${i + 1} -> ${words[i]}');
                 await app.tap(find.byType(WordTile).at(order.indexOf(i)));
+                if (i == 1) {
+                  await app.settle(rounds: 2);
+                  await shots.shoot('matched', {
+                    ...about,
+                    'touched': taps.join(', '),
+                  });
+                }
               }
               touched = taps.join(', ');
             case 'SayItem':
@@ -305,57 +464,101 @@ void main() {
                   ? 'the mic: "${forms.first}"'
                   : 'the mic: "no sé", then "eso no"';
           }
-          if (kind != 'SayItem' && !(kind == 'MatchItem' && !right)) {
+          if (kind != 'SayItem' && kind != 'BuildItem' && kind != 'MatchItem') {
             await app.advance(150);
             await shots.shoot('answered', {
               ...about,
               'right': right,
               'touched': touched,
             });
+          } else if (right && kind != 'SayItem') {
+            await app.advance(150);
+            await shots.shoot('answered', {
+              ...about,
+              'right': true,
+              'touched': touched,
+            });
           }
           if (!again) done[kind]!.add(right);
-          shownFor = -1;
-        } else if (choices.any((c) => c.sign as bool) && shownFor != ss.index) {
-          shownFor = ss.index as int;
-          await app.settle(rounds: 4);
-          await shots.shoot('shown', {...about, 'touched': touched});
-          final k = choices.indexWhere((c) => c.sign as bool);
-          if (kind == 'HearItem') {
-            await app.tap(find.byType(WordTile).at(k));
-          } else {
-            final g = await tester.startGesture(
-              tester.getCenter(find.byType(PictureChoice).at(k)),
-            );
-            await g.up();
-            await tester.pump();
+          shotFor = null;
+          revealFor = null;
+        } else if (ss.canNext as bool) {
+          // the item is over but for Next: after a wrong touch (or tries) this is "the right thing was touched"
+          if (wrongItem && !identical(revealFor, ss.entry)) {
+            revealFor = ss.entry;
+            await app.settle(rounds: 8);
+            await shots.shoot('revealed', {...about, 'touched': touched});
           }
+          await app.tap(find.widgetWithText(LessonButton, 'Next'));
+        } else if (choices.any((c) => c.sign as bool)) {
+          if (!identical(shotFor, ss.entry)) {
+            shotFor = ss.entry;
+            await app.settle(rounds: 4);
+            await shots.shoot('shown', {...about, 'touched': touched});
+          }
+          await touchChoice(choices.indexWhere((c) => c.sign as bool));
         } else if (ss.mic != null &&
             (ss.mic as Enum).name == 'ready' &&
             kind == 'SayItem') {
           await app.tap(byTypeName('RepasoMic'));
-          await app.advance(700);
-          await shots.shoot('answered', {
+          await app.advance(100);
+          micTries++;
+          await shots.shoot('listening', {
             ...about,
-            'right': ss.heardRight,
-            'heard': ss.heard,
+            'try': micTries,
             'touched': touched,
           });
-        } else if (ss.canNext as bool) {
-          await app.settle(rounds: 8);
-          await shots.shoot('shown', {...about, 'touched': touched});
-          await app.tap(find.widgetWithText(LessonButton, 'Next'));
-        } else if (kind == 'CualItem' &&
-            choices.any((c) => c.check as bool) &&
-            shownFor != ss.index) {
-          // ¿Cuál? goes on by itself: its last moment is the answer with its check
-          shownFor = ss.index as int;
-          await shots.shoot('shown', {...about, 'touched': touched});
+          await app.advance(700);
+          if (ss.heardRight as bool) {
+            await shots.shoot('answered', {
+              ...about,
+              'right': true,
+              'heard': ss.heard,
+              'touched': touched,
+            });
+          } else {
+            await shots.shoot('not-heard', {
+              ...about,
+              'try': micTries,
+              'right': false,
+              'heard': ss.heard,
+              'touched': touched,
+            });
+          }
         }
         await app.advance(100);
       }
       await app.settle(rounds: 6);
       final end = s().end;
+      // every scored word of the session is in exactly one of the two lists
+      final rows = [
+        for (final g in end.groups as List)
+          for (final r in g.rows as List) r.word as String,
+      ];
+      expect(rows.length, rows.toSet().length, reason: 'a word twice');
+      expect(rows.toSet(), words.toSet(), reason: 'every word listed once');
+      expect(end.of, words.length);
+      endsChecked++;
+      shots.baseline = null;
       await shots.shoot('end', {
+        'session': session,
+        'screen': 'end',
+        'summary': end.summary,
+        'listed': rows,
+        'missed': [
+          for (final g in end.groups as List)
+            if ((g.title as String) == 'Coming back soon')
+              for (final r in g.rows as List) r.word as String,
+        ],
+      });
+      // the list scrolls: the last rows, above the button
+      final list = find.descendant(
+        of: byTypeName('RepasoEndView'),
+        matching: find.byType(SingleChildScrollView),
+      );
+      await tester.drag(list, const Offset(0, -4000));
+      await app.settle(rounds: 6);
+      await shots.shoot('end-bottom', {
         'session': session,
         'screen': 'end',
         'summary': end.summary,
@@ -363,6 +566,8 @@ void main() {
       await app.tap(find.text('Back to Palabras'));
       await app.settle(rounds: 5);
     }
+    // the praise of the last item, cut short by Next, is a clip of the harness still counting its length
+    await app.advance(5000);
     File('${dir.path}/index.json').writeAsStringSync(
       const JsonEncoder.withIndent(' ').convert({
         'screen': '390 x 844, ratio 2',
@@ -370,6 +575,15 @@ void main() {
         'covered': {
           for (final e in done.entries)
             _games[e.key]: [for (final b in e.value) b ? 'right' : 'wrong'],
+        },
+        'returned_items': returned,
+        'wrong_answers': wrongTotal,
+        'checks': {
+          'no ErrorWidget and no failed picture, pictures checked':
+              shots.errorChecks,
+          'layout equal to the item\'s first, pictures checked':
+              shots.layoutChecks,
+          'end screens listing every scored word once': endsChecked,
         },
         'pictures': shots.index,
       }),

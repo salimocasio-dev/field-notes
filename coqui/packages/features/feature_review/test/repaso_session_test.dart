@@ -179,7 +179,7 @@ void main() {
       expect(a[3], isA<int>());
     }
     expect(b.answersOf(Skill.mouth), isEmpty);
-    expect(b.s.end!.summary, '10 of 10 right the first time');
+    expect(b.s.end!.summary, '10 of 10 words right the first time');
     expect(b.s.end!.groups.single.rows, hasLength(10));
     // the end lists each word with the sentence it was asked in
     for (final r in b.s.end!.groups.single.rows) {
@@ -203,22 +203,27 @@ void main() {
     final first = b.s.played.first;
     final again = b.s.played.where((q) => q.again).toList();
     expect(again, hasLength(1));
-    expect(identical(again.single.item, first.item), isTrue);
+    // the same game, word and sentence; not the identical item (see the test of the arrangement)
+    final back = again.single.item!;
+    expect(
+      (back.runtimeType, back.kind, back.word, back.clip),
+      (first.item!.runtimeType, first.item!.kind, first.item!.word, first.item!.clip),
+    );
     expect(b.s.played.indexOf(again.single), 3);
     // scored once (wrong), asked again with nothing written
     final ear = b.answersOf(Skill.ear);
     expect(ear, hasLength(10));
     expect((ear.first['args'] as List)[2], isFalse);
     expect(b.s.secondAnswers.single.ok, isTrue);
-    expect(b.s.end!.summary, '9 of 10 right the first time');
+    expect(b.s.end!.summary, '9 of 10 words right the first time');
     expect(b.s.end!.groups.map((g) => g.title), [
-      'Moving up',
+      'Got it the first time',
       'Coming back soon',
     ]);
     expect(b.s.end!.groups.last.rows.single.word, first.item!.word);
   });
 
-  test('wrong in ¿Cuál? and ¿Qué oyes?: red-orange on his, the sign and the green ring on the right one', () async {
+  test('wrong in ¿Cuál? and ¿Qué oyes?: red-orange and an X on his, the sign alone on the right one, green and a check only once he touches it', () async {
     for (final kind in [GameKind.cual, GameKind.hear]) {
       final b = Bench(seed: 3);
       final at = b.s.queue.indexWhere((q) => q.item?.kind == kind);
@@ -227,21 +232,33 @@ void main() {
       final w = r == 0 ? 1 : 0;
       b.s.touch(w);
       await b.vt.settle();
+      // his: the red-orange ring and the X badge, at once
+      expect(b.s.choices[w].ring, OptionRing.bad, reason: '$kind');
+      expect(b.s.choices[w].cross, isTrue);
+      expect(b.s.choices[w].check, isFalse);
       await b.vt.runUntil(() => b.s.choices.any((c) => c.sign));
       expect(b.s.choices[w].ring, OptionRing.bad, reason: '$kind');
-      expect(b.s.choices[r].ring, OptionRing.ok);
+      // the right one: the sign, and no green ring and no check: not a hit yet
       expect(b.s.choices[r].sign, isTrue);
+      expect(b.s.choices[r].ring, OptionRing.none);
+      expect(b.s.choices[r].check, isFalse);
       expect(b.s.streak, 0);
       // only the right one takes the touch now
       b.s.touch(w);
       await b.vt.settle();
       expect(b.s.choices[r].sign, isTrue);
       b.s.touch(r);
-      await b.vt.runUntil(() => b.s.canNext || b.s.index > at);
-      if (kind == GameKind.hear) {
-        expect(b.s.showText, isTrue);
-        expect(b.s.canNext, isTrue);
-      }
+      await b.vt.settle();
+      // touched: green ring and the check, the sign gone; his keeps its red and its X
+      expect(b.s.choices[r].sign, isFalse);
+      expect(b.s.choices[r].ring, OptionRing.ok);
+      expect(b.s.choices[r].check, isTrue);
+      expect(b.s.choices[w].ring, OptionRing.bad);
+      expect(b.s.choices[w].cross, isTrue);
+      // the sentence shows and Next is there at once (both games)
+      await b.vt.runUntil(() => b.s.canNext);
+      expect(b.s.showText, isTrue);
+      expect(b.s.canNext, isTrue);
       await b.leave();
     }
   });
@@ -273,16 +290,23 @@ void main() {
     }
   });
 
+  HearItem hearOf(List<RepasoWord> tiles) => HearItem(
+    word: tiles.first.word,
+    sentence: realRepaso.sentences.first,
+    tiles: [for (final w in tiles) w.word],
+    answer: 0,
+    solo: [for (final w in tiles) w.solo],
+  );
+
   test('a speaker touched on a ¿Qué oyes? tile plays the word alone and is not silence', () async {
-    final b = Bench(json: everythingJson(realRepaso), seed: 2);
-    final at = b.s.queue.indexWhere(
-      (q) =>
-          q.item is HearItem &&
-          (q.item! as HearItem).solo.any((c) => c != null),
-    );
-    if (at < 0) return; // no tile with a clip of its own in this session
-    await b.reach(at);
-    final k = b.s.choices.indexWhere((c) => c.clip != null);
+    final b = Bench(seed: 2);
+    final solo = realRepaso.words.where((w) => w.solo != null).take(3).toList();
+    expect(solo, hasLength(3));
+    b.s.queue = [QueueEntry.scored(hearOf(solo))];
+    await b.reach(0);
+    // every tile has a clip of its word alone: every tile has its speaker
+    expect([for (final c in b.s.choices) c.clip], [for (final w in solo) w.solo]);
+    final k = 1;
     await b.vt.advance(5000);
     b.s.touchSpeaker(k);
     await b.vt.settle();
@@ -292,6 +316,33 @@ void main() {
     ); // 8 s after the sentence, 3 s after the speaker: no replay yet
     expect(b.s.choices.any((c) => c.sign), isFalse);
     await b.leave();
+  });
+
+  test('H: speakers on the word tiles only when every tile of the item has a clip of its word alone; else none', () async {
+    final solo = realRepaso.words.where((w) => w.solo != null).toList();
+    final plain = realRepaso.words.where((w) => w.solo == null).toList();
+    expect(hearOf(solo.take(3).toList()).speakers, isTrue);
+    for (final mix in [
+      [solo[0], solo[1], plain[0]],
+      [solo[0], plain[0], plain[1]],
+      [plain[0], plain[1], plain[2]],
+    ]) {
+      final item = hearOf(mix);
+      expect(item.speakers, isFalse);
+      final b = Bench(seed: 2);
+      b.s.queue = [QueueEntry.scored(item)];
+      await b.reach(0);
+      // not one of the item's tiles has a speaker, not even the ones that have a clip
+      expect([for (final c in b.s.choices) c.clip], [null, null, null]);
+      // and no touch on a tile's speaker plays anything
+      final plays = b.clips.plays.length;
+      for (var k = 0; k < 3; k++) {
+        b.s.touchSpeaker(k);
+      }
+      await b.vt.settle();
+      expect(b.clips.plays.length, plays);
+      await b.leave();
+    }
   });
 
   test('the play games never time out', () async {
@@ -312,7 +363,7 @@ void main() {
     await b.play(plan: (e, n) => e.item!.scored && !e.again ? 'w' : 'r');
     expect(b.s.played.where((q) => q.again), hasLength(5));
     expect(b.answersOf(Skill.ear), hasLength(10));
-    expect(b.s.end!.summary, '0 of 10 right the first time');
+    expect(b.s.end!.summary, '0 of 10 words right the first time');
   });
 
   test('Arma la frase and Parejas: a wrong touch jumps back and breaks the row; nothing is written', () async {

@@ -23,7 +23,14 @@ abstract final class RepasoStrings {
   static const next = 'Next';
   static const cantSpeak = "Can't speak now";
   static const nothingHeard = 'Nothing heard';
-  static String rightFirst(int n, int of) => '$n of $of right the first time';
+  static const listening = 'Listening…';
+  static const tryAgain = 'Try again';
+  static const gotItFirst = 'Got it the first time';
+  static String heard(String what) => 'Heard: $what';
+
+  /// The end screen's headline: how many of the session's scored words he got right the first time.
+  static String rightFirst(int n, int of) =>
+      '$n of $of words right the first time';
   static String inARow(int n) => '$n in a row';
 }
 
@@ -53,7 +60,13 @@ class Choice {
   /// The check badge of a right answer.
   bool check = false;
 
-  /// The big sign: touch this one.
+  /// The X badge of a wrong touch (the corner where the check goes).
+  bool cross = false;
+
+  /// Parejas: the number of the pair this tile is in (1 to 4, in the order matched), beside the check.
+  int? number;
+
+  /// The sign (the pointing hand): touch this one.
   bool sign = false;
 
   /// Arma la frase: the tile has gone up into the sentence. Parejas: the pair is found.
@@ -126,7 +139,7 @@ class RepasoSession extends LessonBase {
     this.storage,
     this.options = const ReviewOptions(),
     this.warm,
-  }) : super(captions: CaptionMode.during) {
+  }) : super(captions: CaptionMode.never) {
     // one seed for the session: every choice of the plan follows from it
     seed = (rng.next() * 4294967296).floor();
     _last = LastAsked(storage);
@@ -164,8 +177,33 @@ class RepasoSession extends LessonBase {
   final List<RepasoAnswer> secondAnswers = [];
   RepasoEnd? end;
 
+  /// How many planned items are finished (the bar's green dashes). A return is not a planned item.
+  int _finishedItems = 0;
+
+  /// The scored items that were missed and have not yet been answered when they came back: their dash is red-orange.
+  final Set<QueueEntry> _missed = {};
+
+  /// The planned items of the queue, in order (the bar has one dash for each; a return has none of its own).
+  List<QueueEntry> get _planned => [
+    for (final q in queue)
+      if (!q.again) q,
+  ];
+
+  /// The dashes (by place) that are red-orange now.
+  Set<int> get barMissed {
+    final planned = _planned;
+    return {
+      for (final q in _missed)
+        if (planned.contains(q)) planned.indexOf(q),
+    };
+  }
+
   /// Right answers in a row (shown from three up).
   int streak = 0;
+
+  /// How many pictures a ¿Dónde? item has: 3, or 2 when the screen has no room for three of them at 150 px wide at
+  /// least (the screen says, before the session runs).
+  int wherePictures = 3;
 
   /// Dilo is off for this session ("Can't speak now", or speaking cannot work here).
   bool sayOff = false;
@@ -186,13 +224,20 @@ class RepasoSession extends LessonBase {
   List<Choice> speakers = [];
   int? selectedSpeaker;
 
-  /// Arma la frase: the words put in order so far.
-  List<String> built = [];
+  /// Arma la frase: the choice put in each place of the sentence, in order of place (null: the place is empty).
+  List<int?> slots = [];
+
+  /// Arma la frase: the words put in the sentence so far, in order of place.
+  List<String> get built => [
+    for (final k in slots)
+      if (k != null) choices[k].label,
+  ];
 
   /// His turn: the sentence has ended.
   bool yourTurn = false;
 
-  /// The sentence shows as text (with the word lit, ¿Qué oyes?).
+  /// The sentence shows as text (with the word lit, ¿Qué oyes?), and its story picture where there is one: the
+  /// reveal, once the item is answered.
   bool showText = false;
 
   /// The Next button is there.
@@ -203,14 +248,48 @@ class RepasoSession extends LessonBase {
   String heard = '';
   bool heardRight = false;
 
+  /// Dilo: a try was made and was not heard right (what was heard shows; "Try again" if one is left).
+  bool notHeard = false;
+
+  // the clip sounding now (the round speaker pulses while the item's sentence is)
+  String? _playingId;
+  int _playTok = 0;
+
+  /// The item's sentence is sounding now.
+  bool get sentencePlaying {
+    final id = _playingId;
+    return id != null && id == item?.clip;
+  }
+
+  @override
+  Future<bool> playClip(String id) async {
+    final mine = ++_playTok;
+    _playingId = id;
+    changed();
+    try {
+      return await super.playClip(id);
+    } finally {
+      if (_playTok == mine) {
+        _playingId = null;
+        changed();
+      }
+    }
+  }
+
   // touches go here
   void Function(int k)? _onChoice;
   void Function(int k)? _onSpeaker;
+  void Function()? _onSentence;
   void Function()? _onNext;
   void Function()? _onMic;
 
   void touch(int k) => _onChoice?.call(k);
+
+  /// A tile's own speaker (a word said alone in ¿Qué oyes?, a sentence in Parejas).
   void touchSpeaker(int k) => _onSpeaker?.call(k);
+
+  /// The game's round speaker: the sentence again.
+  void replay() => _onSentence?.call();
   void pressNext() => _onNext?.call();
   void pressMic() => _onMic?.call();
 
@@ -230,7 +309,7 @@ class RepasoSession extends LessonBase {
     words = ws.words;
     practice = ws.practice;
     queue = planner.queue(words);
-    makeDots(words.length);
+    makeDots(queue.length);
     setScreen(LessonScreen.start);
     final n = words.length;
     final items = queue.length;
@@ -258,32 +337,48 @@ class RepasoSession extends LessonBase {
     _speechOk = await _speechAvailable();
     await Future.any<void>([voiceReady, sleep(6000)]);
     try {
-      var scoredDone = 0;
       for (var i = 0; i < queue.length; i++) {
         index = i;
         final q = queue[i];
         if (q.slot) {
           final recent = _recentFirst(i);
           q.item = planner.playItem(recent, canSay: _canSay);
-          if (q.item == null) continue;
+          if (q.item == null) {
+            // no game has material for this place: it is not asked, and the bar has no dash for it
+            queue.removeAt(i);
+            i--;
+            makeDots(_planned.length);
+            continue;
+          }
           _last.writeKind(planner.nextKind);
           unawaited(clips.preload([?q.item!.clip, ..._clipsOf(q.item!)]));
         }
-        step(scoredDone);
+        step(_finishedItems);
         final ok = await _play(q);
-        if (q.item!.scored && !q.again) {
-          scoredDone++;
-          step(scoredDone);
-          if (!ok && returns < repasoMaxReturns) {
-            returns++;
-            final at = i + repasoReturnAfter < queue.length
-                ? i + repasoReturnAfter
-                : queue.length;
-            queue.insert(at, QueueEntry.again(q.item!));
+        if (q.again) {
+          // its return has been answered: the dash that was red-orange goes green
+          _missed.remove(q.origin);
+          changed();
+        } else {
+          _finishedItems++;
+          step(_finishedItems);
+          if (q.item!.scored && !ok) {
+            _missed.add(q);
+            if (returns < repasoMaxReturns) {
+              returns++;
+              final at = i + repasoReturnAfter < queue.length
+                  ? i + repasoReturnAfter
+                  : queue.length;
+              queue.insert(
+                at,
+                QueueEntry.again(_rearranged(q.item!), origin: q),
+              );
+            }
+            changed();
           }
         }
       }
-      step(words.length);
+      step(_planned.length);
     } on SessionStopped {
       return;
     }
@@ -292,6 +387,14 @@ class RepasoSession extends LessonBase {
     _addMinutes();
     _finish();
   }
+
+  /// A missed item as it comes back: the same sentence and game, the pictures or tiles in another order (never the
+  /// identical arrangement).
+  GameItem _rearranged(GameItem it) => switch (it) {
+    CualItem() => it.rearranged(),
+    HearItem() => it.rearranged(planner.rng.next()),
+    _ => it,
+  };
 
   Future<bool> _speechAvailable() async {
     final s = speech;
@@ -324,7 +427,7 @@ class RepasoSession extends LessonBase {
   Iterable<String> _clipsOf(GameItem it) => switch (it) {
     MatchItem(:final sentences) => [for (final s in sentences) s.clip],
     SayItem(:final line) => [line.clip],
-    HearItem(:final solo) => [for (final c in solo) ?c],
+    HearItem(:final solo, :final speakers) => [if (speakers) ...solo.nonNulls],
     _ => const [],
   };
 
@@ -332,15 +435,18 @@ class RepasoSession extends LessonBase {
     choices = [];
     speakers = [];
     selectedSpeaker = null;
-    built = [];
+    slots = [];
     yourTurn = false;
     showText = false;
     canNext = false;
     mic = MicState.dead;
     heard = '';
     heardRight = false;
+    notHeard = false;
+    _praiseToken++;
     _onChoice = null;
     _onSpeaker = null;
+    _onSentence = null;
     _onNext = null;
     _onMic = null;
     hideCaption();
@@ -405,18 +511,28 @@ class RepasoSession extends LessonBase {
     answers.add(RepasoAnswer(it.word, it.kind, ok: ok, ms: ms, auto: auto));
   }
 
-  /// The touch on a shown answer: the big sign is on [k]; he touches it.
+  /// A wrong touch: the red-orange ring and, at the corner where a right one has its check, the round X badge. It
+  /// stays until the item is over.
+  void _markWrong(Choice c) {
+    c
+      ..ring = OptionRing.bad
+      ..cross = true;
+  }
+
+  /// The right one is marked with the sign (the pointing hand) and he must touch it. It has no ring until he does:
+  /// a green ring before the touch would read as a hit. When he touches it, it gets the green ring and the check.
   Future<void> _touchShown(int k) async {
-    choices[k]
-      ..sign = true
-      ..ring = OptionRing.ok;
+    choices[k].sign = true;
     changed();
     final p = Completer<void>();
     _onChoice = (j) {
       if (j == k && !p.isCompleted) p.complete();
     };
     await p.future;
-    choices[k].sign = false;
+    choices[k]
+      ..sign = false
+      ..ring = OptionRing.ok
+      ..check = true;
     _onChoice = null;
     changed();
   }
@@ -432,6 +548,50 @@ class RepasoSession extends LessonBase {
     await p.future;
     canNext = false;
     _onNext = null;
+  }
+
+  // the praise that plays while the item waits for Next; Next cuts it short, and a praise that has not started yet
+  // when Next is pressed never does
+  int _praiseToken = 0;
+
+  Future<void> _praise(String clip) async {
+    final my = ++_praiseToken;
+    try {
+      await waitMs(300);
+      if (my != _praiseToken) return;
+      await say(clip, 0);
+    } on SessionStopped {
+      // the lesson was left
+    }
+  }
+
+  /// The item is answered: its reveal (the sentence as text, its story picture where it has one) and the Next button
+  /// show at once, the praise plays meanwhile, and the item waits for Next.
+  Future<void> _revealAndNext(String praiseClip) async {
+    showText = true;
+    canNext = true;
+    changed();
+    unawaited(_praise(praiseClip));
+    final p = Completer<void>();
+    _onNext = () {
+      if (!p.isCompleted) p.complete();
+    };
+    await p.future;
+    _praiseToken++;
+    hush();
+    canNext = false;
+    _onNext = null;
+  }
+
+  /// The round speaker of a game that plays a sentence: while the sentence has not yet ended (and for a scored game
+  /// while he cannot answer), a touch on it does nothing; after, it plays the sentence again.
+  void _replayWith(String clip, bool Function() ready, {bool silence = false}) {
+    _onSentence = () {
+      if (!ready()) return;
+      if (silence) _lastSpeakerTap = clock.nowMs();
+      hush();
+      unawaited(playClip(clip));
+    };
   }
 
   // ---- ¿Cuál? (scored): cual.js cualItem, with this item's sentence
@@ -452,6 +612,7 @@ class RepasoSession extends LessonBase {
       if (!p.isCompleted) p.complete();
     };
     _lastSpeakerTap = -1;
+    _replayWith(it.clip, () => tEnd != null && got == null, silence: true);
     await say(it.clip, 0);
     tEnd = clock.nowMs();
     for (final c in choices) {
@@ -467,6 +628,7 @@ class RepasoSession extends LessonBase {
       hush();
     }
     _onChoice = null;
+    _onSentence = null;
     final right = !auto && choices[got!].right;
     if (!again) {
       _score(it, ok: right, ms: ms, auto: auto);
@@ -481,23 +643,20 @@ class RepasoSession extends LessonBase {
       choices[1 - got!].dim = true;
       changed();
       sfxRight();
-      await bien(course.fixedClip('review_praise_right'));
+      await _revealAndNext(course.fixedClip('review_praise_right'));
     } else {
       _wrong();
       final k = choices.indexWhere((c) => c.right);
       if (!auto) {
         sfxBonk();
-        choices[got!]
-          ..dim = true
-          ..ring = OptionRing.bad;
+        _markWrong(choices[got!]);
         changed();
         await waitMs(500);
       }
       await _touchShown(k);
       sfxRight();
-      await bien(course.fixedClip('review_praise_after_miss'));
+      await _revealAndNext(course.fixedClip('review_praise_after_miss'));
     }
-    await waitMs(400);
     return right;
   }
 
@@ -521,7 +680,12 @@ class RepasoSession extends LessonBase {
   Future<bool> _hear(HearItem it, bool again) async {
     choices = [
       for (var k = 0; k < it.tiles.length; k++)
-        Choice(label: it.tiles[k], clip: it.solo[k], right: k == it.answer),
+        Choice(
+          label: it.tiles[k],
+          // a speaker on the tiles only when every tile of the item has a clip of its word alone
+          clip: it.speakers ? it.solo[k] : null,
+          right: k == it.answer,
+        ),
     ];
     changed();
     await waitMs(500);
@@ -544,7 +708,8 @@ class RepasoSession extends LessonBase {
       hush();
       unawaited(playClip(c));
     };
-    await _sayQuiet(it.clip);
+    _replayWith(it.clip, () => tEnd != null && got == null, silence: true);
+    await say(it.clip, 0);
     tEnd = clock.nowMs();
     for (final c in choices) {
       c.pre = false;
@@ -560,6 +725,7 @@ class RepasoSession extends LessonBase {
     }
     _onChoice = null;
     _onSpeaker = null;
+    _onSentence = null;
     final right = !auto && choices[got!].right;
     if (!again) {
       _score(it, ok: right, ms: ms, auto: auto);
@@ -576,67 +742,76 @@ class RepasoSession extends LessonBase {
       }
       changed();
       sfxRight();
-      await bien(course.fixedClip('review_praise_right'));
+      await _revealAndNext(course.fixedClip('review_praise_right'));
     } else {
       _wrong();
       if (!auto) {
         sfxBonk();
-        choices[got!]
-          ..dim = true
-          ..ring = OptionRing.bad;
+        _markWrong(choices[got!]);
         changed();
         await waitMs(500);
       }
       await _touchShown(it.answer);
-      choices[it.answer].check = true;
+      for (var k = 0; k < choices.length; k++) {
+        if (k != it.answer && k != got) choices[k].dim = true;
+      }
       sfxRight();
-      await bien(course.fixedClip('review_praise_after_miss'));
+      await _revealAndNext(course.fixedClip('review_praise_after_miss'));
     }
-    showText = true;
-    changed();
-    await _waitNext();
     return right;
-  }
-
-  /// A sentence with no caption under it (the screen shows captions in ¿Cuál? only: the other games would show their
-  /// answer in it).
-  Future<void> _sayQuiet(String clip) async {
-    await say(clip, 0);
-    hideCaption();
   }
 
   // ---- Arma la frase (play)
 
   Future<bool> _build(BuildItem it) async {
     choices = [for (final t in it.pool) Choice(label: t)];
+    // the sentence's places: a row of empty slots, one for each word; a tile goes to the first empty one
+    slots = List<int?>.filled(it.order.length, null);
     changed();
     var wrongs = 0;
     var listening = true;
-    _onSpeaker = (_) {
-      if (listening) return;
-      hush();
-      unawaited(playClip(it.clip));
-    };
+    _replayWith(it.clip, () => !listening);
     final p = Completer<void>();
     _onChoice = (k) {
       if (listening || p.isCompleted) return;
       final c = choices[k];
-      if (c.done) return;
-      if (c.label == it.order[built.length]) {
-        c.done = true;
-        built = [...built, c.label];
+      if (c.done) {
+        // a tile in the sentence goes back to the bank, to the place it left empty there
+        final at = slots.indexOf(k);
+        if (at >= 0) slots[at] = null;
+        c.done = false;
         sfxBlip();
         changed();
-        if (built.length == it.order.length) p.complete();
+        return;
+      }
+      final at = slots.indexOf(null);
+      if (at < 0) return;
+      if (c.label == it.order[at]) {
+        c.done = true;
+        slots[at] = k;
+        sfxBlip();
+        changed();
+        if (!slots.contains(null)) p.complete();
       } else {
+        // a wrong tile jumps back, and its border flashes red-orange once
         wrongs++;
         c.shakes++;
+        c.ring = OptionRing.bad;
         sfxBonk();
         changed();
+        final mine = c.shakes;
+        unawaited(
+          waitMs(600).then((_) {
+            if (c.shakes == mine && c.ring == OptionRing.bad) {
+              c.ring = OptionRing.none;
+              changed();
+            }
+          }, onError: (Object _) {}),
+        );
       }
     };
     await waitMs(300);
-    await _sayQuiet(it.clip);
+    await say(it.clip, 0);
     listening = false;
     for (final c in choices) {
       c.pre = false;
@@ -645,17 +820,14 @@ class RepasoSession extends LessonBase {
     changed();
     await p.future;
     _onChoice = null;
-    _onSpeaker = null;
+    _onSentence = null;
     if (wrongs == 0) {
       _right();
     } else {
       _wrong();
     }
     sfxRight();
-    showText = true;
-    changed();
-    await bien(course.fixedClip('review_praise_right'));
-    await _waitNext();
+    await _revealAndNext(course.fixedClip('review_praise_right'));
     return wrongs == 0;
   }
 
@@ -674,11 +846,24 @@ class RepasoSession extends LessonBase {
     changed();
     var wrongs = 0;
     var found = 0;
+    var flash = 0;
     final p = Completer<void>();
-    // a wrong word keeps its red-orange ring until the next touch
+    // a wrong pair shows red-orange with the X on both tiles for about a second, then clears (a touch clears it too);
+    // the sound stays chosen, so he can try another word
     void clearWrong() {
+      for (var i = 0; i < speakers.length; i++) {
+        if (speakers[i].cross) {
+          speakers[i]
+            ..cross = false
+            ..ring = selectedSpeaker == i ? OptionRing.sel : OptionRing.none;
+        }
+      }
       for (final c in choices) {
-        if (c.ring == OptionRing.bad) c.ring = OptionRing.none;
+        if (c.cross) {
+          c
+            ..cross = false
+            ..ring = OptionRing.none;
+        }
       }
     }
 
@@ -701,55 +886,66 @@ class RepasoSession extends LessonBase {
       clearWrong();
       if (it.wordOrder[k] == s) {
         hush();
+        found++;
         speakers[s]
           ..done = true
           ..ring = OptionRing.ok
-          ..check = true;
+          ..check = true
+          ..number = found;
         choices[k]
           ..done = true
           ..ring = OptionRing.ok
-          ..check = true;
+          ..check = true
+          ..number = found;
         selectedSpeaker = null;
-        found++;
         sfxRight();
         changed();
         if (found == it.words.length) p.complete();
       } else {
+        // a slip resets the "in a row" count at once, like any wrong answer
         wrongs++;
+        streak = 0;
+        speakers[s]
+          ..ring = OptionRing.bad
+          ..cross = true;
         choices[k]
           ..shakes += 1
-          ..ring = OptionRing.bad;
+          ..ring = OptionRing.bad
+          ..cross = true;
         sfxBonk();
         changed();
+        final mine = ++flash;
+        unawaited(
+          waitMs(1000).then((_) {
+            if (mine == flash) {
+              clearWrong();
+              changed();
+            }
+          }, onError: (Object _) {}),
+        );
       }
     };
     await p.future;
     _onChoice = null;
     _onSpeaker = null;
-    if (wrongs == 0) {
-      _right();
-    } else {
-      _wrong();
-    }
-    await bien(course.fixedClip('review_praise_right'));
-    await _waitNext();
+    if (wrongs == 0) _right();
+    await _revealAndNext(course.fixedClip('review_praise_right'));
     return wrongs == 0;
   }
 
   // ---- ¿Dónde? (play)
 
   Future<bool> _where(WhereItem it) async {
+    // as many pictures as the screen has room for (page 15: never three small ones; two big ones instead)
+    final pics = it.picturesFor(wherePictures);
+    final answer = pics.indexOf(it.pictures[it.answer]);
     choices = [
-      for (var k = 0; k < it.pictures.length; k++)
-        Choice(label: it.pictures[k], right: k == it.answer),
+      for (var k = 0; k < pics.length; k++)
+        Choice(label: pics[k], right: k == answer),
     ];
     changed();
     var listening = true;
-    _onSpeaker = (_) {
-      if (listening) return;
-      hush();
-      unawaited(playClip(it.clip));
-    };
+    _replayWith(it.clip, () => !listening);
     int? got;
     final p = Completer<void>();
     _onChoice = (k) {
@@ -758,7 +954,7 @@ class RepasoSession extends LessonBase {
       if (!p.isCompleted) p.complete();
     };
     await waitMs(500);
-    await _sayQuiet(it.clip);
+    await say(it.clip, 0);
     listening = false;
     for (final c in choices) {
       c.pre = false;
@@ -779,24 +975,21 @@ class RepasoSession extends LessonBase {
       }
       changed();
       sfxRight();
-      await bien(course.fixedClip('review_praise_right'));
+      await _revealAndNext(course.fixedClip('review_praise_right'));
     } else {
       _wrong();
       sfxBonk();
-      choices[got!]
-        ..dim = true
-        ..ring = OptionRing.bad;
+      _markWrong(choices[got!]);
       changed();
       await waitMs(500);
-      await _touchShown(it.answer);
-      choices[it.answer].check = true;
+      await _touchShown(answer);
+      for (var k = 0; k < choices.length; k++) {
+        if (k != answer && k != got) choices[k].dim = true;
+      }
       sfxRight();
-      await bien(course.fixedClip('review_praise_after_miss'));
+      await _revealAndNext(course.fixedClip('review_praise_after_miss'));
     }
-    _onSpeaker = null;
-    showText = true;
-    changed();
-    await _waitNext();
+    _onSentence = null;
     return right;
   }
 
@@ -817,16 +1010,12 @@ class RepasoSession extends LessonBase {
       if (!done.isCompleted) done.complete();
     };
     var listening = false;
-    _onSpeaker = (_) {
-      if (listening || mic == MicState.ok) return;
-      hush();
-      unawaited(playClip(it.line.before));
-    };
+    _replayWith(it.line.before, () => !listening && mic != MicState.ok);
     Future<void> turn() async {
       mic = MicState.dead;
       changed();
       await waitMs(300);
-      await _sayQuiet(it.line.before);
+      await say(it.line.before, 0);
       for (var attempt = 1; attempt <= 2 && !done.isCompleted; attempt++) {
         mic = MicState.ready;
         yourTurn = true;
@@ -840,6 +1029,9 @@ class RepasoSession extends LessonBase {
         if (done.isCompleted) return;
         listening = true;
         hush();
+        // the last try's line goes while the app listens again
+        heard = '';
+        notHeard = false;
         mic = MicState.listening;
         changed();
         SpeechResult r;
@@ -891,21 +1083,28 @@ class RepasoSession extends LessonBase {
           await waitMs(750);
           return;
         }
-        mic = MicState.dead;
-        changed();
-        await waitMs(600);
+        // not heard right: what the app heard shows, and "Try again" under the mic if a try is left (the mic is
+        // ready again at once); after the second try the mic rests a moment before the model plays
+        notHeard = true;
+        if (attempt == 2) {
+          mic = MicState.dead;
+          changed();
+          await waitMs(600);
+        } else {
+          changed();
+        }
       }
       if (done.isCompleted) return;
       // two tries and not heard right: the line itself, the model, and on
       mic = MicState.dead;
       changed();
-      await _sayQuiet(it.line.clip);
+      await say(it.line.clip, 0);
     }
 
     await Future.any<void>([turn(), done.future]);
     _cantSpeak = null;
     _onMic = null;
-    _onSpeaker = null;
+    _onSentence = null;
     if (done.isCompleted || sayOff) {
       hush();
       return false;
@@ -950,7 +1149,7 @@ class RepasoSession extends LessonBase {
       groups: [
         if (ups.isNotEmpty)
           RepasoEndGroup(
-            pr ? ReviewStrings.rightHeading : ReviewStrings.movingUpHeading,
+            pr ? ReviewStrings.rightHeading : RepasoStrings.gotItFirst,
             pr ? '' : ReviewStrings.movingUpSub,
             ups,
           ),

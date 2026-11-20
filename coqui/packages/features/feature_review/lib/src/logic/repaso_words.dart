@@ -4,10 +4,7 @@ library;
 import 'package:coqui_contracts/coqui_contracts.dart';
 
 /// The words of [s], lower case, accents and signs gone (`normalize`, PAL.norm, split).
-List<String> foldedTokens(String s) => [
-  for (final t in normalize(s).trim().split(' '))
-    if (t.isNotEmpty) t,
-];
+List<String> foldedTokens(String s) => repasoTokens(s);
 
 /// A word of a written text and where it stands in it.
 class TextSpanAt {

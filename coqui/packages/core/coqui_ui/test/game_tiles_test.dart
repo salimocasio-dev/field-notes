@@ -26,10 +26,10 @@ Border? _border(WidgetTester t, Finder of) {
       )
       .firstWhere(
         (c) =>
-            c.decoration is BoxDecoration &&
-            (c.decoration! as BoxDecoration).border != null,
+            c.foregroundDecoration is BoxDecoration &&
+            (c.foregroundDecoration! as BoxDecoration).border != null,
       );
-  return (c.decoration! as BoxDecoration).border as Border?;
+  return (c.foregroundDecoration! as BoxDecoration).border as Border?;
 }
 
 void main() {
@@ -525,6 +525,49 @@ void main() {
       );
       await t.tap(find.byType(WordTile).last);
       expect(taps, 0);
+    },
+  );
+
+  testWidgets(
+    'a tile keeps its size, and so does everything round it, when a ring, a badge or the sign comes',
+    (t) async {
+      Future<List<Size>> sizes(
+        ChoiceRing ring, {
+        bool check = false,
+        bool cross = false,
+        bool sign = false,
+      }) async {
+        await t.pumpWidget(
+          _app(
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                WordTile(
+                  word: 'puerta',
+                  ring: ring,
+                  check: check,
+                  cross: cross,
+                  sign: sign,
+                ),
+                const SizedBox(width: 8),
+                const WordTile(word: 'sol'),
+              ],
+            ),
+            still: true,
+          ),
+        );
+        final next = t.getTopLeft(find.byType(WordTile).last);
+        return [
+          t.getSize(find.byType(WordTile).first),
+          t.getSize(find.byType(WordTile).last),
+          Size(next.dx, next.dy),
+        ];
+      }
+
+      final plain = await sizes(ChoiceRing.none);
+      expect(await sizes(ChoiceRing.right, check: true), plain);
+      expect(await sizes(ChoiceRing.wrong, cross: true), plain);
+      expect(await sizes(ChoiceRing.none, sign: true), plain);
     },
   );
 
