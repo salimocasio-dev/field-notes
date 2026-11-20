@@ -1,0 +1,248 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>Los estantes · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of Los estantes (estantes-set.html, drawn in a hidden frame, no goods: they are sprites) with the characters and the small things drawn over it as sprites, each placed from estantes-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule; don Pepe on the ladder is drawn after the ladder), with the shadows of those who stand on the floor. Then cropped to the 196 x 216 view. The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the small things (can, bottle, box, crate, net, flag, drawing, bottle box) are stand-ins drawn here, not final art.
+Address: <code>?m=1</code> story 39 opening, <code>?m=2</code> story 40, <code>?m=3</code> the game of story 40, <code>?m=4</code> story 41 (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<p id="cap"></p>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. The sheet gives each spot's world point, screen point and depth.
+   2. The set for the moment's state (anillos, mesa) is drawn by estantes-set.html in a hidden frame (tags=1: each pixel is tagged by the part that drew it),
+      with the shadows of the people on the floor cast (frame(t, casts): radius by character, sheet: shadows). None for don Pepe on the ladder or the frog on his crate.
+   3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on its screen column. A sprite pixel is hidden
+      where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
+      depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins. Don Pepe on the ladder is drawn after the ladder:
+      the pixels of part escalera do not hide him (sheet: front.after). A thing lying flat (a bottle box seen from above) carries the depth of each of its pixels.
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide). */
+(() => {
+  const A = new URLSearchParams(location.search);
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = fetch('estantes-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; });
+  const T30 = Math.tan(Math.PI / 6);
+
+  /* ---------- the people: today's sprite makers, with these outfits ---------- */
+  const PIEL = KIT.PIEL, PELO = KIT.PELO, FAM = KIT.FAM;
+  const PEPE = { piel: PIEL.c, pelo: PELO.negro, peinado: 'corto', ropa: ['#C8C8D0', '#E4E4EA', '#F6F6FA', '#FFFFFF'], abajo: RP.grey, bigote: 1,
+    // a green apron over his front, from the chest to the knees (drawn over the body, under the head and the arms)
+    detalle: (b, X) => {
+      const G = RP.grn;
+      b.rect(X - 4, 18, 1, 4, G[1]); b.rect(X + 3, 18, 1, 4, G[1]);                  // the straps
+      b.rect(X - 5, 22, 10, 24, G[2]); b.rect(X - 5, 22, 2, 24, G[3]); b.rect(X + 3, 22, 2, 24, G[1]);
+      b.rect(X - 5, 45, 10, 1, G[0]); b.rect(X - 5, 22, 10, 1, G[3]);
+      b.rect(X - 3, 34, 6, 4, G[1]); b.rect(X - 3, 34, 6, 1, G[3]);                  // a pocket
+    } };
+  // El banco's two (historia/escenas/banco.js QUIEN: senora, senor), without that scene's own extras (the ponytail, the hat and the stick)
+  const SENORA = { piel: PIEL.a, pelo: PELO.castano, peinado: 'corto', ropa: RP.grn, falda: 1, zapato: '#F2F2F8' };
+  const SENOR = { piel: PIEL.a, pelo: PELO.blanco, peinado: 'corto', ropa: RP.wood, abajo: RP.grey, bigote: 1 };
+  const LUIS = FAM.hermano;
+
+  /* ---------- small things: stand-ins, drawn here with a dark outline ---------- */
+  const mk = (w, h, fn) => { const b = new Buf(w, h); fn(b); return b.outline().done(); };
+  // a can, 6 x 8 px, and a bottle, 5 x 11 px, drawn into a buffer with the top left corner at (x, y)
+  const canAt = (b, x, y, lab) => {
+    b.rect(x, y, 6, 8, '#B8B8C8'); b.rect(x, y, 6, 1, '#F2F2F8'); b.rect(x + 5, y, 1, 8, '#8E8EA0'); b.rect(x, y + 2, 6, 4, lab || '#D0403A'); b.rect(x, y + 2, 1, 4, '#EC6050');
+    b.rect(x, y + 7, 6, 1, '#6E6E80'); b.px(x + 2, y + 3, '#FFF4B0'); b.px(x + 3, y + 4, '#FFF4B0');
+  };
+  const bottleAt = (b, x, y) => {
+    b.rect(x + 1, y, 3, 1, '#D0403A'); b.rect(x + 1, y + 1, 3, 3, '#5CAA5A'); b.rect(x, y + 4, 5, 7, '#5CAA5A'); b.rect(x + 1, y + 1, 1, 9, '#9CDC98'); b.rect(x + 4, y + 1, 1, 10, '#3A7A3E');
+    b.rect(x, y + 6, 5, 3, '#F6F0DC'); b.rect(x + 1, y + 7, 3, 1, '#D0403A'); b.rect(x, y + 10, 5, 1, '#3A7A3E');
+  };
+  const WOODC = RP.wood;
+  // a wooden crate, wd wide and ht high (its front face), with cans standing in it (two rows of five) when full
+  const crate = (wd, ht, full) => mk(wd + 2, ht + (full ? 14 : 3), b => {
+    const top = full ? 14 : 3, y0 = top;
+    if (full) for (let j = 0; j < 2; j++) for (let i = 0; i < 5; i++) canAt(b, 1 + Math.round((wd - 30) / 2) + i * 6, top - 6 - (j ? 0 : 3));              // the back row a little higher
+    b.rect(1, y0, wd, ht, WOODC[2]); b.rect(1, y0, wd, 1, WOODC[4]);                                // the front and its top rim
+    for (let y = y0 + 4; y < y0 + ht - 1; y += 4) b.rect(1, y, wd, 1, WOODC[1]);                    // the boards' seams
+    b.rect(1, y0, 2, ht, WOODC[1]); b.rect(wd - 1, y0, 2, ht, WOODC[1]); b.rect(1, y0 + ht - 1, wd, 1, WOODC[0]);
+  });
+  // the big cardboard box of the delivery: its flaps open, two cans and two bottles showing in it
+  const caja = () => mk(34, 30, b => {
+    canAt(b, 5, 6); bottleAt(b, 13, 1); canAt(b, 19, 7); bottleAt(b, 27, 2);                         // what shows in it
+    const C = ['#8A5A2A', '#B07A3C', '#C8853C', '#E2A85A'];
+    b.rect(2, 14, 30, 15, C[2]); b.rect(2, 14, 30, 1, C[3]); b.rect(2, 28, 30, 1, C[0]); b.rect(29, 14, 3, 15, C[1]); b.rect(15, 14, 4, 15, '#E8D2A0');   // the front, its rim, its foot, its darker side, the tape
+    b.line(2, 14, 0, 10, C[1]); b.line(1, 14, 0, 11, C[1]); b.line(31, 14, 33, 10, C[0]); b.line(30, 14, 33, 11, C[0]);                                // the flaps, opened out
+  });
+  // a net bag of n cans in a loose bunch
+  const red = n => {
+    const ROWS = { 6: [[0, 9, 1], [6, 9, 0], [12, 9, 1], [3, 4, 0], [10, 4, 1], [6, -1, 0]], 4: [[0, 5, 0], [6, 5, 1], [12, 5, 0], [5, 0, 1]] }[n];
+    const H = Math.max(...ROWS.map(r => r[1])) + 8 + 5, Wd = 18 + 4;
+    return mk(Wd, H, b => {
+      const y0 = 5;
+      for (const [x, y, j] of ROWS.slice().sort((p, q) => p[1] - q[1])) canAt(b, 2 + x, y0 + y + j, ['#D0403A', '#4A8CE8', '#F8C838'][(x + y) % 3 === 0 ? 0 : (x + y) % 3 === 1 ? 1 : 2]);
+      const cx = 2 + 9;                                                                               // the net: a lattice over the cans, a cord up to the knot
+      for (let y = y0 - 1; y < H - 1; y++) for (let x = 1; x < Wd - 1; x++) if (b.has(x, y) && (x + y) % 4 === 0) b.px(x, y, '#E8B060');
+      b.line(cx - 3, y0 + 1, cx - 1, 1, '#E8B060'); b.line(cx + 3, y0 + 1, cx + 1, 1, '#E8B060');
+      b.rect(cx - 1, 1, 3, 3, '#A8682C'); b.px(cx, 0, '#A8682C');                                      // the knot and its loop
+    });
+  };
+  // a small flag on a pole
+  const bandera = () => mk(10, 13, b => {
+    b.rect(1, 1, 1, 11, '#8A5A2A'); b.rect(2, 1, 3, 3, '#2E6CD0'); b.rect(5, 1, 3, 3, '#D0403A'); b.rect(2, 4, 3, 2, '#D0403A'); b.rect(5, 4, 3, 2, '#2E6CD0'); b.rect(4, 1, 1, 5, '#FAFAFA'); b.rect(2, 3, 6, 1, '#FAFAFA');
+  });
+  // a sheet of paper with a small pyramid drawn on it, a pin at its top
+  const papel = () => mk(14, 17, b => {
+    b.rect(1, 1, 12, 15, '#F6F0DC'); b.rect(11, 14, 2, 2, '#D8D2BC'); b.rect(1, 15, 12, 1, '#C8C2AC'); b.rect(12, 1, 1, 15, '#E4DEC8'); b.rect(6, 1, 2, 2, '#D0403A');
+    const ink = '#4A4A5A'; b.line(7, 5, 3, 13, ink); b.line(7, 5, 11, 13, ink); b.line(3, 13, 11, 13, ink); b.line(5, 9, 9, 9, ink); b.line(4, 11, 10, 11, ink); b.line(7, 9, 7, 13, '#8A8A9A');
+  });
+  const CACHE = {};
+  const memo = (k, f) => CACHE[k] || (CACHE[k] = f());
+  const THING = {
+    lata: () => mk(8, 10, b => canAt(b, 1, 1)),
+    botella: () => mk(7, 13, b => bottleAt(b, 1, 1)),
+    caja: () => caja(),
+    cajon: () => crate(26, 6, false),
+    cajon_latas: () => crate(32, 8, true),
+    cajon_vacio: () => crate(32, 8, false),
+    red6: () => red(6), red4: () => red(4),
+    bandera: () => bandera(), papel: () => papel(),
+  };
+  const thing = k => memo('t' + k, THING[k]);
+  // the sprite's lowest drawn row (its feet, outline included) rests on the row above the spot's: its bottom edge is on sy. Some canvases have empty rows under the feet (the frog 3, a standing person 1)
+  const inkBottom = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = cv.height - 1; y >= 0; y--) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y + 1; return cv.height; };
+  const anchor = (cv, ax, ay) => ({ cv, ax, ay: ay == null ? inkBottom(cv) : ay });
+  const SP = {
+    pepe: pose => anchor(KIT.mkPersona(PEPE, pose || 'idle', 0, 0), KIT.PX),
+    persona: (w, pose) => anchor(KIT.mkPersona(w, pose || 'idle', 0, 0), KIT.PX),
+    coqui: () => anchor(mkCoqui(1, 0, 0), 16),
+    perro: pose => anchor(KIT.mkPerro(pose || 'sit', 0), 13),                           // Canelo: his middle column 13 (the scenes draw it at -13)
+    thing: k => anchor(thing(k), Math.floor(thing(k).width / 2)),
+    centre: k => anchor(thing(k), Math.floor(thing(k).width / 2), Math.floor(thing(k).height / 2)),
+  };
+  // the bottle box seen from above, lying on the floor at the spot (its middle), 1.0 x .5, its long side along x, .14 high: ten holes (two rows of five) and n bottle tops.
+  // Drawn pixel by pixel from the set frame's own projection; every pixel carries its depth
+  const BOX_H = .14, HOLE_R = .085;
+  const botellero = (w, spot, n) => {
+    const [cx, cy] = spot.world, [fw, fd] = spot.footprint, x0 = cx - fw / 2, x1 = cx + fw / 2, y0 = cy - fd / 2, y1 = cy + fd / 2, h = BOX_H;
+    const D = w.DEPTH, R2 = Math.SQRT2, COS = Math.sqrt(3) / 2, SIN = .5, pj = (x, y, z) => w.project(x, y, z);
+    const cs = []; for (const x of [x0, x1]) for (const y of [y0, y1]) for (const z of [0, h]) cs.push(pj(x, y, z));
+    const bx0 = Math.floor(Math.min(...cs.map(c => c.sx))) - 1, bx1 = Math.ceil(Math.max(...cs.map(c => c.sx))) + 1, by0 = Math.floor(Math.min(...cs.map(c => c.sy))) - 1, by1 = Math.ceil(Math.max(...cs.map(c => c.sy))) + 1;
+    const cw = bx1 - bx0, ch = by1 - by0, cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    const g = cv.getContext('2d'), im = g.createImageData(cw, ch), zmap = new Float32Array(cw * ch).fill(-1e9);
+    const dep = (x, y, z) => (x + y) / R2 * COS + z * SIN;
+    const put = (px, py, hex, d) => { const v = rgb(hex), o = (py * cw + px) * 4; im.data[o] = v[0]; im.data[o + 1] = v[1]; im.data[o + 2] = v[2]; im.data[o + 3] = 255; zmap[py * cw + px] = d; };
+    const CAP = ['#D0403A', '#E8B030'];
+    for (let py = 0; py < ch; py++) for (let px = 0; px < cw; px++) {
+      const sx = bx0 + px + .5, sy = by0 + py + .5, u = (sx - D.OX) / D.S;
+      // the top face: the floor point under the pixel, at the box's top height
+      const v = ((sy - D.OY) / D.S + h * COS) / SIN, x = (u + v) / R2, y = (v - u) / R2;
+      if (x >= x0 && x <= x1 && y >= y0 && y <= y1) {
+        const i = Math.min(4, Math.floor((x - x0) / fw * 5)), j = Math.min(1, Math.floor((y - y0) / fd * 2));
+        const hx = x0 + (i + .5) * fw / 5, hy = y0 + (j + .5) * fd / 2, r = Math.hypot(x - hx, y - hy), k = j * 5 + i;
+        let c = Math.min(x - x0, x1 - x, y - y0, y1 - y) < .04 ? '#E2A85A' : '#C8853C';             // the rim, then the cardboard
+        if (r <= HOLE_R) c = k < n ? (r < HOLE_R * .45 ? '#F6D870' : CAP[k % 2]) : '#3A2414';        // a hole, with its bottle top in it or empty
+        put(px, py, c, dep(x, y, h)); continue;
+      }
+      // the front face (the plane y = y1) and the right face (the plane x = x1), z from 0 to h
+      const xf = y1 + u * R2, vf = (xf + y1) / R2, zf = (vf * SIN - (sy - D.OY) / D.S) / COS;
+      if (xf >= x0 && xf <= x1 && zf >= 0 && zf <= h) { put(px, py, zf > h - .03 ? '#B88040' : '#92602E', dep(xf, y1, zf)); continue; }
+      const yr = x1 - u * R2, vr = (x1 + yr) / R2, zr = (vr * SIN - (sy - D.OY) / D.S) / COS;
+      if (yr >= y0 && yr <= y1 && zr >= 0 && zr <= h) put(px, py, zr > h - .03 ? '#A8702E' : '#6E4220', dep(x1, yr, zr));
+    }
+    // the outline: a dark pixel round the picture's edge, at the depth of its neighbour
+    const has = (px, py) => px >= 0 && py >= 0 && px < cw && py < ch && im.data[(py * cw + px) * 4 + 3] > 0, add = [];
+    for (let py = 0; py < ch; py++) for (let px = 0; px < cw; px++) if (!has(px, py)) { for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) if (has(px + dx, py + dy)) { add.push([px, py, zmap[(py + dy) * cw + px + dx]]); break; } }
+    for (const [px, py, d] of add) put(px, py, OUT, d);
+    g.putImageData(im, 0, 0);
+    return { cv, ax: spot.screen[0] - bx0, ay: spot.screen[1] - by0, zmap };
+  };
+  // a held thing is not needed here: the people stand with their hands as the sprite makers draw them
+
+  /* ---------- the four moments ---------- */
+  // the stand-ins on the shelves: one at each place
+  const at = (name, s, extra) => Object.assign({ at: name, s }, extra || {});
+  const cansRow = (r, n) => Array.from({ length: n }, (_, i) => at('mesa.fila.' + r, () => SP.thing('lata'), { dx: Math.round((i - (n - 1) / 2) * 6) }));
+  const MOMENTS = {
+    1: { what: 'story 39, opening: the rings on the middle shelf; don Pepe at pepe.escalera with his hands out; the big box at caja_grande with two cans and two bottles in it; one can on ring 0 and one bottle on ring 3; Luis at luis.piso; the frog on his crate at coqui.cajon; the señora and the señor at cola1 and cola2',
+      set: { anillos: 1, mesa: 0 },
+      layers: () => [at('pepe.escalera', () => SP.pepe('offer'), { who: 'adulto' }), at('caja_grande', () => SP.thing('caja')),
+        at('estante.medio.0', () => SP.thing('lata')), at('estante.medio.3', () => SP.thing('botella')),
+        at('luis.piso', () => SP.persona(LUIS), { who: 'nino' }), at('coqui.cajon', () => SP.thing('cajon'), { ground: true }), at('coqui.cajon', () => SP.coqui()),
+        at('cola1', () => SP.persona(SENORA), { who: 'adulto' }), at('cola2', () => SP.persona(SENOR), { who: 'adulto' })] },
+    2: { what: 'story 40: the table; a pyramid of four rows of cans (7, 6, 5, 4) with a small flag on it; don Pepe at pepe.mesa; the drawing at dibujo; the crate of cans at cajon_latas; Luis at luis.cajas and the frog at coqui.piso',
+      set: { anillos: 0, mesa: 1 },
+      layers: () => [at('pepe.mesa', () => SP.pepe(), { who: 'adulto' }), at('dibujo', () => SP.centre('papel')),
+        ...cansRow(3, 4), ...cansRow(2, 5), ...cansRow(1, 6), ...cansRow(0, 7),
+        at('mesa.fila.3', () => SP.thing('bandera'), { dy: -8 }),
+        at('cajon_latas', () => SP.thing('cajon_latas')),
+        at('luis.cajas', () => SP.persona(LUIS), { who: 'nino' }), at('coqui.piso', () => SP.coqui(), { who: 'coqui' })] },
+    3: { what: 'the game of story 40: two nets of cans (6 and 4) at red_a and red_b on the crate at cajon_latas; only the bottom row (7 cans) on the table; the frog at coqui.piso and Canelo sitting at perro.rana beside him',
+      set: { anillos: 0, mesa: 1 },
+      layers: () => [...cansRow(0, 7), at('cajon_latas', () => SP.thing('cajon_vacio')),
+        at('red_a', () => SP.thing('red6')), at('red_b', () => SP.thing('red4')),
+        at('coqui.piso', () => SP.coqui(), { who: 'coqui' }), at('perro.rana', () => SP.perro('sit'), { who: 'perro', flip: true })] },
+    4: { what: 'story 41: seven bottles along the top shelf; don Pepe on the ladder; the three boxes on the floor seen from above with 10, 8 and 9 bottle tops (abuela\'s, the señora\'s, the señor\'s); the señora at senora.caja and the señor at senor.caja; Luis at luis.cajas; the frog at coqui.piso',
+      set: { anillos: 0, mesa: 0 },
+      layers: () => [at('pepe.escalera', () => SP.pepe(), { who: 'adulto' }),
+        ...[0, 1, 2, 3, 4, 5, 6].map(k => at('estante.alto.' + k, () => SP.thing('botella'))),
+        at('caja_abuela', null, { flat: 10 }), at('caja_senora', null, { flat: 8 }), at('caja_senor', null, { flat: 9 }),
+        at('senora.caja', () => SP.persona(SENORA), { who: 'adulto' }), at('senor.caja', () => SP.persona(SENOR), { who: 'adulto' }),
+        at('luis.cajas', () => SP.persona(LUIS), { who: 'nino' }), at('coqui.piso', () => SP.coqui(), { who: 'coqui' })] },
+  };
+  const RADIUS = () => SHEET.shadows.radius;
+
+  /* ---------- the set: one hidden frame per state ---------- */
+  const SETS = {};
+  async function setFrame(st) {
+    const q = 'anillos=' + st.anillos + '&mesa=' + st.mesa + '&tags=1';
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'estantes-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+
+  /* ---------- a picture ---------- */
+  PV.render = async function (m, opts = {}) {
+    await ready;
+    const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
+    const w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S, TG = w.TAGS;
+    // the layers: where each sprite stands
+    const LS = M.layers().map(l => {
+      const sp = SHEET.spots[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
+      let world = sp.world, sx = sp.screen[0], sy = sp.screen[1], d = sp.depth;
+      if (l.ground) { world = sp.ground.world; sx = sp.ground.screen[0]; sy = sp.ground.screen[1]; d = sp.ground.depth; }
+      if (l.dx) sx += l.dx;
+      if (l.dy) sy += l.dy;
+      const spr = l.flat != null ? botellero(w, sp, l.flat) : l.s();
+      return Object.assign({}, l, { sp, world, sx, sy, d, spr, ladder: !!(SHEET.front.after && SHEET.front.after[l.at]) });
+    });
+    // the shadows: for those who stand on the floor (z 0): at the world x, y of their spot
+    const casts = [];
+    for (const l of LS) if (l.who && l.sp.world[2] === 0 && !SHEET.shadows.none.includes(l.at)) casts.push([l.world[0], l.world[1], 0, l.who === 'coqui' ? RADIUS().coqui : l.who === 'nino' ? RADIUS().ninos : l.who === 'perro' ? RADIUS().perro : RADIUS().adultos]);
+    const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
+    for (const l of LS) {
+      const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data, wd = c.cv.width;
+      for (let py = 0; py < c.cv.height; py++) {
+        const Y = l.sy - c.ay + py; if (Y < 0 || Y >= 216) continue;
+        const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+        for (let px = 0; px < wd; px++) {
+          // a sprite mirrored left to right (Canelo facing left) turns about its anchor column
+          const XX = l.flip ? l.sx + (c.ax - px) : l.sx - c.ax + px;
+          const o = (py * wd + px) * 4; if (!id[o + 3]) continue;
+          if (XX < 0 || XX >= 240) continue;
+          const i = Y * 240 + XX, mine = c.zmap ? c.zmap[py * wd + px] : plane;
+          if (!(l.ladder && TG[i] === 'escalera') && Z[i] > (flat && !c.zmap ? l.d : mine) + bias) continue;     // a set pixel nearer than the feet hides it (not the ladder, for don Pepe on it)
+          if (zs[i] > mine) continue;                                                                          // a nearer sprite pixel is already there
+          zs[i] = mine; out[i * 4] = id[o]; out[i * 4 + 1] = id[o + 1]; out[i * 4 + 2] = id[o + 2]; out[i * 4 + 3] = 255;
+        }
+      }
+    }
+    if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
+    const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
+    const V = SHEET.views.wide, cv = document.getElementById('out');
+    cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);
+    document.getElementById('cap').textContent = 'm=' + m + ': ' + M.what + '.';
+    return cv.toDataURL();
+  };
+  PV.done = ready.then(() => PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
+})();
+</script></body></html>
