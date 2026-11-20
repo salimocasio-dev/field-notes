@@ -699,6 +699,18 @@ Designed by Opus agents in two rounds (El balcón took five: this time the brief
 - Left as the old game has it: people appear and change places between steps; the two answer cards that look alike; a slice of cake shown over the frog; abuela standing in front of the sofa over a sitting person's body.
 - Bake: 112 to 194 ms the first time, 59 to 66 ms warm, in headless Chrome (flat walls are drawn one sample a pixel).
 
+### Order 31 (sala), step b. **Result (Nov 20): done, merged; stories 6 to 8 play in the app (build 6).**
+
+Ported by an Opus builder with no stop; the orchestrator ran `test_all.sh` on the branch (passes whole); a fresh reader went through the three stories as they play in the real app.
+
+- All five baked states: 0 of 51,840 differ from the JavaScript. Preview pictures: 609, 486 identical, none over 2%, the most 0.07% (along the turned edges of crooked photos). El frente and El balcón unchanged.
+- All 18 recorded runs match in everything but time, with the old number of random draws. la-familia, d-bizcocho-bebe and h-sala are equal whole; la-foto is 700 ms longer, quien-eres-tu 770 to 980 ms, d-foto-familia 140 ms, each because a walk starts from or ends at a place the sheet moved.
+- In the real app la-familia, la-foto and quien-eres-tu play to the end by touches, right and wrong, no touch lost.
+- `Sheet` now also reads: spots and views given by a world point only, points given only on the screen, floor remaps, `moves`, `smoothing`, `talk`. The three smoothed places are kept exactly (a snapshot of the picture drawn small with smoothing on and back up; identical to Chrome).
+- Bake: the very first state, which also builds the floor, 150 to 195 ms (over the limit in 4 of 5 loads); the other first bakes 50 to 102 ms; later ones about 60 ms.
+- What the reader of the real app found is the old stories' own: the hint hand runs off the bottom edge under the children and the baby (same places as the old picture); a person standing in front of a seated one; the two answer cards that look alike; the last asks of la-familia with nothing marked; the end heart between the board and the lamp. quien-eres-tu cannot be followed from pictures alone: its choices are made by sound.
+- Reported in the JavaScript set, not fixed: the sofa, armchair and door each draw one column 1 px outside their touch box.
+
 ## Order 40. Every story against its recorded runs (orchestrator)
 
 Replay all of `ref/trazas/` with `tool/juega.dart`. Any run that differs is fixed in its lane by an order naming the story and the first step that differs.
