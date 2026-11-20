@@ -80,9 +80,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 **The game.** Don Pepe, wiping the counter, turns to the frog. Carmen's list is all ticked, and her bag is on her arm. He asks one of his two questions; the frog answers with the sí and no bubbles. Which question he asks is drawn afresh each round.
 
 7. **Decision A, say sí or no (tests the question asked).** NARR: "Don Pepe dice: ¿Algo más?" (right: no) or NARR: "Don Pepe dice: ¿Tienes bolsa?" (right: sí).
-   - Right, "¿Algo más?": COQUÍ: "No, gracias." Don Pepe nods. A star. Right, "¿Tienes bolsa?": COQUÍ: "Sí." Carmen lifts her bag. A star.
+   - Right, "¿Algo más?": COQUÍ: "No, gracias." Don Pepe nods. A star. Right, "¿Tienes bolsa?": COQUÍ: "¡Sí!" Carmen lifts her bag. A star.
    - Wrong, "¿Algo más?" (he said sí): don Pepe opens a malta with a hiss and sets it down; he takes a coin. A cross. Carmen turns round. NARR: "Carmen dice: ¡No, Coquí! Tengo todo." She drinks the malta and shrugs. The sign is on the no bubble; he touches it. COQUÍ: "No, gracias."
-   - Wrong, "¿Tienes bolsa?" (he said no): don Pepe hands over a paper bag and takes a coin. A cross. NARR: "Carmen dice: ¡No, Coquí! Tengo bolsa." She holds up both bags. The sign is on the sí bubble; he touches it. COQUÍ: "Sí."
+   - Wrong, "¿Tienes bolsa?" (he said no): don Pepe hands over a paper bag and takes a coin. A cross. NARR: "Carmen dice: ¡No, Coquí! Tengo bolsa." She holds up both bags. The sign is on the sí bubble; he touches it. COQUÍ: "¡Sí!"
 8. **Decision B, drawn again.** As A.
 
 **The ending**
@@ -112,7 +112,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 **The opening** (big sign)
 
 1. NARR: "Hace calor." NARR: "Luis dice: ¡Buenas tardes, don Pepe!" NARR: "Don Pepe dice: ¡Buenas tardes!" He lays his hand on the límber beside him. NARR: "Don Pepe dice: Esto es un límber." **(new: límber; the picture carries it)** NARR: "Don Pepe vende límbers."
-2. Hand still on it. NARR: "Don Pepe dice: Esto es para Luis." He looks along the counter at the one by the frog. NARR: "Don Pepe dice: Y eso es para Coquí." Ask (signed, the orange límber by the frog): "Don Pepe dice: Coquí, toma eso." He touches it: the frog picks it up and licks it. COQUÍ [TURN: gracias (gracias)]: "¡Gracias!"
+2. Hand still on it. NARR: "Don Pepe dice: Esto es para Luis." He looks along the counter at the one by the frog. NARR: "Don Pepe dice: Y eso es para Coquí." Ask (signed, the orange límber by the frog): "Don Pepe dice: Coquí, toma eso." He touches it: the frog picks it up and licks it. COQUÍ [TURN: gracias (gracias)]: "Gracias."
 3. Luis pays a coin and takes the white one. NARR: "Luis compra un límber." He licks it. NARR: "Luis dice: ¡Mmm! ¡Esto está frío!" He nods at the freezer at the far end and the children outside. NARR: "Luis dice: ¡Mira eso!"
 4. Don Pepe sits down on his chair behind the counter and fans himself. NARR: "Don Pepe está cansado." NARR: "Don Pepe dice: Coquí, ¿quieres vender?" **(vender: heard)** COQUÍ [TURN: sí (sí, si), quiero (quiero)]: "¡Sí, quiero!" NARR: "Ahora Coquí vende límbers."
 
@@ -179,4 +179,15 @@ Acts (name: what it does on screen; story and step):
 - `piraguas` {n}: the ending at the cart: two, one or none (37: 9).
 - `limber` {que}: `bandeja` (the two of the opening on their small tray), `pon` {col_a, col_b, cerca} (two on the counter: one beside the customer, one beside the frog), `vuelve` (the untouched one back into the freezer), `derrite` (the one set down melts), `cuenta` (the freezer opens: what is left) (38).
 - `abanico` {quien}: don Pepe, or abuela, sits down and fans himself (36: 7; 38: 4). `ninos` {n}: the children come in; n of them get a limber and pay, the others look into the freezer (38: 8).
-- `final` {k}: stars and a heart when nothing was lost.
+- The ending: every story ends with the shared `fin` (stars and a heart when nothing was lost). There is no `final`.
+- `ya`: waits for an act that was started with `suelto: 1` (as in every scene).
+- `brilla`: a thing twinkles: the engine's own `{"set": {"twinkle": key}}` (the shop in 36: 1; the piragua cart in 37: 2, key `carrito`, a poke).
+- `gallo`: the rooster on the awning crows (36: 1).
+- `gesto` {quien, que}: a small move of one person: `saluda` (lifts a hand), `agacha` (don Pepe bends to the frog), `lista` (taps or looks at the list), `no` (shakes the head), `si` (nods), `manos` (shows empty hands), `bolsa` (lifts the bag), `bolsas` (holds up both bags), `monedas` (picks up the coins that are left), `mira` with `a` (looks at something: the quesitos, the dish, the tray, the freezer, along the counter), `levanta` (gets up from the chair), `mano` with `a` (lays a hand on a thing) (36: 3, 4, 8, 10; 37: 4 to 9; 38: 1, 3, 8, 9).
+- The frog on the counter: the shared `ir` to `mostrador_izq` (36: 7; 38: start). The two things of 36's game stand at `cosa_a` and `cosa_b`; which thing is at which is drawn.
+- `trae` {k}: don Pepe comes in at the back door with a thing and sets it on the counter (36: 10).
+- `lame` {quien}: the frog, or Luis, picks up his límber and licks it (38: 2, 3).
+- The card: abuela's or Carmen's list is on the corner card from the first frame (`lista` with no `k` shows it).
+- Values: `hora` manana or tarde; `puerta`, `atras` shut or open; `lista` hecho 0 lights, 1 ticks; `sale` por puerta or atras; `limber pon` col_a, col_b white or orange, cerca a or b: which is beside the customer; limber_a is the one at don Pepe's end, limber_b the one at the frog's end; `ninos` brings the children in itself.
+- Answer bubbles of 37: sí says "¡Sí!" (the recorded line); no says "No, gracias." to "¿Algo más?" and "No." to "¿Tienes bolsa?".
+- The game of 36 draws its two things from café, arroz and azúcar.
