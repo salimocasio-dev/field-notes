@@ -6,7 +6,7 @@
  "place": "cocina",
  "scene": "nevera",
  "tipo": null,
- "storySha256": "b03f789764c7f48eac30aa5ebd4f77edac917736eb2bfd970f36f847daed4994",
+ "storySha256": "e6987a4f3fcfb59e4628d7fb07eb95c5c3e45178075ecd9f9e15417638340015",
  "page": "historia/index.html?cuento=jugo-de-china&fast=1&rec=1&mic=stub:none&abiertas=todas",
  "think": 700,
  "end": "finished",

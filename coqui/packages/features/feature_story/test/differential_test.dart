@@ -16,6 +16,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:feature_story/src/play/trace_json.dart' show firstDifference;
 import 'package:feature_story/src/play/virtual_parts.dart' show CountingRng;
+import 'package:feature_story/src/runner/story_view.dart'
+    show StoryFoot, StoryScreenState, StoryView;
 import 'package:feature_story/src/screen/scene_frame.dart' show registryScenes;
 
 import '../tool/differential.dart';
@@ -65,6 +67,82 @@ void main() {
         }
       });
     }
+  });
+
+  // The end screen's buttons. The recorded runs do not hold them (page-drive.js writes `ending.screen` and nothing of the
+  // buttons), so the comparison above never saw them, with the old story file or the new one. Here they are read from the view
+  // the run was played on, on the real tree: the real story files and the real course (datos/curso.json).
+  //
+  // The one place where the app's end screen differs from the old page's: the old page shows "Next story" for any `next`;
+  // the app, only for a `next` the course names (a staged story is in no list: the shell opens no address for it). So
+  // jugo-de-china, whose file now says `next: que-quieres`, ends on the screen of a story with no `next`. Were these runs to
+  // hold the buttons, this is the one point where the app's trace would differ from the old page's (coqui/AGENTS.md,
+  // "Stories staged by another session").
+  group('the end screen of the recorded runs: Next story where the course names the next story', () {
+    const mapMain = StoryFoot(next: false, again: true, home: true, map: false);
+    const nextWaits = StoryFoot(
+      next: true,
+      again: true,
+      home: false,
+      map: true,
+    );
+
+    Future<StoryFoot> footOf(String story, [String plan = 'right']) async {
+      final view = StoryView();
+      expect(
+        await compareRun(course, story, plan, acts, trazas, view: view),
+        isNull,
+        reason: '$story $plan',
+      );
+      expect(view.screen, StoryScreenState.end, reason: story);
+      return view.foot;
+    }
+
+    test('(a) la-lluvia: its next, el-bizcocho, is a story of the course: Next story, and the outline Map beside Play again', () async {
+      expect((await course.story('la-lluvia'))['next'], 'el-bizcocho');
+      expect(course.meta('el-bizcocho'), isNotNull);
+      expect(await footOf('la-lluvia'), nextWaits);
+    });
+
+    test('(b) jugo-de-china: its next, que-quieres, is a staged story the course does not name: no Next story, Map is the main button', () async {
+      expect((await course.story('jugo-de-china'))['next'], 'que-quieres');
+      // when the course names que-quieres, this test is the one to change: Next story shows then, as for la-lluvia
+      expect(
+        course.meta('que-quieres'),
+        isNull,
+        reason: 'the course names que-quieres now',
+      );
+      for (final plan in ['right', 'wrong', 'alternate']) {
+        expect(await footOf('jugo-de-china', plan), mapMain, reason: plan);
+      }
+    });
+
+    test('(c) a story with no next (a picture story, a routine): Map is the main button, as before', () async {
+      for (final s in ['d-toc-toc', 'h-frente']) {
+        expect((await course.story(s)).containsKey('next'), isFalse);
+        expect(await footOf(s), mapMain, reason: s);
+      }
+    });
+
+    test('every one of the 51 files: Next story exactly when its next is listed in a place of the course', () async {
+      var withNext = 0, withoutNext = 0;
+      final listed = {
+        for (final p in course.places) ...[
+          ...p.stories,
+          ...p.pictureStories,
+          ...p.routines,
+        ],
+      };
+      for (final s in stories) {
+        final next = (await course.story(s))['next'];
+        final named = next is String && listed.contains(next);
+        named ? withNext++ : withoutNext++;
+        expect(await footOf(s), named ? nextWaits : mapMain, reason: s);
+      }
+      // 31 stories lead on to a story of the course; the other 20 have no next (19) or lead to a staged one (jugo-de-china)
+      expect(withNext, 31);
+      expect(withoutNext, 20);
+    });
   });
 
   // The real El frente (order 14): its sheet puts the frog and the views in the new picture, so the runs are the old ones in

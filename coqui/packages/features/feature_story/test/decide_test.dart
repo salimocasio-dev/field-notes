@@ -399,9 +399,10 @@ void main() {
   });
 
   group('the endings', () {
-    test('a story with a next one: the end screen offers Play again and Next story (and the outline Map beside)', () async {
+    test('a story whose next one the course names: the end screen offers Play again and Next story (and the outline Map beside)', () async {
       final r = await Rig.make(
         story(beats: ['q'], clips: clips, extra: {'next': 'otra-historia'}),
+        course: TestCourse(stories: {'otra-historia'}),
       );
       await r.finish((pn) => null);
       expect(r.runner.view.screen, StoryScreenState.end);
@@ -413,8 +414,29 @@ void main() {
       expect(r.runner.view.dotsLit, 5);
     });
 
+    // The one place the app's end screen differs from the old page's: the old page shows Next story for any `next` (a story
+    // file it can open); the app has only the stories its course names, so any other `next` is no next (coqui/AGENTS.md,
+    // "Stories staged by another session").
+    test('a story whose next one the course does not name: the end screen of a story with no next (Map takes the main place)', () async {
+      final r = await Rig.make(
+        story(beats: ['q'], clips: clips, extra: {'next': 'otra-historia'}),
+        course: TestCourse(stories: {'una-que-si', 'otra'}),
+      );
+      await r.finish((pn) => null);
+      expect(r.runner.view.screen, StoryScreenState.end);
+      expect(r.runner.view.title, 'Prueba');
+      expect(
+        r.runner.view.foot,
+        const StoryFoot(next: false, again: true, home: true, map: false),
+      );
+      expect(r.runner.view.dotsLit, 5);
+    });
+
     test('a story with no next one: Map takes the main place', () async {
-      final r = await Rig.make(story(beats: ['q'], clips: clips));
+      final r = await Rig.make(
+        story(beats: ['q'], clips: clips),
+        course: TestCourse(stories: {'otra-historia'}),
+      );
       await r.finish((pn) => null);
       expect(
         r.runner.view.foot,

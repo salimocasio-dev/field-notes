@@ -20,6 +20,7 @@ import 'package:feature_story/src/runner/pending.dart';
 import 'package:feature_story/src/runner/renderer.dart';
 import 'package:feature_story/src/runner/story_options.dart';
 import 'package:feature_story/src/runner/story_runner.dart';
+import 'package:feature_story/src/runner/story_view.dart';
 import 'package:feature_story/src/runner/timers.dart';
 
 /// The three plans (README: "The learner").
@@ -443,6 +444,8 @@ Future<void> _drain() {
 /// - [draws]: draws and decides fixed from outside (the old page's `?a=puerta`: name to value). Usually empty.
 /// - [sceneFor]: makes the scene, given the one random source (counted: `draws.total`). A scene that draws a random
 ///   number must draw it from this.
+/// - [view]: the screen's state, if the caller wants to read it when the story is over (the buttons of the end screen:
+///   `view.foot`). The trace does not hold it, as the old page's recorded runs do not.
 /// - [course]: the catalog. A clip exists when `course.clip(id)` has it.
 /// - [progress]: what the story's end is written into. Words are open for speaking, as in the recorded runs
 ///   (`?abiertas=todas`); no recogniser is there (`?mic=stub:none`).
@@ -471,6 +474,7 @@ Future<Map<String, dynamic>> play({
   List<String> Function(Map<String, dynamic> W, int now)? thingOrder,
   bool allOpen = true,
   List<String>? micStub,
+  StoryView? view,
   ({int x, int y, num scale}) Function(Scene scene)? startFrog,
   bool Function(Scene scene)? frogShadow,
 }) async {
@@ -507,6 +511,7 @@ Future<Map<String, dynamic>> play({
     ),
     timers: timers,
     renderer: HeadlessRenderer(),
+    view: view,
     observer: watcher,
     sfx: RecordingSfx(player, sounds),
     startFrog: startFrog == null ? null : () => startFrog(scene),

@@ -1214,7 +1214,13 @@ class StoryRunner implements SceneHost {
     await sleep(1200 / FAST);
     if (my != runId) return;
     running = false;
-    final nx = jsTruthy(S['next']) && !OIR;
+    // juego.js: `!!(S.next&&!OIR)`. One difference, on purpose: a story the course (datos/curso.json) does not name does not
+    // exist for the app (the shell opens no address for it), so a `next` that is not one of the course's stories is no next:
+    // the end screen is the one of a story with no `next` (Map takes the main place). This is how a story file can lead on to
+    // a staged story before the course lists it (coqui/AGENTS.md, "Stories staged by another session").
+    final next = S['next'];
+    final nx =
+        jsTruthy(next) && !OIR && next is String && course.meta(next) != null;
     estado('end');
     _pantalla(S['title'] as String?);
     foot(nx, true, !nx, nx);

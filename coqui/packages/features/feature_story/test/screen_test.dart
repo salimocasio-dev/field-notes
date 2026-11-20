@@ -322,6 +322,66 @@ void main() {
     );
   });
 
+  group('Next story only where the course names the story', () {
+    // The sample course's la-lluvia leads on to el-bizcocho, which the sample course names (the test above). Here the file
+    // leads on to a story the course does not name, as the real jugo-de-china leads on to the staged que-quieres.
+    testWidgets(
+      'a next the course does not name: no Next story, Map is the main button (blue), Play again above it',
+      (tester) async {
+        final s = await openScreen(
+          tester,
+          course: EditedCourse((id, f) {
+            if (id == 'la-lluvia') f['next'] = 'que-quieres';
+          }),
+        );
+        expect(s.course.meta('que-quieres'), isNull);
+        await tester.tap(find.byType(LessonStartButton));
+        await _answer(s, () => true);
+        expect(s.runner.view.screen, StoryScreenState.end);
+        expect(s.runner.S['next'], 'que-quieres');
+        expect(find.text('Next story'), findsNothing);
+        expect(find.byType(LessonButton), findsNWidgets(2));
+        expect(find.text('Play again'), findsOneWidget);
+        expect(
+          tester
+              .widget<LessonButton>(find.widgetWithText(LessonButton, 'Map'))
+              .kind,
+          LessonButtonKind.blue,
+        );
+        await tester.tap(find.text('Map'));
+        expect(s.nav.routes, [const TabRoute('map')]);
+      },
+    );
+
+    testWidgets(
+      'a next the course names: Next story is the green main button, the outline Map beside Play again, and it opens that story',
+      (tester) async {
+        final s = await openScreen(tester);
+        expect(s.runner.S['next'], 'el-bizcocho');
+        expect(s.course.meta('el-bizcocho'), isNotNull);
+        await tester.tap(find.byType(LessonStartButton));
+        await _answer(s, () => true);
+        expect(find.byType(LessonButton), findsNWidgets(3));
+        expect(
+          tester
+              .widget<LessonButton>(
+                find.widgetWithText(LessonButton, 'Next story'),
+              )
+              .kind,
+          LessonButtonKind.go,
+        );
+        expect(
+          tester
+              .widget<LessonButton>(find.widgetWithText(LessonButton, 'Map'))
+              .kind,
+          LessonButtonKind.outline,
+        );
+        await tester.tap(find.text('Next story'));
+        expect(s.nav.routes, [const StoryRoute('el-bizcocho')]);
+      },
+    );
+  });
+
   group('Listen mode (ref 140, 141)', () {
     testWidgets(
       'the story goes through by itself; at the end Play again and Map, no Next story',
