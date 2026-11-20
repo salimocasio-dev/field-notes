@@ -546,9 +546,24 @@ List<String> rowTitles(WidgetTester tester) => [
 ];
 
 /// The Listen or Read button of the row titled [title] (its label is what a screen reader says).
-Finder buttonOf(String label, String title) => find.byWidgetPredicate(
-  (w) => w is ShelfButton && w.semanticLabel == '$label: $title',
-  description: '$label: $title',
+/// Only the shelf's rows are searched (the "Hear next" card has the same labels: [nextButtonOf]).
+Finder buttonOf(String label, String title) => find.descendant(
+  of: find.byType(ShelfEntry),
+  matching: find.byWidgetPredicate(
+    (w) =>
+        (w is ShelfButton && w.semanticLabel == '$label: $title') ||
+        (w is PlayButton && w.semanticLabel == '$label: $title'),
+    description: '$label: $title',
+  ),
+);
+
+/// The Listen or Read button of the "Hear next" card, when it names [title].
+Finder nextButtonOf(String label, String title) => find.descendant(
+  of: find.byType(ShelfNextCard),
+  matching: find.byWidgetPredicate(
+    (w) => w is ShelfButton && w.semanticLabel == '$label: $title',
+    description: 'card $label: $title',
+  ),
 );
 
 /// Where a render box of [finder] is on the screen.

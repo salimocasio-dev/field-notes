@@ -26,6 +26,31 @@ abstract final class LibraryStrings {
   static String closed(int n) =>
       '$n more ${n == 1 ? "opens" : "open"} as you play the map';
 
+  /// The shelf when nothing was played: its button to the map (order 27).
+  static const openMap = 'Open the map';
+
+  /// The eyebrow of the card at the top of the shelf (order 27).
+  static const hearNext = 'Hear next';
+
+  /// Why the card names this story: it was never heard yet, or it is the one heard least (order 27).
+  static const newOnShelf = 'New on your shelf';
+  static const heardLeast = 'Heard least so far';
+
+  /// The card's grey line: the reason, then the length. "New on your shelf · about 2 min" (order 27).
+  static String nextLine(String reason, int minutes) =>
+      '$reason · ${about(minutes)}';
+
+  /// The grey line under a place's name: "4 of 12 stories played · 2 of 3 books read" (order 27). The books are the
+  /// ones on the shelf that read well; no books, no second half.
+  static String placeLine({
+    required int played,
+    required int stories,
+    required int read,
+    required int books,
+  }) =>
+      '$played of $stories ${stories == 1 ? "story" : "stories"} played'
+      '${books == 0 ? "" : " · $read of $books ${books == 1 ? "book" : "books"} read"}';
+
   /// `aria-label` of the Listen button. app.html:337
   static String listenLabel(String title) => 'Listen: $title';
 

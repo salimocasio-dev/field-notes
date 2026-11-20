@@ -5,6 +5,7 @@ import 'package:feature_library/feature_library.dart';
 import 'package:feature_library/src/images.dart';
 import 'package:feature_library/src/reader.dart';
 import 'package:feature_library/src/shelf.dart';
+import 'package:feature_library/src/shelf_row.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -111,10 +112,15 @@ void main() {
           find.text(CoquiLabels.library),
           findsWidgets,
         ); // the title and the tab bar's label
-        // the seed "curso" has played the sample's three stories
-        expect(find.text('La lluvia'), findsOneWidget);
-        expect(find.text('El bizcocho'), findsOneWidget);
-        expect(find.text('¿Dónde está el pájaro?'), findsOneWidget);
+        // the seed "curso" has played the sample's three stories: a row each (order 27: one of them is also
+        // named by the "Hear next" card, so the titles are looked for in the rows)
+        Finder row(String t) => find.descendant(
+          of: find.byType(ShelfEntry),
+          matching: find.text(t),
+        );
+        expect(row('La lluvia'), findsOneWidget);
+        expect(row('El bizcocho'), findsOneWidget);
+        expect(row('¿Dónde está el pájaro?'), findsOneWidget);
       },
     );
 

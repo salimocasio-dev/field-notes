@@ -1,10 +1,11 @@
-/// A row of the shelf and its buttons, as `.bk` and `.btn` draw them in app.html:97-101.
+/// A row of the shelf, its Read button, its cover, and the "Hear next" card at the top of the shelf.
 ///
-/// The shelf row has one user, this feature, so it lives here (decided; coqui_ui no longer has a `ShelfRow`):
-/// the cover is as tall as its picture (72 wide, the book's first page at 196:216, so 79 high:
-/// `.cov img{height:auto}`), the buttons have 12 px of side padding and 6 px between the icon and the label
-/// under 420 px (and 10 px, a 12 px gap and a 64 px cover under 380), and Read carries a green check once the
-/// book was read.
+/// The shelf row has one user, this feature, so it lives here (decided; coqui_ui no longer has a `ShelfRow`).
+/// Order 27 (the Biblioteca redesign) made the row compact: the cover (the book's first page, 56 wide at its own
+/// 196:216 aspect) at the left, the title and a grey line, Listen as the quiet play disc at the right (the place
+/// sheet's `.pb.o`: the screen's one green thing is the "Hear next" card's Listen), and Read, only on a book that
+/// reads well, under the grey line. A story with no picture (a routine, or a picture that does not load) gets a plain
+/// tile with a speaker, never an empty grey square.
 library;
 
 import 'package:coqui_ui/coqui_ui.dart';
@@ -24,6 +25,7 @@ class ShelfButton extends StatelessWidget {
     required this.onPressed,
     required this.semanticLabel,
     this.check = false,
+    this.full = false,
   });
 
   final String label;
@@ -34,6 +36,9 @@ class ShelfButton extends StatelessWidget {
 
   /// The green check after the label (the old page's `okc` span), drawn as an icon.
   final bool check;
+
+  /// As wide as it is given, the label in the middle (the "Hear next" card's buttons).
+  final bool full;
 
   /// `.bk .btn{padding:0 16px}`, 12 under 420 px, 10 under 380. app.html:99-101
   static double padX(double width) => width <= 380
@@ -68,7 +73,7 @@ class ShelfButton extends StatelessWidget {
             ),
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: full ? MainAxisSize.max : MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CoquiIcon(icon, size: 20, color: fg),
@@ -101,71 +106,202 @@ class ShelfButton extends StatelessWidget {
   }
 }
 
-/// `.bk`: a cover (72 px wide, the picture at its own height, at least 72 high, 8 px corners, a 1 px ring,
-/// grey until it has a picture), the title, a grey line, the buttons under them; 16 px above and below and 16 apart (12 under 380 px).
+/// A book's cover: the picture (the book's first page) [width] wide at its own aspect (196:216), 8 px corners, a 1 px
+/// ring; or, with no picture, the plain tile: the cover's warm grey with a speaker in the middle (something to hear,
+/// not an empty box).
+class ShelfCover extends StatelessWidget {
+  const ShelfCover({super.key, required this.width, this.picture});
+
+  /// The cover's width; its height follows the page's aspect.
+  final double width;
+
+  /// The picture, or null for the plain tile.
+  final Widget? picture;
+
+  /// A book page is 196 x 216 picture pixels (historia/libros/img).
+  static const double aspect = 196 / 216;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: width,
+    height: width / aspect,
+    clipBehavior: Clip.antiAlias,
+    decoration: BoxDecoration(
+      color: CoquiColors.coverFill,
+      borderRadius: BorderRadius.circular(CoquiMetrics.radiusPicture),
+      boxShadow: const [BoxShadow(color: CoquiColors.line, spreadRadius: 1)],
+    ),
+    child:
+        picture ??
+        Center(
+          child: CoquiIcon(
+            CoquiIcons.volume,
+            size: width >= 72 ? 32 : 24,
+            color: CoquiColors.dotOutline,
+          ),
+        ),
+  );
+}
+
+/// [line] with the spaces inside each of its parts made non-breaking, so that it wraps only between parts.
+String keepTogether(String line) =>
+    line.split(' · ').map((p) => p.replaceAll(' ', ' ')).join(' · ');
+
+/// A grey line that wraps only between its parts ("Cuento con dibujos · about 2 min" never leaves "min" alone on a
+/// line). A line that fits is drawn as it is written.
+class GreyLine extends StatelessWidget {
+  const GreyLine(this.text, {super.key, required this.style});
+
+  final String text;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, c) {
+      final tp = TextPainter(
+        text: TextSpan(text: text, style: style),
+        textDirection: TextDirection.ltr,
+        textScaler: MediaQuery.textScalerOf(context),
+        maxLines: 1,
+      )..layout(maxWidth: c.maxWidth);
+      final fits = !tp.didExceedMaxLines;
+      tp.dispose();
+      return Text(fits ? text : keepTogether(text), style: style);
+    },
+  );
+}
+
+/// One row of the shelf: the cover, the title and its grey line, Read under them when the book reads well, and
+/// Listen (the quiet play disc) at the right. 12 px above and below.
 class ShelfEntry extends StatelessWidget {
   const ShelfEntry({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.actions,
+    required this.listen,
+    this.read,
     this.cover,
   });
 
   final String title;
   final String subtitle;
 
-  /// The picture drawn 72 wide (64 under 380 px) with the aspect it has, or null for the grey tile.
+  /// The picture drawn [coverWidth] wide, or null for the plain tile.
   final Widget? cover;
-  final List<Widget> actions;
 
-  /// `.cov{width:72px}`, 64 under 380 px. app.html:98, 101
-  static double coverWidth(double width) =>
-      width <= 380 ? CoquiMetrics.coverSmall : CoquiMetrics.cover;
+  /// The Listen control (the quiet play disc).
+  final Widget listen;
+
+  /// The Read button, only for a book that reads well.
+  final Widget? read;
+
+  /// The cover's width: 56 at every phone width (an 8-point size; about seven rows fit a 390 x 844 screen).
+  static const double coverWidth = 56;
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final cw = coverWidth(width);
+    const coverHeight = coverWidth / ShelfCover.aspect;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s16),
+      padding: const EdgeInsets.symmetric(vertical: CoquiMetrics.s12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: cw,
-            constraints: BoxConstraints(minHeight: cw),
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              color: CoquiColors.coverFill,
-              borderRadius: BorderRadius.circular(CoquiMetrics.radiusPicture),
-              boxShadow: const [
-                BoxShadow(color: CoquiColors.line, spreadRadius: 1),
-              ],
-            ),
-            child: cover,
-          ),
-          SizedBox(width: width <= 380 ? 12 : CoquiMetrics.s16),
+          ShelfCover(width: coverWidth, picture: cover),
+          const SizedBox(width: CoquiMetrics.s12),
           Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: CoquiText.rowBold),
-                Text(subtitle, style: CoquiText.smallMuted),
-                Padding(
-                  padding: const EdgeInsets.only(top: CoquiMetrics.s8),
-                  child: Wrap(
-                    spacing: CoquiMetrics.s16,
-                    runSpacing: CoquiMetrics.s8,
-                    children: actions,
-                  ),
-                ),
-              ],
+            child: ConstrainedBox(
+              // a short title and its line sit in the middle of the cover's height
+              constraints: const BoxConstraints(minHeight: coverHeight),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: CoquiText.rowBold),
+                  GreyLine(subtitle, style: CoquiText.smallMuted),
+                  if (read != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: CoquiMetrics.s8),
+                      child: read,
+                    ),
+                ],
+              ),
             ),
+          ),
+          const SizedBox(width: CoquiMetrics.s12),
+          // the disc in the middle of the cover's height
+          Padding(
+            padding: const EdgeInsets.only(
+              top: (coverHeight - CoquiMetrics.playDisc) / 2,
+            ),
+            child: listen,
           ),
         ],
       ),
     );
   }
+}
+
+/// The card at the top of the shelf: the one story to hear next, with the screen's one green button.
+/// An eyebrow, a larger cover (80 wide), the title (18 semibold), a grey line saying why, then Listen and, for a book
+/// that reads well, Read beside it, the two sharing the width.
+class ShelfNextCard extends StatelessWidget {
+  const ShelfNextCard({
+    super.key,
+    required this.eyebrow,
+    required this.title,
+    required this.subtitle,
+    required this.listen,
+    this.read,
+    this.cover,
+  });
+
+  final String eyebrow;
+  final String title;
+  final String subtitle;
+  final Widget? cover;
+
+  /// The green Listen button.
+  final Widget listen;
+
+  /// The Read button, only for a book that reads well.
+  final Widget? read;
+
+  static const double coverWidth = 80;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ShelfCover(width: coverWidth, picture: cover),
+          const SizedBox(width: CoquiMetrics.s16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                EyebrowLabel(eyebrow),
+                const SizedBox(height: CoquiMetrics.s4),
+                Text(title, style: CoquiText.todayTitle),
+                GreyLine(subtitle, style: CoquiText.todaySub),
+              ],
+            ),
+          ),
+        ],
+      ),
+      const SizedBox(height: CoquiMetrics.s16),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: listen),
+          if (read != null) ...[
+            const SizedBox(width: CoquiMetrics.s16),
+            Expanded(child: read!),
+          ],
+        ],
+      ),
+    ],
+  );
 }

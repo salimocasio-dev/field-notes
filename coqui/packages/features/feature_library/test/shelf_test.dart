@@ -15,10 +15,14 @@ ShelfEntry entry(WidgetTester tester, String title) => tester
     .widgetList<ShelfEntry>(find.byType(ShelfEntry))
     .firstWhere((e) => e.title == title);
 
-List<String> buttonLabels(WidgetTester tester, String title) => [
-  for (final b in entry(tester, title).actions)
-    if (b is ShelfButton) b.label,
-];
+/// What the row titled [title] offers: Listen (the play disc), then Read when the book reads well.
+List<String> buttonLabels(WidgetTester tester, String title) {
+  final e = entry(tester, title);
+  return [
+    if (e.listen is PlayButton) LibraryStrings.listen,
+    if (e.read is ShelfButton) (e.read! as ShelfButton).label,
+  ];
+}
 
 Rect cardRect(WidgetTester tester, String title) {
   final row = find.byWidgetPredicate(
@@ -89,8 +93,13 @@ void main() {
   testWidgets('leer_check: shelf row: 48 px buttons', (tester) async {
     final rig = Rig()..played(['uno', 'tres']);
     await pumpShelf(tester, rig);
-    for (final b in tester.widgetList<ShelfButton>(find.byType(ShelfButton))) {
-      expect(tester.getSize(find.byWidget(b)).height, greaterThanOrEqualTo(48));
+    for (final b in [
+      ...tester.widgetList<ShelfButton>(find.byType(ShelfButton)),
+      ...tester.widgetList<PlayButton>(find.byType(PlayButton)),
+    ]) {
+      final size = tester.getSize(find.byWidget(b));
+      expect(size.height, greaterThanOrEqualTo(48));
+      expect(size.width, greaterThanOrEqualTo(48));
     }
   });
 
@@ -99,10 +108,13 @@ void main() {
     (tester) async {
       final rig = Rig()..played(['uno']);
       await pumpShelf(tester, rig);
-      final bs = entry(tester, 'Uno').actions.cast<ShelfButton>();
-      expect(bs[0].icon, same(CoquiIcons.play));
-      expect(bs[1].icon, same(CoquiIcons.read));
-      expect(bs[1].check, isFalse);
+      final e = entry(tester, 'Uno');
+      // order 27: Listen is the quiet play disc of the place sheet (the screen's one green button is the card's)
+      expect((e.listen as PlayButton).icon, same(CoquiIcons.play));
+      expect((e.listen as PlayButton).quiet, isTrue);
+      final read = e.read! as ShelfButton;
+      expect(read.icon, same(CoquiIcons.read));
+      expect(read.check, isFalse);
     },
   );
 
@@ -124,9 +136,10 @@ void main() {
         final rig = Rig()..played(['uno', 'tres'], read: ['uno']);
         await pumpShelf(tester, rig, size: Size(w, 800));
         final card = cardRect(tester, 'Uno');
-        for (final b in tester.widgetList<ShelfButton>(
-          find.byType(ShelfButton),
-        )) {
+        for (final b in [
+          ...tester.widgetList<ShelfButton>(find.byType(ShelfButton)),
+          ...tester.widgetList<PlayButton>(find.byType(PlayButton)),
+        ]) {
           expect(
             tester.getRect(find.byWidget(b)).right,
             lessThanOrEqualTo(card.right - 16 + 1),
@@ -196,18 +209,20 @@ void main() {
   );
 
   testWidgets(
-    'leer_check: shelf: a book whose verdict is lee:false shows Listen only and a plain cover tile (like a routine)',
+    'order 27: a book whose verdict is lee:false shows Listen only, with its cover (the verdict is about the text)',
     (tester) async {
       final rig = Rig()..played(['dos']);
       await pumpShelf(tester, rig);
       expect(buttonLabels(tester, 'Dos'), ['Listen']);
-      expect(entry(tester, 'Dos').cover, isNull);
-      // the tile is as wide as a cover and no less than 64 px
-      final tile = find.descendant(
+      expect(entry(tester, 'Dos').cover, isNotNull);
+      expect(rig.images.asked, contains('libros/img/dos-1.png?v=39'));
+      // the cover is 56 wide at the page's own aspect
+      final cover = find.descendant(
         of: find.byWidgetPredicate((w) => w is ShelfEntry && w.title == 'Dos'),
-        matching: find.byType(Container),
+        matching: find.byType(ShelfCover),
       );
-      expect(tester.getSize(tile.first).width, greaterThanOrEqualTo(64));
+      expect(tester.getSize(cover).width, 56);
+      expect(tester.getSize(cover).height, closeTo(56 * 216 / 196, 0.01));
     },
   );
 
@@ -226,8 +241,8 @@ void main() {
     (tester) async {
       final rig = Rig()..played(['uno', 'tres'], read: ['uno']);
       await pumpShelf(tester, rig);
-      final uno = entry(tester, 'Uno').actions.cast<ShelfButton>()[1];
-      final tres = entry(tester, 'Tres').actions.cast<ShelfButton>()[1];
+      final uno = entry(tester, 'Uno').read! as ShelfButton;
+      final tres = entry(tester, 'Tres').read! as ShelfButton;
       expect(uno.check, isTrue);
       expect(uno.semanticLabel, 'Read again: Uno');
       expect(tres.check, isFalse);
@@ -257,22 +272,25 @@ void main() {
   );
 
   testWidgets(
-    'leer_check: 390 px and 360 px: Read with its check sits beside Listen, inside the card',
+    'order 27: 390 px and 360 px: Read with its check sits under the title, the disc at the right, both inside the card',
     (tester) async {
       for (final w in [390.0, 360.0]) {
         final rig = Rig()..played(['uno'], read: ['uno']);
-        await pumpShelf(tester, rig, size: Size(w, 800), textScale: 0.5);
+        await pumpShelf(tester, rig, size: Size(w, 800));
         final listen = tester.getRect(buttonOf('Listen', 'Uno'));
         final read = tester.getRect(buttonOf('Read again', 'Uno'));
-        expect(
-          (listen.top - read.top).abs(),
-          lessThan(2),
-          reason: '$w px: one row',
+        final title = tester.getRect(
+          find.descendant(
+            of: find.byType(ShelfEntry),
+            matching: find.text('Uno'),
+          ),
         );
-        expect(
-          read.right,
-          lessThanOrEqualTo(cardRect(tester, 'Uno').right - 16 + 1),
-        );
+        expect(read.top, greaterThan(title.bottom), reason: '$w px');
+        expect(read.left, closeTo(title.left, 1), reason: '$w px');
+        final card = cardRect(tester, 'Uno');
+        expect(listen.right, closeTo(card.right - 16, 1), reason: '$w px');
+        expect(read.right, lessThanOrEqualTo(listen.left));
+        expect(tester.takeException(), isNull);
       }
     },
   );
@@ -323,8 +341,8 @@ void main() {
     expect(tester.takeException(), isNull);
     final scrolls = tester.widgetList<Scrollable>(find.byType(Scrollable));
     expect(scrolls.every((s) => s.axis == Axis.vertical), isTrue);
-    // and the cover is the 64 px one
-    expect(ShelfEntry.coverWidth(360), 64);
+    // and the cover is the 56 px one, as on every phone
+    expect(ShelfEntry.coverWidth, 56);
   });
 
   // ---- behaviours of `biblioteca` the script does not cover
