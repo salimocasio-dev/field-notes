@@ -1,6 +1,15 @@
 // The catalog over the real files under historia/ (vm only: chrome cannot read files). The answers the old code gives
 // are in fixture/real_expected.json, made by tool/make_expected.mjs in node: pares() and oidoEn() from app.html and
 // cualCarga() from cual.js, run over these same files.
+//
+// A file of historia/cuentos/ is one of three kinds:
+//   - named by the course: a story, picture story or routine of a place, or a review set (51 + 11 = 62 today);
+//   - the word list `palabras-solas` (`"tipo": "palabras"`);
+//   - STAGED: any other file. Another session pushes the files of a new story into cuentos/ and the audio job records
+//     them; only later does datos/curso.json list the story (once its book and pictures exist). A staged file must parse,
+//     have an `id` equal to its file name and a `clips` object; this test prints the staged files and does not fail on
+//     their number. The app must not see them (see 'staged files are invisible to the app').
+// See coqui/AGENTS.md, "Stories staged by another session".
 @TestOn('vm')
 library;
 
@@ -53,6 +62,47 @@ Set<String> _clipKeys(String id) =>
     ((_json('cuentos/$id.json') as Map)['clips'] as Map).keys
         .cast<String>()
         .toSet();
+
+/// A staged file as JSON: null when it does not parse.
+Object? _stagedJson(String id) {
+  try {
+    return jsonDecode(
+      File('${_historia.path}/cuentos/$id.json').readAsStringSync(),
+    );
+  } on FormatException {
+    return null;
+  }
+}
+
+/// What is wrong with a staged file, as lines (none: it is as a staged file must be): it parses, it is a JSON object, its
+/// `id` is its file name, it has a `clips` object, and every clip in it is an object.
+List<String> _stagedProblems(String id) {
+  final j = _stagedJson(id);
+  if (j == null) return ['$id.json does not parse (or is the JSON null)'];
+  if (j is! Map) return ['$id.json is not a JSON object'];
+  final clips = j['clips'];
+  return [
+    if (j['id'] != id) '$id.json has the id ${jsonEncode(j['id'])}, not "$id"',
+    if (clips is! Map)
+      '$id.json has no `clips` object'
+    else
+      for (final e in clips.entries)
+        if (e.value is! Map) '$id.json: the clip ${e.key} is not an object',
+  ];
+}
+
+/// The clips of a staged file (id -> the clip's object), as far as they can be read: none when the file does not parse or
+/// has no `clips` object, and the clips that are not objects left out (the test of the staged files says what is wrong).
+Map<String, Map<String, dynamic>> _stagedClips(String id) {
+  final j = _stagedJson(id);
+  final clips = j is Map ? j['clips'] : null;
+  if (clips is! Map) return const {};
+  return {
+    for (final e in clips.entries)
+      if (e.value is Map)
+        e.key as String: Map<String, dynamic>.from(e.value as Map),
+  };
+}
 
 enum _Solas {
   /// None of the clips of palabras-solas has a recording or marks.
@@ -155,7 +205,10 @@ void main() {
   late Map<String, dynamic> oldCurso;
   // the files of cuentos/ the course names: its stories, picture stories and routines, and its review sets (`cual`)
   late Set<String> courseFiles;
-  final storyFiles = _ids('cuentos');
+  // every file of cuentos/; of them the ones the app reads (the course's and the word list), and the staged ones (the rest)
+  final folderFiles = _ids('cuentos');
+  late List<String> appFiles;
+  late List<String> staged;
   final bookFiles = _ids('libros');
 
   setUpAll(() async {
@@ -171,13 +224,27 @@ void main() {
       ...(oldCurso['cuentos'] as Map).keys.cast<String>(),
       ...(oldCurso['cual'] as List).cast<String>(),
     };
+    appFiles = [
+      for (final id in folderFiles)
+        if (courseFiles.contains(id) || id == _solasId) id,
+    ];
+    staged = [
+      for (final id in folderFiles)
+        if (!courseFiles.contains(id) && id != _solasId) id,
+    ];
     catalog = ContentCatalog(_read);
     await catalog.load();
   });
 
   test('the files are there: 62 stories and review sets the course names, the word list palabras-solas, 43 books', () {
     expect(courseFiles, hasLength(62));
-    expect(storyFiles, hasLength(63));
+    expect(
+      courseFiles.difference(folderFiles.toSet()),
+      isEmpty,
+      reason: 'a file the course names is not in cuentos/',
+    );
+    expect(folderFiles, contains(_solasId));
+    expect(appFiles, hasLength(63));
     expect(bookFiles, hasLength(43));
   });
 
@@ -194,17 +261,48 @@ void main() {
       expect(catalog.meta('no-such-story'), isNull);
     });
 
-    test('every file of cuentos/ is named by the course (51 stories and 11 review sets), except palabras-solas, a word list', () {
+    test('every file of cuentos/ is named by the course (51 stories and 11 review sets), the word list palabras-solas, or staged', () {
       expect((oldCurso['cuentos'] as Map).keys, hasLength(51));
       expect(oldCurso['cual'] as List, hasLength(11));
       expect(courseFiles, hasLength(62));
-      final files = storyFiles.toSet();
-      // every file the course names is there, and the only other one is palabras-solas: any other file fails
-      expect(courseFiles.difference(files), isEmpty);
-      expect(files.difference(courseFiles), {_solasId});
+      // datos/curso.json, which the catalog reads, names the same files
+      final curso = _json('datos/curso.json') as Map;
+      expect({
+        ...(curso['cuentos'] as Map).keys.cast<String>(),
+        ...(curso['cual'] as List).cast<String>(),
+      }, courseFiles);
+      // every file the course names is there
+      expect(courseFiles.difference(folderFiles.toSet()), isEmpty);
+      // the word list
       final solas = _json('cuentos/$_solasId.json') as Map;
       expect(solas['id'], _solasId);
       expect(solas['tipo'], 'palabras');
+      // any other file is staged: it must parse, have an `id` equal to its file name and a `clips` object. How many there
+      // are is not a failure; they are listed.
+      expect(staged.toSet().intersection(courseFiles), isEmpty);
+      expect(staged, isNot(contains(_solasId)));
+      expect(
+        folderFiles.length,
+        courseFiles.length + 1 + staged.length,
+        reason: 'every file is of one of the three kinds',
+      );
+      final ready = ((_json('audio/ready.json') as Map)['clips'] as List)
+          .cast<String>()
+          .toSet();
+      final lines = <String>[];
+      for (final id in staged) {
+        final ids = _stagedClips(id).keys.toList();
+        final recorded = ids.where(ready.contains).length;
+        lines.add(
+          '  $id: ${ids.length} clips, $recorded recorded, ${ids.length - recorded} not',
+        );
+      }
+      // ignore: avoid_print
+      print(
+        'staged files (${staged.length}): ${staged.isEmpty ? 'none' : staged.join(', ')}'
+        '${lines.isEmpty ? '' : '\n${lines.join('\n')}'}',
+      );
+      expect([for (final id in staged) ..._stagedProblems(id)], isEmpty);
     });
 
     test('level items, calls and fixed lines are the data files', () {
@@ -278,8 +376,8 @@ void main() {
   });
 
   group('stories and books load', () {
-    test('every file of cuentos/ loads (the 62 the course names and palabras-solas), and each is the file', () async {
-      for (final id in storyFiles) {
+    test('every file of cuentos/ the app reads loads (the 62 the course names and palabras-solas), and each is the file', () async {
+      for (final id in appFiles) {
         final s = await catalog.story(id);
         expect(s['id'], id);
         expect(s, sameJson(_json('cuentos/$id.json')), reason: id);
@@ -325,7 +423,7 @@ void main() {
       'every clip id a course file names has marks and a ClipInfo',
       () async {
         final named = <String, Set<String>>{};
-        for (final id in storyFiles.where(courseFiles.contains)) {
+        for (final id in appFiles.where(courseFiles.contains)) {
           named[id] = _namedClips(await catalog.story(id));
         }
         final all = {for (final s in named.values) ...s};
@@ -346,23 +444,68 @@ void main() {
       },
     );
 
-    test('every clip of ready.json has a ClipInfo: the line a story gives, its marks, its url', () async {
+    test('every clip of ready.json belongs to a file of cuentos/ and has marks and an mp3; the 1582 clips of the course are all recorded, each with its ClipInfo', () async {
       final ready = _json('audio/ready.json') as Map<String, dynamic>;
       final marks = _json('audio/marcas.json') as Map<String, dynamic>;
       final ids = (ready['clips'] as List).cast<String>();
-      // the clips of the files the course names (1582), and the 133 of palabras-solas only once they are recorded
+      final inReady = ids.toSet();
+      expect(
+        inReady,
+        hasLength(ids.length),
+        reason: 'a clip twice in ready.json',
+      );
+      bool hasMp3(String id) =>
+          File('${_historia.path}/audio/$id.mp3').existsSync();
+      // the clips of the files the course names: 1582, each with a recording, marks and an mp3
       final course = {for (final id in courseFiles) ..._clipKeys(id)};
       expect(course, hasLength(1582));
-      final expected = {
+      expect(
+        [
+          for (final id in course)
+            if (!inReady.contains(id) || !marks.containsKey(id) || !hasMp3(id))
+              id,
+        ],
+        isEmpty,
+        reason: 'a clip of a file the course names without a recording, marks or an mp3',
+      );
+      // the 133 of palabras-solas: all recorded or none, as the test below says; a staged file's: each on its own, any state.
+      // Every clip of ready.json belongs to some file of the folder, has marks and an mp3; every key of marcas.json is a
+      // clip of ready.json.
+      final inFolder = {
         ...course,
-        if (_solasState() == _Solas.recorded) ..._clipKeys(_solasId),
+        ..._clipKeys(_solasId),
+        for (final id in staged) ..._stagedClips(id).keys,
       };
-      expect(ids, hasLength(expected.length));
-      expect(ids.toSet(), expected);
-      expect(marks.keys.toSet(), expected);
-      // the lines of every story file; one id must have one line (who, text, habla) wherever it is
+      expect(
+        inReady.difference(inFolder),
+        isEmpty,
+        reason: 'in ready.json, but in no file of cuentos/',
+      );
+      expect(
+        [
+          for (final id in inReady)
+            if (!marks.containsKey(id)) id,
+        ],
+        isEmpty,
+        reason: 'in ready.json without marks in marcas.json',
+      );
+      expect(
+        [
+          for (final id in inReady)
+            if (!hasMp3(id)) id,
+        ],
+        isEmpty,
+        reason: 'in ready.json without an mp3 file in audio/',
+      );
+      expect(
+        marks.keys.toSet().difference(inReady),
+        isEmpty,
+        reason: 'in marcas.json, but not a clip of ready.json',
+      );
+      // the lines of the files the app reads (the course's and the word list); one id must have one line (who, text, habla)
+      // wherever it is
       final lines = <String, Map<String, dynamic>>{};
-      for (final sid in storyFiles) {
+      for (final sid in appFiles) {
         final clips = (_json('cuentos/$sid.json') as Map)['clips'] as Map;
         for (final e in clips.entries) {
           final l = Map<String, dynamic>.from(e.value as Map);
@@ -373,21 +516,24 @@ void main() {
           );
         }
       }
-      for (final id in storyFiles) {
+      for (final id in appFiles) {
         await catalog.story(id);
       }
       for (final id in ids) {
         final c = catalog.clip(id);
         final m = marks[id] as List;
-        final l = lines[id]!;
         expect(c, isNotNull, reason: id);
-        expect(
-          [c!.who, c.text, c.habla],
-          [l['who'], l['text'], l['habla']],
-          reason: id,
-        );
-        expect([c.startMs, c.endMs], [m[0], m[1]], reason: id);
+        expect([c!.startMs, c.endMs], [m[0], m[1]], reason: id);
         expect(c.url, 'audio/$id.mp3?v=${ready['v']}', reason: id);
+        // a clip only a staged file has: no story the app reads gives it a line
+        final l = lines[id];
+        if (l != null) {
+          expect(
+            [c.who, c.text, c.habla],
+            [l['who'], l['text'], l['habla']],
+            reason: id,
+          );
+        }
       }
       // The fixture holds each url with the `v` ready.json had when the fixture was made. The audio job gives ready.json a
       // new `v` whenever it records a clip (voz.py), so what the old code says here is the address before `?v=`; the `v`
@@ -399,6 +545,51 @@ void main() {
         );
       }
       expect(old.urls, isNotEmpty);
+    });
+
+    test('a clip id two files of cuentos/ share has one text and one voice in both (the audio job makes one recording for it)', () {
+      // voz.py: one mp3 per clip id, in the voice of `who` (narr when it has none) and the clip's `text`; two different texts
+      // under one id stop the job. `habla`, `tu_turno` and the like are not heard, so they may differ.
+      final first = <String, ({String file, Object? text, Object? who})>{};
+      final clashes = <String>[];
+      var shared = 0;
+      var sharedWithStaged = 0;
+      for (final id in folderFiles) {
+        final clips = staged.contains(id)
+            ? _stagedClips(id)
+            : {
+                for (final e
+                    in ((_json('cuentos/$id.json') as Map)['clips'] as Map)
+                        .entries)
+                  e.key as String: Map<String, dynamic>.from(e.value as Map),
+              };
+        for (final e in clips.entries) {
+          final here = (
+            file: id,
+            text: e.value['text'],
+            who: e.value['who'] ?? 'narr',
+          );
+          final there = first[e.key];
+          if (there == null) {
+            first[e.key] = here;
+            continue;
+          }
+          shared++;
+          if (staged.contains(id) || staged.contains(there.file)) {
+            sharedWithStaged++;
+          }
+          if (there.text != here.text || there.who != here.who) {
+            clashes.add(
+              '${e.key}: ${there.file} says ${jsonEncode(there.text)} by ${there.who}, $id says ${jsonEncode(here.text)} by ${here.who}',
+            );
+          }
+        }
+      }
+      // ignore: avoid_print
+      print(
+        'a clip id found again in another file: $shared times, $sharedWithStaged of them with a staged file; clashes: ${clashes.length}',
+      );
+      expect(clashes, isEmpty);
     });
 
     test('the clips of palabras-solas: all 133 recorded, or none yet', () async {
@@ -514,7 +705,7 @@ void main() {
       }
       expect(fresh.clip(fresh.fixedClip('story_your_turn'))!.who, 'narr');
       // a story that has the same id says the same, and is the one that wins once it is read
-      for (final sid in storyFiles) {
+      for (final sid in appFiles) {
         final clips = (_json('cuentos/$sid.json') as Map)['clips'] as Map;
         for (final e in lineas.entries) {
           final own = clips[e.key];
@@ -658,6 +849,124 @@ void main() {
           w,
         );
       }
+    });
+  });
+
+  group('staged files are invisible to the app', () {
+    // Everything the catalog loads, lists or counts, as plain data
+    Future<Map<String, Object?>> snapshot(ContentCatalog c) async {
+      final r = c.repaso!;
+      final played = [for (final p in c.places) ...p.stories];
+      return {
+        'places': [for (final p in c.places) p.toJson()],
+        'metas': {
+          for (final id in (oldCurso['cuentos'] as Map).keys.cast<String>())
+            id: c.meta(id)?.toJson(),
+        },
+        'pairs': [
+          for (final p in c.pairs) {...p.toJson(), 'esc': p.scene},
+        ],
+        'level': [for (final q in c.levelItems) q.toJson()],
+        'calls': {for (final p in c.places) p.id: c.callFor(p.id)?.toJson()},
+        'goodbye': c.goodbyeWords,
+        'words': [
+          for (final w in r.words) [w.word, w.place, w.solo, ...w.sentences],
+        ],
+        'sentences': [
+          for (final s in r.sentences) [s.clip, s.story, s.text, s.picture],
+        ],
+        // what oidoEn gives for each of the 156 words, with every story played
+        'heard': {
+          for (final w in old.wordList)
+            w: [
+              for (final l in await c.linesWith(w, played))
+                [l.storyId, l.clipId, l.text],
+            ],
+        },
+      };
+    }
+
+    test('the catalog never asks for a staged file, and a catalog that cannot read one lists, loads and counts the same', () async {
+      final asked = <String>[];
+      Future<String> blind(String path) async {
+        asked.add(path);
+        if (staged.any((id) => path == 'cuentos/$id.json')) {
+          throw StateError(
+            'no file $path',
+          ); // as a file that is not on the site
+        }
+        return _read(path);
+      }
+
+      final without = ContentCatalog(blind);
+      await without.load();
+      for (final id in appFiles) {
+        await without.story(id);
+      }
+      for (final id in bookFiles) {
+        await without.book(id);
+      }
+      final seen = await snapshot(without);
+      // what it holds is what the fixture says: 128 pairs, 156 words, 48 level items and the places of curso.js
+      expect(seen['places'], sameJson(oldCurso['lugares']));
+      expect(seen['pairs'], sameJson(old.pairs));
+      expect(without.pairs, hasLength(128));
+      expect(without.repaso!.words, hasLength(156));
+      expect(without.levelItems, hasLength(48));
+      expect(
+        without.repaso!.words.map((w) => w.word).toSet(),
+        old.wordList.toSet(),
+      );
+      expect(without.repaso!.words.map((w) => w.word), [
+        for (final w in (_json('datos/repaso.json') as Map)['palabras'] as List)
+          (w as Map)['w'],
+      ]);
+      // and it is what the catalog over the whole folder holds
+      expect(await snapshot(catalog), sameJson(seen));
+      // the files it read of cuentos/ are the course's, the review sets', and the word list
+      final reads = {
+        for (final p in asked)
+          if (p.startsWith('cuentos/'))
+            p.substring('cuentos/'.length).replaceAll(RegExp(r'\.json$'), ''),
+      };
+      expect(reads.difference({...courseFiles, _solasId}), isEmpty);
+      expect(asked.where((p) => staged.any((id) => p.contains(id))), isEmpty);
+    });
+
+    test('a staged story is no story, no review set, no routine, no pair and no word of the app', () async {
+      final listed = {
+        for (final p in catalog.places) ...[
+          ...p.stories,
+          ...p.routines,
+          ...p.pictureStories,
+        ],
+      };
+      final r = catalog.repaso!;
+      final readStories = {for (final s in r.sentences) s.story};
+      final pairStories = {
+        for (final w in r.words)
+          for (final l in w.pairLines) ?l.story,
+      };
+      for (final id in staged) {
+        expect(catalog.meta(id), isNull, reason: id);
+        expect(listed, isNot(contains(id)), reason: id);
+        expect(catalog.callFor(id), isNull, reason: id);
+        expect(readStories, isNot(contains(id)), reason: id);
+        expect(pairStories, isNot(contains(id)), reason: id);
+        expect(
+          [for (final p in catalog.pairs) p.scene],
+          isNot(contains(id)),
+          reason: id,
+        );
+        expect(
+          [for (final q in catalog.levelItems) q.toJson().toString()]
+              .where((t) => t.contains("'$id'") || t.contains('"$id"')),
+          isEmpty,
+          reason: id,
+        );
+      }
+      // the lists are the course's: its 51 stories, picture stories and routines, listed in its places
+      expect(listed, (oldCurso['cuentos'] as Map).keys.toSet());
     });
   });
 }

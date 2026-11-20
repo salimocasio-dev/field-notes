@@ -11,7 +11,9 @@ farthest first, at most 3), `puntua`, `falsas`, the fixed shuffle, and that two 
 both ways), the sentences to judge, the STOP for a pair with no picture files, the validator (each fault), `par` true and false,
 `par_frases` (order and no text twice), `puntua`, `no_juntas` (rules a to e and symmetry), `tokens_extra_prohibidos`, the summary and
 determinism. The app's file (--app, --check): what it holds, its bytes, the check of a stale or missing file, the clips of a word
-alone (in a story, or in palabras-solas.json, which is not a story). `dart test tool/test` does not see this file (it looks for *_test.dart).
+alone (in a story, or in palabras-solas.json, which is not a story). A STAGED file (in historia/cuentos/, named by no place and no review
+set of the course, and not the word list) is not read: every output is the same, byte for byte, with it and without it.
+`dart test tool/test` does not see this file (it looks for *_test.dart).
 """
 import contextlib
 import hashlib
@@ -1488,6 +1490,138 @@ class AppFileWithPalabras(AppFile):
         self.assertNotIn("palabras-solas", {x["cuento"] for x in app["frases"]})
 
 
+STAGED_CLIPS = {      # recorded: the audio job has made them, the course does not list the story yet
+    "t_flor": "¡Flor!",                      # the whole text of a tracked word (flor has no word alone otherwise): a staged file gives no `solo`
+    "t_gato": "Gato.",                       # the whole text of a word that palabras-solas.json also says alone: not a "both" STOP
+    "t_larga": "Mira la flor roja y el perro que come pan aquí ahora.",   # a sentence with tracked words: not a candidate
+    "a_el": "Otra cosa, otro texto.",        # the id of a clip of uno, with another text
+}
+
+
+def add_staged(root):
+    """Three STAGED files on the made-up repo, and a recording for the clips of the first: a story with also_heard words, clips that are the
+    whole text of tracked words and a clip id of uno; a file that is not JSON at all; a story whose id is not its file name."""
+    root = Path(root)
+    cuentos = root / "historia" / "cuentos"
+    (cuentos / "tres.json").write_text(json.dumps({
+        "id": "tres", "title": "Tres", "focus_words": ["flor", "tres"], "back_again": ["hola"],
+        "also_heard": ["aquí", "ahora", "come", "agua", "luis", "mamá", "papá", "roja", "pan", "dibujo", "quiero"],
+        "clips": {k: {"who": "narr", "text": t} for k, t in STAGED_CLIPS.items()}, "beats": list(STAGED_CLIPS)}, ensure_ascii=False), encoding="utf-8")
+    (cuentos / "cuatro.json").write_text("{ this is not JSON", encoding="utf-8")
+    (cuentos / "cinco.json").write_text(json.dumps({"id": "seis", "clips": {"c_x": {"who": "narr", "text": "Algo."}}}), encoding="utf-8")
+    ready = json.loads((root / "historia" / "audio" / "ready.json").read_text(encoding="utf-8"))
+    ready["clips"] = sorted(set(ready["clips"]) | {"t_flor", "t_gato", "t_larga"})
+    (root / "historia" / "audio" / "ready.json").write_text(json.dumps(ready), encoding="utf-8")
+
+
+def tree_bytes(root):
+    return {str(p.relative_to(root)): p.read_bytes() for p in sorted(Path(root).rglob("*")) if p.is_file()}
+
+
+class StagedFiles(VerdictsBase):
+    """A file of historia/cuentos/ that the course does not name (and that is not the word list) is STAGED: another session pushed it before the
+    course lists it. The tool does not read it, so nothing it makes changes: the made-up repo is made twice, once with three such files (one
+    that is not JSON) and once without, and every output of the whole sequence is compared byte for byte."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        add_palabras(cls.tmp.name)
+        cls.staged_tmp = tempfile.TemporaryDirectory()
+        cls.staged = Path(cls.staged_tmp.name)
+        make_repo(cls.staged)
+        add_palabras(cls.staged)
+        add_staged(cls.staged)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.staged_tmp.cleanup()
+        super().tearDownClass()
+
+    def sequence(self, repo, out):
+        """The whole sequence of the tool on <repo>, every output into <out>; the verdicts are those of the plain repo (a sentence has one id)."""
+        bd = self.write(self.verdicts(), "sbook")
+        pd = None
+        steps = [["--hojas-libro"], ["--valida-veredictos", str(bd)], ["--veredictos", str(bd), "--hojas-par"]]
+        for args in [[]] + steps:
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(mr.main(["--out", str(out), "--repo", str(repo)] + args), 0, args)
+        # pair verdicts: the letter of `si` for every sentence of every sheet
+        pd = out.parent / (out.name + "-pares")
+        pd.mkdir()
+        index = json.loads((out / "par" / "indice.json").read_text(encoding="utf-8"))
+        claves = json.loads((out / "par" / "claves.json").read_text(encoding="utf-8"))
+        for slug, word in index.items():
+            doc = json.loads((out / "par" / slug / "frases.json").read_text(encoding="utf-8"))
+            (pd / (slug + ".json")).write_text(json.dumps({"palabra": word, "frases": {f["id"]: claves[slug] for f in doc["frases"]}}, ensure_ascii=False), encoding="utf-8")
+        for args in (["--valida-veredictos-par", str(pd)],
+                     ["--veredictos", str(bd), "--veredictos-par", str(pd), "--final", str(out / "final" / "final.json")],
+                     ["--veredictos", str(bd), "--veredictos-par", str(pd), "--app", str(out / "app" / "repaso.json")],
+                     ["--veredictos", str(bd), "--veredictos-par", str(pd), "--app", str(out / "app" / "repaso.json"), "--check"],
+                     ["--veredictos", str(bd), "--app", str(out / "app" / "sin-par.json")]):
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(mr.main(["--out", str(out), "--repo", str(repo)] + list(args)), 0, args)
+        return {k: v for k, v in tree_bytes(out).items()}
+
+    def test_a_staged_file_is_not_read(self):
+        plain, staged = mr.load(self.tmp.name), mr.load(self.staged)
+        self.assertEqual(sorted(staged.story), ["cual-x", "dos", "uno"])                 # the files the course names
+        self.assertEqual(sorted(plain.story), sorted(staged.story))
+        self.assertEqual(list(staged.palabras), list(plain.palabras))                    # the word list, and only it
+        self.assertEqual(staged.audio - plain.audio, {"t_flor", "t_gato", "t_larga"})   # a recording is a recording, whatever file it is for
+        self.assertEqual(staged.eligible, plain.eligible)
+        self.assertEqual(staged.pairs, plain.pairs)
+        self.assertNotIn("tres", staged.story)
+        self.assertNotIn("seis", staged.story)                                           # not by the `id` it says either
+
+    def test_the_words_alone_do_not_come_from_a_staged_file(self):
+        D = mr.load(self.staged)
+        words = [w["word"] for w in mr.build_words(D, [])]
+        solo = mr.solo_clips(D, words)
+        self.assertEqual(solo, mr.solo_clips(mr.load(self.tmp.name), words))
+        self.assertEqual(solo["gato"], "w_gato")                # not a STOP of "a story and the file of single words", and not t_gato
+        self.assertNotIn("flor", solo)                          # t_flor is a staged clip: it does not count
+        self.assertNotIn("t_flor", solo.values())
+
+    def test_every_output_of_the_whole_sequence_is_the_same_with_the_staged_files_and_without(self):
+        with tempfile.TemporaryDirectory() as t:
+            a = self.sequence(self.tmp.name, Path(t) / "plain")
+            b = self.sequence(self.staged, Path(t) / "staged")
+        self.assertEqual(sorted(a), sorted(b))
+        self.assertGreater(len(a), 30)                            # the sheets and the files of every step
+        for k in a:
+            if "-pares/" in k:
+                continue
+            self.assertEqual(a[k], b[k], k)
+        for name in ("candidatos.json", "resumen.md", "final/final.json", "final/resumen-final.md", "app/repaso.json", "app/sin-par.json", "libro/indice.json", "par/indice.json"):
+            self.assertIn(name, a)
+        self.assertNotIn(b"t_flor", a["candidatos.json"] + a["app/repaso.json"])
+        self.assertNotIn(b"tres", a["resumen.md"])
+
+    def test_the_staged_files_do_not_change_the_check_of_the_app_file(self):
+        with tempfile.TemporaryDirectory() as t:
+            plain = Path(t) / "plain"
+            self.sequence(self.tmp.name, plain)
+            bd, pd = self.root / "sbook", plain.parent / "plain-pares"
+            f = plain / "app" / "repaso.json"
+            with contextlib.redirect_stdout(io.StringIO()):
+                code = mr.main(["--out", str(plain), "--repo", str(self.staged), "--veredictos", str(bd), "--veredictos-par", str(pd), "--app", str(f), "--check"])
+            self.assertEqual(code, 0)         # the file the plain repo made is what the tool makes on the repo that has the staged files
+
+
+class CourseFiles(unittest.TestCase):
+    """course_files: the names of the files of historia/cuentos/ the course names."""
+
+    def test_every_place_of_the_course_where_a_file_is_named(self):
+        curso = {"lugares": [{"id": "a", "cuentos": ["s1", "s2"], "dibujos": ["d1"], "haz": ["h1"]}, {"id": "b"}, {"id": "c", "cuentos": ["s3"]}],
+                 "cuentos": {"s1": {}, "s9": {}}, "cual": ["cual-a", "cual-b"]}
+        self.assertEqual(mr.course_files(curso), {"s1", "s2", "d1", "h1", "s3", "s9", "cual-a", "cual-b"})
+
+    def test_a_course_with_no_top_level_cuentos_or_cual(self):
+        self.assertEqual(mr.course_files({"lugares": [{"id": "a", "cuentos": ["s1"]}]}), {"s1"})
+        self.assertEqual(mr.course_files({"lugares": []}), set())
+
+
 def unicodedata_nfd(s):
     import unicodedata
     return unicodedata.normalize("NFD", s)
@@ -1531,6 +1665,17 @@ class RealData(unittest.TestCase):
             self.assertEqual(len({r["text"] for r in rows}), len(rows))
             for r in rows:
                 self.assertTrue(all(1 <= p <= len(D.book[b]["pages"]) for p in r["pages"]))
+
+    def test_the_stories_read_are_the_files_the_course_names_and_no_staged_file(self):
+        D = self.R["D"]
+        named = mr.course_files(D.curso)
+        folder = {p.stem for p in (self.root / "historia" / "cuentos").glob("*.json")}
+        self.assertEqual(named - folder, set())                                  # every file the course names is there
+        self.assertEqual(set(D.story), named)                                    # and it is read as a story; nothing else is
+        staged = folder - named - {mr.PALABRAS_FILE}
+        self.assertEqual(set(D.story) & staged, set())
+        self.assertTrue(set(D.palabras) <= {c for p in [self.root / "historia" / "cuentos" / (mr.PALABRAS_FILE + ".json")]
+                                            for c in mr.read_json(p)["clips"]})
 
     def test_every_word_has_a_clip_alone(self):
         D = self.R["D"]
