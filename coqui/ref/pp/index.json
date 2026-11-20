@@ -1,8 +1,168 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 236,
-  "totalBytes": 17056233,
+  "files": 268,
+  "totalBytes": 18989169,
   "entries": [
+    {
+      "path": "balcon/door-open-win-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "3fa1db9eea5b51b57c80c03cd3c077b19da98a2773c69e330d7887edd602b6a7"
+    },
+    {
+      "path": "balcon/door-open-win-open/kinds.json",
+      "bytes": 305,
+      "sha256": "7c39dd7fd0e52a88affbccc54a7cbc5183c1c31e54b13dc04441a538e9943504"
+    },
+    {
+      "path": "balcon/door-open-win-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "f0679460d56382e11be7488c71988028b383c88e697de02398ace4b614167085"
+    },
+    {
+      "path": "balcon/door-open-win-open/pix.json",
+      "bytes": 370,
+      "sha256": "3f286689c78d51fad1281dd0772247043de0fd15186b1ee67b851d4616588b24"
+    },
+    {
+      "path": "balcon/door-open-win-open/pix.png",
+      "bytes": 14955,
+      "sha256": "b819a8c5860a8a999cadae7e35eec9c2e7d039cf38f54c29286130138fe7971e"
+    },
+    {
+      "path": "balcon/door-open-win-open/state.json",
+      "bytes": 943,
+      "sha256": "8f4e375a74553ad9c0217692c68b39b92188e92e52c2db8c535f15b6a099a205"
+    },
+    {
+      "path": "balcon/door-open-win-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "6302e8847c7e07e4232d46ed72ecbb907d1f0acb5d5f2a43b1da5c3e327a37b1"
+    },
+    {
+      "path": "balcon/door-open-win-open/zb.json",
+      "bytes": 322,
+      "sha256": "36ca54eb510ddaa7efa9c1bd3bc2773407ef92052a90003be70fc2e195f279ac"
+    },
+    {
+      "path": "balcon/door-open-win-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "3fa1db9eea5b51b57c80c03cd3c077b19da98a2773c69e330d7887edd602b6a7"
+    },
+    {
+      "path": "balcon/door-open-win-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "7c39dd7fd0e52a88affbccc54a7cbc5183c1c31e54b13dc04441a538e9943504"
+    },
+    {
+      "path": "balcon/door-open-win-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "da777fd10f3312b2453460dfe56a762c0ff68d994bd8b76f368260b7be97b60e"
+    },
+    {
+      "path": "balcon/door-open-win-shut/pix.json",
+      "bytes": 370,
+      "sha256": "6a6c2598816fe95e5581f73ee9905b6e406a6b40852e3afc4875b64b3505f18a"
+    },
+    {
+      "path": "balcon/door-open-win-shut/pix.png",
+      "bytes": 14809,
+      "sha256": "e7aa1128f72bce2a28229ca33d49456203cf29145d29f240c82859e792e7d62e"
+    },
+    {
+      "path": "balcon/door-open-win-shut/state.json",
+      "bytes": 943,
+      "sha256": "d80d82df50efd7963066d7f8382dc3b1a05131d704c4453b110df155722fc73f"
+    },
+    {
+      "path": "balcon/door-open-win-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "448c38d5549b7029ee617a1292bcb79d07afc0d0699ed0c97fec250386c9cd90"
+    },
+    {
+      "path": "balcon/door-open-win-shut/zb.json",
+      "bytes": 322,
+      "sha256": "74dfa388a8ca696c150f8f7eb6046649aeaf056a0413cede0103e3320481afd5"
+    },
+    {
+      "path": "balcon/door-shut-win-open/kinds.bin",
+      "bytes": 51840,
+      "sha256": "3fa1db9eea5b51b57c80c03cd3c077b19da98a2773c69e330d7887edd602b6a7"
+    },
+    {
+      "path": "balcon/door-shut-win-open/kinds.json",
+      "bytes": 305,
+      "sha256": "7c39dd7fd0e52a88affbccc54a7cbc5183c1c31e54b13dc04441a538e9943504"
+    },
+    {
+      "path": "balcon/door-shut-win-open/pix.bin",
+      "bytes": 207360,
+      "sha256": "cbd2d9cd3a94cf1ab6adae3b085973ed5bfce62bec045fe0a5ac54f36d16e250"
+    },
+    {
+      "path": "balcon/door-shut-win-open/pix.json",
+      "bytes": 370,
+      "sha256": "0981362540582d1b438ac235b09b5638743b22df853cb865447914ecf6e20ce8"
+    },
+    {
+      "path": "balcon/door-shut-win-open/pix.png",
+      "bytes": 14663,
+      "sha256": "634697725520b9243354df4c1cfd6f9181a1e8e050903d83256ab3db9218d94e"
+    },
+    {
+      "path": "balcon/door-shut-win-open/state.json",
+      "bytes": 943,
+      "sha256": "99979486bf4f1194137ea1e5f23b8911d3189253f401cd23c5d4938930a3768d"
+    },
+    {
+      "path": "balcon/door-shut-win-open/zb.bin",
+      "bytes": 207360,
+      "sha256": "eb1aba06191d9d84c1505ccf780956765b9a033fbb28aaef05fd1b9b5de80db5"
+    },
+    {
+      "path": "balcon/door-shut-win-open/zb.json",
+      "bytes": 322,
+      "sha256": "fc7f4e946075134614f13045c9dc4d391008f93d3c8213e37ca4f32ebee91fb9"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/kinds.bin",
+      "bytes": 51840,
+      "sha256": "3fa1db9eea5b51b57c80c03cd3c077b19da98a2773c69e330d7887edd602b6a7"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/kinds.json",
+      "bytes": 305,
+      "sha256": "7c39dd7fd0e52a88affbccc54a7cbc5183c1c31e54b13dc04441a538e9943504"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/pix.bin",
+      "bytes": 207360,
+      "sha256": "b79872abc51326670e08580815c493bfe45eeb894a129cb7589dd212633a089b"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/pix.json",
+      "bytes": 370,
+      "sha256": "245f63b8995cbeb6199d876af69c4694944f4a2faa9efbae908aeae3b0ab9627"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/pix.png",
+      "bytes": 14509,
+      "sha256": "7e1c246534b795c4749038bc2c2118a4e309d5aaeb5a517a93144a92c38e9cc7"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/state.json",
+      "bytes": 943,
+      "sha256": "49def4d41e518d704d1c08a3a400d2bc994d098e05539fe1f691f5e6b3132700"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/zb.bin",
+      "bytes": 207360,
+      "sha256": "809a043f64e537a15a047644135f304b15d60e0876c85c05d3ddac9a1705c719"
+    },
+    {
+      "path": "balcon/door-shut-win-shut/zb.json",
+      "bytes": 322,
+      "sha256": "1760fef16bf630d16eb78a40199f9a4f28eac1211d240b793df98e038b83fd32"
+    },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/kinds.bin",
       "bytes": 51840,
