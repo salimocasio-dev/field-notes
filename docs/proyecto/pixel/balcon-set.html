@@ -32,6 +32,8 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 // Round 3 (the fresh readers again): the set is 20 px further right in the picture (origin x 38), the door and the small chair .3 to the left,
 // so the wide view holds the whole door with abuela in it; the flower box is centred under the window again, and the bird perches on the
 // window's head (a white ledge over it) with plain wall behind it; the eaves are higher, so wall shows above the door and the window
+// Round 4: the bird stands on the window's flower box again, as in the old picture (its feet on the box's top front edge, its body in front of
+// the shutters); the ledge over the window is gone. The box is well above the drinks now, so the bird is not among them
 const HX0 = -5.8, HX1 = 7.8, HY1 = 0;                                 // the house wall behind the porch
 const HY0 = -.4;                                                      // the house's depth behind the wall (only its roof shows it: shallow, so less roof)
 const FLOOR = .3;                                                     // the porch floor, two steps up from the lawn
@@ -40,12 +42,13 @@ const DOOR0 = 2.2, DOOR1 = 3.5, DH = 2.55;                            // the doo
 const TABLE = [-.26, 1.1], TABLE_R = .95, TABLE_H = .75;               // the round table: its middle, radius, height above the floor
 const XW = TABLE[0] - TABLE[1];                                       // the wall behind the table, from the camera (a sight line keeps x - y)
 const WIN0 = XW - .4, WIN1 = XW + .8, WZ0 = FLOOR + 1.5, WZ1 = FLOOR + 2.35;  // the window opening: over the table, wider than tall (as the old one)
-const HEAD = [WZ1 + .12, WZ1 + .2, .2, .2];                           // the window's head: a white ledge over its frame (z0, z1, depth, past the frame each side): the bird's perch
-const BOX0 = WIN0 - .15, BOX1 = WIN1 + .15, BZ0 = WZ0 - .32, BZ1 = WZ0 - .1, BOXD = .3;   // the flower box: under the window, centred on it
+const WIN_TOP = WZ1 + .2;                                             // the window's top as the roof, its touch box and pair 1 take it (round 3's head ledge; the ledge is gone, the number stays)
+const BOX0 = WIN0 - .15, BOX1 = WIN1 + .15, BZ0 = WZ0 - .32, BZ1 = WZ0 - .1, BOXD = .3;   // the flower box: under the window, centred on it: the bird's perch (sheet: points.PERCH)
+const PERCH_GAP = .8;                                                 // the bare middle of the box (no flowers), where the bird's feet stand on its front edge
 const EAVE = .25, RISE = .45;                                         // the roof: eaves EAVE past the walls, the ridge RISE above the eaves
 const RY1 = 1.1;                                                      // the roof covers the back of the porch only (over the furniture)
 const T30R2 = Math.tan(Math.PI / 6) * Math.SQRT2;                     // a roof edge d in front of the wall hides the wall above HF - T30R2 * d from this camera
-const WALL_TOP = HEAD[1] + 1.05;                                      // the wall shows up to here: the bird on the window's head (22 px) and a strip over it
+const WALL_TOP = WIN_TOP + 1.05;                                      // the wall shows up to here: a strip of wall over the window (round 3's, unchanged)
 const HF = Math.ceil((WALL_TOP + T30R2 * RY1 + .12) * 20) / 20;       // the eaves (their fascia .12 deep): as low as lets that wall show (and so a strip of wall over the door too)
 const STEP0 = 1.64, STEP1 = 3.04;                                     // the steps (x), at the porch's front: the path leaves the lower step's front at its middle
 const SILLA = [-3.85, .98], SILLA_HW = .74, SILLA_HD = .5;             // abuela's big chair, turned to the camera
@@ -110,8 +113,7 @@ function house() {
   part('puerta', doorway);
   part('ventana', windowAndShutters);
   part('jardinera', flowerBox);
-  // the window's head: a white ledge over its frame, a little wider than it, standing out from the wall: the bird stands on its front edge (sheet: points.PERCH)
-  part('dintel', () => block(WIN0 - .12 - HEAD[3], HY1, HEAD[0], WIN1 + .12 + HEAD[3], HY1 + HEAD[2], HEAD[1], WHITE));
+  part('flores', flowers);
 }
 // the room behind an opening (as El frente's, lights off: a dim room, not a hole)
 const BACK = -1.2;                                                     // as deep as round 1's: only the doorway and the window show it
@@ -168,11 +170,14 @@ function windowAndShutters() {
 }
 
 function flowerBox() {
-  const ww = WIN1 - WIN0;
-  // the flower box: under the window, centred on it, full of flowers (as El frente's)
+  // the flower box: under the window, centred on it (as El frente's); the bird stands on its top front edge, in the middle
   block(BOX0, HY1, BZ0, BOX1, HY1 + BOXD, BZ1, C.wood);
   for (let a = BOX0 + .04; a <= BOX1 - .04; a += ST * .5) for (let b = HY1 + .04; b <= HY1 + BOXD - .04; b += ST * .5) plot(a, b, BZ1 + .005, rgb(96, 66, 44));
-  for (let k = 0; k < 9; k++) sphere(WIN0 - .05 + k * (ww + .1) / 8, HY1 + .16, BZ1 + .03, .1, [[255, 143, 184], [255, 224, 112], [244, 88, 74]][k % 3], 'solid');
+}
+// its flowers: a clump of three at each end; the middle (PERCH_GAP wide) is bare soil, so the bird's feet show on the front edge, not among the flowers
+function flowers() {
+  const mid = (WIN0 + WIN1) / 2, FL = [[255, 143, 184], [255, 224, 112], [244, 88, 74]];
+  for (const side of [-1, 1]) for (let k = 0; k < 3; k++) sphere(mid + side * (PERCH_GAP / 2 + k * .11), HY1 + .16, BZ1 + .03, .1, FL[(k + (side > 0 ? 1 : 0)) % 3], 'solid');
 }
 
 /* ---------- the porch: the tiled floor, the stone base and steps, the roof ---------- */
@@ -279,7 +284,7 @@ function buildSet() {
 }
 
 window.SPOTS = {};
-window.BALCON = { SET, HX0, HX1, HY0, HY1, FLOOR, PD, EAVE, HF, RISE, RY1, DOOR0, DOOR1, DH, WIN0, WIN1, WZ0, WZ1, HEAD, WALL_TOP, BOX0, BOX1, BZ0, BZ1, BOXD, STEP0, STEP1, TABLE, TABLE_R, TABLE_H, SILLA, SILLA_HW, SILLA_HD, SILLITA, SILLITA_HW, SILLITA_HD, TURN, PATH_U, PATH_V, BUSH1, BUSH2, HZ, buildSet };
+window.BALCON = { SET, HX0, HX1, HY0, HY1, FLOOR, PD, EAVE, HF, RISE, RY1, DOOR0, DOOR1, DH, WIN0, WIN1, WZ0, WZ1, WIN_TOP, WALL_TOP, BOX0, BOX1, BZ0, BZ1, BOXD, STEP0, STEP1, TABLE, TABLE_R, TABLE_H, SILLA, SILLA_HW, SILLA_HD, SILLITA, SILLITA_HW, SILLITA_HD, TURN, PATH_U, PATH_V, BUSH1, BUSH2, HZ, buildSet };
 
 if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
 const t0 = performance.now();

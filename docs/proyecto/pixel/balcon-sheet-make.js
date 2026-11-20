@@ -39,7 +39,7 @@ const REF = path.join(REPO, 'coqui/ref/escenas/balcon');
   console.log('wrote ' + path.relative(REPO, OUT) + ' (' + text.length + ' bytes)');
   for (const n of sheet.checks.notes) console.log('  ' + n);
   if (problems.length) { console.log('CHECK FAILED:\n  ' + problems.join('\n  ')); process.exit(1); }
-  console.log('check: all 13 things, every positions.json entry in remap, every LUGAR and CAM name, every balcon.js position in code, every hop count as the old one, every hint frame inside the picture, nothing decorative over a touch box, every drink\'s base inside the table top with plain wall behind it, the bird on the window\'s head with plain wall behind it, abuela standing on clear floor, the door whole in the wide view: ok');
+  console.log('check: all 13 things, every positions.json entry in remap, every LUGAR and CAM name, every balcon.js position in code, every hop count as the old one, every hint frame inside the picture, nothing decorative over a touch box, every drink\'s base inside the table top with plain wall behind it, the bird on the window\'s flower box clear of abuela and the drinks, abuela standing on clear floor, the door whole in the wide view, the frog and abuela whole in pair gracias: ok');
 })().catch(e => { console.error(e); process.exit(1); });
 
 /* ---------- the engine's projection, as pp-engine.js has it (the same operations in the same order) ---------- */
@@ -124,14 +124,15 @@ function make(G) {
     pt(k, { world: W4(onTable(s)), old, what });
   // the small chair's seat: ASIENTO (the glass on it stands at ASIENTO[1] - 1; the bird's feet at ASIENTO)
   pt('ASIENTO', { world: W4(seat), old: [160, 135], what: 'ASIENTO: the small chair\'s seat: vaso_silla stands on it (its bottom at y - 1), the bird sits on it (avesilla, marcador)' });
-  // round 3: the bird on the window's head (a white ledge over its frame), in the middle: its feet on the ledge's front edge, plain wall behind it
-  // (the flower box is under the window again, centred: on it the bird would have the window behind it)
-  pt('PERCH', { world: W4([winMid, F.HY1 + F.HEAD[2], F.HEAD[1]]), old: [120, 86], what: 'PERCH: the bird at the window (aveventana; the pairs gracias): on the window\'s head, a white ledge over its frame, in the middle: its feet on the ledge\'s front edge, the plain wall behind it and over it, far over abuela\'s head and the drinks' });
+  // round 4: the bird on the window's flower box, as in the old picture: its feet on the box's top front edge, in the middle (the bare soil there,
+  // no flowers), its body in front of the shutters. (Rounds 1 to 3 put it on the window frame, the box's bare end, a ledge over the window:
+  // three rounds of fresh readers saw it hover.) The box is well above the drinks: checks.perch
+  pt('PERCH', { world: W4([winMid, F.HY1 + F.BOXD, F.BZ1]), old: [120, 86], what: 'PERCH: the bird at the window (aveventana; the pairs gracias): on the window\'s flower box, in the middle: its feet on the box\'s top front edge (bare soil behind them, the flowers at both ends), its body in front of the shutters, as the old picture; clear of abuela, her glass and every drink' });
   // the two halves of her fan, on the floor before her chair
   pt('suelo.abanico.1', { world: W4(E.atZ(ptR('ABS')[0] + 40, ptR('ABS')[1] + 64, f)), old: [98, 157], what: 'W.enSuelo: medio(c, 98, 157, -1): one half of her fan on the floor before her chair' });
   pt('suelo.abanico.2', { world: W4(E.atZ(ptR('ABS')[0] + 52, ptR('ABS')[1] + 66, f)), old: [110, 158], what: 'W.enSuelo: medio(c, 110, 158, 1): the other half' });
   // the heart, the hands
-  { const b = ptR('PERCH'); pt('corazon', { world: W4(E.onWallY(b[0] - 13, Math.max(3, b[1] - 50), F.HY1)), old: [107, 31], what: 'heartAt: the heart of a happy ending (its top left, 27 x 24 px): over the bird on the window\'s head, clear of it (PERCH), in the middle of the wide view' }); }
+  { const b = ptR('PERCH'); pt('corazon', { world: W4(E.onWallY(b[0] - 13, Math.max(3, b[1] - 50), F.HY1)), old: [107, 31], what: 'heartAt: the heart of a happy ending (its top left, 27 x 24 px): over the bird on the window\'s flower box, clear of it (PERCH), in the middle of the wide view' }); }
   pt('mano.puerta', { world: W4([doorMid, F.HY1, f + F.DH * .62]), old: [178, 84], what: 'cosas puerta hand: on the door, high (above abuela\'s face when she stands in it? no: see checks.hands)' });
   pt('mano.ventana', { world: W4([winMid, F.HY1, (F.WZ0 + F.WZ1) / 2]), old: [120, 70], what: 'cosas ventana hand: the middle of the window' });
   for (const p of Object.values(PTS)) if (!p.screen) p.screen = P(p.world);
@@ -159,7 +160,7 @@ function make(G) {
     silla_pequena: turned(F.SILLITA, F.SILLITA_HW, F.SILLITA_HD, 1.02, 'the small yellow chair (turned to the camera: the box is the screen box of its 8 corners, as a square world box)', { box: [148, 120, 24, 30] }),
     silla_grande: turned(F.SILLA, F.SILLA_HW, F.SILLA_HD, 1.52, 'abuela\'s big chair (turned to the camera, as silla_pequena)', { box: [48, 102, 40, 48] }),
     puerta: T([F.DOOR0 - .14, F.HY1 - .06, 0, F.DOOR1 + .14, F.HY1 + .06, f + F.DH + .14], 'the door with its frame', { old: { box: [162, 54, 32, 68], hand: [178, 84] }, hand: { point: 'mano.puerta', new: ptR('mano.puerta') } }),
-    ventana: T([F.WIN0 - .45, F.HY1, F.BZ0, F.WIN1 + .45, F.HY1 + F.BOXD, F.HEAD[1]], 'the window with its frame, its head, its shutters (open, flat on the wall) and the flower box', { old: { box: [93, 54, 54, 36], hand: [120, 70] }, hand: { point: 'mano.ventana', new: ptR('mano.ventana') } }),
+    ventana: T([F.WIN0 - .45, F.HY1, F.BZ0, F.WIN1 + .45, F.HY1 + F.BOXD, F.WIN_TOP], 'the window with its frame, its shutters (open, flat on the wall) and the flower box', { old: { box: [93, 54, 54, 36], hand: [120, 70] }, hand: { point: 'mano.ventana', new: ptR('mano.ventana') } }),
     balcon: T([-1.5, 2.1, 0, 3.7, F.PD, f], 'the porch floor: its open front strip, before the furniture, from abuela\'s chair to the door (the whole floor\'s box would take in the wall and the roof\'s posts: with this camera the porch is a slanting band, and a box cannot follow it). Last in the hit order, as before', { old: { box: [42, 122, 156, 34] } }),
   };
 
@@ -190,11 +191,12 @@ function make(G) {
   // each picture's centre is a screen point (then a world point on the floor or the wall that lands there)
   const tableC = atZ(113, 112, f), chairSmallC = (() => { const s = P([F.SILLITA[0], F.SILLITA[1], f + .5]); return E.atZ(s[0] + 4, s[1] - 3, f); })();
   // the window whole, from its head to the flower box's bottom (round 3: pair 1's lower picture had the roof in its top half and the box cut)
-  const windowAlone = (() => { const t = P([winMid, F.HY1, F.HEAD[1]]), b = P([winMid, F.HY1 + F.BOXD, F.BZ0]); return E.onWallY(t[0], (t[1] + b[1]) / 2 + 1, F.HY1); })();
+  const windowAlone = (() => { const t = P([winMid, F.HY1, F.WIN_TOP]), b = P([winMid, F.HY1 + F.BOXD, F.BZ0]); return E.onWallY(t[0], (t[1] + b[1]) / 2 + 1, F.HY1); })();
   const absC = atZ(98, 52, f);                        // abuela in her chair, her bubble over her head, the table beside her
   const tomaC = atZ(113, 109, f);
-  // gracias: the bird on its perch whole (as the old picture), abuela, the frog before her with his bubble (his feet cut, as the old picture)
-  const gracC = (() => { const q = ptR('PERCH'); return E.atZ(98 + DX, q[1] - 25 + 52, f); })();
+  // gracias (pair 8): abuela in her chair with her glass, the frog before her whole with his bubble over him, the bird on its perch: round 4
+  // centres it between abuela's top (ABS) and the frog's feet (his spot abuela: q.y + 25), so both are whole (round 3 cut the frog off at his eyes)
+  const gracC = (() => { const a = ptR('ABS'), q = frogQ('abuela'); return E.atZ(98 + DX, (a[1] + q[1] + 25) / 2, f); })();
   const sitC = atZ(98, 92, f);
   const frogBal = (() => { const q = frogQ('balcon'); return E.atZ(q[0] + 16, q[1] + 13, f); })();
   const PICS = {
@@ -321,7 +323,7 @@ function make(G) {
       pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window [clamp(round(sx - 98), 0, 44), clamp(round(sy - 52), 0, 112)]; zoom 2 = the 98 x 52 region [clamp(round(sx - 49), 0, 142), clamp(round(sy - 26), 0, 164)] shown nearest-neighbour at 2 x 2 in the 196 x 104 picture. crop is given. The old rectangles (remap cam and crop) say which pictures they were',
       walk: 'abCamina walks abuela in a straight screen line between her spots, as before, now between the new spots',
     },
-    roof: { what: 'the roof is round 2\'s roof b, chosen by the orchestrator (round 1\'s roof a and ?roof=a are gone): a short hip roof over the back of the porch, the house 0.4 deep, no posts. Round 3: its eaves are at HF ' + G.F.HF + ', so the wall shows to ' + r2(G.F.WALL_TOP) + ' over the window\'s head: a strip of wall over the door and the window, the bird on the head with wall behind it', HF: G.F.HF },
+    roof: { what: 'the roof is round 2\'s roof b, chosen by the orchestrator (round 1\'s roof a and ?roof=a are gone): a short hip roof over the back of the porch, the house 0.4 deep, no posts. Round 3: its eaves are at HF ' + G.F.HF + ', so the wall shows to ' + r2(G.F.WALL_TOP) + ' over the window\'s top: a strip of wall over the door and the window (round 4: the bird is on the flower box again; the eaves stay)', HF: G.F.HF },
     setKey,
     things,
     spots: Object.fromEntries(Object.entries(SPOTS).map(([k, s]) => [k, Object.assign({ world: s.world, screen: screenOf(k) }, s.scale != null ? { scale: s.scale, frog: frogQ(k) } : { ab: abAt(k) }, { old: s.old, what: s.what })])),
@@ -493,7 +495,7 @@ function check(sh, G) {
   }
   notes.push('decor: no pixel of ' + DECOR.join(', ') + ' inside any set thing\'s hit box (both doors)');
 
-  /* round 2 (the fresh readers' findings 1, 2) and round 3 (findings 1, 3, 4) */
+  /* round 2 (the fresh readers' findings 1, 2), round 3 (findings 1, 3, 4) and round 4 (the perch) */
   const E = engine(G), F = G.F, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6);
   const tags = G['parts.shut'], tagAt = {}; for (const [k, list] of Object.entries(tags)) for (const i of list) tagAt[i] = k;
   const countTag = (r, names) => { let n = 0; for (let y = Math.max(0, r[1]); y < Math.min(216, r[1] + r[3]); y++) for (let x = Math.max(0, r[0]); x < Math.min(240, r[0] + r[2]); x++) if (names.includes(tagAt[y * 240 + x])) n++; return n; };
@@ -507,22 +509,35 @@ function check(sh, G) {
       if (e > 1) P.push('table: the base of a ' + k + ' at ' + n + ' (x ' + px + ', row ' + MY + ') is not inside the table top');
       worstIn = Math.min(worstIn, ra * Math.sqrt(Math.max(0, 1 - Math.pow((MY - top.sy) / rb, 2))) - Math.abs(px + .5 - top.sx));
       // 2: behind the drink, from its base to its top, no pixel of the window, its shutters or its flower box
-      const nb = countTag([px - 1, MY - H[k] - 1, 3, H[k]], ['ventana', 'jardinera']); behind += nb; if (nb) notes.push('  behind a ' + k + ' at ' + n + ' (x ' + px + '): ' + nb + ' window pixels');
+      const nb = countTag([px - 1, MY - H[k] - 1, 3, H[k]], ['ventana', 'jardinera', 'flores']); behind += nb; if (nb) notes.push('  behind a ' + k + ' at ' + n + ' (x ' + px + '): ' + nb + ' window pixels');
     } }
   if (behind) P.push('table: ' + behind + ' pixels of the window or its flower box behind the drinks');
   notes.push('table: every drink\'s base (glass n, g, p, jug at mesa.izq, der, centro, toma) inside the table top, ' + worstIn.toFixed(1) + ' px from its rim at the least (2 px more than the check asks); behind them no pixel of the window, the shutters or the flower box');
-  // round 3, finding 1: the bird on PERCH stands on the window's head: under its feet the ledge; behind its body (29 x 14 px over the ledge's
-  // slope) no pixel of the window, the flower box, the roof, the door or the furniture; clear of abuela's head and glass and of the drinks
-  { const q = sh.points.PERCH.screen.map(Math.round), body = [q[0] - 14, q[1] - 21, 29, 14], bad = ['ventana', 'jardinera', 'techo', 'silla_grande', 'silla_pequena', 'mesa', 'puerta'];
-    const n = countTag(body, bad), under = countTag([q[0] - 4, q[1] - 1, 9, 3], ['dintel']);
-    for (const t of bad) { const k = countTag(body, [t]); if (k) notes.push('  perch: ' + k + ' px of ' + t + ' behind the bird'); }
-    if (n > 8) P.push('perch: ' + n + ' pixels of the window, the roof, the door or the furniture behind the bird');
-    if (under < 10) P.push('perch: the bird\'s feet are not on the window\'s head (' + under + ' px of it under them)');
-    const bird = [q[0] - 15, q[1] - 23, 31, 25], A = sh.points.ABS.screen.map(Math.round), hit = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
-    if (hit(bird, [A[0] + 4, A[1] - 2, 46, 52])) P.push('perch: the bird touches abuela (in her chair, with her glass)');
-    const drinks = [Math.round(sh.points['mesa.toma'].screen[0]) - 9, sh.MESA_Y.new - 25, Math.round(sh.points['mesa.der'].screen[0]) + 20 - Math.round(sh.points['mesa.toma'].screen[0]) + 9, 26];
-    if (hit(bird, drinks)) P.push('perch: the bird is among the drinks');
-    notes.push('perch: on the window\'s head (' + under + ' px of it under its feet); behind its body ' + n + ' px that are not plain wall; ' + (drinks[1] - (bird[1] + bird[3])) + ' px over the drinks\' tops'); }
+  // round 4: the bird on PERCH stands on the window's flower box, as the old picture: its feet on the box's top front edge (the box's front face
+  // under them, its bare soil over them: no flower within 6 px of its feet in the 4 rows over them (its legs; its body hides what is higher),
+  // so it is not sunk into the flowers; the box's top at its feet row, so it does not float). Its box (drawAve: 31 x 25 over its feet) touches nothing it could hide in any story moment: abuela in her chair
+  // (with her glass, the jug over her head), abuela standing at any of her places (her whole sprite, 48 x 51, with her tray), the drinks at
+  // every table place, the glass on the small chair, the frog at any of his places with what he holds
+  { const q = sh.points.PERCH.screen.map(Math.round), w = sh.points.PERCH.world;
+    const onEdge = Math.abs(w[1] - (F.HY1 + F.BOXD)) < 1e-3 && Math.abs(w[2] - F.BZ1) < 1e-3 && w[0] > F.BOX0 + .3 && w[0] < F.BOX1 - .3;
+    if (!onEdge) P.push('perch: the bird\'s feet are not on the flower box\'s top front edge, in its middle (' + JSON.stringify(w) + ')');
+    const face = countTag([q[0] - 4, q[1] + 1, 9, 3], ['jardinera']), feet = countTag([q[0] - 4, q[1], 9, 1], ['jardinera']), soil = countTag([q[0] - 4, q[1] - 3, 9, 3], ['jardinera']);
+    const sunk = countTag([q[0] - 6, q[1] - 4, 13, 6], ['flores']);
+    if (face < 27) P.push('perch: under the bird\'s feet ' + face + ' of 27 px are the flower box\'s front');
+    if (feet < 9 || soil < 27) P.push('perch: the bird\'s feet are not on the flower box\'s top (' + feet + ' of 9 px at its feet, ' + soil + ' of 27 over them)');
+    if (sunk) P.push('perch: ' + sunk + ' px of flowers round the bird\'s feet (sunk into the flowers)');
+    const bird = [q[0] - 15, q[1] - 23, 31, 25], hit = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+    const gap = (a, b) => Math.max(b[0] - (a[0] + a[2]), a[0] - (b[0] + b[2]), b[1] - (a[1] + a[3]), a[1] - (b[1] + b[3]));
+    const A = sh.points.ABS.screen.map(Math.round), MY = sh.MESA_Y.new, X = n => Math.round(sh.points[n].screen[0]);
+    const others = { 'abuela in her chair, her glass, the jug over her head': [A[0] + 4, A[1] - 12, 46, 62] };
+    for (const sp of ['abuela.mesa', 'abuela.lado', 'abuela.camina', 'abuela.puerta']) { const ab = sh.spots[sp].ab; others[sp + ' (her sprite, her tray)'] = [ab[0] - 30, ab[1] - 50, 48, 51]; }
+    others['the drinks on the table'] = [X('mesa.toma') - 9, MY - 25, X('mesa.der') + 20 - X('mesa.toma') + 9, 26];
+    { const a = sh.points.ASIENTO.screen.map(Math.round); others['the glass on the small chair'] = [a[0] - 9, a[1] - 26, 21, 26]; }
+    for (const [k, l] of Object.entries(sh.lugar)) { const fw = Math.round(30 * l.scale) + 2, fh = Math.round(25 * l.scale) + 2, fx = Math.round(l.q[0] + (32 - fw) / 2), fy = l.q[1] + 27 - fh;
+      others['the frog at ' + k + ' with what he holds'] = [fx, fy - 14, fw + 20, fh + 14]; }
+    let near = 99;
+    for (const [k, r] of Object.entries(others)) { if (hit(bird, r)) P.push('perch: the bird touches ' + k); near = Math.min(near, gap(bird, r)); }
+    notes.push('perch: on the flower box\'s top front edge, in its middle (' + face + ' px of its front under the feet, ' + soil + ' of bare soil over them, ' + sunk + ' px of flowers round them); clear of abuela (sitting, standing anywhere), her glass, every drink and the frog by ' + near + ' px at the least; ' + (MY - 25 - (bird[1] + bird[3])) + ' px over the drinks\' tops'); }
   // round 3, finding 3: abuela standing (at the table, beside her chair, pair se sienta.no) is on clear floor: drawn after the furniture and the
   // drinks (ab.y >= behind), and truly in front of them there: no pixel of the table, a chair or the small chair inside her box is nearer than
   // her, and her box covers no drink at any table place
@@ -536,6 +551,12 @@ function check(sh, G) {
       if (near) P.push(sp + ': ' + near + ' pixels of furniture nearer than her inside her box');
       if (cover) P.push(sp + ': her box covers ' + cover + ' drink places');
       notes.push(sp + ' ' + JSON.stringify(ab) + ': drawn after the furniture and the drinks; ' + near + ' furniture pixels nearer than her in her box; ' + (Math.min(...dk.map(d => d[0])) - (ab[0] + 13)) + ' px from her box to the drinks'); } }
+  // round 4: pair 8 (gracias): abuela in her chair (abCaja, her glass at ABS + 36, 28) and the frog's whole box (frogBox at his spot abuela) inside both pictures
+  { const A = sh.points.ABS.screen.map(Math.round), l = sh.lugar.abuela, fw = Math.round(30 * l.scale) + 2, fh = Math.round(25 * l.scale) + 2, fx = Math.round(l.q[0] + (32 - fw) / 2), fy = l.q[1] + 27 - fh;
+    for (const side of ['si', 'no']) { const c = sh.pictures['gracias.' + side].crop, inside = r => r[0] >= c[0] && r[1] >= c[1] && r[0] + r[2] <= c[0] + c[2] && r[1] + r[3] <= c[1] + c[3];
+      if (!inside([A[0] + 4, A[1], 46, 50])) P.push('pair gracias.' + side + ': abuela or her glass is cut (crop ' + JSON.stringify(c) + ')');
+      if (!inside([fx, fy, fw, fh])) P.push('pair gracias.' + side + ': the frog is cut (crop ' + JSON.stringify(c) + ', frog ' + JSON.stringify([fx, fy, fw, fh]) + ')'); }
+    const c = sh.pictures['gracias.si'].crop; notes.push('pair gracias: crop ' + JSON.stringify(c) + ', zoom 1: abuela from row ' + A[1] + ', the frog to row ' + (fy + fh) + ', both whole'); }
   // round 3, finding 4: the door, its frame and abuela standing in it are inside the wide view, 8 px or more from its sides
   { const x0 = sh.views.wide.x0, d = sh.things.puerta.box, cl = sh.clips['puerta.hueco'].box, ab = sh.spots['abuela.puerta'].ab;
     const L = Math.min(d[0], Math.max(ab[0] - 30, cl[0])), R = Math.max(d[0] + d[2], Math.min(ab[0] + 18, cl[0] + cl[2]));

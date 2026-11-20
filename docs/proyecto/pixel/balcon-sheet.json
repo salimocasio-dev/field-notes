@@ -22,7 +22,7 @@
   "walk": "abCamina walks abuela in a straight screen line between her spots, as before, now between the new spots"
  },
  "roof": {
-  "what": "the roof is round 2's roof b, chosen by the orchestrator (round 1's roof a and ?roof=a are gone): a short hip roof over the back of the porch, the house 0.4 deep, no posts. Round 3: its eaves are at HF 4.95, so the wall shows to 3.9 over the window's head: a strip of wall over the door and the window, the bird on the head with wall behind it",
+  "what": "the roof is round 2's roof b, chosen by the orchestrator (round 1's roof a and ?roof=a are gone): a short hip roof over the back of the porch, the house 0.4 deep, no posts. Round 3: its eaves are at HF 4.95, so the wall shows to 3.9 over the window's top: a strip of wall over the door and the window (round 4: the bird is on the flower box again; the eaves stay)",
   "HF": 4.95
  },
  "setKey": {
@@ -198,7 +198,7 @@
     "world": [-2.21, 0, 1.48, -0.11, 0.3, 2.85],
     "box": [111, 43, 45, 54]
    },
-   "what": "the window with its frame, its head, its shutters (open, flat on the wall) and the flower box",
+   "what": "the window with its frame, its shutters (open, flat on the wall) and the flower box",
    "old": {
     "box": [93, 54, 54, 36],
     "hand": [120, 70]
@@ -890,10 +890,10 @@
    "screen": [176.57, 131.8]
   },
   "PERCH": {
-   "world": [-1.16, 0.2, 2.85],
+   "world": [-1.16, 0.3, 1.7],
    "old": [120, 86],
-   "what": "PERCH: the bird at the window (aveventana; the pairs gracias): on the window's head, a white ledge over its frame, in the middle: its feet on the ledge's front edge, the plain wall behind it and over it, far over abuela's head and the drinks",
-   "screen": [133, 55]
+   "what": "PERCH: the bird at the window (aveventana; the pairs gracias): on the window's flower box, in the middle: its feet on the box's top front edge (bare soil behind them, the flowers at both ends), its body in front of the shutters, as the old picture; clear of abuela, her glass and every drink",
+   "screen": [131.16, 81.82]
   },
   "suelo.abanico.1": {
    "world": [-2.3794, 1.3737, 0.3],
@@ -908,10 +908,10 @@
    "screen": [101, 114]
   },
   "corazon": {
-   "world": [-2.0669, 0, 4.6188],
+   "world": [-2.1757, 0, 3.3753],
    "old": [107, 31],
-   "what": "heartAt: the heart of a happy ending (its top left, 27 x 24 px): over the bird on the window's head, clear of it (PERCH), in the middle of the wide view",
-   "screen": [120, 5]
+   "what": "heartAt: the heart of a happy ending (its top left, 27 x 24 px): over the bird on the window's flower box, clear of it (PERCH), in the middle of the wide view",
+   "screen": [118, 32]
   },
   "mano.puerta": {
    "world": [2.85, 0, 1.881],
@@ -997,11 +997,11 @@
      "zoom": 1
     },
     "gracias.si": {
-     "crop": [20, 30, 196, 104],
+     "crop": [20, 46, 196, 104],
      "zoom": 1
     },
     "gracias.no": {
-     "crop": [20, 30, 196, 104],
+     "crop": [20, 46, 196, 104],
      "zoom": 1
     },
     "¿cómo estás?.si": {
@@ -1340,7 +1340,7 @@
    "to": {
     "point": "PERCH"
    },
-   "screen": [133, 55]
+   "screen": [131, 82]
   },
   {
    "kind": "point",
@@ -1530,17 +1530,17 @@
    "what": "abuela in her chair, drinking, a heart"
   },
   "gracias.si": {
-   "world": [-3.2225, -1.0468, 0.3],
-   "screen": [118, 82],
+   "world": [-2.3522, -0.1765, 0.3],
+   "screen": [118, 98],
    "zoom": 1,
-   "crop": [20, 30, 196, 104],
+   "crop": [20, 46, 196, 104],
    "what": "abuela gives the frog a glass, the frog's heart"
   },
   "gracias.no": {
-   "world": [-3.2225, -1.0468, 0.3],
-   "screen": [118, 82],
+   "world": [-2.3522, -0.1765, 0.3],
+   "screen": [118, 98],
    "zoom": 1,
-   "crop": [20, 30, 196, 104],
+   "crop": [20, 46, 196, 104],
    "what": "abuela without a glass, the frog sad"
   },
   "¿cómo estás?.si": {
@@ -1810,7 +1810,7 @@
    "old": "PERCH=[120,86]",
    "to": {
     "point": "PERCH",
-    "new": [133, 55]
+    "new": [131, 82]
    }
   },
   {
@@ -2391,7 +2391,7 @@
    "old": "heartAt [107,31]",
    "to": {
     "point": "corazon",
-    "new": [120, 5]
+    "new": [118, 32]
    }
   },
   {
