@@ -9,7 +9,9 @@
     python3 coqui/tool/make_repaso.py --out <dir> --veredictos <veredictos> [--veredictos-par <veredictos-par>] --final <file>
 
 Reads the repo it sits in (or --repo): historia/datos/curso.json, historia/cuentos/*.json, historia/audio/ready.json,
-historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. Writes into <dir>:
+historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. A file of historia/cuentos/ whose `tipo` is "palabras"
+(palabras-solas.json: each tracked word said alone, made by make_palabras_solas.py) is not a story: it makes no candidate sentence and no
+page, and is read only for the clips of the words alone (solo_clips). Writes into <dir>:
 
     candidatos.json     the 156 words, every candidate sentence, the proposed wrong pictures, the false sentences for a
                         picture, the Parejas sets, and how each story was walked
@@ -127,6 +129,7 @@ NO_JUNTAS_PREFIX = 3                                   # rule (c) of no_juntas: 
 NO_JUNTAS_PREFIX_PHRASE = 4                            # ... and four when one of the two is a phrase (has a space)
 PAR_BUCKETS = ["1", "2", "3-4", "5-9", "10+"]
 EXPECTED_WORDS = 156
+PALABRAS_TIPO = "palabras"                   # the `tipo` of historia/cuentos/palabras-solas.json: a file of single words, not a story
 ENGINE_ALLRIGHT = {"lost": 0, "wet": 0}      # what the engine holds when every answer is right
 ENGINE_VARS = ("ok", "x", "elegido")          # keys the engine itself assigns in decide / elige
 FONT_CANDIDATES = ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
@@ -695,8 +698,12 @@ def load(root):
     clips = D.ready["clips"]
     D.audio = set(clips.keys()) if isinstance(clips, dict) else set(clips)
     D.story = {}
+    D.palabras = OrderedDict()      # clip id -> clip of the files whose `tipo` is "palabras" (each tracked word alone): not stories
     for p in sorted((H / "cuentos").glob("*.json")):
         d = read_json(p)
+        if d.get("tipo") == PALABRAS_TIPO:
+            D.palabras.update(d.get("clips", {}))
+            continue
         D.story[d["id"]] = d
     D.map, D.place_of, D.dib, D.place_order = [], {}, [], []
     for l in D.curso["lugares"]:
@@ -2170,26 +2177,40 @@ APP_VERSION = 1
 
 
 def solo_clips(D, words):
-    """{word: clip} for each tracked word that has a recorded clip whose whole text is the word (case, accents kept, signs and spaces
-    ignored: the folded tokens are equal). The first such clip in course order (map stories, then picture stories, then the other files;
-    then the clip id)."""
-    want = OrderedDict((w, ftoks(w)) for w in words)
-    found = {}
+    """{word: clip} for each tracked word that has a recorded clip (one in historia/audio/ready.json) whose whole text is the word: case
+    and accents kept (so tú and tu are two words with two clips), signs and spaces ignored (the tokens are equal, as make_palabras_solas.py
+    reads them). The clip is found among the clips of the stories (the first in course order: map stories, then picture stories, then the
+    other files; then the clip id) or among the clips of the files of `tipo` "palabras" (historia/cuentos/palabras-solas.json: the first in
+    the file). That file holds only the words that had no such clip in a story, so a word never has both: when one does, this stops
+    (SystemExit) and says which."""
+    want = OrderedDict((w, tuple(toks(w))) for w in words)
+    in_story, in_palabras = {}, {}
     for sid in sorted(D.story, key=lambda x: (story_rank(D, x), x)):
         for cid in sorted(D.story[sid].get("clips", {})):
             if cid not in D.audio:
                 continue
-            ft = ftoks(D.story[sid]["clips"][cid].get("text") or "")
+            ft = tuple(toks(D.story[sid]["clips"][cid].get("text") or ""))
             for w, t in want.items():
-                if t and ft == t and w not in found:
-                    found[w] = cid
-    return OrderedDict((w, found[w]) for w in words if w in found)
+                if t and ft == t and w not in in_story:
+                    in_story[w] = cid
+    for cid, clip in D.palabras.items():
+        if cid not in D.audio:
+            continue
+        ft = tuple(toks(clip.get("text") or ""))
+        for w, t in want.items():
+            if t and ft == t and w not in in_palabras:
+                in_palabras[w] = cid
+    both = [w for w in words if w in in_story and w in in_palabras]
+    if both:
+        raise SystemExit("STOP: a clip of the word alone is in a story and in the file of single words (palabras-solas.json) for: " +
+                         "; ".join("%s: %s, %s" % (w, in_story[w], in_palabras[w]) for w in both))
+    return OrderedDict((w, (in_story.get(w) or in_palabras[w])) for w in words if w in in_story or w in in_palabras)
 
 
 def build_app(R, final):
     """The app's file from the final data: {"v", "frases": [sentence], "palabras": [word]}. A sentence (clip, cuento, text, tokens, `prohibidas`:
     the tracked words in it, `img`: its book picture when the readers judged it to show the sentence, else null, `oyes`, `arma`) is kept once
-    and named by its place in `frases`. A word: `w`, `lugar` (its place), `puntua`, `solo` (the clip of the word alone, or null), `no_juntas`,
+    and named by its place in `frases`. A word: `w`, `lugar` (its place), `puntua`, `solo` (the clip of the word alone, in a story or in palabras-solas.json, or null), `no_juntas`,
     `cual` (its picture pair's sentences: clip, text, cuento, null for the pair's own), `frases` (its sentences for ¿Qué oyes? and Arma la
     frase, in the fixed order, as indexes), `donde` (sentence index, `otras`: the fair wrong pictures), `dilo` (clip, cuento, text, formas,
     antes: the clip before it, img)."""

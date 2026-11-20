@@ -11,7 +11,7 @@ farthest first, at most 3), `puntua`, `falsas`, the fixed shuffle, and that two 
 both ways), the sentences to judge, the STOP for a pair with no picture files, the validator (each fault), `par` true and false,
 `par_frases` (order and no text twice), `puntua`, `no_juntas` (rules a to e and symmetry), `tokens_extra_prohibidos`, the summary and
 determinism. The app's file (--app, --check): what it holds, its bytes, the check of a stale or missing file, the clips of a word
-alone. `dart test tool/test` does not see this file (it looks for *_test.dart).
+alone (in a story, or in palabras-solas.json, which is not a story). `dart test tool/test` does not see this file (it looks for *_test.dart).
 """
 import contextlib
 import hashlib
@@ -1373,6 +1373,7 @@ class AppFile(PairBase):
         D = mr.Data()
         D.idx, D.dib = {"s1": 1, "s2": 2}, ["d1"]
         D.audio = {"a", "b", "c", "d", "e", "f"}
+        D.palabras = {}
         D.story = {"s2": {"clips": {"a": {"text": "¡Hola!"}, "b": {"text": "Abuela dice: ¡Hola!"}}},
                    "s1": {"clips": {"c": {"text": "¿Tengo sed?"}, "d": {"text": "hola"}, "g": {"text": "Casa."}}},
                    "d1": {"clips": {"e": {"text": "Casa."}, "f": {"text": "Sí, casa."}}}}
@@ -1380,6 +1381,111 @@ class AppFile(PairBase):
         # the first in course order; the whole text is the word (signs and case aside); a clip with no recording (g) is not used
         self.assertEqual(got, {"casa": "e", "hola": "d", "tengo sed": "c"})
         self.assertEqual(list(got), ["casa", "hola", "tengo sed"])
+
+    def test_solo_clips_of_the_file_of_single_words(self):
+        D = mr.Data()
+        D.idx, D.dib = {"s1": 1}, []
+        D.audio = {"a", "w_no", "w_si_a", "w_casa", "w_tu", "w_tu_a"}
+        D.story = {"s1": {"clips": {"a": {"text": "¡Hola!"}}}}
+        # the file's clips: accents kept (tu and tú are two words, each with its own clip), signs and case aside, only with a recording
+        D.palabras = {"w_tu": {"text": "Tu."}, "w_tu_a": {"text": "Tú."}, "w_casa": {"text": "Casa."}, "w_no": {"text": "No."},
+                      "w_sin_voz": {"text": "Sin voz."}, "w_si": {"text": "Sí."}, "w_si_a": {"text": "¿Sí?"}}
+        got = mr.solo_clips(D, ["hola", "tú", "tu", "casa", "sin voz", "sí", "si", "no"])
+        self.assertEqual(got, {"hola": "a", "tú": "w_tu_a", "tu": "w_tu", "casa": "w_casa", "sí": "w_si_a", "no": "w_no"})
+        self.assertEqual(list(got), ["hola", "tú", "tu", "casa", "sí", "no"])                 # the order of the words given
+        # a word that has a clip in a story and one in the file of single words: the tool stops, and says which
+        D.palabras["w_hola"] = {"text": "Hola."}
+        D.audio.add("w_hola")
+        with self.assertRaises(SystemExit) as e:
+            mr.solo_clips(D, ["hola", "casa"])
+        self.assertIn("hola: a, w_hola", str(e.exception))
+        D.audio.discard("w_hola")                                                           # with no recording it does not count
+        self.assertEqual(mr.solo_clips(D, ["hola"]), {"hola": "a"})
+        # no such file: the stories alone
+        D.palabras = {}
+        self.assertEqual(mr.solo_clips(D, ["hola", "casa"]), {"hola": "a"})
+
+
+PALABRAS = {"w_pan": "Pan.", "w_tu": "Tu.", "w_tu_a": "Tú.", "w_bebe_a": "Bebé.", "w_gato": "Gato.", "w_perro": "Perro."}   # w_perro has no recording
+
+
+def add_palabras(root):
+    """palabras-solas.json as make_palabras_solas.py makes it (the shape of the real one), and a recording for each clip but w_perro."""
+    root = Path(root)
+    (root / "historia" / "cuentos" / "palabras-solas.json").write_text(json.dumps({
+        "id": "palabras-solas", "title": "Palabras", "tipo": "palabras", "note": "not a story",
+        "clips": {k: {"who": "narr", "text": t} for k, t in PALABRAS.items()}}, ensure_ascii=False), encoding="utf-8")
+    ready = json.loads((root / "historia" / "audio" / "ready.json").read_text(encoding="utf-8"))
+    ready["clips"] = sorted(set(ready["clips"]) | (set(PALABRAS) - {"w_perro"}))
+    (root / "historia" / "audio" / "ready.json").write_text(json.dumps(ready), encoding="utf-8")
+
+
+class PalabrasSolas(unittest.TestCase):
+    """historia/cuentos/palabras-solas.json (`tipo` "palabras") on the made-up repo: it is not a story, and it gives the clips of the words alone."""
+
+    def test_it_is_not_a_story_and_changes_nothing_else(self):
+        with tempfile.TemporaryDirectory() as plain, tempfile.TemporaryDirectory() as with_file:
+            make_repo(plain)
+            make_repo(with_file)
+            add_palabras(with_file)
+            A, B = mr.build(plain), mr.build(with_file)
+            self.assertNotIn("palabras-solas", B["D"].story)
+            self.assertEqual(list(B["D"].palabras), list(PALABRAS))
+            self.assertEqual(B["D"].palabras["w_tu_a"], {"who": "narr", "text": "Tú."})
+            self.assertEqual(B["D"].eligible, A["D"].eligible)
+            self.assertEqual(list(B["walks"]), list(A["walks"]))
+            # every candidate sentence, page and set is what it is without the file (candidatos.json, resumen.md: the same bytes)
+            ja = json.dumps(mr.candidatos_json(A), ensure_ascii=False)
+            jb = json.dumps(mr.candidatos_json(B), ensure_ascii=False)
+            self.assertEqual(ja, jb)
+            self.assertFalse(any(c["story"] == "palabras-solas" for c in B["cands"]))
+            self.assertFalse(any(c["clip"].startswith("w_") for c in B["cands"]))
+            self.assertEqual(A["words"], B["words"])
+
+    def test_the_clips_of_the_words_alone(self):
+        with tempfile.TemporaryDirectory() as root:
+            make_repo(root)
+            R = mr.build(root)
+            self.assertEqual(R["D"].palabras, {})
+            self.assertEqual(mr.solo_clips(R["D"], TRACKED), {})                              # no such file: no word has one
+            add_palabras(root)
+            D = mr.build(root)["D"]
+            self.assertEqual(mr.solo_clips(D, TRACKED), {"tú": "w_tu_a", "tu": "w_tu", "bebé": "w_bebe_a", "pan": "w_pan", "gato": "w_gato"})
+
+    def test_a_word_with_a_clip_in_a_story_and_one_in_the_file_stops_the_tool(self):
+        with tempfile.TemporaryDirectory() as root:
+            make_repo(root)
+            add_palabras(root)
+            p = Path(root) / "historia" / "cuentos" / "dos.json"
+            d = json.loads(p.read_text(encoding="utf-8"))
+            d["clips"]["pan_solo"] = {"who": "narr", "text": "¡Pan!"}
+            p.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+            q = Path(root) / "historia" / "audio" / "ready.json"
+            ready = json.loads(q.read_text(encoding="utf-8"))
+            ready["clips"].append("pan_solo")
+            q.write_text(json.dumps(ready), encoding="utf-8")
+            with self.assertRaises(SystemExit) as e:
+                mr.solo_clips(mr.build(root)["D"], TRACKED)
+            self.assertIn("pan: pan_solo, w_pan", str(e.exception))
+
+
+class AppFileWithPalabras(AppFile):
+    """Every test of AppFile again, with palabras-solas.json in the repo; and the `solo` of the words, in the file the tool writes."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        add_palabras(cls.tmp.name)
+        cls.R = mr.build(cls.tmp.name)
+
+    def test_solo_of_every_word(self):
+        f, _ = self.app("s1")
+        app = self.load(f)
+        self.assertEqual({w["w"]: w["solo"] for w in app["palabras"] if w["solo"]},
+                         {"tú": "w_tu_a", "tu": "w_tu", "bebé": "w_bebe_a", "pan": "w_pan", "gato": "w_gato"})
+        self.assertIsNone(next(w for w in app["palabras"] if w["w"] == "perro")["solo"])      # its clip has no recording
+        self.assertIsNone(next(w for w in app["palabras"] if w["w"] == "bebe")["solo"])       # no accent twin takes the other's clip
+        self.assertNotIn("palabras-solas", {x["cuento"] for x in app["frases"]})
 
 
 def unicodedata_nfd(s):
@@ -1425,6 +1531,21 @@ class RealData(unittest.TestCase):
             self.assertEqual(len({r["text"] for r in rows}), len(rows))
             for r in rows:
                 self.assertTrue(all(1 <= p <= len(D.book[b]["pages"]) for p in r["pages"]))
+
+    def test_every_word_has_a_clip_alone(self):
+        D = self.R["D"]
+        words = [w["word"] for w in self.R["words"]]
+        self.assertNotIn("palabras-solas", D.story)                                         # it is not a story
+        self.assertEqual(len(D.palabras), 133)
+        solo = mr.solo_clips(D, words)
+        self.assertEqual(list(solo), words)                                                 # all 156, course order
+        self.assertEqual(sum(1 for c in solo.values() if c in D.palabras), 133)             # the others (23) are story clips
+        self.assertTrue(all(c in D.audio for c in solo.values()))
+        for w, cid in solo.items():
+            text = D.palabras[cid]["text"] if cid in D.palabras else next(st["clips"][cid]["text"] for st in D.story.values() if cid in st["clips"])
+            self.assertEqual(tuple(mr.toks(text)), tuple(mr.toks(w)), (w, cid))            # accents kept: tú has "Tú.", tu has "Tu."
+        self.assertEqual((solo["tu"], solo["tú"], solo["bebe"], solo["bebé"], solo["esta"], solo["está"]),
+                         ("w_tu", "w_tu_a", "w_bebe", "w_bebe_a", "w_esta", "w_esta_a"))
 
     def test_made_up_verdicts(self):
         D, S = self.R["D"], self.S
