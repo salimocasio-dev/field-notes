@@ -25,7 +25,7 @@ const CF = (() => {
   const CRATE = [8.95, 1.25, 9.7, 1.95, .34], POST = [10.1, 1.6]; // the low crate; the goat's post
   const WIN = [-1.9, -.8, 1.2, 2.1];                             // the shuttered window: x0, x1, z0, z1
   const POT = [.28, .5];                                         // the flower pot left of the door
-  const CART = [3.1, 3.5];                                       // the hand cart: the middle of its bed
+  const CART = [3.9, 3.35];                                      // the hand cart: the middle of its bed. In front of the stand's left end, so that it and the post at the right end fit one 196-px window
   const BINS = ['tomates', 'cebollas', 'papas', 'platanos', 'aguacates', 'pinas', 'limones'];
   const BW = (TX1 - TX0) / BINS.length;
   const PAINT = [240, 150, 116], TRIM = [86, 160, 150], POLE = [3.55, TY1 + .1], WOOD = [150, 98, 56], WOOD_L = [196, 148, 92], WOOD_D = [92, 62, 40], LEGC = [48, 34, 28];
