@@ -123,14 +123,52 @@ const LAWN = GRASS, LAWN_T = 3.45, BLADE = [2, 2, 3, 3, 4];
 // Round 4: the blades take the light of the hour as the lawn under them does (lit, set-kit.js), at every hour: the engine's way at dusk and at
 // night (lightPass darkTufts: every blade in its shade colour) turns this ramp's light tones olive brown, specks of brown on a green lawn
 for (let k = 0; k < 5; k++) { const c = lit(LAWN[BLADE[k]], LIGHT); tuftLit[k] = rgb(...c); tuftDark[k] = rgb(c[0] * .54, c[1] * .52, c[2] * .72); }
-// round 4: round the beds the grass is darker, most behind the row of flower heads (the same ramp, a tone and more down: its two darkest
-// tones mixed), so that each head (its yellow ones, on this lighter lawn, above all) is seen against dark lawn; no blades there. An ellipse
-// over each bed, raised HALO[0] rows (the heads stand 9 to 18 rows over the holes; flowers.py measures 20 to 25 over them), radii HALO[1], HALO[2]; full inside q < HALO[3] - HALO[4], fading out to HALO[3]
-const HALO = [11, 35, 22, 1.2, .5], HALO_DARK = 1.3;
-const backOf = (ix, iy) => { let d = 0; for (const k of ['L', 'R']) { const b = BEDS[k], dx = (ix + .5 - b.sx) / HALO[1], dy = (iy + .5 - (b.sy - HALO[0])) / HALO[2];
-  d = Math.max(d, clamp((HALO[3] - dx * dx - dy * dy) / HALO[4], 0, 1)); } return d; };
-const lawnAt = (x, y, ix, iy) => { const d = backOf(ix, iy), t = LAWN_T - d * HALO_DARK + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
-  return rgb(...LAWN[clamp(Math.floor(t), d > 0 ? 1 : 2, 4)]); };
+const lawnAt = (x, y, ix, iy) => { const t = LAWN_T + (noise(x * .3, y * .3) - .5) * .6 + (bayerAt(ix, iy) - .5) * .8 + (hash(ix, iy) - .5) * .25;
+  return rgb(...LAWN[clamp(Math.floor(t), 2, 4)]); };
+// round 5: each bed has a border of low leaves round its turned earth (round 4's soft darker grass round it read as a pit or a shadow): crisp,
+// in clumps, no gradient, painted on the ground as the earth is (so whoever stands at a bed is drawn over it, as on the lawn). At the sides
+// and the front a narrow rim, BORDER_SIDE px past the earth's ellipse at the sides and BORDER_FRONT rows at the front, a step wider or
+// narrower every CLUMP px along it. Behind the bed it rises to a low row of leafy clumps (two staggered rows, CLUMP px wide, each a rounded
+// top lit, the shade between them), the back row's tops BORDER_BACK rows over the holes less 0 to 3 (the heads' tops are 18 over them: the
+// row stands about 7 to 10 rows over the heads, as far as flowers.py's measure of each head needs: 2 to 7 rows over it), the row's ends
+// rounded down into the rim. Its colours are the dark end of the lawn's ramp
+// and one leaf green between them, lit on each clump's top: no darker than the lawn in the house's and the fence's shade (GRASS[1] is its
+// darkest, the shade's mean is darker; the sheet maker checks it at every hour)
+const BORDER_PX = [];                                                 // its pixels (the sheet maker reads them)
+const BORDER_SIDE = [2, 4], BORDER_FRONT = [2, 3], BORDER_BACK = 28, CLUMP = 6;
+const LEAF = [GRASS[1], [66, 102, 50], GRASS[2]];                    // shade, leaf, lit
+// the clumps behind the bed: two staggered rows, the front one TIER rows lower; each clump a rounded top over CLUMP px. Returns how far
+// under its clump's top the pixel is (0: the top edge) and how near its side (0: the notch between two clumps), or null
+const TIER = 8;
+function clumpAt(ix, dy, k) {
+  const b = BEDS[k], seed = k === 'L' ? 11 : 29, dx = ix + .5 - b.sx, e = Math.abs(dx) - (BED_RX - 6);
+  for (const [t, off] of [[1, CLUMP / 2], [0, 0]]) {                  // the front row first: it is nearer
+    const c = Math.floor((ix + seed + off) / CLUMP), m = c * CLUMP - seed - off + CLUMP / 2, side = CLUMP / 2 - Math.abs(ix + .5 - m);
+    const top = BORDER_BACK - t * TIER - Math.round(hash(c, seed + 1 + t) * 3) - Math.round(((ix + .5 - m) / (CLUMP / 2)) ** 2 * 3) - (e > 0 ? Math.round(e * e * .7) : 0);
+    if (-dy <= top) return { under: top + dy, side };
+  }
+  return null;
+}
+function borderOf(ix, iy) {
+  for (const k of ['L', 'R']) {
+    const b = BEDS[k], dx = ix + .5 - b.sx, dy = iy + .5 - b.sy, seed = k === 'L' ? 11 : 29;
+    if (Math.abs(dx) > BED_RX + 6 || dy > BED_RY + 4 || dy < -BORDER_BACK - 3) continue;
+    // the rim: the earth's ellipse grown, by a clump's width (2 to 4 px at the sides, 2 to 3 rows at the front), in steps along its outline
+    const a = Math.atan2(dy / BED_RY, dx / BED_RX), cell = Math.floor((a + Math.PI) * (BED_RX + BED_RY) / 2 / CLUMP), h = hash(cell, seed);
+    const gx = BORDER_SIDE[0] + Math.round(h * (BORDER_SIDE[1] - BORDER_SIDE[0])), gy = BORDER_FRONT[0] + Math.round(h * (BORDER_FRONT[1] - BORDER_FRONT[0]));
+    if ((dx / (BED_RX + gx)) ** 2 + (dy / (BED_RY + gy)) ** 2 <= 1) return { k, rim: true };
+    // behind the heads: the low rows of leafy clumps
+    if (dy < 0) { const c = clumpAt(ix, dy, k); if (c) return Object.assign({ k }, c); }
+  }
+  return null;
+}
+function leafAt(ix, iy) {
+  const B = borderOf(ix, iy), n = noise(ix / 1.6 + 7, iy / 1.2), nu = noise(ix / 1.6 + 6.4, (iy - 1) / 1.2);
+  if (B.rim) return rgb(...LEAF[borderOf(ix, iy - 1) === null || n - nu > .06 ? 2 : n < .42 ? 0 : 1]);   // the rim: lit along its outer edge
+  if (B.under < 1 || (B.under < 2 && B.side > 1)) return rgb(...LEAF[2]);   // a clump's top: lit
+  if (B.side < .8 && B.under > 1) return rgb(...LEAF[0]);              // the shade between two clumps
+  return rgb(...LEAF[n - nu > .08 ? 2 : n < .38 ? 0 : 1]);             // its leaves
+}
 // the beds (round 3: dug earth, not a mat): a ragged edge, loose clods (a lit top, a dark underside), a low rim of thrown-up earth at the
 // back, the five holes each a dark pit with a lit lip on its far side
 const inBed = (ix, iy, k) => { const b = BEDS[k], dx = (ix + .5 - b.sx) / BED_RX, dy = (iy + .5 - b.sy) / BED_RY, a = Math.atan2(dy, dx);
@@ -175,6 +213,7 @@ function patioGround(x, y, ix, iy, i) {
     kinds[i] = KIND_ROAD;
     return bedEarth(ix, iy, k, r);
   }
+  if (borderOf(ix, iy)) { kinds[i] = KIND_ROAD; BORDER_PX.push(i); return leafAt(ix, iy); }   // round 5: the bed's border of low leaves (no blades grow there)
   kinds[i] = KIND_GRASS;
   return lawnAt(x, y, ix, iy);
 }
@@ -414,7 +453,6 @@ function buildSet() {
       pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
     }
     growGrass();
-    { const keep = tufts.filter(t => backOf(t.ix, t.iy) <= .5); tufts.length = 0; tufts.push(...keep); }   // round 4: no blades in the dark grass round the beds
     GROUND_CACHE = { pix: pix.slice(), zb: zb.slice(), kinds: kinds.slice(), ground: ground.slice(), tufts: tufts.slice() };
   } else {
     pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
@@ -462,6 +500,7 @@ function frame(t, casts = []) {
 frame(SET.t);
 if (PART_TAGS) tagLeaves(zb);
 window.TAGS = PART_TAGS;
+window.BORDER_PX = BORDER_PX;
 window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };   // live: the depth of the frame just drawn (the leaves where the wind has them), for the sky objects behind the set (sheet: behind)
 window.frame = frame;
 </script></body></html>
