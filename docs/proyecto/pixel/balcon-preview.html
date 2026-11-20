@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El balcón · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
 <p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/balcon.js) drawn over the NEW set (balcon-set.html): balcon.js is loaded with every screen position the sheet names replaced by the sheet's new one (as the Flutter port does it, line for line), its background, furniture sprites and the frog's dotted shadow taken out, and the old clip rectangle replaced by the sheet's clip. Then cropped to a view.
-Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp;F=8&amp;t=0</code> (add <code>&amp;roof=a</code> for round 1's roof), or <code>?pair=silla&amp;side=si</code> (a review picture of cual-balcon, 196 x 104, zoom 1 or 2 as the sheet says). Serve the repo over http.</p>
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp;F=8&amp;t=0</code>, or <code>?pair=silla&amp;side=si</code> (a review picture of cual-balcon, 196 x 104, zoom 1 or 2 as the sheet says). Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -71,8 +71,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp
   PV.setOf = setOf;
   let CUR = null;   // the set frame of the picture being drawn
   async function setFrame(st, t, casts) {
-    const roof = new URLSearchParams(location.search).get('roof');   // roof=a: round 1's roof (balcon-set.html), for comparing; the sheet is the same
-    const q = Object.entries(st).map(([k, v]) => k + '=' + v).join('&') + '&tags=1' + (roof ? '&roof=' + roof : '');
+    const q = Object.entries(st).map(([k, v]) => k + '=' + v).join('&') + '&tags=1';
     let fr = SETS[q];
     if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'balcon-set.html?' + q; }); SETS[q] = fr; }
     const w = fr.contentWindow, img = w.frame(t, casts);
@@ -149,7 +148,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp
     const sent = Math.abs(q.x - L[0]) < 3 && Math.abs(q.y - L[1]) < 3 && !q.dy;
     if (q && q.vis && q.al > .5 && !sent) { const b = frogBox(q); feet.push([b.x + b.w / 2, q.y + 25, [.3], .45]); }
     if (W.ab && W.ab.en !== 'silla' && (W.ab.al == null || W.ab.al > .5)) feet.push([W.ab.x, W.ab.y - 1, [.3, .65, 1, 1.35, 1.7], .35]);
-    const st = setOf(W), roofQ = new URLSearchParams(location.search).get('roof'), key = Object.entries(st).map(([k, v]) => k + '=' + v).join('&') + '&tags=1' + (roofQ ? '&roof=' + roofQ : '');
+    const st = setOf(W), key = Object.entries(st).map(([k, v]) => k + '=' + v).join('&') + '&tags=1';
     if (!SETS[key]) await setFrame(st, 0, []);
     const fw = SETS[key].contentWindow, cs = [];
     for (const [sx, sy, zs, r] of feet) { const g = fw.unproject(sx, sy); for (const z of zs) cs.push([g.x, g.y, z, r]); }
@@ -172,6 +171,22 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp
     if (opts.hud && E.hud) E.hud(g, W, F >> 1);
     if (opts.signs && W.spot) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
     return out.toDataURL();
+  };
+  // the signs of a story step as juego.js sets them (ask, decide, elige: lines 341 to 374): which answer cards (W.resp), whether they are
+  // spoken cards (W.respVoz: the step's voces; then each card is the frog and sound marks, and the one being said is lit, W.respOn), and what
+  // the big sign points at (W.spot). Round 3: the pictures of round 2 set W.resp only, so a spoken card was drawn as a glass (que-calor 28b).
+  // on: the card being said (null: none, as between two voices; 'spot': the one the sign points at)
+  PV.askW = function (w, st, V, on) {
+    const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+    const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
+    w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
+    else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
+      if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
+    else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
+    else return null;
+    if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
+    return w;
   };
   // a review picture of cual-balcon: panelW() of cual.js, cropped and zoomed as the sheet's pictures say
   PV.pair = async function (word, side) {
