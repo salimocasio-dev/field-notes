@@ -6,17 +6,20 @@ Checks rules 2a (accents kept; a word inside a longer tracked phrase), 2b (a wor
 2d (a line heard only after a wrong touch), 2e (a correction), 2f (three words after the tag), rule 3 (fair wrong pictures:
 distance, plural, farthest first) and that two runs give the same bytes. The readers' step (--hojas-libro, --valida-veredictos,
 --veredictos --final) is tested with made-up verdicts: the validator (each kind of fault), `cual` (parecidas, own page not in si,
-farthest first, at most 3), `puntua`, `falsas`, Parejas (a set of 4, the fallback to 3, words that differ), the fixed shuffle, and
-that two runs give the same bytes. `dart test tool/test` does not see this file (it looks for *_test.dart).
+farthest first, at most 3), `puntua`, `falsas`, the fixed shuffle, and that two runs give the same bytes. The pair step (--hojas-par,
+--valida-veredictos-par, --veredictos-par) is tested with made-up pair verdicts: the slugs, the sheet and its key (the letter of `si`
+both ways), the sentences to judge, the STOP for a pair with no picture files, the validator (each fault), `par` true and false,
+`par_frases` (order and no text twice), `puntua`, `no_juntas` (rules a to e and symmetry), `tokens_extra_prohibidos`, the summary and
+determinism. `dart test tool/test` does not see this file (it looks for *_test.dart).
 """
 import contextlib
 import hashlib
 import io
-import itertools
 import json
 import sys
 import tempfile
 import unittest
+from collections import Counter
 from pathlib import Path
 
 sys.dont_write_bytecode = True
@@ -52,6 +55,11 @@ UNO = {
 UNO_BEATS = ["a_el", "b_el", "c_tu", "d_esta", "e_bebe", "f_nohay", "g_nada", "h_denada", "i_tag", "j_body", "k_corr", "l_mira", "o_name", "m_short", "n_three", "y_long",
              {"decide": "do", "options": ["si", "no"], "pick": "si", "line": "q_question", "right": ["r_right"], "wrong": ["w_wrong"]}]
 
+# the picture pairs of the made-up course: word -> (clip, the pair's own sentence). tu's own sentence is also the sentence of an item (c_tu).
+PAIR_SAYS = {"tú": ("eres_tu", "Eres tú."), "tu": ("tu_pan", "Tú tienes tu pan aquí."), "el": ("el_es", "El es mío."), "mira": ("mira_aqui", "Mira aquí."),
+             "hola": ("di_hola", "Di hola."), "casa": ("esta_casa", "Esta es la casa."), "perro": ("el_perro", "El perro es grande.")}
+PAIR_SI, PAIR_NO = (255, 0, 0), (0, 0, 255)
+
 # the second story and its book: pictures and texts for rule 3. Pages 1 to 5.
 DOS = {"p1": "Mira la flor roja.", "p2": "El perro come pan.", "p3": "Las flores son rojas.", "p4": "El gato duerme aquí.", "p5": "La casa es grande."}
 
@@ -69,8 +77,17 @@ def make_repo(root):
             json.dump(o, f, ensure_ascii=False)
 
     dump("historia/datos/curso.json", {"lugares": [{"id": "casa", "n": 1, "cuentos": ["uno", "dos"], "dibujos": []}], "cuentos": {}, "cual": ["cual-x"]})
-    dump("historia/cuentos/cual-x.json", {"id": "cual-x", "scene": "frente", "clips": {"esta_casa": {"who": "narr", "text": "Esta es la casa."}},
-                                          "items": [{"w": "casa", "say": "esta_casa", "si": {"cam": [1, 2, 3, 4]}, "no": {"cam": [5, 6, 7, 8]}}]})
+    dump("historia/cuentos/cual-x.json", {"id": "cual-x", "scene": "frente", "clips": {k: {"who": "narr", "text": t} for k, t in PAIR_SAYS.values()},
+                                          "items": [{"w": w, "say": k, "si": {"cam": [1, 2, 3, 4]}, "no": {"cam": [5, 6, 7, 8]}} for w, (k, _) in PAIR_SAYS.items()]})
+    # the captured pictures of the pairs: coqui/ref/escenas/frente/pairs.json and pairs/<png>. `mira` has no picture files (a STOP).
+    (root / "coqui" / "ref" / "escenas" / "frente" / "pairs").mkdir(parents=True)
+    dump("coqui/ref/escenas/frente/pairs.json", {"scene": "frente", "pairs": [
+        {"file": "cual-x", "w": w, "say": k, "sayText": t, "si": {"png": "%s.si.png" % w}, "no": {"png": "%s.no.png" % w}} for w, (k, t) in PAIR_SAYS.items()]})
+    from PIL import Image
+    for w in PAIR_SAYS:
+        if w != "mira":
+            Image.new("RGB", (40, 12), PAIR_SI).save(root / "coqui" / "ref" / "escenas" / "frente" / "pairs" / ("%s.si.png" % w))
+            Image.new("RGB", (40, 12), PAIR_NO).save(root / "coqui" / "ref" / "escenas" / "frente" / "pairs" / ("%s.no.png" % w))
     dump("historia/datos/fijos.json", {"clips": {"story_your_turn": "ahora_tu", "story_praise": "muy_bien", "story_routine_no_prefix": "hz_no_"}, "lineas": {}})
     clips = {k: {"who": "narr", "text": t} for k, t in UNO.items()}
     clips["muy_bien"] = {"who": "narr", "text": "¡Muy bien!"}
@@ -265,11 +282,14 @@ class Rules(unittest.TestCase):
     # puntua
     def test_puntua(self):
         it = lambda cual, oyes: {"cual": cual, "que_oyes": oyes}
-        self.assertEqual(mr.puntua([it([2], True)], None), "cual")
-        self.assertEqual(mr.puntua([it([], True), it([4, 5], False)], None), "cual")
-        self.assertEqual(mr.puntua([it([], True)], {"clip": "x"}), "cual")                 # a picture pair is enough
-        self.assertEqual(mr.puntua([], {"clip": "x"}), "cual")
-        self.assertEqual(mr.puntua([it([], True), it([], False)], None), "que_oyes")
+        pair = {"clip": "x"}
+        self.assertEqual(mr.puntua([it([], True)], pair), "cual")                          # a picture pair is what makes it cual
+        self.assertEqual(mr.puntua([], pair), "cual")
+        self.assertEqual(mr.puntua([it([], False)], pair), "cual")
+        self.assertEqual(mr.puntua([it([2], True)], None), "que_oyes")                      # a wrong book picture no longer does
+        self.assertEqual(mr.puntua([it([], True), it([4, 5], False)], None), "que_oyes")
+        self.assertEqual(mr.puntua([it([4, 5], False), it([], True)], None), "que_oyes")
+        self.assertEqual(mr.puntua([it([2], False)], None), "nada")
         self.assertEqual(mr.puntua([it([], False)], None), "nada")
         self.assertEqual(mr.puntua([], None), "nada")
 
@@ -293,56 +313,6 @@ class Rules(unittest.TestCase):
         V["b:6"] = verd(si=[6])
         self.assertEqual(len(mr.falsas_for_page(S, V, set(), 6)), 6)
 
-    # Parejas
-    def all_no(self, S):
-        return {s["id"]: verd(si=s["pages"], no=[p for t in S for p in t["pages"] if p not in s["pages"]]) for s in S}
-
-    def test_parejas_a_set_of_four(self):
-        S = [sent(i, i, words=["w%d" % i]) for i in range(1, 6)]
-        sets = mr.parejas_for_book(S, self.all_no(S), set(), {"w%d" % i: i for i in range(1, 6)})
-        self.assertEqual([[s["clip"] for s in st] for st in sets], [["c1", "c2", "c3", "c4"]])   # the fifth is left; no second set of 3
-
-    def test_parejas_up_to_three_sets_on_fresh_pages(self):
-        S = [sent(i, i, words=["w%d" % i]) for i in range(1, 14)]
-        sets = mr.parejas_for_book(S, self.all_no(S), set(), {"w%d" % i: i for i in range(1, 14)})
-        self.assertEqual([[s["own"] for s in st] for st in sets], [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
-
-    def test_parejas_falls_back_to_three(self):
-        S = [sent(i, i, words=["w%d" % i]) for i in range(1, 5)]
-        wi = {"w%d" % i: i for i in range(1, 5)}
-        # pages 1 and 2 look alike: no set of 4; the first set of 3 in the order of the pages
-        sets = mr.parejas_for_book(S, self.all_no(S), pairs((1, 2)), wi)
-        self.assertEqual([[s["own"] for s in st] for st in sets], [[1, 3, 4]])
-        # pages 2 and 4 are `duda` for the sentence of page 1 (not `no`): it can stand with page 3 only, so a set of 3 is made without it
-        V = self.all_no(S)
-        V["b:1"] = verd(si=[1], no=[3], duda=[2, 4])
-        sets = mr.parejas_for_book(S, V, set(), wi)
-        self.assertEqual([[s["own"] for s in st] for st in sets], [[2, 3, 4]])
-        # a sentence whose own page is not si is not used at all
-        V = self.all_no(S)
-        V["b:2"] = verd(duda=[2], no=[1, 3, 4])
-        sets = mr.parejas_for_book(S, V, set(), wi)
-        self.assertEqual([[s["own"] for s in st] for st in sets], [[1, 3, 4]])
-        # nothing when fewer than three can stand together
-        self.assertEqual(mr.parejas_for_book(S, self.all_no(S), pairs((1, 2), (3, 4)), wi), [])
-
-    def test_parejas_prefers_sentences_of_different_words(self):
-        S = [sent(1, 1, ["a"]), sent(2, 2, ["a"]), sent(3, 3, ["b"]), sent(4, 4, ["c"]), sent(5, 5, ["d"])]
-        wi = {"a": 1, "b": 2, "c": 3, "d": 4}
-        sets = mr.parejas_for_book(S, self.all_no(S), set(), wi)
-        self.assertEqual([[s["own"] for s in st] for st in sets], [[1, 3, 4, 5]])           # not the first four by page: 1 and 2 share `a`
-        S = [sent(1, 1, ["a"]), sent(2, 2, ["a"]), sent(3, 3, ["b"]), sent(4, 4, ["c"])]
-        sets = mr.parejas_for_book(S, self.all_no(S), set(), wi)
-        self.assertEqual([[s["own"] for s in st] for st in sets], [[1, 2, 3, 4]])           # no set of 4 without a shared word: a set of 4 still
-
-    def test_parejas_a_sentence_on_two_pages(self):
-        S = [sent(1, 3, pages=[3, 7]), sent(2, 5), sent(3, 6), sent(4, 8)]
-        V = {"b:1": verd(si=[3, 7], no=[5, 6, 8]), "b:2": verd(si=[5], no=[3, 6, 7, 8]), "b:3": verd(si=[6], no=[3, 5, 7, 8]), "b:4": verd(si=[8], no=[3, 5, 6, 7])}
-        self.assertEqual([len(st) for st in mr.parejas_for_book(S, V, set(), {"w": 1})], [4])
-        self.assertEqual(mr.parejas_for_book(S, V, pairs((7, 8)), {"w": 1})[0][0]["own"], 3)     # page 7 looks like 8: 1 and 4 cannot stand together
-        self.assertEqual([[s["own"] for s in st] for st in mr.parejas_for_book(S, V, pairs((7, 8)), {"w": 1})], [[3, 5, 6]])
-
-    # the shuffle
     def test_mix_is_fixed(self):
         # pinned: the same on every machine and every Python (SHA-256 only)
         self.assertEqual(mr.mix(list(range(10)), "casa"), [6, 4, 8, 0, 5, 9, 2, 1, 7, 3])
@@ -356,8 +326,8 @@ class Rules(unittest.TestCase):
         self.assertEqual(mr.mix(list(range(6)), unicodedata.normalize("NFD", "niño")), mr.mix(list(range(6)), "niño"))   # NFC first
 
 
-class Verdicts(unittest.TestCase):
-    """The sheets for the readers, the verdict check and the final data, on the made-up repo and made-up verdicts."""
+class VerdictsBase(unittest.TestCase):
+    """The made-up repo with the sheets for the readers written, and the helpers to make made-up verdicts and run the tool. No test."""
 
     @classmethod
     def setUpClass(cls):
@@ -415,6 +385,10 @@ class Verdicts(unittest.TestCase):
 
     def item(self, final, w, clip):
         return next(i for i in self.word(final, w)["frases"] if i["clip"] == clip)
+
+
+class Verdicts(VerdictsBase):
+    """The sheets for the readers, the verdict check and the final data, on the made-up repo and made-up verdicts."""
 
     # the sheets
     def test_hojas_libro(self):
@@ -574,8 +548,12 @@ class Verdicts(unittest.TestCase):
         self.assertFalse(flor["propia_dudosa"])
         self.assertEqual(self.item(fin, "perro", "p2")["cual"], [5, 4, 1])
         self.assertEqual(self.item(fin, "gato", "p4")["cual"], [1, 2, 3])
-        self.assertEqual(self.word(fin, "flor")["puntua"], "cual")
+        # puntua: cual when the word has a picture pair (a wrong book picture no longer counts); else que_oyes with an item that has it; else nada
+        self.assertEqual(self.word(fin, "flor")["puntua"], "que_oyes")             # an item with a wrong picture, but no pair
         self.assertEqual(self.word(fin, "casa")["puntua"], "cual")
+        self.assertEqual(self.word(fin, "hola")["puntua"], "cual")
+        self.assertEqual(self.word(fin, "mira")["puntua"], "cual")                 # a pair, though it has no sheet (a STOP)
+        self.assertEqual(self.word(fin, "hay")["puntua"], "nada")                  # no pair, and no item at all
         # a word whose pictured sentence is in a book of one page: nothing is wrong there; heard-and-chosen only
         self.assertEqual(self.item(fin, "él", "a_el")["cual"], [])
         self.assertEqual(self.word(fin, "él")["puntua"], "que_oyes")
@@ -584,10 +562,11 @@ class Verdicts(unittest.TestCase):
         self.assertEqual((self.item(fin, "perro", "p2")["arma"], self.item(fin, "perro", "p2")["que_oyes"]), (True, True))
         self.assertEqual((self.item(fin, "flor", "p1")["arma"], self.item(fin, "flor", "p1")["que_oyes"]), (False, True))   # "mira" ... 4 tokens, but "roja" is not taught
         for w in fin["palabras"]:
-            self.assertEqual(list(w), ["word", "puntua", "par", "dilo", "frases"])
+            self.assertEqual(list(w), ["word", "puntua", "par", "par_frases", "no_juntas", "dilo", "frases"])
             for i in w["frases"]:
-                self.assertEqual(list(i), ["clip", "cuento", "text", "tokens", "pagina", "cual", "propia_dudosa", "arma", "que_oyes"])
+                self.assertEqual(list(i), ["clip", "cuento", "text", "tokens", "pagina", "cual", "propia_dudosa", "arma", "que_oyes", "par", "tokens_extra_prohibidos"])
                 self.assertLessEqual(len(i["cual"]), 3)
+        self.assertEqual(list(fin), ["meta", "palabras", "paginas"])               # the book-page Parejas sets are gone
 
     def test_final_parecidas_and_own_page_not_si(self):
         fin, _ = self.final("b", parecidas={"dos": [[1, 2]]}, duda=["dos:3"])
@@ -646,18 +625,6 @@ class Verdicts(unittest.TestCase):
         fin, _ = self.final("g", parecidas={"dos": [[1, 2]]})
         self.assertEqual([x["clip"] for x in fin["paginas"]["dos/2"]["falsas"]], ["p5", "p4"])            # the sentence of page 1 looks like page 2: out
 
-    def test_final_parejas(self):
-        fin, _ = self.final("h")
-        sets = fin["parejas"]["dos"]
-        self.assertEqual(len(sets), 1)
-        self.assertEqual((sets[0]["size"], sets[0]["words_differ"]), (4, False))                          # "el" is a word of two of them
-        self.assertEqual([(i["clip"], i["pagina"]["page"]) for i in sets[0]["items"]], [("p1", 1), ("p2", 2), ("p4", 4), ("p5", 5)])
-        self.assertEqual(sorted(sets[0]["items"][0]), ["clip", "pagina", "text"])
-        self.assertEqual(fin["parejas"]["uno"], [])                                                       # two sentences on one page of one picture
-        fin, _ = self.final("i", parecidas={"dos": [[1, 2]]})
-        sets = fin["parejas"]["dos"]
-        self.assertEqual([(s["size"], s["words_differ"], [i["clip"] for i in s["items"]]) for s in sets], [(3, True, ["p1", "p4", "p5"])])
-
     # determinism
     def test_same_bytes_twice(self):
         for i in range(2):
@@ -698,11 +665,611 @@ class Verdicts(unittest.TestCase):
         text = f.with_name("resumen-final.md").read_text(encoding="utf-8")
         for needle in ("## Per word", "## Distribution of words by number of items with a non-empty `cual`", "finished stories 1..3", "finished stories 1..32",
                        "## Words that are not scored by `cual`", "`puntua` = `que_oyes`", "`puntua` = `nada`", "Pages with at least 2 `falsas`",
-                       "Books with at least one set", "`propia_dudosa`", "SHA-256"):
+                       "`propia_dudosa`", "SHA-256"):
             self.assertIn(needle, text)
         # "El gato duerme aquí." is a candidate for el and for gato: two items, one sentence
         self.assertIn("| items with `propia_dudosa` (a picture of its own that the verdict does not put in si) | 2 |", text)
         self.assertIn("|   distinct sentences (book, text) with `propia_dudosa` | 1 |", text)
+
+
+# ---------------------------------------------------------------------------------------------------------------- the pair step
+
+def pairs_of(lst, rule):
+    """The pairs of words (as frozensets) that no_juntas_pairs puts under a rule."""
+    return {frozenset(p) for p in mr.no_juntas_pairs(lst)[rule]}
+
+
+def fs(*ps):
+    return {frozenset(p) for p in ps}
+
+
+class NoJuntas(unittest.TestCase):
+    """The words that must not meet, on plain lists of words."""
+
+    def test_a_accent_twins(self):
+        words = ["bebé", "bebe", "tú", "tu", "el", "él", "niño", "casa"]
+        self.assertEqual(mr.no_juntas_pairs(words)["a"], [("bebé", "bebe"), ("tú", "tu"), ("el", "él")])      # course order, a before b
+        self.assertEqual(pairs_of(["está", "esta", "¿cuál?", "cual", "papá", "papa"], "a"), fs(("está", "esta"), ("¿cuál?", "cual"), ("papá", "papa")))
+
+    def test_b_a_whole_word_part_of_a_phrase(self):
+        words = ["no", "no hay", "hay", "nada", "de nada", "otra", "otra vez", "está", "¿dónde está?", "casa", "nota", "tu", "¿y tú?", "hace", "hace calor", "mesa"]
+        self.assertEqual(pairs_of(words, "b"), fs(("no", "no hay"), ("hay", "no hay"), ("nada", "de nada"), ("otra", "otra vez"), ("está", "¿dónde está?"),
+                                                  ("tu", "¿y tú?"), ("hace", "hace calor")))          # "nota" is not part of anything; "tu" is "tú" with accents folded
+        self.assertEqual(pairs_of(["esta", "¿dónde está?"], "b"), fs(("esta", "¿dónde está?")))                # accents folded here too
+        self.assertEqual(pairs_of(["no hay", "no hay"], "b"), set())                                        # equal is not a part
+        self.assertEqual(pairs_of(["de nada", "nadar"], "b"), set())                                        # part of a word is not a whole word
+
+    def test_c_the_same_first_four_letters(self):
+        words = ["quiero", "quiere", "quieres", "abre", "abierta", "come", "comida", "casa", "cama", "tú", "tus", "sol", "sola", "tengo hambre", "tengo sed", "hasta mañana", "hasta"]
+        got = pairs_of(words, "c")
+        self.assertEqual(got, fs(("quiero", "quiere"), ("quiero", "quieres"), ("quiere", "quieres"), ("tengo hambre", "tengo sed"), ("hasta mañana", "hasta")))
+        # four letters is four letters: "abre" / "abierta" share two and "come" / "comida" three, so rule (c) as written leaves them out
+        self.assertNotIn(frozenset(("abre", "abierta")), got)
+        self.assertNotIn(frozenset(("come", "comida")), got)
+        self.assertNotIn(frozenset(("tú", "tus")), got)                    # "tu" has fewer than four letters
+        self.assertNotIn(frozenset(("sol", "sola")), got)
+        self.assertEqual(pairs_of(["está", "esta", "ESTÁ"], "c"), fs(("está", "esta"), ("está", "ESTÁ"), ("esta", "ESTÁ")))    # accents and case folded
+        self.assertEqual(mr.NO_JUNTAS_PREFIX, 4)
+
+    def test_d_one_letter_apart(self):
+        words = ["tira", "mira", "este", "esta", "abuelo", "abuela", "gato", "pato", "no", "yo", "sol", "sal", "casa", "cosa", "tu", "tú", "niño", "niña", "casas", "papá", "para"]
+        self.assertEqual(pairs_of(words, "d"), fs(("tira", "mira"), ("este", "esta"), ("abuelo", "abuela"), ("gato", "pato"), ("no", "yo"), ("sol", "sal"), ("casa", "cosa"),
+                                                  ("niño", "niña"), ("papá", "para")))
+        self.assertEqual(pairs_of(["mira", "pato", "casa", "gato"], "d"), fs(("pato", "gato")))              # two or three letters apart: no
+        self.assertEqual(pairs_of(["tu", "tú", "casa", "casas"], "d"), set())                                # no letter apart, or not of equal length: no
+
+    def test_e_plus_s_or_es(self):
+        words = ["flor", "flores", "perro", "perros", "casa", "casas", "tu", "tus", "mes", "meses", "sol", "sola", "flor", "perras"]
+        self.assertEqual(pairs_of(words[:-2], "e"), fs(("flor", "flores"), ("perro", "perros"), ("casa", "casas"), ("tu", "tus"), ("mes", "meses")))   # "sola" is no plural
+        self.assertEqual(pairs_of(["flores", "flor"], "e"), fs(("flor", "flores")))                          # in either order
+        self.assertEqual(pairs_of(["flor", "perros"], "e"), set())
+
+    def test_symmetric_sorted_and_the_union_of_the_rules(self):
+        words = ["quiero", "quiere", "quieres", "flor", "flores", "no", "no hay", "hay", "tira", "mira", "tú", "tu", "¿y tú?", "casa", "mesa"]
+        nj = mr.no_juntas(words)
+        self.assertEqual(list(nj), words)
+        for w, lst in nj.items():
+            self.assertEqual(lst, sorted(lst))
+            self.assertNotIn(w, lst)
+            for o in lst:
+                self.assertIn(w, nj[o])
+        self.assertEqual(nj["quiero"], ["quiere", "quieres"])
+        self.assertEqual(nj["flor"], ["flores"])
+        self.assertEqual(nj["flores"], ["flor"])
+        self.assertEqual(nj["no"], ["no hay"])
+        self.assertEqual(nj["no hay"], ["hay", "no"])
+        self.assertEqual(nj["tu"], ["tú", "¿y tú?"])
+        self.assertEqual(nj["tú"], ["tu", "¿y tú?"])
+        self.assertEqual(nj["¿y tú?"], ["tu", "tú"])
+        self.assertEqual(nj["tira"], ["mira"])
+        self.assertEqual((nj["casa"], nj["mesa"]), ([], []))
+        # the union of the pairs of every rule, each pair once on each side
+        every = set().union(*[pairs_of(words, r) for r in "abcde"])
+        self.assertEqual({frozenset((w, o)) for w, l in nj.items() for o in l}, every)
+
+    def test_tokens_extra_prohibidos_rule(self):
+        names = ["flor", "casa", "bebé", "bebe", "él", "el", "no hay", "no", "hay", "pan", "tu", "tú"]
+        fts = [mr.ftoks(w) for w in names]
+        tin = lambda text: mr.tracked_in(text, names, fts)
+        self.assertEqual(tin("Las flores son rojas."), ["flor"])                       # a plural: flor + es
+        self.assertEqual(tin("Dos casas."), ["casa"])                                   # casa + s
+        self.assertEqual(tin("El bebé bebe agua ahora."), ["bebe", "bebé", "el", "él"])  # accents folded: él and el, bebé and bebe are all in it
+        self.assertEqual(tin("No hay pan aquí ahora."), ["hay", "no", "no hay", "pan"])   # a word inside a tracked phrase is in the sentence too
+        self.assertEqual(tin("No tengo hay."), ["hay", "no"])                           # the phrase needs its words one after the other
+        self.assertEqual(tin("Tú tienes tu pan."), ["pan", "tu", "tú"])
+        self.assertEqual(tin("¡Flor!"), ["flor"])                                       # signs and case
+        self.assertEqual(tin("Una floreria."), [])                                      # a part of a word is not the word
+        self.assertEqual(tin(""), [])
+
+
+class Pares(VerdictsBase):
+    """The pair step on the made-up repo. Words with a pair and a sheet, course order: el (B), tú (slug tu, B), tu (tu-2, B), hola (A), casa (B), perro (B);
+    mira has a pair but no picture files (a STOP)."""
+
+    SLUGS = [("el", "el"), ("tu", "tú"), ("tu-2", "tu"), ("hola", "hola"), ("casa", "casa"), ("perro", "perro")]
+
+    def sheets(self, **kw):
+        """The book verdicts written, then --hojas-par run into self.out. -> (the book verdicts dir, the tool's output)."""
+        d = self.write(self.verdicts(**kw), "pbook")
+        code, text = self.run_cli("--veredictos", str(d), "--hojas-par")
+        self.assertEqual(code, 0, text)
+        return d, text
+
+    def index(self):
+        return json.loads((self.out / "par" / "indice.json").read_text(encoding="utf-8"))
+
+    def claves(self):
+        return json.loads((self.out / "par" / "claves.json").read_text(encoding="utf-8"))
+
+    def doc(self, slug):
+        return json.loads((self.out / "par" / slug / "frases.json").read_text(encoding="utf-8"))
+
+    def pair_files(self, name, change=None, value=None):
+        """A pair verdict file for every sheet: every sentence gets `value(slug, k)` (default: the letter of `si`). change(files) may spoil them.
+        -> the directory."""
+        files = {}
+        for slug, word in self.index().items():
+            files[slug] = {"palabra": word, "frases": {f["id"]: (value(slug, k) if value else self.claves()[slug]) for k, f in enumerate(self.doc(slug)["frases"], 1)}}
+        if change:
+            change(files)
+        d = self.root / name
+        d.mkdir(exist_ok=True)
+        for old in d.glob("*.json"):
+            old.unlink()
+        for slug, v in files.items():
+            (d / (slug + ".json")).write_text(json.dumps(v, ensure_ascii=False), encoding="utf-8")
+        return d
+
+    def merge(self, name, bdir, pdir, expect=0):
+        f = self.root / (name + "-final") / "repaso-final.json"
+        args = ["--veredictos", str(bdir)] + (["--veredictos-par", str(pdir)] if pdir else []) + ["--final", str(f)]
+        code, text = self.run_cli(*args)
+        self.assertEqual(code, expect, text)
+        return (json.loads(f.read_text(encoding="utf-8")) if expect == 0 else None), f, text
+
+    # slugs
+    def test_slugs(self):
+        self.assertEqual(mr.slugify("¿cómo estás?"), "como-estas")
+        self.assertEqual(mr.slugify("Niño"), "nino")
+        self.assertEqual(mr.slugify("se sienta"), "se-sienta")
+        self.assertEqual(mr.slugify("¿y tú?"), "y-tu")
+        self.assertEqual(mr.slugify("¿?"), "palabra")
+        self.assertEqual(mr.slugify(unicodedata_nfd("niño")), "nino")
+        got = mr.pair_slugs(["tú", "tu", "bebé", "bebe", "¿dónde está?", "tu-2", "está", "esta"])
+        self.assertEqual(list(got.values()), ["tu", "tu-2", "bebe", "bebe-2", "donde-esta", "tu-2-2", "esta", "esta-2"])     # unique; the first of a kind is plain
+        self.assertEqual(len(set(got.values())), len(got))
+        self.assertEqual(mr.pair_slugs(["tú", "tu", "bebé", "bebe", "¿dónde está?", "tu-2", "está", "esta"]), got)         # the same every time
+        for slug in got.values():
+            self.assertRegex(slug, r"^[a-z0-9]+(-[a-z0-9]+)*$")
+
+    # the sheets
+    def test_the_sheets_written(self):
+        _, text = self.sheets()
+        par = self.out / "par"
+        self.assertEqual(list(self.index().items()), self.SLUGS)                                 # course order: el, tú, tu, (mira has none), hola, casa, perro
+        self.assertEqual(sorted(p.name for p in par.iterdir() if p.is_dir()), sorted(s for s, _ in self.SLUGS))
+        for slug, _ in self.SLUGS:
+            self.assertEqual(sorted(p.name for p in (par / slug).iterdir()), ["frases.json", "par.png"])
+        self.assertEqual(sorted(p.name for p in par.iterdir() if p.is_file()), ["claves.json", "grupos.json", "indice.json"])
+        n = sum(len(self.doc(s)["frases"]) for s, _ in self.SLUGS)
+        self.assertIn("words 6, sentences to judge %d (the pairs' own sentences 6, the others %d)" % (n, n - 6), text)
+        # the largest and the smallest word
+        counts = {w: len(self.doc(s)["frases"]) for s, w in self.SLUGS}
+        self.assertIn("largest word: %s (%d sentences)" % (max(counts, key=lambda w: (counts[w], -list(counts).index(w))), max(counts.values())), text)
+        self.assertIn("smallest: %d sentence" % min(counts.values()), text)
+
+    def test_the_sentences_to_judge(self):
+        d, _ = self.sheets()
+        fin, _, _ = self.merge("pf", d, None)
+        for slug, word in self.SLUGS:
+            w = next(x for x in fin["palabras"] if x["word"] == word)
+            doc = self.doc(slug)
+            self.assertEqual(list(doc), ["palabra", "frases"])
+            self.assertEqual(doc["palabra"], word)
+            want = [w["par"]["text"]] + [t for t in dict.fromkeys(i["text"] for i in w["frases"]) if t != w["par"]["text"]]      # own first, then the items' texts in order, none twice
+            self.assertEqual(doc["frases"], [{"id": "%s:%d" % (slug, k), "text": t} for k, t in enumerate(want, 1)])
+            for f in doc["frases"]:
+                self.assertEqual(sorted(f), ["id", "text"])                                    # nothing says which letter is which
+        self.assertEqual([f["text"] for f in self.doc("casa")["frases"]][0], "Esta es la casa.")
+        self.assertGreater(len(self.doc("casa")["frases"]), 3)
+        self.assertEqual([f["text"] for f in self.doc("tu-2")["frases"]], ["Tú tienes tu pan aquí."])   # its own sentence is also an item's: one sentence
+        self.assertEqual(mr.pair_texts("a", [{"text": "b"}, {"text": "a"}, {"text": "c"}, {"text": "b"}]), ["a", "b", "c"])
+        # a sentence with no page and a sentence whose page the reader doubted are both there; one the final data leaves out is not
+        self.sheets(duda=["uno:2"])                                                            # y_long: own page not si, no page-free use: left out of casa, pan, abuela
+        self.assertNotIn("Abuela come pan aquí con mamá y papá en casa ahora.", [f["text"] for f in self.doc("casa")["frases"]])
+        self.assertIn("Abuela come pan aquí con mamá y papá en casa ahora.", [i["text"] for i in next(x for x in fin["palabras"] if x["word"] == "casa")["frases"]])
+
+    def test_the_key_and_the_order_of_the_pictures(self):
+        from PIL import Image, ImageDraw
+        self.sheets()
+        claves = self.claves()
+        self.assertEqual(claves, {slug: mr.pair_si_letter(word) for slug, word in self.SLUGS})
+        self.assertEqual(set(claves.values()), {"A", "B"})                                     # the letter is shuffled: `si` is not always A
+        self.assertEqual((claves["hola"], claves["casa"]), ("A", "B"))
+        font = mr.load_font(36)
+        for slug, _ in self.SLUGS:
+            with Image.open(self.out / "par" / slug / "par.png") as im:
+                sheet = im.convert("RGB")
+            # 40x12 pictures at 4x: 160 x 48; margin 12, gap 16, 44 for the letters
+            self.assertEqual(sheet.size, (12 * 2 + 160 * 2 + 16, 12 * 2 + 44 + 48))
+            left, right = sheet.getpixel((12 + 3, 56 + 3)), sheet.getpixel((12 + 160 + 16 + 3, 56 + 3))
+            self.assertEqual((left, right), (PAIR_SI, PAIR_NO) if claves[slug] == "A" else (PAIR_NO, PAIR_SI), slug)
+            self.assertEqual(sheet.getpixel((12 + 159, 56 + 47)), left)                          # the whole picture is there
+            self.assertEqual(sheet.getpixel((12 + 160 + 16 + 159, 56 + 47)), right)
+            # only the letters above the pictures: the band over each picture is the letter drawn on the background, and nothing else is drawn
+            blank = Image.new("RGB", sheet.size, (240, 240, 240))
+            for x0, letter in ((12, "A"), (12 + 160 + 16, "B")):
+                band = Image.new("RGB", (160, 44), (240, 240, 240))
+                ImageDraw.Draw(band).text((80, 22), letter, fill=(20, 20, 20), font=font, anchor="mm")
+                self.assertEqual(sheet.crop((x0, 12, x0 + 160, 56)).tobytes(), band.tobytes(), (slug, letter))
+                blank.paste(sheet.crop((x0, 56, x0 + 160, 104)), (x0, 56))
+                blank.paste(band, (x0, 12))
+            self.assertEqual(sheet.tobytes(), blank.tobytes(), slug)                              # margins, gap and bands: the background
+
+    def test_a_pair_without_picture_files_is_a_stop(self):
+        _, text = self.sheets()
+        self.assertIn("STOP, no sheet for the pair of mira: file not found: coqui/ref/escenas/frente/pairs/mira.si.png, coqui/ref/escenas/frente/pairs/mira.no.png", text)
+        self.assertNotIn("mira", self.index().values())
+        self.assertFalse((self.out / "par" / "mira").exists())
+        plans, stops = mr.plan_pairs(self.R)
+        self.assertEqual(stops, ["mira: file not found: coqui/ref/escenas/frente/pairs/mira.si.png, coqui/ref/escenas/frente/pairs/mira.no.png"])
+        self.assertEqual([p["slug"] for p in plans.values()], [s for s, _ in self.SLUGS])
+        fin, _, text = self.merge("pstop", self.root / "pbook", self.pair_files("pstop-par"))      # the merge goes on: mira has a pair, no sheet, no verdict
+        self.assertIn("STOP, no sheet for the pair of mira", text)
+        mira = next(w for w in fin["palabras"] if w["word"] == "mira")
+        self.assertEqual((mira["puntua"], [x["clip"] for x in mira["par_frases"]], any(i["par"] for i in mira["frases"])), ("cual", ["mira_aqui"], False))
+        self.assertEqual(fin["meta"]["pares_sin_hoja"], stops)
+
+    def test_how_a_pair_finds_its_files(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = Path(t)
+            from PIL import Image
+            for sc in ("uno", "otra"):
+                (root / "coqui" / "ref" / "escenas" / sc / "pairs").mkdir(parents=True)
+            for f in ("zz.si.png", "zz.no.png"):
+                Image.new("RGB", (2, 2)).save(root / "coqui" / "ref" / "escenas" / "otra" / "pairs" / f)
+            entry = {"file": "cual-x", "w": "zz", "say": "s", "sayText": "S.", "si": {"png": "zz.si.png"}, "no": {"png": "zz.no.png"}}
+            pair = {"file": "cual-x", "scene": "uno", "say": "s"}
+            # the scene folder of the story file has no entry: the others are searched (a pair drawn by another scene is listed in both)
+            si, no, why = mr.find_pair_files(root, {"uno": [], "otra": [entry]}, "zz", pair)
+            self.assertEqual((si.name, no.name, why, si.parent.parent.name), ("zz.si.png", "zz.no.png", None, "otra"))
+            self.assertEqual(mr.find_pair_files(root, {"uno": [entry], "otra": []}, "zz", pair)[2], "file not found: coqui/ref/escenas/uno/pairs/zz.si.png, coqui/ref/escenas/uno/pairs/zz.no.png")
+            self.assertEqual(mr.find_pair_files(root, {"uno": [], "otra": [entry]}, "yy", pair)[2], "no entry for file cual-x, word yy in any coqui/ref/escenas/*/pairs.json")
+            self.assertEqual(mr.find_pair_files(root, {"otra": [dict(entry, say="t")]}, "zz", pair)[2], "coqui/ref/escenas/otra/pairs.json says the clip t, the story file says s")
+            self.assertEqual(mr.find_pair_files(root, {"otra": [dict(entry, file="cual-y")]}, "zz", pair)[2], "no entry for file cual-x, word zz in any coqui/ref/escenas/*/pairs.json")
+
+    def test_groups(self):
+        self.assertEqual(mr.pair_groups([10] * 10), [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9]])
+        self.assertEqual(mr.pair_groups([1] * 5), [[0], [1], [2], [3], [4]])
+        self.assertEqual(mr.pair_groups([5, 5, 5]), [[0], [1], [2]])                           # fewer words than groups
+        self.assertEqual(mr.pair_groups([]), [])
+        counts = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6, 2, 6, 4, 3, 3, 8, 3, 2, 7, 9, 5]
+        g = mr.pair_groups(counts)
+        self.assertEqual([i for r in g for i in r], list(range(len(counts))))                  # every word once, in order
+        self.assertEqual(len(g), 5)
+        sums = [sum(counts[i] for i in r) for r in g]
+        self.assertLessEqual(max(sums) - min(sums), 9)                                         # about equal: no more apart than the biggest word
+        g = mr.pair_groups([50] + [1] * 9)
+        self.assertTrue(all(r for r in g) and [i for r in g for i in r] == list(range(10)))
+        self.sheets()
+        groups = json.loads((self.out / "par" / "grupos.json").read_text(encoding="utf-8"))
+        self.assertEqual(list(groups), ["1", "2", "3", "4", "5"])
+        self.assertEqual([s for g in groups.values() for s in g], [s for s, _ in self.SLUGS])
+        self.assertTrue(all(groups.values()))
+
+    def test_the_sheets_refuse_a_bad_book_verdict_set(self):
+        v = self.verdicts()
+        del v["dos"]["frases"]["dos:3"]
+        d = self.write(v, "pbad")
+        code, text = self.run_cli("--veredictos", str(d), "--hojas-par")
+        self.assertEqual(code, 1)
+        self.assertIn("dos.json: missing sentence dos:3", text)
+        with contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                mr.main(["--out", str(self.out), "--repo", self.tmp.name, "--hojas-par"])         # it needs the book verdicts
+            with self.assertRaises(SystemExit):
+                mr.main(["--out", str(self.out), "--repo", self.tmp.name, "--veredictos", str(d)])
+            with self.assertRaises(SystemExit):
+                mr.main(["--out", str(self.out), "--repo", self.tmp.name, "--veredictos-par", str(d), "--hojas-par", "--veredictos", str(d)])
+
+    # the validator of the pair verdicts
+    def pfaults(self, change, name="pf"):
+        self.sheets()
+        d = self.pair_files(name, change)
+        return mr.valida_veredictos_par(d, self.out)[0]
+
+    def test_pair_validator_accepts_a_good_set(self):
+        self.sheets()
+        d = self.pair_files("pok")
+        self.assertEqual(mr.valida_veredictos_par(d, self.out), ([], []))
+        code, text = self.run_cli("--valida-veredictos-par", str(d))
+        self.assertEqual(code, 0)
+        self.assertIn("ok: 6 files", text)
+        # every one of the five values is accepted
+        d = self.pair_files("pok5", value=lambda slug, k: mr.PAR_VALUES[(k - 1) % 5])
+        self.assertEqual(mr.valida_veredictos_par(d, self.out)[0], [])
+
+    def test_pair_validator_missing_sentence(self):
+        def m(files):
+            del files["casa"]["frases"]["casa:2"]
+        self.assertEqual(self.pfaults(m), ["casa.json: missing sentence casa:2"])
+
+    def test_pair_validator_unknown_id(self):
+        def m(files):
+            files["hola"]["frases"]["hola:9"] = "A"
+            files["casa"]["frases"]["perro:1"] = "A"
+        self.assertEqual(self.pfaults(m), ["casa.json: unknown sentence id perro:1", "hola.json: unknown sentence id hola:9"])
+
+    def test_pair_validator_values(self):
+        def m(files):
+            files["casa"]["frases"]["casa:1"] = "C"
+            files["casa"]["frases"]["casa:2"] = "a"                     # the letters are capitals
+            files["hola"]["frases"]["hola:1"] = ["A"]
+            files["hola"]["frases"]["hola:2"] = None
+            files["perro"]["frases"]["perro:1"] = "Ambas"
+            files["perro"]["frases"]["perro:2"] = ""
+        got = self.pfaults(m)
+        self.assertEqual(got, ['casa.json: casa:1: "C" is not one of A, B, ambas, ninguna, duda', 'casa.json: casa:2: "a" is not one of A, B, ambas, ninguna, duda',
+                               'hola.json: hola:1: ["A"] is not one of A, B, ambas, ninguna, duda', 'hola.json: hola:2: null is not one of A, B, ambas, ninguna, duda',
+                               'perro.json: perro:1: "Ambas" is not one of A, B, ambas, ninguna, duda', 'perro.json: perro:2: "" is not one of A, B, ambas, ninguna, duda'])
+
+    def test_pair_validator_other_faults(self):
+        def m(files):
+            files["hola"]["palabra"] = "perro"
+            files["casa"]["frases"] = ["A"]
+            del files["perro"]["palabra"]
+            files["el"] = ["not", "an", "object"]
+        got = self.pfaults(m)
+        self.assertIn('hola.json: `palabra` is "perro", not "hola"', got)
+        self.assertIn("casa.json: `frases` is missing or is not an object", got)
+        self.assertIn("casa.json: missing sentence casa:1", got)
+        self.assertIn('perro.json: `palabra` is null, not "perro"', got)
+        self.assertIn("el.json: not a JSON object", got)
+        self.assertEqual(len(got), 4 + len(self.doc("casa")["frases"]))                          # the four above, and every sentence of casa is missing
+
+    def test_pair_validator_files(self):
+        self.sheets()
+        d = self.pair_files("pfiles")
+        (d / "mira.json").write_text("{}", encoding="utf-8")                                        # a word with no sheet
+        (d / "perro.json").write_text("{ not json", encoding="utf-8")
+        f = mr.valida_veredictos_par(d, self.out)[0]
+        self.assertTrue(any(x.startswith("mira.json: not the file of a word with a sheet") for x in f), f)
+        self.assertTrue(any(x.startswith("perro.json: cannot be read as JSON") for x in f), f)
+        # a word with no file is only a note, until the merge asks for every word
+        (d / "mira.json").unlink()
+        (d / "perro.json").unlink()
+        (d / "hola.json").unlink()
+        faults, notes = mr.valida_veredictos_par(d, self.out)
+        self.assertEqual(faults, [])
+        self.assertEqual(len(notes), 1)
+        self.assertIn("words with no verdict file yet: 2 of 6 (hola, perro)", notes[0])
+        self.assertEqual(mr.valida_veredictos_par(d, self.out, require_all=True)[0], ["hola.json: no verdict file for this word", "perro.json: no verdict file for this word"])
+        code, text = self.run_cli("--valida-veredictos-par", str(d))
+        self.assertEqual(code, 0)
+        self.assertIn("note: words with no verdict file yet", text)
+
+    def test_pair_validator_exit_code_is_one_with_a_fault(self):
+        self.sheets()
+        d = self.pair_files("pbad2", lambda files: files["casa"]["frases"].pop("casa:3"))
+        code, text = self.run_cli("--valida-veredictos-par", str(d))
+        self.assertEqual(code, 1)
+        self.assertIn("casa.json: missing sentence casa:3", text)
+        self.assertIn("1 faults in 6 files", text)
+
+    # the merge
+    def test_par_is_true_when_the_verdict_is_the_letter_of_si_both_ways(self):
+        bd, _ = self.sheets()
+        claves = self.claves()
+        for value in ("A", "B"):
+            pd = self.pair_files("pv" + value, value=lambda slug, k: value)
+            fin, _, _ = self.merge("pv" + value, bd, pd)
+            for slug, word in self.SLUGS:
+                w = next(x for x in fin["palabras"] if x["word"] == word)
+                self.assertTrue(w["frases"], word)
+                self.assertEqual([i["par"] for i in w["frases"]], [claves[slug] == value] * len(w["frases"]), (word, value))
+            for w in fin["palabras"]:
+                if not w["par"]:
+                    self.assertFalse(any(i["par"] for i in w["frases"]))                           # no pair: false
+            # mira has a pair but no sheet: false
+            self.assertFalse(any(i["par"] for i in next(x for x in fin["palabras"] if x["word"] == "mira")["frases"]))
+        self.assertEqual((claves["hola"], claves["casa"]), ("A", "B"))                                # one word each way
+
+    def test_par_follows_each_sentence_and_ambas_ninguna_duda_are_false(self):
+        bd, _ = self.sheets()
+        letter = self.claves()["casa"]
+        other = "A" if letter == "B" else "B"
+        order = [letter, other, "ambas", "ninguna", "duda"]
+        pd = self.pair_files("pmix", value=lambda slug, k: order[(k - 2) % 5])                      # the first item gets si's letter, the second the other, ...
+        fin, _, _ = self.merge("pmix", bd, pd)
+        casa = next(x for x in fin["palabras"] if x["word"] == "casa")
+        self.assertEqual([i["par"] for i in casa["frases"]], [True, False, False, False])
+        self.assertEqual(self.doc("casa")["frases"][0]["id"], "casa:1")
+        for value in ("ambas", "ninguna", "duda"):
+            pd = self.pair_files("pnone", value=lambda slug, k: value)
+            fin, _, _ = self.merge("pnone", bd, pd)
+            self.assertFalse(any(i["par"] for w in fin["palabras"] for i in w["frases"]), value)
+            self.assertTrue(all(len(w["par_frases"]) == (1 if w["par"] else 0) for w in fin["palabras"]), value)
+        # the own sentence's verdict does not matter for par_frases
+        pd = self.pair_files("pown", value=lambda slug, k: "ninguna" if k == 1 else self.claves()[slug])
+        fin, _, _ = self.merge("pown", bd, pd)
+        casa = next(x for x in fin["palabras"] if x["word"] == "casa")
+        self.assertEqual(casa["par_frases"][0], {"clip": "esta_casa", "text": "Esta es la casa."})
+        self.assertEqual(len(casa["par_frases"]), 1 + len(casa["frases"]))
+
+    def test_par_frases_order_and_no_text_twice(self):
+        bd, _ = self.sheets()
+        pd = self.pair_files("porder")
+        fin, _, _ = self.merge("porder", bd, pd)
+        casa = next(x for x in fin["palabras"] if x["word"] == "casa")
+        self.assertEqual(casa["par_frases"][0], {"clip": "esta_casa", "text": "Esta es la casa."})        # the own sentence first
+        self.assertEqual(casa["par_frases"][1:], [{"clip": i["clip"], "text": i["text"]} for i in casa["frases"]])   # then the items, in the word's order
+        self.assertEqual([list(x) for x in casa["par_frases"]], [["clip", "text"]] * len(casa["par_frases"]))
+        self.assertEqual([i["clip"] for i in casa["frases"]], [c["clip"] for c in mr.mix([c for c in self.R["cands"] if c["word"] == "casa"], "casa") if c["clip"] in {i["clip"] for i in casa["frases"]}])
+        # tu: its own sentence is also the sentence of its one item, which is `par` but is not added again
+        tu = next(x for x in fin["palabras"] if x["word"] == "tu")
+        self.assertEqual([i["par"] for i in tu["frases"]], [True])
+        self.assertEqual(tu["par_frases"], [{"clip": "tu_pan", "text": "Tú tienes tu pan aquí."}])
+        # tú: its own sentence, then the item "Tú tienes tu pan aquí." (a sentence another word's pair has too: that does not matter)
+        tu2 = next(x for x in fin["palabras"] if x["word"] == "tú")
+        self.assertEqual([x["text"] for x in tu2["par_frases"]], ["Eres tú.", "Tú tienes tu pan aquí."])
+        self.assertEqual(tu2["par_frases"][1]["clip"], "c_tu")
+        # a word with no pair has none
+        self.assertEqual(next(x for x in fin["palabras"] if x["word"] == "flor")["par_frases"], [])
+
+    def test_without_pair_verdicts_the_tool_says_so(self):
+        bd, _ = self.sheets()
+        fin, f, text = self.merge("pnop", bd, None)
+        self.assertIn("no --veredictos-par", text)
+        self.assertFalse(fin["meta"]["veredictos_par"])
+        self.assertFalse(any(i["par"] for w in fin["palabras"] for i in w["frases"]))
+        for w in fin["palabras"]:
+            self.assertEqual([x["clip"] for x in w["par_frases"]], [w["par"]["clip"]] if w["par"] else [])
+        self.assertIn("Pair verdicts: NONE given", f.with_name("resumen-final.md").read_text(encoding="utf-8"))
+        # and the merge with them says nothing of the kind
+        fin, f, text = self.merge("pyes", bd, self.pair_files("pyes-par"))
+        self.assertNotIn("no --veredictos-par", text)
+        self.assertTrue(fin["meta"]["veredictos_par"])
+        self.assertNotIn("NONE given", f.with_name("resumen-final.md").read_text(encoding="utf-8"))
+
+    def test_the_merge_refuses_bad_or_stale_pair_files(self):
+        bd, _ = self.sheets()
+        # a word with no file
+        pd = self.pair_files("pm1")
+        (pd / "hola.json").unlink()
+        _, f, text = self.merge("pm1", bd, pd, expect=1)
+        self.assertIn("hola.json: no verdict file for this word", text)
+        self.assertFalse(f.exists())
+        # a fault in a file
+        pd = self.pair_files("pm2", lambda files: files["casa"]["frases"].pop("casa:2"))
+        _, f, text = self.merge("pm2", bd, pd, expect=1)
+        self.assertIn("casa.json: missing sentence casa:2", text)
+        self.assertFalse(f.exists())
+        # the sheets are not what the tool makes now: a sentence changed, a key changed, the book verdicts changed
+        pd = self.pair_files("pm3")
+        p = self.out / "par" / "casa" / "frases.json"
+        j = json.loads(p.read_text(encoding="utf-8"))
+        j["frases"][1]["text"] = "Otra frase."
+        p.write_text(json.dumps(j, ensure_ascii=False), encoding="utf-8")
+        _, f, text = self.merge("pm3", bd, pd, expect=1)
+        self.assertIn("par/casa/frases.json: is not what the tool makes", text)
+        self.assertFalse(f.exists())
+        self.sheets()
+        c = self.claves()
+        c["casa"] = "A" if c["casa"] == "B" else "B"
+        (self.out / "par" / "claves.json").write_text(json.dumps(c), encoding="utf-8")
+        _, f, text = self.merge("pm3", bd, pd, expect=1)
+        self.assertIn("par/claves.json: the letter of casa is not what the tool makes", text)
+        self.sheets()
+        other = self.write(self.verdicts(duda=["uno:2"]), "pm4book")                               # y_long is left out of casa now: the sentences to judge changed
+        _, f, text = self.merge("pm4", other, pd, expect=1)
+        self.assertIn("par/casa/frases.json: is not what the tool makes", text)
+        self.assertFalse(f.exists())
+        # the sheets were never written
+        out2 = self.root / "out-nopar"
+        quiet(["--out", str(out2), "--repo", self.tmp.name, "--hojas-libro"])
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                mr.main(["--out", str(out2), "--repo", self.tmp.name, "--veredictos", str(bd), "--veredictos-par", str(pd), "--final", str(self.root / "nopar" / "f.json")])
+
+    def test_tokens_extra_prohibidos_and_no_juntas_in_the_final_data(self):
+        bd, _ = self.sheets()
+        fin, _, _ = self.merge("pt", bd, None)
+        tep = lambda w, clip: self.item(fin, w, clip)["tokens_extra_prohibidos"]
+        self.assertEqual(tep("el", "b_el"), ["el", "pan", "perro", "él"])                                  # the accent twin is in it too
+        self.assertEqual(tep("bebé", "e_bebe"), ["bebe", "bebé", "el", "él"])
+        self.assertEqual(tep("no hay", "f_nohay"), ["hay", "no", "no hay", "pan"])
+        self.assertEqual(tep("nada", "g_nada"), ["nada", "no"])
+        self.assertEqual(tep("casa", "d_esta"), ["casa", "esta", "está"])
+        self.assertEqual(tep("tu", "c_tu"), ["pan", "tu", "tú"])
+        for w in fin["palabras"]:
+            for i in w["frases"]:
+                self.assertEqual(i["tokens_extra_prohibidos"], sorted(i["tokens_extra_prohibidos"]))
+                self.assertIn(w["word"], i["tokens_extra_prohibidos"], (w["word"], i["text"]))        # the item's own word is in its sentence
+        nj = {w["word"]: w["no_juntas"] for w in fin["palabras"]}
+        self.assertEqual({w: l for w, l in nj.items() if l}, {"él": ["el"], "el": ["él"], "tú": ["tu"], "tu": ["tú"], "está": ["esta"], "esta": ["está"], "bebé": ["bebe"],
+                                                             "bebe": ["bebé"], "no": ["no hay"], "hay": ["no hay"], "no hay": ["hay", "no"], "nada": ["de nada"],
+                                                             "de nada": ["nada"]})
+
+    def test_the_summary(self):
+        bd, _ = self.sheets()
+        pd = self.pair_files("psum", value=lambda slug, k: self.claves()[slug])
+        fin, f, _ = self.merge("psum", bd, pd)
+        text = f.with_name("resumen-final.md").read_text(encoding="utf-8")
+        self.assertNotIn("## Parejas", text)
+        for needle in ("## Sentences usable with a word's picture pair (`par_frases`)", "## Distribution of words with a pair by number of `par_frases`",
+                       "| learner | words with a pair | 1 | 2 | 3-4 | 5-9 | 10+ |", "Words whose only `par_frases` is the pair's own sentence:",
+                       "## Words that must not meet (`no_juntas`)", "| word | judged | items par | par_frases |"):
+            self.assertIn(needle, text)
+        # per word: sentences judged, items par, par_frases
+        n = {w["word"]: (len(mr.pair_texts(w["par"]["text"], w["frases"])), sum(i["par"] for i in w["frases"]), len(w["par_frases"])) for w in fin["palabras"] if w["par"]}
+        self.assertEqual(n["casa"], (5, 4, 5))
+        self.assertEqual(n["tu"], (1, 1, 1))
+        self.assertEqual(n["mira"][1:], (0, 1))                                                    # no sheet, no verdict: only its own sentence
+        for word, (judged, par, pf) in n.items():
+            self.assertIn("| %s | %d | %d | %d |" % (word, judged, par, pf), text)
+        # the distribution: 1 / 2 / 3 to 4 / 5 to 9 / 10 and more
+        counts = sorted(v[2] for v in n.values())
+        want = [sum(1 for c in counts if c == 1), sum(1 for c in counts if c == 2), sum(1 for c in counts if 3 <= c <= 4), sum(1 for c in counts if 5 <= c <= 9), sum(1 for c in counts if c >= 10)]
+        self.assertIn("| all words with a pair, all stories | %d | %s |" % (len(n), " | ".join(map(str, want))), text)
+        self.assertEqual(sum(want), len(n))
+        self.assertIn("| finished stories 1..3 | %d | %s |" % (len(n), " | ".join(map(str, want))), text)           # both stories are finished by 3
+        only = [w for w, v in n.items() if v[2] == 1]
+        self.assertIn("- all stories: %d words: %s" % (len(only), ", ".join(only)), text)
+        # no_juntas by rule
+        for row in ("| a | accent twins (equal after folding accents) | 4 | 4 |", "| c | the same first 4 letters after folding accents, both of at least 4 letters | 2 | 0 |",
+                    "| e | one is the other plus a final s or es | 0 | 0 |", "Pairs of different words in all: 7."):
+            self.assertIn(row, text)
+        self.assertIn("(b) one is a whole-word part of the other, which is a phrase (accents folded): 3", text)
+
+    def test_the_summary_counts_a_learner_by_the_stories_finished(self):
+        bd, _ = self.sheets()
+        pd = self.pair_files("pk", value=lambda slug, k: self.claves()[slug])
+        fin, f, _ = self.merge("pk", bd, pd)
+        el = next(x for x in fin["palabras"] if x["word"] == "el")
+        stories = {i["cuento"] for i in el["frases"]}
+        self.assertEqual(stories, {"uno", "dos"})                                                   # items in both stories
+        all_n = len({el["par"]["text"]} | {i["text"] for i in el["frases"]})
+        one_n = len({el["par"]["text"]} | {i["text"] for i in el["frases"] if i["cuento"] == "uno"})
+        self.assertLess(one_n, all_n)
+        saved = mr.KS
+        mr.KS = (1,)
+        try:
+            fin, f, _ = self.merge("pk1", bd, pd)
+        finally:
+            mr.KS = saved
+        text = f.with_name("resumen-final.md").read_text(encoding="utf-8")
+        row = [x for x in text.splitlines() if x.startswith("| finished stories 1..1 |")][-1]       # the second table: words with a pair
+        met = [w for w in fin["palabras"] if w["par"] and w["word"] in ("tú", "tu", "el")]          # the pair words first met in story 1
+        want = Counter(mr_bucket(len({w["par"]["text"]} | {i["text"] for i in w["frases"] if i["par"] and i["cuento"] == "uno"})) for w in met)
+        self.assertEqual(row, "| finished stories 1..1 | %d | %s |" % (len(met), " | ".join(str(want.get(b, 0)) for b in mr.PAR_BUCKETS)))
+
+    # determinism
+    def test_same_bytes_twice(self):
+        outs = []
+        bd = self.write(self.verdicts(), "pdet-book")
+        for i in range(2):
+            o = self.root / ("pdet%d" % i)
+            quiet(["--out", str(o), "--repo", self.tmp.name, "--hojas-libro"])
+            quiet(["--out", str(o), "--repo", self.tmp.name, "--veredictos", str(bd), "--hojas-par"])
+            outs.append(o)
+        files = sorted(p.relative_to(outs[0] / "par") for p in (outs[0] / "par").rglob("*") if p.is_file())
+        self.assertEqual(len(files), 6 * 2 + 3)
+        self.assertTrue(any(str(f).endswith(".png") for f in files))
+        for f in files:
+            self.assertEqual((outs[0] / "par" / f).read_bytes(), (outs[1] / "par" / f).read_bytes(), str(f))
+        self.assertEqual((outs[0] / "par" / "casa" / "frases.json").read_bytes(), (self.root / "pdet0" / "par" / "casa" / "frases.json").read_bytes())
+        # a second run into the same folder changes nothing, and leaves no folder of an earlier run
+        stale = outs[0] / "par" / "gone"
+        stale.mkdir()
+        (stale / "par.png").write_bytes(b"x")
+        before = {f: (outs[0] / "par" / f).read_bytes() for f in files}
+        quiet(["--out", str(outs[0]), "--repo", self.tmp.name, "--veredictos", str(bd), "--hojas-par"])
+        self.assertFalse(stale.exists())
+        self.assertEqual({f: (outs[0] / "par" / f).read_bytes() for f in files}, before)
+        # the merge, with pair verdicts and without
+        pd = self.root / "pdet-par"
+        pd.mkdir()
+        for slug, word in self.SLUGS:
+            doc = json.loads((outs[0] / "par" / slug / "frases.json").read_text(encoding="utf-8"))
+            (pd / (slug + ".json")).write_text(json.dumps({"palabra": word, "frases": {f["id"]: ("A", "B", "ambas", "ninguna", "duda")[k % 5] for k, f in enumerate(doc["frases"])}}, ensure_ascii=False), encoding="utf-8")
+        sums = []
+        for o in outs:
+            f1, f2 = o / "f1" / "final.json", o / "f2" / "final.json"
+            self.assertEqual(quiet(["--out", str(o), "--repo", self.tmp.name, "--veredictos", str(bd), "--veredictos-par", str(pd), "--final", str(f1)]), 0)
+            self.assertEqual(quiet(["--out", str(o), "--repo", self.tmp.name, "--veredictos", str(bd), "--final", str(f2)]), 0)
+            sums.append([hashlib.sha256(p.read_bytes()).hexdigest() for p in (f1, f1.with_name("resumen-final.md"), f2, f2.with_name("resumen-final.md"))])
+        self.assertEqual(sums[0], sums[1])
+        self.assertNotEqual(sums[0][0], sums[0][2])                                                   # the pair verdicts did change the data
+
+
+def unicodedata_nfd(s):
+    import unicodedata
+    return unicodedata.normalize("NFD", s)
+
+
+def mr_bucket(n):
+    return "1" if n == 1 else "2" if n == 2 else "3-4" if n <= 4 else "5-9" if n <= 9 else "10+"
 
 
 class RealData(unittest.TestCase):
@@ -715,6 +1282,14 @@ class RealData(unittest.TestCase):
             raise unittest.SkipTest("no historia/ in this checkout")
         cls.R = mr.build(cls.root)
         cls.S = mr.sentences_by_book(cls.R)
+
+    def book_verdicts(self):
+        """The made-up verdicts of the test below: every sentence fits its own page, every other page is `no`."""
+        return {b: {"frases": {s["id"]: verd(si=[s["own"]], no=[p for p in range(1, len(self.R["D"].book[b]["pages"]) + 1) if p != s["own"]]) for s in rows},
+                    "parecidas": set()} for b, rows in self.S.items()}
+
+    def pair_of(self, word):
+        return next(w["pair"] for w in self.R["words"] if w["word"] == word)
 
     def test_every_candidate_that_has_a_page_is_judged_in_its_book(self):
         D = self.R["D"]
@@ -751,9 +1326,11 @@ class RealData(unittest.TestCase):
         fin = mr.build_final(self.R, V)
         self.assertEqual(len(fin["palabras"]), len(self.R["words"]))
         self.assertEqual(list(fin["paginas"]), ["%s/%d" % (b, n) for b in D.eligible for n in range(1, len(D.book[b]["pages"]) + 1)])
-        self.assertEqual(list(fin["parejas"]), D.eligible)
+        self.assertNotIn("parejas", fin)
         for w in fin["palabras"]:
             self.assertEqual(w["puntua"], mr.puntua(w["frases"], w["par"]))
+            self.assertFalse(any(i["par"] for i in w["frases"]))                         # no pair verdicts given
+            self.assertEqual([x["clip"] for x in w["par_frases"]], [w["par"]["clip"]] if w["par"] else [])
             for i in w["frases"]:
                 self.assertLessEqual(len(i["cual"]), 3)
                 if i["pagina"]:
@@ -769,22 +1346,66 @@ class RealData(unittest.TestCase):
                     self.assertTrue(i["arma"] or i["que_oyes"])
         for key, pg in fin["paginas"].items():
             self.assertLessEqual(len(pg["falsas"]), 6)
-        for b, sets in fin["parejas"].items():
-            self.assertLessEqual(len(sets), 3)
-            for st in sets:
-                pages = [i["pagina"]["page"] for i in st["items"]]
-                self.assertEqual(len(set(pages)), len(pages))
-                self.assertIn(len(pages), (3, 4))
-                self.assertFalse(any(frozenset(pq) in V[b]["parecidas"] for pq in itertools.combinations(pages, 2)))
-                by_clip = {s["clip"]: s for s in S[b]}
-                for i in st["items"]:
-                    s = by_clip[i["clip"]]
-                    self.assertIn(s["own"], V[b]["frases"][s["id"]]["si"])
-                    self.assertTrue(all(p in V[b]["frases"][s["id"]]["no"] for p in pages if p != s["own"]))
         # some of everything, with these verdicts
         self.assertTrue(any(v["falsas"] for v in fin["paginas"].values()))
-        self.assertTrue(any(fin["parejas"].values()))
         self.assertTrue(any(i["cual"] for w in fin["palabras"] for i in w["frases"]))
+
+    def test_every_pair_has_its_pictures(self):
+        plans, stops = mr.plan_pairs(self.R)
+        self.assertEqual(stops, [])
+        self.assertEqual(len(plans), 128)
+        self.assertEqual(len({p["slug"] for p in plans.values()}), 128)
+        self.assertTrue(all(p["si"].is_file() and p["no"].is_file() and p["letter"] in "AB" for p in plans.values()))
+        self.assertEqual({p["letter"] for p in plans.values()}, {"A", "B"})
+        self.assertEqual(list(plans), [w["word"] for w in self.R["words"] if w["pair"]])         # course order
+
+    def test_made_up_pair_verdicts(self):
+        items_of, _ = mr.collect_items(self.R, self.book_verdicts())
+        plans, _ = mr.plan_pairs(self.R)
+        cycle = ["si", "B-or-A", "ambas", "ninguna", "duda"]
+        PV = {}
+        for word, pl in plans.items():
+            other = "B" if pl["letter"] == "A" else "A"
+            texts = mr.pair_texts(self.pair_of(word)["text"], items_of[word])
+            PV[pl["slug"]] = {"%s:%d" % (pl["slug"], k): {"si": pl["letter"], "B-or-A": other}.get(cycle[k % 5], cycle[k % 5]) for k in range(1, len(texts) + 1)}
+        fin = mr.build_final(self.R, self.book_verdicts(), PV)
+        n_par = 0
+        for w in fin["palabras"]:
+            pl = plans.get(w["word"])
+            if not w["par"]:
+                self.assertEqual(w["par_frases"], [])
+                self.assertFalse(any(i["par"] for i in w["frases"]))
+                continue
+            self.assertEqual(w["par_frases"][0], {"clip": w["par"]["clip"], "text": w["par"]["text"]})
+            texts = [x["text"] for x in w["par_frases"]]
+            self.assertEqual(len(texts), len(set(texts)))
+            self.assertEqual(texts[1:], [t for t in dict.fromkeys(i["text"] for i in w["frases"] if i["par"]) if t != w["par"]["text"]])
+            ids = {t: k for k, t in enumerate(mr.pair_texts(w["par"]["text"], w["frases"]), 1)}
+            for i in w["frases"]:
+                self.assertEqual(i["par"], PV[pl["slug"]]["%s:%d" % (pl["slug"], ids[i["text"]])] == pl["letter"])
+                n_par += i["par"]
+        self.assertGreater(n_par, 100)
+        self.assertGreater(sum(1 for w in fin["palabras"] if len(w["par_frases"]) > 1), 50)
+
+    def test_no_juntas_on_the_real_words(self):
+        words = [w["word"] for w in self.R["words"]]
+        nj = mr.no_juntas(words)
+        self.assertEqual(list(nj), words)
+        for w, lst in nj.items():
+            self.assertEqual(lst, sorted(lst))
+            self.assertNotIn(w, lst)
+            self.assertTrue(set(lst) <= set(words))
+            for o in lst:
+                self.assertIn(w, nj[o])                                                # symmetric
+        self.assertIn("¿dónde está?", nj["está"])
+        self.assertIn("no hay", nj["no"])
+        self.assertIn("de nada", nj["nada"])
+        self.assertIn("otra vez", nj["otra"])
+        self.assertIn("quiere", nj["quiero"])
+        self.assertIn("mira", nj["tira"])
+        self.assertIn("esta", nj["este"])
+        self.assertIn("abuela", nj["abuelo"])
+        self.assertIn("tú", nj["tu"])
 
 
 if __name__ == "__main__":
