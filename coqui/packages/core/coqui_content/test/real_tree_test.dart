@@ -41,6 +41,55 @@ List<String> _ids(String dir) => [
       f.uri.pathSegments.last.replaceAll(RegExp(r'\.json$'), ''),
 ];
 
+/// The one file of `cuentos/` the course does not name: `palabras-solas.json`, each tracked word said alone for the word
+/// tiles of Repaso (made by tool/make_palabras_solas.py). It is not a story and not a review set; its `tipo` is `palabras`.
+/// Its clips are recorded by the audio job after the file is committed, so the tree is in one of two states (see
+/// [_solasState]).
+const _solasId = 'palabras-solas';
+const _solasClipCount = 133;
+
+/// The keys of `clips` of a story file: every clip id it holds.
+Set<String> _clipKeys(String id) =>
+    ((_json('cuentos/$id.json') as Map)['clips'] as Map).keys
+        .cast<String>()
+        .toSet();
+
+enum _Solas {
+  /// None of the clips of palabras-solas has a recording or marks.
+  notRecorded,
+
+  /// Every one has both.
+  recorded,
+}
+
+/// The state of the clips of palabras-solas: [_Solas.notRecorded] when none of them is in `audio/ready.json`, none has
+/// marks in `audio/marcas.json` and none has an mp3 file in `audio/`; [_Solas.recorded] when every one has all three.
+/// Anything between is a half-done recording, and fails here, naming what is missing.
+_Solas _solasState() {
+  final ids = _clipKeys(_solasId);
+  final ready = ((_json('audio/ready.json') as Map)['clips'] as List)
+      .cast<String>()
+      .toSet();
+  final marks = (_json('audio/marcas.json') as Map).keys.cast<String>().toSet();
+  final inReady = ids.intersection(ready);
+  final withMarks = ids.intersection(marks);
+  final withMp3 = {
+    for (final id in ids)
+      if (File('${_historia.path}/audio/$id.mp3').existsSync()) id,
+  };
+  final parts = {
+    'in ready.json': inReady,
+    'with marks in marcas.json': withMarks,
+    'with an mp3 file': withMp3,
+  };
+  if (parts.values.every((s) => s.isEmpty)) return _Solas.notRecorded;
+  if (parts.values.every((s) => s.length == ids.length)) return _Solas.recorded;
+  return fail(
+    'the ${ids.length} clips of $_solasId are neither all recorded nor none: '
+    '${parts.entries.map((e) => '${e.value.length} ${e.key}').join(', ')}',
+  );
+}
+
 /// The clip ids a story file names: the keys of `clips`, `leer`, the values of `names`, `bien`, and the plain
 /// (no `$` placeholder) ids its beats say: a string in `lead`, `line`, `say`, `right`, `wrong`, `then`, `else`,
 /// `after` or `before`, a bare string in a beat list, and the arrays an `elige` beat keeps under its option names.
@@ -104,6 +153,8 @@ void main() {
   late ContentCatalog catalog;
   late OldAnswers old;
   late Map<String, dynamic> oldCurso;
+  // the files of cuentos/ the course names: its stories, picture stories and routines, and its review sets (`cual`)
+  late Set<String> courseFiles;
   final storyFiles = _ids('cuentos');
   final bookFiles = _ids('libros');
 
@@ -116,12 +167,17 @@ void main() {
     final j = jsonDecode(expected.readAsStringSync()) as Map<String, dynamic>;
     old = OldAnswers(j);
     oldCurso = Map<String, dynamic>.from(j['curso'] as Map);
+    courseFiles = {
+      ...(oldCurso['cuentos'] as Map).keys.cast<String>(),
+      ...(oldCurso['cual'] as List).cast<String>(),
+    };
     catalog = ContentCatalog(_read);
     await catalog.load();
   });
 
-  test('the files are there: 62 stories and review sets, 43 books', () {
-    expect(storyFiles, hasLength(62));
+  test('the files are there: 62 stories and review sets the course names, the word list palabras-solas, 43 books', () {
+    expect(courseFiles, hasLength(62));
+    expect(storyFiles, hasLength(63));
     expect(bookFiles, hasLength(43));
   });
 
@@ -138,16 +194,18 @@ void main() {
       expect(catalog.meta('no-such-story'), isNull);
     });
 
-    test(
-      'every story file is named by the course: 51 stories and 11 review sets',
-      () {
-        final named = {
-          ...(oldCurso['cuentos'] as Map).keys.cast<String>(),
-          ...(oldCurso['cual'] as List).cast<String>(),
-        };
-        expect(named, storyFiles.toSet());
-      },
-    );
+    test('every file of cuentos/ is named by the course (51 stories and 11 review sets), except palabras-solas, a word list', () {
+      expect((oldCurso['cuentos'] as Map).keys, hasLength(51));
+      expect(oldCurso['cual'] as List, hasLength(11));
+      expect(courseFiles, hasLength(62));
+      final files = storyFiles.toSet();
+      // every file the course names is there, and the only other one is palabras-solas: any other file fails
+      expect(courseFiles.difference(files), isEmpty);
+      expect(files.difference(courseFiles), {_solasId});
+      final solas = _json('cuentos/$_solasId.json') as Map;
+      expect(solas['id'], _solasId);
+      expect(solas['tipo'], 'palabras');
+    });
 
     test('level items, calls and fixed lines are the data files', () {
       expect([
@@ -171,7 +229,7 @@ void main() {
   });
 
   group('stories and books load', () {
-    test('all 62 story files load, and each is the file', () async {
+    test('every file of cuentos/ loads (the 62 the course names and palabras-solas), and each is the file', () async {
       for (final id in storyFiles) {
         final s = await catalog.story(id);
         expect(s['id'], id);
@@ -214,34 +272,45 @@ void main() {
   });
 
   group('clips', () {
-    test('every clip id a story file names has marks and a ClipInfo', () async {
-      final named = <String, Set<String>>{};
-      for (final id in storyFiles) {
-        named[id] = _namedClips(await catalog.story(id));
-      }
-      final all = {for (final s in named.values) ...s};
-      expect(all.length, greaterThan(1500));
-      final bad = <String>[];
-      for (final e in named.entries) {
-        for (final id in e.value) {
-          final c = catalog.clip(id);
-          if (c == null ||
-              c.who.isEmpty ||
-              c.text.isEmpty ||
-              c.endMs <= c.startMs) {
-            bad.add('${e.key}: $id');
+    test(
+      'every clip id a course file names has marks and a ClipInfo',
+      () async {
+        final named = <String, Set<String>>{};
+        for (final id in storyFiles.where(courseFiles.contains)) {
+          named[id] = _namedClips(await catalog.story(id));
+        }
+        final all = {for (final s in named.values) ...s};
+        expect(all.length, greaterThan(1500));
+        final bad = <String>[];
+        for (final e in named.entries) {
+          for (final id in e.value) {
+            final c = catalog.clip(id);
+            if (c == null ||
+                c.who.isEmpty ||
+                c.text.isEmpty ||
+                c.endMs <= c.startMs) {
+              bad.add('${e.key}: $id');
+            }
           }
         }
-      }
-      expect(bad, isEmpty);
-    });
+        expect(bad, isEmpty);
+      },
+    );
 
     test('every clip of ready.json has a ClipInfo: the line a story gives, its marks, its url', () async {
       final ready = _json('audio/ready.json') as Map<String, dynamic>;
       final marks = _json('audio/marcas.json') as Map<String, dynamic>;
       final ids = (ready['clips'] as List).cast<String>();
-      expect(ids, hasLength(1582));
-      expect(marks.keys.toSet(), ids.toSet());
+      // the clips of the files the course names (1582), and the 133 of palabras-solas only once they are recorded
+      final course = {for (final id in courseFiles) ..._clipKeys(id)};
+      expect(course, hasLength(1582));
+      final expected = {
+        ...course,
+        if (_solasState() == _Solas.recorded) ..._clipKeys(_solasId),
+      };
+      expect(ids, hasLength(expected.length));
+      expect(ids.toSet(), expected);
+      expect(marks.keys.toSet(), expected);
       // the lines of every story file; one id must have one line (who, text, habla) wherever it is
       final lines = <String, Map<String, dynamic>>{};
       for (final sid in storyFiles) {
@@ -271,10 +340,46 @@ void main() {
         expect([c.startMs, c.endMs], [m[0], m[1]], reason: id);
         expect(c.url, 'audio/$id.mp3?v=${ready['v']}', reason: id);
       }
+      // The fixture holds each url with the `v` ready.json had when the fixture was made. The audio job gives ready.json a
+      // new `v` whenever it records a clip (voz.py), so what the old code says here is the address before `?v=`; the `v`
+      // is ready.json's own, as checked for every clip above.
       for (final e in old.urls.entries) {
-        expect(catalog.clip(e.key)!.url, e.value);
+        expect(
+          catalog.clip(e.key)!.url,
+          e.value.replaceFirst(RegExp(r'\?v=[^&]*$'), '?v=${ready['v']}'),
+        );
       }
       expect(old.urls, isNotEmpty);
+    });
+
+    test('the clips of palabras-solas: all 133 recorded, or none yet', () async {
+      final solas = _clipKeys(_solasId);
+      expect(solas, hasLength(_solasClipCount));
+      expect(solas.every((id) => id.startsWith('w_')), isTrue);
+      // no other file has one of them
+      expect(
+        {for (final id in courseFiles) ..._clipKeys(id)}.intersection(solas),
+        isEmpty,
+      );
+      await catalog.story(_solasId);
+      final state = _solasState();
+      // ignore: avoid_print
+      print(
+        state == _Solas.recorded
+            ? 'palabras-solas: RECORDED: its ${solas.length} clips are in ready.json, in marcas.json and on disk'
+            : 'palabras-solas: NOT RECORDED YET: none of its ${solas.length} clips is in ready.json, marcas.json or audio/',
+      );
+      for (final id in solas) {
+        final c = catalog.clip(id);
+        if (state == _Solas.notRecorded) {
+          expect(c, isNull, reason: id);
+        } else {
+          expect(c, isNotNull, reason: id);
+          expect(c!.who, isNotEmpty, reason: id);
+          expect(c.text, isNotEmpty, reason: id);
+          expect(c.endMs, greaterThan(c.startMs), reason: id);
+        }
+      }
     });
 
     test('a clip that is on disk but not in ready.json has no ClipInfo', () {
