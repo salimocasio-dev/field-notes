@@ -20,20 +20,8 @@ class AddBox extends StatelessWidget {
   final List<String> added;
   final VoidCallback onAdd;
 
-  /// `input` placeholder: the browser's own grey.
-  static const _placeholder = Color(0xFF757575);
-
   @override
   Widget build(BuildContext context) {
-    // a TextField wants a baseline on a style that inherits nothing
-    final text = CoquiText.body.copyWith(textBaseline: TextBaseline.alphabetic);
-    final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
-      borderSide: BorderSide(
-        color: CoquiColors.line2,
-        width: CoquiLayout.border(context, CoquiMetrics.borderButton),
-      ),
-    );
     return CoquiCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,25 +36,9 @@ class AddBox extends StatelessWidget {
           ),
           TextField(
             controller: controller,
-            style: text,
+            style: fieldText,
             cursorColor: CoquiColors.ink,
-            decoration: InputDecoration(
-              isDense: true,
-              hintText: 'A word or a goal',
-              hintStyle: text.copyWith(color: _placeholder),
-              filled: true,
-              fillColor: CoquiColors.white,
-              // Material greys a hovered or focused field: the old input stays white
-              hoverColor: const Color(0x00000000),
-              focusColor: const Color(0x00000000),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: CoquiMetrics.s12,
-                vertical: CoquiMetrics.s12,
-              ),
-              border: border,
-              enabledBorder: border,
-              focusedBorder: border,
-            ),
+            decoration: fieldDecoration(context, 'A word or a goal'),
           ),
           const SizedBox(height: CoquiMetrics.s16),
           CoquiButton(label: 'Add', kind: CoquiButtonKind.go, onPressed: onAdd),
@@ -91,4 +63,38 @@ class AddBox extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The text of a field: the body style, with the baseline a TextField wants on a style that inherits nothing.
+final TextStyle fieldText = CoquiText.body.copyWith(
+  textBaseline: TextBaseline.alphabetic,
+);
+
+/// The look of v=39's `input`: 48 px, white, a `--line2` ring, 12 px corners, the browser's grey placeholder.
+InputDecoration fieldDecoration(BuildContext context, String hint) {
+  final border = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(CoquiMetrics.radiusButton),
+    borderSide: BorderSide(
+      color: CoquiColors.line2,
+      width: CoquiLayout.border(context, CoquiMetrics.borderButton),
+    ),
+  );
+  return InputDecoration(
+    isDense: true,
+    hintText: hint,
+    // `input` placeholder: the browser's own grey
+    hintStyle: fieldText.copyWith(color: const Color(0xFF757575)),
+    filled: true,
+    fillColor: CoquiColors.white,
+    // Material greys a hovered or focused field: the old input stays white
+    hoverColor: const Color(0x00000000),
+    focusColor: const Color(0x00000000),
+    contentPadding: const EdgeInsets.symmetric(
+      horizontal: CoquiMetrics.s12,
+      vertical: CoquiMetrics.s12,
+    ),
+    border: border,
+    enabledBorder: border,
+    focusedBorder: border,
+  );
 }

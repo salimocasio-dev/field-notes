@@ -5,12 +5,24 @@ import 'dart:math' as math;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
+import 'package:feature_words/src/text_rules.dart';
 
-/// One card: the word's record and the review pair that gives it a picture (null: a plain tile).
+/// One card: the word's record, the review pair that gives it a picture (null: no picture), whether today's Repaso
+/// asks it, and, for a word with no picture, the line he heard it in that the card shows instead (null: none).
 class WordEntry {
-  const WordEntry(this.record, this.pair);
+  const WordEntry(this.record, this.pair, {this.today = false, this.line});
   final WordRecord record;
   final ReviewPair? pair;
+
+  /// One of the words the Repaso card counts ("N words today"): due, with a picture pair, within the session's 10.
+  final bool today;
+
+  /// The shortest of the lines the word sheet lists under "Heard in" (stories he has played), for a word with no
+  /// picture: the card shows it where a picture would be.
+  final HeardLine? line;
+
+  /// Good by ear: the scheduler's last stage (palabras.js: right on three returns over two weeks or more).
+  bool get good => record.ear.etapa >= 4;
 }
 
 /// One place's heading and its words, in story order. `More words`: the words no played story brings.
@@ -18,6 +30,54 @@ class PlaceGroup {
   const PlaceGroup(this.name, this.words);
   final String name;
   final List<WordEntry> words;
+}
+
+/// What the tab lists: every word by place, today's Repaso words, or the words that are good.
+enum WordFilter { all, today, good }
+
+/// The stage names of palabras.js ("Stages he sees: heard, found, holding, good"), 0 being a skill not met yet.
+String stageName(int etapa) => switch (etapa) {
+  <= 0 => 'Not yet',
+  1 => 'Heard',
+  2 => 'Found',
+  3 => 'Holding',
+  _ => 'Good',
+};
+
+/// Whether [word] answers the find field's [query]: accents, case and punctuation ignored (`normalize`), a part of
+/// the word is enough. An empty query lets every word through.
+bool matchesQuery(String word, String query) {
+  final q = normalize(query).trim();
+  if (q.isEmpty) return true;
+  return normalize(word).contains(q);
+}
+
+/// The groups the tab shows for [filter] and [query]: by place for every word and for the good ones (a place with
+/// none left has no heading); today's words as one group with no heading, in the order Repaso asks them.
+List<PlaceGroup> shownGroups(WordsView v, WordFilter filter, String query) {
+  bool keep(WordEntry e) =>
+      matchesQuery(e.record.w, query) &&
+      switch (filter) {
+        WordFilter.all => true,
+        WordFilter.today => e.today,
+        WordFilter.good => e.good,
+      };
+  if (filter == WordFilter.today) {
+    final byWord = {
+      for (final g in v.groups)
+        for (final e in g.words) e.record.w: e,
+    };
+    final ws = [
+      for (final w in v.todayWords)
+        if (byWord[w] case final e? when keep(e)) e,
+    ];
+    return ws.isEmpty ? const [] : [PlaceGroup('', ws)];
+  }
+  return [
+    for (final g in v.groups)
+      if (g.words.where(keep).toList() case final ws when ws.isNotEmpty)
+        PlaceGroup(g.name, ws),
+  ];
 }
 
 /// The whole tab.
@@ -29,6 +89,7 @@ class WordsView {
     required this.reviewOff,
     required this.practice,
     required this.added,
+    this.todayWords = const [],
   });
 
   /// Empty when he has met no word: the tab says to play the first story.
@@ -46,6 +107,16 @@ class WordsView {
 
   /// `db().extra`: what he typed in "Add a word or a goal".
   final List<String> added;
+
+  /// The words the Repaso card counts, in the order Repaso asks them (most overdue first).
+  final List<String> todayWords;
+
+  /// Every word on the tab.
+  int get count => groups.fold(0, (n, g) => n + g.words.length);
+
+  /// The words that are good by ear.
+  int get goodCount =>
+      groups.fold(0, (n, g) => n + g.words.where((e) => e.good).length);
 }
 
 // app.html: pares().m (CU.items by `w`, the last one of a word wins, as Map.set does)
@@ -94,7 +165,29 @@ Future<WordsView> buildWordsView(Services s) async {
       }
     }
   }
-  WordEntry entry(WordRecord r) => WordEntry(r, pairs[r.w]);
+  // ¿Cuál? asks only words he has heard that have a picture pair; a session is up to 10 words
+  final due = [
+    for (final w in progress.due(Skill.ear))
+      if (pairs.containsKey(w)) w,
+  ];
+  final today = due.take(10).toList();
+  // a word with no picture shows the shortest line he heard it in (the word sheet's "Heard in" lines)
+  final lineOf = <String, HeardLine>{};
+  await Future.wait([
+    for (final r in recs)
+      if (!pairs.containsKey(r.w))
+        course.linesWith(r.w, played).then<void>((ls) {
+          final best = shortestLine(ls, r.w);
+          if (best != null) lineOf[r.w] = best;
+        }, onError: (Object _) {}),
+  ]);
+  final todaySet = today.toSet();
+  WordEntry entry(WordRecord r) => WordEntry(
+    r,
+    pairs[r.w],
+    today: todaySet.contains(r.w),
+    line: lineOf[r.w],
+  );
   final groups = <PlaceGroup>[];
   for (final l in course.places) {
     final ws = [
@@ -110,11 +203,6 @@ Future<WordsView> buildWordsView(Services s) async {
   if (sin.isNotEmpty) {
     groups.add(PlaceGroup('More words', sin.map(entry).toList()));
   }
-  // ¿Cuál? asks only words he has heard that have a picture pair; a session is up to 10 words
-  final due = [
-    for (final w in progress.due(Skill.ear))
-      if (pairs.containsKey(w)) w,
-  ];
   final askable = [
     for (final r in recs)
       if (r.ear.etapa > 0 && pairs.containsKey(r.w)) r,
@@ -130,5 +218,17 @@ Future<WordsView> buildWordsView(Services s) async {
     reviewOff: n == 0 && askable.isEmpty,
     practice: n == 0,
     added: progress.added,
+    todayWords: today,
   );
+}
+
+/// Of [lines], the shortest one in which [word] stands as a word (not only inside another word); null when none.
+HeardLine? shortestLine(List<HeardLine> lines, String word) {
+  final tokens = wordTokens(word);
+  HeardLine? best;
+  for (final l in lines) {
+    if (occurrences(l.text, [tokens]).isEmpty) continue;
+    if (best == null || l.text.length < best.text.length) best = l;
+  }
+  return best;
 }

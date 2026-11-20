@@ -3,6 +3,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:feature_words/src/word_tile.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -48,7 +49,7 @@ void main() {
     final rig = Rig();
     await rig.playSampleStories();
     await pumpTab(tester, rig);
-    expect(find.byType(WordCard), findsWidgets);
+    expect(find.byType(WordTile), findsWidgets);
   });
 
   group('the dev entry', () {
@@ -73,7 +74,7 @@ void main() {
         await tester.pumpWidget(devApp(state: 'curso'));
         await tester.pumpAndSettle();
         final bar = tester.getRect(find.byType(CoquiTabBar));
-        await tester.tap(find.byType(WordCard).first);
+        await tester.tap(find.byType(WordTile).first);
         await tester.pumpAndSettle();
         expect(sheet, findsOneWidget);
         // the sheet stands above the bar and the raised Mapa disc (the bar's box holds both: 72 + 14 px), the scrim

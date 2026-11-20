@@ -6,6 +6,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:feature_words/src/word_tile.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter_test/flutter_test.dart';
@@ -67,17 +68,13 @@ void main() {
         await pumpTab(tester, rig);
         expect(
           find.text(
-            'Play the first story on the map. Your words show up here.',
+            'Play the first story on the map. Every word you hear shows up here, with how well you know it.',
           ),
           findsOneWidget,
         );
-        expect(find.byType(WordCard), findsNothing);
-        expect(
-          find.text(
-            'Ear: you know it when you hear it. Mouth: you can say it.',
-          ),
-          findsNothing,
-        );
+        expect(find.byType(WordTile), findsNothing);
+        expect(find.byType(SkillKey), findsNothing);
+        expect(find.text('All'), findsNothing, reason: 'no pills');
         expect(placeHeadings(tester), isEmpty);
         final r = repaso(tester);
         expect(
@@ -221,9 +218,7 @@ void main() {
       expect(cardOrder(tester), ['uno', 'perdida']);
     });
 
-    testWidgets('the key line stands once, under the first heading only', (
-      tester,
-    ) async {
+    testWidgets('the key stands once, above the first heading', (tester) async {
       final rig = Rig(
         course: madeCourse(
           places: [
@@ -242,12 +237,13 @@ void main() {
       rig.word('dos');
       rig.word('suelta');
       await pumpTab(tester, rig);
-      const line = 'Ear: you know it when you hear it. Mouth: you can say it.';
-      expect(find.text(line), findsOneWidget);
-      expect(
-        tester.getTopLeft(find.text(line)).dy,
-        lessThan(tester.getTopLeft(find.text('Place two')).dy),
-      );
+      for (final line in [SkillKey.ear, SkillKey.mouth]) {
+        expect(find.text(line), findsOneWidget);
+        expect(
+          tester.getTopLeft(find.text(line)).dy,
+          lessThan(tester.getTopLeft(find.text('Place one')).dy),
+        );
+      }
     });
 
     testWidgets(
@@ -268,8 +264,8 @@ void main() {
         rig.word('esta', ear: 3, due: -1);
         rig.word('está', ear: 3, due: -1);
         await pumpTab(tester, rig);
-        expect(tester.widget<WordCard>(card('esta')).picture, isNull);
-        expect(tester.widget<WordCard>(card('está')).picture, isNotNull);
+        expect(tester.widget<WordTile>(card('esta')).picture, isNull);
+        expect(tester.widget<WordTile>(card('está')).picture, isNotNull);
         expect(
           repaso(tester).line,
           '1 word today · about 1 min',
@@ -483,7 +479,7 @@ void main() {
       );
       await tester.pump();
       expect(
-        find.byType(WordCard),
+        find.byType(WordTile),
         findsNothing,
         reason: 'the first drawing is waiting',
       );
@@ -859,7 +855,7 @@ void main() {
         await tester.drag(find.byType(CoquiCloseButton), const Offset(0, 200));
         await tester.pumpAndSettle();
         expect(sheet, findsNothing);
-        expect(find.byType(WordCard), findsNWidgets(2));
+        expect(find.byType(WordTile), findsNWidgets(2));
         expect(rig.nav.routes, isEmpty);
       },
     );

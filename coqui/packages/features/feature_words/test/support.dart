@@ -6,6 +6,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/feature_words.dart';
+import 'package:feature_words/src/word_tile.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -185,7 +186,7 @@ Future<void> pumpTab(
 }
 
 Finder card(String word) =>
-    find.byWidgetPredicate((w) => w is WordCard && w.word == word);
+    find.byWidgetPredicate((w) => w is WordTile && w.word == word);
 
 /// Touches a card: scrolled into view first.
 Future<void> tapCard(WidgetTester tester, String word) async {
@@ -197,7 +198,7 @@ Future<void> tapCard(WidgetTester tester, String word) async {
 
 /// The words of the cards, from the top of the page to its foot (left before right).
 List<String> cardOrder(WidgetTester tester) {
-  final cs = tester.widgetList<WordCard>(find.byType(WordCard)).toList();
+  final cs = tester.widgetList<WordTile>(find.byType(WordTile)).toList();
   final at = {for (final c in cs) c.word: tester.getTopLeft(card(c.word))};
   final ws = at.keys.toList()
     ..sort((a, b) {
@@ -235,7 +236,11 @@ List<String> placeHeadings(WidgetTester tester) => [
 
 /// How many dots of each meter of [of] are filled: [ear, mouth].
 List<int> dots(WidgetTester tester, Finder of) {
-  final meters = find.descendant(of: of, matching: find.byType(SkillMeter));
+  // a card's meters are [SkillDot]s, the sheet's [SkillMeter]s
+  final meters = find.descendant(
+    of: of,
+    matching: find.byWidgetPredicate((w) => w is SkillDot || w is SkillMeter),
+  );
   return [
     for (var i = 0; i < 2; i++)
       find

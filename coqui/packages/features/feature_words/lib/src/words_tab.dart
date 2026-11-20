@@ -8,7 +8,9 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
 import 'package:feature_words/src/balanced_key_line.dart';
+import 'package:feature_words/src/find_box.dart';
 import 'package:feature_words/src/word_sheet.dart';
+import 'package:feature_words/src/word_tile.dart';
 import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -26,7 +28,13 @@ class WordsTab extends StatefulWidget {
 class _WordsTabState extends State<WordsTab> {
   final _scroll = ScrollController();
   final _field = TextEditingController();
+  final _find = TextEditingController();
   StreamSubscription<void>? _changes;
+
+  // what the list shows: every word, today's, or the good ones; and the find field's text
+  WordFilter _filter = WordFilter.all;
+  String _query = '';
+  bool _finding = false;
   WordsView? _view;
 
   // app.html: PALT (a drawing that a newer one has overtaken is dropped)
@@ -42,7 +50,12 @@ class _WordsTabState extends State<WordsTab> {
   void initState() {
     super.initState();
     _changes = _s.progress.changes.listen((_) => unawaited(_load()));
+    _find.addListener(_onFind);
     unawaited(_load());
+  }
+
+  void _onFind() {
+    if (_find.text != _query) setState(() => _query = _find.text);
   }
 
   @override
@@ -62,6 +75,7 @@ class _WordsTabState extends State<WordsTab> {
     unawaited(_changes?.cancel());
     _scroll.dispose();
     _field.dispose();
+    _find.dispose();
     super.dispose();
   }
 
@@ -126,19 +140,130 @@ class _WordsTabState extends State<WordsTab> {
     return false;
   }
 
-  Widget _card(WordEntry e) {
+  Widget _card(WordEntry e, {required bool tag}) {
     final r = e.record;
     final pair = e.pair;
-    return WordCard(
+    return WordTile(
       word: r.w,
       ear: r.ear.etapa,
       mouth: r.mouth.etapa,
       picture: pair == null
           ? null
           : _s.pictures.of(PictureRef.of(pair, pair.yes)),
+      line: e.line?.text,
+      today: tag && e.today,
       onTap: () => unawaited(_openWord(r.w)),
     );
   }
+
+  /// The words, as [_filter] and [_query] leave them: the pills, the line under them, the key, and the groups.
+  List<Widget> _words(WordsView v) {
+    final groups = shownGroups(v, _filter, _query);
+    final today = v.todayWords.length;
+    final good = v.goodCount;
+    final query = _query.trim();
+    final String about;
+    if (query.isNotEmpty && groups.isEmpty) {
+      about = 'No word has "$query" in it.';
+    } else {
+      about = switch (_filter) {
+        WordFilter.all =>
+          '${v.count} word${v.count == 1 ? '' : 's'} · $today today · $good good',
+        WordFilter.today =>
+          today == 0
+              ? 'Nothing comes back today.'
+              : 'Repaso asks ${today == 1 ? 'this word' : 'these $today words'} today.',
+        WordFilter.good =>
+          good == 0
+              ? 'No word is good yet. A word is good once you get it right three times when it comes back, over two weeks or more.'
+              : 'Good: right three times when it came back, over two weeks or more.',
+      };
+    }
+    final finder = v.count > _findFrom;
+    return [
+      Block(
+        bottom: CoquiMetrics.s8,
+        // the pills keep one line: their text grows with the text size up to 1.3 times
+        child: MediaQuery.withClampedTextScaling(
+          maxScaleFactor: 1.3,
+          child: Row(
+            children: [
+              Expanded(
+                child: SegmentedPills(
+                  labels: const ['All', 'Today', 'Good'],
+                  selected: _filter.index,
+                  onSelected: (i) {
+                    _s.haptics.tick();
+                    setState(() => _filter = WordFilter.values[i]);
+                  },
+                ),
+              ),
+              if (finder) ...[
+                const SizedBox(width: CoquiMetrics.s16),
+                FindButton(on: _finding, onPressed: _toggleFind),
+              ],
+            ],
+          ),
+        ),
+      ),
+      if (finder && _finding)
+        Block(
+          top: CoquiMetrics.s8,
+          bottom: CoquiMetrics.s8,
+          child: FindBox(controller: _find),
+        ),
+      Block(
+        bottom: CoquiMetrics.s8,
+        child: BalancedText(about, style: CoquiText.smallMuted),
+      ),
+      if (groups.isNotEmpty) const Block(bottom: 0, child: SkillKey()),
+      for (final g in groups) ...[
+        if (g.name.isNotEmpty)
+          Block(
+            top: CoquiMetrics.s24,
+            bottom: CoquiMetrics.s16,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Expanded(child: Text(g.name, style: CoquiText.h2)),
+                const SizedBox(width: CoquiMetrics.s8),
+                Text(_placeLine(g, v), style: CoquiText.smallMuted),
+              ],
+            ),
+          )
+        else
+          const Block(top: CoquiMetrics.s16, child: SizedBox.shrink()),
+        TileGrid(
+          children: [
+            for (final e in g.words) _card(e, tag: _filter != WordFilter.today),
+          ],
+        ),
+      ],
+    ];
+  }
+
+  // the find button: opens the field (and puts the caret in it), or closes it and lets every word back
+  void _toggleFind() {
+    _s.haptics.tick();
+    setState(() => _finding = !_finding);
+    if (!_finding) _find.clear();
+  }
+
+  /// Under a place's heading: how many of its words there are, and how many are good (of all its words, whatever
+  /// the list shows).
+  String _placeLine(PlaceGroup shown, WordsView v) {
+    final all = v.groups.firstWhere(
+      (g) => g.name == shown.name,
+      orElse: () => shown,
+    );
+    final n = all.words.length;
+    final good = all.words.where((e) => e.good).length;
+    return '$n word${n == 1 ? '' : 's'} · $good good';
+  }
+
+  /// The find field shows once there are more words than this.
+  static const _findFrom = 12;
 
   @override
   Widget build(BuildContext context) {
@@ -190,23 +315,12 @@ class _WordsTabState extends State<WordsTab> {
                             top: CoquiMetrics.s16,
                             bottom: CoquiMetrics.s16,
                             child: Text(
-                              'Play the first story on the map. Your words show up here.',
+                              'Play the first story on the map. Every word you hear shows up here, with how well you know it.',
                               style: CoquiText.bodyMuted,
                             ),
                           )
                         else
-                          for (var i = 0; i < v.groups.length; i++) ...[
-                            SectionTitle(v.groups[i].name),
-                            if (i == 0)
-                              const BalancedKeyLine(
-                                'Ear: you know it when you hear it. Mouth: you can say it.',
-                              ),
-                            WordGrid(
-                              children: [
-                                for (final e in v.groups[i].words) _card(e),
-                              ],
-                            ),
-                          ],
+                          ..._words(v),
                         const SectionTitle('Add a word or a goal'),
                         AddBox(controller: _field, added: v.added, onAdd: _add),
                       ],

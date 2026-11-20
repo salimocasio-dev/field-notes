@@ -8,6 +8,8 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/add_box.dart';
+import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/word_tile.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -39,7 +41,7 @@ void main() {
       final m = await mixed();
       await pumpTab(tester, m.rig);
       final cards = [
-        for (final c in tester.widgetList<WordCard>(find.byType(WordCard)))
+        for (final c in tester.widgetList<WordTile>(find.byType(WordTile)))
           c.word,
       ];
       expect(cards..sort(), [...m.words]..sort());
@@ -53,7 +55,7 @@ void main() {
         await pumpTab(tester, m.rig);
         var lowStage = false;
         for (final w in m.words) {
-          final c = tester.widget<WordCard>(card(w));
+          final c = tester.widget<WordTile>(card(w));
           expect(
             find.descendant(of: card(w), matching: find.text(w)),
             findsOneWidget,
@@ -76,16 +78,14 @@ void main() {
       for (final w in m.words) {
         final r = m.rig.progress.word(w)!;
         final c = card(w);
-        final meters = find.descendant(
-          of: c,
-          matching: find.byType(SkillMeter),
-        );
+        // order 27: the two meters stand in one row, each an icon and four small dots
+        final meters = find.descendant(of: c, matching: find.byType(SkillDot));
         expect(meters, findsNWidgets(2));
-        expect(tester.widget<SkillMeter>(meters.at(0)).label, 'Ear');
-        expect(tester.widget<SkillMeter>(meters.at(1)).label, 'Mouth');
+        expect(tester.widget<SkillDot>(meters.at(0)).skill, 'Ear');
+        expect(tester.widget<SkillDot>(meters.at(1)).skill, 'Mouth');
         for (final i in [0, 1]) {
           expect(
-            find.descendant(of: meters.at(i), matching: find.byType(MeterDots)),
+            find.descendant(of: meters.at(i), matching: find.byType(SmallDots)),
             findsOneWidget,
           );
           final all = find.descendant(
@@ -103,49 +103,73 @@ void main() {
     });
 
     testWidgets(
-      '"a picture on a pair word; on the others a plain tile with the word large and no empty picture box"',
+      '"a picture on a pair word"; order 27: on the others, the shortest line he heard the word in, in a grey panel of the picture\'s size',
       (tester) async {
         final m = await mixed();
         await pumpTab(tester, m.rig);
         final pairWords = {for (final p in m.rig.course.pairs) p.word};
+        final played = [
+          for (final l in m.rig.course.places)
+            for (final c in l.stories)
+              if (m.rig.progress.played(c)) c,
+        ];
         var pictured = 0;
         var plain = 0;
+        double? panel;
         for (final w in m.words) {
-          final c = tester.widget<WordCard>(card(w));
+          final c = tester.widget<WordTile>(card(w));
           if (pairWords.contains(w)) {
             pictured++;
             expect(c.picture, isNotNull, reason: w);
+            panel ??= tester
+                .getSize(
+                  find.descendant(
+                    of: card(w),
+                    matching: find.byType(WordPictureArea),
+                  ),
+                )
+                .height;
           } else {
             plain++;
             expect(c.picture, isNull, reason: w);
-            // no picture box at all, and the word large (24 px)
+            final lines = await m.rig.course.linesWith(w, played);
+            final shortest = [
+              for (final l in lines)
+                if (occurrences(l.text, [wordTokens(w)]).isNotEmpty) l.text,
+            ]..sort((a, b) => a.length - b.length);
             expect(
-              find.descendant(of: card(w), matching: find.byType(AspectRatio)),
-              findsNothing,
+              c.line,
+              shortest.isEmpty ? isNull : shortest.first,
+              reason: w,
             );
-            final t = tester.widget<Text>(
-              find.descendant(of: card(w), matching: find.text(w)),
-            );
-            expect(t.style!.fontSize, greaterThanOrEqualTo(24));
           }
         }
         expect(pictured, greaterThan(0));
         expect(plain, greaterThan(0));
+        // the panel of a word with no picture is as tall as a picture
+        final noPicture = m.words.firstWhere((w) => !pairWords.contains(w));
+        final box = find.descendant(
+          of: card(noPicture),
+          matching: find.byWidgetPredicate(
+            (x) => x is ColoredBox && x.color == CoquiColors.coverFill,
+          ),
+        );
+        expect(tester.getSize(box).height, panel);
       },
     );
 
     testWidgets(
-      '"one key line under the grid title: \'Ear: you know it when you hear it. Mouth: you can say it.\'"',
+      'order 27: the key of the two icons stands once, above the first place title and its cards',
       (tester) async {
         final m = await mixed();
         await pumpTab(tester, m.rig);
-        const line =
-            'Ear: you know it when you hear it. Mouth: you can say it.';
-        expect(find.text(line), findsOneWidget);
         final title = tester.getTopLeft(find.text('La casa')).dy;
-        final key = tester.getTopLeft(find.text(line)).dy;
-        final firstCard = tester.getTopLeft(find.byType(WordCard).first).dy;
-        expect(title < key && key < firstCard, isTrue);
+        final firstCard = tester.getTopLeft(find.byType(WordTile).first).dy;
+        for (final line in [SkillKey.ear, SkillKey.mouth]) {
+          expect(find.text(line), findsOneWidget);
+          final key = tester.getTopLeft(find.text(line)).dy;
+          expect(key < title && key < firstCard, isTrue);
+        }
       },
     );
 
@@ -548,7 +572,7 @@ void main() {
       (tester) async {
         final m = await mixed();
         await pumpTab(tester, m.rig);
-        expect(tester.widget<WordCard>(card('toca')).picture, isNull);
+        expect(tester.widget<WordTile>(card('toca')).picture, isNull);
         await tapCard(tester, 'toca');
         expect(sheet, findsOneWidget);
         expect(inSheet(find.byType(PictureFrame)), findsNothing);
@@ -658,7 +682,7 @@ void main() {
       (tester) async {
         final m = await mixed();
         await pumpTab(tester, m.rig);
-        final grid = tester.getRect(find.byType(WordGrid).last);
+        final grid = tester.getRect(find.byType(TileGrid).last);
         final add = tester.getRect(find.text('Add a word or a goal'));
         expect(grid.bottom, lessThanOrEqualTo(add.top));
       },

@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:feature_words/src/text_rules.dart';
+import 'package:feature_words/src/words_view.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The word sheet, for `showCoquiSheet`: `showCoquiSheet(context, builder: sheet.build)`, then [closed] when the
@@ -160,11 +161,27 @@ class _WordSheetBodyState extends State<_WordSheetBody> {
             style: CoquiText.h1,
           ),
         ),
+        // the two meters, each with its stage named (palabras.js: heard, found, holding, good)
         Center(
-          child: EarMouthMeters(
-            ear: r.ear.etapa,
-            mouth: r.mouth.etapa,
-            centered: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final (label, value) in [
+                ('Ear', r.ear.etapa),
+                ('Mouth', r.mouth.etapa),
+              ]) ...[
+                if (label == 'Mouth') const SizedBox(height: CoquiMetrics.s4),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SkillMeter(label: label, value: value),
+                    const SizedBox(width: CoquiMetrics.s12),
+                    Text(stageName(value), style: CoquiText.meterLabel),
+                  ],
+                ),
+              ],
+            ],
           ),
         ),
         Block(
