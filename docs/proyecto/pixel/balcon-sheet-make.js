@@ -142,9 +142,13 @@ function make(G) {
   // drinks): a jug's handle reaches x + 9 and its belly x - 7 (its spout, x - 8, is above a glass's straw), a glass n is drawn from x - 5 to x + 5
   for (const [k, s, old, what] of [['mesa.izq', -14, [108, 128], 'X2[0]: the left place on the table top'], ['mesa.der', 14, [132, 128], 'X2[1]: the right place on the table top (also acts.recibe x 132)'],
     ['mesa.centro', 1, [120, 128], 'the middle of the drinks\' row, between the two X2 places (dos("sm") vaso_mesa x 120, acts.aparta x 120: the glass she puts down stands between the two jugs, touching neither; the pairs\' glass or jug at 120; acts.aveva\'s test v.x < 120)'],
-    ['mesa.toma', -14, [106, 128], 'pair toma.si: the glass at x 106'], ['mesa.abanico', 1, [121, 128], 'W.fanMesa: medio(c, 121, MESA_Y, 1): her half fan left on the table'],
-    ['ave.mesa.toma', 7, [127, 128], 'pair toma.si: the bird on the table, drinking from the glass at 106 (x 127)'], ['ave.mesa.der', 12, [132, 128], 'pair toma.no: the bird asleep on the table at 132']])
+    ['mesa.toma', -14, [106, 128], 'pair toma.si: the glass at x 106'],     ['ave.mesa.toma', 7, [127, 128], 'pair toma.si: the bird on the table, drinking from the glass at 106 (x 127)'], ['ave.mesa.der', 12, [132, 128], 'pair toma.no: the bird asleep on the table at 132']])
     pt(k, { world: W4(onTable(s)), old, what });
+  // order 30b: her half fan left on the table (W.fanMesa) lies at the table's front, its pivot on the rim (MESA_Y + 8) a few px right of the left
+  // jug's belly (X2[0] + 5), so no drink is drawn over it nor it over a drink (checks: drinks). In the drinks' row (old: x 121, between the jugs,
+  // all but hidden by the right one) a fresh reader took it for a third drink, a glass with a straw, wedged between the jugs
+  { const izq = Math.round(P(onTable(-14))[0]), my = Math.round(P(onTable(0))[1]);
+    pt('mesa.abanico', { world: W4(E.atZ(izq + 5, my + 8, tableTop)), old: [121, 128], what: 'W.fanMesa: medio(c, 121, MESA_Y, 1): her half fan left on the table: at its front, its pivot on the rim, between the left jug and the middle, in front of the drinks and clear of them' }); }
   // the small chair's seat: ASIENTO (the glass on it stands at ASIENTO[1] - 1; the bird's feet at ASIENTO)
   pt('ASIENTO', { world: W4(seat), old: [160, 135], what: 'ASIENTO: the small chair\'s seat: vaso_silla stands on it (its bottom at y - 1), the bird sits on it (avesilla, marcador)' });
   // round 4: the bird on the window's flower box, as in the old picture: its feet on the box's top front edge, in the middle (the bare soil there,
@@ -426,7 +430,7 @@ function make(G) {
     c(135, 'drawImage(sillaP, SILLITA)', { front: 'silla_pequena' });
     c(136, 'drawImage(mesa, 94, 125)', { front: 'mesa' });
     c(137, 'vasos at v.x, v.y || MESA_Y', 'v.x from X2, mesa.centro, ASIENTO or the remap; MESA_Y the new one');
-    c(138, 'fanMesa: medio(c, 121, MESA_Y, 1)', pn('mesa.abanico'));
+    c(138, 'fanMesa: medio(c, 121, MESA_Y, 1)', pn('mesa.abanico'), 'order 30b: x and y both from the point (the old y was MESA_Y)');
     c(139, 'enSuelo: medio(c, 98, 157, -1)', pn('suelo.abanico.1'));
     c(139, 'enSuelo: medio(c, 110, 158, 1)', pn('suelo.abanico.2'));
     c(140, 'jarras at v.x, MESA_Y', 'v.x from X2 or the remap; MESA_Y the new one');
@@ -715,20 +719,26 @@ function storyChecks(sh, P, notes) {
   const X = n => ptR(n)[0], SW = { [X('mesa.izq')]: X('mesa.der'), [X('mesa.der')]: X('mesa.izq') };
   const sets = new Map(), addSet = (items, from) => { if (items.length < 2) return; const k = JSON.stringify(items.map(v => [v.t || 'jarra', v.k, v.x]).sort()); if (!sets.has(k)) sets.set(k, { items, from }); };
   const onTable = w => (w.vasos || []).filter(v => !v.mano && v.y == null).concat((w.jarras || []).filter(v => !v.mano));
-  let fanOver = 0;
+  // her half fan on the table (balcon.js medio(c, x, y, 1) = abanico(x, y, 8, 5, 70): its pleats and rim, and its pivot), pixel by pixel
+  const fanPx = [], FA = ptR('mesa.abanico');
+  for (let dy = -9; dy <= 0; dy++) for (let dx = -9; dx <= 9; dx++) { const d = Math.hypot(dx, dy), an = Math.atan2(dx, -dy) * 180 / Math.PI; if (an < 5 || an > 70) continue; if (d <= 9.5 && (d >= 1 || d > 8.5)) fanPx.push([FA[0] + dx, FA[1] + dy, 1, 1]); }
+  fanPx.push([FA[0] - 1, FA[1], 3, 3]);
+  let nFan = 0;
   for (const r of runs) for (const L of r.lines) { const w = remapW(L.W, sh), it = onTable(w);
     addSet(it, r.story.id + ' ' + r.plan + ' ' + L.path); addSet(it.map(v => Object.assign({}, v, { x: SW[v.x] != null ? SW[v.x] : v.x })), r.story.id + ' ' + r.plan + ' ' + L.path + ', sides swapped');
-    if (w.fanMesa && it.some(v => drinkRects(v, MY).some(a => meets(a, [X('mesa.abanico') - 1, MY - 9, 11, 12])))) fanOver++; }
+    if (w.fanMesa) { nFan++; for (const v of it) if (drinkRects(v, MY).some(a => fanPx.some(q => meets(a, q)))) P.push('drinks: at ' + r.story.id + ' ' + r.plan + ' ' + L.path + ' her half fan on the table (fanMesa) and the ' + (v.t ? 'glass' : 'jug') + ' at x ' + v.x + ' are drawn over each other'); } }
   for (const s of [0, 1]) { const x2 = [X('mesa.izq'), X('mesa.der')], g = (k, t, x) => ({ k, t, x }), j = (k, x) => ({ k, x });
     addSet([g('jugo', 'n', x2[s]), g('agua', 'n', x2[1 - s])], 'dos("ja")'); addSet([g('jugo', 'g', x2[s]), g('jugo', 'p', x2[1 - s])], 'dos("gp")'); addSet([g('agua', 'n', x2[0]), g('agua', 'n', x2[1])], 'dos("fin")');
     addSet([j('jugo', x2[s]), j('agua', x2[1 - s])], 'pone()'); addSet([j('jugo', x2[s]), j('agua', x2[1 - s]), g('jugo', 'n', X('mesa.centro'))], 'pone() and aparta()'); addSet([j('jugo', x2[s]), j('agua', x2[1 - s]), g('agua', 'n', X('mesa.centro'))], 'pone() and aparta()'); }
   let worstGap = 99;
+  // the fan is left on the table beside the two jugs (que-calor): with any set that has them, sides swapped too
+  for (const { items, from } of sets.values()) if (items.some(v => !v.t)) for (const v of items) if (drinkRects(v, MY).some(a => fanPx.some(q => meets(a, q)))) P.push('drinks: with ' + from + ' her half fan on the table would be drawn over the ' + (v.t ? 'glass' : 'jug') + ' at x ' + v.x);
   for (const { items, from } of sets.values()) for (let a = 0; a < items.length; a++) for (let b = a + 1; b < items.length; b++) {
     const ra = drinkRects(items[a], MY), rb = drinkRects(items[b], MY);
     if (ra.some(p => rb.some(q => meets(p, q)))) P.push('drinks: at ' + from + ' the ' + (items[a].t ? 'glass' : 'jug') + ' at x ' + items[a].x + ' and the ' + (items[b].t ? 'glass' : 'jug') + ' at x ' + items[b].x + ' are drawn over each other');
     else worstGap = Math.min(worstGap, Math.min(...ra.flatMap(p => rb.map(q => gapTo(p, q)))));
   }
-  notes.push('drinks: ' + sets.size + ' sets of drinks on the table at once (the stories\' moments, their sides swapped, the acts\' sets): side by side, none drawn over another (' + worstGap + ' px apart at the least' + (worstGap === 0 ? ': touching' : '') + ')' + (fanOver ? '; NOT a drink: her half fan left on the table (fanMesa) is drawn over a drink at ' + fanOver + ' moments, as the old picture drew it' : ''));
+  notes.push('drinks: ' + sets.size + ' sets of drinks on the table at once (the stories\' moments, their sides swapped, the acts\' sets): side by side, none drawn over another (' + worstGap + ' px apart at the least' + (worstGap === 0 ? ': touching' : '') + '); her half fan on the table at its front, clear of every drink at the ' + nFan + ' moments it is there');
 
   /* 4. every hint frame wholly inside the view it is shown in: at every ask and decide of every run (its thing as the scene boxes it where it stands
      then), and every set thing a story of the scene asks for, in every view */

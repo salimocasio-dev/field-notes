@@ -871,12 +871,6 @@
    "what": "pair toma.si: the glass at x 106",
    "screen": [119, 116.08]
   },
-  "mesa.abanico": {
-   "world": [-0.0152, 1.2904, 1.05],
-   "old": [121, 128],
-   "what": "W.fanMesa: medio(c, 121, MESA_Y, 1): her half fan left on the table",
-   "screen": [134, 116.08]
-  },
   "ave.mesa.toma": {
    "world": [0.1479, 1.1272, 1.05],
    "old": [127, 128],
@@ -888,6 +882,12 @@
    "old": [132, 128],
    "what": "pair toma.no: the bird asleep on the table at 132",
    "screen": [145, 116.08]
+  },
+  "mesa.abanico": {
+   "world": [0.1437, 1.9931, 1.05],
+   "old": [121, 128],
+   "what": "W.fanMesa: medio(c, 121, MESA_Y, 1): her half fan left on the table: at its front, its pivot on the rim, between the left jug and the middle, in front of the drinks and clear of them",
+   "screen": [124, 124]
   },
   "ASIENTO": {
    "world": [1.63, 0.62, 0.75],
@@ -2119,8 +2119,9 @@
    "old": "fanMesa: medio(c, 121, MESA_Y, 1)",
    "to": {
     "point": "mesa.abanico",
-    "new": [134, 116]
-   }
+    "new": [124, 124]
+   },
+   "note": "order 30b: x and y both from the point (the old y was MESA_Y)"
   },
   {
    "line": 139,

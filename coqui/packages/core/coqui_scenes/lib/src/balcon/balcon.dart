@@ -249,7 +249,7 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
     BEHIND = p.number('behind');
     _centro = p.ptRound('mesa.centro')[0];
     _derX = p.ptRound('mesa.der')[0];
-    _fanMesaX = p.ptRound('mesa.abanico')[0];
+    _fanMesa = p.ptRound('mesa.abanico');
     _suelo1 = p.ptRound('suelo.abanico.1');
     _suelo2 = p.ptRound('suelo.abanico.2');
     final sube = p.frog('sube');
@@ -526,9 +526,10 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
   late final int BEHIND;
 
   // the table's middle x (sheet: point mesa.centro; balcon.js: the 120 of dos("sm"), aveva and aparta), the right place's
-  // x (mesa.der: recibe's 132), her half fan on the table (mesa.abanico), the two halves on the floor (suelo.abanico.*)
-  late final int _centro, _derX, _fanMesaX;
-  late final List<int> _suelo1, _suelo2;
+  // x (mesa.der: recibe's 132), her half fan on the table (mesa.abanico: order 30b, at the table's front, its y too),
+  // the two halves on the floor (suelo.abanico.*)
+  late final int _centro, _derX;
+  late final List<int> _fanMesa, _suelo1, _suelo2;
 
   // acts.sube: the foot of the steps (sheet: spot sube; its x is jardin's)
   late final int _subeY;
@@ -795,7 +796,7 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
         );
       }
     }
-    if (jsTruthy(W['fanMesa'])) medio(c, _fanMesaX, MESA_Y, 1);
+    if (jsTruthy(W['fanMesa'])) medio(c, _fanMesa[0], _fanMesa[1], 1);
     // the two halves of her fan, on the floor
     if (jsTruthy(W['enSuelo'])) {
       medio(c, _suelo1[0], _suelo1[1], -1);

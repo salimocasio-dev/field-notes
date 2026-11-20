@@ -49,7 +49,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp
     X('c.drawImage(spr("sillaG",mkSillaG),SILLA[0],SILLA[1]);', 'PREVIEW.front(c,"silla_grande");');
     X('c.drawImage(spr("sillaP",mkSillaP),SILLITA[0],SILLITA[1]);', 'PREVIEW.front(c,"silla_pequena");');
     X('c.drawImage(spr("mesa",mkMesa),94,125);', 'PREVIEW.front(c,"mesa");');
-    X('medio(c,121,MESA_Y,1)', 'medio(c,' + ptR('mesa.abanico')[0] + ',MESA_Y,1)');
+    X('medio(c,121,MESA_Y,1)', 'medio(c,' + ptR('mesa.abanico') + ',1)');   // order 30b: at the table's front, its y from the sheet too
     X('medio(c,98,157,-1);medio(c,110,158,1)', 'medio(c,' + ptR('suelo.abanico.1') + ',-1);medio(c,' + ptR('suelo.abanico.2') + ',1)');
     X('hopTo(LUGAR.jardin[0],168,1,.9)', 'hopTo(LUGAR.jardin[0],' + (S.spots.sube.frog[1]) + ',1,.9)');
     X('const lado=v.x<120?1:-1', 'const lado=v.x<' + ptR('mesa.centro')[0] + '?1:-1');
