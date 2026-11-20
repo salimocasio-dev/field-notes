@@ -2,7 +2,7 @@
 
 Written Nov 20 2026 by the orchestrator, from Salim's words that day. Read with 03, 09, 10 and 13 (order 27). Where this page and 10 differ about Repaso, this page wins once it is built.
 
-Status: third version. The first was read by two fresh reviewers (one as a beginner against page 03, one against the real sentences, the progress rules and his research): see "What the first version got wrong". The second put the scored games on the story books' pictures; readers then judged all 43 books, picture by picture, and that did not hold: see "What the second version got wrong". Nothing is built yet.
+Status: fourth version. The first was read by two fresh reviewers (one as a beginner against page 03, one against the real sentences, the progress rules and his research): see "What the first version got wrong". The second put the scored games on the story books' pictures; readers then judged all 43 books, picture by picture, and that did not hold: see "What the second version got wrong". What the third got wrong is below too. The data is final (`coqui/tool/make_repaso.py`, the readers' verdicts in `coqui/tool/repaso/`); the build is order 27.
 
 ## His words
 
@@ -39,19 +39,19 @@ Older words of his that bind this (page 03): "the pictures are an aid to the lis
 
 ## The games
 
-Scored: listening only, with pictures as the answer. This decides what he knows by ear.
+Scored. These decide what he knows by ear. A word's reviews take them in turn: ¿Cuál?, then ¿Qué oyes?, and so on; after a miss the next is ¿Cuál?.
 
 | Game | What he does |
 |---|---|
-| **¿Cuál?** | Hears a sentence, touches the one of the word's two pictures that fits. The two pictures are the word's own pair, drawn to differ on that word. The sentence changes every time: the pair's own sentence, then other recorded sentences with the word that a reader, looking at the two pictures, judged to fit the right one and not the other. |
+| **¿Cuál?** | Hears a sentence, touches the one of the word's two pictures that fits. The pictures are the word's own pair. The sentence is the pair's own, or another recorded sentence a reader judged to fit the right picture and not the other (78 of 128 words have one or more; none has more than a few). |
+| **¿Qué oyes?** | Hears a sentence he has not been asked in before: one of the word's clean recorded sentences, in turn. Three word tiles, written, each with a speaker that plays the word alone when the word has such a clip. They show while the sentence plays and can be touched when it ends. He touches the word that was in it. The other two are words he has met that are not in the sentence and cannot be taken for anything in it. Then the sentence shows as text with the word lit, and with its story picture where readers judged the picture to show it. |
 
-A word's reviews take its sentences in turn, round and round, so two reviews running are never the same sentence (for a word with more than one).
+¿Qué oyes? is where the new context is: 141 words have three or more such sentences, the middle word 9. It needs him to read a tile, or to hear it: see "Asked of Salim".
 
 Play: these score nothing for Ear. They use the session's words in still other sentences.
 
 | Game | What he does |
 |---|---|
-| **¿Qué oyes?** | Hears a sentence. Three written word tiles: the word and two that are not in it and are not easily taken for anything in it. He touches the one he heard; the sentence then shows as text with the word lit. |
 | **Arma la frase** | Hears a sentence of 3 to 6 words. Its words are tiles in a mixed order, lower case, no punctuation, with two extra tiles. He touches them in order; a wrong tile jumps back. Lines with a name, a repeated word or a "says" tag are not used. |
 | **Parejas** | Four speaker tiles and four written words. A speaker plays a sentence; he touches the word that is in it. Right pairs lock. The four are chosen so that each word is in its own sentence only and no two are easily taken for each other. |
 | **¿Dónde?** | Hears a sentence and touches the picture of its moment, among two or three pictures of the same story. Only for the sentences where readers found fair wrong pictures (163 items, 64 words). |
@@ -59,13 +59,13 @@ Play: these score nothing for Ear. They use the session's words in still other s
 
 Where a sentence has a book picture that readers judged to show it clearly, the play games show that picture while it plays: the moment he first heard it.
 
-Reading is in the play games only, so a slip in reading never lowers what the app thinks he hears. A word with no picture pair (28 words) is scored by ¿Qué oyes? instead; two words no game can serve.
+A word with no picture pair (28 words) is scored by ¿Qué oyes? only; a word with no clean sentence (6 words) by ¿Cuál? only; two words no game can serve.
 
 Nothing is in English but the menus. No game translates.
 
 ## What is written to his progress
 
-- ¿Cuál? (and ¿Qué oyes? for a word with no picture pair): an Ear answer, right or wrong, exactly as Repaso writes today, with the same timing rule. The schedule, the stages and the steps do not change. The sentence in turn is taken from the count of answers the record already keeps.
+- ¿Cuál? and ¿Qué oyes?: an Ear answer, right or wrong, exactly as Repaso writes today, with the same timing rule. The schedule, the stages and the steps do not change. The sentence in turn is taken from the count of answers the record already keeps.
 - Dilo heard right: a Mouth answer right. Nothing else for Mouth.
 - The other play games write nothing.
 - The day's minutes get the session's time.
@@ -102,6 +102,21 @@ It made the scored games "touch the picture of this sentence's moment" and "does
 
 So the book pictures are context, not proof. The scored game went back to each word's own picture pair, with the sentence changing, and only sentences a reader judged against the two pictures.
 
+## What the third version got wrong
+
+It kept the scored game on each word's own picture pair and changed the sentence. Five readers judged 1,294 sentences against the 128 pairs without knowing which picture is the right one: 139 fit. The pairs are tight pictures of one thing; another sentence names other people and things and fits neither. Half the words have only the sentence their pictures were drawn for.
+
+So no picture the course has can score a new sentence fairly. What can: he hears the sentence and says which word was in it.
+
+## Asked of Salim (Nov 20), no answer yet
+
+Which word was in it needs him to read the tiles or to hear them.
+
+1. Written tiles decide the Ear score. No cost. It bends "reading gets no tracking until A2": a slip in reading counts against his ear.
+2. Each of the 156 words recorded alone, once (about 1,500 characters), so that every tile can be heard. No reading needed.
+
+Recommended: 2. Built so that it works either way: written tiles, with a speaker on each that plays as soon as the word's clip exists (23 words have one today).
+
 ## What this does not do
 
 - No new recordings, no new story text, nothing changed under `historia/cuentos/`.
@@ -111,7 +126,7 @@ So the book pictures are context, not proof. The scored game went back to each w
 
 ## Guesses
 
-- That enough sentences fit each word's own pair. The readers' second pass (1,294 sentences against 128 pairs) gives the number.
-- That hearing a new sentence and choosing between the same two pictures feels like a new context and not the same card. The play games around it carry the rest.
-- That written tiles are welcome in a listening-first course at this level, as play.
+- That hearing a known word in a sentence he has not been asked before, and picking it out, is the "differing context" he means.
+- That written tiles are welcome in a listening-first course at this level.
+- That Arma la frase with two extra tiles is not too hard.
 - That the recogniser hears one word inside a short line reliably on his phones (the phone test results are still owed).
