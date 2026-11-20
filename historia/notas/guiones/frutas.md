@@ -4,7 +4,7 @@ Place 4, El colmado. Scene 3 of 4 (scene id `frutas`). Stories 42 to 44. He has 
 
 Scene words (page 02): tomate, cebolla, papa, plátano, aguacate, piña, limón, libra, medio, fresco, bueno, malo.
 
-The picture: don Pepe's fruit and vegetable stand, outside his shop. One view, `wide`: under the awning a slanted stand with seven bins (tomates, cebollas, papas, plátanos, aguacates, piñas, limones: each told from the others by shape and colour); a ledge along the front of the stand; a scale hanging from a pole at the stand's left end, its round dial with two marks only, half way and full (no numerals), a pan under it; a hand of guineos hanging from the awning; at the right, a post with a goat tied to it on a short rope: it reaches the low crate beside the stand and no further. Don Pepe stands behind the stand, abuela in front with her basket, the frog on the ledge.
+The picture: don Pepe's fruit and vegetable stand, outside his shop. One view, `wide`: under the awning a slanted stand with big bins: four of vegetables in stories 42 and 44 (tomates, cebollas, papas, plátanos) and three of fruit in story 43 (aguacates, piñas, limones), each drawn big enough to be named at a glance, with one cut open where that helps (an onion, an aguacate, a limón); a ledge along the front of the stand; a scale hanging from a pole at the stand's left end, its round dial with two marks only, half way and full (no numerals), a pan under it; a hand of guineos hanging from the awning; at the right, a post with a goat tied to it on a short rope: it reaches the low crate beside the stand and no further. Don Pepe stands behind the stand, abuela in front with her basket, the frog on the ledge.
 
 The goat is never named in a line that decides ("la cabra" is heard). It eats whatever lands on the low crate.
 
@@ -154,7 +154,7 @@ Left as written: the goat always gets the bad fruit, so its last picture does no
 The set `frutas`:
 - View: `wide` (zoom 1).
 - States: `carro` (the hand cart in front of the stand's left end: there or not); `hora`; `puerta`. The scale's needle (rest, half, full) is a sprite over the dial.
-- In the set: the shop wall and door behind; the awning; the slanted stand with seven bins; the ledge; the hanging scale with its dial (needle: rest, half, full); the hand of guineos; the low crate; the post. The goat, don Pepe, abuela, the frog and everything that moves are sprites.
+- In the set: the shop wall and door behind; the awning; the slanted stand with its bins (state `surtido`: verduras or frutas); the ledge; the hanging scale with its dial (needle: rest, half, full); the hand of guineos; the low crate; the post. The goat, don Pepe, abuela, the frog and everything that moves are sprites.
 - Things he can touch: tomates, cebollas, papas, platanos, aguacates, pinas, limones (the bins); fruta_a, fruta_b (the two abuela holds, a big one and a small one); cajon_a, cajon_b (two crates on the ledge); canasta, pesa (the scale), guineos, cabra, pepe, abuela, coqui.
 - Spots: repisa (the ledge, three places), delante (abuela), junto_cabra (abuela beside the low crate), detras (don Pepe), puerta, carro.
 - New sprites: the goat (standing, neck out, eating, chewing); each of the seven things whole, and the aguacate cut (green, black); fresh and yesterday's crates of tomatoes, onions and limones; flies; abuela's basket with three hollows, seen from the side and from above; paper bags; coins in a row.
