@@ -1,0 +1,217 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La sala · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/sala.js) drawn over the NEW set (sala-set.html): sala.js is loaded with every screen position the sheet names replaced by the sheet's (as the Flutter port does it, line for line), its background, its lamp, sofa, armchair, blanket, low table and the frames' wood taken out (the set has them), the frog's dotted shadow taken out, the photos clipped to the set's frames, and the low table's place in the drawing order kept by its own pixels drawn again (sheet: front). Then cropped to a view.
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|sofa&amp;F=8&amp;t=0&amp;signs=1&amp;hud=1</code>, or <code>?pair=mama&amp;side=si</code> (a review picture of cual-sala, 196 x 104, zoom 1 or 2 as the sheet says). Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. sala.js is fetched and every screen position it holds is replaced by the sheet's (points, spots, things' boxes, views); bg(), the
+      lamp, the sofa, the armchair, the blanket, the low table and the frames' wood and nail are taken out; the low table's place in the
+      drawing order is kept by drawing the set's own pixels of it again over the characters drawn before it, where nearer (sheet: front);
+      each photo is clipped to its frame's opening in the set (sheet: clips) and turned as the set's frame is.
+   2. W in old positions needs no moving: the room is built round the old picture, so every floor place keeps its screen place (sheet:
+      rules.floor). Only what stood on the old furniture moves with it (the cake, the camera, the photos).
+   3. The set for setKey(W) is drawn by sala-set.html in a hidden frame, with the characters' shadows cast (frame()).
+   4. The picture is cropped to the view (196 x 216 at the view's x0) or the pair's crop (196 x 104, or 98 x 52 at zoom 2). */
+(() => {
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const pt = n => SHEET.points[n].screen;
+
+  /* ---------- 1. the old scene file with the sheet's positions ---------- */
+  function edit(src) {
+    if (new URLSearchParams(location.search).get('old') === '1') return src;
+    const S = SHEET, X = (a, b) => { if (!src.includes(a)) throw new Error('sala.js changed: ' + a); src = src.split(a).join(b); };
+    const bx = k => '[' + S.things[k].box.join(',') + ']', sp = k => S.spots[k].new;
+    // the frames: the set has the wood, the paper and the nail; marco() draws only a photo, clipped to the set's opening (sheet: points foto.i, clips)
+    X('function marco(g,i,f){const x=76+i*24,y=38;g.save();g.translate(x+10,y+2);if(f&&!f.ok)g.rotate(.24+.05*Math.sin(F/6+i));\n  fr(g,-11,-1,22,26,OUT);fr(g,-10,0,20,24,RP.wood[2]);fr(g,-10,0,20,1,RP.wood[4]);fr(g,-8,2,16,20,f?"#BFE0F0":"#FBF0D2");\n  if(f){g.save();g.beginPath();g.rect(-8,2,16,20);g.clip();',
+      'function marco(g,i,f){if(!f)return;const P=PREVIEW.foto(i,f);g.save();g.beginPath();PREVIEW.clipPoly(g,P.clip);g.clip();g.translate(P.x,P.y);if(!f.ok)g.rotate(P.a);fr(g,-14,-6,28,34,"#BFE0F0");\n  {g.save();');
+    X('    g.restore();}\n  fr(g,0,-3,1,3,OUT);g.restore();}', '    g.restore();}\n  g.restore();}');
+    X('const SITIO={mama:[97,127,1],papa:[131,127,1],abuelo:[181,127,1],bebe:[70,193],abuela:[42,168],hermano:[150,198],hermana:[180,198]};',
+      'const SITIO={' + Object.keys(S.spots).filter(k => k.startsWith('sitio.')).map(k => { const id = k.slice(6), o = S.spots[k]; return id + ':[' + o.new.concat(o.what.includes('sitting (sent)') ? [1] : []) + ']'; }).join(',') + '};');
+    X('const LUGAR={puerta:[30,104,.7],centro:[104,183,1],huele:[72,146,.9],abuela:[58,155,1],mama:[82,125,.9],papa:[116,125,.9],abuelo:[166,125,.9],bebe:[88,175,1],izq:[44,183,1]};',
+      'const LUGAR={' + Object.keys(S.lugar).map(k => k + ':[' + S.lugar[k].q.concat([S.lugar[k].scale]) + ']').join(',') + '};');
+    X('const PARADOS=[[100,136],[140,136]],APARTE=[[70,198],[170,198]],JUNTOS=[[96,196],[144,196]],CAMARA=[198,176];',
+      `const PARADOS=[[${sp('parados.0')}],[${sp('parados.1')}]],APARTE=[[${sp('aparte.0')}],[${sp('aparte.1')}]],JUNTOS=[[${sp('juntos.0')}],[${sp('juntos.1')}]],CAMARA=[${sp('camara')}];`);
+    X('{id:"bizcocho",si:w=>w.pastel>0,box:[106,138,30,16],m:1},{id:"mesita",box:[98,148,46,18],m:0},{id:"sofa",box:[68,84,92,44],m:0},{id:"butaca",box:[160,86,42,42],m:0},',
+      `{id:"bizcocho",si:w=>w.pastel>0,box:${bx('bizcocho')},m:1},{id:"mesita",box:${bx('mesita')},m:0},{id:"sofa",box:${bx('sofa')},m:0},{id:"butaca",box:${bx('butaca')},m:0},`);
+    X('{id:"fotos",box:[64,34,82,30],m:0},{id:"lampara",box:[146,62,20,64],m:0},{id:"puerta",box:[20,42,42,80],m:0},{id:"ventana",box:[160,32,56,54],m:0},{id:"sala",box:[0,122,240,94],m:0}',
+      `{id:"fotos",box:${bx('fotos')},m:0},{id:"lampara",box:${bx('lampara')},m:0},{id:"puerta",box:${bx('puerta')},m:0},{id:"ventana",box:${bx('ventana')},m:0},{id:"sala",box:${bx('sala')},m:0}`);
+    X('for(let j=0;j<3;j++)for(let i=j===1?0:2;i<b.w-5-(j===1?0:2);i++)if((i+j)%2===0)fr(g,b.x+2+i,q.y+25+j,1,1,"#A8875A");', '');
+    X('c.drawImage(spr("sala",bg),0,0);', '');
+    X('c.drawImage(spr("lamp"+(W.luz?1:0),()=>mkLampara(W.luz)),146,62);', '');
+    X('c.drawImage(spr("sofa",mkSofa),68,84);c.drawImage(spr("butaca",mkButaca),160,86);', '');
+    X('  manta(c);\n', '');
+    X('a.x=40;a.y=126;b.x=34;b.y=124;', `a.x=${sp('puerta.hermano')[0]};a.y=${sp('puerta.hermano')[1]};b.x=${sp('puerta.hermana')[0]};b.y=${sp('puerta.hermana')[1]};`);
+    // the places that move (sheet: moves; JUNTOS is in the line above already)
+    for (const m of S.moves) if (m.line !== 77) X(m.src, m.to);
+    // where a bubble goes (sheet: talk)
+    X('return [Math.round(p.x),Math.round(p.y)-alto(k)-1-(p.bub?38:0)];}', 'const t=PREVIEW.talk([Math.round(p.x),Math.round(p.y)-alto(k)-1],6,p.bub,W);return [t[0],t[1]-(p.bub?38:0)];}');
+    X('if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}', 'if(q.vis&&q.bub){const b=frogBox(q),t=PREVIEW.talk([b.x+(b.w>>1),b.y+2],b.w>>1,q.bub,W);bub2(c,q.bub,t[0],t[1],a);}');
+    const B = pt('bizcocho'), K = pt('camMesa');
+    X('lista.push({y:165,d:()=>{c.drawImage(spr("mesita",mkMesita),98,148+(W.golpe&&F-W.golpe<4?-2:0));if(W.pastel!=null)bizcocho(c,107,138,W.pastel);if(W.camMesa){fr(c,113,139,16,10,OUT);fr(c,114,140,14,8,"#3A3A46");fr(c,118,142,5,5,"#9CCBF5");}}});',
+      `lista.push({y:${S.front.parts.mesita.sortY},mesa:1,d:()=>{PREVIEW.front(c,"mesita",lista);if(W.pastel!=null)bizcocho(c,${B},W.pastel);if(W.camMesa){fr(c,${K[0]},${K[1]},16,10,OUT);fr(c,${K[0] + 1},${K[1] + 1},14,8,"#3A3A46");fr(c,${K[0] + 5},${K[1] + 3},5,5,"#9CCBF5");}}});`);
+    // the front mask needs to know who is drawn before the table: each item says who it is
+    X('const lista=Object.keys(G).filter(id=>G[id]&&G[id].vis!==0).map(id=>({y:G[id].z||G[id].y,d:()=>gente(c,id,a)}));', 'const lista=Object.keys(G).filter(id=>G[id]&&G[id].vis!==0).map(id=>({y:G[id].z||G[id].y,id,d:()=>gente(c,id,a)}));');
+    X('if(q.vis)lista.push({y:q.y+27,d:()=>{', 'if(q.vis)lista.push({y:q.y+27,id:"coqui",d:()=>{');
+    const ES = S.points['destapa.estrellas'].screen, TR = pt('tres.desde'), HP = pt('hud.plato');
+    X('fx({t:"star",n:10,pts:[[108,134],[132,134],[120,128]]})', 'fx({t:"star",n:10,pts:' + JSON.stringify(ES) + '})');
+    X('await vuelaA(120,140,50,24);', `await vuelaA(${TR},${HP});`);
+    X('await vuelaA(x.x,x.y-30,50,24,1);', `await vuelaA(x.x,x.y-30,${HP},1);`);
+    // the stars over a new photo: the middle of its frame (sheet: code 209, 221)
+    const FC = SHEET.code.find(e => e.line === 209).to.new;
+    X('fx({t:"star",n:ok?10:4,pts:[[86+i*24,50]]})', 'fx({t:"star",n:ok?10:4,pts:[' + JSON.stringify(FC) + '[i]]})');
+    X('pts:(W.fotos||[]).map((f,i)=>f&&f.ok?[86+i*24,50]:null)', 'pts:(W.fotos||[]).map((f,i)=>f&&f.ok?' + JSON.stringify(FC) + '[i]:null)');
+    X('CAM:{wide:[22,0,196,216],sofa:[52,48,150,165.3]},heartAt:[107,6]',
+      'CAM:{' + Object.keys(S.views).map(k => k + ':[' + S.views[k].x0 + ',0,196,216]').join(',') + '},heartAt:[' + pt('corazon') + ']');
+    return src;
+  }
+  const ready = fetch('sala-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; })
+    .then(() => fetch('../../../historia/escenas/sala.js')).then(r => r.text()).then(t => {
+      const s = document.createElement('script'); s.textContent = edit(t) + '\n//# sourceURL=sala-new.js'; document.body.appendChild(s);
+    });
+
+  /* ---------- the set, one hidden frame per state; the front mask; the frames' openings ---------- */
+  const SETS = {};
+  function setOf(w) { const f = w.fotos || []; return { luz: w.luz === 0 ? '0' : '1', fotos: [0, 1, 2].map(i => f[i] && !f[i].ok ? '1' : '0').join(''), top: new URLSearchParams(location.search).get('top') || 'liso' }; }
+  PV.setOf = setOf;
+  let CUR = null;
+  async function setFrame(st, t, casts) {
+    const q = Object.entries(st).map(([k, v]) => k + '=' + v).join('&') + '&tags=1';
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'sala-set.html?' + q; }); SETS[q] = fr; }
+    const w = fr.contentWindow, img = w.frame(t, casts);
+    CUR = { img: new ImageData(new Uint8ClampedArray(img.data), 240, 216), tags: w.TAGS, z: w.DEPTH.z, win: w.DEPTH };
+    return CUR.img;
+  }
+  // the character's feet on the floor: v = (x + y) / R2 of the floor point under them
+  const vOf = (sx, sy) => { const fw = CUR.win, u = (sx - fw.OX) / fw.S, v = (sy - fw.OY) / (fw.S * .5); return v; };
+  // (sheet: front) the set's own pixels of the table, again, inside each character drawn before it, where nearer than that character
+  PV.front = function (c, part, lista) {
+    const fw = CUR.win, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6), me = lista.findIndex(o => o.mesa);
+    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z;
+    for (const o of lista.slice(0, me)) {
+      let r, v;
+      if (o.id === 'coqui') { const q = W.cq, b = frogBox(q); r = [b.x, b.y + Math.round(q.dy), b.w, b.h]; v = vOf(b.x + b.w / 2, q.y + 25); }
+      else if (o.id) { const p = W.gente[o.id], h = SALA_ALTO(o.id); r = [Math.round(p.x) - 24, Math.round(p.y) - h - 2, 48, h + 3]; v = vOf(Math.round(p.x), Math.round(p.y) - 1); }
+      else continue;
+      for (let y = Math.max(0, r[1]); y < Math.min(216, r[1] + r[3]); y++) for (let x = Math.max(0, r[0]); x < Math.min(240, r[0] + r[2]); x++) {
+        const i = y * 240 + x; if (T[i] !== part || !(Z[i] > v / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue;
+        d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255;
+      }
+    }
+    c.putImageData(id, 0, 0);
+  };
+  const SALA_ALTO = id => id === 'abuela' ? 51 : id === 'bebe' ? 28 : (KIT.FAM[id].nino ? 44 : (W.gente[id] && W.gente[id].sent ? 49 : 56));
+  // sheet.talk: the first place for a bubble wholly in the view, clear of the corner cards and of every face
+  const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+  PV.talk = function (top, h, k, w) {
+    if (!k || !SHEET.bubbles.rects[k]) return top;
+    const T = SHEET.talk, R = SHEET.bubbles.rects[k], x0 = cam[0], faces = [], boards = [];
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.vis === 0 || (p.al != null && p.al <= .3)) continue;
+      const hd = T.heads[id + (p.sent && id !== 'abuela' && id !== 'bebe' ? '.sent' : '')], flip = p.dir < 0 && id !== 'bebe', x = Math.round(p.x), y = Math.round(p.y);
+      const hx = flip ? x - hd.head + (id === 'abuela' ? 0 : 1) : x + hd.head; faces.push([Math.round(hx - 6), y + hd.top + (id === 'bebe' ? 4 : 5), 12, 10]); }
+    if (w.cq && w.cq.vis && !(w.cq.al < .5)) { const b = frogBox(w.cq); faces.push([b.x + 2, b.y + Math.round(w.cq.dy || 0), b.w - 4, Math.round(b.h * .6)]); }
+    if (w.plato != null) boards.push([2, 2, 80, 31]); if (w.cafe) boards.push([2, 2, 46 + 13 * (w.aciertos || 0), 38]); if (w.visor) boards.push([2, 2, 52, 52]); if (w.retrato) boards.push([29, 5, 138, 90]);
+    for (const b of boards) b[0] += x0;
+    for (const [side, dy] of T.places) { const tx = top[0] + side * (h + 16), ty = top[1] + dy, r = [tx + R[0], ty + R[1], R[2], R[3]];
+      if (r[0] >= x0 && r[1] >= 0 && r[0] + r[2] <= x0 + 196 && r[1] + r[3] <= 216 && !boards.some(b => meets(r, b)) && !faces.some(f => meets(r, f))) return [tx, ty]; }
+    return top;
+  };
+  PV.foto = function (i, f) { const k = 'foto.' + i + (f.ok ? '' : '.torcida'), p = SHEET.points[k]; return { x: p.screen[0], y: p.screen[1], a: p.angle, clip: k }; };
+  PV.clipPoly = function (c, name) { const s = SHEET.clips[name].screen; c.moveTo(s[0][0], s[0][1]); for (let i = 1; i < 4; i++) c.lineTo(s[i][0], s[i][1]); c.closePath(); };
+
+  /* ---------- a picture ---------- */
+  // the floor rule: nothing moves, but for the places the sheet moves (sheet: moves): a person at a moved place of an act the story uses goes to
+  // its new one; the frog hopped beside them (acts.junto) goes with them. PV.acts: the acts of the story being shown (null: every act)
+  PV.acts = null;
+  PV.remapW = w0 => { const w = JSON.parse(JSON.stringify(w0)), moved = [];
+    const MV = SHEET.moves.filter(m => !PV.acts || PV.acts.includes(m.act)).flatMap(m => m.places);
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; const m = MV.find(q => (q.who === 'whoever' || q.who === id) && q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y));
+      if (m) { moved.push([m.old, m.new]); p.x = m.new[0]; p.y = m.new[1]; } }
+    const q = w.cq; if (q) for (const [o, n] of moved) { const jx = p => Math.round(p[0] + (p[0] < 120 ? -24 : 24) - 16), jy = p => Math.round(p[1] + 5 - 27);
+      if (q.x === jx(o) && q.y === jy(o)) { q.x = jx(n); q.y = jy(n); } }
+    return w; };
+  function baseW(over) { return Object.assign({ spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, ESCENAS.sala.fresh({}), over || {}); }
+  PV.baseW = baseW;
+  PV.render = async function (wOld, opts = {}) {
+    await ready;
+    if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
+    E = ESCENAS.sala; F = opts.F == null ? 8 : opts.F; TALK = null;
+    W = opts.remap === false ? JSON.parse(JSON.stringify(wOld)) : PV.remapW(wOld); if (!W.fx) W.fx = []; if (!W.gente) W.gente = {};
+    const V0 = SHEET.views[opts.view || 'wide'], x0 = opts.crop ? opts.crop[0] : V0.x0;
+    cam = [x0, 0, 196, 216];
+    // the characters' shadows (sheet: shadows): from the floor point under their feet on screen
+    const feet = [], q = W.cq;
+    if (q && q.vis && !(q.al <= .5)) { const b = frogBox(q); feet.push([b.x + b.w / 2, q.y + 25, [.3], .45]); }
+    for (const [id, p] of Object.entries(W.gente)) {
+      if (!p || p.vis === 0 || (p.al != null && p.al <= .5) || p.sent || p.z) continue;
+      const r = id === 'bebe' ? .25 : KIT.FAM[id] && KIT.FAM[id].nino ? .3 : .35, zs = id === 'bebe' ? [.2] : [.3, .65, 1, 1.35, 1.7];
+      feet.push([Math.round(p.x), Math.round(p.y) - 1, zs, r]);
+    }
+    const st = setOf(W), key = Object.entries(st).map(([k, v]) => k + '=' + v).join('&') + '&tags=1';
+    if (!SETS[key]) await setFrame(st, 0, []);
+    const fw = SETS[key].contentWindow, cs = [];
+    for (const [sx, sy, zs, r] of feet) { const g = fw.unproject(sx, sy); for (const z of zs) cs.push([g.x, g.y, z, r]); }
+    const img = await setFrame(st, opts.t || 0, cs);
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
+    c.putImageData(img, 0, 0);
+    E.draw(c, W, F >> 1);
+    // a recorded W holds the photo of everyone as "[canvas 128x80]": take it again as acts.retrato does (sheet: points.retrato), from this picture
+    if (typeof W.retrato === 'string') { const r = SHEET.points.retrato.screen, k = document.createElement('canvas'); k.width = 128; k.height = 80; const x = k.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(sc, r[0], r[1], r[2], r[3], 0, 0, 128, 80); W.retrato = k; }
+    if (W.resp) respDraw(c, F >> 1);
+    if (opts.signs) {
+      const a = F >> 1;
+      if (W.twinkle && bx(W.twinkle)) twinkle(c, bx(W.twinkle));
+      if (W.spot) spot(c, bx(W.spot), a);
+      W.fx.forEach(e => { if (e.t === 'star') e.pts.forEach((p, i) => star(c, p[0], p[1], (i + a) % 2 ? 4 : 2, (i + a) % 2)); });
+      if (W.heart) heart(c, E.heartAt[0], E.heartAt[1] - (a % 2), 3);
+    }
+    const cr = opts.crop || [x0, 0, 196, 216], z = opts.crop ? (opts.zoom || 1) : 1;
+    const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
+    const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
+    if (opts.hud && E.hud) E.hud(g, W, F >> 1);
+    if (opts.signs && W.spot) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
+    return out.toDataURL();
+  };
+  // the signs of a story step as juego.js sets them (ask, decide, elige), as balcon-preview.html
+  PV.askW = function (w, st, V, on) {
+    const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+    const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
+    w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
+    else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
+      if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
+    else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
+    else return null;
+    if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
+    return w;
+  };
+  // a review picture of cual-sala: panelW() of cual.js, cropped and zoomed as the sheet's pictures say
+  PV.pair = async function (word, side) {
+    await ready;
+    const it = PV.CUAL.items.find(i => i.w.replace(/[áéíóú]/g, c => 'aeiou'['áéíóú'.indexOf(c)]) === word), spec = it[side];
+    const w = baseW();
+    w.cq = { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null };
+    Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    const pc = SHEET.pictures[word + '.' + side];
+    return PV.render(w, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+  };
+  PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-sala.json')).then(r => r.json()).then(j => { PV.CUAL = j; });
+
+  const A = new URLSearchParams(location.search);
+  PV.done = PV.ready.then(() => {
+    if (A.get('pair')) return PV.pair(A.get('pair'), A.get('side') || 'si');
+    const w = A.get('w') ? baseW(JSON.parse(A.get('w'))) : baseW();
+    return PV.render(w, { view: A.get('view') || 'wide', F: +(A.get('F') || 8), t: +(A.get('t') || 0), hud: A.get('hud') === '1', signs: A.get('signs') === '1' });
+  });
+})();
+</script></body></html>
