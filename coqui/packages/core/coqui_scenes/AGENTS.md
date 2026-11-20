@@ -28,8 +28,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   shadows), `SetBakes` (a scene's baked states, cached by set key), `StillFrame` and `StillHost` (one frame of a scene on
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
-- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's and El balcón's factories make
-  the real scenes (their sheets read first: `loadScene`); the other nine are stubs that throw
+- `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's and La sala's
+  factories make the real scenes (their sheets read first: `loadScene`); the other eight are stubs that throw
   `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
@@ -49,7 +49,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   old pictures go.
 - `coqui/ref/pp/<id>/`: the set's baked states, made by `node coqui/tool/ref/pp/make.js --states <file>` with one line per
   state of the sheet's `setKey.baked` (`{"id": "<id>/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/<id>-set.html",
-  "query": "?door=shut&win=shut"}`): El balcón's four were made so (order 30b; `coqui/tool/ref/pp/states.json` does not list them).
+  "query": "?door=shut&win=shut"}`), listed in `coqui/tool/ref/pp/states.json` and made by `make.js --only <ids>`: El balcón's four
+  (order 30b) and La sala's five (`sala/luz-1-fotos-000` ..., order 31b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -81,6 +82,34 @@ that `implements SetScene` (`class Balcon extends Escena implements SetScene, Se
   `balcon.dart`. Tests: `balcon_set_test`, `balcon_sprites_test`, `balcon_preview_test`, `balcon_boxes_test`,
   `balcon_pictures_test`, `balcon_acts_test` (with the shadows and the furniture in front). The preview's rule for moving a
   recorded W is `test/support/balcon_preview_remap.dart` (a dev tool's, per scene).
+
+## A room seen from inside (order 31b, La sala)
+
+sala.js is on the kit too (`class Sala extends Escena implements SetScene, SetOverSprites`). What La sala's sheet has that the
+two earlier ones did not, and how the port uses it, as sala-preview.html does:
+
+- **The floor rule.** The room is built round the old picture: every place on its floor keeps its old screen numbers, so the
+  sheet gives each place's number as its `new` (`spots.<name>.new`; the `code` entry of each old `mueve(...)` place with its
+  `new`; `SITIO` from the code entries of line 75). `sala_places.dart` reads them: `floor(line, x, y)` is the `code` entry of
+  that line whose old place is `x, y` (a place the sheet does not name throws: stop). The few the sheet moves (`moves`: seven
+  pieces of sala.js and their replacements, eight entries) come out of the same entries; a comment at each line says so.
+- **`talk`.** Where a bubble goes (`Sala.talkPlace`, preview `PREVIEW.talk`): the first of the sheet's places beside the head
+  whose bubble (`bubbles.rects`) is wholly in the view (`host.cam[0]`), clear of the corner cards shown (`talk.boards`,
+  `SheetTalk.board`) and of every face (`talk.heads`); else over the head. `talkAt` and the frog's bubble use it.
+- **The photos.** marco() draws only a photo: at `points.foto.<i>` (or `foto.<i>.torcida`, rotated by its `angle`), clipped to
+  the frame's opening, the quad `clips.foto.<i>[.torcida].screen` (a screen quad: its world points are on the wall, not exact).
+- **`smoothing`.** sala.js:120 and :121 (W.borroso) snapshot the picture drawn so far (`Ctx.snapshot`) into a 20 x 18 sprite
+  and back up, with `Ctx.smoothing` on, then off; :137 (the camera's window out of focus) the same with a 5 x 5 sprite. The
+  canvas's bilinear gives the browser's pixels here: the 5 x 5 window is exact (`sala_sprites_test`, `vis`), the blur
+  identical to the preview (`blur.*` cases). acts.retrato shrinks the last frame drawn (the scene keeps its canvas) with
+  smoothing off, from `points.retrato`.
+- **The low table in front** (`front.parts.mesita`, `sortY`): at its place in the list sorted by y, its own pixels are drawn
+  again inside each character drawn before it, only where nearer (as El balcón's furniture).
+- **Review pictures** are named with the word's accents folded (`mama.si` for `mamá.si`): `sheetPictureName` finds them.
+- **Random draws** (`azar`, in `lados`) from the game's `Rng`, as El balcón's.
+- Files: `lib/src/sala/sala_set.dart`, `sala_places.dart`, `sala.dart`. Tests: `sala_set_test`, `sala_sprites_test`,
+  `sala_preview_test`, `sala_boxes_test`, `sala_pictures_test`, `sala_acts_test`; the preview's rule for moving a recorded W
+  is `test/support/sala_preview_remap.dart` (the moves of the acts its story names: the case's `acts`).
 
 ## Pictures: by name, the size rule, old pictures until converted
 
@@ -123,16 +152,17 @@ that `implements SetScene` (`class Balcon extends Escena implements SetScene, Se
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/ and coqui/ref/pp/balcon/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/ and .../balcon/
-node tool/preview_shots.mjs [--scene balcon] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/ and .../sala/ for the browser set tests
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/ and .../sala/
+node tool/preview_shots.mjs [--scene balcon|sala] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala]   bake times
+                                                  (each state's first bake, then again on the same engine)
 ```
 
 Numbers for a report: `COQUI_REPORT_DIR=DIR flutter test` writes them on the vm; `--dart-define=COQUI_SHOW=true`
