@@ -2,7 +2,7 @@
 
 Written Nov 20 2026 by the orchestrator, from Salim's words that day. Read with 03, 09, 10 and 13 (order 27). Where this page and 10 differ about Repaso, this page wins once it is built.
 
-Status: second version. The first was read by two fresh reviewers (one as a beginner against page 03, one against the real sentences, the progress rules and his research). What they found is under "What the first version got wrong". Nothing is built yet.
+Status: third version. The first was read by two fresh reviewers (one as a beginner against page 03, one against the real sentences, the progress rules and his research): see "What the first version got wrong". The second put the scored games on the story books' pictures; readers then judged all 43 books, picture by picture, and that did not hold: see "What the second version got wrong". Nothing is built yet.
 
 ## His words
 
@@ -32,38 +32,40 @@ Older words of his that bind this (page 03): "the pictures are an aid to the lis
 - Each word gets one scored item. Around them, about four play items that score nothing. About 14 items, 4 minutes.
 - The mix does not wait for a word to be well known. Every session from the second day has at least three kinds of game.
 - A missed item shows its answer, and comes back once three items later: the same sentence, the same game, not scored. At most five come back in a session.
-- Each game has one plain English line saying what to do (menus may be English): "Touch the picture that fits." "Does it fit? Sí or No." "Touch the word you heard." "Put the words in order." "Say it." "Match each sound to its picture."
+- Each game has one plain English line saying what to do (menus may be English): "Touch the picture that fits." "Touch the word you heard." "Put the words in order." "Match each sound to its word." "Which moment is it?" "Say it."
 - A row of right answers shows as a small count ("4 in a row"). The end screen says how many he got right the first time, and lists each word with the sentence it was asked in; a tap plays it. No lives and no clock.
 - Repaso counts toward the day's minutes, so a day with only Repaso keeps the streak. Today it does not.
-- Silence, in the two scored games only: 6 s after the sentence it plays again; 6 s more, the answer is shown and it is a miss (as today). The play games never time out.
+- Silence, in the scored game only: 6 s after the sentence it plays again; 6 s more, the answer is shown and it is a miss (as today). The play games never time out.
 
 ## The games
 
-Scored: listening only, with a picture as the aid. These decide what he knows by ear.
+Scored: listening only, with pictures as the answer. This decides what he knows by ear.
 
 | Game | What he does |
 |---|---|
-| **¿Cuál?** | Hears a sentence, touches the picture that fits: two or three pictures. Either the word's own sentence with its two pictures (today's game), or a new sentence with the book picture of its moment beside one or two other moments of the same story. |
-| **¿Sí o no?** | Sees one book picture, hears one sentence, touches Sí or No. |
+| **¿Cuál?** | Hears a sentence, touches the one of the word's two pictures that fits. The two pictures are the word's own pair, drawn to differ on that word. The sentence changes every time: the pair's own sentence, then other recorded sentences with the word that a reader, looking at the two pictures, judged to fit the right one and not the other. |
 
-A word's reviews take its sentences in turn, round and round, so two reviews running are never the same sentence. Which pictures are fair wrong answers, and which sentences are false for a picture, is decided ahead of time in the data and checked by readers who look at the pictures.
+A word's reviews take its sentences in turn, round and round, so two reviews running are never the same sentence (for a word with more than one).
 
 Play: these score nothing for Ear. They use the session's words in still other sentences.
 
 | Game | What he does |
 |---|---|
-| **¿Qué oyes?** | Hears a sentence with its picture. Three written word tiles: the word and two that are not in it and do not sound like anything in it. He touches the one he heard; the sentence then shows as text with the word lit. |
-| **Arma la frase** | Hears a sentence of 3 to 6 words with its picture. Its words are tiles in a mixed order, lower case, no punctuation, with two extra tiles. He touches them in order; a wrong tile jumps back. Lines with a name, a repeated word or a "says" tag are not used. |
-| **Parejas** | Three or four speaker tiles and as many pictures. A speaker plays a sentence; he touches its picture. Right pairs lock. The sets are fixed in the data so that no two pictures look alike and no sentence fits two of them. |
-| **Dilo** | Only for a word that is open for speaking (today's rule: some days after he first hears it), only with a line that has decided accepted forms, only when the microphone works and "Speak in stories" is on. He sees the picture and hears what comes just before the line in its story (the question or the cue), not the line itself, so it is not an echo; where a line has nothing before it, it is not used. Heard right: a Mouth answer right. Anything else writes nothing. What the app heard is shown, as on the call screen. |
+| **¿Qué oyes?** | Hears a sentence. Three written word tiles: the word and two that are not in it and are not easily taken for anything in it. He touches the one he heard; the sentence then shows as text with the word lit. |
+| **Arma la frase** | Hears a sentence of 3 to 6 words. Its words are tiles in a mixed order, lower case, no punctuation, with two extra tiles. He touches them in order; a wrong tile jumps back. Lines with a name, a repeated word or a "says" tag are not used. |
+| **Parejas** | Four speaker tiles and four written words. A speaker plays a sentence; he touches the word that is in it. Right pairs lock. The four are chosen so that each word is in its own sentence only and no two are easily taken for each other. |
+| **¿Dónde?** | Hears a sentence and touches the picture of its moment, among two or three pictures of the same story. Only for the sentences where readers found fair wrong pictures (163 items, 64 words). |
+| **Dilo** | Only for a word that is open for speaking (today's rule: some days after he first hears it), only with a line that has decided accepted forms, only when the microphone works and "Speak in stories" is on. He hears what comes just before the line in its story (the question or the cue), not the line itself, so it is not an echo; where a line has nothing before it, it is not used. Heard right: a Mouth answer right. Anything else writes nothing. What the app heard is shown, as on the call screen. |
 
-Reading is in the play games only, so a slip in reading never lowers what the app thinks he hears. A word with no pictured sentence at all (a few) is scored by ¿Qué oyes? instead; the data names them.
+Where a sentence has a book picture that readers judged to show it clearly, the play games show that picture while it plays: the moment he first heard it.
+
+Reading is in the play games only, so a slip in reading never lowers what the app thinks he hears. A word with no picture pair (28 words) is scored by ¿Qué oyes? instead; two words no game can serve.
 
 Nothing is in English but the menus. No game translates.
 
 ## What is written to his progress
 
-- ¿Cuál? and ¿Sí o no?: an Ear answer, right or wrong, exactly as Repaso writes today, with the same timing rule. The schedule, the stages and the steps do not change. The sentence in turn is taken from the count of answers the record already keeps.
+- ¿Cuál? (and ¿Qué oyes? for a word with no picture pair): an Ear answer, right or wrong, exactly as Repaso writes today, with the same timing rule. The schedule, the stages and the steps do not change. The sentence in turn is taken from the count of answers the record already keeps.
 - Dilo heard right: a Mouth answer right. Nothing else for Mouth.
 - The other play games write nothing.
 - The day's minutes get the session's time.
@@ -73,8 +75,9 @@ Nothing is in English but the menus. No game translates.
 One file, `historia/datos/repaso.json`, made by a tool in `coqui/tool/` from the stories, the books and the decided speech marks, then checked by readers:
 
 - For each word: its clean sentences in a fixed order; for each, the clip, the text as recorded, the story, and the book picture of its moment when there is one.
-- For a pictured sentence: the other pictures of the same story that are fair wrong answers; and for a picture, sentences that are false for it.
-- The fixed sets for Parejas. The lines for Dilo. Which words fall back to ¿Qué oyes? for scoring, and which no game can serve.
+- For each word with a picture pair: the sentences that fit its pair, as readers judged them.
+- For a pictured sentence: whether its book picture shows it clearly, and the other pictures of the same story that are fair wrong answers.
+- Which written words must never be offered together (accent twins, one inside another, near spellings). The lines for Dilo. Which words fall back to ¿Qué oyes? for scoring, and which no game can serve.
 
 The app uses a sentence only when he has finished its story.
 
@@ -88,6 +91,17 @@ The app uses a sentence only when he has finished its story.
 - A miss was not shown and came back as a different sentence, so nothing was learned from it.
 - It kept "no points, no streak" without a reason, against his wish for a real game.
 
+## What the second version got wrong
+
+It made the scored games "touch the picture of this sentence's moment" and "does this sentence fit this picture", on the story books' pictures. Five readers then judged every sentence of all 43 books against every page (581 sentences, 231 pages):
+
+- Only 163 of 1,481 items have a fair wrong picture in their own story; 92 of 156 words have none.
+- For 349 sentences the book picture does not clearly show what the sentence says (no bread near the duck, no ball in the tree, nobody visibly running).
+- Many pages of one story look almost the same; some are identical.
+- No set of four could be made for a matching game on pictures.
+
+So the book pictures are context, not proof. The scored game went back to each word's own picture pair, with the sentence changing, and only sentences a reader judged against the two pictures.
+
 ## What this does not do
 
 - No new recordings, no new story text, nothing changed under `historia/cuentos/`.
@@ -97,7 +111,7 @@ The app uses a sentence only when he has finished its story.
 
 ## Guesses
 
-- That a book picture of another moment of the same story is a fair wrong answer often enough. The readers' check will give the number.
-- That the old book pictures (the flat style) are fine beside the new scenes until order 41 redraws them.
+- That enough sentences fit each word's own pair. The readers' second pass (1,294 sentences against 128 pairs) gives the number.
+- That hearing a new sentence and choosing between the same two pictures feels like a new context and not the same card. The play games around it carry the rest.
 - That written tiles are welcome in a listening-first course at this level, as play.
 - That the recogniser hears one word inside a short line reliably on his phones (the phone test results are still owed).
