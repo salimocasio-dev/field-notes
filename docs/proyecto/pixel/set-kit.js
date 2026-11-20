@@ -296,3 +296,28 @@ function planeFace(face, at, a0, a1, z0, z1, fn) {
     zb[i] = d; pix[i] = col;
   }
 }
+
+/* ---------- screen-aligned ground coordinates, and flat faces of any direction (order 32a, El patio) ---------- */
+// screen-aligned ground coordinates: u across the picture (to the right), v towards the camera (down the picture); world x, y from them
+// (El patio places its tree's crown with them: a lobe's middle at a given screen point)
+const UVW = (u, v, z = 0) => [(u + v) / R2, (v - u) / R2, z];
+// a flat parallelogram P0 + a e1 + b e2 (a, b from 0 to 1), drawn pixel by pixel on the screen with plot()'s depth test: every pixel whose
+// middle's sight line meets it takes fn(a, b) there (0: nothing drawn). One sample a pixel, as planeFace, for a face of any direction
+// (a wall turned to the camera, a roof slope, a gate leaf). P0, e1, e2: world [x, y, z]. A face seen edge on draws nothing
+function planeQuad(P0, e1, e2, fn) {
+  const p0 = project(P0[0], P0[1], P0[2]);
+  const d = e => { const q = project(P0[0] + e[0], P0[1] + e[1], P0[2] + e[2]); return [q.sx - p0.sx, q.sy - p0.sy, q.d - p0.d]; };
+  const A = d(e1), B = d(e2), det = A[0] * B[1] - A[1] * B[0];
+  if (Math.abs(det) < 1e-6) return;
+  const xs = [0, A[0], B[0], A[0] + B[0]].map(s => s + p0.sx), ys = [0, A[1], B[1], A[1] + B[1]].map(s => s + p0.sy);
+  const ix0 = Math.max(0, Math.floor(Math.min(...xs))), ix1 = Math.min(W - 1, Math.ceil(Math.max(...xs))), iy0 = Math.max(0, Math.floor(Math.min(...ys))), iy1 = Math.min(H - 1, Math.ceil(Math.max(...ys)));
+  for (let iy = iy0; iy <= iy1; iy++) for (let ix = ix0; ix <= ix1; ix++) {
+    const dx = ix + .5 - p0.sx, dy = iy + .5 - p0.sy, a = (dx * B[1] - dy * B[0]) / det, b = (A[0] * dy - A[1] * dx) / det;
+    if (a < 0 || a > 1 || b < 0 || b > 1) continue;
+    const dd = Math.fround(p0.d + a * A[2] + b * B[2]), i = iy * W + ix;
+    if (dd <= zb[i]) continue;
+    const col = fn(a, b);
+    if (!col) continue;
+    zb[i] = dd; pix[i] = col;
+  }
+}

@@ -1,0 +1,193 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El patio · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/patio.js) drawn over the NEW set (patio-set.html): patio.js is loaded with every screen position the sheet names replaced by the sheet's (as the Flutter port does it, line for line), its sky and its background (fondo) taken out, the light of the hour and W.osc taken out (the set bakes them), the frog's dotted shadow taken out, and the sun, the moon and the stars drawn behind the set (sheet: behind). Then cropped to the view.
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&amp;hud=1&amp;story=&lt;id&gt;</code>, or <code>?pair=nino&amp;side=si</code> (a review picture, 196 x 104, zoom 1 or 2 as the sheet says). <code>old=1</code>: the old picture, as historia/ draws it. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. patio.js is fetched and every screen position it holds is replaced by the sheet's (things' boxes and the gate's hand point, moves);
+      the sky (cielo) and the background (fondo) are taken out, and so are the light of the hour and W.osc (baked into the set: setKey hora);
+      the sun, the moon and the stars are drawn where they were, then the set's own pixels again over them wherever the set drew anything
+      (sheet: behind); the bubbles go where sheet.talk says.
+   2. W in old positions needs no moving: the yard is built round the old picture, so every place on the lawn keeps its screen place (sheet:
+      rules.floor), but for the places in moves (the scene's acts; the frog at LUGAR.porton and LUGAR.sale, who "cq") and the story positions
+      remap moves (applied for the story being shown).
+   3. The set for setKey(W) is drawn by patio-set.html in a hidden frame, with the characters' shadows cast (frame()).
+   4. The picture is cropped to the view (196 x 216 at x0 22) or the pair's crop (196 x 104, or 98 x 52 at zoom 2). */
+(() => {
+  const PV = window.PREVIEW = {}, A = new URLSearchParams(location.search), OLD = A.get('old') === '1';
+  let SHEET = null;
+
+  /* ---------- 1. the old scene file with the sheet's positions ---------- */
+  function edit(src) {
+    if (OLD) return src;
+    const S = SHEET, X = (a, b) => { if (!src.includes(a)) throw new Error('patio.js changed: ' + a); src = src.split(a).join(b); };
+    const bx = k => '[' + S.things[k].box.join(',') + ']';
+    X('c.drawImage(spr("cielo"+n,()=>cielo(n)),0,0);', '');
+    X('c.drawImage(spr("patio"+(W.porton?1:0)+(W.pdoor?1:0),()=>fondo(W.porton,W.pdoor)),0,0);', 'PREVIEW.behind(c);');
+    X('if(!W.noche&&n>=2){c.fillStyle=n===2?"rgba(255,150,50,.10)":"rgba(230,90,70,.17)";c.fillRect(0,0,SW,SH);}', '');
+    X('if(W.osc){c.fillStyle="rgba(12,16,56,"+(.5*W.osc)+")";c.fillRect(0,0,SW,SH);}', '');
+    X('for(let j=0;j<3;j++)for(let i=j===1?0:2;i<b.w-5-(j===1?0:2);i++)if((i+j)%2===0)fr(g,b.x+2+i,q.y+25+j,1,1,"#2E8A34");', '');
+    X('{id:"camaL",box:[40,160,56,38],m:2},{id:"camaR",box:[144,160,56,38],m:2}', `{id:"camaL",box:${bx('camaL')},m:2},{id:"camaR",box:${bx('camaR')},m:2}`);
+    X('{id:"porton",box:[127,70,40,43],m:1},{id:"nido",box:[170,60,22,16],m:1},{id:"arbol",box:[168,8,60,106],m:0}',
+      `{id:"porton",box:${bx('porton')},hand:[${S.things.porton.hand}],m:1},{id:"nido",box:${bx('nido')},m:1},{id:"arbol",box:${bx('arbol')},m:0}`);
+    X('{id:"puerta",box:[27,57,30,56],m:0},{id:"casa",box:[0,14,61,100],m:0},{id:"cerca",box:[60,80,180,33],m:0},{id:"patio",box:[0,113,240,103],m:0}',
+      `{id:"puerta",box:${bx('puerta')},m:0},{id:"casa",box:${bx('casa')},m:0},{id:"cerca",box:${bx('cerca')},m:0},{id:"patio",box:${bx('patio')},m:0}`);
+    for (const m of S.moves) X(m.src, m.to);
+    X('Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});',
+      'Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.bub&&p.vis!==0){const t=PREVIEW.talk([R(p.x),R(p.y)-alto(id)-1],6,p.bub,W);bub2(c,p.bub,t[0],t[1],a);}});');
+    X('if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2-(W.lleva?18:0),a);}',
+      'if(q.vis&&q.bub){const b=frogBox(q),t=PREVIEW.talk([b.x+(b.w>>1),b.y+2-(W.lleva?18:0)],b.w>>1,q.bub,W);bub2(c,q.bub,t[0],t[1],a);}');
+    return src;
+  }
+  // round 6 (sheet flowerLeaves): a flower in the ground comes with its own leaves, drawn first (moves: the line of the beds calls this before
+  // florEn), at its foot, by its stage, 1:1, not dimmed
+  window.flowerLeaves = function (g, x, y, f) {
+    const L = SHEET.flowerLeaves, st = L.stages[f.k ? 'open' : 'bud'];
+    st.rows.forEach((r, j) => { for (let c = 0; c < r.length; c++) if (r[c] !== '.') { g.fillStyle = 'rgb(' + L.palette[r[c]].join(',') + ')'; g.fillRect(x + st.x0 + c, y + st.y0 + j, 1, 1); } });
+  };
+  const ready = fetch('patio-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; })
+    .then(() => fetch('../../../historia/escenas/patio.js')).then(r => r.text()).then(t => {
+      const s = document.createElement('script'); s.textContent = edit(t) + '\n//# sourceURL=patio-new.js'; document.body.appendChild(s);
+    });
+
+  /* ---------- the set, one hidden frame per state ---------- */
+  const SETS = {};
+  function setOf(w) { const n = Math.min(3, w.sol || 0), hora = w.noche ? 'noche' : n < 3 ? ['dia', 'tarde', 'tarde2'][n] : (w.osc || 0) >= .25 ? 'crepusculo' : 'ocaso';
+    return { hora, door: w.pdoor ? 'open' : 'shut', gate: w.porton ? 'open' : 'shut' }; }
+  PV.setOf = setOf;
+  let CUR = null;
+  async function setFrame(st, t, casts) {
+    const q = Object.entries(st).map(([k, v]) => k + '=' + v).join('&');
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'patio-set.html?' + q; }); SETS[q] = fr; }
+    const w = fr.contentWindow, img = w.frame(t, casts);
+    CUR = { img: new ImageData(new Uint8ClampedArray(img.data), 240, 216), z: Float32Array.from(w.DEPTH.live()), win: w };
+    return CUR.img;
+  }
+  // (sheet: behind) the sun, the moon and the stars are drawn before this; the set's own pixels go back over them wherever the set drew anything
+  PV.behind = function (c) {
+    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, Z = CUR.z;
+    for (let i = 0; i < 240 * 216; i++) if (Z[i] > -1e8) { d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255; }
+    c.putImageData(id, 0, 0);
+  };
+  const ALTO = id => id === 'abuela' ? 51 : id === 'bebe' ? 28 : ((id === 'luis' || id === 'carmen') ? (W.gente[id] && W.gente[id].sent ? 40 : 44) : (W.gente[id] && W.gente[id].sent ? 49 : 56));
+  // sheet.talk: the first place for a bubble wholly in the view, clear of the corner cards and of every face
+  const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+  PV.talk = function (top, h, k, w) {
+    if (!k || !SHEET.bubbles.rects[k]) return top;
+    const T = SHEET.talk, R = SHEET.bubbles.rects[k], x0 = cam[0], faces = [], boards = [];
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.vis === 0 || (p.al != null && p.al < .5)) continue;
+      const hd = T.heads[id + (p.sent && id !== 'abuela' && id !== 'bebe' ? '.sent' : '')], flip = p.dir < 0 && id !== 'bebe', x = Math.round(p.x), y = Math.round(p.y);
+      const hx = flip ? x - hd.head + (id === 'abuela' ? 0 : 1) : x + hd.head; faces.push([Math.round(hx - 6), y + hd.top + (id === 'bebe' ? 4 : 5), 12, 10]); }
+    if (w.cq && w.cq.vis && !(w.cq.al < .5)) { const b = frogBox(w.cq); faces.push([b.x + 2, b.y + Math.round(w.cq.dy || 0), b.w - 4, Math.round(b.h * .6)]); }
+    if (w.tarjeta === 'sol') boards.push([2, 2, 36, 54]); if (w.tarjeta === 'luces') boards.push([2, 2, 86, 32]);
+    if (w.tanteo) boards.push([2, 2, 26 + Math.max(3, (w.canasta || []).length) * 15, 28], [119, 2, 75, 28]);
+    for (const b of boards) b[0] += x0;
+    for (const [side, dy] of T.places) { const tx = top[0] + side * (h + 16), ty = top[1] + dy, r = [tx + R[0], ty + R[1], R[2], R[3]];
+      if (r[0] >= x0 && r[1] >= 0 && r[0] + r[2] <= x0 + 196 && r[1] + r[3] <= 216 && !boards.some(b => meets(r, b)) && !faces.some(f => meets(r, f))) return [tx, ty]; }
+    return top;
+  };
+
+  /* ---------- a picture ---------- */
+  // the places that move (sheet: moves, for the acts of the story shown; remap moved, for its own positions); W.soly 24 is 26; after inicio11 the
+  // answer cards stand where W.respEn says. PV.story: the story being shown (null: every move)
+  PV.story = null;
+  PV.remapW = w0 => { const w = JSON.parse(JSON.stringify(w0)), st = PV.story, acts = st ? new Set((JSON.stringify(st).match(/"act":\s*"[a-z0-9]+"/g) || []).map(a => a.split('"')[3])) : null;
+    const MV = SHEET.moves.filter(m => !acts || acts.has(m.act) || m.act === '*').flatMap(m => (m.places || []).map(q => q));
+    const RM = SHEET.remap.filter(e => e.moved && (!st || e.uses.some(u => u.startsWith(st.id + '.json'))));
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue;
+      const m = MV.find(q => (q.who === 'whoever' || q.who === id) && q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y));
+      if (m) { p.x = m.new[0]; p.y = m.new[1]; if (m.z != null) p.z = m.z; continue; }
+      const r = RM.find(e => e.old[0] === Math.round(p.x) && e.old[1] === Math.round(p.y)); if (r) { p.x = r.new[0]; p.y = r.new[1]; } }
+    // round 4: the frog at one of his places that moved (moves, places who "cq": LUGAR.porton and LUGAR.sale, which followed the gate)
+    if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } }
+    if (w.soly === 24) w.soly = 26;
+    const en = SHEET.moves.find(m => m.respEn && (!acts || acts.has(m.act))); if (en && w.gente && w.gente.abuela && w.gente.mama) w.respEn = en.respEn;
+    return w; };
+  function baseW(over) { return Object.assign({ spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, ESCENAS.patio.fresh({}), over || {}); }
+  PV.baseW = baseW;
+  PV.render = async function (wOld, opts = {}) {
+    await ready;
+    if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
+    E = ESCENAS.patio; F = opts.F == null ? 8 : opts.F; TALK = null;
+    W = OLD || opts.remap === false ? JSON.parse(JSON.stringify(wOld)) : PV.remapW(wOld); if (!W.fx) W.fx = []; if (!W.gente) W.gente = {};
+    const x0 = opts.crop ? opts.crop[0] : 22;
+    cam = [x0, 0, 196, 216];
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
+    if (OLD) { c.fillStyle = '#000'; c.fillRect(0, 0, 240, 216); }
+    else {
+      // the characters' shadows (sheet: shadows): from the ground point under their feet on screen
+      const feet = [], q = W.cq;
+      if (q && q.vis && !(q.al <= .5)) { const b = frogBox(q); feet.push([b.x + b.w / 2, q.y + 25, [.3], .45]); }
+      for (const [id, p] of Object.entries(W.gente)) {
+        if (!p || p.vis === 0 || (p.al != null && p.al <= .5) || p.z) continue;
+        const r = id === 'bebe' ? .25 : (id === 'luis' || id === 'carmen') ? .3 : .35, zs = id === 'bebe' ? [.2] : p.sent ? [.3] : [.3, .65, 1, 1.35, 1.7];
+        feet.push([Math.round(p.x), Math.round(p.y) - 1, zs, r]);
+      }
+      const st = setOf(W), key = Object.entries(st).map(([k, v]) => k + '=' + v).join('&');
+      if (!SETS[key]) await setFrame(st, 0, []);
+      const fw = SETS[key].contentWindow, cs = [];
+      for (const [sx, sy, zs, r] of feet) { const g = fw.unproject(sx, sy); for (const z of zs) cs.push([g.x, g.y, z, r]); }
+      // the ball's shadow (sheet: shadows.bola): on the lawn under it, lying or in the air
+      if (W.bola) { const g = fw.unproject(Math.round(W.bola.x), Math.round(W.bola.y) - 1); if (g.x > fw.PATIO_SET.CX + .05 && g.y > fw.PATIO_SET.CY + .05) cs.push([g.x, g.y, .05, .28]); }
+      c.putImageData(await setFrame(st, opts.t || 0, cs), 0, 0);
+    }
+    E.draw(c, W, F >> 1);
+    if (W.resp) respDraw(c, F >> 1);
+    if (opts.signs) {
+      const a = F >> 1;
+      if (W.twinkle && bx(W.twinkle)) twinkle(c, bx(W.twinkle));
+      if (W.spot) spot(c, bx(W.spot), a);
+      W.fx.forEach(e => { if (e.t === 'star') e.pts.forEach((p, i) => star(c, p[0], p[1], (i + a) % 2 ? 4 : 2, (i + a) % 2)); });
+      if (W.heart) heart(c, E.heartAt[0], E.heartAt[1] - (a % 2), 3);
+    }
+    const cr = opts.crop || [x0, 0, 196, 216], z = opts.crop ? (opts.zoom || 1) : 1;
+    const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
+    const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
+    if (opts.hud && E.hud) E.hud(g, W, F >> 1);
+    if (opts.signs && W.spot) { const rb = respBox(W.spot), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : E.handAt[W.spot], k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); }
+    return out.toDataURL();
+  };
+  // the signs of a story step as juego.js sets them (ask, decide, elige), as sala-preview.html
+  PV.askW = function (w, st, V, on) {
+    const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+    const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
+    w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
+    else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
+      if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
+    else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
+    else return null;
+    if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
+    return w;
+  };
+  // a review picture: panelW() of cual.js, cropped and zoomed as the sheet's pictures say (old=1: the old cam rectangle, stretched as cual.html does)
+  PV.pair = async function (word, side, file = 'cual-patio') {
+    await ready;
+    const C = file === 'cual-camino' ? PV.CAMINO : PV.CUAL, it = C.items.find(i => i.w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') === word), spec = it[side];
+    const w = baseW();
+    w.cq = { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null };
+    Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    if (OLD) { await PV.render(w, { F: 8, remap: false }); const o = document.getElementById('out'), cm = spec.cam, k = document.createElement('canvas'); k.width = 196; k.height = 104; const g = k.getContext('2d'); g.imageSmoothingEnabled = false;
+      g.drawImage(sc, cm[0], cm[1], cm[2], cm[3], 0, 0, 196, 104); o.width = 196; o.height = 104; o.getContext('2d').drawImage(k, 0, 0); return o.toDataURL(); }
+    const pc = SHEET.pictures[word + '.' + side];
+    return PV.render(w, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+  };
+  PV.ready = ready.then(() => Promise.all([fetch('../../../historia/cuentos/cual-patio.json').then(r => r.json()), fetch('../../../historia/cuentos/cual-camino.json').then(r => r.json())])).then(([a, b]) => { PV.CUAL = a; PV.CAMINO = b; });
+
+  PV.done = PV.ready.then(() => {
+    if (A.get('pair')) return PV.pair(A.get('pair'), A.get('side') || 'si', A.get('file') || 'cual-patio');
+    const w = A.get('w') ? baseW(JSON.parse(A.get('w'))) : baseW();
+    return PV.render(w, { F: +(A.get('F') || 8), t: +(A.get('t') || 0), hud: A.get('hud') === '1', signs: A.get('signs') === '1' });
+  });
+})();
+</script></body></html>
