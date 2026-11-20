@@ -109,7 +109,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 **The opening** (big sign)
 
 1. The children wave at the window; the ball twinkles. NARR: "Aquí están los niños." NARR: "Don Pepe dice: ¿Qué quieren los niños?" COQUÍ [TURN: bola (bola)]: "¡Una bola!" The jar twinkles. NARR: "Aquí están los chavos de los niños. Necesitan más chavos."
-2. Luis's pot; tag 17. He holds out one bill with 20 on it. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son diecisiete dólares." Ask (signed, the key 17; the other is 18): "¿Dónde está el diecisiete?" He touches it: ring, 17. NARR: "Luis paga con veinte dólares." Don Pepe counts the change up into Luis's hand, a bill at a time. NARR: "Don Pepe dice: Aquí tienes tu cambio: dieciocho, diecinueve y veinte." Luis points at the children and drops the three bills into the jar: it rises a little, still under the first line.
+2. Luis's pot; tag 17. He holds out one bill with 20 on it. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son diecisiete dólares." Ask (signed, the key 17; the other is 18): "¿Dónde está el diecisiete?" He touches it: ring, 17. NARR: "Luis paga diecisiete dólares con un billete de veinte." **(billete: heard; the picture carries it)** Don Pepe counts the change up into Luis's hand, a bill at a time. NARR: "Don Pepe dice: Aquí tienes tu cambio: dieciocho, diecinueve y veinte." Luis points at the children and drops the three bills into the jar: it rises a little, still under the first line.
 3. Carmen; a pan, tag 18; a twenty. NARR: "Don Pepe dice: Son dieciocho dólares." Ask (signed, the key 18; the other is 19): "Toca el dieciocho." He touches it: ring, 18. NARR: "Don Pepe dice: Aquí tienes tu cambio: diecinueve y veinte." Carmen holds the two bills and looks at the jar. NARR: "Carmen dice: ¿Para quién es el cambio?" COQUÍ [TURN: niño (niños, ninos)]: "¡Para los niños!" She drops them in: the money stands just under the first line.
 
 **The turn**
@@ -131,7 +131,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
     - No line reached: the same picture and line, the money lower.
 8. NARR: "Don Pepe dice: ¡Gracias, Coquí! ¡Hasta mañana!" The frog waves.
 
-**Fewest hearings before a word can cost:** diecisiete 3 (step 2, with the ring), dieciocho 4 (steps 2, 3, 3, 3). Not deciding: diecinueve 2 before the game and once or twice more in it (every count of change says it); veinte 4; cambio 3; chavos 2 before the game, 3 or more by the end.
+**Fewest hearings before a word can cost:** diecisiete 3 (step 2: the price, the ask, the payment), dieciocho 3 (steps 2, 3, 3). Not deciding: diecinueve 2 before the game and once or twice more in it (every count of change says it); veinte 3; cambio 3; chavos 2 before the game, 3 or more by the end.
 **A miss is filed under:** diecisiete or dieciocho, whichever was the price.
 **Chance without the Spanish:** one in two, in each round on its own.
 **Speaking turns:** two (steps 1, 3): bola; niño.
@@ -164,9 +164,16 @@ The set `caja`:
 Acts (name: what it does; story and step):
 - `gaveta` {abre}: the drawer opens with a ring, or shuts (45: 1). `clip` {n}: n bills under the frog's clip; `clip` {quita, a}: don Pepe takes one off: to the customer, or into the drawer; `aviso`: he taps the clip and the register (45: 5); `paga45` {n}: he hands the rest to the frog, who drops them into his jar (45: 1, 7, 8, 9).
 - `cliente` {quien, cosa, precio, ver}: a customer comes up and sets a thing down; ver: its tag faces us, or faces don Pepe (45: 2 to 5, 7, 8; 47: 2, 3, 5, 6). `sale` {quien}.
-- `teclas` {a, b}: the numerals on the two keys (45, 47). `marca` {n}: the bell rings and the window shows n; `etiqueta` {ver}: don Pepe turns the tag round (45: 7, 8; 47: 5, 6).
+- `teclas` {a, b}: the numerals on the two keys (45, 47). `suena` {n}: the bell rings and the window shows n (not `marca`, which is the card's star or cross); `etiqueta` {ver}: don Pepe turns the tag round (45: 7, 8; 47: 5, 6).
 - `paga` {quien, n, con}: bills counted into don Pepe's hand; con 20: one twenty-dollar bill (45; 46; 47).
 - `cola` {n}: a line forms (45: 6; 46: 5).
 - `par` {k, a, b}: two things of one kind in front of the frog with their tags (46: 1, 3, 4, 6, 7). `empuja` {cual}: the frog pushes one along to don Pepe (46: 3, 6, 7). `envuelve` {ok}: don Pepe wraps it at once; not ok: he unwraps it and the sheet tears (46: 3, 6, 7). `papel` {n}: the sheets on the holder. `regalo46` {n}: the ending: wrapped with a hat, wrapped, or a plain bag (46: 8).
 - `cambio` {n, ok}: don Pepe counts n bills up into a hand, one for each number of the line; ok: they go into the jar and its level rises a line; not ok: into the customer's purse (47: 2, 3, 5, 6). `frasco` {n}: the jar's level. `ninos47` {que}: at the window; two fingers; in; out with the ball (47: 1, 4, 7).
-- `final`: stars and a heart when nothing was lost.
+- The ending: every story ends with the shared `fin` (stars and a heart when nothing was lost). There is no `final`.
+- `ya`: waits for an act started with `suelto: 1`. `cambio` is started with `suelto: 1` so that its counting line is said while the bills are laid one by one, then `ya`.
+- `brilla`: the engine's own `{"set": {"twinkle": key}}` (the ball and the jar in 47: 1).
+- `cliente` is also used in 46 (the señora, Luis, the señor of round A, the señora of round B come up to the counter; the things they choose from are set out by `par`). `sale` {quien}: a served customer goes out (after each sale, 45 to 47).
+- `gesto` {quien, que}: a small move of one person: `no` (shakes the head, looking from the window to the tag), `mano` with `a` (don Pepe's hand on a thing), `mira` with `a` (looks at or into something: the frog into his jar, don Pepe at the paper holder and the cup, at the jar's lines), `senala` with `a` (points: don Pepe at the paper, Luis at the children), `nudillos` (don Pepe pulls the holder close and cracks his knuckles), `saluda` (waves), `empaca` (don Pepe packs a bag and holds a tag up to his glasses, its blank back to us), `bolsa` (Luis slips the plate into his own bag), `sale_taza` (the frog carries the cup out) (45 to 47).
+- `cuenta47` {ok}: in a miss, don Pepe counts the wrong change into her hand, she counts it herself and shakes her head (47: 5, 6).
+- `frasco` {n}: the jar's level: 0 at the start, 1 just under the first line after the opening, 2 at the first line, 3 at the second. `muestra47`: don Pepe lifts the jar to show its level against the lines (47: 7).
+- Values: `ver` 1 the tag faces us, 0 it faces don Pepe; `clip` {quita: 1, a} a cliente (the register asked too much) or gaveta (too little); `par` a, b the numerals on cosa_a and cosa_b, k taza, olla, plato or vaso; `papel` 5 at the start, 4 after the first pot; `regalo46` n the sheets left; `ninos47` que ventana, dos, entran, salen; numerals are strings. In a game round the other key is the price plus or minus one (45: within 10 to 14; 47: seventeen with eighteen, eighteen with seventeen or nineteen). The ball leaves the window with `{"set": {"vitrina": 0}}`.
