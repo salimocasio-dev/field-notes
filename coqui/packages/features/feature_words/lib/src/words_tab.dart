@@ -222,12 +222,13 @@ class _WordsTabState extends State<WordsTab> {
           Block(
             top: CoquiMetrics.s24,
             bottom: CoquiMetrics.s16,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
+            // the counts at the right end of the heading's line, or under it when both do not fit
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.end,
+              spacing: CoquiMetrics.s8,
               children: [
-                Expanded(child: Text(g.name, style: CoquiText.h2)),
-                const SizedBox(width: CoquiMetrics.s8),
+                Text(g.name, style: CoquiText.h2),
                 Text(_placeLine(g, v), style: CoquiText.smallMuted),
               ],
             ),

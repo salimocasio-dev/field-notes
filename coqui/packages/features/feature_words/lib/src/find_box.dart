@@ -18,6 +18,7 @@ class FindBox extends StatelessWidget {
         valueListenable: controller,
         builder: (context, v, _) => TextField(
           controller: controller,
+          autofocus: true,
           style: fieldText,
           cursorColor: CoquiColors.ink,
           textInputAction: TextInputAction.search,
