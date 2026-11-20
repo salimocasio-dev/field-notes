@@ -14,11 +14,13 @@ of every file under historia/cuentos/ once, and a push of this file starts that 
       "clips": { "w_<slug>": { "who": "narr", "text": "<Text>" }, ... } }
 
 THE WORDS are the tracked words of make_repaso.py (its load() and build_words(): the focus_words and back_again words of the map
-stories, in course order; 156 today). A word gets a clip when no clip of any other file of historia/cuentos/ has the word as its whole
-text. "Whole text" is make_repaso.py's own reading, toks(): lower case, signs taken out, accents kept. So "¡Hola!" and "Hola." are the
-word hola, "Hasta mañana" is hasta mañana, and "Abuela dice: ¡Hola!" is not. An accent counts: a clip "Tú." gives tú a clip of its
-own already and tu none. (23 words have one today.) This file's own clips are never read: they would make every word "already said"
-the second time the tool runs.
+stories, in course order; 156 today). A word gets a clip when no clip of any other file the course names (its stories, picture stories,
+routines and review sets) has the word as its whole text. "Whole text" is make_repaso.py's own reading, toks(): lower case, signs taken
+out, accents kept. So "¡Hola!" and "Hola." are the word hola, "Hasta mañana" is hasta mañana, and "Abuela dice: ¡Hola!" is not. An accent
+counts: a clip "Tú." gives tú a clip of its own already and tu none. (23 words have one today.) This file's own clips are never read: they
+would make every word "already said" the second time the tool runs. Nor are the STAGED files: a file of historia/cuentos/ that the course
+does not name and that is not this one (another session pushed it before the course lists it) is not read at all, so a word that has a clip
+of its own there still gets one here, and an id there is no clash (the data check of real_tree_test.dart reports a clash with a staged file).
 
 THE ID of a clip is "w_" and the word's slug: lower case, accents folded (make_repaso.fold: ñ and ü too), every run of other
 characters one "_", the ends trimmed ("¿cómo estás?" is w_como_estas). When two tracked words have the same slug (tu and tú, esta and
@@ -111,8 +113,8 @@ def text_of(word):
 
 
 def make_doc(words, existing):
-    """The file, as a dict. words: the tracked words in course order. existing: (clip id, text) of every clip of every other file of
-    historia/cuentos/. A Fault when an id of the new clips is one of an existing clip."""
+    """The file, as a dict. words: the tracked words in course order. existing: (clip id, text) of every clip of every other file the course
+    names (existing_clips). A Fault when an id of the new clips is one of an existing clip."""
     whole = {tuple(mr.toks(text)) for _, text in existing}
     taken = {cid for cid, _ in existing}
     ids = clip_ids(words)
@@ -138,10 +140,13 @@ def tracked_words(root):
 
 
 def existing_clips(root):
-    """(clip id, text) of every clip of every file of historia/cuentos/ except this tool's own file."""
+    """(clip id, text) of every clip of every file the course names (its stories, picture stories, routines and review sets). Not this
+    tool's own file, and not a STAGED file (any other file of historia/cuentos/: another session pushed it before the course lists it): a
+    staged file is not read, so a word that has a clip of its own there still gets one here, and an id there is no clash."""
+    named = mr.course_files(mr.read_json(Path(root) / "historia" / "datos" / "curso.json"))
     out = []
     for p in sorted((Path(root) / "historia" / "cuentos").glob("*.json")):
-        if p.name == OWN_FILE:
+        if p.name == OWN_FILE or p.stem not in named:
             continue
         for cid, clip in mr.read_json(p).get("clips", {}).items():
             out.append((cid, clip["text"]))

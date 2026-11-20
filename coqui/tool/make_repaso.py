@@ -9,9 +9,13 @@
     python3 coqui/tool/make_repaso.py --out <dir> --veredictos <veredictos> [--veredictos-par <veredictos-par>] --final <file>
 
 Reads the repo it sits in (or --repo): historia/datos/curso.json, historia/cuentos/*.json, historia/audio/ready.json,
-historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. A file of historia/cuentos/ whose `tipo` is "palabras"
-(palabras-solas.json: each tracked word said alone, made by make_palabras_solas.py) is not a story: it makes no candidate sentence and no
-page, and is read only for the clips of the words alone (solo_clips). Writes into <dir>:
+historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. A file of historia/cuentos/ is one of three kinds:
+  - named by the course (curso.json: a story, picture story or routine of a place, or a review set of `cual`): read as a story;
+  - the word list, palabras-solas.json (`tipo` "palabras": each tracked word said alone, made by make_palabras_solas.py): not a story, it makes
+    no candidate sentence and no page, and is read only for the clips of the words alone (solo_clips);
+  - STAGED: any other file (a story another session has pushed before the course lists it). It is ignored entirely: never read, so it is not a
+    story, makes no candidate, gives no word alone, and its words are not "known". The output is the same, byte for byte, with or without it.
+Writes into <dir>:
 
     candidatos.json     the 156 words, every candidate sentence, the proposed wrong pictures, the false sentences for a
                         picture, the Parejas sets, and how each story was walked
@@ -129,7 +133,8 @@ NO_JUNTAS_PREFIX = 3                                   # rule (c) of no_juntas: 
 NO_JUNTAS_PREFIX_PHRASE = 4                            # ... and four when one of the two is a phrase (has a space)
 PAR_BUCKETS = ["1", "2", "3-4", "5-9", "10+"]
 EXPECTED_WORDS = 156
-PALABRAS_TIPO = "palabras"                   # the `tipo` of historia/cuentos/palabras-solas.json: a file of single words, not a story
+PALABRAS_FILE = "palabras-solas"             # the one file of historia/cuentos/ that is a word list, not a story, and that the course does not name
+PALABRAS_TIPO = "palabras"                   # its `tipo`: a file of single words, not a story
 ENGINE_ALLRIGHT = {"lost": 0, "wet": 0}      # what the engine holds when every answer is right
 ENGINE_VARS = ("ok", "x", "elegido")          # keys the engine itself assigns in decide / elige
 FONT_CANDIDATES = ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
@@ -688,6 +693,17 @@ class Data:
     pass
 
 
+def course_files(curso):
+    """{name} of the files of historia/cuentos/ the course names (curso.json): the stories, picture stories (`dibujos`) and routines (`haz`)
+    of its places, the ids of its `cuentos`, and its review sets (`cual`). A file of that folder that is neither one of these nor the word
+    list palabras-solas.json is STAGED: the tool does not read it."""
+    names = set(curso.get("cuentos", {})) | set(curso.get("cual", []))
+    for l in curso["lugares"]:
+        for key in ("cuentos", "dibujos", "haz"):
+            names.update(l.get(key, []))
+    return names
+
+
 def load(root):
     root = Path(root)
     H = root / "historia"
@@ -698,13 +714,18 @@ def load(root):
     clips = D.ready["clips"]
     D.audio = set(clips.keys()) if isinstance(clips, dict) else set(clips)
     D.story = {}
-    D.palabras = OrderedDict()      # clip id -> clip of the files whose `tipo` is "palabras" (each tracked word alone): not stories
+    D.palabras = OrderedDict()      # clip id -> clip of palabras-solas.json (each tracked word alone): not stories
+    named = course_files(D.curso)
     for p in sorted((H / "cuentos").glob("*.json")):
-        d = read_json(p)
-        if d.get("tipo") == PALABRAS_TIPO:
+        if p.stem == PALABRAS_FILE:
+            d = read_json(p)
+            if d.get("tipo") != PALABRAS_TIPO:
+                raise SystemExit("STOP: %s is the word list, so its `tipo` must be %r, not %r" % (p.name, PALABRAS_TIPO, d.get("tipo")))
             D.palabras.update(d.get("clips", {}))
-            continue
-        D.story[d["id"]] = d
+        elif p.stem in named:
+            d = read_json(p)
+            D.story[d["id"]] = d
+        # any other file is STAGED (another session pushed it before the course lists it): not read, not a story, nothing of it is used
     D.map, D.place_of, D.dib, D.place_order = [], {}, [], []
     for l in D.curso["lugares"]:
         D.place_order.append(l["id"])
