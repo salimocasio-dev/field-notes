@@ -4,7 +4,7 @@ Place 4, El colmado. Scene 4 of 4 (scene id `caja`). Stories 45 to 47. He has fi
 
 Scene words (page 02): the numbers 11 to 20 (once, doce, trece, catorce, quince, dieciséis, diecisiete, dieciocho, diecinueve, veinte), dólar, chavos, ¿cuánto es?, caro, barato, paga, cambio.
 
-The picture: the till end of don Pepe's counter. One view, `wide`: a big old cash register with a little window on top that shows the amount in numerals, a bell, a drawer of dollar bills and coins; the counter running left from it; don Pepe behind it; customers in front; the shop window at the left edge with the street beyond. The frog sits on the register's side shelf, where two big keys stand out: his two answers. A key shows a numeral.
+The picture: the till end of don Pepe's counter, which is its left end, by the street door. One view, `wide`: a big old cash register with a little window on top that shows the amount in numerals, a bell, a drawer of dollar bills and coins; the counter running right from it; don Pepe behind it; customers in front; on the left wall the shop window, with a sill inside where the ball stands and the street beyond, and the street door. The frog sits on the register's side shelf, where two big keys stand out: his two answers. A key shows a numeral.
 
 Numerals are on screen in this scene: on price tags, on the keys, in the register's window, on a twenty-dollar bill. They are not words, and he has to match the word he hears to them. In the game a price tag always faces don Pepe, who reads it out; the frog cannot see it until after his answer.
 

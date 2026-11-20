@@ -4,7 +4,7 @@ Place 4, El colmado. Scene 2 of 4 (scene id `estantes`). Stories 39 to 41. He ha
 
 Scene words (page 02): cuatro, cinco, seis, siete, ocho, nueve, diez, lata, botella, caja, ¿cuántos?, otro.
 
-The picture: the shelves at the back of don Pepe's shop. One view, `wide`: three long shelves on the wall; a wooden ladder against them, with don Pepe on it when he works; the floor in front, where the delivery stands (crates and boxes); the shop window at the left, with a low table in it for a display; the street door at the right. The frog stands on a crate on the floor.
+The picture: the shelves at the back of don Pepe's shop, further along the wall than his counter. One view, `wide`: a run of three long shelves on the wall; a wooden ladder against them, with don Pepe on it when he works; open floor in front, where the delivery stands (crates and boxes); a low table with a cloth at the left, for a display; a bunch of plantains hanging on the wall. The street door is out of the picture at the left: whoever comes in walks in from the left edge, and whoever waits stands there. The frog stands on a crate on the floor.
 
 No numeral is ever on screen in this scene: counts are things to be counted. Answer bubbles for numbers speak their word and show nothing but a mouth.
 
@@ -14,12 +14,12 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 ## Story 39: Latas y botellas
 
-- **Goal he can see:** the middle shelf is bare, with six places marked by rings of dust: three small ones and three large ones. Outside the shop window the señora and the señor stand looking in at it, waiting. On the floor: the delivery, a big cardboard box with three cans and three bottles in it.
+- **Goal he can see:** the middle shelf is bare, with six places marked by rings of dust: three small ones and three large ones. At the left edge the señora and the señor stand looking at it, waiting. On the floor: the delivery, a big cardboard box with three cans and three bottles in it.
 - **At stake:** the six things for the shelf. Don Pepe, up the ladder without his glasses, catches by ear: his hands are set for what he asked for, and they look the same either way. Tossed the other thing, he fumbles: a bottle breaks on the floor, a can rolls out of the door. Its place on the shelf stays bare, and at the end somebody goes without.
 - **New words:** lata, botella, caja, ¿cuántos? (heard as ¿cuántas?).
 - **Back again:** uno, dos, tres, hay, dame, tira, coge, aquí, colmado, necesito, aquí tiene, buenos días.
 
-**Start:** morning. Don Pepe drags the big cardboard box in at the door; Luis and the frog beside it. The señora and the señor at the window.
+**Start:** morning. Don Pepe drags the big cardboard box in at the door; Luis and the frog beside it. The señora and the señor at the left edge.
 
 **The opening** (big sign)
 
@@ -57,12 +57,12 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 ## Story 40: Siete latas
 
-- **Goal he can see:** on the low table in the window, don Pepe's drawing pinned to the wall: a pyramid of cans, four rows, with a little flag on top. On the floor, a crate full of cans.
+- **Goal he can see:** the low table, and don Pepe's drawing pinned to the wall over it: a pyramid of cans, four rows, with a little flag on top. On the floor, a crate full of cans.
 - **At stake:** the cans. Each row is carried to the window in a net: a bunch of cans, which have to be counted. A net with the wrong number does not make its row: don Pepe sends it back, and on the way two cans fall out of it and roll out of the door. What is left in the crate at the end makes the top.
 - **New words:** cuatro, cinco, seis, siete.
 - **Back again:** uno, dos, tres, lata, ¿cuántas?, hay, dame, más, mucho, mira, otra vez, aquí.
 
-**Start:** don Pepe at the window table; Luis and the frog at the crate of cans.
+**Start:** don Pepe at the low table; Luis and the frog at the crate of cans.
 
 **The opening** (big sign)
 

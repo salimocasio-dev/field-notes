@@ -4,7 +4,7 @@ Place 4, El colmado. Scene 3 of 4 (scene id `frutas`). Stories 42 to 44. He has 
 
 Scene words (page 02): tomate, cebolla, papa, plátano, aguacate, piña, limón, libra, medio, fresco, bueno, malo.
 
-The picture: don Pepe's fruit and vegetable stand, outside his shop. One view, `wide`: under the awning a slanted stand with seven bins (tomates, cebollas, papas, plátanos, aguacates, piñas, limones: each told from the others by shape and colour); a ledge along the front of the stand; a scale hanging from the awning, its round dial with two marks only, half way and full (no numerals); a hand of guineos hanging beside it; at the right, a post with a goat tied to it on a short rope: it reaches the low crate beside the stand and no further. Don Pepe stands behind the stand, abuela in front with her basket, the frog on the ledge.
+The picture: don Pepe's fruit and vegetable stand, outside his shop. One view, `wide`: under the awning a slanted stand with seven bins (tomates, cebollas, papas, plátanos, aguacates, piñas, limones: each told from the others by shape and colour); a ledge along the front of the stand; a scale hanging from a pole at the stand's left end, its round dial with two marks only, half way and full (no numerals), a pan under it; a hand of guineos hanging from the awning; at the right, a post with a goat tied to it on a short rope: it reaches the low crate beside the stand and no further. Don Pepe stands behind the stand, abuela in front with her basket, the frog on the ledge.
 
 The goat is never named in a line that decides ("la cabra" is heard). It eats whatever lands on the low crate.
 
@@ -97,23 +97,23 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 ## Story 44: Una libra
 
-- **Goal he can see:** don Pepe's truck has come: two crates fresh from the farm stand on the ledge, shining, with drops of water and green leaves: tomatoes and onions, a pound in each. Beside each stands yesterday's crate of the same thing: dull, wrinkled, a fly. Abuela's list is on the card from the first frame: tomatoes and onions, each with the dial at its full mark.
+- **Goal he can see:** don Pepe's hand cart has come from the farm and stands by the stand, loaded with crates: two crates fresh from it stand on the ledge, shining, with drops of water and green leaves: tomatoes and onions, a pound in each. Beside each stands yesterday's crate of the same thing: dull, wrinkled, a fly. Abuela's list is on the card from the first frame: tomatoes and onions, each with the dial at its full mark.
 - **At stake:** the fresh ones. A wrong move sends half of a fresh crate onto the low crate, where the goat eats it: abuela gets half a pound.
 - **New words:** libra, medio (heard as media libra), fresco.
 - **Back again:** tomate, cebolla, limón, malo, necesito, para, sopa (heard), cabra (heard), buenos días, compra, gracias, tengo hambre.
 
-**Start:** the truck at the left edge; don Pepe lifts the last fresh crate onto the ledge. Abuela with her basket and her list. The frog on the ledge.
+**Start:** the hand cart in front of the stand's left end; don Pepe lifts the last fresh crate off it onto the ledge. Abuela with her basket and her list. The frog on the ledge.
 
 **The opening** (big sign)
 
 1. The fresh crates twinkle. NARR: "Don Pepe dice: ¡Buenos días! ¡Mira! ¡Tomates frescos! ¡Cebollas frescas!" Yesterday's crate of tomatoes; a fly. NARR: "Y estos tomates están malos." Ask (signed, the fresh tomatoes): "¿Dónde están los tomates frescos?" He touches them: they shine.
-2. NARR: "Abuela dice: ¿Tiene limones frescos?" Don Pepe lifts a small fresh crate of limones off the truck, cuts one and gives the frog a slice; the frog's face puckers. NARR: "Don Pepe dice: Sí. Toma, Coquí. Un limón fresco." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, don Pepe!"
+2. NARR: "Abuela dice: ¿Tiene limones frescos?" Don Pepe lifts a small fresh crate of limones off the cart, cuts one and gives the frog a slice; the frog's face puckers. NARR: "Don Pepe dice: Sí. Toma, Coquí. Un limón fresco." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, don Pepe!"
 3. NARR: "Abuela dice: Media libra, por favor." Don Pepe rolls four limones onto the scale; the needle goes to the half mark; he lays a finger on it. NARR: "Don Pepe dice: Media libra de limones." Then he lays his finger on the full mark. NARR: "Don Pepe dice: Y esto es una libra." The limones go into abuela's basket. NARR: "Abuela compra media libra de limones."
 4. Abuela holds up her list. NARR: "Abuela dice: Necesito una libra de tomates y una libra de cebollas. Para la sopa."
 
 **The turn**
 
-5. Don Pepe climbs into his truck to move it. NARR: "Don Pepe dice: Coquí, ¡ojo con la cabra!" **(ojo con: heard; the picture carries it)** The goat pulls at its rope and looks at the crates. Abuela looks into her purse. The card shows two places. The signs go.
+5. Don Pepe takes the cart by its handles and wheels it off round the corner. NARR: "Don Pepe dice: Coquí, ¡ojo con la cabra!" **(ojo con: heard; the picture carries it)** The goat pulls at its rope and looks at the crates. Abuela looks into her purse. The card shows two places. The signs go.
 
 **The game.** Round A is the tomatoes, round B the onions. Each round the two crates of that thing stand side by side on the ledge, the fresh one and yesterday's (which side is drawn). One of two lines is said, drawn afresh each round. He touches the crate the line is about.
 
@@ -153,10 +153,10 @@ Left as written: the goat always gets the bad fruit, so its last picture does no
 
 The set `frutas`:
 - View: `wide` (zoom 1).
-- States: `camion` (the truck at the left edge: there or not).
+- States: `carro` (the hand cart in front of the stand's left end: there or not); `hora`; `puerta`. The scale's needle (rest, half, full) is a sprite over the dial.
 - In the set: the shop wall and door behind; the awning; the slanted stand with seven bins; the ledge; the hanging scale with its dial (needle: rest, half, full); the hand of guineos; the low crate; the post. The goat, don Pepe, abuela, the frog and everything that moves are sprites.
 - Things he can touch: tomates, cebollas, papas, platanos, aguacates, pinas, limones (the bins); fruta_a, fruta_b (the two abuela holds, a big one and a small one); cajon_a, cajon_b (two crates on the ledge); canasta, pesa (the scale), guineos, cabra, pepe, abuela, coqui.
-- Spots: repisa (the ledge, three places), delante (abuela), junto_cabra (abuela beside the low crate), detras (don Pepe), puerta, camion.
+- Spots: repisa (the ledge, three places), delante (abuela), junto_cabra (abuela beside the low crate), detras (don Pepe), puerta, carro.
 - New sprites: the goat (standing, neck out, eating, chewing); each of the seven things whole, and the aguacate cut (green, black); fresh and yesterday's crates of tomatoes, onions and limones; flies; abuela's basket with three hollows, seen from the side and from above; paper bags; coins in a row.
 - Speaker keys: `pepe`, `abuela`, `senora`.
 
@@ -167,7 +167,7 @@ Acts (name: what it does; story and step):
 - `monedas` {n}: abuela's row of coins (42). `guineos` {n}: the ending, two, one or none (42: 8).
 - `corta` {k, bueno}: don Pepe cuts an aguacate: green or black inside (43: 2, 3). `prueba43`: he holds a slice out; the frog eats it (43: 2).
 - `huele` {k, grande}: abuela takes two of a kind, presses and smells each (43: 4, 6, 7). `pone43` {cual, ok}: the frog lays one in the next hollow; not ok: flies over it and its neighbour, and both go onto the low crate (43: 4, 6, 7). `canasta43`: the basket shown from above (43: 8).
-- `sale` / `vuelve` {quien}: don Pepe into the shop, or into his truck, and back (43: 4, 7; 44: 5, 8). `limon44`: he cuts a limón and gives the frog a slice; the frog's face puckers (44: 2). `vuelca44` {k}: yesterday's crate, dragged, knocks the fresh one over: half of it onto the low crate (44: 6, 7).
+- `sale` / `vuelve` {quien}: don Pepe into the shop, or away with his cart, and back (43: 4, 7; 44: 5, 8). `limon44`: he cuts a limón and gives the frog a slice; the frog's face puckers (44: 2). `vuelca44` {k}: yesterday's crate, dragged, knocks the fresh one over: half of it onto the low crate (44: 6, 7).
 - `cajones` {k, lado}: the fresh crate and yesterday's of one thing side by side (44: 6, 7). `pesa` {k, n}: things onto the scale; the needle to half or full; then into a bag in abuela's basket (44: 2, 6, 7, 8). `marca44` {que}: his hand on the full mark, on the half mark (44: 3).
 - `brilla`: a thing twinkles: the engine's own `{"set": {"twinkle": key}}` (the bins in 42: 2, 4; the piña in 43: 4; the fresh crates in 44: 1).
 - `piensa` {quien, k}: a thought over somebody: a pot of soup over abuela (42: 1), a guineo over the frog (42: 1).
@@ -179,5 +179,5 @@ Acts (name: what it does; story and step):
 - `ayer44` {k}: yesterday's crate of a thing twinkles; its fly circles (44: 1).
 - `empuja44` {cual}: the frog pushes a crate off the ledge onto the low crate (44: 6, 7; the goat's `caja` follows).
 - `bolsas44`: the scale shows each bag in turn (44: 8).
-- Values: `lista` hecho 0 lights, 1 ticks; `pesa` n 0.5 or 1; `marca44` que medio or libra; `cajones` lado a or b: the side of the fresh crate; `huele` grande: which of fruta_a, fruta_b is the big one (fruta_a); `sale` / `vuelve` take `a`: tienda or camion.
+- Values: `lista` hecho 0 lights, 1 ticks; `pesa` n 0.5 or 1; `marca44` que medio or libra; `cajones` lado a or b: the side of the fresh crate; `huele` grande: which of fruta_a, fruta_b is the big one (fruta_a); `sale` / `vuelve` take `a`: tienda or carro (he wheels the cart away, and comes back without it).
 - `final`: stars and a heart when nothing was lost.
