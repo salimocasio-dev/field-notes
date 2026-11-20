@@ -581,7 +581,17 @@ First, by the orchestrator: frames of stories 1 to 3 (all right, all wrong) from
 - Not fixed, for after his answer: the answer cards cover abuela's body when she stands in the doorway (the cards sit 46 px above the frog; the new doorway is lower). The fix is in the cards' placement (coqui_pixel `signs.dart`), not the scene.
 - Found on the way, for order 40: hop counts between frog spots the recorded stories do not use differ from the old ones (patio to puerta was 2 hops, is 1). To check: the hint hand may be drawn larger than the old one.
 
+**Salim's answer (Nov 20): "looks good to me."** The look of El frente stands for the other scenes; the scenes lane goes on with order 30a. He added: "Biblioteca and Palabras still need UX improvements"; they are as in the old app, and "it just has always needed improvement". That is new design work in feature_library and feature_words (the port is no longer a straight copy there); see "Order 27" below.
+
 **The scenes lane stops here.** No order 30a starts until he answers. A change he wants to the look is a change to page 11-pixel-engine, made with him, before any other scene. Feature lanes keep going.
+
+## Order 27. Biblioteca and Palabras: better to use (Opus, one per package)
+
+His words, Nov 20: both tabs "still need UX improvements"; they match the old app; they have always needed it. He named nothing in particular, so the designer finds what is wrong against 03-requirements, 09-ui-plan and 10-leer-y-repaso, fixes the worst of it inside the shared look, and a fresh reader compares before and after. What the data means, the Spanish, the scheduler and the book reader's rules do not change.
+
+**Done when:** before and after screens of every state; a fresh reader, shown both without being told which is which, picks the new one and says why; the package's tests and `check_app.mjs` pass; Salim gets the link with what changed, one line each.
+
+---
 
 ## Orders 30 to 39. The other scenes, one at a time
 
