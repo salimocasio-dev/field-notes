@@ -44,22 +44,23 @@ void main() {
     final frame = await pictures.frameOf(id);
     final scene = frame.scene;
     // the preview's own rule for moving a recorded W to the new places (a dev tool's, per scene)
-    Map<String, dynamic> moved(
-      Map<String, dynamic> w,
-      List<String>? acts,
-    ) => switch (scene) {
-      Frente f => previewRemapW(previewBaseW(f.fresh(const {}), w), f.sheet),
-      Balcon b => balconPreviewRemapW(
-        balconPreviewBaseW(b.fresh(const {}), w),
-        b.sheet,
-      ),
-      Sala s => salaPreviewRemapW(
-        salaPreviewBaseW(s.fresh(const {}), w),
-        s.sheet,
-        acts: acts,
-      ),
-      _ => throw StateError('no preview rule for $id'),
-    };
+    Map<String, dynamic> moved(Map<String, dynamic> w, List<String>? acts) =>
+        switch (scene) {
+          Frente f => previewRemapW(
+            previewBaseW(f.fresh(const {}), w),
+            f.sheet,
+          ),
+          Balcon b => balconPreviewRemapW(
+            balconPreviewBaseW(b.fresh(const {}), w),
+            b.sheet,
+          ),
+          Sala s => salaPreviewRemapW(
+            salaPreviewBaseW(s.fresh(const {}), w),
+            s.sheet,
+            acts: acts,
+          ),
+          _ => throw StateError('no preview rule for $id'),
+        };
     final rows = <String>[];
     var over = 0, max = 0.0, exact = 0;
     final cases = (jsonDecode(

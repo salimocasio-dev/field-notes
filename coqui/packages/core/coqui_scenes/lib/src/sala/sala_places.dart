@@ -47,7 +47,8 @@ class SalaPlaces {
   }
 
   /// A place of the old file that the floor rule keeps (or `moves` moves): the `code` entry of [line] whose old place
-  /// is `[x, y]` ("mueve / x, y [x,y]"), its `new`. A place the sheet does not name stops the scene (SheetError).
+  /// is `x, y` ("mueve / x, y [x,y]", or the old call "...(…,x,y)"), its `new`. A place the sheet does not name stops
+  /// the scene (SheetError).
   List<int> floor(int line, num x, num y) {
     final key = '[$x,$y]';
     for (final c in sheet.code) {
@@ -55,7 +56,7 @@ class SalaPlaces {
       if (c.line == line &&
           to is Map &&
           to['new'] is List &&
-          (c.old.endsWith(key) || c.old.contains('$key ') || c.old == key)) {
+          (c.old.endsWith(key) || c.old.contains(',$x,$y)'))) {
         return [for (final v in to['new'] as List) (v as num).toInt()];
       }
     }
