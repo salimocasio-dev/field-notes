@@ -609,6 +609,19 @@ In this order: 30 balcon, 31 sala, 32 patio, 33 camino, 34 campo, 35 lago, 36 ba
 
 **Then (orchestrator):** frames of each of the scene's stories read by a fresh reader with no sound and no words. After each place's last scene (32, 36, 39): the link for that place to Salim, the seven steps first.
 
+### Order 30 (balcon), step a. **Result (Nov 20): done, merged.**
+
+Designed by Opus agents in four rounds; the orchestrator looked at each round's pictures; eight fresh readers saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `balcon-set.html`, `balcon-sheet-make.js` (writes `balcon-sheet.json` and checks it), `balcon-preview.html`; `set-kit.js` gained `turnedBox`, `drum`, `faceBase` (El frente's pictures are byte-identical).
+- In the set: the house wall, door, window with its flower box, a tiled porch on a stone base with a step and path, a short roof over the back of the porch (no posts), the big cane chair with a cushion, the round table, the small yellow chair, bushes. In the sprite layer: abuela, the frog, the bird, glasses and jugs, the fan, bubbles and signs. State parameters: `door` shut or open, `win` shut or open (4 baked states; the stories reach 2). Views `wide`, `mesa`, `porche`, all zoom 1.
+- All 13 touch keys, 3 views, 11 frog places, 26 positions, 10 review pairs and 9 level pictures of the old scene are there. Hop counts for all 55 pairs of frog places are the old ones.
+- What a learner would notice against the old picture: the 30 degree view; no posts and no hanging plants (they would cover the door and window); a round table for the long low one; chairs turned to the camera; the table view no longer zooms.
+- What the rounds fixed, as rules for the next sets: every drink stands on the table top with plain wall behind it; a person who stands at furniture is drawn on clear floor in front of it, after it; a bird perches where the old picture had it (three other perches read as hovering); the whole door, and whoever stands in it, is inside the wide view with a margin; a strip of wall shows over door and window; an empty chair shows its seat; a path starts as wide as its step. "Behind the furniture" is a depth test on the set's own pixels, not a screen row (`sheet.front`).
+- Left as the old game has it: the glass beside abuela's head when she drinks; a glass set on the small chair's seat; a glass on the floor beside the frog when he carries it; the hint hand over the thing it points at; pair "toma" with the big bird.
+- Not solved: in combinations no story reaches, the frog's bubble can cover abuela's face (frog before the door with her in the doorway). The roof is 15% of the wide view.
+- Bake: 76 to 136 ms warm in headless Chrome, 145 to 162 ms the first time.
+
 ## Order 40. Every story against its recorded runs (orchestrator)
 
 Replay all of `ref/trazas/` with `tool/juega.dart`. Any run that differs is fixed in its lane by an order naming the story and the first step that differs.
