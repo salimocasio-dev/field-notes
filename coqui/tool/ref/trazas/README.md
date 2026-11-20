@@ -24,6 +24,7 @@ the worktree on 127.0.0.1 (a free port); nothing goes to the network. About a mi
 `curso.js` is read as it is (in a node `vm`): its places' `cuentos` (32 stories), `dibujos` (11 picture stories) and `haz` (8 routines) = 51.
 `historia/cuentos/` holds 62 files: those 51 and the 11 review sets of `CURSO.cual` (`cual-frente` ... `cual-nevera`), which the story page does not play.
 None is missing from the folder and none is in no list (checked on every run; `runs.json` `course`). Note: `cual.json` is a story (El parque), not a review set.
+Since these runs were recorded the folder has one more file, `palabras-solas` (a word list, `tipo` `palabras`, in no list by design: it is not a story and not a review set), so it now holds 63; `runs.json` `course` still says `folderFiles` 62 and `inFolderInNoList` `[]` as they were at the recording, and the next full run will say 63 and `["palabras-solas"]`.
 
 ## What is injected, and why
 
