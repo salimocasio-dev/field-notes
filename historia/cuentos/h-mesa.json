@@ -1,0 +1,460 @@
+{
+ "id": "h-mesa",
+ "title": "En la mesa",
+ "place": "La cocina",
+ "scene": "mesa",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui",
+  "luis": "p_n_luis",
+  "abuela": "abuela",
+  "mama": "esta_es_mama",
+  "papa": "n_papa",
+  "abuelo": "n_abuelo",
+  "bebe": "m_n_bebe",
+  "cocina": "m_n_cocina"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_platos": {
+   "who": "narr",
+   "text": "No, esos son los platos."
+  },
+  "hz_no_tazas": {
+   "who": "narr",
+   "text": "No, esas son las tazas."
+  },
+  "hz_no_mesa": {
+   "who": "narr",
+   "text": "No. Esa es la mesa."
+  },
+  "p_n_luis": {
+   "who": "narr",
+   "text": "Este es Luis."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "esta_es_mama": {
+   "who": "narr",
+   "text": "Esta es mamá."
+  },
+  "n_papa": {
+   "who": "narr",
+   "text": "Este es papá."
+  },
+  "n_abuelo": {
+   "who": "narr",
+   "text": "Este es abuelo."
+  },
+  "m_n_bebe": {
+   "who": "narr",
+   "text": "Es el bebé."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "wa01": {
+   "who": "narr",
+   "text": "¿Dónde están los platos?"
+  },
+  "wa02": {
+   "who": "narr",
+   "text": "Toca las tazas."
+  },
+  "c24_plato_para_abuelo": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un plato para abuelo."
+  },
+  "c24_taza_para_mama": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Una taza para mamá."
+  },
+  "c24_plato_para_papa": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Un plato para papá."
+  },
+  "wa06": {
+   "who": "narr",
+   "text": "¿Quién tiene una taza?"
+  },
+  "wa07": {
+   "who": "narr",
+   "text": "Toca al bebé y a papá."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio24"
+  },
+  {
+   "set": {
+    "sitio": {
+     "abuelo": 0,
+     "papa": 1,
+     "mama": 3
+    }
+   }
+  },
+  {
+   "act": "g",
+   "quien": "abuelo",
+   "vis": 1,
+   "x": 104,
+   "y": 150,
+   "sent": 1,
+   "dir": 1
+  },
+  {
+   "act": "g",
+   "quien": "papa",
+   "vis": 1,
+   "x": 128,
+   "y": 150,
+   "sent": 1,
+   "dir": 1
+  },
+  {
+   "act": "g",
+   "quien": "mama",
+   "vis": 1,
+   "x": 176,
+   "y": 150,
+   "sent": 1,
+   "dir": 1
+  },
+  {
+   "act": "g",
+   "quien": "abuela",
+   "x": 48,
+   "y": 168,
+   "dir": 1
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "platos",
+    "tazas",
+    "mesa"
+   ],
+   "pick": "platos",
+   "lead": [],
+   "line": "wa01",
+   "right": [
+    {
+     "act": "muestra",
+     "k": "plato"
+    },
+    {
+     "wait": 700
+    },
+    {
+     "act": "muestra",
+     "k": ""
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "platos",
+    "tazas",
+    "mesa"
+   ],
+   "pick": "tazas",
+   "lead": [],
+   "line": "wa02",
+   "right": [
+    {
+     "act": "muestra",
+     "k": "taza"
+    },
+    {
+     "wait": 700
+    },
+    {
+     "act": "muestra",
+     "k": ""
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "platos",
+    "tazas"
+   ],
+   "pick": "platos",
+   "lead": [],
+   "line": "c24_plato_para_abuelo",
+   "right": [
+    {
+     "act": "pon",
+     "k": "plato",
+     "a": "abuelo"
+    },
+    {
+     "act": "casa"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "platos",
+    "tazas"
+   ],
+   "pick": "tazas",
+   "lead": [],
+   "line": "c24_taza_para_mama",
+   "right": [
+    {
+     "act": "pon",
+     "k": "taza",
+     "a": "mama"
+    },
+    {
+     "act": "casa"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "platos",
+    "tazas"
+   ],
+   "pick": "platos",
+   "lead": [],
+   "line": "c24_plato_para_papa",
+   "right": [
+    {
+     "act": "pon",
+     "k": "plato",
+     "a": "papa"
+    },
+    {
+     "act": "casa"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "mama",
+    "abuelo",
+    "papa"
+   ],
+   "pick": "mama",
+   "lead": [],
+   "line": "wa06",
+   "right": [
+    {
+     "act": "pose",
+     "quien": "mama",
+     "que": "wave"
+    },
+    {
+     "wait": 1000
+    },
+    {
+     "act": "pose",
+     "quien": "mama",
+     "que": "idle"
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "bebe"
+   ],
+   "vale": [
+    "papa"
+   ],
+   "pick": "bebe",
+   "lead": [],
+   "line": "wa07",
+   "right": [
+    {
+     "if": "x=bebe",
+     "then": [
+      {
+       "act": "g",
+       "quien": "mama",
+       "bebe": "clap"
+      },
+      {
+       "wait": 1000
+      },
+      {
+       "act": "g",
+       "quien": "mama",
+       "bebe": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "pose",
+       "quien": "papa",
+       "que": "wave"
+      },
+      {
+       "wait": 1000
+      },
+      {
+       "act": "pose",
+       "quien": "papa",
+       "que": "idle"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "otro",
+   "cond": "x=bebe",
+   "then": "papa",
+   "else": "bebe"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "abuelo"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "wa07",
+   "right": [
+    {
+     "if": "otro=bebe",
+     "then": [
+      {
+       "act": "g",
+       "quien": "mama",
+       "bebe": "clap"
+      },
+      {
+       "wait": 1000
+      },
+      {
+       "act": "g",
+       "quien": "mama",
+       "bebe": 1
+      }
+     ],
+     "else": [
+      {
+       "act": "pose",
+       "quien": "papa",
+       "que": "wave"
+      },
+      {
+       "wait": 1000
+      },
+      {
+       "act": "pose",
+       "quien": "papa",
+       "que": "idle"
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "wa01",
+  "wa02",
+  "c24_plato_para_abuelo",
+  "c24_taza_para_mama",
+  "c24_plato_para_papa",
+  "wa06",
+  "wa07"
+ ]
+}

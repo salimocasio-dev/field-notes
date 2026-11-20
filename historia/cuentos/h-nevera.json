@@ -1,0 +1,572 @@
+{
+ "id": "h-nevera",
+ "title": "En la nevera",
+ "place": "La cocina",
+ "scene": "nevera",
+ "tipo": "haz",
+ "goal": "Escuchar. Nothing is scored.",
+ "stake": {
+  "thing": "none",
+  "steps": 9
+ },
+ "dots": 4,
+ "bien": "muy_bien",
+ "focus_words": [],
+ "back_again": [],
+ "also_heard": [],
+ "names": {
+  "coqui": "yo_coqui",
+  "abuela": "abuela",
+  "cocina": "m_n_cocina"
+ },
+ "clips": {
+  "muy_bien": {
+   "who": "narr",
+   "text": "¡Muy bien!"
+  },
+  "si_muy_bien": {
+   "who": "narr",
+   "text": "¡Sí! ¡Muy bien!"
+  },
+  "yo_coqui": {
+   "who": "tu",
+   "text": "¡Coquí!"
+  },
+  "hz_no_nevera": {
+   "who": "narr",
+   "text": "No, esa es la nevera."
+  },
+  "hz_no_red": {
+   "who": "narr",
+   "text": "No, esas son las chinas."
+  },
+  "hz_no_mant": {
+   "who": "narr",
+   "text": "No, esa es la mantequilla."
+  },
+  "hz_no_jarra": {
+   "who": "narr",
+   "text": "No, ese es el jugo."
+  },
+  "hz_no_v_verde": {
+   "who": "narr",
+   "text": "No, ese es el vaso verde."
+  },
+  "hz_no_v_amarillo": {
+   "who": "narr",
+   "text": "No, ese es el vaso amarillo."
+  },
+  "hz_no_v_rojo": {
+   "who": "narr",
+   "text": "No, ese es el vaso rojo."
+  },
+  "hz_no_v_azul": {
+   "who": "narr",
+   "text": "No, ese es el vaso azul."
+  },
+  "hz_no_v_rojo_l": {
+   "who": "narr",
+   "text": "No, ese vaso está lleno."
+  },
+  "abuela": {
+   "who": "narr",
+   "text": "Esta es abuela."
+  },
+  "m_n_cocina": {
+   "who": "narr",
+   "text": "Es la cocina."
+  },
+  "wc01": {
+   "who": "narr",
+   "text": "¿Dónde están las chinas?"
+  },
+  "wc02": {
+   "who": "narr",
+   "text": "Toca la mantequilla."
+  },
+  "wc03": {
+   "who": "narr",
+   "text": "Toca el vaso verde."
+  },
+  "wc04": {
+   "who": "narr",
+   "text": "¿Cuál es el vaso amarillo?"
+  },
+  "wc05": {
+   "who": "narr",
+   "text": "¿Cuál vaso está vacío?"
+  },
+  "wc06": {
+   "who": "narr",
+   "habla": "abuela",
+   "text": "Abuela dice: Coquí, ponle jugo al vaso vacío."
+  },
+  "wc07": {
+   "who": "narr",
+   "text": "Toca la nevera y el vaso verde."
+  }
+ },
+ "beats": [
+  {
+   "act": "inicio32"
+  },
+  {
+   "act": "g",
+   "quien": "luis",
+   "vis": 0
+  },
+  {
+   "act": "g",
+   "quien": "carmen",
+   "vis": 0
+  },
+  {
+   "act": "g",
+   "quien": "papa",
+   "vis": 0
+  },
+  {
+   "act": "g",
+   "quien": "abuelo",
+   "vis": 0
+  },
+  {
+   "act": "g",
+   "quien": "mama",
+   "vis": 0
+  },
+  {
+   "set": {
+    "cosas": [
+     {
+      "id": "red",
+      "k": "red",
+      "v": 4,
+      "x": 142,
+      "y": 122,
+      "z": 100
+     },
+     {
+      "id": "jarra",
+      "k": "jarra",
+      "v": 3,
+      "x": 156,
+      "y": 122,
+      "z": 100
+     },
+     {
+      "id": "v_rojo",
+      "k": "vaso",
+      "v": "rojo",
+      "x": 170,
+      "y": 122,
+      "z": 100,
+      "n": 1
+     },
+     {
+      "id": "v_verde",
+      "k": "vaso",
+      "v": "verde",
+      "x": 182,
+      "y": 122,
+      "z": 100,
+      "n": 1
+     },
+     {
+      "id": "v_amarillo",
+      "k": "vaso",
+      "v": "amarillo",
+      "x": 194,
+      "y": 122,
+      "z": 100,
+      "n": 0
+     },
+     {
+      "id": "v_azul",
+      "k": "vaso",
+      "v": "azul",
+      "x": 206,
+      "y": 122,
+      "z": 100,
+      "n": 0
+     },
+     {
+      "id": "mant",
+      "k": "mantequilla",
+      "v": 3,
+      "x": 178,
+      "y": 98,
+      "z": 90
+     }
+    ]
+   }
+  },
+  {
+   "wait": 500
+  },
+  {
+   "dots": 1
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "red",
+    "mant",
+    "jarra"
+   ],
+   "pick": "red",
+   "lead": [],
+   "line": "wc01",
+   "right": [
+    {
+     "set": {
+      "twinkle": "red"
+     }
+    },
+    {
+     "wait": 800
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "red",
+    "mant",
+    "jarra"
+   ],
+   "pick": "mant",
+   "lead": [],
+   "line": "wc02",
+   "right": [
+    {
+     "set": {
+      "twinkle": "mant"
+     }
+    },
+    {
+     "wait": 800
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 2
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "v_verde",
+    "v_amarillo",
+    "v_rojo",
+    "v_azul"
+   ],
+   "pick": "v_verde",
+   "lead": [],
+   "line": "wc03",
+   "right": [
+    {
+     "set": {
+      "twinkle": "v_verde"
+     }
+    },
+    {
+     "wait": 800
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ],
+   "lock": true
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "v_verde",
+    "v_amarillo",
+    "v_rojo",
+    "v_azul"
+   ],
+   "pick": "v_amarillo",
+   "lead": [],
+   "line": "wc04",
+   "right": [
+    {
+     "set": {
+      "twinkle": "v_amarillo"
+     }
+    },
+    {
+     "wait": 800
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ],
+   "lock": true
+  },
+  {
+   "dots": 3
+  },
+  {
+   "set": {
+    "repisa": [
+     {
+      "k": "vista",
+      "v": "rojo:1",
+      "x": 170,
+      "dy": -12
+     },
+     {
+      "k": "vista",
+      "v": "azul:0",
+      "x": 206,
+      "dy": -12
+     }
+    ]
+   }
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "v_azul",
+    "v_rojo_l"
+   ],
+   "pick": "v_azul",
+   "lead": [],
+   "line": "wc05",
+   "right": [
+    {
+     "set": {
+      "twinkle": "v_azul"
+     }
+    },
+    {
+     "wait": 800
+    },
+    {
+     "set": {
+      "twinkle": null
+     }
+    }
+   ],
+   "lock": true,
+   "alias": {
+    "v_rojo": "v_rojo_l"
+   }
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "options": [
+    "v_azul",
+    "v_rojo_l"
+   ],
+   "pick": "v_azul",
+   "lead": [],
+   "line": "wc06",
+   "right": [
+    {
+     "act": "vierte",
+     "a": "v_azul"
+    },
+    {
+     "set": {
+      "repisa": [
+       {
+        "k": "vista",
+        "v": "rojo:1",
+        "x": 170,
+        "dy": -12
+       },
+       {
+        "k": "vista",
+        "v": "azul:1",
+        "x": 206,
+        "dy": -12
+       }
+      ]
+     }
+    }
+   ],
+   "lock": true,
+   "alias": {
+    "v_rojo": "v_rojo_l"
+   }
+  },
+  {
+   "dots": 4
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "lock": true,
+   "options": [
+    "nevera"
+   ],
+   "vale": [
+    "v_verde"
+   ],
+   "pick": "nevera",
+   "lead": [],
+   "line": "wc07",
+   "right": [
+    {
+     "if": "x=nevera",
+     "then": [
+      {
+       "set": {
+        "nev": {
+         "abierta": 1,
+         "h": []
+        }
+       }
+      },
+      {
+       "wait": 900
+      },
+      {
+       "set": {
+        "nev": {
+         "abierta": 0,
+         "h": []
+        }
+       }
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "twinkle": "v_verde"
+       }
+      },
+      {
+       "wait": 800
+      },
+      {
+       "set": {
+        "twinkle": null
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "calc": "otro",
+   "cond": "x=nevera",
+   "then": "v_verde",
+   "else": "nevera"
+  },
+  {
+   "decide": "do",
+   "libre": true,
+   "bien": false,
+   "mudo": true,
+   "options": [
+    "$otro",
+    "v_amarillo"
+   ],
+   "pick": "$otro",
+   "lead": [],
+   "line": "wc07",
+   "right": [
+    {
+     "if": "otro=nevera",
+     "then": [
+      {
+       "set": {
+        "nev": {
+         "abierta": 1,
+         "h": []
+        }
+       }
+      },
+      {
+       "wait": 900
+      },
+      {
+       "set": {
+        "nev": {
+         "abierta": 0,
+         "h": []
+        }
+       }
+      }
+     ],
+     "else": [
+      {
+       "set": {
+        "twinkle": "v_verde"
+       }
+      },
+      {
+       "wait": 800
+      },
+      {
+       "set": {
+        "twinkle": null
+       }
+      }
+     ]
+    },
+    {
+     "wait": 300
+    },
+    {
+     "say": "muy_bien",
+     "gap": 300
+    },
+    {
+     "set": {
+      "heart": 1
+     }
+    },
+    {
+     "wait": 600
+    }
+   ]
+  }
+ ],
+ "final": [
+  {
+   "wait": 900
+  }
+ ],
+ "leer": [
+  "wc01",
+  "wc02",
+  "wc03",
+  "wc04",
+  "wc05",
+  "wc06",
+  "wc07"
+ ]
+}
