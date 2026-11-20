@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La caja: the till end of don Pepe's counter (place 4, scene 4), as a set on the Pixel Plays engine. A NEW scene.
+   The room is colmado-dentro.js (shared with mostrador and estantes); this file frames the counter's left end, where the register stands,
+   with the shop window and the street door on the left wall.
+   The state comes from the address; these become the builder's setKey:
+     hora = manana | tarde
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = {
+  hora: pick('hora', ['manana', 'tarde'], 'tarde'), atras: 'shut',
+  t: +(Q.get('t') || 0),
+};
+const ORIGIN = [18, -30];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="colmado-dentro.js"></script>
+<script>
+'use strict';
+const DARK = [34, 28, 38];                                           // outside the room: nothing
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = CD.floorAt(g.x, g.y, ix, iy, i);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+  }
+  groundZ.set(zb);
+  CD.build(SET);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  CD.light(SET);
+  skyFill(() => rgb(...DARK));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.CAJA = { SET, CD, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

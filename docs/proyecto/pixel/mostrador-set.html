@@ -8,6 +8,7 @@
      donde = dentro | calle       inside the shop, or its front from the street (calle: colmado-fuera.js, with the frutas set)
      hora  = manana | tarde       the hour: what shows through the street door, the light on the floor
      atras = shut | open          the back door
+     puerta = shut | open         the shop door, in calle
      nevera = 0 | 1               the little freezer on the counter (story 38)
      props = 0 | 1                stand-in goods on the shelves (for the readers' renders only; in the game they are sprites)
      t = wind time (0 for the reference); ox, oy = the origin
@@ -18,22 +19,40 @@ const SET = {
   donde: pick('donde', ['dentro', 'calle'], 'dentro'),
   hora: pick('hora', ['manana', 'tarde'], 'manana'),
   atras: pick('atras', ['shut', 'open'], 'shut'),
+  puerta: pick('puerta', ['shut', 'open'], 'shut'),
   nevera: Q.get('nevera') === '1',
   props: Q.get('props') === '1',
   t: +(Q.get('t') || 0),
 };
-window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || -8), originY: +(Q.get('oy') || -32), shadowX: .9, shadowY: -.1 };
+const ORIGIN = SET.donde === 'calle' ? [-38, -6] : [-8, -32];        // calle: the door and the sign in the middle, the stand at the right
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
 </script>
 <script src="pp-engine.js"></script>
 <script src="mapa.js"></script>
 <script src="set-kit.js"></script>
 <script src="colmado-dentro.js"></script>
+<script src="colmado-fuera.js"></script>
 <script>
 'use strict';
 const DARK = [34, 28, 38];                                           // outside the room: nothing
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
   tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  if (SET.donde === 'calle') {                                       // the shop front, from the street (story 36's first beat)
+    const HZ = 30, o = { hora: SET.hora, puerta: SET.puerta, muro: true, puesto: true };
+    for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+      const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = CF.groundAt(g.x, g.y, ix, iy, i, HZ);
+      if (!c) continue;
+      pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+    }
+    groundZ.set(zb);
+    CF.build(o);
+    flushShadows(); pendingShadows.length = 0;
+    bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+    skyFill(CF.sky(o, HZ));
+    bakedPix.set(pix); bakedZ.set(zb);
+    return;
+  }
   for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
     const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = CD.floorAt(g.x, g.y, ix, iy, i);
     if (!c) continue;

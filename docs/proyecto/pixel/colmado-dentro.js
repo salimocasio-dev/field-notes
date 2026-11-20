@@ -11,17 +11,21 @@
      props  true                    stand-in goods on the shelves (for the readers' renders; the game draws them as sprites)
      nevera true                    the little freezer on the counter (story 38)
      escalera true                  the ladder against the shelves (estantes)
-     caja   true                    the cash register at the right end of the counter (caja)
-     vitrina true                   the shop window in the left wall, with its low table (estantes, caja) */
+     caja   false                   no cash register (it stands at the counter's left end unless this is false)
+     vitrina false                  no shop window in the left wall (it is there unless this is false)
+     anillos true                   six rings of dust on the second run's middle shelf (story 39)
+     mesa   true                    the low display table in front of the second run of shelves (story 40) */
 const CD = (() => {
-  const RX1 = 9.6, RY1 = 9.2, WH = 3.3;                       // the room: floor to x, to y; wall height
+  const RX1 = 16.5, RY1 = 9.2, WH = 3.3;                       // the room: floor to x, to y; wall height
   const CX0 = 1.3, CX1 = 6.2, CY0 = 2.0, CY1 = 2.75, CH = 1.0;   // the counter
   const SX0 = 1.5, SX1 = 6.5, SD = .36, SXM = 5.5;                          // the shelves: along the back wall, their depth
   const SZ = [1.3, 1.95, 2.6];                                  // the planks' heights
   const BD0 = .15, BD1 = 1.25, DH = 2.55;                        // the back door (x on the back wall), beside the corner: don Pepe's way to the store room
   const PD0 = 3.6, PD1 = 5.0;                                   // the street door (y on the left wall)
-  const VW0 = 6.6, VW1 = 8.6, VZ0 = .9, VZ1 = 2.5;              // the shop window (y on the left wall)
+  const VW0 = 1.45, VW1 = 3.15, VZ0 = 1.0, VZ1 = 2.45;            // the shop window (y on the left wall), between the corner and the street door
+  const E2X0 = 7.3, E2X1 = 11.3;                                // the second run of shelves, further along the back wall, with open floor in front (estantes)
   const WALL = [244, 222, 150], DADO = [86, 170, 160], WOOD = [150, 98, 56], WOOD_L = [196, 148, 92], TOP = [224, 196, 150];
+  const MESA = [8.3, 3.7];                                      // the low display table (story 40)
   const SILLA = [6.7, 4.0];                                     // the waiting chair, in front of the counter's right end
   const TILE = [[236, 224, 200], [214, 190, 160], [176, 150, 122]];
   const GOODS = [                                              // k, shelf (0 low, 1 middle), x: where each stands (sheet: spots estante.<k>)
@@ -45,7 +49,7 @@ const CD = (() => {
       wallY(0, 0, RX1, 0, WH, WALL, [[BD0, BD1, 0, DH]]);
       for (let a = 0; a <= RX1; a += ST) { if (a > BD0 && a < BD1) continue; for (let z = 0; z <= .9; z += ST) plot(a, .01, z, shade(DADO, z > .84 ? 1.4 : 2.4, a, z)); }
       // the left wall, with the street door's hole (and the window's)
-      const holes = [[PD0, PD1, 0, DH]]; if (o.vitrina) holes.push([VW0, VW1, VZ0, VZ1]);
+      const holes = [[PD0, PD1, 0, DH]]; if (o.vitrina !== false) holes.push([VW0, VW1, VZ0, VZ1]);
       for (let b = 0; b <= RY1; b += ST) {
         const hs = holes.filter(h => b > h[0] && b < h[1]);
         for (let z = 0; z <= WH; z += ST) {
@@ -81,17 +85,17 @@ const CD = (() => {
       const F = rampOf(WOOD_L);
       for (let z = 0; z <= DH + .12; z += ST * .5) for (let b = 0; b <= .12; b += ST * .5) { plot(.03, PD0 - .12 + b, z, F[1]); plot(.03, PD1 + b, z, F[1]); }
       for (let b = PD0 - .12; b <= PD1 + .12; b += ST * .5) for (let z = DH; z <= DH + .12; z += ST * .5) plot(.03, b, z, F[2]);
-      // the door leaf, open into the shop, flat against the wall towards the corner
+      // the door leaf, open into the shop, flat against the wall, away from the corner (the window is on the corner side)
       const Wd = rampOf(WOOD);
-      paneX(.06, PD0 - (PD1 - PD0) - .1, PD0 - .14, 0, DH, (b, z) => Wd[(z < .08 || z > DH - .08 || Math.abs(z - 1.25) < .05) ? 0 : 1]);
+      paneX(.06, PD1 + .14, PD1 + (PD1 - PD0) + .1, 0, DH, (b, z) => Wd[(z < .08 || z > DH - .08 || Math.abs(z - 1.25) < .05) ? 0 : 1]);
     });
-    if (o.vitrina) part('vitrina', () => {
+    if (o.vitrina !== false) part('vitrina', () => {
       const tarde = o.hora === 'tarde';
       paneX(-.5, VW0 - .5, VW1 + .1, 0, DH + .2, (b, z) => z < 1.0 ? rgb(...(tarde ? [214, 150, 110] : [186, 200, 196])) : rgb(...(tarde ? [252, 200, 120] : [162, 211, 255])));
       const F = rampOf(WOOD_L);
       for (let b = VW0 - .1; b <= VW1 + .1; b += ST * .5) for (const z of [VZ0 - .1, VZ1]) for (let h = 0; h <= .1; h += ST * .5) plot(.03, b, z + h, F[2]);
       for (let z = VZ0 - .1; z <= VZ1 + .1; z += ST * .5) for (const b of [VW0 - .1, VW1, (VW0 + VW1) / 2 - .04]) for (let h = 0; h <= .08; h += ST * .5) plot(.03, b + h, z, F[2]);
-      block(.05, VW0 + .1, 0, 1.05, VW1 - .1, VZ0 - .15, WOOD, TOP);   // the low table in the window
+      block(.03, VW0 + .05, VZ0 - .12, .3, VW1 - .05, VZ0 - .04, WOOD_L, TOP);   // the sill inside: a shelf for what is shown in the window
     });
   }
 
@@ -110,12 +114,12 @@ const CD = (() => {
       block(x0, y0, z0, x1, y1, z1, [236, 240, 244], [176, 214, 232]);
       for (let a = x0 + .05; a <= x1 - .05; a += ST * .6) for (let b = y0 + .05; b <= y1 - .05; b += ST * .6) plot(a, b, z1 + .004, ((a * 9 + b * 5) % 1 < .12) ? rgb(250, 252, 255) : rgb(168, 208, 228));
     });
-    if (o.caja) part('caja', () => {
-      const x0 = CX1 - 1.05, x1 = CX1 - .2, y0 = CY0 + .08, y1 = CY1 - .1, z0 = CH;
-      block(x0, y0, z0, x1, y1, z0 + .34, [120, 126, 134], [150, 156, 164]);             // the body
-      block(x0 + .1, y0, z0 + .34, x1 - .1, y0 + .28, z0 + .7, [104, 110, 120], [140, 146, 154]);   // the head with its window
-      paneY(y0 + .285, x0 + .16, x1 - .16, z0 + .42, z0 + .62, () => rgb(226, 240, 214));   // the amount window (numerals are sprites)
-      for (let r = 0; r < 3; r++) for (let k = 0; k < 4; k++) block(x0 + .1 + k * .17, y0 + .36 + r * .1, z0 + .34, x0 + .2 + k * .17, y0 + .42 + r * .1, z0 + .38, [236, 232, 220]);
+    if (o.caja !== false) part('caja', () => {
+      const x0 = CX0 + .1, x1 = CX0 + 1.15, y0 = CY0 + .06, y1 = CY1 - .06, z0 = CH;
+      block(x0, y0, z0, x1, y1, z0 + .4, [120, 126, 134], [150, 156, 164]);              // the body
+      block(x0 + .1, y0, z0 + .4, x1 - .1, y0 + .3, z0 + .86, [104, 110, 120], [140, 146, 154]);    // the head with its window
+      paneY(y0 + .305, x0 + .18, x1 - .18, z0 + .5, z0 + .78, () => rgb(226, 240, 214));   // the amount window (numerals are sprites)
+      for (let r = 0; r < 3; r++) for (let k = 0; k < 5; k++) block(x0 + .1 + k * .18, y0 + .38 + r * .1, z0 + .4, x0 + .21 + k * .18, y0 + .44 + r * .1, z0 + .44, [236, 232, 220]);
       block(x0 + .04, y1, z0 + .02, x1 - .04, y1 + .06, z0 + .2, [92, 98, 108]);          // the drawer's front
     });
   }
@@ -137,10 +141,25 @@ const CD = (() => {
     if (o.props) part('generos', () => {
       for (const [k, s, x] of GOODS) standIn(k, x, .19, SZ[s] + .06);
     });
+    part('estantes2', () => {
+      for (const x of [E2X0, E2X1]) block(x - .05, .02, 0, x + .05, SD, WH - .25, WOOD);
+      for (const z of SZ) block(E2X0, .02, z, E2X1, SD, z + .06, WOOD_L, TOP);
+      block(E2X0, .02, 0, E2X1, SD + .04, .5, WOOD);
+      const z0 = SZ[0] + .06;                                                     // the low shelf: sacks and boxes that never move
+      for (let k = 0; k < 8; k++) { const x = E2X0 + .4 + k * .47; block(x - .17, .06, z0, x + .17, .3, z0 + .3 + (k % 3) * .06, [[226, 150, 80], [240, 232, 210], [150, 110, 170], [110, 160, 200]][k % 4]); }
+      if (o.anillos) for (let k = 0; k < 6; k++) {                                // story 39: three small rings and three large, on the middle shelf
+        const x = E2X0 + .55 + k * .58, r = k < 3 ? .13 : .17, z = SZ[1] + .065;
+        for (let f = 0; f < 6.3; f += .12) plot(x + Math.cos(f) * r, .19 + Math.sin(f) * r * .8, z, rgb(150, 126, 96));
+      }
+    });
     if (o.escalera) part('escalera', () => {
-      const x = 3.3, Wd = [176, 132, 80];
-      for (const dx of [-.3, .3]) for (let t = 0; t <= 1; t += ST * .25) { const y = SD + .9 - t * .85, z = t * 2.9; for (let h = 0; h <= .08; h += ST * .5) plot(x + dx + h - .04, y, z, shade(Wd, 2.4, z, dx)); }
-      for (let r = 1; r <= 6; r++) { const t = r / 7, y = SD + .9 - t * .85, z = t * 2.9; for (let a = x - .3; a <= x + .3; a += ST * .5) for (let h = 0; h <= .06; h += ST * .5) plot(a, y, z + h, shade(Wd, 3, a, z)); }
+      const x = o.escaleraX || 9.3, Wd = [176, 132, 80];
+      for (const dx of [-.3, .3]) for (let t = 0; t <= 1; t += ST * .25) { const y = SD + 1.0 - t * .95, z = t * 3.0; for (let h = 0; h <= .08; h += ST * .5) plot(x + dx + h - .04, y, z, shade(Wd, 2.4, z, dx)); }
+      for (let r = 1; r <= 7; r++) { const t = r / 8, y = SD + 1.0 - t * .95, z = t * 3.0; for (let a = x - .3; a <= x + .3; a += ST * .5) for (let h = 0; h <= .06; h += ST * .5) plot(a, y, z + h, shade(Wd, 3, a, z)); }
+    });
+    if (o.mesa) part('mesa', () => {
+      const [x, y] = MESA;
+      block(x - .8, y - .45, 0, x + .8, y + .45, .5, WOOD, TOP);
     });
   }
   // a stand-in for one of the nine things that are bought: the size and the colours its sprite has
@@ -186,5 +205,5 @@ const CD = (() => {
     castShadow((CX0 + CX1) / 2, CY1 + .1, .5, .5, .5);
     for (let x = CX0 + .4; x <= CX1 - .2; x += .5) castShadow(x, CY1 - .1, .6, .45, .6);
   }
-  return { RX1, RY1, WH, CX0, CX1, CY0, CY1, CH, SX0, SX1, SD, SZ, BD0, BD1, DH, PD0, PD1, VW0, VW1, VZ0, VZ1, GOODS, SILLA, floorAt, build, light, standIn };
+  return { RX1, RY1, WH, CX0, CX1, CY0, CY1, CH, SX0, SX1, SD, SZ, BD0, BD1, DH, PD0, PD1, VW0, VW1, VZ0, VZ1, GOODS, SILLA, MESA, E2X0, E2X1, floorAt, build, light, standIn };
 })();

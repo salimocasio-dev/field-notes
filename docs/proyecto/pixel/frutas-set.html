@@ -1,0 +1,64 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* Las frutas: don Pepe's fruit and vegetable stand, outside his shop (place 4, scene 3), as a set on the Pixel Plays engine.
+   A NEW scene: there is no old picture. The shop front and the stand are colmado-fuera.js (shared with mostrador's donde=calle).
+   The state comes from the address; these become the builder's setKey:
+     hora   = manana | tarde      the sky
+     puerta = shut | open         the shop door
+     camion = 0 | 1               don Pepe's truck at the kerb (story 44)
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = {
+  hora: pick('hora', ['manana', 'tarde'], 'manana'),
+  puerta: pick('puerta', ['shut', 'open'], 'open'),
+  camion: Q.get('camion') === '1',
+  puesto: true, muro: false,
+  t: +(Q.get('t') || 0),
+};
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || -84), originY: +(Q.get('oy') || -40), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="colmado-fuera.js"></script>
+<script>
+'use strict';
+const HZ = 34;                                                       // the horizon, in screen rows: sky above
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = CF.groundAt(g.x, g.y, ix, iy, i, HZ);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS;
+  }
+  groundZ.set(zb);
+  CF.build(SET);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  skyFill(CF.sky(SET, HZ));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.FRUTAS = { SET, CF, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT); drawTufts(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
