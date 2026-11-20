@@ -30,16 +30,16 @@ const List<GameKind> playKinds = [
 ];
 
 /// The plain English line that says what to do in each game (menus may be English), page 15 "The session". A game that
-/// plays a sentence starts with "Listen."; Parejas, where he starts with a touch, and Dilo, where the mic is the
-/// answer, do not.
+/// plays a sentence starts with "Listen."; Parejas, where he starts with a touch, does not. The two picture games
+/// (¿Cuál? and ¿Dónde?) say the same line.
 String gameInstruction(GameKind k) => switch (k) {
   GameKind.cual => 'Listen. Touch the picture that fits.',
   GameKind.hear => 'Listen. Touch the word you heard.',
   GameKind.build =>
-    "Listen. Put the words in the order you hear. Two don't belong.",
+    "Listen. Touch the words in the order you hear. Two don't belong.",
   GameKind.match => 'Touch a sound, then its word.',
-  GameKind.where => 'Listen. Touch the picture it goes with.',
-  GameKind.say => 'Say it.',
+  GameKind.where => 'Listen. Touch the picture that fits.',
+  GameKind.say => 'Listen. Say what comes next.',
 };
 
 /// How many words a session asks at most (cual.js: CAP).
@@ -252,7 +252,7 @@ class QueueEntry {
   final bool again;
   final bool slot;
 
-  /// A return: the entry whose miss it answers (the bar's dash for that item goes red-orange until this is answered).
+  /// A return: the entry whose miss it answers (the bar has no dash of its own for a return, and it repaints none).
   final QueueEntry? origin;
 }
 

@@ -1,7 +1,9 @@
 // Repaso's games (page 15) as a fresh reader sees them: the real app, the mid-course seed, sessions played by touches,
 // every item at its moments (asked; answered, right after the touch; the answer shown with the sign, after a wrong
-// touch; revealed, after the right thing was touched; and for each game its own: Arma la frase's placed tiles,
-// Parejas' matched pairs, Dilo's listening and not-heard tries), saved as pictures in play order.
+// touch; revealed, after the right thing was touched; and for each game its own: Arma la frase's tiles on the line and
+// a wrong tile mid-way, Parejas' matched pairs, Dilo's listening and not-heard tries and a "Can't speak now"), saved as
+// pictures in play order. Each picture's entry has the bar as the session has it (`bar`: one of none, right, wrong,
+// skipped for each dash; `current`: the outlined one).
 //
 //   cd coqui/app && flutter test tool/repaso_shots_test.dart --dart-define=OUT=<dir>
 //
@@ -175,7 +177,15 @@ class _Shots {
     add('chip', find.byType(StreakChip));
     add('speaker', find.byType(RoundSpeaker));
     add('picture', find.byType(PictureChoice));
-    add('tile', find.byType(WordTile));
+    // the tiles of the game's own area; the tiles put on Arma la frase's line come and go, and the line itself does not
+    final tiles = [
+      for (final e in find.byType(WordTile).evaluate())
+        if (e.findAncestorWidgetOfExactType<TileTray>()?.line != true) e.widget,
+    ];
+    for (var i = 0; i < tiles.length; i++) {
+      out.add(('tile[$i]', tester.getRect(find.byWidget(tiles[i]))));
+    }
+    add('line', find.byKey(const ValueKey('answer-line')));
     add('sound', find.byType(SpeakerTile));
     add('mic', byTypeName('RepasoMic'));
     add('reveal', find.byKey(const ValueKey('reveal')));
@@ -232,7 +242,19 @@ class _Shots {
     });
     final file = '${n.toString().padLeft(3, '0')}-$moment.png';
     File('${dir.path}/$file').writeAsBytesSync(png!);
-    index.add({'n': n, 'file': file, 'moment': moment, ...what});
+    final session = what['screen'] == 'start'
+        ? null
+        : stateNamed(tester, 'RepasoScreen').session;
+    index.add({
+      'n': n,
+      'file': file,
+      'moment': moment,
+      ...what,
+      if (session != null) ...{
+        'bar': [for (final m in session.barMarks as List) (m as Enum).name],
+        'current': session.barCurrent,
+      },
+    });
   }
 }
 
@@ -272,13 +294,15 @@ void main() {
     // right and wrong, each game: how many of each have been played
     final done = <String, Set<bool>>{for (final g in _games.keys) g: {}};
     bool covered() => done.values.every((s) => s.length == 2);
+    // a speaking item ended by "Can't speak now", once, after both of its other ways have been taken
+    var skipTaken = false;
     var returned = 0;
     var wrongTotal = 0;
     var endsChecked = 0;
 
     for (
       var session = 1;
-      session <= 6 && (session == 1 || !covered());
+      session <= 6 && (session == 1 || !covered() || !skipTaken);
       session++
     ) {
       await app.go(const ReviewRoute());
@@ -300,6 +324,7 @@ void main() {
       var wrongItem = false;
       var micTries = 0;
       var missed = 0; // scored items answered wrong in this session
+      var skipNow = false; // this speaking item is ended by "Can't speak now"
       for (var t = 0; ; t += 100) {
         if (t > 30 * 60 * 1000) fail('session $session did not end');
         final ss = s();
@@ -388,16 +413,6 @@ void main() {
                 await app.tap(tile(k));
               }
 
-              if (!right) {
-                final k = choices.indexWhere((c) => c.label != order.first);
-                taps.add(label(k));
-                await app.tap(tile(k));
-                await shots.shoot('answered', {
-                  ...about,
-                  'right': false,
-                  'touched': taps.last,
-                });
-              }
               for (var n = 0; n < order.length; n++) {
                 await place(order[n]);
                 if (n == 1 && order.length > 2) {
@@ -406,20 +421,25 @@ void main() {
                     ...about,
                     'touched': taps.join(' / '),
                   });
-                  // a tile in the sentence goes back to the bank when touched, and is put in again
-                  final line = find.descendant(
-                    of: find.byType(TileTray).first,
-                    matching: find.byType(WordTile),
-                  );
-                  await app.tap(line.at(1));
-                  await app.settle(rounds: 2);
-                  await shots.shoot('returned', {
-                    ...about,
-                    'touched':
-                        '${taps.last} (touched in the sentence: back to the bank)',
-                  });
-                  taps.removeLast();
-                  await place(order[1]);
+                  if (!right) {
+                    // a tile that is not the next word: it stays in the bank, red-orange with the X, for about a
+                    // second; he goes on
+                    final k = choices.indexWhere(
+                      (c) => !(c.done as bool) && c.label != order[n + 1],
+                    );
+                    taps.add('${label(k)} (not the next word)');
+                    await app.tap(tile(k));
+                    await shots.shoot('answered', {
+                      ...about,
+                      'right': false,
+                      'touched': taps.last,
+                    });
+                    await app.advance(1100); // the flash clears
+                    await shots.shoot('cleared', {
+                      ...about,
+                      'touched': taps.last,
+                    });
+                  }
                 }
               }
               touched = taps.join(' / ');
@@ -457,12 +477,17 @@ void main() {
               touched = taps.join(', ');
             case 'SayItem':
               final forms = (item.line.forms as List).cast<String>();
-              app.speech.results.addAll(
-                right ? [forms.first] : ['no sé', 'eso no'],
-              );
-              touched = right
-                  ? 'the mic: "${forms.first}"'
-                  : 'the mic: "no sé", then "eso no"';
+              if (!skipTaken && done[kind]!.length == 2) {
+                skipNow = true;
+                touched = "Can't speak now";
+              } else {
+                app.speech.results.addAll(
+                  right ? [forms.first] : ['no sé', 'eso no'],
+                );
+                touched = right
+                    ? 'the mic: "${forms.first}"'
+                    : 'the mic: "no sé", then "eso no"';
+              }
           }
           if (kind != 'SayItem' && kind != 'BuildItem' && kind != 'MatchItem') {
             await app.advance(150);
@@ -497,6 +522,17 @@ void main() {
             await shots.shoot('shown', {...about, 'touched': touched});
           }
           await touchChoice(choices.indexWhere((c) => c.sign as bool));
+        } else if (ss.mic != null &&
+            (ss.mic as Enum).name == 'ready' &&
+            kind == 'SayItem' &&
+            skipNow) {
+          // "Can't speak now": the item is skipped (its dash is the light grey) and Dilo is off for the session
+          await app.tap(find.text("Can't speak now"));
+          skipNow = false;
+          skipTaken = true;
+          await app.settle(rounds: 3);
+          shots.baseline = null; // the next item is on screen
+          await shots.shoot('skipped', {...about, 'touched': touched});
         } else if (ss.mic != null &&
             (ss.mic as Enum).name == 'ready' &&
             kind == 'SayItem') {

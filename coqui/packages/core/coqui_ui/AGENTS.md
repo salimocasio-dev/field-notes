@@ -40,20 +40,23 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
 - Order 27, the parts of Repaso's games (`lib/src/game_tiles.dart`, `test/game_tiles_test.dart`): `WordTile` (a written
   word, with a speaker of its own when the word can be heard alone), `SpeakerTile`, `RoundSpeaker` (the round 64 px
   speaker of a game that plays a sentence, with a ring that pulses while it sounds), `TileTray` (its rows centred; a child that is not a tile, such as Arma la frase's check, is 8 px after the last tile
-  level with the row's middle, or alone on the row below), `StreakChip` ("N in a
+  level with the row's middle, or alone on the row below; with `line` it is the answer line of Arma la frase: tiles from the
+  left, `lineRows` rows high from the start whatever is on it (`TileTray.lineHeight`), a 1.5 px baseline under them), `StreakChip` ("N in a
   row" from three; with `reserve` its place of `StreakChip.reservedWidth` is kept when it does not show, and the pill
   shrinks to fit it), `TouchSign` (the sign for what to touch: Material's pointing hand, `touch_app`, as path data
   `CoquiIcons.touchApp`, white on a 44 px green disc, bouncing gently, still with reduced motion, taking no touch; it goes
-  over the middle of a picture, and at the right end of a word tile (`WordTile.sign`: inside it, vertically centred; the word
-  stays centred with 40 px clear of it on both sides, as for a speaker, which gives the sign its place while it shows),
-  never a chevron or arrow), `NumberBadge`, `TileLook` (with `empty`: the place of
+  inside a picture's bottom-right corner, `TouchSign.pictureInset` (12 px) from both edges, and at the right end of a word
+  tile (`WordTile.sign`: inside it, vertically centred; the word stays centred with 40 px clear of it on both sides, as for a
+  speaker, which gives the sign its place while it shows), never a chevron or arrow), `NumberBadge`, `TileLook` (with `empty`: the place of
   a tile that is not there, an outline of its size); the tokens `lessonTile`, `lessonTilePressed`, `lessonChip` and the
   styles `lessonTile`, `lessonHint`, `lessonChip` (not in v=39: chosen for the games). A tile's frame is drawn over its
   face (a foreground decoration), so a ring, a badge or the sign never changes its size. `CheckBadge` and `WrongBadge`
   (the round X in the red-orange, at the corner where a right answer has its check) are in `lesson_frame.dart` with
   `PictureChoice(cross:)`; a tile has `check`, `cross` and `number` (Parejas' pair, beside the check).
-  `LessonProgressDashes(missed:)` draws the dashes in the set red-orange (a Repaso item missed and not yet answered when
-  it came back). `Pressable` is exported. They are not in the gallery; feature_review's screenshots show them.
+  `LessonProgressDashes(marks:, current:)` is Repaso's bar: a dash for each item in the colour of its first answer
+  (`DashMark.right` green, `wrong` red-orange, `skipped` the lighter grey `CoquiColors.dotSkipped`, `none` the grey of not
+  reached), and a white outline round the `current` one, outside its box; without `marks` it is v=39's bar (`done`).
+  `PictureChoice(inside: true)` draws a picture's ring inside its box (a picture marked is the same size as one not). `Pressable` is exported. They are not in the gallery; feature_review's screenshots show them.
 
 ## The gallery
 

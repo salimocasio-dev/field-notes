@@ -4,19 +4,20 @@ import 'package:feature_review/src/ui/repaso_layout.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('I: the six instruction lines, word for word', () {
+  test('I: the six instruction lines, word for word; the two picture games say the same one', () {
     expect(
       {for (final k in GameKind.values) k: gameInstruction(k)},
       {
         GameKind.hear: 'Listen. Touch the word you heard.',
         GameKind.cual: 'Listen. Touch the picture that fits.',
         GameKind.build:
-            "Listen. Put the words in the order you hear. Two don't belong.",
+            "Listen. Touch the words in the order you hear. Two don't belong.",
         GameKind.match: 'Touch a sound, then its word.',
-        GameKind.where: 'Listen. Touch the picture it goes with.',
-        GameKind.say: 'Say it.',
+        GameKind.where: 'Listen. Touch the picture that fits.',
+        GameKind.say: 'Listen. Say what comes next.',
       },
     );
+    expect(gameInstruction(GameKind.where), gameInstruction(GameKind.cual));
   });
 
   test('M: the pictures are stacked at the largest whole scale at which all of them fit', () {

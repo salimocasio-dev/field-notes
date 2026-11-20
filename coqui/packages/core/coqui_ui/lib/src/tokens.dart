@@ -111,6 +111,10 @@ abstract final class CoquiColors {
   /// `.dot` a progress dash not yet reached. cual.html:20 (app.html `.lbbar` line 109)
   static const dotOff = Color(0xFF3A3A42);
 
+  /// A Repaso dash that was skipped (the speaking item the learner said he cannot do now): a neutral grey, lighter than
+  /// [dotOff] (not reached) and neither green nor red-orange. Not in v=39: chosen for the games.
+  static const dotSkipped = Color(0xFF74747E);
+
   /// `.ib:active` pressed icon button, `rgba(255,255,255,.1)`. cual.html:18
   static const iconPressed = Color(0x1AFFFFFF);
 

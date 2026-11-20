@@ -5,9 +5,9 @@
 /// Dumb, as every widget here: values and callbacks. They follow the lesson's look (page 09): calm, plain, the
 /// answer's rings as [PictureChoice] draws them (green right, red-orange wrong, white the one chosen), a right
 /// answer never in a colour that reads as wrong, a wrong one marked by a round badge with an X where a right one has
-/// its check, and the sign for what to touch big: over the middle of a picture, at the right end of a word tile
-/// (inside it, vertically centred) so that it never covers the word. Targets are 56 px high at least (48 is the
-/// floor), 8 px apart in a tray.
+/// its check, and the sign for what to touch big: inside a picture's bottom-right corner, at the right end of a word
+/// tile (inside it, vertically centred) so that it never covers the word or what the picture is about. Targets are 56
+/// px high at least (48 is the floor), 8 px apart in a tray.
 library;
 
 import 'dart:math' as math;
@@ -206,13 +206,17 @@ class NumberBadge extends StatelessWidget {
 }
 
 /// The sign for what to touch: Material's pointing hand (`touch_app`), white on a 44 px green disc, that bounces
-/// gently (still with reduced motion, or [still]). It goes over the middle of the picture whose answer is shown, and
-/// at the right end of a word tile ([WordTile.sign]: inside the tile, vertically centred, clear of the word), never on a
-/// border between two things; it takes no touch itself.
+/// gently (still with reduced motion, or [still]). It goes inside the bottom-right corner of the picture whose answer is
+/// shown, [pictureInset] from both its edges (so it never covers what the picture is about), and at the right end of a
+/// word tile ([WordTile.sign]: inside the tile, vertically centred, clear of the word), never on a border between two
+/// things; it takes no touch itself.
 class TouchSign extends StatefulWidget {
   const TouchSign({super.key, this.still = false});
 
   static const double size = 44;
+
+  /// How far the sign's disc stands from a picture's right and bottom edges.
+  static const double pictureInset = 12;
 
   /// How far up the bounce takes it.
   static const double bounce = 5;
@@ -470,18 +474,39 @@ class SpeakerTile extends StatelessWidget {
 /// Tiles laid out in rows that wrap, centred, 8 px apart across and 12 down (the answer's ring takes no room, the
 /// check badge and the sign stand out of their tile). What is not a tile (the check that ends a finished sentence)
 /// is a child like the others: 8 px from the one before it on its row, level with the row's middle, and on a row of
-/// its own when the row has no room for it. With [line], the tray is the place a sentence is put together: at least
-/// one tile high, with a 1.5 px line under it.
+/// its own when the row has no room for it. With [line], the tray is the place a sentence is put together: its tiles
+/// go one after another from the left, [lineRows] rows of them are always room for (the tray is that high from the
+/// start, empty or not, so nothing under it moves as tiles come), with a 1.5 px baseline under them.
 class TileTray extends StatelessWidget {
-  const TileTray({super.key, required this.children, this.line = false});
+  const TileTray({
+    super.key,
+    required this.children,
+    this.line = false,
+    this.lineRows = 1,
+    this.lineTileHeight = _tileHeight,
+  });
 
   final List<Widget> children;
   final bool line;
 
+  /// With [line]: how many rows of tiles the line is as high as, from the start.
+  final int lineRows;
+
+  /// With [line]: the height of one row of its tiles (56, or more at a larger text size).
+  final double lineTileHeight;
+
+  /// The height of a [line] that has room for [rows] rows of tiles of [tileHeight]: the rows, the 12 px between them,
+  /// 8 px above and under, and the baseline's 1.5 px.
+  static double lineHeight(int rows, {double tileHeight = _tileHeight}) =>
+      rows * tileHeight +
+      (rows - 1) * CoquiMetrics.s12 +
+      16 +
+      CoquiMetrics.borderButton;
+
   @override
   Widget build(BuildContext context) {
     final wrap = Wrap(
-      alignment: WrapAlignment.center,
+      alignment: line ? WrapAlignment.start : WrapAlignment.center,
       crossAxisAlignment: WrapCrossAlignment.center,
       spacing: CoquiMetrics.s8,
       runSpacing: CoquiMetrics.s12,
@@ -489,9 +514,11 @@ class TileTray extends StatelessWidget {
     );
     if (!line) return wrap;
     return Container(
-      constraints: const BoxConstraints(minHeight: _tileHeight + 16),
+      constraints: BoxConstraints(
+        minHeight: lineHeight(lineRows, tileHeight: lineTileHeight),
+      ),
       padding: const EdgeInsets.only(bottom: CoquiMetrics.s8, top: 8),
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.topLeft,
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(

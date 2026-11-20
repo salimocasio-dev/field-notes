@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
+import 'package:coqui_ui/coqui_ui.dart' show DashMark;
 import 'package:feature_review/src/logic/lesson_base.dart';
 import 'package:feature_review/src/logic/repaso_plan.dart';
 import 'package:feature_review/src/logic/repaso_session.dart';
@@ -222,10 +223,10 @@ void main() {
     expect(b.s.secondAnswers.single.ok, isTrue);
     expect(b.s.end!.summary, '9 of 10 words right the first time');
     expect(b.s.end!.groups.map((g) => g.title), [
-      'Got it the first time',
       'Coming back soon',
+      'Got it the first time',
     ]);
-    expect(b.s.end!.groups.last.rows.single.word, first.item!.word);
+    expect(b.s.end!.groups.first.rows.single.word, first.item!.word);
   });
 
   test('wrong in ¿Cuál? and ¿Qué oyes?: red-orange and an X on his, the sign alone on the right one, green and a check only once he touches it', () async {
@@ -416,32 +417,62 @@ void main() {
       expect(b.listener.listens.single.locale, 'es-US');
     });
 
-    test(
-      'heard wrong twice: nothing written, the line plays as the model',
-      () async {
-        final w = sayWord();
-        final b = await dilo(['algo', 'otra cosa']);
-        await b.play(until: () => b.s.canNext);
-        // what the app heard shows, not as right
-        expect(
-          (b.s.heard, b.s.heardRight, b.s.showText),
-          ('otra cosa', false, true),
-        );
-        expect(b.clips.plays.last['id'], w.say.first.clip);
-        await b.play();
-        expect(b.answersOf(Skill.mouth), isEmpty);
-        expect(b.listener.used, 2);
-      },
-    );
+    test('heard right: the check, what was heard, the line in the reveal and Next at once, with no wait between them; the dash is green', () async {
+      final w = sayWord();
+      final b = await dilo([w.say.first.forms.first]);
+      await b.play(until: () => b.s.mic == MicState.ready);
+      expect(b.s.barMarks.single, DashMark.none);
+      b.s.pressMic();
+      await b.vt.runUntil(() => b.s.heardRight);
+      await b.vt.settle();
+      expect((b.s.mic, b.s.heard), (MicState.ok, w.say.first.forms.first));
+      expect(
+        (b.s.showText, b.s.canNext),
+        (true, true),
+        reason: 'no pause between the check and Next',
+      );
+      expect(b.s.barMarks.single, DashMark.right);
+      await b.leave();
+    });
+
+    test('heard wrong twice: nothing written, the mic shows the X, the line plays as the model, the dash is red-orange', () async {
+      final w = sayWord();
+      final b = await dilo(['algo', 'otra cosa']);
+      await b.play(until: () => b.s.mic == MicState.ready);
+      b.s.pressMic();
+      await b.vt.runUntil(() => b.s.notHeard && b.s.mic == MicState.ready);
+      // a first try not heard right: the mic is ready again, with "Try again"; the item is not marked yet
+      expect((b.s.heard, b.s.heardRight), ('algo', false));
+      expect(b.s.barMarks.single, DashMark.none);
+      b.s.pressMic();
+      await b.vt.settle(); // the recogniser's answer comes on the next turn of the event loop
+      await b.vt.runUntil(() => b.s.mic == MicState.missed);
+      // the second: the mic shows the X, and the dash is red-orange
+      expect(b.s.barMarks.single, DashMark.wrong);
+      await b.vt.runUntil(() => b.s.canNext);
+      // what the app heard shows, not as right; the line, with the word lit, and Next; the mic keeps its X
+      expect(
+        (b.s.heard, b.s.heardRight, b.s.showText, b.s.mic),
+        ('otra cosa', false, true, MicState.missed),
+      );
+      expect(b.clips.plays.last['id'], w.say.first.clip);
+      await b.play();
+      expect(b.answersOf(Skill.mouth), isEmpty);
+      expect(b.listener.used, 2);
+      expect(b.s.barMarks.single, DashMark.wrong);
+    });
 
     test('"Can\'t speak now" ends it and turns Dilo off for the session; nothing written', () async {
       final b = await dilo([]);
       await b.play(until: () => b.s.mic == MicState.ready);
+      expect(b.s.barMarks.single, DashMark.none);
       b.s.cantSpeak();
       await b.play();
       expect(b.s.sayOff, isTrue);
       expect(b.answersOf(Skill.mouth), isEmpty);
       expect(b.listener.listens, isEmpty);
+      // skipped: neither green nor red-orange
+      expect(b.s.barMarks.single, DashMark.skipped);
     });
 
     test(
@@ -451,6 +482,7 @@ void main() {
         await b.play();
         expect(b.s.sayOff, isTrue);
         expect(b.answersOf(Skill.mouth), isEmpty);
+        expect(b.s.barMarks.single, DashMark.skipped);
       },
     );
 
@@ -555,14 +587,15 @@ void main() {
     expect(listed.toSet(), words.toSet());
     expect((end.right, end.of), (7, 10));
     expect(end.summary, '7 of 10 words right the first time');
+    // the missed words first, then the ones he got
     expect(
       [for (final g in end.groups) (g.title, g.sub)],
       [
-        ('Got it the first time', "You'll see these less often"),
         ('Coming back soon', "You'll see these again soon"),
+        ('Got it the first time', "You'll see these less often"),
       ],
     );
-    expect([for (final g in end.groups) g.rows.length], [7, 3]);
+    expect([for (final g in end.groups) g.rows.length], [3, 7]);
     // each row: the word, the sentence it was asked in, and its sound
     for (final g in end.groups) {
       for (final r in g.rows) {
@@ -580,66 +613,128 @@ void main() {
     expect(end.of, 10);
   });
 
-  test('F: the bar has one dash for each planned item, scored and play; a miss is red-orange until its return is answered, then green', () async {
+  test('F: the bar has one dash for each planned item; each takes the colour of its item\'s first answer at once and keeps it; a return has no dash and repaints nothing; the item on screen is the outlined one', () async {
     final b = Bench(seed: 3);
-    final planned = b.s.queue.length;
-    expect(planned, 13); // ten scored items and three play places
+    expect(b.s.queue.length, 13); // ten scored items and three play places
     expect(b.s.barSegments, 13);
-    // the first scored item is missed
+    expect(b.s.barMarks, everyElement(DashMark.none));
+    expect(b.s.barCurrent, isNull, reason: 'the start screen: no item yet');
+    // the first scored item: asked, nothing marked yet
     await b.reach(0);
-    expect(b.s.barLit, 0);
-    expect(b.s.barMissed, isEmpty);
+    expect(b.s.barCurrent, 0);
+    expect(b.s.barMarks, everyElement(DashMark.none));
+    // his first answer is wrong: red-orange at once, before the right one has even been touched
     final r = b.s.choices.indexWhere((c) => c.right);
     b.s.touch(r == 0 ? 1 : 0);
+    await b.vt.settle(); // no timer between the touch and the mark
+    expect(b.s.barMarks.first, DashMark.wrong);
+    expect(b.s.barMarks.skip(1), everyElement(DashMark.none));
     await b.vt.runUntil(() => b.s.choices.any((c) => c.sign));
     b.s.touch(b.s.choices.indexWhere((c) => c.sign));
     await b.vt.runUntil(() => b.s.canNext);
+    expect(
+      b.s.barMarks.first,
+      DashMark.wrong,
+      reason: 'touching the right one after it does not undo the miss',
+    );
     b.s.pressNext();
     await b.vt.runUntil(() => b.s.index == 1 && b.s.yourTurn);
-    // one item finished: its dash is red-orange (missed), not green
-    expect(b.s.barLit, 1);
-    expect(b.s.barMissed, {0});
+    expect(b.s.barCurrent, 1);
+    expect(b.s.barMarks.first, DashMark.wrong);
     expect(b.s.barSegments, 13);
-    // ... until the return, three items later, has been answered; the return adds no dash
+    // the return, three items later, is the item it answers again: its dash is the outlined one, and it has no dash of
+    // its own
     await b.play(
       until: () =>
           b.s.item == b.s.queue[b.s.queue.indexWhere((q) => q.again)].item &&
           b.s.yourTurn &&
           b.s.entry!.again,
     );
-    expect(b.s.barMissed, {0});
+    expect(b.s.barCurrent, 0);
     expect(b.s.barSegments, 13);
+    expect(b.s.barMarks.first, DashMark.wrong);
+    expect(
+      b.s.barMarks.skip(1).take(2),
+      everyElement(DashMark.right),
+      reason: 'the two answered right in between',
+    );
     final back = b.s.entry!;
-    final r2 = b.s.choices.indexWhere((c) => c.right);
-    b.s.touch(r2);
+    b.s.touch(b.s.choices.indexWhere((c) => c.right));
     await b.vt.runUntil(() => b.s.canNext);
-    expect(b.s.barMissed, {
-      0,
-    }, reason: 'answered, but the item is not over until Next');
+    expect(
+      b.s.barMarks.first,
+      DashMark.wrong,
+      reason: 'right on its return: it keeps the colour of its first answer',
+    );
     b.s.pressNext();
     await b.vt.runUntil(() => b.s.entry != back);
-    expect(b.s.barMissed, isEmpty);
+    expect(b.s.barMarks.first, DashMark.wrong);
     await b.leave();
-    // the whole session: every dash is green at the end, and the count never changed
+    // the whole session: the first wrong, the rest right; the count never changed, no dash is outlined at the end
     final c = Bench(seed: 3);
-    var seen = c.s.barSegments;
     await c.play(plan: (e, n) => n == 0 ? 'w' : 'r', limit: 4000);
-    expect(c.s.barSegments, seen);
-    expect(c.s.barLit, 13);
-    expect(c.s.barMissed, isEmpty);
+    expect(c.s.barSegments, 13);
+    expect(c.s.barMarks, [DashMark.wrong, ...List.filled(12, DashMark.right)]);
+    expect(c.s.barCurrent, isNull);
   });
 
-  test(
-    'F: a miss that has no return (more than five) stays red-orange to the end',
-    () async {
+  test('F: a miss that has no return (more than five) is red-orange to the end, like the others; the right items stay green', () async {
+    final b = Bench(seed: 3);
+    await b.play(plan: (e, n) => e.item!.scored && !e.again ? 'w' : 'r');
+    // five came back; the other five scored items did not
+    expect(b.s.played.where((q) => q.again), hasLength(5));
+    expect(b.s.barMarks.where((m) => m == DashMark.wrong), hasLength(10));
+    expect(b.s.barMarks.where((m) => m == DashMark.right), hasLength(3));
+    expect(b.s.barMarks.where((m) => m == DashMark.none), isEmpty);
+  });
+
+  test('F: every game marks its dash by its first answer: ¿Qué oyes? and ¿Dónde? by the first touch, Parejas by a wrong pair, Arma la frase by a wrong tile', () async {
+    for (final (kind, wrongFirst) in [
+      (GameKind.hear, true),
+      (GameKind.hear, false),
+      (GameKind.where, true),
+      (GameKind.where, false),
+      (GameKind.match, true),
+      (GameKind.match, false),
+      (GameKind.build, true),
+      (GameKind.build, false),
+    ]) {
       final b = Bench(seed: 3);
-      await b.play(plan: (e, n) => e.item!.scored && !e.again ? 'w' : 'r');
-      // five came back; the other five scored items did not
-      expect(b.s.played.where((q) => q.again), hasLength(5));
-      expect(b.s.barMissed, hasLength(5));
-      expect(b.s.barLit, b.s.barSegments);
-    },
-  );
+      final at = b.s.queue.indexWhere((q) => q.slot);
+      if (kind.index >= GameKind.build.index) {
+        b.s.planner.nextKind = playKinds.indexOf(kind);
+      }
+      if (kind == GameKind.hear) {
+        final i = b.s.queue.indexWhere((q) => q.item?.kind == kind);
+        await b.reach(i);
+        b.act(wrongFirst ? 'w' : 'r');
+        await b.vt.settle();
+        expect(
+          b.s.barMarks[i],
+          wrongFirst ? DashMark.wrong : DashMark.right,
+          reason: '$kind $wrongFirst',
+        );
+        await b.leave();
+        continue;
+      }
+      await b.reach(at);
+      expect(b.s.item!.kind, kind);
+      expect(b.s.barMarks[at], DashMark.none, reason: '$kind: asked only');
+      b.act(wrongFirst ? 'w' : 'r');
+      await b.vt.settle();
+      if (kind == GameKind.where) {
+        expect(b.s.barMarks[at], wrongFirst ? DashMark.wrong : DashMark.right);
+      } else {
+        // the whole item was played: it is marked by whether anything was wrong in it
+        expect(
+          b.s.barMarks[at],
+          wrongFirst ? DashMark.wrong : DashMark.right,
+          reason: '$kind $wrongFirst',
+        );
+      }
+      await b.leave();
+    }
+  });
 
   test('G: a missed item comes back as the same sentence and game, with its pictures or tiles in another order (never the identical arrangement)', () async {
     for (final kind in [GameKind.cual, GameKind.hear]) {
@@ -747,53 +842,89 @@ void main() {
     },
   );
 
-  test('J: Arma la frase: empty places for the sentence; a tile goes to the first; a placed tile goes back to the bank when touched; a wrong tile flashes red-orange once', () async {
+  test('J: Arma la frase: no places, an empty line; the next word of the sentence goes onto it and is green at once; any other tile stays in the bank, red-orange with an X for about a second, then clears, and the item counts as missed; a tile on the line cannot be taken back', () async {
     final b = Bench(seed: 3);
     final at = b.s.queue.indexWhere((q) => q.slot);
     await b.reach(at);
     final it = b.s.item! as BuildItem;
-    expect(b.s.slots, List<int?>.filled(it.order.length, null));
+    expect(b.s.placed, isEmpty);
+    expect(b.s.built, isEmpty);
     int idx(String w) => b.s.choices.indexWhere((c) => !c.done && c.label == w);
-    // a wrong tile: its border flashes, it stays in the bank; the flash clears by itself
+    // a tile that is not the next word: it stays in the bank with the red-orange border and the X; nothing is placed
     final wrong = b.s.choices.indexWhere((c) => c.label != it.order.first);
     b.s.touch(wrong);
     expect(
-      (b.s.choices[wrong].ring, b.s.choices[wrong].done),
-      (OptionRing.bad, false),
+      (b.s.choices[wrong].ring, b.s.choices[wrong].cross),
+      (OptionRing.bad, true),
     );
-    expect(b.s.slots, List<int?>.filled(it.order.length, null));
-    await b.vt.advance(700);
-    expect(b.s.choices[wrong].ring, OptionRing.none);
-    // the right tiles, in order
-    final k0 = idx(it.order[0]);
-    final k1 = idx(it.order[1]);
-    b.s.touch(k0);
-    b.s.touch(k1);
-    expect(b.s.slots.take(2), [k0, k1]);
-    expect(b.s.built, it.order.take(2));
-    // touched in the sentence: the second goes back to the bank, the first stays, nothing else moves
-    final before = [for (final c in b.s.choices) c.done];
-    b.s.touch(k1);
-    expect(b.s.slots.take(2), [k0, null]);
-    expect(b.s.choices[k1].done, isFalse);
+    expect(b.s.choices[wrong].done, isFalse);
+    expect(b.s.placed, isEmpty);
     expect(
-      [for (final c in b.s.choices) c.done],
-      [for (var k = 0; k < before.length; k++) k == k1 ? false : before[k]],
+      b.s.barMarks[at],
+      DashMark.wrong,
+      reason: 'a wrong tile marks the item missed at once',
     );
-    // and it must go to the place it left: a wrong word does not take it
-    final other = b.s.choices.indexWhere(
-      (c) => !c.done && c.label != it.order[1],
+    // about a second, then it clears by itself
+    await b.vt.advance(900);
+    expect(b.s.choices[wrong].cross, isTrue);
+    await b.vt.advance(200);
+    expect(
+      (b.s.choices[wrong].ring, b.s.choices[wrong].cross),
+      (OptionRing.none, false),
     );
-    b.s.touch(other);
-    expect(b.s.slots[1], isNull);
-    b.s.touch(k1);
+    // a word of the sentence that is not the next one is wrong too: the second word first
+    final second = idx(it.order[1]);
+    b.s.touch(second);
+    expect(
+      (b.s.choices[second].ring, b.s.choices[second].cross),
+      (OptionRing.bad, true),
+    );
+    expect(b.s.placed, isEmpty);
+    // the right tiles in order: each goes onto the line, green at once
+    final k0 = idx(it.order[0]);
+    b.s.touch(k0);
+    expect(b.s.placed, [k0]);
+    expect((b.s.choices[k0].ring, b.s.choices[k0].done), (OptionRing.ok, true));
+    // it stays: a touch on a tile that is on the line does nothing
+    b.s.touch(k0);
+    expect(b.s.placed, [k0]);
+    expect(b.s.choices[k0].done, isTrue);
+    // the wrong tile that was flashing has cleared on its own meanwhile; the next word goes on
+    await b.vt.advance(1100);
+    expect(b.s.choices[second].cross, isFalse);
+    b.s.touch(second);
+    expect(b.s.built, it.order.take(2));
     for (var i = 2; i < it.order.length; i++) {
       b.s.touch(idx(it.order[i]));
     }
     expect(b.s.built, it.order);
-    // whole: the sentence shows, Next is there
+    // whole: the sentence shows, Next is there; he touched wrong tiles, so the item counts as missed
     await b.vt.settle();
     expect((b.s.showText, b.s.canNext), (true, true));
+    expect(b.s.streak, 0);
+    expect(b.s.barMarks[at], DashMark.wrong);
+    await b.leave();
+  });
+
+  test('J: Arma la frase touched right all the way: every tile green as it goes, the item is green, nothing is red', () async {
+    final b = Bench(seed: 3);
+    final at = b.s.queue.indexWhere((q) => q.slot);
+    await b.reach(at);
+    final it = b.s.item! as BuildItem;
+    for (var i = 0; i < it.order.length; i++) {
+      final k = b.s.choices.indexWhere(
+        (c) => !c.done && c.label == it.order[i],
+      );
+      b.s.touch(k);
+      expect(b.s.built, it.order.take(i + 1));
+      expect(b.s.choices[k].ring, OptionRing.ok);
+    }
+    await b.vt.settle();
+    expect(b.s.barMarks[at], DashMark.right);
+    expect(
+      b.s.choices.where((c) => c.cross || c.ring == OptionRing.bad),
+      isEmpty,
+    );
     await b.leave();
   });
 
@@ -864,6 +995,7 @@ void main() {
     b.s.pressMic();
     await b.vt.runUntil(() => b.s.canNext);
     expect((b.s.notHeard, b.s.heard, b.s.showText), (true, '', true));
+    expect(b.s.mic, MicState.missed, reason: 'the mic shows the X');
     expect(b.clips.plays.last['id'], w.say.first.clip);
     await b.leave();
   });

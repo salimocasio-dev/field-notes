@@ -63,21 +63,35 @@ Page 15 (docs/proyecto/15-repaso-juegos.md) is the design; where it and page 10 
   empty until Next shows (Dilo's "Can't speak now" stands in it until then). Every item ends with Next (it shows at once
   after a right answer, and after a wrong one when the right thing has been touched; the praise plays meanwhile and Next
   cuts it short); no text of the sentence shows before the answer (the session's captions are off). A wrong touch has
-  the red-orange ring and the X badge; the right one then has the pointing hand (over the middle of a picture; at the right end of a word tile, inside it, the
-  word still centred and whole) and no ring until it is touched. A missed item returns as the same sentence and game with its pictures or tiles in another order
-  (`CualItem.rearranged`, `HearItem.rearranged`). The bar has one dash for each planned item (a missed one red-orange
-  until its return is answered, `barMissed`). Speakers on ¿Qué oyes? tiles only when every tile has a clip of its word
+  the red-orange ring and the X badge; the right one then has the pointing hand (inside a picture's bottom-right corner,
+  12 px from both edges; at the right end of a word tile, inside it, the word still centred and whole) and no ring until
+  it is touched. A picture's ring is drawn inside its box (`PictureChoice(inside: true)`), so a picture is the same size
+  marked or not. A missed item returns as the same sentence and game with its pictures or tiles in another order
+  (`CualItem.rearranged`, `HearItem.rearranged`). The bar has one dash for each planned item and tells how it went: a
+  dash takes the colour of its item's first answer, for every game, at that answer (`RepasoSession.barMarks`: right
+  green, wrong red-orange; Parejas and Arma la frase turn red-orange at the first wrong pair or tile and green when the
+  item is whole with none; Dilo is green when heard right in its tries, red-orange when neither try was, and
+  `DashMark.skipped`, a lighter grey than "not reached", when "Can't speak now" ended it), keeps it to the end, and a
+  return neither repaints it nor has a dash; `barCurrent` is the dash of the item on screen (a return: of the item it
+  answers again), drawn with a white outline. Speakers on ¿Qué oyes? tiles only when every tile has a clip of its word
   alone (`HearItem.speakers`). ¿Dónde? stacks its pictures at the largest whole scale that fits and has two when three
   could not be 150 px wide each (`ui/repaso_layout.dart`, `WhereItem.picturesFor`, `RepasoSession.wherePictures`).
-  Arma la frase: a row of empty slots, a placed tile goes back to the bank when touched (`RepasoSession.slots`); the check
-  of a whole sentence has its own place at the end of the line, 8 px after the last tile on its row or at the start of a
-  row below, kept from the first moment so nothing moves when it comes; Parejas:
-  a wrong pair flashes about a second, a matched pair has its number; Dilo: "Listening…", "Heard: …", "Try again".
+  Arma la frase: an empty answer line with a baseline, no slots (their widths gave the answer away); the next word of the
+  sentence he touches goes onto the line, from the left, green at once (`RepasoSession.placed`), any other tile stays in
+  the bank red-orange with the X for about a second and the item counts as missed, a placed tile cannot be taken back; the
+  line is as high as the sentence needs from the first moment (two rows, or more when the sentence and its check would
+  take more at this width and text size: `_lineRows`, `TileTray.lineRows`), so nothing under it moves; the check of a
+  whole sentence is 8 px after the last tile on its row or at the start of a row below; Parejas:
+  a wrong pair flashes about a second, a matched pair has its number; Dilo: "Listening…", "Heard: …" (green with the check
+  when heard right, with Next at once; a try not heard right has the X badge beside the mic and "Try again" under it; after
+  the second the mic shows the X, `MicState.missed`, the line is in the reveal and Next follows). The end screen lists the
+  missed words ("Coming back soon") before "Got it the first time". Instruction lines: ¿Cuál? and ¿Dónde? say the same
+  one; see `gameInstruction`.
 - Tests: `repaso_plan_test.dart` (on the real data file: tiles over every sentence, rotation, which game, the seeded
   learner's session), `repaso_session_test.dart` (each game's rules with no screen, and the session's side of each fix),
   `repaso_screen_test.dart` (both phones, text size, reduced motion), `repaso_fixes_test.dart` (the fixes on screen: the
   pictures of consecutive ¿Cuál? items, the layout that does not move, the hand, Arma la frase, Parejas, Dilo, ¿Dónde?,
-  the end screen), `repaso_layout_test.dart`; `test/support/repaso_screen_rig.dart` is the screen rig.
+  the end screen, the bar's colours, a picture's frame measured in pixels), `repaso_layout_test.dart`; `test/support/repaso_screen_rig.dart` is the screen rig.
   `tool/repaso_counts_test.dart` prints how many words get each game at stories 3, 11, 22, 32. The pictures for readers:
   `coqui/app/tool/repaso_shots_test.dart`; it fails the run on an `ErrorWidget` or a picture that failed to draw at any
   picture, on a game whose layout moved after it was asked, and on an end screen that does not list every scored word once.

@@ -153,8 +153,12 @@ class RepasoScreenState extends State<RepasoScreen> {
     Widget? button;
     if (s.canNext) {
       button = LessonButton(label: RepasoStrings.next, onPressed: s.pressNext);
-    } else if (s.item is SayItem && !s.showText && s.mic != MicState.ok) {
-      // "Can't speak now" stands where Next will: the one button of the bottom of the screen
+    } else if (s.item is SayItem &&
+        !s.showText &&
+        s.mic != MicState.ok &&
+        s.mic != MicState.missed) {
+      // "Can't speak now" stands where Next will: the one button of the bottom of the screen (not once the turn is
+      // over: heard right, or the two tries not heard)
       button = Align(
         child: LessonButton(
           kind: LessonButtonKind.outline,
@@ -189,8 +193,8 @@ class RepasoScreenState extends State<RepasoScreen> {
         muted: _s.clips.muted,
         progress: LessonProgressDashes(
           segments: s.barSegments,
-          done: s.barLit,
-          missed: s.barMissed,
+          marks: s.barMarks,
+          current: s.barCurrent,
           dense: s.barSegments > 24,
         ),
         overlay: start
@@ -320,7 +324,7 @@ class RepasoScreenState extends State<RepasoScreen> {
       final area = switch (it) {
         CualItem() => _cual(context, it, width, budget, dpr),
         HearItem() => _hear(it),
-        BuildItem() => _build(it),
+        BuildItem() => _build(context, it, width),
         MatchItem() => _match(it),
         WhereItem() => _where(context, it, width, budget, dpr),
         SayItem() => _say(it),
@@ -480,14 +484,18 @@ class RepasoScreenState extends State<RepasoScreen> {
   TileLook _look(Choice c) =>
       c.dim ? TileLook.dim : (c.pre ? TileLook.waiting : TileLook.normal);
 
-  /// A picture or tile of a picture game with the sign over its middle when it is the one to touch.
+  /// A picture of a picture game with the sign inside its bottom-right corner when it is the one to touch: 12 px from
+  /// both edges, so that it never covers what the picture is about.
   Widget _signed(Widget child, bool sign) => sign
       ? Stack(
-          alignment: Alignment.center,
           clipBehavior: Clip.none,
           children: [
             child,
-            TouchSign(still: _still),
+            Positioned(
+              right: TouchSign.pictureInset,
+              bottom: TouchSign.pictureInset,
+              child: TouchSign(still: _still),
+            ),
           ],
         )
       : child;
@@ -505,6 +513,8 @@ class RepasoScreenState extends State<RepasoScreen> {
               : (c.pre ? ChoiceDim.whileSentence : ChoiceDim.none),
           check: c.check,
           cross: c.cross,
+          // a picture's frame is drawn inside its box: it is the same size marked or not
+          inside: true,
           child: picture,
         ),
       ),
@@ -585,28 +595,76 @@ class RepasoScreenState extends State<RepasoScreen> {
     );
   }
 
-  // Arma la frase: the sentence's places on their line (empty slots, then the tiles put in them), the tiles in their
-  // mixed order under it; a tile put in the sentence leaves an empty slot of its size in the bank
-  _Area _build(BuildItem it) {
+  /// How many rows of tiles Arma la frase's answer line has room for from the start: two, or more when the whole
+  /// sentence with its check would take more at this width. It is known from the item before a tile is placed, so the
+  /// line never grows and nothing under it moves.
+  int _lineRows(BuildContext context, BuildItem it, double width) {
+    final scaler = MediaQuery.textScalerOf(context);
+    double tileWidth(String word) {
+      final tp = TextPainter(
+        text: TextSpan(text: word, style: CoquiText.lessonTile),
+        textDirection: TextDirection.ltr,
+        textScaler: scaler,
+      )..layout();
+      final w = tp.width + 2 * (CoquiMetrics.s16 + CoquiMetrics.borderButton);
+      tp.dispose();
+      return math.max(56.0, w);
+    }
+
+    var rows = 1;
+    var used = 0.0;
+    for (final w in [
+      for (final x in it.order) tileWidth(x),
+      CoquiMetrics.badgeSize,
+    ]) {
+      if (used == 0) {
+        used = w;
+      } else if (used + CoquiMetrics.s8 + w <= width + .01) {
+        used += CoquiMetrics.s8 + w;
+      } else {
+        rows++;
+        used = w;
+      }
+    }
+    return math.max(2, rows);
+  }
+
+  /// The height of a word tile at this text size: 56, or more when the word's line is taller than that.
+  double _tileHeight(BuildContext context) {
+    final tp = TextPainter(
+      text: TextSpan(text: 'x', style: CoquiText.lessonTile),
+      textDirection: TextDirection.ltr,
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    final h = tp.height + 24;
+    tp.dispose();
+    return math.max(56.0, h);
+  }
+
+  // Arma la frase: an empty line with a baseline (no places: its tiles go onto it one after another, left to right,
+  // and are green at once), the tiles in their mixed order under it; a tile put on the line leaves an empty place of its
+  // size in the bank
+  _Area _build(BuildContext context, BuildItem it, double width) {
     final s = session;
     final done = s.showText;
-    // the line is a tray of the sentence's places; its last place is the check's own: a box of the badge's size that
-    // is empty until the sentence is whole, so the line is the same shape from the start and nothing moves when the
-    // check comes. The tray puts it 8 px after the last tile, level with that row's middle, or at the start of a row
-    // below when that row has no room for it: it is never over a tile.
+    final rows = _lineRows(context, it, width);
+    final tileH = _tileHeight(context);
+    // the line is as high as [rows] rows of tiles from the start, so nothing under it moves as tiles come. The check
+    // after the last tile has its own place at the end of the tiles, a box of the badge's size that is empty until the
+    // sentence is whole: the tray puts it 8 px after the last tile, level with that row's middle, or at the start of a
+    // row below when that row has no room for it: it is never over a tile.
     final line = TileTray(
+      key: const ValueKey('answer-line'),
       line: true,
+      lineRows: rows,
+      lineTileHeight: tileH,
       children: [
-        for (var i = 0; i < it.order.length; i++)
-          if (s.slots.length > i && s.slots[i] != null)
-            WordTile(
-              word: s.choices[s.slots[i]!].label,
-              ring: done ? ChoiceRing.right : ChoiceRing.none,
-              still: _still,
-              onTap: done ? null : () => s.touch(s.slots[i]!),
-            )
-          else
-            WordTile(word: it.order[i], look: TileLook.empty),
+        for (final k in s.placed)
+          WordTile(
+            word: s.choices[k].label,
+            ring: choiceRing(s.choices[k].ring),
+            still: _still,
+          ),
         SizedBox(
           key: const ValueKey('check-place'),
           width: CoquiMetrics.badgeSize,
@@ -630,6 +688,7 @@ class RepasoScreenState extends State<RepasoScreen> {
                       ? TileLook.empty
                       : _look(s.choices[k]),
                   ring: choiceRing(s.choices[k].ring),
+                  cross: s.choices[k].cross,
                   shake: s.choices[k].shakes,
                   still: _still,
                   onTap: s.choices[k].done ? null : () => s.touch(k),
@@ -638,7 +697,10 @@ class RepasoScreenState extends State<RepasoScreen> {
           ),
         ],
       ),
-      2 * 56.0 + _gap + 16 + CoquiMetrics.s24 + 3 * 56.0 + 2 * _gap,
+      TileTray.lineHeight(rows, tileHeight: tileH) +
+          CoquiMetrics.s24 +
+          3 * 56.0 +
+          2 * _gap,
     );
   }
 
@@ -767,6 +829,8 @@ class RepasoScreenState extends State<RepasoScreen> {
                 state: s.mic,
                 onPressed: s.pressMic,
                 still: _still,
+                // a try not heard right, with another left: the X beside the mic, "Try again" under it
+                cross: s.notHeard && s.mic == MicState.ready,
               ),
             ),
           ),
@@ -805,11 +869,15 @@ class RepasoMic extends StatefulWidget {
     required this.state,
     required this.onPressed,
     this.still = false,
+    this.cross = false,
   });
 
   final MicState state;
   final VoidCallback onPressed;
   final bool still;
+
+  /// The round X badge at the mic's upper right: the last try was not heard right.
+  final bool cross;
 
   @override
   State<RepasoMic> createState() => _RepasoMicState();
@@ -865,6 +933,11 @@ class _RepasoMicState extends State<RepasoMic>
         CoquiColors.bookLineLitBar,
         CoquiColors.lessonLine,
       ),
+      MicState.missed => (
+        const Color(0x00000000),
+        CoquiColors.lessonBad,
+        CoquiColors.lessonLine,
+      ),
     };
     final Widget icon = switch (state) {
       MicState.processing => Text(
@@ -875,6 +948,11 @@ class _RepasoMicState extends State<RepasoMic>
         CoquiIcons.check,
         size: 36,
         color: CoquiColors.bookLineLitBar,
+      ),
+      MicState.missed => const CoquiIcon(
+        CoquiIcons.close,
+        size: 36,
+        color: CoquiColors.lessonBad,
       ),
       _ => CoquiIcon(CoquiIcons.lessonMic, size: 32, color: ink),
     };
@@ -893,7 +971,21 @@ class _RepasoMicState extends State<RepasoMic>
         child: icon,
       ),
     );
-    if (state != MicState.listening) return disc;
+    if (state != MicState.listening) {
+      if (!widget.cross) return disc;
+      // the X badge sits on the disc's rim at the upper right; it takes no room
+      return SizedBox(
+        width: CoquiMetrics.startDisc,
+        height: CoquiMetrics.startDisc,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            disc,
+            const Positioned(right: -4, top: -4, child: WrongBadge()),
+          ],
+        ),
+      );
+    }
     // the ring grows out past the disc without the widget's size changing: it is as big as the disc all the time
     return SizedBox(
       width: CoquiMetrics.startDisc,

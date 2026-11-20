@@ -758,30 +758,205 @@ void main() {
   );
 
   testWidgets(
-    'the progress bar: a missed item\'s dash is red-orange (not green, not grey) wherever it stands',
+    'the progress bar with marks: each dash is the colour of its item\'s first answer (green right, red-orange wrong, light grey skipped, grey not reached), the current one has a white outline outside its box, and the bar keeps its size',
     (t) async {
+      List<(Color?, bool)> dashes() => [
+        for (final c in t.widgetList<AnimatedContainer>(
+          find.byType(AnimatedContainer),
+        ))
+          (
+            (c.decoration! as BoxDecoration).color,
+            (c.decoration! as BoxDecoration).boxShadow != null,
+          ),
+      ];
+      Future<Size> bar(List<DashMark> marks, int? current) async {
+        await t.pumpWidget(
+          _app(
+            SizedBox(
+              width: 300,
+              child: LessonProgressDashes(
+                segments: 6,
+                marks: marks,
+                current: current,
+              ),
+            ),
+          ),
+        );
+        await t.pumpAndSettle();
+        return t.getSize(find.byType(LessonProgressDashes));
+      }
+
+      final plain = await bar(const [], null);
+      expect(dashes().every((d) => d == (CoquiColors.dotOff, false)), isTrue);
+      final marked = await bar(const [
+        DashMark.right,
+        DashMark.wrong,
+        DashMark.skipped,
+        DashMark.right,
+      ], 3);
+      expect(dashes(), [
+        (CoquiColors.lessonGreen, false),
+        (CoquiColors.lessonBad, false),
+        (CoquiColors.dotSkipped, false),
+        (CoquiColors.lessonGreen, true), // the current one: outlined
+        (CoquiColors.dotOff, false), // not reached
+        (CoquiColors.dotOff, false),
+      ]);
+      expect(marked, plain, reason: 'an outline takes no room');
+      final outline = t
+          .widgetList<AnimatedContainer>(find.byType(AnimatedContainer))
+          .map((c) => (c.decoration! as BoxDecoration).boxShadow)
+          .whereType<List<BoxShadow>>()
+          .single
+          .single;
+      expect(outline.color, CoquiColors.lessonInk);
+      // skipped is a lighter grey than not reached, and is neither of the two answers' colours
+      expect(
+        Color.alphaBlend(
+          CoquiColors.dotSkipped,
+          CoquiColors.lessonBg,
+        ).computeLuminance(),
+        greaterThan(CoquiColors.dotOff.computeLuminance()),
+      );
+      expect(CoquiColors.dotSkipped, isNot(CoquiColors.lessonGreen));
+      expect(CoquiColors.dotSkipped, isNot(CoquiColors.lessonBad));
+      // without marks the bar is the old one: the first [done] dashes are green, no outline
       await t.pumpWidget(
         _app(
           const SizedBox(
             width: 300,
-            child: LessonProgressDashes(segments: 5, done: 3, missed: {1, 4}),
+            child: LessonProgressDashes(segments: 3, done: 2),
           ),
         ),
       );
       await t.pumpAndSettle();
-      final colors = [
-        for (final c in t.widgetList<AnimatedContainer>(
-          find.byType(AnimatedContainer),
-        ))
-          (c.decoration! as BoxDecoration).color,
-      ];
-      expect(colors, [
-        CoquiColors.lessonGreen,
-        CoquiColors.lessonBad,
-        CoquiColors.lessonGreen,
-        CoquiColors.dotOff,
-        CoquiColors.lessonBad,
+      expect(dashes(), [
+        (CoquiColors.lessonGreen, false),
+        (CoquiColors.lessonGreen, false),
+        (CoquiColors.dotOff, false),
       ]);
+    },
+  );
+
+  testWidgets(
+    'a picture\'s frame drawn inside (PictureChoice.inside) has the same outer edge whatever the ring; drawn outside (the default, as v=39 has it) it grows when a ring comes',
+    (t) async {
+      Future<Size> sized(bool inside, ChoiceRing ring) async {
+        await t.pumpWidget(
+          _app(
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: PictureChoice(
+                  ring: ring,
+                  inside: inside,
+                  child: const SizedBox(width: 100, height: 60),
+                ),
+              ),
+            ),
+          ),
+        );
+        return t.getSize(find.byType(PictureChoice));
+      }
+
+      // the box is the picture's, whatever the ring
+      for (final ring in ChoiceRing.values) {
+        expect(await sized(true, ring), const Size(100, 60));
+      }
+      // and what is drawn stays inside it: the ring is a border of the box, 1.5 px plain and 3 px marked
+      for (final (ring, width, color) in [
+        (ChoiceRing.none, 1.5, CoquiColors.lessonLine),
+        (ChoiceRing.wrong, 3.0, CoquiColors.lessonBad),
+        (ChoiceRing.right, 3.0, CoquiColors.lessonGreen),
+      ]) {
+        await sized(true, ring);
+        final frame = find.descendant(
+          of: find.byType(PictureChoice),
+          matching: find.byWidgetPredicate(
+            (w) =>
+                w is DecoratedBox &&
+                w.decoration is BoxDecoration &&
+                (w.decoration as BoxDecoration).border != null,
+          ),
+        );
+        expect(frame, findsOneWidget);
+        expect(t.getRect(frame), t.getRect(find.byType(PictureChoice)));
+        final b = (t.widget<DecoratedBox>(frame).decoration as BoxDecoration)
+            .border!
+            .top;
+        expect((b.color, b.width), (color, width));
+      }
+      // the default ring stands outside the box: a shadow spread, which is what grew the frame
+      await sized(false, ChoiceRing.wrong);
+      final outside = t
+          .widgetList<DecoratedBox>(
+            find.descendant(
+              of: find.byType(PictureChoice),
+              matching: find.byType(DecoratedBox),
+            ),
+          )
+          .map((d) => (d.decoration as BoxDecoration).boxShadow)
+          .whereType<List<BoxShadow>>()
+          .single
+          .single;
+      expect(outside.spreadRadius, 3);
+    },
+  );
+
+  testWidgets(
+    'a tray with a line: tiles one after another from the left, the line as high as its rows from the start (a baseline 1.5 px under them), however many tiles are on it',
+    (t) async {
+      Future<(Size, List<Rect>)> line(int tiles, {int rows = 2}) async {
+        await t.pumpWidget(
+          _app(
+            // a column gives its child all the height it asks for, as the game's own area does
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: 358,
+                  child: TileTray(
+                    line: true,
+                    lineRows: rows,
+                    children: [
+                      for (var i = 0; i < tiles; i++)
+                        WordTile(
+                          word: ['la', 'casa', 'es', 'azul', 'y', 'roja'][i],
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            text: .5,
+          ),
+        );
+        return (
+          t.getSize(find.byType(TileTray)),
+          [
+            for (var i = 0; i < tiles; i++)
+              t.getRect(find.byType(WordTile).at(i)),
+          ],
+        );
+      }
+
+      final empty = await line(0);
+      expect(empty.$1.height, TileTray.lineHeight(2));
+      expect(TileTray.lineHeight(2), 2 * 56 + 12 + 16 + 1.5);
+      final one = await line(1);
+      expect(one.$1, empty.$1, reason: 'a tile on it changes nothing');
+      // from the left of the line
+      expect(one.$2.single.left, t.getTopLeft(find.byType(TileTray)).dx);
+      final six = await line(6);
+      expect(six.$1, empty.$1, reason: 'nor six');
+      // one after another: to the right of the one before, or on the row below
+      for (var i = 1; i < 6; i++) {
+        final a = six.$2[i - 1], b = six.$2[i];
+        expect(b.left > a.right || b.top > a.bottom, isTrue);
+      }
+      // a taller tile (a larger text size) is given for: the line is that high from the start
+      expect(TileTray.lineHeight(2, tileHeight: 70), 2 * 70 + 12 + 16 + 1.5);
     },
   );
 

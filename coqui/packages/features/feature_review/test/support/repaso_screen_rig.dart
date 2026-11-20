@@ -2,6 +2,7 @@
 // clock), played by touches. Shared by repaso_screen_test.dart and repaso_fixes_test.dart.
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui' as ui;
 
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -24,6 +25,23 @@ final MemoryImage dotPicture = MemoryImage(
     'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
   ),
 );
+
+/// A picture of a book page's size, 196 x 216 picture pixels, drawn in one colour (made in a real async zone: pass it
+/// as `bookPicture` where the size of a book picture matters; [dotPicture] is one pixel).
+Future<MemoryImage> bookPageStandIn(WidgetTester t) async {
+  final bytes = await t.runAsync(() async {
+    final recorder = ui.PictureRecorder();
+    Canvas(recorder).drawRect(
+      const Rect.fromLTWH(0, 0, 196, 216),
+      Paint()..color = const Color(0xFF9E9E9E),
+    );
+    final image = await recorder.endRecording().toImage(196, 216);
+    final data = await image.toByteData(format: ui.ImageByteFormat.png);
+    image.dispose();
+    return data!.buffer.asUint8List();
+  });
+  return MemoryImage(bytes!);
+}
 
 /// A recogniser that listens until the test says what it heard (so the listening state can be looked at).
 class HeldSpeech implements SpeechListener {
@@ -121,6 +139,7 @@ class Screen {
     double h = 844,
     double dpr = 3,
     double text = 1,
+    ImageProvider? bookPicture,
   }) async {
     t.view.devicePixelRatio = dpr;
     t.view.physicalSize = Size(w * dpr, h * dpr);
@@ -140,7 +159,7 @@ class Screen {
               services: services,
               data: realRepaso,
               wait: vt.wait,
-              imageProvider: (_) => dotPicture,
+              imageProvider: (_) => bookPicture ?? dotPicture,
             ),
           ),
         ),

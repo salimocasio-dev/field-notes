@@ -12,64 +12,112 @@ import 'package:coqui_ui/src/text_styles.dart';
 import 'package:coqui_ui/src/tokens.dart';
 import 'package:material_ui/material_ui.dart';
 
+/// What a dash of Repaso's bar says about its item (the result of that item's first answer).
+enum DashMark {
+  /// Not reached yet (grey, [CoquiColors.dotOff]).
+  none,
+
+  /// The first answer was right (green).
+  right,
+
+  /// The first answer was wrong (red-orange).
+  wrong,
+
+  /// Skipped, not answered at all (a lighter grey, [CoquiColors.dotSkipped]).
+  skipped,
+}
+
 /// `#bar`: the progress as dashes, one per step: 6 px high, 3 px corners, 4 px
 /// apart, grey (`#3A3A42`), green as the learner goes. With [dense] (many steps)
 /// the dashes are 1 px apart with 1 px corners (`#bar.many`). The bar is at most
 /// 480 px wide. cual.html:19-23
+///
+/// With [marks] (Repaso) each dash tells how its item went instead: green when the first answer was right,
+/// red-orange when it was wrong, the lighter grey of [CoquiColors.dotSkipped] when it was skipped, the grey of a dash
+/// not reached when it has no mark yet; [done] is then not read. A dash keeps its colour to the end. The [current] one
+/// has a white outline (outside its box: the bar's size does not change).
 class LessonProgressDashes extends StatelessWidget {
   const LessonProgressDashes({
     super.key,
     required this.segments,
-    required this.done,
+    this.done = 0,
     this.dense = false,
-    this.missed = const {},
+    this.marks,
+    this.current,
   });
 
   /// How many dashes.
   final int segments;
 
-  /// How many are green (from the left).
+  /// How many are green (from the left). Not read when [marks] is given.
   final int done;
   final bool dense;
 
-  /// Dashes (by place, from 0) that are red-orange, not green or grey: a Repaso item that was missed and has not yet
-  /// been answered when it came back. Shown whether or not [done] reaches them.
-  final Set<int> missed;
+  /// One mark for each dash, by place (a shorter list leaves the rest unmarked).
+  final List<DashMark>? marks;
+
+  /// The dash (by place, from 0) of the item on screen: it gets a white outline.
+  final int? current;
+
+  DashMark _mark(int i) {
+    final m = marks;
+    if (m == null) return i < done ? DashMark.right : DashMark.none;
+    return i < m.length ? m[i] : DashMark.none;
+  }
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    label: 'Progress',
-    value: missed.isEmpty
-        ? '$done of $segments'
-        : '$done of $segments, ${missed.length} to come back',
-    excludeSemantics: true,
-    child: Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: CoquiMetrics.lessonBarMax),
-        child: Row(
-          children: [
-            for (var i = 0; i < segments; i++) ...[
-              if (i > 0) SizedBox(width: dense ? 1 : 4),
-              Expanded(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: CoquiMetrics.dotHeight,
-                  decoration: BoxDecoration(
-                    color: missed.contains(i)
-                        ? CoquiColors.lessonBad
-                        : i < done
-                        ? CoquiColors.lessonGreen
-                        : CoquiColors.dotOff,
-                    borderRadius: BorderRadius.circular(dense ? 1 : 3),
+  Widget build(BuildContext context) {
+    final all = [for (var i = 0; i < segments; i++) _mark(i)];
+    final marked = all.where((m) => m != DashMark.none).length;
+    final wrong = all.where((m) => m == DashMark.wrong).length;
+    return Semantics(
+      label: 'Progress',
+      value: marks == null
+          ? '$done of $segments'
+          : wrong == 0
+          ? '$marked of $segments'
+          : '$marked of $segments, $wrong missed',
+      excludeSemantics: true,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: CoquiMetrics.lessonBarMax,
+          ),
+          child: Row(
+            children: [
+              for (var i = 0; i < segments; i++) ...[
+                if (i > 0) SizedBox(width: dense ? 1 : 4),
+                Expanded(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    height: CoquiMetrics.dotHeight,
+                    decoration: BoxDecoration(
+                      color: switch (_mark(i)) {
+                        DashMark.right => CoquiColors.lessonGreen,
+                        DashMark.wrong => CoquiColors.lessonBad,
+                        DashMark.skipped => CoquiColors.dotSkipped,
+                        DashMark.none => CoquiColors.dotOff,
+                      },
+                      borderRadius: BorderRadius.circular(dense ? 1 : 3),
+                      // the outline stands outside the dash: it takes no room, so the bar never changes its size
+                      boxShadow: current == i
+                          ? [
+                              BoxShadow(
+                                color: CoquiColors.lessonInk,
+                                spreadRadius: dense ? 1 : 1.5,
+                              ),
+                            ]
+                          : null,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 /// `.lbbar`: the book's thin progress bar: one 6 px grey line with a green part,
@@ -432,6 +480,10 @@ enum ChoiceDim {
 /// ring outside its box (1.5 px `--line`; 3 px green, red-orange or white to show an answer), a dim over
 /// the picture, and the check badge of a right answer. The ring takes no room. cual.html:49, 66-69; cual.js:39
 ///
+/// With [inside] (Repaso's games) the ring is drawn inside the picture's box instead, over its edge: the picture's
+/// outer edge is the same whether or not it is marked, so a ring that comes (1.5 px to 3 px) never makes the frame
+/// grow. Not in v=39: chosen for the games.
+///
 /// The badge ([check]) is a 28 px green circle with a white tick (the 28 px SVG, stroke 3) and a 2 px
 /// white ring outside it, 8 px from the picture's top and right edges. cual.html:49
 class PictureChoice extends StatelessWidget {
@@ -442,6 +494,7 @@ class PictureChoice extends StatelessWidget {
     this.dim = ChoiceDim.none,
     this.check = false,
     this.cross = false,
+    this.inside = false,
     this.onTap,
     this.semanticLabel,
   });
@@ -449,6 +502,9 @@ class PictureChoice extends StatelessWidget {
   final Widget child;
   final ChoiceRing ring;
   final ChoiceDim dim;
+
+  /// The ring is drawn inside the picture's box, not outside it (see above).
+  final bool inside;
 
   /// The check badge of a right touch, or (the same corner) the round X badge of a wrong one.
   final bool check;
@@ -472,18 +528,37 @@ class PictureChoice extends StatelessWidget {
     final picture = Stack(
       clipBehavior: Clip.none,
       children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            boxShadow: [BoxShadow(color: color, spreadRadius: width)],
-          ),
-          child: Stack(
+        if (inside)
+          Stack(
             children: [
               child,
               if (dimColor != null)
                 Positioned.fill(child: ColoredBox(color: dimColor)),
+              // the frame is over the picture's own edge: the box, and so the frame's outer edge, never changes
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: color, width: width),
+                    ),
+                  ),
+                ),
+              ),
             ],
+          )
+        else
+          DecoratedBox(
+            decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: color, spreadRadius: width)],
+            ),
+            child: Stack(
+              children: [
+                child,
+                if (dimColor != null)
+                  Positioned.fill(child: ColoredBox(color: dimColor)),
+              ],
+            ),
           ),
-        ),
         if (check)
           const Positioned(
             right: CoquiMetrics.badgeInset,
