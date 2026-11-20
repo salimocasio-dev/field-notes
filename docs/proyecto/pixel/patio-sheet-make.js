@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-/* El patio's sheet (order 32a, rounds 2 to 5: the yard built on the world's axes, the house wall on the left, the fence on the far right): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
+/* El patio's sheet (order 32a, rounds 2 to 6: the yard built on the world's axes, the house wall on the left, the fence on the far right): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
    Run from the repo root:  node docs/proyecto/pixel/patio-sheet-make.js        (needs Node 22 and the pre-installed Playwright)
    It reads the set's plan (window.PATIO_SET) and its part map from patio-set.html in headless Chrome, for every baked state; measures the old
    sprite layer's bubbles and people (historia/ engine.js, juego.js, kit.js, escenas/patio.js, as they are); projects every world point with the
@@ -27,7 +27,7 @@ const queryOf = k => { const [hora, door, gate] = k.split('-'); return 'hora=' +
   const page = await browser.newPage();
   const errs = [];
   page.on('pageerror', e => errs.push(String(e)));
-  const G = { parts: {}, z: {}, kinds: {}, leafZ: {}, rgb: {}, shade: {} };
+  const G = { parts: {}, z: {}, kinds: {}, leafZ: {}, rgb: {} };
   for (const key of STATES) {
     await page.goto('file://' + path.join(__dirname, 'patio-set.html') + '?tags=1&' + queryOf(key));
     const g = await page.evaluate(() => {
@@ -36,12 +36,10 @@ const queryOf = k => { const [hora, door, gate] = k.split('-'); return 'hora=' +
       // the leaves' reach: every pixel a swaying leaf of the crown can take, at any wind step (drawLeaves moves them up to 2 px across, 1 down)
       const reach = []; for (const L of leaves) for (let n = 0; n < L.pixels.length; n += 4) reach.push(L.pixels[n] + L.pixels[n + 1] * W);
       const cd = document.getElementById('c').getContext('2d').getImageData(0, 0, W, H).data, rgb = []; for (let i = 0; i < W * H; i++) rgb.push(cd[i * 4], cd[i * 4 + 1], cd[i * 4 + 2]);
-      // round 5: the beds' borders of leaves, and the lawn in the set's shade (the house's, the fence's, the posts', the tree's)
-      const shade = []; for (let i = 0; i < W * H; i++) if (staticShadow[i] && kinds[i] === KIND_GRASS) shade.push(i);
-      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), leaves: [...new Set(reach)], K: { road: KIND_ROAD, grass: KIND_GRASS }, rgb, border: Array.from(window.BORDER_PX), shade };
+      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), leaves: [...new Set(reach)], K: { road: KIND_ROAD, grass: KIND_GRASS }, rgb };
     });
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K, leafPix: g.leaves });
-    G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds; G.rgb[key] = g.rgb; G.border = g.border; (G.shade = G.shade || {})[key] = g.shade;
+    G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds; G.rgb[key] = g.rgb;
   }
   if (errs.length) throw new Error(errs.join('; '));
   G.M = await measure(await browser.newPage());
@@ -169,6 +167,25 @@ function make(G) {
   // (the old: 3), his box (at .5) wholly between the posts, a pixel clear of each. Of every such pair of points, 7 hop counts change at the least (with him at x 137, the opening's left edge); here 8, with him before the opening
   const PORTON4 = [126, 86], SALE4 = [130, 68];
   const gap4 = q => r2((q[1] + 25) - E.project(F.CY + (q[0] + 16 - E.OX) / E.S * E.R2, F.CY, 0).sy);   // rows his feet are before the fence's line (< 0: past it)
+  // round 6: a flower in the ground has its own leaves (flowerLeaves): a clump drawn by the sprite layer immediately before the flower, at its
+  // depth, so the dark behind its head belongs to the flower (round 4's darker grass and round 5's border round the beds read as a pit). One
+  // clump per growth stage, as florEn draws it: open (f.k: the head 9 x 9, rows y - 18 to y - 10, x - 4 to x + 4) and bud (!f.k: rows y - 10
+  // to y - 5, x - 2 to x + 2). Its outline per column: the top row over the foot (y) at each dx, the foot rows narrower by the stem
+  const LEAF_STAGES = {
+    open: { head: [-4, -18, 9, 9], tops: [-17, -19, -20, -21, -21, -22, -21, -20, -21, -19, -17], base: [[-5, 3], [-3, 4]] },   // dx -5..5
+    bud: { head: [-2, -10, 5, 6], tops: [-9, -11, -12, -12, -13, -12, -12, -11, -9], base: [[-3, 2]] },                           // dx -4..4
+  };
+  const LEAF_PAL = { d: [20, 83, 45], l: [28, 108, 54], t: [46, 154, 72] };   // RP.grn[0] shade, a leaf green between RP.grn[0] and [1], RP.grn[2] lit
+  const leafStage = st => { const w = (st.tops.length - 1) / 2, inM = (dx, dy) => { if (Math.abs(dx) > w || dy > -1 || dy < st.tops[dx + w]) return false;
+      for (const [from, half] of st.base) if (dy >= from && Math.abs(dx) > half) return false; return true; };
+    const top = Math.min(...st.tops), rows = [];
+    for (let dy = top; dy <= -1; dy++) { let r = '';
+      for (let dx = -w; dx <= w; dx++) { if (!inM(dx, dy)) { r += '.'; continue; }
+        const edge = !inM(dx - 1, dy) || !inM(dx + 1, dy) || !inM(dx, dy - 1) || !inM(dx, dy + 1);
+        r += edge ? (!inM(dx, dy - 1) && (dx + 64) % 2 === 0 ? 't' : 'd') : (!inM(dx, dy - 2) && (dx + 65) % 2 === 0) || ((dx * 5 + dy * 3) % 11 + 11) % 11 === 0 ? 't' : ((dx * 3 - dy * 2) % 7 + 7) % 7 === 0 ? 'd' : 'l'; }
+      rows.push(r); }
+    return { x0: -w, y0: top, rows, head: st.head }; };
+  const FLOWER_LEAVES = { open: leafStage(LEAF_STAGES.open), bud: leafStage(LEAF_STAGES.bud) };
   const MOVES = [
     { line: lineOf('const CAMA='), act: '*', src: 'SOLY=[24,40,56,73]', to: 'SOLY=[26,40,56,73]', sky: [['soly', 24, 26]],
       why: 'the sun at its highest 2 px lower: its touch box ([SOLX - 14, soly - 14, 28, 28]) and so its hint frame (12 px round it) wholly inside the view (las-flores and h-patio ask for the sun; at soly 24 the frame reached 2 px over the picture\'s top). W.soly 24 in a recorded run is 26' },
@@ -182,6 +199,8 @@ function make(G) {
       why: 'acts.juntos: two go to the gate together: the one who walks ends right of the gate, before its right post. The fence runs up towards the far corner, so the gate stands ' + Math.round(112 - E.project((F.GX0 + F.GX1) / 2, F.CY, 0).sy) + ' rows further back than the old one; the walk follows it ' + (124 - JUNTOS[1]) + ' rows up and ' + (170 - JUNTOS[0]) + ' px left (as far as the fence behind them allows: 5 rows of lawn between the feet and the fence\'s foot, round 3). The frog\'s place at the gate (LUGAR.porton) went up with the gate too (round 4, below): he stands left of the one who walks, before the opening' },
     { line: lineOf('async luiscorre()'), act: 'luiscorre', src: 'await mueve("luis",170,124,8)', to: 'await mueve("luis",' + JUNTOS + ',8)', pts: [['luis', [170, 124], JUNTOS]],
       why: 'acts.luiscorre: Luis runs to the gate (then opens it, acts.abre): to the same place as acts.juntos' },
+    { line: lineOf('for(const k in CAMA){const fl='), act: '*', src: 'const h=hoyo(k,i);florEn(c,h[0],h[1],f);', to: 'const h=hoyo(k,i);flowerLeaves(c,h[0],h[1],f);florEn(c,h[0],h[1],f);',
+      why: 'round 6: draw the clump first: every flower in a bed (the only place patio.js plants one: florEn at hoyo(k, i), the beds\' entry in the sprite list at y CAMA[k][1] + 12) gets its own leaves, drawn immediately before it at its foot (flowerLeaves), so at its depth: whoever stands behind the bed is behind the leaves, whoever stands in front is in front, as with the flower. flowerLeaves(g, x, y, f): the stage f.k ? open : bud, each pixel of its rows at (x + x0 + col, y + y0 + row), colours palette' },
     { line: lineOf('porton:[128,104,.85]'), act: '*', src: 'porton:[128,104,.85]', to: 'porton:[' + PORTON4 + ',.85]', pts: [['cq', [128, 104], PORTON4]],
       why: 'round 4: LUGAR.porton, the frog at the gate (acts.ir a porton; acts.juntos), follows the gate: on the lawn before its opening, ' + gap4(PORTON4) + ' rows before the fence\'s line (the old picture: 17; round 3 left him ' + gap4([128, 104]) + ' rows before it, where the old hop counts put him), his middle at x ' + (PORTON4[0] + 16) + ' inside the opening\'s columns. ' + (PORTON4[0] - 128) + ' px, ' + (PORTON4[1] - 104) + ' rows. W.cq at (128, 104) in a recorded run is here (places: who cq). Some hop counts change: hops' },
     { line: lineOf('sale:[134,84,.5]'), act: '*', src: 'sale:[134,84,.5]', to: 'sale:[' + SALE4 + ',.5]', pts: [['cq', [134, 84], SALE4]],
@@ -356,7 +375,7 @@ function make(G) {
       pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were',
     },
     layout: {
-      what: 'the yard built as La sala is: two walls on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture\'s sides and bottom. On the LEFT the back of the house: its back wall on x = ' + F.CX + ' (it faces +x, in shade, teal siding as El frente\'s side wall), from its far corner (a white corner board, screen x ' + Math.round(E.project(F.CX, F.YH, 0).sx) + ') down off the picture\'s left edge; in it the back door in its white frame on a stone step (screen x ' + things.puerta.box[0] + ' to ' + (things.puerta.box[0] + things.puerta.box[2]) + '); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = ' + F.CY + ' (it faces +y, lit), from the far corner off the picture\'s right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x ' + things.porton.box[0] + ' to ' + (things.porton.box[0] + things.porton.box[2]) + '); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence\'s first post the yard opens on a field and low hills (the horizon at row ' + F.HZ + '), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the same grass as El frente\'s and El balcón\'s (round 4: the engine\'s GRASS ramp, centred where El frente\'s lawn is), calm (mostly one tone, Bayer-mixed with its neighbours), no blooms in its grass round the beds, the crate and the ball; round each bed a border of low leaves, crisp, in clumps: a narrow rim at its sides and front, a low row of leafy clumps behind its flower heads (round 5: each head seen against leaves; round 4\'s soft darker grass read as a pit or a shadow); the beds are turned earth in lumps, a hole for each flower',
+      what: 'the yard built as La sala is: two walls on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right), coming together in a far corner over the middle of the picture, the lawn running off the picture\'s sides and bottom. On the LEFT the back of the house: its back wall on x = ' + F.CX + ' (it faces +x, in shade, teal siding as El frente\'s side wall), from its far corner (a white corner board, screen x ' + Math.round(E.project(F.CX, F.YH, 0).sx) + ') down off the picture\'s left edge; in it the back door in its white frame on a stone step (screen x ' + things.puerta.box[0] + ' to ' + (things.puerta.box[0] + things.puerta.box[2]) + '); over it a hip roof of red tiles, the hip over the far corner. On the FAR RIGHT the wooden fence on y = ' + F.CY + ' (it faces +y, lit), from the far corner off the picture\'s right edge, posts with caps along it; in it, near the corner, the cream garden gate between two taller posts (screen x ' + things.porton.box[0] + ' to ' + (things.porton.box[0] + things.porton.box[2]) + '); right of the gate the flamboyán, its trunk a little in front of the fence, its crown where the old one was, the nest on a branch at its left. The lawn before them, the two beds of earth at the old ellipses. The house stops 2 units short of the corner: between its far corner and the fence\'s first post the yard opens on a field and low hills (the horizon at row ' + F.HZ + '), where the sun goes down. The gate opens into the yard: its leaf swung on its left post, its face seen; through the empty opening a path of trodden earth goes out over the field and winds up the hill behind. Through the open door a dark room (no story lights it): abuela stands in the doorway, on its threshold. The lawn is the same grass as El frente\'s and El balcón\'s (round 4: the engine\'s GRASS ramp, centred where El frente\'s lawn is), calm (mostly one tone, Bayer-mixed with its neighbours), no blooms in its grass round the beds, the crate and the ball, right up to the beds; the beds are turned earth in lumps, a hole for each flower, nothing round them (round 6: a flower\'s leaves are its own, the sprite layer\'s: flowerLeaves)',
       lines: LINES_WHAT,
       gate: Object.assign(GATE9, { what: 'the frog\'s two places at the gate (LUGAR.porton: he stops at it; LUGAR.sale: he goes out through it and fades), in rows his feet are in front of the fence\'s line at his column (< 0: past it). The old picture: porton 17 rows before its gate, sale 3 rows past it. Round 4: they follow the gate (moves): porton ' + GATE9.porton.before + ' rows before it, his middle at x ' + (PORTON4[0] + 16) + ' (the opening x 135 to 157); sale ' + (-GATE9.sale.before) + ' rows past it, on the path, his box between the posts. Round 3 had left them where the old hop counts put them: porton ' + GATE9.porton.round3.before + ' rows before, sale ' + GATE9.sale.round3.before + ' rows before (on the lawn). So some hop counts of pairs with porton or sale are not the old ones: hops lists them' }),
       why: 'page 11 decision 9 and the owner\'s three approved sets (El frente, El balcón, La sala): walls run along the world\'s axes and are seen at the engine\'s angle. Every place on the lawn keeps its old screen point (rules.floor). Round 3: everyone on the lawn has at least 5 rows of lawn between their feet and the foot of what stands behind them (round 2 put the lines as low as the places allowed, and the frog read as standing on the wall\'s base, the boy on the fence\'s): the wall\'s line went up ' + F.LIFT_W + ' row, held by the frog at the door (LUGAR.puerta) before the door\'s step; the fence\'s ' + F.LIFT_F + ' row, held by Carmen at the open gate (pair vamos, 168, 120) and the walk to the gate; the trunk stands against the fence, held by the frog at the tree. The old sun sank at x 100, right where the corner rises: a house wall there would hide it at every height, so the house ends short of the corner and the sun goes down in the gap, behind the field and the hills',
@@ -398,6 +417,15 @@ function make(G) {
       'patio.js:147 the light of the hour (orange .10 at sol 2, red .17 at 3) and patio.js:148 W.osc (dark blue over everything) -> baked into the set (setKey hora); the characters, the props and the fireflies are not dimmed (El frente\'s rule)',
       'patio.js:108 the frog\'s dotted shadow -> the engine\'s cast shadow',
     ],
+    flowerLeaves: {
+      what: 'round 6: a flower in the ground comes with its own leaves: a clump drawn by the sprite layer immediately before the flower (moves: the line of the beds), at its foot (x, y = hoyo(k, i)), 1:1, not dimmed by the hour (the characters are not; the set bakes the light). Each stage: pixel (x + x0 + col, y + y0 + row) of rows[row][col] is palette[that letter], "." none. open: the flower open (f.k), its head x - 4 to x + 4, rows y - 18 to y - 10: the clump 11 wide (x - 5 to x + 5), from y - 1 up to 1 to 4 rows over the head (y - 19 to y - 22), narrower at its foot. bud: the bud (!f.k), x - 2 to x + 2, rows y - 10 to y - 5: 9 wide (x - 4 to x + 4), up to y - 13. A clump stays inside its own hole\'s 10 px: a neighbour\'s head is never under it, and neighbours in a full bed join into one row of leaves',
+      palette: LEAF_PAL, stages: FLOWER_LEAVES,
+      gets: [{ line: lineOf('for(const k in CAMA){const fl='), what: 'the flowers in the beds (florEn at hoyo(k, i)): every one, open or bud, in every story, review and level picture (cual-patio flor, aquí, allá: the flower in bed L\'s or R\'s first hole)' }],
+      not: [{ line: lineOf('for(let i=0;i<5;i++){const x=4+i*6;'), what: 'mkCaja: the tulips in the crate (in pots, not in the ground)' },
+        { line: lineOf('if(k==="flor"){b.rect(6,6,1,8'), what: 'mkCosa flor: a flower in a hand, flying (vuelaA), in Carmen\'s hair (alpelo), in the basket, the nest or a card' },
+        { line: lineOf('(W.mari||[]).forEach('), what: 'the butterflies (FLOR colours): not flowers' },
+        { line: 'juego.js', what: 'the bubbles and the answer cards (bub, respIcon): drawn by the game' }],
+    },
     moves: MOVES.map(m => Object.assign({ line: m.line, act: m.act, src: m.src, to: m.to }, m.respEn ? { respEn: m.respEn } : {}, m.pts ? { places: m.pts.map(q => Object.assign({ who: q[0] || 'whoever', old: q[1], new: q[2] }, q.length > 4 ? { z: q[3], world: q[4] } : { world: q[3] })) } : {}, m.sky ? { values: m.sky.map(s => ({ key: 'W.' + s[0], old: s[1], new: s[2] })) } : {}, { why: m.why })),
     bubbles: { what: 'each bubble\'s rectangle relative to its tail\'s tip, as patio.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]', rects: G.M.bubbles },
     talk: {
@@ -471,7 +499,7 @@ function make(G) {
     c(L('if(W.luna)luna(c,150,26)'), 'luna(c,150,26); sol(c, SOLX, soly, n, brilla)', { points: ['luna', 'sol'] }, 'behind the set (sheet behind): unchanged places');
     c(L('c.drawImage(spr("patio"+'), 'c.drawImage(spr("patio"+...,()=>fondo(W.porton,W.pdoor)),0,0)', 'dropped: the set, for setKey(W) (then the sky objects\' box redrawn from the set: behind)');
     c(L('if(W.caja)L.push('), 'if(W.caja) c.drawImage(spr("caja",mkCaja),104,112) (sort y 136)', { point: 'caja', new: PTS.caja.screen }, 'the sprite layer: unchanged');
-    c(L('for(const k in CAMA){const fl='), 'the flowers in the beds: florEn at hoyo(k, i), sort y CAMA[k][1] + 12', 'the sprite layer: unchanged (the set\'s holes are at hoyo())');
+    c(L('for(const k in CAMA){const fl='), 'the flowers in the beds: florEn at hoyo(k, i), sort y CAMA[k][1] + 12', { moved: 'round 6: each flower\'s own leaves drawn first (moves; flowerLeaves)' }, 'the sprite layer (the set\'s holes are at hoyo())');
     c(L('if(W.rizo&&'), 'the loop the bird flew: setLineDash([2,3]) arc at z.x, z.y', 'screen: unchanged');
     c(L('if(!W.noche&&n>=2){c.fillStyle='), 'the light of the hour: c.fillRect(0,0,SW,SH)', 'dropped: baked into the set (setKey hora)');
     c(L('if(W.osc){c.fillStyle='), 'W.osc: c.fillRect(0,0,SW,SH)', 'dropped: baked into the set (setKey hora); the characters are not dimmed');
@@ -669,7 +697,7 @@ function check(sh, G) {
         if (K[h[1] * 240 + h[0]] !== G.K.road) P.push('beds ' + key + ': the hole at ' + h + ' is not in the earth'); }
       const crate = [104, 113, 32, 23], n = countIn(tag, crate, ['casa', 'puerta', 'escalon', 'porton', 'arbol', 'nido']); if (n) P.push('crate ' + key + ': ' + n + ' px of the set behind the crate');
       let lawn = 0; for (let x = 105; x < 135; x++) if (K[135 * 240 + x] === G.K.grass) lawn++; if (lawn < 28) P.push('crate ' + key + ': its bottom row is on ' + lawn + ' px of lawn'); }
-    notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the ground (the bed\'s leaves, the lawn), nothing of the set, in every baked state; the crate\'s bottom row on the lawn, nothing of the set behind it'); }
+    notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the lawn, in every baked state; the crate\'s bottom row on the lawn, nothing of the set behind it'); }
 
   /* round 4: the lawn is El frente's grass (the engine's GRASS ramp) and green at every hour (its mean colour: green over red and over blue, its
      hue 65 degrees or more, yellow green to green, as El frente\'s by day (76); not olive or brown, hue 20 to 60, at dusk or at night); each flower head stands out on the lawn right over and beside it (the yellow petal, the old
@@ -681,21 +709,34 @@ function check(sh, G) {
       for (let y = 120; y < 216; y++) for (let x = 0; x < 240; x++) { const i = y * 240 + x; if (K[i] !== G.K.grass) continue; n++; for (let k = 0; k < 3; k++) m[k] += C[i * 3 + k]; }
       m = m.map(v => Math.round(v / n)); const hue = Math.round(60 * (2 + (m[2] - m[0]) / (m[1] - Math.min(m[0], m[2])))); hours.push(key.split('-')[0] + ' ' + m.join(',') + ' (hue ' + hue + ')');
       if (!(m[1] > m[0] && m[1] > m[2] && hue >= 65)) P.push('lawn ' + key + ': its mean colour ' + m + ' (hue ' + hue + ') is not green'); }
-    const C = G.rgb['dia-shut-shut'], YEL = [255, 224, 112], least = [];
-    for (const k of ['L', 'R']) for (const h of F.HOLES[k]) { let s = 0, n = 0; for (let y = h[1] - 25; y < h[1] - 19; y++) for (let x = h[0] - 4; x <= h[0] + 4; x++) { const i = y * 240 + x; s += dE(YEL, [C[i * 3], C[i * 3 + 1], C[i * 3 + 2]]); n++; }
-      least.push(Math.round(s / n)); if (s / n < 57) P.push('flowers: a yellow head at ' + h + ' stands out ' + Math.round(s / n) + ' from the lawn over it (the old picture: 57)'); }
-    // round 5: the beds' borders of leaves: at every hour no darker than the lawn in the set's shade (their mean luminance, and their darkest
-    // tone's), and not a smooth patch: a few flat colours (the lit hour's leaf tones), crisp
-    const lum = (C, i) => .3 * C[i * 3] + .59 * C[i * 3 + 1] + .11 * C[i * 3 + 2], bnotes = [];
-    for (const key of STATES.filter(k => k.endsWith('-shut-shut'))) { const C = G.rgb[key], B = G.border.filter(i => G.kinds[key][i] === G.K.road), Sh = G.shade[key];
-      const mB = B.reduce((a, i) => a + lum(C, i), 0) / B.length, mS = Sh.reduce((a, i) => a + lum(C, i), 0) / Sh.length;
-      const tones = new Map(); for (const i of B) { const c = C[i * 3] + ',' + C[i * 3 + 1] + ',' + C[i * 3 + 2]; tones.set(c, (tones.get(c) || 0) + 1); }
-      const main = [...tones.entries()].filter(([c, n]) => n >= B.length * .05).map(([c]) => c.split(',').map(Number)), darkest = Math.min(...main.map(c => .3 * c[0] + .59 * c[1] + .11 * c[2]));
-      if (mB < mS || darkest < mS * .9) P.push('bed border ' + key + ': its mean luminance ' + Math.round(mB) + ', its darkest leaf tone ' + Math.round(darkest) + ', the lawn in the set\'s shade ' + Math.round(mS));
-      if (main.length > 4) P.push('bed border ' + key + ': ' + main.length + ' tones (a gradient?)');
-      bnotes.push(key.split('-')[0] + ' ' + Math.round(mB) + '/' + Math.round(darkest) + ' vs ' + Math.round(mS)); }
-    notes.push('bed borders (round 5): ' + G.border.length + ' px of low leaves round the two beds, 3 tones, crisp; their mean luminance / darkest tone against the lawn in the set\'s shade, at every hour: ' + bnotes.join(', '));
-    notes.push('lawn (round 4): El frente\'s grass (GRASS), green at every hour (mean colour of the lawn, El frente\'s by day hue 76: ' + hours.join('; ') + '); a yellow flower head at each hole stands out from the lawn over it by ' + Math.min(...least) + ' at the least (mean CIE76, flowers.py\'s measure; the old picture 57 at every hole, round 3 58)'); }
+    // round 6: the yellow head against what is behind it: the lawn with its clump drawn (flowerLeaves, open), the 1 px round the head's 9 x 9
+    // (x - 5 to x + 5, y - 19 to y - 9, less the head): each at least the old picture's 57 (its lawn); and flowers.py's own measure (the lawn 2
+    // to 7 rows over the head, with every clump of a full bed drawn) reported
+    const C = G.rgb['dia-shut-shut'], YEL = [255, 224, 112], least = [], over = [], LS = sh.flowerLeaves.stages.open, LP = sh.flowerLeaves.palette;
+    const comp = new Map(); for (const k of ['L', 'R']) for (const h of F.HOLES[k]) LS.rows.forEach((r, j) => [...r].forEach((ch, c) => { if (ch !== '.') comp.set((h[1] + LS.y0 + j) * 240 + h[0] + LS.x0 + c, LP[ch]); }));
+    const px = i => comp.get(i) || [C[i * 3], C[i * 3 + 1], C[i * 3 + 2]];
+    for (const k of ['L', 'R']) for (const h of F.HOLES[k]) { let s = 0, n = 0, s2 = 0, n2 = 0;
+      for (let y = h[1] - 19; y <= h[1] - 9; y++) for (let x = h[0] - 5; x <= h[0] + 5; x++) { if (x >= h[0] - 4 && x <= h[0] + 4 && y >= h[1] - 18 && y <= h[1] - 10) continue; s += dE(YEL, px(y * 240 + x)); n++; }
+      for (let y = h[1] - 25; y < h[1] - 19; y++) for (let x = h[0] - 4; x <= h[0] + 4; x++) { s2 += dE(YEL, px(y * 240 + x)); n2++; }
+      least.push(Math.round(s / n)); over.push(Math.round(s2 / n2)); if (s / n < 57) P.push('flowers: a yellow head at ' + h + ' stands out ' + Math.round(s / n) + ' from its leaves round it (the old picture: 57)'); }
+    notes.push('lawn (round 4): El frente\'s grass (GRASS), green at every hour (mean colour of the lawn, El frente\'s by day hue 76: ' + hours.join('; ') + ')');
+    notes.push('flowers (round 6): a yellow head at each hole stands out from what is behind it, its leaves (flowerLeaves) and the lawn round them, by ' + Math.min(...least) + ' at the least (mean CIE76, the 1 px round the head; the old picture\'s lawn 57); from the lawn 2 to 7 rows over it (flowers.py\'s measure, every clump drawn) by ' + Math.min(...over) + ' to ' + Math.max(...over)); }
+
+  /* round 6: the flowers' own leaves (flowerLeaves). Each stage's clump: behind the head (the whole 9 x 9, or the bud) and 1 px round it at
+     its sides, inside its hole's 10 px (no neighbour's head under it). Behind every clump only ground (nothing of the set), in every state. At
+     every recorded moment no clump pixel on anyone's face, nor on the body of anyone standing in front of the bed's middle row who is drawn
+     before it; whoever stands behind the bed is behind the leaves, as with the flowers (counted). The single flower in flor, aquí, allá: its
+     clump whole in the picture */
+  const clumpPx = w => { const out = []; for (const k of ['L', 'R']) (((w.flores || {})[k]) || []).forEach((f, i) => { const h = F.HOLES[k][i], st = sh.flowerLeaves.stages[f.k ? 'open' : 'bud'];
+      st.rows.forEach((r, j) => [...r].forEach((ch, c) => { if (ch !== '.') out.push([h[0] + st.x0 + c, h[1] + st.y0 + j, k]); })); }); return out; };
+  { for (const [name, st] of Object.entries(sh.flowerLeaves.stages)) { const hd = st.head, on = (dx, dy) => { const r = st.rows[dy - st.y0]; return !!r && r[dx - st.x0] !== undefined && r[dx - st.x0] !== '.'; };
+      let miss = 0; for (let dy = hd[1]; dy < hd[1] + hd[3]; dy++) for (let dx = hd[0]; dx < hd[0] + hd[2]; dx++) if (!on(dx, dy)) miss++;
+      for (let dy = hd[1] + 1; dy < hd[1] + hd[3]; dy++) for (const dx of [hd[0] - 1, hd[0] + hd[2]]) if (!on(dx, dy)) miss++;
+      if (miss) P.push('flowerLeaves ' + name + ': ' + miss + ' px of its head or the pixel round it at its sides without leaves behind');
+      if (st.x0 < -5 || st.x0 + st.rows[0].length - 1 > 5) P.push('flowerLeaves ' + name + ': wider than its hole\'s 10 px'); }
+    for (const key of Object.keys(TAGS)) { const tag = TAGS[key]; let n = 0; for (const [x, y] of clumpPx({ flores: { L: [1, 1, 1, 1, 1].map(() => ({ k: 1 })), R: [1, 1, 1, 1, 1].map(() => ({ k: 1 })) } }))
+        if (['casa', 'puerta', 'escalon', 'cerca', 'porton', 'arbol', 'nido'].includes(tag[y * 240 + x])) n++;
+      if (n) P.push('flowerLeaves ' + key + ': ' + n + ' px of the set behind the clumps'); } }
 
   /* the sun sets behind the fence: its disc (r 11 at SOLX, soly) wholly in the sky at its first three heights, nearly at the fourth (on the fence,
      as the old), and wholly behind the set at 109 (after puesta); in every hour it is drawn in */
@@ -908,6 +949,23 @@ function check(sh, G) {
   notes.push('clear lawn (round 3): at every place where someone stands, at every column of their feet, at least ' + CLEAR + ' rows of lawn between their feet and the foot of what stands behind them; the least: behind the wall or the step ' + clearLeast.wall.join(' rows, ') + '; the fence or the gate ' + clearLeast.fence.join(' rows, ') + '; the trunk ' + clearLeast.tree.join(' rows, '));
   notes.push('ground: ' + nFloor + ' distinct places where someone stands (and the frog), ' + nSit + ' where someone sits on the grass: on the lawn of the yard (x > CX, y > CY; abuela in the doorway), none behind the fence or inside the house, nothing of the house, the fence, the gate or the tree nearer than them inside their body');
 
+  /* round 6: the flowers' leaves at every recorded moment: the sprite list as patio.js draw sorts it (people at p.z || p.y, before the beds'
+     entry at y 188 when not greater; the frog at q.y + 27, after it when equal). No clump pixel on the face of anyone drawn before the beds
+     (the frog's too), nor on the body of anyone drawn before them standing in front of the beds' middle row (feet under row 186) */
+  { let nMom = 0, behind = new Set(); const seenL = new Set();
+    for (const r of runs) { forRun(r); for (const ln of r.lines) { const w = remapW(ln.W), cp = clumpPx(w); if (!cp.length) continue;
+      const key = JSON.stringify([w.gente, w.flores, w.cq && [w.cq.x, w.cq.y, w.cq.s, w.cq.vis, w.cq.dy]]); if (seenL.has(key)) continue; seenL.add(key); nMom++;
+      const X0 = Math.min(...cp.map(q => q[0])), X1 = Math.max(...cp.map(q => q[0])), Y0 = Math.min(...cp.map(q => q[1])), Y1 = Math.max(...cp.map(q => q[1])), set = new Set(cp.map(q => q[1] * 240 + q[0]));
+      const inRect = rc => { let n = 0; for (let y = Math.max(Y0, rc[1]); y < Math.min(Y1 + 1, rc[1] + rc[3]); y++) for (let x = Math.max(X0, rc[0]); x < Math.min(X1 + 1, rc[0] + rc[2]); x++) if (set.has(y * 240 + x)) n++; return n; };
+      for (const [id, p] of people(w)) { if ((p.z || p.y) > 188) continue;
+        const f = inRect(faceOf(id, p)); if (f) P.push('flowerLeaves: ' + r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + f + ' px of leaves on ' + id + '\'s face');
+        const b = body(id, p); if (!meets(b, [X0, Y0, X1 - X0 + 1, Y1 - Y0 + 1])) continue;
+        let n = 0; for (const [x, y] of cp) n += maskMeets(id, p, [x, y, 1, 1]);
+        if (n && Math.round(p.y) > 186) P.push('flowerLeaves: ' + r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + n + ' px of leaves on ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ', in front of the bed');
+        else if (n) behind.add(id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y)); }
+      const q = w.cq; if (q && q.vis && q.y + 27 < 188) { const f = inRect(frogFace(q)); if (f) P.push('flowerLeaves: ' + r.story.id + ' ' + r.plan + ' ' + ln.path + ': ' + f + ' px of leaves on the frog\'s face'); } } }
+    notes.push('flowerLeaves (round 6): at ' + nMom + ' distinct moments with flowers in the beds no leaf on anyone\'s face, nor on anyone standing in front of a bed; behind the leaves, as behind the flowers in the old picture: ' + ([...behind].join(', ') || 'no one')); }
+
   /* round 4: the frog at the gate and out through it. LUGAR.porton: 15 to 19 rows before the fence's line, his middle inside the opening's
      columns; LUGAR.sale: 2 to 5 rows past it, on the path, his whole box inside the opening's columns. His way out (acts.sevan: hopTo(sale, 3 hops)
      from the gate, every step as juego.js hopTo makes it, his box raised by dy): no pixel of the gate's leaf, its posts, the fence or anything of
@@ -994,6 +1052,12 @@ function check(sh, G) {
     if (JSON.stringify(ws.si.cq) !== JSON.stringify(ws.no.cq)) diff.push('the frog ' + Object.keys(Object.assign({}, ws.si.cq, ws.no.cq)).filter(k => ws.si.cq[k] !== ws.no.cq[k]).join('/'));
     pairDiff.push(deacc(word) + ': ' + diff.join(', '));
   }
+  // round 6: the flower with its leaves whole in the pictures that show it alone (flor, aquí, allá)
+  { const out = []; for (const ps of pairSides) { const nm = deacc(ps.w) + '.' + ps.side; if (!['flor', 'aqui', 'alla'].includes(deacc(ps.w))) continue;
+      const cp = clumpPx(ps.spec.set || {}), crop = sh.pictures[nm].crop; if (!cp.length) continue;
+      const bx = [Math.min(...cp.map(q => q[0])), Math.min(...cp.map(q => q[1]))]; const rc = [bx[0], bx[1], Math.max(...cp.map(q => q[0])) - bx[0] + 1, Math.max(...cp.map(q => q[1])) - bx[1] + 1];
+      if (!within(rc, crop)) P.push('pair ' + nm + ': the flower\'s leaves ' + JSON.stringify(rc) + ' are cut by the picture ' + JSON.stringify(crop)); else out.push(nm); }
+    notes.push('pairs (round 6): the single flower with its leaves whole in ' + out.join(', ')); }
   notes.push('pairs, what differs (the same window both sides): ' + pairDiff.join('; '));
   notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures): everyone, the frog, the ball and the sun or moon whole in their crop, on clear ground');
   for (const k of STATES) if (!reached.has(k)) P.push('state ' + k + ' is baked but nothing reaches it');

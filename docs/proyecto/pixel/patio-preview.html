@@ -47,6 +47,12 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
       'if(q.vis&&q.bub){const b=frogBox(q),t=PREVIEW.talk([b.x+(b.w>>1),b.y+2-(W.lleva?18:0)],b.w>>1,q.bub,W);bub2(c,q.bub,t[0],t[1],a);}');
     return src;
   }
+  // round 6 (sheet flowerLeaves): a flower in the ground comes with its own leaves, drawn first (moves: the line of the beds calls this before
+  // florEn), at its foot, by its stage, 1:1, not dimmed
+  window.flowerLeaves = function (g, x, y, f) {
+    const L = SHEET.flowerLeaves, st = L.stages[f.k ? 'open' : 'bud'];
+    st.rows.forEach((r, j) => { for (let c = 0; c < r.length; c++) if (r[c] !== '.') { g.fillStyle = 'rgb(' + L.palette[r[c]].join(',') + ')'; g.fillRect(x + st.x0 + c, y + st.y0 + j, 1, 1); } });
+  };
   const ready = fetch('patio-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; })
     .then(() => fetch('../../../historia/escenas/patio.js')).then(r => r.text()).then(t => {
       const s = document.createElement('script'); s.textContent = edit(t) + '\n//# sourceURL=patio-new.js'; document.body.appendChild(s);
