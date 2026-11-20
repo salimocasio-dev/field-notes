@@ -1,0 +1,3095 @@
+// Made by tool/make_sheet_fixture.dart from docs/proyecto/pixel/sala-sheet.json. Do not edit.
+// ignore_for_file: lines_longer_than_80_chars
+
+/// La sala's sheet (order 31a), the text of the file, for the tests that run in a browser.
+const String salaSheetJson = r'''{
+ "scene": "sala",
+ "made": "node docs/proyecto/pixel/sala-sheet-make.js, from sala-set.html (window.SALA) and coqui/ref/escenas/sala/. Order 31a.",
+ "S": 26,
+ "origin": {
+  "originX": 20,
+  "originY": -33
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "pairPicture": [196, 104],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
+  "floor": "the room is built round the old picture: a place on its floor keeps its screen place. A frog place q: the floor point under (q.x + 16, q.y + 25), new q = old q. A person's place (x, y): the floor point under (x, y - 1), new (x, y) = old. So every floor position of sala.js, its stories and its pairs keeps its numbers, but for the few in moves (where the old picture put someone under the answer cards or a bubble on a face); the sheet names each one (spots, remap, code, moves) with its world point",
+  "relative": "what the old code draws or moves relative to a person, the frog or a point (p.x + 22, q.x + 16, h[0] - 2, the bubbles, the trays, the cups, the Z of sleep) keeps its offsets",
+  "sky": "screen-space effects keep their old numbers: the flash (W.flash), the blur (W.borroso), the stars of final6 and final8, the heart (heartAt)",
+  "view": "both views are zoom 1: the 196 x 216 window from x0 22, the old wide one. A change of view moves nothing",
+  "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were"
+ },
+ "room": {
+  "what": "a doll's house cut: of the room's four walls only the two far ones stand, the left one (facing +x, in shade: the door to the porch and the three frames) and the back one (facing +y, lit: the window). The two near walls are not built. The floor runs past the picture's bottom and sides, so no cut edge of it shows; the standing walls are cut at 3.2 (a strip of wall over the door and the window), their cut tops a white edge. Furniture is turned to face the camera (as El balcón's chairs): the sofa stands across the corner, so the family sits in a row as in the old picture. The frames hang turned to the camera too (round 2): upright pictures on wires from nails, so the photos are upright and whole at the old size: three 20 x 27 frames 2 px apart, their nails at one height on the wall, so they step up towards the corner with it, between the door's casing and the corner with 3 px to spare each side (a crooked one turns two corners 2.9 px out: counterclockwise, over the lower frame on its left and under the higher one on its right). The lamp stands in the corner, its foot on the floor seen over the sofa's back, as tall as the old one (its shade over the frames). Through the door: the porch's tiles (El balcón's), 2.6 out, its stone edge, and the lawn 0.3 lower beyond",
+  "why": "the old picture is a wall and a floor that fill the frame, every place in it on that floor; a near wall, even cut low, would stand across the frog's floor and over feet, and a cut edge of the floor would be a line across the room. The two far walls are where the old door (left) and window (right) were; the corner between them is behind the sofa, as the old wall was"
+ },
+ "top": {
+  "liso": "above the cut walls a flat calm dark grey (rgb 38, 36, 44), a little lighter than the lesson screen's #1B1B1F: the picture reads as a room seen from above, nothing outside competes with it",
+  "chosen": "liso",
+  "decided": "the orchestrator (round 2): top = liso. Round 1's candidate b (the lawn round the house behind the cut walls) is gone, and top is no longer a parameter of the set"
+ },
+ "smoothing": {
+  "what": "sala.js turns smoothing on in three places; the new canvas (Ctx) does not smooth unless told, so each keeps its smoothing on (Ctx.smoothing = true) exactly there, over the new picture",
+  "places": [
+   {
+    "at": "sala.js:120",
+    "what": "W.borroso (acts.tropieza: what abuelo sees without his glasses): the whole scene picture, the set and the sprite layer drawn so far, is drawn down to 20 x 18 with smoothing on",
+    "keep": "Ctx.snapshot of the 240 x 216 picture, drawImage into a 20 x 18 Sprite with smoothing true. The picture is the new set with the sprites on it: the blur is of the new room"
+   },
+   {
+    "at": "sala.js:121",
+    "what": "the 20 x 18 picture drawn back up to 240 x 216 with smoothing on (then off)",
+    "keep": "drawImageRect with smoothing true, then false, as the old"
+   },
+   {
+    "at": "sala.js:137",
+    "what": "W.visor without nitido (la-foto: the camera's little window, out of focus): the person's sprite (22 x 23 of it) drawn down to 5 x 5 and back up to 46 x 46, smoothing on for both (the hud, on the display picture)",
+    "keep": "unchanged: it draws a person's sprite in the hud, not the set"
+   }
+  ],
+  "notSmoothing": "sala.js:190 acts.retrato draws 198 x 124 of the picture into 128 x 80 with smoothing OFF (a nearest-neighbour shrink, as the old): its region is points.retrato"
+ },
+ "setKey": {
+  "params": {
+   "luz": {
+    "values": ["1", "0"],
+    "fromW": "W.luz: the floor lamp lit (1) or not (0); every story keeps it lit (the old mkLampara(W.luz) draws both)"
+   },
+   "fotos": {
+    "values": "three characters, 0 or 1, one a frame, left to right",
+    "fromW": "for i in 0..2: W.fotos[i] && !W.fotos[i].ok ? \"1\" (crooked) : \"0\". A photo in a frame (its people, the frog's foot, the slippers) is the sprite layer's: marco()"
+   }
+  },
+  "key": "luz + \"-\" + fotos, e.g. \"1-000\"",
+  "baked": [
+   {
+    "query": "?luz=1&fotos=000",
+    "reached": "every story's start, la-familia, d-bizcocho-bebe, quien-eres-tu, h-sala, d-foto-familia (all its photos straight), the pairs"
+   },
+   {
+    "query": "?luz=1&fotos=100",
+    "reached": "la-foto wrong (one crooked photo)"
+   },
+   {
+    "query": "?luz=1&fotos=110",
+    "reached": "la-foto wrong (two)"
+   },
+   {
+    "query": "?luz=1&fotos=111",
+    "reached": "la-foto wrong (three: the slippers)"
+   },
+   {
+    "query": "?luz=1&fotos=010",
+    "reached": "la-foto alternate"
+   }
+  ],
+  "bakedWhy": "order 06 found 27 states: what makes them is W.fotos (the frames), W.pastel (the cake), W.camMesa, W.gotas (coffee drops), W.relleno and W.luz. Only the frames' crookedness and the lamp are the set's; the cake, the camera, the drops and the photos in the frames are drawn by the sprite layer, so 5 baked states draw all 27",
+  "notRead": "W.borroso is an effect over the whole picture (smoothing: see smoothing); W.golpe (the table jumps 2 px when abuelo trips) is not drawn: the table is in the set"
+ },
+ "things": {
+  "hermano": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "hermana": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "bebe": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "abuela": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "mama": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "papa": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "abuelo": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (sala.js:79): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "bizcocho": {
+   "sprite": true,
+   "prop": true,
+   "why": "the cake on its dish (sprite layer): box [x - 1, y, 30, 16] at points.bizcocho (old [106, 138, 30, 16] at 107, 138)",
+   "box": [107, 142, 30, 16]
+  },
+  "mesita": {
+   "set": true,
+   "world": [3.182, 4.2154, 0, 4.433, 5.4665, -0.1658],
+   "box": [98, 142, 47, 28],
+   "what": "the low table, turned to the camera",
+   "turned": {
+    "centre": [4.1785, 5.2119],
+    "halfWidth": 0.8846,
+    "halfDepth": 0.36,
+    "height": 0.44,
+    "angle": -0.7854
+   },
+   "old": {
+    "box": [98, 148, 46, 18]
+   }
+  },
+  "sofa": {
+   "set": true,
+   "world": [-0.3807, 1.0335, 0, 2.1213, 3.5355, -0.2033],
+   "box": [68, 81, 92, 51],
+   "what": "the long sofa, turned to the camera",
+   "turned": {
+    "centre": [1.8031, 3.2173],
+    "halfWidth": 1.7692,
+    "halfDepth": 0.45,
+    "height": 1.32,
+    "angle": -0.7854
+   },
+   "old": {
+    "box": [68, 84, 92, 44]
+   }
+  },
+  "butaca": {
+   "set": true,
+   "world": [2.8012, 0.5711, 0, 3.9435, 1.7134, 0.7954],
+   "box": [160, 88, 42, 39],
+   "what": "abuelo's armchair, turned to the camera",
+   "turned": {
+    "centre": [3.6324, 1.4022],
+    "halfWidth": 0.8077,
+    "halfDepth": 0.44,
+    "height": 1.22,
+    "angle": -0.7854
+   },
+   "old": {
+    "box": [160, 86, 42, 42]
+   }
+  },
+  "fotos": {
+   "set": true,
+   "world": [-2.5293, -0.6255, 0, -0.6255, 1.2782, 0.8438],
+   "box": [70, 27, 70, 54],
+   "what": "the three picture frames on the left wall, crooked or straight, with their nails (the box round them all, as the old one; a square world box whose corners have that screen box)",
+   "old": {
+    "box": [64, 34, 82, 30]
+   }
+  },
+  "lampara": {
+   "set": true,
+   "world": [0, -0.12, 0, 0.68, 0.56, 3],
+   "box": [129, 6, 26, 81],
+   "what": "the floor lamp in the corner, its foot to its shade",
+   "old": {
+    "box": [146, 62, 20, 64]
+   }
+  },
+  "puerta": {
+   "set": true,
+   "world": [0.3345, 5.1203, 0, 1.2903, 6.076, 3.3288],
+   "box": [34, 50, 36, 93],
+   "what": "the doorway with its frame and the open leaf (the box round their real corners, as a square world box: the leaf stands out of the wall)",
+   "old": {
+    "box": [20, 42, 42, 80]
+   }
+  },
+  "ventana": {
+   "set": true,
+   "world": [1.24, -0.1, 0.85, 3.98, 0.2, 2.97],
+   "box": [159, 18, 57, 77],
+   "what": "the window with its curtains and rod",
+   "old": {
+    "box": [160, 32, 56, 54]
+   }
+  },
+  "sala": {
+   "set": true,
+   "world": [2.62, 2.62, 0, 8, 10.15, 0],
+   "box": [1, 123, 238, 119],
+   "what": "the open floor before the furniture (its box is the old floor's, from row 122 down, the whole width). Last in the hit order, as before",
+   "old": {
+    "box": [0, 122, 240, 94]
+   }
+  }
+ },
+ "spots": {
+  "frog.puerta": {
+   "world": [0.3807, 5.4937, 0],
+   "new": [30, 104],
+   "scale": 0.7,
+   "old": [30, 104],
+   "what": "LUGAR.puerta: the frog"
+  },
+  "frog.centro": {
+   "world": [6.6903, 7.7782, 0],
+   "new": [104, 183],
+   "scale": 1,
+   "old": [104, 183],
+   "what": "LUGAR.centro: the frog"
+  },
+  "frog.huele": {
+   "world": [3.8075, 6.6359, 0],
+   "new": [72, 146],
+   "scale": 0.9,
+   "old": [72, 146],
+   "what": "LUGAR.huele: the frog"
+  },
+  "frog.abuela": {
+   "world": [3.9163, 7.5062, 0],
+   "new": [58, 155],
+   "scale": 1,
+   "old": [58, 155],
+   "what": "LUGAR.abuela: the frog"
+  },
+  "frog.mama": {
+   "world": [2.9372, 5.2217, 0],
+   "new": [82, 125],
+   "scale": 0.9,
+   "old": [82, 125],
+   "what": "LUGAR.mama: the frog"
+  },
+  "frog.papa": {
+   "world": [3.8619, 4.297, 0],
+   "new": [116, 125],
+   "scale": 0.9,
+   "old": [116, 125],
+   "what": "LUGAR.papa: the frog"
+  },
+  "frog.abuelo": {
+   "world": [5.2217, 2.9372, 0],
+   "new": [166, 125],
+   "scale": 0.9,
+   "old": [166, 125],
+   "what": "LUGAR.abuelo: the frog"
+  },
+  "frog.bebe": {
+   "world": [5.82, 7.7782, 0],
+   "new": [88, 175],
+   "scale": 1,
+   "old": [88, 175],
+   "what": "LUGAR.bebe: the frog"
+  },
+  "frog.izq": {
+   "world": [5.0585, 9.41, 0],
+   "new": [44, 183],
+   "scale": 1,
+   "old": [44, 183],
+   "what": "LUGAR.izq: the frog"
+  },
+  "sitio.mama": {
+   "world": [1.6046, 3.9435, 0],
+   "new": [97, 127],
+   "old": [97, 127],
+   "what": "SITIO.mama: mama sitting (sent): the floor at the feet, before the seat"
+  },
+  "sitio.papa": {
+   "world": [2.5293, 3.0188, 0],
+   "new": [131, 127],
+   "old": [131, 127],
+   "what": "SITIO.papa: papa sitting (sent): the floor at the feet, before the seat"
+  },
+  "sitio.abuelo": {
+   "world": [3.8891, 1.659, 0],
+   "new": [181, 127],
+   "old": [181, 127],
+   "what": "SITIO.abuelo: abuelo sitting (sent): the floor at the feet, before the seat"
+  },
+  "sitio.bebe": {
+   "world": [4.4602, 8.2677, 0],
+   "new": [70, 193],
+   "old": [70, 193],
+   "what": "SITIO.bebe: bebe standing (sitting on the blanket)"
+  },
+  "sitio.abuela": {
+   "world": [2.3389, 7.6694, 0],
+   "new": [42, 168],
+   "old": [42, 168],
+   "what": "SITIO.abuela: abuela standing"
+  },
+  "sitio.hermano": {
+   "world": [6.9079, 6.364, 0],
+   "new": [150, 198],
+   "old": [150, 198],
+   "what": "SITIO.hermano: hermano standing"
+  },
+  "sitio.hermana": {
+   "world": [7.7238, 5.5481, 0],
+   "new": [180, 198],
+   "old": [180, 198],
+   "what": "SITIO.hermana: hermana standing"
+  },
+  "parados.0": {
+   "world": [2.1757, 4.3514, 0],
+   "new": [100, 136],
+   "old": [100, 136],
+   "what": "PARADOS[0]: two people standing before the sofa (lados parados; espejuelos)"
+  },
+  "parados.1": {
+   "world": [3.2636, 3.2636, 0],
+   "new": [140, 136],
+   "old": [140, 136],
+   "what": "PARADOS[1]: two people standing before the sofa (lados parados; espejuelos)"
+  },
+  "aparte.0": {
+   "world": [4.7322, 8.5397, 0],
+   "new": [70, 198],
+   "old": [70, 198],
+   "what": "APARTE[0]: two people apart, at the front"
+  },
+  "aparte.1": {
+   "world": [7.4518, 5.82, 0],
+   "new": [170, 198],
+   "old": [170, 198],
+   "what": "APARTE[1]: two people apart, at the front"
+  },
+  "juntos.0": {
+   "world": [4.8954, 8.1589, 0],
+   "new": [80, 196],
+   "old": [96, 196],
+   "what": "JUNTOS[0]: two people together, at the front (moved: see moves)"
+  },
+  "juntos.1": {
+   "world": [7.0711, 5.9832, 0],
+   "new": [160, 196],
+   "old": [144, 196],
+   "what": "JUNTOS[1]: two people together, at the front (moved: see moves)"
+  },
+  "camara": {
+   "world": [7.0167, 3.8619, 0],
+   "new": [198, 176],
+   "old": [198, 176],
+   "what": "CAMARA: abuelo with the camera"
+  },
+  "puerta.hermano": {
+   "world": [0.1, 4.39, 0],
+   "new": [61, 117],
+   "old": [40, 126],
+   "what": "acts.corren: a.x = 40, a.y = 126: the brother appears in the doorway, on its threshold"
+  },
+  "puerta.hermana": {
+   "world": [0.1, 4.936, 0],
+   "new": [51, 122],
+   "old": [34, 124],
+   "what": "acts.corren: b.x = 34, b.y = 124: the sister appears in the doorway, on its threshold, a step behind him"
+  }
+ },
+ "lugar": {
+  "puerta": {
+   "spot": "frog.puerta",
+   "q": [30, 104],
+   "scale": 0.7,
+   "old": [30, 104]
+  },
+  "centro": {
+   "spot": "frog.centro",
+   "q": [104, 183],
+   "scale": 1,
+   "old": [104, 183]
+  },
+  "huele": {
+   "spot": "frog.huele",
+   "q": [72, 146],
+   "scale": 0.9,
+   "old": [72, 146]
+  },
+  "abuela": {
+   "spot": "frog.abuela",
+   "q": [58, 155],
+   "scale": 1,
+   "old": [58, 155]
+  },
+  "mama": {
+   "spot": "frog.mama",
+   "q": [82, 125],
+   "scale": 0.9,
+   "old": [82, 125]
+  },
+  "papa": {
+   "spot": "frog.papa",
+   "q": [116, 125],
+   "scale": 0.9,
+   "old": [116, 125]
+  },
+  "abuelo": {
+   "spot": "frog.abuelo",
+   "q": [166, 125],
+   "scale": 0.9,
+   "old": [166, 125]
+  },
+  "bebe": {
+   "spot": "frog.bebe",
+   "q": [88, 175],
+   "scale": 1,
+   "old": [88, 175]
+  },
+  "izq": {
+   "spot": "frog.izq",
+   "q": [44, 183],
+   "scale": 1,
+   "old": [44, 183]
+  }
+ },
+ "hops": [
+  {
+   "a": "puerta",
+   "b": "centro",
+   "old": 4,
+   "new": 4,
+   "dOld": 108.25,
+   "dNew": 108.25
+  },
+  {
+   "a": "puerta",
+   "b": "huele",
+   "old": 2,
+   "new": 2,
+   "dOld": 59.4,
+   "dNew": 59.4
+  },
+  {
+   "a": "puerta",
+   "b": "abuela",
+   "old": 2,
+   "new": 2,
+   "dOld": 58.18,
+   "dNew": 58.18
+  },
+  {
+   "a": "puerta",
+   "b": "mama",
+   "old": 2,
+   "new": 2,
+   "dOld": 56.08,
+   "dNew": 56.08
+  },
+  {
+   "a": "puerta",
+   "b": "papa",
+   "old": 3,
+   "new": 3,
+   "dOld": 88.53,
+   "dNew": 88.53
+  },
+  {
+   "a": "puerta",
+   "b": "abuelo",
+   "old": 4,
+   "new": 4,
+   "dOld": 137.61,
+   "dNew": 137.61
+  },
+  {
+   "a": "puerta",
+   "b": "bebe",
+   "old": 3,
+   "new": 3,
+   "dOld": 91.68,
+   "dNew": 91.68
+  },
+  {
+   "a": "puerta",
+   "b": "izq",
+   "old": 3,
+   "new": 3,
+   "dOld": 80.23,
+   "dNew": 80.23
+  },
+  {
+   "a": "centro",
+   "b": "huele",
+   "old": 2,
+   "new": 2,
+   "dOld": 48.92,
+   "dNew": 48.92
+  },
+  {
+   "a": "centro",
+   "b": "abuela",
+   "old": 2,
+   "new": 2,
+   "dOld": 53.85,
+   "dNew": 53.85
+  },
+  {
+   "a": "centro",
+   "b": "mama",
+   "old": 2,
+   "new": 2,
+   "dOld": 62.03,
+   "dNew": 62.03
+  },
+  {
+   "a": "centro",
+   "b": "papa",
+   "old": 2,
+   "new": 2,
+   "dOld": 59.23,
+   "dNew": 59.23
+  },
+  {
+   "a": "centro",
+   "b": "abuelo",
+   "old": 3,
+   "new": 3,
+   "dOld": 84.9,
+   "dNew": 84.9
+  },
+  {
+   "a": "centro",
+   "b": "bebe",
+   "old": 1,
+   "new": 1,
+   "dOld": 17.89,
+   "dNew": 17.89
+  },
+  {
+   "a": "centro",
+   "b": "izq",
+   "old": 2,
+   "new": 2,
+   "dOld": 60,
+   "dNew": 60
+  },
+  {
+   "a": "huele",
+   "b": "abuela",
+   "old": 1,
+   "new": 1,
+   "dOld": 16.64,
+   "dNew": 16.64
+  },
+  {
+   "a": "huele",
+   "b": "mama",
+   "old": 1,
+   "new": 1,
+   "dOld": 23.26,
+   "dNew": 23.26
+  },
+  {
+   "a": "huele",
+   "b": "papa",
+   "old": 2,
+   "new": 2,
+   "dOld": 48.75,
+   "dNew": 48.75
+  },
+  {
+   "a": "huele",
+   "b": "abuelo",
+   "old": 3,
+   "new": 3,
+   "dOld": 96.32,
+   "dNew": 96.32
+  },
+  {
+   "a": "huele",
+   "b": "bebe",
+   "old": 1,
+   "new": 1,
+   "dOld": 33.12,
+   "dNew": 33.12
+  },
+  {
+   "a": "huele",
+   "b": "izq",
+   "old": 2,
+   "new": 2,
+   "dOld": 46.4,
+   "dNew": 46.4
+  },
+  {
+   "a": "abuela",
+   "b": "mama",
+   "old": 1,
+   "new": 1,
+   "dOld": 38.42,
+   "dNew": 38.42
+  },
+  {
+   "a": "abuela",
+   "b": "papa",
+   "old": 2,
+   "new": 2,
+   "dOld": 65.3,
+   "dNew": 65.3
+  },
+  {
+   "a": "abuela",
+   "b": "abuelo",
+   "old": 4,
+   "new": 4,
+   "dOld": 112.09,
+   "dNew": 112.09
+  },
+  {
+   "a": "abuela",
+   "b": "bebe",
+   "old": 1,
+   "new": 1,
+   "dOld": 36.06,
+   "dNew": 36.06
+  },
+  {
+   "a": "abuela",
+   "b": "izq",
+   "old": 1,
+   "new": 1,
+   "dOld": 31.3,
+   "dNew": 31.3
+  },
+  {
+   "a": "mama",
+   "b": "papa",
+   "old": 1,
+   "new": 1,
+   "dOld": 34,
+   "dNew": 34
+  },
+  {
+   "a": "mama",
+   "b": "abuelo",
+   "old": 3,
+   "new": 3,
+   "dOld": 84,
+   "dNew": 84
+  },
+  {
+   "a": "mama",
+   "b": "bebe",
+   "old": 2,
+   "new": 2,
+   "dOld": 50.36,
+   "dNew": 50.36
+  },
+  {
+   "a": "mama",
+   "b": "izq",
+   "old": 2,
+   "new": 2,
+   "dOld": 69.34,
+   "dNew": 69.34
+  },
+  {
+   "a": "papa",
+   "b": "abuelo",
+   "old": 2,
+   "new": 2,
+   "dOld": 50,
+   "dNew": 50
+  },
+  {
+   "a": "papa",
+   "b": "bebe",
+   "old": 2,
+   "new": 2,
+   "dOld": 57.31,
+   "dNew": 57.31
+  },
+  {
+   "a": "papa",
+   "b": "izq",
+   "old": 3,
+   "new": 3,
+   "dOld": 92.46,
+   "dNew": 92.46
+  },
+  {
+   "a": "abuelo",
+   "b": "bebe",
+   "old": 3,
+   "new": 3,
+   "dOld": 92.65,
+   "dNew": 92.65
+  },
+  {
+   "a": "abuelo",
+   "b": "izq",
+   "old": 4,
+   "new": 4,
+   "dOld": 135.09,
+   "dNew": 135.09
+  },
+  {
+   "a": "bebe",
+   "b": "izq",
+   "old": 1,
+   "new": 1,
+   "dOld": 44.72,
+   "dNew": 44.72
+  }
+ ],
+ "points": {
+  "bizcocho": {
+   "screen": [108, 142],
+   "old": [107, 138],
+   "what": "bizcocho(c, x, y, n): the cake on its dish on the low table: the dish (x - 4 .. x + 30, rows y + 9 .. y + 11) on the table top, its bottom a row in front of the top's middle"
+  },
+  "camMesa": {
+   "screen": [113, 143],
+   "old": [113, 139],
+   "what": "W.camMesa: the camera on the low table (16 x 10 at x, y), its bottom a row in front of the top's middle"
+  },
+  "foto.0": {
+   "screen": [83, 52],
+   "angle": 0,
+   "nail": [83, 49],
+   "old": [86, 40],
+   "what": "marco(c, 0, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.0. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
+  },
+  "foto.0.torcida": {
+   "screen": [79.791, 52.3869],
+   "angle": -0.24,
+   "nail": [83, 49],
+   "old": [86, 40],
+   "what": "marco(c, 0, f): translate here (the old translate(x + 10, y + 2)); rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings); clip to clips.foto.0.torcida. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
+  },
+  "foto.1": {
+   "screen": [105, 41],
+   "angle": 0,
+   "nail": [105, 38],
+   "old": [110, 40],
+   "what": "marco(c, 1, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.1. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
+  },
+  "foto.1.torcida": {
+   "screen": [101.791, 41.3869],
+   "angle": -0.24,
+   "nail": [105, 38],
+   "old": [110, 40],
+   "what": "marco(c, 1, f): translate here (the old translate(x + 10, y + 2)); rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings); clip to clips.foto.1.torcida. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
+  },
+  "foto.2": {
+   "screen": [127, 30],
+   "angle": 0,
+   "nail": [127, 27],
+   "old": [134, 40],
+   "what": "marco(c, 2, f): translate here (the old translate(x + 10, y + 2)); no rotation; clip to clips.foto.2. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
+  },
+  "foto.2.torcida": {
+   "screen": [123.791, 30.3869],
+   "angle": -0.24,
+   "nail": [127, 27],
+   "old": [134, 40],
+   "what": "marco(c, 2, f): translate here (the old translate(x + 10, y + 2)); rotate(angle): the frame hangs turned counterclockwise about its middle, slid on its wire, the nail where it was (the old .24 + .05 sin(F / 6 + i): baked crooked, so it no longer swings); clip to clips.foto.2.torcida. The frame (the set) is marco()'s [-10, 0, 20, 27] there, the nail 3 rows over its top"
+  },
+  "corazon": {
+   "screen": [107, 6],
+   "old": [107, 6],
+   "what": "heartAt: the heart of a happy ending (its top left): over the corner of the room, the backdrop behind it (unchanged)"
+  },
+  "hud.plato": {
+   "screen": [50, 24],
+   "old": [50, 24],
+   "what": "vuelaA(..., 50, 24): a slice flies to the plate card in the view's top left (hud tarjeta 3, 3): picture x = wide x0 + 28; the wide window is the old one, so unchanged"
+  },
+  "destapa.estrellas": {
+   "screen": [
+    [109, 138],
+    [133, 138],
+    [121, 132]
+   ],
+   "old": [
+    [108, 134],
+    [132, 134],
+    [120, 128]
+   ],
+   "what": "acts.destapa: the stars over the cake (moved with it)"
+  },
+  "tres.desde": {
+   "screen": [121, 144],
+   "old": [120, 140],
+   "what": "acts.tres: the slices fly from the cake (moved with it)"
+  },
+  "retrato": {
+   "screen": [22, 88, 198, 124],
+   "old": [22, 88, 198, 124],
+   "what": "acts.retrato: the part of the picture the photo of everyone is taken from (drawImage(sc, 22, 88, 198, 124, 0, 0, 128, 80)): the sofa, the floor before it and the family; the room is built round the old picture, so unchanged"
+  }
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [3.5355, 4.6234, 0],
+   "region": null,
+   "old": [22, 0, 196, 216],
+   "what": "the room: the door, the frames, the sofa, the lamp, the armchair and the window, the floor before them"
+  },
+  "sofa": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [3.5355, 4.6234, 0],
+   "region": null,
+   "old": [52, 48, 150, 165.3],
+   "what": "the sofa (old: a 1.31x view of the sofa; no story turns to it): the same window as wide, so a change to it moves nothing"
+  }
+ },
+ "remap": [
+  {
+   "kind": "cam",
+   "old": [14, 146, 113, 60],
+   "uses": [
+    "cual-sala.json bebé.si.cam",
+    "cual-sala.json bebé.no.cam"
+   ],
+   "to": {
+    "pictures": ["bebe.si", "bebe.no"]
+   },
+   "crops": {
+    "bebe.si": {
+     "crop": [23, 152, 98, 52],
+     "zoom": 2
+    },
+    "bebe.no": {
+     "crop": [23, 152, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [30, 122, 170, 90.2],
+   "uses": [
+    "cual-sala.json él.si.cam",
+    "cual-sala.json él.no.cam"
+   ],
+   "to": {
+    "pictures": ["el.si", "el.no"]
+   },
+   "crops": {
+    "el.si": {
+     "crop": [20, 112, 196, 104],
+     "zoom": 1
+    },
+    "el.no": {
+     "crop": [20, 112, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [35, 60, 170, 90.2],
+   "uses": ["cual-sala.json familia.si.cam", "cual-sala.json familia.no.cam"],
+   "to": {
+    "pictures": ["familia.si", "familia.no"]
+   },
+   "crops": {
+    "familia.si": {
+     "crop": [22, 52, 196, 104],
+     "zoom": 1
+    },
+    "familia.no": {
+     "crop": [22, 52, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [35, 66, 170, 90.2],
+   "uses": ["cual-sala.json ella.si.cam", "cual-sala.json ella.no.cam"],
+   "to": {
+    "pictures": ["ella.si", "ella.no"]
+   },
+   "crops": {
+    "ella.si": {
+     "crop": [22, 52, 196, 104],
+     "zoom": 1
+    },
+    "ella.no": {
+     "crop": [22, 52, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [41, 70, 113, 60],
+   "uses": [
+    "cual-sala.json mamá.si.cam",
+    "cual-sala.json mamá.no.cam"
+   ],
+   "to": {
+    "pictures": ["mama.si", "mama.no"]
+   },
+   "crops": {
+    "mama.si": {
+     "crop": [48, 77, 98, 52],
+     "zoom": 2
+    },
+    "mama.no": {
+     "crop": [48, 77, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [44, 132, 150, 79.6],
+   "uses": [
+    "cual-sala.json yo.si.cam",
+    "cual-sala.json yo.no.cam",
+    "cual-sala.json tú.si.cam",
+    "cual-sala.json tú.no.cam"
+   ],
+   "to": {
+    "pictures": ["yo.si", "yo.no", "tu.si", "tu.no"]
+   },
+   "crops": {
+    "yo.si": {
+     "crop": [20, 112, 196, 104],
+     "zoom": 1
+    },
+    "yo.no": {
+     "crop": [20, 112, 196, 104],
+     "zoom": 1
+    },
+    "tu.si": {
+     "crop": [20, 112, 196, 104],
+     "zoom": 1
+    },
+    "tu.no": {
+     "crop": [20, 112, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [64, 92, 113, 60],
+   "uses": ["cual-sala.json hermano.si.cam", "cual-sala.json hermano.no.cam", "cual-sala.json hermana.si.cam", "cual-sala.json hermana.no.cam"],
+   "to": {
+    "pictures": ["hermano.si", "hermano.no", "hermana.si", "hermana.no"]
+   },
+   "crops": {
+    "hermano.si": {
+     "crop": [22, 70, 196, 104],
+     "zoom": 1
+    },
+    "hermano.no": {
+     "crop": [22, 70, 196, 104],
+     "zoom": 1
+    },
+    "hermana.si": {
+     "crop": [22, 70, 196, 104],
+     "zoom": 1
+    },
+    "hermana.no": {
+     "crop": [22, 70, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [75, 70, 113, 60],
+   "uses": [
+    "cual-sala.json papá.si.cam",
+    "cual-sala.json papá.no.cam"
+   ],
+   "to": {
+    "pictures": ["papa.si", "papa.no"]
+   },
+   "crops": {
+    "papa.si": {
+     "crop": [82, 77, 98, 52],
+     "zoom": 2
+    },
+    "papa.no": {
+     "crop": [82, 77, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [125, 70, 113, 60],
+   "uses": ["cual-sala.json abuelo.si.cam", "cual-sala.json abuelo.no.cam"],
+   "to": {
+    "pictures": ["abuelo.si", "abuelo.no"]
+   },
+   "crops": {
+    "abuelo.si": {
+     "crop": [132, 77, 98, 52],
+     "zoom": 2
+    },
+    "abuelo.no": {
+     "crop": [132, 77, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [42.83, 146, 54.34, 60],
+   "uses": [
+    "nivel.js NV hermana.p3"
+   ],
+   "to": {
+    "pictures": ["bebe.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [70.33, 70, 54.34, 60],
+   "uses": [
+    "nivel.js NV abuela.p1",
+    "nivel.js NV quiero.p3",
+    "nivel.js NV mamá.p0",
+    "nivel.js NV familia.p1",
+    "nivel.js NV amigo.p3"
+   ],
+   "to": {
+    "pictures": ["mama.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [79.15, 60, 81.69, 90.2],
+   "uses": [
+    "nivel.js NV familia.p0"
+   ],
+   "to": {
+    "pictures": ["familia.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [81.95, 132, 72.09, 79.6],
+   "uses": [
+    "nivel.js NV tú.p0",
+    "nivel.js NV tú.p1",
+    "nivel.js NV tú.p2"
+   ],
+   "to": {
+    "pictures": ["tu.si", "tu.no", "yo.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [93.33, 92, 54.34, 60],
+   "uses": [
+    "nivel.js NV abuela.p3",
+    "nivel.js NV mamá.p3",
+    "nivel.js NV abuelo.p3",
+    "nivel.js NV familia.p2",
+    "nivel.js NV hermana.p0",
+    "nivel.js NV hermana.p1",
+    "nivel.js NV hermana.p2",
+    "nivel.js NV tú.p3"
+   ],
+   "to": {
+    "pictures": ["hermana.si", "hermano.si", "hermana.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [104.33, 70, 54.34, 60],
+   "uses": [
+    "nivel.js NV abuela.p2",
+    "nivel.js NV jugo.p3",
+    "nivel.js NV mamá.p1",
+    "nivel.js NV abuelo.p2",
+    "nivel.js NV ven.p3"
+   ],
+   "to": {
+    "pictures": ["papa.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [154.33, 70, 54.34, 60],
+   "uses": [
+    "nivel.js NV se sienta.p3",
+    "nivel.js NV mamá.p2",
+    "nivel.js NV abuelo.p0",
+    "nivel.js NV abuelo.p1",
+    "nivel.js NV niña.p3"
+   ],
+   "to": {
+    "pictures": ["abuelo.si", "abuelo.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "point",
+   "old": [56, 174],
+   "uses": [
+    "cual-sala.json él.no.set.cq"
+   ],
+   "to": {
+    "floor": [4.8954, 8.5941, 0]
+   },
+   "new": [56, 174],
+   "what": "the frog (cq x, y): the floor under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [60, 114],
+   "uses": ["cual-sala.json ella.si.set.cq"],
+   "to": {
+    "floor": [1.7406, 5.2217, 0]
+   },
+   "new": [60, 114],
+   "what": "the frog (cq x, y): the floor under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [62, 150],
+   "uses": ["cual-sala.json familia.si.set.gente.abuela"],
+   "to": {
+    "floor": [1.9037, 6.1464, 0]
+   },
+   "new": [62, 150],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [70, 193],
+   "uses": [
+    "cual-sala.json bebé.si.set.gente.bebe"
+   ],
+   "to": {
+    "floor": [4.4602, 8.2677, 0]
+   },
+   "new": [70, 193],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [74, 197],
+   "uses": [
+    "cual-sala.json bebé.no.set.gente.hermano"
+   ],
+   "to": {
+    "floor": [4.7866, 8.3765, 0]
+   },
+   "new": [74, 197],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [80, 179],
+   "uses": [
+    "cual-sala.json tú.si.set.cq",
+    "cual-sala.json tú.no.set.cq"
+   ],
+   "to": {
+    "floor": [5.82, 8.2133, 0]
+   },
+   "new": [80, 179],
+   "what": "the frog (cq x, y): the floor under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [84, 200],
+   "uses": ["d-foto-familia.json beats.9"],
+   "to": {
+    "floor": [5.2217, 8.2677, 0]
+   },
+   "new": [84, 200],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [96, 196],
+   "uses": [
+    "cual-sala.json él.si.set.gente.hermana",
+    "cual-sala.json él.no.set.gente.hermana"
+   ],
+   "to": {
+    "floor": [5.3305, 7.7238, 0]
+   },
+   "new": [96, 196],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [97, 112],
+   "uses": ["cual-sala.json familia.si.set.gente.bebe"],
+   "to": {
+    "floor": [0.7887, 3.1276, 0]
+   },
+   "new": [97, 112],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [97, 127],
+   "uses": [
+    "cual-sala.json mamá.si.set.gente.mama",
+    "cual-sala.json familia.si.set.gente.mama",
+    "cual-sala.json familia.no.set.gente.mama"
+   ],
+   "to": {
+    "floor": [1.6046, 3.9435, 0]
+   },
+   "new": [97, 127],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [97, 128],
+   "uses": [
+    "cual-sala.json mamá.no.set.gente.abuela"
+   ],
+   "to": {
+    "floor": [1.659, 3.9979, 0]
+   },
+   "new": [97, 128],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [100, 136],
+   "uses": ["cual-sala.json ella.si.set.gente.mama", "cual-sala.json ella.no.set.gente.mama"],
+   "to": {
+    "floor": [2.1757, 4.3514, 0]
+   },
+   "new": [100, 136],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [100, 196],
+   "uses": ["cual-sala.json yo.si.set.gente.hermana", "cual-sala.json yo.no.set.gente.hermana"],
+   "to": {
+    "floor": [5.4393, 7.615, 0]
+   },
+   "new": [100, 196],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [114, 150],
+   "uses": ["cual-sala.json familia.si.set.gente.hermano"],
+   "to": {
+    "floor": [3.318, 4.7322, 0]
+   },
+   "new": [114, 150],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [120, 146],
+   "uses": ["d-foto-familia.json beats.6", "d-foto-familia.json beats.12", "d-foto-familia.json beats.18"],
+   "to": {
+    "floor": [3.2636, 4.3514, 0]
+   },
+   "new": [120, 146],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [120, 150],
+   "uses": ["cual-sala.json hermano.si.set.gente.hermano", "cual-sala.json hermano.no.set.gente.papa", "cual-sala.json hermana.si.set.gente.hermana", "cual-sala.json hermana.no.set.gente.mama"],
+   "to": {
+    "floor": [3.4811, 4.569, 0]
+   },
+   "new": [120, 150],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [128, 179],
+   "uses": ["cual-sala.json yo.si.set.cq", "cual-sala.json yo.no.set.cq"],
+   "to": {
+    "floor": [7.1255, 6.9079, 0]
+   },
+   "new": [128, 179],
+   "what": "the frog (cq x, y): the floor under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [131, 127],
+   "uses": [
+    "cual-sala.json papá.si.set.gente.papa",
+    "cual-sala.json papá.no.set.gente.abuelo",
+    "cual-sala.json familia.si.set.gente.papa"
+   ],
+   "to": {
+    "floor": [2.5293, 3.0188, 0]
+   },
+   "new": [131, 127],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [140, 136],
+   "uses": ["cual-sala.json ella.si.set.gente.papa", "cual-sala.json ella.no.set.gente.papa"],
+   "to": {
+    "floor": [3.2636, 3.2636, 0]
+   },
+   "new": [140, 136],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [140, 196],
+   "uses": [
+    "cual-sala.json tú.si.set.gente.hermano",
+    "cual-sala.json tú.no.set.gente.hermano"
+   ],
+   "to": {
+    "floor": [6.5271, 6.5271, 0]
+   },
+   "new": [140, 196],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [144, 196],
+   "uses": [
+    "cual-sala.json él.si.set.gente.hermano",
+    "cual-sala.json él.no.set.gente.hermano"
+   ],
+   "to": {
+    "floor": [6.6359, 6.4184, 0]
+   },
+   "new": [144, 196],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [148, 114],
+   "uses": ["cual-sala.json ella.no.set.cq"],
+   "to": {
+    "floor": [4.1339, 2.8284, 0]
+   },
+   "new": [148, 114],
+   "what": "the frog (cq x, y): the floor under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [150, 150],
+   "uses": ["cual-sala.json familia.si.set.gente.hermana"],
+   "to": {
+    "floor": [4.297, 3.7531, 0]
+   },
+   "new": [150, 150],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [152, 174],
+   "uses": [
+    "cual-sala.json él.si.set.cq"
+   ],
+   "to": {
+    "floor": [7.5062, 5.9832, 0]
+   },
+   "new": [152, 174],
+   "what": "the frog (cq x, y): the floor under his feet; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [156, 200],
+   "uses": ["d-foto-familia.json beats.15"],
+   "to": {
+    "floor": [7.1799, 6.3096, 0]
+   },
+   "new": [156, 200],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [160, 192],
+   "uses": ["d-foto-familia.json beats.26"],
+   "to": {
+    "floor": [6.8535, 5.7656, 0]
+   },
+   "new": [160, 192],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [181, 127],
+   "uses": ["cual-sala.json abuelo.si.set.gente.abuelo", "cual-sala.json familia.si.set.gente.abuelo"],
+   "to": {
+    "floor": [3.8891, 1.659, 0]
+   },
+   "new": [181, 127],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [183, 128],
+   "uses": ["cual-sala.json abuelo.no.set.gente.abuela"],
+   "to": {
+    "floor": [3.9979, 1.659, 0]
+   },
+   "new": [183, 128],
+   "what": "a person's feet (x, y): the floor under them; the same screen place"
+  },
+  {
+   "kind": "x",
+   "old": [70],
+   "uses": [
+    "nivel.js NV hermana.p3"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  },
+  {
+   "kind": "x",
+   "old": [118],
+   "uses": [
+    "nivel.js NV tú.p0",
+    "nivel.js NV tú.p1",
+    "nivel.js NV tú.p2"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  }
+ ],
+ "pictures": {
+  "mama.si": {
+   "world": [0.3536, 2.6924, 0],
+   "screen": [97, 103],
+   "zoom": 2,
+   "crop": [48, 77, 98, 52],
+   "what": "mamá sitting on the sofa, close"
+  },
+  "mama.no": {
+   "world": [0.3536, 2.6924, 0],
+   "screen": [97, 103],
+   "zoom": 2,
+   "crop": [48, 77, 98, 52],
+   "what": "abuela standing where mamá sits, close"
+  },
+  "papa.si": {
+   "world": [1.2782, 1.7678, 0],
+   "screen": [131, 103],
+   "zoom": 2,
+   "crop": [82, 77, 98, 52],
+   "what": "papá sitting on the sofa, close"
+  },
+  "papa.no": {
+   "world": [1.2782, 1.7678, 0],
+   "screen": [131, 103],
+   "zoom": 2,
+   "crop": [82, 77, 98, 52],
+   "what": "abuelo sitting where papá sits, close"
+  },
+  "abuelo.si": {
+   "world": [2.6381, 0.4079, 0],
+   "screen": [181, 103],
+   "zoom": 2,
+   "crop": [132, 77, 98, 52],
+   "what": "abuelo in his armchair, close"
+  },
+  "abuelo.no": {
+   "world": [2.6381, 0.4079, 0],
+   "screen": [181, 103],
+   "zoom": 2,
+   "crop": [132, 77, 98, 52],
+   "what": "abuela standing at his armchair, close"
+  },
+  "bebe.si": {
+   "world": [3.7531, 7.4518, 0],
+   "screen": [72, 178],
+   "zoom": 2,
+   "crop": [23, 152, 98, 52],
+   "what": "the baby on the blanket, close"
+  },
+  "bebe.no": {
+   "world": [3.7531, 7.4518, 0],
+   "screen": [72, 178],
+   "zoom": 2,
+   "crop": [23, 152, 98, 52],
+   "what": "the brother on the blanket, close"
+  },
+  "familia.si": {
+   "world": [1.0335, 2.1213, 0],
+   "screen": [120, 104],
+   "zoom": 1,
+   "crop": [22, 52, 196, 104],
+   "what": "everyone"
+  },
+  "familia.no": {
+   "world": [1.0335, 2.1213, 0],
+   "screen": [120, 104],
+   "zoom": 1,
+   "crop": [22, 52, 196, 104],
+   "what": "mamá alone on the sofa"
+  },
+  "hermano.si": {
+   "world": [2.0125, 3.1004, 0],
+   "screen": [120, 122],
+   "zoom": 1,
+   "crop": [22, 70, 196, 104],
+   "what": "the brother standing before the sofa"
+  },
+  "hermano.no": {
+   "world": [2.0125, 3.1004, 0],
+   "screen": [120, 122],
+   "zoom": 1,
+   "crop": [22, 70, 196, 104],
+   "what": "papá standing there"
+  },
+  "hermana.si": {
+   "world": [2.0125, 3.1004, 0],
+   "screen": [120, 122],
+   "zoom": 1,
+   "crop": [22, 70, 196, 104],
+   "what": "the sister standing before the sofa"
+  },
+  "hermana.no": {
+   "world": [2.0125, 3.1004, 0],
+   "screen": [120, 122],
+   "zoom": 1,
+   "crop": [22, 70, 196, 104],
+   "what": "mamá standing there"
+  },
+  "el.si": {
+   "world": [4.2426, 5.4393, 0],
+   "screen": [118, 164],
+   "zoom": 1,
+   "crop": [20, 112, 196, 104],
+   "what": "the frog beside the brother"
+  },
+  "el.no": {
+   "world": [4.2426, 5.4393, 0],
+   "screen": [118, 164],
+   "zoom": 1,
+   "crop": [20, 112, 196, 104],
+   "what": "the frog beside the sister"
+  },
+  "ella.si": {
+   "world": [1.0335, 2.1213, 0],
+   "screen": [120, 104],
+   "zoom": 1,
+   "crop": [22, 52, 196, 104],
+   "what": "the frog beside mamá"
+  },
+  "ella.no": {
+   "world": [1.0335, 2.1213, 0],
+   "screen": [120, 104],
+   "zoom": 1,
+   "crop": [22, 52, 196, 104],
+   "what": "the frog beside papá"
+  },
+  "yo.si": {
+   "world": [4.2426, 5.4393, 0],
+   "screen": [118, 164],
+   "zoom": 1,
+   "crop": [20, 112, 196, 104],
+   "what": "the sister points at herself"
+  },
+  "yo.no": {
+   "world": [4.2426, 5.4393, 0],
+   "screen": [118, 164],
+   "zoom": 1,
+   "crop": [20, 112, 196, 104],
+   "what": "the sister points at the frog"
+  },
+  "tu.si": {
+   "world": [4.2426, 5.4393, 0],
+   "screen": [118, 164],
+   "zoom": 1,
+   "crop": [20, 112, 196, 104],
+   "what": "the brother points at the frog"
+  },
+  "tu.no": {
+   "world": [4.2426, 5.4393, 0],
+   "screen": [118, 164],
+   "zoom": 1,
+   "crop": [20, 112, 196, 104],
+   "what": "the brother points at himself"
+  }
+ },
+ "level": [
+  {
+   "w": "abuela",
+   "index": 1,
+   "picture": "mama.si",
+   "old": [70.33, 70, 54.34, 60],
+   "crop": [48, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "abuela",
+   "index": 2,
+   "picture": "papa.si",
+   "old": [104.33, 70, 54.34, 60],
+   "crop": [82, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "abuela",
+   "index": 3,
+   "picture": "hermana.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "jugo",
+   "index": 3,
+   "picture": "papa.si",
+   "old": [104.33, 70, 54.34, 60],
+   "crop": [82, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "se sienta",
+   "index": 3,
+   "picture": "abuelo.si",
+   "old": [154.33, 70, 54.34, 60],
+   "crop": [132, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "quiero",
+   "index": 3,
+   "picture": "mama.si",
+   "old": [70.33, 70, 54.34, 60],
+   "crop": [48, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "mamá",
+   "index": 0,
+   "picture": "mama.si",
+   "old": [70.33, 70, 54.34, 60],
+   "crop": [48, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "mamá",
+   "index": 1,
+   "picture": "papa.si",
+   "old": [104.33, 70, 54.34, 60],
+   "crop": [82, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "mamá",
+   "index": 2,
+   "picture": "abuelo.si",
+   "old": [154.33, 70, 54.34, 60],
+   "crop": [132, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "mamá",
+   "index": 3,
+   "picture": "hermana.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "abuelo",
+   "index": 0,
+   "picture": "abuelo.si",
+   "old": [154.33, 70, 54.34, 60],
+   "crop": [132, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "abuelo",
+   "index": 1,
+   "picture": "abuelo.no",
+   "old": [154.33, 70, 54.34, 60],
+   "crop": [132, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "abuelo",
+   "index": 2,
+   "picture": "papa.si",
+   "old": [104.33, 70, 54.34, 60],
+   "crop": [82, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "abuelo",
+   "index": 3,
+   "picture": "hermano.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "familia",
+   "index": 0,
+   "picture": "familia.si",
+   "old": [79.15, 60, 81.69, 90.2],
+   "crop": [22, 52, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "familia",
+   "index": 1,
+   "picture": "mama.si",
+   "old": [70.33, 70, 54.34, 60],
+   "crop": [48, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "familia",
+   "index": 2,
+   "picture": "hermano.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hermana",
+   "index": 0,
+   "picture": "hermana.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hermana",
+   "index": 1,
+   "picture": "hermano.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hermana",
+   "index": 2,
+   "picture": "hermana.no",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "hermana",
+   "index": 3,
+   "picture": "bebe.si",
+   "old": [42.83, 146, 54.34, 60],
+   "crop": [23, 152, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "tú",
+   "index": 0,
+   "picture": "tu.si",
+   "old": [81.95, 132, 72.09, 79.6],
+   "crop": [20, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "tú",
+   "index": 1,
+   "picture": "tu.no",
+   "old": [81.95, 132, 72.09, 79.6],
+   "crop": [20, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "tú",
+   "index": 2,
+   "picture": "yo.si",
+   "old": [81.95, 132, 72.09, 79.6],
+   "crop": [20, 112, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "tú",
+   "index": 3,
+   "picture": "hermano.si",
+   "old": [93.33, 92, 54.34, 60],
+   "crop": [22, 70, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "niña",
+   "index": 3,
+   "picture": "abuelo.si",
+   "old": [154.33, 70, 54.34, 60],
+   "crop": [132, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "amigo",
+   "index": 3,
+   "picture": "mama.si",
+   "old": [70.33, 70, 54.34, 60],
+   "crop": [48, 77, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "ven",
+   "index": 3,
+   "picture": "papa.si",
+   "old": [104.33, 70, 54.34, 60],
+   "crop": [82, 77, 98, 52],
+   "zoom": 2
+  }
+ ],
+ "clips": {
+  "foto.0": {
+   "thing": "fotos",
+   "face": "the opening of frame 0",
+   "world": [
+    [0.05, 3.5355, 2.376],
+    [0.05, 2.6652, 2.0207],
+    [0.05, 2.6652, 0.9993],
+    [0.05, 3.5355, 1.3546]
+   ],
+   "screen": [
+    [75, 54],
+    [91, 54],
+    [91, 77],
+    [75, 77]
+   ],
+   "box": [75, 54, 16, 23],
+   "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 0 is drawn clipped to this quad (screen), set before the translate"
+  },
+  "foto.0.torcida": {
+   "thing": "fotos",
+   "face": "the opening of frame 0, crooked",
+   "world": [
+    [0.05, 3.6717, 2.3325],
+    [0.05, 2.8264, 2.1563],
+    [0.05, 2.529, 1.0427],
+    [0.05, 3.3744, 1.2189]
+   ],
+   "screen": [
+    [72.4957, 56.2312],
+    [88.0371, 52.428],
+    [93.5043, 74.7688],
+    [77.9629, 78.572]
+   ],
+   "box": [72, 52, 22, 27],
+   "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 0 is drawn clipped to this quad (screen), set before the translate"
+  },
+  "foto.1": {
+   "thing": "fotos",
+   "face": "the opening of frame 1",
+   "world": [
+    [0.05, 2.3389, 2.376],
+    [0.05, 1.4686, 2.0207],
+    [0.05, 1.4686, 0.9993],
+    [0.05, 2.3389, 1.3546]
+   ],
+   "screen": [
+    [97, 43],
+    [113, 43],
+    [113, 66],
+    [97, 66]
+   ],
+   "box": [97, 43, 16, 23],
+   "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 1 is drawn clipped to this quad (screen), set before the translate"
+  },
+  "foto.1.torcida": {
+   "thing": "fotos",
+   "face": "the opening of frame 1, crooked",
+   "world": [
+    [0.05, 2.4751, 2.3325],
+    [0.05, 1.6298, 2.1563],
+    [0.05, 1.3324, 1.0427],
+    [0.05, 2.1777, 1.2189]
+   ],
+   "screen": [
+    [94.4957, 45.2312],
+    [110.0371, 41.428],
+    [115.5043, 63.7688],
+    [99.9629, 67.572]
+   ],
+   "box": [94, 41, 22, 27],
+   "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 1 is drawn clipped to this quad (screen), set before the translate"
+  },
+  "foto.2": {
+   "thing": "fotos",
+   "face": "the opening of frame 2",
+   "world": [
+    [0.05, 1.1422, 2.376],
+    [0.05, 0.272, 2.0207],
+    [0.05, 0.272, 0.9993],
+    [0.05, 1.1422, 1.3546]
+   ],
+   "screen": [
+    [119, 32],
+    [135, 32],
+    [135, 55],
+    [119, 55]
+   ],
+   "box": [119, 32, 16, 23],
+   "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 2 is drawn clipped to this quad (screen), set before the translate"
+  },
+  "foto.2.torcida": {
+   "thing": "fotos",
+   "face": "the opening of frame 2, crooked",
+   "world": [
+    [0.05, 1.2785, 2.3325],
+    [0.05, 0.4331, 2.1563],
+    [0.05, 0.1357, 1.0427],
+    [0.05, 0.9811, 1.2189]
+   ],
+   "screen": [
+    [116.4957, 34.2312],
+    [132.0371, 30.428],
+    [137.5043, 52.7688],
+    [121.9629, 56.572]
+   ],
+   "box": [116, 30, 22, 27],
+   "what": "sala.js:54 g.rect(-8, 2, 16, 20); g.clip(): the photo inside frame 2 is drawn clipped to this quad (screen), set before the translate"
+  }
+ },
+ "front": {
+  "how": "sala.js:114 drew the low table in the list sorted by y (its y 165): everyone whose y is less is drawn before it and covered by it. The table is in the set now; at its place in the list, for each person (and the frog) drawn before it, the set's own pixels of the table (sala-set.html part \"mesita\", PART_TAGS) are drawn again inside that character's box, only where that pixel is nearer to the camera than the character: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the floor point under the character's feet (people: unproject(x, y - 1); the frog: unproject(q.x + 16, q.y + 25)). The cake and the camera are drawn after it, as before. \"Behind the table\" is that depth test, not the row",
+  "plane": "v / COS - (row + .5 - OY) * tan(30 deg) / S",
+  "parts": {
+   "mesita": {
+    "line": 114,
+    "sortY": 165,
+    "replaces": "c.drawImage(spr(\"mesita\",mkMesita),98,148+(W.golpe&&F-W.golpe<4?-2:0))",
+    "boxes": "people: [x - 24, y - alto - 2, 48, alto + 3]; the frog: frogBox"
+   }
+  }
+ },
+ "shadows": {
+  "coqui": {
+   "radius": 0.45,
+   "at": "the floor point under his feet on screen (unproject(b.x + b.w / 2, q.y + 25))",
+   "when": "W.cq.vis and al > .5",
+   "cast": "castShadow(g.x, g.y, .3, .45)"
+  },
+  "people": {
+   "radius": {
+    "grown": 0.35,
+    "nino": 0.3,
+    "bebe": 0.25
+   },
+   "at": "the floor point under their feet on screen (unproject(x, y - 1))",
+   "when": "visible (vis !== 0, al > .5) and standing (not sent); the baby on the floor too, not on mamá's lap (bebe.z)",
+   "cast": "grown and children: for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, r); the baby: castShadow(g.x, g.y, .2, .25)"
+  },
+  "dropped": "sala.js:101 rana()'s dotted shadow under the frog is not drawn: the engine casts his"
+ },
+ "dropped": [
+  "sala.js:107 c.drawImage(spr(\"sala\", bg)) -> the set, for setKey(W)",
+  "sala.js:109 the lamp, :110 the sofa and the armchair, :111 manta() (the baby's blanket) -> the set (nothing covered anyone in the old: they came before everyone)",
+  "sala.js:114 the low table sprite -> the set (and front: its pixels again at that place in the list); its jump on W.golpe is not drawn",
+  "sala.js:53 and :60 the frames' wood, paper and nail -> the set (marco() draws only the photo in each)",
+  "sala.js:32 the potted plant in bg() -> the set, on the floor by the back wall, clear of every touch box",
+  "sala.js:101 the frog's dotted shadow -> the engine's cast shadow"
+ ],
+ "moves": [
+  {
+   "line": 198,
+   "act": "corren",
+   "src": "mueve(\"hermano\",94,198,10),mueve(\"hermana\",66,203,10)",
+   "to": "mueve(\"hermano\",80,200,10),mueve(\"hermana\",60,204,10)",
+   "places": [
+    {
+     "who": "hermano",
+     "old": [94, 198],
+     "new": [80, 200],
+     "world": [5.1129, 8.3765, 0]
+    },
+    {
+     "who": "hermana",
+     "old": [66, 203],
+     "new": [60, 204],
+     "world": [4.7866, 9.138, 0]
+    }
+   ],
+   "why": "acts.corren: the children stop clear of the frog in the middle (the hint hand, pointing at a child, hung over the frog's face: la-foto beats.8)"
+  },
+  {
+   "line": 214,
+   "act": "solo",
+   "src": "mueve(o.quien,120,146),mueve(otro,72,206)",
+   "to": "mueve(o.quien,120,136),mueve(otro,56,206)",
+   "places": [
+    {
+     "who": "whoever",
+     "old": [120, 146],
+     "new": [120, 136],
+     "world": [2.7196, 3.8075, 0]
+    },
+    {
+     "who": "whoever",
+     "old": [72, 206],
+     "new": [56, 206],
+     "world": [4.7866, 9.3556, 0]
+    }
+   ],
+   "why": "acts.solo: the child alone stands between the sofa and the low table, the other one at the left: the answer cards over the frog covered both (la-foto beats.41)"
+  },
+  {
+   "line": 228,
+   "act": "inicio8",
+   "src": "a.x=156;a.y=200;a.dir=-1;b.x=84;b.y=200;",
+   "to": "a.x=184;a.y=200;a.dir=-1;b.x=56;b.y=200;",
+   "places": [
+    {
+     "who": "hermano",
+     "old": [156, 200],
+     "new": [184, 200],
+     "world": [7.9414, 5.5481, 0]
+    },
+    {
+     "who": "hermana",
+     "old": [84, 200],
+     "new": [56, 200],
+     "world": [4.4602, 9.0292, 0]
+    }
+   ],
+   "why": "acts.inicio8: the children stand either side of the frog, out from under the answer cards (quien-eres-tu beats.10, 13, 22, 28)"
+  },
+  {
+   "line": 236,
+   "act": "suelta",
+   "src": "mueve(o.quien,o.quien===\"hermano\"?152:86,200)",
+   "to": "mueve(o.quien,o.quien===\"hermano\"?184:56,200)",
+   "places": [
+    {
+     "who": "hermano",
+     "old": [152, 200],
+     "new": [184, 200],
+     "world": [7.9414, 5.5481, 0]
+    },
+    {
+     "who": "hermana",
+     "old": [86, 200],
+     "new": [56, 200],
+     "world": [4.4602, 9.0292, 0]
+    }
+   ],
+   "why": "acts.suelta: back to their places either side of the frog (as inicio8)"
+  },
+  {
+   "line": 247,
+   "act": "final8",
+   "src": "mueve(\"abuelo\",150,170)",
+   "to": "mueve(\"abuelo\",172,178)",
+   "places": [
+    {
+     "who": "abuelo",
+     "old": [150, 170],
+     "new": [172, 178],
+     "world": [6.4184, 4.6778, 0]
+    }
+   ],
+   "why": "acts.final8, the cup empty: abuelo asks for more clear of mamá and the baby (his \"q\" bubble was on their faces)"
+  },
+  {
+   "line": 247,
+   "act": "final8",
+   "src": "mueve(\"abuela\",182,172)",
+   "to": "mueve(\"abuela\",200,176)",
+   "places": [
+    {
+     "who": "abuela",
+     "old": [182, 172],
+     "new": [200, 176],
+     "world": [7.0711, 3.8075, 0]
+    }
+   ],
+   "why": "acts.final8: abuela fills his cup from his side (moved with him)"
+  },
+  {
+   "line": 224,
+   "act": "final7",
+   "src": "mueve(\"abuelo\",172,160)",
+   "to": "mueve(\"abuelo\",186,164)",
+   "places": [
+    {
+     "who": "abuelo",
+     "old": [172, 160],
+     "new": [186, 164],
+     "world": [6.0376, 3.5355, 0]
+    }
+   ],
+   "why": "acts.final7: abuelo stands a little further out, so that papá's bubble has a place under the photo of everyone (W.retrato) clear of every face"
+  },
+  {
+   "line": 77,
+   "act": "lados",
+   "src": "JUNTOS=[[96,196],[144,196]]",
+   "to": "JUNTOS=[[80,196],[160,196]]",
+   "places": [
+    {
+     "who": "whoever",
+     "old": [96, 196],
+     "new": [80, 196],
+     "world": [4.8954, 8.1589, 0]
+    },
+    {
+     "who": "whoever",
+     "old": [144, 196],
+     "new": [160, 196],
+     "world": [7.0711, 5.9832, 0]
+    }
+   ],
+   "why": "JUNTOS: two people together at the front, wider apart: the hint hand, pointing at one of them, hung over the frog's face (la-foto beats.18). The frog hops beside them (acts.junto) relative to them, so he moves with them"
+  }
+ ],
+ "bubbles": {
+  "what": "each bubble's rectangle relative to its tail's tip, as sala.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
+  "rects": {
+   "hola": [-16, -46, 34, 44],
+   "amor": [-14, -38, 30, 36],
+   "como": [-32, -40, 66, 38],
+   "bien": [-14, -40, 30, 38],
+   "mal": [-14, -40, 30, 38],
+   "quien": [-22, -40, 46, 38],
+   "lluvia": [-22, -40, 46, 38],
+   "bizcocho": [-16, -40, 34, 38],
+   "q": [-12, -40, 26, 38],
+   "gafas_q": [-22, -40, 46, 38],
+   "feliz": [-14, -40, 30, 38]
+  }
+ },
+ "talk": {
+  "what": "where a bubble goes (sala.js talkAt for a person, line 124 for the frog). The old put it over the head; with the room seen from above, people stand in front of the sofa and a bubble over a head lands on the face of whoever sits behind. So: the first of these places whose bubble is wholly inside the view, clear of the corner cards shown (hud: the slices, the coffee, the camera's window, the photo of everyone) and of every face (each visible person's and the frog's, its own too); if none is, the first",
+  "top": "a person: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2)",
+  "places": [
+   [0, 0],
+   [1, 7],
+   [-1, 7],
+   [1, 30],
+   [-1, 30],
+   [1, 44],
+   [-1, 44],
+   [2, 7],
+   [-2, 7],
+   [2, 30],
+   [-2, 30],
+   [2, 44],
+   [-2, 44],
+   [1, 58],
+   [-1, 58],
+   [2, 58],
+   [-2, 58]
+  ],
+  "placesWhat": "[side, dy]: the tail's tip at (top.x + side * (h + 16), top.y + dy), h the head's half width: a person 6, the frog b.w >> 1",
+  "faces": "a person's face: [x - 6, y - alto + 5 (the baby: + 4), 12, 10] (eyes to chin, not the hair); the frog's: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]",
+  "heads": {
+   "mama": {
+    "top": -54,
+    "head": 0
+   },
+   "mama.sent": {
+    "top": -47,
+    "head": 0
+   },
+   "papa": {
+    "top": -53,
+    "head": 0
+   },
+   "papa.sent": {
+    "top": -46,
+    "head": 0
+   },
+   "abuelo": {
+    "top": -51,
+    "head": 0
+   },
+   "abuelo.sent": {
+    "top": -44,
+    "head": 0
+   },
+   "hermano": {
+    "top": -41,
+    "head": 0
+   },
+   "hermano.sent": {
+    "top": -38,
+    "head": 0
+   },
+   "hermana": {
+    "top": -41,
+    "head": 0
+   },
+   "hermana.sent": {
+    "top": -38,
+    "head": 0
+   },
+   "abuela": {
+    "top": -50,
+    "head": 0
+   },
+   "bebe": {
+    "top": -28,
+    "head": 0
+   }
+  },
+  "headsWhat": "each sprite (idle; .sent: sitting): top, the first opaque row relative to the feet row y; head, the middle of its top 10 rows relative to x (facing right; facing left: x - head, + 1 for the family sprites drawn at -PX)",
+  "boards": "in the 196 x 216 display, then + the view's x0: W.plato [2, 2, 80, 31]; W.cafe [2, 2, 46 + 13 * aciertos, 38]; W.visor [2, 2, 52, 52]; W.retrato [29, 5, 138, 90]"
+ },
+ "code": [
+  {
+   "line": 17,
+   "old": "bg(): the room",
+   "to": "dropped: the set"
+  },
+  {
+   "line": 32,
+   "old": "bg(): the plant pot at 212, 94",
+   "to": "dropped: the set (planta)"
+  },
+  {
+   "line": 49,
+   "old": "manta: fr(g,49,177,58,22) fr(g,50,178,56,20) fr(g,50,178,56,1); the white squares 52..104, 180..197",
+   "to": "dropped: the set (manta, the same place on the screen)"
+  },
+  {
+   "line": 52,
+   "old": "marco: x = 76 + i * 24, y = 38; translate(x + 10, y + 2); rotate(.24 + .05 sin(F / 6 + i)) when !f.ok",
+   "to": {
+    "points": ["foto.0", "foto.1", "foto.2", "foto.0.torcida", "foto.1.torcida", "foto.2.torcida"],
+    "new": [
+     [
+      [83, 52],
+      [79.791, 52.3869],
+      -0.24
+     ],
+     [
+      [105, 41],
+      [101.791, 41.3869],
+      -0.24
+     ],
+     [
+      [127, 30],
+      [123.791, 30.3869],
+      -0.24
+     ]
+    ]
+   },
+   "note": "translate to points.foto.i (or foto.i.torcida, then rotate by its angle: the frame turned about its middle, baked crooked, no swing). Everything marco() draws of a photo keeps its frame coordinates"
+  },
+  {
+   "line": 53,
+   "old": "marco: fr(g,-11,-1,22,26,OUT) fr(g,-10,0,20,24,wood) fr(g,-10,0,20,1,wood) fr(g,-8,2,16,20, f ? \"#BFE0F0\" : \"#FBF0D2\")",
+   "to": "the frame and the empty paper: dropped (the set: the frame is [-10, 0, 20, 27] in these coordinates, the opening [-8, 2, 16, 23]). With a photo (f): fr(g, -14, -6, 28, 34, \"#BFE0F0\") inside the clip, the photo's ground"
+  },
+  {
+   "line": 54,
+   "old": "marco: g.rect(-8,2,16,20); g.clip()",
+   "to": {
+    "clips": ["foto.0", "foto.1", "foto.2", "foto.0.torcida", "foto.1.torcida", "foto.2.torcida"]
+   },
+   "note": "the clip is the quad of the set's opening, in picture coordinates: set it before the translate"
+  },
+  {
+   "line": 55,
+   "old": "marco: the slippers: fr(g,-8,14,16,8) and the shoes at [-6,10], [1,11]",
+   "to": "relative to the frame: unchanged"
+  },
+  {
+   "line": 58,
+   "old": "marco: the frog's foot: fr(g,5,17,4,5) fr(g,6,18,3,4)",
+   "to": "relative to the frame: unchanged"
+  },
+  {
+   "line": 60,
+   "old": "marco: the nail fr(g,0,-3,1,3,OUT)",
+   "to": "dropped: the set (each frame hangs on a wire from a nail, the nail 3 rows over the frame's top: points foto.i nail)"
+  },
+  {
+   "line": 75,
+   "old": "SITIO.mama [97,127,1]",
+   "to": {
+    "spot": "sitio.mama",
+    "new": [97, 127, 1]
+   }
+  },
+  {
+   "line": 75,
+   "old": "SITIO.papa [131,127,1]",
+   "to": {
+    "spot": "sitio.papa",
+    "new": [131, 127, 1]
+   }
+  },
+  {
+   "line": 75,
+   "old": "SITIO.abuelo [181,127,1]",
+   "to": {
+    "spot": "sitio.abuelo",
+    "new": [181, 127, 1]
+   }
+  },
+  {
+   "line": 75,
+   "old": "SITIO.bebe [70,193]",
+   "to": {
+    "spot": "sitio.bebe",
+    "new": [70, 193]
+   }
+  },
+  {
+   "line": 75,
+   "old": "SITIO.abuela [42,168]",
+   "to": {
+    "spot": "sitio.abuela",
+    "new": [42, 168]
+   }
+  },
+  {
+   "line": 75,
+   "old": "SITIO.hermano [150,198]",
+   "to": {
+    "spot": "sitio.hermano",
+    "new": [150, 198]
+   }
+  },
+  {
+   "line": 75,
+   "old": "SITIO.hermana [180,198]",
+   "to": {
+    "spot": "sitio.hermana",
+    "new": [180, 198]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.puerta [30,104,0.7]",
+   "to": {
+    "spot": "frog.puerta",
+    "new": [30, 104, 0.7]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.centro [104,183,1]",
+   "to": {
+    "spot": "frog.centro",
+    "new": [104, 183, 1]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.huele [72,146,0.9]",
+   "to": {
+    "spot": "frog.huele",
+    "new": [72, 146, 0.9]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.abuela [58,155,1]",
+   "to": {
+    "spot": "frog.abuela",
+    "new": [58, 155, 1]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.mama [82,125,0.9]",
+   "to": {
+    "spot": "frog.mama",
+    "new": [82, 125, 0.9]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.papa [116,125,0.9]",
+   "to": {
+    "spot": "frog.papa",
+    "new": [116, 125, 0.9]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.abuelo [166,125,0.9]",
+   "to": {
+    "spot": "frog.abuelo",
+    "new": [166, 125, 0.9]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.bebe [88,175,1]",
+   "to": {
+    "spot": "frog.bebe",
+    "new": [88, 175, 1]
+   }
+  },
+  {
+   "line": 76,
+   "old": "LUGAR.izq [44,183,1]",
+   "to": {
+    "spot": "frog.izq",
+    "new": [44, 183, 1]
+   }
+  },
+  {
+   "line": 77,
+   "old": "PARADOS[0] [100,136]",
+   "to": {
+    "spot": "parados.0",
+    "new": [100, 136]
+   }
+  },
+  {
+   "line": 77,
+   "old": "PARADOS[1] [140,136]",
+   "to": {
+    "spot": "parados.1",
+    "new": [140, 136]
+   }
+  },
+  {
+   "line": 77,
+   "old": "APARTE[0] [70,198]",
+   "to": {
+    "spot": "aparte.0",
+    "new": [70, 198]
+   }
+  },
+  {
+   "line": 77,
+   "old": "APARTE[1] [170,198]",
+   "to": {
+    "spot": "aparte.1",
+    "new": [170, 198]
+   }
+  },
+  {
+   "line": 77,
+   "old": "JUNTOS[0] [96,196]",
+   "to": {
+    "spot": "juntos.0",
+    "new": [80, 196]
+   },
+   "note": "moved (see moves, line 77)"
+  },
+  {
+   "line": 77,
+   "old": "JUNTOS[1] [144,196]",
+   "to": {
+    "spot": "juntos.1",
+    "new": [160, 196]
+   },
+   "note": "moved (see moves, line 77)"
+  },
+  {
+   "line": 77,
+   "old": "CAMARA [198,176]",
+   "to": {
+    "spot": "camara",
+    "new": [198, 176]
+   }
+  },
+  {
+   "line": 79,
+   "old": "caja(id): [x - 11, y - alto(id), 22, alto(id)]",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 82,
+   "old": "box bizcocho [106,138,30,16]",
+   "to": {
+    "thing": "bizcocho",
+    "box": [107, 142, 30, 16]
+   }
+  },
+  {
+   "line": 82,
+   "old": "box mesita [98,148,46,18]",
+   "to": {
+    "thing": "mesita",
+    "box": [98, 142, 47, 28]
+   }
+  },
+  {
+   "line": 82,
+   "old": "box sofa [68,84,92,44]",
+   "to": {
+    "thing": "sofa",
+    "box": [68, 81, 92, 51]
+   }
+  },
+  {
+   "line": 82,
+   "old": "box butaca [160,86,42,42]",
+   "to": {
+    "thing": "butaca",
+    "box": [160, 88, 42, 39]
+   }
+  },
+  {
+   "line": 83,
+   "old": "box fotos [64,34,82,30]",
+   "to": {
+    "thing": "fotos",
+    "box": [70, 27, 70, 54]
+   }
+  },
+  {
+   "line": 83,
+   "old": "box lampara [146,62,20,64]",
+   "to": {
+    "thing": "lampara",
+    "box": [129, 6, 26, 81]
+   }
+  },
+  {
+   "line": 83,
+   "old": "box puerta [20,42,42,80]",
+   "to": {
+    "thing": "puerta",
+    "box": [34, 50, 36, 93]
+   }
+  },
+  {
+   "line": 83,
+   "old": "box ventana [160,32,56,54]",
+   "to": {
+    "thing": "ventana",
+    "box": [159, 18, 57, 77]
+   }
+  },
+  {
+   "line": 83,
+   "old": "box sala [0,122,240,94]",
+   "to": {
+    "thing": "sala",
+    "box": [1, 123, 238, 119]
+   }
+  },
+  {
+   "line": 88,
+   "old": "gente abuela: scale(-1,1) when dir < 0; drawImage(im,-30,0) at x, y - 50",
+   "to": "relative to her: unchanged"
+  },
+  {
+   "line": 91,
+   "old": "gente: scale(-1,1) when dir < 0; drawImage(im, -PX, 0) at x, y - im.height + 1",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 92,
+   "old": "the Z of sleep: rects [0,0,4,1] [3,1,1,1] [2,2,1,1] [1,3,1,1] [0,4,4,1] at x + 6, y - h - 5",
+   "to": "relative to abuelo: unchanged"
+  },
+  {
+   "line": 93,
+   "old": "taza at x + 13 d, y - h + 26",
+   "to": "relative to abuelo: unchanged"
+  },
+  {
+   "line": 99,
+   "old": "taza: the coffee heights [0,2,4,6]",
+   "to": "not a place: unchanged"
+  },
+  {
+   "line": 101,
+   "old": "rana: the dotted shadow at b.x + 2, q.y + 25",
+   "to": "dropped: the engine casts his shadow (shadows.coqui)"
+  },
+  {
+   "line": 105,
+   "old": "bub2: c.scale(2,2), bub(c,k,0,0,a)",
+   "to": "relative: unchanged (the bubbles are drawn at twice their size)"
+  },
+  {
+   "line": 107,
+   "old": "c.drawImage(spr(\"sala\",bg),0,0)",
+   "to": "dropped: the set, for setKey(W)"
+  },
+  {
+   "line": 108,
+   "old": "marco(c, i, W.fotos[i])",
+   "to": "see line 52"
+  },
+  {
+   "line": 109,
+   "old": "the lamp at 146, 62",
+   "to": "dropped: the set (lampara; luz is a set parameter)"
+  },
+  {
+   "line": 110,
+   "old": "the sofa at 68, 84; the armchair at 160, 86",
+   "to": "dropped: the set (sofa, butaca)"
+  },
+  {
+   "line": 111,
+   "old": "manta(c)",
+   "to": "dropped: the set"
+  },
+  {
+   "line": 114,
+   "old": "the low table at 98, 148 (sort y 165); bizcocho(c, 107, 138, n); the camera fr(c,113,139,16,10) fr(c,114,140,14,8) fr(c,118,142,5,5)",
+   "to": {
+    "front": "mesita",
+    "sortY": 165,
+    "bizcocho": [108, 142],
+    "camMesa": [113, 143]
+   },
+   "note": "the table: front (its own pixels again, depth-tested per character drawn before it); the cake at points.bizcocho; the camera's three rects at points.camMesa + (0, 0), (1, 1), (5, 3)"
+  },
+  {
+   "line": 116,
+   "old": "tapaojos: the hands at b.x + b.w * u, b.y + 7 s",
+   "to": "relative to the frog: unchanged"
+  },
+  {
+   "line": 120,
+   "old": "borroso: drawImage(sc, 0, 0, SW, SH, 0, 0, 20, 18), smoothing on",
+   "to": "smoothing.places[0]: the whole picture, unchanged"
+  },
+  {
+   "line": 121,
+   "old": "borroso: drawImage(t, 0, 0, 20, 18, 0, 0, SW, SH), smoothing on",
+   "to": "smoothing.places[1]: unchanged"
+  },
+  {
+   "line": 122,
+   "old": "flash: fillRect(0, 0, SW, SH)",
+   "to": "the whole picture: unchanged"
+  },
+  {
+   "line": 126,
+   "old": "talkAt: [x, y - alto - 1 - (bub ? 38 : 0)]",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 131,
+   "old": "hud retrato at ((DW - 136) / 2, 6)",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 132,
+   "old": "hud plato tarjeta(3,3,78,29) ...",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 137,
+   "old": "hud visor: smoothing on",
+   "to": "smoothing.places[2]: unchanged"
+  },
+  {
+   "line": 162,
+   "old": "destapa stars [108,134] [132,134] [120,128]",
+   "to": {
+    "point": "destapa.estrellas",
+    "new": [
+     [109, 138],
+     [133, 138],
+     [121, 132]
+    ]
+   }
+  },
+  {
+   "line": 163,
+   "old": "tres: vuelaA(120,140,50,24)",
+   "to": {
+    "from": [121, 144],
+    "to": [50, 24]
+   }
+  },
+  {
+   "line": 174,
+   "old": "abda: vuelaA(x.x, x.y - 30, 50, 24, 1)",
+   "to": {
+    "point": "hud.plato",
+    "new": [50, 24]
+   }
+  },
+  {
+   "line": 175,
+   "old": "abda: to h[0] + (bebe ? 22 : -2), bebe ? h[1] - 4 : 150",
+   "to": "relative to SITIO; the row 150 is a floor row: unchanged (the floor rule)"
+  },
+  {
+   "line": 180,
+   "old": "suplato: mueve(\"abuela\",158,200)",
+   "to": {
+    "floor": [7.2342, 6.2552, 0],
+    "new": [158, 200]
+   }
+  },
+  {
+   "line": 183,
+   "old": "final6: vuelaA(b.x, b.y - 14, q.x + 16, q.y + 8, 1, 0.8)",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 184,
+   "old": "final6 stars [60,30] [180,34] [120,22] [96,44] [150,40]",
+   "to": "screen effect: unchanged (over the walls' tops and the backdrop)"
+  },
+  {
+   "line": 188,
+   "old": "mueve / x, y [150,172]",
+   "to": {
+    "floor": [5.4937, 4.9497, 0],
+    "new": [150, 172]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 193,
+   "old": "mueve / x, y [150,200]",
+   "to": {
+    "floor": [7.0167, 6.4727, 0],
+    "new": [150, 200]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 193,
+   "old": "mueve / x, y [182,200]",
+   "to": {
+    "floor": [7.887, 5.6025, 0],
+    "new": [182, 200]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 198,
+   "old": "mueve / x, y [94,198]",
+   "to": {
+    "floor": [5.1129, 8.3765, 0],
+    "new": [80, 200]
+   },
+   "note": "moved (see moves, line 198)"
+  },
+  {
+   "line": 198,
+   "old": "mueve / x, y [66,203]",
+   "to": {
+    "floor": [4.7866, 9.138, 0],
+    "new": [60, 204]
+   },
+   "note": "moved (see moves, line 198)"
+  },
+  {
+   "line": 214,
+   "old": "mueve / x, y [120,146]",
+   "to": {
+    "floor": [2.7196, 3.8075, 0],
+    "new": [120, 136]
+   },
+   "note": "moved (see moves, line 214)"
+  },
+  {
+   "line": 214,
+   "old": "mueve / x, y [72,206]",
+   "to": {
+    "floor": [4.7866, 9.3556, 0],
+    "new": [56, 206]
+   },
+   "note": "moved (see moves, line 214)"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [98,146]",
+   "to": {
+    "floor": [2.6652, 4.9497, 0],
+    "new": [98, 146]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [142,146]",
+   "to": {
+    "floor": [3.8619, 3.7531, 0],
+    "new": [142, 146]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [172,160]",
+   "to": {
+    "floor": [6.0376, 3.5355, 0],
+    "new": [186, 164]
+   },
+   "note": "moved (see moves, line 224)"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [66,160]",
+   "to": {
+    "floor": [2.5565, 6.5815, 0],
+    "new": [66, 160]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [140,190]",
+   "to": {
+    "floor": [6.2008, 6.2008, 0],
+    "new": [140, 190]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [100,190]",
+   "to": {
+    "floor": [5.1129, 7.2886, 0],
+    "new": [100, 190]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 224,
+   "old": "mueve / x, y [106,124]",
+   "to": {
+    "floor": [1.6862, 3.5355, 0],
+    "new": [106, 124]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 228,
+   "old": "mueve / x, y [156,200]",
+   "to": {
+    "floor": [7.9414, 5.5481, 0],
+    "new": [184, 200]
+   },
+   "note": "moved (see moves, line 228)"
+  },
+  {
+   "line": 228,
+   "old": "mueve / x, y [84,200]",
+   "to": {
+    "floor": [4.4602, 9.0292, 0],
+    "new": [56, 200]
+   },
+   "note": "moved (see moves, line 228)"
+  },
+  {
+   "line": 228,
+   "old": "mueve / x, y [190,150]",
+   "to": {
+    "floor": [5.3849, 2.6652, 0],
+    "new": [190, 150]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 228,
+   "old": "mueve / x, y [97,112]",
+   "to": {
+    "floor": [0.7887, 3.1276, 0],
+    "new": [97, 112]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 230,
+   "old": "mueve / x, y [162,176]",
+   "to": {
+    "floor": [6.0376, 4.841, 0],
+    "new": [162, 176]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 231,
+   "old": "mueve / x, y [192,180]",
+   "to": {
+    "floor": [7.0711, 4.2426, 0],
+    "new": [192, 180]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 235,
+   "old": "mueve / x, y [192,180]",
+   "to": {
+    "floor": [7.0711, 4.2426, 0],
+    "new": [192, 180]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 236,
+   "old": "mueve / x, y [152,200]",
+   "to": {
+    "floor": [7.9414, 5.5481, 0],
+    "new": [184, 200]
+   },
+   "note": "moved (see moves, line 236)"
+  },
+  {
+   "line": 236,
+   "old": "mueve / x, y [86,200]",
+   "to": {
+    "floor": [4.4602, 9.0292, 0],
+    "new": [56, 200]
+   },
+   "note": "moved (see moves, line 236)"
+  },
+  {
+   "line": 247,
+   "old": "mueve / x, y [150,170]",
+   "to": {
+    "floor": [6.4184, 4.6778, 0],
+    "new": [172, 178]
+   },
+   "note": "moved (see moves, line 247)"
+  },
+  {
+   "line": 247,
+   "old": "mueve / x, y [182,172]",
+   "to": {
+    "floor": [7.0711, 3.8075, 0],
+    "new": [200, 176]
+   },
+   "note": "moved (see moves, line 247)"
+  },
+  {
+   "line": 198,
+   "old": "corren: a.x=40;a.y=126;b.x=34;b.y=124 (the children appear at the door)",
+   "to": {
+    "spots": ["puerta.hermano", "puerta.hermana"],
+    "new": [
+     [61, 117],
+     [51, 122]
+    ]
+   },
+   "note": "in the new doorway, on its threshold"
+  },
+  {
+   "line": 199,
+   "old": "corren: the baby to mamá's lap: bb.x = 70 + (m.x - 70) i / 6 ..., then m.x, m.y - 15",
+   "to": "from SITIO.bebe, relative to mamá: unchanged"
+  },
+  {
+   "line": 205,
+   "old": "junto: cx = p.x + (p.x < 120 ? -24 : 24); s = p.y < 150 ? .9 : 1; hopTo(cx - 16, p.y + 5 - 27, 2, s)",
+   "to": "the 120 is the room's middle and 150 a floor row: unchanged (the floor rule); relative to the person"
+  },
+  {
+   "line": 207,
+   "old": "prueba: a star at p.x, p.y - 50",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 209,
+   "old": "dispara: the star at [86 + i * 24, 50]",
+   "to": {
+    "points": ["foto.0", "foto.1", "foto.2"],
+    "new": [
+     [83, 66],
+     [105, 55],
+     [127, 44]
+    ]
+   },
+   "note": "over the middle of frame i (the old 86 + i * 24, 50 was the old frame's)"
+  },
+  {
+   "line": 221,
+   "old": "final7 stars at [86 + i * 24, 50]",
+   "to": {
+    "new": [
+     [83, 66],
+     [105, 55],
+     [127, 44]
+    ]
+   },
+   "note": "over the middle of frame i, as line 209"
+  },
+  {
+   "line": 235,
+   "old": "tapa: Math.abs(ab.x - 120) < 60; to q.x + 16, q.y + 22",
+   "to": "the room's middle: unchanged; relative to the frog"
+  },
+  {
+   "line": 239,
+   "old": "abva: p.x + (p.x < 120 ? -22 : 22), p.y + 10",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 241,
+   "old": "espejuelos: m.x + 9, m.y - 26; m.x + 28, m.y + 6; a star at ab.x, ab.y - 58",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 245,
+   "old": "final8 stars [60,30] [180,34] [120,22] [96,44] [150,40]",
+   "to": "screen effect: unchanged"
+  },
+  {
+   "line": 259,
+   "old": "CAM.wide [22,0,196,216]",
+   "to": {
+    "view": "wide",
+    "zoom": 1,
+    "x0": 22
+   }
+  },
+  {
+   "line": 259,
+   "old": "CAM.sofa [52,48,150,165.3]",
+   "to": {
+    "view": "sofa",
+    "zoom": 1,
+    "x0": 22
+   }
+  },
+  {
+   "line": 259,
+   "old": "heartAt [107,6]",
+   "to": {
+    "point": "corazon",
+    "new": [107, 6]
+   }
+  },
+  {
+   "line": 260,
+   "old": "fresh(): cq at LUGAR.centro",
+   "to": "LUGAR: line 76"
+  },
+  {
+   "line": "juego.js:16",
+   "old": "fresh(): cq x 150 y 178 s 1",
+   "to": "not used here: sala's fresh() puts him at LUGAR.centro"
+  },
+  {
+   "line": "cual.js:21",
+   "old": "panelW(): cq x 123 y 150 s .86",
+   "to": "a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)"
+  }
+ ],
+ "checks": {
+  "notes": [
+   "inventory: 16 things (old 16), 9 frog places (old 9), 2 views (old 2), 46 positions (old 46), 11 review pairs, 28 level pictures (old 28), 94 places of sala.js named in code",
+   "hops: 36 pairs of LUGAR places, every count as the old one (round(d / 30), 1 to 4, kit.js acts.ir); the places keep their screen points, so every distance is the old one",
+   "decor: no pixel of the plant inside any set thing's touch box (every baked state)",
+   "wide view (x0 22): the door, its open leaf and who stands in it from x 34 to 72 (12 px from the left side), from row 50",
+   "views: wide zoom 1 x0 22, sofa zoom 1 x0 22: a change of view moves nothing",
+   "a strip of wall: 16 px of wall over the door's frame, 10 px over the window's curtain rod, before the wall's cut top",
+   "seats: an empty sofa shows 6 rows of its seat, the armchair 6; the curtains hang from a rod on two brackets",
+   "frames: in all 5 baked states each of the 3 hangs on the left wall from its own nail, seen, on a wire (9 px of wire at the least), the whole frame seen (nothing of the set over it), its opening its paper; no two frames share a pixel; inside their touch box [70,27,70,54] the set drew only the wall, the frames and 25 px of the lamp's foot in its corner (the frames are hit first there: COSAS order). Straight ones upright (angle 0), a crooked one turned -0.24 rad (counterclockwise, 13.75 degrees) about its middle (its corners 4.02 px from the upright one's); every frame pixel on the left wall, .85 or more over the floor",
+   "lamp: it stands in the corner (0.34,0.22); its foot shows (66 px of the lamp in the 13 x 7 round its front edge), 1 row of floor in front of it before the sofa's back",
+   "door: through it, from the threshold up, the porch's tiles and edge (827 px) then the lawn beyond (152 px), in each of its 23 columns",
+   "table: its top spans x 98..144, rows 147..156; the cake's dish [104,151,34,3] and the camera [113,143,16,10] stand on it, their bottoms 3 and 4 rows from its front edge; plain floor and sofa behind them",
+   "table: the cake and the camera are never on it at once (1101 moments)",
+   "photos: 89 photos of a person at 44 distinct moments (hermana, hermano, mama, papa): each whole (the 16 x 22 of the sprite, at 1:1, upright or turned with its crooked frame) inside its frame's opening, 0 px from its edge at the least (its sides on the opening's: 16 wide in 16, as the old); no corner card (but the photo of everyone) and no one over any pixel of it",
+   "standing over sitting: at 139 distinct moments no standing person's sprite covers more of a sitting person's face (eyes to chin) than the old picture did there (none does, nor in the old); one stands before a sitting one's body, not the face, as abuela before abuelo, abuela before mama, abuela before papa, abuelo before bebe, hermana before papa, hermano before papa, papa before mama, every one as in the old picture",
+   "asks: 45 distinct asks: every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), the hint hand on no face; 16 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
+   "NOT the scene's: the hand juego.js draws at an answer card (the left one) reaches 7 px onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for yo_coqui, tu_hermana, tu_hermano, $bien_papa",
+   "bubbles: 177 bubbles at 1101 moments of 18 runs (d-bizcocho-bebe, d-foto-familia, h-sala, la-familia, la-foto, quien-eres-tu), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, abuelo's \"q\", the frog's \"amor\"): wholly inside the view (1 px from its edge at the least), clear of the cards shown in the corner (0 px), on no face",
+   "floor: 103 distinct places where someone stands (and the frog): inside the room, nothing of the furniture or the walls nearer than them inside their body (the low table only covers who is drawn before it, and only where it is nearer); 11 distinct sittings, each before a seat",
+   "pairs, what differs (the same window both sides): mama: mama only in si, abuela only in no; papa: papa only in si, abuelo only in no; abuelo: abuelo only in si, abuela only in no; bebe: bebe only in si, hermano only in no; familia: papa only in si, abuelo only in si, abuela only in si, hermano only in si, hermana only in si, bebe only in si; hermano: hermano only in si, papa only in no; hermana: hermana only in si, mama only in no; el: the frog x; ella: the frog x; yo: hermana pose; tu: hermano pose",
+   "pairs: 22 review pictures (and the 28 level pictures, the same pictures): everyone and the frog whole in their crop, on clear floor or a seat"
+  ]
+ }
+}
+''';

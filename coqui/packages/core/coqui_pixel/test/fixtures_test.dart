@@ -15,6 +15,7 @@ import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/ref_pp.dart';
 import 'support/fixtures/ref_sprites.dart';
+import 'support/fixtures/sala_sheet.dart';
 import 'support/ref_data.dart';
 import 'support/ref_files.dart';
 import 'support/sheet_text.dart';
@@ -85,5 +86,9 @@ void main() {
 
   test('the sheet fixture is the text of El balcón\'s sheet', () {
     expect(balconSheetJson, balconSheetText());
+  });
+
+  test('the sheet fixture is the text of La sala\'s sheet', () {
+    expect(salaSheetJson, salaSheetText());
   });
 }
