@@ -23,6 +23,10 @@ Models, interfaces, routes. Pure Dart.
 - Nobody imports another package's `src/`.
 - Since order 02 it holds page 12, section 2: the models, the interfaces, the routes, `normalize` (PAL.norm, through `lib/src/normalize_table.dart`) and `Mulberry32`. `coqui/tool/contracts/make_fixtures.mjs` makes the table and the test fixtures from the old code.
 
+- Order 27: `RepasoData` and its parts (`lib/src/repaso.dart`), the typed `historia/datos/repaso.json` that
+  `coqui/tool/make_repaso.py --app` writes, and `RepasoCatalog` (`RepasoData? get repaso`). It is an interface of its own,
+  not a member of `CourseCatalog`: a new member there would break the catalogs other packages' tests implement.
+
 ## Run and test it alone
 
 ```

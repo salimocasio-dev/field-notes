@@ -35,6 +35,30 @@ Repaso (¿Cuál?) and the level check.
 - `tool/dev_main.dart`, `dev_states.dart`, `dev_data.g.dart` (made by `node tool/embed_dev_data.mjs` from `historia/` and `ref/pantallas/seeds/`), `support/`: the dev entry. Its address parameters are in the file's header (`?screen=review|level&seed=curso&state=tu-turno`).
 - `tool/shots.mjs` (screenshots of every reference state on both phones, side by side with the old pictures, `pairs.json`) and `tool/compare.mjs` (the same numbers measured from both pictures).
 
+## Repaso as games (order 27)
+
+Page 15 (docs/proyecto/15-repaso-juegos.md) is the design; where it and page 10 differ about Repaso, page 15 wins.
+
+- `ReviewModule({imageUrl, imageProvider})` answers `ReviewRoute` with `RepasoScreen` (the games) when the course is a
+  `RepasoCatalog` whose `repaso` is not null (`datos/repaso.json` was read); otherwise with today's `ReviewScreen`
+  (cual.js), unchanged. `imageUrl` / `imageProvider` turn a book page's `img` into its picture, as `LibraryModule`'s do;
+  the shell passes the site's address.
+- `lib/src/logic/repaso_plan.dart`: the words, the scored item of each word (¿Cuál? / ¿Qué oyes? in turn by the Ear
+  count `n`; ¿Cuál? after a miss), the sentence in turn by that count, the wrong tiles, the play items (Arma la frase,
+  Parejas, ¿Dónde?, Dilo in turn after every third scored item). Only sentences of stories he has finished (played to the
+  end; a story the level check only presumed does not count; a picture story heard to its end does).
+- `lib/src/logic/repaso_session.dart`: the session on the host's wait (silence for the scored games, the answer shown,
+  a miss back once three items later, at most five), what is written (Ear as today's Repaso, Mouth for Dilo heard right,
+  the minutes), the end. `repaso_words.dart`: folding and finding a word in a sentence.
+- The feature's own storage space `review` keeps two things: the last sentence each word was asked in (`repaso.last`, so
+  two reviews running never repeat one) and where the play kinds' turn stands (`repaso.kind`).
+- `lib/src/ui/repaso_screen.dart` (the start, each game, the end, Dilo's mic), `book_image.dart` (a book picture at a
+  whole scale; a local copy of Biblioteca's).
+- Tests: `repaso_plan_test.dart` (on the real data file: tiles over every sentence, rotation, which game, the seeded
+  learner's session), `repaso_session_test.dart` (each game's rules with no screen), `repaso_screen_test.dart` (both
+  phones, text size, reduced motion). `tool/repaso_counts_test.dart` prints how many words get each game at stories 3,
+  11, 22, 32. The pictures for readers: `coqui/app/tool/repaso_shots_test.dart`.
+
 ## Run and test it alone
 
 ```

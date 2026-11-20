@@ -37,6 +37,12 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
   - `ListFade`, `FadingEdges`.
   All are dumb: values and callbacks, no feature logic. Every number is copied from the old CSS (v=39), never chosen.
 
+- Order 27, the parts of Repaso's games (`lib/src/game_tiles.dart`, `test/game_tiles_test.dart`): `WordTile` (a written
+  word, with a speaker of its own when the word can be heard alone), `SpeakerTile`, `TileTray`, `StreakChip`
+  ("N in a row" from three), `TouchSign` (the big sign for what to touch; still with reduced motion), `TileLook`; the
+  tokens `lessonTile`, `lessonTilePressed`, `lessonChip` and the styles `lessonTile`, `lessonHint`, `lessonChip` (not in
+  v=39: chosen for the games). `Pressable` is exported. They are not in the gallery; feature_review's screenshots show them.
+
 ## The gallery
 
 `tool/dev_main.dart` shows every token and every widget in each of its states, one section per reference picture of `coqui/ref/pantallas/` (the file is named under each section). The sample words and titles are placeholders; the labels v=39 hard-codes are copied. The book reader and the shelf row are not here: Biblioteca (`feature_library`) draws its own, the only place that uses them.

@@ -83,6 +83,13 @@ How the app moves, as the old pages do:
 - `go(TabRoute(...))` from a lesson (a story's Map, Repaso's way back to Palabras, the level check's "To the map")
   leaves it for that tab.
 
+Repaso (order 27): `ReviewModule(imageUrl: bookImageUrl)` gets the book pictures' address, as Biblioteca does. The pictures
+of a whole session for readers:
+
+```
+flutter test tool/repaso_shots_test.dart --dart-define=OUT=<dir>   # 390 x 844 at ratio 2: NNN-<moment>.png and index.json
+```
+
 ## Address switches
 
 Before the `#`, read once at the start, never kept: `?perf=1` (the map's bake and frame times and a story's scene bake in
