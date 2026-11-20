@@ -42,6 +42,7 @@ Every "Done when" includes, without saying so each time: `flutter analyze` clean
 | **Gate A** | **The map, El frente and stories 1 to 3 to Salim. The scenes lane stops** | orchestrator | 13 to 26 |
 | 30a to 39a | Each other scene's set reference and sheet | orchestrator (design), one at a time | Gate A |
 | 30b to 39b | Each other scene in Dart | builder, coqui_scenes, one at a time | its "a" |
+| 50 to 53 | El colmado's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 39b, or sooner if the lane is free |
 | 40 | Every story against its recorded runs | orchestrator | 39b |
 | 41 | Books' pictures captured again | orchestrator | 40 |
 | 42 | Cutover | orchestrator | 41 |
@@ -646,6 +647,44 @@ Ported by an Opus builder; three files it could not touch were finished by a Son
 - Over the limit: the first bake of a balcon state takes 205 to 313 ms in a release web build on the build machine (limit 150; El frente about 100). Later bakes 114 to 198 ms. Accepted for now; a speed-up is a later order.
 - Left as the old game has it: the glass beside abuela's head; a glass on the floor beside the frog when he carries it; the board game's asks with no hint; the two answer cards that look alike.
 - Not solved: the door's hint frame reaches 3 px past the view (no story asks for the door); `coqui_scenes`' picture widget fails when it is given another picture in place (found by order 27; a fix is queued).
+
+## From the content lane (Nov 20): A comer is out; orders 50 to 53, El colmado's four new scenes
+
+Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
+
+### A comer (place 3, scene 4) is published on the old site, v=40
+
+- On main: `historia/escenas/comer.js`; stories `que-quieres`, `buen-provecho`, `cafe-con-azucar`; pairs `cual-comer`; their books; La cocina's three do-this routines `h-mesa`, `h-estufa`, `h-nevera` (place `cocina` now has a `haz` list); four level-check items (`historia/nivel.js`). All recorded (140 clips, 3,938 characters).
+- **`historia/datos/` was not exported again, on purpose.** With the three stories in `datos/curso.json`, `make_repaso.py` stops: the pairs of café, azúcar, un poco and mucho have no sheet (no `coqui/ref/escenas/comer/`), 25 older words gain sentences that no reader has judged (102 of them: pan, yo, come, arroz, más, mantequilla, aquí, papá, hay and others), and the three books have no verdict file. So, when this lane takes A comer: order 06 for `comer`, then `node coqui/tool/export_datos.mjs`, the readers' verdicts (books and pairs), `make_repaso.py --app`, `make_palabras_solas.py` (10 more words to record, about 75 characters), then the scene as the twelfth.
+- Book verdicts by three fresh readers already exist, made from the sheets of `--hojas-libro` with the three stories in the course: `historia/notas/veredictos-comer/` (they validate; copy them into `coqui/tool/repaso/veredictos/` once the course data lists the stories; the tool refuses a verdict file for a book it does not know).
+- Speaking turns: A comer's stories are the first with `tu_turno` (the story kit, page 16).
+- A fault in the old `estufa.js`, for order 38: a cup held by mamá is drawn as the baby. `gen_escuchar_cocina.py` works round it with a hidden stand-in (`mama2`).
+- Lengths at real speed, clean run, on the old site: 266 s, 305 s, 288 s. Salim has been told.
+
+### La cocina's Escuchar picture stories wait for this lane's kitchen scenes
+
+Four picture stories are written and generated (`historia/tools/gen_escuchar_cocina.py`: `d-cuchara-abuelo`, `d-comida-coqui`, `d-chocolate-luis`, `d-comida-parque`; script and the silent readers' findings in `historia/notas/guiones/escuchar-cocina.md`). With the acts the old kitchen scenes have, their stories do not read from the pictures alone, and the old site is frozen. They need plain acts in mesa, estufa and nevera, as El parque's scenes got: the list is the script's "Needs" (anda, da, toma, deja, come, bebe, gesto, cosa, perro, sinmarcador, and three scene notes). Add them when orders 37b to 39b are written; the story files are not on main until then.
+
+### Orders 50 to 53. El colmado (place 4): mostrador, estantes, frutas, caja
+
+New scenes: there is no old scene file and no `ref/escenas/` folder. Step a (design) is done by the content lane. Step b is this lane's.
+
+**What exists, in `docs/proyecto/pixel/`** (all on main):
+- The room and the shop front, shared: `colmado-dentro.js` (inside: counter, register, two runs of shelves, ladder, freezer, chair, doors, shop window) and `colmado-fuera.js` (the front from the street: wall, door, sign, awning, the slanted stand with two assortments, the hanging scale, the hand cart, the low crate, the post).
+- Per scene `<id>-set.html` (the baked set, states from the address), `<id>-sheet-make.js` (writes `<id>-sheet.json` and checks it; all four exit 0), `<id>-preview.html` (a dev tool: stand-in sprites over the set at each story moment; `?m=N`).
+- `mostrador`: states `donde` dentro or calle, `hora`, `atras`, `nevera`, `puerta` (calle); views `dentro` (x0 21) and `calle` (x0 22), both zoom 1; 47 spots. `estantes`: `anillos`, `mesa`; one view (x0 6); 42 spots. `frutas`: `hora`, `puerta`, `carro`, `surtido` verduras or frutas; one view (x0 21); 23 spots. `caja`: `hora`; one view (x0 17); 25 spots, the two key cards and the amount plate (`importe`).
+- Three rounds of fresh readers saw the sets with no words; what they found is fixed (the outside read as a mirror, a truck as a blue box, bins that could not be told apart, a dark room).
+- Bake, headless Chrome on the build machine: frutas and mostrador calle 70 to 110 ms; the three inside states 160 to 270 ms. Over the 150 ms limit, as balcon's first bakes are. Not solved.
+
+**The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/mostrador.md` (stories 36 to 38), `estantes.md` (39 to 41), `frutas.md` (42 to 44), `caja.md` (45 to 47). Generators: `historia/tools/gen_mostrador.py`, `gen_estantes.py`, `gen_frutas.py`, `gen_caja.py`: run one and it writes its three story files into `historia/cuentos/` (the checker passes all 12 with 0 errors; 4,224 paths walked). **The story files are not on main and must not be pushed**: a push under `historia/cuentos/` records them (369 clips, 13,133 characters), and they are recorded only after they have been played in the app. Keep them out of git locally (`.git/info/exclude`). With them in `historia/cuentos/`, `make_repaso.py --check` and `make_palabras_solas.py --check` report stale data: that is these files, not a fault.
+
+**Step b, one scene at a time (builder, coqui_scenes), in the order mostrador, estantes, frutas, caja:**
+1. `buildSet` call for call from the set file and the shared file; every baked state within 0.5% of the JavaScript.
+2. The scene written new from the script's "Needs" list: every act, thing, spot, view and speaker key it names, with positions from the sheet only. **Stop if** a position has no name in the sheet, or an act's picture is not settled by the script: the content lane decides and adds it.
+3. Sprites: don Pepe (standing, reaching up, sitting with a fan, on the ladder), the three children, the goat, and each thing the Needs lists name. The previews' stand-ins show size and place, not the final drawing. The señora and the señor are El banco's. New sprites are design: the content lane looks at each sheet of them before the port goes on.
+4. The sheet's rules hold in the scene: the frog is never behind a grown-up; nothing stands on the amount plate; the two children outside the shop window show only through its panes and the third stands in the doorway; a customer's thing has its price tag at the sheet's `etiqueta` offset.
+
+**Done when:** every state within 0.5% of the reference; every touch box contains its thing; `tool/juega.dart` plays each of the scene's three stories on every path the checker walks, to the end, right and wrong; a fresh reader of the frames with no sound and no words says what happens in each story. Then the content lane measures length and silences, records, and makes the place's pairs, Escuchar set, books and level items.
 
 ## Order 40. Every story against its recorded runs (orchestrator)
 
