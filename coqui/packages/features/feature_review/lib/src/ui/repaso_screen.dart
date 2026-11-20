@@ -153,7 +153,7 @@ class RepasoScreenState extends State<RepasoScreen> {
     Widget? button;
     if (s.canNext) {
       button = LessonButton(label: RepasoStrings.next, onPressed: s.pressNext);
-    } else if (s.item is SayItem && !s.showText) {
+    } else if (s.item is SayItem && !s.showText && s.mic != MicState.ok) {
       // "Can't speak now" stands where Next will: the one button of the bottom of the screen
       button = Align(
         child: LessonButton(
@@ -608,8 +608,8 @@ class RepasoScreenState extends State<RepasoScreen> {
                 WordTile(word: it.order[i], look: TileLook.empty),
           ],
         ),
-        // the sentence is whole: a check badge at the end of the line
-        if (done) const Positioned(right: -6, top: -10, child: CheckBadge()),
+        // the sentence is whole: a check badge at the end of the line (at the right end of its last row)
+        if (done) const Positioned(right: -6, bottom: 24, child: CheckBadge()),
       ],
     );
     return _Area(

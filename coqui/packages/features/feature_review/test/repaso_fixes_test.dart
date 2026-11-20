@@ -513,7 +513,11 @@ void main() {
       final lineBox = t.getRect(find.byType(TileTray).first);
       final check = t.getRect(find.byType(CheckBadge));
       expect(check.right, greaterThan(lineBox.right - 40));
-      expect(check.center.dy, lessThan(lineBox.center.dy));
+      // at the end of the line: on the level of its last row
+      expect(
+        check.center.dy,
+        closeTo(t.getRect(line.at(it.order.length - 1)).center.dy, 2),
+      );
       expect(find.textContaining(it.text, findRichText: true), findsOneWidget);
       expect(find.text(RepasoStrings.next), findsOneWidget);
     },
