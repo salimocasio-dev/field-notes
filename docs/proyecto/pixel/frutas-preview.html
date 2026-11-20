@@ -1,0 +1,227 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>Las frutas · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of Las frutas (frutas-set.html, drawn in a hidden frame: the street front and the stand of colmado-fuera.js) with the characters and the small things drawn over it as sprites, each placed from frutas-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the pavement. Then cropped to the 196 x 216 view. The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the goat and the small things (coins, the baskets, the fruit, the crates, the knife, a fly) are stand-ins drawn here, not final art.
+Address: <code>?m=1</code> story 42 opening, <code>?m=2</code> story 42 game, <code>?m=3</code> story 43, <code>?m=4</code> story 44 (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane, <code>&amp;order=list</code> to draw the sprites in the order they are listed instead of by depth (each still hidden by the set), <code>&amp;also=pepe.carro,senora.puerta</code> to add a sprite at those spots (pepe.*, abuela.*, senora.*, cabra.*). Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<p id="cap"></p>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. The sheet gives each spot's world point, screen point and depth.
+   2. The set for the moment's state (hora, puerta, carro, surtido, aguja; the needle only where a moment asks for it) is drawn by frutas-set.html in a hidden
+      frame, with the shadows of those who stand on the pavement cast (frame(t, casts): radius by character, sheet: shadows). None for the frog on the ledge.
+   3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on its screen column. A sprite pixel is hidden
+      where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
+      depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins. A thing on the scale uses the spot's drawn_depth.
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide). */
+(() => {
+  const A = new URLSearchParams(location.search);
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = fetch('frutas-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; });
+  const T30 = Math.tan(Math.PI / 6);
+
+  /* ---------- the people: today's sprite makers, with these outfits ---------- */
+  const PIEL = KIT.PIEL, PELO = KIT.PELO;
+  const PEPE = { piel: PIEL.c, pelo: PELO.negro, peinado: 'corto', ropa: ['#C8C8D0', '#E4E4EA', '#F6F6FA', '#FFFFFF'], abajo: RP.grey, bigote: 1,
+    // a green apron over his front, from the chest to the knees (drawn over the body, under the head and the arms)
+    detalle: (b, X) => {
+      const G = RP.grn;
+      b.rect(X - 4, 18, 1, 4, G[1]); b.rect(X + 3, 18, 1, 4, G[1]);                  // the straps
+      b.rect(X - 5, 22, 10, 24, G[2]); b.rect(X - 5, 22, 2, 24, G[3]); b.rect(X + 3, 22, 2, 24, G[1]);
+      b.rect(X - 5, 45, 10, 1, G[0]); b.rect(X - 5, 22, 10, 1, G[3]);
+      b.rect(X - 3, 34, 6, 4, G[1]); b.rect(X - 3, 34, 6, 1, G[3]);                  // a pocket
+    } };
+  const SENORA = { piel: PIEL.a, pelo: PELO.castano, peinado: 'corto', ropa: RP.grn, falda: 1, zapato: '#F2F2F8' };
+
+  /* ---------- small things: stand-ins with a dark outline ---------- */
+  const mk = (w, h, fn) => { const b = new Buf(w, h); fn(b); return b.outline().done(); };
+  const pal = m => { const r = {}; for (const k in m) r[k] = m[k]; return r; };
+  const rows = (b, r, P, x0 = 0, y0 = 0) => r.forEach((line, y) => [...line].forEach((ch, x) => { if (P[ch]) b.px(x0 + x, y0 + y, P[ch]); }));
+  // the set's own colours (colmado-fuera.js), as hex
+  const hex = c => '#' + c.map(v => v.toString(16).padStart(2, '0')).join('');
+  const LIM = { l: hex([216, 244, 110]), L: hex([172, 218, 58]), D: hex([120, 172, 46]), d: hex([76, 120, 44]) };
+  const AGU = { a: hex([96, 152, 74]), A: hex([62, 112, 58]), H: hex([196, 234, 154]), D: hex([38, 76, 50]), K: hex([26, 52, 42]) };
+  const POT = { p: hex([190, 160, 118]), P: hex([168, 136, 96]), D: hex([128, 100, 72]), d: hex([96, 74, 56]), e: hex([84, 62, 44]) };
+  const WOODS = [hex([92, 62, 40]), hex([150, 98, 56]), hex([196, 148, 92]), hex([214, 176, 120])];
+  const THING = {
+    moneda: () => mk(7, 7, b => { b.ell(3.5, 3.5, 2.6, 2.6, ['#B87A10', '#F0C020', '#FFE070']); }),
+    limon: () => mk(8, 8, b => rows(b, ['.llLL.', 'lllLLD', 'lLLLLD', 'LLLLDD', '.LLDD.', '..dd..'], LIM, 1, 1)),
+    papa: () => mk(10, 8, b => rows(b, ['..ppPP..', '.pPPPPPD', 'pPePPPPD', 'PPPPPeDD', '.PePDDD.', '..dDdd..'], POT, 1, 1)),
+    // an aguacate, big (10 x 13) and small (8 x 10: the set's own)
+    aguacate_g: () => mk(12, 15, b => rows(b, ['....aA....', '....aA....', '...aAAA...', '..aHAAAA..', '..aHHAAAA.', '.aHHAAAAAD', '.aHAAAAADD', 'aAAAADAAAD', 'aAAAAAAADD', 'AAAAAAADDD', '.AAAADDDD.', '..ADDDDK..', '...DDKK...'], AGU, 1, 1)),
+    aguacate_p: () => mk(10, 12, b => rows(b, ['...aA...', '...aA...', '..aAAA..', '.aHAAAA.', 'aHHAAAAD', 'aHAAAADD', 'aAAADAAD', 'AAAAAADD', '.AAADDD.', '..DDDK..'], AGU, 1, 1)),
+    cuchillo: () => mk(4, 14, b => { b.rect(1, 1, 2, 8, '#E4E8F0'); b.rect(2, 1, 1, 8, '#FFFFFF'); b.px(1, 1, '#B8BCC8'); b.rect(1, 9, 2, 4, '#6E4220'); b.rect(1, 9, 2, 1, '#B88040'); }),
+    cesta: () => mk(14, 11, b => { b.rect(1, 4, 12, 6, '#C8853C'); for (let y = 4; y < 10; y += 2) for (let x = 1; x < 13; x += 2) b.px(x + (y >> 1) % 2, y, '#A8682C'); b.rect(1, 4, 12, 1, '#E2A85A'); b.rect(2, 1, 1, 3, '#A8682C'); b.rect(11, 1, 1, 3, '#A8682C'); b.rect(2, 1, 10, 1, '#A8682C'); }),
+    // abuela's basket on the ledge (story 43): wicker, a cloth over it with three hollows in a row, seen from the front and a little above (24 x 14)
+    canasta: (primero) => mk(24, 14, b => {
+      b.rect(1, 6, 22, 7, '#C8853C'); for (let y = 6; y < 13; y += 2) for (let x = 1; x < 23; x += 2) b.px(x + (y >> 1) % 2, y, '#A8682C');
+      b.rect(1, 12, 22, 1, '#8A5222');
+      b.ell(12, 5, 11.4, 3.4, ['#D8B8C8', '#F0DCE4', '#FFF4F6']);                              // the cloth
+      [5, 12, 19].forEach(x => { b.ell(x, 5.4, 3.1, 1.9, ['#B890A4', '#D0A8BC']); b.ell(x, 4.8, 2.2, 1.2, ['#D8B8C8']); });   // the three hollows
+      b.rect(1, 6, 22, 1, '#E2A85A');
+    }),
+    // a crate of the ledge (story 44), .7 wide: fresh = green leaves and a shine, drops of water; yesterday's = dull, limp leaves, a fly
+    cajon: (fresco) => mk(18, 15, b => {
+      const W0 = fresco ? [WOODS[1], WOODS[2], WOODS[3]] : ['#5E5448', '#7A6E5E', '#8E8270'];
+      b.rect(1, 7, 16, 7, W0[1]); b.rect(1, 7, 16, 1, W0[2]); b.rect(1, 13, 16, 1, W0[0]); b.rect(1, 9, 16, 1, W0[0]); b.rect(1, 11, 16, 1, W0[0]);
+      b.rect(15, 7, 2, 7, W0[0]);
+      if (fresco) {
+        const LV = ['#4A9A3E', '#6CC454', '#3A8438'];
+        b.rect(1, 5, 16, 3, LV[0]);
+        [[2, 3], [5, 2], [8, 3], [11, 2], [14, 3]].forEach(([x, y], i) => b.rect(x, y, 3, 4, LV[i % 3 === 1 ? 1 : 0]));
+        [[3, 3], [7, 2], [12, 3]].forEach(([x, y]) => b.px(x, y, '#CFF2A8'));
+        [[4, 5], [9, 6], [13, 5]].forEach(([x, y]) => { b.px(x, y, '#E23C32'); b.px(x + 1, y, '#E23C32'); });     // red fruit under the leaves
+        [[2, 1], [6, 0], [10, 1], [15, 2]].forEach(([x, y]) => { b.px(x, y, '#FFFFFF'); b.px(x + 1, y, '#FFFFFF'); b.px(x, y + 1, '#FFFFFF'); });   // the shine
+        [[3, 9], [9, 10], [13, 9]].forEach(([x, y]) => b.px(x, y, '#BFE4FF'));                                     // drops of water
+      } else {
+        const LV = ['#7A8040', '#5E6434'];
+        b.rect(1, 5, 16, 3, LV[1]);
+        [[2, 5], [6, 4], [10, 5], [14, 4]].forEach(([x, y], i) => b.rect(x, y, 3, 2, LV[i % 2]));              // limp, olive
+        [[3, 6], [8, 6], [12, 6]].forEach(([x, y]) => { b.px(x, y, '#7A4A3A'); b.px(x + 1, y, '#5E3A30'); });   // dark wrinkled fruit
+        b.rect(6, 8, 3, 1, '#6A6054');
+      }
+    }),
+    mosca: () => mk(5, 4, b => { b.px(1, 2, '#20140A'); b.px(2, 2, '#20140A'); b.px(2, 1, '#E8F0FF'); b.px(1, 1, '#E8F0FF'); b.px(3, 1, '#E8F0FF'); }),
+  };
+  /* the goat: a simple sprite, 30 x 24, white with brown patches, horns and a beard, seen from the front; its middle column on the spot. stand: head up. come: the
+     neck stretched down, the head lowered in front of the chest, its nose at (14, 11): 1 across and 13 rows above the feet, which is cabra.cajon from cabra.poste */
+  function mkCabra(pose) {
+    const b = new Buf(30, 24), WH = ['#C4C4D2', '#E2E2EC', '#F4F4FA', '#FFFFFF'], BR = ['#6E4220', '#92602E'], HORN = [RP.cream[1], RP.cream[2], RP.cream[3]], DK = '#3A2414';
+    const come = pose === 'come';
+    for (const x of [8, 12, 17, 21]) { b.rect(x, 16, 2, 5, WH[1]); b.rect(x, 21, 2, 2, DK); }                  // four legs, dark hooves
+    b.ell(15, 14.2, 9.6, 4.8, WH);                                                                             // the body
+    b.ell(10.5, 13.4, 3.2, 2.4, BR); b.ell(20, 15.4, 3.6, 2.2, BR); b.ell(14.5, 17.4, 2.2, 1.1, BR);            // brown patches
+    if (!come) {
+      b.cap(15, 8.5, 15, 12, 2.6, WH);                                                                         // the neck, up
+      b.ell(15, 5.2, 3.7, 3.9, WH);                                                                            // the head
+      b.cap(11.4, 3.2, 9.2, 1.4, .9, HORN); b.cap(18.6, 3.2, 20.8, 1.4, .9, HORN);                            // horns
+      b.ell(9.6, 5.6, 2.6, 1.2, BR); b.ell(20.4, 5.6, 2.6, 1.2, BR);                                           // ears
+      b.px(13, 4.5, '#F0D040'); b.px(17, 4.5, '#F0D040'); b.px(13, 5, '#20140A'); b.px(17, 5, '#20140A');   // eyes
+      b.ell(15, 8, 1.8, 1.1, ['#B07A6A']);                                                                     // nose
+      b.rect(14, 9, 2, 3, '#DADAE6'); b.px(14, 12, '#C4C4D2');                                                 // the beard
+    } else {
+      b.cap(15, 10, 14.5, 12.8, 2.6, WH);                                                                      // the neck, stretched down
+      b.ell(14.5, 8.2, 3.7, 3.7, WH);                                                                          // the head, lowered
+      b.cap(11.2, 6.4, 9, 4.2, .9, HORN); b.cap(17.8, 6.4, 20, 4.2, .9, HORN);                                  // horns, forward and up
+      b.ell(9.4, 8.2, 2.6, 1.2, BR); b.ell(19.6, 8.2, 2.6, 1.2, BR);
+      b.px(12.5, 7, '#F0D040'); b.px(16.5, 7, '#F0D040'); b.px(12.5, 7.5, '#20140A'); b.px(16.5, 7.5, '#20140A');
+      b.ell(14.5, 10.6, 1.8, 1.1, ['#B07A6A']);                                                                // nose: at row 11
+      b.rect(13.5, 12, 2, 3, '#DADAE6');                                                                       // the beard
+    }
+    return b.outline().done();
+  }
+  const CACHE = {};
+  const thing = (k, a) => { const key = k + (a === undefined ? '' : ':' + a); return CACHE[key] || (CACHE[key] = THING[k](a)); };
+  // the sprite's lowest drawn row (its feet, outline included) rests on the row above the spot's: its bottom edge is on sy
+  const inkBottom = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = cv.height - 1; y >= 0; y--) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y + 1; return cv.height; };
+  const anchor = (cv, ax, ay) => ({ cv, ax, ay: ay == null ? inkBottom(cv) : ay });
+  const SP = {
+    pepe: (pose) => anchor(KIT.mkPersona(PEPE, pose || 'idle', 0, 0), KIT.PX),
+    persona: (w, pose) => anchor(KIT.mkPersona(w, pose || 'idle', 0, 0), KIT.PX),
+    abuela: () => anchor(mkAbuela('idle', 0), 30),
+    coqui: () => anchor(mkCoqui(1, 0, 0), 16),
+    cabra: (pose) => anchor(mkCabra(pose), 15),
+    thing: (k, a) => anchor(thing(k, a), Math.floor(thing(k, a).width / 2)),
+  };
+  // a thing drawn over the person's own sprite (x, y: its top left on the person's canvas)
+  const holding = (s, items) => { const c2 = document.createElement('canvas'); c2.width = s.cv.width; c2.height = s.cv.height; const g = c2.getContext('2d'); g.drawImage(s.cv, 0, 0); for (const [cv, x, y] of items) g.drawImage(cv, x, y); return Object.assign({}, s, { cv: c2 }); };
+  const hands = (xs, y) => { const cv = document.createElement('canvas'); cv.width = 40; cv.height = 5; const b = new Buf(40, 5); for (const x of xs) b.ell(x, 2.5, 2.2, 2.2, [RP.skin[2], RP.skin[3]]); return b.done(); };
+
+  /* ---------- the four moments ---------- */
+  const moneda = (at, n) => Array.from({ length: n }, (_, i) => ({ at, off: [i * .2, 0, 0], s: () => SP.thing('moneda') }));
+  const MOMENTS = {
+    1: { what: 'story 42, opening: morning, the stand of verduras. Don Pepe at pepe.detras, abuela at abuela.delante with a basket, the frog at coqui.repisa.2, four coins at monedas4 and two at monedas2, the goat at cabra.poste',
+      set: { hora: 'manana', puerta: 'open', carro: 0, surtido: 'verduras', aguja: '' },
+      layers: () => [{ at: 'pepe.detras', s: () => SP.pepe(), who: 'adulto' },
+        { at: 'abuela.delante', s: () => holding(SP.abuela(), [[thing('cesta'), 23, 32]]), who: 'adulto' },
+        { at: 'coqui.repisa.2', s: () => SP.coqui(), who: null },
+        ...moneda('monedas4', 4), ...moneda('monedas2', 2),
+        { at: 'cabra.poste', s: () => SP.cabra('stand'), who: 'cabra' }] },
+    2: { what: 'story 42, the game: abuela at abuela.junto_cabra holding her basket with both hands, a potato in the air at vuelo, the goat\'s head at the low crate (its feet at cabra.poste)',
+      set: { hora: 'manana', puerta: 'open', carro: 0, surtido: 'verduras', aguja: '' },
+      layers: () => [{ at: 'abuela.junto_cabra', s: () => holding(SP.abuela(), [[thing('cesta'), 23, 32], [hands([22, 37], 0), 0, 33]]), who: 'adulto' },
+        { at: 'vuelo', s: () => SP.thing('papa') },
+        { at: 'cabra.poste', s: () => SP.cabra('come'), who: 'cabra' }] },
+    3: { what: 'story 43: the stand of frutas. Abuela at abuela.delante holding a big and a small aguacate, the basket at canasta with a limón in its first hollow, don Pepe at pepe.detras with a knife, the frog at coqui.repisa.3',
+      set: { hora: 'manana', puerta: 'open', carro: 0, surtido: 'frutas', aguja: '' },
+      layers: () => [{ at: 'pepe.detras', s: () => holding(SP.pepe(), [[thing('cuchillo'), 35, 21]]), who: 'adulto' },
+        { at: 'abuela.delante', s: () => holding(SP.abuela(), [[thing('aguacate_g'), 36, 25], [thing('aguacate_p'), 13, 30], [hands([40, 17], 0), 0, 33]]), who: 'adulto' },
+        { at: 'canasta', s: () => SP.thing('canasta') },
+        { at: 'canasta', px: [-7, -8], dd: .05, s: () => SP.thing('limon') },
+        { at: 'coqui.repisa.3', s: () => SP.coqui(), who: null }] },
+    4: { what: 'story 44: the stand of verduras, the hand cart there, the needle at medio. Don Pepe at pepe.pesa, four limones on the pan, a fresh crate at cajon_a and yesterday\'s at cajon_b, abuela at abuela.delante, the frog at coqui.repisa.1',
+      set: { hora: 'manana', puerta: 'open', carro: 1, surtido: 'verduras', aguja: 'medio' },
+      layers: () => [{ at: 'pepe.pesa', s: () => SP.pepe(), who: 'adulto' },
+        ...[[-3, 0], [3, 0], [-1, 3], [4, 3]].map(([dx, dy]) => ({ at: 'plato', px: [dx, dy], s: () => SP.thing('limon') })),
+        { at: 'cajon_a', s: () => SP.thing('cajon', true) },
+        { at: 'cajon_b', s: () => SP.thing('cajon', false) }, { at: 'cajon_b', px: [-3, -17], s: () => SP.thing('mosca') },
+        { at: 'abuela.delante', s: () => SP.abuela(), who: 'adulto' },
+        { at: 'coqui.repisa.1', s: () => SP.coqui(), who: null }] },
+  };
+  const RADIUS = () => SHEET.shadows.radius;
+  // the sprites added by &also=: one for each spot named
+  function alsoLayers(list) {
+    return list.split(',').filter(Boolean).map(n => ({ at: n, who: n.startsWith('cabra') ? 'cabra' : 'adulto', s: () => n.startsWith('pepe') ? SP.pepe() : n.startsWith('abuela') ? SP.abuela() : n.startsWith('senora') ? SP.persona(SENORA) : n.startsWith('cabra') ? SP.cabra('stand') : n.startsWith('coqui') ? SP.coqui() : SP.thing('moneda') }));
+  }
+
+  /* ---------- the set: one hidden frame per state ---------- */
+  const SETS = {};
+  async function setFrame(st) {
+    const q = 'hora=' + st.hora + '&puerta=' + st.puerta + '&carro=' + st.carro + '&surtido=' + st.surtido + (st.aguja ? '&aguja=' + st.aguja : '');
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'frutas-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+
+  /* ---------- a picture ---------- */
+  PV.render = async function (m, opts = {}) {
+    await ready;
+    const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias, byList = opts.order === 'list';
+    const w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S;
+    // the layers: where each sprite stands
+    const LS = M.layers().concat(opts.also ? alsoLayers(opts.also) : []).map(l => {
+      const sp = SHEET.spots[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
+      let world = sp.world, sx = sp.screen[0], sy = sp.screen[1], d = sp.drawn_depth || sp.depth;
+      if (l.off) { world = [sp.world[0] + l.off[0], sp.world[1] + l.off[1], sp.world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
+      if (l.px) { sx += l.px[0]; sy += l.px[1]; }
+      if (l.dd) d += l.dd;
+      return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
+    });
+    // the shadows: for those who stand on the pavement (z 0): at the world x, y of their spot
+    const casts = [];
+    for (const l of LS) if (l.who && l.sp.world[2] === 0 && !SHEET.shadows.none.includes(l.at)) casts.push([l.world[0], l.world[1], 0, l.who === 'cabra' ? RADIUS().cabra : RADIUS().adultos]);
+    const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
+    for (const l of LS) {
+      const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data;
+      for (let py = 0; py < c.cv.height; py++) {
+        const Y = l.sy - c.ay + py; if (Y < 0 || Y >= 216) continue;
+        const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+        for (let px = 0; px < c.cv.width; px++) {
+          const X = l.sx - c.ax + px; if (X < 0 || X >= 240) continue;
+          const o = (py * c.cv.width + px) * 4; if (!id[o + 3]) continue;
+          const i = Y * 240 + X;
+          if (Z[i] > (flat ? l.d : plane) + bias) continue;                          // a set pixel nearer than the feet hides it
+          if (!byList && zs[i] > plane) continue;                                   // a nearer sprite pixel is already there
+          zs[i] = plane; out[i * 4] = id[o]; out[i * 4 + 1] = id[o + 1]; out[i * 4 + 2] = id[o + 2]; out[i * 4 + 3] = 255;
+        }
+      }
+    }
+    if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
+    const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
+    const V = SHEET.views.wide, cv = document.getElementById('out');
+    cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);
+    document.getElementById('cap').textContent = 'm=' + m + ': ' + M.what + '.';
+    return cv.toDataURL();
+  };
+  PV.done = ready.then(() => PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth'), order: A.get('order'), also: A.get('also') }));
+})();
+</script></body></html>
