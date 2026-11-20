@@ -9,6 +9,14 @@
 //     them; only later does datos/curso.json list the story (once its book and pictures exist). A staged file must parse,
 //     have an `id` equal to its file name and a `clips` object; this test prints the staged files and does not fail on
 //     their number. The app must not see them (see 'staged files are invisible to the app').
+//
+// A file of historia/libros/ is the book of the story of the same name (`libros/<id>.json` is the book of the story <id>):
+//   - a COURSE book when the course names that story (43 today, asserted; the routines have none): the app asks for it, and
+//     it loads;
+//   - a STAGED book when <id> is a staged file of cuentos/: the pictures of a staged story may be in libros/img/ before the
+//     course names it. It must parse and every picture it names must be under libros/img/; this test prints the staged books
+//     and their page counts. The app must not ask for it either;
+//   - any other book file fails.
 // See coqui/AGENTS.md, "Stories staged by another session".
 @TestOn('vm')
 library;
@@ -102,6 +110,52 @@ Map<String, Map<String, dynamic>> _stagedClips(String id) {
       if (e.value is Map)
         e.key as String: Map<String, dynamic>.from(e.value as Map),
   };
+}
+
+/// What a staged book (`libros/<id>.json`, the book of a staged story) is, as far as it can be read: how many pages it has, the
+/// pictures its pages name (as written, `img/<file>`), and what is wrong with it, as lines (none: it is as a staged book must
+/// be): it parses, it is a JSON object with a `pages` list, every page is an object whose `img` is `img/<file>`, and that
+/// picture is a file of historia/libros/img/.
+({int pages, List<String> pictures, List<String> problems}) _stagedBook(
+  String id,
+) {
+  final Object? j;
+  try {
+    j = jsonDecode(
+      File('${_historia.path}/libros/$id.json').readAsStringSync(),
+    );
+  } on FormatException {
+    return (
+      pages: 0,
+      pictures: const [],
+      problems: ['libros/$id.json does not parse'],
+    );
+  }
+  final pages = j is Map ? j['pages'] : null;
+  if (pages is! List) {
+    return (
+      pages: 0,
+      pictures: const [],
+      problems: ['libros/$id.json is not a JSON object with a `pages` list'],
+    );
+  }
+  final pictures = <String>[];
+  final problems = <String>[];
+  for (var n = 1; n <= pages.length; n++) {
+    final page = pages[n - 1];
+    final img = page is Map ? page['img'] : null;
+    if (img is! String) {
+      problems.add('libros/$id.json: page $n names no picture (`img`)');
+      continue;
+    }
+    pictures.add(img);
+    if (!RegExp(r'^img/[^/]+$').hasMatch(img)) {
+      problems.add('libros/$id.json: page $n names $img, not a file of img/');
+    } else if (!File('${_historia.path}/libros/$img').existsSync()) {
+      problems.add('libros/$id.json: page $n names $img, which is not there');
+    }
+  }
+  return (pages: pages.length, pictures: pictures, problems: problems);
 }
 
 enum _Solas {
@@ -209,7 +263,12 @@ void main() {
   final folderFiles = _ids('cuentos');
   late List<String> appFiles;
   late List<String> staged;
+  // every file of libros/, the book of the story of the same name; of them the course's (the story is named by the course),
+  // the staged ones (the story is a staged file of cuentos/) and any other (which fails)
   final bookFiles = _ids('libros');
+  late List<String> courseBooks;
+  late List<String> stagedBooks;
+  late List<String> strayBooks;
 
   setUpAll(() async {
     final expected = [
@@ -232,11 +291,23 @@ void main() {
       for (final id in folderFiles)
         if (!courseFiles.contains(id) && id != _solasId) id,
     ];
+    courseBooks = [
+      for (final id in bookFiles)
+        if (courseFiles.contains(id)) id,
+    ];
+    stagedBooks = [
+      for (final id in bookFiles)
+        if (staged.contains(id)) id,
+    ];
+    strayBooks = [
+      for (final id in bookFiles)
+        if (!courseFiles.contains(id) && !staged.contains(id)) id,
+    ];
     catalog = ContentCatalog(_read);
     await catalog.load();
   });
 
-  test('the files are there: 62 stories and review sets the course names, the word list palabras-solas, 43 books', () {
+  test('the files are there: 62 stories and review sets the course names, the word list palabras-solas, 43 books of the course', () {
     expect(courseFiles, hasLength(62));
     expect(
       courseFiles.difference(folderFiles.toSet()),
@@ -245,7 +316,7 @@ void main() {
     );
     expect(folderFiles, contains(_solasId));
     expect(appFiles, hasLength(63));
-    expect(bookFiles, hasLength(43));
+    expect(courseBooks, hasLength(43));
   });
 
   group('the course', () {
@@ -384,8 +455,9 @@ void main() {
       }
     });
 
-    test('all 43 books load, and each is the file; a story without a book gives null', () async {
-      for (final id in bookFiles) {
+    test('all 43 books of the course load, and each is the file; a story without a book gives null', () async {
+      expect(courseBooks, hasLength(43));
+      for (final id in courseBooks) {
         final b = await catalog.book(id);
         expect(b, isNotNull, reason: id);
         expect(b!.id, id);
@@ -403,7 +475,7 @@ void main() {
       }
       final without = [
         for (final c in (oldCurso['cuentos'] as Map).keys)
-          if (!bookFiles.contains(c)) c as String,
+          if (!courseBooks.contains(c)) c as String,
       ];
       expect(
         without,
@@ -415,6 +487,32 @@ void main() {
       }
       // the routines are what the places list under `haz`
       expect(without.toSet(), {for (final p in catalog.places) ...p.routines});
+    });
+
+    test('every file of libros/ is the book of a story the course names (43) or of a staged story file; a staged book parses and every picture it names is on disk', () {
+      expect(
+        strayBooks,
+        isEmpty,
+        reason: 'a book file whose story is neither named by the course nor a staged file of cuentos/',
+      );
+      expect(courseBooks, hasLength(43));
+      expect(
+        bookFiles.length,
+        courseBooks.length + stagedBooks.length,
+        reason: 'every book file is of one of the two kinds',
+      );
+      expect(courseBooks.toSet().intersection(stagedBooks.toSet()), isEmpty);
+      expect(stagedBooks.toSet().difference(staged.toSet()), isEmpty);
+      // the staged books are listed with their page counts and their pictures
+      final books = {for (final id in stagedBooks) id: _stagedBook(id)};
+      final pictures = {for (final b in books.values) ...b.pictures};
+      // ignore: avoid_print
+      print(
+        'staged books (${stagedBooks.length}): ${stagedBooks.isEmpty ? 'none' : stagedBooks.join(', ')}'
+        '${books.isEmpty ? '' : '\n${[for (final e in books.entries) '  ${e.key}: ${e.value.pages} pages, ${e.value.pictures.length} pictures'].join('\n')}'}'
+        '\nstaged pictures: ${pictures.length} (the ${courseBooks.length} books of the course are counted apart)',
+      );
+      expect([for (final b in books.values) ...b.problems], isEmpty);
     });
   });
 
@@ -886,11 +984,14 @@ void main() {
       };
     }
 
-    test('the catalog never asks for a staged file, and a catalog that cannot read one lists, loads and counts the same', () async {
+    test('the catalog never asks for a staged file or a staged book, and a catalog that cannot read one lists, loads and counts the same', () async {
       final asked = <String>[];
       Future<String> blind(String path) async {
         asked.add(path);
-        if (staged.any((id) => path == 'cuentos/$id.json')) {
+        // a staged story file and a staged book
+        if (staged.any(
+          (id) => path == 'cuentos/$id.json' || path == 'libros/$id.json',
+        )) {
           throw StateError(
             'no file $path',
           ); // as a file that is not on the site
@@ -903,7 +1004,8 @@ void main() {
       for (final id in appFiles) {
         await without.story(id);
       }
-      for (final id in bookFiles) {
+      // the app is asked for the books of the stories the course names, and only those
+      for (final id in courseBooks) {
         await without.book(id);
       }
       final seen = await snapshot(without);
@@ -930,6 +1032,13 @@ void main() {
             p.substring('cuentos/'.length).replaceAll(RegExp(r'\.json$'), ''),
       };
       expect(reads.difference({...courseFiles, _solasId}), isEmpty);
+      // the books it read are the course's
+      final readBooks = {
+        for (final p in asked)
+          if (p.startsWith('libros/'))
+            p.substring('libros/'.length).replaceAll(RegExp(r'\.json$'), ''),
+      };
+      expect(readBooks, courseBooks.toSet());
       expect(asked.where((p) => staged.any((id) => p.contains(id))), isEmpty);
     });
 
