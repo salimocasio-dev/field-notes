@@ -686,6 +686,19 @@ New scenes: there is no old scene file and no `ref/escenas/` folder. Step a (des
 
 **Done when:** every state within 0.5% of the reference; every touch box contains its thing; `tool/juega.dart` plays each of the scene's three stories on every path the checker walks, to the end, right and wrong; a fresh reader of the frames with no sound and no words says what happens in each story. Then the content lane measures length and silences, records, and makes the place's pairs, Escuchar set, books and level items.
 
+### Order 31 (sala), step a. **Result (Nov 20): done, merged.**
+
+Designed by Opus agents in two rounds (El balcón took five: this time the brief carried every rule the porch and the balcony taught, and the sheet maker's checks were built before the design); the orchestrator looked at both rounds' pictures; three fresh readers saw them with no words.
+
+- Files in `docs/proyecto/pixel/`: `sala-set.html`, `sala-sheet-make.js` (writes `sala-sheet.json` and checks it over 1,101 moments of 18 recorded runs), `sala-preview.html`; `set-kit.js` gained `revealX` and `planeFace` (El frente's and El balcón's pictures are byte-identical).
+- The room is cut open like a model: the two far walls stand, the near ones are not built, the floor runs off the picture, plain dark above the walls (the orchestrator's choice over lawn). Every place on the floor keeps its old screen point, so who stands in front of whom is as in the old picture. In the set: walls, the door to the porch with its open leaf and the porch tiles through it, three framed pictures each on a wire from a nail, the window with curtains, the floor lamp, the sofa, abuelo's armchair, the low table, the baby's blanket, a plant. In the sprite layer: the seven people and the frog, the photos inside the frames, the cake and the camera, bubbles and signs.
+- State parameters: `luz` 1 or 0, `fotos` (which frames hang crooked). 5 baked states cover all 27 old states. Both views are one window.
+- All 16 things, 9 frog places, 46 positions, 11 review pairs and 28 level pictures of the old scene are there; hop counts for all 36 pairs are the old ones.
+- New rules from this scene, for the next ones: a picture on a wall hangs upright, turned to the camera like the furniture, with its whole photo inside the frame at 1:1 (sheared along the wall, a reader could not tell whose face it was); a crooked one turns 14 degrees beside straight ones; a lamp's foot shows on the floor; where a bubble would land on a face, the sheet gives the next free place beside the head (`talk`); a standing person covers no more of a sitting person's face than the old picture did.
+- Three places where smoothing is on are kept as the old code has them (the sheet's `smoothing` part).
+- Left as the old game has it: people appear and change places between steps; the two answer cards that look alike; a slice of cake shown over the frog; abuela standing in front of the sofa over a sitting person's body.
+- Bake: 112 to 194 ms the first time, 59 to 66 ms warm, in headless Chrome (flat walls are drawn one sample a pixel).
+
 ## Order 40. Every story against its recorded runs (orchestrator)
 
 Replay all of `ref/trazas/` with `tool/juega.dart`. Any run that differs is fixed in its lane by an order naming the story and the first step that differs.
