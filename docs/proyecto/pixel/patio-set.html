@@ -146,7 +146,7 @@ const PATH_U = (GM - CY) / R2, PATH_V = (GM + CY) / R2, PATH_SX = OX + PATH_U * 
 // the field and the hills by the hour (round 3): by day green; at dusk and at night darker than the sky over them (round 2's, paler than the
 // night sky, read as mist or a lake). Colours before the light of the hour (lightPass) falls on them
 const DUSK = SET.hora === 'ocaso' || SET.hora === 'crepusculo', NIGHT = SET.hora === 'noche';
-const PATHC = NIGHT ? [104, 98, 84] : DUSK ? [140, 124, 98] : [196, 176, 128];   // the path up the hill: trodden earth
+const PATHC = NIGHT ? [150, 140, 116] : DUSK ? [140, 124, 98] : [196, 176, 128];   // the path up the hill: trodden earth
 const FIELD = NIGHT ? [[30, 46, 14], [36, 54, 18]] : DUSK ? [[60, 104, 54], [72, 116, 60]] : [[70, 128, 64], [88, 146, 70]];
 function patioGround(x, y, ix, iy, i) {
   if (x < CX && y > YH - .02) return 0;                               // under the house (its wall hides it)
