@@ -27,5 +27,7 @@ jobs:
           flutter-version: ${{ steps.pin.outputs.flutter }}
           channel: stable
           cache: true
+      - name: Pillow, for the data check (coqui/tool/make_repaso.py draws its readers' sheets with it)
+        run: python3 -c 'import PIL' 2>/dev/null || python3 -m pip install --quiet pillow
       - name: Run every check
         run: bash coqui/tool/test_all.sh
