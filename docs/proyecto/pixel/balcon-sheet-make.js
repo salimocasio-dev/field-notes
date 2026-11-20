@@ -39,7 +39,7 @@ const REF = path.join(REPO, 'coqui/ref/escenas/balcon');
   console.log('wrote ' + path.relative(REPO, OUT) + ' (' + text.length + ' bytes)');
   for (const n of sheet.checks.notes) console.log('  ' + n);
   if (problems.length) { console.log('CHECK FAILED:\n  ' + problems.join('\n  ')); process.exit(1); }
-  console.log('check: all 13 things, every positions.json entry in remap, every LUGAR and CAM name, every balcon.js position in code, every hop count as the old one, nothing decorative over a touch box, every drink\'s base inside the table top with plain wall behind it, the bird on the window\'s flower box clear of abuela and the drinks, abuela standing on clear floor, the door whole in the wide view, the frog and abuela whole in pair gracias; at every moment of the stories every bubble inside the view, off the boards and off every face, every set of drinks side by side, every hint frame inside its view: ok');
+  console.log('check: all 13 things, every positions.json entry in remap, every LUGAR and CAM name, every balcon.js position in code, every hop count as the old one, nothing decorative over a touch box, every drink\'s base inside the table top with plain wall behind it, the bird on the window\'s flower box clear of abuela and the drinks, abuela standing on clear floor, the door whole in the wide view, the frog and abuela whole in pair gracias; at every moment of the stories every bubble inside the view, off the boards and off every face, every set of drinks side by side, every hint frame inside its view; one window for every zoom 1 view: ok');
 })().catch(e => { console.error(e); process.exit(1); });
 
 /* ---------- the engine's projection, as pp-engine.js has it (the same operations in the same order) ---------- */
@@ -592,6 +592,9 @@ function check(sh, G) {
     const chair = sh.things.silla_grande.box, mL = L - x0, mR = x0 + 196 - R;
     if (mR < 8 || mL < 8) P.push('wide view: the door or abuela in it ' + Math.min(mL, mR) + ' px from its side (keep 8)');
     if (chair[0] - x0 < 6) P.push('wide view: abuela\'s big chair ' + (chair[0] - x0) + ' px from its left side');
+    // order 30b: a change of view is invisible (the same window) or worth it (a zoom 2 close view): never a slide of a few px
+    for (const [k, v] of Object.entries(sh.views)) if (v.zoom === 1 && v.x0 !== x0) P.push('views: ' + k + ' is a zoom 1 window from x ' + v.x0 + ', the wide one from ' + x0 + ': changing to it slides the picture for nothing');
+    notes.push('views: ' + Object.keys(sh.views).map(k => k + ' zoom ' + sh.views[k].zoom + ' x0 ' + sh.views[k].x0).join(', ') + ': a change of view moves nothing');
     notes.push('wide view (x0 ' + x0 + '): the door, its frame and abuela in it from x ' + L + ' to ' + R + ', ' + mR + ' px from the right side; the big chair ' + (chair[0] - x0) + ' px from the left side'); }
   storyChecks(sh, P, notes);
   return P;
