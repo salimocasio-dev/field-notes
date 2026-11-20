@@ -1,0 +1,372 @@
+#!/usr/bin/env node
+'use strict';
+/* La caja's sheet: writes docs/proyecto/pixel/caja-sheet.json from caja-set.html and the design (the orchestrator's caja-spec, part B), then checks it.
+   Run from the repo root:  node docs/proyecto/pixel/caja-sheet-make.js        (needs Node 22 and the pre-installed Playwright, Chrome at /usr/bin/google-chrome)
+   A NEW scene: no old scene file, no old positions, no remap. It loads the set (window.CAJA.CD: the room's constants) in headless Chrome, projects every world point with the
+   engine's own project() (pp-engine.js), and writes the spots, things, view, shadows and the depth rule, the same as El mostrador's sheet (mostrador-sheet-make.js).
+   It also loads the sprite makers (historia/engine.js, escenas/kit.js) in a second page to read how many rows and columns today's person, child and frog draw: the checks
+   that say "seen from the thighs up" and "shows head and shoulders through the window" place the real silhouette on its spot and test it with the depth rule.
+   Then it checks the sheet and prints one line per check; it exits 1 when one fails (the sheet is written first). A second run writes the same bytes.
+   The set is asked for at http://127.0.0.1:8765 (the dev server for the repo root; override with CAJA_BASE), but every request to it is answered
+   from the files of THIS tree (the server's root may be another checkout of the repo): a new file here is seen before it is merged. */
+const fs = require('fs');
+const path = require('path');
+const { chromium } = require('playwright');
+
+const REPO = path.resolve(__dirname, '../../..');
+const OUT = path.join(__dirname, 'caja-sheet.json');
+const BASE = process.env.CAJA_BASE || 'http://127.0.0.1:8765';
+const PAGE = BASE + '/docs/proyecto/pixel/caja-set.html';
+const CHROME = '/usr/bin/google-chrome';
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.png': 'image/png' };
+
+const r4 = v => Math.round(v * 1e4) / 1e4, r2 = v => Math.round(v * 100) / 100;
+const W4 = p => p.map(r4);
+
+const PERSON = { rows: 53, minAbove: 28 };               // the standing figure's drawn rows (the design's number), and the rows of it that must be above the counter's top back edge
+const FROG_HEAD_ROWS = 25;                               // the frog's head above CAJA_REPISA, as the design counts it
+const BIAS = .3;                                         // the depth rule: the feet's depth plus this
+const MIN_APART = 12;                                    // px between two people's feet on screen
+const CARD = { w: 30, h: 26, gap: 10 };                  // an answer key card, and the space between the two
+const CARD_ABOVE = 6;                                    // the cards' bottom edge is this many px above the register's topmost pixel (the design says only: above the register, inside the window)
+const MIN_HEAD_ROWS = 12;                                // rows of a child's head and shoulders that show through the shop window
+
+(async () => {
+  const browser = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {});
+  const page = await browser.newPage();
+  const errs = [];
+  page.on('pageerror', e => errs.push(String(e)));
+  await page.route(BASE + '/**', route => {
+    const u = new URL(route.request().url()), f = path.join(REPO, decodeURIComponent(u.pathname));
+    if (!f.startsWith(REPO + path.sep) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) return route.fulfill({ status: 404, body: 'not found' });
+    route.fulfill({ status: 200, contentType: MIME[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
+  });
+  // the engine's own projection: [sx, sy, d] for each world point
+  const proj = pts => page.evaluate(pts => pts.map(p => { const q = project(p[0], p[1], p[2]); return [q.sx, q.sy, q.d]; }), pts);
+
+  const SP = await sprites(browser);
+  await page.goto(PAGE + '?tags=1&hora=tarde');
+  const G = await page.evaluate(() => {
+    const o = {}; for (const [k, v] of Object.entries(CAJA.CD)) if (typeof v !== 'function') o[k] = v;
+    // the bounding box of each part's pixels, and the amount window: the pale pane of the register's head (paneY (226, 242, 212)) among the register's pixels
+    const bb = {}; for (let i = 0; i < TAGS.length; i++) { const n = TAGS[i]; if (!n) continue; const x = i % W, y = (i / W) | 0, b = bb[n] || (bb[n] = [1e9, 1e9, -1, -1]); if (x < b[0]) b[0] = x; if (x > b[2]) b[2] = x; if (y < b[1]) b[1] = y; if (y > b[3]) b[3] = y; }
+    let p0 = [1e9, 1e9, -1, -1];
+    for (let i = 0; i < TAGS.length; i++) if (TAGS[i] === 'caja') { const v = bakedPix[i], r = v & 255, g = (v >> 8) & 255, b = (v >> 16) & 255; if (r >= 200 && g >= 225 && b >= 185 && g > r) { const x = i % W, y = (i / W) | 0; if (x < p0[0]) p0[0] = x; if (x > p0[2]) p0[2] = x; if (y < p0[1]) p0[1] = y; if (y > p0[3]) p0[3] = y; } }
+    return { CD: o, scene: PP_SCENE, W, H, S, OX, OY, bb, pane: p0 };
+  });
+  const sheet = await make(G, proj, SP);
+  // the checks that read the set's own pixels: both hours
+  const probes = await probeSets(page, sheet, SP);
+  const results = checks(sheet, probes, SP, G);
+  sheet.checks = { person: PERSON, results };
+  const out = compact(JSON.stringify(sheet, null, 1)) + '\n';
+  fs.writeFileSync(OUT, out);
+  await browser.close();
+  if (errs.length) throw new Error(errs.join('; '));
+  console.log('wrote ' + path.relative(REPO, OUT) + ' (' + out.length + ' bytes)');
+  for (const r of results) for (const [i, line] of r.lines.entries()) console.log((i === 0 ? (r.ok ? 'ok   ' : 'FAIL ') : '     ') + line);
+  const bad = results.filter(r => !r.ok);
+  if (bad.length) { console.log('CHECK FAILED: ' + bad.map(r => r.name).join(', ')); process.exit(1); }
+  console.log('check: all ' + results.length + ' checks ok');
+})().catch(e => { console.error(e); process.exit(1); });
+
+// an array of numbers or plain words goes on one line
+const ITEM = '(?:-?[\\d.]+|"[\\w.=+&?-]+")';
+const compact = t => t.replace(new RegExp('\\[\\n\\s+(' + ITEM + '(?:,\\n\\s+' + ITEM + ')*)\\n\\s+\\]', 'g'), (m, a) => '[' + a.replace(/,\n\s+/g, ', ') + ']');
+
+/* ---------- today's sprites: what they draw (rows, columns, the silhouette) ---------- */
+async function sprites(browser) {
+  const p = await browser.newPage();
+  const errs = [];
+  p.on('pageerror', e => errs.push(String(e)));
+  await p.setContent('<!doctype html><html><body><canvas id="cv" width="196" height="216" hidden></canvas><div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div></body></html>');
+  for (const f of ['historia/engine.js', 'historia/palabras.js', 'historia/juego.js', 'historia/escenas/kit.js']) await p.addScriptTag({ path: path.join(REPO, f) });
+  const r = await p.evaluate(() => {
+    const PIEL = KIT.PIEL, PELO = KIT.PELO, FAM = KIT.FAM;
+    const PEPE = { piel: PIEL.c, pelo: PELO.negro, peinado: 'corto', ropa: ['#C8C8D0', '#E4E4EA', '#F6F6FA', '#FFFFFF'], abajo: RP.grey, bigote: 1,
+      detalle: (b, X) => { const G = RP.grn; b.rect(X - 4, 18, 1, 4, G[1]); b.rect(X + 3, 18, 1, 4, G[1]); b.rect(X - 5, 22, 10, 24, G[2]); b.rect(X - 5, 22, 2, 24, G[3]); b.rect(X + 3, 22, 2, 24, G[1]); b.rect(X - 5, 45, 10, 1, G[0]); b.rect(X - 5, 22, 10, 1, G[3]); b.rect(X - 3, 34, 6, 4, G[1]); b.rect(X - 3, 34, 6, 1, G[3]); } };
+    const NINO3 = { nino: 1, piel: PIEL.c, pelo: PELO.castano, peinado: 'corto', ropa: RP.yel, abajo: RP.grey, zapato: '#F2F2F8' };
+    const mask = (cv, ax) => {
+      const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data, px = []; let bottom = 0, top = 1e9, x0 = 1e9, x1 = -1;
+      for (let y = 0; y < cv.height; y++) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) { px.push([x, y]); if (y + 1 > bottom) bottom = y + 1; if (y < top) top = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
+      return { ax, bottom, rows: bottom - top, cols: x1 - x0 + 1, left: x0 - ax, right: x1 - ax, px };
+    };
+    return {
+      pepe: mask(KIT.mkPersona(PEPE, 'idle', 0, 0), KIT.PX), luis: mask(KIT.mkPersona(FAM.hermano, 'idle', 0, 0), KIT.PX), carmen: mask(KIT.mkPersona(FAM.hermana, 'idle', 0, 0), KIT.PX), nino3: mask(KIT.mkPersona(NINO3, 'idle', 0, 0), KIT.PX),
+      senora: mask(KIT.mkPersona({ piel: PIEL.a, pelo: PELO.castano, peinado: 'corto', ropa: RP.grn, falda: 1, zapato: '#F2F2F8' }, 'idle', 0, 0), KIT.PX),
+      coqui: mask(mkCoqui(1, 0, 0), 16), coqui8: mask(mkCoqui(.8, 0, 0), 13),
+    };
+  });
+  await p.close();
+  if (errs.length) throw new Error('sprite page: ' + errs.join('; '));
+  return r;
+}
+
+/* ---------- the sheet ---------- */
+async function make(G, proj, SP) {
+  const CD = G.CD, CH = CD.CH;
+  const P1 = async p => (await proj([p]))[0];
+  const scr = ([sx, sy]) => [Math.round(sx), Math.round(sy)];
+  const RGM = CD.CAJA_VENTANA[0], WMID = (CD.VW0 + CD.VW1) / 2, DY = (CD.PD0 + CD.PD1) / 2;
+
+  /* ---- spots: the ground (or the counter top, the shelf, the sill, the register's face) under the feet; frog scale 1 unless given ---- */
+  const D = [];                                                                       // [name, world, kind, what, extra]
+  const person = (name, w, what, extra) => D.push([name, w, 'person', what, extra]);
+  const onCounter = (name, x, y, what) => D.push([name, [x, y, CH], 'counter', what]);
+  person('pepe.caja', [RGM, 1.2, 0], 'don Pepe behind the register (x: the register\'s middle, CD.CAJA_VENTANA[0])');
+  person('pepe.empaca', [3.6, 1.2, 0], 'don Pepe packing bags beside the register');
+  person('coqui.repisa', CD.CAJA_REPISA.slice(), 'the frog on the register\'s side shelf (CD.CAJA_REPISA), scale .8; no shadow', { scale: .8 });
+  person('cliente', [2.7, 4.0, 0], 'the customer at the register');
+  person('cola1', [3.5, 4.5, 0], 'the line, first: running away from the door');
+  person('cola2', [4.3, 5.0, 0], 'the line, second');
+  person('cola3', [5.1, 5.5, 0], 'the line, third');
+  onCounter('cosa_cliente', 2.95, 2.6, 'what the customer sets down; its price tag stands in front of it');
+  onCounter('cosa_a', 3.6, 2.55, 'the first of the two things of story 46; its price tag in front');
+  onCounter('cosa_b', 4.3, 2.55, 'the second of the two things of story 46; its price tag in front');
+  onCounter('papel', 5.2, 2.3, 'the holder of gift paper');
+  onCounter('taza_abuela', 4.85, 2.25, 'the cup set aside');
+  onCounter('frasco', 3.35, 2.2, 'the children\'s jar');
+  D.push(['clip', [CD.CAJA_GAVETA[0] + .35, CD.CAJA_GAVETA[1], CD.CAJA_GAVETA[2] + .3], 'face', 'the frog\'s bills, clipped on the register\'s front face at its right top corner (CD.CAJA_GAVETA: .35 to the right, .3 up)']);
+  D.push(['ventana_caja', CD.CAJA_VENTANA.slice(), 'window', 'the register\'s amount window (CD.CAJA_VENTANA): the numerals of the amount are drawn here, two digits, about 5 x 7 px each']);
+  D.push(['bola', [.16, WMID, CD.VZ0 - .04], 'sill', 'the ball on the sill inside the shop window (x .16, the window\'s middle y, the sill\'s top)']);
+  [CD.VW0 + .3, WMID, CD.VW1 - .3].forEach((y, i) => person('ninos_fuera.' + (i + 1), [-.3, y, 0], 'child ' + (i + 1) + ' of the three outside the shop window, seen through it (no shadow); group ninos_fuera'));
+  [[1.1, 4.4], [1.7, 4.9], [2.4, 5.4]].forEach(([x, y], i) => person('ninos_dentro.' + (i + 1), [x, y, 0], 'child ' + (i + 1) + ' of the three inside; group ninos_dentro'));
+  person('puerta', [.5, DY, 0], 'just inside the street door');
+  const pr = await proj(D.map(d => d[1]));
+  const spots = {};
+  D.forEach((d, i) => {
+    const q = pr[i];
+    spots[d[0]] = Object.assign({ world: W4(d[1]), screen: scr(q), depth: r4(q[2]), scale: 1, kind: d[2], what: d[3] }, d[4] || {});
+  });
+
+  /* ---- things he can touch ---- */
+  const boxOf = async w => {
+    const cs = []; for (const x of [w[0], w[3]]) for (const y of [w[1], w[4]]) for (const z of [w[2], w[5]]) cs.push([x, y, z]);
+    const q = await proj(cs), xs = q.map(p => p[0]), ys = q.map(p => p[1]);
+    const x0 = Math.floor(Math.min(...xs)), y0 = Math.floor(Math.min(...ys));
+    return [x0, y0, Math.ceil(Math.max(...xs)) - x0, Math.ceil(Math.max(...ys)) - y0];
+  };
+  // the register: the box of the set's part 'caja'. colmado-dentro.js exports its middle (RGM), its front (CAJA_GAVETA y), the height of its body (CAJA_GAVETA z - CH = bodyH / 2) and its shelf's middle
+  // (CAJA_REPISA); the rest is its own constants (RG: x0 = CX0 + .1, y0 = CY0 + .05, headH .6, the bell's top .26 over the head). The box covers the register and its side shelf (x1 = the shelf's far side)
+  const bodyH = 2 * (CD.CAJA_GAVETA[2] - CH), rx0 = CD.CX0 + .1, rx1 = 2 * RGM - rx0, shx1 = 2 * CD.CAJA_REPISA[0] - rx1;
+  const CAJA_W = [rx0, CD.CY0 + .05, CH, shx1, CD.CAJA_GAVETA[1], CH + bodyH + .6 + .26];
+  const things = { caja: Object.assign({ set: true, world: W4(CAJA_W), box: await boxOf(CAJA_W), what: 'the register with its side shelf: the box of the set\'s part \'caja\'' }) };
+  for (const k of ['tecla_a', 'tecla_b', 'cosa_a', 'cosa_b', 'frasco', 'papel', 'bola', 'pepe', 'luis', 'carmen', 'senora', 'senor', 'ninos', 'coqui']) things[k] = 'sprite';
+
+  /* ---- the view `wide`: zoom 1, x0 so that the register, the shop window, the street door with its open leaf and the floor in front of the counter are inside ---- */
+  const bb = G.bb;
+  const parts = { register: bb.caja, 'shop window': bb.vitrina, 'street door (with its open leaf)': bb.puerta, counter: bb.mostrador };
+  const floor = ['pepe.empaca', 'cliente', 'cola1', 'cola2', 'cola3', 'ninos_dentro.1', 'ninos_dentro.2', 'ninos_dentro.3', 'puerta'];
+  const xs = [].concat(Object.values(parts).flatMap(b => [b[0], b[2] + 1]), floor.flatMap(k => [spots[k].screen[0] - 12, spots[k].screen[0] + 12]));
+  const lo = Math.min(...xs), hi = Math.max(...xs), x0 = Math.max(0, Math.min(G.W - 196, Math.round((lo + hi) / 2 - 98)));
+  const views = { wide: { zoom: 1, x0, region: [x0, 0, 196, 216], needs: { from: lo, to: hi, parts: Object.fromEntries(Object.entries(parts).map(([k, b]) => [k, [b[0], b[2] + 1]])) }, what: 'the 196 x 216 window over the 240 x 216 picture. x0 = clamp(round(the middle of what must be inside - 98), 0, 44): what must be inside is the register, the shop window, the street door with its open leaf and the counter (the columns of the pixels the set draws for those parts) and the floor in front of the counter (the spots pepe.empaca, cliente, cola1 to cola3, ninos_dentro.1 to .3 and puerta, 12 px to each side); `needs` gives that span [from, to)' } };
+
+  /* ---- the two answer key cards: screen boxes, side by side, centred above the register ---- */
+  const rm = await P1([RGM, (CAJA_W[1] + CAJA_W[4]) / 2, CH]), cx = Math.round(rm[0]);
+  const top = bb.caja[1], bottom = top - CARD_ABOVE, cy = bottom - CARD.h, ax = cx - (CARD.w * 2 + CARD.gap) / 2;
+  const cards = { centre: cx, registerTop: top, bottomAbove: CARD_ABOVE };
+  spots.tecla_a = { kind: 'card', box: [ax, cy, CARD.w, CARD.h], what: 'the first answer key, a card over the picture (the game draws it): ' + CARD.w + ' x ' + CARD.h + ' px, centred above the register with tecla_b, ' + CARD.gap + ' px gap; its bottom edge is ' + CARD_ABOVE + ' px above the register\'s topmost pixel' };
+  spots.tecla_b = { kind: 'card', box: [ax + CARD.w + CARD.gap, cy, CARD.w, CARD.h], what: 'the second answer key, to the right of tecla_a' };
+
+  // the amount window as the set draws it: the pale pane
+  const pane = G.pane[2] < 0 ? null : [G.pane[0], G.pane[1], G.pane[2] - G.pane[0] + 1, G.pane[3] - G.pane[1] + 1];
+  spots.ventana_caja.pane = pane;
+  spots.ventana_caja.digits = { count: 2, size: [5, 7], gap: 1 };
+
+  const groups = { ninos_fuera: ['ninos_fuera.1', 'ninos_fuera.2', 'ninos_fuera.3'], ninos_dentro: ['ninos_dentro.1', 'ninos_dentro.2', 'ninos_dentro.3'], cola: ['cola1', 'cola2', 'cola3'] };
+  const sc = G.scene;
+  return {
+    scene: 'caja',
+    made: 'node docs/proyecto/pixel/caja-sheet-make.js, from caja-set.html (window.CAJA.CD) and the design of La caja. A new scene: no old scene, no remap.',
+    S: G.S, origin: { originX: sc.originX, originY: sc.originY }, picture: [G.W, G.H], view: [196, 216],
+    rules: {
+      project: 'pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels',
+      spot: 'a spot is a world point of the feet (z 0: the floor; z 1: the counter top; z 1.25: the register\'s side shelf; z .96: the sill) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog\'s: 1, except coqui.repisa .8',
+      anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54), a child 41 rows (a 44-row canvas); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); mkCoqui(.8) (26 x 22): column 13, drawn rows 1 to 19; a small thing: its bottom middle on the point',
+      view: 'a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0, kept inside 0 .. 44. Never a fraction',
+      person: 'for the check "seen from the thighs up": a person is ' + PERSON.rows + ' rows tall (the standing figure\'s drawn rows), at least ' + PERSON.minAbove + ' of them above the counter\'s top back edge at his column',
+      depth: 'a spot\'s depth is the engine\'s d of its world point; front.plane turns it into the depth of each row of a character',
+      cards: 'tecla_a and tecla_b have a screen box (x, y, w, h) in picture pixels and no world point: the game draws them over the picture',
+    },
+    setKey: {
+      params: { hora: { values: ['manana', 'tarde'] } },
+      key: 'hora, e.g. "tarde" (the back door is always shut; no props, no freezer)',
+      baked: ['manana', 'tarde'].map(h => '?hora=' + h),
+    },
+    things,
+    spots,
+    groups,
+    views,
+    cards,
+    front: {
+      list: null,
+      how: 'no list. A character is hidden by every set pixel that is nearer the camera than the character\'s feet (depth test against the baked depth, with the feet\'s depth plus 0.3), so the counter hides don Pepe\'s legs, nothing behind him hides him, and the wall hides the three children outside the shop window below the sill.',
+      bias: BIAS,
+      plane: 'for the character\'s pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot\'s depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet, as El balcón\'s front; the same test for people and for things on the counter',
+      sprites: 'between two sprites the nearer pixel wins: the same depth(r), no bias',
+    },
+    shadows: {
+      radius: { coqui: .45, adultos: .35, ninos: .28 },
+      byCharacter: { coqui: .45, pepe: .35, senora: .35, senor: .35, luis: .28, carmen: .28, ninos: .28 },
+      at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0)',
+      none: ['coqui.repisa', 'ninos_fuera.1', 'ninos_fuera.2', 'ninos_fuera.3'],
+      onShelf: 'the frog on the register\'s shelf (z 1.25) casts none; nor does the frog on the counter top',
+    },
+  };
+}
+
+/* ---------- the checks that read the set's pixels and the sprites' silhouettes ---------- */
+async function probeSets(page, sheet, SP) {
+  const S = sheet.spots, R = {};
+  const place = (name, sp) => ({ name, sx: S[name].screen[0], sy: S[name].screen[1], d: S[name].depth, ax: sp.ax, bottom: sp.bottom, px: sp.px });
+  const sp = (m, ax) => Object.assign({ ax }, m);
+  const jobs = {
+    pepe: place('pepe.caja', sp(SP.pepe, SP.pepe.ax)),
+    kids: [['ninos_fuera.1', SP.luis], ['ninos_fuera.2', SP.carmen], ['ninos_fuera.3', SP.nino3]].map(([n, m]) => place(n, sp(m, m.ax))),
+    pepeEmpaca: place('pepe.empaca', sp(SP.pepe, SP.pepe.ax)),
+  };
+  for (const hora of ['manana', 'tarde']) {
+    await page.goto(PAGE + '?tags=1&hora=' + hora);
+    R[hora] = await page.evaluate(arg => {
+      const T30 = Math.tan(Math.PI / 6);
+      // each ink pixel of the sprite placed on its spot: hidden by the depth rule, and which part of the set is under it
+      const run = j => {
+        const out = []; for (const [px, py] of j.px) {
+          const X = j.sx - j.ax + px, Y = j.sy - j.bottom + py;
+          if (X < 0 || X >= W || Y < 0 || Y >= H) { out.push([px, py, 1, null]); continue; }
+          const plane = j.d + (j.sy - (Y + .5)) * T30 / DEPTH.S, i = Y * W + X;
+          out.push([px, py, DEPTH.z[i] > plane + arg.bias ? 1 : 0, TAGS[i]]);
+        }
+        return { name: j.name, px: out };
+      };
+      // the counter's top back edge (y = CY0, z = CH) in the column cx, on the screen
+      const edge = cx => { const u = (cx - OX) / S, x = CAJA.CD.CY0 + u * Math.SQRT2, y = CAJA.CD.CY0, sy = OY + (((x + y) / Math.SQRT2) * .5 - CAJA.CD.CH * Math.sqrt(3) / 2) * S; return { x, sy }; };
+      return { pepe: run(arg.jobs.pepe), kids: arg.jobs.kids.map(run), pepeEmpaca: run(arg.jobs.pepeEmpaca), edge: edge(arg.jobs.pepe.sx), edgeEmpaca: edge(arg.jobs.pepeEmpaca.sx), bias: arg.bias };
+    }, { jobs, bias: BIAS });
+  }
+  return R;
+}
+
+function checks(sheet, probes, SP, G) {
+  const S = sheet.spots, T = sheet.things, V = sheet.views.wide, OUTS = [], CD = G.CD;
+  const add = (name, bad, okLine, failLines) => OUTS.push({ name, ok: !bad.length, lines: bad.length ? [name + ': ' + failLines[0], ...failLines.slice(1)] : [name + ': ' + okLine] });
+  const pts = Object.entries(S).filter(([, s]) => s.screen);                         // the spots that have a point (the cards have a box)
+  const [x0] = V.region, W0 = sheet.picture[0], H0 = sheet.picture[1];
+
+  // 1. every spot and thing inside the picture and the window (the two cards have a box, the register a box)
+  {
+    const bad = [];
+    for (const [k, s] of pts) {
+      if (s.screen[0] < 0 || s.screen[0] >= W0 || s.screen[1] < 0 || s.screen[1] >= H0) bad.push(k + ' ' + s.screen + ' outside the picture');
+      else if (s.screen[0] < x0 || s.screen[0] >= x0 + 196 || s.screen[1] < 0 || s.screen[1] >= 216) bad.push(k + ' ' + s.screen + ' outside the window [' + x0 + ', ' + (x0 + 196) + ') x [0, 216)');
+    }
+    const boxes = Object.entries(T).filter(([, t]) => t.box).map(([k, t]) => [k, t.box]).concat(['tecla_a', 'tecla_b'].map(k => [k, S[k].box]));
+    for (const [k, b] of boxes) if (b[0] < x0 || b[0] + b[2] > x0 + 196 || b[1] < 0 || b[1] + b[3] > 216) bad.push(k + ' box ' + b + ' outside the window [' + x0 + ', ' + (x0 + 196) + ') x [0, 216)');
+    add('in-view', bad, pts.length + ' spot points and ' + boxes.length + ' boxes (' + boxes.map(([k, b]) => k + ' ' + b).join(', ') + ') inside the ' + sheet.picture.join(' x ') + ' picture and the window [' + x0 + ', ' + (x0 + 196) + ') x [0, 216)', ['outside:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    OUTS[OUTS.length - 1].lines.push('       the window x0 = ' + x0 + ' holds what must be inside, which spans columns ' + V.needs.from + ' to ' + V.needs.to + ' (' + Object.entries(V.needs.parts).map(([k, b]) => k + ' ' + b[0] + '..' + b[1]).join(', ') + ')');
+    const part = Object.entries(V.needs.parts).filter(([, b]) => b[0] < x0 || b[1] > x0 + 196).map(([k]) => k);
+    if (part.length) { OUTS[OUTS.length - 1].ok = false; OUTS[OUTS.length - 1].lines[0] = OUTS[OUTS.length - 1].lines[0].replace('in-view:', 'in-view: NOT HELD BY THE WINDOW: ' + part.join(', ') + ';'); }
+  }
+
+  // 2. people on screen together at least 12 px apart: pepe.caja, coqui.repisa, cliente, cola1, cola2, cola3; ninos_dentro.1 to .3 with cliente. (info: pepe.empaca, the same body as pepe.caja, in the line)
+  {
+    const A = ['pepe.caja', 'coqui.repisa', 'cliente', 'cola1', 'cola2', 'cola3'], pairs = [];
+    for (let i = 0; i < A.length; i++) for (let j = i + 1; j < A.length; j++) pairs.push([A[i], A[j]]);
+    for (const k of ['ninos_dentro.1', 'ninos_dentro.2', 'ninos_dentro.3']) pairs.push([k, 'cliente']);
+    const d = ([a, b]) => Math.hypot(S[a].screen[0] - S[b].screen[0], S[a].screen[1] - S[b].screen[1]);
+    const all = pairs.map(p => [p[0], p[1], d(p)]).sort((p, q) => p[2] - q[2]), near = all.filter(p => p[2] < MIN_APART);
+    add('people-apart', near, all.length + ' pairs (' + A.join(', ') + '; and ninos_dentro.1 to .3 with cliente) at least ' + MIN_APART + ' px apart on screen (closest: ' + all.slice(0, 3).map(p => p[0] + ' ~ ' + p[1] + ' ' + r2(p[2]) + ' px').join(', ') + ')',
+      [near.length + ' pair(s) closer than ' + MIN_APART + ' px (screen points):'].concat(near.map(p => '  ' + p[0] + ' ' + S[p[0]].screen + ' ~ ' + p[1] + ' ' + S[p[1]].screen + ': ' + r2(p[2]) + ' px')));
+    const emp = ['coqui.repisa', 'cliente', 'cola1', 'cola2', 'cola3'].map(k => [k, d(['pepe.empaca', k])]).sort((a, b) => a[1] - b[1]);
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: pepe.empaca (the same body as pepe.caja) is ' + emp.map(e => e[0] + ' ' + r2(e[1]) + ' px').join(', ') + ' from the others');
+  }
+
+  // 3. don Pepe at pepe.caja seen from the thighs up: at least 28 of 53 rows above the counter's back edge, and not hidden by the register for more than a third of his width
+  {
+    const rows = PERSON.rows, min = PERSON.minAbove, st = S['pepe.caja'], feet = st.screen[1];
+    const tarde = probes.tarde, ed = tarde.edge, inX = ed.x >= CD.CX0 && ed.x <= CD.CX1;
+    const hidden = feet - ed.sy, above = rows - hidden;
+    // the real silhouette on its spot: the columns it covers, and those where the register (part 'caja') nearer than he is covers some of him
+    const px = tarde.pepe.px, cols = new Set(px.map(p => p[0])), hid = new Set(px.filter(p => p[2] && p[3] === 'caja').map(p => p[0]));
+    const nHid = px.filter(p => p[2] && p[3] === 'caja').length, nHidAny = px.filter(p => p[2]).length;
+    const frac = hid.size / cols.size;
+    // and the worst single row: the share of that row's ink the register covers
+    const rowT = {}, rowH = {}; for (const q of px) { rowT[q[1]] = (rowT[q[1]] || 0) + 1; if (q[2] && q[3] === 'caja') rowH[q[1]] = (rowH[q[1]] || 0) + 1; }
+    const worst = Math.max(0, ...Object.keys(rowH).map(r => rowH[r] / rowT[r]));
+    // the rows of the figure above the counter by the depth rule: the first hidden row from the top (any part)
+    const rowsHidden = new Set(px.filter(p => p[2]).map(p => p[1])), top = Math.min(...px.map(p => p[1])), firstHid = Math.min(...[...rowsHidden]);
+    const clear = firstHid - top;
+    const bad = [];
+    if (!inX) bad.push('the counter\'s back edge at his column is off the counter (x ' + r2(ed.x) + ')');
+    if (above < min) bad.push(r2(above) + ' rows above the counter\'s back edge (needs ' + min + ')');
+    if (frac > 1 / 3) bad.push(hid.size + ' of his ' + cols.size + ' columns are hidden by the register (' + r2(frac * 100) + ' %, needs at most 33.3 %)');
+    add('pepe-thighs-up', bad, 'pepe.caja ' + st.screen + ': ' + r2(above) + ' of ' + rows + ' rows above the counter\'s back edge (' + r2(hidden) + ' rows hidden under it, edge at row ' + r2(ed.sy) + '; needs ' + min + '); the register hides ' + hid.size + ' of his ' + cols.size + ' columns (' + r2(frac * 100) + ' %, at most 33.3 %; worst single row ' + r2(worst * 100) + ' %), ' + nHid + ' of his ' + px.length + ' pixels (' + r2(nHid / px.length * 100) + ' %); by the depth rule ' + clear + ' rows are clear from the top, ' + nHidAny + ' pixels hidden in all (counter and register)', ['pepe.caja:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    if (bad.length) OUTS[OUTS.length - 1].lines.push('       the numbers: pepe.caja ' + st.screen + ': ' + r2(above) + ' of ' + rows + ' rows above the counter\'s back edge (' + r2(hidden) + ' hidden under it, edge at row ' + r2(ed.sy) + '; needs ' + min + '); the register hides ' + hid.size + ' of his ' + cols.size + ' columns (' + r2(frac * 100) + ' %), worst single row ' + r2(worst * 100) + ' %, ' + nHid + ' of his ' + px.length + ' pixels (' + r2(nHid / px.length * 100) + ' %); by the depth rule ' + clear + ' rows are clear from the top, ' + nHidAny + ' pixels hidden in all (counter and register)');
+    OUTS[OUTS.length - 1].pepe = { above: r2(above), hiddenRows: r2(hidden), edgeRow: r2(ed.sy), columns: cols.size, columnsHiddenByRegister: hid.size, fraction: r4(frac), worstRowFraction: r4(worst), pixels: px.length, pixelsHiddenByRegister: nHid, rowsClearFromTop: clear };
+  }
+
+  // 4. each child outside the window shows at least 12 rows of head and shoulders through it. (info: the part of him the depth rule leaves visible over the wall, which should hide him below the sill)
+  {
+    const bad = [], info = [], over = [];
+    for (const k of probes.tarde.kids) {
+      const vis = k.px.filter(p => !p[2] && p[3] === 'vitrina'), rowsV = [...new Set(vis.map(p => p[1]))].sort((a, b) => a - b);
+      const top = Math.min(...k.px.map(p => p[1])), contiguous = (() => { let n = 0; for (let r = top; rowsV.includes(r); r++) n++; return n; })();
+      const wall = k.px.filter(p => !p[2] && p[3] !== 'vitrina'), wallRows = [...new Set(wall.map(p => p[1]))];
+      info.push(k.name + ' ' + rowsV.length + ' rows (' + contiguous + ' from the top of the head; ' + vis.length + ' of ' + k.px.length + ' pixels)');
+      over.push(k.name + ' ' + wall.length + ' px' + (wall.length ? ' (' + wallRows.length + ' rows, over the ' + [...new Set(wall.map(p => p[3]))].join('/') + ')' : ''));
+      if (rowsV.length < MIN_HEAD_ROWS) bad.push(k.name + ': ' + rowsV.length + ' rows through the window (needs ' + MIN_HEAD_ROWS + ')');
+    }
+    add('ninos-fuera-through-window', bad, 'each of the three children shows at least ' + MIN_HEAD_ROWS + ' rows of head and shoulders through the shop window (rows with a pixel the depth rule leaves visible over the window): ' + info.join('; '), ['children outside:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: pixels of a child the depth rule leaves visible over the wall, not through the window (the wall is only .3 nearer than a child at x -.3, the rule\'s bias; it gets farther than that along the wall): ' + over.join('; '));
+    OUTS[OUTS.length - 1].overWall = over;
+  }
+
+  // 5. the two key cards inside the window and clear of the frog's head (CAJA_REPISA + 25 rows) and of a 53-row customer at cliente
+  {
+    const A = S.tecla_a.box, B = S.tecla_b.box, bad = [];
+    const rep = S['coqui.repisa'].screen, cl = S.cliente.screen, frog = [rep[0] - 16, rep[1] - FROG_HEAD_ROWS, 32, FROG_HEAD_ROWS], cust = [cl[0] + SP.senora.left, cl[1] - PERSON.rows, SP.senora.cols, PERSON.rows];
+    const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+    const gap = (a, b) => Math.max(b[0] - (a[0] + a[2]), a[0] - (b[0] + b[2]), b[1] - (a[1] + a[3]), a[1] - (b[1] + b[3]));
+    for (const [k, b] of [['tecla_a', A], ['tecla_b', B]]) {
+      if (b[0] < x0 || b[0] + b[2] > x0 + 196 || b[1] < 0 || b[1] + b[3] > 216) bad.push(k + ' ' + b + ' is not inside the window');
+      if (meets(b, frog)) bad.push(k + ' ' + b + ' covers the frog\'s head box ' + frog);
+      if (meets(b, cust)) bad.push(k + ' ' + b + ' covers the customer\'s box ' + cust);
+    }
+    if (A[1] + A[3] !== B[1] + B[3] || B[0] - (A[0] + A[2]) !== CARD.gap || A[2] !== CARD.w || A[3] !== CARD.h) bad.push('the two cards are not ' + CARD.w + ' x ' + CARD.h + ' side by side with a ' + CARD.gap + ' px gap');
+    add('key-cards', bad, 'tecla_a [' + A + '] and tecla_b [' + B + '] (' + CARD.w + ' x ' + CARD.h + ', gap ' + CARD.gap + ') inside the window; clear of the frog\'s head box [' + frog + '] by ' + Math.min(gap(A, frog), gap(B, frog)) + ' px and of the customer\'s box [' + cust + '] by ' + Math.min(gap(A, cust), gap(B, cust)) + ' px; the register\'s topmost pixel is row ' + G.bb.caja[1] + ', the cards\' bottom edge row ' + (A[1] + A[3]) + ' (' + CARD_ABOVE + ' px above it); their middle column ' + (A[0] + CARD.w + CARD.gap / 2) + ' is the middle of the register\'s body (its side shelf not counted)',
+      ['key cards:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+  }
+
+  // 6. (extra) the register's touch box covers the pixels of the set's part 'caja'
+  {
+    const bb = G.bb.caja, b = T.caja.box, tol = 1, bad = [];
+    const cov = bb[0] >= b[0] - tol && bb[1] >= b[1] - tol && bb[2] <= b[0] + b[2] + tol && bb[3] <= b[1] + b[3] + tol;
+    if (!cov) bad.push('caja: its pixels span [' + bb + '] (x0, y0, x1, y1), its box is [' + b + '] (x, y, w, h), more than ' + tol + ' px out');
+    add('box-covers-set', bad, 'caja pixels [' + bb + '] in box [' + b + '] (1 px tolerance)', ['the touch box does not cover what the set draws:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+  }
+
+  // 7. (extra) the counter-top spots are on the counter top; the frog's shelf, the sill and the clip are where the set draws them
+  {
+    const bad = [], cnt = Object.entries(S).filter(([, s]) => s.kind === 'counter');
+    for (const [k, s] of cnt) if (s.world[0] < CD.CX0 || s.world[0] > CD.CX1 || s.world[1] < CD.CY0 || s.world[1] > CD.CY1) bad.push(k + ' ' + s.world + ' is off the counter top x ' + CD.CX0 + '..' + CD.CX1 + ', y ' + CD.CY0 + '..' + CD.CY1);
+    // the bills' clip on the register's front face: right of the drawer front's middle, inside the register's x range
+    const c = S.clip.world; if (c[0] < T.caja.world[0] || c[0] > T.caja.world[3]) bad.push('clip x ' + c[0] + ' is off the register');
+    add('counter-spots-on-top', bad, cnt.length + ' counter-top spots (' + cnt.map(([k]) => k).join(', ') + ') inside the counter top x ' + CD.CX0 + '..' + CD.CX1 + ', y ' + CD.CY0 + '..' + CD.CY1 + '; the clip is on the register', ['spots off:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    // info: the amount window against the numerals
+    const pane = S.ventana_caja.pane, dg = S.ventana_caja.digits, w = dg.count * dg.size[0] + (dg.count - 1) * dg.gap, h = dg.size[1];
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: the amount window\'s pale pane is ' + (pane ? pane[2] + ' x ' + pane[3] + ' px (at ' + pane[0] + ',' + pane[1] + ')' : 'not found') + '; the numerals of the design (' + dg.count + ' digits of ' + dg.size.join(' x ') + ', ' + dg.gap + ' px gap) are ' + w + ' x ' + h + ' px' + (pane && (w > pane[2] || h > pane[3]) ? ': they do NOT fit in it (' + (w > pane[2] ? (w - pane[2]) + ' px too wide' : '') + (w > pane[2] && h > pane[3] ? ', ' : '') + (h > pane[3] ? (h - pane[3]) + ' px too tall' : '') + ')' : ''));
+    // and the frog on the shelf in front of it: which of the numerals' 11 x 7 box (centred on the window's point) the frog's silhouette (scale .8, on its spot, with the depth rule) covers
+    {
+      const vc = S.ventana_caja, fr = S['coqui.repisa'], m = SP.coqui8, T30 = Math.tan(Math.PI / 6), bx = vc.screen[0] - (w >> 1), by = vc.screen[1] - 3, covered = new Set(), colsC = new Set();
+      for (const [px, py] of m.px) {
+        const X = fr.screen[0] - m.ax + px, Y = fr.screen[1] - m.bottom + py, plane = fr.depth + (fr.screen[1] - (Y + .5)) * T30 / sheet.S;
+        if (plane > vc.depth && X >= bx && X < bx + w && Y >= by && Y < by + h) { covered.add(X + ',' + Y); colsC.add(X); }
+      }
+      const tot = w * h, cc = covered.size, lo = Math.min(...[...colsC, 1e9]), hi = Math.max(...[...colsC, -1]);
+      OUTS[OUTS.length - 1].lines.push('       info, not a check: the frog on the shelf (scale .8) stands in front of the register\'s head: of the numerals\' ' + w + ' x ' + h + ' box at [' + bx + ', ' + by + '] it covers ' + cc + ' of ' + tot + ' pixels (' + Math.round(cc / tot * 100) + ' %)' + (cc ? ', the columns ' + lo + '..' + hi + ' (the box is columns ' + bx + '..' + (bx + w - 1) + ')' : ''));
+      OUTS[OUTS.length - 1].frogOverNumerals = { box: [bx, by, w, h], covered: cc, of: tot };
+    }
+    OUTS[OUTS.length - 1].window = { pane, digits: w + ' x ' + h, fits: !!pane && w <= pane[2] && h <= pane[3] };
+  }
+  return OUTS;
+}

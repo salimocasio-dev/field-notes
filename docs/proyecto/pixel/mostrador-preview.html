@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El mostrador · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
-<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El mostrador (mostrador-set.html, drawn in a hidden frame, goods off: they are sprites) with the characters and the small things drawn over it as sprites, each placed from mostrador-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. Then cropped to the 196 x 216 view. The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the small things (tray, dish, coins, goods, malts, límbers, basket, bag) are stand-ins drawn here, not final art.
-Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken down, <code>?m=3</code> the game of story 36, <code>?m=4</code> story 37, <code>?m=5</code> story 38 (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El mostrador (mostrador-set.html, drawn in a hidden frame, goods off: they are sprites) with the characters and the small things drawn over it as sprites, each placed from mostrador-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. Then cropped to the 196 x 216 view (the calle picture: the sheet's calle.views.calle). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the small things (tray, dish, coins, goods, malts, límbers, basket, bag, the rooster) are stand-ins drawn here, not final art.
+Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken down, <code>?m=3</code> the game of story 36, <code>?m=4</code> story 37, <code>?m=5</code> story 38, <code>?m=6</code> the street, in the morning (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -19,7 +19,7 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
    3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on its screen column. A sprite pixel is hidden
       where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
       depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins.
-   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.dentro). */
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.dentro; the calle picture: calle.views.calle). */
 (() => {
   const A = new URLSearchParams(location.search);
   const PV = window.PREVIEW = {};
@@ -63,6 +63,14 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
     maltas: () => mk(6, 14, b => { b.rect(2, 1, 2, 4, '#5A3418'); b.px(2, 1, '#F0C020'); b.px(3, 1, '#F0C020'); b.rect(1, 5, 4, 8, '#5A3418'); b.rect(1, 7, 4, 3, '#F2E4B0'); b.px(1, 6, '#9A6A3A'); }),
     limber_a: () => mk(9, 12, b => { b.ell(4.5, 4, 2.9, 2.4, ['#C02864', '#E8508C', '#FF90B8']); b.rect(4, 1, 1, 2, '#D8BC8A'); b.rect(2, 5, 5, 6, '#BCD6EE'); b.rect(2, 6, 5, 3, '#E8508C'); b.rect(6, 5, 1, 6, '#8CB0D0'); }),
     limber_b: () => mk(9, 12, b => { b.ell(4.5, 4, 2.9, 2.4, ['#D0A818', '#F0D040', '#FFF090']); b.rect(4, 1, 1, 2, '#D8BC8A'); b.rect(2, 5, 5, 6, '#BCD6EE'); b.rect(2, 6, 5, 3, '#F0D040'); b.rect(6, 5, 1, 6, '#8CB0D0'); }),
+    // the rooster on the awning (moment 6): facing the door, a comb, a wattle, a green tail
+    gallo: () => mk(16, 17, b => {
+      b.line(5, 8, 1, 3, '#1E6A58'); b.line(5, 9, 0, 6, '#2E8A6A'); b.line(5, 10, 1, 9, '#1E6A58'); b.line(6, 8, 3, 2, '#3AA078');
+      b.ell(7.5, 10, 4.6, 3.6, ['#7A2E16', '#B8541E', '#DC8234', '#F2B05C']);
+      b.ell(11.5, 5.5, 2.6, 2.7, ['#B8541E', '#DC8234', '#F2B05C']);
+      b.rect(10, 1, 3, 2, '#E02A2A'); b.px(11, 0, '#E02A2A'); b.rect(14, 5, 2, 1, '#F0C020'); b.rect(13, 7, 1, 2, '#E02A2A'); b.px(12, 5, '#201818');
+      b.rect(6, 13, 1, 3, '#D8A030'); b.rect(9, 13, 1, 3, '#D8A030'); b.rect(5, 16, 3, 1, '#D8A030'); b.rect(8, 16, 3, 1, '#D8A030');
+    }),
     // held
     cesta: () => mk(14, 11, b => { b.rect(1, 4, 12, 6, '#C8853C'); for (let y = 4; y < 10; y += 2) for (let x = 1; x < 13; x += 2) b.px(x + (y >> 1) % 2, y, '#A8682C'); b.rect(1, 4, 12, 1, '#E2A85A'); b.rect(2, 1, 1, 3, '#A8682C'); b.rect(11, 1, 1, 3, '#A8682C'); b.rect(2, 1, 10, 1, '#A8682C'); }),
     bolsa: () => mk(11, 14, b => { b.rect(1, 4, 9, 9, '#C89A60'); b.rect(1, 4, 3, 9, '#E0B880'); b.rect(1, 3, 9, 1, '#A87A40'); b.rect(6, 1, 2, 3, '#E2A85A'); b.rect(4, 7, 4, 1, '#A87A40'); }),
@@ -95,32 +103,35 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
       set: { hora: 'manana', atras: 'shut', nevera: 0 },
       layers: () => [{ at: 'pepe.estante.leche', s: () => SP.pepe('wave0'), who: 'adulto' }, { at: 'abuela.frente', s: () => SP.abuela(), who: 'adulto' }, { at: 'coqui.frente', s: () => SP.coqui(), who: 'coqui' },
         ...shelf(['leche']), { at: 'compra', s: () => SP.thing('leche') }, { at: 'bandeja', s: () => SP.thing('bandeja') }, { at: 'platillo', s: () => SP.thing('platillo') }] },
-    3: { what: 'the game of story 36: the back door open, don Pepe gone, abuela sitting at abuela.silla, the frog at coqui.mostrador_izq, two goods (pan, leche) at cosa_a and cosa_b, the señora at cliente with a basket, the señor at cola1, the tray and the dish',
+    3: { what: 'the game of story 36: the back door open, don Pepe gone, abuela sitting at abuela.silla, the frog at coqui.mostrador (right of the register, on the counter), two goods (pan, leche) at cosa_a and cosa_b, the señora at cliente with a basket, the señor at cola1, the tray and the dish',
       set: { hora: 'manana', atras: 'open', nevera: 0 },
-      layers: () => [{ at: 'abuela.silla', s: () => SP.abuelaSentada(), who: 'adulto' }, { at: 'coqui.mostrador_izq', s: () => SP.coqui(), who: 'coqui' },
+      layers: () => [{ at: 'abuela.silla', s: () => SP.abuelaSentada(), who: 'adulto' }, { at: 'coqui.mostrador', s: () => SP.coqui(), who: 'coqui' },
         ...shelf(['pan', 'leche']), { at: 'cosa_a', s: () => SP.thing('pan') }, { at: 'cosa_b', s: () => SP.thing('leche') },
         { at: 'cliente', s: () => holding(SP.persona(SENORA), 'cesta', 26, 32), who: 'adulto' }, { at: 'cola1', s: () => SP.persona(SENOR), who: 'adulto' },
         { at: 'bandeja', s: () => SP.thing('bandeja') }, { at: 'platillo', s: () => SP.thing('platillo') }] },
-    4: { what: 'story 37: Carmen at nino.frente with a bag, five coins in a row at monedas (towards +x), don Pepe at pepe.mostrador, the frog at coqui.frente, the row of malts at maltas',
+    4: { what: 'story 37: Carmen at nino.frente with a bag, five coins in a row at monedas (towards +x, .22 apart), don Pepe at pepe.mostrador, the frog at coqui.frente, the row of malts at maltas',
       set: { hora: 'manana', atras: 'shut', nevera: 0 },
       layers: () => [{ at: 'pepe.mostrador', s: () => SP.pepe(), who: 'adulto' }, { at: 'nino.frente', s: () => holding(SP.persona(FAM.hermana), 'bolsa', 25, 27), who: 'nino' }, { at: 'coqui.frente', s: () => SP.coqui(), who: 'coqui' },
         ...shelf(),
-        ...[0, 1, 2, 3, 4].map(i => ({ at: 'monedas', off: [i * .25, 0, 0], s: () => SP.thing('moneda') })),
+        ...[0, 1, 2, 3, 4].map(i => ({ at: 'monedas', off: [i * SHEET.spots.monedas.step, 0, 0], s: () => SP.thing('moneda') })),
         ...[-.15, 0, .15].map(dx => ({ at: 'maltas', off: [dx, 0, 0], s: () => SP.thing('maltas') }))] },
-    5: { what: 'story 38: the afternoon, the freezer on the counter. Don Pepe sitting at pepe.silla, the frog at coqui.mostrador_izq, a límber at limber_pepe and one at limber_lejos, the señora at cliente, three children at ninos_fuera, seen through the street door',
+    5: { what: 'story 38: the afternoon, the freezer on the counter. Don Pepe sitting at pepe.silla, the frog at coqui.mostrador, a límber at limber_pepe and one at limber_lejos, the señora at cliente, three children at ninos_puerta just inside the street door, each with a coin',
       set: { hora: 'tarde', atras: 'shut', nevera: 1 },
-      layers: () => [{ at: 'pepe.silla', s: () => SP.pepe('idle', 1), who: 'adulto' }, { at: 'coqui.mostrador_izq', s: () => SP.coqui(), who: 'coqui' },
+      layers: () => [{ at: 'pepe.silla', s: () => SP.pepe('idle', 1), who: 'adulto' }, { at: 'coqui.mostrador', s: () => SP.coqui(), who: 'coqui' },
         ...shelf(),
         { at: 'limber_pepe', s: () => SP.thing('limber_a') }, { at: 'limber_lejos', s: () => SP.thing('limber_b') },
         { at: 'cliente', s: () => SP.persona(SENORA), who: 'adulto' },
-        { at: 'ninos_fuera.1', s: () => SP.persona(FAM.hermano), who: null }, { at: 'ninos_fuera.2', s: () => SP.persona(FAM.hermana), who: null }, { at: 'ninos_fuera.3', s: () => SP.persona(NINO3), who: null }] },
+        { at: 'ninos_puerta.1', s: () => holding(SP.persona(FAM.hermano), 'moneda', 31, 30), who: 'nino' }, { at: 'ninos_puerta.2', s: () => holding(SP.persona(FAM.hermana), 'moneda', 31, 30), who: 'nino' }, { at: 'ninos_puerta.3', s: () => holding(SP.persona(NINO3), 'moneda', 31, 30), who: 'nino' }] },
+    6: { what: 'the street, in the morning (donde=calle): abuela at abuela.acera and the frog at coqui.acera on the pavement in front of the shop door, a rooster on the awning\'s front edge at gallo (the picture is the sheet\'s calle state, its own origin and view)',
+      calle: true, set: { donde: 'calle', hora: 'manana', puerta: 'shut' },
+      layers: () => [{ at: 'abuela.acera', s: () => SP.abuela(), who: 'adulto' }, { at: 'coqui.acera', s: () => SP.coqui(), who: 'coqui' }, { at: 'gallo', s: () => SP.thing('gallo') }] },
   };
   const RADIUS = () => SHEET.shadows.radius;
 
   /* ---------- the set: one hidden frame per state ---------- */
   const SETS = {};
   async function setFrame(st) {
-    const q = 'donde=dentro&hora=' + st.hora + '&atras=' + st.atras + '&nevera=' + st.nevera + '&props=0';
+    const q = st.donde === 'calle' ? 'donde=calle&hora=' + st.hora + '&puerta=' + st.puerta : 'donde=dentro&hora=' + st.hora + '&atras=' + st.atras + '&nevera=' + st.nevera + '&props=0';
     let fr = SETS[q];
     if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'mostrador-set.html?' + q; }); SETS[q] = fr; }
     return fr.contentWindow;
@@ -133,7 +144,7 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
     const w = await setFrame(M.set), Z = w.DEPTH.z, S = w.DEPTH.S;
     // the layers: where each sprite stands
     const LS = M.layers().map(l => {
-      const sp = SHEET.spots[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
+      const sp = (M.calle ? SHEET.calle.spots : SHEET.spots)[l.at]; if (!sp || !sp.world) throw new Error('no spot ' + l.at);
       let world = sp.world, sx = sp.screen[0], sy = sp.screen[1], d = sp.depth;
       if (l.off) { world = [sp.world[0] + l.off[0], sp.world[1] + l.off[1], sp.world[2] + l.off[2]]; const q = w.project(world[0], world[1], world[2]); sx = Math.round(q.sx); sy = Math.round(q.sy); d = q.d; }
       return Object.assign({}, l, { sp, world, sx, sy, d, spr: l.s() });
@@ -159,7 +170,7 @@ Address: <code>?m=1</code> story 36 opening, <code>?m=2</code> the milk taken do
     }
     if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
     const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
-    const V = SHEET.views.dentro, cv = document.getElementById('out');
+    const V = M.calle ? SHEET.calle.views.calle : SHEET.views.dentro, cv = document.getElementById('out');
     cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
     const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
     g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);

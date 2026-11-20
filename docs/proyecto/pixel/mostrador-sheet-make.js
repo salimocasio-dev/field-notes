@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 'use strict';
-/* El mostrador's sheet: writes docs/proyecto/pixel/mostrador-sheet.json from mostrador-set.html and the design (the orchestrator's mostrador-spec), then checks it.
+/* El mostrador's sheet (version 2): writes docs/proyecto/pixel/mostrador-sheet.json from mostrador-set.html and the design (the orchestrator's mostrador-spec, with its v2 changes
+   and the calle state), then checks it.
    Run from the repo root:  node docs/proyecto/pixel/mostrador-sheet-make.js        (needs Node 22 and the pre-installed Playwright, Chrome at /usr/bin/google-chrome)
-   A NEW scene: no old scene file, no old positions, no remap. It loads the set (window.MOSTRADOR.CD: the room's constants) in headless Chrome,
-   projects every world point with the engine's own project() (pp-engine.js), and writes the spots, things, view, shadows and the depth rule.
+   A NEW scene: no old scene file, no old positions, no remap. It loads the set twice: donde=dentro (window.MOSTRADOR.CD: the room's constants) and donde=calle (CF,
+   colmado-fuera.js: the shop front), projects every world point with the engine's own project() (pp-engine.js), and writes the spots, things, view, shadows and the depth rule.
+   Every place the room exports (CD.GOODS, CD.SILLA, CD.NEVERA, CD.CX0 ..) is read from the set, never typed again from the design.
    Then it checks the sheet and prints one line per check; it exits 1 when one fails (the sheet is written first). A second run writes the same bytes.
    The set is asked for at http://127.0.0.1:8765 (the dev server for the repo root; override with MOSTRADOR_BASE), but every request to it is answered
    from the files of THIS tree (the server's root may be another checkout of the repo): a new file here is seen before it is merged. */
@@ -21,10 +23,13 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'applica
 const r4 = v => Math.round(v * 1e4) / 1e4, r2 = v => Math.round(v * 100) / 100;
 const W4 = p => p.map(r4);
 
-// the two numbers of the design for "seen from the thighs up": a person 49 rows tall, of which at least 28 above the counter's top back edge
-const PERSON = { rows: 49, minAbove: 28 };
+// the standing figure is 53 drawn rows (mkPersona, the design's number); at least 28 of them above the counter's top back edge when he is seen from the thighs up
+const PERSON = { rows: 53, minAbove: 28 };
 const BIAS = .3;                                         // the depth rule: the feet's depth plus this
 const MIN_APART = 10;                                    // px between two people's feet on screen
+const CLEAR = 4;                                         // px a spot keeps from the pixels of the register, the freezer or the chair
+// what the freezer is drawn with: the spots of story 38 (nevera = 1). The other counter spots (the tray, the dish, the malts ...) belong to stories without it
+const NEVERA_STORY = ['coqui.mostrador', 'limber_pepe', 'limber_lejos'];
 
 (async () => {
   const browser = await chromium.launch(fs.existsSync(CHROME) ? { executablePath: CHROME } : {});
@@ -37,14 +42,33 @@ const MIN_APART = 10;                                    // px between two peopl
     route.fulfill({ status: 200, contentType: MIME[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
   });
   const load = async (q) => { await page.goto(PAGE + '?' + q); };
-  await load('props=1&tags=1');
-  const G = await page.evaluate(() => { const o = {}; for (const [k, v] of Object.entries(MOSTRADOR.CD)) if (typeof v !== 'function') o[k] = v; return { CD: o, scene: PP_SCENE, W, H, S, OX, OY }; });
   // the engine's own projection: [sx, sy, d] for each world point
   const proj = pts => page.evaluate(pts => pts.map(p => { const q = project(p[0], p[1], p[2]); return [q.sx, q.sy, q.d]; }), pts);
-  const sheet = await make(G, proj);
+
+  /* ---- inside the shop: the room's constants, and the pixels of the register, the freezer and the chair (all drawn: nevera = 1, tags = 1) ---- */
+  await load('props=1&tags=1&nevera=1');
+  const G = await page.evaluate(() => {
+    const o = {}; for (const [k, v] of Object.entries(MOSTRADOR.CD)) if (typeof v !== 'function') o[k] = v;
+    const px = {}; for (const n of ['caja', 'nevera', 'silla']) px[n] = [];
+    for (let i = 0; i < TAGS.length; i++) if (px[TAGS[i]]) px[TAGS[i]].push([i % W, (i / W) | 0]);
+    return { CD: o, scene: PP_SCENE, W, H, S, OX, OY, px };
+  });
+  const dentro = await makeDentro(G, proj);
   // the checks that read the set's own pixels: every state of the set (hora x atras x nevera), goods drawn (props=1), each pixel tagged by the part that drew it (tags=1)
-  const probes = await probeSets(page, sheet, load);
-  const results = checks(sheet, probes);
+  const probes = await probeSets(page, dentro, load);
+
+  /* ---- the shop front, from the street ---- */
+  await load('donde=calle&hora=manana&puerta=shut&tags=1');
+  const GC = await page.evaluate(() => {
+    const o = {}; for (const [k, v] of Object.entries(CF)) if (typeof v !== 'function') o[k] = v;
+    return { CF: o, scene: PP_SCENE, W, H, S, OX, OY };
+  });
+  const calle = await makeCalle(GC, proj, page);
+  const callePix = await probeCalle(page, calle, load);
+
+  const results = checks(dentro, probes, calle, callePix, G);
+  const sheet = dentro;
+  sheet.calle = calle;
   sheet.checks = { person: PERSON, results };
   const out = compact(JSON.stringify(sheet, null, 1)) + '\n';
   fs.writeFileSync(OUT, out);
@@ -61,11 +85,18 @@ const MIN_APART = 10;                                    // px between two peopl
 const ITEM = '(?:-?[\\d.]+|"[\\w.=+&?-]+")';
 const compact = t => t.replace(new RegExp('\\[\\n\\s+(' + ITEM + '(?:,\\n\\s+' + ITEM + ')*)\\n\\s+\\]', 'g'), (m, a) => '[' + a.replace(/,\n\s+/g, ', ') + ']');
 
-/* ---------- the sheet ---------- */
-async function make(G, proj) {
+/* the distance, in pixels, from a spot's feet pixel (column sx, row sy - 1) to the nearest pixel the set draws for a part */
+const feet = ([sx, sy]) => [sx, sy - 1];
+const nearest = (f, pix) => { let m = 1e9; for (const [x, y] of pix) { const d = Math.hypot(x - f[0], y - f[1]); if (d < m) m = d; } return m; };
+// which objects a spot is kept clear of: a counter-top spot (z = CH) the register, and in story 38 the freezer; a floor spot in front of the counter the chair (not abuela.silla)
+const obstaclesOf = (name, w, CD) => w[2] === CD.CH ? ['caja'].concat(NEVERA_STORY.includes(name) ? ['nevera'] : []) : (w[1] > CD.CY1 && name !== 'abuela.silla' ? ['silla'] : []);
+
+/* ---------- the sheet: inside the shop ---------- */
+async function makeDentro(G, proj) {
   const CD = G.CD, CH = CD.CH, SZ = CD.SZ, GOODS = CD.GOODS;
   const P1 = async p => (await proj([p]))[0];
   const scr = ([sx, sy]) => [Math.round(sx), Math.round(sy)];
+  const DY = (CD.PD0 + CD.PD1) / 2;                                                    // the street door's middle, on the left wall (y)
 
   /* ---- spots: the ground (or the counter top, or the seat) under the feet; frog scale 1 everywhere ---- */
   const D = [];                                                                       // [name, world, kind, what]
@@ -75,38 +106,60 @@ async function make(G, proj) {
   for (const [k, , x] of GOODS) person('pepe.estante.' + k, [x, .95, 0], 'don Pepe in front of the shelves, reaching up to ' + k);
   person('pepe.atras', [.7, .6, 0], 'don Pepe at the back door');
   person('pepe.silla', [5.2, 1.15, 0], 'don Pepe sitting behind the counter with his fan (story 38)');
-  person('coqui.frente', [4.6, 4.3, 0], 'the frog on the floor, in front of the counter');
-  person('coqui.mostrador_izq', [2.1, 2.38, CH], 'the frog on the counter top, left (far end from don Pepe\'s chair)');
-  person('coqui.mostrador_der', [4.6, 2.38, CH], 'the frog on the counter top, right');
-  person('abuela.frente', [3.6, 3.9, 0], 'abuela standing in front of the counter');
-  person('abuela.silla', [CD.SILLA[0], CD.SILLA[1], .45], 'abuela sitting in the waiting chair; z .45 is the chair\'s seat top (colmado-dentro.js chairs()); the sitting sprite is anchored by her lap, rules.anchor');
-  person('nino.frente', [5.2, 3.8, 0], 'Luis or Carmen at the counter');
-  person('nino.puerta_dentro', [1.0, 4.9, 0], 'Carmen looking out of the street door, inside');
+  person('coqui.frente', [4.4, 3.5, 0], 'the frog on the floor, in front of the counter');
+  person('coqui.mostrador', [3.0, 2.38, CH], 'the frog\'s one place on the counter top, right of the register (it casts no shadow)');
+  person('abuela.frente', [3.0, 4.1, 0], 'abuela standing in front of the counter');
+  person('abuela.silla', [CD.SILLA[0], CD.SILLA[1], .45], 'abuela sitting in the waiting chair (CD.SILLA); z .45 is the chair\'s seat top (colmado-dentro.js chairs()); the sitting sprite is anchored by her lap, rules.anchor');
+  person('nino.frente', [5.9, 3.6, 0], 'Luis or Carmen at the counter');
+  person('nino.puerta_dentro', [.7, 5.4, 0], 'Carmen looking out of the street door, inside');
   person('cliente', [2.9, 3.75, 0], 'the customer being served');
-  person('cola1', [1.9, 4.35, 0], 'waiting, first');
-  person('cola2', [1.2, 4.9, 0], 'waiting, second');
-  person('puerta', [.45, 4.3, 0], 'just inside the street door');
-  person('fuera', [-.35, 4.3, 0], 'on the pavement, seen through the street door (no shadow)');
-  [3.85, 4.3, 4.75].forEach((y, i) => person('ninos_fuera.' + (i + 1), [-.35, y, 0], 'child ' + (i + 1) + ' of the three outside the door (no shadow); group ninos_fuera'));
-  onCounter('bandeja', 5.5, 2.38, 'the tray of quesitos');
-  onCounter('platillo', 3.4, 2.15, 'the coin dish');
-  onCounter('cosa_a', 2.75, 2.5, 'the first of the two things in front of the frog');
-  onCounter('cosa_b', 3.45, 2.5, 'the second of the two things in front of the frog');
-  onCounter('compra', 4.1, 2.5, 'where a thing taken down from a shelf is set');
-  onCounter('monedas', 4.7, 2.62, 'the first of Carmen\'s coins; the row runs towards +x (dir)');
-  onCounter('maltas', 5.9, 2.25, 'the malts');
-  onCounter('limber_pepe', 5.0, 2.45, 'a límber at don Pepe\'s end');
-  onCounter('limber_lejos', 2.6, 2.45, 'a límber at the far end');
-  onCounter('bolsa', 4.4, 2.55, 'the bag being packed');
+  person('cola1', [2.3, 4.2, 0], 'waiting, first');
+  person('cola2', [1.6, 4.7, 0], 'waiting, second');
+  person('puerta', [.45, DY, 0], 'just inside the street door');
+  person('fuera', [-.35, DY, 0], 'on the pavement, seen through the street door (no shadow)');
+  [[.6, 3.9], [.6, 4.5], [1.1, 5.1]].forEach(([x, y], i) => person('ninos_puerta.' + (i + 1), [x, y, 0], 'child ' + (i + 1) + ' of the three just inside the street door (story 38: they wait there, each with a coin); group ninos_puerta'));
+  onCounter('bandeja', 5.6, 2.38, 'the tray of quesitos');
+  onCounter('platillo', 5.0, 2.15, 'the coin dish');
+  onCounter('cosa_a', 3.6, 2.5, 'the first of the two things in front of the frog');
+  onCounter('cosa_b', 4.25, 2.5, 'the second of the two things in front of the frog');
+  onCounter('compra', 4.4, 2.5, 'where a thing taken down from a shelf is set');
+  onCounter('monedas', 4.6, 2.62, 'the first of Carmen\'s coins; the row runs towards +x (dir), .22 apart (step)');
+  onCounter('maltas', 5.95, 2.15, 'the malts');
+  onCounter('limber_pepe', 4.75, 2.45, 'a límber at don Pepe\'s end');
+  onCounter('limber_lejos', 3.55, 2.5, 'a límber at the frog\'s end');
+  onCounter('bolsa', 4.45, 2.55, 'the bag being packed');
   for (const [k, s, x] of GOODS) D.push(['estante.' + k, [x, .19, SZ[s] + .06], 'shelf', 'where ' + k + ' stands on its shelf (the plank\'s top)']);
-  const pr = await proj(D.map(d => d[1]));
-  const spots = {}, depth = {};
+
+  /* ---- a spot that now collides with the register, the freezer or the chair moves the least distance along the counter that clears it by CLEAR px ----
+     collide: the spot's feet pixel is nearer than CLEAR px to a pixel the set draws for that object (part 'caja', 'nevera' in nevera = 1, 'silla'). A counter-top spot is tested against
+     the register, and, when it is a spot of story 38 (the only story with the freezer), against the freezer; a floor spot in front of the counter against the chair (not abuela.silla: she
+     sits in it). The move is along x (the counter's length), by steps of .01, to whichever side is nearer; a counter-top spot stays on the counter top */
+  const moved = [];
+  const clearance = (name, w, q) => { const f = feet(scr(q)); const o = obstaclesOf(name, w, CD); return o.length ? Math.min(...o.map(n => nearest(f, G.px[n]))) : Infinity; };
+  let pr = await proj(D.map(d => d[1]));
+  for (let i = 0; i < D.length; i++) {
+    const [name, w, kind] = D[i];
+    if (kind === 'shelf' || clearance(name, w, pr[i]) >= CLEAR) continue;
+    const cands = []; for (let k = 1; k <= 160; k++) for (const s of [-1, 1]) cands.push([w[0] + s * k * .01, w[1], w[2], s * k * .01]);
+    const cp = await proj(cands.map(c => c.slice(0, 3)));
+    const onTop = c => w[2] !== CH || (c[0] >= CD.CX0 && c[0] <= CD.CX1);
+    const j = cands.findIndex((c, n) => onTop(c) && clearance(name, c, cp[n]) >= CLEAR);
+    if (j < 0) throw new Error('no place along the counter clears ' + name);
+    // the nearest clear place on the other side, for the record
+    const jo = cands.findIndex((c, n) => Math.sign(c[3]) === -Math.sign(cands[j][3]) && onTop(c) && clearance(name, c, cp[n]) >= CLEAR);
+    const was = w.slice();
+    D[i][1] = [r4(cands[j][0]), w[1], w[2]];
+    moved.push({ spot: name, from: W4(was), to: W4(D[i][1]), dx: r4(cands[j][3]), clearBefore: r2(clearance(name, was, pr[i])), clearAfter: r2(clearance(name, D[i][1], cp[j])), against: obstaclesOf(name, w, CD).join(' + '),
+      otherSide: jo < 0 ? null : { to: r4(cands[jo][0]), dx: r4(cands[jo][3]) } });
+  }
+  pr = await proj(D.map(d => d[1]));
+  const spots = {};
   D.forEach((d, i) => {
     const q = pr[i];
     spots[d[0]] = { world: W4(d[1]), screen: scr(q), depth: r4(q[2]), scale: 1, kind: d[2], what: d[3] };
-    depth[d[0]] = q[2];
   });
-  spots['monedas'].dir = [1, 0, 0];
+  for (const m of moved) spots[m.spot].moved = { from: m.from, dx: m.dx, why: 'it was ' + m.clearBefore + ' px from the ' + m.against + '\'s pixels; now ' + m.clearAfter + ' px (needs ' + CLEAR + ')' };
+  spots['monedas'].dir = [1, 0, 0]; spots['monedas'].step = .22;
   spots['pepe.fuera'] = { drawn: false, kind: 'person', what: 'don Pepe gone through the back door: not drawn' };
   // keep the design's order: pepe.fuera after pepe.atras
   const order = Object.keys(spots), pf = order.indexOf('pepe.fuera'), pa = order.indexOf('pepe.atras');
@@ -121,11 +174,9 @@ async function make(G, proj) {
     return [x0, y0, Math.ceil(Math.max(...xs)) - x0, Math.ceil(Math.max(...ys)) - y0];
   };
   const T = async (world, what, extra = {}) => Object.assign({ set: true, world: W4(world), box: await boxOf(world), what }, extra);
-  // the freezer: the box colmado-dentro.js counter() draws (x0 = CX1 - 1.15, x1 = CX1 - .15, y0 = CY0 + .1, y1 = CY1 - .08, z0 = CH, z1 = CH + .42)
-  const NEV = [CD.CX1 - 1.15, CD.CY0 + .1, CH, CD.CX1 - .15, CD.CY1 - .08, CH + .42];
   const SL = CD.SILLA;
   const things = {
-    nevera: await T(NEV, 'the little freezer on the counter, only when nevera = 1 (the box colmado-dentro.js draws)', { when: 'nevera = 1' }),
+    nevera: await T(CD.NEVERA, 'the little freezer on the counter, only when nevera = 1: CD.NEVERA, the box colmado-dentro.js draws', { when: 'nevera = 1' }),
     mostrador: await T([CD.CX0, CD.CY0, 0, CD.CX1, CD.CY1, CH], 'the counter, a poke'),
     puerta: await T([0, CD.PD0, 0, .02, CD.PD1, CD.DH], 'the street door, a poke'),
     silla: await T([SL[0] - .4, SL[1] - .4, 0, SL[0] + .4, SL[1] + .4, 1.05], 'the waiting chair: a box round CD.SILLA, .8 wide and 1.05 high'),
@@ -134,32 +185,33 @@ async function make(G, proj) {
 
   /* ---- the view ---- */
   const vq = await P1([3.2, 2.9, 0]), vs = [r2(vq[0]), r2(vq[1])], vx0 = Math.max(0, Math.min(G.W - 196, Math.round(vs[0] - 98)));
-  const views = { dentro: { world: [3.2, 2.9, 0], screen: vs, zoom: 1, x0: vx0, region: [vx0, 0, 196, 216], what: 'inside the shop: the 196 x 216 window over the 240 x 216 picture, centred on this point (x0 = clamp(round(sx - 98), 0, 44)); donde=calle is another picture, a later order' } };
+  const views = { dentro: { world: [3.2, 2.9, 0], screen: vs, zoom: 1, x0: vx0, region: [vx0, 0, 196, 216], what: 'inside the shop: the 196 x 216 window over the 240 x 216 picture, centred on this point (x0 = clamp(round(sx - 98), 0, 44)); donde=calle has its own picture and view (calle.views.calle)' } };
 
-  const groups = { ninos_fuera: ['ninos_fuera.1', 'ninos_fuera.2', 'ninos_fuera.3'] };
+  const groups = { ninos_puerta: ['ninos_puerta.1', 'ninos_puerta.2', 'ninos_puerta.3'] };
   const sc = G.scene;
   return {
     scene: 'mostrador',
-    made: 'node docs/proyecto/pixel/mostrador-sheet-make.js, from mostrador-set.html (window.MOSTRADOR.CD) and the design of El mostrador. A new scene: no old scene, no remap.',
+    made: 'node docs/proyecto/pixel/mostrador-sheet-make.js, from mostrador-set.html (window.MOSTRADOR.CD, CF) and the design of El mostrador (version 2, with the calle state). A new scene: no old scene, no remap.',
     S: G.S, origin: { originX: sc.originX, originY: sc.originY }, picture: [G.W, G.H], view: [196, 216],
     rules: {
       project: 'pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels',
       spot: 'a spot is a world point of the feet (z 0: the floor; z 1: the counter top; z .45: the seat) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog\'s: 1 everywhere',
       anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty: the lowest drawn row is 54), 46 sitting (a 49-row canvas); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a small thing: its bottom middle on the point',
       view: 'a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0 = clamp(round(sx - 98), 0, 44), sx the projection of its world point. Never a fraction',
-      person: 'for the check "seen from the thighs up": a person is ' + PERSON.rows + ' rows tall, at least ' + PERSON.minAbove + ' of them above the counter\'s top back edge at his column',
+      person: 'for the check "seen from the thighs up": a person is ' + PERSON.rows + ' rows tall (the standing figure\'s drawn rows), at least ' + PERSON.minAbove + ' of them above the counter\'s top back edge at his column',
       depth: 'a spot\'s depth is the engine\'s d of its world point; front.plane turns it into the depth of each row of a character',
+      clear: 'a spot keeps ' + CLEAR + ' px from the pixels the set draws for the register (part caja), the freezer (part nevera, nevera = 1) and the chair (part silla): the distance from the spot\'s feet pixel (column sx, row sy - 1) to the nearest such pixel. A spot of the design that was nearer moved along x by the least step of .01 that clears it: spots[name].moved says from where',
     },
     setKey: {
-      params: { donde: { values: ['dentro'], later: 'calle: a later order' }, hora: { values: ['manana', 'tarde'] }, atras: { values: ['shut', 'open'] }, nevera: { values: [0, 1] }, props: { values: [0, 1], note: 'props=1 draws stand-in goods on the shelves for readers\' renders; the game uses 0 and draws the goods as sprites' } },
-      key: 'hora + atras + nevera, e.g. "manana-shut-0"',
+      params: { donde: { values: ['dentro', 'calle'] }, hora: { values: ['manana', 'tarde'] }, atras: { values: ['shut', 'open'], only: 'dentro' }, nevera: { values: [0, 1], only: 'dentro' }, puerta: { values: ['shut', 'open'], only: 'calle', note: 'the shop door seen from the street' }, props: { values: [0, 1], note: 'props=1 draws stand-in goods on the shelves for readers\' renders; the game uses 0 and draws the goods as sprites' } },
+      key: 'dentro: hora + atras + nevera, e.g. "manana-shut-0"; calle: hora + puerta, e.g. "manana-shut"',
       baked: ['manana', 'tarde'].flatMap(h => ['shut', 'open'].flatMap(a => [0, 1].map(n => '?donde=dentro&hora=' + h + '&atras=' + a + '&nevera=' + n))),
     },
     things,
-    later: { colmado: 'the shop front, only in donde=calle: not in this order' },
     spots: spotsOrdered,
     groups,
     views,
+    moved,
     front: {
       list: null,
       how: 'no list. A character is hidden by every set pixel that is nearer the camera than the character\'s feet (depth test against the baked depth, with the feet\'s depth plus 0.3), so the counter hides don Pepe\'s legs and nothing behind him hides him.',
@@ -171,9 +223,46 @@ async function make(G, proj) {
       radius: { coqui: .45, adultos: .35, ninos: .28 },
       byCharacter: { coqui: .45, pepe: .35, abuela: .35, senora: .35, senor: .35, luis: .28, carmen: .28, ninos: .28 },
       at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0)',
-      none: ['pepe.fuera', 'fuera', 'ninos_fuera.1', 'ninos_fuera.2', 'ninos_fuera.3'],
+      none: ['pepe.fuera', 'fuera', 'gallo'],
       onCounter: 'the frog on the counter top (z 1) casts none: the counter top is not ground in colmado-dentro.js (no slab), so a shadow has nothing to land on, and one cast at the floor under him would show in front of the counter',
     },
+  };
+}
+
+/* ---------- the sheet: the shop front, from the street (donde=calle) ---------- */
+async function makeCalle(G, proj, page) {
+  const CF = G.CF, sc = G.scene;
+  const scr = ([sx, sy]) => [Math.round(sx), Math.round(sy)];
+  const gx = (CF.AX0 + CF.AX1) / 2;
+  const D = [
+    ['abuela.acera', [2.4, 2.6, 0], 'person', 'abuela on the pavement in front of the door'],
+    ['coqui.acera', [3.2, 2.9, 0], 'person', 'the frog on the pavement, right of abuela'],
+    ['puerta_calle', [1.65, .4, 0], 'door', 'where they go in: the middle of the shop door (x = the middle of CF.D0 .. CF.D1), on the pavement at the wall'],
+    ['gallo', [gx, CF.AY, CF.AZ0], 'small', 'the rooster on the awning\'s front edge, at its middle (x = the middle of CF.AX0 .. CF.AX1, y = CF.AY, z = CF.AZ0); a small sprite, no shadow'],
+  ];
+  const pr = await proj(D.map(d => d[1]));
+  const spots = {};
+  D.forEach((d, i) => { spots[d[0]] = { world: W4(d[1]), screen: scr(pr[i]), depth: r4(pr[i][2]), scale: 1, kind: d[2], what: d[3] }; });
+  const boxOf = async w => {
+    const cs = []; for (const x of [w[0], w[3]]) for (const y of [w[1], w[4]]) for (const z of [w[2], w[5]]) cs.push([x, y, z]);
+    const q = await proj(cs), xs = q.map(p => p[0]), ys = q.map(p => p[1]);
+    const x0 = Math.floor(Math.min(...xs)), y0 = Math.floor(Math.min(...ys));
+    return [x0, y0, Math.ceil(Math.max(...xs)) - x0, Math.ceil(Math.max(...ys)) - y0];
+  };
+  // the door and the sign over it: the sign is a board 0.5 wider than the door on each side (colmado-fuera.js hSign: x D0 - .5 .. D1 + .5, z DH + .2 .. DH + .85), on the wall y = 0
+  const cw = [CF.D0 - .5, 0, 0, CF.D1 + .5, 0, CF.DH + .85];
+  const things = { colmado: { set: true, world: W4(cw), box: await boxOf(cw), what: 'the shop front\'s door together with the sign over it: the screen box of the wall rectangle x CF.D0 - .5 .. CF.D1 + .5, z 0 .. CF.DH + .85 (the sign\'s top)' } };
+  // the view: nothing in the design gives one for the calle picture. The window is centred on the middle of the bounding box of the calle spots and the colmado box
+  const xs = [].concat(Object.values(spots).map(s => s.screen[0]), [things.colmado.box[0], things.colmado.box[0] + things.colmado.box[2]]);
+  const mid = (Math.min(...xs) + Math.max(...xs)) / 2, x0 = Math.max(0, Math.min(G.W - 196, Math.round(mid - 98)));
+  const views = { calle: { provisional: true, zoom: 1, x0, region: [x0, 0, 196, 216], what: 'PROVISIONAL (the design gives no calle view): the 196 x 216 window centred on the middle of the bounding box of the calle spots and the colmado box, clamped to the picture (x0 = clamp(round(mid - 98), 0, 44))' } };
+  return {
+    what: 'the state donde=calle: the shop front from the street (colmado-fuera.js, drawn by mostrador-set.html?donde=calle); its own origin, picture and view. The depth rule, the anchors and the shadows are the same as inside (the top level of this sheet)',
+    origin: { originX: sc.originX, originY: sc.originY }, picture: [G.W, G.H], view: [196, 216],
+    setKey: { params: { hora: { values: ['manana', 'tarde'] }, puerta: { values: ['shut', 'open'] } }, key: 'hora + puerta, e.g. "manana-shut"', baked: ['manana', 'tarde'].flatMap(h => ['shut', 'open'].map(p => '?donde=calle&hora=' + h + '&puerta=' + p)) },
+    spots, things, views,
+    shadows: { byCharacter: { abuela: .35, coqui: .45 }, none: ['gallo', 'puerta_calle'], at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for abuela and the frog on the pavement' },
+    constants: { 'CF.D0': CF.D0, 'CF.D1': CF.D1, 'CF.DH': CF.DH, 'CF.AX0': CF.AX0, 'CF.AX1': CF.AX1, 'CF.AY': CF.AY, 'CF.AZ0': CF.AZ0, 'CF.PAVE': CF.PAVE },
   };
 }
 
@@ -182,7 +271,7 @@ async function probeSets(page, sheet, load) {
   const S = sheet.spots, R = [];
   const goods = Object.keys(S).filter(k => k.startsWith('estante.'));
   const pix = [];                                                            // the pixel the point is in, and the pixel at the rounded point
-  for (const k of goods) { const sp = S[k].screen, w = S[k].world; pix.push({ k, rounded: sp[1] * 240 + sp[0] }); }
+  for (const k of goods) { const sp = S[k].screen; pix.push({ k, rounded: sp[1] * 240 + sp[0] }); }
   // exact projection (floor) of each shelf place: the pixel the point is really in
   const ex = await page.evaluate(ws => ws.map(w => { const q = project(w[0], w[1], w[2]); return (Math.floor(q.sy)) * W + Math.floor(q.sx); }), goods.map(k => S[k].world));
   pix.forEach((p, i) => { p.exact = ex[i]; });
@@ -192,7 +281,7 @@ async function probeSets(page, sheet, load) {
     const r = await page.evaluate(arg => {
       const out = { goods: {}, bbox: {}, pepes: {} };
       for (const p of arg.pix) out.goods[p.k] = [TAGS[p.exact], TAGS[p.rounded]];
-      for (const name of ['nevera', 'silla', 'mostrador', 'puerta']) {
+      for (const name of ['nevera', 'silla', 'mostrador', 'puerta', 'caja']) {
         let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
         for (let i = 0; i < TAGS.length; i++) if (TAGS[i] === name) { const x = i % W, y = (i / W) | 0; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
         out.bbox[name] = x1 < 0 ? null : [x0, y0, x1, y1];
@@ -210,7 +299,20 @@ async function probeSets(page, sheet, load) {
   return R;
 }
 
-function checks(sheet, probes) {
+// the calle set: the pixel the rooster's point is in, and the ones above and below it (part tags)
+async function probeCalle(page, calle, load) {
+  const out = {};
+  for (const hora of ['manana', 'tarde']) for (const puerta of ['shut', 'open']) {
+    await load('donde=calle&tags=1&hora=' + hora + '&puerta=' + puerta);
+    out[hora + '-' + puerta] = await page.evaluate(w => {
+      const q = project(w[0], w[1], w[2]), at = (x, y) => TAGS[Math.floor(y) * W + Math.floor(x)];
+      return { gallo: [at(q.sx, q.sy), at(q.sx, q.sy + 1), at(q.sx, q.sy - 1)] };
+    }, calle.spots.gallo.world);
+  }
+  return out;
+}
+
+function checks(sheet, probes, calle, callePix, G) {
   const S = sheet.spots, T = sheet.things, V = sheet.views.dentro, OUTS = [];
   const add = (name, bad, okLine, failLines) => OUTS.push({ name, ok: !bad.length, lines: bad.length ? [name + ': ' + failLines[0], ...failLines.slice(1)] : [name + ': ' + okLine] });
   const at = Object.entries(S).filter(([, s]) => s.screen);                         // the spots that have a point (pepe.fuera is not drawn)
@@ -223,24 +325,25 @@ function checks(sheet, probes) {
     add('spots-in-view', bad.concat(out), at.length + ' spot points (every spot but pepe.fuera) inside the ' + sheet.picture.join(' x ') + ' picture and the dentro window [' + x0 + ', ' + (x0 + 196) + ') x [0, 216)', ['spots outside:'].concat(bad, out).map((l, i) => i ? '  ' + l : l));
   }
 
-  // 2. no two spots of people who can be on screen together closer than 10 px
+  // 2. no two people who are on screen together in a story closer than MIN_APART px: don Pepe at pepe.mostrador (or sitting at pepe.silla, story 38), the frog at coqui.mostrador
+  //    (or at coqui.frente), a customer at cliente, cola1, cola2, abuela at abuela.frente or abuela.silla, a child at nino.frente or nino.puerta_dentro, the three ninos_puerta.
+  //    One body has one place at a time: the alternatives are not compared. pepe.atras and pepe.estante.* are passing places and are not compared
   {
-    const people = at.filter(([, s]) => s.kind === 'person');
-    // one character has one body: all pepe.*, all coqui.*, all abuela.* spots are alternatives. nino.frente (Luis or Carmen at the counter) and nino.puerta_dentro (Carmen at the door)
-    // can be two children; cliente, cola1, cola2, puerta, fuera and each of the three ninos_fuera are different people. fuera and ninos_fuera.* are the same place on the pavement: alternatives
-    const who = n => /^(pepe|coqui|abuela)\./.test(n) ? n.split('.')[0] : n;
-    const alt = (a, b) => (a === 'fuera' && b.startsWith('ninos_fuera.')) || (b === 'fuera' && a.startsWith('ninos_fuera.'));
-    const near = [];
-    for (let i = 0; i < people.length; i++) for (let j = i + 1; j < people.length; j++) {
-      const [a, sa] = people[i], [b, sb] = people[j];
-      if (who(a) === who(b) || alt(a, b)) continue;
-      const d = Math.hypot(sa.screen[0] - sb.screen[0], sa.screen[1] - sb.screen[1]);
-      if (d < MIN_APART) near.push([a, b, d]);
+    const TOGETHER = ['pepe.mostrador', 'pepe.silla', 'coqui.mostrador', 'coqui.frente', 'cliente', 'cola1', 'cola2', 'abuela.frente', 'abuela.silla', 'nino.frente', 'nino.puerta_dentro', 'ninos_puerta.1', 'ninos_puerta.2', 'ninos_puerta.3'];
+    const ALT = [['pepe.mostrador', 'pepe.silla'], ['coqui.mostrador', 'coqui.frente'], ['abuela.frente', 'abuela.silla'], ['nino.frente', 'nino.puerta_dentro']];
+    const alt = (a, b) => ALT.some(p => (p[0] === a && p[1] === b) || (p[0] === b && p[1] === a));
+    const near = [], all = [];
+    for (let i = 0; i < TOGETHER.length; i++) for (let j = i + 1; j < TOGETHER.length; j++) {
+      const a = TOGETHER[i], b = TOGETHER[j]; if (alt(a, b)) continue;
+      const d = Math.hypot(S[a].screen[0] - S[b].screen[0], S[a].screen[1] - S[b].screen[1]);
+      all.push([a, b, d]); if (d < MIN_APART) near.push([a, b, d]);
     }
-    near.sort((p, q) => p[2] - q[2] || (p[0] + p[1]).localeCompare(q[0] + q[1]));
-    const pairs = people.length * (people.length - 1) / 2;
-    add('people-apart', near, 'no two of the people spots that can be on screen together are closer than ' + MIN_APART + ' px (same character\'s spots and fuera / ninos_fuera are alternatives, not compared)',
-      [(near.length) + ' pair(s) closer than ' + MIN_APART + ' px (screen points; pepe.*, coqui.*, abuela.* are each one character; fuera and ninos_fuera.* are alternatives):'].concat(near.map(p => '  ' + p[0] + ' ' + S[p[0]].screen + ' ~ ' + p[1] + ' ' + S[p[1]].screen + ': ' + r2(p[2]) + ' px')));
+    near.sort((p, q) => p[2] - q[2] || (p[0] + p[1]).localeCompare(q[0] + q[1])); all.sort((p, q) => p[2] - q[2]);
+    add('people-apart', near, all.length + ' pairs of the ' + TOGETHER.length + ' people spots that are on screen together are at least ' + MIN_APART + ' px apart (closest: ' + all.slice(0, 3).map(p => p[0] + ' ~ ' + p[1] + ' ' + r2(p[2]) + ' px').join(', ') + '; alternatives of one body, pepe.atras and pepe.estante.* are not compared)',
+      [(near.length) + ' pair(s) closer than ' + MIN_APART + ' px (screen points):'].concat(near.map(p => '  ' + p[0] + ' ' + S[p[0]].screen + ' ~ ' + p[1] + ' ' + S[p[1]].screen + ': ' + r2(p[2]) + ' px')));
+    OUTS[OUTS.length - 1].lines.push('       closest pairs: ' + all.slice(0, 5).map(p => p[0] + ' ' + S[p[0]].screen + ' ~ ' + p[1] + ' ' + S[p[1]].screen + ' ' + r2(p[2]) + ' px').join('; '));
+    const rest = all.filter(p => p[2] >= MIN_APART);
+    if (near.length) OUTS[OUTS.length - 1].lines.push('       without ' + near.map(p => p[0] + ' ~ ' + p[1]).join(', ') + ' the closest pair is ' + (rest[0] ? rest[0][0] + ' ~ ' + rest[0][1] + ' ' + r2(rest[0][2]) + ' px' : 'none'));
   }
 
   // 3. every thing's screen box is inside the view
@@ -250,7 +353,7 @@ function checks(sheet, probes) {
     add('things-in-view', bad, n + ' things with a box (' + Object.entries(T).filter(([, t]) => t.box).map(([k, t]) => k + ' ' + t.box).join(', ') + ') inside the dentro window', ['things outside:'].concat(bad).map((l, i) => i ? '  ' + l : l));
   }
 
-  // 4. don Pepe seen from the thighs up: at least 28 rows of a 49-row person above the counter's top back edge at his column
+  // 4. don Pepe seen from the thighs up: at least 28 rows of a 53-row person above the counter's top back edge
   {
     const rows = PERSON.rows, min = PERSON.minAbove;
     const ps = Object.keys(S).filter(k => k === 'pepe.mostrador' || k.startsWith('pepe.estante.'));
@@ -270,7 +373,7 @@ function checks(sheet, probes) {
     }
     const minAbove = Math.min(...info.map(i => i.above)), minDepth = Math.min(...info.map(i => i.byDepth));
     const line = (i) => i.k + ' ' + i.above + ' (' + i.hidden + ' rows hidden under the edge at row ' + i.edgeRow + '; the set draws it at row ' + i.drawnEdgeRow + '; depth rule: ' + i.byDepth + ' rows clear from the top, ' + i.hiddenByDepth + ' hidden)';
-    add('pepe-thighs-up', bad, ps.length + ' places: of a ' + rows + '-row person at least ' + minAbove + ' rows above the counter\'s top back edge (minimum, needs ' + min + '), and ' + minDepth + ' rows clear from the top by the depth rule; for the standing mkPersona, which draws 53 rows (info, not a check): ' + r2(minAbove + 53 - rows) + ' rows',
+    add('pepe-thighs-up', bad, ps.length + ' places: of the ' + rows + '-row standing figure at least ' + minAbove + ' rows above the counter\'s top back edge (minimum, needs ' + min + '), and ' + minDepth + ' rows clear from the top by the depth rule',
       [bad.length + ' place(s) with fewer than ' + min + ' rows above the edge:'].concat(bad.map(b => '  ' + b)));
     OUTS[OUTS.length - 1].lines.push(...info.map(i => '       ' + line(i)));
     OUTS[OUTS.length - 1].pepe = info;
@@ -283,7 +386,7 @@ function checks(sheet, probes) {
     add('goods-not-hidden', bad, goods.length + ' shelf places x ' + probes.length + ' states of the set (hora x atras x nevera): the pixel at each point, exact and rounded, is drawn by part \'generos\' (props=1 tags=1)', ['places hidden:'].concat(bad).map((l, i) => i ? '  ' + l : l));
   }
 
-  // 6. (extra) the touch boxes of what the set draws cover its pixels
+  // 6. the touch boxes of what the set draws cover its pixels (nevera box = CD.NEVERA)
   {
     const bad = [], seen = [];
     for (const [name, tol] of [['nevera', 1], ['silla', 1]]) {
@@ -296,15 +399,68 @@ function checks(sheet, probes) {
     add('boxes-cover-set', bad, seen.join('; ') + ' (1 px tolerance)', ['a touch box does not cover what the set draws:'].concat(bad).map((l, i) => i ? '  ' + l : l));
   }
 
-  // 7. (extra) the counter-top spots are on the counter top
+  // 7. the counter-top spots are on the counter top
   {
     const m = T.mostrador.world, bad = Object.entries(S).filter(([, s]) => s.kind === 'counter' || (s.world && s.world[2] === m[5])).filter(([, s]) => s.world[0] < m[0] || s.world[0] > m[3] || s.world[1] < m[1] || s.world[1] > m[4]).map(([k, s]) => k + ' ' + s.world);
     const n = Object.entries(S).filter(([, s]) => s.kind === 'counter' || (s.world && s.world[2] === m[5])).length;
-    add('counter-spots-on-top', bad, n + ' spots at z = CH (the counter things and the frog\'s two) are inside the counter top x ' + m[0] + '..' + m[3] + ', y ' + m[1] + '..' + m[4], ['spots off the counter top:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    add('counter-spots-on-top', bad, n + ' spots at z = CH (the counter things and the frog\'s one) are inside the counter top x ' + m[0] + '..' + m[3] + ', y ' + m[1] + '..' + m[4], ['spots off the counter top:'].concat(bad).map((l, i) => i ? '  ' + l : l));
     // info: which counter-top spots lie under the freezer's footprint (they cannot be in a nevera = 1 picture)
     const n0 = T.nevera.world, under = Object.entries(S).filter(([, s]) => s.world && s.world[2] === m[5]).filter(([, s]) => s.world[0] >= n0[0] && s.world[0] <= n0[3] && s.world[1] >= n0[1] && s.world[1] <= n0[4]).map(([k]) => k);
-    OUTS[OUTS.length - 1].lines.push('       info, not a check: under the freezer\'s footprint (x ' + r2(n0[0]) + '..' + r2(n0[3]) + ', y ' + r2(n0[1]) + '..' + r2(n0[4]) + '), so not usable while nevera = 1: ' + (under.join(', ') || 'none'));
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: under the freezer\'s footprint (CD.NEVERA x ' + r2(n0[0]) + '..' + r2(n0[3]) + ', y ' + r2(n0[1]) + '..' + r2(n0[4]) + '), so not usable while nevera = 1 (these are spots of stories without the freezer, left where the design has them): ' + (under.join(', ') || 'none'));
     OUTS[OUTS.length - 1].under = under;
+  }
+
+  // 8. the spots keep CLEAR px from the register, the freezer (story 38) and the chair: measured again on the final points
+  {
+    const CD = G.CD, bad = [], rows = [];
+    for (const [k, s] of at) {
+      if (s.kind === 'shelf') continue;
+      const o = obstaclesOf(k, s.world, CD); if (!o.length) continue;
+      const f = feet(s.screen), d = Math.min(...o.map(n => nearest(f, G.px[n])));
+      rows.push([k, o.join('+'), d]);
+      if (d < CLEAR) bad.push(k + ' ' + s.screen + ' is ' + r2(d) + ' px from the ' + o.join(' + ') + ' pixels (needs ' + CLEAR + ')');
+    }
+    rows.sort((a, b) => a[2] - b[2]);
+    const mv = sheet.moved.map(m => m.spot + ' x ' + m.from[0] + ' -> ' + m.to[0] + ' (' + (m.dx > 0 ? '+' : '') + m.dx + ', ' + m.against + ': ' + m.clearBefore + ' -> ' + m.clearAfter + ' px; the nearest clear place on the other side: ' + (m.otherSide ? 'x ' + m.otherSide.to + ', ' + (m.otherSide.dx > 0 ? '+' : '') + m.otherSide.dx : 'none on the counter') + ')');
+    add('spots-clear', bad, rows.length + ' spots (counter-top ones from the register; ' + NEVERA_STORY.join(', ') + ' also from the freezer; floor spots in front of the counter from the chair) keep at least ' + CLEAR + ' px from those pixels; nearest: ' + rows.slice(0, 3).map(r => r[0] + ' ' + r2(r[2]) + ' px (' + r[1] + ')').join(', '), ['spots too near:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    OUTS[OUTS.length - 1].lines.push('       moved from the design to clear it: ' + (mv.join('; ') || 'none'));
+    const nearFreezer = at.filter(([k, s]) => s.world && s.world[2] === CD.CH && s.kind !== 'shelf' && !NEVERA_STORY.includes(k) && nearest(feet(s.screen), G.px.nevera) < CLEAR).map(([k, s]) => k + ' ' + r2(nearest(feet(s.screen), G.px.nevera)) + ' px');
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: counter-top spots of the stories WITHOUT the freezer (nevera = 0) that lie under or within ' + CLEAR + ' px of its pixels, left where the design has them: ' + (nearFreezer.join(', ') || 'none'));
+    OUTS[OUTS.length - 1].leftNearFreezer = nearFreezer;
+  }
+  return OUTS.concat(checksCalle(calle, callePix));
+}
+
+function checksCalle(calle, callePix) {
+  const OUTS = [], S = calle.spots, T = calle.things, V = calle.views.calle, [x0] = V.region;
+  const add = (name, bad, okLine, failLines) => OUTS.push({ name, ok: !bad.length, lines: bad.length ? [name + ': ' + failLines[0], ...failLines.slice(1)] : [name + ': ' + okLine] });
+  // c1. every calle spot and the colmado box inside the calle picture and the calle window
+  {
+    const bad = [];
+    for (const [k, s] of Object.entries(S)) {
+      if (s.screen[0] < 0 || s.screen[0] >= calle.picture[0] || s.screen[1] < 0 || s.screen[1] >= calle.picture[1]) bad.push(k + ' ' + s.screen + ' outside the picture');
+      else if (s.screen[0] < x0 || s.screen[0] >= x0 + 196) bad.push(k + ' ' + s.screen + ' outside the calle window [' + x0 + ', ' + (x0 + 196) + ')');
+    }
+    for (const [k, t] of Object.entries(T)) if (t.box[0] < x0 || t.box[0] + t.box[2] > x0 + 196 || t.box[1] < 0 || t.box[1] + t.box[3] > 216) bad.push(k + ' box ' + t.box + ' outside the calle window [' + x0 + ', ' + (x0 + 196) + ') x [0, 216)');
+    add('calle-in-view', bad, Object.keys(S).length + ' spots (' + Object.entries(S).map(([k, s]) => k + ' ' + s.screen).join(', ') + ') and the colmado box [' + T.colmado.box + '] inside the calle picture and the calle window [' + x0 + ', ' + (x0 + 196) + ') x [0, 216)', ['calle things outside:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+  }
+  // c2. abuela and the frog on the pavement, at least MIN_APART px apart
+  {
+    const a = S['abuela.acera'].screen, b = S['coqui.acera'].screen, d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+    add('calle-people-apart', d < MIN_APART ? ['x'] : [], 'abuela.acera ' + a + ' ~ coqui.acera ' + b + ': ' + r2(d) + ' px (needs ' + MIN_APART + ')', ['abuela.acera ' + a + ' ~ coqui.acera ' + b + ': ' + r2(d) + ' px < ' + MIN_APART]);
+  }
+  // c3. the pavement spots are on the pavement, puerta_calle is in the door (and inside the colmado box), the rooster stands on the awning's front edge, in every calle state
+  {
+    const K = calle.constants, bad = [], P = (n) => S[n].world;
+    for (const n of ['abuela.acera', 'coqui.acera']) if (!(P(n)[1] > K['CF.AY'] && P(n)[1] <= K['CF.PAVE'])) bad.push(n + ' y ' + P(n)[1] + ' is not on the pavement (CF.AY .. CF.PAVE = ' + K['CF.AY'] + ' .. ' + K['CF.PAVE'] + ')');
+    if (!(P('puerta_calle')[0] >= K['CF.D0'] && P('puerta_calle')[0] <= K['CF.D1'])) bad.push('puerta_calle x ' + P('puerta_calle')[0] + ' is not in the door ' + K['CF.D0'] + ' .. ' + K['CF.D1']);
+    const b = T.colmado.box, p = S.puerta_calle.screen;
+    if (p[0] < b[0] || p[0] > b[0] + b[2] || p[1] < b[1] || p[1] > b[1] + b[3]) bad.push('puerta_calle ' + p + ' is outside the colmado box [' + b + ']');
+    const g = P('gallo');
+    if (Math.abs(g[0] - (K['CF.AX0'] + K['CF.AX1']) / 2) > 1e-6 || g[1] !== K['CF.AY'] || g[2] !== K['CF.AZ0']) bad.push('gallo ' + g + ' is not at the middle of the awning\'s front edge');
+    const tags = Object.entries(callePix).map(([st, r]) => [st, r && r.gallo]);
+    for (const [st, t] of tags) if (!t || t[0] !== 'toldo') bad.push('gallo in ' + st + ': the pixel at its point is ' + (t && t[0]) + ', not the awning (toldo)');
+    add('calle-places', bad, 'abuela.acera and coqui.acera on the pavement (y ' + P('abuela.acera')[1] + ', ' + P('coqui.acera')[1] + ' <= CF.PAVE ' + K['CF.PAVE'] + '); puerta_calle x ' + P('puerta_calle')[0] + ' in the door (CF.D0 .. CF.D1 = ' + K['CF.D0'] + ' .. ' + K['CF.D1'] + ') and inside the colmado box; gallo at x ' + r2(g[0]) + ', y ' + g[1] + ', z ' + g[2] + ' (the awning\'s front edge, its middle) and the pixel there is the awning in all ' + tags.length + ' calle states', ['calle places wrong:'].concat(bad).map((l, i) => i ? '  ' + l : l));
   }
   return OUTS;
 }
