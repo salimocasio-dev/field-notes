@@ -1,0 +1,10 @@
+{"id": "cafe-con-azucar", "title": "Café con azúcar", "lee": false, "pages": [
+ {"img": "img/cafe-con-azucar-1.png", "clips": ["c35_hace", "c35_aqui_cafe", "c35_aqui_azucar"]},
+ {"img": "img/cafe-con-azucar-2.png", "clips": ["c35_huele", "papa_hola_como", "c35_abuelo_azucar"]},
+ {"img": "img/cafe-con-azucar-3.png", "clips": ["c35_papa_cafe", "c35_coqui_pone", "c35_abuelo_cafe"]},
+ {"img": "img/cafe-con-azucar-4.png", "clips": ["c35_papa_azucar", "c35_luis_mucho", "c35_carmen_poco"]},
+ {"img": "img/cafe-con-azucar-5.png", "clips": ["c35_luis_toma", "c35_carmen_toma", "c35_carmen_mucho"]},
+ {"img": "img/cafe-con-azucar-6.png", "clips": ["c35_luis_poco", "c35_ab_quieres", "c35_cq_poco"]},
+ {"img": "img/cafe-con-azucar-7.png", "clips": ["c35_cq_mucho", "c35_cq_rico", "c35_ab_cafe_mi"]},
+ {"img": "img/cafe-con-azucar-8.png", "clips": ["c35_ab_toma", "c35_cq_huele"]}
+]}

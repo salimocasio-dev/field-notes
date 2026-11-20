@@ -1,0 +1,8 @@
+{"id": "buen-provecho", "title": "Buen provecho", "lee": false, "pages": [
+ {"img": "img/buen-provecho-1.png", "clips": ["c34_papa_no_esta", "c34_plato_papa", "c34_abuelo_rico"]},
+ {"img": "img/buen-provecho-2.png", "clips": ["c34_luis_rico", "c34_luis_todo", "c34_luis_quiero"]},
+ {"img": "img/buen-provecho-3.png", "clips": ["c34_cq_todo", "c34_mama_tambien", "c34_abuelo_lleno"]},
+ {"img": "img/buen-provecho-4.png", "clips": ["c34_carmen_levanto", "c34_mama_todo", "c34_abuelo_tambien"]},
+ {"img": "img/buen-provecho-5.png", "clips": ["c34_carmen_lleno", "c34_mama_levanto", "c34_abuelo_todo"]},
+ {"img": "img/buen-provecho-6.png", "clips": ["c34_cq_bp_papa", "c34_papa_rico", "c34_papa_todo"]}
+]}

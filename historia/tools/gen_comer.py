@@ -188,7 +188,7 @@ def paso35(p,q,pq,qq,sign):   # step 2/3: abuelo and papá ask; the sign is on t
       ask(sign,None,after=[act("azucar35",a=sign,suelto=1),"c35_coqui_pone",act("ya"),act("cafe35",a="papa" if sign=="abuelo" else "abuelo")],then=[act("bajan35",a="abuelo,papa"),act("vuelve35")])]
 s35={"id":"cafe-con-azucar","title":"Café con azúcar","place":"La cocina","scene":"comer","next":None,
  "goal":"Give everybody the cup he asks for.","stake":{"thing":"café","steps":2},"dots":9,"bien":"si_muy_bien",
- "focus_words":["café","azúcar","un poco","mucho"],"back_again":["leche","taza","toma","más","por favor","huele a","le pone","no hay","rico","sí","quieres"],
+ "focus_words":["café","azúcar","un poco","mucho"],"back_again":["leche","taza","toma","más","por favor","huele","pone","no hay","rico","sí","quieres"],
  "also_heard":[],"names":BASE,"palabras":{"azucar":"azúcar","poco":"un poco","mucho":"mucho"},"clips":c,
  "beats":[act("inicio35"),{"wait":500},"c35_hace",tw("cafetera"),"c35_aqui_cafe",tw("azucarera"),"c35_aqui_azucar",tw(None),"c35_huele","papa_hola_como","bien_gracias",
   # 2 and 3: touch a person (sugar), taught twice, the lines the other way round

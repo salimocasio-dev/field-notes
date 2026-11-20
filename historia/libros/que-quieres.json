@@ -1,0 +1,10 @@
+{"id": "que-quieres", "title": "¿Qué quieres?", "lee": false, "pages": [
+ {"img": "img/que-quieres-1.png", "clips": ["c31_aqui_pan", "c33_caliente", "c33_aqui_mant"]},
+ {"img": "img/que-quieres-2.png", "clips": ["c33_aqui_choc", "abuela_dice", "c33_ab_mg_pan"]},
+ {"img": "img/que-quieres-3.png", "clips": ["c33_q_abuelo", "c33_abuelo_mg_choc", "c33_abuelo_nmg_mant"]},
+ {"img": "img/que-quieres-4.png", "clips": ["c33_abuelo_come_choc", "c33_q_mama", "c33_mama_nmg_choc"]},
+ {"img": "img/que-quieres-5.png", "clips": ["c33_mama_mg_mant", "c33_mama_come_mant", "c33_abuelo_nt_choc"]},
+ {"img": "img/que-quieres-6.png", "clips": ["c33_q_luis", "c33_luis_nmg_mant", "c33_luis_come_choc"]},
+ {"img": "img/que-quieres-7.png", "clips": ["c33_mama_nt_mant", "c33_ab_mas_pan", "c33_plato_no_tiene"]},
+ {"img": "img/que-quieres-8.png", "clips": ["c33_familia_come", "c33_cq_pan_abuela"]}
+]}
