@@ -1500,7 +1500,10 @@ STAGED_CLIPS = {      # recorded: the audio job has made them, the course does n
 
 def add_staged(root):
     """Three STAGED files on the made-up repo, and a recording for the clips of the first: a story with also_heard words, clips that are the
-    whole text of tracked words and a clip id of uno; a file that is not JSON at all; a story whose id is not its file name."""
+    whole text of tracked words and a clip id of uno; a file that is not JSON at all; a story whose id is not its file name. And the BOOKS of
+    the staged stories, which may be in historia/libros/ before the course names the story: the book of tres (a page with a picture that is
+    not there), a book that is not JSON at all (cuatro), and a book of the id `uno`, the id of a story of the course, under the file name of
+    the staged story cinco."""
     root = Path(root)
     cuentos = root / "historia" / "cuentos"
     (cuentos / "tres.json").write_text(json.dumps({
@@ -1509,6 +1512,10 @@ def add_staged(root):
         "clips": {k: {"who": "narr", "text": t} for k, t in STAGED_CLIPS.items()}, "beats": list(STAGED_CLIPS)}, ensure_ascii=False), encoding="utf-8")
     (cuentos / "cuatro.json").write_text("{ this is not JSON", encoding="utf-8")
     (cuentos / "cinco.json").write_text(json.dumps({"id": "seis", "clips": {"c_x": {"who": "narr", "text": "Algo."}}}), encoding="utf-8")
+    libros = root / "historia" / "libros"
+    (libros / "tres.json").write_text(json.dumps({"id": "tres", "pages": [{"img": "img/tres-1.png", "clips": ["t_flor", "t_gato"]}]}), encoding="utf-8")
+    (libros / "cuatro.json").write_text("{ this is not JSON", encoding="utf-8")
+    (libros / "cinco.json").write_text(json.dumps({"id": "uno", "pages": [{"img": "img/cinco-1.png", "clips": ["c_x"]}]}), encoding="utf-8")
     ready = json.loads((root / "historia" / "audio" / "ready.json").read_text(encoding="utf-8"))
     ready["clips"] = sorted(set(ready["clips"]) | {"t_flor", "t_gato", "t_larga"})
     (root / "historia" / "audio" / "ready.json").write_text(json.dumps(ready), encoding="utf-8")
@@ -1573,6 +1580,15 @@ class StagedFiles(VerdictsBase):
         self.assertEqual(staged.pairs, plain.pairs)
         self.assertNotIn("tres", staged.story)
         self.assertNotIn("seis", staged.story)                                           # not by the `id` it says either
+
+    def test_a_staged_book_is_not_read(self):
+        """The book of a story the course does not name is not read (the one that is not JSON would stop the tool), and is not the book of the
+        story its `id` says either (cinco.json says `uno`: the book of uno is uno.json)."""
+        plain, staged = mr.load(self.tmp.name), mr.load(self.staged)
+        self.assertEqual(sorted(staged.book), ["dos", "uno"])                            # the books of the stories the course names
+        self.assertEqual(staged.book, plain.book)
+        self.assertEqual(staged.book["uno"]["pages"][0]["img"], "img/uno-1.png")         # uno.json, not cinco.json
+        self.assertEqual(staged.eligible, plain.eligible)
 
     def test_the_words_alone_do_not_come_from_a_staged_file(self):
         D = mr.load(self.staged)
