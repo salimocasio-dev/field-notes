@@ -96,7 +96,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 ---
 
-## Story 59: La foto
+## Story 59: Delante y detrás
 
 - **Goal he can see:** papá's camera, the kind whose picture slides out of the front. Three white sheets show at its side (and on the card).
 - **At stake:** the good photos (3 sheets). The frog in the wrong place when the flash goes: the picture comes out spoiled (his back over a face, or only his eyes at the edge).
