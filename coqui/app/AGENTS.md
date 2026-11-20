@@ -110,10 +110,11 @@ from disk and the real `ScenePictures`; fakes only for sound, speech, the call, 
 (`test/support/harness.dart`).
 
 Gate A's pictures (a tool, not a test; it is not run by `flutter test`): `tool/gate_a_frames_test.dart` plays stories 1 to 3
-(El frente), each right and wrong, by touches in the real app on a 390 x 844 screen at ratio 2, and saves what is seen:
+(El frente), each right and wrong, by touches in the real app on a 390 x 844 screen at ratio 2, and saves what is seen.
+`STORIES` plays other stories instead (order 30b: `--dart-define=STORIES=el-jugo,que-calor`, El balcón's), each right and wrong:
 
 ```
-flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>   # [--dart-define=ONLY=la-lluvia-right,...] [--dart-define=TXT=con|tras|no]
+flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>   # [--dart-define=ONLY=la-lluvia-right,...] [--dart-define=TXT=con|tras|no] [--dart-define=STORIES=el-jugo,que-calor]
 flutter test tool/gate_a_sheets_test.dart --dart-define=OUT=<dir>   # the contact sheets again, from the pictures on disk
 ```
 

@@ -35,6 +35,10 @@ class _Silent implements ClipPlayer {
 }
 
 /// The frog at the spot a sheet's `code` entry for another file's line names (`juego.js:16`, `cual.js:21`).
+///
+/// A sheet may say the line's place is not used (its `to` is words, not a spot: El balcón's, whose `fresh()` puts the frog
+/// at its own spot, and whose pairs place him themselves when they show him). The line then keeps its old numbers,
+/// which the entry's `old` gives (`cq x 150 y 178 s 1`): whatever reads them next replaces them.
 ({int x, int y, num scale}) frogOfCode(Sheet sheet, PpEngine e, String line) {
   final c = sheet.code.firstWhere(
     (c) => c.line == line,
@@ -43,6 +47,17 @@ class _Silent implements ClipPlayer {
     ),
   );
   final to = c.to;
+  if (to is String) {
+    final m = RegExp(r'cq x (-?[\d.]+) y (-?[\d.]+) s (-?[\d.]+)')
+        .firstMatch(c.old);
+    if (m != null) {
+      return (
+        x: int.parse(m[1]!),
+        y: int.parse(m[2]!),
+        scale: num.parse(m[3]!.startsWith('.') ? '0${m[3]}' : m[3]!),
+      );
+    }
+  }
   if (to is! Map || to['spot'] is! String) {
     throw SheetError('the code entry for $line is not a spot');
   }

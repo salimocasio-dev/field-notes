@@ -97,6 +97,23 @@ class _Scene extends SignScene {
   }
 }
 
+/// A scene that draws part of the set again over its sprites (a sheet's `front.parts`): it is given the set as framed.
+class _OverScene extends _Scene implements SetOverSprites {
+  _OverScene(super.log, super.display);
+
+  Uint32List? framed;
+  BakedSet? bakedGiven;
+  Map<String, dynamic>? wGiven;
+
+  @override
+  void setFramed(PpEngine engine, BakedSet baked, Map<String, dynamic> W) {
+    log.steps.add('setFramed');
+    framed = Uint32List.fromList(engine.pix);
+    bakedGiven = baked;
+    wGiven = W;
+  }
+}
+
 /// A baked picture that says where each pixel is: opaque, `y * 240 + x` in the colour bits.
 Uint32List _baked() => Uint32List.fromList([
   for (var i = 0; i < 240 * 216; i++) 0xFF000000 | (i & 0xFFFFFF),
@@ -117,10 +134,13 @@ _run({
   List<ShadowCast> shadows = const [],
   List<num>? handPoint,
   Float32List? bakedZ,
+  bool over = false,
+  BakedSet? bakedSet,
+  Map<String, dynamic>? W,
 }) {
   final log = _Log(), baked = _baked(), display = Uint32List(196 * 216);
   final engine = _RecEngine(log, baked, still: still);
-  final scene = _Scene(log, display);
+  final scene = over ? _OverScene(log, display) : _Scene(log, display);
   final c = _RecCtx('c', log, engine.pix, 240, 216);
   final dc = _RecCtx('dc', log, display, 196, 216);
   scene
@@ -128,9 +148,9 @@ _run({
     ..hudCtx = dc;
   drawFrame(
     engine: engine,
-    baked: flatBaked(baked, zb: bakedZ),
+    baked: bakedSet ?? flatBaked(baked, zb: bakedZ),
     scene: scene,
-    W: {},
+    W: W ?? {},
     F: F,
     tick: tick,
     cam: cam,
@@ -186,6 +206,37 @@ void main() {
       );
       // the scene's drawing went to the picture, hud's and the hand's to the display
       expect(r.log.steps.where((s) => s.startsWith('c.fillRect')).length, 2);
+    });
+
+    test('a scene that draws the set again over its sprites is given the set as framed, just before its draw', () {
+      final bakedSet = flatBaked(_baked());
+      final W = <String, dynamic>{'door': 1};
+      final r = _run(
+        cam: viewAt(120, 108, 1),
+        shadows: [(x: 1.0, y: 2.0, z: .3, r: .45)],
+        over: true,
+        bakedSet: bakedSet,
+        W: W,
+      );
+      final steps = r.log.steps;
+      expect(
+        steps.indexOf('setFramed'),
+        steps.indexOf('applyShadows groundZ=true') + 1,
+      );
+      expect(
+        steps.indexOf('scene.draw a=12 on c'),
+        steps.indexOf('setFramed') + 1,
+      );
+      final s = r.scene as _OverScene;
+      // the set as the frame shows it before the sprites: the baked picture (the recording engine's shadows draw nothing)
+      expect(s.framed, r.baked);
+      expect(identical(s.bakedGiven, bakedSet), isTrue);
+      expect(identical(s.wGiven, W), isTrue);
+      // a scene that is not one is never asked
+      expect(
+        _run(cam: viewAt(120, 108, 1)).log.steps,
+        isNot(contains('setFramed')),
+      );
     });
 
     test(

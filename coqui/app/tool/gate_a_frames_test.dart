@@ -3,6 +3,7 @@
 //
 //   cd coqui/app && flutter test tool/gate_a_frames_test.dart --dart-define=OUT=<dir>
 //   (--dart-define=ONLY=la-lluvia-right,el-bizcocho-wrong plays just those)
+//   (--dart-define=STORIES=el-jugo,que-calor plays these stories instead of stories 1 to 3, each with both plans)
 //   (--dart-define=TXT=con|tras|no starts the app as the address `?txt=con|tras|no` does: when the story's words show; con is
 //   the default)
 //
@@ -45,12 +46,11 @@ const String _only = String.fromEnvironment('ONLY');
 /// `?txt=` of the address: when the story's words show (`con` while the line is spoken, `tras` right after, `no` never).
 const String _txt = String.fromEnvironment('TXT', defaultValue: 'con');
 
-/// The three stories, all at El frente.
-const List<String> _stories = [
-  'la-lluvia',
-  'el-bizcocho',
-  'donde-esta-el-pajaro',
-];
+/// The stories given by `STORIES` (ids, comma-separated), or, without it, the three stories of Gate A, all at El frente.
+const String _storiesArg = String.fromEnvironment('STORIES');
+final List<String> _stories = _storiesArg.isEmpty
+    ? const ['la-lluvia', 'el-bizcocho', 'donde-esta-el-pajaro']
+    : _storiesArg.split(',');
 const List<String> _plans = ['right', 'wrong'];
 
 const Size _screen = Size(390, 844);

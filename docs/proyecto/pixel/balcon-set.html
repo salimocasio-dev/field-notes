@@ -51,7 +51,7 @@ const T30R2 = Math.tan(Math.PI / 6) * Math.SQRT2;                     // a roof 
 const WALL_TOP = WIN_TOP + 1.05;                                      // the wall shows up to here: a strip of wall over the window (round 3's, unchanged)
 const HF = Math.ceil((WALL_TOP + T30R2 * RY1 + .12) * 20) / 20;       // the eaves (their fascia .12 deep): as low as lets that wall show (and so a strip of wall over the door too)
 const STEP0 = 1.64, STEP1 = 3.04;                                     // the steps (x), at the porch's front: the path leaves the lower step's front at its middle
-const SILLA = [-3.85, .98], SILLA_HW = .74, SILLA_HD = .5;             // abuela's big chair, turned to the camera
+const SILLA = [-3.5, .98], SILLA_HW = .74, SILLA_HD = .5;              // abuela's big chair, turned to the camera (order 30b: .35 along the wall from round 4's -3.85: its hint frame whole in the wide view, her bubble too)
 const SILLITA = [1.63, .62], SILLITA_HW = .44, SILLITA_HD = .3;        // the small yellow chair, turned to the camera, clear of the door frame
 const TURN = -Math.PI / 4;                                            // furniture turned to face the camera
 const PATH_U = (STEP0 + STEP1) / 2 - PD - .7, PATH_V = (STEP0 + STEP1) / 2 + PD + .7;   // where the path leaves the lower step's front, at its middle (u = x - y, v = x + y)
