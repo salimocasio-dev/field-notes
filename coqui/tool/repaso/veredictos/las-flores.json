@@ -1,0 +1,17 @@
+{
+ "libro": "las-flores",
+ "frases": {
+  "las-flores:1": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "las-flores:2": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "las-flores:3": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "las-flores:4": {"si": [], "no": [], "duda": [1, 2, 3, 4]},
+  "las-flores:5": {"si": [], "no": [], "duda": [1, 2, 3, 4]},
+  "las-flores:6": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "las-flores:7": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "las-flores:8": {"si": [], "no": [], "duda": [1, 2, 3, 4]},
+  "las-flores:9": {"si": [], "no": [], "duda": [1, 2, 3, 4]},
+  "las-flores:10": {"si": [], "no": [], "duda": [1, 2, 3, 4]},
+  "las-flores:11": {"si": [], "no": [], "duda": [1, 2, 3, 4]}
+ },
+ "parecidas": [[1, 2], [1, 3], [2, 3]]
+}

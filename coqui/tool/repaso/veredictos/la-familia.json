@@ -1,0 +1,21 @@
+{
+ "libro": "la-familia",
+ "frases": {
+  "la-familia:1": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "la-familia:2": {"si": [1, 2], "no": [4, 5], "duda": [3]},
+  "la-familia:3": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "la-familia:4": {"si": [1, 2, 3, 5], "no": [], "duda": [4]},
+  "la-familia:5": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "la-familia:6": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "la-familia:7": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "la-familia:8": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "la-familia:9": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "la-familia:10": {"si": [3], "no": [5], "duda": [1, 2, 4]},
+  "la-familia:11": {"si": [3, 4], "no": [], "duda": [1, 2, 5]},
+  "la-familia:12": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "la-familia:13": {"si": [4], "no": [1, 2], "duda": [3, 5]},
+  "la-familia:14": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "la-familia:15": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]}
+ },
+ "parecidas": [[1, 2], [1, 3], [2, 3]]
+}

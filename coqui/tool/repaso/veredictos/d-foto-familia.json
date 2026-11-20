@@ -1,0 +1,108 @@
+{
+ "libro": "d-foto-familia",
+ "frases": {
+  "d-foto-familia:1": {
+   "si": [
+    1,
+    2
+   ],
+   "no": [],
+   "duda": [
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:2": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:3": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:4": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:5": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:6": {
+   "si": [
+    3,
+    4
+   ],
+   "no": [
+    1,
+    2
+   ],
+   "duda": []
+  },
+  "d-foto-familia:7": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:8": {
+   "si": [],
+   "no": [
+    1,
+    2
+   ],
+   "duda": [
+    3,
+    4
+   ]
+  },
+  "d-foto-familia:9": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  }
+ },
+ "parecidas": [
+  [
+   1,
+   2
+  ],
+  [
+   3,
+   4
+  ]
+ ]
+}

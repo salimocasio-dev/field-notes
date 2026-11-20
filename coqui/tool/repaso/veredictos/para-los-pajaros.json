@@ -1,0 +1,31 @@
+{
+ "libro": "para-los-pajaros",
+ "frases": {
+  "para-los-pajaros:1": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:2": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:3": {"si": [1, 2, 3, 4], "no": [8, 9], "duda": [5, 6, 7]},
+  "para-los-pajaros:4": {"si": [1, 2, 3, 4, 5, 6, 7, 8, 9], "no": [], "duda": []},
+  "para-los-pajaros:5": {"si": [1, 2, 3, 4, 5, 6, 7], "no": [], "duda": [8, 9]},
+  "para-los-pajaros:6": {"si": [], "no": [8, 9], "duda": [1, 2, 3, 4, 5, 6, 7]},
+  "para-los-pajaros:7": {"si": [], "no": [8, 9], "duda": [1, 2, 3, 4, 5, 6, 7]},
+  "para-los-pajaros:8": {"si": [], "no": [8, 9], "duda": [1, 2, 3, 4, 5, 6, 7]},
+  "para-los-pajaros:9": {"si": [3], "no": [1, 2, 4, 5, 6, 7, 8, 9], "duda": []},
+  "para-los-pajaros:10": {"si": [5], "no": [1, 2, 3, 4, 6, 7, 8, 9], "duda": []},
+  "para-los-pajaros:11": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:12": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:13": {"si": [4, 5, 6, 7], "no": [1, 2, 3], "duda": [8, 9]},
+  "para-los-pajaros:14": {"si": [], "no": [1, 2, 3, 4, 5, 6, 7, 8, 9], "duda": []},
+  "para-los-pajaros:15": {"si": [5], "no": [], "duda": [1, 2, 3, 4, 6, 7, 8, 9]},
+  "para-los-pajaros:16": {"si": [5], "no": [1, 2, 3, 4, 6, 7, 8, 9], "duda": []},
+  "para-los-pajaros:17": {"si": [6, 7], "no": [], "duda": [1, 2, 3, 4, 5, 8, 9]},
+  "para-los-pajaros:18": {"si": [], "no": [1, 2, 3, 4, 5, 6, 7, 8, 9], "duda": []},
+  "para-los-pajaros:19": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:20": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:21": {"si": [], "no": [1, 2, 3, 4, 5, 7, 8, 9], "duda": [6]},
+  "para-los-pajaros:22": {"si": [7], "no": [1, 2, 3, 4, 5, 8, 9], "duda": [6]},
+  "para-los-pajaros:23": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]},
+  "para-los-pajaros:24": {"si": [1, 2], "no": [8, 9], "duda": [3, 4, 5, 6, 7]},
+  "para-los-pajaros:25": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6, 7, 8, 9]}
+ },
+ "parecidas": [[2, 3], [4, 5], [4, 7], [5, 7], [8, 9]]
+}

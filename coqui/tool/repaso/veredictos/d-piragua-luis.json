@@ -1,0 +1,128 @@
+{
+ "libro": "d-piragua-luis",
+ "frases": {
+  "d-piragua-luis:1": {
+   "si": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "no": [],
+   "duda": []
+  },
+  "d-piragua-luis:2": {
+   "si": [
+    3,
+    4
+   ],
+   "no": [
+    1,
+    2
+   ],
+   "duda": []
+  },
+  "d-piragua-luis:3": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-piragua-luis:4": {
+   "si": [
+    1
+   ],
+   "no": [
+    2,
+    3,
+    4
+   ],
+   "duda": []
+  },
+  "d-piragua-luis:5": {
+   "si": [
+    2
+   ],
+   "no": [],
+   "duda": [
+    1,
+    3,
+    4
+   ]
+  },
+  "d-piragua-luis:6": {
+   "si": [
+    2,
+    3,
+    4
+   ],
+   "no": [
+    1
+   ],
+   "duda": []
+  },
+  "d-piragua-luis:7": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  "d-piragua-luis:8": {
+   "si": [
+    1,
+    3,
+    4
+   ],
+   "no": [
+    2
+   ],
+   "duda": []
+  },
+  "d-piragua-luis:9": {
+   "si": [
+    3,
+    4
+   ],
+   "no": [
+    1,
+    2
+   ],
+   "duda": []
+  },
+  "d-piragua-luis:10": {
+   "si": [
+    3,
+    4
+   ],
+   "no": [
+    1,
+    2
+   ],
+   "duda": []
+  },
+  "d-piragua-luis:11": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4
+   ]
+  }
+ },
+ "parecidas": [
+  [
+   3,
+   4
+  ]
+ ]
+}

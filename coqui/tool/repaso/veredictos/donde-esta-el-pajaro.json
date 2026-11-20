@@ -1,0 +1,15 @@
+{
+ "libro": "donde-esta-el-pajaro",
+ "frases": {
+  "donde-esta-el-pajaro:1": {"si": [1, 2], "no": [], "duda": [3, 4]},
+  "donde-esta-el-pajaro:2": {"si": [3, 4], "no": [], "duda": [1, 2]},
+  "donde-esta-el-pajaro:3": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "donde-esta-el-pajaro:4": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "donde-esta-el-pajaro:5": {"si": [1, 2, 3, 4], "no": [], "duda": []},
+  "donde-esta-el-pajaro:6": {"si": [], "no": [3, 4], "duda": [1, 2]},
+  "donde-esta-el-pajaro:7": {"si": [], "no": [4], "duda": [1, 2, 3]},
+  "donde-esta-el-pajaro:8": {"si": [], "no": [], "duda": [1, 2, 3, 4]},
+  "donde-esta-el-pajaro:9": {"si": [], "no": [3, 4], "duda": [1, 2]}
+ },
+ "parecidas": [[1, 2], [3, 4]]
+}

@@ -1,0 +1,207 @@
+{
+ "libro": "arroz-con-habichuelas",
+ "frases": {
+  "arroz-con-habichuelas:1": {
+   "si": [
+    2
+   ],
+   "no": [
+    5,
+    6
+   ],
+   "duda": [
+    1,
+    3,
+    4
+   ]
+  },
+  "arroz-con-habichuelas:2": {
+   "si": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "no": [],
+   "duda": []
+  },
+  "arroz-con-habichuelas:3": {
+   "si": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "no": [],
+   "duda": []
+  },
+  "arroz-con-habichuelas:4": {
+   "si": [
+    2,
+    3,
+    4
+   ],
+   "no": [
+    5,
+    6
+   ],
+   "duda": [
+    1
+   ]
+  },
+  "arroz-con-habichuelas:5": {
+   "si": [
+    3,
+    4
+   ],
+   "no": [
+    5
+   ],
+   "duda": [
+    1,
+    2,
+    6
+   ]
+  },
+  "arroz-con-habichuelas:6": {
+   "si": [],
+   "no": [
+    1,
+    5,
+    6
+   ],
+   "duda": [
+    2,
+    3,
+    4
+   ]
+  },
+  "arroz-con-habichuelas:7": {
+   "si": [
+    2
+   ],
+   "no": [
+    5,
+    6
+   ],
+   "duda": [
+    1,
+    3,
+    4
+   ]
+  },
+  "arroz-con-habichuelas:8": {
+   "si": [],
+   "no": [
+    1,
+    2,
+    5,
+    6
+   ],
+   "duda": [
+    3,
+    4
+   ]
+  },
+  "arroz-con-habichuelas:9": {
+   "si": [],
+   "no": [
+    1,
+    5,
+    6
+   ],
+   "duda": [
+    2,
+    3,
+    4
+   ]
+  },
+  "arroz-con-habichuelas:10": {
+   "si": [],
+   "no": [
+    1,
+    2,
+    5
+   ],
+   "duda": [
+    3,
+    4,
+    6
+   ]
+  },
+  "arroz-con-habichuelas:11": {
+   "si": [],
+   "no": [],
+   "duda": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ]
+  },
+  "arroz-con-habichuelas:12": {
+   "si": [],
+   "no": [
+    1,
+    2,
+    3
+   ],
+   "duda": [
+    4,
+    5,
+    6
+   ]
+  },
+  "arroz-con-habichuelas:13": {
+   "si": [
+    4
+   ],
+   "no": [
+    1,
+    2,
+    5,
+    6
+   ],
+   "duda": [
+    3
+   ]
+  },
+  "arroz-con-habichuelas:14": {
+   "si": [],
+   "no": [
+    1,
+    2,
+    3
+   ],
+   "duda": [
+    4,
+    5,
+    6
+   ]
+  }
+ },
+ "parecidas": [
+  [
+   1,
+   2
+  ],
+  [
+   1,
+   3
+  ],
+  [
+   2,
+   3
+  ],
+  [
+   5,
+   6
+  ]
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "libro": "jugo-de-china",
+ "frases": {
+  "jugo-de-china:1": {"si": [1, 2], "no": [], "duda": [3, 4, 5, 6]},
+  "jugo-de-china:2": {"si": [1, 2, 3], "no": [4, 5, 6], "duda": []},
+  "jugo-de-china:3": {"si": [1, 2, 3, 4, 5, 6], "no": [], "duda": []},
+  "jugo-de-china:4": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6]},
+  "jugo-de-china:5": {"si": [3], "no": [1, 2, 4, 5, 6], "duda": []},
+  "jugo-de-china:6": {"si": [], "no": [4, 5, 6], "duda": [1, 2, 3]},
+  "jugo-de-china:7": {"si": [], "no": [4], "duda": [1, 2, 3, 5, 6]},
+  "jugo-de-china:8": {"si": [], "no": [4], "duda": [1, 2, 3, 5, 6]},
+  "jugo-de-china:9": {"si": [], "no": [3, 4, 5, 6], "duda": [1, 2]},
+  "jugo-de-china:10": {"si": [], "no": [3, 4, 5, 6], "duda": [1, 2]},
+  "jugo-de-china:11": {"si": [], "no": [4, 5, 6], "duda": [1, 2, 3]},
+  "jugo-de-china:12": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6]},
+  "jugo-de-china:13": {"si": [3], "no": [1, 2, 4, 5, 6], "duda": []},
+  "jugo-de-china:14": {"si": [], "no": [4, 5, 6], "duda": [1, 2, 3]},
+  "jugo-de-china:15": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5, 6]},
+  "jugo-de-china:16": {"si": [], "no": [1, 2, 4, 5, 6], "duda": [3]}
+ },
+ "parecidas": [[1, 2], [5, 6]]
+}
