@@ -26,5 +26,9 @@
   { "id": "frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-casa-side--1", "kind": "set", "page": "docs/proyecto/pixel/frente-set.html", "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=casa&side=-1" },
   { "id": "frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-casa-side-1", "kind": "set", "page": "docs/proyecto/pixel/frente-set.html", "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=casa&side=1" },
   { "id": "frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-todo-side--1", "kind": "set", "page": "docs/proyecto/pixel/frente-set.html", "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=todo&side=-1" },
-  { "id": "frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-todo-side-1", "kind": "set", "page": "docs/proyecto/pixel/frente-set.html", "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=todo&side=1" }
+  { "id": "frente/door-shut-win-shut-lights-0-sky-dusk-hide-rustle-todo-side-1", "kind": "set", "page": "docs/proyecto/pixel/frente-set.html", "query": "?door=shut&win=shut&lights=0&sky=dusk&hide=1&rustle=todo&side=1" },
+  { "id": "balcon/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=shut&win=shut" },
+  { "id": "balcon/door-shut-win-open", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=shut&win=open" },
+  { "id": "balcon/door-open-win-shut", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=open&win=shut" },
+  { "id": "balcon/door-open-win-open", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=open&win=open" }
 ]
