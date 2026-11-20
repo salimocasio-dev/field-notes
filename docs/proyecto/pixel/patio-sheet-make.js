@@ -1,0 +1,736 @@
+#!/usr/bin/env node
+'use strict';
+/* El patio's sheet (order 32a): writes docs/proyecto/pixel/patio-sheet.json from patio-set.html and the old scene's data, then checks it.
+   Run from the repo root:  node docs/proyecto/pixel/patio-sheet-make.js        (needs Node 22 and the pre-installed Playwright)
+   It reads the set's plan (window.PATIO_SET) and its part map from patio-set.html in headless Chrome, for every baked state; measures the old
+   sprite layer's bubbles and people (historia/ engine.js, juego.js, kit.js, escenas/patio.js, as they are); projects every world point with the
+   engine's own formula; and checks the sheet against coqui/ref/escenas/patio/ (positions.json, inventory.json, pairs.json) and against every
+   moment of every recorded run of the scene's stories (coqui/tool/ref/trazas/juega.mjs --states, into a temp folder; nothing in the repo is
+   written but the sheet). A second run writes the same bytes. Every name a builder needs for a screen position of historia/escenas/patio.js is
+   in `code`, by line. La sala's maker (sala-sheet-make.js) is the model: the same rules, the same way of checking. */
+const fs = require('fs');
+const path = require('path');
+const { chromium } = require('playwright');
+
+const REPO = path.resolve(__dirname, '../../..');
+const OUT = path.join(__dirname, 'patio-sheet.json');
+const REF = path.join(REPO, 'coqui/ref/escenas/patio');
+// the baked states: hora-door-gate (setKey.baked). Every state a story, a review pair or a level picture reaches is one of these (checked)
+const STATES = ['dia-shut-shut', 'dia-open-shut', 'dia-shut-open', 'tarde-shut-shut', 'tarde-open-shut', 'tarde2-shut-shut', 'tarde2-open-shut',
+  'ocaso-shut-shut', 'ocaso-open-shut', 'ocaso-open-open', 'crepusculo-shut-shut', 'crepusculo-open-shut', 'noche-shut-shut', 'noche-open-shut', 'noche-open-open'];
+const keyOf = w => { const n = Math.min(3, w.sol || 0), hora = w.noche ? 'noche' : n < 3 ? ['dia', 'tarde', 'tarde2'][n] : (w.osc || 0) >= .25 ? 'crepusculo' : 'ocaso';
+  return hora + '-' + (w.pdoor ? 'open' : 'shut') + '-' + (w.porton ? 'open' : 'shut'); };
+const queryOf = k => { const [hora, door, gate] = k.split('-'); return 'hora=' + hora + '&door=' + door + '&gate=' + gate; };
+
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  const errs = [];
+  page.on('pageerror', e => errs.push(String(e)));
+  const G = { parts: {}, z: {}, kinds: {}, leafZ: {} };
+  for (const key of STATES) {
+    await page.goto('file://' + path.join(__dirname, 'patio-set.html') + '?tags=1&' + queryOf(key));
+    const g = await page.evaluate(() => {
+      const o = {}; for (const [k, v] of Object.entries(PATIO_SET)) if (typeof v !== 'function' && k !== 'SET') o[k] = v;
+      const parts = {}; TAGS.forEach((t, i) => { if (t) (parts[t] = parts[t] || []).push(i); });
+      // the leaves' reach: every pixel a swaying leaf of the crown can take, at any wind step (drawLeaves moves them up to 2 px across, 1 down)
+      const reach = []; for (const L of leaves) for (let n = 0; n < L.pixels.length; n += 4) reach.push(L.pixels[n] + L.pixels[n + 1] * W);
+      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), leaves: [...new Set(reach)], K: { road: KIND_ROAD, grass: KIND_GRASS } };
+    });
+    if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K, leafPix: g.leaves });
+    G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds;
+  }
+  if (errs.length) throw new Error(errs.join('; '));
+  G.M = await measure(await browser.newPage());
+  await browser.close();
+  if (errs.length) throw new Error(errs.join('; '));
+  const sheet = make(G);
+  const problems = check(sheet, G);
+  const text = JSON.stringify(sheet, null, 1).replace(/\[\n\s+([-\d.,\s"a-z]+?)\n\s+\]/g, (m, a) => '[' + a.replace(/\s+/g, ' ').replace(/ ?, ?/g, ', ') + ']') + '\n';
+  fs.writeFileSync(OUT, text);
+  console.log('wrote ' + path.relative(REPO, OUT) + ' (' + text.length + ' bytes)');
+  for (const n of sheet.checks.notes) console.log('  ' + n);
+  if (problems.length) { console.log('CHECK FAILED (' + problems.length + '):\n  ' + problems.slice(0, 150).join('\n  ')); process.exit(1); }
+  console.log('check: ok (every rule above)');
+})().catch(e => { console.error(e); process.exit(1); });
+
+/* ---------- the old sprite layer, measured in the browser: every bubble's rectangle, the people's sizes ---------- */
+// historia/ engine.js, palabras.js, juego.js, escenas/kit.js and escenas/patio.js loaded as they are into a blank page. A bubble is drawn as
+// patio.js bub2 draws it (twice its size, its tail's tip at the origin), on both frames of its bob
+const QUIEN = { luis: 'hermano', carmen: 'hermana', mama: 'mama', papa: 'papa', abuelo: 'abuelo' };
+async function measure(page) {
+  await page.setContent('<canvas id="cv" width="196" height="216"></canvas>');
+  for (const f of ['engine.js', 'palabras.js', 'juego.js', 'escenas/kit.js', 'escenas/patio.js']) await page.addScriptTag({ path: path.join(REPO, 'historia', f) });
+  return page.evaluate(QUIEN => {
+    const keys = Object.keys(BUB).concat(Object.keys(BUBL)), bubbles = {};
+    for (const k of keys) {
+      let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      for (const a of [0, 1]) {
+        const cv = document.createElement('canvas'); cv.width = 400; cv.height = 300; const g = cv.getContext('2d');
+        g.translate(200, 250); g.scale(2, 2); bub(g, k, 0, 0, a);
+        const d = g.getImageData(0, 0, 400, 300).data;
+        for (let i = 0; i < 400 * 300; i++) if (d[i * 4 + 3]) { const x = i % 400 - 200, y = (i / 400 | 0) - 250; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+      }
+      bubbles[k] = [x0, y0, x1 - x0 + 1, y1 - y0 + 1];
+    }
+    const opaque = (cv, ox, oy) => { const g = cv.getContext('2d'), d = g.getImageData(0, 0, cv.width, cv.height).data; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      for (let i = 0; i < cv.width * cv.height; i++) if (d[i * 4 + 3]) { const x = i % cv.width, y = i / cv.width | 0; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+      let hx0 = 1e9, hx1 = -1e9; for (let i = 0; i < cv.width * cv.height; i++) { const x = i % cv.width, y = i / cv.width | 0; if (d[i * 4 + 3] && y < y0 + 10) { hx0 = Math.min(hx0, x); hx1 = Math.max(hx1, x); } }
+      return { box: [x0 - ox, y0 - oy, x1 - x0 + 1, y1 - y0 + 1], head: (hx0 + hx1 + 1) / 2 - ox }; };
+    const rowsOf = (cv, ox, oy) => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data, out = [];
+      for (let y = 0; y < cv.height; y++) { let a = -1, b = -1; for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) { if (a < 0) a = x; b = x; } if (a >= 0) out.push([y - oy, a - ox, b - ox]); }
+      return out; };
+    const people = {}, masks = {};
+    for (const [id, fam] of Object.entries(QUIEN)) for (const sent of [0, 1]) {
+      const im = KIT.mkPersona(KIT.FAM[fam], 'idle', 0, sent); people[id + (sent ? '.sent' : '')] = Object.assign(opaque(im, KIT.PX, im.height - 1), { h: im.height });
+      for (const pose of ['idle', 'wave0', 'wave1', 'ojos', 'offer']) { const m = KIT.mkPersona(KIT.FAM[fam], pose.replace(/\d$/, ''), 0, sent); masks[id + '.' + pose + (sent ? '.sent' : '')] = rowsOf(m, KIT.PX, m.height - 1); }
+    }
+    { const im = mkAbuela('idle', 0); people.abuela = Object.assign(opaque(im, 30, 50), { h: 51 }); }
+    { const im = KIT.mkBebe('idle', 0); people.bebe = Object.assign(opaque(im, 13, 28), { h: 28 }); }
+    for (const pose of ['idle', 'wave0', 'wave1']) masks['abuela.' + pose] = rowsOf(mkAbuela(pose, 0), 30, 50);
+    for (const e of ['idle', 'clap']) masks['bebe.' + e] = rowsOf(KIT.mkBebe(e, 0), 13, 28);
+    // the bird sitting (kit.js drawAve: 1.6 times its 18 x 14 sprite, its feet the given point): its opaque rows, relative to (x, y), facing left and right
+    const ave = {}; for (const dir of [-1, 1]) { const cv = document.createElement('canvas'); cv.width = 80; cv.height = 60; const g = cv.getContext('2d');
+      KIT.drawAve(g, { mode: 'sit', x: 40, y: 40, dir, st: 'n' }); ave[dir] = rowsOf(cv, 40, 40); }
+    return { bubbles, FAM: KIT.FAM, PX: KIT.PX, people, masks, ave };
+  }, QUIEN);
+}
+
+/* ---------- the engine's projection, as pp-engine.js has it ---------- */
+function engine(G) {
+  const W = G.W, H = G.H, S = G.S, SIN = .5, COS = Math.sqrt(3) / 2, R2 = Math.SQRT2;
+  const OX = W / 2 + (G.scene.originX || 0), OY = H / 2 + (G.scene.originY || 0);
+  const project = (x, y, z) => { const u = (x - y) / R2, v = (x + y) / R2; return { sx: OX + u * S, sy: OY + (v * SIN - z * COS) * S, d: v * COS + z * SIN }; };
+  const atZ = (sx, sy, z) => { const u = (sx - OX) / S, v = (sy - OY + z * COS * S) / (S * SIN); return [(u + v) / R2, (v - u) / R2, z]; };
+  const UVW = (u, v, z = 0) => [(u + v) / R2, (v - u) / R2, z];
+  return { W, H, S, R2, SIN, COS, OX, OY, project, atZ, UVW };
+}
+const r4 = v => Math.round(v * 1e4) / 1e4, r2 = v => Math.round(v * 100) / 100;
+const W4 = p => p.map(r4);
+const hop = d => d < 3 ? 0 : Math.max(1, Math.min(4, Math.round(d / 30)));   // kit.js acts.ir
+
+/* ---------- the old scene's numbers (historia/escenas/patio.js, read as text: they must be what the file says) ---------- */
+const PATIO_JS = fs.readFileSync(path.join(REPO, 'historia/escenas/patio.js'), 'utf8');
+const LINES = PATIO_JS.split('\n');
+const lineOf = s => { const i = LINES.findIndex(l => l.includes(s)); if (i < 0) throw new Error('patio.js changed: ' + s); return i + 1; };
+function fixJson(s) { return s.replace(/\s+/g, '').replace(/([{,])(\w+):/g, '$1"$2":').replace(/:\./g, ':0.').replace(/,\./g, ',0.').replace(/\[\./g, '[0.'); }
+const OLD = (() => { const g = (re, w) => { const m = PATIO_JS.match(re); if (!m) throw new Error('patio.js changed: ' + w); return JSON.parse(fixJson(m[1])); };
+  return { LUGAR: g(/const LUGAR=(\{[^;]*\})/, 'LUGAR'), DETRAS: g(/const DETRAS=(\{[^}]*\})/, 'DETRAS'), ESPERA: g(/ESPERA=(\{[^}]*\})/, 'ESPERA'), LADOS: g(/LADOS=(\[\[[^\]]*\],\[[^\]]*\]\])/, 'LADOS'),
+    CAMA: g(/const CAMA=(\{[^}]*\})/, 'CAMA'), SOLX: g(/SOLX=(\d+)/, 'SOLX'), SOLY: g(/SOLY=(\[[^\]]*\])/, 'SOLY') }; })();
+
+// the places a bubble's tail may go, in order (as La sala's): over the head (the old), beside the head on the right, on the left, beside the shoulder ...
+const TALK = [[0, 0], [1, 7], [-1, 7], [1, 30], [-1, 30], [1, 44], [-1, 44], [2, 7], [-2, 7], [2, 30], [-2, 30], [2, 44], [-2, 44], [1, 58], [-1, 58], [2, 58], [-2, 58]];
+// the corner cards patio.js hud draws, in the 196 x 216 display (tarjeta(x, y, w, h) covers [x - 1, y - 1, w + 2, h + 2])
+const boardsOf = (w, x0) => { const b = [];
+  if (w.tarjeta === 'sol') b.push(['the sun card', [2, 2, 36, 54]]);
+  if (w.tarjeta === 'luces') b.push(['the fireflies card', [2, 2, 86, 32]]);
+  if (w.tanteo) { const n = Math.max(3, (w.canasta || []).length); b.push(['the basket card', [2, 2, 26 + n * 15, 28]], ['the nest card', [196 - 76 - 1, 2, 75, 28]]); }
+  return b.map(([n, r]) => [n, [r[0] + x0, r[1], r[2], r[3]]]); };
+
+function make(G) {
+  const E = engine(G), F = G.F, P = p => { const q = E.project(p[0], p[1], p[2]); return [r2(q.sx), r2(q.sy)]; };
+  const corners = w => { const out = []; for (const x of [w[0], w[3]]) for (const y of [w[1], w[4]]) for (const z of [w[2], w[5]]) out.push(E.project(x, y, z)); return out; };
+  const box = w => { const c = corners(w), x0 = Math.floor(Math.min(...c.map(q => q.sx))), y0 = Math.floor(Math.min(...c.map(q => q.sy)));
+    return [x0, y0, Math.ceil(Math.max(...c.map(q => q.sx))) - x0, Math.ceil(Math.max(...c.map(q => q.sy))) - y0]; };
+  const floor = (sx, sy) => W4(E.atZ(sx, sy, 0));
+  // the box (square on the ground) whose 8 projected corners have the screen box [sx0, sy0] - [sx1, sy1] (set-kit.js boxAround)
+  const boxAround = (sx0, sy0, sx1, sy1) => { const S = E.S, d = (sx1 - sx0) / S, uc = ((sx0 + sx1) / 2 - E.OX) / S;
+    const vmax = (sy1 - E.OY) / (S * .5), vmin = vmax - d, z1 = (vmin * .5 - (sy0 - E.OY) / S) / E.COS;
+    const xc = (uc + (vmin + vmax) / 2) / E.R2, yc = ((vmin + vmax) / 2 - uc) / E.R2, e = d * E.R2 / 4; return [xc - e, yc - e, 0, xc + e, yc + e, z1]; };
+  // a thing square to the camera, [u0, u1] x [v0, v1] x [z0, z1] (set-kit.js UVW): its screen box, and the square world box with that screen box
+  const uvScreen = (u0, u1, v0, v1, z0, z1) => { const xs = [], ys = []; for (const u of [u0, u1]) for (const v of [v0, v1]) for (const z of [z0, z1]) { const q = E.project(...E.UVW(u, v, z)); xs.push(q.sx); ys.push(q.sy); }
+    return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; };
+  const uvThing = (u0, u1, v0, v1, z0, z1) => { const s = uvScreen(u0, u1, v0, v1, z0, z1); return boxAround(s[0], s[1], s[2], s[3]); };
+
+  /* ---- the floor rule: the yard is built round the old picture, so a place on its lawn stays where it was on the screen ---- */
+  // a frog place q (juego.js frogBox: his middle q.x + 16, his feet row q.y + 25): the ground point under (q.x + 16, q.y + 25); new q = old q.
+  // a person's place (x, y) (their feet, patio.js gente): the ground point under (x, y - 1); new = old
+  const frogW = q => floor(q[0] + 16, q[1] + 25), personW = p => floor(p[0], p[1] - 1);
+  const frogQ = w => { const s = P(w); return [Math.round(s[0]) - 16, Math.round(s[1]) - 25]; };
+  const personQ = w => { const s = P(w); return [Math.round(s[0]), Math.round(s[1]) + 1]; };
+
+  /* ---- the places that move (the floor rule keeps every other one). Each is an exact piece of patio.js source and its replacement ---- */
+  const DOORX = Math.round(E.OX + F.DU * E.S);   // the new doorway's middle on the screen
+  const MOVES = [
+    { line: lineOf('const CAMA='), act: '*', src: 'SOLY=[24,40,56,73]', to: 'SOLY=[26,40,56,73]', sky: [['soly', 24, 26]],
+      why: 'the sun at its highest 2 px lower: its touch box ([SOLX - 14, soly - 14, 28, 28]) and so its hint frame (12 px round it) wholly inside the view (las-flores and h-patio ask for the sun; at soly 24 the frame reached 2 px over the picture\'s top). W.soly 24 in a recorded run is 26' },
+    { line: lineOf('async asoma()'), act: 'asoma', src: 'W.gente.abuela={x:42,y:116,pose:"wave",dir:1}', to: 'W.gente.abuela={x:' + (DOORX - 1) + ',y:116,pose:"wave",dir:1}', pts: [['abuela', [42, 116], [DOORX - 1, 116]]],
+      why: 'acts.asoma: abuela in the middle of the back door. The doorway is ' + (DOORX - 42) + ' px further right than the old one (the whole door and who stands in it 8 px inside the wide view, as El balcón and La sala keep it); she stands where the old one had her, in its middle' },
+    { line: lineOf('async seva(o)'), act: 'seva', src: 'await mueve(id,44,118)', to: 'await mueve(id,' + (DOORX - 1) + ',118)', pts: [[null, [44, 118], [DOORX - 1, 118]]],
+      why: 'acts.seva: whoever goes in walks to the middle of the back door (moved with it), then is gone' },
+    { line: lineOf('async inicio9()'), act: 'inicio9', src: 'carmen:{x:86,y:136,pose:"idle"}}', to: 'carmen:{x:94,y:137,pose:"idle"}}', pts: [['carmen', [86, 136], [94, 137]]],
+      why: 'acts.inicio9: Carmen 8 px further right, in front of the crate\'s left corner: the hint hand pointing at her (las-flores beats.12) was on the frog\'s face, at the door\'s place (LUGAR.inicio)' },
+    { line: lineOf('async inicio10()'), act: 'inicio10', src: 'carmen:{x:50,y:160,pose:"idle",dir:1}', to: 'carmen:{x:37,y:178,pose:"idle",dir:1}', pts: [['carmen', [50, 160], [37, 178]]],
+      why: 'acts.inicio10: Carmen at the left, lower, beside bed L: the answer cards over the frog at the door and by her (que-es-esto beats.3, 10) covered her head, and the hand at the left card her face' },
+    { line: lineOf('async inicio11()'), act: 'inicio11', src: 'W.gente={abuela:{x:34,y:136,pose:"idle",dir:1},abuelo:{x:60,y:126,pose:"ojos",lleva:"bizcocho",dir:1},mama:{x:86,y:136,pose:"idle"},bebe:{x:97,y:109,z:137,est:"idle"},papa:{x:112,y:126,pose:"idle"},',
+      to: 'W.gente={abuela:{x:46,y:136,pose:"idle",dir:1},abuelo:{x:70,y:129,pose:"ojos",lleva:"bizcocho",dir:1},mama:{x:92,y:136,pose:"idle"},bebe:{x:103,y:109,z:137,est:"idle"},papa:{x:114,y:136,pose:"idle"},',
+      pts: [['abuela', [34, 136], [46, 136]], ['abuelo', [60, 126], [70, 129]], ['mama', [86, 136], [92, 136]], ['bebe', [97, 109], [103, 109], 137], ['papa', [112, 126], [114, 136]]],
+      why: 'acts.inicio11: the family by the back door, a little further right and closer together, in one row (abuelo 3 px, papá 10 px lower): abuela\'s hint frame (hasta-manana beats.8) reached 11 px past the view\'s left side; abuelo\'s and papá\'s bubbles ("amor", when touched) lay over the fireflies card; the hand at an answer card in the sky (below) was on papá\'s face. The baby stays in mamá\'s arms (moved with her)' },
+    { line: lineOf('luis:{x:150,y:160,pose:"idle",dir:-1}'), act: 'inicio11', src: 'luis:{x:150,y:160,pose:"idle",dir:-1},carmen:{x:188,y:158,pose:"alto",dir:-1}};W.pdoor=1;', to: 'luis:{x:178,y:126,pose:"idle",dir:-1},carmen:{x:200,y:168,pose:"alto",dir:-1}};W.pdoor=1;W.respEn=[160,4];', pts: [['luis', [150, 160], [178, 126]], ['carmen', [188, 158], [200, 168]]],
+      respEn: [160, 4],
+      why: 'acts.inicio11: Luis waits right of the gate, by the fence, Carmen in front of the tree: the hint hand pointing at the gate (hasta-manana beats.5) was on Luis\'s face. And the answer cards stand in the sky at the top right (W.respEn, juego.js: "a scene that needs its people seen while he chooses puts the bubbles elsewhere", as banco, mesa, estufa, nevera and comer do): over the frog, at abuela\'s place and in the middle, they covered the family and Luis (hasta-manana beats.10, 25)' },
+  ];
+  for (const m of MOVES) for (const q of m.pts || []) q.push(W4(personW(q[2])));   // (the baby's: the ground under its place in mamá's arms; it is not on the ground)
+
+  const SPOTS = {};
+  for (const [k, v] of Object.entries(OLD.LUGAR)) SPOTS['frog.' + k] = { world: frogW(v), scale: v[2], old: v.slice(0, 2), what: 'LUGAR.' + k + ': the frog' };
+  for (const k of ['L', 'R']) SPOTS['detras.' + k] = { world: personW(OLD.DETRAS[k]), old: OLD.DETRAS[k], what: 'DETRAS.' + k + ': a child behind bed ' + k + ', planting (acts.dale, final9)' };
+  for (const k of ['luis', 'carmen']) SPOTS['espera.' + k] = { world: personW(OLD.ESPERA[k]), old: OLD.ESPERA[k], what: 'ESPERA.' + k + ': ' + k + ' waits (acts.anda a = espera)' };
+  OLD.LADOS.forEach((p, i) => { SPOTS['lados.' + i] = { world: personW(p), old: p, what: 'LADOS[' + i + ']: a child either side of the crate, hands out (acts.lados)' }; });
+  SPOTS.asoma = { world: MOVES[1].pts[0][3], old: [42, 116], what: 'acts.asoma: abuela in the back door (moved: see moves)' };
+  SPOTS.seva = { world: MOVES[2].pts[0][3], old: [44, 118], what: 'acts.seva: the back door\'s threshold, where whoever goes in is last seen (moved: see moves)' };
+  for (const s of Object.values(SPOTS)) { s.new = s.scale != null ? frogQ(s.world) : personQ(s.world); }
+  SPOTS.asoma.new = MOVES[1].pts[0][2]; SPOTS.seva.new = MOVES[2].pts[0][2];
+
+  /* ---- the named points of the set ---- */
+  const PTS = {}, pt = (k, o) => { PTS[k] = o; };
+  const nestTop = E.project(...E.UVW(F.NEST[0], F.NEST[1], F.NEST_Z));
+  pt('nido', { screen: [181, 66], old: [181, 66], world: W4(E.UVW(F.NEST[0], F.NEST[1], F.NEST_Z)), what: 'the bird on its nest (W.ave x, y: its feet): fresh(), aveVa(181, 66) in aveloop, avenido, alnido. The nest (the set) is on a branch of the flamboyán, its rim under the bird\'s feet, as the old one; its middle on the screen at ' + [Math.round(nestTop.sx), Math.round(nestTop.sy)] });
+  pt('cerca.ave', { screen: [178, 83], old: [178, 83], what: 'inicio11: the bird sits on the fence\'s top, right of the gate (W.ave x 178, y 83): the boards\' top row there is the old one' });
+  pt('sol', { screen: [OLD.SOLX, null], old: [OLD.SOLX, OLD.SOLY], heights: [26, 40, 56, 73], what: 'the sun (sol(c, SOLX, soly, n, brilla)): drawn by the sprite layer behind the set (sheet: behind); SOLX unchanged, SOLY[0] 2 px lower (moves); it sets behind the fence (soly 109: hidden), as the old one' });
+  pt('luna', { screen: [150, 26], old: [150, 26], what: 'luna(c, 150, 26): the moon, behind the set (sheet: behind)' });
+  pt('estrellas', { screen: [[60, 18], [84, 40], [124, 12], [150, 36], [40, 46], [112, 58], [72, 64], [140, 60]], what: 'ESTRELLAS: the stars, behind the set (sheet: behind): the house\'s roof hides the one at 40, 46 as the old picture did' });
+  pt('corazon', { screen: [118, 36], old: [118, 36], what: 'heartAt: the heart of a happy ending: in the sky between the house and the tree (unchanged)' });
+  pt('caja', { screen: [104, 112], old: [104, 112], what: 'mkCaja at (104, 112): the crate of potted flowers on the lawn before the fence (the sprite layer, its sort y 136): its bottom row 135 on the lawn, the fence\'s foot (row 112) behind its top' });
+  for (const k of ['L', 'R']) pt('hoyos.' + k, { screen: F.HOLES[k], old: F.HOLES[k], what: 'hoyo(' + k + ', i): the five holes of bed ' + k + ' (the set draws them at the old points): a flower (florEn) stands in each' });
+
+  /* ---- things: the 21 touch keys ---- */
+  const T = (world, what, extra = {}) => Object.assign({ set: true, world: W4(world), box: box(world), what }, extra);
+  const person = id => ({ sprite: true, why: 'a person (today\'s sprite, drawn 1:1). caja(id) (patio.js:89): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged' });
+  const sh = (x0, y0, x1, y1) => boxAround(x0, y0, x1, y1);
+  const crown = (() => { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (const i of G.leafPix) { const x = i % 240, y = Math.floor(i / 240); x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } return [x0, y0, x1 + 1, y1 + 1]; })();
+  const trunkFoot = E.project(...E.UVW(F.TREE[0], F.TREE[1], 0));
+  const bedBox = k => { const b = F.BEDS[k]; return sh(b.sx - F.BED_RX, b.sy - F.BED_RY - 16, b.sx + F.BED_RX, b.sy + F.BED_RY + 2); };
+  const things = {
+    luis: person('luis'), carmen: person('carmen'), bebe: person('bebe'), abuela: person('abuela'), abuelo: person('abuelo'), mama: person('mama'), papa: person('papa'),
+    bola: { sprite: true, prop: true, why: 'the ball (sprite layer): box [x - 7, y - 13, 14, 14] at W.bola, unchanged' },
+    saco: { sprite: true, prop: true, why: 'the sack (sprite layer): box [x - 13, y - 23, 26, 24] at W.saco, unchanged' },
+    caja: { sprite: true, prop: true, why: 'the crate of potted flowers (sprite layer, mkCaja at points.caja): box [104, 112, 32, 24], unchanged', box: [104, 112, 32, 24] },
+    camaL: T(bedBox('L'), 'bed L: the earth (the set, painted on the lawn at the old ellipse) and the flowers over it (the sprite layer): the box round both, as the old one', { old: { box: [40, 160, 56, 38] } }),
+    camaR: T(bedBox('R'), 'bed R, as bed L', { old: { box: [144, 160, 56, 38] } }),
+    sol: { sprite: true, prop: true, why: 'the sun (the sprite layer, drawn behind the set: sheet behind): box [SOLX - 14, soly - 14, 28, 28] while !W.noche and soly < 80, unchanged (SOLY[0] 26: moves)' },
+    porton: T(uvThing(F.GP0, F.GP1 + F.GPW, -.1, .1, 0, F.GPH + .1), 'the garden gate: its two posts and the leaf between them (open: the leaf swung out on its left post, its top over the fence)', { old: { box: [127, 70, 40, 43] },
+      hand: [Math.round(E.OX + (F.GU0 + F.GU1) / 2 * E.S), 100], handWhy: 'the hint hand\'s point (kit.js cosas: hand, as El frente\'s house has one): the leaf\'s lower half, 8 px under the box\'s middle, so the hand is on no face of whoever waits before the gate (Luis, hasta-manana beats.32; the old box\'s middle put it on his face)' }),
+    nido: T(sh(170, 60, 192, 76), 'the nest on its branch (the box round it and the bird on it, as the old one)', { old: { box: [170, 60, 22, 16] } }),
+    arbol: T(sh(crown[0], crown[1], crown[2], Math.ceil(trunkFoot.sy) + 3), 'the flamboyán: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk', { old: { box: [168, 8, 60, 106] } }),
+    pajaro: { sprite: true, why: 'the bird (kit.js drawAve, sprite layer): box [p.x - 10, p.y - 20, 20, 22] at avePos, unchanged' },
+    puerta: T(uvThing(F.DU0 - F.DF, F.DU1 + F.DF, -.06, .06, 0, F.FLOOR + F.DH + F.DF), 'the back door in its white frame', { old: { box: [27, 57, 30, 56] } }),
+    casa: T(uvThing(F.HU0, F.HU1 + F.EAVE, F.RIDGE_V, F.EAVE, 0, F.HH + F.RISE), 'the back of the house: its wall and its roof (to the picture\'s left edge)', { old: { box: [0, 14, 61, 100] } }),
+    cerca: T(uvThing(F.FU0, F.FU1, -.1, .1, 0, F.FH + .05), 'the fence, from the house to the picture\'s right edge', { old: { box: [60, 80, 180, 33] } }),
+    patio: T((() => { const s = [0, 113, 240, 216]; return boxAround(s[0], s[1], s[2], s[3]); })(), 'the lawn, from the foot of the house and the fence (row 113) to the bottom, the whole width, as the old box: last in the hit order', { old: { box: [0, 113, 240, 103] } }),
+  };
+  // the yard's box is the lawn's own screen rectangle (a square world box can only reach it so: the lawn is a plane)
+  things.patio.box = [0, 113, 240, 103];
+
+  /* ---- views: one, zoom 1, the old wide window ---- */
+  const views = { wide: { zoom: 1, x0: 22, world: floor(120, 150), region: null, old: [22, 0, 196, 216], what: 'the yard: the back of the house with its door, the fence with the gate, the flamboyán with the nest, the two beds, the sky' } };
+
+  /* ---- the review and level pictures ---- */
+  const pic = (cx, cy, zoom, what) => { const crop = zoom === 1
+      ? [Math.max(0, Math.min(44, Math.round(cx - 98))), Math.max(0, Math.min(112, Math.round(cy - 52))), 196, 104]
+      : [Math.max(0, Math.min(142, Math.round(cx - 49))), Math.max(0, Math.min(164, Math.round(cy - 26))), 98, 52];
+    return { world: floor(cx, cy), screen: [cx, cy], zoom, crop, what }; };
+  const PICS = PICTURES(pic);
+  const deacc = s => s.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_');
+  const LEVEL = JSON.parse(fs.readFileSync(path.join(REF, 'pairs.json'), 'utf8')).level.flatMap(L => L.pictures.map((p, i) => p.scene === 'patio' ? { w: L.w, index: i, picture: deacc(p.pair) + '.' + p.side, old: p.crop } : null).filter(Boolean));
+  for (const l of LEVEL) { const pc = PICS[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
+
+  /* ---- remap: every distinct position of positions.json ---- */
+  const POS = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
+  // story-file positions that move (the files are not edited: the host passes the point through remap, which gives the new one)
+  const STORY_MOVES = [
+    { old: [150, 150], new: [180, 150], why: 'Luis at the start of d-la-bola and h-patio: right of the gate, not before it (the hint hand pointing at the gate, h-patio beats.12, was on his face)' },
+    { old: [84, 150], new: [80, 150], why: 'Carmen at the start of d-la-bola and h-patio (and h-patio beats.20): 4 px further left (the hint hand pointing at her, h-patio beats.23, reached the frog\'s face at the crate\'s place)' },
+  ];
+  const remap = POS.positions.map(p => {
+    const e = { kind: p.kind, old: p.kind === 'point' ? [p.x, p.y] : p.kind === 'x' ? [p.x] : [p.x, p.y, p.w, p.h], uses: p.uses.map(u => u.file.replace(/^cuentos\//, '') + ' ' + u.at) };
+    if (p.kind === 'cam') { const names = [...new Set(p.uses.map(u => { const m = u.at.match(/^(.+)\.(si|no)\.cam$/); return m ? deacc(m[1]) + '.' + m[2] : null; }).filter(Boolean))];
+      e.to = { pictures: names }; e.crops = Object.fromEntries(names.map(n => [n, PICS[n] ? { crop: PICS[n].crop, zoom: PICS[n].zoom } : { scene: 'camino', what: 'drawn by El camino (its sheet\'s picture): listed here because the pair\'s other side is this scene\'s' }])); }
+    else if (p.kind === 'crop') { const names = [...new Set(LEVEL.filter(l => l.old && Math.abs(l.old[0] - p.x) < .01 && Math.abs(l.old[1] - p.y) < .01).map(l => l.picture))]; e.to = { pictures: names, level: true }; }
+    else if (p.kind === 'x') e.to = { level: true, what: 'a level crop\'s centre x: the level pictures take pictures[...] whole (level[])' };
+    else {
+      const ats = p.uses.map(u => u.at), cq = ats.every(a => /\.cq$/.test(a)), sky = ats.every(a => /\.(ave|rizo)$/.test(a)), eyes = p.x === 1 && (p.y === -1 || p.y === 0);
+      if (p.x === -16 && p.y === -27) { e.to = { none: true }; e.what = 'the frog out of the picture (vis 0): not a place'; }
+      else if (eyes) { e.to = { none: true }; e.what = 'acts.ojos x, y: where the frog\'s eyes look (a direction), not a place'; }
+      else if (sky) { e.to = { screen: [p.x, p.y] }; e.what = 'in the air (the bird, the loop it flew): a screen point over the yard, unchanged'; }
+      else { const mv = STORY_MOVES.find(m => m.old[0] === p.x && m.old[1] === p.y), at = mv ? mv.new : [p.x, p.y];
+        const w = cq ? frogW(at) : personW(at); e.to = { floor: w }; e.new = cq ? frogQ(w) : personQ(w); if (mv) { e.moved = true; e.why = mv.why; }
+        e.what = cq ? 'the frog (cq x, y): the ground under his feet; the same screen place' : ats.every(a => /\.(bola|polvo)$/.test(a)) ? 'on the lawn (the ball, the dust of a hop): the ground under it; the same screen place' : 'a person\'s feet (x, y): the ground under them; the same screen place'; }
+    }
+    return e;
+  });
+
+  // hop counts: every pair of LUGAR places, old against new
+  const lugar = {}; for (const [k, v] of Object.entries(OLD.LUGAR)) lugar[k] = { spot: 'frog.' + k, q: SPOTS['frog.' + k].new, scale: v[2], old: v.slice(0, 2) };
+  const hops = [], names = Object.keys(lugar);
+  for (let i = 0; i < names.length; i++) for (let j = i + 1; j < names.length; j++) {
+    const a = lugar[names[i]], b = lugar[names[j]], dOld = Math.hypot(a.old[0] - b.old[0], a.old[1] - b.old[1]), dNew = Math.hypot(a.q[0] - b.q[0], a.q[1] - b.q[1]);
+    hops.push({ a: names[i], b: names[j], old: hop(dOld), new: hop(dNew), dOld: r2(dOld), dNew: r2(dNew) });
+  }
+
+  const setKey = {
+    params: {
+      hora: { values: ['dia', 'tarde', 'tarde2', 'ocaso', 'crepusculo', 'noche'], fromW: 'W.noche ? "noche" : n = min(3, W.sol || 0): n < 3 ? ["dia", "tarde", "tarde2"][n] : (W.osc >= .25 ? "crepusculo" : "ocaso"). The sky (the old cielo(n)) and the light of the hour on the set (the old overlays of patio.js:147-148, W.osc) are baked, as El frente\'s dusk; the characters are not dimmed' },
+      door: { values: ['shut', 'open'], fromW: 'W.pdoor ? "open" : "shut" (the back door)' },
+      gate: { values: ['shut', 'open'], fromW: 'W.porton ? "open" : "shut" (the garden gate)' },
+    },
+    key: 'hora + "-" + door + "-" + gate, e.g. "dia-shut-shut"',
+    baked: STATES.map(k => ({ key: k, query: '?' + queryOf(k) })),
+    bakedWhy: 'order 06 found 73 states: what makes them is the sky (W.sol, W.noche, W.osc), the back door, the gate, the crate, the flowers in the beds and the sack. Only the hour, the door and the gate are the set\'s; the crate, the flowers, the sack, the ball, the sun, the moon and the stars are drawn by the sprite layer, so these 15 baked states draw all 73 (and every review and level picture)',
+    plan: 'patio-set.html also takes plan = esquina: the other candidate of the look question (see layout.candidates). The builder ports plan = frente only',
+  };
+
+  return {
+    scene: 'patio',
+    made: 'node docs/proyecto/pixel/patio-sheet-make.js, from patio-set.html (window.PATIO_SET) and coqui/ref/escenas/patio/. Order 32a.',
+    S: E.S, origin: { originX: G.scene.originX, originY: G.scene.originY }, picture: [E.W, E.H], view: [196, 216], pairPicture: [196, 104],
+    rules: {
+      project: 'pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]',
+      floor: 'the yard is built round the old picture: a place on its lawn keeps its screen place. A frog place q: the ground point under (q.x + 16, q.y + 25), new q = old q. A person\'s place (x, y): the ground point under (x, y - 1), new (x, y) = old. So every ground position of patio.js, its stories and its pairs keeps its numbers, but for the few in moves; the sheet names each one (spots, remap, code, moves) with its world point',
+      relative: 'what the old code draws or moves relative to a person, the frog or a point (what they carry, the flower in Carmen\'s hair, the fireflies "with" someone, the bubbles, the ball at p.x + 12) keeps its offsets',
+      sky: 'screen-space effects keep their old numbers: the stars of the happy endings (final9, final10, final11), the heart (heartAt), the bird\'s loop (aveloop) and its flights, the fireflies\' way out (stake: 226, 58)',
+      view: 'one view, zoom 1: the 196 x 216 window from x0 22, the old wide one',
+      pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were',
+    },
+    layout: {
+      what: 'the yard seen square on: the house\'s back wall and the fence stand on one straight line across the picture (v = 0, the old picture\'s row 112, where the yard begins), turned to face the camera, as the old picture had them. The camera is the engine\'s, unchanged (30 degrees; shadows to screen right); the walls are turned to it (set-kit.js UVW, planeQuad), so the back of the house shows as a flat wall under its roof\'s long slope, its hip at the right end. On the left the house (teal siding, white corner board, the back door in its white frame on a stone step, red tiles); from its corner to the right edge the wooden fence, with the cream garden gate between two taller posts in the middle; right of the gate, a little in front of the fence, the flamboyán (green crown with red flowers), the nest on a branch at its left; the lawn before them with the two beds of earth at the old ellipses; the sky over the fence. Through the open gate a path of flat stones goes on over the grass; the open leaf shows over the fence, swung out on its left post. Through the open door a dim room',
+      why: 'the old picture is a wall line (house and fence) at row 112 with every place on the lawn before it and a big sky above it, where the sun sets behind the fence, the bird flies its loop and the fireflies leave. Built on the world\'s axes, a wall line runs across the picture at a slant (26.6 degrees): with the places kept, either the house or the fence would cut through where people stand, and the corner of a house wall and a fence (as La sala\'s two walls) rises to a peak over the middle of the picture, where the sun must set. Square to the camera, the line is the old one: the door, the gate, the tree, the sun and every place keep their screen points',
+      candidates: { frente: 'kept: the house wall and the fence square to the camera (this sheet)', esquina: 'patio-set.html?plan=esquina: the other candidate, the house wall (facing +x, in shade) and the fence (facing +y) on the world\'s axes, meeting in a corner over the middle of the picture, as La sala\'s room. The door, the gate and the tree are near their old places; the sun at SOLX 100 would set behind the corner\'s fence 30 rows too high, so SOLX would move. No sheet is made for it' },
+    },
+    behind: {
+      what: 'the sky is the set\'s (baked per hour); what moves or twinkles in it is the sprite layer\'s, drawn behind the set: the sun (sol(), its rays turning with F, sinking with W.soly), the moon (luna()) and the stars (ESTRELLAS, twinkling). Each is drawn first in the sprite layer, then the set\'s own pixels are drawn again inside its box wherever the set has drawn anything (bakedZ > -1e8, and the leaves of that frame): the sky objects are farther than everything (depth -1e9, SetOverSprites). So the sun sets behind the fence, and the roof hides the star at 40, 46, as the old picture had them',
+      items: [
+        { at: 'patio.js:131', what: 'the stars (W.estrella, W.noche)', boxes: 'each star [x - 1, y - 1, 4, 4]' },
+        { at: 'patio.js:132', what: 'the moon (W.luna) at 150, 26; the sun at SOLX, soly (W.soly < 110)', boxes: 'moon [139, 15, 24, 22]; sun [SOLX - 21, soly - 21, 42, 42] (its rays)' },
+      ],
+    },
+    setKey,
+    things,
+    spots: Object.fromEntries(Object.entries(SPOTS).map(([k, s]) => [k, Object.assign({ world: s.world, new: s.new }, s.scale != null ? { scale: s.scale } : {}, { old: s.old, what: s.what })])),
+    lugar,
+    hops,
+    points: PTS,
+    views,
+    remap,
+    pictures: PICS,
+    level: LEVEL,
+    clips: {},
+    clipsWhat: 'patio.js never calls clip()',
+    front: {
+      how: 'nothing of the set covers a character: in the old picture the background (fondo: the house, the fence, the gate, the tree, the nest, the beds) was drawn before everyone, and every place is on the lawn before the house, the fence and the tree (checked: floor). The crate, the flowers, the sack and the ball stay in the sprite layer, in its list sorted by y, as before',
+      parts: {},
+    },
+    shadows: {
+      coqui: { radius: .45, at: 'the ground point under his feet on screen (unproject(b.x + b.w / 2, q.y + 25))', when: 'W.cq.vis and al > .5', cast: 'castShadow(g.x, g.y, .3, .45)' },
+      people: { radius: { grown: .35, nino: .3, bebe: .25 }, at: 'the ground point under their feet on screen (unproject(x, y - 1))', when: 'visible (vis !== 0, al > .5); the baby only on the ground, not in mamá\'s arms (bebe.z)', cast: 'standing: for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, r); sitting on the grass (sent): castShadow(g.x, g.y, .3, r)' },
+      dropped: 'patio.js:108 rana()\'s dotted shadow under the frog is not drawn: the engine casts his',
+    },
+    dropped: [
+      'patio.js:129 c.drawImage(spr("cielo" + n)) and patio.js:132 c.drawImage(spr("patio"...), fondo()) -> the set, for setKey(W)',
+      'patio.js:147 the light of the hour (orange .10 at sol 2, red .17 at 3) and patio.js:148 W.osc (dark blue over everything) -> baked into the set (setKey hora); the characters, the props and the fireflies are not dimmed (El frente\'s rule)',
+      'patio.js:108 the frog\'s dotted shadow -> the engine\'s cast shadow',
+    ],
+    moves: MOVES.map(m => Object.assign({ line: m.line, act: m.act, src: m.src, to: m.to }, m.respEn ? { respEn: m.respEn } : {}, m.pts ? { places: m.pts.map(q => Object.assign({ who: q[0] || 'whoever', old: q[1], new: q[2] }, q.length > 4 ? { z: q[3], world: q[4] } : { world: q[3] })) } : {}, m.sky ? { values: m.sky.map(s => ({ key: 'W.' + s[0], old: s[1], new: s[2] })) } : {}, { why: m.why })),
+    bubbles: { what: 'each bubble\'s rectangle relative to its tail\'s tip, as patio.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]', rects: G.M.bubbles },
+    talk: {
+      what: 'where a bubble goes (patio.js draw: line 150 for a person, 151 for the frog). The first of these places whose bubble is wholly inside the view, clear of the corner cards shown (hud: the sun card, the basket and the nest, the fireflies) and of every face (each visible person\'s and the frog\'s, its own too); if none is, the first (the old)',
+      top: 'a person: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2 - (W.lleva ? 18 : 0))',
+      places: TALK, placesWhat: '[side, dy]: the tail\'s tip at (top.x + side * (h + 16), top.y + dy), h the head\'s half width: a person 6, the frog b.w >> 1',
+      faces: 'a person\'s face: [hx - 6, y + top + 5 (the baby: + 4), 12, 10] (eyes to chin, not the hair), hx the head\'s middle; the frog\'s: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]',
+      heads: Object.fromEntries(Object.entries(G.M.people).map(([k, v]) => [k, { top: v.box[1], head: v.head }])),
+      headsWhat: 'each sprite (idle; .sent: sitting): top, the first opaque row relative to the feet row y; head, the middle of its top 10 rows relative to x (facing right; facing left: x - head, + 1 for the family sprites drawn at -PX)',
+      boards: 'in the 196 x 216 display, then + the view\'s x0: W.tarjeta sol [2, 2, 36, 54]; W.tarjeta luces [2, 2, 86, 32]; W.tanteo: [2, 2, 26 + 15 max(3, canasta.length), 28] and [119, 2, 75, 28]',
+    },
+    code: CODE(),
+    checks: { notes: [] },
+  };
+
+  function PICTURES(pic) {
+    // each picture's centre is a screen point; both sides of a pair the same window. An old 113 x 60 view (1.73 x) is zoom 2 when its subject is
+    // whole in 98 x 52 (niño, flor, amigo); niña is zoom 1 (mamá, 56 rows tall, is not whole in 52)
+    return {
+      'nino.si': pic(120, 148, 2, 'Luis on the lawn, close'), 'nino.no': pic(120, 148, 2, 'Carmen there, close'),
+      'nina.si': pic(96, 110, 1, 'Carmen by the crate'), 'nina.no': pic(96, 110, 1, 'mamá there'),
+      'juega.si': pic(105, 164, 1, 'Luis kicks the ball up'), 'juega.no': pic(105, 164, 1, 'Luis holds a pot, the ball at his feet'),
+      'flor.si': pic(72, 176, 2, 'one red flower in bed L, close'), 'flor.no': pic(72, 176, 2, 'the ball by bed L, no flower, close'),
+      'sol.si': pic(115, 45, 1, 'the sun over the fence, by day'), 'sol.no': pic(115, 45, 1, 'the moon, at night'),
+      'aqui.si': pic(120, 159, 1, 'Carmen beside bed L, a flower in it'), 'aqui.no': pic(120, 159, 1, 'Carmen beside bed L, the flower in bed R'),
+      'alla.si': pic(120, 159, 1, 'Luis beside bed L, the flower in bed R'), 'alla.no': pic(120, 159, 1, 'Luis beside bed L, a flower in it'),
+      'amigo.si': pic(107, 160, 2, 'Luis, the frog beside him, close'), 'amigo.no': pic(107, 160, 2, 'Luis, the ball beside him, close'),
+      'ven.si': pic(125, 145, 1, 'Carmen calls, the frog hops to her'), 'ven.no': pic(125, 145, 1, 'Carmen points up, the frog looks at the bird'),
+      'mira.si': pic(125, 145, 1, 'Luis points up, the frog looks at the bird'), 'mira.no': pic(125, 145, 1, 'Luis calls, the frog hops to him'),
+      'vamos.si': pic(145, 102, 1, 'Carmen at the open gate, the frog hops after her'), 'vamos.no': pic(145, 102, 1, 'Carmen sits with a glass, the frog holds one'),
+      'hasta_manana.si': pic(114, 88, 1, 'the family at the back door waves, sunset, the gate open, the frog going'), 'hasta_manana.no': pic(114, 88, 1, 'the family at the back door waves, by day, the frog stays'),
+      'parque.no': pic(120, 82, 1, 'cual-camino\'s "parque" pair, its "no" side: the yard, not the park (the old window [22, 30, 196, 104])'),
+    };
+  }
+
+  function CODE() {
+    const C = [], c = (line, old, to, note) => C.push(note ? { line, old, to, note } : { line, old, to });
+    const L = s => lineOf(s), fl = p => ({ floor: personW(p), new: personQ(personW(p)) });
+    c(L('const CAMA='), 'CAMA L [40,176,56,20], R [144,176,56,20]', 'the beds (the set paints each at the old ellipse: middle (c[0] + 28, c[1] + 10), radii 28, 10); hoyo() unchanged', 'points.hoyos.L, hoyos.R');
+    c(L('const CAMA='), 'SOLX=100, SOLY=[24,40,56,73]', { moved: 'SOLY=[26,40,56,73]' }, 'see moves');
+    c(L('const ESTRELLAS='), 'ESTRELLAS [60,18] [84,40] [124,12] [150,36] [40,46] [112,58] [72,64] [140,60]', 'behind the set (sheet behind): unchanged');
+    for (const [k, v] of Object.entries(OLD.LUGAR)) c(LINES.findIndex(l => l.includes(k + ':' + JSON.stringify(v).replace(/0\./g, '.'))) + 1, 'LUGAR.' + k + ' ' + JSON.stringify(v), { spot: 'frog.' + k, new: SPOTS['frog.' + k].new.concat([v[2]]) });
+    for (const k of ['L', 'R']) c(L('const DETRAS='), 'DETRAS.' + k + ' ' + JSON.stringify(OLD.DETRAS[k]), { spot: 'detras.' + k, new: SPOTS['detras.' + k].new });
+    for (const k of ['luis', 'carmen']) c(L('const DETRAS='), 'ESPERA.' + k + ' ' + JSON.stringify(OLD.ESPERA[k]), { spot: 'espera.' + k, new: SPOTS['espera.' + k].new });
+    OLD.LADOS.forEach((p, i) => c(L('const DETRAS='), 'LADOS[' + i + '] ' + JSON.stringify(p), { spot: 'lados.' + i, new: SPOTS['lados.' + i].new }));
+    c(L('const caja=id=>'), 'caja(id): [x - 11, y - alto(id), 22, alto(id)]', 'relative to the person: unchanged');
+    c(L('{id:"caja",si:'), 'box caja [104,112,32,24]', { thing: 'caja', box: things.caja.box }, 'the sprite layer\'s crate: unchanged');
+    c(L('{id:"caja",si:'), 'box camaL [40,160,56,38]', { thing: 'camaL', box: things.camaL.box });
+    c(L('{id:"caja",si:'), 'box camaR [144,160,56,38]', { thing: 'camaR', box: things.camaR.box });
+    c(L('{id:"caja",si:'), 'box bola [x - 7, y - 13, 14, 14]; saco [x - 13, y - 23, 26, 24]', 'relative: unchanged');
+    c(L('{id:"sol",si:'), 'box sol [SOLX-14, soly-14, 28, 28]', 'relative to the sun: unchanged (SOLY: moves)');
+    c(L('{id:"sol",si:'), 'box porton [127,70,40,43]', { thing: 'porton', box: things.porton.box, hand: things.porton.hand }, 'and hand: the hint hand\'s point (new: the old had none, so the box\'s middle)');
+    c(L('{id:"sol",si:'), 'box nido [170,60,22,16]', { thing: 'nido', box: things.nido.box });
+    c(L('{id:"sol",si:'), 'box arbol [168,8,60,106]', { thing: 'arbol', box: things.arbol.box });
+    c(L('{id:"pajaro",si:'), 'box pajaro [p[0]-10, p[1]-20, 20, 22]', 'relative to the bird: unchanged');
+    c(L('{id:"pajaro",si:'), 'box puerta [27,57,30,56]', { thing: 'puerta', box: things.puerta.box });
+    c(L('{id:"pajaro",si:'), 'box casa [0,14,61,100]', { thing: 'casa', box: things.casa.box });
+    c(L('{id:"pajaro",si:'), 'box cerca [60,80,180,33]', { thing: 'cerca', box: things.cerca.box });
+    c(L('{id:"pajaro",si:'), 'box patio [0,113,240,103]', { thing: 'patio', box: things.patio.box });
+    c(L('if(id==="bebe"){const e='), 'gente bebe: drawImage at x - 13, y - 28', 'relative to the baby: unchanged');
+    c(L('else if(id==="abuela"){const pose'), 'gente abuela: translate(x, y - 50), scale(-1,1) when dir < 0; drawImage(im,-30,0)', 'relative to her: unchanged');
+    c(L('c.translate(x,y-im.height+1'), 'gente: scale(-1,1) when dir < 0; drawImage(im, -PX, 0) at x, y - im.height + 1', 'relative to the person: unchanged');
+    c(L('if(p.pelo){'), 'the flower in her hair at x + 3, y - h + 2', 'relative: unchanged');
+    c(L('if(p.lleva){if(p.pose==="alto")'), 'what a person holds: cosa at x + d * 14, y - h + 13 (alto, 2 x); x - d * 20, y - h + 30 (offer, 1.4 x); x, y - h + 34 / 38 (1.4 x)', 'relative: unchanged (the old code\'s own 1.4 x and 2 x drawings of the small things, kept as they are)');
+    c(L('for(let j=0;j<3;j++)for(let i=j===1?0:2;i<b.w-5'), 'rana: the dotted shadow at b.x + 2, q.y + 25', 'dropped: the engine casts his shadow (shadows.coqui)');
+    c(L('if(q.ojos)[.3,.7].forEach'), 'rana: the eyes at b.x + b.w * .3, .7', 'relative to the frog: unchanged');
+    c(L('if(W.lleva)cosa(g,W.lleva'), 'rana: what he carries at b.x + b.w / 2, b.y + dy + 1; the basket at b.x + b.w - 6, b.y + b.h - 17', 'relative: unchanged');
+    c(L('function bub2('), 'bub2: c.scale(2,2), bub(c,k,0,0,a)', 'relative: unchanged (the bubbles are drawn at twice their size)');
+    c(L('c.drawImage(spr("cielo"+n'), 'c.drawImage(spr("cielo"+n,...),0,0)', 'dropped: the set\'s sky, for setKey(W)');
+    c(L('if(W.estrella||W.noche)ESTRELLAS'), 'the stars at ESTRELLAS', 'behind the set (sheet behind)');
+    c(L('if(W.luna)luna(c,150,26)'), 'luna(c,150,26); sol(c, SOLX, soly, n, brilla)', { points: ['luna', 'sol'] }, 'behind the set (sheet behind): unchanged places');
+    c(L('c.drawImage(spr("patio"+'), 'c.drawImage(spr("patio"+...,()=>fondo(W.porton,W.pdoor)),0,0)', 'dropped: the set, for setKey(W) (then the sky objects\' box redrawn from the set: behind)');
+    c(L('if(W.caja)L.push('), 'if(W.caja) c.drawImage(spr("caja",mkCaja),104,112) (sort y 136)', { point: 'caja', new: PTS.caja.screen }, 'the sprite layer: unchanged');
+    c(L('for(const k in CAMA){const fl='), 'the flowers in the beds: florEn at hoyo(k, i), sort y CAMA[k][1] + 12', 'the sprite layer: unchanged (the set\'s holes are at hoyo())');
+    c(L('if(W.rizo&&'), 'the loop the bird flew: setLineDash([2,3]) arc at z.x, z.y', 'screen: unchanged');
+    c(L('if(!W.noche&&n>=2){c.fillStyle='), 'the light of the hour: c.fillRect(0,0,SW,SH)', 'dropped: baked into the set (setKey hora)');
+    c(L('if(W.osc){c.fillStyle='), 'W.osc: c.fillRect(0,0,SW,SH)', 'dropped: baked into the set (setKey hora); the characters are not dimmed');
+    c(L('Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.bub'), 'a person\'s bubble at x, y - alto - 1', { talk: true }, 'sheet talk: the first free place');
+    c(L('if(q.vis&&q.bub){const b=frogBox(q);bub2'), 'the frog\'s bubble at b.x + (b.w >> 1), b.y + 2 - (W.lleva ? 18 : 0)', { talk: true }, 'sheet talk: the first free place');
+    c(L('function talkAt('), 'talkAt: [x, y - alto - 1 - (bub ? 38 : 0)]', 'relative to the person: unchanged');
+    c(L('if(k==="ir"){const up='), 'respIcon ir: [13,27] ...', 'the answer card\'s own drawing: unchanged');
+    c(L('else{[13,27].forEach(ex=>'), 'respIcon ver: the eyes at x + 13, x + 27', 'the answer card\'s own drawing: unchanged');
+    c(L('[[4,6],[20,3],[36,6]]'), 'respIcon ver: the rays [4,6] [20,3] [36,6]', 'the answer card\'s own drawing: unchanged');
+    c(L('if(W.tarjeta==="sol"){const k='), 'hud sun card tarjeta(g,3,3,34,52); g.fillRect(5,5,30,40)', 'display: unchanged');
+    c(L('for(let x=5;x<35;x+=5){g.fillStyle'), 'hud sun card: the fence g.fillRect(5,42,30,1)', 'display: unchanged');
+    c(L('if(W.tanteo){const mio='), 'hud tanteo tarjeta(g,3,3,...,26); the basket at 5,7', 'display: unchanged');
+    c(L('if(W.tarjeta==="luces"){tarjeta(g,3,3,84,30)'), 'hud fireflies card tarjeta(g,3,3,84,30); the frog at 5,9', 'display: unchanged');
+    c(L('async inicio9()'), 'inicio9: luis {x:160,y:128}, carmen {x:86,y:136}, bola {x:174,y:128}', { floor: [personW([160, 128]), personW([86, 136]), personW([174, 128])], new: [[160, 128], [86, 136], [174, 128]] }, 'the floor rule: the same screen places');
+    c(L('async ensena()'), 'ensena: for(const k of [0,1,2,3])', 'not a place: the sun card\'s four steps');
+    c(L('async asoma()'), 'asoma: W.gente.abuela={x:42,y:116,...}', { spot: 'asoma', new: SPOTS.asoma.new }, 'moved (see moves)');
+    c(L('if(!n){W.mari=[];'), 'final9: the stars [60,150] [180,150] [120,120] [90,170] [150,170]; the butterflies at 48 + i * 24 + (i % 2) 6, 150 + (i % 3) 8', 'screen effect: unchanged (over the lawn)');
+    c(L('else if(n>=3){W.luces=[{id:"medio"'), 'final9: a firefly at 150, 150', 'over the lawn: unchanged');
+    c(L('async pelota(){'), 'pelota: mueve("luis",166,150), mueve("carmen",60,150)', { floor: [personW([166, 150]), personW([60, 150])], new: [[166, 150], [60, 150]] }, 'the floor rule: the same screen places');
+    c(L('async bolaarbol()'), 'bolaarbol: the ball to 196, 64 (in the tree, by the nest)', 'the crown is where it was: unchanged');
+    c(L('async avesale()'), 'avesale: KIT.aveVa(184,60,5,1)', 'by the nest, in the air: unchanged');
+    c(L('async seva(o)'), 'seva: mueve(id,44,118)', { spot: 'seva', new: SPOTS.seva.new }, 'moved (see moves)');
+    c(L('async luzsale(o)'), 'luzsale: P [70,160] [150,150] [112,190]', fl([70, 160]), 'over the lawn: the same screen places');
+    c(L('async inicio10()'), 'inicio10: luis {x:190,y:160} (sitting), carmen {x:50,y:160}, saco {x:164,y:165}', { floor: [personW([190, 160]), personW([50, 160]), personW([164, 165])], new: [[190, 160], [50, 160], [164, 165]] }, 'the floor rule: the same screen places');
+    c(L('async aveloop()'), 'aveloop: the loop round 150, 40, r 18; KIT.aveVa(181,66,7,-1)', { point: 'nido', new: PTS.nido.screen }, 'the loop: screen, unchanged; the nest where it was');
+    c(L('async avenido()'), 'avenido: KIT.aveVa(181,66,8,-1)', { point: 'nido', new: PTS.nido.screen });
+    c(L('async prepA()'), 'prepA: mueve("carmen",150,140)', fl([150, 140]), 'the floor rule: the same screen place');
+    c(L('async alnido()'), 'alnido: KIT.aveVa(181,66,9,-1)', { point: 'nido', new: PTS.nido.screen });
+    c(L('if(mio>=3){W.heart=1;SFX.win();fx({t:"star",n:36,pts:[[60,40]'), 'final10: the stars [60,40] [150,44] [104,30] [80,60] [130,56]', 'screen effect: unchanged (in the sky)');
+    c(L('async inicio11()'), 'inicio11: abuela {x:34,y:136}, abuelo {x:60,y:126}, mama {x:86,y:136}, bebe {x:97,y:109,z:137} (in mamá\'s arms), papa {x:112,y:126}', { floor: [[34, 136], [60, 126], [86, 136], [112, 126]].map(personW), new: [[34, 136], [60, 126], [86, 136], [112, 126]] }, 'the floor rule: the same screen places; the baby relative to mamá');
+    c(L('luis:{x:150,y:160,pose:"idle",dir:-1}'), 'inicio11: luis {x:150,y:160}, carmen {x:188,y:158}; ave {x:178,y:83} on the fence', { floor: [personW([150, 160]), personW([188, 158])], new: [[150, 160], [188, 158]], point: 'cerca.ave' }, 'the floor rule; the bird on the fence\'s top (points cerca.ave)');
+    c(L('async juntos(o)'), 'juntos: mueve(id,170,124)', fl([170, 124]), 'the floor rule: the same screen place');
+    c(L('async vuelveluis()'), 'vuelveluis: mueve("luis",138,138)', fl([138, 138]), 'the floor rule: the same screen place');
+    c(L('async alcentro(o)'), 'alcentro: +o.x || 160, +o.y || 190', fl([160, 190]), 'the floor rule: the same screen place');
+    c(L('async viene(o)'), 'viene: mueve("carmen",186,174), mueve("abuelo",52,174)', { floor: [personW([186, 174]), personW([52, 174])], new: [[186, 174], [52, 174]] }, 'the floor rule: the same screen places');
+    c(L('async luiscorre()'), 'luiscorre: mueve("luis",170,124,8)', fl([170, 124]), 'the floor rule: the same screen place');
+    c(L('if(con>=3){W.aro=1;'), 'final11: the stars [110,70] [170,66] [140,56] [124,96] [160,96]', 'screen effect: unchanged');
+    c(L('else{const l={id:"nueva",est:"mov",x:214,y:120'), 'final11: a firefly comes from 214,120; luzA(l, f[0]+12, f[1]-8, 14, 1)', 'over the yard: unchanged; relative to the frog');
+    c(L('async sevan()'), 'sevan: KIT.aveA(150,70,10); hopTo(LUGAR.sale)', 'the bird in the air: unchanged; the frog out through the gate (LUGAR.sale)');
+    c(L('if(t==="luces"){const l='), 'stake: luzA(l,226,58,14,0)', 'screen: the firefly leaves to the top right, unchanged');
+    c(L('KIT.escena({id:"patio"'), 'CAM.wide [22,0,196,216]', { view: 'wide', zoom: 1, x0: views.wide.x0 });
+    c(L('KIT.escena({id:"patio"'), 'heartAt [118,36]', { point: 'corazon', new: PTS.corazon.screen });
+    c(L('polvo:null,rizo:null,brilla:0,ave:{mode:"sit",x:181'), 'fresh(): ave {x:181,y:66}; soly: SOLY[0]', { point: 'nido', new: PTS.nido.screen }, 'the nest where it was; SOLY: moves');
+    c('juego.js:16', 'fresh(): cq x 150 y 178 s 1', 'not used here: patio\'s fresh() puts him at LUGAR.centro');
+    c('cual.js:21', 'panelW(): cq x 123 y 150 s .86', 'a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)');
+    return C;
+  }
+}
+
+/* ---------- the checks ---------- */
+const FRAME_OUT = 12;                 // juego.js spot(): the frame is box +- 5 (+ 2 when it pulses), and its rings reach 5 further out
+const HANDR = [-12, 0, 36, 54];        // juego.js hand(): 12 x 15 cells of 3 px, drawn from (p.x - 12, p.y), 9 px lower on the down beat
+const HAND = JSON.parse(fs.readFileSync(path.join(REPO, 'historia/juego.js'), 'utf8').match(/const HAND=(\[[^\]]*\])/)[1]);   // its rows of cells: o ink, w white
+const handOn = (hp, r) => { for (const o of [0, 9]) for (let j = 0; j < HAND.length; j++) for (let i = 0; i < 12; i++) if (HAND[j][i] !== '.' && meets([Math.round(hp[0]) - 12 + i * 3, Math.round(hp[1]) + j * 3 + o, 3, 3], r)) return true; return false; };   // its drawn cells, both beats
+const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+const within = (r, c) => r[0] >= c[0] && r[1] >= c[1] && r[0] + r[2] <= c[0] + c[2] && r[1] + r[3] <= c[1] + c[3];
+const gapTo = (a, b) => Math.max(b[0] - (a[0] + a[2]), a[0] - (b[0] + b[2]), b[1] - (a[1] + a[3]), a[1] - (b[1] + b[3]));
+const frogBox = q => { const w = Math.round(30 * q.s) + 2, h = Math.round(25 * q.s) + 2; return { x: Math.round(q.x + (32 - w) / 2), y: q.y + 27 - h, w, h }; };
+
+function storyStates() {
+  const os = require('os'), { execFileSync } = require('child_process');
+  const dir = path.join(REPO, 'historia/cuentos'), stories = [];
+  for (const f of fs.readdirSync(dir).sort()) { if (!f.endsWith('.json') || f.startsWith('cual-')) continue;
+    const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (j.scene === 'patio') stories.push(j); }
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'patio-sheet-'));
+  try {
+    const runs = [];
+    for (const st of stories) {
+      execFileSync(process.execPath, [path.join(REPO, 'coqui/tool/ref/trazas/juega.mjs'), '--only', st.id, '--out', path.join(tmp, 'trazas', st.id), '--states', path.join(tmp, 'states')], { cwd: REPO, stdio: 'pipe' });
+      for (const plan of ['right', 'wrong', 'alternate']) {
+        const lines = fs.readFileSync(path.join(tmp, 'states', st.id, plan + '.states.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+        runs.push({ story: st, plan, lines });
+      }
+    }
+    return runs;
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+}
+
+function check(sh, G) {
+  const P = [], notes = sh.checks.notes, inv = JSON.parse(fs.readFileSync(path.join(REF, 'inventory.json'), 'utf8')), pos = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
+  const E = engine(G), F = G.F, COS = E.COS, T30 = Math.tan(Math.PI / 6), FAM = G.M.FAM;
+  const deacc = s => s.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_');
+  /* the inventory: every thing, place, view, position, pair and level picture */
+  for (const id of inv.thingIds) if (!sh.things[id]) P.push('thing missing: ' + id);
+  if (Object.keys(sh.things).length !== inv.thingIds.length) P.push('things: ' + Object.keys(sh.things).length + ', not ' + inv.thingIds.length);
+  if (sh.remap.length !== pos.positions.length) P.push('remap has ' + sh.remap.length + ' entries, positions.json ' + pos.positions.length);
+  sh.remap.forEach((r, i) => { if (!r.to || (r.to.pictures && !r.to.pictures.length)) P.push('remap: no name for positions.json #' + i + ' ' + JSON.stringify(r.old)); });
+  for (const k of Object.keys(inv.given.lugar)) if (!sh.lugar[k]) P.push('LUGAR missing: ' + k);
+  for (const k of Object.keys(inv.given.CAM)) if (!sh.views[k]) P.push('CAM missing: ' + k);
+  const pairs = JSON.parse(fs.readFileSync(path.join(REF, 'pairs.json'), 'utf8'));
+  const cual = JSON.parse(fs.readFileSync(path.join(REPO, 'historia/cuentos/cual-patio.json'), 'utf8'));
+  const pairSides = pairs.pairs.flatMap(p => ['si', 'no'].filter(s => p[s].scene === 'patio').map(s => ({ w: p.w, side: s, file: p.file, spec: p[s] })));
+  for (const ps of pairSides) if (!sh.pictures[deacc(ps.w) + '.' + ps.side]) P.push('picture missing: ' + ps.w + '.' + ps.side);
+  let nLevel = 0; for (const L of pairs.level) for (const p of L.pictures) if (p.scene === 'patio') { nLevel++; if (!sh.pictures[deacc(p.pair) + '.' + p.side]) P.push('level picture missing: ' + p.pair + '.' + p.side); }
+  if (sh.level.length !== nLevel) P.push('level: ' + sh.level.length + ' pictures, pairs.json ' + nLevel);
+  const lines = new Set(sh.code.map(e => String(e.line)));
+  for (const p of pos.inSceneFile) { const L = p.at.split(':')[1]; if (!lines.has(L)) P.push('patio.js line ' + L + ' (' + p.what + ' ' + JSON.stringify(p.nums) + ') has no entry in code'); }
+  for (const p of pos.inSceneFile) { const L = p.at.split(':')[1], es = sh.code.filter(e => String(e.line) === L), nums = p.nums.slice(0, 2).map(String);
+    if (!es.some(e => nums.every(n => e.old.replace(/\s/g, '').includes(n.replace(/^0\./, '.')) || e.old.replace(/\s/g, '').includes(n)))) P.push('patio.js:' + L + ' ' + JSON.stringify(p.nums) + ' (' + p.what + '): no code entry names these numbers'); }
+  notes.push('inventory: ' + Object.keys(sh.things).length + ' things (old ' + inv.thingIds.length + '), ' + Object.keys(sh.lugar).length + ' frog places (old ' + Object.keys(inv.given.lugar).length + '), ' + Object.keys(sh.views).length + ' view (old ' + Object.keys(inv.given.CAM).length + '), ' + sh.remap.length + ' positions (old ' + pos.positions.length + '), ' + cual.items.length + ' review pairs of cual-patio and cual-camino\'s parque.no (' + pairSides.length + ' pictures), ' + sh.level.length + ' level pictures (old ' + nLevel + '), ' + pos.inSceneFile.length + ' places of patio.js named in code');
+
+  /* hops */
+  for (const h of sh.hops) if (h.old !== h.new) P.push('hops ' + h.a + ' - ' + h.b + ': old ' + h.old + ', new ' + h.new);
+  notes.push('hops: ' + sh.hops.length + ' pairs of LUGAR places, every count as the old one (round(d / 30), 1 to 4, kit.js acts.ir); the places keep their screen points, so every distance is the old one');
+
+  /* the set's pixels: which part drew each, its depth */
+  const tagMap = key => { const m = new Array(240 * 216).fill(null); for (const [k, list] of Object.entries(G.parts[key])) for (const i of list) m[i] = k; return m; };
+  const TAGS = Object.fromEntries(Object.keys(G.parts).map(k => [k, tagMap(k)]));
+  const countIn = (tag, r, names) => { let n = 0; for (let y = Math.max(0, r[1]); y < Math.min(216, r[1] + r[3]); y++) for (let x = Math.max(0, r[0]); x < Math.min(240, r[0] + r[2]); x++) if (names.includes(tag[y * 240 + x])) n++; return n; };
+  const x0 = sh.views.wide.x0, VIEW = [x0, 0, 196, 216];
+
+  /* greenery off touch targets: no pixel any leaf of the crown can take (at any wind step: 2 px across, 1 down) inside another set thing's box, or the
+     sun's at any height, or the bird's on its nest or on the fence; nothing decorative in the set at all (every part is a touch key's) */
+  { const reach = new Set(); for (const i of G.leafPix) { const x = i % 240, y = Math.floor(i / 240); for (let dx = -2; dx <= 2; dx++) for (let dy = -1; dy <= 1; dy++) if (x + dx >= 0 && x + dx < 240 && y + dy >= 0 && y + dy < 216) reach.add((y + dy) * 240 + x + dx); }
+    const boxes = Object.entries(sh.things).filter(([k, t]) => t.set && !['arbol', 'cerca', 'patio'].includes(k)).map(([k, t]) => [k, t.box]);
+    for (const s of [26, 40, 56, 73]) boxes.push(['the sun at ' + s, [86, s - 14, 28, 28]]);
+    const bird = (p, k) => boxes.push([k, [p[0] - 10, p[1] - 20, 20, 22]]); bird([181, 66], 'the bird on its nest'); bird([178, 83], 'the bird on the fence');
+    for (const [k, b] of boxes) { let n = 0; for (const i of reach) { const x = i % 240, y = Math.floor(i / 240); if (x >= b[0] && x < b[0] + b[2] && y >= b[1] && y < b[1] + b[3]) n++; }
+      if (n && !/bird on its nest/.test(k)) P.push('greenery: ' + n + ' px the crown\'s leaves can take are inside the box of ' + k + ' ' + JSON.stringify(b));
+      if (/bird on its nest/.test(k)) notes.push('greenery: the crown\'s lower left lobe reaches ' + n + ' px into the bird\'s box on its nest (behind the bird: the sprite layer draws the bird over it, as the old picture did)'); }
+    const parts = new Set(Object.values(G.parts).flatMap(p => Object.keys(p)));
+    const keyParts = ['casa', 'puerta', 'escalon', 'cerca', 'porton', 'arbol', 'nido'];
+    for (const p of parts) if (!keyParts.includes(p)) P.push('decor: the set has a part ' + p + ' that is no touch key\'s');
+    notes.push('greenery: no pixel the crown\'s leaves can take (at any wind step) inside the box of the gate, the nest, the door, the house, the beds, the sun at any of its heights or the bird on the fence; the set\'s parts are ' + [...parts].sort().join(', ') + ' (the step is the door\'s): nothing decorative'); }
+
+  /* the door: whole (and who stands in it) in the wide view with a margin; a strip of wall over it */
+  { const d = sh.things.puerta.box, who = [d];
+    for (const k of ['asoma', 'seva']) { const p = sh.spots[k].new, m = G.M.people.abuela.box; who.push([p[0] + m[0], p[1] + m[1], m[2], m[3]]); }
+    { const b = frogBox({ x: sh.lugar.puerta.q[0], y: sh.lugar.puerta.q[1], s: sh.lugar.puerta.scale }); who.push([b.x, b.y, b.w, b.h]); }
+    const L = Math.min(...who.map(r => r[0])), R = Math.max(...who.map(r => r[0] + r[2])), T = Math.min(...who.map(r => r[1]));
+    if (L - x0 < 8 || x0 + 196 - R < 8 || T < 8) P.push('wide view: the door or who stands in it is ' + Math.min(L - x0, x0 + 196 - R, T) + ' px from its edge (keep 8)');
+    notes.push('wide view (x0 ' + x0 + '): the door, its frame and abuela in it from x ' + L + ' to ' + R + ' (' + (L - x0) + ' px from the left side), from row ' + T);
+    const tag = TAGS['dia-shut-shut'], top = E.project(...E.UVW(F.DU, .03, F.FLOOR + F.DH + F.DF)); let n = 0;
+    for (let y = Math.floor(top.sy) - 1; y >= 0 && tag[y * 240 + Math.round(top.sx)] === 'casa'; y--) n++;
+    // (the wall's own pixels: under the roof's fascia)
+    if (n < 6) P.push('a strip of wall: over the door ' + n + ' px');
+    notes.push('a strip of wall: ' + n + ' px of wall over the door\'s frame, under the roof\'s fascia'); }
+
+  /* the nest: the bird on it rests on it (the nest's rim under its feet, seen); the bird on the fence stands on the boards' tops */
+  { const tag = TAGS['dia-shut-shut'], ave = G.M.ave;
+    const feetOn = (p, part, where) => { const rows = ave[-1], last = Math.max(...rows.map(r => r[0])), feet = rows.filter(r => r[0] === last); let under = 0, cols = 0;
+      for (const [dy, a, b] of feet) for (let x = p[0] + a; x <= p[0] + b; x++) { cols++; for (let y = p[1] + dy + 1; y <= p[1] + dy + 2; y++) if (tag[y * 240 + x] === part) { under++; break; } }
+      if (under < cols) P.push('perch: ' + where + ': ' + under + ' of ' + cols + ' columns under its feet are ' + part);
+      return [under, cols, p[1] + last]; };
+    const a = feetOn(sh.points.nido.screen, 'nido', 'the bird on its nest'), b = feetOn(sh.points['cerca.ave'].screen, 'cerca', 'the bird on the fence');
+    notes.push('perch: the bird on its nest has the nest under its feet (' + a[0] + ' of ' + a[1] + ' columns, its feet row ' + a[2] + '); on the fence (inicio11), the boards\' tops under its feet (' + b[0] + ' of ' + b[1] + ')');
+    // what is behind the bird on the nest: sky and leaves, no other part (the old: the crown)
+    const behind = countIn(tag, [171, 46, 20, 20], ['casa', 'cerca', 'porton', 'puerta']);
+    if (behind) P.push('perch: ' + behind + ' px of the house, fence or gate behind the bird on its nest'); }
+
+  /* the beds: the five holes of each where the old ones were (a flower stands in each); behind the flowers' heads (rows y - 18 .. y - 9) the lawn,
+     nothing of the set (plain ground); the crate on the lawn with the lawn behind its flowers; the ball on the lawn at its old places */
+  { for (const key of Object.keys(TAGS)) { const tag = TAGS[key], K = G.kinds[key];
+      for (const k of ['L', 'R']) for (const h of F.HOLES[k]) { const head = [h[0] - 4, h[1] - 18, 9, 9];
+        const n = countIn(tag, head, ['casa', 'puerta', 'escalon', 'cerca', 'porton', 'arbol', 'nido']); if (n) P.push('beds ' + key + ': ' + n + ' px of the set behind the flower at ' + h);
+        if (K[h[1] * 240 + h[0]] !== G.K.road) P.push('beds ' + key + ': the hole at ' + h + ' is not in the earth'); }
+      const crate = [104, 113, 32, 23], n = countIn(tag, crate, ['casa', 'puerta', 'escalon', 'porton', 'arbol', 'nido']); if (n) P.push('crate ' + key + ': ' + n + ' px of the set behind the crate');
+      let lawn = 0; for (let x = 105; x < 135; x++) if (K[135 * 240 + x] === G.K.grass) lawn++; if (lawn < 28) P.push('crate ' + key + ': its bottom row is on ' + lawn + ' px of lawn'); }
+    notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the lawn, in every baked state; the crate\'s bottom row on the lawn; behind its flowers the lawn, the fence\'s and the gate post\'s foot (row 112) behind its top row, as the old picture'); }
+
+  /* every moment of every run */
+  const runs = storyStates();
+  const at = (st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
+  const sub = (x, V) => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+  const alto = (id, p) => id === 'abuela' ? 51 : id === 'bebe' ? 28 : (['luis', 'carmen'].includes(id) ? (p && p.sent ? 40 : 44) : (p && p.sent ? 49 : 56));
+  const shown = p => p && p.vis !== 0 && !(p.al != null && p.al <= .3);
+  const people = w => Object.entries(w.gente || {}).filter(([id, p]) => shown(p));
+  const spr = (id, p) => G.M.people[id + (p.sent && id !== 'abuela' && id !== 'bebe' ? '.sent' : '')];
+  const body = (id, p) => { const m = spr(id, p), b = m.box, x = Math.round(p.x), y = Math.round(p.y);
+    return p.dir < 0 && id !== 'bebe' ? [x - (b[0] + b[2]) + (id === 'abuela' ? 0 : 1), y + b[1], b[2], b[3]] : [x + b[0], y + b[1], b[2], b[3]]; };
+  const faceOf = (id, p) => { const m = spr(id, p), b = body(id, p), hx = p.dir < 0 && id !== 'bebe' ? Math.round(p.x) - m.head + (id === 'abuela' ? 0 : 1) : Math.round(p.x) + m.head;
+    return [Math.round(hx - 6), b[1] + (id === 'bebe' ? 4 : 5), 12, 10]; };
+  const frogFace = q => { const b = frogBox(q); return [b.x + 2, b.y + Math.round(q.dy || 0), b.w - 4, Math.round(b.h * .6)]; };
+  const BUBR = G.M.bubbles, bubRect = (k, tx, ty) => { const r = BUBR[k]; if (!r) throw new Error('no bubble ' + k); return [tx + r[0], ty + r[1], r[2], r[3]]; };
+  // the old runs' W in the new places (sheet moves): a person at a moved place of an act the story uses goes to its new one; soly 24 is 26
+  const MVall = sh.moves.flatMap(m => (m.places || []).map(q => Object.assign({ act: m.act }, q)));
+  const RMall = sh.remap.filter(e => e.moved).map(e => ({ old: e.old, new: e.new, files: e.uses.map(u => u.split(' ')[0].replace(/\.json$/, '')) }));
+  let MV = MVall, RM = RMall, EN = null;
+  const remapW = w0 => { const w = JSON.parse(JSON.stringify(w0));
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; const m = MV.find(q => (q.who === 'whoever' || q.who === id) && q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y));
+      if (m) { p.x = m.new[0]; p.y = m.new[1]; if (m.z != null) p.z = m.z; } }
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; const m = RM.find(q => q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y)); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    if (w.soly === 24) w.soly = 26;
+    if (EN && w.gente && w.gente.abuela && w.gente.mama) w.respEn = EN;   // after inicio11 (the family is there)
+    return w; };
+  let nM = 0, nB = 0, worstView = 99, worstBoard = 99; const seen = new Set(), reached = new Set();
+  const facesOf = w => { const f = people(w).filter(([id, p]) => !(p.al != null && p.al < .5)).map(([id, p]) => [id + '\'s face', faceOf(id, p)]); if (w.cq && w.cq.vis && !(w.cq.al < .5)) f.push(['the frog\'s face', frogFace(w.cq)]); return f; };
+  const talk = (k, top, view, boards, faces, h = 6) => { for (const [side, dy] of sh.talk.places) { const r = bubRect(k, top[0] + side * (h + 16), top[1] + dy);
+      if (within(r, view) && !boards.some(b => meets(r, b[1])) && !faces.some(f => meets(r, f[1]))) return r; } return bubRect(k, top[0], top[1]); };
+  // each person's recorded bubble and the ones an act can show at any moment: "amor" (poke: anyone touched), "q" (duda, encoge: Carmen, abuelo,
+  // Luis); the frog's recorded one, his "amor" (abrazo) and "q" (turno, duda)
+  const bubblesOf = (w, acts = true, view = VIEW) => {
+    const out = [], boards = boardsOf(w, view[0]), faces = facesOf(w);
+    for (const [id, p] of people(w)) { if (p.al != null && p.al < .5) continue;
+      const ks = new Set(p.bub ? [p.bub] : []); if (acts) { ks.add('amor'); if ((w.__q || []).includes(id)) ks.add('q'); }
+      for (const k of ks) out.push([id + ' (' + Math.round(p.x) + ',' + Math.round(p.y) + (p.sent ? ' sitting' : '') + ') "' + k + '"', talk(k, [Math.round(p.x), Math.round(p.y) - alto(id, p) - 1], view, boards, faces)]); }
+    const q = w.cq; if (q && q.vis && !(q.al < .5)) { const b = frogBox(q); for (const k of new Set((acts ? [q.bub, 'amor', (w.__q || []).includes('cq') ? 'q' : null] : [q.bub]).filter(Boolean))) out.push(['the frog (' + q.x + ',' + q.y + ') "' + k + '"', talk(k, [b.x + (b.w >> 1), b.y + 2 - (w.lleva ? 18 : 0)], view, boards, faces, b.w >> 1)]); }
+    return out; };
+  const judge = (where, rect, box, boards, faces) => {
+    if (!within(rect, box)) { P.push('bubble: ' + where + ' ' + JSON.stringify(rect) + ' is not wholly inside ' + JSON.stringify(box)); return; }
+    worstView = Math.min(worstView, rect[0] - box[0], box[0] + box[2] - rect[0] - rect[2], rect[1] - box[1], box[1] + box[3] - rect[1] - rect[3]);
+    for (const [bn, b] of boards) { if (meets(rect, b)) P.push('bubble: ' + where + ' ' + JSON.stringify(rect) + ' is over ' + bn + ' ' + JSON.stringify(b)); else worstBoard = Math.min(worstBoard, gapTo(rect, b)); }
+    for (const [fn, f] of faces) if (meets(rect, f)) P.push('bubble: ' + where + ' ' + JSON.stringify(rect) + ' is on ' + fn + ' ' + JSON.stringify(f));
+  };
+  // standing on clear ground: no set pixel nearer than a character inside its body (the house, the door and its step, the fence, the gate, the tree, the nest)
+  const NEAR = .08;
+  const SOLID = ['casa', 'puerta', 'escalon', 'cerca', 'porton', 'arbol', 'nido'];
+  const vAt = (sx, sy) => { const g = E.atZ(sx, sy, 0); return (g[0] + g[1]) / E.R2; };
+  const nearer = (key, r, v, names) => { const Z = G.z[key], tag = TAGS[key]; let n = 0;
+    for (let y = Math.max(0, r[1]); y < Math.min(216, r[1] + r[3]); y++) for (let x = Math.max(0, r[0]); x < Math.min(240, r[0] + r[2]); x++) { const i = y * 240 + x; if (names.includes(tag[i]) && Z[i] > (v + NEAR) / COS - (y + .5 - E.OY) * T30 / E.S) n++; }
+    return n; };
+  const floorSeen = new Set(); let nFloor = 0, nSit = 0;
+  const floorCheck = (where, w) => {
+    const key = keyOf(w); reached.add(key);
+    if (!STATES.includes(key)) P.push('state: ' + where + ' reaches ' + key + ', which is not baked');
+    for (const [id, p] of people(w)) {
+      if (p.z) continue;                                                       // the baby in mamá's arms
+      const k = JSON.stringify([id, Math.round(p.x), Math.round(p.y), !!p.sent, key]); if (floorSeen.has(k)) continue; floorSeen.add(k);
+      if (p.sent) nSit++; else nFloor++;
+      const v = vAt(Math.round(p.x), Math.round(p.y) - 1);
+      if (v < 0 && !(id === 'abuela' && v > -.4)) P.push('ground: ' + where + ' ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ' stands beyond the house and the fence (v ' + r2(v) + ')');
+      const n = nearer(key, body(id, p), v, SOLID);
+      if (n) P.push('ground: ' + where + ' ' + id + ' at ' + Math.round(p.x) + ',' + Math.round(p.y) + ': ' + n + ' px of the set nearer than them inside their body');
+    }
+    const q = w.cq; if (q && q.vis) { const k = JSON.stringify(['cq', q.x, q.y, q.s, key]); if (!floorSeen.has(k)) { floorSeen.add(k); nFloor++;
+      const b = frogBox(q), n = nearer(key, [b.x, b.y, b.w, b.h], vAt(b.x + b.w / 2, q.y + 25), SOLID);
+      if (n) P.push('ground: ' + where + ' the frog at ' + q.x + ',' + q.y + ': ' + n + ' px of the set nearer than him inside his box'); } }
+  };
+  const actsOf = st => new Set((JSON.stringify(st).match(/"act":\s*"[a-z0-9]+"/g) || []).map(a => a.split('"')[3]));
+  const forRun = r => { const a = actsOf(r.story); MV = MVall.filter(q => a.has(q.act) || q.act === '*'); RM = RMall.filter(q => q.files.includes(r.story.id)); EN = (sh.moves.find(m => m.respEn && a.has(m.act)) || {}).respEn || null; };
+  for (const r of runs) { forRun(r); for (const L of r.lines) {
+    if (JSON.stringify(L.cam) !== '[22,0,196,216]') P.push(r.story.id + ' ' + r.plan + ' ' + L.path + ': a view the sheet does not have ' + JSON.stringify(L.cam));
+    const w = remapW(L.W), boards = boardsOf(w, x0), faces = facesOf(w); nM++;
+    { const st = L.path && at(r.story, L.path); if (st && typeof st === 'object' && ['duda', 'encoge', 'turno'].includes(st.act)) w.__q = [st.act === 'turno' ? 'cq' : st.quien || 'luis']; }
+    for (const [who, rect] of bubblesOf(w)) { const key = JSON.stringify([who, rect, boards]); if (seen.has(key)) continue; seen.add(key); nB++; judge(r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + who, rect, VIEW, boards, faces); }
+    floorCheck(r.story.id + ' ' + r.plan + ' ' + L.path + ':', w);
+  } }
+
+  /* the asks: hint frames inside the view, the hand on no face, the answer cards over no one */
+  const cajaBox = (id, p) => [Math.round(p.x) - 11, Math.round(p.y) - alto(id, p), 22, alto(id, p)];
+  const boxOf = (w, k) => { const t = sh.things[k];
+    if (t && t.set) return t.box;
+    if (k === 'caja') return w.caja ? t.box : null;
+    if (k === 'bola') return w.bola ? [Math.round(w.bola.x) - 7, Math.round(w.bola.y) - 13, 14, 14] : null;
+    if (k === 'saco') return w.saco ? [Math.round(w.saco.x) - 13, Math.round(w.saco.y) - 23, 26, 24] : null;
+    if (k === 'sol') return !w.noche && w.soly < 80 ? [86, Math.round(w.soly) - 14, 28, 28] : null;
+    if (k === 'pajaro') { const v = w.ave; if (!v || v.mode === 'none') return null; const p = v.mode === 'head' ? (() => { const b = frogBox(w.cq); return [b.x + b.w / 2, b.y + Math.round(w.cq.dy) + 2]; })() : [Math.round(v.x), Math.round(v.y + (v.dip || 0))]; return [p[0] - 10, p[1] - 20, 20, 22]; }
+    if (k === 'coqui') { const b = frogBox(w.cq); return [b.x, b.y, b.w, b.h]; }
+    const p = w.gente && w.gente[k]; return p && shown(p) ? cajaBox(k, p) : null; };
+  const maskMeets = (id, p, r) => { const pose0 = id === 'bebe' ? (p.est || 'idle') : (p.pose === 'alto' ? 'wave0' : p.pose || 'idle'), sent = p.sent && id !== 'abuela' && id !== 'bebe' ? '.sent' : '';
+    const key = G.M.masks[id + '.' + pose0 + sent] ? id + '.' + pose0 + sent : G.M.masks[id + '.' + pose0 + '0' + sent] ? id + '.' + pose0 + '0' + sent : id + '.idle' + sent;
+    const m = G.M.masks[key], x = Math.round(p.x), y = Math.round(p.y), flip = p.dir < 0 && id !== 'bebe'; let n = 0;
+    for (const [dy, a, b] of m) { const row = y + dy; if (row < r[1] || row >= r[1] + r[3]) continue; const xa = flip ? x - b + (id === 'abuela' ? 0 : 1) : x + a, xb = flip ? x - a + (id === 'abuela' ? 0 : 1) : x + b;
+      n += Math.max(0, Math.min(xb + 1, r[0] + r[2]) - Math.max(xa, r[0])); }
+    return n; };
+  const respBox = (w, k) => { const q = w.cq, b = frogBox(q), n = w.resp.length, i = w.resp.indexOf(k), m = n > 2 ? 76 : 60, en = w.respEn, cx = en ? en[0] : Math.max(x0 + m, Math.min(x0 + 196 - m, b.x + b.w / 2)), y = en ? en[1] : Math.max(4, b.y - 46);
+    return n > 2 ? [Math.round(cx - 70 + i * 50), y, 40, 36] : i === 0 ? [Math.round(cx - 50), y, 40, 36] : [Math.round(cx + 10), y, 40, 36]; };
+  let nF = 0, nC = 0, nH = 0, worstF = 99, worstC = 99; const askSeen = new Set(), cardHand = new Set(), askedFor = new Set();
+  for (const r of runs) { const Ls = r.lines; forRun(r);
+    Ls.forEach(L => { if (L.kind !== 'ask' && L.kind !== 'decide') return;
+      const j = Ls.findIndex(M => M.path === L.path || (M.path || '').startsWith(L.path + '.')); if (j < 1) return;
+      const w = remapW(Ls[j - 1].W), st = at(r.story, L.path), V = Ls[j - 1].V;
+      const sb = x => sub(x, V);
+      w.resp = null; let spot = null;
+      if (st.ask) { spot = sb(st.ask); if (st.resp) w.resp = st.resp.map(sb); }
+      else if (st.decide) { const ops = st.options.map(sb), bur = (st.burbujas || []).map(sb); spot = sb(st.pick) || ops[0]; if (st.decide === 'say') w.resp = ops; else if (bur.length) w.resp = bur; }
+      const where = r.story.id + ' ' + r.plan + ' ' + L.path + ' (' + spot + ')', key = JSON.stringify([spot, w.gente, w.cq, w.resp, w.soly, w.bola, w.ave, w.caja]);
+      if (askSeen.has(key)) return; askSeen.add(key); askedFor.add(spot);
+      const faces = facesOf(w), bodies = people(w).map(([id, p]) => [id, body(id, p)]);
+      if (w.resp) for (const k of w.resp) { const c = respBox(w, k); nC++;
+        if (!within(c, VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' is not inside the view');
+        for (const [bn, bb] of boardsOf(w, x0)) if (meets(c, bb)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' is over ' + bn);
+        { const v = w.ave; if (v && v.mode !== 'none' && v.mode !== 'head') { const rows = G.M.ave[v.dir < 0 ? -1 : 1]; let n = 0; for (const [dy, a, bb] of rows) { const row = Math.round(v.y) + dy; if (row >= c[1] && row < c[1] + c[3]) n += Math.max(0, Math.min(Math.round(v.x) + bb + 1, c[0] + c[2]) - Math.max(Math.round(v.x) + a, c[0])); } if (n) P.push('cards: ' + where + ' the card ' + k + ' covers ' + n + ' px of the bird'); } }
+        for (const [id, b] of bodies) { const p = w.gente[id], n = maskMeets(id, p, c); if (n) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' covers ' + n + ' px of ' + id + ' ' + JSON.stringify(b)); else worstC = Math.min(worstC, gapTo(c, b)); } }
+      const rb = w.resp && w.resp.includes(spot) ? respBox(w, spot) : null, b = rb || boxOf(w, spot) || (() => { const f = frogBox(w.cq); return [f.x, f.y, f.w, f.h]; })();
+      nF++;
+      const fr = [b[0] - FRAME_OUT, b[1] - FRAME_OUT, b[2] + 2 * FRAME_OUT, b[3] + 2 * FRAME_OUT];
+      if (!rb) { if (!within(fr, VIEW)) P.push('hint frame: ' + where + ' ' + JSON.stringify(b) + ' +- ' + FRAME_OUT + ' is not wholly inside the view'); else worstF = Math.min(worstF, fr[0] - x0, x0 + 196 - fr[0] - fr[2], fr[1], 216 - fr[1] - fr[3]); }
+      const hp = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : (sh.things[spot] && sh.things[spot].hand) || [Math.round(b[0] + b[2] / 2), Math.round(b[1] + b[3] / 2)], hr = [Math.round(hp[0]) + HANDR[0], Math.round(hp[1]) + HANDR[1], HANDR[2], HANDR[3]]; nH++;
+      for (const [fn, f] of faces) if (handOn(hp, f)) { if (rb && fn === 'the frog\'s face') { cardHand.add(spot); continue; } P.push('hand: ' + where + ' the hand ' + JSON.stringify(hr) + ' is on ' + fn + ' ' + JSON.stringify(f)); }
+    }); }
+  notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), the hint hand on no face; ' + nC + ' answer cards inside the view, over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
+  if (cardHand.size) notes.push('NOT the scene\'s: the hand juego.js draws at an answer card (the left one) reaches onto the frog\'s face, 46 px under it, in every scene (the card\'s place and the hand are the game\'s, respBox and hand()): at the asks for ' + [...cardHand].join(', '));
+  notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, at any moment; the "q" of duda, encoge and turno at their steps; the frog\'s "amor"): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corners (' + worstBoard + ' px), on no face');
+  notes.push('ground: ' + nFloor + ' distinct places where someone stands (and the frog), ' + nSit + ' where someone sits on the grass: on the lawn (or the back door\'s step), nothing of the house, the fence, the gate or the tree nearer than them inside their body');
+
+  /* standing over sitting: no standing person's sprite covers more of a sitting one's face than the old picture did at that moment */
+  let nSO = 0; const soSeen = new Set(), soOld = new Set();
+  const drawOrder = w => Object.keys(w.gente || {}).filter(id => shown(w.gente[id])).map((id, k) => [id, w.gente[id].z || w.gente[id].y, k]).sort((a, b) => a[1] - b[1] || a[2] - b[2]).map(e => e[0]);
+  const coverFaces = w => { const ord = drawOrder(w), out = {};
+    ord.forEach((t, ti) => { const pt = w.gente[t]; if (!pt.sent && !pt.z) return; const face = faceOf(t, pt);
+      ord.slice(ti + 1).forEach(sid => { const ps = w.gente[sid]; if (ps.sent || ps.z) return; const n = maskMeets(sid, ps, face); if (n) out[sid + '>' + t] = n; }); });
+    return out; };
+  for (const r of runs) { forRun(r); for (const L of r.lines) { const wn = remapW(L.W), key = JSON.stringify([wn.gente, L.W.gente]); if (soSeen.has(key)) continue; soSeen.add(key); nSO++;
+    const cn = coverFaces(wn), co = coverFaces(L.W);
+    for (const [pair, n] of Object.entries(cn)) { if ((co[pair] || 0) < n) P.push('standing over sitting: ' + r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + pair.replace('>', '\'s sprite covers ') + '\'s face, ' + n + ' px (the old picture: ' + (co[pair] || 0) + ')'); else soOld.add(r.story.id + ' ' + pair + ' ' + n); } } }
+  notes.push('standing over sitting: at ' + nSO + ' distinct moments no standing person\'s sprite covers more of a sitting person\'s face (the baby in mamá\'s arms, Luis on the grass) than the old picture did there' + (soOld.size ? ' (' + soOld.size + ' covers, each as in the old: ' + [...soOld].join('; ') + ')' : ''));
+
+  /* the review pictures (and the level pictures, the same pictures): everyone and the frog whole in their crop (a zoom 2 crop cuts no one the old one
+     did not), every bubble inside, on the ground; the sky things inside; what differs between the two sides */
+  let nPic = 0; const pairDiff = [];
+  MV = []; RM = []; EN = null;
+  const byWord = {}; for (const ps of pairSides) (byWord[ps.w] = byWord[ps.w] || {})[ps.side] = ps;
+  for (const [word, sides] of Object.entries(byWord)) {
+    const ws = {};
+    for (const side of Object.keys(sides)) {
+      const spec = sides[side].spec, base = { gente: {}, cq: { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: 0, bub: null }, soly: 24, sol: 0, ave: { mode: 'sit', x: 181, y: 66, dir: -1, st: 'n' } };
+      const w = remapW(Object.assign(base, JSON.parse(JSON.stringify(spec.set || {})))), nm = deacc(word) + '.' + side, pc = sh.pictures[nm]; ws[side] = w; nPic++;
+      const crop = pc.crop, oc = spec.cam, who = people(w).map(([id, p]) => [id, body(id, p)]); if (w.cq.vis) { const b = frogBox(w.cq); who.push(['the frog', [b.x, b.y + Math.round(w.cq.dy || 0), b.w, b.h]]); }
+      if (w.bola) who.push(['the ball', [Math.round(w.bola.x) - 7, Math.round(w.bola.y - (w.bola.h || 0)) - 13, 14, 14]]);
+      if (w.luna) who.push(['the moon', [139, 15, 24, 22]]); else if (!w.noche && w.soly < 110) who.push(['the sun', [100 - 21, Math.round(w.soly) - 21, 42, 42]]);
+      for (const [id, b] of who) { const cut = !within(b, crop), oldCut = !within(b, [Math.floor(oc[0]), Math.floor(oc[1]), Math.ceil(oc[2]), Math.ceil(oc[3])]);
+        if (cut && !(id === 'the sun' && oldCut)) P.push('pair ' + nm + ': ' + id + ' ' + JSON.stringify(b) + ' is cut by the picture ' + JSON.stringify(crop) + (oldCut ? ' (the old one cut it too)' : '')); }
+      for (const [who2, rect] of bubblesOf(w, false, crop)) if (!within(rect, crop)) P.push('pair ' + nm + ': ' + who2 + ' bubble is cut');
+      floorCheck('pair ' + nm + ':', w);
+    }
+    if (!ws.si || !ws.no) continue;
+    if (JSON.stringify(ws.si) === JSON.stringify(ws.no)) P.push('pair ' + word + ': the two pictures are the same');
+    const diff = []; const ids = new Set([...Object.keys(ws.si.gente || {}), ...Object.keys(ws.no.gente || {})]);
+    for (const id of ids) { const x = (ws.si.gente || {})[id], y = (ws.no.gente || {})[id]; if (JSON.stringify(x) !== JSON.stringify(y)) diff.push(id + (!x ? ' only in no' : !y ? ' only in si' : ' ' + Object.keys(Object.assign({}, x, y)).filter(k => JSON.stringify(x[k]) !== JSON.stringify(y[k])).join('/'))); }
+    for (const k of new Set([...Object.keys(ws.si), ...Object.keys(ws.no)])) if (k !== 'gente' && k !== 'cq' && JSON.stringify(ws.si[k]) !== JSON.stringify(ws.no[k])) diff.push(k);
+    if (JSON.stringify(ws.si.cq) !== JSON.stringify(ws.no.cq)) diff.push('the frog ' + Object.keys(Object.assign({}, ws.si.cq, ws.no.cq)).filter(k => ws.si.cq[k] !== ws.no.cq[k]).join('/'));
+    pairDiff.push(deacc(word) + ': ' + diff.join(', '));
+  }
+  notes.push('pairs, what differs (the same window both sides): ' + pairDiff.join('; '));
+  notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures): everyone, the frog, the ball and the sun or moon whole in their crop, on clear ground');
+  for (const k of STATES) if (!reached.has(k)) P.push('state ' + k + ' is baked but nothing reaches it');
+  notes.push('states: ' + reached.size + ' baked states reached (' + [...reached].sort().join(', ') + ')');
+  return P;
+}
