@@ -275,7 +275,7 @@ void main() {
     'the low table is drawn again over who stands behind it, only where nearer',
     () {
       final W = fresh();
-      final b = person('hermano')
+      person('hermano')
         ..['vis'] = 1
         ..['x'] = 121
         ..['y'] = 150;
