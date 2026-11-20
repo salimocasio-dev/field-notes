@@ -39,7 +39,7 @@ const REF = path.join(REPO, 'coqui/ref/escenas/balcon');
   console.log('wrote ' + path.relative(REPO, OUT) + ' (' + text.length + ' bytes)');
   for (const n of sheet.checks.notes) console.log('  ' + n);
   if (problems.length) { console.log('CHECK FAILED:\n  ' + problems.join('\n  ')); process.exit(1); }
-  console.log('check: all 13 things, every positions.json entry in remap, every LUGAR and CAM name, every balcon.js position in code, every hop count as the old one, every hint frame inside the picture, nothing decorative over a touch box, every drink\'s base inside the table top with plain wall behind it, the bird on the window\'s flower box clear of abuela and the drinks, abuela standing on clear floor, the door whole in the wide view, the frog and abuela whole in pair gracias: ok');
+  console.log('check: all 13 things, every positions.json entry in remap, every LUGAR and CAM name, every balcon.js position in code, every hop count as the old one, nothing decorative over a touch box, every drink\'s base inside the table top with plain wall behind it, the bird on the window\'s flower box clear of abuela and the drinks, abuela standing on clear floor, the door whole in the wide view, the frog and abuela whole in pair gracias; at every moment of the stories every bubble inside the view, off the boards and off every face, every set of drinks side by side, every hint frame inside its view: ok');
 })().catch(e => { console.error(e); process.exit(1); });
 
 /* ---------- the engine's projection, as pp-engine.js has it (the same operations in the same order) ---------- */
@@ -54,6 +54,22 @@ function engine(G) {
 const r4 = v => Math.round(v * 1e4) / 1e4, r2 = v => Math.round(v * 100) / 100;
 const W4 = p => p.map(r4);
 const hop = d => d < 3 ? 0 : Math.max(1, Math.min(4, Math.round(d / 30)));   // kit.js:128 acts.ir
+
+/* ---------- the picture bubbles (order 30b), as balcon.js bub2 draws them: twice their size, the tail's tip at (tx, ty) ---------- */
+// the glyphs of every bubble a character of this scene can show: balcon.js's BUBL (calor ... feliz), juego.js's BUBL (como, bien, mal, quien, lluvia)
+// and BUB (hola, amor). A glyph's width: engine.js GL (q 5, hand 7, gota 5), balcon.js GL (sol 7, jugo 7, agua 7, equis 5); ok and sad are faces, 7
+const GLW = { ok: 7, sad: 7, q: 5, hand: 7, gota: 5, sol: 7, jugo: 7, agua: 7, equis: 5 };
+const BUBBLES = { calor: ['sol', 'sad'], no: ['equis'], q: ['q'], quiere_agua: ['agua'], no_jugo_si_agua: ['jugo', 'equis', 'agua'], jugo_q: ['jugo', 'q'], agua_q: ['agua', 'q'], feliz: ['ok'],
+  como: ['ok', 'q', 'sad'], bien: ['ok'], mal: ['sad'], quien: ['hand', 'q'], lluvia: ['gota', 'sad'], hola: { w: 9, h: 10 }, amor: { w: 7, h: 6 } };
+// the screen rectangle [x, y, w, h] of bubble k with its tail's tip at (tx, ty), on either frame of its bob (engine.js bubble, juego.js bub: the
+// outline and the tail, at 1x; bub2 doubles them about (tx, ty))
+function bubbleRect(k, tx, ty) {
+  const b = BUBBLES[k]; if (!b) throw new Error('no bubble ' + k);
+  let c0, c1, r0, r1;
+  if (Array.isArray(b)) { const w = b.reduce((a, g) => a + GLW[g] + 3, 3), x = Math.round(-w / 2), y = -13 - 5 - 1; c0 = Math.min(x - 1, -3); c1 = Math.max(x + w, 3); r0 = y - 1; r1 = y + 1 + 13 + 3; }
+  else { const w = b.w + 6, h = b.h + 6, x = Math.round(-w / 2), y = -h - 5 - 1; c0 = Math.min(x - 1, -2); c1 = Math.max(x + w, 2); r0 = y - 1; r1 = y + 1 + h + 3; }
+  return [tx + 2 * c0, ty + 2 * r0, 2 * (c1 - c0 + 1), 2 * (r1 - r0 + 1)];
+}
 
 function make(G) {
   const E = engine(G), F = G.F, P = p => { const q = E.project(p[0], p[1], p[2]); return [r2(q.sx), r2(q.sy)]; };
@@ -115,10 +131,17 @@ function make(G) {
   // her lap (row 36) on the seat, her feet (row 47) before it
   const chairSeat = [F.SILLA[0], F.SILLA[1], f + .5];
   { const s = P(chairSeat); pt('ABS', { world: W4(chairSeat), old: [51, 96], screen: [Math.round(s[0]) - 20, Math.round(s[1]) - 36], what: 'ABS: abuela sitting in her big chair (the sprite\'s top left: her middle, sprite x 17, 3 px left of the chair\'s middle so her feet stay before it and off the table; her lap, row 36, on its seat). Everything drawn with her (the fan, her glass, the jug over her head, sweat, the splash and its puddle, her bubble) is relative to it: unchanged' }); }
+  // order 30b: her bubble while the score boards are up (el-jugo's game part, W.rondas: they cover the top 29 rows of the view): beside her head, on
+  // its right, not over it. Its tail at TALK_LADO; her bubbles then are "no" and "amor" (26 and 30 px wide at twice their size, 38 to 40 rows
+  // over the tail): the bubble's left edge 2 px right of her hair (sprite x 25), its top a row under the boards (row 28) (checks: bubbles)
+  { const a = ptR('ABS'); pt('talk.lado', { world: W4(chairSeat), old: [68, 95], screen: [a[0] + 25 + 2 + 14, 28 + 2 + 40], what: 'TALK_LADO: the tail of her bubble while she sits and the score boards are up (talkAt with W.rondas): beside her head, on its right, under the boards (old: over her head, ABS + (17, -1), as when no boards are up)' }); }
   // the table top: X2 and MESA_Y. The glasses and jugs stand on a row DROW px in front of the table's middle (their bottom on it), each one's
   // base inside the top (checks.table)
-  for (const [k, s, old, what] of [['mesa.izq', -12, [108, 128], 'X2[0]: the left place on the table top'], ['mesa.der', 12, [132, 128], 'X2[1]: the right place on the table top (also acts.recibe x 132)'],
-    ['mesa.centro', 0, [120, 128], 'the middle of the table top (dos("sm") vaso_mesa x 120, acts.aparta x 120, the pairs\' glass or jug at 120; acts.aveva\'s test v.x < 120)'],
+  // order 30b: X2 14 px left and right of the middle (round 4: 12), and the middle one a pixel right of the table's middle (round 4: on it), so that
+  // three drinks (a jug at each X2 and the glass abuela puts down between them, acts.aparta) stand side by side, none drawn over another (checks:
+  // drinks): a jug's handle reaches x + 9 and its belly x - 7 (its spout, x - 8, is above a glass's straw), a glass n is drawn from x - 5 to x + 5
+  for (const [k, s, old, what] of [['mesa.izq', -14, [108, 128], 'X2[0]: the left place on the table top'], ['mesa.der', 14, [132, 128], 'X2[1]: the right place on the table top (also acts.recibe x 132)'],
+    ['mesa.centro', 1, [120, 128], 'the middle of the drinks\' row, between the two X2 places (dos("sm") vaso_mesa x 120, acts.aparta x 120: the glass she puts down stands between the two jugs, touching neither; the pairs\' glass or jug at 120; acts.aveva\'s test v.x < 120)'],
     ['mesa.toma', -14, [106, 128], 'pair toma.si: the glass at x 106'], ['mesa.abanico', 1, [121, 128], 'W.fanMesa: medio(c, 121, MESA_Y, 1): her half fan left on the table'],
     ['ave.mesa.toma', 7, [127, 128], 'pair toma.si: the bird on the table, drinking from the glass at 106 (x 127)'], ['ave.mesa.der', 12, [132, 128], 'pair toma.no: the bird asleep on the table at 132']])
     pt(k, { world: W4(onTable(s)), old, what });
@@ -174,12 +197,18 @@ function make(G) {
 
   /* ---- views: every old view is zoom 1 here (page 12 section 5: only an old 98 x 108 view is zoom 2; mesa and porche were 1.54 and 1.15) ---- */
   const view = (world, what, old) => { const s = P(world); return { world: W4(world), screen: s, zoom: 1, x0: Math.max(0, Math.min(44, Math.round(s[0] - 98))), region: null, old, what }; };
-  // the wide view: centred between the big chair's left edge and the door frame's right edge (round 3: the whole door, its frame and abuela in it, with a margin)
-  const chairL = turnedScreen(F.SILLA, F.SILLA_HW, F.SILLA_HD, f, f + 1.52)[0], doorR = E.project(F.DOOR1 + .26, F.HY1 + .03, f).sx;
-  const porchMid = E.atZ((chairL + doorR) / 2, 130, f);                         // the porch's middle: abuela's chair to the door, the steps and the path below
+  // the wide view (round 3: the whole door, its frame and abuela in it, with a margin). Order 30b: the window from the door frame's right edge with 8 px
+  // to spare (checks: wide view) to abuela's chair's hint frame (its box - 12: juego.js spot(), pulsing) and her widest bubble over her head, the
+  // window in the middle of the x0 those allow (a camera that moved with the chair would cut her bubble again)
+  const doorR = E.project(F.DOOR1 + .26, F.HY1 + .03, f).sx, chairBox = things.silla_grande.box, talkSilla = [ptR('ABS')[0] + 17, ptR('ABS')[1] - 1];
+  const leftmost = Math.min(chairBox[0] - 12, ...Object.keys(BUBBLES).map(k => bubbleRect(k, talkSilla[0], talkSilla[1])[0]));
+  const wideX0 = Math.round((Math.ceil(doorR + 8 - 196) + leftmost) / 2);
+  const porchMid = E.atZ(wideX0 + 98, 130, f);                                  // the porch's middle: abuela's chair to the door, the steps and the path below
+  // order 30b: one window for all three views, so a change of view moves nothing (it was a 5 px slide for no purpose: the old mesa, a 1.54x close
+  // view of the table, cannot be one here: only zoom 1 or 2, and a zoom 2 window of the table leaves abuela and her bubble out)
   const views = {
     wide: view(porchMid, 'the porch from abuela\'s chair to the door, the path and the frog on it: every story\'s usual view', [22, 0, 196, 216]),
-    mesa: view([F.TABLE[0], F.TABLE[1], tableTop], 'the table in the middle (old: a 1.54x close view of the table; a zoom 1 window here, page 12 section 5)', [45, 36, 127, 140]),
+    mesa: view(porchMid, 'the table (old: a 1.54x close view of the table): the same window as wide here (order 30b: a zoom 1 window centred on the table slid 5 px for nothing; a zoom 2 one would leave abuela and her bubble out)', [45, 36, 127, 140]),
     porche: view(porchMid, 'the porch (old: a 1.15x view; the same window as wide here)', [35, 20, 170, 187.3]),
   };
 
@@ -411,7 +440,7 @@ function make(G) {
     c(153, 'W.rojo: fillRect(0, 0, SW, SH)', 'the whole picture: unchanged');
     c(154, 'abuela\'s bubble at talkAt', 'relative: unchanged');
     c(155, 'the frog\'s bubble at frogBox', 'relative: unchanged');
-    c(158, 'talkAt: ABS + (17, -39 or -1); standing ab.x, ab.y - 51 (- 38)', 'relative: unchanged');
+    c(158, 'talkAt: ABS + (17, -39 or -1); standing ab.x, ab.y - 51 (- 38)', { point: 'talk.lado', new: ptR('talk.lado') }, 'order 30b: sitting while the score boards are up (W.rondas): [TALK_LADO[0], TALK_LADO[1] - (ab.bub ? 38 : 0)], her bubble beside her head under the boards; otherwise as before, relative to ABS or to her');
     c(160, 'respIcon: a big glass in the answer bubble', 'relative: unchanged');
     c(179, 'hud: tanteo(g, 5, 5), tanteo(g, DW - 71, 5), termo(g, DW - 51, 7)', 'display: unchanged (hud draws on the 196 x 216 display)');
     c(183, 'abCamina: from AB.lado when in the chair; steps of 6 px', 'AB.lado: the new spot; the step length stays');
@@ -474,12 +503,8 @@ function check(sh, G) {
   }
   if (worst < 2) P.push('hops: a distance is ' + worst.toFixed(1) + ' px from a rounding edge (keep 2 px)');
   notes.push('hops: ' + sh.hops.length + ' pairs of LUGAR places, every count as the old one; the nearest to a rounding edge is ' + worst.toFixed(1) + ' px from it');
-  // hint frames (Gate A): the frame goes round box(k) +- 5 (+ 2 when it pulses); where the old frame had all four edges inside the picture, so must the new
-  const inPic = (b, m) => b[0] - m >= 0 && b[1] - m >= 0 && b[0] + b[2] + m <= 240 && b[1] + b[3] + m <= 216;
-  const oldBoxes = { mesa: [94, 124, 52, 25], silla_pequena: [148, 120, 24, 30], silla_grande: [48, 102, 40, 48], puerta: [162, 54, 32, 68], ventana: [93, 54, 54, 36], balcon: [42, 122, 156, 34] };
-  for (const [k, ob] of Object.entries(oldBoxes)) { if (inPic(ob, 7) && !inPic(sh.things[k].box, 7)) P.push('hint frame of ' + k + ' leaves the picture: ' + JSON.stringify(sh.things[k].box)); }
-  const wide = sh.views.wide.x0;
-  for (const [k, ob] of Object.entries(oldBoxes)) { const b = sh.things[k].box; if (b[0] - 7 < wide || b[0] + b[2] + 7 > wide + 196) notes.push('hint frame of ' + k + ' reaches past the wide view\'s sides (' + JSON.stringify(b) + ', view from ' + wide + ')'); }
+  // hint frames: order 30b checks them in the VIEW, at every ask of every story (checks: hint frames, at the end); a frame of a thing no story asks
+  // for is only noted
   // nothing green or decorative over a touch box (decision 14): the pixels of the bushes, the hanging plants, the posts, the roof inside a set thing's hit box
   const DECOR = ['arbusto', 'plantas', 'postes'];
   for (const door of ['shut', 'open']) {
@@ -564,5 +589,171 @@ function check(sh, G) {
     if (mR < 8 || mL < 8) P.push('wide view: the door or abuela in it ' + Math.min(mL, mR) + ' px from its side (keep 8)');
     if (chair[0] - x0 < 6) P.push('wide view: abuela\'s big chair ' + (chair[0] - x0) + ' px from its left side');
     notes.push('wide view (x0 ' + x0 + '): the door, its frame and abuela in it from x ' + L + ' to ' + R + ', ' + mR + ' px from the right side; the big chair ' + (chair[0] - x0) + ' px from the left side'); }
+  storyChecks(sh, P, notes);
   return P;
+}
+
+/* ---------- order 30b: every moment of the scene's stories (the faults a reader found in the real app's frames) ---------- */
+// The moments: every state of every run of the scene's stories (right, wrong, alternate), as the old page plays them: coqui/tool/ref/trazas/juega.mjs
+// --only <story> --states, into a temp folder (about 1.5 s a story; nothing in the repo is written), W after every step in OLD places, moved to the
+// new ones as balcon-preview.html's remapW moves them (the same rule, written again here: remapW below).
+const FRAME_OUT = 12;     // juego.js spot(): the frame is box +- 5 (+ 2 when it pulses), and its rings reach 5 further out
+const BOARDS = {          // the boards juego.js hud draws on the view (balcon.js hud, tarjeta): picture rectangles once the view's x0 is added
+  rondas: [[2, 2, 72, 27], [122, 2, 71, 27]],                                   // tanteo(5, 5) the frog's, tanteo(DW - 71, 5) the bird's, with their icons
+  termo: [[141, 3, 52, 64]],                                                    // termo(DW - 51, 7): the thermometer and its sun
+};
+function storyStates() {
+  const os = require('os'), { execFileSync } = require('child_process');
+  const dir = path.join(REPO, 'historia/cuentos'), stories = [];
+  for (const f of fs.readdirSync(dir).sort()) { if (!f.endsWith('.json') || f.startsWith('cual-')) continue;
+    const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (j.scene === 'balcon') stories.push(j); }
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'balcon-sheet-'));
+  try {
+    const runs = [];
+    for (const st of stories) {
+      execFileSync(process.execPath, [path.join(REPO, 'coqui/tool/ref/trazas/juega.mjs'), '--only', st.id, '--out', path.join(tmp, 'trazas', st.id), '--states', path.join(tmp, 'states')], { cwd: REPO, stdio: 'pipe' });
+      for (const plan of ['right', 'wrong', 'alternate']) {
+        const lines = fs.readFileSync(path.join(tmp, 'states', st.id, plan + '.states.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
+        runs.push({ story: st, plan, lines });
+      }
+    }
+    return runs;
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+}
+// balcon-preview.html remapW: the frog to the nearest frog spot, abuela to the nearest of hers (within 60, by the same offset); a glass or jug on the table
+// to the new place of its old one (X2, the middle, the pair's 106; any other x keeps its offset from the middle); one on the small chair to its seat; the
+// bird on the flower box or the small chair to its point, on the table beside a glass as acts.aveva puts it (19 px on the middle's side), else its pair point
+function remapW(w0, sh) {
+  const w = JSON.parse(JSON.stringify(w0)), ptR = n => sh.points[n].screen.map(Math.round), TC = ptR('mesa.centro')[0];
+  const near = (list, x, y) => { let best = null, bd = 60; for (const e of list) { const d = Math.hypot(e.old[0] - x, e.old[1] - y); if (d < bd) { bd = d; best = e; } } return best; };
+  const frogs = Object.values(sh.spots).filter(s => s.frog).map(s => ({ old: s.old, new: s.frog })), abs = Object.values(sh.spots).filter(s => s.ab).map(s => ({ old: s.old, new: s.ab }));
+  const move = (list, q) => { if (!q || q.x == null) return q; const e = near(list, q.x, q.y); return e ? Object.assign({}, q, { x: q.x + e.new[0] - e.old[0], y: q.y + e.new[1] - e.old[1] }) : q; };
+  const TX = { 106: 'mesa.toma', 108: 'mesa.izq', 120: 'mesa.centro', 132: 'mesa.der' }, tableX = x => TX[x] ? ptR(TX[x])[0] : x - 120 + TC;
+  const glass = v => v.y != null && Math.abs(v.x - 160) < 2 ? Object.assign({}, v, { x: ptR('ASIENTO')[0], y: ptR('ASIENTO')[1] - 1 }) : Object.assign({}, v, { x: tableX(v.x) });
+  const bird = a => { if (!a || a.x == null || a.mode === 'head' || a.mode === 'none') return a; const o = Object.assign({}, a);
+    if (Math.abs(a.x - 120) < 2 && Math.abs(a.y - 86) < 2) [o.x, o.y] = ptR('PERCH');
+    else if (Math.abs(a.x - 160) < 2 && Math.abs(a.y - 135) < 2) [o.x, o.y] = ptR('ASIENTO');
+    else if (Math.abs(a.y - 128) < 2) {
+      const v = (w0.vasos || []).concat(w0.jarras || []).find(v => v.y == null && a.x === v.x + (v.x < 120 ? 19 : -19)), PB = { 127: 'ave.mesa.toma', 132: 'ave.mesa.der' };
+      if (v) { const nx = tableX(v.x); o.x = nx + (nx < TC ? 19 : -19); } else o.x = PB[a.x] ? ptR(PB[a.x])[0] : a.x - 120 + TC;
+      o.y = sh.MESA_Y.new; }
+    return o; };
+  w.cq = move(frogs, w.cq); if (w.ab) w.ab = move(abs, w.ab);
+  if (w.vasos) w.vasos = w.vasos.map(glass); if (w.jarras) w.jarras = w.jarras.map(glass);
+  w.ave = bird(w.ave);
+  return w;
+}
+const frogBox = q => { const w = Math.round(30 * q.s) + 2, h = Math.round(25 * q.s) + 2; return { x: Math.round(q.x + (32 - w) / 2), y: q.y + 27 - h, w, h }; };   // juego.js frogBox
+const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+const within = (r, c) => r[0] >= c[0] && r[1] >= c[1] && r[0] + r[2] <= c[0] + c[2] && r[1] + r[3] <= c[1] + c[3];
+// a glass or a jug on the table, as the rectangles balcon.js vaso and jarra fill (outline and straw; every other pixel is inside them)
+function drinkRects(v, MY) {
+  const by = v.y != null ? v.y : MY;
+  if (v.t) { const VT = { n: [9, 13], g: [11, 17], p: [7, 9] }, [w, h] = VT[v.t], x = Math.round(v.x - w / 2), y = by - h;
+    return [[x - 1, y, w + 2, h], [x, by, w, 1]].concat(v.k === 'jugo' ? [[x + w - 3, y - 5, 3, 5]] : []); }
+  const x = v.x - 6, y = by - 21;
+  return [[x + 1, y, 9, 7], [x - 2, y, 4, 3], [x - 1, y + 6, 13, 15], [x, y + 21, 11, 1], [x + 11, y + 7, 4, 2], [x + 14, y + 8, 2, 8], [x + 11, y + 15, 4, 2]];
+}
+
+function storyChecks(sh, P, notes) {
+  const inv = JSON.parse(fs.readFileSync(path.join(REF, 'inventory.json'), 'utf8')), OLDCAM = inv.given.CAM;
+  const ptR = n => sh.points[n].screen.map(Math.round), ABS = ptR('ABS'), TL = ptR('talk.lado'), MY = sh.MESA_Y.new;
+  const viewOf = cam => { const k = Object.keys(OLDCAM).find(k => OLDCAM[k].every((v, i) => Math.abs(v - cam[i]) < .01)); return k ? sh.views[k] : null; };
+  const runs = storyStates();
+  const at = (st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
+  const sub = (x, V) => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+
+  /* 1. every bubble wholly inside the view, clear of the boards shown, and on no face (abuela's, the frog's) */
+  // who can speak at a moment: abuela's bubble (W.ab.bub), and the ones the acts show for a moment inside a step: her "amor" when she is touched
+  // (poke: any moment she can be touched) and her "feliz" at the end of que-calor (acts.final, the thermometer up); the frog's (W.cq.bub), and his
+  // "amor" and "mal" (acts.gana, cqbebe, marcador: at any of his places)
+  const bubblesOf = (w, acts = true) => {
+    const out = [], faces = [], ab = w.ab, q = w.cq;
+    if (ab && !(ab.al < .5)) {
+      const sit = ab.en === 'silla', t = sit ? (w.rondas ? TL : [ABS[0] + 17, ABS[1] - 1]) : [Math.round(ab.x), Math.round(ab.y) - 51];
+      faces.push(['abuela\'s face', sit ? [ABS[0] + 10, ABS[1] + 5, 15, 13] : [Math.round(ab.x) - 8, Math.round(ab.y) - 42, 15, 12]]);
+      const ks = new Set(ab.bub ? [ab.bub] : []); if (acts && (ab.al == null || ab.al > .5)) ks.add('amor'); if (acts && w.termo && sit) ks.add('feliz');
+      for (const k of ks) out.push(['abuela (' + (sit ? 'sitting' : ab.en + ' ' + Math.round(ab.x) + ',' + Math.round(ab.y)) + ') "' + k + '"', bubbleRect(k, t[0], t[1])]);
+    }
+    if (q && q.vis && !(q.al < .5)) {
+      const b = frogBox(q); faces.push(['the frog\'s face', [b.x, b.y, b.w, Math.round(b.h * .6)]]);
+      for (const k of new Set((acts ? [q.bub, 'amor', 'mal'] : [q.bub]).filter(Boolean))) out.push(['the frog (' + q.x + ',' + q.y + ') "' + k + '"', bubbleRect(k, b.x + (b.w >> 1), b.y + 2)]);
+    }
+    return { out, faces };
+  };
+  let nB = 0, nM = 0, worstView = 99, worstBoard = 99;
+  const seen = new Set();
+  const gapTo = (a, b) => Math.max(b[0] - (a[0] + a[2]), a[0] - (b[0] + b[2]), b[1] - (a[1] + a[3]), a[1] - (b[1] + b[3]));
+  const judge = (where, rect, box, boards, faces) => {
+    if (!within(rect, box)) { P.push('bubble: ' + where + ' ' + JSON.stringify(rect) + ' is not wholly inside ' + JSON.stringify(box)); return; }
+    worstView = Math.min(worstView, rect[0] - box[0], box[0] + box[2] - rect[0] - rect[2], rect[1] - box[1], box[1] + box[3] - rect[1] - rect[3]);
+    for (const [bn, b] of boards) { if (meets(rect, b)) P.push('bubble: ' + where + ' ' + JSON.stringify(rect) + ' is over the ' + bn + ' ' + JSON.stringify(b)); else worstBoard = Math.min(worstBoard, gapTo(rect, b)); }
+    for (const [fn, f] of faces) if (meets(rect, f)) P.push('bubble: ' + where + ' ' + JSON.stringify(rect) + ' is on ' + fn + ' ' + JSON.stringify(f));
+  };
+  for (const r of runs) for (const L of r.lines) {
+    const v = viewOf(L.cam); if (!v) { P.push(r.story.id + ' ' + r.plan + ' ' + L.path + ': a view the sheet does not have ' + JSON.stringify(L.cam)); continue; }
+    const w = remapW(L.W, sh), boards = [];
+    if (w.rondas) for (const b of BOARDS.rondas) boards.push(['score board', [b[0] + v.x0, b[1], b[2], b[3]]]);
+    if (w.termo) for (const b of BOARDS.termo) boards.push(['thermometer board', [b[0] + v.x0, b[1], b[2], b[3]]]);
+    const { out, faces } = bubblesOf(w); nM++;
+    for (const [who, rect] of out) { const key = JSON.stringify([who, rect, v.x0, boards]); if (seen.has(key)) continue; seen.add(key); nB++;
+      judge(r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + who, rect, [v.x0, 0, 196, 216], boards, faces); }
+  }
+  // every review picture of cual-balcon (balcon-preview.html PV.pair: panelW()'s W, then the item's set), in its crop
+  const cual = JSON.parse(fs.readFileSync(path.join(REPO, 'historia/cuentos/cual-balcon.json'), 'utf8'));
+  let nP = 0;
+  for (const it of cual.items) for (const side of ['si', 'no']) {
+    const spec = it[side], w0 = Object.assign({ ab: { en: 'puerta', x: 178, y: 125, pose: 'idle', bub: null, al: 1, trae: 0 }, cq: { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null } }, JSON.parse(JSON.stringify(spec.set || {})));
+    const w = remapW(w0, sh), pc = sh.pictures[it.w + '.' + side], { out, faces } = bubblesOf(w, false);   // a pair shows only the bubbles its W has: no act runs in it
+    for (const [who, rect] of out) { nP++; judge('pair ' + it.w + '.' + side + ': ' + who, rect, pc.crop, [], faces); }
+  }
+  notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), and ' + nP + ' in the review pictures: each wholly inside the view (' + worstView + ' px from its edge at the least), clear of the score and thermometer boards when they are up (' + worstBoard + ' px at the least), on no face');
+
+  /* 2. every set of drinks the stories put on the table at once: side by side, none drawn over another (and, checked above for every table place:
+     their bases inside the table top, plain wall behind them). The sets: every moment of every run, each also with the sides swapped (dos() and pone()
+     draw the side: azar), and the sets balcon.js's acts can make */
+  const X = n => ptR(n)[0], SW = { [X('mesa.izq')]: X('mesa.der'), [X('mesa.der')]: X('mesa.izq') };
+  const sets = new Map(), addSet = (items, from) => { if (items.length < 2) return; const k = JSON.stringify(items.map(v => [v.t || 'jarra', v.k, v.x]).sort()); if (!sets.has(k)) sets.set(k, { items, from }); };
+  const onTable = w => (w.vasos || []).filter(v => !v.mano && v.y == null).concat((w.jarras || []).filter(v => !v.mano));
+  let fanOver = 0;
+  for (const r of runs) for (const L of r.lines) { const w = remapW(L.W, sh), it = onTable(w);
+    addSet(it, r.story.id + ' ' + r.plan + ' ' + L.path); addSet(it.map(v => Object.assign({}, v, { x: SW[v.x] != null ? SW[v.x] : v.x })), r.story.id + ' ' + r.plan + ' ' + L.path + ', sides swapped');
+    if (w.fanMesa && it.some(v => drinkRects(v, MY).some(a => meets(a, [X('mesa.abanico') - 1, MY - 9, 11, 12])))) fanOver++; }
+  for (const s of [0, 1]) { const x2 = [X('mesa.izq'), X('mesa.der')], g = (k, t, x) => ({ k, t, x }), j = (k, x) => ({ k, x });
+    addSet([g('jugo', 'n', x2[s]), g('agua', 'n', x2[1 - s])], 'dos("ja")'); addSet([g('jugo', 'g', x2[s]), g('jugo', 'p', x2[1 - s])], 'dos("gp")'); addSet([g('agua', 'n', x2[0]), g('agua', 'n', x2[1])], 'dos("fin")');
+    addSet([j('jugo', x2[s]), j('agua', x2[1 - s])], 'pone()'); addSet([j('jugo', x2[s]), j('agua', x2[1 - s]), g('jugo', 'n', X('mesa.centro'))], 'pone() and aparta()'); addSet([j('jugo', x2[s]), j('agua', x2[1 - s]), g('agua', 'n', X('mesa.centro'))], 'pone() and aparta()'); }
+  let worstGap = 99;
+  for (const { items, from } of sets.values()) for (let a = 0; a < items.length; a++) for (let b = a + 1; b < items.length; b++) {
+    const ra = drinkRects(items[a], MY), rb = drinkRects(items[b], MY);
+    if (ra.some(p => rb.some(q => meets(p, q)))) P.push('drinks: at ' + from + ' the ' + (items[a].t ? 'glass' : 'jug') + ' at x ' + items[a].x + ' and the ' + (items[b].t ? 'glass' : 'jug') + ' at x ' + items[b].x + ' are drawn over each other');
+    else worstGap = Math.min(worstGap, Math.min(...ra.flatMap(p => rb.map(q => gapTo(p, q)))));
+  }
+  notes.push('drinks: ' + sets.size + ' sets of drinks on the table at once (the stories\' moments, their sides swapped, the acts\' sets): side by side, none drawn over another (' + worstGap + ' px apart at the least' + (worstGap === 0 ? ': touching' : '') + ')' + (fanOver ? '; NOT a drink: her half fan left on the table (fanMesa) is drawn over a drink at ' + fanOver + ' moments, as the old picture drew it' : ''));
+
+  /* 4. every hint frame wholly inside the view it is shown in: at every ask and decide of every run (its thing as the scene boxes it where it stands
+     then), and every set thing a story of the scene asks for, in every view */
+  const boxOf = (w, k) => {
+    const t = sh.things[k]; if (t && t.world) return t.box;
+    if (k === 'abuela') { const ab = w.ab; if (!ab) return null; return ab.en === 'silla' ? sh.things.abuela.box.silla.new : [Math.round(ab.x) - 13, Math.round(ab.y) - 50, 26, 50]; }
+    const v = (w.vasos || []).find(v => v.id === k) || (w.jarras || []).find(v => v.id === k); if (!v) return null;
+    if (v.t) { const VT = { n: [9, 13], g: [11, 17], p: [7, 9] }, s = VT[v.t], y = v.y || MY; return [Math.round(v.x - s[0] / 2) - 4, y - s[1] - 6, s[0] + 8, s[1] + 9]; }   // balcon.js cajaDe
+    return [v.x - 9, MY - 24, 26, 27];
+  };
+  const frameIn = (b, x0) => b[0] - FRAME_OUT >= x0 && b[0] + b[2] + FRAME_OUT <= x0 + 196 && b[1] - FRAME_OUT >= 0 && b[1] + b[3] + FRAME_OUT <= 216;
+  let nF = 0, nCards = 0, worstF = 99; const asked = new Set();
+  for (const r of runs) { const Ls = r.lines;
+    Ls.forEach((L, i) => { if (L.kind !== 'ask' && L.kind !== 'decide') return;
+      const j = Ls.findIndex(M => M.path === L.path || (M.path || '').startsWith(L.path + '.')); if (j < 1) return;
+      const before = Ls[j - 1], st = at(r.story, L.path), V = before.V;
+      const spot = st.ask ? sub(st.ask, V) : (sub(st.pick, V) || sub((st.options || [])[0], V));
+      const w = remapW(before.W, sh), b = boxOf(w, spot), v = viewOf(before.cam);
+      if (!b) { nCards++; return; }                                              // an answer card (de_nada, gracias): the game places it
+      asked.add(spot); nF++;
+      if (!v || !frameIn(b, v.x0)) P.push('hint frame: ' + r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + spot + ' ' + JSON.stringify(b) + ' +- ' + FRAME_OUT + ' is not wholly inside the view from x ' + (v && v.x0));
+      else worstF = Math.min(worstF, b[0] - FRAME_OUT - v.x0, v.x0 + 196 - (b[0] + b[2] + FRAME_OUT), b[1] - FRAME_OUT, 216 - (b[1] + b[3] + FRAME_OUT)); }); }
+  for (const r of runs) JSON.stringify(r.story).replace(/"(?:ask|pick)":\s*"([a-z_]+)"/g, (m, k) => { if (sh.things[k] && sh.things[k].world) asked.add(k); return m; });
+  for (const [k, t] of Object.entries(sh.things)) if (t.world) for (const [vn, v] of Object.entries(sh.views)) if (!frameIn(t.box, v.x0)) {
+    if (asked.has(k)) P.push('hint frame: ' + k + ' ' + JSON.stringify(t.box) + ' +- ' + FRAME_OUT + ' is not wholly inside the ' + vn + ' view (x0 ' + v.x0 + ')');
+    else if (vn === 'wide') notes.push('hint frame of ' + k + ' (no story of the scene asks for it): ' + JSON.stringify(t.box) + ' +- ' + FRAME_OUT + ' reaches past the view from x ' + v.x0); }
+  notes.push('hint frames: ' + nF + ' at the asks of the runs (' + nCards + ' asks for an answer card, the game\'s), and every set thing a story asks for (' + [...asked].filter(k => sh.things[k] && sh.things[k].world).join(', ') + ') in every view: box +- ' + FRAME_OUT + ' wholly inside the view, ' + worstF + ' px from its edge at the least');
 }

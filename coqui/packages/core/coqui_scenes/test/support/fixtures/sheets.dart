@@ -2878,7 +2878,7 @@ const Map<String, String> sheetTexts = {
    "why": "the glass on the table. A glass (or a jug, for jugo and agua in que-calor) in the sprite layer: box = cajaDe (balcon.js:100), relative to where it stands: unchanged",
    "where": {
     "table": "mesa.centro",
-    "box": [125, 97, 17, 22]
+    "box": [126, 97, 17, 22]
    }
   },
   "vaso_grande": {
@@ -2903,7 +2903,7 @@ const Map<String, String> sheetTexts = {
    "box": {
     "silla": {
      "old": [55, 96, 34, 50],
-     "new": [53, 48, 34, 50]
+     "new": [60, 51, 34, 50]
     }
    }
   },
@@ -2942,15 +2942,15 @@ const Map<String, String> sheetTexts = {
   },
   "silla_grande": {
    "set": true,
-   "world": [-4.9104, -0.0804, 0, -3.8639, 0.9661, 1.2429],
-   "box": [49, 54, 40, 48],
+   "world": [-4.5604, -0.0804, 0, -3.5139, 0.9661, 1.2429],
+   "box": [56, 57, 39, 48],
    "hit": {
-    "world": [-4.9104, -0.0804, 0, -3.8639, 0.9661, 1.2429],
-    "box": [49, 54, 40, 48]
+    "world": [-4.5604, -0.0804, 0, -3.5139, 0.9661, 1.2429],
+    "box": [56, 57, 39, 48]
    },
    "what": "abuela's big chair (turned to the camera, as silla_pequena)",
    "turned": {
-    "centre": [-3.85, 0.98],
+    "centre": [-3.5, 0.98],
     "halfWidth": 0.74,
     "halfDepth": 0.5,
     "height": 1.82,
@@ -3624,28 +3624,34 @@ const Map<String, String> sheetTexts = {
  ],
  "points": {
   "ABS": {
-   "world": [-3.85, 0.98, 0.8],
+   "world": [-3.5, 0.98, 0.8],
    "old": [51, 96],
-   "screen": [49, 48],
+   "screen": [56, 51],
    "what": "ABS: abuela sitting in her big chair (the sprite's top left: her middle, sprite x 17, 3 px left of the chair's middle so her feet stay before it and off the table; her lap, row 36, on its seat). Everything drawn with her (the fan, her glass, the jug over her head, sweat, the splash and its puddle, her bubble) is relative to it: unchanged"
   },
+  "talk.lado": {
+   "world": [-3.5, 0.98, 0.8],
+   "old": [68, 95],
+   "screen": [97, 70],
+   "what": "TALK_LADO: the tail of her bubble while she sits and the score boards are up (talkAt with W.rondas): beside her head, on its right, under the boards (old: over her head, ABS + (17, -1), as when no boards are up)"
+  },
   "mesa.izq": {
-   "world": [-0.3688, 1.6439, 1.05],
+   "world": [-0.4232, 1.6983, 1.05],
    "old": [108, 128],
    "what": "X2[0]: the left place on the table top",
-   "screen": [121, 116.08]
+   "screen": [119, 116.08]
   },
   "mesa.der": {
-   "world": [0.2839, 0.9912, 1.05],
+   "world": [0.3383, 0.9368, 1.05],
    "old": [132, 128],
    "what": "X2[1]: the right place on the table top (also acts.recibe x 132)",
-   "screen": [145, 116.08]
+   "screen": [147, 116.08]
   },
   "mesa.centro": {
-   "world": [-0.0424, 1.3176, 1.05],
+   "world": [-0.0152, 1.2904, 1.05],
    "old": [120, 128],
-   "what": "the middle of the table top (dos(\"sm\") vaso_mesa x 120, acts.aparta x 120, the pairs' glass or jug at 120; acts.aveva's test v.x < 120)",
-   "screen": [133, 116.08]
+   "what": "the middle of the drinks' row, between the two X2 places (dos(\"sm\") vaso_mesa x 120, acts.aparta x 120: the glass she puts down stands between the two jugs, touching neither; the pairs' glass or jug at 120; acts.aveva's test v.x < 120)",
+   "screen": [134, 116.08]
   },
   "mesa.toma": {
    "world": [-0.4232, 1.6983, 1.05],
@@ -3684,16 +3690,16 @@ const Map<String, String> sheetTexts = {
    "screen": [131.16, 81.82]
   },
   "suelo.abanico.1": {
-   "world": [-2.3794, 1.3737, 0.3],
+   "world": [-2.0259, 1.3465, 0.3],
    "old": [98, 157],
    "what": "W.enSuelo: medio(c, 98, 157, -1): one half of her fan on the floor before her chair",
-   "screen": [89, 112]
+   "screen": [96, 115]
   },
   "suelo.abanico.2": {
-   "world": [-1.9443, 1.1561, 0.3],
+   "world": [-1.5907, 1.1289, 0.3],
    "old": [110, 158],
    "what": "W.enSuelo: medio(c, 110, 158, 1): the other half",
-   "screen": [101, 114]
+   "screen": [108, 117]
   },
   "corazon": {
    "world": [-2.1757, 0, 3.3753],
@@ -3726,8 +3732,8 @@ const Map<String, String> sheetTexts = {
  },
  "views": {
   "wide": {
-   "world": [-0.0604, 1.0128, 0.3],
-   "screen": [138.27, 130],
+   "world": [-0.0677, 1.0201, 0.3],
+   "screen": [138, 130],
    "zoom": 1,
    "x0": 40,
    "region": null,
@@ -3735,17 +3741,17 @@ const Map<String, String> sheetTexts = {
    "what": "the porch from abuela's chair to the door, the path and the frog on it: every story's usual view"
   },
   "mesa": {
-   "world": [-0.26, 1.1, 1.05],
-   "screen": [133, 112.08],
+   "world": [-0.0677, 1.0201, 0.3],
+   "screen": [138, 130],
    "zoom": 1,
-   "x0": 35,
+   "x0": 40,
    "region": null,
    "old": [45, 36, 127, 140],
-   "what": "the table in the middle (old: a 1.54x close view of the table; a zoom 1 window here, page 12 section 5)"
+   "what": "the table (old: a 1.54x close view of the table): the same window as wide here (order 30b: a zoom 1 window centred on the table slid 5 px for nothing; a zoom 2 one would leave abuela and her bubble out)"
   },
   "porche": {
-   "world": [-0.0604, 1.0128, 0.3],
-   "screen": [138.27, 130],
+   "world": [-0.0677, 1.0201, 0.3],
+   "screen": [138, 130],
    "zoom": 1,
    "x0": 40,
    "region": null,
@@ -3785,11 +3791,11 @@ const Map<String, String> sheetTexts = {
      "zoom": 1
     },
     "gracias.si": {
-     "crop": [20, 46, 196, 104],
+     "crop": [20, 48, 196, 104],
      "zoom": 1
     },
     "gracias.no": {
-     "crop": [20, 46, 196, 104],
+     "crop": [20, 48, 196, 104],
      "zoom": 1
     },
     "¿cómo estás?.si": {
@@ -4202,8 +4208,8 @@ const Map<String, String> sheetTexts = {
    "to": {
     "point": "mesa.izq"
    },
-   "screen": [121, 116],
-   "x": 121,
+   "screen": [119, 116],
+   "x": 119,
    "what": "x on the table top (y is MESA_Y)"
   },
   {
@@ -4213,8 +4219,8 @@ const Map<String, String> sheetTexts = {
    "to": {
     "point": "mesa.centro"
    },
-   "screen": [133, 116],
-   "x": 133,
+   "screen": [134, 116],
+   "x": 134,
    "what": "x on the table top (y is MESA_Y)"
   }
  ],
@@ -4318,17 +4324,17 @@ const Map<String, String> sheetTexts = {
    "what": "abuela in her chair, drinking, a heart"
   },
   "gracias.si": {
-   "world": [-2.3522, -0.1765, 0.3],
-   "screen": [118, 98],
+   "world": [-2.2706, -0.0949, 0.3],
+   "screen": [118, 99.5],
    "zoom": 1,
-   "crop": [20, 46, 196, 104],
+   "crop": [20, 48, 196, 104],
    "what": "abuela gives the frog a glass, the frog's heart"
   },
   "gracias.no": {
-   "world": [-2.3522, -0.1765, 0.3],
-   "screen": [118, 98],
+   "world": [-2.2706, -0.0949, 0.3],
+   "screen": [118, 99.5],
    "zoom": 1,
-   "crop": [20, 46, 196, 104],
+   "crop": [20, 48, 196, 104],
    "what": "abuela without a glass, the frog sad"
   },
   "¿cómo estás?.si": {
@@ -4560,7 +4566,7 @@ const Map<String, String> sheetTexts = {
    "old": "X2=[108,132]",
    "to": {
     "points": ["mesa.izq", "mesa.der"],
-    "new": [121, 145]
+    "new": [119, 147]
    }
   },
   {
@@ -4590,7 +4596,7 @@ const Map<String, String> sheetTexts = {
    "old": "ABS=[51,96]",
    "to": {
     "point": "ABS",
-    "new": [49, 48]
+    "new": [56, 51]
    }
   },
   {
@@ -4730,7 +4736,7 @@ const Map<String, String> sheetTexts = {
    "line": 102,
    "old": "abCaja silla [55,96,34,50]",
    "to": {
-    "new": [53, 48, 34, 50]
+    "new": [60, 51, 34, 50]
    },
    "note": "ABS + [4, 0, 34, 50]; standing: relative, unchanged"
   },
@@ -4755,7 +4761,7 @@ const Map<String, String> sheetTexts = {
    "old": "box silla_grande [SILLA,40,48] = [48,102,40,48]",
    "to": {
     "thing": "silla_grande",
-    "box": [49, 54, 40, 48]
+    "box": [56, 57, 39, 48]
    }
   },
   {
@@ -4849,7 +4855,7 @@ const Map<String, String> sheetTexts = {
    "old": "mkAbuelaS at ABS",
    "to": {
     "point": "ABS",
-    "new": [49, 48]
+    "new": [56, 51]
    }
   },
   {
@@ -4909,7 +4915,7 @@ const Map<String, String> sheetTexts = {
    "old": "enSuelo: medio(c, 98, 157, -1)",
    "to": {
     "point": "suelo.abanico.1",
-    "new": [89, 112]
+    "new": [96, 115]
    }
   },
   {
@@ -4917,7 +4923,7 @@ const Map<String, String> sheetTexts = {
    "old": "enSuelo: medio(c, 110, 158, 1)",
    "to": {
     "point": "suelo.abanico.2",
-    "new": [101, 114]
+    "new": [108, 117]
    }
   },
   {
@@ -4980,7 +4986,11 @@ const Map<String, String> sheetTexts = {
   {
    "line": 158,
    "old": "talkAt: ABS + (17, -39 or -1); standing ab.x, ab.y - 51 (- 38)",
-   "to": "relative: unchanged"
+   "to": {
+    "point": "talk.lado",
+    "new": [97, 70]
+   },
+   "note": "order 30b: sitting while the score boards are up (W.rondas): [TALK_LADO[0], TALK_LADO[1] - (ab.bub ? 38 : 0)], her bubble beside her head under the boards; otherwise as before, relative to ABS or to her"
   },
   {
    "line": 160,
@@ -5007,7 +5017,7 @@ const Map<String, String> sheetTexts = {
    "old": "dos(\"sm\"): vaso_silla at ASIENTO[0], ASIENTO[1] - 1; vaso_mesa at x 120",
    "to": {
     "point": "mesa.centro",
-    "new": [133, 116]
+    "new": [134, 116]
    },
    "note": "ASIENTO: line 95"
   },
@@ -5055,7 +5065,7 @@ const Map<String, String> sheetTexts = {
    "old": "aveva: lado = v.x < 120 ? 1 : -1; to v.x + lado * 19, v.y || MESA_Y",
    "to": {
     "point": "mesa.centro",
-    "x": 133
+    "x": 134
    },
    "note": "the test x is the table's middle; the 19 stays: the bird lands on the table on the middle's side of the glass"
   },
@@ -5091,7 +5101,7 @@ const Map<String, String> sheetTexts = {
    "old": "aparta: the glass she puts down: x 120",
    "to": {
     "point": "mesa.centro",
-    "x": 133
+    "x": 134
    }
   },
   {
@@ -5099,7 +5109,7 @@ const Map<String, String> sheetTexts = {
    "old": "recibe: his glass: x 132",
    "to": {
     "point": "mesa.der",
-    "x": 145
+    "x": 147
    }
   },
   {
@@ -5162,7 +5172,7 @@ const Map<String, String> sheetTexts = {
    "to": {
     "view": "mesa",
     "zoom": 1,
-    "x0": 35
+    "x0": 40
    }
   },
   {

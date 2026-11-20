@@ -96,8 +96,8 @@ const double WALL_TOP = WIN_TOP + 1.05;
 final double HF = ((WALL_TOP + T30R2 * RY1 + .12) * 20).ceil() / 20;
 // the steps (x), at the porch's front: the path leaves the lower step's front at its middle
 const double STEP0 = 1.64, STEP1 = 3.04;
-// abuela's big chair, turned to the camera
-const List<double> SILLA = [-3.85, .98];
+// abuela's big chair, turned to the camera (order 30b: .35 along the wall from round 4's -3.85: its hint frame whole in the wide view, her bubble too)
+const List<double> SILLA = [-3.5, .98];
 const double SILLA_HW = .74, SILLA_HD = .5;
 // the small yellow chair, turned to the camera, clear of the door frame
 const List<double> SILLITA = [1.63, .62];

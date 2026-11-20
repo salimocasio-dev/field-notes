@@ -1,8 +1,10 @@
 // TEST-ONLY. balcon-preview.html's `remapW` and `baseW`, ported: how the preview moves a W written in OLD positions (a
 // recorded run's W) to the new ones, so that a moment of a recorded run can be drawn by the Dart scene exactly as the
 // preview draws it. The frog goes to the nearest frog spot and abuela to the nearest of her spots (within 60, by the
-// same offset); a glass or jug on the table keeps its offset from the table's middle (one on the small chair goes to
-// its seat); the bird on the window's flower box, the small chair or the table goes to its point there. It is the
+// same offset); a glass or jug on the table goes to the new place of its old one (X2, the middle, the pairs' 106; any
+// other x keeps its offset from the table's middle; one on the small chair goes to its seat); the bird on the window's
+// flower box or the small chair goes to its point there, on the table beside a glass as acts.aveva puts it, or else to
+// the pairs' point of its old x (order 30b). It is the
 // preview's rule, a dev tool's, not the scene's: the Dart scene's acts place things from the sheet themselves.
 import 'dart:math' as math;
 
@@ -96,6 +98,18 @@ Map<String, dynamic> balconPreviewRemapW(Map<String, dynamic> w0, Sheet sheet) {
     };
   }
 
+  // balcon-preview.html: TABLE_X, tableX
+  const tableXs = {
+    106: 'mesa.toma',
+    108: 'mesa.izq',
+    120: 'mesa.centro',
+    132: 'mesa.der',
+  };
+  num tableX(num x) {
+    final n = tableXs[x];
+    return n != null ? ptR(n)[0] : x - 120 + tc;
+  }
+
   Map<String, dynamic> moveGlass(Map<String, dynamic> v) {
     final x = v['x'] as num;
     // on the small chair
@@ -103,10 +117,12 @@ Map<String, dynamic> balconPreviewRemapW(Map<String, dynamic> w0, Sheet sheet) {
       final a = ptR('ASIENTO');
       return {...v, 'x': a[0], 'y': a[1] - 1};
     }
-    // on the table: the old offsets from its middle
-    return {...v, 'x': x - 120 + tc};
+    // on the table
+    return {...v, 'x': tableX(x)};
   }
 
+  // balcon-preview.html: BIRD_X
+  const birdXs = {127: 'ave.mesa.toma', 132: 'ave.mesa.der'};
   Map<String, dynamic>? moveBird(Map<String, dynamic>? a) {
     if (a == null ||
         a['x'] == null ||
@@ -124,7 +140,26 @@ Map<String, dynamic> balconPreviewRemapW(Map<String, dynamic> w0, Sheet sheet) {
       o['x'] = p[0];
       o['y'] = p[1];
     } else if ((y - 128).abs() < 2) {
-      o['x'] = x - 120 + tc;
+      // beside a glass as acts.aveva puts it (19 px on the middle's side of it), or the pairs' point of its old x
+      Map<String, dynamic>? beside;
+      for (final k in const ['vasos', 'jarras']) {
+        for (final v
+            in ((w0[k] as List?) ?? const []).cast<Map<String, dynamic>>()) {
+          final vx = v['x'] as num;
+          if (beside == null &&
+              v['y'] == null &&
+              x == vx + (vx < 120 ? 19 : -19)) {
+            beside = v;
+          }
+        }
+      }
+      if (beside != null) {
+        final nx = tableX(beside['x'] as num);
+        o['x'] = nx + (nx < tc ? 19 : -19);
+      } else {
+        final n = birdXs[x];
+        o['x'] = n != null ? ptR(n)[0] : x - 120 + tc;
+      }
       o['y'] = mesaY;
     }
     return o;

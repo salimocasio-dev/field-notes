@@ -6,29 +6,29 @@ const String balconSetRefs = r'''[
  {
   "id": "door-open-win-open",
   "query": "door=open&win=open",
-  "pix": "7ae85bed0f120b7b",
-  "zb": "41bae95a469e3668",
-  "kinds": "41f7f58a387ac450"
+  "pix": "f22688a52bedf5a3",
+  "zb": "8ac30b0cbb7f4680",
+  "kinds": "cfd861dda7209477"
  },
  {
   "id": "door-open-win-shut",
   "query": "door=open&win=shut",
-  "pix": "531f0b2a269f30f6",
-  "zb": "9e7440586ebcfa06",
-  "kinds": "41f7f58a387ac450"
+  "pix": "c9d2c23a880ae1ae",
+  "zb": "488215da60951e3e",
+  "kinds": "cfd861dda7209477"
  },
  {
   "id": "door-shut-win-open",
   "query": "door=shut&win=open",
-  "pix": "b096e76b5de6f995",
-  "zb": "b6cd5de864a5aad4",
-  "kinds": "41f7f58a387ac450"
+  "pix": "10c9222b46baec05",
+  "zb": "76ea209a56e6b8a4",
+  "kinds": "cfd861dda7209477"
  },
  {
   "id": "door-shut-win-shut",
   "query": "door=shut&win=shut",
-  "pix": "9fa48e7489a8cbf8",
-  "zb": "91247992fdcb9782",
-  "kinds": "41f7f58a387ac450"
+  "pix": "643021dcfa41c6c8",
+  "zb": "7550b64c79970202",
+  "kinds": "cfd861dda7209477"
  }
 ]''';

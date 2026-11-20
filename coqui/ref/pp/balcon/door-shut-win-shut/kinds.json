@@ -7,5 +7,5 @@
   "layout": "row-major, index = y * width + x",
   "note": "KIND_NONE 0, SAND 1, WATER 2, GRASS 3, ROAD 4",
   "bytes": 51840,
-  "sha256": "3fa1db9eea5b51b57c80c03cd3c077b19da98a2773c69e330d7887edd602b6a7"
+  "sha256": "f84e8d701099c4d4b47785543f2951fb49fb544c31d4762cd20490d384581384"
 }

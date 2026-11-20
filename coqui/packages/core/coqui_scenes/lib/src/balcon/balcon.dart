@@ -237,6 +237,7 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
     X2 = [p.ptRound('mesa.izq')[0], p.ptRound('mesa.der')[0]];
     MESA_Y = p.number('MESA_Y');
     ABS = p.ptRound('ABS');
+    _talkLado = p.ptRound('talk.lado');
     PERCH = p.ptRound('PERCH');
     ASIENTO = p.ptRound('ASIENTO');
     AB = {
@@ -511,6 +512,9 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
   late final List<int> X2;
   late final int MESA_Y;
   late final List<int> ABS, PERCH, ASIENTO;
+
+  // order 30b: the tail of her bubble while she sits and the score boards are up (sheet: point talk.lado; code line 158)
+  late final List<int> _talkLado;
 
   // balcon.js: AB, where abuela stands (her feet) (sheet: spots abuela.puerta, abuela.mesa, abuela.lado)
   late final Map<String, List<int>> AB;
@@ -930,7 +934,9 @@ class Balcon extends Escena implements SetScene, SetOverSprites {
     if (al is num && al < .5) return null;
     final bub = jsTruthy(ab['bub']);
     return ab['en'] == 'silla'
-        ? [ABS[0] + 17, ABS[1] - (bub ? 39 : 1)]
+        ? (jsTruthy(W['rondas'])
+              ? [_talkLado[0], _talkLado[1] - (bub ? 38 : 0)]
+              : [ABS[0] + 17, ABS[1] - (bub ? 39 : 1)])
         : [
             _round(ab['x'] as num),
             _round(ab['y'] as num) - 51 - (bub ? 38 : 0),
