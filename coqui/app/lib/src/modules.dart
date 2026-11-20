@@ -17,7 +17,7 @@ import 'package:feature_story/feature_story.dart';
 import 'package:feature_words/feature_words.dart';
 
 /// The modules, for the address switches [switches]. [bookImageUrl] turns a book page's picture (`img/<file>`) into its
-/// address; [voiceTest] is the voice test's content (null when its file could not be read).
+/// address (Biblioteca's books, and the moments of Repaso's games); [voiceTest] is the voice test's content (null when its file could not be read).
 List<FeatureModule> coquiModules({
   required AppSwitches switches,
   required String Function(String path) bookImageUrl,
@@ -29,7 +29,7 @@ List<FeatureModule> coquiModules({
   speakingModule(voiceTest: voiceTest),
   const ProfileModule(),
   StoryModule(showPerf: switches.perf, txt: switches.txt),
-  const ReviewModule(),
+  ReviewModule(imageUrl: bookImageUrl),
 ];
 
 /// Biblioteca's module, told where a book page's picture is ([imageUrl]: `historia/libros/<path>?v=39` on the site).
