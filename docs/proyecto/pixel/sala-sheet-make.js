@@ -291,7 +291,7 @@ function make(G) {
     S: E.S, origin: { originX: G.scene.originX, originY: G.scene.originY }, picture: [E.W, E.H], view: [196, 216], pairPicture: [196, 104],
     rules: {
       project: 'pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]',
-      floor: 'the room is built round the old picture: a place on its floor keeps its screen place. A frog place q: the floor point under (q.x + 16, q.y + 25), new q = old q. A person\'s place (x, y): the floor point under (x, y - 1), new (x, y) = old. So every floor position of sala.js, its stories and its pairs keeps its numbers; the sheet names each one (spots, remap, code) with its world point',
+      floor: 'the room is built round the old picture: a place on its floor keeps its screen place. A frog place q: the floor point under (q.x + 16, q.y + 25), new q = old q. A person\'s place (x, y): the floor point under (x, y - 1), new (x, y) = old. So every floor position of sala.js, its stories and its pairs keeps its numbers, but for the few in moves (where the old picture put someone under the answer cards or a bubble on a face); the sheet names each one (spots, remap, code, moves) with its world point',
       relative: 'what the old code draws or moves relative to a person, the frog or a point (p.x + 22, q.x + 16, h[0] - 2, the bubbles, the trays, the cups, the Z of sleep) keeps its offsets',
       sky: 'screen-space effects keep their old numbers: the flash (W.flash), the blur (W.borroso), the stars of final6 and final8, the heart (heartAt)',
       view: 'both views are zoom 1: the 196 x 216 window from x0 22, the old wide one. A change of view moves nothing',
@@ -537,6 +537,15 @@ function check(sh, G) {
     notes.push('a strip of wall: ' + sd + ' px of wall over the door\'s frame, ' + sw + ' px over the window\'s curtain rod, before the wall\'s cut top'); }
 
   /* the frames hang from nails on the wall; the lamp stands on its foot (structure: notes) */
+  // an empty seat shows: the sofa's and the armchair's seat tops (their cushions, z .52) are seen, nothing of the set over them; each frame's nail and
+  // wire are seen on the wall over it (what hangs, hangs from something visible)
+  { const tag = TAGS['000'], seatRows = (c, hw, hd, part) => { let rows = 0; for (const s0 of [-hw / 2, 0, hw / 2]) { const a = F.TURN, f = [c[0] + Math.cos(a) * s0 - Math.sin(a) * (hd - .06), c[1] + Math.sin(a) * s0 + Math.cos(a) * (hd - .06)], b = [c[0] + Math.cos(a) * s0 - Math.sin(a) * (-hd + .3), c[1] + Math.sin(a) * s0 + Math.cos(a) * (-hd + .3)];
+        const pf = E.project(f[0], f[1], .52), pb = E.project(b[0], b[1], .52); let n = 0; for (let y = Math.ceil(pb.sy); y < Math.floor(pf.sy); y++) if (tag[y * 240 + Math.round(pf.sx)] === part) n++; rows = Math.max(rows, n); } return rows; };
+    const so = seatRows(F.SOFA_C, F.SOFA_HW, F.SOFA_HD, 'sofa'), bu = seatRows(F.BUT_C, F.BUT_HW, F.BUT_HD, 'butaca');
+    if (so < 5 || bu < 5) P.push('seats: the sofa\'s seat shows ' + so + ' rows, the armchair\'s ' + bu + ' (keep 5)');
+    let nails = 0; for (let i = 0; i < 3; i++) { const q = E.project(.09, F.FY[i], F.FZ + F.FH / 2 + .08); if (tag[Math.floor(q.sy) * 240 + Math.floor(q.sx)] === 'fotos') nails++; }
+    if (nails < 3) P.push('hanging: ' + (3 - nails) + ' frames\' nails are not seen');
+    notes.push('seats: an empty sofa shows ' + so + ' rows of its seat, the armchair ' + bu + '; hanging: the 3 nails seen over the frames'); }
   notes.push('hanging: each frame hangs on a wire from a nail in the left wall (sala-set.html frames(); crooked ones turned about that nail); the lamp stands on its round foot on the floor; the curtains hang from a rod on two brackets');
 
   /* the cake and the camera on the low table */
