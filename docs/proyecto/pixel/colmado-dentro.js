@@ -32,7 +32,7 @@ const CD = (() => {
   const E2X0 = 11.0, E2X1 = 15.0;                               // the second run of shelves, far along the back wall, with open floor in front (estantes): the mostrador framing never shows it
   const WALL = [244, 222, 150], DADO = [86, 170, 160], WOOD = [150, 98, 56], WOOD_L = [196, 148, 92], TOP = [224, 196, 150];
   const MESA = [E2X0 + 1.3, 3.7], MESA_H = .55;                 // the low display table (story 40): its middle, the height of its top (the cloth)
-  const SILLA = [6.7, 4.0];                                     // the waiting chair, in front of the counter's right end
+  const SILLA = [6.9, 4.5];                                     // the waiting chair, in front of the counter's right end, clear of it (a half unit further out and a fifth to the right: it did seem stuck to the counter)
   const TILE = [[236, 224, 200], [214, 190, 160], [176, 150, 122]];
   const MAT = [.08, PD0 + .12, .8, PD1 - .12];                  // the doormat, on the floor just inside the street door: x0, y0, x1, y1
   const LEAF_TURN = .28;                                        // the street door's open leaf stands this many radians off the wall
@@ -53,7 +53,7 @@ const CD = (() => {
   const CAJA_VENTANA = [RGM, RG.headY, CH + RG.bodyH + .4];
   const CAJA_GAVETA = [RGM, RG.y1, CH + RG.bodyH / 2];
   const CAJA_REPISA = [(SHELF.x0 + SHELF.x1) / 2, (SHELF.y0 + SHELF.y1) / 2, SHELF.z];
-  const NV = { x0: CX1 - 1.1, x1: CX1 - .2, y0: CY0 + .15, y1: CY0 + .7, h: .4 };   // the chest freezer on the counter's right end (26 px wide)
+  const NV = { x0: CX1 - 1.1, x1: CX1 - .2, y0: CY0 + .15, y1: CY0 + .7, h: .49 };   // the chest freezer on the counter's right end (26 px wide)
   const NEVERA = [NV.x0, NV.y0, CH, NV.x1, NV.y1, CH + NV.h + .05];
   const PX = S / R2;                                            // screen pixels along x - y, per world unit
   const stepDown = v => Math.floor(v / ST) * ST;
@@ -194,18 +194,18 @@ const CD = (() => {
       for (let z = VZ0 - .1; z <= VZ1 + .1; z += ST * .5) for (const b of [VW0 - .1, VW1, (VW0 + VW1) / 2 - .04]) for (let h = 0; h <= .08; h += ST * .5) plot(.03, b + h, z, F[2]);
       block(.03, VW0 + .05, VZ0 - .12, .3, VW1 - .05, VZ0 - .04, WOOD_L, TOP);   // the sill inside: a shelf for what is shown in the window
     });
-    // a round wall clock above the pier between the window and the door, over everyone's head: a dark rim, a pale face, twelve ticks, two hands (10 past 10)
+    // a round wall clock above the pier between the window and the door, over everyone's head. Drawn as a picture of one-pixel cells (13 x 13) on the
+    // pixel where the wall point (bc, zc) falls, so it is the same in every framing: a dark rim 2 px thick, a white face, two dark hands (10 past 10)
+    // and four dark dots at 12, 3, 6 and 9, nothing else
     part('reloj', () => {
-      const bc = (VW1 + .1 + PD0 - .12) / 2, zc = 2.99, R0 = .28, ang = d => d * Math.PI / 180;
-      const hand = (h, v, deg, len) => { const t = clamp((h * Math.sin(ang(deg)) + v * Math.cos(ang(deg))), 0, len); return Math.hypot(h - Math.sin(ang(deg)) * t, v - Math.cos(ang(deg)) * t) < .02; };
-      pixelsX(.08, bc - R0 - .02, bc + R0 + .02, zc - R0 - .02, zc + R0 + .02, (b, z) => {
-        const h = bc - b, v = z - zc, r = Math.hypot(h, v);                                       // h: to the right of the clock's face (towards the corner)
-        if (r > R0) return 0;
-        if (r > R0 - .06) return rgb(84, 54, 36);
-        if (hand(h, v, 305, .11) || hand(h, v, 60, .17) || r < .035) return rgb(36, 28, 30);
-        const th = Math.atan2(h, v), k = Math.round(th / ang(30)), dth = Math.abs(th - k * ang(30)) * r;
-        if (r > R0 - .12 && dth < .035) return rgb(120, 88, 64);                                  // a tick
-        return rgb(252, 248, 236);
+      const bc = (VW1 + .1 + PD0 - .12) / 2, zc = 2.95, c0 = project(.08, bc, zc), cx = Math.floor(c0.sx), cy = Math.floor(c0.sy);
+      const RIM = rgb(62, 42, 34), FACE = rgb(252, 250, 244), INK = rgb(32, 26, 28);
+      const hands = new Set(['0,0', '-1,-1', '1,-1', '2,-1', '3,-2']), dots = new Set(['0,-3', '3,0', '0,3', '-3,0']);
+      pixelsX(.08, bc - .45, bc + .45, zc - .5, zc + .5, (b, z) => {
+        const q = project(.08, b, z), dx = Math.floor(q.sx) - cx, dy = Math.floor(q.sy) - cy, r = Math.hypot(dx, dy);
+        if (r > 6.4) return 0;
+        if (r > 4.4) return RIM;
+        return hands.has(dx + ',' + dy) || dots.has(dx + ',' + dy) ? INK : FACE;
       });
     });
     // a hanging bunch of plantains on the bare wall between the two runs of shelves: a nail, a stem, two tiers of fingers
@@ -237,7 +237,7 @@ const CD = (() => {
       }
     });
     // the chest freezer: a white body with a blue snowflake and a vent grille on its front, a metal frame round a sliding glass lid
-    // (two panes, two diagonal lights), frost-white inside under the glass
+    // (two clear light-blue panes, each with a white diagonal reflection)
     if (o.nevera) part('nevera', () => {
       const { x0, x1, y0, y1, h } = NV, z0 = CH, z1 = CH + h, zt = z1 + .05, xm = (x0 + x1) / 2, METAL = [158, 166, 178];
       block(x0, y0, z0, x1, y1, z1, [238, 242, 248], [226, 236, 244]);
@@ -249,9 +249,9 @@ const CD = (() => {
         let c;
         if (ex < .07 || ey < .07 || Math.abs(a - xm) < .022) c = rgb(...METAL);                      // the frame, and the rail between the two panes
         else {
-          const p = 3 * (a - x0) - (b - y0);                                                         // lines that run up and to the right on the screen
-          if ((p > .5 && p < .72) || (p > 1.9 && p < 2.12)) c = rgb(255, 255, 255);                // the two lights, one on each pane
-          else c = hash(Math.floor(a * 60), Math.floor(b * 60)) < .12 ? rgb(248, 252, 255) : rgb(196, 226, 242);
+          const p = 3 * (a - x0) - (b - y0), k = (b - y0) / (y1 - y0);                               // lines that run up and to the right on the screen
+          if ((p > .46 && p < .8) || (p > 1.86 && p < 2.2)) c = rgb(255, 255, 255);                // the two white reflections, one on each pane
+          else c = rgb(176 - 58 * k, 224 - 40 * k, 250 - 12 * k);                                    // a clear light blue, paler at the back
         }
         plot(a, b, zt + .004, c);
       }

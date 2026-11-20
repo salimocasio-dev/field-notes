@@ -9,10 +9,14 @@
      puerta  'shut' | 'open'        the shop door
      carro   true                   don Pepe's hand cart on the pavement, left of the scale (story 44)
      puesto  true                   the stand, its bins, the scale, the guineos, the low crate and the post (false: only the awning's shade)
+     surtido 'verduras' | 'frutas'  what the stand's bins hold: verduras, FOUR bins of a quarter of the table each (tomates, cebollas, papas, platanos,
+                                    left to right), or frutas, THREE of a third each (aguacates, pinas, limones). Default verduras
      aguja   '' | '0' | 'medio' | 'libra'   a red needle on the scale's dial, at 12, 3 or 6 o'clock ('' : none; in the game the needle is a sprite)
      solX    the sun's x in the picture, in pixels (default W - 44)
    Everything that moves is a sprite: people, the goat, the rooster, what is taken out of a bin, the scale's needle, coins.
-   Exports PESA_DIAL ({x, y, z}: the world centre of the scale's dial, r: its radius in picture pixels; the dial faces the camera, so its
+   Exports BINS and BW (the bins of the assortment in use, and each one's width: set by build(o); verduras before it), SURTIDOS (both lists),
+   binX(k) (the x of a bin's middle) and binBox(k) ([x0, y0, z0, x1, y1, z1]: the bin's space, from the table's low edge to .3 above its back),
+   PESA_DIAL ({x, y, z}: the world centre of the scale's dial, r: its radius in picture pixels; the dial faces the camera, so its
    centre on the picture is project(x, y, z)) and PESA_PLATO ({x, y, z}: the world centre of the pan's top, r: its radius in world units). */
 const CF = (() => {
   const WX0 = -3.4, WX1 = 11.0, WH = 3.5, DEEP = -2.2;           // the building: along x, its height, its depth behind the wall
@@ -26,13 +30,13 @@ const CF = (() => {
   const WIN = [-1.9, -.8, 1.2, 2.1];                             // the shuttered window: x0, x1, z0, z1
   const POT = [.28, .5];                                         // the flower pot left of the door
   const CART = [3.9, 3.35];                                      // the hand cart: the middle of its bed. In front of the stand's left end, so that it and the post at the right end fit one 196-px window
-  const BINS = ['tomates', 'cebollas', 'papas', 'platanos', 'aguacates', 'pinas', 'limones'];
-  const BW = (TX1 - TX0) / BINS.length;
+  const SURTIDOS = { verduras: ['tomates', 'cebollas', 'papas', 'platanos'], frutas: ['aguacates', 'pinas', 'limones'] };
+  let BINS = SURTIDOS.verduras, BW = (TX1 - TX0) / BINS.length;     // the assortment in use (build sets them): each bin takes an equal slice of the table
   const PAINT = [240, 150, 116], TRIM = [86, 160, 150], POLE = [3.55, TY1 + .1], WOOD = [150, 98, 56], WOOD_L = [196, 148, 92], WOOD_D = [92, 62, 40], LEGC = [48, 34, 28];
   const METAL = [120, 120, 130], LEAF = [74, 134, 62];
-  const PRODUCE = { tomates: [[226, 60, 50], .1], cebollas: [[214, 170, 190], .1], papas: [[176, 132, 84], .1] };
   const tableZ = y => TZ1 - (clamp(y, TY0, TY1) - TY0) / (TY1 - TY0) * (TZ1 - TZ0);
   const binX = k => TX0 + BW * (BINS.indexOf(k) + .5);
+  const binBox = k => { const i = BINS.indexOf(k); return [TX0 + BW * i, TY0, TZ0, TX0 + BW * (i + 1), TY1, TZ1 + .3]; };
   const PESA_DIAL = { x: POLE[0] - .8, y: POLE[1], z: 1.7, r: 7.5 };        // the dial: a disc turned to the camera
   const PESA_PLATO = { x: POLE[0] - .8, y: POLE[1], z: .72, r: .27 };       // the pan hangs straight under it
 
@@ -185,7 +189,7 @@ const CF = (() => {
       for (const bx of [TX0 + .1, TX1 - .2]) block(bx, TY1, LZ - .2, bx + .08, LY1 - .06, LZ - .08, WOOD_D);
       // the slanted top: a dark bed, the bins' rims
       for (let a = TX0; a <= TX1; a += PA) for (let b = TY0; b <= TY1; b += PA) {
-        const u = (a - TX0) / BW, rim = (u - Math.floor(u)) < .07 || b < TY0 + .06 || b > TY1 - .06 || a > TX1 - .05;
+        const rim = ((a - TX0) % BW) < .05 || b < TY0 + .06 || b > TY1 - .06 || a > TX1 - .05;
         plot(a, b, tableZ(b), rim ? rampOf(WOOD_L)[3] : rgb(104, 72, 48));
       }
       for (let a = TX0; a <= TX1; a += PX) for (let z = TZ1; z <= TZ1 + .16; z += PZ) plot(a, TY0, z, shade(WOOD_L, 2.4, a, z));   // the back board
@@ -205,67 +209,220 @@ const CF = (() => {
     part('poste', () => block(POST[0] - .05, POST[1] - .05, 0, POST[0] + .05, POST[1] + .05, 1.15, WOOD));
   }
 
-  /* ---------- the seven bins: each inside its own slice of the top, nothing past its rims ---------- */
-  const G_PLAT = [128, 182, 66], G_TIP = [58, 78, 36], G_STEM = [96, 92, 46], AGUA = [32, 62, 40], AGUA_H = rgb(150, 198, 120), PINA = [214, 140, 52], CROWN = [[56, 126, 60], [108, 184, 80]], LIMA = [176, 214, 54];
-  function bin(k) {
-    const mid = binX(k), hw = BW / 2 - .08, bz = y => tableZ(y);
-    if (PRODUCE[k]) {                                              // tomatoes, onions, potatoes: small rounds in a grid
-      const [c, r] = PRODUCE[k], x0 = mid - BW / 2 + .12, x1 = mid + BW / 2 - .1, step = r * 1.75;
-      let n = 0;
-      for (let b = TY0 + .16; b <= TY1 - .14; b += step) for (let a = x0; a <= x1; a += step) {
-        const jx = (hash(n, 7) - .5) * r * .5, jy = (hash(n, 13) - .5) * r * .5, z = bz(b) + r * .8; n++;
-        sphere(a + jx, b + jy, z, r, k === 'cebollas' && n % 3 === 0 ? [240, 226, 200] : c, 'solid');
-        if (k === 'tomates' && n % 2) sphere(a + jx, b + jy, z + r * .75, r * .28, [70, 140, 70], 'solid');
+  /* ---------- the bins: four (verduras) or three (frutas) on one table, each inside its own slice of the top, nothing past its rims ---------- */
+  // A kind is drawn pixel by pixel in the picture, like the scale: a stamp of one-pixel cells standing on a world point of the bed (its bottom middle
+  // on that point), so it can be bigger than a shaded ball and carry what makes it itself (a tomato's star, an onion's point, a potato's eyes ...).
+  // A stamp is a little nearer the camera than the bed under it (SPR), so it beats the rims and what lies behind it; nearer stamps beat farther ones
+  const SPR = .14;
+  const pal = m => { const r = {}; for (const k in m) r[k] = rgb(...m[k]); return r; };
+  function draw(w, h, x, y, z, fn, dd = 0) {                         // fn(c, r) -> a colour or 0, for the cell c across and r down (r = h - 1 is the feet)
+    const p = project(x, y, z), cx = Math.floor(p.sx) - (w >> 1), cy = Math.floor(p.sy) - (h - 1), d = p.d + SPR + dd;
+    for (let r = 0; r < h; r++) for (let c = 0; c < w; c++) { const q = fn(c, r); if (q) spot(cx + c, cy + r, d, q); }
+  }
+  const stamp = (rows, P, x, y, z, dd) => draw(rows[0].length, rows.length, x, y, z, (c, r) => P[rows[r][c]], dd);
+  // the spot of a bin's picture at (u, v) from 0 to 1 over the room left inside its rims for a thing `half` wide (world units)
+  function lay(k, half, u, v) {
+    const i = BINS.indexOf(k), x0 = TX0 + BW * i + .07 + half, x1 = TX0 + BW * (i + 1) - .07 - half, y0 = TY0 + .09 + half, y1 = TY1 - .09 - half;
+    return [x0 + (x1 - x0) * u, y0 + (y1 - y0) * v];
+  }
+  const jit = (n, a) => (hash(n, 7) - .5) * a;
+
+  // tomatoes: round and red, a green star of a stem on top
+  const P_TOM = pal({ R: [218, 50, 46], L: [250, 134, 108], D: [164, 34, 46], K: [110, 26, 44], g: [84, 156, 62], G: [146, 210, 88], s: [40, 88, 48] });
+  const S_TOM = [[
+    '...s...',
+    '.gGGGg.',
+    'RLRgRRD',
+    'LRRRRRD',
+    'RRRRRDD',
+    '.RDDDD.',
+  ], [
+    '...s...',
+    '.gGGGg.',
+    'RRgRRRD',
+    'RLRRRRD',
+    'RRRRRDD',
+    '.RDDDD.',
+  ]];
+  // yellow onions: round with a pointed top, golden-brown papery skin with one lighter stripe, a tuft of dry stem above, a few roots below
+  const P_ONI = pal({ y: [236, 182, 86], Y: [208, 148, 64], S: [252, 226, 134], D: [156, 102, 50], K: [106, 68, 42], t: [232, 208, 142], T: [128, 88, 52], r: [222, 200, 150] });
+  const S_ONI = [
+    '...T...',
+    '...t...',
+    '..ySD..',
+    '.ySYYD.',
+    'ySYYYYD',
+    'ySYYYYD',
+    'yYSYYDD',
+    '.yYSDD.',
+    '..YDK..',
+    '..r.r..',
+  ];
+  // the cut onion (9 x 11): the same pointed shape, a golden skin round it, rings of white and pale beige inside
+  const P_ONC = pal({ Y: [208, 148, 64], D: [156, 102, 50], W: [254, 250, 238], V: [186, 150, 106], t: [232, 208, 142] });
+  function onionCut(x, y, z) {
+    draw(9, 11, x, y, z, (c, r) => {
+      const dx = c - 4, dy = r - 6.5, q = Math.hypot(dx * (dy < 0 ? 1 + .2 * -dy : 1), dy * (dy < 0 ? .82 : 1));
+      if (q > 4.5) return r === 0 && c === 4 ? P_ONC.t : 0;
+      if (q > 3.5) return dx + dy > 2 ? P_ONC.D : P_ONC.Y;
+      return q > 2.6 ? P_ONC.W : q > 1.7 ? P_ONC.V : q > .8 ? P_ONC.W : P_ONC.V;
+    });
+  }
+  // potatoes: lumpy brown ovals with two or three darker eyes, dull (no light spot)
+  const P_POT = pal({ p: [190, 160, 118], P: [168, 136, 96], D: [128, 100, 72], d: [96, 74, 56], e: [84, 62, 44] });
+  const S_POT = [[
+    '...ppPP.',
+    '.pPPPPPD',
+    'pPePPPPD',
+    'PPPPPeDD',
+    'PePPDDD.',
+    '.dDDdd..',
+  ], [
+    '..pPPP..',
+    '.pPPPePD',
+    'PPePPPPD',
+    'PPPPPDDD',
+    '.DPeDDD.',
+    '..dddd..',
+  ], [
+    '.ppPP...',
+    'pPPPPPD.',
+    'PPPePPPD',
+    '.PPPPPeD',
+    '.dDPDDD.',
+    '...dddd.',
+  ]];
+  // plantains: two big hands of long curved green fingers, each hand joined at a dark stem, each finger fat in the middle and ending in a dark tip.
+  // A finger is a curve in world space along x (its ends lifted, bowed a little), painted in pixels: lit on its top edge, dark on its lower, up to 4 px thick
+  const P_PLA = pal({ G: [154, 208, 86], g: [108, 166, 62], d: [56, 100, 50], T: [44, 42, 28], S: [58, 40, 26], s: [170, 130, 78] });
+  function hand(xs, ys, n, L, gap, fan, lift, lay) {                   // the stem at (xs, ys) on the bed; n fingers run along +x, `gap` apart along y at the stem, `fan` more at each tip
+    for (let i = 0; i < n; i++) {
+      const f = i - (n - 1) / 2, y0 = ys + i * gap, y1 = y0 + f * fan, len = L * (1 - .05 * Math.abs(f));
+      for (let t = 0; t <= 1.0001; t += .006) {
+        const x = xs + len * t, y = y0 + (y1 - y0) * t + .06 * Math.sin(t * Math.PI), z = tableZ(y) + .1 + lay + lift * (2 * t - 1) ** 2;
+        const p = project(x, y, z), sx = Math.floor(p.sx), sy = p.sy, d = p.d + SPR + .02 * i;
+        const w = 1.6 + 2.2 * Math.pow(Math.sin(Math.PI * Math.min(1, t * 1.08)), .6), top = Math.round(sy - w / 2 + .01), bot = Math.round(sy + w / 2 - .01);
+        for (let Y = top; Y <= bot; Y++) spot(sx, Y, d, t > .93 ? P_PLA.T : Y === top ? P_PLA.G : (Y === bot && bot > top) ? P_PLA.d : P_PLA.g);
       }
-    } else if (k === 'platanos') {                                 // plantains: long green fingers, curved, fanned from a dark stem; three loose hands; dark tips
-      const r = .05;
-      for (const [hx, hy] of [[mid - .045, 1.02], [mid + .05, 1.27], [mid - .03, 1.46]]) {
-        capsule([hx - .085, hy - .015, bz(hy) + r + .02], [hx + .085, hy - .015, bz(hy) + r + .02], r * .85, r * .85, () => G_STEM, 'solid');   // the stem the fingers hang from
-        for (const s of [-1, 0, 1]) {
-          const x0 = hx + s * .02, y1 = hy + Math.abs(s) * .02, y2 = y1 + .42 - Math.abs(s) * .03, x2 = hx + s * .15;
-          const A = [x0, y1, bz(y1) + r + .02], B = [(x0 + x2) / 2 + s * .12, (y1 + y2) / 2, bz((y1 + y2) / 2) + r - .02], Cc = [x2, y2, bz(y2) + r + .07];
-          for (let n = 22, k = 0; k <= n; k++) {                      // a curve of spheres: fat in the middle, thin and dark at the tip, dark at the stem
-            const t = k / n, u = 1 - t, c = (v, i) => u * u * A[i] + 2 * u * t * B[i] + t * t * Cc[i];
-            sphere(c(0, 0), c(0, 1), c(0, 2), r * (1 + .15 * Math.sin(t * 3.14) - .3 * t * t), t > .86 || t < .07 ? G_TIP : G_PLAT, 'solid');
-          }
-        }
-      }
-    } else if (k === 'aguacates') {                                // avocados: dark pears (a round bottom, a narrow neck), a lighter patch on each, no tops
-      for (let j = 0; j < 3; j++) for (let c = 0; c < 2; c++) {
-        const x = mid + (c - .5) * .22 + (j % 2 ? .04 : -.04) - .01, y = 1.17 + j * .33 + c * .07 - .02, z = bz(y), lean = (j + c) % 2 ? .02 : -.01;
-        sphere(x, y, z + .1, .1, AGUA, 'solid');
-        sphere(x - lean, y + lean, z + .17, .073, AGUA, 'solid');
-        sphere(x - lean * 2, y + lean * 2, z + .225, .05, AGUA, 'solid');
-        const p = project(x, y, z + .1), i = (Math.floor(p.sy) - 2) * W + Math.floor(p.sx) - 2;                   // the highlight: two pixels, upper left
-        if (zb[i] > -1e8) { pix[i] = AGUA_H; pix[i + 1] = AGUA_H; }
-      }
-    } else if (k === 'pinas') {                                    // pineapples: three, big, a diamond pattern and a spiky crown each
-      [[mid + .05, 1.13], [mid + .08, 1.45], [mid + .05, 1.76]].forEach(([x, y]) => pineapple(x, y, bz(y) + .175));
-    } else {                                                       // limes: small bright rounds with dark gaps between them
-      for (let j = 0; j < 5; j++) for (let c = 0; c < 2; c++) {
-        const x = mid + (c - .5) * .21 + (j % 2 ? .045 : -.045), y = 1.07 + j * .2 + (hash(c, j) - .5) * .02;
-        sphere(x, y, bz(y) + .066, .066, LIMA, 'solid');
-      }
+    }
+    for (let i = 0; i < n; i++) {                                     // the stem: a dark block across the roots, lit on its top edge
+      const y0 = ys + i * gap, p = project(xs - .03, y0, tableZ(y0) + .1 + lay + lift), sx = Math.floor(p.sx), sy = Math.floor(p.sy);
+      for (let c = 0; c < 3; c++) for (let k = -1; k <= 0; k++) spot(sx - c, sy + k, p.d + SPR + .02 * n + .05, k === -1 ? P_PLA.s : P_PLA.S);
     }
   }
+
+  // avocados: dark green pears (a round bottom, a narrow neck) with a light spot, 8 x 10; and one cut in half and open
+  const P_AGU = pal({ a: [96, 152, 74], A: [62, 112, 58], H: [196, 234, 154], D: [38, 76, 50], K: [26, 52, 42] });
+  const S_AGU = [[
+    '...aA...',
+    '...aA...',
+    '..aAAA..',
+    '.aHAAAA.',
+    'aHHAAAAD',
+    'aHAAAADD',
+    'aAAADAAD',
+    'AAAAAADD',
+    '.AAADDD.',
+    '..DDDK..',
+  ], [
+    '...aA...',
+    '..aAAA..',
+    '..aHAA..',
+    '.aHHAAA.',
+    'aHAAAADD',
+    'aAADAAAD',
+    'aAAAAADD',
+    'AAAAADAD',
+    '.AAADDD.',
+    '..DDDK..',
+  ]];
+  const P_AGC = pal({ skin: [34, 66, 42], rim: [96, 150, 58], fl: [208, 224, 118], fh: [232, 238, 158], st: [112, 72, 42], sl: [170, 118, 72], sd: [76, 48, 32] });
+  function avocadoCut(x, y, z) {
+    draw(11, 12, x, y, z, (c, r) => {
+      const px = c + .5 - 5.5, py = r + .5;
+      const q1 = Math.hypot(px / 5, (py - 7.3) / 4.7), q2 = Math.hypot(px / 3.1, (py - 3.5) / 3.4), q = Math.min(q1, q2);
+      if (q > 1) return 0;
+      const dep = 1 - q;                                              // how far in from the skin, 0 to 1
+      if (dep < .17) return P_AGC.skin;
+      const sx = px, sy = py - 8.1, sr = Math.hypot(sx, sy);
+      if (sr < 2.3) return sr > 1.5 && sx + sy > 1.2 ? P_AGC.sd : (sx < -.2 && sy < -.2 && sr > .4) ? P_AGC.sl : P_AGC.st;   // the stone
+      return dep < .3 ? P_AGC.rim : dep < .46 ? P_AGC.fl : P_AGC.fh;
+    });
+  }
+
+  // pineapples (15 x 20, a body 13 wide): a golden-orange oval with a dark diamond criss-cross, a tall spiky crown of seven leaves
+  const P_PIN = { hi: rgb(252, 204, 90), mid: rgb(240, 160, 52), lo: rgb(206, 116, 42), dk: rgb(150, 84, 40),
+    hiL: rgb(150, 78, 24), midL: rgb(128, 64, 22), loL: rgb(104, 52, 26), dkL: rgb(80, 40, 28),
+    lv: [rgb(122, 196, 86), rgb(84, 156, 70), rgb(54, 120, 62), rgb(40, 94, 56)] };
+  const CROWN = [[.8, 5.4], [2.9, 2.8], [5.2, 1.0], [7.5, .2], [9.8, 1.0], [12.1, 2.8], [14.2, 5.4]];   // the seven leaves' tips
   function pineapple(x, y, z) {
-    const r = .175;
-    capture = [];
-    sphere(x, y, z, r, PINA, 'solid');
-    sphere(x, y, z + .05, r * .95, PINA, 'solid');                 // a little taller than wide: an oval
-    const px = capture; capture = null;
-    const p = project(x, y, z), cx = Math.round(p.sx), cy = Math.round(p.sy);
-    for (let n = 0; n < px.length; n += 4) {                       // the skin's diamonds: darker lines across the body, both ways
-      const ix = px[n], iy = px[n + 1], d = px[n + 2], dx = ix - cx, dy = iy - cy, i = iy * W + ix;
-      let c = px[n + 3];
-      if ((((dx + dy) & 3) === 0) || (((dx - dy) & 3) === 0)) c = rgb((c & 255) * .7, (c >> 8 & 255) * .62, (c >> 16 & 255) * .8);
-      if (d <= zb[i]) continue;
-      zb[i] = d; pix[i] = c;
-    }
-    const zt = z + r * .85;
-    for (let f = 0; f < 7; f++) {                                  // the crown: leaves fanned up and out
-      const a = f / 7 * 6.283 + .4, dx = Math.cos(a), dy = Math.sin(a), out = f === 0 ? 0 : .09, up = f === 0 ? .25 : .18;
-      capsule([x, y, zt - .02], [x + dx * out, y + dy * out, zt + up], .04, .014, () => CROWN[f % 2], 'solid');
+    const BX = 7.5, BY = 14.6, HW = 6.5, HH = 5.5;
+    draw(15, 20, x, y, z, (c, r) => {
+      const px = c + .5, py = r + .5, nx = (px - BX) / HW, ny = (py - BY) / HH, nn = nx * nx + ny * ny;
+      if (nn <= 1) {
+        const l = -.55 * nx - .6 * ny + .58 * Math.sqrt(1 - nn), band = l > .78 ? 'hi' : l > .5 ? 'mid' : l > .2 ? 'lo' : 'dk';
+        const i = c - 7, j = r - 14, m = k => ((k % 4) + 4) % 4;
+        if (m(i + j) === 0 || m(i - j) === 0) return P_PIN[band + 'L'];
+        return m(i + j) === 2 && m(i - j) === 2 && band !== 'dk' ? P_PIN.hi : P_PIN[band];
+      }
+      let best = 9;                                                     // a leaf: the pixel is within its width of the line from the crown's foot to its tip
+      for (let k = 0; k < 7; k++) {
+        const [tx, ty] = CROWN[k], bx = BX + (k - 3) * .9, by = 10.6 - (k === 3 ? 0 : 0), ex = tx - bx, ey = ty - by, len2 = ex * ex + ey * ey;
+        const t = clamp(((px - bx) * ex + (py - by) * ey) / len2, 0, 1), dist = Math.hypot(px - bx - ex * t, py - by - ey * t);
+        if (dist <= 1.05 * (1 - t) + .42) best = Math.min(best, Math.abs(k - 3));
+      }
+      return best < 9 ? P_PIN.lv[best] : 0;
+    });
+  }
+
+  // limes: bright yellow-green rounds (6 x 6) with dark gaps between them; and one cut in half (9 x 9), pale, with segment lines
+  const P_LIM = pal({ l: [216, 244, 110], L: [172, 218, 58], D: [120, 172, 46], d: [76, 120, 44] });
+  const S_LIM = [
+    '.llLL.',
+    'lllLLD',
+    'lLLLLD',
+    'LLLLDD',
+    '.LLDD.',
+    '..dd..',
+  ];
+  const P_LIC = pal({ skin: [78, 142, 40], rind: [204, 228, 132], fl: [172, 210, 80], ln: [242, 251, 196] });
+  function limeCut(x, y, z) {
+    draw(9, 9, x, y, z, (c, r) => {
+      const dx = c - 4, dy = r - 4, q = Math.hypot(dx, dy);
+      if (q > 4.4) return 0;
+      if (q > 3.7) return P_LIC.skin;
+      if (q > 3.0) return P_LIC.rind;
+      if (q > .9 && (dx === 0 || dy === 0 || Math.abs(dx) === Math.abs(dy))) return P_LIC.ln;
+      return P_LIC.fl;
+    });
+  }
+
+  function bin(k) {
+    const bz = y => tableZ(y);
+    const put = (rows, P, h, u, v, n) => { const [x, y] = lay(k, h, u, v); stamp(rows, P, x + jit(n, .02), y + jit(n + 5, .02), bz(y)); };
+    if (k === 'tomates') {
+      [[0, 0], [.5, 0], [1, 0], [0, .5], [.33, .5], [.67, .5], [1, .5], [0, 1], [.5, 1], [1, 1]].forEach(([u, v], n) => put(S_TOM[n % 2], P_TOM, .135, u, v, n));
+    } else if (k === 'cebollas') {
+      [[0, 0], [.5, 0], [1, 0], [0, .5], [.33, .5], [.67, .5], [1, .5], [0, 1], [1, 1]].forEach(([u, v], n) => put(S_ONI, P_ONI, .135, u, v, n + 20));
+      const [x, y] = lay(k, .17, .5, .93); onionCut(x, y, bz(y));
+    } else if (k === 'papas') {
+      [[0, 0], [.5, 0], [1, 0], [.1, .5], [.55, .5], [1, .5], [0, 1], [.5, 1], [1, 1]].forEach(([u, v], n) => put(S_POT[n % 3], P_POT, .154, u, v, n + 40));
+    } else if (k === 'platanos') {
+      const x0 = TX0 + BW * BINS.indexOf(k);
+      hand(x0 + .22, 1.16, 5, .8, .15, .07, .1, 0);
+      hand(x0 + .26, 1.33, 4, .76, .15, .07, .1, .07);
+    } else if (k === 'aguacates') {
+      [[0, 0], [.45, 0], [.2, .5], [.7, .5], [1, .45], [0, 1], [1, 1]].forEach(([u, v], n) => put(S_AGU[n % 2], P_AGU, .154, u, v, n + 60));
+      const [x, y] = lay(k, .2, .5, .95); avocadoCut(x, y, bz(y));
+    } else if (k === 'pinas') {
+      const [xa, ya] = lay(k, .29, 0, .22), [xb, yb] = lay(k, .29, 1, .52);
+      pineapple(xa, ya, bz(ya)); pineapple(xb, yb, bz(yb));
+    } else {                                                          // limones
+      for (let j = 0; j < 3; j++) for (let c = 0; c < (j === 1 ? 4 : 5); c++) {
+        if (j === 2 && c === 2) continue;
+        const [x, y] = lay(k, .115, j === 1 ? (c + .5) / 4 : c / 4, j / 2); stamp(S_LIM, P_LIM, x + jit(j * 7 + c, .02), y + jit(j * 7 + c + 3, .02), bz(y));
+      }
+      const [x, y] = lay(k, .17, .5, .9); limeCut(x, y, bz(y));
     }
   }
 
@@ -337,6 +494,7 @@ const CF = (() => {
   }
 
   function build(o) {
+    BINS = SURTIDOS[o.surtido] || SURTIDOS.verduras; BW = (TX1 - TX0) / BINS.length; api.BINS = BINS; api.BW = BW;
     building(o);
     if (o.puesto !== false) stand(o);
     extras(o);
@@ -352,5 +510,6 @@ const CF = (() => {
       for (let z = .3; z <= 1.1; z += .3) castShadow(POST[0], POST[1], z, .1);
     }
   }
-  return { WX0, WX1, WH, D0, D1, DH, AX0, AX1, AZ0, AZ1, AY, TX0, TX1, TY0, TY1, TZ0, TZ1, LEG, LY1, LZ, PAVE, CRATE, POST, CART, BINS, BW, POLE, PESA_DIAL, PESA_PLATO, binX, tableZ, groundAt, build, sky, skyPlan };
+  const api = { WX0, WX1, WH, D0, D1, DH, AX0, AX1, AZ0, AZ1, AY, TX0, TX1, TY0, TY1, TZ0, TZ1, LEG, LY1, LZ, PAVE, CRATE, POST, CART, BINS, BW, SURTIDOS, POLE, PESA_DIAL, PESA_PLATO, binX, binBox, tableZ, groundAt, build, sky, skyPlan };
+  return api;
 })();

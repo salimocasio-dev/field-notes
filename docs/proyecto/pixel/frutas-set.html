@@ -8,6 +8,7 @@
      hora   = manana | tarde      the sky
      puerta = shut | open         the shop door
      carro  = 0 | 1               don Pepe's hand cart on the pavement, left of the scale (story 44)
+     surtido = verduras | frutas  what the stand's bins hold: four bins of verduras (tomates, cebollas, papas, platanos) or three of frutas (aguacates, pinas, limones)
      aguja  = 0 | medio | libra   a red needle on the scale's dial, at 12, 3 or 6 o'clock (for the readers' renders only: in the game it is a sprite)
      t = wind time (0 for the reference); ox, oy = the origin
    The game shows a 196 x 216 window of this 240 x 216 picture; the origin is chosen so everything a player touches (the sign, the door, the
@@ -19,6 +20,7 @@ const SET = {
   hora: pick('hora', ['manana', 'tarde'], 'manana'),
   puerta: pick('puerta', ['shut', 'open'], 'open'),
   carro: Q.get('carro') === '1',
+  surtido: pick('surtido', ['verduras', 'frutas'], 'verduras'),
   aguja: pick('aguja', ['0', 'medio', 'libra'], ''),
   puesto: true,
   t: +(Q.get('t') || 0),
