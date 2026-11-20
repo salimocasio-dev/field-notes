@@ -239,6 +239,15 @@ void main() {
 
           if (s.item.runtimeType.toString() != 'CualItem') return;
           await app.settle(rounds: 4); // the pictures are read from the assets
+          // no picture failed to draw (coqui_scenes puts its own red box where one does): the pictures of two
+          // ¿Cuál? items in a row are each their own, not one picture handed another pair
+          expect(
+            find.byWidgetPredicate(
+              (w) => w is ColoredBox && w.color == const Color(0xFF3A1E24),
+            ),
+            findsNothing,
+          );
+          expect(find.byType(ErrorWidget), findsNothing);
           final choices = s.choices as List<dynamic>;
           for (var k = 0; k < choices.length; k++) {
             final pair = s.item.pair as ReviewPair;
@@ -294,6 +303,8 @@ void main() {
       await app.settle(rounds: 5);
       expect(app.tabBarShown, isTrue);
       expect(app.selectedTab, 'words');
+      // the praise of the last item, cut short by Next, is a clip of the harness still counting its length
+      await app.advance(5000);
     },
     timeout: const Timeout(Duration(minutes: 10)),
   );

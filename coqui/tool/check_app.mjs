@@ -286,7 +286,7 @@ async function run(phone, state) {
       });
       const before = await earAnswers();
       await tapText(page, /^Start$/);
-      const line = /^Touch the (word you heard|picture that fits)\.$/;
+      const line = /^Listen\. Touch the (word you heard|picture that fits)\.$/;
       const ns0 = await waitFor(page, has(line), 'the first game\'s line', 30000);
       const game = ns0.find((n) => says(n, line));
       const words = game.text.includes('word');

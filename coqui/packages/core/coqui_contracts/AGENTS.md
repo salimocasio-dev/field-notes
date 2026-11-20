@@ -26,6 +26,11 @@ Models, interfaces, routes. Pure Dart.
 - Order 27: `RepasoData` and its parts (`lib/src/repaso.dart`), the typed `historia/datos/repaso.json` that
   `coqui/tool/make_repaso.py --app` writes, and `RepasoCatalog` (`RepasoData? get repaso`). It is an interface of its own,
   not a member of `CourseCatalog`: a new member there would break the catalogs other packages' tests implement.
+- The readers' fixes to Repaso: `RepasoServing` and `repasoServing(course, progress)` (same file): the one rule for which
+  words Repaso can serve now (a word with a picture pair and a sentence of his, or a sentence of a story he has finished
+  that scores it with two fair wrong tiles among the words he has met). The session's plan, the Palabras tab's Repaso
+  card ("N words today") and the map's Today card all ask it; it gives null when the course has not read the games'
+  data, and the caller then keeps today's rule (a word with a picture pair). `repasoStoryFinished`, `repasoTokens`.
 
 ## Run and test it alone
 

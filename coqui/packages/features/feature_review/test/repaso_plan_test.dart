@@ -58,6 +58,36 @@ void main() {
     }
   });
 
+  test('N: the words the session takes are exactly the words the shared rule serves (the counts outside Repaso ask the same rule)', () {
+    for (final json in [seedJson('curso'), everythingJson(data)]) {
+      final p = learner(json);
+      final serving = repasoServing(course, p)!;
+      final pl = planner(p);
+      // every word of the data: the planner says what the rule says
+      for (final w in data.words) {
+        expect(pl.servable(w), serving.canServe(w.word), reason: w.word);
+      }
+      // and the due words the session takes are the due words the rule counts, up to the cap
+      final counted = [
+        for (final w in p.due(Skill.ear))
+          if (serving.canServe(w)) w,
+      ];
+      expect([
+        for (final w in pl.sessionWords().words) w.word,
+      ], counted.take(repasoCap).toList());
+    }
+    // the rule serves words with no picture pair: Repaso's count is not only the pair words
+    final p = learner(everythingJson(data));
+    final serving = repasoServing(course, p)!;
+    final noPair = [
+      for (final w in data.words)
+        if (course.pairs.every((x) => x.word != w.word) &&
+            serving.canServe(w.word))
+          w.word,
+    ];
+    expect(noPair, isNotEmpty);
+  });
+
   test('wrong tiles: over EVERY ¿Qué oyes? sentence of the data file, never a forbidden word, and two found', () {
     final all = learner(everythingJson(data));
     final pl = planner(all);

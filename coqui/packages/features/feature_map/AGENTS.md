@@ -28,6 +28,7 @@ The home map (page 11), the Today card, the place sheet.
 - Not ported: the landscape two-column layout of v=39 (the chips and the Today card in a right column). The app is portrait: the phone builds are locked to portrait and the web manifest asks for it. The map tab scrolls, and the place sheet hides its "Place N" line in landscape as v=39 does.
 - The screen draws the whole screen: the card sits above the tab bar's height, as in coqui_ui's gallery, so the shell draws the bar over it. The place sheet opens with `showCoquiSheet` (a route of the root navigator), so its scrim dims the tab bar too, as v=39's does.
 - Order 26: `MapModule(showPerf: true)` (`MapScreen.showPerf`) shows the bake time and the frame times (slowest and mean) in a small chip in a corner, under the chips bar: the app's `?perf=1`. Off by default.
+- The Today card's review entry ("N words coming back") counts the words Repaso can serve (`repasoServing` in coqui_contracts, the rule the session asks), not only the words with a picture pair; with no games' data, today's rule (`test/map_model_test.dart`).
 - `MapScreen.reviewTitle`: the title of the Today card's review entry (app.html's `plan()`); the screen shows that entry only when it is given a title, and `MapModule` gives `CoquiLabels.reviewTitle`.
 
 ## Run and test it alone

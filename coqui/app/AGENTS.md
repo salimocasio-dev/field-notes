@@ -90,6 +90,11 @@ of a whole session for readers:
 flutter test tool/repaso_shots_test.dart --dart-define=OUT=<dir>   # 390 x 844 at ratio 2: NNN-<moment>.png and index.json
 ```
 
+It plays sessions until every game has been answered once right and once wrong, with at least two words missed in the
+first, a returned item, a Parejas slip, Dilo's listening and not-heard tries, and the end screens (top and bottom of the
+list). It fails the run if any picture has an `ErrorWidget` or a picture that failed to draw (coqui_scenes' own red box),
+if a game's layout moved between the moment it was asked and a later one, or if an end screen leaves out a scored word.
+
 ## Address switches
 
 Before the `#`, read once at the start, never kept: `?perf=1` (the map's bake and frame times and a story's scene bake in

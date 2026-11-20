@@ -54,10 +54,34 @@ Page 15 (docs/proyecto/15-repaso-juegos.md) is the design; where it and page 10 
   two reviews running never repeat one) and where the play kinds' turn stands (`repaso.kind`).
 - `lib/src/ui/repaso_screen.dart` (the start, each game, the end, Dilo's mic), `book_image.dart` (a book picture at a
   whole scale; a local copy of Biblioteca's).
+- The readers' fixes (page 15's lines for them are in the page; the tests of each are named for its letter): the one rule
+  for which words Repaso can serve is `RepasoServing` in coqui_contracts (the plan delegates to it; Palabras and the map
+  count by it). The screen has one fixed layout from the moment an item is asked: (1) the instruction line, and the
+  streak chip's place (reserved); (2) the round speaker (`RoundSpeaker`, not in Parejas, whose sounds are its tiles),
+  the same size and place in every game that plays a sentence; (3) the game's own area; (4) the reveal, a place of its
+  own (key `reveal`) that holds the sentence and its story picture after the answer; (5) Next's place (key `next-slot`),
+  empty until Next shows (Dilo's "Can't speak now" stands in it until then). Every item ends with Next (it shows at once
+  after a right answer, and after a wrong one when the right thing has been touched; the praise plays meanwhile and Next
+  cuts it short); no text of the sentence shows before the answer (the session's captions are off). A wrong touch has
+  the red-orange ring and the X badge; the right one then has the pointing hand over its middle and no ring until it is
+  touched. A missed item returns as the same sentence and game with its pictures or tiles in another order
+  (`CualItem.rearranged`, `HearItem.rearranged`). The bar has one dash for each planned item (a missed one red-orange
+  until its return is answered, `barMissed`). Speakers on ¿Qué oyes? tiles only when every tile has a clip of its word
+  alone (`HearItem.speakers`). ¿Dónde? stacks its pictures at the largest whole scale that fits and has two when three
+  could not be 150 px wide each (`ui/repaso_layout.dart`, `WhereItem.picturesFor`, `RepasoSession.wherePictures`).
+  Arma la frase: a row of empty slots, a placed tile goes back to the bank when touched (`RepasoSession.slots`); Parejas:
+  a wrong pair flashes about a second, a matched pair has its number; Dilo: "Listening…", "Heard: …", "Try again".
 - Tests: `repaso_plan_test.dart` (on the real data file: tiles over every sentence, rotation, which game, the seeded
-  learner's session), `repaso_session_test.dart` (each game's rules with no screen), `repaso_screen_test.dart` (both
-  phones, text size, reduced motion). `tool/repaso_counts_test.dart` prints how many words get each game at stories 3,
-  11, 22, 32. The pictures for readers: `coqui/app/tool/repaso_shots_test.dart`.
+  learner's session), `repaso_session_test.dart` (each game's rules with no screen, and the session's side of each fix),
+  `repaso_screen_test.dart` (both phones, text size, reduced motion), `repaso_fixes_test.dart` (the fixes on screen: the
+  pictures of consecutive ¿Cuál? items, the layout that does not move, the hand, Arma la frase, Parejas, Dilo, ¿Dónde?,
+  the end screen), `repaso_layout_test.dart`; `test/support/repaso_screen_rig.dart` is the screen rig.
+  `tool/repaso_counts_test.dart` prints how many words get each game at stories 3, 11, 22, 32. The pictures for readers:
+  `coqui/app/tool/repaso_shots_test.dart`; it fails the run on an `ErrorWidget` or a picture that failed to draw at any
+  picture, on a game whose layout moved after it was asked, and on an end screen that does not list every scored word once.
+- Pictures that change place: the pictures of a ¿Cuál? item are keyed to their item. `coqui_scenes`' `ScenePicture` is a
+  `SingleTickerProviderStateMixin` that starts a second ticker when it is handed another picture in place, which Flutter
+  refuses; until that is changed in `coqui_scenes` (not this package's to change), never hand a scene picture another ref in place.
 
 ## Run and test it alone
 

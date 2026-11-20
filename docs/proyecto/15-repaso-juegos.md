@@ -32,8 +32,8 @@ Older words of his that bind this (page 03): "the pictures are an aid to the lis
 - Each word gets one scored item. Around them, about four play items that score nothing. About 14 items, 4 minutes.
 - The mix does not wait for a word to be well known. Every session from the second day has at least three kinds of game.
 - A missed item shows its answer, and comes back once three items later: the same sentence, the same game, not scored. At most five come back in a session.
-- Each game has one plain English line saying what to do (menus may be English): "Touch the picture that fits." "Touch the word you heard." "Put the words in order." "Match each sound to its word." "Which moment is it?" "Say it."
-- A row of right answers shows as a small count ("4 in a row"). The end screen says how many he got right the first time, and lists each word with the sentence it was asked in; a tap plays it. No lives and no clock.
+- Each game has one plain English line saying what to do (menus may be English): "Listen. Touch the picture that fits." "Listen. Touch the word you heard." "Listen. Put the words in the order you hear. Two don't belong." "Touch a sound, then its word." "Listen. Touch the picture it goes with." "Say it."
+- A row of right answers shows as a small count ("4 in a row"). The end screen says "N of M words right the first time" (M is the session's scored words; the play games do not count) and lists every one of those words in one of two lists, "Got it the first time" and "Coming back soon", each with the sentence it was asked in; a tap plays it. No lives and no clock.
 - Repaso counts toward the day's minutes, so a day with only Repaso keeps the streak. Today it does not.
 - Silence, in the scored game only: 6 s after the sentence it plays again; 6 s more, the answer is shown and it is a miss (as today). The play games never time out.
 
