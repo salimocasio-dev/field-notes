@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:coqui_contracts/coqui_contracts.dart';
+import 'package:coqui_pixel/coqui_pixel.dart' show Sheet;
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/old_pictures.dart';
 import 'package:coqui_ui/coqui_ui.dart';
@@ -446,7 +447,8 @@ void main() {
           n++;
         }
       }
-      expect(n, greaterThan(kIsWeb ? 30 : 400));
+      // on the vm: 379 old pictures of the 9 scenes not converted (El balcón's 36 went at order 30b)
+      expect(n, greaterThan(kIsWeb ? 30 : 350));
     });
   });
 
@@ -494,8 +496,10 @@ void main() {
       expect(refs, hasLength(2 * all.length + 4 * levelItems.length));
       final seen = <String>{};
       final source = ScenePictures(bundle: testBundle());
-      final frame = (await source.frameOf('frente'));
-      final sheet = frame.scene.sheet;
+      final sheets = <String, Sheet>{
+        for (final id in convertedScenes)
+          id: (await source.frameOf(id)).scene.sheet,
+      };
       final old = OldPictures(bundle: testBundle());
       var inSheet = 0, inOld = 0;
       for (final r in refs) {
@@ -506,7 +510,7 @@ void main() {
           reason: 'two pictures are ${r.scene}/${r.name}',
         );
         if (convertedScenes.contains(r.scene)) {
-          final n = r.name!;
+          final n = r.name!, sheet = sheets[r.scene]!;
           expect(
             sheet.pictures.containsKey(n) ||
                 sheet.level.any((l) => 'nivel.${l.word}.${l.index}' == n),
@@ -525,8 +529,11 @@ void main() {
           inOld++;
         }
       }
-      // El frente's sheet has exactly the pictures the content asks of it
-      expect(inSheet, sheet.pictures.length + sheet.level.length);
+      // each converted scene's sheet has exactly the pictures the content asks of it
+      expect(inSheet, [
+        for (final sheet in sheets.values)
+          sheet.pictures.length + sheet.level.length,
+      ].reduce((a, b) => a + b));
       expect(inOld + inSheet, refs.length);
       expect(
         oldHashes.length,
