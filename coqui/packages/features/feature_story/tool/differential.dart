@@ -13,6 +13,7 @@ import 'package:coqui_contracts/coqui_contracts.dart' show Rng;
 import 'package:coqui_pixel/coqui_pixel.dart' show Scene;
 import 'package:feature_story/src/play/play.dart';
 import 'package:feature_story/src/play/trace_json.dart';
+import 'package:feature_story/src/runner/story_view.dart' show StoryView;
 
 import 'disk_course.dart';
 import 'replay_scene.dart';
@@ -101,14 +102,16 @@ Future<String?> compareWithScene(
 ({Map<String, dynamic> committed, Map<String, dynamic> trace})? lastCompared;
 
 /// One recorded run of the old page played by the runner on the replay scene. Returns the first difference, or null when
-/// the two traces are equal (the committed one is [committed]).
+/// the two traces are equal (the committed one is [committed]). [view] is the screen's state the run was played on: the
+/// caller reads the end screen's buttons from it (the recorded runs do not hold them, so the comparison does not either).
 Future<String?> compareRun(
   DiskCourse course,
   String story,
   String plan,
   Directory actsDir,
-  Directory trazas,
-) async {
+  Directory trazas, {
+  StoryView? view,
+}) async {
   final committed = jsonDecode(
     File('${trazas.path}/$story/$plan.json').readAsStringSync(),
   ) as Map<String, dynamic>;
@@ -135,6 +138,7 @@ Future<String?> compareRun(
     course: course,
     progress: ToolProgress(),
     storySha256: sha256Hex(course.storyBytes(story)),
+    view: view,
     // the old learner's wrong touch of an ask: the first thing of the scene's list; here, the thing it touched
     thingOrder: (W, now) {
       for (final w in wrongs) {

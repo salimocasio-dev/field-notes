@@ -14,11 +14,17 @@ import '../../tool/stand_in_scene.dart';
 
 /// A course that has the clips a test names. The fixed lines are the ones datos/fijos.json names.
 class TestCourse implements CourseCatalog {
-  TestCourse({Set<String>? missing, this.lengths = const {}})
-    : missing = missing ?? {};
+  TestCourse({
+    Set<String>? missing,
+    this.lengths = const {},
+    this.stories = const {},
+  }) : missing = missing ?? {};
 
   /// Clips that have no recording.
   final Set<String> missing;
+
+  /// The stories the course names (`meta` has these and no others): a story's `next` leads to one of them or to nothing.
+  final Set<String> stories;
 
   /// A clip's length in ms (1000 when not given).
   final Map<String, int> lengths;
@@ -28,6 +34,10 @@ class TestCourse implements CourseCatalog {
 
   @override
   List<Place> get places => const [];
+
+  @override
+  StoryMeta? meta(String id) =>
+      stories.contains(id) ? StoryMeta(id: id, title: id, minutes: 1) : null;
 
   @override
   ClipInfo? clip(String id) => missing.contains(id)
