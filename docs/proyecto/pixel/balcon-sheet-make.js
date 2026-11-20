@@ -78,15 +78,15 @@ function make(G) {
   /* ---- the frog's spots: the ground under his feet. q.x = round(sx) - 16, q.y = round(sy) - 25 (frogBox: his middle is q.x + 16, his shadow line q.y + 25) ---- */
   // placed so that every hop count acts.ir gives (round(d / 30), 1 to 4) between any two LUGAR places is the old one (the check below)
   const SPOTS = {
-    jardin: { world: pathAt(3.63), scale: 1, old: [104, 185], what: 'LUGAR.jardin: on the path, near the bottom: where every story starts (fresh)' },
-    sube: { world: pathAt(1.78), scale: .9, old: [104, 168], what: 'acts.sube: hopTo(LUGAR.jardin[0], 168, 1, .9): on the path, at the foot of the steps' },
-    balcon: { world: [.82, 1.66, f], scale: .8, old: [106, 130], what: 'LUGAR.balcon and LUGAR.ventana: on the porch, before the table' },
-    mesa: { world: [.785, F.PD + .17, f * 2 / 3], scale: .86, old: [104, 141], what: 'LUGAR.mesa and LUGAR.junto: on the top step, before the table (where he takes a glass)' },
+    jardin: { world: pathAt(3.844), scale: 1, old: [104, 185], what: 'LUGAR.jardin: on the path, near the bottom: where every story starts (fresh)' },
+    sube: { world: pathAt(1.994), scale: .9, old: [104, 168], what: 'acts.sube: hopTo(LUGAR.jardin[0], 168, 1, .9): on the path, at the foot of the steps' },
+    balcon: { world: [.956, 1.581, f], scale: .8, old: [106, 130], what: 'LUGAR.balcon and LUGAR.ventana: on the porch, before the table' },
+    mesa: { world: [1.003, F.PD + .17, f * 2 / 3], scale: .86, old: [104, 141], what: 'LUGAR.mesa and LUGAR.junto: on the top step, before the table (where he takes a glass)' },
     decir: { world: [2.23, 1.82, f], scale: .8, old: [134, 130], what: 'LUGAR.decir: on the porch, before the small chair (where he speaks to abuela)' },
-    silla_pequena: { world: [seat[0] + .1, seat[1] + .01, seatZ], scale: .72, old: [144, 109], what: 'LUGAR.silla_pequena: on the small chair\'s seat (rana(): sitting there he has no shadow)' },
-    suelo: { world: [2.64, 1.52, f], scale: .8, old: [150, 132], what: 'LUGAR.suelo: on the porch floor, between the small chair and the door' },
-    abuela: { world: [-.7, 1.56, f], scale: .8, old: [84, 129], what: 'LUGAR.abuela and LUGAR.silla_grande: on the porch, before abuela\'s feet when she sits' },
-    puerta: { world: [2.75, .55, f], scale: .76, old: [162, 125], what: 'LUGAR.puerta: on the porch, before the door' },
+    silla_pequena: { world: [seat[0] + .144, seat[1] - .027, seatZ], scale: .72, old: [144, 109], what: 'LUGAR.silla_pequena: on the small chair\'s seat (rana(): sitting there he has no shadow)' },
+    suelo: { world: [2.994, 1.716, f], scale: .8, old: [150, 132], what: 'LUGAR.suelo: on the porch floor, between the small chair and the door' },
+    abuela: { world: [-.513, 1.418, f], scale: .8, old: [84, 129], what: 'LUGAR.abuela and LUGAR.silla_grande: on the porch, before abuela\'s feet when she sits' },
+    puerta: { world: [3.645, 1.279, f], scale: .76, old: [162, 125], what: 'LUGAR.puerta: on the porch, before the door, a step out from it so that his bubble stays under abuela\'s face when she stands in the doorway (Gate A)' },
     // abuela standing: the ground under her feet; her sprite is drawn at (ab.x - 30, ab.y - 50) with ab.x = round(sx), ab.y = round(sy) + 1
     'abuela.puerta': { world: [doorMid, F.HY1 + .1, f], old: [178, 125], what: 'AB.puerta: in the doorway (drawn clipped to clips[puerta.hueco])' },
     'abuela.mesa': { world: [F.TABLE[0] - .55, F.TABLE[1] - .72, f], old: [98, 143], what: 'AB.mesa: behind the table, its left side, where she puts the glasses down (pone2): the table covers her legs (front)' },
@@ -114,12 +114,12 @@ function make(G) {
   // the small chair's seat: ASIENTO (the glass on it stands at ASIENTO[1] - 1; the bird's feet at ASIENTO)
   pt('ASIENTO', { world: W4(seat), old: [160, 135], what: 'ASIENTO: the small chair\'s seat: vaso_silla stands on it (its bottom at y - 1), the bird sits on it (avesilla, marcador)' });
   // the bird on the flower box under the window
-  pt('PERCH', { world: W4([winMid + .78, F.HY1 + .16, F.WZ0 - .17]), old: [120, 86], what: 'PERCH: the bird on the flower box under the window, near its right end (aveventana; the pairs gracias): there the frog\'s bubble at LUGAR.abuela does not reach it' });
+  pt('PERCH', { world: W4([winMid + .45, F.HY1 + .07, F.WZ1 + .12]), old: [120, 86], what: 'PERCH: the bird on top of the window frame (aveventana; the pairs gracias). Not the flower box as before: with this camera the box is just over the table top, and the bird stood among the glasses and jugs; up here it is clear of them and of the frog\'s bubble at LUGAR.abuela' });
   // the two halves of her fan, on the floor before her chair
   pt('suelo.abanico.1', { world: W4([F.SILLA[0] + .95, F.SILLA[1] + .95, f]), old: [98, 157], what: 'W.enSuelo: medio(c, 98, 157, -1): one half of her fan on the floor before her chair' });
   pt('suelo.abanico.2', { world: W4([F.SILLA[0] + 1.45, F.SILLA[1] + .8, f]), old: [110, 158], what: 'W.enSuelo: medio(c, 110, 158, 1): the other half' });
   // the heart, the hands
-  pt('corazon', { world: W4([winMid - .3, F.HY1, F.WZ1 + .95]), old: [107, 31], what: 'heartAt: the heart of a happy ending, over the window' });
+  pt('corazon', { world: W4([winMid - .5, F.HY1, 4.4]), old: [107, 31], what: 'heartAt: the heart of a happy ending (its top left), over the window on the roof\'s edge, clear of the bird on the window (PERCH)' });
   pt('mano.puerta', { world: W4([doorMid, F.HY1, f + F.DH * .62]), old: [178, 84], what: 'cosas puerta hand: on the door, high (above abuela\'s face when she stands in it? no: see checks.hands)' });
   pt('mano.ventana', { world: W4([winMid, F.HY1, (F.WZ0 + F.WZ1) / 2]), old: [120, 70], what: 'cosas ventana hand: the middle of the window' });
   for (const p of Object.values(PTS)) if (!p.screen) p.screen = P(p.world);
@@ -324,6 +324,7 @@ function make(G) {
       'balcon.js:121 c.drawImage(bg) -> the set, for setKey(W)',
       'balcon.js:127, :135, :136 the big chair, the small chair, the table sprites -> the set (and front: their pixels again at those lines)',
       'balcon.js:118 the frog\'s dotted shadow -> the engine\'s cast shadow (shadows.coqui)',
+      'balcon.js:50 the two hanging plants of bg() are not in the set: under a roof this high (its eaves at 5, so that the door and window show whole from this camera) they would hang in front of the window and the door, over their touch boxes (decision 14). The two bushes and the two posts are',
     ],
     code,
     checks: { notes: [] },

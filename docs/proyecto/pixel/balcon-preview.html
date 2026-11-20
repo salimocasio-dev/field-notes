@@ -27,6 +27,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;view=wide|mesa|porche&amp
 
   /* ---------- 1. the old scene file with the sheet's positions ---------- */
   function edit(src) {
+    if (new URLSearchParams(location.search).get('old') === '1') return src;   // for comparing only: the old scene as it is (its own background and positions)
     const S = SHEET, X = (a, b) => { if (!src.includes(a)) throw new Error('balcon.js changed: ' + a); src = src.split(a).join(b); };
     const L = S.lugar, q = k => '[' + L[k].q[0] + ',' + L[k].q[1] + ',' + L[k].scale + ']', ab = k => '[' + S.spots[k].ab.join(',') + ']', bx = k => '[' + S.things[k].box.join(',') + ']';
     X('const X2=[108,132],X4=[101,113,127,139],MESA_Y=128,SILLA=[48,102],SILLITA=[148,120],ABS=[51,96],PERCH=[120,86],ASIENTO=[160,135];',
