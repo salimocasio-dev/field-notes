@@ -371,8 +371,10 @@ class _ScenePicture extends StatefulWidget {
   State<_ScenePicture> createState() => _ScenePictureState();
 }
 
+// A TickerProviderStateMixin, not a single-ticker one: a picture handed another picture in place (`didUpdateWidget`)
+// disposes its ticker and starts another, and a single-ticker state refuses a second ticker in its life.
 class _ScenePictureState extends State<_ScenePicture>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   _Shot? _shot;
   Uint32List? _pixels;
   Object? _error;

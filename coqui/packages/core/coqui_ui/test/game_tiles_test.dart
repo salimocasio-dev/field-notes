@@ -19,6 +19,13 @@ Widget _app(Widget child, {bool still = false, double text = 1}) => MaterialApp(
   ),
 );
 
+/// Whether [inner] is wholly inside [outer].
+bool _contains(Rect outer, Rect inner) =>
+    inner.left >= outer.left &&
+    inner.top >= outer.top &&
+    inner.right <= outer.right &&
+    inner.bottom <= outer.bottom;
+
 Border? _border(WidgetTester t, Finder of) {
   final c = t
       .widgetList<Container>(
@@ -96,7 +103,7 @@ void main() {
   );
 
   testWidgets(
-    'the sign is the pointing hand (touch_app) white on a green disc, over the middle of its tile, and takes no touch',
+    'the sign is the pointing hand (touch_app) white on a green disc, at the right end of its word tile, and takes no touch',
     (t) async {
       var taps = 0;
       await t.pumpWidget(
@@ -138,15 +145,188 @@ void main() {
         (disc.shape, disc.color),
         (BoxShape.circle, CoquiColors.lessonGreen),
       );
-      // the middle of the tile: not a corner, not an edge
+      // the right end of the tile, inside it, level with its middle: the middle is the word's
       final tile = t.getRect(find.byType(WordTile));
-      expect(
-        (t.getCenter(find.byType(TouchSign)) - tile.center).distance,
-        lessThan(.5),
-      );
-      // a touch at the very middle (on the sign) is a touch on the tile
-      await t.tapAt(tile.center);
+      final sign = t.getRect(find.byType(TouchSign));
+      expect(sign.center.dy, closeTo(tile.center.dy, .5));
+      expect(tile.right - sign.right, 6);
+      expect(tile.contains(sign.topLeft), isTrue);
+      expect(tile.contains(sign.bottomRight), isTrue);
+      // a touch on the sign is a touch on the tile, and so is one on the word
+      await t.tapAt(sign.center);
       expect(taps, 1);
+      await t.tapAt(tile.center);
+      expect(taps, 2);
+    },
+  );
+
+  // the two phones the app is checked on, and the large text size
+  const phones = [(390.0, 844.0), (412.0, 915.0)];
+  const sizes = [1.0, 1.6];
+
+  /// Shows [tile] on a phone of [w] x [h] at text size [text], in a column [width] wide: [width] null is the width of
+  /// the screen between its 16 px sides.
+  Future<void> onPhone(
+    WidgetTester t,
+    double w,
+    double h,
+    double text,
+    Widget tile,
+  ) async {
+    t.view.devicePixelRatio = 1;
+    t.view.physicalSize = Size(w, h);
+    addTearDown(t.view.reset);
+    await t.pumpWidget(
+      _app(
+        Align(
+          alignment: Alignment.topCenter,
+          child: SizedBox(width: w - 32, child: tile),
+        ),
+        still: true,
+        text: text,
+      ),
+    );
+  }
+
+  testWidgets(
+    'the sign never hides the word: it sits at the right end, the word stays whole and centred where it was (both phones, text size 1.6)',
+    (t) async {
+      // a ¿Qué oyes? tile (the whole row), with and without a speaker of its word alone; a Parejas tile (the row less
+      // a sound's tile); long words that wrap at the large text size
+      var kept = 0, wrapped = 0;
+      for (final (w, h) in phones) {
+        for (final text in sizes) {
+          for (final word in ['sol', 'puerta', 'desayuno', 'refrigerador']) {
+            for (final speaker in [false, true]) {
+              final reason = '$w x $h, text $text, $word, speaker: $speaker';
+              Widget tile({required bool sign}) => WordTile(
+                word: word,
+                expand: true,
+                sign: sign,
+                onTap: () {},
+                onSpeaker: speaker ? () {} : null,
+              );
+              await onPhone(t, w, h, text, tile(sign: false));
+              final plain = (
+                t.getRect(find.byType(WordTile)),
+                t.getRect(find.text(word)),
+              );
+              await onPhone(t, w, h, text, tile(sign: true));
+              expect(find.byType(TouchSign), findsOneWidget, reason: reason);
+              final box = t.getRect(find.byType(WordTile));
+              final sign = t.getRect(find.byType(TouchSign));
+              final label = t.getRect(find.text(word));
+              // the sign's white ring (2 px) is part of what it covers
+              expect(
+                sign.inflate(2).overlaps(label),
+                isFalse,
+                reason: '$reason: the sign $sign covers the word $label',
+              );
+              // at the right end of the tile, inside it, level with its middle
+              expect(_contains(box, sign.inflate(2)), isTrue, reason: reason);
+              expect(
+                sign.center.dy,
+                closeTo(box.center.dy, .5),
+                reason: reason,
+              );
+              expect(sign.center.dx, greaterThan(label.right), reason: reason);
+              expect(box.right - sign.right, 6, reason: reason);
+              // the word is centred in its tile
+              expect(
+                label.center.dx,
+                closeTo(box.center.dx, .5),
+                reason: '$reason: the word is centred',
+              );
+              if (label.size == plain.$2.size) {
+                // it still fits on its line: the tile and the word are as they were
+                kept++;
+                expect(
+                  box,
+                  plain.$1,
+                  reason: '$reason: the tile does not change',
+                );
+                expect(
+                  label,
+                  plain.$2,
+                  reason: '$reason: the word did not move',
+                );
+              } else {
+                // a word as wide as the room the sign needs wraps, whole and centred, rather than go under the sign
+                wrapped++;
+                expect(label.width, lessThan(plain.$2.width));
+              }
+              // a speaker gives its place to the sign while it shows
+              expect(
+                find.bySemanticsLabel('Hear the word'),
+                findsNothing,
+                reason: reason,
+              );
+            }
+          }
+          // Parejas' tile: beside a sound's tile
+          final reason = '$w x $h, text $text, Parejas';
+          await onPhone(
+            t,
+            w,
+            h,
+            text,
+            Row(
+              children: [
+                SpeakerTile(onTap: () {}),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: WordTile(
+                    word: 'desayuno',
+                    expand: true,
+                    sign: true,
+                    onTap: () {},
+                  ),
+                ),
+              ],
+            ),
+          );
+          final sign = t.getRect(find.byType(TouchSign)).inflate(2);
+          expect(
+            sign.overlaps(t.getRect(find.text('desayuno'))),
+            isFalse,
+            reason: reason,
+          );
+          expect(
+            _contains(t.getRect(find.byType(WordTile)), sign),
+            isTrue,
+            reason: reason,
+          );
+        }
+      }
+      expect(kept, greaterThan(0), reason: 'words that fit were tried');
+      expect(wrapped, greaterThan(0), reason: 'words that wrap were tried');
+    },
+  );
+
+  testWidgets(
+    'a tile that is only as wide as its word (Arma la frase) grows by the sign\'s room on both sides, the word centred and clear of the sign',
+    (t) async {
+      for (final text in sizes) {
+        await t.pumpWidget(
+          _app(const WordTile(word: 'puerta'), still: true, text: text),
+        );
+        final plain = t.getRect(find.byType(WordTile));
+        await t.pumpWidget(
+          _app(
+            const WordTile(word: 'puerta', sign: true),
+            still: true,
+            text: text,
+          ),
+        );
+        final box = t.getRect(find.byType(WordTile));
+        final sign = t.getRect(find.byType(TouchSign)).inflate(2);
+        final label = t.getRect(find.text('puerta'));
+        expect(box.width, plain.width + 80, reason: 'text $text');
+        expect(box.height, plain.height, reason: 'text $text');
+        expect(label.center.dx, closeTo(box.center.dx, .5));
+        expect(sign.overlaps(label), isFalse, reason: 'text $text');
+        expect(_contains(box, sign), isTrue, reason: 'text $text');
+      }
     },
   );
 
@@ -536,19 +716,24 @@ void main() {
         bool check = false,
         bool cross = false,
         bool sign = false,
+        bool row = false,
       }) async {
+        final first = WordTile(
+          word: 'puerta',
+          expand: row,
+          ring: ring,
+          check: check,
+          cross: cross,
+          sign: sign,
+        );
         await t.pumpWidget(
           _app(
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                WordTile(
-                  word: 'puerta',
-                  ring: ring,
-                  check: check,
-                  cross: cross,
-                  sign: sign,
-                ),
+                // a tile that is given its row does not change for the sign (one that is as wide as its word grows by
+                // the sign's room: see its own test)
+                if (row) SizedBox(width: 240, child: first) else first,
                 const SizedBox(width: 8),
                 const WordTile(word: 'sol'),
               ],
@@ -567,7 +752,8 @@ void main() {
       final plain = await sizes(ChoiceRing.none);
       expect(await sizes(ChoiceRing.right, check: true), plain);
       expect(await sizes(ChoiceRing.wrong, cross: true), plain);
-      expect(await sizes(ChoiceRing.none, sign: true), plain);
+      final given = await sizes(ChoiceRing.none, row: true);
+      expect(await sizes(ChoiceRing.none, sign: true, row: true), given);
     },
   );
 

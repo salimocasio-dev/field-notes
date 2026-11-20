@@ -590,26 +590,29 @@ class RepasoScreenState extends State<RepasoScreen> {
   _Area _build(BuildItem it) {
     final s = session;
     final done = s.showText;
-    final line = Stack(
-      clipBehavior: Clip.none,
+    // the line is a tray of the sentence's places; its last place is the check's own: a box of the badge's size that
+    // is empty until the sentence is whole, so the line is the same shape from the start and nothing moves when the
+    // check comes. The tray puts it 8 px after the last tile, level with that row's middle, or at the start of a row
+    // below when that row has no room for it: it is never over a tile.
+    final line = TileTray(
+      line: true,
       children: [
-        TileTray(
-          line: true,
-          children: [
-            for (var i = 0; i < it.order.length; i++)
-              if (s.slots.length > i && s.slots[i] != null)
-                WordTile(
-                  word: s.choices[s.slots[i]!].label,
-                  ring: done ? ChoiceRing.right : ChoiceRing.none,
-                  still: _still,
-                  onTap: done ? null : () => s.touch(s.slots[i]!),
-                )
-              else
-                WordTile(word: it.order[i], look: TileLook.empty),
-          ],
+        for (var i = 0; i < it.order.length; i++)
+          if (s.slots.length > i && s.slots[i] != null)
+            WordTile(
+              word: s.choices[s.slots[i]!].label,
+              ring: done ? ChoiceRing.right : ChoiceRing.none,
+              still: _still,
+              onTap: done ? null : () => s.touch(s.slots[i]!),
+            )
+          else
+            WordTile(word: it.order[i], look: TileLook.empty),
+        SizedBox(
+          key: const ValueKey('check-place'),
+          width: CoquiMetrics.badgeSize,
+          height: CoquiMetrics.badgeSize,
+          child: done ? const CheckBadge() : null,
         ),
-        // the sentence is whole: a check badge at the end of the line (at the right end of its last row)
-        if (done) const Positioned(right: -6, bottom: 24, child: CheckBadge()),
       ],
     );
     return _Area(

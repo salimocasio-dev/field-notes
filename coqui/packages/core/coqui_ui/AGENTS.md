@@ -39,11 +39,14 @@ Colours, type, shared widgets, the lesson frame, the widget that shows a pixel p
 
 - Order 27, the parts of Repaso's games (`lib/src/game_tiles.dart`, `test/game_tiles_test.dart`): `WordTile` (a written
   word, with a speaker of its own when the word can be heard alone), `SpeakerTile`, `RoundSpeaker` (the round 64 px
-  speaker of a game that plays a sentence, with a ring that pulses while it sounds), `TileTray`, `StreakChip` ("N in a
+  speaker of a game that plays a sentence, with a ring that pulses while it sounds), `TileTray` (its rows centred; a child that is not a tile, such as Arma la frase's check, is 8 px after the last tile
+  level with the row's middle, or alone on the row below), `StreakChip` ("N in a
   row" from three; with `reserve` its place of `StreakChip.reservedWidth` is kept when it does not show, and the pill
   shrinks to fit it), `TouchSign` (the sign for what to touch: Material's pointing hand, `touch_app`, as path data
   `CoquiIcons.touchApp`, white on a 44 px green disc, bouncing gently, still with reduced motion, taking no touch; it goes
-  over the middle of the thing to touch, never a chevron or arrow), `NumberBadge`, `TileLook` (with `empty`: the place of
+  over the middle of a picture, and at the right end of a word tile (`WordTile.sign`: inside it, vertically centred; the word
+  stays centred with 40 px clear of it on both sides, as for a speaker, which gives the sign its place while it shows),
+  never a chevron or arrow), `NumberBadge`, `TileLook` (with `empty`: the place of
   a tile that is not there, an outline of its size); the tokens `lessonTile`, `lessonTilePressed`, `lessonChip` and the
   styles `lessonTile`, `lessonHint`, `lessonChip` (not in v=39: chosen for the games). A tile's frame is drawn over its
   face (a foreground decoration), so a ring, a badge or the sign never changes its size. `CheckBadge` and `WrongBadge`

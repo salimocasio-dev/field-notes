@@ -5,7 +5,8 @@
 /// Dumb, as every widget here: values and callbacks. They follow the lesson's look (page 09): calm, plain, the
 /// answer's rings as [PictureChoice] draws them (green right, red-orange wrong, white the one chosen), a right
 /// answer never in a colour that reads as wrong, a wrong one marked by a round badge with an X where a right one has
-/// its check, and the sign for what to touch big, over the middle of it. Targets are 56 px high at least (48 is the
+/// its check, and the sign for what to touch big: over the middle of a picture, at the right end of a word tile
+/// (inside it, vertically centred) so that it never covers the word. Targets are 56 px high at least (48 is the
 /// floor), 8 px apart in a tray.
 library;
 
@@ -38,6 +39,14 @@ enum TileLook {
 const double _tileHeight = 56;
 const double _ringWidth = 3;
 
+/// How far the sign's disc stands from a word tile's right edge (its white ring takes 2 px of it: 4 px of tile show
+/// between the ring and the edge, and the same above and below it in a tile of 56).
+const double _signInset = 6;
+
+/// The room a word tile keeps clear of its word on each side for what sits at its right end (a speaker, the sign), so
+/// that the word stays centred and never under either.
+const double _endRoom = 40;
+
 Color? _ringColor(ChoiceRing r) => switch (r) {
   ChoiceRing.none => null,
   ChoiceRing.right => CoquiColors.lessonGreen,
@@ -47,8 +56,9 @@ Color? _ringColor(ChoiceRing r) => switch (r) {
 
 /// The face every tile shares: 56 px high at least, radius 12, the tile colour, a 1.5 px `--line` frame or a 3 px
 /// answer ring, dimmed when [look] says so; at its right edge the check badge of a right answer ([check]) or the
-/// X badge of a wrong one ([cross]), with a small [number] badge beside it; the [TouchSign] over its middle when
-/// [sign]. [shake] moves it side to side once each time it grows (a wrong tile jumps back), unless [still].
+/// X badge of a wrong one ([cross]), with a small [number] badge beside it; the [TouchSign] at its right end, inside
+/// it and vertically centred, when [sign] (the word is centred and kept clear of it: see [WordTile]). [shake] moves it
+/// side to side once each time it grows (a wrong tile jumps back), unless [still].
 class _TileFace extends StatelessWidget {
   const _TileFace({
     required this.child,
@@ -146,9 +156,13 @@ class _TileFace extends StatelessWidget {
             top: (check || cross) ? -7 : -8,
             child: NumberBadge(number: number!),
           ),
-        // the sign is over the middle of the tile, and takes no touch: a finger on it is a finger on the tile
+        // the sign is at the tile's right end, inside it and vertically centred (the middle is the word's), and takes
+        // no touch: a finger on it is a finger on the tile
         if (sign)
-          Positioned.fill(
+          Positioned(
+            right: _signInset,
+            top: 0,
+            bottom: 0,
             child: IgnorePointer(
               child: Center(child: TouchSign(still: calm)),
             ),
@@ -192,8 +206,9 @@ class NumberBadge extends StatelessWidget {
 }
 
 /// The sign for what to touch: Material's pointing hand (`touch_app`), white on a 44 px green disc, that bounces
-/// gently (still with reduced motion, or [still]). It goes over the middle of the picture or tile whose answer is
-/// shown, never on a border between two things; it takes no touch itself.
+/// gently (still with reduced motion, or [still]). It goes over the middle of the picture whose answer is shown, and
+/// at the right end of a word tile ([WordTile.sign]: inside the tile, vertically centred, clear of the word), never on a
+/// border between two things; it takes no touch itself.
 class TouchSign extends StatefulWidget {
   const TouchSign({super.key, this.still = false});
 
@@ -281,6 +296,12 @@ class _TouchSignState extends State<TouchSign>
 
 /// A written word to touch. [onSpeaker] puts a speaker at its right end that plays the word alone (a word with no
 /// such clip has none); touching the speaker does not touch the word. [onTap] null: it takes no touch.
+///
+/// [sign] puts the [TouchSign] at the tile's right end, inside it and vertically centred. The word stays where it was,
+/// centred, with [_endRoom] clear of it on both sides (the sign's room, as the speaker's), so the sign never covers it;
+/// a tile that is only as wide as its word grows by that room when the sign comes (a tile given its row, [expand],
+/// does not change). A speaker gives its place to the sign while the sign shows: a touch on the sign is a touch on
+/// the tile, never on the speaker.
 class WordTile extends StatelessWidget {
   const WordTile({
     super.key,
@@ -322,7 +343,10 @@ class WordTile extends StatelessWidget {
       textAlign: TextAlign.center,
       style: CoquiText.lessonTile,
     );
-    final speaker = look == TileLook.empty ? null : onSpeaker;
+    final empty = look == TileLook.empty;
+    // the sign takes the speaker's place at the tile's right end while it shows
+    final speaker = empty || sign ? null : onSpeaker;
+    final endRoom = !empty && (onSpeaker != null || sign);
     Widget tile = Pressable(
       onPressed: look == TileLook.empty ? null : onTap,
       semanticLabel: look == TileLook.empty ? '' : word,
@@ -339,8 +363,8 @@ class WordTile extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 12,
-            // room for the speaker, which sits over the tile's right end
-            horizontal: speaker == null ? 0 : 40,
+            // room for the speaker or the sign, which sit over the tile's right end
+            horizontal: endRoom ? _endRoom : 0,
           ),
           child: text,
         ),
@@ -444,8 +468,10 @@ class SpeakerTile extends StatelessWidget {
 }
 
 /// Tiles laid out in rows that wrap, centred, 8 px apart across and 12 down (the answer's ring takes no room, the
-/// check badge and the sign stand out of their tile). With [line], the tray is the place a sentence is put
-/// together: at least one tile high, with a 1.5 px line under it.
+/// check badge and the sign stand out of their tile). What is not a tile (the check that ends a finished sentence)
+/// is a child like the others: 8 px from the one before it on its row, level with the row's middle, and on a row of
+/// its own when the row has no room for it. With [line], the tray is the place a sentence is put together: at least
+/// one tile high, with a 1.5 px line under it.
 class TileTray extends StatelessWidget {
   const TileTray({super.key, required this.children, this.line = false});
 
@@ -456,6 +482,7 @@ class TileTray extends StatelessWidget {
   Widget build(BuildContext context) {
     final wrap = Wrap(
       alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       spacing: CoquiMetrics.s8,
       runSpacing: CoquiMetrics.s12,
       children: children,
