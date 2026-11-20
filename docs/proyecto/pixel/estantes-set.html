@@ -3,7 +3,7 @@
 <script>
 'use strict';
 /* Los estantes: the shelves at the back of don Pepe's shop (place 4, scene 2), as a set on the Pixel Plays engine. A NEW scene.
-   The room is colmado-dentro.js (shared with mostrador and caja); this file frames its second run of shelves, with the ladder and open floor.
+   The room is colmado-dentro.js (shared with mostrador and caja); this file frames its second run of shelves, whole, with the ladder, the low table and open floor in front.
    The state comes from the address; these become the builder's setKey:
      anillos = 0 | 1      six rings of dust on the middle shelf (story 39)
      mesa = 0 | 1         the low display table (story 40)
@@ -17,7 +17,7 @@ const SET = {
   mesa: Q.get('mesa') === '1',
   t: +(Q.get('t') || 0),
 };
-const ORIGIN = [-164, -58];
+const ORIGIN = [-242, -95];                                          // the second run of shelves (x 72..154), the ladder, the table (x 11..60) and 60 px of open floor under the run; only wall and floor at the left edge (the first run, the counter and the chair are out of the picture)
 window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
 </script>
 <script src="pp-engine.js"></script>
@@ -26,7 +26,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 <script src="colmado-dentro.js"></script>
 <script>
 'use strict';
-const DARK = [34, 28, 38];                                           // outside the room: nothing
+const DARK = [46, 38, 40];                                           // outside the room, above the walls' tops: a warm dark
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
   tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
