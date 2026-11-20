@@ -102,18 +102,18 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 ## Story 38: Esto y eso
 
-- **Goal he can see:** it is hot; three children wait outside the street door, each with a coin in his hand, looking in at don Pepe's little freezer: five límbers stand in it, seen through its glass lid.
+- **Goal he can see:** it is hot; three children wait just inside the street door, each with a coin in his hand, looking at don Pepe's little freezer: five límbers stand in it, seen through its glass lid.
 - **At stake:** the límbers in the freezer (5). Two are for the two customers of the game; three for the children. A límber pushed across to somebody who did not ask for it cannot go back into the freezer: it melts on the counter.
 - **New words:** esto, eso, vende, buenas tardes.
 - **Back again:** quiero, por favor, hace calor, frío, colmado, compra, aquí tiene, toma, mira, niño, triste, contento, cansado, gracias.
 
-**Start:** `dentro`, afternoon: orange light at the door, long shadows. Don Pepe behind the counter; the freezer on the counter at his end, five límbers in it; a small tray on the counter with two more límbers, one at don Pepe's hand (white) and one at the far end, by the frog (orange). The frog on the counter. Luis comes in. The three children outside the door.
+**Start:** `dentro`, afternoon: orange light at the door, long shadows. Don Pepe behind the counter; the freezer on the counter at his end, five límbers in it; a small tray on the counter with two more límbers, one at don Pepe's hand (white) and one at the far end, by the frog (orange). The frog on the counter. Luis comes in. The three children just inside the door.
 
 **The opening** (big sign)
 
 1. NARR: "Hace calor." NARR: "Luis dice: ¡Buenas tardes, don Pepe!" NARR: "Don Pepe dice: ¡Buenas tardes!" He lays his hand on the límber beside him. NARR: "Don Pepe dice: Esto es un límber." **(new: límber; the picture carries it)** NARR: "Don Pepe vende límbers."
 2. Hand still on it. NARR: "Don Pepe dice: Esto es para Luis." He looks along the counter at the one by the frog. NARR: "Don Pepe dice: Y eso es para Coquí." Ask (signed, the orange límber by the frog): "Don Pepe dice: Coquí, toma eso." He touches it: the frog picks it up and licks it. COQUÍ [TURN: gracias (gracias)]: "Gracias."
-3. Luis pays a coin and takes the white one. NARR: "Luis compra un límber." He licks it. NARR: "Luis dice: ¡Mmm! ¡Esto está frío!" He nods at the freezer at the far end and the children outside. NARR: "Luis dice: ¡Mira eso!"
+3. Luis pays a coin and takes the white one. NARR: "Luis compra un límber." He licks it. NARR: "Luis dice: ¡Mmm! ¡Esto está frío!" He nods at the freezer at the far end and at the children by the door. NARR: "Luis dice: ¡Mira eso!"
 4. Don Pepe sits down on his chair behind the counter and fans himself. NARR: "Don Pepe está cansado." NARR: "Don Pepe dice: Coquí, ¿quieres vender?" **(vender: heard)** COQUÍ [TURN: sí (sí, si), quiero (quiero)]: "¡Sí, quiero!" NARR: "Ahora Coquí vende límbers."
 
 **The turn**
@@ -129,7 +129,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 **The ending**
 
-8. Don Pepe gets up and opens the freezer: what is left can be counted. NARR: "Don Pepe dice: ¡Vengan, niños!" **(vengan: heard)** The three children come in. NARR: "Los niños dicen: ¡Buenas tardes!" Each child who gets a límber pays his coin.
+8. Don Pepe gets up and opens the freezer: what is left can be counted. NARR: "Don Pepe dice: ¡Vengan, niños!" **(vengan: heard)** The three children come up to the counter. NARR: "Los niños dicen: ¡Buenas tardes!" Each child who gets a límber pays his coin.
     - Three left: every child has one. NARR: "Los niños compran límbers. Están contentos." Stars and a heart.
     - Two left: two children have one; the third looks into the empty freezer. NARR: "Un niño no tiene límber. Está triste."
     - One left: one child has one; two look into the empty freezer. NARR: "Dos niños no tienen límber. Están tristes."
@@ -159,9 +159,9 @@ Left as written: "bolsa" is the island's word for a shopping bag (weighed agains
 The set `mostrador`:
 - Views: `calle` (the shop front, zoom 1), `dentro` (inside, zoom 1).
 - States: `hora` morning or afternoon (sky, light, rooster); `puerta` shut or open; `atras` (back door) shut or open.
-- In the set: shop front with door, awning and wall; inside: counter, shelves, ladder, back door, street door with the sky and (story 37) the piragua cart or (story 38) the three children outside it.
+- In the set: shop front with door, awning and wall; inside: counter, shelves, ladder, back door, street door with the sky and (story 37) the piragua cart outside it; the shop window; the register at the counter's left end.
 - Things he can touch: colmado (in `calle`); on the shelf and on the counter: leche, pan, mantequilla, queso, cafe, arroz, azucar, jugo, habichuelas; bolsa (Carmen's cloth bag); limber_a, limber_b (the two on the counter); quesitos; nevera (the freezer); pepe, abuela, luis, carmen, senora, senor, coqui; the sí and no bubbles.
-- Spots: acera (pavement, both), puerta, frente (floor in front of the counter), mostrador_izq, mostrador_der (on the counter), cola1, cola2 (customers waiting), silla (don Pepe's chair), atras.
+- Spots: acera (pavement, both), puerta, frente (floor in front of the counter), mostrador (the frog's place on the counter), cola1, cola2 (customers waiting), silla (don Pepe's chair), atras.
 - New people (sprites): don Pepe (standing, reaching up, sitting with a fan); three children at the door. The señora and the señor are El banco's, with a basket or a bag, shut or open.
 - New speaker key: `pepe` (bubble over don Pepe); `ninos` (the three children together).
 
@@ -184,7 +184,7 @@ Acts (name: what it does on screen; story and step):
 - `brilla`: a thing twinkles: the engine's own `{"set": {"twinkle": key}}` (the shop in 36: 1; the piragua cart in 37: 2, key `carrito`, a poke).
 - `gallo`: the rooster on the awning crows (36: 1).
 - `gesto` {quien, que}: a small move of one person: `saluda` (lifts a hand), `agacha` (don Pepe bends to the frog), `lista` (taps or looks at the list), `no` (shakes the head), `si` (nods), `manos` (shows empty hands), `bolsa` (lifts the bag), `bolsas` (holds up both bags), `monedas` (picks up the coins that are left), `mira` with `a` (looks at something: the quesitos, the dish, the tray, the freezer, along the counter), `levanta` (gets up from the chair), `mano` with `a` (lays a hand on a thing) (36: 3, 4, 8, 10; 37: 4 to 9; 38: 1, 3, 8, 9).
-- The frog on the counter: the shared `ir` to `mostrador_izq` (36: 7; 38: start). The two things of 36's game stand at `cosa_a` and `cosa_b`; which thing is at which is drawn.
+- The frog on the counter: the shared `ir` to `mostrador` (36: 7; 38: start). The two things of 36's game stand at `cosa_a` and `cosa_b`; which thing is at which is drawn.
 - `trae` {k}: don Pepe comes in at the back door with a thing and sets it on the counter (36: 10).
 - `lame` {quien}: the frog, or Luis, picks up his límber and licks it (38: 2, 3).
 - The card: abuela's or Carmen's list is on the corner card from the first frame (`lista` with no `k` shows it).
