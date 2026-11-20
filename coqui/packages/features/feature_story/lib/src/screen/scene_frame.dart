@@ -43,13 +43,18 @@ class StoryScene {
 /// sheet first, so it is asynchronous. Throws when there is no such scene, or it is not converted yet.
 typedef SceneFactory = Future<StoryScene> Function(String sceneId, Rng rng);
 
-/// The scenes of coqui_scenes: its registry's real scene for [sceneId] (`loadScene`), with what the frame needs of it. A scene
-/// that is not converted yet throws `UnimplementedError('not converted yet')`.
+/// The scenes of coqui_scenes: its registry's real scene for [sceneId] (made as `loadScene` makes it: its sheet read first),
+/// with what the frame needs of it. A scene that is not converted yet throws `UnimplementedError('not converted yet')`.
 ///
-/// [rng] is not given to the scene: the registry's factories take none (El frente draws no random number; the scenes that do
-/// are not converted yet).
+/// [rng] is the story runner's random source, given to the scene's factory: a scene that draws random numbers (El balcón's
+/// `azar`) draws from the one seeded source of the game, as the old one drew from `Math.random`; El frente draws none and
+/// ignores it.
 Future<StoryScene> registryScenes(String sceneId, Rng rng) async {
-  final scene = await loadScene(sceneId);
+  final make =
+      sceneRegistry[sceneId] ??
+      (throw ArgumentError.value(sceneId, 'sceneId', 'not a scene'));
+  if (convertedScenes.contains(sceneId)) await loadSheet(sceneId);
+  final scene = make(rng: rng);
   if (scene is! SetScene) {
     throw StateError('scene "$sceneId" is not a converted scene with a set');
   }

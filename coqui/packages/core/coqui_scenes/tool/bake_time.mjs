@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// The bake time of each of El frente's states in a release web build of the dev entry, in headless Chrome.
+// The bake time of each of a converted scene's states (El frente's, or --scene balcon) in a release web build of the
+// dev entry, in headless Chrome.
 //
 //   flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart     (in this package)
-//   node tool/bake_time.mjs [--shots DIR]
+//   node tool/bake_time.mjs [--scene balcon] [--shots DIR]
 //
 // It serves build/web on 127.0.0.1 (a free port), opens ?page=bake, waits for `window.coquiBakes` and prints each
 // state's ms, then the least, the median and the most. --shots DIR: also screenshots of ?page=pairs and of the scene.
@@ -16,6 +17,7 @@ const { chromium } = require('playwright');
 const ROOT = path.resolve('build/web');
 if (!fs.existsSync(path.join(ROOT, 'index.html'))) { console.error('build the dev entry first (see the top of this file)'); process.exit(2); }
 const i = process.argv.indexOf('--shots'), SHOTS = i < 0 ? null : process.argv[i + 1];
+const j = process.argv.indexOf('--scene'), SCENE = j < 0 ? null : process.argv[j + 1];
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wasm': 'application/wasm', '.png': 'image/png', '.otf': 'font/otf', '.ttf': 'font/ttf' };
 const srv = http.createServer((req, res) => {
   let f = path.join(ROOT, decodeURIComponent(new URL(req.url, 'http://x').pathname));
@@ -28,7 +30,7 @@ await new Promise(r => srv.listen(0, '127.0.0.1', r));
 const base = `http://127.0.0.1:${srv.address().port}/`;
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 900, height: 1000 } });
-await page.goto(base + '?page=bake');
+await page.goto(base + '?page=bake' + (SCENE ? '&scene=' + SCENE : ''));
 await page.waitForFunction(() => window.coquiBakes, null, { timeout: 120000 });
 const ms = JSON.parse(await page.evaluate(() => window.coquiBakes));
 for (const [k, v] of Object.entries(ms)) console.log(`${k}: ${v.toFixed(1)} ms`);
