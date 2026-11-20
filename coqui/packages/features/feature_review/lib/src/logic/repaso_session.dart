@@ -136,6 +136,7 @@ class RepasoSession extends LessonBase {
       pairs: course.pairs,
       rng: Mulberry32(seed),
       lastAsked: _last.read(),
+      nextKind: _last.readKind(),
     );
   }
 
@@ -265,6 +266,7 @@ class RepasoSession extends LessonBase {
           final recent = _recentFirst(i);
           q.item = planner.playItem(recent, canSay: _canSay);
           if (q.item == null) continue;
+          _last.writeKind(planner.nextKind);
           unawaited(clips.preload([?q.item!.clip, ..._clipsOf(q.item!)]));
         }
         step(scoredDone);

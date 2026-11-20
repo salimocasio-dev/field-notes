@@ -224,6 +224,24 @@ class LastAsked {
   final KeyValueStore? store;
   static const key = 'repaso.last';
 
+  /// Where the play kinds' turn stands (see [RepasoPlanner.nextKind]).
+  static const kindKey = 'repaso.kind';
+
+  int readKind() {
+    try {
+      final v = int.tryParse(store?.read(kindKey) ?? '') ?? 0;
+      return v < 0 ? 0 : v % playKinds.length;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  void writeKind(int k) {
+    final s = store;
+    if (s == null) return;
+    s.write(kindKey, '$k').ignore();
+  }
+
   Map<String, String> read() {
     try {
       final t = store?.read(key);
@@ -250,6 +268,7 @@ class RepasoPlanner {
     required this.pairs,
     required this.rng,
     Map<String, String>? lastAsked,
+    this.nextKind = 0,
   }) : lastAsked = lastAsked ?? const {};
 
   final RepasoData data;
@@ -500,14 +519,17 @@ class RepasoPlanner {
 
   // ---- play items
 
-  int _nextKind = 0;
+  /// The place in [playKinds] of the kind the next play slot tries first. The turn goes on from one session to the
+  /// next (the session keeps it in the feature's own space): with three slots in a session of ten words, a turn that
+  /// started again each session would never reach Dilo.
+  int nextKind;
 
   /// The play item for a slot: the kinds in turn, from the one after the last given, skipping a kind with no
   /// material. [words]: the session's words, the ones asked just before the slot first. [canSay]: Dilo can run.
   /// Null when no kind has material.
   GameItem? playItem(List<RepasoWord> words, {required bool canSay}) {
     for (var d = 0; d < playKinds.length; d++) {
-      final i = (_nextKind + d) % playKinds.length;
+      final i = (nextKind + d) % playKinds.length;
       final item = switch (playKinds[i]) {
         GameKind.build => _build(words),
         GameKind.match => _match(words),
@@ -516,7 +538,7 @@ class RepasoPlanner {
         _ => null,
       };
       if (item != null) {
-        _nextKind = (i + 1) % playKinds.length;
+        nextKind = (i + 1) % playKinds.length;
         return item;
       }
     }

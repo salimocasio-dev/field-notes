@@ -26,7 +26,9 @@ class Bench {
     List<String> heard = const [],
     bool speech = false,
     ReviewOptions options = const ReviewOptions(),
-  }) : vt = VirtualTime() {
+    FakeKeyValueStore? space,
+  }) : vt = VirtualTime(),
+       kv = space ?? FakeKeyValueStore() {
     store = RecordingStore(
       vt,
       clock: FakeClock(now),
@@ -57,7 +59,7 @@ class Bench {
   late final RecordingStore store;
   late final ScriptedClips clips;
   late final FakeSpeechListener listener;
-  final FakeKeyValueStore kv = FakeKeyValueStore();
+  final FakeKeyValueStore kv;
   late final RepasoSession s;
 
   List<Map<String, Object?>> answersOf(Skill k) => [
@@ -407,6 +409,36 @@ void main() {
         expect(b.s.played.where((q) => q.item is SayItem), isEmpty);
       }
     });
+  });
+
+  test('the play kinds take turns from one session to the next (kept in the feature\'s own space)', () async {
+    final space = FakeKeyValueStore();
+    final one = Bench(seed: 3, speech: true, space: space);
+    await one.play();
+    expect(
+      [
+        for (final q in one.s.played)
+          if (!q.item!.scored) q.item!.kind,
+      ],
+      [GameKind.build, GameKind.match, GameKind.where],
+    );
+    expect(space.read(LastAsked.kindKey), '3');
+    final two = Bench(
+      seed: 5,
+      speech: true,
+      space: space,
+      heard: List.filled(4, 'nada que ver'),
+    );
+    await two.play();
+    final kinds = [
+      for (final q in two.s.played)
+        if (!q.item!.scored) q.item!.kind,
+    ];
+    expect(kinds.first, GameKind.say);
+    expect(kinds.skip(1).take(2), [GameKind.build, GameKind.match]);
+    // and the second session's sentences are not the first's for the same word
+    final last = jsonDecode(space.read(LastAsked.key)!) as Map;
+    expect(last, isNotEmpty);
   });
 
   test('practice (nothing due): the same games, the answers written as today\'s practice writes them (intro)', () async {
