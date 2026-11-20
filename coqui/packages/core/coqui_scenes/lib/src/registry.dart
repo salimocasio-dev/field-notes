@@ -26,7 +26,7 @@ SceneMaker _plain(Scene Function() make) =>
 final Map<String, SceneMaker> sceneRegistry = Map.unmodifiable({
   'frente': _plain(createFrente),
   'balcon': createBalcon,
-  'sala': _plain(createSala),
+  'sala': createSala,
   'patio': _plain(createPatio),
   'camino': _plain(createCamino),
   'campo': _plain(createCampo),

@@ -61,7 +61,8 @@ class SalaState {
 const double T = .22,
     WH = 3.2; // the walls' thickness and the height they are cut at
 const double YL = 8.2,
-    XR = 6.2; // how far each wall runs (past the picture's left and right edges)
+    XR =
+        6.2; // how far each wall runs (past the picture's left and right edges)
 const double D0 = 4.0,
     D1 = 5.3,
     DH = 2.55; // the door to the porch, on the left wall (y from D0 to D1)
@@ -86,7 +87,8 @@ const double W0 = 1.86,
     WZ0 = 1.3,
     WZ1 = 2.55; // the window, on the back wall (x from W0 to W1)
 const double TURN =
-    -math.pi / 4; // the furniture turned to face the camera (as El balcón's chairs)
+    -math.pi /
+    4; // the furniture turned to face the camera (as El balcón's chairs)
 const List<int> TEAL = [92, 190, 186],
     WOOD = [150, 98, 56],
     WHITE = [244, 240, 228];
@@ -96,7 +98,11 @@ const List<List<int>> TILE = [
   [224, 198, 144],
   [184, 154, 106],
 ];
-const List<int> WALLP = [252, 238, 196]; // the wallpaper (old: #F4E0B0 .. #F8E8C0)
+const List<int> WALLP = [
+  252,
+  238,
+  196,
+]; // the wallpaper (old: #F4E0B0 .. #F8E8C0)
 const List<int> SOFA = [62, 154, 138],
     SOFA_D = [46, 122, 110],
     ORNG = [242, 166, 80],
@@ -314,7 +320,8 @@ class SalaSet {
         XR,
         0,
         WH,
-        (a, z) => a > W0 && a < W1 && z > WZ0 && z < WZ1 ? 0 : paper(true, a, z),
+        (a, z) =>
+            a > W0 && a < W1 && z > WZ0 && z < WZ1 ? 0 : paper(true, a, z),
       );
       // their cut tops: the wall's thickness, white
       final E = e.rampOf(WHITE);
@@ -627,11 +634,12 @@ class SalaSet {
   // sala-set.html: cloth
   // flat bands for upholstery (shade()'s grain reads as dirt on cloth): the top lit, the front a step down, the side in shade
   int Function(num s, num t, num z, String face) cloth(List<int> c) =>
-      (s, t, z, face) => e.rampOf(c)[face == 'top'
-          ? 3
-          : face == 'front'
-          ? 2
-          : 1];
+      (s, t, z, face) =>
+          e.rampOf(c)[face == 'top'
+              ? 3
+              : face == 'front'
+              ? 2
+              : 1];
 
   // sala-set.html: atT
   List<double> atT(List<double> c, num s, num t) => [
