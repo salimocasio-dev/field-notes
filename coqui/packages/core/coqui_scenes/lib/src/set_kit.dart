@@ -700,6 +700,70 @@ class SetKit {
     }
   }
 
+  /* ---------- a room seen from inside (order 31a, La sala) ---------- */
+
+  // set-kit.js: revealX
+  /// The reveal of a hole in a +x wall: the faces of the wall's thickness seen through it from above, `deep` into the
+  /// wall (the jamb at a0, which faces +y, and the sill).
+  void revealX(num at, num a0, num a1, num z0, num z1, num deep, List<num> c) {
+    for (num t = 0; t <= deep; t += ST * .5) {
+      for (num z = z0; z <= z1; z += ST * .5) {
+        e.plot(at - t, a0, z, e.rampOf(c)[2]);
+      }
+      for (num a = a0; a <= a1; a += ST * .5) {
+        e.plot(at - t, a, z0, e.rampOf(c)[3]);
+      }
+    }
+  }
+
+  // set-kit.js: planeFace
+  /// A wall face drawn pixel by pixel on the screen (order 31a): every pixel of the picture whose sight line meets the
+  /// plane x = at (face 'x', facing +x) or y = at (face 'y', facing +y) inside [a0, a1] (along the wall) x [z0, z1] takes
+  /// fn(a, z) there (0: a hole, nothing drawn), with the depth test of plot(). One sample a pixel, where wallX / wallY
+  /// step every ST (about 13 a pixel at S = 26): the same picture of a flat face, far cheaper.
+  void planeFace(
+    String face,
+    num at,
+    num a0,
+    num a1,
+    num z0,
+    num z1,
+    int Function(num a, num z) fn,
+  ) {
+    final xs = <double>[], ys = <double>[];
+    for (final a in [a0, a1]) {
+      for (final z in [z0, z1]) {
+        final p = face == 'x' ? e.project(at, a, z) : e.project(a, at, z);
+        xs.add(p.sx);
+        ys.add(p.sy);
+      }
+    }
+    final ix0 = math.max(0, xs.reduce(math.min).floor()),
+        ix1 = math.min(W - 1, xs.reduce(math.max).ceil()),
+        iy0 = math.max(0, ys.reduce(math.min).floor()),
+        iy1 = math.min(H - 1, ys.reduce(math.max).ceil());
+    final OX = e.OX, OY = e.OY, S = e.S, R2 = e.R2, SIN = e.SIN, COS = e.COS;
+    final zb = e.zb, pix = e.pix;
+    for (var iy = iy0; iy <= iy1; iy++) {
+      for (var ix = ix0; ix <= ix1; ix++) {
+        // u = (x - y) / R2; k = v SIN - z COS
+        final u = (ix + .5 - OX) / S, k = (iy + .5 - OY) / S;
+        final x = face == 'x' ? at : at + u * R2,
+            y = face == 'x' ? at - u * R2 : at,
+            a = face == 'x' ? y : x;
+        if (a < a0 || a > a1) continue;
+        final v = (x + y) / R2, z = (v * SIN - k) / COS;
+        if (z < z0 || z > z1) continue;
+        final d = v * COS + z * SIN, i = iy * W + ix;
+        if (d <= zb[i]) continue;
+        final col = fn(a, z);
+        if (col == 0) continue;
+        zb[i] = d;
+        pix[i] = col;
+      }
+    }
+  }
+
   /* ---------- for the checks: which object drew each pixel ---------- */
 
   // set-kit.js: PART_TAGS, PART_LEAVES

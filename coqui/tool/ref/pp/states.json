@@ -30,5 +30,10 @@
   { "id": "balcon/door-shut-win-shut", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=shut&win=shut" },
   { "id": "balcon/door-shut-win-open", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=shut&win=open" },
   { "id": "balcon/door-open-win-shut", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=open&win=shut" },
-  { "id": "balcon/door-open-win-open", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=open&win=open" }
+  { "id": "balcon/door-open-win-open", "kind": "set", "page": "docs/proyecto/pixel/balcon-set.html", "query": "?door=open&win=open" },
+  { "id": "sala/luz-1-fotos-000", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=000" },
+  { "id": "sala/luz-1-fotos-100", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=100" },
+  { "id": "sala/luz-1-fotos-110", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=110" },
+  { "id": "sala/luz-1-fotos-111", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=111" },
+  { "id": "sala/luz-1-fotos-010", "kind": "set", "page": "docs/proyecto/pixel/sala-set.html", "query": "?luz=1&fotos=010" }
 ]

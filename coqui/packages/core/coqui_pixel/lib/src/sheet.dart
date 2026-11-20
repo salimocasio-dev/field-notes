@@ -1,5 +1,5 @@
 // The sheet's own names are kept (`S`, `setKey`, `lugar`, `fromW`): the lint on names is off in this file.
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, constant_identifier_names
 
 import 'dart:convert';
 import 'dart:math' as math;
@@ -231,6 +231,7 @@ class SheetAnchor {
     this.nudge,
     this.raw, {
     this.ab,
+    this.now,
   });
 
   final String name;
@@ -239,8 +240,15 @@ class SheetAnchor {
   final List<double> world;
 
   /// The sheet's screen position of it (what [Sheet.screenOf] gives, rounded to hundredths; for a point made through
-  /// a frame, the old point plus the frame's offset, which is the one to use).
+  /// a frame, the old point plus the frame's offset, which is the one to use). A sheet that writes no `screen` for it
+  /// (La sala's spots, whose `new` is the old scene's place): the projection of [world] by the sheet's own scale and
+  /// origin, which is what [Sheet.screenOf] gives.
   final List<double> screen;
+
+  /// The sheet's `new` (La sala's, order 31b): the place the old scene file writes, today. A frog's spot: his `q.x`,
+  /// `q.y` (the floor point under `q.x + 16`, `q.y + 25` is [world]); a person's: their `x`, `y` (the floor point
+  /// under `x`, `y - 1`). The room is built round the old picture, so it is the old place but where the sheet moves it.
+  final List<num>? now;
 
   /// The old screen position.
   final List<num> old;
@@ -435,6 +443,7 @@ class RemapTo {
     this.none, {
     this.pictures,
     this.level = false,
+    this.floor,
   });
 
   final String? point;
@@ -450,6 +459,10 @@ class RemapTo {
 
   /// The position is a level picture's: the level pictures take [Sheet.level] whole, so it has no place of its own.
   final bool level;
+
+  /// The floor point under a place that keeps its screen place (La sala's `to.floor`: the frog's or a person's feet);
+  /// the place today is [SheetRemap.now].
+  final List<double>? floor;
 }
 
 /// One entry of `remap`: a position written in a story, pair or level file, and its place today.
@@ -472,6 +485,7 @@ class SheetRemap {
     this.raw, {
     this.ab,
     this.crops,
+    this.now,
   });
 
   final String kind;
@@ -497,16 +511,29 @@ class SheetRemap {
 
   /// The crop and zoom of each picture of [RemapTo.pictures].
   final Map<String, ({List<int> crop, int zoom})>? crops;
+
+  /// The sheet's `new` (La sala's): the place today, as the file writes it (`x, y`).
+  final List<int>? now;
 }
 
 /// How one parameter of the set's key reads W (`setKey.params`).
 class SetKeyParam {
-  SetKeyParam._(this.name, this.values, this.fromW, this.raw);
+  SetKeyParam._(
+    this.name,
+    this.values,
+    this.fromW,
+    this.raw, {
+    this.valuesWhat,
+  });
 
   final String name;
 
-  /// The values it takes, as the strings of the state's name.
+  /// The values it takes, as the strings of the state's name. Empty when the sheet says them in words ([valuesWhat]).
   final List<String> values;
+
+  /// The values in the sheet's words, when it writes them so (La sala's `fotos`: "three characters, 0 or 1, one a
+  /// frame, left to right").
+  final String? valuesWhat;
 
   /// How W gives it: the sheet's words. The function from W to the key is the scene's, written from these.
   final String fromW;
@@ -547,12 +574,31 @@ class SheetSetKey {
   final Map<String, dynamic> raw;
 }
 
-/// Who casts a shadow (`shadows.<who>`): the radius as a number, and the sheet's words for where, when and how.
+/// Who casts a shadow (`shadows.<who>`): the radius as a number (or one by kind, [radii]), and the sheet's words for
+/// where, when and how.
 class SheetShadow {
-  SheetShadow._(this.who, this.radius, this.at, this.when, this.cast, this.raw);
+  SheetShadow._(
+    this.who,
+    this._radius,
+    this.at,
+    this.when,
+    this.cast,
+    this.raw, {
+    this.radii,
+  });
 
   final String who;
-  final double radius;
+  final double? _radius;
+
+  /// The radius. Throws [SheetError] for a shadow whose radius is by kind ([radii]).
+  double get radius =>
+      _radius ??
+      (throw SheetError(
+        'the shadow of "$who" has a radius by kind (${radii!.keys.join(', ')}): read radii',
+      ));
+
+  /// A radius by kind (La sala's `people`: `grown`, `nino`, `bebe`), or null.
+  final Map<String, double>? radii;
 
   /// Where (`at`), when (`when`) and how (`cast`: the `castShadow` calls, heights included, in words). The scene
   /// decides when; the heights are only in [cast].
@@ -581,7 +627,14 @@ class SheetCode {
 /// drawn again over what the sprite layer has drawn so far, where the sheet's `front.how` says (a depth test on the
 /// set's own pixels).
 class SheetFrontPart {
-  SheetFrontPart._(this.name, this.line, this.replaces, this.raw);
+  SheetFrontPart._(
+    this.name,
+    this.line,
+    this.replaces,
+    this.raw, {
+    this.sortY,
+    this.boxes,
+  });
 
   /// The part's name in the set reference (`part(name, ...)`).
   final String name;
@@ -592,6 +645,140 @@ class SheetFrontPart {
   /// The old call it replaces, as the sheet quotes it.
   final String? replaces;
   final Map<String, dynamic> raw;
+
+  /// La sala's: the part's place in the old list sorted by y (`sortY`), and the box round each character where its
+  /// pixels are drawn again, in the sheet's words (`boxes`).
+  final num? sortY;
+  final String? boxes;
+}
+
+/// A named point of a sheet given on the screen only, with no world point (La sala's `points`, order 31b: what the old
+/// code draws at a place of the picture, the cake on the low table, a photo's frame, the stars over the cake). Its
+/// [screen] is one point (`x, y`), a rectangle (`x, y, w, h`: [rect]) or a list of points ([points]).
+class SheetScreenPoint {
+  SheetScreenPoint._(
+    this.name,
+    this.screen,
+    this.points,
+    this.old,
+    this.what,
+    this.angle,
+    this.nail,
+    this.raw,
+  );
+
+  final String name;
+
+  /// The numbers of a point or a rectangle; empty for a list of points.
+  final List<double> screen;
+
+  /// A list of points (`[[x, y], ...]`), or null.
+  final List<List<double>>? points;
+
+  /// The old place, as the sheet writes it (a point, a rectangle or a list of points).
+  final Object? old;
+  final String? what;
+
+  /// A photo's frame (La sala's `foto.<i>`): the turn the photo is drawn at, and the nail the frame hangs from.
+  final double? angle;
+  final List<int>? nail;
+  final Map<String, dynamic> raw;
+
+  /// The point `x, y`. Throws [SheetError] when it is not one.
+  List<double> get xy => screen.length == 2
+      ? screen
+      : (throw SheetError('point "$name" is not one point'));
+
+  /// The rectangle `x, y, w, h`. Throws [SheetError] when it is not one.
+  List<double> get rect => screen.length == 4
+      ? screen
+      : (throw SheetError('point "$name" is not a rectangle'));
+}
+
+/// A place of the old scene file the sheet moves (`moves`, La sala's): at [line] of the old file, act [act], the old
+/// source [src] becomes [to] (the sheet's exact pieces of source), and each person's old and new place.
+class SheetMove {
+  SheetMove._(
+    this.line,
+    this.act,
+    this.src,
+    this.to,
+    this.places,
+    this.why,
+    this.raw,
+  );
+
+  final int line;
+  final String act;
+  final String src, to;
+  final List<({String who, List<num> old, List<num> now, List<double> world})>
+  places;
+  final String? why;
+  final Map<String, dynamic> raw;
+}
+
+/// One place where the old code turns smoothing on (`smoothing.places`): where ([at], "sala.js:120"), what it does, and
+/// how it is kept, in the sheet's words.
+class SheetSmoothingPlace {
+  SheetSmoothingPlace._(this.at, this.what, this.keep, this.raw);
+
+  final String at;
+  final String? what, keep;
+  final Map<String, dynamic> raw;
+}
+
+/// Where a bubble goes (`talk`, La sala's): the first of [places] whose bubble is wholly inside the view, clear of the
+/// corner cards shown and of every face; else the first. The rules are the sheet's words ([what], [top], [faces],
+/// [boards]); the numbers are [places], [heads] and the boards' rectangles ([board]).
+class SheetTalk {
+  SheetTalk._(
+    this.what,
+    this.top,
+    this.places,
+    this.faces,
+    this.heads,
+    this.boards,
+    this.raw,
+  );
+
+  final String? what, top, faces;
+
+  /// `[side, dy]`: the tail's tip at `top.x + side * (h + 16)`, `top.y + dy`.
+  final List<({int side, int dy})> places;
+
+  /// Each sprite's head (`idle`; `<who>.sent`: sitting): `top`, its first opaque row relative to the feet; `head`, the
+  /// middle of its top rows relative to x.
+  final Map<String, ({int top, int head})> heads;
+
+  /// The corner cards, in the sheet's words: `W.<name> [x, y, w, h]` in the display, a term of `p + q * <field>` taking a
+  /// field of W ([board]).
+  final String boards;
+  final Map<String, dynamic> raw;
+
+  /// The rectangle of the corner card [name] (`plato`, `cafe`, `visor`, `retrato`) in the display, a term `p + q * f`
+  /// read with [field] (W's number `f`, 0 when it has none). Null when the sheet names no such card.
+  List<num>? board(String name, num Function(String field) field) {
+    final m = RegExp('W\\.$name \\[([^\\]]*)\\]').firstMatch(boards);
+    if (m == null) return null;
+    num term(String t) {
+      final n = num.tryParse(t.trim());
+      if (n != null) return n;
+      final e = RegExp(r'^\s*(-?[\d.]+)\s*\+\s*(-?[\d.]+)\s*\*\s*(\w+)\s*$')
+          .firstMatch(t);
+      if (e == null) {
+        throw SheetError(
+          'talk.boards: "$t" of W.$name is not a number or p + q * field',
+        );
+      }
+      return num.parse(e[1]!) + num.parse(e[2]!) * field(e[3]!);
+    }
+
+    final parts = m[1]!.split(',');
+    if (parts.length != 4) {
+      throw SheetError('talk.boards: W.$name is not 4 numbers');
+    }
+    return [for (final t in parts) term(t)];
+  }
 }
 
 /// A number of the old scene file and what it is today: a top-level entry of the sheet with a number `old` and a number
@@ -654,6 +841,13 @@ class Sheet {
     required this.code,
     required this.raw,
     required this.unknown,
+    this.screenPoints = const {},
+    this.moves = const [],
+    this.smoothing = const [],
+    this.smoothingWhat,
+    this.notSmoothing,
+    this.bubbleRects = const {},
+    this.talk,
   });
 
   /// Parses the text of a sheet. Throws [SheetError], naming where, when it is not a sheet.
@@ -687,6 +881,27 @@ class Sheet {
     );
     final front = _obj(_need(m, 'front', at), '$at.front');
     final shadowsRaw = _obj(_need(m, 'shadows', at), '$at.shadows');
+    // a place the sheet gives as a world point only (La sala's spots and views): its screen place is the projection by
+    // the sheet's own scale and origin (pp-engine.js project)
+    final pw = picture[0], ph = picture[1];
+    final S0 = _num(_need(m, 'S', at), '$at.S').toDouble(),
+        OX =
+            pw / 2 +
+            _num(_need(origin, 'originX', '$at.origin'), '$at.origin.originX'),
+        OY =
+            ph / 2 +
+            _num(_need(origin, 'originY', '$at.origin'), '$at.origin.originY');
+    List<double> project(List<double> w) {
+      const SIN = .5;
+      final COS = math.sqrt(3) / 2, R2 = math.sqrt2;
+      final u = (w[0] - w[1]) / R2, v = (w[0] + w[1]) / R2;
+      return [OX + u * S0, OY + (v * SIN - w[2] * COS) * S0];
+    }
+
+    final pointsRaw = _obj(_need(m, 'points', at), '$at.points');
+    final smoothingRaw = m.containsKey('smoothing')
+        ? _obj(m['smoothing'], '$at.smoothing')
+        : null;
     const known = {
       'scene',
       'made',
@@ -711,6 +926,10 @@ class Sheet {
       'shadows',
       'dropped',
       'code',
+      'smoothing',
+      'moves',
+      'bubbles',
+      'talk',
     };
     final partsRaw = front.containsKey('parts')
         ? _obj(front['parts'], '$at.front.parts')
@@ -757,13 +976,39 @@ class Sheet {
       },
       setKey: _readSetKey(_need(m, 'setKey', at), '$at.setKey'),
       things: _byName(_need(m, 'things', at), '$at.things', _readThing),
-      spots: _byName(_need(m, 'spots', at), '$at.spots', _readSpot),
+      spots: _byName(
+        _need(m, 'spots', at),
+        '$at.spots',
+        (n, v, a) => _readAnchor(n, v, a, project),
+      ),
       lugar: _byName(_need(m, 'lugar', at), '$at.lugar', _readLugar),
       frames: m.containsKey('frames')
           ? _byName(m['frames'], '$at.frames', _readFrame)
           : const {},
-      points: _byName(_need(m, 'points', at), '$at.points', _readPoint),
-      views: _byName(_need(m, 'views', at), '$at.views', _readView),
+      points: {
+        for (final e in pointsRaw.entries)
+          if (_obj(e.value, '$at.points.${e.key}').containsKey('world'))
+            e.key: _readAnchor(
+              e.key,
+              e.value as Map<String, dynamic>,
+              '$at.points.${e.key}',
+              project,
+            ),
+      },
+      screenPoints: {
+        for (final e in pointsRaw.entries)
+          if (!(e.value as Map<String, dynamic>).containsKey('world'))
+            e.key: _readScreenPoint(
+              e.key,
+              e.value as Map<String, dynamic>,
+              '$at.points.${e.key}',
+            ),
+      },
+      views: _byName(
+        _need(m, 'views', at),
+        '$at.views',
+        (n, v, a) => _readView(n, v, a, project),
+      ),
       remapTable: _readRemapTable(_need(m, 'remap', at), '$at.remap'),
       pictures: pictures,
       level: _readLevelList(_need(m, 'level', at), '$at.level', pictures),
@@ -791,6 +1036,16 @@ class Sheet {
                 (v) => _str(v, '$at.front.parts.${e.key}.replaces'),
               ),
               p,
+              sortY: _opt(
+                p,
+                'sortY',
+                (v) => _num(v, '$at.front.parts.${e.key}.sortY'),
+              ),
+              boxes: _opt(
+                p,
+                'boxes',
+                (v) => _str(v, '$at.front.parts.${e.key}.boxes'),
+              ),
             );
           }(),
       },
@@ -812,6 +1067,61 @@ class Sheet {
           : null,
       dropped: _strs(_need(m, 'dropped', at), '$at.dropped'),
       code: _readCodeList(_need(m, 'code', at), '$at.code'),
+      moves: m.containsKey('moves')
+          ? _readMoves(m['moves'], '$at.moves')
+          : const [],
+      smoothing: smoothingRaw == null
+          ? const []
+          : [
+              for (final (i, v) in _list(
+                _need(smoothingRaw, 'places', '$at.smoothing'),
+                '$at.smoothing.places',
+              ).indexed)
+                () {
+                  final o = _obj(v, '$at.smoothing.places[$i]');
+                  return SheetSmoothingPlace._(
+                    _str(
+                      _need(o, 'at', '$at.smoothing.places[$i]'),
+                      '$at.smoothing.places[$i].at',
+                    ),
+                    _opt(
+                      o,
+                      'what',
+                      (v) => _str(v, '$at.smoothing.places[$i].what'),
+                    ),
+                    _opt(
+                      o,
+                      'keep',
+                      (v) => _str(v, '$at.smoothing.places[$i].keep'),
+                    ),
+                    o,
+                  );
+                }(),
+            ],
+      smoothingWhat: smoothingRaw == null
+          ? null
+          : _opt(smoothingRaw, 'what', (v) => _str(v, '$at.smoothing.what')),
+      notSmoothing: smoothingRaw == null
+          ? null
+          : _opt(
+              smoothingRaw,
+              'notSmoothing',
+              (v) => _str(v, '$at.smoothing.notSmoothing'),
+            ),
+      bubbleRects: m.containsKey('bubbles')
+          ? {
+              for (final e in _obj(
+                _need(
+                  _obj(m['bubbles'], '$at.bubbles'),
+                  'rects',
+                  '$at.bubbles',
+                ),
+                '$at.bubbles.rects',
+              ).entries)
+                e.key: _ints(e.value, '$at.bubbles.rects.${e.key}', length: 4),
+            }
+          : const {},
+      talk: m.containsKey('talk') ? _readTalk(m['talk'], '$at.talk') : null,
       raw: m,
       unknown: {
         for (final e in m.entries)
@@ -890,6 +1200,29 @@ class Sheet {
   /// The old code the set replaces, as the sheet lists it (`dropped`), and every old line with what replaces it (`code`).
   final List<String> dropped;
   final List<SheetCode> code;
+
+  /// La sala's (order 31b): the named points given on the screen only (`points` with no world point); [points] holds
+  /// those with one.
+  final Map<String, SheetScreenPoint> screenPoints;
+
+  /// The places of the old scene file the sheet moves (`moves`), in the sheet's order.
+  final List<SheetMove> moves;
+
+  /// Where the old code turns smoothing on and how each is kept (`smoothing.places`), the sheet's words on it
+  /// (`smoothing.what`), and what does not smooth (`smoothing.notSmoothing`).
+  final List<SheetSmoothingPlace> smoothing;
+  final String? smoothingWhat, notSmoothing;
+
+  /// Each bubble's rectangle relative to its tail's tip (`bubbles.rects`): `[dx, dy, w, h]`.
+  final Map<String, List<int>> bubbleRects;
+
+  /// Where a bubble goes (`talk`), or null.
+  final SheetTalk? talk;
+
+  /// A screen point of [screenPoints]. Throws [SheetError] when the sheet has none of that name.
+  SheetScreenPoint screenPoint(String name) =>
+      screenPoints[name] ??
+      (throw SheetError('the sheet has no screen point "$name"'));
 
   /// The sheet as decoded, every field; and the top-level fields this reader does not know.
   final Map<String, dynamic> raw;
@@ -1199,27 +1532,122 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
   );
 }
 
-SheetAnchor _readSpot(String name, Map<String, dynamic> m, String at) =>
-    _readAnchor(name, m, at);
+SheetAnchor _readAnchor(
+  String name,
+  Map<String, dynamic> m,
+  String at,
+  List<double> Function(List<double> world) project,
+) {
+  final world = _doubles(_need(m, 'world', at), '$at.world', length: 3);
+  return SheetAnchor._(
+    name,
+    world,
+    m.containsKey('screen') || !m.containsKey('new')
+        ? _doubles(_need(m, 'screen', at), '$at.screen', length: 2)
+        : project(world),
+    _nums(_need(m, 'old', at), '$at.old', length: 2),
+    _opt(m, 'what', (v) => _str(v, '$at.what')),
+    _opt(m, 'scale', (v) => _num(v, '$at.scale')),
+    _opt(m, 'frog', (v) => _ints(v, '$at.frog', length: 2)),
+    _opt(m, 'abuela', (v) => _ints(v, '$at.abuela', length: 2)),
+    _opt(m, 'frame', (v) => _str(v, '$at.frame')),
+    _opt(m, 'nudge', (v) => _nums(v, '$at.nudge', length: 2)),
+    m,
+    ab: _opt(m, 'ab', (v) => _ints(v, '$at.ab', length: 2)),
+    now: _opt(m, 'new', (v) => _nums(v, '$at.new', length: 2)),
+  );
+}
 
-SheetAnchor _readPoint(String name, Map<String, dynamic> m, String at) =>
-    _readAnchor(name, m, at);
+SheetScreenPoint _readScreenPoint(
+  String name,
+  Map<String, dynamic> m,
+  String at,
+) {
+  final sc = _list(_need(m, 'screen', at), '$at.screen');
+  final many = sc.isNotEmpty && sc.first is List;
+  return SheetScreenPoint._(
+    name,
+    many ? const [] : _doubles(sc, '$at.screen'),
+    many
+        ? [
+            for (var i = 0; i < sc.length; i++)
+              _doubles(sc[i], '$at.screen[$i]', length: 2),
+          ]
+        : null,
+    m['old'],
+    _opt(m, 'what', (v) => _str(v, '$at.what')),
+    _opt(m, 'angle', (v) => _num(v, '$at.angle').toDouble()),
+    _opt(m, 'nail', (v) => _ints(v, '$at.nail', length: 2)),
+    m,
+  );
+}
 
-SheetAnchor _readAnchor(String name, Map<String, dynamic> m, String at) =>
-    SheetAnchor._(
-      name,
-      _doubles(_need(m, 'world', at), '$at.world', length: 3),
-      _doubles(_need(m, 'screen', at), '$at.screen', length: 2),
-      _nums(_need(m, 'old', at), '$at.old', length: 2),
-      _opt(m, 'what', (v) => _str(v, '$at.what')),
-      _opt(m, 'scale', (v) => _num(v, '$at.scale')),
-      _opt(m, 'frog', (v) => _ints(v, '$at.frog', length: 2)),
-      _opt(m, 'abuela', (v) => _ints(v, '$at.abuela', length: 2)),
-      _opt(m, 'frame', (v) => _str(v, '$at.frame')),
-      _opt(m, 'nudge', (v) => _nums(v, '$at.nudge', length: 2)),
-      m,
-      ab: _opt(m, 'ab', (v) => _ints(v, '$at.ab', length: 2)),
-    );
+List<SheetMove> _readMoves(Object? v, String at) {
+  final l = _list(v, at);
+  return [
+    for (var i = 0; i < l.length; i++)
+      () {
+        final p = '$at[$i]', o = _obj(l[i], p);
+        final places = _list(_need(o, 'places', p), '$p.places');
+        return SheetMove._(
+          _int(_need(o, 'line', p), '$p.line'),
+          _str(_need(o, 'act', p), '$p.act'),
+          _str(_need(o, 'src', p), '$p.src'),
+          _str(_need(o, 'to', p), '$p.to'),
+          [
+            for (var j = 0; j < places.length; j++)
+              () {
+                final q = '$p.places[$j]', pl = _obj(places[j], q);
+                return (
+                  who: _str(_need(pl, 'who', q), '$q.who'),
+                  old: _nums(_need(pl, 'old', q), '$q.old', length: 2),
+                  now: _nums(_need(pl, 'new', q), '$q.new', length: 2),
+                  world: _doubles(_need(pl, 'world', q), '$q.world', length: 3),
+                );
+              }(),
+          ],
+          _opt(o, 'why', (v) => _str(v, '$p.why')),
+          o,
+        );
+      }(),
+  ];
+}
+
+SheetTalk _readTalk(Object? v, String at) {
+  final m = _obj(v, at);
+  final places = _list(_need(m, 'places', at), '$at.places');
+  final heads = _obj(_need(m, 'heads', at), '$at.heads');
+  return SheetTalk._(
+    _opt(m, 'what', (v) => _str(v, '$at.what')),
+    _opt(m, 'top', (v) => _str(v, '$at.top')),
+    [
+      for (var i = 0; i < places.length; i++)
+        () {
+          final p = _ints(places[i], '$at.places[$i]', length: 2);
+          return (side: p[0], dy: p[1]);
+        }(),
+    ],
+    _opt(m, 'faces', (v) => _str(v, '$at.faces')),
+    {
+      for (final e in heads.entries)
+        e.key: () {
+          final h = _obj(e.value, '$at.heads.${e.key}');
+          return (
+            top: _int(
+              _need(h, 'top', '$at.heads.${e.key}'),
+              '$at.heads.${e.key}.top',
+            ),
+            head: _int(
+              _need(h, 'head', '$at.heads.${e.key}'),
+              '$at.heads.${e.key}.head',
+            ),
+          );
+        }(),
+    },
+    _str(_need(m, 'boards', at), '$at.boards'),
+    m,
+  );
+}
 
 SheetLugar _readLugar(String name, Map<String, dynamic> m, String at) {
   final key = m.containsKey('frog') || !m.containsKey('q') ? 'frog' : 'q';
@@ -1252,7 +1680,12 @@ int _zoom(Object? v, String at) {
   return z;
 }
 
-SheetView _readView(String name, Map<String, dynamic> m, String at) {
+SheetView _readView(
+  String name,
+  Map<String, dynamic> m,
+  String at,
+  List<double> Function(List<double> world) project,
+) {
   final zoom = _zoom(_need(m, 'zoom', at), '$at.zoom');
   final region = _opt(
     m,
@@ -1262,10 +1695,14 @@ SheetView _readView(String name, Map<String, dynamic> m, String at) {
   if (zoom == 2 && region == null) {
     throw SheetError('$at: a view at zoom 2 has a region');
   }
+  final world = _doubles(_need(m, 'world', at), '$at.world', length: 3);
   return SheetView._(
     name,
-    _doubles(_need(m, 'world', at), '$at.world', length: 3),
-    _doubles(_need(m, 'screen', at), '$at.screen', length: 2),
+    world,
+    // a view with no screen (La sala's): the projection of its world centre
+    m.containsKey('screen')
+        ? _doubles(_need(m, 'screen', at), '$at.screen', length: 2)
+        : project(world),
     zoom,
     _int(_need(m, 'x0', at), '$at.x0'),
     region,
@@ -1338,15 +1775,25 @@ SheetClip _readClip(String name, Map<String, dynamic> m, String at) {
   );
 }
 
-SheetShadow _readShadow(String who, Map<String, dynamic> m, String at) =>
-    SheetShadow._(
-      who,
-      _num(_need(m, 'radius', at), '$at.radius').toDouble(),
-      _opt(m, 'at', (v) => _str(v, '$at.at')),
-      _opt(m, 'when', (v) => _str(v, '$at.when')),
-      _opt(m, 'cast', (v) => _str(v, '$at.cast')),
-      m,
-    );
+SheetShadow _readShadow(String who, Map<String, dynamic> m, String at) {
+  final r = _need(m, 'radius', at);
+  // a radius by kind (La sala's people: grown, nino, bebe)
+  final radii = r is Map<String, dynamic>
+      ? {
+          for (final e in r.entries)
+            e.key: _num(e.value, '$at.radius.${e.key}').toDouble(),
+        }
+      : null;
+  return SheetShadow._(
+    who,
+    radii == null ? _num(r, '$at.radius').toDouble() : null,
+    _opt(m, 'at', (v) => _str(v, '$at.at')),
+    _opt(m, 'when', (v) => _str(v, '$at.when')),
+    _opt(m, 'cast', (v) => _str(v, '$at.cast')),
+    m,
+    radii: radii,
+  );
+}
 
 List<SheetRemap> _readRemapTable(Object? v, String at) {
   final l = _list(v, at);
@@ -1374,6 +1821,11 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
             _opt(t, 'none', (v) => _str(v, '$p.to.none')),
             pictures: _opt(t, 'pictures', (v) => _strs(v, '$p.to.pictures')),
             level: t.containsKey('level') && _bool(t['level'], '$p.to.level'),
+            floor: _opt(
+              t,
+              'floor',
+              (v) => _doubles(v, '$p.to.floor', length: 3),
+            ),
           ),
           _opt(m, 'screen', (v) => _doubles(v, '$p.screen', length: 2)),
           _opt(m, 'crop', (v) => _ints(v, '$p.crop', length: 4)),
@@ -1384,6 +1836,7 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
           _opt(m, 'what', (v) => _str(v, '$p.what')),
           m,
           ab: _opt(m, 'ab', (v) => _ints(v, '$p.ab', length: 2)),
+          now: _opt(m, 'new', (v) => _ints(v, '$p.new', length: 2)),
           crops: _opt(m, 'crops', (v) {
             final c = _obj(v, '$p.crops');
             return {
@@ -1418,17 +1871,18 @@ SheetSetKey _readSetKey(Object? v, String at) {
       for (final e in params.entries)
         e.key: () {
           final p = _obj(e.value, '$at.params.${e.key}');
+          final values = _need(p, 'values', '$at.params.${e.key}');
           return SetKeyParam._(
             e.key,
-            _strs(
-              _need(p, 'values', '$at.params.${e.key}'),
-              '$at.params.${e.key}.values',
-            ),
+            values is String
+                ? const []
+                : _strs(values, '$at.params.${e.key}.values'),
             _str(
               _need(p, 'fromW', '$at.params.${e.key}'),
               '$at.params.${e.key}.fromW',
             ),
             p,
+            valuesWhat: values is String ? values : null,
           );
         }(),
     },

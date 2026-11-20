@@ -3,7 +3,8 @@
 // the vm the tests compare the bytes themselves; in a browser, the hashes.
 //
 //   dart run tool/make_sprite_fixture.dart          (in this package) writes test/support/fixtures/sprite_refs.dart
-//                                                  (frente.js) and test/support/fixtures/balcon_sprite_refs.dart (balcon.js)
+//                                                  (frente.js), test/support/fixtures/balcon_sprite_refs.dart (balcon.js)
+//                                                  and test/support/fixtures/sala_sprite_refs.dart (sala.js)
 //   dart run tool/make_sprite_fixture.dart --check  fails when a file is not what the reference gives
 import 'dart:convert';
 import 'dart:io';
@@ -14,6 +15,7 @@ void main(List<String> args) {
   const scenes = {
     'frente': (file: 'sprite_refs.dart', constant: 'spriteRefs'),
     'balcon': (file: 'balcon_sprite_refs.dart', constant: 'balconSpriteRefs'),
+    'sala': (file: 'sala_sprite_refs.dart', constant: 'salaSpriteRefs'),
   };
   var stale = 0;
   for (final sc in scenes.entries) {
@@ -32,6 +34,8 @@ void main(List<String> args) {
       for (final s in (index['sprites'] as List).cast<Map<String, dynamic>>())
         {
           'key': s['key'],
+          // a key with more than one file (sala.js's scratch canvas `bor`): which one
+          if (s['file'] != '${s['key']}.rgba') 'file': s['file'],
           'w': s['w'],
           'h': s['h'],
           'caller': s['caller'],

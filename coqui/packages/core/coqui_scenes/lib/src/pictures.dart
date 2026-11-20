@@ -50,6 +50,19 @@ Object? _copy(Object? v) => v is Map
     : v;
 
 // one string for a JSON-shaped value, its keys in order, a number written as JavaScript writes it
+/// The name a review picture has in [sheet]: [n] (`<word>.<side>`) as it is, or, when the sheet has no picture of that
+/// name, with its accents folded (`mamá.si` is `mama.si`): La sala's sheet names its pictures so, as sala-preview.html's
+/// `PV.pair` finds a pair's pictures (order 31b). [n] as it is when the sheet has neither.
+String sheetPictureName(Sheet sheet, String n) {
+  if (sheet.pictures.containsKey(n)) return n;
+  const from = 'áéíóú', to = 'aeiou';
+  final folded = n.split('').map((c) {
+    final i = from.indexOf(c);
+    return i < 0 ? c : to[i];
+  }).join();
+  return sheet.pictures.containsKey(folded) ? folded : n;
+}
+
 String _canon(Object? v) {
   if (v is Map) {
     final keys = v.keys.map((k) => k as String).toList()..sort();
@@ -125,8 +138,9 @@ class ScenePictures implements PictureSource {
   /// that has no name.
   String pictureName(PictureRef ref, Sheet sheet) {
     final names = [
-      for (final n in _index[_key(ref)] ?? const <String>[])
-        if (sheet.pictures.containsKey(n)) n,
+      for (final n0 in _index[_key(ref)] ?? const <String>[])
+        if (sheet.pictures.containsKey(sheetPictureName(sheet, n0)))
+          sheetPictureName(sheet, n0),
     ];
     if (names.isEmpty) {
       throw PictureError(
@@ -146,7 +160,8 @@ class ScenePictures implements PictureSource {
   }
 
   // the sheet's picture [n] (`<word>.<side>`), or its level entry (`nivel.<word>.<index>`: its own centre; the cell is always zoom 1)
-  _Cut _cutNamed(Sheet sheet, String scene, String n) {
+  _Cut _cutNamed(Sheet sheet, String scene, String n0) {
+    final n = sheetPictureName(sheet, n0);
     final pic = sheet.pictures[n];
     if (pic != null) return _Cut(n, pic.crop, pic.zoom);
     if (n.startsWith('nivel.')) {

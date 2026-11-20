@@ -6,6 +6,7 @@
 //   touches' places on the old screen (x, y) are left out.
 // - On the real El frente: the traces of every file that plays on it, all three plans, once its scene is in the registry.
 // - On the real El balcón (order 30b): the same, for its four files.
+// - On the real La sala (order 31b): the same, for its six files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -38,6 +39,9 @@ Map<String, dynamic> placeless(Map<String, dynamic> t) => {
 
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
+
+/// Each sala run's first difference with the old trace, time and hops included (null: equal whole).
+final Map<String, String?> salaWhole = {};
 
 void main() {
   final root = findRoot();
@@ -265,6 +269,98 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in balconWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}'].join('\n')}\n',
+        );
+    });
+  });
+
+  // The real La sala (order 31b): the room is built round the old picture, so its places keep their screen numbers but the
+  // few the sheet moves (`moves`); the runs are the old ones in everything but time and the places its state line writes.
+  // The scene draws its random numbers (`azar`: which side each of two people stands) from the game's one source, as the
+  // old one drew from Math.random.
+  group('the recorded runs, on the real La sala (order 31b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final sala = {
+      for (final r in runs)
+        if (r['scene'] == 'sala') r['story'] as String,
+    };
+    test('the six files of La sala', () {
+      expect(sala, {
+        'la-familia',
+        'la-foto',
+        'quien-eres-tu',
+        'd-bizcocho-bebe',
+        'd-foto-familia',
+        'h-sala',
+      });
+    });
+    for (final s in sala) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            // a new scene for each run, given the run's random source
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('sala'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            expect(
+              firstDifference(
+                placeless(forTimeless(c.committed)),
+                placeless(forTimeless(c.trace)),
+              ),
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            // the whole trace, time and hops included: printed for the order's report, not a condition
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            salaWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    // the screen's scene factory gives the scene the story runner's random source: `lados` draws which side each of two
+    // people is on, once, from it
+    test(
+      'registryScenes gives La sala the random source it is given',
+      () async {
+        final rng = CountingRng(Mulberry32(1));
+        final made = await registryScenes('sala', rng);
+        StillFrame(made.scene as SetScene).host.fresh();
+        expect(rng.draws, 0);
+        await (made.scene as Escena).acts['lados']!({
+          'a': 'mama',
+          'b': 'papa',
+          'donde': 'juntos',
+        });
+        expect(rng.draws, 1);
+      },
+    );
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/sala-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in salaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}'].join('\n')}\n',
         );
     });
   });

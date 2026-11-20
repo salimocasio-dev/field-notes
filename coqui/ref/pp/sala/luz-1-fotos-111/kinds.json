@@ -1,0 +1,11 @@
+{
+  "file": "kinds.bin",
+  "width": 240,
+  "height": 216,
+  "type": "uint8",
+  "endian": "little",
+  "layout": "row-major, index = y * width + x",
+  "note": "KIND_NONE 0, SAND 1, WATER 2, GRASS 3, ROAD 4",
+  "bytes": 51840,
+  "sha256": "9cce618b938e86402af4afe5239750bc13e5b66b174717de846f332e16698eb3"
+}

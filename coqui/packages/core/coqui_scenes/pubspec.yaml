@@ -25,7 +25,6 @@ dev_dependencies:
 flutter:
   assets:
     - assets/sheets/
-    - assets/old_pictures/sala/
     - assets/old_pictures/patio/
     - assets/old_pictures/camino/
     - assets/old_pictures/campo/

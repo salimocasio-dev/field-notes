@@ -8,6 +8,7 @@ import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_pixel/coqui_pixel.dart' show Sheet;
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/old_pictures.dart';
+import 'package:coqui_scenes/src/pictures.dart' show sheetPictureName;
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -504,8 +505,8 @@ void main() {
           n++;
         }
       }
-      // on the vm: 379 old pictures of the 9 scenes not converted (El balcón's 36 went at order 30b)
-      expect(n, greaterThan(kIsWeb ? 30 : 350));
+      // on the vm: 329 old pictures of the 8 scenes not converted (El balcón's 36 went at order 30b, La sala's 50 at 31b)
+      expect(n, kIsWeb ? greaterThan(30) : 329);
     });
   });
 
@@ -569,7 +570,7 @@ void main() {
         if (convertedScenes.contains(r.scene)) {
           final n = r.name!, sheet = sheets[r.scene]!;
           expect(
-            sheet.pictures.containsKey(n) ||
+            sheet.pictures.containsKey(sheetPictureName(sheet, n)) ||
                 sheet.level.any((l) => 'nivel.${l.word}.${l.index}' == n),
             isTrue,
             reason: '${r.scene}: the sheet has no picture "$n"',
