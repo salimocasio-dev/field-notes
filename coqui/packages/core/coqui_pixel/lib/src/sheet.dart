@@ -229,8 +229,9 @@ class SheetAnchor {
     this.abuela,
     this.frame,
     this.nudge,
-    this.raw,
-  );
+    this.raw, {
+    this.ab,
+  });
 
   final String name;
 
@@ -251,6 +252,10 @@ class SheetAnchor {
   /// The frog's `q.x`, `q.y` there, and abuela's sprite's top left there.
   final List<int>? frog, abuela;
 
+  /// Abuela's `ab.x`, `ab.y` there (a sheet whose scene moves her by the point under her feet, El balcón's: `ab.x =
+  /// round(sx)`, `ab.y = round(sy) + 1`, her sprite drawn at `ab.x - 30`, `ab.y - 50`, which is [Sheet.abuelaAt]).
+  final List<int>? ab;
+
   /// A point made through a frame: its name, and the extra whole pixels.
   final String? frame;
   final List<num>? nudge;
@@ -259,16 +264,26 @@ class SheetAnchor {
 
 /// `lugar`: a name of the old scene's `LUGAR`: the spot, where the frog's box is, his size.
 class SheetLugar {
-  SheetLugar._(this.name, this.spot, this.frog, this.scale, this.raw);
+  SheetLugar._(
+    this.name,
+    this.spot,
+    this.frog,
+    this.scale,
+    this.raw, {
+    this.old,
+  });
 
   final String name;
 
   /// A key of [Sheet.spots].
   final String spot;
 
-  /// The frog's `q.x`, `q.y`.
+  /// The frog's `q.x`, `q.y` (the sheet's `frog`, or `q` as El balcón's sheet writes it).
   final List<int> frog;
   final num scale;
+
+  /// The old `LUGAR` entry `[x, y, scale]`, when the sheet gives it.
+  final List<num>? old;
   final Map<String, dynamic> raw;
 }
 
@@ -412,7 +427,15 @@ class SheetClip {
 /// world point), `view` (a view of the sheet), `spot` (a spot of the sheet) or `none` (nothing: the position is
 /// not used).
 class RemapTo {
-  RemapTo._(this.point, this.world, this.view, this.spot, this.none);
+  RemapTo._(
+    this.point,
+    this.world,
+    this.view,
+    this.spot,
+    this.none, {
+    this.pictures,
+    this.level = false,
+  });
 
   final String? point;
   final List<double>? world;
@@ -421,6 +444,12 @@ class RemapTo {
 
   /// Why nothing: the sheet's words.
   final String? none;
+
+  /// The review pictures an old pair rectangle was (keys of [Sheet.pictures]): their crops are [SheetRemap.crops].
+  final List<String>? pictures;
+
+  /// The position is a level picture's: the level pictures take [Sheet.level] whole, so it has no place of its own.
+  final bool level;
 }
 
 /// One entry of `remap`: a position written in a story, pair or level file, and its place today.
@@ -440,8 +469,10 @@ class SheetRemap {
     this.scale,
     this.x0,
     this.what,
-    this.raw,
-  );
+    this.raw, {
+    this.ab,
+    this.crops,
+  });
 
   final String kind;
   final List<num> old;
@@ -460,6 +491,12 @@ class SheetRemap {
   final int? x0;
   final String? what;
   final Map<String, dynamic> raw;
+
+  /// Abuela's `ab.x`, `ab.y` at the spot (a `point` that is one of her spots: [SheetAnchor.ab]).
+  final List<int>? ab;
+
+  /// The crop and zoom of each picture of [RemapTo.pictures].
+  final Map<String, ({List<int> crop, int zoom})>? crops;
 }
 
 /// How one parameter of the set's key reads W (`setKey.params`).
@@ -478,10 +515,14 @@ class SetKeyParam {
 
 /// One baked state: the reference folder and the page's query that made it.
 class SheetBaked {
-  SheetBaked._(this.ref, this.query);
+  SheetBaked._(this.ref, this.query, this.reached);
 
-  final String ref;
+  /// The reference folder (`coqui/ref/pp/frente/<state>`), when the sheet names it.
+  final String? ref;
   final String query;
+
+  /// What reaches the state (the stories, the pictures), when the sheet says.
+  final String? reached;
 }
 
 /// The set's states and how W maps to them (`setKey`): the parameters, the key's shape, the states baked.
@@ -535,6 +576,39 @@ class SheetCode {
   final Map<String, dynamic> raw;
 }
 
+/// A part of the set that covers a character (`front.parts`, El balcón's): at [line] of the old scene file, where the old
+/// code drew that piece as a sprite ([replaces]), the set's own pixels of the part (the set reference's `part(name)`) are
+/// drawn again over what the sprite layer has drawn so far, where the sheet's `front.how` says (a depth test on the
+/// set's own pixels).
+class SheetFrontPart {
+  SheetFrontPart._(this.name, this.line, this.replaces, this.raw);
+
+  /// The part's name in the set reference (`part(name, ...)`).
+  final String name;
+
+  /// The old scene file's line (a number, or a string such as `"balcon.js:127"`).
+  final Object line;
+
+  /// The old call it replaces, as the sheet quotes it.
+  final String? replaces;
+  final Map<String, dynamic> raw;
+}
+
+/// A number of the old scene file and what it is today: a top-level entry of the sheet with a number `old` and a number
+/// `new` (El balcón's `MESA_Y`, the row the drinks stand on, and `behind`, the row that says who is drawn behind the
+/// furniture).
+class SheetNumber {
+  SheetNumber._(this.name, this.old, this.now, this.what, this.raw);
+
+  final String name;
+  final num old;
+
+  /// The sheet's `new`.
+  final num now;
+  final String? what;
+  final Map<String, dynamic> raw;
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 /// A sheet: the data of a scene's set (`<id>-sheet.json`), page 12 section 5. Parsed from the text of the file, which the
@@ -570,6 +644,10 @@ class Sheet {
     required this.clips,
     required this.front,
     required this.frontWhy,
+    required this.frontParts,
+    required this.frontHow,
+    required this.frontPlane,
+    required this.numbers,
     required this.shadows,
     required this.shadowsNote,
     required this.dropped,
@@ -634,6 +712,27 @@ class Sheet {
       'dropped',
       'code',
     };
+    final partsRaw = front.containsKey('parts')
+        ? _obj(front['parts'], '$at.front.parts')
+        : const <String, dynamic>{};
+    final numbers = <String, SheetNumber>{
+      for (final e in m.entries)
+        if (!known.contains(e.key) &&
+            e.value is Map<String, dynamic> &&
+            (e.value as Map<String, dynamic>)['old'] is num &&
+            (e.value as Map<String, dynamic>)['new'] is num)
+          e.key: SheetNumber._(
+            e.key,
+            (e.value as Map<String, dynamic>)['old'] as num,
+            (e.value as Map<String, dynamic>)['new'] as num,
+            _opt(
+              e.value as Map<String, dynamic>,
+              'what',
+              (v) => _str(v, '$at.${e.key}.what'),
+            ),
+            e.value as Map<String, dynamic>,
+          ),
+    };
     final sheet = Sheet._(
       scene: _str(_need(m, 'scene', at), '$at.scene'),
       made: _str(_need(m, 'made', at), '$at.made'),
@@ -660,15 +759,44 @@ class Sheet {
       things: _byName(_need(m, 'things', at), '$at.things', _readThing),
       spots: _byName(_need(m, 'spots', at), '$at.spots', _readSpot),
       lugar: _byName(_need(m, 'lugar', at), '$at.lugar', _readLugar),
-      frames: _byName(_need(m, 'frames', at), '$at.frames', _readFrame),
+      frames: m.containsKey('frames')
+          ? _byName(m['frames'], '$at.frames', _readFrame)
+          : const {},
       points: _byName(_need(m, 'points', at), '$at.points', _readPoint),
       views: _byName(_need(m, 'views', at), '$at.views', _readView),
       remapTable: _readRemapTable(_need(m, 'remap', at), '$at.remap'),
       pictures: pictures,
       level: _readLevelList(_need(m, 'level', at), '$at.level', pictures),
       clips: _byName(_need(m, 'clips', at), '$at.clips', _readClip),
-      front: _strs(_need(front, 'things', '$at.front'), '$at.front.things'),
+      front: front.containsKey('things') || !front.containsKey('parts')
+          ? _strs(_need(front, 'things', '$at.front'), '$at.front.things')
+          : [...partsRaw.keys],
       frontWhy: _opt(front, 'why', (v) => _str(v, '$at.front.why')),
+      frontParts: {
+        for (final e in partsRaw.entries)
+          e.key: () {
+            final p = _obj(e.value, '$at.front.parts.${e.key}');
+            final line = _need(p, 'line', '$at.front.parts.${e.key}');
+            if (line is! int && line is! String) {
+              throw SheetError(
+                '$at.front.parts.${e.key}.line: a number or a string was expected, found ${_what(line)}',
+              );
+            }
+            return SheetFrontPart._(
+              e.key,
+              line!,
+              _opt(
+                p,
+                'replaces',
+                (v) => _str(v, '$at.front.parts.${e.key}.replaces'),
+              ),
+              p,
+            );
+          }(),
+      },
+      frontHow: _opt(front, 'how', (v) => _str(v, '$at.front.how')),
+      frontPlane: _opt(front, 'plane', (v) => _str(v, '$at.front.plane')),
+      numbers: numbers,
       shadows: {
         for (final e in shadowsRaw.entries)
           if (e.value is Map<String, dynamic> &&
@@ -687,7 +815,8 @@ class Sheet {
       raw: m,
       unknown: {
         for (final e in m.entries)
-          if (!known.contains(e.key)) e.key: e.value,
+          if (!known.contains(e.key) && !numbers.containsKey(e.key))
+            e.key: e.value,
       },
     );
     sheet._checkReferences();
@@ -735,9 +864,24 @@ class Sheet {
   /// The clip regions, by name.
   final Map<String, SheetClip> clips;
 
-  /// `front`: the things that cover a character (none, for El frente) and why.
+  /// `front`: the things that cover a character (none, for El frente) and why. For a sheet that gives them as `parts`
+  /// (El balcón's), the names of [frontParts].
   final List<String> front;
   final String? frontWhy;
+
+  /// `front.parts`: the parts of the set drawn again over the sprite layer, by name, each at its old line; `front.how`
+  /// and `front.plane`: how, in the sheet's words (the depth test). Empty and null for a sheet without them.
+  final Map<String, SheetFrontPart> frontParts;
+  final String? frontHow, frontPlane;
+
+  /// The old scene file's numbers the sheet gives the new value of, by name (`MESA_Y`, `behind`): top-level entries
+  /// with a number `old` and a number `new`. Not in [unknown].
+  final Map<String, SheetNumber> numbers;
+
+  /// The number [name] of [numbers], today's value. Throws [SheetError] when the sheet has no such number.
+  num numberOf(String name) =>
+      (numbers[name] ?? (throw SheetError('the sheet has no number "$name"')))
+          .now;
 
   /// Who casts a shadow, and the note the sheet adds (`dropped`).
   final Map<String, SheetShadow> shadows;
@@ -860,7 +1004,7 @@ class Sheet {
   ({int x, int y}) abuelaAt(String spot, PpEngine e) {
     final s =
         spots[spot] ?? (throw SheetError('the sheet has no spot "$spot"'));
-    if (s.abuela == null) {
+    if (s.abuela == null && s.ab == null) {
       throw SheetError('spot "$spot" is not abuela\'s');
     }
     final p = screenOf(spot, e);
@@ -1074,16 +1218,20 @@ SheetAnchor _readAnchor(String name, Map<String, dynamic> m, String at) =>
       _opt(m, 'frame', (v) => _str(v, '$at.frame')),
       _opt(m, 'nudge', (v) => _nums(v, '$at.nudge', length: 2)),
       m,
+      ab: _opt(m, 'ab', (v) => _ints(v, '$at.ab', length: 2)),
     );
 
-SheetLugar _readLugar(String name, Map<String, dynamic> m, String at) =>
-    SheetLugar._(
-      name,
-      _str(_need(m, 'spot', at), '$at.spot'),
-      _ints(_need(m, 'frog', at), '$at.frog', length: 2),
-      _num(_need(m, 'scale', at), '$at.scale'),
-      m,
-    );
+SheetLugar _readLugar(String name, Map<String, dynamic> m, String at) {
+  final key = m.containsKey('frog') || !m.containsKey('q') ? 'frog' : 'q';
+  return SheetLugar._(
+    name,
+    _str(_need(m, 'spot', at), '$at.spot'),
+    _ints(_need(m, key, at), '$at.$key', length: 2),
+    _num(_need(m, 'scale', at), '$at.scale'),
+    m,
+    old: _opt(m, 'old', (v) => _nums(v, '$at.old')),
+  );
+}
 
 SheetFrame _readFrame(String name, Map<String, dynamic> m, String at) =>
     SheetFrame._(
@@ -1224,6 +1372,8 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
             _opt(t, 'view', (v) => _str(v, '$p.to.view')),
             _opt(t, 'spot', (v) => _str(v, '$p.to.spot')),
             _opt(t, 'none', (v) => _str(v, '$p.to.none')),
+            pictures: _opt(t, 'pictures', (v) => _strs(v, '$p.to.pictures')),
+            level: t.containsKey('level') && _bool(t['level'], '$p.to.level'),
           ),
           _opt(m, 'screen', (v) => _doubles(v, '$p.screen', length: 2)),
           _opt(m, 'crop', (v) => _ints(v, '$p.crop', length: 4)),
@@ -1233,6 +1383,27 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
           _opt(m, 'x0', (v) => _int(v, '$p.x0')),
           _opt(m, 'what', (v) => _str(v, '$p.what')),
           m,
+          ab: _opt(m, 'ab', (v) => _ints(v, '$p.ab', length: 2)),
+          crops: _opt(m, 'crops', (v) {
+            final c = _obj(v, '$p.crops');
+            return {
+              for (final e in c.entries)
+                e.key: () {
+                  final o = _obj(e.value, '$p.crops.${e.key}');
+                  return (
+                    crop: _ints(
+                      _need(o, 'crop', '$p.crops.${e.key}'),
+                      '$p.crops.${e.key}.crop',
+                      length: 4,
+                    ),
+                    zoom: _zoom(
+                      _need(o, 'zoom', '$p.crops.${e.key}'),
+                      '$p.crops.${e.key}.zoom',
+                    ),
+                  );
+                }(),
+            };
+          }),
         );
       }(),
   ];
@@ -1267,8 +1438,9 @@ SheetSetKey _readSetKey(Object? v, String at) {
         () {
           final b = _obj(baked[i], '$at.baked[$i]');
           return SheetBaked._(
-            _str(_need(b, 'ref', '$at.baked[$i]'), '$at.baked[$i].ref'),
+            _opt(b, 'ref', (v) => _str(v, '$at.baked[$i].ref')),
             _str(_need(b, 'query', '$at.baked[$i]'), '$at.baked[$i].query'),
+            _opt(b, 'reached', (v) => _str(v, '$at.baked[$i].reached')),
           );
         }(),
     ],
