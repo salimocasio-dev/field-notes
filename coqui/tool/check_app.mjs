@@ -17,6 +17,8 @@
 //     spoken line (the caption is in the page and the picture is drawn), and its clips are asked for from
 //     /field-notes/historia/audio/; the browser's back from it returns to the map, and so does its X;
 //   - the book reader, Repaso's start, the level check's start, Hablar and Yo render;
+//   - mid-course seed: Repaso (the games of page 15) starts, and one item is played by touches until it writes an Ear
+//     answer;
 //   - reloading on a lesson's address (#/nivel) opens that lesson again;
 //   - every request stays on the local server, except the ElevenLabs library's (cdn.jsdelivr.net/npm/@elevenlabs/...),
 //     which is allowed only once Hablar shows an open call card (the seed: La casa is done); every request that
@@ -276,6 +278,42 @@ async function run(phone, state) {
       await page.waitForFunction(() => location.hash === '#/repaso', null, { timeout: 15000 });
       await waitFor(page, has(/^Start$/), 'Repaso\'s start disc', 30000);
       await shot(page, `${tag}-05-repaso-start`);
+    });
+    await step('Repaso: Start, and one item of the games (page 15) is played: an Ear answer is written', async () => {
+      const earAnswers = () => page.evaluate(() => {
+        const db = JSON.parse(localStorage.getItem('coqui.palabras.v1') || '{}');
+        return Object.values(db.palabras || {}).reduce((n, r) => n + ((r.ear && r.ear.n) || 0), 0);
+      });
+      const before = await earAnswers();
+      await tapText(page, /^Start$/);
+      const line = /^Touch the (word you heard|picture that fits)\.$/;
+      const ns0 = await waitFor(page, has(line), 'the first game\'s line', 30000);
+      const game = ns0.find((n) => says(n, line));
+      const words = game.text.includes('word');
+      await page.waitForTimeout(800);
+      await shot(page, `${tag}-05b-repaso-${words ? 'que-oyes' : 'cual'}`);
+      // the options under the line: ¿Cuál?'s two pictures, or ¿Qué oyes?'s three word tiles; touched in turn (a touch
+      // before the sentence ends does not count; after a wrong one only the right one is taken) until it is answered
+      const vp = PHONES[phone].viewport;
+      const t0 = Date.now();
+      let after = before;
+      while (after === before) {
+        if (Date.now() - t0 > 40000) throw new Error('no answer was written in 40 s');
+        const ns = await nodes(page);
+        const opts = words
+          ? ns.filter((n) => n.role === 'button' && n.y > game.y + 10 && n.y < vp.height - 120 && !/^(Hear the word|Close|Sound|Hear it again)$/.test(n.text) && !line.test(n.text))
+          : ns.filter((n) => /^Picture \d$/.test(n.text));
+        if (!opts.length) throw new Error(`no option under the line; on screen: ${JSON.stringify(ns.map((n) => n.text)).slice(0, 400)}`);
+        for (const o of opts) {
+          await page.mouse.click(o.x, o.y);
+          await page.waitForTimeout(700);
+          after = await earAnswers();
+          if (after !== before) break;
+        }
+      }
+      if (after !== before + 1) throw new Error(`ear answers went from ${before} to ${after}`);
+      await page.waitForTimeout(1500);
+      await shot(page, `${tag}-05c-repaso-answered`);
       await page.goBack();
       await page.waitForFunction(() => location.hash === '#/tab/map', null, { timeout: 15000 });
     });

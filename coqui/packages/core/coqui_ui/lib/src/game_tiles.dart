@@ -105,6 +105,8 @@ class _TileFace extends StatelessWidget {
     }
     return Stack(
       clipBehavior: Clip.none,
+      // the face takes what its tile is given: as wide as its word, or the whole row when the tile is told to expand
+      fit: StackFit.passthrough,
       children: [
         face,
         if (check) const Positioned(right: -6, top: -10, child: _CheckBadge()),

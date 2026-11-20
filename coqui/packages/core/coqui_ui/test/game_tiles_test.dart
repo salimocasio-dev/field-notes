@@ -213,6 +213,49 @@ void main() {
     },
   );
 
+  testWidgets(
+    'expand: the tile, its face and ring, as wide as its row; otherwise as wide as its word',
+    (t) async {
+      await t.pumpWidget(
+        _app(
+          SizedBox(
+            width: 300,
+            child: WordTile(
+              word: 'sol',
+              expand: true,
+              onTap: () {},
+              ring: ChoiceRing.right,
+            ),
+          ),
+        ),
+      );
+      final face = find
+          .descendant(
+            of: find.byType(WordTile),
+            matching: find.byType(Container),
+          )
+          .first;
+      expect(t.getSize(face).width, 300);
+      await t.pumpWidget(
+        _app(
+          SizedBox(
+            width: 300,
+            child: Center(
+              child: WordTile(word: 'sol', onTap: () {}),
+            ),
+          ),
+        ),
+      );
+      final narrow = find
+          .descendant(
+            of: find.byType(WordTile),
+            matching: find.byType(Container),
+          )
+          .first;
+      expect(t.getSize(narrow).width, lessThan(150));
+    },
+  );
+
   testWidgets('the streak chip: nothing under three, then "N in a row"', (
     t,
   ) async {
