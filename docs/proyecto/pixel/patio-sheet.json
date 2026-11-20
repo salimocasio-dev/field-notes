@@ -2809,8 +2809,8 @@
    "line": 291,
    "act": "inicio11",
    "src": "luis:{x:150,y:160,pose:\"idle\",dir:-1},carmen:{x:188,y:158,pose:\"alto\",dir:-1}};W.pdoor=1;",
-   "to": "luis:{x:178,y:126,pose:\"idle\",dir:-1},carmen:{x:200,y:168,pose:\"alto\",dir:-1}};W.pdoor=1;W.respEn=[160,4];",
-   "respEn": [160, 4],
+   "to": "luis:{x:178,y:126,pose:\"idle\",dir:-1},carmen:{x:200,y:168,pose:\"alto\",dir:-1}};W.pdoor=1;W.respEn=[164,4];",
+   "respEn": [164, 4],
    "places": [
     {
      "who": "luis",
@@ -3647,6 +3647,8 @@
    "a strip of wall: 33 px of wall over the door's frame, under the roof's fascia",
    "perch: the bird on its nest has the nest under its feet (6 of 6 columns, its feet row 67); on the fence (inicio11), the boards' tops under its feet (6 of 6)",
    "beds: each of the ten holes is in its bed's earth where the old one was; behind every flower's head (9 x 9 over its hole) only the lawn, in every baked state; the crate's bottom row on the lawn; behind its flowers the lawn, the fence's and the gate post's foot (row 112) behind its top row, as the old picture",
+   "sun: the part of its disc in the sky at soly 26: 100%, 40: 100%, 56: 100%, 73: 91%, 109: 0% (the old: the fence hid 2 rows at 73, all at 109)",
+   "ball: at its 4 places on the lawn the lawn alone behind it (in the tree, by the nest, as the old: the crown)",
    "asks: 69 distinct asks (for abuela, bola, camaL, camaR, carmen, es_flor, es_silla, gracias_abuelo, hm, hm_abuela, ir, luis, pajaro, porton, q_que, sol, ver): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), the hint hand on no face; 52 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
    "NOT the scene's: the hand juego.js draws at an answer card (the left one) reaches onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for ir, es_flor, q_que, es_silla",
    "bubbles: 84 bubbles at 1128 moments of 18 runs (d-buenas-noches, d-la-bola, h-patio, hasta-manana, las-flores, que-es-esto), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; the \"q\" of duda, encoge and turno at their steps; the frog's \"amor\"): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corners (0 px), on no face",

@@ -166,8 +166,8 @@ function make(G) {
       to: 'W.gente={abuela:{x:46,y:136,pose:"idle",dir:1},abuelo:{x:70,y:129,pose:"ojos",lleva:"bizcocho",dir:1},mama:{x:92,y:136,pose:"idle"},bebe:{x:103,y:109,z:137,est:"idle"},papa:{x:114,y:136,pose:"idle"},',
       pts: [['abuela', [34, 136], [46, 136]], ['abuelo', [60, 126], [70, 129]], ['mama', [86, 136], [92, 136]], ['bebe', [97, 109], [103, 109], 137], ['papa', [112, 126], [114, 136]]],
       why: 'acts.inicio11: the family by the back door, a little further right and closer together, in one row (abuelo 3 px, papá 10 px lower): abuela\'s hint frame (hasta-manana beats.8) reached 11 px past the view\'s left side; abuelo\'s and papá\'s bubbles ("amor", when touched) lay over the fireflies card; the hand at an answer card in the sky (below) was on papá\'s face. The baby stays in mamá\'s arms (moved with her)' },
-    { line: lineOf('luis:{x:150,y:160,pose:"idle",dir:-1}'), act: 'inicio11', src: 'luis:{x:150,y:160,pose:"idle",dir:-1},carmen:{x:188,y:158,pose:"alto",dir:-1}};W.pdoor=1;', to: 'luis:{x:178,y:126,pose:"idle",dir:-1},carmen:{x:200,y:168,pose:"alto",dir:-1}};W.pdoor=1;W.respEn=[160,4];', pts: [['luis', [150, 160], [178, 126]], ['carmen', [188, 158], [200, 168]]],
-      respEn: [160, 4],
+    { line: lineOf('luis:{x:150,y:160,pose:"idle",dir:-1}'), act: 'inicio11', src: 'luis:{x:150,y:160,pose:"idle",dir:-1},carmen:{x:188,y:158,pose:"alto",dir:-1}};W.pdoor=1;', to: 'luis:{x:178,y:126,pose:"idle",dir:-1},carmen:{x:200,y:168,pose:"alto",dir:-1}};W.pdoor=1;W.respEn=[164,4];', pts: [['luis', [150, 160], [178, 126]], ['carmen', [188, 158], [200, 168]]],
+      respEn: [164, 4],
       why: 'acts.inicio11: Luis waits right of the gate, by the fence, Carmen in front of the tree: the hint hand pointing at the gate (hasta-manana beats.5) was on Luis\'s face. And the answer cards stand in the sky at the top right (W.respEn, juego.js: "a scene that needs its people seen while he chooses puts the bubbles elsewhere", as banco, mesa, estufa, nevera and comer do): over the frog, at abuela\'s place and in the middle, they covered the family and Luis (hasta-manana beats.10, 25)' },
   ];
   for (const m of MOVES) for (const q of m.pts || []) q.push(W4(personW(q[2])));   // (the baby's: the ground under its place in mamá's arms; it is not on the ground)
@@ -564,6 +564,15 @@ function check(sh, G) {
       let lawn = 0; for (let x = 105; x < 135; x++) if (K[135 * 240 + x] === G.K.grass) lawn++; if (lawn < 28) P.push('crate ' + key + ': its bottom row is on ' + lawn + ' px of lawn'); }
     notes.push('beds: each of the ten holes is in its bed\'s earth where the old one was; behind every flower\'s head (9 x 9 over its hole) only the lawn, in every baked state; the crate\'s bottom row on the lawn; behind its flowers the lawn, the fence\'s and the gate post\'s foot (row 112) behind its top row, as the old picture'); }
 
+  /* the sun sets behind the fence: its disc (r 11 at SOLX, soly) wholly in the sky at its first three heights, nearly at the fourth (on the fence,
+     as the old), and wholly behind the set at 109 (after puesta); in every hour it is drawn in */
+  { const sunNotes = [];
+    for (const key of Object.keys(G.z)) { const Z = G.z[key], hora = key.split('-')[0]; if (hora === 'noche') continue;
+      for (const sy of [26, 40, 56, 73, 109]) { let n = 0, sky = 0; for (let y = sy - 11; y <= sy + 11; y++) for (let x = 89; x <= 111; x++) { if ((x + .5 - 100) ** 2 + (y + .5 - sy) ** 2 > 121) continue; n++; if (Z[y * 240 + x] < -1e8) sky++; }
+        const f = sky / n; if ((sy <= 56 && f < 1) || (sy === 73 && f < .85) || (sy === 109 && f > 0)) P.push('sun ' + key + ': at soly ' + sy + ' ' + Math.round(f * 100) + '% of its disc is in the sky');
+        if (key.startsWith('ocaso-shut-shut') || key === 'dia-shut-shut') sunNotes.push(sy + ': ' + Math.round(f * 100) + '%'); } }
+    notes.push('sun: the part of its disc in the sky at soly ' + [...new Set(sunNotes)].join(', ') + ' (the old: the fence hid 2 rows at 73, all at 109)'); }
+
   /* every moment of every run */
   const runs = storyStates();
   const at = (st, p) => p.split('.').reduce((o, k) => o == null ? o : o[/^\d+$/.test(k) ? +k : k], st);
@@ -589,7 +598,7 @@ function check(sh, G) {
     if (w.soly === 24) w.soly = 26;
     if (EN && w.gente && w.gente.abuela && w.gente.mama) w.respEn = EN;   // after inicio11 (the family is there)
     return w; };
-  let nM = 0, nB = 0, worstView = 99, worstBoard = 99; const seen = new Set(), reached = new Set();
+  let nM = 0, nB = 0, worstView = 99, worstBoard = 99; const seen = new Set(), reached = new Set(), ballSeen = new Set();
   const facesOf = w => { const f = people(w).filter(([id, p]) => !(p.al != null && p.al < .5)).map(([id, p]) => [id + '\'s face', faceOf(id, p)]); if (w.cq && w.cq.vis && !(w.cq.al < .5)) f.push(['the frog\'s face', frogFace(w.cq)]); return f; };
   const talk = (k, top, view, boards, faces, h = 6) => { for (const [side, dy] of sh.talk.places) { const r = bubRect(k, top[0] + side * (h + 16), top[1] + dy);
       if (within(r, view) && !boards.some(b => meets(r, b[1])) && !faces.some(f => meets(r, f[1]))) return r; } return bubRect(k, top[0], top[1]); };
@@ -640,7 +649,10 @@ function check(sh, G) {
     { const st = L.path && at(r.story, L.path); if (st && typeof st === 'object' && ['duda', 'encoge', 'turno'].includes(st.act)) w.__q = [st.act === 'turno' ? 'cq' : st.quien || 'luis']; }
     for (const [who, rect] of bubblesOf(w)) { const key = JSON.stringify([who, rect, boards]); if (seen.has(key)) continue; seen.add(key); nB++; judge(r.story.id + ' ' + r.plan + ' ' + L.path + ': ' + who, rect, VIEW, boards, faces); }
     floorCheck(r.story.id + ' ' + r.plan + ' ' + L.path + ':', w);
+    if (w.bola && !(w.bola.h > 0) && !(Math.round(w.bola.x) === 196 && Math.round(w.bola.y) === 64)) { const b = [Math.round(w.bola.x) - 7, Math.round(w.bola.y) - 13, 14, 14], k = JSON.stringify(b);
+      if (!ballSeen.has(k)) { ballSeen.add(k); const n = countIn(TAGS[keyOf(w)], b, ['casa', 'puerta', 'escalon', 'cerca', 'porton', 'arbol', 'nido']); if (n) P.push('ball: ' + r.story.id + ' ' + L.path + ' at ' + b + ': ' + n + ' px of the set behind it'); } }
   } }
+  notes.push('ball: at its ' + ballSeen.size + ' places on the lawn the lawn alone behind it (in the tree, by the nest, as the old: the crown)');
 
   /* the asks: hint frames inside the view, the hand on no face, the answer cards over no one */
   const cajaBox = (id, p) => [Math.round(p.x) - 11, Math.round(p.y) - alto(id, p), 22, alto(id, p)];

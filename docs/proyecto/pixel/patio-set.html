@@ -77,8 +77,8 @@ const LIGHTS = {   // the light of the hour on the set: c * m + a (set-kit.js li
   dia: null,
   tarde: { m: [.97, .95, .9], a: [10, 6, 0], litTufts: true },
   tarde2: { m: [.9, .8, .72], a: [34, 16, 4], litTufts: true },        // El frente's dusk
-  ocaso: { m: [.8, .66, .68], a: [38, 14, 18] },
-  crepusculo: { m: [.66, .56, .64], a: [28, 12, 28] },
+  ocaso: { m: [.84, .76, .72], a: [34, 10, 16] },                     // warm and a little dim: the lawn stays green under the setting sun
+  crepusculo: { m: [.7, .64, .68], a: [24, 8, 26] },
   noche: { m: [.56, .62, .82], a: [6, 10, 30] },
 };
 const LIGHT = LIGHTS[SET.hora], SKY = SKIES[SET.hora], DARK = ['ocaso', 'crepusculo', 'noche'].includes(SET.hora);
@@ -302,6 +302,29 @@ function tree() {
   });
 }
 
+/* ---------- the other candidate (plan = esquina): the house wall and the fence on the world's axes, meeting in a corner ----------
+   For the orchestrator's look question only (the sheet is for plan = frente). The corner is where the two old lines meet if each keeps one old
+   point on the ground: the house wall through the back door's threshold (47, 113), the fence through the gate's middle (147, 112); the house wall
+   faces +x (in shade), the fence +y (lit). Rough: the same door, siding, boards and gate, a hip roof over the house */
+function esquina() {
+  const c = unproject(98, 87.5), cx = c.x, cy = c.y, Tr = rampOf(TEAL), Fr = rampOf(FENCEW), Wd = rampOf(WOOD), Wh = rampOf(WHITE), G = rampOf(GATE);
+  const dA = unproject(47, 113), dy = dA.y, d0 = dy - DW / 2, d1 = dy + DW / 2;   // the door on the house wall (x = cx), its middle at the old threshold
+  part('casa', () => {
+    planeFace('x', cx, cy, cy + 9, 0, HH, (a, z) => {
+      if (a > d0 - DF && a < d1 + DF && z < FLOOR + DH + DF) { if (a > d0 && a < d1 && z < FLOOR + DH) return Wd[(Math.floor((a - d0) / .35) + (z > 1.3 ? 1 : 0)) % 2 ? 1 : 2]; return Wh[2]; }
+      if (a < cy + .14) return Wh[1];
+      return shade(TEAL, z % .21 < .21 * .17 ? .6 : 1.4, a, z);
+    });
+    hipRoof(cx - 3.2, cy - .25, cx + .25, cy + 9, HH, .7, C.red, WHITE);
+  });
+  const gA = unproject(147, 112), gx = gA.x, g0 = gx - .62, g1 = gx + .62;
+  part('cerca', () => planeFace('y', cy, cx, cx + 9, 0, FH, (a, z) => {
+    if (a > g0 && a < g1) return z < GH ? G[(Math.floor((a - g0) / .2)) % 2 ? 3 : 2] : 0;
+    const k = Math.floor(a / (7 / 26)), f = a / (7 / 26) - k; return f > .86 ? Fr[0] : Fr[clamp(Math.floor(2.6 + (hash(k, 3) - .5) * .7), 0, 4)];
+  }));
+  for (const gp of [g0 - .08, g1]) { const w = [gp, cy]; part('porton', () => block(w[0], cy - .08, 0, w[0] + .15, cy + .08, GPH, FENCEW)); }
+}
+
 /* ---------- bake one state ---------- */
 let GROUND_CACHE = null;
 function buildSet() {
@@ -321,12 +344,11 @@ function buildSet() {
   // after sunset the grass has no flowers: a white or yellow bloom on a dark lawn reads as a firefly (the fireflies are the sprite layer's)
   if (DARK) for (let k = 0; k < tufts.length; k++) if (tufts[k].bloom) tufts[k] = Object.assign({}, tufts[k], { bloom: 0 });
   groundZ.set(zb);
-  house();
-  fence();
+  if (SET.plan === 'esquina') esquina(); else { house(); fence(); }
   tree();
   // the shadows: the fence's along its foot (it is low); the house's kept behind it (the yard before it in the sun, as El frente's porch)
-  for (let u = FU0; u <= FU1; u += .25) for (let z = .2; z <= FH; z += .3) castShadow(...P(u, -.04), z, .16);
-  for (const u0 of [GP0, GP1]) for (let z = .2; z <= GPH; z += .3) castShadow(...P(u0 + GPW / 2, -.02), z, .1);
+  if (SET.plan === 'frente') for (let u = FU0; u <= FU1; u += .25) for (let z = .2; z <= FH; z += .3) castShadow(...P(u, -.04), z, .16);
+  if (SET.plan === 'frente') for (const u0 of [GP0, GP1]) for (let z = .2; z <= GPH; z += .3) castShadow(...P(u0 + GPW / 2, -.02), z, .1);
   flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   if (LIGHT) lightPass(LIGHT.m, LIGHT.a, !LIGHT.litTufts);
@@ -360,6 +382,6 @@ function frame(t, casts = []) {
 frame(SET.t);
 if (PART_TAGS) tagLeaves(zb);
 window.TAGS = PART_TAGS;
-window.DEPTH = { z: bakedZ, OX, OY, S };
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };   // live: the depth of the frame just drawn (the leaves where the wind has them), for the sky objects behind the set (sheet: behind)
 window.frame = frame;
 </script></body></html>
