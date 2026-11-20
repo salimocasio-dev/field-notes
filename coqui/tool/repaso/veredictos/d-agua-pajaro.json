@@ -1,0 +1,20 @@
+{
+ "libro": "d-agua-pajaro",
+ "frases": {
+  "d-agua-pajaro:1": {"si": [], "no": [1], "duda": [2, 3, 4, 5]},
+  "d-agua-pajaro:2": {"si": [3, 4, 5], "no": [1, 2], "duda": []},
+  "d-agua-pajaro:3": {"si": [1, 2, 3], "no": [4, 5], "duda": []},
+  "d-agua-pajaro:4": {"si": [], "no": [2, 3, 4, 5], "duda": [1]},
+  "d-agua-pajaro:5": {"si": [], "no": [1], "duda": [2, 3, 4, 5]},
+  "d-agua-pajaro:6": {"si": [2], "no": [1], "duda": [3, 4, 5]},
+  "d-agua-pajaro:7": {"si": [2, 3], "no": [1, 4, 5], "duda": []},
+  "d-agua-pajaro:8": {"si": [2, 3], "no": [1, 4, 5], "duda": []},
+  "d-agua-pajaro:9": {"si": [], "no": [1, 4, 5], "duda": [2, 3]},
+  "d-agua-pajaro:10": {"si": [], "no": [1, 4, 5], "duda": [2, 3]},
+  "d-agua-pajaro:11": {"si": [4, 5], "no": [1, 2, 3], "duda": []},
+  "d-agua-pajaro:12": {"si": [], "no": [1, 2, 3], "duda": [4, 5]},
+  "d-agua-pajaro:13": {"si": [4, 5], "no": [1, 2, 3], "duda": []},
+  "d-agua-pajaro:14": {"si": [], "no": [1], "duda": [2, 3, 4, 5]}
+ },
+ "parecidas": [[2, 3], [4, 5]]
+}

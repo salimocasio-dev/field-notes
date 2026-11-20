@@ -1,0 +1,15 @@
+{
+ "libro": "cuidado",
+ "frases": {
+  "cuidado:1": {"si": [1, 2, 3], "no": [], "duda": []},
+  "cuidado:2": {"si": [2, 3], "no": [], "duda": [1]},
+  "cuidado:3": {"si": [], "no": [], "duda": [1, 2, 3]},
+  "cuidado:4": {"si": [], "no": [], "duda": [1, 2, 3]},
+  "cuidado:5": {"si": [], "no": [2, 3], "duda": [1]},
+  "cuidado:6": {"si": [], "no": [1, 2], "duda": [3]},
+  "cuidado:7": {"si": [2], "no": [1, 3], "duda": []},
+  "cuidado:8": {"si": [], "no": [1, 3], "duda": [2]},
+  "cuidado:9": {"si": [], "no": [1, 2], "duda": [3]}
+ },
+ "parecidas": []
+}

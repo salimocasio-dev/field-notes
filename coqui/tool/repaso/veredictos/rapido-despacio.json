@@ -1,0 +1,124 @@
+{
+ "libro": "rapido-despacio",
+ "frases": {
+  "rapido-despacio:1": {
+   "si": [
+    1,
+    2
+   ],
+   "no": [
+    4
+   ],
+   "duda": [
+    3
+   ]
+  },
+  "rapido-despacio:2": {
+   "si": [
+    3
+   ],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2
+   ]
+  },
+  "rapido-despacio:3": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  },
+  "rapido-despacio:4": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  },
+  "rapido-despacio:5": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  },
+  "rapido-despacio:6": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  },
+  "rapido-despacio:7": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  },
+  "rapido-despacio:8": {
+   "si": [
+    3
+   ],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2
+   ]
+  },
+  "rapido-despacio:9": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  },
+  "rapido-despacio:10": {
+   "si": [],
+   "no": [
+    4
+   ],
+   "duda": [
+    1,
+    2,
+    3
+   ]
+  }
+ },
+ "parecidas": [
+  [
+   1,
+   2
+  ]
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "libro": "quien-eres-tu",
+ "frases": {
+  "quien-eres-tu:1": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:2": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:3": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:4": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:5": {"si": [1], "no": [], "duda": [2, 3, 4, 5]},
+  "quien-eres-tu:6": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:7": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:8": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:9": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:10": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:11": {"si": [1, 2, 3, 4, 5], "no": [], "duda": []},
+  "quien-eres-tu:12": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]},
+  "quien-eres-tu:13": {"si": [], "no": [], "duda": [1, 2, 3, 4, 5]}
+ },
+ "parecidas": [[4, 5]]
+}
