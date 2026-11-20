@@ -2,6 +2,9 @@
 """Makes the candidate data for Repaso as games (docs/proyecto/15-repaso-juegos.md, "The games" and "The data").
 
     python3 coqui/tool/make_repaso.py --out <dir> [--repo <root>] [--no-sheets]
+    python3 coqui/tool/make_repaso.py --out <dir> --hojas-libro
+    python3 coqui/tool/make_repaso.py --out <dir> --valida-veredictos <veredictos>
+    python3 coqui/tool/make_repaso.py --out <dir> --veredictos <veredictos> --final <file>
 
 Reads the repo it sits in (or --repo): historia/datos/curso.json, historia/cuentos/*.json, historia/audio/ready.json,
 historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. Writes into <dir>:
@@ -14,6 +17,28 @@ historia/libros/*.json and libros/img/, docs/hablar/02-marcas.json. Writes into 
 
 Deterministic (two runs give the same bytes: nothing reads the clock, a random seed is fixed, nothing iterates a set into
 an output), and offline. Nothing under historia/ is written.
+
+THE READERS' STEP (the old rules 3 to 5 above judged a sentence against a picture from page texts only, which was too weak;
+readers now look at the pictures).
+  --hojas-libro             writes only <dir>/libro/: for each of the books (course order) <book>/paginas.png (every page picture,
+                            2x nearest neighbour, three per row, the page number in digits above each; paginas-1.png, paginas-2.png
+                            ... of at most 9 pages when a book has more), <book>/frases.json (the page numbers and every distinct
+                            candidate sentence that stands on a page of that book, in story order, ids "<book>:<k>", k from 1; nothing
+                            says which page a sentence is on) and libro/indice.json.
+  verdict file              <veredictos>/<book>.json: {"libro", "frases": {"<book>:<k>": {"si": [..], "no": [..], "duda": [..]}},
+                            "parecidas": [[p, q], ..]}. Every sentence id of frases.json is there; every page of the book is in exactly
+                            one of si / no / duda for each sentence.
+  --valida-veredictos DIR   checks every file of DIR against its frases.json (needs the same --out) and prints each fault: missing
+                            sentence, unknown id, missing page, unknown page, page in two lists, and a file or list that is malformed.
+                            Exit 1 if any. Books that have no file yet are only noted.
+  --veredictos DIR --final FILE
+                            with a valid verdict file for every book (the same check, and a missing file is a fault): writes the final
+                            data FILE and resumen-final.md beside it. Per word: its sentences (`frases`) in a fixed mixed order (a
+                            Fisher-Yates shuffle seeded by the word's text: SHA-256 of "<word>|<i>", see mix()), `par`, `dilo`, `puntua`;
+                            per book page: `falsas` and `ciertas`; per book: `parejas`.
+  A sentence's "own page" is the page of its first clip in the story. A sentence that is a candidate in two stories is judged in both
+  books; its item takes the picture of the earlier story (the same page as in candidatos.json). A sentence of the story that stands on no
+  page of the book is not judged (nothing uses it: every use of a verdict needs the sentence's own page).
 
 The order of the rules follows the order that was given to the builder:
  1 words, 2 candidate sentences (2a to 2g), 3 fair wrong pictures, 4 false sentences for a picture, 5 Parejas sets,
@@ -764,6 +789,7 @@ def build_candidates(D, words, walks, stops, report):
             known.update(toks(a))
 
     occ = defaultdict(list)    # (word, text) -> occurrences
+    posmap = {}                # (story, clip) -> place of the clip in its story's all-right play (story order)
     order_in_story = {}
     for sid in D.eligible:
         T = D.story[sid]
@@ -796,6 +822,7 @@ def build_candidates(D, words, walks, stops, report):
                 extra += 1
                 pos = 100000 + extra
             pn = page_of(D, sid, clip)
+            posmap[(sid, clip)] = pos
             for w in hits:
                 occ[(w, text)].append({"story": sid, "clip": clip, "voice": {"who": v.get("who"), "habla": v.get("habla")}, "page": pn,
                                        "pos": pos, "sure": reach["sure"]})
@@ -861,7 +888,7 @@ def build_candidates(D, words, walks, stops, report):
         rec["pagina"] = pagina_record(D, rep["story"], rep["page"], rep["clip"]) if rep["page"] is not None else None
         rec["wrong_pictures"] = []
         out.append(rec)
-    return out, M
+    return out, M, posmap
 
 
 # ---------------------------------------------------------------------------------------------------------------- 3. wrong pictures, 4. false sentences, 5. Parejas
@@ -1395,6 +1422,501 @@ def write_sheets(D, cands, out_dir, stops):
     return n
 
 
+# ---------------------------------------------------------------------------------------------------------------- 8. sheets for the readers
+# Readers LOOK at each book's pictures and say which sentences fit which page (the verdict files, 9). Nothing here says which page a
+# sentence belongs to.
+
+COLS = 3                 # pictures per row on a sheet
+PAGES_PER_SHEET = 9      # pages on one sheet
+MAX_CUAL = 3             # fair wrong pictures per sentence
+MAX_FALSAS = 6           # false sentences kept for a page
+LISTS = ("si", "no", "duda")
+
+
+def sentences_by_book(R):
+    """The sentences the readers judge: for each book (course order), every DISTINCT candidate sentence (distinct by text; the same
+    sentence under several words is one) that is recorded in that book's story and stands on a page of that book, in story order
+    (the place of its first such clip in the all-right play). A sentence that is a candidate in two stories is judged in each book.
+    Rows: k (1 up, in story order), id "<book>:<k>", text, clip (its first clip in the story), own (the page of that clip), pages
+    (every page the sentence stands on in this book, own first in the sort), words (the tracked words it is a candidate for, course
+    order), pos."""
+    D, pos = R["D"], R["pos"]
+    wordidx = {w["word"]: i for i, w in enumerate(R["words"])}
+    words_of = defaultdict(set)
+    occ = defaultdict(lambda: defaultdict(set))       # story -> text -> {(pos, clip, page)}
+    for c in R["cands"]:
+        words_of[c["text"]].add(c["word"])
+        for o in c["apariciones"]:
+            if o["page"] is not None:
+                occ[o["story"]][c["text"]].add((pos[(o["story"], o["clip"])], o["clip"], o["page"]))
+    out = OrderedDict()
+    for sid in D.eligible:
+        rows = []
+        for text, os_ in occ[sid].items():
+            os_ = sorted(os_)
+            rows.append({"text": text, "clip": os_[0][1], "own": os_[0][2], "pages": sorted({p for _, _, p in os_}),
+                         "pos": os_[0][:2], "words": sorted(words_of[text], key=wordidx.get)})
+        rows.sort(key=lambda r: r["pos"])
+        for k, r in enumerate(rows, 1):
+            r["k"] = k
+            r["id"] = "%s:%d" % (sid, k)
+        out[sid] = rows
+    return out
+
+
+def frases_doc(D, sid, rows):
+    """frases.json of a book: the page numbers and the sentences (id, text). Nothing about which page a sentence belongs to."""
+    return OrderedDict([("libro", sid), ("paginas", list(range(1, len(D.book[sid]["pages"]) + 1))),
+                        ("frases", [OrderedDict([("id", r["id"]), ("text", r["text"])]) for r in rows])])
+
+
+def book_sheet(D, sid, pages, font):
+    """One sheet: the pictures of `pages` (numbers), 2x nearest neighbour, COLS per row, the page number in digits above each."""
+    from PIL import Image, ImageDraw
+    scale, gap, top, margin = 2, 16, 44, 12
+    BG, INK = (240, 240, 240), (20, 20, 20)
+    imgs = []
+    for n in pages:
+        with Image.open(D.H / "libros" / D.book[sid]["pages"][n - 1]["img"]) as im:
+            im = im.convert("RGBA")
+            bg = Image.new("RGBA", im.size, (255, 255, 255, 255))     # a transparent pixel is drawn on white
+            bg.alpha_composite(im)
+            im = bg.convert("RGB")
+        imgs.append(im.resize((im.width * scale, im.height * scale), Image.NEAREST))
+    cw, ch = max(i.width for i in imgs), max(i.height for i in imgs)
+    cols = min(COLS, len(imgs))
+    rows = (len(imgs) + COLS - 1) // COLS
+    W = margin * 2 + cols * cw + (cols - 1) * gap
+    H = margin * 2 + rows * (top + ch) + (rows - 1) * gap
+    sheet = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(sheet)
+    for i, (n, im) in enumerate(zip(pages, imgs)):
+        x = margin + (i % COLS) * (cw + gap)
+        y = margin + (i // COLS) * (top + ch + gap)
+        d.text((x + cw // 2, y + top // 2), str(n), fill=INK, font=font, anchor="mm")
+        sheet.paste(im, (x + (cw - im.width) // 2, y + top))
+    return sheet
+
+
+def sheet_chunks(n):
+    """[(file name, page numbers)] of a book of n pages: paginas.png, or paginas-1.png, paginas-2.png ... of at most 9 pages each."""
+    chunks = [list(range(a, min(a + PAGES_PER_SHEET, n + 1))) for a in range(1, n + 1, PAGES_PER_SHEET)]
+    return [("paginas.png" if len(chunks) == 1 else "paginas-%d.png" % (i + 1), c) for i, c in enumerate(chunks)]
+
+
+def write_hojas_libro(R, out_dir):
+    """<out>/libro/<book>/paginas.png (paginas-1.png, ... when a book has more than 9 pages), frases.json, and <out>/libro/indice.json."""
+    D = R["D"]
+    S = sentences_by_book(R)
+    base = Path(out_dir) / "libro"
+    base.mkdir(parents=True, exist_ok=True)
+    font = load_font(36)
+    index = []
+    for sid in D.eligible:
+        folder = base / sid
+        folder.mkdir(exist_ok=True)
+        for old in sorted(folder.glob("paginas*.png")):
+            old.unlink()
+        n = len(D.book[sid]["pages"])
+        sheets = sheet_chunks(n)
+        for name, chunk in sheets:
+            book_sheet(D, sid, chunk, font).save(folder / name, compress_level=6)
+        jdump(frases_doc(D, sid, S[sid]), folder / "frases.json")
+        index.append(OrderedDict([("libro", sid), ("paginas", n), ("frases", len(S[sid])), ("hojas", [name for name, _ in sheets])]))
+    jdump(OrderedDict([("libros", index), ("totales", OrderedDict([("libros", len(index)), ("paginas", sum(i["paginas"] for i in index)),
+                                                                   ("frases", sum(i["frases"] for i in index))]))]), base / "indice.json")
+    return index
+
+
+# ---------------------------------------------------------------------------------------------------------------- 9. the verdict files
+
+def is_page(x):
+    return isinstance(x, int) and not isinstance(x, bool)
+
+
+def check_verdict(book, fr, v):
+    """Every fault of one verdict file against its frases.json (fr), as a list of lines. Kinds: not an object, wrong `libro`, missing
+    or malformed `frases` / lists / `parecidas`, unknown id, missing sentence, unknown page, missing page, page in two lists (or twice in one)."""
+    f = []
+    if not isinstance(v, dict):
+        return ["not a JSON object"]
+    if v.get("libro") != book:
+        f.append("`libro` is %s, not %s" % (json.dumps(v.get("libro"), ensure_ascii=False), json.dumps(book)))
+    pages = set(fr["paginas"])
+    ids = [x["id"] for x in fr["frases"]]
+    got = v.get("frases")
+    if not isinstance(got, dict):
+        f.append("`frases` is missing or is not an object")
+        got = {}
+    for sid in got:
+        if sid not in ids:
+            f.append("unknown sentence id %s" % sid)
+    for sid in ids:
+        if sid not in got:
+            f.append("missing sentence %s" % sid)
+            continue
+        e = got[sid]
+        if not isinstance(e, dict):
+            f.append("%s: not an object" % sid)
+            continue
+        seen = defaultdict(list)       # page -> the lists that hold it (once each time it is written)
+        for name in LISTS:
+            lst = e.get(name)
+            if not isinstance(lst, list):
+                f.append("%s: list `%s` is missing or is not a list" % (sid, name))
+                continue
+            for p in lst:
+                if not is_page(p):
+                    f.append("%s: `%s` holds %s, which is not a page number" % (sid, name, json.dumps(p, ensure_ascii=False)))
+                elif p not in pages:
+                    f.append("%s: unknown page %d in `%s`" % (sid, p, name))
+                else:
+                    seen[p].append(name)
+        if all(isinstance(e.get(n), list) for n in LISTS):
+            for p in sorted(pages):
+                if p not in seen:
+                    f.append("%s: missing page %d (in none of si, no, duda)" % (sid, p))
+                else:
+                    names = list(dict.fromkeys(seen[p]))
+                    if len(names) > 1:
+                        f.append("%s: page %d is in two lists (%s)" % (sid, p, ", ".join(names)))
+                    for nm in names:
+                        if seen[p].count(nm) > 1:
+                            f.append("%s: page %d is written twice in `%s`" % (sid, p, nm))
+    par = v.get("parecidas")
+    if not isinstance(par, list):
+        f.append("`parecidas` is missing or is not a list (write [] when there is none)")
+        par = []
+    for i, pr in enumerate(par):
+        if not (isinstance(pr, list) and len(pr) == 2 and all(is_page(x) for x in pr) and pr[0] != pr[1]):
+            f.append("parecidas[%d] is %s, not two different page numbers" % (i, json.dumps(pr, ensure_ascii=False)))
+        else:
+            for x in pr:
+                if x not in pages:
+                    f.append("parecidas[%d]: unknown page %d" % (i, x))
+    return f
+
+
+def libro_frases(out_dir):
+    """(books in course order, {book: frases.json}) from <out>/libro/. Raises when the sheets were not written."""
+    base = Path(out_dir) / "libro"
+    if not (base / "indice.json").exists():
+        raise SystemExit("no %s: write the sheets first (--hojas-libro)" % (base / "indice.json"))
+    books = [b["libro"] for b in read_json(base / "indice.json")["libros"]]
+    return books, {b: read_json(base / b / "frases.json") for b in books}
+
+
+def valida_veredictos(vdir, out_dir, require_all=False):
+    """-> (faults, notes). faults: lines "<file>: <fault>" for every file of vdir (a file that is not <book>.json of a book is a fault
+    too). notes: the books that have no file yet (a fault only with require_all)."""
+    books, frs = libro_frases(out_dir)
+    vdir = Path(vdir)
+    faults, have = [], set()
+    for p in sorted(vdir.glob("*.json")):
+        b = p.stem
+        if b not in frs:
+            faults.append("%s: not the file of a book (%s.json for a book of the course)" % (p.name, "<book>"))
+            continue
+        have.add(b)
+        try:
+            v = read_json(p)
+        except (ValueError, OSError) as e:
+            faults.append("%s: cannot be read as JSON (%s)" % (p.name, e))
+            continue
+        faults += ["%s: %s" % (p.name, x) for x in check_verdict(b, frs[b], v)]
+    missing = [b for b in books if b not in have]
+    notes = []
+    if missing:
+        if require_all:
+            faults += ["%s.json: no verdict file for this book" % b for b in missing]
+        else:
+            notes.append("books with no verdict file yet: %d of %d (%s)" % (len(missing), len(books), ", ".join(missing)))
+    return faults, notes
+
+
+def load_veredictos(vdir, books):
+    """{book: {"frases": {id: {"si","no","duda": set}}, "parecidas": {frozenset({p, q})}}} from files that passed the check."""
+    out = {}
+    for b in books:
+        v = read_json(Path(vdir) / (b + ".json"))
+        out[b] = {"frases": {i: {n: set(e[n]) for n in LISTS} for i, e in v["frases"].items()},
+                  "parecidas": {frozenset(pr) for pr in v["parecidas"]}}
+    return out
+
+
+# ---------------------------------------------------------------------------------------------------------------- 10. the final data
+# The rules take pages and verdicts as plain values so that the tests can call them with made-up ones.
+
+def cual_pages(own, others, v, par):
+    """The fair wrong pictures of a sentence: the pages the verdict puts in `no` that are not `parecidas` with the sentence's own page
+    (nor with another page the same sentence stands on: `others`), at most MAX_CUAL, farthest from the own page first (then the lower
+    page number). Empty when the verdict does not put the own page in `si`. v: {"si", "no", "duda"} sets; par: {frozenset({p, q})}."""
+    if own not in v["si"]:
+        return []
+    mine = [own] + list(others)
+    ok = [p for p in v["no"] if p not in mine and not any(frozenset((p, m)) in par for m in mine)]
+    ok.sort(key=lambda p: (-abs(p - own), p))
+    return ok[:MAX_CUAL]
+
+
+def puntua(items, par):
+    """How a word is scored: "cual" with at least one item that has a wrong picture or a picture pair; else "que_oyes" with an item
+    that has que_oyes; else "nada"."""
+    if par or any(i["cual"] for i in items):
+        return "cual"
+    if any(i["que_oyes"] for i in items):
+        return "que_oyes"
+    return "nada"
+
+
+def falsas_for_page(sents, V, par, n):
+    """The sentences (clip, text) that are false for page n: the verdict puts n in `no`, n is not a page the sentence stands on, and the
+    sentence's own page is not `parecidas` with n. Farthest own page first (then story order), at most MAX_FALSAS."""
+    rows = []
+    for s in sents:
+        if n in s["pages"] or n not in V[s["id"]]["no"]:
+            continue
+        if any(frozenset((p, n)) in par for p in s["pages"]):
+            continue
+        rows.append(s)
+    rows.sort(key=lambda s: (-abs(s["own"] - n), s["k"]))
+    return [OrderedDict([("clip", s["clip"]), ("text", s["text"])]) for s in rows[:MAX_FALSAS]]
+
+
+def parejas_for_book(sents, V, par, wordidx):
+    """Up to MAX_SETS sets for Parejas. A sentence is in only if its own page is in `si`. Inside a set each sentence has every other
+    page of the set in `no`, and no two pages of the set are `parecidas`. Each set is of 4, of 3 where no set of 4 is left. A set whose
+    sentences share no word is preferred over one that does; a set on pages that no earlier set uses over one on other sentences only.
+    The search takes the sentences in the order of their own page and finds the first set in that order. -> list of lists of rows."""
+    nodes = sorted((s for s in sents if s["own"] in V[s["id"]]["si"]), key=lambda s: (s["own"], min(wordidx[w] for w in s["words"]) if s["words"] else 0, s["k"]))
+
+    def compat(a, b):
+        return (not (set(a["pages"]) & set(b["pages"]))
+                and all(p in V[a["id"]]["no"] for p in b["pages"]) and all(p in V[b["id"]]["no"] for p in a["pages"])
+                and not any(frozenset((p, q)) in par for p in a["pages"] for q in b["pages"]))
+
+    ok = {}
+
+    def c(a, b):
+        k = (a["id"], b["id"])
+        if k not in ok:
+            ok[k] = compat(a, b)
+        return ok[k]
+
+    def dfs(avail, size, distinct, chosen):
+        if len(chosen) == size:
+            return chosen
+        for i, a in enumerate(avail):
+            if all(c(b, a) for b in chosen) and (not distinct or all(not (set(a["words"]) & set(b["words"])) for b in chosen)):
+                r = dfs(avail[i + 1:], size, distinct, chosen + [a])
+                if r:
+                    return r
+        return None
+
+    sets, used_pages, used_ids = [], set(), set()
+    for _ in range(MAX_SETS):
+        found = None
+        for size, distinct in ((4, True), (4, False), (3, True), (3, False)):
+            for ban in ("pages", "ids"):
+                avail = [s for s in nodes if (not (set(s["pages"]) & used_pages) if ban == "pages" else s["id"] not in used_ids)]
+                found = dfs(avail, size, distinct, [])
+                if found:
+                    break
+            if found:
+                break
+        if not found:
+            break
+        sets.append(found)
+        for s in found:
+            used_pages |= set(s["pages"])
+            used_ids.add(s["id"])
+    return sets
+
+
+def mix(seq, key):
+    """A fixed shuffle of seq, seeded by the text `key` (a word). Fisher-Yates from the end; the swap partner of position i is
+    int(SHA-256 of "<key>|<i>" in UTF-8, first 16 hex digits) mod (i + 1). Nothing but SHA-256 is involved, so it is the same on every
+    machine and every Python."""
+    out = list(seq)
+    key = nfc(key)
+    for i in range(len(out) - 1, 0, -1):
+        j = int(hashlib.sha256(("%s|%d" % (key, i)).encode("utf-8")).hexdigest()[:16], 16) % (i + 1)
+        out[i], out[j] = out[j], out[i]
+    return out
+
+
+def pagina_ref(D, book, n):
+    return OrderedDict([("book", book), ("page", n), ("img", D.book[book]["pages"][n - 1]["img"])])
+
+
+def build_final(R, V):
+    """The final data from the build (R) and the verdicts (V, from load_veredictos). -> dict."""
+    D = R["D"]
+    S = sentences_by_book(R)
+    by_text = {b: {s["text"]: s for s in rows} for b, rows in S.items()}
+    wordidx = {w["word"]: i for i, w in enumerate(R["words"])}
+    by_word = defaultdict(list)
+    for c in R["cands"]:
+        by_word[c["word"]].append(c)
+    palabras, left_out = [], 0
+    for w in R["words"]:
+        items = []
+        for c in mix(by_word.get(w["word"], []), w["word"]):
+            pg = c["pagina"]
+            cual, dudosa, own_ok = [], False, False
+            if pg:
+                s = by_text[pg["book"]][c["text"]]
+                assert s["own"] == pg["page"], (pg["book"], c["text"])
+                v, par = V[pg["book"]]["frases"][s["id"]], V[pg["book"]]["parecidas"]
+                own_ok = s["own"] in v["si"]
+                dudosa = not own_ok
+                cual = cual_pages(s["own"], [p for p in s["pages"] if p != s["own"]], v, par)
+            arma, oyes, _ = usable_flags(c)
+            if not own_ok and not (arma or oyes):
+                left_out += 1
+                continue
+            items.append(OrderedDict([("clip", c["clip"]), ("cuento", c["story"]), ("text", c["text"]), ("tokens", c["tokens"]),
+                                      ("pagina", pagina_ref(D, pg["book"], pg["page"]) if pg else None), ("cual", cual),
+                                      ("propia_dudosa", dudosa), ("arma", arma), ("que_oyes", oyes)]))
+        par_w = None
+        if w["pair"]:
+            p = w["pair"]
+            par_w = OrderedDict([("clip", p["say"]), ("text", p["text"]), ("si", p["si"]), ("no", p["no"]), ("scene", p["scene"]), ("file", p["file"])])
+        dilo = []
+        for c in by_word.get(w["word"], []):
+            m = c["marca_habla"]
+            if not (m and m["antes"]):
+                continue
+            formas = []
+            for t in m["targets"]:
+                if t["palabra"] == w["word"]:
+                    formas += [x for x in t["formas"] if x not in formas]
+            if formas:
+                dilo.append(OrderedDict([("clip", c["clip"]), ("cuento", c["story"]), ("formas", formas),
+                                         ("antes", OrderedDict([("clip", m["antes"]["clip"]), ("text", m["antes"]["text"])])),
+                                         ("pagina", pagina_ref(D, c["pagina"]["book"], c["pagina"]["page"]) if c["pagina"] else None)]))
+        palabras.append(OrderedDict([("word", w["word"]), ("puntua", puntua(items, par_w)), ("par", par_w), ("dilo", dilo), ("frases", items)]))
+    paginas, parejas = OrderedDict(), OrderedDict()
+    for sid in D.eligible:
+        fr, par = V[sid]["frases"], V[sid]["parecidas"]
+        for n in range(1, len(D.book[sid]["pages"]) + 1):
+            paginas["%s/%d" % (sid, n)] = OrderedDict([
+                ("img", D.book[sid]["pages"][n - 1]["img"]),
+                ("falsas", falsas_for_page(S[sid], {s["id"]: fr[s["id"]] for s in S[sid]}, par, n)),
+                ("ciertas", [OrderedDict([("clip", s["clip"]), ("text", s["text"])]) for s in S[sid] if n in fr[s["id"]]["si"]])])
+        sets = parejas_for_book(S[sid], {s["id"]: fr[s["id"]] for s in S[sid]}, par, wordidx)
+        parejas[sid] = [OrderedDict([("size", len(st)), ("words_differ", all(not (set(a["words"]) & set(b["words"])) for a, b in itertools.combinations(st, 2))),
+                                     ("items", [OrderedDict([("clip", s["clip"]), ("text", s["text"]), ("pagina", pagina_ref(D, sid, s["own"]))]) for s in st])])
+                        for st in sets]
+    meta = OrderedDict([("version", 1), ("palabras", len(palabras)), ("libros", len(D.eligible)), ("frases_fuera", left_out),
+                        ("mezcla", "Fisher-Yates from the end; the swap partner of position i is int(first 16 hex digits of SHA-256 of "
+                                   "'<word>|<i>' in UTF-8 and NFC) mod (i + 1)")])
+    return OrderedDict([("meta", meta), ("palabras", palabras), ("paginas", paginas), ("parejas", parejas)])
+
+
+def write_resumen_final(R, final, path):
+    D = R["D"]
+    L = []
+    A = L.append
+    ws = final["palabras"]
+    first = {w["word"]: w["first_index"] for w in R["words"]}
+    A("# Repaso final data: counts")
+    A("")
+    A("Made by `coqui/tool/make_repaso.py --veredictos ... --final ...` from the readers' verdicts. Every number is printed by the tool. No advice.")
+    A("")
+    items_all = [i for w in ws for i in w["frases"]]
+    n_cual = sum(1 for i in items_all if i["cual"])
+    dud_items = [i for i in items_all if i["propia_dudosa"]]
+    dud_sent = {(i["pagina"]["book"], i["text"]) for i in dud_items}
+    A("## Counts")
+    A("")
+    L += md_table(["", "n"], [
+        ("words", len(ws)),
+        ("items (word, sentence) kept", len(items_all)),
+        ("candidates left out (own page not in si and neither arma nor que_oyes)", final["meta"]["frases_fuera"]),
+        ("items with a non-empty `cual`", n_cual),
+        ("items with 2 or more wrong pictures", sum(1 for i in items_all if len(i["cual"]) >= 2)),
+        ("items with 3 wrong pictures", sum(1 for i in items_all if len(i["cual"]) == 3)),
+        ("items `arma`", sum(1 for i in items_all if i["arma"])),
+        ("items `que_oyes`", sum(1 for i in items_all if i["que_oyes"])),
+        ("items with `propia_dudosa` (a picture of its own that the verdict does not put in si)", len(dud_items)),
+        ("  distinct sentences (book, text) with `propia_dudosa`", len(dud_sent)),
+        ("dilo lines (word, line)", sum(len(w["dilo"]) for w in ws)),
+        ("words with a picture pair", sum(1 for w in ws if w["par"])),
+    ])
+    A("")
+    A("Words by `puntua`: " + ", ".join("%s %d" % (k, sum(1 for w in ws if w["puntua"] == k)) for k in ("cual", "que_oyes", "nada")))
+    A("")
+
+    A("## Per word")
+    A("")
+    A("Fewest items with a non-empty `cual` first (then fewest items, then course order). `cual`: items with a non-empty `cual`; `2+ wrong`: items with 2 or more wrong pictures.")
+    A("")
+    order = {w["word"]: i for i, w in enumerate(ws)}
+    rows = []
+    for w in ws:
+        it = w["frases"]
+        rows.append((w["word"], len(it), sum(1 for i in it if i["cual"]), sum(1 for i in it if len(i["cual"]) >= 2), sum(1 for i in it if i["arma"]),
+                     sum(1 for i in it if i["que_oyes"]), len(w["dilo"]), w["puntua"]))
+    rows.sort(key=lambda r: (r[2], r[1], order[r[0]]))
+    L += md_table(["word", "items", "cual", "2+ wrong", "arma", "que_oyes", "dilo", "puntua"], rows)
+    A("")
+
+    A("## Distribution of words by number of items with a non-empty `cual`")
+    A("")
+    A("A learner who has finished stories 1..k: the words first met in a map story 1..k, and their items whose story (`cuento`) is a map story 1..k or a picture story of a place whose map stories are all in 1..k.")
+    A("")
+
+    def dist(sel):
+        cnt = Counter(bucket(n) for n in sel)
+        return [cnt.get(b, 0) for b in BUCKETS]
+
+    rows = [["all words, all stories", len(ws)] + dist([sum(1 for i in w["frases"] if i["cual"]) for w in ws])]
+    for k in KS:
+        met = [w for w in ws if first[w["word"]] <= k]
+        rows.append(["finished stories 1..%d" % k, len(met)] + dist([sum(1 for i in w["frases"] if i["cual"] and scope_has(D, {"story": i["cuento"]}, k, True)) for w in met]))
+    L += md_table(["learner", "words"] + BUCKETS, rows)
+    A("")
+
+    A("## Words that are not scored by `cual`")
+    A("")
+    for k in ("que_oyes", "nada"):
+        sel = [w["word"] for w in ws if w["puntua"] == k]
+        A("`puntua` = `%s`: %d words%s" % (k, len(sel), (": " + ", ".join(sel)) if sel else ""))
+        A("")
+
+    A("## Pages")
+    A("")
+    pg2 = [(k, v) for k, v in final["paginas"].items() if len(v["falsas"]) >= 2]
+    A("Book pages: %d. Pages with at least 2 `falsas`: %d. With none: %d. Pages with at least 1 `ciertas`: %d." % (
+        len(final["paginas"]), len(pg2), sum(1 for v in final["paginas"].values() if not v["falsas"]), sum(1 for v in final["paginas"].values() if v["ciertas"])))
+    A("")
+    rows = []
+    for s in D.eligible:
+        mine = [v for k, v in final["paginas"].items() if k.rsplit("/", 1)[0] == s]
+        rows.append((s, len(mine), sum(1 for v in mine if len(v["falsas"]) >= 2), sum(1 for v in mine if not v["falsas"])))
+    L += md_table(["book", "pages", "pages with 2+ falsas", "pages with no falsas"], rows)
+    A("")
+
+    A("## Parejas")
+    A("")
+    withsets = [s for s in D.eligible if final["parejas"][s]]
+    A("Books with at least one set: %d of %d. Sets of 4: %d (with all words different: %d); sets of 3: %d. Books with no set: %s." % (
+        len(withsets), len(D.eligible), sum(1 for v in final["parejas"].values() for t in v if t["size"] == 4),
+        sum(1 for v in final["parejas"].values() for t in v if t["size"] == 4 and t["words_differ"]),
+        sum(1 for v in final["parejas"].values() for t in v if t["size"] == 3), ", ".join(s for s in D.eligible if not final["parejas"][s]) or "none"))
+    A("")
+    L += md_table(["book", "sets", "sizes", "words differ"], [(s, len(final["parejas"][s]), "/".join(str(t["size"]) for t in final["parejas"][s]),
+                                                              "/".join("y" if t["words_differ"] else "n" for t in final["parejas"][s])) for s in D.eligible])
+    A("")
+    A("## Order of the sentences of a word")
+    A("")
+    A(final["meta"]["mezcla"] + ". The shuffle is made on all of a word's candidates before any is left out, so leaving one out does not move the others.")
+    A("")
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(L))
+
+
 # ---------------------------------------------------------------------------------------------------------------- main
 
 def build(root):
@@ -1417,7 +1939,7 @@ def build(root):
             fits.append(("2d walk", s, "steps name clips the story does not have: " + ", ".join(walks[s]["dangling"])))
         if walks[s]["unres_clips"]:
             fits.append(("2d walk", s, "a $ in a clip id could not be filled: " + ", ".join(walks[s]["unres_clips"])))
-    cands, M = build_candidates(D, words, walks, stops, fits)
+    cands, M, posmap = build_candidates(D, words, walks, stops, fits)
     # marks that are not on a candidate: say why
     fair = Fair(D, M)
     propose_wrong(D, fair, cands)
@@ -1458,7 +1980,7 @@ def build(root):
         ("reading 2 dilo", "line before", "the line before is the clip before it in the all-right play that takes the first option of every choice (tipo says what kind it was); the clips that can come before it on other plays are in otros_antes"),
     ]
     return {"D": D, "words": words, "cands": cands, "falsas": falsas, "parejas": parejas, "pstats": pstats, "walks": walks, "classes": classes, "stops": stops,
-            "fits": fits, "M": M}
+            "fits": fits, "M": M, "pos": posmap}
 
 
 def candidatos_json(R):
@@ -1482,16 +2004,62 @@ def candidatos_json(R):
     return rec
 
 
+def report_faults(faults, notes, n_files):
+    for x in faults:
+        print(x)
+    for x in notes:
+        print("note: " + x)
+    print("%d faults in %d files" % (len(faults), n_files) if faults else "ok: %d files, no fault" % n_files)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--out", required=True, help="directory to write into")
+    ap.add_argument("--out", required=True, help="directory to write into (and, for the verdict checks, where libro/ was written)")
     ap.add_argument("--repo", default=None, help="repo root (default: the repo this file sits in)")
     ap.add_argument("--no-sheets", action="store_true", help="do not write the vetting sheets")
+    ap.add_argument("--hojas-libro", action="store_true", help="write only <out>/libro/: the page sheets and sentences for the readers, and indice.json")
+    ap.add_argument("--valida-veredictos", metavar="DIR", help="check every <book>.json in DIR against <out>/libro/<book>/frases.json; exit 1 on any fault")
+    ap.add_argument("--veredictos", metavar="DIR", help="with --final: the verdicts of every book")
+    ap.add_argument("--final", metavar="FILE", help="with --veredictos: write the final data here, and resumen-final.md beside it")
     a = ap.parse_args(argv)
+    if bool(a.veredictos) != bool(a.final):
+        ap.error("--veredictos and --final go together")
+    if sum([a.hojas_libro, bool(a.valida_veredictos), bool(a.final)]) > 1:
+        ap.error("one of --hojas-libro, --valida-veredictos, --veredictos with --final at a time")
     root = a.repo or Path(__file__).resolve().parents[2]
     out = Path(a.out)
+    if a.valida_veredictos:
+        faults, notes = valida_veredictos(a.valida_veredictos, out)
+        report_faults(faults, notes, len(list(Path(a.valida_veredictos).glob("*.json"))))
+        return 1 if faults else 0
+    if a.final:
+        books, frs = libro_frases(out)
+        faults, notes = valida_veredictos(a.veredictos, out, require_all=True)
+        R = build(root)
+        S = sentences_by_book(R)
+        for b in books:
+            if json.loads(json.dumps(frases_doc(R["D"], b, S[b]))) != frs[b]:
+                faults.append("%s: frases.json is not what the tool makes from the repo now (write the sheets again; the readers' verdicts of this book no longer match)" % b)
+        if faults:
+            report_faults(faults, notes, len(list(Path(a.veredictos).glob("*.json"))))
+            return 1
+        final = build_final(R, load_veredictos(a.veredictos, books))
+        fp = Path(a.final)
+        fp.parent.mkdir(parents=True, exist_ok=True)
+        jdump(final, fp)
+        write_resumen_final(R, final, fp.with_name("resumen-final.md"))
+        its = [i for w in final["palabras"] for i in w["frases"]]
+        print("words %d, items %d (with a wrong picture %d), left out %d, puntua %s, books with a Parejas set %d" % (
+            len(final["palabras"]), len(its), sum(1 for i in its if i["cual"]), final["meta"]["frases_fuera"],
+            "/".join("%s %d" % (k, sum(1 for w in final["palabras"] if w["puntua"] == k)) for k in ("cual", "que_oyes", "nada")),
+            sum(1 for v in final["parejas"].values() if v)))
+        return 0
     out.mkdir(parents=True, exist_ok=True)
     R = build(root)
+    if a.hojas_libro:
+        index = write_hojas_libro(R, out)
+        print("books %d, pages %d, sentences to judge %d" % (len(index), sum(i["paginas"] for i in index), sum(i["frases"] for i in index)))
+        return 0
     sheets_n = dup = 0
     if not a.no_sheets:
         sheets_n = write_sheets(R["D"], R["cands"], out, R["stops"])
@@ -1500,7 +2068,8 @@ def main(argv=None):
     jdump(candidatos_json(R), out / "candidatos.json")
     write_resumen(R["D"], R["words"], R["cands"], R["parejas"], R["pstats"], R["falsas"], R["walks"], R["classes"], R["stops"], R["fits"], out / "resumen.md", sheets_n, dup)
     print("words %d, candidates %d (with a page %d), sheets %d" % (len(R["words"]), len(R["cands"]), sum(1 for c in R["cands"] if c["pagina"]), sheets_n))
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
