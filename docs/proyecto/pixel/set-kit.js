@@ -125,6 +125,7 @@ function hipRoof(x0, y0, x1, y1, z, rise, c, edge) {
   const R = rampOf(c), ROW = .19, TILE = .3;
   for (let x = x0; x <= x1; x += ST * .7) for (let y = y0; y <= y1; y += ST * .7) {
     const fy = (hy - Math.abs(y - yc)) / hy, fx = (hx - Math.abs(x - xc)) / hy, f = Math.min(fy, fx, 1);
+    { const p = project(x, y, z + rise * f), ix = p.sx | 0, iy = p.sy | 0; if (ix < 0 || iy < 0 || ix >= W || iy >= H) continue; }   // off the picture: plot() would drop it (order 30a: skipped before the work, the same pixels)
     const front = fy <= fx, along = (front ? fy : fx) * hy;                     // how far up the slope from the eave
     const r = Math.floor(along / ROW), t = (along % ROW) / ROW;
     const run = front ? x : y, s = ((run / TILE + (r % 2) * .5) % 1 + 1) % 1;   // along the eave, the tiles staggered row by row
@@ -205,6 +206,41 @@ function boxAround(sx0, sy0, sx1, sy1) {
   const vmax = (sy1 - OY) / (S * SIN), vmin = vmax - d, z1 = (vmin * SIN - (sy0 - OY) / S) / COS;
   const xc = (uc + (vmin + vmax) / 2) / R2, yc = ((vmin + vmax) / 2 - uc) / R2, e = d * R2 / 4;
   return [xc - e, yc - e, 0, xc + e, yc + e, z1];
+}
+
+/* ---------- furniture turned to any angle (order 30a, El balcón) ---------- */
+// the shade of a vertical face by the way it faces: like block()'s walls, +y faces lit (2.4), +x faces in shade (1.3), in between by angle
+// (nx, ny): the face's outward normal on the ground
+function faceBase(nx, ny) { return clamp(1.3 + 1.1 * Math.atan2(ny, nx) / (Math.PI / 2), 1, 2.9); }
+// a box turned by ang: its width axis along (cos ang, sin ang), half-width hw; its depth axis along (-sin ang, cos ang), half-depth hd.
+// ang = -Math.PI / 4 turns its front (+depth) to the camera. fn(s, t, z, face) may give a colour (s across, t in depth; face 'top' or the
+// side: 'front', 'back', 'left', 'right'); otherwise the face is shaded from c. Only faces turned towards the camera are drawn
+function turnedBox(cx, cy, z0, z1, hw, hd, ang, c, fn = null) {
+  const ax = Math.cos(ang), ay = Math.sin(ang), bx = -ay, by = ax;
+  const P = (s, t) => [cx + ax * s + bx * t, cy + ay * s + by * t];
+  const put = (s, t, z, face, base, g1, g2) => { const p = P(s, t), col = fn && fn(s, t, z, face); plot(p[0], p[1], z, col || shade(c, base, g1, g2)); };
+  for (let s = -hw; s <= hw + 1e-9; s += ST * .7) for (let t = -hd; t <= hd + 1e-9; t += ST * .7) put(s, t, z1, 'top', 3.4, cx + s, cy + t);
+  const sides = [['front', bx, by, s => [s, hd], hw], ['back', -bx, -by, s => [s, -hd], hw], ['right', ax, ay, t => [hw, t], hd], ['left', -ax, -ay, t => [-hw, t], hd]];
+  for (const [face, nx, ny, at, half] of sides) {
+    if (nx + ny < -1e-6) continue;                                            // turned away from the camera
+    const base = faceBase(nx, ny);
+    for (let k = -half; k <= half + 1e-9; k += ST * .7) for (let z = z0; z <= z1 + 1e-9; z += ST * .7) { const [s, t] = at(k); put(s, t, z, face, base, k + cx, z); }
+  }
+}
+// an upright cylinder (a table's top, its foot, a flower pot): the top disc and the side that faces the camera. top(dx, dy) may colour the disc
+function drum(cx, cy, z0, z1, r, c, top = null) {
+  for (let a = -r; a <= r; a += ST * .7) for (let b = -r; b <= r; b += ST * .7) {
+    if (a * a + b * b > r * r) continue;
+    const col = top && top(a, b);
+    plot(cx + a, cy + b, z1, col || shade(c, 3.4, cx + a, cy + b));
+  }
+  const n = Math.max(12, Math.ceil(2 * Math.PI * r / (ST * .6)));
+  for (let k = 0; k < n; k++) {
+    const f = k / n * 2 * Math.PI, nx = Math.cos(f), ny = Math.sin(f);
+    if (nx + ny < -.3) continue;
+    const base = faceBase(nx, ny);
+    for (let z = z0; z <= z1 + 1e-9; z += ST * .7) plot(cx + nx * r, cy + ny * r, z, shade(c, base, f * 3, z));
+  }
 }
 
 /* ---------- for the checks: which object drew each pixel ---------- */
