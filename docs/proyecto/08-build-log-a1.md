@@ -2,6 +2,14 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 20, part 24: Gate A passed, El balcón, Repaso as games
+
+- Gate A: "looks good to me." The scenes lane went on: El balcón designed in JavaScript in four rounds with eight fresh readers, ported to Dart, a fifth round for four faults a reader found in the real app; stories 4 and 5 play (build 4). Its first bake is over the limit (205 to 313 ms against 150).
+- His words on Biblioteca and the flash cards ("filler and fluff"; "differing context make the word stick more"; "more like how duo lingo does their games") became order 27. Page 15 has the design and the three versions that fell before it; page 13 has the result. Repaso is now a session of games; a word comes back in a sentence it was not asked in before (build 5).
+- Recorded with his approval: 133 single words, 814 characters, Azure (free). Nothing else was spent.
+- Readers used: about thirty, none of whom built what they read. Fifteen of them judged sentences against pictures (43 books, 128 word pairs); their verdicts are in `coqui/tool/repaso/`.
+- Problems caused by the orchestrator's own work: the first three designs of Repaso each rested on a guess that the next check broke (the game chosen by a word's step; the books' pictures as proof; the word pairs as proof); he was told ElevenLabs credits for recordings that are Azure; a container restart lost seven running jobs (their written work survived). Another session of his pushed the story kit (page 16) to main meanwhile; it does not touch this work.
+
 ## Nov 19, part 23: the shell, build 3, Gate A ready
 
 - The shell (order 26) is on main with every real feature; builds 2 and 3 were published by raising `coqui/BUILD` (the live files were compared with the build, 457 of 457 equal, for build 2; see below for 3).

@@ -2,7 +2,7 @@
 
 Written Nov 20 2026 by the orchestrator, from Salim's words that day. Read with 03, 09, 10 and 13 (order 27). Where this page and 10 differ about Repaso, this page wins once it is built.
 
-Status: fourth version. The first was read by two fresh reviewers (one as a beginner against page 03, one against the real sentences, the progress rules and his research): see "What the first version got wrong". The second put the scored games on the story books' pictures; readers then judged all 43 books, picture by picture, and that did not hold: see "What the second version got wrong". What the third got wrong is below too. The data is final (`coqui/tool/make_repaso.py`, the readers' verdicts in `coqui/tool/repaso/`); the build is order 27.
+Status: fourth version. The first was read by two fresh reviewers (one as a beginner against page 03, one against the real sentences, the progress rules and his research): see "What the first version got wrong". The second put the scored games on the story books' pictures; readers then judged all 43 books, picture by picture, and that did not hold: see "What the second version got wrong". What the third got wrong is below too. The data is final (`coqui/tool/make_repaso.py`, the readers' verdicts in `coqui/tool/repaso/`); the build is order 27: built and live as build 5 (page 13 has the result).
 
 ## His words
 
