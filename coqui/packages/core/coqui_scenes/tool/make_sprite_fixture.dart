@@ -5,8 +5,9 @@
 //   dart run tool/make_sprite_fixture.dart          (in this package) writes test/support/fixtures/sprite_refs.dart
 //                                                  (frente.js), test/support/fixtures/balcon_sprite_refs.dart (balcon.js)
 //                                                  test/support/fixtures/sala_sprite_refs.dart (sala.js),
-//                                                  test/support/fixtures/patio_sprite_refs.dart (patio.js) and
-//                                                  test/support/fixtures/camino_sprite_refs.dart (camino.js)
+//                                                  test/support/fixtures/patio_sprite_refs.dart (patio.js),
+//                                                  test/support/fixtures/camino_sprite_refs.dart (camino.js) and
+//                                                  test/support/fixtures/campo_sprite_refs.dart (campo.js)
 //   dart run tool/make_sprite_fixture.dart --check  fails when a file is not what the reference gives
 import 'dart:convert';
 import 'dart:io';
@@ -20,6 +21,7 @@ void main(List<String> args) {
     'sala': (file: 'sala_sprite_refs.dart', constant: 'salaSpriteRefs'),
     'patio': (file: 'patio_sprite_refs.dart', constant: 'patioSpriteRefs'),
     'camino': (file: 'camino_sprite_refs.dart', constant: 'caminoSpriteRefs'),
+    'campo': (file: 'campo_sprite_refs.dart', constant: 'campoSpriteRefs'),
   };
   var stale = 0;
   for (final sc in scenes.entries) {
