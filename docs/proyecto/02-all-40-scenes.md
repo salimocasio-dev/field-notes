@@ -49,7 +49,7 @@ Getting around town. The call: ask where a place is, follow left, right and near
 Meeting people. The call: give your name, where you are from, your age and your work. Ask the same back. Tell the time.
 - **El banco de la plaza (the bench).** Two people meet. ¿cómo te llamas?, nombre, mucho gusto, ¿de dónde eres?, soy de, vivo en, hablo, español, inglés, entiendo, no sé
 - **El reloj (the clock).** What time it is. reloj, hora, ¿qué hora es?, es la una, son las, y media, en punto, minuto, the tens from 30 to 100
-- **El quiosco (the kiosk).** Who does what. trabajo, trabaja, maestra, doctor, cocinero, policía, estudiante, vendedor, ¿qué haces?, ¿cuántos años tienes?, tengo … años
+- **El quiosco (the kiosk).** Who does what. trabajo, trabaja, maestra, doctor, cocinero, policía, estudiante, vendedor, ¿en qué trabajas?, ¿cuántos años tienes?, tengo … años
 - **El calendario (the calendar).** The days, shown on a week strip. lunes, martes, miércoles, jueves, viernes, sábado, domingo, hoy, mañana, día, semana, fin de semana
 
 ## 7. La playa

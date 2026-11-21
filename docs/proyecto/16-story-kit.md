@@ -26,7 +26,7 @@ From 03-requirements and the reviewers' list in 07. His words outrank everything
 - Short praise ("¡Muy bien!"), then on to the next thing. The story keeps moving.
 - No ask repeated to pad it. No long dead pauses: something moves in every gap.
 - Slow, plain, A1 words. No pet names. Nothing religious or personal.
-- Course words are Puerto Rican. Where the plan's word (page 02) and the word Puerto Ricans use most in everyday speech differ, the everyday one wins, in every line (Salim, Nov 21: "I just want the Spanish usable. Pick whatever is most used."). So: después, not luego; al frente de, not delante de; se monta, se baja, se va at a guagua; ¿para dónde vas?. The Spanish reviewer names the everyday word; the writer takes it and changes page 02's list to match.
+- Course words are Puerto Rican. Where the plan's word (page 02) and the word Puerto Ricans use most in everyday speech differ, the everyday one wins, in every line (Salim, Nov 21: "I just want the Spanish usable. Pick whatever is most used."). So: después, not luego; al frente de, not delante de; se monta, se baja, se va at a guagua; ¿para dónde vas?; ¿en qué trabajas?, not a bare ¿qué haces?. The Spanish reviewer names the everyday word; the writer takes it and changes page 02's list to match.
 - Who is talking is always clear. Narrator lines with another speaker start "Abuela dice:" (the bubble shows the rest).
 - The coquí has his own voice and lines ("who": "tu"). He replies when spoken to.
 - Spanish only on screen. English only for menus, the welcome, the stuck line, and the one line before a new grammar pattern.

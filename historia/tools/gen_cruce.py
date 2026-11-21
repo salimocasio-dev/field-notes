@@ -201,7 +201,7 @@ def ronda59(s,sitios,pick,linea,no,draw,hojas):
       "right":[{"if":"ok","then":[act("va59",donde=pick),"c59_uno",act("foto59",ok=1),act("hojas",n=hojas),OK],
                 "else":[act("va59",donde=pick),gesto("papa","pulgar")]}],
       "wrong":[act("va59",donde="$x"),"c59_uno",act("foto59",ok=0,como="$"+k),gesto("papa","rie"),gesto("papa","no"),act("hojas",n=hojas)]+X+[no]}]
-s59={"id":"al-frente-y-detras","title":"Al frente y detrás","place":"La calle","scene":"cruce","next":None,
+s59={"id":"al-frente-y-detras","title":"Al frente y detrás","place":"La calle","scene":"cruce","next":"mucho-gusto",
  "goal":"Pose where papá says (in front of, behind, beside) for the family photo: every wrong place spoils one of the three photos, and the last one is always a good one.",
  "stake":{"thing":"fotos","steps":3},"dots":9,"bien":"si_muy_bien",
  "focus_words":["al lado de","al frente de","detrás","entre"],"formas_foco":{},
