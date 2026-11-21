@@ -298,21 +298,15 @@ class Estufa extends Escena implements SetScene, SetOverSprites, PairPlaces {
       ),
       Thing(
         id: 'pzpollo',
-        si: (w) => jsTruthy(w['plata']),
-        box: (Map<String, dynamic> w) {
-          final pl = w['plata'] as Map;
-          return [(pl['x'] as num) - 24, (pl['y'] as num) - 22, 24, 24];
-        },
+        si: (w) => _onPlate(w, 'muslo'),
+        box: (Map<String, dynamic> w) => _pieceBox(w, 'muslo'),
         m: 0,
         z: true,
       ),
       Thing(
         id: 'pzhuevo',
-        si: (w) => jsTruthy(w['plata']),
-        box: (Map<String, dynamic> w) {
-          final pl = w['plata'] as Map;
-          return [pl['x'] as num, (pl['y'] as num) - 22, 24, 24];
-        },
+        si: (w) => _onPlate(w, 'frito'),
+        box: (Map<String, dynamic> w) => _pieceBox(w, 'frito'),
         m: 0,
         z: true,
       ),
@@ -424,6 +418,27 @@ class Estufa extends Escena implements SetScene, SetOverSprites, PairPlaces {
     'papa': FAM['papa'],
     'abuela': null,
   };
+
+  /// A piece on abuela's plate (W.plata) is there while it lies on the plate, and its box is the half of the plate it is
+  /// drawn in: the left `[plata.x - 24, plata.y - 22, 24, 24]` or the right `[plata.x, …]`. The old file (estufa.js THINGS)
+  /// has both while there is a plate and gives the drumstick the left half and the egg the right one always, but draws
+  /// the pieces by their order on the plate (`P.x - 11 + j * 22`): once Mamá has the drumstick (`dabebe`) the egg lies
+  /// alone on the left half, under the drumstick's box, and the old hint frame, hand and tap of its ask were the empty
+  /// right half (el-pollo-y-el-huevo beats.27, every plan), a touch of the egg itself the drumstick. Decided in order
+  /// 38b's fix.
+  static bool _onPlate(Map<String, dynamic> w, String kind) =>
+      jsTruthy(w['plata']) &&
+      ((w['plata'] as Map)['items'] as List).any((o) => _kOf(o) == kind);
+  static List<num> _pieceBox(Map<String, dynamic> w, String kind) {
+    final pl = w['plata'] as Map;
+    final j = (pl['items'] as List).indexWhere((o) => _kOf(o) == kind);
+    return [
+      (pl['x'] as num) - (j == 0 ? 24 : 0),
+      (pl['y'] as num) - 22,
+      24,
+      24,
+    ];
+  }
 
   static String? _fuegoK(Map<String, dynamic> w, int i) {
     final f = w['fuegos'];
