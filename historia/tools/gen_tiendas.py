@@ -20,7 +20,7 @@ X=[act("marca",que="x"),{"cost":1}]                      # the card's cross, the
 OK=act("marca",que="ok")                                  # the card's star
 CARD={"set":{"tarjeta":"rondas","marcas":[None,None]}}   # every story of this place has two scored rounds: the card shows two places
 # earlier stories' focus words that a speaking turn may use and that are not on disk here: stories 48 to 53 (La esquina, La parada), from the order of the course
-FOCUS_48_53=["calle","carro","guagua","bicicleta","esquina","gente","cruza","pasa","viene","va","ahora","luego","parada","¿adónde vas?","voy","vas","sube","baja","llega","sale","cerca","lejos","temprano","tarde"]
+FOCUS_48_53=["calle","carro","guagua","bicicleta","esquina","gente","cruza","pasa","viene","va","ahora","después","parada","¿para dónde vas?","voy","vas","se monta","se baja","llega","se va","cerca","lejos","temprano","tarde"]
 MINE=("las-tiendas","el-edificio-alto","abierto-y-cerrado")   # this generator's stories: not seen
 # a clip whose text and speaker are already recorded under another id keeps that id (nothing is recorded twice); the stories of this run feed it too, in order.
 # Ties go to the id most used, then to the earliest story of the course.
@@ -74,7 +74,7 @@ def nombres(*ks): return {k:NM[k][0] for k in ks},{NM[k][0]:NM[k][1] for k in ks
 # Round A: one of the banco, the farmacia and the correo (drawn); round B: one of the two that are left (drawn). The four fronts can all be touched.
 nm,nc=nombres("abuela","bebe","coqui"); c=dict(comunes); c.update(nc)
 c.update({"c54_calle":N("Abuela, el bebé y Coquí están en la calle de las tiendas."),"c54_mira":N("Mira. Aquí, en la tienda, hay un caballito."),
- "c54_ab_gusta":AB("¿Te gusta el caballito, Coquí?"),"c54_cq_gusta":T("¡Sí, me gusta!"),"c54_ab_luego":AB("Luego, Coquí. Ahora tengo tres cosas que hacer."),
+ "c54_ab_gusta":AB("¿Te gusta el caballito, Coquí?"),"c54_cq_gusta":T("¡Sí, me gusta!"),"c54_ab_despues":AB("Después, Coquí. Ahora tengo tres cosas que hacer."),
  "c54_ab_carta":AB("Tengo una carta. ¿Dónde está el correo?"),"c54_donde_correo":N("¿Dónde está el correo?"),"c54_ab_aqui_correo":AB("¡Aquí está el correo!"),
  "c54_ab_chavos":AB("Ahora necesito chavos. Vamos al banco."),"c54_donde_banco":N("¿Dónde está el banco?"),
  "c54_ab_farmacia":AB("Y abuelo necesita algo de la farmacia."),"c54_donde_farmacia":N("¿Dónde está la farmacia?"),"c54_ab_listo":AB("El correo, el banco, la farmacia... ¡Listo!"),
@@ -95,11 +95,11 @@ def ronda54(p,t,ln):
 s54={"id":"las-tiendas","title":"Las tiendas","place":"La calle","scene":"tiendas","next":"el-edificio-alto",
  "goal":"Take abuela through her three errands and keep her coins, so the frog and the bebé can ride the little horse in front of the tienda.","stake":{"thing":"monedas","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["tienda","banco","farmacia","correo"],"formas_foco":{"tienda":["tiendas"]},
- "back_again":["calle","abuela","abuelo","bebé","mamá","necesito","chavos","me gusta","tengo","cosa","dos","tres","ahora","luego","vamos","aquí","gracias","casa","listo"],
+ "back_again":["calle","abuela","abuelo","bebé","mamá","necesito","chavos","me gusta","tengo","cosa","dos","tres","ahora","después","vamos","aquí","gracias","casa","listo"],
  "also_heard":["caballito","carta"],"names":nm,"palabras":{},"clips":c,
  "beats":[{"set":{"fila":"tiendas","hora":"manana"}},act("lista"),{"wait":500},
   # 1: the street, the little horse; a speaking turn; the three coins
-  {"dots":1},"c54_calle",tw("tienda"),gesto("bebe","senala",a="caballito"),"c54_mira",tw(None),"c54_ab_gusta","c54_cq_gusta",act("monedas",n=3),"c54_ab_luego",
+  {"dots":1},"c54_calle",tw("tienda"),gesto("bebe","senala",a="caballito"),"c54_mira",tw(None),"c54_ab_gusta","c54_cq_gusta",act("monedas",n=3),"c54_ab_despues",
   # 2 to 4: three signed asks (the correo, the banco, the farmacia); each errand lights on the card, then gets its tick
   {"dots":2},act("lista",k="letter",hecho=0),
   ask("correo","c54_donde_correo",lead=["c54_ab_carta"],after=[act("va54",a="correo",ok=1,trae="letter")],then=["c54_ab_aqui_correo",act("lista",k="letter",hecho=1)]),
@@ -118,7 +118,7 @@ s54={"id":"las-tiendas","title":"Las tiendas","place":"La calle","scene":"tienda
   {"calc":"nn","cond":"lost=0","then":"3","else":"1"},{"calc":"nn","cond":"lost=1","then":"2","else":"$nn"},act("monedas",n="$nn"),"c54_ab_ahora_si","c54_cq_gracias",
   {"if":"lost=0","then":[act("caballito54",n=3)],"else":[{"if":"lost=1","then":[act("caballito54",n=2)],"else":[act("caballito54",n=1)]}]},
   "c54_ab_casa",act("fin")],
- "leer":["c54_calle","c54_mira","c54_ab_gusta","c54_cq_gusta","c54_ab_luego","c54_ab_carta","c54_donde_correo","c54_ab_aqui_correo","c54_ab_chavos","c54_donde_banco","c54_ab_farmacia","c54_donde_farmacia","c54_ab_listo","c54_ab_ay",
+ "leer":["c54_calle","c54_mira","c54_ab_gusta","c54_cq_gusta","c54_ab_despues","c54_ab_carta","c54_donde_correo","c54_ab_aqui_correo","c54_ab_chavos","c54_donde_banco","c54_ab_farmacia","c54_donde_farmacia","c54_ab_listo","c54_ab_ay",
   "c54_a_farmacia","c54_b_correo","c54_ab_ahora_si","c54_cq_gracias","c54_ab_casa"]}
 s54=reuse(s54,{"c54_cq_gusta":TG(("me gusta",["me gusta"])),"c54_cq_gracias":TG(("gracias",["gracias"]))})
 json.dump(s54,open("cuentos/las-tiendas.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)

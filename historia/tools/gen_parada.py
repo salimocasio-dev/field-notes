@@ -17,9 +17,9 @@ X=[act("marca",que="x"),{"cost":1}]                      # the card's cross, the
 OK=act("marca",que="ok")                                  # the card's star
 CARD={"set":{"tarjeta":"rondas","marcas":[None,None]}}   # every story of this place has two scored rounds: the card shows two places
 # an earlier story's focus words that a speaking turn may use: stories 48 to 50 (not on disk when this was written; their new words, from the order)
-FOCUS_48_50=["calle","carro","guagua","bicicleta","esquina","gente","cruza","pasa","viene","va","ahora","luego"]
+FOCUS_48_50=["calle","carro","guagua","bicicleta","esquina","gente","cruza","pasa","viene","va","ahora","después"]
 # this generator's stories and the ones after it: not seen (their files may be on disk; nothing here may depend on them)
-MINE=("adonde-vas","sube-y-baja","cerca-y-lejos","las-tiendas","el-edificio-alto","abierto-y-cerrado","izquierda-o-derecha","sigue-derecho","delante-y-detras")
+MINE=("para-donde-vas","se-monta-y-se-baja","cerca-y-lejos","las-tiendas","el-edificio-alto","abierto-y-cerrado","izquierda-o-derecha","sigue-derecho","al-frente-y-detras")
 # a clip whose text and speaker are already recorded under another id keeps that id (nothing is recorded twice); the stories of this run feed it too, in order.
 # Ties go to the id most used, then to the earliest story of the course.
 ORD={}
@@ -70,15 +70,15 @@ def nombres(*ks):
     return {k:NM[k][0] for k in ks},{NM[k][0]:NM[k][1] for k in ks}
 PL={"arbol":"al parque","toldo":"al colmado","casa":"a casa"}   # the picture of a guagua (tree, awning, house) and where it goes
 
-# ---------------- 51. ¿Adónde vas? ----------------
+# ---------------- 51. ¿Para dónde vas? ----------------
 # Each round: two of the three pictures (a, b), which stands in front (frente), which is the frog's (mio), which half of abuela's line comes first (primero): all drawn afresh.
 # ab is the picture of abuela's guagua, fr the frog's; every ordered pair, in both orders, has its line (12 per round; B's begins "Ahora"); the correction is "Yo voy... Tú vas..." (6, shared by both rounds).
 c=dict(comunes); nm,nc=nombres("abuela","luis","carmen","senora","coqui"); c.update(nc)
 c.update({"c51_estan":N("Abuela, Luis, Carmen y Coquí están en la parada."),"c51_donde_parada":N("¿Dónde está la parada?"),"c51_sra_dias":SA("¡Buenos días! ¿Estás cansado, Coquí?"),"c51_cq_no_bien":T("No. Estoy bien."),
- "c51_viene":N("La guagua viene a la parada."),"c51_sra_luis":SA("Luis, ¿adónde vas?"),"c51_luis_voy":L("Voy al parque."),"c51_cual_luis":N("¿Cuál es la guagua de Luis?"),
- "c51_ch_adonde":CH("¿Adónde vas?"),"c51_luis_al_parque":L("¡Al parque!"),"c51_ab_carmen":AB("Carmen, tú vas al colmado."),"c51_carmen_voy":CA("Sí. Yo voy al colmado."),
- "c51_cual_carmen":N("¿Cuál es la guagua de Carmen?"),"c51_sra_casa":SA("Yo voy a casa. ¿Y tú, Coquí? ¿Adónde vas?"),"c51_ab_hoy":AB("Coquí, hoy tú vas en la guagua."),
- "c51_ab_toma":AB("Toma, Coquí."),"c51_cq_gracias":T("¡Gracias, abuela!"),"c51_luego":N("Y luego..."),"c51_ab_vamos":AB("Ahora vamos a casa."),
+ "c51_viene":N("La guagua viene a la parada."),"c51_sra_luis":SA("Luis, ¿para dónde vas?"),"c51_luis_voy":L("Voy al parque."),"c51_cual_luis":N("¿Cuál es la guagua de Luis?"),
+ "c51_ch_para_donde":CH("¿Para dónde vas?"),"c51_luis_al_parque":L("¡Al parque!"),"c51_ab_carmen":AB("Carmen, tú vas al colmado."),"c51_carmen_voy":CA("Sí. Yo voy al colmado."),
+ "c51_cual_carmen":N("¿Cuál es la guagua de Carmen?"),"c51_sra_casa":SA("Yo voy a casa. ¿Y tú, Coquí? ¿Para dónde vas?"),"c51_ab_hoy":AB("Coquí, hoy tú vas en la guagua."),
+ "c51_ab_toma":AB("Toma, Coquí."),"c51_cq_gracias":T("¡Gracias, abuela!"),"c51_despues":N("Y después..."),"c51_ab_vamos":AB("Ahora vamos a casa."),
  "c51_ch_hasta":CH("¡Hasta mañana, Coquí!"),"c51_sra_hasta":SA("¡Hasta mañana, Coquí!"),"c51_cq_adios":T("¡Adiós!"),"c51_van":N("Abuela y Coquí van a casa.")})
 for ab in PL:
     for fr in PL:
@@ -102,10 +102,10 @@ def ronda51(s):
       "right":[act("sube",quien="coqui",k="$fr"),act("boleto",quien="coqui"),{"if":"ok","then":[act("sube",quien="abuela",k="$ab")]},
                act("guagua",k="$pf",que="sale",a="parada1"),act("guagua",k="$pt",que="sale",a="parada2"),{"if":"ok","then":[OK]}],
       "wrong":[act("sube",quien="abuela",k="$ab"),act("sube",quien="coqui",k="$ab"),act("boleto",quien="coqui"),gesto("abuela","no"),gesto("abuela","senala",a="$k")]+X+["c51_no_$ab_$fr"]}]
-s51={"id":"adonde-vas","title":"¿Adónde vas?","place":"La calle","scene":"parada","next":"sube-y-baja",
+s51={"id":"para-donde-vas","title":"¿Para dónde vas?","place":"La calle","scene":"parada","next":"se-monta-y-se-baja",
  "goal":"Keep abuela's strip of four guagua tickets by sending the frog onto the right guagua each time: a wrong one tears a ticket off for nothing, and what is left decides how they go home.","stake":{"thing":"boletos","steps":2},"dots":7,"bien":"si_muy_bien",
- "focus_words":["parada","¿adónde vas?","voy","vas"],"formas_foco":{},
- "back_again":["guagua","viene","va","parque","colmado","casa","yo","tú","¿cuál?","señora","abuela","gracias","toma","no","cansado","bien","adiós","hasta mañana","luego","ahora","vamos"],
+ "focus_words":["parada","¿para dónde vas?","voy","vas"],"formas_foco":{},
+ "back_again":["guagua","viene","va","parque","colmado","casa","yo","tú","¿cuál?","señora","abuela","gracias","toma","no","cansado","bien","adiós","hasta mañana","después","ahora","vamos"],
  "also_heard":[],"names":nm,"clips":c,
  "beats":[{"set":{"hora":"manana"}},act("boletos",n=4,quien="abuela"),gesto("senora","sienta"),act("ir",a="bordillo"),{"wait":500},
   # 1: the stop's sign twinkles; the signed ask on the sign and shelter; the señora asks if he is tired (a speaking turn)
@@ -113,7 +113,7 @@ s51={"id":"adonde-vas","title":"¿Adónde vas?","place":"La calle","scene":"para
   ask("parada","c51_donde_parada",after=[gesto("coqui","salta")],then=["c51_sra_dias","c51_cq_no_bien"]),
   # 2: two guaguas (the tree, the awning); Luis's ride (signed ask on the guagua with the tree)
   {"dots":1},act("guagua",k="arbol",que="llega",a="parada1"),act("guagua",k="toldo",que="llega",a="parada2"),"c51_viene","c51_sra_luis","c51_luis_voy",
-  ask("guagua_a","c51_cual_luis",then=["c51_ch_adonde","c51_luis_al_parque",act("boleto",quien="luis"),act("sube",quien="luis",k="arbol")]),
+  ask("guagua_a","c51_cual_luis",then=["c51_ch_para_donde","c51_luis_al_parque",act("boleto",quien="luis"),act("sube",quien="luis",k="arbol")]),
   # 3: Carmen's ride (signed ask on the guagua with the awning); both drive away
   {"dots":2},"c51_ab_carmen","c51_carmen_voy",
   ask("guagua_b","c51_cual_carmen",then=[act("boleto",quien="carmen"),act("sube",quien="carmen",k="toldo"),act("guagua",k="arbol",que="sale",a="parada1"),act("guagua",k="toldo",que="sale",a="parada2")]),
@@ -121,29 +121,29 @@ s51={"id":"adonde-vas","title":"¿Adónde vas?","place":"La calle","scene":"para
   {"dots":3},act("guagua",k="casa",que="llega",a="parada1"),"c51_sra_casa",gesto("coqui","mira",a="abuela"),"c51_ab_hoy",act("sube",quien="senora",k="casa"),act("guagua",k="casa",que="sale",a="parada1"),
   # 5: the turn: the strip of four goes to the frog's hand; the card shows two places
   {"dots":4},act("boletos",n=4,quien="coqui"),"c51_ab_toma","c51_cq_gracias",CARD,{"wait":400},
-  # 6: A. Then, both ways: a moment, "Y luego...", the two guaguas come back
-  {"dots":5}]+ronda51("a")+[{"wait":600},"c51_luego",act("vuelve51"),
+  # 6: A. Then, both ways: a moment, "Y después...", the two guaguas come back
+  {"dots":5}]+ronda51("a")+[{"wait":600},"c51_despues",act("vuelve51"),
   # 7: B (drawn afresh); they come back as in A; the sun is low; the señora is on the bench again
-  {"dots":6}]+ronda51("b")+[{"wait":600},"c51_luego",act("vuelve51"),{"set":{"hora":"tarde"}},gesto("senora","sienta")],
+  {"dots":6}]+ronda51("b")+[{"wait":600},"c51_despues",act("vuelve51"),{"set":{"hora":"tarde"}},gesto("senora","sienta")],
  "final":[{"dots":7},   # 8: the guagua with the house; what is left of the strip (two, one or none) decides how they go home; 9: the turn, "Abuela y Coquí van a casa."
   act("guagua",k="casa",que="llega",a="parada1"),"c51_ab_vamos",
   {"if":"lost=0","then":[act("final51",n=2),"c51_ch_hasta"],"else":[{"if":"lost=1","then":[act("final51",n=1),"c51_ch_hasta"],"else":[act("final51",n=0),"c51_sra_hasta"]}]},
   "c51_cq_adios","c51_van",act("fin")],
- "leer":["c51_estan","c51_donde_parada","c51_sra_dias","c51_cq_no_bien","c51_viene","c51_sra_luis","c51_luis_voy","c51_cual_luis","c51_ch_adonde","c51_luis_al_parque","c51_ab_carmen","c51_carmen_voy","c51_cual_carmen","c51_sra_casa","c51_ab_hoy","c51_ab_toma","c51_cq_gracias",
-  "c51_a_yo_toldo_arbol","c51_luego","c51_b_yo_casa_toldo","c51_luego","c51_ab_vamos","c51_ch_hasta","c51_cq_adios","c51_van"]}
+ "leer":["c51_estan","c51_donde_parada","c51_sra_dias","c51_cq_no_bien","c51_viene","c51_sra_luis","c51_luis_voy","c51_cual_luis","c51_ch_para_donde","c51_luis_al_parque","c51_ab_carmen","c51_carmen_voy","c51_cual_carmen","c51_sra_casa","c51_ab_hoy","c51_ab_toma","c51_cq_gracias",
+  "c51_a_yo_toldo_arbol","c51_despues","c51_b_yo_casa_toldo","c51_despues","c51_ab_vamos","c51_ch_hasta","c51_cq_adios","c51_van"]}
 s51=reuse(s51,{"c51_cq_no_bien":TG(("no",["no"])),"c51_cq_gracias":TG(("gracias",["gracias"])),"c51_cq_adios":TG(("adiós",["adiós","adios"]))})
-json.dump(s51,open("cuentos/adonde-vas.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+json.dump(s51,open("cuentos/para-donde-vas.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
-# ---------------- 52. Sube y baja ----------------
-# Both rounds are at abuela's guagua (the tree, at parada1). The chofer says sube or baja (drawn afresh each round); both groups wait, both doors are shut; he touches the door of the word said.
+# ---------------- 52. Se monta y se baja ----------------
+# Both rounds are at abuela's guagua (the tree, at parada1). `dice` is sube or baja (drawn afresh each round; the values stay as names, the words said are "se monta" and "se baja": see `palabras`); the chofer says it, both groups wait, both doors are shut; he touches the door of the word said.
 c=dict(comunes); nm,nc=nombres("abuela","luis","carmen","senor","coqui"); c.update(nc)
-c.update({"c52_mira":N("Mira. Llega una guagua."),"c52_carmen_baja":N("Carmen baja de la guagua."),"c52_donde_carmen":N("¿Por dónde baja Carmen?"),"c52_sale_parada":N("La guagua sale de la parada."),
- "c52_otra":N("Ahora llega otra guagua. Va al parque."),"c52_ch_sube_abuela":CH("¡Sube, abuela!"),"c52_donde_abuela":N("¿Por dónde sube abuela?"),"c52_pan_huele":N("El pan huele rico. Canelo tiene hambre."),
- "c52_senor_baja":N("El señor baja de la guagua."),"c52_donde_senor":N("¿Por dónde baja el señor?"),"c52_senor_gracias":SE("¡Gracias! ¿Vas al parque, Coquí?"),"c52_cq_si":T("¡Sí!"),
- "c52_ch_sube_luis":CH("¡Sube, Luis!"),"c52_donde_luis":N("¿Por dónde sube Luis?"),"c52_ch_muy_bien":CH("¡Muy bien, Coquí! Ahora tú."),"c52_llega_otra":N("Llega otra guagua."),
- "c52_ahora_baja":CH("Ahora baja la gente."),"c52_ahora_sube":CH("Ahora sube la gente."),"c52_no_baja":CH("No, Coquí. Ahora baja la gente."),"c52_no_sube":CH("No, Coquí. Ahora sube la gente."),
- "c52_sale":N("La guagua sale."),"c52_ch_coqui_sube":CH("¡Coquí! ¡Sube!"),"c52_ab_quieres":AB("¿Qué quieres, Coquí?"),"c52_cq_pan":T("¡Pan, por favor!"),"c52_luego":N("Y luego llega al parque.")})
+c.update({"c52_mira":N("Mira. Llega una guagua."),"c52_carmen_baja":N("Carmen se baja de la guagua."),"c52_donde_carmen":N("¿Por dónde se baja Carmen?"),"c52_se_va":N("La guagua se va."),
+ "c52_otra":N("Ahora llega otra guagua. Va al parque."),"c52_ab_monta":N("Abuela se monta en la guagua."),"c52_donde_abuela":N("¿Por dónde se monta abuela?"),"c52_pan_huele":N("El pan huele rico. Canelo tiene hambre."),
+ "c52_senor_baja":N("El señor se baja de la guagua."),"c52_donde_senor":N("¿Por dónde se baja el señor?"),"c52_senor_gracias":SE("¡Gracias! ¿Vas al parque, Coquí?"),"c52_cq_si":T("¡Sí!"),
+ "c52_ahora_monta_luis":N("Ahora se monta Luis."),"c52_donde_luis":N("¿Por dónde se monta Luis?"),"c52_ch_muy_bien":CH("¡Muy bien, Coquí! Ahora tú."),"c52_llega_otra":N("Llega otra guagua."),
+ "c52_ahora_baja":CH("Ahora se baja la gente."),"c52_ahora_sube":CH("Ahora se monta la gente."),"c52_no_baja":CH("No, Coquí. Ahora se baja la gente."),"c52_no_sube":CH("No, Coquí. Ahora se monta la gente."),
+ "c52_ch_coqui_monta":CH("¡Coquí! ¡Móntate!"),"c52_ab_quieres":AB("¿Qué quieres, Coquí?"),"c52_cq_pan":T("¡Pan, por favor!"),"c52_se_va_parada":N("La guagua se va de la parada."),"c52_despues":N("Y después llega al parque.")})
 def ronda52():
     # dice: sube or baja, drawn; k: the door of the word said
     return [{"draw":"dice","options":["sube","baja"]},{"calc":"k","cond":"dice=baja","then":"puerta_baja","else":"puerta_sube"},
@@ -152,37 +152,37 @@ def ronda52():
       "right":[act("puerta",cual="$k",abre=1),{"if":"dice=baja","then":[act("gente52",que="baja")],"else":[act("gente52",que="sube")]},{"if":"ok","then":[OK]},
                {"if":"dice=baja","then":[act("gente52",que="sube")],"else":[act("gente52",que="baja")]}],
       "wrong":[act("puerta",cual="$x",abre=1),gesto("chofer","silba"),act("perro52")]+X+["c52_no_$dice"]}]
-s52={"id":"sube-y-baja","title":"Sube y baja","place":"La calle","scene":"parada","next":"cerca-y-lejos",
+s52={"id":"se-monta-y-se-baja","title":"Se monta y se baja","place":"La calle","scene":"parada","next":"cerca-y-lejos",
  "goal":"Open the right door for each group, so the three warm rolls on abuela's window sill are still there for the picnic and Canelo, under the bench, gets none.","stake":{"thing":"panes","steps":2},"dots":7,"bien":"si_muy_bien",
- "focus_words":["sube","baja","llega","sale"],"formas_foco":{},
- "back_again":["guagua","parada","gente","ahora","luego","va","pan","huele","rico","tengo hambre","¿qué quieres?","abuela","señor","sí","parque","gracias"],
- "also_heard":[],"names":nm,"clips":c,
+ "focus_words":["se monta","se baja","llega","se va"],"formas_foco":{"se monta":["móntate"]},
+ "back_again":["guagua","parada","gente","ahora","después","va","pan","huele","rico","tengo hambre","¿qué quieres?","abuela","señor","sí","parque","gracias"],
+ "also_heard":[],"names":nm,"palabras":{"sube":"se monta","baja":"se baja"},"clips":c,
  "beats":[{"set":{"hora":"manana"}},act("ir",a="bordillo"),{"wait":500},
   # 1: a guagua with the awning; Carmen knocks at the back door; the button twinkles; signed ask on the back door; she gets off; the guagua drives away
   act("guagua",k="toldo",que="llega",a="parada1"),"c52_mira",act("llama52",quien="carmen"),tw("puerta_baja"),"c52_carmen_baja",tw(None),
-  ask("puerta_baja","c52_donde_carmen",after=[act("puerta",cual="puerta_baja",abre=1),act("baja",quien="carmen",k="toldo")],then=[act("guagua",k="toldo",que="sale",a="parada1"),"c52_sale_parada"]),
+  ask("puerta_baja","c52_donde_carmen",after=[act("puerta",cual="puerta_baja",abre=1),act("baja",quien="carmen",k="toldo")],then=[act("guagua",k="toldo",que="sale",a="parada1"),"c52_se_va"]),
   # 2: abuela's guagua (the tree); the button of the front door twinkles; signed ask on the front door; abuela sits at the window with the basket of three rolls
-  {"dots":1},act("guagua",k="arbol",que="llega",a="parada1"),"c52_otra",tw("puerta_sube"),"c52_ch_sube_abuela",tw(None),
+  {"dots":1},act("guagua",k="arbol",que="llega",a="parada1"),"c52_otra",tw("puerta_sube"),"c52_ab_monta",tw(None),
   ask("puerta_sube","c52_donde_abuela",after=[act("puerta",cual="puerta_sube",abre=1),act("sube",quien="abuela",k="arbol"),act("panes",n=3)],then=["c52_pan_huele"]),
   # 3: the señor knocks at the back door; signed ask; he gets off; a speaking turn
   {"dots":2},act("llama52",quien="senor"),"c52_senor_baja",
   ask("puerta_baja","c52_donde_senor",after=[act("puerta",cual="puerta_baja",abre=1),act("baja",quien="senor",k="arbol"),gesto("coqui","salta"),gesto("coqui","mira",a="guagua_a")],then=["c52_senor_gracias","c52_cq_si"]),
   # 4: Luis gets on at the front door
-  {"dots":3},"c52_ch_sube_luis",ask("puerta_sube","c52_donde_luis",after=[act("sube",quien="luis",k="arbol")]),
+  {"dots":3},"c52_ahora_monta_luis",ask("puerta_sube","c52_donde_luis",after=[act("sube",quien="luis",k="arbol")]),
   # 5: the turn: thumb up; a guagua with the house stops behind; people at the kerb and at the back door's glass; the card shows two places
   {"dots":4},gesto("chofer","pulgar"),"c52_ch_muy_bien",act("guagua",k="casa",que="llega",a="parada2"),"c52_llega_otra",act("gente52",que="viene"),CARD,{"wait":400},
   # 6: A (sube or baja, drawn). Then, both ways: the guagua with the house drives away; new people come
-  {"dots":5}]+ronda52()+[act("guagua",k="casa",que="sale",a="parada2"),"c52_sale",act("gente52",que="viene"),
+  {"dots":5}]+ronda52()+[act("guagua",k="casa",que="sale",a="parada2"),"c52_se_va",act("gente52",que="viene"),
   # 7: B (the same game, drawn afresh)
   {"dots":6}]+ronda52(),
  "final":[{"dots":7},   # 8: the frog gets on; abuela lifts the cloth; "¿Qué quieres, Coquí?" (a speaking turn); what is left of the rolls (three, two or one); 9: the guagua drives away
-  "c52_ch_coqui_sube",act("sube",quien="coqui",k="arbol"),"c52_ab_quieres","c52_cq_pan",
+  "c52_ch_coqui_monta",act("sube",quien="coqui",k="arbol"),"c52_ab_quieres","c52_cq_pan",
   {"if":"lost=0","then":[act("final52",n=3)],"else":[{"if":"lost=1","then":[act("final52",n=2)],"else":[act("final52",n=1)]}]},
-  "c52_sale_parada",act("guagua",k="arbol",que="sale",a="parada1"),"c52_luego",act("fin")],
- "leer":["c52_mira","c52_carmen_baja","c52_donde_carmen","c52_sale_parada","c52_otra","c52_ch_sube_abuela","c52_donde_abuela","c52_pan_huele","c52_senor_baja","c52_donde_senor","c52_senor_gracias","c52_cq_si","c52_ch_sube_luis","c52_donde_luis","c52_ch_muy_bien","c52_llega_otra",
-  "c52_ahora_baja","c52_sale","c52_ahora_sube","c52_ch_coqui_sube","c52_ab_quieres","c52_cq_pan","c52_sale_parada","c52_luego"]}
+  "c52_se_va_parada",act("guagua",k="arbol",que="sale",a="parada1"),"c52_despues",act("fin")],
+ "leer":["c52_mira","c52_carmen_baja","c52_donde_carmen","c52_se_va","c52_otra","c52_ab_monta","c52_donde_abuela","c52_pan_huele","c52_senor_baja","c52_donde_senor","c52_senor_gracias","c52_cq_si","c52_ahora_monta_luis","c52_donde_luis","c52_ch_muy_bien","c52_llega_otra",
+  "c52_ahora_baja","c52_se_va","c52_ahora_sube","c52_ch_coqui_monta","c52_ab_quieres","c52_cq_pan","c52_se_va_parada","c52_despues"]}
 s52=reuse(s52,{"c52_cq_si":TG(("sí",["sí","si"])),"c52_cq_pan":TG(("pan",["pan"]))})
-json.dump(s52,open("cuentos/sube-y-baja.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+json.dump(s52,open("cuentos/se-monta-y-se-baja.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
 # ---------------- 53. Cerca y lejos ----------------

@@ -26,7 +26,7 @@ def resta(nombre):   # what is left of the stake after a cost (the stake has 3 s
 def quedan(hist):   # the ending, by what was lost: three, two or one left
     return {"if":"lost=0","then":[act(hist,n=3)],"else":[{"if":"lost=1","then":[act(hist,n=2)],"else":[act(hist,n=1)]}]}
 LEFT,RIGHT="izq","der"   # OPEN: the script says "comes one way ... the other way" (48.3) and names no side values; these two are mine
-MINE=("la-calle","la-esquina","ahora-y-luego","adonde-vas","sube-y-baja","cerca-y-lejos","las-tiendas","el-edificio-alto","abierto-y-cerrado","izquierda-o-derecha","sigue-derecho","delante-y-detras")   # this generator's stories and the ones after them: not seen
+MINE=("la-calle","la-esquina","ahora-y-despues","para-donde-vas","se-monta-y-se-baja","cerca-y-lejos","las-tiendas","el-edificio-alto","abierto-y-cerrado","izquierda-o-derecha","sigue-derecho","al-frente-y-detras")   # this generator's stories and the ones after them: not seen
 # a clip whose text and speaker are already recorded under another id keeps that id (nothing is recorded twice); the stories of this run feed it too, in order.
 # Ties go to the id most used, then to the earliest story of the course.
 ORD={}
@@ -159,7 +159,7 @@ def ronda49(s):
       "lead":[act("par49",a="$"+cr,b="$"+pa,lado="$"+d),linea],"line":linea,
       "right":[act("luz",roja=1),act("cruza",quien="$"+cr),{"if":"ok","then":[act("pasa",quien="$"+pa)]},act("luz",roja=0),okc()],
       "wrong":[act("luz",roja=1),act("pasa",quien="$x"),act("bocina",k="guagua"),act("globo_va")]+X+[resta("globos"),"c49_no_$%s_$%s"%(cr,pa)]}]
-s49={"id":"la-esquina","title":"La esquina","place":"La calle","scene":"esquina","next":"ahora-y-luego",
+s49={"id":"la-esquina","title":"La esquina","place":"La calle","scene":"esquina","next":"ahora-y-despues",
  "goal":"Press the button only for the person who is crossing, so the three balloons in his hand reach the bebé on the far pavement: every wrong press stops the traffic for nobody and a balloon gets away.","stake":{"thing":"globos","steps":3},"dots":8,"bien":"si_muy_bien",
  "focus_words":["esquina","gente","cruza","pasa"],"formas_foco":{"cruza":["cruzan"],"pasa":["pasan"]},
  "back_again":["calle","carro","guagua","bicicleta","colmado","espera","hay","mucho","señora","señor","abuela","bebé","mamá","tres","¿cuántos?","toma","tiene","aquí","no","ahora","casa"],
@@ -191,24 +191,24 @@ s49=reuse(s49,{"c49_cq_colmado":TG(("colmado",["colmado"])),"c49_cq_tres":TG(("t
 json.dump(s49,open("cuentos/la-esquina.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
-# ---------------- 50. Ahora y luego ----------------
+# ---------------- 50. Ahora y después ----------------
 # Every round: two of the car, the guagua and the bicycle wait at the two ends of the lane; the obrero says which goes now and which goes after (which half of his line comes first: drawn). B's pair is not A's pair.
 nm,nc=nombres("luis","coqui")
 c=dict(comunes); c.update(nc)
 c.update({"c50_obrero_arregla":N("Coquí y Luis están en la esquina. Un obrero arregla la calle."),"c50_obrero_cuidado":OB("¡Cuidado, Coquí! Mira."),"c50_cq_que_es":T("¿Qué es esto?"),"c50_obrero_cemento":OB("Esto es cemento. No está listo."),
- "c50_viene_carro_guagua":N("Viene un carro y viene la guagua."),"c50_cual_ahora":N("¿Cuál va ahora?"),"c50_y_luego_guagua":N("Y luego va la guagua."),
- "c50_viene_bici":N("Ahora viene una bicicleta."),"c50_y_luego_carro":N("Y luego va el carro."),
+ "c50_viene_carro_guagua":N("Viene un carro y viene la guagua."),"c50_cual_ahora":N("¿Cuál va ahora?"),"c50_y_despues_guagua":N("Y después va la guagua."),
+ "c50_viene_bici":N("Ahora viene una bicicleta."),"c50_y_despues_carro":N("Y después va el carro."),
  "c50_obrero_banderas":OB("Tengo sed. Quiero agua. Toma las banderas, Coquí."),"c50_cq_gracias":T("¡Gracias!"),
- "c50_espera":OB("¡Espera, Coquí!"),"c50_obrero_listo":OB("Ahora está listo. Ahora tú, Coquí."),"c50_y_luego_tu":OB("Y luego tú, Luis."),
+ "c50_espera":OB("¡Espera, Coquí!"),"c50_obrero_listo":OB("Ahora está listo. Ahora tú, Coquí."),"c50_y_despues_tu":OB("Y después tú, Luis."),
  "c50_obrero_gusta":OB("Mira. ¿Te gusta?"),"c50_cq_me_gusta":T("¡Sí, me gusta!"),"c50_viene_carro_casa":N("Viene un carro. Coquí y Luis van a casa.")})
 for ahora in ART:
-    for luego in ART:
-        if ahora==luego: continue
-        Lu=ART[luego][0].upper()+ART[luego][1:]
-        c["c50_ob_a_%s_%s"%(ahora,luego)]=OB("Ahora va %s. Luego va %s."%(ART[ahora],ART[luego]))          # his line, the "now" half first
-        c["c50_ob_l_%s_%s"%(ahora,luego)]=OB("%s va luego. Ahora va %s."%(Lu,ART[ahora]))                 # drawn: the "after" half first
-        c["c50_no_%s_%s"%(ahora,luego)]=OB("No. Ahora va %s. Luego va %s."%(ART[ahora],ART[luego]))        # the correction, as in the script's example
-        DIN.update(["c50_ob_a_%s_%s"%(ahora,luego),"c50_ob_l_%s_%s"%(ahora,luego),"c50_no_%s_%s"%(ahora,luego)])
+    for despues in ART:
+        if ahora==despues: continue
+        Lu=ART[despues][0].upper()+ART[despues][1:]
+        c["c50_ob_a_%s_%s"%(ahora,despues)]=OB("Ahora va %s. Después va %s."%(ART[ahora],ART[despues]))          # his line, the "now" half first
+        c["c50_ob_l_%s_%s"%(ahora,despues)]=OB("%s va después. Ahora va %s."%(Lu,ART[ahora]))                 # drawn: the "after" half first
+        c["c50_no_%s_%s"%(ahora,despues)]=OB("No. Ahora va %s. Después va %s."%(ART[ahora],ART[despues]))        # the correction, as in the script's example
+        DIN.update(["c50_ob_a_%s_%s"%(ahora,despues),"c50_ob_l_%s_%s"%(ahora,despues),"c50_no_%s_%s"%(ahora,despues)])
 def ronda50(s,u,v):
     # u waits at carril_a, v at carril_b (variables dealt for the game); n: the one that goes now, l: the one that goes after; o: which half of the line is said first (a: the "now" half, l: the "after" half)
     n,l,o="n"+s,"l"+s,"o"+s
@@ -218,9 +218,9 @@ def ronda50(s,u,v):
       "lead":junto(act("llega",k="$"+u,a="carril_a"),act("llega",k="$"+v,a="carril_b"))+[linea],"line":linea,
       "right":[act("bandera",a="$"+n),act("sigue",k="$"+n),act("sigue",k="$"+l),okc()],
       "wrong":[act("bandera",a="$x")]+con(act("atras50",k="$x"),gesto("obrero","silba"),"c50_espera")+X+[resta("cemento"),"c50_no_$%s_$%s"%(n,l)]}]
-s50={"id":"ahora-y-luego","title":"Ahora y luego","place":"La calle","scene":"esquina","next":"adonde-vas",
+s50={"id":"ahora-y-despues","title":"Ahora y después","place":"La calle","scene":"esquina","next":"para-donde-vas",
  "goal":"Send the right one through the one-lane roadwork first with the flags, so the fresh cement stays smooth for the frog's and Luis's prints: a wrong one backs up and leaves a wheel track in it.","stake":{"thing":"cemento","steps":3},"dots":7,"bien":"si_muy_bien",
- "focus_words":["viene","va","ahora","luego"],"formas_foco":{},
+ "focus_words":["viene","va","ahora","después"],"formas_foco":{},
  "back_again":["carro","guagua","bicicleta","calle","esquina","cuidado","listo","¿qué es esto?","¿cuál?","me gusta","mira","tú","tengo sed","agua","quiero","toma","gracias","casa"],
  "also_heard":["obrero","arregla","banderas"],"names":nm,"palabras":{},"clips":c,
  "beats":[{"set":{"hora":"manana","obra":1}},act("cemento",n=3),{"wait":500},
@@ -228,21 +228,21 @@ s50={"id":"ahora-y-luego","title":"Ahora y luego","place":"La calle","scene":"es
   {"dots":1},"c50_obrero_arregla","c50_obrero_cuidado",gesto("obrero","mira",a="cemento"),tw("cemento"),"c50_cq_que_es",tw(None),"c50_obrero_cemento",gesto("coqui","pie"),
   # 2 and 3: two signed asks (the car; the bicycle): who goes now
   {"dots":2}]+junto(act("llega",k="carro",color="rojo",a="carril_a"),act("llega",k="guagua",a="carril_b"),"c50_viene_carro_guagua")+["c50_ob_a_carro_guagua",
-  ask("carro","c50_cual_ahora",after=[act("paleta",a="carril_a"),act("sigue",k="carro")],then=["c50_y_luego_guagua",act("sigue",k="guagua")]),
+  ask("carro","c50_cual_ahora",after=[act("paleta",a="carril_a"),act("sigue",k="carro")],then=["c50_y_despues_guagua",act("sigue",k="guagua")]),
   {"dots":3}]+junto(act("llega",k="bicicleta",a="carril_a"),act("llega",k="carro",color="azul",a="carril_b"),"c50_viene_bici")+["c50_ob_a_bicicleta_carro",
-  ask("bicicleta","c50_cual_ahora",after=[act("paleta",a="carril_a"),act("bocina",k="bicicleta"),act("sigue",k="bicicleta")],then=["c50_y_luego_carro",act("sigue",k="carro")]),
+  ask("bicicleta","c50_cual_ahora",after=[act("paleta",a="carril_a"),act("bocina",k="bicicleta"),act("sigue",k="bicicleta")],then=["c50_y_despues_carro",act("sigue",k="carro")]),
   # 4: the turn: the obrero sits down and hands over the flags; thanks (a speaking turn); the card shows two places
   {"dots":4},gesto("obrero","bebe"),"c50_obrero_banderas","c50_cq_gracias",act("banderas"),CARD,{"wait":400},
   # 5: A; 6: B. The three things are dealt once: A is ua and va, B is va and wa (not A's pair)
   {"reparte":["ua","va","wa"],"options":["carro","guagua","bicicleta"]},
   {"dots":5}]+ronda50("a","ua","va")+[{"dots":6}]+ronda50("b","va","wa"),
  "final":[{"dots":7},"c50_obrero_listo",act("ir",a="cemento"),   # 7: the obrero tests the cement; the frog hops on it; the prints, by what was lost
-  {"if":"lost=0","then":con(act("huellas",n=3),"c50_y_luego_tu"),"else":[{"if":"lost=1","then":[act("huellas",n=2)],"else":[act("huellas",n=1)]}]},
+  {"if":"lost=0","then":con(act("huellas",n=3),"c50_y_despues_tu"),"else":[{"if":"lost=1","then":[act("huellas",n=2)],"else":[act("huellas",n=1)]}]},
   "c50_obrero_gusta","c50_cq_me_gusta",act("llega",k="carro",a="carril_a"),"c50_viene_carro_casa",act("fin")],     # 8
- "leer":["c50_obrero_arregla","c50_obrero_cuidado","c50_cq_que_es","c50_obrero_cemento","c50_viene_carro_guagua","c50_ob_a_carro_guagua","c50_cual_ahora","c50_y_luego_guagua","c50_viene_bici","c50_ob_a_bicicleta_carro","c50_y_luego_carro",
-  "c50_obrero_banderas","c50_cq_gracias","c50_ob_a_guagua_carro","c50_obrero_listo","c50_y_luego_tu","c50_obrero_gusta","c50_cq_me_gusta","c50_viene_carro_casa"]}
+ "leer":["c50_obrero_arregla","c50_obrero_cuidado","c50_cq_que_es","c50_obrero_cemento","c50_viene_carro_guagua","c50_ob_a_carro_guagua","c50_cual_ahora","c50_y_despues_guagua","c50_viene_bici","c50_ob_a_bicicleta_carro","c50_y_despues_carro",
+  "c50_obrero_banderas","c50_cq_gracias","c50_ob_a_guagua_carro","c50_obrero_listo","c50_y_despues_tu","c50_obrero_gusta","c50_cq_me_gusta","c50_viene_carro_casa"]}
 s50=reuse(s50,{"c50_cq_que_es":TG(("¿qué es esto?",["¿qué es esto?","que es esto"])),"c50_cq_gracias":TG(("gracias",["gracias"])),"c50_cq_me_gusta":TG(("me gusta",["me gusta"]))})
-json.dump(s50,open("cuentos/ahora-y-luego.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+json.dump(s50,open("cuentos/ahora-y-despues.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
 # clip ids are global: the same id must have the same text everywhere

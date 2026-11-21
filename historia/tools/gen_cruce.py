@@ -28,9 +28,9 @@ CARD={"set":{"tarjeta":"rondas","marcas":[None,None]}}   # every story has two s
 HORA59="tarde"                                            # the script's third state ("late afternoon") has no key: placeholder, see the header
 TRAE_FARMACIA="farmacia"
 # The new words of stories 48 to 56 (their files are not on disk when this runs): the speaking turns of 57 to 59 may use them, and the back_again lists name them.
-FOCUS_48_56=["calle","carro","guagua","bicicleta","esquina","gente","cruza","pasa","viene","va","ahora","luego","parada","¿adónde vas?","voy","vas","sube","baja","llega","sale","cerca","lejos","temprano","tarde",
+FOCUS_48_56=["calle","carro","guagua","bicicleta","esquina","gente","cruza","pasa","viene","va","ahora","después","parada","¿para dónde vas?","voy","vas","se monta","se baja","llega","se va","cerca","lejos","temprano","tarde",
              "tienda","banco","farmacia","correo","edificio","alto","nuevo","escuela","hospital","abierto","cerrado","entra"]
-MINE=("izquierda-o-derecha","sigue-derecho","delante-y-detras")   # this generator's stories: not seen
+MINE=("izquierda-o-derecha","sigue-derecho","al-frente-y-detras")   # this generator's stories: not seen
 # a clip whose text and speaker are already recorded under another id keeps that id (nothing is recorded twice); the stories of this run feed it too, in order.
 # Ties go to the id most used, then to the earliest story of the course.
 ORD={}
@@ -85,8 +85,8 @@ def nombres(*ks):
 # The frog goes for a kite (tienda) and a loaf (colmado), in a drawn order (la: round A's place, lb: round B's). Each round on its own: the street said, izq or der (da, db).
 # Round A asks the señor, round B asks Carmen. Nobody points in a round. A miss: the frog walks out along the other street, comes back, trips on abuela's bag: a part of the water runs out.
 c=dict(comunes); nm,nc=nombres("abuela","coqui","senor","senora","carmen"); c.update(nc)
-c.update({"c57_cruce":N("Abuela y Coquí están en el cruce."),"c57_ab_carta":AB("Tengo una carta."),"c57_pepe_hola":PE("¡Hola! Coquí, ¿adónde vas?"),"c57_cq_correo":T("¡Al correo!"),
- "c57_cq_pepe":T("Perdón, don Pepe. ¿Dónde está el correo?"),"c57_pepe_izq":PE("Dobla a la izquierda, Coquí. A la izquierda."),"c57_para_donde":N("¿Para dónde dobla Coquí?"),"c57_luego":N("Y luego..."),
+c.update({"c57_cruce":N("Abuela y Coquí están en el cruce."),"c57_ab_carta":AB("Tengo una carta."),"c57_pepe_hola":PE("¡Hola! Coquí, ¿para dónde vas?"),"c57_cq_correo":T("¡Para el correo!"),
+ "c57_cq_pepe":T("Perdón, don Pepe. ¿Dónde está el correo?"),"c57_pepe_izq":PE("Dobla a la izquierda, Coquí. A la izquierda."),"c57_para_donde":N("¿Para dónde dobla Coquí?"),"c57_despues":N("Y después..."),
  "c57_ab_correo":AB("¡El correo está a la izquierda!"),"c57_cq_sra":T("Perdón, señora. ¿Dónde está la farmacia?"),"c57_sra_der":SA("Dobla a la derecha. Sí, a la derecha."),
  "c57_ab_farmacia":AB("¡La farmacia está a la derecha!"),"c57_ab_calor":AB("¡Qué calor! Estoy cansada. Coquí, ¿vas tú?"),"c57_cq_voy":T("¡Sí, yo voy!"),
  "c57_ab_gracias":AB("¡Gracias, Coquí! Toma agua."),"c57_cq_gracias":T("¡Gracias, abuela!"),"c57_ab_casa":AB("Y ahora, a casa.")})
@@ -98,7 +98,7 @@ for q,F,pre in (("senor",SE,"Perdón, señor. ¿Dónde está %s?"),("carmen",CA,
 def ronda57(s,q,orden):
     # one round: the person stands at the crossing, the frog asks where the place is, the answer is a street (drawn); he touches it
     l,d,o="l"+s,"d"+s,"o"+s    # the place, the street said, the other street
-    ir=([act("toma",quien="carmen",por="$"+d)] if q=="carmen" else [])+con(act("toma",quien="coqui",por="$"+d,trae="$"+l),"c57_luego")   # Carmen skips out along the same street ahead of him
+    ir=([act("toma",quien="carmen",por="$"+d)] if q=="carmen" else [])+con(act("toma",quien="coqui",por="$"+d,trae="$"+l),"c57_despues")   # Carmen skips out along the same street ahead of him
     return [{"draw":d,"options":orden,"other":o},act("pasa",quien=q),"c57_cq_%s_$%s"%(q,l),
      {"decide":"do","options":["calle_izq","calle_der"],"pick":"calle_$"+d,"tests":"$"+d,"lock":True,"lead":[],"line":"c57_%s_$%s"%(q,d),
       "right":ir+[star],
@@ -108,17 +108,17 @@ s57={"id":"izquierda-o-derecha","title":"¿Izquierda o derecha?","place":"La cal
  "goal":"Fetch a kite from the tienda and a loaf from the colmado by asking the way at the crossing, and keep abuela's bottle of water: every wrong street ends with the frog tripping on her bag and a part of the water running out.",
  "stake":{"thing":"agua","steps":3},"dots":7,"bien":"si_muy_bien",
  "focus_words":["izquierda","derecha","dobla","perdón"],"formas_foco":{},
- "back_again":["calle","correo","farmacia","tienda","colmado","¿adónde vas?","voy","vas","yo","tú","señor","señora","agua","cansado","luego","toma","gracias","casa","ahora","aquí"],
+ "back_again":["calle","correo","farmacia","tienda","colmado","¿para dónde vas?","voy","vas","yo","tú","señor","señora","agua","cansado","después","toma","gracias","casa","ahora","aquí"],
  "also_heard":[],"names":nm,"palabras":{"izq":"izquierda","der":"derecha"},"clips":c,
  "beats":[{"set":{"hora":"mediodia"}},act("botella",n=3),{"wait":500},
   # 1: the crossing; abuela's letter; don Pepe rides up; the first turn (correo)
   "c57_cruce",gesto("abuela","mira",a="calle_izq"),gesto("abuela","mira",a="calle_der"),gesto("abuela","mira",a="calle_recta"),"c57_ab_carta",act("pasa",quien="pepe"),"c57_pepe_hola","c57_cq_correo",
   # 2: don Pepe points left (signed ask on the left street): the post office
   {"dots":1},"c57_cq_pepe",act("senala",quien="pepe",a="izq"),tw("calle_izq"),"c57_pepe_izq",tw(None),
-  ask("calle_izq","c57_para_donde",after=con(act("toma",quien="abuela",por="izq"),"c57_luego"),then=[gesto("abuela","manos"),"c57_ab_correo"]),
+  ask("calle_izq","c57_para_donde",after=con(act("toma",quien="abuela",por="izq"),"c57_despues"),then=[gesto("abuela","manos"),"c57_ab_correo"]),
   # 3: the señora points right (signed ask on the right street): the farmacia, a small bag
   {"dots":2},act("pasa",quien="senora"),"c57_cq_sra",act("senala",quien="senora",a="der"),tw("calle_der"),"c57_sra_der",tw(None),
-  ask("calle_der","c57_para_donde",after=con(act("toma",quien="abuela",por="der",trae=TRAE_FARMACIA),"c57_luego"),then=[gesto("abuela","manos"),"c57_ab_farmacia"]),
+  ask("calle_der","c57_para_donde",after=con(act("toma",quien="abuela",por="der",trae=TRAE_FARMACIA),"c57_despues"),then=[gesto("abuela","manos"),"c57_ab_farmacia"]),
   # 4: the turn (voy): abuela sits in the shade with the bottle; the card shows two places
   {"dots":3},gesto("abuela","sienta"),gesto("abuela","abanica"),"c57_ab_calor","c57_cq_voy",CARD,{"wait":400},
   # A: the señor. B: Carmen. The kite's and the loaf's places are drawn (la, lb); the street said is drawn afresh each round
@@ -126,8 +126,8 @@ s57={"id":"izquierda-o-derecha","title":"¿Izquierda o derecha?","place":"La cal
  "final":[{"dots":6},act("ir",a="asiento_plaza"),"c57_ab_gracias","c57_cq_gracias",   # 7: the two things on the seat; the water left, by what was lost
   {"if":"lost=0","then":[act("final57",n=3)],"else":[{"if":"lost=1","then":[act("final57",n=2)],"else":[act("final57",n=1)]}]},
   {"dots":7},"c57_ab_casa",act("fin")],
- "leer":["c57_cruce","c57_ab_carta","c57_pepe_hola","c57_cq_correo","c57_cq_pepe","c57_pepe_izq","c57_para_donde","c57_luego","c57_ab_correo","c57_cq_sra","c57_sra_der","c57_para_donde","c57_luego","c57_ab_farmacia","c57_ab_calor","c57_cq_voy",
-  "c57_cq_senor_tienda","c57_senor_der","c57_luego","c57_cq_carmen_colmado","c57_carmen_izq","c57_luego","c57_ab_gracias","c57_cq_gracias","c57_ab_casa"]}
+ "leer":["c57_cruce","c57_ab_carta","c57_pepe_hola","c57_cq_correo","c57_cq_pepe","c57_pepe_izq","c57_para_donde","c57_despues","c57_ab_correo","c57_cq_sra","c57_sra_der","c57_para_donde","c57_despues","c57_ab_farmacia","c57_ab_calor","c57_cq_voy",
+  "c57_cq_senor_tienda","c57_senor_der","c57_despues","c57_cq_carmen_colmado","c57_carmen_izq","c57_despues","c57_ab_gracias","c57_cq_gracias","c57_ab_casa"]}
 s57=reuse(s57,{"c57_cq_correo":TG(("correo",["correo"])),"c57_cq_voy":TG(("voy",["voy"])),"c57_cq_gracias":TG(("gracias",["gracias"]))})
 json.dump(s57,open("cuentos/izquierda-o-derecha.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
@@ -137,10 +137,10 @@ json.dump(s57,open("cuentos/izquierda-o-derecha.json","w",encoding="utf-8"),ensu
 # A miss: Luis rides out along the other street and back, puffing, the ice melts a size. After each ride the bicycle on the card moves a step nearer the cart (mapa58).
 c=dict(comunes); nm,nc=nombres("luis","coqui","senor","senora","carmen","piraguero"); c.update(nc)
 c.update({"c58_van":N("Luis y Coquí van en bicicleta. Tienen hielo para el piragüero."),"c58_luis_donde":L("¿Dónde está el piragüero? Ese señor sabe. ¡Coquí!"),"c58_cq_perdon":T("¡Perdón, señor!"),
- "c58_senor_recto":SE("¿El piragüero? Sigue derecho, hasta el árbol."),"c58_por_donde":N("¿Por dónde sigue Luis?"),"c58_luis_sigue":N("Luis sigue derecho."),"c58_luego":N("Y luego..."),
- "c58_pepe_ruta":PE("¿El piragüero? Dobla a la izquierda. Luego sigue derecho, hasta la esquina."),"c58_para_donde":N("¿Para dónde dobla Luis?"),"c58_obrero":OB("La calle está cerrada."),
+ "c58_senor_recto":SE("¿El piragüero? Sigue derecho, hasta el árbol."),"c58_por_donde":N("¿Por dónde sigue Luis?"),"c58_luis_sigue":N("Luis sigue derecho."),"c58_despues":N("Y después..."),
+ "c58_pepe_ruta":PE("¿El piragüero? Dobla a la izquierda. Después sigue derecho, hasta la esquina."),"c58_para_donde":N("¿Para dónde dobla Luis?"),"c58_obrero":OB("La calle está cerrada."),
  "c58_luis_hielo":L("¡El hielo! ¡Mira!"),"c58_cq_rapido":T("¡Rápido, Luis!"),"c58_luis_sra":L("Perdón, señora. ¿Dónde está el piragüero?"),
- "c58_pira_gracias":PI("¡Mi hielo! ¡Gracias, Luis! ¡Gracias, Coquí!"),"c58_pira_toma":PI("Toma, Coquí. ¿Está fría?"),"c58_cq_fria":T("¡Sí! ¡Muy fría!"),"c58_van_casa":N("Y luego Luis y Coquí van a casa.")})
+ "c58_pira_gracias":PI("¡Mi hielo! ¡Gracias, Luis! ¡Gracias, Coquí!"),"c58_pira_toma":PI("Toma, Coquí. ¿Está fría?"),"c58_cq_fria":T("¡Sí! ¡Muy fría!"),"c58_van_casa":N("Y después Luis y Coquí van a casa.")})
 for q,F in (("sra",SA),("carmen",CA)):
     for d,t in (("recta","Sigue derecho, hasta la esquina."),("izq","Dobla a la izquierda y sigue hasta la esquina.")):
         c["c58_%s_%s"%(q,d)]=F(t); c["c58_%s_no_%s"%(q,d)]=F("No. "+t); DIN.update(["c58_%s_%s"%(q,d),"c58_%s_no_%s"%(q,d)])
@@ -149,22 +149,22 @@ def ronda58(s,q,orden,fin):
     d,o="d"+s,"o"+s
     return [{"draw":d,"options":orden,"other":o},act("pasa",quien="senora" if q=="sra" else "carmen")]+(["c58_luis_sra"] if q=="sra" else [])+[
      {"decide":"do","options":["calle_recta","calle_izq"],"pick":"calle_$"+d,"tests":"$"+d,"lock":True,"lead":[],"line":"c58_%s_$%s"%(q,d),
-      "right":con(act("toma",quien="luis",por="$"+d),"c58_luego")+fin,
+      "right":con(act("toma",quien="luis",por="$"+d),"c58_despues")+fin,
       "wrong":[act("vuelve",quien="luis",por="$"+o),act("gotea"),{"if":"lost=0","then":[act("hielo",n=2)],"else":[act("hielo",n=1)]}]+X+["c58_%s_no_$%s"%(q,d)]}]
-s58={"id":"sigue-derecho","title":"Sigue derecho","place":"La calle","scene":"cruce","next":"delante-y-detras",
+s58={"id":"sigue-derecho","title":"Sigue derecho","place":"La calle","scene":"cruce","next":"al-frente-y-detras",
  "goal":"Ride the block of ice to the piragüero by asking the way at the crossing, with the right street shut: every wrong street melts the block a size.",
  "stake":{"thing":"hielo","steps":3},"dots":7,"bien":"si_muy_bien",
  "focus_words":["derecho","sigue","hasta"],"formas_foco":{},
- "back_again":["dobla","izquierda","perdón","calle","bicicleta","esquina","árbol","cerrado","rápido","frío","señor","señora","toma","gracias","van","luego","mira","casa"],
+ "back_again":["dobla","izquierda","perdón","calle","bicicleta","esquina","árbol","cerrado","rápido","frío","señor","señora","toma","gracias","van","después","mira","casa"],
  "also_heard":[],"names":nm,"palabras":{"recta":"derecho","izq":"dobla"},"clips":c,
  "beats":[{"set":{"hora":"tarde","cerrada":1}},act("hielo",n=3),act("mapa58",n=0),{"wait":500},
   # 1: the ice, the señor who knows; the first turn (perdón)
   "c58_van",act("pasa",quien="senor"),"c58_luis_donde","c58_cq_perdon",
   # 2: the señor says straight on, to the tree (signed ask on the street straight on); Luis stops under the tree on the way
   {"dots":1},"c58_senor_recto",act("senala",quien="senor",a="recta"),tw("calle_recta"),{"wait":600},tw("arbol"),{"wait":600},tw(None),
-  ask("calle_recta","c58_por_donde",after=con(act("toma",quien="luis",por="recta",arbol=1),"c58_luis_sigue","c58_luego")),
+  ask("calle_recta","c58_por_donde",after=con(act("toma",quien="luis",por="recta",arbol=1),"c58_luis_sigue","c58_despues")),
   # 3: don Pepe says left, then straight on (signed ask on the left street)
-  {"dots":2},act("pasa",quien="pepe"),"c58_pepe_ruta",ask("calle_izq","c58_para_donde",after=con(act("toma",quien="luis",por="izq"),"c58_luego")),
+  {"dots":2},act("pasa",quien="pepe"),"c58_pepe_ruta",ask("calle_izq","c58_para_donde",after=con(act("toma",quien="luis",por="izq"),"c58_despues")),
   # 4: the turn (rápido): the ice drips, the obrero says the street is shut; the card shows two places on its road
   {"dots":3},gesto("luis","mira",a="hielo"),act("gotea"),"c58_obrero","c58_luis_hielo",gesto("luis","mira",a="coqui"),"c58_cq_rapido",CARD,{"wait":400},
   # A: the señora (asked by Luis). B: Carmen. The answer is drawn afresh each round
@@ -172,26 +172,26 @@ s58={"id":"sigue-derecho","title":"Sigue derecho","place":"La calle","scene":"cr
  "final":[{"dots":6},"c58_pira_gracias",act("piraguero58"),   # 7: the piragüero scrapes the block; the piraguas, by the ice left
   {"if":"lost=0","then":[act("final58",n=3)],"else":[{"if":"lost=1","then":[act("final58",n=2)],"else":[act("final58",n=1)]}]},
   {"dots":7},"c58_pira_toma","c58_cq_fria","c58_van_casa",act("fin")],
- "leer":["c58_van","c58_luis_donde","c58_cq_perdon","c58_senor_recto","c58_por_donde","c58_luis_sigue","c58_luego","c58_pepe_ruta","c58_para_donde","c58_luego","c58_obrero","c58_luis_hielo","c58_cq_rapido",
-  "c58_luis_sra","c58_sra_recta","c58_luego","c58_carmen_izq","c58_luego","c58_pira_gracias","c58_pira_toma","c58_cq_fria","c58_van_casa"]}
+ "leer":["c58_van","c58_luis_donde","c58_cq_perdon","c58_senor_recto","c58_por_donde","c58_luis_sigue","c58_despues","c58_pepe_ruta","c58_para_donde","c58_despues","c58_obrero","c58_luis_hielo","c58_cq_rapido",
+  "c58_luis_sra","c58_sra_recta","c58_despues","c58_carmen_izq","c58_despues","c58_pira_gracias","c58_pira_toma","c58_cq_fria","c58_van_casa"]}
 s58=reuse(s58,{"c58_cq_perdon":TG(("perdón",["perdón","perdon"])),"c58_cq_rapido":TG(("rápido",["rápido","rapido"])),"c58_cq_fria":TG(("frío",["fría","fria","frío","frio"]))})
 json.dump(s58,open("cuentos/sigue-derecho.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
-# ---------------- 59. Delante y detrás ----------------
+# ---------------- 59. Al frente y detrás ----------------
 # Papá says where the frog goes. Round A is at Canelo: behind him or in front of him (da, drawn); round B is at abuela: beside her (the gap on the seat) or in front of her (db, drawn). The picture is spoiled by where he went:
 # the wrong place of a "delante" is farther from the camera (only his eyes at an edge: ojos), the wrong place of a "detrás" or an "al lado de" is nearer (his back over a face: espalda).
 c=dict(comunes); nm,nc=nombres("abuela","luis","carmen","abuelo","mama","papa","bebe","perro","coqui"); c.update(nc)
-c.update({"c59_familia":N("La familia está en el cruce. Papá tiene una cámara."),"c59_pa_foto":PA("¡Una foto de la familia!"),"c59_pa_luis":PA("Luis, delante de Carmen."),"c59_pa_abuela":PA("Abuela, delante de mamá."),
- "c59_quien_delante":N("¿Quién está delante de Carmen?"),"c59_detras":N("Carmen está detrás de Luis. Mamá está detrás de abuela."),
+c.update({"c59_familia":N("La familia está en el cruce. Papá tiene una cámara."),"c59_pa_foto":PA("¡Una foto de la familia!"),"c59_pa_luis":PA("Luis, al frente de Carmen."),"c59_pa_abuela":PA("Abuela, al frente de mamá."),
+ "c59_quien_delante":N("¿Quién está al frente de Carmen?"),"c59_detras":N("Carmen está detrás de Luis. Mamá está detrás de abuela."),
  "c59_lado_luis":N("Carmen está al lado de mamá. Y abuela está al lado de Luis."),"c59_quien_lado_luis":N("¿Quién está al lado de Luis?"),"c59_pa_canelo_aqui":PA("Canelo, ¡aquí!"),
  "c59_entre":N("El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."),
  "c59_pa_coqui":PA("¿Y Coquí? ¿Dónde está Coquí?"),"c59_cq_aqui":T("¡Aquí!"),"c59_coqui_arbol":N("Coquí está detrás de papá."),"c59_pa_tres":PA("Tres fotos. Y Coquí va en las tres."),
  "c59_uno":PA("¡Uno, dos, tres!"),"c59_pa_yo":PA("¡Y ahora yo también! Coquí, aquí hay un lugar: ¡entre abuela y Luis!"),"c59_ab_mira":AB("Mira la foto. ¿Quién es?"),"c59_cq_soy":T("¡Soy yo!"),
  "c59_fin":N("Coquí está en la foto, entre abuela y Luis. La familia está contenta.")})
-for d,w,W in (("detras","detrás","Detrás"),("delante","delante","Delante")):
+for d,w,W in (("detras","detrás","Detrás"),("delante","al frente","Al frente")):
     c["c59_a_%s_canelo"%d]=PA("Coquí, ¡%s de Canelo!"%w); c["c59_a_no_%s_canelo"%d]=PA("No, Coquí. %s de Canelo."%W); DIN.update(["c59_a_%s_canelo"%d,"c59_a_no_%s_canelo"%d])
-for d,w,W in (("lado","al lado","Al lado"),("delante","delante","Delante")):
+for d,w,W in (("lado","al lado","Al lado"),("delante","al frente","Al frente")):
     c["c59_b_%s_abuela"%d]=PA("Coquí, ¡%s de abuela!"%w); c["c59_b_no_%s_abuela"%d]=PA("No, Coquí. %s de abuela."%W); DIN.update(["c59_b_%s_abuela"%d,"c59_b_no_%s_abuela"%d])
 def ronda59(s,sitios,pick,linea,no,draw,hojas):
     # one round: papá says a place (drawn); he touches one of two places; the flash. `hojas`: the sheets left in the camera after this photo
@@ -201,16 +201,16 @@ def ronda59(s,sitios,pick,linea,no,draw,hojas):
       "right":[{"if":"ok","then":[act("va59",donde=pick),"c59_uno",act("foto59",ok=1),act("hojas",n=hojas),OK],
                 "else":[act("va59",donde=pick),gesto("papa","pulgar")]}],
       "wrong":[act("va59",donde="$x"),"c59_uno",act("foto59",ok=0,como="$"+k),gesto("papa","rie"),gesto("papa","no"),act("hojas",n=hojas)]+X+[no]}]
-s59={"id":"delante-y-detras","title":"Delante y detrás","place":"La calle","scene":"cruce","next":None,
+s59={"id":"al-frente-y-detras","title":"Al frente y detrás","place":"La calle","scene":"cruce","next":None,
  "goal":"Pose where papá says (in front of, behind, beside) for the family photo: every wrong place spoils one of the three photos, and the last one is always a good one.",
  "stake":{"thing":"fotos","steps":3},"dots":9,"bien":"si_muy_bien",
- "focus_words":["al lado de","delante","detrás","entre"],"formas_foco":{},
+ "focus_words":["al lado de","al frente de","detrás","entre"],"formas_foco":{},
  "back_again":["familia","abuela","abuelo","mamá","papá","bebé","aquí","uno","dos","tres","yo","soy","mira","también","contento","hay","ahora"],
- "also_heard":[],"names":nm,"palabras":{"detras":"detrás","delante":"delante","lado":"al lado de"},"clips":c,
+ "also_heard":[],"names":nm,"palabras":{"detras":"detrás","delante":"al frente de","lado":"al lado de"},"clips":c,
  "beats":[{"set":{"hora":HORA59}},act("hojas",n=3),act("ir",a="tras_papa"),{"wait":500},
   # 1: the family, the camera; abuelo, mamá and Carmen stand in a row well behind the seat
   "c59_familia","c59_pa_foto",act("pone59",quien="abuelo",donde="fila_atras1"),act("pone59",quien="mama",donde="fila_atras2"),act("pone59",quien="carmen",donde="fila_atras3"),
-  # 2: delante (signed ask on Luis)
+  # 2: al frente de (signed ask on Luis)
   {"dots":1},"c59_pa_luis",act("pone59",quien="luis",donde="asiento2"),"c59_pa_abuela",act("pone59",quien="abuela",donde="asiento1"),
   ask("luis","c59_quien_delante",then=[gesto("luis","saluda")]),
   # 3: detrás
@@ -230,7 +230,7 @@ s59={"id":"delante-y-detras","title":"Delante y detrás","place":"La calle","sce
  "leer":["c59_familia","c59_pa_foto","c59_pa_luis","c59_pa_abuela","c59_quien_delante","c59_detras","c59_lado_luis","c59_quien_lado_luis","c59_pa_canelo_aqui","c59_entre","c59_pa_coqui","c59_cq_aqui","c59_coqui_arbol","c59_pa_tres",
   "c59_a_detras_canelo","c59_uno","c59_b_lado_abuela","c59_uno","c59_pa_yo","c59_ab_mira","c59_cq_soy","c59_fin"]}
 s59=reuse(s59,{"c59_cq_aqui":TG(("aquí",["aquí","aqui"])),"c59_cq_soy":TG(("yo",["yo"]))})
-json.dump(s59,open("cuentos/delante-y-detras.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
+json.dump(s59,open("cuentos/al-frente-y-detras.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
 # clip ids are global: the same id must have the same text everywhere
