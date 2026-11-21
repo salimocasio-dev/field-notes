@@ -35,7 +35,8 @@ const int _displayBackground = 0xFF241A0E;
 ///    behind (the ground, its depth, the kinds, the static shadow, the tufts and leaves; [BakedSet]), and its picture
 ///    and depth into `pix` and `zb` (240 × 216).
 /// 2. `drawLeaves` and `drawTufts`: the wind, in steps of 1 / `WIND_FPS` second, still when the engine is (`STILL`,
-///    the OS asking for reduced motion). Time is [F] ticks of [tick] ms.
+///    the OS asking for reduced motion). Time is [F] ticks of [tick] ms. Then `drawGlints` at the same time, for a set
+///    whose bake left glints on its water (the engine's `glints`: El campo's); none for the others.
 /// 3. Cast the shadow of each character in [shadows], and `applyShadows` (the leaves' shadows go with them).
 /// 4. The sprite layer, [scene]'s `draw(c, W, a)` with `a = F >> 1` (a [SetOverSprites] scene is first given the set
 ///    as framed), then [signs] (the game's signs: the answer
@@ -71,6 +72,11 @@ void drawFrame({
       : (F * tick * engine.WIND_FPS) ~/ 1000 / engine.WIND_FPS;
   engine.drawLeaves(windT);
   engine.drawTufts(windT);
+  // the glints on the water (set-kit.js drawGlints, beside the tufts: campo-set.html `frame`); a set with no water has
+  // none, and its frame is drawn as before
+  if (engine.glints.isNotEmpty) {
+    drawGlints(engine, engine.glints, windT, engine.bakedZ, engine.glintColour);
+  }
   // 3. the characters' shadows
   for (final s in shadows) {
     engine.castShadow(s.x, s.y, s.z, s.r);

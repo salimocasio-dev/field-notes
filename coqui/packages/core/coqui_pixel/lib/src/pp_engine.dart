@@ -76,6 +76,44 @@ class Tuft {
   final int bloom;
 }
 
+/// One glint on a set's water (set-kit.js `waterPixel`: an entry of `look.glints`): the pixel `i` at `ix, iy`, and the
+/// phase of its cycle. [drawGlints] shows it each frame for part of its cycle.
+class Glint {
+  Glint({
+    required this.i,
+    required this.ix,
+    required this.iy,
+    required this.phase,
+  });
+
+  final int i, ix, iy;
+  final double phase;
+}
+
+// set-kit.js: drawGlints (order 34b)
+/// The glints on the water, each frame (wind time [t], stepped as the grass: 8 a second, still when the OS asks for
+/// reduced motion): a glint shows 1 or 3 px of [color] on the surface for part of its cycle, and only where the surface
+/// itself shows (the frame's depth `zb` is still [refZ]'s there: nothing stands over it).
+void drawGlints(
+  PpEngine e,
+  List<Glint> glints,
+  double t,
+  Float32List refZ,
+  int color,
+) {
+  final zb = e.zb, pix = e.pix, W = e.W;
+  for (final gl in glints) {
+    final s = math.sin(t * 1.7 + gl.phase);
+    if (s < .35) continue;
+    final w = s > .8 ? 1 : 0;
+    for (var dx = -w; dx <= w; dx++) {
+      final j = gl.i + dx;
+      if (gl.ix + dx < 0 || gl.ix + dx >= W || zb[j] != refZ[j]) continue;
+      pix[j] = color;
+    }
+  }
+}
+
 /// One leaf of a tree that sways (pp-engine.js: an entry of `leaves`). `pixels` holds ix, iy, depth, colour for
 /// each pixel of the leaf, four numbers after four. mapa.js adds `owner` and `orig` to a leaf.
 class Leaf {
@@ -475,6 +513,15 @@ class PpEngine {
   late final List<int> tuftDark = [
     for (final c in GRASS) rgb(c[0] * .54, c[1] * .52, c[2] * .72),
   ];
+
+  /// The glints on a set's water that come and go each frame (set-kit.js `waterPixel` collects them, `drawGlints`
+  /// draws them; campo-set.html keeps them in `LOOK.glints`, order 34b): kept on the engine as the tufts and the leaves
+  /// are, so that a bake leaves them for the frame ([BakedSet] keeps them with its state). Empty for a set with no
+  /// water, whose frames are drawn as before.
+  final List<Glint> glints = [];
+
+  /// The colour the [glints] are drawn in (campo-set.html: `GLINT`); 0 while there are none.
+  int glintColour = 0;
 
   // pp-engine.js: growGrass
   void growGrass() {
