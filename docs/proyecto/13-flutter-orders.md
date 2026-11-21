@@ -791,6 +791,19 @@ Designed by an Opus agent in five rounds; the orchestrator looked at every round
 - Seen by readers and not changed: the blue boat's sail stands out least from the water (39); the reeds run off the right edge of the picture; Carmen in los-botes stands 3 px from the right edge.
 - Bake: 71 to 95 ms the first time, 12 to 29 ms warm, in headless Chrome.
 
+### Order 35 (lago), step b. **Result (Nov 21): done, merged; stories 18 to 20 play in the app (build 10).**
+
+- Built by one builder on `orden/35b`, checked by the orchestrator: `tool/test_all.sh` passes whole on the merged branch; no commit names a model.
+- The set in Dart differs from the JavaScript set in 0 of 51,840 pixels (colour, depth and kinds), at rest and at two glint times. The preview: 801 pictures, 674 identical, none over 2%, the most 0.06% (the edge pixels of a turned sprite: a boat in the reeds, the leaping fish). The six earlier scenes' pictures are unchanged.
+- The 15 recorded runs are equal without their times, with the same hop sounds and the same number of random draws. Times differ only where a path moved: pan-para-el-pato 1.3 to 1.7 s longer, los-botes 1 s shorter, d-pato-pequeno 0.4 s shorter, h-lago 0.07 s longer, cual equal.
+- Bake in the release web build: 97 to 139 ms the first time, 31 to 41 ms after; the 82 glints cost 0.006 ms a frame.
+- New in the kit and the sheet reader: `WaterLook.noShade`; rings by kind (`pato`, `bote`, `pan`), drawn only where the set's water shows (the mask is kept at the bake); the fish's patch (`SheetPatch`, `helps.ring.pez`); a move's `shift`; things whose `world` is null or more than one point.
+- **Decided at the stop:** three lines of `lago.js` hold places the sheet's `code` never names (263: the birds rise to row 70; 276: bread falls to `o.y || 178`; 278: the ducks swim out to x 252). None moved; the old numbers are kept by `LagoPlaces.floorRule`, which serves those three lines only, as El campo's does for its two. The two lines 276 and 278 are used by no story of the lake. From El banco on, the sheet maker reads the scene's file itself for every place, not order 06's inventory.
+- Reported from the JavaScript, not changed: `lago.js:237`'s comment swallows the rest of its line, so in the old game the boats were never knocked free and Carmen kept her pose at the end of los-botes; the port does the same.
+- `lago.js`'s `aveA` is `pajaroA` in Dart (the kit's scene already has an `aveA`). The tests of a scene not converted now use El banco (`la-piragua`; the Repaso test asks `hombre`).
+- A fresh reader went through all six plays from the real app (pan-para-el-pato, los-botes, cual; right and wrong). Read well: the dock and its posts standing in the water, the boats going up the bend to the girl on the far bank, the ducks' rings, the shadows all one way, the reeds as reeds. No frame or card cut by an edge or round an empty place.
+- **Left:** at pan-para-el-pato's first card ask the hint frame round the first card crosses Carmen's head and the hint hand covers her bag (the set's pictures had it too; the maker checked the cards, not the hint drawn round a card); at one card ask of los-botes the hint hand is on Luis's head. The fish's pale oval still reads as "a plate or sticker" close up to one reader. The hint hand for a duck near the bottom edge is cut by it, as in the old game. From El banco on the maker checks the hint frame and hand round every card against every head; the earlier scenes' cards (El frente's doorway, these two) want one sweep after order 39.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
