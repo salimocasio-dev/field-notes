@@ -39,10 +39,10 @@ Buying things at the corner shop. The call: ask for three things, ask the price,
 ## 5. La calle
 
 Getting around town. The call: ask where a place is, follow left, right and near, say where you are going.
-- **La esquina (the corner).** Traffic and people. calle, esquina, carro, guagua, bicicleta, gente, cruza, pasa, viene, va, ahora, luego
-- **La parada (the bus stop).** Waiting, getting on and off. parada, voy, vas, sube, baja, llega, sale, cerca, lejos, temprano, tarde, ¿adónde vas?
+- **La esquina (the corner).** Traffic and people. calle, esquina, carro, guagua, bicicleta, gente, cruza, pasa, viene, va, ahora, después
+- **La parada (the bus stop).** Waiting, getting on and off. parada, voy, vas, se monta, se baja, llega, se va, cerca, lejos, temprano, tarde, ¿para dónde vas?
 - **Las tiendas (the shops).** What is open and what is closed. tienda, banco, farmacia, escuela, hospital, correo, edificio, abierto, cerrado, entra, nuevo, alto
-- **El cruce (the crossing).** Finding the way. izquierda, derecha, derecho, al lado de, delante, detrás, entre, sigue, dobla, hasta, perdón
+- **El cruce (the crossing).** Finding the way. izquierda, derecha, derecho, al lado de, al frente de, detrás, entre, sigue, dobla, hasta, perdón
 
 ## 6. La plaza
 

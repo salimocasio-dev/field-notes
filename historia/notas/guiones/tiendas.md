@@ -17,13 +17,13 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 - **Goal he can see:** the little horse in front of the tienda. The frog looks at it; the bebé in his stroller points at it. Abuela shows three coins in her hand and puts them in her pocket: after the errands. The card shows the three coins and the horse.
 - **At stake:** the coins (3). In a wrong place the bebé takes something from the counter (a lollipop, a pencil, a top) and will not let go: abuela pays a coin.
 - **New words:** tienda, banco, farmacia, correo.
-- **Back again:** calle, abuela, abuelo, bebé, mamá, necesito, chavos, me gusta, tengo, cosa, dos, tres, ahora, luego, vamos, aquí, gracias, casa, listo.
+- **Back again:** calle, abuela, abuelo, bebé, mamá, necesito, chavos, me gusta, tengo, cosa, dos, tres, ahora, después, vamos, aquí, gracias, casa, listo.
 
 **Start:** morning. Abuela pushes the bebé's stroller along the near pavement; the frog hops beside it. Abuela has a letter in her hand. Beside the coins and the horse, the card shows her three errands as pictures: a letter, a coin purse, a small bottle.
 
 **The opening** (big sign)
 
-1. NARR: "Abuela, el bebé y Coquí están en la calle de las tiendas." The tienda twinkles; the horse rocks once; the bebé claps and points. NARR: "Mira. Aquí, en la tienda, hay un caballito." **(caballito: heard; the picture carries it)** NARR: "Abuela dice: ¿Te gusta el caballito, Coquí?" COQUÍ [TURN: me gusta (me gusta)]: "¡Sí, me gusta!" Abuela shows her three coins and puts them away. NARR: "Abuela dice: Luego, Coquí. Ahora tengo tres cosas que hacer."
+1. NARR: "Abuela, el bebé y Coquí están en la calle de las tiendas." The tienda twinkles; the horse rocks once; the bebé claps and points. NARR: "Mira. Aquí, en la tienda, hay un caballito." **(caballito: heard; the picture carries it)** NARR: "Abuela dice: ¿Te gusta el caballito, Coquí?" COQUÍ [TURN: me gusta (me gusta)]: "¡Sí, me gusta!" Abuela shows her three coins and puts them away. NARR: "Abuela dice: Después, Coquí. Ahora tengo tres cosas que hacer."
 2. The letter lights on the card. NARR: "Abuela dice: Tengo una carta. ¿Dónde está el correo?" **(carta: heard)** The correo twinkles. Ask (signed, the correo): "¿Dónde está el correo?" He touches it: they cross to it; abuela drops the letter in the post box. NARR: "Abuela dice: ¡Aquí está el correo!" A tick.
 3. The coin purse lights. NARR: "Abuela dice: Ahora necesito chavos. Vamos al banco." The banco twinkles. Ask (signed, the banco): "¿Dónde está el banco?" He touches it: abuela goes in and comes out with her purse fat. A tick.
 4. The bottle lights. NARR: "Abuela dice: Y abuelo necesita algo de la farmacia." The farmacia twinkles. Ask (signed, the farmacia): "¿Dónde está la farmacia?" He touches it: abuela goes in and comes out with a small paper bag. The last tick. Abuela counts on her fingers, looking along the row. NARR: "Abuela dice: El correo, el banco, la farmacia... ¡Listo!"
@@ -151,7 +151,7 @@ Fixed:
 
 Left, and why:
 - 54's game has three or four fronts to choose from, not two. The rule asks for two real options; more of them lowers the chance of a lucky touch, and every front does something.
-- "Luego, Coquí": "después" is what is said; luego is story 50's word.
+- (Changed on Nov 21, on Salim's word "pick whatever is most used": "Luego, Coquí" is "Después, Coquí".)
 - Mamá and papá, not mami and papi: the course's words since La casa.
 - 55's first turn and 56's last say words back from earlier lines ("Para mamá y papá", "todo"): they answer a real question the picture supports.
 - "¿Tienes hambre?" answered "Tengo hambre": the verb turned round, as a child answers.

@@ -2,7 +2,7 @@
 
 Place 5, La calle. Scene 1 of 4 (scene id `esquina`). Stories 48 to 50. The learner is the little frog (Coquí). He has finished La casa, El parque, La cocina and El colmado (stories 1 to 47).
 
-Scene words (page 02): calle, esquina, carro, guagua, bicicleta, gente, cruza, pasa, viene, va, ahora, luego.
+Scene words (page 02): calle, esquina, carro, guagua, bicicleta, gente, cruza, pasa, viene, va, ahora, después.
 
 The picture (as the set `esquina-set.html` draws it): the street corner outside don Pepe's colmado. One view. Across the top, the colmado's front: its shop window under an awning, its door with the basket sign, then the building's corner at the right, where a narrow side street goes off behind it. In front of the colmado its pavement; then the street, two lanes, across the picture; then the near pavement at the bottom left, with the park's low wall and grass behind it. A striped crossing goes over the street beside the corner, with the traffic light's pole and its button box at the colmado's end of it. Whatever drives comes from the right and goes left, so its lit side faces us; a guagua's door is on that side. The frog's corner (story 49) is the colmado's pavement at the pole; "the far pavement" where mamá and the bebé wait is the near pavement at the bottom; going "round the corner" is walking off along the colmado's side wall. In story 48 abuela, the bebé and the frog stand on the near pavement, the car pulls up in the lane beside them and the guagua in the lane behind it. In story 50 the far lane is dug up beside the crossing (no stripes then), the near lane is the one lane left, and the two squares of cement are in the near pavement; the guagua always waits at the right end. Things that drive are a red car and a blue car (small cars, plainly not vans: in Puerto Rico a van or a pickup is a guagua too; dark windows), a guagua (a bus, big, dark windows, a door on its side), a bicycle with a rider.
 
@@ -97,11 +97,11 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 ---
 
-## Story 50: Ahora y luego
+## Story 50: Ahora y después
 
 - **Goal he can see:** two squares in the pavement at the corner. An old dry one with a hand print and a paw print in it; beside it a fresh, smooth, wet one with three cones round it. The frog looks at the old prints, at the wet square and at his own foot.
 - **At stake:** the smooth cement (3 parts). The frog sends the wrong one first: it has to back up, knocks a cone over and leaves a wheel track through one part.
-- **New words:** viene, va, ahora, luego.
+- **New words:** viene, va, ahora, después.
 - **Back again:** carro, guagua, bicicleta, calle, esquina, cuidado, listo, ¿qué es esto?, ¿cuál?, me gusta, mira, tú, tengo sed, agua, quiero, toma, gracias, casa.
 
 **Start:** morning. Half the street at the corner is dug up: a hole, a fence of cones, one lane left. The obrero stands at the lane with a paddle (red on one side, green on the other). Beside him, in the pavement, the square of fresh cement. The frog and Luis stand looking.
@@ -109,8 +109,8 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 **The opening** (big sign)
 
 1. NARR: "Coquí y Luis están en la esquina. Un obrero arregla la calle." **(obrero, arregla: heard; the picture carries them)** The frog lifts a foot over the wet square. NARR: "El obrero dice: ¡Cuidado, Coquí! Mira." He points at the wet square with his trowel. COQUÍ [TURN: ¿qué es esto? (¿qué es esto?, que es esto)]: "¿Qué es esto?" NARR: "El obrero dice: Esto es cemento. No está listo." The frog pulls his foot back and looks at the old prints.
-2. The red car comes to one end of the lane and the guagua to the other, at the same moment; both stop. NARR: "Viene un carro y viene la guagua." NARR: "El obrero dice: Ahora va el carro. Luego va la guagua." Ask (signed, the car): "¿Cuál va ahora?" He touches it: the obrero turns the green side to the car; it drives through the lane and away. NARR: "Y luego va la guagua." The guagua drives through.
-3. A bicycle and the blue car come up, one to each end. NARR: "Ahora viene una bicicleta." NARR: "El obrero dice: Ahora va la bicicleta. Luego va el carro." Ask (signed, the bicycle): "¿Cuál va ahora?" He touches it: the bicycle rides through, bell ringing. NARR: "Y luego va el carro." The blue car drives through.
+2. The red car comes to one end of the lane and the guagua to the other, at the same moment; both stop. NARR: "Viene un carro y viene la guagua." NARR: "El obrero dice: Ahora va el carro. Después va la guagua." Ask (signed, the car): "¿Cuál va ahora?" He touches it: the obrero turns the green side to the car; it drives through the lane and away. NARR: "Y después va la guagua." The guagua drives through.
+3. A bicycle and the blue car come up, one to each end. NARR: "Ahora viene una bicicleta." NARR: "El obrero dice: Ahora va la bicicleta. Después va el carro." Ask (signed, the bicycle): "¿Cuál va ahora?" He touches it: the bicycle rides through, bell ringing. NARR: "Y después va el carro." The blue car drives through.
 
 **The turn**
 
@@ -118,20 +118,20 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 **The game.** Two things that drive come up at the same moment, one to each end of the lane, drawn from the car, the guagua and the bicycle. The obrero, from his bucket, says which goes now and which goes after. Which is which, and which half of his line comes first, is drawn, each round on its own. No question is asked: his line is the cue.
 
-5. **Decision A, touch a thing (the two that wait; tests ahora).** NARR: "El obrero dice: Ahora va la guagua. Luego va el carro." (Or, drawn: "El obrero dice: El carro va luego. Ahora va la guagua.")
+5. **Decision A, touch a thing (the two that wait; tests ahora).** NARR: "El obrero dice: Ahora va la guagua. Después va el carro." (Or, drawn: "El obrero dice: El carro va después. Ahora va la guagua.")
    - Right: the frog points the green flag at it and the red one at the other. It drives through; its driver lifts a hand. Then the other. A star.
-   - Wrong: the frog points the green flag at the one he touched; it starts into the lane. The obrero whistles. NARR: "El obrero dice: ¡Espera, Coquí!" It backs up, knocks a cone over and rolls a wheel through the wet square: a track across one part. A cross. NARR: "El obrero dice: No. Ahora va la guagua. Luego va el carro." The sign is on the right one; he touches it: it drives through, then the other.
+   - Wrong: the frog points the green flag at the one he touched; it starts into the lane. The obrero whistles. NARR: "El obrero dice: ¡Espera, Coquí!" It backs up, knocks a cone over and rolls a wheel through the wet square: a track across one part. A cross. NARR: "El obrero dice: No. Ahora va la guagua. Después va el carro." The sign is on the right one; he touches it: it drives through, then the other.
 6. **Decision B, touch a thing (the same game; two others).** Right and wrong as in A.
 
 **The ending**
 
 7. The obrero gets up, takes his paddle back, presses a thumb on the wet square and nods. NARR: "El obrero dice: Ahora está listo. Ahora tú, Coquí." The frog hops onto the smooth part and off again.
-   - Three parts smooth: two frog prints side by side; then NARR: "El obrero dice: Y luego tú, Luis." Luis presses his hand in beside them, and the obrero draws a heart round all of it with his finger. Stars and a heart.
+   - Three parts smooth: two frog prints side by side; then NARR: "El obrero dice: Y después tú, Luis." Luis presses his hand in beside them, and the obrero draws a heart round all of it with his finger. Stars and a heart.
    - Two parts smooth: two frog prints, and Luis's hand beside them.
    - One part smooth: one small frog print between the wheel tracks.
 8. NARR: "El obrero dice: Mira. ¿Te gusta?" COQUÍ [TURN: me gusta (me gusta)]: "¡Sí, me gusta!" A car comes up to the lane; the obrero lifts his paddle. NARR: "Viene un carro. Coquí y Luis van a casa."
 
-**Fewest hearings before a word can cost:** ahora 5 (steps 2 and 3), luego 4 (steps 2 and 3). Not deciding: viene 3 before the game (steps 2 and 3) and once at the end; va 8 before the game. Ahora, viene and va were heard in stories 48 and 49 too; luego is the one word nobody has met.
+**Fewest hearings before a word can cost:** ahora 5 (steps 2 and 3), después 4 (steps 2 and 3). Not deciding: viene 3 before the game (steps 2 and 3) and once at the end; va 8 before the game. Ahora, viene and va were heard in stories 48 and 49 too; después is the one word nobody has met.
 **A miss is filed under:** ahora.
 **Chance without the Spanish:** one in two, each round on its own: both wait at the lane's ends; which half of the line comes first is drawn.
 **Speaking turns:** three (steps 1, 4, 8): ¿qué es esto?; gracias; me gusta.
@@ -148,7 +148,7 @@ Fixed:
 - 50: the first turn had nothing before it: now the obrero stops the frog and points. "Y ahora, ¿quién va?" made "ahora" mean the one that was "luego": gone. No question in the game. "¿Quién va?" of things is "¿Cuál va?". "¿Estás listo?" answered "estoy listo" was an echo with a word nobody has: now he hands over the flags and the frog says thank you. The old square with prints shows what the wet one is for. "The other one starts" said the wrong thing. The two that wait arrive together.
 
 Left, and why:
-- "luego": both Spanish readers say Puerto Ricans say "después" in speech. Luego is the word on the plan's list for this scene (page 02) and in "hasta luego"; it stays until Salim says otherwise.
+- (Changed on Nov 21, on Salim's word "pick whatever is most used": the plan's "luego" is now "después" in every line, as both Spanish readers said people say.)
 - "pasa por la esquina" is not a clean opposite of "cruza" (one who crosses also passes the corner). Cruza is the tested word; a miss is filed under it.
 - Length: the beginner reader guesses 95 to 105 s for each story at real speed. One ask and several lines are cut; the real number comes from machine play.
 - The cones are never named ("cono" is one sound from a swear word).
