@@ -121,7 +121,7 @@ c.update({"c108_l_fuerte":L("Mira, Coquí: el fuerte. Es grande y es viejo."),"c
  "c108_l_bandera":L("Y allá arriba está la bandera."),"c108_q_bandera":N("¿Dónde está la bandera?"),"c108_ca_viento":CA("Hay viento. Mira la bandera."),
  "c108_l_hola":L("¡Hola! Hoy hay una fiesta en el fuerte. ¿Quieres venir?"),"c108_ca_para":CA("Para la fiesta: una luz en la puerta, una en la muralla y una en la bandera."),
  "c108_l_hola2":L("¡Hola! Hay una fiesta. ¿Quieres venir?"),
- "c108_ca_gusta":CA("Mira, Coquí. ¿Te gusta?"),"c108_cq_bonito":T("¡Qué bonito!"),"c108_fin":N("Hoy hay una fiesta en el fuerte. Hay luz en la muralla.")})
+ "c108_ca_gusta":CA("Mira, Coquí. ¿Te gusta?"),"c108_cq_bonito":T("¡Qué bonito!"),"c108_fin":N("Hoy hay una fiesta en el fuerte. ¡Hay luz en el fuerte!")})
 for p in ("muralla","bandera"):   # what Carmen says about the next lantern, and the correction for each
     c["c108_va_%s"%p]=CA("Esta luz va en la %s."%p); c["c108_no_%s"%p]=CA("No, Coquí. En la %s."%p); DIN.update(["c108_va_%s"%p,"c108_no_%s"%p])
 VARS108={"pa":["muralla","bandera"],"pb":["muralla","bandera"]}
