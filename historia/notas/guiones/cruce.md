@@ -4,7 +4,7 @@ Place 5, La calle. Scene 4 of 4 (scene id `cruce`). Stories 57 to 59. The learne
 
 Scene words (page 02): izquierda, derecha, derecho, al lado de, delante, detrás, entre, sigue, dobla, hasta, perdón.
 
-The picture (as the set `cruce-set.html` draws it): a crossing of two streets in town, drawn square to the picture: one street runs straight up and down, the other straight across. The frog comes up from the bottom with his back to us, so his left is the picture's left. Two views of one picture: `wide` (stories 57 and 58) and `plaza` (story 59; the window moved to the right). Three ways leave the crossing: a street to the left, a street to the right, a street straight on. Where each leads is out of the picture: nothing in it says what is down a street (no signs, no fronts; the same pavement and low hedge on all three). At the far end of the street straight on stands one big tree. At the near right corner is a small square: a second tree, a seat with a back that faces us, a low wall behind it (story 59: the family's photo). A row of cones can close the street to the right (story 58).
+The picture (as the set `cruce-set.html` draws it): a crossing of two streets in town, drawn square to the picture: one street runs straight up and down, the other straight across. The frog comes up from the bottom with his back to us, so his left is the picture's left. Two views of one picture: `wide` (stories 57 and 58) and `plaza` (story 59; the window moved to the right). Three ways leave the crossing: a street to the left, a street to the right, a street straight on. Where each leads is out of the picture: nothing in it says what is down a street (no signs, no fronts; the same pavement and low hedge on all three). At the far end of the street straight on stands one big tree. At the near right corner is a small square: a second tree at its far corner, a seat with a back that faces us, and a short piece of low wall at its near edge (story 59: the family's photo). A row of cones can close the street to the right (story 58).
 
 New person: the piragüero with his cart (he is the piragua man of El parque), story 58. The others: the family, the señora and the señor, don Pepe on his bicycle, the obrero of story 50.
 
@@ -62,7 +62,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 - **New words:** derecho, sigue, hasta.
 - **Back again:** dobla, izquierda, perdón, calle, bicicleta, esquina, árbol, cerrado, rápido, frío, señor, señora, toma, gracias, van, luego, mira, casa.
 
-**Start:** afternoon, hot. Luis rides up to the crossing with the block of ice in his basket and the frog on the handlebar. The street to the right is shut off by cones; the obrero stands there.
+**Start:** afternoon, hot. Luis rides up to the crossing with the block of ice in his basket and the frog on the rack behind him. The street to the right is shut off by cones; the obrero stands there.
 
 **The opening** (big sign)
 
@@ -103,30 +103,30 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 - **New words:** al lado de, delante, detrás, entre.
 - **Back again:** familia, abuela, abuelo, mamá, papá, bebé, árbol, aquí, uno, dos, tres, yo, soy, mira, también, contento, hay, ahora.
 
-**Start:** late afternoon, a soft light. The small square at the crossing: the tree, the seat, the low wall. The family walks in; papá has the camera round his neck. The frog is behind the tree, peeping out.
+**Start:** late afternoon, a soft light. The small square at the crossing: the tree, the seat, the short wall. The family walks in; papá has the camera round his neck. The frog is behind the tree's trunk, peeping out.
 
 **The opening** (big sign)
 
-1. NARR: "La familia está en el cruce. Papá tiene una cámara." **(cámara: heard)** NARR: "Papá dice: ¡Una foto de la familia!" Abuelo, mamá and Carmen stand in a row behind the seat, in that order.
+1. NARR: "La familia está en el cruce. Papá tiene una cámara." **(cámara: heard)** NARR: "Papá dice: ¡Una foto de la familia!" Abuelo, mamá and Carmen stand in a row well behind the seat, in that order, so that each is seen above whoever sits in front.
 2. NARR: "Papá dice: Luis, delante de Carmen." Luis sits down on the seat in front of Carmen. NARR: "Papá dice: Abuela, delante de mamá." Abuela sits down in front of mamá; a gap is left on the seat between her and Luis. Ask (signed, Luis): "¿Quién está delante de Carmen?" He touches him: Luis waves.
 3. Carmen puts her hands on Luis's shoulders; mamá bends to abuela's ear. NARR: "Carmen está detrás de Luis. Mamá está detrás de abuela."
-4. Canelo trots in. NARR: "Papá dice: Canelo, al lado de Luis." Canelo sits down on the ground at the seat's end, beside Luis. NARR: "Y Carmen está al lado de mamá." Ask (signed, Luis): "¿Quién está al lado de Canelo?" He touches him: Canelo licks Luis's hand.
-5. Abuelo and mamá stand the bebé on the seat's back between them, each holding a hand. NARR: "El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."
+4. NARR: "Carmen está al lado de mamá. Y abuela está al lado de Luis." Ask (signed, abuela): "¿Quién está al lado de Luis?" He touches her: abuela pats Luis's knee. Canelo trots in. NARR: "Papá dice: Canelo, ¡aquí!" Canelo lies down on the ground in front of the seat, at the right.
+5. Mamá lifts the bebé and holds him up between herself and abuelo; abuelo takes his hand. NARR: "El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."
 
 **The turn**
 
 6. Papá looks through the camera and lowers it. NARR: "Papá dice: ¿Y Coquí? ¿Dónde está Coquí?" COQUÍ [TURN: aquí (aquí, aqui)]: "¡Aquí!" The frog hops out. NARR: "Coquí está detrás del árbol." Papá taps the three sheets. NARR: "Papá dice: Tres fotos. Y Coquí va en las tres." The card shows two places and the three sheets. The signs go.
 
-**The game.** Papá says where the frog goes; then he counts and presses the button. Round A is in front of or behind one person (abuela or Luis, drawn): the ground at that person's feet, or the top of the seat's back behind that person's shoulder. Round B is at Canelo: beside him (the ground at his far side, where nobody else is), or in front of him (the ground before his paws). Which is said is drawn, each round on its own.
+**The game.** Papá says where the frog goes; then he counts and presses the button. Round A is at Canelo, who lies low enough for the frog to be seen behind him: in front of him (the ground before his paws) or behind him (the ground between him and the seat). Round B is at abuela: beside her (on the seat, in the gap) or in front of her (the ground at her feet). Which is said is drawn, each round on its own.
 
-7. **Decision A, touch a place (two places; tests the word said).** NARR: "Papá dice: Coquí, ¡detrás de abuela!" (Or, drawn: "Coquí, ¡delante de abuela!"; or Luis.)
+7. **Decision A, touch a place (two places at Canelo; tests the word said).** NARR: "Papá dice: Coquí, ¡detrás de Canelo!" (Or, drawn: "Papá dice: Coquí, ¡delante de Canelo!")
    - Right: the frog hops there. NARR: "Papá dice: ¡Uno, dos, tres!" The flash. A sheet slides out and is shown big for a moment: everybody, and the frog where he should be. A star.
-   - Wrong: the frog hops to the other place. NARR: "Papá dice: ¡Uno, dos, tres!" The flash. The sheet is shown big: the frog's back over a face (he was nearer the camera than papá wanted), or only his eyes at an edge (he was farther). Papá laughs and shakes his head. A cross: a sheet spoiled. NARR: "Papá dice: No, Coquí. Detrás de abuela." The sign is on the right place; he touches it: the frog hops there, and papá gives him a thumb up (no picture is taken).
-8. **Decision B, touch a place (two places at Canelo; tests the word said).** NARR: "Papá dice: Coquí, ¡al lado de Canelo!" (Or, drawn: "Coquí, ¡delante de Canelo!") Right and wrong as in A.
+   - Wrong: the frog hops to the other place. NARR: "Papá dice: ¡Uno, dos, tres!" The flash. The sheet is shown big: the frog's back over a face (he was nearer the camera than papá wanted), or only his eyes at an edge (he was farther). Papá laughs and shakes his head. A cross: a sheet spoiled. NARR: "Papá dice: No, Coquí. Detrás de Canelo." (Or: "Papá dice: No, Coquí. Delante de Canelo.") The sign is on the right place; he touches it: the frog hops there, and papá gives him a thumb up (no picture is taken).
+8. **Decision B, touch a place (two places at abuela; tests the word said).** NARR: "Papá dice: Coquí, ¡al lado de abuela!" (Or, drawn: "Papá dice: Coquí, ¡delante de abuela!") Right and wrong as in A, with "Papá dice: No, Coquí. Al lado de abuela." or "Papá dice: No, Coquí. Delante de abuela."
 
 **The ending**
 
-9. Papá stands the camera on the low wall, presses something and runs to the seat. NARR: "Papá dice: ¡Y ahora yo también! Coquí, aquí hay un lugar: ¡entre abuela y Luis!" Papá kneels beside Canelo; the frog hops into the gap on the seat. The flash: the last sheet, always a good one. The photos are laid out on the seat.
+9. Papá stands the camera on the short wall, presses something and runs to the seat. NARR: "Papá dice: ¡Y ahora yo también! Coquí, aquí hay un lugar: ¡entre abuela y Luis!" Papá kneels at the left end of the seat, beside abuela; the frog hops into the gap on the seat (if he sits there already, he bounces). The flash: the last sheet, always a good one. The photos are laid out on the seat.
    - Three good photos: the family looks at all three; abuela holds one to her heart. Stars and a heart.
    - Two good, one spoiled: they laugh at the spoiled one; Luis holds it up.
    - One good, two spoiled: the bebé chews a spoiled one; mamá takes it away, laughing.
@@ -134,7 +134,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 **Fewest hearings before a word can cost:** delante 3 (step 2), detrás 3 (steps 3 and 6), al lado de 3 (step 4). Not deciding: entre 2 before the game (step 5) and 4 on a clean run (steps 9, 10).
 **A miss is filed under:** the word that was said (delante or detrás in round A; al lado de or delante in round B).
-**Chance without the Spanish:** one in two, each round on its own: one person or the dog, two places.
+**Chance without the Spanish:** one in two, each round on its own: the dog or abuela, two places. "Al lado de abuela" is true of the gap on the seat and not of the ground at her feet.
 **Speaking turns:** two (steps 6, 10): aquí; yo.
 
 ---
@@ -162,8 +162,8 @@ The set `cruce`:
 - View: `wide` (zoom 1).
 - States: `hora` (mediodia, tarde, late afternoon); `cerrada` (the cones across the right street: there or not; story 58).
 - In the set: the street the frog comes up, the three streets that leave (alike: low walls, no signs), the big tree at the far end of the street straight on, the crossing's corners, the small square at the near right corner with its tree, seat with a back, and low wall.
-- Things he can touch: calle_izq, calle_der, calle_recta (the three streets); each person; perro; the frog's places of story 59 (delante_abuela, detras_abuela, delante_luis, detras_luis, lado_canelo, delante_canelo).
-- Spots: abajo (where they come up: abuela, the frog; Luis on his bicycle), centro (somebody asked at the crossing, facing us), asiento_plaza (abuela sitting, her bag and the bottle beside her), salida_izq, salida_der, salida_recta (where a street leaves the picture), bajo_arbol (where Luis stops under the big tree), conos (the obrero), plaza_carrito (the piragüero and his cart in the square), the family's places of story 59 (fila_atras 1 to 3: abuelo, mamá, Carmen; respaldo: the bebé standing on the seat's back between abuelo and mamá; asiento 1, 2: abuela, Luis, with the gap between them; fin_asiento: Canelo on the ground; papa_camara; muro: the camera on the wall; hueco: the gap, the frog's last place), tras_arbol (the frog behind the square's tree), and the frog's six places.
+- Things he can touch: calle_izq, calle_der, calle_recta (the three streets); each person; perro; the frog's places of story 59 (delante_canelo, detras_canelo, lado_abuela, delante_abuela).
+- Spots: abajo (where they come up: abuela, the frog; Luis on his bicycle), centro (somebody asked at the crossing, facing us), asiento_plaza (abuela sitting, her bag and the bottle beside her), salida_izq, salida_der, salida_recta (where a street leaves the picture), bajo_arbol (where Luis stops under the big tree), conos (the obrero), plaza_carrito (the piragüero and his cart in the square), the family's places of story 59 (fila_atras 1 to 3: abuelo, mamá, Carmen, well behind the seat; bebe_alto: the bebé held up between abuelo and mamá; asiento 1, 2: abuela, Luis, with the gap between them; suelo_canelo: Canelo lying on the ground in front of the seat, at the right; papa_camara; muro: the camera on the short wall; hueco: the gap, which is also lado_abuela and the frog's last place; papa_rodillas: papá kneeling at the seat's left end), tras_arbol (the frog behind the square's tree), and the frog's four places.
 - New sprites: abuela's bottle with three marks (3 to 0), tipping, water on the pavement; the letter, a small bag, a kite, a loaf; Carmen with a skipping rope; Luis's bicycle with the basket and the block of ice in three sizes, drops and a puddle; the cones; the piragüero and his cart, piraguas (3, 2, 1; one with two spoons); the thought of the piragüero at his cart; the card's road with the bicycle at three places; papá with the camera (looking through it, lowering it, laughing, thumb up, running, kneeling); the camera on the wall; the flash; a photo sheet shown big (good: the group with the frog in each of the six places and in the gap; spoiled: his back over a face, his eyes at an edge); the photos laid out on the seat.
 - Speaker keys: `piraguero`, `obrero`; the others exist. The spoken word is always "piragüero", with its ü.
 
@@ -176,4 +176,4 @@ Acts (name: what it does on screen; story and step):
 - `gesto` {quien, que}: `saluda`, `no`, `rie`, `mira` with `a`, `sienta`, `abanica` (abuela fans herself), `lengua` (the frog, tongue out), `pulgar`, `manos` (abuela shows empty hands; holds a bag up), `hombros` (Carmen's hands on Luis's shoulders).
 - `brilla`: the engine's own twinkle (a street; the big tree; the bottle; the ice; the sheets).
 - `ya`: waits for an act started with `suelto: 1`.
-- Values: in 57 `dice` izq or der, `lugar` tienda or colmado, `quien` the person asked; in 58 `dice` recta or izq; in 59 round A `quien` abuela or luis and `dice` delante or detras; round B `dice` lado or delante; `como` which spoiled picture (espalda, ojos).
+- Values: in 57 `dice` izq or der, `lugar` tienda or colmado, `quien` the person asked; in 58 `dice` recta or izq; in 59 round A `dice` delante or detras (at Canelo); round B `dice` lado or delante (at abuela); `como` which spoiled picture (espalda, ojos).

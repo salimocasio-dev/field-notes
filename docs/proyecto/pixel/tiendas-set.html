@@ -16,7 +16,7 @@
 const Q = new URLSearchParams(location.search);
 const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
 const SET = { fila: pick('fila', ['tiendas', 'altos'], 'tiendas'), par: pick('par', ['a', 'b'], 'a'), lado: pick('lado', ['izq', 'der'], 'izq'), hora: pick('hora', ['manana', 'tarde'], 'manana'), nube: +(Q.get('nube') || 0), t: +(Q.get('t') || 0) };
-const ORIGIN = SET.fila === 'altos' ? [6, 42] : [0, 24];
+const ORIGIN = SET.fila === 'altos' ? [6, 48] : [0, 24];
 window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
 </script>
 <script src="pp-engine.js"></script>
@@ -30,7 +30,7 @@ const E = {
   FRONTS: ['tienda', 'banco', 'farmacia', 'correo'],
   COLOR: { tienda: [[250, 214, 120], [206, 150, 70]], banco: [[214, 214, 220], [130, 136, 150]], farmacia: [[226, 244, 226], [70, 150, 90]], correo: [[250, 232, 190], [60, 90, 170]] },
   DOOR: .58, DW: 1.1, DH: 2.4,                                       // a front's door: its left edge from the front's left edge, its width, its height
-  HORSE: [-4.15, 1.3], BUZON: [4.25, .5], SEAT: [-1.2, 1.9, .8],      // the little horse (left of the tienda's door); the post box (right of the correo's door); the seat
+  HORSE: [-4.15, 1.3], BUZON: [4.25, .5], SEAT: [.9, 1.95, .8],       // the little horse (left of the tienda's door); the post box (right of the correo's door); the seat
   ALTO: { h: 4.6, w: 3.9 }, NUEVO: { h: 2.75, w: 3.9 }, AX: [-4.2, .4],   // story 55's buildings: heights, widths, and the two places' left edges
 };
 E.frontX = k => E.X0 + E.FW * E.FRONTS.indexOf(k);

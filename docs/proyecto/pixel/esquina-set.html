@@ -54,7 +54,7 @@ function groundAt(x, y, ix, iy) {
   }
   if ((y > E.P && y < E.S0) || (y > E.S1 && y < E.S1 + E.K)) return CL.kerb();
   if (y < E.P && ((x > E.P && x < E.B0) || (x > E.B1 && x < E.B1 + E.K))) return CL.kerb();
-  if (y > 7.82) return CL.grass(x, y, ix, iy);                                                                         // the park
+  if (y > 8.82) return CL.grass(x, y, ix, iy);                                                                         // the park
   if (SET.obra && y > E.S1) {                                                                                           // the two squares of cement
     const inq = q => x >= q[0] && x <= q[2] && y >= q[1] && y <= q[3], rim = q => x < q[0] + .06 || x > q[2] - .06 || y < q[1] + .06 || y > q[3] - .06;
     if (inq(E.WET)) return rim(E.WET) ? rgb(150, 150, 156) : rgb(...(hash(ix, iy) < .03 ? [214, 214, 220] : [200, 200, 208]));
@@ -94,7 +94,7 @@ function buildSet() {
   part('puerta', () => CL.doorX(0, E.D0, E.D1, E.DH, SET.puerta === 'open'));
   part('vitrina', () => { CL.windowX(0, E.WIN[0], E.WIN[1], E.WIN[2], E.WIN[3]); CL.awningX(0, E.WIN[0] - .3, E.WIN[1] + .3, 2.9, 2.6, .8); });
   part('semaforo', () => { E.LUZ = CL.trafficLight(E.POLE[0], E.POLE[1]); });
-  part('muro', () => CL.box(-9, 7.6, 0, 9, 7.82, .5, STONE));          // the park's low wall, beyond the near pavement
+  part('muro', () => CL.box(-9, 8.6, 0, 9, 8.82, .5, STONE));          // the park's low wall, beyond the near pavement
   if (SET.obra) part('obra', () => {
     CL.faceY(4.0, E.OBRA[0] - .1, E.OBRA[1] + .1, .5, .86, (a, z) => (Math.floor((a + 40) / .3) % 2) ? rgb(226, 50, 44) : rgb(252, 252, 250));   // a red and white board along the hole, on two feet
     for (const x of [E.OBRA[0], E.OBRA[1]]) CL.box(x - .05, 3.94, 0, x + .05, 4.04, .5, [70, 74, 84]);

@@ -8,7 +8,7 @@
    down it (towards the camera): x = (u + v) / R2, y = (v - u) / R2. The crossing's middle is u = 0, v = 0.
    Three ways leave: left (u < 0), right (u > 0), straight on (v < 0), all alike: a pavement and a low hedge on each side, nothing that says where
    they lead. At the far end of the street straight on stands one big tree. In the near right corner is a small square: a second tree, a seat
-   with a back that faces the camera, a low wall behind it.
+   with a back that faces the camera, a tree at its far corner, and a short piece of low wall at its near edge (where a camera can be stood).
    The state comes from the address; these become the builder's setKey:
      hora = mediodia | tarde | ocaso      the light
      cerrada = 0 | 1                      cones across the street to the right (story 58)
@@ -29,7 +29,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 const E = {
   HW: 1.25, PV: .7,                                                  // half a street's width; a pavement's width beside it
   TREE: [-2.5, -4.4], PLAZA: { u0: 2.2, v0: 2.6, u1: 5.7, v1: 7.6 },      // the big tree at the end of the street straight on; the small square (in u, v)
-  SEAT: { u: 3.4, v: 4.5, hw: 1.05 }, TREE2: [5.3, 6.7], WALL: { v: 3.5 }, MURITO: [2.7, 6.9],
+  SEAT: { u: 3.3, v: 4.5, hw: 1.1 }, TREE2: [5.0, 2.3], MURITO: [2.6, 7.0],
   CONES: 2.45,                                                       // the cones that close the right street stand at u = CONES
   uv: (x, y) => [(x - y) / R2, (x + y) / R2], xy: (u, v) => [(u + v) / R2, (v - u) / R2],
 };
@@ -78,8 +78,7 @@ function buildSet() {
     const [bx, by] = E.xy(s.u, s.v - .24); turnedBox(bx, by, .46, 1.0, s.hw, .05, -Math.PI / 4, c);     // its back, at the far side
     for (const du of [-s.hw + .15, s.hw - .15]) { const [lx, ly] = E.xy(s.u + du, s.v); turnedBox(lx, ly, 0, .36, .07, .22, -Math.PI / 4, [70, 60, 56]); }
     for (let du = -s.hw; du <= s.hw; du += .3) { const [qx, qy] = E.xy(s.u + du, s.v); castShadow(qx, qy, .4, .3); }
-    const [wx, wy] = E.xy(E.SEAT.u + .2, E.WALL.v); turnedBox(wx, wy, 0, .5, 1.6, .1, -Math.PI / 4, [196, 186, 168]);
-    const [mx, my] = E.xy(E.MURITO[0], E.MURITO[1]); turnedBox(mx, my, 0, .55, .45, .12, -Math.PI / 4, [196, 186, 168]);   // a short piece of low wall at the square's near edge: where the camera is stood   // the low wall behind the seat
+    const [mx, my] = E.xy(E.MURITO[0], E.MURITO[1]); turnedBox(mx, my, 0, .55, .45, .12, -Math.PI / 4, [196, 186, 168]);   // a short piece of low wall at the square's near edge: where the camera is stood
   });
   if (SET.cerrada) part('conos', () => {                              // the right street is shut: a red and white board on two feet right across it, and cones before it
     const [bx, by] = E.xy(E.CONES + .5, 0);

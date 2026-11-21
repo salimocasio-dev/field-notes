@@ -61,7 +61,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 - **New words:** edificio, alto, nuevo, escuela, hospital.
 - **Back again:** calle, bicicleta, va, mamá, papá, comida, caliente, frío, arroz, rico, un poco, tengo hambre, gracias, también, no, para, este, ahora.
 
-**Start:** midday, state `altos`, pair a. Luis stands with his bicycle on the near pavement, the lunch tins in its basket, the frog on the handlebar. Across the street the two buildings with no sign: the tall old one and the low new one.
+**Start:** midday, state `altos`, pair a. Luis stands with his bicycle on the pavement, the lunch tins in its basket, the frog beside him. Across the street the two buildings with no sign: the tall old one and the low new one.
 
 **The opening** (big sign)
 
