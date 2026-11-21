@@ -11,6 +11,7 @@
 // - On the real El camino (order 33b): the same, for its five files; rapido-despacio's end (acts.sevan, the sheet's sevan:
 //   everyone leaves in a file) is the new act's: its runs differ from the old there and after in time only.
 // - On the real El campo (order 34b): the same, for its five files.
+// - On the real El lago (order 35b): the same, for its five files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -71,6 +72,9 @@ Map<String, dynamic> campoPlaceless(Map<String, dynamic> t) {
 
 /// Each campo run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> campoWhole = {}, campoTimeless = {};
+
+/// Each lago run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> lagoWhole = {}, lagoTimeless = {};
 
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
@@ -686,6 +690,88 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in campoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${campoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real El lago (order 35b): the lake and its dock are built round the old picture, so its places keep their
+  // screen numbers but the ones the sheet moves (`moves`: the post, Carmen on the right bank, the boats' rows, where
+  // boats stick in the reeds, the ducks' and the fish's places and paths, the flower, the answer cards; `remap`: the
+  // story positions it moved, d-pato-pequeno's ducks, Luis in h-lago and d-pato-pequeno, the bird on the post). All 21
+  // hop counts are the old ones (the sheet's `hops` is empty). The scene draws its random numbers (mueven, rina) from the
+  // runner's one source: the draws are the old ones. The state line writes where each duck is (`patos=k@x,y:`), which
+  // `placeless` leaves out.
+  group('the recorded runs, on the real El lago (order 35b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final lago = {
+      for (final r in runs)
+        if (r['scene'] == 'lago') r['story'] as String,
+    };
+    test('the five files of El lago', () {
+      expect(lago, {
+        'pan-para-el-pato',
+        'los-botes',
+        'cual',
+        'd-pato-pequeno',
+        'h-lago',
+      });
+    });
+    for (final s in lago) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('lago'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            lagoTimeless['$s $plan'] = timeless;
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            expect(hops(c.trace), hops(c.committed), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            lagoWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/lago-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in lagoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${lagoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });
