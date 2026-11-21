@@ -4,7 +4,7 @@ Place 5, La calle. Scene 4 of 4 (scene id `cruce`). Stories 57 to 59. The learne
 
 Scene words (page 02): izquierda, derecha, derecho, al lado de, delante, detrás, entre, sigue, dobla, hasta, perdón.
 
-The picture (as the set `cruce-set.html` draws it): a crossing of two streets in town, drawn square to the picture: one street runs straight up and down, the other straight across. The frog comes up from the bottom with his back to us, so his left is the picture's left. Two views of one picture: `wide` (stories 57 and 58) and `plaza` (story 59; the window moved to the right). Three ways leave the crossing: a street to the left, a street to the right, a street straight on. Where each leads is out of the picture: nothing in it says what is down a street (no signs, no fronts; the same pavement and low hedge on all three). At the far end of the street straight on stands one big tree. At the near right corner is a small square: a second tree at its far corner, a seat with a back that faces us, and a short piece of low wall at its near edge (story 59: the family's photo). A row of cones can close the street to the right (story 58).
+The picture (as the set `cruce-set.html` draws it): a crossing of two streets in town, drawn square to the picture: one street runs straight up and down, the other straight across. The frog comes up from the bottom with his back to us, so his left is the picture's left. Two views of one picture: `wide` (stories 57 and 58) and `plaza` (story 59; the window moved to the right). Three ways leave the crossing: a street to the left, a street to the right, a street straight on. Where each leads is out of the picture: nothing in it says what is down a street (no signs, no fronts; the same pavement and low hedge on all three). At the far end of the street straight on stands one big tree. At the near right corner is a small square: low bushes, a seat with a back that faces us, and a short piece of low wall at its near edge (story 59: the family's photo). A row of cones can close the street to the right (story 58).
 
 New person: the piragüero with his cart (he is the piragua man of El parque), story 58. The others: the family, the señora and the señor, don Pepe on his bicycle, the obrero of story 50.
 
@@ -101,9 +101,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 - **Goal he can see:** papá's camera, the kind whose picture slides out of the front. Three white sheets show at its side (and on the card).
 - **At stake:** the good photos (3 sheets). The frog in the wrong place when the flash goes: the picture comes out spoiled (his back over a face, or only his eyes at the edge).
 - **New words:** al lado de, delante, detrás, entre.
-- **Back again:** familia, abuela, abuelo, mamá, papá, bebé, árbol, aquí, uno, dos, tres, yo, soy, mira, también, contento, hay, ahora.
+- **Back again:** familia, abuela, abuelo, mamá, papá, bebé, aquí, uno, dos, tres, yo, soy, mira, también, contento, hay, ahora.
 
-**Start:** late afternoon, a soft light. The small square at the crossing: the tree, the seat, the short wall. The family walks in; papá has the camera round his neck. The frog is behind the tree's trunk, peeping out.
+**Start:** late afternoon, a soft light. The small square at the crossing: the seat, the short wall. The family walks in; papá has the camera round his neck. The frog is behind papá, peeping round his legs.
 
 **The opening** (big sign)
 
@@ -115,7 +115,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes, answer bu
 
 **The turn**
 
-6. Papá looks through the camera and lowers it. NARR: "Papá dice: ¿Y Coquí? ¿Dónde está Coquí?" COQUÍ [TURN: aquí (aquí, aqui)]: "¡Aquí!" The frog hops out. NARR: "Coquí está detrás del árbol." Papá taps the three sheets. NARR: "Papá dice: Tres fotos. Y Coquí va en las tres." The card shows two places and the three sheets. The signs go.
+6. Papá looks through the camera and lowers it. NARR: "Papá dice: ¿Y Coquí? ¿Dónde está Coquí?" COQUÍ [TURN: aquí (aquí, aqui)]: "¡Aquí!" The frog hops out from behind papá. NARR: "Coquí está detrás de papá." Papá taps the three sheets. NARR: "Papá dice: Tres fotos. Y Coquí va en las tres." The card shows two places and the three sheets. The signs go.
 
 **The game.** Papá says where the frog goes; then he counts and presses the button. Round A is at Canelo, who lies low enough for the frog to be seen behind him: in front of him (the ground before his paws) or behind him (the ground between him and the seat). Round B is at abuela: beside her (on the seat, in the gap) or in front of her (the ground at her feet). Which is said is drawn, each round on its own.
 
@@ -161,9 +161,9 @@ Left, and why:
 The set `cruce`:
 - View: `wide` (zoom 1).
 - States: `hora` (mediodia, tarde, late afternoon); `cerrada` (the cones across the right street: there or not; story 58).
-- In the set: the street the frog comes up, the three streets that leave (alike: low walls, no signs), the big tree at the far end of the street straight on, the crossing's corners, the small square at the near right corner with its tree, seat with a back, and low wall.
+- In the set: the street the frog comes up, the three streets that leave (alike: low walls, no signs), the big tree at the far end of the street straight on, the crossing's corners, the small square at the near right corner with its seat with a back, its bushes and its short wall.
 - Things he can touch: calle_izq, calle_der, calle_recta (the three streets); each person; perro; the frog's places of story 59 (delante_canelo, detras_canelo, lado_abuela, delante_abuela).
-- Spots: abajo (where they come up: abuela, the frog; Luis on his bicycle), centro (somebody asked at the crossing, facing us), asiento_plaza (abuela sitting, her bag and the bottle beside her), salida_izq, salida_der, salida_recta (where a street leaves the picture), bajo_arbol (where Luis stops under the big tree), conos (the obrero), plaza_carrito (the piragüero and his cart in the square), the family's places of story 59 (fila_atras 1 to 3: abuelo, mamá, Carmen, well behind the seat; bebe_alto: the bebé held up between abuelo and mamá; asiento 1, 2: abuela, Luis, with the gap between them; suelo_canelo: Canelo lying on the ground in front of the seat, at the right; papa_camara; muro: the camera on the short wall; hueco: the gap, which is also lado_abuela and the frog's last place; papa_rodillas: papá kneeling at the seat's left end), tras_arbol (the frog behind the square's tree), and the frog's four places.
+- Spots: abajo (where they come up: abuela, the frog; Luis on his bicycle), centro (somebody asked at the crossing, facing us), asiento_plaza (abuela sitting, her bag and the bottle beside her), salida_izq, salida_der, salida_recta (where a street leaves the picture), bajo_arbol (where Luis stops under the big tree), conos (the obrero), plaza_carrito (the piragüero and his cart in the square), the family's places of story 59 (fila_atras 1 to 3: abuelo, mamá, Carmen, well behind the seat; bebe_alto: the bebé held up between abuelo and mamá; asiento 1, 2: abuela, Luis, with the gap between them; suelo_canelo: Canelo lying on the ground in front of the seat, at the right; papa_camara; muro: the camera on the short wall; hueco: the gap, which is also lado_abuela and the frog's last place; papa_rodillas: papá kneeling at the seat's left end), tras_papa (the frog behind papá at his camera), and the frog's four places.
 - New sprites: abuela's bottle with three marks (3 to 0), tipping, water on the pavement; the letter, a small bag, a kite, a loaf; Carmen with a skipping rope; Luis's bicycle with the basket and the block of ice in three sizes, drops and a puddle; the cones; the piragüero and his cart, piraguas (3, 2, 1; one with two spoons); the thought of the piragüero at his cart; the card's road with the bicycle at three places; papá with the camera (looking through it, lowering it, laughing, thumb up, running, kneeling); the camera on the wall; the flash; a photo sheet shown big (good: the group with the frog in each of the six places and in the gap; spoiled: his back over a face, his eyes at an edge); the photos laid out on the seat.
 - Speaker keys: `piraguero`, `obrero`; the others exist. The spoken word is always "piragüero", with its ü.
 

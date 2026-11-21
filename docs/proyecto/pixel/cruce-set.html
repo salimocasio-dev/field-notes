@@ -8,7 +8,7 @@
    down it (towards the camera): x = (u + v) / R2, y = (v - u) / R2. The crossing's middle is u = 0, v = 0.
    Three ways leave: left (u < 0), right (u > 0), straight on (v < 0), all alike: a pavement and a low hedge on each side, nothing that says where
    they lead. At the far end of the street straight on stands one big tree. In the near right corner is a small square: a second tree, a seat
-   with a back that faces the camera, a tree at its far corner, and a short piece of low wall at its near edge (where a camera can be stood).
+   with a back that faces the camera, low bushes at its corners, and a short piece of low wall at its near edge (where a camera can be stood).
    The state comes from the address; these become the builder's setKey:
      hora = mediodia | tarde | ocaso      the light
      cerrada = 0 | 1                      cones across the street to the right (story 58)
@@ -29,7 +29,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 const E = {
   HW: 1.25, PV: .7,                                                  // half a street's width; a pavement's width beside it
   TREE: [-2.5, -4.4], PLAZA: { u0: 2.2, v0: 2.6, u1: 5.7, v1: 7.6 },      // the big tree at the end of the street straight on; the small square (in u, v)
-  SEAT: { u: 3.3, v: 4.5, hw: 1.1 }, TREE2: [5.0, 2.3], MURITO: [2.6, 7.0],
+  SEAT: { u: 3.3, v: 4.5, hw: 1.1 }, MURITO: [2.6, 7.0],
   CONES: 2.45,                                                       // the cones that close the right street stand at u = CONES
   uv: (x, y) => [(x - y) / R2, (x + y) / R2], xy: (u, v) => [(u + v) / R2, (v - u) / R2],
 };
@@ -72,7 +72,7 @@ function buildSet() {
   });
   part('arbol', () => { const [x, y] = E.xy(E.TREE[0], E.TREE[1]); CL.tree(x, y, 1.9, 1.35); });
   part('plaza', () => {
-    const [tx, ty] = E.xy(E.TREE2[0], E.TREE2[1]); CL.tree(tx, ty, 1.5, 1.0, CL.LEAF_L, CL.LEAF);
+    for (const [u, v] of [[5.2, 2.2], [5.55, 2.6], [5.3, 7.3]]) { const [x, y] = E.xy(u, v); sphere(x, y, .22, .34, CL.LEAF_L, 'rough'); castShadow(x, y, .25, .3); }   // low bushes at the square's corners: nothing tall stands here (a tree would hide the street to the right, or the family)
     const s = E.SEAT, [sx, sy] = E.xy(s.u, s.v), c = [150, 104, 62];
     turnedBox(sx, sy, .36, .46, s.hw, .26, -Math.PI / 4, c);                                           // the seat, long across the picture
     const [bx, by] = E.xy(s.u, s.v - .24); turnedBox(bx, by, .46, 1.0, s.hw, .05, -Math.PI / 4, c);     // its back, at the far side

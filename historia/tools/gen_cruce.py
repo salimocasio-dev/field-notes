@@ -186,7 +186,7 @@ c.update({"c59_familia":N("La familia está en el cruce. Papá tiene una cámara
  "c59_quien_delante":N("¿Quién está delante de Carmen?"),"c59_detras":N("Carmen está detrás de Luis. Mamá está detrás de abuela."),
  "c59_lado_luis":N("Carmen está al lado de mamá. Y abuela está al lado de Luis."),"c59_quien_lado_luis":N("¿Quién está al lado de Luis?"),"c59_pa_canelo_aqui":PA("Canelo, ¡aquí!"),
  "c59_entre":N("El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."),
- "c59_pa_coqui":PA("¿Y Coquí? ¿Dónde está Coquí?"),"c59_cq_aqui":T("¡Aquí!"),"c59_coqui_arbol":N("Coquí está detrás del árbol."),"c59_pa_tres":PA("Tres fotos. Y Coquí va en las tres."),
+ "c59_pa_coqui":PA("¿Y Coquí? ¿Dónde está Coquí?"),"c59_cq_aqui":T("¡Aquí!"),"c59_coqui_arbol":N("Coquí está detrás de papá."),"c59_pa_tres":PA("Tres fotos. Y Coquí va en las tres."),
  "c59_uno":PA("¡Uno, dos, tres!"),"c59_pa_yo":PA("¡Y ahora yo también! Coquí, aquí hay un lugar: ¡entre abuela y Luis!"),"c59_ab_mira":AB("Mira la foto. ¿Quién es?"),"c59_cq_soy":T("¡Soy yo!"),
  "c59_fin":N("Coquí está en la foto, entre abuela y Luis. La familia está contenta.")})
 for d,w,W in (("detras","detrás","Detrás"),("delante","delante","Delante")):
@@ -207,7 +207,7 @@ s59={"id":"delante-y-detras","title":"Delante y detrás","place":"La calle","sce
  "focus_words":["al lado de","delante","detrás","entre"],"formas_foco":{},
  "back_again":["familia","abuela","abuelo","mamá","papá","bebé","árbol","aquí","uno","dos","tres","yo","soy","mira","también","contento","hay","ahora"],
  "also_heard":[],"names":nm,"palabras":{"detras":"detrás","delante":"delante","lado":"al lado de"},"clips":c,
- "beats":[{"set":{"hora":HORA59}},act("hojas",n=3),act("ir",a="tras_arbol"),{"wait":500},
+ "beats":[{"set":{"hora":HORA59}},act("hojas",n=3),act("ir",a="tras_papa"),{"wait":500},
   # 1: the family, the camera; abuelo, mamá and Carmen stand in a row well behind the seat
   "c59_familia","c59_pa_foto",act("pone59",quien="abuelo",donde="fila_atras1"),act("pone59",quien="mama",donde="fila_atras2"),act("pone59",quien="carmen",donde="fila_atras3"),
   # 2: delante (signed ask on Luis)
