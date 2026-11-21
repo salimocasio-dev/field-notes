@@ -832,8 +832,8 @@ class BancoSet {
         if (d > 1) continue;
         if (d < .5) POOL_IN.add(i);
         final f = (1 - d) * 2.2;
-        if (e.bayerAt(ix, iy) > f)
-          continue; // a soft edge: dithered over its outer part
+        // a soft edge: dithered over its outer part
+        if (e.bayerAt(ix, iy) > f) continue;
         final c = pix[i], kk = str * (.2 + .45 * (1 - d));
         pix[i] = e.rgb(
           e.lerp(c & 255, 255, kk),
