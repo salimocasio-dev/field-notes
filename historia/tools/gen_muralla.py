@@ -34,7 +34,7 @@ N=lambda t:{"who":"narr","text":t}
 T=lambda t:{"who":"tu","text":t}
 def D(quien,pre,t): return {"who":"narr","habla":quien,"text":pre+" dice: "+t}
 AB=lambda t:D("abuela","Abuela",t); ABO=lambda t:D("abuelo","Abuelo",t); L=lambda t:D("luis","Luis",t); CA=lambda t:D("carmen","Carmen",t)
-MU1=lambda t:D("musico1","El músico",t); MU2=lambda t:D("musico2","El otro músico",t); DP=lambda t:D("don_pepe","Don Pepe",t); MAE=lambda t:D("maestra","La maestra",t)
+MU1=lambda t:D("musico1","El músico",t); MU2=lambda t:D("musico2","El otro músico",t); DP=lambda t:D("pepe","Don Pepe",t); MAE=lambda t:D("maestra","La maestra",t)
 PI=lambda t:D("piraguero","El piragüero",t); GE=lambda t:D("gente","La gente",t)
 tw=lambda k:{"set":{"twinkle":k}}                                              # the engine's own twinkle on a thing he can touch (the script's `brilla`)
 def act(_n,**k): return dict({"act":_n},**k)
@@ -128,7 +128,7 @@ DOORS=["roja","azul"]; DICE=["alguien","nadie"]
 for h in DOORS:   # the four sentences Luis can say in the game, and the four corrections
     for w in DICE:
         c["c117_l_%s_%s"%(h,w)]=L("Detrás de la puerta %s, %s."%(h,w)); c["c117_no_%s_%s"%(h,w)]=L("¡No, Coquí! Detrás de la puerta %s, %s."%(h,w)); DIN.update(["c117_l_%s_%s"%(h,w),"c117_no_%s_%s"%(h,w)])
-GUESTS117=["don_pepe","maestra","piraguero","senor","senora"]
+GUESTS117=["pepe","maestra","piraguero","senor","senora"]
 VARS117={"na":DOORS,"nb":DOORS,"sa":DICE,"sb":DICE}
 def sorteo117(s):
     # h: the box with somebody in it; n: the door Luis names; sd: what he says (alguien when he names the box with somebody, else nadie); d: the right door (the box with somebody)
@@ -145,7 +145,7 @@ s117={"id":"todos-en-la-foto","title":"Todos en la foto","place":"El fuerte","sc
  "focus_words":["todos","nadie","alguien"],"formas_foco":{},
  "back_again":["puerta","rojo","azul","detrás","hay","no hay","falta","aquí","¿dónde está?","pájaro","luz","viento","cuidado","otra vez","ahora","uno","dos","tres","por favor","sí","no"],
  "also_heard":[],"names":nm,"palabras":{},"clips":c,
- "beats":[START(),act("faroles",n=3),act("llega",quien="abuela",a="camara_abuela")]+juntos(*[act("llega",quien=q,a="centro%d"%i) for i,q in enumerate(("abuelo","luis","don_pepe","maestra","piraguero","senor","senora"),1)]+[act("llega",quien="carmen",a="dentro_roja"),act("ir",a="junto_camara")])+[{"wait":500},
+ "beats":[START(),act("faroles",n=3),act("llega",quien="abuela",a="camara_abuela")]+juntos(*[act("llega",quien=q,a="centro%d"%i) for i,q in enumerate(("abuelo","luis","pepe","maestra","piraguero","senor","senora"),1)]+[act("llega",quien="carmen",a="dentro_roja"),act("ir",a="junto_camara")])+[{"wait":500},
   # 1: people move closer together (no act named); abuela counts heads on her fingers (in time with her line)
   {"dots":1},"c117_ab_foto"]+con(act("cuenta117"),"c117_ab_faltan")+[
   # 2: a giggle, the red box's window flickers (no act named); signed ask on the red door (Luis's own line): the frog pulls it open, Carmen with her hands over her mouth, her line, she runs to the others (`abre117`, in time with her line)
@@ -209,7 +209,7 @@ s118={"id":"por-que-no-bailas","title":"¿Por qué no bailas?","place":"El fuert
   # 2: Luis stands apart with his tongue out; signed ask on the glass of juice (Luis's own line): the frog carries it over, he drinks it off and goes to dance
   {"dots":2},gesto("luis","lengua"),"c118_ab_luis",ask("jugo","c118_l_sed",after=[act("trae118",que="jugo",a="luis",ok=1)]),
   # 3: don Pepe comes to the parapet, a hand on his stomach; signed ask on the plate (his own line): the frog carries it over, he eats and goes to dance with the plate in his hand
-  {"dots":3},act("llega",quien="don_pepe",a="muro2"),gesto("don_pepe","barriga"),"c118_ab_pepe",ask("plato","c118_dp_hambre",after=[act("trae118",que="plato",a="don_pepe",ok=1)]),
+  {"dots":3},act("llega",quien="pepe",a="muro2"),gesto("pepe","barriga"),"c118_ab_pepe",ask("plato","c118_dp_hambre",after=[act("trae118",que="plato",a="pepe",ok=1)]),
   # 4: abuelo gets up from his chair (no act named) and dances with abuela; Luis puts the chair, a new glass and a new plate back; a speaking turn (no)
   {"dots":4},"c118_abo_pero","c118_ca_por_que","c118_abo_musica",act("llega",quien="abuelo",a="baile3"),act("repone118"),"c118_ab_tu_cansado","c118_cq_no","c118_ab_cansada",
   # 5: the turn: the músico with the hat lifts his guitar, the last song begins; the maestra and the piragüero stand at the parapet; the card shows two places. The reasons of the two rounds are dealt out here (none twice)
@@ -234,7 +234,7 @@ c.update({"c119_ab_gracias":AB("¡Gracias por venir!"),"c119_m1_guitarra":MU1("�
  "c119_l_guagua":L("¡Mira, la guagua! ¡Ya mismo se va!"),"c119_ab_rapido":AB("¡Rápido! Gracias por venir. ¡Cuídense!"),"c119_ca_nos_vemos":CA("¡Nos vemos!"),
  "c119_abo_carro":ABO("Está bien. Vamos en mi carro."),"c119_gente":GE("¡Nos vemos, Coquí!"),"c119_cq_adios":T("¡Adiós!"),"c119_ab_buenas_noches":AB("Buenas noches, Coquí. Gracias por venir."),
  "c119_fin":N("La fiesta en el fuerte: la música, los regalos, la gente. Nos vemos. ¡Hasta pronto!")})
-GU119={"don_pepe":("Don Pepe","caja"),"senora":("La señora","bolsa"),"senor":("El señor","sombrero"),"maestra":("La maestra","libro")}
+GU119={"pepe":("Don Pepe","caja"),"senora":("La señora","bolsa"),"senor":("El señor","sombrero"),"maestra":("La maestra","libro")}
 GUESTS119=list(GU119)
 for g,(pre,cosa) in GU119.items():   # what each guest asks for, the correction, and his thanks (the same words in his own voice)
     c["c119_%s_pide"%g]=D(g,pre,"Mi %s, por favor."%cosa); c["c119_no_%s"%g]=D(g,pre,"¡No, Coquí! Mi %s."%cosa); c["c119_gracias_%s"%g]=D(g,pre,"¡Gracias! ¡Nos vemos!")
@@ -242,7 +242,7 @@ for g,(pre,cosa) in GU119.items():   # what each guest asks for, the correction,
 VARS119={"ga":GUESTS119,"gb":GUESTS119}
 def cosa119(g,t):
     # each guest's own thing: don Pepe the box, la señora the bag, el señor the hat, la maestra the book
-    return [{"calc":t,"cond":g+"=don_pepe","then":"caja","else":"libro"},{"calc":t,"cond":g+"=senora","then":"bolsa","else":"$"+t},{"calc":t,"cond":g+"=senor","then":"sombrero","else":"$"+t}]
+    return [{"calc":t,"cond":g+"=pepe","then":"caja","else":"libro"},{"calc":t,"cond":g+"=senora","then":"bolsa","else":"$"+t},{"calc":t,"cond":g+"=senor","then":"sombrero","else":"$"+t}]
 def ronda119(s):
     # g: the guest (dealt out); t: his thing. A: the four things. B: the three things round A did not use (oa ob oc: round A's thing is the one left out).
     g,t="g"+s,"t"+s
@@ -261,7 +261,7 @@ s119={"id":"nos-vemos","title":"Nos vemos","place":"El fuerte","scene":"muralla"
  "focus_words":["nos vemos","hasta pronto","gracias por venir"],"formas_foco":{},
  "back_again":["guagua","se va","ya","rápido","guitarra","bolsa","sombrero","caja","libro","mi","música","bonito","cansado","está bien","carro","gente","hasta luego","adiós","buenas noches","por favor","gracias","sí","no"],
  "also_heard":["cuídense"],"names":nm,"palabras":{},"clips":c,
- "beats":[START("tarde_noche"),act("caras",n=0),act("llega",quien="abuela",a="escalera_abuela"),act("llega",quien="abuelo",a="escalera_abuelo")]+juntos(*[act("llega",quien=q,a="banco%d"%i) for i,q in enumerate(("don_pepe","senora","senor","maestra"),1)]+[act("ir",a="mesa_coqui")])+[{"wait":500},
+ "beats":[START("tarde_noche"),act("caras",n=0),act("llega",quien="abuela",a="escalera_abuela"),act("llega",quien="abuelo",a="escalera_abuelo")]+juntos(*[act("llega",quien=q,a="banco%d"%i) for i,q in enumerate(("pepe","senora","senor","maestra"),1)]+[act("ir",a="mesa_coqui")])+[{"wait":500},
   # 1: the músico with the hat comes to the steps; signed ask on the guitar (his own line): the frog pushes it to him and he slings it on his back (no act named); he goes down the steps
   {"dots":1},act("llega",quien="musico1",a="escalera1"),"c119_ab_gracias",ask("guitarra","c119_m1_guitarra"),"c119_m1_hasta",act("llega",quien="musico1",a="baja"),
   # 2: the other músico with his drum (no act named); a speaking turn (hasta luego); he goes down, and the two músicos walk off along the road
@@ -276,7 +276,7 @@ s119={"id":"nos-vemos","title":"Nos vemos","place":"El fuerte","scene":"muralla"
   {"if":"lost=0","then":[gesto("abuelo","saluda")],"else":["c119_abo_carro",gesto("abuelo","hombro")]},   # with somebody on the bench abuelo says "Está bien. Vamos en mi carro." and pats his shoulder; with four faces he only waves
   {"dots":8}]+juntos(*[act("llega",quien=q,a="pretil%d"%i) for i,q in enumerate(("abuela","abuelo","luis","carmen"),1)]+[act("ir",a="pretil5")])+["c119_gente","c119_cq_adios",gesto("coqui","saluda"),"c119_ab_buenas_noches",   # 8: the family and the frog at the parapet; a speaking turn (adiós); he waves with both arms
   {"dots":9},act("apaga119"),"c119_fin",act("fin")],   # 9: the lanterns go out one by one
- "leer":["c119_ab_gracias","c119_m1_guitarra","c119_m1_hasta","c119_abo_gracias","c119_m2_nos_vemos","c119_cq_hasta_luego","c119_l_guagua","c119_ab_rapido","c119_ca_nos_vemos","c119_don_pepe_pide","c119_no_don_pepe","c119_gracias_don_pepe",
+ "leer":["c119_ab_gracias","c119_m1_guitarra","c119_m1_hasta","c119_abo_gracias","c119_m2_nos_vemos","c119_cq_hasta_luego","c119_l_guagua","c119_ab_rapido","c119_ca_nos_vemos","c119_pepe_pide","c119_no_pepe","c119_gracias_pepe",
   "c119_senora_pide","c119_abo_carro","c119_gente","c119_cq_adios","c119_ab_buenas_noches","c119_fin"]}
 s119=reuse(s119,{"c119_cq_hasta_luego":TG(("hasta luego",["hasta luego","adiós"])),"c119_cq_adios":TG(("adiós",["adiós","adiós a todos"]))})
 json.dump(s119,open("cuentos/nos-vemos.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
