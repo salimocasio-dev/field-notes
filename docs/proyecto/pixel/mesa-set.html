@@ -65,7 +65,7 @@ const STX = r3(.9 + (205 - OX) / (S / R2) - K.STW / 2);
 const WIN = { face: 'y', a0: 2.7, a1: 3.85, z0: 1.95, z1: 2.85, view: 'arbusto', name: 'ventana', bushA: -1.5, bushR: .5 };
 // the doorway to the yard in the left wall, between the corner and the counter (the old picture's door at its left edge): whoever comes in to
 // sit, or leaves, appears and goes there (moves: PUERTA), walking along the walkway behind the chairs (PASO)
-const DOOR = { face: 'x', a0: 1.6, a1: 2.62, z0: 0, z1: 2.45, view: 'patio', door: true, name: 'puerta', horizon: 1.0 };
+const DOOR = { face: 'x', a0: 1.6, a1: 2.62, z0: 0, z1: 2.45, view: 'patio', door: true, name: 'puerta', horizon: 1.6 };
 const WALK = { y: 2.2, door: [.15, 2.2] };                         // the walkway behind the chairs (y), and its end in the doorway
 const BAND = { x: [[A0 - .2, YL]], y: [[STX - .18, XR]] };
 
