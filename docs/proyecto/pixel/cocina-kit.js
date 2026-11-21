@@ -319,7 +319,7 @@ function cocinaBuild(plan) {
   if (plan.furnish) plan.furnish();
   if (plan.shadows) plan.shadows();
   flushShadows(); pendingShadows.length = 0;
-  if (plan.occlusion === 'shade') cocinaOcclusion(); else bakeOcclusion();
+  if (plan.occlusion === 'shade') cocinaOcclusion(); else if (plan.occlusion !== 'none') bakeOcclusion();
   staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   skyFill(() => kRgb(K.BACKDROP));
   bakedPix.set(pix); bakedZ.set(zb);
@@ -329,7 +329,7 @@ function cocinaBuild(plan) {
    bakeOcclusion (the engine's) dims the floor round everything on every side, so a chair's leg or a stool's foot gets a dark ring on its lit side
    (upper left) too. cocinaOcclusion dims a floor pixel only by what stands to its left on the screen (the light comes from the upper left):
    the same offsets and tints as bakeOcclusion, those with a negative dx. cocinaBuild uses it when plan.occlusion is 'shade' (without it,
-   cocinaBuild draws as before). */
+   cocinaBuild draws as before). plan.occlusion 'none': no dimming at all (for a check's picture of the set without its shadows). */
 function cocinaOcclusion() {
   const offsets = [];
   for (const r of [2, 4]) for (let k = 0; k < 8; k++) {
