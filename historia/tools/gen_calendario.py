@@ -245,7 +245,7 @@ def ronda71(s,primera):
                        {"if":"lost=0","then":[act("se_va71",quien="senor"),act("gente",n=2)],"else":[act("se_va71",quien="tito"),act("gente",n=1)]}]+X}]
 rA=ronda71("a",[{"draw":"sa","options":["1","2","3","4"]}]+succ("sa","na",1,4)+[act("sol71",dia="$sa"),"c71_a_$sa"])
 rB=ronda71("b",[act("noche71")]+succ("sa","sb",1,4)+succ("sb","nb",2,5)+[act("sol71",dia="$sb"),"c71_b_$sb"])
-s71={"id":"hoy-y-manana","title":"Hoy y mañana","place":"La plaza","scene":"calendario","next":None,
+s71={"id":"hoy-y-manana","title":"Hoy y mañana","place":"La plaza","scene":"calendario","next":"la-playa",
  "goal":"Hang the card the señora holds under the right day, today's or tomorrow's, so that abuela, don Tito and the señor stay on the seat with their baskets and go home with something in them: every card under the wrong day sends one of them home with an empty basket.",
  "stake":{"thing":"gente","steps":3},"dots":10,"bien":"si_muy_bien",
  "focus_words":["hoy","mañana","día","semana"],"formas_foco":{"día":["días"]},
