@@ -6,7 +6,7 @@ import 'support/sheet_bundle.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('the registry holds the eleven scene ids, in order', () {
+  test('the registry holds the eleven scene ids, in order, then the new scenes converted so far', () {
     expect(sceneRegistry.keys.toList(), [
       'frente',
       'balcon',
@@ -19,6 +19,7 @@ void main() {
       'mesa',
       'estufa',
       'nevera',
+      'mostrador',
     ]);
   });
 
