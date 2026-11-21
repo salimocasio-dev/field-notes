@@ -43,7 +43,7 @@ Every "Done when" includes, without saying so each time: `flutter analyze` clean
 | 30a to 39a | Each other scene's set reference and sheet | orchestrator (design), one at a time | Gate A |
 | 30b to 39b | Each other scene in Dart | builder, coqui_scenes, one at a time | its "a" |
 | 50 to 53 | El colmado's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 39b, or sooner if the lane is free |
-| 54 to 57 | La calle's four new scenes in Dart (sets are done; sheets in the making) | builder, coqui_scenes, one at a time | 53b |
+| 54 to 57 | La calle's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 53b |
 | 40 | Every story against its recorded runs | orchestrator | 39b |
 | 41 | Books' pictures captured again | orchestrator | 40 |
 | 42 | Cutover | orchestrator | 41 |
@@ -698,7 +698,7 @@ New scenes, as El colmado's: no old scene file, no `ref/escenas/` folder. Step a
 - `tiendas-set.html`: `fila` tiendas (four fronts with picture signs: toys, coins, a green cross, a letter; a little horse; a post box; a seat) or altos (a tall old building and a low new one; `par` a or b, `lado` izq or der: four baked states); `hora`; `nube` 0, 1, 2 (the sky and the light; rain itself is a sprite layer).
 - `cruce-set.html`: a crossing drawn square to the picture: its streets are turned 45 degrees to the engine's axes (the set's `E.xy(u, v)` and `E.uv(x, y)`), so that the frog's left is the picture's left. States `hora` mediodia, tarde, ocaso; `cerrada` 0 or 1 (a barrier and cones across the right street). Two views of one picture, `wide` and `plaza`.
 - One fresh reader saw each set with no words; what was not read is fixed. Bake, headless Chrome on the build machine: 55 to 110 ms for every state.
-- Sheets (`<id>-sheet-make.js`, `<id>-sheet.json`) and previews (`<id>-preview.html`): being made; this entry is updated when they pass their checks.
+- Sheets (`<id>-sheet-make.js`, `<id>-sheet.json`) and previews (`<id>-preview.html`, `?m=N`): done for all four; every make exits 0 (esquina 10 checks, 43 spots, x0 12; parada 14 checks, x0 4, the second guagua cut at its back end by the window; tiendas 11 checks, x0 4, and x0 10 for `fila=altos`; cruce 11 checks, `wide` x0 6 and `plaza` x0 44). The checks that matter most to the port: two sprites that stand together never overlap unless their feet are 12 px apart up-down; the frog is never behind a grown-up, a car or a guagua; a guagua that stops in story 49 or 50 stands in the near lane (in the far lane it hides the colmado's corner, where the frog is). The orchestrator looked at every preview moment.
 
 **The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/esquina.md` (stories 48 to 50), `parada.md` (51 to 53), `tiendas.md` (54 to 56), `cruce.md` (57 to 59). Generators: `historia/tools/gen_esquina.py`, `gen_parada.py`, `gen_tiendas.py`, `gen_cruce.py`, run in that order after El colmado's four (each sees what was recorded before it). The checker passes all 12 with 0 errors. As El colmado's, the story files are not on main and must not be pushed until they have played in the app.
 
