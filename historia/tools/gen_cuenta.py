@@ -240,7 +240,7 @@ def ronda95(s,g):
      {"decide":"do","options":["gaveta","frasco"],"pick":"$"+k,"tests":"$"+p,"lock":True,"lead":[],"line":"c95_$%s_$%s"%(g,p),
       "right":[act("guarda95",donde="$"+k,ok=1),"c95_%s_$%s"%(s,g),act("sale",quien="$"+g),star],
       "wrong":con(act("guarda95",donde="$x",ok=0),"c95_no_$%s_$%s"%(g,p))+[{"if":"lost=0","then":[act("guagua",n="medio")],"else":[act("guagua",n="cerca")]}]+X}]
-s95={"id":"buenas-noches","title":"Buenas noches","place":"La fonda","scene":"cuenta","next":None,
+s95={"id":"buenas-noches","title":"Buenas noches","place":"La fonda","scene":"cuenta","next":"buenos-dias",
  "goal":"Put each last guest's folded bills where he says they are for, in the register's drawer for the bill or in the glass jar for the tip, so that the family catches the last guagua of the night: every mix-up takes time, and the guagua's lights come one lamp nearer.",
  "stake":{"thing":"guagua","steps":3},"dots":9,"bien":"si_muy_bien",
  "focus_words":["propina","estoy lleno","hasta luego","buenas noches"],"formas_foco":{"estoy lleno":["estoy llena"]},
