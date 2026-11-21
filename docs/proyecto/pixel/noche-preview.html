@@ -1,0 +1,278 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La noche · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La noche (noche-set.html, drawn in a hidden frame: the living room at night, place 9, scene 4: the back wall with the arch into the bedroom, the lamps, the window, the clock and the sideboard; the sofa, the armchair and the rug; the television; with mesa 1 the dinner table) with the characters and the small things drawn over it as sprites, each placed from noche-sheet.json: the lowest drawn row of the sprite (its feet; for a person who sits, the bottom of the hips) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the floor. Whoever lies in the bed is the standing sprite hung from the head's place (its top middle on the spot) with a blanket over it from the chest to the bed's foot (the sheet's rules.lying: his depth is the bed's own plane). Then cropped to the 196 x 216 view (wide). The characters are today's sprite makers (historia/engine.js, escenas/kit.js): abuela (sitting: mkAbuelaS; standing: mkAbuela), abuelo (kit's FAM.abuelo: a grown-up man), Luis, Carmen, the frog and Canelo (kit's mkPerro). The scarf, the book, the juice, the flan, the cheese, the fruit and the candle are small plain stand-ins drawn here, not final art; the children on the rug sit with their feet on the spot. Nobody is drawn turned.
+The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.silhouette(name)</code>, <code>PREVIEW.nearest(...)</code>, <code>PREVIEW.nearestClear(...)</code> and <code>PREVIEW.nearestFree(...)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 105 opening, <code>?m=2</code> story 105 game, <code>?m=3</code> story 106 opening, <code>?m=4</code> story 106 game, <code>?m=5</code> story 106 ending, <code>?m=6</code> story 107 game, <code>?m=7</code> story 107 ending (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<p id="cap"></p>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. The sheet gives each spot's world point, its (u, v, z) (u across the picture, v down it), screen point and depth.
+   2. The set for the moment's state (luz1, luz2, luz3, tele, mesa, oscuro) is drawn by noche-set.html in a hidden frame, with the shadows of those who stand on the floor cast
+      (frame(t, casts): radius by character, sheet: shadows). None for anybody on a seat, on the sofa's arm, on the sideboard, on the table, on the sill or in the bed (z above 0).
+   3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on its screen column; a person who
+      sits on a seat is hung by the lap (rules.anchor); a small thing stands with its bottom row on its spot's row (a juice, a candle: on the sideboard's or the table's top), the scarf and the
+      book are held in abuela's hands at the point the sheet gives (things.bufanda, things.libro: the spot butaca and a pixel offset). Whoever lies in the bed hangs from his head's place
+      (the top of his sprite on the spot's row) and has a blanket over him from the chest to the bed's foot. A sprite pixel is
+      hidden where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
+      depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). The people in the bed have the bed's own plane instead: the horizontal plane at the head's height z, depth(r) = ((r + .5 - OY + z 22.5) / 13) COS + z / 2.
+      Between two sprites the nearer pixel wins; two planes within .001 of each other are a tie, which the draw order decides (the later layer wins).
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide). */
+(() => {
+  const A = new URLSearchParams(location.search);
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = fetch('noche-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; });
+  const T30 = Math.tan(Math.PI / 6), EPS = .001, R2 = Math.SQRT2, COS = Math.sqrt(3) / 2;
+
+  /* ---------- the people: today's sprite makers ---------- */
+  const FAM = KIT.FAM;
+
+  /* ---------- small things: stand-ins, each with a dark outline (the outline is drawn inside the buffer: the shapes leave a margin of one pixel) ---------- */
+  const mk = (w, h, fn) => { const b = new Buf(w, h); fn(b); return b.outline().done(); };
+  const THING = {
+    // 10 x 10: a jug of orange juice (a handle at the right)
+    jugo: () => mk(10, 10, b => { b.rect(2, 3, 5, 6, '#F2A650'); b.rect(2, 3, 5, 1, '#FFE070'); b.rect(3, 1, 3, 2, '#F4F4FA'); b.rect(7, 4, 1, 3, '#D8D8E4'); b.px(8, 5, '#D8D8E4'); }),
+    // 10 x 10: a flan on its plate, with the caramel on top
+    flan: () => mk(10, 10, b => { b.ell(5, 7.4, 4.2, 1.6, ['#A8A8B8', '#D0D0DC', '#F4F4FA']); b.rect(2, 4, 6, 3, '#F6D060'); b.rect(2, 3, 6, 1, '#B8601C'); b.rect(3, 2, 4, 1, '#B8601C'); b.px(3, 5, '#FFE890'); }),
+    // 10 x 10: a wedge of cheese with three holes
+    queso: () => mk(10, 10, b => { for (let y = 2; y < 9; y++) b.rect(1, y, 2 + Math.round((y - 2) * 1.2), 1, '#F6D060'); b.rect(1, 8, 8, 1, '#C8861C'); b.px(3, 6, '#C8861C'); b.px(5, 7, '#C8861C'); b.px(2, 4, '#C8861C'); }),
+    // 10 x 10: a bowl of fruit (an apple, an orange, a green one)
+    frutas: () => mk(10, 10, b => { b.ell(3, 4.4, 1.8, 1.8, ['#D0403A', '#FA9080']); b.ell(5.6, 3.6, 1.8, 1.8, ['#DC8430', '#FBCB86']); b.ell(7.4, 5, 1.6, 1.6, ['#389838', '#84DC78']); b.rect(1, 6, 8, 2, '#8E806C'); b.rect(2, 8, 6, 1, '#6A5E50'); b.rect(1, 6, 8, 1, '#B4A68E'); }),
+    // 6 x 14: a tall candle, lit (its flame at the top)
+    vela: () => mk(6, 14, b => { b.rect(1, 5, 4, 8, '#FBF0D2'); b.rect(1, 5, 1, 8, '#EEDCB0'); b.rect(4, 5, 1, 8, '#D8BC8A'); b.rect(2, 3, 2, 2, '#F2A650'); b.px(2, 2, '#FFE070'); b.px(3, 2, '#FFE070'); b.px(2, 1, '#FFF4B0'); b.px(3, 3, '#FFFBEA'); }),
+    // 12 x 8: the scarf, three stripes done (it lies across her hands)
+    bufanda: () => mk(12, 8, b => { b.rect(1, 2, 10, 5, '#E0A020'); b.rect(1, 2, 10, 1, '#F8C838'); for (const x of [3, 6, 9]) b.rect(x, 2, 1, 5, '#D0403A'); b.rect(0, 5, 2, 2, '#D0403A'); b.rect(10, 5, 2, 2, '#D0403A'); }),
+    // 8 x 8: a ball of wool, one thread loose
+    lana: () => mk(8, 8, b => { b.ell(4, 4, 2.8, 2.8, ['#A82A26', '#D0403A', '#FA9080']); b.line(2, 3, 5, 5, '#FFB8B0'); b.line(3, 2, 6, 4, '#7A1C1C'); b.px(6, 6, '#D0403A'); b.px(7, 7, '#D0403A'); }),
+    // 12 x 8: her storybook, open (a cover of blue, two pages)
+    libro: () => mk(12, 8, b => { b.rect(1, 2, 10, 5, '#2E6CD0'); b.rect(2, 2, 4, 4, '#FFFBEA'); b.rect(6, 2, 4, 4, '#F2EBD4'); b.rect(5, 2, 2, 4, '#B89A6A'); b.line(3, 3, 4, 3, '#8E806C'); b.line(7, 3, 8, 3, '#8E806C'); b.line(3, 4, 4, 4, '#8E806C'); b.line(7, 4, 8, 4, '#8E806C'); }),
+  };
+  const CACHE = {};
+  const thing = k => CACHE[k] || (CACHE[k] = THING[k]());
+  const inkBottom = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = cv.height - 1; y >= 0; y--) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y + 1; return cv.height; };
+  const inkTop = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = 0; y < cv.height; y++) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y; return 0; };
+  const anchor = (cv, ax, ay) => ({ cv, ax, ay: ay == null ? inkBottom(cv) : ay });
+  const lap = w => 16 + 2 * (w.nino ? 7 : 11) + 3;                                       // a person who sits is hung by the bottom of the hips (mkPersona: row 16 + 2 t + 3)
+  const bottom = (cv, ax) => anchor(cv, ax, cv.height);                                  // a small thing: its bottom edge on the spot's row, its middle column on the spot's column
+  const standing = w => () => anchor(KIT.mkPersona(w, 'idle', 0, 0), KIT.PX);
+  const sitting = w => () => anchor(KIT.mkPersona(w, 'idle', 0, 1), KIT.PX, lap(w));
+  const onFloor = w => () => anchor(KIT.mkPersona(w, 'idle', 0, 1), KIT.PX);              // sitting on the floor: the sitting drawing with its feet (its lowest row) on the spot
+  /* whoever lies in the bed: the standing sprite hung from his head's place (the top of his sprite on the spot's row), clipped at the bed's foot, and over it a blanket in the bed's colour
+     and the bed's width (the mattress's) from his chest (sprite row 24 of a child: the torso's middle) to the bed's foot (the mattress's top edge at v1, things.cama.foot). ctx = { sx, sy }: the spot */
+  const lying = w => ctx => {
+    const B = SHEET.things.cama, p = KIT.mkPersona(w, 'idle', 0, 0), top = inkTop(p), CHEST = 24;
+    const footRel = Math.max(1, B.foot[1] - ctx.sy), bw = B.blanket[0], dx = Math.round((B.blanket[1] - ctx.sx)), AX = 50;
+    const cv = document.createElement('canvas'); cv.width = 100; cv.height = footRel + 1;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.save(); g.beginPath(); g.rect(0, 0, 100, footRel); g.clip(); g.drawImage(p, AX - KIT.PX, -top); g.restore();
+    const c0 = CHEST - top;                                                               // the blanket's first row (below the spot's row)
+    if (c0 < footRel) {
+      const x0 = AX + dx - Math.floor(bw / 2), C = B.colour, d = C.map(k => Math.max(0, k - 34)), hi = C.map(k => Math.min(255, k + 22));
+      const col = c => 'rgb(' + c.join(',') + ')';
+      g.fillStyle = col([42, 24, 16]); g.fillRect(x0 - 1, c0 - 1, bw + 2, footRel - c0 + 2);
+      g.fillStyle = col(C); g.fillRect(x0, c0, bw, footRel - c0);
+      g.fillStyle = col(hi); g.fillRect(x0, c0, bw, 1);
+      g.fillStyle = col(d); for (let x = x0 + 4; x < x0 + bw - 2; x += 9) g.fillRect(x, c0 + 2, 1, Math.max(0, footRel - c0 - 3));
+    }
+    return { cv, ax: AX, ay: 0 };
+  };
+  const SPR = {
+    abuelaS: () => anchor(KIT.mkAbuelaS('idle', 0, 0), 17, 36),                          // abuela sitting: hung by the lap
+    abuela: () => anchor(mkAbuela('idle', 0), 30),                                       // abuela standing (mkAbuela draws her middle at column 30)
+    abueloS: sitting(FAM.abuelo), luisS: sitting(FAM.hermano), carmenS: sitting(FAM.hermana),     // abuelo: kit's FAM.abuelo, a grown-up man
+    abuelo: standing(FAM.abuelo), luis: standing(FAM.hermano), carmen: standing(FAM.hermana),
+    luisPiso: onFloor(FAM.hermano), carmenPiso: onFloor(FAM.hermana),
+    'lying:luis': lying(FAM.hermano), 'lying:carmen': lying(FAM.hermana),
+    coqui: () => anchor(mkCoqui(1, 0, 0), 16),
+    perro: () => anchor(KIT.mkPerro('eat', 0), 15),                                      // Canelo at his bowl
+    jugo: () => bottom(thing('jugo'), 5), flan: () => bottom(thing('flan'), 5), queso: () => bottom(thing('queso'), 5), frutas: () => bottom(thing('frutas'), 5),
+    vela: () => bottom(thing('vela'), 3), bufanda: () => bottom(thing('bufanda'), 6), lana: () => bottom(thing('lana'), 4), libro: () => bottom(thing('libro'), 6),
+  };
+  PV.SPR = Object.keys(SPR);
+  const sprOf = (s, ctx) => typeof s === 'function' ? s(ctx) : SPR[s](ctx);
+  PV.sprite = (k, ctx) => { const s = sprOf(k, ctx || { sx: 0, sy: 0 }); return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay }; };
+  // the drawn silhouette of a sprite from its anchor: [x0, y0, x1, y1] of the ink, dy -1 the feet's row (a person's sprites are drawn with their feet on the row above the spot's)
+  PV.silhouette = (k, ctx) => { await_ready(); const s = sprOf(k, ctx || { sx: 0, sy: 0 }), d = s.cv.getContext('2d').getImageData(0, 0, s.cv.width, s.cv.height).data; let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let y = 0; y < s.cv.height; y++) for (let x = 0; x < s.cv.width; x++) if (d[(y * s.cv.width + x) * 4 + 3]) { x0 = Math.min(x0, x - s.ax); x1 = Math.max(x1, x - s.ax); y0 = Math.min(y0, y - s.ay); y1 = Math.max(y1, y - s.ay); }
+    return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay, box: [x0, y0, x1, y1] }; };
+  const await_ready = () => { if (!SHEET) throw new Error('the sheet is not read yet'); };
+
+  /* ---------- the seven moments ---------- */
+  const ST = o => Object.assign({ luz1: 0, luz2: 0, luz3: 0, tele: 0, mesa: 0, oscuro: 0 }, o);
+  const CENA = ST({ luz1: 1, luz2: 1, luz3: 1, mesa: 1 });
+  const P = (at, s, who, group) => ({ at, s, who, group });                              // a person at a spot
+  const FRANA = at => ({ at, s: 'coqui', who: 'coqui' });
+  const held = (name, group) => { const T = SHEET.things[name]; return { at: T.on, px: T.px, s: name, dd: .05, group: group || 'held', thing: name }; };     // in abuela's hands
+  const on = (at, s) => ({ at, s, group: 'cosa' });                                       // a thing on the sideboard's top
+  const VELA = { at: 'vela', s: 'vela', group: 'vela' };
+  const PERRO = { at: 'perro', s: 'perro', who: 'perro' };
+  const ABUELA_S = P('butaca', 'abuelaS', 'adulto', 'head'), ABUELO_SOFA = P('sofa1', 'abueloS', 'adulto', 'head');
+  const MOMENTS = {
+    1: { view: 'wide', what: 'story 105, opening: night, the middle lamp lit (luz2), the television dark. Abuelo on the sofa (sofa1), abuela in the armchair with her scarf (butaca, the scarf at her hands), the frog on the sofa\'s right arm (brazo_coqui)',
+      set: ST({ luz2: 1 }),
+      layers: () => [ABUELO_SOFA, ABUELA_S, held('bufanda'), FRANA('brazo_coqui')] },
+    2: { view: 'wide', what: 'story 105, the game: as 1 with the television lit (tele 1), Luis (alfombra1) and Carmen (alfombra2) sitting on the rug',
+      set: ST({ luz2: 1, tele: 1 }),
+      layers: () => [ABUELO_SOFA, ABUELA_S, held('bufanda'), P('alfombra1', 'luisPiso', 'nino', 'head'), P('alfombra2', 'carmenPiso', 'nino', 'head'), FRANA('brazo_coqui')] },
+    3: { view: 'wide', what: 'story 106, opening: the three lamps lit, the dinner table laid (mesa 1). Abuela beside the table (junto_mesa), abuelo at silla4, Luis (sofa2) and Carmen (sofa3) on the sofa, the frog on the sideboard (aparador_coqui) with the juice, the flan, the cheese and the fruit (jugo, flan, queso, frutas), the candle on the table (vela), Canelo at his bowl (perro)',
+      set: CENA,
+      layers: () => [P('junto_mesa', 'abuela', 'adulto'), P('silla4', 'abueloS', 'adulto', 'head'), P('sofa2', 'luisS', 'nino', 'head'), P('sofa3', 'carmenS', 'nino', 'head'), PERRO,
+        on('jugo', 'jugo'), on('flan', 'flan'), on('queso', 'queso'), on('frutas', 'frutas'), VELA, FRANA('aparador_coqui')] },
+    4: { view: 'wide', what: 'story 106, the game: as 3 with abuela at the sideboard\'s end (ensalada) and only the cheese and the fruit on the sideboard',
+      set: CENA,
+      layers: () => [P('ensalada', 'abuela', 'adulto'), P('silla4', 'abueloS', 'adulto', 'head'), P('sofa2', 'luisS', 'nino', 'head'), P('sofa3', 'carmenS', 'nino', 'head'), PERRO,
+        on('queso', 'queso'), on('frutas', 'frutas'), VELA, FRANA('aparador_coqui')] },
+    5: { view: 'wide', what: 'story 106, ending: the three lamps lit, the table laid. Abuela (silla1), Luis (silla2), Carmen (silla3) and abuelo (silla4) at the table, the frog on the table\'s near edge (mesa_coqui), the candle (vela)',
+      set: CENA,
+      layers: () => [P('silla1', 'abuelaS', 'adulto', 'head'), P('silla2', 'luisS', 'nino', 'head'), P('silla3', 'carmenS', 'nino', 'head'), P('silla4', 'abueloS', 'adulto', 'head'), VELA, FRANA('mesa_coqui')] },
+    6: { view: 'wide', what: 'story 107, the game: night, the middle lamp lit (luz2). Abuela in the armchair with her book (butaca, the book at her hands), Luis (alfombra1) and Carmen (alfombra2) standing on the rug, abuelo on the sofa (sofa1), the frog on the sofa\'s right arm (brazo_coqui)',
+      set: ST({ luz2: 1 }),
+      layers: () => [ABUELO_SOFA, ABUELA_S, held('libro'), P('alfombra1', 'luis', 'nino'), P('alfombra2', 'carmen', 'nino'), FRANA('brazo_coqui')] },
+    7: { view: 'wide', what: 'story 107, ending: every lamp out (oscuro 1), only the moon. Luis (cama1) and Carmen (cama2) lying in the bed seen through the arch (the head\'s place on the pillow, the blanket from the chest), the frog on the window\'s sill (ventana_coqui), abuela in the armchair (butaca)',
+      set: ST({ oscuro: 1 }),
+      layers: () => [ABUELA_S, { at: 'cama1', s: 'lying:luis', who: 'nino', group: 'head' }, { at: 'cama2', s: 'lying:carmen', who: 'nino', group: 'head' }, FRANA('ventana_coqui')] },
+  };
+  const RADIUS = () => SHEET.shadows.radius, RKEY = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos', perro: 'perro' };
+
+  /* ---------- the set: one hidden frame per state ---------- */
+  const SETS = {};
+  const query = st => ['luz1', 'luz2', 'luz3', 'tele', 'mesa', 'oscuro'].map(k => k + '=' + st[k]).join('&');
+  async function setFrame(st) {
+    const q = query(st);
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'noche-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+
+  /* ---------- the placed sprites: where each stands (and what it draws), shared by the picture and by the make's checks ----------
+     a layer: { at: spot name | uvz: [u, v, z], off: [du, dv, dz] added to it, px: [dx, dy] screen shift, dd: depth added, s: sprite name, who, group, thing } */
+  const isLying = l => typeof l.s === 'string' && l.s.startsWith('lying:');
+  function placeAll(specs, w) {
+    return specs.map(l => {
+      if (!l.at && !l.uvz) throw new Error('layer without a place');
+      if (l.at && !SHEET.spots[l.at]) throw new Error('no spot ' + l.at);
+      let uvz = l.at ? SHEET.spots[l.at].uv.slice() : l.uvz.slice();
+      if (l.off) uvz = uvz.map((v, i) => v + l.off[i]);
+      const x = (uvz[0] + uvz[1]) / R2, y = (uvz[1] - uvz[0]) / R2, q = w.project(x, y, uvz[2]);                       // the set's PZ.xy(u, v)
+      let sx = Math.round(q.sx), sy = Math.round(q.sy), d = q.d;
+      if (l.at && !l.off) { const sp = SHEET.spots[l.at]; sx = sp.screen[0]; sy = sp.screen[1]; d = sp.depth; }
+      if (l.px) { sx += l.px[0]; sy += l.px[1]; }
+      if (l.dd) d += l.dd;
+      return Object.assign({}, l, { uvz, world: [x, y, uvz[2]], sx, sy, d, OY: w.DEPTH.OY, spr: sprOf(l.s, { sx, sy }) });
+    });
+  }
+  // the depth of the sprite's plane at picture row Y: the upright plane through the feet; for whoever lies in the bed, the horizontal plane at the head's height z (the bed's own)
+  const planeAt = (l, Y, S) => isLying(l) ? (((Y + .5) - l.OY + l.uvz[2] * 22.5) / (S / 2)) * COS + l.uvz[2] * .5 : l.d + (l.sy - (Y + .5)) * T30 / S;
+  // the pixels a placed sprite draws, as [X, Y, hidden by the set (the depth rule), the sprite's own depth plane] on the 240 x 216 picture
+  const inkOf = (l, Z, S, bias) => {
+    const c = l.spr, id = c.cv.getContext('2d').getImageData(0, 0, c.cv.width, c.cv.height).data, px = [];
+    px.out = 0;                                                                   // how many of its pixels lie outside the picture (not in the list)
+    for (let py = 0; py < c.cv.height; py++) for (let qx = 0; qx < c.cv.width; qx++) {
+      if (!id[(py * c.cv.width + qx) * 4 + 3]) continue;
+      const X = l.sx - c.ax + qx, Y = l.sy - c.ay + py; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) { px.out++; continue; }
+      const plane = planeAt(l, Y, S);
+      px.push([X, Y, Z[Y * 240 + X] > plane + bias ? 1 : 0, plane]);
+    }
+    return px;
+  };
+  const build = async (st, specs) => { await ready; const w = await setFrame(st); return { w, Z: w.DEPTH.z, S: w.DEPTH.S, LS: placeAll(specs, w) }; };
+  const pack = (LS, Z, S, bias) => LS.map(l => { const px = inkOf(l, Z, S, bias); return { at: l.at || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, thing: l.thing || null, sx: l.sx, sy: l.sy, d: l.d, uvz: l.uvz, ax: l.spr.ax, ay: l.spr.ay, out: px.out, px }; });
+  // for the make: every layer of a moment with its spot, its character kind and its drawn pixels
+  PV.inspect = async m => { const M = MOMENTS[m]; await ready; const { Z, S, LS } = await build(M.set, M.layers()); return { m, set: M.set, view: M.view, layers: pack(LS, Z, S, SHEET.front.bias) }; };
+  PV.inspectLayers = async (st, specs) => { const { Z, S, LS } = await build(st, specs); return pack(LS, Z, S, SHEET.front.bias); };
+  PV.moment = async m => { await ready; return { view: MOMENTS[m].view, set: MOMENTS[m].set, layers: MOMENTS[m].layers().map(l => ({ at: l.at || null, uvz: l.uvz || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, thing: l.thing || null, off: l.off || null, px: l.px || null, dd: l.dd || 0 })) }; };
+  // the least shift of one layer of a set of layers, along u, v or z in steps of .01 up to 3 either way, that leaves every pixel of it shown (not hidden by the set, not under a nearer sprite)
+  PV.nearest = async (st, specs, idx, allow = 0) => {
+    const { w, Z, S, LS } = await build(st, specs), zs = new Float32Array(240 * 216).fill(-1e9), bias = SHEET.front.bias;
+    LS.forEach((l, i) => { if (i === idx) return; for (const p of inkOf(l, Z, S, bias)) if (!p[2] && zs[p[1] * 240 + p[0]] < p[3]) zs[p[1] * 240 + p[0]] = p[3]; });
+    const base = specs[idx], covered = uvz => {
+      const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0], px = inkOf(l, Z, S, bias);
+      return { n: px.filter(p => p[2] || zs[p[1] * 240 + p[0]] > p[3] + EPS).length + px.out, total: px.length + px.out, sx: l.sx, sy: l.sy };
+    };
+    const start = LS[idx].uvz, res = { now: covered(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; const c = covered(uvz); if (c.n <= allow * c.total) { hit = { to: uvz[ax], d: sg * k * .01, sx: c.sx, sy: c.sy }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+  // the least shift of one layer that leaves it covering none of the shown pixels of the layers `others` (indices), same steps; `rows` = [from, to) restricts the covered pixels to the target's rows (its head)
+  PV.nearestClear = async (st, specs, idx, others, rows) => {
+    const { w, Z, S, LS } = await build(st, specs), bias = SHEET.front.bias, tgt = new Map();
+    others.forEach(oi => { const o = LS[oi], px = inkOf(o, Z, S, bias), top = Math.min(...px.map(p => p[1])); for (const p of px) if (!p[2] && (!rows || (p[1] >= top + rows[0] && p[1] < top + rows[1]))) { const k = p[1] * 240 + p[0], b = tgt.get(k); if (!b || b < p[3]) tgt.set(k, p[3]); } });
+    const base = specs[idx], covers = uvz => {
+      const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0], px = inkOf(l, Z, S, bias);
+      return px.filter(p => !p[2] && tgt.has(p[1] * 240 + p[0]) && p[3] > tgt.get(p[1] * 240 + p[0]) + EPS).length;
+    };
+    const start = LS[idx].uvz, res = { now: covers(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; if (covers(uvz) === 0) { hit = { to: uvz[ax], d: sg * k * .01 }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+  // the least shift of one layer that leaves none of its shown pixels inside the boxes [x, y, w, h], same steps
+  PV.nearestFree = async (st, specs, idx, boxes) => {
+    const { w, Z, S, LS } = await build(st, specs), bias = SHEET.front.bias;
+    const inB = (X, Y) => boxes.some(b => X >= b[0] && X < b[0] + b[2] && Y >= b[1] && Y < b[1] + b[3]);
+    const base = specs[idx], hits = uvz => { const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0]; return inkOf(l, Z, S, bias).filter(p => !p[2] && inB(p[0], p[1])).length; };
+    const start = LS[idx].uvz, res = { now: hits(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; if (hits(uvz) === 0) { hit = { to: uvz[ax], d: sg * k * .01 }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+
+  /* ---------- a picture ---------- */
+  PV.render = async function (m, opts = {}) {
+    await ready;
+    const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
+    const { w, Z, S, LS } = await build(M.set, M.layers());
+    // the shadows: for those who stand on the floor (z 0): at the world x, y of their spot
+    const casts = [];
+    for (const l of LS) if (l.who && l.uvz[2] === 0 && !SHEET.shadows.none.includes(l.at)) casts.push([l.world[0], l.world[1], 0, RADIUS()[RKEY[l.who]]]);
+    const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
+    for (const l of LS) {
+      const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data;
+      for (let py = 0; py < c.cv.height; py++) {
+        const Y = l.sy - c.ay + py; if (Y < 0 || Y >= 216) continue;
+        const plane = planeAt(l, Y, S);
+        for (let px = 0; px < c.cv.width; px++) {
+          const X = l.sx - c.ax + px; if (X < 0 || X >= 240) continue;
+          const o = (py * c.cv.width + px) * 4; if (!id[o + 3]) continue;
+          const i = Y * 240 + X;
+          if (Z[i] > (flat ? l.d : plane) + bias) continue;                          // a set pixel nearer than the feet hides it
+          if (zs[i] > plane + EPS) continue;                                          // a nearer sprite pixel is already there (a tie: the later layer wins)
+          zs[i] = plane; out[i * 4] = id[o]; out[i * 4 + 1] = id[o + 1]; out[i * 4 + 2] = id[o + 2]; out[i * 4 + 3] = 255;
+        }
+      }
+    }
+    if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
+    const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
+    const V = SHEET.views[M.view], cv = document.getElementById('out');
+    cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);
+    document.getElementById('cap').textContent = 'm=' + m + ' (view ' + M.view + ', x0 ' + V.x0 + '): ' + M.what + '.';
+    return cv.toDataURL();
+  };
+  PV.done = ready.then(() => A.get('nodraw') === '1' ? null : PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
+})();
+</script></body></html>
