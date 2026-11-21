@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El cruce · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
-<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El cruce (cruce-set.html, drawn in a hidden frame: a crossing of two streets turned 45 degrees, no cars) with the characters and the small things drawn over it as sprites, each placed from cruce-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the ground. Then cropped to the 196 x 216 view of the moment (wide for stories 57 and 58, plaza for 59). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the bicycles, the cart, the bag, the bottle and the camera are stand-ins drawn here, not final art. There is no back view of a person: papa at papa_camara is drawn from the front.
-The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.walk(...)</code> and <code>PREVIEW.nearest(...)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 57 opening, <code>?m=2</code> story 57 game, <code>?m=3</code> story 58 game (the right street shut), <code>?m=4</code> story 58 ending, <code>?m=5</code> story 59 with the frog behind abuela, <code>?m=6</code> the frog beside Canelo, <code>?m=7</code> story 59 ending (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El cruce (cruce-set.html, drawn in a hidden frame: a crossing of two streets turned 45 degrees, no cars) with the characters and the small things drawn over it as sprites, each placed from cruce-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the ground. Then cropped to the 196 x 216 view of the moment (wide for stories 57 and 58's game, plaza for 58's ending and 59). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); the bicycles, the cart, the bag, the bottle and the camera are stand-ins drawn here, not final art. There is no back view of a person: papá at papa_camara and Luis on his bicycle are drawn from the front; mamá's arms that hold the bebé up are not drawn.
+The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.walk(...)</code> and <code>PREVIEW.nearest(...)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 57 opening, <code>?m=2</code> story 57 game, <code>?m=3</code> story 58 game (the right street shut), <code>?m=4</code> story 58 ending (plaza view), <code>?m=5</code> story 59 with the frog behind Canelo, <code>?m=6</code> the frog in the gap beside abuela, <code>?m=7</code> story 59 ending (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -97,7 +97,7 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     papaFoto: () => anchor(KIT.mkPersona(FAM.papa, 'foto', 0, 0), KIT.PX),
     papaRodillas: () => anchor(KIT.mkPersona(FAM.papa, 'idle', 0, 1), KIT.PX),                   // kneeling: the sitting drawing, its feet on the spot
     bebe: () => anchor(KIT.mkBebe('idle', 0), 13),
-    perro: () => anchor(KIT.mkPerro('sit', 0), 15),
+    perro: () => anchor(KIT.mkPerro('lie', 0), 15),                                              // Canelo lying
     bici: () => anchor(thing('bici', 0), 10), biciCesta: () => anchor(thing('bici', 1), 10),
     carrito: () => anchor(thing('carrito'), 20), bolsa: () => anchor(thing('bolsa'), 6), botella: () => anchor(thing('botella'), 3), camara: () => anchor(thing('camara'), 5),
   };
@@ -105,35 +105,35 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
   PV.sprite = k => { const s = SPR[k](); return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay }; };
 
   /* ---------- the seven moments ---------- */
-  const W_ = { hora: 'mediodia', cerrada: 0 };
-  // the family of story 59 in its places (moments 5 to 7): the back row, the seat, the bebé on the back, Canelo
+  // the family of story 59 in its places (moments 5 to 7): the back row well behind the seat (abuelo, mamá, Carmen) with the bebé held up between abuelo and mamá, abuela and Luis on the seat, Canelo lying in front of it
   const FAMILIA = () => [
-    { at: 'fila_atras1', s: 'abuelo', who: 'adulto', group: 'familia' }, { at: 'fila_atras2', s: 'mama', who: 'adulto', group: 'familia' }, { at: 'fila_atras3', s: 'carmen', who: 'nino', group: 'familia' },
+    { at: 'fila_atras1', s: 'abuelo', who: 'adulto', group: 'familia', row: 'atras' }, { at: 'fila_atras2', s: 'mama', who: 'adulto', group: 'familia', row: 'atras' }, { at: 'fila_atras3', s: 'carmen', who: 'nino', group: 'familia', row: 'atras' },
+    { at: 'bebe_alto', s: 'bebe', who: 'nino', group: 'familia', row: 'atras' },
     { at: 'asiento1', s: 'abuelaS', who: 'adulto', group: 'familia' }, { at: 'asiento2', s: 'luisS', who: 'nino', group: 'familia' },
-    { at: 'respaldo', s: 'bebe', who: 'nino', group: 'familia' }, { at: 'fin_asiento', s: 'perro', who: 'perro', group: 'familia' }];
+    { at: 'suelo_canelo', s: 'perro', who: 'perro', group: 'familia' }];
   const MOMENTS = {
     1: { view: 'wide', what: 'story 57, opening: midday. Abuela and the frog have come up at abajo.abuela and abajo.coqui; don Pepe on his bicycle has stopped at centro, facing us',
       set: { hora: 'mediodia', cerrada: 0 },
       layers: () => [{ at: 'abajo.abuela', s: 'abuela', who: 'adulto' }, { at: 'abajo.coqui', s: 'coqui', who: 'coqui' }, { at: 'centro', s: 'pepe', who: 'adulto' }, { at: 'centro', s: 'bici', dd: .15 }] },
-    2: { view: 'wide', what: 'story 57, the game: abuela sitting on the seat at asiento.abuela, her bag and the bottle at asiento.bolsa, the frog on the crossing\'s stripes at coqui.cruce (0.3, 1.9), the señor at centro',
+    2: { view: 'wide', what: 'story 57, the game: abuela sitting on the seat at asiento.abuela, her bag at asiento.bolsa with the bottle standing on it, the frog on the crossing\'s stripes at coqui.cruce (0.3, 1.9), the señor at centro',
       set: { hora: 'mediodia', cerrada: 0 },
-      layers: () => [{ at: 'asiento.abuela', s: 'abuelaS', who: 'adulto' }, { at: 'asiento.bolsa', s: 'bolsa', off: [-.12, 0, 0] }, { at: 'asiento.bolsa', s: 'botella', off: [.12, 0, 0] },
+      layers: () => [{ at: 'asiento.abuela', s: 'abuelaS', who: 'adulto' }, { at: 'asiento.bolsa', s: 'bolsa' }, { at: 'asiento.bolsa', s: 'botella', px: [0, -11], dd: .01 },
         { at: 'coqui.cruce', s: 'coqui', who: 'coqui' }, { at: 'centro', s: 'senor', who: 'adulto' }] },
-    3: { view: 'wide', what: 'story 58, the game: afternoon, the street to the right shut by the cones. Luis on his bicycle at abajo.bici, the frog on its handlebar (coqui.manillar), the señora at centro, the obrero behind the barrier at conos.obrero',
+    3: { view: 'wide', what: 'story 58, the game: afternoon, the street to the right shut by the cones. Luis on his bicycle at abajo.bici, the frog behind him on the rack (coqui.bici), the señora at centro, the obrero behind the barrier at conos.obrero. Luis is drawn from the front: there is no back view of a person',
       set: { hora: 'tarde', cerrada: 1 },
-      layers: () => [{ at: 'conos.obrero', s: 'obrero', who: 'adulto' }, { at: 'centro', s: 'senora', who: 'adulto' }, { at: 'abajo.bici', s: 'luis', who: 'nino' }, { at: 'abajo.bici', s: 'biciCesta', dd: .15 }, { at: 'coqui.manillar', s: 'coqui', who: 'coqui' }] },
-    4: { view: 'wide', what: 'story 58, the ending: the piragüero and his cart in the square at plaza_carrito, Luis at luis.plaza (3.0, 5.6), the frog at coqui.plaza (3.5, 6.2); the street to the right is still shut',
+      layers: () => [{ at: 'conos.obrero', s: 'obrero', who: 'adulto' }, { at: 'centro', s: 'senora', who: 'adulto' }, { at: 'abajo.bici', s: 'luis', who: 'nino' }, { at: 'abajo.bici', s: 'biciCesta', dd: .15 }, { at: 'coqui.bici', s: 'coqui', who: 'coqui' }] },
+    4: { view: 'plaza', what: 'story 58, the ending (plaza view): the piragüero and his cart in the square at plaza_carrito, Luis at luis.plaza, the frog at coqui.plaza; the street to the right is still shut',
       set: { hora: 'tarde', cerrada: 1 },
       layers: () => [{ at: 'plaza_carrito', s: 'piraguero', who: 'adulto' }, { at: 'plaza_carrito', s: 'carrito', px: [0, 3], dd: .1 }, { at: 'luis.plaza', s: 'luis', who: 'nino' }, { at: 'coqui.plaza', s: 'coqui', who: 'coqui' }] },
-    5: { view: 'plaza', what: 'story 59: late afternoon. The whole family placed (abuelo, mamá, Carmen behind the seat; abuela and Luis on it, the gap between them; the bebé on its back; Canelo at its end), papá at papa_camara with the camera at his face, the frog at detras_abuela',
+    5: { view: 'plaza', what: 'story 59: late afternoon. The family placed (abuelo, mamá with the bebé held up between them, Carmen, well behind the seat; abuela and Luis on it, the gap between them; Canelo lying in front), papá at papa_camara with the camera at his face, the frog at detras_canelo',
       set: { hora: 'ocaso', cerrada: 0 },
-      layers: () => [...FAMILIA(), { at: 'papa_camara', s: 'papaFoto', who: 'adulto', group: 'familia' }, { at: 'detras_abuela', s: 'coqui', who: 'coqui' }] },
-    6: { view: 'plaza', what: 'story 59: the same, the frog at lado_canelo',
+      layers: () => [...FAMILIA(), { at: 'papa_camara', s: 'papaFoto', who: 'adulto', group: 'familia' }, { at: 'detras_canelo', s: 'coqui', who: 'coqui' }] },
+    6: { view: 'plaza', what: 'story 59: the same, the frog at lado_abuela, on the seat in the gap',
       set: { hora: 'ocaso', cerrada: 0 },
-      layers: () => [...FAMILIA(), { at: 'papa_camara', s: 'papaFoto', who: 'adulto', group: 'familia' }, { at: 'lado_canelo', s: 'coqui', who: 'coqui' }] },
-    7: { view: 'plaza', what: 'story 59, the ending: papá kneeling at papa.rodillas beside Canelo, the frog in the gap at hueco, the camera on the wall at muro',
+      layers: () => [...FAMILIA(), { at: 'papa_camara', s: 'papaFoto', who: 'adulto', group: 'familia' }, { at: 'lado_abuela', s: 'coqui', who: 'coqui' }] },
+    7: { view: 'plaza', what: 'story 59, the ending: papá kneeling at papa_rodillas at the seat\'s left end, the frog in the gap at hueco, the camera on the short wall at muro',
       set: { hora: 'ocaso', cerrada: 0 },
-      layers: () => [...FAMILIA(), { at: 'papa.rodillas', s: 'papaRodillas', who: 'adulto', group: 'familia' }, { at: 'muro', s: 'camara' }, { at: 'hueco', s: 'coqui', who: 'coqui' }] },
+      layers: () => [...FAMILIA(), { at: 'papa_rodillas', s: 'papaRodillas', who: 'adulto', group: 'familia' }, { at: 'muro', s: 'camara' }, { at: 'hueco', s: 'coqui', who: 'coqui' }] },
   };
   const RADIUS = () => SHEET.shadows.radius, RKEY = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos', perro: 'perro' };
 
@@ -176,11 +176,11 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     return px;
   };
   const build = async (st, specs) => { await ready; const w = await setFrame(st); return { w, Z: w.DEPTH.z, S: w.DEPTH.S, LS: placeAll(specs, w) }; };
-  const pack = (LS, Z, S, bias) => LS.map(l => { const px = inkOf(l, Z, S, bias); return { at: l.at || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, sx: l.sx, sy: l.sy, d: l.d, uvz: l.uvz, ax: l.spr.ax, ay: l.spr.ay, out: px.out, px }; });
+  const pack = (LS, Z, S, bias) => LS.map(l => { const px = inkOf(l, Z, S, bias); return { at: l.at || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, row: l.row || null, sx: l.sx, sy: l.sy, d: l.d, uvz: l.uvz, ax: l.spr.ax, ay: l.spr.ay, out: px.out, px }; });
   // for the make: every layer of a moment with its spot, its character kind and its drawn pixels
   PV.inspect = async m => { const M = MOMENTS[m], { Z, S, LS } = await build(M.set, M.layers()); return { m, set: M.set, view: M.view, layers: pack(LS, Z, S, SHEET.front.bias) }; };
   PV.inspectLayers = async (st, specs) => { const { Z, S, LS } = await build(st, specs); return pack(LS, Z, S, SHEET.front.bias); };
-  PV.moment = m => ({ view: MOMENTS[m].view, set: MOMENTS[m].set, layers: MOMENTS[m].layers().map(l => ({ at: l.at || null, uvz: l.uvz || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, off: l.off || null, px: l.px || null, dd: l.dd || 0 })) });
+  PV.moment = m => ({ view: MOMENTS[m].view, set: MOMENTS[m].set, layers: MOMENTS[m].layers().map(l => ({ at: l.at || null, uvz: l.uvz || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, row: l.row || null, off: l.off || null, px: l.px || null, dd: l.dd || 0 })) });
   // somebody walking along a line in (u, v, z): at each of n + 1 steps how many of his pixels lie inside the picture and how many of those the set hides
   PV.walk = async (st, spr, who, a, b, n) => {
     const out = [];
@@ -191,7 +191,7 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     return out;
   };
   // the least shift of one layer of a set of layers, along u, v or z in steps of .01 up to 3 either way, that leaves every pixel of it shown (not hidden by the set, not under a nearer sprite)
-  PV.nearest = async (st, specs, idx) => {
+  PV.nearest = async (st, specs, idx, allow = 0) => {
     const { w, Z, S, LS } = await build(st, specs), zs = new Float32Array(240 * 216).fill(-1e9), bias = SHEET.front.bias;
     LS.forEach((l, i) => { if (i === idx) return; for (const p of inkOf(l, Z, S, bias)) if (!p[2] && zs[p[1] * 240 + p[0]] < p[3]) zs[p[1] * 240 + p[0]] = p[3]; });
     const base = specs[idx], covered = uvz => {
@@ -202,7 +202,7 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
       for (let k = 1; k <= 300; k++) {
         let hit = null;
-        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; const c = covered(uvz); if (!c.n) { hit = { to: uvz[ax], d: sg * k * .01, sx: c.sx, sy: c.sy }; break; } }
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; const c = covered(uvz); if (c.n <= allow * c.total) { hit = { to: uvz[ax], d: sg * k * .01, sx: c.sx, sy: c.sy }; break; } }
         if (hit) { res.axis[name] = hit; break; }
       }
     }
