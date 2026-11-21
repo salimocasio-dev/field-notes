@@ -240,7 +240,7 @@ def ronda107(s):
      {"decide":"do","options":["cama","sofa"],"pick":"$"+p,"tests":"$"+w,"lock":True,"lead":[],"line":"c107_$%s_$%s"%(q,w),
       "right":[{"if":w+"=acuesta","then":[act("acuesta107",quien="$"+q,ok=1)],"else":[act("descansa107",quien="$"+q,a="$"+z,ok=1)]},star],
       "wrong":[{"if":"x=cama","then":[act("acuesta107",quien="$"+q,ok=0)],"else":[act("descansa107",quien="$"+q,a="$"+z,ok=0)]},"c107_no_$%s_$%s"%(q,w),gesto("abuela","mira",a="reloj"),resta(lambda n:act("paginas",n=n))]+X}]
-s107={"id":"se-acuesta","title":"Se acuesta","place":"La casa, un día entero","scene":"noche","next":None,
+s107={"id":"se-acuesta","title":"Se acuesta","place":"La casa, un día entero","scene":"noche","next":"la-fiesta",
  "goal":"Lead each child to the bed or to the sofa as abuela says, so that her storybook keeps its three pages for the bedtime reading: every mix-up takes time, and abuela looks at the clock and turns one page down.",
  "stake":{"thing":"paginas","steps":3},"dots":9,"bien":"si_muy_bien",
  "focus_words":["se acuesta","descansa","todos los días"],"formas_foco":{"se acuesta":["te acuestas"],"descansa":["descanso"]},
