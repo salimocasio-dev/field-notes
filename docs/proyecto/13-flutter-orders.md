@@ -47,6 +47,7 @@ Every "Done when" includes, without saying so each time: `flutter analyze` clean
 | 58 to 61 | La plaza's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 57b |
 | 62 to 65 | La playa's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 61b |
 | 66 to 69 | La fonda's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 65b |
+| 70 to 73 | La casa, un día entero: four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 69b |
 | 40 | Every story against its recorded runs | orchestrator | 39b |
 | 41 | Books' pictures captured again | orchestrator | 40 |
 | 42 | Cutover | orchestrator | 41 |
@@ -860,6 +861,32 @@ New scenes, as La playa's. Step a (design) is the content lane's; step b is this
 - Misses filed by what he touched (88, 91): `tests` is built from the draw and the touch through `palabras`.
 - A state that is the stake: the guagua's lights in the window (95) move one lamp nearer at each mix-up.
 - Voices: three new speaker keys (`mesera`, `mesero`, `cocinero`) and `abuelo`.
+
+### Orders 70 to 73. La casa, un día entero (place 9): cuarto, bano, sala_dia, noche
+
+New scenes, as La fonda's. Step a (design) is the content lane's; step b is this lane's, after La fonda's four.
+
+**What exists, in `docs/proyecto/pixel/`:**
+- `casa-base.js`: the house's shared kit (`CS`), on top of `fonda-base.js` and `plaza-base.js` (u, v). Indoor sets, as La fonda's: a floor and a back wall at v = 0 painted pixel by pixel. Pieces: a wooden floor, the wall's paint, bathroom tiles, what a window shows by the hour (alba, manana, tarde, noche), a window, a wall clock with no hands (the hands are sprites), a door (shut or open), a bed, an armchair, a sofa, a rug, three kinds of lamp (standing, small, on the wall) that glow when lit. A bed stands with its head to the back wall and runs towards the camera, so that whoever lies in it is seen whole, head at the top.
+- `cuarto-set.html`: the children's bedroom: a wall light with its switch, a window, a clock, the door at the right; Luis's bed (blue) and Carmen's (pink) side by side with a night table between them; an armchair at the far left, a cradle in the right back corner, a chair at the right front, a rug. States `hora` alba, manana; `luz` 0, 1 (the wall light: at dawn the room is dim until it is on); `cuna` 0, 1; `butaca` 0, 1.
+- `bano-set.html`: the bathroom: at the left the shower, a tiled corner with a wall across its front as high as a child's chest (whoever stands in it is seen from the chest up; Canelo in it is not seen at all), its head on the back wall and its tap outside it, on the wall at its right; in the middle the sink with its tap and the mirror over it, a shelf at each side; at the right the water heater with its gauge (the three bars are sprites) and the door; a wide stool, a basket. One state.
+- `sala_dia-set.html`: the living room in the afternoon: a clock, a window with the low sun, a shelf of books, the kitchen's door; a desk with a computer at its left end and a chair behind its right end; a low table with two cushions along its far side; an armchair with a small round table at its left. States `pantalla` 0, 1 (the computer's screen).
+- `noche-set.html`: the living room at night: at the far left a wide arch, a hole through which a corner of the bedroom shows, with a bed; a standing lamp, a window with the moon, a small lamp on a wall shelf, a clock, a sideboard with a wall lamp over its right end; a sofa and an armchair that face us, a rug; the television at the left front; at the right front the dinner table with four chairs along its far side. States `luz1`, `luz2`, `luz3` 0, 1 (the room is a little brighter with each lamp lit); `tele` 0, 1; `mesa` 0, 1; `oscuro` 0, 1 (every lamp out: only the moon).
+- A fresh reader saw each set with no words. Fixed after the reading: the shower read as a bath tub (it has a tiled corner and a shower head now); the heater read as a fuse box (it has a tank, a pipe and a gauge); the cradle read as a crate (it has rails and rockers); dawn was too dark to read the beds (the wall light and a paler dawn).
+- Sheets (`<id>-sheet-make.js`, `<id>-sheet.json`) and previews (`<id>-preview.html`, `?m=N`): done for all four; every make exits 0 (cuarto 13 checks, x0 22; bano 17, x0 20, because abuela in the door reaches column 215; sala_dia 14, x0 22; noche 15, x0 22). The sheets keep the list of every spot that was moved under `moves`. What I changed in the sets and the positions after the builders' reports: the shower's wall is 1.2 high, not .8 (so that it hides whoever bathes, and the dog); the dinner table's four chairs are wider apart (two grown-ups side by side are 24 px each); the two children in the bed seen through the arch lie at the pillow's two ends; abuela by the window, abuela with her camera, and the frog on the rug and by the big pillow stand clear of the others. What the checks hold, and the port must keep: the frog is whole in every moment; the head of whoever sits or lies is covered by nobody; the taps, the mirror, the gauge, the lamps' shades and the television's screen are covered by nobody when they can be touched; the things on the shelves, the night table, the low table and the sideboard are covered by nobody; the heads of the two in the far bed are inside the arch's hole.
+- Stand-ins the art still owes: abuelo sitting and asleep, a child lying in a bed and sitting up in it, the baby in the cradle, a child in a raincoat with its hood up, a child with a towel on his head, abuela's camera and her knitting, Canelo eating, sitting and under a bed (his nose), blankets, the big pillow, the bell, clothes on a chair, towels, the soap, the toothbrush, the comb, the telephone, the book, the pad, the album and its photos.
+
+**The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/cuarto.md` (stories 96 to 98), `bano.md` (99 to 101), `sala_dia.md` (102 to 104), `noche.md` (105 to 107). Generators: `historia/tools/gen_cuarto.py`, `gen_bano.py`, `gen_sala_dia.py`, `gen_noche.py`, run in that order after La fonda's four. The checker passes all 12 with 0 errors; every new word is heard three times or more on every clean path. With places 4 to 8 that is 111,587 characters still to record (inside the free 500,000 a month). The story files are not on main and must not be pushed until they are recorded.
+
+**Step b** and **Done when**: as orders 50 to 53. New for this place:
+- Whoever lies in a bed is drawn on the bed's own plane, not upright: his sprite hangs from the pillow by its head, runs down the mattress and is cut at the bed's foot, with a blanket over him from the chest (the sheets call this `hung` in cuarto and `lying` in noche; the rule is written in each sheet's notes). Sitting up in bed is the same sprite with the blanket from the waist.
+- Light is a state: the wall light at dawn (96), the three lamps and the television at night (105), every lamp out at the end (107). A lamp that is lit glows; the room's light follows the count of lamps.
+- A clock's hands are sprites and are set by the story (97, 104, 106).
+- Two things the frog pushes or carries in a drawn order (the towels of 99, the clothes of 98, the pages of 104); a pair whose order is the answer ("primero ..., después ...").
+- A thing with two places to touch on one person (abuelo's ear and his mouth, 103): two small boxes on his head, kept apart by the sheet.
+- Water that runs and stops (the shower, the sink's tap), bars on the heater's gauge that go down (100), Z's over a sleeper that are lost one by one (97).
+- The second child told to rest on the sofa takes the second seat (`sofa_pies2`, 107); the generator passes the seat.
+- Voices: `abuelo` speaks in every scene; mamá is heard on the telephone only (103).
 
 ## Order 40. Every story against its recorded runs (orchestrator)
 
