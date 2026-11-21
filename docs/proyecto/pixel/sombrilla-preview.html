@@ -1,0 +1,250 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La sombrilla · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of La sombrilla (sombrilla-set.html, drawn in a hidden frame: abuela's beach umbrella, close) with the characters and the small things drawn over it as sprites, each placed from sombrilla-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the sand. Then cropped to the 196 x 216 view (wide). The people are today's sprite makers (historia/engine.js, escenas/kit.js: abuela, Luis, Carmen, Canelo, the frog); abuela lying has no maker yet (a plain stand-in drawn here, 52 x 18); the shells, the bucket, the three things in the row, the ball are stand-ins drawn here, not final art. Nobody is drawn turned.
+The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.nearest(...)</code>, <code>PREVIEW.nearestClear(...)</code>, <code>PREVIEW.nearestOutside(...)</code> and <code>PREVIEW.sil(name)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 75 opening, <code>?m=2</code> story 75 ending, <code>?m=3</code> story 76, <code>?m=4</code> story 76 after a miss, <code>?m=5</code> story 77 opening, <code>?m=6</code> story 77 ending (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<p id="cap"></p>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart):
+   1. The sheet gives each spot's world point, its (u, v, z) (u across the picture, v down it), screen point and depth.
+   2. The set for the moment's state (hora, dibujo) is drawn by sombrilla-set.html in a hidden frame, with the shadows of those who stand on the sand cast
+      (frame(t, casts): radius by character, sheet: shadows). None for abuela lying (she is in the umbrella's shade).
+   3. Each sprite is drawn 1:1 with its feet (its lowest drawn row) resting on the spot's screen row and its middle column on the spot's column;
+      a small thing has its bottom edge on the row and its middle on the column (the shells of the face: centred on the point). A sprite pixel is
+      hidden where the set's baked depth (window.DEPTH.z) is nearer than the character's feet plus .3: the upright plane through the feet,
+      depth(r) = d + (sy - (r + .5)) * tan 30 / S (sheet: front). Between two sprites the nearer pixel wins; two planes within .001 of each other are a tie,
+      which the draw order decides (the later layer wins).
+   4. The picture is cropped to the view (196 x 216 at x0, sheet: views.wide).
+   There are no palms here: nothing in this set sways, so frame(0) is the whole picture. */
+(() => {
+  const A = new URLSearchParams(location.search);
+  const PV = window.PREVIEW = {};
+  let SHEET = null;
+  const ready = fetch('sombrilla-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; });
+  const T30 = Math.tan(Math.PI / 6), EPS = .001, R2 = Math.SQRT2;
+
+  /* ---------- small things: stand-ins, each with a dark outline ---------- */
+  const mk = (w, h, fn) => { const b = new Buf(w, h); fn(b); return b.outline().done(); };
+  const PINK = ['#D98A8A', '#F0B4AC', '#FFE0D8'], SPIRAL = ['#9A6A40', '#C8985C', '#F0D09A'], DARK = '#3A2414';
+  const THING = {
+    // abuela lying on her back on the blanket, head at the left: a plain stand-in (the spec gives no size for her lying: 52 x 18 drawn)
+    lying: () => mk(52, 18, b => {
+      const S = RP.skin, P = RP.purp;
+      b.rect(41, 7, 7, 5, S[2]);                                                              // her legs out of the dress
+      b.ell(49.5, 9.5, 2.4, 3.2, [DARK]);                                                     // her shoes
+      b.ell(27, 9.5, 14, 5.8, P);                                                             // the dress
+      for (let i = 0; i < 6; i++) b.px(15 + (i * 5) % 22, 12 + i % 3, P[4]);
+      b.ell(23, 8.8, 6, 3, RP.cream);                                                         // the apron
+      b.cap(17, 12.5, 24, 13.2, 1.7, P); b.ell(26.5, 13.2, 1.8, 1.8, S);                      // her arm along her side
+      b.rect(13, 7, 3, 5, S[1]);                                                              // the neck
+      b.ell(9, 9.5, 6.6, 6.8, RP.grey); b.ell(3.6, 7.6, 2.4, 2.4, RP.grey);                   // the hair, the bun
+      b.ell(10, 10, 4.4, 4.8, S);                                                             // the face, up
+      b.rect(8, 9, 2, 1, '#20140A'); b.rect(12, 9, 2, 1, '#20140A'); b.rect(10, 13, 3, 1, '#7A2A1A');
+    }),
+    concha5: () => mk(5, 5, b => b.ell(2.5, 2.5, 1.5, 1.5, PINK)),                           // a shell: 5 px with its outline
+    caracol: () => mk(8, 8, b => { b.ell(4, 4, 2.9, 2.9, SPIRAL); b.px(4, 4, DARK); b.px(5, 4, DARK); b.px(5, 3, DARK); b.px(3, 3, DARK); b.px(4, 2, DARK); }),   // a spiral shell: 8 px
+    cubo: () => mk(12, 12, b => {                                                                 // his bucket of shells: 12 x 12
+      b.rect(1, 4, 10, 7, '#3E7CD0'); b.rect(1, 4, 10, 1, '#78B0F6'); b.rect(0, 3, 12, 1, '#2A58A0'); b.line(2, 3, 5, 0, '#6E6E80'); b.line(9, 3, 6, 0, '#6E6E80');
+      for (const [x, y] of [[3, 2], [5, 2], [7, 2], [4, 1], [6, 1]]) b.px(x, y, '#FFFBEA');
+    }),
+    sombreros: () => mk(16, 12, b => { b.ell(8, 8.5, 6.8, 2.6, ['#B8862C', '#DCAC4C', '#F4D07C']); b.ell(8, 5.5, 3.8, 3.6, ['#B8862C', '#DCAC4C', '#F4D07C']); b.rect(5, 6, 6, 1, '#D0403A'); }),
+    gafas: () => mk(16, 12, b => { b.ell(4.5, 7, 3.4, 3.6, ['#20242E', '#3A4256']); b.ell(11.5, 7, 3.4, 3.6, ['#20242E', '#3A4256']); b.rect(7, 5, 2, 1, '#20242E'); b.line(1, 5, 1, 2, '#20242E'); b.line(14, 5, 14, 2, '#20242E'); b.px(3, 5, '#78B0F6'); b.px(10, 5, '#78B0F6'); }),
+    chancletas: () => mk(16, 12, b => { for (const x of [4, 11]) { b.ell(x, 7, 2.9, 4.2, ['#2E9A48', '#4CBC58']); b.line(x - 2, 5, x, 3, '#F8F8F0'); b.line(x + 2, 5, x, 3, '#F8F8F0'); } }),
+    bola: () => mk(9, 9, b => { b.ell(4.5, 4.5, 3.4, 3.4, ['#D0403A', '#EC6050', '#FA9080']); b.line(2, 4, 7, 4, '#FFFFFF'); }),
+  };
+  const row = (n, k) => mk(28, 8, b => { for (let i = 0; i < n; i++) b.ell(4 + i * 10, 4, 2.9, 2.9, SPIRAL); });       // n spiral shells in a row: 8 px each, centres 10 px apart (a 2 px gap), from the left of the 28 px row
+  const CACHE = {};
+  const thing = k => CACHE[k] || (CACHE[k] = THING[k]());
+  const inkBottom = cv => { const d = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data; for (let y = cv.height - 1; y >= 0; y--) for (let x = 0; x < cv.width; x++) if (d[(y * cv.width + x) * 4 + 3]) return y + 1; return cv.height; };
+  const anchor = (cv, ax, ay) => ({ cv, ax, ay: ay == null ? inkBottom(cv) : ay });
+  const bottom = (cv, ax) => anchor(cv, ax, cv.height);                                  // a small thing: its bottom edge on the spot's row, its middle column on the spot's column
+  const KP = KIT.FAM;
+  const SPR = {
+    abuelaL: () => anchor(thing('lying'), 26),                                           // lying: her lowest row on the spot's row, her middle on its column
+    abuelaP: () => anchor(KIT.mkAbuelaS('idle', 0, 1), 17),                              // sitting on the blanket, her legs out in front: mkAbuelaS with pies, her lowest row on the spot's row
+    abuela: () => anchor(mkAbuela('idle', 0), 30),                                       // standing: engine.js mkAbuela, column 30
+    luis: () => anchor(KIT.mkPersona(KP.hermano, 'idle', 0, 0), KIT.PX),
+    carmen: () => anchor(KIT.mkPersona(KP.hermana, 'idle', 0, 0), KIT.PX),
+    coqui: () => anchor(mkCoqui(1, 0, 0), 16),
+    perro: () => anchor(KIT.mkPerro('husmea', 0), 15),                                   // Canelo with his head down (sniffing, digging)
+    // small things
+    concha5: () => anchor(thing('concha5'), 2, 2),                                       // a shell of the face: centred on its place
+    caracoles3: () => bottom(row(3), 14), caracoles2: () => bottom(row(2), 14),         // the row's middle (28 wide) on the spot; two shells: the two at the left
+    cubo: () => bottom(thing('cubo'), 6), sombreros: () => bottom(thing('sombreros'), 8), gafas: () => bottom(thing('gafas'), 8), chancletas: () => bottom(thing('chancletas'), 8), bola: () => bottom(thing('bola'), 4),
+  };
+  PV.SPR = Object.keys(SPR);
+  PV.sprite = k => { const s = SPR[k](); return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay }; };
+  // the drawn box of a sprite from its anchor: [dx0, dy0, dx1, dy1], dy -1 is the feet's row (the same as the sheet's silhouettes)
+  PV.sil = k => {
+    const s = SPR[k](), d = s.cv.getContext('2d').getImageData(0, 0, s.cv.width, s.cv.height).data;
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (let y = 0; y < s.cv.height; y++) for (let x = 0; x < s.cv.width; x++) if (d[(y * s.cv.width + x) * 4 + 3]) { x0 = Math.min(x0, x - s.ax); x1 = Math.max(x1, x - s.ax); y0 = Math.min(y0, y - s.ay); y1 = Math.max(y1, y - s.ay); }
+    return { w: s.cv.width, h: s.cv.height, ax: s.ax, ay: s.ay, box: [x0, y0, x1, y1] };
+  };
+
+  /* ---------- the six moments ---------- */
+  const shell = at => ({ at, s: 'concha5', dd: .05 });                                   // a shell of the face: a hair in front of the sand
+  const FACE = () => ['ojo_izq', 'ojo_der', 'nariz', 'boca'].map(shell);
+  const base75 = who => [{ at: 'manta', s: who, who: 'adulto', lying: who === 'abuelaL' }, { at: 'cubo75', s: 'cubo' }, ...FACE(),
+    { at: 'luis.cara', s: 'luis', who: 'nino' }, { at: 'carmen.cara', s: 'carmen', who: 'nino' }, { at: 'coqui.cara', s: 'coqui', who: 'coqui' }];
+  const base76 = () => [{ at: 'manta', s: 'abuelaP', who: 'adulto' }, { at: 'luis.figura', s: 'luis', who: 'nino' }, { at: 'carmen.figura', s: 'carmen', who: 'nino' }, { at: 'coqui.figura', s: 'coqui', who: 'coqui' }];
+  const MOMENTS = {
+    1: { view: 'wide', what: 'story 75, opening: midday, the circle drawn. Abuela lying asleep on the blanket in the umbrella\'s shade at manta, Luis at luis.cara (left of the circle), Carmen at carmen.cara (right of it), the frog at coqui.cara below it with his bucket at cubo75, and a 5 px shell on each of the four places of the face (the two eyes, the nose, the mouth)',
+      set: { hora: 'mediodia', dibujo: 'circulo' }, layers: () => base75('abuelaL') },
+    2: { view: 'wide', what: 'story 75, ending: as 1 with abuela sitting up at manta (her legs out in front)',
+      set: { hora: 'mediodia', dibujo: 'circulo' }, layers: () => base75('abuelaP') },
+    3: { view: 'wide', what: 'story 76: afternoon, the figure drawn. Abuela sitting at manta, Luis at luis.figura, Carmen at carmen.figura, the frog at coqui.figura, the three spiral shells in their row at caracoles, Canelo at perro sniffing at them',
+      set: { hora: 'tarde', dibujo: 'figura' },
+      layers: () => base76().concat([{ at: 'caracoles', s: 'caracoles3' }, { at: 'perro', s: 'perro', who: 'perro' }]) },
+    4: { view: 'wide', what: 'story 76, after a miss: as 3 with Canelo at hoyo (digging) and two spiral shells left in the row',
+      set: { hora: 'tarde', dibujo: 'figura' },
+      layers: () => base76().concat([{ at: 'caracoles', s: 'caracoles2' }, { at: 'hoyo', s: 'perro', who: 'perro' }]) },
+    5: { view: 'wide', what: 'story 77, opening: the hottest hour. Abuela standing at sol1, Luis at sol2 with a ball, Carmen at sol3, the frog at coqui.bolsa, and in a row on the sand in front of the bag the three things: the sun hats at sombreros, the dark glasses at gafas, the sandals at chancletas',
+      set: { hora: 'sol', dibujo: 'figura' },
+      layers: () => [{ at: 'sombreros', s: 'sombreros' }, { at: 'gafas', s: 'gafas' }, { at: 'chancletas', s: 'chancletas' }, { at: 'coqui.bolsa', s: 'coqui', who: 'coqui' },
+        { at: 'sol1', s: 'abuela', who: 'adulto' }, { at: 'sol2', s: 'luis', who: 'nino' }, { at: 'sol2', s: 'bola', px: [-10, -11], dd: .3 }, { at: 'sol3', s: 'carmen', who: 'nino' }] },
+    6: { view: 'wide', what: 'story 77, ending: Luis at sol2 and Carmen at sol3 play on, abuela lying at manta2 in the shade, the frog at coqui.bolsa (the spec gives no place for him here)',
+      set: { hora: 'sol', dibujo: 'figura' },
+      layers: () => [{ at: 'manta2', s: 'abuelaL', who: 'adulto', lying: true }, { at: 'coqui.bolsa', s: 'coqui', who: 'coqui' }, { at: 'sol2', s: 'luis', who: 'nino' }, { at: 'sol3', s: 'carmen', who: 'nino' }] },
+  };
+  const RADIUS = () => SHEET.shadows.radius, RKEY = { coqui: 'coqui', adulto: 'adultos', nino: 'ninos', perro: 'perro' };
+
+  /* ---------- the set: one hidden frame per state ---------- */
+  const SETS = {};
+  async function setFrame(st) {
+    const q = 'hora=' + st.hora + '&dibujo=' + st.dibujo;
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'sombrilla-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+
+  /* ---------- the placed sprites: where each stands (and what it draws), shared by the picture and by the make's checks ----------
+     a layer: { at: spot name | uvz: [u, v, z], off: [du, dv, dz] added to it, px: [dx, dy] screen shift, dd: depth added, s: sprite name | function, who, group, lying } */
+  const sprOf = s => typeof s === 'function' ? s() : SPR[s]();
+  function placeAll(specs, w) {
+    return specs.map(l => {
+      if (!l.at && !l.uvz) throw new Error('layer without a place');
+      if (l.at && !SHEET.spots[l.at]) throw new Error('no spot ' + l.at);
+      let uvz = l.at ? SHEET.spots[l.at].uv.slice() : l.uvz.slice();
+      if (l.off) uvz = uvz.map((v, i) => v + l.off[i]);
+      const x = (uvz[0] + uvz[1]) / R2, y = (uvz[1] - uvz[0]) / R2, q = w.project(x, y, uvz[2]);                       // the set's PZ.xy(u, v)
+      let sx = Math.round(q.sx), sy = Math.round(q.sy), d = q.d;
+      if (l.at && !l.off) { const sp = SHEET.spots[l.at]; sx = sp.screen[0]; sy = sp.screen[1]; d = sp.depth; }
+      if (l.px) { sx += l.px[0]; sy += l.px[1]; }
+      if (l.dd) d += l.dd;
+      return Object.assign({}, l, { uvz, world: [x, y, uvz[2]], sx, sy, d, spr: sprOf(l.s) });
+    });
+  }
+  // the pixels a placed sprite draws, as [X, Y, hidden by the set (the depth rule), the sprite's own depth plane] on the 240 x 216 picture
+  const inkOf = (l, Z, S, bias) => {
+    const c = l.spr, id = c.cv.getContext('2d').getImageData(0, 0, c.cv.width, c.cv.height).data, px = [];
+    px.out = 0;                                                                   // how many of its pixels lie outside the picture (not in the list)
+    for (let py = 0; py < c.cv.height; py++) for (let qx = 0; qx < c.cv.width; qx++) {
+      if (!id[(py * c.cv.width + qx) * 4 + 3]) continue;
+      const X = l.sx - c.ax + qx, Y = l.sy - c.ay + py; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) { px.out++; continue; }
+      const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+      px.push([X, Y, Z[Y * 240 + X] > plane + bias ? 1 : 0, plane]);
+    }
+    return px;
+  };
+  const build = async (st, specs) => { await ready; const w = await setFrame(st); w.frame(0, []); return { w, Z: w.DEPTH.z, S: w.DEPTH.S, LS: placeAll(specs, w) }; };       // frame(0): the baked set as the engine draws it
+  const pack = (LS, Z, S, bias) => LS.map(l => { const px = inkOf(l, Z, S, bias); return { at: l.at || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, lying: !!l.lying, sx: l.sx, sy: l.sy, d: l.d, uvz: l.uvz, ax: l.spr.ax, ay: l.spr.ay, out: px.out, px }; });
+  // for the make: every layer of a moment with its spot, its character kind and its drawn pixels
+  PV.inspect = async m => { const M = MOMENTS[m], { Z, S, LS } = await build(M.set, M.layers()); return { m, set: M.set, view: M.view, layers: pack(LS, Z, S, SHEET.front.bias) }; };
+  PV.inspectLayers = async (st, specs) => { const { Z, S, LS } = await build(st, specs); return pack(LS, Z, S, SHEET.front.bias); };
+  PV.moment = m => ({ view: MOMENTS[m].view, set: MOMENTS[m].set, layers: MOMENTS[m].layers().map(l => ({ at: l.at || null, uvz: l.uvz || null, s: typeof l.s === 'string' ? l.s : null, who: l.who === undefined ? null : l.who, group: l.group || null, lying: !!l.lying, off: l.off || null, px: l.px || null, dd: l.dd || 0 })) });
+  // the least shift of one layer of a set of layers, along u, v or z in steps of .01 up to 3 either way, that leaves every pixel of it shown (not hidden by the set, not under a nearer sprite)
+  PV.nearest = async (st, specs, idx, allow = 0) => {
+    const { w, Z, S, LS } = await build(st, specs), zs = new Float32Array(240 * 216).fill(-1e9), bias = SHEET.front.bias;
+    LS.forEach((l, i) => { if (i === idx) return; for (const p of inkOf(l, Z, S, bias)) if (!p[2] && zs[p[1] * 240 + p[0]] < p[3]) zs[p[1] * 240 + p[0]] = p[3]; });
+    const base = specs[idx], covered = uvz => {
+      const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0], px = inkOf(l, Z, S, bias);
+      return { n: px.filter(p => p[2] || zs[p[1] * 240 + p[0]] > p[3] + EPS).length + px.out, total: px.length + px.out, sx: l.sx, sy: l.sy };
+    };
+    const start = LS[idx].uvz, res = { now: covered(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; const c = covered(uvz); if (c.n <= allow * c.total) { hit = { to: uvz[ax], d: sg * k * .01, sx: c.sx, sy: c.sy }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+  // the least shift of one layer that leaves it covering none of the shown pixels of the layers `others` (indices); `rows` = [from, to) restricts the covered pixels to the target's rows
+  PV.nearestClear = async (st, specs, idx, others, rows) => {
+    const { w, Z, S, LS } = await build(st, specs), bias = SHEET.front.bias, tgt = new Map();
+    others.forEach(oi => { const o = LS[oi], px = inkOf(o, Z, S, bias), top = Math.min(...px.map(p => p[1])); for (const p of px) if (!p[2] && (!rows || (p[1] >= top + rows[0] && p[1] < top + rows[1]))) { const k = p[1] * 240 + p[0], b = tgt.get(k); if (!b || b < p[3]) tgt.set(k, p[3]); } });
+    const base = specs[idx], covers = uvz => {
+      const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0], px = inkOf(l, Z, S, bias);
+      return px.filter(p => !p[2] && tgt.has(p[1] * 240 + p[0]) && p[3] > tgt.get(p[1] * 240 + p[0]) + EPS).length;
+    };
+    const start = LS[idx].uvz, res = { now: covers(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; if (covers(uvz) === 0) { hit = { to: uvz[ax], d: sg * k * .01 }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+  // the least shift of one layer that leaves none of its shown pixels inside any of the boxes [x, y, w, h] (a place to keep clear), same steps
+  PV.nearestOutside = async (st, specs, idx, boxes) => {
+    const { w, Z, S, LS } = await build(st, specs), bias = SHEET.front.bias, base = specs[idx];
+    const inB = (X, Y) => boxes.some(b => X >= b[0] && X < b[0] + b[2] && Y >= b[1] && Y < b[1] + b[3]);
+    const hits = uvz => { const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0]; return inkOf(l, Z, S, bias).filter(p => !p[2] && inB(p[0], p[1])).length; };
+    const start = LS[idx].uvz, res = { now: hits(start), axis: {} };
+    for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
+      for (let k = 1; k <= 300; k++) {
+        let hit = null;
+        for (const sg of [1, -1]) { const uvz = start.slice(); uvz[ax] = Math.round((uvz[ax] + sg * k * .01) * 1e4) / 1e4; if (name === 'z' && uvz[2] < 0) continue; if (hits(uvz) === 0) { hit = { to: uvz[ax], d: sg * k * .01 }; break; } }
+        if (hit) { res.axis[name] = hit; break; }
+      }
+    }
+    return res;
+  };
+
+  /* ---------- a picture ---------- */
+  PV.render = async function (m, opts = {}) {
+    await ready;
+    const M = MOMENTS[m] || MOMENTS[1], scale = opts.scale || 1, flat = opts.depth === 'flat', bias = SHEET.front.bias;
+    const { w, Z, S, LS } = await build(M.set, M.layers());
+    // the shadows: for those who stand on the sand (z 0): at the world x, y of their spot; abuela lying casts none
+    const casts = [];
+    for (const l of LS) if (l.who && !l.lying && l.uvz[2] === 0) casts.push([l.world[0], l.world[1], 0, RADIUS()[RKEY[l.who]]]);
+    const img = w.frame(0, casts), out = new Uint8ClampedArray(img.data), zs = new Float32Array(240 * 216).fill(-1e9);
+    for (const l of LS) {
+      const c = l.spr, g = c.cv.getContext('2d'), id = g.getImageData(0, 0, c.cv.width, c.cv.height).data;
+      for (let py = 0; py < c.cv.height; py++) {
+        const Y = l.sy - c.ay + py; if (Y < 0 || Y >= 216) continue;
+        const plane = l.d + (l.sy - (Y + .5)) * T30 / S;
+        for (let px = 0; px < c.cv.width; px++) {
+          const X = l.sx - c.ax + px; if (X < 0 || X >= 240) continue;
+          const o = (py * c.cv.width + px) * 4; if (!id[o + 3]) continue;
+          const i = Y * 240 + X;
+          if (Z[i] > (flat ? l.d : plane) + bias) continue;                          // a set pixel nearer than the feet hides it
+          if (zs[i] > plane + EPS) continue;                                          // a nearer sprite pixel is already there (a tie: the later layer wins)
+          zs[i] = plane; out[i * 4] = id[o]; out[i * 4 + 1] = id[o + 1]; out[i * 4 + 2] = id[o + 2]; out[i * 4 + 3] = 255;
+        }
+      }
+    }
+    if (opts.marks) for (const l of LS) for (const [dx, dy] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1]]) { const X = l.sx + dx, Y = l.sy + dy, i = (Y * 240 + X) * 4; if (X < 0 || X >= 240 || Y < 0 || Y >= 216) continue; out[i] = 255; out[i + 1] = 0; out[i + 2] = 255; out[i + 3] = 255; }
+    const full = document.createElement('canvas'); full.width = 240; full.height = 216; full.getContext('2d').putImageData(new ImageData(out, 240, 216), 0, 0);
+    const V = SHEET.views[M.view], cv = document.getElementById('out');
+    cv.width = V.region[2] * scale; cv.height = V.region[3] * scale;
+    const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(full, V.region[0], V.region[1], V.region[2], V.region[3], 0, 0, cv.width, cv.height);
+    document.getElementById('cap').textContent = 'm=' + m + ' (view ' + M.view + ', x0 ' + V.x0 + '): ' + M.what + '.';
+    return cv.toDataURL();
+  };
+  PV.done = ready.then(() => A.get('nodraw') === '1' ? null : PV.render(+(A.get('m') || 1), { scale: +(A.get('scale') || 1), marks: A.get('marks') === '1', depth: A.get('depth') }));
+})();
+</script></body></html>
