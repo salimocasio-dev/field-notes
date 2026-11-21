@@ -7,7 +7,7 @@
 //   ?w=<W as JSON>&view=<name>&F=<n>   the scene in that state (W over the fresh world, in today's places), through a view
 //                                      of the sheet (wide, casa, puerta, ventana, cuadro, wide@donde-esta-el-pajaro)
 //   ?page=pairs                        the 12 review pairs of cual-frente and the level pictures, through ScenePictures
-//   ?page=bake[&scene=balcon|sala]     every baked state of the sheet (El frente's, or the scene given), each baked on a
+//   ?page=bake[&scene=balcon|sala|patio] every baked state of the sheet (El frente's, or the scene given), each baked on a
 //                                      fresh engine's cache, one after the other; the times are on the page and in
 //                                      `window.coquiBakes` (JSON) for a script
 // Every page shows how long each state it baked took, in ms.
@@ -20,6 +20,7 @@ import 'package:coqui_pixel/coqui_pixel.dart';
 import 'package:coqui_scenes/coqui_scenes.dart';
 import 'package:coqui_scenes/src/balcon/balcon_set.dart';
 import 'package:coqui_scenes/src/frente/frente_set.dart';
+import 'package:coqui_scenes/src/patio/patio_set.dart';
 import 'package:coqui_scenes/src/sala/sala_set.dart';
 import 'package:coqui_ui/coqui_ui.dart';
 import 'package:material_ui/material_ui.dart';
@@ -325,6 +326,7 @@ class _BakePageState extends State<BakePage> {
         final key = switch (id) {
           'balcon' => BalconState.fromQuery(b.query).key,
           'sala' => SalaState.fromQuery(b.query).key,
+          'patio' => PatioState.fromQuery(b.query).key,
           _ => FrenteState.fromQuery(b.query).key,
         };
         bakes.bakeKey(key);

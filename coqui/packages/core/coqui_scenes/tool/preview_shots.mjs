@@ -68,8 +68,8 @@ function cases() {
   const fileOf = w => (OTHER.find(o => o.items.some(i => i.w === w || fold(i.w) === w)) || { file: `cual-${SCENE}` }).file;
   const spec = (w, side) => { const it = items.find(i => i.w === w) || items.find(i => fold(i.w) === w); return { set: it[side].set || null, cam: it[side].cam }; };
   for (const it of CUAL.items) for (const side of ['si', 'no']) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side }, spec(it.w, side)));
-  for (const o of OTHER) for (const it of o.items) for (const side of o.sides) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side, file: o.file }, spec(it.w, side)));
-  for (const L of SHEET.level) { const [w, s] = L.picture.split('.'); out.push(Object.assign({ id: `level.${L.w}.${L.index}`, kind: 'pair', word: w, side: s, file: fileOf(w) }, spec(w, s))); }
+  for (const o of OTHER) for (const it of o.items) for (const side of o.sides) out.push(Object.assign({ id: `pair.${it.w}.${side}`, kind: 'pair', word: it.w, side, cual: o.file }, spec(it.w, side)));
+  for (const L of SHEET.level) { const [w, s] = L.picture.split('.'); out.push(Object.assign({ id: `level.${L.w}.${L.index}`, kind: 'pair', word: w, side: s, cual: fileOf(w) }, spec(w, s))); }
   const seenView = new Set();
   for (const st of STORIES) for (const plan of PLANS) {
     const lines = fs.readFileSync(path.join(STATES, st, plan + '.states.jsonl'), 'utf8').trim().split('\n').map(l => JSON.parse(l));
@@ -125,7 +125,7 @@ function server() {
   const pngs = {};
   for (const c of all) {
     const url = c.kind === 'pair'
-      ? await page.evaluate(([w, s, f]) => window.PREVIEW.pair(w, s, f || undefined), [SCENE === 'sala' || SCENE === 'patio' ? fold(c.word) : c.word, c.side, c.file || null])
+      ? await page.evaluate(([w, s, f]) => window.PREVIEW.pair(w, s, f || undefined), [SCENE === 'sala' || SCENE === 'patio' ? fold(c.word) : c.word, c.side, c.cual || null])
       : SCENE === 'patio'
       ? await page.evaluate(async ([w, F, st]) => { window.PREVIEW.story = await (await fetch('../../../historia/cuentos/' + st + '.json')).json(); return window.PREVIEW.render(window.PREVIEW.baseW(w), { F, t: 0 }); }, [c.W, c.F, c.story])
       : await page.evaluate(([w, v, F, acts]) => { if (acts) window.PREVIEW.acts = acts; return window.PREVIEW.render(window.PREVIEW.baseW(w), { view: v, F, t: 0 }); }, [c.W, c.view, c.F, c.acts || null]);

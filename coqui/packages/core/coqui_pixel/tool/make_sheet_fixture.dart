@@ -23,10 +23,7 @@ void main(List<String> args) {
       what: "El balcón's sheet (order 30a)",
     ),
     'sala': (constant: 'salaSheetJson', what: "La sala's sheet (order 31a)"),
-    'patio': (
-      constant: 'patioSheetJson',
-      what: "El patio's sheet (order 32a)",
-    ),
+    'patio': (constant: 'patioSheetJson', what: "El patio's sheet (order 32a)"),
   };
   var stale = 0;
   for (final e in sheets.entries) {
