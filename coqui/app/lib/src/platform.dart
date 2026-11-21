@@ -1,6 +1,7 @@
 /// What the shell is built on: the real platform (`real_platform.dart`) in the app, fakes in its tests.
 library;
 
+import 'package:app/src/previa.dart';
 import 'package:coqui_content/coqui_content.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_platform/coqui_platform.dart' show ClipLookup;
@@ -28,6 +29,7 @@ class AppPlatform {
     required this.clock,
     this.bundle,
     this.historyBack,
+    this.previa,
   });
 
   /// A file under `historia/`, by its path, with the old pages' cache rules (`content.dart`).
@@ -55,6 +57,10 @@ class AppPlatform {
 
   /// The browser's back, where there is a browser history.
   final void Function()? historyBack;
+
+  /// The preview content bundled in the app (`previa.dart`: in the app, [bundledPrevia] of the root bundle). Null: none,
+  /// every file is the site's.
+  final PreviaRead? previa;
 }
 
 /// The time now, from the system.

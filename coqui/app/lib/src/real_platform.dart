@@ -1,14 +1,16 @@
 /// The real platform: coqui_platform's audio, speech, call, storage, haptics and build facts, and the course read from
-/// the old site by address.
+/// the old site by address, with the preview content bundled in the app (`previa.dart`).
 library;
 
 import 'package:app/src/content.dart';
 import 'package:app/src/platform.dart';
+import 'package:app/src/previa.dart';
 import 'package:app/src/scripted_speech.dart';
 import 'package:app/src/switches.dart';
 import 'package:app/src/web/browser.dart';
 import 'package:coqui_platform/coqui_platform.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/services.dart' show rootBundle;
 
 /// The platform of the running app, for the address switches [sw].
 AppPlatform realPlatform(AppSwitches sw) {
@@ -38,5 +40,6 @@ AppPlatform realPlatform(AppSwitches sw) {
     info: createAppInfo(),
     clock: const SystemClock(),
     historyBack: kIsWeb ? historyBack : null,
+    previa: bundledPrevia(rootBundle),
   );
 }

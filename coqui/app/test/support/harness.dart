@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:app/src/app.dart';
 import 'package:app/src/content.dart';
 import 'package:app/src/platform.dart';
+import 'package:app/src/previa.dart';
 import 'package:app/src/switches.dart';
 import 'package:coqui_contracts/coqui_contracts.dart';
 import 'package:coqui_testing/coqui_testing.dart';
@@ -98,6 +99,9 @@ class TestApp {
   /// The network is down: every fetch fails.
   bool offline = false;
 
+  /// The preview content the app is built with (`previa.dart`); null: none, as the tests of the site's own files want.
+  PreviaRead? previa;
+
   /// The stored progress, read back (null when nothing is stored).
   String? get stored => spaces.kv.read(progressKey);
 
@@ -159,6 +163,7 @@ class TestApp {
     haptics: haptics,
     info: info,
     clock: clock,
+    previa: previa,
   );
 
   /// Opens the app at [location] with the stored progress [stored] (a seed's text, or nothing).

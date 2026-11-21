@@ -8,6 +8,7 @@ import 'package:app/src/content.dart';
 import 'package:app/src/modules.dart';
 import 'package:app/src/navigator.dart';
 import 'package:app/src/platform.dart';
+import 'package:app/src/previa.dart';
 import 'package:app/src/shell.dart';
 import 'package:app/src/switches.dart';
 import 'package:app/src/voice_test_data.dart';
@@ -58,7 +59,10 @@ class CoquiApp extends StatefulWidget {
 }
 
 class _CoquiAppState extends State<CoquiApp> {
-  late final ContentCatalog _course = ContentCatalog(widget.platform.fetch);
+  // the site's files, with the preview content merged in (previa.dart)
+  late final ContentCatalog _course = ContentCatalog(
+    previaFetch(widget.platform.fetch, widget.platform.previa ?? noPrevia),
+  );
   late final ClipPlayer _clips = widget.platform.clipPlayer(_course.clip);
 
   /// Mulberry32, seeded once from the clock at the start.
