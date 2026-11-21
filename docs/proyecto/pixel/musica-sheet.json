@@ -193,10 +193,10 @@
    "on": "patio"
   },
   "junto_escenario": {
-   "world": [2.2627, 1.9799, 0],
-   "uv": [0.2, 3, 0],
-   "screen": [125, 113],
-   "depth": 2.5981,
+   "world": [1.2374, 1.0253, 0],
+   "uv": [0.15, 1.6, 0],
+   "screen": [124, 95],
+   "depth": 1.3856,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -462,14 +462,14 @@
    "who": "adulto"
   },
   "banqueta_abuela": {
-   "world": [5.6215, 1.0253, 0.46],
-   "uv": [3.25, 4.7, 0.46],
-   "screen": [205, 125],
+   "world": [5.2326, 1.4142, 0.46],
+   "uv": [2.7, 4.7, 0.46],
+   "screen": [190, 125],
    "depth": 4.3003,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "abuela on the stool beside the floor (STOOL u 3.25, v 4.7): its top, z 0.46; hung by the lap (113)",
+   "what": "abuela on the stool beside the floor (STOOL u 2.7, v 4.7): its top, z 0.46; hung by the lap (113)",
    "sprite": "abuelaS",
    "who": "adulto",
    "on": "patio",
@@ -630,7 +630,7 @@
     "ok": true,
     "lines": [
      "spots-in-view: 30 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 25 (taburete1), the rightmost 217 (espera3)",
-     "       info, not a check (the real drawn ink of today's makers against the window; the spec's width is the rule): banqueta_abuela (abuelaS ink columns 195 to 230: 13 px right of the window)"
+     "       info, not a check (the real drawn ink of today's makers against the window; the spec's width is the rule): no sprite's ink is cut"
     ]
    },
    {
@@ -659,8 +659,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 132 pairs in the 4 moments of the preview (m1 (taburete1, taburete2, borde_coqui, junto_escenario, pista1, pista2, pista3, pista4, pista5, pista6); m2 (taburete1, taburete2, borde_coqui, pista1, pista2, banco1, banco2, banco3, banco4); m3 (taburete1, taburete2, ante_micro, pista_baile, espera2, centro_coqui); m4 (taburete1, taburete2, ronda1, ante_micro, banco3, ronda4, ronda5, banqueta_abuela, centro_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 taburete2 ~ borde_coqui (26 across, 24 down), m1 borde_coqui ~ pista1 (26 across, 28 down), m1 borde_coqui ~ pista5 (15 across, 64 down), m1 junto_escenario ~ pista1 (10 across, 13 down), m1 junto_escenario ~ pista2 (15 across, 13 down), m1 junto_escenario ~ pista5 (21 across, 49 down), m1 junto_escenario ~ pista6 (4 across, 49 down), m1 pista1 ~ pista5 (11 across, 36 down), m1 pista1 ~ pista6 (14 across, 36 down), m1 pista2 ~ pista3 (19 across, 21 down), m1 pista2 ~ pista6 (11 across, 36 down), m2 taburete2 ~ borde_coqui (26 across, 24 down), m2 borde_coqui ~ pista1 (26 across, 28 down), m2 pista1 ~ banco1 (16 across, 57 down), m2 pista2 ~ banco1 (9 across, 57 down), m2 pista2 ~ banco2 (16 across, 57 down), m3 ante_micro ~ centro_coqui (23 across, 18 down), m3 pista_baile ~ espera2 (23 across, 18 down), m3 pista_baile ~ centro_coqui (25 across, 22 down), m4 taburete2 ~ ronda5 (13 across, 75 down), m4 ronda1 ~ ante_micro (10 across, 50 down), m4 ante_micro ~ centro_coqui (23 across, 18 down), m4 banco3 ~ ronda4 (17 across, 91 down), m4 ronda4 ~ centro_coqui (26 across, 48 down)",
-     "       closest pair in each moment (px across / px down): m1 junto_escenario ~ pista6 4/49 (needs 24 across or 12 down); m2 pista2 ~ banco1 9/57 (needs 24 across or 12 down); m3 ante_micro ~ centro_coqui 23/18 (needs 28 across or 12 down); m4 ronda1 ~ ante_micro 10/50 (needs 24 across or 12 down)"
+     "sprites-apart: 132 pairs in the 4 moments of the preview (m1 (taburete1, taburete2, borde_coqui, junto_escenario, pista1, pista2, pista3, pista4, pista5, pista6); m2 (taburete1, taburete2, borde_coqui, pista1, pista2, banco1, banco2, banco3, banco4); m3 (taburete1, taburete2, ante_micro, pista_baile, espera2, centro_coqui); m4 (taburete1, taburete2, ronda1, ante_micro, banco3, ronda4, ronda5, banqueta_abuela, centro_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 taburete2 ~ borde_coqui (26 across, 24 down), m1 borde_coqui ~ pista1 (26 across, 28 down), m1 borde_coqui ~ pista5 (15 across, 64 down), m1 junto_escenario ~ pista1 (9 across, 31 down), m1 junto_escenario ~ pista2 (16 across, 31 down), m1 junto_escenario ~ pista5 (20 across, 67 down), m1 junto_escenario ~ pista6 (5 across, 67 down), m1 pista1 ~ pista5 (11 across, 36 down), m1 pista1 ~ pista6 (14 across, 36 down), m1 pista2 ~ pista3 (19 across, 21 down), m1 pista2 ~ pista6 (11 across, 36 down), m2 taburete2 ~ borde_coqui (26 across, 24 down), m2 borde_coqui ~ pista1 (26 across, 28 down), m2 pista1 ~ banco1 (16 across, 57 down), m2 pista2 ~ banco1 (9 across, 57 down), m2 pista2 ~ banco2 (16 across, 57 down), m3 ante_micro ~ centro_coqui (23 across, 18 down), m3 pista_baile ~ espera2 (23 across, 18 down), m3 pista_baile ~ centro_coqui (25 across, 22 down), m4 taburete2 ~ ronda5 (13 across, 75 down), m4 ronda1 ~ ante_micro (10 across, 50 down), m4 ante_micro ~ centro_coqui (23 across, 18 down), m4 banco3 ~ ronda4 (17 across, 91 down), m4 banco3 ~ banqueta_abuela (9 across, 56 down), m4 ronda4 ~ centro_coqui (26 across, 48 down)",
+     "       closest pair in each moment (px across / px down): m1 junto_escenario ~ pista6 5/67 (needs 24 across or 12 down); m2 pista2 ~ banco1 9/57 (needs 24 across or 12 down); m3 ante_micro ~ centro_coqui 23/18 (needs 28 across or 12 down); m4 banco3 ~ banqueta_abuela 9/56 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
@@ -685,8 +685,8 @@
       "moment": 1,
       "a": "taburete1",
       "b": "junto_escenario",
-      "across": 88,
-      "down": 39,
+      "across": 87,
+      "down": 21,
       "needAcross": 24,
       "ok": true
      },
@@ -757,8 +757,8 @@
       "moment": 1,
       "a": "taburete2",
       "b": "junto_escenario",
-      "across": 62,
-      "down": 39,
+      "across": 61,
+      "down": 21,
       "needAcross": 24,
       "ok": true
      },
@@ -820,8 +820,8 @@
       "moment": 1,
       "a": "borde_coqui",
       "b": "junto_escenario",
-      "across": 36,
-      "down": 15,
+      "across": 35,
+      "down": 3,
       "needAcross": 28,
       "ok": true
      },
@@ -883,8 +883,8 @@
       "moment": 1,
       "a": "junto_escenario",
       "b": "pista1",
-      "across": 10,
-      "down": 13,
+      "across": 9,
+      "down": 31,
       "needAcross": 24,
       "ok": true
      },
@@ -892,8 +892,8 @@
       "moment": 1,
       "a": "junto_escenario",
       "b": "pista2",
-      "across": 15,
-      "down": 13,
+      "across": 16,
+      "down": 31,
       "needAcross": 24,
       "ok": true
      },
@@ -901,8 +901,8 @@
       "moment": 1,
       "a": "junto_escenario",
       "b": "pista3",
-      "across": 34,
-      "down": 34,
+      "across": 35,
+      "down": 52,
       "needAcross": 24,
       "ok": true
      },
@@ -910,8 +910,8 @@
       "moment": 1,
       "a": "junto_escenario",
       "b": "pista4",
-      "across": 59,
-      "down": 34,
+      "across": 60,
+      "down": 52,
       "needAcross": 24,
       "ok": true
      },
@@ -919,8 +919,8 @@
       "moment": 1,
       "a": "junto_escenario",
       "b": "pista5",
-      "across": 21,
-      "down": 49,
+      "across": 20,
+      "down": 67,
       "needAcross": 24,
       "ok": true
      },
@@ -928,8 +928,8 @@
       "moment": 1,
       "a": "junto_escenario",
       "b": "pista6",
-      "across": 4,
-      "down": 49,
+      "across": 5,
+      "down": 67,
       "needAcross": 24,
       "ok": true
      },
@@ -1585,7 +1585,7 @@
       "moment": 4,
       "a": "taburete1",
       "b": "banqueta_abuela",
-      "across": 168,
+      "across": 153,
       "down": 51,
       "needAcross": 24,
       "ok": true
@@ -1648,7 +1648,7 @@
       "moment": 4,
       "a": "taburete2",
       "b": "banqueta_abuela",
-      "across": 142,
+      "across": 127,
       "down": 51,
       "needAcross": 24,
       "ok": true
@@ -1702,7 +1702,7 @@
       "moment": 4,
       "a": "ronda1",
       "b": "banqueta_abuela",
-      "across": 100,
+      "across": 85,
       "down": 19,
       "needAcross": 24,
       "ok": true
@@ -1747,7 +1747,7 @@
       "moment": 4,
       "a": "ante_micro",
       "b": "banqueta_abuela",
-      "across": 90,
+      "across": 75,
       "down": 31,
       "needAcross": 24,
       "ok": true
@@ -1783,7 +1783,7 @@
       "moment": 4,
       "a": "banco3",
       "b": "banqueta_abuela",
-      "across": 24,
+      "across": 9,
       "down": 56,
       "needAcross": 24,
       "ok": true
@@ -1810,7 +1810,7 @@
       "moment": 4,
       "a": "ronda4",
       "b": "banqueta_abuela",
-      "across": 41,
+      "across": 26,
       "down": 35,
       "needAcross": 24,
       "ok": true
@@ -1828,7 +1828,7 @@
       "moment": 4,
       "a": "ronda5",
       "b": "banqueta_abuela",
-      "across": 129,
+      "across": 114,
       "down": 24,
       "needAcross": 24,
       "ok": true
@@ -1846,7 +1846,7 @@
       "moment": 4,
       "a": "banqueta_abuela",
       "b": "centro_coqui",
-      "across": 67,
+      "across": 52,
       "down": 13,
       "needAcross": 28,
       "ok": true
@@ -1865,7 +1865,7 @@
     "ok": true,
     "lines": [
      "heads-clear: every person who sits (m1: taburete1, taburete2; m2: taburete1, taburete2, banco1, banco2, banco3, banco4; m3: taburete1, taburete2; m4: taburete1, taburete2, banco3, banqueta_abuela) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 14 heads, 0 px covered, 0 hidden by the set",
-     "       info, not a check: m1 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco1 131,69 (gus3): head rows 29 to 42: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco2 156,69 (gus4): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco3 181,69 (gus5): head rows 29 to 42: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco4 205,69 (gus6): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 banco3 181,69 (gus2): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 banqueta_abuela 205,125 (abuelaS): head rows 89 to 102: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
+     "       info, not a check: m1 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco1 131,69 (gus3): head rows 29 to 42: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco2 156,69 (gus4): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco3 181,69 (gus5): head rows 29 to 42: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 banco4 205,69 (gus6): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 taburete1 37,74 (musico1): head rows 33 to 46: 218 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 taburete2 63,74 (musico2): head rows 35 to 48: 184 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 banco3 181,69 (gus2): head rows 30 to 43: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 banqueta_abuela 190,125 (abuelaS): head rows 89 to 102: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
     ]
    },
    {
@@ -1901,7 +1901,7 @@
     "name": "info-touch",
     "ok": true,
     "lines": [
-     "info-touch: not a check. m1: escenario [23,71,82,36] 866 px under people, pista [94,102,94,71] 4072 px under people, banco [118,49,100,35] 475 px under people; m2: escenario [23,71,82,36] 866 px under people, pista [94,102,94,71] 772 px under people, banco [118,49,100,35] 2121 px under people; m3: escenario [23,71,82,36] 319 px under people, pista [94,102,94,71] 961 px under people, banco [118,49,100,35] 322 px under people; m4: escenario [23,71,82,36] 631 px under people, pista [94,102,94,71] 1854 px under people, banco [118,49,100,35] 670 px under people, camara 0 of 68 px covered by anyone but the frog, 0 hidden by the set"
+     "info-touch: not a check. m1: escenario [23,71,82,36] 866 px under people, pista [94,102,94,71] 3903 px under people, banco [118,49,100,35] 752 px under people; m2: escenario [23,71,82,36] 866 px under people, pista [94,102,94,71] 772 px under people, banco [118,49,100,35] 2121 px under people; m3: escenario [23,71,82,36] 319 px under people, pista [94,102,94,71] 961 px under people, banco [118,49,100,35] 322 px under people; m4: escenario [23,71,82,36] 631 px under people, pista [94,102,94,71] 2004 px under people, banco [118,49,100,35] 670 px under people, camara 0 of 68 px covered by anyone but the frog, 0 hidden by the set"
     ]
    }
   ]

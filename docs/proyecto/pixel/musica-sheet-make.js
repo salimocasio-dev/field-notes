@@ -70,7 +70,7 @@ function defs(E) {
   add('tambor_atril', [r4(R.u + .22), R.v, r4(S.h + R.h)], 'thing', null, null, 'the drum on the rack (RACK.u + .22, RACK.v; z ' + r4(S.h + R.h) + '): a ' + SZ.tambor.join(' x ') + ' px stand-in, its top middle on the point (it hangs)', { size: SZ.tambor, anchor: 'top', on: 'air', fixed: true });
   // the frog on the stage's front edge, abuela beside the stage
   add('borde_coqui', [-1.2, 2.3, S.h], 'place', 'coqui', 'coqui', 'the frog on the stage\'s front edge, below the rack (the stage\'s front edge is v ' + S.v1 + '): the stage\'s top, z STAGE.h = ' + S.h, { on: 'patio' });
-  add('junto_escenario', [.2, 3.0, 0], 'person', 'abuela', 'adulto', 'abuela beside the stage (111)', {});
+  add('junto_escenario', [.15, 1.6, 0], 'person', 'abuela', 'adulto', 'abuela beside the stage (111)', {});
   // the microphone: a sprite on the floor beside the stage; whoever sings stands just behind it
   add('microfono', [M[0], M[1], 0], 'thing', null, null, 'the microphone on its stand (MIC u ' + M[0] + ', v ' + M[1] + '): a ' + SZ.microfono.join(' x ') + ' px stand-in, its bottom middle on the floor at the point', { size: SZ.microfono, anchor: 'bottom', fixed: true });
   add('ante_micro', [M[0], r4(M[1] - .3), 0], 'person', 'adulto', 'adulto', 'whoever sings stands just behind the microphone (MIC.u, MIC.v - .3); abuelo in 112 (m3), the singer ronda2 in 113 (m4)', {});

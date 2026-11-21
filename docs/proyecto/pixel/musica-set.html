@@ -34,7 +34,7 @@ const E = {
   MIC: [-.2, 1.8],                                                     // where the microphone stands, on the floor beside the stage (a sprite)
   NOTES: { u: [-3.2, -2.2, -1.2], z: 2.75 },                           // where the three paper notes hang, over the stage (sprites)
   BENCH: { u: 1.85, v: .45, hw: 1.9 },                                 // the long bench against the wall: four can sit on it
-  STOOL: [3.25, 4.7],                                                  // the stool beside the floor
+  STOOL: [2.7, 4.7],                                                  // the stool beside the floor
   FLOOR: [-1.0, 2.2, 2.6, 7.6],                                        // the open floor where people dance (u0, v0, u1, v1)
 };
 const groundAt = (x, y, ix, iy) => { const [u, v] = PZ.uv(x, y); return v < -.62 ? 0 : FT.flags(u, v, ix, iy); };
