@@ -51,8 +51,8 @@ void expectFair(RepasoWord target, RepasoSentence s, String m) {
 }
 
 void main() {
-  test('the data: 156 words; each word that has a picture pair in the course has its own sentence first', () {
-    expect(data.words, hasLength(156));
+  test('the data: 167 words; each word that has a picture pair in the course has its own sentence first', () {
+    expect(data.words, hasLength(167));
     for (final w in data.words) {
       final p = course.pairs.where((x) => x.word == w.word).toList();
       if (w.pairLines.isNotEmpty) expect(w.pairLines.first.clip, p.last.say);

@@ -10,6 +10,10 @@ import 'package:flutter/services.dart';
 String oldPictureAsset(String id, String file) =>
     'packages/coqui_scenes/assets/old_pictures/$id/$file';
 
+/// The scenes that are not in the registry yet but whose old pictures are here (the content asks for them before the
+/// scene is ported): tool/make_old_pictures.dart makes their folders after the registry's scenes.
+const Set<String> oldPictureScenes = {'comer'};
+
 /// The size of an old review picture, and of an old cell of the level check.
 const int oldReviewWidth = 196, oldReviewHeight = 104;
 const int oldLevelWidth = 96, oldLevelHeight = 106;

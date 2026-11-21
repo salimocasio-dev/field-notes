@@ -12,7 +12,7 @@
    "caller": "escenas/mesa.js:137:167 gente",
    "maker": "escenas/mesa.js:137:189",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -24,7 +24,7 @@
    "caller": "escenas/mesa.js:137:167 gente",
    "maker": "escenas/mesa.js:137:189",
    "firstRun": "la-mesa/wrong",
-   "runs": 5,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -36,7 +36,7 @@
    "caller": "escenas/mesa.js:143:50 gente",
    "maker": "escenas/mesa.js:143:75",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -48,7 +48,7 @@
    "caller": "escenas/mesa.js:143:50 gente",
    "maker": "escenas/mesa.js:143:75",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -60,7 +60,7 @@
    "caller": "escenas/mesa.js:143:50 gente",
    "maker": "escenas/mesa.js:143:75",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -72,7 +72,7 @@
    "caller": "escenas/mesa.js:143:50 gente",
    "maker": "escenas/mesa.js:143:75",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -84,7 +84,7 @@
    "caller": "escenas/mesa.js:156:47 Object.draw",
    "maker": "escenas/mesa.js:30:26 fondo",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -96,7 +96,7 @@
    "caller": "escenas/mesa.js:152:34 rana",
    "maker": "escenas/mesa.js:152:61",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -120,7 +120,7 @@
    "caller": "escenas/mesa.js:152:34 rana",
    "maker": "escenas/mesa.js:152:61",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -144,7 +144,7 @@
    "caller": "escenas/mesa.js:171:63 Object.d",
    "maker": "escenas/mesa.js:171:93",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -156,7 +156,7 @@
    "caller": "escenas/mesa.js:171:63 Object.d",
    "maker": "escenas/mesa.js:171:93",
    "firstRun": "la-mesa/right",
-   "runs": 6,
+   "runs": 9,
    "variants": 1
   },
   {
@@ -276,7 +276,7 @@
    "caller": "escenas/mesa.js:101:19 cosa",
    "maker": "escenas/mesa.js:101:70",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -324,7 +324,7 @@
    "caller": "escenas/mesa.js:101:19 cosa",
    "maker": "escenas/mesa.js:101:70",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -444,7 +444,7 @@
    "caller": "escenas/mesa.js:101:19 cosa",
    "maker": "escenas/mesa.js:101:70",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -456,7 +456,7 @@
    "caller": "escenas/mesa.js:101:19 cosa",
    "maker": "escenas/mesa.js:101:70",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -540,7 +540,7 @@
    "caller": "escenas/mesa.js:101:19 cosa",
    "maker": "escenas/mesa.js:101:70",
    "firstRun": "la-mesa/right",
-   "runs": 3,
+   "runs": 6,
    "variants": 1
   },
   {
@@ -744,7 +744,7 @@
    "caller": "escenas/mesa.js:141:63 gente",
    "maker": "escenas/mesa.js:141:107",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -828,7 +828,7 @@
    "caller": "escenas/mesa.js:141:63 gente",
    "maker": "escenas/mesa.js:141:107",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -864,7 +864,7 @@
    "caller": "escenas/mesa.js:141:63 gente",
    "maker": "escenas/mesa.js:141:107",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -876,6 +876,18 @@
    "caller": "escenas/mesa.js:141:63 gente",
    "maker": "escenas/mesa.js:141:107",
    "firstRun": "la-mesa/wrong",
+   "runs": 6,
+   "variants": 1
+  },
+  {
+   "key": "pmmamawave101",
+   "file": "pmmamawave101.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "4ef40031dc807d7189c8a49846043d52556a47e371d1ec7cb9a88d35b341603b",
+   "caller": "escenas/mesa.js:141:63 gente",
+   "maker": "escenas/mesa.js:141:107",
+   "firstRun": "h-mesa/right",
    "runs": 3,
    "variants": 1
   },
@@ -900,7 +912,7 @@
    "caller": "escenas/mesa.js:141:63 gente",
    "maker": "escenas/mesa.js:141:107",
    "firstRun": "la-mesa/right",
-   "runs": 9,
+   "runs": 12,
    "variants": 1
   },
   {
@@ -913,6 +925,30 @@
    "maker": "escenas/mesa.js:141:107",
    "firstRun": "tengo-hambre/alternate",
    "runs": 1,
+   "variants": 1
+  },
+  {
+   "key": "pmpapawave001",
+   "file": "pmpapawave001.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "dd59615417d2b4985ab40597b77c33dc9d3c5b97a080bbbb14a4aabf76caa1c1",
+   "caller": "escenas/mesa.js:141:63 gente",
+   "maker": "escenas/mesa.js:141:107",
+   "firstRun": "h-mesa/right",
+   "runs": 3,
+   "variants": 1
+  },
+  {
+   "key": "pmpapawave101",
+   "file": "pmpapawave101.rgba",
+   "w": 48,
+   "h": 49,
+   "sha256": "f7ca5179a5539de43a031f933be5026c6cc0a8987ddcb776bae2cb4bb0b621e3",
+   "caller": "escenas/mesa.js:141:63 gente",
+   "maker": "escenas/mesa.js:141:107",
+   "firstRun": "h-mesa/right",
+   "runs": 3,
    "variants": 1
   }
  ],
@@ -998,9 +1034,12 @@
     "pmmamaidle00",
     "pmmamaidle01",
     "pmmamawave001",
+    "pmmamawave101",
     "pmpapaidle00",
     "pmpapaidle01",
-    "pmpapaidle11"
+    "pmpapaidle11",
+    "pmpapawave001",
+    "pmpapawave101"
    ]
   },
   {

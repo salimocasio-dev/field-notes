@@ -1,7 +1,7 @@
 // ref/escenas: what make.mjs cannot read from the running page, set by hand from the scene files (each line cited).
 // Every judgment here is also written into the scene's inventory.json ("judgments") and draw-order.md.
 
-export const SCENES = ["frente", "balcon", "sala", "patio", "camino", "campo", "lago", "banco", "mesa", "estufa", "nevera"];
+export const SCENES = ["frente", "balcon", "sala", "patio", "camino", "campo", "lago", "banco", "mesa", "estufa", "nevera", "comer"];
 
 // The background functions: what the scene draws first, once per state, cached by spr(). Their W keys are the set's states.
 // file:line of the call in draw(), and the W keys the call passes or the key reads (checked by make.mjs: two states with the same
@@ -18,6 +18,7 @@ export const BG = {
   mesa: { fns: ["fondo", "mkPuesto"], at: ["mesa.js:30 fondo()", "mesa.js:54 mkPuesto()", "mesa.js:156 W.afuera ? spr(\"puesto\",mkPuesto) : spr(\"cocina\",fondo)"], keys: ["afuera"] },
   estufa: { fns: ["fondo"], at: ["estufa.js:26 fondo()", "estufa.js:133 spr(\"estufa\",fondo)"], keys: [] },
   nevera: { fns: ["fondo"], at: ["nevera.js:22 fondo()", "nevera.js:156 spr(\"nevera\",fondo)"], keys: [] },
+  comer: { fns: ["fondo"], at: ["comer.js:31 fondo()", "comer.js:549 spr(\"comer\",fondo)"], keys: [] },
 };
 
 // Characters, for the frames "without characters" (variant nochar): a canvas call is left out when its stack holds one of these
@@ -39,6 +40,8 @@ export const CHARS = {
   mesa: { fns: ["gente", "rana", "nube", "bub2"], keep: [], lines: ["mesa.js:174", "mesa.js:175", "mesa.js:176", "mesa.js:185", "mesa.js:186", "mesa.js:187", "mesa.js:188"] },
   estufa: { fns: ["gente", "rana", "nube", "nube2", "bub2"], keep: [], lines: ["estufa.js:134", "estufa.js:163", "estufa.js:164", "estufa.js:165"] },
   nevera: { fns: ["gente", "rana", "nube", "bub2"], keep: [], lines: ["nevera.js:109", "nevera.js:171", "nevera.js:173", "nevera.js:174", "nevera.js:175", "nevera.js:176", "nevera.js:177"] },
+  comer: { fns: ["cuerpo", "objetos", "rana", "nube", "hab"], keep: [], lines: ["comer.js:554", "comer.js:555", "comer.js:556"],
+    note: "comer.js:455 cuerpo() draws a person without the arms that hold, objetos() (comer.js:481) the arms, hands and what they hold; comer.js:554-556 the dog; nube() the thought clouds; hab() the empty speech bubbles drawn only with ?txt=no (comer.js:561-566)." },
 };
 
 // W keys that hold characters (who stands where, how): left out when states are grouped (a character's own box, when it is a thing,
@@ -55,10 +58,11 @@ export const CHARKEYS = {
   mesa: ["cq", "gente", "perro", "tiron"],
   estufa: ["cq", "gente", "ventana"],
   nevera: ["cq", "gente", "olfato"],
+  comer: ["cq", "gente", "perro", "sitio"],
 };
 // W keys of props that move about (carried, thrown, put down here and there): like characters, they do not separate states; where each
 // one was is in inventory.json (spriteLayer, things) for every snapshot.
-export const PROPKEYS = { frente: [], balcon: [], sala: ["vuela"], patio: ["bola", "vuela"], camino: ["vuela"], campo: ["bolas"], lago: ["botes", "pan"], banco: ["cosas"], mesa: ["cosas", "vuelos", "muestra"], estufa: ["cosas", "vuelos"], nevera: ["cosas", "vuelos"] };
+export const PROPKEYS = { frente: [], balcon: [], sala: ["vuela"], patio: ["bola", "vuela"], camino: ["vuela"], campo: ["bolas"], lago: ["botes", "pan"], banco: ["cosas"], mesa: ["cosas", "vuelos", "muestra"], estufa: ["cosas", "vuelos"], nevera: ["cosas", "vuelos"], comer: ["vuelos"] };
 export const SIGNKEYS = ["fx", "spot", "twinkle", "glow", "heart", "resp", "respVoz", "respOn", "respEn", "marcas", "apodo", "flash", "rojo", "azul", "trozos", "golpe", "brilla", "tiembla", "salpica", "lost", "mios", "plato", "rondas", "termo", "tarjeta", "cafe", "aciertos", "visor", "retrato"];
 
 // What a position in a story or pair file means, where the scene's code makes it clear: the owner of an x, y (the path under set,
@@ -80,6 +84,8 @@ export const MEANING = {
   mesa: { "set.gente": "a person's feet (mesa.js:136-149 gente)", "set.cosas": "a thing's foot (mesa.js:177 conTodo / tenida)" },
   estufa: { "set.gente": "a person's feet (estufa.js:117-127 gente)", "set.cosas": "a thing's foot (estufa.js:156 tenida)", "set.vuelos": "a thing in the air (estufa.js:162)", "set.mat": "the small plate (estufa.js:160)", "set.plata": "the big plate (estufa.js:159)", "set.olor": "the smell line from x0, y0 to x1, y1 (estufa.js:138)" },
   nevera: { "set.gente": "a person's feet; fuera: outside, seen in the window (nevera.js:109, 141)", "set.cosas": "a thing's foot (nevera.js:167 tenida)" },
+  comer: { "set.gente": "a person's feet: x middle, y the bottom (comer.js:455 cuerpo; sent: sitting, at a chair SILLA, comer.js:20)", "set.cosas": "a thing's foot: x middle, y the bottom (comer.js:538 cosaDibuja, comer.js:294 tenida)",
+    "set.vuelos": "a thing in the air: its middle (comer.js:560 tenidaC)", "set.perro": "the dog's feet (comer.js:554)" },
 };
 
 // El frente has no KIT.escena: its hit() order, each with its condition and the rectangle (or shape) it tests, frente.js:185-199.
