@@ -27,7 +27,7 @@ const CS = (() => {
   }
   // what a window shows by the hour: alba | manana | tarde | noche. (a, b) run 0 to 1 across and up the pane
   function sky(hora, a, b, ix, iy) {
-    if (hora === 'alba') return rgb(120 + b * 40, 130 + b * 30, 170 - b * 10 + (b < .3 ? 40 : 0));
+    if (hora === 'alba') return b < .35 ? rgb(250, 190, 150) : b < .55 ? rgb(226, 170, 176) : rgb(150, 150, 200);
     if (hora === 'manana') { if (Math.hypot((a - .72) * 30, (b - .68) * 22) < 5) return rgb(255, 240, 150); return rgb(150 + (1 - b) * 60, 206 + (1 - b) * 30, 250); }
     if (hora === 'tarde') { if (Math.hypot((a - .3) * 30, (b - .45) * 22) < 5.5) return rgb(255, 214, 120); return rgb(250 - b * 40, 196 - b * 20, 130 + b * 60); }
     if (Math.hypot((a - .66) * 30, (b - .64) * 22) < 5) return rgb(250, 250, 236);                                        // noche: the moon

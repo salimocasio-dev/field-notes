@@ -24,7 +24,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The opening** (big sign)
 
-1. NARR: "Abuela dice: Buenos días, Coquí. Mira: el cuarto de Luis y Carmen. Luis duerme en la cama." Ask (signed, Luis's bed): "¿Dónde está la cama de Luis?" He touches it: the frog hops onto the bed; Luis groans and pulls the blanket over his head. NARR: "Luis dice: No... Tengo sueño."
+1. NARR: "Abuela dice: Buenos días, Coquí. Mira: el cuarto de Luis y Carmen. Luis duerme en la cama." Ask (signed, Luis's bed): "¿Dónde está la cama de Luis?" He touches it: the frog hops onto the bed; Luis groans and pulls the blanket over his head. NARR: "Luis dice: No... Tengo sueño. ¡Mi cama!"
 2. NARR: "Abuela dice: Luis tiene sueño. Coquí, la luz, por favor." (signed, the wall light's switch.) He touches it: the wall light comes on, and the room is bright. NARR: "Luis dice: ¡No! ¡La luz no!" Carmen sits up in her bed. NARR: "Carmen dice: ¡Ay, la luz! ¡Hola, Coquí!" COQUÍ [TURN: buenos días (buenos días, buenos dias)]: "¡Buenos días!"
 3. Carmen throws her big pillow at Luis; it bounces off him and lands on the floor, at the right. NARR: "Carmen dice: ¡Luis, toma mi almohada!" NARR: "Luis dice: ¡Ay! ¡No quiero tu almohada!" Ask (signed, the big pillow on the floor): "¿Dónde está la almohada de Carmen?" He touches it: the frog bounces on it. Luis sits up, his eyes still shut, and feels about with his hands. NARR: "Luis dice: ¿Dónde está mi camisa?"
 4. NARR: "Carmen dice: Yo sé dónde está. Yo tengo sueño... Busca tú, Coquí." She lies back, her eyes half shut. Abuela shakes her head. NARR: "Abuela dice: ¡Este cuarto! Vengo ahora." **(vengo: a form of viene)** She goes.
@@ -46,9 +46,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - Three pieces: he eats two and gives one to the frog. Stars and a heart.
    - Two pieces: he eats them; the frog gets the crumbs.
    - One piece: he breaks it in two with the frog; Canelo licks his nose.
-9. Abuela comes back. NARR: "Abuela dice: ¿Y tú, Coquí? ¿Tienes sueño?" **(tienes: a form of tiene)** COQUÍ [TURN: sí (sí, si)]: "¡Sí!" The frog lies down on the big pillow, and his eyes shut. NARR: "Coquí tiene sueño. Duerme en la almohada."
+9. Abuela comes back. NARR: "Abuela dice: ¿Y tú, Coquí? ¿Tienes sueño?" **(tienes: a form of tiene)** COQUÍ [TURN: sí (sí, si)]: "¡Sí!" The frog lies down on the big pillow, and his eyes shut. NARR: "Coquí tiene sueño. Duerme en la almohada, en el cuarto de Luis y Carmen."
 
-**Fewest hearings before a word can cost:** cama 2 (step 1) and the bed is touched (to weigh: a third), almohada 3 (step 3). Not deciding: luz 3 (step 2), cuarto 2 before the game (steps 1, 4), tiene sueño 3 with tengo sueño (steps 1, 2, 4) and 2 more in the ending.
+**Fewest hearings before a word can cost:** cama 3 (step 1), almohada 3 (step 3). Not deciding: luz 3 (step 2), cuarto 2 before the game (steps 1, 4) and once in the last line, tiene sueño 3 with tengo sueño (steps 1, 2, 4) and 2 more in the ending.
 **Forms:** tengo sueño and tienes sueño count with tiene sueño.
 **A miss is filed under:** the place that was said (cama, almohada or silla).
 **Chance without the Spanish:** one in three, each round on its own.
@@ -69,7 +69,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 1. Abuela puts a finger to her lips and points at the cradle. NARR: "Abuela dice: Shh. El bebé duerme. Despacio, Coquí." Ask (signed, the clock): "¿Dónde está el reloj, Coquí?" He touches it: it ticks. NARR: "Abuela dice: Son las siete de la mañana."
 2. NARR: "Abuela dice: A las siete, Carmen se despierta." (signed, the bell.) He touches it: a soft tinkle; Carmen opens her eyes and sits up in her bed. NARR: "Carmen dice: Mmm. Buenos días."
-3. NARR: "Abuela dice: Ahora Carmen se levanta." (signed, Carmen's blanket.) He touches it: the frog pulls the blanket off; Carmen stands up on the floor. NARR: "Carmen dice: ¡Ya me levanto!" **(me levanto: a form of se levanta)**
+3. NARR: "Abuela dice: Ahora Carmen se levanta." (signed, Carmen's blanket.) He touches it: the frog pulls the blanket off; Carmen stands up on the floor. NARR: "Carmen dice: ¡Ya me levanto! ¡Qué bonita la mañana!" **(me levanto: a form of se levanta)**
 4. Luis snores. NARR: "Abuela dice: Luis duerme. ¿Qué hora es, Coquí?" COQUÍ [TURN: son las siete (son las siete)]: "Son las siete." NARR: "Abuela dice: Sí. A las siete Luis se despierta." The frog rings the bell: Luis opens his eyes, and shuts them again. NARR: "Abuela dice: Y a las siete y media se levanta." Carmen points at her own two feet on the floor. NARR: "Carmen dice: Luis se despierta. Yo me levanto."
 
 **The turn**
@@ -92,7 +92,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
    - One Z: the baby sits up and laughs; abuela carries it out with them.
 10. NARR: "Son las siete y media de la mañana. Luis y Carmen se levantan." **(se levantan: a form of se levanta)**
 
-**Fewest hearings before a word can cost:** se despierta 3 (steps 2, 4), se levanta 2 and me levanto twice (steps 3, 4). Not deciding: a las siete 3 (steps 2, 4); la mañana 1 before the game (step 1) and 1 in the ending (to weigh: a third).
+**Fewest hearings before a word can cost:** se despierta 3 (steps 2, 4), se levanta 2 and me levanto twice (steps 3, 4). Not deciding: a las siete 3 (steps 2, 4); la mañana 2 before the game (steps 1, 3) and 1 in the ending.
 **Forms:** me levanto, se levantan count with se levanta.
 **A miss is filed under:** the one that was said (se despierta or se levanta).
 **Chance without the Spanish:** one in two, each round on its own.
@@ -123,7 +123,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 5. **Decision A, touch a thing (two on the chair; tests primero against después).** NARR: "Carmen dice: Primero Luis se pone la camisa." (Or, drawn: "Luis se pone la camisa después." Or: "Primero Luis se pone los zapatos." Or: "Luis se pone los zapatos después.")
    - Right: Luis puts it on, and then the other. A star.
-   - Wrong: Luis puts the other one on first. NARR: "Carmen dice: ¡No! Primero la camisa." She makes him take it off and put both on again in her order: a tuft of his hair stands up (the second time: his shirt tail hangs out). A cross. The sign is on the right thing; he touches it.
+   - Wrong: Luis puts the other one on first. NARR: "Carmen dice: ¡No! Primero la camisa." (She always names the thing that goes first.) She makes him take it off and put both on again in her order: a tuft of his hair stands up (the second time: his shirt tail hangs out). A cross. The sign is on the right thing; he touches it.
 6. **Decision B, touch a thing (the same game; the hat and the watch).** NARR: "Carmen dice: Luis se pone el sombrero después." (Drawn.) Right and wrong as in A.
 
 **The ending**
@@ -153,7 +153,6 @@ Fixed:
 
 Left, and why:
 - 98: "después" is his already, so a learner can play the rounds on that word and on the names alone; "primero" is taught here and is never the only thing that decides. No line was found that makes it so without giving the answer by the order of the words.
-- "Cama" is heard twice before it can cost (and the bed is touched); "la mañana" twice on a clean run. Both are weighed again when the story files are counted.
 - The plain "duerme" for what is happening now ("está durmiendo" is what is said): one form for A1.
 - "Sombrero": the picture is a hat with a brim (a cap is "una gorra").
 
@@ -173,7 +172,7 @@ The set `cuarto`:
 Acts (name: what it does on screen; story and step):
 - `llega` {quien, a}, `sale` {quien} (96 to 98). `luz96` {on}: the wall light comes on, and the room is bright (96: 2). `almohada96`: Carmen throws her pillow; it lands on the floor (96: 3). `plato96` {n}: the pieces of bread left. `busca96` {donde, que, ok}: the frog looks near the bed, the pillow or the chair; he pulls the thing out (camisa, zapatos), or finds nothing while Canelo takes a piece. `final96` {n}; `duerme96`: the frog lies down on the big pillow and sleeps (96: 8, 9).
 - `reloj97` {hora}: the clock's hands (7, 7.5). `campana97` {quien, ok}: a tinkle; the sleeper opens his eyes and sits up; with ok 0 he stays sitting and abuela calls again, loud. `manta97` {quien, ok}: the frog pulls the blanket off; the sleeper stands up; with ok 0 he howls. `zetas` {n}: the Z's over the cradle. `corre97`: Luis runs for the door, stops, and tiptoes (97: 8). `final97` {n}: abuela claps without a sound, and everyone is on his feet (97: 9).
-- `zapatos98`: Luis pulls his shoes on first, then his trousers stick, and he falls onto the bed; then the shoes come off, the trousers go on, and the shoes (98: 2). `silla98` {a, b}: the two things on the chair. `viste98` {cual, ok}: the frog pushes a thing over; Luis puts it on and then the other; with ok 0 the other first, and Carmen makes him take it off and put both on again. `pelo98` {n}: how neat he is (3 neat, 2 a tuft, 1 a tuft and a shirt tail). `final98` {n}: the flash and the photo (98: 7).
+- `zapatos98`: Luis pulls his shoes on first, then his trousers stick, and he falls onto the bed; `corrige98`: the shoes come off, the trousers go on, and then the shoes (98: 2: the first before Carmen's line, the second after the touch). In step 2 the chair holds the trousers (ropa_a) and the shoes (ropa_b). `silla98` {a, b}: the two things on the chair. `viste98` {cual, ok}: the frog pushes a thing over; Luis puts it on and then the other; with ok 0 the other first, and Carmen makes him take it off and put both on again. `pelo98` {n}: how neat he is (3 neat, 2 a tuft, 1 a tuft and a shirt tail). `final98` {n}: the flash and the photo (98: 7).
 - `gesto` {quien, que}: `saluda`, `no`, `si`, `rie`, `mira` with `a`, `senala` with `a`, `silencio` (a finger to her lips), `palpa` (feels about with his hands), `bosteza` (yawns), `puntillas` (goes on tiptoe), `pies` (points at her own feet).
 - `brilla`: the engine's own twinkle. `ya`: waits for an act started with `suelto: 1`.
 - Values: in 96 the place (cama, almohada, silla), each round, round B's not round A's; in 97 what the sleeper does (despierta, levanta), each round; in 98 which of the two things is named and whether first or afterwards, each round.
