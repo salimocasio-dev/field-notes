@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:coqui_contracts/coqui_contracts.dart';
 
 import 'fixtures/balcon_preview_fixture.dart';
+import 'fixtures/camino_preview_fixture.dart';
 import 'fixtures/patio_preview_fixture.dart';
 import 'fixtures/preview_fixture.dart';
 import 'fixtures/sala_preview_fixture.dart';
@@ -37,10 +38,20 @@ PictureSpec patioParqueNo() {
   );
 }
 
+/// The 13 review pairs of cual-camino, as [frentePairs] reads El frente's (tool/preview_shots.mjs --scene camino reads
+/// them from historia/cuentos/cual-camino.json): the pair parque's "no" side is a picture of the yard, El patio's
+/// ([patioParqueNo]), its "si" side the park's.
+List<ReviewPair> caminoPairs() => _pairsOf(
+  'camino',
+  caminoPreviewCases,
+  otherNo: {'parque': patioParqueNo()},
+);
+
 List<ReviewPair> _pairsOf(
   String scene,
   String json, {
   bool Function(Map<String, dynamic> c)? only,
+  Map<String, PictureSpec> otherNo = const {},
 }) {
   final cases = (jsonDecode(json) as List).cast<Map<String, dynamic>>().where(
     (c) =>
@@ -62,7 +73,7 @@ List<ReviewPair> _pairsOf(
         say: e.key,
         scene: scene,
         yes: e.value['si']!,
-        no: e.value['no']!,
+        no: e.value['no'] ?? otherNo[e.key]!,
       ),
   ];
 }
