@@ -32,7 +32,7 @@ final Map<String, SceneMaker> sceneRegistry = Map.unmodifiable({
   'campo': _plain(createCampo),
   'lago': createLago,
   'banco': _plain(createBanco),
-  'mesa': _plain(createMesa),
+  'mesa': createMesa,
   'estufa': _plain(createEstufa),
   'nevera': _plain(createNevera),
 });

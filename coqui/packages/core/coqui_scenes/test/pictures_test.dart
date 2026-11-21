@@ -526,9 +526,9 @@ void main() {
         }
       }
       // on the vm: every old picture of the real scenes not converted yet (tool/make_old_pictures.dart writes their
-      // hashes; none once every scene is converted). Now 160: the 200 of A comer's order 06 (El balcón's 36 went at order
+      // hashes; none once every scene is converted). Now 120: the 200 of A comer's order 06 (El balcón's 36 went at order
       // 30b, La sala's 50 at 31b, El patio's 52 at 32b, El camino's 41 at 33b, El campo's 38 at 34b, El lago's 38 at 35b;
-      // A comer brought 36 and 4 level cells of La estufa and La nevera) less El banco's 40 (order 36b)
+      // A comer brought 36 and 4 level cells of La estufa and La nevera) less El banco's 40 (order 36b) and La mesa's 40 (37b)
       if (!kIsWeb) expect(n, oldHashes.length);
     });
 
