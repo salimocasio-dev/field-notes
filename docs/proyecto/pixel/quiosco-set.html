@@ -1,0 +1,121 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El quiosco: the stand of the square, close (place 6, scene 3), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   Laid out square to the picture, in u, v (plaza-base.js). The stand is a roofed booth with a counter in the shape of a U, open towards the
+   camera: the front counter runs across the picture at v = 0 (the vendedor stands behind it, under the roof, before a back wall of shelves);
+   a wing of counter comes towards the camera at each end. The four high stools stand OUTSIDE the wings, two at each side, so that whoever
+   sits there is seen from the side and nobody has his back to us; the front counter is clear for the frog to run along. The roof covers the
+   booth only (a roof over the wings would hide the vendedor). At the left, nearer the camera, a small round table with two chairs.
+   The state comes from the address; these become the builder's setKey:
+     hora = mediodia | tarde          the light
+     fiesta = 0 | 1                   paper flags along the roof's edge and from the posts (story 68)
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters, no dome, no tray, no box, no limbers, no cake stand. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['mediodia', 'tarde'], 'mediodia'), fiesta: Q.get('fiesta') === '1', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, 14];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script>
+'use strict';
+const E = {
+  CH: 1.05,                                                           // the counter's height
+  FRONT: { u0: -1.5, u1: 1.5, v0: -.5, v1: 0 },                       // the front counter (its front face at v1)
+  WING: { hw: .25, v0: -.5, v1: 1.65, uL: -1.75, uR: 1.75 },          // the two wings: each one's middle u, from v0 to v1
+  STOOLS: [[-2.5, 1.3], [-2.5, .3], [2.5, .3], [2.5, 1.3]],           // taburete1 to 4: outside the wings
+  BACK: -1.4, ROOF: 3.0,                                              // the back wall's v; the roof's edge height
+  TABLE: [-3.0, 3.0],                                                 // the round table, its two chairs behind it
+  WALL: -3.4, END: -4.9, TOWER: [34, 52],
+};
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v < E.END) return 0;
+  if (v < E.WALL - .1) return PZ.grass(u, v, ix, iy);
+  return PZ.paving(u, v, ix, iy);
+}
+const TEAL = [70, 150, 150], TEAL_D = [52, 118, 120], WH = [250, 246, 236], TOPC = [226, 214, 196];
+const panel = (s, z, hw) => (z > .14 && z < E.CH - .16 && Math.abs(s) < hw - .1) ? shade(TEAL, 2.2, s * 4, z) : 0;
+function stand() {
+  const F = E.FRONT, W = E.WING, mid = (F.u0 + F.u1) / 2;
+  PZ.wall(F.u0 - .1, F.u1 + .1, E.BACK, 0, E.ROOF, (u, z) => {         // the back wall: boards, two shelves of bottles and cups, a coffee machine
+    if (z < 1.0) return shade(TEAL_D, 1.8, u * 3, z);
+    for (const zs of [1.2, 1.72]) {
+      if (z > zs - .06 && z < zs) return rgb(150, 104, 62);
+      if (z >= zs && z < zs + .36) { const k = Math.floor((u + 4) / .22), f = ((u + 4) / .22) % 1; if (f > .2 && f < .8 && (z - zs) < .16 + (hash(k, zs * 10 | 0) * .2)) return rgb(...[[214, 62, 54], [250, 206, 70], [86, 160, 150], [250, 250, 250], [150, 90, 60]][(k + (zs > 1.5 ? 2 : 0)) % 5]); }
+    }
+    return ((u + 4) % .5 < .03) ? rgb(206, 196, 176) : shade([240, 232, 212], 2.2, u, z);
+  });
+  PZ.box(mid, (F.v0 + F.v1) / 2, 0, E.CH, (F.u1 - F.u0) / 2, (F.v1 - F.v0) / 2, WH, (s, t, z, face) => face === 'front' ? panel(s, z, (F.u1 - F.u0) / 2) : face === 'top' ? shade(TOPC, 3.4, s, t) : 0);
+  for (const u of [W.uL, W.uR]) PZ.box(u, (W.v0 + W.v1) / 2, 0, E.CH, W.hw, (W.v1 - W.v0) / 2, WH, (s, t, z, face) => face === 'front' ? panel(s, z, W.hw + .06) : face === 'top' ? shade(TOPC, 3.4, s, t) : 0);
+  PZ.box(.95, -.3, E.CH, E.CH + .5, .16, .12, [176, 60, 50], (s, t, z, face) => face === 'front' && z > E.CH + .3 && Math.abs(s) < .09 ? rgb(60, 50, 50) : 0);   // the coffee pot
+  for (let k = 0; k < 3; k++) PZ.box(1.28, -.3, E.CH + k * .1, E.CH + k * .1 + .08, .07, .07, [250, 250, 250]);                                                    // a stack of cups
+  for (const u of [W.uL - .1, W.uR + .1]) for (const v of [E.BACK + .08, .1]) PZ.post(u, v, v > 0 ? E.CH : 0, E.ROOF, .06, [240, 232, 212]);                      // four posts
+  /* the roof: a striped edge, a slope up to a flat top with a little ball (the booth has eight sides; from the front we see three of them) */
+  const r0 = W.uL - .35, r1 = W.uR + .35, vf = .22, vb = E.BACK - .1, zt = E.ROOF + 1.0, vm = (vf + vb) / 2;
+  PZ.wall(r0, r1, vf, E.ROOF - .14, E.ROOF + .02, (u, z) => (Math.floor((u + 6) / .24) % 2) ? rgb(56, 124, 126) : rgb(232, 228, 216));
+  planeQuad(PZ.P(r0, vf, E.ROOF), [(r1 - r0) / R2, -(r1 - r0) / R2, 0], [(vm - vf) / R2, (vm - vf) / R2, zt - E.ROOF], (a, b) => {
+    const inset = b * .32; if (a < inset || a > 1 - inset) return 0;                                                 // the front slope narrows towards the top
+    const f = (a - inset) / (1 - 2 * inset);
+    return (f < .3 - b * .02 || f > .7 + b * .02) ? shade(PZ.TILE, 2.0, a * 20, b * 8) : shade(PZ.TILE, 2.9, a * 20, b * 8);
+  });
+  PZ.ball(mid, vm, zt + .12, .16, [250, 206, 70], 'gloss');
+  for (let u = r0; u <= r1; u += .4) for (const v of [-.9, -.3]) PZ.shadow(u, v, 2.4, .5);
+  for (const [u, v] of E.STOOLS) { const [x, y] = PZ.xy(u, v); drum(x, y, 0, .6, .05, PZ.IRON); drum(x, y, .6, .68, .2, [214, 62, 54]); castShadow(x, y, .5, .22); }
+  if (SET.fiesta) { PZ.flags(r0 + .1, E.ROOF - .16, r1 - .1, E.ROOF - .16, vf + .02, .2); PZ.flags(W.uL - .1, E.ROOF - .5, -3.6, 2.2, .14, .25); PZ.flags(W.uR + .1, E.ROOF - .5, 3.6, 2.2, .14, .25); }
+}
+function table() {
+  const [u, v] = E.TABLE, [x, y] = PZ.xy(u, v);
+  for (const du of [-.5, .5]) { PZ.box(u + du, v - .5, 0, .42, .2, .2, PZ.WOOD); PZ.box(u + du, v - .68, .42, .95, .2, .03, PZ.WOOD); PZ.shadow(u + du, v - .5, .3, .25); }   // two chairs, their backs at the far side
+  drum(x, y, 0, .62, .07, PZ.IRON);
+  drum(x, y, .62, .72, .52, [250, 246, 236], (a, b) => (Math.hypot(a, b) > .44) ? rgb(70, 150, 150) : 0);
+  castShadow(x, y, .6, .55);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    const [u, v] = PZ.uv(g.x, g.y);
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = v < E.WALL - .1 ? KIND_GRASS : KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('fondo', () => {
+    for (const [u, h, r] of [[-4.6, 1.5, .95], [3.4, 2.0, 1.2], [5.2, 1.4, .9]]) PZ.tree(u, E.WALL - .8, h, r);
+    PZ.hedge(-5.4, E.END + .25, 5.4, E.END + .25);
+  });
+  part('muro', () => PZ.box(0, E.WALL, 0, .55, 5.4, .13, PZ.STONE));
+  part('flores', () => { PZ.bed(-4.6, E.WALL + .3, -2.4, E.WALL + .9); PZ.bed(2.4, E.WALL + .3, 4.6, E.WALL + .9, [[250, 250, 250], [236, 120, 170], [250, 206, 70]]); });
+  part('quiosco', stand);
+  part('mesa', table);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  PZ.light(SET.hora);
+  skyFill(PZ.sky(SET.hora, PZ.farTower(E.TOWER[0], E.TOWER[1])));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.QUIOSCO = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

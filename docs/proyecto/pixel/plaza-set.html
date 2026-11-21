@@ -1,0 +1,137 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El banco de la plaza: a bench in the town square (place 6, scene 1), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   Laid out square to the picture, in u, v (plaza-base.js): u across, v down towards the camera. The long seat faces the camera at v = 0, under
+   a big tree that stands behind it. Paving all round. Behind: flower beds, a low wall, grass and small trees; far off, in the sky at the
+   right, the top of the square's clock tower. At the left a notice board on two posts (story 61): two pictures (the island; a city of tall
+   buildings), a row of five hooks under each, and a ledge along its foot. At the right the piragüero's cart (story 62).
+   The state comes from the address; these become the builder's setKey:
+     hora = manana | mediodia | tarde     the light
+     tablero = 0 | 1                      the notice board
+     carrito = 0 | 1                      the piragüero's cart
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters, no pigeons, no photos on the hooks. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['manana', 'mediodia', 'tarde'], 'manana'), tablero: Q.get('tablero') === '1', carrito: Q.get('carrito') === '1', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, 10];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script>
+'use strict';
+const E = {
+  SEAT: { u: .9, v: 0, hw: 2.3 },                                     // the long seat: its middle, half its length
+  TREE: [.9, -1.15, 2.5, 1.55],                                       // the big tree behind it: u, v, the trunk's height, the crown's size
+  WALL: -3.3, BACK: -5.0,                                             // the low wall's v; where the ground ends (sky beyond)
+  BOARD: { u0: -3.72, u1: -1.42, v: -1.3, z0: 1.0, z1: 2.62 },        // the notice board: a plane that faces the camera
+  CART: { u: 3.0, v: 2.95, hw: .72, hd: .42 },                        // the piragüero's cart
+  TOWER: [206, 55],                                                   // the far tower's foot on the picture (px)
+};
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v < E.BACK) return 0;
+  if (v < E.WALL - .1) return PZ.grass(u, v, ix, iy);
+  return PZ.paving(u, v, ix, iy);
+}
+/* the board's two pictures. u, v from 0 to 1 (v up) */
+const island = (u, v) => {
+  if (v < .3) return ((u * 9 + v * 3) % 1 < .18 && v > .08 && v < .24) ? rgb(170, 214, 240) : rgb(70, 140, 214);                     // the sea
+  const hump = .3 + .34 * Math.sin(Math.PI * clamp((u - .08) / .84, 0, 1)) * (u < .5 ? 1 : .8);
+  if (v < hump) return v > hump - .07 ? rgb(120, 190, 96) : rgb(70, 150, 76);                                                          // the green island
+  if (Math.abs(u - .68 - (v - .5) * .1) < .025 && v < .82) return rgb(140, 100, 66);                                                   // a palm's trunk
+  if (v > .7 && Math.hypot((u - .7) * 1.0, (v - .84) * 1.6) < .2 && ((u * 20 + v * 9) % 1) < .7) return rgb(60, 140, 70);              // its leaves
+  if (Math.hypot(u - .18, v - .84) < .09) return rgb(252, 220, 110);                                                                   // the sun
+  return rgb(176, 220, 250);
+};
+const city = (u, v) => {
+  const T = [[.06, .2, .62], [.22, .36, .88], [.4, .56, .7], [.6, .74, .94], [.78, .94, .56]];
+  for (const [a, b, h] of T) if (u >= a && u <= b && v < h) {
+    const wx = ((u - a) / (b - a) * 3) % 1, wy = (v * 9) % 1;
+    return (wx > .3 && wx < .75 && wy > .3 && wy < .75 && v < h - .06) ? rgb(250, 232, 150) : (Math.floor((u - a) / (b - a) * 3) + Math.round(a * 10)) % 2 ? rgb(120, 130, 156) : rgb(140, 150, 176);
+  }
+  return v < .08 ? rgb(96, 100, 116) : rgb(196, 210, 232);
+};
+function board() {
+  const B = E.BOARD, W2 = PZ.WOOD, Wd = rampOf(PZ.WOOD_D), mid = (B.u0 + B.u1) / 2;
+  for (const u of [B.u0 + .06, B.u1 - .06]) PZ.post(u, B.v - .05, 0, B.z1 + .1, .06, PZ.WOOD_D);
+  PZ.wall(B.u0, B.u1, B.v, B.z0, B.z1, (u, z) => {
+    const fu = u - B.u0, w = B.u1 - B.u0, half = fu < w / 2 ? 0 : 1, hu = (fu - half * w / 2) / (w / 2), fz = (z - B.z0) / (B.z1 - B.z0);
+    if (fu < .05 || fu > w - .05 || fz < .04 || fz > .96) return Wd[1];                                              // the frame
+    if (Math.abs(fu - w / 2) < .03) return Wd[2];
+    if (fz > .5) { const pu = (hu - .08) / .84, pv = (fz - .55) / .38; if (pu >= 0 && pu <= 1 && pv >= 0 && pv <= 1) return (half ? city : island)(pu, pv); return rgb(244, 234, 208); }
+    if (fz > .36 && fz < .44) { const k = hu * 5 - Math.floor(hu * 5); if (hu > .04 && hu < .96 && Math.abs(k - .5) < .1) return rgb(90, 70, 60); }   // five hooks
+    return rgb(244, 234, 208);                                                                                       // cork: where the photos hang
+  });
+  PZ.box(mid, B.v + .1, B.z0 - .08, B.z0, (B.u1 - B.u0) / 2 + .04, .1, W2);                                          // the ledge along its foot
+  PZ.slope(B.u0 - .12, B.u1 + .12, B.v + .22, B.z1 + .02, B.v - .12, B.z1 + .3, (u, b) => shade(PZ.TILE, b > .5 ? 3.0 : 2.4, u, b));   // a little roof
+  for (let u = B.u0; u <= B.u1; u += .3) PZ.shadow(u, B.v, 1.6, .28);
+}
+function cart() {
+  const K = E.CART, RED = [214, 62, 54], WH = [250, 246, 236], BL = [70, 120, 206];
+  PZ.box(K.u, K.v, .42, 1.02, K.hw, K.hd, WH, (s, t, z, face) => {
+    if (face === 'top') return (Math.abs(s) < K.hw - .1 && Math.abs(t) < K.hd - .08) ? rgb(206, 232, 244) : 0;       // the block of ice under its lid of glass
+    if (face === 'front') {
+      const d = Math.hypot(s * 1.0, (z - .74) * 1.2);                                                                // painted on its side: a big piragua of three colours
+      if (z > .52 && z < .7 && Math.abs(s) < (z - .5) * .5 + .02) return rgb(244, 234, 200);                          // the paper cone
+      if (z >= .7 && d < .2) return s < -.06 ? rgb(226, 60, 70) : s > .06 ? rgb(80, 130, 220) : rgb(250, 206, 70);
+      return (z < .5 || z > .96) ? rgb(...RED) : 0;
+    }
+    return 0;
+  });
+  for (const du of [-K.hw + .12, K.hw - .12]) { const [x, y] = PZ.xy(K.u + du, K.v + K.hd + .02); for (let a = -.3; a <= .3; a += .02) for (let b = -.3; b <= .3; b += .02) { const r = Math.hypot(a, b); if (r < .3) plot(x + a / R2, y - a / R2, .3 + b, r < .06 ? rgb(60, 60, 66) : r > .24 ? rgb(70, 60, 56) : (Math.abs(a) < .03 || Math.abs(b) < .03) ? rgb(150, 110, 70) : rgb(196, 150, 96)); } }   // two big wheels
+  for (const [du, dv] of [[-K.hw + .05, -K.hd + .05], [K.hw - .05, -K.hd + .05], [-K.hw + .05, K.hd - .05], [K.hw - .05, K.hd - .05]]) PZ.post(K.u + du, K.v + dv, 1.02, 3.0, .03, PZ.IRON);
+  PZ.slope(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 2.96, K.v - K.hd - .1, 3.22, (u, b) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(...(b > .5 ? [236, 84, 74] : RED)) : rgb(...(b > .5 ? WH : [232, 228, 218])));   // a striped awning
+  PZ.wall(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 2.82, 2.96, (u, z) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(190, 50, 46) : rgb(226, 222, 210));
+  for (const [du, c] of [[-.4, [226, 60, 70]], [-.13, [250, 206, 70]], [.14, [80, 130, 220]], [.4, [110, 190, 90]]]) PZ.box(K.u + du, K.v - K.hd + .1, 1.02, 1.36, .07, .07, c);    // bottles of syrup along the back
+  for (let du = -K.hw; du <= K.hw; du += .3) PZ.shadow(K.u + du, K.v, 1.6, .5);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    const [u, v] = PZ.uv(g.x, g.y);
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = v < E.WALL - .1 ? KIND_GRASS : KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('fondo', () => {                                               // behind the low wall: small trees against the sky
+    for (const [u, h, r] of [[-3.9, 1.5, .95], [-1.9, 1.2, .8], [4.7, 1.4, .9]]) PZ.tree(u, E.WALL - .9, h, r);
+    PZ.hedge(-5, E.BACK + .25, 5, E.BACK + .25);
+  });
+  part('muro', () => PZ.box(0, E.WALL, 0, .55, 5.4, .13, PZ.STONE));
+  part('flores', () => { PZ.bed(-4.5, E.WALL + .35, -1.5, E.WALL + 1.0); PZ.bed(2.4, E.WALL + .35, 4.6, E.WALL + 1.0, [[250, 250, 250], [236, 120, 170], [250, 206, 70]]); });
+  part('arbol', () => PZ.tree(E.TREE[0], E.TREE[1], E.TREE[2], E.TREE[3]));
+  part('banco', () => PZ.seat(E.SEAT.u, E.SEAT.v, E.SEAT.hw));
+  if (SET.tablero) part('tablero', board);
+  if (SET.carrito) part('carrito', cart);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  PZ.light(SET.hora);
+  skyFill(PZ.sky(SET.hora, PZ.farTower(E.TOWER[0], E.TOWER[1])));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.PLAZA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

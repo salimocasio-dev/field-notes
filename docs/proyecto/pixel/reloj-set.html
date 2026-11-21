@@ -1,0 +1,163 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El reloj: the foot of the square's clock tower (place 6, scene 2), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   Laid out square to the picture, in u, v (plaza-base.js). The tower's front faces the camera at v = TOWER.v: a big round clock face with its
+   twelve numerals and NO hands (the hands are sprites); under it a balcony with a rail, and a ladder up to it at the left; beside the face,
+   at the right, the little door of the three figures (three shutters, one over another: a rooster, a man with a guitar, a small frog); at
+   the left a small iron flap (the works). At the tower's foot, at the right, the quiosco's counter under its awning, with a fryer.
+   The state comes from the address; these become the builder's setKey:
+     hora = mediodia | tarde | ocaso      the light
+     mesas = 0 | 1                        the bingo: three round tables, the stand of the cage, the prize shelf (story 65)
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters, no hands, no cage, no prizes, no cards. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['mediodia', 'tarde', 'ocaso'], 'mediodia'), mesas: Q.get('mesas') === '1', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, 44];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script>
+'use strict';
+const E = {
+  TOWER: { u0: -1.9, u1: 1.9, v: -2.0 },                              // the tower's front: a plane that faces the camera
+  FACE: { u: 0, z: 3.92, r: 27 },                                     // the clock face: its middle, its radius in px (the rim included)
+  BALCON: { z: 2.1, out: .55, u0: -1.75, u1: 1.75, rail: .5 },        // the balcony: its floor's height, how far it stands out, its rail's height
+  LADDER: { u: -1.5, v0: -.95 },                                      // the ladder's foot (it leans up to the balcony's front edge)
+  DOOR: { u0: 1.14, u1: 1.82, z0: 3.2, z1: 4.4 },                     // the little door of the figures: three shutters, one over another
+  FLAP: { u0: -1.82, u1: -1.2, z0: 3.45, z1: 4.15 },                  // the iron flap of the works
+  KIOSK: { u: 3.02, v: -.25, hw: .74, hd: .4 },                       // the quiosco's counter
+  WALL: -2.7, BACK: -4.2,                                             // the low wall behind, at each side of the tower; where the ground ends
+  TABLES: [[-2.75, 1.7], [-.45, 3.1], [1.9, 3.1]],                    // the bingo tables: abuela's, the señor's, don Tito's
+  CAGE: [.75, 1.15], SHELF: [2.35, 1.35],
+};
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v < E.BACK) return 0;
+  if (v < E.WALL - .1) return PZ.grass(u, v, ix, iy);
+  return PZ.paving(u, v, ix, iy);
+}
+/* a 3 x 5 figure font, for the clock's numerals */
+const DIG = ['111101101101111', '010110010010111', '111001111100111', '111001111001111', '101101111001001', '111100111001111', '111100111101111', '111001001001001', '111101111101111', '111101111001111'];
+const NUM = new Map();                                                 // "px,py" (px right, py up, from the face's middle) -> 1
+for (let n = 1; n <= 12; n++) {
+  const th = n * Math.PI / 6, R = 20.5, cx = Math.round(Math.sin(th) * R), cy = Math.round(Math.cos(th) * R), ds = String(n).split('').map(Number), w = ds.length * 4 - 1;
+  ds.forEach((d, k) => { for (let r = 0; r < 5; r++) for (let c = 0; c < 3; c++) if (DIG[d][r * 3 + c] === '1') NUM.set((cx - (w >> 1) + k * 4 + c) + ',' + (cy + 2 - r), 1); });
+}
+const WALLC = [244, 214, 150], QUOIN = [226, 206, 176], TRIM = [196, 104, 76];
+function towerFront(u, z) {
+  const T = E.TOWER, F = E.FACE, px = Math.floor((u - F.u) * 26), py = Math.floor((z - F.z) * 22.5), d = Math.hypot(px + .5, py + .5);
+  if (d < F.r) {                                                       // the face: a dark rim, a white dial, twelve numerals, a pin
+    if (d > F.r - 2) return rgb(96, 70, 56);
+    if (d > F.r - 3) return rgb(190, 150, 90);
+    if (d < 1.6) return rgb(70, 56, 50);
+    if (NUM.has(px + ',' + py)) return rgb(60, 50, 60);
+    return (d > F.r - 4.2 && ((Math.atan2(px + .5, py + .5) / Math.PI * 30 + 60.5) % 1) < .22) ? rgb(150, 130, 120) : rgb(252, 250, 240);
+  }
+  if (d < F.r + 2) return rgb(...TRIM);
+  const D = E.DOOR;
+  if (u > D.u0 - .06 && u < D.u1 + .06 && z > D.z0 - .06 && z < D.z1 + .06) {      // the little door: a frame and three shutters, each with its painted figure
+    if (u < D.u0 || u > D.u1 || z < D.z0 || z > D.z1) return rgb(120, 76, 50);
+    const k = Math.min(2, Math.floor((z - D.z0) / ((D.z1 - D.z0) / 3))), fu = (u - D.u0) / (D.u1 - D.u0), fz = ((z - D.z0) / ((D.z1 - D.z0) / 3)) - k;
+    if (fz < .07 || fz > .93 || fu < .06 || fu > .94) return rgb(150, 98, 60);
+    const x = fu - .5, y = fz - .5;
+    if (k === 2) { if (Math.hypot(x * 1.1, y + .05) < .2 || Math.hypot(x - .12, y - .2) < .13) return rgb(214, 70, 50); if (x > .17 && x < .3 && Math.abs(y - .2) < .05) return rgb(250, 190, 60); if (Math.abs(x + .22) < .08 && y > -.1 && y < .25) return rgb(60, 110, 70); }      // a rooster
+    if (k === 1) { if (Math.hypot(x + .12, y - .22) < .1) return rgb(232, 180, 140); if (Math.abs(x + .12) < .1 && y > -.3 && y < .12) return rgb(80, 110, 190); if (Math.hypot(x - .12, y + .08) < .15) return rgb(190, 130, 70); if (y > -.02 && y < .04 && x > .1 && x < .36) return rgb(120, 80, 50); }   // a man with a guitar
+    if (k === 0) { if (Math.hypot(x * .9, y * 1.3) < .22) return rgb(110, 180, 80); if (Math.hypot(x + .1, y - .16) < .07 || Math.hypot(x - .1, y - .16) < .07) return rgb(250, 250, 240); }   // a small frog
+    return rgb(206, 160, 104);
+  }
+  const P = E.FLAP;
+  if (u > P.u0 && u < P.u1 && z > P.z0 && z < P.z1) { const e = u < P.u0 + .05 || u > P.u1 - .05 || z < P.z0 + .05 || z > P.z1 - .05; return e ? rgb(52, 56, 68) : (Math.hypot(u - P.u1 + .14, z - (P.z0 + P.z1) / 2) < .045 ? rgb(200, 170, 90) : rgb(84, 90, 104)); }   // the iron flap, its knob
+  if (z < .62) return shade(PZ.STONE_D, z > .56 ? 1.4 : 2.2, u, z);                                                     // a stone foot
+  if (Math.abs(u) < .5 && z < 1.62 && Math.hypot(u, Math.max(0, z - 1.12)) < .5) return Math.abs(u) < .03 ? rgb(70, 46, 36) : shade(PZ.WOOD_D, 2.0, u * 6, z);   // an arched door at the foot
+  if (Math.abs(u) < .6 && z < 1.74 && Math.hypot(u, Math.max(0, z - 1.12)) < .6) return rgb(...TRIM);
+  if (u < T.u0 + .26 || u > T.u1 - .26) { const row = Math.floor(z / .32), inn = (row % 2) ? .26 : .16; if (u < T.u0 + inn || u > T.u1 - inn) return ((z % .32) < .03) ? rgb(190, 170, 144) : shade(QUOIN, 2.4, u, z); }   // corner stones
+  if (z > 5.5 && z < 5.68) return rgb(...TRIM);
+  return shade(WALLC, 2.4, u * 2, z * 2, .5);
+}
+function tower() {
+  const T = E.TOWER, B = E.BALCON;
+  PZ.wall(T.u0, T.u1, T.v, 0, 9.2, towerFront);
+  PZ.box(0, T.v + B.out / 2, B.z - .14, B.z, (B.u1 - B.u0) / 2, B.out / 2, PZ.STONE);                                 // the balcony's floor
+  for (const u of [B.u0 + .3, 0, B.u1 - .3]) PZ.box(u, T.v + .14, B.z - .46, B.z - .14, .09, .14, PZ.STONE_D);        // its brackets
+  PZ.wall(B.u0, B.u1, T.v + B.out, B.z, B.z + B.rail, (u, z) => {                                                     // its rail: a top bar, a foot bar, thin iron posts (open at the left, where the ladder comes up)
+    if (u < E.LADDER.u + .32) return (u > E.LADDER.u + .26) ? rgb(...PZ.IRON) : 0;
+    const k = ((u - B.u0) % .22) / .22;
+    return (z > B.z + B.rail - .07 || z < B.z + .05 || k < .16) ? rgb(...PZ.IRON) : 0;
+  });
+  const L = E.LADDER, top = T.v + B.out;                                                                               // the ladder: two rails and rungs, leaning from the paving to the balcony's edge
+  planeQuad(PZ.P(L.u - .26, L.v0, 0), [.52 / R2, -.52 / R2, 0], [(top - L.v0) / R2, (top - L.v0) / R2, B.z + .02], (a, b) => (a < .12 || a > .88) ? rgb(150, 104, 62) : ((b * 9) % 1 < .2) ? rgb(176, 124, 76) : 0);
+  for (let z = .3; z <= B.z; z += .4) PZ.shadow(L.u, L.v0 - z * .22, z, .16);
+  for (let u = T.u0; u <= T.u1; u += .4) { PZ.shadow(u, T.v + .2, 1.2, .5); PZ.shadow(u, T.v + .3, B.z, .4); }
+}
+function kiosk() {
+  const K = E.KIOSK, TEAL = [70, 150, 150], WH = [250, 246, 236];
+  PZ.box(K.u, K.v, 0, 1.0, K.hw, K.hd, WH, (s, t, z, face) => face === 'front' ? ((z > .14 && z < .86 && Math.abs(s) < K.hw - .1) ? shade(TEAL, 2.2, s * 4, z) : 0) : face === 'top' ? shade([226, 214, 196], 3.4, s, t) : 0);
+  PZ.box(K.u - .34, K.v - .05, 1.0, 1.26, .2, .17, [70, 70, 80], (s, t, z, face) => face === 'top' && Math.abs(s) < .15 && Math.abs(t) < .12 ? rgb(214, 160, 60) : 0);   // the fryer: a dark pan of oil
+  for (const [du, dv] of [[-K.hw + .05, -K.hd + .05], [K.hw - .05, -K.hd + .05], [-K.hw + .05, K.hd - .05], [K.hw - .05, K.hd - .05]]) PZ.post(K.u + du, K.v + dv, 1.0, 3.04, .03, PZ.IRON);
+  PZ.slope(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 3.0, K.v - K.hd - .1, 3.26, (u, b) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(...(b > .5 ? [90, 170, 168] : TEAL)) : rgb(...(b > .5 ? WH : [232, 228, 218])));
+  PZ.wall(K.u - K.hw - .12, K.u + K.hw + .12, K.v + K.hd + .14, 2.86, 3.0, (u, z) => (Math.floor((u - K.u + 4) / .24) % 2) ? rgb(56, 124, 126) : rgb(226, 222, 210));
+  for (let du = -K.hw; du <= K.hw; du += .3) PZ.shadow(K.u + du, K.v, 1.6, .5);
+}
+function table(u, v) {                                                 // a round table with a cloth, and two stools behind it
+  const [x, y] = PZ.xy(u, v);
+  drum(x, y, 0, .62, .07, PZ.IRON);
+  drum(x, y, .62, .72, .5, [250, 246, 236], (a, b) => (Math.hypot(a, b) > .42) ? rgb(226, 90, 80) : 0);
+  for (const du of [-.42, .42]) { const [sx, sy] = PZ.xy(u + du, v - .55); drum(sx, sy, 0, .4, .15, PZ.WOOD); castShadow(sx, sy, .3, .2); }
+  castShadow(x, y, .6, .55);
+}
+function bingo() {
+  for (const [u, v] of E.TABLES) table(u, v);
+  const [cu, cv] = E.CAGE; PZ.box(cu, cv, 0, .8, .3, .22, PZ.WOOD, (s, t, z, face) => face === 'front' && z < .66 && Math.abs(s) < .22 ? 0 : 0); PZ.shadow(cu, cv, .6, .35);      // the stand of the cage
+  const [su, sv] = E.SHELF;                                             // the prize shelf: three steps, the best prize's place at the top
+  for (let k = 0; k < 3; k++) PZ.box(su, sv - .14 * k, .34 * k, .34 * k + .34, .46, .16, [214, 170, 110], (s, t, z, face) => face === 'front' && (z - .34 * k) < .05 ? rgb(150, 104, 62) : 0);
+  PZ.shadow(su, sv, .6, .5);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    const [u, v] = PZ.uv(g.x, g.y);
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = v < E.WALL - .1 ? KIND_GRASS : KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('fondo', () => {
+    for (const [u, h, r] of [[-3.6, 2.2, 1.25], [3.5, 2.4, 1.3], [-5.2, 1.6, 1.0], [5.2, 1.6, 1.0]]) PZ.tree(u, E.WALL - .8, h, r);
+    PZ.hedge(-5.4, E.BACK + .25, -2, E.BACK + .25); PZ.hedge(2, E.BACK + .25, 5.4, E.BACK + .25);
+  });
+  part('muro', () => { PZ.box(-3.7, E.WALL, 0, .55, 1.8, .13, PZ.STONE); PZ.box(3.7, E.WALL, 0, .55, 1.8, .13, PZ.STONE); });
+  part('flores', () => { PZ.bed(-4.6, E.WALL + .3, -2.15, E.WALL + .9); PZ.bed(2.15, E.WALL + .3, 4.6, E.WALL + .9, [[250, 250, 250], [236, 120, 170], [250, 206, 70]]); });
+  part('torre', tower);
+  part('quiosco', kiosk);
+  if (SET.mesas) part('mesas', bingo);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  PZ.light(SET.hora);
+  skyFill(PZ.sky(SET.hora));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.RELOJ = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

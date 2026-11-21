@@ -1,0 +1,131 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El calendario: the square's board of the week, close (place 6, scene 4), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   Laid out square to the picture, in u, v (plaza-base.js). The board faces the camera at v = 0: seven columns side by side, each with a
+   coloured square at its top (no writing: the first five green, the last two orange) and three hooks under it, one over another. Over the two
+   orange columns, on the board's top edge, an arch of little paper flags with a hook at its middle. The board stands on two posts; its left
+   post goes up above it (the balloons are tied there). Along its foot a low step for the frog. At the right a seat for three, seen from its
+   end. Behind: lamps, a bandstand, trees.
+   The state comes from the address; these become the builder's setKey:
+     hora = manana | tarde | noche     the light; noche lights the lamps
+     tela = 0 | 1                      a cloth over the last three columns (story 69)
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set. No characters, no cards, no sun peg, no balloons, no kite. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['manana', 'tarde', 'noche'], 'manana'), tela: Q.get('tela') === '1', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, 12];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script>
+'use strict';
+const E = {
+  BOARD: { u0: -2.5, cw: .68, v: 0, z0: 1.4, z1: 4.05 },              // the board: its left edge, a column's width (seven of them), its plane, its foot and its top
+  HEAD: [3.62, 3.95], HOOKS: [3.44, 2.8, 2.16],                       // the coloured squares' z; the three hooks' z (a card hangs below its hook)
+  ARCH: { z: 4.05, h: .82 },                                           // the arch of flags over columns 6 and 7, on the board's top edge; its hook at its middle
+  STEP: { v0: .12, v1: .62, h: .3 },                                  // the low step along the board's foot
+  SEAT: [3.15, .35, 3.3],                                             // the seat at the right: u, from v to v
+  LAMPS: [[-3.55, -1.0], [3.8, -.7]],
+  STAND: { u: 3.6, v: -2.6 },                                         // the bandstand, behind at the right
+  WALL: -3.5, END: -4.9,
+};
+E.BOARD.u1 = E.BOARD.u0 + .06 + 7 * E.BOARD.cw + .06;
+const colU = k => E.BOARD.u0 + .06 + (k - 1) * E.BOARD.cw;            // the left edge of column k (1 to 7)
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v < E.END) return 0;
+  if (v < E.WALL - .1) return PZ.grass(u, v, ix, iy);
+  return PZ.paving(u, v, ix, iy);
+}
+const GREEN = [96, 176, 96], ORANGE = [244, 150, 60], CORK = [240, 226, 196], FRAME = [120, 80, 52];
+function boardFace(u, z) {
+  const B = E.BOARD;
+  if (u < B.u0 + .06 || u > B.u1 - .06 || z < B.z0 + .06 || z > B.z1 - .05) return rgb(...FRAME);
+  const k = Math.min(7, Math.floor((u - B.u0 - .06) / B.cw) + 1), f = (u - colU(k)) / B.cw;
+  if (f < .035 || f > .965) return rgb(206, 186, 150);                                                  // a line between the columns
+  if (z > E.HEAD[0] && z < E.HEAD[1] && f > .14 && f < .86) return rgb(...(k <= 5 ? GREEN : ORANGE));    // the day's coloured square
+  if (z > E.HEAD[0] - .04 && z < E.HEAD[1] + .04 && f > .1 && f < .9) return rgb(...(k <= 5 ? [60, 120, 70] : [190, 104, 40]));
+  for (const h of E.HOOKS) if (Math.abs(z - h) < .035 && Math.abs(f - .5) < .07) return rgb(70, 60, 60);   // a hook
+  return k > 5 ? rgb(250, 232, 200) : rgb(...CORK);
+}
+function board() {
+  const B = E.BOARD, mid = (B.u0 + B.u1) / 2;
+  PZ.post(B.u0 + .02, -.07, 0, 5.1, .07, PZ.WOOD_D);                                                    // the left post goes up above the board: the balloons' string is tied to its top
+  PZ.post(B.u1 - .02, -.07, 0, B.z1, .07, PZ.WOOD_D);
+  PZ.wall(B.u0, B.u1, B.v, B.z0, B.z1, boardFace);
+  PZ.slope(B.u0 - .1, colU(6) - .05, B.v + .2, B.z1, B.v - .14, B.z1 + .26, (u, b) => shade(PZ.TILE, b > .5 ? 3.0 : 2.4, u * 3, b));   // a little roof over the first five columns
+  const a0 = colU(6) + .04, a1 = colU(8) - .04, am = (a0 + a1) / 2, A = E.ARCH;                           // the arch over the two orange columns: a hoop of wood, flags along it, a hook at its middle
+  PZ.wall(a0, a1, B.v, A.z, A.z + A.h + .06, (u, z) => {
+    const t = (u - a0) / (a1 - a0), top = A.z + A.h * Math.sin(Math.PI * clamp(t, 0, 1)) ** .6;
+    if (z > top || z < top - .4) return (Math.abs(u - am) < .03 && z < top && z > A.z + .12) ? rgb(70, 60, 60) : 0;     // the hook's stem, hanging from the hoop's middle
+    if (z > top - .07) return rgb(...FRAME);
+    const kk = Math.floor(t * 5), ff = t * 5 - kk, d = (top - .07) - z;
+    return (d < .32 && Math.abs(ff - .5) < .46 * (1 - d / .32)) ? rgb(...[[236, 80, 90], [250, 206, 70], [86, 160, 150], [250, 250, 250], [110, 150, 220]][kk % 5]) : 0;
+  });
+  PZ.box(mid, (E.STEP.v0 + E.STEP.v1) / 2, 0, E.STEP.h, (B.u1 - B.u0) / 2 + .1, (E.STEP.v1 - E.STEP.v0) / 2, PZ.STONE);                 // the step
+  if (SET.tela) PZ.wall(colU(5) - .02, B.u1 + .04, B.v + .04, B.z0 - .25, B.z1 + .04, (u, z) => {                                       // the cloth over the last three columns
+    const f = (u - colU(5)) / (B.u1 - colU(5)), hem = B.z0 - .25 + .12 * Math.abs(Math.sin(f * 9));
+    if (z < hem) return 0;
+    return (Math.sin(f * 16 + z * .6) > .72) ? rgb(206, 190, 170) : (z < hem + .07) ? rgb(196, 110, 90) : shade([240, 232, 216], 2.5, u * 3, z * 2, .3);
+  });
+  for (let u = B.u0; u <= B.u1; u += .35) PZ.shadow(u, B.v, 2.2, .4);
+}
+function bandstand() {
+  const K = E.STAND, hw = 1.25, hd = .7;
+  PZ.box(K.u, K.v, 0, .7, hw, hd, PZ.STONE, (s, t, z, face) => face === 'front' && Math.abs(s) < .45 ? ((z % .234) < .03 ? rgb(...PZ.STONE_D) : 0) : 0);   // a stone floor with steps at its front
+  for (const [du, dv] of [[-hw + .1, hd - .1], [hw - .1, hd - .1], [-hw + .1, -hd + .1], [hw - .1, -hd + .1]]) PZ.post(K.u + du, K.v + dv, .7, 2.1, .06, PZ.WHITE);
+  PZ.wall(K.u - hw, K.u + hw, K.v + hd - .1, .7, 1.15, (u, z) => (z > 1.08 || ((u - K.u + 4) % .2) < .05) && Math.abs(u - K.u) > .45 ? rgb(...PZ.WHITE) : 0);   // a rail, open at the steps
+  PZ.slope(K.u - hw - .2, K.u + hw + .2, K.v + hd + .15, 2.1, K.v, 2.8, (u, b) => { const inset = b * .42 * (2 * hw + .4), d = u - (K.u - hw - .2); return (d < inset || d > 2 * hw + .4 - inset) ? 0 : shade(PZ.TILE, 2.8, u * 3, b * 6); });
+  PZ.ball(K.u, K.v, 2.9, .13, [250, 206, 70], 'gloss');
+  for (let du = -hw; du <= hw; du += .4) PZ.shadow(K.u + du, K.v, 2.0, .6);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  PZ.NIGHT = CL.NIGHT = SET.hora === 'noche';
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    const [u, v] = PZ.uv(g.x, g.y);
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = v < E.WALL - .1 ? KIND_GRASS : KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('fondo', () => {
+    for (const [u, h, r] of [[-4.4, 1.9, 1.15], [-1.2, 1.5, .95], [1.4, 1.7, 1.05]]) PZ.tree(u, E.WALL - .8, h, r);
+    PZ.hedge(-5.4, E.END + .25, 5.4, E.END + .25);
+  });
+  part('muro', () => PZ.box(0, E.WALL, 0, .55, 5.4, .13, PZ.STONE));
+  part('glorieta', bandstand);
+  part('faroles', () => { for (const [u, v] of E.LAMPS) PZ.lamp(u, v); });
+  part('tablero', board);
+  part('banco', () => PZ.seatSide(E.SEAT[0], E.SEAT[1], E.SEAT[2]));
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  PZ.light(SET.hora);
+  skyFill(PZ.sky(SET.hora));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.CALENDARIO = { SET, E, colU, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
