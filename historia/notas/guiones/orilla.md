@@ -45,7 +45,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 8. Luis stands back from the castle.
    - Three shells: every tower has its pink shell. Stars and a heart.
    - Two shells: two towers with shells; on the third, Carmen sets a small white one.
-   - One shell: one pink shell on the middle tower; Canelo comes back with sand on his nose and lies down beside it.
+   - One shell: one pink shell on the first tower; Canelo comes back with sand on his nose and lies down beside the castle.
 9. NARR: "Abuela dice: Coquí, ven acá. ¡La foto!" **(acá: heard)** COQUÍ [TURN: voy (voy)]: "¡Voy!" The frog hops onto the highest tower; the camera clicks. NARR: "Hay mucha arena en la playa. Y el mar es grande."
 
 **Fewest hearings before a word can cost:** mar 5 (steps 1, 4), arena 5 (steps 2, 3). Not deciding: ola 3 (steps 1, 2, 4); playa 3 (step 1).

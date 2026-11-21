@@ -55,7 +55,7 @@ function bus() {
   const B = E.BUS, C1 = [244, 244, 236], BAND = [60, 150, 120], G = [44, 52, 66], G2 = [70, 84, 104];
   PZ.wall(B.u0, B.u1, B.v, .3, B.h + .3, (u, z) => {
     const d = u - B.u0, zz = z - .3;
-    if (d > .35 && d < 1.15 && zz < B.h - .2) return (Math.abs(d - .75) < .03) ? rgb(30, 34, 44) : (d < .75 ? rgb(60, 50, 50) : rgb(96, 84, 76));        // the front door, open: the steps inside
+    if (d > .35 && d < 1.15 && zz < B.h - .2) return (zz < .5 && ((zz % .17) < .03)) ? rgb(90, 84, 80) : (d > 1.02) ? rgb(250, 206, 70) : (zz < .5 ? rgb(176, 170, 160) : rgb(124, 132, 144));   // the front door, open: two pale steps, the dim inside, a yellow handrail
     if (zz > .85 && zz < 1.55 && d > 1.45 && ((d - 1.45) % .68) < .54) return rgb(...(((u * 2 + z) % 1.6) < .22 ? G2 : G));
     if (zz > .85 && zz < 1.55 && d < .28) return rgb(...G);                                                                                                  // the driver's window
     if (zz > .32 && zz < .56) return shade(BAND, 2.4, u, z);

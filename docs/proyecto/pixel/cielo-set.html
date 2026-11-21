@@ -50,8 +50,8 @@ function deck() {
   drum(tx, ty, D.h, D.h + .64, .07, PZ.IRON);
   drum(tx, ty, D.h + .64, D.h + .72, .5, [250, 246, 236], (a, b) => (Math.hypot(a, b) > .43) ? rgb(226, 90, 80) : 0);
   castShadow(tx, ty, .7, .5);
-  const [cu, cv] = E.CHAIR, WD = [150, 104, 62];                                                                        // the rocking chair: a seat, a tall back, two rockers
-  PZ.box(cu, cv, D.h + .34, D.h + .44, .3, .26, WD); PZ.box(cu, cv - .26, D.h + .44, D.h + 1.25, .3, .04, WD, (s, t, z, face) => face === 'front' && Math.abs((s + .3) % .15 - .075) < .02 ? rgb(110, 76, 46) : 0);
+  const [cu, cv] = E.CHAIR, WD = [196, 144, 92];                                                                        // the rocking chair: a seat, a tall back, two rockers
+  PZ.box(cu, cv, D.h + .34, D.h + .44, .3, .26, WD); PZ.box(cu, cv - .26, D.h + .44, D.h + 1.25, .3, .04, WD, (s, t, z, face) => face === 'front' && Math.abs((s + .3) % .15 - .075) < .03 ? rgb(120, 84, 52) : 0);
   for (const du of [-.26, .26]) PZ.box(cu + du, cv, D.h, D.h + .08, .05, .42, [120, 86, 56]);
   for (const [du, dv] of [[-.24, .2], [.24, .2], [-.24, -.2], [.24, -.2]]) PZ.post(cu + du, cv + dv, D.h + .06, D.h + .34, .03, WD);
   PZ.shadow(cu, cv, .5, .4);
