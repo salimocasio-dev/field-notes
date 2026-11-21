@@ -68,6 +68,19 @@ The Pixel Plays engine, the set-building helpers, the sprite library, the softwa
   - `BakedSet` keeps the blades' colours of its bake (`tuftLit`, `tuftDark`) and puts them back: a set whose blades take the
     light of its hour (El patio) sets them in its bake. For the earlier sets they are the engine's own, unchanged.
   - `test/patio_sheet_test.dart`: the reader against El patio's real sheet (the file on the vm, the fixture in chrome).
+- Since order 33b (El camino), only as far as that scene needs:
+  - `Sheet` reads what El camino's sheet writes that the earlier ones do not: a thing's `hintBox` (`SheetThing.hintBox`)
+    and its screen box as corners (`screen: [x0, y0, x1, y1]`, `SheetThing.screenRect`); a point with no `old` (the arch:
+    `SheetAnchor.old` empty); a screen point's depth `v` and radius (`SheetScreenPoint.v`, `radius`: the cat on the bench,
+    the sun); a list of points of three numbers (the clouds, x, y, size); remap entries of kind `numbers` (three counts,
+    no place); front parts with no line, placed by their `insert` words (`SheetFrontPart.line` null, `insert`); `sevan`
+    (`SheetSevan`: each one's delay in ticks and two points). El frente's, El balcón's, La sala's and El patio's sheets read
+    as before.
+  - `Thing.hintBox`: where a thing's hint frame and twinkle are drawn when not round its box (a box that runs off the
+    picture); `Signs.drawSigns` draws the twinkle round `hintBoxOf(k) ?? bx(k)` and the frame round
+    `respBox(k) ?? hintBoxOf(k) ?? bx(k)` (camino-preview.html `hb`). A thing with none, every earlier scene's, is drawn
+    as before; touches answer in the box either way.
+  - `test/camino_sheet_test.dart`: the reader against El camino's real sheet (the file on the vm, the fixture in chrome).
 - Since order 12b it also holds `hexColour` (`colour.dart`): `"#RRGGBB"` as the int `0xFFBBGGRR`, for a colour that is made once. `hexColours` (a list of them) stays under `src/`.
 
 ## Run and test it alone
@@ -103,7 +116,7 @@ node tool/make_dash_ref.mjs [--check]    # test/support/fixtures/ref_dash.dart: 
 ```
 
 ```
-dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart and patio_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
+dart run tool/make_sheet_fixture.dart [--check]   # test/support/fixtures/frente_sheet.dart, balcon_sheet.dart, sala_sheet.dart, patio_sheet.dart and camino_sheet.dart: docs/proyecto/pixel/<id>-sheet.json as a string, for chrome
 ```
 
 `test/pp_frente_test.dart` rebuilds the Nov 14 one-state El frente (an old frente-set.html) as a test of `PpBuild`'s helpers at S = 26. That picture is no longer in `coqui/ref/pp/` (order 07 replaced it with El frente's 25 states): its bytes are `test/support/fixtures/frente_nov14.dart`, read on every platform, and nothing makes that file again. The 25 states are order 14's.
