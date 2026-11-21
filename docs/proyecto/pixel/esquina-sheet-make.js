@@ -46,7 +46,7 @@ const ON_STREET = ['obrero.paleta'];
 const STATES = [];
 for (const hora of ['manana', 'tarde']) for (const obra of [0, 1]) for (const puerta of ['shut', 'open']) STATES.push({ hora, obra, puerta });
 const qOf = (s, autos) => 'hora=' + s.hora + '&obra=' + s.obra + '&puerta=' + s.puerta + (autos ? '&autos=' + encodeURIComponent(autos) : '');
-const AUTOS_49 = 'carro@3.5,2.8,i;guagua@4.6,4.8,i';               // story 49: the traffic stopped at the stop line (alto_carro, alto_guagua)
+const AUTOS_49 = 'carro@3.5,4.8,i;guagua@6.7,4.8,i';               // story 49: the traffic stopped in the near lane, one behind the other (alto_carro, alto_guagua)
 const AUTOS_48 = 'carro@0.7,4.8,i;guagua@4.5,4.8,i';               // story 48: the car and the guagua at the kerb (para48_carro, para48_guagua)
 const BASE_STATE = { hora: 'tarde', obra: 0, puerta: 'shut' };
 
@@ -115,8 +115,8 @@ async function partBoxes(page, load) {
 
 /* ---------- the pixel box of each thing that drives, as the set draws it (autos=kind@x,y,heading; tags=1: part 'auto'): [x0, y0, x1, y1], read from a picture larger than the game's so that nothing is clipped ---------- */
 const VEH = {                                            // spot: [what the set draws, x, y, heading]
-  para48_carro: ['carro', .7, 4.8, 'i'], para48_guagua: ['guagua', 4.5, 4.8, 'i'], alto_carro: ['carro', 3.5, 2.8, 'i'], alto_guagua: ['guagua', 4.6, 4.8, 'i'],
-  'carril_a.carro': ['azul', -.9, 4.8, 'd'], 'carril_b.carro': ['carro', 5.1, 4.8, 'i'], 'carril_b.guagua': ['guagua', 6.2, 4.8, 'i'],
+  para48_carro: ['carro', .7, 4.8, 'i'], para48_guagua: ['guagua', 4.5, 4.8, 'i'], alto_carro: ['carro', 3.5, 4.8, 'i'], alto_guagua: ['guagua', 6.7, 4.8, 'i'],
+  'carril_a.carro': ['azul', -.9, 4.8, 'd'], 'carril_b.carro': ['carro', 5.1, 4.8, 'i'], 'carril_b.guagua': ['guagua', 6.3, 4.8, 'i'],
 };
 const BIG = 'pw=480&ph=320&ox=-90&oy=-60&';                // a picture twice the size with the same OX, OY (150, 100): what the set draws beyond the 240 x 216 picture is seen too
 async function vehicleBoxes(page, load) {
@@ -146,13 +146,13 @@ async function make(G, proj, parts, veh) {
   // the colmado's pavement
   person('puerta', [-1.85, .35, 0], 'adulto', 'at the colmado\'s door, in front of it: abuela coming out (story 49 opening, before the group is there: an alternative of pepe.puerta)');
   person('pepe.puerta', [-1.85, .3, 0], 'adulto', 'don Pepe at the colmado\'s door with his broom (story 49; an alternative of puerta)');
-  person('esquina', [.5, 1.35, 0], 'coqui', 'the frog at the corner, always (story 49; there is no esquina2)');
-  person('boton_coqui', [1.1, 1.4, 0], 'coqui', 'the frog while he presses the button on the pole');
+  person('esquina', [.5, 1.25, 0], 'coqui', 'the frog at the corner, always (story 49; there is no esquina2)');
+  person('boton_coqui', [1.1, 1.2, 0], 'coqui', 'the frog while he presses the button on the pole (the pole may hide him: he is pressing its button)');
   add('boton', [LUZ.button.x, LUZ.button.y, LUZ.button.z], 'point', null, 'the button on the pole: E.LUZ.button (the red disc on the yellow box, at frog height)');
   person('bordillo1', [-1.1, 1.35, 0], 'adulto', 'at the kerb, the first of the two (story 49: in the opening la señora; in the game one of la señora, el señor, Luis, Carmen)');
-  person('bordillo2', [-2.7, 1.35, 0], 'adulto', 'at the kerb, the second (story 49: in the opening el señor)');
+  person('bordillo2', [-2.7, 1.35, 0], 'nino', 'at the kerb, the second (story 49: in the opening Luis, the child in front)');
   person('fondo1', [-.3, .45, 0], 'nino', 'behind the kerb row, right: Carmen in the opening of story 49');
-  person('fondo2', [-3.4, .5, 0], 'nino', 'behind the kerb row, left: Luis in the opening of story 49');
+  person('fondo2', [-3.4, .5, 0], 'adulto', 'behind the kerb row, left: el señor in the opening of story 49 (the grown-up behind)');
   add('vuelta', [.8, -2.2, 0], 'person', 'adulto', 'where somebody who goes round the corner leaves the picture (an exit: only its point has to be in the window); he walks along the pavement to (0.8, 0.2, 0), then up the side wall to here', { exit: true, path: [[.8, .2, 0], [.8, -2.2, 0]] });
   // the near pavement: a back row at y 6.5 and a front row at y 7.9
   [[.5, 6.5, 'adulto', 'back row 1: papá or mamá (stories 48 and 49: mamá with the bebé on her arm: enfrente)'], [2.1, 6.5, 'adulto', 'back row 2: abuela with the bebé on her arm (story 48), the one who crossed (story 49: cruce_fin), abuela (the ending of story 49)'],
@@ -167,19 +167,19 @@ async function make(G, proj, parts, veh) {
   person('sale_guagua', [3.05, 5.9, 0], 'adulto', 'where somebody gets out of the guagua (its front door), on the kerb stone beside it; he walks to acera3 (mamá) or acera1 (papá)');
   person('toca_carro', [1.3, 6.05, 0], 'coqui', 'the frog knocks at the car, on the near pavement beside the kerb');
   person('toca_guagua', [3.6, 6.05, 0], 'coqui', 'the frog knocks at the guagua, on the near pavement beside the kerb');
-  car('alto_carro', [3.5, 2.8, 0], 'carro', 'i', 'story 49: where the car stops at the stop line, the middle of its floor, in the far lane, heading to -x (its front at x 2.4, the stop line at x 2.2)');
-  car('alto_guagua', [4.6, 4.8, 0], 'guagua', 'i', 'story 49: where the guagua stops at the stop line, the middle of its floor, in the near lane, heading to -x (its front at x 2.4)');
+  car('alto_carro', [3.5, 4.8, 0], 'carro', 'i', 'story 49: where the car stops at the stop line, the middle of its floor, in the near lane, heading to -x (its front at x 2.4, the stop line at x 2.2); the guagua stops behind it');
+  car('alto_guagua', [6.7, 4.8, 0], 'guagua', 'i', 'story 49: where the guagua stops, the middle of its floor, in the near lane behind the car, heading to -x (its front at x 4.5)');
   // story 50
   car('carril_a.carro', [-.9, 4.8, 0], 'azul', 'd', 'carril_a, the left end of the one lane (the near lane): a car\'s middle, heading to +x; the guagua never waits here');
   car('carril_a.bici', [-.5, 4.8, 0], 'bici', 'd', 'carril_a: a bicycle\'s middle, heading to +x (an alternative of the car; the set has no bicycle: a sprite)');
   car('carril_b.carro', [5.1, 4.8, 0], 'carro', 'i', 'carril_b, the right end of the one lane: a car\'s middle, heading to -x');
-  car('carril_b.guagua', [6.2, 4.8, 0], 'guagua', 'i', 'carril_b: the guagua\'s middle, heading to -x');
+  car('carril_b.guagua', [6.3, 4.8, 0], 'guagua', 'i', 'carril_b: the guagua\'s middle, heading to -x');
   car('carril_b.bici', [4.5, 4.8, 0], 'bici', 'i', 'carril_b: a bicycle\'s middle, heading to -x (the set has no bicycle: a sprite)');
   person('obrero.paleta', [3.2, 3.6, 0], 'adulto', 'the obrero at the lane with his paddle, on the street at the hole\'s right end', { street: true });
   person('obrero.cubo', [5.3, 6.5, .3], 'adulto', 'the obrero sitting on his bucket (a sprite; its top is z .3); the sitting sprite is anchored by his lap row on the spot\'s row (rules.anchor)', { seated: true });
-  person('coqui.cerca', [3.0, 6.1, 0], 'coqui', 'story 50: the frog near the cement, on the pavement right of the wet square');
+  person('coqui.cerca', [3.1, 6.1, 0], 'coqui', 'story 50: the frog near the cement, on the pavement right of the wet square');
   person('coqui.cemento', [1.7, 6.6, 0], 'coqui', 'the frog on the wet square (the ending of story 50)');
-  person('luis.cemento', [2.9, 7.9, 0], 'nino', 'Luis beside the wet square (the ending of story 50)');
+  person('luis.cemento', [.5, 6.5, 0], 'nino', 'Luis kneeling behind and left of the frog, on the old dry square (the ending of story 50; the preview\'s stand-in is the sitting persona)');
   person('obrero.fin', [3.9, 6.5, 0], 'adulto', 'the obrero standing in the ending of story 50');
   [[1.1, 6.05], [2.3, 6.05], [2.35, 7.15]].forEach(([x, y], i) => add('cono' + (i + 1), [x, y, 0], 'small', null, 'a cone round the wet square (a sprite)' + (i === 1 ? '; the one that is knocked over (in a wrong move, and in the ending of story 50)' : '')));
   LUZ.lamps.forEach((l, i) => add('lamps.' + (i + 1), [l.x, l.y, l.z], 'point', null, 'a lamp of the traffic light, from E.LUZ.lamps, top to bottom: ' + ['red', 'amber', 'green'][i] + '; the lit lamp is a sprite', { lamp: ['red', 'amber', 'green'][i] }));
@@ -346,7 +346,7 @@ async function checks(ctx) {
     return 'none within 3';
   };
   // the sprite of each spot: the stand-in the preview draws there (for its rows and its silhouette)
-  const SILOF = { puerta: 'abuela', 'pepe.puerta': 'pepe', esquina: 'coqui', boton_coqui: 'coqui', bordillo1: 'senora', bordillo2: 'senor', fondo1: 'carmen', fondo2: 'luis', vuelta: 'senor',
+  const SILOF = { puerta: 'abuela', 'pepe.puerta': 'pepe', esquina: 'coqui', boton_coqui: 'coqui', bordillo1: 'senora', bordillo2: 'luis', fondo1: 'carmen', fondo2: 'senor', vuelta: 'senor',
     acera1: 'mama', acera2: 'abuela', acera3: 'mama', acera4: 'luis', acera5: 'coqui', acera6: 'luis', enfrente: 'mama', cruce_fin: 'abuela', sale_carro: 'mama', sale_guagua: 'mama', toca_carro: 'coqui', toca_guagua: 'coqui',
     'obrero.paleta': 'obrero', 'obrero.cubo': 'obreroSentado', 'coqui.cerca': 'coqui', 'coqui.cemento': 'coqui', 'luis.cemento': 'luis', 'obrero.fin': 'obrero' };
 
@@ -490,12 +490,12 @@ async function checks(ctx) {
       if (street) on.push(k + ' y ' + w[1]);
       if (hole) bad.push(k + ' ' + w + ' is in the hole (x ' + E.OBRA[0] + ' to ' + E.OBRA[1] + ', y ' + E.S0 + ' to 3.8)');
       const dry = inRect(w, E.DRY), wet = inRect(w, E.WET);
-      if (obra1.has(k) && (dry || (wet && k !== 'coqui.cemento'))) bad.push(k + ' ' + w + ' is on the ' + (dry ? 'old dry' : 'wet') + ' square of cement');
+      if (obra1.has(k) && ((dry && k !== 'luis.cemento') || (wet && k !== 'coqui.cemento'))) bad.push(k + ' ' + w + ' is on the ' + (dry ? 'old dry' : 'wet') + ' square of cement');
       if (!obra1.has(k) && (dry || wet)) onFoot.push(k + ' ' + w + ' (' + (dry ? 'dry' : 'wet') + ')');
       if (w[1] > NEAR_END) bad.push(k + ' ' + w + ' is past the near pavement (its end, the park\'s wall, is y ' + NEAR_END + ')');
       if (w[1] >= E.S1 && w[1] < E.S1 + E.K) near.push(k + ' y ' + w[1] + ' is ' + r2(w[1] - E.S1) + ' past the street\'s edge y ' + E.S1 + ', on the kerb stone (the kerb is y ' + E.S1 + ' to ' + r2(E.S1 + E.K) + ')');
     }
-    add('street-people', bad, 'every person and the frog (' + Object.values(S).filter(s => s.kind === 'person' || s.kind === 'frog').length + ' spots) stands off the street (y ' + E.S0 + ' to ' + E.S1 + ') and the hole, except the ones the spec puts on the street: ' + on.join(', ') + '; ' + near.join('; ') + '; the spots of the moments with obra = 1 (' + [...obra1].join(', ') + ') are off the two squares of cement but the frog on the wet one at coqui.cemento', ['somebody stands where the spec does not put him:'].concat(bad.map(b => '  ' + b)));
+    add('street-people', bad, 'every person and the frog (' + Object.values(S).filter(s => s.kind === 'person' || s.kind === 'frog').length + ' spots) stands off the street (y ' + E.S0 + ' to ' + E.S1 + ') and the hole, except the ones the spec puts on the street: ' + on.join(', ') + '; ' + near.join('; ') + '; the spots of the moments with obra = 1 (' + [...obra1].join(', ') + ') are off the two squares of cement but the frog on the wet one at coqui.cemento and Luis, kneeling, on the old dry one at luis.cemento', ['somebody stands where the spec does not put him:'].concat(bad.map(b => '  ' + b)));
     OUTS[OUTS.length - 1].lines.push('       info, not a check: spots of the stories without the dug-up street that lie on the footprint of a cement square (the squares are there only with obra = 1): ' + (onFoot.join(', ') || 'none'));
   }
 
@@ -510,14 +510,14 @@ async function checks(ctx) {
   // 7. (extra) the frog at esquina and at boton_coqui (his two places in story 49; esquina2 is gone) is not covered by a vehicle standing at the stop line, alto_carro or alto_guagua: the pixels of his sprite that a
   //    pixel of the car or the guagua (part auto of the set drawn with them) hides by the depth rule; the pole's own pixels that hide him are reported apart
   {
-    const bad = [], lines = [], zs = { carro: await zOf(BASE_STATE, 'carro@3.5,2.8,i'), guagua: await zOf(BASE_STATE, 'guagua@4.6,4.8,i'), both: await zOf(BASE_STATE, AUTOS_49) };
+    const bad = [], lines = [], zs = { carro: await zOf(BASE_STATE, 'carro@3.5,4.8,i'), guagua: await zOf(BASE_STATE, 'guagua@6.7,4.8,i'), both: await zOf(BASE_STATE, AUTOS_49) };
     const res = {}, auto = (zt, sx, sy, d) => hiddenBy(zt, SIL.coqui.rel, sx, sy, d).by.auto || 0;
     for (const k of ['esquina', 'boton_coqui']) {
       const s = S[k], r = {}, tot = hiddenBy(zs.both, SIL.coqui.rel, s.screen[0], s.screen[1], s.depth);
       for (const n of ['carro', 'guagua', 'both']) r[n] = auto(zs[n], s.screen[0], s.screen[1], s.depth);
       const base = hiddenBy(await zOf(BASE_STATE, ''), SIL.coqui.rel, s.screen[0], s.screen[1], s.depth);
       res[k] = { drawn: tot.tot, car: r.carro, guagua: r.guagua, both: r.both, hiddenByThePole: base.by.semaforo || 0 };
-      lines.push(k + ' ' + s.screen + ' (' + tot.tot + ' px drawn): ' + r.carro + ' covered by the car at alto_carro, ' + r.guagua + ' by the guagua at alto_guagua, ' + r.both + ' by both (apart from these, ' + (base.by.semaforo || 0) + ' hidden by the pole)');
+      lines.push(k + ' ' + s.screen + ' (' + tot.tot + ' px drawn): ' + r.carro + ' covered by the car at alto_carro, ' + r.guagua + ' by the guagua at alto_guagua, ' + r.both + ' by both (apart from these, ' + (base.by.semaforo || 0) + ' hidden by the pole' + (k === 'boton_coqui' ? ': allowed there, he is pressing its button' : '') + ')');
       if (r.both) bad.push(lines[lines.length - 1]);
     }
     add('frog-clear-of-vehicles', bad, 'the frog at esquina and at boton_coqui is not covered by the car at alto_carro or the guagua at alto_guagua: ' + lines.join('; '), ['the frog is covered by what stands at the stop line:'].concat(bad.map(b => '  ' + b)));
@@ -525,6 +525,16 @@ async function checks(ctx) {
     // story 48: the frog at toca_carro, toca_guagua and acera5 against the car and the guagua at the kerb (not in the spec's check: for information)
     const z48 = await zOf(BASE_STATE, AUTOS_48), l48 = ['toca_carro', 'toca_guagua', 'acera5'].map(k => k + ' ' + S[k].screen + ': ' + auto(z48, S[k].screen[0], S[k].screen[1], S[k].depth) + ' px covered by the car at para48_carro or the guagua at para48_guagua');
     OUTS[OUTS.length - 1].lines.push('       info, not a check: story 48: ' + l48.join('; '));
+    // the footprints of the things that drive standing together in a moment (the car 2.2 x 1.1, the guagua 4.4 x 1.3, the middle of the floor at the spot): do they overlap in the world (not a check)
+    const fp = [];
+    for (const m of [1, 2, 3, 4, 5, 6, 7, 8]) {
+      const au = (PVD.moments[m].set.autos || '').split(';').filter(Boolean).map(a => { const [k, r] = a.split('@'), [x, y] = r.split(','), bus = k === 'guagua', L = bus ? 4.4 : 2.2, W = bus ? 1.3 : 1.1; return { k, x: +x, y: +y, L, W }; });
+      for (let i = 0; i < au.length; i++) for (let j = i + 1; j < au.length; j++) {
+        const a = au[i], b = au[j], ox = Math.min(a.x + a.L / 2, b.x + b.L / 2) - Math.max(a.x - a.L / 2, b.x - b.L / 2), oy = Math.min(a.y + a.W / 2, b.y + b.W / 2) - Math.max(a.y - a.W / 2, b.y - b.W / 2);
+        fp.push('moment ' + m + ' ' + a.k + '@' + a.x + ',' + a.y + ' ~ ' + b.k + '@' + b.x + ',' + b.y + ': ' + (ox > 1e-9 && oy > 1e-9 ? 'the floors overlap by ' + r2(ox) + ' in x (and ' + r2(oy) + ' in y)' : 'floors apart (' + r2(-ox) + ' in x' + (oy > 0 ? ', same lane' : '') + ')'));
+      }
+    }
+    OUTS[OUTS.length - 1].lines.push('       info, not a check: things that drive standing together: ' + (fp.join('; ') || 'none'));
     OUTS[OUTS.length - 1].covered = res;
   }
 
