@@ -29,8 +29,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   a host whose waits return at once and whose sound is silent), `PictureError`, and `ScenePictures`, the `PictureSource` of
   page 12, section 3: `of(ref, {width = 196, height = 104, animated = false})`, sizes in PICTURE pixels, no scale.
 - `lib/src/registry.dart` holds `sceneRegistry`: the eleven scene ids in order. El frente's, El balcón's, La sala's, El
-  patio's, El camino's, El campo's, El lago's and El banco's factories make the real scenes (their sheets read first:
-  `loadScene`); the other three are stubs that throw `UnimplementedError('not converted yet')`.
+  patio's, El camino's, El campo's, El lago's, El banco's and La estufa's factories make the real scenes (their sheets read
+  first: `loadScene`); the other two are stubs that throw `UnimplementedError('not converted yet')`.
 
 ## How a converted scene is laid out (order 14, El frente; the pattern for orders 30b to 39b)
 
@@ -53,8 +53,8 @@ One folder per scene (its set, its scene), and the pictures other features ask f
   (order 30b), La sala's five (`sala/luz-1-fotos-000` ..., order 31b) and El patio's fifteen (`patio/hora-dia-door-shut-gate-shut`
   ..., order 32b), El camino's two (`camino/gran-1`, `camino/gran-0`, order 33b), El campo's one with two more frames of it at
   other wind times (`campo/campo`, `campo/campo-t-1.5`, `campo/campo-t-3.25`: the page's `?t=`, its glints, order 34b), El
-  lago's the same way (`lago/lago`, `lago/lago-t-1.5`, `lago/lago-t-3.25`, order 35b) and El banco's seven reached states
-  (`banco/luz-dia-luna-0-carro-abierto` ..., order 36b).
+  lago's the same way (`lago/lago`, `lago/lago-t-1.5`, `lago/lago-t-3.25`, order 35b), El banco's seven reached states
+  (`banco/luz-dia-luna-0-carro-abierto` ..., order 36b) and La estufa's two (`estufa/banco1`, `estufa/banco0`, order 38b).
 - Tests: `set_test` (every state against `coqui/ref/pp/<id>/`), `sprites_test` (the scene's own sprites against
   `coqui/ref/sprites/escenas/<id>/`), `preview_test` (the frame against `<id>-preview.html`), `boxes_test`, `acts_test`,
   `pictures_test`, `picture_cut_test` (the size rule), `plate_test` (a thing drawn on the display, hit at both zooms),
@@ -313,6 +313,45 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   `banco_acts_test`; the preview's rule for moving a recorded W is `test/support/banco_preview_remap.dart` (the scene's own
   `remapW`, the frog's part included).
 
+## The kitchen: La estufa (order 38b), on the kitchen's kit
+
+- **`lib/src/cocina_kit.dart`**: the port of `docs/proyecto/pixel/cocina-kit.js`, call for call, every function (shared by La
+  mesa, La estufa, La nevera and A comer): `K` (one object: a set may change a number for one call and put it back, as
+  estufa-set.html's `base()` does with `K.CD`), `KC`, the wall's frame (`kpt`, `kWallPixel`), `kBox`, `kSolid`, the floor, the
+  walls and the tile band, a window and the outside (`cocinaOutside`, `kView`, `cocinaWindow`), the base and wall cupboards,
+  the shelf, the stove, the hood, the backguard, the shadows, `cocinaBuild` (the floor laid once per engine) and
+  `cocinaOcclusion`. Its pieces against the JavaScript: `test/cocina_kit_test.dart` (16 cases drawn in headless Chrome by
+  `node tool/make_cocina_kit_ref.mjs [--check]`: pix, zb, kinds and ground equal). A function La mesa's designer adds to
+  cocina-kit.js is added here, with a case in both, by adding only: what a function draws never changes.
+- estufa.js is on the kit (`class Estufa extends Escena implements SetScene, SetOverSprites, PairPlaces`). What its sheet has
+  that the earlier ones did not, or uses differently, as estufa-preview.html uses it:
+  - **The set** (`estufa_set.dart`): the run along the back wall (the left counter, the wide stove, the right counter), the
+    splashback, the hood joined to the wall, the shelf, the window's deep recess and sill; `setKey` is `banco1` or `banco0`
+    (W.banco: the stool, drawn after the room is baked, no shadow). `estufaSurfaceAt` (the page's `surfaceAt`: the stool's
+    top, a top of the run, the shelf, the floor) is what the scene asks for the shadows and the front test.
+  - **The family at the window** (moves line 134): drawn unclipped, standing outside; then the set's own pixels of
+    `front.parts.ventana` nearer than their plane (world y `front.parts.ventana.y`) drawn again over what they drew
+    (`Estufa.winA`, `winB`), so they show only through the opening, cut at the chest; their plates on the sill after.
+  - **The stool in front** (`front.parts.banco`, sortY 9999): the sorted list is drawn as it is drawn: each item owns the
+    pixels it drew last (`Estufa.item`); at the stool's entry its own pixels are drawn again where their owner stands behind
+    it (`front`, `planeOf`), never over the frog standing on it. The part tags of each state are recorded at its first bake.
+  - **`moves`** (38): read from the moved source itself (`EstufaPlaces.to(line, src, [pattern])`); every number the floor
+    rule keeps is checked against the sheet's `code` entry of its line (`EstufaPlaces.at(line, v)`: a number the sheet does
+    not name at that line throws).
+  - **`talk`** with each one's height and abuela's head (`talk.heights`, `talk.abuelaHead`); **`shadows`** of whoever stands
+    on the floor (none for the frog on the stool); the kitchen's **hint box**; **`hops`**: ranaA's counts are the old but
+    saco-servir's, walked by no run.
+  - **The old fault is kept** (`faults`): line 122 draws the baby whenever mamá has `p.bebe`, also the cup she is handed.
+  - **Remap**: the pairs' moved positions (the cups and pots on the stove, mamá at the stove, abuela, her plate), the smell's
+    curve (`rect`); a pair's own W (`Estufa.placePair`: the preview's remapW for cual-estufa).
+  - estufa.js's `cosa` is `Estufa.cosaSpr` (the kit's Escena has a `cosa` of its own); its sprite makers `Estufa.cosaMake`.
+    Its pictures' `world` is the surface under (x, y - 1) of their centre: `Sheet.pictureCrop` cuts one row higher than the
+    sheet's `crop`, which is what ScenePictures and the preview cut.
+  - No random draw: the registry's factory takes no source.
+  - Files: `lib/src/estufa/estufa_set.dart`, `estufa_places.dart`, `estufa.dart`. Tests: `estufa_set_test`,
+    `estufa_sprites_test`, `estufa_preview_test`, `estufa_boxes_test`, `estufa_pictures_test`, `estufa_acts_test`; the
+    preview's rule for moving a recorded W is `test/support/estufa_preview_remap.dart`.
+
 ## Pictures: by name, the size rule, old pictures until converted
 
 `ScenePictures` (`lib/src/pictures.dart`) is the `PictureSource`. A `PictureRef` carries its scene, its state (`set`), and its
@@ -362,16 +401,17 @@ has that the earlier ones did not, or uses differently, and how the port uses it
 ```
 dart run tool/make_sheets.dart [--check]          the sheets as assets (and their fixture for browser tests)
 dart run tool/make_old_pictures.dart [--check]    the old pictures of the scenes not converted yet, as assets (and their fixtures)
-dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/ and .../banco/ for the browser set tests
-dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/ and .../banco/
-node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago|banco] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
+dart run tool/make_set_fixture.dart [--check]     the hashes of coqui/ref/pp/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/ and .../estufa/ for the browser set tests
+node tool/make_cocina_kit_ref.mjs [--check]       the kitchen's kit drawn by cocina-kit.js, for test/cocina_kit_test.dart
+dart run tool/make_sprite_fixture.dart [--check]  the hashes of coqui/ref/sprites/escenas/frente/, .../balcon/, .../sala/, .../patio/, .../camino/, .../campo/, .../lago/, .../banco/ and .../estufa/
+node tool/preview_shots.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|estufa] --states DIR --out DIR [--fixture]   <scene>-preview.html's pictures (DIR from
                                                   node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR, for each of
                                                   the scene's stories)
-COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco] flutter test tool/compare_all_test.dart   every picture of
+COQUI_PREVIEW_DIR=DIR COQUI_REPORT_DIR=DIR [COQUI_SCENE=balcon|sala|patio|camino|campo|lago|banco|estufa] flutter test tool/compare_all_test.dart   every picture of
                                                   preview_shots.mjs against the Dart frame
 COQUI_OUT=DIR COQUI_CASES=FILE flutter test tool/make_pictures_test.dart   the pictures for fresh readers
 COQUI_OUT=DIR flutter test tool/make_cells_test.dart   the 24 review pictures and the 9 level cells of El frente, 4x, and a contact sheet of the cells
-flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco]   bake times
+flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart; node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo|lago|banco|estufa]   bake times
                                                   (each state's first bake, then again on the same engine; for a set with glints on its
                                                   water, what drawing them costs a frame)
 ```
