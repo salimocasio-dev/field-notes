@@ -69,14 +69,14 @@ comunes={"si_muy_bien":N("¡Sí! ¡Muy bien!"),"yo_coqui":T("¡Coquí!"),"p_n_lu
 # ---------------- 45. ¿Cuánto es? ----------------
 # The register's window and the two keys: the price is once, doce or trece (drawn afresh each round); the other key is the number beside it (10 to 14, drawn).
 c=dict(comunes)
-c.update({"c45_caja":N("Esta es la caja de don Pepe."),"c45_pepe_cuenta":PE("Uno, dos, tres. Tres dólares para ti, Coquí."),"c45_cq_gracias":T("¡Gracias, don Pepe!"),
- "c45_luis_cuanto":L("¿Cuánto es?"),"c45_donde_11":N("¿Dónde está el once?"),"c45_luis_paga":N("Luis paga once dólares."),
+c.update({"c45_caja":N("Esta es la caja de don Pepe."),"c45_pepe_cuenta":PE("Uno, dos, tres. Tres pesos para ti, Coquí."),"c45_cq_gracias":T("¡Gracias, don Pepe!"),
+ "c45_luis_cuanto":L("¿Cuánto es?"),"c45_donde_11":N("¿Dónde está el once?"),"c45_luis_paga":N("Luis paga once pesos."),
  "c45_senor_hola":SE("¡Hola, Coquí!"),"c45_cq_buenas":T("¡Buenas tardes, señor!"),"c45_senor_cuanto":SE("¿Cuánto es?"),"c45_toca_12":N("Toca el doce."),
  "c45_senora_cuanto":SA("¿Cuánto es?"),"c45_y_13":N("¿Y el trece?"),"c45_pepe_aviso":PE("¡Ay! Coquí, ¡la caja, por favor!"),
- "c45_toma3":PE("Toma, Coquí. Tres dólares."),"c45_toma2":PE("Toma, Coquí. Dos dólares."),"c45_toma1":PE("Toma, Coquí. Un dólar."),"c45_hasta":PE("¡Hasta mañana, Coquí!")})
+ "c45_toma3":PE("Toma, Coquí. Tres pesos."),"c45_toma2":PE("Toma, Coquí. Dos pesos."),"c45_toma1":PE("Toma, Coquí. Un peso."),"c45_hasta":PE("¡Hasta mañana, Coquí!")})
 for n in ("11","12","13"):
     w=PAL[n]
-    c["c45_pepe_"+n]=PE("Son %s dólares."%w); c["c45_senora_paga_"+n]=N("La señora paga %s dólares."%w); c["c45_senor_paga_"+n]=N("El señor paga %s dólares."%w); c["c45_no_"+n]=N("No, Coquí. Mira. Son %s dólares."%w)
+    c["c45_pepe_"+n]=PE("Son %s pesos."%w); c["c45_senora_paga_"+n]=N("La señora paga %s pesos."%w); c["c45_senor_paga_"+n]=N("El señor paga %s pesos."%w); c["c45_no_"+n]=N("No, Coquí. Mira. Son %s pesos."%w)
     DIN.update(["c45_pepe_"+n,"c45_senora_paga_"+n,"c45_senor_paga_"+n,"c45_no_"+n])
 def ronda45(s,q):
     # one round: a customer asks, don Pepe reads a tag we cannot see, the frog rings it on one of two keys
@@ -92,8 +92,8 @@ def ronda45(s,q):
       "wrong":[act("suena",n="$"+d),act("etiqueta",ver=1),gesto(q,"no")]+X+["c45_no_$"+p,
                {"if":"%s=up"%e,"then":[act("clip",quita=1,a="cliente")],"else":[act("clip",quita=1,a="gaveta")]}]}]
 s45={"id":"cuanto-es","title":"¿Cuánto es?","place":"El colmado","scene":"caja","next":"caro-y-barato",
- "goal":"Ring each price on the register's keys, so the three dollars under the clip are still there when don Pepe pays his helper.","stake":{"thing":"dólar","steps":2},"dots":7,"bien":"si_muy_bien",
- "focus_words":["¿cuánto es?","dólar","paga","once","doce","trece"],"formas_foco":{"dólar":["dólares"]},
+ "goal":"Ring each price on the register's keys, so the three dollars under the clip are still there when don Pepe pays his helper.","stake":{"thing":"peso","steps":2},"dots":7,"bien":"si_muy_bien",
+ "focus_words":["¿cuánto es?","peso","paga","once","doce","trece"],"formas_foco":{"peso":["pesos"]},
  "back_again":["diez","tres","colmado","compra","buenas tardes","señor","señora","gracias","aquí tiene","olla","arroz"],
  "also_heard":[],"names":{"luis":"p_n_luis","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"11":"once","12":"doce","13":"trece"},"clips":c,
  "beats":[act("ir",a="repisa"),{"wait":500},
@@ -122,17 +122,17 @@ json.dump(s45,open("cuentos/cuanto-es.json","w",encoding="utf-8"),ensure_ascii=F
 # ---------------- 46. Caro y barato ----------------
 # Two things of one kind in front of the frog, each with its tag towards us: the prices are two of 14, 15, 16 (drawn), the dear one is the larger or finer. Round A is said by caro or barato, round B by the price.
 c=dict(comunes)
-c.update({"c46_compra":N("Coquí compra una taza."),"c46_pepe_cara":PE("Esta taza es cara: dieciséis dólares."),"c46_pepe_barata":PE("Y esta taza es barata: catorce dólares."),
- "c46_donde_taza":N("¿Dónde está la taza barata?"),"c46_cq_paga":N("Coquí paga catorce dólares."),"c46_pepe_quien":PE("¿Para quién es la taza?"),"c46_cq_abuela":T("Es para abuela."),
- "c46_pepe_ollas":PE("La olla grande es cara: dieciséis dólares. La olla pequeña es barata: quince dólares."),"c46_senora_olla":SA("Quiero la olla cara, por favor."),"c46_toca_olla":N("Toca la olla cara."),
- "c46_senora_paga16":N("La señora paga dieciséis dólares."),"c46_luis_cuanto":L("¿Cuánto es?"),"c46_pepe_platos":PE("Este, catorce dólares. Y este, quince dólares."),
- "c46_luis_plato":L("Quiero el plato de quince dólares."),"c46_donde_plato":N("¿Dónde está el plato de quince dólares?"),"c46_luis_paga15":N("Luis paga quince dólares."),
+c.update({"c46_compra":N("Coquí compra una taza."),"c46_pepe_cara":PE("Esta taza es cara: dieciséis pesos."),"c46_pepe_barata":PE("Y esta taza es barata: catorce pesos."),
+ "c46_donde_taza":N("¿Dónde está la taza barata?"),"c46_cq_paga":N("Coquí paga catorce pesos."),"c46_pepe_quien":PE("¿Para quién es la taza?"),"c46_cq_abuela":T("Es para abuela."),
+ "c46_pepe_ollas":PE("La olla grande es cara: dieciséis pesos. La olla pequeña es barata: quince pesos."),"c46_senora_olla":SA("Quiero la olla cara, por favor."),"c46_toca_olla":N("Toca la olla cara."),
+ "c46_senora_paga16":N("La señora paga dieciséis pesos."),"c46_luis_cuanto":L("¿Cuánto es?"),"c46_pepe_platos":PE("Este, catorce pesos. Y este, quince pesos."),
+ "c46_luis_plato":L("Quiero el plato de quince pesos."),"c46_donde_plato":N("¿Dónde está el plato de quince pesos?"),"c46_luis_paga15":N("Luis paga quince pesos."),
  "c46_luis_gracias_adios":L("¡Gracias, Coquí! ¡Adiós!"),"c46_cq_adios_luis":T("¡Adiós, Luis!"),"c46_pepe_rapido":PE("¡Rápido, Coquí!"),
  "c46_pepe_abuela":PE("Y esto es para tu abuela."),"c46_no_hay_papel":N("No hay más papel."),"c46_cq_mira":T("¡Abuela! ¡Mira!")})
 for w in ("caro","barato"):
     c["c46_vaso_"+w]=SE("Quiero el vaso %s, por favor."%w); c["c46_no_vaso_"+w]=N("No, Coquí. Mira. Este vaso es %s."%w); DIN.update(["c46_vaso_"+w,"c46_no_vaso_"+w])
 for n in ("14","15","16"):
-    c["c46_taza_"+n]=SA("Quiero la taza de %s dólares, por favor."%PAL[n]); c["c46_no_taza_"+n]=N("No, Coquí. Mira. Esta taza es de %s dólares."%PAL[n]); DIN.update(["c46_taza_"+n,"c46_no_taza_"+n])
+    c["c46_taza_"+n]=SA("Quiero la taza de %s pesos, por favor."%PAL[n]); c["c46_no_taza_"+n]=N("No, Coquí. Mira. Esta taza es de %s pesos."%PAL[n]); DIN.update(["c46_taza_"+n,"c46_no_taza_"+n])
 def par46(s,kind):
     # the two prices (two of 14, 15, 16), which of the two spots holds the dear one, and what is on each spot
     q,l,h,k,e,u,v="q"+s,"l"+s,"h"+s,"c"+s,"e"+s,"u"+s,"v"+s
@@ -148,7 +148,7 @@ def decide46(s,kind,quien,quien_pre,tests,line,noline,ka,pa):
 s46={"id":"caro-y-barato","title":"Caro y barato","place":"El colmado","scene":"caja","next":"el-cambio",
  "goal":"Buy abuela a cup, then push to don Pepe the one each customer asks for: every wrong one he wraps tears a sheet of the gift paper that abuela's cup needs.","stake":{"thing":"papel","steps":2},"dots":7,"bien":"si_muy_bien",
  "focus_words":["caro","barato","catorce","quince","dieciséis"],"formas_foco":{"caro":["cara"],"barato":["barata"]},
- "back_again":["taza","olla","plato","vaso","dólar","¿cuánto es?","paga","quiero","compra","once","doce","trece","grande","pequeño","abuela","por favor","gracias","adiós"],
+ "back_again":["taza","olla","plato","vaso","peso","¿cuánto es?","paga","quiero","compra","once","doce","trece","grande","pequeño","abuela","por favor","gracias","adiós"],
  "also_heard":["papel"],"names":{"luis":"p_n_luis","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"14":"catorce","15":"quince","16":"dieciséis"},"clips":c,
  "beats":[act("papel",n=5),{"wait":500},
   # 1: the two cups, caro and barato said (taught), the signed ask on the cheap one, the frog pays
@@ -185,17 +185,17 @@ json.dump(s46,open("cuentos/caro-y-barato.json","w",encoding="utf-8"),ensure_asc
 # Every customer pays with one twenty. The price is diecisiete or dieciocho (drawn afresh each round); the keys are 17 and 18 for seventeen, 18 and 17 or 18 and 19 for eighteen (never sixteen beside seventeen).
 c=dict(comunes); c["p_n_carmen"]=N("Esta es Carmen.")
 c.update({"c47_aqui_ninos":N("Aquí están los niños."),"c47_pepe_quieren":PE("¿Qué quieren los niños?"),"c47_cq_bola":T("¡Una bola!"),"c47_aqui_chavos":N("Aquí están los chavos de los niños. Necesitan más chavos."),
- "c47_luis_cuanto":L("¿Cuánto es?"),"c47_donde_17":N("¿Dónde está el diecisiete?"),"c47_luis_paga17":N("Luis paga diecisiete dólares con un billete de veinte."),
+ "c47_luis_cuanto":L("¿Cuánto es?"),"c47_donde_17":N("¿Dónde está el diecisiete?"),"c47_luis_paga17":N("Luis paga diecisiete pesos con un billete de veinte."),
  "c47_pepe_cambio_luis":PE("Aquí tienes tu cambio: dieciocho, diecinueve y veinte."),"c47_toca_18":N("Toca el dieciocho."),"c47_pepe_cambio_carmen":PE("Aquí tienes tu cambio: diecinueve y veinte."),
  "c47_carmen_quien":CA("¿Para quién es el cambio?"),"c47_cq_ninos":T("¡Para los niños!"),"c47_pepe_aviso":PE("Coquí, ¡la caja, por favor!"),
  "c47_mas_chavos":N("Más chavos para la bola."),"c47_vengan":PE("¡Vengan, niños!"),"c47_compran":N("Los niños compran la bola."),"c47_cq_adios":T("¡Adiós, niños!"),
  "c47_faltan":N("Faltan chavos para la bola. ¡Mañana!"),"c47_pepe_gracias":PE("¡Gracias, Coquí! ¡Hasta mañana!")})
 for n,cam in (("17","dieciocho, diecinueve y veinte"),("18","diecinueve y veinte")):
     w=PAL[n]
-    c["c47_pepe_"+n]=PE("Son %s dólares."%w); c["c47_cambio_"+n]=PE("Aquí tiene su cambio: %s."%cam); c["c47_no_"+n]=N("No, Coquí. Mira. Son %s dólares."%w)
+    c["c47_pepe_"+n]=PE("Son %s pesos."%w); c["c47_cambio_"+n]=PE("Aquí tiene su cambio: %s."%cam); c["c47_no_"+n]=N("No, Coquí. Mira. Son %s pesos."%w)
     DIN.update(["c47_pepe_"+n,"c47_cambio_"+n,"c47_no_"+n])
 for q,SS in (("senora",SA),("senor",SE)):
-    c["c47_%s_cuanto"%q]=SS("¿Cuánto es?"); c["c47_%s_paga20"%q]=N(("La señora" if q=="senora" else "El señor")+" paga con veinte dólares.")
+    c["c47_%s_cuanto"%q]=SS("¿Cuánto es?"); c["c47_%s_paga20"%q]=N(("La señora" if q=="senora" else "El señor")+" paga con veinte pesos.")
 def ronda47(s,q):
     p,e,d,k,o,u,v="p"+s,"e"+s,"d"+s,"k"+s,"o"+s,"u"+s,"v"+s
     return [{"draw":p,"options":["17","18"]},{"draw":e,"options":["17","19"]},{"calc":d,"cond":"%s=17"%p,"then":"18","else":"$"+e},   # the other key: 18 for seventeen; 17 or 19 for eighteen
@@ -209,7 +209,7 @@ def ronda47(s,q):
       "wrong":[act("suena",n="$"+d),act("etiqueta",ver=1),act("cuenta47",ok=0)]+X+["c47_no_$"+p]}]
 s47={"id":"el-cambio","title":"El cambio","place":"El colmado","scene":"caja",
  "goal":"Ring each price on the register's keys, so the change goes into the jar and the children can buy the ball.","stake":{"thing":"cambio","steps":2},"dots":6,"bien":"si_muy_bien",
- "focus_words":["cambio","chavos","diecisiete","dieciocho","diecinueve","veinte"],"formas_foco":{},"back_again":["dólar","¿cuánto es?","paga","bola","niño","quiere","dieciséis","compra","para","aquí tiene","mañana"],
+ "focus_words":["cambio","chavos","diecisiete","dieciocho","diecinueve","veinte"],"formas_foco":{},"back_again":["peso","¿cuánto es?","paga","bola","niño","quiere","dieciséis","compra","para","aquí tiene","mañana"],
  "also_heard":["billete","faltan","mañana"],"names":{"luis":"p_n_luis","carmen":"p_n_carmen","senor":"b_n_senor","senora":"b_n_senora","coqui":"yo_coqui"},"palabras":{"17":"diecisiete","18":"dieciocho"},"clips":c,
  "beats":[{"wait":500},act("frasco",n=0),
   # 1: the children at the window; the ball and the jar twinkle; a speaking turn

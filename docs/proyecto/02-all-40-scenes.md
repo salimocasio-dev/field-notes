@@ -34,7 +34,7 @@ Buying things at the corner shop. The call: ask for three things, ask the price,
 - **El mostrador (the counter).** You walk in and ask. colmado, buenos días, buenas tardes, necesito, esto, eso, ¿tiene…?, aquí tiene, bolsa, compra, vende, ¿algo más?
 - **Los estantes (the shelves).** Counting things. cuatro, cinco, seis, siete, ocho, nueve, diez, lata, botella, caja, ¿cuántos?, otro
 - **Las frutas (the produce).** Picking what looks good. tomate, cebolla, papa, plátano, aguacate, piña, limón, libra, medio, fresco, bueno, malo
-- **La caja (the register).** Paying. the numbers 11 to 20, dólar, chavos, ¿cuánto es?, caro, barato, paga, cambio
+- **La caja (the register).** Paying. the numbers 11 to 20, peso, chavos, ¿cuánto es?, caro, barato, paga, cambio
 
 ## 5. La calle
 

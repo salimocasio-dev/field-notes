@@ -2,7 +2,7 @@
 
 Place 4, El colmado. Scene 4 of 4 (scene id `caja`). Stories 45 to 47. He has finished stories 1 to 44.
 
-Scene words (page 02): the numbers 11 to 20 (once, doce, trece, catorce, quince, dieciséis, diecisiete, dieciocho, diecinueve, veinte), dólar, chavos, ¿cuánto es?, caro, barato, paga, cambio.
+Scene words (page 02): the numbers 11 to 20 (once, doce, trece, catorce, quince, dieciséis, diecisiete, dieciocho, diecinueve, veinte), peso, chavos, ¿cuánto es?, caro, barato, paga, cambio.
 
 The picture: the till end of don Pepe's counter, which is its left end, by the street door. One view, `wide`: a big old cash register with a little window on top that shows the amount in numerals, a bell, a drawer of dollar bills and coins; the counter running right from it; don Pepe behind it; customers in front; on the left wall the shop window, with a sill inside where the ball stands and the street beyond, and the street door. The frog sits on the register's side shelf, where two big keys stand out: his two answers. A key shows a numeral.
 
@@ -16,17 +16,17 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 - **Goal he can see:** three dollar bills under a clip on the side of the register, with a small drawing of the frog on the clip. Don Pepe pays his helper at the end of the day.
 - **At stake:** the frog's three dollars. When the register rings the wrong price, don Pepe makes it right with one of them: back to the customer if it asked too much, into the drawer if it asked too little.
-- **New words:** ¿cuánto es?, dólar, paga, once, doce, trece.
+- **New words:** ¿cuánto es?, peso, paga, once, doce, trece.
 - **Back again:** diez, tres, colmado, compra, buenas tardes, señor, señora, gracias, aquí tiene, olla, arroz.
 
 **Start:** afternoon. Don Pepe at the register; the frog hops onto its side shelf. Luis in front of the counter.
 
 **The opening** (big sign)
 
-1. The drawer slides open with a ring: bills and coins. NARR: "Esta es la caja de don Pepe." Don Pepe counts three bills under the clip. NARR: "Don Pepe dice: Uno, dos, tres. Tres dólares para ti, Coquí." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, don Pepe!"
-2. Luis sets a box of cans on the counter; its tag (11) faces us. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son once dólares." Ask (signed, the key 11; the other key is 10): "¿Dónde está el once?" He touches it: the bell rings, the window shows 11. Luis counts bills into don Pepe's hand. NARR: "Luis paga once dólares."
-3. The bell at the door: the señor comes in. NARR: "El señor dice: ¡Hola, Coquí!" COQUÍ [TURN: buenas tardes (buenas tardes), señor (señor, senor)]: "¡Buenas tardes, señor!" He sets down a pot; tag 12. NARR: "El señor dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son doce dólares." Ask (signed, the key 12; the other is 11): "Toca el doce." He touches it: ring, 12. NARR: "El señor paga doce dólares."
-4. The señora sets down a bag of rice; tag 13. NARR: "La señora dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son trece dólares." Ask (signed, the key 13; the other is 12): "¿Y el trece?" He touches it: ring, 13. NARR: "La señora paga trece dólares."
+1. The drawer slides open with a ring: bills and coins. NARR: "Esta es la caja de don Pepe." Don Pepe counts three bills under the clip. NARR: "Don Pepe dice: Uno, dos, tres. Tres pesos para ti, Coquí." COQUÍ [TURN: gracias (gracias)]: "¡Gracias, don Pepe!"
+2. Luis sets a box of cans on the counter; its tag (11) faces us. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son once pesos." Ask (signed, the key 11; the other key is 10): "¿Dónde está el once?" He touches it: the bell rings, the window shows 11. Luis counts bills into don Pepe's hand. NARR: "Luis paga once pesos."
+3. The bell at the door: the señor comes in. NARR: "El señor dice: ¡Hola, Coquí!" COQUÍ [TURN: buenas tardes (buenas tardes), señor (señor, senor)]: "¡Buenas tardes, señor!" He sets down a pot; tag 12. NARR: "El señor dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son doce pesos." Ask (signed, the key 12; the other is 11): "Toca el doce." He touches it: ring, 12. NARR: "El señor paga doce pesos."
+4. The señora sets down a bag of rice; tag 13. NARR: "La señora dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son trece pesos." Ask (signed, the key 13; the other is 12): "¿Y el trece?" He touches it: ring, 13. NARR: "La señora paga trece pesos."
 
 **The turn**
 
@@ -34,20 +34,20 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The game.** Each round a customer asks, don Pepe reads a tag we cannot see, and the frog rings it. The price is once, doce or trece, drawn afresh each round. The two keys are the price and one number beside it (10 to 14, drawn).
 
-6. **Decision A, touch a key (two keys; tests the number said).** NARR: "La señora dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son once dólares." (Or doce, or trece.)
-   - Right: ring; the window shows the price; don Pepe turns the tag round: the same. She pays. NARR: "La señora paga once dólares." A star.
-   - Wrong: ring; the window shows the wrong number; don Pepe turns the tag round and she looks from one to the other and shakes her head. A cross. NARR: "No, Coquí. Mira. Son once dólares." Don Pepe takes one bill from under the frog's clip: he gives it back to her, or drops it into the drawer. The sign is on the right key; he touches it: ring. She pays.
+6. **Decision A, touch a key (two keys; tests the number said).** NARR: "La señora dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son once pesos." (Or doce, or trece.)
+   - Right: ring; the window shows the price; don Pepe turns the tag round: the same. She pays. NARR: "La señora paga once pesos." A star.
+   - Wrong: ring; the window shows the wrong number; don Pepe turns the tag round and she looks from one to the other and shakes her head. A cross. NARR: "No, Coquí. Mira. Son once pesos." Don Pepe takes one bill from under the frog's clip: he gives it back to her, or drops it into the drawer. The sign is on the right key; he touches it: ring. She pays.
 7. **Decision B, drawn again: the señor.** As A.
 
 **The ending**
 
 8. The shop is empty. Don Pepe takes what is left from under the clip.
-    - Three: NARR: "Don Pepe dice: Toma, Coquí. Tres dólares." The frog drops them into his jar. Stars and a heart.
-    - Two: NARR: "Don Pepe dice: Toma, Coquí. Dos dólares." Into the jar.
-    - One: NARR: "Don Pepe dice: Toma, Coquí. Un dólar." Into the jar.
+    - Three: NARR: "Don Pepe dice: Toma, Coquí. Tres pesos." The frog drops them into his jar. Stars and a heart.
+    - Two: NARR: "Don Pepe dice: Toma, Coquí. Dos pesos." Into the jar.
+    - One: NARR: "Don Pepe dice: Toma, Coquí. Un peso." Into the jar.
 9. NARR: "Don Pepe dice: ¡Hasta mañana, Coquí!" The frog waves, his jar under his arm.
 
-**Fewest hearings before a word can cost:** once 3 (step 2), doce 3 (step 3), trece 3 (step 4). Not deciding: ¿cuánto es? 3 before the game; dólar 7 or more; paga 3.
+**Fewest hearings before a word can cost:** once 3 (step 2), doce 3 (step 3), trece 3 (step 4). Not deciding: ¿cuánto es? 3 before the game; peso 7 or more; paga 3.
 **A miss is filed under:** the number that was the price.
 **Chance without the Spanish:** one in two, in each round on its own: the tag's back is to us until he has answered.
 **Speaking turns:** two (steps 1, 3): gracias; buenas tardes and señor.
@@ -59,16 +59,16 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **Goal he can see:** on the counter, two cups; over the frog, a thought of abuela holding a cup. On the paper holder beside the register, five bright sheets of gift paper. Don Pepe wraps what people buy.
 - **At stake:** the sheets of paper (four, once the game begins). Don Pepe wraps at once whatever is pushed along the counter to him: paper, string, a bow. A thing wrapped that was not the one asked for is unwrapped again, and its sheet is torn. Two customers need a sheet each, abuela's cup needs one, and one is over.
 - **New words:** caro, barato, catorce, quince, dieciséis.
-- **Back again:** taza, olla, plato, vaso, dólar, ¿cuánto es?, paga, quiero, compra, once to trece, grande, pequeño, abuela, por favor, gracias, adiós.
+- **Back again:** taza, olla, plato, vaso, peso, ¿cuánto es?, paga, quiero, compra, once to trece, grande, pequeño, abuela, por favor, gracias, adiós.
 
 **Start:** the frog on the counter with his jar of dollars (from story 45). Two cups stand in front of him: a large one with a gold rim, tag 16; a small one with a flower, tag 14.
 
 **The opening** (big sign)
 
-1. NARR: "Coquí compra una taza." Don Pepe lays a hand on the large cup. NARR: "Don Pepe dice: Esta taza es cara: dieciséis dólares." On the small one. NARR: "Don Pepe dice: Y esta taza es barata: catorce dólares." The frog looks into his jar: not many bills. Ask (signed, the small cup): "¿Dónde está la taza barata?" He touches it. The frog pays. NARR: "Coquí paga catorce dólares."
+1. NARR: "Coquí compra una taza." Don Pepe lays a hand on the large cup. NARR: "Don Pepe dice: Esta taza es cara: dieciséis pesos." On the small one. NARR: "Don Pepe dice: Y esta taza es barata: catorce pesos." The frog looks into his jar: not many bills. Ask (signed, the small cup): "¿Dónde está la taza barata?" He touches it. The frog pays. NARR: "Coquí paga catorce pesos."
 2. NARR: "Don Pepe dice: ¿Para quién es la taza?" COQUÍ [TURN: abuela (abuela)]: "Es para abuela." Don Pepe points at the gift paper and stands the cup beside it, for later.
-3. The señora comes in. Two pots on the counter: a large one, tag 16; a small one, tag 15. NARR: "Don Pepe dice: La olla grande es cara: dieciséis dólares. La olla pequeña es barata: quince dólares." NARR: "La señora dice: Quiero la olla cara, por favor." Ask (signed, the large pot): "Toca la olla cara." He touches it: the frog pushes it along to don Pepe, who wraps it in a blink: paper, string, a bow. Four sheets are left; don Pepe taps the holder. NARR: "La señora paga dieciséis dólares."
-4. Luis comes in with a bag of his own. Two plates on the counter: tag 14 and tag 15. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Este, catorce dólares. Y este, quince dólares." NARR: "Luis dice: Quiero el plato de quince dólares." Ask (signed, the plate with tag 15): "¿Dónde está el plato de quince dólares?" He touches it. NARR: "Luis paga quince dólares." Luis slips it into his own bag: no paper. NARR: "Luis dice: ¡Gracias, Coquí! ¡Adiós!" COQUÍ [TURN: adiós (adiós, adios)]: "¡Adiós, Luis!"
+3. The señora comes in. Two pots on the counter: a large one, tag 16; a small one, tag 15. NARR: "Don Pepe dice: La olla grande es cara: dieciséis pesos. La olla pequeña es barata: quince pesos." NARR: "La señora dice: Quiero la olla cara, por favor." Ask (signed, the large pot): "Toca la olla cara." He touches it: the frog pushes it along to don Pepe, who wraps it in a blink: paper, string, a bow. Four sheets are left; don Pepe taps the holder. NARR: "La señora paga dieciséis pesos."
+4. Luis comes in with a bag of his own. Two plates on the counter: tag 14 and tag 15. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Este, catorce pesos. Y este, quince pesos." NARR: "Luis dice: Quiero el plato de quince pesos." Ask (signed, the plate with tag 15): "¿Dónde está el plato de quince pesos?" He touches it. NARR: "Luis paga quince pesos." Luis slips it into his own bag: no paper. NARR: "Luis dice: ¡Gracias, Coquí! ¡Adiós!" COQUÍ [TURN: adiós (adiós, adios)]: "¡Adiós, Luis!"
 
 **The turn**
 
@@ -79,8 +79,8 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 6. **Decision A, touch a thing (two glasses; tests caro or barato).** NARR: "El señor dice: Quiero el vaso barato, por favor." or NARR: "El señor dice: Quiero el vaso caro, por favor."
    - Right: the frog pushes it along; don Pepe wraps it. He pays. A star.
    - Wrong: the frog pushes the other one; it is wrapped before anybody can speak; the señor shakes his head. A cross. NARR: "No, Coquí. Mira. Este vaso es caro." (Or: "…es barato.") Don Pepe unwraps it: the sheet tears. One sheet gone. The sign is on the right glass; he touches it; it is wrapped in a new sheet.
-7. **Decision B, touch a thing (two cups; tests the number).** NARR: "La señora dice: Quiero la taza de quince dólares, por favor." (Or catorce, or dieciséis: the price of one of the two.)
-   - Right and wrong as in A. NARR (wrong): "No, Coquí. Mira. Esta taza es de catorce dólares." (the number on the one he pushed)
+7. **Decision B, touch a thing (two cups; tests the number).** NARR: "La señora dice: Quiero la taza de quince pesos, por favor." (Or catorce, or dieciséis: the price of one of the two.)
+   - Right and wrong as in A. NARR (wrong): "No, Coquí. Mira. Esta taza es de catorce pesos." (the number on the one he pushed)
 
 **The ending**
 
@@ -102,15 +102,15 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **Goal he can see:** a big glass jar on the counter with a drawing of a ball taped to it, some money in it, and two lines marked on the glass above the money. In the shop window stands the ball itself. Three children look at it from the street.
 - **At stake:** the change for the jar. A customer whose change is right drops it into the jar, and it rises to the next line. A customer who had to wait while it was counted twice puts it in her purse.
 - **New words:** cambio, chavos, diecisiete, dieciocho, diecinueve, veinte.
-- **Back again:** dólar, ¿cuánto es?, paga, bola, niño, quiere, dieciséis, compra, para, aquí tiene, mañana (heard).
+- **Back again:** peso, ¿cuánto es?, paga, bola, niño, quiere, dieciséis, compra, para, aquí tiene, mañana (heard).
 
 **Start:** don Pepe at the register; the frog on its side shelf; Luis in front with a pot. The children at the window.
 
 **The opening** (big sign)
 
 1. The children wave at the window; the ball twinkles. NARR: "Aquí están los niños." NARR: "Don Pepe dice: ¿Qué quieren los niños?" COQUÍ [TURN: bola (bola)]: "¡Una bola!" The jar twinkles. NARR: "Aquí están los chavos de los niños. Necesitan más chavos."
-2. Luis's pot; tag 17. He holds out one bill with 20 on it. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son diecisiete dólares." Ask (signed, the key 17; the other is 18): "¿Dónde está el diecisiete?" He touches it: ring, 17. NARR: "Luis paga diecisiete dólares con un billete de veinte." **(billete: heard; the picture carries it)** Don Pepe counts the change up into Luis's hand, a bill at a time. NARR: "Don Pepe dice: Aquí tienes tu cambio: dieciocho, diecinueve y veinte." Luis points at the children and drops the three bills into the jar: it rises a little, still under the first line.
-3. Carmen; a pan, tag 18; a twenty. NARR: "Don Pepe dice: Son dieciocho dólares." Ask (signed, the key 18; the other is 19): "Toca el dieciocho." He touches it: ring, 18. NARR: "Don Pepe dice: Aquí tienes tu cambio: diecinueve y veinte." Carmen holds the two bills and looks at the jar. NARR: "Carmen dice: ¿Para quién es el cambio?" COQUÍ [TURN: niño (niños, ninos)]: "¡Para los niños!" She drops them in: the money stands just under the first line.
+2. Luis's pot; tag 17. He holds out one bill with 20 on it. NARR: "Luis dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son diecisiete pesos." Ask (signed, the key 17; the other is 18): "¿Dónde está el diecisiete?" He touches it: ring, 17. NARR: "Luis paga diecisiete pesos con un billete de veinte." **(billete: heard; the picture carries it)** Don Pepe counts the change up into Luis's hand, a bill at a time. NARR: "Don Pepe dice: Aquí tienes tu cambio: dieciocho, diecinueve y veinte." Luis points at the children and drops the three bills into the jar: it rises a little, still under the first line.
+3. Carmen; a pan, tag 18; a twenty. NARR: "Don Pepe dice: Son dieciocho pesos." Ask (signed, the key 18; the other is 19): "Toca el dieciocho." He touches it: ring, 18. NARR: "Don Pepe dice: Aquí tienes tu cambio: diecinueve y veinte." Carmen holds the two bills and looks at the jar. NARR: "Carmen dice: ¿Para quién es el cambio?" COQUÍ [TURN: niño (niños, ninos)]: "¡Para los niños!" She drops them in: the money stands just under the first line.
 
 **The turn**
 
@@ -118,9 +118,9 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The game.** Each round a customer pays with a twenty. The price is diecisiete or dieciocho, drawn afresh each round. The two keys are 17 and 18 for seventeen; 18 and 17, or 18 and 19, for eighteen (drawn). Sixteen is never a key beside seventeen: the two are too close for a beginner's ear.
 
-5. **Decision A, touch a key (two keys; tests diecisiete or dieciocho).** NARR: "La señora dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son diecisiete dólares." (Or: "Son dieciocho dólares.") She holds out her twenty.
-   - Right: ring; the window and the tag agree. NARR: "La señora paga con veinte dólares." NARR: "Don Pepe dice: Aquí tiene su cambio: dieciocho, diecinueve y veinte." (Or: "…diecinueve y veinte.") She drops it into the jar: it rises to the next line. NARR: "Más chavos para la bola." A star.
-   - Wrong: ring; the window and the tag do not agree; don Pepe counts the change into her hand, she counts it herself and shakes her head. A cross. NARR: "No, Coquí. Mira. Son diecisiete dólares." The sign is on the right key; he touches it: ring. Don Pepe counts the change again, right this time; she puts it in her purse and goes.
+5. **Decision A, touch a key (two keys; tests diecisiete or dieciocho).** NARR: "La señora dice: ¿Cuánto es?" NARR: "Don Pepe dice: Son diecisiete pesos." (Or: "Son dieciocho pesos.") She holds out her twenty.
+   - Right: ring; the window and the tag agree. NARR: "La señora paga con veinte pesos." NARR: "Don Pepe dice: Aquí tiene su cambio: dieciocho, diecinueve y veinte." (Or: "…diecinueve y veinte.") She drops it into the jar: it rises to the next line. NARR: "Más chavos para la bola." A star.
+   - Wrong: ring; the window and the tag do not agree; don Pepe counts the change into her hand, she counts it herself and shakes her head. A cross. NARR: "No, Coquí. Mira. Son diecisiete pesos." The sign is on the right key; he touches it: ring. Don Pepe counts the change again, right this time; she puts it in her purse and goes.
 6. **Decision B, drawn again: the señor.** As A.
 
 **The ending**
@@ -144,9 +144,9 @@ Two fresh reviewers saw draft 1 with only the owner's rules: one as a beginner, 
 
 Fixed after the beginner: no second round can be worked out from the first, and no line before the game says its prices (every round is drawn on its own); the numbers are shared out again so that each is heard three times, with its numeral in the picture, before it can cost: 45 has once, doce, trece; 46 catorce, quince, dieciséis; 47 diecisiete, dieciocho, diecinueve, veinte; a wrong price costs a bill whether it was too high or too low (45); don Pepe points at what can be lost before the game (45, 46); the sheets of paper are counted right and Luis has his own bag (46); the two turns of 47 and one of 46 answer real questions now; the jar's level is said at each step and a customer keeps her change because she had to count it twice (47).
 
-Fixed after the Spanish: "chavos" is money, as on the island, not coins (it moved to 47, where it is the children's money); "Faltan chavos para la bola."; change is counted the way it is at a till, "Aquí tiene su cambio: dieciocho, diecinueve y veinte." (and "tu cambio" to a child); prices of two things are "Este, catorce dólares. Y este, quince dólares."; grown-ups say "por favor" with "Quiero…"; "tu abuela"; the things for sale are cups, pots, plates and glasses (a bag at that price would be a "cartera"); seventeen is never set against sixteen.
+Fixed after the Spanish: "chavos" is money, as on the island, not coins (it moved to 47, where it is the children's money); "Faltan chavos para la bola."; change is counted the way it is at a till, "Aquí tiene su cambio: dieciocho, diecinueve y veinte." (and "tu cambio" to a child); prices of two things are "Este, catorce pesos. Y este, quince pesos."; grown-ups say "por favor" with "Quiero…"; "tu abuela"; the things for sale are cups, pots, plates and glasses (a bag at that price would be a "cartera"); seventeen is never set against sixteen.
 
-Left as written: "dólares", where many people on the island say "pesos". Only the owner can hear whether the voice keeps "dos dólares" and "tres dólares" apart from "doce" and "trece".
+Changed on Nov 21, on Salim's word "pick whatever is most used": "dólar" and "dólares" are "peso" and "pesos" in every line, which is what people on the island say for a dollar. Only the owner can hear whether the voice keeps "dos pesos" and "tres pesos" apart from "doce" and "trece".
 
 ---
 
