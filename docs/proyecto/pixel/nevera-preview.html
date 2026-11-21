@@ -222,13 +222,14 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
     return w;
   };
-  // a review picture: panelW() of cual.js, cropped and zoomed as the sheet's pictures say (old=1: the old cam rectangle, stretched as cual.html does)
-  PV.pair = async function (word, side, file = 'cual-nevera') {
+  // a review picture: panelW() of cual.js, cropped and zoomed as the sheet's pictures say (old=1: the old cam rectangle, stretched as cual.html does); wide: the whole view, not cropped
+  PV.pair = async function (word, side, file = 'cual-nevera', wide = false) {
     await ready;
     const it = PV.CUAL.items.find(i => i.w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') === word), spec = it[side];
     const w = baseW({ banco: 0 });
     w.cq = { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null };
     Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    if (OLD && wide) return PV.render(w, { F: 8, remap: false });
     if (OLD) { await PV.render(w, { F: 8, remap: false }); const o = document.getElementById('out'), cm = spec.cam, k = document.createElement('canvas'); k.width = 196; k.height = 104; const g = k.getContext('2d'); g.imageSmoothingEnabled = false;
       g.drawImage(sc, cm[0], cm[1], cm[2], cm[3], 0, 0, 196, 104); o.width = 196; o.height = 104; o.getContext('2d').drawImage(k, 0, 0); return o.toDataURL(); }
     const pc = SHEET.pictures[word + '.' + side];
@@ -237,7 +238,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     // the pair file's own positions on the counter, through the sheet's remap
     for (const e of SHEET.remap) if (e.moved && e.kind === 'point' && e.uses.some(u => u.startsWith(file + '.json ' + word.replace(/_/g, ' ') + '.' + side) || u.startsWith(file + '.json ' + it.w + '.' + side))) for (const o of ww.cosas || []) if (Math.round(o.x) === e.old[0] && Math.round(o.y) === e.old[1]) { o.x = e.new[0]; o.y = e.new[1]; }
     PV.story = null;
-    return PV.render(ww, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+    return PV.render(ww, wide ? { F: 8, remap: false } : { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
   };
   PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-nevera.json').then(r => r.json())).then(a => { PV.CUAL = a; });
 
