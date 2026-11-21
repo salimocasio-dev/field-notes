@@ -82,7 +82,7 @@ const EDGEROW = c => {
 /* ---------- the hedge and the gate (the old PORTON: (188, 197), where one stands at the gate) ----------
    the hedge along y: on the screen the line sx + 2 sy = HEDGE_K, its +x face towards the camera; the gate an opening in it between two stone
    posts at GATE[0] and GATE[1] (screen, their feet), the paving running out through it along +x (between the lines through the posts) */
-const HEDGE_K = 588, HEDGE_T = .32, HEDGE_H = .38;                // a low hedge: it stands in front of the paving (the camera looks over it), so that it hides nobody
+const HEDGE_K = 588, HEDGE_T = .32, HEDGE_H = .38, HEDGE_H_FAR = .8;                // a low hedge: it stands in front of the paving (the camera looks over it), so that it hides nobody
 const GATE = [[152, 218], [214, 187]];                               // the left post's foot 2 rows under the picture's edge: the paving's lower edge is busy                               // the posts' feet (their middles), on the line
 const GATE_W = GATE.map(p => Gs(p[0], p[1]));
 const HEDGE_X = GATE_W[0][0] + HEDGE_T / 2;                          // the hedge's +x face (the line x = HEDGE_X); the posts stand in its middle
@@ -266,7 +266,7 @@ function lampPost() {
   });
 }
 // the lamp's light (lit at dusk and at night): a pool on the ground round its foot, under the lantern, joined to it; brighter at night
-const POOL = { rx: 1.25, ry: 1.25 };
+const POOL = { rx: 1.4, ry: 1.4 };
 function lampPool() {
   if (SET.luz === 'dia') return;
   const g = Gs(...FAROL.at), str = NIGHT ? 1 : .45;
@@ -275,7 +275,7 @@ function lampPool() {
     const w = unproject(ix + .5, iy + .5), d = Math.hypot((w.x - g[0]) / POOL.rx, (w.y - g[1]) / POOL.ry);
     if (d > 1) continue;
     const f = (1 - d) * 1.6; if (bayerAt(ix, iy) > f) continue;
-    const c = pix[i], k = str * (d < .55 ? .34 : .2);
+    const c = pix[i], k = str * (d < .5 ? .46 : .28);
     pix[i] = rgb(lerp(c & 255, 255, k), lerp(c >> 8 & 255, 236, k), lerp(c >> 16 & 255, 170, k)); POOL_PX.add(i);
   }
 }
@@ -370,6 +370,9 @@ function hedge() {
         sphere(xF - .05, y, z, .1 + h * .05, LEAF[h > .7 ? 2 : 1], 'rough'); }
       for (let x = xF - HEDGE_T; x <= xF; x += .11) { const h = hash(Math.round(x * 50) + 7, Math.round(y * 50));
         sphere(x, y, HEDGE_H - .04 + h * .05, .11 + h * .04, LEAF[h > .6 ? 3 : 2], 'rough'); }
+      // right of the gate, where nobody stands, the hedge is taller (it runs off the picture's right edge)
+      if (y < yB - .5) for (let z = HEDGE_H; z <= HEDGE_H_FAR; z += .11) { const h = hash(Math.round(y * 50) + 11, Math.round(z * 50)); sphere(xF - .05, y, z, .1 + h * .05, LEAF[h > .7 ? 2 : 1], 'rough');
+        if (z > HEDGE_H_FAR - .12) for (let x = xF - HEDGE_T; x <= xF; x += .11) sphere(x, y, HEDGE_H_FAR + hash(Math.round(x * 50), Math.round(y * 50)) * .05, .11, LEAF[3], 'rough'); }
     }
     // the hedge's cut ends at the opening (+y face of the far piece and -y face of the near one: only the near piece's end faces the camera)
     for (let x = xF - HEDGE_T; x <= xF; x += .1) for (let z = .05; z <= HEDGE_H; z += .1) { const h = hash(Math.round(x * 40), Math.round(z * 40)); sphere(x, yB - .08, z, .09 + h * .04, LEAF[1], 'rough'); }

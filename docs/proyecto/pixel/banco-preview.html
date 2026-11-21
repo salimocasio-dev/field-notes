@@ -91,6 +91,8 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
   };
   const vOf = (sx, sy) => { const g = CUR.set.Gs(sx, sy, 0); return (g[0] + g[1]) / Math.SQRT2; };
   PV.vOf = vOf;
+  // a thing on a seat or a pigeon on a bench's back: the plane of the point it rests on (at that height), a little in front
+  PV.vAt = (sx, sy, z) => { const g = CUR.set.Gs(sx, sy, z); return (g[0] + g[1]) / Math.SQRT2 + .02; };
   // (sheet: front) the set's own pixels of a part, again, inside each item drawn before its entry in the sorted list, only where that pixel is
   // nearer to the camera than the item: z[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S
   PV.front = function (c, part, L) {
@@ -112,9 +114,9 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     if (o.id === 'coqui') { const q = w.cq, b = frogBox(q); return [[b.x, b.y + R(q.dy || 0), b.w, b.h], vOf(b.x + b.w / 2, q.y + 25)]; }
     if (o.id) { const p = w.gente[o.id]; const x = R(p.x), y = R(p.y), dy = R(p.dy || 0); if (p.sent) { const k = x < 120 ? 0 : x < 168 ? 1 : 2, b = CUR.set.BENCH[k], g = CUR.set.Gs(x, y - 11, CUR.set.ZS); return [[x - 24, y - 60 - dy, 48, 63 + dy], (g[0] + b.y1) / Math.SQRT2 + .03]; } return [[x - 24, y - 60 - dy, 48, 63 + dy], vOf(x, y - 1)]; }
     if (o.perro) { const p = w.perros[o.perro]; return [[R(p.x) - 16, R(p.y) - 24 - R(p.dy || 0), 32, 27 + R(p.dy || 0)], vOf(R(p.x), R(p.y) - 1)]; }
-    if (o.pal) { const p = o.pal; if (p.pose === 'vuela') return null; return [[R(p.x) - 10, R(p.y) - 14, 20, 16], vOf(R(p.x), R(p.y) - 1)]; }
+    if (o.pal) { const p = o.pal, k = PV.perch(p); if (k === 'air' || k === 'wire') return null; return [[R(p.x) - 10, R(p.y) - 14, 20, 16], k === 'back' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS + CUR.set.BACK_H) : k === 'seat' ? PV.vAt(R(p.x), R(p.y), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1)]; }
     if (o.coche) { const p = w.coche; return [[R(p.x) - 21, R(p.y) - 42, 42, 45], vOf(R(p.x), R(p.y) - 1)]; }
-    if (o.cosa) { const p = o.cosa; return [[R(p.x) - 15, R(p.y) - 34, 30, 36], vOf(R(p.x), R(p.y) - 1)]; }
+    if (o.cosa) { const p = o.cosa; return [[R(p.x) - 15, R(p.y) - 34, 30, 36], PV.onSeat(R(p.x), R(p.y)) ? PV.vAt(R(p.x), R(p.y) + (p.rot ? 5 : 0), CUR.set.ZS) : vOf(R(p.x), R(p.y) - 1)]; }
     return null;
   };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
@@ -178,9 +180,10 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (const o of w.cosas || []) { if (!o || o.vis === 0 || o.z === 400 || (o.z != null && o.z > o.y + 30)) continue; if (PV.onSeat(R(o.x), R(o.y))) continue; const g = on(R(o.x), R(o.y) - 1); out.push([g[0], g[1], .1, o.k === 'caja' ? .4 : SH.cosas.radius]); }
     return out;
   };
+  PV.backTop = x => { const S = CUR.set; for (const b of S.BENCH) { const yy = b.y0 + .065, z = S.ZS + S.BACK_H - .02, wx = (x - S.OXY[0]) / 26 * Math.SQRT2 + yy; if (wx >= b.x0 + .02 && wx <= b.x1 - .02) { const v = (wx + yy) / Math.SQRT2; return S.OXY[1] + (v * .5 - z * Math.sqrt(3) / 2) * 26; } } return null; };
   PV.onSeat = (x, y) => { if (y >= 172) return false; const S = CUR.set, w = S.Gs(x, y - 1, S.ZS); return S.BENCH.some(b => w[0] >= b.x0 - .02 && w[0] <= b.x1 + .02 && w[1] >= b.y0 - .02 && w[1] <= b.y1 + .02); };
   PV.perch = o => { const x = R(o.x), y = R(o.y), S = CUR.set; if (o.pose === 'vuela') return 'air'; if (Math.abs(y - S.cableY(x)) <= 1 && y < 80) return 'wire';
-    const POSA = JSON.parse(SHEET.moves.find(m => m.src.startsWith('POSA=')).to.slice(5)); if (POSA.some(p => p[0] === x && p[1] === y)) return 'back';
+    { const bt = PV.backTop(x); if (bt != null && Math.abs(y - 1 - bt) <= 1.5) return 'back'; }
     if (PV.onSeat(x, y)) return 'seat'; if (W && W.coche && Math.abs(x - R(W.coche.x) - 14) <= 2 && Math.abs(y - R(W.coche.y) + 33) <= 2) return 'coche'; return 'ground'; };
   // where everyone is (the sheet's check reads it)
   PV.places = w => { const o = {};

@@ -323,14 +323,14 @@ function designMoves(F, POSA) {
       pts: [sit('senora', B[1] - 9), sit('luis', B[0] - 13), ['hombre', [B[2] + 2, 161], [B[2], SYf(B[2])]]], why: 'acts.inicio23: the three on the benches (SY); the man on the third bench 2 px left, so that his hint frame stays 2 px inside the view (it did not in the old)' },
     { act: 'abuelallega', src: 'a.x=B[0][0]+5;a.y=161;', to: 'a.x=B[0][0]+7;a.y=SY(B[0][0]+7);', pts: [['abuela', [B[0] + 5, 161], [B[0] + 7, SYf(B[0] + 7)]]], why: 'acts.abuelallega: abuela sits down on the first bench (SY), 2 px further right than the old, apart from Luis (on the slanted seat she sits lower than he)' },
     { act: 'mira23', src: 's.x+=4;await wait(700);s.x-=4;', to: 's.x+=4;s.y+=2;await wait(700);s.x-=4;s.y-=2;', why: 'acts.mira23: the señora leans 4 px to the right along the seat: she keeps to its edge (2 rows lower)' },
-    { act: 'dejan', src: '{id:"pir",k:"piragua",x:101,y:ASIENTO-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:ASIENTO}', to: '{id:"pir",k:"piragua",x:101,y:AS(101)-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:AS(153)}',
-      pts: [['cosa', [101, OLD.ASIENTO - 4], [101, ASf(101) - 4]], ['cosa', [153, OLD.ASIENTO], [153, ASf(153)]]], why: 'acts.dejan: the piragua and the bottle left on the seats (AS)' },
-    { act: 'paloma', src: 'await palomaA(pg,119,ASIENTO);', to: 'await palomaA(pg,112,AS(112));', pts: [['paloma', [119, OLD.ASIENTO], [112, ASf(112)]]], why: 'acts.paloma: the pigeon lands on the seat by the piragua: the old point (119) is past the new seat\'s right end; on its right end, 7 px left' },
-    { act: 'paloma', src: 'await palomaA(pg,163,ASIENTO);', to: 'await palomaA(pg,159,AS(159));', pts: [['paloma', [163, OLD.ASIENTO], [159, ASf(159)]]], why: 'acts.paloma: the pigeon lands on the seat by the bottle: on the seat\'s right end, 4 px left' },
-    { act: 'inicio22', src: '{id:"cartera",k:"cartera",x:157,y:ASIENTO},{id:"mochila",k:"mochila",x:204,y:ASIENTO+1}', to: '{id:"cartera",k:"cartera",x:157,y:AS(157)},{id:"mochila",k:"mochila",x:204,y:AS(204)+1}',
-      pts: [['cosa', [157, OLD.ASIENTO], [157, ASf(157)]], ['cosa', [204, OLD.ASIENTO + 1], [204, ASf(204) + 1]]], why: 'acts.inicio22: the handbag and the rucksack on the seats (AS)' },
-    { act: 'turno22', src: '{id:"periodico",k:"periodico",x:108,y:ASIENTO}', to: '{id:"periodico",k:"periodico",x:108,y:AS(108)}', pts: [['cosa', [108, OLD.ASIENTO], [108, ASf(108)]]], why: 'acts.turno22: the newspaper left on the seat (AS)' },
-    { act: 'cojin', src: '{id:"cojin",k:"mochila",x:B[0][0]-21,y:ASIENTO+1,z:150}', to: '{id:"cojin",k:"mochila",x:B[0][0]+15,y:AS(B[0][0]+15)+1,z:150}', pts: [['cosa', [OLD.BANCOS[0][0] - 21, OLD.ASIENTO + 1], [OLD.BANCOS[0][0] + 15, ASf(OLD.BANCOS[0][0] + 15) + 1]]],
+    { act: 'dejan', src: '{id:"pir",k:"piragua",x:101,y:ASIENTO-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:ASIENTO}', to: '{id:"pir",k:"piragua",x:97,y:AS(97)-4,rot:Math.PI/2},{id:"bot",k:"agua",x:153,y:AS(153)}',
+      pts: [['cosa', [101, OLD.ASIENTO - 4], [97, ASf(97) - 4]], ['cosa', [153, OLD.ASIENTO], [153, ASf(153)]]], why: 'acts.dejan: the piragua and the bottle left on the seats (AS); the piragua 4 px left, so that it lies on the seat\'s top clear of its right end, by the man who leaves it' },
+    { act: 'paloma', src: 'await palomaA(pg,119,ASIENTO);', to: 'await palomaA(pg,109,AS(109));', pts: [['paloma', [119, OLD.ASIENTO], [109, ASf(109)]]], why: 'acts.paloma: the pigeon lands on the seat by the piragua: the old point (119) is past the new seat\'s right end; on the seat, 10 px left, its beak at the piragua (moved 4 px left too)' },
+    { act: 'paloma', src: 'await palomaA(pg,163,ASIENTO);', to: 'await palomaA(pg,157,AS(157));', pts: [['paloma', [163, OLD.ASIENTO], [157, ASf(157)]]], why: 'acts.paloma: the pigeon lands on the seat by the bottle: on the seat, 6 px left (the old point is past the new seat\'s right end)' },
+    { act: 'inicio22', src: '{id:"cartera",k:"cartera",x:157,y:ASIENTO},{id:"mochila",k:"mochila",x:204,y:ASIENTO+1}', to: '{id:"cartera",k:"cartera",x:154,y:AS(154)},{id:"mochila",k:"mochila",x:201,y:AS(201)+1}',
+      pts: [['cosa', [157, OLD.ASIENTO], [154, ASf(154)]], ['cosa', [204, OLD.ASIENTO + 1], [201, ASf(201) + 1]]], why: 'acts.inicio22: the handbag and the rucksack on the seats (AS), 3 px left, clear of the seats\' right ends' },
+    { act: 'turno22', src: '{id:"periodico",k:"periodico",x:108,y:ASIENTO}', to: '{id:"periodico",k:"periodico",x:105,y:AS(105)}', pts: [['cosa', [108, OLD.ASIENTO], [105, ASf(105)]]], why: 'acts.turno22: the newspaper left on the seat (AS), 3 px left, clear of its right end' },
+    { act: 'cojin', src: '{id:"cojin",k:"mochila",x:B[0][0]-21,y:ASIENTO+1,z:150}', to: '{id:"cojin",k:"mochila",x:B[0][0]+12,y:AS(B[0][0]+12)+1,z:150}', pts: [['cosa', [OLD.BANCOS[0][0] - 21, OLD.ASIENTO + 1], [OLD.BANCOS[0][0] + 12, ASf(OLD.BANCOS[0][0] + 12) + 1]]],
       why: 'acts.cojin: Carmen puts the rucksack on the first bench as a cushion: the old point (B - 21) is past the new seat\'s left end, and Luis sits at its left end (B - 13); at its right end' },
     { act: '*', src: 'POSA=[[110,127],[158,127],[176,127],[208,127]]', to: 'POSA=' + JSON.stringify(POSA), pts: OLD.POSA.map((p, i) => ['paloma', p, POSA[i]]),
       why: 'where the pigeons perch on the benches\' backs (posa): on the top of each back at its x, which falls half a row a px to the right; the third (176) was past the third back\'s left end: 12 px right' },
@@ -354,11 +354,11 @@ function designStoryMoves() {
   const out = [], sit = x => ({ old: [x, 161], new: [x, SYf(x)], who: 'sitting', why: 'sitting on the bench at x ' + x + ': on its seat\'s edge (SY)' });
   for (const x of [87, 135, 138]) out.push(sit(x));
   out.push({ old: [51, 172], new: [38, 172], who: 'piraguero', why: 'the piragua man behind his cart: CARRO moved (moves)' });
-  out.push({ old: [160, 150], new: [159, ASf(159) + 1], who: 'cosa', why: 'h-banco: the rucksack on the second bench\'s seat at its right end (AS), 1 px left' });
-  out.push({ old: [152, 149], new: [152, ASf(152)], who: 'cosa', why: 'cual-banco bebe.si: the bottle on the second bench\'s seat (AS)' });
+  out.push({ old: [160, 150], new: [156, ASf(156) + 1], who: 'cosa', why: 'h-banco: the rucksack on the second bench\'s seat (AS), 4 px left, clear of its right end' });
+  out.push({ old: [152, 149], new: [143, ASf(143)], who: 'cosa', why: 'cual-banco bebe.si: the bottle on the second bench\'s seat (AS), 9 px left: the pigeon by it moved left (the old point is past the seat\'s right end), its beak at the bottle as the old' });
   out.push({ old: [146, 145], new: [146, ASf(146) - 4], who: 'cosa', why: 'cual-banco bebe.no: the piragua lying on the second bench\'s seat (AS - 4, as the old ASIENTO - 4)' });
-  out.push({ old: [162, 149], new: [159, ASf(159)], who: 'paloma', why: 'cual-banco bebe.si: the pigeon drinking on the second bench\'s seat, at its right end (AS)' });
-  out.push({ old: [164, 149], new: [159, ASf(159)], who: 'paloma', why: 'cual-banco bebe.no: the pigeon eating on the second bench\'s seat, at its right end (AS)' });
+  out.push({ old: [162, 149], new: [157, ASf(157)], who: 'paloma', why: 'cual-banco bebe.si: the pigeon drinking on the second bench\'s seat, at its right end (AS)' });
+  out.push({ old: [164, 149], new: [157, ASf(157)], who: 'paloma', why: 'cual-banco bebe.no: the pigeon eating on the second bench\'s seat, at its right end (AS)' });
   return out;
 }
 
@@ -462,9 +462,9 @@ function make(G, runs) {
     'mujer.si': pic(146, 160, 1, 'the woman walking on the paving'), 'mujer.no': pic(146, 160, 1, 'Carmen walking there'),
     'senora.si': pic(146, 160, 1, 'the woman with a bag, the frog'), 'senora.no': pic(146, 160, 1, 'the young man with a bag, the frog'),
     'joven.si': pic(146, 160, 1, 'the young man walking'), 'joven.no': pic(146, 160, 1, 'the old man walking'),
-    'viejo.si': pic(120, 190, 2, 'the old dog walking'), 'viejo.no': pic(120, 190, 2, 'the young dog walking'),
-    'duerme.si': pic(120, 190, 2, 'Canelo asleep'), 'duerme.no': pic(120, 190, 2, 'Canelo lying with a bone'),
-    'triste.si': pic(120, 190, 2, 'Canelo sad'), 'triste.no': pic(120, 190, 2, 'Canelo tired'),
+    'viejo.si': pic(98, 190, 2, 'the old dog walking'), 'viejo.no': pic(98, 190, 2, 'the young dog walking'),
+    'duerme.si': pic(98, 190, 2, 'Canelo asleep'), 'duerme.no': pic(98, 190, 2, 'Canelo lying with a bone'),
+    'triste.si': pic(98, 190, 2, 'Canelo sad'), 'triste.no': pic(98, 190, 2, 'Canelo tired'),
     'bebe.si': pic(152, 140, 2, 'a pigeon drinking from a bottle on the bench'), 'bebe.no': pic(152, 140, 2, 'a pigeon eating a piragua on the bench'),
   };
   const LEVEL = PAIRS.level.flatMap(L => L.pictures.map((p, i) => p.scene === 'banco' ? { w: L.w, index: i, picture: deacc(p.pair) + '.' + p.side, old: p.crop } : null).filter(Boolean));
@@ -548,7 +548,7 @@ function make(G, runs) {
     clipsWhat: 'banco.js never calls clip()',
     smoothing: 'banco.js never turns smoothing on (respIcon turns it off)',
     front: {
-      how: 'the old background (fondo: the benches, the lamp post, the pole, the hedge and its posts) was drawn before everyone, and the cart was in the sorted list; now each is a set thing someone can be behind. At its entry in the list banco.js draw sorts by y (sortY 9999: after everyone), for each item drawn before it (a person, the frog, a dog, a pigeon, the pushchair, a thing: each item says what it is), the set\'s own pixels of the part (banco-set.html part(), PART_TAGS) are drawn again inside the item\'s box, only where that pixel is nearer to the camera than the item: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the ground point under it (rules.floor). Whoever sits on a bench (sent) stands in the plane of that bench\'s seat front (its y1) + .03: so nothing of their bench is drawn over them, and its back stays behind them. "Behind the bench" is that depth test, not a row',
+      how: 'the old background (fondo: the benches, the lamp post, the pole, the hedge and its posts) was drawn before everyone, and the cart was in the sorted list; now each is a set thing someone can be behind. At its entry in the list banco.js draw sorts by y (sortY 9999: after everyone), for each item drawn before it (a person, the frog, a dog, a pigeon, the pushchair, a thing: each item says what it is), the set\'s own pixels of the part (banco-set.html part(), PART_TAGS) are drawn again inside the item\'s box, only where that pixel is nearer to the camera than the item: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the ground point under it (rules.floor). Whoever sits on a bench (sent) stands in the plane of that bench\'s seat front (its y1) + .03: so nothing of their bench is drawn over them, and its back stays behind them. A thing or a pigeon on a seat stands in the plane of the seat\'s point under its lowest row + 1 (at the seat\'s height) + .02: under (x, y), and under (x, y + 5) for a thing lying on its side (rot: the piragua, whose width reaches forward), a pigeon on a bench\'s back in that of the back\'s top; a pigeon on the wire is drawn over everything. "Behind the bench" is that depth test, not a row',
       plane: 'v / COS - (row + .5 - OY) * tan(30 deg) / S',
       boxes: 'a person: [x - 24, y - 60 - dy, 48, 63 + dy]; the frog: frogBox with dy; a dog: [x - 16, y - 24 - dy, 32, 27 + dy]; a pigeon: [x - 10, y - 14, 20, 16]; the pushchair: [x - 21, y - 42, 42, 45]; a thing: [x - 15, y - 34, 30, 36]; its ground point under (x, y - 1)',
       parts: Object.fromEntries(FRONT.map(p => [p, { sortY: 9999, insert: 'before the sort: L.push({y: 9999, front: "' + p + '"})' }])),
@@ -861,6 +861,7 @@ function checkMoments(sh, G, runs, P, C) {
     if (w.cq && w.cq.vis && !(w.cq.al < .5)) f.push(['the frog\'s face', frogFace(w.cq)]); return f; };
   const headOf = f => [f[0] - 2, f[1] - 6, f[2] + 4, f[3] + 6];   // a face and the hair over it
   const BUBR = sh.bubbles.rects, bubRect = (k, tx, ty) => { const r = BUBR[k]; if (!r) throw new Error('no bubble ' + k); return [tx + r[0], ty + r[1], r[2], r[3]]; };
+  const vAt = (sx, sy, z) => { const w = E.atZ(sx, sy, z); return (w[0] + w[1]) / E.R2 + .02; };
   const vGround = (sx, sy) => { const w = E.atZ(sx, sy, 0); return (w[0] + w[1]) / E.R2; };
   const nearerRows = (key, rs, v, names) => { const out = {}, TG = TAGS[key], Z = G.z[key];
     for (const [y, a, b] of rs) { if (y < 0 || y >= 216) continue; for (let x = Math.max(0, a); x <= Math.min(239, b); x++) { const i = y * 240 + x; if (names.includes(TG[i]) && Z[i] > v / COS - (y + .5 - E.OY) * T30 / E.S) out[TG[i]] = (out[TG[i]] || 0) + 1; } }
@@ -882,9 +883,9 @@ function checkMoments(sh, G, runs, P, C) {
         if (it.perch === 'air') { stats.fly++; if (dwell && !it.o.gs) flyBad.set(it.id, where + ': in the air with no shadow point (o.gs)'); else if (it.o.gs) { const s = E.surface(it.o.gs[0], it.o.gs[1]); if (s.on !== 'pave' && s.on !== 'lawn' && it.o.gs[0] < 240 && it.o.gs[0] >= 0) flyBad.set(it.id + ' shadow', where + ': its shadow at ' + it.o.gs.map(R) + ' is not on the ground'); } continue; }
         if (it.perch === 'wire') { let n = 0; for (let x = it.at[0] - 3; x <= it.at[0] + 3; x++) for (let y = it.at[1] - 1; y <= it.at[1] + 1; y++) if (TAGS[key][y * 240 + x] === 'cable') n++; if (n < 3) perchBad.set(it.id + ' at ' + it.at, where + ': only ' + n + ' px of wire under its feet'); continue; }
         if (it.perch === 'back') { let n = 0; for (let x = it.at[0] - 2; x <= it.at[0] + 2; x++) for (let y = it.at[1] - 1; y <= it.at[1] + 1; y++) if (/^banco/.test(TAGS[key][y * 240 + x] || '')) n++; if (n < 4) perchBad.set(it.id + ' at ' + it.at, where + ': only ' + n + ' px of the bench\'s back under its feet'); continue; }
-        if (it.perch === 'seat') { stats.onSeat++; continue; }
+        if (it.perch === 'seat' || it.perch === 'back') { stats.onSeat++; const near = nearerRows(key, it.rows, vAt(it.at[0], Math.max(...it.rows.map(q => q[0])) + 1, it.perch === 'seat' ? F.ZS : F.ZS + F.BACK_H), BENCHES); if (Object.keys(near).length) seatBad.set(it.id + ' at ' + it.at, where + ': ' + JSON.stringify(near) + ' of its bench in front of it'); continue; }
         if (it.perch === 'frog' || it.perch === 'coche') continue; }
-      if (it.kind === 'thing' && it.onSeat && !it.air) { stats.onSeat++; continue; }
+      if (it.kind === 'thing' && it.onSeat && !it.air) { stats.onSeat++; const near = nearerRows(key, it.rows, vAt(it.at[0], Math.max(...it.rows.map(q => q[0])) + 1, F.ZS), BENCHES); if (Object.keys(near).length) seatBad.set(it.id + ' at ' + it.at, where + ': ' + JSON.stringify(near) + ' of its bench in front of it'); continue; }
       if (it.kind === 'person' && it.sent) { stats.sit++;
         // on the seat: the seat under the lap, the bench's back behind the body, the feet over the paving; nothing of the set nearer than them
         const lap = [it.at[0], it.at[1] - 11], k = seatAt(lap[0], lap[1]), k2 = seatAt(lap[0], lap[1] + 1);
@@ -925,6 +926,7 @@ function checkMoments(sh, G, runs, P, C) {
   for (const [k, why] of hedgeBad) P.push('gate: ' + k + ' ' + why);
   for (const [k, why] of sitBad) P.push('sitting: ' + k + ' ' + why);
   for (const [k, why] of perchBad) P.push('perch: ' + k + ' ' + why);
+  for (const [k, why] of seatBad) P.push('on a seat: ' + k + ' ' + why);
   for (const [k, why] of flyBad) P.push('flying: ' + k + ' ' + why);
   for (const [k, why] of hidden) P.push('hidden: ' + k + ' ' + why);
   const bySide = s => [...new Set([...sides].filter(e => e[1] === s).map(e => e[0].replace(/ at .*/, '')))].sort().join(', ');
