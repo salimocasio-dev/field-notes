@@ -39,7 +39,8 @@ The shell: tabs, routes, wiring, web/, android/, ios/.
   `CoquiTabBar` with `CoquiTabs` drawn over the tab body (`FeatureTab.icon` is not used); a lesson screen over
   everything, the tab bar hidden; a `PopScope` that turns the system back on a lesson into `nav.back()`.
 - `lib/src/navigator.dart`: `ShellNavigator`, the `AppNavigator` (see "Addresses" below).
-- `lib/src/content.dart`: the content base and the cache rules. `lib/src/switches.dart`: the address switches.
+- `lib/src/content.dart`: the content base and the cache rules. `lib/src/previa.dart`: the preview content (below), the
+  fetch the catalog is given. `lib/src/switches.dart`: the address switches.
   `lib/src/scripted_speech.dart`: the recogniser of `?mic=stub:` / `?mic=off`. `lib/src/voice_test_data.dart`: the voice
   test's file read; `modules.dart` builds from it the `VoiceTestContent` of `SpeakingModule(voiceTest:)`, so `#/prueba-voz`
   opens the voice test (no entry to it on a tab: v=39 links it from nowhere).
@@ -108,6 +109,23 @@ line is spoken, right after it, never; anything else is `con`; `StoryModule(txt:
 
 `audio/ready.json`, `audio/marcas.json`, `datos/*.json` and `cuentos/*.json`: `cache: "no-store"`. `libros/*.json` and the
 books' pictures: `?v=39`. Clips: `audio/<id>.mp3?v=<ready.json's v>` (the catalog's url, from the content base).
+
+## Preview content (previa)
+
+Stories of places 4 to 10 that are not on the old site yet, bundled here so that a published build plays them, silent,
+before they are recorded (`../AGENTS.md`, "Preview content (previa)", has the whole rule).
+
+- `assets/previa/curso.json` (the overlay: each place id's preview stories in order, each story's `t` and `min`, nothing
+  else) and `assets/previa/cuentos/<id>.json` (the generators' story files, byte for byte), listed in `pubspec.yaml`.
+  Made only by `python3 coqui/tool/make_previa.py --places <ids>` from the repo root; `--check` says whether they are
+  current. The committed overlay is empty until a place's four scenes are ported.
+- `lib/src/previa.dart` wraps the platform's fetch (`AppPlatform.previa`: the root bundle in the app, none in the tests
+  unless a test gives one): `datos/curso.json` gains each overlay story the site's file does not list, and such a story's
+  file is the bundled one. The site wins for every story it lists. No overlay: every file is the site's, byte for byte.
+- `modules.dart`'s `storyScenes`: a scene id `sceneRegistry` does not have opens feature_story's "This story is not in the
+  new app yet." screen, as an unconverted scene does (it was an empty frame and a reported `ArgumentError`).
+- Nothing goes under `historia/cuentos/`: `git status --porcelain historia/` is empty before every commit.
+- `test/previa_test.dart`: the merge, the fetch, no overlay is today, and a preview story played from the map to its end.
 
 ## Run and test it alone
 

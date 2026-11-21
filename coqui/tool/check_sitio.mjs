@@ -15,7 +15,8 @@
 //     check_app.mjs does) it opens on the map: the address is #/tab/map, the tab bar's five names are there, and the
 //     map's place chip ("1 . La casa") is, all read from Flutter's accessibility tree; the screenshot is not blank
 //   - it reads its content from /field-notes/historia/ (datos/curso.json, audio/ready.json, audio/marcas.json,
-//     datos/prueba-voz.json: each asked for there and answered 200), and nothing from inside /field-notes/app/
+//     datos/prueba-voz.json: each asked for there and answered 200), and nothing from inside /field-notes/app/ but the
+//     preview content bundled in the app (assets/assets/previa/: its overlay curso.json is asked for and answered 200)
 //   - it shows the build number: the Yo tab (the only place the app shows it) says "build <n>"
 //   - no console error or warning, no uncaught page error, no failed request
 //   - no request leaves 127.0.0.1 (CanvasKit and the fonts come from the build itself)
@@ -238,8 +239,12 @@ const answered = (u) => served.some((x) => x.url === u && x.status === 200);
 const content = ['datos/curso.json', 'audio/ready.json', 'audio/marcas.json', 'datos/prueba-voz.json'];
 check(content.every((f) => answered(`${HISTORIA}${f}`)), 'the content is read from /field-notes/historia/ (' + content.join(', ') + ')',
   content.filter((f) => !answered(`${HISTORIA}${f}`)).map((f) => `not answered: ${f}`).join(', '));
-check(!served.some((x) => x.url.startsWith(PREFIX) && /\.json$/.test(x.url) && /curso|ready|marcas|prueba-voz|cuentos|libros/.test(x.url)),
-  'none of the content is asked for inside /field-notes/app/');
+// the one exception: the preview content bundled in the app (lib/src/previa.dart), its overlay and its story files, under
+// assets/assets/previa/ of the build
+const PREVIA = `${PREFIX}assets/assets/previa/`;
+check(!served.some((x) => x.url.startsWith(PREFIX) && !x.url.startsWith(PREVIA) && /\.json$/.test(x.url) && /curso|ready|marcas|prueba-voz|cuentos|libros/.test(x.url)),
+  'none of the content is asked for inside /field-notes/app/, but the bundled preview');
+check(answered(`${PREVIA}curso.json`), 'the preview overlay is read from the build (assets/assets/previa/curso.json, 200)');
 
 const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 check(/<html lang="en" translate="no">/.test(html) && /<meta name="google" content="notranslate">/.test(html),
