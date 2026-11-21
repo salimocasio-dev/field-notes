@@ -9,4 +9,5 @@ const Set<String> convertedScenes = {
   'sala',
   'patio',
   'camino',
+  'campo',
 };

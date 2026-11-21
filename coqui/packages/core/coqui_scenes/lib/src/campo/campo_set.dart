@@ -54,6 +54,14 @@ double campoTimeOf(String query) {
 
 /* ---------- the plan: every thing placed from its old screen point (the ground under it) ---------- */
 
+// campo-set.html: BANK, the lake's shore (round 3): the line x = BANK (screen sx + 2 sy = 556)
+double campoBank(PpEngine e) => (556 - 344) / (e.S * e.R2);
+
+// campo-set.html: shore. > 0 land, < 0 over the water (world units); the shore wavers a little, along y. The scene's
+// sprite layer asks it too (campo-preview.html: `CAMPO_SET.shore`, for the ripple rings, the shadows and the front test)
+double campoShore(PpEngine e, double x, double y) =>
+    campoBank(e) + .035 * math.sin(y * 2.3 + 1) + .025 * math.sin(y * 5.1) - x;
+
 const double HZ = 100; // the horizon (screen row): the old picture's
 // the old tree: its foot, its crown's middle and radii on the screen, the fork where a ball sticks; Canelo's spot
 const List<int> ARBOL = [60, 152],
@@ -62,7 +70,8 @@ const List<int> ARBOL = [60, 152],
     SITIO = [46, 168];
 const double TCROWN_CX = 63,
     TCROWN_CY = 99,
-    CROWN_SH_R = .85; // the crown's middle on the screen; its shadow's radius (world)
+    CROWN_SH_R =
+        .85; // the crown's middle on the screen; its shadow's radius (world)
 const double WDEPTH = .16; // the surface under the lawn: a bank 4 rows high
 // the reeds (round 3): a sparse row along the whole shore in the view, standing on the lip of the bank and just into the
 // water (REED_X0 to REED_X1), from the screen's x REED_FROM to past the picture's right edge
@@ -174,7 +183,7 @@ final Expando<_GroundCache> _groundCaches = Expando<_GroundCache>();
 /// The set of El campo, built into an engine (campo-set.html, from "the plan" to "bake the one state").
 class CampoSet {
   CampoSet(this.e, this.b, [this.SET = const CampoState()]) : k = SetKit(e, b) {
-    BANK = (556 - 344) / (e.S * e.R2);
+    BANK = campoBank(e);
     REED_X0 = BANK - .08;
     REED_X1 = BANK + .14;
     CROWN_SH = () {
@@ -228,11 +237,7 @@ class CampoSet {
   late final double BANK, REED_X0, REED_X1;
 
   // campo-set.html: shore. > 0 land; the shore wavers a little, along y
-  double shore(double x, double y) =>
-      BANK +
-      .035 * math.sin(y * 2.3 + 1) +
-      .025 * math.sin(y * 5.1) -
-      x;
+  double shore(double x, double y) => campoShore(e, x, y);
 
   // campo-set.html: cloudAt
   int cloudAt(int ix, int iy) {
@@ -381,8 +386,9 @@ class CampoSet {
         double h(int a, int bb) => e.hash(kk * 13 + 211 + a, bb);
         final th = h(1, 7) * 6.283,
             ph = math.acos(2 * h(2, 8) - 1),
-            // Math.cbrt, as the porting table says
-            d = math.pow(h(3, 9), 1 / 3) * .9;
+                // Math.cbrt, as the porting table says
+                d =
+                math.pow(h(3, 9), 1 / 3) * .9;
         final du = math.cos(th) * math.sin(ph) * d,
             dv = math.sin(th) * math.sin(ph) * d,
             dz = math.cos(ph) * d;
@@ -402,7 +408,9 @@ class CampoSet {
             du * .25 +
             .3 -
             (dv < -.2 ? .25 : 0) -
-            (inHollow ? .7 : 0); // in the hollow: the crown's inside, in its own shade
+            (inHollow
+                ? .7
+                : 0); // in the hollow: the crown's inside, in its own shade
         e.sphere(
           q[0],
           q[1],
@@ -474,12 +482,7 @@ class CampoSet {
         // the stalk: 1 px, a little lean towards x (the light side darker below)
         for (double z = z0; z <= top; z += .012) {
           final f = (z - z0) / r.h;
-          e.plot(
-            r.x + r.lean * f,
-            r.y,
-            z,
-            _rgbOf(f < .3 ? REED_G[0] : G),
-          );
+          e.plot(r.x + r.lean * f, r.y, z, _rgbOf(f < .3 ? REED_G[0] : G));
         }
         if (r.head) {
           final hz = top - .1;
