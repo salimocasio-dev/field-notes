@@ -8,6 +8,8 @@
 // - On the real El balcón (order 30b): the same, for its four files.
 // - On the real La sala (order 31b): the same, for its six files.
 // - On the real El patio (order 32b): the same, for its six files.
+// - On the real El camino (order 33b): the same, for its five files; rapido-despacio's end (acts.sevan, the sheet's sevan:
+//   everyone leaves in a file) is the new act's: its runs differ from the old there and after in time only.
 import 'dart:convert';
 import 'dart:io';
 
@@ -38,6 +40,20 @@ Map<String, dynamic> placeless(Map<String, dynamic> t) => {
     ),
 };
 
+/// [placeless], and the places camino.js's state line writes for Canelo and the cat (`perro=x,y:`, `gato=x,y:`): the
+/// sheet moves a few of them (Canelo at the first tree, the cat on the bench, everyone out through the arch).
+Map<String, dynamic> caminoPlaceless(Map<String, dynamic> t) {
+  final p = placeless(t);
+  return {
+    ...p,
+    if (p['estado'] is String)
+      'estado': (p['estado'] as String).replaceAllMapped(
+        RegExp(r'(perro|gato)=-?[\d.]+,-?[\d.]+:'),
+        (m) => '${m[1]}=_:',
+      ),
+  };
+}
+
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
 
@@ -46,6 +62,9 @@ final Map<String, String?> salaWhole = {};
 
 /// Each patio run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> patioWhole = {};
+
+/// Each camino run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> caminoWhole = {}, caminoTimeless = {};
 
 void main() {
   final root = findRoot();
@@ -462,6 +481,113 @@ void main() {
         ..parent.createSync(recursive: true)
         ..writeAsStringSync(
           '${[for (final e in patioWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}'].join('\n')}\n',
+        );
+    });
+  });
+  // The real El camino (order 33b): the park is built round the old picture, so its places keep their screen numbers but
+  // the few the sheet moves (`moves`); the runs are the old ones in everything but time and the places its state line
+  // writes. All 21 hop counts are the old ones (the sheet's hops is empty). The scene draws its random numbers
+  // (`gatoarbol`: the order of the other two counts, and which one the bubble shows) from the game's one source. The end
+  // of rapido-despacio (acts.sevan) is the sheet's new act: everyone leaves through the arch in a file, 20 ticks where
+  // the old act took 8 for the people; its frog hops twice by the act's own steps instead of hopTo's (no 110 ms wait
+  // after each hop). The old trace was recorded with the old act: the act and what follows it are 140 ms later, with the
+  // same steps, the same two hop sounds and the same draws, so the timeless comparison holds for that story too.
+  group('the recorded runs, on the real El camino (order 33b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final camino = {
+      for (final r in runs)
+        if (r['scene'] == 'camino') r['story'] as String,
+    };
+    test('the five files of El camino', () {
+      expect(camino, {
+        'uno-dos-tres',
+        'donde-esta-el-gato',
+        'rapido-despacio',
+        'd-corre',
+        'h-camino',
+      });
+    });
+    for (final s in camino) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('camino'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              caminoPlaceless(forTimeless(c.committed)),
+              caminoPlaceless(forTimeless(c.trace)),
+            );
+            caminoTimeless['$s $plan'] = timeless;
+            if (s != 'rapido-despacio') {
+              expect(
+                timeless,
+                isNull,
+                reason: '$s $plan (whole: ${d ?? 'equal'})',
+              );
+            }
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            if (s != 'rapido-despacio') {
+              expect(
+                hops(c.trace),
+                hops(c.committed),
+                reason: '$s $plan: hops',
+              );
+            }
+            // the random draws are the old ones in every run, rapido-despacio's included
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            caminoWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    test(
+      'registryScenes gives El camino the random source it is given',
+      () async {
+        final rng = CountingRng(Mulberry32(1));
+        final made = await registryScenes('camino', rng);
+        final host = StillFrame(made.scene as SetScene).host..fresh();
+        expect(rng.draws, 0);
+        final acts = (made.scene as Escena).acts;
+        await acts['inicio13']!({});
+        await acts['posan']!({'p': '231'});
+        expect(host.W['gato'], isNotNull);
+        await acts['gatoarbol']!({'en': '0'});
+        expect(rng.draws, 2);
+      },
+    );
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/camino-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in caminoWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${caminoTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
         );
     });
   });

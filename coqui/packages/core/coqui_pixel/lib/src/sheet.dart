@@ -177,9 +177,19 @@ class SheetThing {
     this.why,
     this.raw, {
     this.hand,
+    this.hintBox,
+    this.screenRect,
   });
 
   final String id;
+
+  /// El camino's (order 33b): the part of the touch box the hint frame and its twinkle are drawn round (`hintBox`,
+  /// `[x, y, w, h]`), where the box runs off the picture; touches still answer in [box]. Null for a thing with none.
+  final List<int>? hintBox;
+
+  /// El camino's (order 33b): the screen box of a set thing given as its corners (`screen`: `[x0, y0, x1, y1]`); the
+  /// same rectangle as [box]. Null when `screen` is a shape (the sun's, [screen]) or absent.
+  final List<int>? screenRect;
 
   /// El patio's (order 32b): the point the hint hand points at (`hand`, kit.js cosas: `hand`, given as `[x, y]`), when
   /// the box's middle is not the place; null for a thing with none (or one that gives it otherwise: El balcón's door).
@@ -255,7 +265,7 @@ class SheetAnchor {
   /// under `x`, `y - 1`). The room is built round the old picture, so it is the old place but where the sheet moves it.
   final List<num>? now;
 
-  /// The old screen position.
+  /// The old screen position; empty for a point the old scene had no place for (El camino's `arco`).
   final List<num> old;
   final String? what;
 
@@ -653,13 +663,18 @@ class SheetFrontPart {
     this.raw, {
     this.sortY,
     this.boxes,
+    this.insert,
   });
 
   /// The part's name in the set reference (`part(name, ...)`).
   final String name;
 
-  /// The old scene file's line (a number, or a string such as `"balcon.js:127"`).
-  final Object line;
+  /// The old scene file's line (a number, or a string such as `"balcon.js:127"`); null for a part that gives where it
+  /// goes in its [insert] words instead (El camino's).
+  final Object? line;
+
+  /// El camino's (order 33b): where the part's entry goes in the list the old `draw` sorts by y, in the sheet's words.
+  final String? insert;
 
   /// The old call it replaces, as the sheet quotes it.
   final String? replaces;
@@ -685,9 +700,18 @@ class SheetScreenPoint {
     this.nail,
     this.raw, {
     this.heights,
+    this.v,
+    this.radius,
   });
 
   final String name;
+
+  /// El camino's cat on the bench (`points.gato_banco.v`, order 33b): the depth the sheet's front test takes for
+  /// whoever is at this point, `v = (x + y) / R2` of the seat's front edge.
+  final double? v;
+
+  /// El camino's sun (`points.sol.radius`, order 33b): its radius in pixels.
+  final double? radius;
 
   /// The numbers of a point or a rectangle; empty for a list of points. A point that moves up and down (El patio's sun,
   /// order 32b) has its `x` only, and its rows are [heights].
@@ -701,7 +725,7 @@ class SheetScreenPoint {
       ? screen[0]
       : (throw SheetError('point "$name" is not an x with heights'));
 
-  /// A list of points (`[[x, y], ...]`), or null.
+  /// A list of points (`[[x, y], ...]`; El camino's clouds `[[x, y, size], ...]`), or null.
   final List<List<double>>? points;
 
   /// The old place, as the sheet writes it (a point, a rectangle or a list of points).
@@ -961,6 +985,21 @@ class SheetFlowerLeaves {
       stages[name] ?? (throw SheetError('flowerLeaves has no stage "$name"'));
 }
 
+/// Everyone leaving through a gate in a file (`sevan`, El camino's, order 33b: acts.sevan as the sheet's `moves` gives
+/// it): each one's [delay] in ticks after the first, and each one's two [points] on the screen, just inside the
+/// opening and just past it (a person's or an animal's feet, the frog's `q`); [a], [b]: the same, from the opening's
+/// middle in world units (a into the park, b towards its first post), as the sheet writes it.
+class SheetSevan {
+  SheetSevan._(this.delay, this.points, this.a, this.b, this.what, this.raw);
+
+  final Map<String, int> delay;
+  final Map<String, List<List<int>>> points;
+  final List<double> a;
+  final double b;
+  final String? what;
+  final Map<String, dynamic> raw;
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 /// A sheet: the data of a scene's set (`<id>-sheet.json`), page 12 section 5. Parsed from the text of the file, which the
@@ -1017,6 +1056,7 @@ class Sheet {
     this.hopsAll = const [],
     this.behind,
     this.flowerLeaves,
+    this.sevan,
   });
 
   /// Parses the text of a sheet. Throws [SheetError], naming where, when it is not a sheet.
@@ -1102,6 +1142,7 @@ class Sheet {
       'hops',
       'hopsAll',
       'flowerLeaves',
+      'sevan',
     };
     // El patio's `behind` (a part: what is drawn behind the set) is not El balcón's (a number, old and new)
     final behindPart =
@@ -1199,15 +1240,18 @@ class Sheet {
         for (final e in partsRaw.entries)
           e.key: () {
             final p = _obj(e.value, '$at.front.parts.${e.key}');
-            final line = _need(p, 'line', '$at.front.parts.${e.key}');
-            if (line is! int && line is! String) {
+            // El camino's parts (order 33b) give no line: their `insert` says where they go in the sorted list
+            final line = p.containsKey('insert')
+                ? p['line']
+                : _need(p, 'line', '$at.front.parts.${e.key}');
+            if (line != null && line is! int && line is! String) {
               throw SheetError(
                 '$at.front.parts.${e.key}.line: a number or a string was expected, found ${_what(line)}',
               );
             }
             return SheetFrontPart._(
               e.key,
-              line!,
+              line,
               _opt(
                 p,
                 'replaces',
@@ -1223,6 +1267,11 @@ class Sheet {
                 p,
                 'boxes',
                 (v) => _str(v, '$at.front.parts.${e.key}.boxes'),
+              ),
+              insert: _opt(
+                p,
+                'insert',
+                (v) => _str(v, '$at.front.parts.${e.key}.insert'),
               ),
             );
           }(),
@@ -1307,6 +1356,9 @@ class Sheet {
       behind: behindPart,
       flowerLeaves: m.containsKey('flowerLeaves')
           ? _readFlowerLeaves(m['flowerLeaves'], '$at.flowerLeaves')
+          : null,
+      sevan: m.containsKey('sevan')
+          ? _readSevan(m['sevan'], '$at.sevan')
           : null,
       raw: m,
       unknown: {
@@ -1416,6 +1468,9 @@ class Sheet {
 
   /// A flower's own leaves (`flowerLeaves`, El patio's), or null.
   final SheetFlowerLeaves? flowerLeaves;
+
+  /// Everyone leaving in a file (`sevan`, El camino's), or null.
+  final SheetSevan? sevan;
 
   /// A screen point of [screenPoints]. Throws [SheetError] when the sheet has none of that name.
   SheetScreenPoint screenPoint(String name) =>
@@ -1705,7 +1760,11 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
     );
   }
   SheetScreenShape? screen;
-  if (m.containsKey('screen')) {
+  List<int>? screenRect;
+  if (m['screen'] is List) {
+    // El camino's set things: the box's corners, x0, y0, x1, y1
+    screenRect = _ints(m['screen'], '$at.screen', length: 4);
+  } else if (m.containsKey('screen')) {
     final s = _obj(m['screen'], '$at.screen');
     screen = SheetScreenShape._(
       _nums(_need(s, 'circle', '$at.screen'), '$at.screen.circle', length: 3),
@@ -1729,6 +1788,8 @@ SheetThing _readThing(String id, Map<String, dynamic> m, String at) {
     m,
     // (El balcón's door gives its hand as an object, a point's name: kept in raw)
     hand: m['hand'] is List ? _ints(m['hand'], '$at.hand', length: 2) : null,
+    hintBox: _opt(m, 'hintBox', (v) => _ints(v, '$at.hintBox', length: 4)),
+    screenRect: screenRect,
   );
 }
 
@@ -1745,7 +1806,8 @@ SheetAnchor _readAnchor(
     m.containsKey('screen') || !m.containsKey('new')
         ? _doubles(_need(m, 'screen', at), '$at.screen', length: 2)
         : project(world),
-    _nums(_need(m, 'old', at), '$at.old', length: 2),
+    // a point the old scene had no place for (El camino's arch, order 33b) has no `old`: an empty list
+    _opt(m, 'old', (v) => _nums(v, '$at.old', length: 2)) ?? const <num>[],
     _opt(m, 'what', (v) => _str(v, '$at.what')),
     _opt(m, 'scale', (v) => _num(v, '$at.scale')),
     _opt(m, 'frog', (v) => _ints(v, '$at.frog', length: 2)),
@@ -1780,7 +1842,10 @@ SheetScreenPoint _readScreenPoint(
     many
         ? [
             for (var i = 0; i < sc.length; i++)
-              _doubles(sc[i], '$at.screen[$i]', length: 2),
+              // El camino's clouds (`nubes`, order 33b): x, y and a size each
+              _list(sc[i], '$at.screen[$i]').length == 3
+                  ? _doubles(sc[i], '$at.screen[$i]', length: 3)
+                  : _doubles(sc[i], '$at.screen[$i]', length: 2),
           ]
         : null,
     m['old'],
@@ -1789,6 +1854,34 @@ SheetScreenPoint _readScreenPoint(
     _opt(m, 'nail', (v) => _ints(v, '$at.nail', length: 2)),
     m,
     heights: heights,
+    v: _opt(m, 'v', (v) => _num(v, '$at.v').toDouble()),
+    radius: _opt(m, 'radius', (v) => _num(v, '$at.radius').toDouble()),
+  );
+}
+
+SheetSevan _readSevan(Object? v, String at) {
+  final m = _obj(v, at);
+  final d = _obj(_need(m, 'delay', at), '$at.delay');
+  final pts = _obj(_need(m, 'points', at), '$at.points');
+  return SheetSevan._(
+    {for (final e in d.entries) e.key: _int(e.value, '$at.delay.${e.key}')},
+    {
+      for (final e in pts.entries)
+        e.key: () {
+          final l = _list(e.value, '$at.points.${e.key}');
+          if (l.length != 2) {
+            throw SheetError('$at.points.${e.key}: two points were expected');
+          }
+          return [
+            for (var i = 0; i < 2; i++)
+              _ints(l[i], '$at.points.${e.key}[$i]', length: 2),
+          ];
+        }(),
+    },
+    _doubles(_need(m, 'a', at), '$at.a', length: 2),
+    _num(_need(m, 'b', at), '$at.b').toDouble(),
+    _opt(m, 'what', (v) => _str(v, '$at.what')),
+    m,
   );
 }
 
@@ -2126,10 +2219,13 @@ List<SheetRemap> _readRemapTable(Object? v, String at) {
         final p = '$at[$i]';
         final m = _obj(l[i], p);
         final kind = _str(_need(m, 'kind', p), '$p.kind');
-        const kinds = {'point': 2, 'cam': 4, 'crop': 4, 'x': 1};
+        // `numbers` (El camino's, order 33b): three counts a pair file writes (W.pajaros), no place
+        const kinds = {'point': 2, 'cam': 4, 'crop': 4, 'x': 1, 'numbers': 3};
         final n = kinds[kind];
         if (n == null) {
-          throw SheetError('$p.kind: "$kind" is not point, cam, crop or x');
+          throw SheetError(
+            '$p.kind: "$kind" is not point, cam, crop, x or numbers',
+          );
         }
         final t = _obj(_need(m, 'to', p), '$p.to');
         return SheetRemap._(

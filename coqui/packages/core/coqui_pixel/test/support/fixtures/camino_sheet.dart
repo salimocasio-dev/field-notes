@@ -1,0 +1,2575 @@
+// Made by tool/make_sheet_fixture.dart from docs/proyecto/pixel/camino-sheet.json. Do not edit.
+// ignore_for_file: lines_longer_than_80_chars
+
+/// El camino's sheet (order 33a), the text of the file, for the tests that run in a browser.
+const String caminoSheetJson = r'''{
+ "scene": "camino",
+ "made": "node docs/proyecto/pixel/camino-sheet-make.js, from camino-set.html (window.CAMINO_SET) and coqui/ref/escenas/camino/. Order 33a.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 4
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "pairPicture": [196, 104],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin; a box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]",
+  "floor": "the park is built round the old picture: a place on its ground keeps its screen place. A frog place q: the ground point under (q.x + 16, q.y + 25), new q = old q. A person's or an animal's place (x, y): the ground point under (x, y - 1), new (x, y) = old. So every ground position of camino.js (LUGAR, ranaEn, ninaEn, perroEn, enT, perroT, the acts' places), its stories and its pairs keeps its numbers, but for the few in moves and in remap (moved); the sheet names each one (spots, remap, code, moves) with its world point",
+  "relative": "what the old code draws or moves relative to a person, the frog, an animal, a small tree's foot or a mark (the birds at ARBOL + NIDO, the cat in a tree, the lit rings, the shaking leaves, what is carried, the leash, the dust, the snail by the dog, the bush at perroT(.46) + (16, 5), the bubbles) keeps its offsets",
+  "sky": "screen-space effects keep their old numbers: the stars of the happy endings (final12, final13, final14), the heart (heartAt), the birds flying up (W.vuelan)",
+  "view": "one view, zoom 1: the 196 x 216 window from x0 22, the old wide one",
+  "pair": "a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were"
+ },
+ "layout": {
+  "what": "a park on the world's axes, seen at the engine's 30 degrees (shadows to screen right): a path of trodden earth comes in from the picture's left edge along +x (down to the right) through the park's arch (two stone posts with caps, an iron arch over them), turns at the first mark and climbs along -y (up to the right) over seven flat stones, bends a little flatter and goes on past the big tree off the picture's right edge. Behind the path, at their old feet, the three small round trees; on its far side, in front of the middle one, the bench along the path, facing it; at its far end, on its far side, the big tree. The lawn is El frente's grass (the engine's GRASS ramp, calm, as El patio's); the horizon at row 100, El frente's far hills and day sky over it, its sun in the upper left of the sky, the old picture's three clouds in it (round 2)",
+  "lines": {
+   "path": "the path's middle line (world, PATH_PTS): from off the picture's left edge along +x through the arch to mark 0 (66, 182), then over marks 1 to 8 (up to the right, along -y to mark 4, a little flatter after) and on past the big tree off the picture's right edge; 0.6 either side of it (the frog's marks, ranaEn, on its far edge; Carmen's, ninaEn, on the lawn on our side; Canelo's, perroEn, on it)",
+   "arch": "the arch over the path's first leg: its opening's middle on the ground at screen (37, 168), its posts at (27, 173) and (47, 162), 2.62 high, the iron arch 0.36 over them; its opening faces +x (into the park down to the right, out of it up to the left)",
+   "bench": "the bench: its long side along y (parallel to the path's climb), facing the path (+x), on the path's far side in front of small tree 1, its middle on the ground at screen [91,133]"
+  },
+  "why": "the brief and page 11 decision 9: the set stands on the world's axes and is seen at the engine's angle; nothing is built square to the camera. The old path already climbed on a slant from the bottom left: its marks 0 to 4 lie on one -y line within 1 px, so the path runs along -y there; its first leg, through the arch, runs along +x, so that whoever leaves goes through the arch and on up the path off the picture's edge (sevan). The arch could not stand across the path's climb: the old picture's lower left holds Carmen, Luis, abuela, the frog and the dog at the end of story 14, and a post there would stand in front of one of them. The three small trees keep their old feet (the birds, the cat in them, Carmen's places by them are all relative to them): free-standing round trees, not a row (a row along -y through the middle one, trees=row in the set's address, puts the first tree's trunk behind the arch and the third's crown into the big tree's: see the report). Every place on the ground keeps its old screen point (rules.floor)",
+  "moved": [
+   "the big tree (round 2): built like the old one, at the picture's right: its foot 4 px right and 25 rows further back than the old (200, 128 to 204,103), its whole trunk inside the view, lawn between its foot and whoever stands before it (the frog with the basket, Canelo at the last marks, capped at x 188: moves); its broad crown runs off the picture's right and top edges (things.grande.hintBox for its hint frame)",
+   "the bench: along y, facing the path; its box [77,117,28,23] (old [97, 126, 32, 18]); the cat on it and the bird on it follow it (remap, moves)",
+   "the arch: over the path's first leg, its opening facing +x; its box [23,94,28,80] (old [22, 116, 36, 60]). The frog's place at the first tree (LUGAR.arbol0) moved left clear of its far post (moves)",
+   "unchanged: the small trees' feet, the marks, every bird's place, the frog's other places, every person's and animal's place but the cat on the bench"
+  ]
+ },
+ "behind": {
+  "what": "nothing: the sun is baked into the set's sky (El frente's); the birds that fly up (W.vuelan) fly up from the crowns they sit on, in front of them and of the sky, as the old",
+  "items": []
+ },
+ "setKey": {
+  "params": {
+   "gran": {
+    "values": ["1", "0"],
+    "fromW": "W.sinGran ? \"0\" : \"1\": the big tree (story 13, donde-esta-el-gato, is at the other end of the path: no big tree; the path, its stones and everything else are the same)"
+   }
+  },
+  "key": "gran, e.g. \"1\"",
+  "baked": [
+   {
+    "key": "1",
+    "query": "?gran=1"
+   },
+   {
+    "key": "0",
+    "query": "?gran=0"
+   }
+  ],
+  "bakedWhy": "order 06 found 9 states: the background (sinGran) and six keys of the sprite layer (arbusto: the bush, arrastra: the frog pulled off his feet, galleta: the biscuit, lit: the counted trees' rings, tumbo: the basket shaken, vuelan: the birds flown up). Only the big tree is the set's; the bush, the rings, the birds and the rest stay in the sprite layer, so these 2 baked states draw all 9 (and every review and level picture)"
+ },
+ "things": {
+  "luis": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (camino.js:64): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "carmen": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (camino.js:64): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "abuela": {
+   "sprite": true,
+   "why": "a person (today's sprite, drawn 1:1). caja(id) (camino.js:64): [x - 11, y - alto(id), 22, alto(id)], relative to where they stand: unchanged"
+  },
+  "ave00": {
+   "sprite": true,
+   "box": [53, 83, 15, 12],
+   "why": "a bird in small tree 0, place 0 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave01": {
+   "sprite": true,
+   "box": [70, 78, 15, 12],
+   "why": "a bird in small tree 0, place 1 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave02": {
+   "sprite": true,
+   "box": [62, 93, 15, 12],
+   "why": "a bird in small tree 0, place 2 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave10": {
+   "sprite": true,
+   "box": [95, 79, 15, 12],
+   "why": "a bird in small tree 1, place 0 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave11": {
+   "sprite": true,
+   "box": [112, 74, 15, 12],
+   "why": "a bird in small tree 1, place 1 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave12": {
+   "sprite": true,
+   "box": [104, 89, 15, 12],
+   "why": "a bird in small tree 1, place 2 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave20": {
+   "sprite": true,
+   "box": [137, 75, 15, 12],
+   "why": "a bird in small tree 2, place 0 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave21": {
+   "sprite": true,
+   "box": [154, 70, 15, 12],
+   "why": "a bird in small tree 2, place 1 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "ave22": {
+   "sprite": true,
+   "box": [146, 85, 15, 12],
+   "why": "a bird in small tree 2, place 2 (mkPajarito, drawn 15 x 12 at ARBOL + NIDO - (8, 6)): unchanged; the tree is where it was"
+  },
+  "perro": {
+   "sprite": true,
+   "why": "Canelo (KIT.mkPerro): box [x - 14, y - 20, 28, 22] at W.perro, unchanged"
+  },
+  "gato": {
+   "sprite": true,
+   "hand": "x + 12, y - 10",
+   "why": "the cat (mkGato): box [x - 12, y - 18, 24, 20] at W.gato (on the ground), unchanged; up a tree it is the tree's. Round 2: its hint hand at (x + 12, y - 10) (moves; the old: the box's middle): on the bench (106, 124) the hand from its middle reached Carmen's face (donde-esta-el-gato beats.10)"
+  },
+  "arbol0": {
+   "set": true,
+   "world": [-1.8902, 0.8567, 0, -0.8839, 1.863, 1.2657],
+   "box": [51, 74, 37, 47],
+   "screen": [51, 74, 88, 121],
+   "what": "small tree 0: its trunk and crown (still: at its height the wind moves no leaf a pixel)",
+   "old": {
+    "box": [53, 74, 34, 48]
+   },
+   "hand": [70, 108],
+   "handWhy": "the old hand point (the trunk, 12 rows over the foot). No point in the tree's box keeps the hand off every face at its asks and off the cat's tail, its face and the birds in the tree: the hand hangs 54 rows, and Luis waits under it (donde-esta-el-gato beats.32, 39, 70) as in the old picture (see checks: hand, as the old)"
+  },
+  "arbol1": {
+   "set": true,
+   "world": [-0.8839, -0.4759, 0, 0.068, 0.4759, 1.399],
+   "box": [95, 68, 35, 49],
+   "screen": [95, 68, 130, 117],
+   "what": "small tree 1",
+   "old": {
+    "box": [95, 70, 34, 48]
+   },
+   "hand": [104, 104],
+   "handWhy": "the trunk's left side, 12 rows over the foot (the old point 8 px right): there the hand is on no face at the tree's asks and off the cat's tail and face and the birds in the tree"
+  },
+  "arbol2": {
+   "set": true,
+   "world": [-0.0544, -1.9037, 0, 0.9791, -0.8703, 1.2435],
+   "box": [135, 66, 38, 47],
+   "screen": [135, 66, 173, 113],
+   "what": "small tree 2",
+   "old": {
+    "box": [137, 66, 34, 48]
+   },
+   "hand": [146, 100],
+   "handWhy": "as arbol1's: at the old point the hand lay on Luis's face by the big tree (h-camino beats.13), as in the old picture"
+  },
+  "banco": {
+   "set": true,
+   "world": [-0.0272, 1.5502, 0, 0.7343, 2.3117, 0.3997],
+   "box": [77, 117, 28, 23],
+   "screen": [77, 117, 105, 140],
+   "what": "the bench: its seat, backrest and legs",
+   "old": {
+    "box": [97, 126, 32, 18]
+   }
+  },
+  "grande": {
+   "set": true,
+   "world": [-0.2176, -4.569, 0, 1.9581, -2.3933, 3.02],
+   "box": [160, 0, 80, 108],
+   "screen": [160, 0, 240, 108],
+   "what": "the big tree: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk (gran 1). As the old, its box has no si: it stays when sinGran hides the tree (story 13 never names it)",
+   "old": {
+    "box": [160, 16, 58, 116]
+   },
+   "hintBox": [160, 12, 46, 96],
+   "hintWhy": "hintBox: the part of the touch box the hint frame shows (the frame and the twinkle of a thing are drawn round hintBox where it has one; the touch box answers the touches): the crown runs off the picture's right and top edges, as the old one's did",
+   "hand": [190, 51],
+   "handWhy": "the hint hand's point (new: the old had none, so its box's middle): in its hint box, under the crown's left side, left of the trunk: the hand hangs from it right of Luis's face (he waits at 174, 138)"
+  },
+  "porton": {
+   "set": true,
+   "world": [0.3536, 4.8682, 0, 1.1151, 5.6297, 2.9312],
+   "box": [23, 94, 28, 80],
+   "screen": [23, 94, 51, 174],
+   "what": "the arch: its two posts and the iron arch over them",
+   "old": {
+    "box": [22, 116, 36, 60]
+   }
+  },
+  "camino": {
+   "set": true,
+   "ground": true,
+   "what": "the path (the ground: trodden earth, the stones): the box round it on the picture, as the old one held its path",
+   "screen": [0, 115, 240, 190],
+   "world": [-2.2845, -2.2845, 0, 4.2426, 4.2426, -1.9985],
+   "box": [0, 115, 240, 75],
+   "old": {
+    "box": [30, 128, 170, 76]
+   }
+  },
+  "parque": {
+   "set": true,
+   "ground": true,
+   "what": "the park: the lawn from the horizon (row 100) to the bottom, the whole width: last in the hit order",
+   "old": {
+    "box": [0, 100, 240, 116]
+   },
+   "box": [0, 100, 240, 116],
+   "world": [-0.8703, -0.8703, 0, 5.6569, 5.6569, -0.1776]
+  }
+ },
+ "spots": {
+  "frog.inicio": {
+   "world": [1.6862, 4.9497, 0],
+   "new": [44, 148],
+   "scale": 0.96,
+   "old": [44, 148],
+   "what": "LUGAR.inicio: the frog (ranaEn(0))"
+  },
+  "frog.centro": {
+   "world": [4.7322, 4.9497, 0],
+   "new": [100, 176],
+   "scale": 1,
+   "old": [100, 176],
+   "what": "LUGAR.centro: the frog"
+  },
+  "frog.banco": {
+   "world": [1.4142, 3.046, 0],
+   "new": [74, 128],
+   "scale": 0.86,
+   "old": [74, 128],
+   "what": "LUGAR.banco: the frog"
+  },
+  "frog.arbol0": {
+   "world": [0.3536, 3.3452, 0],
+   "new": [49, 121],
+   "scale": 0.8,
+   "old": [44, 122],
+   "what": "LUGAR.arbol0: the frog at the first small tree (moved: see moves)"
+  },
+  "frog.arbol1": {
+   "world": [2.5021, 1.3054, 0],
+   "new": [126, 122],
+   "scale": 0.8,
+   "old": [126, 122],
+   "what": "LUGAR.arbol1: the frog"
+  },
+  "frog.arbol2": {
+   "world": [3.3724, 0, 0],
+   "new": [166, 118],
+   "scale": 0.8,
+   "old": [166, 118],
+   "what": "LUGAR.arbol2: the frog"
+  },
+  "frog.gran": {
+   "world": [3.8075, 0.4351, 0],
+   "new": [166, 126],
+   "scale": 0.84,
+   "old": [166, 126],
+   "what": "LUGAR.gran: the frog"
+  },
+  "rana.0": {
+   "world": [1.6862, 4.9497, 0],
+   "new": [44, 148],
+   "scale": 0.96,
+   "old": [44, 148],
+   "what": "ranaEn(0): the frog at mark 0, on the path's far edge"
+  },
+  "nina.0": {
+   "world": [3.7531, 6.1464, 0],
+   "new": [76, 204],
+   "old": [76, 204],
+   "what": "ninaEn(0): Carmen at mark 0, on the lawn on our side of the path"
+  },
+  "perro.0": {
+   "world": [2.7196, 3.8075, 0],
+   "new": [100, 173],
+   "old": [100, 173],
+   "what": "perroEn(0): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.1": {
+   "world": [1.659, 4.2154, 0],
+   "new": [57, 141],
+   "scale": 0.95,
+   "old": [57, 141],
+   "what": "ranaEn(1): the frog at mark 1, on the path's far edge"
+  },
+  "nina.1": {
+   "world": [3.7259, 5.4121, 0],
+   "new": [89, 197],
+   "old": [89, 197],
+   "what": "ninaEn(1): Carmen at mark 1, on the lawn on our side of the path"
+  },
+  "perro.1": {
+   "world": [2.6924, 3.0732, 0],
+   "new": [113, 166],
+   "old": [113, 166],
+   "what": "perroEn(1): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.2": {
+   "world": [1.6318, 3.4811, 0],
+   "new": [70, 134],
+   "scale": 0.93,
+   "old": [70, 134],
+   "what": "ranaEn(2): the frog at mark 2, on the path's far edge"
+  },
+  "nina.2": {
+   "world": [3.6987, 4.6778, 0],
+   "new": [102, 190],
+   "old": [102, 190],
+   "what": "ninaEn(2): Carmen at mark 2, on the lawn on our side of the path"
+  },
+  "perro.2": {
+   "world": [2.6652, 2.3389, 0],
+   "new": [126, 159],
+   "old": [126, 159],
+   "what": "perroEn(2): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.3": {
+   "world": [1.659, 2.8012, 0],
+   "new": [83, 128],
+   "scale": 0.91,
+   "old": [83, 128],
+   "what": "ranaEn(3): the frog at mark 3, on the path's far edge"
+  },
+  "nina.3": {
+   "world": [3.7259, 3.9979, 0],
+   "new": [115, 184],
+   "old": [115, 184],
+   "what": "ninaEn(3): Carmen at mark 3, on the lawn on our side of the path"
+  },
+  "perro.3": {
+   "world": [2.6924, 1.659, 0],
+   "new": [139, 153],
+   "old": [139, 153],
+   "what": "perroEn(3): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.4": {
+   "world": [1.6862, 2.1213, 0],
+   "new": [96, 122],
+   "scale": 0.9,
+   "old": [96, 122],
+   "what": "ranaEn(4): the frog at mark 4, on the path's far edge"
+  },
+  "nina.4": {
+   "world": [3.7531, 3.318, 0],
+   "new": [128, 178],
+   "old": [128, 178],
+   "what": "ninaEn(4): Carmen at mark 4, on the lawn on our side of the path"
+  },
+  "perro.4": {
+   "world": [2.7196, 0.9791, 0],
+   "new": [152, 147],
+   "old": [152, 147],
+   "what": "perroEn(4): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.5": {
+   "world": [1.7678, 1.4958, 0],
+   "new": [109, 117],
+   "scale": 0.89,
+   "old": [109, 117],
+   "what": "ranaEn(5): the frog at mark 5, on the path's far edge"
+  },
+  "nina.5": {
+   "world": [3.8347, 2.6924, 0],
+   "new": [141, 173],
+   "old": [141, 173],
+   "what": "ninaEn(5): Carmen at mark 5, on the lawn on our side of the path"
+  },
+  "perro.5": {
+   "world": [2.8012, 0.3536, 0],
+   "new": [165, 142],
+   "old": [165, 142],
+   "what": "perroEn(5): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.6": {
+   "world": [1.8494, 0.8703, 0],
+   "new": [122, 112],
+   "scale": 0.87,
+   "old": [122, 112],
+   "what": "ranaEn(6): the frog at mark 6, on the path's far edge"
+  },
+  "nina.6": {
+   "world": [3.9163, 2.0669, 0],
+   "new": [154, 168],
+   "old": [154, 168],
+   "what": "ninaEn(6): Carmen at mark 6, on the lawn on our side of the path"
+  },
+  "perro.6": {
+   "world": [2.8828, -0.272, 0],
+   "new": [178, 137],
+   "old": [178, 137],
+   "what": "perroEn(6): Canelo a little ahead of the frog, on the path"
+  },
+  "rana.7": {
+   "world": [1.9853, 0.2992, 0],
+   "new": [135, 108],
+   "scale": 0.86,
+   "old": [135, 108],
+   "what": "ranaEn(7): the frog at mark 7, on the path's far edge"
+  },
+  "nina.7": {
+   "world": [4.0523, 1.4958, 0],
+   "new": [167, 164],
+   "old": [167, 164],
+   "what": "ninaEn(7): Carmen at mark 7, on the lawn on our side of the path"
+  },
+  "perro.7": {
+   "world": [2.9372, -0.7615, 0],
+   "new": [188, 133],
+   "old": [191, 133],
+   "what": "perroEn(7): Canelo a little ahead of the frog, on the path (moved: x at most 188, see moves)"
+  },
+  "rana.8": {
+   "world": [2.1757, -0.2176, 0],
+   "new": [148, 105],
+   "scale": 0.84,
+   "old": [148, 105],
+   "what": "ranaEn(8): the frog at mark 8, on the path's far edge"
+  },
+  "nina.8": {
+   "world": [4.2426, 0.9791, 0],
+   "new": [180, 161],
+   "old": [180, 161],
+   "what": "ninaEn(8): Carmen at mark 8, on the lawn on our side of the path"
+  },
+  "perro.8": {
+   "world": [2.774, -0.9247, 0],
+   "new": [188, 130],
+   "old": [204, 130],
+   "what": "perroEn(8): Canelo a little ahead of the frog, on the path (moved: x at most 188, see moves)"
+  },
+  "inicio12.luis": {
+   "world": [2.8284, -0.1088, 0],
+   "new": [174, 138],
+   "old": [174, 138],
+   "what": "inicio12: Luis, by the big tree"
+  },
+  "final12.carmen": {
+   "world": [2.8828, 0.7071, 0],
+   "new": [160, 146],
+   "old": [160, 146],
+   "what": "final12: Carmen sits down by the big tree"
+  },
+  "inicio13.luis": {
+   "world": [2.5021, 5.6569, 0],
+   "new": [62, 188],
+   "old": [62, 188],
+   "what": "inicio13: Luis with the leash"
+  },
+  "inicio13.carmen": {
+   "world": [3.8619, 5.3849, 0],
+   "new": [92, 198],
+   "old": [92, 198],
+   "what": "inicio13, carmenvuelve: Carmen with the basket"
+  },
+  "inicio13.perro": {
+   "world": [3.2636, 6.8535, 0],
+   "new": [54, 206],
+   "old": [54, 206],
+   "what": "inicio13, perrocome, agarra, perrocome2: Canelo on the leash, by Luis"
+  },
+  "escapa.perro": {
+   "world": [2.8284, 1.1966, 0],
+   "new": [150, 150],
+   "old": [150, 150],
+   "what": "escapa: Canelo runs loose to here"
+  },
+  "final13.carmen": {
+   "world": [5.4937, 3.5355, 0],
+   "new": [156, 196],
+   "old": [156, 196],
+   "what": "final13: Carmen"
+  },
+  "inicio14.abuela": {
+   "world": [2.2845, 5.2217, 0],
+   "new": [66, 182],
+   "old": [66, 182],
+   "what": "inicio14: abuela waits at the path's turn, inside the arch (mark 0)"
+  },
+  "inicio14.luis": {
+   "world": [3.8619, 5.6025, 0],
+   "new": [88, 200],
+   "old": [88, 200],
+   "what": "inicio14: Luis"
+  },
+  "inicio14.carmen": {
+   "world": [2.8284, 6.8535, 0],
+   "new": [46, 202],
+   "old": [46, 202],
+   "what": "inicio14: Carmen"
+  },
+  "carmenva.0": {
+   "world": [0.1632, 1.9037, 0],
+   "new": [88, 132],
+   "old": [88, 132],
+   "what": "carmenva: Carmen at tree 0 (ARBOL[0] + 18, 12)"
+  },
+  "carmenva.1": {
+   "world": [1.0879, 0.5439, 0],
+   "new": [130, 128],
+   "old": [130, 128],
+   "what": "carmenva: Carmen at tree 1 (ARBOL[1] + 18, 12)"
+  },
+  "carmenva.2": {
+   "world": [2.0125, -0.8159, 0],
+   "new": [172, 124],
+   "old": [172, 124],
+   "what": "carmenva: Carmen at tree 2 (ARBOL[2] + 18, 12)"
+  }
+ },
+ "lugar": {
+  "inicio": {
+   "spot": "frog.inicio",
+   "q": [44, 148],
+   "scale": 0.96,
+   "old": [44, 148]
+  },
+  "centro": {
+   "spot": "frog.centro",
+   "q": [100, 176],
+   "scale": 1,
+   "old": [100, 176]
+  },
+  "banco": {
+   "spot": "frog.banco",
+   "q": [74, 128],
+   "scale": 0.86,
+   "old": [74, 128]
+  },
+  "arbol0": {
+   "spot": "frog.arbol0",
+   "q": [49, 121],
+   "scale": 0.8,
+   "old": [44, 122]
+  },
+  "arbol1": {
+   "spot": "frog.arbol1",
+   "q": [126, 122],
+   "scale": 0.8,
+   "old": [126, 122]
+  },
+  "arbol2": {
+   "spot": "frog.arbol2",
+   "q": [166, 118],
+   "scale": 0.8,
+   "old": [166, 118]
+  },
+  "gran": {
+   "spot": "frog.gran",
+   "q": [166, 126],
+   "scale": 0.84,
+   "old": [166, 126]
+  }
+ },
+ "hops": [],
+ "hopsWhat": "each pair of LUGAR places whose hop count (kit.js acts.ir: round(d / 30), 1 to 4, d the screen distance between the two frog points) is not the old one; every other pair keeps its count (hopsAll: all 21 pairs). ranaEn's marks are walked with the hop counts the acts give (ranaa, va), whatever the distance",
+ "hopsAll": [
+  {
+   "a": "inicio",
+   "b": "centro",
+   "old": 2,
+   "new": 2,
+   "dOld": 62.61,
+   "dNew": 62.61
+  },
+  {
+   "a": "inicio",
+   "b": "banco",
+   "old": 1,
+   "new": 1,
+   "dOld": 36.06,
+   "dNew": 36.06
+  },
+  {
+   "a": "inicio",
+   "b": "arbol0",
+   "old": 1,
+   "new": 1,
+   "dOld": 26,
+   "dNew": 27.46
+  },
+  {
+   "a": "inicio",
+   "b": "arbol1",
+   "old": 3,
+   "new": 3,
+   "dOld": 86.02,
+   "dNew": 86.02
+  },
+  {
+   "a": "inicio",
+   "b": "arbol2",
+   "old": 4,
+   "new": 4,
+   "dOld": 125.63,
+   "dNew": 125.63
+  },
+  {
+   "a": "inicio",
+   "b": "gran",
+   "old": 4,
+   "new": 4,
+   "dOld": 123.97,
+   "dNew": 123.97
+  },
+  {
+   "a": "centro",
+   "b": "banco",
+   "old": 2,
+   "new": 2,
+   "dOld": 54.59,
+   "dNew": 54.59
+  },
+  {
+   "a": "centro",
+   "b": "arbol0",
+   "old": 3,
+   "new": 3,
+   "dOld": 77.79,
+   "dNew": 75.01
+  },
+  {
+   "a": "centro",
+   "b": "arbol1",
+   "old": 2,
+   "new": 2,
+   "dOld": 59.93,
+   "dNew": 59.93
+  },
+  {
+   "a": "centro",
+   "b": "arbol2",
+   "old": 3,
+   "new": 3,
+   "dOld": 87.86,
+   "dNew": 87.86
+  },
+  {
+   "a": "centro",
+   "b": "gran",
+   "old": 3,
+   "new": 3,
+   "dOld": 82.8,
+   "dNew": 82.8
+  },
+  {
+   "a": "banco",
+   "b": "arbol0",
+   "old": 1,
+   "new": 1,
+   "dOld": 30.59,
+   "dNew": 25.96
+  },
+  {
+   "a": "banco",
+   "b": "arbol1",
+   "old": 2,
+   "new": 2,
+   "dOld": 52.35,
+   "dNew": 52.35
+  },
+  {
+   "a": "banco",
+   "b": "arbol2",
+   "old": 3,
+   "new": 3,
+   "dOld": 92.54,
+   "dNew": 92.54
+  },
+  {
+   "a": "banco",
+   "b": "gran",
+   "old": 3,
+   "new": 3,
+   "dOld": 92.02,
+   "dNew": 92.02
+  },
+  {
+   "a": "arbol0",
+   "b": "arbol1",
+   "old": 3,
+   "new": 3,
+   "dOld": 82,
+   "dNew": 77.01
+  },
+  {
+   "a": "arbol0",
+   "b": "arbol2",
+   "old": 4,
+   "new": 4,
+   "dOld": 122.07,
+   "dNew": 117.04
+  },
+  {
+   "a": "arbol0",
+   "b": "gran",
+   "old": 4,
+   "new": 4,
+   "dOld": 122.07,
+   "dNew": 117.11
+  },
+  {
+   "a": "arbol1",
+   "b": "arbol2",
+   "old": 1,
+   "new": 1,
+   "dOld": 40.2,
+   "dNew": 40.2
+  },
+  {
+   "a": "arbol1",
+   "b": "gran",
+   "old": 1,
+   "new": 1,
+   "dOld": 40.2,
+   "dNew": 40.2
+  },
+  {
+   "a": "arbol2",
+   "b": "gran",
+   "old": 1,
+   "new": 1,
+   "dOld": 8,
+   "dNew": 8
+  }
+ ],
+ "points": {
+  "arbol.0": {
+   "screen": [70, 120],
+   "old": [70, 120],
+   "world": [-0.9247, 1.795, 0],
+   "what": "ARBOL[0]: the foot of small tree 0 (unchanged): the birds (NIDO), the cat in it (cara, cola), the lit ring, the shaking leaves and Carmen's place at it (carmenva) are all relative to it"
+  },
+  "arbol.1": {
+   "screen": [112, 116],
+   "old": [112, 116],
+   "world": [0, 0.4351, 0],
+   "what": "ARBOL[1]: the foot of small tree 1 (unchanged): the birds (NIDO), the cat in it (cara, cola), the lit ring, the shaking leaves and Carmen's place at it (carmenva) are all relative to it"
+  },
+  "arbol.2": {
+   "screen": [154, 112],
+   "old": [154, 112],
+   "world": [0.9247, -0.9247, 0],
+   "what": "ARBOL[2]: the foot of small tree 2 (unchanged): the birds (NIDO), the cat in it (cara, cola), the lit ring, the shaking leaves and Carmen's place at it (carmenva) are all relative to it"
+  },
+  "nido": {
+   "screen": [
+    [-9, -31],
+    [8, -36],
+    [0, -21]
+   ],
+   "old": [
+    [-9, -31],
+    [8, -36],
+    [0, -21]
+   ],
+   "what": "NIDO: where up to three birds sit in a small tree, from its foot (unchanged): each bird on the crown's leaves"
+  },
+  "marca.0": {
+   "screen": [66, 182],
+   "old": [66, 182],
+   "world": [2.3389, 5.2761, 0],
+   "what": "MARCA[0]: the path's turn inside the arch"
+  },
+  "marca.1": {
+   "screen": [79, 175],
+   "old": [79, 175],
+   "world": [2.3117, 4.5418, 0],
+   "what": "MARCA[1]: a stone in the path"
+  },
+  "marca.2": {
+   "screen": [92, 168],
+   "old": [92, 168],
+   "world": [2.2845, 3.8075, 0],
+   "what": "MARCA[2]: a stone in the path"
+  },
+  "marca.3": {
+   "screen": [105, 162],
+   "old": [105, 162],
+   "world": [2.3117, 3.1276, 0],
+   "what": "MARCA[3]: a stone in the path"
+  },
+  "marca.4": {
+   "screen": [118, 156],
+   "old": [118, 156],
+   "world": [2.3389, 2.4477, 0],
+   "what": "MARCA[4]: a stone in the path"
+  },
+  "marca.5": {
+   "screen": [131, 151],
+   "old": [131, 151],
+   "world": [2.4205, 1.8222, 0],
+   "what": "MARCA[5]: a stone in the path"
+  },
+  "marca.6": {
+   "screen": [144, 146],
+   "old": [144, 146],
+   "world": [2.5021, 1.1966, 0],
+   "what": "MARCA[6]: a stone in the path"
+  },
+  "marca.7": {
+   "screen": [157, 142],
+   "old": [157, 142],
+   "world": [2.6381, 0.6255, 0],
+   "what": "MARCA[7]: a stone in the path"
+  },
+  "marca.8": {
+   "screen": [170, 139],
+   "old": [170, 139],
+   "world": [2.8284, 0.1088, 0],
+   "what": "MARCA[8]: before the big tree"
+  },
+  "gran": {
+   "screen": [204, 103],
+   "old": [200, 128],
+   "world": [1.795, -2.774, 0],
+   "what": "the big tree's foot (GRAN, used only by the old background and its box): 4 px, -25 rows from the old"
+  },
+  "arco": {
+   "screen": [37, 167.5],
+   "world": [0.7615, 5.2761, 0],
+   "posts": [
+    [26.89, 172.56],
+    [47.11, 162.44]
+   ],
+   "what": "the arch: the middle of its opening on the ground (the cat sits there in d-corre, 46, 172), its two posts' feet (A, down to the left; B, up to the right)"
+  },
+  "gato_banco": {
+   "screen": [92, 123],
+   "old": [113, 134],
+   "v": 2.1538,
+   "what": "the cat on the bench (story files d-corre, h-camino beats.1, cual-camino gato.si: x 113, y 134 -> remap): its lowest pixels on the seat's top; drawn after the bench's entry in the sorted list (front.banco), so no shadow on the lawn (shadows.gato)"
+  },
+  "ave_banco": {
+   "screen": [81, 112],
+   "old": [106, 117],
+   "what": "the bird on the bench (W.avebanco): drawn at (x, y) 15 x 12, its feet on the seat's back plank (moves)"
+  },
+  "corazon": {
+   "screen": [110, 30],
+   "old": [110, 30],
+   "what": "heartAt: the heart of a happy ending, in the sky (unchanged)"
+  },
+  "sol": {
+   "screen": [38, 47],
+   "radius": 9,
+   "what": "the sun: baked into the set's sky (El frente's colours), left of the middle (every shadow falls to the right), round 3 under the corner boards' place and left of every answer card's frame, whole inside the wide view; no story touches it or names its place"
+  },
+  "nubes": {
+   "screen": [
+    [128, 6, 0.7],
+    [140, 24, 0.8],
+    [120, 44, 0.8]
+   ],
+   "old": [
+    [36, 16, 1],
+    [112, 9, 0.7],
+    [168, 26, 0.8]
+   ],
+   "what": "the old picture's three clouds (x, y, size: engine.js sky()), baked into the set's sky as El patio's, each moved clear of the sun and of the crowns; no story names them"
+  }
+ },
+ "views": {
+  "wide": {
+   "zoom": 1,
+   "x0": 22,
+   "world": [2.0669, 2.0669, 0],
+   "region": null,
+   "old": [22, 0, 196, 216],
+   "what": "the park: the arch, the path with its stones, the three small trees, the bench, the big tree, the sky"
+  }
+ },
+ "remap": [
+  {
+   "kind": "cam",
+   "old": [22, 30, 196, 104],
+   "uses": ["cual-camino.json parque.no.cam"],
+   "to": {
+    "pictures": ["parque.no"]
+   },
+   "crops": {
+    "parque.no": {
+     "scene": "patio",
+     "what": "drawn by El patio (its sheet's picture parque.no): listed here because the pair's other side is this scene's"
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [22, 84, 196, 104],
+   "uses": ["cual-camino.json parque.si.cam"],
+   "to": {
+    "pictures": ["parque.si"]
+   },
+   "crops": {
+    "parque.si": {
+     "crop": [22, 84, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [40, 120, 150, 79.6],
+   "uses": ["cual-camino.json camina.si.cam", "cual-camino.json camina.no.cam", "cual-camino.json espera.si.cam", "cual-camino.json espera.no.cam"],
+   "to": {
+    "pictures": ["camina.si", "camina.no", "espera.si", "espera.no"]
+   },
+   "crops": {
+    "camina.si": {
+     "crop": [17, 108, 196, 104],
+     "zoom": 1
+    },
+    "camina.no": {
+     "crop": [17, 108, 196, 104],
+     "zoom": 1
+    },
+    "espera.si": {
+     "crop": [17, 108, 196, 104],
+     "zoom": 1
+    },
+    "espera.no": {
+     "crop": [17, 108, 196, 104],
+     "zoom": 1
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [58, 58, 113, 60],
+   "uses": ["cual-camino.json hay.si.cam", "cual-camino.json hay.no.cam"],
+   "to": {
+    "pictures": ["hay.si", "hay.no"]
+   },
+   "crops": {
+    "hay.si": {
+     "crop": [64, 62, 98, 52],
+     "zoom": 2
+    },
+    "hay.no": {
+     "crop": [64, 62, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [62, 60, 100, 53.1],
+   "uses": ["cual-camino.json uno.si.cam", "cual-camino.json uno.no.cam", "cual-camino.json dos.si.cam", "cual-camino.json dos.no.cam", "cual-camino.json tres.si.cam", "cual-camino.json tres.no.cam"],
+   "to": {
+    "pictures": ["uno.si", "uno.no", "dos.si", "dos.no", "tres.si", "tres.no"]
+   },
+   "crops": {
+    "uno.si": {
+     "crop": [63, 61, 98, 52],
+     "zoom": 2
+    },
+    "uno.no": {
+     "crop": [63, 61, 98, 52],
+     "zoom": 2
+    },
+    "dos.si": {
+     "crop": [63, 61, 98, 52],
+     "zoom": 2
+    },
+    "dos.no": {
+     "crop": [63, 61, 98, 52],
+     "zoom": 2
+    },
+    "tres.si": {
+     "crop": [63, 61, 98, 52],
+     "zoom": 2
+    },
+    "tres.no": {
+     "crop": [63, 61, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [62, 96, 100, 53.1],
+   "uses": ["cual-camino.json gato.si.cam", "cual-camino.json gato.no.cam"],
+   "to": {
+    "pictures": ["gato.si", "gato.no"]
+   },
+   "crops": {
+    "gato.si": {
+     "crop": [64, 98, 98, 52],
+     "zoom": 2
+    },
+    "gato.no": {
+     "crop": [64, 98, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [70, 128, 113, 60],
+   "uses": [
+    "cual-camino.json perro.si.cam",
+    "cual-camino.json perro.no.cam",
+    "cual-camino.json corre.si.cam",
+    "cual-camino.json corre.no.cam",
+    "cual-camino.json rápido.si.cam",
+    "cual-camino.json rápido.no.cam",
+    "cual-camino.json despacio.si.cam",
+    "cual-camino.json despacio.no.cam"
+   ],
+   "to": {
+    "pictures": ["perro.si", "perro.no", "corre.si", "corre.no", "rapido.si", "rapido.no", "despacio.si", "despacio.no"]
+   },
+   "crops": {
+    "perro.si": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "perro.no": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "corre.si": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "corre.no": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "rapido.si": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "rapido.no": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "despacio.si": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    },
+    "despacio.no": {
+     "crop": [75, 135, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [78, 118, 75, 39.8],
+   "uses": [
+    "cual-camino.json árbol.no.cam"
+   ],
+   "to": {
+    "pictures": ["arbol.no"]
+   },
+   "crops": {
+    "arbol.no": {
+     "crop": [64, 117, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "cam",
+   "old": [112, 62, 100, 53.1],
+   "uses": [
+    "cual-camino.json árbol.si.cam"
+   ],
+   "to": {
+    "pictures": ["arbol.si"]
+   },
+   "crops": {
+    "arbol.si": {
+     "crop": [108, 62, 98, 52],
+     "zoom": 2
+    }
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [79.95, 120, 72.09, 79.6],
+   "uses": [
+    "nivel.js NV corre.p2"
+   ],
+   "to": {
+    "pictures": ["camina.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [87.33, 58, 54.34, 60],
+   "uses": [
+    "nivel.js NV dos.p3"
+   ],
+   "to": {
+    "pictures": ["hay.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [87.95, 60, 48.09, 53.1],
+   "uses": [
+    "nivel.js NV dos.p0",
+    "nivel.js NV dos.p1",
+    "nivel.js NV dos.p2"
+   ],
+   "to": {
+    "pictures": ["dos.si", "uno.si", "tres.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [87.95, 96, 48.09, 53.1],
+   "uses": [
+    "nivel.js NV perro.p2"
+   ],
+   "to": {
+    "pictures": ["gato.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [99.33, 128, 54.34, 60],
+   "uses": [
+    "nivel.js NV perro.p0",
+    "nivel.js NV perro.p1",
+    "nivel.js NV corre.p0",
+    "nivel.js NV corre.p1",
+    "nivel.js NV corre.p3",
+    "nivel.js NV rápido.p0",
+    "nivel.js NV rápido.p1",
+    "nivel.js NV rápido.p2",
+    "nivel.js NV rápido.p3"
+   ],
+   "to": {
+    "pictures": ["perro.si", "perro.no", "corre.si", "corre.no", "despacio.si", "rapido.si", "rapido.no", "despacio.no"],
+    "level": true
+   }
+  },
+  {
+   "kind": "crop",
+   "old": [137.95, 62, 48.09, 53.1],
+   "uses": [
+    "nivel.js NV perro.p3"
+   ],
+   "to": {
+    "pictures": ["arbol.si"],
+    "level": true
+   }
+  },
+  {
+   "kind": "numbers",
+   "old": [0, 0, 0],
+   "uses": ["cual-camino.json gato.no.set.pajaros"],
+   "to": {
+    "none": true
+   },
+   "what": "W.pajaros: how many birds sit in each small tree (counts, not a place)"
+  },
+  {
+   "kind": "numbers",
+   "old": [0, 1, 0],
+   "uses": ["cual-camino.json uno.si.set.pajaros", "cual-camino.json dos.no.set.pajaros"],
+   "to": {
+    "none": true
+   },
+   "what": "W.pajaros: how many birds sit in each small tree (counts, not a place)"
+  },
+  {
+   "kind": "numbers",
+   "old": [0, 2, 0],
+   "uses": ["cual-camino.json dos.si.set.pajaros", "cual-camino.json tres.no.set.pajaros"],
+   "to": {
+    "none": true
+   },
+   "what": "W.pajaros: how many birds sit in each small tree (counts, not a place)"
+  },
+  {
+   "kind": "numbers",
+   "old": [0, 3, 0],
+   "uses": ["cual-camino.json uno.no.set.pajaros", "cual-camino.json tres.si.set.pajaros"],
+   "to": {
+    "none": true
+   },
+   "what": "W.pajaros: how many birds sit in each small tree (counts, not a place)"
+  },
+  {
+   "kind": "point",
+   "old": [-16, -27],
+   "uses": [
+    "cual-camino.json perro.si.set.cq",
+    "cual-camino.json perro.no.set.cq",
+    "cual-camino.json gato.si.set.cq",
+    "cual-camino.json gato.no.set.cq",
+    "cual-camino.json árbol.si.set.cq",
+    "cual-camino.json árbol.no.set.cq",
+    "cual-camino.json parque.si.set.cq",
+    "cual-camino.json camina.si.set.cq",
+    "cual-camino.json camina.no.set.cq",
+    "cual-camino.json corre.si.set.cq",
+    "cual-camino.json corre.no.set.cq",
+    "cual-camino.json espera.si.set.cq",
+    "cual-camino.json espera.no.set.cq",
+    "cual-camino.json rápido.si.set.cq",
+    "cual-camino.json rápido.no.set.cq",
+    "cual-camino.json despacio.si.set.cq",
+    "cual-camino.json despacio.no.set.cq",
+    "cual-camino.json hay.si.set.cq",
+    "cual-camino.json hay.no.set.cq",
+    "cual-camino.json uno.si.set.cq",
+    "cual-camino.json uno.no.set.cq",
+    "cual-camino.json dos.si.set.cq",
+    "cual-camino.json dos.no.set.cq",
+    "cual-camino.json tres.si.set.cq",
+    "cual-camino.json tres.no.set.cq"
+   ],
+   "to": {
+    "none": true
+   },
+   "what": "the frog out of the picture (vis 0): not a place"
+  },
+  {
+   "kind": "point",
+   "old": [0, 0],
+   "uses": ["cual-camino.json hay.si.set.gato"],
+   "to": {
+    "none": true
+   },
+   "what": "the cat up small tree 1 (en 1): its x, y are not used (the tree's place is ARBOL[1])"
+  },
+  {
+   "kind": "point",
+   "old": [46, 172],
+   "uses": ["d-corre.json beats.26"],
+   "to": {
+    "floor": [1.1966, 5.2217, 0]
+   },
+   "new": [46, 172],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [70, 186],
+   "uses": ["d-corre.json beats.27"],
+   "to": {
+    "floor": [2.6109, 5.3305, 0]
+   },
+   "new": [70, 186],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [88, 134],
+   "uses": ["d-corre.json beats.49"],
+   "to": {
+    "floor": [0.8703, 3.046, 0]
+   },
+   "new": [80, 149],
+   "moved": true,
+   "why": "round 4: Canelo barking at the cat in the first tree (d-corre beats.49): 8 px left and 15 rows down, before the bench's left end with lawn between (the bench moved along the path and up: at the old point he stood in its foot)",
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [96, 30],
+   "uses": [
+    "h-camino.json beats.5.set.respEn"
+   ],
+   "to": {
+    "screen": [134, 14]
+   },
+   "new": [134, 14],
+   "moved": true,
+   "why": "round 2: the answer cards where acts.inicio12 puts them (moves), their frames inside the view with 2 px to spare",
+   "what": "W.respEn: the answer cards in the sky (juego.js respBox: centred at x, their top at y): screen, moved"
+  },
+  {
+   "kind": "point",
+   "old": [98, 170],
+   "uses": ["cual-camino.json camina.no.set.polvo"],
+   "to": {
+    "floor": [2.5021, 3.6987, 0]
+   },
+   "new": [98, 170],
+   "what": "on the ground (the dust of a run, the snail): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [100, 174],
+   "uses": ["cual-camino.json espera.no.set.polvo"],
+   "to": {
+    "floor": [2.774, 3.8619, 0]
+   },
+   "new": [100, 174],
+   "what": "on the ground (the dust of a run, the snail): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [102, 185],
+   "uses": [
+    "cual-camino.json rápido.no.set.caracol",
+    "cual-camino.json despacio.si.set.caracol"
+   ],
+   "to": {
+    "floor": [3.4267, 4.4058, 0]
+   },
+   "new": [102, 185],
+   "what": "on the ground (the dust of a run, the snail): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [106, 180],
+   "uses": [
+    "cual-camino.json rápido.si.set.polvo",
+    "cual-camino.json despacio.no.set.polvo"
+   ],
+   "to": {
+    "floor": [3.2636, 4.0251, 0]
+   },
+   "new": [106, 180],
+   "what": "on the ground (the dust of a run, the snail): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [108, 180],
+   "uses": ["cual-camino.json corre.si.set.polvo"],
+   "to": {
+    "floor": [3.318, 3.9707, 0]
+   },
+   "new": [108, 180],
+   "what": "on the ground (the dust of a run, the snail): the ground under it; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [113, 134],
+   "uses": ["d-corre.json beats.1.set.gato", "h-camino.json beats.1.set.gato", "cual-camino.json gato.si.set.gato"],
+   "to": {
+    "floor": [-0.2176, 1.3054, 0]
+   },
+   "new": [92, 123],
+   "moved": true,
+   "why": "the cat on the bench (d-corre and h-camino beats.1, cual-camino gato.si): on the new bench's seat, its lowest pixels on the seat's top (points.gato_banco), and drawn after the bench's entry in the sorted list (front.banco: sortY 134.5)",
+   "what": "an animal's place (x, y): the ground under it"
+  },
+  {
+   "kind": "point",
+   "old": [116, 172],
+   "uses": ["cual-camino.json camina.si.set.gente.luis", "cual-camino.json camina.no.set.gente.luis"],
+   "to": {
+    "floor": [3.1004, 3.318, 0]
+   },
+   "new": [116, 172],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [118, 176],
+   "uses": ["cual-camino.json espera.si.set.gente.carmen", "cual-camino.json espera.no.set.gente.carmen"],
+   "to": {
+    "floor": [3.3724, 3.4811, 0]
+   },
+   "new": [118, 176],
+   "what": "a person's feet (x, y): the ground under them; the same screen place"
+  },
+  {
+   "kind": "point",
+   "old": [126, 180],
+   "uses": [
+    "cual-camino.json perro.si.set.perro",
+    "cual-camino.json perro.no.set.gato",
+    "cual-camino.json corre.si.set.perro",
+    "cual-camino.json corre.no.set.perro",
+    "cual-camino.json rápido.si.set.perro",
+    "cual-camino.json rápido.no.set.perro",
+    "cual-camino.json despacio.si.set.gato",
+    "cual-camino.json despacio.no.set.gato"
+   ],
+   "to": {
+    "floor": [3.8075, 3.4811, 0]
+   },
+   "new": [126, 180],
+   "what": "an animal's place (x, y): the ground under it; the same screen place"
+  },
+  {
+   "kind": "x",
+   "old": [116],
+   "uses": [
+    "nivel.js NV corre.p2"
+   ],
+   "to": {
+    "level": true,
+    "what": "a level crop's centre x: the level pictures take pictures[...] whole (level[])"
+   }
+  }
+ ],
+ "pictures": {
+  "perro.si": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "Canelo sits on the path, close"
+  },
+  "perro.no": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "the cat sits there, close"
+  },
+  "corre.si": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "Canelo runs, dust behind him"
+  },
+  "corre.no": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "Canelo lies down"
+  },
+  "rapido.si": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "Canelo walks fast, dust behind him"
+  },
+  "rapido.no": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "Canelo sniffs along, a snail beside him"
+  },
+  "despacio.si": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "the cat walks, a snail beside it"
+  },
+  "despacio.no": {
+   "world": [2.774, 2.5565, 0],
+   "screen": [124, 161],
+   "zoom": 2,
+   "crop": [75, 135, 98, 52],
+   "what": "the cat runs, dust behind it"
+  },
+  "gato.si": {
+   "world": [0.4623, 0.8431, 0],
+   "screen": [113, 124],
+   "zoom": 2,
+   "crop": [64, 98, 98, 52],
+   "what": "the cat on the bench, close"
+  },
+  "gato.no": {
+   "world": [0.4623, 0.8431, 0],
+   "screen": [113, 124],
+   "zoom": 2,
+   "crop": [64, 98, 98, 52],
+   "what": "a bird on the bench's back, close"
+  },
+  "arbol.si": {
+   "world": [-0.2992, -2.3117, 0],
+   "screen": [157, 88],
+   "zoom": 2,
+   "crop": [108, 62, 98, 52],
+   "what": "small tree 2, close"
+  },
+  "arbol.no": {
+   "world": [1.4958, 1.8766, 0],
+   "screen": [113, 143],
+   "zoom": 2,
+   "crop": [64, 117, 98, 52],
+   "what": "the bench, no tree, close"
+  },
+  "parque.si": {
+   "world": [1.3054, 1.3054, 0],
+   "screen": [120, 136],
+   "zoom": 1,
+   "crop": [22, 84, 196, 104],
+   "what": "the park: the arch, the path, the trees, the bench (the old window [22, 84, 196, 104])"
+  },
+  "camina.si": {
+   "world": [2.4749, 2.7468, 0],
+   "screen": [115, 160],
+   "zoom": 1,
+   "crop": [17, 108, 196, 104],
+   "what": "Luis walks on the path"
+  },
+  "camina.no": {
+   "world": [2.4749, 2.7468, 0],
+   "screen": [115, 160],
+   "zoom": 1,
+   "crop": [17, 108, 196, 104],
+   "what": "Luis runs, dust behind him"
+  },
+  "espera.si": {
+   "world": [2.4749, 2.7468, 0],
+   "screen": [115, 160],
+   "zoom": 1,
+   "crop": [17, 108, 196, 104],
+   "what": "Carmen stands still"
+  },
+  "espera.no": {
+   "world": [2.4749, 2.7468, 0],
+   "screen": [115, 160],
+   "zoom": 1,
+   "crop": [17, 108, 196, 104],
+   "what": "Carmen runs, dust behind her"
+  },
+  "hay.si": {
+   "world": [-1.4958, -1.1151, 0],
+   "screen": [113, 88],
+   "zoom": 2,
+   "crop": [64, 62, 98, 52],
+   "what": "the cat's face in small tree 1"
+  },
+  "hay.no": {
+   "world": [-1.4958, -1.1151, 0],
+   "screen": [113, 88],
+   "zoom": 2,
+   "crop": [64, 62, 98, 52],
+   "what": "small tree 1, nothing in it"
+  },
+  "uno.si": {
+   "world": [-1.5774, -1.1422, 0],
+   "screen": [112, 87],
+   "zoom": 2,
+   "crop": [63, 61, 98, 52],
+   "what": "one bird in small tree 1"
+  },
+  "uno.no": {
+   "world": [-1.5774, -1.1422, 0],
+   "screen": [112, 87],
+   "zoom": 2,
+   "crop": [63, 61, 98, 52],
+   "what": "three birds there"
+  },
+  "dos.si": {
+   "world": [-1.5774, -1.1422, 0],
+   "screen": [112, 87],
+   "zoom": 2,
+   "crop": [63, 61, 98, 52],
+   "what": "two birds in small tree 1"
+  },
+  "dos.no": {
+   "world": [-1.5774, -1.1422, 0],
+   "screen": [112, 87],
+   "zoom": 2,
+   "crop": [63, 61, 98, 52],
+   "what": "one bird there"
+  },
+  "tres.si": {
+   "world": [-1.5774, -1.1422, 0],
+   "screen": [112, 87],
+   "zoom": 2,
+   "crop": [63, 61, 98, 52],
+   "what": "three birds in small tree 1"
+  },
+  "tres.no": {
+   "world": [-1.5774, -1.1422, 0],
+   "screen": [112, 87],
+   "zoom": 2,
+   "crop": [63, 61, 98, 52],
+   "what": "two birds there"
+  }
+ },
+ "level": [
+  {
+   "w": "perro",
+   "index": 0,
+   "picture": "perro.si",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "perro",
+   "index": 1,
+   "picture": "perro.no",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "perro",
+   "index": 2,
+   "picture": "gato.no",
+   "old": [87.95, 96, 48.09, 53.1],
+   "crop": [64, 98, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "perro",
+   "index": 3,
+   "picture": "arbol.si",
+   "old": [137.95, 62, 48.09, 53.1],
+   "crop": [108, 62, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "corre",
+   "index": 0,
+   "picture": "corre.si",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "corre",
+   "index": 1,
+   "picture": "corre.no",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "corre",
+   "index": 2,
+   "picture": "camina.si",
+   "old": [79.95, 120, 72.09, 79.6],
+   "crop": [17, 108, 196, 104],
+   "zoom": 1
+  },
+  {
+   "w": "corre",
+   "index": 3,
+   "picture": "despacio.si",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "dos",
+   "index": 0,
+   "picture": "dos.si",
+   "old": [87.95, 60, 48.09, 53.1],
+   "crop": [63, 61, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "dos",
+   "index": 1,
+   "picture": "uno.si",
+   "old": [87.95, 60, 48.09, 53.1],
+   "crop": [63, 61, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "dos",
+   "index": 2,
+   "picture": "tres.si",
+   "old": [87.95, 60, 48.09, 53.1],
+   "crop": [63, 61, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "dos",
+   "index": 3,
+   "picture": "hay.no",
+   "old": [87.33, 58, 54.34, 60],
+   "crop": [64, 62, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rápido",
+   "index": 0,
+   "picture": "rapido.si",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rápido",
+   "index": 1,
+   "picture": "rapido.no",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rápido",
+   "index": 2,
+   "picture": "despacio.no",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  },
+  {
+   "w": "rápido",
+   "index": 3,
+   "picture": "perro.si",
+   "old": [99.33, 128, 54.34, 60],
+   "crop": [75, 135, 98, 52],
+   "zoom": 2
+  }
+ ],
+ "clips": {},
+ "clipsWhat": "camino.js never calls clip()",
+ "front": {
+  "how": "the old background (fondo: the arch, the trees, the bench, the big tree) was drawn before everyone; the bench and the arch are set things someone can be behind now. At its entry in the list camino.js draw sorts by y (line 107), for each item drawn before it (a person, the frog, Canelo, the cat: each item says who it is), the set's own pixels of that part (camino-set.html part(name), PART_TAGS) are drawn again inside the item's box, only where that pixel is nearer to the camera than the item: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the ground point under its feet (a person or an animal: unproject(x, y - 1); the frog: unproject(b.x + b.w / 2, q.y + 25)). \"Behind the bench\" or \"behind a post\" is that depth test, not a row",
+  "plane": "v / COS - (row + .5 - OY) * tan(30 deg) / S",
+  "boxes": "a person: [x - 24, y - alto - 2, 48, alto + 3]; the frog: frogBox with dy; Canelo or the cat: [x - 16, y - 24, 32, 27]; the cat on the bench (at points.gato_banco): its v is points.gato_banco.v, the seat's front edge (so nothing of the bench goes over it)",
+  "parts": {
+   "banco": {
+    "sortY": 134.5,
+    "insert": "before line 107's sort: L.push({y: 134.5, front: \"banco\"})",
+    "why": "whoever stands behind the bench (Carmen at small trees 0 and 1, story 13; Canelo barking at tree 0, d-corre, y 134) is drawn before it and the bench over them; the cat on its seat is before it too, its plane the seat's front edge (boxes), so nothing of the bench goes over it"
+   },
+   "porton": {
+    "sortY": 9999,
+    "insert": "before the sort: L.push({y: 9999, front: \"porton\"}) (after everyone)",
+    "why": "whoever has gone out through the arch (sevan) is behind it: its posts and its iron over them"
+   }
+  },
+  "list": "line 102 (people: id), 103 (animals: k), 104 (the frog: id coqui): each item says who it is"
+ },
+ "shadows": {
+  "coqui": {
+   "radius": 0.45,
+   "at": "the ground point under his feet on screen (unproject(b.x + b.w / 2, q.y + 25))",
+   "when": "W.cq.vis and al > .5",
+   "cast": "castShadow(g.x, g.y, .3, .45)"
+  },
+  "people": {
+   "radius": {
+    "grown": 0.35,
+    "nino": 0.3
+   },
+   "at": "the ground point under their feet on screen (unproject(x, y - 1))",
+   "when": "visible (vis !== 0, al > .5)",
+   "cast": "standing: for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, r); sitting on the grass (sent): castShadow(g.x, g.y, .3, r)"
+  },
+  "perro": {
+   "radius": 0.32,
+   "at": "the ground point under its feet on screen (unproject(x, y - 1))",
+   "when": "W.perro shown (vis !== 0, al > .5)",
+   "cast": "castShadow(g.x, g.y, .25, .32)"
+  },
+  "gato": {
+   "radius": 0.25,
+   "at": "as Canelo",
+   "when": "W.gato on the ground (vis !== 0, en == null), not on the bench (points.gato_banco)",
+   "cast": "castShadow(g.x, g.y, .25, .25)"
+  },
+  "arbusto": {
+   "radius": 0.55,
+   "at": "the ground point under its foot on screen (unproject(arbusto[0], arbusto[1] - 1))",
+   "when": "W.arbusto",
+   "cast": "castShadow(g.x, g.y, .3, .55)",
+   "why": "the bush is the sprite layer's (a prop of story 14, as the old); its shadow seats it on the lawn"
+  },
+  "dropped": "camino.js:87 rana()'s dotted shadow under the frog is not drawn: the engine casts his"
+ },
+ "dropped": [
+  "camino.js:95 c.drawImage(spr(\"camino\"...), fondo()) -> the set, for setKey(W)",
+  "camino.js:87 the frog's dotted shadow -> the engine's cast shadow"
+ ],
+ "moves": [
+  {
+   "line": 160,
+   "act": "inicio12",
+   "src": "async inicio12(){W.gente={luis:{x:174,y:138,pose:\"wave\",dir:-1}",
+   "to": "async inicio12(){W.respEn=[134,14];W.gente={luis:{x:174,y:138,pose:\"wave\",dir:-1}",
+   "respEn": [134, 14],
+   "why": "acts.inicio12 (uno-dos-tres, d-corre, h-camino): the answer cards stand in the sky (W.respEn 134,14, as h-camino sets for itself at its beats.5: [96, 30], remapped to the same; two or three cards, their lit frames and glow, inside the view with 2 px to spare need 106 <= x <= 134 and y >= 14, and the sun at the top left keeps clear of them at 134): over the frog at the far marks they covered Luis, who waits by the big tree (uno-dos-tres beats.19 to 38), and the hand at a card reached his and Carmen's faces"
+  },
+  {
+   "line": 193,
+   "act": "inicio13",
+   "src": "async inicio13(){W.sinGran=1;",
+   "to": "async inicio13(){W.sinGran=1;W.respEn=[120,34];",
+   "respEn": [120, 34],
+   "why": "acts.inicio13 (donde-esta-el-gato): the answer cards (con_1, con_2, con_3: which tree the cat is in, by its birds; two at a time) stand in the sky over the trees (W.respEn 120,34): under the biscuits card (rows 2 to 33), above every bird's place, right of the sun with their frames (round 3), their frames inside the view with 2 px to spare: over the frog at the path's middle they covered Luis and Carmen (beats.47, 85) and the hand at a card was on Carmen's face"
+  },
+  {
+   "line": 229,
+   "act": "inicio14",
+   "src": "async inicio14(){W.gente={abuela:",
+   "to": "async inicio14(){W.respEn=[134,34];W.gente={abuela:",
+   "respEn": [134, 34],
+   "why": "acts.inicio14 (rapido-despacio): the answer cards stand in the sky under the guineos card (W.respEn 134,34): over the frog walking down the path to the arch they ran off the view's left edge (juego.js respBox clamps their middle 76 or 60 px from the edge: the first card's frame is cut)"
+  },
+  {
+   "line": 61,
+   "act": "*",
+   "src": "Math.min(204,MARCA[i][0]+34)",
+   "to": "Math.min(188,MARCA[i][0]+34)",
+   "places": [
+    {
+     "who": "perro",
+     "old": [204, 130],
+     "new": [188, 130],
+     "world": [2.774, -0.9247, 0]
+    },
+    {
+     "who": "perro",
+     "old": [191, 133],
+     "new": [188, 133],
+     "world": [2.9372, -0.7615, 0]
+    }
+   ],
+   "why": "round 2: perroEn(i) caps Canelo's x at 188 (the old 204): at marks 7 and 8 he stands beside the big tree's foot, which is now further right (the old tree's foot was at 200, and he sat in front of it, hiding it): 204, 130 -> 188, 130 and 191, 133 -> 188, 133"
+  },
+  {
+   "line": 258,
+   "act": "sevan",
+   "src": "async sevan(){const q=W.cq;W.correa=0;const fuera=async id=>{const p=G(id);for(let i=0;i<8;i++){p.x-=4;p.al=1-i/8;await wait(TICK);}p.vis=0;};await Promise.all([fuera(\"abuela\"),fuera(\"luis\"),fuera(\"carmen\"),animalA(\"perro\",-10,W.perro.y,\"walk\"),hopTo(8,q.y,2,q.s)]);q.vis=0;W.perro.vis=0;await wait(500);},",
+   "to": "async sevan(){const q=W.cq,pe=W.perro;W.correa=0;pe.pose=\"walk\";const PU={\"abuela\":[45,169,35,164],\"carmen\":[45,169,35,164],\"luis\":[45,169,35,164],\"perro\":[45,169,35,164],\"cq\":[29,144,19,139]},fila=async(o,u,d,f)=>{await wait(d*TICK);const x0=o.x,y0=o.y;for(let i=0;i<8;i++){const a=i<4?[x0,y0,u[0],u[1],(i+1)/4]:[u[0],u[1],u[2],u[3],(i-3)/4];o.x=a[0]+(a[2]-a[0])*a[4];o.y=a[1]+(a[3]-a[1])*a[4];o.al=1-i/8;if(f){o.x=Math.round(o.x);o.y=Math.round(o.y);if(i%4===0)SFX.hop();o.dy=-7*Math.sin(Math.PI*(i%4+1)/4);}await wait(TICK);}if(f)o.dy=0;o.vis=0;};await Promise.all([fila(G(\"abuela\"),PU.abuela,0),fila(G(\"carmen\"),PU.carmen,3),fila(G(\"luis\"),PU.luis,6),fila(pe,PU.perro,9),fila(q,PU.cq,12,1)]);q.vis=0;pe.vis=0;await wait(500);},",
+   "why": "acts.sevan (rapido-despacio, the end): everyone leaves the park through the arch, as the old picture had them leave towards its gate (the old act walked them 32 px left on the grass, fading, and the dog off the left edge at its row; the frog hopped to x 8). Round 2: in a file, one after another (abuela, Carmen, Luis, Canelo, the frog, 3 ticks apart): each walks in 4 steps to the same point just inside the opening (PU, screen: a person's or Canelo's feet, the frog's q), then in 4 more through it to just past its line, fading as the old (al 1 - i / 8) and gone; Canelo walks and fades too (moves: animal()), the frog hops twice (one hop to the opening, one through it: the old hop count) and fades. Whoever is under the arch has it drawn over them (front.porton); past its line everyone is faded (al .25 and less), so nobody is seen beyond the left post. What changes: each one's 8 steps as the old, but they start 3 ticks apart (the act takes 20 ticks, the old 8 for the people and about 18 for Canelo's walk), Canelo fades instead of walking off the picture, the frog's two hops take 4 ticks each instead of 5 and a wait"
+  },
+  {
+   "line": 84,
+   "act": "*",
+   "src": "c.save();c.translate(R(o.x),R(o.y)-im.height+2+(o.dy||0));",
+   "to": "c.save();c.globalAlpha=o.al==null?1:o.al;c.translate(R(o.x),R(o.y)-im.height+2+(o.dy||0));",
+   "why": "animal(): Canelo and the cat are drawn with their al (1 unless set), so that Canelo fades as he goes out through the arch (acts.sevan); c.restore() puts the alpha back"
+  },
+  {
+   "line": 112,
+   "act": "*",
+   "src": "c.drawImage(im,BANCO[0]+8,BANCO[1]-11,15,12)",
+   "to": "c.drawImage(im,81,112,15,12)",
+   "why": "the bird on the bench (W.avebanco, the pair gato.no): on the seat's back plank, its feet on it (points.ave_banco). The new bench stands along y and has no back: the bird -25 px right, -5 rows (the old at 106, 117)"
+  },
+  {
+   "line": 69,
+   "act": "*",
+   "src": "box:w=>[R(w.gato.x)-12,R(w.gato.y)-18,24,20],m:2}",
+   "to": "box:w=>[R(w.gato.x)-12,R(w.gato.y)-18,24,20],hand:w=>[R(w.gato.x)+12,R(w.gato.y)-10],m:2}",
+   "why": "round 2: the cat's hint hand at its back (x + 12, y - 10; kit.js handAt takes a thing's hand): on the moved bench the hand from the box's middle hung on Carmen's face (donde-esta-el-gato beats.10)"
+  },
+  {
+   "line": 194,
+   "act": "inicio13",
+   "src": "W.gato={x:113,y:134,pose:\"lava\"",
+   "to": "W.gato={x:92,y:123,pose:\"lava\"",
+   "places": [
+    {
+     "who": "gato",
+     "old": [113, 134],
+     "new": [92, 123],
+     "world": [-0.2176, 1.3054, 0]
+    }
+   ],
+   "why": "acts.inicio13: the cat on the bench, on the new bench's seat (points.gato_banco), as the story files' cat at 113, 134 (remap)"
+  },
+  {
+   "line": 62,
+   "act": "*",
+   "src": "arbol0:[44,122,.8]",
+   "to": "arbol0:[49,121,.8]",
+   "places": [
+    {
+     "who": "cq",
+     "old": [44, 122],
+     "new": [49, 121],
+     "world": [0.3536, 3.3452, 0]
+    }
+   ],
+   "why": "LUGAR.arbol0, the frog at the first small tree: 5 px right and 1 row up, so that the arch's far post (screen x 47, in front of him: its foot 15 rows before his feet) is clear of him (at the old point it stood in front of his right side). Every hop count with the other places is the old one (hops). W.cq at (44, 122) in a recorded run is here (places: who cq)"
+  }
+ ],
+ "sevan": {
+  "a": [0.3, -0.22],
+  "b": -0.12,
+  "delay": {
+   "abuela": 0,
+   "carmen": 3,
+   "luis": 6,
+   "perro": 9,
+   "cq": 12
+  },
+  "points": {
+   "abuela": [
+    [45, 169],
+    [35, 164]
+   ],
+   "carmen": [
+    [45, 169],
+    [35, 164]
+   ],
+   "luis": [
+    [45, 169],
+    [35, 164]
+   ],
+   "perro": [
+    [45, 169],
+    [35, 164]
+   ],
+   "cq": [
+    [29, 144],
+    [19, 139]
+   ]
+  },
+  "what": "moves (acts.sevan): each one's point just inside the arch's opening and their point past it up the path (screen: a person's feet, the dog's, the frog's q); GATE: the same, as (a, b) from the opening's middle in world units (a into the park, b towards post A)"
+ },
+ "bubbles": {
+  "what": "each bubble's rectangle relative to its tail's tip, as camino.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]",
+  "rects": {
+   "hola": [-16, -46, 34, 44],
+   "amor": [-14, -38, 30, 36],
+   "como": [-32, -40, 66, 38],
+   "bien": [-14, -40, 30, 38],
+   "mal": [-14, -40, 30, 38],
+   "quien": [-22, -40, 46, 38],
+   "lluvia": [-22, -40, 46, 38],
+   "q": [-12, -40, 26, 38]
+  }
+ },
+ "talk": {
+  "what": "where a bubble goes (camino.js draw: line 113 for a person, 114 for the frog, 85 for Canelo and the cat). The first of these places whose bubble is wholly inside the view, clear of the corner card shown (hud: the biscuits, the guineos) and of every face (each visible person's and the frog's, its own too); if none is, the first (the old)",
+  "top": "a person: (x, y - alto - 1) as the old tail; the frog: (b.x + (b.w >> 1), b.y + 2 - (W.guineos != null ? 16 : 0)); Canelo or the cat: (x, y - 22)",
+  "places": [
+   [0, 0],
+   [1, 7],
+   [-1, 7],
+   [1, 30],
+   [-1, 30],
+   [1, 44],
+   [-1, 44],
+   [2, 7],
+   [-2, 7],
+   [2, 30],
+   [-2, 30],
+   [2, 44],
+   [-2, 44],
+   [1, 58],
+   [-1, 58],
+   [2, 58],
+   [-2, 58]
+  ],
+  "placesWhat": "[side, dy]: the tail's tip at (top.x + side * (h + 16), top.y + dy), h the head's half width: a person 6, the frog b.w >> 1, Canelo or the cat 8",
+  "faces": "a person's face: [hx - 6, y + top + 5, 12, 10] (eyes to chin, not the hair), hx the head's middle; the frog's: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]",
+  "heads": {
+   "luis": {
+    "top": -41,
+    "head": 0
+   },
+   "luis.sent": {
+    "top": -38,
+    "head": 0
+   },
+   "carmen": {
+    "top": -41,
+    "head": 0
+   },
+   "carmen.sent": {
+    "top": -38,
+    "head": 0
+   },
+   "abuela": {
+    "top": -50,
+    "head": 0
+   }
+  },
+  "headsWhat": "each sprite (idle; .sent: sitting): top, the first opaque row relative to the feet row y; head, the middle of its top 10 rows relative to x (facing right; facing left: x - head, + 1 for the children drawn at -PX)",
+  "boards": "in the 196 x 216 display, then + the view's x0: W.tarjeta galletas [2, 2, 90, 32]; W.tarjeta guineos [2, 2, 86, 32]"
+ },
+ "code": [
+  {
+   "line": 16,
+   "old": "MARCA [66,182] [79,175] [92,168] [105,162] [118,156] [131,151] [144,146] [157,142] [170,139]",
+   "to": {
+    "points": ["marca.0", "marca.1", "marca.2", "marca.3", "marca.4", "marca.5", "marca.6", "marca.7", "marca.8"],
+    "new": [
+     [66, 182],
+     [79, 175],
+     [92, 168],
+     [105, 162],
+     [118, 156],
+     [131, 151],
+     [144, 146],
+     [157, 142],
+     [170, 139]
+    ]
+   },
+   "note": "the floor rule: the same screen places (the set lays the stones at marks 1 to 7)"
+  },
+  {
+   "line": 17,
+   "old": "ARBOL [70,120] [112,116] [154,112]",
+   "to": {
+    "points": ["arbol.0", "arbol.1", "arbol.2"],
+    "new": [
+     [70, 120],
+     [112, 116],
+     [154, 112]
+    ]
+   },
+   "note": "unchanged: the small trees stand at their old feet"
+  },
+  {
+   "line": 17,
+   "old": "GRAN [200,128]",
+   "to": {
+    "point": "gran",
+    "new": [204, 103]
+   },
+   "note": "used only by the old background (dropped) and the big tree's box (things.grande)"
+  },
+  {
+   "line": 17,
+   "old": "BANCO [98,128,30,16]",
+   "to": {
+    "thing": "banco",
+    "box": [77, 117, 28, 23]
+   },
+   "note": "used by the old background (dropped), the bench's box (things.banco) and the bird on it (moves)"
+  },
+  {
+   "line": 18,
+   "old": "NIDO [-9,-31] [8,-36] [0,-21]",
+   "to": {
+    "point": "nido"
+   },
+   "note": "relative to a small tree's foot: unchanged"
+  },
+  {
+   "line": 54,
+   "old": "galleta: the biscuit's rectangles [1,0,5,5] [0,1,7,3] [7,0,1,5] [8,-1,1,7] [6,1,1,3] (u(1,0,5,5) u(0,1,7,3) u(6,1,1,3) u(7,0,1,5) u(8,-1,1,7) u(1,1,1,1) u(3,3,2,1))",
+   "to": "the biscuit's own drawing: unchanged"
+  },
+  {
+   "line": 55,
+   "old": "guineo: [0,2,2,2] [1,3,3,2] [3,4,4,2] [6,3,3,2] [8,1,2,3]",
+   "to": "the guineo's own drawing: unchanged"
+  },
+  {
+   "line": 59,
+   "old": "ranaEn(i) = MARCA[i] - (22, 34), scale .96 - .015 i",
+   "to": {
+    "spots": "rana.0 to rana.8"
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 60,
+   "old": "ninaEn(i) = MARCA[i] + (10, 22), y at most 206",
+   "to": {
+    "spots": "nina.0 to nina.8"
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 61,
+   "old": "perroEn(i) = MARCA[i] + (34, -9), x at most 204",
+   "to": {
+    "spots": "perro.0 to perro.8",
+    "moved": "x at most 188 (moves): perro.7, perro.8"
+   },
+   "note": "the floor rule: the same screen places, but marks 7 and 8"
+  },
+  {
+   "line": 62,
+   "old": "LUGAR centro [100,176,1], banco [74,128,.86], arbol0 [44,122,.8], arbol1 [126,122,.8], arbol2 [166,118,.8], gran [166,126,.84]",
+   "to": {
+    "spots": ["frog.inicio", "frog.centro", "frog.banco", "frog.arbol0", "frog.arbol1", "frog.arbol2", "frog.gran"],
+    "moved": "arbol0: 49,121 (moves)"
+   },
+   "note": "the floor rule: the same screen places, but arbol0"
+  },
+  {
+   "line": 64,
+   "old": "caja(id): [x - 11, y - alto(id), 22, alto(id)]",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 66,
+   "old": "ave box [ARBOL[i][0] + NIDO[k][0] - 8, ARBOL[i][1] + NIDO[k][1] - 6, 15, 12]",
+   "to": "relative to the tree: unchanged"
+  },
+  {
+   "line": 68,
+   "old": "perro box [x - 14, y - 20, 28, 22]",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 69,
+   "old": "gato box [x - 12, y - 18, 24, 20]",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 70,
+   "old": "box arbol0 [ARBOL[0][0]-17,ARBOL[0][1]-46,34,48] = [53,74,34,48]; hand [ARBOL[0][0],ARBOL[0][1]-12]",
+   "to": {
+    "thing": "arbol0",
+    "box": [51, 74, 37, 47],
+    "hand": [70, 108]
+   },
+   "note": "the hand: things.arbol0.handWhy"
+  },
+  {
+   "line": 70,
+   "old": "box arbol1 [ARBOL[1][0]-17,ARBOL[1][1]-46,34,48] = [95,70,34,48]; hand [ARBOL[1][0],ARBOL[1][1]-12]",
+   "to": {
+    "thing": "arbol1",
+    "box": [95, 68, 35, 49],
+    "hand": [104, 104]
+   },
+   "note": "the hand: things.arbol1.handWhy"
+  },
+  {
+   "line": 70,
+   "old": "box arbol2 [ARBOL[2][0]-17,ARBOL[2][1]-46,34,48] = [137,66,34,48]; hand [ARBOL[2][0],ARBOL[2][1]-12]",
+   "to": {
+    "thing": "arbol2",
+    "box": [135, 66, 38, 47],
+    "hand": [146, 100]
+   },
+   "note": "the hand: things.arbol2.handWhy"
+  },
+  {
+   "line": 71,
+   "old": "box banco [BANCO[0]-1,BANCO[1]-2,BANCO[2]+2,18] = [97,126,32,18]",
+   "to": {
+    "thing": "banco",
+    "box": [77, 117, 28, 23]
+   }
+  },
+  {
+   "line": 71,
+   "old": "box grande [GRAN[0]-40,GRAN[1]-112,58,116] = [160,16,58,116]",
+   "to": {
+    "thing": "grande",
+    "box": [160, 0, 80, 108],
+    "hand": [190, 51]
+   },
+   "note": "and a hand (new: the old had none, so the box's middle)"
+  },
+  {
+   "line": 71,
+   "old": "box porton [22,116,36,60]",
+   "to": {
+    "thing": "porton",
+    "box": [23, 94, 28, 80]
+   }
+  },
+  {
+   "line": 72,
+   "old": "box camino [30,128,170,76]",
+   "to": {
+    "thing": "camino",
+    "box": [0, 115, 240, 75]
+   }
+  },
+  {
+   "line": 72,
+   "old": "box parque [0,100,240,116]",
+   "to": {
+    "thing": "parque",
+    "box": [0, 100, 240, 116]
+   }
+  },
+  {
+   "line": 76,
+   "old": "gente abuela: translate(x, y - 50), scale(-1,1) when dir < 0; drawImage(im,-30,0); the basket at x + 2, y - 26",
+   "to": "relative to her: unchanged"
+  },
+  {
+   "line": 78,
+   "old": "gente: scale(-1,1) when dir < 0; drawImage(im, -PX, 0) at x, y - im.height + 1",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 84,
+   "old": "animal: translate(x, y - h + 2 + dy), scale(-1,1) when dir < 0, drawImage(im,-13,0)",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 85,
+   "old": "animal: its bubble at x, y - 22",
+   "to": {
+    "talk": true
+   },
+   "note": "sheet talk: the first free place"
+  },
+  {
+   "line": 87,
+   "old": "rana: the dotted shadow at b.x + 2, q.y + 25",
+   "to": "dropped: the engine casts his shadow (shadows.coqui)"
+  },
+  {
+   "line": 93,
+   "old": "bub2: c.scale(2,2), bub(c,k,0,0,a)",
+   "to": "relative: unchanged (the bubbles are drawn at twice their size)"
+  },
+  {
+   "line": 95,
+   "old": "c.drawImage(spr(\"camino\"+...,()=>fondo(!W.sinGran)),0,0)",
+   "to": "dropped: the set, for setKey(W)"
+  },
+  {
+   "line": 96,
+   "old": "the lit ring round a counted tree: ellipse at ARBOL[i] - (0, 30), 19 x 16",
+   "to": "relative to the tree: unchanged"
+  },
+  {
+   "line": 98,
+   "old": "the shaking leaves at ARBOL + [-18,-36] [16,-40] [-14,-18] [18,-22]",
+   "to": "relative to the tree: unchanged"
+  },
+  {
+   "line": 99,
+   "old": "the birds at ARBOL[i] + NIDO[k] - (8, 6 + vuelan), 15 x 12",
+   "to": "relative: unchanged (on the crown's leaves)"
+  },
+  {
+   "line": 100,
+   "old": "the cat in a tree: its face at ARBOL - (12, 34), its tail at ARBOL[0] + lado 9 - 12, ARBOL[1] - 20",
+   "to": "relative to the tree: unchanged"
+  },
+  {
+   "line": 105,
+   "old": "the snail at x - 9, y - 12 (its sort y)",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 106,
+   "old": "the bush at arbusto - (22, 28) (sort y arbusto[1] + 2); the leash's end behind it at arbusto - (25, 9)",
+   "to": "the sprite layer's, relative: unchanged (its shadow: shadows.arbusto)"
+  },
+  {
+   "line": 107,
+   "old": "the sorted list",
+   "to": {
+    "front": ["banco", "porton"]
+   },
+   "note": "two entries added before the sort (front.parts)"
+  },
+  {
+   "line": 109,
+   "old": "the leash: from the frog's hand or a person's (x +- 10, y - 18) to the dog's collar (x +- 8, y - 11), or to correaA",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 111,
+   "old": "the dust at p.x + dir (4 + 6 i), p.y - 2; the speed lines",
+   "to": "relative: unchanged"
+  },
+  {
+   "line": 112,
+   "old": "the bird on the bench at BANCO[0] + 8, BANCO[1] - 11",
+   "to": {
+    "point": "ave_banco",
+    "new": [81, 112],
+    "moved": "moves"
+   }
+  },
+  {
+   "line": 113,
+   "old": "a person's bubble at x, y - alto - 1",
+   "to": {
+    "talk": true
+   },
+   "note": "sheet talk: the first free place"
+  },
+  {
+   "line": 114,
+   "old": "the frog's bubble at b.x + (b.w >> 1), b.y + 2 - (W.guineos != null ? 16 : 0)",
+   "to": {
+    "talk": true
+   },
+   "note": "sheet talk: the first free place"
+  },
+  {
+   "line": 116,
+   "old": "talkAt: [x, y - alto - 1 - (bub ? 38 : 0)]",
+   "to": "relative to the person: unchanged"
+  },
+  {
+   "line": 120,
+   "old": "respIcon espera: the frog at x + 6, y + 12; feet [9,30] [18,30]; the hand at x + 27, y + 5",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 121,
+   "old": "respIcon corre: the frog at x + 24, y + 21 rotated, drawn at -10,-9; lin(3,9); dust [5,29] [11,27]",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 122,
+   "old": "respIcon rapido: the frog at x + 15, y + 12; lin(3,6); steps [18,30] [27,30]",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 123,
+   "old": "respIcon despacio: the frog at x + 14, y + 12; the snail at x + 2, y + 23; steps [18,30] [25,30]",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 124,
+   "old": "respIcon camina: the frog at x + 12, y + 11; steps [2,29] [7,25]; the leaf [5,-3,2,9] [7,-1,2,5] [9,0,1,3]",
+   "to": "the answer card's own drawing: unchanged"
+  },
+  {
+   "line": 129,
+   "old": "hud biscuits card tarjeta(g,3,3,88,30); the cat at 5,7",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 130,
+   "old": "hud biscuits card: the marks at 34 + 18 i, 10; the paw [1,3] [5,1] [9,1] [13,3]",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 131,
+   "old": "hud guineos card tarjeta(g,3,3,84,30); the basket at 5,13; guineo(g,30+i*17,10,1.5)",
+   "to": "display: unchanged"
+  },
+  {
+   "line": 138,
+   "old": "enT(t): the frog on the walk back (story 14): (40 + 146 t - 10, 194 - 58 t - 8 sin(pi t) - 14)",
+   "to": "the floor rule: the same screen places"
+  },
+  {
+   "line": 139,
+   "old": "perroT(t): the dog on the walk back: (40 + 146 tt - 2, 194 - 58 tt - 8 sin(pi tt) + 16)",
+   "to": "the floor rule: the same screen places"
+  },
+  {
+   "line": 160,
+   "old": "inicio12: luis {x:174,y:138}; carmen at ninaEn(0); the frog at ranaEn(0); the dog at junto()",
+   "to": {
+    "floor": [
+     [2.8284, -0.1088, 0]
+    ],
+    "new": [
+     [174, 138]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 186,
+   "old": "final12: mueve(\"carmen\",160,146); the dog to LUGAR.gran - (12, -28)",
+   "to": {
+    "floor": [2.8828, 0.7071, 0],
+    "new": [160, 146]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 187,
+   "old": "final12: the stars [150,60] [196,70] [176,50] [160,90] [200,96]",
+   "to": "screen effect: unchanged (round the big tree)"
+  },
+  {
+   "line": 193,
+   "old": "inicio13: luis {x:62,y:188}, carmen {x:92,y:198}, perro {x:54,y:206}",
+   "to": {
+    "floor": [
+     [2.5021, 5.6569, 0],
+     [3.8619, 5.3849, 0],
+     [3.2636, 6.8535, 0]
+    ],
+    "new": [
+     [62, 188],
+     [92, 198],
+     [54, 206]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 194,
+   "old": "inicio13: gato {x:113,y:134} (on the bench)",
+   "to": {
+    "point": "gato_banco",
+    "new": [92, 123],
+    "moved": "as the story files' (remap): on the new bench's seat"
+   }
+  },
+  {
+   "line": 198,
+   "old": "gatoarbol: [0,1,2] the trees",
+   "to": "not a place: the trees' numbers"
+  },
+  {
+   "line": 203,
+   "old": "lit: [0,1,2]",
+   "to": "not a place"
+  },
+  {
+   "line": 210,
+   "old": "carmenvuelve: mueve(\"carmen\",92,198)",
+   "to": {
+    "floor": [3.8619, 5.3849, 0],
+    "new": [92, 198]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 214,
+   "old": "perrocome: animalA(\"perro\",54,206,\"walk\")",
+   "to": {
+    "floor": [3.2636, 6.8535, 0],
+    "new": [54, 206]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 217,
+   "old": "escapa: animalA(\"perro\",150,150,\"run\")",
+   "to": {
+    "floor": [2.8284, 1.1966, 0],
+    "new": [150, 150]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 218,
+   "old": "agarra: animalA(\"perro\",54,206,\"walk\")",
+   "to": {
+    "floor": [3.2636, 6.8535, 0],
+    "new": [54, 206]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 219,
+   "old": "cuentaaves: for [1,2,3]",
+   "to": "not a place: the counts"
+  },
+  {
+   "line": 220,
+   "old": "carmenva: mueve(\"carmen\",ARBOL[i][0]+18,ARBOL[i][1]+12)",
+   "to": {
+    "spots": ["carmenva.0", "carmenva.1", "carmenva.2"]
+   },
+   "note": "relative to the tree: unchanged (whoever is behind the bench: front.banco)"
+  },
+  {
+   "line": 224,
+   "old": "perrocome2: animalA(\"perro\",54,206,\"walk\")",
+   "to": {
+    "floor": [3.2636, 6.8535, 0],
+    "new": [54, 206]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 225,
+   "old": "final13: mueve(\"carmen\",156,196)",
+   "to": {
+    "floor": [5.4937, 3.5355, 0],
+    "new": [156, 196]
+   },
+   "note": "the floor rule: the same screen place"
+  },
+  {
+   "line": 226,
+   "old": "final13: the stars [90,150] [150,150] [120,130] [100,176] [140,176]",
+   "to": "screen effect: unchanged (over the lawn)"
+  },
+  {
+   "line": 229,
+   "old": "inicio14: abuela {x:66,y:182}, luis {x:88,y:200}, carmen {x:46,y:202}; the bush at perroT(.46) + (16, 5); the frog at enT(1), the dog at perroT(1)",
+   "to": {
+    "floor": [
+     [2.2845, 5.2217, 0],
+     [3.8619, 5.6025, 0],
+     [2.8284, 6.8535, 0]
+    ],
+    "new": [
+     [66, 182],
+     [88, 200],
+     [46, 202]
+    ]
+   },
+   "note": "the floor rule: the same screen places"
+  },
+  {
+   "line": 248,
+   "old": "cae: the basket shakes [4,-4,3,0]",
+   "to": "not a place: offsets"
+  },
+  {
+   "line": 256,
+   "old": "final14: the stars [40,120] [90,130] [64,110] [50,150] [90,160]",
+   "to": "screen effect: unchanged (by the arch)"
+  },
+  {
+   "line": 258,
+   "old": "sevan: p.x -= 4 eight times, fading; the dog to -10, y; the frog to 8, y",
+   "to": {
+    "moved": "moves: out through the arch and up the path off the picture (sheet sevan)"
+   }
+  },
+  {
+   "line": 265,
+   "old": "CAM.wide [22,0,196,216]",
+   "to": {
+    "view": "wide",
+    "zoom": 1,
+    "x0": 22
+   }
+  },
+  {
+   "line": 265,
+   "old": "heartAt [110,30]",
+   "to": {
+    "point": "corazon",
+    "new": [110, 30]
+   }
+  },
+  {
+   "line": 266,
+   "old": "fresh(): pajaros [0,0,0]; cq at LUGAR.inicio",
+   "to": "the counts; the frog at mark 0 (the floor rule)"
+  },
+  {
+   "line": "juego.js:16",
+   "old": "fresh(): cq x 150 y 178 s 1",
+   "to": "not used here: camino's fresh() puts him at LUGAR.inicio"
+  },
+  {
+   "line": "cual.js:21",
+   "old": "panelW(): cq x 123 y 150 s .86",
+   "to": "a pair picture that shows the frog sets cq itself (remap); otherwise he is not seen (vis 0)"
+  }
+ ],
+ "checks": {
+  "notes": [
+   "inventory: 22 things (old 22), 7 frog places (old 7), 1 view (old 1), 35 positions (old 35), 13 review pairs of cual-camino (25 pictures here; parque.no is El patio's), 16 level pictures (old 16), 127 places of camino.js named in code, 2 baked states (the old 9)",
+   "hops: all 21 pairs of LUGAR places (round(d / 30), 1 to 4, kit.js acts.ir) keep the old count (arbol0 moved -5 px left: its distances inicio-arbol0 26 -> 27.46, centro-arbol0 77.79 -> 75.01, banco-arbol0 30.59 -> 25.96, arbol0-arbol1 82 -> 77.01, arbol0-arbol2 122.07 -> 117.04, arbol0-gran 122.07 -> 117.11); the frog walks between places in the recorded runs: inicio - centro (3), centro - arbol0 (8), arbol0 - arbol2 (3), centro - arbol2 (3), centro - arbol1 (1), arbol0 - arbol1 (1)",
+   "boxes: every pixel of each set thing (the big tree's leaves at every wind step: 1 px either way) inside its touch box: porton [23,94,28,80], arbol0 [51,74,37,47], arbol1 [95,68,35,49], arbol2 [135,66,38,47], banco [77,117,28,23], grande [160,0,80,108]; every path pixel inside the camino box [0,115,240,75]; every pixel of each set thing answers that thing in the hit order (boxes that overlap: arbol0/banco, arbol2/grande, each overlap held by the one drawn there); the set's parts are arbol0, arbol1, arbol2, banco, camino, grande, porton (each a touch key's: nothing decorative)",
+   "shadows: every castShadow call of the bake has strength 1 and a radius (none lost), each casting part darkens: porton 12 calls, 244 px set (0 calls wholly over shadow already); arbol0 36 calls, 1970 px set (0 calls wholly over shadow already); arbol1 36 calls, 1976 px set (0 calls wholly over shadow already); arbol2 36 calls, 1970 px set (0 calls wholly over shadow already); banco 12 calls, 896 px set (0 calls wholly over shadow already); grande 45 calls, 3226 px set (15 calls wholly over shadow already)",
+   "ground: the lawn and the path only (4390 px of path); the set paints nothing else on the ground but the shadows its things cast and the seven stones in the path",
+   "preview: at every moment of the 15 runs (5081 places of people, the frog, Canelo and the cat) camino-preview.html puts everyone exactly where the sheet does (0 differ)",
+   "find them: Canelo and the cat have the lawn or the path behind them but gato at 46,172 before porton (60 px), perro at 80,149 before banco (73 px), perro at 46,177 before porton (28 px) (the snail always the path or the lawn)",
+   "ground: 80 distinct stands of people, the frog, Canelo and the cat: nothing of the arch, the trees or the bench nearer than them inside their sprites, but where they are behind the bench or the arch and drawn before its entry (front): no one; at least 5 rows of lawn between anyone's feet and the foot of what stands behind them: the least behind a trunk 17 rows, uno-dos-tres right beats.38.right.0: the frog at 148,105; a post 9 rows, d-corre right null: the frog at 44,148; the bench 10 rows, d-corre right beats.49: perro at 80,149",
+   "asks: 63 distinct asks (for arbol0, arbol1, arbol2, camina, carmen, con_2, con_3, corre, despacio, di_despacio, di_rapido, espera, gato, grande, luis, perro, rapido): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: donde-esta-el-gato right beats.39 (arbol0) the frog's face; donde-esta-el-gato wrong beats.39 (arbol0) the frog's face; h-camino right beats.8 (perro) carmen's face; h-camino right beats.13 (arbol2) luis's face; h-camino right beats.21 (carmen) the frog's face; rapido-despacio right beats.8 (perro) the frog's face; uno-dos-tres right beats.11 (perro) carmen's face), the hint hand on no face; 103 answer cards, each with its lit frame and glow (+- 12) inside the view (2 px to spare at the least), over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
+   "sun (round 3): at 38,47, radius 9: under no corner board (241 boards shown, 4 px to spare at the least) and under no answer card with its frame and glow (103 cards, 5 px to spare at the least), at every moment and ask of every run",
+   "NOT solved, as the old picture: the hint hand at the first small tree (its old point; no point in the tree keeps it off every face and off the cat's tail and the birds) lies on a face at donde-esta-el-gato beats.32 (arbol0): over the cat's tail; donde-esta-el-gato beats.32 (arbol0): on luis's face; donde-esta-el-gato beats.39 (arbol0): over the cat's tail; donde-esta-el-gato beats.39 (arbol0): on luis's face; donde-esta-el-gato beats.39 (arbol0): on the frog's face; donde-esta-el-gato beats.70 (arbol0): on luis's face",
+   "bubbles: 111 bubbles at 1066 moments of 15 runs (d-corre, donde-esta-el-gato, h-camino, rapido-despacio, uno-dos-tres), each its recorded one and the ones an act can show there (anyone's \"amor\" when touched, at any moment; Carmen's \"q\" at mirarriba; the frog's \"amor\" at lame and acaricia; the cat's at ronronea; Canelo's at final13, final14): wholly inside the view (0 px from its edge at the least), clear of the cards shown in the corner (11 px), on no face",
+   "birds: every bird of the nine places perches on its own tree's crown (its leaves under at least 67% of its feet' columns), with nothing but that crown or the sky behind it, none overlapping another of its tree; a bird's blue stands out from the leaves behind it by 53 at the least (mean CIE76)",
+   "perch: the bird on the bench (gato.no) has the seat's back plank under 6 of the 6 columns of its feet; the empty bench shows 190 px of its seat's top",
+   "stones: the seven stones (marks 1 to 7) in the path, each whole and seen, nothing over them, 1 px apart at the least along the path",
+   "sevan (round 2): everyone leaves through the arch in a file, their feet between the posts (x 29.39 to 44.61) as they cross its line (right: abuela at tick 7, carmen at tick 10, luis at tick 13, perro at tick 16, cq at tick 19; wrong: abuela at tick 7, carmen at tick 10, luis at tick 13, perro at tick 16, cq at tick 19; alternate: abuela at tick 7, carmen at tick 10, luis at tick 13, perro at tick 16, cq at tick 19); nobody shows (al > .3) past the line, so nobody is seen beyond the left post; nothing of the set but the arch nearer than them; all gone at the end",
+   "arch shadow (round 3): only a contact shadow at each post's foot (57 px, all within 4.51 px of a post's foot; keep 5); the path's first leg, from the view's left edge to mark 0: near edge 251 px, 0% in shadow, lightness 159; far edge 523 px, 0% in shadow, lightness 149 (the lawn 130, the path's middle 180): no dark band along either edge",
+   "big tree (round 2): its trunk 18 px wide (a small one 6), its crown 88 px wide (a small one 35, running off the picture's right and top edges), its middle at x 204 over the trunk at 204; no limb seen outside the trunk's columns; its hint box [160,12,46,96] (its touch box [160,0,80,108]), the frame inside the view, its hand 190,51 in it; the foot of its trunk seen at every moment (100% at the least: )",
+   "shadows (round 2): each in one piece with its thing, from its foot (grande 339 px, arbol0 242 px, arbol1 465 px, arbol2 464 px, porton 20 px, banco 237 px); the path's edge is the path's own earth, ragged into the lawn (no edge line)",
+   "sky (round 2): the sun at 38,47 (radius 9), left of the middle, whole in the view, nothing of the set within 2 px; the old picture's three clouds back, at 128,6; 140,24; 120,44 (the old 36,16; 112,9; 168,26: moved clear of the sun and the crowns), each clear of them by 2 px; no story or pair names the sun or a cloud by a position",
+   "bench (round 4): behind whatever sits on it, besides the bench, one backdrop only: the cat (lava) lit lawn, the cat (lava, other frame) lit lawn, the cat (sit) lit lawn, the bird lit lawn, the bird (other frame) lit lawn",
+   "pairs, what differs: perro: perro, gato; gato: gato, avebanco; arbol: the window; camina: luis corre, polvo; corre: perro pose, polvo; espera: carmen paso/corre, polvo; rapido: perro pose, polvo, caracol; despacio: gato pose, caracol, polvo; hay: gato; uno: pajaros; dos: pajaros; tres: pajaros",
+   "pairs: 25 review pictures (and the 16 level pictures, the same pictures): everyone, the frog, Canelo, the cat, the snail and the birds whole in their crop (no zoom 2 crop cuts what the old window did not), on clear ground",
+   "lawn: El frente's grass (GRASS), mean colour 125,146,64 (hue 75); the sprite layer's things on it, by their mean colour against it (CIE76), each with its dark outline: the bush 24, the snail 33, Canelo 34, the cat 51",
+   "states: 2 baked states reached (gran 0, 1)"
+  ]
+ }
+}
+''';
