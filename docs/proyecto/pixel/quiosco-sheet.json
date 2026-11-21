@@ -337,10 +337,10 @@
    }
   },
   "barra_caja": {
-   "world": [-0.7071, 1.7678, 1.05],
-   "uv": [-1.75, 0.75, 1.05],
-   "screen": [75, 108],
-   "depth": 1.1745,
+   "world": [-0.8839, 1.591, 1.05],
+   "uv": [-1.75, 0.5, 1.05],
+   "screen": [75, 105],
+   "depth": 0.958,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -427,10 +427,10 @@
    }
   },
   "detras": {
-   "world": [-0.601, -0.601, 0],
-   "uv": [0, -0.85, 0],
-   "screen": [120, 111],
-   "depth": -0.7361,
+   "world": [-0.5515, -0.5515, 0],
+   "uv": [0, -0.78, 0],
+   "screen": [120, 112],
+   "depth": -0.6755,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -440,9 +440,9 @@
    "on": "ground"
   },
   "cola1": {
-   "world": [0.0707, 0.9899, 0],
-   "uv": [-0.65, 0.75, 0],
-   "screen": [103, 132],
+   "world": [-0.0212, 1.0819, 0],
+   "uv": [-0.78, 0.75, 0],
+   "screen": [100, 132],
    "depth": 0.6495,
    "scale": 1,
    "kind": "person",
@@ -715,7 +715,7 @@
      "       barra_c z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
      "       barra_izq z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
      "       barra_fin z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0.05",
-     "       barra_caja z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0.06",
+     "       barra_caja z 1.05 (wing): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
      "       barra_e z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.01",
      "       vela_a z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.03",
      "       vela_b z 1.05 (counter): 25 of 25 grid points on the surface; its own pixel: quiosco +0.03",
@@ -724,7 +724,7 @@
      "       mesa_a z 0.42 (chair): 10 of 25 grid points on the surface, 15 behind a nearer part; its own pixel: mesa +0.62",
      "       mesa_b z 0.42 (chair): 10 of 25 grid points on the surface, 15 behind a nearer part; its own pixel: mesa +0.62",
      "       mesa z 0.72 (table): 25 of 25 grid points on the surface; its own pixel: mesa +0.03",
-     "       info, not a check: ground spots whose feet pixel the set draws nearer than the feet (the person stands behind it: the depth rule hides what it covers): detras 120,111 (quiosco 1 nearer)"
+     "       info, not a check: ground spots whose feet pixel the set draws nearer than the feet (the person stands behind it: the depth rule hides what it covers): detras 120,112 (quiosco 0.92 nearer)"
     ]
    },
    {
@@ -740,8 +740,8 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 173 pairs in the 6 moments of the preview (m1 (detras, barra_c, taburete1, taburete2, mesa_a, mesa_b); m2 (detras, taburete1, taburete2, taburete3, taburete4, barra3, mesa_a, mesa_b); m3 (detras, barra_caja, taburete4, taburete3, mesa_a, mesa_b, pie1); m4 (detras, cola1, cola2, cola3, cola4, barra_caja, mesa_a, mesa_b, pie1); m5 (detras, taburete1, taburete2, taburete3, barra_e, pie1, mesa_a, mesa_b); m6 (detras, taburete1, taburete2, taburete3, barra_e, pie1, mesa_a, mesa_b, cola1, cola3)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 vendedor ~ coqui (0 across, 15 down), m1 maestra ~ doctor (9 across, 17 down), m1 maestra ~ luis (7 across, 31 down), m1 maestra ~ carmen (19 across, 31 down), m1 doctor ~ luis (16 across, 48 down), m1 doctor ~ carmen (10 across, 48 down), m2 maestra ~ doctor (9 across, 17 down), m2 maestra ~ luis (7 across, 31 down), m2 maestra ~ carmen (19 across, 31 down), m2 doctor ~ luis (16 across, 48 down), m2 doctor ~ carmen (10 across, 48 down), m2 cocinero ~ policia (9 across, 17 down), m3 coqui ~ carmen (13 across, 49 down), m3 coqui ~ luis (14 across, 57 down), m3 joven ~ senor (9 across, 17 down), m4 vendedor ~ senora (17 across, 21 down), m4 vendedor ~ hombre (17 across, 21 down), m4 vendedor ~ mujer (17 across, 40 down), m4 vendedor ~ laJoven (17 across, 40 down), m4 senora ~ mujer (0 across, 19 down), m4 senora ~ luis (14 across, 33 down), m4 hombre ~ laJoven (0 across, 19 down), m4 mujer ~ luis (14 across, 14 down), m4 coqui ~ carmen (13 across, 49 down), m4 coqui ~ luis (14 across, 57 down), m5 vendedor ~ coqui (26 across, 15 down), m5 ana ~ beto (9 across, 17 down), m5 ana ~ abuela (7 across, 31 down), m5 ana ~ mamaAna (19 across, 31 down), m5 beto ~ abuela (16 across, 48 down), m5 beto ~ mamaAna (10 across, 48 down), m6 vendedor ~ coqui (26 across, 15 down), m6 vendedor ~ nino (17 across, 21 down), m6 vendedor ~ nina (17 across, 40 down), m6 ana ~ beto (9 across, 17 down), m6 ana ~ abuela (7 across, 31 down), m6 ana ~ mamaAna (19 across, 31 down), m6 beto ~ abuela (16 across, 48 down), m6 beto ~ mamaAna (10 across, 48 down), m6 luis ~ nino (14 across, 33 down), m6 luis ~ nina (14 across, 14 down), m6 nino ~ nina (0 across, 19 down)",
-     "       closest pair in each moment (px across / px down): m1 vendedor ~ coqui 0/15 (needs 28 across or 12 down); m2 maestra ~ luis 7/31 (needs 24 across or 12 down); m3 coqui ~ carmen 13/49 (needs 28 across or 12 down); m4 senora ~ mujer 0/19 (needs 24 across or 12 down); m5 ana ~ abuela 7/31 (needs 24 across or 12 down); m6 nino ~ nina 0/19 (needs 24 across or 12 down)"
+     "sprites-apart: 173 pairs in the 6 moments of the preview (m1 (detras, barra_c, taburete1, taburete2, mesa_a, mesa_b); m2 (detras, taburete1, taburete2, taburete3, taburete4, barra3, mesa_a, mesa_b); m3 (detras, barra_caja, taburete4, taburete3, mesa_a, mesa_b, pie1); m4 (detras, cola1, cola2, cola3, cola4, barra_caja, mesa_a, mesa_b, pie1); m5 (detras, taburete1, taburete2, taburete3, barra_e, pie1, mesa_a, mesa_b); m6 (detras, taburete1, taburete2, taburete3, barra_e, pie1, mesa_a, mesa_b, cola1, cola3)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 vendedor ~ coqui (0 across, 16 down), m1 maestra ~ doctor (9 across, 17 down), m1 maestra ~ luis (7 across, 31 down), m1 maestra ~ carmen (19 across, 31 down), m1 doctor ~ luis (16 across, 48 down), m1 doctor ~ carmen (10 across, 48 down), m2 maestra ~ doctor (9 across, 17 down), m2 maestra ~ luis (7 across, 31 down), m2 maestra ~ carmen (19 across, 31 down), m2 doctor ~ luis (16 across, 48 down), m2 doctor ~ carmen (10 across, 48 down), m2 cocinero ~ policia (9 across, 17 down), m3 coqui ~ carmen (13 across, 52 down), m3 coqui ~ luis (14 across, 60 down), m3 joven ~ senor (9 across, 17 down), m4 vendedor ~ senora (20 across, 20 down), m4 vendedor ~ hombre (17 across, 20 down), m4 vendedor ~ mujer (17 across, 39 down), m4 vendedor ~ laJoven (17 across, 39 down), m4 senora ~ mujer (3 across, 19 down), m4 senora ~ coqui (25 across, 27 down), m4 senora ~ luis (11 across, 33 down), m4 hombre ~ laJoven (0 across, 19 down), m4 mujer ~ luis (14 across, 14 down), m4 coqui ~ carmen (13 across, 52 down), m4 coqui ~ luis (14 across, 60 down), m5 vendedor ~ coqui (26 across, 16 down), m5 ana ~ beto (9 across, 17 down), m5 ana ~ abuela (7 across, 31 down), m5 ana ~ mamaAna (19 across, 31 down), m5 beto ~ abuela (16 across, 48 down), m5 beto ~ mamaAna (10 across, 48 down), m6 vendedor ~ coqui (26 across, 16 down), m6 vendedor ~ nino (20 across, 20 down), m6 vendedor ~ nina (17 across, 39 down), m6 ana ~ beto (9 across, 17 down), m6 ana ~ abuela (7 across, 31 down), m6 ana ~ mamaAna (19 across, 31 down), m6 beto ~ abuela (16 across, 48 down), m6 beto ~ mamaAna (10 across, 48 down), m6 luis ~ nino (11 across, 33 down), m6 luis ~ nina (14 across, 14 down), m6 nino ~ nina (3 across, 19 down)",
+     "       closest pair in each moment (px across / px down): m1 vendedor ~ coqui 0/16 (needs 28 across or 12 down); m2 maestra ~ luis 7/31 (needs 24 across or 12 down); m3 coqui ~ carmen 13/52 (needs 28 across or 12 down); m4 hombre ~ laJoven 0/19 (needs 24 across or 12 down); m5 ana ~ abuela 7/31 (needs 24 across or 12 down); m6 nino ~ nina 3/19 (needs 24 across or 12 down)"
     ],
     "pairs": [
      {
@@ -749,7 +749,7 @@
       "a": "vendedor@detras",
       "b": "coqui@barra_c",
       "across": 0,
-      "down": 15,
+      "down": 16,
       "needAcross": 28,
       "ok": true
      },
@@ -758,7 +758,7 @@
       "a": "vendedor@detras",
       "b": "maestra@taburete1",
       "across": 77,
-      "down": 15,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
@@ -767,7 +767,7 @@
       "a": "vendedor@detras",
       "b": "doctor@taburete2",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -776,7 +776,7 @@
       "a": "vendedor@detras",
       "b": "luis@mesa_a",
       "across": 84,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -785,7 +785,7 @@
       "a": "vendedor@detras",
       "b": "carmen@mesa_b",
       "across": 58,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -884,7 +884,7 @@
       "a": "vendedor@detras",
       "b": "maestra@taburete1",
       "across": 77,
-      "down": 15,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
@@ -893,7 +893,7 @@
       "a": "vendedor@detras",
       "b": "doctor@taburete2",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -902,7 +902,7 @@
       "a": "vendedor@detras",
       "b": "cocinero@taburete3",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -911,7 +911,7 @@
       "a": "vendedor@detras",
       "b": "policia@taburete4",
       "across": 77,
-      "down": 15,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
@@ -920,7 +920,7 @@
       "a": "vendedor@detras",
       "b": "coqui@barra3",
       "across": 40,
-      "down": 11,
+      "down": 12,
       "needAcross": 28,
       "ok": true
      },
@@ -929,7 +929,7 @@
       "a": "vendedor@detras",
       "b": "luis@mesa_a",
       "across": 84,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -938,7 +938,7 @@
       "a": "vendedor@detras",
       "b": "carmen@mesa_b",
       "across": 58,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1136,7 +1136,7 @@
       "a": "vendedor@detras",
       "b": "coqui@barra_caja",
       "across": 45,
-      "down": 3,
+      "down": 7,
       "needAcross": 28,
       "ok": true
      },
@@ -1145,7 +1145,7 @@
       "a": "vendedor@detras",
       "b": "joven@taburete4",
       "across": 77,
-      "down": 15,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
@@ -1154,7 +1154,7 @@
       "a": "vendedor@detras",
       "b": "senor@taburete3",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1163,7 +1163,7 @@
       "a": "vendedor@detras",
       "b": "abuela@mesa_a",
       "across": 84,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1172,7 +1172,7 @@
       "a": "vendedor@detras",
       "b": "carmen@mesa_b",
       "across": 58,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1181,7 +1181,7 @@
       "a": "vendedor@detras",
       "b": "luis@pie1",
       "across": 31,
-      "down": 54,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1190,7 +1190,7 @@
       "a": "coqui@barra_caja",
       "b": "joven@taburete4",
       "across": 122,
-      "down": 18,
+      "down": 21,
       "needAcross": 28,
       "ok": true
      },
@@ -1199,7 +1199,7 @@
       "a": "coqui@barra_caja",
       "b": "senor@taburete3",
       "across": 113,
-      "down": 1,
+      "down": 4,
       "needAcross": 28,
       "ok": true
      },
@@ -1208,7 +1208,7 @@
       "a": "coqui@barra_caja",
       "b": "abuela@mesa_a",
       "across": 39,
-      "down": 49,
+      "down": 52,
       "needAcross": 28,
       "ok": true
      },
@@ -1217,7 +1217,7 @@
       "a": "coqui@barra_caja",
       "b": "carmen@mesa_b",
       "across": 13,
-      "down": 49,
+      "down": 52,
       "needAcross": 28,
       "ok": true
      },
@@ -1226,7 +1226,7 @@
       "a": "coqui@barra_caja",
       "b": "luis@pie1",
       "across": 14,
-      "down": 57,
+      "down": 60,
       "needAcross": 28,
       "ok": true
      },
@@ -1324,8 +1324,8 @@
       "moment": 4,
       "a": "vendedor@detras",
       "b": "senora@cola1",
-      "across": 17,
-      "down": 21,
+      "across": 20,
+      "down": 20,
       "needAcross": 24,
       "ok": true
      },
@@ -1334,7 +1334,7 @@
       "a": "vendedor@detras",
       "b": "hombre@cola2",
       "across": 17,
-      "down": 21,
+      "down": 20,
       "needAcross": 24,
       "ok": true
      },
@@ -1343,7 +1343,7 @@
       "a": "vendedor@detras",
       "b": "mujer@cola3",
       "across": 17,
-      "down": 40,
+      "down": 39,
       "needAcross": 24,
       "ok": true
      },
@@ -1352,7 +1352,7 @@
       "a": "vendedor@detras",
       "b": "laJoven@cola4",
       "across": 17,
-      "down": 40,
+      "down": 39,
       "needAcross": 24,
       "ok": true
      },
@@ -1361,7 +1361,7 @@
       "a": "vendedor@detras",
       "b": "coqui@barra_caja",
       "across": 45,
-      "down": 3,
+      "down": 7,
       "needAcross": 28,
       "ok": true
      },
@@ -1370,7 +1370,7 @@
       "a": "vendedor@detras",
       "b": "abuela@mesa_a",
       "across": 84,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1379,7 +1379,7 @@
       "a": "vendedor@detras",
       "b": "carmen@mesa_b",
       "across": 58,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1388,7 +1388,7 @@
       "a": "vendedor@detras",
       "b": "luis@pie1",
       "across": 31,
-      "down": 54,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1396,7 +1396,7 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "hombre@cola2",
-      "across": 34,
+      "across": 37,
       "down": 0,
       "needAcross": 24,
       "ok": true
@@ -1405,7 +1405,7 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "mujer@cola3",
-      "across": 0,
+      "across": 3,
       "down": 19,
       "needAcross": 24,
       "ok": true
@@ -1414,7 +1414,7 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "laJoven@cola4",
-      "across": 34,
+      "across": 37,
       "down": 19,
       "needAcross": 24,
       "ok": true
@@ -1423,8 +1423,8 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "coqui@barra_caja",
-      "across": 28,
-      "down": 24,
+      "across": 25,
+      "down": 27,
       "needAcross": 28,
       "ok": true
      },
@@ -1432,7 +1432,7 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "abuela@mesa_a",
-      "across": 67,
+      "across": 64,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -1441,7 +1441,7 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "carmen@mesa_b",
-      "across": 41,
+      "across": 38,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -1450,7 +1450,7 @@
       "moment": 4,
       "a": "senora@cola1",
       "b": "luis@pie1",
-      "across": 14,
+      "across": 11,
       "down": 33,
       "needAcross": 24,
       "ok": true
@@ -1478,7 +1478,7 @@
       "a": "hombre@cola2",
       "b": "coqui@barra_caja",
       "across": 62,
-      "down": 24,
+      "down": 27,
       "needAcross": 28,
       "ok": true
      },
@@ -1523,7 +1523,7 @@
       "a": "mujer@cola3",
       "b": "coqui@barra_caja",
       "across": 28,
-      "down": 43,
+      "down": 46,
       "needAcross": 28,
       "ok": true
      },
@@ -1559,7 +1559,7 @@
       "a": "laJoven@cola4",
       "b": "coqui@barra_caja",
       "across": 62,
-      "down": 43,
+      "down": 46,
       "needAcross": 28,
       "ok": true
      },
@@ -1595,7 +1595,7 @@
       "a": "coqui@barra_caja",
       "b": "abuela@mesa_a",
       "across": 39,
-      "down": 49,
+      "down": 52,
       "needAcross": 28,
       "ok": true
      },
@@ -1604,7 +1604,7 @@
       "a": "coqui@barra_caja",
       "b": "carmen@mesa_b",
       "across": 13,
-      "down": 49,
+      "down": 52,
       "needAcross": 28,
       "ok": true
      },
@@ -1613,7 +1613,7 @@
       "a": "coqui@barra_caja",
       "b": "luis@pie1",
       "across": 14,
-      "down": 57,
+      "down": 60,
       "needAcross": 28,
       "ok": true
      },
@@ -1649,7 +1649,7 @@
       "a": "vendedor@detras",
       "b": "ana@taburete1",
       "across": 77,
-      "down": 15,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
@@ -1658,7 +1658,7 @@
       "a": "vendedor@detras",
       "b": "beto@taburete2",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1667,7 +1667,7 @@
       "a": "vendedor@detras",
       "b": "carmen@taburete3",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1676,7 +1676,7 @@
       "a": "vendedor@detras",
       "b": "coqui@barra_e",
       "across": 26,
-      "down": 15,
+      "down": 16,
       "needAcross": 28,
       "ok": true
      },
@@ -1685,7 +1685,7 @@
       "a": "vendedor@detras",
       "b": "luis@pie1",
       "across": 31,
-      "down": 54,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1694,7 +1694,7 @@
       "a": "vendedor@detras",
       "b": "abuela@mesa_a",
       "across": 84,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1703,7 +1703,7 @@
       "a": "vendedor@detras",
       "b": "mamaAna@mesa_b",
       "across": 58,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1901,7 +1901,7 @@
       "a": "vendedor@detras",
       "b": "ana@taburete1",
       "across": 77,
-      "down": 15,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
@@ -1910,7 +1910,7 @@
       "a": "vendedor@detras",
       "b": "beto@taburete2",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1919,7 +1919,7 @@
       "a": "vendedor@detras",
       "b": "carmen@taburete3",
       "across": 68,
-      "down": 2,
+      "down": 3,
       "needAcross": 24,
       "ok": true
      },
@@ -1928,7 +1928,7 @@
       "a": "vendedor@detras",
       "b": "coqui@barra_e",
       "across": 26,
-      "down": 15,
+      "down": 16,
       "needAcross": 28,
       "ok": true
      },
@@ -1937,7 +1937,7 @@
       "a": "vendedor@detras",
       "b": "luis@pie1",
       "across": 31,
-      "down": 54,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1946,7 +1946,7 @@
       "a": "vendedor@detras",
       "b": "abuela@mesa_a",
       "across": 84,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1955,7 +1955,7 @@
       "a": "vendedor@detras",
       "b": "mamaAna@mesa_b",
       "across": 58,
-      "down": 46,
+      "down": 45,
       "needAcross": 24,
       "ok": true
      },
@@ -1963,8 +1963,8 @@
       "moment": 6,
       "a": "vendedor@detras",
       "b": "nino@cola1",
-      "across": 17,
-      "down": 21,
+      "across": 20,
+      "down": 20,
       "needAcross": 24,
       "ok": true
      },
@@ -1973,7 +1973,7 @@
       "a": "vendedor@detras",
       "b": "nina@cola3",
       "across": 17,
-      "down": 40,
+      "down": 39,
       "needAcross": 24,
       "ok": true
      },
@@ -2035,7 +2035,7 @@
       "moment": 6,
       "a": "ana@taburete1",
       "b": "nino@cola1",
-      "across": 60,
+      "across": 57,
       "down": 6,
       "needAcross": 24,
       "ok": true
@@ -2098,7 +2098,7 @@
       "moment": 6,
       "a": "beto@taburete2",
       "b": "nino@cola1",
-      "across": 51,
+      "across": 48,
       "down": 23,
       "needAcross": 24,
       "ok": true
@@ -2152,7 +2152,7 @@
       "moment": 6,
       "a": "carmen@taburete3",
       "b": "nino@cola1",
-      "across": 85,
+      "across": 88,
       "down": 23,
       "needAcross": 24,
       "ok": true
@@ -2197,7 +2197,7 @@
       "moment": 6,
       "a": "coqui@barra_e",
       "b": "nino@cola1",
-      "across": 43,
+      "across": 46,
       "down": 36,
       "needAcross": 28,
       "ok": true
@@ -2233,7 +2233,7 @@
       "moment": 6,
       "a": "luis@pie1",
       "b": "nino@cola1",
-      "across": 14,
+      "across": 11,
       "down": 33,
       "needAcross": 24,
       "ok": true
@@ -2260,7 +2260,7 @@
       "moment": 6,
       "a": "abuela@mesa_a",
       "b": "nino@cola1",
-      "across": 67,
+      "across": 64,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -2278,7 +2278,7 @@
       "moment": 6,
       "a": "mamaAna@mesa_b",
       "b": "nino@cola1",
-      "across": 41,
+      "across": 38,
       "down": 25,
       "needAcross": 24,
       "ok": true
@@ -2296,7 +2296,7 @@
       "moment": 6,
       "a": "nino@cola1",
       "b": "nina@cola3",
-      "across": 0,
+      "across": 3,
       "down": 19,
       "needAcross": 24,
       "ok": true
@@ -2305,29 +2305,17 @@
    },
    {
     "name": "frog-seen",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-seen: 2 moment(s) where the frog is not seen whole:",
-     "  moment 3: the frog at barra_caja 75,108: 40 of his 536 px are not seen (0 hidden by the set, 40 under caja, 0 outside the picture)",
-     "  moment 4: the frog at barra_caja 75,108: 40 of his 536 px are not seen (0 hidden by the set, 40 under caja, 0 outside the picture)",
-     "       or, moment 3, the one that covers him moves: caja at barra_fin -1.75,1.45,1.05: u -1.75 -> -2.49 (-0.74); v 1.45 -> 1.63 (+0.18); z 1.05 -> 0.94 (-0.11)",
-     "       nearest passing, moment 3 barra_caja -1.75,0.75,1.05: u -1.75 -> -2.49 (-0.74); v 0.75 -> 0.54 (-0.21); z 1.05 -> 1.17 (+0.12)",
-     "       or, moment 4, the one that covers him moves: caja at barra_fin -1.75,1.45,1.05: u -1.75 -> -2.49 (-0.74); v 1.45 -> 1.63 (+0.18); z 1.05 -> 0.94 (-0.11)",
-     "       nearest passing, moment 4 barra_caja -1.75,0.75,1.05: u -1.75 -> -2.49 (-0.74); v 0.75 -> 0.54 (-0.21); z 1.05 -> 1.17 (+0.12)",
-     "       info, not a check: m1 barra_c 120,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 barra3 160,100: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 barra_caja 75,108: 536 px, 0 hidden by the set, 40 under a nearer person or thing (caja 40), 0 outside the picture; his 32 x 25 box: 46 px with a nearer sprite on them; m4 barra_caja 75,108: 536 px, 0 hidden by the set, 40 under a nearer person or thing (caja 40), 0 outside the picture; his 32 x 25 box: 46 px with a nearer sprite on them; m5 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 8 px with a nearer sprite on them"
+     "frog-seen: the frog is seen whole in all 6 moments: m1 barra_c 120,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 barra3 160,100: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m5 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 8 px with a nearer sprite on them",
+     "       info, not a check: m1 barra_c 120,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m2 barra3 160,100: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m3 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m4 barra_caja 75,105: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 12 px with a nearer sprite on them; m5 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 0 px with a nearer sprite on them; m6 barra_e 146,96: 536 px, 0 hidden by the set, 0 under a nearer person or thing, 0 outside the picture; his 32 x 25 box: 8 px with a nearer sprite on them"
     ]
    },
    {
     "name": "frog-bar",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "frog-bar: 2 moment(s) with the frog covered:",
-     "  moment 3: the frog at barra_caja 75,108 is covered at 40 of his 536 px (0 by the set, 40 by caja 40)",
-     "  moment 4: the frog at barra_caja 75,108 is covered at 40 of his 536 px (0 by the set, 40 by caja 40)",
-     "       or, moment 3, the one that covers him moves: caja at barra_fin -1.75,1.45,1.05: u -1.75 -> -2.49 (-0.74); v 1.45 -> 1.63 (+0.18); z 1.05 -> 0.94 (-0.11)",
-     "       nearest passing, moment 3 barra_caja -1.75,0.75,1.05: u -1.75 -> -2.49 (-0.74); v 0.75 -> 0.54 (-0.21); z 1.05 -> 1.17 (+0.12)",
-     "       or, moment 4, the one that covers him moves: caja at barra_fin -1.75,1.45,1.05: u -1.75 -> -2.49 (-0.74); v 1.45 -> 1.63 (+0.18); z 1.05 -> 0.94 (-0.11)",
-     "       nearest passing, moment 4 barra_caja -1.75,0.75,1.05: u -1.75 -> -2.49 (-0.74); v 0.75 -> 0.54 (-0.21); z 1.05 -> 1.17 (+0.12)"
+     "frog-bar: the frog at barra_c, barra_caja and barra_e is covered by nobody: m1 barra_c: 0 of his 536 px covered (0 by the set, 0 by people or things); m3 barra_caja: 0 of his 536 px covered (0 by the set, 0 by people or things); m4 barra_caja: 0 of his 536 px covered (0 by the set, 0 by people or things); m5 barra_e: 0 of his 536 px covered (0 by the set, 0 by people or things); m6 barra_e: 0 of his 536 px covered (0 by the set, 0 by people or things)"
     ]
    },
    {
@@ -2348,34 +2336,19 @@
    },
    {
     "name": "vendedor-head",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "vendedor-head: 6 moment(s) with his head covered:",
-     "  moment 1: the vendedor's head at detras 120,111 (rows 54 to 67) is covered at 12 of 184 px: 12 by the set (the roof's edge), 0 by nobody",
-     "  moment 2: the vendedor's head at detras 120,111 (rows 54 to 67) is covered at 12 of 184 px: 12 by the set (the roof's edge), 0 by nobody",
-     "  moment 3: the vendedor's head at detras 120,111 (rows 54 to 67) is covered at 12 of 184 px: 12 by the set (the roof's edge), 0 by nobody",
-     "  moment 4: the vendedor's head at detras 120,111 (rows 54 to 67) is covered at 12 of 184 px: 12 by the set (the roof's edge), 0 by nobody",
-     "  moment 5: the vendedor's head at detras 120,111 (rows 54 to 67) is covered at 60 of 184 px: 60 by the set (12 by the roof, 48 by the chains), 0 by nobody",
-     "  moment 6: the vendedor's head at detras 120,111 (rows 54 to 67) is covered at 60 of 184 px: 60 by the set (12 by the roof, 48 by the chains), 0 by nobody",
-     "       nearest passing, moment 1 detras 0,-0.85,0 (head only): u 0 -> 2.33 (+2.33); v -0.85 -> -0.8 (+0.05); z: none within 3",
-     "       nearest passing, moment 2 detras 0,-0.85,0 (head only): u 0 -> 2.33 (+2.33); v -0.85 -> -0.8 (+0.05); z: none within 3",
-     "       nearest passing, moment 3 detras 0,-0.85,0 (head only): u 0 -> 2.33 (+2.33); v -0.85 -> -0.8 (+0.05); z: none within 3",
-     "       nearest passing, moment 4 detras 0,-0.85,0 (head only): u 0 -> 2.33 (+2.33); v -0.85 -> -0.8 (+0.05); z: none within 3",
-     "       nearest passing, moment 5 detras 0,-0.85,0 (head only): u 0 -> 2.45 (+2.45); v -0.85 -> -0.03 (+0.82); z: none within 3",
-     "       nearest passing, moment 6 detras 0,-0.85,0 (head only): u 0 -> 2.45 (+2.45); v -0.85 -> -0.03 (+0.82); z: none within 3",
-     "       info, not a check: m1 vendedor at detras 120,111: head rows 54 to 67: 12 of 184 px covered (12 by the set, 0 by people or things); m2 vendedor at detras 120,111: head rows 54 to 67: 12 of 184 px covered (12 by the set, 0 by people or things); m3 vendedor at detras 120,111: head rows 54 to 67: 12 of 184 px covered (12 by the set, 0 by people or things); m4 vendedor at detras 120,111: head rows 54 to 67: 12 of 184 px covered (12 by the set, 0 by people or things); m5 vendedor at detras 120,111: head rows 54 to 67: 60 of 184 px covered (60 by the set: 12 the roof, 48 the chains, 0 by people or things); m6 vendedor at detras 120,111: head rows 54 to 67: 60 of 184 px covered (60 by the set: 12 the roof, 48 the chains, 0 by people or things)",
+     "vendedor-head: the vendedor's head is covered by nothing in all 6 moments: m1 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m2 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m3 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m4 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m5 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things); m6 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things)",
+     "       info, not a check: m1 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m2 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m3 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m4 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set, 0 by people or things); m5 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things); m6 vendedor at detras 120,112: head rows 55 to 68: 0 of 184 px covered (0 by the set: 0 the roof, 0 the chains, 0 by people or things)",
      "       info, not a check: the stand-in wears a white paper hat 4 rows above the plain 53-row grown-up's top (57 rows in all), and the head is its top 14 rows: the hat and the top of the hair"
     ]
    },
    {
     "name": "candles-clear",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "candles-clear: 1 candle(s) covered in moment 6:",
-     "  moment 6: vela_a at vela_a 111,96 is covered at 11 of 82 px (0 by the set, 11 by nino 11)",
-     "       or the one that covers vela_a moves: nino at cola1 -0.65,0.75,0: u -0.65 -> -0.76 (-0.11); v 0.75 -> 1.04 (+0.29); z 0 -> 2.01 (+2.01)",
-     "       nearest passing, vela_a -0.35,-0.15,1.05: u -0.35 -> -0.25 (+0.1); v -0.15 -> -0.46 (-0.31); z 1.05 -> 1.23 (+0.18)",
-     "       info, not a check: vela_a at vela_a 111,96: 11 of 82 px covered (0 by the set, 11 by nino 11); vela_b at vela_b 119,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_c at vela_c 127,96: 0 of 82 px covered (0 by the set, 0 by nobody)"
+     "candles-clear: in moment 6 no candle is covered: vela_a at vela_a 111,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_b at vela_b 119,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_c at vela_c 127,96: 0 of 82 px covered (0 by the set, 0 by nobody)",
+     "       info, not a check: vela_a at vela_a 111,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_b at vela_b 119,96: 0 of 82 px covered (0 by the set, 0 by nobody); vela_c at vela_c 127,96: 0 of 82 px covered (0 by the set, 0 by nobody)"
     ]
    },
    {
@@ -2389,7 +2362,7 @@
     "name": "things-seen",
     "ok": true,
     "lines": [
-     "things-seen: not a check (the spec asks nothing of the small things but the candles): m1 quesitos: 288 of 288 px seen; m2 quesitos: 288 of 288 px seen; m3 caja: 188 of 188 px seen; m4 caja: 188 of 188 px seen; m4 limbers: 114 of 114 px seen; m5 torre: 380 of 380 px seen; m6 torre: 375 of 380 px seen (0 hidden by the set, 5 under nino 5); m6 vela_a: 71 of 82 px seen (0 hidden by the set, 11 under nino 11); m6 vela_b: 82 of 82 px seen; m6 vela_c: 82 of 82 px seen"
+     "things-seen: not a check (the spec asks nothing of the small things but the candles): m1 quesitos: 288 of 288 px seen; m2 quesitos: 288 of 288 px seen; m3 caja: 188 of 188 px seen; m4 caja: 188 of 188 px seen; m4 limbers: 114 of 114 px seen; m5 torre: 380 of 380 px seen; m6 torre: 363 of 380 px seen (0 hidden by the set, 17 under nino 17); m6 vela_a: 82 of 82 px seen; m6 vela_b: 82 of 82 px seen; m6 vela_c: 82 of 82 px seen"
     ]
    },
    {

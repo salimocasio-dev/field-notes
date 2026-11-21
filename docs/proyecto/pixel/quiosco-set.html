@@ -10,7 +10,7 @@
    booth only (a roof over the wings would hide the vendedor). At the left, nearer the camera, a small round table with two chairs.
    The state comes from the address; these become the builder's setKey:
      hora = mediodia | tarde          the light
-     fiesta = 0 | 1                   paper flags along the roof's edge and from the posts (story 68)
+     fiesta = 0 | 1                   paper flags from the posts out to each side (story 68)
      t = wind time (0 for the reference); ox, oy = the origin
    It draws one frame: the baked set. No characters, no dome, no tray, no box, no limbers, no cake stand. */
 const Q = new URLSearchParams(location.search);
@@ -79,7 +79,7 @@ function stand() {
   });
   for (let u = r0; u <= r1; u += .4) for (const v of [-.9, -.3]) PZ.shadow(u, v, 2.4, .5);
   for (const [u, v] of E.STOOLS) { const [x, y] = PZ.xy(u, v); drum(x, y, 0, .6, .05, PZ.IRON); drum(x, y, .6, .68, .2, [214, 62, 54]); castShadow(x, y, .5, .22); }
-  if (SET.fiesta) { PZ.flags(r0 + .1, E.ROOF - .16, r1 - .1, E.ROOF - .16, vf + .02, .2); PZ.flags(W.uL - .1, E.ROOF - .5, -3.6, 2.2, .14, .25); PZ.flags(W.uR + .1, E.ROOF - .5, 3.6, 2.2, .14, .25); }
+  if (SET.fiesta) { PZ.flags(W.uL - .1, E.ROOF - .5, -3.6, 2.2, .14, .25); PZ.flags(W.uR + .1, E.ROOF - .5, 3.6, 2.2, .14, .25); }
 }
 function table() {
   const [u, v] = E.TABLE, [x, y] = PZ.xy(u, v);
