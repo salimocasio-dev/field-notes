@@ -83,7 +83,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
     for (let i = 0; i < 240 * 216; i++) if (T[i] === 'carro') px.push(i, img.data[i * 4], img.data[i * 4 + 1], img.data[i * 4 + 2], Z[i]);
     PV.cartSprite = { key, px };
   }
-  PV.cartAt = w => [R(w.carroX) - SHEET.spots.carro.old[0], R((SHEET.spots.carro.old[0] - w.carroX) / 2)];
+  PV.cartAt = w => [R(w.carroX) - SHEET.spots.carro.new[0], R((SHEET.spots.carro.new[0] - w.carroX) / 2)];   // round 4: from where the standing cart stands (CARRO), no jump
   PV.cart = function (c, w) {
     const s = PV.cartSprite; if (!s) return; const [dx, dy] = PV.cartAt(w), id = c.getImageData(0, 0, 240, 216), d = id.data;
     for (let n = 0; n < s.px.length; n += 5) { const i = s.px[n], x = i % 240 + dx, y = Math.floor(i / 240) + dy; if (x < 0 || y < 0 || x >= 240 || y >= 216) continue; const j = (y * 240 + x) * 4; d[j] = s.px[n + 1]; d[j + 1] = s.px[n + 2]; d[j + 2] = s.px[n + 3]; d[j + 3] = 255; }
