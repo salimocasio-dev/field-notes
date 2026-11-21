@@ -34,7 +34,7 @@ const PZ = (() => {
   // a slope that rises away from the camera (a roof seen from the front): from (v0, z0) at its near edge to (v1, z1) at its far edge
   function slope(u0, u1, v0, z0, v1, z1, fn) { planeQuad(P(u0, v0, z0), [(u1 - u0) / R2, -(u1 - u0) / R2, 0], [(v1 - v0) / R2, (v1 - v0) / R2, z1 - z0], (a, b) => fn(u0 + a * (u1 - u0), b)); }
   const lit = (c, a = 0, b = 0) => shade(c, 2.4, a, b), dim = (c, a = 0, b = 0) => shade(c, 1.5, a, b), up = (c, a = 0, b = 0) => shade(c, 3.4, a, b);
-  function post(u, v, z0, z1, r, c) { const [x, y] = xy(u, v); drum(x, y, z0, z1, r, c); for (let z = z0 + .2; z <= z1; z += .3) castShadow(x, y, z, r + .03); }
+  function post(u, v, z0, z1, r, c) { const [x, y] = xy(u, v); drum(x, y, z0, z1, r, c); for (let z = z0 + .1; z <= z1; z += .1) castShadow(x, y, z, r + .03); }
   function ball(u, v, z, r, c, mode = 'rough') { const [x, y] = xy(u, v); sphere(x, y, z, r, c, mode); }
   function shadow(u, v, z, r) { const [x, y] = xy(u, v); castShadow(x, y, z, r); }
   function tree(u, v, h, r, c, c2) { const [x, y] = xy(u, v); CL.tree(x, y, h, r, c, c2); }
@@ -42,16 +42,23 @@ const PZ = (() => {
   /* ---- pieces ---- */
   // a seat, long across the picture, its back at the far side
   function seat(u, v, hw, back = true, c = [190, 138, 86]) {
-    box(u, v, .36, .46, hw, .26, c);
-    if (back) box(u, v - .24, .46, 1.0, hw, .05, c, (s, t, z, face) => face === 'front' && (((z - .46) % .18) < .04) ? rampOf(WOOD_D)[2] : 0);
+    const L = [214, 164, 104];
+    box(u, v, .36, .46, hw, .26, L, (s, t, z, face) => face === 'top' && ((t + .26) % .17) < .03 ? rampOf(c)[2] : 0);                    // the seat: planks
+    if (back) {                                                                                                                         // the back: three slats with gaps, on uprights
+      for (const z of [.58, .8, 1.02]) wall(u - hw, u + hw, v - .24, z, z + .15, (a, b) => shade(L, 2.6, a * 3, b * 9, .3));
+      for (let du = -hw + .08; du <= hw - .05; du += (2 * hw - .16) / Math.max(2, Math.round(hw * 2 / 1.1))) box(u + du, v - .27, .46, 1.17, .045, .03, IRON);
+    }
+    for (const du of [-hw + .04, hw - .04]) { box(u + du, v - .02, .46, .74, .04, .04, IRON); box(u + du, v - .02, .74, .8, .06, .26, c); }   // arm rests
     for (const du of [-hw + .15, hw - .15]) box(u + du, v, 0, .36, .07, .22, IRON);
     for (let du = -hw; du <= hw; du += .3) shadow(u + du, v, .4, .3);
   }
   // a seat seen from its end: long down the picture (people on it face the left)
   function seatSide(u, v0, v1, c = [190, 138, 86]) {
     const v = (v0 + v1) / 2, hd = (v1 - v0) / 2;
-    box(u, v, .36, .46, .26, hd, c);
-    box(u + .24, v, .46, 1.0, .05, hd, c);
+    const L = [214, 164, 104];
+    box(u, v, .36, .46, .26, hd, L, (s, t, z, face) => face === 'top' && ((s + .26) % .17) < .03 ? rampOf(c)[2] : 0);
+    box(u + .24, v, .46, 1.12, .04, hd, L, (s, t, z, face) => (face === 'front' && (((z - .46) % .22) > .16)) ? rampOf(c)[1] : 0);        // its back, at the right
+    box(u - .22, v + hd - .04, .46, .78, .26, .04, c);                                                                                  // the near arm rest
     for (const dv of [-hd + .15, hd - .15]) box(u, v + dv, 0, .36, .22, .07, IRON);
     for (let dv = -hd; dv <= hd; dv += .3) shadow(u, v + dv, .4, .3);
   }
