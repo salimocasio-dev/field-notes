@@ -1,0 +1,232 @@
+<!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>La estufa · preview (dev tool)</title>
+<style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px;width:588px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}</style></head><body>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The OLD sprite layer (historia/escenas/estufa.js) drawn over the NEW set (estufa-set.html): estufa.js is loaded with every screen position the sheet moves replaced by the sheet's (as the Flutter port does it, line for line), its background and its stool taken out (the set's), the stool and the window drawn again over whoever is behind them (front), the bubbles where the sheet's talk puts them. The game's signs (the hint frame and hand, the answer cards, the rounds card, the heart) are juego.js's own.
+Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;signs=1&amp;hud=1&amp;story=&lt;id&gt;</code>, or <code>?pair=arroz&amp;side=si</code> (a review picture, as the sheet says). <code>old=1</code>: the old picture, as historia/ draws it. Serve the repo over http.</p>
+<canvas id="cv" width="196" height="216" hidden></canvas>
+<div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
+<canvas id="out" width="196" height="216"></canvas>
+<script src="../../../historia/engine.js"></script>
+<script src="../../../historia/palabras.js"></script>
+<script src="../../../historia/juego.js"></script>
+<script src="../../../historia/escenas/kit.js"></script>
+<script>
+'use strict';
+/* How it works (what the builder does in Dart), as banco-preview.html and lago-preview.html:
+   1. estufa.js is fetched and every screen position it holds that the sheet changes is replaced by the sheet's (the set things' boxes and
+      hands, moves); its background and its stool are taken out (dropped); the bubbles go where sheet.talk says; the front parts are drawn
+      again from the set's own pixels over whoever stands behind them (each item of the sorted list owns the pixels it drew last; the stool
+      after everyone; the room over the window's people right after them).
+   2. A W in old positions is moved by the sheet's rule (remapW): the places of moves and of the story positions remap moves. A W recorded
+      from the port's own play needs no moving: remap=false.
+   3. The set (the baked state setKey(W)) is drawn by estufa-set.html in a hidden frame, with the shadows of whoever stands on the floor cast.
+   4. The picture is cropped to the view (196 x 216 at x0 22) or the pair's crop (98 x 52 shown at zoom 2, or 196 x 104 at zoom 1).
+   A known fault of the old file is kept (the port will be told): a cup held by mamá (p.bebe set by luisda or ranallena when she is the one
+   served) is drawn as the baby, estufa.js gente() (the line "if(p.bebe&&id==="mama")"), and her cup is never drawn. */
+(() => {
+  const PV = window.PREVIEW = {}, A = new URLSearchParams(location.search), OLD = A.get('old') === '1';
+  let SHEET = null;
+  const R = Math.round, COS = Math.sqrt(3) / 2, T30 = Math.tan(Math.PI / 6);
+
+  /* ---------- 1. the old scene file with the sheet's positions ---------- */
+  function edit(src) {
+    if (OLD) return src;
+    const S = SHEET, X = (a, b) => { if (!src.includes(a)) throw new Error('estufa.js changed: ' + a.slice(0, 80)); src = src.split(a).join(b); };
+    const bx = k => '[' + S.things[k].box.join(',') + ']', hd = k => S.things[k].hand ? ',hand:[' + S.things[k].hand.join(',') + ']' : '';
+    for (const d of S.dropped) X(d.src, d.to);
+    { const done = new Set(); for (const m of S.moves) { if (done.has(m.src)) continue; done.add(m.src); X(m.src, m.to); } }
+    X('{id:"estufa",box:[EST[0],EST[1]-2,EST[2],EST[3]],m:0},{id:"cocina",box:[22,16,196,198],m:0}]);', `{id:"estufa",box:${bx('estufa')}${hd('estufa')},m:0},{id:"cocina",box:${bx('cocina')}${hd('cocina')},m:0}]);`);
+    for (const [a, b] of S.front.tags) X(a, b);
+    for (const [a, b] of S.helps.lines) X(a, b);
+    // the window's people: the room drawn again over them where it is nearer (front.parts.ventana)
+    const vn = S.moves.find(m => m.src.startsWith('if(W.ventana&&W.ventana.length)')).to;
+    X(vn, 'PREVIEW.winA(c);' + vn + 'PREVIEW.winB(c);');
+    const fronts = Object.entries(S.front.parts).filter(e => e[1].sortY != null).map(([p, f]) => `L.push({y:${f.sortY},front:"${p}",d:()=>PREVIEW.front(c,"${p}")});`).join('');
+    X('L.sort((m,n)=>m.y-n.y).forEach(o=>o.d());', fronts + 'PREVIEW.OWN=null;L.sort((m,n)=>m.y-n.y).forEach(o=>PREVIEW.item(c,o));');
+    X('Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0)bub2(c,p.bub,R(p.x),R(p.y)-alto(id)-1,a);});',
+      'Object.keys(Gt).forEach(id=>{const p=Gt[id];if(p&&p.bub&&p.vis!==0){const t=PREVIEW.talk([R(p.x),R(p.y)-alto(id)-1],6,p.bub,W);bub2(c,p.bub,t[0],t[1],a);}});');
+    X('if(q.vis&&q.bub){const b=frogBox(q);bub2(c,q.bub,b.x+(b.w>>1),b.y+2,a);}',
+      'if(q.vis&&q.bub){const b=frogBox(q),t=PREVIEW.talk([b.x+(b.w>>1),b.y+2],b.w>>1,q.bub,W);bub2(c,q.bub,t[0],t[1],a);}');
+    X('KIT.escena({id:"estufa"', 'window.ESTUFA_OLD={QUIEN,alto};KIT.escena({id:"estufa"');
+    return src;
+  }
+  const ready = fetch('estufa-sheet.json').then(r => r.json()).then(j => { SHEET = j; PV.SHEET = j; })
+    .then(() => fetch('../../../historia/escenas/estufa.js')).then(r => r.text()).then(t => {
+      PV.SRC = edit(t);
+      const s = document.createElement('script'); s.textContent = PV.SRC + '\n//# sourceURL=estufa-new.js'; document.body.appendChild(s);
+    });
+
+  /* ---------- the set: a hidden frame per baked state; the front masks ---------- */
+  const SETS = {};
+  let CUR = null;
+  PV.keyOf = w => w.banco === 0 || w.banco === false ? 'banco0' : 'banco1';
+  async function frameOf(key) {
+    const q = 'banco=' + (key === 'banco1' ? 1 : 0) + '&tags=1';
+    let fr = SETS[q];
+    if (!fr) { fr = document.createElement('iframe'); fr.style.display = 'none'; document.body.appendChild(fr); await new Promise(r => { fr.onload = r; fr.src = 'estufa-set.html?' + q; }); SETS[q] = fr; }
+    return fr.contentWindow;
+  }
+  async function setFrame(key, casts) {
+    const w = await frameOf(key), img = w.frame(0, casts);
+    CUR = { img: new ImageData(new Uint8ClampedArray(img.data), 240, 216), tags: w.TAGS, z: w.DEPTH.z, win: w.DEPTH, fw: w, set: w.ESTUFA_SET, key };
+    return CUR.img;
+  }
+  // the v of the surface point under a screen point (the floor, a top, the stool's top)
+  const vOf = (sx, sy) => { const s = CUR.set.surfaceAt(sx, sy); return (s.w[0] + s.w[1]) / Math.SQRT2 + (s.on === 'suelo' || s.on === 'mueble' ? 0 : .02); };
+  PV.vOf = vOf;
+  // (sheet front) every item of the sorted list owns the pixels it drew last; at the stool's entry its own pixels are drawn again where their
+  // owner stands behind them (bakedZ[i] > the owner's plane at that row), never over the frog standing on it
+  PV.item = function (c, o) {
+    if (o.front) return o.d();
+    if (!PV.OWN) PV.OWN = new Array(240 * 216).fill(null);
+    const a = c.getImageData(0, 0, 240, 216).data; o.d(); const b = c.getImageData(0, 0, 240, 216).data;
+    for (let i = 0; i < 240 * 216; i++) { const j = i * 4; if (a[j] !== b[j] || a[j + 1] !== b[j + 1] || a[j + 2] !== b[j + 2]) PV.OWN[i] = o; }
+  };
+  PV.front = function (c, name) {
+    const fw = CUR.win, O = PV.OWN, parts = SHEET.front.parts[name].parts; if (!O) return;
+    const id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z, cache = new Map();
+    for (let i = 0; i < 240 * 216; i++) { if (!parts.includes(T[i]) || !O[i]) continue; const o = O[i];
+      if (!cache.has(o)) cache.set(o, PV.planeOf(o, W)); const r = cache.get(o); if (r == null) continue;
+      const y = (i / 240) | 0; if (!(Z[i] > r / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue;
+      d[i * 4] = s[i * 4]; d[i * 4 + 1] = s[i * 4 + 1]; d[i * 4 + 2] = s[i * 4 + 2]; d[i * 4 + 3] = 255; }
+    c.putImageData(id, 0, 0);
+  };
+  // a list item's plane (the v of the surface under it); the frog on the stool stands on it: nothing of it in front of him
+  PV.planeOf = function (o, w) {
+    if (o.id === 'coqui') { const q = w.cq, b = frogBox(q), s = CUR.set.surfaceAt(b.x + b.w / 2, q.y + 26); if (s.on === 'banco') return null; return (s.w[0] + s.w[1]) / Math.SQRT2; }
+    if (o.id) { const p = w.gente[o.id]; return vOf(R(p.x), R(p.y) - 1); }
+    return null;
+  };
+  // the window's people: what they drew, then the room's own pixels nearer than their plane (world y = -0.05) drawn again over them
+  PV.winA = c => { PV.WA = c.getImageData(0, 0, 240, 216).data; };
+  PV.winB = function (c) {
+    const a = PV.WA, id = c.getImageData(0, 0, 240, 216), d = id.data, s = CUR.img.data, T = CUR.tags, Z = CUR.z, fw = CUR.win, parts = SHEET.front.parts.ventana.parts;
+    for (let i = 0; i < 240 * 216; i++) { const j = i * 4; if (a[j] === d[j] && a[j + 1] === d[j + 1] && a[j + 2] === d[j + 2]) continue; if (!parts.includes(T[i])) continue;
+      const x = i % 240, y = (i / 240) | 0, v = (x + .5 - fw.OX) / fw.S - .05 * Math.SQRT2;
+      if (!(Z[i] > v / COS - (y + .5 - fw.OY) * T30 / fw.S)) continue; d[j] = s[j]; d[j + 1] = s[j + 1]; d[j + 2] = s[j + 2]; d[j + 3] = 255; }
+    c.putImageData(id, 0, 0);
+  };
+  // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
+  const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
+  PV.faces = function (w) {
+    const faces = [];
+    for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.vis === 0 || (p.al != null && p.al < .5)) continue;
+      faces.push(PV.face(id, p)); }
+    if (w.cq && w.cq.vis && !(w.cq.al < .5)) { const b = frogBox(w.cq); faces.push([b.x + 2, b.y + R(w.cq.dy || 0), b.w - 4, R(b.h * .6)]); }
+    return faces;
+  };
+  // a face (sheet talk.faces): a person's [x - 6, top + 6, 12, 10]; abuela's head is off her x by talk.abuelaHead the way she faces
+  PV.face = (id, p) => { const x = R(p.x); if (id === 'abuela') { const ps = p.pose || 'idle', f = ((ps === 'offer' || ps === 'bless') ? -1 : 1) * (p.dir < 0 ? -1 : 1); return [x + f * SHEET.talk.abuelaHead - 6, R(p.y) - 50 + 6, 12, 10]; }
+    const top = R(p.y) - SHEET.talk.heights[id] + 1 + R(p.dy || 0); return [x - 6, top + 6, 12, 10]; };
+  PV.talk = function (top, h, k, w) {
+    if (!k || !SHEET.bubbles.rects[k]) return top;
+    const T = SHEET.talk, Rc = SHEET.bubbles.rects[k], x0 = cam[0], faces = PV.faces(w), boards = [];
+    if (w.tarjeta) { const b = T.board.slice(); b[0] += x0; boards.push(b); }
+    for (const [side, dy] of T.places) { const tx = top[0] + side * (h + 16), ty = top[1] + dy, r = [tx + Rc[0], ty + Rc[1], Rc[2], Rc[3]];
+      if (r[0] >= x0 && r[1] >= 0 && r[0] + r[2] <= x0 + 196 && r[1] + r[3] <= 216 && !boards.some(b => meets(r, b)) && !faces.some(f => meets(r, f))) return [tx, ty]; }
+    return top;
+  };
+
+  /* ---------- 2. a W in old positions, moved by the sheet's rule ---------- */
+  PV.story = null;
+  PV.remapW = w0 => { const w = JSON.parse(JSON.stringify(w0)), st = PV.story;
+    const MV = SHEET.moves.flatMap(m => (m.places || []));
+    const RM = SHEET.remap.filter(e => e.moved && e.kind === 'point' && (!st || e.uses.some(u => u.startsWith(st.id + '.json'))));
+    const find = (who, p) => MV.find(q => q.who === who && q.old[0] === R(p.x) && q.old[1] === R(p.y)) || RM.find(e => e.old[0] === R(p.x) && e.old[1] === R(p.y));
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null) { const m = find(id, p); if (m) { p.x = m.new[0] + (p.x - R(p.x)); p.y = m.new[1] + (p.y - R(p.y)); } }
+    for (const p of w.cosas || []) if (p && p.x != null) { const m = find('cosa', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    for (const p of w.vuelos || []) if (p && p.x != null) { const m = find('cosa', p); if (m) { p.x = m.new[0]; p.y = m.new[1]; } }
+    if (w.plata) { const m = find('plata', w.plata); if (m) { w.plata.x = m.new[0]; w.plata.y = m.new[1]; } }
+    if (w.olor) { const m = SHEET.remap.find(e => e.moved && e.kind === 'rect' && e.old.join() === w.olor.join()); if (m) w.olor = m.new.slice(); }
+    if (w.cq) { const mq = MV.find(m2 => m2.who === 'cq' && m2.old[0] === w.cq.x && m2.old[1] === w.cq.y) || RM.find(e => e.old[0] === w.cq.x && e.old[1] === w.cq.y && e.uses.every(u => /\.cq$/.test(u))); if (mq) { w.cq.x = mq.new[0]; w.cq.y = mq.new[1]; } }
+    return w; };
+
+  /* ---------- 3. the picture ---------- */
+  function baseW(over) { return Object.assign({ spot: null, twinkle: null, glow: null, fx: [], heart: 0, lost: 0, resp: null }, ESCENAS.estufa.fresh({}), over || {}); }
+  PV.baseW = baseW;
+  // the shadows the engine casts (sheet: shadows), from the floor point under each one who stands on the floor
+  PV.casts = function (w, fw) {
+    const out = [], q = w.cq, SH = SHEET.shadows, S = fw.ESTUFA_SET;
+    if (q && q.vis && !(q.al <= .5)) { const b = frogBox(q), s = S.surfaceAt(b.x + b.w / 2, q.y + 26); if (s.on === 'suelo') out.push([s.w[0], s.w[1], .3, SH.coqui.radius]); }
+    for (const [id, p] of Object.entries(w.gente || {})) {
+      if (!p || p.vis === 0 || (p.al != null && p.al <= .5)) continue;
+      const s = S.surfaceAt(R(p.x), R(p.y) - 1); if (s.on !== 'suelo') continue;
+      const r = SH.people.radius[id] || (ESTUFA_OLD.QUIEN[id] && ESTUFA_OLD.QUIEN[id].nino ? SH.people.radius.nino : SH.people.radius.other);
+      for (const z of [.3, .65, 1, 1.35, 1.7]) out.push([s.w[0], s.w[1], z, r]);
+    }
+    return out;
+  };
+  // where everyone is (the sheet's check reads it)
+  PV.places = w => { const o = {};
+    for (const [id, p] of Object.entries(w.gente || {})) if (p && p.x != null && p.vis !== 0) o[id] = [R(p.x), R(p.y)];
+    if (w.cq && w.cq.vis) o.cq = [w.cq.x, w.cq.y];
+    (w.cosas || []).forEach((c, i) => { if (c && c.vis !== 0) o['cosa.' + (c.id || c.k + i)] = [R(c.x), R(c.y)]; });
+    if (w.plata) o.plata = [R(w.plata.x), R(w.plata.y)]; if (w.mat) o.mat = [R(w.mat.x), R(w.mat.y)];
+    return o; };
+  PV.render = async function (wOld, opts = {}) {
+    await ready;
+    if (sc.width !== 240 || sc.height !== 216) { sc.width = 240; sc.height = 216; }
+    E = ESCENAS.estufa; F = opts.F == null ? 8 : opts.F; TALK = null;
+    W = OLD || opts.remap === false ? JSON.parse(JSON.stringify(wOld)) : PV.remapW(wOld); if (!W.fx) W.fx = []; if (!W.gente) W.gente = {};
+    const x0 = opts.crop ? opts.crop[0] : 22;
+    cam = [x0, 0, 196, 216];
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = 1; c.imageSmoothingEnabled = false;
+    if (OLD) { c.fillStyle = '#000'; c.fillRect(0, 0, 240, 216); }
+    else { const key = PV.keyOf(W), fw = await frameOf(key); CUR = { set: fw.ESTUFA_SET }; c.putImageData(await setFrame(key, PV.casts(W, fw)), 0, 0); }
+    E.draw(c, W, F >> 1);
+    if (W.resp) respDraw(c, F >> 1);
+    if (opts.signs) {
+      const a = F >> 1;
+      const hb = k => (SHEET.things[k] && SHEET.things[k].hintBox) || bx(k);
+      if (W.twinkle && bx(W.twinkle)) twinkle(c, hb(W.twinkle));
+      if (W.spot) spot(c, respBox(W.spot) || hb(W.spot), a);
+      W.fx.forEach(e => { if (e.t === 'star') e.pts.forEach((p, i) => star(c, p[0], p[1], (i + a) % 2 ? 4 : 2, (i + a) % 2)); });
+      if (W.heart) heart(c, E.heartAt[0], E.heartAt[1] - (a % 2), 3);
+    }
+    const cr = opts.crop || [x0, 0, 196, 216], z = opts.crop ? (opts.zoom || 1) : 1;
+    const out = document.getElementById('out'); out.width = cr[2] * z; out.height = cr[3] * z;
+    const g = out.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sc, cr[0], cr[1], cr[2], cr[3], 0, 0, cr[2] * z, cr[3] * z);
+    if (opts.hud && E.hud) E.hud(g, W, F >> 1);
+    if (opts.signs && W.spot) { const rb = respBox(W.spot), t = SHEET.things[W.spot], b = rb || (t && t.hand ? null : bx(W.spot)), p = rb ? [rb[0] + rb[2] / 2, rb[1] + rb[3] - 6] : t && t.hand ? t.hand : b ? [b[0] + b[2] / 2, b[1] + b[3] / 2] : null;
+      if (p) { const k = 3, hx = Math.round(p[0] - cam[0]) - 4 * k, hy = Math.round(p[1] - cam[1]); hand(g, hx, hy, (F >> 2) % 2 === 1, k); } }
+    return out.toDataURL();
+  };
+  // the signs of a story step as juego.js sets them (ask, decide), as lago-preview.html
+  PV.askW = function (w, st, V, on) {
+    const sub = x => typeof x === 'string' ? x.replace(/\$(\w+)/g, (m, k) => V && V[k] != null ? V[k] : m) : x;
+    const vmapa = m => m ? Object.fromEntries(Object.entries(m).map(e => [sub(e[0]), sub(e[1])])) : null;
+    const keep = w.resp; w.resp = null; w.respVoz = null; w.respOn = null; w.spot = null;
+    if (st.ask) { w.spot = sub(st.ask); if (st.resp) { w.resp = st.resp.map(sub); w.respVoz = vmapa(st.voces); } }
+    else if (st.decide) { const ops = st.options.map(sub), bur = (st.burbujas || []).map(sub); w.spot = sub(st.pick) || ops[0];
+      if (st.decide === 'say') { w.resp = ops; w.respVoz = vmapa(st.voces); } else if (bur.length) { w.resp = bur; w.respVoz = vmapa(st.voces); } }
+    else if (st.kind === 'say' && st.options) w.resp = st.options.map(sub);
+    else return null;
+    if (!w.resp && keep) w.resp = keep;
+    if (on && w.respVoz && w.resp) w.respOn = on === 'spot' ? (w.resp.includes(w.spot) ? w.spot : null) : on;
+    return w;
+  };
+  // a review picture: panelW() of cual.js, cropped and zoomed as the sheet's pictures say (old=1: the old cam rectangle, stretched as cual.html does)
+  PV.pair = async function (word, side, file = 'cual-estufa') {
+    await ready;
+    const it = PV.CUAL.items.find(i => i.w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') === word), spec = it[side];
+    const w = baseW();
+    w.cq = { x: 123, y: 150, s: .86, dy: 0, al: 1, vis: spec.set && spec.set.resp ? 1 : 0, bub: null };
+    Object.assign(w, JSON.parse(JSON.stringify(spec.set || {})));
+    if (OLD) { await PV.render(w, { F: 8, remap: false }); const o = document.getElementById('out'), cm = spec.cam, k = document.createElement('canvas'); k.width = 196; k.height = 104; const g = k.getContext('2d'); g.imageSmoothingEnabled = false;
+      g.drawImage(sc, cm[0], cm[1], cm[2], cm[3], 0, 0, 196, 104); o.width = 196; o.height = 104; o.getContext('2d').drawImage(k, 0, 0); return o.toDataURL(); }
+    const pc = SHEET.pictures[word + '.' + side];
+    PV.story = { id: file };
+    const ww = PV.remapW(w);
+    PV.story = null;
+    return PV.render(ww, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+  };
+  PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-estufa.json').then(r => r.json())).then(a => { PV.CUAL = a; });
+
+  PV.done = PV.ready.then(() => {
+    if (A.get('pair')) return PV.pair(A.get('pair'), A.get('side') || 'si');
+    if (A.get('story')) PV.story = { id: A.get('story') };
+    const w = A.get('w') ? baseW(JSON.parse(A.get('w'))) : baseW();
+    return PV.render(w, { F: +(A.get('F') || 8), hud: A.get('hud') === '1', signs: A.get('signs') === '1', remap: A.get('remap') !== '0' });
+  });
+})();
+</script></body></html>
