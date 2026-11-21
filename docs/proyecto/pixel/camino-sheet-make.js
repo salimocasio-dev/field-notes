@@ -40,18 +40,26 @@ const SOLID = ['porton', 'arbol0', 'arbol1', 'arbol2', 'banco', 'grande'];   // 
         for (let j = a; j < b; j++) { const L = leaves[j], reach = Math.min(1, Math.max(.3, (L.z - 2.5) / 3)), mx = Math.round(1.55 * reach * .9), my = Math.round(reach * .45);
           for (let n = 0; n < L.pixels.length; n += 4) for (let dx = -mx; dx <= mx; dx++) for (let dy = -my; dy <= my; dy++) { const x = L.pixels[n] + dx, y = L.pixels[n + 1] + dy; if (x >= 0 && y >= 0 && x < W && y < H) out.add(y * W + x); } }
         leaf[name] = [...out]; }
-      const cd = document.getElementById('c').getContext('2d').getImageData(0, 0, W, H).data, rgb = []; for (let i = 0; i < W * H; i++) rgb.push(cd[i * 4], cd[i * 4 + 1], cd[i * 4 + 2]);
+      const cd = document.getElementById('c').getContext('2d').getImageData(0, 0, W, H).data, rgbA = []; for (let i = 0; i < W * H; i++) rgbA.push(cd[i * 4], cd[i * 4 + 1], cd[i * 4 + 2]);
       // every castShadow call of the bake, with the part that made it and what it did: bake again with castShadow and part() watched
-      const calls = []; let cur = null; const cs0 = castShadow, part0 = part;
-      castShadow = function (x, y, z, r, strength = 1, dither = .4) { const before = shadowMask.slice(); cs0(x, y, z, r, strength, dither); let n = 0; for (let i = 0; i < W * H; i++) if (shadowMask[i] !== before[i]) n++;
+      // what shows at frame 0 of each part's baked pixels (the leaves drawn over them at t 0): the big tree's limbs, its trunk's foot
+      const live = DEPTH.live(), shown0 = {}; TAGS.forEach((t, i) => { if (t && live[i] === bakedZ[i]) (shown0[t] = shown0[t] || []).push(i); });
+      const calls = [], shadowPx = {}; let cur = null; const cs0 = castShadow, part0 = part;
+      castShadow = function (x, y, z, r, strength = 1, dither = .4) { const saved = shadowMask.slice(); shadowMask.fill(0); cs0(x, y, z, r, strength, dither); let n = 0; const S = shadowPx[cur] = shadowPx[cur] || new Set();
+        for (let i = 0; i < W * H; i++) { if (shadowMask[i]) { n++; S.add(i); } if (saved[i] > shadowMask[i]) shadowMask[i] = saved[i]; }
         calls.push({ part: cur, args: [x, y, z, r, strength], set: n }); };
       part = function (name, fn) { const c0 = cur; cur = name; const r = part0(name, fn); cur = c0; return r; };
       PART_TAGS = null; const t0 = performance.now(); buildSet(); const warm = performance.now() - t0;
       castShadow = cs0; part = part0;
-      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), K: { road: KIND_ROAD, grass: KIND_GRASS }, rgb, leaf, calls, bake: BAKE_MS };
+      // the ground as the set lays it (before shadows and occlusion), and which of its pixels are lit lawn in the baked picture
+      const raw = Array.from(GROUND_CACHE.pix), lit = []; for (let i = 0; i < W * H; i++) lit.push(kinds[i] === KIND_GRASS && bakedZ[i] === groundZ[i] && !staticShadow[i] ? 1 : 0);
+      const onGround = []; for (let i = 0; i < W * H; i++) onGround.push(ground[i] && bakedZ[i] === groundZ[i] ? 1 : 0);
+      return { F: o, scene: PP_SCENE, W, H, S, parts, z: Array.from(DEPTH.z), kinds: Array.from(kinds), K: { road: KIND_ROAD, grass: KIND_GRASS }, rgb: rgbA, leaf, calls, bake: BAKE_MS,
+        shown0, shadowPx: Object.fromEntries(Object.entries(shadowPx).map(([k, v]) => [k, [...v]])), raw, lit, onGround, PATHC: PATHC.map(c => rgb(...c)) };
     });
     if (!G.F) Object.assign(G, { F: g.F, scene: g.scene, W: g.W, H: g.H, S: g.S, K: g.K });
     G.parts[key] = g.parts; G.z[key] = g.z; G.kinds[key] = g.kinds; G.rgb[key] = g.rgb; G.leaf[key] = g.leaf; G.shadows[key] = g.calls;
+    for (const k of ['shown0', 'shadowPx', 'raw', 'lit', 'onGround']) (G[k] = G[k] || {})[key] = g[k]; G.PATHC = g.PATHC;
   }
   if (errs.length) throw new Error(errs.join('; '));
   G.M = await measure(await browser.newPage());
@@ -213,37 +221,48 @@ function make(G) {
   /* ---- the places that move (the floor rule keeps every other one). Each is an exact piece of camino.js source and its replacement ---- */
   // the arch's opening: a point in it, b along y from its middle (+ towards post A, down to the left on the screen), a along x (+ into the park)
   const inArch = (a, b) => { const q = E.project(F.AC[0] + a, F.AC[1] + b, 0); return [Math.round(q.sx), Math.round(q.sy)]; };
-  // acts.sevan: everyone leaves the park through the arch and goes on up the path off the picture's left edge (the old: walked left, fading,
-  // on the grass). Each person: 4 steps to their own point just inside the opening (a .3), 4 steps through it and on (a -2.7), fading as before;
-  // the dog walks through it and off; the frog hops through it in his two hops
-  const GATE = { abuela: [.3, 0], luis: [.3, -.2], carmen: [.3, .2], perro: [.3, 0], cq: [.3, -.1] };
-  const pu = id => { const g = GATE[id]; return [inArch(g[0], g[1]), inArch(-2.7, g[1])]; };
+  // acts.sevan (round 2): everyone leaves the park through the arch in a file, one after another (abuela, Carmen, Luis, Canelo, the frog, 3 ticks
+  // apart): each walks 4 steps to a point just inside the opening (a .3, b SEVAN_B), then 4 steps through it to just past its line (a -.22), fading
+  // as the old (al 1 - i / 8, gone after the 8th): whoever is past the line is under the arch and faded (al .25 and less); nobody is seen beyond
+  // the left post. Canelo fades too (moves: animal() draws with its al); the frog hops twice (one hop to the opening, one through it), fading
+  const SEVAN_B = -.12, SEVAN_A = [.3, -.22], SEVAN_DELAY = { abuela: 0, carmen: 3, luis: 6, perro: 9, cq: 12 };
+  const pu = id => [inArch(SEVAN_A[0], SEVAN_B), inArch(SEVAN_A[1], SEVAN_B)];
   const fq = p => [p[0] - 16, p[1] - 25];                                   // the frog's q from the point under his feet
   const SEVAN_SRC = 'async sevan(){const q=W.cq;W.correa=0;const fuera=async id=>{const p=G(id);for(let i=0;i<8;i++){p.x-=4;p.al=1-i/8;await wait(TICK);}p.vis=0;};await Promise.all([fuera("abuela"),fuera("luis"),fuera("carmen"),animalA("perro",-10,W.perro.y,"walk"),hopTo(8,q.y,2,q.s)]);q.vis=0;W.perro.vis=0;await wait(500);},';
-  const SEVAN_PU = { abuela: pu('abuela'), luis: pu('luis'), carmen: pu('carmen') }, SEVAN_DOG = pu('perro'), SEVAN_FROG = pu('cq').map(fq);
-  const SEVAN_TO = 'async sevan(){const q=W.cq;W.correa=0;const PU={abuela:' + JSON.stringify(SEVAN_PU.abuela.flat()) + ',luis:' + JSON.stringify(SEVAN_PU.luis.flat()) + ',carmen:' + JSON.stringify(SEVAN_PU.carmen.flat()) +
-    '},fuera=async id=>{const p=G(id),x0=p.x,y0=p.y,u=PU[id];for(let i=0;i<8;i++){const a=i<4?[x0,y0,u[0],u[1],(i+1)/4]:[u[0],u[1],u[2],u[3],(i-3)/4];p.x=a[0]+(a[2]-a[0])*a[4];p.y=a[1]+(a[3]-a[1])*a[4];p.al=1-i/8;await wait(TICK);}p.vis=0;};' +
-    'await Promise.all([fuera("abuela"),fuera("luis"),fuera("carmen"),(async()=>{await animalA("perro",' + SEVAN_DOG[0] + ',"walk");await animalA("perro",' + SEVAN_DOG[1] + ',"walk");})(),(async()=>{await hopTo(' + SEVAN_FROG[0] + ',1,q.s);await hopTo(' + SEVAN_FROG[1] + ',1,q.s);})()]);q.vis=0;W.perro.vis=0;await wait(500);},';
+  const SEVAN_PU = { abuela: pu('abuela'), carmen: pu('carmen'), luis: pu('luis'), perro: pu('perro'), cq: pu('cq').map(fq) };
+  const SEVAN_TO = 'async sevan(){const q=W.cq,pe=W.perro;W.correa=0;pe.pose="walk";const PU=' + JSON.stringify(Object.fromEntries(Object.entries(SEVAN_PU).map(([k, v]) => [k, v.flat()]))) +
+    ',fila=async(o,u,d,f)=>{await wait(d*TICK);const x0=o.x,y0=o.y;for(let i=0;i<8;i++){const a=i<4?[x0,y0,u[0],u[1],(i+1)/4]:[u[0],u[1],u[2],u[3],(i-3)/4];o.x=a[0]+(a[2]-a[0])*a[4];o.y=a[1]+(a[3]-a[1])*a[4];o.al=1-i/8;' +
+    'if(f){o.x=Math.round(o.x);o.y=Math.round(o.y);if(i%4===0)SFX.hop();o.dy=-7*Math.sin(Math.PI*(i%4+1)/4);}await wait(TICK);}if(f)o.dy=0;o.vis=0;};' +
+    'await Promise.all([' + Object.entries(SEVAN_DELAY).map(([k, d]) => 'fila(' + (k === 'cq' ? 'q' : k === 'perro' ? 'pe' : 'G("' + k + '")') + ',PU.' + k + ',' + d + (k === 'cq' ? ',1' : '') + ')').join(',') + ']);q.vis=0;pe.vis=0;await wait(500);},';
   // the bird on the bench (the pair gato.no): on the backrest's top rail, its feet on it (points.ave_banco)
   const AVEB = F.AVEB || [104, 103];
-  const ARBOL0 = F.ARBOL0_Q || [36, 122];
+  const ARBOL0 = F.ARBOL0_Q;
   // the answer cards in the sky (W.respEn, juego.js respBox: "a scene that needs its people seen while he chooses puts the bubbles elsewhere", as
   // El patio's inicio11 and h-camino's own beats.5): over the frog they covered Luis by the big tree (uno-dos-tres) and Luis and Carmen (the
   // asks con_n of donde-esta-el-gato), and their hand reached Carmen's and Luis's faces
-  const EN12 = [92, 30], EN13 = [166, 24];
+  // round 2: every card, its lit frame and the frame's glow (the card +- 12) wholly inside the view with 2 px to spare, for two cards and three
+  const EN12 = [134, 14], EN13 = [86, 34], EN14 = [134, 34];
   const MOVES = [
     { line: lineOf('async inicio12()'), act: 'inicio12', src: 'async inicio12(){W.gente={luis:{x:174,y:138,pose:"wave",dir:-1}', to: 'async inicio12(){W.respEn=[' + EN12 + '];W.gente={luis:{x:174,y:138,pose:"wave",dir:-1}', respEn: EN12,
-      why: 'acts.inicio12 (uno-dos-tres, d-corre, h-camino): the answer cards stand in the sky at the top left (W.respEn ' + EN12 + ', as h-camino sets for itself at its beats.5: [96, 30]; three cards need x >= 92 to stay in the view): over the frog at the far marks they covered Luis, who waits by the big tree (uno-dos-tres beats.19 to 38), and the hand at a card reached his and Carmen\'s faces' },
+      why: 'acts.inicio12 (uno-dos-tres, d-corre, h-camino): the answer cards stand in the sky (W.respEn ' + EN12 + ', as h-camino sets for itself at its beats.5: [96, 30], remapped to the same; two or three cards, their lit frames and glow, inside the view with 2 px to spare need 106 <= x <= 134 and y >= 14, and the sun at the top left keeps clear of them at 134): over the frog at the far marks they covered Luis, who waits by the big tree (uno-dos-tres beats.19 to 38), and the hand at a card reached his and Carmen\'s faces' },
     { line: lineOf('async inicio13()'), act: 'inicio13', src: 'async inicio13(){W.sinGran=1;', to: 'async inicio13(){W.sinGran=1;W.respEn=[' + EN13 + '];', respEn: EN13,
-      why: 'acts.inicio13 (donde-esta-el-gato): the answer cards (con_1, con_2, con_3: which tree the cat is in, by its birds) stand in the sky over the trees (W.respEn ' + EN13 + '): over the frog at the path\'s middle they covered Luis and Carmen (beats.47, 85) and the hand at a card was on Carmen\'s face' },
+      why: 'acts.inicio13 (donde-esta-el-gato): the answer cards (con_1, con_2, con_3: which tree the cat is in, by its birds; two at a time) stand in the sky over the trees (W.respEn ' + EN13 + '): under the biscuits card (rows 2 to 33), left of every bird\'s place, their frames inside the view with 2 px to spare: over the frog at the path\'s middle they covered Luis and Carmen (beats.47, 85) and the hand at a card was on Carmen\'s face' },
+    { line: lineOf('async inicio14(){'), act: 'inicio14', src: 'async inicio14(){W.gente={abuela:', to: 'async inicio14(){W.respEn=[' + EN14 + '];W.gente={abuela:', respEn: EN14,
+      why: 'acts.inicio14 (rapido-despacio): the answer cards stand in the sky under the guineos card (W.respEn ' + EN14 + '): over the frog walking down the path to the arch they ran off the view\'s left edge (juego.js respBox clamps their middle 76 or 60 px from the edge: the first card\'s frame is cut)' },
+    { line: lineOf('const perroEn='), act: '*', src: 'Math.min(204,MARCA[i][0]+34)', to: 'Math.min(188,MARCA[i][0]+34)', pts: [['perro', [204, 130], [188, 130]], ['perro', [191, 133], [188, 133]]],
+      why: 'round 2: perroEn(i) caps Canelo\'s x at 188 (the old 204): at marks 7 and 8 he stands beside the big tree\'s foot, which is now further right (the old tree\'s foot was at 200, and he sat in front of it, hiding it): 204, 130 -> 188, 130 and 191, 133 -> 188, 133' },
     { line: lineOf('async sevan()'), act: 'sevan', src: SEVAN_SRC, to: SEVAN_TO,
-      why: 'acts.sevan (rapido-despacio, the end): everyone leaves the park through the arch and goes on up the path off the picture\'s left edge, as the old picture had them leave towards its gate (the old act walked them 32 px left on the grass, fading, and the dog off the left edge at its row; the frog hopped to x 8). Each person walks in 4 steps to their own point just inside the opening (abuela in its middle, Luis to her right, Carmen to her left: PU, screen), then in 4 more through it and on up the path (a 2.7 past the arch), fading as before (al 1 - i / 8) and gone; the dog walks through it and on off the picture (animalA, twice); the frog hops through it in his two hops (one to the opening, one on). The same number of steps, of hops and of waits as the old: the act takes the time it took. Whoever is past the arch is behind it: the arch is drawn again over them (front.porton)' },
+      why: 'acts.sevan (rapido-despacio, the end): everyone leaves the park through the arch, as the old picture had them leave towards its gate (the old act walked them 32 px left on the grass, fading, and the dog off the left edge at its row; the frog hopped to x 8). Round 2: in a file, one after another (abuela, Carmen, Luis, Canelo, the frog, ' + SEVAN_DELAY.carmen + ' ticks apart): each walks in 4 steps to the same point just inside the opening (PU, screen: a person\'s or Canelo\'s feet, the frog\'s q), then in 4 more through it to just past its line, fading as the old (al 1 - i / 8) and gone; Canelo walks and fades too (moves: animal()), the frog hops twice (one hop to the opening, one through it: the old hop count) and fades. Whoever is under the arch has it drawn over them (front.porton); past its line everyone is faded (al .25 and less), so nobody is seen beyond the left post. What changes: each one\'s 8 steps as the old, but they start 3 ticks apart (the act takes 20 ticks, the old 8 for the people and about 18 for Canelo\'s walk), Canelo fades instead of walking off the picture, the frog\'s two hops take 4 ticks each instead of 5 and a wait' },
+    { line: lineOf('c.save();c.translate(R(o.x),R(o.y)-im.height+2'), act: '*', src: 'c.save();c.translate(R(o.x),R(o.y)-im.height+2+(o.dy||0));', to: 'c.save();c.globalAlpha=o.al==null?1:o.al;c.translate(R(o.x),R(o.y)-im.height+2+(o.dy||0));',
+      why: 'animal(): Canelo and the cat are drawn with their al (1 unless set), so that Canelo fades as he goes out through the arch (acts.sevan); c.restore() puts the alpha back' },
     { line: lineOf('if(W.avebanco){'), act: '*', src: 'c.drawImage(im,BANCO[0]+8,BANCO[1]-11,15,12)', to: 'c.drawImage(im,' + AVEB[0] + ',' + AVEB[1] + ',15,12)',
       why: 'the bird on the bench (W.avebanco, the pair gato.no): on the seat\'s back plank, its feet on it (points.ave_banco). The new bench stands along y and has no back: the bird ' + (AVEB[0] - 106) + ' px right, ' + (AVEB[1] - 117) + ' rows (the old at 106, 117)' },
+    { line: lineOf('{id:"gato",si:'), act: '*', src: 'box:w=>[R(w.gato.x)-12,R(w.gato.y)-18,24,20],m:2}', to: 'box:w=>[R(w.gato.x)-12,R(w.gato.y)-18,24,20],hand:w=>[R(w.gato.x)+12,R(w.gato.y)-10],m:2}',
+      why: 'round 2: the cat\'s hint hand at its back (x + 12, y - 10; kit.js handAt takes a thing\'s hand): on the moved bench the hand from the box\'s middle hung on Carmen\'s face (donde-esta-el-gato beats.10)' },
     { line: lineOf('W.gato={x:113,y:134,pose:"lava"'), act: 'inicio13', src: 'W.gato={x:113,y:134,pose:"lava"', to: 'W.gato={x:' + F.CAT_BENCH[0] + ',y:' + F.CAT_BENCH[1] + ',pose:"lava"', pts: [['gato', [113, 134], F.CAT_BENCH]],
       why: 'acts.inicio13: the cat on the bench, on the new bench\'s seat (points.gato_banco), as the story files\' cat at 113, 134 (remap)' },
     { line: lineOf('arbol0:[44,122,.8]'), act: '*', src: 'arbol0:[44,122,.8]', to: 'arbol0:[' + ARBOL0 + ',.8]', pts: [['cq', [44, 122], ARBOL0]],
-      why: 'LUGAR.arbol0, the frog at the first small tree: ' + (44 - ARBOL0[0]) + ' px further left, so that the arch\'s far post (screen x ' + Math.round(pB.sx) + ', in front of him: its foot ' + Math.round(pB.sy - 122 - 25) + ' rows before his feet) is clear of him (at the old point it stood in front of his right side). Every hop count with the other places is the old one (hops). W.cq at (44, 122) in a recorded run is here (places: who cq)' },
+      why: 'LUGAR.arbol0, the frog at the first small tree: ' + (ARBOL0[0] - 44) + ' px right and ' + (122 - ARBOL0[1]) + ' row up, so that the arch\'s far post (screen x ' + Math.round(pB.sx) + ', in front of him: its foot ' + Math.round(pB.sy - 122 - 25) + ' rows before his feet) is clear of him (at the old point it stood in front of his right side). Every hop count with the other places is the old one (hops). W.cq at (44, 122) in a recorded run is here (places: who cq)' },
   ];
   for (const m of MOVES) for (const q of m.pts || []) q.push(q[0] === 'cq' ? frogW(q[2]) : W4(personW(q[2])));
 
@@ -253,7 +272,7 @@ function make(G) {
   for (let i = 0; i <= 8; i++) {
     SPOTS['rana.' + i] = { world: frogW(OLD.ranaEn(i)), scale: OLD.ranaEn(i)[2], old: OLD.ranaEn(i).slice(0, 2), what: 'ranaEn(' + i + '): the frog at mark ' + i + ', on the path\'s far edge' };
     SPOTS['nina.' + i] = { world: personW(OLD.ninaEn(i)), old: OLD.ninaEn(i), what: 'ninaEn(' + i + '): Carmen at mark ' + i + ', on the lawn on our side of the path' };
-    SPOTS['perro.' + i] = { world: personW(OLD.perroEn(i)), old: OLD.perroEn(i), what: 'perroEn(' + i + '): Canelo a little ahead of the frog, on the path' };
+    SPOTS['perro.' + i] = { world: personW(OLD.perroEn(i)), old: OLD.perroEn(i), what: 'perroEn(' + i + '): Canelo a little ahead of the frog, on the path' + (OLD.perroEn(i)[0] > 188 ? ' (moved: x at most 188, see moves)' : '') };
   }
   const named = [['inicio12.luis', [174, 138], 'inicio12: Luis, by the big tree'], ['final12.carmen', [160, 146], 'final12: Carmen sits down by the big tree'],
     ['inicio13.luis', [62, 188], 'inicio13: Luis with the leash'], ['inicio13.carmen', [92, 198], 'inicio13, carmenvuelve: Carmen with the basket'], ['inicio13.perro', [54, 206], 'inicio13, perrocome, agarra, perrocome2: Canelo on the leash, by Luis'],
@@ -261,6 +280,7 @@ function make(G) {
     ['inicio14.abuela', [66, 182], 'inicio14: abuela waits at the path\'s turn, inside the arch (mark 0)'], ['inicio14.luis', [88, 200], 'inicio14: Luis'], ['inicio14.carmen', [46, 202], 'inicio14: Carmen']];
   for (const [k, p, w] of named) SPOTS[k] = { world: personW(p), old: p, what: w };
   OLD.ARBOL.forEach((a, i) => { SPOTS['carmenva.' + i] = { world: personW([a[0] + 18, a[1] + 12]), old: [a[0] + 18, a[1] + 12], what: 'carmenva: Carmen at tree ' + i + ' (ARBOL[' + i + '] + 18, 12)' }; });
+  for (const [k, s] of Object.entries(SPOTS)) if (/^perro\.[78]$/.test(k)) s.world = personW([188, s.old[1]]);
   for (const s of Object.values(SPOTS)) s.new = s.scale != null ? frogQ(s.world) : personQ(s.world);
   Object.assign(SPOTS['frog.arbol0'], { world: frogW(ARBOL0), new: ARBOL0, what: 'LUGAR.arbol0: the frog at the first small tree (moved: see moves)' });
 
@@ -274,7 +294,8 @@ function make(G) {
   pt('gato_banco', { screen: F.CAT_BENCH, old: [113, 134], v: r4(F.CAT_BENCH_V), what: 'the cat on the bench (story files d-corre, h-camino beats.1, cual-camino gato.si: x 113, y 134 -> remap): its lowest pixels on the seat\'s top; drawn after the bench\'s entry in the sorted list (front.banco), so no shadow on the lawn (shadows.gato)' });
   pt('ave_banco', { screen: AVEB, old: [106, 117], what: 'the bird on the bench (W.avebanco): drawn at (x, y) 15 x 12, its feet on the seat\'s back plank (moves)' });
   pt('corazon', { screen: [110, 30], old: [110, 30], what: 'heartAt: the heart of a happy ending, in the sky (unchanged)' });
-  pt('sol', { screen: F.SUN.slice(0, 2), radius: F.SUN[2], what: 'the sun: baked into the set\'s sky (El frente\'s), behind the big tree\'s crown; no story touches it' });
+  pt('sol', { screen: F.SUN.slice(0, 2), radius: F.SUN[2], what: 'the sun: baked into the set\'s sky (El frente\'s colours), round 2 in the upper left of the sky (every shadow falls to the right), whole inside the wide view; no story touches it or names its place' });
+  pt('nubes', { screen: F.CLOUDS, old: [[36, 16, 1], [112, 9, .7], [168, 26, .8]], what: 'the old picture\'s three clouds (x, y, size: engine.js sky()), baked into the set\'s sky as El patio\'s, each moved clear of the sun and of the crowns; no story names them' });
 
   /* ---- things: the 22 touch keys ---- */
   const T = (name, what, extra = {}) => { const s = partScreen(name), w = boxAround(s[0], s[1], s[2], s[3]); return Object.assign({ set: true, world: W4(w), box: box(w), screen: s, what, old: { box: OLDBOX[name] } }, extra); };
@@ -283,7 +304,7 @@ function make(G) {
   const lawnTop = F.HZ;
   const things = Object.assign({ luis: person('luis'), carmen: person('carmen'), abuela: person('abuela') }, aves, {
     perro: { sprite: true, why: 'Canelo (KIT.mkPerro): box [x - 14, y - 20, 28, 22] at W.perro, unchanged' },
-    gato: { sprite: true, why: 'the cat (mkGato): box [x - 12, y - 18, 24, 20] at W.gato (on the ground), unchanged; up a tree it is the tree\'s' },
+    gato: { sprite: true, hand: 'x + 12, y - 10', why: 'the cat (mkGato): box [x - 12, y - 18, 24, 20] at W.gato (on the ground), unchanged; up a tree it is the tree\'s. Round 2: its hint hand at (x + 12, y - 10) (moves; the old: the box\'s middle): on the bench (106, 124) the hand from its middle reached Carmen\'s face (donde-esta-el-gato beats.10)' },
     arbol0: T('arbol0', 'small tree 0: its trunk and crown (still: at its height the wind moves no leaf a pixel)', { hand: [OLD.ARBOL[0][0], OLD.ARBOL[0][1] - 12], handWhy: 'the old hand point (the trunk, 12 rows over the foot). No point in the tree\'s box keeps the hand off every face at its asks and off the cat\'s tail, its face and the birds in the tree: the hand hangs 54 rows, and Luis waits under it (donde-esta-el-gato beats.32, 39, 70) as in the old picture (see checks: hand, as the old)' }),
     arbol1: T('arbol1', 'small tree 1', { hand: [OLD.ARBOL[1][0] - 8, OLD.ARBOL[1][1] - 12], handWhy: 'the trunk\'s left side, 12 rows over the foot (the old point 8 px right): there the hand is on no face at the tree\'s asks and off the cat\'s tail and face and the birds in the tree' }),
     arbol2: T('arbol2', 'small tree 2', { hand: [OLD.ARBOL[2][0] - 8, OLD.ARBOL[2][1] - 12], handWhy: 'as arbol1\'s: at the old point the hand lay on Luis\'s face by the big tree (h-camino beats.13), as in the old picture' }),
@@ -294,7 +315,16 @@ function make(G) {
     parque: { set: true, ground: true, what: 'the park: the lawn from the horizon (row ' + lawnTop + ') to the bottom, the whole width: last in the hit order', old: { box: OLDBOX.parque } },
   });
   // the hand of the big tree: its trunk, 30 rows over its foot (the old had none: the box's middle, on the crown's lower edge)
-  things.grande.hand = [F.GRAN[0] + 4, F.GRAN[1] - 40]; things.grande.handWhy = 'the hint hand\'s point (new: the old had none, so its box\'s middle): the trunk\'s right side, 40 rows over its foot, under the crown (the hand hangs from it to the right of Luis, who waits by the big tree at 174, 138: at the box\'s middle it was on his face)';
+  // round 2: the big tree's crown runs off the picture's right and top edges, as the old one's did: its touch box is the whole tree on the picture,
+  // its hint box (hintBox) the part of that box the hint frame can show: inside the view, shrunk so that the frame (box + 12) lies inside it
+  { const b = things.grande.box, x0 = Math.max(b[0], 22 + 12), y0 = Math.max(b[1], 12), x1 = Math.min(b[0] + b[2], 22 + 196 - 12), y1 = Math.min(b[1] + b[3], 216 - 12);
+    things.grande.hintBox = [x0, y0, x1 - x0, y1 - y0];
+    things.grande.hintWhy = 'hintBox: the part of the touch box the hint frame shows (the frame and the twinkle of a thing are drawn round hintBox where it has one; the touch box answers the touches): the crown runs off the picture\'s right and top edges, as the old one\'s did'; }
+  things.grande.hand = [F.GRAN[0] - 14, F.GRAN[1] - 52];
+  // its box reaches x 173 on the left (its leaves from 177): its hint frame then holds Luis\'s face whole when he waits by it (174, 138), as the old
+  // frame did, instead of its rings crossing it; the third small tree\'s box ends at 172
+  { const b = things.grande.box, x0 = Math.min(b[0], 173); things.grande.box = [x0, b[1], b[0] + b[2] - x0, b[3]]; things.grande.world = W4(boxAround(x0, b[1], b[0] + b[2], b[1] + b[3]));
+    const h = things.grande.hintBox, hx0 = Math.max(x0, 34); things.grande.hintBox = [hx0, h[1], h[0] + h[2] - hx0, h[3]]; } things.grande.handWhy = 'the hint hand\'s point (new: the old had none, so its box\'s middle): in its hint box, under the crown\'s left side, left of the trunk: the hand hangs from it right of Luis\'s face (he waits at 174, 138)';
   { const roads = []; for (let i = 0; i < 240 * 216; i++) if (G.kinds['1'][i] === G.K.road) roads.push(i); const s = pxBox(roads.concat(tagsOf('1').camino || []));
     things.camino.screen = s; things.camino.world = W4(boxAround(s[0], s[1], s[2], s[3])); things.camino.box = [s[0], s[1], s[2] - s[0], s[3] - s[1]]; things.camino.old = { box: OLDBOX.camino }; }
   // (the path is flat on the ground: its box is its own screen rectangle, as El patio's lawn; a square world box can only reach it so)
@@ -317,6 +347,7 @@ function make(G) {
   const POS = JSON.parse(fs.readFileSync(path.join(REF, 'positions.json'), 'utf8'));
   // story-file positions that move (the files are not edited: the host passes the point through remap, which gives the new one)
   const STORY_MOVES = [
+    { old: [88, 134], new: [84, 130], who: 'perro', why: 'round 2: Canelo barking at the cat in the first tree (d-corre beats.49): 4 px left and 4 rows up, behind the bench\'s left end (the bench moved 12 px left along the path: at the old point he stood in its foot); the bench is drawn over him (front.banco)' },
     { old: [113, 134], new: F.CAT_BENCH, who: 'gato', why: 'the cat on the bench (d-corre and h-camino beats.1, cual-camino gato.si): on the new bench\'s seat, its lowest pixels on the seat\'s top (points.gato_banco), and drawn after the bench\'s entry in the sorted list (front.banco: sortY ' + F.BENCH_SORT + ')' },
   ];
   const remap = POS.positions.map(p => {
@@ -330,7 +361,7 @@ function make(G) {
       const ats = p.uses.map(u => u.at);
       if (p.x === -16 && p.y === -27) { e.to = { none: true }; e.what = 'the frog out of the picture (vis 0): not a place'; }
       else if (p.x === 0 && p.y === 0) { e.to = { none: true }; e.what = 'the cat up small tree 1 (en 1): its x, y are not used (the tree\'s place is ARBOL[1])'; }
-      else if (ats.every(a => /respEn$/.test(a))) { e.to = { screen: [p.x, p.y] }; e.what = 'W.respEn: the answer cards in the sky (juego.js respBox: centred at x, their top at y): screen, unchanged'; }
+      else if (ats.every(a => /respEn$/.test(a))) { e.to = { screen: EN12 }; e.new = EN12; e.moved = true; e.why = 'round 2: the answer cards where acts.inicio12 puts them (moves), their frames inside the view with 2 px to spare'; e.what = 'W.respEn: the answer cards in the sky (juego.js respBox: centred at x, their top at y): screen, moved'; }
       else { const mv = STORY_MOVES.find(m => m.old[0] === p.x && m.old[1] === p.y), at = mv ? mv.new : [p.x, p.y], w = personW(at);
         e.to = { floor: w }; e.new = personQ(w); if (mv) { e.moved = true; e.why = mv.why; }
         e.what = ats.every(a => /\.(polvo|caracol)$/.test(a)) ? 'on the ground (the dust of a run, the snail): the ground under it; the same screen place' : ats.every(a => /\.(perro|gato)$/.test(a)) ? 'an animal\'s place (x, y): the ground under it' + (mv ? '' : '; the same screen place') : 'a person\'s feet (x, y): the ground under them; the same screen place'; }
@@ -373,11 +404,11 @@ function make(G) {
       pair: 'a review or level picture is pictures[word.side] (level: level[...].picture): zoom 1 = the 196 x 104 window crop; zoom 2 = the 98 x 52 crop shown nearest-neighbour at 2 x 2. The old rectangles (remap cam and crop) say which pictures they were',
     },
     layout: {
-      what: 'a park on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right): a path of trodden earth comes in from the picture\'s left edge along +x (down to the right) through the park\'s arch (two stone posts with caps, an iron arch over them), turns at the first mark and climbs along -y (up to the right) over seven flat stones, bends a little flatter and goes on past the big tree off the picture\'s right edge. Behind the path, at their old feet, the three small round trees; on its far side, in front of the middle one, the bench along the path, facing it; at its far end, on its far side, the big tree. The lawn is El frente\'s grass (the engine\'s GRASS ramp, calm, as El patio\'s); the horizon at row ' + F.HZ + ', El frente\'s far hills and day sky over it, its sun behind the big tree\'s crown',
+      what: 'a park on the world\'s axes, seen at the engine\'s 30 degrees (shadows to screen right): a path of trodden earth comes in from the picture\'s left edge along +x (down to the right) through the park\'s arch (two stone posts with caps, an iron arch over them), turns at the first mark and climbs along -y (up to the right) over seven flat stones, bends a little flatter and goes on past the big tree off the picture\'s right edge. Behind the path, at their old feet, the three small round trees; on its far side, in front of the middle one, the bench along the path, facing it; at its far end, on its far side, the big tree. The lawn is El frente\'s grass (the engine\'s GRASS ramp, calm, as El patio\'s); the horizon at row ' + F.HZ + ', El frente\'s far hills and day sky over it, its sun in the upper left of the sky, the old picture\'s three clouds in it (round 2)',
       lines: LINES_WHAT,
       why: 'the brief and page 11 decision 9: the set stands on the world\'s axes and is seen at the engine\'s angle; nothing is built square to the camera. The old path already climbed on a slant from the bottom left: its marks 0 to 4 lie on one -y line within 1 px, so the path runs along -y there; its first leg, through the arch, runs along +x, so that whoever leaves goes through the arch and on up the path off the picture\'s edge (sevan). The arch could not stand across the path\'s climb: the old picture\'s lower left holds Carmen, Luis, abuela, the frog and the dog at the end of story 14, and a post there would stand in front of one of them. The three small trees keep their old feet (the birds, the cat in them, Carmen\'s places by them are all relative to them): free-standing round trees, not a row (a row along -y through the middle one, trees=row in the set\'s address, puts the first tree\'s trunk behind the arch and the third\'s crown into the big tree\'s: see the report). Every place on the ground keeps its old screen point (rules.floor)',
       moved: [
-        'the big tree: its foot 8 px left and 10 rows further back than the old (200, 128 to ' + F.GRAN + '), its crown smaller and kept inside x 152 to 203, rows 13 to 62: its hint frame (h-camino asks for it) inside the view, its leaves clear of small tree 2\'s box, the dog at mark 8 (204, 130) with 5 rows of lawn and more before its trunk',
+        'the big tree (round 2): built like the old one, at the picture\'s right: its foot ' + (F.GRAN[0] - OLD.GRAN[0]) + ' px right and ' + (OLD.GRAN[1] - F.GRAN[1]) + ' rows further back than the old (200, 128 to ' + F.GRAN + '), its whole trunk inside the view, lawn between its foot and whoever stands before it (the frog with the basket, Canelo at the last marks, capped at x 188: moves); its broad crown runs off the picture\'s right and top edges (things.grande.hintBox for its hint frame)',
         'the bench: along y, facing the path; its box ' + JSON.stringify(things.banco.box) + ' (old [97, 126, 32, 18]); the cat on it and the bird on it follow it (remap, moves)',
         'the arch: over the path\'s first leg, its opening facing +x; its box ' + JSON.stringify(things.porton.box) + ' (old [22, 116, 36, 60]). The frog\'s place at the first tree (LUGAR.arbol0) moved left clear of its far post (moves)',
         'unchanged: the small trees\' feet, the marks, every bird\'s place, the frog\'s other places, every person\'s and animal\'s place but the cat on the bench',
@@ -411,7 +442,7 @@ function make(G) {
     shadows: {
       coqui: { radius: .45, at: 'the ground point under his feet on screen (unproject(b.x + b.w / 2, q.y + 25))', when: 'W.cq.vis and al > .5', cast: 'castShadow(g.x, g.y, .3, .45)' },
       people: { radius: { grown: .35, nino: .3 }, at: 'the ground point under their feet on screen (unproject(x, y - 1))', when: 'visible (vis !== 0, al > .5)', cast: 'standing: for (z = .3; z <= 1.7; z += .35) castShadow(g.x, g.y, z, r); sitting on the grass (sent): castShadow(g.x, g.y, .3, r)' },
-      perro: { radius: .32, at: 'the ground point under its feet on screen (unproject(x, y - 1))', when: 'W.perro shown (vis !== 0)', cast: 'castShadow(g.x, g.y, .25, .32)' },
+      perro: { radius: .32, at: 'the ground point under its feet on screen (unproject(x, y - 1))', when: 'W.perro shown (vis !== 0, al > .5)', cast: 'castShadow(g.x, g.y, .25, .32)' },
       gato: { radius: .25, at: 'as Canelo', when: 'W.gato on the ground (vis !== 0, en == null), not on the bench (points.gato_banco)', cast: 'castShadow(g.x, g.y, .25, .25)' },
       arbusto: { radius: .55, at: 'the ground point under its foot on screen (unproject(arbusto[0], arbusto[1] - 1))', when: 'W.arbusto', cast: 'castShadow(g.x, g.y, .3, .55)', why: 'the bush is the sprite layer\'s (a prop of story 14, as the old); its shadow seats it on the lawn' },
       dropped: 'camino.js:' + lineOf('for(let j=0;j<3;j++)for(let i=j===1?0:2;i<b.w-5') + ' rana()\'s dotted shadow under the frog is not drawn: the engine casts his',
@@ -421,7 +452,7 @@ function make(G) {
       'camino.js:' + lineOf('for(let j=0;j<3;j++)for(let i=j===1?0:2;i<b.w-5') + ' the frog\'s dotted shadow -> the engine\'s cast shadow',
     ],
     moves: MOVES.map(m => Object.assign({ line: m.line, act: m.act, src: m.src, to: m.to }, m.respEn ? { respEn: m.respEn } : {}, m.pts ? { places: m.pts.map(q => ({ who: q[0] || 'whoever', old: q[1], new: q[2], world: q[3] })) } : {}, { why: m.why })),
-    sevan: { gate: GATE, people: SEVAN_PU, dog: SEVAN_DOG, frog: SEVAN_FROG, what: 'moves (acts.sevan): each one\'s point just inside the arch\'s opening and their point past it up the path (screen: a person\'s feet, the dog\'s, the frog\'s q); GATE: the same, as (a, b) from the opening\'s middle in world units (a into the park, b towards post A)' },
+    sevan: { a: SEVAN_A, b: SEVAN_B, delay: SEVAN_DELAY, points: SEVAN_PU, what: 'moves (acts.sevan): each one\'s point just inside the arch\'s opening and their point past it up the path (screen: a person\'s feet, the dog\'s, the frog\'s q); GATE: the same, as (a, b) from the opening\'s middle in world units (a into the park, b towards post A)' },
     bubbles: { what: 'each bubble\'s rectangle relative to its tail\'s tip, as camino.js bub2 draws it (twice its size), both frames of its bob: [dx, dy, w, h]', rects: G.M.bubbles },
     talk: {
       what: 'where a bubble goes (camino.js draw: line ' + lineOf('Object.keys(G).forEach(id=>{const p=G[id];if(p&&p.bub&&p.vis!==0)bub2') + ' for a person, ' + lineOf('if(q.vis&&q.bub){const b=frogBox(q);bub2') + ' for the frog, ' + lineOf('if(o.bub)bub2(c,o.bub') + ' for Canelo and the cat). The first of these places whose bubble is wholly inside the view, clear of the corner card shown (hud: the biscuits, the guineos) and of every face (each visible person\'s and the frog\'s, its own too); if none is, the first (the old)',
@@ -469,7 +500,7 @@ function make(G) {
     c(L('function guineo('), 'guineo: [0,2,2,2] [1,3,3,2] [3,4,4,2] [6,3,3,2] [8,1,2,3]', 'the guineo\'s own drawing: unchanged');
     c(L('const ranaEn='), 'ranaEn(i) = MARCA[i] - (22, 34), scale .96 - .015 i', { spots: 'rana.0 to rana.8' }, 'the floor rule: the same screen places');
     c(L('const ninaEn='), 'ninaEn(i) = MARCA[i] + (10, 22), y at most 206', { spots: 'nina.0 to nina.8' }, 'the floor rule: the same screen places');
-    c(L('const perroEn='), 'perroEn(i) = MARCA[i] + (34, -9), x at most 204', { spots: 'perro.0 to perro.8' }, 'the floor rule: the same screen places');
+    c(L('const perroEn='), 'perroEn(i) = MARCA[i] + (34, -9), x at most 204', { spots: 'perro.0 to perro.8', moved: 'x at most 188 (moves): perro.7, perro.8' }, 'the floor rule: the same screen places, but marks 7 and 8');
     c(L('const LUGAR='), 'LUGAR centro [100,176,1], banco [74,128,.86], arbol0 [44,122,.8], arbol1 [126,122,.8], arbol2 [166,118,.8], gran [166,126,.84]', { spots: Object.keys(OLD.LUGAR).map(k => 'frog.' + k), moved: 'arbol0: ' + ARBOL0 + ' (moves)' }, 'the floor rule: the same screen places, but arbol0');
     c(L('const caja=id=>'), 'caja(id): [x - 11, y - alto(id), 22, alto(id)]', 'relative to the person: unchanged');
     c(L('const AVES=[];'), 'ave box [ARBOL[i][0] + NIDO[k][0] - 8, ARBOL[i][1] + NIDO[k][1] - 6, 15, 12]', 'relative to the tree: unchanged');
@@ -681,6 +712,7 @@ function check(sh, G, runs) {
     for (const k of ['perro', 'gato']) { const p = w[k]; if (!p || p.x == null) continue; const m = MV.find(q => q.who === k && q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y));
       if (m) { p.x = m.new[0]; p.y = m.new[1]; continue; } const r = RM.find(q => q.old[0] === Math.round(p.x) && q.old[1] === Math.round(p.y)); if (r) { p.x = r.new[0]; p.y = r.new[1]; } }
     if (w.cq) { const m = MV.find(q => q.who === 'cq' && q.old[0] === Math.round(w.cq.x) && q.old[1] === Math.round(w.cq.y)); if (m) { w.cq.x = m.new[0]; w.cq.y = m.new[1]; } }
+    if (w.respEn) { const r = RM.find(q => q.old[0] === w.respEn[0] && q.old[1] === w.respEn[1]); if (r) w.respEn = r.new.slice(); }   // a story's own W.respEn (h-camino beats.5)
     return w; };
   const actsOf = st => new Set((JSON.stringify(st).match(/"act":\s*"[a-z0-9]+"/g) || []).map(a => a.split('"')[3]));
   const forRun = r => { const a = actsOf(r.story); MV = MVall.filter(q => a.has(q.act) || q.act === '*'); RM = RMall.filter(q => q.files.includes(r.story.id)); EN = (sh.moves.find(m => m.respEn && a.has(m.act)) || {}).respEn || null; };
@@ -778,16 +810,16 @@ function check(sh, G, runs) {
   /* the asks: hint frames inside the view, no frame's rings across a face where the old ones had none, the hand on no face, the answer cards over no one */
   const cajaBox = (id, p) => [Math.round(p.x) - 11, Math.round(p.y) - alto(id, p), 22, alto(id, p)];
   const boxOf = (w, k, old) => { const t = sh.things[k];
-    if (t && t.set) return old ? (t.old && t.old.box) : t.box;
+    if (t && t.set) return old ? (t.old && t.old.box) : (t.hintBox || t.box);   // the hint frame: the hint box where a thing has one (the big tree)
     if (/^ave\d\d$/.test(k)) { const i = +k[3], j = +k[4]; return (w.pajaros || [])[i] > j ? t.box : null; }
     if (k === 'perro') return onGround(w, 'perro') ? [Math.round(w.perro.x) - 14, Math.round(w.perro.y) - 20, 28, 22] : null;
     if (k === 'gato') return onGround(w, 'gato') ? [Math.round(w.gato.x) - 12, Math.round(w.gato.y) - 18, 24, 20] : null;
     if (k === 'coqui') { const b = frogBox(w.cq); return [b.x, b.y, b.w, b.h]; }
     const p = w.gente && w.gente[k]; return p && shown(p) ? cajaBox(k, p) : null; };
-  const handOf = (w, k, old) => { const t = sh.things[k]; if (t && t.hand && !(old && k === 'grande')) return t.hand; const b = boxOf(w, k, old); return b ? [Math.round(b[0] + b[2] / 2), Math.round(b[1] + b[3] / 2)] : null; };
+  const handOf = (w, k, old) => { const t = sh.things[k]; if (k === 'gato' && !old && onGround(w, 'gato')) return [Math.round(w.gato.x) + 12, Math.round(w.gato.y) - 10]; if (t && t.hand && !(old && k === 'grande')) return t.hand; const b = boxOf(w, k, old); return b ? [Math.round(b[0] + b[2] / 2), Math.round(b[1] + b[3] / 2)] : null; };
   const respBox = (w, k) => { const q = w.cq, b = frogBox(q), n = w.resp.length, i = w.resp.indexOf(k), m = n > 2 ? 76 : 60, en = w.respEn, cx = en ? en[0] : Math.max(x0 + m, Math.min(x0 + 196 - m, b.x + b.w / 2)), y = en ? en[1] : Math.max(4, b.y - 46);
     return n > 2 ? [Math.round(cx - 70 + i * 50), y, 40, 36] : i === 0 ? [Math.round(cx - 50), y, 40, 36] : [Math.round(cx + 10), y, 40, 36]; };
-  let nF = 0, nC = 0, worstF = 99; const askSeen = new Set(), askedFor = new Set(), cardHand = new Set(), crossedOld = [], handOld = new Set();
+  let nF = 0, nC = 0, worstF = 99, cardSpare = 99; const askSeen = new Set(), askedFor = new Set(), cardHand = new Set(), crossedOld = [], handOld = new Set();
   for (const r of runs) { const Ls = r.lines; forRun(r);
     Ls.forEach(L => { if (L.kind !== 'ask' && L.kind !== 'decide') return;
       const j = Ls.findIndex(Mm => Mm.path === L.path || (Mm.path || '').startsWith(L.path + '.')); if (j < 1) return;
@@ -799,7 +831,7 @@ function check(sh, G, runs) {
       if (askSeen.has(key)) return; askSeen.add(key); askedFor.add(spot);
       const faces = facesOf(w), facesOld = facesOf(wo);
       if (w.resp) for (const k of w.resp) { const c = respBox(w, k); nC++;
-        if (!within(c, VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' is not inside the view');
+        { const f = [c[0] - 12 - 2, c[1] - 12 - 2, c[2] + 28, c[3] + 28 + (w.respEn ? 0 : 4)]; if (!within(f, VIEW)) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ': its lit frame and glow (+- 12) are not inside the view with 2 px to spare'); else cardSpare = Math.min(cardSpare, f[0] + 2 - x0, x0 + 196 - f[0] - f[2] + 2, f[1] + 2, 216 - f[1] - f[3] + 2); }
         for (const [bn, bb] of boardsOf(w, x0)) if (meets(c, bb)) P.push('cards: ' + where + ' the card ' + k + ' is over ' + bn);
         for (const [id, p] of people(w)) { const n = rowsMeet(personRows(id, p), c); if (n) P.push('cards: ' + where + ' the card ' + k + ' ' + JSON.stringify(c) + ' covers ' + n + ' px of ' + id); }
         for (const kk of ['perro', 'gato']) if (onGround(w, kk)) { const n = rowsMeet(animalRows(kk, w[kk]), c); if (n) P.push('cards: ' + where + ' the card ' + k + ' covers ' + n + ' px of ' + kk); }
@@ -824,7 +856,7 @@ function check(sh, G, runs) {
         if (ho && fo && handOn(ho, fo[1]) && JSON.stringify(ho) === JSON.stringify(hp)) { handOld.add(where.replace(/ (right|wrong|alternate) /, ' ') + ': on ' + fn); continue; }
         P.push('hand: ' + where + ' the hand at ' + JSON.stringify(hp) + ' is on ' + fn + ' ' + JSON.stringify(f)); }
     }); }
-  notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), no frame\'s rings across a face where the old frame\'s were not' + (crossedOld.length ? ' (as the old: ' + [...new Set(crossedOld)].join('; ') + ')' : '') + ', the hint hand on no face; ' + nC + ' answer cards inside the view, over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
+  notes.push('asks: ' + nF + ' distinct asks (for ' + [...askedFor].sort().join(', ') + '): every hint frame (box +- ' + FRAME_OUT + ') wholly inside the view (' + worstF + ' px from its edge at the least), no frame\'s rings across a face where the old frame\'s were not' + (crossedOld.length ? ' (as the old: ' + [...new Set(crossedOld)].join('; ') + ')' : '') + ', the hint hand on no face; ' + nC + ' answer cards, each with its lit frame and glow (+- 12) inside the view (' + cardSpare + ' px to spare at the least), over no one\'s body (no opaque pixel of anyone\'s sprite, in their pose, under a card)');
   if (handOld.size) notes.push('NOT solved, as the old picture: the hint hand at the first small tree (its old point; no point in the tree keeps it off every face and off the cat\'s tail and the birds) lies on a face at ' + [...handOld].join('; '));
   if (cardHand.size) notes.push('NOT the scene\'s: the hand juego.js draws at an answer card reaches onto the frog\'s face, 46 px under it, in every scene (the card\'s place and the hand are the game\'s, respBox and hand()): at the asks for ' + [...cardHand].join(', '));
   notes.push('bubbles: ' + nB + ' bubbles at ' + nM + ' moments of ' + runs.length + ' runs (' + [...new Set(runs.map(r => r.story.id))].join(', ') + '), each its recorded one and the ones an act can show there (anyone\'s "amor" when touched, at any moment; Carmen\'s "q" at mirarriba; the frog\'s "amor" at lame and acaricia; the cat\'s at ronronea; Canelo\'s at final13, final14): wholly inside the view (' + worstView + ' px from its edge at the least), clear of the cards shown in the corner (' + (worstBoard === 99 ? 'no card shown with a bubble near' : worstBoard + ' px') + '), on no face');
@@ -871,18 +903,102 @@ function check(sh, G, runs) {
 
   /* the front parts' order: everyone drawn before the bench's entry is behind it or clear of it; the cat on its seat is after it */
 
-  /* acts.sevan: each one goes out through the opening (their way crosses the arch's line between its posts, clear of them by their half width),
-     and is beyond the view or faded (al <= .3) at the end; at every step with al > .3, no set pixel nearer than them inside their sprite but the
-     arch's (drawn over them after everyone: front.porton) */
-  { const sv = sh.sevan, inner = F.AH - F.APW, out = [];
-    const crossB = (p0, p1) => { const g0 = E.atZ(p0[0], p0[1] - 1, 0), g1 = E.atZ(p1[0], p1[1] - 1, 0), t = (F.AC[0] - g0[0]) / (g1[0] - g0[0]); return t >= 0 && t <= 1 ? g0[1] + (g1[1] - g0[1]) * t - F.AC[1] : null; };
-    const halfB = { abuela: .15, luis: .15, carmen: .15, perro: .15, cq: .15 };   // their ground point well inside the opening (their sprites are wider than it: past the arch's line the posts are drawn over them, front.porton)
-    for (const id of ['abuela', 'luis', 'carmen']) { const [g, f] = sv.people[id], b = crossB(g, f);
-      if (b == null || Math.abs(b) + halfB[id] > inner) P.push('sevan: ' + id + ' crosses the arch\'s line at ' + (b == null ? 'no point' : r2(b)) + ' (keep within ' + r2(inner - halfB[id]) + ')'); else out.push(id + ' ' + r2(b));
-      if (f[0] + 20 > x0 + 8) P.push('sevan: ' + id + ' ends at ' + f + ', in the view'); }
-    { const b = crossB(sv.dog[0], sv.dog[1]); if (b == null || Math.abs(b) + halfB.perro > inner) P.push('sevan: the dog crosses the arch\'s line at ' + b); else out.push('Canelo ' + r2(b)); if (sv.dog[1][0] + 16 > x0) P.push('sevan: the dog ends in the view'); }
-    { const b = crossB([sv.frog[0][0] + 16, sv.frog[0][1] + 26], [sv.frog[1][0] + 16, sv.frog[1][1] + 26]); if (b == null || Math.abs(b) + halfB.cq > inner + .3) P.push('sevan: the frog crosses the arch\'s line at ' + b); else out.push('the frog ' + r2(b)); }
-    notes.push('sevan: everyone leaves through the arch\'s opening (where their way crosses its line, from its middle, in world units; its posts\' inner faces at +-' + r2(inner) + '): ' + out.join(', ') + '; each ends past the view\'s left edge (the dog walks on off it, the people fade there, the frog hops there); behind the arch, it is drawn over them (front.porton)'); }
+  /* acts.sevan (round 2): in a file through the opening. The new act played tick by tick from the moment before it in every run that reaches it
+     (rapido-despacio): each one's feet inside the opening's columns when they cross the arch's line, one at a time (crossings 2 ticks apart and
+     more); while anyone shows (al > .3) they are not past the line (nobody seen beyond the left post); at every tick of it, no set pixel nearer
+     than a walker inside their sprite but the arch's (drawn over them: front.porton); everyone gone at the end */
+  { const pA = E.project(F.AC[0], F.AC[1] + F.AH, 0), pB = E.project(F.AC[0], F.AC[1] - F.AH, 0);
+    const sv = sh.sevan, aOf = (sx, sy) => { const g = E.atZ(sx, sy, 0); return [g[0] - F.AC[0], g[1] - F.AC[1]]; }, cols = [pA.sx + 2.5, pB.sx - 2.5];
+    let nRun = 0; const cross = {}, notesS = [];
+    for (const r of runs) { const i0 = r.lines.findIndex(l => { const st = l.path && at(r.story, l.path); return st && st.act === 'sevan'; }); if (i0 < 1) continue; nRun++; forRun(r);
+      const w0 = remapW(r.lines[i0 - 1].W), start = {};
+      for (const id of ['abuela', 'carmen', 'luis']) start[id] = [w0.gente[id].x, w0.gente[id].y]; start.perro = [w0.perro.x, w0.perro.y]; start.cq = [w0.cq.x, w0.cq.y];
+      const T = Math.max(...Object.values(sv.delay)) + 8;
+      for (let t = 1; t <= T; t++) { const w = JSON.parse(JSON.stringify(w0)); w.correa = 0; w.perro.pose = 'walk';
+        for (const id of Object.keys(sv.delay)) { const i = t - sv.delay[id] - 1, o = id === 'cq' ? w.cq : id === 'perro' ? w.perro : w.gente[id], u = sv.points[id];
+          if (i < 0) continue; if (i > 7) { o.vis = 0; continue; }
+          const A = i < 4 ? [start[id], u[0], (i + 1) / 4] : [u[0], u[1], (i - 3) / 4]; o.x = A[0][0] + (A[1][0] - A[0][0]) * A[2]; o.y = A[0][1] + (A[1][1] - A[0][1]) * A[2]; o.al = 1 - i / 8;
+          if (id === 'cq') { o.x = Math.round(o.x); o.y = Math.round(o.y); }
+          const feet = id === 'cq' ? [o.x + 16, o.y + 25] : [Math.round(o.x), Math.round(o.y) - 1], a = aOf(feet[0], feet[1]);
+          if (a[0] < 0 && cross[r.plan + id] == null) { cross[r.plan + id] = t; if (!(feet[0] > cols[0] && feet[0] < cols[1])) P.push('sevan: ' + r.plan + ' ' + id + ' crosses the arch\'s line with the feet at x ' + r2(feet[0]) + ', not between the posts (' + cols.map(r2) + ')'); }
+          if (o.al > .3 && a[0] < -.02) P.push('sevan: ' + r.plan + ' tick ' + t + ': ' + id + ' shows (al ' + o.al + ') past the arch\'s line');
+          if (id !== 'cq' && id !== 'perro' && o.al > .3) { const rs = personRows(id, o), near = nearerRows('1', rs, vAt(Math.round(o.x), Math.round(o.y) - 1), SOLID); for (const [pt, n] of Object.entries(near)) if (pt !== 'porton') P.push('sevan: tick ' + t + ' ' + id + ': ' + n + ' px of ' + pt + ' nearer'); }
+        } }
+      const ts = Object.entries(cross).filter(([k]) => k.startsWith(r.plan)).map(([k, v]) => [k.slice(r.plan.length), v]).sort((a, b) => a[1] - b[1]);
+      if (ts.length < 5) P.push('sevan: ' + r.plan + ': only ' + ts.length + ' of 5 cross the arch\'s line');
+      for (let k = 1; k < ts.length; k++) if (ts[k][1] - ts[k - 1][1] < 2) P.push('sevan: ' + r.plan + ': ' + ts[k - 1][0] + ' and ' + ts[k][0] + ' cross the line ' + (ts[k][1] - ts[k - 1][1]) + ' tick apart (a clump)');
+      notesS.push(r.plan + ': ' + ts.map(([k, v]) => k + ' at tick ' + v).join(', ')); }
+    if (!nRun) P.push('sevan: no run reaches acts.sevan');
+    notes.push('sevan (round 2): everyone leaves through the arch in a file, their feet between the posts (x ' + cols.map(r2).join(' to ') + ') as they cross its line (' + notesS.join('; ') + '); nobody shows (al > .3) past the line, so nobody is seen beyond the left post; nothing of the set but the arch nearer than them; all gone at the end'); }
+
+  /* round 2, the big tree: built like the old one. Its trunk at least twice a small one's width, its crown at least twice a small crown's and
+     centred over the trunk; no limb shows outside the leaves (no pixel of it seen, at frame 0, left or right of the trunk's columns above its
+     foot); its hint box's frame inside the view, its hand in its hint box; the foot of its trunk seen at every moment (at least half its pixels
+     not under anyone); its shadow, the trees', the arch's and the bench's each one piece with the thing (8-connected, with the dither's 1 px gaps) */
+  { const tagG = TAGS['1'], shown = new Set(G.shown0['1'].grande), foot = F.GRAN[1];
+    const widthAt = (part, row) => { let a = 999, b = -1; for (const i of G.parts['1'][part]) { if (Math.floor(i / 240) !== row) continue; const x = i % 240; a = Math.min(a, x); b = Math.max(b, x); } return b - a + 1; };
+    const tw = widthAt('grande', foot - 12), sw = widthAt('arbol1', sh.points['arbol.1'].screen[1] - 8);
+    if (tw < 2 * sw) P.push('big tree: its trunk ' + tw + ' px wide, a small one ' + sw);
+    const R0 = .28 * E.S, cx0 = Math.min(...F.BIG_LOBES.map(l => l[0] - l[2] * .9 - R0), 999), cx1 = Math.max(...F.BIG_LOBES.map(l => l[0] + l[2] * .9 + R0));
+    const leafX = G.leaf['1'].grande.map(i => i % 240), lx0 = Math.max(cx0, Math.min(...leafX)), crownW = cx1 - lx0, mid = (lx0 + cx1) / 2;
+    const small = G.leaf['1'].arbol1 || G.parts['1'].arbol1.filter(i => Math.floor(i / 240) < sh.points['arbol.1'].screen[1] - 22), sx = small.map(i => i % 240), smallW = Math.max(...sx) - Math.min(...sx) + 1;
+    if (crownW < 2 * smallW) P.push('big tree: its crown ' + r2(crownW) + ' px wide, a small one ' + smallW);
+    if (Math.abs(mid - F.GRAN[0]) > 6) P.push('big tree: its crown\'s middle at x ' + r2(mid) + ', its trunk at ' + F.GRAN[0]);
+    const crownLow = Math.max(...G.leaf['1'].grande.map(i => Math.floor(i / 240))), trunkCols = (() => { let a = 999, b = -1; for (const i of G.parts['1'].grande) { const y = Math.floor(i / 240); if (y !== crownLow + 2) continue; a = Math.min(a, i % 240); b = Math.max(b, i % 240); } return [a, b]; })();
+    let stub = 0; for (const i of shown) { const x = i % 240, y = Math.floor(i / 240); if (y < foot - 8 && (x < trunkCols[0] - 2 || x > trunkCols[1] + 2)) stub++; }
+    if (stub) P.push('big tree: ' + stub + ' px of its limbs seen outside its trunk\'s columns (a stub)');
+    const hb = sh.things.grande.hintBox, fr = [hb[0] - FRAME_OUT, hb[1] - FRAME_OUT, hb[2] + 2 * FRAME_OUT, hb[3] + 2 * FRAME_OUT], hp = sh.things.grande.hand;
+    if (!within(fr, VIEW)) P.push('big tree: its hint box\'s frame ' + JSON.stringify(fr) + ' is not inside the view');
+    if (!within([hp[0], hp[1], 1, 1], hb)) P.push('big tree: its hand ' + hp + ' is not in its hint box');
+    // the trunk's foot seen: its pixels in the 7 rows over its foot row, at every moment with the big tree
+    const footPx = G.parts['1'].grande.filter(i => { const y = Math.floor(i / 240); return y >= foot - 7 && y <= foot + 1 && shown.has(i); });
+    let leastSeen = 1, leastAt = '';
+    for (const r of runs) { forRun(r); for (const L of r.lines) { const w = remapW(L.W); if (w.sinGran) continue; const cov = new Set();
+      const add = rs => { for (const [y, a, b] of rs) for (let x = a; x <= b; x++) cov.add(y * 240 + x); };
+      for (const [id, p] of people(w)) add(personRows(id, p)); for (const k of ['perro', 'gato']) if (onGround(w, k)) add(animalRows(k, w[k]));
+      const q = w.cq; if (q && q.vis) { const b = frogBox(q), dy = Math.round(q.dy || 0), rs = []; for (let y = b.y + dy; y < b.y + dy + b.h; y++) rs.push([y, b.x + 2, b.x + b.w - 3]);
+        if (w.guineos != null) { const cx = b.x + (b.w >> 1) + Math.round(w.tumbo || 0); for (let y = b.y + dy - 9 - 7; y < b.y + dy + 3; y++) rs.push([y, cx - 10, cx + 10]); } add(rs); }
+      const seen = footPx.filter(i => !cov.has(i)).length / footPx.length; if (seen < leastSeen) { leastSeen = seen; leastAt = r.story.id + ' ' + r.plan + ' ' + L.path; }
+      if (seen < .5) P.push('big tree: ' + r.story.id + ' ' + r.plan + ' ' + L.path + ': only ' + Math.round(seen * 100) + '% of its trunk\'s foot seen'); } }
+    // shadows in one piece with their things
+    const pieces = [];
+    for (const part of ['grande', 'arbol0', 'arbol1', 'arbol2', 'porton', 'banco']) { const own = new Set(G.parts['1'][part]), OG = G.onGround['1'];
+      const occ = Object.entries(G.parts['1']).filter(([k]) => k !== part && k !== 'camino').flatMap(([, v]) => v);   // the shadow may run on behind another thing (the bench)
+      const sp = (G.shadowPx['1'][part] || []).filter(i => OG[i] && !own.has(i)), all = new Set([...own, ...sp, ...occ]), seen = new Set(), stack = [];
+      // start from the thing's lowest pixels (its foot)
+      const low = Math.max(...[...own].map(i => Math.floor(i / 240))); for (const i of own) if (Math.floor(i / 240) >= low - 1) { seen.add(i); stack.push(i); }
+      while (stack.length) { const i = stack.pop(), x = i % 240, y = Math.floor(i / 240); for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) { const j = (y + dy) * 240 + x + dx; if (x + dx < 0 || x + dx >= 240 || y + dy < 0 || y + dy >= 216 || seen.has(j) || !all.has(j)) continue; seen.add(j); stack.push(j); } }
+      const lost = sp.filter(i => !seen.has(i)).length; if (lost > 2) P.push('shadow: ' + lost + ' of the ' + sp.length + ' shadow px of ' + part + ' are not joined to it (a piece apart)');
+      pieces.push(part + ' ' + sp.length + ' px'); }
+    // the arch's top casts: its arches' shadow seen on the ground
+    { const arc = G.shadows['1'].filter(c => c.part === 'porton' && c.args[2] > F.APH).length; if (!arc) P.push('shadow: the arch\'s top casts nothing'); }
+    // the path's edge is soft earth: the ground lays only the path's own tones (2 to 4) on it, no edge colour
+    { const raw = G.raw['1'], K = G.kinds['1'], allowed = new Set(G.PATHC.slice(2)); let bad = 0; for (let i = 0; i < raw.length; i++) if (K[i] === G.K.road && !allowed.has(raw[i] >>> 0) && !allowed.has(raw[i])) bad++;
+      if (bad) P.push('path: ' + bad + ' px of the path take a colour that is not its own (an edge line)'); }
+    notes.push('big tree (round 2): its trunk ' + tw + ' px wide (a small one ' + sw + '), its crown ' + Math.round(crownW) + ' px wide (a small one ' + smallW + ', running off the picture\'s right and top edges), its middle at x ' + Math.round(mid) + ' over the trunk at ' + F.GRAN[0] + '; no limb seen outside the trunk\'s columns; its hint box ' + JSON.stringify(hb) + ' (its touch box ' + JSON.stringify(sh.things.grande.box) + '), the frame inside the view, its hand ' + hp + ' in it; the foot of its trunk seen at every moment (' + Math.round(leastSeen * 100) + '% at the least: ' + leastAt + ')');
+    notes.push('shadows (round 2): each in one piece with its thing, from its foot (' + pieces.join(', ') + '); the arch\'s shadow is its two posts\' and its top\'s; the path\'s edge is the path\'s own earth, ragged into the lawn (no edge line)'); }
+
+  /* round 2, the sky: the sun in the upper left, whole inside the wide view, nothing of the set within 2 px of its disc (a crown's leaves at
+     any wind step); the three clouds in the sky, clear of the sun and of every crown by 2 px */
+  { const Z = G.z['1'], reach = new Set(Object.values(G.leaf['1']).flat()), [sx, sy, sr] = F.SUN, bad = [];
+    const clear = (x0r, y0r, x1r, y1r) => { let n = 0; for (let y = Math.max(0, y0r); y <= Math.min(215, y1r); y++) for (let x = Math.max(0, x0r); x <= Math.min(239, x1r); x++) { const i = y * 240 + x; if (Z[i] > -1e8 || reach.has(i)) n++; } return n; };
+    if (sx - sr - 1 < x0 || sx + sr + 1 > x0 + 196 || sy - sr - 1 < 0) P.push('sun: its disc is not whole inside the view');
+    if (sx > 120) P.push('sun: not in the upper left');
+    { const n = clear(Math.floor(sx - sr - 2), Math.floor(sy - sr - 2), Math.ceil(sx + sr + 2), Math.ceil(sy + sr + 2)); if (n) P.push('sun: ' + n + ' px of the set within 2 px of its disc'); }
+    for (const [cx, cy, s2] of F.CLOUDS) { const b = [Math.floor(cx - 17 * s2 - 2), Math.floor(cy - 5 * s2 - 2), Math.ceil(cx + 19 * s2 + 2), Math.ceil(cy + 6 * s2 + 2)];
+      const n = clear(...b); if (n) P.push('cloud at ' + cx + ',' + cy + ': ' + n + ' px of the set within 2 px');
+      if (b[2] >= sx - sr && b[0] <= sx + sr && b[3] >= sy - sr && b[1] <= sy + sr) P.push('cloud at ' + cx + ',' + cy + ': on the sun'); }
+    notes.push('sky (round 2): the sun at ' + F.SUN.slice(0, 2) + ' (radius ' + sr + '), in the upper left, whole in the view, nothing of the set within 2 px; the old picture\'s three clouds back, at ' + F.CLOUDS.map(c => c.slice(0, 2).join(',')).join('; ') + ' (the old 36,16; 112,9; 168,26: moved clear of the sun and the crowns), each clear of them by 2 px; no story or pair names the sun or a cloud by a position'); }
+
+  /* round 2, the bench: whatever sits on it (the cat at its place on the seat, in the stories and the pair gato.si; the bird in the pair gato.no)
+     has only the bench under it or lit lawn behind its head and body (no trunk, no crown, no tree's shadow) */
+  { const tag = TAGS['1'], lit = G.lit['1'], res = [];
+    const sitters = [['the cat (lava)', rowsAt(M.animals['gato.lava.0.-1'], F.CAT_BENCH[0], F.CAT_BENCH[1])], ['the cat (lava, other frame)', rowsAt(M.animals['gato.lava.1.-1'], F.CAT_BENCH[0], F.CAT_BENCH[1])],
+      ['the cat (sit)', rowsAt(M.animals['gato.sit.0.1'], F.CAT_BENCH[0], F.CAT_BENCH[1])], ['the bird', rowsAt(M.ave[0], sh.points.ave_banco.screen[0], sh.points.ave_banco.screen[1])], ['the bird (other frame)', rowsAt(M.ave[1], sh.points.ave_banco.screen[0], sh.points.ave_banco.screen[1])]];
+    for (const [who, rs] of sitters) { let n = 0, bad = 0; for (const [y, a, b] of rs) for (let x = a; x <= b; x++) { const i = y * 240 + x; n++; if (tag[i] === 'banco') continue; if (!lit[i]) bad++; }
+      if (bad) P.push('bench: ' + bad + ' of the ' + n + ' px behind ' + who + ' on the bench are not lit lawn (' + JSON.stringify([...new Set(rs.flatMap(([y, a, b]) => Array.from({ length: b - a + 1 }, (_, k) => tag[y * 240 + a + k] || (lit[y * 240 + a + k] ? 'lit' : 'shade'))))]) + ')');
+      res.push(who); }
+    notes.push('bench (round 2): behind ' + res.join(', ') + ' on the bench only the bench or lit lawn (no trunk, no crown, no tree\'s shadow)'); }
 
   /* the review pictures (and the level pictures, the same pictures): everyone whole in their crop (a zoom 2 crop cuts no one the old one did not),
      every bubble inside, on the ground; what differs between the two sides */

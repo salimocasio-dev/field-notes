@@ -12,7 +12,8 @@
      the arch (el portón): two stone posts and an iron arch over the path's first leg, its opening facing +x (whoever leaves goes up the
        path through it and on off the picture's left edge);
      the three small trees at their old feet (ARBOL), free-standing round trees; the bench (el banco) on the path's far side, its long side
-       along y (parallel to the path's climb), facing the path; the big tree (el árbol grande) at the path's far end, on its far side.
+       along y (parallel to the path's climb), facing the path; the big tree (el árbol grande) at the picture's right, by the path's far end,
+       its broad crown running off the picture's right and top edges as the old one's did (round 2).
    The state comes from the address; these become the builder's setKey:
      gran   = 1 | 0          !W.sinGran: the big tree (story 13 is at the other end of the path: no big tree; the path goes on the same)
      t      = wind time in seconds (0 for the reference); ox, oy = the origin (defaults are El camino's)
@@ -41,12 +42,14 @@ const P = (x, y, z = 0) => [x, y, z];
 const SCR = (x, y, z = 0) => { const p = project(x, y, z); return [p.sx, p.sy]; };
 // the marks on the path (the old MARCA: 0 the arch's end of the path, 1 to 7 the stones, 8 before the big tree)
 const MARCA = [[66, 182], [79, 175], [92, 168], [105, 162], [118, 156], [131, 151], [144, 146], [157, 142], [170, 139]];
-// the three small trees (their feet) and the big tree (its foot: 8 px left and 10 rows further back than the old GRAN 200, 128, so that its
-// hint frame is inside the view and the dog at mark 8, 204, 130, has 5 rows of lawn and more before its trunk)
+// the three small trees (their feet) and the big tree. Round 2: the big tree is built like the old one, a big old tree at the picture's right:
+// its foot 4 px right of the old GRAN (200, 128) and 25 rows further back, the whole trunk inside the wide view: the frog with the basket at the
+// walk's start (enT(1)) and Canelo at the last mark (perroEn(8), capped at x 188: sheet moves) stand before it, lawn between them and its foot
 const ARBOL_OLD = [[70, 120], [112, 116], [154, 112]];
 const ARBOL = SET.trees === 'row' ? [[70, 137], [112, 116], [154, 95]] : ARBOL_OLD;
-const GRAN = [192, 118];
-const HZ = 100;                                                       // the horizon (screen row): the old picture's
+const GRAN = [204, 103];
+const HZ = 100;
+const SMALL_CROWN_W = 2 * 15.6;                                       // a small crown's width (px, its clusters' middles)                                                       // the horizon (screen row): the old picture's
 const WOOD = [150, 98, 56], TRUNK = [118, 82, 50], IRON = [64, 66, 82], STONEP = [190, 178, 156];
 
 /* ---------- the path ---------- */
@@ -91,7 +94,8 @@ function caminoGround(x, y, ix, iy, i) {
   if (d < PATH_HALF) {
     kinds[i] = KIND_ROAD;
     const e = PATH_HALF - d;
-    if (e < .07) return rgb(...PATHC[1]);                               // the edge
+    // round 2: the edge is soft earth, ragged into the lawn (round 1's darker line read as a kerb under the arch's post shadow)
+    if (e < .09 && bayerAt(ix, iy) > e / .09 + (hash(ix, iy) - .5) * .3) { kinds[i] = KIND_GRASS; return lawnAt(x, y, ix, iy); }
     const t = 2.75 + (e > .25 ? .35 : 0) + (noise(x * 1.7, y * 1.7) - .5) * .9 + (bayerAt(ix, iy) - .5) * .7 + (hash(ix, iy) - .5) * .3;
     return rgb(...PATHC[clamp(Math.floor(t), 2, 4)]);
   }
@@ -142,8 +146,10 @@ function arch() {
       for (let yy = ay - bw; yy <= ay + bw; yy += .01) for (let zz = bz0; zz <= bz1; zz += .01) { const edge = Math.abs(yy - ay) > bw - .035 || zz < bz0 + .03 || zz > bz1 - .03;
         plot(ax + .04, yy, zz, edge ? rampOf([236, 226, 190])[3] : G[(Math.floor((yy + zz * 3) * 40) % 7 === 0) ? 3 : 2]); }
       for (const yy of [ay - bw + .06, ay + bw - .06]) for (let zz = bz1; zz <= APH + .1 + ARISE * .55; zz += .01) plot(ax + .04, yy, zz, Ir[1]); }
-    // the posts' shadows on the lawn
-    for (const s of [1, -1]) for (let z = .2; z <= APH; z += .25) castShadow(ax, ay + s * AH, z, .13);
+    // its shadow: the two posts' and the top's (the arches, the bar, the board), falling to the right as the trees' (round 2: round 1 cast only
+    // the posts', two long strips along the path's edge that read as a kerb)
+    for (const s of [1, -1]) for (let z = .05; z <= APH + .1; z += .1) castShadow(ax, ay + s * AH, z, .1, 1, 0);
+    for (let t = 0; t <= 1; t += .02) { const a = Math.PI * t, yy = ay + AH * Math.cos(a); castShadow(ax, yy, APH + .1 + ARISE * Math.sin(a), .05, 1, 0); castShadow(ax, yy, APH + .07, .045, 1, 0); }
   });
 }
 
@@ -156,7 +162,7 @@ function smallTree(i) {
     const zc = 30 / (COS * S);
     capsule([fx, fy, 0], [fx, fy, zc - .1], .11, .08, () => TRUNK, 'rough');
     capsule([fx - .12, fy + .12, 0], [fx + .12, fy - .12, 0], .07, .07, () => TRUNK, 'rough');
-    for (let z = .15; z < zc - .3; z += .2) castShadow(fx, fy, z, .1);
+    for (let z = .03; z < zc; z += .08) castShadow(fx, fy, z, .14, 1, 0);   // round 2: the trunk's shadow in one piece from its foot to the crown's
     // the crown: an ellipsoid of clusters, 16 px across (u), 13 rows (z) round the middle, a little deep in v
     const ru = 15.6 / S, rz = 12.6 / (COS * S), rv = .5;
     const n = 80;
@@ -176,9 +182,18 @@ function smallTree(i) {
 
 /* ---------- the bench: on the path's far side, its long side along y (parallel to the path's climb), facing the path (+x); the cat sits on it ----------
    Round 2: a plain bench of three planks on four legs, no back (round 1 had a back and stood where the frog walks over the marks: at mark 4 he
-   stood in it). Its front left corner on the ground at screen (100, 141): the frog at marks 3 and 4 has 5 rows of lawn and more before it; its
-   seat's back right corner under small tree 1's box (the tree's trunk foot) */
-const BENCH = (() => { const fl = Gs(100, 141), hl = .55, a0 = -.24, a1 = .24; return { cx: fl[0] - a1, cy: fl[1] - hl, hl, a0, a1, zs: .4 }; })();
+   stood in it). Round 2: its front left corner on the ground at screen (86, 146) (round 1: 100, 141), 14 px left along the path and 5 rows
+   lower: whatever sits on it (the cat, the bird) is left of the middle tree's trunk; the first tree's shadow is kept off the patch of lawn behind
+   the seat (benchBackdrop), so that whatever sits there has lit lawn behind it; the frog at marks 2 to 4 has 5 rows of lawn and more before it;
+   its seat under the small trees' boxes */
+const BENCH = (() => { const fl = Gs(86, 146), hl = .55, a0 = -.24, a1 = .24; return { cx: fl[0] - a1, cy: fl[1] - hl, hl, a0, a1, zs: .4 }; })();
+// round 2: the lawn right behind the seat, where whatever sits on the bench is seen against it, takes no tree's shadow: from the seat's back edge
+// up 26 rows, between its two ends (3 px wider each side) (the first tree's crown shadow fell there: the cat and the bird sat against a dark oval)
+function benchBackdrop() {
+  const B = BENCH, a = project(B.cx + B.a0, B.cy + B.hl, 0), b = project(B.cx + B.a0, B.cy - B.hl, 0), f = project(B.cx + B.a1, B.cy + B.hl, 0);
+  for (let ix = Math.floor(Math.min(f.sx, a.sx)) - 4; ix <= Math.ceil(b.sx) + 4; ix++) { const t = (ix + .5 - a.sx) / (b.sx - a.sx), edge = a.sy + (b.sy - a.sy) * clamp(t, 0, 1);
+    for (let iy = Math.floor(edge - 27); iy <= Math.ceil(edge + 4); iy++) if (ix >= 0 && iy >= 0 && ix < W && iy < H) shadowMask[iy * W + ix] = 0; }
+}
 function bench() {
   const B = BENCH, LEG = [92, 60, 36];
   part('banco', () => {
@@ -195,50 +210,60 @@ function bench() {
   });
 }
 
-/* ---------- the big tree: a thick trunk, two limbs, a wide crown of leaf clusters that sway ---------- */
-// its crown (screen): kept inside x 151 to 204, rows 13 to 63, so that with the wind's pixel its box and hint frame are inside the view and it
-// is clear of the third small tree's box
-const BIG_LOBES = [[178, 36, 20, 19, 300], [162, 49, 9, 9, 40], [194, 50, 7, 8, 30]];
-const BIG_CLIP = [152, 13, 203, 62];
+/* ---------- the big tree (round 2): built like the old one, a big old tree at the picture's right ----------
+   A thick trunk (twice a small one's and more), a broad crown centred over it (more than twice a small crown's width), lobed and leafed as the
+   small ones (the same clusters, the same greens) so that it is the same kind of tree, bigger and older; no limb shows outside the leaves. Its
+   crown runs off the picture's right and top edges, as the old one's did (sheet things.grande.hintBox: the part of its box its hint frame
+   can show). Its leaves sway (they are high: the wind moves them a pixel). Kept clear of the third small tree's crown and box and of every
+   bird's place: no cluster grows left of BIG_CLIP[0] below row BIG_CLIP[1], left of BIG_CLIP[2], or below row BIG_CLIP[3] */
+const BIG_LOBES = [[205, 28, 30, 24, 420], [178, 26, 14, 12, 90], [188, 48, 11, 10, 60], [229, 46, 13, 12, 60], [201, 3, 22, 12, 90]];
+const BIG_CLIP = [174, 64, 160, 72];   // no cluster left of x 174 reaches below row 64 (the third small tree's box), none left of 160, none below row 72
+const BIG_R = .37;                                                    // the trunk's radius at its foot (a small one's .11)
 function bigTree() {
   if (!SET.gran) return;
   const [fx, fy] = Gs(GRAN[0], GRAN[1]), tu = (fx - fy) / R2, tv = (fx + fy) / R2, Pu = (u, v, z = 0) => UVW(u, v, z);
-  const TOP = (GRAN[1] - 52) / (COS * S);
+  const TOP = (GRAN[1] - 36) / (COS * S);
   part('grande', () => {
-    capsule(Pu(tu, tv, 0), Pu(tu - .03, tv, TOP), .3, .22, () => TRUNK, 'rough');
-    capsule(Pu(tu - .3, tv, 0), Pu(tu + .3, tv, 0), .18, .18, () => TRUNK, 'rough');
-    capsule(Pu(tu - .03, tv, TOP - .3), Pu(tu - .7, tv - .1, TOP + .6), .16, .1, () => TRUNK, 'rough');
-    capsule(Pu(tu - .03, tv, TOP - .3), Pu(tu + .45, tv - .1, TOP + .7), .15, .1, () => TRUNK, 'rough');
-    for (let z = .2; z < TOP; z += .3) castShadow(...Pu(tu, tv).slice(0, 2), z, .26);
+    capsule(Pu(tu, tv, 0), Pu(tu, tv, TOP), BIG_R, .27, () => TRUNK, 'rough');
+    capsule(Pu(tu - .38, tv, 0), Pu(tu + .38, tv, 0), .2, .2, () => TRUNK, 'rough');           // the flare of its roots
+    // its limbs, hidden in the crown (none pokes out: the sheet checks)
+    capsule(Pu(tu, tv, TOP - .4), Pu(tu - .6, tv - .1, TOP + .5), .17, .12, () => TRUNK, 'rough');
+    capsule(Pu(tu, tv, TOP - .4), Pu(tu + .55, tv - .1, TOP + .55), .17, .12, () => TRUNK, 'rough');
+    // its shadow, one piece from its foot: the trunk's, cast all the way up (the crown's falls off the picture to the right)
+    for (let z = .03; z < TOP + .6; z += .08) castShadow(...Pu(tu, tv).slice(0, 2), z, .3, 1, 0);
     const UX = sx => (sx - OX) / S, cv = tv - .1, SYv = (v, z = 0) => OY + (v * SIN - z * COS) * S;
-    const LV = [[52, 128, 66], [70, 150, 74], [92, 174, 88], [124, 200, 110]];
     let n = 0;
     for (const [sx, sy, rx, ry, count] of BIG_LOBES) {
       const cu = UX(sx), cz = (SYv(cv) - sy) / (COS * S), ru = rx / S, rz = ry / (COS * S);
       for (let k = 0; k < count; k++, n++) {
-        const a = hash(n, 7) * 6.283, tilt = hash(n, 8) * 2 - 1, d = Math.cbrt(hash(n, 9)) * .92, flat = Math.sqrt(1 - tilt * tilt);
-        const du = Math.cos(a) * flat * d, dv = Math.sin(a) * flat * d, dz = tilt * d;
-        const pu = cu + du * ru, pv = cv + dv * ru * .7, pz = cz + dz * rz;
-        const tone = hash(n, 10) * .7 + dz * .45 - du * .2 + .3;
-        const col = LV[tone > 1.02 ? 3 : tone > .66 ? 2 : tone > .28 ? 1 : 0];
-        const r = .17 + hash(n, 11) * .14, c = project(...Pu(pu, pv, pz)), rp = r * S;
-        // a cluster whose disc would leave the crown's place is not grown (so the crown keeps its round outline inside it)
-        if (c.sx - rp < BIG_CLIP[0] || c.sx + rp > BIG_CLIP[2] + 1 || c.sy - rp < BIG_CLIP[1] || c.sy + rp > BIG_CLIP[3] + 1) continue;
+        const h = (a, b) => hash(n * 13 + 977 + a, b);
+        const th = h(1, 7) * 6.283, ph = Math.acos(2 * h(2, 8) - 1), d = Math.cbrt(h(3, 9)) * .9;
+        const du = Math.cos(th) * Math.sin(ph) * d, dv = Math.sin(th) * Math.sin(ph) * d, dz = Math.cos(ph) * d;
+        const pu = cu + du * ru, pv = cv + dv * .7, pz = cz + dz * rz;
+        const tone = h(4, 10) * .6 + dz * .5 - du * .25 + .3;
+        const col = LEAF[tone > 1 ? 3 : tone > .62 ? 2 : tone > .25 ? 1 : 0];
+        const r = .17 + h(5, 11) * .11, c = project(...Pu(pu, pv, pz)), rp = r * S;
+        if ((c.sx - rp < BIG_CLIP[0] && c.sy + rp > BIG_CLIP[1]) || c.sx - rp < BIG_CLIP[2] || c.sy + rp > BIG_CLIP[3]) continue;
         capture = [];
         sphere(...Pu(pu, pv, pz), r, col, 'rough');
-        // k odd: no shadow each frame (a crown's shadow far from its trunk reads as a shadow of nothing); its shadow is baked once, below
+        // k odd: no shadow each frame (the crown's shadow falls off the picture)
         leaves.push({ x: Pu(pu, pv)[0], y: Pu(pu, pv)[1], z: pz, k: n * 2 + 1, r: .3, pixels: capture });
         capture = null;
       }
     }
-    // the crown's shadow: under it and to its right, baked
-    { const cu = UX(BIG_LOBES[0][0]), cz = (SYv(cv) - BIG_LOBES[0][1]) / (COS * S), c = Pu(cu, cv, cz); castShadow(c[0], c[1], cz, .9, 1, .5); }
   });
 }
 
 /* ---------- the sky, the hills, the sun: El frente's by day ---------- */
 const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
-const SUN = [215, 17, 10];   // El frente's sun (the old camino sky's, 5 px right)
+// round 2: the sun in the upper LEFT of the sky (every shadow falls to the right), whole inside the wide view and clear of every crown; the old
+// picture's three clouds back in the sky (El patio's way), each moved where it is clear of the sun and of the crowns (the old: 36, 16; 112, 9; 168, 26)
+const SUN = [44, 24, 9];
+const CLOUDS = [[90, 15, 1], [128, 6, .7], [124, 42, .8]];
+const cloudAt = (ix, iy) => { for (const [cx, cy, s] of CLOUDS) {
+    const e = (x0, y0, rx, ry) => { const dx = (ix + .5 - x0) / rx, dy = (iy + .5 - y0) / ry; return dx * dx + dy * dy <= 1; };
+    if (e(cx, cy, 13 * s, 5 * s) || e(cx - 9 * s, cy + 2, 8 * s, 4 * s) || e(cx + 10 * s, cy + 2, 9 * s, 4 * s)) return rgb(...(iy + .5 > cy + 2 * s ? [214, 230, 248] : [244, 248, 255])); }
+  return 0; };
 
 /* ---------- bake one state ---------- */
 let GROUND_CACHE = null;
@@ -257,11 +282,12 @@ function buildSet() {
     pix.set(GROUND_CACHE.pix); zb.set(GROUND_CACHE.zb); kinds.set(GROUND_CACHE.kinds); ground.set(GROUND_CACHE.ground); tufts.push(...GROUND_CACHE.tufts);
   }
   groundZ.set(zb);
-  stones(); arch(); for (let i = 0; i < 3; i++) smallTree(i); bench(); bigTree();
+  stones(); arch(); for (let i = 0; i < 3; i++) smallTree(i); benchBackdrop(); bench(); bigTree();
   flushShadows(); pendingShadows.length = 0;
   bakeOcclusion(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
   skyFill((ix, iy) => {
     const s = skyDisc(SUN[0], SUN[1], SUN[2], SKY.sun, ix, iy); if (s) return s;
+    const c = cloudAt(ix, iy); if (c) return c;
     return skyHills(HZ, SKY.far, SKY.near, ix, iy) || skyBands(SKY.bands, 0, HZ, ix, iy);
   });
   bakedPix.set(pix); bakedZ.set(zb);
@@ -281,7 +307,7 @@ function seatSeen() { const B = BENCH, seen = new Set();
   for (let a = B.a0 + .01; a <= B.a1 - .01; a += .01) for (let b = -B.hl + .01; b <= B.hl - .01; b += .01) { const p = project(B.cx + a, B.cy + b, B.zs), ix = p.sx | 0, iy = p.sy | 0, i = iy * W + ix;
     if (Math.abs(bakedZ[i] - p.d) < .02) seen.add(i); }
   return seen.size; }
-window.CAMINO_SET = { SET, MARCA, ARBOL, ARBOL_OLD, GRAN, HZ, AC, AH, APW, APH, ARISE, PATH_PTS, PATH_HALF, STONES, STONE_R, BENCH, BIG_LOBES, BIG_CLIP, SUN, OXY: [OX, OY],
+window.CAMINO_SET = { SET, MARCA, ARBOL, ARBOL_OLD, GRAN, HZ, AC, AH, APW, APH, ARISE, PATH_PTS, PATH_HALF, STONES, STONE_R, BENCH, BIG_LOBES, BIG_CLIP, BIG_R, SMALL_CROWN_W, SUN, CLOUDS, OXY: [OX, OY],
   CAT_BENCH, CAT_BENCH_V, BENCH_SORT, BENCH_SCREEN, AVEB, ARBOL0_Q, buildSet };
 
 if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
