@@ -1128,8 +1128,8 @@ class PatioSet {
     e.shadeEdges();
     hills();
     final L = LIGHT;
-    if (L != null)
-      k.lightPass(L.m, L.a, false); // (the blades are lit already: tuftLit)
+    // (the blades are lit already: tuftLit)
+    if (L != null) k.lightPass(L.m, L.a, false);
     final day = SET.hora == 'dia' || SET.hora == 'tarde', sky = SKY;
     k.skyFill((ix, iy) {
       if (day) {
