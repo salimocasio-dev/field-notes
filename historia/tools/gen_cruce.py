@@ -179,24 +179,24 @@ json.dump(s58,open("cuentos/sigue-derecho.json","w",encoding="utf-8"),ensure_asc
 
 
 # ---------------- 59. Delante y detrás ----------------
-# Papá says where the frog goes. Round A: in front of or behind abuela or Luis (drawn: qa, da); round B: beside or in front of Canelo (drawn: db). The picture is spoiled by where he went:
+# Papá says where the frog goes. Round A is at Canelo: behind him or in front of him (da, drawn); round B is at abuela: beside her (the gap on the seat) or in front of her (db, drawn). The picture is spoiled by where he went:
 # the wrong place of a "delante" is farther from the camera (only his eyes at an edge: ojos), the wrong place of a "detrás" or an "al lado de" is nearer (his back over a face: espalda).
 c=dict(comunes); nm,nc=nombres("abuela","luis","carmen","abuelo","mama","papa","bebe","perro","coqui"); c.update(nc)
 c.update({"c59_familia":N("La familia está en el cruce. Papá tiene una cámara."),"c59_pa_foto":PA("¡Una foto de la familia!"),"c59_pa_luis":PA("Luis, delante de Carmen."),"c59_pa_abuela":PA("Abuela, delante de mamá."),
- "c59_quien_delante":N("¿Quién está delante de Carmen?"),"c59_detras":N("Carmen está detrás de Luis. Mamá está detrás de abuela."),"c59_pa_canelo":PA("Canelo, al lado de Luis."),
- "c59_carmen_lado":N("Y Carmen está al lado de mamá."),"c59_quien_lado":N("¿Quién está al lado de Canelo?"),"c59_entre":N("El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."),
+ "c59_quien_delante":N("¿Quién está delante de Carmen?"),"c59_detras":N("Carmen está detrás de Luis. Mamá está detrás de abuela."),
+ "c59_lado_luis":N("Carmen está al lado de mamá. Y abuela está al lado de Luis."),"c59_quien_lado_luis":N("¿Quién está al lado de Luis?"),"c59_pa_canelo_aqui":PA("Canelo, ¡aquí!"),
+ "c59_entre":N("El bebé está entre abuelo y mamá. Y mamá está entre abuelo y Carmen."),
  "c59_pa_coqui":PA("¿Y Coquí? ¿Dónde está Coquí?"),"c59_cq_aqui":T("¡Aquí!"),"c59_coqui_arbol":N("Coquí está detrás del árbol."),"c59_pa_tres":PA("Tres fotos. Y Coquí va en las tres."),
  "c59_uno":PA("¡Uno, dos, tres!"),"c59_pa_yo":PA("¡Y ahora yo también! Coquí, aquí hay un lugar: ¡entre abuela y Luis!"),"c59_ab_mira":AB("Mira la foto. ¿Quién es?"),"c59_cq_soy":T("¡Soy yo!"),
  "c59_fin":N("Coquí está en la foto, entre abuela y Luis. La familia está contenta.")})
 for d,w,W in (("detras","detrás","Detrás"),("delante","delante","Delante")):
-    for p,P in (("abuela","abuela"),("luis","Luis")):
-        c["c59_a_%s_%s"%(d,p)]=PA("Coquí, ¡%s de %s!"%(w,P)); c["c59_a_no_%s_%s"%(d,p)]=PA("No, Coquí. %s de %s."%(W,P)); DIN.update(["c59_a_%s_%s"%(d,p),"c59_a_no_%s_%s"%(d,p)])
+    c["c59_a_%s_canelo"%d]=PA("Coquí, ¡%s de Canelo!"%w); c["c59_a_no_%s_canelo"%d]=PA("No, Coquí. %s de Canelo."%W); DIN.update(["c59_a_%s_canelo"%d,"c59_a_no_%s_canelo"%d])
 for d,w,W in (("lado","al lado","Al lado"),("delante","delante","Delante")):
-    c["c59_b_%s"%d]=PA("Coquí, ¡%s de Canelo!"%w); c["c59_b_no_%s"%d]=PA("No, Coquí. %s de Canelo."%W); DIN.update(["c59_b_%s"%d,"c59_b_no_%s"%d])
-def ronda59(s,sitios,pick,linea,no,draws,hojas):
-    # one round: papá says a place (drawn); he touches one of two places; the flash. `draws`: the draws that come first; `hojas`: the sheets left in the camera after this photo
+    c["c59_b_%s_abuela"%d]=PA("Coquí, ¡%s de abuela!"%w); c["c59_b_no_%s_abuela"%d]=PA("No, Coquí. %s de abuela."%W); DIN.update(["c59_b_%s_abuela"%d,"c59_b_no_%s_abuela"%d])
+def ronda59(s,sitios,pick,linea,no,draw,hojas):
+    # one round: papá says a place (drawn); he touches one of two places; the flash. `hojas`: the sheets left in the camera after this photo
     d,k="d"+s,"c"+s
-    return draws+[{"calc":k,"cond":"%s=delante"%d,"then":"ojos","else":"espalda"},
+    return [draw,{"calc":k,"cond":"%s=delante"%d,"then":"ojos","else":"espalda"},
      {"decide":"do","options":sitios,"pick":pick,"tests":"$"+d,"lock":True,"lead":[],"line":linea,
       "right":[{"if":"ok","then":[act("va59",donde=pick),"c59_uno",act("foto59",ok=1),act("hojas",n=hojas),OK],
                 "else":[act("va59",donde=pick),gesto("papa","pulgar")]}],
@@ -208,27 +208,27 @@ s59={"id":"delante-y-detras","title":"Delante y detrás","place":"La calle","sce
  "back_again":["familia","abuela","abuelo","mamá","papá","bebé","árbol","aquí","uno","dos","tres","yo","soy","mira","también","contento","hay","ahora"],
  "also_heard":[],"names":nm,"palabras":{"detras":"detrás","delante":"delante","lado":"al lado de"},"clips":c,
  "beats":[{"set":{"hora":HORA59}},act("hojas",n=3),act("ir",a="tras_arbol"),{"wait":500},
-  # 1: the family, the camera; abuelo, mamá and Carmen stand in a row behind the seat
+  # 1: the family, the camera; abuelo, mamá and Carmen stand in a row well behind the seat
   "c59_familia","c59_pa_foto",act("pone59",quien="abuelo",donde="fila_atras1"),act("pone59",quien="mama",donde="fila_atras2"),act("pone59",quien="carmen",donde="fila_atras3"),
   # 2: delante (signed ask on Luis)
   {"dots":1},"c59_pa_luis",act("pone59",quien="luis",donde="asiento2"),"c59_pa_abuela",act("pone59",quien="abuela",donde="asiento1"),
   ask("luis","c59_quien_delante",then=[gesto("luis","saluda")]),
   # 3: detrás
   {"dots":2},gesto("carmen","hombros"),"c59_detras",
-  # 4: al lado de (signed ask on Luis: the one beside Canelo)
-  {"dots":3},"c59_pa_canelo",act("pone59",quien="perro",donde="fin_asiento"),"c59_carmen_lado",ask("luis","c59_quien_lado"),
-  # 5: entre
-  {"dots":4},act("pone59",quien="bebe",donde="respaldo"),"c59_entre",
+  # 4: al lado de (signed ask on abuela: the one beside Luis); then Canelo comes and lies down in front of the seat
+  {"dots":3},"c59_lado_luis",ask("abuela","c59_quien_lado_luis"),"c59_pa_canelo_aqui",act("pone59",quien="perro",donde="suelo_canelo"),
+  # 5: entre: mamá holds the bebé up between herself and abuelo
+  {"dots":4},act("pone59",quien="bebe",donde="bebe_alto"),"c59_entre",
   # 6: the turn (aquí): papá asks for the frog; the card shows two places and the three sheets
   {"dots":5},"c59_pa_coqui","c59_cq_aqui","c59_coqui_arbol","c59_pa_tres",CARD,{"wait":400},
-  # A: abuela or Luis, in front of or behind. B: Canelo, beside or in front of. Each drawn afresh
-  {"dots":6}]+ronda59("a",["detras_$qa","delante_$qa"],"$da_$qa","c59_a_$da_$qa","c59_a_no_$da_$qa",[{"draw":"qa","options":["abuela","luis"]},{"draw":"da","options":["detras","delante"]}],2)
-  +[{"dots":7}]+ronda59("b",["lado_canelo","delante_canelo"],"$db_canelo","c59_b_$db","c59_b_no_$db",[{"draw":"db","options":["lado","delante"]}],1),
- "final":[{"dots":8},"c59_pa_yo",act("va59",donde="hueco"),act("foto59",ok=1),act("hojas",n=0),   # 9: the last photo, always a good one; the photos on the seat, by what was lost
+  # A: at Canelo, behind or in front. B: at abuela, beside or in front. Each drawn afresh
+  {"dots":6}]+ronda59("a",["detras_canelo","delante_canelo"],"$da_canelo","c59_a_$da_canelo","c59_a_no_$da_canelo",{"draw":"da","options":["detras","delante"]},2)
+  +[{"dots":7}]+ronda59("b",["lado_abuela","delante_abuela"],"$db_abuela","c59_b_$db_abuela","c59_b_no_$db_abuela",{"draw":"db","options":["lado","delante"]},1),
+ "final":[{"dots":8},"c59_pa_yo",act("pone59",quien="papa",donde="papa_rodillas"),act("va59",donde="hueco"),act("foto59",ok=1),act("hojas",n=0),   # 9: papá kneels at the seat's left end; the last photo, always a good one; the photos on the seat, by what was lost
   {"if":"lost=0","then":[act("final59",n=3)],"else":[{"if":"lost=1","then":[act("final59",n=2)],"else":[act("final59",n=1)]}]},
   {"dots":9},"c59_ab_mira","c59_cq_soy","c59_fin",act("fin")],
- "leer":["c59_familia","c59_pa_foto","c59_pa_luis","c59_pa_abuela","c59_quien_delante","c59_detras","c59_pa_canelo","c59_carmen_lado","c59_quien_lado","c59_entre","c59_pa_coqui","c59_cq_aqui","c59_coqui_arbol","c59_pa_tres",
-  "c59_a_detras_abuela","c59_uno","c59_b_lado","c59_uno","c59_pa_yo","c59_ab_mira","c59_cq_soy","c59_fin"]}
+ "leer":["c59_familia","c59_pa_foto","c59_pa_luis","c59_pa_abuela","c59_quien_delante","c59_detras","c59_lado_luis","c59_quien_lado_luis","c59_pa_canelo_aqui","c59_entre","c59_pa_coqui","c59_cq_aqui","c59_coqui_arbol","c59_pa_tres",
+  "c59_a_detras_canelo","c59_uno","c59_b_lado_abuela","c59_uno","c59_pa_yo","c59_ab_mira","c59_cq_soy","c59_fin"]}
 s59=reuse(s59,{"c59_cq_aqui":TG(("aquí",["aquí","aqui"])),"c59_cq_soy":TG(("yo",["yo"]))})
 json.dump(s59,open("cuentos/delante-y-detras.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
