@@ -1,0 +1,2989 @@
+{
+ "scene": "muralla",
+ "made": "node docs/proyecto/pixel/muralla-sheet-make.js, from muralla-set.html (window.MURALLA.E) and the design of La muralla (the orchestrator's p10-spec, general rules and section muralla). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": -24,
+  "OX": 120,
+  "OY": 84
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 84. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
+  "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the parapet at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 84 + 13 v - 22.5 z (22.52 exactly); the picture holds u from -4.62 to 4.62",
+  "spot": "a spot is a world point of the feet (z 0: the walk; z 0.46: the bench's top; z 0.74: the table's top; z 1: the parapet's top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): the camera, the candle, the glass, the plate, the chair, the table's five things, the guagua and the two walking músicos have their bottom middle on the spot (the box [sx - floor(w / 2), sy - h, w, h]); a lantern HANGS: its top middle on the spot (the box [sx - 5, sy, 10, 12]). scale is the frog's: 1 everywhere",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41) on (sx, sy), the spot being the bench's top; a small thing: see spot. Nobody is drawn turned: whoever is said to have his back to us (abuela at her camera, the guests at the steps) is drawn facing us",
+  "clip": "whoever is inside a sentry box (dentro_roja, dentro_azul) is drawn standing at the spot and CLIPPED to the door's box (things.puerta_roja.box, things.puerta_azul.box): only the pixels that fall inside it show; the door is drawn open (a dark inside) under him. He casts no shadow",
+  "far": "the guagua and the two walking músicos are far below the wall, on the road: given in picture pixels (the spot has px 1: its screen point is the one of the spec, its uv the line of sight through it at z 0, its depth that of that plane (-2.07), behind every pixel the set bakes: the sky, the sea and the land are not baked)",
+  "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character"
+ },
+ "setKey": {
+  "params": {
+   "hora": {
+    "values": ["noche", "tarde_noche"],
+    "default": "noche",
+    "note": "noche: the moon high; tarde_noche (story 119): the moon low over the sea, and yellow"
+   }
+  },
+  "key": "hora, e.g. \"hora=noche\"",
+  "baked": ["?hora=noche", "?hora=tarde_noche"],
+  "note": "the geometry (and so the depth) is the same in both states: the sheet's numbers are read from the set with hora noche. The lanterns, the candle, the camera, the guagua and everything on the table are sprites"
+ },
+ "things": {
+  "puerta_roja": {
+   "set": true,
+   "uv": [-3.3, 1.5, 0, -2.7, 1.5, 1.18],
+   "world": [-1.2728, 2.9698, 0, -0.8485, 3.3941, 1.18],
+   "box": [34, 76, 16, 28],
+   "what": "the red sentry box's door (BOXES[0] u -3, v 1: its front face is at v 1.5, the door from u -3.3 to -2.7, z 0 to 1.18); a touch",
+   "quad": [
+    [-1.2728, 3.3941, 0],
+    [-0.8485, 2.9698, 0],
+    [-0.8485, 2.9698, 1.18],
+    [-1.2728, 3.3941, 1.18]
+   ],
+   "colour": [206, 70, 64]
+  },
+  "puerta_azul": {
+   "set": true,
+   "uv": [2.7, 1.5, 0, 3.3, 1.5, 1.18],
+   "world": [2.9698, -1.2728, 0, 3.3941, -0.8485, 1.18],
+   "box": [190, 76, 16, 28],
+   "what": "the blue sentry box's door (BOXES[1] u 3: as puerta_roja); a touch",
+   "quad": [
+    [2.9698, -0.8485, 0],
+    [3.3941, -1.2728, 0],
+    [3.3941, -1.2728, 1.18],
+    [2.9698, -0.8485, 1.18]
+   ],
+   "colour": [70, 110, 206]
+  },
+  "banco": {
+   "set": true,
+   "uv": [-1.9, 0.19, 0, 1.9, 0.71, 0.46],
+   "world": [-1.2092, -1.2092, 0, 1.8455, 1.8455, 0.46],
+   "box": [70, 76, 100, 18],
+   "what": "the bench against the parapet (BENCH u 0, v 0.45, hw 1.9: the seat's box u -1.9 to 1.9, v 0.19 to 0.71, z 0 to 0.46); a touch"
+  },
+  "escalera": {
+   "set": true,
+   "uv": [2.2, 6.2, 0, 3.7, 8.4, 0],
+   "world": [5.9397, 1.7678, 0, 8.556, 4.3841, 0],
+   "box": [177, 164, 40, 30],
+   "what": "the head of the steps: the hole in the walk (STEPS u 2.2 to 3.7, v 6.2 to 8.4, on the floor, z 0; the rail at its far side is not in the box); a touch"
+  },
+  "camara": "sprite",
+  "silla": "sprite",
+  "jugo": "sprite",
+  "plato": "sprite",
+  "vela": "sprite",
+  "guitarra": "sprite",
+  "sombrero": "sprite",
+  "bolsa": "sprite",
+  "caja": "sprite",
+  "libro": "sprite",
+  "guagua": "sprite",
+  "farol1": "sprite",
+  "farol2": "sprite",
+  "farol3": "sprite",
+  "abuela": "sprite",
+  "abuelo": "sprite",
+  "luis": "sprite",
+  "carmen": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "farol1": {
+   "world": [-0.1414, 1.5556, 2.1978],
+   "uv": [-1.2, 1, 2.1978],
+   "screen": [89, 48],
+   "depth": 1.9649,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "lantern 1 of 3 (10 x 12 px stand-in), hanging from the cord (CORD.at[0] = -1.2, CORD.v = 1, the cord's height there CORD.z - sin(pi (u - u0) / (u1 - u0)) sag = 2.1978): its top middle on the point",
+   "box": [84, 48, 10, 12],
+   "anchor": "top",
+   "on": "cuerda",
+   "fixed": 1
+  },
+  "farol2": {
+   "world": [0.7071, 0.7071, 2.13],
+   "uv": [0, 1, 2.13],
+   "screen": [120, 49],
+   "depth": 1.931,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "lantern 2 of 3 (10 x 12 px stand-in), hanging from the cord (CORD.at[1] = 0, CORD.v = 1, the cord's height there CORD.z - sin(pi (u - u0) / (u1 - u0)) sag = 2.13): its top middle on the point",
+   "box": [115, 49, 10, 12],
+   "anchor": "top",
+   "on": "cuerda",
+   "fixed": 1
+  },
+  "farol3": {
+   "world": [1.5556, -0.1414, 2.1978],
+   "uv": [1.2, 1, 2.1978],
+   "screen": [151, 48],
+   "depth": 1.9649,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "lantern 3 of 3 (10 x 12 px stand-in), hanging from the cord (CORD.at[2] = 1.2, CORD.v = 1, the cord's height there CORD.z - sin(pi (u - u0) / (u1 - u0)) sag = 2.1978): its top middle on the point",
+   "box": [146, 48, 10, 12],
+   "anchor": "top",
+   "on": "cuerda",
+   "fixed": 1
+  },
+  "centro1": {
+   "world": [0.5657, 2.687, 0],
+   "uv": [-1.5, 2.3, 0],
+   "screen": [81, 114],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the back row of the group under the lanterns, place 1 of 4 (u -1.5, v 2.3): grown-ups",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "centro2": {
+   "world": [1.2728, 1.9799, 0],
+   "uv": [-0.5, 2.3, 0],
+   "screen": [107, 114],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the back row of the group under the lanterns, place 2 of 4 (u -0.5, v 2.3): grown-ups",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "centro3": {
+   "world": [1.9799, 1.2728, 0],
+   "uv": [0.5, 2.3, 0],
+   "screen": [133, 114],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the back row of the group under the lanterns, place 3 of 4 (u 0.5, v 2.3): grown-ups",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "centro4": {
+   "world": [2.687, 0.5657, 0],
+   "uv": [1.5, 2.3, 0],
+   "screen": [159, 114],
+   "depth": 1.9919,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the back row of the group under the lanterns, place 4 of 4 (u 1.5, v 2.3): grown-ups",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "centro5": {
+   "world": [1.7678, 3.182, 0],
+   "uv": [-1, 3.5, 0],
+   "screen": [94, 130],
+   "depth": 3.0311,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the front row of the group, place 1 of 3 (u -1, v 3.5): children",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "centro6": {
+   "world": [2.4749, 2.4749, 0],
+   "uv": [0, 3.5, 0],
+   "screen": [120, 130],
+   "depth": 3.0311,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the front row of the group, place 2 of 3 (u 0, v 3.5): children",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "centro7": {
+   "world": [3.182, 1.7678, 0],
+   "uv": [1, 3.5, 0],
+   "screen": [146, 130],
+   "depth": 3.0311,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the front row of the group, place 3 of 3 (u 1, v 3.5): children",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "camara": {
+   "world": [4.2426, 4.2426, 0],
+   "uv": [0, 6, 0],
+   "screen": [120, 162],
+   "depth": 5.1962,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "abuela's camera on its three legs (12 x 22 px stand-in): its bottom middle on the point",
+   "box": [114, 140, 12, 22],
+   "anchor": "bottom"
+  },
+  "camara_abuela": {
+   "world": [4.879, 4.879, 0],
+   "uv": [0, 6.9, 0],
+   "screen": [120, 174],
+   "depth": 5.9756,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela at her camera, her back to us (drawn standing, as everybody: nobody is drawn turned); v 6.9, nearer the camera of the picture than the tripod (v 6.0)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "junto_camara": {
+   "world": [5.7629, 3.9952, 0],
+   "uv": [1.25, 6.9, 0],
+   "screen": [153, 174],
+   "depth": 5.9756,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog beside the camera (117, opening)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "ante_todos": {
+   "world": [3.3234, 3.3234, 0],
+   "uv": [0, 4.7, 0],
+   "screen": [120, 145],
+   "depth": 4.0703,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog in front of the others (117, \"aqui\")",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "juego_coqui": {
+   "world": [4.179, 2.8921, 0],
+   "uv": [0.91, 5, 0],
+   "screen": [144, 149],
+   "depth": 4.3301,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog in the game (117)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "spec": [0.2, 5, 0],
+   "moved": "frog-seen: in moments 2 and 3 the frog in the game stood behind abuela (v 6.9) and the camera (v 6.0): 319 of his 536 px were under them: u .2 -> .91 (+.71; v 5.0 -> 7.81, +2.81, also passes)"
+  },
+  "junto_coqui": {
+   "world": [2.8284, 4.2426, 0],
+   "uv": [-1, 5, 0],
+   "screen": [94, 149],
+   "depth": 4.3301,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis beside the frog (117, the game)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "dentro_roja": {
+   "world": [-1.0465, 3.1961, 0],
+   "uv": [-3, 1.52, 0],
+   "screen": [42, 104],
+   "depth": 1.3164,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "whoever is inside the red box (BOXES[0].u, BOXES[0].v + .52): drawn standing there and CLIPPED to puerta_roja's box (only what falls inside the door shows); Carmen (117, the game)",
+   "sprite": "nino",
+   "who": "nino",
+   "clip": "puerta_roja"
+  },
+  "dentro_azul": {
+   "world": [3.1961, -1.0465, 0],
+   "uv": [3, 1.52, 0],
+   "screen": [198, 104],
+   "depth": 1.3164,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "whoever is inside the blue box (BOXES[1].u, BOXES[1].v + .52): as dentro_roja, clipped to puerta_azul's box",
+   "sprite": "nino",
+   "who": "nino",
+   "clip": "puerta_azul"
+  },
+  "ventana_roja": {
+   "world": [-0.3182, 2.7224, 0],
+   "uv": [-2.15, 1.7, 0],
+   "screen": [64, 106],
+   "depth": 1.4722,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis beside the red box, looking in at its window (BOXES[0].u + .85, BOXES[0].v + .7)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "ventana_azul": {
+   "world": [2.5244, -0.5162, 0],
+   "uv": [2.15, 1.42, 0],
+   "screen": [176, 102],
+   "depth": 1.2298,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Luis beside the blue box, looking in at its window (BOXES[1].u - .85, BOXES[1].v + .7)",
+   "sprite": "nino",
+   "who": "nino",
+   "spec": [2.15, 1.7, 0],
+   "moved": "sprites-apart: in moment 3 Luis at the blue box's window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group's back row)"
+  },
+  "sale_roja": {
+   "world": [0.2121, 3.182, 0],
+   "uv": [-2.1, 2.4, 0],
+   "screen": [65, 115],
+   "depth": 2.0785,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "someone who has just come out of the red box (117: Carmen; a child)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "sale_azul": {
+   "world": [3.182, 0.2121, 0],
+   "uv": [2.1, 2.4, 0],
+   "screen": [175, 115],
+   "depth": 2.0785,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "someone who has just come out of the blue box (117: a grown-up)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "banco1": {
+   "world": [-0.693, 1.3294, 0.46],
+   "uv": [-1.43, 0.45, 0.46],
+   "screen": [83, 79],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's place 1 of 4 (BENCH.u - 1.43, BENCH.v 0.45): on its top, z 0.46; whoever sits faces us and is hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "paseo"
+  },
+  "banco2": {
+   "world": [-0.0212, 0.6576, 0.46],
+   "uv": [-0.48, 0.45, 0.46],
+   "screen": [108, 79],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's place 2 of 4 (BENCH.u - 0.48, BENCH.v 0.45): on its top, z 0.46; whoever sits faces us and is hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "paseo"
+  },
+  "banco3": {
+   "world": [0.6576, -0.0212, 0.46],
+   "uv": [0.48, 0.45, 0.46],
+   "screen": [132, 79],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's place 3 of 4 (BENCH.u + 0.48, BENCH.v 0.45): on its top, z 0.46; whoever sits faces us and is hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "paseo"
+  },
+  "banco4": {
+   "world": [1.3294, -0.693, 0.46],
+   "uv": [1.43, 0.45, 0.46],
+   "screen": [157, 79],
+   "depth": 0.6197,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the bench's place 4 of 4 (BENCH.u + 1.43, BENCH.v 0.45): on its top, z 0.46; whoever sits faces us and is hung by the lap",
+   "sprite": "adultoS",
+   "who": "adulto",
+   "on": "paseo"
+  },
+  "vela": {
+   "world": [-1.0748, 1.0748, 1],
+   "uv": [-1.52, 0, 1],
+   "screen": [80, 61],
+   "depth": 0.5,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the candle in its glass (8 x 16 px stand-in) on the parapet's top (u 1.1, v 0, z PARAPET 1): its bottom middle on the top; the parapet must be solid under all its columns",
+   "box": [76, 45, 8, 16],
+   "anchor": "bottom",
+   "on": "pretil",
+   "spec": [1.1, 0, 1],
+   "moved": "candle-clear: in moment 4 the lantern farol3 (u 1.2, v 1.0, nearer than the parapet) covers 58 of the candle's 98 px at u 1.1. The parapet holds a candle only on a merlon (u .94 to 1.46, 1.84 to 2.36 ... every .9); to the right of farol3 the next merlon has muro2 in front of it (5 px of the candle's last row at u 1.99), in the middle the músicos' heads and farol2 fill the way: u 1.1 -> -1.52 (-2.62, the least that leaves the candle uncovered on a merlon; v is the parapet's, 0). The other way: u 1.99 (+.89) with muro2 v 2.2 -> 2.28 (+.08, a second spot)"
+  },
+  "muro1": {
+   "world": [0.0707, 3.0406, 0],
+   "uv": [-2.1, 2.2, 0],
+   "screen": [65, 113],
+   "depth": 1.9053,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a person who does not dance, place 1 of 3 (u -2.1, v 2.2)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "muro2": {
+   "world": [3.0406, 0.0707, 0],
+   "uv": [2.1, 2.2, 0],
+   "screen": [175, 113],
+   "depth": 1.9053,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a person who does not dance, place 2 of 3 (u 2.1, v 2.2)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "muro3": {
+   "world": [4.3841, 0.7071, 0],
+   "uv": [2.6, 3.6, 0],
+   "screen": [188, 131],
+   "depth": 3.1177,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a person who does not dance, place 3 of 3 (u 2.6, v 3.6)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "baile1": {
+   "world": [1.4142, 2.8284, 0],
+   "uv": [-1, 3, 0],
+   "screen": [94, 123],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a dancer, place 1 of 6 (u -1, v 3)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "baile2": {
+   "world": [2.1213, 2.1213, 0],
+   "uv": [0, 3, 0],
+   "screen": [120, 123],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a dancer, place 2 of 6 (u 0, v 3)",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "baile3": {
+   "world": [2.8284, 1.4142, 0],
+   "uv": [1, 3, 0],
+   "screen": [146, 123],
+   "depth": 2.5981,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a dancer, place 3 of 6 (u 1, v 3)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "baile4": {
+   "world": [2.7577, 3.4648, 0],
+   "uv": [-0.5, 4.4, 0],
+   "screen": [107, 141],
+   "depth": 3.8105,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a dancer, place 4 of 6 (u -0.5, v 4.4)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "baile5": {
+   "world": [3.4648, 2.7577, 0],
+   "uv": [0.5, 4.4, 0],
+   "screen": [133, 141],
+   "depth": 3.8105,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a dancer, place 5 of 6 (u 0.5, v 4.4)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "baile6": {
+   "world": [4.1719, 2.0506, 0],
+   "uv": [1.5, 4.4, 0],
+   "screen": [159, 141],
+   "depth": 3.8105,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a dancer, place 6 of 6 (u 1.5, v 4.4)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "jugo": {
+   "world": [1.6263, 6.1518, 0.74],
+   "uv": [-3.2, 5.5, 0.74],
+   "screen": [37, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the glass of juice (118; 6 x 10 px stand-in) on the table's top (TABLE.u - 1.1, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [34, 129, 6, 10],
+   "anchor": "bottom",
+   "on": "paseo"
+  },
+  "plato": {
+   "world": [2.0506, 5.7276, 0.74],
+   "uv": [-2.6, 5.5, 0.74],
+   "screen": [52, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the plate (118; 12 x 6 px stand-in) on the table's top (TABLE.u - .5, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [46, 133, 12, 6],
+   "anchor": "bottom",
+   "on": "paseo"
+  },
+  "mesa_coqui": {
+   "world": [2.9981, 5.2043, 0.74],
+   "uv": [-1.56, 5.8, 0.74],
+   "screen": [79, 143],
+   "depth": 5.3929,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the table's right end (118; TABLE.u + .9, TABLE.v + .1): the table's top, z 0.74",
+   "sprite": "coqui",
+   "who": "coqui",
+   "on": "paseo",
+   "spec": [-1.2, 5.8, 0.74],
+   "moved": "sprites-apart: in moment 4 the frog on the table was 18 px sideways from the dancer at baile4 and his feet 2 px apart (needs 28 across or 12 down): u -1.2 -> -1.56 (-.36; no v on the table's top passes; the other way, baile4 u -.5 -> -.13, +.37, or v 4.4 -> 5.43, +1.03)"
+  },
+  "junto_mesa": {
+   "world": [3.8184, 4.1012, 0],
+   "uv": [-0.2, 5.6, 0],
+   "screen": [115, 157],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the chair (118; a 14 x 24 px sprite) beside the table (TABLE.u + 1.9, TABLE.v - .1): its bottom middle on the point",
+   "box": [108, 133, 14, 24],
+   "anchor": "bottom"
+  },
+  "mesa1": {
+   "world": [1.5203, 6.2579, 0.74],
+   "uv": [-3.35, 5.5, 0.74],
+   "screen": [33, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the guitar (119; 10 x 22 px stand-in), place 1 of 5 in a row on the table's top (TABLE.u - 1.25, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [28, 117, 10, 22],
+   "anchor": "bottom",
+   "on": "paseo",
+   "thing": "guitarra"
+  },
+  "mesa2": {
+   "world": [1.8243, 5.9538, 0.74],
+   "uv": [-2.92, 5.5, 0.74],
+   "screen": [44, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the hat (119; 12 x 8 px stand-in), place 2 of 5 in a row on the table's top (TABLE.u - 0.82, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [38, 131, 12, 8],
+   "anchor": "bottom",
+   "on": "paseo",
+   "thing": "sombrero"
+  },
+  "mesa3": {
+   "world": [2.1284, 5.6498, 0.74],
+   "uv": [-2.49, 5.5, 0.74],
+   "screen": [55, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the bag (119; 10 x 12 px stand-in), place 3 of 5 in a row on the table's top (TABLE.u - 0.39, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [50, 127, 10, 12],
+   "anchor": "bottom",
+   "on": "paseo",
+   "thing": "bolsa"
+  },
+  "mesa4": {
+   "world": [2.4324, 5.3457, 0.74],
+   "uv": [-2.06, 5.5, 0.74],
+   "screen": [66, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the box (119; 12 x 10 px stand-in), place 4 of 5 in a row on the table's top (TABLE.u + 0.04, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [60, 129, 12, 10],
+   "anchor": "bottom",
+   "on": "paseo",
+   "thing": "caja"
+  },
+  "mesa5": {
+   "world": [2.7365, 5.0417, 0.74],
+   "uv": [-1.63, 5.5, 0.74],
+   "screen": [78, 139],
+   "depth": 5.1331,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the book (119; 10 x 8 px stand-in), place 5 of 5 in a row on the table's top (TABLE.u + 0.47, TABLE.v - .2): its bottom middle on the top, z 0.74",
+   "box": [73, 131, 10, 8],
+   "anchor": "bottom",
+   "on": "paseo",
+   "thing": "libro"
+  },
+  "junto_mesa_coqui": {
+   "world": [4.3841, 4.5255, 0],
+   "uv": [-0.1, 6.3, 0],
+   "screen": [117, 166],
+   "depth": 5.456,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog on the floor beside the table (119; TABLE.u + 2.0, TABLE.v + .6)",
+   "sprite": "coqui",
+   "who": "coqui"
+  },
+  "escalera_abuela": {
+   "world": [4.9497, 2.9698, 0],
+   "uv": [1.4, 5.6, 0],
+   "screen": [156, 157],
+   "depth": 4.8497,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuela at the head of the steps, seeing people off (119)",
+   "sprite": "adulto",
+   "who": "adulto",
+   "spec": [1.75, 5.6, 0],
+   "moved": "sprites-apart: in moment 5 abuela at the head of the steps was 14 px sideways from the guest at escalera1 and 3 px above him (needs 24 across or 12 down): u 1.75 -> 1.40 (-.35; v 5.6 -> 6.27, +.67, also passes)"
+  },
+  "escalera_abuelo": {
+   "world": [6.2933, 4.0305, 0],
+   "uv": [1.6, 7.3, 0],
+   "screen": [162, 179],
+   "depth": 6.322,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "abuelo at the head of the steps (119)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "escalera1": {
+   "world": [5.4447, 2.192, 0],
+   "uv": [2.3, 5.4, 0],
+   "screen": [180, 154],
+   "depth": 4.6765,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "guest 1 of 4 at the head of the steps, his back to us (drawn facing us: nobody is drawn turned) (119)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "escalera2": {
+   "world": [6.1165, 1.5203, 0],
+   "uv": [3.25, 5.4, 0],
+   "screen": [205, 154],
+   "depth": 4.6765,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "guest 2 of 4 at the head of the steps, his back to us (drawn facing us: nobody is drawn turned) (119)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "escalera3": {
+   "world": [4.5962, 1.3435, 0],
+   "uv": [2.3, 4.2, 0],
+   "screen": [180, 139],
+   "depth": 3.6373,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "guest 3 of 4 at the head of the steps, his back to us (drawn facing us: nobody is drawn turned) (119)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "escalera4": {
+   "world": [5.2679, 0.6718, 0],
+   "uv": [3.25, 4.2, 0],
+   "screen": [204, 139],
+   "depth": 3.6373,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "guest 4 of 4 at the head of the steps, his back to us (drawn facing us: nobody is drawn turned) (119)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "baja": {
+   "world": [6.8943, 2.7224, 0],
+   "uv": [2.95, 6.8, 0],
+   "screen": [197, 172],
+   "depth": 5.889,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "the way down the steps: the only place on the steps' hole where somebody stands (STEPS u middle, v0 + .6)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "guagua": {
+   "world": [-0.4079, -2.9644, 0],
+   "uv": [1.8077, -2.3846, 0],
+   "screen": [167, 53],
+   "depth": -2.0651,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the guagua on the road (22 x 10 px stand-in), far below the wall: its bottom middle at column 160 on the road's row (LAND.road + (240 - 160) .1 = 54)",
+   "px": 1,
+   "box": [156, 43, 22, 10],
+   "anchor": "bottom",
+   "spec": [160, 54],
+   "moved": "guagua-clear: in moment 5 the lantern farol3 (box [146, 48, 10, 12]) covers 29 px of the guagua (box [149, 44, 22, 10]): column 160 -> 167 (+7, the least that clears it: its box [156, 43, 22, 10]); the road's row there is 53. It now overlaps the columns of the two músicos walking off (170 to 178: not in a moment with it). The cord is not cured by a column: see the open point of guagua-clear"
+  },
+  "guagua_se_va": {
+   "world": [-1.0879, -1.9581, 0],
+   "uv": [0.6154, -2.1538, 0],
+   "screen": [136, 56],
+   "depth": -1.8653,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the guagua going off (119, the end): column 136 on the road's row (56.4); not a name of the spec",
+   "px": 1,
+   "box": [125, 46, 22, 10],
+   "anchor": "bottom"
+  },
+  "musico_lejos1": {
+   "world": [-0.272, -3.1004, 0],
+   "uv": [2, -2.3846, 0],
+   "screen": [172, 53],
+   "depth": -2.0651,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the first of the two músicos walking off along the road (119, step 2): a 4 x 7 figure, bottom middle at column 172 on the road's row (52.8); not a name of the spec",
+   "px": 1,
+   "box": [170, 46, 4, 7],
+   "anchor": "bottom"
+  },
+  "musico_lejos2": {
+   "world": [-0.1904, -3.2908, 0],
+   "uv": [2.1923, -2.4615, 0],
+   "screen": [177, 52],
+   "depth": -2.1318,
+   "scale": 1,
+   "kind": "thing",
+   "view": "wide",
+   "what": "the second músico walking off: a 4 x 7 figure, bottom middle at column 177 on the road's row (52.3); not a name of the spec",
+   "px": 1,
+   "box": [175, 45, 4, 7],
+   "anchor": "bottom"
+  },
+  "pretil1": {
+   "world": [0.0424, 2.3052, 0],
+   "uv": [-1.6, 1.66, 0],
+   "screen": [78, 106],
+   "depth": 1.4376,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "at the parapet at the end (119), place 1 of 4 (u -1.6, v 1.6): abuela",
+   "sprite": "adulto",
+   "who": "adulto",
+   "spec": [-1.6, 1.6, 0],
+   "moved": "heads-clear: in moment 6 abuela at the parapet covered 2 px of the head of the guest sitting at banco1: v 1.6 -> 1.66 (+.06; u -1.6 -> -1.68, -.08, also passes)"
+  },
+  "pretil2": {
+   "world": [0.6718, 1.591, 0],
+   "uv": [-0.65, 1.6, 0],
+   "screen": [103, 105],
+   "depth": 1.3856,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "at the parapet at the end (119), place 2 of 4 (u -0.65, v 1.6): abuelo",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "pretil3": {
+   "world": [1.3435, 0.9192, 0],
+   "uv": [0.3, 1.6, 0],
+   "screen": [128, 105],
+   "depth": 1.3856,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "at the parapet at the end (119), place 3 of 4 (u 0.3, v 1.6): Luis",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "pretil4": {
+   "world": [0.0707, 3.6062, 0],
+   "uv": [-2.5, 2.6, 0],
+   "screen": [55, 118],
+   "depth": 2.2517,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "at the parapet at the end (119), place 4 of 4 (u -2.5, v 2.6): Carmen",
+   "sprite": "nino",
+   "who": "nino"
+  },
+  "pretil_coqui": {
+   "world": [2.3122, 0.3748, 0],
+   "uv": [1.37, 1.9, 0],
+   "screen": [156, 109],
+   "depth": 1.6454,
+   "scale": 1,
+   "kind": "place",
+   "view": "wide",
+   "what": "the frog at the parapet at the end (119)",
+   "sprite": "coqui",
+   "who": "coqui",
+   "spec": [1.3, 1.9, 0],
+   "moved": "sprites-apart: in moment 6 the frog at the parapet was 26 px sideways from Luis at pretil3 and 4 px below him (needs 28 across or 12 down): u 1.3 -> 1.37 (+.07; v 1.9 -> 2.58, +.68, also passes)"
+  }
+ },
+ "groups": {
+  "centro": ["centro1", "centro2", "centro3", "centro4", "centro5", "centro6", "centro7"],
+  "banco": ["banco1", "banco2", "banco3", "banco4"],
+  "baile": ["baile1", "baile2", "baile3", "baile4", "baile5", "baile6"],
+  "muro": ["muro1", "muro2", "muro3"],
+  "farol": ["farol1", "farol2", "farol3"],
+  "mesa": ["mesa1", "mesa2", "mesa3", "mesa4", "mesa5"],
+  "escalera": ["escalera1", "escalera2", "escalera3", "escalera4"],
+  "pretil": ["pretil1", "pretil2", "pretil3", "pretil4"],
+  "touch": {
+   "camara": "camara",
+   "silla": "junto_mesa",
+   "jugo": "jugo",
+   "plato": "plato",
+   "vela": "vela",
+   "guitarra": "mesa1",
+   "sombrero": "mesa2",
+   "bolsa": "mesa3",
+   "caja": "mesa4",
+   "libro": "mesa5",
+   "guagua": "guagua",
+   "farol1": "farol1",
+   "farol2": "farol2",
+   "farol3": "farol3"
+  }
+ },
+ "moves": [
+  {
+   "spot": "juego_coqui",
+   "spec": [0.2, 5, 0],
+   "now": [0.91, 5, 0],
+   "why": "frog-seen: in moments 2 and 3 the frog in the game stood behind abuela (v 6.9) and the camera (v 6.0): 319 of his 536 px were under them: u .2 -> .91 (+.71; v 5.0 -> 7.81, +2.81, also passes)"
+  },
+  {
+   "spot": "ventana_azul",
+   "spec": [2.15, 1.7, 0],
+   "now": [2.15, 1.42, 0],
+   "why": "sprites-apart: in moment 3 Luis at the blue box's window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group's back row)"
+  },
+  {
+   "spot": "vela",
+   "spec": [1.1, 0, 1],
+   "now": [-1.52, 0, 1],
+   "why": "candle-clear: in moment 4 the lantern farol3 (u 1.2, v 1.0, nearer than the parapet) covers 58 of the candle's 98 px at u 1.1. The parapet holds a candle only on a merlon (u .94 to 1.46, 1.84 to 2.36 ... every .9); to the right of farol3 the next merlon has muro2 in front of it (5 px of the candle's last row at u 1.99), in the middle the músicos' heads and farol2 fill the way: u 1.1 -> -1.52 (-2.62, the least that leaves the candle uncovered on a merlon; v is the parapet's, 0). The other way: u 1.99 (+.89) with muro2 v 2.2 -> 2.28 (+.08, a second spot)"
+  },
+  {
+   "spot": "mesa_coqui",
+   "spec": [-1.2, 5.8, 0.74],
+   "now": [-1.56, 5.8, 0.74],
+   "why": "sprites-apart: in moment 4 the frog on the table was 18 px sideways from the dancer at baile4 and his feet 2 px apart (needs 28 across or 12 down): u -1.2 -> -1.56 (-.36; no v on the table's top passes; the other way, baile4 u -.5 -> -.13, +.37, or v 4.4 -> 5.43, +1.03)"
+  },
+  {
+   "spot": "escalera_abuela",
+   "spec": [1.75, 5.6, 0],
+   "now": [1.4, 5.6, 0],
+   "why": "sprites-apart: in moment 5 abuela at the head of the steps was 14 px sideways from the guest at escalera1 and 3 px above him (needs 24 across or 12 down): u 1.75 -> 1.40 (-.35; v 5.6 -> 6.27, +.67, also passes)"
+  },
+  {
+   "spot": "guagua",
+   "spec": [160, 54],
+   "now": [167, 53],
+   "why": "guagua-clear: in moment 5 the lantern farol3 (box [146, 48, 10, 12]) covers 29 px of the guagua (box [149, 44, 22, 10]): column 160 -> 167 (+7, the least that clears it: its box [156, 43, 22, 10]); the road's row there is 53. It now overlaps the columns of the two músicos walking off (170 to 178: not in a moment with it). The cord is not cured by a column: see the open point of guagua-clear"
+  },
+  {
+   "spot": "pretil1",
+   "spec": [-1.6, 1.6, 0],
+   "now": [-1.6, 1.66, 0],
+   "why": "heads-clear: in moment 6 abuela at the parapet covered 2 px of the head of the guest sitting at banco1: v 1.6 -> 1.66 (+.06; u -1.6 -> -1.68, -.08, also passes)"
+  },
+  {
+   "spot": "pretil_coqui",
+   "spec": [1.3, 1.9, 0],
+   "now": [1.37, 1.9, 0],
+   "why": "sprites-apart: in moment 6 the frog at the parapet was 26 px sideways from Luis at pretil3 and 4 px below him (needs 28 across or 12 down): u 1.3 -> 1.37 (+.07; v 1.9 -> 2.58, +.68, also passes)"
+  }
+ ],
+ "notes": [
+  "every number of a spot is the orchestrator's (the p10-spec, \"muralla\"), given in (u, v, z); the parapet, the boxes, the cord, the bench, the table, the steps and the road are read from the set",
+  "things: puerta_roja, puerta_azul (the two doors' faces, from u BOX.u - .3 to + .3, z 0 to 1.18, on the boxes' front face at v 1.5), banco (the bench's seat box) and escalera (the steps' hole on the floor) are set things with a box; camara, silla, jugo, plato, vela, guitarra, sombrero, bolsa, caja, libro, guagua and farol1 to farol3 are sprites at the spots of the same name (silla at junto_mesa, guitarra to libro at mesa1 to mesa5); the people are sprites",
+  "the spec gives no name for the guagua going off (column 136), the two walking músicos (columns 172 and 177), nor for the place of the guagua's own column in a second moment: guagua_se_va, musico_lejos1 and musico_lejos2 are the make's names (open points)",
+  "whoever sits on the bench (banco1 to banco4) is hung by the lap on the seat's top; the spot's sprite is a grown-up sitting; in the preview the two músicos of story 118 sit at banco2 and banco3 and a guest at banco1 in story 119",
+  "the spec gives no sizes for the glass of juice's and plate's sprites other than 6 x 10 and 12 x 6, the chair 14 x 24, the table's five things 10 x 22, 12 x 8, 10 x 12, 12 x 10 and 10 x 8, the camera 12 x 22, the candle 8 x 16, the lantern 10 x 12 and the guagua 22 x 10: those are used; the preview's drawings of them are stand-ins",
+  "the spec gives no radius for the shadows: El cruce's are used (frog .45, grown-ups .35, children .28)",
+  "abuelo is kit's FAM.abuelo (a grown-up man); the two músicos, don Pepe, the maestra, the piragüero, the señor, the señora and two guest children are kit's mkPersona in other colours (the preview says which)",
+  "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
+  "moves: juego_coqui [0.2,5,0] -> [0.91,5,0] (frog-seen: in moments 2 and 3 the frog in the game stood behind abuela (v 6.9) and the camera (v 6.0): 319 of his 536 px were under them: u .2 -> .91 (+.71; v 5.0 -> 7.81, +2.81, also passes)); ventana_azul [2.15,1.7,0] -> [2.15,1.42,0] (sprites-apart: in moment 3 Luis at the blue box's window was 17 px sideways from centro4 and his feet 8 px above theirs (needs 24 across or 12 down): v 1.7 -> 1.42 (-.28; the other way, centro4 v 2.3 -> 2.58, +.28, would move the group's back row)); vela [1.1,0,1] -> [-1.52,0,1] (candle-clear: in moment 4 the lantern farol3 (u 1.2, v 1.0, nearer than the parapet) covers 58 of the candle's 98 px at u 1.1. The parapet holds a candle only on a merlon (u .94 to 1.46, 1.84 to 2.36 ... every .9); to the right of farol3 the next merlon has muro2 in front of it (5 px of the candle's last row at u 1.99), in the middle the músicos' heads and farol2 fill the way: u 1.1 -> -1.52 (-2.62, the least that leaves the candle uncovered on a merlon; v is the parapet's, 0). The other way: u 1.99 (+.89) with muro2 v 2.2 -> 2.28 (+.08, a second spot)); mesa_coqui [-1.2,5.8,0.74] -> [-1.56,5.8,0.74] (sprites-apart: in moment 4 the frog on the table was 18 px sideways from the dancer at baile4 and his feet 2 px apart (needs 28 across or 12 down): u -1.2 -> -1.56 (-.36; no v on the table's top passes; the other way, baile4 u -.5 -> -.13, +.37, or v 4.4 -> 5.43, +1.03)); escalera_abuela [1.75,5.6,0] -> [1.4,5.6,0] (sprites-apart: in moment 5 abuela at the head of the steps was 14 px sideways from the guest at escalera1 and 3 px above him (needs 24 across or 12 down): u 1.75 -> 1.40 (-.35; v 5.6 -> 6.27, +.67, also passes)); guagua [160,54] -> [167,53] (guagua-clear: in moment 5 the lantern farol3 (box [146, 48, 10, 12]) covers 29 px of the guagua (box [149, 44, 22, 10]): column 160 -> 167 (+7, the least that clears it: its box [156, 43, 22, 10]); the road's row there is 53. It now overlaps the columns of the two músicos walking off (170 to 178: not in a moment with it). The cord is not cured by a column: see the open point of guagua-clear); pretil1 [-1.6,1.6,0] -> [-1.6,1.66,0] (heads-clear: in moment 6 abuela at the parapet covered 2 px of the head of the guest sitting at banco1: v 1.6 -> 1.66 (+.06; u -1.6 -> -1.68, -.08, also passes)); pretil_coqui [1.3,1.9,0] -> [1.37,1.9,0] (sprites-apart: in moment 6 the frog at the parapet was 26 px sideways from Luis at pretil3 and 4 px below him (needs 28 across or 12 down): u 1.3 -> 1.37 (+.07; v 1.9 -> 2.58, +.68, also passes))"
+ ],
+ "views": {
+  "wide": {
+   "world": [1.3054, 1.3054, 0],
+   "uv": [0, 1.8462, 0],
+   "screen": [120, 108],
+   "zoom": 1,
+   "x0": 22,
+   "region": [22, 0, 196, 216],
+   "stories": [117, 118, 119],
+   "holds": ["farol1", "farol2", "farol3", "centro1", "centro2", "centro3", "centro4", "centro5", "centro6", "centro7", "camara", "camara_abuela", "junto_camara", "ante_todos", "juego_coqui", "junto_coqui", "dentro_roja", "dentro_azul", "ventana_roja", "ventana_azul", "sale_roja", "sale_azul", "banco1", "banco2", "banco3", "banco4", "vela", "muro1", "muro2", "muro3", "baile1", "baile2", "baile3", "baile4", "baile5", "baile6", "jugo", "plato", "mesa_coqui", "junto_mesa", "mesa1", "mesa2", "mesa3", "mesa4", "mesa5", "junto_mesa_coqui", "escalera_abuela", "escalera_abuelo", "escalera1", "escalera2", "escalera3", "escalera4", "baja", "guagua", "guagua_se_va", "musico_lejos1", "musico_lejos2", "pretil1", "pretil2", "pretil3", "pretil4", "pretil_coqui"],
+   "extent": [28, 216],
+   "x0Range": [21, 28],
+   "what": "the one view of stories 117, 118 and 119: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 21 to 28 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 28 to 216). The window's point is the ground point under its middle column at the picture's middle row"
+  }
+ },
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3): the table hides the legs of whoever stands behind it, the sentry boxes hide what stands behind them, the parapet hides what is on the road. The guagua and the two walking músicos: rules.far.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet. A hanging lantern: the plane through its spot (the cord's own plane, v 1)",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; two planes within 0.001 are a tie and the later layer is drawn"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "abuelo": 0.35,
+   "luis": 0.28,
+   "carmen": 0.28
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28) (open point)",
+  "none": ["farol1", "farol2", "farol3", "dentro_roja", "dentro_azul", "banco1", "banco2", "banco3", "banco4", "vela", "jugo", "plato", "mesa_coqui", "mesa1", "mesa2", "mesa3", "mesa4", "mesa5"],
+  "onSeat": "whoever sits on the bench, stands on the table, or is inside a sentry box casts none (a shadow cast at the floor under them would show in front of them); the things (lanterns, camera, candle, glass, plate, chair, the table's things, the guagua) cast none"
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "views-x0",
+    "ok": true,
+    "lines": [
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 62 spots held span columns 28 to 216 (189 of the window's 196); x0 that hold them all: 21 to 28 (the one nearest 22, the window centred on the picture)"
+    ],
+    "x0": {
+     "wide": 22
+    }
+   },
+   {
+    "name": "spots-in-view",
+    "ok": true,
+    "lines": [
+     "spots-in-view: 62 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 28 (mesa1), the rightmost 216 (escalera2)"
+    ]
+   },
+   {
+    "name": "spots-on-surface",
+    "ok": true,
+    "lines": [
+     "spots-on-surface: 13 spots above the floor (banco1, banco2, banco3, banco4, vela, jugo, plato, mesa_coqui, mesa1, mesa2, mesa3, mesa4, mesa5) are on a surface the set draws (the bench's top z 0.46 and the table's top z 0.74 part paseo, the parapet's top z 1 part pretil: depth within .1 of the spot's; the parapet solid under all the candle's columns)",
+     "       banco1 z 0.46: part paseo, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banco2 z 0.46: part paseo, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banco3 z 0.46: part paseo, depth 0.65 against the spot's 0.62 (0.03)",
+     "       banco4 z 0.46: part paseo, depth 0.65 against the spot's 0.62 (0.03)",
+     "       vela z 1: part pretil, depth 0.5 against the spot's 0.5 (0)",
+     "       vela: the parapet under its 8 columns (76 to 83): solid (a merlon: u from -1.6923 to -1.3846)",
+     "       jugo z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)",
+     "       plato z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)",
+     "       mesa_coqui z 0.74: part paseo, depth 5.41 against the spot's 5.39 (0.01)",
+     "       mesa1 z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)",
+     "       mesa2 z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)",
+     "       mesa3 z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)",
+     "       mesa4 z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)",
+     "       mesa5 z 0.74: part paseo, depth 5.14 against the spot's 5.13 (0.01)"
+    ]
+   },
+   {
+    "name": "things-in-view",
+    "ok": true,
+    "lines": [
+     "things-in-view: the boxes of puerta_roja, puerta_azul, banco, escalera are inside the window [22, 218) and the picture (puerta_roja [34,76,16,28], puerta_azul [190,76,16,28], banco [70,76,100,18], escalera [177,164,40,30])"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": true,
+    "lines": [
+     "sprites-apart: 204 pairs in the 6 moments of the preview (m1 (centro1, centro2, centro3, centro4, centro5, centro6, centro7, camara_abuela, junto_camara); m2 (centro1, centro2, centro3, centro4, centro5, centro6, camara_abuela, juego_coqui, junto_coqui, dentro_roja); m3 (centro1, centro2, centro3, centro4, centro5, centro6, camara_abuela, juego_coqui, ventana_azul); m4 (banco2, banco3, muro1, muro2, baile1, baile2, baile3, baile4, mesa_coqui); m5 (escalera_abuela, escalera_abuelo, escalera1, escalera2, escalera3, escalera4, junto_mesa_coqui, baile1, baile2); m6 (pretil1, pretil2, pretil3, pretil4, pretil_coqui, banco1)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 centro1 ~ centro5 (13 across, 16 down), m1 centro2 ~ centro5 (13 across, 16 down), m1 centro2 ~ centro6 (13 across, 16 down), m1 centro2 ~ camara_abuela (13 across, 60 down), m1 centro3 ~ centro6 (13 across, 16 down), m1 centro3 ~ centro7 (13 across, 16 down), m1 centro3 ~ camara_abuela (13 across, 60 down), m1 centro3 ~ junto_camara (20 across, 60 down), m1 centro4 ~ centro7 (13 across, 16 down), m1 centro4 ~ junto_camara (6 across, 60 down), m1 centro6 ~ camara_abuela (0 across, 44 down), m1 centro7 ~ junto_camara (7 across, 44 down), m2 centro1 ~ centro5 (13 across, 16 down), m2 centro1 ~ junto_coqui (13 across, 35 down), m2 centro2 ~ centro5 (13 across, 16 down), m2 centro2 ~ centro6 (13 across, 16 down), m2 centro2 ~ camara_abuela (13 across, 60 down), m2 centro2 ~ junto_coqui (13 across, 35 down), m2 centro3 ~ centro6 (13 across, 16 down), m2 centro3 ~ camara_abuela (13 across, 60 down), m2 centro3 ~ juego_coqui (11 across, 35 down), m2 centro4 ~ juego_coqui (15 across, 35 down), m2 centro5 ~ junto_coqui (0 across, 19 down), m2 centro6 ~ camara_abuela (0 across, 44 down), m2 centro6 ~ juego_coqui (24 across, 19 down), m2 camara_abuela ~ juego_coqui (24 across, 25 down), m3 centro1 ~ centro5 (13 across, 16 down), m3 centro2 ~ centro5 (13 across, 16 down), m3 centro2 ~ centro6 (13 across, 16 down), m3 centro2 ~ camara_abuela (13 across, 60 down), m3 centro3 ~ centro6 (13 across, 16 down), m3 centro3 ~ camara_abuela (13 across, 60 down), m3 centro3 ~ juego_coqui (11 across, 35 down), m3 centro4 ~ juego_coqui (15 across, 35 down), m3 centro4 ~ ventana_azul (17 across, 12 down), m3 centro6 ~ camara_abuela (0 across, 44 down), m3 centro6 ~ juego_coqui (24 across, 19 down), m3 camara_abuela ~ juego_coqui (24 across, 25 down), m4 banco2 ~ baile1 (14 across, 44 down), m4 banco2 ~ baile2 (12 across, 44 down), m4 banco2 ~ baile4 (1 across, 62 down), m4 banco3 ~ baile2 (12 across, 44 down), m4 banco3 ~ baile3 (14 across, 44 down), m4 muro1 ~ mesa_coqui (14 across, 30 down), m4 baile1 ~ baile4 (13 across, 18 down), m4 baile1 ~ mesa_coqui (15 across, 20 down), m4 baile2 ~ baile4 (13 across, 18 down), m5 escalera_abuela ~ escalera_abuelo (6 across, 22 down), m5 escalera_abuelo ~ escalera1 (18 across, 25 down), m5 escalera_abuelo ~ escalera3 (18 across, 40 down), m5 escalera1 ~ escalera3 (0 across, 15 down), m5 escalera2 ~ escalera4 (1 across, 15 down), m5 junto_mesa_coqui ~ baile1 (23 across, 43 down), m5 junto_mesa_coqui ~ baile2 (3 across, 43 down), m6 pretil1 ~ pretil4 (23 across, 12 down), m6 pretil1 ~ banco1 (5 across, 27 down), m6 pretil2 ~ banco1 (20 across, 26 down)",
+     "       closest pair in each moment (px across / px down): m1 centro6 ~ camara_abuela 0/44 (needs 24 across or 12 down); m2 centro5 ~ junto_coqui 0/19 (needs 24 across or 12 down); m3 centro6 ~ camara_abuela 0/44 (needs 24 across or 12 down); m4 banco2 ~ baile4 1/62 (needs 24 across or 12 down); m5 junto_mesa_coqui ~ baile2 3/43 (needs 28 across or 12 down); m6 pretil1 ~ banco1 5/27 (needs 24 across or 12 down)"
+    ],
+    "pairs": [
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "centro2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "centro3",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "centro4",
+      "across": 78,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "centro5",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "centro6",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "centro7",
+      "across": 65,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "camara_abuela",
+      "across": 39,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro1",
+      "b": "junto_camara",
+      "across": 72,
+      "down": 60,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "centro3",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "centro4",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "centro5",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "centro6",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "centro7",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "camara_abuela",
+      "across": 13,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro2",
+      "b": "junto_camara",
+      "across": 46,
+      "down": 60,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro3",
+      "b": "centro4",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro3",
+      "b": "centro5",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro3",
+      "b": "centro6",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro3",
+      "b": "centro7",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro3",
+      "b": "camara_abuela",
+      "across": 13,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro3",
+      "b": "junto_camara",
+      "across": 20,
+      "down": 60,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro4",
+      "b": "centro5",
+      "across": 65,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro4",
+      "b": "centro6",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro4",
+      "b": "centro7",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro4",
+      "b": "camara_abuela",
+      "across": 39,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro4",
+      "b": "junto_camara",
+      "across": 6,
+      "down": 60,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro5",
+      "b": "centro6",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro5",
+      "b": "centro7",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro5",
+      "b": "camara_abuela",
+      "across": 26,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro5",
+      "b": "junto_camara",
+      "across": 59,
+      "down": 44,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro6",
+      "b": "centro7",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro6",
+      "b": "camara_abuela",
+      "across": 0,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro6",
+      "b": "junto_camara",
+      "across": 33,
+      "down": 44,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro7",
+      "b": "camara_abuela",
+      "across": 26,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "centro7",
+      "b": "junto_camara",
+      "across": 7,
+      "down": 44,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 1,
+      "a": "camara_abuela",
+      "b": "junto_camara",
+      "across": 33,
+      "down": 0,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "centro2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "centro3",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "centro4",
+      "across": 78,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "centro5",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "centro6",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "camara_abuela",
+      "across": 39,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "juego_coqui",
+      "across": 63,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "junto_coqui",
+      "across": 13,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro1",
+      "b": "dentro_roja",
+      "across": 39,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "centro3",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "centro4",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "centro5",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "centro6",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "camara_abuela",
+      "across": 13,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "juego_coqui",
+      "across": 37,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "junto_coqui",
+      "across": 13,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro2",
+      "b": "dentro_roja",
+      "across": 65,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "centro4",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "centro5",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "centro6",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "camara_abuela",
+      "across": 13,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "juego_coqui",
+      "across": 11,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "junto_coqui",
+      "across": 39,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro3",
+      "b": "dentro_roja",
+      "across": 91,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro4",
+      "b": "centro5",
+      "across": 65,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro4",
+      "b": "centro6",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro4",
+      "b": "camara_abuela",
+      "across": 39,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro4",
+      "b": "juego_coqui",
+      "across": 15,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro4",
+      "b": "junto_coqui",
+      "across": 65,
+      "down": 35,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro4",
+      "b": "dentro_roja",
+      "across": 117,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro5",
+      "b": "centro6",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro5",
+      "b": "camara_abuela",
+      "across": 26,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro5",
+      "b": "juego_coqui",
+      "across": 50,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro5",
+      "b": "junto_coqui",
+      "across": 0,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro5",
+      "b": "dentro_roja",
+      "across": 52,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro6",
+      "b": "camara_abuela",
+      "across": 0,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro6",
+      "b": "juego_coqui",
+      "across": 24,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro6",
+      "b": "junto_coqui",
+      "across": 26,
+      "down": 19,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "centro6",
+      "b": "dentro_roja",
+      "across": 78,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camara_abuela",
+      "b": "juego_coqui",
+      "across": 24,
+      "down": 25,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camara_abuela",
+      "b": "junto_coqui",
+      "across": 26,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "camara_abuela",
+      "b": "dentro_roja",
+      "across": 78,
+      "down": 70,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "juego_coqui",
+      "b": "junto_coqui",
+      "across": 50,
+      "down": 0,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "juego_coqui",
+      "b": "dentro_roja",
+      "across": 102,
+      "down": 45,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 2,
+      "a": "junto_coqui",
+      "b": "dentro_roja",
+      "across": 52,
+      "down": 45,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "centro2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "centro3",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "centro4",
+      "across": 78,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "centro5",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "centro6",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "camara_abuela",
+      "across": 39,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "juego_coqui",
+      "across": 63,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro1",
+      "b": "ventana_azul",
+      "across": 95,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "centro3",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "centro4",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "centro5",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "centro6",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "camara_abuela",
+      "across": 13,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "juego_coqui",
+      "across": 37,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro2",
+      "b": "ventana_azul",
+      "across": 69,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro3",
+      "b": "centro4",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro3",
+      "b": "centro5",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro3",
+      "b": "centro6",
+      "across": 13,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro3",
+      "b": "camara_abuela",
+      "across": 13,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro3",
+      "b": "juego_coqui",
+      "across": 11,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro3",
+      "b": "ventana_azul",
+      "across": 43,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro4",
+      "b": "centro5",
+      "across": 65,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro4",
+      "b": "centro6",
+      "across": 39,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro4",
+      "b": "camara_abuela",
+      "across": 39,
+      "down": 60,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro4",
+      "b": "juego_coqui",
+      "across": 15,
+      "down": 35,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro4",
+      "b": "ventana_azul",
+      "across": 17,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro5",
+      "b": "centro6",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro5",
+      "b": "camara_abuela",
+      "across": 26,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro5",
+      "b": "juego_coqui",
+      "across": 50,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro5",
+      "b": "ventana_azul",
+      "across": 82,
+      "down": 28,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro6",
+      "b": "camara_abuela",
+      "across": 0,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro6",
+      "b": "juego_coqui",
+      "across": 24,
+      "down": 19,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "centro6",
+      "b": "ventana_azul",
+      "across": 56,
+      "down": 28,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "camara_abuela",
+      "b": "juego_coqui",
+      "across": 24,
+      "down": 25,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "camara_abuela",
+      "b": "ventana_azul",
+      "across": 56,
+      "down": 72,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "juego_coqui",
+      "b": "ventana_azul",
+      "across": 32,
+      "down": 47,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "banco3",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "muro1",
+      "across": 43,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "muro2",
+      "across": 67,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "baile1",
+      "across": 14,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "baile2",
+      "across": 12,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "baile3",
+      "across": 38,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "baile4",
+      "across": 1,
+      "down": 62,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco2",
+      "b": "mesa_coqui",
+      "across": 29,
+      "down": 64,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "muro1",
+      "across": 67,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "muro2",
+      "across": 43,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "baile1",
+      "across": 38,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "baile2",
+      "across": 12,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "baile3",
+      "across": 14,
+      "down": 44,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "baile4",
+      "across": 25,
+      "down": 62,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "banco3",
+      "b": "mesa_coqui",
+      "across": 53,
+      "down": 64,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro1",
+      "b": "muro2",
+      "across": 110,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro1",
+      "b": "baile1",
+      "across": 29,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro1",
+      "b": "baile2",
+      "across": 55,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro1",
+      "b": "baile3",
+      "across": 81,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro1",
+      "b": "baile4",
+      "across": 42,
+      "down": 28,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro1",
+      "b": "mesa_coqui",
+      "across": 14,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro2",
+      "b": "baile1",
+      "across": 81,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro2",
+      "b": "baile2",
+      "across": 55,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro2",
+      "b": "baile3",
+      "across": 29,
+      "down": 10,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro2",
+      "b": "baile4",
+      "across": 68,
+      "down": 28,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "muro2",
+      "b": "mesa_coqui",
+      "across": 96,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile1",
+      "b": "baile2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile1",
+      "b": "baile3",
+      "across": 52,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile1",
+      "b": "baile4",
+      "across": 13,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile1",
+      "b": "mesa_coqui",
+      "across": 15,
+      "down": 20,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile2",
+      "b": "baile3",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile2",
+      "b": "baile4",
+      "across": 13,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile2",
+      "b": "mesa_coqui",
+      "across": 41,
+      "down": 20,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile3",
+      "b": "baile4",
+      "across": 39,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile3",
+      "b": "mesa_coqui",
+      "across": 67,
+      "down": 20,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 4,
+      "a": "baile4",
+      "b": "mesa_coqui",
+      "across": 28,
+      "down": 2,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "escalera_abuelo",
+      "across": 6,
+      "down": 22,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "escalera1",
+      "across": 24,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "escalera2",
+      "across": 49,
+      "down": 3,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "escalera3",
+      "across": 24,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "escalera4",
+      "across": 48,
+      "down": 18,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "junto_mesa_coqui",
+      "across": 39,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "baile1",
+      "across": 62,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuela",
+      "b": "baile2",
+      "across": 36,
+      "down": 34,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "escalera1",
+      "across": 18,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "escalera2",
+      "across": 43,
+      "down": 25,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "escalera3",
+      "across": 18,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "escalera4",
+      "across": 42,
+      "down": 40,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "junto_mesa_coqui",
+      "across": 45,
+      "down": 13,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "baile1",
+      "across": 68,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera_abuelo",
+      "b": "baile2",
+      "across": 42,
+      "down": 56,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera1",
+      "b": "escalera2",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera1",
+      "b": "escalera3",
+      "across": 0,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera1",
+      "b": "escalera4",
+      "across": 24,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera1",
+      "b": "junto_mesa_coqui",
+      "across": 63,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera1",
+      "b": "baile1",
+      "across": 86,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera1",
+      "b": "baile2",
+      "across": 60,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera2",
+      "b": "escalera3",
+      "across": 25,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera2",
+      "b": "escalera4",
+      "across": 1,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera2",
+      "b": "junto_mesa_coqui",
+      "across": 88,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera2",
+      "b": "baile1",
+      "across": 111,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera2",
+      "b": "baile2",
+      "across": 85,
+      "down": 31,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera3",
+      "b": "escalera4",
+      "across": 24,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera3",
+      "b": "junto_mesa_coqui",
+      "across": 63,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera3",
+      "b": "baile1",
+      "across": 86,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera3",
+      "b": "baile2",
+      "across": 60,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera4",
+      "b": "junto_mesa_coqui",
+      "across": 87,
+      "down": 27,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera4",
+      "b": "baile1",
+      "across": 110,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "escalera4",
+      "b": "baile2",
+      "across": 84,
+      "down": 16,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "junto_mesa_coqui",
+      "b": "baile1",
+      "across": 23,
+      "down": 43,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "junto_mesa_coqui",
+      "b": "baile2",
+      "across": 3,
+      "down": 43,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 5,
+      "a": "baile1",
+      "b": "baile2",
+      "across": 26,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil1",
+      "b": "pretil2",
+      "across": 25,
+      "down": 1,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil1",
+      "b": "pretil3",
+      "across": 50,
+      "down": 1,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil1",
+      "b": "pretil4",
+      "across": 23,
+      "down": 12,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil1",
+      "b": "pretil_coqui",
+      "across": 78,
+      "down": 3,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil1",
+      "b": "banco1",
+      "across": 5,
+      "down": 27,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil2",
+      "b": "pretil3",
+      "across": 25,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil2",
+      "b": "pretil4",
+      "across": 48,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil2",
+      "b": "pretil_coqui",
+      "across": 53,
+      "down": 4,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil2",
+      "b": "banco1",
+      "across": 20,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil3",
+      "b": "pretil4",
+      "across": 73,
+      "down": 13,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil3",
+      "b": "pretil_coqui",
+      "across": 28,
+      "down": 4,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil3",
+      "b": "banco1",
+      "across": 45,
+      "down": 26,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil4",
+      "b": "pretil_coqui",
+      "across": 101,
+      "down": 9,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil4",
+      "b": "banco1",
+      "across": 28,
+      "down": 39,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 6,
+      "a": "pretil_coqui",
+      "b": "banco1",
+      "across": 73,
+      "down": 30,
+      "needAcross": 28,
+      "ok": true
+     }
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": true,
+    "lines": [
+     "frog-seen: the frog is seen whole in all 6 moments (0 px covered by anything): m1 junto_camara 153,174: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m2 juego_coqui 144,149: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m3 juego_coqui 144,149: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m4 mesa_coqui 79,143: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m5 junto_mesa_coqui 117,166: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture; m6 pretil_coqui 156,109: 536 px, 0 hidden by the set, 0 under a nearer sprite, 0 outside the picture"
+    ]
+   },
+   {
+    "name": "heads-clear",
+    "ok": false,
+    "lines": [
+     "heads-clear: 3 problem(s) with the people who sit:",
+     "  moment 4 banco2 108,79: 14 of the 200 px of his head (rows 38 to 51) are not seen: 0 covered by nobody, 14 hidden by the set (14 of them by the cord)",
+     "  moment 4 banco3 132,79: 13 of the 182 px of his head (rows 40 to 53) are not seen: 0 covered by nobody, 13 hidden by the set (13 of them by the cord)",
+     "  moment 6 banco1 83,79: 18 of the 192 px of his head (rows 42 to 55) are not seen: 0 covered by nobody, 18 hidden by the set (18 of them by the cord)",
+     "       info, not a check: m4 banco2 108,79 (musico1S): head rows 38 to 51: 200 px, 0 covered, 14 hidden by the set; m4 banco3 132,79 (musico2S): head rows 40 to 53: 182 px, 0 covered, 13 hidden by the set; m6 banco1 83,79 (senorS): head rows 42 to 55: 192 px, 0 covered, 18 hidden by the set",
+     "       OPEN POINT: 0 px of the heads are covered by a person and 45 are hidden by the set, 45 of those by the cord (a 1 px line of the set at v 1, z 2.13 to 2.38: nearer than the bench at v 0.45, it crosses the head of everyone who sits anywhere under it: rows 43 to 49 against heads at rows 38 to 55); no place on the bench passes while the cord counts. Read with --cord-ok (the cord's pixels hide nothing) the check passes"
+    ]
+   },
+   {
+    "name": "lanterns-clear",
+    "ok": true,
+    "lines": [
+     "lanterns-clear: the lanterns (m1 to m5: farol1 to farol3; m6: farol2) are covered by nobody and hidden by nothing of the set in every moment: m1: farol1 [84,48,10,12] 0 covered, 0 hidden, farol2 [115,49,10,12] 0 covered, 0 hidden, farol3 [146,48,10,12] 0 covered, 0 hidden; m2: farol1 [84,48,10,12] 0 covered, 0 hidden, farol2 [115,49,10,12] 0 covered, 0 hidden, farol3 [146,48,10,12] 0 covered, 0 hidden; m3: farol1 [84,48,10,12] 0 covered, 0 hidden, farol2 [115,49,10,12] 0 covered, 0 hidden, farol3 [146,48,10,12] 0 covered, 0 hidden; m4: farol1 [84,48,10,12] 0 covered, 0 hidden, farol2 [115,49,10,12] 0 covered, 0 hidden, farol3 [146,48,10,12] 0 covered, 0 hidden; m5: farol1 [84,48,10,12] 0 covered, 0 hidden, farol2 [115,49,10,12] 0 covered, 0 hidden, farol3 [146,48,10,12] 0 covered, 0 hidden; m6: farol2 [115,49,10,12] 0 covered, 0 hidden"
+    ]
+   },
+   {
+    "name": "doors-clear",
+    "ok": true,
+    "lines": [
+     "doors-clear: in moments 2 and 3 the two doors' boxes (puerta_roja [34,76,16,28], puerta_azul [190,76,16,28]) are covered by nobody, and whoever is inside is clipped to the door: m2: dentro_roja (carmen) is inside puerta_roja [34,76,16,28], 418 px shown, 306 px cut off by the clip, 0 px outside the box; m3: nobody inside; both doors' boxes under nobody"
+    ]
+   },
+   {
+    "name": "candle-clear",
+    "ok": true,
+    "lines": [
+     "candle-clear: in moment 4 the candle (vela 80,61 box [76,45,8,16]) is covered by nobody: 98 px, 0 covered, 4 hidden by the set (4 of them by the cord's line; the spec says \"covered by nobody\": nothing else of the set hides it), on a merlon of the parapet; the músicos' heads are heads-clear"
+    ]
+   },
+   {
+    "name": "table-clear",
+    "ok": true,
+    "lines": [
+     "table-clear: the glass, the plate and the chair (m4) and the four things on the table (m5: mesa2 to mesa5) are covered by nobody, not hidden by the set, and the frog covers none (none of his pixels on theirs or in their boxes): m4 (the frog at mesa_coqui 79,143): jugo [34,129,6,10] 0 covered, 0 hidden, 0 px of the frog in its box; plato [46,133,12,6] 0 covered, 0 hidden, 0 px of the frog in its box; junto_mesa [108,133,14,24] 0 covered, 0 hidden, 0 px of the frog in its box; m5 (the frog at junto_mesa_coqui 117,166): mesa2 [38,131,12,8] 0 covered, 0 hidden, 0 px of the frog in its box; mesa3 [50,127,10,12] 0 covered, 0 hidden, 0 px of the frog in its box; mesa4 [60,129,12,10] 0 covered, 0 hidden, 0 px of the frog in its box; mesa5 [73,131,10,8] 0 covered, 0 hidden, 0 px of the frog in its box"
+    ]
+   },
+   {
+    "name": "guagua-clear",
+    "ok": false,
+    "lines": [
+     "guagua-clear: 2 problem(s):",
+     "  moment 5 guagua 167,53 box [156,43,22,10]: 0 of its 202 px covered by nobody; other sprites have shown pixels in its box: none; 22 px hidden by the set (22 of them by the cord, 0 by the rest of the set), 0 outside the picture",
+     "  moment 6 guagua_se_va 136,56 box [125,46,22,10]: 0 of its 202 px covered by nobody; other sprites have shown pixels in its box: none; 21 px hidden by the set (21 of them by the cord, 0 by the rest of the set), 0 outside the picture",
+     "       OPEN POINT: m5 guagua 167,53 box [156,43,22,10]: 202 px, 0 covered, 22 hidden by the set (22 by the cord); m6 guagua_se_va 136,56 box [125,46,22,10]: 202 px, 0 covered, 21 hidden by the set (21 by the cord). The cord (a 1 px line of the set at v 1, nearer than the road) crosses the guagua's box in the rows 44 to 47 and hides one pixel of it per column wherever the guagua stands on the road (the road, from column 128, lies under the cord, which runs from column 55 to 185, at every column of it): no column passes \"hidden by nothing of the set\" while the cord counts. Read with --cord-ok it passes"
+    ]
+   },
+   {
+    "name": "steps-clear",
+    "ok": true,
+    "lines": [
+     "steps-clear: none of the 45 places of people stands on the steps' hole (u 2.2 to 3.7, v 6.2 to 8.4) except baja (2.95, 6.8)"
+    ]
+   },
+   {
+    "name": "info-groups",
+    "ok": true,
+    "lines": [
+     "info-groups: not a check. Pairs of one group (centro, banco, baile, muro, escalera, pretil) whose boxes overlap sideways with feet closer than 12 px up-down: none"
+    ]
+   },
+   {
+    "name": "info-touch",
+    "ok": true,
+    "lines": [
+     "info-touch: not a check. m1: camara 179 of 187 px covered by camara_abuela 179; m2: camara 179 of 187 px covered by camara_abuela 179, the red door is open (a stand-in); m3: camara 179 of 187 px covered by camara_abuela 179; m4: no camera; m5: no camera; m6: no camera"
+    ]
+   }
+  ]
+ }
+}
