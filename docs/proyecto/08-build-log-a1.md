@@ -2,6 +2,14 @@
 
 Started Nov 13 2026. Newest first. Where this page and 05, 06 or 07 differ, this page wins.
 
+## Nov 21, part 25: La sala and El patio; La casa whole in the new app
+
+- La sala (order 31): designed in two rounds, ported with no stop, stories 6 to 8 play (build 6).
+- El patio (order 32): designed in six rounds with seven fresh readers, ported with no stop, stories 9 to 11 play (build 7). Round 1 stood square to the camera like the old flat picture and was turned into a corner; the frog now leaves through the gate (8 pairs of places take a hop more, none walked in the recorded runs); the lawn is El frente's grass. Three tries at making the flowers stand out on that lawn: a darker patch round each bed read as a hole, a border of leaves as a pit; what holds is plain earth beds and each planted flower with its own leaves.
+- All eleven stories of La casa now play in the Flutter app, each against its recorded runs.
+- Spent: nothing. No audio recorded.
+- Problems caused by the orchestrator's own work: the two failed bed designs were the orchestrator's decisions (rounds 4 and 5), each costing a round. The other session pushed two new places' sets and orders to main meanwhile (page 13, orders 50 to 57); the checks were run again on the merged tree.
+
 ## Nov 20, part 24: Gate A passed, El balcón, Repaso as games
 
 - Gate A: "looks good to me." The scenes lane went on: El balcón designed in JavaScript in four rounds with eight fresh readers, ported to Dart, a fifth round for four faults a reader found in the real app; stories 4 and 5 play (build 4). Its first bake is over the limit (205 to 313 ms against 150).
