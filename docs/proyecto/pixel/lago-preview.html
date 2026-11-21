@@ -110,13 +110,12 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;t=0&amp;signs=1&a
   PV.ring = function (c, kind, o) { if (OLD) return; const r = PV.ringWhere(kind, o); if (r) ringOn(c, r[0], r[1], r[2], r[3], r[4]); };
   // (sheet: helps.ring.pez) the fish at the surface swims in a pale patch of stirred water of its own: the old water's pale tone, its edge dithered,
   // the ring's light line at its rim; on the water only
-  PV.patch = function (c, o) { if (OLD || !o || (o.dy || 0) > 4) return; const H = SHEET.helps.ring.pez, fw = CUR.fw, cx = R(o.x), cy = R(o.y) + H.dy;
-    for (let y = Math.floor(cy - H.ry - 1); y <= Math.ceil(cy + H.ry + 1); y++) for (let x = Math.floor(cx - H.rx - 1); x <= Math.ceil(cx + H.rx + 1); x++) {
-      const d = Math.sqrt(((x + .5 - cx) / H.rx) ** 2 + ((y + .5 - cy) / H.ry) ** 2); if (d > 1 || !fw.LAGO_SET.waterShown(x, y)) continue;
-      const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(y & 3) * 4 + (x & 3)] / 16, edge = (d - (1 - H.soft)) / H.soft;
-      if (d > .82) { c.fillStyle = 'rgb(' + H.rim + ')'; c.fillRect(x, y, 1, 1); continue; }
-      if (edge > 0 && B < edge) continue;
-      c.fillStyle = 'rgb(' + H.patch + ')'; c.fillRect(x, y, 1, 1); } };
+  PV.patchAt = function (o, x, y) { const H = SHEET.helps.ring.pez, b = H.box, q = H.round, X0 = R(o.x) + b[0] + q, Y0 = R(o.y) + b[1] + q, dx = Math.max(0, X0 - (x + .5), (x + .5) - (X0 + b[2] - 2 * q)), dy = Math.max(0, Y0 - (y + .5), (y + .5) - (Y0 + b[3] - 2 * q)), e = Math.hypot(dx, dy) - q;   // its box with rounded corners (radius round + its distance)
+    if (e <= H.pad) return H.patch; if (e <= H.pad + H.soft) { const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(y & 3) * 4 + (x & 3)] / 16; return B < 1 - (e - H.pad) / H.soft ? H.patch : null; }
+    if (e <= H.pad + H.soft + H.rim) return H.rimColour; return null; };
+  PV.patch = function (c, o) { if (OLD || !o || (o.dy || 0) > 4) return; const H = SHEET.helps.ring.pez, fw = CUR.fw, b = H.box, m = H.pad + H.soft + H.rim + 1;
+    for (let y = Math.floor(R(o.y) + b[1] - m); y <= Math.ceil(R(o.y) + b[1] + b[3] + m); y++) for (let x = Math.floor(R(o.x) + b[0] - m); x <= Math.ceil(R(o.x) + b[0] + b[2] + m); x++) {
+      if (!fw.LAGO_SET.waterShown(x, y)) continue; const col = PV.patchAt(o, x, y); if (col) { c.fillStyle = 'rgb(' + col + ')'; c.fillRect(x, y, 1, 1); } } };
   // sheet.talk: the first place for a bubble wholly in the view, clear of the corner card and of every face
   const meets = (a, b) => a[0] < b[0] + b[2] && b[0] < a[0] + a[2] && a[1] < b[1] + b[3] && b[1] < a[1] + a[3];
   PV.faces = function (w) {

@@ -68,7 +68,7 @@ const POSTE = [166, 156], POST_R = .12;
 const POST = (() => { const g = Gs(POSTE[0], POSTE[1] + 8, -WDEPTH), topZ = -WDEPTH + 32 / (COS * S); return { x: g[0], y: g[1], top: topZ }; })();
 // the reeds: a bed of them in the shallows at the right, as the old (JUNCOS), but higher up the water: past the post and clear of the ducks'
 // and the boats' places of the stories below it; clumps round these feet
-const JUNCOS = [[204, 157], [211, 155], [218, 158], [208, 163], [215, 165], [222, 161], [221, 170]];   // near the old reeds' feet (190..210, 144..162), below the boats' row at Carmen's feet
+const JUNCOS = [[197, 161], [204, 160], [211, 162], [201, 167], [208, 166], [216, 164], [214, 171]];   // near the old reeds' feet (190..210, 144..162), below the boats' row at Carmen's feet; round 4: 22 px and more of the bed inside the view
 const REED_H = [.6, .25];   // round 3: a little shorter than El campo's (13 to 19 rows), their heads below the boats at Carmen's feet   
 // the sky, the hills, the sun: El camino's and El campo's (the sun upper left: every shadow falls to the right)
 const SKY = { bands: [[58, 134, 230], [85, 159, 242], [120, 186, 250], [162, 211, 255], [208, 234, 255]], far: [[116, 180, 162], [156, 208, 188], [94, 158, 144]], near: [[78, 158, 94], [124, 203, 122], [62, 136, 80]], sun: [[220, 150, 30], [248, 200, 56], [255, 224, 112], [255, 244, 176]] };
@@ -119,8 +119,8 @@ function deckTop(R) {
     const x = R.x0 + a * (R.x1 - R.x0), y = R.y0 + b * (R.y1 - R.y0), f = (x - DECK.x0 + 40 * PW) / PW, k = Math.floor(f), fr = f - k;
     if (fr < .14) return rampOf(WOOD)[0];                                 // the gap between two planks
     if (fr > .86) return rampOf(WOOD)[1];                                  // its shaded edge, the same on every plank
-    const t = 2.2 + plankTone(k) * .95 + (hash(Math.floor(y * 9), k) - .5) * .35;   // the plank's own tone, a little grain along it
-    return rampOf(WOOD)[clamp(Math.floor(t), 2, 3)];                       // round 2: no dark patch inside a plank; round 3: no light band
+    // round 4: each plank one even tone along its whole length: its two wood tones mixed by a fixed dither (no grain that gathers into patches)
+    return rampOf(WOOD)[bayerAt(Math.floor(project(x, y, ZD).sx), Math.floor(project(x, y, ZD).sy)) < plankTone(k) * .85 ? 3 : 2];
   });
 }
 // the dock's edge on the two sides the camera sees: the plank ends (the top TH_P), the fascia board under them; on the lawn it goes down to the ground
@@ -256,6 +256,8 @@ function buildSet() {
     return skyHills(HZ, SKY.far, SKY.near, ix, iy) || skyBands(SKY.bands, 0, HZ, ix, iy);
   });
   bakedPix.set(pix); bakedZ.set(zb);
+  // round 4: a glint registered by the ground pass where the dock, the post or a reed now stands is dropped (it showed as a white speck on the planks)
+  for (let n = LOOK.glints.length - 1; n >= 0; n--) { const i = LOOK.glints[n].i; if (!(kinds[i] === KIND_WATER && bakedZ[i] === groundZ[i])) LOOK.glints.splice(n, 1); }
 }
 // a pixel of the deck's top: its depth is the plane z = ZD's at that pixel (the sides and the posts are not)
 function DECK_TOP(i) { const ix = i % W, iy = (i / W) | 0, g = Gs(ix + .5, iy + .5, ZD); if (!onDeck(g[0], g[1])) return false;

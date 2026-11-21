@@ -297,8 +297,8 @@ const DESIGN = (() => {
     { act: '*', src: 'L.push({y:FY+1,d:()=>c.drawImage(spr("pan",mkPan),36+i*12-5,FY-8)})', to: 'L.push({y:158,d:()=>c.drawImage(spr("pan",mkPan),54+i*12-5,149)})', why: 'the row of bread on the dock (W.fila): the old row lay on the old dock\'s face; here on the planks, in front of the people' },
     { act: '*', src: 'const slotC=i=>[98+(i%13)*6,119+(i>=13?4:0)];', to: 'const SLOTC=' + JSON.stringify(SLOTS) + ',slotC=i=>SLOTC[Math.min(i,11)];', slot: true,
       why: 'round 3: the boats that reach Carmen (sopla, conpez; 12 at the most in a run): the old row lay along the far bank and ended at her feet, filled from its far end towards her; here two rows on the water along the right bank, running from her feet up the bank, the last slot 8 to 12 px of water straight in front of her, filled from the farthest towards her as the old, neighbours 6 px apart at the least (the old spacing), each slot no further from her than the old slot was from the old Carmen (+ 10 px), none behind the post or in the reeds' },
-    { act: '*', src: 'PEGA=[[182,166],[196,172],[210,168],[190,178]]', to: 'PEGA=[[201,150],[199,144],[201,157],[196,151]]', pts: [['bote', [182, 166], [201, 150]], ['bote', [196, 172], [199, 144]], ['bote', [210, 168], [201, 157]], ['bote', [190, 178], [196, 151]]],
-      why: 'acts.deriva: where a drifting boat sticks in the reeds: at the front of the reed bed in the shallows of the right bank (round 3), 6 px and more from the view\'s edge' },
+    { act: '*', src: 'PEGA=[[182,166],[196,172],[210,168],[190,178]]', to: 'PEGA=[[192,160],[187,156],[196,165],[184,162]]', pts: [['bote', [182, 166], [192, 160]], ['bote', [196, 172], [187, 156]], ['bote', [210, 168], [196, 165]], ['bote', [190, 178], [184, 162]]],
+      why: 'acts.deriva: where a drifting boat sticks in the reeds: at the front of the reed bed in the shallows of the right bank (round 3; round 4: the bed further into the view), 6 px and more from the view\'s edge, 60% and more of each boat seen' },
     { act: '*', src: 'await patoA("blanco",124,126,"nada");d.pose="anda";await patoA("blanco",120,118,"anda",4)', to: 'await patoA("blanco",132,124,"nada");d.pose="anda";await patoA("blanco",102,110,"anda",4)', pts: [['pato', [124, 126], [132, 124]], ['pato', [120, 118], [102, 110]]],
       why: 'acts.orilla (pan-para-el-pato): the duck climbs out onto the far bank: the old bank at row 118 is water here; it swims to the shore up the lake (8 px of water round it) and walks out onto the lawn (8 px of lawn round its feet)' },
     { act: '*', src: 'await patoA("blanco",124,126,"anda",4);d.pose="nada";salpica(124,128);', to: 'await patoA("blanco",132,124,"anda",4);d.pose="nada";salpica(132,126);', why: 'acts.alagua: back into the water where it came out (orilla)' },
@@ -306,12 +306,12 @@ const DESIGN = (() => {
     { act: 'inicio19', src: 'async inicio19(){W.gente=', to: 'async inicio19(){W.respEn=[127,31];W.gente=', respEn: [127, 31], why: 'acts.inicio19 (los-botes): the answer cards stand in the sky (W.respEn): over the frog on the dock they covered Carmen across the water, Luis and the boats. Round 3: under the rounds card by 2 px, over Carmen\'s head on the right bank by 2 px, their frames and glow off the sun and 4 px inside the view; the hand at each card off her face' },
     { act: 'inicio20', src: 'async inicio20(){W.gente=', to: 'async inicio20(){W.respEn=['+EN+'];W.gente=', respEn: [132, 32], why: 'acts.inicio20 (cual, d-pato-pequeno, h-lago): the answer cards stand in the sky (W.respEn): over the frog they covered Luis and Canelo on the lawn and Carmen' },
     { act: '*', src: 'const P7=i=>[134+(i-1)*9.5,177+(i-1)*2]', to: 'const P7=i=>[156+(i-1)*4.5,186+(i-1)*1]', pts: (() => { const OFF = [[-14, -9], [14, -7], [0, 12]], out = []; for (let i = 1; i <= 7; i++) for (const o of OFF) out.push(['pato', [Math.round(134 + (i - 1) * 9.5 + o[0]), Math.round(177 + (i - 1) * 2 + o[1])], [Math.round(156 + (i - 1) * 4.5 + o[0]), 186 + (i - 1) * 1 + o[1]]]); return out; })(), why: 'story 20: the seven places of the three ducks, from the dock outward: the old first places lay under the new dock\'s end (as wide as its row of places needs); they start 8 px of water past its end and end 6 px from the view\'s right edge (the ducks closer together, their order and offsets OFF unchanged)' },
-    { act: '*', src: 'W.peces={a:{c:"pardo",x:92,y:192,x0:92,dir:1,vaiven:1}}', to: 'W.peces={a:{c:"pardo",x:130,y:194,x0:130,dir:1,vaiven:1}}', pts: [['pez', [92, 192], [130, 194]]], why: 'acts.inicio18: the fish swimming to and fro (x0 +- 12): the old place passed under the new dock\'s near corner; on open water in front of its end, out of its shade (round 3)' },
+    { act: '*', src: 'W.peces={a:{c:"pardo",x:92,y:192,x0:92,dir:1,vaiven:1}}', to: 'W.peces={a:{c:"pardo",x:138,y:194,x0:138,dir:1,vaiven:1}}', pts: [['pez', [92, 192], [138, 194]]], why: 'acts.inicio18: the fish swimming to and fro (x0 +- 12): the old place passed under the new dock\'s near corner; on open water in front of its end, out of its shade (round 3)' },
     { act: '*', src: 'o.x=120+13*Math.cos(t);o.y=192+4*Math.sin(t)', to: 'o.x=132+8*Math.cos(t);o.y=190+4*Math.sin(t)', why: 'anima: the fish circling before the dock (pezviene, h-lago): its hint frame (box + 12) 2 px inside the view at the bottom of its circle, its patch out of the dock\'s shade, its circle narrower (13 to 8 px) so that it keeps clear of the ducks (round 3)' },
     { act: '*', src: 'await pezA("a",134,192,16)', to: 'await pezA("a",140,190,16)', pts: [['pez', [134, 192], [140, 190]]], why: 'acts.pezviene: the fish swims up to its circle (anima, moved)' },
     { act: '*', src: 'const b=W.botes[o.sigue];o.x=b.x-4;o.y=b.y+9;', to: 'const b=W.botes[o.sigue];o.x=b.x+10;o.y=b.y+12;', why: 'anima: the fish swimming with a boat to Carmen (conpez): below the boat\'s right instead of its left, so that its path keeps out of the dock\'s shade at the dock\'s end (round 3)' },
     { act: '*', src: 'await pezA("a",SALE[0][0]-4,SALE[0][1]+9,6)', to: 'await pezA("a",SALE[0][0]+10,SALE[0][1]+12,6)', why: 'acts.conpez: the fish comes to the boat\'s right (anima, round 3)' },
-    { act: 'inicio20', src: 'W.flor=[196,119]', to: 'W.flor=[212,116]', pts: [['flor', [196, 119], [212, 116]]], why: 'acts.inicio20: the yellow flower on the right bank (round 3), as the old: 16 px right and 3 rows up of its old point, where it has 8 px of lawn round its foot and plain lawn behind it (lower, its head would be against the water; higher, against the hills)' },
+    { act: 'inicio20', src: 'W.flor=[196,119]', to: 'W.flor=[204,112]', pts: [['flor', [196, 119], [204, 112]]], why: 'acts.inicio20: the yellow flower on the right bank (round 3), as the old: round 4, 8 px right and 7 rows up of its old point, whole inside the view 4 px and more from its right edge with the stars of its twinkle inside it, 8 px of lawn round its foot, lawn and the hills behind its head' },
   ];
   const storyMoves = [
     { old: [152, 122], new: [POSTE[0], POSTE[1] - 24], who: 'ave', why: 'h-lago beats.14: the bird on the post (POSTE[1] - 24): the post moved (moves)' },
@@ -422,7 +422,7 @@ Object.assign(DESIGN, {
     what: 'drawn by the sprite layer just before the thing they help, 1:1 (lines: each drawing function of a thing on the water gains one call): El campo\'s ripple ring on the water round whatever floats or swims at the surface: a duck swimming, a boat on the water or in the reeds, the bread lying on the water',
     margin: 8, edge: 6, deckMargin: 3,
     marginWhat: 'whatever rests near the shore or the dock\'s edge is on one side: on the lawn with at least `margin` px of lawn round its foot (the lowest 2 rows of its sprite); on the dock with planks under its whole foot and at least `deckMargin` px of plank to the dock\'s edge; in the water with `margin` px of water all round its foot, the ring and the thing `edge` px and more from the picture\'s edges',
-    ring: { inner: .45, colour: [212, 236, 246], pato: { rx: 13, ry: 3, dy: 0 }, bote: { rx: 11, ry: 3, dy: 0 }, pan: { rx: 7, ry: 2.5, dy: 0 }, pez: { rx: 13, ry: 5, dy: -1, patch: [166, 210, 224], rim: [212, 236, 246], soft: .35, why: 'round 3 (replaces round 2\'s lighter ring): the fish at the surface swims in a small patch of pale stirred water of its own, the old water\'s pale tone (#A6D2E0), its edge dithered over the last .35 of its radius, the ring\'s light line at its rim (d .82 to 1): its whole outline seen; every fish colour 45 and more from it' },
+    ring: { inner: .45, colour: [212, 236, 246], pato: { rx: 13, ry: 3, dy: 0 }, bote: { rx: 11, ry: 3, dy: 0 }, pan: { rx: 7, ry: 2.5, dy: 0 }, pez: { box: [-9.5, -6, 19, 11], round: 3, pad: 3, soft: 1, rim: 1, patch: [166, 210, 224], rimColour: [212, 236, 246], why: 'round 4: the fish at the surface swims in a patch of pale stirred water of its own, the old water\'s pale tone (#A6D2E0), larger than the fish on every side: e, the distance (px) from the fish\'s box [x - 9.5, y - 6, 19, 11] (its sprite either way it faces), its corners rounded (radius round), so that the patch is an oval more than a card, pale where e <= pad (3), dithered over the next soft px, the ring\'s light line on the last rim px (e 4 to 5); only where the water shows. Its whole outline, tail and fin, on pale water; every fish colour 45 and more from the 2 px band just outside its outline' },
       when: 'a duck swimming (pose nada, not in the air: dy <= 3); a boat on the water or in the reeds (en agua, juncos, carmen, or on its way: meta); the bread lying on the water (W.pan, not carried, z <= 1, its point over the water); round 3: the fish swimming at the surface (dy <= 4) has its pale patch instead (pez; leaping, it has its splash as the old)',
       how: 'every pixel (x, y) with .45 < ((x + .5 - cx) / rx)^2 + ((y + .5 - cy) / ry)^2 <= 1 that shows the water (the set\'s surface) takes the colour: a duck\'s at (x, y) (rx scaled .78 for the yellow one), a boat\'s at (x, y + bob), the bread\'s at (x, y)' },
     lines: [
@@ -804,6 +804,19 @@ function check(sh, G, runs) {
     if (it.kind === 'fish') return it.air ? null : [R(o.x), R(o.y), RG.pez.rx, RG.pez.ry];
     if (it.kind === 'bread' && o && !it.air && E.surface(R(o.x), R(o.y) - 1).on === 'water') return [R(o.x), R(o.y), RG.pan.rx, RG.pan.ry];
     return null; };
+  // round 4: the fish's patch (lago-preview.html PREVIEW.patchAt): its colour at a pixel, or null; its pixels; the 2 px band just outside the fish's
+  // outline as drawn (the patch where it paints and the water shows, else the set), against the fish (CIE76)
+  const patchAt = (o, x, y) => { const H = sh.helps.ring.pez, b = H.box, q = H.round, X0 = R(o.x) + b[0] + q, Y0 = R(o.y) + b[1] + q, dx = Math.max(0, X0 - (x + .5), (x + .5) - (X0 + b[2] - 2 * q)), dy = Math.max(0, Y0 - (y + .5), (y + .5) - (Y0 + b[3] - 2 * q)), e = Math.hypot(dx, dy) - q;   // its box with rounded corners (radius round + its distance)
+    if (e <= H.pad) return H.patch; if (e <= H.pad + H.soft) { const B = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5][(y & 3) * 4 + (x & 3)] / 16; return B < 1 - (e - H.pad) / H.soft ? H.patch : null; }
+    if (e <= H.pad + H.soft + H.rim) return H.rimColour; return null; };
+  const patchPx = o => { const H = sh.helps.ring.pez, b = H.box, out = []; for (let y = Math.floor(R(o.y) + b[1] - 6); y <= Math.ceil(R(o.y) + b[1] + b[3] + 6); y++) for (let x = Math.floor(R(o.x) + b[0] - 6); x <= Math.ceil(R(o.x) + b[0] + b[2] + 6); x++) if (patchAt(o, x, y)) out.push([x, y]); return out; };
+  const fishWorst = {}; let fishN = 0;
+  const fishBand = it => { if (it.at[0] < x0 + 10 || it.at[0] > x0 + 186) return;   // a fish entering or leaving the view: its band is not in the picture
+    const o = it.o, own = new Set(); for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) own.add(y * 240 + x); const sum = [0, 0, 0]; let n = 0;
+    for (const [y, a, b] of it.rows) for (let x = a - 2; x <= b + 2; x++) for (let dy = -2; dy <= 2; dy++) { const yy = y + dy, i = yy * 240 + x; if (own.has(i) || x < 0 || x >= 240 || yy < 0 || yy >= 216) continue; own.add(i);
+      if (zoneAt(x, yy) !== 'w') continue;   // the water round it (a post or the dock beside it is not)
+      const c = patchAt(o, x, yy) || rgbAt(i); for (let k = 0; k < 3; k++) sum[k] += c[k]; n++; }
+    const d = dE(M.colours['pez.' + o.c], sum.map(v => v / n)); fishN++; if (!(o.c in fishWorst) || d < fishWorst[o.c][0]) fishWorst[o.c] = [d, it.at.join(',')]; };
   const ringPx = (cx, cy, rx, ry) => { const out = []; for (let y = Math.floor(cy - ry - 1); y <= Math.ceil(cy + ry + 1); y++) for (let x = Math.floor(cx - rx - 1); x <= Math.ceil(cx + rx + 1); x++) { const d = ((x + .5 - cx) / rx) ** 2 + ((y + .5 - cy) / ry) ** 2; if (d > sh.helps.ring.inner && d <= 1) out.push([x, y]); } return out; };
   const OLD_DOCK = [OLD.MUELLE[0] - 12, OLD.MUELLE[1] - 12, OLD.MUELLE[2] + 24, OLD.MUELLE[3] + 40];   // the old dock, its face and its posts, with a margin
   // on which side a foot is: the lawn (lawn within m px), the dock (planks under it and within mD px), the water (water within m px of its
@@ -820,6 +833,7 @@ function check(sh, G, runs) {
   const want = it => it.kind === 'duck' ? (ringOf(it) ? ['water'] : ['land', 'dock']) : it.kind === 'boat' ? ['dock', 'water'] : WANT[it.kind];
 
   /* the port's play: at every tick inside the acts and every step's end, and in every pair picture */
+  const reedSeen = new Map();
   const REST_MS = 300, sides = new Map(), across = new Map(), ringBad = new Map(), perchBad = new Map(), hidden = new Map(), behind = new Map(), fishBad = new Map(), stats = { ticks: 0, rest: 0, rings: 0, worstRing: 1, edge: 99, perched: 0, fishUnder: 0, fishUp: 0 };
   const look = (where, w, dwell, crop) => {
     for (const it of itemsOf(w)) {
@@ -828,15 +842,16 @@ function check(sh, G, runs) {
       if (it.kind === 'bird' && it.perch) { stats.perched++; const fx = R(it.o.x), fy = R(it.o.y); let n = 0; for (let x = fx - 2; x <= fx + 2; x++) for (let y = fy; y <= fy + 2; y++) { const t = TAG[y * 240 + x]; if (t === 'muelle.postes' || t === 'poste') n++; } if (n < 4) perchBad.set(it.id + ' at ' + it.at, where + ': only ' + n + ' px of post under its feet'); continue; }
       // the fish: under the surface, every pixel of it over open water; or leaping
       if (it.kind === 'fish') { if (it.air) { stats.fishUp++; continue; } stats.fishUnder++;
-        { const H = sh.helps.ring.pez, cx = R(it.o.x), cy = R(it.o.y) + H.dy; let n = 0, on = 0, shd = 0; stats.rings++;   // its pale patch: on the water, out of the dock's shade
-          for (let y = Math.floor(cy - H.ry); y <= Math.ceil(cy + H.ry); y++) for (let x = Math.floor(cx - H.rx); x <= Math.ceil(cx + H.rx); x++) { if (((x + .5 - cx) / H.rx) ** 2 + ((y + .5 - cy) / H.ry) ** 2 > 1) continue; n++; const z = zoneAt(x, y); if (z === 'w' || z === 'out') on++; if (z === 'w' && SHD[y * 240 + x]) shd++; }
+        { let n = 0, on = 0, shd = 0; stats.rings++;   // its pale patch: on the water, out of the dock's shade
+          for (const [x, y] of patchPx(it.o)) { n++; const z = zoneAt(x, y); if (z === 'w' || z === 'out') on++; if (z === 'w' && SHD[y * 240 + x]) shd++; }
+          fishBand(it); 
           if (resting) { stats.worstRing = Math.min(stats.worstRing, on / n); if (on < .9 * n) ringBad.set(it.id + ' at ' + it.at, Math.round(on / n * 100) + '% of its patch on the water, ' + where); }
           let own = 0; for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) if (zoneAt(x, y) === 'w' && SHD[y * 240 + x]) own++;
           if (resting && shd) fishBad.set(it.id + ' at ' + it.at + ' (shade)', where + ': ' + shd + ' px of its patch in the dock\'s shade'); if (own) fishBad.set(it.id + ' at ' + it.at + ' (path)', where + ': ' + own + ' px of it in the dock\'s shade'); } let bad = 0; for (const [y, a, b] of it.rows) for (let x = a; x <= b; x++) { const z = zoneAt(x, y); if (z !== 'w' && z !== 'out') bad++; } if (bad && resting) fishBad.set(it.id + ' at ' + it.at, where + ': ' + bad + ' px of it over something but the water'); continue; }
       if (it.air) continue;
       // a set thing nearer than it inside its sprite: the dock never (nobody under or behind the deck); the reeds, the post, the mooring posts are front parts
       { const v = vSurf(it.at[0], it.at[1] - 1), near = nearerRows(it.rows, v, SOLID);
-        for (const [part, n] of Object.entries(near)) { if (sh.front.parts[part]) { const k = it.id + ' at ' + it.at + ' behind ' + part; behind.set(k, Math.max(behind.get(k) || 0, n)); continue; } if (resting) hidden.set(it.id + ' at ' + it.at, where + ': ' + n + ' px of ' + part + ' nearer than it inside its sprite'); } }
+        for (const [part, n] of Object.entries(near)) { if (sh.front.parts[part]) { const k = it.id + ' at ' + it.at + ' behind ' + part; behind.set(k, Math.max(behind.get(k) || 0, n)); if (part === 'juncos' && resting) { const tot = it.rows.reduce((a, q) => a + q[2] - q[1] + 1, 0), seenF = 1 - n / tot, kk = it.id + ' at ' + it.at; reedSeen.set(kk, Math.min(reedSeen.has(kk) ? reedSeen.get(kk) : 1, seenF)); } continue; } if (resting) hidden.set(it.id + ' at ' + it.at, where + ': ' + n + ' px of ' + part + ' nearer than it inside its sprite'); } }
       const ring = ringOf(it);
       if (ring) { stats.rings++; const rp = ringPx(...ring), on = rp.filter(([x, y]) => zoneAt(x, y) === 'w' || (it.kind === 'boat' && zoneAt(x, y) === 'x' && TAG[y * 240 + x] === 'juncos')).length / rp.length;
         if (resting) { stats.worstRing = Math.min(stats.worstRing, on); if (on < .9) ringBad.set(it.id + ' at ' + it.at, Math.round(on * 100) + '% of its ring on the water, ' + where); } }
@@ -1004,8 +1019,9 @@ function check(sh, G, runs) {
   /* round 2, point 4: the fish against the water round it (CIE76, mean against mean): 30 at the least, or the help (its ring a tone lighter);
      the blue boat's sail, measured the same way (reported) */
   { const W0 = waterMean, PT = sh.helps.ring.pez.patch, res = [];
-    for (const c of ['pardo', 'rojo', 'azul', 'verde']) { const d = dE(M.colours['pez.' + c], PT), d0 = dE(M.colours['pez.' + c], W0); res.push(c + ' ' + Math.round(d) + ' (the open water ' + Math.round(d0) + ')'); if (d < 45) P.push('fish: the ' + c + ' fish stands out from its patch by ' + Math.round(d) + ' (keep 45)'); }
-    notes.push('fish (round 3, CIE76) against its pale patch ' + PT + ': ' + res.join(', ') + '; the sails against the water ' + W0.map(Math.round) + ': ' + ['rojo', 'azul', 'verde'].map(c => c + ' ' + Math.round(dE(M.colours['vela.' + c], W0))).join(', ') + '; the fish at the surface swims in its patch at every moment, out of the dock\'s shade; leaping, its splash (the old salpica)'); }
+    for (const [c, [d, at]] of Object.entries(fishWorst)) { res.push(c + ' ' + Math.round(d) + ' (at ' + at + '; against the open water ' + Math.round(dE(M.colours['pez.' + c], W0)) + ')'); if (d < 45) P.push('fish: the ' + c + ' fish at ' + at + ' stands out from the 2 px band round its outline by ' + Math.round(d) + ' (keep 45)'); }
+    for (const c of ['pardo', 'rojo', 'azul', 'verde']) if (!(c in fishWorst)) res.push(c + ' (not at the surface in any run or pair)');
+    notes.push('fish (round 4, CIE76): at ' + fishN + ' moments at the surface, the fish against the 2 px band of water just outside its outline as drawn (its pale patch ' + PT + ' larger than it by 3 px and more on every side), the least: ' + res.join(', ') + '; the sails against the water ' + W0.map(Math.round) + ': ' + ['rojo', 'azul', 'verde'].map(c => c + ' ' + Math.round(dE(M.colours['vela.' + c], W0))).join(', ') + '; the fish at the surface swims in its patch at every moment, out of the dock\'s shade; leaping, its splash (the old salpica)'); }
 
   /* round 3, point 5: the planks' tones vary plank by plank, no run of light ones: the mean lightness of each plank's pixels on the deck,
      no two side by side both lighter than the deck's mean by 3 (CIE L*) */
@@ -1016,13 +1032,37 @@ function check(sh, G, runs) {
     if (run) P.push('planks: ' + run + ' pairs of light planks side by side (a band)');
     notes.push('planks (round 3): ' + ks.length + ' planks, their lightness ' + Ls.map(Math.round).join(' ') + ' (CIE L*; mean ' + Math.round(mean) + '): no two light ones side by side'); }
 
+  /* round 4: the reed bed shows 22 px and more of its width inside the view, its nearest feet at x 196 or less, its tops below the boats' row at
+     Carmen's feet; whatever sticks or rests in it 6 px and more from the view's right edge (sides) and 60% and more of it seen */
+  { const rp = G.parts[KEY].juncos || [], xs = rp.map(i => i % 240).filter(x => x < x0 + 196), minX = Math.min(...xs), top = Math.min(...rp.map(i => Math.floor(i / 240))), feet = Math.min(...F.REED_FEET.map(f => f[0]));
+    const SL = JSON.parse(sh.moves.find(m => m.src.startsWith('const slotC=')).to.match(/SLOTC=(\[\[.*?\]\])/)[1]); let slotBottom = 0;
+    for (const q of SL) { const o = { c: 'rojo', x: q[0], y: q[1], en: 'carmen' }, b = rowsBox(boatRows(o)); if (b[0] + b[2] >= minX) slotBottom = Math.max(slotBottom, q[1] + sh.helps.ring.bote.ry + 1); }
+    if (x0 + 196 - minX < 22) P.push('reeds: only ' + (x0 + 196 - minX) + ' px of the bed inside the view');
+    if (feet > 196) P.push('reeds: the nearest feet at x ' + feet);
+    if (top <= slotBottom) P.push('reeds: their tops (row ' + top + ') reach the boats\' row at Carmen\'s feet (row ' + slotBottom + ')');
+    let worstSeen = 1, nIn = 0; for (const [k, f] of reedSeen) { nIn++; worstSeen = Math.min(worstSeen, f); if (f < .6) P.push('reeds: ' + k + ' is only ' + Math.round(f * 100) + '% seen'); }
+    notes.push('reeds (round 4): ' + (x0 + 196 - minX) + ' px of the bed inside the view, its nearest feet at x ' + feet + ', its tops at row ' + top + ', below the boats\' row at Carmen\'s feet (row ' + slotBottom + '); ' + nIn + ' things resting in it, each ' + Math.round(worstSeen * 100) + '% seen at the least, 6 px and more from the view\'s edge (sides)'); }
+
+  /* round 4: no stray light pixel on the deck, each plank's tone even along its length (its light pixels, quarter by quarter, within 20%) */
+  { const cnt = new Map(), byK = new Map(); for (let i = 0; i < 240 * 216; i++) { if (TAG[i] !== 'muelle' || ZONE[i] !== 'd' || G.shade[KEY][i]) continue; const c = RGB[i * 3] + ',' + RGB[i * 3 + 1] + ',' + RGB[i * 3 + 2]; cnt.set(c, (cnt.get(c) || 0) + 1); }
+    const stray = [...cnt].filter(e => e[1] < 20); for (const [c, n] of stray) P.push('deck: ' + n + ' px of ' + c + ' on the planks (a stray colour)');
+    const light = [...cnt].sort((a, b) => b[1] - a[1]).slice(0, 4).map(e => e[0].split(',').map(Number)).sort((a, b) => lab(b)[0] - lab(a)[0])[0].join(',');
+    for (let i = 0; i < 240 * 216; i++) { if (TAG[i] !== 'muelle' || ZONE[i] !== 'd' || G.shade[KEY][i]) continue; const w = E.atZ(i % 240 + .5, Math.floor(i / 240) + .5, F.ZD), f = (w[0] - F.DECK.x0 + 40 * F.PW) / F.PW, k = Math.floor(f); if (f - k < .14 || f - k > .86) continue;
+      const q = Math.min(3, Math.max(0, Math.floor((w[1] - F.DECK.y0) / (F.DECK.y1 - F.DECK.y0) * 4))), b = byK.get(k) || [[0, 0], [0, 0], [0, 0], [0, 0]]; b[q][1]++; if (RGB[i * 3] + ',' + RGB[i * 3 + 1] + ',' + RGB[i * 3 + 2] === light) b[q][0]++; byK.set(k, b); }
+    let uneven = 0, worst = 0; for (const [k, b] of byK) { const fr = b.filter(q => q[1] > 15).map(q => q[0] / q[1]); if (fr.length < 2) continue; const d = Math.max(...fr) - Math.min(...fr); worst = Math.max(worst, d); if (d > .2) uneven++; }
+    if (uneven) P.push('deck: ' + uneven + ' planks uneven along their length');
+    notes.push('deck (round 4): ' + cnt.size + ' colours on the planks out of every shadow, none of them stray (fewer than 20 px); each plank even along its length (its lightest tone\'s share, quarter by quarter, within ' + Math.round(worst * 100) + '%); no glint on the deck, the post or a reed'); }
+
   /* round 3: the flower on the right bank: plain lawn round it (2 px), nobody in front of it at any moment */
-  { let bad = 0, n = 0; const over = new Set();
+  { let bad = 0, n = 0, flowerSpare = 99, flowerLawn = 99; const over = new Set();
     for (const [where, w] of allW) { if (!w.flor) continue; n++; const fr = rowsAt(M.things.flor, w.flor[0], w.flor[1]);
-      if (n === 1) for (const [y, a, b] of fr) for (let x = a - 2; x <= b + 2; x++) { const z = zoneAt(x, y); if (z !== 'l' && z !== 'out') bad++; }   // behind it and 2 px each side, on its own rows
+      if (n === 1) { for (const [y, a, b] of fr) for (let x = a - 2; x <= b + 2; x++) { const z = zoneAt(x, y); if (z !== 'l' && z !== 's') bad++; }   // behind it and 2 px each side, on its own rows: lawn, or the hills behind its head
+        const fb = rowsBox(fr); if (fb[0] + fb[2] > x0 + 196 - 4 || fb[0] < x0 + 4) P.push('flower: ' + JSON.stringify(fb) + ' is not whole inside the view 4 px from its edges');
+        { const b2 = [w.flor[0] - 5, w.flor[1] - 16, 10, 17], cx = b2[0] + b2[2] / 2, cy = b2[1] + b2[3] / 2, rx = b2[2] / 2 + 5, ry = b2[3] / 2 + 5; if (cx - rx - 3 < x0 || cx + rx + 3 > x0 + 196 || cy - ry - 3 < 0) P.push('flower: the stars of its twinkle (juego.js twinkle: box + 5, 3 px) leave the view'); flowerSpare = [x0 + 196 - fb[0] - fb[2], R(x0 + 196 - (cx + rx + 3))]; }
+        { const f = footOf(fr); let m = 99; for (let y = f[0][0] - 12; y <= f[0][0] + 12; y++) for (let x = fb[0] - 12; x <= fb[0] + fb[2] + 12; x++) { const z = zoneAt(x, y); if (z !== 'l' && z !== 's' && z !== 'out') for (const [fy, a, b] of f) m = Math.min(m, Math.hypot(x < a ? a - x : x > b ? x - b : 0, y - fy)); } flowerLawn = m; } }
       for (const it of itemsOf(w)) if (it.kind !== 'flower' && rowsOverlap(it.rows, fr)) over.add(it.id + ' (' + where + ')'); }
     if (bad) P.push('flower: ' + bad + ' px round it are not lawn'); for (const o of [...over].slice(0, 10)) P.push('flower: ' + o + ' is in front of it');
-    notes.push('flower (round 3): on the right bank, plain lawn round it, nobody in front of it at any of ' + n + ' moments'); }
+    notes.push('flower (round 4): on the right bank, whole inside the view (' + flowerSpare[0] + ' px from its right edge; the stars of its twinkle ' + flowerSpare[1] + ' px inside it), ' + r2(flowerLawn) + ' px of lawn round its foot, lawn or the hills behind it, nobody in front of it at any of ' + n + ' moments'); }
 
   /* the sky */
   { const [sx, sy, sr] = F.SUN;
