@@ -99,7 +99,7 @@ void main() {
             if ((p[i] & 0xFFFFFF) == (q[i] & 0xFFFFFF)) continue;
             drawn++;
             final x = i % 240, y = i ~/ 240;
-            if (!(x >= box![0] &&
+            if (!(x >= box[0] &&
                 x < box[0] + box[2] &&
                 y >= box[1] &&
                 y < box[1] + box[3])) {
