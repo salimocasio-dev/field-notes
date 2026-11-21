@@ -1,0 +1,119 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* El cielo: the porch of a little beach house, and a great deal of sky (place 7, scene 4), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v (plaza-base.js, playa-base.js). The sky is the upper half of the picture; under it the sea's line,
+   a strip of sea, and the sand. At the left an open wooden deck: no roof over it (a roof would hide whoever sits there): two posts at its
+   back carry a beam with a rolled-up blind, which comes down BEHIND the table, on the sea's side, when it rains. On the deck a round table
+   and a rocking chair. In front of the deck, the sand, with a blanket; a palm at the right.
+   The state comes from the address; these become the builder's setKey:
+     cielo = azul | nublado | gris | rosa | noche     the sky and the light (noche: the moon at the left, one big four-pointed star at the right,
+                                                      a long pale cloud between them, small stars)
+     toldo = arriba | abajo                           the blind: rolled up on its beam, or down behind the table
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set and the palm's fronds. No characters, no radio, no candles, no umbrella, kite, ball or telescope. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { cielo: pick('cielo', ['azul', 'nublado', 'gris', 'rosa', 'noche'], 'azul'), toldo: pick('toldo', ['arriba', 'abajo'], 'arriba'), t: +(Q.get('t') || 0) };
+const ORIGIN = [0, 44];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="playa-base.js"></script>
+<script>
+'use strict';
+const E = {
+  B: { edge: -1.9, wet: .6, deep: -2.9, hor: -3.7 },                  // the beach (v): the horizon is at about row 104, the picture's middle
+  DECK: { u0: -4.1, u1: -1.2, v0: .3, v1: 2.7, h: .25 },              // the deck: a wooden floor
+  BEAM: 2.6,                                                          // the beam's height, on two posts at the deck's back corners; the blind hangs from it
+  TABLE: [-2.0, 1.6], CHAIR: [-3.3, 1.7],                             // the round table (top z .25 + .72); the rocking chair
+  BLANKET: [.1, 2.3, 2.7, 3.9],
+  PALM: [3.7, .9],
+  SKY: { sun: [196, 26, 9], cloud: [150, 34], moon: [42, 30, 12], star: [196, 30], long: [118, 46] },   // screen px: the sun; the small cloud; the moon; the big star; the long cloud's middle
+};
+const NIGHT = SET.cielo === 'noche';
+function groundAt(x, y, ix, iy) { const [u, v] = PZ.uv(x, y); return PL.ground(u, v, ix, iy, E.B); }
+function deck() {
+  const D = E.DECK, W1 = [196, 150, 100], mid = (D.u0 + D.u1) / 2, hw = (D.u1 - D.u0) / 2;
+  PZ.box(mid, (D.v0 + D.v1) / 2, 0, D.h, hw, (D.v1 - D.v0) / 2, W1, (s, t, z, face) => face === 'top' ? (((s + hw) % .36) < .035 ? rgb(140, 100, 64) : 0) : (face === 'front' && z < .05 ? rgb(120, 86, 56) : 0));
+  for (const u of [D.u0 + .08, D.u1 - .08]) PZ.post(u, D.v0 + .08, D.h, E.BEAM, .06, [240, 232, 212]);
+  PZ.box(mid, D.v0 + .08, E.BEAM, E.BEAM + .12, hw, .06, [240, 232, 212]);                                              // the beam
+  if (SET.toldo === 'arriba') PZ.box(mid, D.v0 + .1, E.BEAM - .2, E.BEAM, hw - .12, .09, [86, 160, 190], (s, t, z, face) => face === 'front' && (Math.floor((s + hw) / .3) % 2) ? rgb(250, 246, 236) : 0);   // the blind, rolled up
+  else PZ.wall(D.u0 + .14, D.u1 - .14, D.v0 + .1, D.h + .1, E.BEAM, (u, z) => (z < D.h + .18) ? rgb(120, 86, 56) : shade((Math.floor((u - D.u0) / .3) % 2) ? [250, 246, 236] : [86, 160, 190], 2.4, u * 3, z, .2));   // the blind, down behind the table
+  PZ.wall(D.u1 - .13, D.u1 - .1, D.v0 + .12, 1.2, E.BEAM - .2, () => rgb(90, 70, 56));                                  // its cord, hanging by the right post
+  const [tx, ty] = PZ.xy(E.TABLE[0], E.TABLE[1]);
+  drum(tx, ty, D.h, D.h + .64, .07, PZ.IRON);
+  drum(tx, ty, D.h + .64, D.h + .72, .5, [250, 246, 236], (a, b) => (Math.hypot(a, b) > .43) ? rgb(226, 90, 80) : 0);
+  castShadow(tx, ty, .7, .5);
+  const [cu, cv] = E.CHAIR, WD = [150, 104, 62];                                                                        // the rocking chair: a seat, a tall back, two rockers
+  PZ.box(cu, cv, D.h + .34, D.h + .44, .3, .26, WD); PZ.box(cu, cv - .26, D.h + .44, D.h + 1.25, .3, .04, WD, (s, t, z, face) => face === 'front' && Math.abs((s + .3) % .15 - .075) < .02 ? rgb(110, 76, 46) : 0);
+  for (const du of [-.26, .26]) PZ.box(cu + du, cv, D.h, D.h + .08, .05, .42, [120, 86, 56]);
+  for (const [du, dv] of [[-.24, .2], [.24, .2], [-.24, -.2], [.24, -.2]]) PZ.post(cu + du, cv + dv, D.h + .06, D.h + .34, .03, WD);
+  PZ.shadow(cu, cv, .5, .4);
+}
+/* the sky by state: screen space */
+const disc = (ix, iy, c, r) => Math.hypot(ix + .5 - c[0], iy + .5 - c[1]) < r;
+const puff = (ix, iy, cx, cy, k = 1) => [[0, 0, 9], [-9, 2, 6.5], [9, 2, 7], [-3, -4, 6], [5, -4, 5.5]].some(([dx, dy, r]) => Math.hypot(ix + .5 - cx - dx * k, (iy + .5 - cy - dy * k) * 1.25) < r * k);
+function skyOf(ix, iy) {
+  const K = E.SKY, hz = OY + E.B.hor * 13, t = clamp(iy / hz, 0, 1), dth = (bayerAt(ix, iy) - .5) * .08;
+  const band = (A, B) => rgb(...A.map((a, i) => a + (B[i] - a) * clamp(t + dth, 0, 1)));
+  if (SET.cielo === 'noche') {
+    const M = K.moon, S2 = K.star;
+    if (disc(ix, iy, M, M[2])) return (Math.hypot(ix - M[0] + 4, iy - M[1] + 3) < 3 || Math.hypot(ix - M[0] - 4, iy - M[1] - 2) < 2.2) ? rgb(214, 218, 226) : rgb(250, 250, 244);
+    const dx = Math.abs(ix + .5 - S2[0]), dy = Math.abs(iy + .5 - S2[1]);
+    if ((dx < 1.2 && dy < 8) || (dy < 1.2 && dx < 8) || dx + dy < 4.2) return rgb(255, 250, 214);                                              // the big star: four points
+    if (Math.hypot((ix + .5 - K.long[0]) / 42, (iy + .5 - K.long[1]) / 5 - Math.sin(ix * .12) * .25) < 1) return rgb(96, 104, 150);            // the long pale cloud
+    if (hash(ix * 7, iy * 13) < .012 && iy < hz - 6) return hash(ix, iy) < .5 ? rgb(250, 250, 255) : rgb(190, 200, 240);                        // small stars
+    return band([18, 24, 66], [50, 60, 120]);
+  }
+  if (SET.cielo === 'gris') { if (iy > hz - 9) return band([236, 150, 80], [246, 176, 96]); const n = noise(ix * .05, iy * .09); return n > .55 ? rgb(120, 126, 140) : n > .42 ? rgb(144, 150, 164) : rgb(168, 174, 186); }
+  if (SET.cielo === 'rosa') { if (iy > hz - 12) return band([250, 170, 150], [252, 196, 170]); const n = noise(ix * .05 + 9, iy * .09); return n > .66 ? rgb(190, 176, 196) : band([110, 130, 190], [236, 170, 170]); }
+  if (SET.cielo === 'nublado') { const n = noise(ix * .045, iy * .08) + (ix / W - .5) * .5; if (n > .5) return n > .62 ? rgb(236, 238, 244) : rgb(214, 220, 232); return band([96, 150, 226], [176, 208, 246]); }
+  if (disc(ix, iy, K.sun, K.sun[2])) return rgb(255, 240, 170);
+  if (puff(ix, iy, K.cloud[0], K.cloud[1])) return (iy > K.cloud[1] + 3) ? rgb(226, 234, 246) : rgb(252, 252, 255);                             // the one small cloud
+  return band([80, 150, 236], [190, 222, 255]);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c[0]; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = c[1] === 'mar' ? KIND_WATER : KIND_SAND;
+  }
+  groundZ.set(zb);
+  const L = { nublado: { m: [.9, .92, .96], a: [0, 0, 4] }, gris: { m: [.78, .8, .88], a: [0, 0, 6] }, rosa: { m: [1.0, .9, .86], a: [10, 0, -4] }, noche: { m: [.5, .54, .8], a: [-6, -4, 18] } }[SET.cielo] || null;
+  part('manta', () => PL.blanket(...E.BLANKET, [236, 150, 60], [250, 246, 236]));
+  part('porche', deck);
+  part('palma', () => PL.palm(E.PALM[0], E.PALM[1], 3.6, .4, 3, 1, L));
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  if (L) lightPass(L.m, L.a, false);
+  skyFill(skyOf);
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.CIELO = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };
+window.frame = frame;
+</script></body></html>
