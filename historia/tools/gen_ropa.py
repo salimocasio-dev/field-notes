@@ -187,7 +187,7 @@ s79={"id":"mi-sombrero","title":"¡Mi sombrero!","place":"La playa","scene":"rop
   # 4: Luis calls him; the second turn (voy); the frog hops to the edge (no spot named for him)
   {"dots":4},"c79_l_avanza","c79_cq_voy",
   # 5: four things in a dealt order; abuela holds the bag open; the wave is building; the card shows two places
-  {"dots":5},{"reparte":["o1","o2","o3","o4"],"options":T79},act("flotan",orden="$o1,$o2,$o3,$o4"),act("bolsa",n=3),"c79_ab_cuidado",CARD,{"wait":400},
+  {"dots":5},{"reparte":["oa","ob","oc","od"],"options":T79},act("flotan",orden="$oa,$ob,$oc,$od"),act("bolsa",n=3),"c79_ab_cuidado",CARD,{"wait":400},
   # 6: A (one of four). 7: B (one of those afloat). Each drawn afresh
   {"dots":6}]+ronda79("a",T79,flags=True)+[{"dots":7}]+arbolB(),
  "final":[{"dots":8},gesto("abuela","mira",a="bolsa"),baja3(lambda n:act("final79",n=n)),   # 8: the last wave; the things on the line, by what was lost
