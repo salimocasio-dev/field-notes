@@ -37,7 +37,9 @@ const BIAS = .3;                                         // the depth rule: the 
 const UPDOWN = 12;                                       // two sprite boxes that overlap sideways need their feet this many px apart up-down (El mostrador's sprites-apart)
 const SEAT_TOP = .46;                                    // the seat's top (the spec); the check seat-top reads the set's pixels there
 const HORSE_Z = .72;                                     // the rider's place on the horse (the spec)
-const HANDLEBAR_Z = .9;                                  // the frog on the handlebar (the spec)
+const STROLLER_LOW = 10;                                 // pass 2: the stroller may cover the lower 10 rows of a door (a door's lower 10 rows are z up to 10 / (COS * S))
+const HORSE_NECK = 30;                                   // pass 2: on the horse the horse's own neck may hide up to 30 px of the frog
+const POOL = 40;                                         // pass 2: a child or the stroller may cover up to 40 px of the frog (together), elsewhere
 const SIGN = { in: .22, z0: .18, top: .06, bancoUp: .25 };   // the set's own numbers (tiendas-set.html): a sign is .22 in from each side of its front, from DH + .18 to h - .06; the banco's front is .25 higher. Checked against the set's pixels below
 const DOOR_FRAME = .12;                                  // calle-base.js doorX: the frame is .12 wider on each side and .12 higher than the door
 const HORSE_BOX = [-.52, -.22, 0, .44, .22, 1.08];       // the horse's volume round E.HORSE (tiendas-set.html caballito: its coin box on the left to the mane's top): x, y, z from, to
@@ -158,23 +160,22 @@ async function make(T, A, KB, proj, page, load) {
   const add = (name, w, kind, what, sprite) => D.push({ name, w, kind, what, sprite });
   for (const f of FR) add('puerta_' + f.k, [f.dm, .4, 0], 'door', 'at the door of the ' + f.k + ' (the door\'s middle, .4 in front of the wall): where somebody goes in', 'abuela');
   for (const f of FR) {
-    add('abuela.puerta_' + f.k, [f.dm, .75, 0], 'person', 'abuela at the ' + f.k + '\'s door: the group that goes to a door (abuela, the stroller, the frog)', 'abuela');
-    add('cochecito.puerta_' + f.k, [r4(f.dm - .65), 1.0, 0], 'stroller', 'the stroller with the bebé at the ' + f.k + '\'s door, .65 left of the door\'s middle', 'cochecito');
-    add('coqui.puerta_' + f.k, [r4(f.dm + .65), .9, 0], 'frog', 'the frog at the ' + f.k + '\'s door, .65 right of the door\'s middle', 'coqui');
+    add('abuela.puerta_' + f.k, [f.dm, .8, 0], 'person', 'abuela at the ' + f.k + '\'s door: the group that goes to a door (abuela at the door\'s middle D, .8; the stroller in front of her; the frog)', 'abuela');
+    add('cochecito.puerta_' + f.k, [r4(f.dm + .2), 2.0, 0], 'stroller', 'the stroller with the bebé at the ' + f.k + '\'s door, in front of abuela: D + .2, y 2.0', 'cochecito');
+    add('coqui.puerta_' + f.k, [r4(f.dm + 1.7), 1.9, 0], 'frog', 'the frog at the ' + f.k + '\'s door: D + 1.7, y 1.9', 'coqui');
   }
-  add('abuela.acera', [1.9, 2.0, 0], 'person', 'story 54, the start: abuela on the near pavement', 'abuela');
-  add('cochecito', [1.2, 2.15, 0], 'stroller', 'story 54, the start: the stroller with the bebé', 'cochecito');
-  add('coqui.acera', [2.6, 1.9, 0], 'frog', 'story 54, the start: the frog on the near pavement', 'coqui');
+  add('abuela.acera', [-2.0, 1.5, 0], 'person', 'story 54, the start: abuela on the near pavement', 'abuela');
+  add('cochecito', [-.4, 1.6, 0], 'stroller', 'story 54, the start: the stroller with the bebé', 'cochecito');
+  add('coqui.acera', [-2.8, 2.4, 0], 'frog', 'story 54, the start: the frog on the near pavement', 'coqui');
   add('caballito', [E.HORSE[0], E.HORSE[1], HORSE_Z], 'frog', 'the rider\'s place on the horse (E.HORSE x, y; z ' + HORSE_Z + ', the top of its body): the frog rides here', 'coqui');
-  add('abuela.caballito', [-3.3, 1.6, 0], 'person', 'the group at the horse: abuela', 'abuela');
-  add('cochecito.caballito', [-3.9, 2.0, 0], 'stroller', 'the group at the horse: the stroller with the bebé', 'cochecito');
-  add('banco_acera', [-.2, 2.15, SEAT_TOP], 'seat', 'story 56: abuela sitting on the seat, on its top (z ' + SEAT_TOP + '); the sitting sprite is anchored by her lap (rules.anchor)', 'abuelaS');
-  add('pan', [.4, 2.15, SEAT_TOP], 'small', 'story 56: abuela\'s bread beside her on the seat (z ' + SEAT_TOP + ')', 'pan');
-  add('senora.tienda', [r4(front('tienda').dm + .3), .8, 0], 'person', 'story 56: the señora who has just come out of the tienda with her kite (the tienda door\'s middle + .3)', 'senora');
-  add('coqui.56', [.7, 1.5, 0], 'frog', 'story 56: the frog on the pavement', 'coqui');
-  add('senora.pasa', [1.6, 1.3, 0], 'person', 'story 56, the game: where the señora stops on her way past', 'senora');
-  add('abuela.lluvia', [.3, 1.6, 0], 'person', 'story 56, the ending (nube 2): abuela standing, with the umbrella', 'abuela');
-  add('coqui.lluvia', [1.2, 1.9, 0], 'frog', 'story 56, the ending (nube 2): the frog in the rain', 'coqui');
+  add('abuela.caballito', [-2.4, 1.3, 0], 'person', 'the group at the horse: abuela', 'abuela');
+  add('cochecito.caballito', [-2.6, 2.4, 0], 'stroller', 'the group at the horse: the stroller with the bebé', 'cochecito');
+  add('banco_acera', [1.5, 2.2, SEAT_TOP], 'seat', 'story 56: abuela sitting on the seat, on its top (z ' + SEAT_TOP + '); the sitting sprite is anchored by her lap (rules.anchor)', 'abuelaS');
+  add('pan', [2.4, 2.2, SEAT_TOP], 'small', 'story 56: abuela\'s bread beside her on the seat (z ' + SEAT_TOP + ')', 'pan');
+  add('senora.tienda', [front('tienda').dm, .8, 0], 'person', 'story 56: the señora who has just come out of the tienda with her kite (the tienda door\'s middle, y .8)', 'senora');
+  add('coqui.56', [-1.6, 2.2, 0], 'frog', 'story 56: the frog on the pavement (also in the ending, nube 2)', 'coqui');
+  add('senora.pasa', [-.6, 1.3, 0], 'person', 'story 56, the game: where the señora stops on her way past', 'senora');
+  add('abuela.lluvia', [-.6, 1.2, 0], 'person', 'story 56, the ending (nube 2): abuela standing, with the umbrella', 'abuela');
   const pr = await proj(TQ, D.map(d => d.w));
   const spots = {};
   D.forEach((d, i) => { const q = pr[i]; spots[d.name] = { world: W4(d.w), screen: scr(q), depth: r4(q[2]), scale: 1, kind: d.kind, sprite: d.sprite, what: d.what }; });
@@ -182,17 +183,17 @@ async function make(T, A, KB, proj, page, load) {
   /* ---- spots (fila = altos) ---- */
   const DA = [];
   const addA = (name, w, kind, what, sprite) => DA.push({ name, w, kind, what, sprite });
-  addA('puerta_izq', [r4(AL.doors[0].dm), .4, 0], 'door', 'at the door of the left building (the door\'s middle, .4 in front of the wall): mamá stands here when the tall building is on the left', 'mama');
-  addA('puerta_der', [r4(AL.doors[1].dm), .4, 0], 'door', 'at the door of the right building (the door\'s middle, .4 in front of the wall): mamá stands here when the tall building is on the right', 'mama');
-  addA('luis.puerta_izq', [r4(AL.doors[0].dm - .5), 1.0, 0], 'person', 'Luis in front of the left building\'s door (the door\'s middle - .5)', 'luis');
-  addA('coqui.puerta_izq', [r4(AL.doors[0].dm + .4), 1.1, 0], 'frog', 'the frog in front of the left building\'s door (the door\'s middle + .4)', 'coqui');
-  addA('luis.puerta_der', [r4(AL.doors[1].dm - .5), 1.0, 0], 'person', 'Luis in front of the right building\'s door (the door\'s middle - .5)', 'luis');
-  addA('coqui.puerta_der', [r4(AL.doors[1].dm + .4), 1.1, 0], 'frog', 'the frog in front of the right building\'s door (the door\'s middle + .4)', 'coqui');
+  addA('puerta_izq', [r4(AL.doors[0].dm), .5, 0], 'door', 'in the doorway of the left building (the door\'s middle D, .5 in front of the wall): mamá or papá stands here when this is the building they work in', 'mama');
+  addA('puerta_der', [r4(AL.doors[1].dm), .5, 0], 'door', 'in the doorway of the right building (the door\'s middle D, .5 in front of the wall): mamá or papá stands here when this is the building they work in', 'mama');
+  addA('luis.puerta_izq', [r4(AL.doors[0].dm - 1.7), 1.3, 0], 'person', 'Luis in front of the left building\'s door (D - 1.7, y 1.3)', 'luis');
+  addA('coqui.puerta_izq', [r4(AL.doors[0].dm + .4), 2.1, 0], 'frog', 'the frog in front of the left building\'s door (D + .4, y 2.1)', 'coqui');
+  addA('luis.puerta_der', [r4(AL.doors[1].dm - 1.7), 1.3, 0], 'person', 'Luis in front of the right building\'s door (D - 1.7, y 1.3)', 'luis');
+  addA('coqui.puerta_der', [r4(AL.doors[1].dm + .4), 2.1, 0], 'frog', 'the frog in front of the right building\'s door (D + .4, y 2.1)', 'coqui');
   addA('bici', [-.9, 2.2, 0], 'person', 'Luis standing with his bicycle (the bicycle is drawn here too)', 'luis');
-  addA('coqui.bici', [-.9, 2.2, HANDLEBAR_Z], 'frog', 'the frog on the handlebar: the same x, y as bici, z ' + HANDLEBAR_Z, 'coqui');
-  addA('senor.pasa', [1.2, 1.5, 0], 'person', 'the señor passing', 'senor');
-  addA('bordillo1', [-.6, 2.62, 0], 'person', 'Luis sitting on the kerb', 'luisS');
-  addA('bordillo2', [.1, 2.62, 0], 'frog', 'the frog sitting on the kerb', 'coqui');
+  addA('coqui.bici', [.8, 2.3, 0], 'frog', 'the frog standing beside the bicycle', 'coqui');
+  addA('senor.pasa', [2.4, 1.3, 0], 'person', 'the señor passing', 'senor');
+  addA('bordillo1', [-1.0, 2.62, 0], 'person', 'Luis sitting on the kerb', 'luisS');
+  addA('bordillo2', [.7, 2.62, 0], 'frog', 'the frog sitting on the kerb', 'coqui');
   const prA = await proj(AQ, DA.map(d => d.w));
   const spotsA = {};
   DA.forEach((d, i) => { const q = prA[i]; spotsA[d.name] = { world: W4(d.w), screen: scr(q), depth: r4(q[2]), scale: 1, kind: d.kind, sprite: d.sprite, what: d.what }; });
@@ -229,10 +230,12 @@ async function make(T, A, KB, proj, page, load) {
   const groupsA = { puerta_izq: ['puerta_izq', 'luis.puerta_izq', 'coqui.puerta_izq'], puerta_der: ['puerta_der', 'luis.puerta_der', 'coqui.puerta_der'], bici: ['bici', 'coqui.bici'], bordillo: ['bordillo1', 'bordillo2'] };
 
   /* ---- the views: x0 so that every spot's sprite is whole inside the window and, for tiendas, the horse, the four doors, the four signs and the post box too ---- */
-  const needsT = await needsOfTiendas(T, FR, spots, KB, proj);
-  const pickT = pickX0(needsT.items, T.W, needsT.rowItems);
-  const needsA = await needsOfAltos(A, AL, spotsA, KB, proj);
-  const pickA = pickX0(needsA.items, A.W, needsA.rowItems);
+  const boxesT = Object.entries(things).filter(([, t]) => t.box).map(([k, t]) => [k, t.box]);
+  const boxesA = Object.entries(thingsA).flatMap(([k, t]) => t.izq ? [[k + ' izq', t.izq.box], [k + ' der', t.der.box]] : []);
+  const needsT = await needsOfTiendas(T, FR, spots, KB, proj, boxesT);
+  const pickT = pickX0(needsT.items, T.W, needsT.rowItems, needsT.spotsEnd);
+  const needsA = await needsOfAltos(A, AL, spotsA, KB, proj, boxesA);
+  const pickA = pickX0(needsA.items, A.W, needsA.rowItems, needsA.spotsEnd);
   const mkView = (pick, needs, what) => ({ zoom: 1, x0: pick.x0, region: [pick.x0, 0, 196, 216], needs: { from: needs.from, to: needs.to, picked: pick.how, items: needs.items.map(i => [i.name, i.lo, i.hi]) }, what });
   const views = { tiendas: mkView(pickT, needsT, 'the one view of fila tiendas: the 196 x 216 window over the 240 x 216 picture. x0 = the value in 0 .. 44 that holds what must be inside (the horse, the four doors, the four signs and the post box, and every spot\'s sprite: needs lists each as [name, first column, last column]) with the fewest cut pixels; of those, the one nearest to the middle of the span (x0 = clamp(round((from + to) / 2 - 98), 0, 44)). `needs.picked` says what it holds and what is cut') };
   const viewsA = { altos: mkView(pickA, needsA, 'the one view of fila altos: the 196 x 216 window over the 240 x 216 picture, chosen the same way: it must hold both buildings\' doors (with their frames) and every spot\'s sprite') };
@@ -244,10 +247,10 @@ async function make(T, A, KB, proj, page, load) {
     S: T.S, origin: { originX: sc.originX, originY: sc.originY }, picture: [T.W, T.H], view: [196, 216],
     rules: {
       project: 'pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels. The row\'s wall is y = 0 (the fronts face +y); the pavement runs from it to y = ' + E.PV + ', the kerb to y = ' + E.S0 + ', then the street. This is the state fila = tiendas; fila = altos has its own origin, spots and view in `altos`',
-      spot: 'a spot is a world point of the feet (z 0: the pavement; z ' + SEAT_TOP + ': the seat\'s top; z ' + HORSE_Z + ': the horse\'s back; z ' + HANDLEBAR_Z + ': the handlebar of Luis\'s bicycle) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog\'s: 1 everywhere. spot.sprite says which maker stands there in the preview (the make\'s checks use it); the game may put someone else there',
-      anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty), a child 41 rows; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; Luis sitting mkPersona(..., sent = 1): feet on sy; the stroller with the bebé (a stand-in, 26 x 36): column 13, its wheels\' bottom on sy; Luis\'s bicycle (a stand-in, 44 x 34): the handlebar\'s column 28 on sx; a small thing: its bottom middle on the point. Widths of the boxes for the checks: the frog 32, a grown-up 24, a child 24, the stroller 26 (its stand-in\'s own width: the spec gives none)',
+      spot: 'a spot is a world point of the feet (z 0: the pavement; z ' + SEAT_TOP + ': the seat\'s top; z ' + HORSE_Z + ': the horse\'s back) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog\'s: 1 everywhere. spot.sprite says which maker stands there in the preview (the make\'s checks use it); the game may put someone else there',
+      anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty), a child 41 rows; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; Luis sitting mkPersona(..., sent = 1): feet on sy; the stroller with the bebé (a stand-in, 24 x 36): column 12, its wheels\' bottom on sy; Luis\'s bicycle (a stand-in, 44 x 34): the handlebar\'s column 28 on sx (the preview draws it 8 px right of bici, behind Luis); a small thing: its bottom middle on the point. Widths of the boxes for the checks: the frog 32, a grown-up 24, a child 24, the stroller 24 (its stand-in\'s own width: the spec gives none)',
       view: 'a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0, kept inside 0 .. 44. Never a fraction',
-      depth: 'a spot\'s depth is the engine\'s d of its world point (z counts: d = (x + y) / R2 * COS + z * .5); front.plane turns it into the depth of each row of a character. The frog on the handlebar stands in the same upright plane as Luis (same x, y): the two tie, and the frog is drawn after him',
+      depth: 'a spot\'s depth is the engine\'s d of its world point (z counts: d = (x + y) / R2 * COS + z * .5); front.plane turns it into the depth of each row of a character.',
       doors: 'a front is the lit wall x0 .. x1 (E.FW wide), y = 0, h high (E.H, the banco .25 more); its door from x0 + E.DOOR, E.DW wide, E.DH high, with a frame .12 wider on each side and .12 higher; its sign (a board on the wall, y .03) .22 in from each side, from E.DH + .18 to h - .06. fronts[] below lists the numbers the checks use',
     },
     setKey: {
@@ -261,23 +264,23 @@ async function make(T, A, KB, proj, page, load) {
     groups,
     views,
     notes: [
-      'a spot\'s name for the group at a door is abuela.puerta_<k>, cochecito.puerta_<k>, coqui.puerta_<k> (the spec gives their places, not their names); likewise cochecito.caballito, abuela.caballito, pan, abuela.lluvia, coqui.lluvia and, in altos, luis.puerta_izq/der, coqui.puerta_izq/der, coqui.bici',
+      'a spot\'s name for the group at a door is abuela.puerta_<k>, cochecito.puerta_<k>, coqui.puerta_<k> (the spec gives their places, not their names); likewise cochecito.caballito, abuela.caballito, pan, abuela.lluvia and, in altos, luis.puerta_izq/der, coqui.puerta_izq/der. Pass 2 (the orchestrator\'s new numbers): the seat is at E.SEAT [.9, 1.95] (x .9 to 2.9), the frog of story 56\'s ending stays at coqui.56 (there is no coqui.lluvia), puerta_izq / puerta_der are the doorway (D, .5, 0), coqui.bici stands beside the bicycle (z 0)',
       'a front\'s thing box is its lit wall (a slab .02 deep, from the wall\'s left end to its right end and from the floor to its height), so that two fronts\' boxes do not overlap; the door\'s box is the door\'s own width and height',
-      'readings of the spec the make took where it says less than it needs (the orchestrator may change them): senora.tienda is the tienda door\'s MIDDLE + .3; coqui.bici is the same x, y as bici at z ' + HANDLEBAR_Z + '; bordillo1 is Luis and bordillo2 the frog; in altos the group in front of a door (luis.puerta_*, coqui.puerta_*) is given for both buildings, the spec names only the tall one\'s; the preview\'s hora is manana for moments 1 to 3 and 6 to 8 and tarde for 4 and 5 (story 56 is the afternoon), moment 8 uses lado der as moment 7; the stroller\'s box is 26 wide (its stand-in) and its shadow .35 (the spec gives neither); the frog\'s box is 32 x 24 (his drawn rows)',
+      'readings of the spec the make took where it says less than it needs (the orchestrator may change them): senora.tienda is the tienda door\'s MIDDLE ("door of the tienda"), y .8; bordillo1 is Luis and bordillo2 the frog; in altos the group in front of a door (luis.puerta_*, coqui.puerta_*) is given for both buildings, the spec names only the tall one\'s; the preview\'s hora is manana for moments 1 to 3 and 6 to 8 and tarde for 4 and 5 (story 56 is the afternoon), moment 8 uses lado der as moment 7; the stroller\'s box is 24 wide (its stand-in, narrowed from 26 in pass 2) and its shadow .35 (the spec gives neither); the frog\'s box is 32 x 24 (his drawn rows)',
     ],
     front: {
       list: null,
       how: 'no list. A character is hidden by every set pixel that is nearer the camera than the character\'s feet (depth test against the baked depth, with the feet\'s depth plus 0.3), so a front hides nobody who stands in front of it, the seat\'s back hides nobody who sits on it, and a person at a door is whole.',
       bias: BIAS,
       plane: 'for the character\'s pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot\'s depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet, as El mostrador\'s front; the same test for people, the stroller and the small things',
-      sprites: 'between two sprites the nearer pixel wins: the same depth(r), no bias; equal depths: the one drawn later (the frog on the handlebar is drawn after Luis)',
+      sprites: 'between two sprites the nearer pixel wins: the same depth(r), no bias; equal depths: the one drawn later',
     },
     shadows: {
       radius: { coqui: .45, adultos: .35, ninos: .28, cochecito: .35 },
       byCharacter: { coqui: .45, abuela: .35, senora: .35, senor: .35, mama: .35, papa: .35, luis: .28, cochecito: .35 },
       at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0)',
-      none: ['caballito', 'banco_acera', 'pan', 'coqui.bici'],
-      onSeat: 'the frog on the horse or the handlebar and abuela on the seat cast none: they are not on the ground (the horse and the seat cast their own); a shadow cast at the pavement under the frog on the handlebar would show in front of Luis',
+      none: ['caballito', 'banco_acera', 'pan'],
+      onSeat: 'the frog on the horse and abuela on the seat cast none: they are not on the ground (the horse and the seat cast their own)',
     },
     altos: {
       what: 'the state fila = altos (story 55): two buildings with no sign, a tall old one and a low new one; par a | b picks the pair, lado izq | der says which side the tall one stands on. tiendas-set.html draws it with its own origin; its picture, spots, things and view are here; the depth rule, the anchors and the shadows are the same as above',
@@ -288,7 +291,7 @@ async function make(T, A, KB, proj, page, load) {
       spots: spotsA,
       groups: groupsA,
       views: viewsA,
-      shadows: { byCharacter: { luis: .28, senor: .35, mama: .35, coqui: .45 }, none: ['coqui.bici'], at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0)' },
+      shadows: { byCharacter: { luis: .28, senor: .35, mama: .35, coqui: .45 }, none: [], at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0)' },
     },
   };
   Object.defineProperty(sheet, 'geometry', { value: { FR, AL, needsT, needsA, pickT, pickA }, enumerable: false });
@@ -306,7 +309,7 @@ function spriteCols(KB, kind, sx, sy) {
   const b = KB[kind], hw = b.width ? b.width / 2 : 0;
   return { lo: sx + Math.min(b.left, b.width ? -hw : b.left), hi: sx + Math.max(b.right, b.width ? hw - 1 : b.right), top: sy + b.top, bottom: sy + b.bottom - 1 };
 }
-async function needsOfTiendas(G, FR, spots, KB, proj) {
+async function needsOfTiendas(G, FR, spots, KB, proj, boxes) {
   const items = [];
   const horse = G.parts.caballito, post = G.parts.buzon;
   items.push({ name: 'caballito (the horse\'s pixels)', lo: horse[0], hi: horse[2] }, { name: 'buzon (the post box\'s pixels)', lo: post[0], hi: post[2] });
@@ -316,27 +319,31 @@ async function needsOfTiendas(G, FR, spots, KB, proj) {
   }
   const row = items.length;
   for (const [k, s] of Object.entries(spots)) { const c = spriteCols(KB, s.sprite, s.screen[0], s.screen[1]); items.push({ name: 'spot ' + k, lo: c.lo, hi: c.hi }); }
-  return { items, rowItems: row, from: Math.min(...items.map(i => i.lo)), to: Math.max(...items.map(i => i.hi)) };
+  const spotsEnd = items.length;
+  for (const [name, b] of boxes) items.push({ name: 'thing ' + name, lo: b[0], hi: b[0] + b[2] - 1 });
+  return { items, rowItems: row, spotsEnd, from: Math.min(...items.slice(0, spotsEnd).map(i => i.lo)), to: Math.max(...items.slice(0, spotsEnd).map(i => i.hi)) };
 }
-async function needsOfAltos(G, AL, spotsA, KB, proj) {
+async function needsOfAltos(G, AL, spotsA, KB, proj, boxes) {
   const items = [];
   for (const [n, d] of AL.doors.entries()) { const c = await colsOfRect(proj, AQ, 0, d.d0 - DOOR_FRAME, d.d1 + DOOR_FRAME, 0, 2.4 + DOOR_FRAME); items.push({ name: 'door ' + (n ? 'der' : 'izq'), lo: c[0], hi: c[1] }); }
   const row = items.length;
   for (const [k, s] of Object.entries(spotsA)) { const c = spriteCols(KB, s.sprite, s.screen[0], s.screen[1]); items.push({ name: 'spot ' + k, lo: c.lo, hi: c.hi }); }
-  return { items, rowItems: row, from: Math.min(...items.map(i => i.lo)), to: Math.max(...items.map(i => i.hi)) };
+  const spotsEnd = items.length;
+  for (const [name, b] of boxes) items.push({ name: 'thing ' + name, lo: b[0], hi: b[0] + b[2] - 1 });
+  return { items, rowItems: row, spotsEnd, from: Math.min(...items.slice(0, spotsEnd).map(i => i.lo)), to: Math.max(...items.slice(0, spotsEnd).map(i => i.hi)) };
 }
-// the x0 in 0 .. W - 196: first the one that holds the row (the items before rowItems: for tiendas the horse, the doors, the signs and the post box; for altos the doors) with no cut pixel
-// (the spec's rule for the row), then the fewest cut pixels of the spots' sprites; of those the nearest to the middle of the span. If no x0 holds the row, the fewest cut pixels in all
-function pickX0(items, W, rowItems) {
-  const lo = Math.min(...items.map(i => i.lo)), hi = Math.max(...items.map(i => i.hi)), mid = Math.max(0, Math.min(W - 196, Math.round((lo + hi) / 2 - 98)));
+// the x0 in 0 .. W - 196, in this order: (1) no cut pixel of the row (the items before rowItems: for tiendas the horse, the doors, the signs and the post box; for altos the doors), (2) the fewest cut pixels
+// of the spots' sprites (the items up to spotsEnd), (3) the fewest cut pixels of the things' boxes (the rest), (4) nearest to the middle of the row and the spots' span. If no x0 holds the row, the fewest cut pixels in it come first
+function pickX0(items, W, rowItems, spotsEnd) {
+  const core = items.slice(0, spotsEnd), lo = Math.min(...core.map(i => i.lo)), hi = Math.max(...core.map(i => i.hi)), mid = Math.max(0, Math.min(W - 196, Math.round((lo + hi) / 2 - 98)));
   const cutOf = (x0, list) => { let cut = 0, n = 0; for (const i of list) { const c = Math.max(0, x0 - i.lo) + Math.max(0, i.hi - (x0 + 195)); if (c) n++; cut += c; } return [cut, n]; };
   const table = [];
-  for (let x0 = 0; x0 <= W - 196; x0++) { const [rc, rn] = cutOf(x0, items.slice(0, rowItems)), [sc, sn] = cutOf(x0, items.slice(rowItems)); table.push({ x0, rowCut: rc, rowItemsCut: rn, spotCut: sc, spotsCut: sn }); }
-  const key = t => [t.rowCut, t.spotCut, Math.abs(t.x0 - mid)];
-  const best = table.slice().sort((p, q) => { const a = key(p), b = key(q); for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i] - b[i]; return 0; })[0];
-  const feas = table.filter(t => t.rowCut === 0).map(t => t.x0);
+  for (let x0 = 0; x0 <= W - 196; x0++) { const [rc, rn] = cutOf(x0, items.slice(0, rowItems)), [sc, sn] = cutOf(x0, items.slice(rowItems, spotsEnd)), [bc, bn] = cutOf(x0, items.slice(spotsEnd)); table.push({ x0, rowCut: rc, rowItemsCut: rn, spotCut: sc, spotsCut: sn, boxCut: bc, boxesCut: bn }); }
+  const key = t => [t.rowCut, t.spotCut, t.boxCut, Math.abs(t.x0 - mid)];
+  const best = table.slice().sort((p, q) => { const a = key(p), b = key(q); for (let i = 0; i < 4; i++) if (a[i] !== b[i]) return a[i] - b[i]; return 0; })[0];
+  const feas = table.filter(t => t.rowCut === 0).map(t => t.x0), feasSpots = table.filter(t => t.rowCut === 0 && t.spotCut === 0).map(t => t.x0);
   const how = (best.rowCut ? 'no x0 holds the row (the horse, the doors, the signs, the post box): x0 ' + best.x0 + ' cuts it by ' + best.rowCut + ' px; ' : 'x0 ' + best.x0 + ' holds the whole row (it does for x0 ' + (feas.length ? feas[0] + ' to ' + feas[feas.length - 1] : 'none') + '); ')
-    + (best.spotCut ? 'no x0 holds every spot\'s sprite as well: with this one ' + best.spotsCut + ' spot sprite(s) are cut by ' + best.spotCut + ' px in all' : 'every spot\'s sprite is inside as well') + ' (span of everything: columns ' + lo + ' to ' + hi + ')';
+    + (best.spotCut ? 'no x0 holds every spot\'s sprite as well: with this one ' + best.spotsCut + ' spot sprite(s) are cut by ' + best.spotCut + ' px in all' : 'every spot\'s sprite is inside as well (row and spots both fit for x0 ' + (feasSpots.length ? feasSpots[0] + ' to ' + feasSpots[feasSpots.length - 1] : 'none') + ')') + '; the things\' boxes are cut by ' + best.boxCut + ' px in all' + ' (span of the row and the spots: columns ' + lo + ' to ' + hi + ')';
   return Object.assign({}, best, { how, mid, table, feas });
 }
 
@@ -421,8 +428,8 @@ async function checks(sheet, T, A, KB, PVD, proj, page, load) {
       }
       lines.push(F.id + ' window [' + x0 + ', ' + (x0 + 196) + '): ' + F.view.needs.picked);
     }
-    const r = add('in-view', bad, n + ' spots (every spot of both filas) have their sprite whole inside the picture and the window; ' + lines.join('; '), [bad.length + ' spot(s) with a cut sprite or a thing outside the picture (a spot\'s sprite is its class box, 32 / 24 / 24 / 26 wide, together with the pixels its maker draws):'].concat(bad.map(b => '  ' + b), lines.map(l => '  ' + l)));
-    for (const F of FILAS) { const clean = F.pick.table.filter(t => !t.rowCut && !t.spotCut).map(t => t.x0); r.lines.push('       info, not a check: ' + F.id + ' x0 trade-off' + (clean.length ? ': every x0 from ' + clean[0] + ' to ' + clean[clean.length - 1] + ' holds the row and every spot\'s sprite; ' + F.pick.x0 + ' is the middle of what they span' : ', each x0 as (px of the row cut / px of spots\' sprites cut): ' + F.pick.table.filter(t => t.x0 <= 10).map(t => t.x0 + ': ' + t.rowCut + '/' + t.spotCut).join(', '))); }
+    const r = add('in-view', bad, n + ' spots (every spot of both filas) have their sprite whole inside the picture and the window; ' + lines.join('; '), [bad.length + ' spot(s) with a cut sprite or a thing outside the picture (a spot\'s sprite is its class box, 32 / 24 / 24 / 24 wide, together with the pixels its maker draws):'].concat(bad.map(b => '  ' + b), lines.map(l => '  ' + l)));
+    for (const F of FILAS) { const clean = F.pick.table.filter(t => !t.rowCut && !t.spotCut).map(t => t.x0); r.lines.push('       info, not a check: ' + F.id + ' x0 trade-off, each x0 as (px of the row cut / px of spots\' sprites cut / px of things\' boxes cut): ' + F.pick.table.filter(t => (F.id === 'tiendas' ? t.x0 <= 10 : t.x0 % 2 === 1 || t.x0 === F.pick.x0) && t.x0 <= (F.id === 'tiendas' ? 10 : 22)).map(t => t.x0 + ': ' + t.rowCut + '/' + t.spotCut + '/' + t.boxCut).join(', ') + '; row and spots both whole for x0 ' + (clean.length ? clean[0] + ' to ' + clean[clean.length - 1] : 'none') + '; chosen ' + F.pick.x0); }
     for (const i of info) r.lines.push('       info, not a check: ' + i);
   }
 
@@ -451,7 +458,7 @@ async function checks(sheet, T, A, KB, PVD, proj, page, load) {
       }
     }
     const r = add('sprites-apart', bad, all.length + ' pairs in the 8 moments of the preview: no two sprite boxes overlap sideways unless their feet are ' + UPDOWN + ' px or more apart up-down; the pairs that do overlap sideways: ' + (all.filter(q => q.over).map(q => 'm' + q.m + ' ' + q.a + ' ~ ' + q.b + ' (' + q.dx + ' px across, ' + q.dy + ' down)').join(', ') || 'none'),
-      [bad.length + ' pair(s) with overlapping boxes and feet closer than ' + UPDOWN + ' px up-down (the frog 32 wide, a grown-up 24, a child 24, the stroller 26):'].concat(bad.map(b => '  ' + b)));
+      [bad.length + ' pair(s) with overlapping boxes and feet closer than ' + UPDOWN + ' px up-down (the frog 32 wide, a grown-up 24, a child 24, the stroller 24):'].concat(bad.map(b => '  ' + b)));
     for (const h of hints) {                                                           // the nearest spot value that would pass (the spec's numbers are kept)
       const pass = other => (sx, sy) => Math.abs(sx - other.sx) >= h.half || Math.abs(sy - other.sy) >= UPDOWN;
       r.lines.push('       nearest passing, moment ' + h.m + ' ' + h.a.at + ' ~ ' + h.b.at + ': ' + h.a.at + ' ' + h.a.world + ': ' + nearestPass(h.G, h.a.world, pass(h.b)) + '; or ' + h.b.at + ' ' + h.b.world + ': ' + nearestPass(h.G, h.b.world, pass(h.a)));
@@ -460,34 +467,43 @@ async function checks(sheet, T, A, KB, PVD, proj, page, load) {
     r.pairs = all.map(q => ({ moment: q.m, a: q.a, b: q.b, across: q.dx, down: q.dy, needAcross: q.half, ok: q.ok }));
   }
 
-  // 4. the frog is never behind a grown-up (or anybody): in every moment his whole box (32 wide, his drawn rows) is seen: no set pixel hides any of his pixels and no sprite nearer than he is draws over his box
+  // 4. (pass 2) the frog is never behind a grown-up, a car or a guagua: in every moment he is seen. His drawn pixels are counted. The set hides none of them, except on the horse, where the horse's own neck may hide up to
+  //    HORSE_NECK (30) px. A grown-up (or any other thing) covers none of them; a child or the stroller may cover up to POOL (40) px of him, together
   {
     const bad = [], lines = [], hints = [];
     const fb = KB.coqui;
     for (const m of MS) {
-      const M = PVD.moments[m], G = FG[M.fila].G, fr = M.layers.find(l => l.k === 'coqui');
+      const M = PVD.moments[m], G = FG[M.fila].G, fr = M.layers.find(l => l.k === 'coqui'), onHorse = fr.at === 'caballito';
       const frT = { sx: fr.sx, sy: fr.sy, d: fr.d, order: fr.order, tpl: tplOf(fr) };
-      const hid = fr.px.filter(p => p[2]), hidTags = tally(await tagsOf(M.set, hid));
-      const box = { x0: fr.sx - 16, x1: fr.sx + 15, y0: fr.sy + fb.top, y1: fr.sy - 1 };
-      const others = M.layers.filter(o => o !== fr).map(o => ({ at: o.at, sx: o.sx, sy: o.sy, d: o.d, order: o.order, tpl: tplOf(o, true) }));
-      const cov = coverage(frT, frT.tpl, others, box);
-      const line = 'moment ' + m + ' the frog at ' + fr.at + ' [' + fr.sx + ',' + fr.sy + ']: ' + fr.px.length + ' drawn pixels, ' + hid.length + ' hidden by the set' + (hid.length ? ' (' + tallyText(hidTags) + ')' : '') + ', ' + cov.ink + ' of his pixels and ' + cov.box + ' of the ' + (box.x1 - box.x0 + 1) + ' x ' + (box.y1 - box.y0 + 1) + ' px of his box covered by a nearer sprite' + (cov.box ? ' (' + byText(cov.by) + ')' : '');
+      const hid = fr.px.filter(p => p[2]), hidTags = tally(await tagsOf(M.set, hid)), neck = hidTags.caballito || 0;
+      const hidOver = onHorse ? hid.length - neck + Math.max(0, neck - HORSE_NECK) : hid.length;
+      const mk = o => ({ at: o.at, sx: o.sx, sy: o.sy, d: o.d, order: o.order, who: o.who, tpl: tplOf(o, true) });
+      const others = M.layers.filter(o => o !== fr).map(mk);
+      const isPool = o => o.who === 'nino' || o.who === 'cochecito';
+      const verdict = (frp, oth) => {
+        const bx = { x0: frp.sx - 16, x1: frp.sx + 15, y0: frp.sy + fb.top, y1: frp.sy - 1 };
+        const big = coverage(frp, frT.tpl, oth.filter(o => !isPool(o)), bx), small = coverage(frp, frT.tpl, oth.filter(isPool), bx);
+        return { big: big.ink, pool: small.ink, by: Object.assign({}, big.by, small.by) };
+      };
+      const ok = q => q.big === 0 && q.pool <= POOL;
+      const v = verdict(frT, others);
+      const line = 'moment ' + m + ' the frog at ' + fr.at + ' [' + fr.sx + ',' + fr.sy + ']: ' + fr.px.length + ' drawn pixels, ' + hid.length + ' hidden by the set' + (hid.length ? ' (' + tallyText(hidTags) + (onHorse ? '; up to ' + HORSE_NECK + ' by the horse allowed' : '') + ')' : '') + ', ' + v.big + ' covered by grown-ups or things (needs 0), ' + v.pool + ' by a child or the stroller (up to ' + POOL + ' allowed)' + (v.big + v.pool ? ' [' + byText(v.by) + ']' : '');
       lines.push(line);
-      if (hid.length || cov.box) {
+      if (hidOver || !ok(v)) {
         bad.push(line);
-        // the nearest place that clears it: the frog's own spot (nothing hidden, nothing covering his box); and each covering sprite's spot alone (what it covers of his box becomes zero)
+        // the nearest place that clears it: the frog's own spot, and each covering sprite's spot alone (the rest stay; a moved sprite's hidden pixels are not counted)
         const cands = candidates(G, fr.world), hc = await hiddenAt(M.set, frT.tpl, cands);
-        const frogHit = firstHits(cands, (c, i) => hc[i] === 0 && coverage({ sx: c.sx, sy: c.sy, d: c.d, order: fr.order }, frT.tpl, others, { x0: c.sx - 16, x1: c.sx + 15, y0: c.sy + fb.top, y1: c.sy - 1 }).box === 0);
+        const frogHit = firstHits(cands, (c, i) => hc[i] === 0 && ok(verdict({ sx: c.sx, sy: c.sy, d: c.d, order: fr.order }, others)));
         const alone = [];
-        for (const o of Object.keys(cov.by)) {
-          const ol = M.layers.find(l => l.at === o), oc = candidates(G, ol.world), ot = others.find(q => q.at === o);
-          alone.push(o + ' ' + ol.world + ' -> ' + firstHits(oc, c => coverage(frT, frT.tpl, [{ at: o, sx: c.sx, sy: c.sy, d: c.d, order: ol.order, tpl: ot.tpl }], box).box === 0));
+        for (const o of Object.keys(v.by).filter(k => v.by[k].ink)) {
+          const ol = M.layers.find(l => l.at === o), oc = candidates(G, ol.world);
+          alone.push(o + ' ' + ol.world + ' -> ' + firstHits(oc, c => ok(verdict(frT, others.map(x => x.at === o ? Object.assign({}, x, { sx: c.sx, sy: c.sy, d: c.d }) : x)))));
         }
-        const setLeft = hid.length ? ' (the ' + hid.length + ' px the set hides, ' + tallyText(hidTags) + ', stay hidden)' : '';
-        hints.push('       nearest passing, moment ' + m + ' (one spot moved, the others stay; the hidden pixels of a moved sprite are not counted): ' + (fr.at === 'caballito' ? 'the frog\'s spot caballito is the horse\'s back (E.HORSE, z ' + HORSE_Z + '), it does not move; ' : 'either the frog\'s spot ' + fr.at + ' ' + fr.world + ': ' + frogHit + '; or ') + (alone.length ? (alone.length > 1 ? 'all of these together (each clears only its own cover)' : 'this') + (setLeft || '') + ': ' + alone.join(' AND ') : ''));
+        const setLeft = hidOver ? ' (the ' + hidOver + ' px the set hides beyond what is allowed, ' + tallyText(hidTags) + ', stay hidden)' : '';
+        hints.push('       nearest passing, moment ' + m + ' (one spot moved, the others stay): ' + (onHorse ? 'the frog\'s spot caballito is the horse\'s back (E.HORSE, z ' + HORSE_Z + '), it does not move; ' : 'either the frog\'s spot ' + fr.at + ' ' + fr.world + ': ' + frogHit + '; or ') + (alone.length ? (alone.length > 1 ? 'all of these together (each clears only its own cover)' : 'this') + setLeft + ': ' + alone.join(' AND ') : ''));
       }
     }
-    const r = add('frog-seen', bad, 'in all ' + MS.length + ' moments the frog\'s whole box is seen: ' + lines.map(l => l.replace(/ the frog at ([^ ]+) \[[^\]]*\]: \d+ drawn pixels, /, ' $1: ')).join('; '), [bad.length + ' moment(s) in which something is drawn over the frog\'s box or the set hides him:'].concat(bad.map(b => '  ' + b)));
+    const r = add('frog-seen', bad, 'in all ' + MS.length + ' moments the frog is seen: ' + lines.map(l => l.replace(/ the frog at ([^ ]+) \[[^\]]*\]: \d+ drawn pixels, /, ' $1: ')).join('; '), [bad.length + ' moment(s) in which the frog is hidden or covered beyond what is allowed (the set hides none of him, but up to ' + HORSE_NECK + ' px by the horse\'s neck on the horse; grown-ups cover none; a child or the stroller up to ' + POOL + ' px together):'].concat(bad.map(b => '  ' + b)));
     r.lines.push(...hints);
   }
 
@@ -553,33 +569,33 @@ async function checks(sheet, T, A, KB, PVD, proj, page, load) {
     add('signs-clear', bad, 'in moments 1 to 5 and for every spot of fila tiendas alone (' + PVD.alone.tiendas.length + ' sprites) no pixel a sprite draws covers any of the four signs\' boards; the closest a sprite\'s topmost pixel comes under a board\'s bottom edge row: ' + least + ' rows (' + leastAt + ')', [bad.length + ' sprite(s) cover a sign:'].concat(bad.map(b => '  ' + b)));
   }
 
-  // 9. a group at a door does not cover the next front's door (the door and its frame; the neighbours on both sides are checked and told apart)
+  // 9. (pass 2) a group at a door does not cover the right-hand neighbour's door (the door and its frame); the stroller may cover its lower STROLLER_LOW (10) rows
   {
-    const bad = [], lines = [], hints = [], frames = FR.map(f => f.frame);
-    const inFrame = (X, Y, fr) => { const [x, z] = onPlaneY(T, X, Y, 0); return x >= fr.x0 && x <= fr.x1 && z >= 0 && z <= fr.z1; };
+    const bad = [], lines = [], hints = [], frames = FR.map(f => f.frame), lowZ = STROLLER_LOW / (COS * T.S);
+    // is the picture pixel on the frame of the neighbour's door; for the stroller its lower rows (z up to lowZ) do not count
+    const hit = (X, Y, fr, k) => { const [x, z] = onPlaneY(T, X, Y, 0); return x >= fr.x0 && x <= fr.x1 && z >= 0 && z <= fr.z1 && !(k === 'cochecito' && z <= lowZ); };
     for (const [n, f] of FR.entries()) {
-      const names = ['abuela.puerta_' + f.k, 'cochecito.puerta_' + f.k, 'coqui.puerta_' + f.k], per = [];
-      for (const nb of [n - 1, n + 1]) {
-        if (nb < 0 || nb >= FR.length) continue;
-        const fr = frames[nb], who = {};
-        for (const name of names) {
-          const l = PVD.alone.tiendas.find(q => q.at === name);
-          const c = l.px.filter(p => !p[2] && inFrame(p[0], p[1], fr)).length;
-          if (c) who[name] = c;
-        }
-        const cov = Object.values(who).reduce((a, b) => a + b, 0);
-        per.push((nb > n ? 'right-hand neighbour ' : 'left-hand neighbour ') + FR[nb].k + ': ' + cov + ' px' + (cov ? ' (' + Object.entries(who).map(([k, v]) => k + ' ' + v).join(', ') + ')' : ''));
-        if (cov) {
-          bad.push('the group at the ' + f.k + ' covers ' + cov + ' px of the ' + FR[nb].k + '\'s door (' + (nb > n ? 'right-hand' : 'left-hand') + ' neighbour): ' + Object.entries(who).map(([k, v]) => k + ' ' + v).join(', '));
-          for (const name of Object.keys(who)) {
-            const l = PVD.alone.tiendas.find(q => q.at === name), tpl = tplOf(l), cands = candidates(T, l.world);
-            hints.push('       nearest passing, the ' + f.k + ' group covering the ' + FR[nb].k + '\'s door: ' + name + ' ' + l.world + ' alone: ' + firstHits(cands, c => !tpl.some(([dx, dy]) => inFrame(c.sx + dx, c.sy + dy, fr))));
-          }
+      const names = ['abuela.puerta_' + f.k, 'cochecito.puerta_' + f.k, 'coqui.puerta_' + f.k];
+      if (n + 1 >= FR.length) { lines.push('the ' + f.k + ' group: no right-hand neighbour'); continue; }
+      const nb = n + 1, fr = frames[nb], who = {}, low = {};
+      for (const name of names) {
+        const l = PVD.alone.tiendas.find(q => q.at === name);
+        const shown = l.px.filter(p => !p[2]);
+        const c = shown.filter(p => hit(p[0], p[1], fr, l.k)).length, all = shown.filter(p => hit(p[0], p[1], fr, null)).length;
+        if (c) who[name] = c;
+        if (all - c) low[name] = all - c;
+      }
+      const cov = Object.values(who).reduce((a, b) => a + b, 0);
+      lines.push('the ' + f.k + ' group over the ' + FR[nb].k + '\'s door: ' + cov + ' px' + (cov ? ' (' + Object.entries(who).map(([k, v]) => k + ' ' + v).join(', ') + ')' : '') + (Object.keys(low).length ? '; the stroller\'s ' + Object.values(low).join(', ') + ' px in the door\'s lower ' + STROLLER_LOW + ' rows are allowed' : ''));
+      if (cov) {
+        bad.push('the group at the ' + f.k + ' covers ' + cov + ' px of the ' + FR[nb].k + '\'s door: ' + Object.entries(who).map(([k, v]) => k + ' ' + v).join(', '));
+        for (const name of Object.keys(who)) {
+          const l = PVD.alone.tiendas.find(q => q.at === name), tpl = tplOf(l), cands = candidates(T, l.world);
+          hints.push('       nearest passing, the ' + f.k + ' group over the ' + FR[nb].k + '\'s door: ' + name + ' ' + l.world + ' alone: ' + firstHits(cands, c => !tpl.some(([dx, dy]) => hit(c.sx + dx, c.sy + dy, fr, l.k))));
         }
       }
-      lines.push('the ' + f.k + ' group: ' + per.join(', '));
     }
-    const r = add('group-door-clear', bad, 'no group at a door covers a neighbouring front\'s door: ' + lines.join('; '), [bad.length + ' covering of a neighbouring front\'s door by a group at a door (the spec says "the next front\'s door"; both neighbours are checked: the stroller stands .65 left of the door\'s middle and covers the left-hand neighbour\'s door, nothing covers the right-hand one):'].concat(bad.map(b => '  ' + b)));
+    const r = add('group-door-clear', bad, 'no group at a door covers the right-hand front\'s door (the stroller may cover its lower ' + STROLLER_LOW + ' rows): ' + lines.join('; '), [bad.length + ' covering of the right-hand front\'s door by a group at a door:'].concat(bad.map(b => '  ' + b)));
     r.lines.push(...hints);
     r.lines.push('       ' + lines.join('; '));
   }
