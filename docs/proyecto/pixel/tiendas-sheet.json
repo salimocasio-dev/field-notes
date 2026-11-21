@@ -1,0 +1,1085 @@
+{
+ "scene": "tiendas",
+ "made": "node docs/proyecto/pixel/tiendas-sheet-make.js, from tiendas-set.html (window.TIENDAS.E) and the design of Las tiendas (the orchestrator's p5-spec, section tiendas). A new scene: no old scene, no remap.",
+ "S": 26,
+ "origin": {
+  "originX": 0,
+  "originY": 24
+ },
+ "picture": [240, 216],
+ "view": [196, 216],
+ "rules": {
+  "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX, OY = H / 2 + originY. A box is the screen bounding box of its 8 projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels. The row's wall is y = 0 (the fronts face +y); the pavement runs from it to y = 2.6, the kerb to y = 2.8, then the street. This is the state fila = tiendas; fila = altos has its own origin, spots and view in `altos`",
+  "spot": "a spot is a world point of the feet (z 0: the pavement; z 0.46: the seat's top; z 0.72: the horse's back; z 0.9: the handlebar of Luis's bicycle) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). scale is the frog's: 1 everywhere. spot.sprite says which maker stands there in the preview (the make's checks use it); the game may put someone else there",
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing (a 56-row canvas whose lowest row is empty), a child 41 rows; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (so row 25 of the canvas is on sy, as juego.js frogBox: his shadow line q.y + 25); abuela standing mkAbuela (48 x 51): column 30, drawn rows 0 to 49; abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; Luis sitting mkPersona(..., sent = 1): feet on sy; the stroller with the bebé (a stand-in, 26 x 36): column 13, its wheels' bottom on sy; Luis's bicycle (a stand-in, 44 x 34): the handlebar's column 28 on sx; a small thing: its bottom middle on the point. Widths of the boxes for the checks: the frog 32, a grown-up 24, a child 24, the stroller 26 (its stand-in's own width: the spec gives none)",
+  "view": "a view has a zoom (here 1: the 196 x 216 window over the 240 x 216 picture) and x0, kept inside 0 .. 44. Never a fraction",
+  "depth": "a spot's depth is the engine's d of its world point (z counts: d = (x + y) / R2 * COS + z * .5); front.plane turns it into the depth of each row of a character. The frog on the handlebar stands in the same upright plane as Luis (same x, y): the two tie, and the frog is drawn after him",
+  "doors": "a front is the lit wall x0 .. x1 (E.FW wide), y = 0, h high (E.H, the banco .25 more); its door from x0 + E.DOOR, E.DW wide, E.DH high, with a frame .12 wider on each side and .12 higher; its sign (a board on the wall, y .03) .22 in from each side, from E.DH + .18 to h - .06. fronts[] below lists the numbers the checks use"
+ },
+ "setKey": {
+  "params": {
+   "fila": {
+    "values": ["tiendas", "altos"]
+   },
+   "par": {
+    "values": ["a", "b"],
+    "only": "altos"
+   },
+   "lado": {
+    "values": ["izq", "der"],
+    "only": "altos",
+    "note": "which side the tall building stands on"
+   },
+   "hora": {
+    "values": ["manana", "tarde"]
+   },
+   "nube": {
+    "values": [0, 1, 2],
+    "note": "the cloud: at the sky's edge, over the street, raining"
+   }
+  },
+  "key": "tiendas: hora + nube, e.g. \"manana-0\"; altos: par + lado + hora, e.g. \"a-izq-manana\"",
+  "baked": {
+   "tiendas": ["?fila=tiendas&hora=manana&nube=0", "?fila=tiendas&hora=manana&nube=1", "?fila=tiendas&hora=manana&nube=2", "?fila=tiendas&hora=tarde&nube=0", "?fila=tiendas&hora=tarde&nube=1", "?fila=tiendas&hora=tarde&nube=2"],
+   "altos": ["?fila=altos&par=a&lado=izq&hora=manana", "?fila=altos&par=a&lado=izq&hora=tarde", "?fila=altos&par=a&lado=der&hora=manana", "?fila=altos&par=a&lado=der&hora=tarde", "?fila=altos&par=b&lado=izq&hora=manana", "?fila=altos&par=b&lado=izq&hora=tarde", "?fila=altos&par=b&lado=der&hora=manana", "?fila=altos&par=b&lado=der&hora=tarde"]
+  }
+ },
+ "fronts": {
+  "tienda": {
+   "wall": [-4.5, -2.25],
+   "h": 3.6,
+   "door": [-3.92, -2.82],
+   "doorMiddle": -3.37,
+   "sign": {
+    "x": [-4.28, -2.47],
+    "z": [2.58, 3.54],
+    "y": 0.03
+   }
+  },
+  "banco": {
+   "wall": [-2.25, 0],
+   "h": 3.85,
+   "door": [-1.67, -0.57],
+   "doorMiddle": -1.12,
+   "sign": {
+    "x": [-2.03, -0.22],
+    "z": [2.58, 3.79],
+    "y": 0.03
+   }
+  },
+  "farmacia": {
+   "wall": [0, 2.25],
+   "h": 3.6,
+   "door": [0.58, 1.68],
+   "doorMiddle": 1.13,
+   "sign": {
+    "x": [0.22, 2.03],
+    "z": [2.58, 3.54],
+    "y": 0.03
+   }
+  },
+  "correo": {
+   "wall": [2.25, 4.5],
+   "h": 3.6,
+   "door": [2.83, 3.93],
+   "doorMiddle": 3.38,
+   "sign": {
+    "x": [2.47, 4.28],
+    "z": [2.58, 3.54],
+    "y": 0.03
+   }
+  }
+ },
+ "things": {
+  "tienda": {
+   "set": true,
+   "world": [-4.5, 0, 0, -2.25, 0.02, 3.6],
+   "box": [36, 9, 43, 103],
+   "what": "the front of the tienda: its lit wall, a poke (door and sign inside it)"
+  },
+  "banco": {
+   "set": true,
+   "world": [-2.25, 0, 0, 0, 0.02, 3.85],
+   "box": [78, 24, 42, 109],
+   "what": "the front of the banco: its lit wall, a poke (door and sign inside it)"
+  },
+  "farmacia": {
+   "set": true,
+   "world": [0, 0, 0, 2.25, 0.02, 3.6],
+   "box": [119, 50, 43, 103],
+   "what": "the front of the farmacia: its lit wall, a poke (door and sign inside it)"
+  },
+  "correo": {
+   "set": true,
+   "world": [2.25, 0, 0, 4.5, 0.02, 3.6],
+   "box": [160, 71, 43, 103],
+   "what": "the front of the correo: its lit wall, a poke (door and sign inside it)"
+  },
+  "puerta_tienda": {
+   "set": true,
+   "world": [-3.92, 0, 0, -2.82, 0.02, 2.4],
+   "box": [47, 41, 22, 66],
+   "what": "the door of the tienda, a poke (story 56: the door is the thing; the doorway, in any state of the door)"
+  },
+  "puerta_banco": {
+   "set": true,
+   "world": [-1.67, 0, 0, -0.57, 0.02, 2.4],
+   "box": [88, 62, 22, 65],
+   "what": "the door of the banco, a poke (story 56: the door is the thing; the doorway, in any state of the door)"
+  },
+  "puerta_farmacia": {
+   "set": true,
+   "world": [0.58, 0, 0, 1.68, 0.02, 2.4],
+   "box": [130, 83, 21, 65],
+   "what": "the door of the farmacia, a poke (story 56: the door is the thing; the doorway, in any state of the door)"
+  },
+  "puerta_correo": {
+   "set": true,
+   "world": [2.83, 0, 0, 3.93, 0.02, 2.4],
+   "box": [171, 103, 22, 66],
+   "what": "the door of the correo, a poke (story 56: the door is the thing; the doorway, in any state of the door)"
+  },
+  "caballito": {
+   "set": true,
+   "world": [-4.67, 1.08, 0, -3.71, 1.52, 1.08],
+   "box": [6, 74, 26, 38],
+   "what": "the little horse with its coin box: its volume, a poke"
+  },
+  "comida": "sprite",
+  "abuela": "sprite",
+  "bebe": "sprite",
+  "luis": "sprite",
+  "mama": "sprite",
+  "papa": "sprite",
+  "senora": "sprite",
+  "senor": "sprite",
+  "coqui": "sprite"
+ },
+ "spots": {
+  "puerta_tienda": {
+   "world": [-3.37, 0.4, 0],
+   "screen": [51, 105],
+   "depth": -1.8187,
+   "scale": 1,
+   "kind": "door",
+   "sprite": "abuela",
+   "what": "at the door of the tienda (the door's middle, .4 in front of the wall): where somebody goes in"
+  },
+  "puerta_banco": {
+   "world": [-1.12, 0.4, 0],
+   "screen": [92, 125],
+   "depth": -0.4409,
+   "scale": 1,
+   "kind": "door",
+   "sprite": "abuela",
+   "what": "at the door of the banco (the door's middle, .4 in front of the wall): where somebody goes in"
+  },
+  "puerta_farmacia": {
+   "world": [1.13, 0.4, 0],
+   "screen": [133, 146],
+   "depth": 0.9369,
+   "scale": 1,
+   "kind": "door",
+   "sprite": "abuela",
+   "what": "at the door of the farmacia (the door's middle, .4 in front of the wall): where somebody goes in"
+  },
+  "puerta_correo": {
+   "world": [3.38, 0.4, 0],
+   "screen": [175, 167],
+   "depth": 2.3148,
+   "scale": 1,
+   "kind": "door",
+   "sprite": "abuela",
+   "what": "at the door of the correo (the door's middle, .4 in front of the wall): where somebody goes in"
+  },
+  "abuela.puerta_tienda": {
+   "world": [-3.37, 0.75, 0],
+   "screen": [44, 108],
+   "depth": -1.6044,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "abuela at the tienda's door: the group that goes to a door (abuela, the stroller, the frog)"
+  },
+  "cochecito.puerta_tienda": {
+   "world": [-4.02, 1, 0],
+   "screen": [28, 104],
+   "depth": -1.8494,
+   "scale": 1,
+   "kind": "stroller",
+   "sprite": "cochecito",
+   "what": "the stroller with the bebé at the tienda's door, .65 left of the door's middle"
+  },
+  "coqui.puerta_tienda": {
+   "world": [-2.72, 0.9, 0],
+   "screen": [53, 115],
+   "depth": -1.1145,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "the frog at the tienda's door, .65 right of the door's middle"
+  },
+  "abuela.puerta_banco": {
+   "world": [-1.12, 0.75, 0],
+   "screen": [86, 129],
+   "depth": -0.2266,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "abuela at the banco's door: the group that goes to a door (abuela, the stroller, the frog)"
+  },
+  "cochecito.puerta_banco": {
+   "world": [-1.77, 1, 0],
+   "screen": [69, 125],
+   "depth": -0.4715,
+   "scale": 1,
+   "kind": "stroller",
+   "sprite": "cochecito",
+   "what": "the stroller with the bebé at the banco's door, .65 left of the door's middle"
+  },
+  "coqui.puerta_banco": {
+   "world": [-0.47, 0.9, 0],
+   "screen": [95, 136],
+   "depth": 0.2633,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "the frog at the banco's door, .65 right of the door's middle"
+  },
+  "abuela.puerta_farmacia": {
+   "world": [1.13, 0.75, 0],
+   "screen": [127, 149],
+   "depth": 1.1513,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "abuela at the farmacia's door: the group that goes to a door (abuela, the stroller, the frog)"
+  },
+  "cochecito.puerta_farmacia": {
+   "world": [0.48, 1, 0],
+   "screen": [110, 146],
+   "depth": 0.9063,
+   "scale": 1,
+   "kind": "stroller",
+   "sprite": "cochecito",
+   "what": "the stroller with the bebé at the farmacia's door, .65 left of the door's middle"
+  },
+  "coqui.puerta_farmacia": {
+   "world": [1.78, 0.9, 0],
+   "screen": [136, 157],
+   "depth": 1.6412,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "the frog at the farmacia's door, .65 right of the door's middle"
+  },
+  "abuela.puerta_correo": {
+   "world": [3.38, 0.75, 0],
+   "screen": [168, 170],
+   "depth": 2.5291,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "abuela at the correo's door: the group that goes to a door (abuela, the stroller, the frog)"
+  },
+  "cochecito.puerta_correo": {
+   "world": [2.73, 1, 0],
+   "screen": [152, 166],
+   "depth": 2.2841,
+   "scale": 1,
+   "kind": "stroller",
+   "sprite": "cochecito",
+   "what": "the stroller with the bebé at the correo's door, .65 left of the door's middle"
+  },
+  "coqui.puerta_correo": {
+   "world": [4.03, 0.9, 0],
+   "screen": [178, 177],
+   "depth": 3.019,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "the frog at the correo's door, .65 right of the door's middle"
+  },
+  "abuela.acera": {
+   "world": [1.9, 2, 0],
+   "screen": [118, 168],
+   "depth": 2.3883,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "story 54, the start: abuela on the near pavement"
+  },
+  "cochecito": {
+   "world": [1.2, 2.15, 0],
+   "screen": [103, 163],
+   "depth": 2.0514,
+   "scale": 1,
+   "kind": "stroller",
+   "sprite": "cochecito",
+   "what": "story 54, the start: the stroller with the bebé"
+  },
+  "coqui.acera": {
+   "world": [2.6, 1.9, 0],
+   "screen": [133, 173],
+   "depth": 2.7557,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "story 54, the start: the frog on the near pavement"
+  },
+  "caballito": {
+   "world": [-4.15, 1.3, 0.72],
+   "screen": [20, 90],
+   "depth": -1.3853,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "the rider's place on the horse (E.HORSE x, y; z 0.72, the top of its body): the frog rides here"
+  },
+  "abuela.caballito": {
+   "world": [-3.3, 1.6, 0],
+   "screen": [30, 116],
+   "depth": -1.041,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "the group at the horse: abuela"
+  },
+  "cochecito.caballito": {
+   "world": [-3.9, 2, 0],
+   "screen": [12, 115],
+   "depth": -1.1635,
+   "scale": 1,
+   "kind": "stroller",
+   "sprite": "cochecito",
+   "what": "the group at the horse: the stroller with the bebé"
+  },
+  "banco_acera": {
+   "world": [-0.2, 2.15, 0.46],
+   "screen": [77, 140],
+   "depth": 1.4241,
+   "scale": 1,
+   "kind": "seat",
+   "sprite": "abuelaS",
+   "what": "story 56: abuela sitting on the seat, on its top (z 0.46); the sitting sprite is anchored by her lap (rules.anchor)"
+  },
+  "pan": {
+   "world": [0.4, 2.15, 0.46],
+   "screen": [88, 145],
+   "depth": 1.7915,
+   "scale": 1,
+   "kind": "small",
+   "sprite": "pan",
+   "what": "story 56: abuela's bread beside her on the seat (z 0.46)"
+  },
+  "senora.tienda": {
+   "world": [-3.07, 0.8, 0],
+   "screen": [49, 111],
+   "depth": -1.3901,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "senora",
+   "what": "story 56: the señora who has just come out of the tienda with her kite (the tienda door's middle + .3)"
+  },
+  "coqui.56": {
+   "world": [0.7, 1.5, 0],
+   "screen": [105, 152],
+   "depth": 1.3472,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "story 56: the frog on the pavement"
+  },
+  "senora.pasa": {
+   "world": [1.6, 1.3, 0],
+   "screen": [126, 159],
+   "depth": 1.7759,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "senora",
+   "what": "story 56, the game: where the señora stops on her way past"
+  },
+  "abuela.lluvia": {
+   "world": [0.3, 1.6, 0],
+   "screen": [96, 149],
+   "depth": 1.1635,
+   "scale": 1,
+   "kind": "person",
+   "sprite": "abuela",
+   "what": "story 56, the ending (nube 2): abuela standing, with the umbrella"
+  },
+  "coqui.lluvia": {
+   "world": [1.2, 1.9, 0],
+   "screen": [107, 160],
+   "depth": 1.8984,
+   "scale": 1,
+   "kind": "frog",
+   "sprite": "coqui",
+   "what": "story 56, the ending (nube 2): the frog in the rain"
+  }
+ },
+ "groups": {
+  "inicio": ["abuela.acera", "cochecito", "coqui.acera"],
+  "grupo_caballito": ["abuela.caballito", "cochecito.caballito", "caballito"],
+  "grupo_tienda": ["abuela.puerta_tienda", "cochecito.puerta_tienda", "coqui.puerta_tienda"],
+  "grupo_banco": ["abuela.puerta_banco", "cochecito.puerta_banco", "coqui.puerta_banco"],
+  "grupo_farmacia": ["abuela.puerta_farmacia", "cochecito.puerta_farmacia", "coqui.puerta_farmacia"],
+  "grupo_correo": ["abuela.puerta_correo", "cochecito.puerta_correo", "coqui.puerta_correo"]
+ },
+ "views": {
+  "tiendas": {
+   "zoom": 1,
+   "x0": 3,
+   "region": [3, 0, 196, 216],
+   "needs": {
+    "from": -1,
+    "to": 198,
+    "picked": "x0 3 holds the whole row (it does for x0 3 to 8); no x0 holds every spot's sprite as well: with this one 1 spot sprite(s) are cut by 4 px in all (span of everything: columns -1 to 198)",
+    "items": [
+     [
+      "caballito (the horse's pixels)",
+      8,
+      29
+     ],
+     [
+      "buzon (the post box's pixels)",
+      180,
+      197
+     ],
+     [
+      "door tienda",
+      45,
+      70
+     ],
+     [
+      "sign tienda",
+      40,
+      74
+     ],
+     [
+      "door banco",
+      87,
+      111
+     ],
+     [
+      "sign banco",
+      82,
+      115
+     ],
+     [
+      "door farmacia",
+      128,
+      153
+     ],
+     [
+      "sign farmacia",
+      123,
+      156
+     ],
+     [
+      "door correo",
+      169,
+      194
+     ],
+     [
+      "sign correo",
+      164,
+      198
+     ],
+     [
+      "spot puerta_tienda",
+      38,
+      63
+     ],
+     [
+      "spot puerta_banco",
+      79,
+      104
+     ],
+     [
+      "spot puerta_farmacia",
+      120,
+      145
+     ],
+     [
+      "spot puerta_correo",
+      162,
+      187
+     ],
+     [
+      "spot abuela.puerta_tienda",
+      31,
+      56
+     ],
+     [
+      "spot cochecito.puerta_tienda",
+      15,
+      40
+     ],
+     [
+      "spot coqui.puerta_tienda",
+      37,
+      68
+     ],
+     [
+      "spot abuela.puerta_banco",
+      73,
+      98
+     ],
+     [
+      "spot cochecito.puerta_banco",
+      56,
+      81
+     ],
+     [
+      "spot coqui.puerta_banco",
+      79,
+      110
+     ],
+     [
+      "spot abuela.puerta_farmacia",
+      114,
+      139
+     ],
+     [
+      "spot cochecito.puerta_farmacia",
+      97,
+      122
+     ],
+     [
+      "spot coqui.puerta_farmacia",
+      120,
+      151
+     ],
+     [
+      "spot abuela.puerta_correo",
+      155,
+      180
+     ],
+     [
+      "spot cochecito.puerta_correo",
+      139,
+      164
+     ],
+     [
+      "spot coqui.puerta_correo",
+      162,
+      193
+     ],
+     [
+      "spot abuela.acera",
+      105,
+      130
+     ],
+     [
+      "spot cochecito",
+      90,
+      115
+     ],
+     [
+      "spot coqui.acera",
+      117,
+      148
+     ],
+     [
+      "spot caballito",
+      4,
+      35
+     ],
+     [
+      "spot abuela.caballito",
+      17,
+      42
+     ],
+     [
+      "spot cochecito.caballito",
+      -1,
+      24
+     ],
+     [
+      "spot banco_acera",
+      65,
+      102
+     ],
+     [
+      "spot pan",
+      83,
+      92
+     ],
+     [
+      "spot senora.tienda",
+      37,
+      60
+     ],
+     [
+      "spot coqui.56",
+      89,
+      120
+     ],
+     [
+      "spot senora.pasa",
+      114,
+      137
+     ],
+     [
+      "spot abuela.lluvia",
+      83,
+      108
+     ],
+     [
+      "spot coqui.lluvia",
+      91,
+      122
+     ]
+    ]
+   },
+   "what": "the one view of fila tiendas: the 196 x 216 window over the 240 x 216 picture. x0 = the value in 0 .. 44 that holds what must be inside (the horse, the four doors, the four signs and the post box, and every spot's sprite: needs lists each as [name, first column, last column]) with the fewest cut pixels; of those, the one nearest to the middle of the span (x0 = clamp(round((from + to) / 2 - 98), 0, 44)). `needs.picked` says what it holds and what is cut"
+  }
+ },
+ "notes": [
+  "a spot's name for the group at a door is abuela.puerta_<k>, cochecito.puerta_<k>, coqui.puerta_<k> (the spec gives their places, not their names); likewise cochecito.caballito, abuela.caballito, pan, abuela.lluvia, coqui.lluvia and, in altos, luis.puerta_izq/der, coqui.puerta_izq/der, coqui.bici",
+  "a front's thing box is its lit wall (a slab .02 deep, from the wall's left end to its right end and from the floor to its height), so that two fronts' boxes do not overlap; the door's box is the door's own width and height",
+  "readings of the spec the make took where it says less than it needs (the orchestrator may change them): senora.tienda is the tienda door's MIDDLE + .3; coqui.bici is the same x, y as bici at z 0.9; bordillo1 is Luis and bordillo2 the frog; in altos the group in front of a door (luis.puerta_*, coqui.puerta_*) is given for both buildings, the spec names only the tall one's; the preview's hora is manana for moments 1 to 3 and 6 to 8 and tarde for 4 and 5 (story 56 is the afternoon), moment 8 uses lado der as moment 7; the stroller's box is 26 wide (its stand-in) and its shadow .35 (the spec gives neither); the frog's box is 32 x 24 (his drawn rows)"
+ ],
+ "front": {
+  "list": null,
+  "how": "no list. A character is hidden by every set pixel that is nearer the camera than the character's feet (depth test against the baked depth, with the feet's depth plus 0.3), so a front hides nobody who stands in front of it, the seat's back hides nobody who sits on it, and a person at a door is whole.",
+  "bias": 0.3,
+  "plane": "for the character's pixel on picture row r (r = 0 at the top): depth(r) = d + (sy - (r + .5)) * tan(30 deg) / S, where d is the spot's depth and sy its screen row; the pixel is hidden where bakedZ[r * 240 + x] > depth(r) + bias (bakedZ: window.DEPTH.z of the set page). The upright plane through the feet, as El mostrador's front; the same test for people, the stroller and the small things",
+  "sprites": "between two sprites the nearer pixel wins: the same depth(r), no bias; equal depths: the one drawn later (the frog on the handlebar is drawn after Luis)"
+ },
+ "shadows": {
+  "radius": {
+   "coqui": 0.45,
+   "adultos": 0.35,
+   "ninos": 0.28,
+   "cochecito": 0.35
+  },
+  "byCharacter": {
+   "coqui": 0.45,
+   "abuela": 0.35,
+   "senora": 0.35,
+   "senor": 0.35,
+   "mama": 0.35,
+   "papa": 0.35,
+   "luis": 0.28,
+   "cochecito": 0.35
+  },
+  "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0)",
+  "none": ["caballito", "banco_acera", "pan", "coqui.bici"],
+  "onSeat": "the frog on the horse or the handlebar and abuela on the seat cast none: they are not on the ground (the horse and the seat cast their own); a shadow cast at the pavement under the frog on the handlebar would show in front of Luis"
+ },
+ "altos": {
+  "what": "the state fila = altos (story 55): two buildings with no sign, a tall old one and a low new one; par a | b picks the pair, lado izq | der says which side the tall one stands on. tiendas-set.html draws it with its own origin; its picture, spots, things and view are here; the depth rule, the anchors and the shadows are the same as above",
+  "origin": {
+   "originX": 6,
+   "originY": 42
+  },
+  "picture": [240, 216],
+  "view": [196, 216],
+  "setKey": {
+   "params": {
+    "par": {
+     "values": ["a", "b"]
+    },
+    "lado": {
+     "values": ["izq", "der"]
+    },
+    "hora": {
+     "values": ["manana", "tarde"]
+    }
+   },
+   "key": "par + lado + hora, e.g. \"a-izq-manana\"",
+   "baked": ["?fila=altos&par=a&lado=izq&hora=manana", "?fila=altos&par=a&lado=izq&hora=tarde", "?fila=altos&par=a&lado=der&hora=manana", "?fila=altos&par=a&lado=der&hora=tarde", "?fila=altos&par=b&lado=izq&hora=manana", "?fila=altos&par=b&lado=izq&hora=tarde", "?fila=altos&par=b&lado=der&hora=manana", "?fila=altos&par=b&lado=der&hora=tarde"]
+  },
+  "buildings": {
+   "width": 3.9,
+   "left": -4.2,
+   "right": 0.4,
+   "alto": 4.6,
+   "nuevo": 2.75,
+   "doors": [
+    {
+     "door": [-2.8, -1.7],
+     "doorMiddle": -2.25
+    },
+    {
+     "door": [1.8, 2.9],
+     "doorMiddle": 2.35
+    }
+   ]
+  },
+  "things": {
+   "alto": {
+    "set": true,
+    "by": "lado",
+    "what": "the tall old building: its lit wall, a poke (4.6 high, 3.9 wide); izq = lado izq (the tall one on the left), der = lado der",
+    "izq": {
+     "world": [-4.2, 0, 0, -0.3, 0.02, 4.6],
+     "box": [48, 7, 73, 141]
+    },
+    "der": {
+     "world": [0.4, 0, 0, 4.3, 0.02, 4.6],
+     "box": [132, 50, 74, 140]
+    }
+   },
+   "nuevo": {
+    "set": true,
+    "by": "lado",
+    "what": "the low new building: its lit wall, a poke (2.75 high, 3.9 wide); izq = lado izq (the tall one on the left), der = lado der",
+    "izq": {
+     "world": [0.4, 0, 0, 4.3, 0.02, 2.75],
+     "box": [132, 91, 74, 99]
+    },
+    "der": {
+     "world": [-4.2, 0, 0, -0.3, 0.02, 2.75],
+     "box": [48, 49, 73, 99]
+    }
+   },
+   "comida": "sprite",
+   "abuela": "sprite",
+   "bebe": "sprite",
+   "luis": "sprite",
+   "mama": "sprite",
+   "papa": "sprite",
+   "senora": "sprite",
+   "senor": "sprite",
+   "coqui": "sprite"
+  },
+  "spots": {
+   "puerta_izq": {
+    "world": [-2.25, 0.4, 0],
+    "screen": [77, 133],
+    "depth": -1.1329,
+    "scale": 1,
+    "kind": "door",
+    "sprite": "mama",
+    "what": "at the door of the left building (the door's middle, .4 in front of the wall): mamá stands here when the tall building is on the left"
+   },
+   "puerta_der": {
+    "world": [2.35, 0.4, 0],
+    "screen": [162, 175],
+    "depth": 1.684,
+    "scale": 1,
+    "kind": "door",
+    "sprite": "mama",
+    "what": "at the door of the right building (the door's middle, .4 in front of the wall): mamá stands here when the tall building is on the right"
+   },
+   "luis.puerta_izq": {
+    "world": [-2.75, 1, 0],
+    "screen": [57, 134],
+    "depth": -1.0717,
+    "scale": 1,
+    "kind": "person",
+    "sprite": "luis",
+    "what": "Luis in front of the left building's door (the door's middle - .5)"
+   },
+   "coqui.puerta_izq": {
+    "world": [-1.85, 1.1, 0],
+    "screen": [72, 143],
+    "depth": -0.4593,
+    "scale": 1,
+    "kind": "frog",
+    "sprite": "coqui",
+    "what": "the frog in front of the left building's door (the door's middle + .4)"
+   },
+   "luis.puerta_der": {
+    "world": [1.85, 1, 0],
+    "screen": [142, 176],
+    "depth": 1.7453,
+    "scale": 1,
+    "kind": "person",
+    "sprite": "luis",
+    "what": "Luis in front of the right building's door (the door's middle - .5)"
+   },
+   "coqui.puerta_der": {
+    "world": [2.75, 1.1, 0],
+    "screen": [156, 185],
+    "depth": 2.3576,
+    "scale": 1,
+    "kind": "frog",
+    "sprite": "coqui",
+    "what": "the frog in front of the right building's door (the door's middle + .4)"
+   },
+   "bici": {
+    "world": [-0.9, 2.2, 0],
+    "screen": [69, 162],
+    "depth": 0.7961,
+    "scale": 1,
+    "kind": "person",
+    "sprite": "luis",
+    "what": "Luis standing with his bicycle (the bicycle is drawn here too)"
+   },
+   "coqui.bici": {
+    "world": [-0.9, 2.2, 0.9],
+    "screen": [69, 142],
+    "depth": 1.2461,
+    "scale": 1,
+    "kind": "frog",
+    "sprite": "coqui",
+    "what": "the frog on the handlebar: the same x, y as bici, z 0.9"
+   },
+   "senor.pasa": {
+    "world": [1.2, 1.5, 0],
+    "screen": [120, 175],
+    "depth": 1.6534,
+    "scale": 1,
+    "kind": "person",
+    "sprite": "senor",
+    "what": "the señor passing"
+   },
+   "bordillo1": {
+    "world": [-0.6, 2.62, 0],
+    "screen": [67, 169],
+    "depth": 1.237,
+    "scale": 1,
+    "kind": "person",
+    "sprite": "luisS",
+    "what": "Luis sitting on the kerb"
+   },
+   "bordillo2": {
+    "world": [0.1, 2.62, 0],
+    "screen": [80, 175],
+    "depth": 1.6657,
+    "scale": 1,
+    "kind": "frog",
+    "sprite": "coqui",
+    "what": "the frog sitting on the kerb"
+   }
+  },
+  "groups": {
+   "puerta_izq": ["puerta_izq", "luis.puerta_izq", "coqui.puerta_izq"],
+   "puerta_der": ["puerta_der", "luis.puerta_der", "coqui.puerta_der"],
+   "bici": ["bici", "coqui.bici"],
+   "bordillo": ["bordillo1", "bordillo2"]
+  },
+  "views": {
+   "altos": {
+    "zoom": 1,
+    "x0": 15,
+    "region": [15, 0, 196, 216],
+    "needs": {
+     "from": 45,
+     "to": 181,
+     "picked": "x0 15 holds the whole row (it does for x0 0 to 44); every spot's sprite is inside as well (span of everything: columns 45 to 181)",
+     "items": [
+      [
+       "door izq",
+       72,
+       96
+      ],
+      [
+       "door der",
+       156,
+       181
+      ],
+      [
+       "spot puerta_izq",
+       65,
+       88
+      ],
+      [
+       "spot puerta_der",
+       150,
+       173
+      ],
+      [
+       "spot luis.puerta_izq",
+       45,
+       68
+      ],
+      [
+       "spot coqui.puerta_izq",
+       56,
+       87
+      ],
+      [
+       "spot luis.puerta_der",
+       130,
+       153
+      ],
+      [
+       "spot coqui.puerta_der",
+       140,
+       171
+      ],
+      [
+       "spot bici",
+       57,
+       80
+      ],
+      [
+       "spot coqui.bici",
+       53,
+       84
+      ],
+      [
+       "spot senor.pasa",
+       108,
+       131
+      ],
+      [
+       "spot bordillo1",
+       55,
+       78
+      ],
+      [
+       "spot bordillo2",
+       64,
+       95
+      ]
+     ]
+    },
+    "what": "the one view of fila altos: the 196 x 216 window over the 240 x 216 picture, chosen the same way: it must hold both buildings' doors (with their frames) and every spot's sprite"
+   }
+  },
+  "shadows": {
+   "byCharacter": {
+    "luis": 0.28,
+    "senor": 0.35,
+    "mama": 0.35,
+    "coqui": 0.45
+   },
+   "none": ["coqui.bici"],
+   "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0)"
+  }
+ },
+ "checks": {
+  "results": [
+   {
+    "name": "in-view",
+    "ok": false,
+    "lines": [
+     "in-view: 1 spot(s) with a cut sprite or a thing outside the picture (a spot's sprite is its class box, 32 / 24 / 24 / 26 wide, together with the pixels its maker draws):",
+     "  tiendas cochecito.caballito 12,115 (cochecito box columns -1 to 24, rows 80 to 114) is cut: 4 px left of the window x0 3, 1 px left of the picture; nearest spot value that holds it whole: x -3.9 -> -3.68 (+0.22) or y 2 -> 1.78 (-0.22)",
+     "  tiendas window [3, 199): x0 3 holds the whole row (it does for x0 3 to 8); no x0 holds every spot's sprite as well: with this one 1 spot sprite(s) are cut by 4 px in all (span of everything: columns -1 to 198)",
+     "  altos window [15, 211): x0 15 holds the whole row (it does for x0 0 to 44); every spot's sprite is inside as well (span of everything: columns 45 to 181)",
+     "       info, not a check: tiendas x0 trade-off, each x0 as (px of the row cut / px of spots' sprites cut): 0: 5/1, 1: 3/2, 2: 1/3, 3: 0/4, 4: 0/5, 5: 0/7, 6: 0/9, 7: 0/11, 8: 0/13, 9: 1/15, 10: 2/17",
+     "       info, not a check: altos x0 trade-off: every x0 from 0 to 44 holds the row and every spot's sprite; 15 is the middle of what they span",
+     "       info, not a check: tiendas thing correo box columns 160 to 202 are partly outside the window [3, 199) by 4 px"
+    ]
+   },
+   {
+    "name": "row-in-window",
+    "ok": true,
+    "lines": [
+     "row-in-window: tiendas: the horse, the four doors, the four signs and the post box are inside the window x0 3 ([3, 199)); altos: both doors are inside x0 15",
+     "       tiendas: the row's own span is columns 8 to 198 (191 wide): it fits one window for x0 3 to 8 (caballito 8..29, buzon 180..197, door tienda 45..70, sign tienda 40..74, door banco 87..111, sign banco 82..115, door farmacia 128..153, sign farmacia 123..156, door correo 169..194, sign correo 164..198)",
+     "       altos: both doors span columns 72 to 181 (door izq 72..96, door der 156..181)"
+    ]
+   },
+   {
+    "name": "sprites-apart",
+    "ok": false,
+    "lines": [
+     "sprites-apart: 12 pair(s) with overlapping boxes and feet closer than 12 px up-down (the frog 32 wide, a grown-up 24, a child 24, the stroller 26):",
+     "  moment 1: abuela.acera [118,168] (24 wide) ~ cochecito [103,163] (26 wide): 15 px sideways (the boxes need 25), 5 px up-down (needs 12): short by 10 px sideways or 7 px up-down",
+     "  moment 1: abuela.acera [118,168] (24 wide) ~ coqui.acera [133,173] (32 wide): 15 px sideways (the boxes need 28), 5 px up-down (needs 12): short by 13 px sideways or 7 px up-down",
+     "  moment 2: abuela.puerta_correo [168,170] (24 wide) ~ cochecito.puerta_correo [152,166] (26 wide): 16 px sideways (the boxes need 25), 4 px up-down (needs 12): short by 9 px sideways or 8 px up-down",
+     "  moment 2: abuela.puerta_correo [168,170] (24 wide) ~ coqui.puerta_correo [178,177] (32 wide): 10 px sideways (the boxes need 28), 7 px up-down (needs 12): short by 18 px sideways or 5 px up-down",
+     "  moment 2: cochecito.puerta_correo [152,166] (26 wide) ~ coqui.puerta_correo [178,177] (32 wide): 26 px sideways (the boxes need 29), 11 px up-down (needs 12): short by 3 px sideways or 1 px up-down",
+     "  moment 3: abuela.caballito [30,116] (24 wide) ~ cochecito.caballito [12,115] (26 wide): 18 px sideways (the boxes need 25), 1 px up-down (needs 12): short by 7 px sideways or 11 px up-down",
+     "  moment 4: senora.pasa [126,159] (24 wide) ~ coqui.56 [105,152] (32 wide): 21 px sideways (the boxes need 28), 7 px up-down (needs 12): short by 7 px sideways or 5 px up-down",
+     "  moment 5: abuela.lluvia [96,149] (24 wide) ~ coqui.lluvia [107,160] (32 wide): 11 px sideways (the boxes need 28), 11 px up-down (needs 12): short by 17 px sideways or 1 px up-down",
+     "  moment 7: puerta_der [162,175] (24 wide) ~ luis.puerta_der [142,176] (24 wide): 20 px sideways (the boxes need 24), 1 px up-down (needs 12): short by 4 px sideways or 11 px up-down",
+     "  moment 7: puerta_der [162,175] (24 wide) ~ coqui.puerta_der [156,185] (32 wide): 6 px sideways (the boxes need 28), 10 px up-down (needs 12): short by 22 px sideways or 2 px up-down",
+     "  moment 7: luis.puerta_der [142,176] (24 wide) ~ coqui.puerta_der [156,185] (32 wide): 14 px sideways (the boxes need 28), 9 px up-down (needs 12): short by 14 px sideways or 3 px up-down",
+     "  moment 8: bordillo1 [67,169] (24 wide) ~ bordillo2 [80,175] (32 wide): 13 px sideways (the boxes need 28), 6 px up-down (needs 12): short by 15 px sideways or 6 px up-down",
+     "       nearest passing, moment 1 abuela.acera ~ cochecito: abuela.acera 1.9,2,0: x 1.9 -> 2.41 (+0.51) or y 2 -> 1.49 (-0.51); or cochecito 1.2,2.15,0: x 1.2 -> 0.7 (-0.5) or y 2.15 -> 2.65 (+0.5)",
+     "       nearest passing, moment 1 abuela.acera ~ coqui.acera: abuela.acera 1.9,2,0: x 1.9 -> 1.21 (-0.69) or y 2 -> 2.69 (+0.69); or coqui.acera 2.6,1.9,0: x 2.6 -> 3.27 (+0.67) or y 1.9 -> 2.57 (+0.67)",
+     "       nearest passing, moment 2 abuela.puerta_correo ~ cochecito.puerta_correo: abuela.puerta_correo 3.38,0.75,0: x 3.38 -> 3.83 (+0.45) or y 0.75 -> 0.3 (-0.45); or cochecito.puerta_correo 2.73,1,0: x 2.73 -> 2.27 (-0.46) or y 1 -> 1.46 (+0.46)",
+     "       nearest passing, moment 2 abuela.puerta_correo ~ coqui.puerta_correo: abuela.puerta_correo 3.38,0.75,0: x 3.38 -> 2.89 (-0.49) or y 0.75 -> 0.26 (-0.49); or coqui.puerta_correo 4.03,0.9,0: x 4.03 -> 4.49 (+0.46) or y 0.9 -> 1.36 (+0.46)",
+     "       nearest passing, moment 2 cochecito.puerta_correo ~ coqui.puerta_correo: cochecito.puerta_correo 2.73,1,0: x 2.73 -> 2.64 (-0.09) or y 1 -> 0.91 (-0.09); or coqui.puerta_correo 4.03,0.9,0: x 4.03 -> 4.05 (+0.02) or y 0.9 -> 0.92 (+0.02)",
+     "       nearest passing, moment 3 abuela.caballito ~ cochecito.caballito: abuela.caballito -3.3,1.6,0: x -3.3 -> -2.94 (+0.36) or y 1.6 -> 1.24 (-0.36); or cochecito.caballito -3.9,2,0: x -3.9 -> -4.23 (-0.33) or y 2 -> 2.33 (+0.33)",
+     "       nearest passing, moment 4 senora.pasa ~ coqui.56: senora.pasa 1.6,1.3,0: x 1.6 -> 1.98 (+0.38) or y 1.3 -> 0.92 (-0.38); or coqui.56 0.7,1.5,0: x 0.7 -> 0.33 (-0.37) or y 1.5 -> 1.87 (+0.37)",
+     "       nearest passing, moment 5 abuela.lluvia ~ coqui.lluvia: abuela.lluvia 0.3,1.6,0: x 0.3 -> 0.19 (-0.11) or y 1.6 -> 1.49 (-0.11); or coqui.lluvia 1.2,1.9,0: x 1.2 -> 1.21 (+0.01) or y 1.9 -> 1.91 (+0.01)",
+     "       nearest passing, moment 7 puerta_der ~ luis.puerta_der: puerta_der 2.35,0.4,0: x 2.35 -> 2.55 (+0.2) or y 0.4 -> 0.2 (-0.2); or luis.puerta_der 1.85,1,0: x 1.85 -> 1.67 (-0.18) or y 1 -> 1.18 (+0.18)",
+     "       nearest passing, moment 7 puerta_der ~ coqui.puerta_der: puerta_der 2.35,0.4,0: x 2.35 -> 2.15 (-0.2) or y 0.4 -> 0.2 (-0.2); or coqui.puerta_der 2.75,1.1,0: x 2.75 -> 2.88 (+0.13) or y 1.1 -> 1.23 (+0.13)",
+     "       nearest passing, moment 7 luis.puerta_der ~ coqui.puerta_der: luis.puerta_der 1.85,1,0: x 1.85 -> 1.55 (-0.3) or y 1 -> 0.7 (-0.3); or coqui.puerta_der 2.75,1.1,0: x 2.75 -> 2.98 (+0.23) or y 1.1 -> 1.33 (+0.23)",
+     "       nearest passing, moment 8 bordillo1 ~ bordillo2: bordillo1 -0.6,2.62,0: x -0.6 -> -1.16 (-0.56) or y 2.62 -> 2.06 (-0.56); or bordillo2 0.1,2.62,0: x 0.1 -> 0.7 (+0.6) or y 2.62 -> 3.22 (+0.6)",
+     "       closest in each moment (px across / px down): m1 abuela.acera ~ coqui.acera 15/5 (needs 28 across or 12 down); m2 abuela.puerta_correo ~ coqui.puerta_correo 10/7 (needs 28 across or 12 down); m3 cochecito.caballito ~ caballito 8/25 (needs 29 across or 12 down); m4 senora.pasa ~ coqui.56 21/7 (needs 28 across or 12 down); m5 abuela.lluvia ~ coqui.lluvia 11/11 (needs 28 across or 12 down); m6 bici ~ coqui.bici 0/20 (needs 28 across or 12 down); m7 puerta_der ~ coqui.puerta_der 6/10 (needs 28 across or 12 down); m8 bordillo1 ~ bordillo2 13/6 (needs 28 across or 12 down)"
+    ]
+   },
+   {
+    "name": "frog-seen",
+    "ok": false,
+    "lines": [
+     "frog-seen: 2 moment(s) in which something is drawn over the frog's box or the set hides him:",
+     "  moment 3 the frog at caballito [20,90]: 536 drawn pixels, 17 hidden by the set (17 by caballito), 342 of his pixels and 466 of the 32 x 24 px of his box covered by a nearer sprite (abuela.caballito 213 of his pixels, 312 of his box; cochecito.caballito 144 of his pixels, 174 of his box)",
+     "  moment 4 the frog at coqui.56 [105,152]: 536 drawn pixels, 136 hidden by the set (136 by asiento), 40 of his pixels and 162 of the 32 x 24 px of his box covered by a nearer sprite (pan 3 of his pixels, 42 of his box; senora.pasa 37 of his pixels, 120 of his box)",
+     "       nearest passing, moment 3 (one spot moved, the others stay; the hidden pixels of a moved sprite are not counted): the frog's spot caballito is the horse's back (E.HORSE, z 0.72), it does not move; all of these together (each clears only its own cover) (the 17 px the set hides, 17 by caballito, stay hidden): abuela.caballito -3.3,1.6,0 -> x -3.3 -> -2.5 (+0.8) AND cochecito.caballito -3.9,2,0 -> y 2 -> 2.82 (+0.82)",
+     "       nearest passing, moment 4 (one spot moved, the others stay; the hidden pixels of a moved sprite are not counted): either the frog's spot coqui.56 0.7,1.5,0: y 1.5 -> 2.13 (+0.63); or all of these together (each clears only its own cover) (the 136 px the set hides, 136 by asiento, stay hidden): pan 0.4,2.15,0.46 -> x 0.4 -> 0.21 (-0.19) or y 2.15 -> 2.34 (+0.19) AND senora.pasa 1.6,1.3,0 -> x 1.6 -> 1.98 (+0.38) or y 1.3 -> 0.92 (-0.38)"
+    ]
+   },
+   {
+    "name": "door-front",
+    "ok": true,
+    "lines": [
+     "door-front: 10 spots at a door (the four puerta_<k> and their abuela.puerta_<k> in tiendas, puerta_izq and puerta_der in altos) are in front of their door: inside its width, in front of the wall and not hidden by it: puerta_tienda x -3.37 (door -3.92 to -2.82), y 0.4, 0 pixels hidden by a wall; abuela.puerta_tienda x -3.37 (door -3.92 to -2.82), y 0.75, 0 pixels hidden by a wall; puerta_banco x -1.12 (door -1.67 to -0.57), y 0.4, 0 pixels hidden by a wall; abuela.puerta_banco x -1.12 (door -1.67 to -0.57), y 0.75, 0 pixels hidden by a wall (and 36 of its 895 by other things: 36 by asiento); puerta_farmacia x 1.13 (door 0.58 to 1.68), y 0.4, 0 pixels hidden by a wall; abuela.puerta_farmacia x 1.13 (door 0.58 to 1.68), y 0.75, 0 pixels hidden by a wall; puerta_correo x 3.38 (door 2.83 to 3.93), y 0.4, 0 pixels hidden by a wall (and 106 of its 895 by other things: 106 by buzon); abuela.puerta_correo x 3.38 (door 2.83 to 3.93), y 0.75, 0 pixels hidden by a wall (and 7 of its 895 by other things: 7 by buzon); puerta_izq x -2.25 (door -2.8 to -1.7), y 0.4, 0 pixels hidden by a wall; puerta_der x 2.35 (door 1.8 to 2.9), y 0.4, 0 pixels hidden by a wall"
+    ]
+   },
+   {
+    "name": "seat-top",
+    "ok": true,
+    "lines": [
+     "seat-top: banco_acera and pan sit at z 0.46 on the seat (x -1.2 to 0.8, y 1.9 to 2.4) and caballito at z 0.72 on the horse: the set draws the surface there at that depth: banco_acera -0.2,2.15,0.46: the set's pixel there is part asiento, its depth 1.4486 against the spot's 1.4241 (0.0245 apart); pan 0.4,2.15,0.46: the set's pixel there is part asiento, its depth 1.8344 against the spot's 1.7915 (0.0429 apart); caballito -4.15,1.3,0.72: the set's pixel there is part caballito, its depth -1.3669 against the spot's -1.3853 (0.0184 apart)"
+    ]
+   },
+   {
+    "name": "street-clear",
+    "ok": true,
+    "lines": [
+     "street-clear: no standing spot is on the street (from y 2.8); the pavement ends at y 2.6; only bordillo1 y 2.62 and bordillo2 y 2.62 (sitting on the kerb, as the spec says) are on the kerb; the nearest to the street of the rest is altos bici at y 2.2"
+    ]
+   },
+   {
+    "name": "signs-clear",
+    "ok": true,
+    "lines": [
+     "signs-clear: in moments 1 to 5 and for every spot of fila tiendas alone (29 sprites) no pixel a sprite draws covers any of the four signs' boards; the closest a sprite's topmost pixel comes under a board's bottom edge row: 14 rows (puerta_tienda under the tienda's sign)"
+    ]
+   },
+   {
+    "name": "group-door-clear",
+    "ok": false,
+    "lines": [
+     "group-door-clear: 3 covering of a neighbouring front's door by a group at a door (the spec says \"the next front's door\"; both neighbours are checked: the stroller stands .65 left of the door's middle and covers the left-hand neighbour's door, nothing covers the right-hand one):",
+     "  the group at the banco covers 154 px of the tienda's door (left-hand neighbour): cochecito.puerta_banco 154",
+     "  the group at the farmacia covers 164 px of the banco's door (left-hand neighbour): cochecito.puerta_farmacia 164",
+     "  the group at the correo covers 160 px of the farmacia's door (left-hand neighbour): cochecito.puerta_correo 160",
+     "       nearest passing, the banco group covering the tienda's door: cochecito.puerta_banco -1.77,1,0 alone: x -1.77 -> -1.09 (+0.68) or y 1 -> 0.32 (-0.68)",
+     "       nearest passing, the farmacia group covering the banco's door: cochecito.puerta_farmacia 0.48,1,0 alone: x 0.48 -> 1.2 (+0.72)",
+     "       nearest passing, the correo group covering the farmacia's door: cochecito.puerta_correo 2.73,1,0 alone: x 2.73 -> 3.43 (+0.7) or y 1 -> 0.3 (-0.7)",
+     "       the tienda group: right-hand neighbour banco: 0 px; the banco group: left-hand neighbour tienda: 154 px (cochecito.puerta_banco 154), right-hand neighbour farmacia: 0 px; the farmacia group: left-hand neighbour banco: 164 px (cochecito.puerta_farmacia 164), right-hand neighbour correo: 0 px; the correo group: left-hand neighbour farmacia: 160 px (cochecito.puerta_correo 160)"
+    ]
+   },
+   {
+    "name": "altos-top",
+    "ok": false,
+    "lines": [
+     "altos-top: fila altos:",
+     "  par a lado izq: the tall building's roof is cut at the top by 6 row(s) (its highest drawn row would be -6)",
+     "  par b lado izq: the tall building's roof is cut at the top by 6 row(s) (its highest drawn row would be -6)",
+     "       par a lado izq: the tall one (x -4.2, 4.6 high) draws as high as row -6: 6 row(s) are above the picture; the low one (2.75 high) as high as row 78",
+     "       par a lado der: the tall one (x 0.4, 4.6 high) draws as high as row 37 (inside); the low one (2.75 high) as high as row 36",
+     "       par b lado izq: the tall one (x -4.2, 4.6 high) draws as high as row -6: 6 row(s) are above the picture; the low one (2.75 high) as high as row 78",
+     "       par b lado der: the tall one (x 0.4, 4.6 high) draws as high as row 37 (inside); the low one (2.75 high) as high as row 36",
+     "       door izq: its frame spans columns 72 to 96 and rows 66.42 to 135.48 (in either lado)",
+     "       door der: its frame spans columns 156 to 181 and rows 108.7 to 177.76 (in either lado)",
+     "       nearest value that passes: the origin's y 42 -> 48 (+6), i.e. everything 6 rows lower; the lowest sprite row of any altos spot is then 190 of 215, which still fits"
+    ]
+   },
+   {
+    "name": "info-people",
+    "ok": true,
+    "lines": [
+     "info-people: not a check; what the set hides of each sprite alone on its spot, who is covered by whom in the moments, and the preview's sprites (held things included) outside the window",
+     "       hidden by the set (alone): tiendas puerta_correo (abuela): 106 of 895 pixels (106 by buzon); tiendas cochecito.puerta_tienda (cochecito): 135 of 761 pixels (135 by caballito); tiendas abuela.puerta_banco (abuela): 36 of 895 pixels (36 by asiento); tiendas cochecito.puerta_banco (cochecito): 91 of 761 pixels (91 by asiento); tiendas coqui.puerta_banco (coqui): 121 of 536 pixels (121 by asiento); tiendas cochecito.puerta_farmacia (cochecito): 34 of 761 pixels (34 by asiento); tiendas abuela.puerta_correo (abuela): 7 of 895 pixels (7 by buzon); tiendas caballito (coqui): 17 of 536 pixels (17 by caballito); tiendas banco_acera (abuelaS): 205 of 884 pixels (202 by asiento, 3 by ground); tiendas coqui.56 (coqui): 136 of 536 pixels (136 by asiento); tiendas abuela.lluvia (abuela): 216 of 895 pixels (216 by asiento)",
+     "       covered by a nearer sprite in the moments: m1 abuela.acera (abuela): 119 of 895 shown pixels covered by coqui.acera 119; m1 cochecito (cochecito): 227 of 761 shown pixels covered by abuela.acera 227; m2 abuela.puerta_correo (abuela): 155 of 888 shown pixels covered by coqui.puerta_correo 155; m2 cochecito.puerta_correo (cochecito): 192 of 761 shown pixels covered by abuela.puerta_correo 192; m3 cochecito.caballito (cochecito): 142 of 758 shown pixels covered by abuela.caballito 142; m3 caballito (coqui): 325 of 519 shown pixels covered by abuela.caballito 196, cochecito.caballito 129; m4 banco_acera (abuelaS): 80 of 679 shown pixels covered by pan 67, coqui.56 13; m4 coqui.56 (coqui): 40 of 400 shown pixels covered by senora.pasa 37, pan 3; m5 abuela.lluvia (abuela): 37 of 679 shown pixels covered by coqui.lluvia 37; m6 bici (luis): 272 of 600 shown pixels covered by coqui.bici 272; m7 puerta_der (mama): 142 of 950 shown pixels covered by luis.puerta_der 5, coqui.puerta_der 137; m7 luis.puerta_der (luis): 64 of 600 shown pixels covered by coqui.puerta_der 64; m8 bordillo1 (luisS): 128 of 580 shown pixels covered by bordillo2 128",
+     "       heads (the top 14 rows of a person) a nearer sprite covers: m1 cochecito (cochecito): 54 of the 295 pixels of its head (the top 14 rows) are covered by abuela.acera 54; nearest place of this spot alone where no other sprite touches the head: x 1.2 -> 0.87 (-0.33); m2 cochecito.puerta_correo (cochecito): 44 of the 295 pixels of its head (the top 14 rows) are covered by abuela.puerta_correo 44; nearest place of this spot alone where no other sprite touches the head: x 2.73 -> 2.38 (-0.35); m3 cochecito.caballito (cochecito): 47 of the 295 pixels of its head (the top 14 rows) are covered by abuela.caballito 47; nearest place of this spot alone where no other sprite touches the head: y 2 -> 2.65 (+0.65); m6 bici (luis): 180 of the 182 pixels of its head (the top 14 rows) are covered by coqui.bici 180; nearest place of this spot alone where no other sprite touches the head: x -0.9 -> -1.86 (-0.96) or y 2.2 -> 1.24 (-0.96)",
+     "       outside the window: m3 cochecito.caballito (cochecito) drawn columns 0 to 24: 3 px outside the window [3, 199)"
+    ]
+   }
+  ]
+ }
+}
