@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// The bake time of each of a converted scene's states (El frente's, or --scene balcon, sala, patio or camino) in a release web
+// The bake time of each of a converted scene's states (El frente's, or --scene balcon, sala, patio, camino or campo) in a release web
 // build of the dev entry, in headless Chrome: each state's first bake, then each again on the same engine ("again").
 //
 //   flutter build web --release --no-web-resources-cdn -t tool/dev_main.dart     (in this package)
-//   node tool/bake_time.mjs [--scene balcon|sala|patio|camino] [--shots DIR]
+//   node tool/bake_time.mjs [--scene balcon|sala|patio|camino|campo] [--shots DIR]
 //
 // It serves build/web on 127.0.0.1 (a free port), opens ?page=bake, waits for `window.coquiBakes` and prints each
-// state's ms, then the least, the median and the most. --shots DIR: also screenshots of ?page=pairs and of the scene.
+// state's ms, then the least, the median and the most (and, for a set with glints on its water, what drawing them costs a frame). --shots DIR: also screenshots of ?page=pairs and of the scene.
 import fs from 'node:fs';
 import path from 'node:path';
 import http from 'node:http';
@@ -33,8 +33,8 @@ const page = await browser.newPage({ viewport: { width: 900, height: 1000 } });
 await page.goto(base + '?page=bake' + (SCENE ? '&scene=' + SCENE : ''));
 await page.waitForFunction(() => window.coquiBakes, null, { timeout: 120000 });
 const ms = JSON.parse(await page.evaluate(() => window.coquiBakes));
-for (const [k, v] of Object.entries(ms)) console.log(`${k}: ${v.toFixed(1)} ms`);
-for (const [what, keep] of [['first bakes', k => !k.endsWith(' again')], ['later bakes', k => k.endsWith(' again')]]) {
+for (const [k, v] of Object.entries(ms)) console.log(`${k}: ${v.toFixed(k.startsWith('glints') ? 3 : 1)} ms`);
+for (const [what, keep] of [['first bakes', k => !k.endsWith(' again') && !k.startsWith('glints')], ['later bakes', k => k.endsWith(' again')]]) {
   const v = Object.entries(ms).filter(([k]) => keep(k)).map(([, x]) => x).sort((a, b) => a - b);
   if (!v.length) continue;
   const med = v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2;

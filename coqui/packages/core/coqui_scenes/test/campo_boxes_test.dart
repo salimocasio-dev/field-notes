@@ -18,7 +18,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'support/campo_preview_remap.dart';
 import 'support/fixtures/campo_preview_fixture.dart';
-import 'support/fixtures/campo_set_refs.dart';
 import 'support/report.dart';
 import 'support/sheet_bundle.dart';
 
@@ -79,10 +78,13 @@ const Map<String, String> shadowedBy = {
   'campo -> luis': 'Luis in the middle of the field (pair tira, level mi): the children come before the field',
   'carmen -> bola_carmen': 'the ball in Carmen\'s hands, in front of her body: the balls are tested first (z)',
   'carmen -> bola_cq': 'the frog\'s ball in Carmen\'s hands (otra-vez, d-bola-canelo): the balls first',
-  'carmen -> bola_luis': 'Luis\'s big ball beside Carmen (la-bola): the balls first',
-  'coqui -> bola_cq': 'the frog\'s ball in his hands, in front of him: the balls first',
+  'carmen -> bola_luis':
+      'Luis\'s big ball beside Carmen (la-bola): the balls first',
+  'coqui -> bola_cq':
+      'the frog\'s ball in his hands, in front of him: the balls first',
   'coqui -> bola_luis': 'Luis\'s big ball flying past the frog (la-bola, h-campo): the balls first',
-  'luis -> bola_luis': 'the ball in Luis\'s hands, in front of his body: the balls first',
+  'luis -> bola_luis':
+      'the ball in Luis\'s hands, in front of his body: the balls first',
 };
 
 void main() {
@@ -93,7 +95,6 @@ void main() {
     frame = await ScenePictures(bundle: testBundle()).frameOf('campo');
     scene = frame.scene as Campo;
   });
-  final refs = (jsonDecode(campoSetRefs) as List).cast<Map<String, dynamic>>();
   final rows = <String>[];
 
   test('every thing of the set lies inside its touch box, in its state', () {
