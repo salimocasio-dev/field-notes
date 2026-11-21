@@ -292,7 +292,7 @@ has that the earlier ones did not, or uses differently, and how the port uses it
   `Banco.cart` draws the set's own cart (the pixels tagged `carro` in the state with the same light and moon and the cart
   closed, that state's frame at time 0), moved by `cartAt` (dx = R(W.carroX) - CARRO[0], dy = R((CARRO[0] - W.carroX) / 2),
   CARRO banco.js's own as moved: 36), at its row in the sorted list (moves line 198); its touch box moves with it.
-  banco-preview.html's PV.cartAt takes the old CARRO (47): those preview pictures differ (reported by order 36b).
+  banco-preview.html's PV.cartAt takes the same CARRO (spots.carro.new, the sheet's round 4).
 - **`helps`**: a pigeon in the air has its shadow: palomaA keeps `o.gs` (`Banco.GS`, the sheet's `helps.shadow.gsSource`, its
   numbers read from the source).
 - **`moves`** (42), read from the moved sources (`BancoPlaces.to(line, src, [pattern])`; a move named on several lines, the

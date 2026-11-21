@@ -80,10 +80,6 @@ final Map<String, String?> lagoWhole = {}, lagoTimeless = {};
 /// Each banco run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> bancoWhole = {}, bancoTimeless = {};
 
-/// The hop sounds a banco story's runs take fewer than the old ones (order 36b's STOP, reported: one walk of
-/// el-bebe-duerme, to a man the sheet moved). Any other difference fails.
-const Map<String, int> bancoHopStop = {'el-bebe-duerme': 1};
-
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
 
@@ -838,15 +834,8 @@ void main() {
             );
             int hops(Map<String, dynamic> t) =>
                 '${t['sounds']}'.split('hop').length - 1;
-            // STOP (order 36b, reported, not decided): in el-bebe-duerme, at beats.19.after.0 (acts.alegra, a: hombre),
-            // the frog's walk from (70, 190) to the man on the third bench takes 3 hops where the old took 4 (all three
-            // plans): the sheet moves the man 2 px left (moves line 339: B[2][0] for B[2][0] + 2), and the walk to
-            // (x - 4, y + 22) is 118.2 px for 120.2 (banco.js ranaA: R(d / 34)). Every other walk takes its old hops.
-            expect(
-              hops(c.committed) - hops(c.trace),
-              bancoHopStop[s] ?? 0,
-              reason: '$s $plan: hops',
-            );
+            // every walk of the frog takes its old hops (the sheet's round 4: the man of el-bebe-duerme 1 px left)
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
             expect(
               c.trace['draws'],
               c.committed['draws'],
