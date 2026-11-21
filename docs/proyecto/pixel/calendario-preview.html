@@ -88,7 +88,7 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     // small things
     sol: () => anchor(thing('sol'), 4, 4),                                               // centred on the spot
     globos: () => bottom(thing('globos'), 12), chiringa: () => bottom(thing('chiringa'), 14), lazo: () => bottom(thing('lazo'), 3), caja: () => bottom(thing('caja'), 7),
-    muestra: kind => bottom(thing('card', kind), 7),                                     // the card the señora holds up: its bottom middle on the point
+    muestra: kind => anchor(thing('card', kind), 0, 6),                                     // the card the señora holds up, out to her right: the middle of its left edge on the point
   };
   for (const k of Object.keys(CARD)) if (k !== 'base') SPR['card:' + k] = () => anchor(thing('card', k), 7, 0);        // a card hangs with its top on its hook's row, its middle on the hook's column
   for (const k of Object.keys(CARD)) if (k !== 'base') SPR['held:' + k] = () => SPR.muestra(k);
@@ -111,10 +111,10 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
       layers: () => [card('gancho.1.1', 'fruta'), card('gancho.2.1', 'bola'), card('gancho.3.1', 'bingo'), card('gancho.4.1', 'bici'), card('gancho.5.1', 'guitarra'), card('arco_gancho', 'piragua'),
         { at: 'escalon6', s: 'coqui', who: 'coqui' }, { at: 'suelo1', s: 'luis', who: 'nino' }, { at: 'suelo2', s: 'carmen', who: 'nino' },
         { at: 'chiringa', s: 'chiringa' }, { at: 'lazo1', s: 'lazo' }, { at: 'lazo2', s: 'lazo' }, { at: 'lazo3', s: 'lazo' }, { at: 'perro', s: 'perro', who: 'perro' }] },
-    4: { view: 'wide', what: 'story 70, the game: as 3 with the frog on the step at escalon7 and a second card in column 7 (open point: read here as two cards in column 7, on its top two hooks: the flowers, the chicken)',
+    4: { view: 'wide', what: 'story 70, the game: as 3 with the frog on the step at escalon7 and a card in column 7 (hook 1: the flowers)',
       set: { hora: 'tarde', tela: 0 },
       layers: () => [card('gancho.1.1', 'fruta'), card('gancho.2.1', 'bola'), card('gancho.3.1', 'bingo'), card('gancho.4.1', 'bici'), card('gancho.5.1', 'guitarra'), card('arco_gancho', 'piragua'),
-        card('gancho.7.1', 'flor'), card('gancho.7.2', 'pollo'),
+        card('gancho.7.1', 'flor'),
         { at: 'escalon7', s: 'coqui', who: 'coqui' }, { at: 'suelo1', s: 'luis', who: 'nino' }, { at: 'suelo2', s: 'carmen', who: 'nino' },
         { at: 'chiringa', s: 'chiringa' }, { at: 'lazo1', s: 'lazo' }, { at: 'lazo2', s: 'lazo' }, { at: 'lazo3', s: 'lazo' }, { at: 'perro', s: 'perro', who: 'perro' }] },
     5: { view: 'wide', what: 'story 71, opening: early morning. The sun on column 1 (sol1) and the fruit card under it, the frog on the step at escalon1, the señora at izq with her box, abuela at asiento1, don Tito at asiento2, the señor at asiento3',

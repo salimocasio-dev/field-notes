@@ -63,10 +63,10 @@ function defs(E, colU) {
   const add = (name, uvz, kind, sil, who, what, more) => D.push(Object.assign({ name, uvz, kind, sil, who, what }, more || {}));
   for (let k = 1; k <= 7; k++) add('escalon' + k, [c(k), .37, E.STEP.h], 'place', 'coqui', 'coqui', 'the frog on the step under column ' + k + ': the step\'s top (z ' + E.STEP.h + ')', { on: 'tablero' });
   add('izq', [-3.2, .5, 0], 'person', 'adulto', 'adulto', 'the señora, left of the board');
-  add('caja', [-3.35, 1.0, 0], 'thing', null, null, 'her box of cards on the paving (a ' + CAJA.w + ' x ' + CAJA.h + ' px stand-in: the spec gives no size)', { size: [CAJA.w, CAJA.h], anchor: 'bottom' });
-  [.85, 1.85, 2.85].forEach((v, i) => add('asiento' + (i + 1), [E.SEAT[0], v, SEAT_Z], 'person', i ? 'adultoS' : 'abuelaS', 'adulto', 'the seat\'s place ' + (i + 1) + ' (whoever sits faces left): on its top, z ' + SEAT_Z + '; the sitting sprite hangs by the lap', { on: 'banco' }));
+  add('caja', [-3.3, 1.3, 0], 'thing', null, null, 'her box of cards on the paving (a ' + CAJA.w + ' x ' + CAJA.h + ' px stand-in: the spec gives no size)', { size: [CAJA.w, CAJA.h], anchor: 'bottom' });
+  [.7, 1.95, 3.2].forEach((v, i) => add('asiento' + (i + 1), [E.SEAT[0], v, SEAT_Z], 'person', i ? 'adultoS' : 'abuelaS', 'adulto', 'the seat\'s place ' + (i + 1) + ' (whoever sits faces left): on its top, z ' + SEAT_Z + '; the sitting sprite hangs by the lap', { on: 'banco' }));
   [-1.9, -.75, .4, 1.55].forEach((u, i) => add('suelo' + (i + 1), [u, 2.3, 0], 'person', 'nino', 'nino', 'a place of the row on the paving in front of the board'));
-  add('poste', [-2.75, 1.6, 0], 'person', 'nino', 'nino', 'Beto under the balloons');
+  add('poste', [-2.95, 1.6, 0], 'person', 'nino', 'nino', 'Beto under the balloons');
   add('globos', [r4(B.u0 + .02), -.07, POST_TOP], 'thing', null, null, 'the balloons, tied to the top of the board\'s left post (the set\'s PZ.post at u ' + r4(B.u0 + .02) + ', v -.07, top z ' + POST_TOP + '): a ' + GLOBOS.w + ' x ' + GLOBOS.h + ' px stand-in, its foot on the post\'s top', { size: [GLOBOS.w, GLOBOS.h], anchor: 'bottom', on: 'tablero' });
   add('chiringa', [.3, 1.25, 0], 'thing', null, null, 'the kite lying on the paving (a ' + CHIRINGA.w + ' x ' + CHIRINGA.h + ' px stand-in)', { size: [CHIRINGA.w, CHIRINGA.h], anchor: 'bottom' });
   [[.9, 1.3], [1.2, 1.35], [1.5, 1.4]].forEach(([u, v], i) => add('lazo' + (i + 1), [u, v, 0], 'thing', null, null, 'the kite\'s tail: bow ' + (i + 1) + ' of 3 (a ' + LAZO.w + ' x ' + LAZO.h + ' px stand-in: the spec gives no size)', { size: [LAZO.w, LAZO.h], anchor: 'bottom' }));
@@ -76,7 +76,7 @@ function defs(E, colU) {
   for (let k = 1; k <= 7; k++) for (let j = 1; j <= 3; j++) add('gancho.' + k + '.' + j, [c(k), 0, E.HOOKS[j - 1]], 'thing', null, null, 'hook ' + j + ' (1 the top one) of column ' + k + ': a card (' + CARD.w + ' x ' + CARD.h + ') hangs with its top at the hook', { size: [CARD.w, CARD.h], anchor: 'top', on: 'tablero', hook: 1 });
   add('arco_gancho', [r4((c(6) + c(7)) / 2), 0, r4(E.ARCH.z + ARCH_HOOK)], 'thing', null, null, 'the hook at the arch\'s middle (ARCH.z + ' + ARCH_HOOK + '): a card hangs there under the hoop', { size: [CARD.w, CARD.h], anchor: 'top', on: 'tablero', hook: 1 });
   for (let k = 1; k <= 7; k++) add('sol' + k, [c(k), 0, r4((E.HEAD[0] + E.HEAD[1]) / 2)], 'thing', null, null, 'the sun peg on column ' + k + ': a ' + SOL.w + ' px square centred on its coloured square', { size: [SOL.w, SOL.h], anchor: 'centre', on: 'tablero' });
-  add('muestra', [-2.95, .5, 1.6], 'thing', null, null, 'the card the señora holds up (a ' + CARD.w + ' x ' + CARD.h + ' card; its bottom middle on the point: the spec gives the point only)', { size: [CARD.w, CARD.h], anchor: 'bottom' });
+  add('muestra', [-2.95, .5, 1.6], 'thing', null, null, 'the card the señora holds up (a ' + CARD.w + ' x ' + CARD.h + ' card, held out to her right: the middle of its left edge on the point)', { size: [CARD.w, CARD.h], anchor: 'left' });
   return D;
 }
 
@@ -168,6 +168,7 @@ const scrUV = (G, u, v, z) => [Math.round(G.OX + u * G.S), Math.round(G.OY + (v 
 // the box of a small thing on its point
 const boxOn = (sx, sy, size, anchor) => {
   const [w, h] = size, x = sx - Math.floor(w / 2);
+  if (anchor === 'left') return [sx, sy - Math.floor(h / 2), w, h];                                            // the middle of its left edge on the point
   return [x, anchor === 'top' ? sy : anchor === 'bottom' ? sy - h : sy - Math.floor(h / 2), w, h];
 };
 // the columns a spot's sprite (a person: his sprite box, the feet's spot in the middle; a small thing: its box) takes: [first, last]
@@ -238,7 +239,7 @@ async function make(G, proj, SIL) {
     rules: {
       project: 'pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = ' + G.OX + ', OY = H / 2 + originY = ' + G.OY + '. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels',
       uv: 'the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the board\'s face at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = ' + G.OX + ' + 26 u, and sy = OY + (v / 2 - z * COS) * S = ' + G.OY + ' + 13 v - 22.5 z. Column k\'s middle is c(k) = colU(k) + cw / 2 (cw ' + B.cw + '): ' + [1, 2, 3, 4, 5, 6, 7].map(k => 'c' + k + ' ' + r4(colU[k - 1] + B.cw / 2)).join(', ') + '; the picture holds u from ' + r2((0 - G.OX) / G.S) + ' to ' + r2((G.W - G.OX) / G.S),
-      spot: 'a spot is a world point of the feet (z 0: the paving; z ' + E.STEP.h + ': the step\'s top; z ' + SEAT_Z + ': the seat\'s top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot\'s box): a card on a hook hangs with its top row on sy and its middle on sx; the sun peg is centred on its spot; the balloons, the kite, the bows, the box of cards and the card held up at muestra have their bottom middle on the spot. scale is the frog\'s: 1 everywhere',
+      spot: 'a spot is a world point of the feet (z 0: the paving; z ' + E.STEP.h + ': the step\'s top; z ' + SEAT_Z + ': the seat\'s top) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite\'s bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot\'s box): a card on a hook hangs with its top row on sy and its middle on sx; the sun peg is centred on its spot; the balloons, the kite, the bows and the box of cards have their bottom middle on the spot; the card held up at muestra has the middle of its left edge on the spot (it is held out to her right). scale is the frog\'s: 1 everywhere',
       anchor: 'the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 53 rows drawn standing for a grown-up (a 56-row canvas whose lowest row is empty), 41 for a child; the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela sitting mkAbuelaS (52 x 50): column 17 (her middle) and row 36 (her lap) on (sx, sy), the spot being the seat; a grown-up sitting (mkPersona with sent = 1): column 24 and the lap row, the bottom of the hips: row 16 + 2 t + 3 (t 11 a grown-up: 41) on (sx, sy); Canelo lying mkPerro(\'lie\') (30 x 22): column 15 and its bottom edge; a small thing: see spot. Whoever sits on the seat faces left: no sprite is turned (the makers draw them from the front)',
       view: 'one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction',
       depth: 'a spot\'s depth is the engine\'s d of its world point; front.plane turns it into the depth of each row of a character',
@@ -260,7 +261,7 @@ async function make(G, proj, SIL) {
     notes: [
       'every number of a spot is the orchestrator\'s (the p6-spec, "calendario"), given in (u, v, z); the board\'s numbers (c(k), HOOKS, ARCH, STEP, SEAT) are read from the set',
       'gancho.k.j is the spec\'s hook k, j (j 1 the top one); sol1 to sol7 are the spec\'s `sol` on column k; lazo1 to lazo3 are the three bows of the kite\'s tail; entrada is outside the picture on purpose (only its point)',
-      'the spec gives no size for the bows of the kite\'s tail (' + LAZO.w + ' x ' + LAZO.h + ' used) nor for the señora\'s box of cards (' + CAJA.w + ' x ' + CAJA.h + ' used), and no anchor for the card held up at muestra (its bottom middle on the point used): open points',
+      'the spec gives no size for the bows of the kite\'s tail (' + LAZO.w + ' x ' + LAZO.h + ' used) nor for the señora\'s box of cards (' + CAJA.w + ' x ' + CAJA.h + ' used): open points; the card held up at muestra hangs by the middle of its left edge (the coordinator\'s decision)',
       'tabla is the board\'s face (the posts, the little roof and the arch are not in it); arco is the arch\'s wall; the globos\' spot is the set\'s left post: u ' + r4(B.u0 + .02) + ', v -.07 (the spec gives only its top, z ' + POST_TOP + ')',
       'the view\'s x0: the x0 that holds every spot (a person with his sprite whole, a small thing with its box), the one nearest the window centred on the picture (views.wide.what; check views-x0)',
     ],
@@ -374,7 +375,7 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
         if (!ok) bad.push(k + ' ' + s.screen + ' z ' + s.uv[2] + ' is not on a surface the set draws: ' + (best ? 'the nearest pixel is part ' + best.r.tag + ' at depth ' + r2(best.r.z) + ', the spot\'s is ' + r2(s.depth) : 'no pixel in the picture'));
       }
     }
-    const hooks = Object.entries(S).filter(([k, s]) => s.hook && k !== 'arco_gancho'), missed = [];
+    const hooks = Object.entries(S).filter(([, s]) => s.hook), missed = [];
     let farthest = 0;
     for (const [k, s] of hooks) {
       const d = near(k, r => Math.abs(r.rgb[0] - HOOK_COLOUR[0]) <= 8 && Math.abs(r.rgb[1] - HOOK_COLOUR[1]) <= 8 && Math.abs(r.rgb[2] - HOOK_COLOUR[2]) <= 8).map(r => Math.max(Math.abs(r.dx), Math.abs(r.dy))).sort((a, b) => a - b)[0];
@@ -389,8 +390,6 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
     const o = add('spots-on-surface', bad, surf.length + ' spots on the seat and the step (' + surf.join(', ') + ') are on a surface the set draws (the seat\'s top z ' + SEAT_Z + ' part banco, the step\'s top z ' + E.STEP.h + ' part tablero: depth within .1 of the spot\'s); the ' + hooks.length + ' hook spots have a pixel of the set\'s hook within ' + farthest + ' px; the balloons\' foot is the left post\'s top; the 7 sun spots are on their column\'s coloured square', ['spots off their surface:'].concat(bad).map((l, i) => i ? '  ' + l : l));
     for (const l of lines) o.lines.push('       ' + l);
     o.lines.push('       the sun spots read ' + sols.join('; '));
-    { const a = near('arco_gancho', r => Math.abs(r.rgb[0] - HOOK_COLOUR[0]) <= 8 && Math.abs(r.rgb[1] - HOOK_COLOUR[1]) <= 8 && Math.abs(r.rgb[2] - HOOK_COLOUR[2]) <= 8);
-      o.lines.push('       info, not a check (a finding about the set, calendario-set.html, which this make does not edit): arco_gancho ' + S.arco_gancho.screen + ': ' + (a.length ? 'a pixel of the hook\'s colour within 2 px' : 'no pixel of the hook\'s colour within 2 px: the set\'s arch draws the hook\'s stem only where z < top - .4 and z > ARCH.z + .66, and at the arch\'s middle top - .4 = ARCH.z + .42, so the stem is never drawn (a white flag hangs there); the spot ARCH.z + .67 is the spec\'s, and the card hangs over the flag') + '; the part there is ' + (((px.arco_gancho || []).find(r => r.dx === 0 && r.dy === 0) || {}).tag || 'none')); }
   }
 
   // 4. the set things' boxes are inside the picture and the window
@@ -559,11 +558,11 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
     }
     // where the card at muestra hangs from its point (the spec gives the point only): how many px of the señora's face (her top 14 rows) the card covers, by anchor
     const alt = [];
-    for (const [name, px] of [['bottom middle on the point (used)', [0, 0]], ['middle of the card on the point', [0, 6]], ['bottom left corner on the point', [7, 0]], ['middle of the left edge on the point', [7, 6]]]) {
+    for (const [name, px] of [['middle of the left edge on the point (used)', [0, 0]], ['bottom middle on the point', [-7, -6]], ['middle of the card on the point', [-7, 0]], ['bottom left corner on the point', [0, -6]]]) {
       const L = await PV.layers({ hora: 'manana', tela: 1 }, [{ at: 'izq', s: 'senora', who: 'adulto' }, { at: 'muestra', s: 'held:cafe', px, dd: .05 }]), sn = L[0], cd = new Set(L[1].px.filter(q => !q[2]).map(q => key(q[0], q[1]))), top = Math.min(...sn.px.map(q => q[1]));
       alt.push(name + ': ' + sn.px.filter(q => !q[2] && q[1] < top + HEAD_ROWS && cd.has(key(q[0], q[1]))).length + ' px of her face, ' + sn.px.filter(q => !q[2] && cd.has(key(q[0], q[1]))).length + ' of her sprite');
     }
-    OUTS.push({ name: 'info-stand-ins', ok: true, lines: ['info-stand-ins: not a check. ' + lines.join('; '), '       the card at muestra, by where it hangs from the point (open point): ' + alt.join('; ')] });
+    OUTS.push({ name: 'info-stand-ins', ok: true, lines: ['info-stand-ins: not a check. ' + lines.join('; '), '       the card at muestra, by where it hangs from the point (the used anchor first): ' + alt.join('; ')] });
   }
   return OUTS;
 }
