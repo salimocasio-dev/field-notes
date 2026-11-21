@@ -7,7 +7,7 @@
    low parapet with its battlements; beyond it the sea with the moon's road on it, the moon and the stars, and at the right, far
    below, a point of land with the road on it (the guagua and whoever walks there are sprites). On the walk, at the left and at the
    right, two sentry boxes of stone with domed tops: the left one has a red door, the right one a blue door; each has a small lit
-   window. A cord runs between them over the middle for three lanterns (sprites). Against the parapet, in the middle, a long bench.
+   window. Between them, over the middle, three lanterns hang on a cord (the cord and the lanterns are sprites: E.CORD says where). Against the parapet, in the middle, a long bench.
    At the left front a table with a cloth (the chair beside it is a sprite). At the right front, the head of the steps that go down.
    The state comes from the address:  hora = noche | tarde_noche   (tarde_noche: the moon is low over the sea, and yellow)
    It draws one frame: the baked set. No people, no lanterns, no camera, no candle, no things on the table, no guagua. */
@@ -51,8 +51,7 @@ function groundAt(x, y, ix, iy) {
 function parapet() {
   PZ.wall(-4.7, 4.7, 0, 0, E.PARAPET, (u, z) => FT.solid(u, z, E.PARAPET) ? (z > E.PARAPET - .44 && z < E.PARAPET - .36 ? rgb(...FT.STONE_L) : FT.stone(u, z + .1)) : 0);
   for (const B of E.BOXES) FT.garita(B.u, B.v, B.door, true);
-  const C = E.CORD;
-  FT.cord(C.u0, C.u1, C.v, C.z, C.z, C.sag);
+  // the lanterns' cord (E.CORD) is not drawn here: it is a sprite with its lanterns, so that it hides nobody's head
 }
 function walk() {
   PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw, false);
