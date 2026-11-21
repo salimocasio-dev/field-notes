@@ -12,13 +12,7 @@
   "project": "pp-engine.js project(x, y, z) with S 26 and this origin: sx = OX + (x - y) / R2 * S, sy = OY + ((x + y) / R2 * .5 - z * COS) * S, depth d = (x + y) / R2 * COS + z * .5 (R2 = sqrt 2, COS = sqrt 3 / 2); OX = W / 2 + originX = 120, OY = H / 2 + originY = 74. A box is the screen bounding box of its projected corners [floor(min x), floor(min y), ceil(max x) - floor(min x), ceil(max y) - floor(min y)]. screen is the projection rounded to whole pixels",
   "uv": "the set is laid out square to the picture: a spot is given in (u, v, z), u across the picture (to the right), v down it (towards the camera), the wall at v 0; plaza-base.js PZ.xy(u, v) = ((u + v) / R2, (v - u) / R2) gives the world x, y (world is that). On the picture sx = OX + u * S = 120 + 26 u, and sy = OY + (v / 2 - z * COS) * S = 74 + 13 v - 22.5 z; the picture holds u from -4.62 to 4.62. E.STEP and E.STOOL are arrays [u, v, height] in the set (STEP.u, STEP.v, STEP.h of the spec are E.STEP[0], [1], [2])",
   "spot": "a spot is a world point of the feet (z 0: the floor; z 0.46: the bench's seat; z 0.74: the table's top; z 0.3: the step stool's top; z 0.34: the low stool's top; the photos' cord is z 1.95, a photo hangs from z 1.85) and, drawn there, a character stands with its feet (the lowest row the sprite draws, outline included) resting on the screen row sy, i.e. the sprite's bottom edge on sy, and its middle column on the column sx (rules.anchor). A small thing has a box (the spot's box): a thing on a surface has its bottom middle on the spot (the box [sx - floor(w / 2), sy - h, w, h]); a thing that hangs (a photo on the cord) has its top middle on the spot (the box [sx - floor(w / 2), sy, w, h]). scale is the frog's: 1 everywhere",
-  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 51 rows drawn standing for a grown-up (rows 4 to 54 of a 56-row canvas whose lowest row is empty), 41 for a child (rows 2 to 42 of 44); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30, rows 0 to 49; a small thing: see spot. The curtain: the sprite is things.cortina.box (or .half), its left column on the box's left column and its bottom edge on the spot's row. The four heads behind the table (escondidos1 to escondidos4): the top 16 rows of the sprite (from its first drawn row), their bottom edge on spots.escondidos*.head.bottomRow (the table's far edge at the spot's u: rules.heads), their depth the spot's upright plane (the table's far side). Nobody is drawn turned",
-  "heads": {
-   "v": 2.3,
-   "z": 0.74,
-   "rows": 16,
-   "what": "the table's far edge (TABLE.v - TABLE.hd, the top z 0.74): the row of the bottom edge of each of the four heads; the top 16 rows of the sprite"
-  },
+  "anchor": "the column of the sprite that is on sx; its feet (its lowest drawn row, outline included) rest on row sy - 1, so its bottom edge is on sy. mkPersona (48 wide): column 24 (KIT.PX), 51 rows drawn standing for a grown-up (rows 4 to 54 of a 56-row canvas whose lowest row is empty), 41 for a child (rows 2 to 42 of 44); the frog mkCoqui(1) (32 x 27): column 16, drawn rows 1 to 24 (row 25 of the canvas is on sy); abuela standing mkAbuela (48 x 51): column 30, rows 0 to 49; a small thing: see spot. The curtain: the sprite is things.cortina.box (or .half), its left column on the box's left column and its bottom edge on the spot's row. Nobody is drawn turned",
   "view": "one window, wide, zoom 1: the 196 x 216 window over the 240 x 216 picture, x0 = its left edge (22 centres it). Never a fraction",
   "depth": "a spot's depth is the engine's d of its world point; front.plane turns it into the depth of each row of a character"
  },
@@ -304,30 +298,30 @@
    "anchor": "bottom"
   },
   "fondo1": {
-   "world": [-2.4466, 2.0789, 0],
-   "uv": [-3.2, -0.26, 0],
-   "screen": [37, 71],
-   "depth": -0.2252,
+   "world": [-2.8991, 1.6263, 0],
+   "uv": [-3.2, -0.9, 0],
+   "screen": [37, 62],
+   "depth": -0.7794,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "Carmen seen dancing in the arch's hole, beyond the wall (m1); a child standing, her feet on the dance floor beyond",
-   "sprite": "nino",
-   "who": "nino",
-   "spec": [-3.2, -0.9, 0],
-   "moved": "fondo-head (m1): at v -.9 the child stands with her feet on row 62 and her head on rows 21 to 34: 126 of its 244 px are outside the arch's hole (its top is row 28) and 124 are hidden by the wall: v -.9 -> -.26 (+.64, 8.3 px: feet on row 71, head rows 30 to 43, all inside the hole). Along u nothing within 4 passes; z is not moved"
-  },
-  "fondo2": {
-   "world": [-2.1213, 1.4142, 0],
-   "uv": [-2.5, -0.5, 0],
-   "screen": [55, 68],
-   "depth": -0.433,
-   "scale": 1,
-   "kind": "person",
-   "view": "wide",
-   "what": "the other dancer seen in the hole (in no moment of the spec); a grown-up standing, his feet on the dance floor beyond",
+   "what": "a grown-up dancer seen in the hole, beyond the wall (in no moment of the spec); standing, his feet on the dance floor beyond",
    "sprite": "adulto",
    "who": "adulto"
+  },
+  "fondo2": {
+   "world": [-1.8455, 1.69, 0],
+   "uv": [-2.5, -0.11, 0],
+   "screen": [55, 73],
+   "depth": -0.0953,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "Carmen seen dancing in the arch's hole, on the open side of the half curtain (m1); a child standing, her feet on the dance floor beyond",
+   "sprite": "nino",
+   "who": "nino",
+   "spec": [-2.5, -0.5, 0],
+   "moved": "fondo-head (m1): Carmen at fondo2 stood with her feet on row 68 and her head on rows 27 to 40: 52 of its 244 px were outside the arch's hole (its top is row 28) and 51 hidden by the wall; she is clear of the half curtain (columns 19 to 43): v -.5 -> -.11 (+.39, 5.1 px: feet on row 73, head rows 32 to 45, all inside the hole). Along u nothing within 4 passes; z is not moved"
   },
   "tras_cortina": {
    "world": [-2.2274, 1.8738, 0],
@@ -340,16 +334,18 @@
    "what": "a shadow on the curtain, cast from beyond it (in no moment of the spec; the spec gives no size)"
   },
   "arco": {
-   "world": [-1.5556, 2.5456, 0],
-   "uv": [-2.9, 0.7, 0],
-   "screen": [45, 83],
-   "depth": 0.6062,
+   "world": [-1.4779, 2.6234, 0],
+   "uv": [-2.9, 0.81, 0],
+   "screen": [45, 85],
+   "depth": 0.7015,
    "scale": 1,
    "kind": "person",
    "view": "wide",
    "what": "Luis in front of the arch (m1, m2); Carmen coming in at the arch (m3)",
    "sprite": "nino",
-   "who": "nino"
+   "who": "nino",
+   "spec": [-2.9, 0.7, 0],
+   "moved": "sprites-apart (m1): Carmen at fondo2 [55,73] and Luis at the arch [45,83] were 10 px sideways and 10 px up-down (24 across or 12 down are needed); fondo2 cannot go back (fondo-head): v .7 -> .81 (+.11, 1.4 px). The other way: fondo2 v -.2 (+ the head out of the hole again), u +/-.5"
   },
   "banco1": {
    "world": [-0.7707, 1.4071, 0.46],
@@ -486,69 +482,17 @@
    "spec": [2.4, 2.15, 0],
    "moved": "sprites-apart (m4, m5): 23 px sideways and 0 up-down from abuela at tras_mesa, the boxes need 24: u 2.4 -> 2.41 (+.01, .3 px). Heads behind the table (m4, m5): her head (rows 61 to 74) was covered by 22 px of the cake's candles (the cake's box [173,73,18,18]): v 2.15 -> 2.0 (-.15, 2 px: her head rows 59 to 72). The other way: mesa2 v +.11 (1.4 px), which would move the cake of m3 and the packet of m6 off the row of mesa1 to mesa3"
   },
-  "escondidos1": {
-   "world": [1.9799, 1.0607, 0],
-   "uv": [0.65, 2.15, 0],
-   "screen": [137, 102],
+  "tras_mesa3": {
+   "world": [3.6416, -0.601, 0],
+   "uv": [3, 2.15, 0],
+   "screen": [198, 102],
    "depth": 1.862,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "a head only behind the table, number 1 of 4 (TABLE.u - 1.1, TABLE.v - TABLE.hd - .15): the sprite's top 16 rows with their bottom edge on the table's far edge (spots.*.head.bottomRow); m3: abuela, abuelo, Luis, the señor (a stand-in)",
-   "sprite": "adulto",
-   "who": "adulto",
-   "head": {
-    "rows": 16,
-    "bottomRow": 87
-   }
-  },
-  "escondidos2": {
-   "world": [2.5102, 0.5303, 0],
-   "uv": [1.4, 2.15, 0],
-   "screen": [156, 102],
-   "depth": 1.862,
-   "scale": 1,
-   "kind": "person",
-   "view": "wide",
-   "what": "a head only behind the table, number 2 of 4 (TABLE.u - 0.35, TABLE.v - TABLE.hd - .15): the sprite's top 16 rows with their bottom edge on the table's far edge (spots.*.head.bottomRow); m3: abuela, abuelo, Luis, the señor (a stand-in)",
-   "sprite": "adulto",
-   "who": "adulto",
-   "head": {
-    "rows": 16,
-    "bottomRow": 87
-   }
-  },
-  "escondidos3": {
-   "world": [3.0406, 0, 0],
-   "uv": [2.15, 2.15, 0],
-   "screen": [176, 102],
-   "depth": 1.862,
-   "scale": 1,
-   "kind": "person",
-   "view": "wide",
-   "what": "a head only behind the table, number 3 of 4 (TABLE.u + 0.4, TABLE.v - TABLE.hd - .15): the sprite's top 16 rows with their bottom edge on the table's far edge (spots.*.head.bottomRow); m3: abuela, abuelo, Luis, the señor (a stand-in)",
+   "what": "Luis behind the table's right end (TABLE.u + 1.25, TABLE.v - TABLE.hd - .15): m3, after he has jumped up",
    "sprite": "nino",
-   "who": "nino",
-   "head": {
-    "rows": 16,
-    "bottomRow": 87
-   }
-  },
-  "escondidos4": {
-   "world": [3.5709, -0.5303, 0],
-   "uv": [2.9, 2.15, 0],
-   "screen": [195, 102],
-   "depth": 1.862,
-   "scale": 1,
-   "kind": "person",
-   "view": "wide",
-   "what": "a head only behind the table, number 4 of 4 (TABLE.u + 1.15, TABLE.v - TABLE.hd - .15): the sprite's top 16 rows with their bottom edge on the table's far edge (spots.*.head.bottomRow); m3: abuela, abuelo, Luis, the señor (a stand-in)",
-   "sprite": "adulto",
-   "who": "adulto",
-   "head": {
-    "rows": 16,
-    "bottomRow": 87
-   }
+   "who": "nino"
   },
   "cuerda1": {
    "world": [0.4596, -0.3889, 1.85],
@@ -752,10 +696,10 @@
    "who": "adulto"
   },
   "luis_patio": {
-   "world": [0.9192, 3.182, 0],
-   "uv": [-1.6, 2.9, 0],
-   "screen": [78, 112],
-   "depth": 2.5115,
+   "world": [0, 3.2527, 0],
+   "uv": [-2.3, 2.3, 0],
+   "screen": [60, 104],
+   "depth": 1.9919,
    "scale": 1,
    "kind": "person",
    "view": "wide",
@@ -764,38 +708,38 @@
    "who": "nino"
   },
   "espera1": {
-   "world": [1.3435, 5.1619, 0],
-   "uv": [-2.7, 4.6, 0],
-   "screen": [50, 134],
-   "depth": 3.9837,
-   "scale": 1,
-   "kind": "person",
-   "view": "wide",
-   "what": "a guest who waits, number 1 of 3 (m4, m5, m6: don Pepe, the maestra)",
-   "sprite": "adulto",
-   "who": "adulto"
-  },
-  "espera2": {
-   "world": [2.5809, 5.0558, 0],
-   "uv": [-1.75, 5.4, 0],
-   "screen": [75, 144],
-   "depth": 4.6765,
-   "scale": 1,
-   "kind": "person",
-   "view": "wide",
-   "what": "a guest who waits, number 2 of 3 (m4, m5, m6: don Pepe, the maestra)",
-   "sprite": "adulto",
-   "who": "adulto"
-  },
-  "espera3": {
-   "world": [2.3335, 6.4347, 0],
-   "uv": [-2.9, 6.2, 0],
-   "screen": [45, 155],
+   "world": [2.2627, 6.5054, 0],
+   "uv": [-3, 6.2, 0],
+   "screen": [42, 155],
    "depth": 5.3694,
    "scale": 1,
    "kind": "person",
    "view": "wide",
-   "what": "a guest who waits, number 3 of 3 (in no moment of the spec)",
+   "what": "a guest who waits, number 1 of 3, in a row at the left front (m4, m5, m6: don Pepe, the maestra)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "espera2": {
+   "world": [2.9698, 5.7983, 0],
+   "uv": [-2, 6.2, 0],
+   "screen": [68, 155],
+   "depth": 5.3694,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest who waits, number 2 of 3, in a row at the left front (m4, m5, m6: don Pepe, the maestra)",
+   "sprite": "adulto",
+   "who": "adulto"
+  },
+  "espera3": {
+   "world": [3.677, 5.0912, 0],
+   "uv": [-1, 6.2, 0],
+   "screen": [94, 155],
+   "depth": 5.3694,
+   "scale": 1,
+   "kind": "person",
+   "view": "wide",
+   "what": "a guest who waits, number 3 of 3, in a row at the left front (in no moment of the spec)",
    "sprite": "adulto",
    "who": "adulto"
   }
@@ -803,7 +747,7 @@
  "groups": {
   "banco": ["banco1", "banco2", "banco3"],
   "mesa": ["mesa1", "mesa2", "mesa3"],
-  "escondidos": ["escondidos1", "escondidos2", "escondidos3", "escondidos4"],
+  "tras_mesa": ["tras_mesa", "tras_mesa2", "tras_mesa3"],
   "cuerda": ["cuerda1", "cuerda2", "cuerda3", "cuerda4"],
   "fotos": ["fotos1", "fotos2", "fotos3", "fotos4"],
   "espera": ["espera1", "espera2", "espera3"],
@@ -833,10 +777,16 @@
  },
  "moves": [
   {
-   "spot": "fondo1",
-   "spec": [-3.2, -0.9, 0],
-   "now": [-3.2, -0.26, 0],
-   "why": "fondo-head (m1): at v -.9 the child stands with her feet on row 62 and her head on rows 21 to 34: 126 of its 244 px are outside the arch's hole (its top is row 28) and 124 are hidden by the wall: v -.9 -> -.26 (+.64, 8.3 px: feet on row 71, head rows 30 to 43, all inside the hole). Along u nothing within 4 passes; z is not moved"
+   "spot": "fondo2",
+   "spec": [-2.5, -0.5, 0],
+   "now": [-2.5, -0.11, 0],
+   "why": "fondo-head (m1): Carmen at fondo2 stood with her feet on row 68 and her head on rows 27 to 40: 52 of its 244 px were outside the arch's hole (its top is row 28) and 51 hidden by the wall; she is clear of the half curtain (columns 19 to 43): v -.5 -> -.11 (+.39, 5.1 px: feet on row 73, head rows 32 to 45, all inside the hole). Along u nothing within 4 passes; z is not moved"
+  },
+  {
+   "spot": "arco",
+   "spec": [-2.9, 0.7, 0],
+   "now": [-2.9, 0.81, 0],
+   "why": "sprites-apart (m1): Carmen at fondo2 [55,73] and Luis at the arch [45,83] were 10 px sideways and 10 px up-down (24 across or 12 down are needed); fondo2 cannot go back (fondo-head): v .7 -> .81 (+.11, 1.4 px). The other way: fondo2 v -.2 (+ the head out of the hole again), u +/-.5"
   },
   {
    "spot": "banco3",
@@ -880,15 +830,14 @@
   "things: cortina is a sprite with a box (things.cortina.box whole, .half the left half); banqueta is a set thing (the low stool's box); bizcocho, regalo, flores, caja_velas, foto_3m, foto_7m, foto_3a, foto_7a and paquete are sprites with a box at each place they stand (things.*.places: spot, size, box, moments); the people are sprites; the packets on the table (m6) are 14 x 14 stand-ins, not things he can touch",
   "the spec does not say which of the four photos hangs at which peg or lies at which place: the order of its list of things (3 months, 7 months, 3 years, 7 years) is used for both; the real order is drawn at play (open point)",
   "the three things on the table in m3 (mesa1 to mesa3): the box, the cake and the flowers in that order (the box is at mesa1 in m2; the cake is at mesa2 in m4 and m5; the flowers go on last); the spec does not say which is where (open point)",
-  "the four heads behind the table (m3): abuela, abuelo, Luis and a señor (a grown-up stand-in); the spec gives four heads and no names (open point)",
-  "stand-ins: don Pepe (El colmado's man without his apron) and the maestra (mkPersona, teal blouse and skirt) wait at espera1 and espera2; the piragüero (mkPersona, orange shirt) is the guest at banqueta_der; the señor is the fourth head; each has other clothes than the family",
+  "stand-ins: don Pepe (El colmado's man without his apron) and the maestra (mkPersona, teal blouse and skirt) wait at espera1 and espera2; the piragüero (mkPersona, orange shirt) is the guest at banqueta_der; each has other clothes than the family",
   "the spec's m4 has the cake with seven candles 4 px tall at mesa2; the script says the cake has no candles yet at the start of 115: the preview draws the candles, unlit (m4), lit (m5) (open point)",
-  "tras_cortina (a shadow on the curtain) and fondo2 are in no moment of the spec: they are spots with no sprite drawn; espera3 is in no moment either",
-  "OPEN POINT (check escondidos, m3, fails): the table's far edge is 83 px wide; the four heads (24-wide boxes, 16 px of head each) stand on it side by side, with the frog at mesa_coqui (32 wide, rows 74 to 98) in front of the first two and the three things at mesa1 to mesa3 (rows 77 to 90) in front of the rest: the frog covers 113 px of the first head, the things 18, 67 and 56 px of the others, and the heads are 19 to 20 px apart where the boxes need 24. No shift of a head clears them; nothing was moved on their account",
-  "OPEN POINT (m1): fondo1 (Carmen, beyond the arch) is behind the half-open curtain's left half (things.cortina.half, columns 19 to 43): the curtain covers 638 of her 724 px, 217 of her head's 244 (fondo-head only asks for the hole; the curtain is a sprite in front of her). fondo2 (u -2.5) would be on the open side",
+  "tras_cortina (a shadow on the curtain) and fondo1 (a grown-up dancer beyond the arch) are in no moment of the spec: they are spots with no sprite drawn; espera3 is in no moment either",
+  "escondidos: hidden behind the table, no sprite is drawn; they come up at tras_mesa, tras_mesa3 and junto_banco",
+  "the guests wait in a row at the left front: espera1 (-3.0, 6.2), espera2 (-2.0, 6.2), espera3 (-1.0, 6.2); luis_patio is (-2.3, 2.3) (the numbers of the coordinator, not moves)",
   "the checks \"covered by nobody\" (the things on the bench, the table and the stool, the photos, the cake, the packets) read people: no character's shown pixel on a pixel of the thing or in its box, nearer than it; a thing over a thing is info (m5: the box of fotos4 touches the cake's box in 3 x 1 px, not moved); the heads (rule 14) are covered by nobody and by nothing: no person, no thing, not the set",
   "the view's x0: the x0 that holds every spot (a person with his sprite whole, a small thing and the curtain with their boxes), the one nearest the window centred on the picture (views.wide.what; check views-x0)",
-  "moves: fondo1 [-3.2,-0.9,0] -> [-3.2,-0.26,0] (fondo-head (m1): at v -.9 the child stands with her feet on row 62 and her head on rows 21 to 34: 126 of its 244 px are outside the arch's hole (its top is row 28) and 124 are hidden by the wall: v -.9 -> -.26 (+.64, 8.3 px: feet on row 71, head rows 30 to 43, all inside the hole). Along u nothing within 4 passes; z is not moved); banco3 [-0.5,0.45,0.46] -> [-0.65,0.45,0.46] (bench-things (m1, m2): with abuelo at u .05 his left side (column 109 on rows 53 to 68) covered 23 px of the flowers [101,53,12,16]: u -.5 -> -.65 (-.15, 3.9 px: the flowers' box now ends at column 108; the seat's top z .46 is not moved). The other way, abuelo u +.13, covers the first photo on the cord again (photos-cord)); junto_banco [0.25,1.1,0] -> [0.05,1.03,0] (photos-cord (m4): at u .25 abuelo covered 38 px of the first photo on the cord [130,33,12,12]: u .25 -> .05 (-.20, 5.2 px). The other way, v 1.1 -> 1.58 (+.48), leaves the frog no place on the table's left end (sprites-apart in m1 and m2). And sprites-apart (m1, m2): 12 px up-down are needed from the frog at mesa_coqui, abuelo was 11: v 1.1 -> 1.03 (-.07, .9 px; the other way: mesa_coqui v +.05)); mesa_coqui [0.75,3.2,0.74] -> [0.44,3.2,0.74] (sprites-apart: in moments 1, 2 and 6 the frog on the table's left end was 19 px sideways and 3 px up-down from whoever stands behind the table (abuela, abuelo in m6: tras_mesa [159,102]); the boxes need 28 across or 12 down: u .75 -> .44 (-.31, 8.1 px; his z is the table's top, not moved). The other ways: tras_mesa u +.33 (8.6 px, and it pushes Carmen at tras_mesa2 along), mesa_coqui v -.65 (8.5 px, and it leaves him 2 px up-down from abuelo at junto_banco)); tras_mesa2 [2.4,2.15,0] -> [2.41,2,0] (sprites-apart (m4, m5): 23 px sideways and 0 up-down from abuela at tras_mesa, the boxes need 24: u 2.4 -> 2.41 (+.01, .3 px). Heads behind the table (m4, m5): her head (rows 61 to 74) was covered by 22 px of the cake's candles (the cake's box [173,73,18,18]): v 2.15 -> 2.0 (-.15, 2 px: her head rows 59 to 72). The other way: mesa2 v +.11 (1.4 px), which would move the cake of m3 and the packet of m6 off the row of mesa1 to mesa3); banqueta_izq [0.8,4.7,0] -> [0.8,5.04,0] (frog-seen (m6): Carmen at the low stool's left (STOOL.u - .95) stood in front of the frog on the table's left end with her head (rows 94 to 108) over his feet (rows to 99): 59 px of the frog were under her: v 4.7 -> 5.04 (+.34, 4.4 px: her head starts on row 100). The other ways: mesa_coqui v -.35 (4.5 px, 7 px up-down from abuela at tras_mesa: sprites-apart), mesa_coqui u +.81); banqueta_der [2.7,4.7,0] -> [2.7,5.35,0] (table-things (m6): the guest at the low stool's right (STOOL.u + .95; a grown-up 51 rows tall, his head from row 84) covered the packets at mesa2 and mesa3 (rows 77 to 90; 71 and 60 px): v 4.7 -> 5.35 (+.65, 8.5 px: his head starts on row 91). One u cannot clear both packets (mesa2 u +.17, mesa3 u -.15))"
+  "moves: fondo2 [-2.5,-0.5,0] -> [-2.5,-0.11,0] (fondo-head (m1): Carmen at fondo2 stood with her feet on row 68 and her head on rows 27 to 40: 52 of its 244 px were outside the arch's hole (its top is row 28) and 51 hidden by the wall; she is clear of the half curtain (columns 19 to 43): v -.5 -> -.11 (+.39, 5.1 px: feet on row 73, head rows 32 to 45, all inside the hole). Along u nothing within 4 passes; z is not moved); arco [-2.9,0.7,0] -> [-2.9,0.81,0] (sprites-apart (m1): Carmen at fondo2 [55,73] and Luis at the arch [45,83] were 10 px sideways and 10 px up-down (24 across or 12 down are needed); fondo2 cannot go back (fondo-head): v .7 -> .81 (+.11, 1.4 px). The other way: fondo2 v -.2 (+ the head out of the hole again), u +/-.5); banco3 [-0.5,0.45,0.46] -> [-0.65,0.45,0.46] (bench-things (m1, m2): with abuelo at u .05 his left side (column 109 on rows 53 to 68) covered 23 px of the flowers [101,53,12,16]: u -.5 -> -.65 (-.15, 3.9 px: the flowers' box now ends at column 108; the seat's top z .46 is not moved). The other way, abuelo u +.13, covers the first photo on the cord again (photos-cord)); junto_banco [0.25,1.1,0] -> [0.05,1.03,0] (photos-cord (m4): at u .25 abuelo covered 38 px of the first photo on the cord [130,33,12,12]: u .25 -> .05 (-.20, 5.2 px). The other way, v 1.1 -> 1.58 (+.48), leaves the frog no place on the table's left end (sprites-apart in m1 and m2). And sprites-apart (m1, m2): 12 px up-down are needed from the frog at mesa_coqui, abuelo was 11: v 1.1 -> 1.03 (-.07, .9 px; the other way: mesa_coqui v +.05)); mesa_coqui [0.75,3.2,0.74] -> [0.44,3.2,0.74] (sprites-apart: in moments 1, 2 and 6 the frog on the table's left end was 19 px sideways and 3 px up-down from whoever stands behind the table (abuela, abuelo in m6: tras_mesa [159,102]); the boxes need 28 across or 12 down: u .75 -> .44 (-.31, 8.1 px; his z is the table's top, not moved). The other ways: tras_mesa u +.33 (8.6 px, and it pushes Carmen at tras_mesa2 along), mesa_coqui v -.65 (8.5 px, and it leaves him 2 px up-down from abuelo at junto_banco)); tras_mesa2 [2.4,2.15,0] -> [2.41,2,0] (sprites-apart (m4, m5): 23 px sideways and 0 up-down from abuela at tras_mesa, the boxes need 24: u 2.4 -> 2.41 (+.01, .3 px). Heads behind the table (m4, m5): her head (rows 61 to 74) was covered by 22 px of the cake's candles (the cake's box [173,73,18,18]): v 2.15 -> 2.0 (-.15, 2 px: her head rows 59 to 72). The other way: mesa2 v +.11 (1.4 px), which would move the cake of m3 and the packet of m6 off the row of mesa1 to mesa3); banqueta_izq [0.8,4.7,0] -> [0.8,5.04,0] (frog-seen (m6): Carmen at the low stool's left (STOOL.u - .95) stood in front of the frog on the table's left end with her head (rows 94 to 108) over his feet (rows to 99): 59 px of the frog were under her: v 4.7 -> 5.04 (+.34, 4.4 px: her head starts on row 100). The other ways: mesa_coqui v -.35 (4.5 px, 7 px up-down from abuela at tras_mesa: sprites-apart), mesa_coqui u +.81); banqueta_der [2.7,4.7,0] -> [2.7,5.35,0] (table-things (m6): the guest at the low stool's right (STOOL.u + .95; a grown-up 51 rows tall, his head from row 84) covered the packets at mesa2 and mesa3 (rows 77 to 90; 71 and 60 px): v 4.7 -> 5.35 (+.65, 8.5 px: his head starts on row 91). One u cannot clear both packets (mesa2 u +.17, mesa3 u -.15))"
  ],
  "views": {
   "wide": {
@@ -899,7 +848,7 @@
    "x0": 19,
    "region": [19, 0, 196, 216],
    "stories": [114, 115, 116],
-   "holds": ["cortina", "fondo1", "fondo2", "tras_cortina", "arco", "banco1", "banco2", "banco3", "junto_banco", "mesa1", "mesa2", "mesa3", "mesa_coqui", "tras_mesa", "tras_mesa2", "escondidos1", "escondidos2", "escondidos3", "escondidos4", "cuerda1", "cuerda2", "cuerda3", "cuerda4", "fotos1", "fotos2", "fotos3", "fotos4", "caja_velas", "taburete", "banqueta_coqui", "paquete", "banqueta_izq", "banqueta_der", "lista_abuela", "luis_patio", "espera1", "espera2", "espera3"],
+   "holds": ["cortina", "fondo1", "fondo2", "tras_cortina", "arco", "banco1", "banco2", "banco3", "junto_banco", "mesa1", "mesa2", "mesa3", "mesa_coqui", "tras_mesa", "tras_mesa2", "tras_mesa3", "cuerda1", "cuerda2", "cuerda3", "cuerda4", "fotos1", "fotos2", "fotos3", "fotos4", "caja_velas", "taburete", "banqueta_coqui", "paquete", "banqueta_izq", "banqueta_der", "lista_abuela", "luis_patio", "espera1", "espera2", "espera3"],
    "extent": [19, 214],
    "x0Range": [19, 19],
    "what": "the one view of stories 114, 115 and 116: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing and the curtain with their boxes). x0 19 to 19 hold them all; x0 19 is the one nearest 22, the window centred on the picture (the spots held span columns 19 to 214). The window's point is the ground point under its middle column at the picture's middle row"
@@ -929,8 +878,8 @@
    "carmen": 0.28
   },
   "at": "castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the floor (z 0). The spec gives no radius: these are El cruce's (frog .45, grown-ups .35, children .28) (open point)",
-  "none": ["banco1", "banco2", "banco3", "mesa1", "mesa2", "mesa3", "mesa_coqui", "escondidos1", "escondidos2", "escondidos3", "escondidos4", "cuerda1", "cuerda2", "cuerda3", "cuerda4", "fotos1", "fotos2", "fotos3", "fotos4", "caja_velas", "taburete", "banqueta_coqui", "paquete"],
-  "onSeat": "whoever stands on the step, the frog on the table or on the low stool (z above 0) casts none: none of those is floor (a shadow cast at the floor under them would show in front of them); the things on the bench, the table, the stool and the cord cast none; the four heads behind the table cast none (they are crouched)"
+  "none": ["banco1", "banco2", "banco3", "mesa1", "mesa2", "mesa3", "mesa_coqui", "cuerda1", "cuerda2", "cuerda3", "cuerda4", "fotos1", "fotos2", "fotos3", "fotos4", "caja_velas", "taburete", "banqueta_coqui", "paquete"],
+  "onSeat": "whoever stands on the step, the frog on the table or on the low stool (z above 0) casts none: none of those is floor (a shadow cast at the floor under them would show in front of them); the things on the bench, the table, the stool and the cord cast none"
  },
  "checks": {
   "results": [
@@ -938,7 +887,7 @@
     "name": "views-x0",
     "ok": true,
     "lines": [
-     "views-x0: wide: x0 19 (window columns 19 to 214); the 38 spots held span columns 19 to 214 (196 of the window's 196); x0 that hold them all: 19 to 19 (the one nearest 22, the window centred on the picture)"
+     "views-x0: wide: x0 19 (window columns 19 to 214); the 35 spots held span columns 19 to 214 (196 of the window's 196); x0 that hold them all: 19 to 19 (the one nearest 22, the window centred on the picture)"
     ],
     "x0": {
      "wide": 19
@@ -948,7 +897,7 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 38 spots (persons with their sprite, small things and the curtain with their box) inside the 240 x 216 picture and the window (x0 19); the leftmost column any takes is 19 (cortina), the rightmost 214 (taburete)"
+     "spots-in-view: 35 spots (persons with their sprite, small things and the curtain with their box) inside the 240 x 216 picture and the window (x0 19); the leftmost column any takes is 19 (cortina), the rightmost 214 (taburete)"
     ]
    },
    {
@@ -1002,43 +951,43 @@
     "name": "sprites-apart",
     "ok": true,
     "lines": [
-     "sprites-apart: 87 pairs in the 6 moments of the preview (the four heads behind the table in m3: check escondidos) (m1 (fondo1, tras_mesa, arco, junto_banco, mesa_coqui); m2 (tras_mesa, arco, junto_banco, mesa_coqui); m3 (arco, mesa_coqui); m4 (tras_mesa, tras_mesa2, junto_banco, luis_patio, espera1, espera2, banqueta_coqui); m5 (tras_mesa, tras_mesa2, taburete, luis_patio, espera1, espera2, banqueta_coqui); m6 (banqueta_izq, banqueta_der, lista_abuela, tras_mesa, mesa_coqui, luis_patio, espera1, espera2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 fondo1 ~ arco (8 across, 12 down), m1 junto_banco ~ mesa_coqui (10 across, 12 down), m2 junto_banco ~ mesa_coqui (10 across, 12 down), m4 tras_mesa ~ banqueta_coqui (7 across, 25 down), m4 tras_mesa2 ~ banqueta_coqui (17 across, 27 down), m4 luis_patio ~ espera2 (3 across, 32 down), m5 tras_mesa ~ banqueta_coqui (7 across, 25 down), m5 tras_mesa2 ~ taburete (20 across, 21 down), m5 tras_mesa2 ~ banqueta_coqui (17 across, 27 down), m5 luis_patio ~ espera2 (3 across, 32 down), m6 banqueta_izq ~ tras_mesa (18 across, 38 down), m6 banqueta_izq ~ mesa_coqui (10 across, 41 down), m6 lista_abuela ~ mesa_coqui (27 across, 26 down), m6 luis_patio ~ espera2 (3 across, 32 down)",
-     "       closest pair in each moment (px across / px down): m1 junto_banco ~ mesa_coqui 10/12 (needs 28 across or 12 down); m2 junto_banco ~ mesa_coqui 10/12 (needs 28 across or 12 down); m3 arco ~ mesa_coqui 86/16 (needs 28 across or 12 down); m4 tras_mesa ~ banqueta_coqui 7/25 (needs 28 across or 12 down); m5 tras_mesa ~ banqueta_coqui 7/25 (needs 28 across or 12 down); m6 luis_patio ~ espera2 3/32 (needs 24 across or 12 down)"
+     "sprites-apart: 96 pairs in the 6 moments of the preview (m1 (fondo2, tras_mesa, arco, junto_banco, mesa_coqui); m2 (tras_mesa, arco, junto_banco, mesa_coqui); m3 (tras_mesa, tras_mesa3, junto_banco, arco, mesa_coqui); m4 (tras_mesa, tras_mesa2, junto_banco, luis_patio, espera1, espera2, banqueta_coqui); m5 (tras_mesa, tras_mesa2, taburete, luis_patio, espera1, espera2, banqueta_coqui); m6 (banqueta_izq, banqueta_der, lista_abuela, tras_mesa, mesa_coqui, luis_patio, espera1, espera2)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 fondo2 ~ arco (10 across, 12 down), m1 junto_banco ~ mesa_coqui (10 across, 12 down), m2 junto_banco ~ mesa_coqui (10 across, 12 down), m3 junto_banco ~ mesa_coqui (10 across, 12 down), m4 tras_mesa ~ banqueta_coqui (7 across, 25 down), m4 tras_mesa2 ~ banqueta_coqui (17 across, 27 down), m4 luis_patio ~ espera1 (18 across, 51 down), m4 luis_patio ~ espera2 (8 across, 51 down), m5 tras_mesa ~ banqueta_coqui (7 across, 25 down), m5 tras_mesa2 ~ taburete (20 across, 21 down), m5 tras_mesa2 ~ banqueta_coqui (17 across, 27 down), m5 luis_patio ~ espera1 (18 across, 51 down), m5 luis_patio ~ espera2 (8 across, 51 down), m6 banqueta_izq ~ tras_mesa (18 across, 38 down), m6 banqueta_izq ~ mesa_coqui (10 across, 41 down), m6 lista_abuela ~ mesa_coqui (27 across, 26 down), m6 luis_patio ~ espera1 (18 across, 51 down), m6 luis_patio ~ espera2 (8 across, 51 down)",
+     "       closest pair in each moment (px across / px down): m1 junto_banco ~ mesa_coqui 10/12 (needs 28 across or 12 down); m2 junto_banco ~ mesa_coqui 10/12 (needs 28 across or 12 down); m3 junto_banco ~ mesa_coqui 10/12 (needs 28 across or 12 down); m4 tras_mesa ~ banqueta_coqui 7/25 (needs 28 across or 12 down); m5 tras_mesa ~ banqueta_coqui 7/25 (needs 28 across or 12 down); m6 banqueta_izq ~ mesa_coqui 10/41 (needs 28 across or 12 down)"
     ],
     "pairs": [
      {
       "moment": 1,
-      "a": "fondo1",
+      "a": "fondo2",
       "b": "tras_mesa",
-      "across": 122,
-      "down": 31,
+      "across": 104,
+      "down": 29,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "fondo1",
+      "a": "fondo2",
       "b": "arco",
-      "across": 8,
+      "across": 10,
       "down": 12,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "fondo1",
+      "a": "fondo2",
       "b": "junto_banco",
-      "across": 84,
-      "down": 16,
+      "across": 66,
+      "down": 14,
       "needAcross": 24,
       "ok": true
      },
      {
       "moment": 1,
-      "a": "fondo1",
+      "a": "fondo2",
       "b": "mesa_coqui",
-      "across": 94,
-      "down": 28,
+      "across": 76,
+      "down": 26,
       "needAcross": 28,
       "ok": true
      },
@@ -1047,7 +996,7 @@
       "a": "tras_mesa",
       "b": "arco",
       "across": 114,
-      "down": 19,
+      "down": 17,
       "needAcross": 24,
       "ok": true
      },
@@ -1074,7 +1023,7 @@
       "a": "arco",
       "b": "junto_banco",
       "across": 76,
-      "down": 4,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -1083,7 +1032,7 @@
       "a": "arco",
       "b": "mesa_coqui",
       "across": 86,
-      "down": 16,
+      "down": 14,
       "needAcross": 28,
       "ok": true
      },
@@ -1101,7 +1050,7 @@
       "a": "tras_mesa",
       "b": "arco",
       "across": 114,
-      "down": 19,
+      "down": 17,
       "needAcross": 24,
       "ok": true
      },
@@ -1128,7 +1077,7 @@
       "a": "arco",
       "b": "junto_banco",
       "across": 76,
-      "down": 4,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -1137,7 +1086,7 @@
       "a": "arco",
       "b": "mesa_coqui",
       "across": 86,
-      "down": 16,
+      "down": 14,
       "needAcross": 28,
       "ok": true
      },
@@ -1152,10 +1101,91 @@
      },
      {
       "moment": 3,
+      "a": "tras_mesa",
+      "b": "tras_mesa3",
+      "across": 39,
+      "down": 0,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "tras_mesa",
+      "b": "junto_banco",
+      "across": 38,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "tras_mesa",
+      "b": "arco",
+      "across": 114,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "tras_mesa",
+      "b": "mesa_coqui",
+      "across": 28,
+      "down": 3,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "tras_mesa3",
+      "b": "junto_banco",
+      "across": 77,
+      "down": 15,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "tras_mesa3",
+      "b": "arco",
+      "across": 153,
+      "down": 17,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "tras_mesa3",
+      "b": "mesa_coqui",
+      "across": 67,
+      "down": 3,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "junto_banco",
+      "b": "arco",
+      "across": 76,
+      "down": 2,
+      "needAcross": 24,
+      "ok": true
+     },
+     {
+      "moment": 3,
+      "a": "junto_banco",
+      "b": "mesa_coqui",
+      "across": 10,
+      "down": 12,
+      "needAcross": 28,
+      "ok": true
+     },
+     {
+      "moment": 3,
       "a": "arco",
       "b": "mesa_coqui",
       "across": 86,
-      "down": 16,
+      "down": 14,
       "needAcross": 28,
       "ok": true
      },
@@ -1181,8 +1211,8 @@
       "moment": 4,
       "a": "tras_mesa",
       "b": "luis_patio",
-      "across": 81,
-      "down": 10,
+      "across": 99,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -1190,8 +1220,8 @@
       "moment": 4,
       "a": "tras_mesa",
       "b": "espera1",
-      "across": 109,
-      "down": 32,
+      "across": 117,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1199,8 +1229,8 @@
       "moment": 4,
       "a": "tras_mesa",
       "b": "espera2",
-      "across": 84,
-      "down": 42,
+      "across": 91,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1226,8 +1256,8 @@
       "moment": 4,
       "a": "tras_mesa2",
       "b": "luis_patio",
-      "across": 105,
-      "down": 12,
+      "across": 123,
+      "down": 4,
       "needAcross": 24,
       "ok": true
      },
@@ -1235,8 +1265,8 @@
       "moment": 4,
       "a": "tras_mesa2",
       "b": "espera1",
-      "across": 133,
-      "down": 34,
+      "across": 141,
+      "down": 55,
       "needAcross": 24,
       "ok": true
      },
@@ -1244,8 +1274,8 @@
       "moment": 4,
       "a": "tras_mesa2",
       "b": "espera2",
-      "across": 108,
-      "down": 44,
+      "across": 115,
+      "down": 55,
       "needAcross": 24,
       "ok": true
      },
@@ -1262,8 +1292,8 @@
       "moment": 4,
       "a": "junto_banco",
       "b": "luis_patio",
-      "across": 43,
-      "down": 25,
+      "across": 61,
+      "down": 17,
       "needAcross": 24,
       "ok": true
      },
@@ -1271,8 +1301,8 @@
       "moment": 4,
       "a": "junto_banco",
       "b": "espera1",
-      "across": 71,
-      "down": 47,
+      "across": 79,
+      "down": 68,
       "needAcross": 24,
       "ok": true
      },
@@ -1280,8 +1310,8 @@
       "moment": 4,
       "a": "junto_banco",
       "b": "espera2",
-      "across": 46,
-      "down": 57,
+      "across": 53,
+      "down": 68,
       "needAcross": 24,
       "ok": true
      },
@@ -1298,8 +1328,8 @@
       "moment": 4,
       "a": "luis_patio",
       "b": "espera1",
-      "across": 28,
-      "down": 22,
+      "across": 18,
+      "down": 51,
       "needAcross": 24,
       "ok": true
      },
@@ -1307,8 +1337,8 @@
       "moment": 4,
       "a": "luis_patio",
       "b": "espera2",
-      "across": 3,
-      "down": 32,
+      "across": 8,
+      "down": 51,
       "needAcross": 24,
       "ok": true
      },
@@ -1316,8 +1346,8 @@
       "moment": 4,
       "a": "luis_patio",
       "b": "banqueta_coqui",
-      "across": 88,
-      "down": 15,
+      "across": 106,
+      "down": 23,
       "needAcross": 28,
       "ok": true
      },
@@ -1325,8 +1355,8 @@
       "moment": 4,
       "a": "espera1",
       "b": "espera2",
-      "across": 25,
-      "down": 10,
+      "across": 26,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -1334,8 +1364,8 @@
       "moment": 4,
       "a": "espera1",
       "b": "banqueta_coqui",
-      "across": 116,
-      "down": 7,
+      "across": 124,
+      "down": 28,
       "needAcross": 28,
       "ok": true
      },
@@ -1343,8 +1373,8 @@
       "moment": 4,
       "a": "espera2",
       "b": "banqueta_coqui",
-      "across": 91,
-      "down": 17,
+      "across": 98,
+      "down": 28,
       "needAcross": 28,
       "ok": true
      },
@@ -1370,8 +1400,8 @@
       "moment": 5,
       "a": "tras_mesa",
       "b": "luis_patio",
-      "across": 81,
-      "down": 10,
+      "across": 99,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -1379,8 +1409,8 @@
       "moment": 5,
       "a": "tras_mesa",
       "b": "espera1",
-      "across": 109,
-      "down": 32,
+      "across": 117,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1388,8 +1418,8 @@
       "moment": 5,
       "a": "tras_mesa",
       "b": "espera2",
-      "across": 84,
-      "down": 42,
+      "across": 91,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1415,8 +1445,8 @@
       "moment": 5,
       "a": "tras_mesa2",
       "b": "luis_patio",
-      "across": 105,
-      "down": 12,
+      "across": 123,
+      "down": 4,
       "needAcross": 24,
       "ok": true
      },
@@ -1424,8 +1454,8 @@
       "moment": 5,
       "a": "tras_mesa2",
       "b": "espera1",
-      "across": 133,
-      "down": 34,
+      "across": 141,
+      "down": 55,
       "needAcross": 24,
       "ok": true
      },
@@ -1433,8 +1463,8 @@
       "moment": 5,
       "a": "tras_mesa2",
       "b": "espera2",
-      "across": 108,
-      "down": 44,
+      "across": 115,
+      "down": 55,
       "needAcross": 24,
       "ok": true
      },
@@ -1451,8 +1481,8 @@
       "moment": 5,
       "a": "taburete",
       "b": "luis_patio",
-      "across": 125,
-      "down": 33,
+      "across": 143,
+      "down": 25,
       "needAcross": 24,
       "ok": true
      },
@@ -1460,8 +1490,8 @@
       "moment": 5,
       "a": "taburete",
       "b": "espera1",
-      "across": 153,
-      "down": 55,
+      "across": 161,
+      "down": 76,
       "needAcross": 24,
       "ok": true
      },
@@ -1469,8 +1499,8 @@
       "moment": 5,
       "a": "taburete",
       "b": "espera2",
-      "across": 128,
-      "down": 65,
+      "across": 135,
+      "down": 76,
       "needAcross": 24,
       "ok": true
      },
@@ -1487,8 +1517,8 @@
       "moment": 5,
       "a": "luis_patio",
       "b": "espera1",
-      "across": 28,
-      "down": 22,
+      "across": 18,
+      "down": 51,
       "needAcross": 24,
       "ok": true
      },
@@ -1496,8 +1526,8 @@
       "moment": 5,
       "a": "luis_patio",
       "b": "espera2",
-      "across": 3,
-      "down": 32,
+      "across": 8,
+      "down": 51,
       "needAcross": 24,
       "ok": true
      },
@@ -1505,8 +1535,8 @@
       "moment": 5,
       "a": "luis_patio",
       "b": "banqueta_coqui",
-      "across": 88,
-      "down": 15,
+      "across": 106,
+      "down": 23,
       "needAcross": 28,
       "ok": true
      },
@@ -1514,8 +1544,8 @@
       "moment": 5,
       "a": "espera1",
       "b": "espera2",
-      "across": 25,
-      "down": 10,
+      "across": 26,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      },
@@ -1523,8 +1553,8 @@
       "moment": 5,
       "a": "espera1",
       "b": "banqueta_coqui",
-      "across": 116,
-      "down": 7,
+      "across": 124,
+      "down": 28,
       "needAcross": 28,
       "ok": true
      },
@@ -1532,8 +1562,8 @@
       "moment": 5,
       "a": "espera2",
       "b": "banqueta_coqui",
-      "across": 91,
-      "down": 17,
+      "across": 98,
+      "down": 28,
       "needAcross": 28,
       "ok": true
      },
@@ -1577,8 +1607,8 @@
       "moment": 6,
       "a": "banqueta_izq",
       "b": "luis_patio",
-      "across": 63,
-      "down": 28,
+      "across": 81,
+      "down": 36,
       "needAcross": 24,
       "ok": true
      },
@@ -1586,8 +1616,8 @@
       "moment": 6,
       "a": "banqueta_izq",
       "b": "espera1",
-      "across": 91,
-      "down": 6,
+      "across": 99,
+      "down": 15,
       "needAcross": 24,
       "ok": true
      },
@@ -1595,8 +1625,8 @@
       "moment": 6,
       "a": "banqueta_izq",
       "b": "espera2",
-      "across": 66,
-      "down": 4,
+      "across": 73,
+      "down": 15,
       "needAcross": 24,
       "ok": true
      },
@@ -1631,8 +1661,8 @@
       "moment": 6,
       "a": "banqueta_der",
       "b": "luis_patio",
-      "across": 112,
-      "down": 32,
+      "across": 130,
+      "down": 40,
       "needAcross": 24,
       "ok": true
      },
@@ -1640,8 +1670,8 @@
       "moment": 6,
       "a": "banqueta_der",
       "b": "espera1",
-      "across": 140,
-      "down": 10,
+      "across": 148,
+      "down": 11,
       "needAcross": 24,
       "ok": true
      },
@@ -1649,8 +1679,8 @@
       "moment": 6,
       "a": "banqueta_der",
       "b": "espera2",
-      "across": 115,
-      "down": 0,
+      "across": 122,
+      "down": 11,
       "needAcross": 24,
       "ok": true
      },
@@ -1676,8 +1706,8 @@
       "moment": 6,
       "a": "lista_abuela",
       "b": "luis_patio",
-      "across": 26,
-      "down": 13,
+      "across": 44,
+      "down": 21,
       "needAcross": 24,
       "ok": true
      },
@@ -1685,8 +1715,8 @@
       "moment": 6,
       "a": "lista_abuela",
       "b": "espera1",
-      "across": 54,
-      "down": 9,
+      "across": 62,
+      "down": 30,
       "needAcross": 24,
       "ok": true
      },
@@ -1694,8 +1724,8 @@
       "moment": 6,
       "a": "lista_abuela",
       "b": "espera2",
-      "across": 29,
-      "down": 19,
+      "across": 36,
+      "down": 30,
       "needAcross": 24,
       "ok": true
      },
@@ -1712,8 +1742,8 @@
       "moment": 6,
       "a": "tras_mesa",
       "b": "luis_patio",
-      "across": 81,
-      "down": 10,
+      "across": 99,
+      "down": 2,
       "needAcross": 24,
       "ok": true
      },
@@ -1721,8 +1751,8 @@
       "moment": 6,
       "a": "tras_mesa",
       "b": "espera1",
-      "across": 109,
-      "down": 32,
+      "across": 117,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1730,8 +1760,8 @@
       "moment": 6,
       "a": "tras_mesa",
       "b": "espera2",
-      "across": 84,
-      "down": 42,
+      "across": 91,
+      "down": 53,
       "needAcross": 24,
       "ok": true
      },
@@ -1739,8 +1769,8 @@
       "moment": 6,
       "a": "mesa_coqui",
       "b": "luis_patio",
-      "across": 53,
-      "down": 13,
+      "across": 71,
+      "down": 5,
       "needAcross": 28,
       "ok": true
      },
@@ -1748,8 +1778,8 @@
       "moment": 6,
       "a": "mesa_coqui",
       "b": "espera1",
-      "across": 81,
-      "down": 35,
+      "across": 89,
+      "down": 56,
       "needAcross": 28,
       "ok": true
      },
@@ -1757,8 +1787,8 @@
       "moment": 6,
       "a": "mesa_coqui",
       "b": "espera2",
-      "across": 56,
-      "down": 45,
+      "across": 63,
+      "down": 56,
       "needAcross": 28,
       "ok": true
      },
@@ -1766,8 +1796,8 @@
       "moment": 6,
       "a": "luis_patio",
       "b": "espera1",
-      "across": 28,
-      "down": 22,
+      "across": 18,
+      "down": 51,
       "needAcross": 24,
       "ok": true
      },
@@ -1775,8 +1805,8 @@
       "moment": 6,
       "a": "luis_patio",
       "b": "espera2",
-      "across": 3,
-      "down": 32,
+      "across": 8,
+      "down": 51,
       "needAcross": 24,
       "ok": true
      },
@@ -1784,8 +1814,8 @@
       "moment": 6,
       "a": "espera1",
       "b": "espera2",
-      "across": 25,
-      "down": 10,
+      "across": 26,
+      "down": 0,
       "needAcross": 24,
       "ok": true
      }
@@ -1802,33 +1832,16 @@
     "name": "heads-behind-table",
     "ok": true,
     "lines": [
-     "heads-behind-table: everyone who stands behind the table (m1: tras_mesa; m2: tras_mesa; m4: tras_mesa, tras_mesa2; m5: tras_mesa, tras_mesa2; m6: tras_mesa) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 7 heads, 0 px covered, 0 hidden by the set",
-     "       info, not a check: m1 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 tras_mesa2 183,100 (carmen): head rows 59 to 72: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 tras_mesa2 183,100 (carmen): head rows 59 to 72: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m6 tras_mesa 159,102 (abuelo): head rows 51 to 64: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
-    ]
-   },
-   {
-    "name": "escondidos",
-    "ok": false,
-    "lines": [
-     "escondidos: 9 problem(s) with the four heads behind the table:",
-     "  moment 3: escondidos1 [137,102] (24 wide) ~ escondidos2 [156,102] (24 wide): 19 px sideways (the boxes need 24), 0 px up-down (needs 12)",
-     "  moment 3: escondidos1 [137,102] (24 wide) ~ mesa_coqui [131,99] (32 wide): 6 px sideways (the boxes need 28), 3 px up-down (needs 12)",
-     "  moment 3: escondidos2 [156,102] (24 wide) ~ escondidos3 [176,102] (24 wide): 20 px sideways (the boxes need 24), 0 px up-down (needs 12)",
-     "  moment 3: escondidos2 [156,102] (24 wide) ~ mesa_coqui [131,99] (32 wide): 25 px sideways (the boxes need 28), 3 px up-down (needs 12)",
-     "  moment 3: escondidos3 [176,102] (24 wide) ~ escondidos4 [195,102] (24 wide): 19 px sideways (the boxes need 24), 0 px up-down (needs 12)",
-     "  moment 3 escondidos1 [137,102]: 113 of the 206 px of his head are not seen: 113 covered by mesa_coqui 113, 0 hidden by the set",
-     "  moment 3 escondidos2 [156,102]: 18 of the 192 px of his head are not seen: 18 covered by mesa1 18, 0 hidden by the set",
-     "  moment 3 escondidos3 [176,102]: 67 of the 182 px of his head are not seen: 67 covered by mesa2 48, mesa1 19, 0 hidden by the set",
-     "  moment 3 escondidos4 [195,102]: 56 of the 182 px of his head are not seen: 56 covered by mesa3 54, mesa2 2, 0 hidden by the set",
-     "       the table's far edge is 83.2 px wide (columns 123.9 to 207.1, its top rows 87 and below); the four heads take 4 x 16 px of it side by side, the frog (columns 115 to 146, rows 74 to 98) and the three things (rows 77 to 90, v 2.6) stand in front of it: no shift of one head clears them. OPEN POINT"
+     "heads-behind-table: everyone who stands behind the table (m1: tras_mesa; m2: tras_mesa; m3: tras_mesa, tras_mesa3; m4: tras_mesa, tras_mesa2; m5: tras_mesa, tras_mesa2; m6: tras_mesa) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 9 heads, 0 px covered, 0 hidden by the set",
+     "       info, not a check: m1 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 tras_mesa3 198,102 (luis): head rows 61 to 74: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 tras_mesa2 183,100 (carmen): head rows 59 to 72: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 tras_mesa 159,102 (abuela): head rows 52 to 65: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 tras_mesa2 183,100 (carmen): head rows 59 to 72: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m6 tras_mesa 159,102 (abuelo): head rows 51 to 64: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
     ]
    },
    {
     "name": "fondo-head",
     "ok": true,
     "lines": [
-     "fondo-head: in moment 1 whoever is at fondo1 37,71 has his head (rows 30 to 43) inside the arch's hole (x 21.72 to 65.4, y 27.88 to 74): 244 px, 0 outside, 0 hidden by the set",
-     "       info, not a check: the curtain (half open, its left half [19,26,25,49]) covers 638 of her 724 px (217 of the 244 of her head)"
+     "fondo-head: in moment 1 Carmen at fondo2 55,73 has her head (rows 32 to 45, columns 45 to 64) inside the arch's hole (x 21.72 to 65.4, y 27.88 to 74) and clear of the half curtain [19,26,25,49]: 244 px, 0 outside, 0 hidden by the set, 0 behind the curtain",
+     "       info, not a check: the half curtain covers 0 of her 724 px (0 of her head's 244)"
     ]
    },
    {
@@ -1885,7 +1898,7 @@
     "name": "info-touch",
     "ok": true,
     "lines": [
-     "info-touch: not a check. m1: the curtain's box: 216 nearer px of others (arco 216), the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m2: the curtain's box: 498 nearer px of others (arco 498), the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m3: the curtain's box: 624 nearer px of others (arco 624), the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m4: the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m5: the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m6: the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it"
+     "info-touch: not a check. m1: the curtain's box: 206 nearer px of others (arco 206), the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m2: the curtain's box: 474 nearer px of others (arco 474), the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m3: the curtain's box: 590 nearer px of others (arco 590), the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m4: the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m5: the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it; m6: the low stool's box [157,123,17,16]: 0 px under anyone but the frog on it"
     ]
    }
   ]
