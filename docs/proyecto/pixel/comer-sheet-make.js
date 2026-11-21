@@ -50,6 +50,7 @@ const TZ = 173;
   let sheet = make(G, runs);
   G.HOPS = await hopTable(browser, runs, sheet);
   sheet = make(G, runs);
+  G.WALKS = await hopTable(browser, runs, sheet, G.HOPS.walks);   // every walk again, with the final sheet's port: hop count by hop count
   fs.writeFileSync(OUT, text(sheet));   // the preview reads the sheet: written first, then checked (and written again with the checks' notes)
   if (process.env.COMER_NOCHECK) { await browser.close(); console.log('wrote ' + path.relative(REPO, OUT) + ' (no checks)'); return; }
   G.TICKS = await tickStates(browser, runs, sheet);
@@ -207,29 +208,38 @@ async function tickStates(browser, runs, sheet) {
 
 /* ---------- the frog's hops: every ranaA call of every run, played on the old page and with the port's comer.js, in order: where he was and
    where he went on the new picture, and on the old. HOPAT (moves) maps each new place to its old one, so the port counts the old hops ---------- */
-async function hopTable(browser, runs, sheet) {
+const JUEGO_JS = fs.readFileSync(path.join(REPO, 'historia/juego.js'), 'utf8');
+const HOPTO = 'async function hopTo(x,y,hops,s1){const q=W.cq,x0=q.x,y0=q.y,s0=q.s;';
+if (JUEGO_JS.split(HOPTO).length !== 2) throw new Error('walks: hopTo');
+// juego.js with every walk of the frog written down: where from, where to, how many hops (hopTo is the only way he hops, acts included)
+const JUEGO_LOG = JUEGO_JS.replace(HOPTO, HOPTO + '(window.__WALKS=window.__WALKS||[]).push([x0,y0,x,y,hops]);');
+async function hopTable(browser, runs, sheet, oldWalks) {
   const INIT = fs.readFileSync(path.join(TRAZAS, 'page-init.js'), 'utf8').replace('__SEED__', '1'), DRIVE = fs.readFileSync(path.join(TRAZAS, 'page-drive.js'), 'utf8');
   const a = 'async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);';
   const LOG = s => { if (!s.includes(a)) throw new Error('hops: ranaA'); return s.replace(a, a + '(window.__HOPS=window.__HOPS||[]).push([q.x+16,q.y+27,x,y,d<3?0:(h||Math.max(1,Math.min(6,Math.ceil(d/26))))]);'); };
   const SRC = { o: LOG(COMER_JS), n: LOG(portSource(sheet)) };
   return serve(async base => { const table = {}, conflicts = new Set(); let calls = 0;
-    for (const r of runs) { const got = {};
-      for (const side of ['o', 'n']) { const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, timezoneId: 'UTC', locale: 'en-US' });
+    const walks = []; let ri = 0;
+    for (const r of runs) { const got = {}, wk = {}; if (oldWalks) wk.o = oldWalks[ri].o;
+      for (const side of oldWalks ? ['n'] : ['o', 'n']) { const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1, timezoneId: 'UTC', locale: 'en-US' });
         try { await ctx.addInitScript(INIT);
           await ctx.route(/\/historia\/audio\/[^/]+\.mp3(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()); return fs.existsSync(path.join(REPO, 'historia/audio', name)) ? route.fulfill({ status: 200, contentType: 'audio/mpeg', body: 'ID3' }) : route.fulfill({ status: 404, body: '' }); });
+          await ctx.route(/\/historia\/juego\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: JUEGO_LOG }));
           await ctx.route(/\/historia\/escenas\/comer\.js(\?.*)?$/, route => route.fulfill({ status: 200, contentType: 'text/javascript; charset=utf-8', body: SRC[side] }));
           if (side === 'n') await ctx.route(/\/historia\/cuentos\/[^/]+\.json(\?.*)?$/, route => { const name = decodeURIComponent(new URL(route.request().url()).pathname.split('/').pop()).replace(/\.json$/, ''); return route.fulfill({ status: 200, contentType: 'application/json', body: portStory(name, sheet) }); });
           const page = await ctx.newPage(); await page.goto(base + '/historia/index.html?cuento=' + r.story.id + '&fast=1&rec=1&mic=stub:none&abiertas=todas');
           for (let i = 0; ; i++) { if (await page.evaluate("!!(window.Story&&Story.ready&&typeof voiceReady!=='undefined'&&voiceReady)")) break; if (i > 600) throw new Error('the page did not load ' + r.story.id); await new Promise(z => setTimeout(z, 50)); }
           await page.evaluate('voiceReady'); await page.evaluate(DRIVE);
           const tr = await page.evaluate(cfg => window.__drive(cfg), { plan: r.plan, think: 700, limitMs: 4 * 3600e3, states: false }); if (tr.end !== 'finished') throw new Error('hops: ' + r.story.id + ' ' + r.plan + ' ' + side + ' ended: ' + tr.end);
-          got[side] = await page.evaluate(() => window.__HOPS || []); } finally { await ctx.close(); } }
+          got[side] = await page.evaluate(() => window.__HOPS || []); wk[side] = await page.evaluate(() => window.__WALKS || []); } finally { await ctx.close(); } }
+      walks.push({ story: r.story.id, plan: r.plan, o: wk.o, n: wk.n }); ri++;
+      if (oldWalks) continue;
       if (got.o.length !== got.n.length) throw new Error('hops: ' + r.story.id + ' ' + r.plan + ': ' + got.o.length + ' ranaA calls on the old page, ' + got.n.length + ' with the port\'s comer.js');
       got.o.forEach((o, i) => { const w = got.n[i]; calls++;
         for (const [nx, ny, ox, oy] of [[w[2], w[3], o[2], o[3]], [w[0], w[1], o[0], o[1]]]) { if (Math.round(nx) === Math.round(ox) && Math.round(ny) === Math.round(oy)) continue; const k = Math.round(nx) + ',' + Math.round(ny), v = [Math.round(ox), Math.round(oy)];
           if (table[k] && table[k].join() !== v.join()) conflicts.add(k + ': ' + table[k] + ' and ' + v); else table[k] = v; } }); }
     const sorted = {}; for (const k of Object.keys(table).sort((p, q) => { const [a1, b1] = p.split(',').map(Number), [a2, b2] = q.split(',').map(Number); return a1 - a2 || b1 - b2; })) sorted[k] = table[k];
-    return { table: sorted, conflicts: [...conflicts], calls }; });
+    return { table: sorted, conflicts: [...conflicts], calls, walks }; });
 }
 
 /* ---------- the old sprite layer, as comer.js draw() draws it ----------
@@ -415,7 +425,7 @@ function designMoves(E, F) {
   // story 33
   const CE33 = place('CE33', [84, 146], [90, 147], 'the basket of rolls: at the near edge of the cloth, within the arm of the one who asks (on the world\'s axes the cloth\'s near edge at the left is 20 rows higher than the old front)');
   const BU33 = place('BU33', [112, 164], [150, 166], 'the butter dish at the cloth\'s near edge, the frog\'s place to its left (x - 20) on it too, clear of the basket and of where the frog waits');
-  const CH33 = place('CH33', [160, 164], [150, 150], 'the chocolate dish on the cloth, the frog\'s place to its left on it too, behind the butter (the cloth\'s near edge at the right falls away)');
+  const CH33 = place('CH33', [160, 164], [162, 150], 'the chocolate dish on the cloth, the frog\'s place to its left on it too, behind the butter (the cloth\'s near edge at the right falls away)');
   const HOME33 = place('HOME33', [82, 174], [118, 165], 'the frog\'s place at the cloth\'s near edge, to the right of the one who asks as the old (the old place is in front of the table here)');
   const FETCH33 = place('FETCH33', [112, 152], [118, 148], 'where the frog takes a roll from the basket, to its right: on the cloth, within his arm');
   const HO33 = place('HO33', [66, 158], [97, 155], 'where a roll passes from the asker\'s hand to the frog\'s: between them, within both arms');
@@ -439,11 +449,11 @@ function designMoves(E, F) {
   const PLUIS = tp('PLUIS', [100, 172], 8, 'Luis\'s plate on the cloth\'s near edge');
   const PRANA = place('PRANA', [150, 174], [140, 170], 'the frog\'s small plate on the cloth, his fork beside it on the cloth too');
   const CASA34 = place('CASA34', [172, 168], [178, 157], 'the frog\'s place in story 34, on the cloth at its right, clear of the hint frame round whoever sits behind');
-  const EAT34 = tp('EAT34', [162, 176], 10, 'where the frog eats at his plate, on the cloth');
+  const EAT34 = place('EAT34', [162, 176], [148, 172], 'where the frog eats at his plate, on the cloth, beside it');
   const LUIS34 = fl('LUIS34', [118, 190]);
   const PLAT34 = place('PLAT34', [213, 118], [204, 94], 'the platter waits on the stove\'s top (the kit\'s stove and the counter beside it)');
   const CONT34 = place('CONT34', [58, 117], [214, 98], 'where a plate is set on a counter\'s top: the counter beside the stove (the counter along the left wall is behind the table\'s left end: whoever stands at it is hidden from the waist down)');
-  const CONTP = place('CONT34.pie', [49, 152], [212, 130], 'where Carmen stands to set it there: in front of that counter, behind the table');
+  const CONTP = place('CONT34.pie', [49, 152], [212, 138], 'where Carmen stands to set it there: in front of that counter, behind the table');
   const ENC34 = fl('ENC34', [196, 184], 'where Luis meets abuela for the big spoon: at the right of the table\'s right end, on clear floor');
   const TIPR = tp('tipa34.rana', [144, 172], 10, 'where the frog hands the spoon back to Luis: on the cloth');
   // story 35
@@ -458,7 +468,7 @@ function designMoves(E, F) {
   const CAFE35 = place('CAFE35', [199, 118], [190, 87], 'the big coffee pot on the stove\'s left burner');
   const CAZO35 = place('CAZO35', [218, 118], [212, 97], 'the milk pan on the counter beside the stove (the kit\'s stove is too narrow for both: its burners are 8 px apart)');
   const AFOGON = place('AFOGON', [208, 153], [190, 128], 'where abuela stands to take something off the stove\'s top: on the floor just in front of the stove');
-  place('STOOL', [210, 178], [206, 178], 'abuela\'s stool, 4 px left: she sits on it wholly inside the view with 3 px to spare');
+  place('STOOL', [210, 178], [206, 184], 'abuela\'s stool, 4 px left and 6 rows nearer: she sits on it wholly inside the view with 3 px to spare, clear of the table\'s right end');
   place('SIDE34', [194, 166], [204, 166], 'abuela\'s way from the stove to the front: right of the table\'s right end (straight down from there she passes clear of its corner)');
   return { NP, NUM, XP, DOOR, PB, leastTop, leastFloor, Gm };
 }
@@ -478,12 +488,14 @@ function designEdits(E, F, D) {
     ',DETRAS=(x,y)=>(y<' + DT.far + '+x/2||(x<80&&y<' + DT.passage + '-x/2))&&y>' + DT.left + '-x/2&&x<' + DT.right +
     ',ENTOP=(x,y)=>y>=' + EN[0] + '+x/2&&y<=' + EN[1] + '+x/2&&y>=' + EN[2] + '-x/2&&y<=' + EN[3] + '-x/2' +
     ',MESAPIE=(x,y)=>y>' + FF + '+x/2&&y<' + NF + '+x/2&&y>' + LF + '-x/2&&y<' + RF + '-x/2' +
-    ',atras=async(id,x,y)=>{const p=G(id),ln=SY(p.x,ATRAS);if(p.y>ln+3&&p.x>80&&!(x>XP-8&&p.x>XP-8)){if(SILLA.some(s=>Math.abs(s-p.x)<6))await mueve(id,p.x+12,SY(p.x+12,ASIENTO-3));await mueve(id,G(id).x,SY(G(id).x,ATRAS));}const q=G(id),a=q.x<80&&q.y>PB[1]-1,b=x<80&&y>PB[1]-1;if(a!==b)await mueve(id,PB[0],PB[1]);await mueve(id,x,y);};']],
+    ',FRONTROW=(x,y)=>{while(MESAPIE(x,y)&&y<212)y++;return y;}' +
+    ',LIBRE=(who,tx,ty,h)=>{const Fc=[];for(const k in W.gente){const p=W.gente[k];if(k!==who&&p&&p.vis!==0)Fc.push([R(p.x)-6,R(p.y)-alto(k)+7,12,10]);}if(who!=="coqui"&&W.cq&&W.cq.vis){const b=frogBox(W.cq);Fc.push([b.x+2,b.y+R(W.cq.dy),b.w-4,R(b.h*.6)]);}for(const[s,dy]of ' + JSON.stringify(TALK) + '){const x=tx+s*(h+16),y=ty+dy,r=[x-9,y-16,19,13];if(r[0]>=cam[0]&&r[1]>=0&&r[0]+r[2]<=cam[0]+cam[2]&&!Fc.some(f=>f[0]<r[0]+r[2]&&r[0]<f[0]+f[2]&&f[1]<r[1]+r[3]&&r[1]<f[1]+f[3]))return [x,y];}return [tx,ty];}' +
+    ',atras=async(id,x,y)=>{const p=G(id),ln=SY(p.x,ATRAS);if(p.y>ln+3&&p.x>80&&!(x>XP-8&&p.x>XP-8)){if(SILLA.some(s=>Math.abs(s-p.x)<6))await mueve(id,p.x+12,SY(p.x+12,ASIENTO-3));await mueve(id,G(id).x,SY(G(id).x,ATRAS));}const q=G(id),a=q.x<80&&q.y>PB[1]-1,b=x<80&&y>PB[1]-1;if(b&&!a&&q.x>86)await mueve(id,86,SY(86,ATRAS));if(a!==b)await mueve(id,PB[0],PB[1]);await mueve(id,x,y);};']],
     'the new geometry, for the lines below: SY(x, y), a row at the table stepping down half a row a pixel to the right (round x ' + SYC + '); XP, the column of the way round the table\'s right end; DOOR, the doorway in the left wall (whoever comes in to sit or leaves from behind); PB, the passage between the counter and the table\'s left end; DETRAS, a place behind the table (or in that passage); ENTOP, a foot on the cloth; MESAPIE, a floor point under the table; atras, a walk behind the table (by the lane behind the chairs and the passage)');
   ed('const LE=[66,190],CAR=[46,194],FOGON=[208,168],AFOGON=[208,153],DER=[208,176],PUERTA=[0,190];', [['AFOGON=[208,153]', 'AFOGON=' + A('AFOGON')]], D.NP.AFOGON.why, [['abuela', [208, 153], N('AFOGON')]]);
-  ed('const caja=id=>{', [['MESA[1]+26-(R(p.y)-h)', 'SY(R(p.x),MESA[1]+26)-(R(p.y)-h)']], 'caja: a seated one\'s box reaches down to 26 rows under the table\'s far edge, at his column (SY)');
+  ed('const caja=id=>{', [['MESA[1]+26-(R(p.y)-h)', 'SY(R(p.x),MESA[1]+14)-(R(p.y)-h)']], 'caja: a seated one\'s box reaches down to 6 rows over his feet, at his column (SY): his chest in its middle as the old (the table\'s far edge is 14 rows over a sitter\'s feet here, 20 in the old), and its hint frame clear of the frog on the cloth in front');
   ed('const enMesa=o=>', [['o.y>=FILA-1&&o.y<=FREN+3&&o.x>MESA[0]-8&&o.x<MESA[0]+MESA[2]+8', 'ENTOP(o.x,o.y)']], 'enMesa: a thing on the table is one whose foot is on the cloth (the new table\'s top)');
-  ed('const detrasMesa=p=>', [['p.y<TZ&&p.x>62&&p.x<190', 'DETRAS(p.x,p.y)&&p.x<186']], 'detrasMesa: behind the table is behind its far edge (or in the passage at its left end), short of the stove (whoever stands at the stove is drawn after what stands on its top, as the old)');
+  ed('const detrasMesa=p=>', [['p.y<TZ&&p.x>62&&p.x<190', 'DETRAS(p.x,p.y)&&p.x<186&&p.y-(p.x-' + SYC + ')/2<ATRAS+4']], 'detrasMesa: behind the table is behind the chairs (the lane, the passage at its left end), short of the stove (whoever stands at the stove is drawn after what stands on its top, as the old); whoever stands at a chair, getting up or sitting down, is sorted by his row (capa) and drawn after the chairs');
   ed('const capa=p=>', [['(p.sent||p.est)?[p.y,TZ+.9]:detrasMesa(p)?[40+p.y/100,40.5+p.y/100]', '(p.sent||p.est)?[p.y-(p.x-' + SYC + ')/2,TZ+.9]:detrasMesa(p)?[40+(p.y-(p.x-' + SYC + ')/2)/100,40.5+(p.y-(p.x-' + SYC + ')/2)/100]']], 'capa: whoever sits, stands at a corner or walks behind the table is sorted by his row at the table without its step (y - (x - ' + SYC + ') / 2): who is behind whom along the table is as the old');
   ed('const HIJA=[213,204],OLLA=', [['OLLA=[134,158]', 'OLLA=' + A('OLLA')], ['PLUIS=[100,172]', 'PLUIS=' + A('PLUIS')], ['PRANA=[150,174]', 'PRANA=' + A('PRANA')], ['CASA34=[172,168]', 'CASA34=' + A('CASA34')], ['EAT34=[162,176]', 'EAT34=' + A('EAT34')], ['LUIS34=[118,190]', 'LUIS34=' + A('LUIS34')], ['FU34=[96,160]', 'FU34=' + A('FU34')], ['PLAT34=[213,118]', 'PLAT34=' + A('PLAT34')], ['CONT34=[58,117]', 'CONT34=' + A('CONT34')], ['SIDE34=[194,166]', 'SIDE34=' + A('SIDE34')]],
     'story 34\'s places: ' + ['OLLA', 'PLUIS', 'PRANA', 'CASA34', 'EAT34', 'LUIS34', 'FU34', 'PLAT34', 'CONT34', 'SIDE34'].map(k => k + ' ' + D.NP[k].why).join('; '), ['OLLA', 'PLUIS', 'PRANA', 'CASA34', 'EAT34', 'LUIS34', 'FU34', 'PLAT34', 'CONT34', 'SIDE34'].map(k => [k === 'LUIS34' ? 'luis' : k === 'CASA34' || k === 'EAT34' ? 'cq.feet' : 'cosa', D.NP[k].old, N(k)]));
@@ -491,7 +503,9 @@ function designEdits(E, F, D) {
   ed('async function deEncuentro34(){', [['[[184,FR],[LUIS34[0],FR]', '[[ENC34[0],FR],[LUIS34[0],FR]']], 'deEncuentro34: and back');
   ed('const ENC34=[192,182];', [['[192,182]', A('ENC34')]], D.NP.ENC34.why, [['luis', [192, 182], N('ENC34')]]);
   { const c = N('CASA34');
-    ed('const NUBE34={barriga:', [['[146,84]', '[168,50]'], ['[160,100]', '[176,62]'], ['AIM34=[172,141]', 'AIM34=[' + c[0] + ',' + (c[1] - 27) + ']']], 'the frog\'s thought (story 34): over the stove\'s side, right of the seated (over the table it would cover their faces: their row steps up to the left), under the answer cards; its trail to his head (AIM34, as the old relative to his place)'); }
+    ed('const NUBE34={barriga:', [['[146,84]', '[165,50]'], ['[160,100]', '[173,62]'], ['AIM34=[172,141]', 'AIM34=[' + c[0] + ',' + (c[1] - 27) + ']']], 'the frog\'s thought (story 34): over the stove\'s side, right of the seated (over the table it would cover their faces: their row steps up to the left), under the answer cards; its trail to his head (AIM34, as the old relative to his place)'); }
+  ed('    if(TALK==="coqui"&&q.vis){const b=frogBox(q),fx=b.x+(b.w>>1),fy=b.y+R(q.dy);hab(fx,fy-3,fx);}', [['hab(fx,fy-3,fx);', '{const u=LIBRE("coqui",fx,fy-3,b.w>>1);hab(u[0],u[1],u[0]);}']], 'with the words hidden, the frog\'s empty bubble goes to the first place of talk.places clear of every other face (LIBRE)');
+  ed('    else if(TALK&&Gt[TALK]&&Gt[TALK].vis!==0){const t=talkAt(TALK,W),p=Gt[TALK];', [['else hab(t[0],t[1]-1,t[0]);', 'else{const u=LIBRE(TALK,t[0],t[1]-1,6);hab(u[0],u[1],u[0]);}']], 'with the words hidden, a speaker\'s empty bubble goes to the first place of talk.places clear of every other face (LIBRE)');
   ed('const lado34=px=>', [['{fx:px-17,fy:138,izq:0}', '{fx:px-17,fy:SY(px-17,138),izq:0}'], ['{fx:px+17,fy:138,izq:1}', '{fx:px+17,fy:SY(px+17,138),izq:1}']], 'lado34: the frog beside a seated one\'s plate stands at the table\'s row there (SY)');
   ed('const origen=()=>{', [['fu.x<200', 'fu.y>PLAT34[1]+20']], 'origen: the platter is on the table (not on the stove\'s top) when it stands lower than the stove\'s top');
   ed('const K1=[76,170],K2=', ['K1', 'K2', 'AZU', 'TRANA', 'GRECA35', 'GRECA35B', 'TABU', 'CASA35', 'CAFE35', 'CAZO35', 'STOOL'].map(k => [k + '=[' + D.NP[k].old.join(',') + ']', k + '=' + A(k)]).concat([['NUBE35=[102,104]', 'NUBE35=[' + (N('CASA35')[0] - 8) + ',' + (N('CASA35')[1] - 62) + ']'], ['AIM35=[110,139]', 'AIM35=[' + N('CASA35')[0] + ',' + (N('CASA35')[1] - 27) + ']']]),
@@ -521,7 +535,6 @@ function designEdits(E, F, D) {
   ed('await ruta("abuela",[[FOGON[0],FR],[PA33S[0]-2,FR],[PA33S[0]-2,184]]);', [['[PA33S[0]-2,184]', '[PA33S[0]-2,' + N('plato33')[1] + ']']], 'plato33: abuela stands on clear floor in front of her plate', [['abuela', [144, 184], [N('PA33S')[0] - 2, N('plato33')[1]]]]);
   // the frog's hops: counted on the old picture (HOPAT: each of his places on the new picture and the old place it stands for), so every walk takes
   // the old number of hops, whatever the new distance (the hop count is the old one between every pair of his places)
-  ed('fresh:()=>({respEn:[130,22],', [['respEn:[130,22]', 'respEn:[150,14]']], 'where the answer cards stand (W.respEn): 20 px right and 8 rows up, over the wall above the stove\'s side: the seated at the left sit 18 rows higher than the old (the table\'s row steps), and the hint hand at a card would be on their faces');
   if (D.HOPAT) ed('async function ranaA(x,y,h){', [['async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(6,Math.ceil(d/26))));}',
     'async function ranaA(x,y,h){const q=W.cq,d=Math.hypot(x-16-q.x,y-27-q.y);if(d<3)return;const k=a=>HOPAT[R(a[0])+","+R(a[1])]||a,o=k([x,y]),f=k([q.x+16,q.y+27]),dd=Math.hypot(o[0]-f[0],o[1]-f[1]);await hopTo(R(x-16),R(y-27),h||Math.max(1,Math.min(6,Math.ceil(dd/26))));}const HOPAT=' + JSON.stringify(D.HOPAT) + ';']],
     'ranaA: the frog takes the old number of hops: they are counted on the old picture (HOPAT: each of his places on the new picture, by its feet, and the old place it stands for, from the recorded runs played both ways), not on the new distance (his places stand where the table\'s top is, so the distances between them changed)');
@@ -563,7 +576,7 @@ function designEdits(E, F, D) {
   ed('    W.cosas=[{id:"taburete",k:"taburete",x:STOOL[0],y:STOOL[1]},{id:"t_abuelo"', [['x:SILLA[0],y:FILA,', 'x:SILLA[0],y:SY(SILLA[0],FILA),'], ['x:SILLA[3],y:FILA,', 'x:SILLA[3],y:SY(SILLA[3],FILA),'], ['x:SILLA[0]-12,y:FILA-1', 'x:SILLA[0]-12,y:SY(SILLA[0]-12,FILA)-1'], ['x:SILLA[3]+12,y:FILA-1', 'x:SILLA[3]+12,y:SY(SILLA[3]+12,FILA)-1']], 'inicio35: the men\'s cups and their teaspoons at the table\'s row (SY)');
   const cz = N('CAZO35'), czRow = (() => { const a = 1.2 + (cz[0] - 4 - E.OX) / (E.S / E.R2); return R(E.project(a, 1.2, 0).sy); })();
   const reps = [['[TRANA[0]+26,190]', '[TRANA[0]+26,' + row(TR[0] + 26, 190) + ']'], ['[GRECA35[0]+4,190]', '[GRECA35[0]+4,' + row(GR[0] + 4, 190) + ']'], ['[AZU[0]+4,188]', '[AZU[0]+4,' + row(AZ[0] + 4, 188) + ']'], ['AZU[0]+4,188)', 'AZU[0]+4,' + row(AZ[0] + 4, 188) + ')'],
-    ['[TABU[0]+12,178]', '[TABU[0]+12,' + row(TB[0] + 12, 178) + ']'], ['[CAZO35[0]-4,150]', '[CAZO35[0]-4,' + czRow + ']'], ['mueve("abuela",CAZO35[0]-4,150)', 'mueve("abuela",CAZO35[0]-4,' + czRow + ')'], ['delante("abuela",198,176)', 'delante("abuela",' + (TB[0] + 18) + ',' + row(TB[0] + 18, 176) + ')'], ['mostrar(jt,jt.x+4,190)', 'mostrar(jt,jt.x+4,' + row(GR[0] + 4, 190) + ')']];
+    ['[TABU[0]+12,178]', '[TABU[0]+12,' + row(TB[0] + 12, 178) + ']'], ['[CAZO35[0]-4,150]', '[CAZO35[0]-4,' + czRow + ']'], ['mueve("abuela",CAZO35[0]-4,150)', 'mueve("abuela",CAZO35[0]-4,' + czRow + ')'], ['delante("abuela",198,176)', 'delante("abuela",' + (TB[0] + 18) + ',' + row(TB[0] + 18, 176) + ')'], ['mostrar(jt,jt.x+4,190)', 'mostrar(jt,jt.x+4,FRONTROW(jt.x+4,190))']];
   for (let L = lineOf('/* ----- story 35: Café con azúcar ----- */'); L <= lineOf('async prueba(o){'); L++) { if (byLine.has(L)) { const e = byLine.get(L), prs = reps.filter(([a]) => e.to.includes(a)); if (prs.length) ed(L, prs, 'story 35: abuela on clear floor in front of the table (the first clear row at the old x)'); continue; } const prs = reps.filter(([a]) => LINES[L - 1].includes(a)); if (prs.length) ed(L, prs, 'story 35: where abuela stands in front of the table to pour, to take a pot or to set one down: on clear floor at the old x (the first clear row from the old one down); in front of the milk pan\'s counter, just in front of it'); }
   return { byLine, NF, RF, FF, LF };
 }
@@ -682,7 +695,7 @@ function make(G, runs) {
     dropped: DROPPED,
     moves: MOVES.map(m => Object.assign({ line: m.line }, m.lines ? { lines: m.lines } : {}, { act: m.act, src: m.src, to: m.to }, m.pts.length ? { places: m.pts.map(q => ({ who: q[0], old: q[1], new: q[2], world: q[3] })) } : {}, { why: m.why })),
     helps: { what: 'the steam (comer.js vapor) is drawn with a darker blue-grey edge on both sides of each wisp, #6E80A6 for the old one-sided #B8C4D4: white steam over the white cloth, the cream wall and the people at the table stands out by its edge (contrast 2.0 and more), as it did not in the old picture',
-      lines: [['fr(c,x+dx+sw-1,y-k,3,1,"#B8C4D4");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");', 'fr(c,x+dx+sw-1,y-k,4,1,"#6E80A6");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");']] },
+      lines: [['fr(c,x+dx+sw-1,y-k,3,1,"#B8C4D4");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");', 'fr(c,x+dx+sw-1,y-k,4,1,"#5C6C92");fr(c,x+dx+sw,y-k,2,1,"#FFFFFF");']] },
     bubbles: { what: 'each bubble\'s rectangle relative to its tail\'s tip, as juego.js bub draws it, both frames of its bob: [dx, dy, w, h]', rects: G.M.bubbles },
     talk: { what: 'where a bubble goes: the first of these places whose bubble is wholly inside the view, clear of the corner card and of every face; if none is, the first (the old)', top: 'a person: talkAt(k) = (x, y - alto - 1); the frog: (b.x + b.w / 2, b.y + dy - 1)', places: TALK, placesWhat: '[side, dy]: the tail\'s tip at (top.x + side * (h + 16), top.y + dy), h the head\'s half width: a person 6, the frog b.w >> 1', faces: 'a person\'s face: [x - 6, top + 6, 12, 10], top = y - height + 1 + dy (abuela: y - 50 standing, y - 48 sitting); the frog\'s: [b.x + 2, b.y + dy, b.w - 4, round(b.h * .6)]', board: BOARD },
     faults: [
@@ -834,6 +847,15 @@ function check(sh, G, runs) {
       nH += hops(a); if (hops(a) !== hops(b) || seq(a) !== seq(b)) { bad++; P.push('hops: ' + r.story.id + ' ' + r.plan + ': ' + hops(b) + ' hops, the recorded run ' + hops(a) + (seq(a) !== seq(b) ? ' (the sounds but the blips differ in order)' : '')); } });
     notes.push('hops: every run of the port\'s play makes the recorded run\'s sounds, the blips aside, in the same order: ' + nH + ' hops in all (' + bad + ' runs differ)'); }
 
+  /* walks: every call of juego.js hopTo (the frog's every walk, acts included) of every run, on the old page and with the port, walk by walk:
+     as many walks, each with the old hop count */
+  { let n = 0, bad = 0; const per = [];
+    for (const w of G.WALKS.walks) { const o = w.o || [], q = w.n || [];
+      if (o.length !== q.length) { bad++; P.push('walks: ' + w.story + ' ' + w.plan + ': ' + q.length + ' walks, the old page ' + o.length); continue; }
+      let d = 0; o.forEach((a, i) => { n++; if (a[4] !== q[i][4]) { d++; bad++; P.push('walks: ' + w.story + ' ' + w.plan + ' walk ' + (i + 1) + ' from (' + q[i][0] + ', ' + q[i][1] + ') to (' + q[i][2] + ', ' + q[i][3] + '): ' + q[i][4] + ' hops, the old ' + a[4] + ' (from (' + a[0] + ', ' + a[1] + ') to (' + a[2] + ', ' + a[3] + '))'); } });
+      per.push(w.story + ' ' + w.plan + ' ' + o.length); }
+    sh.checks.walks = { count: n, differ: bad, runs: per, what: 'every call of juego.js hopTo (where from, where to, how many hops: his top-left corner) in every run of the three stories, acts included, on the old page and with the port, compared walk by walk' };
+    notes.push('walks: every walk of the frog (every hopTo call) of the ' + G.WALKS.walks.length + ' runs, on the old page and with the port, walk by walk: ' + n + ' walks, ' + bad + ' with another hop count or missing'); }
   if (sh.hopTable && sh.hopTable.conflicts.length) P.push('hops: a new place of the frog stands for two old ones: ' + sh.hopTable.conflicts.join('; '));
   /* the set's pixels: every set thing's pixels inside its touch box; the hit order; the set things whole in the view or clearly off it */
   { const res = []; const k = key0, parts = G.parts[k];
@@ -1073,7 +1095,7 @@ function checkAsks(sh, G, runs, C) {
         // each row of a wisp (where it is drawn at alpha .4 and more: its fading top is meant to melt away) is seen by its edge or by its core: the
         // contrast of the better of the two, its colour laid over what is behind it at the row's alpha; the puff's is the mean of its rows
         for (const pf of puffs(R(x), R(y), nn, h)) { if (pf.al < .4) continue; const part = cols => { let a = 0, b2 = 0, k = 0; for (const [dx, col] of cols) { const xx = pf.x + dx - 1, yy = pf.y; if (xx < 0 || yy < 0 || xx >= 240 || yy >= 216) continue; const i = yy * 240 + xx, behind = [pic[i * 3], pic[i * 3 + 1], pic[i * 3 + 2]], c = behind.map((v, q) => v + (col[q] - v) * pf.al); a += lum(c); b2 += lum(behind); k++; } return k ? (Math.max(a, b2) / k + .05) / (Math.min(a, b2) / k + .05) : 1; };
-          sl += Math.max(part([[0, [110, 128, 166]], [3, [110, 128, 166]]]), part([[1, [255, 255, 255]], [2, [255, 255, 255]]])); m++; }
+          sl += Math.max(part([[0, [92, 108, 146]], [3, [92, 108, 146]]]), part([[1, [255, 255, 255]], [2, [255, 255, 255]]])); m++; }
         const rr = m ? sl / m : 99; if (rr < worst) { worst = rr; worstAt = what + ' (' + where + ')'; }
         if (rr < 2) P.push('steam: ' + what + ' stands out from what is behind it by ' + r2(rr) + ' (' + where + ')'); } }
     notes.push('steam: ' + n + ' distinct puffs (every frame of their rise, as comer.js draws them with the help\'s darker edge) against what is directly behind them (the picture without what steams): each row of a wisp drawn at alpha .4 and more seen by its edge or its core (WCAG contrast of that colour over what is behind it), the mean over its rows ' + r2(worst) + ' at the least (' + worstAt + ')'); }
