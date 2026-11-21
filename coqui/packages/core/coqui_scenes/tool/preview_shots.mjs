@@ -3,15 +3,15 @@
 // the Dart scene must draw), rendered in headless Chrome, for the comparison test (test/preview_test.dart,
 // test/balcon_preview_test.dart).
 //
-//   node tool/preview_shots.mjs [--scene frente|balcon|sala|patio|camino|campo|lago|banco|mesa] --states DIR --out DIR [--fixture]
+//   node tool/preview_shots.mjs [--scene frente|balcon|sala|patio|camino|campo|lago|banco|mesa|estufa] --states DIR --out DIR [--fixture]
 //
 // --scene: the converted scene (frente when not given). La sala's cases carry the acts their story names (`acts`): its
 //   preview moves a person only at a moved place of an act the story uses (PREVIEW.acts, the sheet's `moves`). El patio's
 //   carry them too, and the story is given to its preview (PREVIEW.story: the moves of the acts it names, the story
 //   positions the sheet moved for it); its pairs are cual-patio's and cual-camino's parque.no (a picture of the yard). El camino's
 //   are drawn as El patio's (PREVIEW.story, the moves of its acts and the story positions the sheet moved); its pairs are
-//   cual-camino's but parque.no (El patio's). El campo's, El lago's and El banco's are drawn as El camino's; their pairs are
-//   all cual-campo's, cual-lago's and cual-banco's. --states: the folder
+//   cual-camino's but parque.no (El patio's). El campo's, El lago's, El banco's and La estufa's are drawn as El camino's; their
+//   pairs are all cual-campo's, cual-lago's, cual-banco's and cual-estufa's. --states: the folder
 //   `node coqui/tool/ref/trazas/juega.mjs --only <story> --states DIR` wrote (W after every step of every run of the
 //   scene's stories: El frente's five, El balcón's four, La sala's six). --out: where every picture and cases.json go. --fixture: also
 //   write the package's fixture (El frente: test/support/fixtures/preview_fixture.dart; El balcón:
@@ -50,8 +50,9 @@ const SCENES = {
   lago: { stories: ['pan-para-el-pato', 'los-botes', 'cual', 'd-pato-pequeno', 'h-lago'], fixture: 'lago_preview_fixture.dart', cases: 'lagoPreviewCases', pictures: 'lagoPreviewPictures' },
   banco: { stories: ['la-piragua', 'senor-senora', 'el-bebe-duerme', 'd-piragua-luis', 'd-vamos-a-casa', 'h-banco'], fixture: 'banco_preview_fixture.dart', cases: 'bancoPreviewCases', pictures: 'bancoPreviewPictures' },
   mesa: { stories: ['la-mesa', 'la-cuchara', 'tengo-hambre', 'h-mesa'], fixture: 'mesa_preview_fixture.dart', cases: 'mesaPreviewCases', pictures: 'mesaPreviewPictures' },
+  estufa: { stories: ['arroz-con-habichuelas', 'el-pollo-y-el-huevo', 'cuidado', 'h-estufa'], fixture: 'estufa_preview_fixture.dart', cases: 'estufaPreviewCases', pictures: 'estufaPreviewPictures' },
 };
-if (!STATES || !OUT || !SCENES[SCENE]) { console.error('usage: node tool/preview_shots.mjs [--scene frente|balcon|sala|patio|camino|campo|lago|banco|mesa] --states DIR --out DIR [--fixture]'); process.exit(2); }
+if (!STATES || !OUT || !SCENES[SCENE]) { console.error('usage: node tool/preview_shots.mjs [--scene frente|balcon|sala|patio|camino|campo|lago|banco|mesa|estufa] --states DIR --out DIR [--fixture]'); process.exit(2); }
 const PKG = process.cwd(), ROOT = path.resolve(PKG, '../../../..');
 if (!fs.existsSync(path.join(ROOT, `docs/proyecto/pixel/${SCENE}-preview.html`))) { console.error('run this in coqui/packages/core/coqui_scenes'); process.exit(2); }
 
@@ -62,7 +63,7 @@ const CUAL = JSON.parse(fs.readFileSync(path.join(ROOT, `historia/cuentos/cual-$
 const OTHER = SCENE === 'patio' ? [{ file: 'cual-camino', items: JSON.parse(fs.readFileSync(path.join(ROOT, 'historia/cuentos/cual-camino.json'), 'utf8')).items.filter(i => i.w === 'parque'), sides: ['no'] }] : [];
 // a word with its accents folded: La sala's sheet and preview name a pair's pictures so (mamá.si is mama.si); El patio's
 // also fold ñ and write a space as _ (hasta mañana.si is hasta_manana.si)
-const PATIO_LIKE = SCENE === 'patio' || SCENE === 'camino' || SCENE === 'campo' || SCENE === 'lago' || SCENE === 'banco' || SCENE === 'mesa';
+const PATIO_LIKE = SCENE === 'patio' || SCENE === 'camino' || SCENE === 'campo' || SCENE === 'lago' || SCENE === 'banco' || SCENE === 'mesa' || SCENE === 'estufa';
 const fold = w => PATIO_LIKE ? w.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_') : w.replace(/[áéíóú]/g, c => 'aeiou'['áéíóú'.indexOf(c)]);
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 const viewOf = cam => Object.keys(SHEET.views).find(k => same(SHEET.views[k].old, cam)) || null;

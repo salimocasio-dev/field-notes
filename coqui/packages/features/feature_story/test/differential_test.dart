@@ -14,6 +14,7 @@
 // - On the real El lago (order 35b): the same, for its five files.
 // - On the real El banco (order 36b): the same, for its six files.
 // - On the real La mesa (order 37b): the same, for its four files.
+// - On the real La estufa (order 38b): the same, for its four files.
 import 'dart:convert';
 import 'dart:io';
 
@@ -84,17 +85,8 @@ final Map<String, String?> bancoWhole = {}, bancoTimeless = {};
 /// Each mesa run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
 final Map<String, String?> mesaWhole = {}, mesaTimeless = {};
 
-/// STOP of order 37b, reported and not worked round: on the real La mesa the frog takes one hop fewer than the old run
-/// where he goes from abuela's hand at the counter (q 58,165: acts.lleva26 `de: "abuela"`, ranaA(ab.x - 30, ab.y + 10))
-/// to Carmen's place at seat 2 (ranaAl(2): the sheet's rana.2, moved from q 122,163 to 116,168: 64 px, 2 hops, became
-/// 58 px, 1 hop): tengo-hambre beats.32.after.0 in every plan, and beats.70.right.0 in the right plan. The sheet's hops
-/// name no such pair (its walks are between named frog places; this one starts at a place relative to abuela). By run,
-/// how many hops the old run has more.
-const Map<String, int> mesaHopStop = {
-  'tengo-hambre right': 2,
-  'tengo-hambre wrong': 1,
-  'tengo-hambre alternate': 1,
-};
+/// Each estufa run's first difference with the old trace, time and hops included (null: equal whole), and, timeless.
+final Map<String, String?> estufaWhole = {}, estufaTimeless = {};
 
 /// Each balcon run's first difference with the old trace, time and hops included (null: equal whole).
 final Map<String, String?> balconWhole = {};
@@ -874,12 +866,91 @@ void main() {
         );
     });
   });
+  // The real La estufa (order 38b): the kitchen is built round the old picture, so its places keep their screen numbers
+  // but the ones the sheet moves (`moves`: what stands on the run's tops, the pots at each burner's row, the family at the
+  // window, abuela and Carmen at the right counter, whoever comes in for a cup, Luis's place in cuidado, the answer
+  // cards). The hop counts are the old ones but saco-servir's (the sheet's `hops`), walked by no run. The scene draws no
+  // random number. The state line writes where each person is (`gente=k@x,y`), which `placeless` leaves out.
+  group('the recorded runs, on the real La estufa (order 38b)', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    final estufa = {
+      for (final r in runs)
+        if (r['scene'] == 'estufa') r['story'] as String,
+    };
+    test('the four files of La estufa', () {
+      expect(estufa, {
+        'arroz-con-habichuelas',
+        'el-pollo-y-el-huevo',
+        'cuidado',
+        'h-estufa',
+      });
+    });
+    for (final s in estufa) {
+      test(
+        '$s: the three plans: every decision, mark, step, clip, touch, draw and the story result as the old run',
+        () async {
+          for (final plan in ['right', 'wrong', 'alternate']) {
+            final d = await compareWithScene(
+              course,
+              s,
+              plan,
+              trazas,
+              await realSceneFor('estufa'),
+              startFrog: startFrogOf,
+              frogShadow: frogShadowOf,
+            );
+            expect(
+              d == null || !d.startsWith('the run failed'),
+              isTrue,
+              reason: '$s $plan: $d',
+            );
+            final c = lastCompared!;
+            final timeless = firstDifference(
+              placeless(forTimeless(c.committed)),
+              placeless(forTimeless(c.trace)),
+            );
+            estufaTimeless['$s $plan'] = timeless;
+            expect(
+              timeless,
+              isNull,
+              reason: '$s $plan (whole: ${d ?? 'equal'})',
+            );
+            int hops(Map<String, dynamic> t) =>
+                '${t['sounds']}'.split('hop').length - 1;
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
+            expect(
+              c.trace['draws'],
+              c.committed['draws'],
+              reason: '$s $plan: random draws',
+            );
+            final steps = firstDifference(
+              forComparison(c.committed)['steps'],
+              forComparison(c.trace)['steps'],
+              '.steps',
+            );
+            estufaWhole['$s $plan'] = d == null
+                ? null
+                : '$d; first step: ${steps ?? 'none'}; hop sounds ${hops(c.committed)} old, ${hops(c.trace)} new';
+          }
+        },
+      );
+    }
+    tearDownAll(() {
+      final dir = Platform.environment['COQUI_REPORT_DIR'];
+      if (dir == null) return;
+      File('$dir/estufa-traces.txt')
+        ..parent.createSync(recursive: true)
+        ..writeAsStringSync(
+          '${[for (final e in estufaWhole.entries) '${e.key}: ${e.value ?? 'equal whole'}; timeless: ${estufaTimeless[e.key] ?? 'equal'}'].join('\n')}\n',
+        );
+    });
+  });
   // The real La mesa (order 37b): the kitchen is built round the old picture, so its places keep their screen numbers
   // but the ones the sheet moves (`moves`: the seats stepped down the table, SD, and what stands at each place; the
   // doorway, PUERTA, and the walkway behind the chairs, PASO; the places in front of each seat for the frog, Luis,
   // abuela and Canelo; the things on the counter and the stove; the answer cards per story; `remap`: h-mesa's sitters on
-  // their chairs). One hop count changes (frog.ranaa - rana.2, 3 to 2), on a pair no run walks: every walk takes its old
-  // hops. The scene draws its random numbers (elige25) from the runner's one source: the draws are the old ones. The
+  // their chairs). Every walk of the frog takes its old hops (the sheet's `hops` is empty since its fix after the
+  // STOP of order 37b: rana.2 at 118,169). The scene draws its random numbers (elige25) from the runner's one source: the draws are the old ones. The
   // state line writes where each person is (`gente=k@x,y`), which `placeless` leaves out.
   group('the recorded runs, on the real La mesa (order 37b)', () {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -924,12 +995,8 @@ void main() {
             int hops(Map<String, dynamic> t) =>
                 '${t['sounds']}'.split('hop').length - 1;
             // every walk of the frog takes its old hops (the sheet's round 4: the man of el-bebe-duerme 1 px left)
-            // every walk of the frog takes its old hops but the ones of the stop (mesaHopStop: reported, not worked round)
-            expect(
-              hops(c.committed) - hops(c.trace),
-              mesaHopStop['$s $plan'] ?? 0,
-              reason: '$s $plan: hops',
-            );
+            // every walk of the frog takes its old hops
+            expect(hops(c.committed), hops(c.trace), reason: '$s $plan: hops');
             expect(
               c.trace['draws'],
               c.committed['draws'],

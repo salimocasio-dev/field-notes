@@ -69,5 +69,7 @@
   { "id": "mesa/m0h0", "kind": "set", "page": "docs/proyecto/pixel/mesa-set.html", "query": "?mantel=0&horno=0" },
   { "id": "mesa/m1h0", "kind": "set", "page": "docs/proyecto/pixel/mesa-set.html", "query": "?mantel=1&horno=0" },
   { "id": "mesa/m0h1", "kind": "set", "page": "docs/proyecto/pixel/mesa-set.html", "query": "?mantel=0&horno=1" },
-  { "id": "mesa/frutas-surtido-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?surtido=frutas" }
+  { "id": "mesa/frutas-surtido-frutas", "kind": "set", "page": "docs/proyecto/pixel/frutas-set.html", "query": "?surtido=frutas" },
+  { "id": "estufa/banco1", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=1" },
+  { "id": "estufa/banco0", "kind": "set", "page": "docs/proyecto/pixel/estufa-set.html", "query": "?banco=0" }
 ]

@@ -1,7 +1,7 @@
 {
   "what": "engine reference: renders of docs/proyecto/pixel/ in headless Chrome, the island, and unit values",
-  "files": 580,
-  "totalBytes": 37771400,
+  "files": 596,
+  "totalBytes": 38719902,
   "entries": [
     {
       "path": "balcon/door-open-win-open/kinds.bin",
@@ -642,6 +642,86 @@
       "path": "campo/campo/zb.json",
       "bytes": 322,
       "sha256": "ada102cbe1894fc9bca1a783762bad5602493275e7fbe8d78a97aa11faaeda43"
+    },
+    {
+      "path": "estufa/banco0/kinds.bin",
+      "bytes": 51840,
+      "sha256": "e44352c011e1606d7c9dbb7c4916a14be9771a6be4a349e966e4bac376cd17bd"
+    },
+    {
+      "path": "estufa/banco0/kinds.json",
+      "bytes": 305,
+      "sha256": "916935aca7dd0158948b41bf9f92c92a9a274a76c83d9033f8045e00db8f9c7b"
+    },
+    {
+      "path": "estufa/banco0/pix.bin",
+      "bytes": 207360,
+      "sha256": "123364321355143f65f3df297e62ec6b7b3428d45a8195eabab5c29f0e3b5451"
+    },
+    {
+      "path": "estufa/banco0/pix.json",
+      "bytes": 370,
+      "sha256": "91bdb1a71e4e105f5c2e2fc2eb801b5f1f8e4ee0997772669b34e8deb85e2629"
+    },
+    {
+      "path": "estufa/banco0/pix.png",
+      "bytes": 5658,
+      "sha256": "ce46fe03d84438cbd526631cc5a79442a042da8bb76f66b75ecf7418109ec27f"
+    },
+    {
+      "path": "estufa/banco0/state.json",
+      "bytes": 925,
+      "sha256": "14827deaa671f1946303a08dd8676f61e26d729d4068f01f7fccb82cbdf8bbcd"
+    },
+    {
+      "path": "estufa/banco0/zb.bin",
+      "bytes": 207360,
+      "sha256": "25e8a2ea53309f5e0f3c6d0f2b6a1667ecc63e58dd6c10c76e349d7676509f48"
+    },
+    {
+      "path": "estufa/banco0/zb.json",
+      "bytes": 322,
+      "sha256": "5df4d86af41e7462c53340e56467aeaf1613318e16d70d72a66cb7cdc99f41e6"
+    },
+    {
+      "path": "estufa/banco1/kinds.bin",
+      "bytes": 51840,
+      "sha256": "e44352c011e1606d7c9dbb7c4916a14be9771a6be4a349e966e4bac376cd17bd"
+    },
+    {
+      "path": "estufa/banco1/kinds.json",
+      "bytes": 305,
+      "sha256": "916935aca7dd0158948b41bf9f92c92a9a274a76c83d9033f8045e00db8f9c7b"
+    },
+    {
+      "path": "estufa/banco1/pix.bin",
+      "bytes": 207360,
+      "sha256": "16ab08c2dd1ce587dd27d4e77186e9b096b6b6d7bab8f5ebcfda61bb8ddb3965"
+    },
+    {
+      "path": "estufa/banco1/pix.json",
+      "bytes": 370,
+      "sha256": "3f4029b5bf4699d3f108ebc268220c25ee64118314cccd69e715696c0e6b75cd"
+    },
+    {
+      "path": "estufa/banco1/pix.png",
+      "bytes": 5880,
+      "sha256": "d5727fbae239ec42db7232bfb267d1159a4f8898f8b8ab563d3037241577f32f"
+    },
+    {
+      "path": "estufa/banco1/state.json",
+      "bytes": 925,
+      "sha256": "8a37ab50f31d7dd6d7400771a91ee12c05e8e710e64035e1db17be17df76bfd7"
+    },
+    {
+      "path": "estufa/banco1/zb.bin",
+      "bytes": 207360,
+      "sha256": "033e8cd818058d5f40d7851f3b7953348d19f1ba12104e9c5d6603f73dbcb58d"
+    },
+    {
+      "path": "estufa/banco1/zb.json",
+      "bytes": 322,
+      "sha256": "05481a5eb4038e5f0be0f4f15b5c0cc302af5f6713706a30bcf44449b2bfde6f"
     },
     {
       "path": "frente/door-half-win-shut-lights-0-sky-day/kinds.bin",

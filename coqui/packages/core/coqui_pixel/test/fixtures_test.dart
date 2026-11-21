@@ -15,6 +15,7 @@ import 'support/fixtures/balcon_sheet.dart';
 import 'support/fixtures/banco_sheet.dart';
 import 'support/fixtures/camino_sheet.dart';
 import 'support/fixtures/campo_sheet.dart';
+import 'support/fixtures/estufa_sheet.dart';
 import 'support/fixtures/frente_sheet.dart';
 import 'support/fixtures/lago_sheet.dart';
 import 'support/fixtures/mesa_sheet.dart';
@@ -120,5 +121,9 @@ void main() {
 
   test('the sheet fixture is the text of La mesa\'s sheet', () {
     expect(mesaSheetJson, mesaSheetText());
+  });
+
+  test('the sheet fixture is the text of La estufa\'s sheet', () {
+    expect(estufaSheetJson, estufaSheetText());
   });
 }

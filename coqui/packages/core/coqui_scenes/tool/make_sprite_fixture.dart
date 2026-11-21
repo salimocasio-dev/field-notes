@@ -9,8 +9,9 @@
 //                                                  test/support/fixtures/camino_sprite_refs.dart (camino.js),
 //                                                  test/support/fixtures/campo_sprite_refs.dart (campo.js),
 //                                                  test/support/fixtures/lago_sprite_refs.dart (lago.js),
-//                                                  test/support/fixtures/banco_sprite_refs.dart (banco.js) and
-//                                                  test/support/fixtures/mesa_sprite_refs.dart (mesa.js)
+//                                                  test/support/fixtures/banco_sprite_refs.dart (banco.js),
+//                                                  test/support/fixtures/mesa_sprite_refs.dart (mesa.js) and
+//                                                  test/support/fixtures/estufa_sprite_refs.dart (estufa.js)
 //   dart run tool/make_sprite_fixture.dart --check  fails when a file is not what the reference gives
 import 'dart:convert';
 import 'dart:io';
@@ -28,6 +29,7 @@ void main(List<String> args) {
     'lago': (file: 'lago_sprite_refs.dart', constant: 'lagoSpriteRefs'),
     'banco': (file: 'banco_sprite_refs.dart', constant: 'bancoSpriteRefs'),
     'mesa': (file: 'mesa_sprite_refs.dart', constant: 'mesaSpriteRefs'),
+    'estufa': (file: 'estufa_sprite_refs.dart', constant: 'estufaSpriteRefs'),
   };
   var stale = 0;
   for (final sc in scenes.entries) {
