@@ -1,0 +1,109 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La orilla: the shore (place 7, scene 1), as a set on the Pixel Plays engine. A NEW scene: there is no old picture.
+   Laid out square to the picture, in u, v (plaza-base.js, playa-base.js): u across, v down towards the camera. The water's edge is the line
+   v = 0: above it the sea (light where it is shallow, dark blue beyond E.B.deep, small waves in lines), then the horizon and a strip of sky;
+   below it a strip of wet sand, then dry sand to the picture's foot. At the left two palms with a rope between them.
+   The state comes from the address; these become the builder's setKey:
+     hora = manana | mediodia | tarde | ocaso     the light, the sun
+     castillo = 0 | 1      the sand castle: a low round base with three towers, and a patch of smooth sand in front of it (story 72)
+     manta = 0 | 1         abuela's blanket in the palms' shade (story 74)
+     bote = 0 | 1          the fishing boat far out, for the readers' renders only: in the game it is a sprite
+     t = wind time (0 for the reference); ox, oy = the origin
+   It draws one frame: the baked set and the palms' fronds. No characters, no waves running up the sand, no towels, no shells. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: pick('hora', ['manana', 'mediodia', 'tarde', 'ocaso'], 'manana'), castillo: Q.get('castillo') === '1', manta: Q.get('manta') === '1', bote: Q.get('bote') === '1', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -30];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="playa-base.js"></script>
+<script>
+'use strict';
+const E = {
+  B: { edge: 0, wet: .9, deep: -2.2, hor: -4.6 },                     // the beach: the water's edge, the wet strip's width, where the sea turns dark, the horizon (all v)
+  PALMS: [[-3.6, 2.0], [-1.6, 2.0]], ROPE: 1.45,                      // the two palms; the rope's height between them
+  CASTLE: { u: 1.2, v: 3.4, r: 1.15, towers: [.6, 1.2, 1.8], th: .5 },   // the castle's base, its three towers' u (at the base's v), their height
+  PATCH: { u: 1.2, v: 4.75, ru: .7, rv: .32 },                        // the patch of smooth sand in front of the castle (where a shell is hidden)
+  BLANKET: [-3.75, 3.2, -.9, 5.0],                                  // abuela's blanket: u0, v0, u1, v1
+  BOAT: [2.5, -3.5],                                                  // where the fishing boat lies at anchor
+  SUN: { manana: [150, 8, 6], mediodia: null, tarde: [40, 9, 6], ocaso: [58, 17, 9] },
+};
+let LIGHT = null;
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y), g = PL.ground(u, v, ix, iy, E.B);
+  if (!g) return 0;
+  if (SET.castillo && g[1] === 'arena') {
+    const P = E.PATCH, d = Math.hypot((u - P.u) / P.ru, (v - P.v) / P.rv);
+    if (d < 1) return [d > .84 ? rgb(196, 174, 128) : rgb(248, 238, 208), 'arena'];   // smooth, pale, a faint rim: raked sand
+  }
+  return g;
+}
+function castle() {
+  const K = E.CASTLE, S1 = [232, 212, 168], [bx, by] = PZ.xy(K.u, K.v);
+  drum(bx, by, 0, .12, K.r, S1);                                                                 // the round base
+  for (const tu of K.towers) {
+    const [x, y] = PZ.xy(tu, K.v);
+    drum(x, y, .12, .12 + K.th, .24, S1, (a, b) => Math.hypot(a, b) < .13 ? rgb(206, 186, 140) : 0);
+    for (let k = 0; k < 6; k++) { const t = k * 1.047; PZ.box(tu + Math.cos(t) * .2, K.v + Math.sin(t) * .2, .12 + K.th, .12 + K.th + .07, .045, .045, S1); }   // the battlements
+    castShadow(x, y, .4, .3);
+  }
+  castShadow(bx, by, .1, K.r);
+}
+function boat() {
+  const [u, v] = E.BOAT, W1 = [250, 248, 240], RED = [206, 62, 54];
+  PZ.box(u, v, 0, .3, .62, .2, W1, (s, t, z, face) => face === 'front' && z < .12 ? rgb(...RED) : 0);
+  PZ.box(u - .18, v, .3, .62, .2, .15, [86, 160, 190], (s, t, z, face) => face === 'front' && Math.abs(s) < .1 && z > .38 && z < .54 ? rgb(40, 60, 90) : 0);
+  PZ.post(u + .28, v, .3, 1.0, .02, [120, 90, 60]);
+}
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c[0]; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = c[1] === 'mar' ? KIND_WATER : KIND_SAND;
+  }
+  groundZ.set(zb);
+  const L = { tarde: { m: [1.0, .95, .86], a: [8, 3, -6] }, ocaso: { m: [1.0, .86, .74], a: [16, 0, -12] } }[SET.hora] || null;
+  LIGHT = L;
+  if (SET.bote) part('bote', boat);
+  if (SET.manta) part('manta', () => PL.blanket(...E.BLANKET));
+  part('palmas', () => {
+    PL.palm(E.PALMS[0][0], E.PALMS[0][1], 3.3, -.5, 2, 1, L); PL.palm(E.PALMS[1][0], E.PALMS[1][1], 3.0, .45, 5, .92, L);
+    PZ.wall(E.PALMS[0][0] - .05, E.PALMS[1][0] + .2, E.PALMS[0][1], E.ROPE - .12, E.ROPE + .03, (u, z) => { const t = (u - E.PALMS[0][0]) / (E.PALMS[1][0] - E.PALMS[0][0] + .15), zr = E.ROPE - .09 * 4 * t * (1 - t); return Math.abs(z - zr) < .03 ? rgb(250, 244, 226) : 0; });   // the rope, sagging a little
+  });
+  if (SET.castillo) part('castillo', castle);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  PL.light(SET.hora);
+  skyFill(PL.sky(SET.hora, E.SUN[SET.hora]));
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.ORILLA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  const windT = STILL ? 0 : Math.floor(t * WIND_FPS) / WIND_FPS;
+  drawLeaves(windT);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+if (PART_TAGS) tagLeaves(zb);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S, live: () => zb };
+window.frame = frame;
+</script></body></html>
