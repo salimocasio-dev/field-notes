@@ -55,5 +55,8 @@
   { "id": "camino/gran-0", "kind": "set", "page": "docs/proyecto/pixel/camino-set.html", "query": "?gran=0" },
   { "id": "campo/campo", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?" },
   { "id": "campo/campo-t-1.5", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?t=1.5" },
-  { "id": "campo/campo-t-3.25", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?t=3.25" }
+  { "id": "campo/campo-t-3.25", "kind": "set", "page": "docs/proyecto/pixel/campo-set.html", "query": "?t=3.25" },
+  { "id": "lago/lago", "kind": "set", "page": "docs/proyecto/pixel/lago-set.html", "query": "?" },
+  { "id": "lago/lago-t-1.5", "kind": "set", "page": "docs/proyecto/pixel/lago-set.html", "query": "?t=1.5" },
+  { "id": "lago/lago-t-3.25", "kind": "set", "page": "docs/proyecto/pixel/lago-set.html", "query": "?t=3.25" }
 ]
