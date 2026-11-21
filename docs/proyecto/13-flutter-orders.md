@@ -872,6 +872,22 @@ Two rounds read by fresh readers (four readers, no words), then one fix pass for
 - **Left, by Salim's rule:** the stove here is bigger than the one La mesa shows at its edge; the left counter's things stand high at the upper left; the dark above the walls; abuelo's face at the window is 83% seen, as in the old picture (mamá's hair); the hint frame takes in both cups of rice and beans, as the old; no green shows outside the window, only the yard's wall and sky; the empty window can still read as a flat blue picture.
 - Left as the old game has it: the twinkle over the frog; voice cards that look alike; the hint hand over the boy at the pot's ask; the pairs `huevo` and `frio` (two different pictures each), `sal` (a shaker in the air); people appearing and leaving; the crowd at the right counter.
 
+### Order 38 (estufa), step b. **Result (Nov 21): done; merged into `lane/cocina`, not yet on main (it goes to main with La cocina's build).**
+
+Built by an Opus builder on `orden/38b` with no stop. The orchestrator ran `test_all.sh`'s steps to the end itself on the branch with `lane/cocina` merged in: nothing red but the six tests that wait for A comer's ten single-word recordings.
+
+- **`lane/cocina`** is the kitchen's integration branch: main plus `orden/06-comer` (A comer's groundwork) plus each kitchen port as it is checked. It exists because the course data that lists A comer cannot go to main before the ten words are recorded and a build that knows A comer is ready.
+- Files: `coqui_scenes/lib/src/cocina_kit.dart` (the whole of `cocina-kit.js`, call for call; `test/cocina_kit_test.dart` compares 16 cases with the JavaScript run in headless Chrome by `tool/make_cocina_kit_ref.mjs`: pixels, depth, kinds and ground equal), `lib/src/estufa/` (`estufa_set.dart`, `estufa_places.dart`, `estufa.dart`), six tests, the sheet as an asset, `coqui/ref/pp/estufa/`.
+- The set: both baked states equal the JavaScript reference: 0 of 51,840 pixels differ. Sprites: 83 exact.
+- The preview: 678 pictures, 616 identical, none over 2%, the most 0.24% (edges of rotated sprites).
+- Recorded runs: all 12 (three stories and `h-estufa`, three plans each) equal timeless; hop sounds and draws the old ones. Time: el-pollo-y-el-huevo and h-estufa equal whole; arroz-con-habichuelas 70 ms shorter; cuidado 2.2 to 2.5 s longer (walks to moved places).
+- The window's family is drawn unclipped and the set's nearer pixels are drawn again over them, pixel for pixel as the preview; the stool is drawn at its place in the sorted list and never over the frog on it. The old fault (a cup mamá holds is drawn as the baby, estufa.js line 122) is kept.
+- `Sheet` gained, on El banco's reader: a remap kind `rect`, a front part drawn after something at a world y, `talk.abuelaHead`, a board with no words, hops with counts only, `faults`.
+- All 24 review pictures and 17 level cells draw (azúcar, A comer's, among them). Touch boxes hold their things; the pan's handle and the tray's edges stick out of their boxes exactly as in the old file.
+- Bake in Dart (release web, median of five, a busy machine): the first state 98 ms (74 to 162), the other 40 ms; later bakes 17 to 18 ms.
+- The app's story test (q) now follows the list of converted scenes (a converted scene's routine opens on its start disc), so no kitchen port has to change it.
+- For the content lane and the designers, found by the builder in the JavaScript sheet and not fixed (the port follows the preview): the sheet's words put the frog's surface point under (x+16, y+26) while its frog spots are under y+25; `spots.banco` projects one row above `points.banco`; a picture's `world` is the surface under (x, y-1), so a crop from it is one row higher than the sheet's `crop`.
+
 ## From the content lane (Nov 20 and 21): A comer is out; orders 50 to 57, the new scenes of El colmado and La calle
 
 Written by the session that finishes A1's content (scripts, story files, reviews, recordings; page 00 has its state). It builds nothing under `coqui/`. Everything here is for the scenes lane.
