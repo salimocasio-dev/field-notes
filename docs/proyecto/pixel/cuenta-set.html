@@ -68,6 +68,8 @@ function backWall() {
   });
   PZ.wall(E.DOOR[0] - .2, E.DOOR[1] + .2, -1.2, 0, 3.2, (u, z) => FD.outside(NIGHT, .5, (z + .2) / 3.0, Math.round(u * 26), Math.round(z * 22.5)));
   for (const u of [-2.4, -.6]) FD.sconce(u, 0, 2.2);
+  const W = E.WINDOW; PZ.box((W[0] + W[1]) / 2, .06, W[2] - .14, W[2] - .07, (W[1] - W[0]) / 2 + .12, .07, FD.WOOD_L);                 // the window's sill
+  PZ.flat(E.DOOR[0] + .08, .1, E.DOOR[1] - .08, .85, .012, (u, v) => (u - E.DOOR[0] < .2 || E.DOOR[1] - u < .2 || v < .22 || v > .73) ? rgb(120, 90, 60) : rgb(170, 130, 84));   // a doormat
 }
 function counter() {
   const C = E.COUNTER, mid = (C.u0 + C.u1) / 2, hw = (C.u1 - C.u0) / 2, vm = (C.v0 + C.v1) / 2, hd = (C.v1 - C.v0) / 2, TOP = [226, 196, 150];

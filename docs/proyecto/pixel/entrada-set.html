@@ -29,7 +29,7 @@ window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, o
 const E = {
   WALL: 3.1,                                                          // the back wall's height (it fills the picture's top)
   DOOR: [-3.6, -2.55, 0, 2.2],                                        // the open door: u0, u1, z0, z1
-  RUG: [-3.5, .12, -2.2, 4.6],                                        // the runner rug from the door: u0, v0, u1, v1
+  RUG: [-3.5, .12, -2.2, 5.3],                                        // the runner rug from the door: u0, v0, u1, v1
   BENCH: { u: -1.2, v: .38, hw: .62 },                                // the bench against the wall (its seat's top is z .46)
   STAND: { u: -.95, v: 5.0, hw: .27, hd: .2, h: .95 },                // the mesera's stand (she stands behind it, at v 4.6)
   ROPE: { u: -.35, v0: 1.5, v1: 5.6, h: .86 },                        // the rope on two posts, down the picture
@@ -73,8 +73,8 @@ function entry() {
   for (const v of [P.v0, P.v1]) { PZ.box(P.u, v, 0, .06, .13, .13, FD.BRASS.map(c => c - 30)); PZ.post(P.u, v, 0, P.h, .04, FD.BRASS); PZ.ball(P.u, v, P.h + .05, .07, FD.BRASS, 'gloss'); }
   if (SET.cuerda === 'puesta') {
     const n = 40;
-    for (let k = 0; k <= n; k++) { const t = k / n, v = P.v0 + (P.v1 - P.v0) * t, z = P.h - .08 - .22 * 4 * t * (1 - t); PZ.box(P.u, v, z - .035, z + .035, .03, (P.v1 - P.v0) / n * .6, FD.RED); }
-  } else PZ.box(P.u + .05, P.v0 + .03, .14, P.h - .06, .028, .028, FD.RED);
+    for (let k = 0; k <= n; k++) { const t = k / n, v = P.v0 + (P.v1 - P.v0) * t, z = P.h - .08 - .22 * 4 * t * (1 - t); PZ.box(P.u, v, z - .045, z + .045, .045, (P.v1 - P.v0) / n * .6, (k % 4 < 2) ? [250, 214, 110] : [214, 168, 70]); }
+  } else PZ.box(P.u + .06, P.v0 + .03, .14, P.h - .06, .04, .04, [236, 196, 96]);
 }
 function room() {
   const V = E.VELLONERA;
@@ -88,7 +88,7 @@ function room() {
     return 0;
   });
   PZ.shadow(V.u, V.v + .2, .6, .45);
-  E.TABLES.forEach(([u, v]) => FD.setTable(u, v, E.THW, { seats: 2, span: 1.1, ends: true }));
+  E.SEATS = E.TABLES.map(([u, v]) => FD.setTable(u, v, E.THW, { seats: 2, span: 1.1, ends: true, hd: .6 }));
 }
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);

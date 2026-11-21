@@ -15,7 +15,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 ## Story 84: Bienvenidos
 
-- **Goal he can see:** beyond the rope, the three tables: one has flowers and a small card with a star on it, one is in the middle, one is beside the kitchen's swing door. Abuela points at the one with the flowers. In the doorway behind the family, the señor and the señora look at the same table.
+- **Goal he can see:** beyond the rope, the three tables, one behind another: the near one (mesa3) has flowers and a small card with a star on it, the middle one (mesa2) is plain, the far one (mesa1) is beside the kitchen's swing door. Abuela points at the one with the flowers. In the doorway behind the family, the señor and the señora look at the same table.
 - **At stake:** the good tables (3, best first). The mesera says to come on, or to wait a moment. If the frog, who leads the family, does the other, the people behind them get the best table that is left.
 - **New words:** fonda, mesera, bienvenido, adelante, un momento.
 - **Back again:** buenas tardes, hola, tengo hambre, familia, gente, mucho, hay, espera, va, vamos, aquí, cuatro, por favor, sí, mira.
@@ -38,7 +38,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 6. **Decision A, touch a place (the mesera at her stand, the bench; tests adelante against un momento).** NARR: "La mesera dice: ¡Adelante, por favor!" (Or, drawn: "La mesera dice: Un momento, por favor.")
    - Right: for "adelante" the frog hops up to the stand, and the family after him. For "un momento" he sits; a mesero goes by with a full tray; then she waves, and they all go up to the stand. A star.
    - Wrong: he sits when she said to come on: the señor and the señora walk past him, and she takes them to the best table that is free. (Or he hops on when she said to wait: he runs into the mesero's legs; the tray tips; while she helps, she waves the señor and the señora round them to the table.) NARR: "La mesera dice: ¡No, Coquí! ¡Adelante!" (or: "¡No, Coquí! ¡Un momento!") A cross. The best table left is gone. The sign is on the right place; he touches it. The family ends at the stand.
-7. **Decision B, touch a place (the mesera, who now stands beyond the rope, and the bench; the hombre and the mujer have come in behind the family).** NARR: "La mesera dice: Un momento, por favor." (Or, drawn: "La mesera dice: ¡Adelante, por favor!") Right: for "adelante" she unhooks the rope and they go through; for "un momento" he sits, a mesero goes by, and then she unhooks the rope. Wrong: as in A, and the hombre and the mujer get the best table left. Either way the family ends beyond the rope.
+7. **Decision B, touch a place (the mesera, who now stands beyond the rope, and the bench; behind the family stand the señor and the señora if they are still waiting, and if they have their table, the hombre and the mujer, who have come in).** NARR: "La mesera dice: Un momento, por favor." (Or, drawn: "La mesera dice: ¡Adelante, por favor!") Right: for "adelante" she unhooks the rope and they go through; for "un momento" he sits, a mesero goes by, and then she unhooks the rope. Wrong: as in A, and the hombre and the mujer get the best table left. Either way the family ends beyond the rope.
 
 **The ending**
 
@@ -63,7 +63,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 - **New words:** mesero, libre, ocupado, para dos.
 - **Back again:** fonda, mesera, un momento, mesa, rojo, azul, verde, amarillo, blanco, dos, señor, señora, hombre, mujer, joven, gente, espera, listo, perdón, toma, hay, no hay, gracias, por favor, pie, malo.
 
-**Start:** evening; the lamps are lit. Three tables: at the one by the kitchen the hombre and the mujer eat, and stay there. The other two stand empty: one with a red cloth, one with a blue cloth. Two people stand at the vellonera, choosing a song. The mesero sits on his stool by the kitchen door with his foot up, the saucer of sweets on the stool's shelf; the frog beside him. The señor and the señora at the rope.
+**Start:** evening; the lamps are lit. Three tables: the far one (mesa1), by the kitchen, is kept for a party: a card stands on it, and nobody sits there. The other two stand empty: the middle one (mesa2) with a red cloth, the near one (mesa3) with a blue cloth. Two people stand at the vellonera, their backs to the room, choosing a song. The mesero sits on his stool by the kitchen door with his foot up, the saucer of sweets on the stool's shelf; the frog beside him. The señor and the señora at the rope.
 
 **The opening** (big sign)
 
@@ -76,7 +76,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 5. Later: the window is darker. The people at the red table and the blue table pay and go; the mesera puts two new cloths on. The mesero taps the saucer of sweets, and points at the frog. Couples wait at the rope. The card shows two places. The signs go.
 
-**The game.** Two tables stand empty, with cloths of two colours (drawn each round from rojo, azul, verde, amarillo and blanco). One of them is taken: its two people are at the vellonera, their backs to the room. The mesero, from his stool, says in one breath which is free and which is taken (which is said first is drawn). Nothing on the tables shows it. The frog leads the couple at the rope to a table. Between the rounds it is later again: new cloths, new people at the vellonera.
+**The game.** The middle table and the near one stand empty, with cloths of two colours (drawn each round from rojo, azul, verde, amarillo and blanco; round B's two are not round A's). Who asks is drawn from the señor, the señora, the hombre, the mujer and the joven (round B's is not round A's): each comes with a companion. One of them is taken: its two people are at the vellonera, their backs to the room. The mesero, from his stool, says in one breath which is free and which is taken (which is said first is drawn). Nothing on the tables shows it. The frog leads the couple at the rope to a table. Between the rounds it is later again: new cloths, new people at the vellonera.
 
 6. **Decision A, touch a table (two tables; tests libre against ocupada).** NARR: "La mujer dice: Una mesa para dos, por favor." NARR: "El mesero dice: La mesa verde está ocupada. La mesa amarilla está libre." (Drawn.)
    - Right: the couple sits down; the mesero nods. A star.
@@ -85,7 +85,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 **The ending**
 
-8. Later still. Every table is taken; music from the vellonera. The mesero holds out the saucer to the frog.
+8. Later still. Every table is taken (the party has come to the far one); music from the vellonera. The mesero holds out the saucer to the frog.
    - Three sweets. Stars and a heart.
    - Two sweets.
    - One sweet; the frog unwraps it slowly.
@@ -119,7 +119,7 @@ Voices, the signal for a right move, what follows a wrong move, pokes and the co
 
 5. The glasses are empty. The mesero comes back with a full tray: two glasses of water, two small plates of bread; he looks from one to the other, and at the family, lost. The candles flicker. NARR: "El mesero dice: ¡Ay! ¿Con limón? ¿Sin limón? ¡Ayúdame, Coquí!" **(ayúdame: heard; his face carries it)** The card shows two places. The signs go.
 
-**The game.** One of the family (drawn) asks for something, with or without (drawn). The tray shows the two of it, side by side (which is at the left is drawn). The frog pushes one across. Round A is bread, with butter or without (a pat of butter on the slice, or none); round B is water, with lemon or without.
+**The game.** One of the family (drawn; round B's is not round A's) asks for something, with or without (drawn). The tray shows the two of it, side by side (which is at the left is drawn). The frog pushes one across. Round A is bread, with butter or without (a pat of butter on the slice, or none); round B is water, with lemon or without.
 
 6. **Decision A, touch one of the two (tests con against sin).** NARR: "Carmen dice: Para mí, pan sin mantequilla." (Or, drawn: "pan con mantequilla"; the speaker is drawn too.)
    - Right: the frog pushes it across; she eats, and nods. A star.
@@ -171,8 +171,8 @@ The set `entrada`:
 
 Acts (name: what it does on screen; story and step):
 - `llega` {quien, a}, `sale` {quien} (84 to 86). `pasa84` {que}: a mesero crosses in front of the stand (platos, bandeja) (84). `avanza84` {tramo, ok}: the frog hops up to the mesera, and the family after him: rightly, or into the mesero's legs; `espera84` {tramo, ok}: the frog sits on the bench: rightly (a mesero passes, she waves, they go on), or while the two behind walk past him (84: 6, 7). `mesas84` {n}: the good tables left; `final84` {n} (84: 8).
-- `corbata85`: the mesero puts his bow tie on the frog (85: 1). `tarde85`: later: the two tables are cleared, new cloths, new people at the vellonera. `manteles` {a, b}: the two empty tables' cloths. `sienta85` {quienes, mesa, ok}: the frog leads a couple to a table; they stay, or its people come back, they get up, take a sweet and sit down at the other one. `dulces` {n}; `final85` {n} (85: 8).
-- `menu86`: abuela opens the menu; `bandeja86` {que, izq}: the tray shows the two of a thing (agua, pan) and which is at the left; `da86` {cual, a, ok}: the frog pushes one across; taken, or refused, snatched back with a splash; `velas` {n}: the candles lit (86). `final86` {n} (86: 8).
+- `corbata85`: the mesero takes off his bow tie and puts it on the frog (85: 1). `vuelven85` {mesa}: the two at the vellonera come back and sit down at a table (85: 2). `banco85` {quien}: someone and his companion sit down on the bench (85: 3). `tarde85`: later: the two tables are cleared, new cloths, new people at the vellonera. `manteles` {a, b}: the two empty tables' cloths. `sienta85` {quienes, mesa, ok}: the frog leads a couple to a table; they stay, or its people come back, they get up, take a sweet and sit down at the other one. `dulces` {n}; `final85` {n} (85: 8).
+- `menu86`: the mesera gives abuela the menu, and abuela opens it; `cafes86`: the mesero sets the pale cup before abuelo and the black one before abuela (86: 3); `vasito86`: a small glass with a slice of lemon comes for the frog (86: 4); `bandeja86` {que, izq}: the tray shows the two of a thing (agua, pan) and which is at the left; `da86` {cual, a, ok}: the frog pushes one across; taken, or refused, snatched back with a splash; `velas` {n}: the candles lit (86). `final86` {n} (86: 8).
 - `gesto` {quien, que}: `saluda`, `no`, `si`, `rie`, `mira` with `a`, `senala` with `a`, `mano` (holds up a hand), `pasa` (waves on), `lista` (looks at her list), `baston` (points with his stick), `reverencia` (bows).
 - `brilla`: the engine's own twinkle. `ya`: waits for an act started with `suelto: 1`.
 - Values: in 84 `dice` (adelante, momento), each round; in 85 the two colours, which is free and which is said first, and who asks, each round; in 86 `quien`, `como` (con, sin) and `izq`, each round (`que` is pan in A, agua in B).

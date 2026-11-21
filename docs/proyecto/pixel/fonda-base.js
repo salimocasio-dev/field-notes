@@ -70,7 +70,7 @@ const FD = (() => {
   // a set table with its chairs: seats = how many along the far side; ends = chairs at the ends too. Returns the seats' places [[u, v], ...]
   function setTable(u, v, hw, opt = {}) {
     const hd = opt.hd || .45, n = opt.seats || 2, out = [];
-    for (let k = 0; k < n; k++) { const cu = u + (n === 1 ? 0 : (k / (n - 1) - .5) * (opt.span || (2 * hw - .9))); chair(cu, v - hd - .08); out.push([cu, v - hd - .08]); }
+    for (let k = 0; k < n; k++) { const cu = u + (n === 1 ? 0 : (k / (n - 1) - .5) * (opt.span || (2 * hw - .9))); chair(cu, v - hd - .26); out.push([cu, v - hd - .26]); }
     if (opt.ends) { chairEnd(u - hw - .4, v, -1); chairEnd(u + hw + .4, v, 1); out.push([u - hw - .4, v], [u + hw + .4, v]); }
     table(u, v, hw, hd, opt.cloth || CLOTH);
     return out;
