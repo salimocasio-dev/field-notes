@@ -205,7 +205,7 @@ s59={"id":"delante-y-detras","title":"Delante y detrás","place":"La calle","sce
  "goal":"Pose where papá says (in front of, behind, beside) for the family photo: every wrong place spoils one of the three photos, and the last one is always a good one.",
  "stake":{"thing":"fotos","steps":3},"dots":9,"bien":"si_muy_bien",
  "focus_words":["al lado de","delante","detrás","entre"],"formas_foco":{},
- "back_again":["familia","abuela","abuelo","mamá","papá","bebé","árbol","aquí","uno","dos","tres","yo","soy","mira","también","contento","hay","ahora"],
+ "back_again":["familia","abuela","abuelo","mamá","papá","bebé","aquí","uno","dos","tres","yo","soy","mira","también","contento","hay","ahora"],
  "also_heard":[],"names":nm,"palabras":{"detras":"detrás","delante":"delante","lado":"al lado de"},"clips":c,
  "beats":[{"set":{"hora":HORA59}},act("hojas",n=3),act("ir",a="tras_papa"),{"wait":500},
   # 1: the family, the camera; abuelo, mamá and Carmen stand in a row well behind the seat
