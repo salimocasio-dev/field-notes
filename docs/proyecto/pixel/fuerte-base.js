@@ -91,11 +91,27 @@ const FT = (() => {
     for (let k = 0; k <= n; k++) { const a = k / n, [x, y] = PZ.xy(u0 + (u1 - u0) * a, v); plot(x, y, z0 + (z1 - z0) * a - Math.sin(a * Math.PI) * sag, rgb(...c)); }
   }
   // a wooden stool
-  function stool(u, v, h = .46, r = .22, c = [176, 122, 76]) {
+  function stool(u, v, h = .46, r = .22, c = [176, 122, 76], z0 = 0) {
     const [x, y] = PZ.xy(u, v);
-    for (const [a, b] of [[-.13, -.13], [.13, -.13], [-.13, .13], [.13, .13]]) PZ.post(u + a, v + b, 0, h - .06, .03, c.map(k => k - 40));
-    drum(x, y, h - .07, h, r, c);
-    PZ.shadow(u, v, .3, r + .05);
+    for (const [a, b] of [[-.13, -.13], [.13, -.13], [-.13, .13], [.13, .13]]) PZ.post(u + a, v + b, z0, z0 + h - .06, .03, c.map(k => k - 40));
+    drum(x, y, z0 + h - .07, z0 + h, r, c);
+    if (!z0) PZ.shadow(u, v, .3, r + .05);
   }
-  return { STONE, STONE_D, STONE_L, IRON, stone, solid, inArch, archRing, flags, grass, onPath, pathStone, night, day, wallLamp, garita, cord, stool };
+  // the yard's inner wall at v = 0, across the picture: stone, battlements, the sky over it; holes = arches (each [u0, u1, z0, z1])
+  function yardWall(h = 2.6, holes = [], u0 = -4.7, u1 = 4.7) {
+    PZ.flat(u0, -.6, u1, 0, h - .34, (u, v) => flags(u, v * 2, 0, 0, [176, 156, 124]));
+    PZ.wall(u0, u1, 0, 0, h, (u, z) => {
+      if (!solid(u, z, h)) return 0;
+      for (const r of holes) { if (inArch(u, z, r)) return 0; const c = archRing(u, z, r); if (c) return c; }
+      if (z > h - .44 && z < h - .36) return rgb(...STONE_L);
+      return stone(u, z);
+    });
+  }
+  // a string of small lights along a wall, at height z, on the plane v (every other one warm)
+  function lights(u0, u1, v, z, sag = .1) {
+    const n = Math.round((u1 - u0) / .42);
+    cord(u0, u1, v, z, z, sag, [60, 56, 60]);
+    for (let k = 0; k <= n; k++) { const a = k / n, [x, y] = PZ.xy(u0 + (u1 - u0) * a, v + .02), zz = z - Math.sin(a * Math.PI) * sag - .07; for (const [dx, dz] of [[0, 0], [.03, 0], [0, -.04], [.03, -.04]]) plotGlow(x + dx * .7, y - dx * .7, zz + dz, k % 2 ? rgb(255, 236, 150) : rgb(255, 176, 120)); }
+  }
+  return { STONE, STONE_D, STONE_L, IRON, stone, solid, inArch, archRing, flags, grass, onPath, pathStone, night, day, wallLamp, garita, cord, stool, yardWall, lights };
 })();

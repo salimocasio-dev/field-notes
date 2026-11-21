@@ -1,0 +1,91 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* La música: the fort's courtyard at night, with the party (place 10, scene 2), as a set on the Pixel Plays engine. A NEW scene.
+   Laid out square to the picture, in u, v (plaza-base.js, fuerte-base.js). The fort's inner wall faces us at v = 0, across the whole
+   picture: stone with battlements, the night sky over it, four iron lamps and a string of small lights. In front of it, at the left,
+   a low stage of boards with two stools and, behind them, a rack for two instruments (the instruments, the microphone and the paper
+   notes over the stage are sprites). In the middle and at the right, the open floor of flagstones. Against the wall at the right, a
+   bench; at the right front, a stool beside the floor.
+   One state. It draws one frame: the baked set. No people, no instruments, no microphone, no paper notes, no camera. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: 'noche', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -34];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script src="fuerte-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WALL: 2.6,
+  LAMPS: [[-3.45, 1.35], [-1.0, 1.35], [1.15, 1.35], [3.5, 1.35]],     // iron lamps on the wall (u, z)
+  LIGHTS: { u0: -4.2, u1: 4.2, z: 2.05 },                              // the string of small lights
+  STAGE: { u0: -3.72, u1: -1.3, v0: .3, v1: 2.5, h: .28 },             // the stage: a low floor of boards
+  STOOLS: [[-3.2, 1.25], [-2.2, 1.25]],                                // the músicos' stools (on the stage; their tops are z h + .46)
+  RACK: { u: -2.7, v: .55, hw: .5, h: .95 },                           // the instruments' rack, behind the stools (its bar's height above the stage)
+  MIC: [-1.72, 2.25],                                                  // where the microphone stands, at the stage's front right (a sprite)
+  NOTES: { u: [-3.3, -2.5, -1.7], z: 2.75 },                           // where the three paper notes hang, over the stage (sprites)
+  BENCH: { u: 2.55, v: .45, hw: 1.0 },                                 // the bench against the wall
+  STOOL: [3.25, 4.7],                                                  // the stool beside the floor
+  FLOOR: [-1.0, 2.2, 2.6, 7.6],                                        // the open floor where people dance (u0, v0, u1, v1)
+};
+const groundAt = (x, y, ix, iy) => { const [u, v] = PZ.uv(x, y); return v < -.62 ? 0 : FT.flags(u, v, ix, iy); };
+function wall() {
+  FT.yardWall(E.WALL);
+  for (const [u, z] of E.LAMPS) FT.wallLamp(u, 0, z, true);
+  FT.lights(E.LIGHTS.u0, E.LIGHTS.u1, .03, E.LIGHTS.z, .16);
+}
+function yard() {
+  const S = E.STAGE, mid = (S.u0 + S.u1) / 2, hw = (S.u1 - S.u0) / 2, W1 = [190, 140, 92];
+  PZ.box(mid, (S.v0 + S.v1) / 2, 0, S.h, hw, (S.v1 - S.v0) / 2, W1, (s, t, z, face) => face === 'top' ? (((t + 9) % .34) < .035 ? rgb(130, 92, 60) : shade([206, 158, 106], 3, s * 2, t * 2, .12)) : (face === 'front' ? (z < .05 ? rgb(110, 78, 52) : ((s + 9) % .5) < .04 ? rgb(130, 92, 60) : 0) : 0));
+  for (let du = -hw; du <= hw; du += .3) PZ.shadow(mid + du, S.v1 - .1, .2, .3);
+  const R = E.RACK;                                                                                              // the rack: two posts and a bar with two pegs
+  for (const du of [-R.hw, R.hw]) PZ.post(R.u + du, R.v, S.h, S.h + R.h, .04, [120, 84, 52]);
+  PZ.box(R.u, R.v, S.h + R.h, S.h + R.h + .07, R.hw + .06, .04, [150, 104, 62]);
+  for (const [u, v] of E.STOOLS) FT.stool(u, v, .46, .22, [176, 122, 76], S.h);
+  PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw);
+  FT.stool(E.STOOL[0], E.STOOL[1]);
+}
+const skyOf = (ix, iy) => FT.night(ix, iy, 400, [150, 6, 7]);
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('muro', wall);
+  part('patio', yard);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  lightPass([.86, .8, .8], [4, 0, 8], false);
+  skyFill(skyOf);
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.MUSICA = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>

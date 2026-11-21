@@ -1,0 +1,102 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#000}canvas{image-rendering:pixelated}</style></head><body>
+<canvas id="c"></canvas>
+<script>
+'use strict';
+/* Los regalos: a corner of the fort's courtyard at night, beside the dance floor (place 10, scene 3), as a set on the Pixel Plays engine.
+   A NEW scene. Laid out square to the picture, in u, v. The fort's inner wall faces us at v = 0: at its far left a wide arch, a hole
+   through which the dance floor shows, with its own far wall and its lights (the dancers there, and the curtain across the arch, are
+   sprites); a cord across the arch for the curtain; against the wall just right of the arch, a bench; over the right half of the wall,
+   a second cord with four pegs for photos; two iron lamps. In the middle and at the right, in front of the wall, a long table with a
+   cloth. Between the wall and the table, a step stool; in front of the table, a low stool.
+   One state. It draws one frame: the baked set. No people, no curtain, no cake, no presents, no photos. */
+const Q = new URLSearchParams(location.search);
+const pick = (k, allowed, def) => { const v = Q.get(k); return allowed.includes(v) ? v : def; };
+const SET = { hora: 'noche', t: +(Q.get('t') || 0) };
+const ORIGIN = [0, -34];
+window.PP_SCENE = { w: +(Q.get('pw') || 240), h: +(Q.get('ph') || 216), s: 26, originX: +(Q.get('ox') || ORIGIN[0]), originY: +(Q.get('oy') || ORIGIN[1]), shadowX: .9, shadowY: -.1 };
+</script>
+<script src="pp-engine.js"></script>
+<script src="mapa.js"></script>
+<script src="set-kit.js"></script>
+<script src="calle-base.js"></script>
+<script src="plaza-base.js"></script>
+<script src="fonda-base.js"></script>
+<script src="fuerte-base.js"></script>
+<script>
+'use strict';
+const E = {
+  WALL: 2.6,
+  ARCH: [-3.78, -2.1, 0, 2.05],                                        // the arch onto the dance floor: a hole
+  FAR: -3.4,                                                           // the dance floor's far wall (v)
+  CURTAIN: { u0: -3.86, u1: -2.02, z: 2.16, v: .06 },                  // the cord the curtain hangs from (three pegs on it; the curtain is a sprite)
+  BENCH: { u: -1.02, v: .45, hw: .82 },                                // the bench: its left end is beside the arch
+  PHOTOS: { u0: .25, u1: 3.3, z: 1.95, v: .05, pegs: [.75, 1.45, 2.15, 2.85] },   // the photos' cord on the wall, and its four pegs (u)
+  LAMPS: [[-1.02, 1.55], [3.62, 1.2]],
+  TABLE: { u: 1.75, v: 2.9, hw: 1.6, hd: .6 },                         // the long table (top z .74)
+  STEP: [.2, 1.0, .3],                                                 // the step stool between the wall and the table (u, v, its height)
+  STOOL: [1.75, 4.7, .34],                                             // the low stool in front of the table (u, v, its height)
+};
+function groundAt(x, y, ix, iy) {
+  const [u, v] = PZ.uv(x, y);
+  if (v < E.FAR) return 0;
+  if (v < 0) return (u > E.ARCH[0] - 1.2 && u < E.ARCH[1] + 1.2) ? FT.flags(u, v, ix, iy, [255, 232, 160]) : 0;      // the dance floor beyond the arch: lit warm
+  return FT.flags(u, v, ix, iy);
+}
+function wall() {
+  const A = E.ARCH;
+  PZ.wall(A[0] - 1.2, A[1] + 1.2, E.FAR, 0, .6, (u, z) => FT.stone(u + .3, z, [255, 226, 160]));                   // the foot of the dance floor's far wall (the arch shows no more of it)
+  FT.yardWall(E.WALL, [A]);
+  for (const [u, z] of E.LAMPS) FT.wallLamp(u, 0, z, true);
+  const C = E.CURTAIN;
+  for (const u of [C.u0, C.u1]) PZ.box(u, .04, C.z - .04, C.z + .06, .04, .04, FT.IRON);
+  FT.cord(C.u0, C.u1, C.v, C.z, C.z, .05);
+  const P = E.PHOTOS;
+  for (const u of [P.u0, P.u1]) PZ.box(u, .04, P.z - .04, P.z + .06, .04, .04, FT.IRON);
+  FT.cord(P.u0, P.u1, P.v, P.z, P.z, .08);
+  for (const u of P.pegs) PZ.box(u, .07, P.z - .16, P.z - .02, .03, .02, [226, 190, 120]);
+}
+function yard() {
+  PZ.seat(E.BENCH.u, E.BENCH.v, E.BENCH.hw);
+  const T = E.TABLE;
+  FD.table(T.u, T.v, T.hw, T.hd, [250, 246, 236]);
+  const [su, sv, sh] = E.STEP;                                                                                    // the step stool: two steps
+  PZ.box(su, sv, 0, sh, .26, .2, [176, 122, 76], (s, t, z, face) => face === 'top' ? rgb(206, 158, 106) : 0);
+  PZ.box(su, sv + .26, 0, sh / 2, .26, .1, [150, 104, 62], (s, t, z, face) => face === 'top' ? rgb(190, 140, 92) : 0);
+  PZ.shadow(su, sv, .2, .36);
+  FT.stool(E.STOOL[0], E.STOOL[1], E.STOOL[2], .3, [190, 140, 92]);
+}
+const skyOf = (ix, iy) => FT.night(ix, iy, 400, [128, 6, 7]);
+function buildSet() {
+  zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);
+  tufts.length = 0; leaves.length = 0; pendingShadows.length = 0; slabTops.length = 0; glowReset();
+  for (let iy = 0; iy < H; iy++) for (let ix = 0; ix < W; ix++) {
+    const g = unproject(ix + .5, iy + .5), i = iy * W + ix, c = groundAt(g.x, g.y, ix, iy);
+    if (!c) continue;
+    pix[i] = c; ground[i] = 1; zb[i] = (g.x + g.y) / R2 * COS; kinds[i] = KIND_ROAD;
+  }
+  groundZ.set(zb);
+  part('muro', wall);
+  part('patio', yard);
+  flushShadows(); pendingShadows.length = 0;
+  bakeOcclusion(); joinSlabs(); staticShadow.set(shadowMask); applyShadows(groundZ); shadeEdges();
+  lightPass([.86, .8, .8], [4, 0, 8], false);
+  skyFill(skyOf);
+  bakedPix.set(pix); bakedZ.set(zb);
+}
+window.REGALOS = { SET, E, buildSet };
+if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
+const t0 = performance.now();
+buildSet();
+window.BAKE_MS = performance.now() - t0;
+function frame(t, casts = []) {
+  pix.set(bakedPix); zb.set(bakedZ);
+  for (const c of casts) castShadow(c[0], c[1], c[2], c[3]);
+  applyShadows(groundZ);
+  ctx.putImageData(image, 0, 0);
+  return image;
+}
+frame(SET.t);
+window.TAGS = PART_TAGS;
+window.DEPTH = { z: bakedZ, OX, OY, S };
+window.frame = frame;
+</script></body></html>
