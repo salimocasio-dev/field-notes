@@ -1,7 +1,7 @@
 <!doctype html><html lang="es" translate="no"><head><meta charset="utf-8"><title>El reloj · preview (dev tool)</title>
 <style>body{margin:0;padding:12px;background:#222;color:#ddd;font:13px/1.4 system-ui,sans-serif}canvas{image-rendering:pixelated}#out{display:block;margin-top:8px}.dev{max-width:760px;margin:0 0 8px;padding:8px;background:#5a1d1d;color:#fff}#cap{max-width:760px;margin:8px 0 0}</style></head><body>
-<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El reloj (reloj-set.html, drawn in a hidden frame: the foot of the square's clock tower, laid out square to the picture in u, v) with the characters and the small things drawn over it as sprites, each placed from reloj-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the ground. Then cropped to the 196 x 216 window of the sheet's view (wide). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); people who have no maker yet are STAND-INS of the same size: don Tito, the señor and the vendedor are grown-up men (the vendedor in a white apron and a paper hat), the señora who calls the bingo is the señora of today's makers, abuela sits (mkAbuelaS), Luis and Carmen are the family's children. The two hands of the clock (dark lines 2 px wide: the long 19 px, the short 12 px), the time cards (a white square with a small dial), the plate of pastelillos, the cage (20 x 22), the three prizes (16 x 16), the beans and the card of five numerals are stand-ins drawn here, not final art. The cards and the card of numerals are drawn over everything (they are the game's own signs); everything else is placed by the depth rule.
-The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.moment(m)</code> and <code>PREVIEW.nearest(...)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 63 opening, <code>?m=2</code> story 63 game (two time cards, the short hand at the 5), <code>?m=3</code> story 64 the frog at mano_arriba, <code>?m=4</code> mano_abajo, <code>?m=5</code> mano_lado, <code>?m=6</code> story 65 (the bingo), then two dev aids that are not among the spec's six: <code>?m=7</code> the frog at balcon2, <code>?m=8</code> the frog half way up the ladder (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
+<p class="dev"><b>DEV TOOL, not part of the game.</b> The set of El reloj (reloj-set.html, drawn in a hidden frame: the foot of the square's clock tower, laid out square to the picture in u, v) with the characters and the small things drawn over it as sprites, each placed from reloj-sheet.json: the lowest drawn row of the sprite (its feet) just above the spot's screen row, its middle column on the spot's column (the sheet's rules.anchor), hidden by every set pixel nearer than its feet (the sheet's front rule), with the shadows of those who stand on the ground. Then cropped to the 196 x 216 window of the sheet's view (wide). The characters are today's sprite makers (historia/engine.js, escenas/kit.js); people who have no maker yet are STAND-INS of the same size: don Tito, the señor and the vendedor are grown-up men (the vendedor in a white apron and a paper hat (4 rows tall)), the señora who calls the bingo is the señora of today's makers, abuela sits (mkAbuelaS), Luis and Carmen are the family's children. The two hands of the clock (dark lines 2 px wide: the long 19 px, the short 12 px), the time cards (a white square with a small dial), the plate of pastelillos, the cage (20 x 22), the three prizes (16 x 16), the beans and the card of five numerals are stand-ins drawn here, not final art. The cards and the card of numerals are drawn over everything (they are the game's own signs); everything else is placed by the depth rule.
+The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIEW.inspectLayers(set, layers)</code>, <code>PREVIEW.moment(m)</code> and <code>PREVIEW.nearest(...)</code> (<code>?nodraw=1</code> skips the first drawing). Address: <code>?m=1</code> story 63 opening, <code>?m=2</code> story 63 game (two time cards, the short hand at the 5), <code>?m=3</code> story 64 the frog at mano_arriba, <code>?m=4</code> mano_abajo (his feet at the long hand's tip), <code>?m=5</code> mano_lado (the long hand rests at the 3), <code>?m=6</code> story 65 (the bingo), then two dev aids that are not among the spec's six: <code>?m=7</code> the frog at balcon2, <code>?m=8</code> the frog half way up the ladder (default 1). Add <code>&amp;scale=3</code> to draw it 3x, <code>&amp;marks=1</code> to mark each spot, <code>&amp;depth=flat</code> to test against the feet's depth alone instead of the sheet's upright plane. Serve the repo over http.</p>
 <canvas id="cv" width="196" height="216" hidden></canvas>
 <div hidden><button id="go"></button><button id="again"></button><button id="next"></button><button id="snd"></button><button id="close"></button><button id="home"></button><button id="map"></button></div>
 <canvas id="out" width="196" height="216"></canvas>
@@ -77,12 +77,21 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     for (let t = 0; t <= len; t += .5) g.fillRect(Math.round(R + Math.sin(a) * t) - 1, Math.round(R - Math.cos(a) * t) - 1, 2, 2);
     return { cv, ax: R, ay: R };
   };
+  // a paper hat on a grown-up: the sprite gets 4 rows taller above (the hat), a white cap over the hair
+  const paperHat = (base, ax) => {
+    const HAT = 4, cv = document.createElement('canvas'); cv.width = base.width; cv.height = base.height + HAT;
+    const g = cv.getContext('2d'); g.drawImage(base, 0, HAT);
+    const d = base.getContext('2d').getImageData(0, 0, base.width, base.height).data; let T = -1;
+    for (let y = 0; y < base.height && T < 0; y++) for (let x = 0; x < base.width; x++) if (d[(y * base.width + x) * 4 + 3]) { T = y; break; }
+    const b = new Buf(cv.width, cv.height); b.ell(ax, T + 5, 7.5, 4.2, ['#C8C8D0', '#E4E4EA', '#F6F6FA', '#FFFFFF']); b.outline(); g.drawImage(b.done(), 0, 0);
+    return cv;
+  };
   const SPR = {
     tito: () => anchor(KIT.mkPersona(TITO, 'idle', 0, 0), KIT.PX),
     titoS: () => anchor(KIT.mkPersona(TITO, 'idle', 0, 1), KIT.PX, lap(TITO)),
     senorS: () => anchor(KIT.mkPersona(SENOR, 'idle', 0, 1), KIT.PX, lap(SENOR)),
     senora: () => anchor(KIT.mkPersona(SENORA, 'idle', 0, 0), KIT.PX),
-    vendedor: () => anchor(KIT.mkPersona(VENDEDOR, 'idle', 0, 0), KIT.PX),
+    vendedor: () => anchor(paperHat(KIT.mkPersona(VENDEDOR, 'idle', 0, 0), KIT.PX), KIT.PX),
     abuelaS: () => anchor(KIT.mkAbuelaS('idle', 0, 0), 17, 36),
     coqui: () => anchor(mkCoqui(1, 0, 0), 16),
     luis: () => anchor(KIT.mkPersona(FAM.hermano, 'idle', 0, 0), KIT.PX),
@@ -120,10 +129,10 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     4: { view: 'wide', what: 'story 64: the frog on the long hand at mano_abajo, the long hand down (half past two: the short hand half way to the 3)',
       set: { hora: 'tarde', mesas: 0 },
       layers: () => [{ at: 'balcon1', s: 'tito', who: 'adulto' }, { at: 'pie1', s: 'luis', who: 'nino' }, { at: 'pie3', s: 'carmen', who: 'nino' }, ...HANDS(180, 75), { at: 'mano_abajo', s: 'coqui', who: 'coqui' }] },
-    5: { view: 'wide', what: 'story 64: the frog on the long hand at mano_lado, the long hand at the 9 (a quarter to three: the short hand three quarters of the way to the 3)',
+    5: { view: 'wide', what: 'story 64: the frog on the long hand at mano_lado, the long hand resting at the 3 (a quarter past two: the short hand a quarter of the way from the 2 to the 3), his feet on the hand\'s line',
       set: { hora: 'tarde', mesas: 0 },
-      layers: () => [{ at: 'balcon1', s: 'tito', who: 'adulto' }, { at: 'pie1', s: 'luis', who: 'nino' }, { at: 'pie3', s: 'carmen', who: 'nino' }, ...HANDS(270, 82.5), { at: 'mano_lado', s: 'coqui', who: 'coqui' }] },
-    6: { view: 'wide', what: 'story 65: the bingo, afternoon, mesas = 1. Abuela (sitting), Luis (sitting) and the frog (on the table) at the first table; the señor at the second, don Tito at the third; the señora behind the cage (jaula); the three prizes on the shelf\'s steps (premio1 the best, on top); abuela\'s card of numerals (n40 to n100) shown big, a bean on n90 and on n40; the vendedor behind his counter. No hands are drawn (the spec names none)',
+      layers: () => [{ at: 'balcon1', s: 'tito', who: 'adulto' }, { at: 'pie1', s: 'luis', who: 'nino' }, { at: 'pie3', s: 'carmen', who: 'nino' }, ...HANDS(90, 67.5), { at: 'mano_lado', s: 'coqui', who: 'coqui' }] },
+    6: { view: 'wide', what: 'story 65: the bingo, afternoon, mesas = 1. Abuela (sitting), Luis (sitting) and the frog (on the table) at the first table; the señor at the second, don Tito at the third; the señora behind the cage (jaula); the three prizes side by side on the long prize table (premio1 the best, at the left); abuela\'s card of numerals (n40 to n100) shown big, a bean on n90 and on n40; the vendedor behind his counter. No hands are drawn (the spec names none)',
       set: { hora: 'tarde', mesas: 1 },
       layers: () => [{ at: 'quiosco', s: 'vendedor', who: 'adulto' }, { at: 'mesa_abuela.abuela', s: 'abuelaS', who: 'adulto' }, { at: 'mesa_abuela.luis', s: 'luisS', who: 'nino' }, { at: 'mesa_abuela.coqui', s: 'coqui', who: 'coqui' },
         { at: 'mesa_senor', s: 'senorS', who: 'adulto' }, { at: 'mesa_tito', s: 'titoS', who: 'adulto' }, { at: 'senora', s: 'senora', who: 'adulto' }, { at: 'jaula', s: 'jaula', thing: 'jaula' },
@@ -204,11 +213,11 @@ The make reads the moments through <code>PREVIEW.inspect(m)</code>, <code>PREVIE
     return res;
   };
 
-  // the least shift of layer idx (the one that covers) of moment m, along u, v or z in steps of .01 up to 3 either way, that leaves the shown pixels of layer victim uncovered by it
-  PV.nearestCover = async (m, idx, victim) => {
+  // the least shift of layer idx (the one that covers) of moment m, along u, v or z in steps of .01 up to 3 either way, that leaves the shown pixels of the layer (or layers) victims uncovered by it
+  PV.nearestCover = async (m, idx, victims) => {
     const M = MOMENTS[m], specs = M.layers(), { w, Z, S, LS } = await build(M.set, specs), bias = SHEET.front.bias;
-    const vmap = new Map(); for (const p of inkOf(LS[victim], Z, S, bias)) if (!p[2]) vmap.set(p[1] * 240 + p[0], p[3]);
-    const base = specs[idx], covers = uvz => { const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0]; let n = 0; for (const p of inkOf(l, Z, S, bias)) if (!p[2]) { const v = vmap.get(p[1] * 240 + p[0]); if (v !== undefined && p[3] > v + EPS) n++; } return n; };
+    const vmaps = [].concat(victims).map(vi => { const mp = new Map(); for (const p of inkOf(LS[vi], Z, S, bias)) if (!p[2]) mp.set(p[1] * 240 + p[0], p[3]); return mp; });
+    const base = specs[idx], covers = uvz => { const l = placeAll([Object.assign({}, base, { at: null, uvz, off: null })], w)[0]; let n = 0; for (const p of inkOf(l, Z, S, bias)) if (!p[2]) for (const vmap of vmaps) { const v = vmap.get(p[1] * 240 + p[0]); if (v !== undefined && p[3] > v + EPS) n++; } return n; };
     const start = LS[idx].uvz, res = { now: covers(start), axis: {} };
     for (const [ax, name] of [[0, 'u'], [1, 'v'], [2, 'z']]) {
       for (let k = 1; k <= 300; k++) {

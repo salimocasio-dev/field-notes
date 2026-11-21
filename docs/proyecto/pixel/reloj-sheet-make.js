@@ -46,6 +46,8 @@ const HANDS = { long: 19, short: 12, width: 2 };         // the hands of the clo
 const CARD = { w: 22, gap: 4, above: 3 };                // carta_a, carta_b: two 22 px squares, 4 px apart, centred over the frog, their foot 3 px above his head
 const CAGE_BOX = { w: 20, h: 22 }, PRIZE_BOX = { w: 16, h: 16 };       // the cage's stand-in; the prizes' stand-ins
 const PLATE_BOX = { w: 14, h: 7 };                       // the plate of pastelillos: the spec gives no size (open point): a plate with three half-moons
+const AWNING = { near: 3.4, far: 3.66 };                  // the quiosco's awning (reloj-set.html kiosk(): not exported in E)
+const PAPER_HAT = 4;                                     // the vendedor's paper hat: the stand-in wears one 4 rows tall, so the head's top 14 rows hold the hat and 10 rows of head
 const CARTON = { x: 26, y: 92, sq: 14, gap: 2, nums: ['n40', 'n60', 'n80', 'n90', 'n100'] };       // abuela's card, shown big: five 14 px squares, 2 px apart, its top left at screen (26, 92)
 const VIEW_W = 196;
 const MOMENTS = [1, 2, 3, 4, 5, 6], EXTRA = [7, 8];     // the spec's six moments; two dev aids (the frog at balcon2 and on the ladder), read for information only
@@ -55,14 +57,13 @@ const PLAIN_X0 = 22;                                     // the spec: "22 centre
 // silhouette: which drawing hangs there (adulto, adultoS = a grown-up sitting, abuelaS, nino, luisS = a child sitting, coqui) or null for a small thing; on: what it stands on above the ground (a part of the set, or the hand: a sprite)
 const spotsOf = E => {
   const T = E.TOWER, K = E.KIOSK, [T1, T2, T3] = E.TABLES, C = E.CAGE, SH = E.SHELF;
-  const step = k => [SH[0], r4(SH[1] - .14 * k), r4(.34 * (k + 1))];
   return [
     ['balcon1', [-1.35, -1.7, 2.1], 'person', 'adulto', 'adulto', 'don Tito on the balcony (standing or sitting: a sitting person hangs by the lap on the same point; the balcony\'s floor, z 2.1)', 'torre'],
     ['balcon2', [1.3, -1.7, 2.1], 'person', 'coqui', 'coqui', 'the frog on the balcony\'s floor', 'torre'],
     ['escalera', [-1.5, -1.2, 1.05], 'person', 'coqui', 'coqui', 'the frog half way up the ladder', 'torre'],
     ['mano_arriba', [0, -1.98, 4.3], 'person', 'coqui', 'coqui', 'the frog on the long hand, the hand pointing up (the 12): on a sprite, z 4.3', 'mano'],
-    ['mano_abajo', [0, -1.98, 2.78], 'person', 'coqui', 'coqui', 'the frog on the long hand, the hand pointing down (the 6): on a sprite, z 2.78', 'mano'],
-    ['mano_lado', [-.8, -1.98, 3.55], 'person', 'coqui', 'coqui', 'the frog on the long hand, the hand at the 9: on a sprite, z 3.55', 'mano'],
+    ['mano_abajo', [0, -1.98, 3.1], 'person', 'coqui', 'coqui', 'the frog on the long hand, the hand pointing down (the 6): his feet at the hand\'s tip: on a sprite, z 3.1', 'mano'],
+    ['mano_lado', [.75, -1.98, 3.9], 'person', 'coqui', 'coqui', 'the frog on the long hand, the hand resting at the 3: his feet on the hand\'s line: on a sprite, z 3.9', 'mano'],
     ['pie1', [-.7, -.9, 0], 'person', 'nino', 'nino', 'the tower\'s foot, first of the row (Luis)'],
     ['pie2', [.45, -.9, 0], 'person', 'coqui', 'coqui', 'the tower\'s foot, second of the row (the frog)'],
     ['pie3', [1.6, -.9, 0], 'person', 'nino', 'nino', 'the tower\'s foot, third of the row (Carmen)'],
@@ -76,9 +77,9 @@ const spotsOf = E => {
     ['mesa_tito', [r4(T3[0] + .5), r4(T3[1] - .55), .4], 'person', 'adultoS', 'adulto', 'don Tito on his stool at the third table (z .4)', 'mesas'],
     ['jaula', [C[0], C[1], .8], 'thing', null, null, 'the cage of numbered balls on its stand (the stand\'s top, z .8): a 20 x 22 stand-in', 'mesas'],
     ['senora', [C[0], r4(C[1] - .5), 0], 'person', 'adulto', 'adulto', 'the señora who calls the bingo, behind the cage'],
-    ['premio1', step(2), 'thing', null, null, 'the best prize, on the shelf\'s top step (k = 2: z .34 (k + 1) = 1.02, v - .14 k): a 16 x 16 stand-in. "premio1 to premio3, the best at the top": the script says "3, best first", so premio1 is the best (open point: the order of the names)', 'mesas'],
-    ['premio2', step(1), 'thing', null, null, 'the second prize, on the shelf\'s middle step (k = 1): a 16 x 16 stand-in', 'mesas'],
-    ['premio3', step(0), 'thing', null, null, 'the third prize, on the shelf\'s lowest step (k = 0): a 16 x 16 stand-in', 'mesas'],
+    ['premio1', [r4(SH[0] - .62), SH[1], .7], 'thing', null, null, 'the best prize, at the left of the long prize table (SHELF.u - 0.62, SHELF.v, the table\'s top z .7): a 16 x 16 stand-in', 'mesas'],
+    ['premio2', [SH[0], SH[1], .7], 'thing', null, null, 'the second prize, in the middle of the long prize table (SHELF.u, SHELF.v, z .7): a 16 x 16 stand-in', 'mesas'],
+    ['premio3', [r4(SH[0] + .62), SH[1], .7], 'thing', null, null, 'the third prize, at the right of the long prize table (SHELF.u + 0.62, SHELF.v, z .7): a 16 x 16 stand-in', 'mesas'],
   ].map(s => { if (!s[6]) s[6] = null; return s; });
 };
 const THING_BOX = { plato: PLATE_BOX, jaula: CAGE_BOX, premio1: PRIZE_BOX, premio2: PRIZE_BOX, premio3: PRIZE_BOX };
@@ -86,8 +87,8 @@ const PEOPLE = ['tito', 'vendedor', 'luis', 'carmen', 'abuela', 'senor', 'senora
 
 /* the checks (each is a line of the output and of the sheet's checks.results):
    views-x0 (every spot of every moment is inside the window), spots-in-view (every spot inside the picture and the window, its sprite whole), spots-on-surface (whoever sits or stands above the
-   ground is on the top of what the set draws there), things-in-view (the signs and the stand-ins are inside the window), sprites-apart (the people of a moment), frog-seen (the frog whole in every
-   moment: nothing of the set, no grown-up, covers him), frog-on-hand (at mano_arriba, mano_abajo, mano_lado he is whole inside the picture), tito-face (don Tito at balcon1 covers no more than 8%
+   ground is on the top of what the set draws there), things-in-view (the signs and the stand-ins are inside the window), sprites-apart (the people of a moment; the frog on abuela's table is exempt against the two who sit behind it), frog-seen (the frog whole in every
+   moment: nothing of the set, no grown-up, covers him), frog-on-hand (at mano_arriba, mano_abajo, mano_lado he is whole inside the picture), table-heads (the frog on abuela's table covers neither head at it), tito-face (don Tito at balcon1 covers no more than 8%
    of the face), vendedor-head (nothing covers the top 14 px of the vendedor), cards-clear (the two time cards cover neither the frog, the face nor the vendedor), carton-clear (every square of
    abuela's card is in the window and covered by nobody), bingo-clear (nobody covers the cage and the three prizes). A failing line names its numbers and the nearest value that would pass. */
 (async () => {
@@ -189,7 +190,7 @@ async function make(G, proj, SIL) {
     const q = pr[i], o = { world: W4([q[3], q[4], s[1][2]]), uv: W4(s[1]), screen: [Math.round(q[0]), Math.round(q[1])], depth: r4(q[2]), scale: 1, kind: s[2], view: 'wide', what: s[5] };
     if (s[3]) o.sprite = s[3];
     if (s[4]) o.who = s[4];
-    if (s[1][2] > 0) o.on = s[6] || 'torre';                                    // what it stands on above the ground: a part of the set (the balcony, the counter, a stool, the table, the cage's stand, a step) or the hand (a sprite)
+    if (s[1][2] > 0) o.on = s[6] || 'torre';                                    // what it stands on above the ground: a part of the set (the balcony, the counter, a stool, a table, the cage's stand, the prize table) or the hand (a sprite)
     if (THING_BOX[s[0]]) { const b = THING_BOX[s[0]]; o.box = [o.screen[0] - b.w / 2, o.screen[1] - b.h, b.w, b.h]; }
     spots[s[0]] = o;
   });
@@ -204,13 +205,13 @@ async function make(G, proj, SIL) {
   const pivot = [Math.round(cx), Math.round(cy)];
   const tip = (len, deg) => [r2(pivot[0] + Math.sin(deg * Math.PI / 180) * len), r2(pivot[1] - Math.cos(deg * Math.PI / 180) * len)];
   const dseg = (p, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], t = Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / (dx * dx + dy * dy))); const q = [a[0] + t * dx, a[1] + t * dy]; return { dist: r2(Math.hypot(p[0] - q[0], p[1] - q[1])), along: r2(t * Math.hypot(dx, dy)), at: q.map(r2) }; };
-  const FROG_HAND = { mano_arriba: ['up', 0], mano_abajo: ['down', 180], mano_lado: ['the 9', 270] };
+  const FROG_HAND = { mano_arriba: ['up', 0], mano_abajo: ['down', 180], mano_lado: ['the 3', 90] };
   const hands = {
     pivot: { world: W4([fq[3], fq[4], F.z]), uv: W4([F.u, T.v, F.z]), screen: pivot, exact: [r2(cx), r2(cy)], depth: r4(fq[2]) },
     long: HANDS.long, short: HANDS.short, width: HANDS.width,
     what: 'the two hands are sprites that turn about the face\'s middle (the pivot, on the tower\'s front: the plane v ' + T.v + '): the long one ' + HANDS.long + ' px, the short one ' + HANDS.short + ' px (stand-ins: dark lines ' + HANDS.width + ' px wide), drawn with the depth of the pivot (the tower\'s front) so that the frog, who stands .02 in front of it, is drawn over them',
     turn: 'an angle is degrees clockwise from the 12 (straight up): a hand of length len at angle a ends at (pivot x + len sin a, pivot y - len cos a). The short hand at hour h and m minutes is at 30 (h mod 12) + m / 2 degrees',
-    long_at: { up: { deg: 0, tip: tip(HANDS.long, 0) }, down: { deg: 180, tip: tip(HANDS.long, 180) }, nine: { deg: 270, tip: tip(HANDS.long, 270) } },
+    long_at: { up: { deg: 0, tip: tip(HANDS.long, 0) }, down: { deg: 180, tip: tip(HANDS.long, 180) }, three: { deg: 90, tip: tip(HANDS.long, 90) } },
     frog_on: Object.fromEntries(Object.entries(FROG_HAND).map(([k, [name, deg]]) => [k, Object.assign({ hand: name, deg, tip: tip(HANDS.long, deg) }, dseg(spots[k].screen, pivot, tip(HANDS.long, deg)))])),
     note: 'frog_on: for each of the frog\'s three places on the long hand, the distance (px) from his feet\'s spot to the hand\'s line (the segment from the pivot to the tip) and where along it (px from the pivot, the hand being ' + HANDS.long + '): the spec\'s z values put his feet on the hand at mano_arriba and beyond or beside its end at the other two',
   };
@@ -259,7 +260,7 @@ async function make(G, proj, SIL) {
   things.tapa = await setThing(P.u0, P.u1, T.v, T.v, P.z0, P.z1, 'the iron flap of the works, in the tower\'s front, left of the face (FLAP); a poke');
   things.balcon = await setThing(B.u0, B.u1, T.v, r4(T.v + B.out), r4(B.z - .46), r4(B.z + B.rail), 'the balcony: its floor, brackets and rail (u ' + B.u0 + ' to ' + B.u1 + ', out to v ' + r4(T.v + B.out) + ', z ' + r4(B.z - .46) + ' to ' + r4(B.z + B.rail) + ')');
   things.escalera = await setThing(r4(L.u - .26), r4(L.u + .26), r4(T.v + B.out), L.v0, 0, r4(B.z + .02), 'the ladder, leaning from its foot (v ' + L.v0 + ') to the balcony\'s front edge (v ' + r4(T.v + B.out) + '): the box of its two rails');
-  things.quiosco = await setThing(r4(K.u - K.hw - .12), r4(K.u + K.hw + .12), r4(K.v - K.hd - .1), r4(K.v + K.hd + .14), 0, 3.26, 'the quiosco: the counter, the fryer and the awning on its four posts (KIOSK: the counter\'s top z 1.0, the awning to z 3.26)');
+  things.quiosco = await setThing(r4(K.u - K.hw - .12), r4(K.u + K.hw + .12), r4(K.v - K.hd - .1), r4(K.v + K.hd + .14), 0, AWNING.far, 'the quiosco: the counter, the fryer and the awning on its four posts (KIOSK: the counter\'s top z 1.0, the awning from z ' + AWNING.near + ' at its front edge to z ' + AWNING.far + ' at its back: the set\'s own numbers, not in E)');
   things.pastelillos = 'sprite';
   things.carta_a = { set: false, at: 'carta_a', box: cardA, what: 'the first time card (a sign over the frog; here for the frog at pie2): a poke' };
   things.carta_b = { set: false, at: 'carta_b', box: cardB, what: 'the second time card: a poke' };
@@ -282,7 +283,7 @@ async function make(G, proj, SIL) {
       carton: 'abuela\'s card: five ' + CARTON.sq + ' px squares ' + CARTON.gap + ' px apart, the first\'s top left at screen (' + CARTON.x + ', ' + CARTON.y + '): square i (0 to 4) at x ' + CARTON.x + ' + ' + (CARTON.sq + CARTON.gap) + ' i, y ' + CARTON.y,
     },
     setKey: {
-      params: { hora: { values: ['mediodia', 'tarde', 'ocaso'], note: 'the light: 63 mediodia, 64 and 65 tarde (the spec\'s moments); ocaso is in the set and in no moment of the spec' }, mesas: { values: [0, 1], note: 'the bingo: three round tables with their stools, the cage\'s stand and the prize shelf (story 65)' } },
+      params: { hora: { values: ['mediodia', 'tarde', 'ocaso'], note: 'the light: 63 mediodia, 64 and 65 tarde (the spec\'s moments); ocaso is in the set and in no moment of the spec' }, mesas: { values: [0, 1], note: 'the bingo: three round tables with their stools, the cage\'s stand and the long prize table (story 65)' } },
       key: 'hora + mesas, e.g. "tarde-1"',
       baked: ['mediodia', 'tarde', 'ocaso'].flatMap(h => [0, 1].map(c => '?hora=' + h + '&mesas=' + c)),
     },
@@ -293,7 +294,9 @@ async function make(G, proj, SIL) {
     notes: [
       'every number of a spot is the orchestrator\'s (p6-spec, section reloj), given in (u, v, z); where the spec writes E.KIOSK, E.TABLES, E.CAGE, E.SHELF the make reads them from the set (window.RELOJ.E)',
       'the spec\'s six moments are 1 (63 opening), 2 (63 game), 3 to 5 (64), 6 (65); the preview also draws two dev aids that are not among them: 7 (the frog at balcon2), 8 (the frog at escalera)',
-      'the shelf\'s steps: step k (0 to 2) is at v - .14 k with its top at z .34 (k + 1); premio1 (the best) is on the top step (k = 2), premio3 on the lowest (k = 0): "the best at the top" and the script\'s "3, best first" (an open point)',
+      'the prize table is a long low table (SHELF: hw .95, hd .2, top z .7) with three places side by side, the best at the left: premio1 at SHELF.u - 0.62, premio2 at SHELF.u, premio3 at SHELF.u + 0.62 (the coordinator\'s decision)',
+      'the long hand rests at the 3 (the script says so): mano_lado is (0.75, -1.98, 3.9), his feet on the hand\'s line; mano_abajo is (0, -1.98, 3.1), his feet at the hand\'s tip',
+      'the frog on abuela\'s table stands in front of the two who sit behind it: he is exempt from sprites-apart against mesa_abuela.abuela and mesa_abuela.luis; the check table-heads is that he covers neither one\'s head (the top 14 rows of each sprite)',
       'carta_a, carta_b and the card of numerals are signs: they are placed on the screen, not in the world, and drawn over everything',
     ],
     views,
@@ -309,7 +312,7 @@ async function make(G, proj, SIL) {
       byCharacter: { coqui: .45, tito: .35, vendedor: .35, abuela: .35, senor: .35, senora: .35, luis: .28, carmen: .28 },
       at: 'castShadow(x, y, 0, radius) at the world x, y of the spot, for a character standing on the ground (z 0). The spec gives no radius: these are El mostrador\'s (frog .45, grown-ups .35, children .28) (open point)',
       none: all.filter(([, s]) => s.uv && s.uv[2] > 0).map(([k]) => k),
-      onSeat: 'whoever stands or sits above the ground (the balcony, the ladder, a stool, the table, the hand, the counter, the cage\'s stand, a step) casts none: it is not ground (a shadow cast at the pavement under it would show in front of it)',
+      onSeat: 'whoever stands or sits above the ground (the balcony, the ladder, a stool, the table, the hand, the counter, the cage\'s stand, the prize table) casts none: it is not ground (a shadow cast at the pavement under it would show in front of it)',
     },
   };
 }
@@ -394,7 +397,7 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
   }
 
   // 3. the spots above the ground are on a surface the set draws: the pixels round the spot's feet include one drawn by the part it stands on (the balcony and the ladder: torre; the counter: quiosco;
-  //    a stool, the table, the cage's stand, a step: mesas) whose depth is within .1 of the spot's; the three places on the long hand stand on a sprite
+  //    a stool, a table, the cage's stand, the prize table: mesas) whose depth is within .1 of the spot's; the three places on the long hand stand on a sprite
   {
     const bad = [], lines = [], on = Object.entries(S).filter(([, s]) => s.on && s.on !== 'mano'), behind = [];
     for (const [k, s] of on) {
@@ -408,7 +411,7 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
       const feet = (probes.spotsPx[k] || []).find(r => r.dx === 0 && r.dy === -1);
       if (feet && feet.z > s.depth + .08) behind.push(k + ' ' + s.screen + ' (' + (feet.tag || 'ground') + ' ' + r2(feet.z - s.depth) + ' nearer)');
     }
-    const o = add('spots-on-surface', bad, on.length + ' spots above the ground (' + on.map(([k]) => k).join(', ') + ') are on the top of what the set draws there (its depth within .1 of the spot\'s: the balcony\'s floor z 2.1, the ladder, the counter\'s top z 1.0, a stool\'s top z .4, the table\'s cloth z .72, the cage\'s stand z .8, the shelf\'s steps z .34 (k + 1)); mano_arriba, mano_abajo and mano_lado are on a sprite (the hand)', ['spots off their surface:'].concat(bad).map((l, i) => i ? '  ' + l : l));
+    const o = add('spots-on-surface', bad, on.length + ' spots above the ground (' + on.map(([k]) => k).join(', ') + ') are on the top of what the set draws there (its depth within .1 of the spot\'s: the balcony\'s floor z 2.1, the ladder, the counter\'s top z 1.0, a stool\'s top z .4, the table\'s cloth z .72, the cage\'s stand z .8, the prize table z .7); mano_arriba, mano_abajo and mano_lado are on a sprite (the hand)', ['spots off their surface:'].concat(bad).map((l, i) => i ? '  ' + l : l));
     for (const l of lines) o.lines.push('       ' + l);
     o.lines.push('       info, not a check: ground spots whose feet pixel the set draws nearer than the feet (the person stands behind it: the depth rule hides what it covers): ' + (behind.join(', ') || 'none'));
   }
@@ -429,13 +432,16 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
 
   // 5. sprites-apart: the people who stand together in a moment: the sprite boxes (the frog 32, a grown-up 24, a child 24; the feet's spot in the middle) do not overlap sideways unless their feet are 12 px or more apart up-down
   {
-    const bad = [], per = [], all = [], hints = [];
+    const bad = [], per = [], all = [], hints = [], info = [];
+    // the frog on abuela's table stands in front of the two who sit behind it (the coordinator's decision): exempt against them; table-heads checks that he covers neither one's head
+    const exempt = (a, b) => ((a.at === 'mesa_abuela.coqui' && ['mesa_abuela.abuela', 'mesa_abuela.luis'].includes(b.at)) || (b.at === 'mesa_abuela.coqui' && ['mesa_abuela.abuela', 'mesa_abuela.luis'].includes(a.at))) ? 'the frog on the table, in front of the two who sit behind it (see table-heads)' : null;
     for (const m of MOMENTS) {
       const L = layersOf(m).filter(person);
       for (let i = 0; i < L.length; i++) for (let j = i + 1; j < L.length; j++) {
-        const a = L[i], b = L[j], half = (WIDTH[a.who] + WIDTH[b.who]) / 2, dx = Math.abs(a.sx - b.sx), dy = Math.abs(a.sy - b.sy), over = dx < half, ok = !over || dy >= UPDOWN;
-        all.push({ m, a: a.at, b: b.at, dx, dy, half, over, ok });
-        if (!ok) { hints.push({ m, a, b, half }); bad.push('moment ' + m + ': ' + a.at + ' [' + a.sx + ',' + a.sy + '] (' + WIDTH[a.who] + ' wide) ~ ' + b.at + ' [' + b.sx + ',' + b.sy + '] (' + WIDTH[b.who] + ' wide): ' + dx + ' px sideways (the boxes need ' + half + '), ' + dy + ' px up-down (needs ' + UPDOWN + '): short by ' + r2(half - dx) + ' px sideways or ' + (UPDOWN - dy) + ' px up-down'); }
+        const a = L[i], b = L[j], half = (WIDTH[a.who] + WIDTH[b.who]) / 2, dx = Math.abs(a.sx - b.sx), dy = Math.abs(a.sy - b.sy), over = dx < half, ok = !over || dy >= UPDOWN, ex = exempt(a, b);
+        all.push({ m, a: a.at, b: b.at, dx, dy, half, over, ok, ex });
+        if (!ok && ex) info.push('moment ' + m + ': ' + a.at + ' [' + a.sx + ',' + a.sy + '] ~ ' + b.at + ' [' + b.sx + ',' + b.sy + ']: ' + dx + ' px sideways (the boxes need ' + half + '), ' + dy + ' px up-down (' + ex + ')');
+        else if (!ok) { hints.push({ m, a, b, half }); bad.push('moment ' + m + ': ' + a.at + ' [' + a.sx + ',' + a.sy + '] (' + WIDTH[a.who] + ' wide) ~ ' + b.at + ' [' + b.sx + ',' + b.sy + '] (' + WIDTH[b.who] + ' wide): ' + dx + ' px sideways (the boxes need ' + half + '), ' + dy + ' px up-down (needs ' + UPDOWN + '): short by ' + r2(half - dx) + ' px sideways or ' + (UPDOWN - dy) + ' px up-down'); }
       }
       per.push('m' + m + ' (' + L.map(l => l.at).join(', ') + ')');
     }
@@ -445,11 +451,27 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
       for (const [ax, lab] of [[0, 'u'], [1, 'v'], [2, 'z']]) for (let n = 1; n <= 400; n++) { let f = null; for (const sg of [-1, 1]) { const q = s.uv.slice(); q[ax] = r4(q[ax] + sg * n * .01); if (q[2] < 0) continue; const [sx, sy] = scrUV(G, q[0], q[1], q[2]); if (ok(sx, sy)) { f = lab + ' ' + s.uv[ax] + ' -> ' + q[ax] + ' (' + sgn(sg * n * .01) + ')'; break; } } if (f) { res.push(f); break; } }
       return res.length ? res.join(' or ') : 'none within 4';
     };
-    const o = add('sprites-apart', bad, all.length + ' pairs in the 6 moments of the preview (' + per.join('; ') + '): no two sprite boxes overlap sideways unless their feet are ' + UPDOWN + ' px or more apart up-down; the pairs that do overlap sideways: ' + (all.filter(q => q.over).map(q => 'm' + q.m + ' ' + q.a + ' ~ ' + q.b + ' (' + q.dx + ' across, ' + q.dy + ' down)').join(', ') || 'none'),
-      [bad.length + ' pair(s) with overlapping boxes and feet closer than ' + UPDOWN + ' px up-down (of ' + all.length + ' pairs in 6 moments):'].concat(bad.map(b => '  ' + b)));
+    const counted = all.filter(q => !q.ex);
+    const o = add('sprites-apart', bad, counted.length + ' pairs counted (' + (all.length - counted.length) + ' more not counted) in the 6 moments of the preview (' + per.join('; ') + '): no two sprite boxes overlap sideways unless their feet are ' + UPDOWN + ' px or more apart up-down; the counted pairs that do overlap sideways: ' + (counted.filter(q => q.over).map(q => 'm' + q.m + ' ' + q.a + ' ~ ' + q.b + ' (' + q.dx + ' across, ' + q.dy + ' down)').join(', ') || 'none'),
+      [bad.length + ' pair(s) with overlapping boxes and feet closer than ' + UPDOWN + ' px up-down (of ' + counted.length + ' counted pairs in 6 moments):'].concat(bad.map(b => '  ' + b)));
     for (const h of hints) o.lines.push('       nearest passing, moment ' + h.m + ' ' + h.a.at + ' ~ ' + h.b.at + ': ' + h.a.at + ' ' + S[h.a.at].uv + ': ' + nearestOf(h.a.at, pass(h.b, h.half)) + '; or ' + h.b.at + ' ' + S[h.b.at].uv + ': ' + nearestOf(h.b.at, pass(h.a, h.half)));
-    o.lines.push('       closest pair in each moment (px across / px down): ' + MOMENTS.map(m => 'm' + m + ' ' + (() => { const q = all.filter(x => x.m === m).sort((x, y) => (x.dx - x.half) - (y.dx - y.half))[0]; return q ? q.a + ' ~ ' + q.b + ' ' + q.dx + '/' + q.dy + ' (needs ' + q.half + ' across or ' + UPDOWN + ' down)' : 'none'; })()).join('; '));
-    o.pairs = all.map(q => ({ moment: q.m, a: q.a, b: q.b, across: q.dx, down: q.dy, needAcross: q.half, ok: q.ok }));
+    o.lines.push('       closest pair in each moment (px across / px down): ' + MOMENTS.map(m => 'm' + m + ' ' + (() => { const q = counted.filter(x => x.m === m).sort((x, y) => (x.dx - x.half) - (y.dx - y.half))[0]; return q ? q.a + ' ~ ' + q.b + ' ' + q.dx + '/' + q.dy + ' (needs ' + q.half + ' across or ' + UPDOWN + ' down)' : 'none'; })()).join('; '));
+    for (const t of info) o.lines.push('       info, not counted: ' + t);
+    o.pairs = all.map(q => ({ moment: q.m, a: q.a, b: q.b, across: q.dx, down: q.dy, needAcross: q.half, ok: q.ok, notCounted: q.ex }));
+  }
+
+  // 5b. table-heads: the frog on abuela's table (moment 6) covers neither abuela's head nor Luis's (the top 14 rows of each sprite): none of those pixels lies under him
+  {
+    const bad = [], lines = [], L = layersOf(6), fi = L.findIndex(l => l.at === 'mesa_abuela.coqui'), fails = [];
+    for (const k of ['mesa_abuela.abuela', 'mesa_abuela.luis']) {
+      const i = L.findIndex(l => l.at === k), a = L[i], top = Math.min(...a.px.map(p => p[1])), c = coverage(L, i, p => p[1] < top + HEAD_ROWS), byFrog = c.by['mesa_abuela.coqui'] || 0;
+      lines.push(k + ' ' + [a.sx, a.sy] + ': head rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ': ' + byFrog + ' of ' + c.total + ' px under the frog' + (c.cov - byFrog ? ' (and ' + (c.cov - byFrog) + ' under ' + byTxt(Object.fromEntries(Object.entries(c.by).filter(([n]) => n !== 'mesa_abuela.coqui'))) + ')' : '') + (c.hid ? ', ' + c.hid + ' hidden by the set' : ''));
+      if (byFrog) { bad.push(k + ': the frog covers ' + byFrog + ' of the ' + c.total + ' px of its head (rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ')'); fails.push([i, k]); }
+    }
+    const o = add('table-heads', bad, 'in moment 6 the frog on abuela\'s table covers neither abuela\'s head nor Luis\'s (the top ' + HEAD_ROWS + ' rows of each sprite): ' + lines.join('; '), ['the frog covers a head at the table:'].concat(bad.map(b => '  ' + b)));
+    if (fails.length > 1) { const rj = await PV.nearestCover(6, fi, fails.map(f => f[0])); o.lines.push('       nearest passing, move the frog mesa_abuela.coqui ' + S['mesa_abuela.coqui'].uv + ' so that he covers neither head: ' + nearestTxt(rj, S['mesa_abuela.coqui'].uv) + ' (the cloth\'s radius is .5 about (-2.75, 1.7))'); }
+    for (const [i, k] of fails) { const rc = await PV.nearestCover(6, fi, i); o.lines.push('       nearest passing, move the frog mesa_abuela.coqui ' + S['mesa_abuela.coqui'].uv + ' so that he does not cover ' + k + ' at all: ' + nearestTxt(rc, S['mesa_abuela.coqui'].uv)); }
+    if (bad.length) for (const l of lines) o.lines.push('       ' + l);
   }
 
   // 6. frog-seen: the frog is never behind a grown-up or a thing of the set: in every moment his whole drawing is seen (no pixel hidden by the set, outside the picture, or under a nearer person, thing or sign);
@@ -512,7 +534,7 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
       lines.push('m' + m + ' vendedor at quiosco ' + [v.sx, v.sy] + ': head rows ' + top + ' to ' + (top + HEAD_ROWS - 1) + ': ' + (c.total - c.hid - c.cov) + ' of ' + c.total + ' px show (' + c.hid + ' hidden by the set' + (c.hid ? ': ' + byTxt(parts) + ', rows ' + Math.min(...hrows) + ' to ' + Math.max(...hrows) : '') + ', ' + c.cov + ' covered' + (c.cov ? ' by ' + byTxt(c.by) : '') + ')');
       if (c.hid || c.cov) { bad.push('moment ' + m + ': the vendedor\'s head is covered on ' + (c.hid + c.cov) + ' of ' + c.total + ' px (' + c.hid + ' hidden by the set' + (c.hid ? ' (' + byTxt(parts) + ', rows ' + Math.min(...hrows) + ' to ' + Math.max(...hrows) + ')' : '') + ', ' + c.cov + ' by ' + (Object.keys(c.by).join(', ') || 'sprites') + ')'); fails.push([m, vi]); }
     }
-    const o = add('vendedor-head', bad, 'nothing covers the top ' + HEAD_ROWS + ' rows of the vendedor\'s sprite in moments 1, 2 and 6 (the awning and its edge included): ' + lines.join('; '), [bad.length + ' moment(s) where the vendedor\'s head is covered:'].concat(bad.map(b => '  ' + b)));
+    const o = add('vendedor-head', bad, 'nothing covers the top ' + HEAD_ROWS + ' rows of the vendedor\'s sprite (his paper hat, ' + PAPER_HAT + ' rows, and 10 rows of head) in moments 1, 2 and 6 (the awning and its edge included): ' + lines.join('; '), [bad.length + ' moment(s) where the vendedor\'s head is covered:'].concat(bad.map(b => '  ' + b)));
     const done = new Set();
     for (const [m, vi] of fails) { if (done.has(layersOf(m)[vi].sx + ',' + layersOf(m)[vi].sy)) continue; done.add(layersOf(m)[vi].sx + ',' + layersOf(m)[vi].sy); const r = await PV.nearest(m, vi, 0, HEAD_ROWS); o.lines.push('       nearest passing, quiosco ' + S.quiosco.uv + ' (the counter itself stands at v ' + r4(G.E.KIOSK.v - G.E.KIOSK.hd) + ' to ' + r4(G.E.KIOSK.v + G.E.KIOSK.hd) + '): ' + nearestTxt(r, S.quiosco.uv)); }
     if (bad.length) for (const l of lines) o.lines.push('       ' + l);
@@ -561,25 +583,19 @@ async function checksAsync(sheet, G, SIL, probes, PV) {
     }
   }
 
-  // 12. bingo-clear: in moment 6 the cage and the three prizes are covered by nobody: no person (and no sign) nearer than they are, and nothing of the set, on their pixels. The prizes covering one another are reported (information)
+  // 12. bingo-clear: in moment 6 the cage and the three prizes are covered by nobody: no person, no sign and no other prize or thing nearer than they are, and nothing of the set, on their pixels
   {
-    const L = layersOf(6), bad = [], lines = [], info = [];
+    const L = layersOf(6), bad = [], lines = [];
     for (const k of ['jaula', 'premio1', 'premio2', 'premio3']) {
-      const i = L.findIndex(l => l.at === k), f = L[i], c = coverage(L, i);
-      const people = {}, things = {};
-      for (const [nm, n] of Object.entries(c.by)) { const l = L.find(x => lbl(x) === nm); if (l && l.who) people[nm] = n; else things[nm] = n; }
-      const np = Object.values(people).reduce((a, b) => a + b, 0), nt = Object.values(things).reduce((a, b) => a + b, 0);
-      lines.push(k + ' ' + [f.sx, f.sy] + ' (' + f.px.length + ' px): ' + c.hid + ' hidden by the set, ' + np + ' under people' + (np ? ' (' + byTxt(people) + ')' : '') + ', ' + nt + ' under other things' + (nt ? ' (' + byTxt(things) + ')' : ''));
-      if (c.hid || np) bad.push(k + ' ' + [f.sx, f.sy] + ': ' + c.hid + ' px hidden by the set, ' + np + ' under ' + (Object.keys(people).join(', ') || 'people'));
-      if (nt) info.push(k + ' loses ' + nt + ' of its ' + f.px.length + ' px to ' + byTxt(things));
+      const i = L.findIndex(l => l.at === k), f = L[i], c = coverage(L, i), n = Object.values(c.by).reduce((a, b) => a + b, 0);
+      lines.push(k + ' ' + [f.sx, f.sy] + ' (' + f.px.length + ' px): ' + c.hid + ' hidden by the set, ' + n + ' under others' + (n ? ' (' + byTxt(c.by) + ')' : ''));
+      if (c.hid || n) bad.push(k + ' ' + [f.sx, f.sy] + ': ' + c.hid + ' px hidden by the set, ' + n + ' under ' + (Object.keys(c.by).join(', ') || 'others'));
     }
-    const o = add('bingo-clear', bad, 'in moment 6 the cage and the three prizes are covered by nobody (no person nearer, nothing of the set): ' + lines.join('; '), ['the cage or a prize is covered:'].concat(bad.map(b => '  ' + b)));
-    o.lines.push('       info, not counted: the prizes against one another: ' + (info.join('; ') || 'none') + ' ("nobody" read as a person; the steps are ' + r2(Math.abs(S.premio1.screen[1] - S.premio2.screen[1])) + ' and ' + r2(Math.abs(S.premio2.screen[1] - S.premio3.screen[1])) + ' px apart on the screen, the stand-ins ' + PRIZE_BOX.h + ' px high: the nearer prize hides the foot of the one behind it)');
+    const o = add('bingo-clear', bad, 'in moment 6 the cage and the three prizes are covered by nobody (no person, sign or other prize nearer, nothing of the set; the prizes stand side by side on the long table: boxes ' + ['premio1', 'premio2', 'premio3'].map(k => JSON.stringify(S[k].box)).join(', ') + '): ' + lines.join('; '), ['the cage or a prize is covered:'].concat(bad.map(b => '  ' + b)));
     if (bad.length) for (const l of lines) o.lines.push('       ' + l);
-    else o.lines.push('       ' + lines.join('; '));
   }
 
-  OUTS.push({ name: 'info-stand-ins', ok: true, lines: ['info-stand-ins: not a check. Stand-ins used for size: don Tito, the señor and the vendedor are grown-up men (mkPersona), the señora who calls the bingo is a grown-up woman (mkPersona, skirt), abuela sits (mkAbuelaS), Luis and Carmen are the family\'s children, the frog is mkCoqui(1). The hands, the two time cards, the plate, the cage, the prizes, the card of numerals and its beans are drawn in the preview as plain stand-ins.'] });
+  OUTS.push({ name: 'info-stand-ins', ok: true, lines: ['info-stand-ins: not a check. Stand-ins used for size: don Tito, the señor and the vendedor are grown-up men (mkPersona; the vendedor with a paper hat, 4 rows taller than the stand-in\'s head: his head\'s top 14 rows are the hat and 10 rows of head), the señora who calls the bingo is a grown-up woman (mkPersona, skirt), abuela sits (mkAbuelaS), Luis and Carmen are the family\'s children, the frog is mkCoqui(1). The hands, the two time cards, the plate, the cage, the prizes, the card of numerals and its beans are drawn in the preview as plain stand-ins.'] });
   return OUTS;
 }
 
