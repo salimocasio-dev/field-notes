@@ -288,7 +288,7 @@ function make(G) {
     arbol1: T('arbol1', 'small tree 1', { hand: [OLD.ARBOL[1][0], OLD.ARBOL[1][1] - 12] }),
     arbol2: T('arbol2', 'small tree 2', { hand: [OLD.ARBOL[2][0], OLD.ARBOL[2][1] - 12] }),
     banco: T('banco', 'the bench: its seat, backrest and legs'),
-    grande: T('grande', 'the big tree: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk (gran 1; gran 0 has no big tree, as the old: sinGran hides the box too? no: the old box stays; see the note)'),
+    grande: T('grande', 'the big tree: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk (gran 1). As the old, its box has no si: it stays when sinGran hides the tree (story 13 never names it)'),
     porton: T('porton', 'the arch: its two posts and the iron arch over them'),
     camino: { set: true, ground: true, what: 'the path (the ground: trodden earth, the stones): the box round it on the picture, as the old one held its path' },
     parque: { set: true, ground: true, what: 'the park: the lawn from the horizon (row ' + lawnTop + ') to the bottom, the whole width: last in the hit order', old: { box: OLDBOX.parque } },
@@ -296,7 +296,8 @@ function make(G) {
   // the hand of the big tree: its trunk, 30 rows over its foot (the old had none: the box's middle, on the crown's lower edge)
   things.grande.hand = [F.GRAN[0] + 4, F.GRAN[1] - 40]; things.grande.handWhy = 'the hint hand\'s point (new: the old had none, so its box\'s middle): the trunk\'s right side, 40 rows over its foot, under the crown (the hand hangs from it to the right of Luis, who waits by the big tree at 174, 138: at the box\'s middle it was on his face)';
   { const roads = []; for (let i = 0; i < 240 * 216; i++) if (G.kinds['1'][i] === G.K.road) roads.push(i); const s = pxBox(roads.concat(tagsOf('1').camino || []));
-    things.camino.screen = s; things.camino.world = W4(boxAround(s[0], s[1], s[2], s[3])); things.camino.box = box(things.camino.world); things.camino.old = { box: OLDBOX.camino }; }
+    things.camino.screen = s; things.camino.world = W4(boxAround(s[0], s[1], s[2], s[3])); things.camino.box = [s[0], s[1], s[2] - s[0], s[3] - s[1]]; things.camino.old = { box: OLDBOX.camino }; }
+  // (the path is flat on the ground: its box is its own screen rectangle, as El patio's lawn; a square world box can only reach it so)
   things.parque.box = [0, lawnTop, 240, 216 - lawnTop]; things.parque.world = W4(boxAround(0, lawnTop, 240, 216));
 
   /* ---- views: one, zoom 1, the old wide window ---- */

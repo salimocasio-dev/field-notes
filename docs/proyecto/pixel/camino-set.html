@@ -47,7 +47,7 @@ const ARBOL_OLD = [[70, 120], [112, 116], [154, 112]];
 const ARBOL = SET.trees === 'row' ? [[70, 137], [112, 116], [154, 95]] : ARBOL_OLD;
 const GRAN = [192, 118];
 const HZ = 100;                                                       // the horizon (screen row): the old picture's
-const WOOD = [150, 98, 56], TRUNK = [118, 82, 50], IRON = [58, 58, 70], STONEP = [190, 178, 156];
+const WOOD = [150, 98, 56], TRUNK = [118, 82, 50], IRON = [64, 66, 82], STONEP = [190, 178, 156];
 
 /* ---------- the path ---------- */
 // the arch over the path's first leg: its middle on the ground at screen (48, 173) (the cat sits there, d-corre: in the old picture between
@@ -125,17 +125,23 @@ function arch() {
       const py = ay + s * AH;
       block(ax - APW, py - APW, 0, ax + APW, py + APW, APH, STONEP, STONEP.map(v => v * 1.08));
       block(ax - APW - .02, py - APW - .02, APH, ax + APW + .02, py + APW + .02, APH + .1, STONEP.map(v => v * .96), STONEP.map(v => Math.min(255, v * 1.12)));
-      sphere(ax, py, APH + .17, .07, IRON, 'solid');
+      sphere(ax, py, APH + .19, .085, STONEP, 'solid');                       // a stone ball on each cap
+      block(ax - APW - .01, py - APW - .01, 0, ax + APW + .01, py + APW + .01, .22, STONEP.map(v => v * .8));   // a darker plinth at the foot
     }
     // the iron arch: a band .07 thick rising ARISE over the posts' tops, from one cap to the other, a second, thinner one under it, and a
     // straight bar across from cap to cap: an archway (round 1's single band read as a lamp's hook)
     const band = (rise, z0, th, lit) => { for (let t = 0; t <= 1; t += .0015) { const a = Math.PI * t, yy = ay + AH * Math.cos(a), zz = z0 + rise * Math.sin(a);
       for (let w = -.035; w <= .035; w += .012) for (let h = 0; h <= th; h += .012) plot(ax + w, yy, zz + h, Ir[h > th - .02 ? lit : w > 0 ? 1 : 2]); } };
-    band(ARISE, APH + .1, .08, 3); band(ARISE * .55, APH + .1, .05, 2);
+    band(ARISE, APH + .1, .08, 4); band(ARISE * .55, APH + .1, .05, 3);
     for (let yy = ay - AH; yy <= ay + AH; yy += .01) for (let w = -.03; w <= .03; w += .012) for (let h = 0; h <= .06; h += .012) plot(ax + w, yy, APH + .04 + h, Ir[h > .04 ? 3 : 1]);
     // short iron bars between the two arcs
     for (const t of [.2, .35, .5, .65, .8]) { const a = Math.PI * t, yy = ay + AH * Math.cos(a), z0 = APH + .1 + ARISE * .55 * Math.sin(a), z1 = APH + .1 + ARISE * Math.sin(a);
       for (let z = z0; z <= z1; z += .01) for (let w = -.02; w <= .02; w += .012) plot(ax + w, yy, z, Ir[1]); }
+    // round 2: a small green board hangs under the arch's top, in its plane (the park's sign, no words: round 1's bare iron read as a hook)
+    { const bw = .26, bz0 = APH + .1 + ARISE * .55 - .26, bz1 = bz0 + .2, G = rampOf([70, 140, 80]);
+      for (let yy = ay - bw; yy <= ay + bw; yy += .01) for (let zz = bz0; zz <= bz1; zz += .01) { const edge = Math.abs(yy - ay) > bw - .035 || zz < bz0 + .03 || zz > bz1 - .03;
+        plot(ax + .04, yy, zz, edge ? rampOf([236, 226, 190])[3] : G[(Math.floor((yy + zz * 3) * 40) % 7 === 0) ? 3 : 2]); }
+      for (const yy of [ay - bw + .06, ay + bw - .06]) for (let zz = bz1; zz <= APH + .1 + ARISE * .55; zz += .01) plot(ax + .04, yy, zz, Ir[1]); }
     // the posts' shadows on the lawn
     for (const s of [1, -1]) for (let z = .2; z <= APH; z += .25) castShadow(ax, ay + s * AH, z, .13);
   });

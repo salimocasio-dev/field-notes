@@ -171,7 +171,7 @@
    "world": [0.6799, -2.5293, 0, 2.1485, -1.0607, 3.6417],
    "box": [152, 13, 54, 109],
    "screen": [152, 13, 206, 122],
-   "what": "the big tree: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk (gran 1; gran 0 has no big tree, as the old: sinGran hides the box too? no: the old box stays; see the note)",
+   "what": "the big tree: its crown (every pixel its leaves take at any wind step) down to the foot of its trunk (gran 1). As the old, its box has no si: it stays when sinGran hides the tree (story 13 never names it)",
    "old": {
     "box": [160, 16, 58, 116]
    },
@@ -194,7 +194,7 @@
    "what": "the path (the ground: trodden earth, the stones): the box round it on the picture, as the old one held its path",
    "screen": [0, 114, 240, 190],
    "world": [-2.2845, -2.2845, 0, 4.2426, 4.2426, -1.9541],
-   "box": [0, 69, 240, 165],
+   "box": [0, 114, 240, 76],
    "old": {
     "box": [30, 128, 170, 76]
    }
@@ -2087,7 +2087,7 @@
    "old": "box camino [30,128,170,76]",
    "to": {
     "thing": "camino",
-    "box": [0, 69, 240, 165]
+    "box": [0, 114, 240, 76]
    }
   },
   {
@@ -2470,11 +2470,11 @@
   "notes": [
    "inventory: 22 things (old 22), 7 frog places (old 7), 1 view (old 1), 35 positions (old 35), 13 review pairs of cual-camino (25 pictures here; parque.no is El patio's), 16 level pictures (old 16), 127 places of camino.js named in code, 2 baked states (the old 9)",
    "hops: all 21 pairs of LUGAR places (round(d / 30), 1 to 4, kit.js acts.ir) keep the old count (arbol0 moved -5 px left: its distances inicio-arbol0 26 -> 27.46, centro-arbol0 77.79 -> 75.01, banco-arbol0 30.59 -> 25.96, arbol0-arbol1 82 -> 77.01, arbol0-arbol2 122.07 -> 117.04, arbol0-gran 122.07 -> 117.11); the frog walks between places in the recorded runs: inicio - centro (3), centro - arbol0 (8), arbol0 - arbol2 (3), centro - arbol2 (3), centro - arbol1 (1), arbol0 - arbol1 (1)",
-   "boxes: every pixel of each set thing (the big tree's leaves at every wind step: 1 px either way) inside its touch box: porton [23,94,28,80], arbol0 [51,74,37,47], arbol1 [95,68,35,49], arbol2 [135,66,38,47], banco [91,117,29,24], grande [152,13,54,109]; every path pixel inside the camino box [0,69,240,165]; every pixel of each set thing answers that thing in the hit order (boxes that overlap: arbol2/grande, each overlap held by the one drawn there); the set's parts are arbol0, arbol1, arbol2, banco, camino, grande, porton (each a touch key's: nothing decorative)",
+   "boxes: every pixel of each set thing (the big tree's leaves at every wind step: 1 px either way) inside its touch box: porton [23,94,28,80], arbol0 [51,74,37,47], arbol1 [95,68,35,49], arbol2 [135,66,38,47], banco [91,117,29,24], grande [152,13,54,109]; every path pixel inside the camino box [0,114,240,76]; every pixel of each set thing answers that thing in the hit order (boxes that overlap: arbol2/grande, each overlap held by the one drawn there); the set's parts are arbol0, arbol1, arbol2, banco, camino, grande, porton (each a touch key's: nothing decorative)",
    "shadows: every castShadow call of the bake has strength 1 and a radius (none lost), each casting part darkens: porton 40 calls, 1064 px set (0 calls wholly over shadow already); arbol0 12 calls, 902 px set (0 calls wholly over shadow already); arbol1 12 calls, 904 px set (0 calls wholly over shadow already); arbol2 12 calls, 902 px set (0 calls wholly over shadow already); banco 12 calls, 442 px set (0 calls wholly over shadow already); grande 11 calls, 777 px set (1 calls wholly over shadow already)",
    "ground: the lawn and the path only (4747 px of path); the set paints nothing else on the ground but the shadows its things cast and the seven stones in the path",
    "preview: at every moment of the 15 runs (5081 places of people, the frog, Canelo and the cat) camino-preview.html puts everyone exactly where the sheet does (0 differ)",
-   "find them: Canelo and the cat have the lawn or the path behind them but gato at 46,172 before porton (53 px), perro at 88,134 before arbol0 (9 px), perro at 88,134 before banco (126 px), perro at 46,177 before porton (24 px), perro at 191,133 before grande (119 px), perro at 178,137 before grande (23 px), perro at 204,130 before grande (93 px) (the snail always the path or the lawn)",
+   "find them: Canelo and the cat have the lawn or the path behind them but gato at 46,172 before porton (60 px), perro at 88,134 before arbol0 (9 px), perro at 88,134 before banco (126 px), perro at 46,177 before porton (28 px), perro at 191,133 before grande (119 px), perro at 178,137 before grande (23 px), perro at 204,130 before grande (93 px) (the snail always the path or the lawn)",
    "ground: 80 distinct stands of people, the frog, Canelo and the cat: nothing of the arch, the trees or the bench nearer than them inside their sprites, but where they are behind the bench or the arch and drawn before its entry (front): perro behind banco (2); at least 5 rows of lawn between anyone's feet and the foot of what stands behind them: the least behind a trunk 10 rows, uno-dos-tres right beats.38.right.0: perro at 204,130; a post 9 rows, d-corre right null: the frog at 44,148; the bench 5 rows, d-corre right beats.49: perro at 88,134",
    "asks: 63 distinct asks (for arbol0, arbol1, arbol2, camina, carmen, con_2, con_3, corre, despacio, di_despacio, di_rapido, espera, gato, grande, luis, perro, rapido): every hint frame (box +- 12) wholly inside the view (0 px from its edge at the least), no frame's rings across a face where the old frame's were not (as the old: donde-esta-el-gato right beats.32 (arbol0) hand on luis's face (as the old); donde-esta-el-gato right beats.39 (arbol0) the frog's face; donde-esta-el-gato right beats.39 (arbol0) hand on luis's face (as the old); donde-esta-el-gato right beats.39 (arbol0) hand on the frog's face (as the old); donde-esta-el-gato right beats.70 (arbol0) hand on luis's face (as the old); donde-esta-el-gato wrong beats.32 (arbol0) hand on luis's face (as the old); donde-esta-el-gato wrong beats.39 (arbol0) the frog's face; donde-esta-el-gato wrong beats.39 (arbol0) hand on luis's face (as the old); donde-esta-el-gato wrong beats.39 (arbol0) hand on the frog's face (as the old); donde-esta-el-gato wrong beats.70 (arbol0) hand on luis's face (as the old); h-camino right beats.8 (perro) carmen's face; h-camino right beats.13 (arbol2) luis's face; h-camino right beats.21 (carmen) the frog's face; rapido-despacio right beats.8 (perro) the frog's face; uno-dos-tres right beats.11 (perro) carmen's face), the hint hand on no face; 103 answer cards inside the view, over no one's body (no opaque pixel of anyone's sprite, in their pose, under a card)",
    "NOT the scene's: the hand juego.js draws at an answer card reaches onto the frog's face, 46 px under it, in every scene (the card's place and the hand are the game's, respBox and hand()): at the asks for di_rapido, despacio",
