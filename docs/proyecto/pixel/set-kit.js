@@ -321,3 +321,51 @@ function planeQuad(P0, e1, e2, fn) {
     zb[i] = dd; pix[i] = col;
   }
 }
+
+/* ---------- the park's water (order 34a, El campo; for El lago too) ---------- */
+// A body of water lying under the ground: its surface `depth` below the land, so the land ends in a bank (a low face of earth) all along
+// its shore. shore(x, y) is a signed distance in world units: > 0 on land, < 0 over the water (any shape: El campo's straight bank along y,
+// a whole lake). waterPixel() is called by a set's ground pass for a screen pixel whose ground point g (at z 0) is over the water: it follows
+// the pixel's sight line down (x and y fall together by t * COS / SIN / R2 as z falls by t) and draws what it meets first, the bank's face or
+// the surface, with the depth of that point (so a reed standing in it, a person on the bank and a ball floating on it sort as they should).
+// The surface is the water's ground: kinds KIND_WATER (mapa.js; no grass blade grows on it), ground 1 (a shadow falls on it).
+// look: { deep, shallow: colours far from and near the shore; bank: the earth of the bank's face; wet: the dark wet line along its foot;
+//         sky: the colour the ripples catch; reflect: the width (world) of the bank's dark reflection on the water; glints: [] to collect glints }
+const WSTEP = COS / SIN / R2;   // as z falls by 1 along a sight line, x and y each fall by this
+function waterPixel(ix, iy, i, g, depth, shore, look) {
+  let wx = g.x - depth * WSTEP, wy = g.y - depth * WSTEP;
+  if (shore(wx, wy) >= 0) {
+    // the sight line meets the bank's face before the surface: find where (bisection along t from 0 to depth)
+    let a = 0, b = depth;
+    for (let k = 0; k < 14; k++) { const m = (a + b) / 2; if (shore(g.x - m * WSTEP, g.y - m * WSTEP) < 0) a = m; else b = m; }
+    const t = (a + b) / 2, x = g.x - t * WSTEP, y = g.y - t * WSTEP, p = project(x, y, -t);
+    const f = t / depth, B = rampOf(look.bank);
+    // the face: lighter earth at the top lip, darker down to the wet line at the water
+    const tone = f > .78 ? 0 : f < .2 ? 3 : 2 - (hash(ix, iy * 3) > .7 ? 1 : 0);
+    pix[i] = f > .78 ? rgb(...look.wet) : B[clamp(tone, 0, 4)];
+    zb[i] = p.d; kinds[i] = KIND_NONE; ground[i] = 1;   // a shadow falls on the bank's face too (a ball's thrown over it)
+    return;
+  }
+  // the surface: shallow near the shore, deep away from it, dithered; the bank's dark reflection along the shore; sparse light ripples
+  const p = project(wx, wy, -depth), d = -shore(wx, wy);
+  const D = look.deep, Sh = look.shallow;
+  let t = clamp(d / look.fade, 0, 1) + (bayerAt(ix, iy) - .5) * .35 + (noise(wx * 1.3, wy * 1.3) - .5) * .25;
+  t = clamp(t, 0, 1);
+  let c = [lerp(Sh[0], D[0], t), lerp(Sh[1], D[1], t), lerp(Sh[2], D[2], t)];
+  if (d < look.reflect && bayerAt(ix, iy) < 1 - d / look.reflect * .6) c = c.map(v => v * .72);          // the bank's reflection
+  // ripples: short dashes along the picture's rows (the light of the sky on the crest of a small wave), sparse, longer far out
+  const rowH = hash(iy * 7, 13), run = Math.floor((ix + rowH * 40) / (5 + (rowH * 4 | 0)));
+  if (d > look.reflect && hash(run, iy) < .16 && hash(run * 3, iy + 1) > .3) c = [lerp(c[0], look.sky[0], .55), lerp(c[1], look.sky[1], .55), lerp(c[2], look.sky[2], .55)];
+  pix[i] = rgb(...c); zb[i] = p.d; kinds[i] = KIND_WATER; ground[i] = 1;
+  if (look.glints && d > look.reflect + .15 && hash(ix * 5 + 1, iy * 3 + 7) < .006) look.glints.push({ i, ix, iy, phase: hash(ix, iy + 9) * 6.283 });
+}
+// the glints on the water, each frame (wind time t, stepped as the grass: 8 a second, still when the OS asks for reduced motion): a glint
+// shows 1 or 3 px of light on the surface for part of its cycle, and only where the surface itself shows (nothing stands over it)
+function drawGlints(glints, t, refZ, color) {
+  for (const gl of glints) {
+    const s = Math.sin(t * 1.7 + gl.phase);
+    if (s < .35) continue;
+    const w = s > .8 ? 1 : 0;
+    for (let dx = -w; dx <= w; dx++) { const j = gl.i + dx; if (gl.ix + dx < 0 || gl.ix + dx >= W || zb[j] !== refZ[j]) continue; pix[j] = color; }
+  }
+}
