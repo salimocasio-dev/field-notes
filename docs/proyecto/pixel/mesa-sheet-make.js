@@ -38,7 +38,7 @@ const queryOf = k => 'mantel=' + k[1] + '&horno=' + k[3];
 // la estufa's; the walls, the door, the window, the counters and the wall cupboard the kitchen's (la cocina: the whole room)
 const THING_OF = p => /^(mesa|sillas)/.test(p) ? 'mesa' : /^(estufa|campana)/.test(p) ? 'estufa' : 'cocina';
 // the parts that stand in the room (someone can be behind them): drawn again over whoever stands behind them (front)
-const FRONT = ['mesa', 'mesa.patas', 'sillas', 'sillas.patas', 'mostrador', 'mostrador2', 'estufa'];
+const FRONT = ['mesa', 'mesa.patas', 'sillas', 'sillas.patas', 'mostrador', 'mostrador2', 'estufa', 'pared', 'puerta', 'puerta.umbral', 'puerta.jamba'];
 const SOLID = ['mesa', 'mesa.patas', 'sillas', 'sillas.patas', 'mostrador', 'mostrador2', 'estufa', 'campana', 'alacena', 'pared', 'puerta', 'ventana'];
 const R = Math.round, r4 = v => Math.round(v * 1e4) / 1e4, r2 = v => Math.round(v * 100) / 100, W4 = p => p.map(r4);
 const deacc = s => s.replace(/[áéíóúñ]/g, c => 'aeioun'['áéíóúñ'.indexOf(c)]).replace(/ /g, '_');
@@ -95,6 +95,7 @@ const STATES_ARG = process.env.MESA_STATES ? process.env.MESA_STATES.split(',') 
   if (process.env.MESA_NOCHECK) { await browser.close(); console.log('wrote ' + path.relative(REPO, OUT) + ' (no checks)'); return; }
   G.TICKS = await tickStates(browser, runs, sheet);
   G.PV = await previewPlaces(browser, runs);
+  G.PAIRPX = await pairPixels(browser, sheet);
   if (process.env.MESA_DUMP) { fs.mkdirSync(process.env.MESA_DUMP, { recursive: true }); runs.forEach((r, i) => fs.writeFileSync(path.join(process.env.MESA_DUMP, r.story.id + '.' + r.plan + '.json'), JSON.stringify({ old: r.lines, port: G.TICKS[i].states, ticks: G.TICKS[i].ticks }))); }
   // the sprite layer's shapes for every item seen at any moment (measured in the browser, mesa.js draw() itself: the old one and the port's)
   const ppage = await browser.newPage(); ppage.on('pageerror', e => errs.push(String(e)));
@@ -223,6 +224,26 @@ async function previewPlaces(browser, runs) {
   });
 }
 
+/* ---------- (round 2) the review pictures as the preview draws them: each whole picture before its crop, without the thing the pair is about
+   (sheet pictures[...].thing), and without each person in it: the thing's pixels and each person's, for the pairs' checks ---------- */
+async function pairPixels(browser, sheet) {
+  return serve(async base => {
+    const page = await browser.newPage(), errs = []; page.on('pageerror', e => errs.push(String(e)));
+    await page.goto(base + '/docs/proyecto/pixel/mesa-preview.html');
+    await page.evaluate(() => PREVIEW.ready);
+    const raw = async (w, s, d) => Buffer.from(await page.evaluate(([w, s, d]) => PREVIEW.pairRaw(w, s, d), [w, s, d]), 'base64');
+    const diff = (a, b) => { const m = []; for (let i = 0; i < 240 * 216; i++) if (a[i * 3] !== b[i * 3] || a[i * 3 + 1] !== b[i * 3 + 1] || a[i * 3 + 2] !== b[i * 3 + 2]) m.push(i); return m; };
+    const out = {};
+    for (const ps of pairSidesOf()) { const nm = deacc(ps.w) + '.' + ps.side, pc = sheet.pictures[nm]; if (pc.scene) continue; const w = deacc(ps.w);
+      const full = await raw(w, ps.side, []), noT = await raw(w, ps.side, pc.thing), people = {};
+      for (const id of Object.keys((ps.spec.set || {}).gente || {})) people[id] = diff(full, await raw(w, ps.side, ['gente.' + id]));
+      out[nm] = { full, noT, thing: diff(full, noT), people }; }
+    await page.close();
+    if (errs.length) throw new Error('preview: ' + errs.join('; '));
+    return out;
+  });
+}
+
 /* ---------- mesa.js as the port will have it: the sheet's moves applied (the same edit as mesa-preview.html's, without its drawing) ---------- */
 function portSource(sheet) {
   let src = MESA_JS; const done = new Set();
@@ -346,7 +367,7 @@ const FROG_PLACES = { inicio: [104, 161], ranaa: [20, 146], hm: [36, 173], th: [
    rules below, so a second run writes the same bytes. */
 function design(E, F) {
   const SD = F.SD, SY = OLD.SILLA.map((x, k) => 150 + SD[k]);
-  const pd = F.WALK.door, PU = E.project(pd[0], pd[1], 0), PUERTA = [R(PU.sx), R(PU.sy)];
+  const pd = F.WALK.out, PU = E.project(pd[0], pd[1], 0), PUERTA = [R(PU.sx), R(PU.sy)];
   const PK = r2(E.OY - E.OX / 2 + F.WALK.y * E.S / E.R2), PASO = x => R(PK + x / 2);
   // the least move (whole px) that puts every foot of a thing (its bottom row's middle, and its two ends) on a top, 2 rows inside its back edge and
   // 1 inside its front: feet [[dx, dy, half width]] relative to the anchor; returns [mx, my] (0, 0 when it is already on it)
@@ -383,7 +404,7 @@ function designMoves(E, F, D) {
   const st = (k, o) => 'ESTUFA[0]' + (o[0] >= 0 ? '+' : '') + o[0] + ',ESTUFA[1]' + (o[1] >= 0 ? '+' : '') + o[1];
   return [
     { act: '*', src: 'FILA=148,FRENTE=157;', to: 'FILA=148,FRENTE=157,SD=' + SDs + ',PUERTA=[' + D.PUERTA.join(',') + '],PASO=x=>Math.round(' + D.PK + '+x/2);', def: true,
-      why: 'the table stands on the world\'s axes (along x), so its far side, where the four chairs stand, falls half a row for every px to the right: SD[i], the rows each seat steps down from the old row 150 (whoever sits at seat i has their feet at 150 + SD[i]: -24, -12, 0, +12, the least that keeps the four in the old order, apart, and the right end of the table clear of the frog\'s, Luis\'s and abuela\'s places in front of it); PUERTA, the doorway to the yard in the left wall where whoever comes in to sit appears and where whoever leaves goes (the old door at the picture\'s left edge, x 6); PASO(x), the row of the walkway behind the chairs at x (the world line y = ' + F.WALK.y + ')' },
+      why: 'the table stands on the world\'s axes (along x), so its far side, where the four chairs stand, falls half a row for every px to the right: SD[i], the rows each seat steps down from the old row 150 (whoever sits at seat i has their feet at 150 + SD[i]: -24, -12, 0, +12, the least that keeps the four in the old order, apart, and the right end of the table clear of the frog\'s, Luis\'s and abuela\'s places in front of it); PUERTA, on the patio\'s step outside the doorway in the left wall (round 2: seen in the opening, the wall and the door\'s frame drawn over what of them is behind it), where whoever comes in to sit appears and where whoever leaves goes; from it they step in straight onto the walkway\'s end in the doorway (the old door at the picture\'s left edge, x 6); PASO(x), the row of the walkway behind the chairs at x (the world line y = ' + F.WALK.y + ')' },
     { act: '*', src: 'const LUIS=[75,160],FOGON=[205,170],CAN=[196,204];', to: 'const LUIS=[' + D.LUIS + '],FOGON=[' + D.FOGON + '],CAN=[' + D.CAN + '],FRX=[' + D.FRX + '],FAX=[' + D.FAX + '],FR=[' + D.FR + '],FT=[' + D.FT + '],FL=[' + D.FL + '],FA=[' + D.FA + '],FP=[' + D.FP + '],FC=[' + D.FC + '],FI=[' + D.FI + '];',
       pts: [['abuela', OLD.FOGON, D.FOGON], ['perro', OLD.CAN, D.CAN], ['luis', OLD.LUIS, D.LUIS]].filter(q => q[1].join() !== q[2].join()),
       why: 'LUIS, where Luis waits at the counter: unchanged (what he holds up at his right reaches over the table\'s near left corner: checks, asks); FOGON, where abuela stands at the stove: ' + (OLD.FOGON[0] - D.FOGON[0]) + ' px left, so that she is whole in the view with 3 px to spare (her sprite reached the view\'s last column), and 24 rows down, in front of the table\'s right end beside the stove: the table\'s right end and whoever sits there (150 + SD[3]) are where she stood, and what she holds out covered their face; from here her walks keep in front of the table; CAN, where Canelo lies: ' + (D.CAN[1] - OLD.CAN[1]) + ' rows down (clear floor beside the table\'s right end). FR, FL, FA, FP, FC, FI: for each seat, the rows the places in front of it step down from the old ones (the frog serving, the frog fetching from the sitter, Luis, abuela, Canelo begging, what falls from the table, the bundle of the cloth), the least that puts each on clear floor in front of the table (the table along x comes nearer the camera to the right)' },
@@ -488,7 +509,7 @@ function make(G, runs) {
   OLD.SILLA.forEach((x, i) => spot('rana.' + i, [x - 30, 163], 'ranaAl(' + i + '): the frog serving place ' + i + ' (q; his feet at SILLA - 14 + FRX, 188 + FR), in front of the table', 'cq', [x - 30 + D.FRX[i], 163 + D.FR[i]]));
   OLD.SILLA.forEach((x, i) => spot('luis.' + i, [x - 15, 202], 'luisEn(' + i + '): Luis serving place ' + i + ', in front of the table', 'place', [x - 15, 202 + D.FL[i]]));
   OLD.SILLA.forEach((x, i) => spot('abuela.' + i, [x + 22, 204], 'abuelaEn(' + i + '): abuela serving place ' + i + ', in front of the table', 'place', [x + D.FAX[i], 204 + D.FA[i]]));
-  spot('puerta', [6, 152], 'PUERTA: the doorway to the yard, where whoever comes in to sit appears and whoever leaves goes (the old came in at the left edge, x 6)', 'place', D.PUERTA);
+  spot('puerta', [6, 152], 'PUERTA: on the patio\'s step just outside the doorway (round 2: seen in the opening before they step onto the kitchen floor), where whoever comes in to sit appears and whoever leaves goes (the old came in at the left edge, x 6)', 'place', D.PUERTA);
   spot('luis', OLD.LUIS, 'LUIS: where Luis waits at the counter', 'place', D.LUIS);
   spot('fogon', OLD.FOGON, 'FOGON: where abuela stands at the stove', 'place', D.FOGON);
   spot('canelo', OLD.CAN, 'CAN: where Canelo lies, beside the table\'s right end', 'place', D.CAN);
@@ -541,7 +562,7 @@ function make(G, runs) {
   const pic = (cx, cy, zoom, what, extra) => { const crop = zoom === 1
       ? [Math.max(0, Math.min(44, R(cx - 98))), Math.max(0, Math.min(112, R(cy - 52))), 196, 104]
       : [Math.max(0, Math.min(142, R(cx - 49))), Math.max(0, Math.min(164, R(cy - 26))), 98, 52];
-    const w = topW(cx, cy); return Object.assign({ world: w.world, screen: [cx, cy], zoom, crop, what }, extra || {}); };
+    const w = topW(cx, cy); return Object.assign({ world: w.world, screen: [cx, cy], zoom, crop, what }, extra || {}); };   // (extra.crop: the window found for it)
   const PICS = designPictures(pic, D);
   const LEVEL = PAIRS.level.flatMap(L => L.pictures.map((p, i) => p.scene === 'mesa' ? { w: L.w, index: i, picture: deacc(p.pair) + '.' + p.side, old: p.crop } : null).filter(Boolean));
   for (const l of LEVEL) { const pc = PICS[l.picture]; if (pc) { l.crop = pc.crop; l.zoom = pc.zoom; } }
@@ -630,7 +651,7 @@ function make(G, runs) {
       how: 'the old table (mkMesa) was drawn in the sorted list at y MESA[1] + MESA[3] + 6 (166), over whoever sat behind it; its chairs, counter and stove were the background. Now the table, its chairs, the counters and the stove are set things someone can be behind. Every item of the sorted list owns the pixels it drew last; at each front entry (sortY 9999: after everyone) the set\'s own pixels of that part (mesa-set.html part(), PART_TAGS) are drawn again where their owner stands behind them: bakedZ[i] > v / COS - (row + .5 - OY) * tan(30 deg) / S, v = (x + y) / R2 of the owner\'s plane: whoever sits, their lap on the seat (x, y - 8, z ' + F.ZS + ') + .03; anyone else, the floor under their foot (x, y - 1); the frog, the floor under (b.x + b.w / 2, q.y + 25); what stands on a top is never drawn over (the places at the table: their entry; the stacks on the counter and the stove are drawn before the list). "Behind the table" is that depth test, not a row',
       plane: 'v / COS - (row + .5 - OY) * tan(30 deg) / S',
       chairs: 'a chair is never drawn over whoever sits (they sit on it, its back behind them)',
-      parts: Object.fromEntries(FRONT.map(p => [p, { sortY: 9999, insert: 'before the sort: L.push({y: 9999, front: "' + p + '"})', why: { mesa: 'whoever sits behind the table, or walks behind it: the table\'s top drawn over their lower part', 'mesa.patas': 'its legs', sillas: 'whoever walks behind the chairs: their backs drawn over their legs', 'sillas.patas': 'their legs', mostrador: 'whoever stands behind the counter\'s end: none in the stories', mostrador2: 'as mostrador', estufa: 'whoever stands behind the stove: none in the stories' }[p] }])),
+      parts: Object.fromEntries(FRONT.map(p => [p, { sortY: 9999, insert: 'before the sort: L.push({y: 9999, front: "' + p + '"})', why: { mesa: 'whoever sits behind the table, or walks behind it: the table\'s top drawn over their lower part', 'mesa.patas': 'its legs', sillas: 'whoever walks behind the chairs: their backs drawn over their legs', 'sillas.patas': 'their legs', mostrador: 'whoever stands behind the counter\'s end: none in the stories', mostrador2: 'as mostrador', estufa: 'whoever stands behind the stove: none in the stories', pared: 'whoever stands outside on the step (PUERTA, round 2): the left wall drawn over what of them is behind it, so they are seen in the opening', puerta: 'as pared: the door\'s frame and reveal over whoever stands outside (the patio and the backdrop are behind them: the depth test keeps them under)', 'puerta.umbral': 'the threshold over the feet of whoever stands outside on the step', 'puerta.jamba': 'the wall\'s thickness in the opening, where it stands before whoever is outside' }[p] }])),
       tags: [
         ['L.push({y:p.z!=null?p.z:p.y,d:()=>gente(c,id,a)});', 'L.push({y:p.z!=null?p.z:p.y,id,d:()=>gente(c,id,a)});'],
         ['if(W.perro&&W.perro.vis!==0)L.push({y:W.perro.y,d:', 'if(W.perro&&W.perro.vis!==0)L.push({y:W.perro.y,k:"perro",d:'],
@@ -673,34 +694,49 @@ function designStoryMoves(E, F, D) {
   // a thing put on the table in a review picture (cosas, z 300): the least move that puts its foot on the table's top
   const onT = (x, y, hw) => E.onTop(x, y - 2.5, 'mesa', .02) && E.onTop(x, y + .5, 'mesa', .02) && E.onTop(x - hw, y - .5, 'mesa', 0) && E.onTop(x + hw, y - .5, 'mesa', 0);
   const leastT = (x, y, hw) => { for (let r = 0; r <= 40; r++) { let best = null; for (let mx = -r; mx <= r; mx++) for (let my = -r; my <= r; my++) { if (Math.max(Math.abs(mx), Math.abs(my)) !== r) continue; if (onT(x + mx, y + my, hw) && (!best || Math.hypot(mx, my) < Math.hypot(best[0], best[1]))) best = [mx, my]; } if (best) return [x + best[0], y + best[1]]; } throw new Error('no place on the table for ' + x + ',' + y); };
+  // (round 2) pone: the plate set down and the little cloth, from there the least further move that puts a plain surface (the cloth's top) round
+  // half the thing's outline at least (a search over every point within 16 px); the plate beside the cloth moves with it
+  const R2N = { '187,150': [[173, 159], 'pone.si: the plate set down (by the cloth\'s edge: 44% plain round it)'], '178,150': [[167, 158], 'pone.no: the plate beside the cloth, moved with it'], '187,151': [[172, 160], 'pone.no: the little cloth (by the cloth\'s edge: 30% plain round it)'] };
   for (const [p, hw, what] of [[[140, 152], 6, 'the vase'], [[140, 153], 11, 'the whole cake'], [[187, 150], 6, 'the plate set down'], [[178, 150], 6, 'the plate'], [[187, 151], 5, 'the cloth']]) {
-    const n = leastT(p[0], p[1], hw); if (n[0] !== p[0] || n[1] !== p[1]) out.push({ old: p, new: n, who: 'cosa', uses: ['cual-mesa.json'], why: 'cual-mesa: ' + what + ' on the table\'s top: moved by the least distance that puts it on the top (the table along x falls half a row a px to the right)' }); }
+    const n = leastT(p[0], p[1], hw), r2n = R2N[p.join()];
+    if (r2n) { out.push({ old: p, new: r2n[0], who: 'cosa', uses: ['cual-mesa.json'], why: 'cual-mesa: ' + what + ' on the table\'s top (round 1: ' + n.join(', ') + ', the least move onto the top); round 2, ' + r2n[1] + ': the least move from there that puts the cloth\'s plain top round half its outline' }); continue; }
+    if (n[0] !== p[0] || n[1] !== p[1]) out.push({ old: p, new: n, who: 'cosa', uses: ['cual-mesa.json'], why: 'cual-mesa: ' + what + ' on the table\'s top: moved by the least distance that puts it on the top (the table along x falls half a row a px to the right)' }); }
   // someone standing (a review picture) where the floor is not clear: the least move to clear floor in front of it
   const clearFoot = (x, y) => [-6, 0, 6].every(dx => E.clearFloor(x + dx, y - 1, .12)) && E.clearFloor(x, y - 4, .12);
   const leastF = (x, y) => { for (let r = 0; r <= 40; r++) { let best = null; for (let mx = -r; mx <= r; mx++) for (let my = -r; my <= r; my++) { if (Math.max(Math.abs(mx), Math.abs(my)) !== r) continue; if (clearFoot(x + mx, y + my) && (!best || Math.hypot(mx, my) < Math.hypot(best[0], best[1]))) best = [mx, my]; } if (best) return [x + best[0], y + best[1]]; } throw new Error('no clear floor near ' + x + ',' + y); };
   for (const [p, what] of [[[176, 172], 'cual-mesa cocina.si: abuela in the kitchen, by the stove'], [[206, 165], 'cual-mesa pone: Carmen setting a plate on the table'], [[110, 206], 'cual-mesa: whoever holds up a thing']]) {
     const n = leastF(p[0], p[1]); if (n[0] !== p[0] || n[1] !== p[1]) out.push({ old: p, new: n, who: 'standing', uses: ['cual-mesa.json'], why: what + ': the old point is ' + (E.surface(p[0], p[1] - 1).under ? 'under the ' + E.surface(p[0], p[1] - 1).under : 'not clear floor') + '; moved by the least distance to clear floor' }); }
-  if (D.FOGON[0] !== OLD.FOGON[0]) out.push({ old: OLD.FOGON.slice(), new: D.FOGON.slice(), who: 'standing', uses: ['cual-mesa.json'], why: 'cual-mesa cuchillo: abuela at the stove (FOGON, moved)' });
+  // (round 2) whoever holds up a thing in a review picture: the least move (a search over the floor, every 4 px) that puts a plain surface round
+  // half the held thing's outline at least, for all four (plato, taza, cuchara, tenedor: the same place, as the old): on the floor before the
+  // back wall, the thing seen against its plaster; abuela with the knife or the spoon: before the stove, the thing against its white front
+  out.push({ old: [110, 206], new: [144, 120], who: 'standing', uses: ['cual-mesa.json'], why: 'cual-mesa plato, taza, cuchara, tenedor (round 2): whoever holds up a thing stands on the floor before the back wall, left of the window, so the thing is seen against the plaster (at the old point, in front of the table, it was seen against the checker floor: 18 to 61% plain round it); the nearest such place to the old one (86 px), all eight pictures 58% plain and more' });
+  out.push({ old: OLD.FOGON.slice(), new: [202, 154], who: 'standing', uses: ['cual-mesa.json'], why: 'cual-mesa cuchillo (round 2): abuela with the knife or the spoon stands before the stove, the thing seen against its white front (at FOGON, ' + D.FOGON.join(', ') + ', it was against the floor and the table: 6 to 20% plain round it); the nearest such place to FOGON (40 px)' });
   out.push({ old: [176, 176], new: [115, 203], who: 'abuela', uses: ['cual-mesa.json cocina.no'], scene: 'frutas', spot: 'abuela.delante', why: 'cual-mesa cocina.no (W.afuera: abuela outside, at a stall): the picture is El colmado\'s fruit stall (frutas, its spot abuela.delante: in front of the stand)' });
   return out;
 }
-// the review pictures: each centred on what the pair is about, at its new place; zoom 2 where the subject is small enough for 98 x 52 (things on
-// the table, a sitter's head), zoom 1 where it is a standing person (56 rows)
+// the review pictures (round 2: every one at zoom 2, as the old close pictures): each a 98 x 52 window (shown at 2 x 2: the 196 x 104 picture) on
+// what the pair is about (thing: the W paths that draw it), the whole head of whoever holds it or stands by it inside (they may be cut by the
+// window's lower or side edges); the windows found by a search over every place (the thing whole, the heads whole, the most plain round the thing)
+// (the search: the window's top left corner; the two pictures of a pair share their window, but mesa's, whose two are of different things, as the old)
+const PAIR_WIN = {'mesa.si': [91, 115], 'mesa.no': [142, 70], 'plato.si': [108, 72], 'plato.no': [108, 72], 'taza.si': [110, 68], 'taza.no': [110, 68], 'cuchara.si': [108, 55], 'cuchara.no': [108, 55], 'tenedor.si': [108, 55], 'tenedor.no': [108, 55], 'cuchillo.si': [134, 91], 'cuchillo.no': [134, 91], 'comida.si': [79, 113], 'comida.no': [79, 113], 'pone.si': [123, 122], 'pone.no': [123, 122], 'tengo_hambre.si': [93, 75], 'tengo_hambre.no': [93, 75], 'tengo_sed.si': [85, 102], 'tengo_sed.no': [85, 102], 'listo.si': [114, 110], 'listo.no': [114, 110]};
 function designPictures(pic, D) {
-  const S = OLD.SILLA, sy = k => D.SY[k], fila = k => OLD.FILA + D.SD[k];
+  const P = (nm, what, thing, extra) => { const w = PAIR_WIN[nm]; return pic(w[0] + 49, w[1] + 26, 2, what, Object.assign({ thing, crop: [w[0], w[1], 98, 52] }, extra || {})); };
   return {
-    'mesa.si': pic(140, 140, 2, 'the table with its cloth and a vase of flowers on it'), 'mesa.no': pic(OLD.ESTUFA[0] + D.ST.olla[0], OLD.ESTUFA[1] + D.ST.olla[1] - 4, 2, 'the stove with a steaming pot'),
-    'plato.si': pic(110, 182, 1, 'Luis holding up a plate'), 'plato.no': pic(110, 182, 1, 'Luis holding up a cup'),
-    'taza.si': pic(110, 182, 1, 'Carmen holding up a cup of chocolate'), 'taza.no': pic(110, 182, 1, 'Carmen holding up a pot'),
-    'cuchara.si': pic(110, 182, 1, 'abuelo holding up a spoon'), 'cuchara.no': pic(110, 182, 1, 'abuelo holding up a fork'),
-    'tenedor.si': pic(110, 182, 1, 'papá holding up a fork'), 'tenedor.no': pic(110, 182, 1, 'papá holding up a knife'),
-    'cuchillo.si': pic(D.FOGON[0] - 15, D.FOGON[1] - 12, 1, 'abuela at the stove holding up a knife'), 'cuchillo.no': pic(D.FOGON[0] - 15, D.FOGON[1] - 12, 1, 'abuela holding up a spoon'),
-    'comida.si': pic(S[1], fila(1) - 4, 2, 'a plate of hot food at a place on the table'), 'comida.no': pic(S[1], fila(1) - 4, 2, 'two empty plates at that place'),
-    'cocina.si': pic(170, 150, 1, 'abuela in the kitchen by the stove, a pot steaming'), 'cocina.no': pic(118, 168, 1, 'abuela outside at a fruit stall (El colmado\'s stall: frutas-set.html?surtido=frutas)', { scene: 'frutas', query: '?surtido=frutas' }),
-    'pone.si': pic(184, 156, 1, 'Carmen at the table\'s end, a plate set on it'), 'pone.no': pic(184, 156, 1, 'Carmen at the table\'s end, a plate and a cloth on it'),
-    'tengo_hambre.si': pic(S[1], sy(1) - 30, 1, 'Luis at the table thinking of food'), 'tengo_hambre.no': pic(S[1], sy(1) - 30, 1, 'Luis at the table thinking of water'),
-    'tengo_sed.si': pic(S[1], sy(1) - 30, 1, 'Carmen at the table drinking'), 'tengo_sed.no': pic(S[1], sy(1) - 30, 1, 'Carmen at the table eating'),
-    'listo.si': pic(140, 144, 2, 'a whole cake on the table'), 'listo.no': pic(OLD.ESTUFA[0] + 10, 130, 2, 'the oven lit, something baking'),
+    'mesa.si': P('mesa.si', 'the table with its cloth and a vase of flowers on it', ['cosas.0']), 'mesa.no': P('mesa.no', 'the stove with a steaming pot', ['estufa.olla', 'estufa.vapor']),
+    'plato.si': P('plato.si', 'Luis holding up a plate', ['gente.luis.alza']), 'plato.no': P('plato.no', 'Luis holding up a cup', ['gente.luis.alza']),
+    'taza.si': P('taza.si', 'Carmen holding up a cup of chocolate', ['gente.carmen.alza']), 'taza.no': P('taza.no', 'Carmen holding up a pot', ['gente.carmen.alza']),
+    'cuchara.si': P('cuchara.si', 'abuelo holding up a spoon', ['gente.abuelo.alza']), 'cuchara.no': P('cuchara.no', 'abuelo holding up a fork', ['gente.abuelo.alza']),
+    'tenedor.si': P('tenedor.si', 'papá holding up a fork', ['gente.papa.alza']), 'tenedor.no': P('tenedor.no', 'papá holding up a knife', ['gente.papa.alza']),
+    'cuchillo.si': P('cuchillo.si', 'abuela by the stove holding up a knife', ['gente.abuela.alza']), 'cuchillo.no': P('cuchillo.no', 'abuela by the stove holding up a spoon', ['gente.abuela.alza']),
+    'comida.si': P('comida.si', 'a plate of hot food at a place on the table', ['puestos.1.plato']), 'comida.no': P('comida.no', 'two empty plates at that place', ['puestos.1.plato']),
+    'cocina.si': pic(170, 134, 1, 'abuela in the kitchen by the stove, a pot steaming', { thing: ['estufa.olla'], zoom1: 'zoom 2 cannot hold it: the pot with its steam (25 rows) and abuela\'s whole head by the stove need 55 rows of a 52-row window; and its other picture, cocina.no, is El colmado\'s stall at zoom 1' }),
+    'cocina.no': pic(118, 168, 1, 'abuela outside at a fruit stall (El colmado\'s stall: frutas-set.html?surtido=frutas)', { scene: 'frutas', query: '?surtido=frutas', zoom1: 'another scene\'s picture, El colmado\'s stall, drawn whole as its page draws it',
+      port: 'El colmado is ported later: until then the port draws this picture from the web page itself. File docs/proyecto/pixel/frutas-set.html with the query ?surtido=frutas (its canvas, 240 x 216, as the page draws it: no state of mesa-set.html, no mesa sprite but abuela); the window: crop [' + [22, 112, 196, 104].join(', ') + '] at zoom 1 (the 196 x 104 picture; x0 22 is the view of every scene); abuela: the sprite layer of mesa.js (W.afuera 1, gente.abuela with dir -1 as cual-mesa.json gives) at frutas\'s spot abuela.delante, screen (115, 203) (storyMoves: old 176, 176), her feet there; nothing else of mesa.js is drawn (its old stall, mkPuesto, is dropped). When El colmado is in Dart, its set at that state and that spot replace the page' }),
+    'pone.si': P('pone.si', 'Carmen at the table\'s end, a plate set on it', ['cosas.0']), 'pone.no': P('pone.no', 'Carmen at the table\'s end, a plate and a cloth on it', ['cosas.1']),
+    'tengo_hambre.si': P('tengo_hambre.si', 'Luis at the table thinking of food', ['gente.luis.piensa']), 'tengo_hambre.no': P('tengo_hambre.no', 'Luis at the table thinking of water', ['gente.luis.piensa']),
+    'tengo_sed.si': P('tengo_sed.si', 'Carmen at the table drinking', ['gente.carmen.hace'], { plainKnown: 'the glass is at her mouth: round it her face and hair, which are hers (left out), and the chair\'s back behind her, as the old' }),
+    'tengo_sed.no': P('tengo_sed.no', 'Carmen at the table eating', ['gente.carmen.hace'], { plainKnown: 'the fork is at her mouth: round it her face, which is hers (left out), and the chair\'s back behind her, as the old' }),
+    'listo.si': P('listo.si', 'a whole cake on the table', ['cosas.0']), 'listo.no': P('listo.no', 'the oven lit, something baking', ['estufa.horno']),
   };
 }
 
@@ -794,7 +830,7 @@ const SILLA = [104, 128, 152, 176];
 function remapW(sh, w0, story) {
   const w = JSON.parse(JSON.stringify(w0)), SD = JSON.parse(sh.moves[0].to.match(/SD=(\[[-\d,]+\])/)[1]);
   const MV = sh.moves.flatMap(m => m.places || []), RM = (sh.storyMoves || []).filter(e => !e.scene && (!e.uses || !story || e.uses.some(u => u.startsWith(story))));
-  const find = (who, x, y) => MV.find(q => (q.who === 'whoever' || q.who === who) && q.old[0] === x && q.old[1] === y) || RM.find(e => e.who !== 'sitting' && e.old[0] === x && e.old[1] === y);
+  const find = (who, x, y) => RM.find(e => e.who !== 'sitting' && e.uses && e.old[0] === x && e.old[1] === y) || MV.find(q => (q.who === 'whoever' || q.who === who) && q.old[0] === x && q.old[1] === y) || RM.find(e => e.who !== 'sitting' && e.old[0] === x && e.old[1] === y);   // (round 2) a story file's own move first
   const mv = (who, p) => { const m = find(who, R(p.x), R(p.y)); if (m) { p.x = m.new[0]; p.y = m.new[1]; } };
   for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; if (p.sent) { const k = SILLA.indexOf(R(p.x)); if (k >= 0 && R(p.y) === 150) p.y = 150 + SD[k]; } else mv(id, p); }
   if (w.perro && w.perro.x != null) mv('perro', w.perro);
@@ -903,6 +939,35 @@ function check(sh, G, runs) {
     for (let i = 0; i < 240 * 216; i++) { if (T0[i] !== 'ventana') continue; const c = [RGB[i * 3], RGB[i * 3 + 1], RGB[i * 3 + 2]]; if (c[2] > c[0] + 40 && c[2] > 180) sky++; else if (c[1] > c[0] + 30 && c[1] > c[2]) green++; else frame++; }
     if (sky < 20 || green < 6) P.push('window: the outside shows ' + sky + ' px of sky and ' + green + ' of green (20 and 6 kept)');
     notes.push('window: through it ' + sky + ' px of sky and ' + green + ' px of the patio\'s bush, seen on a backdrop ' + (F.K.OUTD + F.K.T) + ' behind the wall\'s face (it shifts as a view does, not as a picture on the wall); its frame and bars (' + frame + ' px) stand ' + .06 + ' out of the wall, a sill under it'); }
+
+  /* the door (round 2): a leaf open against the wall with its handle, the wall's thickness seen, a threshold, the patio's ground through it */
+  { const K0 = STATES[0], T0 = TAGS[K0], RGB = G.rgb[K0], inV = i => { const x = i % 240; return x >= x0 && x < x0 + 196; }, n = p => (G.parts[K0][p] || []).filter(inV).length;
+    const nLeaf = n('puerta.hoja'), nRev = n('puerta.jamba'), nThr = n('puerta.umbral');
+    for (const [nm, v] of [['leaf', nLeaf], ['reveal', nRev], ['threshold', nThr]]) if (v < 30) P.push('door: its ' + nm + ' has ' + v + ' px in the wide view (30 kept)');
+    let knob = 0; for (const i of G.parts[K0]['puerta.hoja'] || []) { const c = [RGB[i * 3], RGB[i * 3 + 1], RGB[i * 3 + 2]]; if (dE(c, F.KC.knob) < 20 || dE(c, F.KC.knob.map(v => v * .86)) < 20) knob++; }
+    if (knob < 2) P.push('door: its leaf shows ' + knob + ' px of its brass handle');
+    // the opening's lowest outside pixels: in each column of the opening, the lowest pixel that is neither the room's (the wall, the frame, the
+    // reveal, the threshold, the leaf, the kitchen's floor) is the patio's ground (El patio's step or lawn), not the backdrop (sky, yard wall, hedge)
+    const isGround = c => dE(c, F.STONE) < 12 || dE(c, F.STONE.map(v => v * .84)) < 12 || dE(c, F.STONE.map(v => v * .7)) < 14 || dE(c, [124, 146, 62]) < 10;
+    let cols = 0, okc = 0; const badc = [], KC = F.KC, BACK = [...KC.sky, KC.yard, KC.yardTop, KC.yardLine, ...KC.hedge, [255, 255, 255]];
+    const outside = (i, x, y) => { if (!T0[i]) return G.onGround[K0][i] && E.atZ(x + .5, y + .5, 0)[0] < 0 ? 'ground' : null; if (T0[i] !== 'puerta') return null; const c = [RGB[i * 3], RGB[i * 3 + 1], RGB[i * 3 + 2]]; return BACK.some(b => dE(c, b) < 3) ? 'back' : null; };
+    for (let x = 0; x < 240; x++) { let low = -1, kind = null; for (let y = 215; y >= 0; y--) { const i = y * 240 + x, o = outside(i, x, y); if (o) { low = i; kind = o; break; } }
+      if (low < 0) continue; cols++; const c = [RGB[low * 3], RGB[low * 3 + 1], RGB[low * 3 + 2]]; if (kind === 'ground' && isGround(c)) okc++; else badc.push(x + ',' + Math.floor(low / 240) + ' ' + kind + ' ' + c.join('/')); }
+    if (!cols || badc.length) P.push('door: the lowest outside pixel of ' + badc.length + ' of the opening\'s ' + cols + ' columns is not the patio\'s ground: ' + badc.slice(0, 8).join('; '));
+    notes.push('door (round 2): in the wide view its leaf ' + nLeaf + ' px (open into the room against the wall towards the corner, its brass handle ' + knob + ' px), the wall\'s thickness in the opening ' + nRev + ' px, the threshold ' + nThr + ' px (30 kept each); through it the patio\'s ground at the floor\'s level, El patio\'s stone step then the lawn, out to the yard\'s wall and hedge: the lowest outside pixel of each of the opening\'s ' + cols + ' columns is ground (' + okc + '); whoever comes in appears on the step (PUERTA), seen in the opening (the wall, its frame, its thickness and the threshold drawn over what of them is behind: front), and steps in onto the walkway\'s end'); }
+
+  /* specks (round 2): the empty set (every baked state) has no group of fewer than 6 floor pixels of one colour that differs from all the floor round it */
+  { const res = []; for (const k of STATES) { const T0 = TAGS[k], RGB = G.rgb[k], col = i => RGB[i * 3] * 65536 + RGB[i * 3 + 1] * 256 + RGB[i * 3 + 2], seen = new Uint8Array(240 * 216); let nG = 0; const bad = [];
+      for (let y = 0; y < 216; y++) for (let x = x0; x < x0 + 196; x++) { const i = y * 240 + x; if (seen[i] || T0[i] || G.z[k][i] < -1e8) continue;
+        const c = col(i), grp = [i], q = [i]; seen[i] = 1; while (q.length && grp.length < 6) { const j = q.pop(), jx = j % 240, jy = Math.floor(j / 240);
+          for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = jx + dx, ny = jy + dy, m = ny * 240 + nx; if (nx < 0 || nx >= 240 || ny < 0 || ny >= 216 || seen[m] || T0[m] || col(m) !== c) continue; seen[m] = 1; grp.push(m); q.push(m); } }
+        nG++; if (grp.length >= 6) continue;
+        // the floor round the group (8 neighbours, untagged, not in it): a speck when none of it is the group's colour
+        const S = new Set(grp); let same = false; for (const j of grp) { const jx = j % 240, jy = Math.floor(j / 240); for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const m = (jy + dy) * 240 + jx + dx; if (S.has(m) || jx + dx < 0 || jx + dx >= 240 || jy + dy < 0 || jy + dy >= 216) continue; if (col(m) === c) same = true; } }
+        if (!same) bad.push((grp[0] % 240 - x0) + ',' + Math.floor(grp[0] / 240) + ' (' + grp.length + ' px)'); }
+      if (bad.length) P.push('speck: ' + k + ' has ' + bad.length + ' groups of under 6 floor px unlike every pixel round them (view x, y): ' + bad.slice(0, 12).join('; '));
+      res.push(k + ' ' + bad.length); }
+    notes.push('specks (round 2): in every baked state, every group of floor pixels of one colour (4-connected) of fewer than 6 px has a pixel of its own colour next to it, on the floor or of the set (no lone speck: mesa-set.html noSpecks): ' + res.join(', ')); }
 
   /* a set thing is either whole inside the view by 3 px or clearly runs off it (by 12 px or more) */
   { const res = []; for (const [name, parts] of [['the table and chairs', ['mesa', 'sillas']], ['the stove, hood and panel', ['estufa', 'campana']], ['the left counter', ['mostrador']], ['the right counter', ['mostrador2']], ['the wall cupboard', ['alacena']], ['the door', ['puerta']], ['the window', ['ventana']]]) {
@@ -1136,12 +1201,12 @@ function checkAsks(sh, G, runs, P, C) {
 
   /* heads: nobody's face against the window's bars, a cupboard's edge or the hood (where the old picture kept it clear) */
   const isWood = c => [.4, .62, .84, 1, 1.1].some(k => dE(c, F.KC.frame.map(v => v * k)) < 18) || dE(c, F.KC.frameL) < 18 || dE(c, F.KC.sill) < 18;
-  { const bad = new Map(); let n = 0;
+  { const bad = new Map(), leafBehind = new Set(); let n = 0;
     for (const [where, w, dwell] of allW) { if (dwell && !Object.values(dwell).every(v => v >= 300)) continue; const key = keyOf(w), { list } = itemsOf(w, MN, false);
       for (const it of list) { if (!it.face || it.kind === 'frog') continue; n++; const f = it.face;
-        for (let y = f[1]; y < f[1] + f[3]; y++) for (let x = f[0]; x < f[0] + f[2]; x++) { const i = y * 240 + x, t = TAGS[key][i]; if (!t || !/^(ventana|alacena|campana|puerta)/.test(t)) continue; const c = [G.rgb[key][i * 3], G.rgb[key][i * 3 + 1], G.rgb[key][i * 3 + 2]]; if (/^(ventana|puerta)/.test(t) && !isWood(c)) continue; bad.set(it.id + ' / ' + t, where + ' (face ' + JSON.stringify(f) + ', its pixel ' + x + ',' + y + ')'); } } }
+        for (let y = f[1]; y < f[1] + f[3]; y++) for (let x = f[0]; x < f[0] + f[2]; x++) { const i = y * 240 + x, t = TAGS[key][i]; if (!t || !/^(ventana|alacena|campana|puerta)/.test(t)) continue; if (t === 'puerta.hoja') { leafBehind.add(it.id + ' ' + where.replace(/ (right|wrong|alternate) .*/, '')); continue; } const c = [G.rgb[key][i * 3], G.rgb[key][i * 3 + 1], G.rgb[key][i * 3 + 2]]; if (/^(ventana|puerta)/.test(t) && !isWood(c)) continue; bad.set(it.id + ' / ' + t, where + ' (face ' + JSON.stringify(f) + ', its pixel ' + x + ',' + y + ')'); } } }
     for (const [k, w] of [...bad].slice(0, 20)) P.push('heads: ' + k + ' behind the face at ' + w);
-    notes.push('heads: at ' + n + ' face-moments (everyone at rest) no face has the window, the door\'s frame, the wall cupboard or the hood behind it'); }
+    notes.push('heads: at ' + n + ' face-moments (everyone at rest) no face has the window, the door\'s frame, the wall cupboard or the hood behind it' + (leafBehind.size ? '; the door\'s open leaf (round 2: a plain wooden panel, its lower edge at the face\'s top rows) behind the face of whoever sits at the first seat: ' + [...leafBehind].join(', ') : '')); }
 
   /* the preview puts everyone where the sheet's rule does, at every recorded moment; the rule puts everyone at rest where the port's play has them */
   { let nP = 0, bad = 0, nR = 0, badR = 0; const off = new Map();
@@ -1154,22 +1219,46 @@ function checkAsks(sh, G, runs, P, C) {
     notes.push('preview: at every step\'s end of the ' + runs.length + ' recorded runs (' + nP + ' places of the people, the frog, the dog and the things) mesa-preview.html puts everyone exactly where the sheet\'s rule does (' + bad + ' differ); and the rule puts each of the ' + nR + ' places at rest where the port\'s play has them (' + badR + ' differ)'); }
 
   /* the review pictures */
-  { let nPic = 0; const pairDiff = [], zoom2 = [];
+  { let nPic = 0; const pairDiff = [], zoom2 = [], heads = [], plainAt = [], plainKnown = [], diffPct = [];
     const byWord = {}; for (const ps of pairSides) (byWord[ps.w] = byWord[ps.w] || {})[ps.side] = ps;
     for (const [word, sides2] of Object.entries(byWord)) { const ws = {};
       for (const side of Object.keys(sides2)) { const ps = sides2[side], nm = deacc(word) + '.' + side, pc = sh.pictures[nm], w = pairW(ps, sh, false); ws[side] = w; nPic++;
         if (pc.scene) continue;
-        const key = keyOf(w), crop = pc.crop, mrg = pc.zoom === 2 ? 1 : 2, { pre, list } = itemsOf(w, MN, false);
-        for (const it of pre.concat(list)) { if (it.kind === 'table' || it.kind === 'counter' || it.kind === 'stove') continue; const b = rowsBox(it.rows); if (!within([b[0] - mrg, b[1] - mrg, b[2] + 2 * mrg, b[3] + 2 * mrg], crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with ' + mrg + ' px to spare in ' + JSON.stringify(crop)); }
+        const key = keyOf(w), crop = pc.crop, mrg = pc.zoom === 2 ? 1 : 2, { pre, list } = itemsOf(w, MN, false), PX = G.PAIRPX[nm];
+        const inCrop = i => { const x = i % 240, y = Math.floor(i / 240); return x >= crop[0] && x < crop[0] + crop[2] && y >= crop[1] && y < crop[1] + crop[3]; };
+        // (round 2) a person may be cut by the window's edges (as the old close pictures): their whole head inside with 2 px to spare, or none of
+        // them in it; every other thing whole with 1 px to spare (2 at zoom 1), or none of it in it
+        for (const it of pre.concat(list)) { if (it.kind === 'table' || it.kind === 'counter' || it.kind === 'stove' || it.kind === 'person') continue; const b = rowsBox(it.rows); if (!within([b[0] - mrg, b[1] - mrg, b[2] + 2 * mrg, b[3] + 2 * mrg], crop) && rowsMeet(it.rows, crop)) P.push('pair ' + nm + ': ' + it.id + ' ' + JSON.stringify(b) + ' is not whole with ' + mrg + ' px to spare in ' + JSON.stringify(crop)); }
+        const T = new Set(PX.thing);
+        for (const [id, m] of Object.entries(PX.people)) { const body = m.filter(i => !T.has(i)); if (!body.length) continue; const top = Math.min(...body.map(i => Math.floor(i / 240))), hd = body.filter(i => Math.floor(i / 240) < top + 16);
+          const hb = [Math.min(...hd.map(i => i % 240)), top, Math.max(...hd.map(i => i % 240)) - Math.min(...hd.map(i => i % 240)) + 1, Math.max(...hd.map(i => Math.floor(i / 240))) - top + 1];
+          if (within([hb[0] - 2, hb[1] - 2, hb[2] + 4, hb[3] + 4], crop)) { heads.push(nm + ' ' + id); continue; }
+          if (m.some(inCrop)) P.push('pair ' + nm + ': ' + id + '\'s head ' + JSON.stringify(hb) + ' is not whole with 2 px to spare in ' + JSON.stringify(crop) + ' and part of ' + id + ' is in it'); }
+        // the thing the pair is about: whole in the window with 1 px to spare; a plain surface round half of its outline at least (the ring of
+        // pixels next to it, those of whoever holds it left out: each one plain when the 3 x 3 round it, the thing left out, in the picture
+        // without the thing, is one colour within dE 12)
+        { if (!PX.thing.length) P.push('pair ' + nm + ': the thing (' + pc.thing.join(', ') + ') draws nothing');
+          else { const tb = rowsBox(PX.thing.map(i => [Math.floor(i / 240), i % 240, i % 240])); if (!within([tb[0] - 1, tb[1] - 1, tb[2] + 2, tb[3] + 2], crop)) P.push('pair ' + nm + ': the thing ' + JSON.stringify(tb) + ' is not whole with 1 px to spare in ' + JSON.stringify(crop)); }
+          const HOLD = new Set(); for (const m of Object.values(PX.people)) for (const i of m) if (!T.has(i)) HOLD.add(i);
+          const ring = new Set(); for (const i of PX.thing) { const x = i % 240, y = Math.floor(i / 240); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const j = (y + dy) * 240 + x + dx; if (!T.has(j) && !HOLD.has(j) && inCrop(j)) ring.add(j); } }
+          const cAt = (A, i) => [A[i * 3], A[i * 3 + 1], A[i * 3 + 2]]; let ok = 0;
+          for (const i of ring) { const x = i % 240, y = Math.floor(i / 240), c = cAt(PX.noT, i); let good = true; for (let dy = -1; dy <= 1 && good; dy++) for (let dx = -1; dx <= 1; dx++) { const j = (y + dy) * 240 + x + dx; if (T.has(j)) continue; if (dE(cAt(PX.noT, j), c) > 12) { good = false; break; } } if (good) ok++; }
+          const fr = ring.size ? ok / ring.size : 0; plainAt.push(nm + ' ' + R(fr * 100) + '%');
+          if (fr < .5) { if (pc.plainKnown) plainKnown.push(nm + ' ' + R(fr * 100) + '% (' + pc.plainKnown + ')'); else P.push('pair ' + nm + ': a plain surface round ' + R(fr * 100) + '% of the thing\'s outline (half kept)'); } }
         if (pc.zoom === 2) { for (const [part, lst] of Object.entries(G.shadowPx[key])) { const inC = i => { const x = i % 240, y = Math.floor(i / 240); return x >= crop[0] && x < crop[0] + crop[2] && y >= crop[1] && y < crop[1] + crop[3]; };
             const sh2 = lst.filter(i => G.onGround[key][i] && inC(i)).length, own = (G.parts[key][part] || []).filter(inC).length; if (sh2 > 4 && own < 6) P.push('pair ' + nm + ': shows ' + sh2 + ' px of ' + part + '\'s shadow and not ' + part); }
           zoom2.push(nm); } }
       if (!ws.si || !ws.no) continue;
+      // (round 2) the pixels that differ between the two pictures (as shown: 196 x 104, the crop at its zoom): 1.5% of the picture at least
+      { const pic = side => { const pc = sh.pictures[deacc(word) + '.' + side], A = G.PAIRPX[deacc(word) + '.' + side]; if (!A) return null; const o = [];
+          for (let y = 0; y < 104; y++) for (let x = 0; x < 196; x++) { const i = (pc.crop[1] + Math.floor(y / pc.zoom)) * 240 + pc.crop[0] + Math.floor(x / pc.zoom); o.push(A.full[i * 3] * 65536 + A.full[i * 3 + 1] * 256 + A.full[i * 3 + 2]); } return o; };
+        const a2 = pic('si'), b2 = pic('no'); if (a2 && b2) { let n = 0; for (let k = 0; k < a2.length; k++) if (a2[k] !== b2[k]) n++; const pct = n / a2.length * 100; diffPct.push(deacc(word) + ' ' + pct.toFixed(1) + '%'); if (pct < 1.5) P.push('pair ' + word + ': the two pictures differ in ' + pct.toFixed(2) + '% of their pixels (1.5% kept)'); } }
       const diff = []; for (const k of new Set([...Object.keys(ws.si), ...Object.keys(ws.no)])) if (JSON.stringify(ws.si[k]) !== JSON.stringify(ws.no[k])) diff.push(k);
       if (JSON.stringify(sh.pictures[deacc(word) + '.si'].crop) !== JSON.stringify(sh.pictures[deacc(word) + '.no'].crop)) diff.push('the window');
       if (!diff.length) P.push('pair ' + word + ': the two pictures are the same');
       pairDiff.push(deacc(word) + ': ' + diff.join(', ')); }
-    notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures), ' + zoom2.length + ' at zoom 2, the others at zoom 1 (a standing person is taller than 52 rows): everything in each whole with 1 px to spare at zoom 2 (2 at zoom 1); no zoom 2 picture shows a shadow without its caster; what differs: ' + pairDiff.join('; ')); }
+    const z1 = Object.entries(sh.pictures).filter(([k, v]) => v.zoom === 1 && !v.scene).map(([k, v]) => k + ' (' + v.zoom1 + ')');
+    notes.push('pairs: ' + nPic + ' review pictures (and the ' + sh.level.length + ' level pictures, the same pictures), ' + zoom2.length + ' at zoom 2' + (z1.length ? ', at zoom 1: ' + z1.join(', ') : ', none at zoom 1') + ' (cocina.no is El colmado\'s stall); in each, everyone who is in it has their whole head inside with 2 px to spare (' + heads.length + ' heads; a person may be cut by the window\'s edges, as the old close pictures), every other sprite whole with 1 px to spare (2 at zoom 1) or out of it, the thing the pair is about whole with 1 px to spare, a plain surface round half its outline at least (' + plainAt.join(', ') + (plainKnown.length ? '; under half, as written in the picture: ' + plainKnown.join('; ') : '') + '); the two pictures of each pair differ in 1.5% of their pixels at least (' + diffPct.join(', ') + '); no zoom 2 picture shows a shadow without its caster; what differs: ' + pairDiff.join('; ')); }
 
   { const reached = new Set(); for (const r of runs) for (const L of r.lines) reached.add(keyOf(L.W)); for (const T of NEW) for (const t of T.ticks) reached.add(keyOf(t.W)); for (const ps of pairSides) if (!sh.pictures[deacc(ps.w) + '.' + ps.side].scene) reached.add(keyOf(pairW(ps, sh, false)));
     for (const b of sh.setKey.baked) if (!reached.has(b.key)) P.push('state ' + b.key + ' is baked but nothing reaches it');

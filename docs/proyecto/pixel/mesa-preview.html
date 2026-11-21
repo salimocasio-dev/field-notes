@@ -139,7 +139,7 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;signs=1&amp;hud=1
   function remapRule(sh, w0, story) {
     const w = JSON.parse(JSON.stringify(w0)), SIL = [104, 128, 152, 176], SD = JSON.parse(sh.moves[0].to.match(/SD=(\[[-\d,]+\])/)[1]);
     const MV = sh.moves.flatMap(m => m.places || []), RM = (sh.storyMoves || []).filter(e => !e.scene && (!e.uses || !story || e.uses.some(u => u.startsWith(story))));
-    const find = (who, x, y) => MV.find(q => (q.who === 'whoever' || q.who === who) && q.old[0] === x && q.old[1] === y) || RM.find(e => e.who !== 'sitting' && e.old[0] === x && e.old[1] === y);
+    const find = (who, x, y) => RM.find(e => e.who !== 'sitting' && e.uses && e.old[0] === x && e.old[1] === y) || MV.find(q => (q.who === 'whoever' || q.who === who) && q.old[0] === x && q.old[1] === y) || RM.find(e => e.who !== 'sitting' && e.old[0] === x && e.old[1] === y);   // (round 2) a story file's own move first
     const mv = (who, p) => { const m = find(who, R(p.x), R(p.y)); if (m) { p.x = m.new[0]; p.y = m.new[1]; } };
     for (const [id, p] of Object.entries(w.gente || {})) { if (!p || p.x == null) continue; if (p.sent) { const k = SIL.indexOf(R(p.x)); if (k >= 0 && R(p.y) === 150) p.y = 150 + SD[k]; } else mv(id, p); }
     if (w.perro && w.perro.x != null) mv('perro', w.perro);
@@ -238,8 +238,19 @@ Address: <code>?w=&lt;W as JSON, old positions&gt;&amp;F=8&amp;signs=1&amp;hud=1
     PV.story = { id: file };
     const ww = PV.remapW(w);
     PV.story = null;
+    if (PV.pairEdit) PV.pairEdit(ww);
     if (pc.scene === 'frutas') { const sm = SHEET.storyMoves.find(m => m.scene === 'frutas'); return PV.render(ww, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false, scene: 'frutas', at: sm.new }); }
     return PV.render(ww, { crop: pc.crop, zoom: pc.zoom, F: 8, remap: false });
+  };
+  // (the sheet's pair checks) a review picture's whole picture before its crop (240 x 216, RGB bytes in base64), with the W paths in drop taken out (the
+  // picture without the thing it is about, or without one person); the picture itself (cropped and zoomed) is PV.pair's
+  PV.pairRaw = async function (word, side, drop = [], put = {}) {
+    PV.pairEdit = w => { for (const [p, v] of Object.entries(put)) { const ks = p.split('.'), last = ks.pop(); const o = ks.reduce((a, k) => a == null ? a : a[/^\d+$/.test(k) ? +k : k], w); if (o != null) o[last] = v; }
+      for (const p of drop) { const ks = p.split('.'), last = ks.pop(); const o = ks.reduce((a, k) => a == null ? a : a[/^\d+$/.test(k) ? +k : k], w); if (o != null) { if (Array.isArray(o)) o.splice(+last, 1); else delete o[last]; } } };
+    try { await PV.pair(word, side); } finally { PV.pairEdit = null; }
+    const d = c.getImageData(0, 0, 240, 216).data; let o = '';
+    for (let i = 0; i < d.length; i += 4) o += String.fromCharCode(d[i], d[i + 1], d[i + 2]);
+    return btoa(o);   // (base64 of the RGB bytes: quick to hand over)
   };
   PV.ready = ready.then(() => fetch('../../../historia/cuentos/cual-mesa.json').then(r => r.json())).then(a => { PV.CUAL = a; });
 

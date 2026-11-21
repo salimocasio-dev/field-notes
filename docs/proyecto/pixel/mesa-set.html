@@ -65,8 +65,17 @@ const STX = r3(.9 + (205 - OX) / (S / R2) - K.STW / 2);
 const WIN = { face: 'y', a0: 2.7, a1: 3.85, z0: 1.95, z1: 2.85, view: 'arbusto', name: 'ventana', bushA: -1.5, bushR: .5 };
 // the doorway to the yard in the left wall, between the corner and the counter (the old picture's door at its left edge): whoever comes in to
 // sit, or leaves, appears and goes there (moves: PUERTA), walking along the walkway behind the chairs (PASO)
-const DOOR = { face: 'x', a0: 1.6, a1: 2.62, z0: 0, z1: 2.45, view: 'patio', door: true, name: 'puerta', horizon: 1.6 };
-const WALK = { y: 2.2, door: [.15, 2.2] };                         // the walkway behind the chairs (y), and its end in the doorway
+// (round 2) a door, not a picture of one: 2.75 high (whoever stands on its step outside is whole in the opening, their head under its top); its
+// leaf open into the room and back towards the corner (hinged at the jamb on the corner's side: on the other side the counter stands .24
+// from the jamb), with its brass handle; a wooden threshold across the wall's thickness; through it the patio's ground at the kitchen floor's
+// level: El patio's stone step outside the door (C.stone), then the lawn (the engine's GRASS) out to the yard's wall and hedge (the kit's
+// backdrop, K.T + K.OUTD behind the wall's face)
+const DOOR = { face: 'x', a0: 1.6, a1: 2.62, z0: 0, z1: 2.75, view: 'patio', door: true, name: 'puerta', horizon: 2.5 };
+const LEAF = { hx: .05, hy: r3(DOOR.a0 - .12), len: r3(DOOR.a1 - DOOR.a0), ang: -1.0 };   // its hinge, its width, its turn from the wall's normal (+x) towards -y
+const STEP_D = .42;                                                    // the stone step's depth out from the wall's outer face
+// the walkway behind the chairs (y), its end in the doorway; out: where whoever comes in appears (on the step, just outside the threshold, its
+// sight line through the opening's middle: x - y as the walkway's end at screen x 84, so they come straight in onto the walkway)
+const WALK = { y: 2.2, door: [.024, 2.2], out: [-.25, 1.926] };
 const BAND = { x: [[A0 - .2, YL]], y: [[STX - .18, XR]] };
 
 /* ---------- the table and its chairs ---------- */
@@ -107,10 +116,48 @@ function chairs() {
   }
 }
 
+/* ---------- the door (round 2) ---------- */
+const STONE = [216, 206, 184];                                         // El patio's step (mapa.js C.stone)
+// the floor outside: the patio's ground seen through the doorway (cocinaBuild plan.floor): every floor point outside the wall (x < -K.T) whose
+// sight line crosses the wall's plane in the opening (y - x from a0 - .3 to a1 + .3), out to the backdrop: the step, its outer edge a darker line,
+// then the lawn, flat (one tone: no speck)
+const PATIO_PX = [];                                                  // (the outside's pixels and colours: the floor's dimming is not theirs)
+function patioGround(x, y, ix, iy, i) {
+  const c = patioColour(x, y); if (c) PATIO_PX.push(i, c); return c;
+}
+function patioColour(x, y) {
+  if (x >= -K.T || x < -K.T - K.OUTD) return 0;
+  const a = y - x; if (a < DOOR.a0 - .3 || a > DOOR.a1 + .3) return 0;
+  const R = rampOf(STONE);
+  if (x > -K.T - STEP_D + .04) return R[3];
+  if (x > -K.T - STEP_D) return R[1];
+  return rgb(...GRASS[3]);
+}
+function doorExtras() {
+  const Wd = rampOf(KC.wood), { a0, a1, z1 } = DOOR, w = LEAF.len;
+  // the threshold: a wooden sill across the wall's thickness and a little into the room, its top lit
+  part('puerta.umbral', () => kBox('x', a0, a1, -K.T, .1, 0, .05, (f, p, q, sh) => f === 'top' ? kRgb(KC.woodL) : Wd[1], 'tf'));
+  // the outside under the opening: the wall's thickness has no floor of its own (the reveal's bottom is the threshold's)
+  // the leaf: a wooden door of four panels, as El balcón's and La sala's; its free edge darker
+  const panel = (t, z) => {
+    const u = t * w, edge = u < .07 || u > w - .07 || z < .07 || z > z1 - .07;
+    const inPanel = u > .2 && u < w - .2 && ((z > .3 && z < 1.15) || (z > 1.35 && z < z1 - .25));
+    const rim = inPanel && (u < .26 || u > w - .26 || Math.abs(z - .3) < .06 || Math.abs(z - 1.15) < .06 || Math.abs(z - 1.35) < .06 || Math.abs(z - (z1 - .25)) < .06);
+    return Wd[edge ? 0 : rim ? 1 : inPanel ? 3 : 2];
+  };
+  part('puerta.hoja', () => {
+  leaf(LEAF.hx, LEAF.hy, w, 0, z1 - .02, LEAF.ang, (t, z) => t > .96 ? Wd[0] : panel(t, z));
+  // its handle: brass, near the free edge, at hand height
+  const hx = LEAF.hx + Math.cos(LEAF.ang) * (w - .14), hy = LEAF.hy + Math.sin(LEAF.ang) * (w - .14), Kn = kRgb(KC.knob), KnD = kRgb(kLit(KC.knob, true));
+  for (let a = 0; a <= .1; a += ST * .4) for (let z = 0; z <= .1; z += ST * .4) plot(hx + .03, hy - a, 1.1 + z, z > .07 ? Kn : KnD);
+  });
+}
+
 /* ---------- bake one state ---------- */
 const PLAN = {
-  XR, YL, windows: [WIN, DOOR], band: BAND, occlusion: 'shade',
+  XR, YL, windows: [WIN, DOOR], band: BAND, occlusion: 'shade', floor: patioGround,
   furnish() {
+    doorExtras();
     part('mostrador', () => { cocinaBase('x', A0, A1); });
     part('alacena', () => { cocinaWallCupboard('x', UP[0], UP[1]); });
     part('estufa', () => { cocinaStove('y', STX, { noEnd: true, horno: SET.horno }); });
@@ -132,7 +179,31 @@ const PLAN = {
 // for the checks' pictures (not states): noshade=1, the set with no shadow cast and no floor dimming (what a surface is without the thing on it);
 // empty=1, the room without the table and the chairs (what lies behind them)
 const NOSHADE = Q.get('noshade') === '1', EMPTY = Q.get('empty') === '1';
-function buildSet() { cocinaBuild(NOSHADE ? Object.assign({}, PLAN, { occlusion: 'none', shadows: null }) : EMPTY ? Object.assign({}, PLAN, { furnish() { const f = PLAN.furnish; const p0 = part; part = (n, fn) => /^(mesa|sillas)/.test(n) ? null : p0(n, fn); try { f(); } finally { part = p0; } }, shadows: null }) : PLAN); }
+// (for the sheet's checks, tags=1 only) the door's reveal (the kit's revealX: the wall's thickness seen in the opening) tagged puerta.jamba
+const REVEAL = new Map();
+{ const rx = revealX; revealX = function (...a) { if (!PART_TAGS) return rx(...a); const b = zb.slice(); rx(...a); for (let i = 0; i < W * H; i++) if (zb[i] !== b[i]) REVEAL.set(i, pix[i]); }; }
+function tagReveal() { if (!PART_TAGS) return; for (const [i, c] of REVEAL) if (PART_TAGS[i] === 'puerta' && pix[i] === c) PART_TAGS[i] = 'puerta.jamba'; REVEAL.clear(); }
+function undimPatio() { for (let k = 0; k < PATIO_PX.length; k += 2) { const i = PATIO_PX[k]; if (zb[i] === groundZ[i] && kinds[i] === KIND_ROAD && !shadowMask[i]) pix[i] = PATIO_PX[k + 1]; } bakedPix.set(pix); }
+// (round 2) no speck on the floor: a group of fewer than 6 floor pixels of one colour with no pixel of its colour round it (a 1 px gap between a
+// leg of the table and a chair's, a dot of the dimming's dither) takes the colour most of the floor round it has (or, with no floor round it,
+// the darkest pixel round it: it reads as the leg's or the shade's)
+function noSpecks() {
+  const isF = i => ground[i] && zb[i] === groundZ[i], N8 = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
+  for (let pass = 0; pass < 4; pass++) { let changed = 0; const seen = new Uint8Array(W * H);
+    for (let i = 0; i < W * H; i++) { if (seen[i] || !isF(i)) continue; const c = pix[i], grp = [i], q = [i]; seen[i] = 1;
+      while (q.length && grp.length < 6) { const j = q.pop(), x = j % W, y = (j / W) | 0; for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + dx, ny = y + dy, m = ny * W + nx; if (nx < 0 || nx >= W || ny < 0 || ny >= H || seen[m] || !isF(m) || pix[m] !== c) continue; seen[m] = 1; grp.push(m); q.push(m); } }
+      if (grp.length >= 6) continue;
+      const S = new Set(grp), cnt = new Map(); let same = false, dark = 0, darkL = 1e9;
+      for (const j of grp) { const x = j % W, y = (j / W) | 0; for (const [dx, dy] of N8) { const nx = x + dx, ny = y + dy, m = ny * W + nx; if (nx < 0 || nx >= W || ny < 0 || ny >= H || S.has(m)) continue;
+        if (pix[m] === c) { same = true; break; } if (isF(m)) cnt.set(pix[m], (cnt.get(pix[m]) || 0) + 1); else if (zb[m] > -1e8) { const v = pix[m], L = (v & 255) + ((v >> 8) & 255) + ((v >> 16) & 255); if (L < darkL) { darkL = L; dark = v; } } } if (same) break; }
+      if (same) continue;
+      let to = dark, best = 0; for (const [v, n] of cnt) if (n > best) { best = n; to = v; }
+      if (!to) continue; for (const j of grp) pix[j] = to; changed++; }
+    if (!changed) break; }
+  bakedPix.set(pix);
+}
+function buildSet() { buildSet0(); undimPatio(); noSpecks(); tagReveal(); }
+function buildSet0() { cocinaBuild(NOSHADE ? Object.assign({}, PLAN, { occlusion: 'none', shadows: null }) : EMPTY ? Object.assign({}, PLAN, { furnish() { const f = PLAN.furnish; const p0 = part; part = (n, fn) => /^(mesa|sillas)/.test(n) ? null : p0(n, fn); try { f(); } finally { part = p0; } }, shadows: null }) : PLAN); }
 // what is under a screen point (the sheet's floor rule): the table's top, a counter's top, the stove's top, or the floor (z 0); on the floor, whether
 // the point is under the table or a chair, in a counter's or the stove's footprint (not clear floor)
 const inR = (x, y, r, m = 0) => x >= r[0] - m && x <= r[2] + m && y >= r[1] - m && y <= r[3] + m;
@@ -144,7 +215,7 @@ function surfaceAt(sx, sy) {
   return { on: g[0] < 0 || g[1] < 0 ? 'wall' : 'floor', z: 0, x: g[0], y: g[1], under: under ? under[0] : null };
 }
 const STOVE = (() => { const x0 = STX, x1 = STX + K.STW; return { x0, x1, y0: 0, y1: K.SD, z: K.CZ }; })();
-window.MESA_SET = { SET, OXY: [OX, OY], XR, YL, SILLA, SD, ZS, ZT, LAPS, LY, TBL, CH, CHAIRS, A0, A1, UP, STX, STOVE, WIN, DOOR, WALK, BAND, FOOT, K, KC, buildSet, Gs, SCR, surfaceAt };
+window.MESA_SET = { SET, OXY: [OX, OY], XR, YL, SILLA, SD, ZS, ZT, LAPS, LY, TBL, CH, CHAIRS, A0, A1, UP, STX, STOVE, WIN, DOOR, LEAF, STEP_D, STONE, WALK, BAND, FOOT, K, KC, buildSet, Gs, SCR, surfaceAt };
 
 if (Q.get('tags') === '1') PART_TAGS = new Array(W * H).fill(null);
 // prof=1 (a check's tool, not a state): the time each part of the first bake takes
