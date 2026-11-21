@@ -46,6 +46,7 @@ Every "Done when" includes, without saying so each time: `flutter analyze` clean
 | 54 to 57 | La calle's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 53b |
 | 58 to 61 | La plaza's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 57b |
 | 62 to 65 | La playa's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 61b |
+| 66 to 69 | La fonda's four new scenes in Dart (sets and sheets are done) | builder, coqui_scenes, one at a time | 65b |
 | 40 | Every story against its recorded runs | orchestrator | 39b |
 | 41 | Books' pictures captured again | orchestrator | 40 |
 | 42 | Cutover | orchestrator | 41 |
@@ -835,6 +836,30 @@ New scenes, as La plaza's. Step a (design) is the content lane's; step b is this
 - Two look-alike children who each do the opposite thing with the same piece of clothing, over and over, until one is touched (80: `pareja80`).
 - The sky's things are touch places in screen pixels (the small cloud, the moon, the big star), and a round picture opens beside the telescope (83).
 - A voice with no body: the radio (speaker key `radio`; a bubble over the set shows who is talking).
+
+### Orders 66 to 69. La fonda (place 8): entrada, pedido, comida, cuenta
+
+New scenes, as La playa's. Step a (design) is the content lane's; step b is this lane's, after La playa's four.
+
+**What exists, in `docs/proyecto/pixel/`:**
+- `fonda-base.js`: the fonda's shared kit (`FD`), on top of `plaza-base.js`'s painters (u, v). These are the first INDOOR sets on the engine: a floor (v >= 0) and a back wall that faces the camera at v = 0, painted pixel by pixel; a door, a window or a hatch is a hole in it with something painted behind it, so whoever stands behind the wall is seen in the hole and the wall hides the rest of him. No side walls, no ceiling. Pieces: clay tiles, a terrace's boards, the wall's paint (boards to a chair's height, a rail, plaster), what a door or window shows by the hour, a wall lamp that glows, a table with its cloth, a chair at a table's far side, a chair at a table's end, `setTable` (a table with its chairs: it returns the seats' places, kept in each set's `E.SEATS`). Whoever sits at a table sits along its far side, facing us, or at an end.
+- `entrada-set.html`: the room seen from inside: the open door at the left with a runner rug, a bench against the wall, the mesera's stand, a rope on two posts running down the picture, three tables one behind another (mesa1 the far one), the vellonera, a window, the kitchen's swing door. States `hora` ocaso, noche, tarde_noche (what the door and the window show); `cuerda` puesta, abierta.
+- `pedido-set.html`: the family's long table, and in the back wall the kitchen's hatch with its shelf (plates and the frog stand on the shelf; the cocinero is seen in the hole from the chest up, in front of the kitchen's own back wall), two chalk boards with four panels each (the pictures on them are sprites), a hook, a stool; the next table at the lower right. One state.
+- `comida-set.html`: the terrace at night: boards, a rail with a string of small lights (low, behind everyone), the dark sea and the night sky, a long table, the mesera's sideboard at the right (a low top for the frog and a shelf above it for four things), a serving table with the big pot at the left. One state. No roof.
+- `cuenta-set.html`: the front of the fonda: a long counter (a glass case of desserts, the spike of slips, the register with its drawer, a bowl of mints), the kitchen's door at the far left, the open door at the right, and between them a window that shows the street with three lamps. States `guagua` no, lejos, medio, cerca (the guagua's lights in the window); `sillas` abajo, arriba (the next table's chairs up on it at closing time).
+- One fresh reader saw each set with no words. Read at once: a dining room with a way in, a place to wait and tables to sit at; a serving hatch into a kitchen; a deck over the sea at night with string lights; a counter with a register and a display of pastries, and something small driving along the street in the window. Fixed after the reading: the two menu boards read as windows (they are chalk boards now, with a chalk fork and knife and a chalk glass at the top); the sideboard read as a bunk bed or crates (it has doors, knobs and feet); the rope was a thin red line among red things (it is a thick gold rope); chair backs with no seats read as ladders (the chairs stand a little back from the tables, so the seats show); the window on the street could be a painting (it has a sill); the open door could be a window (it has a doormat).
+SHEETS_LINE_8
+
+**The stories.** Scripts with their reviews and a "Needs" list each: `historia/notas/guiones/entrada.md` (stories 84 to 86), `pedido.md` (87 to 89), `comida.md` (90 to 92), `cuenta.md` (93 to 95). Generators: `historia/tools/gen_entrada.py`, `gen_pedido.py`, `gen_comida.py`, `gen_cuenta.py`, run in that order after La playa's four. The checker passes all 12 with 0 errors; every new word is heard three times or more on every clean path. With places 4 to 7 that is 100,693 characters still to record (inside the free 500,000 a month). The story files are not on main and must not be pushed until they are recorded.
+
+**Step b** and **Done when**: as orders 50 to 53. New for this place:
+- Indoor depth: a person behind a wall's hole (the cocinero in the hatch, the mesera behind the counter) is drawn by the same depth rule as outdoors; nothing new in the engine, but the ports must keep the hole and the wall behind it as two planes.
+- Tables' cloths change colour (85): a sprite over the table's top and front, in five colours.
+- Things that stand on a shelf, a table or a counter and are pushed across by the frog (plates, drinks, the card machine); a tray of two or three things whose order is drawn.
+- A round's clue is often the second of two spoken lines (a question, then the answer that decides): the decision's `line` is the answer.
+- Misses filed by what he touched (88, 91): `tests` is built from the draw and the touch through `palabras`.
+- A state that is the stake: the guagua's lights in the window (95) move one lamp nearer at each mix-up.
+- Voices: three new speaker keys (`mesera`, `mesero`, `cocinero`) and `abuelo`.
 
 ## Order 40. Every story against its recorded runs (orchestrator)
 

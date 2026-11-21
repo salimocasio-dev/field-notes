@@ -94,7 +94,7 @@ function tables() {
   if (SET.sillas === 'arriba') {
     FD.table(N.u, N.v, N.hw, .45, [236, 214, 150]);
     for (const du of [-.45, .45]) { PZ.box(N.u + du, N.v, .74, .8, .2, .2, FD.WOOD_L); for (const [a, b] of [[-.16, -.16], [.16, -.16], [-.16, .16], [.16, .16]]) PZ.post(N.u + du + a, N.v + b, .8, 1.16, .028, FD.WOOD); }
-  } else FD.setTable(N.u, N.v, N.hw, { seats: 2, span: .9, cloth: [236, 214, 150] });
+  } else FD.setTable(N.u, N.v, N.hw, { seats: 2, span: .94, cloth: [236, 214, 150] });
 }
 function buildSet() {
   zb.fill(-1e9); pix.fill(0); kinds.fill(0); ground.fill(0); shadowMask.fill(0); staticShadow.fill(0);

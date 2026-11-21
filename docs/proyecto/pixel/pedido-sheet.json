@@ -411,9 +411,9 @@
    "on": "mesas"
   },
   "otra_mesa1": {
-   "world": [7.7004, 4.4477, 0.44],
-   "uv": [2.3, 8.59, 0.44],
-   "screen": [180, 168],
+   "world": [7.6863, 4.4618, 0.44],
+   "uv": [2.28, 8.59, 0.44],
+   "screen": [179, 168],
    "depth": 7.6592,
    "scale": 1,
    "kind": "person",
@@ -425,9 +425,9 @@
    "fixed": 1
   },
   "otra_mesa2": {
-   "world": [8.3368, 3.8113, 0.44],
-   "uv": [3.2, 8.59, 0.44],
-   "screen": [203, 168],
+   "world": [8.3509, 3.7972, 0.44],
+   "uv": [3.22, 8.59, 0.44],
+   "screen": [204, 168],
    "depth": 7.6592,
    "scale": 1,
    "kind": "person",
@@ -635,9 +635,9 @@
    "region": [22, 0, 196, 216],
    "stories": [87, 88, 89],
    "holds": ["silla1", "silla2", "silla3", "silla4", "mesa_coqui", "repisa_coqui", "repisa1", "repisa2", "repisa3", "repisa_fin", "hueco", "borde", "junto_mesa", "lejos", "bebida1", "bebida2", "bebida3", "vasito", "otra_mesa1", "otra_mesa2", "platanos", "banquito", "cuadro1", "cuadro2", "cuadro3", "cuadro4", "bcuadro1", "bcuadro2", "bcuadro3", "bcuadro4"],
-   "extent": [26, 214],
-   "x0Range": [19, 26],
-   "what": "the one view of stories 87, 88 and 89: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 19 to 26 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 26 to 214). The window's point is the ground point under its middle column at the picture's middle row"
+   "extent": [26, 215],
+   "x0Range": [20, 26],
+   "what": "the one view of stories 87, 88 and 89: the 196 x 216 window over the 240 x 216 picture. The spec: x0 22 (the window centred on the picture) unless a spot is cut (a person with his sprite whole, a small thing with its box). x0 20 to 26 hold them all; x0 22 is the one nearest 22, the window centred on the picture (the spots held span columns 26 to 215). The window's point is the ground point under its middle column at the picture's middle row"
   }
  },
  "front": {
@@ -675,7 +675,7 @@
     "name": "views-x0",
     "ok": true,
     "lines": [
-     "views-x0: wide: x0 22 (window columns 22 to 217); the 30 spots held span columns 26 to 214 (189 of the window's 196); x0 that hold them all: 19 to 26 (the one nearest 22, the window centred on the picture)"
+     "views-x0: wide: x0 22 (window columns 22 to 217); the 30 spots held span columns 26 to 215 (190 of the window's 196); x0 that hold them all: 20 to 26 (the one nearest 22, the window centred on the picture)"
     ],
     "x0": {
      "wide": 22
@@ -685,7 +685,7 @@
     "name": "spots-in-view",
     "ok": true,
     "lines": [
-     "spots-in-view: 30 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 26 (cuadro1), the rightmost 214 (otra_mesa2)"
+     "spots-in-view: 30 spots (persons with their sprite, small things with their box) inside the 240 x 216 picture and the window (x0 22); the leftmost column any takes is 26 (cuadro1), the rightmost 215 (otra_mesa2)"
     ]
    },
    {
@@ -720,16 +720,9 @@
    },
    {
     "name": "sprites-apart",
-    "ok": false,
+    "ok": true,
     "lines": [
-     "sprites-apart: 3 pair(s) with overlapping boxes and feet closer than 12 px up-down (of 156 pairs in 5 moments):",
-     "  moment 2: otra_mesa1 [180,168] (24 wide) ~ otra_mesa2 [203,168] (24 wide): 23 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 1 px sideways or 12 px up-down",
-     "  moment 3: otra_mesa1 [180,168] (24 wide) ~ otra_mesa2 [203,168] (24 wide): 23 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 1 px sideways or 12 px up-down",
-     "  moment 4: otra_mesa1 [180,168] (24 wide) ~ otra_mesa2 [203,168] (24 wide): 23 px sideways (the boxes need 24), 0 px up-down (needs 12): short by 1 px sideways or 12 px up-down",
-     "       nearest passing, moment 2 otra_mesa1 ~ otra_mesa2: otra_mesa1 2.3,8.59,0.44: fixed by the set (a chair): not moved; or otra_mesa2 3.2,8.59,0.44: fixed by the set (a chair): not moved",
-     "       nearest passing, moment 3 otra_mesa1 ~ otra_mesa2: otra_mesa1 2.3,8.59,0.44: fixed by the set (a chair): not moved; or otra_mesa2 3.2,8.59,0.44: fixed by the set (a chair): not moved",
-     "       nearest passing, moment 4 otra_mesa1 ~ otra_mesa2: otra_mesa1 2.3,8.59,0.44: fixed by the set (a chair): not moved; or otra_mesa2 3.2,8.59,0.44: fixed by the set (a chair): not moved",
-     "       OPEN POINT (a set number, not a spot of the spec): otra_mesa1 and otra_mesa2 are the next table's two chairs, 23.4 px apart in u (0.9 u, FD.setTable span in pedido-set.html's tables()), 23 px after rounding; they would be 24 px apart or more with the chairs 0.924 u apart (span 0.924) about the same middle (u 2.75)",
+     "sprites-apart: 156 pairs in the 5 moments of the preview (m1 (hueco, silla1, silla2, silla3, silla4, banquito, junto_mesa, mesa_coqui); m2 (hueco, silla1, silla2, silla3, silla4, banquito, lejos, otra_mesa1, otra_mesa2, repisa_coqui); m3 (hueco, silla1, silla2, silla3, silla4, banquito, borde, otra_mesa1, otra_mesa2, repisa_coqui); m4 (hueco, silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2, repisa_coqui); m5 (silla1, silla2, silla3, junto_mesa, mesa_coqui)): no two sprite boxes overlap sideways unless their feet are 12 px or more apart up-down; the pairs that do overlap sideways: m1 hueco ~ silla3 (8 across, 49 down), m1 hueco ~ silla4 (16 across, 49 down), m1 silla1 ~ mesa_coqui (3 across, 12 down), m1 silla2 ~ mesa_coqui (22 across, 12 down), m2 hueco ~ silla3 (8 across, 49 down), m2 hueco ~ silla4 (16 across, 49 down), m2 silla1 ~ lejos (10 across, 85 down), m2 silla1 ~ repisa_coqui (27 across, 63 down), m2 silla2 ~ repisa_coqui (2 across, 63 down), m2 silla3 ~ repisa_coqui (23 across, 63 down), m2 silla4 ~ otra_mesa1 (17 across, 58 down), m2 banquito ~ otra_mesa2 (3 across, 81 down), m3 hueco ~ silla3 (8 across, 49 down), m3 hueco ~ silla4 (16 across, 49 down), m3 silla1 ~ borde (7 across, 18 down), m3 silla1 ~ repisa_coqui (27 across, 63 down), m3 silla2 ~ repisa_coqui (2 across, 63 down), m3 silla3 ~ repisa_coqui (23 across, 63 down), m3 silla4 ~ otra_mesa1 (17 across, 58 down), m3 banquito ~ otra_mesa2 (3 across, 81 down), m4 hueco ~ silla3 (8 across, 49 down), m4 hueco ~ silla4 (16 across, 49 down), m4 silla1 ~ repisa_coqui (27 across, 63 down), m4 silla2 ~ repisa_coqui (2 across, 63 down), m4 silla3 ~ repisa_coqui (23 across, 63 down), m4 silla4 ~ otra_mesa1 (17 across, 58 down), m5 silla1 ~ mesa_coqui (3 across, 12 down), m5 silla2 ~ mesa_coqui (22 across, 12 down)",
      "       closest pair in each moment (px across / px down): m1 silla1 ~ mesa_coqui 3/12 (needs 28 across or 12 down); m2 silla2 ~ repisa_coqui 2/63 (needs 28 across or 12 down); m3 silla2 ~ repisa_coqui 2/63 (needs 28 across or 12 down); m4 silla2 ~ repisa_coqui 2/63 (needs 28 across or 12 down); m5 silla1 ~ mesa_coqui 3/12 (needs 28 across or 12 down)"
     ],
     "pairs": [
@@ -1043,7 +1036,7 @@
       "moment": 2,
       "a": "hueco",
       "b": "otra_mesa1",
-      "across": 34,
+      "across": 33,
       "down": 107,
       "needAcross": 24,
       "ok": true
@@ -1052,7 +1045,7 @@
       "moment": 2,
       "a": "hueco",
       "b": "otra_mesa2",
-      "across": 57,
+      "across": 58,
       "down": 107,
       "needAcross": 24,
       "ok": true
@@ -1115,7 +1108,7 @@
       "moment": 2,
       "a": "silla1",
       "b": "otra_mesa1",
-      "across": 92,
+      "across": 91,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1124,7 +1117,7 @@
       "moment": 2,
       "a": "silla1",
       "b": "otra_mesa2",
-      "across": 115,
+      "across": 116,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1178,7 +1171,7 @@
       "moment": 2,
       "a": "silla2",
       "b": "otra_mesa1",
-      "across": 67,
+      "across": 66,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1187,7 +1180,7 @@
       "moment": 2,
       "a": "silla2",
       "b": "otra_mesa2",
-      "across": 90,
+      "across": 91,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1232,7 +1225,7 @@
       "moment": 2,
       "a": "silla3",
       "b": "otra_mesa1",
-      "across": 42,
+      "across": 41,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1241,7 +1234,7 @@
       "moment": 2,
       "a": "silla3",
       "b": "otra_mesa2",
-      "across": 65,
+      "across": 66,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1277,7 +1270,7 @@
       "moment": 2,
       "a": "silla4",
       "b": "otra_mesa1",
-      "across": 18,
+      "across": 17,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1286,7 +1279,7 @@
       "moment": 2,
       "a": "silla4",
       "b": "otra_mesa2",
-      "across": 41,
+      "across": 42,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1313,7 +1306,7 @@
       "moment": 2,
       "a": "banquito",
       "b": "otra_mesa1",
-      "across": 21,
+      "across": 22,
       "down": 81,
       "needAcross": 22,
       "ok": true
@@ -1322,7 +1315,7 @@
       "moment": 2,
       "a": "banquito",
       "b": "otra_mesa2",
-      "across": 2,
+      "across": 3,
       "down": 81,
       "needAcross": 22,
       "ok": true
@@ -1340,7 +1333,7 @@
       "moment": 2,
       "a": "lejos",
       "b": "otra_mesa1",
-      "across": 102,
+      "across": 101,
       "down": 27,
       "needAcross": 24,
       "ok": true
@@ -1349,7 +1342,7 @@
       "moment": 2,
       "a": "lejos",
       "b": "otra_mesa2",
-      "across": 125,
+      "across": 126,
       "down": 27,
       "needAcross": 24,
       "ok": true
@@ -1367,16 +1360,16 @@
       "moment": 2,
       "a": "otra_mesa1",
       "b": "otra_mesa2",
-      "across": 23,
+      "across": 25,
       "down": 0,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 2,
       "a": "otra_mesa1",
       "b": "repisa_coqui",
-      "across": 65,
+      "across": 64,
       "down": 121,
       "needAcross": 28,
       "ok": true
@@ -1385,7 +1378,7 @@
       "moment": 2,
       "a": "otra_mesa2",
       "b": "repisa_coqui",
-      "across": 88,
+      "across": 89,
       "down": 121,
       "needAcross": 28,
       "ok": true
@@ -1448,7 +1441,7 @@
       "moment": 3,
       "a": "hueco",
       "b": "otra_mesa1",
-      "across": 34,
+      "across": 33,
       "down": 107,
       "needAcross": 24,
       "ok": true
@@ -1457,7 +1450,7 @@
       "moment": 3,
       "a": "hueco",
       "b": "otra_mesa2",
-      "across": 57,
+      "across": 58,
       "down": 107,
       "needAcross": 24,
       "ok": true
@@ -1520,7 +1513,7 @@
       "moment": 3,
       "a": "silla1",
       "b": "otra_mesa1",
-      "across": 92,
+      "across": 91,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1529,7 +1522,7 @@
       "moment": 3,
       "a": "silla1",
       "b": "otra_mesa2",
-      "across": 115,
+      "across": 116,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1583,7 +1576,7 @@
       "moment": 3,
       "a": "silla2",
       "b": "otra_mesa1",
-      "across": 67,
+      "across": 66,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1592,7 +1585,7 @@
       "moment": 3,
       "a": "silla2",
       "b": "otra_mesa2",
-      "across": 90,
+      "across": 91,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1637,7 +1630,7 @@
       "moment": 3,
       "a": "silla3",
       "b": "otra_mesa1",
-      "across": 42,
+      "across": 41,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1646,7 +1639,7 @@
       "moment": 3,
       "a": "silla3",
       "b": "otra_mesa2",
-      "across": 65,
+      "across": 66,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1682,7 +1675,7 @@
       "moment": 3,
       "a": "silla4",
       "b": "otra_mesa1",
-      "across": 18,
+      "across": 17,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1691,7 +1684,7 @@
       "moment": 3,
       "a": "silla4",
       "b": "otra_mesa2",
-      "across": 41,
+      "across": 42,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1718,7 +1711,7 @@
       "moment": 3,
       "a": "banquito",
       "b": "otra_mesa1",
-      "across": 21,
+      "across": 22,
       "down": 81,
       "needAcross": 22,
       "ok": true
@@ -1727,7 +1720,7 @@
       "moment": 3,
       "a": "banquito",
       "b": "otra_mesa2",
-      "across": 2,
+      "across": 3,
       "down": 81,
       "needAcross": 22,
       "ok": true
@@ -1745,7 +1738,7 @@
       "moment": 3,
       "a": "borde",
       "b": "otra_mesa1",
-      "across": 99,
+      "across": 98,
       "down": 76,
       "needAcross": 24,
       "ok": true
@@ -1754,7 +1747,7 @@
       "moment": 3,
       "a": "borde",
       "b": "otra_mesa2",
-      "across": 122,
+      "across": 123,
       "down": 76,
       "needAcross": 24,
       "ok": true
@@ -1772,16 +1765,16 @@
       "moment": 3,
       "a": "otra_mesa1",
       "b": "otra_mesa2",
-      "across": 23,
+      "across": 25,
       "down": 0,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 3,
       "a": "otra_mesa1",
       "b": "repisa_coqui",
-      "across": 65,
+      "across": 64,
       "down": 121,
       "needAcross": 28,
       "ok": true
@@ -1790,7 +1783,7 @@
       "moment": 3,
       "a": "otra_mesa2",
       "b": "repisa_coqui",
-      "across": 88,
+      "across": 89,
       "down": 121,
       "needAcross": 28,
       "ok": true
@@ -1835,7 +1828,7 @@
       "moment": 4,
       "a": "hueco",
       "b": "otra_mesa1",
-      "across": 34,
+      "across": 33,
       "down": 107,
       "needAcross": 24,
       "ok": true
@@ -1844,7 +1837,7 @@
       "moment": 4,
       "a": "hueco",
       "b": "otra_mesa2",
-      "across": 57,
+      "across": 58,
       "down": 107,
       "needAcross": 24,
       "ok": true
@@ -1889,7 +1882,7 @@
       "moment": 4,
       "a": "silla1",
       "b": "otra_mesa1",
-      "across": 92,
+      "across": 91,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1898,7 +1891,7 @@
       "moment": 4,
       "a": "silla1",
       "b": "otra_mesa2",
-      "across": 115,
+      "across": 116,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1934,7 +1927,7 @@
       "moment": 4,
       "a": "silla2",
       "b": "otra_mesa1",
-      "across": 67,
+      "across": 66,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1943,7 +1936,7 @@
       "moment": 4,
       "a": "silla2",
       "b": "otra_mesa2",
-      "across": 90,
+      "across": 91,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1970,7 +1963,7 @@
       "moment": 4,
       "a": "silla3",
       "b": "otra_mesa1",
-      "across": 42,
+      "across": 41,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1979,7 +1972,7 @@
       "moment": 4,
       "a": "silla3",
       "b": "otra_mesa2",
-      "across": 65,
+      "across": 66,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -1997,7 +1990,7 @@
       "moment": 4,
       "a": "silla4",
       "b": "otra_mesa1",
-      "across": 18,
+      "across": 17,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -2006,7 +1999,7 @@
       "moment": 4,
       "a": "silla4",
       "b": "otra_mesa2",
-      "across": 41,
+      "across": 42,
       "down": 58,
       "needAcross": 24,
       "ok": true
@@ -2024,16 +2017,16 @@
       "moment": 4,
       "a": "otra_mesa1",
       "b": "otra_mesa2",
-      "across": 23,
+      "across": 25,
       "down": 0,
       "needAcross": 24,
-      "ok": false
+      "ok": true
      },
      {
       "moment": 4,
       "a": "otra_mesa1",
       "b": "repisa_coqui",
-      "across": 65,
+      "across": 64,
       "down": 121,
       "needAcross": 28,
       "ok": true
@@ -2042,7 +2035,7 @@
       "moment": 4,
       "a": "otra_mesa2",
       "b": "repisa_coqui",
-      "across": 88,
+      "across": 89,
       "down": 121,
       "needAcross": 28,
       "ok": true
@@ -2151,7 +2144,7 @@
     "ok": true,
     "lines": [
      "heads-clear: every person at a table (m1: silla1, silla2, silla3, silla4; m2: silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2; m3: silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2; m4: silla1, silla2, silla3, silla4, otra_mesa1, otra_mesa2; m5: silla1, silla2, silla3) is whole in the window and his head (the top 14 rows) is covered by nobody and by nothing: 25 heads, 0 px covered, 0 hidden by the set",
-     "       info, not a check: m1 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 otra_mesa1 180,168 (senorS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 otra_mesa2 203,168 (senoraS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 otra_mesa1 180,168 (senorS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 otra_mesa2 203,168 (senoraS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 otra_mesa1 180,168 (jovenS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 otra_mesa2 203,168 (mujerS): head rows 128 to 141: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla1 88,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla2 113,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
+     "       info, not a check: m1 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m1 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 otra_mesa1 179,168 (senorS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m2 otra_mesa2 204,168 (senoraS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 otra_mesa1 179,168 (senorS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m3 otra_mesa2 204,168 (senoraS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla1 88,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla2 113,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 silla4 162,110 (carmenS): head rows 79 to 92: 244 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 otra_mesa1 179,168 (jovenS): head rows 129 to 142: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m4 otra_mesa2 204,168 (mujerS): head rows 128 to 141: 214 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla1 88,110 (abueloS): head rows 73 to 86: 192 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla2 113,110 (abuelaS): head rows 74 to 87: 206 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture; m5 silla3 138,110 (luisS): head rows 79 to 92: 182 px, 0 covered, 0 hidden by the set; window cut 0 px, 0 px outside the picture"
     ]
    },
    {
@@ -2193,7 +2186,7 @@
     "name": "guests-chest",
     "ok": true,
     "lines": [
-     "guests-chest: the guests at otra_mesa1, otra_mesa2 (m2, m3, m4) are whole from the chest up (the top 30 rows of the sprite) and inside the window: m2 otra_mesa1 180,168 (senorS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m2 otra_mesa2 203,168 (senoraS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m3 otra_mesa1 180,168 (senorS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m3 otra_mesa2 203,168 (senoraS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m4 otra_mesa1 180,168 (jovenS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m4 otra_mesa2 203,168 (mujerS): chest rows 128 to 157: 542 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 35 (the table hides the rest)"
+     "guests-chest: the guests at otra_mesa1, otra_mesa2 (m2, m3, m4) are whole from the chest up (the top 30 rows of the sprite) and inside the window: m2 otra_mesa1 179,168 (senorS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m2 otra_mesa2 204,168 (senoraS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m3 otra_mesa1 179,168 (senorS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m3 otra_mesa2 204,168 (senoraS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m4 otra_mesa1 179,168 (jovenS): chest rows 129 to 158: 494 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 34 (the table hides the rest); m4 otra_mesa2 204,168 (mujerS): chest rows 128 to 157: 542 px, 0 covered, 0 hidden by the set; window cut 0 px; he is seen whole down to sprite row 35 (the table hides the rest)"
     ]
    },
    {
