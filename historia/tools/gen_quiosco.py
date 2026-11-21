@@ -92,8 +92,8 @@ c=dict(comunes); nm,nc=nombres("luis","carmen","coqui"); c.update(nc)
 c.update({"c66_mediodia":N("Es mediodía. La gente viene al quiosco."),"c66_ve_tardes_maestra":VE("¡Buenas tardes, maestra!"),"c66_ca_maestra":CA("¡Mira! Es mi maestra. La maestra viene de la escuela."),
  "c66_donde_maestra":N("¿Dónde está la maestra?"),"c66_ve_tardes_doctor":VE("¡Buenas tardes, doctor!"),"c66_luis_doctor":L("El doctor viene del hospital."),"c66_ca_hola_doctor":CA("¡Hola, doctor!"),
  "c66_luis_cocinero":L("¡Mira, un cocinero! El cocinero hace la comida."),"c66_ca_policia":CA("Y un policía. El policía mira los carros."),"c66_quien_cocinero":N("¿Quién es el cocinero?"),
- "c66_ve_ayudas":VE("Coquí, ¿me ayudas?"),"c66_cq_si":T("¡Sí!"),"c66_quien_policia":N("¿Quién es el policía?"),"c66_cq_aqui_tiene":T("Aquí tiene."),"c66_po_gracias":PO("Gracias."),
- "c66_ve_ahora_tu":VE("Ahora tú, Coquí."),"c66_ma_gracias":MT("Gracias. Buenas tardes."),"c66_ve_quesito":VE("¿Quieres un quesito, Coquí?"),"c66_cq_si_favor":T("¡Sí, por favor!"),
+ "c66_ve_ayudas":VE("Coquí, ¿me ayudas?"),"c66_cq_si":T("¡Sí!"),"c66_quien_policia":N("¿Quién es el policía?"),"c66_cq_aqui_tiene":T("¡Aquí tiene!"),"c66_po_gracias":PO("Gracias."),
+ "c66_ve_ahora_tu":VE("Ahora tú, Coquí."),"c66_ma_gracias":MT("Gracias. Buenas tardes."),"c66_ve_quesito":VE("¿Quieres un quesito, Coquí?"),"c66_cq_si_quiero":T("¡Sí, quiero!"),
  "c66_fin":N("La maestra va a la escuela. El doctor va al hospital. Y Coquí come.")})
 PERS66=["maestra","doctor","cocinero","policia"]
 QUE66={"cafe":"un café","jugo":"un jugo de china","leche":"un vaso de leche"}; ART66={"cafe":"El café","jugo":"El jugo de china","leche":"El vaso de leche"}   # what the order says; the correction's subject
@@ -133,10 +133,10 @@ s66={"id":"un-cafe-para-la-maestra","title":"Un café para la maestra","place":"
   {"dots":5}]+ronda66("a","pide")+[{"dots":6}]+ronda66("b","pide_y"),
  "final":[{"dots":7},"c66_ma_gracias",gesto("policia","pito")]+juntos(*[act("sale",quien=q) for q in PERS66])+[   # 8: the four go; the vendedor lifts the dome: the quesitos left decide the last picture; 9: the turn (por favor)
   {"if":"lost=0","then":[act("final66",n=3)],"else":[{"if":"lost=1","then":[act("final66",n=2)],"else":[act("final66",n=1)]}]},
-  "c66_ve_quesito","c66_cq_si_favor","c66_fin",act("fin")],
+  "c66_ve_quesito","c66_cq_si_quiero","c66_fin",act("fin")],
  "leer":["c66_mediodia","c66_ve_tardes_maestra","c66_ca_maestra","c66_donde_maestra","c66_ve_tardes_doctor","c66_luis_doctor","c66_ca_hola_doctor","c66_luis_cocinero","c66_ca_policia","c66_quien_cocinero","c66_ve_ayudas","c66_cq_si",
-  "c66_pide_cafe_policia","c66_quien_policia","c66_cq_aqui_tiene","c66_po_gracias","c66_ve_ahora_tu","c66_pide_leche_maestra","c66_cq_aqui_tiene","c66_pide_y_jugo_doctor","c66_cq_aqui_tiene","c66_ma_gracias","c66_ve_quesito","c66_cq_si_favor","c66_fin"]}
-s66=reuse(s66,{"c66_cq_si":TG(("sí",["sí","si"])),"c66_cq_si_favor":TG(("por favor",["por favor","sí por favor","si por favor"]))})
+  "c66_pide_cafe_policia","c66_quien_policia","c66_cq_aqui_tiene","c66_po_gracias","c66_ve_ahora_tu","c66_pide_leche_maestra","c66_cq_aqui_tiene","c66_pide_y_jugo_doctor","c66_cq_aqui_tiene","c66_ma_gracias","c66_ve_quesito","c66_cq_si_quiero","c66_fin"]}
+s66=reuse(s66,{"c66_cq_si":TG(("sí",["sí","si"])),"c66_cq_si_quiero":TG(("quiero",["quiero","sí quiero","si quiero"]))})
 json.dump(s66,open("cuentos/un-cafe-para-la-maestra.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
@@ -148,10 +148,10 @@ json.dump(s66,open("cuentos/un-cafe-para-la-maestra.json","w",encoding="utf-8"),
 c=dict(comunes); nm,nc=nombres("abuela","luis","carmen","coqui","senor","senora","hombre","mujer","joven"); c.update(nc)
 c.update({"c67_mira_vendedor":N("Mira al vendedor. El vendedor trabaja en el quiosco."),"c67_ve_trabajo":VE("Yo trabajo aquí. Soy vendedor. ¡Y tengo mucho trabajo!"),"c67_que_hay_caja":N("¿Qué hay en la caja?"),
  "c67_ab_y_tu":AB("Y tú, ¿en qué trabajas?"),"c67_jo_estudiante":JO("No trabajo. Soy estudiante. Voy a la universidad."),"c67_ab_estudiante":AB("¡Un estudiante! Muy bien."),"c67_quien_estudiante":N("¿Quién es el estudiante?"),
- "c67_jo_libro":JO("¡Mi libro! ¡Gracias, Coquí!"),"c67_cq_de_nada":T("¡De nada!"),"c67_ab_usted_trabaja":AB("¿Y usted? ¿En qué trabaja?"),"c67_se_cocinero":SE("Soy cocinero. Trabajo en la escuela."),
+ "c67_jo_libro":JO("¡Mi libro! ¡Gracias, Coquí!"),"c67_cq_toma":T("¡Toma!"),"c67_ab_usted_trabaja":AB("¿Y usted? ¿En qué trabaja?"),"c67_se_cocinero":SE("Soy cocinero. Trabajo en la escuela."),
  "c67_quien_escuela":N("¿Quién trabaja en la escuela?"),"c67_luis_y_tu":L("Y tú, Coquí, ¿en qué trabajas?"),"c67_ab_no_trabaja":AB("Coquí no trabaja. ¡Coquí juega!"),"c67_ve_ahora_tu":VE("Ahora tú, Coquí."),
  "c67_ab_y_usted":AB("¿Y usted?"),"c67_ab_y_tu_corto":AB("¿Y tú?"),
- "c67_ve_gracias":VE("¡Gracias, Coquí! ¡Buen trabajo!"),"c67_ve_limber":VE("¿Quieres un limber, Coquí?"),"c67_cq_quiero":T("¡Sí, quiero!"),"c67_ab_fin":AB("¡Mira! Ahora Coquí también trabaja.")})
+ "c67_ve_gracias":VE("¡Gracias, Coquí! ¡Buen trabajo!"),"c67_ve_limber":VE("¿Quieres un limber, Coquí?"),"c67_cq_si_gracias":T("¡Sí, gracias!"),"c67_ab_fin":AB("¡Mira! Ahora Coquí también trabaja.")})
 TRAB67={"doctor":("doctora","doctor","Trabajo en el hospital."),"maestra":("maestra","maestro","Trabajo en la escuela."),"policia":("policía","policía","Trabajo aquí, en la plaza.")}   # job key -> (said by a woman, said by a man, where)
 for p,F,g in (("senora",SA,0),("hombre",HO,1)):
     for j,(fem,mas,lug) in TRAB67.items():
@@ -196,7 +196,7 @@ s67={"id":"en-que-trabajas","title":"¿En qué trabajas?","place":"La plaza","sc
   "c67_mira_vendedor","c67_ve_trabajo",act("tapa67"),gesto("vendedor","no"),ask("caja","c67_que_hay_caja",after=[act("saca67",cosa="libro")]),
   # 2: a young man sits down; "no trabajo, soy estudiante"; signed ask on him: the frog carries the book over; a speaking turn (de nada)
   {"dots":1},act("llega",quien="joven",a="taburete1"),"c67_ab_y_tu","c67_jo_estudiante","c67_ab_estudiante",gesto("coqui","mira",a="joven"),
-  ask("joven","c67_quien_estudiante",after=[act("lleva67",cosa="libro",a="joven",ok=1)],then=["c67_jo_libro"]),"c67_cq_de_nada",
+  ask("joven","c67_quien_estudiante",after=[act("lleva67",cosa="libro",a="joven",ok=1)]),"c67_cq_toma","c67_jo_libro",
   # 3: the señor sits beside him; "soy cocinero. Trabajo en la escuela"; signed ask on him: the frog brings the tall hat; everybody claps
   {"dots":2},act("llega",quien="senor",a="taburete2"),"c67_ab_usted_trabaja","c67_se_cocinero",act("saca67",cosa="gorro"),
   ask("senor","c67_quien_escuela",after=[act("lleva67",cosa="gorro",a="senor",ok=1)],then=juntos(*[gesto(q,"aplaude") for q in TODOS67])),
@@ -209,10 +209,10 @@ s67={"id":"en-que-trabajas","title":"¿En qué trabajas?","place":"La plaza","sc
   {"dots":5}]+ronda67a+juntos(act("sale",quien="senora"),act("sale",quien="hombre"))+juntos(act("llega",quien="mujer",a="cola1"),act("llega",quien="la_joven",a="cola2"))+[{"dots":6}]+ronda67b,
  "final":[{"dots":7},"c67_ve_gracias",   # 8: the box is empty; the limbers left decide the last picture; 9: the turn (quiero)
   {"if":"lost=0","then":[act("final67",n=3)],"else":[{"if":"lost=1","then":[act("final67",n=2)],"else":[act("final67",n=1)]}]},
-  "c67_ve_limber","c67_cq_quiero","c67_ab_fin",act("fin")],
- "leer":["c67_mira_vendedor","c67_ve_trabajo","c67_que_hay_caja","c67_ab_y_tu","c67_jo_estudiante","c67_ab_estudiante","c67_quien_estudiante","c67_jo_libro","c67_cq_de_nada","c67_ab_usted_trabaja","c67_se_cocinero","c67_quien_escuela","c67_luis_y_tu","c67_ab_no_trabaja",
-  "c67_ve_ahora_tu","c67_ab_usted_trabaja","c67_senora_doctor","c67_ab_y_usted","c67_hombre_maestra","c67_senora_gracias","c67_ab_y_tu","c67_la_joven_estudiante","c67_ab_y_usted","c67_mujer_vendedor","c67_mujer_gracias","c67_ve_gracias","c67_ve_limber","c67_cq_quiero","c67_ab_fin"]}
-s67=reuse(s67,{"c67_cq_de_nada":TG(("de nada",["de nada"])),"c67_cq_quiero":TG(("quiero",["quiero","sí quiero","si quiero"]))})
+  "c67_ve_limber","c67_cq_si_gracias","c67_ab_fin",act("fin")],
+ "leer":["c67_mira_vendedor","c67_ve_trabajo","c67_que_hay_caja","c67_ab_y_tu","c67_jo_estudiante","c67_ab_estudiante","c67_quien_estudiante","c67_cq_toma","c67_jo_libro","c67_ab_usted_trabaja","c67_se_cocinero","c67_quien_escuela","c67_luis_y_tu","c67_ab_no_trabaja",
+  "c67_ve_ahora_tu","c67_ab_usted_trabaja","c67_senora_doctor","c67_ab_y_usted","c67_hombre_maestra","c67_senora_gracias","c67_ab_y_tu","c67_la_joven_estudiante","c67_ab_y_usted","c67_mujer_vendedor","c67_mujer_gracias","c67_ve_gracias","c67_ve_limber","c67_cq_si_gracias","c67_ab_fin"]}
+s67=reuse(s67,{"c67_cq_toma":TG(("toma",["toma"])),"c67_cq_si_gracias":TG(("gracias",["gracias","sí gracias","si gracias"]))})
 json.dump(s67,open("cuentos/en-que-trabajas.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
 
@@ -228,13 +228,18 @@ c.update({"c68_cumple":N("Es el cumpleaños de Beto."),"c68_ve_cuantos_beto":VE(
  "c68_ve_cuantos_a":VE("¿Cuántos años tienes?"),"c68_ve_cuantos_b":VE("¿Y tú? ¿Cuántos años tienes?"),
  "c68_be_quieres":BE("Coquí, ¿quieres bizcocho?"),"c68_cq_un_poco":T("¡Un poco!"),"c68_fin":N("Beto tiene cinco años. Y Coquí tiene tres.")})
 AGES68=[str(i) for i in range(5,13)]; SIBS68=["2","3","4"]
+# Each child's answer is two clips, one for each sentence, played one after the other with the same speaker key (so the draws share their recordings):
+# the first has the speaker ("El niño dice: Tengo nueve años." / "El niño dice: Tengo dos hermanos."), the second has none ("Y tengo dos hermanos." / "Y tengo nueve años.").
+# The first is the `lead` of the decision and the second its `line` (the engine asks the line again every 9 s: only the second sentence is said again). The correction after a wrong move stays one clip.
+SEG=lambda kind,t:{"who":"narr","habla":kind,"text":t}
 for kind,F,her in (("nino",NI,"hermanos"),("nina",NA,"hermanas")):
     for e in AGES68:
         c["c68_%s_no_%s"%(kind,e)]=F("¡No! Tengo %s años."%NUM[e]); DIN.add("c68_%s_no_%s"%(kind,e))
-        for h in SIBS68:
-            c["c68_%s_%s_%s_ed"%(kind,e,h)]=F("Tengo %s años. Y tengo %s %s."%(NUM[e],NUM[h],her))     # the years first
-            c["c68_%s_%s_%s_he"%(kind,e,h)]=F("Tengo %s %s. Y tengo %s años."%(NUM[h],her,NUM[e]))     # the brothers or sisters first
-            DIN.update(["c68_%s_%s_%s_ed"%(kind,e,h),"c68_%s_%s_%s_he"%(kind,e,h)])
+        c["c68_%s_edad_%s"%(kind,e)]=F("Tengo %s años."%NUM[e]); c["c68_%s_y_edad_%s"%(kind,e)]=SEG(kind,"Y tengo %s años."%NUM[e])       # the years: said first (with the speaker) or second
+        DIN.update(["c68_%s_edad_%s"%(kind,e),"c68_%s_y_edad_%s"%(kind,e)])
+    for h in SIBS68:
+        c["c68_%s_herm_%s"%(kind,h)]=F("Tengo %s %s."%(NUM[h],her)); c["c68_%s_y_herm_%s"%(kind,h)]=SEG(kind,"Y tengo %s %s."%(NUM[h],her))   # the brothers or sisters: first or second
+        DIN.update(["c68_%s_herm_%s"%(kind,h),"c68_%s_y_herm_%s"%(kind,h)])
 def tercera68(e,h,t):
     # the third candle, drawn from the numbers that may lie beside these years and this number of brothers or sisters (a nested `if` on the years, then on the brothers; the leaf is the draw)
     def permitidos(ev,hv):
@@ -248,14 +253,17 @@ def tercera68(e,h,t):
 def ronda68(s,kind,quien,pregunta):
     # e: the years, h: the brothers or sisters, t: the third number, o: which is said first (ed: the years, he: the brothers or sisters)
     # p, q, r: what the candles a, b, c hold (edad, herm, otro: dealt out); u, v, w: the numbers on them; k: the candle with the years; n: the number on the candle he touched
-    e,h,t,o,p,q,r,u,v,w,k,n="e"+s,"h"+s,"t"+s,"o"+s,"p"+s,"q"+s,"r"+s,"u"+s,"v"+s,"w"+s,"k"+s,"n"+s
-    return [{"draw":e,"options":AGES68},{"draw":h,"options":SIBS68}]+tercera68(e,h,t)+[{"draw":o,"options":["ed","he"]},{"reparte":[p,q,r],"options":["edad","herm","otro"]},
+    # f, g: the first clip (with the speaker) and the second clip of his answer
+    e,h,t,o,p,q,r,u,v,w,k,n,f,g="e"+s,"h"+s,"t"+s,"o"+s,"p"+s,"q"+s,"r"+s,"u"+s,"v"+s,"w"+s,"k"+s,"n"+s,"f"+s,"g"+s
+    return [{"draw":e,"options":AGES68},{"draw":h,"options":SIBS68}]+tercera68(e,h,t)+[{"draw":o,"options":["ed","he"]},
+     {"calc":f,"cond":o+"=ed","then":"c68_%s_edad_$%s"%(kind,e),"else":"c68_%s_herm_$%s"%(kind,h)},{"calc":g,"cond":o+"=ed","then":"c68_%s_y_herm_$%s"%(kind,h),"else":"c68_%s_y_edad_$%s"%(kind,e)},
+     {"reparte":[p,q,r],"options":["edad","herm","otro"]},
      {"calc":u,"cond":p+"=edad","then":"$"+e,"else":"$"+t},{"calc":u,"cond":p+"=herm","then":"$"+h,"else":"$"+u},
      {"calc":v,"cond":q+"=edad","then":"$"+e,"else":"$"+t},{"calc":v,"cond":q+"=herm","then":"$"+h,"else":"$"+v},
      {"calc":w,"cond":r+"=edad","then":"$"+e,"else":"$"+t},{"calc":w,"cond":r+"=herm","then":"$"+h,"else":"$"+w},
      {"calc":k,"cond":p+"=edad","then":"vela_a","else":"vela_b"},{"calc":k,"cond":r+"=edad","then":"vela_c","else":"$"+k},
      act("velas",a="$"+u,b="$"+v,c="$"+w),pregunta,
-     {"decide":"do","options":["vela_a","vela_b","vela_c"],"pick":"$"+k,"tests":"tengo … años","lock":True,"lead":[],"line":"c68_%s_$%s_$%s_$%s"%(kind,e,h,o),
+     {"decide":"do","options":["vela_a","vela_b","vela_c"],"pick":"$"+k,"tests":"tengo … años","lock":True,"lead":["$"+f],"line":"$"+g,
       "right":[{"if":"ok","then":[act("vela68",n="$"+e,a=quien,ok=1),OK],"else":[act("vela68",n="$"+e,a=quien,ok=1)]}],
       "wrong":[{"calc":n,"cond":"x=vela_a","then":"$"+u,"else":"$"+v},{"calc":n,"cond":"x=vela_c","then":"$"+w,"else":"$"+n},
                act("vela68",n="$"+n,a=quien,ok=0),gesto(quien,"no"),"c68_%s_no_$%s"%(kind,e),act("quita68")]+X}]
@@ -282,7 +290,7 @@ s68={"id":"cuantos-anos-tienes","title":"¿Cuántos años tienes?","place":"La p
   {"if":"lost=0","then":[act("final68",n=3)],"else":[{"if":"lost=1","then":[act("final68",n=2)],"else":[act("final68",n=1)]}]},
   "c68_be_quieres","c68_cq_un_poco","c68_fin",act("fin")],
  "leer":["c68_cumple","c68_ve_cuantos_beto","c68_be_cinco","c68_donde_cinco","c68_be_y_tu_ana","c68_an_ocho","c68_ca_ocho","c68_donde_ocho","c68_l_diez","c68_l_abuela","c68_ab_setenta","c68_ma_treinta","c68_an_y_tu_coqui","c68_cq_tres","c68_ve_cada",
-  "c68_ve_cuantos_a","c68_nino_9_2_ed","c68_ve_cuantos_b","c68_nina_7_3_he","c68_be_quieres","c68_cq_un_poco","c68_fin"]}
+  "c68_ve_cuantos_a","c68_nino_edad_9","c68_nino_y_herm_2","c68_ve_cuantos_b","c68_nina_herm_3","c68_nina_y_edad_7","c68_be_quieres","c68_cq_un_poco","c68_fin"]}
 s68=reuse(s68,{"c68_cq_tres":TG(("tres",["tres"])),"c68_cq_un_poco":TG(("un poco",["un poco"]))})
 json.dump(s68,open("cuentos/cuantos-anos-tienes.json","w",encoding="utf-8"),ensure_ascii=False,indent=1)
 
